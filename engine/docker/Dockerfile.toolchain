@@ -25,7 +25,12 @@ ARG XERCES_VERSION=3.2.5
 ARG ICU_VERSION=76-1
 ARG FMT_VERSION=11.0.2
 ARG YAMLCPP_VERSION=0.8.0
-ARG PYTHON_VERSION=3.14.0
+# 3.14.4, not 3.14.0: confirmed from freecad-web's own
+# deps/build/assemble-python-prefix.sh (PYSRC=.../src/Python-3.14.4), the
+# only place upstream's exact CPython version is recorded.
+ARG PYTHON_VERSION=3.14.4
+ARG LIBFFI_VERSION=3.4.6
+ARG MPDEC_VERSION=4.0.1
 
 # ----------------------------------------------------------------------------
 # base: emsdk 4.0.12 (pinned, matches upstream) + host build tooling
@@ -38,6 +43,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         python3-dev python3-pip bison flex ca-certificates curl xz-utils \
         build-essential git perl \
         qt6-base-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools \
+        zlib1g-dev libssl-dev libbz2-dev libffi-dev libreadline-dev \
+        libsqlite3-dev liblzma-dev uuid-dev \
     && rm -rf /var/lib/apt/lists/*
 # Host Qt6 (native x86_64) provides QT_HOST_PATH tools (moc, lrelease) for
 # cross-compiling the wasm-target Qt6Core used by the headless kernel --
@@ -180,3 +187,87 @@ RUN cd boost-src && ./b2 \
       --with-program_options --with-regex --with-date_time \
       install -j"$(nproc)" \
     && rm -rf /work/boost.tar.gz /work/boost-src
+
+# ----------------------------------------------------------------------------
+# python-wasm: CPython, static embed (BUILD_DYNAMIC_LINK_PYTHON=OFF in
+# FreeCAD's own configure -- everything links into one wasm binary, no
+# dlopen'd extension modules). Steps hand-replicate CPython's own official
+# emscripten-build pipeline (its orchestrator script needs Python 3.11+ for
+# contextlib.chdir; the emsdk base image ships 3.10, so the steps are run
+# directly instead of through that script) plus freecad-web's own
+# deps/build/assemble-python-prefix.sh, which is the only place the exact
+# upstream CPython version (3.14.4, not the deps/README's unversioned
+# "3.14") is recorded. NOTE: CPython renamed this tooling's directory
+# between patch releases -- it's Tools/wasm/emscripten/ in 3.14.0 but
+# Platforms/emscripten/ in 3.14.4 (confirmed by listing both tarballs);
+# freecad-web's comment "Run after `Platforms/emscripten build`" is the
+# correct 3.14.4 path, not a typo.
+# ----------------------------------------------------------------------------
+FROM base AS python-wasm
+ARG PYTHON_VERSION
+ARG LIBFFI_VERSION
+ARG MPDEC_VERSION
+ENV PYPREFIX=/opt/toolchains/python-wasm-prefix
+RUN curl -fsSL "https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz" \
+      -o python.tgz && tar xf python.tgz && mv "Python-${PYTHON_VERSION}" python-src
+
+# 1. Native "build" Python (used by the cross-build to freeze/regen modules).
+RUN mkdir -p native-build && cd native-build \
+    && ../python-src/configure --without-ensurepip \
+    && make -j"$(nproc)"
+
+# 2. libffi, cross-built for wasm32 (CPython's own recipe: CHOST=wasm32-unknown-linux).
+RUN curl -fsSL "https://github.com/libffi/libffi/releases/download/v${LIBFFI_VERSION}/libffi-${LIBFFI_VERSION}.tar.gz" \
+      -o libffi.tar.gz && tar xf libffi.tar.gz
+RUN cd "libffi-${LIBFFI_VERSION}" \
+    && CFLAGS="-O2 -fPIC -DWASM_BIGINT" CXXFLAGS="-O2 -fPIC -DWASM_BIGINT" \
+       CPATH="$PYPREFIX/include" PKG_CONFIG_PATH="$PYPREFIX/lib/pkgconfig" \
+       EM_PKG_CONFIG_PATH="$PYPREFIX/lib/pkgconfig" \
+       emconfigure ./configure --host=wasm32-unknown-linux --prefix="$PYPREFIX" \
+         --enable-static --disable-shared --disable-dependency-tracking \
+         --disable-builddir --disable-multi-os-directory --disable-raw-api --disable-docs \
+    && make install \
+    && cp fficonfig.h "$PYPREFIX/include/" \
+    && cp include/ffi_common.h "$PYPREFIX/include/"
+
+# 3. mpdecimal, cross-built for wasm32.
+RUN curl -fsSL "https://www.bytereef.org/software/mpdecimal/releases/mpdecimal-${MPDEC_VERSION}.tar.gz" \
+      -o mpdecimal.tar.gz && tar xf mpdecimal.tar.gz
+RUN cd "mpdecimal-${MPDEC_VERSION}" \
+    && emconfigure ./configure CFLAGS=-fPIC --prefix="$PYPREFIX" --disable-shared \
+    && make install
+
+# 4. Host (wasm32-emscripten) CPython, static: --without-pymalloc (matches
+# upstream), --disable-shared, --without-ensurepip; no
+# --enable-wasm-dynamic-linking (that flag makes further extension .so files
+# dlopen-loadable at runtime -- freecad-web's own comment confirms the plain
+# static archive already has "Modules/expat etc. end up inside libpython for
+# the static build", i.e. the flag is additive capability, not required for
+# a working static libpython3.14.a; omitted here since FreeCAD's own
+# BUILD_DYNAMIC_LINK_PYTHON=OFF wants everything static in one binary).
+RUN mkdir -p host-build && cd host-build \
+    && CONFIG_SITE=/work/python-src/Platforms/emscripten/config.site-wasm32-emscripten \
+       EM_PKG_CONFIG_PATH="$PYPREFIX/lib/pkgconfig" \
+       emconfigure ../python-src/configure \
+         CFLAGS="-DPY_CALL_TRAMPOLINE -sUSE_BZIP2 ${EM_WASM_EH_FLAGS}" \
+         PKG_CONFIG=pkg-config \
+         --host=wasm32-emscripten --build=x86_64-pc-linux-gnu \
+         --with-build-python=/work/native-build/python \
+         --without-pymalloc --without-ensurepip --disable-shared --disable-ipv6 \
+         --enable-big-digits=30 \
+         --prefix="$PYPREFIX" \
+    && make -j"$(nproc)"
+
+# 5. Assemble the clean prefix FreeCAD's configure-stage1.sh expects:
+#    include/python3.14/, lib/libpython3.14.a, lib/python3.14/ (stdlib tree).
+RUN OUT=/opt/toolchains/python-wasm && mkdir -p "$OUT/include/python3.14" "$OUT/lib" \
+    && cp -r python-src/Include/. "$OUT/include/python3.14/" \
+    && cp host-build/pyconfig.h "$OUT/include/python3.14/" \
+    && cp host-build/libpython3.14.a "$OUT/lib/" \
+    && cp "$PYPREFIX"/lib/*.a "$OUT/lib/" \
+    && mkdir -p "$OUT/lib/python3.14" \
+    && cp -r python-src/Lib/. "$OUT/lib/python3.14/" \
+    && find host-build -name '_sysconfigdata*.py' -exec cp {} "$OUT/lib/python3.14/" \; \
+    && rm -rf /work/python.tgz /work/python-src /work/native-build /work/host-build \
+              /work/libffi.tar.gz "/work/libffi-${LIBFFI_VERSION}" \
+              /work/mpdecimal.tar.gz "/work/mpdecimal-${MPDEC_VERSION}"
