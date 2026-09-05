@@ -31,6 +31,9 @@ ARG YAMLCPP_VERSION=0.8.0
 ARG PYTHON_VERSION=3.14.4
 ARG LIBFFI_VERSION=3.4.6
 ARG MPDEC_VERSION=4.0.1
+# Matches upstream's qt-jspi/6.11.1 and qt/6.11.1 prefixes in deps/README.md
+# and configure-stage1.sh -- the one version this stage is NOT our own guess.
+ARG QT_VERSION=6.11.1
 
 # ----------------------------------------------------------------------------
 # base: emsdk 4.0.12 (pinned, matches upstream) + host build tooling
@@ -271,3 +274,60 @@ RUN OUT=/opt/toolchains/python-wasm && mkdir -p "$OUT/include/python3.14" "$OUT/
     && rm -rf /work/python.tgz /work/python-src /work/native-build /work/host-build \
               /work/libffi.tar.gz "/work/libffi-${LIBFFI_VERSION}" \
               /work/mpdecimal.tar.gz "/work/mpdecimal-${MPDEC_VERSION}"
+
+# ----------------------------------------------------------------------------
+# qt-host-wasm: native x86_64 Qt6 qtbase, Core/Network/Xml/Concurrent + tools
+# only (-no-gui skips Widgets/OpenGL/PrintSupport, which depend on it). This
+# is QT_HOST_PATH -- Qt6's own cross-compilation model needs a *matching*
+# full host build (not distro qt6-base-dev packages: those don't ship the
+# Qt6HostInfo/Qt6CoreTools CMake package files -qt-host-path expects) to run
+# moc/rcc/tracegen/qlalr/syncqt during the target configure and build.
+# ----------------------------------------------------------------------------
+FROM base AS qt-host-wasm
+ARG QT_VERSION
+RUN curl -fsSL "https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/submodules/qtbase-everywhere-src-${QT_VERSION}.tar.xz" \
+      -o qtbase.tar.xz && tar xf qtbase.tar.xz && mv "qtbase-everywhere-src-${QT_VERSION}" qtbase-src
+RUN mkdir -p qt-host-build && cd qt-host-build \
+    && ../qtbase-src/configure -prefix /opt/toolchains/qt-host \
+         -release -static \
+         -no-gui -no-widgets -no-opengl -no-dbus \
+         -nomake examples -nomake tests \
+    && cmake --build . --parallel "$(nproc)" \
+    && cmake --install . \
+    && rm -rf /work/qtbase.tar.xz /work/qtbase-src /work/qt-host-build
+
+# ----------------------------------------------------------------------------
+# qt-wasm-core: the same qtbase source, cross-built for wasm32 via Qt's own
+# `-platform wasm-emscripten` mkspec (Qt has first-party Emscripten support;
+# this is NOT a generic emcmake/CMAKE_TOOLCHAIN_FILE build like the other
+# deps -- Qt's configure invokes em++ itself once emsdk_env.sh is on PATH,
+# which the base image already provides). Core/Network/Xml/Concurrent only,
+# matching FreeCAD's own FREECAD_QT_COMPONENTS list for BUILD_GUI=OFF.
+# ----------------------------------------------------------------------------
+FROM qt-host-wasm AS qt-wasm-core
+ARG QT_VERSION
+RUN curl -fsSL "https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/submodules/qtbase-everywhere-src-${QT_VERSION}.tar.xz" \
+      -o qtbase.tar.xz && tar xf qtbase.tar.xz && mv "qtbase-everywhere-src-${QT_VERSION}" qtbase-src
+RUN mkdir -p qt-wasm-build && cd qt-wasm-build \
+    && ../qtbase-src/configure -prefix /opt/toolchains/qt-wasm \
+         -platform wasm-emscripten -qt-host-path /opt/toolchains/qt-host \
+         -release -static \
+         -no-gui -no-widgets -no-opengl -no-dbus \
+         -nomake examples -nomake tests \
+    && cmake --build . --parallel "$(nproc)" \
+    && cmake --install . \
+    && rm -rf /work/qtbase.tar.xz /work/qtbase-src /work/qt-wasm-build
+# NOTE (real finding, not an assumption): forcing -fwasm-exceptions onto
+# Qt's own build fails outright -- `clang: error: invalid argument
+# '-fwasm-exceptions' not allowed with '-enable-emscripten-sjlj'` on a
+# bundled-PCRE2 C file (Qt's default Emscripten exception strategy is
+# setjmp/longjmp-based ("sjlj"), a software fallback that emits ordinary
+# branch instructions, NOT wasm-EH try/catch opcodes -- it cannot collide
+# with OCCT's exnref-vs-legacy problem at the bytecode level because it
+# contains no wasm-EH opcodes to be inconsistent with in the first place).
+# Deliberately NOT passing EM_WASM_EH_FLAGS to Qt's own compile: this
+# relies on the kernel link stage's own MANDATORY
+# `wasm-opt --translate-to-exnref` pass (already required for OCCT) to
+# reconcile Qt's sjlj-built objects with the rest of FreeCAD.wasm. If that
+# assumption is wrong, it will surface as a G3/G4 link or V8-load failure,
+# not a silent miscompile -- flagged for whoever runs that gate to watch for.
