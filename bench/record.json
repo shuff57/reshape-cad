@@ -1,21 +1,21 @@
 [
   {
     "candidate": "C1",
-    "engine": null,
-    "build_sha": null,
-    "date": null,
-    "device": null,
-    "transfer_mb_gz": null,
-    "cold_load_s": null,
-    "cached_load_s": null,
-    "peak_ram_mb": null,
+    "engine": "freecad-web GUI wasm (magik.net/freecad app.html)",
+    "build_sha": "magik6k/freecad-web@24053dfb",
+    "date": "2026-09-05",
+    "device": "windows-11-lead",
+    "transfer_mb_gz": 103.7,
+    "cold_load_s": 18.4,
+    "cached_load_s": 15.1,
+    "peak_ram_mb": 836,
     "pad_recompute_ms": null,
     "opens_in_freecad_113": null,
     "constraints_roundtrip": null,
     "y1": null,
     "y2": null,
     "y3": null,
-    "notes": null
+    "notes": "Chrome 151 headed. Cold 18.71/18.14 s; cached 14.47/15.69 s. FreeCAD.wasm 86.2 MB + freecad.data 9.26 MB have no cache-control and re-download every visit. crossOriginIsolated=false and it runs: single-threaded, no COOP/COEP needed. RAM peak 835.7/696.3 MB. Box via Part workbench works by coordinate clicks; Pad-on-sketch not attempted. Details docs/spike/a1-live-demo.md"
   },
   {
     "candidate": "C2",

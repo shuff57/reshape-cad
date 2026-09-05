@@ -1,0 +1,59 @@
+{
+  "date": "2026-09-05",
+  "device": "windows-11-lead",
+  "url": "https://magik.net/freecad/",
+  "app_loader_url": "https://magik.net/freecad/app.html",
+  "browser": "Google Chrome (real chrome channel, not bundled Chromium)",
+  "browser_version": "151.0.0.0",
+  "headed": true,
+  "headed_fallback_needed": false,
+  "notes_on_headed": "JSPI worked fine headed on the first try via playwright-cli's --browser chrome --headed. Headless was never attempted since headed worked immediately and the task said to prefer headed.",
+  "cold_load_s": [18.713, 18.142],
+  "cold_load_method": "Fresh browser profile per run (playwright_chromiumdev_profile temp dir, closed and reopened between runs, confirmed via process creation time), first navigation to app.html.",
+  "cached_load_s": [14.466, 15.686],
+  "cached_load_method": "Opened a second tab in the SAME already-warm browser context/profile and navigated to app.html (soft navigation, not a forced reload). A forced page.reload() in the same profile was also tried and gave an almost identical 15.017s -- see cached_load_reload_variant_s.",
+  "cached_load_reload_variant_s": 15.017,
+  "transfer_mb_gz": {
+    "cold_run1_mb": 103.72,
+    "cold_run2_mb": 103.75,
+    "cached_run1_mb": 91.02,
+    "cached_run2_mb": 91.00,
+    "measurement_method": "Sum of Performance Resource Timing transferSize (+ navigation entry transferSize) via page.evaluate, cross-checked per-resource against the playwright-cli `requests`/`response-headers` network log. This is functionally equivalent to summing encoded response bytes over CDP Network events (transferSize already reflects wire bytes including compression), just read via the page's own Performance API instead of live CDP Network domain events."
+  },
+  "caching_finding": "Caching is PARTIAL, not full, and the docs claim 'your browser caches it afterward' overstates it. The ~13 small/medium .data chunks (mods, pyside, numpy, pivy, td-res, pydeps, extra-res, etc, ~8.7 MB total) DO get served from HTTP disk cache on repeat visits (transferSize 0). But the two largest files -- freecad.data (~9.26 MB) and FreeCAD.wasm (~86.2 MB), together ~91 MB of the ~96 MB advertised total -- are re-fetched in full on every single visit, cold or warm, reload or fresh tab. No cache-control header is sent on any of these files at all (checked via response-headers); only etag/last-modified are present, and Chrome does not appear to apply heuristic freshness to these two files consistently enough to avoid re-transfer. Net effect: a returning user still pays essentially the full ~91-96 MB download every time, and cached load time (14.5-15.7s) is close to cold load time (18.1-18.7s) on this connection -- caching saves ~4s and ~13 MB, not the 96 MB implied.",
+  "peak_ram_mb": {
+    "cold_run1_peak_renderer_mb": 835.71,
+    "cold_run2_peak_renderer_mb": 696.34,
+    "measurement_method": "PowerShell Get-Process -Id <renderer_pid> WorkingSet64, polled every 500ms for 90s starting at browser launch. Renderer pid identified by process tree: Get-CimInstance Win32_Process filtered to chrome.exe descendants of the browser's main pid with --type=renderer in the command line. CDP SystemInfo.getProcessInfo was attempted first but Chrome rejects it on a page-level CDP session ('only supported on the browser target'), so the WMI/process-tree route was used instead. Chrome spins up 2-3 idle spare renderer processes per tab; the real app renderer was unambiguous in both runs (one pid reached 700-800+ MB while the spares stayed under 90 MB)."
+  },
+  "cross_origin_isolated": false,
+  "cross_origin_isolated_note": "self.crossOriginIsolated was false on every run, and app.html's response headers carry no Cross-Origin-Opener-Policy or Cross-Origin-Embedder-Policy at all. The task brief assumed COOP/COEP were required; empirically this build does NOT need them -- it works without cross-origin isolation, implying no SharedArrayBuffer/pthreads are in play (single-threaded WASM + JSPI only). Only the browser-version gate (Chrome/Edge 137+) actually mattered; this box has Chrome 151.",
+  "ready_signal": "Console message 'FCLOG STARTUP_DONE' logged by the app itself. Cross-validated visually: at the moment this fires, the full Qt main window (menu bar, toolbars, a 'Welcome to FreeCAD' first-run panel) is painted and the toolbar buttons ('Open / Import', 'Save .FCStd') flip from disabled to enabled. Note: the actual WebGL 3D canvas element (id qt-window-canvas) lives inside a shadow root, not the plain DOM -- document.querySelector('canvas') alone returns null even after full load, so any automated check needs to pierce shadow DOM or just rely on the console signal, which is what was used here.",
+  "demo_document_note": "The write-up says 'a demo document opens in a live 3D viewport' on boot. In practice, on both cold runs, boot lands on a 'Welcome to FreeCAD' onboarding panel (language/unit/theme picker), not a live 3D view of a pre-made box-with-cylindrical-cut. No document is open in the Model tree at STARTUP_DONE.",
+  "interaction_notes": "Performed headed, using raw page.mouse move/down/up at pixel coordinates -- the entire FreeCAD GUI (menus, toolbars, comboboxes, viewport) is one WebGL canvas with no accessible DOM structure, so playwright-cli's ref/selector-based click/find commands cannot target menu items; only coordinate-based mouse events work, matching the guardrail about canvas/SVG UIs. Full working chain, screenshot-verified at each step: (1) File > New Document via menu-bar coordinates -> empty 'Unnamed' document opens with a live WebGL viewport (previously just the Welcome panel). (2) Workbench combobox: FreeCAD's QComboBox opens its popup ON MOUSEDOWN and behaves like a native press-drag-release control -- mousedown at the combobox, drag to the 'Part' list item while still held, then mouseup there. A plain click (mousedown+mouseup with no movement) does NOT change the selection, it just closes the popup with no effect; this cost a couple of throwaway attempts before the drag-select pattern was found. (3) Clicked the Part workbench's Box toolbar icon -> a grey Cube solid rendered immediately in the 3D viewport and 'Cube' appeared under 'Unnamed' in the Model tree. All three steps worked on the first or second try once coordinates were read off a screenshot. Total interaction time: under 15 minutes, inside the 20-minute budget. Sketch+Pad was NOT attempted (assessed only, per the task's time cap): it is very likely attemptable with the same raw-coordinate technique (enter sketch mode on a plane, draw a closed profile, apply Part Design Pad, confirm the length dialog), but each sketch point and every dialog field is another blind coordinate guess with no accessibility tree to query, so a real attempt would need an iterative screenshot-click-verify loop per point/constraint rather than the one-or-two-shot clicks that worked for Box. That makes it feasible but meaningfully slower and flakier to automate than primitive creation.",
+  "screenshots": [
+    "docs/spike/screenshots/ready-state.png",
+    "docs/spike/screenshots/after-startup-done.png",
+    "docs/spike/screenshots/01-post-load.png",
+    "docs/spike/screenshots/02-file-menu.png",
+    "docs/spike/screenshots/03-new-document.png",
+    "docs/spike/screenshots/04-workbench-dropdown.png",
+    "docs/spike/screenshots/05-workbench-dropdown2.png",
+    "docs/spike/screenshots/06-mid-click.png",
+    "docs/spike/screenshots/07-hover-part.png",
+    "docs/spike/screenshots/08-part-selected.png",
+    "docs/spike/screenshots/09-box-created.png"
+  ],
+  "raw_data_files": [
+    "docs/spike/ram_log_cold1.csv",
+    "docs/spike/ram_log_cold2.csv",
+    "docs/spike/cold_measure.js",
+    "docs/spike/newtab_measure.js",
+    "docs/spike/poll_ram.ps1"
+  ],
+  "could_not_measure": [
+    "Headless JSPI behavior: not tested since headed worked on the first try and the task deprioritized the headless path once headed succeeded.",
+    "True first-ever cold load with zero prior CDN/edge warmup on the server side: only client-side cache state was controlled, not server/CDN state.",
+    "Pad-on-sketch: assessed as feasible but not executed, per the explicit 20-minute interaction time cap in the task."
+  ]
+}

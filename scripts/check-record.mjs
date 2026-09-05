@@ -94,7 +94,11 @@ for (const row of rows) {
   for (const f of required) {
     const v = row[f];
     if (v === null || v === undefined) {
-      problem(row, f, "is null but the row claims a run");
+      // Measurements (numeric / boolean / enum cells) may stay null while a row
+      // is measured in stages; only --require-complete demands them all.
+      // Identity and free-text fields are always required once a row claims a run.
+      const isMeasurement = numeric.has(f) || boolean.has(f) || Boolean(enums[f]);
+      if (!isMeasurement) problem(row, f, "is null but the row claims a run");
       continue;
     }
     if (numeric.has(f)) {
