@@ -220,10 +220,19 @@ ENV PYPREFIX=/opt/toolchains/python-wasm-prefix
 RUN curl -fsSL "https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz" \
       -o python.tgz && tar xf python.tgz && mv "Python-${PYTHON_VERSION}" python-src
 
-# 1. Native "build" Python (used by the cross-build to freeze/regen modules).
+# 1. Native "build" Python (used by the cross-build to freeze/regen modules,
+# and later by FreeCAD's own build-time codegen scripts as
+# Python3_EXECUTABLE). Given a real --prefix and `make install`: an
+# in-tree, uninstalled CPython build resolves its own stdlib/extension
+# modules (pybuilddir.txt, _sysconfigdata) via relative paths from its
+# build directory, so relocating just the bare binary elsewhere breaks it
+# outright ("Could not find platform dependent libraries <exec_prefix>",
+# ModuleNotFoundError even on `math`) -- confirmed by an actual failed
+# FreeCAD ninja build before this was installed properly.
 RUN mkdir -p native-build && cd native-build \
-    && ../python-src/configure --without-ensurepip \
-    && make -j"$(nproc)"
+    && ../python-src/configure --prefix=/opt/toolchains/python-wasm-native --without-ensurepip \
+    && make -j"$(nproc)" \
+    && make install
 
 # 2. libffi, cross-built for wasm32 (CPython's own recipe: CHOST=wasm32-unknown-linux).
 RUN curl -fsSL "https://github.com/libffi/libffi/releases/download/v${LIBFFI_VERSION}/libffi-${LIBFFI_VERSION}.tar.gz" \
@@ -269,16 +278,17 @@ RUN mkdir -p host-build && cd host-build \
 
 # 5. Assemble the clean prefix FreeCAD's configure-stage1.sh expects:
 #    include/python3.14/, lib/libpython3.14.a, lib/python3.14/ (stdlib tree).
-# Also keep the NATIVE 3.14 "build python" as bin/python3.14-native: CMake's
-# FindPython3 COMPONENTS "Interpreter Development" (FreeCAD's own
-# SetupPython.cmake macro) runs whatever Python3_EXECUTABLE points at to
-# cross-check its version against the Development headers/library it is
-# given -- pointing it at the base image's system python3.10 fails that
-# check ("Could NOT find Python3 ... found version 3.10.12") even with
-# correct Python3_INCLUDE_DIR/Python3_LIBRARY, because 3.10 != 3.14. A
-# native 3.14 interpreter (this cross-build's own bootstrap "build Python",
-# otherwise thrown away) reports the matching version and satisfies it.
-RUN OUT=/opt/toolchains/python-wasm && mkdir -p "$OUT/include/python3.14" "$OUT/lib" "$OUT/bin" \
+# The NATIVE 3.14 "build python" is left as its own separate, properly
+# `make install`-ed prefix at /opt/toolchains/python-wasm-native (see step
+# 1) rather than copied in here -- CMake's FindPython3 COMPONENTS
+# "Interpreter Development" (FreeCAD's own SetupPython.cmake macro) runs
+# whatever Python3_EXECUTABLE points at to cross-check its version against
+# the Development headers/library it is given. Pointing it at the base
+# image's system python3.10 fails that check ("Could NOT find Python3 ...
+# found version 3.10.12") even with correct Python3_INCLUDE_DIR/
+# Python3_LIBRARY, because 3.10 != 3.14; this cross-build's own bootstrap
+# "build Python" (otherwise thrown away) reports the matching version.
+RUN OUT=/opt/toolchains/python-wasm && mkdir -p "$OUT/include/python3.14" "$OUT/lib" \
     && cp -r python-src/Include/. "$OUT/include/python3.14/" \
     && cp host-build/pyconfig.h "$OUT/include/python3.14/" \
     && cp host-build/libpython3.14.a "$OUT/lib/" \
@@ -286,7 +296,6 @@ RUN OUT=/opt/toolchains/python-wasm && mkdir -p "$OUT/include/python3.14" "$OUT/
     && mkdir -p "$OUT/lib/python3.14" \
     && cp -r python-src/Lib/. "$OUT/lib/python3.14/" \
     && find host-build -name '_sysconfigdata*.py' -exec cp {} "$OUT/lib/python3.14/" \; \
-    && cp native-build/python "$OUT/bin/python3.14-native" \
     && rm -rf /work/python.tgz /work/python-src /work/native-build /work/host-build \
               /work/libffi.tar.gz "/work/libffi-${LIBFFI_VERSION}" \
               /work/mpdecimal.tar.gz "/work/mpdecimal-${MPDEC_VERSION}"
@@ -469,6 +478,7 @@ COPY --from=icu-wasm      /opt/toolchains/icu-wasm       /opt/toolchains/icu-was
 COPY --from=xerces-wasm   /opt/toolchains/xerces-wasm    /opt/toolchains/xerces-wasm
 COPY --from=boost-wasm    /opt/toolchains/boost-wasm     /opt/toolchains/boost-wasm
 COPY --from=python-wasm   /opt/toolchains/python-wasm    /opt/toolchains/python-wasm
+COPY --from=python-wasm   /opt/toolchains/python-wasm-native /opt/toolchains/python-wasm-native
 COPY --from=occt-wasm     /opt/toolchains/occt-wasm      /opt/toolchains/occt-wasm
 COPY --from=qt-wasm-aqt   /opt/toolchains/qt-wasm-aqt    /opt/toolchains/qt-wasm-aqt
 # qt-host-wasm/qt-wasm-core (from-source fallback) ALSO copied in: aqt's
