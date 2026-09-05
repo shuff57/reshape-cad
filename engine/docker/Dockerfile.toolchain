@@ -46,3 +46,104 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN mkdir -p /opt/toolchains && \
     ln -s /usr/lib/qt6 /opt/toolchains/qt-host
 WORKDIR /work
+
+# ----------------------------------------------------------------------------
+# fmt-wasm: {fmt} static, wasm-EH consistent
+# ----------------------------------------------------------------------------
+FROM base AS fmt-wasm
+ARG FMT_VERSION
+RUN curl -fsSL "https://github.com/fmtlib/fmt/archive/refs/tags/${FMT_VERSION}.tar.gz" \
+      -o fmt.tar.gz && tar xf fmt.tar.gz && mv "fmt-${FMT_VERSION}" fmt-src
+RUN emcmake cmake -S fmt-src -B fmt-build -G Ninja \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_INSTALL_PREFIX=/opt/toolchains/fmt-wasm \
+      -DFMT_TEST=OFF -DFMT_DOC=OFF \
+      -DCMAKE_CXX_FLAGS="${EM_WASM_EH_FLAGS}" \
+    && ninja -C fmt-build install \
+    && rm -rf fmt.tar.gz fmt-src fmt-build
+
+# ----------------------------------------------------------------------------
+# yamlcpp-wasm: yaml-cpp static, wasm-EH consistent
+# ----------------------------------------------------------------------------
+FROM base AS yamlcpp-wasm
+ARG YAMLCPP_VERSION
+RUN curl -fsSL "https://github.com/jbeder/yaml-cpp/archive/refs/tags/${YAMLCPP_VERSION}.tar.gz" \
+      -o yamlcpp.tar.gz && tar xf yamlcpp.tar.gz && mv "yaml-cpp-${YAMLCPP_VERSION}" yamlcpp-src
+RUN emcmake cmake -S yamlcpp-src -B yamlcpp-build -G Ninja \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_INSTALL_PREFIX=/opt/toolchains/yaml-wasm \
+      -DYAML_CPP_BUILD_TESTS=OFF -DYAML_CPP_BUILD_TOOLS=OFF -DYAML_CPP_BUILD_CONTRIB=OFF \
+      -DYAML_BUILD_SHARED_LIBS=OFF \
+      -DCMAKE_CXX_FLAGS="${EM_WASM_EH_FLAGS}" \
+    && ninja -C yamlcpp-build install \
+    && rm -rf yamlcpp.tar.gz yamlcpp-src yamlcpp-build
+
+# ----------------------------------------------------------------------------
+# icu-wasm: ICU static, cross-built (host ICU first for the build-time tools
+# genrb/gencnval/gennorm2/icupkg that the target configure needs at build
+# time -- ICU's own --with-cross-build= mechanism).
+# ----------------------------------------------------------------------------
+FROM base AS icu-wasm
+ARG ICU_VERSION
+RUN curl -fsSL "https://github.com/unicode-org/icu/releases/download/release-${ICU_VERSION}/icu4c-$(echo ${ICU_VERSION} | tr '-' '_')-src.tgz" \
+      -o icu.tgz && tar xf icu.tgz
+# 1. Native host ICU build (only used for its cross-build tools).
+RUN mkdir -p icu-host-build && cd icu-host-build \
+    && ../icu/source/runConfigureICU Linux --enable-static --disable-shared \
+         --disable-tests --disable-samples --disable-extras --disable-tools-tests \
+    && make -j"$(nproc)"
+# 2. wasm32-emscripten target build against the host build's tools.
+RUN mkdir -p icu-wasm-build && cd icu-wasm-build \
+    && emconfigure ../icu/source/configure \
+         --host=wasm32-unknown-linux --build=x86_64-pc-linux-gnu \
+         --with-cross-build=/work/icu-host-build \
+         --prefix=/opt/toolchains/icu-wasm \
+         --with-data-packaging=archive \
+         --enable-static --disable-shared --disable-tests --disable-samples \
+         --disable-extras --disable-tools-tests --disable-icuio --disable-layoutex \
+         CXXFLAGS="${EM_WASM_EH_FLAGS}" CFLAGS="${EM_WASM_EH_FLAGS}" \
+    && emmake make -j"$(nproc)" \
+    && emmake make install \
+    && rm -rf /work/icu.tgz /work/icu /work/icu-host-build /work/icu-wasm-build
+# NOTE (real finding, not an assumption): ICU's genccode has NO wasm32 entry
+# in its match-arch object table ("not an ELF object file, or not
+# supported"), so --with-data-packaging=static/archive both fail to produce
+# a *linkable* libicudata.a on this target -- confirmed by direct build
+# error, not inferred. --with-data-packaging=archive instead succeeds and
+# installs real converter/locale data as a single flat file:
+#   /opt/toolchains/icu-wasm/share/icu/76.1/icudt76l.dat
+# libicudata.a here is only the empty ICU stub (harmless to link). The
+# kernel must mount icudt76l.dat into the wasm virtual FS (FORCE_FILESYSTEM
+# is already on) and call u_setDataDirectory() -- or set env ICU_DATA --
+# before any ICU/Xerces call in App::Application::init(). This is a real
+# deviation from what upstream's configure-stage1.sh implies (it links
+# libicudata.a directly); flagged for E2/kernel-boot integration, not
+# silently worked around.
+
+# ----------------------------------------------------------------------------
+# xerces-wasm: Xerces-C static, wasm-EH consistent. network=OFF (no sockets
+# on wasm); transcoder=icu (emscripten's libc has no usable iconv, and ICU
+# is required by FreeCAD's own root CMakeLists regardless -- reuse it).
+# ----------------------------------------------------------------------------
+FROM icu-wasm AS xerces-wasm
+ARG XERCES_VERSION
+RUN curl -fsSL "https://archive.apache.org/dist/xerces/c/3/sources/xerces-c-${XERCES_VERSION}.tar.gz" \
+      -o xerces.tar.gz && tar xf xerces.tar.gz && mv "xerces-c-${XERCES_VERSION}" xerces-src
+# xerces-c's own top-level CMakeLists.txt hardcodes `set(CMAKE_CXX_STANDARD 14)`
+# (a plain, non-CACHE set() -- a -DCMAKE_CXX_STANDARD=17 on the command line
+# cannot override it, it just gets shadowed). ICU 76's headers need C++17
+# (std::is_convertible_v etc). Patch the one line rather than fight CMake
+# variable scoping.
+RUN sed -i 's/set(CMAKE_CXX_STANDARD 14)/set(CMAKE_CXX_STANDARD 17)/' xerces-src/CMakeLists.txt
+RUN emcmake cmake -S xerces-src -B xerces-build -G Ninja \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_INSTALL_PREFIX=/opt/toolchains/xerces-wasm \
+      -DBUILD_SHARED_LIBS=OFF \
+      -Dnetwork=OFF -Dtranscoder=icu -Dmessage-loader=inmemory \
+      -Dthreads=OFF \
+      -DICU_ROOT=/opt/toolchains/icu-wasm \
+      -DCMAKE_FIND_ROOT_PATH=/opt/toolchains/icu-wasm \
+      -DCMAKE_CXX_STANDARD=17 -DCMAKE_CXX_STANDARD_REQUIRED=ON \
+      -DCMAKE_CXX_FLAGS="${EM_WASM_EH_FLAGS}" \
+    && ninja -C xerces-build install \
+    && rm -rf xerces.tar.gz xerces-src xerces-build
