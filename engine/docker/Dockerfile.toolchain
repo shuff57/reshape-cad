@@ -1,0 +1,48 @@
+# syntax=docker/dockerfile:1
+# ============================================================================
+# engine/docker/Dockerfile.toolchain
+#
+# Headless FreeCAD -> WebAssembly toolchain image (Track A2 spike).
+# NO Qt Widgets/GUI, NO Coin3D, NO PySide6, NO VTK.
+#
+# One stage per dependency so `docker build` layer-caches independently:
+# a failed later stage does not force a rebuild of earlier ones.
+#
+# All wasm deps compiled with the SAME exception model:
+#   -fwasm-exceptions -sWASM_LEGACY_EXCEPTIONS=0
+# (mixing legacy and exnref EH in one linked module is rejected by V8 -- see
+# the wasm-opt --translate-to-exnref step in Dockerfile.kernel / build.sh).
+#
+# Versions pinned here (OCCT/Xerces/ICU/fmt/yaml-cpp are NOT pinned by
+# upstream freecad-web's deps/README.md -- only Boost 1.86.0 and CPython
+# 3.14 are upstream-specified). Report flags any version chosen by us.
+# ============================================================================
+
+ARG EMSDK_VERSION=4.0.12
+ARG OCCT_VERSION=7.8.1
+ARG BOOST_VERSION=1.86.0
+ARG XERCES_VERSION=3.2.5
+ARG ICU_VERSION=76-1
+ARG FMT_VERSION=11.0.2
+ARG YAMLCPP_VERSION=0.8.0
+ARG PYTHON_VERSION=3.14.0
+
+# ----------------------------------------------------------------------------
+# base: emsdk 4.0.12 (pinned, matches upstream) + host build tooling
+# ----------------------------------------------------------------------------
+FROM emscripten/emsdk:${EMSDK_VERSION} AS base
+ENV DEBIAN_FRONTEND=noninteractive \
+    EM_WASM_EH_FLAGS="-fwasm-exceptions -sWASM_LEGACY_EXCEPTIONS=0"
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        ninja-build swig autoconf automake libtool pkg-config \
+        python3-dev python3-pip bison flex ca-certificates curl xz-utils \
+        build-essential git perl \
+        qt6-base-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools \
+    && rm -rf /var/lib/apt/lists/*
+# Host Qt6 (native x86_64) provides QT_HOST_PATH tools (moc, lrelease) for
+# cross-compiling the wasm-target Qt6Core used by the headless kernel --
+# FreeCAD's SetupQt.cmake requires Qt6 Core/Concurrent/Network/Xml even with
+# BUILD_GUI=OFF (LinguistTools too, for qt_add_translation on Emscripten).
+RUN mkdir -p /opt/toolchains && \
+    ln -s /usr/lib/qt6 /opt/toolchains/qt-host
+WORKDIR /work
