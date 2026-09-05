@@ -147,3 +147,36 @@ RUN emcmake cmake -S xerces-src -B xerces-build -G Ninja \
       -DCMAKE_CXX_FLAGS="${EM_WASM_EH_FLAGS}" \
     && ninja -C xerces-build install \
     && rm -rf xerces.tar.gz xerces-src xerces-build
+
+# ----------------------------------------------------------------------------
+# boost-wasm: Boost 1.86.0, compiled components only (program_options, regex,
+# date_time -- thread is excluded, matching FreeCAD's own EMSCRIPTEN branch
+# in SetupBoost.cmake: "Boost.Thread needs real pthreads; the single-threaded
+# wasm build replaces its two mutex uses with std::mutex"). Boost.Build (b2)
+# has no built-in Emscripten toolset, so em++ is registered as a `gcc`-family
+# toolset variant via a user-config.jam -- the standard technique for
+# cross-building Boost to novel gcc-compatible targets.
+# ----------------------------------------------------------------------------
+FROM base AS boost-wasm
+ARG BOOST_VERSION
+RUN BV_US=$(echo ${BOOST_VERSION} | tr '.' '_') && \
+    curl -fsSL "https://archives.boost.io/release/${BOOST_VERSION}/source/boost_${BV_US}.tar.gz" \
+      -o boost.tar.gz && tar xf boost.tar.gz && mv "boost_${BV_US}" boost-src
+RUN cd boost-src && ./bootstrap.sh --with-libraries=program_options,regex,date_time
+RUN cat > boost-src/tools/build/src/user-config.jam <<'EOF'
+using gcc : emscripten : em++ :
+  <archiver>emar
+  <ranlib>emranlib
+  <cxxflags>-fwasm-exceptions
+  <cxxflags>-sWASM_LEGACY_EXCEPTIONS=0
+  <compileflags>-fwasm-exceptions
+  <compileflags>-sWASM_LEGACY_EXCEPTIONS=0
+;
+EOF
+RUN cd boost-src && ./b2 \
+      toolset=gcc-emscripten target-os=linux \
+      link=static threading=single variant=release \
+      --layout=system --prefix=/opt/toolchains/boost-wasm \
+      --with-program_options --with-regex --with-date_time \
+      install -j"$(nproc)" \
+    && rm -rf /work/boost.tar.gz /work/boost-src
