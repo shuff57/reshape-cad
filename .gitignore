@@ -1,0 +1,8 @@
+node_modules/
+dist/
+*.wasm
+*.wasm.br
+*.wasm.gz
+engine/build/
+engine/toolchains/
+.msgbox/cursor*
