@@ -1,0 +1,103 @@
+# syntax=docker/dockerfile:1
+# ============================================================================
+# engine/docker/Dockerfile.kernel
+#
+# Headless FreeCAD kernel wasm build (Track A2 spike, G2-G4).
+#
+# Builds FROM the consolidated toolchain image (engine/docker/Dockerfile.toolchain,
+# target `toolchain`, tagged reshape-cad/fc-toolchain:latest).
+#
+# Source: shallow clone of github.com/magik6k/freecad-web pinned to commit
+# 24053dfb (per the A2 brief). U2 later moves this onto tag 1.1.3 -- this
+# Dockerfile intentionally hardcodes the pinned sha, not a branch, so a
+# rebuild is reproducible.
+#
+# G2 uses the PROVEN minimal module set from deps/build/configure-stage1.sh
+# (Part, Sketcher, Material; BUILD_GUI=OFF) reproduced against OUR toolchain
+# paths. The brief's full module list (PartDesign, TechDraw, Spreadsheet,
+# Draft) is deps/README.md section 2's set with GUI-only pieces stripped --
+# team-lead confirmed upstream built these on wasm (commits 80046491,
+# 84216dec, e7fb8876), so this is a *reproduction* with BUILD_GUI=OFF, not
+# unproven territory. Toggle EXTRA_MODULES below once the minimal set
+# passes G2-G4.
+# ============================================================================
+
+FROM reshape-cad/fc-toolchain:latest AS kernel-src
+
+ARG FREECAD_WEB_SHA=24053dfb8d3f3a8a31d19af6bdc0a0783f403f54
+WORKDIR /work
+RUN git clone --filter=blob:none --no-checkout https://github.com/magik6k/freecad-web.git fw \
+    && cd fw && git checkout "${FREECAD_WEB_SHA}"
+
+# ----------------------------------------------------------------------------
+# configure: G2. Toolchain prefixes point at our /opt/toolchains layout
+# (built in Dockerfile.toolchain) rather than upstream's /opt/toolchains
+# (same root, different internal contents -- ours has no qt-jspi, no PySide,
+# no VTK/Coin3D/Fem; Qt6_DIR points at the aqt prebuilt wasm_singlethread,
+# QT_HOST_PATH at its matching gcc_64 host tools).
+# ----------------------------------------------------------------------------
+FROM kernel-src AS kernel-configure
+ENV TC=/opt/toolchains
+ENV SY=/emsdk/upstream/emscripten/cache/sysroot
+WORKDIR /work/fw
+# FreeCAD's root CMakeLists unconditionally does `find_package(ZLIB
+# REQUIRED)` (and Main/CMakeLists.txt links -sUSE_ZLIB=1 -sUSE_BZIP2=1) --
+# these are emscripten "ports" built lazily on first *compile* use, but
+# find_package needs the .a to already exist on disk at *configure* time.
+RUN embuilder build zlib bzip2 sqlite3
+# Eigen3 is header-only and only needed here (not by any wasm dependency),
+# so install it in this Dockerfile rather than the toolchain base image.
+RUN apt-get update && apt-get install -y --no-install-recommends libeigen3-dev \
+    && rm -rf /var/lib/apt/lists/*
+RUN emcmake cmake -S . -B /work/build -G Ninja \
+      -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_INSTALL_PREFIX=$TC/freecad-dist \
+      -DFREECAD_WASM_NODERAWFS=ON \
+      -DCMAKE_FIND_ROOT_PATH="$TC/qt-wasm;$TC/occt-wasm;$TC/xerces-wasm;$TC/fmt-wasm;$TC/yaml-wasm;$TC/python-wasm;$TC/boost-wasm;$TC/icu-wasm;$TC" \
+      -DCMAKE_CXX_FLAGS="-fexceptions -DEIGEN_DONT_VECTORIZE -DBOOST_HAS_PTHREADS=1 -DBOOST_STACKTRACE_USE_NOOP" \
+      -DCMAKE_C_FLAGS="-fexceptions" \
+      -DFREECAD_QT_MAJOR_VERSION=6 \
+      -DQt6_DIR=$TC/qt-wasm/lib/cmake/Qt6 \
+      -DQT_HOST_PATH=$TC/qt-host \
+      -DPython3_EXECUTABLE=$TC/python-wasm/bin/python3.14-native \
+      -DPython3_INCLUDE_DIR=$TC/python-wasm/include/python3.14 \
+      -DPython3_LIBRARY=$TC/python-wasm/lib/libpython3.14.a \
+      "-DFREECAD_WASM_EXTRA_LINK_LIBS=$TC/python-wasm/lib/libmpdec.a;$TC/python-wasm/lib/libffi.a" \
+      -DBoost_DIR=$TC/boost-wasm/lib/cmake/Boost-1.86.0 \
+      -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 \
+      -DXercesC_INCLUDE_DIR=$TC/xerces-wasm/include \
+      -DXercesC_LIBRARY=$TC/xerces-wasm/lib/libxerces-c.a \
+      -Dfmt_DIR=$TC/fmt-wasm/lib/cmake/fmt \
+      -DOpenCASCADE_DIR=$TC/occt-wasm/lib/cmake/opencascade \
+      -Dyaml-cpp_DIR=$TC/yaml-wasm/lib/cmake/yaml-cpp \
+      -DICU_ROOT=$TC/icu-wasm \
+      -DZLIB_INCLUDE_DIR=$SY/include \
+      -DZLIB_LIBRARY=$SY/lib/wasm32-emscripten/libz.a \
+      -DBUILD_GUI=OFF \
+      -DBUILD_PART=ON -DBUILD_SKETCHER=ON -DBUILD_MATERIAL=ON \
+      -DBUILD_PART_DESIGN=OFF -DBUILD_SPREADSHEET=OFF -DBUILD_START=OFF \
+      -DBUILD_MEASURE=OFF -DBUILD_MESH=OFF -DBUILD_MESH_PART=OFF \
+      -DBUILD_IMPORT=OFF -DBUILD_DRAFT=OFF -DBUILD_BIM=OFF -DBUILD_CAM=OFF \
+      -DBUILD_FEM=OFF -DBUILD_TECHDRAW=OFF -DBUILD_ASSEMBLY=OFF -DBUILD_ROBOT=OFF \
+      -DBUILD_SURFACE=OFF -DBUILD_POINTS=OFF -DBUILD_INSPECTION=OFF \
+      -DBUILD_REVERSEENGINEERING=OFF -DBUILD_OPENSCAD=OFF -DBUILD_PLOT=OFF \
+      -DBUILD_SHOW=OFF -DBUILD_TUX=OFF -DBUILD_WEB=OFF -DBUILD_HELP=OFF \
+      -DBUILD_ADDONMGR=OFF -DBUILD_JTREADER=OFF -DBUILD_TEST=OFF -DBUILD_FLAT_MESH=OFF \
+      -DBUILD_DYNAMIC_LINK_PYTHON=OFF -DENABLE_DEVELOPER_TESTS=OFF \
+      -DFREECAD_USE_PYSIDE=OFF -DFREECAD_USE_SHIBOKEN=OFF \
+      -DFREECAD_USE_PCL=OFF -DFREECAD_USE_FREETYPE=OFF \
+      -DFREECAD_USE_PYBIND11=OFF
+
+# ----------------------------------------------------------------------------
+# build: G3. ninja + the mandatory wasm-opt exnref normalization.
+# ----------------------------------------------------------------------------
+FROM kernel-configure AS kernel-build
+RUN ninja -C /work/build FreeCADCmd -j"$(nproc)"
+RUN /emsdk/upstream/bin/wasm-opt \
+      --translate-to-exnref --emit-exnref --all-features -g \
+      /work/build/bin/FreeCAD.wasm -o /work/build/bin/FreeCAD.wasm
+
+FROM scratch AS kernel-artifacts
+COPY --from=kernel-build /work/build/bin/FreeCAD.js /
+COPY --from=kernel-build /work/build/bin/FreeCAD.wasm /

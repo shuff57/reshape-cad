@@ -263,7 +263,16 @@ RUN mkdir -p host-build && cd host-build \
 
 # 5. Assemble the clean prefix FreeCAD's configure-stage1.sh expects:
 #    include/python3.14/, lib/libpython3.14.a, lib/python3.14/ (stdlib tree).
-RUN OUT=/opt/toolchains/python-wasm && mkdir -p "$OUT/include/python3.14" "$OUT/lib" \
+# Also keep the NATIVE 3.14 "build python" as bin/python3.14-native: CMake's
+# FindPython3 COMPONENTS "Interpreter Development" (FreeCAD's own
+# SetupPython.cmake macro) runs whatever Python3_EXECUTABLE points at to
+# cross-check its version against the Development headers/library it is
+# given -- pointing it at the base image's system python3.10 fails that
+# check ("Could NOT find Python3 ... found version 3.10.12") even with
+# correct Python3_INCLUDE_DIR/Python3_LIBRARY, because 3.10 != 3.14. A
+# native 3.14 interpreter (this cross-build's own bootstrap "build Python",
+# otherwise thrown away) reports the matching version and satisfies it.
+RUN OUT=/opt/toolchains/python-wasm && mkdir -p "$OUT/include/python3.14" "$OUT/lib" "$OUT/bin" \
     && cp -r python-src/Include/. "$OUT/include/python3.14/" \
     && cp host-build/pyconfig.h "$OUT/include/python3.14/" \
     && cp host-build/libpython3.14.a "$OUT/lib/" \
@@ -271,6 +280,7 @@ RUN OUT=/opt/toolchains/python-wasm && mkdir -p "$OUT/include/python3.14" "$OUT/
     && mkdir -p "$OUT/lib/python3.14" \
     && cp -r python-src/Lib/. "$OUT/lib/python3.14/" \
     && find host-build -name '_sysconfigdata*.py' -exec cp {} "$OUT/lib/python3.14/" \; \
+    && cp native-build/python "$OUT/bin/python3.14-native" \
     && rm -rf /work/python.tgz /work/python-src /work/native-build /work/host-build \
               /work/libffi.tar.gz "/work/libffi-${LIBFFI_VERSION}" \
               /work/mpdecimal.tar.gz "/work/mpdecimal-${MPDEC_VERSION}"
@@ -433,3 +443,11 @@ COPY --from=boost-wasm    /opt/toolchains/boost-wasm     /opt/toolchains/boost-w
 COPY --from=python-wasm   /opt/toolchains/python-wasm    /opt/toolchains/python-wasm
 COPY --from=occt-wasm     /opt/toolchains/occt-wasm      /opt/toolchains/occt-wasm
 COPY --from=qt-wasm-aqt   /opt/toolchains/qt-wasm-aqt    /opt/toolchains/qt-wasm-aqt
+# qt-host-wasm/qt-wasm-core (from-source fallback) ALSO copied in: aqt's
+# wasm_singlethread package has NO Qt6Concurrent at all (confirmed by
+# listing lib/cmake/ -- dozens of GUI/Quick modules present, Concurrent
+# absent), and FreeCAD's SetupQt.cmake hard-requires Qt6::Concurrent even
+# headless. This is a real gap found at G2 configure time, not a G3/G4 EH
+# risk -- the from-source build is the one actually used for the kernel.
+COPY --from=qt-host-wasm  /opt/toolchains/qt-host        /opt/toolchains/qt-host
+COPY --from=qt-wasm-core  /opt/toolchains/qt-wasm        /opt/toolchains/qt-wasm
