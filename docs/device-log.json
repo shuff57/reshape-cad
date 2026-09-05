@@ -1,0 +1,24 @@
+{
+  "rows": [
+    {
+      "build_sha": null,
+      "device": "windows-11-lead",
+      "date": null,
+      "transfer_mb_gz": null,
+      "cold_load_s": null,
+      "cached_load_s": null,
+      "peak_ram_mb": null,
+      "notes": null
+    },
+    {
+      "build_sha": null,
+      "device": "home-laptop",
+      "date": null,
+      "transfer_mb_gz": null,
+      "cold_load_s": null,
+      "cached_load_s": null,
+      "peak_ram_mb": null,
+      "notes": null
+    }
+  ]
+}

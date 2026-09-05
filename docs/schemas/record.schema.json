@@ -1,0 +1,36 @@
+{
+  "required": [
+    "candidate",
+    "engine",
+    "build_sha",
+    "date",
+    "device",
+    "transfer_mb_gz",
+    "cold_load_s",
+    "cached_load_s",
+    "peak_ram_mb",
+    "pad_recompute_ms",
+    "opens_in_freecad_113",
+    "constraints_roundtrip",
+    "y1",
+    "y2",
+    "y3",
+    "notes"
+  ],
+  "numeric": [
+    "transfer_mb_gz",
+    "cold_load_s",
+    "cached_load_s",
+    "peak_ram_mb",
+    "pad_recompute_ms"
+  ],
+  "boolean": [
+    "opens_in_freecad_113",
+    "constraints_roundtrip"
+  ],
+  "enum": {
+    "y1": ["pass", "fail"],
+    "y2": ["pass", "fail"],
+    "y3": ["pass", "fail"]
+  }
+}

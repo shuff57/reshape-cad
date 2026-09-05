@@ -1,0 +1,19 @@
+{
+  "required": [
+    "build_sha",
+    "device",
+    "date",
+    "transfer_mb_gz",
+    "cold_load_s",
+    "cached_load_s",
+    "peak_ram_mb"
+  ],
+  "numeric": [
+    "transfer_mb_gz",
+    "cold_load_s",
+    "cached_load_s",
+    "peak_ram_mb"
+  ],
+  "boolean": [],
+  "enum": {}
+}

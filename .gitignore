@@ -6,3 +6,4 @@ dist/
 engine/build/
 engine/toolchains/
 .msgbox/cursor*
+.playwright-cli/

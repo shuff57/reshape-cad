@@ -1,0 +1,14 @@
+{
+  "required": [
+    "patch_sha",
+    "subject",
+    "files",
+    "classification",
+    "reason"
+  ],
+  "numeric": [],
+  "boolean": [],
+  "enum": {
+    "classification": ["upstreamable", "wasm-only", "undecided"]
+  }
+}
