@@ -1,0 +1,12 @@
+{
+  "base": "FreeCAD/FreeCAD@3f9ece2d (2026-07-03, main)",
+  "port": "magik6k/freecad-web@24053dfb (2026-07-07)",
+  "port_commits_on_top": 41,
+  "stable_target": "releases/FreeCAD-1-1 tag 1.1.3 (2026-07-25)",
+  "hunk_counts": {
+    "method": "diff -w -B <base> <port> on the file fetched at each sha via the GitHub contents API; git diff --no-index --stat -w --ignore-blank-lines for the +/- totals",
+    "src/App/Application.cpp": { "raw_diff_lines": 7723, "real_hunks": 12, "insertions": 128, "deletions": 1, "guarded_lines": 7, "verdict": "reformat plus small additive guarded hunks" },
+    "src/App/ApplicationPy.cpp": { "raw_diff_lines": 2731, "real_hunks": 3, "insertions": 73, "deletions": 0, "guarded_lines": 2, "verdict": "reformat plus three additive hunks" }
+  },
+  "rows": []
+}
