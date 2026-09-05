@@ -184,12 +184,18 @@ using gcc : emscripten : em++ :
 ;
 EOF
 RUN cd boost-src && ./b2 \
-      toolset=gcc-emscripten target-os=linux \
+      toolset=gcc-emscripten target-os=linux address-model=32 \
       link=static threading=single variant=release \
       --layout=system --prefix=/opt/toolchains/boost-wasm \
       --with-program_options --with-regex --with-date_time \
       install -j"$(nproc)" \
     && rm -rf /work/boost.tar.gz /work/boost-src
+# NOTE: without address-model=32, b2 tags the compiled variant as 64-bit
+# (inherited from the gcc-emscripten toolset's host-like defaults, not
+# anything wasm32-specific) even though every .o is a real wasm32 object --
+# BoostConfig.cmake's own variant validation then rejects it downstream:
+# "libboost_program_options.a (64 bit, need 32)". Confirmed by an actual
+# FreeCAD configure failing on exactly that message.
 
 # ----------------------------------------------------------------------------
 # python-wasm: CPython, static embed (BUILD_DYNAMIC_LINK_PYTHON=OFF in
