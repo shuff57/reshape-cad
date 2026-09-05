@@ -413,3 +413,23 @@ RUN mkdir -p qt-wasm-build && cd qt-wasm-build \
 # reconcile Qt's sjlj-built objects with the rest of FreeCAD.wasm. If that
 # assumption is wrong, it will surface as a G3/G4 link or V8-load failure,
 # not a silent miscompile -- flagged for whoever runs that gate to watch for.
+
+# ----------------------------------------------------------------------------
+# toolchain: final consolidated image -- every dependency prefix copied into
+# one /opt/toolchains tree, matching the layout configure-stage1.sh expects
+# ($TC/occt-wasm, $TC/xerces-wasm, $TC/fmt-wasm, $TC/yaml-wasm,
+# $TC/python-wasm, $TC/boost-wasm, $TC/icu-wasm, $TC/qt-host). This is the
+# image Dockerfile.kernel builds FROM. Qt6_DIR points at qt-wasm-aqt (the
+# primary path); switch to qt-wasm-core (the from-source fallback) only if
+# G3/G4 finds the prebuilt Qt's legacy EH does not survive
+# wasm-opt --translate-to-exnref.
+# ----------------------------------------------------------------------------
+FROM base AS toolchain
+COPY --from=fmt-wasm      /opt/toolchains/fmt-wasm      /opt/toolchains/fmt-wasm
+COPY --from=yamlcpp-wasm  /opt/toolchains/yaml-wasm      /opt/toolchains/yaml-wasm
+COPY --from=icu-wasm      /opt/toolchains/icu-wasm       /opt/toolchains/icu-wasm
+COPY --from=xerces-wasm   /opt/toolchains/xerces-wasm    /opt/toolchains/xerces-wasm
+COPY --from=boost-wasm    /opt/toolchains/boost-wasm     /opt/toolchains/boost-wasm
+COPY --from=python-wasm   /opt/toolchains/python-wasm    /opt/toolchains/python-wasm
+COPY --from=occt-wasm     /opt/toolchains/occt-wasm      /opt/toolchains/occt-wasm
+COPY --from=qt-wasm-aqt   /opt/toolchains/qt-wasm-aqt    /opt/toolchains/qt-wasm-aqt
