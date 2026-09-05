@@ -387,6 +387,28 @@ RUN mkdir -p qt-host-build && cd qt-host-build \
     && cmake --build . --parallel "$(nproc)" \
     && cmake --install . \
     && rm -rf /work/qtbase.tar.xz /work/qtbase-src /work/qt-host-build
+# qttools (specifically its LinguistTools module: lrelease/lupdate/lconvert)
+# is a SEPARATE Qt repo from qtbase. qtbase bundles a minimal lrelease
+# binary for its own internal use, but the Qt6LinguistToolsConfig.cmake
+# package descriptor FreeCAD's SetupQt.cmake looks for
+# (`find_package(Qt6 COMPONENTS LinguistTools)`, required unconditionally
+# on EMSCRIPTEN even with BUILD_GUI=OFF) only exists if qttools itself is
+# built and installed against this host Qt.
+RUN curl -fsSL "https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/submodules/qttools-everywhere-src-${QT_VERSION}.tar.xz" \
+      -o qttools.tar.xz && tar xf qttools.tar.xz && mv "qttools-everywhere-src-${QT_VERSION}" qttools-src
+# NOTE: -DFEATURE_linguist=OFF (tried first) disables the entire
+# src/linguist subdirectory, including the lrelease/lupdate/lconvert
+# COMMAND-LINE tools, not just the Linguist.app GUI -- confirmed by an
+# actual build with no Qt6LinguistTools cmake package produced at all.
+# Leave FEATURE_linguist on; only skip the GUI-heavy pieces.
+RUN mkdir -p qttools-build && cd qttools-build \
+    && /opt/toolchains/qt-host/bin/qt-cmake ../qttools-src \
+         -DCMAKE_BUILD_TYPE=Release -DFEATURE_designer=OFF \
+         -DFEATURE_assistant=OFF -DFEATURE_pixeltool=OFF \
+         -DFEATURE_qtdiag=OFF -DFEATURE_qtplugininfo=OFF \
+    && cmake --build . --parallel "$(nproc)" \
+    && cmake --install . \
+    && rm -rf /work/qttools.tar.xz /work/qttools-src /work/qttools-build
 
 # ----------------------------------------------------------------------------
 # qt-wasm-core: the same qtbase source, cross-built for wasm32 via Qt's own
