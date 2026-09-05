@@ -44,26 +44,51 @@ WORKDIR /work/fw
 # REQUIRED)` (and Main/CMakeLists.txt links -sUSE_ZLIB=1 -sUSE_BZIP2=1) --
 # these are emscripten "ports" built lazily on first *compile* use, but
 # find_package needs the .a to already exist on disk at *configure* time.
-RUN embuilder build zlib bzip2 sqlite3
+# freetype/harfbuzz: FREECAD_USE_FREETYPE=OFF (my first guess, reasoning
+# from OCCT's own optional font support) was wrong -- FreeCAD's Part module
+# unconditionally `#include <ft2build.h>` in Geometry.cpp regardless of that
+# flag, confirmed by an actual "fatal error: 'ft2build.h' file not found"
+# partway through the ninja build (642/714 objects in). Matches upstream's
+# own configure-stage1.sh, which always turns FREECAD_USE_FREETYPE=ON.
+RUN embuilder build zlib bzip2 sqlite3 freetype harfbuzz
 # Eigen3 is header-only and only needed here (not by any wasm dependency),
 # so install it in this Dockerfile rather than the toolchain base image.
 RUN apt-get update && apt-get install -y --no-install-recommends libeigen3-dev \
     && rm -rf /var/lib/apt/lists/*
+# DEVIATION FROM UPSTREAM in the two flags right below, confirmed
+# necessary by an actual link failure: configure-stage1.sh compiles
+# FreeCAD's own sources with plain `-fexceptions`, which under Emscripten
+# defaults to the OLD JS-exception-based runtime ABI (__resumeException,
+# llvm_eh_typeid_for) -- a DIFFERENT set of runtime support functions from
+# the new wasm-EH ABI, not just a different bytecode encoding of the same
+# one. Our OCCT/Boost/Xerces/CPython are all built with -fwasm-exceptions
+# (the new ABI), so the final link picked the new ABI's runtime libraries
+# (em++'s automatic selection), leaving FreeCADMainCmd.dir/MainCmd.cpp.o's
+# legacy-ABI calls with no matching symbols: "undefined symbol:
+# __resumeException" / "undefined symbol: llvm_eh_typeid_for". The
+# mandatory wasm-opt --translate-to-exnref pass normalizes
+# *legacy-vs-exnref wasm-EH opcodes* post-link; it cannot fix a link
+# against the wrong runtime ABI entirely. Likely explanation for
+# upstream's own `-fexceptions`-everywhere recipe: their whole toolchain
+# (including their OCCT) was built consistently with legacy EH, then
+# normalized to exnref in one pass at the end -- we built OCCT/Boost/etc
+# with the new ABI directly instead, so FreeCAD's own code has to match
+# that, not upstream's literal flag.
 RUN emcmake cmake -S . -B /work/build -G Ninja \
       -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_INSTALL_PREFIX=$TC/freecad-dist \
       -DFREECAD_WASM_NODERAWFS=ON \
       -DCMAKE_FIND_ROOT_PATH="$TC/qt-wasm;$TC/occt-wasm;$TC/xerces-wasm;$TC/fmt-wasm;$TC/yaml-wasm;$TC/python-wasm;$TC/boost-wasm;$TC/icu-wasm;$TC" \
-      -DCMAKE_CXX_FLAGS="-fexceptions -DEIGEN_DONT_VECTORIZE -DBOOST_HAS_PTHREADS=1 -DBOOST_STACKTRACE_USE_NOOP" \
-      -DCMAKE_C_FLAGS="-fexceptions" \
+      -DCMAKE_CXX_FLAGS="-fwasm-exceptions -sWASM_LEGACY_EXCEPTIONS=0 -DEIGEN_DONT_VECTORIZE -DBOOST_HAS_PTHREADS=1 -DBOOST_STACKTRACE_USE_NOOP" \
+      -DCMAKE_C_FLAGS="-fwasm-exceptions -sWASM_LEGACY_EXCEPTIONS=0" \
       -DFREECAD_QT_MAJOR_VERSION=6 \
       -DQt6_DIR=$TC/qt-wasm/lib/cmake/Qt6 \
       -DQT_HOST_PATH=$TC/qt-host \
       -DPython3_EXECUTABLE=$TC/python-wasm-native/bin/python3.14 \
       -DPython3_INCLUDE_DIR=$TC/python-wasm/include/python3.14 \
       -DPython3_LIBRARY=$TC/python-wasm/lib/libpython3.14.a \
-      "-DFREECAD_WASM_EXTRA_LINK_LIBS=$TC/python-wasm/lib/libmpdec.a;$TC/python-wasm/lib/libffi.a" \
+      "-DFREECAD_WASM_EXTRA_LINK_LIBS=$TC/python-wasm/lib/libmpdec.a;$TC/python-wasm/lib/libffi.a;$TC/python-wasm/lib/libHacl.a;$TC/python-wasm/lib/libexpat.a" \
       -DBoost_DIR=$TC/boost-wasm/lib/cmake/Boost-1.86.0 \
       -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 \
       -DXercesC_INCLUDE_DIR=$TC/xerces-wasm/include \
@@ -86,7 +111,12 @@ RUN emcmake cmake -S . -B /work/build -G Ninja \
       -DBUILD_ADDONMGR=OFF -DBUILD_JTREADER=OFF -DBUILD_TEST=OFF -DBUILD_FLAT_MESH=OFF \
       -DBUILD_DYNAMIC_LINK_PYTHON=OFF -DENABLE_DEVELOPER_TESTS=OFF \
       -DFREECAD_USE_PYSIDE=OFF -DFREECAD_USE_SHIBOKEN=OFF \
-      -DFREECAD_USE_PCL=OFF -DFREECAD_USE_FREETYPE=OFF \
+      -DFREECAD_USE_PCL=OFF -DFREECAD_USE_FREETYPE=ON \
+      -DFREETYPE_INCLUDE_DIR_ft2build=$SY/include/freetype2 \
+      -DFREETYPE_INCLUDE_DIR_freetype2=$SY/include/freetype2 \
+      -DFREETYPE_LIBRARY=$SY/lib/wasm32-emscripten/libfreetype.a \
+      -DHARFBUZZ_INCLUDE_DIR=$SY/include/harfbuzz \
+      -DHARFBUZZ_LIBRARY=$SY/lib/wasm32-emscripten/libharfbuzz.a \
       -DFREECAD_USE_PYBIND11=OFF
 
 # ----------------------------------------------------------------------------

@@ -288,11 +288,20 @@ RUN mkdir -p host-build && cd host-build \
 # found version 3.10.12") even with correct Python3_INCLUDE_DIR/
 # Python3_LIBRARY, because 3.10 != 3.14; this cross-build's own bootstrap
 # "build Python" (otherwise thrown away) reports the matching version.
+# libpython3.14.a itself does NOT contain the HACL* hash-module objects --
+# md5module.o/sha1module.o/etc call into _Py_LibHacl_Hacl_Hash_* symbols
+# that live as loose, unarchived .o files under
+# host-build/Modules/_hacl/*.o (confirmed by a debug `find` after an
+# actual "undefined symbol: _Py_LibHacl_Hacl_Hash_MD5_malloc" kernel link
+# failure). Archive them into libHacl.a here; libexpat.a is likewise a
+# separate archive under Modules/expat/, not folded into libpython3.14.a.
 RUN OUT=/opt/toolchains/python-wasm && mkdir -p "$OUT/include/python3.14" "$OUT/lib" \
     && cp -r python-src/Include/. "$OUT/include/python3.14/" \
     && cp host-build/pyconfig.h "$OUT/include/python3.14/" \
     && cp host-build/libpython3.14.a "$OUT/lib/" \
     && cp "$PYPREFIX"/lib/*.a "$OUT/lib/" \
+    && emar rcs "$OUT/lib/libHacl.a" host-build/Modules/_hacl/*.o \
+    && cp host-build/Modules/expat/libexpat.a "$OUT/lib/" \
     && mkdir -p "$OUT/lib/python3.14" \
     && cp -r python-src/Lib/. "$OUT/lib/python3.14/" \
     && find host-build -name '_sysconfigdata*.py' -exec cp {} "$OUT/lib/python3.14/" \; \
