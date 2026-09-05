@@ -276,12 +276,94 @@ RUN OUT=/opt/toolchains/python-wasm && mkdir -p "$OUT/include/python3.14" "$OUT/
               /work/mpdecimal.tar.gz "/work/mpdecimal-${MPDEC_VERSION}"
 
 # ----------------------------------------------------------------------------
-# qt-host-wasm: native x86_64 Qt6 qtbase, Core/Network/Xml/Concurrent + tools
-# only (-no-gui skips Widgets/OpenGL/PrintSupport, which depend on it). This
-# is QT_HOST_PATH -- Qt6's own cross-compilation model needs a *matching*
-# full host build (not distro qt6-base-dev packages: those don't ship the
+# occt-wasm: OCCT (the CAD kernel), headless subset. OCCT already has native
+# Emscripten awareness in its own CMakeLists.txt (USE_OPENGL is
+# auto-forced OFF for EMSCRIPTEN; USE_VTK/USE_TBB/USE_RAPIDJSON default OFF
+# already) -- only Draw (Tcl/Tk test harness) and Visualization (needs
+# OpenGL) need to be explicitly turned off for a headless build.
+# FoundationClasses, ModelingData, ModelingAlgorithms, ApplicationFramework
+# (OCAF -- FreeCAD's own document model builds on this) and DataExchange
+# (STEP/IGES/STL) stay on.
+# ----------------------------------------------------------------------------
+FROM base AS occt-wasm
+ARG OCCT_VERSION
+RUN OV_US=$(echo "${OCCT_VERSION}" | tr '.' '_') && \
+    curl -fsSL "https://github.com/Open-Cascade-SAS/OCCT/archive/refs/tags/V${OV_US}.tar.gz" \
+      -o occt.tar.gz && tar xf occt.tar.gz && mv "OCCT-${OV_US}" occt-src
+# adm/cmake/occt_toolkit.cmake unconditionally does
+# `install(FILES .../${PROJECT_NAME}.wasm ...)` for every EMSCRIPTEN
+# executable target with no OPTIONAL. ExpToCasExe (a build-time-only EXPRESS
+# schema codegen tool, never used at FreeCAD runtime) links to a
+# self-contained .js with no separate sibling .wasm, which turns a harmless
+# missing dev-tool artifact into a hard `ninja install` failure -- confirmed
+# by an actual failed build, not inferred. We don't need any OCCT
+# executables at all (library-only headless kernel), so make the install
+# tolerant of a missing .wasm rather than hunting down every toolkit that
+# might trip the same install-script assumption.
+RUN sed -E -i 's#^(\s*install\(FILES .*\.wasm DESTINATION "[^"]*")\)$#\1 OPTIONAL)#' \
+      occt-src/adm/cmake/occt_toolkit.cmake
+RUN emcmake cmake -S occt-src -B occt-build -G Ninja \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_INSTALL_PREFIX=/opt/toolchains/occt-wasm \
+      -DBUILD_LIBRARY_TYPE=Static \
+      -DBUILD_MODULE_Draw=OFF -DBUILD_MODULE_Visualization=OFF \
+      -DUSE_FREETYPE=OFF -DUSE_TK=OFF -DUSE_VTK=OFF -DUSE_TBB=OFF \
+      -DUSE_RAPIDJSON=OFF -DUSE_FREEIMAGE=OFF \
+      -DBUILD_DOC_Overview=OFF \
+      -DCMAKE_CXX_FLAGS="${EM_WASM_EH_FLAGS}" -DCMAKE_C_FLAGS="${EM_WASM_EH_FLAGS}" \
+    && ninja -C occt-build install -j"$(nproc)" \
+    && rm -rf /work/occt.tar.gz /work/occt-src /work/occt-build
+# DEFERRED, not forgotten: 8 OCCT translation units (ChFi3d_Builder,
+# ShapeCustom_BSplineRestriction, ShapeFix_FaceConnect,
+# ShapeUpgrade_{ShapeDivide,SplitCurve2dContinuity,SplitCurve3dContinuity,
+# SplitSurface}, BRepCheck_Analyzer) reportedly need a clang-22
+# `-O1` rebuild around a `try_table`->`br_table` miscompile at `-O3` that V8
+# rejects. This build uses CMAKE_BUILD_TYPE=Release (-O2, not -O3), so it
+# may or may not trigger -- confirmed only by trying to load the FINAL
+# linked FreeCAD.wasm in V8/node at G4, not by anything observable in this
+# per-dependency build. If G4 fails on a wasm validation error naming one of
+# these TUs, recompile just that TU at -O1 and `emar r` it back into the
+# relevant OCCT .a before relinking -- do not preemptively patch all 8 here
+# without a reproduced failure, since the exact miscompile trigger
+# (optimization level, specific TU) was not independently re-verified.
+
+# ----------------------------------------------------------------------------
+# qt-wasm-aqt: PRIMARY path (operator direction, after this stage's
+# from-source sibling below already worked): official prebuilt Qt 6.8.3 via
+# aqtinstall -- `all_os wasm 6.8.3 wasm_singlethread` for the target,
+# `linux desktop 6.8.3 linux_gcc_64` for QT_HOST_PATH (aqt verifies its own
+# hashes). Confirmed present after install: libQt6Core/Network/Xml.a (plus
+# Concurrent via QtConcurrent headers bundled in Core in 6.8), all real
+# WebAssembly objects, and host moc/lrelease under gcc_64/libexec and
+# gcc_64/bin respectively.
+#
+# Known risk, deliberately NOT preempted here: prebuilt Qt is built with
+# emscripten's default (legacy) exception handling, not our
+# -fwasm-exceptions -sWASM_LEGACY_EXCEPTIONS=0. The mandatory post-link
+# `wasm-opt --translate-to-exnref --emit-exnref --all-features` step (already
+# required for OCCT) is what this is FOR -- test at G3/G4 rather than
+# fighting it here. If that normalization fails specifically because of Qt's
+# objects, fall back to qt-host-wasm/qt-wasm-core below, which already builds
+# Qt 6.11.1 from source with our exact EH flags and is kept as a proven,
+# working alternative rather than deleted.
+# ----------------------------------------------------------------------------
+FROM base AS qt-wasm-aqt
+ARG QT_AQT_VERSION=6.8.3
+RUN pip install --no-cache-dir aqtinstall \
+    && python3 -m aqt install-qt all_os wasm "${QT_AQT_VERSION}" wasm_singlethread -O /opt/toolchains/qt-wasm-aqt \
+    && python3 -m aqt install-qt linux desktop "${QT_AQT_VERSION}" linux_gcc_64 -O /opt/toolchains/qt-wasm-aqt
+
+# ----------------------------------------------------------------------------
+# qt-host-wasm: FALLBACK path, already built and verified working (real
+# WebAssembly libQt6Core.a etc. before the aqt direction arrived) -- native
+# x86_64 Qt6 qtbase, Core/Network/Xml/Concurrent + tools only (-no-gui skips
+# Widgets/OpenGL/PrintSupport, which depend on it). This is QT_HOST_PATH --
+# Qt6's own cross-compilation model needs a *matching* full host build (not
+# distro qt6-base-dev packages: those don't ship the
 # Qt6HostInfo/Qt6CoreTools CMake package files -qt-host-path expects) to run
 # moc/rcc/tracegen/qlalr/syncqt during the target configure and build.
+# Use this pair (qt-host-wasm + qt-wasm-core) only if qt-wasm-aqt's prebuilt
+# objects fail to survive wasm-opt --translate-to-exnref at G3/G4.
 # ----------------------------------------------------------------------------
 FROM base AS qt-host-wasm
 ARG QT_VERSION
