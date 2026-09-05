@@ -50,7 +50,31 @@ WORKDIR /work/fw
 # flag, confirmed by an actual "fatal error: 'ft2build.h' file not found"
 # partway through the ninja build (642/714 objects in). Matches upstream's
 # own configure-stage1.sh, which always turns FREECAD_USE_FREETYPE=ON.
-RUN embuilder build zlib bzip2 sqlite3 freetype harfbuzz
+RUN embuilder build zlib bzip2 sqlite3
+# freetype/harfbuzz must ALSO be built with our wasm-EH flags: a plain
+# `embuilder build freetype` (no EH flags) produced a libfreetype.a that
+# calls the legacy JS-based `emscripten_longjmp`, which does not exist
+# in a wasm-EH final link (which wants `__wasm_longjmp` instead, per
+# FreeCAD's own CMakeLists.txt comment on -sSUPPORT_LONGJMP=wasm) --
+# confirmed by an actual "undefined symbol: emscripten_longjmp" kernel
+# link failure. `embuilder --force build` with EMCC_CFLAGS set did NOT
+# fix this (it "rebuilt" in ~4s, too fast to be real, and produced the
+# identical broken symbol -- embuilder.py evidently does not route this
+# env var into its own internal build calls the way plain `emcc` does).
+# Forcing a real on-demand port (re)build through an actual emcc
+# invocation with the matching settings -- the same code path FreeCAD's
+# own compile would trigger -- picks up the correct wasm-longjmp variant.
+# NOTE: with these settings active, emscripten caches freetype under a
+# DIFFERENT filename, libfreetype-legacysjlj.a, not plain libfreetype.a
+# (confirmed by the actual build log: "generating port:
+# sysroot/lib/wasm32-emscripten/libfreetype-legacysjlj.a"). harfbuzz has
+# no such variant suffix (it doesn't use longjmp). FreeCAD's configure
+# below points FREETYPE_LIBRARY at the suffixed name accordingly.
+RUN echo 'int main(){return 0;}' > /tmp/eh_probe.c \
+    && emcc /tmp/eh_probe.c -sUSE_FREETYPE=1 -sUSE_HARFBUZZ=1 \
+         ${EM_WASM_EH_FLAGS} -sSUPPORT_LONGJMP=wasm -o /tmp/eh_probe.js \
+    && test -f "$SY/lib/wasm32-emscripten/libfreetype-legacysjlj.a" \
+    && test -f "$SY/lib/wasm32-emscripten/libharfbuzz.a"
 # Eigen3 is header-only and only needed here (not by any wasm dependency),
 # so install it in this Dockerfile rather than the toolchain base image.
 RUN apt-get update && apt-get install -y --no-install-recommends libeigen3-dev \
@@ -88,7 +112,7 @@ RUN emcmake cmake -S . -B /work/build -G Ninja \
       -DPython3_EXECUTABLE=$TC/python-wasm-native/bin/python3.14 \
       -DPython3_INCLUDE_DIR=$TC/python-wasm/include/python3.14 \
       -DPython3_LIBRARY=$TC/python-wasm/lib/libpython3.14.a \
-      "-DFREECAD_WASM_EXTRA_LINK_LIBS=$TC/python-wasm/lib/libmpdec.a;$TC/python-wasm/lib/libffi.a;$TC/python-wasm/lib/libHacl.a;$TC/python-wasm/lib/libexpat.a" \
+      "-DFREECAD_WASM_EXTRA_LINK_LIBS=$TC/python-wasm/lib/libmpdec.a;$TC/python-wasm/lib/libffi.a;$TC/python-wasm/lib/libHacl.a;$TC/python-wasm/lib/libexpat.a;$SY/lib/wasm32-emscripten/libsqlite3.a;$TC/icu-wasm/lib/libicudata.a" \
       -DBoost_DIR=$TC/boost-wasm/lib/cmake/Boost-1.86.0 \
       -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 \
       -DXercesC_INCLUDE_DIR=$TC/xerces-wasm/include \
@@ -114,7 +138,7 @@ RUN emcmake cmake -S . -B /work/build -G Ninja \
       -DFREECAD_USE_PCL=OFF -DFREECAD_USE_FREETYPE=ON \
       -DFREETYPE_INCLUDE_DIR_ft2build=$SY/include/freetype2 \
       -DFREETYPE_INCLUDE_DIR_freetype2=$SY/include/freetype2 \
-      -DFREETYPE_LIBRARY=$SY/lib/wasm32-emscripten/libfreetype.a \
+      -DFREETYPE_LIBRARY=$SY/lib/wasm32-emscripten/libfreetype-legacysjlj.a \
       -DHARFBUZZ_INCLUDE_DIR=$SY/include/harfbuzz \
       -DHARFBUZZ_LIBRARY=$SY/lib/wasm32-emscripten/libharfbuzz.a \
       -DFREECAD_USE_PYBIND11=OFF

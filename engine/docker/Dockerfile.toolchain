@@ -336,6 +336,43 @@ RUN OV_US=$(echo "${OCCT_VERSION}" | tr '.' '_') && \
 # might trip the same install-script assumption.
 RUN sed -E -i 's#^(\s*install\(FILES .*\.wasm DESTINATION "[^"]*")\)$#\1 OPTIONAL)#' \
       occt-src/adm/cmake/occt_toolkit.cmake
+# 8 OCCT translation units need a -O1 rebuild around a clang-22
+# try_table->br_table miscompile at higher optimization levels (spec-
+# invalid br_table that a wasm parser rejects outright) -- confirmed by an
+# ACTUAL failure, not the brief's "reportedly": emscripten's own internal
+# post-link wasm-opt pass (`--post-emscripten -O3 ...`, part of every
+# em++ link, running before our own explicit --translate-to-exnref step
+# ever gets a chance to run) failed with
+# "[parse exception: popping from empty stack]" / "Fatal: error parsing
+# wasm" while linking FreeCADCmd -- i.e. the linked module was already
+# invalid wasm bytecode, not a legacy-vs-exnref EH encoding mismatch.
+# set_source_files_properties() here (before any add_subdirectory, in the
+# root CMakeLists.txt) is visible to every toolkit subdirectory that
+# consumes these files, since source-property visibility flows from an
+# ancestor scope down to descendants. ChFi3d_Builder is a split class (9
+# physical .cxx files sharing that base name); the exact miscompiled TU
+# among them isn't named more precisely anywhere, so all 9 get -O1.
+RUN sed -i '/^project (OCCT)$/a\
+set_source_files_properties(\
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ChFi3d/ChFi3d_Builder.cxx\
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ChFi3d/ChFi3d_Builder_0.cxx\
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ChFi3d/ChFi3d_Builder_1.cxx\
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ChFi3d/ChFi3d_Builder_2.cxx\
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ChFi3d/ChFi3d_Builder_6.cxx\
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ChFi3d/ChFi3d_Builder_C1.cxx\
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ChFi3d/ChFi3d_Builder_C2.cxx\
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ChFi3d/ChFi3d_Builder_CnCrn.cxx\
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ChFi3d/ChFi3d_Builder_NotImp.cxx\
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ChFi3d/ChFi3d_Builder_SpKP.cxx\
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ShapeCustom/ShapeCustom_BSplineRestriction.cxx\
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ShapeFix/ShapeFix_FaceConnect.cxx\
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ShapeUpgrade/ShapeUpgrade_ShapeDivide.cxx\
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ShapeUpgrade/ShapeUpgrade_SplitCurve2dContinuity.cxx\
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ShapeUpgrade/ShapeUpgrade_SplitCurve3dContinuity.cxx\
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/ShapeUpgrade/ShapeUpgrade_SplitSurface.cxx\
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/BRepCheck/BRepCheck_Analyzer.cxx\
+  PROPERTIES COMPILE_OPTIONS "-O1"\
+)' occt-src/CMakeLists.txt
 RUN emcmake cmake -S occt-src -B occt-build -G Ninja \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_INSTALL_PREFIX=/opt/toolchains/occt-wasm \
@@ -347,19 +384,11 @@ RUN emcmake cmake -S occt-src -B occt-build -G Ninja \
       -DCMAKE_CXX_FLAGS="${EM_WASM_EH_FLAGS}" -DCMAKE_C_FLAGS="${EM_WASM_EH_FLAGS}" \
     && ninja -C occt-build install -j"$(nproc)" \
     && rm -rf /work/occt.tar.gz /work/occt-src /work/occt-build
-# DEFERRED, not forgotten: 8 OCCT translation units (ChFi3d_Builder,
-# ShapeCustom_BSplineRestriction, ShapeFix_FaceConnect,
-# ShapeUpgrade_{ShapeDivide,SplitCurve2dContinuity,SplitCurve3dContinuity,
-# SplitSurface}, BRepCheck_Analyzer) reportedly need a clang-22
-# `-O1` rebuild around a `try_table`->`br_table` miscompile at `-O3` that V8
-# rejects. This build uses CMAKE_BUILD_TYPE=Release (-O2, not -O3), so it
-# may or may not trigger -- confirmed only by trying to load the FINAL
-# linked FreeCAD.wasm in V8/node at G4, not by anything observable in this
-# per-dependency build. If G4 fails on a wasm validation error naming one of
-# these TUs, recompile just that TU at -O1 and `emar r` it back into the
-# relevant OCCT .a before relinking -- do not preemptively patch all 8 here
-# without a reproduced failure, since the exact miscompile trigger
-# (optimization level, specific TU) was not independently re-verified.
+# The -O1 override above WAS needed: this build's CMAKE_BUILD_TYPE=Release
+# is -O2 by CMake's own default (not -O3), and the miscompile still
+# triggered -- so "only at -O3" in the original brief is not the full
+# picture; -O2 hits it too. Applied to all 9 ChFi3d_Builder* files since
+# the exact miscompiled one isn't named more precisely anywhere.
 
 # ----------------------------------------------------------------------------
 # qt-wasm-aqt: PRIMARY path (operator direction, after this stage's
