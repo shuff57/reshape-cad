@@ -1,0 +1,58 @@
+<title>reSHape Studio</title>
+<style>
+  :root {
+    --ground:#14171c; --panel:#1c2027; --raised:#242a33; --hair:#2e353f;
+    --text:#d7dde5; --muted:#8b95a3; --accent:#5aa9e6;
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--ground); color:var(--text);
+         font:13px/1.4 "IBM Plex Sans", system-ui, sans-serif; height:100vh; }
+  #app { display:grid; grid-template-rows:auto auto 1fr auto; height:100vh; }
+  header { padding:8px 14px; font-weight:600; letter-spacing:.02em;
+           border-bottom:1px solid var(--hair); background:var(--panel); }
+  header b { color:var(--accent); }
+  #toolbar { display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+             padding:8px 14px; border-bottom:1px solid var(--hair); background:var(--panel); }
+  #toolbar .grp { display:flex; align-items:center; gap:5px; color:var(--muted); }
+  button { background:var(--raised); color:var(--text); border:1px solid var(--hair);
+           border-radius:6px; padding:6px 12px; cursor:pointer; font:inherit; }
+  button:hover:not(:disabled) { border-color:var(--accent); }
+  button:disabled { opacity:.4; cursor:not-allowed; }
+  input { width:52px; background:var(--ground); color:var(--text); border:1px solid var(--hair);
+          border-radius:5px; padding:4px 6px; font:12px "IBM Plex Mono", monospace; }
+  #main { display:grid; grid-template-columns:220px 1fr; min-height:0; }
+  #tree { border-right:1px solid var(--hair); background:var(--panel); overflow:auto; padding:8px 0; }
+  #tree h3 { margin:0 0 6px; padding:0 14px; font-size:11px; text-transform:uppercase;
+             letter-spacing:.08em; color:var(--muted); font-weight:600; }
+  #treeList { list-style:none; margin:0; padding:0; }
+  .tree-row { padding:4px 14px; border-left:2px solid transparent; }
+  .tree-row:hover { background:var(--raised); border-left-color:var(--accent); }
+  .tree-row .tk { color:var(--muted); font:11px "IBM Plex Mono", monospace; margin-right:4px; }
+  #right { position:relative; min-height:0; }
+  #right canvas { display:block; }
+  #status { margin:0; padding:6px 14px; height:96px; overflow:auto; background:#0e1116;
+            border-top:1px solid var(--hair); color:var(--muted);
+            font:11px/1.45 "IBM Plex Mono", ui-monospace, monospace; white-space:pre-wrap; }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Mono&display=swap">
+
+<div id="app">
+  <header>re<b>SHape</b> Studio <span style="color:var(--muted);font-weight:400">· parametric CAD in the browser</span></header>
+  <div id="toolbar">
+    <button id="newBody">New Body</button>
+    <span class="grp">W <input id="w" value="40"> H <input id="h" value="40"></span>
+    <button id="rect">Rect Sketch</button>
+    <span class="grp">Length <input id="len" value="20"></span>
+    <button id="pad">Pad</button>
+    <button id="apply">Set Length</button>
+  </div>
+  <div id="main">
+    <aside id="tree"><h3>Model</h3><ul id="treeList"></ul></aside>
+    <div id="right"></div>
+  </div>
+  <pre id="status">loading engine…</pre>
+</div>
+
+<script crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<script crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script type="module" src="/studio.js"></script>

@@ -26,6 +26,14 @@
 // pass the SAME reference into createFreeCAD(), because the MODULARIZE
 // factory uses whatever object it's given as its internal Module.
 
+// Track U #5 fix: predefine the bare `resolveGlobalSymbol` the port's
+// promising-main glue reads (undefined in our static -sJSPI=0 build; its
+// `if(!WebAssembly.promising) return` guard does not short-circuit in a
+// JSPI-capable browser, so the read throws during __wasm_call_ctors and aborts
+// init). A benign stub — never invoked in a static build. See studio.js.
+globalThis.resolveGlobalSymbol =
+  globalThis.resolveGlobalSymbol || function () { return { sym: undefined }; };
+
 const statusEl = document.getElementById('status');
 const runBtn = document.getElementById('run');
 const saveBtn = document.getElementById('save');

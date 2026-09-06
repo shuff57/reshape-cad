@@ -27,6 +27,9 @@ const playRoot = here;
 //                    as "not ready yet" and falls back to /kernel/.
 const kernelRoot = resolve(here, '..', 'build', 'g3-artifacts');
 const kernelBrowserRoot = resolve(here, '..', 'build', 'g5-artifacts');
+// /bridge/ -> engine/bridge (fc-session.mjs, fc-commands.mjs) so the studio
+// page can import the command bridge as ES modules over the same origin.
+const bridgeRoot = resolve(here, '..', 'bridge');
 const port = Number(process.argv[2] || 8787);
 
 const MIME = {
@@ -52,7 +55,10 @@ const server = createServer(async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
   let root = playRoot;
   let relPath = url.pathname;
-  if (relPath.startsWith('/kernel-browser/')) {
+  if (relPath.startsWith('/bridge/')) {
+    root = bridgeRoot;
+    relPath = relPath.slice('/bridge'.length);
+  } else if (relPath.startsWith('/kernel-browser/')) {
     root = kernelBrowserRoot;
     relPath = relPath.slice('/kernel-browser'.length);
   } else if (relPath.startsWith('/kernel/')) {
