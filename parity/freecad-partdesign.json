@@ -1,0 +1,373 @@
+{
+  "source": "FreeCAD 1.1.3 PartDesign workbench toolbar, https://wiki.freecad.org/PartDesign_Workbench",
+  "tools": [
+    {
+      "id": "PartDesign_Body",
+      "group": "Structure",
+      "label": "Create a Body",
+      "reshape": null,
+      "status": "queued",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_NewSketch",
+      "group": "Structure",
+      "label": "Create Sketch",
+      "reshape": "sketch",
+      "status": "shipped",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_Plane",
+      "group": "Structure",
+      "label": "Create a Datum Plane",
+      "reshape": null,
+      "status": "queued",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_Line",
+      "group": "Structure",
+      "label": "Create a Datum Line",
+      "reshape": null,
+      "status": "queued",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_Point",
+      "group": "Structure",
+      "label": "Create a Datum Point",
+      "reshape": null,
+      "status": "queued",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_CoordinateSystem",
+      "group": "Structure",
+      "label": "Create a Local Coordinate System",
+      "reshape": null,
+      "status": "queued",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_ShapeBinder",
+      "group": "Structure",
+      "label": "Create a Shape Binder",
+      "reshape": null,
+      "status": "refused",
+      "reason": "ShapeBinder is multi-body plumbing: it imports a shape from another body/project. A single-body student tool has no second body to bind from."
+    },
+    {
+      "id": "PartDesign_SubShapeBinder",
+      "group": "Structure",
+      "label": "Create a Sub-Object(s) Shape Binder",
+      "reshape": null,
+      "status": "refused",
+      "reason": "SubShapeBinder is multi-body plumbing: it links part of another body or an external project into this one. A single-body student tool does not need cross-body links."
+    },
+    {
+      "id": "PartDesign_Clone",
+      "group": "Structure",
+      "label": "Create a Clone",
+      "reshape": null,
+      "status": "refused",
+      "reason": "Clone is multi-body plumbing: it duplicates a whole other body for further PartDesign features. A single-body student tool repeats geometry with repeat()/repeatAround() instead."
+    },
+    {
+      "id": "PartDesign_Pad",
+      "group": "Additive",
+      "label": "Pad a selected sketch",
+      "reshape": "pull",
+      "status": "shipped",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_Revolution",
+      "group": "Additive",
+      "label": "Revolve a selected sketch",
+      "reshape": "spin",
+      "status": "shipped",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_AdditiveLoft",
+      "group": "Additive",
+      "label": "Loft a selected sketch through material to be added",
+      "reshape": "blend",
+      "status": "shipped",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_AdditivePipe",
+      "group": "Additive",
+      "label": "Sweep a selected sketch along a path",
+      "reshape": null,
+      "status": "queued",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_AdditiveHelix",
+      "group": "Additive",
+      "label": "Additive helix",
+      "reshape": null,
+      "status": "queued",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_AdditiveBox",
+      "group": "Additive",
+      "label": "Add a cube",
+      "reshape": "box",
+      "status": "shipped",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_AdditiveCylinder",
+      "group": "Additive",
+      "label": "Add a cylinder",
+      "reshape": "cylinder",
+      "status": "shipped",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_AdditiveSphere",
+      "group": "Additive",
+      "label": "Add a sphere",
+      "reshape": "sphere",
+      "status": "shipped",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_AdditiveCone",
+      "group": "Additive",
+      "label": "Add a cone",
+      "reshape": "cone",
+      "status": "shipped",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_AdditiveEllipsoid",
+      "group": "Additive",
+      "label": "Add an ellipsoid",
+      "reshape": null,
+      "status": "queued",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_AdditiveTorus",
+      "group": "Additive",
+      "label": "Add a torus",
+      "reshape": "ring",
+      "status": "shipped",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_AdditivePrism",
+      "group": "Additive",
+      "label": "Add a regular polygon prism",
+      "reshape": null,
+      "status": "queued",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_AdditiveWedge",
+      "group": "Additive",
+      "label": "Add a wedge",
+      "reshape": null,
+      "status": "queued",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_Pocket",
+      "group": "Subtractive",
+      "label": "Pocket a selected sketch",
+      "reshape": null,
+      "status": "queued",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_Hole",
+      "group": "Subtractive",
+      "label": "Drill a hole in a selected sketch",
+      "reshape": "hole",
+      "status": "partial",
+      "reason": "hole() makes a simple through/depth hole only; counterbore, countersink, thread and standard sizes are queued (plan B3)"
+    },
+    {
+      "id": "PartDesign_Groove",
+      "group": "Subtractive",
+      "label": "Groove a selected sketch",
+      "reshape": null,
+      "status": "queued",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_SubtractiveLoft",
+      "group": "Subtractive",
+      "label": "Loft a selected sketch through material to be removed",
+      "reshape": null,
+      "status": "queued",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_SubtractivePipe",
+      "group": "Subtractive",
+      "label": "Sweep a selected sketch along a path",
+      "reshape": null,
+      "status": "queued",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_SubtractiveHelix",
+      "group": "Subtractive",
+      "label": "Subtractive helix",
+      "reshape": null,
+      "status": "queued",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_SubtractiveBox",
+      "group": "Subtractive",
+      "label": "Subtract a cube",
+      "reshape": null,
+      "status": "queued",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_SubtractiveCylinder",
+      "group": "Subtractive",
+      "label": "Subtract a cylinder",
+      "reshape": null,
+      "status": "queued",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_SubtractiveSphere",
+      "group": "Subtractive",
+      "label": "Subtract a sphere",
+      "reshape": null,
+      "status": "queued",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_SubtractiveCone",
+      "group": "Subtractive",
+      "label": "Subtract a cone",
+      "reshape": null,
+      "status": "queued",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_SubtractiveEllipsoid",
+      "group": "Subtractive",
+      "label": "Subtract an ellipsoid",
+      "reshape": null,
+      "status": "queued",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_SubtractiveTorus",
+      "group": "Subtractive",
+      "label": "Subtract a torus",
+      "reshape": null,
+      "status": "queued",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_SubtractivePrism",
+      "group": "Subtractive",
+      "label": "Subtract a regular polygon prism",
+      "reshape": null,
+      "status": "queued",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_SubtractiveWedge",
+      "group": "Subtractive",
+      "label": "Subtract a wedge",
+      "reshape": null,
+      "status": "queued",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_Mirrored",
+      "group": "Transformation",
+      "label": "Create a mirrored feature",
+      "reshape": "mirror",
+      "status": "shipped",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_LinearPattern",
+      "group": "Transformation",
+      "label": "Create a linear pattern",
+      "reshape": "repeat",
+      "status": "shipped",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_PolarPattern",
+      "group": "Transformation",
+      "label": "Create a polar pattern",
+      "reshape": "repeatAround",
+      "status": "shipped",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_MultiTransform",
+      "group": "Transformation",
+      "label": "Create a multi-transform feature",
+      "reshape": null,
+      "status": "queued",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_Scaled",
+      "group": "Transformation",
+      "label": "Create a scaled feature",
+      "reshape": null,
+      "status": "queued",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_Fillet",
+      "group": "Dress-up",
+      "label": "Fillet the selected edges of a shape",
+      "reshape": "round",
+      "status": "shipped",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_Chamfer",
+      "group": "Dress-up",
+      "label": "Chamfer the selected edges of a shape",
+      "reshape": "bevel",
+      "status": "shipped",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_Draft",
+      "group": "Dress-up",
+      "label": "Set the Draft angles for the selected faces of a shape",
+      "reshape": "draft",
+      "status": "shipped",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_Thickness",
+      "group": "Dress-up",
+      "label": "Hollow out a solid and set a thickness for its walls",
+      "reshape": "hollow",
+      "status": "shipped",
+      "reason": null
+    },
+    {
+      "id": "PartDesign_Boolean",
+      "group": "Boolean",
+      "label": "Boolean operation between two bodies",
+      "reshape": "join",
+      "status": "shipped",
+      "reason": null
+    }
+  ]
+}
