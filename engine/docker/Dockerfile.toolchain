@@ -237,8 +237,17 @@ RUN mkdir -p native-build && cd native-build \
 # 2. libffi, cross-built for wasm32 (CPython's own recipe: CHOST=wasm32-unknown-linux).
 RUN curl -fsSL "https://github.com/libffi/libffi/releases/download/v${LIBFFI_VERSION}/libffi-${LIBFFI_VERSION}.tar.gz" \
       -o libffi.tar.gz && tar xf libffi.tar.gz
+# CFLAGS include EM_WASM_EH_FLAGS: libffi's trampoline/closure code
+# generates unwind-relevant code paths across the C/C++ FFI boundary, and
+# leaving it on emscripten's default exception model while everything
+# else uses -fwasm-exceptions produced a linked FreeCADCmd.wasm that
+# neither emscripten's own internal wasm-opt pass nor our own
+# --translate-to-exnref could even PARSE ("[parse exception: popping from
+# empty stack]" -- a genuinely corrupt module, not just a feature-flag
+# mismatch) -- confirmed by bisecting which dependencies were missing our
+# EH flags after ruling out the EH-vs-JS-ABI and OCCT-miscompile causes.
 RUN cd "libffi-${LIBFFI_VERSION}" \
-    && CFLAGS="-O2 -fPIC -DWASM_BIGINT" CXXFLAGS="-O2 -fPIC -DWASM_BIGINT" \
+    && CFLAGS="-O2 -fPIC -DWASM_BIGINT ${EM_WASM_EH_FLAGS}" CXXFLAGS="-O2 -fPIC -DWASM_BIGINT ${EM_WASM_EH_FLAGS}" \
        CPATH="$PYPREFIX/include" PKG_CONFIG_PATH="$PYPREFIX/lib/pkgconfig" \
        EM_PKG_CONFIG_PATH="$PYPREFIX/lib/pkgconfig" \
        emconfigure ./configure --host=wasm32-unknown-linux --prefix="$PYPREFIX" \
@@ -251,8 +260,17 @@ RUN cd "libffi-${LIBFFI_VERSION}" \
 # 3. mpdecimal, cross-built for wasm32.
 RUN curl -fsSL "https://www.bytereef.org/software/mpdecimal/releases/mpdecimal-${MPDEC_VERSION}.tar.gz" \
       -o mpdecimal.tar.gz && tar xf mpdecimal.tar.gz
+# --host= added because adding EM_WASM_EH_FLAGS broke mpdecimal's plain
+# (non-cross-flagged) `./configure`: without --host, it runs an AC_TRY_RUN
+# "can we execute compiled programs" check via emconfigure's node-based
+# execution shim, which worked with no EH flags but fails once
+# -fwasm-exceptions is added ("cannot run C compiled programs") --
+# presumably the resulting probe binary needs newer node/V8 EH support
+# than that plain shim invokes with. --host= makes autoconf treat this as
+# a real cross-compile and skip execution-based checks entirely, matching
+# how libffi's own configure call already avoids the same trap.
 RUN cd "mpdecimal-${MPDEC_VERSION}" \
-    && emconfigure ./configure CFLAGS=-fPIC --prefix="$PYPREFIX" --disable-shared \
+    && emconfigure ./configure --host=wasm32-unknown-linux CFLAGS="-fPIC ${EM_WASM_EH_FLAGS}" --prefix="$PYPREFIX" --disable-shared \
     && make install
 
 # 4. Host (wasm32-emscripten) CPython, static: --without-pymalloc (matches

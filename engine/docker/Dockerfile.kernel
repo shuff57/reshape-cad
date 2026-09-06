@@ -106,6 +106,7 @@ RUN emcmake cmake -S . -B /work/build -G Ninja \
       -DCMAKE_FIND_ROOT_PATH="$TC/qt-wasm;$TC/occt-wasm;$TC/xerces-wasm;$TC/fmt-wasm;$TC/yaml-wasm;$TC/python-wasm;$TC/boost-wasm;$TC/icu-wasm;$TC" \
       -DCMAKE_CXX_FLAGS="-fwasm-exceptions -sWASM_LEGACY_EXCEPTIONS=0 -DEIGEN_DONT_VECTORIZE -DBOOST_HAS_PTHREADS=1 -DBOOST_STACKTRACE_USE_NOOP" \
       -DCMAKE_C_FLAGS="-fwasm-exceptions -sWASM_LEGACY_EXCEPTIONS=0" \
+      -DCMAKE_EXE_LINKER_FLAGS="-O1" \
       -DFREECAD_QT_MAJOR_VERSION=6 \
       -DQt6_DIR=$TC/qt-wasm/lib/cmake/Qt6 \
       -DQT_HOST_PATH=$TC/qt-host \
@@ -149,12 +150,39 @@ RUN emcmake cmake -S . -B /work/build -G Ninja \
 FROM kernel-configure AS kernel-build
 # NOTE: the ninja target is `FreeCADCmd.js`, not `FreeCADCmd` -- confirmed
 # via `ninja -t targets` after the FreeCADCmd guess failed ("did you mean
-# 'FreeCAD.a'?"). The underlying executable target is `FreeCADMainCmd`.
+# 'FreeCAD.a'?"). The underlying executable target is `FreeCADMainCmd`, and
+# its actual output files are bin/FreeCADCmd.js / bin/FreeCADCmd.wasm (not
+# "FreeCAD.js"/"FreeCAD.wasm" -- an earlier version of this file had that
+# wrong and failed at the wasm-opt step below with "Failed opening
+# '.../FreeCAD.wasm'" since the file never existed under that name).
+#
+# -DCMAKE_EXE_LINKER_FLAGS="-O1" above (real finding, not cosmetic): with
+# CMAKE_BUILD_TYPE=Release's default -O3 at LINK time, emscripten's own
+# INTERNAL post-link optimization pass (baked into every em++ link,
+# `wasm-opt --post-emscripten -O3 ... --enable-exception-handling`, which
+# runs automatically as part of `ninja FreeCADCmd.js` -- BEFORE our own
+# explicit --translate-to-exnref step ever gets a chance to run) failed
+# to even PARSE the freshly linked module: "[parse exception: popping from
+# empty stack]" / "Fatal: error parsing wasm". The -O1 OCCT TU fix above
+# did NOT change this (identical byte offset both times), so this isn't
+# the same clang-22 miscompile -- more likely `--enable-exception-handling`
+# is binaryen's flag for the OLDER wasm-EH proposal (try/catch/delegate),
+# and our objects (-sWASM_LEGACY_EXCEPTIONS=0) already emit the NEWER
+# exnref/try_table encoding that this specific automatic pass doesn't
+# expect, at this emsdk 4.0.12 version. Lowering the link step to -O1
+# skips (or downgrades) that automatic internal pass entirely, and the
+# link then succeeds; our own explicit `--all-features` wasm-opt call
+# below (which DOES know about exnref) still runs as the real
+# normalization step afterward.
 RUN ninja -C /work/build FreeCADCmd.js -j"$(nproc)"
+
+FROM kernel-build AS kernel-linked
+
+FROM kernel-linked AS kernel-build-final
 RUN /emsdk/upstream/bin/wasm-opt \
       --translate-to-exnref --emit-exnref --all-features -g \
-      /work/build/bin/FreeCAD.wasm -o /work/build/bin/FreeCAD.wasm
+      /work/build/bin/FreeCADCmd.wasm -o /work/build/bin/FreeCADCmd.wasm
 
 FROM scratch AS kernel-artifacts
-COPY --from=kernel-build /work/build/bin/FreeCAD.js /
-COPY --from=kernel-build /work/build/bin/FreeCAD.wasm /
+COPY --from=kernel-build-final /work/build/bin/FreeCADCmd.js /
+COPY --from=kernel-build-final /work/build/bin/FreeCADCmd.wasm /
