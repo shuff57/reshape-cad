@@ -141,8 +141,16 @@ const PYTHON_PATH = process.env.FREECAD_PYTHONPATH || `${PYTHON_HOME}/lib/python
 // while the Mod resource data (Resources/, Init.py, etc.) only exists under
 // the *source* checkout -- the build dir's src/Mod is object files/CMake
 // bookkeeping, not the resource tree. So AppHomePath can't just be one of
-// the two; we stage a synthetic home dir that symlinks each piece from
-// where it actually is.
+// the two; we stage a synthetic home dir that bind-mounts each piece from
+// where it actually is (see ensureMounted below for why a symlink doesn't
+// work). App::Application::getResourceDir() (used by Mod/Material's
+// default-material lookup, among others) resolves to AppHomePath + "share/"
+// in this build, not AppHomePath itself -- verified empirically via
+// App.getResourceDir() -- so both Mod and Ext are mounted twice: once at
+// FREECAD_HOME for AppHomePath-relative consumers (FreeCADInit.py's
+// std_mod/std_ext, i.e. "import freecad" and workbench Init.py scanning),
+// and again at FREECAD_HOME/share for getResourceDir()-relative consumers
+// (e.g. Mod/Material/Resources/Materials/Standard/Default.FCMat).
 const FREECAD_MOD_SRC = process.env.FREECAD_MOD_SRC || '/work/fw/src/Mod';
 const FREECAD_EXT_SRC = process.env.FREECAD_EXT_SRC || '/work/build/Ext';
 const FREECAD_HOME = process.env.FREECAD_HOME || '/freecad_home';
@@ -211,18 +219,9 @@ createFreeCAD({
       m.ENV.PYTHONHOME = PYTHON_HOME;
       m.ENV.PYTHONPATH = PYTHON_PATH;
       // ApplicationDirectories::findHomePath() (FC_OS_WASM branch) reads
-      // FREECAD_HOME, defaulting to "/freecad"; getResourceDir() then
-      // returns AppHomePath AS-IS (no "Resources" suffix in the non-RESDIR
-      // build), so material cards are looked up at
-      // <FREECAD_HOME>/Mod/Material/Resources/Materials/... . NOTE: pointing
-      // FREECAD_HOME straight at the source checkout (e.g. /work/fw/src) is
-      // NOT enough on its own -- src/Ext/freecad only has __init__.py's
-      // CMake *template* (__init__.py.template); the real, generated
-      // __init__.py only exists under the build tree's Ext/freecad/. So
-      // std_ext = FREECAD_HOME/"Ext" needs the *build* dir while
-      // std_mod = FREECAD_HOME/"Mod" needs the *source* dir's Resources/ --
-      // two different trees, which is exactly what the FREECAD_HOME staging
-      // dir above (Mod/Ext symlinks) reconciles into one AppHomePath.
+      // FREECAD_HOME, defaulting to "/freecad". See the staging block above
+      // for why FREECAD_HOME points at a synthetic directory rather than
+      // either of the real build/source trees directly.
       m.ENV.FREECAD_HOME = FREECAD_HOME;
       console.log('preRun: Module.ENV set, FREECAD_WASM_KERNEL=' + m.ENV.FREECAD_WASM_KERNEL + ' FREECAD_HOME=' + m.ENV.FREECAD_HOME);
     },
