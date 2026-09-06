@@ -1,0 +1,27 @@
+{
+  "name": "@shuff57/reshape-sketch",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./sketch-solve": "./dist/sketch-solve.js",
+    "./sketch-arc": "./dist/sketch-arc.js",
+    "./sketch-outline": "./dist/sketch-outline.js",
+    "./least-squares": "./dist/least-squares.js"
+  },
+  "typesVersions": {
+    "*": {
+      "*": ["dist/*"]
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "@types/node": "^24.3.0"
+  }
+}

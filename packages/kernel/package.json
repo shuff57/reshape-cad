@@ -1,0 +1,37 @@
+{
+  "name": "@shuff57/reshape-kernel",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./occt-build": "./dist/occt-build.js",
+    "./occt-api": "./dist/occt-api.js",
+    "./occt-mesh": "./dist/occt-mesh.js",
+    "./occt-three": "./dist/occt-three.js",
+    "./topo-resolve": "./dist/topo-resolve.js",
+    "./config": "./dist/config.js"
+  },
+  "typesVersions": {
+    "*": {
+      "*": ["dist/*"]
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@shuff57/reshape-script": "file:../script"
+  },
+  "peerDependencies": {
+    "three": "^0.185.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "three": "^0.185.1",
+    "@types/node": "^24.3.0",
+    "@types/three": "^0.185.4"
+  }
+}

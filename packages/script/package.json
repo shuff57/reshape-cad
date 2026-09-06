@@ -1,0 +1,40 @@
+{
+  "name": "@shuff57/reshape-script",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./reshape-script": "./dist/reshape-script.js",
+    "./reshape-script-gen": "./dist/reshape-script-gen.js",
+    "./reshape-docs": "./dist/reshape-docs.js",
+    "./docs-core": "./dist/docs-core.js",
+    "./model-types": "./dist/model-types.js",
+    "./model-codegen": "./dist/model-codegen.js",
+    "./model-deps": "./dist/model-deps.js",
+    "./model-handles": "./dist/model-handles.js",
+    "./model-selection": "./dist/model-selection.js",
+    "./model-check": "./dist/model-check.js",
+    "./topo-history": "./dist/topo-history.js",
+    "./topo-name": "./dist/topo-name.js",
+    "./hull": "./dist/hull.js",
+    "./script-surface": "./dist/script-surface.js"
+  },
+  "typesVersions": {
+    "*": {
+      "*": ["dist/*"]
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@shuff57/reshape-sketch": "file:../sketch"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "@types/node": "^24.3.0"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "name": "@shuff57/reshape-studio",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./ReshapeStudio": "./dist/ReshapeStudio.js",
+    "./ReshapeParamsPanel": "./dist/ReshapeParamsPanel.js",
+    "./format-number": "./dist/format-number.js",
+    "./mesh-export": "./dist/mesh-export.js",
+    "./camera-fit": "./dist/camera-fit.js",
+    "./model/BrepViewportThree": "./dist/model/BrepViewportThree.js",
+    "./model/HandleOverlay": "./dist/model/HandleOverlay.js",
+    "./model/ModelEditor": "./dist/model/ModelEditor.js",
+    "./model/SketchConstraints": "./dist/model/SketchConstraints.js"
+  },
+  "typesVersions": {
+    "*": {
+      "*": ["dist/*"]
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@shuff57/reshape-kernel": "file:../kernel",
+    "@shuff57/reshape-script": "file:../script",
+    "@shuff57/reshape-sketch": "file:../sketch",
+    "jszip": "^3.10.1"
+  },
+  "peerDependencies": {
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "three": "^0.185.1",
+    "lucide-react": "*"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@types/node": "^24.3.0",
+    "@types/three": "^0.185.4",
+    "react": "^19.1.1",
+    "three": "^0.185.1"
+  }
+}
