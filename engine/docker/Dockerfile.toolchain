@@ -354,8 +354,36 @@ RUN OV_US=$(echo "${OCCT_VERSION}" | tr '.' '_') && \
 # might trip the same install-script assumption.
 RUN sed -E -i 's#^(\s*install\(FILES .*\.wasm DESTINATION "[^"]*")\)$#\1 OPTIONAL)#' \
       occt-src/adm/cmake/occt_toolkit.cmake
+# The clang-22 try_table->br_table miscompile the A2 brief named 8
+# specific TUs for is real (confirmed: emscripten's own internal
+# post-link wasm-opt pass, and separately our own explicit
+# --translate-to-exnref, both failed identically on the linked
+# FreeCADCmd.wasm with "[parse exception: popping from empty stack]" --
+# a genuinely invalid module, not a feature-flag mismatch) -- but NOT
+# confined to those 8/10 named files. Two fixes were tried and rejected
+# before this one: (1) set_source_files_properties(... -O1) in OCCT's
+# root CMakeLists.txt had no effect at all (confirmed via a debug dump of
+# build.ninja: still showed -O3 for those files); (2) recompiling exactly
+# those 10 files at -O1 and `emar r`-ing them into their archives changed
+# the parse-exception's byte offset (proving the fix did alter the linked
+# binary) but did NOT eliminate the exception -- it just moved to a
+# nearby offset, meaning at least one more affected function exists
+# outside that list, and the brief's file list isn't exhaustive. Rather
+# than keep guessing individual translation units one link-cycle at a
+# time (each cycle being a ~13-20 minute OCCT rebuild plus a ~5 minute
+# kernel relink), build the entire OCCT library at -O1 via
+# CMAKE_CXX_FLAGS_RELEASE/CMAKE_C_FLAGS_RELEASE (CMake's Release default
+# is -O3; these override it specifically, leaving -DNDEBUG from
+# CMAKE_BUILD_TYPE=Release intact). This is a deliberate, temporary
+# blunt instrument for this feasibility spike: correctness over
+# optimization level. Track E (the production line, if C2 wins the
+# convergence decision) should re-narrow this to the actual affected
+# translation units once they're known, since -O1 has a real OCCT
+# geometry-kernel performance cost.
 RUN emcmake cmake -S occt-src -B occt-build -G Ninja \
       -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_CXX_FLAGS_RELEASE="-O1 -DNDEBUG" \
+      -DCMAKE_C_FLAGS_RELEASE="-O1 -DNDEBUG" \
       -DCMAKE_INSTALL_PREFIX=/opt/toolchains/occt-wasm \
       -DBUILD_LIBRARY_TYPE=Static \
       -DBUILD_MODULE_Draw=OFF -DBUILD_MODULE_Visualization=OFF \
@@ -363,60 +391,8 @@ RUN emcmake cmake -S occt-src -B occt-build -G Ninja \
       -DUSE_RAPIDJSON=OFF -DUSE_FREEIMAGE=OFF \
       -DBUILD_DOC_Overview=OFF \
       -DCMAKE_CXX_FLAGS="${EM_WASM_EH_FLAGS}" -DCMAKE_C_FLAGS="${EM_WASM_EH_FLAGS}" \
-    && ninja -C occt-build install -j"$(nproc)"
-# 8 OCCT translation units (10 physical files: ChFi3d_Builder is a split
-# class, 9 files sharing that base name) need a -O1 rebuild around a
-# clang-22 try_table->br_table miscompile at -O3 (CMAKE_BUILD_TYPE=Release
-# here really is -O3, confirmed via the actual build.ninja FLAGS= line --
-# an earlier note here mis-stated it as -O2). Confirmed as an ACTUAL
-# failure, not the brief's "reportedly": emscripten's own internal
-# post-link wasm-opt pass failed with "[parse exception: popping from
-# empty stack]" while linking FreeCADCmd, and our own explicit
-# --translate-to-exnref step failed identically against a saved copy of
-# the same linked module (checked with `wasm-opt --debug`).
-#
-# set_source_files_properties(... COMPILE_OPTIONS -O1) in OCCT's root
-# CMakeLists.txt (tried first) did NOT work -- confirmed by a debug dump
-# of the generated build.ninja after that patch: every one of these
-# files still showed `FLAGS = ... -O3 ...`. CMake's documented rule
-# ("source properties are visible to targets in the same directory or
-# subdirectories added after that point") evidently doesn't reach
-# whatever mechanism OCCT's own adm/cmake/occt_toolkit.cmake uses to
-# collect and compile each toolkit's sources. Rather than spend more
-# cycles on CMake scoping, this recompiles the exact 10 files directly
-# with the same flags ninja used (extracted from build.ninja: FLAGS,
-# DEFINES, INCLUDES are identical for every one of them) except -O3 -> -O1,
-# then `emar r`s the new objects into the already-`ninja install`-ed
-# archives -- exactly the fallback the original brief described.
-RUN for pair in \
-      "src/ChFi3d/ChFi3d_Builder.cxx:libTKFillet.a" \
-      "src/ChFi3d/ChFi3d_Builder_0.cxx:libTKFillet.a" \
-      "src/ChFi3d/ChFi3d_Builder_1.cxx:libTKFillet.a" \
-      "src/ChFi3d/ChFi3d_Builder_2.cxx:libTKFillet.a" \
-      "src/ChFi3d/ChFi3d_Builder_6.cxx:libTKFillet.a" \
-      "src/ChFi3d/ChFi3d_Builder_C1.cxx:libTKFillet.a" \
-      "src/ChFi3d/ChFi3d_Builder_C2.cxx:libTKFillet.a" \
-      "src/ChFi3d/ChFi3d_Builder_CnCrn.cxx:libTKFillet.a" \
-      "src/ChFi3d/ChFi3d_Builder_NotImp.cxx:libTKFillet.a" \
-      "src/ChFi3d/ChFi3d_Builder_SpKP.cxx:libTKFillet.a" \
-      "src/ShapeCustom/ShapeCustom_BSplineRestriction.cxx:libTKShHealing.a" \
-      "src/ShapeFix/ShapeFix_FaceConnect.cxx:libTKShHealing.a" \
-      "src/ShapeUpgrade/ShapeUpgrade_ShapeDivide.cxx:libTKShHealing.a" \
-      "src/ShapeUpgrade/ShapeUpgrade_SplitCurve2dContinuity.cxx:libTKShHealing.a" \
-      "src/ShapeUpgrade/ShapeUpgrade_SplitCurve3dContinuity.cxx:libTKShHealing.a" \
-      "src/ShapeUpgrade/ShapeUpgrade_SplitSurface.cxx:libTKShHealing.a" \
-      "src/BRepCheck/BRepCheck_Analyzer.cxx:libTKTopAlgo.a" \
-    ; do \
-      src="${pair%%:*}"; archive="${pair##*:}"; \
-      objname=$(basename "$src").o; \
-      em++ -c -fwasm-exceptions -sWASM_LEGACY_EXCEPTIONS=0 -fexceptions -fPIC \
-        -Wall -Wextra -Wshorten-64-to-32 -O1 -DNDEBUG -DNo_Exception -DOCCT_NO_PLUGINS \
-        -std=gnu++11 -DOCC_CONVERT_SIGNALS -I/work/occt-build/include/opencascade \
-        -o "/tmp/$objname" "occt-src/$src" \
-      && emar r "/opt/toolchains/occt-wasm/lib/$archive" "/tmp/$objname" \
-      && rm "/tmp/$objname"; \
-    done
-RUN rm -rf /work/occt.tar.gz /work/occt-src /work/occt-build
+    && ninja -C occt-build install -j"$(nproc)" \
+    && rm -rf /work/occt.tar.gz /work/occt-src /work/occt-build
 
 # ----------------------------------------------------------------------------
 # qt-wasm-aqt: PRIMARY path (operator direction, after this stage's
