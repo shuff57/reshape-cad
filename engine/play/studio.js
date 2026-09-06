@@ -140,7 +140,7 @@ function render() {
 // --- buttons ---------------------------------------------------------------
 const $ = (id) => document.getElementById(id);
 function setButtons(on) {
-  ['newBody', 'rect', 'pad', 'apply'].forEach((id) => { $(id).disabled = !on; });
+  ['newBody', 'rect', 'pad', 'apply', 'save', 'open'].forEach((id) => { $(id).disabled = !on; });
 }
 setButtons(false);
 
@@ -181,3 +181,36 @@ $('apply').addEventListener('click', guard(() => {
   log(`~ ${state.pad}.Length = ${len}`);
   render();
 }));
+
+// Save the live document to a real .FCStd and hand it to the browser download.
+$('save').addEventListener('click', guard(() => {
+  const bytes = session.saveDocument();
+  const blob = new Blob([bytes], { type: 'application/octet-stream' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'model.FCStd';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  log(`saved model.FCStd (${bytes.length} bytes)`);
+}));
+
+// Open a .FCStd the user picks; it becomes the active document. Re-derive the
+// current Body/Sketch/Pad from the opened tree so Set Length still works.
+$('open').addEventListener('click', () => $('file').click());
+$('file').addEventListener('change', async (e) => {
+  const f = e.target.files[0];
+  if (!f) return;
+  try {
+    const bytes = new Uint8Array(await f.arrayBuffer());
+    const name = session.openDocument(bytes);
+    state.body = lastOfType('PartDesign::Body');
+    state.sketch = lastOfType('Sketcher::SketchObject');
+    state.pad = lastOfType('PartDesign::Pad');
+    log(`opened ${f.name} → doc ${name}`);
+    render();
+  } catch (err) {
+    log(`✗ open: ${err.message.split('\n')[0]}`);
+  } finally {
+    e.target.value = ''; // allow re-opening the same file
+  }
+});

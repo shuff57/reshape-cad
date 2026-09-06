@@ -139,6 +139,31 @@ export function createFcSession(Module) {
     );
   }
 
+  // Save the active document to a real .FCStd and return its bytes (Uint8Array)
+  // for download. Portable: Module.FS reads the file the kernel just wrote
+  // (MEMFS in the browser, the host mount under NODERAWFS).
+  function saveDocument(fcstdPath = '/tmp/model.FCStd') {
+    const { rc, out } = exec(
+      `import FreeCAD as App\n` +
+      `App.ActiveDocument.saveAs(${JSON.stringify(fcstdPath)})\n`
+    );
+    if (rc !== 0) throw new Error(`saveDocument failed:\n${out}`);
+    return Module.FS.readFile(fcstdPath);
+  }
+
+  // Open a .FCStd from bytes (Uint8Array): write it into the engine FS, then
+  // App.openDocument() -- which becomes the new ActiveDocument, so subsequent
+  // mesh()/tree()/commands operate on it. Returns the opened document's Name.
+  function openDocument(bytes, fcstdPath = '/tmp/opened.FCStd') {
+    Module.FS.writeFile(fcstdPath, bytes);
+    return read(
+      `import json, FreeCAD as App\n` +
+      `doc = App.openDocument(${JSON.stringify(fcstdPath)})\n` +
+      `doc.recompute()\n` +
+      `open(${JSON.stringify(OUT_PATH)}, 'w').write(json.dumps({'name': doc.Name}))\n`
+    ).name;
+  }
+
   return {
     Module,
     exec,
@@ -146,6 +171,8 @@ export function createFcSession(Module) {
     newDocument,
     mesh,
     tree,
+    saveDocument,
+    openDocument,
     // typed PartDesign/Sketcher commands are attached in fc-commands.mjs
     // (mechanical Python emitters) so this core stays small and stable.
   };
