@@ -28,7 +28,8 @@
     }
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json"
+    "build": "tsc -p tsconfig.json",
+    "test": "node --test \"test/*.test.mjs\""
   },
   "dependencies": {
     "@shuff57/reshape-sketch": "file:../sketch"
