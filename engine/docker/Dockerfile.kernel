@@ -38,6 +38,13 @@ RUN git clone --filter=blob:none --no-checkout https://github.com/magik6k/freeca
 # ----------------------------------------------------------------------------
 FROM kernel-src AS kernel-configure
 ENV TC=/opt/toolchains
+# KERNEL_LINKER_FLAGS is empty by default (normal -O3 link). It exists solely
+# as a debug lever for the G3 "[parse exception: popping from empty stack]"
+# investigation -- see the NOTE above kernel-build below -- and should stay
+# empty on any build meant to ship. Do not bake a permanent -O0/-O1 default
+# in here; that regressed OCCT runtime perf once already (commit a13bc8f)
+# and was reverted for the 4.0.15 bump.
+ARG KERNEL_LINKER_FLAGS=""
 ENV SY=/emsdk/upstream/emscripten/cache/sysroot
 WORKDIR /work/fw
 # FreeCAD's root CMakeLists unconditionally does `find_package(ZLIB
@@ -141,7 +148,8 @@ RUN emcmake cmake -S . -B /work/build -G Ninja \
       -DFREETYPE_LIBRARY=$SY/lib/wasm32-emscripten/libfreetype-legacysjlj.a \
       -DHARFBUZZ_INCLUDE_DIR=$SY/include/harfbuzz \
       -DHARFBUZZ_LIBRARY=$SY/lib/wasm32-emscripten/libharfbuzz.a \
-      -DFREECAD_USE_PYBIND11=OFF
+      -DFREECAD_USE_PYBIND11=OFF \
+      -DCMAKE_EXE_LINKER_FLAGS="${KERNEL_LINKER_FLAGS}"
 
 # ----------------------------------------------------------------------------
 # build: G3. ninja + the mandatory wasm-opt exnref normalization.
@@ -155,19 +163,39 @@ FROM kernel-configure AS kernel-build
 # wrong and failed at the wasm-opt step below with "Failed opening
 # '.../FreeCAD.wasm'" since the file never existed under that name).
 #
-# NOTE: this build previously carried -DCMAKE_EXE_LINKER_FLAGS="-O1 -g" to
-# work around emscripten's own internal post-link wasm-opt pass
-# (`--post-emscripten -O3 ... --enable-exception-handling`, part of every
-# em++ link at -O3) failing to parse the freshly linked module. That was a
-# symptom of the same clang-22 OCCT miscompile documented in
-# Dockerfile.toolchain's occt-wasm stage and engine/docs/toolchain.md
-# (ChFi3d_Builder::Compute() lowered to an invalid br_table) -- fixed at
-# the root by bumping EMSDK_VERSION to 4.0.15, not by de-optimizing the
-# link. Link at normal optimization; if this step ever fails again with
-# "[parse exception: popping from empty stack]", re-add -g temporarily and
-# use `node --experimental-wasm-exnref -e "new WebAssembly.Module(buf)"`
-# against the linked .wasm to get a real function name before reaching for
-# -O1 again.
+# NOTE (CORRECTED -- the previous version of this comment was wrong): this
+# build previously carried -DCMAKE_EXE_LINKER_FLAGS="-O1 -g" to work around
+# emscripten's own internal post-link wasm-opt pass (`--post-emscripten -O3
+# ... --enable-exception-handling`, part of every em++ link at -O3) failing
+# to parse the freshly linked module with "[parse exception: popping from
+# empty stack]". That failure was originally attributed to a clang-22 OCCT
+# miscompile in ChFi3d_Builder::Compute() (named by V8 under an -O1 -g
+# isolated repro), allegedly fixed by bumping EMSDK_VERSION to 4.0.12 ->
+# 4.0.15. THAT DIAGNOSIS DID NOT HOLD UP: after the full 4.0.15 rebuild with
+# the -O1/-O0/-fno-jump-tables workarounds removed, the IDENTICAL failure
+# recurred at the real kernel link (byte offset ~24.1M, same signature).
+# Three separate isolated re-tests (kitchen-sink relinks of OCCT+Xerces+
+# ICU+Boost+fmt+yaml-cpp, +Qt 6.11.1, +CPython 3.14.4, all against the
+# rebuilt 4.0.15 toolchain) all loaded clean in
+# `node --experimental-wasm-exnref` -- but those tests are THEMSELVES
+# suspect: none of them called into the linked code, so wasm-ld's default
+# --gc-sections stripped everything unreachable, including
+# ChFi3d_Builder::Compute (confirmed absent via `llvm-nm --defined-only`
+# even with -g) -- the "Module OK" results proved nothing about that
+# function specifically. Root cause is UNKNOWN as of this writing; do not
+# trust an isolated relink's "Module OK" as evidence unless you have
+# independently confirmed (via `llvm-nm`/`wasm-dis` on the *named* function)
+# that gc-sections did not just delete the thing under test.
+#
+# Debug lever: KERNEL_LINKER_FLAGS (ARG, above) lets you pass e.g.
+# `--build-arg KERNEL_LINKER_FLAGS="-O0 -g"` to make this link skip
+# emscripten's internal post-link wasm-opt pass entirely (it only runs at
+# link-time -O>0), producing a real bin/FreeCADCmd.wasm to inspect even
+# when the -O3 link fails here. Corroborate any V8-named function with an
+# independent tool before acting on it: `wasm-opt --debug` on the raw
+# (pre-any-wasm-opt) linked module prints the last opcode read and its
+# enclosing function; `wasm-objdump`/`llvm-objdump -d` can map the parse
+# error's byte offset directly.
 RUN ninja -C /work/build FreeCADCmd.js -j"$(nproc)"
 
 FROM kernel-build AS kernel-linked
