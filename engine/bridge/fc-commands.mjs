@@ -1,0 +1,144 @@
+// engine/bridge/fc-commands.mjs
+//
+// Typed PartDesign command emitters on top of the command bridge core
+// (fc-session.mjs). Two layers:
+//
+//   emit.*          -- PURE Python-source emitters. Plain args in, a Python
+//                      snippet string out. No side effects, no I/O, no engine:
+//                      unit-testable by asserting on the emitted strings.
+//   attachCommands  -- thin session wrappers. Binds one method per emitter
+//                      onto a session created by createFcSession(): builds the
+//                      Python via emit.*, runs it with session.exec(), throws
+//                      on non-zero rc (Python raised), returns the created or
+//                      edited object's name. Nothing else on the session is
+//                      touched or reimplemented -- exec/read/mesh/tree stay
+//                      the core's.
+//
+// Emitted Python assumes a live persistent document (doc = App.ActiveDocument,
+// created via session.newDocument()). Every snippet re-imports FreeCAD/Part/
+// Sketcher defensively (imports are idempotent) and re-binds doc, so snippets
+// are safe to send one at a time. v1 is XY-plane only: a sketch added to a
+// Body with no attachment sits on the global XY plane, and a geometrically-
+// closed wire is enough for Pad -- no constraints, no face attachment.
+//
+// Injection hygiene: string names are emitted via JSON.stringify, which is a
+// valid Python double-quoted string literal, so names containing quotes or
+// backslashes cannot break out of the literal. Numbers are emitted bare:
+// integers stay integers (40, not 40.0), floats pass through as-is; anything
+// that is not a finite number is rejected rather than interpolated.
+
+const pyStr = (s) => JSON.stringify(String(s));
+
+const pyNum = (v, what) => {
+  if (typeof v !== 'number' || !Number.isFinite(v)) {
+    throw new TypeError(`${what}: expected a finite number, got ${JSON.stringify(v)}`);
+  }
+  return v;
+};
+
+const vec = (x, y, z = 0) =>
+  `App.Vector(${pyNum(x, 'vector x')},${pyNum(y, 'vector y')},${pyNum(z, 'vector z')})`;
+
+const HEAD =
+  'import FreeCAD as App\n' +
+  'import Part\n' +
+  'import Sketcher\n' +
+  'doc = App.ActiveDocument\n';
+
+const RECT_END = 'doc.recompute()\n';
+
+export const emit = {
+  // Add a PartDesign Body to the active document. Returns the Python source.
+  newBody(name = 'Body') {
+    return HEAD + `doc.addObject("PartDesign::Body", ${pyStr(name)})\n`;
+  },
+
+  // Add a Sketch to a Body and draw a closed rectangle wire
+  // 0,0 -> w,0 -> w,h -> 0,h -> 0,0 (matches the proven pd-smoke pattern:
+  // a geometrically-closed wire, no constraints). Recomputes.
+  sketchRect(bodyName, sketchName, width, height) {
+    const w = pyNum(width, 'width');
+    const h = pyNum(height, 'height');
+    return (
+      HEAD +
+      `sk = doc.getObject(${pyStr(bodyName)}).newObject("Sketcher::SketchObject", ${pyStr(sketchName)})\n` +
+      `sk.addGeometry(Part.LineSegment(${vec(0, 0)}, ${vec(w, 0)}), False)\n` +
+      `sk.addGeometry(Part.LineSegment(${vec(w, 0)}, ${vec(w, h)}), False)\n` +
+      `sk.addGeometry(Part.LineSegment(${vec(w, h)}, ${vec(0, h)}), False)\n` +
+      `sk.addGeometry(Part.LineSegment(${vec(0, h)}, ${vec(0, 0)}), False)\n` +
+      RECT_END
+    );
+  },
+
+  // Add a Sketch to a Body with one circle centered (cx,cy) on the XY plane.
+  // Recomputes.
+  sketchCircle(bodyName, sketchName, radius, cx = 0, cy = 0) {
+    const r = pyNum(radius, 'radius');
+    return (
+      HEAD +
+      `sk = doc.getObject(${pyStr(bodyName)}).newObject("Sketcher::SketchObject", ${pyStr(sketchName)})\n` +
+      `sk.addGeometry(Part.Circle(${vec(cx, cy)}, App.Vector(0,0,1), ${r}), False)\n` +
+      RECT_END
+    );
+  },
+
+  // Pad a Body's sketch to a solid. Profile is resolved by name so the snippet
+  // needs no live handle to the sketch object. Recomputes.
+  pad(bodyName, sketchName, padName, length) {
+    return (
+      HEAD +
+      `pad = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::Pad", ${pyStr(padName)})\n` +
+      `pad.Profile = doc.getObject(${pyStr(sketchName)})\n` +
+      `pad.Length = ${pyNum(length, 'length')}\n` +
+      RECT_END
+    );
+  },
+
+  // Set a numeric property on a document object by name (setattr), recompute.
+  // value must be a finite number: it is emitted bare, never quoted.
+  setParam(objName, prop, value) {
+    return (
+      HEAD +
+      `setattr(doc.getObject(${pyStr(objName)}), ${pyStr(prop)}, ${pyNum(value, 'value')})\n` +
+      RECT_END
+    );
+  },
+};
+
+// ---------------------------------------------------------------------------
+// Session wrappers. attachCommands(session) adds one method per emitter to a
+// createFcSession() session and returns the same session (chainable).
+// ---------------------------------------------------------------------------
+export function attachCommands(session) {
+  if (!session || typeof session.exec !== 'function') {
+    throw new Error('attachCommands: need a session with exec() (see fc-session.mjs)');
+  }
+
+  const run = (what, py) => {
+    const { rc, out } = session.exec(py);
+    if (rc !== 0) throw new Error(`${what} failed (rc=${rc}):\n${out}`);
+  };
+
+  session.newBody = (name = 'Body') => {
+    run('newBody', emit.newBody(name));
+    return name;
+  };
+  session.sketchRect = (bodyName, sketchName, width, height) => {
+    run('sketchRect', emit.sketchRect(bodyName, sketchName, width, height));
+    return sketchName;
+  };
+  session.sketchCircle = (bodyName, sketchName, radius, cx = 0, cy = 0) => {
+    run('sketchCircle', emit.sketchCircle(bodyName, sketchName, radius, cx, cy));
+    return sketchName;
+  };
+  session.pad = (bodyName, sketchName, padName, length) => {
+    run('pad', emit.pad(bodyName, sketchName, padName, length));
+    return padName;
+  };
+  session.setParam = (objName, prop, value) => {
+    run('setParam', emit.setParam(objName, prop, value));
+    return objName;
+  };
+
+  return session;
+}
