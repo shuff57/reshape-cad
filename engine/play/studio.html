@@ -1,59 +1,244 @@
 <title>reSHape Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
+  :root{
     --ground:#14171c; --panel:#1c2027; --raised:#242a33; --hair:#2e353f;
     --text:#d7dde5; --muted:#8b95a3; --accent:#5aa9e6;
+    --font-ui:"IBM Plex Sans","Segoe UI",system-ui,-apple-system,sans-serif;
+    --font-mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;
+    color-scheme: dark;
   }
-  * { box-sizing: border-box; }
-  body { margin:0; background:var(--ground); color:var(--text);
-         font:13px/1.4 "IBM Plex Sans", system-ui, sans-serif; height:100vh; }
-  #app { display:grid; grid-template-rows:auto auto 1fr auto; height:100vh; }
-  header { padding:8px 14px; font-weight:600; letter-spacing:.02em;
-           border-bottom:1px solid var(--hair); background:var(--panel); }
-  header b { color:var(--accent); }
-  #toolbar { display:flex; align-items:center; gap:10px; flex-wrap:wrap;
-             padding:8px 14px; border-bottom:1px solid var(--hair); background:var(--panel); }
-  #toolbar .grp { display:flex; align-items:center; gap:5px; color:var(--muted); }
-  button { background:var(--raised); color:var(--text); border:1px solid var(--hair);
-           border-radius:6px; padding:6px 12px; cursor:pointer; font:inherit; }
-  button:hover:not(:disabled) { border-color:var(--accent); }
-  button:disabled { opacity:.4; cursor:not-allowed; }
-  input { width:52px; background:var(--ground); color:var(--text); border:1px solid var(--hair);
-          border-radius:5px; padding:4px 6px; font:12px "IBM Plex Mono", monospace; }
-  #main { display:grid; grid-template-columns:220px 1fr; min-height:0; }
-  #tree { border-right:1px solid var(--hair); background:var(--panel); overflow:auto; padding:8px 0; }
-  #tree h3 { margin:0 0 6px; padding:0 14px; font-size:11px; text-transform:uppercase;
-             letter-spacing:.08em; color:var(--muted); font-weight:600; }
-  #treeList { list-style:none; margin:0; padding:0; }
-  .tree-row { padding:4px 14px; border-left:2px solid transparent; }
-  .tree-row:hover { background:var(--raised); border-left-color:var(--accent); }
-  .tree-row .tk { color:var(--muted); font:11px "IBM Plex Mono", monospace; margin-right:4px; }
-  #right { position:relative; min-height:0; }
-  #right canvas { display:block; }
-  #status { margin:0; padding:6px 14px; height:96px; overflow:auto; background:#0e1116;
-            border-top:1px solid var(--hair); color:var(--muted);
-            font:11px/1.45 "IBM Plex Mono", ui-monospace, monospace; white-space:pre-wrap; }
+  *{ box-sizing:border-box; }
+  html, body{ height:100%; }
+  body{
+    margin:0; background:var(--ground); color:var(--text);
+    font:13px/1.4 var(--font-ui); overflow:hidden;
+  }
+  button, input{ font-family:inherit; color:inherit; }
+  :focus-visible{ outline:2px solid var(--accent); outline-offset:1px; border-radius:2px; }
+
+  .uc{ text-transform:uppercase; letter-spacing:.08em; font-size:11px; color:var(--muted); font-weight:600; }
+
+  /* ---------- shell ---------- */
+  #app{
+    height:100vh;
+    display:grid;
+    grid-template-columns:240px 1fr;
+    grid-template-rows:50px 62px minmax(0,1fr) 108px;
+    grid-template-areas:
+      "topbar   topbar"
+      "toolbar  toolbar"
+      "tree     viewport"
+      "statusbar statusbar";
+  }
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    grid-area:topbar; display:flex; align-items:center; gap:12px;
+    padding:0 14px; background:var(--panel); border-bottom:1px solid var(--hair);
+  }
+  .wordmark{ display:flex; align-items:center; gap:8px; font-weight:700; font-size:15px; white-space:nowrap; }
+  .wordmark .mark{
+    width:22px; height:22px; border-radius:5px;
+    background:linear-gradient(135deg, var(--accent), #3d7fb8);
+    display:flex; align-items:center; justify-content:center;
+    color:#0d1116; font-size:12px; font-weight:700;
+  }
+  .wordmark .re{ color:var(--muted); font-weight:500; }
+  .tagline{ color:var(--muted); font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+  /* ---------- feature toolbar ---------- */
+  .toolbar{
+    grid-area:toolbar; background:var(--panel); border-bottom:1px solid var(--hair);
+    display:flex; align-items:stretch; overflow-x:auto; overflow-y:hidden;
+  }
+  .tgroup{
+    display:flex; align-items:center; gap:8px; padding:0 12px;
+    border-right:1px solid var(--hair); flex-shrink:0;
+  }
+  .tgroup:last-of-type{ border-right:none; }
+
+  .fbtn{
+    appearance:none; border:1px solid transparent; background:transparent; cursor:pointer;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px;
+    width:64px; height:46px; border-radius:6px; color:var(--text);
+    transition:background .12s ease, border-color .12s ease;
+  }
+  .fbtn svg{ width:18px; height:18px; color:var(--accent); }
+  .fbtn span{ font-size:9.5px; line-height:1; color:var(--muted); white-space:nowrap; }
+  .fbtn:hover:not(:disabled){ background:var(--raised); border-color:var(--hair); }
+  .fbtn:hover:not(:disabled) span{ color:var(--text); }
+  .fbtn:disabled, .fbtn.ghost{ opacity:.4; cursor:not-allowed; }
+  .fbtn:disabled svg, .fbtn.ghost svg{ color:var(--muted); }
+
+  .btn{
+    appearance:none; cursor:pointer; border-radius:6px; padding:7px 14px;
+    font-size:12.5px; font-weight:600; border:1px solid var(--hair);
+    background:var(--raised); color:var(--text); white-space:nowrap;
+  }
+  .btn:hover:not(:disabled){ border-color:var(--accent); }
+  .btn:disabled{ opacity:.4; cursor:not-allowed; }
+  .btn.primary{ background:var(--accent); border-color:var(--accent); color:#0d1116; }
+  .btn.primary:hover:not(:disabled){ filter:brightness(1.08); }
+
+  .dims{ display:flex; align-items:center; gap:5px; color:var(--muted); font-size:11px; }
+  .dims label{ display:flex; align-items:center; gap:4px; }
+  input[type="number"], input[type="text"]{
+    width:52px; background:var(--ground); color:var(--text); border:1px solid var(--hair);
+    border-radius:5px; padding:5px 6px; font:12px var(--font-mono); text-align:right;
+  }
+  input:focus-visible{ border-color:var(--accent); }
+
+  .spacer{ flex:1; }
+
+  /* ---------- left dock / model tree ---------- */
+  #tree{
+    grid-area:tree; background:var(--panel); border-right:1px solid var(--hair);
+    display:flex; flex-direction:column; min-height:0;
+  }
+  .dock-header{ padding:9px 14px; border-bottom:1px solid var(--hair); flex-shrink:0; }
+  #treeList{ list-style:none; margin:0; padding:6px 0; overflow-y:auto; flex:1; }
+  .tree-row{
+    display:flex; align-items:baseline; gap:7px; padding:5px 14px;
+    border-left:2px solid transparent; font-size:12.5px; cursor:default;
+  }
+  .tree-row:hover{ background:rgba(255,255,255,.03); border-left-color:var(--accent); }
+  .tree-row .tk{
+    flex-shrink:0; font:10.5px var(--font-mono); color:var(--muted);
+    background:var(--raised); border:1px solid var(--hair); border-radius:4px; padding:1px 5px;
+  }
+
+  /* ---------- 3D viewport ---------- */
+  #right{
+    grid-area:viewport; position:relative; min-height:0; min-width:0;
+    background:radial-gradient(ellipse at 50% 40%, #1a1e25 0%, #14171c 70%);
+    overflow:hidden;
+  }
+  #right canvas{ display:block; }
+
+  .navcube-wrap{
+    position:absolute; top:14px; right:14px; z-index:4;
+    display:flex; flex-direction:column; align-items:center; gap:6px;
+    pointer-events:none;
+  }
+  .navcube-scene{ width:56px; height:56px; perspective:300px; }
+  .navcube{ position:relative; width:100%; height:100%; transform-style:preserve-3d; transform:rotateX(-18deg) rotateY(38deg); }
+  .navcube .face{
+    position:absolute; width:56px; height:56px; background:var(--raised); border:1px solid var(--hair);
+    display:flex; align-items:center; justify-content:center;
+    font-size:8.5px; font-weight:600; letter-spacing:.06em; color:var(--muted);
+  }
+  .navcube .face.top{ transform:rotateX(90deg) translateZ(28px); }
+  .navcube .face.front{ transform:translateZ(28px); }
+  .navcube .face.right{ transform:rotateY(90deg) translateZ(28px); }
+
+  .triad{ position:absolute; bottom:14px; right:14px; width:52px; height:52px; z-index:4; opacity:.85; pointer-events:none; }
+
+  .viewport-hint{
+    position:absolute; bottom:12px; left:12px; z-index:3; pointer-events:none;
+    font-size:11px; color:var(--muted); background:rgba(20,23,28,.6); padding:4px 8px; border-radius:5px;
+  }
+
+  /* ---------- status / log pane ---------- */
+  #status{
+    grid-area:statusbar; margin:0; padding:8px 14px; overflow:auto;
+    background:#0e1116; border-top:1px solid var(--hair); color:var(--muted);
+    font:11px/1.5 var(--font-mono); white-space:pre-wrap;
+  }
+
+  @media (max-width:900px){
+    #app{ grid-template-columns:200px 1fr; }
+    .fbtn{ width:52px; }
+  }
 </style>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Mono&display=swap">
 
 <div id="app">
-  <header>re<b>SHape</b> Studio <span style="color:var(--muted);font-weight:400">· parametric CAD in the browser</span></header>
-  <div id="toolbar">
-    <button id="newBody">New Body</button>
-    <span class="grp">W <input id="w" value="40"> H <input id="h" value="40"></span>
-    <button id="rect">Rect Sketch</button>
-    <span class="grp">Length <input id="len" value="20"></span>
-    <button id="pad">Pad</button>
-    <button id="apply">Set Length</button>
-    <span style="flex:1"></span>
-    <button id="save">Save .FCStd</button>
-    <button id="open">Open .FCStd</button>
-    <input id="file" type="file" accept=".FCStd,.fcstd" hidden>
+  <header class="topbar">
+    <div class="wordmark"><span class="mark">rS</span><span><span class="re">re</span>SHape Studio</span></div>
+    <span class="tagline">parametric CAD in the browser</span>
+  </header>
+
+  <nav class="toolbar" aria-label="Feature tools">
+    <div class="tgroup" aria-label="Body">
+      <button id="newBody" class="fbtn" disabled title="New Body — start a new PartDesign body">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 20 7.5v9L12 21 4 16.5v-9z"/></svg>
+        <span>New Body</span>
+      </button>
+    </div>
+
+    <div class="tgroup" aria-label="Sketch">
+      <button id="rect" class="fbtn" disabled title="Rect Sketch — draw a rectangle sketch">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="16" height="12" rx="1"/></svg>
+        <span>Rect Sketch</span>
+      </button>
+      <span class="dims"><label>W <input id="w" type="number" value="40"></label><label>H <input id="h" type="number" value="40"></label></span>
+
+      <button id="circle" class="fbtn" disabled title="Circle Sketch — draw a circle sketch">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/></svg>
+        <span>Circle Sketch</span>
+      </button>
+      <span class="dims"><label>r <input id="r" type="number" value="6"></label></span>
+    </div>
+
+    <div class="tgroup" aria-label="Additive features">
+      <button id="pad" class="fbtn" disabled title="Pad — extrude the sketch into a solid">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="12" width="14" height="7" rx="1"/><path d="M12 10V3"/><path d="M8.5 6.5 12 3l3.5 3.5"/></svg>
+        <span>Pad</span>
+      </button>
+      <button class="fbtn ghost" disabled tabindex="-1" title="Pocket — coming soon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="14" height="7" rx="1"/><path d="M12 14v7"/></svg>
+        <span>Pocket</span>
+      </button>
+      <button class="fbtn ghost" disabled tabindex="-1" title="Fillet — coming soon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10a6 6 0 0 1 6-6h10"/></svg>
+        <span>Fillet</span>
+      </button>
+    </div>
+
+    <div class="tgroup" aria-label="Edit">
+      <span class="dims">Length <input id="len" type="number" value="20"></span>
+      <button id="apply" class="btn" disabled>Set Length</button>
+    </div>
+
+    <span class="spacer"></span>
+
+    <div class="tgroup" aria-label="File" style="border-right:none;">
+      <button id="save" class="btn" disabled>Save .FCStd</button>
+      <button id="open" class="btn" disabled>Open .FCStd</button>
+      <input id="file" type="file" accept=".FCStd,.fcstd" hidden>
+    </div>
+  </nav>
+
+  <aside id="tree">
+    <div class="dock-header uc">Model Tree</div>
+    <ul id="treeList"></ul>
+  </aside>
+
+  <div id="right">
+    <div class="navcube-wrap">
+      <div class="navcube-scene">
+        <div class="navcube">
+          <div class="face top">TOP</div>
+          <div class="face front">FRONT</div>
+          <div class="face right">RIGHT</div>
+        </div>
+      </div>
+    </div>
+    <svg class="triad" viewBox="0 0 60 60" aria-hidden="true">
+      <g stroke-width="2" stroke-linecap="round">
+        <line x1="30" y1="30" x2="52" y2="30" stroke="#e0685a"/>
+        <line x1="30" y1="30" x2="30" y2="8" stroke="#5fbf8f"/>
+        <line x1="30" y1="30" x2="14" y2="46" stroke="var(--accent)"/>
+      </g>
+      <text x="55" y="33" font-size="9" fill="#e0685a" font-family="var(--font-mono)">X</text>
+      <text x="27" y="6" font-size="9" fill="#5fbf8f" font-family="var(--font-mono)">Y</text>
+      <text x="6" y="52" font-size="9" fill="var(--accent)" font-family="var(--font-mono)">Z</text>
+    </svg>
+    <div class="viewport-hint">Drag to orbit · scroll to zoom</div>
   </div>
-  <div id="main">
-    <aside id="tree"><h3>Model</h3><ul id="treeList"></ul></aside>
-    <div id="right"></div>
-  </div>
+
   <pre id="status">loading engine…</pre>
 </div>
 

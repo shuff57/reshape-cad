@@ -119,12 +119,14 @@ const HIDE = new Set(['App::Origin', 'App::Line', 'App::Plane', 'App::Point']);
 function refreshTree() {
   if (!session) return;
   const rows = session.tree().objects.filter((o) => !HIDE.has(o.type));
-  treeList.innerHTML = '';
+  treeList.replaceChildren();
   for (const o of rows) {
     const li = document.createElement('li');
     li.className = 'tree-row';
-    const kind = o.type.split('::').pop();
-    li.innerHTML = `<span class="tk">${kind}</span> ${o.label}`;
+    const tk = document.createElement('span');
+    tk.className = 'tk';
+    tk.textContent = o.type.split('::').pop(); // kind, from the controlled TypeId
+    li.append(tk, document.createTextNode(' ' + o.label)); // label is data — textNode, not HTML
     treeList.appendChild(li);
   }
 }
@@ -140,15 +142,19 @@ function render() {
 // --- buttons ---------------------------------------------------------------
 const $ = (id) => document.getElementById(id);
 function setButtons(on) {
-  ['newBody', 'rect', 'pad', 'apply', 'save', 'open'].forEach((id) => { $(id).disabled = !on; });
+  ['newBody', 'rect', 'circle', 'pad', 'apply', 'save', 'open'].forEach((id) => {
+    const el = $(id);
+    if (el) el.disabled = !on; // null-safe: a restyle that drops an id won't crash init
+  });
 }
+function on(id, ev, fn) { const el = $(id); if (el) el.addEventListener(ev, fn); }
 setButtons(false);
 
 function guard(fn) {
   return () => { try { fn(); } catch (e) { log(`✗ ${e.message.split('\n')[0]}`); } };
 }
 
-$('newBody').addEventListener('click', guard(() => {
+on('newBody', 'click', guard(() => {
   session.newBody('Body');
   state.body = lastOfType('PartDesign::Body');
   state.sketch = null; state.pad = null;
@@ -156,7 +162,7 @@ $('newBody').addEventListener('click', guard(() => {
   render();
 }));
 
-$('rect').addEventListener('click', guard(() => {
+on('rect', 'click', guard(() => {
   if (!state.body) return log('make a Body first');
   const w = Number($('w').value), h = Number($('h').value);
   session.sketchRect(state.body, 'Sketch', w, h);
@@ -165,7 +171,16 @@ $('rect').addEventListener('click', guard(() => {
   render();
 }));
 
-$('pad').addEventListener('click', guard(() => {
+on('circle', 'click', guard(() => {
+  if (!state.body) return log('make a Body first');
+  const r = Number(($('r') || {}).value || 6);
+  session.sketchCircle(state.body, 'Sketch', r);
+  state.sketch = lastOfType('Sketcher::SketchObject');
+  log(`+ ${state.sketch} (circle r${r})`);
+  render();
+}));
+
+on('pad', 'click', guard(() => {
   if (!state.sketch) return log('draw a Rect Sketch first');
   const len = Number($('len').value);
   session.pad(state.body, state.sketch, 'Pad', len);
@@ -174,7 +189,7 @@ $('pad').addEventListener('click', guard(() => {
   render();
 }));
 
-$('apply').addEventListener('click', guard(() => {
+on('apply', 'click', guard(() => {
   if (!state.pad) return log('Pad something first');
   const len = Number($('len').value);
   session.setParam(state.pad, 'Length', len);
@@ -183,7 +198,7 @@ $('apply').addEventListener('click', guard(() => {
 }));
 
 // Save the live document to a real .FCStd and hand it to the browser download.
-$('save').addEventListener('click', guard(() => {
+on('save', 'click', guard(() => {
   const bytes = session.saveDocument();
   const blob = new Blob([bytes], { type: 'application/octet-stream' });
   const a = document.createElement('a');
@@ -196,8 +211,8 @@ $('save').addEventListener('click', guard(() => {
 
 // Open a .FCStd the user picks; it becomes the active document. Re-derive the
 // current Body/Sketch/Pad from the opened tree so Set Length still works.
-$('open').addEventListener('click', () => $('file').click());
-$('file').addEventListener('change', async (e) => {
+on('open', 'click', () => { const f = $('file'); if (f) f.click(); });
+on('file', 'change', async (e) => {
   const f = e.target.files[0];
   if (!f) return;
   try {
