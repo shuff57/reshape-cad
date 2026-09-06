@@ -19,10 +19,10 @@
   },
   {
     "candidate": "C2",
-    "engine": null,
-    "build_sha": null,
-    "date": null,
-    "device": null,
+    "engine": "headless FreeCAD kernel wasm (Part+Sketcher+Material, no GUI)",
+    "build_sha": "freecad-web@24053dfb, emsdk 4.0.15, wasm sha256 bec12f2f17730f87f4752a9b06fc502cfabe004db278f80446b0c2a1b6e6553a",
+    "date": "2026-09-05",
+    "device": "windows-11-lead",
     "transfer_mb_gz": null,
     "cold_load_s": null,
     "cached_load_s": null,
@@ -33,7 +33,7 @@
     "y1": null,
     "y2": null,
     "y3": null,
-    "notes": null
+    "notes": "G3 PASS: FreeCADCmd.wasm 52,419,635 bytes raw (optimized -O3, wasm-opt completed). 8 OCCT TUs compiled with -fignore-exceptions (clang try_table + Binaryen translate bugs). Transfer/load/RAM cells wait for G5 page measurement."
   },
   {
     "candidate": "C3",
