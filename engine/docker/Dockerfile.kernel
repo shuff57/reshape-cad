@@ -22,7 +22,12 @@
 # passes G2-G4.
 # ============================================================================
 
-FROM reshape-cad/fc-toolchain:latest AS kernel-src
+# TOOLCHAIN_TAG (default "latest") is a debug lever for testing the kernel
+# against an alternate toolchain build (e.g. "o1occt", an all-OCCT-at--O1
+# experiment image) without retagging or touching the shipped default.
+ARG TOOLCHAIN_TAG=latest
+FROM reshape-cad/fc-toolchain:${TOOLCHAIN_TAG} AS kernel-src
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ARG FREECAD_WEB_SHA=24053dfb8d3f3a8a31d19af6bdc0a0783f403f54
 WORKDIR /work
@@ -37,6 +42,7 @@ RUN git clone --filter=blob:none --no-checkout https://github.com/magik6k/freeca
 # QT_HOST_PATH at its matching gcc_64 host tools).
 # ----------------------------------------------------------------------------
 FROM kernel-src AS kernel-configure
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV TC=/opt/toolchains
 # KERNEL_LINKER_FLAGS is empty by default (normal -O3 link). It exists solely
 # as a debug lever for the G3 "[parse exception: popping from empty stack]"
@@ -155,6 +161,7 @@ RUN emcmake cmake -S . -B /work/build -G Ninja \
 # build: G3. ninja + the mandatory wasm-opt exnref normalization.
 # ----------------------------------------------------------------------------
 FROM kernel-configure AS kernel-build
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # NOTE: the ninja target is `FreeCADCmd.js`, not `FreeCADCmd` -- confirmed
 # via `ninja -t targets` after the FreeCADCmd guess failed ("did you mean
 # 'FreeCAD.a'?"). The underlying executable target is `FreeCADMainCmd`, and
@@ -163,29 +170,20 @@ FROM kernel-configure AS kernel-build
 # wrong and failed at the wasm-opt step below with "Failed opening
 # '.../FreeCAD.wasm'" since the file never existed under that name).
 #
-# NOTE (CORRECTED -- the previous version of this comment was wrong): this
-# build previously carried -DCMAKE_EXE_LINKER_FLAGS="-O1 -g" to work around
-# emscripten's own internal post-link wasm-opt pass (`--post-emscripten -O3
-# ... --enable-exception-handling`, part of every em++ link at -O3) failing
-# to parse the freshly linked module with "[parse exception: popping from
-# empty stack]". That failure was originally attributed to a clang-22 OCCT
-# miscompile in ChFi3d_Builder::Compute() (named by V8 under an -O1 -g
-# isolated repro), allegedly fixed by bumping EMSDK_VERSION to 4.0.12 ->
-# 4.0.15. THAT DIAGNOSIS DID NOT HOLD UP: after the full 4.0.15 rebuild with
-# the -O1/-O0/-fno-jump-tables workarounds removed, the IDENTICAL failure
-# recurred at the real kernel link (byte offset ~24.1M, same signature).
-# Three separate isolated re-tests (kitchen-sink relinks of OCCT+Xerces+
-# ICU+Boost+fmt+yaml-cpp, +Qt 6.11.1, +CPython 3.14.4, all against the
-# rebuilt 4.0.15 toolchain) all loaded clean in
-# `node --experimental-wasm-exnref` -- but those tests are THEMSELVES
-# suspect: none of them called into the linked code, so wasm-ld's default
-# --gc-sections stripped everything unreachable, including
-# ChFi3d_Builder::Compute (confirmed absent via `llvm-nm --defined-only`
-# even with -g) -- the "Module OK" results proved nothing about that
-# function specifically. Root cause is UNKNOWN as of this writing; do not
-# trust an isolated relink's "Module OK" as evidence unless you have
-# independently confirmed (via `llvm-nm`/`wasm-dis` on the *named* function)
-# that gc-sections did not just delete the thing under test.
+# NOTE (RESOLVED -- this comment went through several wrong diagnoses
+# before landing on the real cause; see engine/docs/toolchain.md's "G3
+# resolution" section for the full history, kept there rather than
+# repeated here). This link was failing at emscripten's own internal
+# post-link wasm-opt pass (`--post-emscripten -O3 ...
+# --enable-exception-handling`, part of every em++ link at -O3) with
+# "[parse exception: popping from empty stack]", caused by a clang-22
+# try_table lowering bug in 8 specific OCCT translation units (deeply
+# nested try/catch -> spec-invalid br_table). Fixed by compiling exactly
+# those 8 files with -fignore-exceptions (engine/docker/occt-eh-fixups.sh,
+# applied in Dockerfile.toolchain's occt-wasm stage) -- NOT by the
+# emsdk 4.0.15 bump (that turned out not to matter), NOT by any
+# optimization level, and NOT by a legacy-EH recompile alone (which fixed
+# 6 of the 8 but left 2 unparseable even under legacy EH).
 #
 # Debug lever: KERNEL_LINKER_FLAGS (ARG, above) lets you pass e.g.
 # `--build-arg KERNEL_LINKER_FLAGS="-O0 -g"` to make this link skip
@@ -195,12 +193,19 @@ FROM kernel-configure AS kernel-build
 # independent tool before acting on it: `wasm-opt --debug` on the raw
 # (pre-any-wasm-opt) linked module prints the last opcode read and its
 # enclosing function; `wasm-objdump`/`llvm-objdump -d` can map the parse
-# error's byte offset directly.
+# error's byte offset directly. (This is how the real 8-file list above
+# was found and corroborated -- do not trust an isolated relink's
+# "Module OK" as evidence on its own: confirm via `llvm-nm --defined-only`
+# with `-g` that the function under test is actually present, since
+# wasm-ld's default --gc-sections silently strips anything unreachable
+# from a trivial test harness's own main().)
 RUN ninja -C /work/build FreeCADCmd.js -j"$(nproc)"
 
 FROM kernel-build AS kernel-linked
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 FROM kernel-linked AS kernel-build-final
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN /emsdk/upstream/bin/wasm-opt \
       --translate-to-exnref --emit-exnref --all-features -g \
       /work/build/bin/FreeCADCmd.wasm -o /work/build/bin/FreeCADCmd.wasm
@@ -208,3 +213,48 @@ RUN /emsdk/upstream/bin/wasm-opt \
 FROM scratch AS kernel-artifacts
 COPY --from=kernel-build-final /work/build/bin/FreeCADCmd.js /
 COPY --from=kernel-build-final /work/build/bin/FreeCADCmd.wasm /
+
+# ----------------------------------------------------------------------------
+# Browser variant (G5 prep). The node-only kernel above links with
+# -sNODERAWFS=1 (direct host filesystem), which throws
+# "NODERAWFS is currently only supported on Node.js" in any browser
+# (FS.staticInit). FREECAD_WASM_NODERAWFS (src/Main/CMakeLists.txt) only
+# ever appears in target_link_options -- it is not a compile define -- so
+# re-running cmake configure with it off, in the SAME build directory,
+# changes nothing about how the .o files were compiled; ninja detects only
+# the final link command differs and relinks without recompiling anything.
+#
+# -sJSPI=0 is explicit here because emscripten's own runtime glue
+# unconditionally probes for JSPI (WebAssembly stack-switching) support at
+# load time and, where it's available (Node >=25, Chrome >=137 -- found by
+# a parallel agent building the G5 browser page), emits a
+# `resolveGlobalSymbol` ReferenceError. FreeCADMainCmd's own link options
+# never set -sJSPI=1 in the first place (only the GUI target, FreeCADMain,
+# does, for QEventLoop stack-switching this headless build has no use for)
+# -- -sJSPI=0 opts back out of the autodetection that shim depends on.
+# ----------------------------------------------------------------------------
+FROM kernel-build AS kernel-configure-browser
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+# -sFORCE_FILESYSTEM=1 is already in FREECAD_WASM_COMMON_LINK_OPTIONS (both
+# targets get it), but a MEMFS build (NODERAWFS off) can still strip FS
+# support unless it's explicit at the FINAL link line too -- g4-smoke found
+# this the hard way while building the G5 page's file_packager preload
+# pack. Redundant with the common option; kept explicit here since it's
+# load-bearing specifically for the MEMFS/no-NODERAWFS case.
+RUN emcmake cmake -S . -B /work/build \
+      -DFREECAD_WASM_NODERAWFS=OFF \
+      -DCMAKE_EXE_LINKER_FLAGS="-sJSPI=0 -sFORCE_FILESYSTEM=1"
+RUN ninja -C /work/build FreeCADCmd.js -j"$(nproc)"
+
+FROM kernel-configure-browser AS kernel-linked-browser
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+FROM kernel-linked-browser AS kernel-build-browser-final
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN /emsdk/upstream/bin/wasm-opt \
+      --translate-to-exnref --emit-exnref --all-features -g \
+      /work/build/bin/FreeCADCmd.wasm -o /work/build/bin/FreeCADCmd.wasm
+
+FROM scratch AS kernel-artifacts-browser
+COPY --from=kernel-build-browser-final /work/build/bin/FreeCADCmd.js /
+COPY --from=kernel-build-browser-final /work/build/bin/FreeCADCmd.wasm /

@@ -17,26 +17,33 @@
 # upstream freecad-web's deps/README.md -- only Boost 1.86.0 and CPython
 # 3.14 are upstream-specified). Report flags any version chosen by us.
 #
-# EMSDK_VERSION is 4.0.15, not upstream's recorded 4.0.12: emsdk 4.0.12's
-# clang-22 has a real, upstream-fixed codegen bug -- it lowers
-# OCCT's ChFi3d_Builder::Compute() (several try/catch blocks at different
-# loop-nesting depths, one with a `break` inside a catch handler that exits
-# an outer loop) to a `br_table` with inconsistent label arities, producing
-# a wasm module V8 refuses to load ("br_table: label arity inconsistent
-# with previous arity 0"). Confirmed NOT fixable from our side: -O3
-# (upstream's stated trigger), OCCT-wide -O1, -O0, and -fno-jump-tables
-# were all tried on this exact function and all failed identically -- see
-# engine/docs/toolchain.md for the full diagnosis, including how to get a
-# real function name and error out of a "wasm-opt: popping from empty
-# stack" failure (wasm-opt's own message carries no symbol information;
-# `node --experimental-wasm-exnref -e "new WebAssembly.Module(buf)"`
-# against the linked .wasm does, once relinked with -g since FreeCAD's own
-# link path strips debug info by default at this optimization level).
-# Verified fixed by compiling this exact file (real OCCT source, our exact
-# flags) as a standalone side-module against a throwaway
-# emscripten/emsdk:4.0.15 image: it now compiles clean and V8 loads it
-# with no error. Do not lower this back to 4.0.12 without re-verifying
-# that specific function compiles clean.
+# EMSDK_VERSION is 4.0.15, not upstream's recorded 4.0.12 (kept for other
+# reasons -- 4.0.12 was never confirmed to matter for the bug below).
+#
+# CORRECTED (the previous version of this comment was wrong on the root
+# cause and the fix): clang-22 miscompiles 8 specific OCCT translation
+# units at -O3 with new wasm-EH (-fwasm-exceptions
+# -sWASM_LEGACY_EXCEPTIONS=0) -- their try_table lowering for deeply
+# nested try/catch produces a spec-invalid `br_table` ("label arity
+# inconsistent with previous arity 0") that V8 rejects. This was
+# originally attributed to a single function (ChFi3d_Builder::Compute())
+# and believed fixed by the 4.0.12->4.0.15 bump; a full rebuild proved
+# that wrong (identical failure recurred), and the "fix" was actually a
+# vacuous isolated test (--gc-sections had stripped the function under
+# test, so it was never exercised). NONE of -O3/-O1/-O0/-fno-jump-tables,
+# at any scope (single-TU or whole-OCCT), fix this -- optimization level
+# is not the lever. A legacy-EH recompile of the 8 affected TUs fixes 6
+# of them but leaves 2 (ShapeCustom_BSplineRestriction,
+# ShapeUpgrade_ShapeDivide) unparseable even under legacy EH -- the bug
+# is not exclusive to the new try_table encoding either.
+#
+# The fix that works for all 8, uniformly: -fignore-exceptions (see
+# occt-eh-fixups.sh, applied in the occt-wasm stage below). See
+# engine/docs/toolchain.md and engine/docs/spike-report.md for the full
+# G3 investigation and the V8-direct-load debugging technique
+# (`node --experimental-wasm-exnref -e "new WebAssembly.Module(buf)"`,
+# far more informative than wasm-opt's own opaque
+# "[parse exception: popping from empty stack]").
 ARG EMSDK_VERSION=4.0.15
 ARG OCCT_VERSION=7.8.1
 ARG OCCT_SHA256=7321af48c34dc253bf8aae3f0430e8cb10976961d534d8509e72516978aa82f5
@@ -69,6 +76,7 @@ ARG QTTOOLS_SHA256=8e61835a679c93fa9c6065b142353c2071ba68e297898937c32a03777fcaf
 # base: emsdk 4.0.15 + host build tooling
 # ----------------------------------------------------------------------------
 FROM emscripten/emsdk:${EMSDK_VERSION} AS base
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV DEBIAN_FRONTEND=noninteractive \
     EM_WASM_EH_FLAGS="-fwasm-exceptions -sWASM_LEGACY_EXCEPTIONS=0"
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -91,6 +99,7 @@ WORKDIR /work
 # fmt-wasm: {fmt} static, wasm-EH consistent
 # ----------------------------------------------------------------------------
 FROM base AS fmt-wasm
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ARG FMT_VERSION
 ARG FMT_SHA256
 RUN curl -fsSL "https://github.com/fmtlib/fmt/archive/refs/tags/${FMT_VERSION}.tar.gz" \
@@ -108,6 +117,7 @@ RUN emcmake cmake -S fmt-src -B fmt-build -G Ninja \
 # yamlcpp-wasm: yaml-cpp static, wasm-EH consistent
 # ----------------------------------------------------------------------------
 FROM base AS yamlcpp-wasm
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ARG YAMLCPP_VERSION
 ARG YAMLCPP_SHA256
 RUN curl -fsSL "https://github.com/jbeder/yaml-cpp/archive/refs/tags/${YAMLCPP_VERSION}.tar.gz" \
@@ -128,6 +138,7 @@ RUN emcmake cmake -S yamlcpp-src -B yamlcpp-build -G Ninja \
 # time -- ICU's own --with-cross-build= mechanism).
 # ----------------------------------------------------------------------------
 FROM base AS icu-wasm
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ARG ICU_VERSION
 ARG ICU_SHA256
 RUN curl -fsSL "https://github.com/unicode-org/icu/releases/download/release-${ICU_VERSION}/icu4c-$(echo ${ICU_VERSION} | tr '-' '_')-src.tgz" \
@@ -172,6 +183,7 @@ RUN mkdir -p icu-wasm-build && cd icu-wasm-build \
 # is required by FreeCAD's own root CMakeLists regardless -- reuse it).
 # ----------------------------------------------------------------------------
 FROM icu-wasm AS xerces-wasm
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ARG XERCES_VERSION
 ARG XERCES_SHA256
 RUN curl -fsSL "https://archive.apache.org/dist/xerces/c/3/sources/xerces-c-${XERCES_VERSION}.tar.gz" \
@@ -206,6 +218,7 @@ RUN emcmake cmake -S xerces-src -B xerces-build -G Ninja \
 # cross-building Boost to novel gcc-compatible targets.
 # ----------------------------------------------------------------------------
 FROM base AS boost-wasm
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ARG BOOST_VERSION
 ARG BOOST_SHA256
 RUN BV_US=$(echo ${BOOST_VERSION} | tr '.' '_') && \
@@ -253,6 +266,7 @@ RUN cd boost-src && ./b2 \
 # correct 3.14.4 path, not a typo.
 # ----------------------------------------------------------------------------
 FROM base AS python-wasm
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ARG PYTHON_VERSION
 ARG PYTHON_SHA256
 ARG LIBFFI_VERSION
@@ -384,8 +398,18 @@ RUN OUT=/opt/toolchains/python-wasm && mkdir -p "$OUT/include/python3.14" "$OUT/
 # (STEP/IGES/STL) stay on.
 # ----------------------------------------------------------------------------
 FROM base AS occt-wasm
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ARG OCCT_VERSION
 ARG OCCT_SHA256
+# Debug/experiment lever for the ChFi3d_Builder::Compute() miscompile (see
+# the ARG block at the top of this file and engine/docs/toolchain.md). The
+# defaults below are CMake's own Release defaults, so leaving these unset
+# reproduces today's shipped -O3 build byte-for-byte. Override only to
+# re-test an optimization-level hypothesis against the CURRENT emsdk/clang
+# pin -- do not bake a non-default value in here permanently without
+# updating the NOTE further down and re-confirming the perf tradeoff.
+ARG OCCT_CXX_FLAGS_RELEASE="-O3 -DNDEBUG"
+ARG OCCT_C_FLAGS_RELEASE="-O3 -DNDEBUG"
 RUN OV_US=$(echo "${OCCT_VERSION}" | tr '.' '_') && \
     curl -fsSL "https://github.com/Open-Cascade-SAS/OCCT/archive/refs/tags/V${OV_US}.tar.gz" \
       -o occt.tar.gz && echo "${OCCT_SHA256}  occt.tar.gz" | sha256sum -c - \
@@ -402,23 +426,15 @@ RUN OV_US=$(echo "${OCCT_VERSION}" | tr '.' '_') && \
 # might trip the same install-script assumption.
 RUN sed -E -i 's#^(\s*install\(FILES .*\.wasm DESTINATION "[^"]*")\)$#\1 OPTIONAL)#' \
       occt-src/adm/cmake/occt_toolkit.cmake
-# NOTE: this build previously carried a set of workarounds (global -O1,
-# then a targeted -O0 + -fno-jump-tables recompile of ChFi3d_Builder*) for
-# a clang-22 codegen bug: it lowered ChFi3d_Builder::Compute() (several
-# try/catch blocks at different loop-nesting depths, one with a `break`
-# inside a catch handler that exits an outer loop) to a `br_table` with
-# inconsistent label arities -- confirmed via
-# `node --experimental-wasm-exnref -e "new WebAssembly.Module(buf)"`
-# against the linked FreeCADCmd.wasm: "Compiling function #54106:
-# \"ChFi3d_Builder::Compute()\" failed: br_table: label arity inconsistent
-# with previous arity 0". None of -O3/-O1/-O0/-fno-jump-tables fixed it --
-# it was not an optimization-level issue. The actual fix was bumping
-# EMSDK_VERSION to 4.0.15 (see the ARG block at the top of this file for
-# the full diagnosis and how to reproduce the V8-based debugging
-# technique); OCCT builds at normal optimization again. Do not
-# reintroduce the -O1/-O0/-fno-jump-tables workarounds without first
-# re-confirming this function actually miscompiles on whatever emsdk
-# version is current.
+# NOTE (CORRECTED): see the ARG block at the top of this file for the full,
+# corrected diagnosis. Short version: 8 specific OCCT TUs miscompile at -O3
+# with new wasm-EH; no optimization level fixes it at any scope; the fix
+# is -fignore-exceptions on exactly those 8 files, applied by
+# occt-eh-fixups.sh below, AFTER the normal ninja install (so the archives
+# it patches already exist) and BEFORE occt-src/occt-build are removed (so
+# it still has the source and the generated include tree to recompile
+# against). Do not skip this step or the exact same G3 failure recurs.
+COPY docker/occt-eh-fixups.sh /usr/local/bin/occt-eh-fixups.sh
 RUN emcmake cmake -S occt-src -B occt-build -G Ninja \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_INSTALL_PREFIX=/opt/toolchains/occt-wasm \
@@ -428,7 +444,12 @@ RUN emcmake cmake -S occt-src -B occt-build -G Ninja \
       -DUSE_RAPIDJSON=OFF -DUSE_FREEIMAGE=OFF \
       -DBUILD_DOC_Overview=OFF \
       -DCMAKE_CXX_FLAGS="${EM_WASM_EH_FLAGS}" -DCMAKE_C_FLAGS="${EM_WASM_EH_FLAGS}" \
+      -DCMAKE_CXX_FLAGS_RELEASE="${OCCT_CXX_FLAGS_RELEASE}" \
+      -DCMAKE_C_FLAGS_RELEASE="${OCCT_C_FLAGS_RELEASE}" \
     && ninja -C occt-build install -j"$(nproc)" \
+    && OCCT_SRC=/work/occt-src OCCT_BUILD=/work/occt-build \
+       OCCT_OUT=/opt/toolchains/occt-wasm EM_WASM_EH_FLAGS="${EM_WASM_EH_FLAGS}" \
+       sh /usr/local/bin/occt-eh-fixups.sh \
     && rm -rf /work/occt.tar.gz /work/occt-src /work/occt-build
 
 # ----------------------------------------------------------------------------
@@ -452,6 +473,7 @@ RUN emcmake cmake -S occt-src -B occt-build -G Ninja \
 # working alternative rather than deleted.
 # ----------------------------------------------------------------------------
 FROM base AS qt-wasm-aqt
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ARG QT_AQT_VERSION=6.8.3
 RUN pip install --no-cache-dir aqtinstall \
     && python3 -m aqt install-qt all_os wasm "${QT_AQT_VERSION}" wasm_singlethread -O /opt/toolchains/qt-wasm-aqt \
@@ -470,6 +492,7 @@ RUN pip install --no-cache-dir aqtinstall \
 # objects fail to survive wasm-opt --translate-to-exnref at G3/G4.
 # ----------------------------------------------------------------------------
 FROM base AS qt-host-wasm
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ARG QT_VERSION
 ARG QTBASE_SHA256
 RUN curl -fsSL "https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/submodules/qtbase-everywhere-src-${QT_VERSION}.tar.xz" \
@@ -517,6 +540,7 @@ RUN mkdir -p qttools-build && cd qttools-build \
 # matching FreeCAD's own FREECAD_QT_COMPONENTS list for BUILD_GUI=OFF.
 # ----------------------------------------------------------------------------
 FROM qt-host-wasm AS qt-wasm-core
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ARG QT_VERSION
 ARG QTBASE_SHA256
 RUN curl -fsSL "https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/submodules/qtbase-everywhere-src-${QT_VERSION}.tar.xz" \
@@ -570,6 +594,7 @@ RUN mkdir -p qt-wasm-build && cd qt-wasm-build \
 # wasm-opt --translate-to-exnref.
 # ----------------------------------------------------------------------------
 FROM base AS toolchain
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 COPY --from=fmt-wasm      /opt/toolchains/fmt-wasm      /opt/toolchains/fmt-wasm
 COPY --from=yamlcpp-wasm  /opt/toolchains/yaml-wasm      /opt/toolchains/yaml-wasm
 COPY --from=icu-wasm      /opt/toolchains/icu-wasm       /opt/toolchains/icu-wasm
