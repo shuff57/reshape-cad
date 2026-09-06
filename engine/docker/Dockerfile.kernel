@@ -106,7 +106,7 @@ RUN emcmake cmake -S . -B /work/build -G Ninja \
       -DCMAKE_FIND_ROOT_PATH="$TC/qt-wasm;$TC/occt-wasm;$TC/xerces-wasm;$TC/fmt-wasm;$TC/yaml-wasm;$TC/python-wasm;$TC/boost-wasm;$TC/icu-wasm;$TC" \
       -DCMAKE_CXX_FLAGS="-fwasm-exceptions -sWASM_LEGACY_EXCEPTIONS=0 -DEIGEN_DONT_VECTORIZE -DBOOST_HAS_PTHREADS=1 -DBOOST_STACKTRACE_USE_NOOP" \
       -DCMAKE_C_FLAGS="-fwasm-exceptions -sWASM_LEGACY_EXCEPTIONS=0" \
-      -DCMAKE_EXE_LINKER_FLAGS="-O1" \
+      -DCMAKE_EXE_LINKER_FLAGS="-O1 -g" \
       -DFREECAD_QT_MAJOR_VERSION=6 \
       -DQt6_DIR=$TC/qt-wasm/lib/cmake/Qt6 \
       -DQT_HOST_PATH=$TC/qt-host \

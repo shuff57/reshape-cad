@@ -391,8 +391,30 @@ RUN emcmake cmake -S occt-src -B occt-build -G Ninja \
       -DUSE_RAPIDJSON=OFF -DUSE_FREEIMAGE=OFF \
       -DBUILD_DOC_Overview=OFF \
       -DCMAKE_CXX_FLAGS="${EM_WASM_EH_FLAGS}" -DCMAKE_C_FLAGS="${EM_WASM_EH_FLAGS}" \
-    && ninja -C occt-build install -j"$(nproc)" \
-    && rm -rf /work/occt.tar.gz /work/occt-src /work/occt-build
+    && ninja -C occt-build install -j"$(nproc)"
+# Global -O1 (above) did NOT fully fix the clang-22 br_table miscompile --
+# confirmed with V8 itself (`node --experimental-wasm-exnref`, which gives
+# a real function name and error unlike wasm-opt's bare byte offset):
+# "Compiling function #54106:\"ChFi3d_Builder::Compute()\" failed:
+# br_table: label arity inconsistent with previous arity 0". This is the
+# exact class the A2 brief named, but the bug survives -O1 for this
+# specific function -- it isn't purely an optimization-level issue.
+# Recompile the whole ChFi3d_Builder* file family (Compute() itself is
+# most likely in the base ChFi3d_Builder.cxx, but which of the 9 split
+# files actually needs it isn't confirmed, so all 9 get -O0 to be safe)
+# and re-archive, same technique as the per-file -O1 attempt earlier.
+RUN for f in ChFi3d_Builder.cxx ChFi3d_Builder_0.cxx ChFi3d_Builder_1.cxx \
+             ChFi3d_Builder_2.cxx ChFi3d_Builder_6.cxx ChFi3d_Builder_C1.cxx \
+             ChFi3d_Builder_C2.cxx ChFi3d_Builder_CnCrn.cxx \
+             ChFi3d_Builder_NotImp.cxx ChFi3d_Builder_SpKP.cxx; do \
+      em++ -c -fwasm-exceptions -sWASM_LEGACY_EXCEPTIONS=0 -fexceptions -fPIC \
+        -Wall -Wextra -Wshorten-64-to-32 -O0 -DNDEBUG -DNo_Exception -DOCCT_NO_PLUGINS \
+        -std=gnu++11 -DOCC_CONVERT_SIGNALS -I/work/occt-build/include/opencascade \
+        -o "/tmp/$f.o" "occt-src/src/ChFi3d/$f" \
+      && emar r "/opt/toolchains/occt-wasm/lib/libTKFillet.a" "/tmp/$f.o" \
+      && rm "/tmp/$f.o"; \
+    done
+RUN rm -rf /work/occt.tar.gz /work/occt-src /work/occt-build
 
 # ----------------------------------------------------------------------------
 # qt-wasm-aqt: PRIMARY path (operator direction, after this stage's
