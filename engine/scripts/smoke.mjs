@@ -51,7 +51,9 @@ const stlPath = resolve(outDir, 'g4smoke.stl');
 // absolute paths, forward-slashed for the Python side.
 const py = (path) => path.replace(/\\/g, '/');
 
-const pythonScript = `
+const pythonScript = process.env.SMOKE_PY_FILE
+  ? readFileSync(process.env.SMOKE_PY_FILE, 'utf8')
+  : `
 import sys
 import FreeCAD as App
 import Part
@@ -254,6 +256,16 @@ createFreeCAD({
     console.log('Running G4 smoke Python script via freecad_run_python()...');
     const pyRc = Module.ccall('freecad_run_python', 'number', ['string'], [pythonScript]);
     console.log(`freecad_run_python() returned ${pyRc}`);
+
+    // Generic module-smoke mode: when SMOKE_PY_FILE is set, pythonScript is that
+    // file's contents; run it through the same proven loader and exit on its
+    // return code, skipping the box-cut-specific assertions below. Used for
+    // per-module smokes (PartDesign, ...) and as "run any Python through the
+    // engine" bridge infra. The default G4 behavior is unchanged when unset.
+    if (process.env.SMOKE_PY_FILE) {
+      console.log(`SMOKE_PY_DONE rc=${pyRc}`);
+      process.exit(pyRc === 0 ? 0 : 1);
+    }
 
     if (pyRc !== 0) {
       console.error('G4 FAIL: freecad_run_python returned non-zero (Python exception -- see printed traceback above)');
