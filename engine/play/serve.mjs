@@ -18,7 +18,15 @@ import { fileURLToPath } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const playRoot = here;
+// /kernel/       -> the G4 Node-only build (NODERAWFS=ON). Known to fail in
+//                    a browser -- kept served so play.js can still probe it
+//                    and report the real failure honestly.
+// /kernel-browser/ -> the G5 browser build (NODERAWFS=OFF), landing at
+//                    engine/build/g5-artifacts/ once a2-headless-build's
+//                    relink finishes. 404s until then; play.js treats that
+//                    as "not ready yet" and falls back to /kernel/.
 const kernelRoot = resolve(here, '..', 'build', 'g3-artifacts');
+const kernelBrowserRoot = resolve(here, '..', 'build', 'g5-artifacts');
 const port = Number(process.argv[2] || 8787);
 
 const MIME = {
@@ -44,7 +52,10 @@ const server = createServer(async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
   let root = playRoot;
   let relPath = url.pathname;
-  if (relPath.startsWith('/kernel/')) {
+  if (relPath.startsWith('/kernel-browser/')) {
+    root = kernelBrowserRoot;
+    relPath = relPath.slice('/kernel-browser'.length);
+  } else if (relPath.startsWith('/kernel/')) {
     root = kernelRoot;
     relPath = relPath.slice('/kernel'.length);
   }

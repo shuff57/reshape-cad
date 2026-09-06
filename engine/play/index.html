@@ -44,17 +44,19 @@ cut.Tool = cyl
 doc.recompute()
 
 # Tessellate for the three.js viewport: (vertices, triangle index list).
-verts, tris = cut.Shape.tessellate(0.5)
+verts, tris = cut.Shape.tessellate(0.1)
 
 import json
-with open("/tmp/g5_result.json", "w") as f:
+import os
+os.makedirs("/out", exist_ok=True)
+with open("/out/mesh.json", "w") as f:
     json.dump({
         "volume": cut.Shape.Volume,
         "vertices": [[v.x, v.y, v.z] for v in verts],
         "triangles": [list(t) for t in tris],
     }, f)
 
-doc.saveAs("/tmp/g5_out.FCStd")
+doc.saveAs("/out/model.FCStd")
 print("G5_RESULT:PASS volume=%r" % cut.Shape.Volume)
 </textarea>
     <pre id="status">Loading kernel...</pre>
@@ -63,7 +65,6 @@ print("G5_RESULT:PASS volume=%r" % cut.Shape.Volume)
 
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-  <script src="/kernel/FreeCADCmd.js"></script>
   <script src="/play.js"></script>
 </body>
 </html>
