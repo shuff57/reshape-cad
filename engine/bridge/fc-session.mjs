@@ -128,6 +128,54 @@ export function createFcSession(Module) {
     );
   }
 
+  // Per-FACE tessellation for 3D selection (the Slice-2 keystone). Where mesh()
+  // returns one undifferentiated blob, this returns one mesh per OCCT face and
+  // one polyline per edge, each tagged with its 0-based sub-element index. That
+  // index maps to FreeCAD's 1-based sub-element name -- faceId i == "Face{i+1}",
+  // edgeId j == "Edge{j+1}" (verified: getElement('Face1').Area == Faces[0].Area)
+  // -- so a click in 3D that resolves to faceId i can drive Pocket/Fillet on
+  // "Face{i+1}" later. Same active-solid target rule as mesh().
+  function meshFaces(objName = null, deflection = 0.1) {
+    const target = objName
+      ? `doc.getObject(${JSON.stringify(objName)})`
+      : `(_active_solid(doc))`;
+    return read(
+      `import json, FreeCAD as App\n` +
+      `doc = App.ActiveDocument\n` +
+      `def _active_solid(d):\n` +
+      `    hit = None\n` +
+      `    for o in d.Objects:\n` +
+      `        s = getattr(o, 'Shape', None)\n` +
+      `        if s is not None and not s.isNull():\n` +
+      `            hit = o\n` +
+      `    return hit\n` +
+      `o = ${target}\n` +
+      `if o is None or getattr(o, 'Shape', None) is None or o.Shape.isNull():\n` +
+      `    payload = {'faces': [], 'edges': [], 'empty': True}\n` +
+      `else:\n` +
+      `    sh = o.Shape\n` +
+      `    faces = []\n` +
+      `    for i, f in enumerate(sh.Faces):\n` +
+      `        vs, ts = f.tessellate(${Number(deflection)})\n` +
+      `        pos = []\n` +
+      `        for v in vs:\n` +
+      `            pos.extend([v.x, v.y, v.z])\n` +
+      `        idx = []\n` +
+      `        for t in ts:\n` +
+      `            idx.extend([t[0], t[1], t[2]])\n` +
+      `        faces.append({'id': i, 'positions': pos, 'indices': idx})\n` +
+      `    edges = []\n` +
+      `    for j, e in enumerate(sh.Edges):\n` +
+      `        pts = e.discretize(Deflection=${Number(deflection)})\n` +
+      `        flat = []\n` +
+      `        for p in pts:\n` +
+      `            flat.extend([p.x, p.y, p.z])\n` +
+      `        edges.append({'id': j, 'points': flat})\n` +
+      `    payload = {'object': o.Name, 'faces': faces, 'edges': edges, 'volume': round(sh.Volume, 6)}\n` +
+      `open(${JSON.stringify(OUT_PATH)}, 'w').write(json.dumps(payload))\n`
+    );
+  }
+
   // The feature tree: every document object as {name,label,type}. Headless has
   // no ViewObject, so visibility is not reported here (the UI tracks it).
   function tree() {
@@ -170,6 +218,7 @@ export function createFcSession(Module) {
     read,
     newDocument,
     mesh,
+    meshFaces,
     tree,
     saveDocument,
     openDocument,
