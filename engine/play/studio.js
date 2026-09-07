@@ -68,27 +68,48 @@ resize();
 
 // --- kernel load + session -------------------------------------------------
 let session = null;
-const state = { body: null, sketch: null, pad: null, selected: null };
+// state.pad is specifically the original Pad feature (Set Length targets it
+// forever). state.tip is whatever solid is CURRENTLY at the end of the
+// feature chain (Pad -> Fillet -> Chamfer -> ...) — Fillet/Chamfer's `Base`
+// must always be the latest tip, not the original Pad, so the two need to be
+// tracked separately.
+const state = { body: null, sketch: null, pad: null, tip: null, selected: null };
 const t0 = performance.now();
 log(`crossOriginIsolated: ${window.crossOriginIsolated}`);
+
+// Shared by pick3d's onSelect AND the fillet/chamfer handlers below (which
+// clear the selection themselves after a feature-creating op, since
+// pick3d.rebuild() disposes the old selection without re-notifying).
+function updateSelectionReadout(sel) {
+  state.selected = sel;
+  const readout = document.getElementById('selReadout');
+  if (sel) {
+    const label = `${sel.kind === 'face' ? 'Face' : 'Edge'} ${sel.id + 1}`; // 0-based id -> 1-based FreeCAD name
+    log(`▷ selected ${label}`);
+    if (readout) readout.textContent = label;
+  } else {
+    log('▷ selection cleared');
+    if (readout) readout.textContent = '—';
+  }
+  updateFeatureButtons();
+}
+
+// Fillet/Chamfer only make sense on an EDGE selection, and only once the
+// kernel is up — re-run whenever either condition could have changed.
+function updateFeatureButtons() {
+  const enabled = !!session && state.selected?.kind === 'edge';
+  ['fillet', 'chamfer'].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.disabled = !enabled;
+  });
+}
 
 // --- pickable solid (slice 2b) -----------------------------------------------
 // Session-agnostic per SPEC: pick3d never touches the session — studio.js
 // reads session.meshFaces() and hands the RESULT into rebuild().
 const pick3d = initPick3d({
   scene, THREE, getCamera: () => camera, renderer,
-  onSelect: (sel) => {
-    state.selected = sel;
-    const readout = document.getElementById('selReadout');
-    if (sel) {
-      const label = `${sel.kind === 'face' ? 'Face' : 'Edge'} ${sel.id + 1}`; // 0-based id -> 1-based FreeCAD name
-      log(`▷ selected ${label}`);
-      if (readout) readout.textContent = label;
-    } else {
-      log('▷ selection cleared');
-      if (readout) readout.textContent = '—';
-    }
-  },
+  onSelect: updateSelectionReadout,
 });
 
 (async () => {
@@ -116,6 +137,7 @@ const pick3d = initPick3d({
     log('session ready — click New Body to start');
     refreshTree();
     setButtons(true);
+    updateFeatureButtons(); // session is ready now, but no edge is selected yet — stays disabled
   } catch (err) {
     log(`KERNEL LOAD FAILED: ${err.message || err}`);
   }
@@ -145,16 +167,23 @@ function lastOfType(typeId) {
 // Rebuilds the pickable solid from the active tip (no arg = FreeCAD's own
 // default). Kept the try/catch shape of the old showMesh(session.mesh())
 // call it replaces — meshFaces() degrades to {faces:[],edges:[],empty:true}
-// rather than throwing, but a mid-recompute error is still possible.
+// rather than throwing, but a mid-recompute error is still possible. Also
+// keeps state.tip in sync with whatever's actually at the tip (e.g. after
+// opening a file, or Set Length) — leave it as-is on an empty result rather
+// than wiping out a previously valid tip.
 function render() {
-  try { pick3d.rebuild(session.meshFaces()); } catch (e) { log(`mesh: ${e.message}`); }
+  try {
+    const fm = session.meshFaces();
+    if (!fm.empty && fm.object) state.tip = fm.object;
+    pick3d.rebuild(fm);
+  } catch (e) { log(`mesh: ${e.message}`); }
   refreshTree();
 }
 
 // --- buttons ---------------------------------------------------------------
 const $ = (id) => document.getElementById(id);
 function setButtons(on) {
-  ['newBody', 'rect', 'circle', 'sketchNew', 'pad', 'apply', 'save', 'open', 'pickFaces', 'pickEdges'].forEach((id) => {
+  ['newBody', 'rect', 'circle', 'sketchNew', 'pad', 'apply', 'save', 'open', 'pickFaces', 'pickEdges', 'fillet', 'chamfer'].forEach((id) => {
     const el = $(id);
     if (el) el.disabled = !on; // null-safe: a restyle that drops an id won't crash init
   });
@@ -243,6 +272,8 @@ on('pad', 'click', guard(() => {
   const madeSolid = !fm.empty && fm.faces && fm.faces.length > 0;
   // On success, rebuild pick3d from the PADDED solid immediately — it's the
   // freshest tip, so the just-created solid is pickable without a second click.
+  // Also seeds state.tip: the Pad is the first Base a Fillet/Chamfer can target.
+  if (madeSolid && fm.object) state.tip = fm.object;
   pick3d.rebuild(madeSolid ? fm : { faces: [], edges: [] });
   refreshTree();
   if (madeSolid) {
@@ -258,6 +289,63 @@ on('apply', 'click', guard(() => {
   session.setParam(state.pad, 'Length', len);
   log(`~ ${state.pad}.Length = ${len}`);
   render();
+}));
+
+// The bridge's fillet/chamfer now REJECT an impossible radius/size BEFORE
+// recompute (an oversized one used to corrupt the wasm heap during OCCT's
+// recompute, crashing the session) and THROW a ValueError with a helpful
+// message instead. So the contract is now: the call either succeeds (a valid
+// feature) or throws (nothing created, tip unchanged) — no more meshFaces()
+// empty-check needed to detect failure.
+//
+// The thrown Error's message is `${what} failed (rc=${rc}):\n${out}` (see
+// attachCommands' run() in fc-commands.mjs), where `out` is the raw Python
+// stdout/stderr — a full traceback ending in the actual `ValueError: ...`
+// line. Pull that line out instead of showing the traceback or the generic
+// "fillet failed (rc=-1)" guard() would otherwise log.
+function extractFriendlyError(err) {
+  const lines = String((err && err.message) || err || '').split('\n').map((l) => l.trim()).filter(Boolean);
+  for (let i = lines.length - 1; i >= 0; i--) {
+    if (/ValueError:/.test(lines[i]) || /too large/i.test(lines[i]) || /try a smaller/i.test(lines[i])) {
+      return lines[i].replace(/^.*ValueError:\s*/, '');
+    }
+  }
+  return lines[0] || 'operation failed';
+}
+
+// Fillet and Chamfer round/bevel the selected edge on the CURRENT tip
+// (state.tip, not state.pad — so a second fillet chains off the first one's
+// result rather than re-targeting the original Pad).
+on('fillet', 'click', guard(() => {
+  if (state.selected?.kind !== 'edge') return log('select an edge first');
+  const edge = 'Edge' + (state.selected.id + 1);
+  const r = Number($('filletR').value);
+  try {
+    session.fillet(state.body, state.tip, [edge], r);
+  } catch (err) {
+    return log(`✗ ${extractFriendlyError(err)}`);
+  }
+  state.tip = lastOfType('PartDesign::Fillet');
+  pick3d.rebuild(session.meshFaces());
+  log(`+ fillet ${edge} r${r}`);
+  updateSelectionReadout(null); // the tip changed under the old selection — clear it
+  refreshTree();
+}));
+
+on('chamfer', 'click', guard(() => {
+  if (state.selected?.kind !== 'edge') return log('select an edge first');
+  const edge = 'Edge' + (state.selected.id + 1);
+  const size = Number($('filletR').value);
+  try {
+    session.chamfer(state.body, state.tip, [edge], size);
+  } catch (err) {
+    return log(`✗ ${extractFriendlyError(err)}`);
+  }
+  state.tip = lastOfType('PartDesign::Chamfer');
+  pick3d.rebuild(session.meshFaces());
+  log(`+ chamfer ${edge} size${size}`);
+  updateSelectionReadout(null);
+  refreshTree();
 }));
 
 // Save the live document to a real .FCStd and hand it to the browser download.
