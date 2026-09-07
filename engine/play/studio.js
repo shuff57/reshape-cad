@@ -213,8 +213,19 @@ on('pad', 'click', guard(() => {
   const len = Number($('len').value);
   session.pad(state.body, state.sketch, 'Pad', len);
   state.pad = lastOfType('PartDesign::Pad');
-  log(`+ ${state.pad} (length ${len})`);
-  render();
+  // A Pad only makes a solid from a single CLOSED profile. If the sketch has an
+  // open wire (a loose arc/line) the recompute leaves the Pad shape null — mesh
+  // of the Pad itself comes back empty. Surface that instead of logging a
+  // phantom "+ Pad" and rendering nothing.
+  const m = session.mesh(state.pad);
+  const madeSolid = m.positions && m.positions.length > 0 && m.indices && m.indices.length > 0;
+  showMesh(madeSolid ? m : { positions: [], indices: [] });
+  refreshTree();
+  if (madeSolid) {
+    log(`+ ${state.pad} (length ${len})`);
+  } else {
+    log(`✗ Pad made no solid — the profile isn't one closed loop (an open arc/line, or gaps between edges). Close the sketch or delete open geometry, then Pad again.`);
+  }
 }));
 
 on('apply', 'click', guard(() => {

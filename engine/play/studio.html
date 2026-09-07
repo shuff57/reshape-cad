@@ -177,6 +177,7 @@
   .sk-vertex{ fill:var(--text); }
   .sk-vertex-sel{ fill:var(--accent); }
   #rubberBand{ stroke:var(--accent); stroke-width:.5; opacity:.7; }
+  .sk-preview{ fill:none; stroke:var(--accent); stroke-width:.5; stroke-dasharray:1.2,1.2; opacity:.7; }
   #snapRing{ fill:none; stroke:var(--accent); stroke-width:.4; opacity:.9; }
   #axisHint{ fill:var(--accent); font:4px var(--font-mono); }
 
@@ -307,6 +308,18 @@
             <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M4 4l7 16 2-7 7-2z"/></svg>
             <span>Select</span>
           </button>
+          <button id="toolRect" class="fbtn small" title="Rectangle — click two opposite corners">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="16" height="12" rx="1"/></svg>
+            <span>Rect</span>
+          </button>
+          <button id="toolCircle" class="fbtn small" title="Circle — click center, then a point on the circle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/></svg>
+            <span>Circle</span>
+          </button>
+          <button id="toolArc" class="fbtn small" title="Arc — click center, start point, then end direction">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18a14 14 0 0 1 16-16"/></svg>
+            <span>Arc</span>
+          </button>
         </div>
         <div class="sk-group" aria-label="Constraints">
           <button id="cHoriz" class="btn" disabled title="Horizontal — needs 1 line">Horizontal</button>
@@ -315,7 +328,8 @@
           <button id="cPar" class="btn" disabled title="Parallel — needs 2 lines">Parallel</button>
           <button id="cPerp" class="btn" disabled title="Perpendicular — needs 2 lines">Perpendicular</button>
           <button id="cEq" class="btn" disabled title="Equal — needs 2 lines">Equal</button>
-          <button id="cDim" class="btn" disabled title="Dimension — needs 1 line">Dimension</button>
+          <button id="cDim" class="btn" disabled title="Dimension — needs 1 line, circle, or arc">Dimension</button>
+          <button id="cDelete" class="btn" disabled title="Delete — remove selected geometry (Delete/Backspace)">Delete</button>
         </div>
         <div class="sk-group" aria-label="Auto-constrain">
           <label class="sk-toggle"><input id="autoConstrain" type="checkbox" checked> Auto</label>
@@ -328,6 +342,9 @@
         <g id="gridLayer"></g>
         <g id="geomLayer"></g>
         <line id="rubberBand" class="sk-line" stroke-dasharray="1.2,1.2" hidden></line>
+        <rect id="previewRect" class="sk-preview" hidden></rect>
+        <circle id="previewCircle" class="sk-preview" hidden></circle>
+        <polyline id="previewArc" class="sk-preview" hidden></polyline>
         <circle id="snapRing" r="1.8" hidden></circle>
         <text id="axisHint" hidden></text>
       </svg>
