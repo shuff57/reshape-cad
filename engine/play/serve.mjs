@@ -51,6 +51,10 @@ const server = createServer(async (req, res) => {
   res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
   res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
   res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+  // Dev server: never cache. Browsers cache ES module imports (e.g. /bridge/
+  // *.mjs) hard, so without this a plain reload keeps running an old module
+  // after the file on disk changed — "I fixed it but it's still broken".
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
 
   const url = new URL(req.url, `http://${req.headers.host}`);
   let root = playRoot;
