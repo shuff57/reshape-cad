@@ -72,6 +72,14 @@ const wrapStatus = (body) =>
   '    _res = {"ok": False, "error": str(_e)}\n' +
   `open(${JSON.stringify(OUT_PATH)}, "w").write(json.dumps(_res))\n`;
 
+// Editable-history: each feature type's single driving parameter. Editing any
+// other property, or a Sketch, is out of scope (a Sketch is re-entered in the
+// 2D editor instead).
+const FEATURE_PARAM =
+  "_PARAM = {'PartDesign::Pad':'Length', 'PartDesign::Pocket':'Length', " +
+  "'PartDesign::Revolution':'Angle', 'PartDesign::Fillet':'Radius', " +
+  "'PartDesign::Chamfer':'Size'}\n";
+
 export const emit = {
   // Add a PartDesign Body to the active document. Returns the Python source.
   newBody(name = 'Body') {
@@ -216,6 +224,72 @@ export const emit = {
       `    raise ValueError('revolve failed — the profile must be a closed loop that does not cross the vertical axis')`
     );
   },
+
+  // -- editable history ----------------------------------------------------
+  // Read a feature's editable driving parameter (name/label/type/param/value),
+  // for the history editor. param is null for a feature with nothing to edit.
+  featureInfo(objName) {
+    return (
+      'import json\n' + HEAD + FEATURE_PARAM +
+      `o = doc.getObject(${pyStr(objName)})\n` +
+      `if o is None:\n` +
+      `    _res = {'ok': False, 'error': 'no such feature'}\n` +
+      `else:\n` +
+      `    _p = _PARAM.get(o.TypeId)\n` +
+      `    _res = {'ok': True, 'name': o.Name, 'label': o.Label, 'type': o.TypeId.split('::')[-1], 'param': _p}\n` +
+      `    if _p:\n` +
+      `        _v = getattr(o, _p)\n` +
+      `        _res['value'] = float(_v.Value) if hasattr(_v, 'Value') else float(_v)\n` +
+      `open(${JSON.stringify(OUT_PATH)}, 'w').write(json.dumps(_res))\n`
+    );
+  },
+
+  // Edit a feature's driving parameter, SAFELY. Fillet/Chamfer get the same
+  // bbox radius cap as creation (an oversized value corrupts wasm). After the
+  // edit + recompute, if ANY feature is left Invalid (FreeCAD's topological
+  // naming can break a downstream ref on an upstream change), the value is
+  // reverted and a clear error raised — the model is never left broken.
+  editFeature(objName, value) {
+    const v = pyNum(value, 'value');
+    return wrapStatus(
+      FEATURE_PARAM +
+      `o = doc.getObject(${pyStr(objName)})\n` +
+      `if o is None:\n` +
+      `    raise ValueError('no such feature')\n` +
+      `p = _PARAM.get(o.TypeId)\n` +
+      `if not p:\n` +
+      `    raise ValueError('this feature has no editable parameter')\n` +
+      `if o.TypeId in ('PartDesign::Fillet', 'PartDesign::Chamfer'):\n` +
+      `    bb = o.Base[0].Shape.BoundBox\n` +
+      `    maxr = 0.49 * min(bb.XLength, bb.YLength, bb.ZLength)\n` +
+      `    if ${v} > maxr:\n` +
+      `        raise ValueError('value %.3g is too large for this solid (max ~%.3g mm)' % (${v}, maxr))\n` +
+      `old = getattr(o, p)\n` +
+      `oldv = old.Value if hasattr(old, 'Value') else old\n` +
+      `setattr(o, p, ${v})\n` +
+      `doc.recompute()\n` +
+      `bad = [x.Label for x in doc.Objects if 'Invalid' in x.State]\n` +
+      `if bad:\n` +
+      `    setattr(o, p, oldv)\n` +
+      `    doc.recompute()\n` +
+      `    raise ValueError('that value broke a later feature (%s) — reverted' % ', '.join(bad))`
+    );
+  },
+
+  // Delete a feature — but only if nothing depends on it (delete from the tip
+  // backward), so the chain is never left with an orphaned reference.
+  deleteFeature(objName) {
+    return wrapStatus(
+      `o = doc.getObject(${pyStr(objName)})\n` +
+      `if o is None:\n` +
+      `    raise ValueError('no such feature')\n` +
+      `deps = [x.Label for x in o.InList if x.TypeId.startswith('PartDesign::') and x.TypeId != 'PartDesign::Body']\n` +
+      `if deps:\n` +
+      `    raise ValueError('delete the later feature(s) first — %s depend(s) on this' % ', '.join(deps))\n` +
+      `doc.removeObject(o.Name)\n` +
+      `doc.recompute()`
+    );
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -273,6 +347,18 @@ export function attachCommands(session) {
     const res = session.read(emit.revolve(bodyName, sketchName, revName, angle));
     if (!res.ok) throw new Error(res.error || 'revolve failed');
     return revName;
+  };
+  // editable history
+  session.featureInfo = (objName) => session.read(emit.featureInfo(objName));
+  session.editFeature = (objName, value) => {
+    const res = session.read(emit.editFeature(objName, value));
+    if (!res.ok) throw new Error(res.error || 'edit failed');
+    return objName;
+  };
+  session.deleteFeature = (objName) => {
+    const res = session.read(emit.deleteFeature(objName));
+    if (!res.ok) throw new Error(res.error || 'delete failed');
+    return objName;
   };
 
   return session;
