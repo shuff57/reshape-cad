@@ -199,6 +199,23 @@ export const emit = {
       `    raise ValueError('pocket failed — the profile must be one closed loop lying on the face')`
     );
   },
+
+  // Revolve: spin a closed profile around the sketch's vertical axis (V_Axis)
+  // into a solid of revolution (a lathe turn). angle in degrees (default 360).
+  // The profile must not cross the axis. Same clean-status guard as pocket.
+  revolve(bodyName, sketchName, revName, angle = 360) {
+    return wrapStatus(
+      `rev = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::Revolution", ${pyStr(revName)})\n` +
+      `rev.Profile = doc.getObject(${pyStr(sketchName)})\n` +
+      `rev.ReferenceAxis = (doc.getObject(${pyStr(sketchName)}), ['V_Axis'])\n` +
+      `rev.Angle = ${pyNum(angle, 'angle')}\n` +
+      `doc.recompute()\n` +
+      `if ('Invalid' in rev.State) or rev.Shape.isNull():\n` +
+      `    doc.removeObject(rev.Name)\n` +
+      `    doc.recompute()\n` +
+      `    raise ValueError('revolve failed — the profile must be a closed loop that does not cross the vertical axis')`
+    );
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -251,6 +268,11 @@ export function attachCommands(session) {
     const res = session.read(emit.pocket(bodyName, sketchName, pocketName, length));
     if (!res.ok) throw new Error(res.error || 'pocket failed');
     return pocketName;
+  };
+  session.revolve = (bodyName, sketchName, revName, angle = 360) => {
+    const res = session.read(emit.revolve(bodyName, sketchName, revName, angle));
+    if (!res.ok) throw new Error(res.error || 'revolve failed');
+    return revName;
   };
 
   return session;
