@@ -10,6 +10,7 @@ import { createFcSession } from '/bridge/fc-session.mjs';
 import { attachCommands } from '/bridge/fc-commands.mjs';
 import { attachSketchCommands } from '/bridge/fc-sketch.mjs';
 import { initSketchMode } from './sketch.js';
+import { initPick3d } from './pick3d.js';
 
 // Track U #5 fix. The FreeCAD-web port emits "promising main" glue that reads a
 // bare `resolveGlobalSymbol` (an Emscripten dynamic-linking symbol) even though
@@ -56,7 +57,6 @@ const dir = new THREE.DirectionalLight(0xffffff, 0.6);
 dir.position.set(1, 2, 3);
 scene.add(dir);
 scene.add(new THREE.AxesHelper(20));
-let mesh = null;
 
 function resize() {
   const w = viewport.clientWidth, h = viewport.clientHeight;
@@ -66,24 +66,30 @@ window.addEventListener('resize', resize);
 resize();
 (function animate() { requestAnimationFrame(animate); controls.update(); renderer.render(scene, camera); })();
 
-// The bridge mesh() returns flat arrays: positions [x,y,z,...], indices [i,j,k,...].
-function showMesh({ positions, indices }) {
-  if (mesh) { scene.remove(mesh); mesh.geometry.dispose(); mesh.material.dispose(); mesh = null; }
-  if (!positions || positions.length === 0) return;
-  const g = new THREE.BufferGeometry();
-  g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(positions), 3));
-  g.setIndex(indices);
-  g.computeVertexNormals();
-  const m = new THREE.MeshStandardMaterial({ color: 0x5aa9e6, metalness: 0.1, roughness: 0.55 });
-  mesh = new THREE.Mesh(g, m);
-  scene.add(mesh);
-}
-
 // --- kernel load + session -------------------------------------------------
 let session = null;
-const state = { body: null, sketch: null, pad: null };
+const state = { body: null, sketch: null, pad: null, selected: null };
 const t0 = performance.now();
 log(`crossOriginIsolated: ${window.crossOriginIsolated}`);
+
+// --- pickable solid (slice 2b) -----------------------------------------------
+// Session-agnostic per SPEC: pick3d never touches the session — studio.js
+// reads session.meshFaces() and hands the RESULT into rebuild().
+const pick3d = initPick3d({
+  scene, THREE, getCamera: () => camera, renderer,
+  onSelect: (sel) => {
+    state.selected = sel;
+    const readout = document.getElementById('selReadout');
+    if (sel) {
+      const label = `${sel.kind === 'face' ? 'Face' : 'Edge'} ${sel.id + 1}`; // 0-based id -> 1-based FreeCAD name
+      log(`▷ selected ${label}`);
+      if (readout) readout.textContent = label;
+    } else {
+      log('▷ selection cleared');
+      if (readout) readout.textContent = '—';
+    }
+  },
+});
 
 (async () => {
   const base = (await headOk('/kernel-browser/FreeCADCmd.js')) ? '/kernel-browser/' : '/kernel/';
@@ -136,15 +142,19 @@ function lastOfType(typeId) {
   const hits = session.tree().objects.filter((o) => o.type === typeId);
   return hits.length ? hits[hits.length - 1].name : null;
 }
+// Rebuilds the pickable solid from the active tip (no arg = FreeCAD's own
+// default). Kept the try/catch shape of the old showMesh(session.mesh())
+// call it replaces — meshFaces() degrades to {faces:[],edges:[],empty:true}
+// rather than throwing, but a mid-recompute error is still possible.
 function render() {
-  try { showMesh(session.mesh()); } catch (e) { log(`mesh: ${e.message}`); }
+  try { pick3d.rebuild(session.meshFaces()); } catch (e) { log(`mesh: ${e.message}`); }
   refreshTree();
 }
 
 // --- buttons ---------------------------------------------------------------
 const $ = (id) => document.getElementById(id);
 function setButtons(on) {
-  ['newBody', 'rect', 'circle', 'sketchNew', 'pad', 'apply', 'save', 'open'].forEach((id) => {
+  ['newBody', 'rect', 'circle', 'sketchNew', 'pad', 'apply', 'save', 'open', 'pickFaces', 'pickEdges'].forEach((id) => {
     const el = $(id);
     if (el) el.disabled = !on; // null-safe: a restyle that drops an id won't crash init
   });
@@ -182,6 +192,18 @@ on('sketchNew', 'click', guard(() => {
 
 on('sketchFinish', 'click', guard(() => sketchUI.exit()));
 
+// --- 3D face/edge pick mode --------------------------------------------------
+// Only meaningful in 3D (not sketch mode) — toggles what pick3d's raycaster
+// targets. `.primary` styling on whichever button is active mirrors the
+// existing .fbtn.active pattern sketch.js uses for its own tool buttons.
+function setPickMode(m) {
+  pick3d.setMode(m);
+  $('pickFaces')?.classList.toggle('primary', m === 'face');
+  $('pickEdges')?.classList.toggle('primary', m === 'edge');
+}
+on('pickFaces', 'click', () => setPickMode('face'));
+on('pickEdges', 'click', () => setPickMode('edge'));
+
 on('newBody', 'click', guard(() => {
   session.newBody('Body');
   state.body = lastOfType('PartDesign::Body');
@@ -217,9 +239,11 @@ on('pad', 'click', guard(() => {
   // open wire (a loose arc/line) the recompute leaves the Pad shape null — mesh
   // of the Pad itself comes back empty. Surface that instead of logging a
   // phantom "+ Pad" and rendering nothing.
-  const m = session.mesh(state.pad);
-  const madeSolid = m.positions && m.positions.length > 0 && m.indices && m.indices.length > 0;
-  showMesh(madeSolid ? m : { positions: [], indices: [] });
+  const fm = session.meshFaces(state.pad);
+  const madeSolid = !fm.empty && fm.faces && fm.faces.length > 0;
+  // On success, rebuild pick3d from the PADDED solid immediately — it's the
+  // freshest tip, so the just-created solid is pickable without a second click.
+  pick3d.rebuild(madeSolid ? fm : { faces: [], edges: [] });
   refreshTree();
   if (madeSolid) {
     log(`+ ${state.pad} (length ${len})`);
