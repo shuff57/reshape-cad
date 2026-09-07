@@ -114,6 +114,15 @@ function updatePocketButton() {
   if (el) el.disabled = !(session && state.sketch && state.tip);
 }
 
+// Revolve only needs a drawn sketch (like Pad, it can BE the first feature —
+// unlike Pocket, it doesn't require an existing solid to cut into), so it's a
+// separate condition from updatePocketButton's rather than a shared one.
+// Called alongside updatePocketButton() everywhere state.sketch can change.
+function updateRevolveButton() {
+  const el = document.getElementById('revolve');
+  if (el) el.disabled = !(session && state.sketch);
+}
+
 // --- pickable solid (slice 2b) -----------------------------------------------
 // Session-agnostic per SPEC: pick3d never touches the session — studio.js
 // reads session.meshFaces() and hands the RESULT into rebuild().
@@ -149,6 +158,7 @@ const pick3d = initPick3d({
     setButtons(true);
     updateFeatureButtons(); // session is ready now, but no edge is selected yet — stays disabled
     updatePocketButton(); // ditto — no sketch drawn yet
+    updateRevolveButton();
   } catch (err) {
     log(`KERNEL LOAD FAILED: ${err.message || err}`);
   }
@@ -190,12 +200,13 @@ function render() {
   } catch (e) { log(`mesh: ${e.message}`); }
   refreshTree();
   updatePocketButton();
+  updateRevolveButton();
 }
 
 // --- buttons ---------------------------------------------------------------
 const $ = (id) => document.getElementById(id);
 function setButtons(on) {
-  ['newBody', 'rect', 'circle', 'sketchNew', 'pad', 'pocket', 'apply', 'save', 'open', 'pickFaces', 'pickEdges', 'fillet', 'chamfer'].forEach((id) => {
+  ['newBody', 'rect', 'circle', 'sketchNew', 'pad', 'pocket', 'revolve', 'apply', 'save', 'open', 'pickFaces', 'pickEdges', 'fillet', 'chamfer'].forEach((id) => {
     const el = $(id);
     if (el) el.disabled = !on; // null-safe: a restyle that drops an id won't crash init
   });
@@ -307,6 +318,7 @@ on('pad', 'click', guard(() => {
     log(`✗ Pad made no solid — the profile isn't one closed loop (an open arc/line, or gaps between edges). Close the sketch or delete open geometry, then Pad again.`);
   }
   updatePocketButton(); // state.tip / state.sketch just changed
+  updateRevolveButton();
 }));
 
 on('apply', 'click', guard(() => {
@@ -335,6 +347,29 @@ on('pocket', 'click', guard(() => {
   pick3d.rebuild(session.meshFaces());
   refreshTree();
   updatePocketButton();
+  updateRevolveButton();
+}));
+
+// Spins the drawn profile around the sketch's own vertical (Y) axis into a
+// solid of revolution. Like Pad, it can BE the first feature (no state.tip
+// required to enable it) — unlike Pocket, which needs an existing solid to
+// cut into. Same guard()+try/catch+extractFriendlyError() shape as the rest:
+// the bridge throws a clean message if the profile crosses the axis.
+on('revolve', 'click', guard(() => {
+  if (!state.sketch) return log('draw a sketch first');
+  const angle = Number($('revAngle').value) || 360;
+  try {
+    session.revolve(state.body, state.sketch, 'Revolution', angle);
+  } catch (err) {
+    return log(`✗ ${extractFriendlyError(err)}`);
+  }
+  state.tip = lastOfType('PartDesign::Revolution');
+  log(`+ revolve ${state.sketch} ${angle}°`);
+  state.sketch = null; // consumed by the Revolution — a sketch feeds exactly one feature
+  pick3d.rebuild(session.meshFaces());
+  refreshTree();
+  updatePocketButton();
+  updateRevolveButton();
 }));
 
 // The bridge's fillet/chamfer now REJECT an impossible radius/size BEFORE
