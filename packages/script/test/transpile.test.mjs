@@ -1,10 +1,12 @@
-// Unit tests for the reSHape Script -> FreeCAD Python transpiler (v0).
+// Unit tests for the reSHape Script -> FreeCAD Python transpiler (v1).
 // Pure string assertions -- FreeCAD is not runnable here, so we assert on
-// the emitted Python's structure, resilient to insignificant whitespace.
+// the emitted commands and Python's structure, resilient to insignificant
+// whitespace.
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { transpile } from '../src/transpile.mjs';
+import { emit } from '../../../engine/bridge/fc-commands.mjs';
 
 // Collapse runs of whitespace so assertions survive line-wrap differences
 // that carry no meaning.
@@ -12,57 +14,62 @@ function squish(s) {
   return s.replace(/\s+/g, ' ').trim();
 }
 
-test('box(40,40,20); hole(6) emits the exact proven idiom', () => {
-  const py = transpile('box(40, 40, 20); hole(6)');
-  const flat = squish(py);
+test('box(40,40,20); hole(6) emits the exact proven command sequence', () => {
+  const { commands, python } = transpile('box(40, 40, 20); hole(6)');
 
-  assert.match(flat, /import FreeCAD as App/);
-  assert.match(flat, /import Part/);
-  assert.match(flat, /doc = App.newDocument\("reSHape"\)/);
-  assert.match(flat, /Box = doc\.addObject\("Part::Box", "Box"\)/);
-  assert.match(flat, /Box\.Length = 40/);
-  assert.match(flat, /Box\.Width = 40/);
-  assert.match(flat, /Box\.Height = 20/);
+  assert.deepEqual(commands, [
+    { op: 'newBody', args: ['Body'] },
+    { op: 'sketchRect', args: ['Body', 'Sketch', 40, 40] },
+    { op: 'pad', args: ['Body', 'Sketch', 'Pad', 20] },
+    { op: 'sketchCircle', args: ['Body', 'Sketch001', 3, 20, 20] },
+    { op: 'holeThrough', args: ['Body', 'Sketch001', 'Hole'] },
+  ]);
 
-  assert.match(flat, /Cylinder = doc\.addObject\("Part::Cylinder", "Cylinder"\)/);
-  assert.match(flat, /Cylinder\.Radius = 3\.0/);
-  assert.match(flat, /Cylinder\.Placement = App\.Placement\(App\.Vector\(20\.0, 20\.0, 0\), App\.Rotation\(\)\)/);
-
-  assert.match(flat, /Cut = doc\.addObject\("Part::Cut", "Cut"\)/);
-  assert.match(flat, /Cut\.Base = Box/);
-  assert.match(flat, /Cut\.Tool = Cylinder/);
-
-  assert.match(py, /doc\.recompute\(\)\s*$/);
+  assert.ok(python.includes('PartDesign::Pad'), python);
+  assert.ok(python.includes('ThroughAll'), python);
+  assert.ok(!python.includes('Part::Cut'), python);
+  assert.ok(!python.includes('Part::Box'), python);
 });
 
-test('cylinder(10, 30) alone emits one Part::Cylinder, no Cut', () => {
-  const py = transpile('cylinder(10, 30)');
-  const flat = squish(py);
+test('cylinder(10, 30) alone emits newBody + sketchCircle + pad, no Cut', () => {
+  const { commands, python } = transpile('cylinder(10, 30)');
 
-  assert.match(flat, /Cylinder = doc\.addObject\("Part::Cylinder", "Cylinder"\)/);
-  assert.match(flat, /Cylinder\.Radius = 10/);
-  assert.match(flat, /Cylinder\.Height = 30/);
-  assert.doesNotMatch(flat, /Part::Cut/);
-  assert.match(py, /doc\.recompute\(\)\s*$/);
+  assert.deepEqual(commands, [
+    { op: 'newBody', args: ['Body'] },
+    { op: 'sketchCircle', args: ['Body', 'Sketch', 10, 0, 0] },
+    { op: 'pad', args: ['Body', 'Sketch', 'Pad', 30] },
+  ]);
+
+  assert.ok(python.includes('pad.Length = 30'), python);
+  assert.ok(!python.includes('Part::Cut'), python);
 });
 
 test('whitespace, newlines, semicolons and comments all parse the same', () => {
   const multiline = transpile('box(10, 10, 10)\n// a comment\nhole(4)');
   const oneline = transpile('box(10, 10, 10); hole(4)');
-  const messy = transpile('  box( 10 ,10,   10 ) ;;\n\n  // another\n\nhole( 4 );;');
 
-  assert.equal(squish(multiline), squish(oneline));
-  assert.equal(squish(messy), squish(oneline));
+  assert.deepEqual(multiline.commands, oneline.commands);
+  assert.equal(multiline.python, oneline.python);
 });
 
-test('two holes chain Cut -> Cut001 with the second Cut based on the first', () => {
-  const py = transpile('box(10, 10, 10); hole(2); hole(3)');
-  const flat = squish(py);
+test('two holes chain on one body with Sketch001/Hole001 naming', () => {
+  const { commands, python } = transpile('box(10, 10, 10); hole(2); hole(3)');
 
-  assert.match(flat, /Cut = doc\.addObject\("Part::Cut", "Cut"\)/);
-  assert.match(flat, /Cut\.Base = Box/);
-  assert.match(flat, /Cut001 = doc\.addObject\("Part::Cut", "Cut001"\)/);
-  assert.match(flat, /Cut001\.Base = Cut/);
+  assert.deepEqual(commands, [
+    { op: 'newBody', args: ['Body'] },
+    { op: 'sketchRect', args: ['Body', 'Sketch', 10, 10] },
+    { op: 'pad', args: ['Body', 'Sketch', 'Pad', 10] },
+    { op: 'sketchCircle', args: ['Body', 'Sketch001', 1, 5, 5] },
+    { op: 'holeThrough', args: ['Body', 'Sketch001', 'Hole'] },
+    { op: 'sketchCircle', args: ['Body', 'Sketch002', 1.5, 5, 5] },
+    { op: 'holeThrough', args: ['Body', 'Sketch002', 'Hole001'] },
+  ]);
+
+  // both holeThrough ops act on the same Body
+  const holes = commands.filter((c) => c.op === 'holeThrough');
+  assert.equal(holes.length, 2);
+  assert.ok(holes.every((h) => h.args[0] === 'Body'));
+  assert.ok(python.includes('ThroughAll'), python);
 });
 
 test('hole before any solid is an error mentioning there is no solid to cut', () => {
@@ -72,12 +79,79 @@ test('hole before any solid is an error mentioning there is no solid to cut', ()
   );
 });
 
-test('empty script still emits a valid document skeleton', () => {
-  const py = transpile('');
-  assert.match(squish(py), /doc = App\.newDocument\("reSHape"\) doc\.recompute\(\)/);
+test('unknown statement lists the supported words', () => {
+  assert.throws(
+    () => transpile('spin(45)'),
+    (err) => err instanceof Error
+      && /v1 supports/.test(err.message)
+      && ['box', 'cuboid', 'cylinder', 'hole', 'holeThrough'].every((w) => err.message.includes(w)),
+  );
 });
 
-test('hole without x,y on a non-box current solid defaults to 0,0', () => {
-  const py = transpile('cylinder(10, 30); hole(4)');
-  assert.match(squish(py), /App\.Vector\(0\.0, 0\.0, 0\)/);
+test('official names work: cuboid and holeThrough lower identically to box and hole', () => {
+  const official = transpile('cuboid(40, 40, 20); holeThrough(6)');
+  const student = transpile('box(40, 40, 20); hole(6)');
+  assert.deepEqual(official.commands, student.commands);
+  assert.equal(official.python, student.python);
+});
+
+test('official and student words mix freely in one script', () => {
+  const mixed = transpile('cuboid(10, 10, 10); hole(2)');
+  const student = transpile('box(10, 10, 10); hole(2)');
+  assert.deepEqual(mixed.commands, student.commands);
+  assert.equal(mixed.python, student.python);
+});
+
+test('non-number argument throws "is not a number"', () => {
+  assert.throws(
+    () => transpile('box(10, ten, 10)'),
+    (err) => err instanceof Error && /is not a number/.test(err.message),
+  );
+});
+
+test('empty script returns empty commands and empty python', () => {
+  const { commands, python } = transpile('');
+  assert.deepEqual(commands, []);
+  assert.equal(python, '');
+});
+
+test('python is exactly the concatenation of the emitted command snippets', () => {
+  for (const src of ['box(40, 40, 20); hole(6)', 'cylinder(10, 30)', 'torus(40, 8)']) {
+    const { commands, python } = transpile(src);
+    const expected = commands.map((c) => emit[c.op](...c.args)).join('\n');
+    assert.equal(python, expected);
+  }
+});
+
+test('sphere(8) emits newBody + PartDesign sphere feature', () => {
+  const { commands, python } = transpile('sphere(8)');
+  assert.deepEqual(commands, [
+    { op: 'newBody', args: ['Body'] },
+    { op: 'sphere', args: ['Body', 'Sphere', 8] },
+  ]);
+  assert.ok(python.includes('PartDesign::Sphere'), python);
+});
+
+test('cone(4, 30) emits newBody + cone feature with top radius 0', () => {
+  const { commands, python } = transpile('cone(4, 30)');
+  assert.deepEqual(commands, [
+    { op: 'newBody', args: ['Body'] },
+    { op: 'cone', args: ['Body', 'Cone', 4, 0, 30] },
+  ]);
+  assert.ok(python.includes('PartDesign::Cone'), python);
+});
+
+test('torus(40, 8) emits ring radius 16, tube radius 4 (diameters in, radii out)', () => {
+  const { commands } = transpile('torus(40, 8)');
+  assert.deepEqual(commands, [
+    { op: 'newBody', args: ['Body'] },
+    { op: 'torus', args: ['Body', 'Torus', 16, 4] },
+  ]);
+});
+
+test('ring is a student alias of torus with identical lowering', () => {
+  const alias = transpile('ring(40, 8)');
+  const official = transpile('torus(40, 8)');
+  assert.deepEqual(alias.commands, official.commands);
+  assert.equal(alias.python, official.python);
 });

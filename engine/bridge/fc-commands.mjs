@@ -208,6 +208,86 @@ export const emit = {
     );
   },
 
+  // Hole-through: cut a closed profile (a sketch) all the way through the
+  // body, regardless of depth. A PartDesign::Pocket with Type = 'ThroughAll' —
+  // the FreeCAD hole idiom, so no depth number to compute and get wrong.
+  // Midplane = True: the cut is made symmetric about the sketch plane, so the
+  // hole reaches material whichever side FreeCAD's pocket direction convention
+  // picks (kernel-measured: a bare XY sketch under a Pad cuts -Z only, i.e.
+  // empty space — the box came out uncut at vol=32000; see msgbox #59).
+  // Same clean-status wrapper as pocket: an open/invalid profile leaves a
+  // null shape — detect it, delete, report a clear message.
+  holeThrough(bodyName, sketchName, holeName) {
+    return wrapStatus(
+      `pk = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::Pocket", ${pyStr(holeName)})\n` +
+      `pk.Profile = doc.getObject(${pyStr(sketchName)})\n` +
+      `pk.Type = 'ThroughAll'\n` +
+      `pk.Midplane = True\n` +
+      `doc.recompute()\n` +
+      `if ('Invalid' in pk.State) or pk.Shape.isNull():\n` +
+      `    doc.removeObject(pk.Name)\n` +
+      `    doc.recompute()\n` +
+      `    raise ValueError('hole failed — the profile must be one closed loop lying on the solid')`
+    );
+  },
+
+  // Additive PartDesign primitives. Unlike profile-driven features (pocket,
+  // revolve), these build from positive dimensions alone, so they cannot fail
+  // from an open/invalid profile — no clean-status wrapper, no null-shape
+  // guard. Each is created as a Body method (doc.getObject(BODY).newObject),
+  // mirroring emit.pad. pyNum guards every number (throws in JS before
+  // emission), so a bad dimension never reaches the engine.
+  sphere(bodyName, featName, radius) {
+    return (
+      HEAD +
+      `sp = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::Sphere", ${pyStr(featName)})\n` +
+      `sp.Radius = ${pyNum(radius, 'radius')}\n` +
+      RECT_END
+    );
+  },
+
+  cone(bodyName, featName, radius1, radius2, height) {
+    return (
+      HEAD +
+      `cn = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::Cone", ${pyStr(featName)})\n` +
+      `cn.Radius1 = ${pyNum(radius1, 'radius1')}\n` +
+      `cn.Radius2 = ${pyNum(radius2, 'radius2')}\n` +
+      `cn.Height = ${pyNum(height, 'height')}\n` +
+      RECT_END
+    );
+  },
+
+  torus(bodyName, featName, ringRadius, tubeRadius) {
+    return (
+      HEAD +
+      `tr = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::Torus", ${pyStr(featName)})\n` +
+      `tr.Radius1 = ${pyNum(ringRadius, 'ringRadius')}\n` +
+      `tr.Radius2 = ${pyNum(tubeRadius, 'tubeRadius')}\n` +
+      RECT_END
+    );
+  },
+
+  prism(bodyName, featName, radius, height) {
+    return (
+      HEAD +
+      `pr = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::Prism", ${pyStr(featName)})\n` +
+      `pr.Polygon = 6\n` +
+      `pr.Circumradius = ${pyNum(radius, 'radius')}\n` +
+      `pr.Height = ${pyNum(height, 'height')}\n` +
+      RECT_END
+    );
+  },
+
+  wedge(bodyName, featName, width, height) {
+    return (
+      HEAD +
+      `wd = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::Wedge", ${pyStr(featName)})\n` +
+      `wd.Width = ${pyNum(width, 'width')}\n` +
+      `wd.Height = ${pyNum(height, 'height')}\n` +
+      RECT_END
+    );
+  },
+
   // Revolve: spin a closed profile around the sketch's vertical axis (V_Axis)
   // into a solid of revolution (a lathe turn). angle in degrees (default 360).
   // The profile must not cross the axis. Same clean-status guard as pocket.
@@ -354,6 +434,33 @@ export function attachCommands(session) {
     const res = session.read(emit.pocket(bodyName, sketchName, pocketName, length));
     if (!res.ok) throw new Error(res.error || 'pocket failed');
     return pocketName;
+  };
+  session.holeThrough = (bodyName, sketchName, holeName) => {
+    const res = session.read(emit.holeThrough(bodyName, sketchName, holeName));
+    if (!res.ok) throw new Error(res.error || 'hole failed');
+    return holeName;
+  };
+  // Additive primitives build from positive dimensions alone, so they use
+  // pad's run() pattern (not the read/status pattern) — no wrapStatus.
+  session.sphere = (bodyName, featName, radius) => {
+    run('sphere', emit.sphere(bodyName, featName, radius));
+    return featName;
+  };
+  session.cone = (bodyName, featName, radius1, radius2, height) => {
+    run('cone', emit.cone(bodyName, featName, radius1, radius2, height));
+    return featName;
+  };
+  session.torus = (bodyName, featName, ringRadius, tubeRadius) => {
+    run('torus', emit.torus(bodyName, featName, ringRadius, tubeRadius));
+    return featName;
+  };
+  session.prism = (bodyName, featName, radius, height) => {
+    run('prism', emit.prism(bodyName, featName, radius, height));
+    return featName;
+  };
+  session.wedge = (bodyName, featName, width, height) => {
+    run('wedge', emit.wedge(bodyName, featName, width, height));
+    return featName;
   };
   session.revolve = (bodyName, sketchName, revName, angle = 360) => {
     const res = session.read(emit.revolve(bodyName, sketchName, revName, angle));
