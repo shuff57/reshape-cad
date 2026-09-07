@@ -73,7 +73,9 @@ let session = null;
 // feature chain (Pad -> Fillet -> Chamfer -> ...) — Fillet/Chamfer's `Base`
 // must always be the latest tip, not the original Pad, so the two need to be
 // tracked separately.
-const state = { body: null, sketch: null, pad: null, tip: null, selected: null };
+// state.selectedFeature (a tree-row click) is SEPARATE from state.selected
+// (a 3D face/edge pick, slice 2b) — the two never cross.
+const state = { body: null, sketch: null, pad: null, tip: null, selected: null, selectedFeature: null };
 const t0 = performance.now();
 log(`crossOriginIsolated: ${window.crossOriginIsolated}`);
 
@@ -174,6 +176,8 @@ function refreshTree() {
   for (const o of rows) {
     const li = document.createElement('li');
     li.className = 'tree-row';
+    li.dataset.name = o.name; // click target -> which feature (see the delegated listener below)
+    if (o.name === state.selectedFeature) li.classList.add('tree-row-sel'); // survive an incidental re-render
     const tk = document.createElement('span');
     tk.className = 'tk';
     tk.textContent = o.type.split('::').pop(); // kind, from the controlled TypeId
@@ -185,6 +189,89 @@ function lastOfType(typeId) {
   const hits = session.tree().objects.filter((o) => o.type === typeId);
   return hits.length ? hits[hits.length - 1].name : null;
 }
+
+// --- editable history: click a tree row to inspect/edit/delete it ----------
+// state.selectedFeature is SEPARATE from state.selected (the 3D pick, above).
+function highlightTreeRow(name) {
+  for (const li of treeList.children) li.classList.toggle('tree-row-sel', li.dataset.name === name);
+}
+function hideHistPanel() {
+  const el = document.getElementById('histPanel');
+  if (el) el.hidden = true;
+}
+function clearFeatureSelection() {
+  state.selectedFeature = null;
+  highlightTreeRow(null);
+  hideHistPanel();
+}
+// Builds the panel from session.featureInfo()'s {type, param, value}: the
+// value input + Apply are only shown when param is set (Sketch/Body have
+// none — nothing to edit, Delete is always available).
+function populateHistPanel(info) {
+  const panel = document.getElementById('histPanel');
+  if (!panel) return;
+  const typeEl = document.getElementById('histType');
+  if (typeEl) typeEl.textContent = `${info.type} — ${info.name}`;
+  const hasParam = info.param != null;
+  const row = document.getElementById('histValueRow');
+  if (row) row.hidden = !hasParam;
+  if (hasParam) {
+    const label = document.getElementById('histParamLabel');
+    if (label) label.textContent = info.param;
+    const input = document.getElementById('histValue');
+    if (input) input.value = info.value;
+  }
+  panel.hidden = false;
+}
+function selectFeature(name) {
+  try {
+    const info = session.featureInfo(name);
+    if (!info || !info.ok) { clearFeatureSelection(); return; }
+    state.selectedFeature = name;
+    highlightTreeRow(name);
+    populateHistPanel(info);
+  } catch (err) {
+    log(`✗ ${extractFriendlyError(err)}`);
+    clearFeatureSelection();
+  }
+}
+// Delegated (not per-row) so it survives refreshTree()'s replaceChildren();
+// treeList itself is never recreated, only its children. Clicking the
+// already-selected row, or empty space below the rows, clears the selection.
+treeList.addEventListener('click', (evt) => {
+  const li = evt.target.closest('.tree-row');
+  const name = li && li.dataset.name;
+  if (!name || state.selectedFeature === name) { clearFeatureSelection(); return; }
+  selectFeature(name);
+});
+
+on('histApply', 'click', guard(() => {
+  const name = state.selectedFeature;
+  if (!name) return;
+  const v = Number(document.getElementById('histValue').value);
+  try {
+    session.editFeature(name, v);
+  } catch (err) {
+    return log(`✗ ${extractFriendlyError(err)}`);
+  }
+  log(`~ ${name} = ${v}`);
+  render();            // rebuilds tree + 3D from the new state
+  selectFeature(name); // re-read the (possibly reverted) value back into the panel
+}));
+
+on('histDelete', 'click', guard(() => {
+  const name = state.selectedFeature;
+  if (!name) return;
+  try {
+    session.deleteFeature(name);
+  } catch (err) {
+    return log(`✗ ${extractFriendlyError(err)}`);
+  }
+  log(`− deleted ${name}`);
+  state.selectedFeature = null;
+  hideHistPanel();
+  render();
+}));
 // Rebuilds the pickable solid from the active tip (no arg = FreeCAD's own
 // default). Kept the try/catch shape of the old showMesh(session.mesh())
 // call it replaces — meshFaces() degrades to {faces:[],edges:[],empty:true}

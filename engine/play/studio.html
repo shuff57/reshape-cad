@@ -102,13 +102,22 @@
   #treeList{ list-style:none; margin:0; padding:6px 0; overflow-y:auto; flex:1; }
   .tree-row{
     display:flex; align-items:baseline; gap:7px; padding:5px 14px;
-    border-left:2px solid transparent; font-size:12.5px; cursor:default;
+    border-left:2px solid transparent; font-size:12.5px; cursor:pointer;
   }
   .tree-row:hover{ background:rgba(255,255,255,.03); border-left-color:var(--accent); }
+  .tree-row-sel{ background:rgba(90,169,230,.14); border-left-color:var(--accent); }
   .tree-row .tk{
     flex-shrink:0; font:10.5px var(--font-mono); color:var(--muted);
     background:var(--raised); border:1px solid var(--hair); border-radius:4px; padding:1px 5px;
   }
+
+  #histPanel{
+    border-top:1px solid var(--hair); padding:10px 14px; flex-shrink:0;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  #histPanel .hist-type{ font:11px var(--font-mono); text-transform:uppercase; letter-spacing:.05em; color:var(--muted); }
+  #histPanel label{ display:flex; align-items:center; gap:6px; font-size:12px; }
+  #histPanel .hist-actions{ display:flex; gap:6px; }
 
   /* ---------- 3D viewport ---------- */
   #right{
@@ -289,6 +298,14 @@
   <aside id="tree">
     <div class="dock-header uc">Model Tree</div>
     <ul id="treeList"></ul>
+    <div id="histPanel" hidden>
+      <div id="histType" class="hist-type">—</div>
+      <label id="histValueRow"><span id="histParamLabel">Value</span> <input id="histValue" type="number"></label>
+      <div class="hist-actions">
+        <button id="histApply" class="btn primary">Apply</button>
+        <button id="histDelete" class="btn">Delete</button>
+      </div>
+    </div>
   </aside>
 
   <div id="right">
