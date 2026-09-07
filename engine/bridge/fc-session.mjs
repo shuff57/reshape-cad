@@ -109,8 +109,8 @@ export function createFcSession(Module) {
       `    hit = None\n` +
       `    for o in d.Objects:\n` +
       `        s = getattr(o, 'Shape', None)\n` +
-      `        if s is not None and not s.isNull():\n` +
-      `            hit = o\n` +
+      `        if s is not None and not s.isNull() and len(s.Faces) > 0:\n` +
+      `            hit = o  # require faces: a solid, not a leftover sketch wire\n` +
       `    return hit\n` +
       `o = ${target}\n` +
       `if o is None or getattr(o, 'Shape', None) is None or o.Shape.isNull():\n` +
@@ -146,8 +146,8 @@ export function createFcSession(Module) {
       `    hit = None\n` +
       `    for o in d.Objects:\n` +
       `        s = getattr(o, 'Shape', None)\n` +
-      `        if s is not None and not s.isNull():\n` +
-      `            hit = o\n` +
+      `        if s is not None and not s.isNull() and len(s.Faces) > 0:\n` +
+      `            hit = o  # require faces: a solid, not a leftover sketch wire\n` +
       `    return hit\n` +
       `o = ${target}\n` +
       `if o is None or getattr(o, 'Shape', None) is None or o.Shape.isNull():\n` +

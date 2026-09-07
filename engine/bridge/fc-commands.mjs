@@ -182,6 +182,23 @@ export const emit = {
       `    raise ValueError('chamfer failed for this edge — try a smaller size')`
     );
   },
+
+  // Pocket: cut a closed profile (a sketch, usually attached to a face) inward
+  // by `length`. Subtractive counterpart to Pad. Same clean-status wrapper: an
+  // open/invalid profile leaves a null shape — detect it, delete, report a
+  // clear message instead of a phantom feature.
+  pocket(bodyName, sketchName, pocketName, length) {
+    return wrapStatus(
+      `pk = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::Pocket", ${pyStr(pocketName)})\n` +
+      `pk.Profile = doc.getObject(${pyStr(sketchName)})\n` +
+      `pk.Length = ${pyNum(length, 'length')}\n` +
+      `doc.recompute()\n` +
+      `if ('Invalid' in pk.State) or pk.Shape.isNull():\n` +
+      `    doc.removeObject(pk.Name)\n` +
+      `    doc.recompute()\n` +
+      `    raise ValueError('pocket failed — the profile must be one closed loop lying on the face')`
+    );
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -229,6 +246,11 @@ export function attachCommands(session) {
     const res = session.read(emit.chamfer(bodyName, baseName, edgeNames, size));
     if (!res.ok) throw new Error(res.error || 'chamfer failed');
     return 'Chamfer';
+  };
+  session.pocket = (bodyName, sketchName, pocketName, length) => {
+    const res = session.read(emit.pocket(bodyName, sketchName, pocketName, length));
+    if (!res.ok) throw new Error(res.error || 'pocket failed');
+    return pocketName;
   };
 
   return session;

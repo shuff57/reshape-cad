@@ -57,6 +57,21 @@ export const emit = {
     );
   },
 
+  // Empty sketch ATTACHED to a picked planar face (for Pocket). baseName is the
+  // solid that owns the face, faceName its sub-element ("Face{n}"). MapMode
+  // 'FlatFace' lays the sketch flat on that face; the sketch then draws in the
+  // face's local plane and Pocket cuts perpendicular to it. Verified: attaching
+  // to a box's top face + a 10x10 window pockets a valid 500 mm^3 recess.
+  sketchNewOnFace(bodyName, sketchName, baseName, faceName) {
+    return (
+      HEAD +
+      `_sk = doc.getObject(${pyStr(bodyName)}).newObject("Sketcher::SketchObject", ${pyStr(sketchName)})\n` +
+      `_sk.AttachmentSupport = [(doc.getObject(${pyStr(baseName)}), ${pyStr(faceName)})]\n` +
+      `_sk.MapMode = "FlatFace"\n` +
+      `doc.recompute()\n`
+    );
+  },
+
   // Add one line segment; returns {geoId}.
   addLine(sketchName, x1, y1, x2, y2) {
     return (
@@ -240,6 +255,10 @@ export function attachSketchCommands(session) {
 
   session.sketchNew = (bodyName, sketchName) => {
     runExec('sketchNew', emit.sketchNew(bodyName, sketchName));
+    return sketchName;
+  };
+  session.sketchNewOnFace = (bodyName, sketchName, baseName, faceName) => {
+    runExec('sketchNewOnFace', emit.sketchNewOnFace(bodyName, sketchName, baseName, faceName));
     return sketchName;
   };
   session.sketchAddLine = (sk, x1, y1, x2, y2) =>
