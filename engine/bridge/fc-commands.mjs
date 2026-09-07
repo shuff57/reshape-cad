@@ -57,6 +57,21 @@ const HEAD =
 
 const RECT_END = 'doc.recompute()\n';
 
+// Fillet/Chamfer can fail EXPECTEDLY (radius too big). Raising to
+// freecad_run_python dumps a Python traceback into the browser status log, so
+// instead these commands catch internally and report a clean status through
+// the file channel (same OUT_PATH the readback commands use). The wrapper reads
+// it and throws only a short, user-facing message — no traceback.
+const OUT_PATH = '/tmp/reshape_out.json';
+const wrapStatus = (body) =>
+  'import json\n' + HEAD +
+  '_res = {"ok": True}\n' +
+  'try:\n' +
+  body.replace(/^/gm, '    ') +
+  '\nexcept Exception as _e:\n' +
+  '    _res = {"ok": False, "error": str(_e)}\n' +
+  `open(${JSON.stringify(OUT_PATH)}, "w").write(json.dumps(_res))\n`;
+
 export const emit = {
   // Add a PartDesign Body to the active document. Returns the Python source.
   newBody(name = 'Body') {
@@ -129,42 +144,42 @@ export const emit = {
   // well under it. A radius under the cap that still fails is caught by the
   // secondary State check (safe to read; only tessellation crashes).
   fillet(bodyName, baseName, edgeNames, radius) {
-    return (
-      HEAD +
+    const r = pyNum(radius, 'radius');
+    return wrapStatus(
       `base = doc.getObject(${pyStr(baseName)})\n` +
       `bb = base.Shape.BoundBox\n` +
       `maxr = 0.49 * min(bb.XLength, bb.YLength, bb.ZLength)\n` +
-      `if ${pyNum(radius, 'radius')} > maxr:\n` +
-      `    raise ValueError('fillet radius %.3g is too large for this solid (max ~%.3g mm) — use a smaller radius' % (${pyNum(radius, 'radius')}, maxr))\n` +
+      `if ${r} > maxr:\n` +
+      `    raise ValueError('fillet radius %.3g is too large for this solid (max ~%.3g mm) — use a smaller radius' % (${r}, maxr))\n` +
       `fl = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::Fillet", "Fillet")\n` +
       `fl.Base = (base, ${pyStrList(edgeNames)})\n` +
-      `fl.Radius = ${pyNum(radius, 'radius')}\n` +
+      `fl.Radius = ${r}\n` +
       `doc.recompute()\n` +
       `if ('Invalid' in fl.State) or fl.Shape.isNull():\n` +
       `    doc.removeObject(fl.Name)\n` +
       `    doc.recompute()\n` +
-      `    raise ValueError('fillet failed for this edge — try a smaller radius')\n`
+      `    raise ValueError('fillet failed for this edge — try a smaller radius')`
     );
   },
 
   // Chamfer (bevel) the picked edges. Same crash-guard + cap as fillet, driving
   // .Size instead of .Radius.
   chamfer(bodyName, baseName, edgeNames, size) {
-    return (
-      HEAD +
+    const z = pyNum(size, 'size');
+    return wrapStatus(
       `base = doc.getObject(${pyStr(baseName)})\n` +
       `bb = base.Shape.BoundBox\n` +
       `maxs = 0.49 * min(bb.XLength, bb.YLength, bb.ZLength)\n` +
-      `if ${pyNum(size, 'size')} > maxs:\n` +
-      `    raise ValueError('chamfer size %.3g is too large for this solid (max ~%.3g mm) — use a smaller size' % (${pyNum(size, 'size')}, maxs))\n` +
+      `if ${z} > maxs:\n` +
+      `    raise ValueError('chamfer size %.3g is too large for this solid (max ~%.3g mm) — use a smaller size' % (${z}, maxs))\n` +
       `ch = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::Chamfer", "Chamfer")\n` +
       `ch.Base = (base, ${pyStrList(edgeNames)})\n` +
-      `ch.Size = ${pyNum(size, 'size')}\n` +
+      `ch.Size = ${z}\n` +
       `doc.recompute()\n` +
       `if ('Invalid' in ch.State) or ch.Shape.isNull():\n` +
       `    doc.removeObject(ch.Name)\n` +
       `    doc.recompute()\n` +
-      `    raise ValueError('chamfer failed for this edge — try a smaller size')\n`
+      `    raise ValueError('chamfer failed for this edge — try a smaller size')`
     );
   },
 };
@@ -203,12 +218,16 @@ export function attachCommands(session) {
     run('setParam', emit.setParam(objName, prop, value));
     return objName;
   };
+  // Fillet/Chamfer report success/failure through the file channel (no
+  // traceback): read the status and throw only the short user-facing message.
   session.fillet = (bodyName, baseName, edgeNames, radius) => {
-    run('fillet', emit.fillet(bodyName, baseName, edgeNames, radius));
+    const res = session.read(emit.fillet(bodyName, baseName, edgeNames, radius));
+    if (!res.ok) throw new Error(res.error || 'fillet failed');
     return 'Fillet';
   };
   session.chamfer = (bodyName, baseName, edgeNames, size) => {
-    run('chamfer', emit.chamfer(bodyName, baseName, edgeNames, size));
+    const res = session.read(emit.chamfer(bodyName, baseName, edgeNames, size));
+    if (!res.ok) throw new Error(res.error || 'chamfer failed');
     return 'Chamfer';
   };
 
