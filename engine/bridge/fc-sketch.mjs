@@ -67,6 +67,70 @@ export const emit = {
     );
   },
 
+  // Add a full circle (center + radius) on the XY plane; returns {geoId}.
+  addCircle(sketchName, cx, cy, r) {
+    return (
+      HEAD + SK(sketchName) +
+      `gid = sk.addGeometry(Part.Circle(${vec(cx, cy)}, App.Vector(0,0,1), ${pyNum(r, 'r')}), False)\n` +
+      `sk.solve()\n` +
+      writeOut(`{'geoId': gid}`)
+    );
+  },
+
+  // Add an arc from center + radius + start/end angle (radians, CCW). The UI
+  // computes the angles from clicked points; ArcOfCircle(Circle, a0, a1) is the
+  // constructor the kernel accepts (verified via probe). Returns {geoId}.
+  addArc(sketchName, cx, cy, r, a0, a1) {
+    return (
+      HEAD + SK(sketchName) +
+      `gid = sk.addGeometry(Part.ArcOfCircle(` +
+      `Part.Circle(${vec(cx, cy)}, App.Vector(0,0,1), ${pyNum(r, 'r')}), ` +
+      `${pyNum(a0, 'a0')}, ${pyNum(a1, 'a1')}), False)\n` +
+      `sk.solve()\n` +
+      writeOut(`{'geoId': gid}`)
+    );
+  },
+
+  // Rectangle convenience: 4 lines from (x1,y1)-(x2,y2) as a constrained wire
+  // (coincident corners + 2 Horizontal + 2 Vertical). Returns {geoIds:[...]}.
+  // The UI's rectangle tool calls this on a corner-to-corner drag.
+  addRectangle(sketchName, x1, y1, x2, y2) {
+    const X1 = pyNum(x1, 'x1'), Y1 = pyNum(y1, 'y1'), X2 = pyNum(x2, 'x2'), Y2 = pyNum(y2, 'y2');
+    return (
+      HEAD + SK(sketchName) +
+      `g0 = sk.addGeometry(Part.LineSegment(${vec(X1, Y1)}, ${vec(X2, Y1)}), False)\n` +
+      `g1 = sk.addGeometry(Part.LineSegment(${vec(X2, Y1)}, ${vec(X2, Y2)}), False)\n` +
+      `g2 = sk.addGeometry(Part.LineSegment(${vec(X2, Y2)}, ${vec(X1, Y2)}), False)\n` +
+      `g3 = sk.addGeometry(Part.LineSegment(${vec(X1, Y2)}, ${vec(X1, Y1)}), False)\n` +
+      `sk.addConstraint(Sketcher.Constraint('Coincident', g0,2, g1,1))\n` +
+      `sk.addConstraint(Sketcher.Constraint('Coincident', g1,2, g2,1))\n` +
+      `sk.addConstraint(Sketcher.Constraint('Coincident', g2,2, g3,1))\n` +
+      `sk.addConstraint(Sketcher.Constraint('Coincident', g3,2, g0,1))\n` +
+      `sk.addConstraint(Sketcher.Constraint('Horizontal', g0))\n` +
+      `sk.addConstraint(Sketcher.Constraint('Horizontal', g2))\n` +
+      `sk.addConstraint(Sketcher.Constraint('Vertical', g1))\n` +
+      `sk.addConstraint(Sketcher.Constraint('Vertical', g3))\n` +
+      `sk.solve()\n` +
+      writeOut(`{'geoIds': [g0, g1, g2, g3]}`)
+    );
+  },
+
+  // Radius constraint on a circle or arc; drives its radius. Returns {index}.
+  radius(sketchName, g, value) {
+    return HEAD + SK(sketchName) +
+      `idx = sk.addConstraint(${cons('Radius', pyInt(g, 'g'), pyNum(value, 'value'))})\n` +
+      `sk.solve()\n` + writeOut(`{'index': idx}`);
+  },
+
+  // Delete one geometry element. FreeCAD cascades: constraints that referenced
+  // it are removed too, and remaining geoIds renumber -- callers MUST re-read
+  // sketchState() afterward rather than reuse any prior geoId/constraint index.
+  delGeometry(sketchName, g) {
+    return HEAD + SK(sketchName) +
+      `sk.delGeometry(${pyInt(g, 'g')})\n` +
+      `sk.solve()\n` + `doc.recompute()\n`;
+  },
+
   // Attach a constraint. `kind` selects the FreeCAD constraint; the emitter
   // shapes the right argument list and returns {index} (the new constraint's
   // position in sk.Constraints), which setDatum() and delete will reference.
@@ -137,6 +201,13 @@ export const emit = {
       `        row['cx']=round(g.Center.x,6); row['cy']=round(g.Center.y,6); row['r']=round(g.Radius,6)\n` +
       `    except Exception:\n` +
       `        pass\n` +
+      `    if row['type'] == 'ArcOfCircle':\n` +
+      `        try:\n` +
+      `            a0=g.FirstParameter; a1=g.LastParameter\n` +
+      `            m=g.value((a0+a1)/2.0)\n` +
+      `            row['mx']=round(m.x,6); row['my']=round(m.y,6); row['a0']=round(a0,6); row['a1']=round(a1,6)\n` +
+      `        except Exception:\n` +
+      `            pass\n` +
       `    geo.append(row)\n` +
       `def _ctype(c):\n` +
       `    t = c.Type\n` +
@@ -173,6 +244,16 @@ export function attachSketchCommands(session) {
   };
   session.sketchAddLine = (sk, x1, y1, x2, y2) =>
     session.read(emit.addLine(sk, x1, y1, x2, y2)).geoId;
+  session.sketchAddCircle = (sk, cx, cy, r) =>
+    session.read(emit.addCircle(sk, cx, cy, r)).geoId;
+  session.sketchAddArc = (sk, cx, cy, r, a0, a1) =>
+    session.read(emit.addArc(sk, cx, cy, r, a0, a1)).geoId;
+  session.sketchAddRectangle = (sk, x1, y1, x2, y2) =>
+    session.read(emit.addRectangle(sk, x1, y1, x2, y2)).geoIds;
+  session.sketchDelGeometry = (sk, g) => {
+    runExec('sketchDelGeometry', emit.delGeometry(sk, g));
+    return g;
+  };
 
   session.constrainCoincident = (sk, g1, p1, g2, p2) =>
     session.read(emit.coincident(sk, g1, p1, g2, p2)).index;
@@ -186,6 +267,7 @@ export function attachSketchCommands(session) {
   session.constrainDistanceY = (sk, g1, p1, g2, p2, v) => session.read(emit.distance(sk, 'DistanceY', g1, p1, g2, p2, v)).index;
   session.constrainDistance  = (sk, g1, p1, g2, p2, v) => session.read(emit.distance(sk, 'Distance',  g1, p1, g2, p2, v)).index;
   session.constrainPinOrigin = (sk, g, p = 1) => session.read(emit.pinOrigin(sk, g, p)).index;
+  session.constrainRadius = (sk, g, value) => session.read(emit.radius(sk, g, value)).index;
 
   session.sketchSetDatum = (sk, cIndex, value) => {
     runExec('sketchSetDatum', emit.setDatum(sk, cIndex, value));
