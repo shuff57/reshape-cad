@@ -288,7 +288,9 @@ on('histApply', 'click', guard(() => {
   try {
     session.editFeature(name, v);
   } catch (err) {
-    return log(`✗ ${extractFriendlyError(err)}`);
+    log(`✗ ${extractFriendlyError(err)}`);
+    selectFeature(name); // rejected — reset the input back to the actual value
+    return;
   }
   log(`~ ${name} = ${v}`);
   render();            // rebuilds tree + 3D from the new state
