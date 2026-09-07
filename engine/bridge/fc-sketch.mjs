@@ -101,6 +101,16 @@ export const emit = {
       `sk.solve()\n` + writeOut(`{'index': idx}`);
   },
 
+  // Remove a constraint by index. Used as the auto-constraint safety valve
+  // (roll back an inferred constraint that would over-constrain) and by the
+  // future delete/trim slice. NOTE: constraint indices shift down after a
+  // delete, so callers must re-read sketchState() rather than reuse old ids.
+  delConstraint(sketchName, cIndex) {
+    return HEAD + SK(sketchName) +
+      `sk.delConstraint(${pyInt(cIndex, 'cIndex')})\n` +
+      `sk.solve()\n` + `doc.recompute()\n`;
+  },
+
   // Change a driving dimension's value; the solver moves the geometry to match.
   setDatum(sketchName, cIndex, value) {
     return HEAD + SK(sketchName) +
@@ -179,6 +189,10 @@ export function attachSketchCommands(session) {
 
   session.sketchSetDatum = (sk, cIndex, value) => {
     runExec('sketchSetDatum', emit.setDatum(sk, cIndex, value));
+    return cIndex;
+  };
+  session.delConstraint = (sk, cIndex) => {
+    runExec('delConstraint', emit.delConstraint(sk, cIndex));
     return cIndex;
   };
   session.sketchState = (sk) => session.read(emit.state(sk));

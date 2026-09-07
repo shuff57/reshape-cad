@@ -83,10 +83,19 @@ assert.ok(Math.abs(vol - 18000) < 1, `constrained sketch pads to 18000, got ${vo
 
 // solver diagnostics must be real: add a clashing width (99) and confirm the
 // conflicting list populates (this is what the UI turns red).
-s.constrainDistanceX('Sketch', g0, 1, g0, 2, 99.0);
+const clash = s.constrainDistanceX('Sketch', g0, 1, g0, 2, 99.0);
 st = s.sketchState('Sketch');
 console.log(`after clash:    conflicting=${JSON.stringify(st.conflicting)}`);
 assert.ok(st.conflicting.length > 0, 'a clashing dimension is reported as conflicting');
+
+// delConstraint is the auto-constraint safety valve: rolling back the clashing
+// constraint must clear the conflict and restore the good, fully-constrained state.
+s.delConstraint('Sketch', clash);
+st = s.sketchState('Sketch');
+console.log(`after rollback: conflicting=${JSON.stringify(st.conflicting)} fully=${st.fully}`);
+assert.equal(st.conflicting.length, 0, 'deleting the clashing constraint clears the conflict');
+assert.equal(st.fully, true, 'sketch is fully constrained again after rollback');
+assert.ok(Math.abs(lineLen(st.geometry[0]) - 60) < 1e-6, 'geometry back to the good 60mm width');
 
 console.log('SKETCH:PASS');
 process.exit(0);
