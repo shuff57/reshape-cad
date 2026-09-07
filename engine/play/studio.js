@@ -104,6 +104,16 @@ function updateFeatureButtons() {
   });
 }
 
+// Pocket needs a drawn sketch AND a solid to cut into. Re-run wherever
+// state.sketch/state.tip could have changed — render() covers most of that
+// (Finish Sketch -> onFinish -> render(), New Body, Rect/Circle Sketch, Pad,
+// Fillet, Chamfer, Open file, Set Length all call it already); New Sketch
+// itself doesn't, but Pocket's enablement doesn't matter mid-draw.
+function updatePocketButton() {
+  const el = document.getElementById('pocket');
+  if (el) el.disabled = !(session && state.sketch && state.tip);
+}
+
 // --- pickable solid (slice 2b) -----------------------------------------------
 // Session-agnostic per SPEC: pick3d never touches the session — studio.js
 // reads session.meshFaces() and hands the RESULT into rebuild().
@@ -138,6 +148,7 @@ const pick3d = initPick3d({
     refreshTree();
     setButtons(true);
     updateFeatureButtons(); // session is ready now, but no edge is selected yet — stays disabled
+    updatePocketButton(); // ditto — no sketch drawn yet
   } catch (err) {
     log(`KERNEL LOAD FAILED: ${err.message || err}`);
   }
@@ -178,12 +189,13 @@ function render() {
     pick3d.rebuild(fm);
   } catch (e) { log(`mesh: ${e.message}`); }
   refreshTree();
+  updatePocketButton();
 }
 
 // --- buttons ---------------------------------------------------------------
 const $ = (id) => document.getElementById(id);
 function setButtons(on) {
-  ['newBody', 'rect', 'circle', 'sketchNew', 'pad', 'apply', 'save', 'open', 'pickFaces', 'pickEdges', 'fillet', 'chamfer'].forEach((id) => {
+  ['newBody', 'rect', 'circle', 'sketchNew', 'pad', 'pocket', 'apply', 'save', 'open', 'pickFaces', 'pickEdges', 'fillet', 'chamfer'].forEach((id) => {
     const el = $(id);
     if (el) el.disabled = !on; // null-safe: a restyle that drops an id won't crash init
   });
@@ -209,14 +221,26 @@ const sketchUI = initSketchMode({
   },
 });
 
+// A face picked in 3D (Faces mode) + an existing solid means "sketch on that
+// face" (for Pocket); otherwise fall back to the original flat XY sketch.
+// Either way, read the REAL created name back via lastOfType — FreeCAD
+// auto-numbers a second 'Sketch' to 'Sketch001', so the literal can't be
+// assumed once a sketch already exists in the document.
 on('sketchNew', 'click', guard(() => {
   if (!state.body) {
     session.newBody('Body');
     state.body = lastOfType('PartDesign::Body');
   }
-  const sk = session.sketchNew(state.body, 'Sketch');
-  log(`+ ${sk} (sketch mode)`);
-  sketchUI.enter(sk);
+  const onFace = state.selected?.kind === 'face' && state.tip;
+  if (onFace) {
+    const face = 'Face' + (state.selected.id + 1);
+    session.sketchNewOnFace(state.body, 'Sketch', state.tip, face);
+  } else {
+    session.sketchNew(state.body, 'Sketch');
+  }
+  state.sketch = lastOfType('Sketcher::SketchObject');
+  log(onFace ? `+ ${state.sketch} on Face ${state.selected.id + 1}` : `+ ${state.sketch} (XY)`);
+  sketchUI.enter(state.sketch);
 }));
 
 on('sketchFinish', 'click', guard(() => sketchUI.exit()));
@@ -277,10 +301,12 @@ on('pad', 'click', guard(() => {
   pick3d.rebuild(madeSolid ? fm : { faces: [], edges: [] });
   refreshTree();
   if (madeSolid) {
+    state.sketch = null; // a sketch feeds exactly ONE feature — clear it so Pad/Pocket need a fresh one
     log(`+ ${state.pad} (length ${len})`);
   } else {
     log(`✗ Pad made no solid — the profile isn't one closed loop (an open arc/line, or gaps between edges). Close the sketch or delete open geometry, then Pad again.`);
   }
+  updatePocketButton(); // state.tip / state.sketch just changed
 }));
 
 on('apply', 'click', guard(() => {
@@ -289,6 +315,26 @@ on('apply', 'click', guard(() => {
   session.setParam(state.pad, 'Length', len);
   log(`~ ${state.pad}.Length = ${len}`);
   render();
+}));
+
+// Cuts the drawn profile inward from whichever face/plane it was sketched on.
+// Mirrors the fillet/chamfer shape exactly: try the op, catch -> friendly
+// message via extractFriendlyError() (session.pocket() throws the same clean-
+// message contract on an open/invalid profile), success -> new tip + rebuild.
+on('pocket', 'click', guard(() => {
+  if (!state.sketch) return log('draw a sketch on a face first');
+  const depth = Number($('len').value);
+  try {
+    session.pocket(state.body, state.sketch, 'Pocket', depth);
+  } catch (err) {
+    return log(`✗ ${extractFriendlyError(err)}`);
+  }
+  state.tip = lastOfType('PartDesign::Pocket');
+  log(`+ pocket ${state.sketch} depth ${depth}`);
+  state.sketch = null; // consumed by the Pocket — a new cut needs a fresh face-sketch
+  pick3d.rebuild(session.meshFaces());
+  refreshTree();
+  updatePocketButton();
 }));
 
 // The bridge's fillet/chamfer now REJECT an impossible radius/size BEFORE
@@ -330,6 +376,7 @@ on('fillet', 'click', guard(() => {
   log(`+ fillet ${edge} r${r}`);
   updateSelectionReadout(null); // the tip changed under the old selection — clear it
   refreshTree();
+  updatePocketButton(); // state.tip just changed — Pocket's other operand
 }));
 
 on('chamfer', 'click', guard(() => {
@@ -346,6 +393,7 @@ on('chamfer', 'click', guard(() => {
   log(`+ chamfer ${edge} size${size}`);
   updateSelectionReadout(null);
   refreshTree();
+  updatePocketButton();
 }));
 
 // Save the live document to a real .FCStd and hand it to the browser download.
