@@ -7,6 +7,11 @@
 // so all names in scope are part of the reSHape script vocabulary: box, cylinder,
 // sphere, cone, ring, hole, holes, hollow, round, bevel, repeat, repeatAround,
 // mirror, move, turn, join, cut, keep, sketch, pull, spin, blend, param.
+// Since SPEC-S2 the vocabulary ALSO carries the official geometry names as
+// aliases of the same functions — cuboid, torus, fillet, chamfer, shell,
+// subtract, union, intersect, linearPattern, polarPattern, extrude, revolve,
+// loft — but the lesson pages below still teach the course words; teaching
+// copy migration is a later, deliberate pass, not part of that spec.
 //
 // Scope-out (stated explicitly so a future maintainer doesn't rediscover
 // the boundary). Every section is the taught surface for the Build UI. The

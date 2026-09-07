@@ -77,7 +77,7 @@
       "id": "PartDesign_Pad",
       "group": "Additive",
       "label": "Pad a selected sketch",
-      "reshape": "pull",
+      "reshape": "extrude",
       "status": "shipped",
       "reason": null
     },
@@ -85,7 +85,7 @@
       "id": "PartDesign_Revolution",
       "group": "Additive",
       "label": "Revolve a selected sketch",
-      "reshape": "spin",
+      "reshape": "revolve",
       "status": "shipped",
       "reason": null
     },
@@ -93,7 +93,7 @@
       "id": "PartDesign_AdditiveLoft",
       "group": "Additive",
       "label": "Loft a selected sketch through material to be added",
-      "reshape": "blend",
+      "reshape": "loft",
       "status": "shipped",
       "reason": null
     },
@@ -117,7 +117,7 @@
       "id": "PartDesign_AdditiveBox",
       "group": "Additive",
       "label": "Add a cube",
-      "reshape": "box",
+      "reshape": "cuboid",
       "status": "shipped",
       "reason": null
     },
@@ -157,7 +157,7 @@
       "id": "PartDesign_AdditiveTorus",
       "group": "Additive",
       "label": "Add a torus",
-      "reshape": "ring",
+      "reshape": "torus",
       "status": "shipped",
       "reason": null
     },
@@ -229,32 +229,32 @@
       "id": "PartDesign_SubtractiveBox",
       "group": "Subtractive",
       "label": "Subtract a cube",
-      "reshape": null,
-      "status": "queued",
+      "reshape": "subtract",
+      "status": "shipped",
       "reason": null
     },
     {
       "id": "PartDesign_SubtractiveCylinder",
       "group": "Subtractive",
       "label": "Subtract a cylinder",
-      "reshape": null,
-      "status": "queued",
+      "reshape": "subtract",
+      "status": "shipped",
       "reason": null
     },
     {
       "id": "PartDesign_SubtractiveSphere",
       "group": "Subtractive",
       "label": "Subtract a sphere",
-      "reshape": null,
-      "status": "queued",
+      "reshape": "subtract",
+      "status": "shipped",
       "reason": null
     },
     {
       "id": "PartDesign_SubtractiveCone",
       "group": "Subtractive",
       "label": "Subtract a cone",
-      "reshape": null,
-      "status": "queued",
+      "reshape": "subtract",
+      "status": "shipped",
       "reason": null
     },
     {
@@ -269,8 +269,8 @@
       "id": "PartDesign_SubtractiveTorus",
       "group": "Subtractive",
       "label": "Subtract a torus",
-      "reshape": null,
-      "status": "queued",
+      "reshape": "subtract",
+      "status": "shipped",
       "reason": null
     },
     {
@@ -301,7 +301,7 @@
       "id": "PartDesign_LinearPattern",
       "group": "Transformation",
       "label": "Create a linear pattern",
-      "reshape": "repeat",
+      "reshape": "linearPattern",
       "status": "shipped",
       "reason": null
     },
@@ -309,7 +309,7 @@
       "id": "PartDesign_PolarPattern",
       "group": "Transformation",
       "label": "Create a polar pattern",
-      "reshape": "repeatAround",
+      "reshape": "polarPattern",
       "status": "shipped",
       "reason": null
     },
@@ -333,7 +333,7 @@
       "id": "PartDesign_Fillet",
       "group": "Dress-up",
       "label": "Fillet the selected edges of a shape",
-      "reshape": "round",
+      "reshape": "fillet",
       "status": "shipped",
       "reason": null
     },
@@ -341,7 +341,7 @@
       "id": "PartDesign_Chamfer",
       "group": "Dress-up",
       "label": "Chamfer the selected edges of a shape",
-      "reshape": "bevel",
+      "reshape": "chamfer",
       "status": "shipped",
       "reason": null
     },
@@ -357,7 +357,7 @@
       "id": "PartDesign_Thickness",
       "group": "Dress-up",
       "label": "Hollow out a solid and set a thickness for its walls",
-      "reshape": "hollow",
+      "reshape": "shell",
       "status": "shipped",
       "reason": null
     },
@@ -365,7 +365,7 @@
       "id": "PartDesign_Boolean",
       "group": "Boolean",
       "label": "Boolean operation between two bodies",
-      "reshape": "join",
+      "reshape": "union",
       "status": "shipped",
       "reason": null
     }

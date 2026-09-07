@@ -160,12 +160,26 @@ export interface RunResult {
  * array (`Object.fromEntries(VOCABULARY.map(...))`) rather than the other
  * way around, so the two cannot drift apart.
  */
+// OFFICIAL NAMES. Every shape/operation has an OFFICIAL geometry name, which
+// is what the API teaches and what a student's variables get bound through:
+// cuboid, torus, fillet, chamfer, extrude, revolve, loft, shell, subtract,
+// union, intersect, linearPattern, polarPattern (SPEC-S2). The friendly
+// course words (box, ring, round, bevel, pull, spin, blend, hollow, cut, join,
+// keep, repeat, repeatAround) remain documented ALIASES pointing at the SAME
+// function — same reference, not a wrapper, so the two vocabularies can never
+// drift apart. Mirrors transpile.mjs's OFFICIAL_NAMES fold.
 export const VOCABULARY = [
+  // student words (course-facing, documented in the lesson pages)
   'box', 'cylinder', 'sphere', 'cone', 'ring',
   'hole', 'holes', 'hollow', 'round', 'bevel', 'repeat', 'repeatAround', 'mirror', 'move', 'turn',
   'join', 'cut', 'keep', 'draft',
   'sketch', 'pull', 'spin', 'blend',
   'param',
+  // official geometry names (API-facing; same fns as their student alias)
+  'cuboid', 'torus', 'fillet', 'chamfer',
+  'shell', 'subtract', 'union', 'intersect',
+  'linearPattern', 'polarPattern',
+  'extrude', 'revolve', 'loft',
 ] as const;
 
 export interface RunOptions {
@@ -209,7 +223,8 @@ function messageOf(err: unknown): string {
 /** Classic edit distance -- insert, delete, substitute, each cost 1. Used
  *  only to find the closest VOCABULARY word to a name a script misspelled;
  *  nothing here needs to be fast, a script's undefined names are typed by
- *  hand and there are at most 24 candidates to compare against. */
+ *  hand and the candidate set is VOCABULARY's length (37 since SPEC-S2 added
+ *  the official-name aliases) — small either way. */
 function levenshtein(a: string, b: string): number {
   const rows = a.length + 1;
   const cols = b.length + 1;
@@ -231,8 +246,9 @@ function levenshtein(a: string, b: string): number {
  * the raw engine message -- "boxx is not defined" -- which is true and
  * useless to someone who has never heard the word "defined" used that way.
  * A ReferenceError of exactly that shape gets rewritten in the house voice,
- * naming the nearest word in VOCABULARY by edit distance: there are only 24
- * candidates, so "nearest" is always cheap and, for an actual typo, always
+ * naming the nearest word in VOCABULARY by edit distance: the candidate set
+ * is small (VOCABULARY's length), so "nearest" is always cheap and, for an
+ * actual typo, always
  * the right one. Every OTHER error (a validation throw, a plain JS bug in
  * the student's own logic) passes through messageOf() unchanged -- this
  * rewrite is narrowly scoped to the one error shape a name that does not
@@ -1333,6 +1349,14 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     join, cut, keep, draft,
     sketch, pull, spin, blend,
     param,
+    // Official names: SAME reference as their student alias (SPEC-S2) — an
+    // alias that wrapped instead would drift the moment the student word's
+    // implementation changed. tsc enforces every VOCABULARY entry has a key
+    // here, both directions.
+    cuboid: box, torus: ring, fillet: round, chamfer: bevel,
+    shell: hollow, subtract: cut, union: join, intersect: keep,
+    linearPattern: repeat, polarPattern: repeatAround,
+    extrude: pull, revolve: spin, loft: blend,
   };
   const globals: Record<string, unknown> = fns;
   const names: string[] = [...VOCABULARY];
