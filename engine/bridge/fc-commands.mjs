@@ -29,6 +29,16 @@
 
 const pyStr = (s) => JSON.stringify(String(s));
 
+// A Python list literal of strings from a JS string array; each element is a
+// safe double-quoted literal (JSON.stringify), so sub-element names can't break
+// out. Throws on an empty list — a fillet/chamfer needs at least one edge.
+const pyStrList = (arr) => {
+  if (!Array.isArray(arr) || arr.length === 0) {
+    throw new TypeError('expected a non-empty array of sub-element names');
+  }
+  return '[' + arr.map(pyStr).join(', ') + ']';
+};
+
 const pyNum = (v, what) => {
   if (typeof v !== 'number' || !Number.isFinite(v)) {
     throw new TypeError(`${what}: expected a finite number, got ${JSON.stringify(v)}`);
@@ -103,6 +113,30 @@ export const emit = {
       RECT_END
     );
   },
+
+  // Fillet the picked edges of a Body's tip solid. edgeNames are FreeCAD
+  // sub-element names on `baseName` (e.g. ['Edge3','Edge7']) — the UI maps a
+  // picked 0-based edge id to "Edge{id+1}". The Fillet becomes the new tip.
+  fillet(bodyName, baseName, edgeNames, radius) {
+    return (
+      HEAD +
+      `fl = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::Fillet", "Fillet")\n` +
+      `fl.Base = (doc.getObject(${pyStr(baseName)}), ${pyStrList(edgeNames)})\n` +
+      `fl.Radius = ${pyNum(radius, 'radius')}\n` +
+      RECT_END
+    );
+  },
+
+  // Chamfer (bevel) the picked edges. Same shape as fillet but drives .Size.
+  chamfer(bodyName, baseName, edgeNames, size) {
+    return (
+      HEAD +
+      `ch = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::Chamfer", "Chamfer")\n` +
+      `ch.Base = (doc.getObject(${pyStr(baseName)}), ${pyStrList(edgeNames)})\n` +
+      `ch.Size = ${pyNum(size, 'size')}\n` +
+      RECT_END
+    );
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -138,6 +172,14 @@ export function attachCommands(session) {
   session.setParam = (objName, prop, value) => {
     run('setParam', emit.setParam(objName, prop, value));
     return objName;
+  };
+  session.fillet = (bodyName, baseName, edgeNames, radius) => {
+    run('fillet', emit.fillet(bodyName, baseName, edgeNames, radius));
+    return 'Fillet';
+  };
+  session.chamfer = (bodyName, baseName, edgeNames, size) => {
+    run('chamfer', emit.chamfer(bodyName, baseName, edgeNames, size));
+    return 'Chamfer';
   };
 
   return session;
