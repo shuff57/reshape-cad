@@ -8,6 +8,8 @@
 
 import { createFcSession } from '/bridge/fc-session.mjs';
 import { attachCommands } from '/bridge/fc-commands.mjs';
+import { attachSketchCommands } from '/bridge/fc-sketch.mjs';
+import { initSketchMode } from './sketch.js';
 
 // Track U #5 fix. The FreeCAD-web port emits "promising main" glue that reads a
 // bare `resolveGlobalSymbol` (an Emscripten dynamic-linking symbol) even though
@@ -103,7 +105,7 @@ log(`crossOriginIsolated: ${window.crossOriginIsolated}`);
     const mod = await createFreeCAD(window.Module);
     log(`kernel loaded in ${Math.round(performance.now() - t0)}ms`);
     mod.callMain(['/nonexistent-placeholder.FCStd']);
-    session = attachCommands(createFcSession(mod));
+    session = attachSketchCommands(attachCommands(createFcSession(mod)));
     session.newDocument('studio');
     log('session ready — click New Body to start');
     refreshTree();
@@ -142,7 +144,7 @@ function render() {
 // --- buttons ---------------------------------------------------------------
 const $ = (id) => document.getElementById(id);
 function setButtons(on) {
-  ['newBody', 'rect', 'circle', 'pad', 'apply', 'save', 'open'].forEach((id) => {
+  ['newBody', 'rect', 'circle', 'sketchNew', 'pad', 'apply', 'save', 'open'].forEach((id) => {
     const el = $(id);
     if (el) el.disabled = !on; // null-safe: a restyle that drops an id won't crash init
   });
@@ -153,6 +155,32 @@ setButtons(false);
 function guard(fn) {
   return () => { try { fn(); } catch (e) { log(`✗ ${e.message.split('\n')[0]}`); } };
 }
+
+// --- sketch mode -------------------------------------------------------------
+// sketch.js owns the 2D canvas + interaction; this module only owns the
+// session and the 3D view, per its initSketchMode({getSession,...}) contract.
+const sketchUI = initSketchMode({
+  getSession: () => session,
+  viewport,
+  onEnter: () => { const el = $('sketchFinish'); if (el) el.style.display = ''; },
+  onFinish: (finishedSketch) => {
+    const el = $('sketchFinish'); if (el) el.style.display = 'none';
+    if (finishedSketch) state.sketch = finishedSketch;
+    render();
+  },
+});
+
+on('sketchNew', 'click', guard(() => {
+  if (!state.body) {
+    session.newBody('Body');
+    state.body = lastOfType('PartDesign::Body');
+  }
+  const sk = session.sketchNew(state.body, 'Sketch');
+  log(`+ ${sk} (sketch mode)`);
+  sketchUI.enter(sk);
+}));
+
+on('sketchFinish', 'click', guard(() => sketchUI.exit()));
 
 on('newBody', 'click', guard(() => {
   session.newBody('Body');

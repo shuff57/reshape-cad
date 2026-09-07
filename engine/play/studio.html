@@ -141,6 +141,50 @@
     font-size:11px; color:var(--muted); background:rgba(20,23,28,.6); padding:4px 8px; border-radius:5px;
   }
 
+  /* ---------- sketch mode ---------- */
+  #right.sketching .navcube-wrap, #right.sketching .triad, #right.sketching .viewport-hint{ display:none; }
+
+  .sketch-overlay{
+    position:absolute; inset:0; z-index:5; background:var(--ground);
+    display:flex; flex-direction:column;
+  }
+  /* The `hidden` attribute must beat the display:flex author rules above/below,
+     or Finish Sketch (which sets .hidden) leaves the overlay + dim popup parked
+     over the 3D view. The UA [hidden] rule is too weak against a class rule. */
+  .sketch-overlay[hidden], .dim-input[hidden]{ display:none !important; }
+  .sketch-toolbar{
+    display:flex; align-items:center; gap:0; padding:0 12px; height:52px; flex-shrink:0;
+    background:var(--panel); border-bottom:1px solid var(--hair); overflow-x:auto;
+  }
+  .sk-group{ display:flex; align-items:center; gap:6px; padding:0 12px; border-right:1px solid var(--hair); flex-shrink:0; }
+  .sk-group:last-of-type{ border-right:none; }
+  .fbtn.small{ width:52px; height:40px; }
+  .fbtn.active{ background:var(--raised); border-color:var(--accent); }
+  .fbtn.active span{ color:var(--text); }
+
+  .dof-badge{
+    font:11px var(--font-mono); text-transform:uppercase; letter-spacing:.06em;
+    padding:5px 10px; border-radius:5px; background:var(--raised); border:1px solid var(--hair); color:var(--muted);
+    white-space:nowrap;
+  }
+  .dof-badge.dof-ok{ color:#5fbf8f; border-color:#5fbf8f; }
+  .dof-badge.dof-warn{ color:#d9a94e; border-color:#d9a94e; }
+  .dof-badge.dof-bad{ color:#e0685a; border-color:#e0685a; }
+
+  .sketch-svg{ flex:1; width:100%; height:100%; display:block; }
+  .sk-line{ stroke:var(--text); stroke-width:.6; fill:none; }
+  .sk-line-sel{ stroke:var(--accent); stroke-width:1; }
+  .sk-vertex{ fill:var(--text); }
+  .sk-vertex-sel{ fill:var(--accent); }
+  #rubberBand{ stroke:var(--accent); stroke-width:.5; opacity:.7; }
+
+  .dim-input{
+    position:absolute; top:64px; left:50%; transform:translateX(-50%); z-index:6;
+    display:flex; align-items:center; gap:8px; background:var(--raised); border:1px solid var(--hair);
+    border-radius:8px; padding:8px 10px; box-shadow:0 4px 16px rgba(0,0,0,.4);
+  }
+  .dim-input label{ display:flex; align-items:center; gap:6px; }
+
   /* ---------- status / log pane ---------- */
   #status{
     grid-area:statusbar; margin:0; padding:8px 14px; overflow:auto;
@@ -180,6 +224,15 @@
         <span>Circle Sketch</span>
       </button>
       <span class="dims"><label>r <input id="r" type="number" value="6"></label></span>
+
+      <button id="sketchNew" class="fbtn" disabled title="New Sketch — draw a constrained sketch">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19 19 5"/><circle cx="5" cy="19" r="1.4" fill="currentColor" stroke="none"/><circle cx="19" cy="5" r="1.4" fill="currentColor" stroke="none"/></svg>
+        <span>New Sketch</span>
+      </button>
+      <button id="sketchFinish" class="fbtn" style="display:none" title="Finish Sketch — exit sketch mode and hand off to Pad">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+        <span>Finish Sketch</span>
+      </button>
     </div>
 
     <div class="tgroup" aria-label="Additive features">
@@ -237,6 +290,44 @@
       <text x="6" y="52" font-size="9" fill="var(--accent)" font-family="var(--font-mono)">Z</text>
     </svg>
     <div class="viewport-hint">Drag to orbit · scroll to zoom</div>
+
+    <div id="sketchOverlay" class="sketch-overlay" hidden>
+      <div class="sketch-toolbar" aria-label="Sketch tools">
+        <div class="sk-group" aria-label="Draw tools">
+          <button id="toolLine" class="fbtn small active" title="Line — click to place points, click the start point to close the loop">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20 20 4"/></svg>
+            <span>Line</span>
+          </button>
+          <button id="toolSelect" class="fbtn small" title="Select — click a line or a point, shift-click to add">
+            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M4 4l7 16 2-7 7-2z"/></svg>
+            <span>Select</span>
+          </button>
+        </div>
+        <div class="sk-group" aria-label="Constraints">
+          <button id="cHoriz" class="btn" disabled title="Horizontal — needs 1 line">Horizontal</button>
+          <button id="cVert" class="btn" disabled title="Vertical — needs 1 line">Vertical</button>
+          <button id="cCoin" class="btn" disabled title="Coincident — needs 2 points">Coincident</button>
+          <button id="cPar" class="btn" disabled title="Parallel — needs 2 lines">Parallel</button>
+          <button id="cPerp" class="btn" disabled title="Perpendicular — needs 2 lines">Perpendicular</button>
+          <button id="cEq" class="btn" disabled title="Equal — needs 2 lines">Equal</button>
+          <button id="cDim" class="btn" disabled title="Dimension — needs 1 line">Dimension</button>
+        </div>
+        <span class="spacer"></span>
+        <span id="dofBadge" class="dof-badge">—</span>
+      </div>
+
+      <svg id="sketchSvg" class="sketch-svg" viewBox="-15 -95 110 110" preserveAspectRatio="xMidYMid meet">
+        <g id="gridLayer"></g>
+        <g id="geomLayer"></g>
+        <line id="rubberBand" class="sk-line" stroke-dasharray="1.2,1.2" hidden></line>
+      </svg>
+
+      <div id="dimInput" class="dim-input" hidden>
+        <label class="uc">Length <input id="dimValue" type="number" step="0.1" min="0.01"></label>
+        <button id="dimOk" class="btn primary">Set</button>
+        <button id="dimCancel" class="btn">Cancel</button>
+      </div>
+    </div>
   </div>
 
   <pre id="status">loading engine…</pre>
