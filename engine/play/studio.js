@@ -11,6 +11,7 @@ import { attachCommands } from '/bridge/fc-commands.mjs';
 import { attachSketchCommands } from '/bridge/fc-sketch.mjs';
 import { initSketchMode } from './sketch.js';
 import { initPick3d } from './pick3d.js';
+import { transpile } from '/script/transpile.mjs';
 
 // Track U #5 fix. The FreeCAD-web port emits "promising main" glue that reads a
 // bare `resolveGlobalSymbol` (an Emscripten dynamic-linking symbol) even though
@@ -265,7 +266,7 @@ function render() {
 // --- buttons ---------------------------------------------------------------
 const $ = (id) => document.getElementById(id);
 function setButtons(on) {
-  ['newBody', 'rect', 'circle', 'sketchNew', 'pad', 'pocket', 'revolve', 'apply', 'save', 'open', 'pickFaces', 'pickEdges', 'fillet', 'chamfer'].forEach((id) => {
+  ['newBody', 'rect', 'circle', 'sketchNew', 'pad', 'pocket', 'revolve', 'apply', 'save', 'open', 'pickFaces', 'pickEdges', 'fillet', 'chamfer', 'scriptRun'].forEach((id) => {
     const el = $(id);
     if (el) el.disabled = !on; // null-safe: a restyle that drops an id won't crash init
   });
@@ -523,6 +524,49 @@ on('chamfer', 'click', guard(() => {
   refreshTree();
   updatePocketButton();
 }));
+
+// --- script box ---------------------------------------------------------------
+// The reSHape Script path: statements in, typed commands out, executed through
+// the SAME session the toolbar uses. Each script run starts from a fresh
+// document so a re-run is deterministic (the transpiler's names are computed
+// from an empty name-space: Body, Sketch, Pad...). A transpile-time error
+// (unknown word, bad arity) never touches the document; a command-time error
+// (bridge threw) leaves the document at whatever command failed — the status
+// log names the failing statement.
+on('scriptRun', 'click', () => {
+  const src = $('scriptSrc')?.value ?? '';
+  let compiled;
+  try {
+    compiled = transpile(src);
+  } catch (err) {
+    return log(`✗ script: ${err.message}`);
+  }
+  if (compiled.commands.length === 0) return log('script: nothing to run');
+  session.newDocument('script');
+  state.body = null; state.sketch = null; state.pad = null; state.tip = null;
+  state.selectedFeature = null;
+  clearFeatureSelection();
+  let ran = 0;
+  for (const cmd of compiled.commands) {
+    try {
+      session[cmd.op](...cmd.args);
+      ran++;
+    } catch (err) {
+      log(`✗ command ${ran + 1} (${cmd.op}): ${extractFriendlyError(err)}`);
+      break;
+    }
+  }
+  if (ran === compiled.commands.length) {
+    log(`+ script ran ${ran} command${ran === 1 ? '' : 's'}`);
+  }
+  // Whatever the state, show it: the tree + mesh reflect the document as it
+  // now stands, partial run included.
+  state.body = lastOfType('PartDesign::Body');
+  state.sketch = lastOfType('Sketcher::SketchObject');
+  state.pad = lastOfType('PartDesign::Pad');
+  state.tip = null; // meshFaces() picks up the real tip in render()
+  render();
+});
 
 // Save the live document to a real .FCStd and hand it to the browser download.
 on('save', 'click', guard(() => {

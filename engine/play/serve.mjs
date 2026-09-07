@@ -30,6 +30,9 @@ const kernelBrowserRoot = resolve(here, '..', 'build', 'g5-artifacts');
 // /bridge/ -> engine/bridge (fc-session.mjs, fc-commands.mjs) so the studio
 // page can import the command bridge as ES modules over the same origin.
 const bridgeRoot = resolve(here, '..', 'bridge');
+// /script/ -> packages/script/src (transpile.mjs) — the studio's script box
+// imports the transpiler directly; it is a dependency-free ESM module.
+const scriptRoot = resolve(here, '..', '..', 'packages', 'script', 'src');
 const port = Number(process.argv[2] || 8787);
 
 const MIME = {
@@ -62,6 +65,9 @@ const server = createServer(async (req, res) => {
   if (relPath.startsWith('/bridge/')) {
     root = bridgeRoot;
     relPath = relPath.slice('/bridge'.length);
+  } else if (relPath.startsWith('/script/')) {
+    root = scriptRoot;
+    relPath = relPath.slice('/script'.length);
   } else if (relPath.startsWith('/kernel-browser/')) {
     root = kernelBrowserRoot;
     relPath = relPath.slice('/kernel-browser'.length);
