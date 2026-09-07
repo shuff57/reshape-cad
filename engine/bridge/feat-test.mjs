@@ -39,5 +39,23 @@ const chVol = s.mesh().volume;
 console.log(`chamfer: vol=${chVol}`);
 assert.ok(chVol < 24000 && chVol > 23000, `chamfer removes material (got ${chVol})`);
 
+// --- oversized fillet must fail CLEANLY, not crash the wasm kernel ---------
+// An impossible radius leaves an Invalid feature with a null shape; tessellating
+// that crashes wasm ("memory access out of bounds"). The bridge guard must
+// detect + delete it and RAISE, leaving the box intact and the kernel alive.
+s.newDocument('fail');
+s.newBody('B3');
+s.sketchRect('B3', 'Sketch', 40, 30);
+s.pad('B3', 'Sketch', 'Pad', 20);
+let threw = false;
+try { s.fillet('B3', 'Pad', ['Edge1'], 999); } catch { threw = true; }
+console.log(`oversized fillet threw=${threw}`);
+assert.ok(threw, 'oversized fillet raises instead of leaving a corrupt shape');
+// These calls would crash if the bad fillet were still present + tessellated:
+const survive = s.meshFaces('Pad');
+assert.equal(survive.faces.length, 6, 'box survives a failed fillet — kernel not crashed');
+assert.ok(Math.abs(s.mesh().volume - 24000) < 1, 'box volume intact (24000) after the failed fillet');
+console.log(`survived: faces=${survive.faces.length} vol=${s.mesh().volume}`);
+
 console.log('FEAT:PASS');
 process.exit(0);

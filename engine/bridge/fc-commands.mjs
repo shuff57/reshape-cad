@@ -117,24 +117,54 @@ export const emit = {
   // Fillet the picked edges of a Body's tip solid. edgeNames are FreeCAD
   // sub-element names on `baseName` (e.g. ['Edge3','Edge7']) — the UI maps a
   // picked 0-based edge id to "Edge{id+1}". The Fillet becomes the new tip.
+  //
+  // CRITICAL guard: an impossible fillet (radius too large for the local
+  // geometry) does NOT raise on recompute — OCCT's fillet algorithm corrupts
+  // the wasm heap DURING the failed recompute ("memory access out of bounds"),
+  // and no later removeObject can heal it: the very next tessellation crashes
+  // the browser session. Detection-after-the-fact is therefore useless; the
+  // radius must be rejected BEFORE recompute. We cap it conservatively at
+  // ~half the solid's smallest bounding-box dimension — grossly oversized
+  // radii (the crash cases) are many times over that, while normal fillets sit
+  // well under it. A radius under the cap that still fails is caught by the
+  // secondary State check (safe to read; only tessellation crashes).
   fillet(bodyName, baseName, edgeNames, radius) {
     return (
       HEAD +
+      `base = doc.getObject(${pyStr(baseName)})\n` +
+      `bb = base.Shape.BoundBox\n` +
+      `maxr = 0.49 * min(bb.XLength, bb.YLength, bb.ZLength)\n` +
+      `if ${pyNum(radius, 'radius')} > maxr:\n` +
+      `    raise ValueError('fillet radius %.3g is too large for this solid (max ~%.3g mm) — use a smaller radius' % (${pyNum(radius, 'radius')}, maxr))\n` +
       `fl = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::Fillet", "Fillet")\n` +
-      `fl.Base = (doc.getObject(${pyStr(baseName)}), ${pyStrList(edgeNames)})\n` +
+      `fl.Base = (base, ${pyStrList(edgeNames)})\n` +
       `fl.Radius = ${pyNum(radius, 'radius')}\n` +
-      RECT_END
+      `doc.recompute()\n` +
+      `if ('Invalid' in fl.State) or fl.Shape.isNull():\n` +
+      `    doc.removeObject(fl.Name)\n` +
+      `    doc.recompute()\n` +
+      `    raise ValueError('fillet failed for this edge — try a smaller radius')\n`
     );
   },
 
-  // Chamfer (bevel) the picked edges. Same shape as fillet but drives .Size.
+  // Chamfer (bevel) the picked edges. Same crash-guard + cap as fillet, driving
+  // .Size instead of .Radius.
   chamfer(bodyName, baseName, edgeNames, size) {
     return (
       HEAD +
+      `base = doc.getObject(${pyStr(baseName)})\n` +
+      `bb = base.Shape.BoundBox\n` +
+      `maxs = 0.49 * min(bb.XLength, bb.YLength, bb.ZLength)\n` +
+      `if ${pyNum(size, 'size')} > maxs:\n` +
+      `    raise ValueError('chamfer size %.3g is too large for this solid (max ~%.3g mm) — use a smaller size' % (${pyNum(size, 'size')}, maxs))\n` +
       `ch = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::Chamfer", "Chamfer")\n` +
-      `ch.Base = (doc.getObject(${pyStr(baseName)}), ${pyStrList(edgeNames)})\n` +
+      `ch.Base = (base, ${pyStrList(edgeNames)})\n` +
       `ch.Size = ${pyNum(size, 'size')}\n` +
-      RECT_END
+      `doc.recompute()\n` +
+      `if ('Invalid' in ch.State) or ch.Shape.isNull():\n` +
+      `    doc.removeObject(ch.Name)\n` +
+      `    doc.recompute()\n` +
+      `    raise ValueError('chamfer failed for this edge — try a smaller size')\n`
     );
   },
 };
