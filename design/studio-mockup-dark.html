@@ -1,0 +1,1257 @@
+<title>reSHape Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --ground:#14171c;
+    --panel:#1c2027;
+    --raised:#242a33;
+    --hairline:#2e353f;
+    --text:#d7dde5;
+    --muted:#8b95a3;
+    --accent:#5aa9e6;
+    --additive:#e0b64d;
+    --subtractive:#e0685a;
+    --good:#5fbf8f;
+    --warn:#e0b64d;
+    --crit:#e0685a;
+
+    --font-ui: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+    --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+
+    --text-xs: 11px;
+    --text-sm: 12.5px;
+    --text-md: 13.5px;
+    --text-lg: 15px;
+    --text-xl: 18px;
+
+    color-scheme: dark;
+  }
+
+  *{ box-sizing:border-box; }
+
+  html, body{ height:100%; }
+
+  body{
+    background: var(--ground);
+    color: var(--text);
+    font-family: var(--font-ui);
+    font-size: var(--text-md);
+    overflow: hidden;
+  }
+
+  button, input, select{ font-family: inherit; color: inherit; }
+
+  :focus-visible{
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+    border-radius: 2px;
+  }
+
+  [hidden]{ display:none !important; }
+
+  .uc{
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    font-size: var(--text-xs);
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  /* ---------- shell ---------- */
+
+  .app{
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 288px 1fr;
+    grid-template-rows: 48px 56px 1fr 34px 26px;
+    grid-template-areas:
+      "topbar   topbar"
+      "toolbar  toolbar"
+      "dock     viewport"
+      "doctabs  doctabs"
+      "status   status";
+    background: var(--ground);
+  }
+
+  /* ---------- top bar ---------- */
+
+  .topbar{
+    grid-area: topbar;
+    display:flex;
+    align-items:center;
+    gap:20px;
+    padding: 0 14px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .wordmark{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-weight:700;
+    font-size: var(--text-lg);
+    letter-spacing:.01em;
+    white-space:nowrap;
+  }
+  .wordmark .mark{
+    width:22px; height:22px;
+    border-radius:5px;
+    background: linear-gradient(135deg, var(--accent), #3d7fb8);
+    display:flex; align-items:center; justify-content:center;
+    color:#0d1116;
+    font-size:12px; font-weight:700;
+  }
+  .wordmark .re{ color: var(--muted); font-weight:500; }
+
+  .mode-switch{
+    display:flex;
+    background: var(--raised);
+    border:1px solid var(--hairline);
+    border-radius:7px;
+    padding:2px;
+    gap:2px;
+    margin: 0 auto;
+  }
+  .mode-switch button{
+    appearance:none; border:none; background:transparent; cursor:pointer;
+    padding:6px 16px;
+    font-size: var(--text-sm);
+    font-weight:600;
+    color: var(--muted);
+    border-radius:5px;
+    transition: background .12s ease, color .12s ease;
+  }
+  .mode-switch button:hover{ color: var(--text); }
+  .mode-switch button[aria-pressed="true"]{
+    background: var(--accent);
+    color:#0d1116;
+  }
+
+  .view-controls{
+    display:flex; align-items:center; gap:4px;
+  }
+  .view-controls .sep{ width:1px; height:20px; background:var(--hairline); margin:0 4px; }
+
+  .icon-btn{
+    appearance:none; border:1px solid transparent; background:transparent;
+    color: var(--muted);
+    width:30px; height:30px;
+    border-radius:6px;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    transition: background .12s ease, color .12s ease, border-color .12s ease;
+  }
+  .icon-btn svg{ width:16px; height:16px; }
+  .icon-btn:hover{ background: var(--raised); color: var(--text); border-color: var(--hairline); }
+  .icon-btn.letter{ font-size:11px; font-weight:700; font-family:var(--font-mono); }
+
+  /* ---------- feature toolbar ---------- */
+
+  .toolbar{
+    grid-area: toolbar;
+    background: var(--panel);
+    border-bottom: 1px solid var(--hairline);
+    display:flex;
+    align-items:stretch;
+    overflow-x:auto;
+    overflow-y:hidden;
+  }
+  .toolbar-row{
+    display:flex;
+    align-items:center;
+    padding: 4px 10px;
+    gap: 2px;
+    width:100%;
+  }
+  .tgroup{
+    display:flex; align-items:center; gap:2px;
+    padding: 0 8px;
+    border-right: 1px solid var(--hairline);
+    height:100%;
+  }
+  .tgroup:last-child{ border-right:none; }
+
+  .fbtn{
+    appearance:none; border:1px solid transparent; background:transparent;
+    cursor:pointer;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:3px;
+    width:56px; height:46px;
+    border-radius:6px;
+    color: var(--text);
+    transition: background .12s ease, border-color .12s ease;
+  }
+  .fbtn svg{ width:19px; height:19px; }
+  .fbtn span{ font-size:9.5px; line-height:1; color:var(--muted); white-space:nowrap; }
+  .fbtn:hover{ background: var(--raised); border-color: var(--hairline); }
+  .fbtn:hover span{ color: var(--text); }
+  .fbtn.additive svg{ color: var(--additive); }
+  .fbtn.subtractive svg{ color: var(--subtractive); }
+  .fbtn.neutral svg{ color: var(--muted); }
+  .fbtn.active{ background: var(--raised); border-color: var(--accent); }
+
+  .fbtn.ghost{ opacity:.4; cursor:default; }
+  .fbtn.ghost:hover{ background:transparent; border-color:transparent; }
+
+  .toolbar-note{
+    color: var(--muted);
+    font-size: var(--text-sm);
+    padding-left: 10px;
+    white-space: nowrap;
+  }
+
+  /* ---------- left dock ---------- */
+
+  .dock{
+    grid-area: dock;
+    background: var(--panel);
+    border-right: 1px solid var(--hairline);
+    display:flex;
+    flex-direction:column;
+    min-width:0;
+  }
+
+  .dock-panel{
+    display:flex;
+    flex-direction:column;
+    min-height:0;
+  }
+  .dock-panel.tree{ flex: 1.35; border-bottom: 1px solid var(--hairline); }
+  .dock-panel.props{ flex: 1; }
+
+  .dock-header{
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--hairline);
+    flex-shrink:0;
+  }
+
+  .tree-body{
+    overflow-y:auto;
+    flex:1;
+    padding: 6px 0;
+  }
+
+  .trow{
+    display:flex; align-items:center; gap:6px;
+    padding: 4px 10px 4px 0;
+    cursor:pointer;
+    border-left: 2px solid transparent;
+    color: var(--text);
+    font-size: var(--text-sm);
+  }
+  .trow:hover{ background: rgba(255,255,255,.03); }
+  .trow.selected{
+    background: rgba(90,169,230,.14);
+    border-left-color: var(--accent);
+  }
+  .trow.dimmed{ color: var(--muted); }
+  .trow.dimmed .tname{ text-decoration: line-through; text-decoration-color: var(--hairline); }
+
+  .trow .indent{ flex-shrink:0; }
+  .trow .disclosure{
+    width:12px; text-align:center; color: var(--muted); font-size:9px; flex-shrink:0;
+  }
+  .trow .ficon{ width:14px; height:14px; flex-shrink:0; }
+  .trow .ficon svg{ width:100%; height:100%; }
+  .trow .tname{ flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .trow .eye{
+    flex-shrink:0; width:20px; height:20px; border-radius:4px;
+    display:flex; align-items:center; justify-content:center;
+    color: var(--muted); background:transparent; border:none; cursor:pointer;
+  }
+  .trow .eye:hover{ background: var(--raised); color: var(--text); }
+  .trow .eye svg{ width:13px; height:13px; }
+  .trow.dimmed .eye{ color: var(--hairline); }
+
+  .lvl-0{ padding-left:10px; font-weight:600; }
+  .lvl-1{ padding-left:26px; }
+  .lvl-2{ padding-left:42px; font-size: var(--text-xs); color: var(--muted); }
+
+  .rollback{
+    position:relative;
+    margin: 6px 10px 6px 26px;
+    height:0;
+    border-top: 1px dashed var(--accent);
+    opacity:.75;
+  }
+  .rollback .tip-tag{
+    position:absolute; right:-2px; top:-8px;
+    background: var(--accent);
+    color:#0d1116;
+    font-size:9px; font-weight:700; letter-spacing:.04em;
+    padding:1px 5px;
+    border-radius:3px;
+  }
+  .rollback .handle{
+    position:absolute; left:-6px; top:-4px;
+    width:9px; height:9px; border-radius:2px;
+    background: var(--accent);
+    box-shadow: 0 0 0 2px var(--panel);
+  }
+
+  .tabs{
+    display:flex; gap:2px; padding: 6px 10px 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .ptab{
+    appearance:none; border:none; background:transparent; cursor:pointer;
+    padding:6px 12px;
+    font-size: var(--text-xs);
+    font-weight:600; letter-spacing:.05em; text-transform:uppercase;
+    color: var(--muted);
+    border-bottom: 2px solid transparent;
+  }
+  .ptab:hover{ color: var(--text); }
+  .ptab[aria-selected="true"]{ color: var(--text); border-bottom-color: var(--accent); }
+
+  .prop-title{
+    padding: 8px 12px 2px;
+    font-size: var(--text-sm);
+    font-weight:600;
+    color: var(--text);
+  }
+  .prop-title .sub{ color: var(--muted); font-weight:400; margin-left:6px; }
+
+  .prop-list{
+    overflow-y:auto;
+    flex:1;
+    padding: 4px 0 10px;
+  }
+  .prow{
+    display:grid; grid-template-columns: 40% 60%;
+    padding: 4px 12px;
+    font-size: var(--text-sm);
+    border-bottom: 1px solid rgba(255,255,255,.02);
+  }
+  .prow .plabel{ color: var(--muted); }
+  .prow .pvalue{ font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text); text-align:right; }
+  .prow .pvalue.bool-false{ color: var(--subtractive); }
+  .prow .pvalue.bool-true{ color: var(--good); }
+
+  /* ---------- viewport ---------- */
+
+  .viewport{
+    grid-area: viewport;
+    position:relative;
+    background: radial-gradient(ellipse at 50% 40%, #1a1e25 0%, #14171c 70%);
+    overflow:hidden;
+  }
+  #scene-canvas{ position:absolute; inset:0; width:100%; height:100%; display:block; cursor:grab; }
+  #scene-canvas:active{ cursor:grabbing; }
+
+  .viewport-fallback{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .viewport-fallback svg{ width:min(60%,520px); height:auto; }
+
+  /* task panel */
+  .task-panel{
+    position:absolute; top:14px; left:14px;
+    width:236px;
+    background: var(--panel);
+    border: 1px solid var(--hairline);
+    border-radius:8px;
+    box-shadow: 0 10px 28px rgba(0,0,0,.45);
+    overflow:hidden;
+    z-index:5;
+  }
+  .task-head{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 9px 12px;
+    background: var(--raised);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .task-head .task-title{ font-size: var(--text-sm); font-weight:600; }
+  .task-head .task-close{
+    width:18px; height:18px; border-radius:4px; border:none; background:transparent;
+    color: var(--muted); cursor:pointer; display:flex; align-items:center; justify-content:center;
+  }
+  .task-head .task-close:hover{ background: var(--panel); color: var(--text); }
+  .task-body{ padding: 12px; display:flex; flex-direction:column; gap:10px; }
+  .field{ display:flex; flex-direction:column; gap:4px; }
+  .field label{ font-size: var(--text-xs); color: var(--muted); }
+  .field input[type="text"], .field select{
+    background: var(--raised);
+    border: 1px solid var(--hairline);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    padding: 6px 8px;
+    border-radius: 5px;
+    width:100%;
+  }
+  .field select{ font-family: var(--font-ui); }
+  .checkfield{
+    display:flex; align-items:center; gap:7px;
+    font-size: var(--text-sm);
+  }
+  .checkfield input{ accent-color: var(--accent); width:14px; height:14px; }
+  .task-actions{
+    display:flex; justify-content:flex-end; gap:8px;
+    padding: 10px 12px; border-top: 1px solid var(--hairline);
+    background: rgba(255,255,255,.015);
+  }
+  .btn{
+    appearance:none; cursor:pointer; border-radius:6px;
+    padding: 6px 14px;
+    font-size: var(--text-sm); font-weight:600;
+    border: 1px solid var(--hairline);
+    background: var(--raised);
+    color: var(--text);
+  }
+  .btn:hover{ background:#2b323d; }
+  .btn.primary{ background: var(--accent); border-color: var(--accent); color:#0d1116; }
+  .btn.primary:hover{ filter: brightness(1.08); }
+
+  /* nav cube */
+  .navcube-wrap{
+    position:absolute; top:16px; right:16px;
+    display:flex; flex-direction:column; align-items:center; gap:6px;
+    z-index:4;
+  }
+  .navcube-scene{ width:64px; height:64px; perspective: 340px; }
+  .navcube{
+    position:relative; width:100%; height:100%;
+    transform-style: preserve-3d;
+    transform: rotateX(-18deg) rotateY(38deg);
+  }
+  .navcube .face{
+    position:absolute; width:64px; height:64px;
+    background: var(--raised);
+    border: 1px solid var(--hairline);
+    display:flex; align-items:center; justify-content:center;
+    font-size:9px; font-weight:600; letter-spacing:.06em;
+    color: var(--muted);
+    cursor:pointer;
+  }
+  .navcube .face:hover{ color: var(--text); background:#2b323d; }
+  .navcube .face.top{ transform: rotateX(90deg) translateZ(32px); }
+  .navcube .face.front{ transform: translateZ(32px); }
+  .navcube .face.right{ transform: rotateY(90deg) translateZ(32px); }
+  .navcube-home{
+    width:22px; height:22px; border-radius:5px;
+    background: var(--raised); border:1px solid var(--hairline);
+    color: var(--muted); display:flex; align-items:center; justify-content:center; cursor:pointer;
+  }
+  .navcube-home:hover{ color:var(--text); background:#2b323d; }
+  .navcube-home svg{ width:12px; height:12px; }
+
+  /* origin triad */
+  .triad{
+    position:absolute; bottom:16px; right:16px;
+    width:60px; height:60px;
+    z-index:4;
+    opacity:.9;
+  }
+
+  .viewport-hint{
+    position:absolute; bottom:14px; left:14px;
+    font-size: var(--text-xs);
+    color: var(--muted);
+    background: rgba(20,23,28,.6);
+    padding: 4px 8px;
+    border-radius: 5px;
+    z-index:3;
+    pointer-events:none;
+  }
+
+  /* ---------- doc tabs ---------- */
+
+  .doctabs{
+    grid-area: doctabs;
+    background: var(--panel);
+    border-bottom: 1px solid var(--hairline);
+    display:flex; align-items:flex-end;
+    padding: 0 8px;
+    gap:2px;
+  }
+  .dtab{
+    appearance:none; border:1px solid var(--hairline); border-bottom:none;
+    background: var(--ground);
+    color: var(--muted);
+    font-size: var(--text-sm);
+    padding: 6px 12px 6px 10px;
+    border-radius: 6px 6px 0 0;
+    display:flex; align-items:center; gap:6px;
+    cursor:pointer;
+    margin-bottom:-1px;
+  }
+  .dtab svg{ width:12px; height:12px; opacity:.7; }
+  .dtab[aria-selected="true"]{
+    background: var(--raised);
+    color: var(--text);
+    border-color: var(--hairline);
+  }
+  .dtab .dot{ color: var(--warn); font-weight:700; }
+
+  /* ---------- status bar ---------- */
+
+  .status{
+    grid-area: status;
+    background: var(--raised);
+    border-top: 1px solid var(--hairline);
+    display:flex; align-items:center;
+    padding: 0 12px;
+    font-size: var(--text-xs);
+    color: var(--muted);
+    gap: 16px;
+  }
+  .status .hint{ flex:1; color: var(--text); min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .status .navstyle{
+    display:flex; align-items:center; gap:4px;
+    padding: 2px 8px;
+    border: 1px solid var(--hairline);
+    border-radius: 4px;
+    background: var(--panel);
+    color: var(--muted);
+  }
+  .status .navstyle svg{ width:9px; height:9px; }
+  .status .bbox{ font-family: var(--font-mono); color: var(--text); white-space:nowrap; }
+
+  @media (prefers-reduced-motion: reduce){
+    * { transition-duration: 0.001ms !important; animation-duration: 0.001ms !important; }
+  }
+
+  /* narrow safety: let toolbar/tree scroll rather than break layout */
+  @media (max-width: 900px){
+    .app{ grid-template-columns: 236px 1fr; }
+    .fbtn{ width:48px; }
+  }
+</style>
+
+<div class="app" data-mode="model">
+
+  <!-- ============ 1. TOP BAR ============ -->
+  <header class="topbar">
+    <div class="wordmark">
+      <span class="mark">rS</span>
+      <span><span class="re">re</span>SHape Studio</span>
+    </div>
+
+    <div class="mode-switch" role="group" aria-label="Workbench mode">
+      <button type="button" data-mode-btn="model" aria-pressed="true">Model</button>
+      <button type="button" data-mode-btn="sketch" aria-pressed="false">Sketch</button>
+      <button type="button" data-mode-btn="draft" aria-pressed="false">Draft</button>
+    </div>
+
+    <div class="view-controls">
+      <button class="icon-btn" title="Fit all">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 9V5a1 1 0 0 1 1-1h4M20 9V5a1 1 0 0 0-1-1h-4M4 15v4a1 1 0 0 0 1 1h4M20 15v4a1 1 0 0 1-1 1h-4"/>
+        </svg>
+      </button>
+      <button class="icon-btn" title="Isometric view">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3 20 7.5v9L12 21 4 16.5v-9z"/><path d="M12 12V3M12 12 4 7.5M12 12l8-4.5"/>
+        </svg>
+      </button>
+      <span class="sep"></span>
+      <button class="icon-btn letter" title="Front view">F</button>
+      <button class="icon-btn letter" title="Top view">T</button>
+      <button class="icon-btn letter" title="Right view">R</button>
+      <span class="sep"></span>
+      <button class="icon-btn" title="Measure">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 16 16 4"/><path d="M4 16l3 3M8 12l3 3M12 8l3 3"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============ 2. FEATURE TOOLBAR ============ -->
+  <nav class="toolbar" aria-label="Feature tools">
+
+    <div class="toolbar-row" id="toolbar-model">
+      <div class="tgroup" aria-label="Additive features">
+        <button class="fbtn additive active" data-feature="Pad" title="Pad — extrude a sketch into a solid">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="12" width="14" height="7" rx="1"/><path d="M12 10V3"/><path d="M8.5 6.5 12 3l3.5 3.5"/></svg>
+          <span>Pad</span>
+        </button>
+        <button class="fbtn additive" data-feature="Revolve" title="Revolve — spin a sketch around an axis">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="6"/><path d="M12 3a9 9 0 0 1 8 4.5"/><path d="M20 4v4h-4"/></svg>
+          <span>Revolve</span>
+        </button>
+        <button class="fbtn additive" data-feature="Additive Loft" title="Additive Loft — blend between profiles">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="12" height="4" rx="1"/><rect x="4" y="16" width="16" height="4" rx="1"/><path d="M8 8 6 16M16 8l2 8"/></svg>
+          <span>Loft</span>
+        </button>
+        <button class="fbtn additive" data-feature="Additive Pipe" title="Additive Pipe — sweep a profile along a path">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5.5" rx="6" ry="2.2"/><path d="M6 5.5v9a6 2.2 0 0 0 12 0v-9"/></svg>
+          <span>Pipe</span>
+        </button>
+      </div>
+
+      <div class="tgroup" aria-label="Subtractive features">
+        <button class="fbtn subtractive" data-feature="Pocket" title="Pocket — cut a sketch into the solid">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="14" height="7" rx="1"/><path d="M12 14v7"/><path d="M8.5 17.5 12 21l3.5-3.5"/></svg>
+          <span>Pocket</span>
+        </button>
+        <button class="fbtn subtractive" data-feature="Hole" title="Hole — drill a standard hole">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2.4"/></svg>
+          <span>Hole</span>
+        </button>
+        <button class="fbtn subtractive" data-feature="Groove" title="Groove — cut a revolved channel">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="7.5"/><path d="M12 7.5v4.5l3.2 3.2"/></svg>
+          <span>Groove</span>
+        </button>
+        <button class="fbtn subtractive" data-feature="Subtractive Loft" title="Subtractive Loft — cut a blended volume">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="12" height="4" rx="1"/><rect x="4" y="16" width="16" height="4" rx="1"/><path d="M8.5 12h7"/></svg>
+          <span>Loft</span>
+        </button>
+      </div>
+
+      <div class="tgroup" aria-label="Dress-up features">
+        <button class="fbtn neutral" data-feature="Fillet" title="Fillet — round selected edges">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10a6 6 0 0 1 6-6h10"/></svg>
+          <span>Fillet</span>
+        </button>
+        <button class="fbtn neutral" data-feature="Chamfer" title="Chamfer — bevel selected edges">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V8l4-4h12v16z"/></svg>
+          <span>Chamfer</span>
+        </button>
+        <button class="fbtn neutral" data-feature="Draft" title="Draft — angle a face for molding">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18h12l-3-12H9z"/></svg>
+          <span>Draft</span>
+        </button>
+      </div>
+
+      <div class="tgroup" aria-label="Transform features" style="border-right:none;">
+        <button class="fbtn neutral" data-feature="Mirror" title="Mirror — copy features across a plane">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4 5 12l6 8"/><path d="M13 4l6 8-6 8"/><path d="M12 3v18" stroke-dasharray="2 2.4"/></svg>
+          <span>Mirror</span>
+        </button>
+        <button class="fbtn neutral" data-feature="Linear Pattern" title="Linear Pattern — repeat along a direction">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="9" width="5" height="6"/><rect x="9.5" y="9" width="5" height="6" opacity=".6"/><rect x="16.5" y="9" width="5" height="6" opacity=".3"/></svg>
+          <span>Linear</span>
+        </button>
+        <button class="fbtn neutral" data-feature="Polar Pattern" title="Polar Pattern — repeat around an axis">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8" stroke-dasharray="2 3"/><circle cx="12" cy="4" r="1.5" fill="currentColor" stroke="none"/><circle cx="19" cy="14" r="1.3" fill="currentColor" stroke="none" opacity=".6"/><circle cx="5" cy="14" r="1.3" fill="currentColor" stroke="none" opacity=".6"/></svg>
+          <span>Polar</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="toolbar-row" id="toolbar-sketch" hidden>
+      <div class="tgroup" aria-label="Sketch geometry">
+        <button class="fbtn neutral" data-sketch-tool="Line" title="Line">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20 20 4"/></svg>
+          <span>Line</span>
+        </button>
+        <button class="fbtn neutral" data-sketch-tool="Rectangle" title="Rectangle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="16" height="12" rx="1"/></svg>
+          <span>Rectangle</span>
+        </button>
+        <button class="fbtn neutral" data-sketch-tool="Circle" title="Circle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/></svg>
+          <span>Circle</span>
+        </button>
+        <button class="fbtn neutral" data-sketch-tool="Arc" title="Arc">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16a8 8 0 0 1 16 0"/></svg>
+          <span>Arc</span>
+        </button>
+      </div>
+      <div class="tgroup" aria-label="Sketch constraints" style="border-right:none;">
+        <button class="fbtn neutral" data-sketch-tool="Constraint" title="Constrain distance">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16"/><path d="M4 8v8M20 8v8"/></svg>
+          <span>Constrain</span>
+        </button>
+      </div>
+      <div class="toolbar-note">Editing on the XY plane</div>
+    </div>
+
+    <div class="toolbar-row" id="toolbar-draft" hidden>
+      <div class="tgroup" aria-label="Draft tools" style="border-right:none;">
+        <button class="fbtn ghost" tabindex="-1" title="Draft line (coming soon)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20 20 4"/></svg>
+          <span>Line</span>
+        </button>
+        <button class="fbtn ghost" tabindex="-1" title="Draft circle (coming soon)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/></svg>
+          <span>Circle</span>
+        </button>
+        <button class="fbtn ghost" tabindex="-1" title="Draft text (coming soon)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6h12M12 6v12"/></svg>
+          <span>Text</span>
+        </button>
+      </div>
+      <div class="toolbar-note">2D annotation tools — coming soon</div>
+    </div>
+
+  </nav>
+
+  <!-- ============ 3. LEFT DOCK ============ -->
+  <aside class="dock">
+
+    <section class="dock-panel tree">
+      <div class="dock-header"><span class="uc">Model tree</span></div>
+      <div class="tree-body" id="tree-body">
+        <div class="trow lvl-0" data-select="Body" data-icon="body">
+          <span class="disclosure">▾</span>
+          <span class="ficon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3 20 7.5v9L12 21 4 16.5v-9z"/></svg>
+          </span>
+          <span class="tname">Body</span>
+          <button class="eye" data-eye title="Toggle visibility">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="2.6"/></svg>
+          </button>
+        </div>
+
+        <div class="trow lvl-1" data-select="Origin" data-icon="origin">
+          <span class="disclosure">▸</span>
+          <span class="ficon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 20V4M12 4 8 8M12 4l4 4"/><path d="M4 12h10M14 12l-3-3M14 12l-3 3"/></svg>
+          </span>
+          <span class="tname">Origin</span>
+          <button class="eye" data-eye title="Toggle visibility">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z" opacity=".35"/></svg>
+          </button>
+        </div>
+
+        <div class="trow lvl-1" data-select="Pad" data-icon="additive">
+          <span class="disclosure">▾</span>
+          <span class="ficon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--additive)" stroke-width="1.9"><rect x="5" y="12" width="14" height="7" rx="1"/><path d="M12 10V3"/></svg>
+          </span>
+          <span class="tname">Pad</span>
+          <button class="eye" data-eye title="Toggle visibility">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="2.6"/></svg>
+          </button>
+        </div>
+        <div class="trow lvl-2" data-select="Sketch" data-icon="sketch">
+          <span class="disclosure"></span>
+          <span class="ficon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="4" width="16" height="16" rx="1.5" stroke-dasharray="2.4 2"/></svg>
+          </span>
+          <span class="tname">Sketch</span>
+          <button class="eye" data-eye title="Toggle visibility">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z" opacity=".35"/></svg>
+          </button>
+        </div>
+
+        <div class="trow lvl-1" data-select="Pocket" data-icon="subtractive">
+          <span class="disclosure">▾</span>
+          <span class="ficon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--subtractive)" stroke-width="1.9"><rect x="5" y="5" width="14" height="7" rx="1"/><path d="M12 14v7"/></svg>
+          </span>
+          <span class="tname">Pocket</span>
+          <button class="eye" data-eye title="Toggle visibility">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="2.6"/></svg>
+          </button>
+        </div>
+        <div class="trow lvl-2" data-select="Sketch001" data-icon="sketch">
+          <span class="disclosure"></span>
+          <span class="ficon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="4" width="16" height="16" rx="1.5" stroke-dasharray="2.4 2"/></svg>
+          </span>
+          <span class="tname">Sketch001</span>
+          <button class="eye" data-eye title="Toggle visibility">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z" opacity=".35"/></svg>
+          </button>
+        </div>
+
+        <div class="trow lvl-1" data-select="Pocket001" data-icon="subtractive">
+          <span class="disclosure">▾</span>
+          <span class="ficon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--subtractive)" stroke-width="1.9"><rect x="5" y="5" width="14" height="7" rx="1"/><path d="M12 14v7"/></svg>
+          </span>
+          <span class="tname">Pocket001</span>
+          <button class="eye" data-eye title="Toggle visibility">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="2.6"/></svg>
+          </button>
+        </div>
+        <div class="trow lvl-2" data-select="Sketch003" data-icon="sketch">
+          <span class="disclosure"></span>
+          <span class="ficon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="4" width="16" height="16" rx="1.5" stroke-dasharray="2.4 2"/></svg>
+          </span>
+          <span class="tname">Sketch003</span>
+          <button class="eye" data-eye title="Toggle visibility">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z" opacity=".35"/></svg>
+          </button>
+        </div>
+
+        <div class="trow lvl-1" data-select="Pocket002" data-icon="subtractive">
+          <span class="disclosure">▾</span>
+          <span class="ficon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--subtractive)" stroke-width="1.9"><rect x="5" y="5" width="14" height="7" rx="1"/><path d="M12 14v7"/></svg>
+          </span>
+          <span class="tname">Pocket002</span>
+          <button class="eye" data-eye title="Toggle visibility">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="2.6"/></svg>
+          </button>
+        </div>
+        <div class="trow lvl-2" data-select="Sketch002" data-icon="sketch">
+          <span class="disclosure"></span>
+          <span class="ficon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="4" width="16" height="16" rx="1.5" stroke-dasharray="2.4 2"/></svg>
+          </span>
+          <span class="tname">Sketch002</span>
+          <button class="eye" data-eye title="Toggle visibility">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z" opacity=".35"/></svg>
+          </button>
+        </div>
+
+        <div class="rollback" title="Rollback bar — drag to roll the model back to an earlier feature">
+          <span class="handle"></span>
+          <span class="tip-tag">tip</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="dock-panel props">
+      <div class="tabs" role="tablist" aria-label="Property editor">
+        <button class="ptab" role="tab" aria-selected="false" data-ptab="view">View</button>
+        <button class="ptab" role="tab" aria-selected="true" data-ptab="data">Data</button>
+      </div>
+      <div class="prop-title">Pad <span class="sub">PartDesign::Pad</span></div>
+      <div class="prop-list" id="prop-list">
+        <div class="prow"><span class="plabel">Length</span><span class="pvalue">10 mm</span></div>
+        <div class="prow"><span class="plabel">Type</span><span class="pvalue">Dimension</span></div>
+        <div class="prow"><span class="plabel">Direction</span><span class="pvalue">Normal</span></div>
+        <div class="prow"><span class="plabel">Midplane</span><span class="pvalue bool-false">false</span></div>
+        <div class="prow"><span class="plabel">Reversed</span><span class="pvalue bool-false">false</span></div>
+      </div>
+    </section>
+
+  </aside>
+
+  <!-- ============ 4. 3D VIEWPORT ============ -->
+  <main class="viewport" id="viewport">
+    <canvas id="scene-canvas" aria-label="3D model view of Bracket"></canvas>
+
+    <div class="viewport-fallback" id="viewport-fallback" hidden>
+      <svg viewBox="0 0 400 300" fill="none">
+        <g stroke="#5b6472" stroke-width="1.5" stroke-linejoin="round">
+          <polygon points="60,180 60,80 150,40 260,80 260,180 150,220" fill="#2a3140"/>
+          <polygon points="60,80 150,40 260,80 150,120" fill="#333c4d"/>
+          <polygon points="260,80 260,180 150,220 150,120" fill="#232936"/>
+          <polygon points="150,120 150,220 60,180 60,80" fill="#2a3140"/>
+          <ellipse cx="230" cy="120" rx="26" ry="15" fill="#333c4d"/>
+          <ellipse cx="230" cy="120" rx="12" ry="7" fill="#171b22"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="task-panel" id="task-panel">
+      <div class="task-head">
+        <span class="task-title" id="task-title">Pad</span>
+        <button class="task-close" id="task-close" title="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 5l14 14M19 5 5 19"/></svg>
+        </button>
+      </div>
+      <div class="task-body" id="task-body">
+        <div class="field">
+          <label for="f-length">Length</label>
+          <input type="text" id="f-length" value="10 mm">
+        </div>
+        <div class="field">
+          <label for="f-type">Type</label>
+          <select id="f-type">
+            <option>Dimension</option>
+            <option>Through all</option>
+            <option>Up to face</option>
+            <option>Two dimensions</option>
+          </select>
+        </div>
+        <label class="checkfield"><input type="checkbox"> Midplane</label>
+        <label class="checkfield"><input type="checkbox"> Reversed</label>
+      </div>
+      <div class="task-actions">
+        <button class="btn" id="task-cancel">Cancel</button>
+        <button class="btn primary" id="task-ok">OK</button>
+      </div>
+    </div>
+
+    <div class="navcube-wrap">
+      <div class="navcube-scene">
+        <div class="navcube" id="navcube">
+          <div class="face top" data-view="top">TOP</div>
+          <div class="face front" data-view="front">FRONT</div>
+          <div class="face right" data-view="right">RIGHT</div>
+        </div>
+      </div>
+      <button class="navcube-home" title="Reset view">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11 12 4l8 7"/><path d="M6 10v9h12v-9"/></svg>
+      </button>
+    </div>
+
+    <svg class="triad" viewBox="0 0 60 60" aria-hidden="true">
+      <g stroke-width="2" stroke-linecap="round">
+        <line x1="30" y1="30" x2="52" y2="30" stroke="var(--crit)"/>
+        <line x1="30" y1="30" x2="30" y2="8" stroke="var(--good)"/>
+        <line x1="30" y1="30" x2="14" y2="46" stroke="var(--accent)"/>
+      </g>
+      <text x="55" y="33" font-size="9" fill="var(--crit)" font-family="var(--font-mono)">X</text>
+      <text x="27" y="6" font-size="9" fill="var(--good)" font-family="var(--font-mono)">Y</text>
+      <text x="6" y="52" font-size="9" fill="var(--accent)" font-family="var(--font-mono)">Z</text>
+    </svg>
+
+    <div class="viewport-hint">Drag to orbit · scroll to zoom</div>
+  </main>
+
+  <!-- ============ 5. DOC TABS + STATUS BAR ============ -->
+  <div class="doctabs">
+    <button class="dtab" aria-selected="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3 20 7.5v9L12 21 4 16.5v-9z"/></svg>
+      Start
+    </button>
+    <button class="dtab" aria-selected="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3 20 7.5v9L12 21 4 16.5v-9z"/></svg>
+      Bracket<span class="dot">*</span>
+    </button>
+  </div>
+
+  <div class="status">
+    <span class="hint" id="status-hint">Pad selected</span>
+    <span class="navstyle" title="Navigation style">
+      CAD
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </span>
+    <span class="bbox" id="status-bbox">387.77 mm &times; 194.19 mm &times; 40.00 mm</span>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" integrity="sha512-dLxUelApnYxpLt6K2iomGngnHO83iUvZytA3YjDUCjT0HDOHKXnVYdf3hU4JjM8uEhxf9nD1/ey98U3t2vZ0qQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+(function(){
+  "use strict";
+
+  var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------------- mode switch ---------------- */
+  var app = document.querySelector(".app");
+  var modeBtns = document.querySelectorAll("[data-mode-btn]");
+  var rows = {
+    model: document.getElementById("toolbar-model"),
+    sketch: document.getElementById("toolbar-sketch"),
+    draft: document.getElementById("toolbar-draft")
+  };
+  modeBtns.forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var mode = btn.getAttribute("data-mode-btn");
+      modeBtns.forEach(function(b){ b.setAttribute("aria-pressed", b === btn ? "true" : "false"); });
+      Object.keys(rows).forEach(function(key){ rows[key].hidden = key !== mode; });
+      app.setAttribute("data-mode", mode);
+    });
+  });
+
+  /* ---------------- feature toolbar -> task panel ---------------- */
+  var FORMS = {
+    "Pad": [
+      {type:"text", label:"Length", value:"10 mm"},
+      {type:"select", label:"Type", options:["Dimension","Through all","Up to face","Two dimensions"]},
+      {type:"check", label:"Midplane"},
+      {type:"check", label:"Reversed"}
+    ],
+    "Revolve": [
+      {type:"text", label:"Angle", value:"360 deg"},
+      {type:"text", label:"Axis", value:"Sketch axis"},
+      {type:"check", label:"Reversed"}
+    ],
+    "Additive Loft": [
+      {type:"text", label:"Sections", value:"2 selected"},
+      {type:"check", label:"Ruled"},
+      {type:"check", label:"Closed"}
+    ],
+    "Additive Pipe": [
+      {type:"text", label:"Profile", value:"Sketch"},
+      {type:"text", label:"Path", value:"Sketch001"},
+      {type:"select", label:"Transition", options:["Right corner","Round corner"]}
+    ],
+    "Pocket": [
+      {type:"text", label:"Length", value:"5 mm"},
+      {type:"select", label:"Type", options:["Dimension","Through all","Up to face"]},
+      {type:"check", label:"Reversed"}
+    ],
+    "Hole": [
+      {type:"text", label:"Diameter", value:"6 mm"},
+      {type:"text", label:"Depth", value:"12 mm"},
+      {type:"check", label:"Threaded"}
+    ],
+    "Groove": [
+      {type:"text", label:"Angle", value:"360 deg"},
+      {type:"check", label:"Reversed"}
+    ],
+    "Subtractive Loft": [
+      {type:"text", label:"Sections", value:"2 selected"},
+      {type:"check", label:"Ruled"}
+    ],
+    "Fillet": [
+      {type:"text", label:"Radius", value:"2 mm"},
+      {type:"text", label:"Edges", value:"4 selected"}
+    ],
+    "Chamfer": [
+      {type:"text", label:"Size", value:"1 mm"},
+      {type:"text", label:"Edges", value:"4 selected"}
+    ],
+    "Draft": [
+      {type:"text", label:"Angle", value:"5 deg"},
+      {type:"text", label:"Neutral plane", value:"Face6"}
+    ],
+    "Mirror": [
+      {type:"text", label:"Plane", value:"XZ Plane"},
+      {type:"text", label:"Features", value:"1 selected"}
+    ],
+    "Linear Pattern": [
+      {type:"text", label:"Direction", value:"X axis"},
+      {type:"text", label:"Length", value:"40 mm"},
+      {type:"text", label:"Occurrences", value:"4"}
+    ],
+    "Polar Pattern": [
+      {type:"text", label:"Axis", value:"Z axis"},
+      {type:"text", label:"Angle", value:"360 deg"},
+      {type:"text", label:"Occurrences", value:"6"}
+    ]
+  };
+
+  var taskPanel = document.getElementById("task-panel");
+  var taskTitle = document.getElementById("task-title");
+  var taskBody = document.getElementById("task-body");
+
+  function renderForm(name){
+    var fields = FORMS[name];
+    if (!fields) return;
+    taskTitle.textContent = name;
+    taskBody.innerHTML = "";
+    fields.forEach(function(f, i){
+      var wrap;
+      if (f.type === "check"){
+        wrap = document.createElement("label");
+        wrap.className = "checkfield";
+        wrap.innerHTML = '<input type="checkbox"> ' + f.label;
+      } else {
+        wrap = document.createElement("div");
+        wrap.className = "field";
+        var id = "f-" + i;
+        var labelEl = document.createElement("label");
+        labelEl.setAttribute("for", id);
+        labelEl.textContent = f.label;
+        wrap.appendChild(labelEl);
+        if (f.type === "select"){
+          var sel = document.createElement("select");
+          sel.id = id;
+          f.options.forEach(function(o){
+            var opt = document.createElement("option");
+            opt.textContent = o;
+            sel.appendChild(opt);
+          });
+          wrap.appendChild(sel);
+        } else {
+          var input = document.createElement("input");
+          input.type = "text";
+          input.id = id;
+          input.value = f.value || "";
+          wrap.appendChild(input);
+        }
+      }
+      taskBody.appendChild(wrap);
+    });
+    taskPanel.hidden = false;
+  }
+
+  document.querySelectorAll(".fbtn[data-feature]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      document.querySelectorAll(".fbtn[data-feature]").forEach(function(b){ b.classList.remove("active"); });
+      btn.classList.add("active");
+      renderForm(btn.getAttribute("data-feature"));
+    });
+  });
+
+  document.getElementById("task-cancel").addEventListener("click", function(){ taskPanel.hidden = true; });
+  document.getElementById("task-ok").addEventListener("click", function(){ taskPanel.hidden = true; });
+  document.getElementById("task-close").addEventListener("click", function(){ taskPanel.hidden = true; });
+
+  /* ---------------- model tree selection ---------------- */
+  var PROPS = {
+    "Body": {type:"PartDesign::Body", rows:[["Tip","Pocket002"],["Group","5 features"],["Placement","Identity"]]},
+    "Origin": {type:"App::Origin", rows:[["Visibility","false"]]},
+    "Pad": {type:"PartDesign::Pad", rows:[["Length","10 mm"],["Type","Dimension"],["Direction","Normal"],["Midplane","false"],["Reversed","false"]]},
+    "Sketch": {type:"Sketcher::SketchObject", rows:[["Constraints","12"],["Attachment","XY_Plane"],["AttachmentOffset","0, 0, 0"]]},
+    "Pocket": {type:"PartDesign::Pocket", rows:[["Length","5 mm"],["Type","Dimension"],["Reversed","false"]]},
+    "Sketch001": {type:"Sketcher::SketchObject", rows:[["Constraints","8"],["Attachment","Face top"],["AttachmentOffset","0, 0, 0"]]},
+    "Pocket001": {type:"PartDesign::Pocket", rows:[["Length","3 mm"],["Type","Dimension"],["Reversed","false"]]},
+    "Sketch003": {type:"Sketcher::SketchObject", rows:[["Constraints","6"],["Attachment","Face front"],["AttachmentOffset","0, 0, 0"]]},
+    "Pocket002": {type:"PartDesign::Pocket", rows:[["Length","40 mm"],["Type","Through all"],["Reversed","true"]]},
+    "Sketch002": {type:"Sketcher::SketchObject", rows:[["Constraints","4"],["Attachment","Face right"],["AttachmentOffset","0, 0, 0"]]}
+  };
+
+  var propTitle = document.querySelector(".prop-title");
+  var propList = document.getElementById("prop-list");
+  var statusHint = document.getElementById("status-hint");
+
+  function boolClass(v){
+    if (v === "false") return " bool-false";
+    if (v === "true") return " bool-true";
+    return "";
+  }
+
+  document.querySelectorAll(".trow[data-select]").forEach(function(row){
+    row.addEventListener("click", function(e){
+      if (e.target.closest("[data-eye]")) return;
+      document.querySelectorAll(".trow.selected").forEach(function(r){ r.classList.remove("selected"); });
+      row.classList.add("selected");
+      var name = row.getAttribute("data-select");
+      statusHint.textContent = name + " selected";
+      var data = PROPS[name];
+      if (data){
+        propTitle.innerHTML = name + ' <span class="sub">' + data.type + '</span>';
+        propList.innerHTML = "";
+        data.rows.forEach(function(pair){
+          var r = document.createElement("div");
+          r.className = "prow";
+          r.innerHTML = '<span class="plabel">' + pair[0] + '</span><span class="pvalue' + boolClass(pair[1]) + '">' + pair[1] + '</span>';
+          propList.appendChild(r);
+        });
+      }
+    });
+  });
+  document.querySelector('.trow[data-select="Pad"]').classList.add("selected");
+
+  /* ---------------- eye toggles ---------------- */
+  document.querySelectorAll("[data-eye]").forEach(function(btn){
+    btn.addEventListener("click", function(e){
+      e.stopPropagation();
+      var row = btn.closest(".trow");
+      row.classList.toggle("dimmed");
+    });
+  });
+
+  /* ---------------- property tabs (visual only) ---------------- */
+  document.querySelectorAll(".ptab").forEach(function(tab){
+    tab.addEventListener("click", function(){
+      document.querySelectorAll(".ptab").forEach(function(t){ t.setAttribute("aria-selected", "false"); });
+      tab.setAttribute("aria-selected", "true");
+    });
+  });
+
+  /* ---------------- nav cube clicks (snap, nice-to-have) ---------------- */
+  document.querySelectorAll(".navcube .face").forEach(function(face){
+    face.addEventListener("click", function(){
+      var v = face.getAttribute("data-view");
+      if (v === "front") setTarget(0, 0);
+      if (v === "top") setTarget(-Math.PI/2 + 0.001, 0);
+      if (v === "right") setTarget(0, Math.PI/2);
+    });
+  });
+
+  /* ================= three.js viewport ================= */
+  var canvas = document.getElementById("scene-canvas");
+  var fallback = document.getElementById("viewport-fallback");
+  var group, camera, renderer, scene;
+  var rotX = -0.35, rotY = 0.6, targetX = rotX, targetY = rotY;
+  var dragging = false, lastX = 0, lastY = 0;
+
+  function setTarget(x, y){ targetX = x; targetY = y; }
+
+  function initThree(){
+    if (typeof THREE === "undefined") { fallback.hidden = false; canvas.hidden = true; return; }
+    var vp = document.getElementById("viewport");
+    scene = new THREE.Scene();
+
+    camera = new THREE.PerspectiveCamera(38, vp.clientWidth / vp.clientHeight, 0.1, 100);
+    camera.position.set(0, 0, 11);
+
+    renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(vp.clientWidth, vp.clientHeight);
+
+    scene.add(new THREE.AmbientLight(0x8a93a3, 0.9));
+    var key = new THREE.DirectionalLight(0xffffff, 0.9);
+    key.position.set(5, 8, 6);
+    scene.add(key);
+    var rim = new THREE.DirectionalLight(0x5aa9e6, 0.35);
+    rim.position.set(-6, -3, -4);
+    scene.add(rim);
+
+    group = new THREE.Group();
+
+    var bodyMat = new THREE.MeshStandardMaterial({ color: 0x9aa4b2, roughness: 0.55, metalness: 0.12 });
+    var cutMat  = new THREE.MeshStandardMaterial({ color: 0x14171c, roughness: 0.8 });
+
+    var base = new THREE.Mesh(new THREE.BoxGeometry(4.6, 2.2, 1.4), bodyMat);
+    base.position.set(-0.6, 0, 0);
+    group.add(base);
+    addEdges(base);
+
+    var boss = new THREE.Mesh(new THREE.CylinderGeometry(1.15, 1.15, 1.4, 40), bodyMat);
+    boss.rotation.x = Math.PI / 2;
+    boss.position.set(2.6, 0, 0);
+    group.add(boss);
+    addEdges(boss);
+
+    var bore = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.55, 1.5, 32), cutMat);
+    bore.rotation.x = Math.PI / 2;
+    bore.position.set(2.6, 0, 0);
+    group.add(bore);
+
+    for (var i = 0; i < 4; i++){
+      var notch = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.5, 1.5), cutMat);
+      notch.position.set(-2.5 + i * 0.62, 1.2, 0);
+      group.add(notch);
+    }
+
+    var pocket = new THREE.Mesh(new THREE.BoxGeometry(1.1, 0.9, 1.5), cutMat);
+    pocket.position.set(-0.6, -0.7, 0);
+    group.add(pocket);
+
+    group.rotation.set(rotX, rotY, 0);
+    scene.add(group);
+
+    window.addEventListener("resize", onResize);
+    onResize();
+
+    canvas.addEventListener("pointerdown", function(e){
+      dragging = true; lastX = e.clientX; lastY = e.clientY;
+      canvas.setPointerCapture(e.pointerId);
+    });
+    canvas.addEventListener("pointermove", function(e){
+      if (!dragging) return;
+      var dx = e.clientX - lastX, dy = e.clientY - lastY;
+      lastX = e.clientX; lastY = e.clientY;
+      targetY += dx * 0.008;
+      targetX += dy * 0.008;
+      targetX = Math.max(-1.4, Math.min(1.4, targetX));
+    });
+    canvas.addEventListener("pointerup", function(){ dragging = false; });
+    canvas.addEventListener("pointerleave", function(){ dragging = false; });
+    canvas.addEventListener("wheel", function(e){
+      e.preventDefault();
+      camera.position.z = Math.max(6, Math.min(20, camera.position.z + e.deltaY * 0.01));
+    }, { passive: false });
+
+    tick();
+  }
+
+  function addEdges(mesh){
+    var edges = new THREE.EdgesGeometry(mesh.geometry, 25);
+    var line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x2e353f }));
+    mesh.add(line);
+  }
+
+  function onResize(){
+    var vp = document.getElementById("viewport");
+    var w = vp.clientWidth, h = vp.clientHeight;
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+  }
+
+  function tick(){
+    requestAnimationFrame(tick);
+    if (!dragging && !reduceMotion) targetY += 0.0022;
+    rotX += (targetX - rotX) * 0.08;
+    rotY += (targetY - rotY) * 0.08;
+    if (group){ group.rotation.x = rotX; group.rotation.y = rotY; }
+    renderer.render(scene, camera);
+  }
+
+  try { initThree(); } catch (err) { fallback.hidden = false; canvas.hidden = true; }
+
+})();
+</script>
