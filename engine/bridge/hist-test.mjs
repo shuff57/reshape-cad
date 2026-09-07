@@ -56,7 +56,18 @@ assert.ok(threwDep, 'deleting Pad refuses while Fillet depends on it');
 
 // delete the tip (Fillet) is fine -> box back to a plain 24000
 s.deleteFeature('Fillet');
-console.log(`after delete Fillet: vol=${s.mesh().volume}`);
+// Body.Tip must move to Pad, not dangle at the deleted Fillet (a dangling tip
+// makes the Body's mirrored shape point at freed geometry -> tessellation
+// crash in the browser). Check both the tip AND the per-face mesh render path.
+const tip = s.read(
+  `import json, FreeCAD as App\n` +
+  `doc = App.ActiveDocument\n` +
+  `b = [o for o in doc.Objects if o.TypeId == 'PartDesign::Body'][0]\n` +
+  `open('/tmp/reshape_out.json','w').write(json.dumps({'tip': (b.Tip.Name if b.Tip else None)}))\n`
+);
+console.log(`after delete Fillet: tip=${tip.tip} vol=${s.mesh().volume}`);
+assert.equal(tip.tip, 'Pad', 'Body.Tip moved to Pad after deleting the Fillet (not dangling)');
+assert.equal(s.meshFaces().faces.length, 6, 'per-face mesh (browser render path) is a plain box after delete');
 assert.ok(Math.abs(s.mesh().volume - 24000) < 1, 'deleting the tip fillet restores the plain box');
 
 console.log('HIST:PASS');

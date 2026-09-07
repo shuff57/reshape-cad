@@ -277,15 +277,27 @@ export const emit = {
   },
 
   // Delete a feature — but only if nothing depends on it (delete from the tip
-  // backward), so the chain is never left with an orphaned reference.
+  // backward), so the chain is never left with an orphaned reference. Before
+  // removing, move the Body.Tip back to the previous feature: otherwise Tip is
+  // left dangling at the just-deleted object and the Body's mirrored Shape
+  // points at freed geometry, so the next tessellation reads out-of-bounds
+  // memory and crashes wasm ("mesh: memory access out of bounds").
   deleteFeature(objName) {
     return wrapStatus(
       `o = doc.getObject(${pyStr(objName)})\n` +
       `if o is None:\n` +
       `    raise ValueError('no such feature')\n` +
-      `deps = [x.Label for x in o.InList if x.TypeId.startswith('PartDesign::') and x.TypeId != 'PartDesign::Body']\n` +
+      `deps = sorted(set(x.Label for x in o.InList if x.TypeId.startswith('PartDesign::') and x.TypeId != 'PartDesign::Body'))\n` +
       `if deps:\n` +
-      `    raise ValueError('delete the later feature(s) first — %s depend(s) on this' % ', '.join(deps))\n` +
+      `    raise ValueError('delete the later feature(s) first — %s depends on this' % ', '.join(deps))\n` +
+      `body = None\n` +
+      `for b in doc.Objects:\n` +
+      `    if b.TypeId == 'PartDesign::Body' and o in b.Group:\n` +
+      `        body = b\n` +
+      `        break\n` +
+      `prev = getattr(o, 'BaseFeature', None)\n` +
+      `if body is not None and getattr(body, 'Tip', None) is o:\n` +
+      `    body.Tip = prev\n` +
       `doc.removeObject(o.Name)\n` +
       `doc.recompute()`
     );
