@@ -177,6 +177,11 @@
   .sk-vertex{ fill:var(--text); }
   .sk-vertex-sel{ fill:var(--accent); }
   #rubberBand{ stroke:var(--accent); stroke-width:.5; opacity:.7; }
+  #snapRing{ fill:none; stroke:var(--accent); stroke-width:.4; opacity:.9; }
+  #axisHint{ fill:var(--accent); font:4px var(--font-mono); }
+
+  .sk-toggle{ display:flex; align-items:center; gap:5px; font-size:11px; color:var(--muted); white-space:nowrap; user-select:none; cursor:pointer; }
+  .sk-toggle input{ accent-color:var(--accent); }
 
   .dim-input{
     position:absolute; top:64px; left:50%; transform:translateX(-50%); z-index:6;
@@ -312,6 +317,9 @@
           <button id="cEq" class="btn" disabled title="Equal — needs 2 lines">Equal</button>
           <button id="cDim" class="btn" disabled title="Dimension — needs 1 line">Dimension</button>
         </div>
+        <div class="sk-group" aria-label="Auto-constrain">
+          <label class="sk-toggle"><input id="autoConstrain" type="checkbox" checked> Auto</label>
+        </div>
         <span class="spacer"></span>
         <span id="dofBadge" class="dof-badge">—</span>
       </div>
@@ -320,6 +328,8 @@
         <g id="gridLayer"></g>
         <g id="geomLayer"></g>
         <line id="rubberBand" class="sk-line" stroke-dasharray="1.2,1.2" hidden></line>
+        <circle id="snapRing" r="1.8" hidden></circle>
+        <text id="axisHint" hidden></text>
       </svg>
 
       <div id="dimInput" class="dim-input" hidden>
