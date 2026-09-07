@@ -244,34 +244,6 @@ treeList.addEventListener('click', (evt) => {
   if (!name || state.selectedFeature === name) { clearFeatureSelection(); return; }
   selectFeature(name);
 });
-
-on('histApply', 'click', guard(() => {
-  const name = state.selectedFeature;
-  if (!name) return;
-  const v = Number(document.getElementById('histValue').value);
-  try {
-    session.editFeature(name, v);
-  } catch (err) {
-    return log(`✗ ${extractFriendlyError(err)}`);
-  }
-  log(`~ ${name} = ${v}`);
-  render();            // rebuilds tree + 3D from the new state
-  selectFeature(name); // re-read the (possibly reverted) value back into the panel
-}));
-
-on('histDelete', 'click', guard(() => {
-  const name = state.selectedFeature;
-  if (!name) return;
-  try {
-    session.deleteFeature(name);
-  } catch (err) {
-    return log(`✗ ${extractFriendlyError(err)}`);
-  }
-  log(`− deleted ${name}`);
-  state.selectedFeature = null;
-  hideHistPanel();
-  render();
-}));
 // Rebuilds the pickable solid from the active tip (no arg = FreeCAD's own
 // default). Kept the try/catch shape of the old showMesh(session.mesh())
 // call it replaces — meshFaces() degrades to {faces:[],edges:[],empty:true}
@@ -304,6 +276,38 @@ setButtons(false);
 function guard(fn) {
   return () => { try { fn(); } catch (e) { log(`✗ ${e.message.split('\n')[0]}`); } };
 }
+
+// Editable-history panel handlers. Registered here — AFTER $/on/guard are
+// defined — because on() dereferences $, and a top-level on() call before $'s
+// declaration hits its temporal dead zone ("Cannot access '$' before
+// initialization") and aborts the whole module.
+on('histApply', 'click', guard(() => {
+  const name = state.selectedFeature;
+  if (!name) return;
+  const v = Number($('histValue').value);
+  try {
+    session.editFeature(name, v);
+  } catch (err) {
+    return log(`✗ ${extractFriendlyError(err)}`);
+  }
+  log(`~ ${name} = ${v}`);
+  render();            // rebuilds tree + 3D from the new state
+  selectFeature(name); // re-read the (possibly reverted) value back into the panel
+}));
+
+on('histDelete', 'click', guard(() => {
+  const name = state.selectedFeature;
+  if (!name) return;
+  try {
+    session.deleteFeature(name);
+  } catch (err) {
+    return log(`✗ ${extractFriendlyError(err)}`);
+  }
+  log(`− deleted ${name}`);
+  state.selectedFeature = null;
+  hideHistPanel();
+  render();
+}));
 
 // --- sketch mode -------------------------------------------------------------
 // sketch.js owns the 2D canvas + interaction; this module only owns the
