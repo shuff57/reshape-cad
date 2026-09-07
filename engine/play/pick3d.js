@@ -111,7 +111,13 @@ export function initPick3d({ scene, THREE, getCamera, renderer, onSelect }) {
     const rect = renderer.domElement.getBoundingClientRect();
     pointerNDC.x = ((clientX - rect.left) / rect.width) * 2 - 1;
     pointerNDC.y = -((clientY - rect.top) / rect.height) * 2 + 1;
-    raycaster.setFromCamera(pointerNDC, getCamera());
+    const cam = getCamera();
+    // Edge lines are thin, so pick tolerance is in world mm — but a fixed mm
+    // slack is too tight when zoomed out and too loose when zoomed in. Scale it
+    // with the camera's distance to the model (~origin) so the clickable band
+    // stays roughly constant in SCREEN space at any zoom.
+    raycaster.params.Line.threshold = Math.max(1.5, cam.position.length() * 0.025);
+    raycaster.setFromCamera(pointerNDC, cam);
     const hits = raycaster.intersectObjects(pickTargets(), false);
     return hits.length ? hits[0].object : null;
   }
