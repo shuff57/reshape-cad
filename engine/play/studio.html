@@ -285,6 +285,44 @@
         <span>Chamfer</span>
       </button>
       <span class="dims"><label>R/size <input id="filletR" type="number" value="5"></label></span>
+      <button id="loftBtn" class="fbtn" disabled title="Loft — skin between the two most recent sketches (needs two)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8c0-2.2 3.6-4 8-4s8 1.8 8 4-3.6 4-8 4-8-1.8-8-4z"/><path d="M4 8v8c0 2.2 3.6 4 8 4s8-1.8 8-4V8"/></svg>
+        <span>Loft</span>
+      </button>
+    </div>
+
+    <div class="tgroup" aria-label="Primitives">
+      <button id="prismBtn" class="fbtn" disabled title="Prism — add a hexagonal prism">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5 12 12l8-4.5M12 12v9"/></svg>
+        <span>Prism</span>
+      </button>
+      <span class="dims"><label>r <input id="prismR" type="number" value="10"></label><label>h <input id="prismH" type="number" value="30"></label></span>
+      <button id="wedgeBtn" class="fbtn" disabled title="Wedge — add a right wedge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18h18L3 6v12z"/></svg>
+        <span>Wedge</span>
+      </button>
+      <span class="dims"><label>w <input id="wedgeW" type="number" value="30"></label><label>h <input id="wedgeH" type="number" value="25"></label></span>
+      <button id="sphereBtn" class="fbtn" disabled title="Sphere — add a sphere">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M4 12h16"/></svg>
+        <span>Sphere</span>
+      </button>
+      <span class="dims"><label>r <input id="sphereR" type="number" value="8"></label></span>
+      <button id="coneBtn" class="fbtn" disabled title="Cone — add a cone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4 4 20h16L12 4z"/></svg>
+        <span>Cone</span>
+      </button>
+      <span class="dims"><label>r <input id="coneR" type="number" value="6"></label><label>h <input id="coneH" type="number" value="25"></label></span>
+      <button id="torusBtn" class="fbtn" disabled title="Torus — add a torus">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/></svg>
+        <span>Torus</span>
+      </button>
+      <span class="dims"><label>R <input id="torusR" type="number" value="16"></label><label>r <input id="torusr" type="number" value="4"></label></span>
+    </div>
+
+    <div class="tgroup" aria-label="Patterns">
+      <button id="linPatBtn" class="btn" disabled title="Linear Pattern — repeat the latest feature along Z (needs a feature)">Lin Pattern</button>
+      <span class="dims"><label>n <input id="patCount" type="number" value="3"></label><label>step <input id="patStep" type="number" value="20"></label></span>
+      <button id="polPatBtn" class="btn" disabled title="Polar Pattern — repeat the latest feature around Z (needs a feature)">Pol Pattern</button>
     </div>
 
     <div class="tgroup" aria-label="Edit">

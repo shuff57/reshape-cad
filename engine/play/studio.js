@@ -261,12 +261,14 @@ function render() {
   refreshTree();
   updatePocketButton();
   updateRevolveButton();
+  updateSweepButtons();
 }
 
 // --- buttons ---------------------------------------------------------------
 const $ = (id) => document.getElementById(id);
 function setButtons(on) {
-  ['newBody', 'rect', 'circle', 'sketchNew', 'pad', 'pocket', 'revolve', 'apply', 'save', 'open', 'pickFaces', 'pickEdges', 'fillet', 'chamfer', 'scriptRun'].forEach((id) => {
+  ['newBody', 'rect', 'circle', 'sketchNew', 'pad', 'pocket', 'revolve', 'apply', 'save', 'open', 'pickFaces', 'pickEdges', 'fillet', 'chamfer', 'scriptRun',
+   'loftBtn', 'prismBtn', 'wedgeBtn', 'sphereBtn', 'coneBtn', 'torusBtn', 'linPatBtn', 'polPatBtn'].forEach((id) => {
     const el = $(id);
     if (el) el.disabled = !on; // null-safe: a restyle that drops an id won't crash init
   });
@@ -567,6 +569,138 @@ on('scriptRun', 'click', () => {
   state.tip = null; // meshFaces() picks up the real tip in render()
   render();
 });
+
+// --- primitive buttons (P1c) -------------------------------------------------
+// Each starts its OWN body (one solid per body, the PartDesign model the
+// transpiler already follows) and adds the named primitive feature. The
+// feature becomes the body's tip, so it renders and is pickable immediately.
+function primBody(kind) {
+  session.newBody('Body');
+  const body = lastOfType('PartDesign::Body');
+  state.body = body;
+  state.tip = null;
+  state.sketch = null;
+  return body;
+}
+
+on('prismBtn', 'click', guard(() => {
+  const body = primBody('prism');
+  const r = Number($('prismR').value);
+  const h = Number($('prismH').value);
+  session.prism(body, 'Prism', r, h);
+  state.tip = lastOfType('PartDesign::Prism');
+  log(`+ prism r${r} h${h}`);
+  pick3d.rebuild(session.meshFaces());
+  refreshTree();
+}));
+
+on('wedgeBtn', 'click', guard(() => {
+  const body = primBody('wedge');
+  const w = Number($('wedgeW').value);
+  const h = Number($('wedgeH').value);
+  session.wedge(body, 'Wedge', w, h);
+  state.tip = lastOfType('PartDesign::Wedge');
+  log(`+ wedge ${w}x${h}`);
+  pick3d.rebuild(session.meshFaces());
+  refreshTree();
+}));
+
+on('sphereBtn', 'click', guard(() => {
+  const body = primBody('sphere');
+  const r = Number($('sphereR').value);
+  session.sphere(body, 'Sphere', r);
+  state.tip = lastOfType('PartDesign::Sphere');
+  log(`+ sphere r${r}`);
+  pick3d.rebuild(session.meshFaces());
+  refreshTree();
+}));
+
+on('coneBtn', 'click', guard(() => {
+  const body = primBody('cone');
+  const r = Number($('coneR').value);
+  const h = Number($('coneH').value);
+  session.cone(body, 'Cone', r, 0, h);
+  state.tip = lastOfType('PartDesign::Cone');
+  log(`+ cone r${r} h${h}`);
+  pick3d.rebuild(session.meshFaces());
+  refreshTree();
+}));
+
+on('torusBtn', 'click', guard(() => {
+  const body = primBody('torus');
+  const R = Number($('torusR').value);
+  const r = Number($('torusr').value);
+  session.torus(body, 'Torus', R, r);
+  state.tip = lastOfType('PartDesign::Torus');
+  log(`+ torus R${R} r${r}`);
+  pick3d.rebuild(session.meshFaces());
+  refreshTree();
+}));
+
+// --- loft button (P1c) --------------------------------------------------------
+// Skins between the two most recent sketches on the CURRENT body. Needs two
+// live sketches; the button's disabled state tracks that via
+// updateSweepButtons() below.
+on('loftBtn', 'click', guard(() => {
+  const sketches = session.tree().objects
+    .filter((o) => o.type === 'Sketcher::SketchObject')
+    .map((o) => o.name);
+  if (sketches.length < 2) return log('loft needs two sketches — draw a second one');
+  const lo = sketches[sketches.length - 2];
+  const hi = sketches[sketches.length - 1];
+  try {
+    session.additiveLoft(state.body, lo, hi, 'Loft');
+  } catch (err) {
+    return log(`✗ ${extractFriendlyError(err)}`);
+  }
+  state.tip = lastOfType('PartDesign::AdditiveLoft');
+  log(`+ loft ${lo} → ${hi}`);
+  pick3d.rebuild(session.meshFaces());
+  refreshTree();
+  updateSweepButtons();
+}));
+
+// --- pattern buttons (P1c) ----------------------------------------------------
+// Repeat the CURRENT tip feature. Linear rides the world Z axis by the
+// Length + Occurrences the inputs give; Polar rings around Z.
+on('linPatBtn', 'click', guard(() => {
+  if (!state.tip) return log('make a feature first (Pad, Prism, …)');
+  const n = Math.max(2, Math.round(Number($('patCount').value) || 3));
+  const step = Number($('patStep').value) || 20;
+  try {
+    session.linearPattern(state.body, state.tip, n, step, 'z');
+  } catch (err) {
+    return log(`✗ ${extractFriendlyError(err)}`);
+  }
+  log(`+ linear pattern ${state.tip} x${n} step ${step}`);
+  pick3d.rebuild(session.meshFaces());
+  refreshTree();
+}));
+
+on('polPatBtn', 'click', guard(() => {
+  if (!state.tip) return log('make a feature first (Pad, Prism, …)');
+  const n = Math.max(2, Math.round(Number($('patCount').value) || 3));
+  try {
+    session.polarPattern(state.body, state.tip, n, 360, 'z');
+  } catch (err) {
+    return log(`✗ ${extractFriendlyError(err)}`);
+  }
+  log(`+ polar pattern ${state.tip} x${n} around Z`);
+  pick3d.rebuild(session.meshFaces());
+  refreshTree();
+}));
+
+// Sweep/pattern button states. Loft needs 2+ sketches; the patterns need a
+// tip feature. Called from render() so every tree change re-derives them.
+function updateSweepButtons() {
+  const sketches = session ? session.tree().objects.filter((o) => o.type === 'Sketcher::SketchObject').length : 0;
+  const loft = $('loftBtn');
+  if (loft) loft.disabled = !(session && state.body && sketches >= 2);
+  const lin = $('linPatBtn');
+  if (lin) lin.disabled = !(session && state.tip);
+  const pol = $('polPatBtn');
+  if (pol) pol.disabled = !(session && state.tip);
+}
 
 // Save the live document to a real .FCStd and hand it to the browser download.
 on('save', 'click', guard(() => {

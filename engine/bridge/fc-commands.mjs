@@ -419,6 +419,61 @@ export const emit = {
     );
   },
 
+  // Linear pattern: repeat the named feature along a world axis. PartDesign's
+  // LinearPattern takes Originals (features to repeat) + a Direction link.
+  // The world axis is the Body's own Origin datum axis (every PartDesign Body
+  // carries an .Origin with X_Axis/Y_Axis/Z_Axis children). Resolved via the
+  // BODY's Origin property — the dogfood-measured bug (msgbox #97) was a
+  // doc.Objects scan for 'App::Origin' whose InList check matched nothing,
+  // handing (None, ['']) to Direction and throwing "type of first element
+  // in tuple must be 'DocumentObject', not NoneType".
+  linearPattern(bodyName, featureName, count, step, axis = 'z') {
+    const c = pyNum(count, 'count');
+    const s = pyNum(step, 'step');
+    const AXIS_DATUM = { x: 'X_Axis', y: 'Y_Axis', z: 'Z_Axis' };
+    const datum = AXIS_DATUM[axis] ?? 'Z_Axis';
+    return wrapStatus(
+      `lp = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::LinearPattern", "LinearPattern")\n` +
+      `lp.Originals = [doc.getObject(${pyStr(featureName)})]\n` +
+      `body = doc.getObject(${pyStr(bodyName)})\n` +
+      `origin = getattr(body, 'Origin', None)\n` +
+      `axisObj = origin.getObject(${JSON.stringify(datum)}) if origin is not None else None\n` +
+      `lp.Direction = (axisObj, [''])\n` +
+      `lp.Length = ${s}\n` +
+      `lp.Occurrences = ${c}\n` +
+      `doc.recompute()\n` +
+      `if ('Invalid' in lp.State) or lp.Shape.isNull():\n` +
+      `    doc.removeObject(lp.Name)\n` +
+      `    doc.recompute()\n` +
+      `    raise ValueError('pattern failed — the feature to repeat must exist')`
+    );
+  },
+
+  // Polar pattern: repeat the named feature around a world axis. Same Body-
+  // Origin datum resolution as linearPattern; Angle is the total sweep the
+  // occurrences span (360 = the full ring).
+  polarPattern(bodyName, featureName, count, angle = 360, axis = 'z') {
+    const c = pyNum(count, 'count');
+    const a = pyNum(angle, 'angle');
+    const AXIS_DATUM = { x: 'X_Axis', y: 'Y_Axis', z: 'Z_Axis' };
+    const datum = AXIS_DATUM[axis] ?? 'Z_Axis';
+    return wrapStatus(
+      `pp = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::PolarPattern", "PolarPattern")\n` +
+      `pp.Originals = [doc.getObject(${pyStr(featureName)})]\n` +
+      `body = doc.getObject(${pyStr(bodyName)})\n` +
+      `origin = getattr(body, 'Origin', None)\n` +
+      `axisObj = origin.getObject(${JSON.stringify(datum)}) if origin is not None else None\n` +
+      `pp.Axis = (axisObj, [''])\n` +
+      `pp.Angle = ${a}\n` +
+      `pp.Occurrences = ${c}\n` +
+      `doc.recompute()\n` +
+      `if ('Invalid' in pp.State) or pp.Shape.isNull():\n` +
+      `    doc.removeObject(pp.Name)\n` +
+      `    doc.recompute()\n` +
+      `    raise ValueError('pattern failed — the feature to repeat must exist')`
+    );
+  },
+
   // -- editable history ----------------------------------------------------
   // Read a feature's editable driving parameter (name/label/type/param/value),
   // for the history editor. param is null for a feature with nothing to edit.
@@ -612,6 +667,16 @@ export function attachCommands(session) {
     const res = session.read(emit.subtractiveHelix(bodyName, sketchName, featName, height, turns));
     if (!res.ok) throw new Error(res.error || 'subtractive helix failed');
     return featName;
+  };
+  session.linearPattern = (bodyName, featureName, count, step, axis = 'z') => {
+    const res = session.read(emit.linearPattern(bodyName, featureName, count, step, axis));
+    if (!res.ok) throw new Error(res.error || 'linear pattern failed');
+    return 'LinearPattern';
+  };
+  session.polarPattern = (bodyName, featureName, count, angle = 360, axis = 'z') => {
+    const res = session.read(emit.polarPattern(bodyName, featureName, count, angle, axis));
+    if (!res.ok) throw new Error(res.error || 'polar pattern failed');
+    return 'PolarPattern';
   };
   // editable history
   session.featureInfo = (objName) => session.read(emit.featureInfo(objName));
