@@ -18,7 +18,19 @@
 // table keyed by the function name, so new statement types are added by
 // appending one entry rather than growing a regex pile.
 
-import { emit } from '../../../engine/bridge/fc-commands.mjs';
+// The bridge emitters. TWO import forms, one per host:
+// - Node (tests, the kernel-container gate): a relative filesystem path.
+// - Browser (the studio script box): the same-origin /bridge/ route the dev
+//   server maps onto engine/bridge — a bare relative path would resolve
+//   against the page URL and 404.
+// The conditional static-import dance (import.meta.url check + two dynamic
+// imports, hoisted once) is deliberate: a plain `if` around two static
+// imports is not valid ESM, and a single static import cannot pick a path
+// at load time.
+const IS_BROWSER = typeof document !== 'undefined';
+const emit = IS_BROWSER
+  ? (await import('/bridge/fc-commands.mjs')).emit
+  : (await import('../../../engine/bridge/fc-commands.mjs')).emit;
 
 // ---------------------------------------------------------------------------
 // Parsing
