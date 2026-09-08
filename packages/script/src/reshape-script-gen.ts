@@ -5,6 +5,15 @@
 // fixture now that the JSCAD-era scripts/oracle-measure.mjs that recorded it
 // is deleted, CLAUDE.md's "JSCAD is retired" section).
 //
+// OFFICIAL NAMES (SPEC-S2/S3): the generated script speaks the OFFICIAL
+// vocabulary -- cuboid, torus, fillet, chamfer, extrude, revolve, loft,
+// shell, subtract, union, intersect, linearPattern, polarPattern -- because
+// this text is what a student reads, edits, and binds variables through.
+// Round-trips stay valid because runScript() installs the student words as
+// same-reference aliases of these (reshape-script.ts's fns object), so the
+// generated text re-runs exactly; the student-word forms remain accepted
+// input, just no longer the emitted output.
+//
 // ONE LINE PER FEATURE, in doc order -- lib/model-codegen.ts's now-deleted
 // toReshape() followed the same rule, for the same reason: a script is the
 // Build timeline written down, so its shape on the page should mirror the
@@ -285,7 +294,7 @@ export function toScript(doc: ModelDoc, namedParams?: readonly ScriptParamRef[])
       const w = numText(bindings, f.id, 'width', lit(f.size[0]));
       const d = numText(bindings, f.id, 'depth', lit(f.size[1]));
       const h = numText(bindings, f.id, 'height', lit(f.size[2]));
-      lines.push(`const ${f.id} = box(${w}, ${d}, ${h}${at})`);
+      lines.push(`const ${f.id} = cuboid(${w}, ${d}, ${h}${at})`);
       if (f.round) lines.push(`round(${f.id}, ${numText(bindings, f.id, 'round', lit(f.round))})`);
       if (f.rotate && f.rotate.some((n) => n !== 0)) {
         const rx = numText(bindings, f.id, 'rx', lit(f.rotate[0]));
@@ -340,7 +349,7 @@ export function toScript(doc: ModelDoc, namedParams?: readonly ScriptParamRef[])
       const tubeAcross = 2 * f.tubeRadius;
       const def = defaultCenter(doc, i, 'torus');
       const at = emitAt(bindings, f.id, f.center, def);
-      lines.push(`const ${f.id} = ring(${lit(across)}, ${lit(tubeAcross)}${at})`);
+      lines.push(`const ${f.id} = torus(${lit(across)}, ${lit(tubeAcross)}${at})`);
       return;
     }
     if (f.kind === 'sketch') {
@@ -401,11 +410,11 @@ export function toScript(doc: ModelDoc, namedParams?: readonly ScriptParamRef[])
       return;
     }
     if (f.kind === 'extrude') {
-      lines.push(`const ${f.id} = pull(${v(f.target)}, ${numText(bindings, f.id, 'height', lit(f.height))})`);
+      lines.push(`const ${f.id} = extrude(${v(f.target)}, ${numText(bindings, f.id, 'height', lit(f.height))})`);
       return;
     }
     if (f.kind === 'revolve') {
-      lines.push(`const ${f.id} = spin(${v(f.target)}, ${numText(bindings, f.id, 'angle', lit(f.angle))})`);
+      lines.push(`const ${f.id} = revolve(${v(f.target)}, ${numText(bindings, f.id, 'angle', lit(f.angle))})`);
       return;
     }
     if (f.kind === 'blend') {
@@ -413,11 +422,12 @@ export function toScript(doc: ModelDoc, namedParams?: readonly ScriptParamRef[])
       const lo = byId.get(loId) as SketchFeature | undefined;
       const hi = byId.get(hiId) as SketchFeature | undefined;
       const gap = (hi?.offset ?? 0) - (lo?.offset ?? 0);
-      lines.push(`const ${f.id} = blend(${v(loId)}, ${v(hiId)}, ${numText(bindings, hiId, 'offset', lit(gap))})`);
+      lines.push(`const ${f.id} = loft(${v(loId)}, ${v(hiId)}, ${numText(bindings, hiId, 'offset', lit(gap))})`);
       return;
     }
     if (f.kind === 'combine') {
-      const fn = f.op === 'union' ? 'join' : f.op === 'subtract' ? 'cut' : 'keep';
+      const fn = f.op === 'union' ? 'union' : f.op === 'subtract' ? 'subtract'
+        : 'intersect';
       lines.push(`const ${f.id} = ${fn}(${f.targets.map(v).join(', ')})`);
       return;
     }
@@ -450,13 +460,13 @@ export function toScript(doc: ModelDoc, namedParams?: readonly ScriptParamRef[])
           step[1] === 0 && step[2] === 0
             ? numText(bindings, f.id, 'stepx', lit(step[0]))
             : litVec(step);
-        lines.push(`repeat(${v(f.target)}, { count: ${countText}, step: ${stepArg} })`);
+        lines.push(`linearPattern(${v(f.target)}, { count: ${countText}, step: ${stepArg} })`);
       } else {
         const angle =
           f.totalAngle !== undefined && f.totalAngle !== 360
             ? `, angle: ${numText(bindings, f.id, 'totalangle', lit(f.totalAngle))}`
             : '';
-        lines.push(`repeatAround(${v(f.target)}, { count: ${countText}, axis: '${f.axis ?? 'z'}'${angle} })`);
+        lines.push(`polarPattern(${v(f.target)}, { count: ${countText}, axis: '${f.axis ?? 'z'}'${angle} })`);
       }
       return;
     }
@@ -495,7 +505,7 @@ export function toScript(doc: ModelDoc, namedParams?: readonly ScriptParamRef[])
     if (f.kind === 'shell') {
       const opts: string[] = [optText(bindings, f.id, 'thickness', 'wall', lit(f.thickness))];
       if (f.open && f.open.cause === 'primitive') opts.push(`open: '${faceWord(f.open.part)}'`);
-      lines.push(`hollow(${v(f.target)}, { ${opts.join(', ')} })`);
+      lines.push(`shell(${v(f.target)}, { ${opts.join(', ')} })`);
       return;
     }
     if (f.kind === 'fillet') {
@@ -503,7 +513,7 @@ export function toScript(doc: ModelDoc, namedParams?: readonly ScriptParamRef[])
       const [a, b] = edge.of;
       const wordOf = (n: TopoName) => (n.cause === 'primitive' ? faceWord(n.part) : 'top');
       const ref = `${v(f.target)}.edge('${wordOf(a)}', '${wordOf(b)}')`;
-      const fn = f.style === 'chamfer' ? 'bevel' : 'round';
+      const fn = f.style === 'chamfer' ? 'chamfer' : 'fillet';
       lines.push(`const ${f.id} = ${fn}(${ref}, ${numText(bindings, f.id, 'size', lit(f.size))})`);
       return;
     }
