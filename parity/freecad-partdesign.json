@@ -5,8 +5,8 @@
       "id": "PartDesign_Body",
       "group": "Structure",
       "label": "Create a Body",
-      "reshape": null,
-      "status": "queued",
+      "reshape": "cuboid",
+      "status": "shipped",
       "reason": null
     },
     {
@@ -102,16 +102,16 @@
       "group": "Additive",
       "label": "Sweep a selected sketch along a path",
       "reshape": null,
-      "status": "queued",
-      "reason": null
+      "status": "refused",
+      "reason": "The wasm OCCT build binds no pipe operation at all: zero of its exports match BRepOffsetAPI_MakePipe or MakePipeShell (probed directly, and consistent with script-surface.ts extrudeHelix entry: no helix, no pipe ride). A pipe exists only on the BRIDGE side, where the real FreeCAD PartDesign::AdditivePipe is kernel-gated -- the studio button (SPEC-P1c) delivers it by mouse. A ModelDoc/Code-mode word would have nothing honest to lower into."
     },
     {
       "id": "PartDesign_AdditiveHelix",
       "group": "Additive",
       "label": "Additive helix",
       "reshape": null,
-      "status": "queued",
-      "reason": null
+      "status": "refused",
+      "reason": "The wasm OCCT build has no helix curve export and no pipe operation to ride one on (zero exports match /helix/i, BRepOffsetAPI_MakePipe or MakePipeShell -- probed directly; script-surface.ts extrudeHelix entry records the same wall). The bridge side is exact (real PartDesign::AdditiveHelix/SubtractiveHelix, kernel-gated) and the studio buttons (SPEC-P1c) deliver it by mouse; a Code-mode word would be an approximation with nothing to ride."
     },
     {
       "id": "PartDesign_AdditiveBox",
@@ -165,16 +165,16 @@
       "id": "PartDesign_AdditivePrism",
       "group": "Additive",
       "label": "Add a regular polygon prism",
-      "reshape": null,
-      "status": "queued",
+      "reshape": "prism",
+      "status": "shipped",
       "reason": null
     },
     {
       "id": "PartDesign_AdditiveWedge",
       "group": "Additive",
       "label": "Add a wedge",
-      "reshape": null,
-      "status": "queued",
+      "reshape": "wedge",
+      "status": "shipped",
       "reason": null
     },
     {
@@ -197,16 +197,16 @@
       "id": "PartDesign_Groove",
       "group": "Subtractive",
       "label": "Groove a selected sketch",
-      "reshape": null,
-      "status": "queued",
+      "reshape": "groove",
+      "status": "shipped",
       "reason": null
     },
     {
       "id": "PartDesign_SubtractiveLoft",
       "group": "Subtractive",
       "label": "Loft a selected sketch through material to be removed",
-      "reshape": null,
-      "status": "queued",
+      "reshape": "loft",
+      "status": "shipped",
       "reason": null
     },
     {
@@ -214,16 +214,16 @@
       "group": "Subtractive",
       "label": "Sweep a selected sketch along a path",
       "reshape": null,
-      "status": "queued",
-      "reason": null
+      "status": "refused",
+      "reason": "The wasm OCCT build binds no pipe operation at all: zero of its exports match BRepOffsetAPI_MakePipe or MakePipeShell (probed directly, and consistent with script-surface.ts extrudeHelix entry: no helix, no pipe ride). A pipe exists only on the BRIDGE side, where the real FreeCAD PartDesign::AdditivePipe is kernel-gated -- the studio button (SPEC-P1c) delivers it by mouse. A ModelDoc/Code-mode word would have nothing honest to lower into."
     },
     {
       "id": "PartDesign_SubtractiveHelix",
       "group": "Subtractive",
       "label": "Subtractive helix",
       "reshape": null,
-      "status": "queued",
-      "reason": null
+      "status": "refused",
+      "reason": "The wasm OCCT build has no helix curve export and no pipe operation to ride one on (zero exports match /helix/i, BRepOffsetAPI_MakePipe or MakePipeShell -- probed directly; script-surface.ts extrudeHelix entry records the same wall). The bridge side is exact (real PartDesign::AdditiveHelix/SubtractiveHelix, kernel-gated) and the studio buttons (SPEC-P1c) deliver it by mouse; a Code-mode word would be an approximation with nothing to ride."
     },
     {
       "id": "PartDesign_SubtractiveBox",
@@ -277,16 +277,16 @@
       "id": "PartDesign_SubtractivePrism",
       "group": "Subtractive",
       "label": "Subtract a regular polygon prism",
-      "reshape": null,
-      "status": "queued",
+      "reshape": "subtract",
+      "status": "shipped",
       "reason": null
     },
     {
       "id": "PartDesign_SubtractiveWedge",
       "group": "Subtractive",
       "label": "Subtract a wedge",
-      "reshape": null,
-      "status": "queued",
+      "reshape": "subtract",
+      "status": "shipped",
       "reason": null
     },
     {

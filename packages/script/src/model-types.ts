@@ -81,6 +81,55 @@ export interface TorusFeature {
   rotate?: Vec3;
 }
 
+/** A regular n-gon prism, extruded standing on Z. SPEC-P1a: the ModelDoc
+ *  kind behind the parity flip for PartDesign_AdditivePrism (and, composed
+ *  with cut(), SubtractivePrism). OCCT builds it as a prism over a regular
+ *  polygon wire — the `polygon` recipe path script-surface.ts already
+ *  proved (MakeEdge per side, then MakeWire). */
+export interface PrismFeature {
+  id: string;
+  kind: 'prism';
+  name?: string;
+  /** Number of sides. 3 (triangle) .. 12; FreeCAD's PartDesign::Prism
+   *  clamps at 360/12 the same way and a student never types more. */
+  sides: number;
+  /** Distance from the centre of the prism to each corner (circumradius). */
+  radius: number;
+  height: number;
+  center: Vec3;
+  rotate?: Vec3;
+}
+
+/** A right wedge — a triangular profile extruded along the third axis.
+ *  SPEC-P1a: the kind behind AdditiveWedge/SubtractiveWedge. */
+export interface WedgeFeature {
+  id: string;
+  kind: 'wedge';
+  name?: string;
+  /** Footprint width (X) and depth (Y) of the right-triangle profile. */
+  width: number;
+  depth: number;
+  height: number;
+  center: Vec3;
+  rotate?: Vec3;
+}
+
+/** A subtractive revolve — the groove. Spins the target sketch's profile
+ *  around the sketch plane's own normal axis and CUTS the swept ring out of
+ *  an earlier solid. The ModelDoc twin of the bridge's PartDesign::Groove
+ *  emitter; the additive twin already exists as RevolveFeature. */
+export interface GrooveFeature {
+  id: string;
+  kind: 'groove';
+  name?: string;
+  /** The sketch whose profile is spun into the cutting ring. */
+  target: string;
+  /** The solid the groove is cut into. */
+  into: string;
+  /** Degrees to sweep. 360 is a full ring. */
+  angle: number;
+}
+
 /** Which flat plane a sketch is drawn on. Extrusion runs perpendicular to it. */
 export type SketchPlane = 'xy' | 'xz' | 'yz';
 
@@ -390,9 +439,10 @@ export interface MoveFeature {
 export type Feature =
   | BoxFeature | CylinderFeature | SphereFeature
   | ConeFeature | TorusFeature
+  | PrismFeature | WedgeFeature
   | SketchFeature | ExtrudeFeature | CombineFeature
   | BlendFeature
-  | RevolveFeature | MirrorFeature | PatternFeature
+  | RevolveFeature | GrooveFeature | MirrorFeature | PatternFeature
   | HoleFeature | ShellFeature | MoveFeature
   | FilletFeature
   | DraftFeature;
@@ -644,7 +694,7 @@ export function nextId(doc: ModelDoc, prefix: string): string {
   }
 }
 
-export type ShapeKind = 'box' | 'cylinder' | 'sphere' | 'cone' | 'torus';
+export type ShapeKind = 'box' | 'cylinder' | 'sphere' | 'cone' | 'torus' | 'prism' | 'wedge';
 
 /**
  * A born-axis-aligned rectangle's four edges, alternating horizontal and
@@ -767,6 +817,14 @@ export function newExtrude(doc: ModelDoc, target: string): ExtrudeFeature {
 
 export function newRevolve(doc: ModelDoc, target: string): RevolveFeature {
   return { id: nextId(doc, 'rev'), kind: 'revolve', target, angle: 360 };
+}
+
+/** The groove twin of newRevolve: same profile contract, but the swept ring
+ *  is cut from `into` rather than standing alone. `into` is required for the
+ *  same reason mirror's plane is — a groove with nothing to cut is not a
+ *  feature, it is a revolve someone forgot to aim. */
+export function newGroove(doc: ModelDoc, target: string, into: string): GrooveFeature {
+  return { id: nextId(doc, 'groove'), kind: 'groove', target, into, angle: 360 };
 }
 
 // No default plane -- Onshape makes the mirror plane a required field and
@@ -998,6 +1056,8 @@ function newHalfWidthX(kind: ShapeKind): number {
   if (kind === 'cylinder') return 10; // radius: 10
   if (kind === 'cone') return 12; // radius: 12
   if (kind === 'torus') return 18; // ringRadius 14 + tubeRadius 4
+  if (kind === 'prism') return 10; // circumradius 10
+  if (kind === 'wedge') return 15; // width 30 -> half is 15
   return 15; // sphere radius: 15
 }
 
@@ -1012,6 +1072,8 @@ function shapeRightEdgeX(f: Feature): number | null {
   if (f.kind === 'cylinder' || f.kind === 'cone') return f.center[0] + f.radius;
   if (f.kind === 'sphere') return f.center[0] + f.radius;
   if (f.kind === 'torus') return f.center[0] + f.ringRadius + f.tubeRadius;
+  if (f.kind === 'prism') return f.center[0] + f.radius;
+  if (f.kind === 'wedge') return f.center[0] + f.width / 2;
   return null;
 }
 
@@ -1045,6 +1107,12 @@ export function newShape(doc: ModelDoc, kind: ShapeKind): Feature {
   if (kind === 'torus') {
     return { id: nextId(doc, 'ring'), kind, ringRadius: 14, tubeRadius: 4, center: [cx, 0, 0] };
   }
+  if (kind === 'prism') {
+    return { id: nextId(doc, 'prism'), kind, sides: 6, radius: 10, height: 30, center: [cx, 0, 0] };
+  }
+  if (kind === 'wedge') {
+    return { id: nextId(doc, 'wedge'), kind, width: 30, depth: 20, height: 25, center: [cx, 0, 0] };
+  }
   return { id: nextId(doc, 'ball'), kind, radius: 15, center: [cx, 0, 0] };
 }
 
@@ -1071,6 +1139,9 @@ function labelOf(f: Feature): string {
     : f.kind === 'cylinder' ? 'Cylinder'
     : f.kind === 'cone' ? 'Cone'
     : f.kind === 'torus' ? 'Ring'
+    : f.kind === 'prism' ? 'Prism'
+    : f.kind === 'wedge' ? 'Wedge'
+    : f.kind === 'groove' ? 'Groove'
     : f.kind === 'blend' ? 'Blend'
     : f.kind === 'sphere' ? 'Sphere'
     // Decision: reference.md and studentWord() (lib/model-check.ts) both

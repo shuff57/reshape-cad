@@ -97,6 +97,19 @@ export function generatedParams(doc: ModelDoc): GeneratedParam[] {
     } else if (f.kind === 'sphere') {
       push('radius', 'across', f.radius * 2);
       pushCentre(out, f.id, label, f.center);
+    } else if (f.kind === 'prism') {
+      push('radius', 'across', f.radius * 2);
+      push('height', 'height', f.height);
+      pushCentre(out, f.id, label, f.center);
+      pushTurn(out, f.id, label, f.rotate);
+    } else if (f.kind === 'wedge') {
+      push('width', 'width', f.width);
+      push('depth', 'depth', f.depth);
+      push('height', 'height', f.height);
+      pushCentre(out, f.id, label, f.center);
+      pushTurn(out, f.id, label, f.rotate);
+    } else if (f.kind === 'groove') {
+      push('angle', 'angle', f.angle);
     } else if (f.kind === 'sketch') {
       if (f.shape === 'circle' && f.points.length === 2) {
         // A circle is stored as the two ends of a diameter (see
@@ -329,6 +342,18 @@ export function applyParam(doc: ModelDoc, name: string, value: number): ModelDoc
         const ringRadius = f.ringRadius + f.tubeRadius - tubeRadius;
         return { ...f, ringRadius, tubeRadius };
       }
+    }
+    if (f.kind === 'prism') {
+      if (slot === 'radius') { changed = true; return { ...f, radius: value / 2 }; }
+      if (slot === 'height') { changed = true; return { ...f, height: value }; }
+    }
+    if (f.kind === 'wedge') {
+      if (slot === 'width') { changed = true; return { ...f, width: value }; }
+      if (slot === 'depth') { changed = true; return { ...f, depth: value }; }
+      if (slot === 'height') { changed = true; return { ...f, height: value }; }
+    }
+    if (f.kind === 'groove') {
+      if (slot === 'angle') { changed = true; return { ...f, angle: value }; }
     }
     if (f.kind === 'sketch') {
       if (f.shape === 'circle' && f.points.length === 2 && (slot === 'across' || slot === 'x' || slot === 'y')) {

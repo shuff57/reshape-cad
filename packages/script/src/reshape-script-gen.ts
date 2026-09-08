@@ -164,8 +164,8 @@ function chainVars(doc: ModelDoc): Map<string, string> {
  *  lib/model-types.ts's newShape() already does, so the generated script
  *  only writes `{ at: [...] }` when the student's own doc actually needed a
  *  non-default position -- see box()'s call site below. */
-function defaultCenter(doc: ModelDoc, upTo: number, kind: 'box' | 'cylinder' | 'cone' | 'torus' | 'sphere') {
-  // newShape() always returns one of the five primitive kinds for these
+function defaultCenter(doc: ModelDoc, upTo: number, kind: 'box' | 'cylinder' | 'cone' | 'torus' | 'sphere' | 'prism' | 'wedge') {
+  // newShape() always returns one of the primitive kinds for these
   // `kind` values -- every one of which carries `center` -- but its own
   // return type is the full Feature union (it also builds sketches, whose
   // signature differs), so the cast states what is already true at runtime.
@@ -352,6 +352,25 @@ export function toScript(doc: ModelDoc, namedParams?: readonly ScriptParamRef[])
       lines.push(`const ${f.id} = torus(${lit(across)}, ${lit(tubeAcross)}${at})`);
       return;
     }
+    if (f.kind === 'prism') {
+      // prism()'s args are derived (across = 2*circumradius), same as
+      // ring(): no param() correlation is possible on the derived ones.
+      const def = defaultCenter(doc, i, 'prism');
+      const at = emitAt(bindings, f.id, f.center, def);
+      const across = numText(bindings, f.id, 'radius', lit(f.radius * 2));
+      const tall = numText(bindings, f.id, 'height', lit(f.height));
+      lines.push(`const ${f.id} = prism(${f.sides}, ${across}, ${tall}${at})`);
+      return;
+    }
+    if (f.kind === 'wedge') {
+      const def = defaultCenter(doc, i, 'wedge');
+      const at = emitAt(bindings, f.id, f.center, def);
+      const w = numText(bindings, f.id, 'width', lit(f.width));
+      const d = numText(bindings, f.id, 'depth', lit(f.depth));
+      const h = numText(bindings, f.id, 'height', lit(f.height));
+      lines.push(`const ${f.id} = wedge(${w}, ${d}, ${h}${at})`);
+      return;
+    }
     if (f.kind === 'sketch') {
       const plane = PLANE_WORD[f.plane] ?? 'top';
       const offsetArg = f.offset !== 0 ? `, ${lit(f.offset)}` : '';
@@ -415,6 +434,10 @@ export function toScript(doc: ModelDoc, namedParams?: readonly ScriptParamRef[])
     }
     if (f.kind === 'revolve') {
       lines.push(`const ${f.id} = revolve(${v(f.target)}, ${numText(bindings, f.id, 'angle', lit(f.angle))})`);
+      return;
+    }
+    if (f.kind === 'groove') {
+      lines.push(`groove(${v(f.target)}, ${v(f.into)}, ${numText(bindings, f.id, 'angle', lit(f.angle))})`);
       return;
     }
     if (f.kind === 'blend') {

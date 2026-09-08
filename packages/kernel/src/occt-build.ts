@@ -500,6 +500,36 @@ function primitiveOf(oc: Occt, f: Feature): any {
     case 'torus':
       return turned(oc, new oc.BRepPrimAPI_MakeTorus(f.ringRadius, f.tubeRadius).Shape(),
         f.rotate, [0, 0, 0]);
+    case 'prism': {
+      // Regular n-gon wire (edge per side — the polygon recipe path
+      // script-surface.ts proved), face, prism along Z. Circumradius R with
+      // a vertex at angle 0 matches FreeCAD's own PartDesign::Prism.
+      const n = Math.max(3, Math.min(12, Math.round(f.sides)));
+      const pts: any[] = [];
+      for (let i = 0; i < n; i++) {
+        const a = (2 * Math.PI * i) / n;
+        pts.push(new oc.gp_Pnt(f.radius * Math.cos(a), f.radius * Math.sin(a), 0));
+      }
+      const mk = new oc.BRepBuilderAPI_MakeWire();
+      for (let i = 0; i < n; i++) {
+        mk.Add(new oc.BRepBuilderAPI_MakeEdge(pts[i], pts[(i + 1) % n]).Edge());
+      }
+      const profile = new oc.BRepBuilderAPI_MakeFace(mk.Wire()).Face();
+      const raw = new oc.BRepPrimAPI_MakePrism(profile, new oc.gp_Vec(0, 0, f.height)).Shape();
+      return turned(oc, moved(oc, raw, [0, 0, -f.height / 2]), f.rotate, [0, 0, 0]);
+    }
+    case 'wedge': {
+      // Right-triangle profile in XY (origin corner, width x, depth y,
+      // hypotenuse closing it), extruded along Z — the shape FreeCAD's own
+      // PartDesign::Wedge defaults to.
+      const tri = new oc.BRepBuilderAPI_MakeWire();
+      tri.Add(new oc.BRepBuilderAPI_MakeEdge(new oc.gp_Pnt(0, 0, 0), new oc.gp_Pnt(f.width, 0, 0)).Edge());
+      tri.Add(new oc.BRepBuilderAPI_MakeEdge(new oc.gp_Pnt(f.width, 0, 0), new oc.gp_Pnt(0, f.depth, 0)).Edge());
+      tri.Add(new oc.BRepBuilderAPI_MakeEdge(new oc.gp_Pnt(0, f.depth, 0), new oc.gp_Pnt(0, 0, 0)).Edge());
+      const profile = new oc.BRepBuilderAPI_MakeFace(tri.Wire()).Face();
+      const raw = new oc.BRepPrimAPI_MakePrism(profile, new oc.gp_Vec(0, 0, f.height)).Shape();
+      return turned(oc, moved(oc, raw, [-f.width / 2, -f.depth / 2, -f.height / 2]), f.rotate, [0, 0, 0]);
+    }
     default:
       return null;
   }
@@ -551,9 +581,34 @@ export function buildDoc(oc: Occt, doc: ModelDoc, arc?: any): BuildResult {
   for (const f of doc.features) {
     let shape: any = null;
     if (f.kind === 'box' || f.kind === 'cylinder' || f.kind === 'cone'
-        || f.kind === 'sphere' || f.kind === 'torus') {
+        || f.kind === 'sphere' || f.kind === 'torus'
+        || f.kind === 'prism' || f.kind === 'wedge') {
       shape = primitiveOf(oc, f);
       if (shape) shape = moved(oc, shape, f.center);
+    } else if (f.kind === 'groove') {
+      // Subtractive revolve: spin the profile sketch around the plane
+      // normal (the same axis revolve uses) and CUT the swept ring out of
+      // the named solid. Mirror of the revolve branch, minus the sweep
+      // history (a cut's faces come from the boolean, not the spin).
+      const src = doc.features.find((x) => x.id === f.target);
+      const base = built.get(f.into);
+      if (arc && src && src.kind === 'sketch' && base) {
+        const a = PLANE_AXES[src.plane ?? 'xy'] ?? PLANE_AXES.xy;
+        const marks: Mark[] = [];
+        const face = revolveProfileFace(oc, arc, src, marks);
+        if (face) {
+          const axis = new oc.gp_Ax1(new oc.gp_Pnt(0, 0, 0), new oc.gp_Dir(a.n[0], a.n[1], a.n[2]));
+          const spun = new oc.BRepPrimAPI_MakeRevol(face, axis, (f.angle * Math.PI) / 180, true).Shape();
+          const off = src.offset ?? 0;
+          let tool: any = spun;
+          if (off !== 0) {
+            const after = new oc.gp_Trsf();
+            after.SetTranslation(new oc.gp_Vec(a.n[0] * off, a.n[1] * off, a.n[2] * off));
+            tool = new oc.BRepBuilderAPI_Transform(spun, after, false).Shape();
+          }
+          shape = boolean('BRepAlgoAPI_Cut', base, tool, f.id, [f.into]);
+        }
+      }
     } else if (f.kind === 'combine') {
       const live = f.targets.filter((id) => built.get(id));
       if (live.length >= 2) {

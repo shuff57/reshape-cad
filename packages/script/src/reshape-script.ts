@@ -45,6 +45,9 @@ import {
   type CylinderFeature,
   type ConeFeature,
   type TorusFeature,
+  type PrismFeature,
+  type WedgeFeature,
+  type GrooveFeature,
   type SphereFeature,
   type SketchFeature,
   type SketchConstraint,
@@ -62,6 +65,7 @@ import {
   RECTANGLE_CONSTRAINTS,
   newExtrude,
   newRevolve,
+  newGroove,
   newMirror,
   newBlend,
   extentAlong,
@@ -171,6 +175,7 @@ export interface RunResult {
 export const VOCABULARY = [
   // student words (course-facing, documented in the lesson pages)
   'box', 'cylinder', 'sphere', 'cone', 'ring',
+  'prism', 'wedge', 'groove',
   'hole', 'holes', 'hollow', 'round', 'bevel', 'repeat', 'repeatAround', 'mirror', 'move', 'turn',
   'join', 'cut', 'keep', 'draft',
   'sketch', 'pull', 'spin', 'blend',
@@ -739,6 +744,45 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
       tf.tubeRadius = t / 2;
       tf.ringRadius = (a - t) / 2;
     });
+  }
+
+  // prism(sides, across, tall) -> PrismFeature. `across` is the whole width
+  // across corners (the circumradius doubled), matching how every other
+  // student word names a diameter rather than a radius.
+  function prism(sides: unknown, across: unknown, tall: unknown, opts?: unknown): SolidHandle {
+    return placePrimitive('prism', 'prism', ['sides', 'across', 'tall'], [sides, across, tall], opts, (f, id) => {
+      const pf = f as PrismFeature;
+      const n = Math.round(unwrap(sides) as number);
+      if (!(n >= 3 && n <= 12)) throw new Error('prism() needs 3 to 12 sides.');
+      pf.sides = n;
+      pf.radius = num(across, id, 'radius') / 2;
+      pf.height = num(tall, id, 'height');
+    });
+  }
+
+  // wedge(width, depth, tall) -> WedgeFeature: the right-triangle footprint
+  // the kernel extrudes along Z (occt-build's wedgeOf, matching FreeCAD's own
+  // PartDesign::Wedge default).
+  function wedge(width: unknown, depth: unknown, tall: unknown, opts?: unknown): SolidHandle {
+    return placePrimitive('wedge', 'wedge', ['width', 'depth', 'height'], [width, depth, tall], opts, (f, id) => {
+      const wf = f as WedgeFeature;
+      wf.width = num(width, id, 'width');
+      wf.depth = num(depth, id, 'depth');
+      wf.height = num(tall, id, 'height');
+    });
+  }
+
+  // groove(sketch, target, angle): the subtractive revolve — spin the profile
+  // around the sketch plane's own normal and CUT the ring out of the target
+  // solid. Mirror of spin(), with the solid it cuts named.
+  function groove(sk: unknown, target: unknown, angle: unknown): SolidHandle {
+    if (!isSketchHandle(sk)) throw new Error('groove() needs a sketch: groove(sketch1, shape, angle).');
+    if (!isHandle(target)) throw new Error('groove() needs a shape to cut: groove(sketch1, shape, angle).');
+    requiredNumber('groove', 'angle', angle);
+    const f = newGroove(docNow(), sk.id, target.id);
+    f.angle = num(angle, f.id, 'angle');
+    pushFeature(f);
+    return makeSolidHandle(f);
   }
 
   // ---- sketches ---------------------------------------------------------
@@ -1345,6 +1389,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
   // constant exists to close.
   const fns: Record<(typeof VOCABULARY)[number], unknown> = {
     box, cylinder, sphere, cone, ring,
+    prism, wedge, groove,
     hole, holes, hollow, round, bevel, repeat, repeatAround, mirror, move, turn,
     join, cut, keep, draft,
     sketch, pull, spin, blend,
