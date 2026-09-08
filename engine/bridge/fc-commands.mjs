@@ -305,6 +305,112 @@ export const emit = {
     );
   },
 
+  // Groove: the subtractive counterpart of Revolve — spin a closed profile
+  // around the sketch's vertical axis (V_Axis) and REMOVE the swept material.
+  // Same clean-status guard as revolve.
+  groove(bodyName, sketchName, featName, angle = 360) {
+    return wrapStatus(
+      `gr = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::Groove", ${pyStr(featName)})\n` +
+      `gr.Profile = doc.getObject(${pyStr(sketchName)})\n` +
+      `gr.ReferenceAxis = (doc.getObject(${pyStr(sketchName)}), ['V_Axis'])\n` +
+      `gr.Angle = ${pyNum(angle, 'angle')}\n` +
+      `doc.recompute()\n` +
+      `if ('Invalid' in gr.State) or gr.Shape.isNull():\n` +
+      `    doc.removeObject(gr.Name)\n` +
+      `    doc.recompute()\n` +
+      `    raise ValueError('groove failed — the profile must be a closed loop that does not cross the vertical axis')`
+    );
+  },
+
+  // Subtractive loft: remove the shape lofted between two closed profile
+  // sketches. Sections carries the second profile (a one-element Python list,
+  // matching PartDesign's AddSubShape semantics). Thickness only when a gap
+  // is asked for — a 0 gap is the plain loft.
+  subtractiveLoft(bodyName, sketchNameA, sketchNameB, featName, gap = 0) {
+    const g = pyNum(gap, 'gap');
+    const thick = gap > 0 ? `ls.Thickness = ${g}\n` : '';
+    return wrapStatus(
+      `ls = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::SubtractiveLoft", ${pyStr(featName)})\n` +
+      `ls.Profile = doc.getObject(${pyStr(sketchNameA)})\n` +
+      `ls.Sections = [doc.getObject(${pyStr(sketchNameB)})]\n` +
+      thick +
+      `doc.recompute()\n` +
+      `if ('Invalid' in ls.State) or ls.Shape.isNull():\n` +
+      `    doc.removeObject(ls.Name)\n` +
+      `    doc.recompute()\n` +
+      `    raise ValueError('subtractive loft failed — the two profiles must be closed loops of the same shape')`
+    );
+  },
+
+  // Additive loft: add the shape lofted between two closed profile sketches.
+  additiveLoft(bodyName, sketchNameA, sketchNameB, featName) {
+    return wrapStatus(
+      `lo = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::AdditiveLoft", ${pyStr(featName)})\n` +
+      `lo.Profile = doc.getObject(${pyStr(sketchNameA)})\n` +
+      `lo.Sections = [doc.getObject(${pyStr(sketchNameB)})]\n` +
+      `doc.recompute()\n` +
+      `if ('Invalid' in lo.State) or lo.Shape.isNull():\n` +
+      `    doc.removeObject(lo.Name)\n` +
+      `    doc.recompute()\n` +
+      `    raise ValueError('additive loft failed — the two profiles must be closed loops of the same shape')`
+    );
+  },
+
+  // Additive pipe: sweep a closed profile along an open path sketch (the
+  // spine's first edge is the ride; a full path ride is a v2 concern).
+  additivePipe(bodyName, sketchNameProfile, sketchNamePath, featName) {
+    return wrapStatus(
+      `ap = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::AdditivePipe", ${pyStr(featName)})\n` +
+      `ap.Profile = doc.getObject(${pyStr(sketchNameProfile)})\n` +
+      `ap.Spine = (doc.getObject(${pyStr(sketchNamePath)}), ['Edge1'])\n` +
+      `doc.recompute()\n` +
+      `if ('Invalid' in ap.State) or ap.Shape.isNull():\n` +
+      `    doc.removeObject(ap.Name)\n` +
+      `    doc.recompute()\n` +
+      `    raise ValueError('pipe failed — the path must be an open line the profile can follow')`
+    );
+  },
+
+  // Additive helix: sweep a closed profile along a helical ride (Height +
+  // Turns drive the helix; Angle is the full revolution per turn).
+  // ReferenceAxis is REQUIRED and PERPENDICULAR to the profile (kernel-
+  // measured, msgbox #72/#74): the sketch's own normal ('N_Axis') — a helix
+  // rides ALONG the axis like Pad's extrude direction, unlike revolve/groove
+  // which spin AROUND an in-plane axis. V_Axis (in-plane) makes the helical
+  // path run through the profile's own plane and self-intersect at any pitch.
+  additiveHelix(bodyName, sketchName, featName, height, turns) {
+    return wrapStatus(
+      `ah = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::AdditiveHelix", ${pyStr(featName)})\n` +
+      `ah.Profile = doc.getObject(${pyStr(sketchName)})\n` +
+      `ah.ReferenceAxis = (doc.getObject(${pyStr(sketchName)}), ['N_Axis'])\n` +
+      `ah.Height = ${pyNum(height, 'height')}\n` +
+      `ah.Turns = ${pyNum(turns, 'turns')}\n` +
+      `ah.Angle = 360\n` +
+      `doc.recompute()\n` +
+      `if ('Invalid' in ah.State) or ah.Shape.isNull():\n` +
+      `    doc.removeObject(ah.Name)\n` +
+      `    doc.recompute()\n` +
+      `    raise ValueError('helix failed — the profile must be a closed loop')`
+    );
+  },
+
+  // Subtractive helix: the same helical ride, removing material.
+  subtractiveHelix(bodyName, sketchName, featName, height, turns) {
+    return wrapStatus(
+      `sh = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::SubtractiveHelix", ${pyStr(featName)})\n` +
+      `sh.Profile = doc.getObject(${pyStr(sketchName)})\n` +
+      `sh.ReferenceAxis = (doc.getObject(${pyStr(sketchName)}), ['N_Axis'])\n` +
+      `sh.Height = ${pyNum(height, 'height')}\n` +
+      `sh.Turns = ${pyNum(turns, 'turns')}\n` +
+      `sh.Angle = 360\n` +
+      `doc.recompute()\n` +
+      `if ('Invalid' in sh.State) or sh.Shape.isNull():\n` +
+      `    doc.removeObject(sh.Name)\n` +
+      `    doc.recompute()\n` +
+      `    raise ValueError('subtractive helix failed — the profile must be a closed loop')`
+    );
+  },
+
   // -- editable history ----------------------------------------------------
   // Read a feature's editable driving parameter (name/label/type/param/value),
   // for the history editor. param is null for a feature with nothing to edit.
@@ -466,6 +572,38 @@ export function attachCommands(session) {
     const res = session.read(emit.revolve(bodyName, sketchName, revName, angle));
     if (!res.ok) throw new Error(res.error || 'revolve failed');
     return revName;
+  };
+  // sweep/groove/loft/pipe/helix — all wrapStatus emitters, so all use the
+  // read/status pattern with their own short default message.
+  session.groove = (bodyName, sketchName, featName, angle = 360) => {
+    const res = session.read(emit.groove(bodyName, sketchName, featName, angle));
+    if (!res.ok) throw new Error(res.error || 'groove failed');
+    return featName;
+  };
+  session.subtractiveLoft = (bodyName, sketchA, sketchB, featName, gap = 0) => {
+    const res = session.read(emit.subtractiveLoft(bodyName, sketchA, sketchB, featName, gap));
+    if (!res.ok) throw new Error(res.error || 'subtractive loft failed');
+    return featName;
+  };
+  session.additiveLoft = (bodyName, sketchA, sketchB, featName) => {
+    const res = session.read(emit.additiveLoft(bodyName, sketchA, sketchB, featName));
+    if (!res.ok) throw new Error(res.error || 'additive loft failed');
+    return featName;
+  };
+  session.additivePipe = (bodyName, profile, path, featName) => {
+    const res = session.read(emit.additivePipe(bodyName, profile, path, featName));
+    if (!res.ok) throw new Error(res.error || 'pipe failed');
+    return featName;
+  };
+  session.additiveHelix = (bodyName, sketchName, featName, height, turns) => {
+    const res = session.read(emit.additiveHelix(bodyName, sketchName, featName, height, turns));
+    if (!res.ok) throw new Error(res.error || 'helix failed');
+    return featName;
+  };
+  session.subtractiveHelix = (bodyName, sketchName, featName, height, turns) => {
+    const res = session.read(emit.subtractiveHelix(bodyName, sketchName, featName, height, turns));
+    if (!res.ok) throw new Error(res.error || 'subtractive helix failed');
+    return featName;
   };
   // editable history
   session.featureInfo = (objName) => session.read(emit.featureInfo(objName));

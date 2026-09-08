@@ -151,6 +151,28 @@ function emitTorus(state, args) {
   ];
 }
 
+function emitPrism(state, args) {
+  const [radius, height] = args;
+  const body = freshName(state, 'Body');
+  const feat = freshName(state, 'Prism');
+  state.current = { body, kind: 'prism' };
+  return [
+    { op: 'newBody', args: [body] },
+    { op: 'prism', args: [body, feat, radius, height] },
+  ];
+}
+
+function emitWedge(state, args) {
+  const [width, height] = args;
+  const body = freshName(state, 'Body');
+  const feat = freshName(state, 'Wedge');
+  state.current = { body, kind: 'wedge' };
+  return [
+    { op: 'newBody', args: [body] },
+    { op: 'wedge', args: [body, feat, width, height] },
+  ];
+}
+
 function emitHole(state, args) {
   if (!state.current) {
     throw new Error('hole needs a solid to cut, but no box or cylinder statement came before it');
@@ -190,6 +212,8 @@ const BASE_STATEMENTS = {
   sphere: { minArgs: 1, maxArgs: 1, emit: emitSphere },
   cone: { minArgs: 2, maxArgs: 2, emit: emitCone },
   torus: { minArgs: 2, maxArgs: 2, emit: emitTorus },
+  prism: { minArgs: 2, maxArgs: 2, emit: emitPrism },
+  wedge: { minArgs: 2, maxArgs: 2, emit: emitWedge },
 };
 
 // Official geometry names for the student words. Each key is a word a script

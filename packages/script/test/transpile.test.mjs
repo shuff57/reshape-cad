@@ -155,3 +155,21 @@ test('ring is a student alias of torus with identical lowering', () => {
   assert.deepEqual(alias.commands, official.commands);
   assert.equal(alias.python, official.python);
 });
+
+test('prism(10, 20) emits newBody + hexagonal prism feature', () => {
+  const { commands, python } = transpile('prism(10, 20)');
+  assert.deepEqual(commands, [
+    { op: 'newBody', args: ['Body'] },
+    { op: 'prism', args: ['Body', 'Prism', 10, 20] },
+  ]);
+  assert.ok(python.includes('PartDesign::Prism'), python);
+});
+
+test('wedge(30, 40) emits newBody + wedge feature', () => {
+  const { commands, python } = transpile('wedge(30, 40)');
+  assert.deepEqual(commands, [
+    { op: 'newBody', args: ['Body'] },
+    { op: 'wedge', args: ['Body', 'Wedge', 30, 40] },
+  ]);
+  assert.ok(python.includes('PartDesign::Wedge'), python);
+});

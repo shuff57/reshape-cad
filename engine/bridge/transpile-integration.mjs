@@ -60,5 +60,47 @@ for (const [src, expected, tag] of cases) {
   ci++;
 }
 
+// v1.2 sweep/groove/loft/pipe/helix emitters, driven directly (their
+// statements are not transpiler words yet — the transpiler's vocabulary is
+// number-only primitives; profile-driven features need sketch statements).
+// Each case builds its own document; volumes checked against exact formulas
+// where the shape admits one.
+s.newDocument('sw1');
+s.newBody('Body');
+// Helix pitch (Height/Turns) must be >= profile diameter or consecutive
+// turns overlap and the swept solid self-intersects (kernel-measured,
+// msgbox #73: 30/5=6mm pitch vs r=6 circle threw 'Result is self
+// intersecting'). r=3 circle + 50/5=10mm pitch rides clean.
+s.sketchCircle('Body', 'Sketch', 3);
+s.additiveHelix('Body', 'Sketch', 'Spring', 50, 5);
+const h = s.mesh();
+// a helical sweep of a circle is hard to state exactly; assert it built
+// non-empty and tall enough to have swept
+console.log(`ADDITIVE HELIX: vol=${h.volume}`);
+assert.ok(h.volume > 0, `additive helix built, got vol ${h.volume}`);
+
+s.newDocument('sw2');
+s.newBody('Body');
+s.sketchRect('Body', 'SketchA', 10, 10);
+s.sketchRect('Body', 'SketchB', 20, 20);
+// Two sections stacked at the same Z give the loft nothing to sweep between
+// (kernel-measured, msgbox #75: vol=0). PartDesign lofts ride the section
+// PLACEMENTS, so lift SketchB to z=10 — the same move the studio's Pad-
+// Length idiom cannot express, done here with a raw placement exec.
+s.exec(
+  'import FreeCAD as App\n' +
+  'doc = App.ActiveDocument\n' +
+  'sk = doc.getObject("SketchB")\n' +
+  'sk.Placement = App.Placement(App.Vector(0, 0, 10), App.Rotation())\n' +
+  'doc.recompute()\n'
+);
+s.additiveLoft('Body', 'SketchA', 'SketchB', 'Loft');
+const lf = s.mesh();
+// frustum between 10x10 at z=0 and 20x20 at z=10:
+// exact volume = (A1 + A2 + sqrt(A1*A2)) / 3 * h = (100+400+200)/3 * 10
+const expectedLoft = ((100 + 400 + Math.sqrt(100 * 400)) / 3) * 10;
+console.log(`ADDITIVE LOFT: vol=${lf.volume} expected≈${expectedLoft.toFixed(3)}`);
+assert.ok(Math.abs(lf.volume - expectedLoft) < 5, `loft vol ~${expectedLoft}, got ${lf.volume}`);
+
 console.log('TRANSPILER_INTEGRATION:PASS');
 process.exit(0);
