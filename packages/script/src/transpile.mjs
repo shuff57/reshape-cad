@@ -173,6 +173,60 @@ function emitWedge(state, args) {
   ];
 }
 
+// Profile statements (P1b): one statement = one complete sketch-driven
+// feature, matching the studio's click flows. extrude is 'draw a rectangle,
+// pad it'; pocket is the subtractive twin on the CURRENT body; groove is
+// the subtractive revolve — its profile needs no pick (lead's #84), and
+// unlike revolve it has no prior ModelDoc-word coverage on the statement
+// surface. Fillet/chamfer/revolve statements stay OUT, with reasons: an
+// edge name is only a 3D pick away (no statement grammar for picks), and
+// revolve's operation is already the ModelDoc word's.
+function emitExtrude(state, args) {
+  const [width, height, depth] = args;
+  const body = freshName(state, 'Body');
+  const sketch = freshName(state, 'Sketch');
+  const pad = freshName(state, 'Pad');
+  state.current = { body, kind: 'box', length: width, width: height, height: depth };
+  return [
+    { op: 'newBody', args: [body] },
+    { op: 'sketchRect', args: [body, sketch, width, height] },
+    { op: 'pad', args: [body, sketch, pad, depth] },
+  ];
+}
+
+function emitPocketStmt(state, args) {
+  const [width, height, depth] = args;
+  if (!state.current) {
+    throw new Error('pocket needs a solid to cut, but no solid statement came before it');
+  }
+  const body = state.current.body;
+  const sketch = freshName(state, 'Sketch');
+  const feat = freshName(state, 'Pocket');
+  return [
+    { op: 'sketchRect', args: [body, sketch, width, height] },
+    { op: 'pocket', args: [body, sketch, feat, depth] },
+  ];
+}
+
+function emitGrooveStmt(state, args) {
+  if (!state.current) {
+    throw new Error('groove needs a solid to cut, but no solid statement came before it');
+  }
+  // groove(w[, h][, angle]): the profile rectangle spun around V_Axis and
+  // cut from the current solid. w only = square profile; angle defaults to
+  // the full ring.
+  const w = args[0];
+  const h = args.length >= 2 ? args[1] : args[0];
+  const ang = args.length === 3 ? args[2] : 360;
+  const body = state.current.body;
+  const sketch = freshName(state, 'Sketch');
+  const feat = freshName(state, 'Groove');
+  return [
+    { op: 'sketchRect', args: [body, sketch, w, h] },
+    { op: 'groove', args: [body, sketch, feat, ang] },
+  ];
+}
+
 function emitHole(state, args) {
   if (!state.current) {
     throw new Error('hole needs a solid to cut, but no box or cylinder statement came before it');
@@ -214,6 +268,9 @@ const BASE_STATEMENTS = {
   torus: { minArgs: 2, maxArgs: 2, emit: emitTorus },
   prism: { minArgs: 2, maxArgs: 2, emit: emitPrism },
   wedge: { minArgs: 2, maxArgs: 2, emit: emitWedge },
+  extrude: { minArgs: 3, maxArgs: 3, emit: emitExtrude },
+  pocket: { minArgs: 3, maxArgs: 3, emit: emitPocketStmt },
+  groove: { minArgs: 1, maxArgs: 3, emit: emitGrooveStmt },
 };
 
 // Official geometry names for the student words. Each key is a word a script

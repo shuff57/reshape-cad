@@ -195,11 +195,19 @@ export const emit = {
   // by `length`. Subtractive counterpart to Pad. Same clean-status wrapper: an
   // open/invalid profile leaves a null shape — detect it, delete, report a
   // clear message instead of a phantom feature.
+  // Reversed = True (kernel-measured, msgbox #91/#92): a bare XY sketch under
+  // a Pad cuts -Z by default — empty space below the solid — so the pocket
+  // removed NOTHING (vol came back the base solid's, 32000). Midplane was the
+  // wrong first fix (it splits the depth symmetrically, so only half falls
+  // in material, 31800). Reversed aims the whole depth the other way: +Z,
+  // straight into the material. (holeThrough keeps Midplane because a
+  // THROUGH-all cut has no depth to halve — symmetric is free there.)
   pocket(bodyName, sketchName, pocketName, length) {
     return wrapStatus(
       `pk = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::Pocket", ${pyStr(pocketName)})\n` +
       `pk.Profile = doc.getObject(${pyStr(sketchName)})\n` +
       `pk.Length = ${pyNum(length, 'length')}\n` +
+      `pk.Reversed = True\n` +
       `doc.recompute()\n` +
       `if ('Invalid' in pk.State) or pk.Shape.isNull():\n` +
       `    doc.removeObject(pk.Name)\n` +

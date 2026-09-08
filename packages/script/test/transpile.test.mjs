@@ -173,3 +173,53 @@ test('wedge(30, 40) emits newBody + wedge feature', () => {
   ]);
   assert.ok(python.includes('PartDesign::Wedge'), python);
 });
+
+test('extrude(w, h, d) is a rect sketch + pad — the statement form of cuboid', () => {
+  const { commands, python } = transpile('extrude(20, 10, 8)');
+  assert.deepEqual(commands, [
+    { op: 'newBody', args: ['Body'] },
+    { op: 'sketchRect', args: ['Body', 'Sketch', 20, 10] },
+    { op: 'pad', args: ['Body', 'Sketch', 'Pad', 8] },
+  ]);
+  assert.ok(python.includes('PartDesign::Pad'), python);
+});
+
+test('pocket(w, h, d) cuts a rect profile from the current solid', () => {
+  const { commands } = transpile('cuboid(40, 40, 20); pocket(10, 8, 5)');
+  const ops = commands.map((c) => c.op);
+  assert.deepEqual(ops, ['newBody', 'sketchRect', 'pad', 'sketchRect', 'pocket']);
+  const pocketCmd = commands[4];
+  assert.deepEqual(pocketCmd.args.slice(0, 3), ['Body', 'Sketch001', 'Pocket']);
+  assert.equal(pocketCmd.args[3], 5);
+});
+
+test('pocket before any solid is an error', () => {
+  assert.throws(
+    () => transpile('pocket(10, 8, 5)'),
+    (err) => err instanceof Error && /pocket needs a solid/i.test(err.message),
+  );
+});
+
+test('groove(w, h, angle) spins a rect profile around V_Axis on the current solid', () => {
+  const { commands } = transpile('cylinder(10, 30); groove(4, 6, 180)');
+  const ops = commands.map((c) => c.op);
+  assert.deepEqual(ops, ['newBody', 'sketchCircle', 'pad', 'sketchRect', 'groove']);
+  const grooveCmd = commands[4];
+  assert.deepEqual(grooveCmd.args.slice(0, 3), ['Body', 'Sketch001', 'Groove']);
+  assert.equal(grooveCmd.args[3], 180);
+});
+
+test('groove with one arg is a square profile at the full ring', () => {
+  const { commands } = transpile('cylinder(10, 30); groove(4)');
+  const grooveCmd = commands.find((c) => c.op === 'groove');
+  assert.equal(grooveCmd.args[3], 360);
+  const sketchCmd = commands.filter((c) => c.op === 'sketchRect')[0];
+  assert.deepEqual(sketchCmd.args.slice(2), [4, 4]);
+});
+
+test('groove before any solid is an error', () => {
+  assert.throws(
+    () => transpile('groove(4)'),
+    (err) => err instanceof Error && /groove needs a solid/i.test(err.message),
+  );
+});

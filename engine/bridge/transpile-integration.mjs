@@ -102,5 +102,28 @@ const expectedLoft = ((100 + 400 + Math.sqrt(100 * 400)) / 3) * 10;
 console.log(`ADDITIVE LOFT: vol=${lf.volume} expected≈${expectedLoft.toFixed(3)}`);
 assert.ok(Math.abs(lf.volume - expectedLoft) < 5, `loft vol ~${expectedLoft}, got ${lf.volume}`);
 
+// P1b statement-level checks: the pocket/groove statements COMPOSE emitters
+// the sweep cases already gate, but a statement is a different entry path —
+// cheap to gate, and this catches a lowering bug the emitter tests cannot.
+s.newDocument('p1b1');
+{
+  const r = transpile('cuboid(40, 40, 20); pocket(10, 8, 5)');
+  for (const cmd of r.commands) s[cmd.op](...cmd.args);
+  const m = s.mesh();
+  const expected = 32000 - 10 * 8 * 5;
+  console.log(`POCKET STMT: vol=${m.volume} expected≈${expected}`);
+  assert.ok(Math.abs(m.volume - expected) < 1, `pocket stmt vol ~${expected}, got ${m.volume}`);
+}
+
+s.newDocument('p1b2');
+{
+  const r = transpile('extrude(20, 10, 8)');
+  for (const cmd of r.commands) s[cmd.op](...cmd.args);
+  const m = s.mesh();
+  const expected = 20 * 10 * 8;
+  console.log(`EXTRUDE STMT: vol=${m.volume} expected≈${expected}`);
+  assert.ok(Math.abs(m.volume - expected) < 1, `extrude stmt vol ~${expected}, got ${m.volume}`);
+}
+
 console.log('TRANSPILER_INTEGRATION:PASS');
 process.exit(0);
