@@ -65,5 +65,23 @@ stays queued and the gate keeps asking for it. Both halves must move.
 ## Current state
 
 `node scripts/check-freecad-parity.mjs` → `FreeCAD PartDesign parity:
-18/46 shipped, 25 queued, 3 refused` (exit 1 — queued tools remain; that is
+22/46 shipped, 17 queued, 7 refused` (exit 1 — queued tools remain; that is
 correct today).
+
+The 7 refusals: ShapeBinder, SubShapeBinder and Clone (multi-body plumbing a
+single-body student tool does not need); the two Ellipsoids and Scaled
+(non-uniform stretch is the one operation this wasm build cannot do —
+BRepBuilderAPI_GTransform is not bound, measured in script-surface.ts's `scale`
+entry; the axisymmetric cases are already covered by revolve/groove);
+MultiTransform (expert stacking of patterns the student words already
+compose — linearPattern(linearPattern(x, …)) is the lesson, not a new word).
+
+The 17 queued are honest future words: Body, datum plumbing (Plane, Line,
+Point, CoordinateSystem), Pocket (the UI Pocket is sketch-driven; the parity
+word will land with the sketch-statement work), the six sweep features
+(groove, lofts, pipes, helixes — bridge emitters are kernel-gated in
+engine/bridge, but the parity cross-check requires the word in
+reshape-script.ts's VOCABULARY, which means a ModelDoc feature kind and a
+kernel path first), prism/wedge (transpiler statements exist; same
+VOCABULARY gate), and Hole's remaining depth (counterbore, countersink,
+thread, standard sizes — the reason Hole is `partial`).

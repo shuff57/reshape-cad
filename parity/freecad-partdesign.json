@@ -150,8 +150,8 @@
       "group": "Additive",
       "label": "Add an ellipsoid",
       "reshape": null,
-      "status": "queued",
-      "reason": null
+      "status": "refused",
+      "reason": "A general ellipsoid (three unequal radii) is a sphere stretched unequally -- the one operation this wasm build cannot do: BRepBuilderAPI_GTransform is not bound and BRepBuilderAPI_Transform accepts only a uniform-scale gp_Trsf (measured in packages/script/src/script-surface.ts, the scale entry). The two-equal-radii case is already served: it is a revolve."
     },
     {
       "id": "PartDesign_AdditiveTorus",
@@ -262,8 +262,8 @@
       "group": "Subtractive",
       "label": "Subtract an ellipsoid",
       "reshape": null,
-      "status": "queued",
-      "reason": null
+      "status": "refused",
+      "reason": "Same wall as the additive ellipsoid: a general ellipsoid needs unequal-axis stretch (unbound BRepBuilderAPI_GTransform in this wasm build); the axisymmetric subtractive case is a groove."
     },
     {
       "id": "PartDesign_SubtractiveTorus",
@@ -318,16 +318,16 @@
       "group": "Transformation",
       "label": "Create a multi-transform feature",
       "reshape": null,
-      "status": "queued",
-      "reason": null
+      "status": "refused",
+      "reason": "A multi-transform stacks several patterns into one feature -- an expert compression of operations the student vocabulary already composes: linearPattern(linearPattern(x, ...), ...) says the same thing in words a beginner reads. No new word needed; the composition is the lesson."
     },
     {
       "id": "PartDesign_Scaled",
       "group": "Transformation",
       "label": "Create a scaled feature",
       "reshape": null,
-      "status": "queued",
-      "reason": null
+      "status": "refused",
+      "reason": "Scaling IS the blocked operation: uniform scale is expressible as a primitive dimension, and the unequal-axis case hits the same unbound BRepBuilderAPI_GTransform the ellipsoids do (measured in script-surface.ts). A student resizes a dimension; PartDesign_Scaled is an expert modeling tool, not a beginner word."
     },
     {
       "id": "PartDesign_Fillet",
