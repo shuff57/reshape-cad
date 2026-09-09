@@ -23,9 +23,15 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      # v7, not v4. The first green run carried a deprecation annotation: v4
+      # targets Node 20, which GitHub now force-runs on Node 24 and will stop
+      # supporting on its own schedule. That is the one failure in this file
+      # no test of ours can see coming -- a stale build order breaks the build
+      # step and CI says so, but a retired runtime breaks the workflow itself,
+      # from the outside, with nothing in this repo changing.
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
           # Restores ~/.npm between runs. Worth having here specifically:
