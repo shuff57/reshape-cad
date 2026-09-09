@@ -36,8 +36,16 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: Build every workspace
-        run: npm run build --workspaces
+      # `npm run build`, NOT `npm run build --workspaces`. Measured on this
+      # workflow's own first run: --workspaces builds in workspace order
+      # (kernel, script, sketch, studio) while the dependency order is
+      # sketch -> script -> kernel -> studio, so kernel compiled first and
+      # could not resolve @shuff57/reshape-script/model-types -- dist/ is
+      # gitignored, so on a fresh checkout it did not exist yet. It passed on
+      # every developer machine because dist/ was already lying there from an
+      # earlier build. The root script now enforces the order.
+      - name: Build every workspace, in dependency order
+        run: npm run build
 
       # Runs check-record, the three workspace suites, and the ModelDoc/OCCT
       # gate, which resolves its kernel from node_modules with no env var set.
