@@ -136,6 +136,13 @@ function constraintCallLine(v: string, c: SketchConstraint): string {
   if (c.kind === 'vertical') return `${v}.up(${c.edge + 1})`;
   if (c.kind === 'length') return `${v}.length(${c.edge + 1}, ${lit(c.value)})`;
   if (c.kind === 'lock') return `${v}.pin(${c.corner + 1})`;
+  if (c.kind === 'distanceX' || c.kind === 'distanceY' || c.kind === 'symmetric' || c.kind === 'angle') {
+    // P1d (packages/sketch) added these to the solver, but reSHape Script
+    // has no .distanceX()/.distanceY()/.symmetric()/.angle() word yet --
+    // that is an unscoped DSL addition, not a script-gen bug. Fail loud
+    // rather than emit a call the interpreter cannot parse back.
+    throw new Error(`toScript(): no reSHape Script word for '${c.kind}' yet -- P1d added the solver rule but not the DSL syntax.`);
+  }
   return `${v}.${c.kind}(${c.edge + 1}, ${c.other + 1})`; // equal / parallel / perpendicular
 }
 

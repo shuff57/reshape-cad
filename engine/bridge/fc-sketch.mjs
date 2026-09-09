@@ -179,6 +179,61 @@ export const emit = {
       `idx = sk.addConstraint(${cons('Coincident', pyInt(g, 'g'), pyInt(p, 'p'), -1, 1)})\n` +
       `sk.solve()\n` + writeOut(`{'index': idx}`);
   },
+  symmetric(sketchName, g1, p1, g2, p2, g3, p3) {
+    // Symmetric: point p1 on g1 and point p2 on g2 are symmetric about
+    // point p3 on g3 (usually the root point, geoId -1 PointPos 1).
+    return HEAD + SK(sketchName) +
+      `idx = sk.addConstraint(${cons('Symmetric', pyInt(g1, 'g1'), pyInt(p1, 'p1'), pyInt(g2, 'g2'), pyInt(p2, 'p2'), pyInt(g3, 'g3'), pyInt(p3, 'p3'))})\n` +
+      `sk.solve()\n` + writeOut(`{'index': idx}`);
+  },
+  angleBetween(sketchName, g1, g2, degrees) {
+    // Angle between two lines. FreeCAD's Angle constraint with two geoIds
+    // names the LINES (not their endpoints), which is the student-facing
+    // meaning: "these two edges meet at N degrees".
+    //
+    // The argument is in DEGREES and FreeCAD wants RADIANS. This was measured,
+    // not assumed: p1d-test.mjs asked for 45 and the solver produced 58.310076
+    // degrees, which is exactly 45 RADIANS wrapped -- 45 - 7*(2*pi) = 1.017700
+    // rad = 58.3104 deg, matching to four decimals. Passing the number through
+    // unconverted does not error and does not conflict; it silently builds the
+    // wrong angle, so nothing but a measured gate catches it. Every other
+    // datum on this bridge (DistanceX/Y, Radius) is a LENGTH and needs no
+    // conversion, which is why the one angular datum is the one that slipped.
+    return HEAD + SK(sketchName) +
+      `idx = sk.addConstraint(${cons('Angle', pyInt(g1, 'g1'), pyInt(g2, 'g2'), (pyNum(degrees, 'degrees') * Math.PI) / 180)})\n` +
+      `sk.solve()\n` + writeOut(`{'index': idx}`);
+  },
+  addEllipse(sketchName, cx, cy, rx, ry) {
+    // Part.Ellipse(S1, S2, Center): S1 on the MAJOR axis, S2 on the minor.
+    // OCCT's GC_MakeEllipse refuses major < minor, and the Center/major/minor
+    // form pins the major axis to +X -- so a tall ellipse (ry > rx) has to be
+    // handed over with its AXES swapped rather than its radii. Measured
+    // against EllipsePyImp.cpp in the vendored FreeCAD source, which lists
+    // the four accepted forms in its own TypeError -- a 4-argument call (the
+    // form this used to emit) is not one of them and raises TypeError.
+    // These two look like dead calls and are not: DELETING THEM REOPENS A HOLE.
+    // Every other emitter hands its numbers straight to vec(), which validates
+    // via pyNum. Here rx/ry go through ARITHMETIC first (cy + ry below), and a
+    // string "5" would concatenate rather than add -- 0 + "5" is "05", which
+    // pyNum then accepts as a number and writes a silently wrong coordinate.
+    // Validating the raw inputs before any arithmetic touches them is the
+    // whole point; the return values are deliberately discarded.
+    pyNum(rx, 'rx');
+    pyNum(ry, 'ry');
+    const tall = ry > rx;
+    const s1 = tall ? [cx, cy + ry] : [cx + rx, cy];
+    const s2 = tall ? [cx + rx, cy] : [cx, cy + ry];
+    return HEAD + SK(sketchName) +
+      `gid = sk.addGeometry(Part.Ellipse(${vec(s1[0], s1[1])}, ${vec(s2[0], s2[1])}, ${vec(cx, cy)}), False)\n` +
+      `doc.recompute()\n` + writeOut(`{'geoId': gid}`);
+  },
+  addPoint(sketchName, x, y) {
+    // Part.Point: construction geometry only — it never bounds a face, it
+    // is a snap/attachment marker a student places.
+    return HEAD + SK(sketchName) +
+      `gid = sk.addGeometry(Part.Point(${vec(x, y)}), False)\n` +
+      `doc.recompute()\n` + writeOut(`{'geoId': gid}`);
+  },
 
   // Remove a constraint by index. Used as the auto-constraint safety valve
   // (roll back an inferred constraint that would over-constrain) and by the
@@ -214,6 +269,20 @@ export const emit = {
       `        pass\n` +
       `    try:\n` +
       `        row['cx']=round(g.Center.x,6); row['cy']=round(g.Center.y,6); row['r']=round(g.Radius,6)\n` +
+      `    except Exception:\n` +
+      `        pass\n` +
+      `    try:\n` +
+      // Ellipse has MajorRadius/MinorRadius, not Radius, so the block above
+      // sets cx/cy and then throws on g.Radius -- r is silently absent.
+      // AngleXU is left in RADIANS on purpose: the renderer is the only
+      // consumer and it needs to flip the sign to match SVG's flipped Y
+      // axis, so converting here would just make it flip back there.
+      `        row['rx']=round(g.MajorRadius,6); row['ry']=round(g.MinorRadius,6); row['ang']=round(g.AngleXU,6)\n` +
+      `    except Exception:\n` +
+      `        pass\n` +
+      `    try:\n` +
+      // Point has none of StartPoint/EndPoint/Center -- only bare X/Y/Z.
+      `        row['px']=round(g.X,6); row['py']=round(g.Y,6)\n` +
       `    except Exception:\n` +
       `        pass\n` +
       `    if row['type'] == 'ArcOfCircle':\n` +
@@ -269,6 +338,8 @@ export function attachSketchCommands(session) {
     session.read(emit.addArc(sk, cx, cy, r, a0, a1)).geoId;
   session.sketchAddRectangle = (sk, x1, y1, x2, y2) =>
     session.read(emit.addRectangle(sk, x1, y1, x2, y2)).geoIds;
+  session.sketchAddEllipse = (sk, cx, cy, rx, ry) => session.read(emit.addEllipse(sk, cx, cy, rx, ry)).geoId;
+  session.sketchAddPoint   = (sk, x, y)          => session.read(emit.addPoint(sk, x, y)).geoId;
   session.sketchDelGeometry = (sk, g) => {
     runExec('sketchDelGeometry', emit.delGeometry(sk, g));
     return g;
@@ -281,6 +352,8 @@ export function attachSketchCommands(session) {
   session.constrainParallel      = (sk, g1, g2) => session.read(emit.binary(sk, 'Parallel', g1, g2)).index;
   session.constrainPerpendicular = (sk, g1, g2) => session.read(emit.binary(sk, 'Perpendicular', g1, g2)).index;
   session.constrainEqual         = (sk, g1, g2) => session.read(emit.binary(sk, 'Equal', g1, g2)).index;
+  session.constrainSymmetric = (sk, g1, p1, g2, p2, g3, p3) => session.read(emit.symmetric(sk, g1, p1, g2, p2, g3, p3)).index;
+  session.constrainAngle     = (sk, g1, g2, deg)            => session.read(emit.angleBetween(sk, g1, g2, deg)).index;
 
   session.constrainDistanceX = (sk, g1, p1, g2, p2, v) => session.read(emit.distance(sk, 'DistanceX', g1, p1, g2, p2, v)).index;
   session.constrainDistanceY = (sk, g1, p1, g2, p2, v) => session.read(emit.distance(sk, 'DistanceY', g1, p1, g2, p2, v)).index;

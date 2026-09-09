@@ -42,7 +42,38 @@ export type Constraint =
   | { kind: 'equal'; edge: number; other: number }
   | { kind: 'parallel'; edge: number; other: number }
   | { kind: 'perpendicular'; edge: number; other: number }
+  // P1d: the four measured additions. distanceX/distanceY hold the gap
+  // between two CORNERS along one axis; symmetric holds a center corner at
+  // the MIDPOINT of two others (symmetry about a point, not about a line
+  // -- FreeCAD's own 3-point Symmetric puts it there too); angle holds the
+  // turn between two edges, in degrees. All three shapes reduce to
+  // coordinate arithmetic the existing least-squares loop already handles.
+  | { kind: 'distanceX'; a: number; b: number; value: number }
+  | { kind: 'distanceY'; a: number; b: number; value: number }
+  | { kind: 'symmetric'; a: number; b: number; center: number }
+  | { kind: 'angle'; edge: number; other: number; degrees: number }
   | { kind: 'lock'; corner: number };
+
+/** Constraints that index CORNERS, not edges. The rest of this package
+ *  was written when `lock` was the only one, so it asks `kind === 'lock'`
+ *  in six places and then reads `.edge` off everything else. P1d added
+ *  three more corner rules, which made that the wrong question: the
+ *  discriminator is not "is it a lock", it is "does it index corners".
+ *  Ask THIS instead — a seventh corner rule then costs one line here
+ *  rather than a hunt through two files. */
+export type CornerConstraint =
+  Extract<Constraint, { kind: 'lock' | 'distanceX' | 'distanceY' | 'symmetric' }>;
+export type EdgeConstraint = Exclude<Constraint, CornerConstraint>;
+export function indexesCorners(c: Constraint): c is CornerConstraint {
+  return c.kind === 'lock' || c.kind === 'distanceX'
+      || c.kind === 'distanceY' || c.kind === 'symmetric';
+}
+/** Every corner this rule names, for the remap/filter sites. */
+export function cornersOf(c: CornerConstraint): number[] {
+  if (c.kind === 'lock') return [c.corner];
+  if (c.kind === 'symmetric') return [c.a, c.b, c.center];
+  return [c.a, c.b];
+}
 
 export interface SolveResult {
   points: Point[];
@@ -282,6 +313,54 @@ export function residualsOf(
       return Math.abs(pts[b][axis] - pts[a][axis]);
     }
     if (c.kind === 'length') return Math.abs(edgeLength(pts, c.edge) - c.value);
+    // P1d kinds: coordinate/vector arithmetic, each stated as a signed
+    // equation driven to zero so least squares can chase it -- same shape
+    // of residual as everything above, just different arithmetic.
+    if (c.kind === 'distanceX') return Math.abs(pts[c.b][0] - pts[c.a][0] - c.value);
+    if (c.kind === 'distanceY') return Math.abs(pts[c.b][1] - pts[c.a][1] - c.value);
+    if (c.kind === 'symmetric') {
+      // center AT the midpoint of a and b, in BOTH axes -- symmetry about a
+      // POINT, not about a line (a perpendicular bisector would only pin
+      // the center's distance off that line, not its position on it) --
+      // one equation per axis, maxed.
+      const mx = (pts[c.a][0] + pts[c.b][0]) / 2 - pts[c.center][0];
+      const my = (pts[c.a][1] + pts[c.b][1]) / 2 - pts[c.center][1];
+      return Math.max(Math.abs(mx), Math.abs(my));
+    }
+    if (c.kind === 'angle') {
+      // Signed turn between the two edge direction vectors, compared to the
+      // wanted degrees. The angle residual is scaled by the sketch size
+      // (same rationale as perpendicular: an angle error must not be
+      // satisfiable by shrinking an edge).
+      const [a0, a1] = edgeCorners(c.edge, n);
+      const [b0, b1] = edgeCorners(c.other, n);
+      const ax = pts[a1][0] - pts[a0][0], ay = pts[a1][1] - pts[a0][1];
+      const bx = pts[b1][0] - pts[b0][0], by = pts[b1][1] - pts[b0][1];
+      const la = Math.hypot(ax, ay), lb = Math.hypot(bx, by);
+      // A zero-length edge has no direction to be off by, so it can't
+      // report how wrong it is the way every other branch does -- `scale`
+      // stands in as "maximally wrong". That is deliberately WORSE than the
+      // wrapped branch below can ever return (its largest wrap is PI out of
+      // 2*PI, i.e. scale/2): a zero-length edge should dominate the
+      // conflict, not blend in as an ordinary large error. Don't "fix" the
+      // gap by halving this -- it is the point.
+      if (la < 1e-9 || lb < 1e-9) return scale;
+      const dot = (ax * bx + ay * by) / (la * lb);
+      const cross = (ax * by - ay * bx) / (la * lb);
+      const turn = Math.atan2(cross, dot); // signed, in (-PI, PI]
+      // `turn` comes from atan2 and is always in (-PI, PI]. `c.degrees` is
+      // raw student input and is not -- 350 gives a raw `want` of 6.11
+      // radians, outside that range, which the single `diff - 2*PI` wrap
+      // below only corrects for one lap. Normalise `want` into the same
+      // range `turn` lives in BEFORE comparing, so 350 deg and -10 deg (the
+      // same edge relationship) produce the same residual.
+      let want = ((c.degrees * Math.PI) / 180) % (2 * Math.PI);
+      if (want > Math.PI) want -= 2 * Math.PI;
+      if (want <= -Math.PI) want += 2 * Math.PI;
+      const diff = Math.abs(turn - want);
+      const wrapped = Math.min(diff, Math.abs(diff - 2 * Math.PI)); // 359° ≡ -1°
+      return (wrapped / (2 * Math.PI)) * scale;
+    }
     return residualOfPair(pts, c, n, scale);
   });
 }
@@ -496,6 +575,10 @@ export function describe(c: Constraint): string {
   if (c.kind === 'equal') return `edge ${c.edge + 1} = edge ${c.other + 1}`;
   if (c.kind === 'parallel') return `edge ${c.edge + 1} ∥ edge ${c.other + 1}`;
   if (c.kind === 'perpendicular') return `edge ${c.edge + 1} ⊥ edge ${c.other + 1}`;
+  if (c.kind === 'distanceX') return `corner ${c.a + 1}→${c.b + 1} across = ${c.value}`;
+  if (c.kind === 'distanceY') return `corner ${c.a + 1}→${c.b + 1} up = ${c.value}`;
+  if (c.kind === 'symmetric') return `corner ${c.center + 1} centred between ${c.a + 1} and ${c.b + 1}`;
+  if (c.kind === 'angle') return `edge ${c.edge + 1} ∠ edge ${c.other + 1} = ${c.degrees}°`;
   return `corner ${c.corner + 1} pinned`;
 }
 
@@ -511,11 +594,20 @@ function describeQuality(c: Constraint): string {
   if (c.kind === 'equal') return `stay the same length as edge ${c.other + 1}`;
   if (c.kind === 'parallel') return `stay parallel to edge ${c.other + 1}`;
   if (c.kind === 'perpendicular') return `stay at a right angle to edge ${c.other + 1}`;
+  if (c.kind === 'distanceX') return `stay ${c.value} across from corner ${c.a + 1}`;
+  if (c.kind === 'distanceY') return `stay ${c.value} up from corner ${c.a + 1}`;
+  if (c.kind === 'symmetric') return `stay centred between corners ${c.a + 1} and ${c.b + 1}`;
+  if (c.kind === 'angle') return `stay at ${c.degrees}° to edge ${c.other + 1}`;
   return 'stay pinned in place';
 }
 
 function subjectOf(c: Constraint, lower: boolean): string {
   if (c.kind === 'lock') return (lower ? 'c' : 'C') + `orner ${c.corner + 1}`;
+  // distanceX/distanceY name the corner that MOVES (`b`); symmetric names
+  // the corner the rule is about (`center`). angle keeps the existing
+  // edge-named path below, unchanged.
+  if (c.kind === 'distanceX' || c.kind === 'distanceY') return (lower ? 'c' : 'C') + `orner ${c.b + 1}`;
+  if (c.kind === 'symmetric') return (lower ? 'c' : 'C') + `orner ${c.center + 1}`;
   return (lower ? 'e' : 'E') + `dge ${c.edge + 1}`;
 }
 
@@ -544,6 +636,7 @@ export function describeRemovalNote(removed: Constraint, added: Constraint): str
 function describePairGoal(c: Extract<Constraint, { other: number }>): string {
   if (c.kind === 'equal') return 'match in length';
   if (c.kind === 'parallel') return 'run parallel';
+  if (c.kind === 'angle') return `meet at ${c.degrees}°`;
   return 'meet at a right angle';
 }
 
@@ -732,9 +825,12 @@ export function addConstraintSettling(points: Point[], next: Constraint[]): Conf
  *  `equal` that cannot be met is an argument between two edges and pointing at
  *  one of them would be picking a side arbitrarily.
  *
- *  A `lock` names a corner rather than an edge and never appears here. It also
- *  never has a residual to begin with, so this is a type guard rather than a
- *  behavioural one.
+ *  A corner rule (`lock`, and P1d's `distanceX`/`distanceY`/`symmetric`)
+ *  names corners rather than edges and never appears here. `lock` never had
+ *  a residual to begin with; the other three do, but a red edge is not the
+ *  claim they make -- inventing one would paint an edge the student never
+ *  constrained. If a red CORNER is wanted later, that is a separate
+ *  function with its own name, not a widening of this one.
  *
  *  The 1e-3 tolerance is the same one the Rules panel marks a control with, so
  *  a red edge and a red control are always the same claim. */
@@ -745,7 +841,7 @@ export function losingEdges(pts: Point[], constraints: Constraint[]): number[] {
   const out = new Set<number>();
   constraints.forEach((c, i) => {
     if (residuals[i] <= 1e-3) return;
-    if (c.kind === 'lock') return;
+    if (indexesCorners(c)) return;
     out.add(wrap(c.edge));
     if ('other' in c) out.add(wrap(c.other));
   });

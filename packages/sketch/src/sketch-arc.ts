@@ -13,6 +13,7 @@
 // carry it as one extra field per edge instead of a separate curve type.
 
 import type { Constraint } from './sketch-solve.js';
+import { indexesCorners, cornersOf } from './sketch-solve.js';
 
 export type Point = [number, number];
 
@@ -324,7 +325,16 @@ export function reindex<T extends SketchLike>(f: T, insertedAt: number): T {
   const shiftEdge = (e: number) => (e > insertedAt ? e + 1 : e);
 
   const constraints = f.constraints?.map((c): Constraint => {
-    if (c.kind === 'lock') return { ...c, corner: shiftCorner(c.corner) };
+    // Corner rules (lock, and P1d's distanceX/distanceY/symmetric) shift
+    // EVERY corner they name, not just one -- symmetric alone carries three
+    // (a, b, center). Edge rules are untouched below, same as before P1d.
+    if (indexesCorners(c)) {
+      if (c.kind === 'lock') return { ...c, corner: shiftCorner(c.corner) };
+      if (c.kind === 'symmetric') {
+        return { ...c, a: shiftCorner(c.a), b: shiftCorner(c.b), center: shiftCorner(c.center) };
+      }
+      return { ...c, a: shiftCorner(c.a), b: shiftCorner(c.b) }; // distanceX | distanceY
+    }
     if (c.kind === 'equal') return { ...c, edge: shiftEdge(c.edge), other: shiftEdge(c.other) };
     // horizontal | vertical | length all carry a bare `edge`.
     return { ...c, edge: shiftEdge(c.edge) };
@@ -979,7 +989,9 @@ export function whyRemovingCornerCosts(f: SketchLike, k: number): string | null 
   const lost: string[] = [];
 
   const rules = (f.constraints ?? []).filter((c) => {
-    if (c.kind === 'lock') return c.corner === k;
+    // A corner rule counts when ANY corner it names is k -- not just the
+    // one merging edges name, since symmetric's `center` can be k too.
+    if (indexesCorners(c)) return cornersOf(c).includes(k);
     if ('other' in c) return merging.includes(c.edge) || merging.includes(c.other);
     return merging.includes(c.edge);
   }).length;
@@ -1036,12 +1048,18 @@ export function removeCorner<T extends SketchLike>(f: T, k: number): T {
 
   const constraints = f.constraints
     ?.filter((c) => {
-      if (c.kind === 'lock') return c.corner !== k;
+      // Drop a corner rule if ANY of its corners is k, same reasoning as
+      // whyRemovingCornerCosts above.
+      if (indexesCorners(c)) return !cornersOf(c).includes(k);
       if ('other' in c) return !merging.has(c.edge) && !merging.has(c.other);
       return !merging.has(c.edge);
     })
     .map((c): Constraint => {
-      if (c.kind === 'lock') return { ...c, corner: shift(c.corner) };
+      if (indexesCorners(c)) {
+        if (c.kind === 'lock') return { ...c, corner: shift(c.corner) };
+        if (c.kind === 'symmetric') return { ...c, a: shift(c.a), b: shift(c.b), center: shift(c.center) };
+        return { ...c, a: shift(c.a), b: shift(c.b) }; // distanceX | distanceY
+      }
       if ('other' in c) return { ...c, edge: shift(c.edge), other: shift(c.other) };
       return { ...c, edge: shift(c.edge) };
     });

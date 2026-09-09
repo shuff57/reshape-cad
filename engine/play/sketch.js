@@ -267,11 +267,13 @@ export function initSketchMode({ getSession, viewport, onEnter, onFinish }) {
   const previewRect = $('previewRect');
   const previewCircle = $('previewCircle');
   const previewArc = $('previewArc');
+  const previewEllipse = $('previewEllipse');
   const snapRing = $('snapRing');
   const axisHint = $('axisHint');
   const dofBadge = $('dofBadge');
   const dimInput = $('dimInput');
   const dimValue = $('dimValue');
+  const dimLabel = $('dimLabel');
 
   const sess = () => getSession();
   // Default CHECKED per SPEC: missing element (older markup) still means "on".
@@ -284,7 +286,14 @@ export function initSketchMode({ getSession, viewport, onEnter, onFinish }) {
   let selection = []; // [{geoId, pointPos|null}]
   let lastState = null;
   let dimTargetGeoId = null;
-  let dimTargetKind = null; // 'distance' | 'radius'
+  let dimTargetKind = null; // 'distance' | 'radius' | 'distanceX' | 'distanceY' | 'angle'
+  // Second reference for the two-argument dimensioned kinds above: a point
+  // {geoId, pointPos} for distanceX/distanceY, a line geoId for angle. The
+  // FIRST reference reuses dimTargetGeoId for angle (a line) but a point
+  // for distanceX/distanceY needs its pointPos too, so those live in
+  // dimTargetA instead -- dimTargetGeoId alone can't carry it.
+  let dimTargetA = null;
+  let dimTargetB = null;
   let gridDrawn = false;
 
   // -- coordinate mapping (screen px <-> world mm, Y-up) --------------------
@@ -326,6 +335,14 @@ export function initSketchMode({ getSession, viewport, onEnter, onFinish }) {
         consider(g.id, 1, g.x1, g.y1);
         consider(g.id, 2, g.x2, g.y2);
         consider(g.id, 3, g.cx, g.cy);
+      } else if (g.type === 'Ellipse') {
+        consider(g.id, 3, g.cx, g.cy); // centre only, matching Circle
+      } else if (g.type === 'Point') {
+        // A Point IS its own vertex (PointPos 1), which is the only way a
+        // Symmetric/DistanceX/DistanceY can ever name it. Drawing it without
+        // hit-testing it makes it decorative -- and undeletable, since
+        // deleteSelection() reaches geometry through the selected corner.
+        consider(g.id, 1, g.px, g.py);
       }
     }
     return best;
@@ -360,6 +377,13 @@ export function initSketchMode({ getSession, viewport, onEnter, onFinish }) {
           if (angleInArcRange(theta, g.a0, g.a1)) { bestDist = d; best = { geoId: g.id, pointPos: null }; }
         }
       }
+      // Ellipse and Point are deliberately absent, unlike in findSnapVertex
+      // above. A whole-shape pick only exists to feed a constraint that names
+      // a whole shape, and nothing in this pass takes an ellipse that way (no
+      // major/minor dimension constraint shipped); Delete already reaches an
+      // ellipse through its selected centre. A Point has no stroke at all.
+      // Add an ellipse branch here when a constraint needs one, not before --
+      // it costs a rotated-frame distance, which is not free to get right.
     }
     return best;
   }
@@ -437,6 +461,23 @@ export function initSketchMode({ getSession, viewport, onEnter, onFinish }) {
         appendVertex(g.id, 1, g.x1, g.y1);
         appendVertex(g.id, 2, g.x2, g.y2);
         appendVertex(g.id, 3, g.cx, g.cy);
+      } else if (g.type === 'Ellipse') {
+        const e = document.createElementNS(SVGNS, 'ellipse');
+        e.setAttribute('cx', g.cx); e.setAttribute('cy', -g.cy);
+        e.setAttribute('rx', g.rx); e.setAttribute('ry', g.ry);
+        e.setAttribute('class', shapeClass);
+        // Every branch here draws at -y because SVG's Y axis points down
+        // while the sketch's points up. That flip reverses the sense of
+        // rotation too, so AngleXU (counter-clockwise in sketch coordinates)
+        // becomes a clockwise SVG rotation -- hence the sign flip below.
+        e.setAttribute('transform', `rotate(${-g.ang * 180 / Math.PI} ${g.cx} ${-g.cy})`);
+        geomLayer.appendChild(e);
+        appendVertex(g.id, 3, g.cx, g.cy);
+      } else if (g.type === 'Point') {
+        // Route through appendVertex like every other type's vertices, not a
+        // bare circle -- otherwise Symmetric/DistanceX/DistanceY can never
+        // name it, which is the whole reason the tool exists.
+        appendVertex(g.id, 1, g.px, g.py);
       }
       // else: an unrecognized future geometry type — skip rather than crash.
     }
@@ -464,6 +505,15 @@ export function initSketchMode({ getSession, viewport, onEnter, onFinish }) {
   // or arc; renamed from selLines() now that it covers all three kinds.
   function selShapes() { return selection.filter((s) => s.pointPos == null); }
   function selPoints() { return selection.filter((s) => s.pointPos != null); }
+  // World coordinates of a selected POINT {geoId, pointPos}. PointPos
+  // convention per fc-sketch.mjs's own header: 1=start, 2=end, 3=center.
+  function pointWorld(sel) {
+    const g = lastState && lastState.geometry.find((x) => x.id === sel.geoId);
+    if (!g) return { x: 0, y: 0 };
+    if (sel.pointPos === 2) return { x: g.x2, y: g.y2 };
+    if (sel.pointPos === 3) return { x: g.cx, y: g.cy };
+    return { x: g.x1, y: g.y1 };
+  }
   function geomType(geoId) {
     const g = lastState && lastState.geometry.find((x) => x.id === geoId);
     return g ? g.type : null;
@@ -477,6 +527,7 @@ export function initSketchMode({ getSession, viewport, onEnter, onFinish }) {
     const oneArc = types.length === 1 && types[0] === 'ArcOfCircle' && points.length === 0;
     const twoLines = types.length === 2 && types.every((t) => t === 'LineSegment') && points.length === 0;
     const twoPoints = points.length === 2 && shapes.length === 0;
+    const threePoints = points.length === 3 && shapes.length === 0;
     setEnabled('cHoriz', oneLine);
     setEnabled('cVert', oneLine);
     setEnabled('cDim', oneLine || oneCircle || oneArc);
@@ -484,6 +535,10 @@ export function initSketchMode({ getSession, viewport, onEnter, onFinish }) {
     setEnabled('cPar', twoLines);
     setEnabled('cPerp', twoLines);
     setEnabled('cEq', twoLines);
+    setEnabled('cSym', threePoints);
+    setEnabled('cDistX', twoPoints);
+    setEnabled('cDistY', twoPoints);
+    setEnabled('cAngle', twoLines);
     setEnabled('cDelete', selection.length > 0);
   }
 
@@ -507,6 +562,7 @@ export function initSketchMode({ getSession, viewport, onEnter, onFinish }) {
     if (previewRect) previewRect.hidden = true;
     if (previewCircle) previewCircle.hidden = true;
     if (previewArc) previewArc.hidden = true;
+    if (previewEllipse) previewEllipse.hidden = true;
     if (snapRing) snapRing.hidden = true;
     if (axisHint) axisHint.hidden = true;
   }
@@ -530,7 +586,7 @@ export function initSketchMode({ getSession, viewport, onEnter, onFinish }) {
   // -- tool switching -----------------------------------------------------------
   function setTool(t) {
     tool = t; chain = null; toolClicks = []; hideHints();
-    for (const id of ['toolLine', 'toolSelect', 'toolRect', 'toolCircle', 'toolArc']) {
+    for (const id of ['toolLine', 'toolSelect', 'toolRect', 'toolCircle', 'toolArc', 'toolEllipse', 'toolPoint']) {
       $(id)?.classList.toggle('active', id === `tool${t[0].toUpperCase()}${t.slice(1)}`);
     }
     svg.style.cursor = t === 'select' ? 'default' : 'crosshair';
@@ -618,6 +674,30 @@ export function initSketchMode({ getSession, viewport, onEnter, onFinish }) {
       refresh();
     });
   }
+  function onEllipseToolClick(evt) {
+    if (toolClicks.length === 0) {
+      const snap = findSnapVertex(evt);
+      toolClicks = [snap ? { x: snap.x, y: snap.y } : worldFromEvent(evt)];
+      return;
+    }
+    if (toolClicks.length === 1) { toolClicks = [toolClicks[0], worldFromEvent(evt)]; return; }
+    guardOp(() => {
+      const [c, rxPoint] = toolClicks;
+      const rx = Math.abs(rxPoint.x - c.x);
+      const ry = Math.abs(worldFromEvent(evt).y - c.y);
+      sess().sketchAddEllipse(sketchName, c.x, c.y, rx, ry);
+      toolClicks = [];
+      hideHints();
+      refresh();
+    });
+  }
+  function onPointToolClick(evt) {
+    const world = worldFromEvent(evt);
+    guardOp(() => {
+      sess().sketchAddPoint(sketchName, world.x, world.y);
+      refresh();
+    });
+  }
   function updateRectPreview(evt) {
     if (!previewRect) return;
     if (toolClicks.length !== 1) { previewRect.hidden = true; return; }
@@ -644,6 +724,20 @@ export function initSketchMode({ getSession, viewport, onEnter, onFinish }) {
     previewArc.setAttribute('points', sampleArc(c1.x, c1.y, r, a0, a1).map((p) => `${p.x},${-p.y}`).join(' '));
     previewArc.hidden = false;
   }
+  function updateEllipsePreview(evt) {
+    if (!previewEllipse) return;
+    if (toolClicks.length === 0) { previewEllipse.hidden = true; return; }
+    const c = toolClicks[0], w = worldFromEvent(evt);
+    previewEllipse.setAttribute('cx', c.x); previewEllipse.setAttribute('cy', -c.y);
+    if (toolClicks.length === 1) {
+      const rx = Math.abs(w.x - c.x);
+      previewEllipse.setAttribute('rx', rx); previewEllipse.setAttribute('ry', rx);
+    } else {
+      const rx = Math.abs(toolClicks[1].x - c.x);
+      previewEllipse.setAttribute('rx', rx); previewEllipse.setAttribute('ry', Math.abs(w.y - c.y));
+    }
+    previewEllipse.hidden = false;
+  }
 
   // -- delete ------------------------------------------------------------------
   // geoIds renumber after each sketchDelGeometry() call, so delete in
@@ -662,13 +756,18 @@ export function initSketchMode({ getSession, viewport, onEnter, onFinish }) {
   function applyConstraint(fn) {
     guardOp(() => { fn(); selection = []; refresh(); });
   }
-  function hideDim() { if (dimInput) dimInput.hidden = true; dimTargetGeoId = null; dimTargetKind = null; }
+  function hideDim() {
+    if (dimInput) dimInput.hidden = true;
+    dimTargetGeoId = null; dimTargetKind = null; dimTargetA = null; dimTargetB = null;
+  }
 
   on('toolLine', 'click', () => setTool('line'));
   on('toolSelect', 'click', () => setTool('select'));
   on('toolRect', 'click', () => setTool('rect'));
   on('toolCircle', 'click', () => setTool('circle'));
   on('toolArc', 'click', () => setTool('arc'));
+  on('toolEllipse', 'click', () => setTool('ellipse'));
+  on('toolPoint', 'click', () => setTool('point'));
 
   on('cHoriz', 'click', () => applyConstraint(() => sess().constrainHorizontal(sketchName, selShapes()[0].geoId)));
   on('cVert', 'click', () => applyConstraint(() => sess().constrainVertical(sketchName, selShapes()[0].geoId)));
@@ -684,6 +783,61 @@ export function initSketchMode({ getSession, viewport, onEnter, onFinish }) {
   on('cCoin', 'click', () => applyConstraint(() => {
     const [a, b] = selPoints(); return sess().constrainCoincident(sketchName, a.geoId, a.pointPos, b.geoId, b.pointPos);
   }));
+  on('cSym', 'click', () => applyConstraint(() => {
+    // Third selected point is the one the other two are symmetric ABOUT --
+    // same "last selected is the pivot" convention selPoints() order gives
+    // cCoin above, just with one more point.
+    const [a, b, c] = selPoints();
+    return sess().constrainSymmetric(sketchName, a.geoId, a.pointPos, b.geoId, b.pointPos, c.geoId, c.pointPos);
+  }));
+  // The popup field label: 'angle' types in degrees, 'radius' types a
+  // radius, everything else (distance/distanceX/distanceY) types a length.
+  function dimLabelFor(kind) {
+    if (kind === 'angle') return 'Angle';
+    if (kind === 'radius') return 'Radius';
+    return 'Length';
+  }
+  on('cDistX', 'click', () => {
+    const [a, b] = selPoints();
+    if (!a || !b || !lastState || !dimInput || !dimValue) return;
+    const pa = pointWorld(a), pb = pointWorld(b);
+    dimTargetKind = 'distanceX'; dimTargetA = a; dimTargetB = b;
+    dimValue.value = (pb.x - pa.x).toFixed(2);
+    if (dimLabel) dimLabel.textContent = dimLabelFor(dimTargetKind);
+    dimInput.hidden = false;
+    dimValue.focus(); dimValue.select();
+  });
+  on('cDistY', 'click', () => {
+    const [a, b] = selPoints();
+    if (!a || !b || !lastState || !dimInput || !dimValue) return;
+    const pa = pointWorld(a), pb = pointWorld(b);
+    dimTargetKind = 'distanceY'; dimTargetA = a; dimTargetB = b;
+    dimValue.value = (pb.y - pa.y).toFixed(2);
+    if (dimLabel) dimLabel.textContent = dimLabelFor(dimTargetKind);
+    dimInput.hidden = false;
+    dimValue.focus(); dimValue.select();
+  });
+  on('cAngle', 'click', () => {
+    const [a, b] = selShapes();
+    if (!a || !b || !lastState || !dimInput || !dimValue) return;
+    const ga = lastState.geometry.find((x) => x.id === a.geoId);
+    const gb = lastState.geometry.find((x) => x.id === b.geoId);
+    if (!ga || !gb) return;
+    // NOTE the shape change: distanceX/distanceY store the whole picked POINT
+    // ({geoId, pointPos}) because FreeCAD's DistanceX wants both halves, while
+    // Angle names two LINES and takes bare geoIds. So dimTargetA/B hold
+    // different shapes depending on dimTargetKind, and dimOk unpacks each kind
+    // its own way. Said here because the assignment is where it would
+    // otherwise look like an inconsistency rather than a deliberate one.
+    dimTargetKind = 'angle'; dimTargetA = a.geoId; dimTargetB = b.geoId;
+    const ax = ga.x2 - ga.x1, ay = ga.y2 - ga.y1;
+    const bx = gb.x2 - gb.x1, by = gb.y2 - gb.y1;
+    const turn = Math.atan2(ax * by - ay * bx, ax * bx + ay * by) * (180 / Math.PI);
+    dimValue.value = turn.toFixed(2);
+    if (dimLabel) dimLabel.textContent = dimLabelFor(dimTargetKind);
+    dimInput.hidden = false;
+    dimValue.focus(); dimValue.select();
+  });
   on('cDim', 'click', () => {
     const shape = selShapes()[0];
     if (!shape || !lastState || !dimInput || !dimValue) return;
@@ -692,15 +846,31 @@ export function initSketchMode({ getSession, viewport, onEnter, onFinish }) {
     dimTargetGeoId = shape.geoId;
     dimTargetKind = g.type === 'LineSegment' ? 'distance' : 'radius'; // circle or arc -> radius
     dimValue.value = (dimTargetKind === 'distance' ? Math.hypot(g.x2 - g.x1, g.y2 - g.y1) : g.r).toFixed(2);
+    if (dimLabel) dimLabel.textContent = dimLabelFor(dimTargetKind);
     dimInput.hidden = false;
     dimValue.focus(); dimValue.select();
   });
   on('dimOk', 'click', () => {
     const v = Number(dimValue?.value);
-    if (!Number.isFinite(v) || v <= 0) { log('✗ dimension: enter a positive number'); return; }
-    applyConstraint(() => (dimTargetKind === 'radius'
-      ? sess().constrainRadius(sketchName, dimTargetGeoId, v)
-      : sess().constrainDistance(sketchName, dimTargetGeoId, 1, dimTargetGeoId, 2, v)));
+    // distanceX/distanceY/angle are SIGNED (a negative gap or a negative
+    // turn is a real, distinct ask -- see packages/sketch's own distanceY
+    // test), so only distance/radius keep the positive-only rule.
+    const signed = dimTargetKind === 'distanceX' || dimTargetKind === 'distanceY' || dimTargetKind === 'angle';
+    if (!Number.isFinite(v) || (!signed && v <= 0)) {
+      log(signed ? '✗ dimension: enter a number' : '✗ dimension: enter a positive number');
+      return;
+    }
+    applyConstraint(() => {
+      if (dimTargetKind === 'radius') return sess().constrainRadius(sketchName, dimTargetGeoId, v);
+      if (dimTargetKind === 'distanceX') {
+        return sess().constrainDistanceX(sketchName, dimTargetA.geoId, dimTargetA.pointPos, dimTargetB.geoId, dimTargetB.pointPos, v);
+      }
+      if (dimTargetKind === 'distanceY') {
+        return sess().constrainDistanceY(sketchName, dimTargetA.geoId, dimTargetA.pointPos, dimTargetB.geoId, dimTargetB.pointPos, v);
+      }
+      if (dimTargetKind === 'angle') return sess().constrainAngle(sketchName, dimTargetA, dimTargetB, v);
+      return sess().constrainDistance(sketchName, dimTargetGeoId, 1, dimTargetGeoId, 2, v);
+    });
     hideDim();
   });
   on('dimCancel', 'click', hideDim);
@@ -714,12 +884,15 @@ export function initSketchMode({ getSession, viewport, onEnter, onFinish }) {
     else if (tool === 'rect') onRectToolClick(evt);
     else if (tool === 'circle') onCircleToolClick(evt);
     else if (tool === 'arc') onArcToolClick(evt);
+    else if (tool === 'ellipse') onEllipseToolClick(evt);
+    else if (tool === 'point') onPointToolClick(evt);
   });
   svg.addEventListener('pointermove', (evt) => {
     if (!sketchName) return;
     if (tool === 'rect') return updateRectPreview(evt);
     if (tool === 'circle') return updateCirclePreview(evt);
     if (tool === 'arc') return updateArcPreview(evt);
+    if (tool === 'ellipse') return updateEllipsePreview(evt);
     if (tool !== 'line' || !chain || !rubberBand) return;
     const snap = findSnapVertex(evt);
     const world = worldFromEvent(evt);

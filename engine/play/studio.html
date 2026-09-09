@@ -409,6 +409,14 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18a14 14 0 0 1 16-16"/></svg>
             <span>Arc</span>
           </button>
+          <button id="toolEllipse" class="fbtn small" title="Ellipse — click center, a point setting the width, then a point setting the height">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="12" rx="9" ry="5"/></svg>
+            <span>Ellipse</span>
+          </button>
+          <button id="toolPoint" class="fbtn small" title="Point — click to place a construction point">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1.8" fill="currentColor" stroke="none"/></svg>
+            <span>Point</span>
+          </button>
         </div>
         <div class="sk-group" aria-label="Constraints">
           <button id="cHoriz" class="btn" disabled title="Horizontal — needs 1 line">Horizontal</button>
@@ -417,6 +425,10 @@
           <button id="cPar" class="btn" disabled title="Parallel — needs 2 lines">Parallel</button>
           <button id="cPerp" class="btn" disabled title="Perpendicular — needs 2 lines">Perpendicular</button>
           <button id="cEq" class="btn" disabled title="Equal — needs 2 lines">Equal</button>
+          <button id="cSym" class="btn" disabled title="Symmetric — needs 3 points">Symmetric</button>
+          <button id="cDistX" class="btn" disabled title="Dist X — needs 2 points">Dist X</button>
+          <button id="cDistY" class="btn" disabled title="Dist Y — needs 2 points">Dist Y</button>
+          <button id="cAngle" class="btn" disabled title="Angle — needs 2 lines">Angle</button>
           <button id="cDim" class="btn" disabled title="Dimension — needs 1 line, circle, or arc">Dimension</button>
           <button id="cDelete" class="btn" disabled title="Delete — remove selected geometry (Delete/Backspace)">Delete</button>
         </div>
@@ -434,12 +446,13 @@
         <rect id="previewRect" class="sk-preview" hidden></rect>
         <circle id="previewCircle" class="sk-preview" hidden></circle>
         <polyline id="previewArc" class="sk-preview" hidden></polyline>
+        <ellipse id="previewEllipse" class="sk-preview" hidden></ellipse>
         <circle id="snapRing" r="1.8" hidden></circle>
         <text id="axisHint" hidden></text>
       </svg>
 
       <div id="dimInput" class="dim-input" hidden>
-        <label class="uc">Length <input id="dimValue" type="number" step="0.1" min="0.01"></label>
+        <label class="uc"><span id="dimLabel">Length</span> <input id="dimValue" type="number" step="0.1" min="0.01"></label>
         <button id="dimOk" class="btn primary">Set</button>
         <button id="dimCancel" class="btn">Cancel</button>
       </div>
