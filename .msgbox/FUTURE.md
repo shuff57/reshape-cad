@@ -6,6 +6,34 @@ parked rather than done.
 
 ---
 
+## 2026-09-09 — after P1c-3: two hazards left standing, one unexplained
+
+**Decided and shipped** (`e9f66d3`): the six P1c buttons that never shipped,
+plus guards for the two silent failure modes running them exposed — a sweep
+that succeeds while changing nothing, and a helix that grinds instead of
+refusing.
+
+**Open, unexplained.** An **offset helix profile** grinds even when the pitch
+rule is satisfied: a circle at (15, 0) r=2 with pitch 6.67 mm against a 4 mm
+profile ran **14 minutes at 3.4 GB** in the container before being killed, while
+the same parameters with the profile centred on the axis finish in seconds.
+`helixPitchGuard` does not catch this because the pitch rule is not violated.
+Not gated: a check that may never terminate is not a check.
+
+**Open, decided against for now.** The volume-change guard is applied to the
+four two-sketch sweeps only. `groove` and both helixes are the same defect class
+— a feature that reports success and moves no material — but neither was
+measured failing that way, and `additiveHelix` cannot be re-run cheaply enough
+to verify a guard on it.
+
+**Open, and the reason Pipe is awkward.** Pipe and Sub Pipe need the path sketch
+on a **different plane** from the profile, and `Rect Sketch` / `Circle Sketch`
+only make XY sketches. The only route to a second plane is picking a face and
+using New Sketch. The buttons now say so when it goes wrong, but nothing guides
+a student there beforehand.
+
+---
+
 ## 2026-09-09 — P1d-2: construction toggle + Trim
 
 **Decided.** Specced in full at `docs/specs/SPEC-P1d2-construction-trim.md`,
