@@ -26,32 +26,81 @@
 // change and by how much.
 //
 // USAGE
+//   npm run test:occt
 //   node scripts/occt-modeldoc-gate.mjs
 //   RESHAPE_KERNEL_DIR=/path/to/kernel node scripts/occt-modeldoc-gate.mjs
 //
 // Run `npm run build --workspaces` FIRST -- this gate reads packages/*/dist,
 // not src, because that is what the browser loads too.
+//
+// WHERE THE KERNEL COMES FROM. This used to require RESHAPE_KERNEL_DIR to
+// point at a shCode checkout, which is the only place on this box that had the
+// .wasm -- so the gate ran on exactly one machine and could never run in CI.
+// `replicad-opencascadejs` is a real npm package shipping the same emscripten
+// build, so it is now a pinned devDependency and `npm ci` is enough. The env
+// var and the shCode path are kept as fallbacks, in that order, for a checkout
+// that has not installed.
+//
+// THE TWO BUILDS ARE NOT BYTE-IDENTICAL, and that was checked rather than
+// assumed. shCode's deployed replicad_single.js is byte-identical to the
+// package's; the .wasm differs (sha256 69974ca4.. vs 4c9f22e9.., 22970161 vs
+// 22980267 bytes -- 10 KB on 23 MB, consistent with a different patch version
+// rather than a custom build). Measured 2026-09-09: all twelve slices below
+// return IDENTICAL volumes on both, so the kernel build is not a confound for
+// what this gate measures. It prints which kernel it used; if a slice ever
+// disagrees across the two, that difference is itself the finding.
 
 import { pathToFileURL } from 'node:url';
-import { existsSync } from 'node:fs';
+import { createRequire } from 'node:module';
+import { existsSync, statSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.join(HERE, '..');
+const require = createRequire(import.meta.url);
 
-// shCode serves these at /reshape/kernel; that checkout is the default because
-// it is the only place on any box that has the .wasm. Override for another.
-const KERNEL_DIR = process.env.RESHAPE_KERNEL_DIR
-  ?? 'C:/Users/shuff57/Documents/GitHub/shCode/public/reshape/kernel';
+/** Where the package's dist sits, or null if it is not installed. Resolved
+ *  through require.resolve rather than a hardcoded node_modules path so a
+ *  hoisted or pnpm layout still finds it. */
+function packagedKernel() {
+  try {
+    return path.dirname(require.resolve('replicad-opencascadejs/dist/replicad_single.js'));
+  } catch {
+    try {
+      return path.join(path.dirname(require.resolve('replicad-opencascadejs/package.json')), 'dist');
+    } catch {
+      return null;
+    }
+  }
+}
 
-const WASM = path.join(KERNEL_DIR, 'replicad_single.wasm');
-if (!existsSync(WASM)) {
-  console.error(`FAIL: no kernel wasm at ${WASM}`);
-  console.error('The replicad build is gitignored (23 MB). Point RESHAPE_KERNEL_DIR at a');
-  console.error('checkout that has public/reshape/kernel/replicad_single.{js,wasm}.');
+const CANDIDATES = [
+  ['RESHAPE_KERNEL_DIR', process.env.RESHAPE_KERNEL_DIR],
+  ['replicad-opencascadejs (devDependency)', packagedKernel()],
+  ['shCode checkout', 'C:/Users/shuff57/Documents/GitHub/shCode/public/reshape/kernel'],
+];
+
+const found = CANDIDATES.find(
+  ([, dir]) => dir && existsSync(path.join(dir, 'replicad_single.wasm'))
+    && existsSync(path.join(dir, 'replicad_single.js')),
+);
+
+if (!found) {
+  console.error('FAIL: no OpenCascade kernel found. Looked, in order:');
+  for (const [label, dir] of CANDIDATES) {
+    console.error(`  ${label}: ${dir ?? '(unset)'}`);
+  }
+  console.error('\nFix: `npm install` at the repo root -- replicad-opencascadejs is a');
+  console.error('pinned devDependency and is all this needs. Or point RESHAPE_KERNEL_DIR');
+  console.error('at any directory holding replicad_single.js and replicad_single.wasm.');
   process.exit(1);
 }
+
+const [KERNEL_LABEL, KERNEL_DIR] = found;
+console.log(`kernel: ${KERNEL_LABEL}`);
+console.log(`        ${path.join(KERNEL_DIR, 'replicad_single.wasm')}`);
+console.log(`        ${statSync(path.join(KERNEL_DIR, 'replicad_single.wasm')).size} bytes\n`);
 
 const load = (p) => import(pathToFileURL(path.join(REPO, p)).href);
 

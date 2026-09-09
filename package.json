@@ -2,9 +2,15 @@
   "name": "reshape-cad-workspace",
   "private": true,
   "version": "0.0.0",
-  "workspaces": ["packages/*"],
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "build": "npm run build --workspaces --if-present",
-    "test": "node scripts/check-record.mjs bench/record.json && npm test --workspaces --if-present"
+    "test": "node scripts/check-record.mjs bench/record.json && npm test --workspaces --if-present && npm run test:occt",
+    "test:occt": "node scripts/occt-modeldoc-gate.mjs"
+  },
+  "devDependencies": {
+    "replicad-opencascadejs": "1.1.0"
   }
 }

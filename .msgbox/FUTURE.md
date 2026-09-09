@@ -89,10 +89,29 @@ a correct height from one measured off zero.
 **Gate now 12/12, and every ModelDoc kind is measured against a closed form.**
 No "it changed" assertions remain.
 
-**Open — the harness needs a kernel path it does not own.** `RESHAPE_KERNEL_DIR`
-defaults to the shCode checkout, the only place on any box with the `.wasm`. On
-a machine without it the gate exits 1 saying so, which is right but means this
-is not yet a CI gate.
+**CLOSED — the harness no longer needs a kernel path it does not own.**
+`replicad-opencascadejs` is a real npm package shipping the same emscripten
+build, so it is now a **pinned devDependency** (`1.1.0`, exact) and `npm ci` is
+all the gate needs. It resolves in order — `RESHAPE_KERNEL_DIR`, then the
+package via `require.resolve`, then the shCode checkout — and prints which one
+it used and that file's size. Wired into `npm test` at the root, and runnable
+alone as `npm run test:occt`.
+
+The two builds are **not byte-identical**, and that was checked rather than
+assumed. shCode's deployed `replicad_single.js` is byte-identical to the
+package's; the `.wasm` differs — sha256 `69974ca4…` vs `4c9f22e9…`, 22 970 161
+vs 22 980 267 bytes. Ten kilobytes on twenty-three megabytes, with identical
+glue, reads as a different patch version rather than a custom build. (It is
+**not** the STEP-stripped binary `shCode/scripts/inspect-occt-wasm.mjs` prices
+out; that was step one of a rebuild that was never done.) Measured: **all twelve
+slices return identical volumes on both**, so the kernel build is not a confound
+for anything this gate asserts. If a slice ever disagrees across the two, that
+disagreement is itself the finding — which is why the gate names its kernel.
+
+**Still open — there is no CI to run it in.** Neither repo has
+`.github/workflows`. The wasm was the blocker and it is gone; adding a workflow
+is now a small, separate decision about runners and triggers, not a technical
+obstacle.
 
 **Open, deliberately not fixed here — `dependsOn` cannot see `into`.**
 `model-types.ts:460` returns `[f.target, ...named]`, so the solid a `groove` or
