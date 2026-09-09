@@ -55,10 +55,43 @@ chunk contained `Rules between two edges` (the old panel) and not
 missing feature from a stale bundle. Fix: kill whatever holds the port
 (`Get-NetTCPConnection -LocalPort 3002`), delete `.next`, restart.
 
-**Still not covered.** Nothing here is automated; a regression in this panel
-would not be caught by any check in either repo. `check-constraint-ui.mjs`
-remains a grep tripwire and `point-rules.test.mjs` covers the writers, not the
-JSX.
+**NOW COVERED**, by `shCode/scripts/drive-point-rules.py` — a Playwright drive
+script in the house `drive-*.py` style, 32 checks, ALL PASS. It replays the
+session above: the four rows, the disabled tooltips, create/see/remove for all
+three rule types, the degenerate refusal, the settle() conflict note, and the
+solver measurements. Not in `npm test` (it needs a dev server on :3002 and
+Playwright, which is installed under Python here, not node).
+
+Proven able to fail: it failed four times while being written, and one of those
+was a real defect.
+
+**FOUND BY IT, open and unfixed — `toScript()` THROWS on three of the four
+kinds.** Adding a `distanceX`, `distanceY` or `symmetric` rule makes
+`reshape-script-gen.ts:144` throw on every render of the Code view:
+
+> `toScript(): no reSHape Script word for 'distanceX' yet -- P1d added the solver rule but not the DSL syntax.`
+
+Six pageerrors in one short session. `angle` does not throw — only the three
+that reach `toScript` first.
+
+The *gap* was known: the message is deliberate, and msgbox #140 flagged that
+these four constraints have no reSHape Script word. What was NOT known is that
+it surfaces as a repeated **page error the moment a student uses the panel**.
+The manual dogfood missed it because console errors were not readable in that
+session; the drive script read them on its first run.
+
+The fix is a decision, not a patch: either give the four kinds ModelDoc/DSL
+words (the P1e `pocket` shape — vocabulary, generator, codegen slot, tests),
+or make `toScript` skip an unrepresentable constraint with a comment instead of
+throwing. Throwing is the one option that cannot be right, because Build → Code
+is a path students take.
+
+Asserted rather than ignored: the drive script allows exactly these throws and
+fails on anything else, so the gap stays visible and cannot quietly widen.
+
+**Still not covered.** `check-constraint-ui.mjs` remains a grep tripwire and
+`point-rules.test.mjs` covers the writers, not the JSX; the drive script is the
+only thing exercising the rendered panel, and nothing runs it automatically.
 
 ---
 
