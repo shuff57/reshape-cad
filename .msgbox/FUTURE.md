@@ -6,6 +6,62 @@ parked rather than done.
 
 ---
 
+## 2026-09-09 — P1f dogfooded in a browser; the caveat is closed
+
+`3a3be70` shipped with `Not-tested: NO BROWSER`. That is now resolved, and the
+run found two things worth keeping.
+
+**All three rule types work end to end**, driven through shCode's `/sandbox` in
+reSHape Build mode on a fresh rectangle sketch:
+
+| step | observed |
+|---|---|
+| Dist X, corners 1→3, value 12 | listed as `corner 1→3 across = 12`, draft cleared, Set re-disabled |
+| Symmetric, 1 and 3 about 2 | listed as `corner 2 centred between 1 and 3` |
+| Angle, edges 1 and 2, 30° | listed as `edge 1 ∠ edge 2 = 30°` |
+| remove (×) on each | removed exactly that rule; list emptied; section still rendered |
+
+**The solver actually honoured them** — the part a rules list cannot prove.
+With Dist X = 12 and the symmetric both live, the Dimensions panel read corner
+1 across **18**, corner 3 across **30** (exactly 12 apart), and corner 2 at
+**(24, 4)** — the exact midpoint of (18, −10) and (30, 18) on *both* axes. The
+sketch began as a 40×25 rectangle, so it genuinely moved.
+
+**The conflict machinery works on the new kinds, and reads well.** Adding the
+angle while the symmetric was live made `settle()` drop the symmetric and say:
+*"Corner 2 no longer has to stay centred between corners 1 and 3 so edge 1 can
+stay at 30° to edge 2. Undo puts it back."* That is what routing every write
+through `settle()` was for. Removing the angle and re-adding the symmetric
+kept it, confirming the drop was a real conflict rather than a failed write.
+
+Degenerate refusal is live too: setting Symmetric's "about" corner equal to an
+endpoint disables Set with *"The about corner has to be a third corner."*
+
+**TRAP, and it cost the first half of the run.** The panel appeared to be
+missing entirely: the Rules panel rendered with no Point rules section. Two
+causes stacked.
+
+1. **`traycer_stop_shell` did not kill the dev server's child.** `npm run dev`
+   spawns `node server.js`; stopping the shell left it holding port 3002, so
+   the "restarted" server failed to bind with `EADDRINUSE` and the browser kept
+   talking to the ORIGINAL process. The restart looked successful.
+2. **Next's dev cache does not pick up changes through a `file:` symlink.**
+   `node_modules/@shuff57/reshape-studio` symlinks to `packages/studio`, and
+   `.next/` held a chunk compiled before the change.
+
+Diagnosed by fetching every loaded `.js` and grepping the served bytes: the
+chunk contained `Rules between two edges` (the old panel) and not
+`Point rules`. **That is the check to run first** — the DOM cannot tell a
+missing feature from a stale bundle. Fix: kill whatever holds the port
+(`Get-NetTCPConnection -LocalPort 3002`), delete `.next`, restart.
+
+**Still not covered.** Nothing here is automated; a regression in this panel
+would not be caught by any check in either repo. `check-constraint-ui.mjs`
+remains a grep tripwire and `point-rules.test.mjs` covers the writers, not the
+JSX.
+
+---
+
 ## 2026-09-09 — P1e: the ModelDoc/OCCT surface became testable
 
 **Decided and shipped.** `pocket` is now a ModelDoc vocabulary word, and the
