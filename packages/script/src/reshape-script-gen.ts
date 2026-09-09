@@ -136,13 +136,19 @@ function constraintCallLine(v: string, c: SketchConstraint): string {
   if (c.kind === 'vertical') return `${v}.up(${c.edge + 1})`;
   if (c.kind === 'length') return `${v}.length(${c.edge + 1}, ${lit(c.value)})`;
   if (c.kind === 'lock') return `${v}.pin(${c.corner + 1})`;
-  if (c.kind === 'distanceX' || c.kind === 'distanceY' || c.kind === 'symmetric' || c.kind === 'angle') {
-    // P1d (packages/sketch) added these to the solver, but reSHape Script
-    // has no .distanceX()/.distanceY()/.symmetric()/.angle() word yet --
-    // that is an unscoped DSL addition, not a script-gen bug. Fail loud
-    // rather than emit a call the interpreter cannot parse back.
-    throw new Error(`toScript(): no reSHape Script word for '${c.kind}' yet -- P1d added the solver rule but not the DSL syntax.`);
-  }
+  // The four Point-rules rows below USED to throw here: P1d (packages/sketch)
+  // added the solver rules but the DSL had no word for them, and failing loud
+  // beat emitting a call the interpreter could not parse back. P1f made the
+  // constraints reachable from the Rules panel, which turned a correct throw
+  // into silent data loss on Build -> Code -- so the words now exist
+  // (reshape-script.ts's SketchHandle) and this emits them instead. The
+  // branches stay ABOVE the equal/parallel/perpendicular fallthrough on
+  // purpose: distanceX/distanceY/symmetric carry no .edge and would fall
+  // into that line, emitting undefined.
+  if (c.kind === 'distanceX') return `${v}.distX(${c.a + 1}, ${c.b + 1}, ${lit(c.value)})`;
+  if (c.kind === 'distanceY') return `${v}.distY(${c.a + 1}, ${c.b + 1}, ${lit(c.value)})`;
+  if (c.kind === 'symmetric') return `${v}.symmetric(${c.a + 1}, ${c.b + 1}, ${c.center + 1})`;
+  if (c.kind === 'angle') return `${v}.angle(${c.edge + 1}, ${c.other + 1}, ${lit(c.degrees)})`;
   return `${v}.${c.kind}(${c.edge + 1}, ${c.other + 1})`; // equal / parallel / perpendicular
 }
 

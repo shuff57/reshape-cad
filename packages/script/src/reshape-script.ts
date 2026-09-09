@@ -555,6 +555,15 @@ export interface SketchHandle {
   parallel(edge: unknown, other: unknown): SketchHandle;
   perpendicular(edge: unknown, other: unknown): SketchHandle;
   pin(corner: unknown): SketchHandle;
+  // P1f's measured Point-rules rows (Dist X, Dist Y, Symmetric, Angle) --
+  // same panel-words rule as the rows above. distX/distY rather than
+  // overloading .across(), which already means "this edge is level";
+  // corner and edge numbers are 1-based, and every number below is SIGNED
+  // (a negative gap or turn is a meaningful ask), unlike .length().
+  distX(a: unknown, b: unknown, value: unknown): SketchHandle;
+  distY(a: unknown, b: unknown, value: unknown): SketchHandle;
+  symmetric(a: unknown, b: unknown, center: unknown): SketchHandle;
+  angle(edge: unknown, other: unknown, degrees: unknown): SketchHandle;
 }
 
 function isHandle(v: unknown): v is SolidHandle {
@@ -825,6 +834,27 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     if (a.kind === 'lock' && b.kind === 'lock') return a.corner === b.corner;
     if (a.kind === 'length' && b.kind === 'length') return a.edge === b.edge && a.value === b.value;
     if ((a.kind === 'horizontal' || a.kind === 'vertical') && 'edge' in b) return a.edge === b.edge;
+    // No cross-kind branch here: `a.kind !== b.kind` at the top of this
+    // function already means a distanceX can never be compared with a
+    // distanceY. (Reviewed 2026-09-09: an earlier version tested for that
+    // pairing anyway, which read as if cross-kind matching were intended and
+    // was unreachable either way.) A distX and a distY on one pair are
+    // different rules; whether they can COEXIST is the solver's call, and
+    // addConstraintSettling drops one on a rectangle diagonal because fixing
+    // both dx and dy there over-constrains it -- measured, reported through
+    // `removed`, and long-standing.
+    if (a.kind === 'distanceX' && b.kind === 'distanceX') {
+      return a.a === b.a && a.b === b.b && a.value === b.value;
+    }
+    if (a.kind === 'distanceY' && b.kind === 'distanceY') {
+      return a.a === b.a && a.b === b.b && a.value === b.value;
+    }
+    if (a.kind === 'symmetric' && b.kind === 'symmetric') {
+      return a.a === b.a && a.b === b.b && a.center === b.center;
+    }
+    if (a.kind === 'angle' && b.kind === 'angle') {
+      return a.edge === b.edge && a.other === b.other && a.degrees === b.degrees;
+    }
     if ('other' in a && 'other' in b) return a.edge === b.edge && a.other === b.other;
     return false;
   }
@@ -1029,6 +1059,65 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
         const cur = findFeature(id) as SketchFeature;
         const c = wholeIndex('.pin()', 'corner', corner, cur.points.length);
         applyConstraint(id, { kind: 'lock', corner: c });
+        return handle;
+      },
+      distX(a, b, value) {
+        const cur = findFeature(id) as SketchFeature;
+        const count = cur.points.length;
+        const i = wholeIndex('.distX()', 'corner', a, count);
+        const j = wholeIndex('.distX()', 'other', b, count);
+        if (i === j) throw new Error('.distX() needs two DIFFERENT corners.');
+        const v = requiredNumber('.distX()', 'value', value);
+        applyConstraint(id, {
+          kind: 'distanceX', a: Math.min(i, j), b: Math.max(i, j),
+          value: num(v, id, `dx${Math.min(i, j)}_${Math.max(i, j)}`),
+        });
+        return handle;
+      },
+      distY(a, b, value) {
+        const cur = findFeature(id) as SketchFeature;
+        const count = cur.points.length;
+        const i = wholeIndex('.distY()', 'corner', a, count);
+        const j = wholeIndex('.distY()', 'other', b, count);
+        if (i === j) throw new Error('.distY() needs two DIFFERENT corners.');
+        const v = requiredNumber('.distY()', 'value', value);
+        applyConstraint(id, {
+          kind: 'distanceY', a: Math.min(i, j), b: Math.max(i, j),
+          value: num(v, id, `dy${Math.min(i, j)}_${Math.max(i, j)}`),
+        });
+        return handle;
+      },
+      symmetric(a, b, center) {
+        const cur = findFeature(id) as SketchFeature;
+        const count = cur.points.length;
+        const i = wholeIndex('.symmetric()', 'corner', a, count);
+        const j = wholeIndex('.symmetric()', 'other', b, count);
+        const k = wholeIndex('.symmetric()', 'about corner', center, count);
+        if (i === j) throw new Error('.symmetric() needs two DIFFERENT corners.');
+        if (k === i || k === j) {
+          throw new Error('.symmetric() needs the about corner to be a THIRD corner.');
+        }
+        // `center` is a corner INDEX, not a measurement, so it goes in raw --
+        // the same way pin() passes its corner. num() exists to register a
+        // param-name override for a bindable dimension; wrapping an index in
+        // it (behind a double cast, which was the tell) claims a student could
+        // put a slider on "which corner", which is not a thing.
+        applyConstraint(id, {
+          kind: 'symmetric', a: Math.min(i, j), b: Math.max(i, j), center: k,
+        });
+        return handle;
+      },
+      angle(edge, other, degrees) {
+        const cur = findFeature(id) as SketchFeature;
+        const count = cur.points.length;
+        const i = wholeIndex('.angle()', 'edge', edge, count);
+        const j = wholeIndex('.angle()', 'other', other, count);
+        if (i === j) throw new Error('.angle() needs two DIFFERENT edges.');
+        const v = requiredNumber('.angle()', 'degrees', degrees);
+        applyConstraint(id, {
+          kind: 'angle', edge: Math.min(i, j), other: Math.max(i, j),
+          degrees: num(v, id, `ang${Math.min(i, j)}_${Math.max(i, j)}`),
+        });
         return handle;
       },
     };

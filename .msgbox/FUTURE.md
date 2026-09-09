@@ -65,29 +65,48 @@ Playwright, which is installed under Python here, not node).
 Proven able to fail: it failed four times while being written, and one of those
 was a real defect.
 
-**FOUND BY IT, open and unfixed — `toScript()` THROWS on three of the four
-kinds.** Adding a `distanceX`, `distanceY` or `symmetric` rule makes
-`reshape-script-gen.ts:144` throw on every render of the Code view:
+**FOUND BY IT, AND NOW FIXED — `toScript()` used to THROW on three of the
+four kinds.** Adding a `distanceX`, `distanceY` or `symmetric` rule made
+`reshape-script-gen.ts:144` throw on every render of the Code view: six
+pageerrors from one short session. `angle` did not — only the three that
+reached `toScript` first.
 
-> `toScript(): no reSHape Script word for 'distanceX' yet -- P1d added the solver rule but not the DSL syntax.`
-
-Six pageerrors in one short session. `angle` does not throw — only the three
-that reach `toScript` first.
-
-The *gap* was known: the message is deliberate, and msgbox #140 flagged that
-these four constraints have no reSHape Script word. What was NOT known is that
-it surfaces as a repeated **page error the moment a student uses the panel**.
+The *gap* was known: the message was deliberate, and msgbox #140 flagged that
+these four constraints had no reSHape Script word. What was NOT known is that
+it surfaced as a repeated **page error the moment a student used the panel**.
 The manual dogfood missed it because console errors were not readable in that
 session; the drive script read them on its first run.
 
-The fix is a decision, not a patch: either give the four kinds ModelDoc/DSL
-words (the P1e `pocket` shape — vocabulary, generator, codegen slot, tests),
-or make `toScript` skip an unrepresentable constraint with a comment instead of
-throwing. Throwing is the one option that cannot be right, because Build → Code
-is a path students take.
+**Decided: give them words, not a skip** (`SPEC-P1g`). `.distX()`, `.distY()`,
+`.symmetric()` and `.angle()` now exist on `SketchHandle`, and `toScript`
+emits them. The alternative — skipping a constraint `toScript` cannot express —
+was rejected because it is **silent data loss**: Build → Code would drop the
+rule and Code → Build would rebuild the doc without it, in a path students take
+constantly. shCode's `docsEqualUpToIds` deep-compares features, so a skip either
+fails that suite or quietly loses work. The throw's own comment ("fail loud
+rather than emit a call the interpreter cannot parse back") argued for adding
+the word, not for skipping: making the call parseable dissolves the dilemma.
 
-Asserted rather than ignored: the drive script allows exactly these throws and
-fails on anything else, so the gap stays visible and cannot quietly widen.
+`distX`/`distY` rather than overloading `.across()`, which already means "this
+edge is level" — `.across(3)` and `.across(1, 3, 12)` differing only by arity
+is the kind of cleverness that produces an unreadable bug report.
+
+**Measured after:** the drive script reports **zero** throws, and its allowance
+is now a wall — any page error fails the run. reshape-cad `npm test` 41+9+10
+unit plus 12 gate slices; shCode's round-trip suite 213/213.
+
+**Two review findings on the P1g build, both cosmetic and both fixed by the
+lead:** `symmetric` wrapped its `center` — a corner INDEX — in `num()` behind a
+double cast, which claims a student could bind a slider to "which corner"; and
+`sameConstraint` grew a cross-kind branch that `a.kind !== b.kind` at the top of
+that function already made unreachable.
+
+**Pre-existing, and NOT a P1g regression — worth knowing before it is
+rediscovered.** A `distX` and a `distY` on the same corner pair cannot coexist
+on a rectangle: `addConstraintSettling` drops one, because fixing both dx and dy
+across a diagonal over-constrains it. Measured directly against the solver, and
+it reports the removal through `removed`, so the panel shows its note. The
+later rule wins, in either order.
 
 **Still not covered.** `check-constraint-ui.mjs` remains a grep tripwire and
 `point-rules.test.mjs` covers the writers, not the JSX; the drive script is the
