@@ -609,6 +609,26 @@ export function buildDoc(oc: Occt, doc: ModelDoc, arc?: any): BuildResult {
           shape = boolean('BRepAlgoAPI_Cut', base, tool, f.id, [f.into]);
         }
       }
+    } else if (f.kind === 'pocket') {
+      // Subtractive extrude: pull the profile sketch straight into the named
+      // solid and CUT the block away. The prism is the extrude branch's; the
+      // cut is the groove branch's. No sweep history is recorded for the same
+      // reason groove records none -- a cut's faces come from the boolean,
+      // not from the prism.
+      const face = built.get(f.target);
+      const src = doc.features.find((x) => x.id === f.target);
+      const base = built.get(f.into);
+      if (face && src && src.kind === 'sketch' && base) {
+        const a = PLANE_AXES[src.plane ?? 'xy'] ?? PLANE_AXES.xy;
+        // NEGATIVE where extrude is positive: a pad pulls the profile up out
+        // of the plane, a pocket pushes it down into the material. `depth` is
+        // documented positive so this sign lives here, once, rather than in
+        // every student's head.
+        const h = -f.depth * a.dir;
+        const v = new oc.gp_Vec(a.n[0] * h, a.n[1] * h, a.n[2] * h);
+        const tool = new oc.BRepPrimAPI_MakePrism(face, v, false, true).Shape();
+        shape = boolean('BRepAlgoAPI_Cut', base, tool, f.id, [f.into]);
+      }
     } else if (f.kind === 'combine') {
       const live = f.targets.filter((id) => built.get(id));
       if (live.length >= 2) {

@@ -447,6 +447,10 @@ export function toScript(doc: ModelDoc, namedParams?: readonly ScriptParamRef[])
       lines.push(`groove(${v(f.target)}, ${v(f.into)}, ${numText(bindings, f.id, 'angle', lit(f.angle))})`);
       return;
     }
+    if (f.kind === 'pocket') {
+      lines.push(`pocket(${v(f.target)}, ${v(f.into)}, ${numText(bindings, f.id, 'depth', lit(f.depth))})`);
+      return;
+    }
     if (f.kind === 'blend') {
       const [loId, hiId] = f.targets;
       const lo = byId.get(loId) as SketchFeature | undefined;

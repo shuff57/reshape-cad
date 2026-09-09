@@ -110,6 +110,8 @@ export function generatedParams(doc: ModelDoc): GeneratedParam[] {
       pushTurn(out, f.id, label, f.rotate);
     } else if (f.kind === 'groove') {
       push('angle', 'angle', f.angle);
+    } else if (f.kind === 'pocket') {
+      push('depth', 'deep', f.depth);
     } else if (f.kind === 'sketch') {
       if (f.shape === 'circle' && f.points.length === 2) {
         // A circle is stored as the two ends of a diameter (see
@@ -354,6 +356,9 @@ export function applyParam(doc: ModelDoc, name: string, value: number): ModelDoc
     }
     if (f.kind === 'groove') {
       if (slot === 'angle') { changed = true; return { ...f, angle: value }; }
+    }
+    if (f.kind === 'pocket') {
+      if (slot === 'depth') { changed = true; return { ...f, depth: value }; }
     }
     if (f.kind === 'sketch') {
       if (f.shape === 'circle' && f.points.length === 2 && (slot === 'across' || slot === 'x' || slot === 'y')) {

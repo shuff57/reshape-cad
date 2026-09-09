@@ -48,6 +48,7 @@ import {
   type PrismFeature,
   type WedgeFeature,
   type GrooveFeature,
+  type PocketFeature,
   type SphereFeature,
   type SketchFeature,
   type SketchConstraint,
@@ -66,6 +67,7 @@ import {
   newExtrude,
   newRevolve,
   newGroove,
+  newPocket,
   newMirror,
   newBlend,
   extentAlong,
@@ -175,7 +177,7 @@ export interface RunResult {
 export const VOCABULARY = [
   // student words (course-facing, documented in the lesson pages)
   'box', 'cylinder', 'sphere', 'cone', 'ring',
-  'prism', 'wedge', 'groove',
+  'prism', 'wedge', 'groove', 'pocket',
   'hole', 'holes', 'hollow', 'round', 'bevel', 'repeat', 'repeatAround', 'mirror', 'move', 'turn',
   'join', 'cut', 'keep', 'draft',
   'sketch', 'pull', 'spin', 'blend',
@@ -785,6 +787,20 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     return makeSolidHandle(f);
   }
 
+  // pocket(sketch, target, depth): the subtractive extrude — pull the profile
+  // straight into the target solid and CUT the block out. Mirror of pull(),
+  // with the solid it cuts named. Same argument order as groove() on purpose:
+  // profile first, victim second, number last.
+  function pocket(sk: unknown, target: unknown, depth: unknown): SolidHandle {
+    if (!isSketchHandle(sk)) throw new Error('pocket() needs a sketch: pocket(sketch1, shape, depth).');
+    if (!isHandle(target)) throw new Error('pocket() needs a shape to cut: pocket(sketch1, shape, depth).');
+    requiredNumber('pocket', 'depth', depth);
+    const f = newPocket(docNow(), sk.id, target.id);
+    f.depth = num(depth, f.id, 'depth');
+    pushFeature(f);
+    return makeSolidHandle(f);
+  }
+
   // ---- sketches ---------------------------------------------------------
 
   const PLANE_WORD: Record<string, SketchPlane> = { top: 'xy', front: 'xz', side: 'yz' };
@@ -1389,7 +1405,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
   // constant exists to close.
   const fns: Record<(typeof VOCABULARY)[number], unknown> = {
     box, cylinder, sphere, cone, ring,
-    prism, wedge, groove,
+    prism, wedge, groove, pocket,
     hole, holes, hollow, round, bevel, repeat, repeatAround, mirror, move, turn,
     join, cut, keep, draft,
     sketch, pull, spin, blend,

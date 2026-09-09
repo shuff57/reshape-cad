@@ -181,8 +181,8 @@
       "id": "PartDesign_Pocket",
       "group": "Subtractive",
       "label": "Pocket a selected sketch",
-      "reshape": null,
-      "status": "queued",
+      "reshape": "pocket",
+      "status": "shipped",
       "reason": null
     },
     {

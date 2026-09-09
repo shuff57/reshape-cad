@@ -130,6 +130,24 @@ export interface GrooveFeature {
   angle: number;
 }
 
+/** A subtractive extrude — the pocket. Pulls the target sketch's profile
+ *  straight DOWN into an earlier solid and cuts it away. The ModelDoc twin of
+ *  the bridge's PartDesign::Pocket emitter and of transpile.mjs's pocket()
+ *  statement; the additive twin already exists as ExtrudeFeature. */
+export interface PocketFeature {
+  id: string;
+  kind: 'pocket';
+  name?: string;
+  /** The sketch whose profile is pulled into the cutting block. */
+  target: string;
+  /** The solid the pocket is cut into. */
+  into: string;
+  /** How far into the solid to cut, in mm. Always positive; the DIRECTION is
+   *  fixed (into the material, opposite the way extrude pulls) so a student
+   *  cannot type a sign that silently cuts air. */
+  depth: number;
+}
+
 /** Which flat plane a sketch is drawn on. Extrusion runs perpendicular to it. */
 export type SketchPlane = 'xy' | 'xz' | 'yz';
 
@@ -442,7 +460,7 @@ export type Feature =
   | PrismFeature | WedgeFeature
   | SketchFeature | ExtrudeFeature | CombineFeature
   | BlendFeature
-  | RevolveFeature | GrooveFeature | MirrorFeature | PatternFeature
+  | RevolveFeature | GrooveFeature | PocketFeature | MirrorFeature | PatternFeature
   | HoleFeature | ShellFeature | MoveFeature
   | FilletFeature
   | DraftFeature;
@@ -827,6 +845,14 @@ export function newGroove(doc: ModelDoc, target: string, into: string): GrooveFe
   return { id: nextId(doc, 'groove'), kind: 'groove', target, into, angle: 360 };
 }
 
+/** The pocket twin of newExtrude: same profile contract, but the pulled block
+ *  is cut out of a named solid instead of standing on its own. `into` is
+ *  required for the same reason groove's is — a pocket with nothing to cut is
+ *  not a pocket. */
+export function newPocket(doc: ModelDoc, target: string, into: string): PocketFeature {
+  return { id: nextId(doc, 'pocket'), kind: 'pocket', target, into, depth: 5 };
+}
+
 // No default plane -- Onshape makes the mirror plane a required field and
 // refuses to complete the feature without one, precisely because there is no
 // plane that is silently "probably right." A caller that has not asked the
@@ -1142,6 +1168,7 @@ function labelOf(f: Feature): string {
     : f.kind === 'prism' ? 'Prism'
     : f.kind === 'wedge' ? 'Wedge'
     : f.kind === 'groove' ? 'Groove'
+    : f.kind === 'pocket' ? 'Pocket'
     : f.kind === 'blend' ? 'Blend'
     : f.kind === 'sphere' ? 'Sphere'
     // Decision: reference.md and studentWord() (lib/model-check.ts) both
