@@ -7,3 +7,4 @@ engine/build/
 engine/toolchains/
 .msgbox/cursor*
 .playwright-cli/
+.msgbox/events.jsonl

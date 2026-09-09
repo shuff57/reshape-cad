@@ -200,12 +200,22 @@ legitimately produce nothing, which is why the hole surfaced here.
 
 ## 7. Measured facts worth not re-deriving
 
-- **OCCT caches the triangulation on the shape.** Exporting ONE sphere at
-  deflection 0.01 and then at 1.0 returns **26718 facets both times** —
-  `BRepMesh_IncrementalMesh` skips re-meshing when what is already attached is
-  finer than asked for. This is not the argument being dropped. Gate slice 3
-  therefore measures two FRESH spheres (26718 vs 8002); collapsing it back to
-  one shape makes it pass for the wrong reason.
+- **OCCT may reuse a triangulation already attached to the shape, and whether
+  it does is NOT deterministic.** Re-exporting one shape at a coarser
+  deflection can hand back the finer mesh it already has. Measured three
+  times: a PartDesign sphere gave **26718 facets at both 0.01 and 1.0** on one
+  shape versus 26718 and 8002 on two fresh spheres; then a padded cylinder
+  gave **912 then 500** on one run and **912 then 912** on the next, with
+  nothing changed in between.
+
+  An earlier draft of this section stated the reuse as a flat rule
+  ("`BRepMesh_IncrementalMesh` skips re-meshing when what is attached is
+  finer"). The cylinder contradicts it, and no explanation here covers both
+  observations — so the honest statement is *sometimes*, and the gate must not
+  depend on which way it lands. Slice 2 therefore builds **two fresh solids**,
+  which have no triangulation to reuse; it then reports 912 vs 500 on every
+  run. A same-shape comparison is a coin flip whose failure mode is a **false
+  alarm** — it accuses the emitter of dropping an argument that is fine.
 - **Python error text does reach the browser, and does not reach Node.** On
   the NODERAWFS node kernel Python's fd 1 bypasses `Module.print`, so the
   guard's `ValueError` never reaches JS and the thrown message is the bare
