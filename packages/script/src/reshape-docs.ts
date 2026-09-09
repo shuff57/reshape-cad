@@ -266,6 +266,15 @@ sk.length(1, 40)
 const shape = pull(sk, 12)`,
       },
       {
+        title: 'rules between corners: distance, symmetry and angle',
+        body: `Four more rules name CORNERS rather than edges, and they are the Rules panel's "Point rules" section in the same words: sk.distX(a, b, mm) holds two corners a fixed distance apart measured across, sk.distY(a, b, mm) holds them a fixed distance apart measured up, sk.symmetric(a, b, middle) holds the middle corner exactly halfway between the other two, and sk.angle(edge, other, degrees) holds two edges at a fixed turn. Corner and edge numbers are 1-based here too. These numbers can be negative, unlike a length: distX(1, 3, -12) asks for corner 3 to sit 12 mm to the LEFT of corner 1, which is a different shape from 12 mm to the right. Not every pair of rules can hold at once -- asking a rectangle for both a distX and a distY across the same diagonal is asking it to be two shapes, so the older rule is dropped with a note in the panel, the same as any other conflict.`,
+        code: `const sk = sketch('top')
+sk.polygon([[0, 0], [40, 0], [40, 25], [0, 25]])
+sk.distX(1, 3, 30)
+sk.symmetric(1, 3, 2)
+const shape = pull(sk, 12)`,
+      },
+      {
         title: 'pull: extruding sketches',
         body: `pull(sk, 30) extrudes 30 mm upward perpendicular to the sketch plane.`,
         code: `const sk = sketch('front')
