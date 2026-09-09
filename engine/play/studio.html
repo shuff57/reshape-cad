@@ -197,6 +197,7 @@
   .sk-line-sel{ stroke:var(--accent); stroke-width:1; }
   .sk-vertex{ fill:var(--text); }
   .sk-vertex-sel{ fill:var(--accent); }
+  .sk-constr{ stroke:var(--accent); stroke-width:.4; stroke-dasharray:1.5,1; opacity:.75; }
   #rubberBand{ stroke:var(--accent); stroke-width:.5; opacity:.7; }
   .sk-preview{ fill:none; stroke:var(--accent); stroke-width:.5; stroke-dasharray:1.2,1.2; opacity:.7; }
   #snapRing{ fill:none; stroke:var(--accent); stroke-width:.4; opacity:.9; }
@@ -451,6 +452,10 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1.8" fill="currentColor" stroke="none"/></svg>
             <span>Point</span>
           </button>
+          <button id="toolTrim" class="fbtn small" title="Trim — click a piece of a line or curve to cut it back to the nearest crossing">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18a14 14 0 0 1 16-16"/><path d="M15 9 4 20"/><path d="m15 9 5-5"/></svg>
+            <span>Trim</span>
+          </button>
         </div>
         <div class="sk-group" aria-label="Constraints">
           <button id="cHoriz" class="btn" disabled title="Horizontal — needs 1 line">Horizontal</button>
@@ -464,6 +469,7 @@
           <button id="cDistY" class="btn" disabled title="Dist Y — needs 2 points">Dist Y</button>
           <button id="cAngle" class="btn" disabled title="Angle — needs 2 lines">Angle</button>
           <button id="cDim" class="btn" disabled title="Dimension — needs 1 line, circle, or arc">Dimension</button>
+          <button id="cConstr" class="btn" disabled title="Construction — needs 1 or more lines, circles, or arcs">Construction</button>
           <button id="cDelete" class="btn" disabled title="Delete — remove selected geometry (Delete/Backspace)">Delete</button>
         </div>
         <div class="sk-group" aria-label="Auto-constrain">

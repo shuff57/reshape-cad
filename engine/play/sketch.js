@@ -437,7 +437,10 @@ export function initSketchMode({ getSession, viewport, onEnter, onFinish }) {
     geomLayer.replaceChildren();
     for (const g of lastState.geometry) {
       const shapeSel = selection.some((s) => s.geoId === g.id && s.pointPos == null);
-      const shapeClass = shapeSel ? 'sk-line sk-line-sel' : 'sk-line';
+      // Construction geometry is drawn dashed. Selection still wins on colour,
+      // so a selected construction line reads as selected AND as construction.
+      const shapeClass = (shapeSel ? 'sk-line sk-line-sel' : 'sk-line')
+        + (g.constr ? ' sk-constr' : '');
       if (g.type === 'LineSegment') {
         const line = document.createElementNS(SVGNS, 'line');
         line.setAttribute('x1', g.x1); line.setAttribute('y1', -g.y1);
@@ -518,6 +521,10 @@ export function initSketchMode({ getSession, viewport, onEnter, onFinish }) {
     const g = lastState && lastState.geometry.find((x) => x.id === geoId);
     return g ? g.type : null;
   }
+  function geomConstr(geoId) {
+    const g = lastState && lastState.geometry.find((x) => x.id === geoId);
+    return g ? !!g.constr : false;
+  }
   function setEnabled(id, enabled) { const el = $(id); if (el) el.disabled = !enabled; }
   function updateConstraintButtons() {
     const shapes = selShapes(), points = selPoints();
@@ -539,6 +546,7 @@ export function initSketchMode({ getSession, viewport, onEnter, onFinish }) {
     setEnabled('cDistX', twoPoints);
     setEnabled('cDistY', twoPoints);
     setEnabled('cAngle', twoLines);
+    setEnabled('cConstr', shapes.length >= 1 && points.length === 0);
     setEnabled('cDelete', selection.length > 0);
   }
 
@@ -586,7 +594,7 @@ export function initSketchMode({ getSession, viewport, onEnter, onFinish }) {
   // -- tool switching -----------------------------------------------------------
   function setTool(t) {
     tool = t; chain = null; toolClicks = []; hideHints();
-    for (const id of ['toolLine', 'toolSelect', 'toolRect', 'toolCircle', 'toolArc', 'toolEllipse', 'toolPoint']) {
+    for (const id of ['toolLine', 'toolSelect', 'toolRect', 'toolCircle', 'toolArc', 'toolEllipse', 'toolPoint', 'toolTrim']) {
       $(id)?.classList.toggle('active', id === `tool${t[0].toUpperCase()}${t.slice(1)}`);
     }
     svg.style.cursor = t === 'select' ? 'default' : 'crosshair';
@@ -698,6 +706,16 @@ export function initSketchMode({ getSession, viewport, onEnter, onFinish }) {
       refresh();
     });
   }
+  function onTrimToolClick(evt) {
+    const hit = findShapeHit(evt);
+    if (!hit) return log('trim: click on a line, circle, or arc');
+    const world = worldFromEvent(evt);
+    guardOp(() => {
+      sess().sketchTrim(sketchName, hit.geoId, world.x, world.y);
+      selection = [];   // ids shift when trim deletes a piece -- see fc-sketch.mjs
+      refresh();
+    });
+  }
   function updateRectPreview(evt) {
     if (!previewRect) return;
     if (toolClicks.length !== 1) { previewRect.hidden = true; return; }
@@ -768,6 +786,7 @@ export function initSketchMode({ getSession, viewport, onEnter, onFinish }) {
   on('toolArc', 'click', () => setTool('arc'));
   on('toolEllipse', 'click', () => setTool('ellipse'));
   on('toolPoint', 'click', () => setTool('point'));
+  on('toolTrim', 'click', () => setTool('trim'));
 
   on('cHoriz', 'click', () => applyConstraint(() => sess().constrainHorizontal(sketchName, selShapes()[0].geoId)));
   on('cVert', 'click', () => applyConstraint(() => sess().constrainVertical(sketchName, selShapes()[0].geoId)));
@@ -875,6 +894,15 @@ export function initSketchMode({ getSession, viewport, onEnter, onFinish }) {
   });
   on('dimCancel', 'click', hideDim);
   on('cDelete', 'click', deleteSelection);
+  on('cConstr', 'click', () => applyConstraint(() => {
+    // Toggle by MAJORITY, not per-shape: if any selected shape is not yet
+    // construction, turn them all ON; only when they are all already
+    // construction does the button turn them all off. A per-shape toggle on a
+    // mixed selection just inverts the mix, which no user has ever wanted.
+    const shapes = selShapes();
+    const want = shapes.some((s) => !geomConstr(s.geoId));
+    for (const s of shapes) sess().sketchSetConstruction(sketchName, s.geoId, want);
+  }));
 
   // -- canvas pointer/keyboard wiring ------------------------------------------
   svg.addEventListener('click', (evt) => {
@@ -886,6 +914,7 @@ export function initSketchMode({ getSession, viewport, onEnter, onFinish }) {
     else if (tool === 'arc') onArcToolClick(evt);
     else if (tool === 'ellipse') onEllipseToolClick(evt);
     else if (tool === 'point') onPointToolClick(evt);
+    else if (tool === 'trim') onTrimToolClick(evt);
   });
   svg.addEventListener('pointermove', (evt) => {
     if (!sketchName) return;

@@ -146,6 +146,32 @@ export const emit = {
       `sk.solve()\n` + `doc.recompute()\n`;
   },
 
+  // Flag geometry as CONSTRUCTION: it stays in the sketch, keeps its
+  // constraints, and is ignored when the sketch is padded into a solid --
+  // which is the whole point (a centreline you dimension from but do not
+  // extrude). Mode must be a real Python bool: the parser is "iO!" against
+  // PyBool_Type (SketchObjectPyImp.cpp:337), so a 1 is a TypeError.
+  setConstruction(sketchName, g, on) {
+    return HEAD + SK(sketchName) +
+      `sk.setConstruction(${pyInt(g, 'g')}, ${on ? 'True' : 'False'})\n` +
+      `sk.solve()\n` + `doc.recompute()\n`;
+  },
+
+  // Trim the curve `g` at the picked point: FreeCAD removes the piece of it
+  // that contains that point, up to the nearest intersections. The point is
+  // Base::VectorPy ("iO!", SketchObjectPyImp.cpp:1587), not a tuple, so it
+  // goes through vec() like every other point on this bridge.
+  //
+  // NOTE for the caller: trim can DELETE a geometry outright (a segment with
+  // no intersections on either side), which shifts every id above it. Callers
+  // must re-read sketchState() rather than reuse ids across a trim -- the same
+  // rule delGeometry/delConstraint already carry.
+  trim(sketchName, g, x, y) {
+    return HEAD + SK(sketchName) +
+      `sk.trim(${pyInt(g, 'g')}, ${vec(x, y)})\n` +
+      `sk.solve()\n` + `doc.recompute()\n`;
+  },
+
   // Attach a constraint. `kind` selects the FreeCAD constraint; the emitter
   // shapes the right argument list and returns {index} (the new constraint's
   // position in sk.Constraints), which setDatum() and delete will reference.
@@ -285,6 +311,10 @@ export const emit = {
       `        row['px']=round(g.X,6); row['py']=round(g.Y,6)\n` +
       `    except Exception:\n` +
       `        pass\n` +
+      `    try:\n` +
+      `        row['constr'] = bool(sk.getConstruction(i))\n` +
+      `    except Exception:\n` +
+      `        pass\n` +
       `    if row['type'] == 'ArcOfCircle':\n` +
       `        try:\n` +
       `            a0=g.FirstParameter; a1=g.LastParameter\n` +
@@ -342,6 +372,14 @@ export function attachSketchCommands(session) {
   session.sketchAddPoint   = (sk, x, y)          => session.read(emit.addPoint(sk, x, y)).geoId;
   session.sketchDelGeometry = (sk, g) => {
     runExec('sketchDelGeometry', emit.delGeometry(sk, g));
+    return g;
+  };
+  session.sketchSetConstruction = (sk, g, on) => {
+    runExec('sketchSetConstruction', emit.setConstruction(sk, g, on));
+    return g;
+  };
+  session.sketchTrim = (sk, g, x, y) => {
+    runExec('sketchTrim', emit.trim(sk, g, x, y));
     return g;
   };
 
