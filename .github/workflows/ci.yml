@@ -1,0 +1,48 @@
+# Build and test on every push and pull request.
+#
+# WHY THIS DID NOT EXIST BEFORE. It could not: `npm test` runs the ModelDoc
+# OCCT gate, and until 0366d95 that gate needed RESHAPE_KERNEL_DIR pointed at a
+# sibling shCode checkout holding a 23 MB gitignored replicad_single.wasm. No
+# runner has that. The kernel is a pinned devDependency now
+# (replicad-opencascadejs), so `npm ci` is the whole setup and this file is
+# just the thing that presses the button.
+#
+# WHAT IT RUNS, and the order matters: the test suites import from
+# `packages/*/dist`, not from `src`, because dist is what a browser and shCode
+# both load. So the build is not a separate nicety -- skip it and every suite
+# measures whatever dist happened to be committed last.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          # Restores ~/.npm between runs. Worth having here specifically:
+          # replicad-opencascadejs unpacks to ~49 MB and is fetched every run
+          # without it.
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Build every workspace
+        run: npm run build --workspaces
+
+      # Runs check-record, the three workspace suites, and the ModelDoc/OCCT
+      # gate, which resolves its kernel from node_modules with no env var set.
+      # The gate PRINTS which kernel it used and that file's size -- if a slice
+      # ever disagrees between this runner's copy and the one shCode deploys,
+      # that disagreement is a finding, so leave the printing in.
+      - name: Test
+        run: npm test
