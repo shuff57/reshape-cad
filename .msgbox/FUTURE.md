@@ -39,11 +39,36 @@ passes **6/6**:
 
 Proven able to fail: on `main` before the build it read **2 passed, 3 failed**.
 
-**Open — the rest of P1a is still unproven.** `prism` and `wedge` have exact
-closed-form volumes ((3√3/2)r²h and w·h·d/2) and nothing measures them.
-`groove`'s slice only asserts that material moved, not how much: the swept
-ring's geometry was never derived, and inventing an expected number after the
-fact is a guess dressed as a gate.
+**CLOSED, and it found a real one.** Retro-gating `prism` and `wedge` the same
+day: **neither had ever built, and both were marked `shipped`.** The gate went
+straight to 4 failures, all the same `BindingError: parameter 0 has unknown
+type 8gp_Torus`.
+
+Cause: `BRepBuilderAPI_MakeFace(wire)` with **one argument**. replicad's embind
+bindings expose no single-wire overload, so the call falls through to the
+surface-taking ones and reports the first it cannot match — `gp_Torus` — from
+inside code that has nothing to do with tori, which is why it read as a kernel
+mystery instead of a missing argument. Every other `MakeFace` in the repo
+(`occt-build.ts:238,458,467`, `occt-api.ts:721`) already passed `false`; only
+the prism and wedge branches did not. Swept the repo: those two were the only
+one-argument call sites.
+
+Worse than a broken feature: `buildDoc` **throws**, so one prism took the
+entire document down with it. Measured — a doc holding a 40×40×20 box and a
+prism returned no shapes at all. The inverse of this project's usual defect:
+not "succeeded and did nothing" but "one feature destroyed everything."
+
+The geometry underneath was always right. With the argument supplied, all five
+shapes match closed forms derived from `model-types.ts`'s own field docs rather
+than read back off the implementation: prism hex 5196.152, triangle 2598.076,
+12-gon 6000.000; wedge 600.000 and 1440.000. Gate now **10/10**.
+
+No ledger change: `prism` and `wedge` were already `shipped` and stay `shipped`.
+The status was not wrong about intent — it was just untrue until today.
+
+**Still open — `groove` has no exact number.** Its slice asserts only that
+material moved. The swept ring's geometry was never derived, and inventing an
+expected value after the fact is a guess dressed as a gate.
 
 **Open — the harness needs a kernel path it does not own.** `RESHAPE_KERNEL_DIR`
 defaults to the shCode checkout, the only place on any box with the `.wasm`. On

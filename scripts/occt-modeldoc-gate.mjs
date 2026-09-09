@@ -185,6 +185,58 @@ slice('pocket depth 10 removes twice as much', () => {
   check('pocket depth 10 removes twice as much', cut ? volume(cut) : NaN, 31200);
 });
 
+// --- slices 5-8: prism and wedge, retro-gated ------------------------------
+// The other two ModelDoc kinds P1a added and never executed. Both have exact
+// closed-form volumes, so unlike groove there is a real number to demand.
+//
+// The expectations are derived from the CONTRACT (model-types.ts's own field
+// docs: `sides`, `radius` as circumradius, `height`; a right triangle of legs
+// `width` and `depth` extruded `height`), NOT read back off occt-build.ts. A
+// gate that reproduces the implementation's arithmetic agrees with the bug.
+//
+//   regular n-gon, circumradius R:  area = (n/2) R^2 sin(2*pi/n)
+//   n = 6 folds to the closed form SPEC-P1-parity-closeout quotes: (3*sqrt3/2) R^2
+//   right triangle, legs w and d:   area = w*d/2
+
+const ngonArea = (n, R) => (n / 2) * R * R * Math.sin((2 * Math.PI) / n);
+
+function primDoc(kind, fields) {
+  const doc = { features: [] };
+  const f = mt.newShape(doc, kind);
+  Object.assign(f, fields);
+  doc.features.push(f);
+  const res = buildDoc(oc, doc, arc);
+  return res.shapes.get(f.id);
+}
+
+slice('prism: hexagon R=10 h=20', () => {
+  const s = primDoc('prism', { sides: 6, radius: 10, height: 20, center: [0, 0, 0] });
+  // (3*sqrt3/2) * 100 * 20 = 5196.152
+  check('prism: hexagon R=10 h=20', s ? volume(s) : NaN, ngonArea(6, 10) * 20);
+});
+
+// `sides` is the one field a prism cannot be right without, and a branch that
+// ignored it would still pass the hexagon slice if it happened to hardcode 6.
+slice('prism: triangle sides=3 R=10 h=20', () => {
+  const s = primDoc('prism', { sides: 3, radius: 10, height: 20, center: [0, 0, 0] });
+  check('prism: triangle sides=3 R=10 h=20', s ? volume(s) : NaN, ngonArea(3, 10) * 20);
+});
+
+slice('wedge: 20 x 10 legs, 6 tall', () => {
+  const s = primDoc('wedge', { width: 20, depth: 10, height: 6, center: [0, 0, 0] });
+  // (20 * 10 / 2) * 6 = 600
+  check('wedge: 20 x 10 legs, 6 tall', s ? volume(s) : NaN, (20 * 10 / 2) * 6);
+});
+
+// A wedge is HALF the box of the same dimensions. Stated separately because
+// the failure it catches is the one worth naming: a right-triangle profile
+// that silently closed into a rectangle reads as a plausible solid and would
+// pass any "did it build" check.
+slice('wedge is half its bounding box', () => {
+  const s = primDoc('wedge', { width: 30, depth: 12, height: 8, center: [0, 0, 0] });
+  check('wedge is half its bounding box', s ? volume(s) : NaN, (30 * 12 * 8) / 2);
+});
+
 // --- slice 5: end to end, from student script text -------------------------
 // Every slice above hand-builds the doc, which is exactly what the unit tests
 // do too -- so nothing yet proves the doc the DSL actually PRODUCES is one the

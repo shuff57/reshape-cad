@@ -514,7 +514,14 @@ function primitiveOf(oc: Occt, f: Feature): any {
       for (let i = 0; i < n; i++) {
         mk.Add(new oc.BRepBuilderAPI_MakeEdge(pts[i], pts[(i + 1) % n]).Edge());
       }
-      const profile = new oc.BRepBuilderAPI_MakeFace(mk.Wire()).Face();
+      // The second argument is NOT optional in this build. replicad's embind
+      // bindings expose no single-wire MakeFace overload, so a one-argument
+      // call falls through to the surface-taking ones and throws
+      // "parameter 0 has unknown type 8gp_Torus" -- naming a torus from inside
+      // code that has nothing to do with tori, which is why this read as a
+      // kernel mystery rather than a missing argument. Every other MakeFace in
+      // this file and in occt-api.ts already passes it.
+      const profile = new oc.BRepBuilderAPI_MakeFace(mk.Wire(), false).Face();
       const raw = new oc.BRepPrimAPI_MakePrism(profile, new oc.gp_Vec(0, 0, f.height)).Shape();
       return turned(oc, moved(oc, raw, [0, 0, -f.height / 2]), f.rotate, [0, 0, 0]);
     }
@@ -526,7 +533,8 @@ function primitiveOf(oc: Occt, f: Feature): any {
       tri.Add(new oc.BRepBuilderAPI_MakeEdge(new oc.gp_Pnt(0, 0, 0), new oc.gp_Pnt(f.width, 0, 0)).Edge());
       tri.Add(new oc.BRepBuilderAPI_MakeEdge(new oc.gp_Pnt(f.width, 0, 0), new oc.gp_Pnt(0, f.depth, 0)).Edge());
       tri.Add(new oc.BRepBuilderAPI_MakeEdge(new oc.gp_Pnt(0, f.depth, 0), new oc.gp_Pnt(0, 0, 0)).Edge());
-      const profile = new oc.BRepBuilderAPI_MakeFace(tri.Wire()).Face();
+      // Second argument required -- see the note on the prism branch above.
+      const profile = new oc.BRepBuilderAPI_MakeFace(tri.Wire(), false).Face();
       const raw = new oc.BRepPrimAPI_MakePrism(profile, new oc.gp_Vec(0, 0, f.height)).Shape();
       return turned(oc, moved(oc, raw, [-f.width / 2, -f.depth / 2, -f.height / 2]), f.rotate, [0, 0, 0]);
     }
