@@ -34,22 +34,27 @@ a student there beforehand.
 
 ---
 
-## 2026-09-09 — P1d-2: construction toggle + Trim
+## 2026-09-09 — P1d-2: construction toggle + Trim (shipped `d775f6d`)
 
-**Decided.** Specced in full at `docs/specs/SPEC-P1d2-construction-trim.md`,
-ready to dispatch. Both APIs already read out of the vendored source
-(`Mod/Sketcher/App/SketchObjectPyImp.cpp`), including the two `"O!"` traps:
-`setConstruction` needs a real Python `True`/`False` (a `1` is a TypeError) and
-`trim` needs an `App.Vector`, not a tuple. Bridge + `engine/play` only —
-nothing in `packages/`, because the studio sketcher uses FreeCAD's solver, not
-the TS relaxation solver.
+**Decided and shipped.** Construction geometry and Trim now work through the
+FreeCAD Sketcher bridge and Studio sketcher; `packages/` remains deliberately
+untouched. The bridge emits the measured strict types — literal Python
+`True`/`False` for `setConstruction`, and `App.Vector` for `trim` — reports the
+construction flag in sketch state, and clears client selection after Trim
+because IDs can shift.
 
-**Open.** Not built. Blocked only on a coordination problem, not a technical one:
-a second Claude Code session (cwd `~/Documents/GitHub/shCode`) writes into this
-repo by absolute path *under the msgbox identity `claude`*, so it can release
-this session's file claims and read messages addressed to others. Until that
-session uses a distinct identity, the ownership guard cannot separate two
-Claude sessions and a dispatched builder is unprotected.
+**Measured.** Lead-owned `engine/bridge/p1d2-test.mjs` passes **2/2** in the
+kernel container: construction flag off → on → off round-trips while retaining
+the 16 mm line, and trimming the selected half of two crossing 20 mm lines
+changes their total from **40 mm to 30 mm**. Browser dogfood against the real
+wasm kernel passed: construction enabled for a selected shape and rendered it
+dashed; Trim shortened the clicked segment; no browser errors. `npm run build
+--workspaces` and `npm test --workspaces --if-present` pass (32/32).
+
+**Still deliberately absent.** `findShapeHit` has no Ellipse branch, so Trim
+targets lines, circles, and arcs only. That was specified, not overlooked:
+ellipse stroke picking needs rotated-frame distance and belongs in its own
+slice when an actual whole-ellipse operation needs it.
 
 ---
 
