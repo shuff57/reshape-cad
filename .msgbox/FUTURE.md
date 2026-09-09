@@ -6,6 +6,69 @@ parked rather than done.
 
 ---
 
+## 2026-09-09 — P1e: the ModelDoc/OCCT surface became testable
+
+**Decided and shipped.** `pocket` is now a ModelDoc vocabulary word, and the
+parity ledger reads **30/46 shipped, 5 queued, 11 refused** — the number
+`SPEC-P1-parity-closeout.md` named as P1a's gate, met at last. All five
+remaining queued entries are now parked by an explicit decision; there is no
+open ledger item.
+
+**The bigger thing, and it was not the word.** `packages/kernel/src/
+occt-build.ts` had **never been executed in this repo**. Its kernel is
+`replicad_single.wasm` — 23 MB, gitignored, fetched at runtime from
+`getKernelBaseUrl()` by packages/studio — so nothing here called `buildDoc()`,
+and every ModelDoc kind P1a added (`prism`, `wedge`, `groove`) shipped typed
+and unproven. The msgbox carries the admission verbatim: *"packages/kernel has
+no wasm dep, no test script … I have no browser/replicad harness available."*
+
+Measured 2026-09-09: replicad's emscripten factory **initialises under plain
+Node** given a `locateFile` pointing at the sibling `.wasm`, and the repo's own
+`dist/occt-build.js` builds real solids against it. No browser, no container,
+no new dependency. `scripts/occt-modeldoc-gate.mjs` is that harness, and it
+passes **6/6**:
+
+| slice | measured |
+|---|---|
+| harness live: extrude 20×10 by 5 | 1000.000 mm³ |
+| `groove` (P1a, retro-gated) | 32000.000 → 30335.225 mm³ |
+| `pocket` on `xy`, 10×8 cut 5 deep | 31600.000 mm³ |
+| `pocket` on `xz` (where `PLANE_AXES.dir` is −1) | 31600.000 mm³ |
+| `pocket` depth 10 | 31200.000 mm³ |
+| end to end, from student script text | 31600.000 mm³ |
+
+Proven able to fail: on `main` before the build it read **2 passed, 3 failed**.
+
+**Open — the rest of P1a is still unproven.** `prism` and `wedge` have exact
+closed-form volumes ((3√3/2)r²h and w·h·d/2) and nothing measures them.
+`groove`'s slice only asserts that material moved, not how much: the swept
+ring's geometry was never derived, and inventing an expected number after the
+fact is a guess dressed as a gate.
+
+**Open — the harness needs a kernel path it does not own.** `RESHAPE_KERNEL_DIR`
+defaults to the shCode checkout, the only place on any box with the `.wasm`. On
+a machine without it the gate exits 1 saying so, which is right but means this
+is not yet a CI gate.
+
+**Open, deliberately not fixed here — `dependsOn` cannot see `into`.**
+`model-types.ts:460` returns `[f.target, ...named]`, so the solid a `groove` or
+a `pocket` cuts into is not a tracked dependency: delete it and the cut keeps a
+dangling reference. Pre-existing in `groove`; `pocket` inherits it by design,
+because fixing it changes `groove`'s behaviour and belongs in its own slice.
+
+**Corrected, on the record.** The spec's self-check demanded the parity checker
+exit **0**. It cannot: `check-freecad-parity.mjs:176` exits non-zero unless
+every non-refused entry is shipped, and five are parked by decision. Exit 1
+with a clean 30/46 print is correct. The builder caught this and was right.
+
+**A message-center failure worth pinning.** The builder's threaded reply never
+reached `log.jsonl` — `handoff.mjs`'s reply-counting guard exited 1 on exactly
+the silent shape it exists to catch. The full report survived on stdout, so
+nothing was lost this time, but the log has a gap where the reply should be.
+The guard earned its keep.
+
+---
+
 ## 2026-09-09 — after P1c-3: two hazards left standing, one unexplained
 
 **Decided and shipped** (`e9f66d3`): the six P1c buttons that never shipped,
