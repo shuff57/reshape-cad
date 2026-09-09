@@ -192,6 +192,24 @@ export interface RuleActions {
  */
 export type TouchedPart = { kind: 'edge'; indices: number[] } | { kind: 'corner'; index: number };
 
+// P1f: the Point rules rows are drafts -- picks plus a typed number --
+// committed only by each row's Set button, so a half-made rule never
+// reaches the solver. One draft store (below), one draft shape, four rows.
+type PointRuleRow = 'distX' | 'distY' | 'sym' | 'angle';
+interface PointDraft {
+  /** First corner/edge pick. */
+  a: number | null;
+  /** Second corner/edge pick. */
+  b: number | null;
+  /** symmetric's "about" corner; unused by the other rows. */
+  c: number | null;
+  /** The typed number, kept as a string until commit so a half-typed
+   *  "-5" neither turns into 0 nor refuses to be typed. Signed values
+   *  are real here: a negative gap or turn is stored as typed. */
+  value: string;
+}
+const EMPTY_POINT_DRAFT: PointDraft = { a: null, b: null, c: null, value: '' };
+
 const PAIR_CYCLES: PairKind[] = ['equal', 'parallel', 'perpendicular'];
 
 function pairKind(cs: Constraint[], lo: number, hi: number): PairKind | null {
@@ -236,6 +254,93 @@ function setPairKind(cs: Constraint[], a: number, b: number, kind: PairKind | nu
   const current = pairKind(cs, lo, hi);
   const rest = cs.filter((c) => !(current !== null && c.kind === current && c.edge === lo && 'other' in c && c.other === hi));
   return kind === null ? rest : [...rest, { kind, edge: lo, other: hi }];
+}
+
+// P1f: the four kinds the solver honours that this panel never offered --
+// distanceX/distanceY and symmetric name CORNERS, angle names two EDGES.
+// Every write decision lives in these exported pure functions and the JSX
+// below only calls them, because there is no React test harness in this
+// repo: logic inside the component is proven by nothing but tsc, logic in
+// an exported function is proven by test/point-rules.test.mjs.
+//
+// Rules the writes obey, all matching setPairKind above:
+// - The pair is normalised (lower index in the first field, higher in the
+//   second) so a rule stored one way can never be read as a different pair.
+//   symmetric's `center` is a distinct role, not a pair member, so a/b
+//   normalise and center is kept exactly as given -- including a center
+//   lower than both endpoints.
+// - Adding a rule of a kind that already exists on the same pair REPLACES
+//   it rather than stacking: two contradictory distances on one pair is not
+//   a state the solver should ever see.
+// - A degenerate selection (a === b, or a symmetric center equal to either
+//   endpoint) is not a rule: the UI disables that state, and the writer
+//   declines it unchanged if anything calls it anyway.
+// - A value that is not a finite number is declined the same way. The JSX
+//   already refuses to commit one, but these are EXPORTED, and a guard that
+//   lives only in the component is proven by nothing -- which is the same
+//   argument that put the write decisions out here in the first place.
+//   Measured before the guard: setPointRule(cs, 'distanceX', 1, 3, NaN)
+//   wrote `value: NaN` into the solver's input without complaint.
+// - distanceX, distanceY and angle are SIGNED in this solver (a negative
+//   gap or turn is a distinct, meaningful ask -- engine/play's
+//   sketch.js:874-877 says the same) and degrees are stored as typed: no
+//   Math.abs, no minus-sign rejection.
+// All four are pure: they never mutate the array passed in, because every
+// caller hands them the live `constraints` prop and a writer that mutated
+// it would corrupt React state in a way that shows up much later as a rule
+// that will not clear.
+export function setPointRule(
+  cs: Constraint[],
+  kind: 'distanceX' | 'distanceY',
+  a: number,
+  b: number,
+  value: number
+): Constraint[] {
+  if (a === b || !Number.isFinite(value)) return cs;
+  const lo = Math.min(a, b);
+  const hi = Math.max(a, b);
+  const rest = cs.filter((c) => !(c.kind === kind && c.a === lo && c.b === hi));
+  return [...rest, { kind, a: lo, b: hi, value }];
+}
+
+export function setSymmetric(
+  cs: Constraint[],
+  a: number,
+  b: number,
+  center: number
+): Constraint[] {
+  if (a === b || center === a || center === b) return cs;
+  const lo = Math.min(a, b);
+  const hi = Math.max(a, b);
+  const rest = cs.filter((c) => !(c.kind === 'symmetric' && c.a === lo && c.b === hi));
+  return [...rest, { kind: 'symmetric', a: lo, b: hi, center }];
+}
+
+export function setAngle(
+  cs: Constraint[],
+  edge: number,
+  other: number,
+  degrees: number
+): Constraint[] {
+  if (edge === other || !Number.isFinite(degrees)) return cs;
+  const lo = Math.min(edge, other);
+  const hi = Math.max(edge, other);
+  const rest = cs.filter((c) => !(c.kind === 'angle' && c.edge === lo && c.other === hi));
+  return [...rest, { kind: 'angle', edge: lo, other: hi, degrees }];
+}
+
+// Matches on the rule's OWN fields (field order irrelevant), not on object
+// identity: settle() rebuilds the array it is handed, and a removal has to
+// survive that. A rule of another kind on the same pair is never matched --
+// distanceX and distanceY on one pair are different rules, not one.
+export function removeRule(cs: Constraint[], rule: Constraint): Constraint[] {
+  const key = (c: Constraint): string => {
+    const rec = c as Record<string, unknown>;
+    const fields = Object.keys(rec).filter((f) => f !== 'kind').sort();
+    return [String(rec.kind), ...fields.map((f) => `${f}:${String(rec[f])}`)].join('|');
+  };
+  const target = key(rule);
+  return cs.filter((c) => key(c) !== target);
 }
 
 // Item M/O: the picker's four choices, in the course's own words with
@@ -412,6 +517,36 @@ const PANEL_CSS = `
           width: 16px; font-size: 12px; color: #6272a4; flex-shrink: 0;
         }
         .sk-pair-picker button[aria-selected="true"] .sk-pair-picker-mark { color: #282a36; }
+        /* P1f: the Point rules section -- the four kinds the solver honours
+           that had no control here (distanceX, distanceY, symmetric, angle).
+           Same palette and type sizes as the rest of the panel; selects are
+           clumsier than clicking geometry, but they are what this panel can
+           do without a canvas selection channel. Rows wrap rather than
+           widen the 240px docked column (item O). */
+        .sk-point-rows { margin-top: 8px; }
+        .sk-point-row { display: flex; align-items: center; gap: 4px; margin-top: 4px; color: #6272a4; flex-wrap: wrap; }
+        .sk-point-row-name { min-width: 52px; }
+        .sk-point-row select, .sk-point-row input {
+          background: var(--bg); color: var(--text);
+          border: 1px solid #44475a; border-radius: 3px;
+          padding: 2px 4px; font-size: 12px; font-variant-numeric: tabular-nums;
+          max-width: 92px;
+        }
+        .sk-point-row input { width: 56px; }
+        .sk-point-row button {
+          min-width: 24px; padding: 2px 6px; font-size: 12px;
+          background: transparent; color: #6272a4;
+          border: 1px solid #44475a; border-radius: 3px; cursor: pointer;
+        }
+        .sk-point-row button:disabled { opacity: 0.35; cursor: not-allowed; }
+        .sk-point-list { margin: 6px 0 0; padding: 0; list-style: none; }
+        .sk-point-list li { display: flex; align-items: center; gap: 6px; margin-top: 3px; color: var(--text); }
+        .sk-point-list button {
+          min-width: 24px; padding: 1px 6px; font-size: 11px;
+          background: transparent; color: #6272a4;
+          border: 1px solid #44475a; border-radius: 3px; cursor: pointer;
+        }
+        .sk-point-list button:hover { color: var(--text); border-color: #6272a4; }
       `;
 
 export default function SketchConstraints({ points, bulges, rounds, chamfers, constraints, onChange, onRound, onChamfer, onBow, onRemoveCorner, plane, onPlane, shape, hoveredPart, onHoverPart, registerActions, onTouch }: Props) {
@@ -614,6 +749,101 @@ export default function SketchConstraints({ points, bulges, rounds, chamfers, co
     touch(touched);
     setOpenPair(null);
   }
+
+  // P1f: the Point rules section's state -- one draft per row, keyed by
+  // row id, so four rows never share a half-made rule and a Set on one row
+  // clears only that row's draft. Kept beside the panel's other local
+  // state, same lifetime (cleared by unmount on deselect).
+  const [pointDrafts, setPointDrafts] = useState<Record<PointRuleRow, PointDraft>>({
+    distX: EMPTY_POINT_DRAFT, distY: EMPTY_POINT_DRAFT, sym: EMPTY_POINT_DRAFT, angle: EMPTY_POINT_DRAFT,
+  });
+  const patchPointDraft = (row: PointRuleRow, patch: Partial<PointDraft>) =>
+    setPointDrafts((d) => ({ ...d, [row]: { ...d[row], ...patch } }));
+
+  // P1f: commits a Point rules row through settle(), the same path every
+  // rule-adding control here uses -- bypassing it would silently drop the
+  // panel's conflict handling ("removed also" note). Returns false when the
+  // draft is degenerate (a === b, symmetric's center equal to an endpoint)
+  // or its number is not finite, so the row can say "not settable" instead
+  // of writing a constraint the solver must then fight. Declines quietly:
+  // the disabled Set button already explains why, per the degenerate-
+  // selection rule the spec pins.
+  // P1f: the disabled logic for a Point rules row's Set button, read off the
+  // row's draft: picks complete, a typed number where the row carries one,
+  // and not degenerate (a === b; symmetric's center equal to an endpoint).
+  // Disabled rather than erroring-at-click, per the degenerate-selection
+  // rule the spec pins: refuse in the UI, not after the write.
+  function pointSettable(row: PointRuleRow): boolean {
+    const d = pointDrafts[row];
+    if (d.a === null || d.b === null) return false;
+    if (row === 'sym' ? d.c === null : d.value.trim() === '' || !Number.isFinite(Number(d.value))) return false;
+    if (d.a === d.b) return false;
+    if (row === 'sym' && (d.c === d.a || d.c === d.b)) return false;
+    return true;
+  }
+
+  // P1f: why a row is not settable, for the Set button's tooltip -- a
+  // disabled control should explain itself, the same bargain the Length
+  // box's curved-edge tooltip already strikes.
+  function pointWhyNot(row: PointRuleRow): string | null {
+    const d = pointDrafts[row];
+    if (d.a === null || d.b === null) return 'Pick the two corners (or edges) first.';
+    if (row === 'sym' ? d.c === null : d.value.trim() === '' || !Number.isFinite(Number(d.value))) {
+      return row === 'sym' ? 'Pick the about corner.' : 'Type the number.';
+    }
+    if (d.a === d.b) return 'Those are the same corner (or edge) -- that is not a rule.';
+    if (row === 'sym' && (d.c === d.a || d.c === d.b)) return 'The about corner has to be a third corner.';
+    return null;
+  }
+
+  function commitPointRule(row: PointRuleRow): boolean {
+    const d = pointDrafts[row];
+    if (d.a === null || d.b === null) return false;
+    const ra = d.a;
+    const rb = d.b;
+    let next: Constraint[] | null = null;
+    if (row === 'distX' || row === 'distY') {
+      // An empty box stays empty rather than quietly meaning 0 -- the same
+      // "typed value must be real" bargain the Length box above strikes.
+      // 0 is a real distance (two corners in line) and is typed, not implied.
+      const v = Number(d.value);
+      if (d.value.trim() === '' || !Number.isFinite(v)) return false;
+      next = setPointRule(constraints, row === 'distX' ? 'distanceX' : 'distanceY', ra, rb, v);
+    } else if (row === 'sym') {
+      if (d.c === null) return false;
+      next = setSymmetric(constraints, ra, rb, d.c);
+    } else {
+      const v = Number(d.value);
+      if (d.value.trim() === '' || !Number.isFinite(v)) return false;
+      next = setAngle(constraints, ra, rb, v);
+    }
+    if (next === constraints) return false; // the writer declined it
+    const written = next[next.length - 1];
+    settle(next);
+    // The touch cue names the rule's own subject, same corner subjectOf()
+    // names in the removal note: the corner that moves for a distance, the
+    // center for symmetric, both edges for an angle.
+    const touched: typeof lastTouched
+      = written.kind === 'angle'
+        ? { kind: 'edge', indices: [written.edge, written.other] }
+        : written.kind === 'symmetric'
+          ? { kind: 'corner', index: written.center }
+          : written.kind === 'distanceX' || written.kind === 'distanceY'
+            ? { kind: 'corner', index: written.b }
+            : { kind: 'corner', index: Math.min(ra, rb) };
+    touch(touched);
+    setPointDrafts((prev) => ({ ...prev, [row]: EMPTY_POINT_DRAFT }));
+    return true;
+  }
+
+  // P1f: the rules of the four kinds that currently exist, oldest first --
+  // the "see" and "remove" halves of create/see/remove. Sourced from the
+  // live constraints, so a settle() that removed one (the note above)
+  // updates this list the same render as every other rule display.
+  const pointRules = constraints.filter(
+    (c): c is Extract<Constraint, { kind: 'distanceX' | 'distanceY' | 'symmetric' | 'angle' }> =>
+      c.kind === 'distanceX' || c.kind === 'distanceY' || c.kind === 'symmetric' || c.kind === 'angle'
+  );
 
   // Item R: "Length..." on the canvas strip does not set a value itself --
   // it puts the cursor in the SAME box this table already renders, so
@@ -1218,6 +1448,176 @@ export default function SketchConstraints({ points, bulges, rounds, chamfers, co
             />
           );
         })}
+      </div>
+
+      {/* P1f: the "Point rules" section -- the four kinds the solver honours
+          that this panel never offered. Selects and number boxes, the panel's
+          own idiom (this component has no canvas selection channel; adding
+          one is a larger slice). Settled through the same settle() as every
+          other rule here, so a conflict is settled, not stacked. */}
+      <div className="sk-point-rows">
+        <div className="sk-pairs-head">Point rules:</div>
+        <div className="sk-point-row">
+          <span className="sk-point-row-name">Dist X</span>
+          <select
+            aria-label="Distance across, first corner"
+            value={pointDrafts.distX.a === null ? '' : String(pointDrafts.distX.a)}
+            onChange={(ev) => patchPointDraft('distX', { a: ev.target.value === '' ? null : Number(ev.target.value) })}
+          >
+            <option value="">–</option>
+            {points.map((_, i) => <option key={i} value={i}>{i + 1}</option>)}
+          </select>
+          <select
+            aria-label="Distance across, second corner"
+            value={pointDrafts.distX.b === null ? '' : String(pointDrafts.distX.b)}
+            onChange={(ev) => patchPointDraft('distX', { b: ev.target.value === '' ? null : Number(ev.target.value) })}
+          >
+            <option value="">–</option>
+            {points.map((_, i) => <option key={i} value={i}>{i + 1}</option>)}
+          </select>
+          <input
+            type="text"
+            inputMode="decimal"
+            aria-label="Distance across value"
+            placeholder="0"
+            value={pointDrafts.distX.value}
+            onChange={(ev) => patchPointDraft('distX', { value: ev.target.value })}
+          />
+          <button
+            type="button"
+            aria-label="Set distance across"
+            disabled={!pointSettable('distX')}
+            title={pointWhyNot('distX') ?? 'Set the distance between the two corners, along the across axis'}
+            onClick={() => commitPointRule('distX')}
+          >
+            Set
+          </button>
+        </div>
+        <div className="sk-point-row">
+          <span className="sk-point-row-name">Dist Y</span>
+          <select
+            aria-label="Distance up, first corner"
+            value={pointDrafts.distY.a === null ? '' : String(pointDrafts.distY.a)}
+            onChange={(ev) => patchPointDraft('distY', { a: ev.target.value === '' ? null : Number(ev.target.value) })}
+          >
+            <option value="">–</option>
+            {points.map((_, i) => <option key={i} value={i}>{i + 1}</option>)}
+          </select>
+          <select
+            aria-label="Distance up, second corner"
+            value={pointDrafts.distY.b === null ? '' : String(pointDrafts.distY.b)}
+            onChange={(ev) => patchPointDraft('distY', { b: ev.target.value === '' ? null : Number(ev.target.value) })}
+          >
+            <option value="">–</option>
+            {points.map((_, i) => <option key={i} value={i}>{i + 1}</option>)}
+          </select>
+          <input
+            type="text"
+            inputMode="decimal"
+            aria-label="Distance up value"
+            placeholder="0"
+            value={pointDrafts.distY.value}
+            onChange={(ev) => patchPointDraft('distY', { value: ev.target.value })}
+          />
+          <button
+            type="button"
+            aria-label="Set distance up"
+            disabled={!pointSettable('distY')}
+            title={pointWhyNot('distY') ?? 'Set the distance between the two corners, along the up axis'}
+            onClick={() => commitPointRule('distY')}
+          >
+            Set
+          </button>
+        </div>
+        <div className="sk-point-row">
+          <span className="sk-point-row-name">Symmetric</span>
+          <select
+            aria-label="Symmetric, first corner"
+            value={pointDrafts.sym.a === null ? '' : String(pointDrafts.sym.a)}
+            onChange={(ev) => patchPointDraft('sym', { a: ev.target.value === '' ? null : Number(ev.target.value) })}
+          >
+            <option value="">–</option>
+            {points.map((_, i) => <option key={i} value={i}>{i + 1}</option>)}
+          </select>
+          <select
+            aria-label="Symmetric, second corner"
+            value={pointDrafts.sym.b === null ? '' : String(pointDrafts.sym.b)}
+            onChange={(ev) => patchPointDraft('sym', { b: ev.target.value === '' ? null : Number(ev.target.value) })}
+          >
+            <option value="">–</option>
+            {points.map((_, i) => <option key={i} value={i}>{i + 1}</option>)}
+          </select>
+          <select
+            aria-label="Symmetric, about corner"
+            value={pointDrafts.sym.c === null ? '' : String(pointDrafts.sym.c)}
+            onChange={(ev) => patchPointDraft('sym', { c: ev.target.value === '' ? null : Number(ev.target.value) })}
+          >
+            <option value="">–</option>
+            {points.map((_, i) => <option key={i} value={i}>{i + 1}</option>)}
+          </select>
+          <button
+            type="button"
+            aria-label="Set symmetric"
+            disabled={!pointSettable('sym')}
+            title={pointWhyNot('sym') ?? 'Keep the about corner centred between the two corners'}
+            onClick={() => commitPointRule('sym')}
+          >
+            Set
+          </button>
+        </div>
+        <div className="sk-point-row">
+          <span className="sk-point-row-name">Angle</span>
+          <select
+            aria-label="Angle, first edge"
+            value={pointDrafts.angle.a === null ? '' : String(pointDrafts.angle.a)}
+            onChange={(ev) => patchPointDraft('angle', { a: ev.target.value === '' ? null : Number(ev.target.value) })}
+          >
+            <option value="">–</option>
+            {points.map((_, e) => <option key={e} value={e}>{`Edge ${e + 1}`}</option>)}
+          </select>
+          <select
+            aria-label="Angle, second edge"
+            value={pointDrafts.angle.b === null ? '' : String(pointDrafts.angle.b)}
+            onChange={(ev) => patchPointDraft('angle', { b: ev.target.value === '' ? null : Number(ev.target.value) })}
+          >
+            <option value="">–</option>
+            {points.map((_, e) => <option key={e} value={e}>{`Edge ${e + 1}`}</option>)}
+          </select>
+          <input
+            type="text"
+            inputMode="decimal"
+            aria-label="Angle degrees"
+            placeholder="0"
+            value={pointDrafts.angle.value}
+            onChange={(ev) => patchPointDraft('angle', { value: ev.target.value })}
+          />
+          <button
+            type="button"
+            aria-label="Set angle"
+            disabled={!pointSettable('angle')}
+            title={pointWhyNot('angle') ?? 'Set the turn between the two edges, in degrees'}
+            onClick={() => commitPointRule('angle')}
+          >
+            Set
+          </button>
+        </div>
+        {pointRules.length > 0 && (
+          <ul className="sk-point-list">
+            {pointRules.map((r) => (
+              <li key={JSON.stringify(r)}>
+                <span>{describe(r)}</span>
+                <button
+                  type="button"
+                  aria-label={`Remove rule: ${describe(r)}`}
+                  title={`Remove ${describe(r)}`}
+                  onClick={() => settle(removeRule(constraints, r))}
+                >
+                  ×
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       <style>{PANEL_CSS}</style>

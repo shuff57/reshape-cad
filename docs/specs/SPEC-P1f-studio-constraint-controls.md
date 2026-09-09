@@ -156,8 +156,14 @@ gets type-checked, and I want it explicit rather than accidental.
 `packages/studio` has no `test` script today. Add one:
 
 ```json
-"test": "node --test test/"
+"test": "node --test \"test/*.test.mjs\""
 ```
+
+> **CORRECTED after the build.** This originally said `node --test test/`.
+> That was wrong: `packages/script` and `packages/sketch` both already use the
+> quoted-glob form, so the glob *is* "matching how `packages/script/test/`
+> resolves" — the sentence right below. The builder deviated deliberately, said
+> so, and offered to flip it back; it was right and the spec was not.
 
 so `npm test --workspaces --if-present` picks it up from the root. Import from
 `../dist/`, matching how `packages/script/test/` resolves.
