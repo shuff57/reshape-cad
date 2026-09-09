@@ -103,7 +103,7 @@
       "label": "Sweep a selected sketch along a path",
       "reshape": null,
       "status": "refused",
-      "reason": "The wasm OCCT build binds no pipe operation at all: zero of its exports match BRepOffsetAPI_MakePipe or MakePipeShell (probed directly, and consistent with script-surface.ts extrudeHelix entry: no helix, no pipe ride). A pipe exists only on the BRIDGE side, where the real FreeCAD PartDesign::AdditivePipe is kernel-gated -- the studio button (SPEC-P1c) delivers it by mouse. A ModelDoc/Code-mode word would have nothing honest to lower into."
+      "reason": "The wasm OCCT build binds no pipe operation at all: zero of its exports match BRepOffsetAPI_MakePipe or MakePipeShell (probed directly, and consistent with script-surface.ts extrudeHelix entry: no helix, no pipe ride). A pipe exists only on the BRIDGE side, where the real FreeCAD PartDesign::AdditivePipe is kernel-gated -- the studio button (SPEC-P1c) delivers it by mouse. A ModelDoc/Code-mode word would have nothing honest to lower into. STUDIO BUTTON NOW EXISTS (P1c-3, 2026-09-09): the earlier text claimed the studio button delivered this by mouse; it had never been built. It is built and kernel-gated now. MEASURED: a pipe needs its profile and path on DIFFERENT planes, and Rect/Circle Sketch only make XY sketches, so the button works only after drawing the path on a face (pick a face, then New Sketch). A coplanar attempt used to build nothing silently; the emitter now refuses and says so."
     },
     {
       "id": "PartDesign_AdditiveHelix",
@@ -111,7 +111,7 @@
       "label": "Additive helix",
       "reshape": null,
       "status": "refused",
-      "reason": "The wasm OCCT build has no helix curve export and no pipe operation to ride one on (zero exports match /helix/i, BRepOffsetAPI_MakePipe or MakePipeShell -- probed directly; script-surface.ts extrudeHelix entry records the same wall). The bridge side is exact (real PartDesign::AdditiveHelix/SubtractiveHelix, kernel-gated) and the studio buttons (SPEC-P1c) deliver it by mouse; a Code-mode word would be an approximation with nothing to ride."
+      "reason": "The wasm OCCT build has no helix curve export and no pipe operation to ride one on (zero exports match /helix/i, BRepOffsetAPI_MakePipe or MakePipeShell -- probed directly; script-surface.ts extrudeHelix entry records the same wall). The bridge side is exact (real PartDesign::AdditiveHelix/SubtractiveHelix, kernel-gated) and the studio buttons (SPEC-P1c) deliver it by mouse; a Code-mode word would be an approximation with nothing to ride. STUDIO BUTTON NOW EXISTS (P1c-3, 2026-09-09): the earlier text claimed the studio button delivered this by mouse; it had never been built. It is built and kernel-gated now. MEASURED: helix pitch (Height/Turns) must be >= the profile diameter or OCCT grinds rather than failing -- an offset profile at pitch 6.67 ran 14 minutes at 3.4GB in the container, and a 40mm Rect Sketch profile froze the browser tab. The emitter now checks pitch before building and refuses in ~50ms."
     },
     {
       "id": "PartDesign_AdditiveBox",
@@ -215,7 +215,7 @@
       "label": "Sweep a selected sketch along a path",
       "reshape": null,
       "status": "refused",
-      "reason": "The wasm OCCT build binds no pipe operation at all: zero of its exports match BRepOffsetAPI_MakePipe or MakePipeShell (probed directly, and consistent with script-surface.ts extrudeHelix entry: no helix, no pipe ride). A pipe exists only on the BRIDGE side, where the real FreeCAD PartDesign::AdditivePipe is kernel-gated -- the studio button (SPEC-P1c) delivers it by mouse. A ModelDoc/Code-mode word would have nothing honest to lower into."
+      "reason": "The wasm OCCT build binds no pipe operation at all: zero of its exports match BRepOffsetAPI_MakePipe or MakePipeShell (probed directly, and consistent with script-surface.ts extrudeHelix entry: no helix, no pipe ride). A pipe exists only on the BRIDGE side, where the real FreeCAD PartDesign::AdditivePipe is kernel-gated -- the studio button (SPEC-P1c) delivers it by mouse. A ModelDoc/Code-mode word would have nothing honest to lower into. STUDIO BUTTON NOW EXISTS (P1c-3, 2026-09-09): the earlier text claimed the studio button delivered this by mouse; it had never been built. It is built and kernel-gated now. MEASURED: a pipe needs its profile and path on DIFFERENT planes, and Rect/Circle Sketch only make XY sketches, so the button works only after drawing the path on a face (pick a face, then New Sketch). A coplanar attempt used to build nothing silently; the emitter now refuses and says so."
     },
     {
       "id": "PartDesign_SubtractiveHelix",
@@ -223,7 +223,7 @@
       "label": "Subtractive helix",
       "reshape": null,
       "status": "refused",
-      "reason": "The wasm OCCT build has no helix curve export and no pipe operation to ride one on (zero exports match /helix/i, BRepOffsetAPI_MakePipe or MakePipeShell -- probed directly; script-surface.ts extrudeHelix entry records the same wall). The bridge side is exact (real PartDesign::AdditiveHelix/SubtractiveHelix, kernel-gated) and the studio buttons (SPEC-P1c) deliver it by mouse; a Code-mode word would be an approximation with nothing to ride."
+      "reason": "The wasm OCCT build has no helix curve export and no pipe operation to ride one on (zero exports match /helix/i, BRepOffsetAPI_MakePipe or MakePipeShell -- probed directly; script-surface.ts extrudeHelix entry records the same wall). The bridge side is exact (real PartDesign::AdditiveHelix/SubtractiveHelix, kernel-gated) and the studio buttons (SPEC-P1c) deliver it by mouse; a Code-mode word would be an approximation with nothing to ride. STUDIO BUTTON NOW EXISTS (P1c-3, 2026-09-09): the earlier text claimed the studio button delivered this by mouse; it had never been built. It is built and kernel-gated now. MEASURED: helix pitch (Height/Turns) must be >= the profile diameter or OCCT grinds rather than failing -- an offset profile at pitch 6.67 ran 14 minutes at 3.4GB in the container, and a 40mm Rect Sketch profile froze the browser tab. The emitter now checks pitch before building and refuses in ~50ms."
     },
     {
       "id": "PartDesign_SubtractiveBox",

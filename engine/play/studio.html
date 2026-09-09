@@ -289,6 +289,39 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8c0-2.2 3.6-4 8-4s8 1.8 8 4-3.6 4-8 4-8-1.8-8-4z"/><path d="M4 8v8c0 2.2 3.6 4 8 4s8-1.8 8-4V8"/></svg>
         <span>Loft</span>
       </button>
+      <button id="pipeBtn" class="fbtn" disabled title="Pipe — sweep the second-last sketch along the last one">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13.5" width="5" height="5" rx="1"/><path d="M8 16c6.5 0 3.5-9 11-9"/><path d="M16.5 4.5 19 7l-2.5 2.5"/></svg>
+        <span>Pipe</span>
+      </button>
+      <button id="helixBtn" class="fbtn" disabled title="Helix — sweep the last sketch along a helical ride">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><ellipse cx="12" cy="7" rx="5" ry="2"/><ellipse cx="12" cy="12" rx="5" ry="2"/><ellipse cx="12" cy="17" rx="5" ry="2"/></svg>
+        <span>Helix</span>
+      </button>
+      <span class="dims"><label>H <input id="helixH" type="number" value="20"></label><label>T <input id="helixT" type="number" value="3"></label></span>
+    </div>
+
+    <div class="tgroup" aria-label="Subtractive features">
+      <button id="grooveBtn" class="fbtn" disabled title="Groove — spin the last sketch around its V axis, removing material">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="7" rx="6" ry="2.5"/><path d="M6 7v10c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5V7"/><path d="M6 12h12" stroke-dasharray="2.5 2"/><path d="M16.5 19.5h4.5"/></svg>
+        <span>Groove</span>
+      </button>
+      <span class="dims"><label>° <input id="grooveAngle" type="number" value="360"></label></span>
+      <button id="subLoftBtn" class="fbtn" disabled title="Sub Loft — remove the shape lofted between the last two sketches">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8c0-2.2 3.6-4 8-4s8 1.8 8 4-3.6 4-8 4-8-1.8-8-4z"/><path d="M4 8v8c0 2.2 3.6 4 8 4s8-1.8 8-4V8"/><path d="M16.5 19.5h4.5"/></svg>
+        <span>Sub Loft</span>
+      </button>
+      <span class="dims"><label>gap <input id="subLoftGap" type="number" value="0"></label></span>
+      <!-- Sub Helix reuses the Helix group's helixH / helixT inputs on purpose:
+           they mean the same thing. One pair serves both buttons; do not add a
+           second labelled pair. -->
+      <button id="subHelixBtn" class="fbtn" disabled title="Sub Helix — the same helical ride, removing material">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><ellipse cx="12" cy="7" rx="5" ry="2"/><ellipse cx="12" cy="12" rx="5" ry="2"/><ellipse cx="12" cy="17" rx="5" ry="2"/><path d="M16.5 20.5h4.5"/></svg>
+        <span>Sub Helix</span>
+      </button>
+      <button id="subPipeBtn" class="fbtn" disabled title="Sub Pipe — sweep along a path, removing material">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13.5" width="5" height="5" rx="1"/><path d="M8 16c6.5 0 3.5-9 11-9"/><path d="M16.5 4.5 19 7l-2.5 2.5"/><path d="M16.5 19.5h4.5"/></svg>
+        <span>Sub Pipe</span>
+      </button>
     </div>
 
     <div class="tgroup" aria-label="Primitives">

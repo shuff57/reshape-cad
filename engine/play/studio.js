@@ -672,6 +672,128 @@ on('loftBtn', 'click', guard(() => {
   updateSweepButtons();
 }));
 
+// --- sweep buttons (P1c-3) -----------------------------------------------------
+// The six sweep handlers P1c never shipped. Cloned from the loft handler
+// above, not parameterised: they differ in arity, in sketch picks and in
+// lastOfType name, and a table encoding all three is harder to read than six
+// handlers that each say what they do.
+on('pipeBtn', 'click', guard(() => {
+  const sketches = session.tree().objects
+    .filter((o) => o.type === 'Sketcher::SketchObject')
+    .map((o) => o.name);
+  if (sketches.length < 2) return log('pipe needs two sketches — draw a second one');
+  const profile = sketches[sketches.length - 2];
+  const path = sketches[sketches.length - 1];
+  try {
+    session.additivePipe(state.body, profile, path, 'Pipe');
+  } catch (err) {
+    return log(`✗ ${extractFriendlyError(err)}`);
+  }
+  state.tip = lastOfType('PartDesign::AdditivePipe');
+  log(`+ pipe ${profile} → ${path}`);
+  pick3d.rebuild(session.meshFaces());
+  refreshTree();
+  updateSweepButtons();
+}));
+
+on('helixBtn', 'click', guard(() => {
+  const sketches = session.tree().objects
+    .filter((o) => o.type === 'Sketcher::SketchObject')
+    .map((o) => o.name);
+  if (sketches.length < 1) return log('helix needs one sketch — draw one');
+  const sk = sketches[sketches.length - 1];
+  const h = Number($('helixH').value);
+  const t = Number($('helixT').value);
+  try {
+    session.additiveHelix(state.body, sk, 'Helix', h, t);
+  } catch (err) {
+    return log(`✗ ${extractFriendlyError(err)}`);
+  }
+  state.tip = lastOfType('PartDesign::AdditiveHelix');
+  log(`+ helix ${sk} H${h} T${t}`);
+  pick3d.rebuild(session.meshFaces());
+  refreshTree();
+  updateSweepButtons();
+}));
+
+on('grooveBtn', 'click', guard(() => {
+  const sketches = session.tree().objects
+    .filter((o) => o.type === 'Sketcher::SketchObject')
+    .map((o) => o.name);
+  if (sketches.length < 1) return log('groove needs one sketch — draw one');
+  const sk = sketches[sketches.length - 1];
+  const angle = Number($('grooveAngle').value) || 360;
+  try {
+    session.groove(state.body, sk, 'Groove', angle);
+  } catch (err) {
+    return log(`✗ ${extractFriendlyError(err)}`);
+  }
+  state.tip = lastOfType('PartDesign::Groove');
+  log(`+ groove ${sk} ${angle}°`);
+  pick3d.rebuild(session.meshFaces());
+  refreshTree();
+  updateSweepButtons();
+}));
+
+on('subLoftBtn', 'click', guard(() => {
+  const sketches = session.tree().objects
+    .filter((o) => o.type === 'Sketcher::SketchObject')
+    .map((o) => o.name);
+  if (sketches.length < 2) return log('Sub Loft needs two sketches — draw a second one');
+  const lo = sketches[sketches.length - 2];
+  const hi = sketches[sketches.length - 1];
+  const gap = Number($('subLoftGap').value) || 0;
+  try {
+    session.subtractiveLoft(state.body, lo, hi, 'SubLoft', gap);
+  } catch (err) {
+    return log(`✗ ${extractFriendlyError(err)}`);
+  }
+  state.tip = lastOfType('PartDesign::SubtractiveLoft');
+  log(`+ sub loft ${lo} → ${hi}${gap ? ` (gap ${gap})` : ''}`);
+  pick3d.rebuild(session.meshFaces());
+  refreshTree();
+  updateSweepButtons();
+}));
+
+on('subHelixBtn', 'click', guard(() => {
+  const sketches = session.tree().objects
+    .filter((o) => o.type === 'Sketcher::SketchObject')
+    .map((o) => o.name);
+  if (sketches.length < 1) return log('Sub Helix needs one sketch — draw one');
+  const sk = sketches[sketches.length - 1];
+  const h = Number($('helixH').value); // reuses the Helix inputs — same meaning, one pair
+  const t = Number($('helixT').value);
+  try {
+    session.subtractiveHelix(state.body, sk, 'SubHelix', h, t);
+  } catch (err) {
+    return log(`✗ ${extractFriendlyError(err)}`);
+  }
+  state.tip = lastOfType('PartDesign::SubtractiveHelix');
+  log(`+ sub helix ${sk} H${h} T${t}`);
+  pick3d.rebuild(session.meshFaces());
+  refreshTree();
+  updateSweepButtons();
+}));
+
+on('subPipeBtn', 'click', guard(() => {
+  const sketches = session.tree().objects
+    .filter((o) => o.type === 'Sketcher::SketchObject')
+    .map((o) => o.name);
+  if (sketches.length < 2) return log('Sub Pipe needs two sketches — draw a second one');
+  const profile = sketches[sketches.length - 2];
+  const path = sketches[sketches.length - 1];
+  try {
+    session.subtractivePipe(state.body, profile, path, 'SubPipe');
+  } catch (err) {
+    return log(`✗ ${extractFriendlyError(err)}`);
+  }
+  state.tip = lastOfType('PartDesign::SubtractivePipe');
+  log(`+ sub pipe ${profile} → ${path}`);
+  pick3d.rebuild(session.meshFaces());
+  refreshTree();
+  updateSweepButtons();
+}));
+
 // --- pattern buttons (P1c) ----------------------------------------------------
 // Repeat the CURRENT tip feature. Linear rides the world Z axis by the
 // Length + Occurrences the inputs give; Polar rings around Z.
@@ -714,6 +836,23 @@ function updateSweepButtons() {
   if (pol) pol.disabled = !(session && state.tip);
   const stl = $('exportStl');
   if (stl) stl.disabled = !(session && state.tip);
+  // Additive sweeps need a body and enough sketches. Subtractive ones ALSO
+  // need something to cut: a SubtractiveLoft against no material fails in the
+  // kernel, so gate on state.tip and let the button say why by being off.
+  const twoSketches = !!(session && state.body && sketches >= 2);
+  const oneSketch = !!(session && state.body && sketches >= 1);
+  setDis('pipeBtn', !twoSketches);
+  setDis('helixBtn', !oneSketch);
+  setDis('grooveBtn', !(oneSketch && state.tip));
+  setDis('subLoftBtn', !(twoSketches && state.tip));
+  setDis('subHelixBtn', !(oneSketch && state.tip));
+  setDis('subPipeBtn', !(twoSketches && state.tip));
+}
+// One null-safe enable/disable setter for the sweep buttons above — the six
+// $(id)-then-assign blocks it replaces are the thing this helper exists to avoid.
+function setDis(id, disabled) {
+  const el = $(id);
+  if (el) el.disabled = disabled;
 }
 
 // Save the live document to a real .FCStd and hand it to the browser download.

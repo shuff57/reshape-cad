@@ -72,6 +72,69 @@ const wrapStatus = (body) =>
   '    _res = {"ok": False, "error": str(_e)}\n' +
   `open(${JSON.stringify(OUT_PATH)}, "w").write(json.dumps(_res))\n`;
 
+// ---------------------------------------------------------------------------
+// The "it succeeded and did nothing" guard, for the sweep family.
+//
+// Every sweep emitter below already rolls back on `'Invalid' in State` or a
+// null Shape. That catches a sweep the kernel REFUSES. It cannot catch the
+// far quieter case, measured 2026-09-09 by the P1c-3 kernel gate:
+//
+//   additivePipe    two XY sketches  ->  volume 0.000,     no error
+//   subtractivePipe two XY sketches  ->  32000 -> 32000,   no error
+//   subtractiveLoft two XY sketches  ->  32000 -> 32000,   no error
+//
+// All three recomputed clean, reported no Invalid state and a non-null Shape,
+// and changed nothing. The user gets a feature in the tree, an unchanged
+// model, and silence.
+//
+// This is the DEFAULT outcome, not an edge case: a loft or a pipe needs its
+// two sketches on DIFFERENT planes, and `Rect Sketch` / `Circle Sketch` only
+// ever make XY sketches. Two of them land on top of each other, so there is no
+// distance to loft across and no path to sweep along. The only way to a second
+// plane in the studio today is picking a face and using New Sketch.
+//
+// So: measure the body's volume before and after, and if the feature moved it
+// by nothing, roll back and say which mistake it was. volGuardHead binds
+// `_body` and `_v0`; volGuardTail re-reads and compares.
+const volGuardHead = (bodyName) =>
+  `_body = doc.getObject(${pyStr(bodyName)})\n` +
+  `_v0 = _body.Shape.Volume if (_body.Shape is not None and not _body.Shape.isNull()) else 0.0\n`;
+
+// 1e-6 mm^3, not 0: OCCT volumes are floating point and a genuine no-op
+// returns bit-identical values, so any epsilon this small only guards against
+// a formatting artefact -- it will never mask a real cut.
+const volGuardTail = (varName, why) =>
+  `_v1 = _body.Shape.Volume if (_body.Shape is not None and not _body.Shape.isNull()) else 0.0\n` +
+  `if abs(_v1 - _v0) < 1e-6:\n` +
+  `    doc.removeObject(${varName}.Name)\n` +
+  `    doc.recompute()\n` +
+  `    raise ValueError(${pyStr(why)})\n`;
+
+const SAME_PLANE_HINT =
+  ' — the two sketches are on the same plane, so there is nothing to sweep across.' +
+  ' Pick a face on the solid, then New Sketch, to draw the second one on another plane.';
+
+// The helix pitch rule, enforced instead of merely documented.
+//
+// transpile-integration.mjs has carried it as a comment since msgbox #73:
+// "Helix pitch (Height/Turns) must be >= profile diameter or consecutive turns
+// overlap and the swept solid self-intersects". Unenforced, violating it does
+// not raise -- OCCT goes away and grinds. Measured 2026-09-09:
+//
+//   container, offset circle r=2, pitch 6.67   -> 14 MINUTES, 3.4GB, killed
+//   browser,   40x40 rect profile, pitch 6.67  -> tab frozen past 90s
+//
+// The browser case is the ordinary one: `Rect Sketch` makes a 40x40 profile
+// and the Helix inputs default to H20/T3, so the FIRST thing a student clicks
+// violates the rule by a factor of six and the tab stops responding. A hang is
+// the worst possible refusal, so refuse first and say the number.
+const helixPitchGuard = (sketchName, height, turns) =>
+  `_hp = doc.getObject(${pyStr(sketchName)}).Shape.BoundBox\n` +
+  `_dia = max(_hp.XLength, _hp.YLength)\n` +
+  `_pitch = (${height}) / (${turns}) if (${turns}) else 0.0\n` +
+  `if _pitch < _dia:\n` +
+  `    raise ValueError('helix pitch %.3g mm is smaller than the profile (%.3g mm across), so the turns would overlap and the sweep can hang. Raise Height, lower Turns, or draw a smaller profile.' % (_pitch, _dia))\n`;
+
 // Editable-history: each feature type's single driving parameter. Editing any
 // other property, or a Sketch, is out of scope (a Sketch is re-entered in the
 // 2D editor instead).
@@ -338,6 +401,7 @@ export const emit = {
     const g = pyNum(gap, 'gap');
     const thick = gap > 0 ? `ls.Thickness = ${g}\n` : '';
     return wrapStatus(
+      volGuardHead(bodyName) +
       `ls = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::SubtractiveLoft", ${pyStr(featName)})\n` +
       `ls.Profile = doc.getObject(${pyStr(sketchNameA)})\n` +
       `ls.Sections = [doc.getObject(${pyStr(sketchNameB)})]\n` +
@@ -346,13 +410,15 @@ export const emit = {
       `if ('Invalid' in ls.State) or ls.Shape.isNull():\n` +
       `    doc.removeObject(ls.Name)\n` +
       `    doc.recompute()\n` +
-      `    raise ValueError('subtractive loft failed — the two profiles must be closed loops of the same shape')`
+      `    raise ValueError('subtractive loft failed — the two profiles must be closed loops of the same shape')\n` +
+      volGuardTail('ls', 'subtractive loft removed nothing' + SAME_PLANE_HINT).trimEnd()
     );
   },
 
   // Additive loft: add the shape lofted between two closed profile sketches.
   additiveLoft(bodyName, sketchNameA, sketchNameB, featName) {
     return wrapStatus(
+      volGuardHead(bodyName) +
       `lo = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::AdditiveLoft", ${pyStr(featName)})\n` +
       `lo.Profile = doc.getObject(${pyStr(sketchNameA)})\n` +
       `lo.Sections = [doc.getObject(${pyStr(sketchNameB)})]\n` +
@@ -360,7 +426,8 @@ export const emit = {
       `if ('Invalid' in lo.State) or lo.Shape.isNull():\n` +
       `    doc.removeObject(lo.Name)\n` +
       `    doc.recompute()\n` +
-      `    raise ValueError('additive loft failed — the two profiles must be closed loops of the same shape')`
+      `    raise ValueError('additive loft failed — the two profiles must be closed loops of the same shape')\n` +
+      volGuardTail('lo', 'loft added nothing' + SAME_PLANE_HINT).trimEnd()
     );
   },
 
@@ -368,6 +435,7 @@ export const emit = {
   // spine's first edge is the ride; a full path ride is a v2 concern).
   additivePipe(bodyName, sketchNameProfile, sketchNamePath, featName) {
     return wrapStatus(
+      volGuardHead(bodyName) +
       `ap = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::AdditivePipe", ${pyStr(featName)})\n` +
       `ap.Profile = doc.getObject(${pyStr(sketchNameProfile)})\n` +
       `ap.Spine = (doc.getObject(${pyStr(sketchNamePath)}), ['Edge1'])\n` +
@@ -375,7 +443,31 @@ export const emit = {
       `if ('Invalid' in ap.State) or ap.Shape.isNull():\n` +
       `    doc.removeObject(ap.Name)\n` +
       `    doc.recompute()\n` +
-      `    raise ValueError('pipe failed — the path must be an open line the profile can follow')`
+      // The old message named only the path's shape. Measured in the browser:
+      // the usual cause is neither the shape nor the openness -- it is that both
+      // sketches are on XY, which is all Rect/Circle Sketch can make. Name that
+      // too, or the message sends the student to fix the one thing that is fine.
+      `    raise ValueError('pipe failed — the path must be an open line the profile can follow, on a DIFFERENT plane from the profile. Pick a face, then New Sketch, to draw it.')\n` +
+      volGuardTail('ap', 'pipe added nothing' + SAME_PLANE_HINT).trimEnd()
+    );
+  },
+
+  // Subtractive pipe: the same sweep, removing material. SubtractivePipe
+  // derives from PartDesign::Pipe (FeaturePipe.h:111) exactly as the additive
+  // one does, so Profile + Spine are identical -- this is a type swap, not a
+  // different operation.
+  subtractivePipe(bodyName, sketchNameProfile, sketchNamePath, featName) {
+    return wrapStatus(
+      volGuardHead(bodyName) +
+      `sp = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::SubtractivePipe", ${pyStr(featName)})\n` +
+      `sp.Profile = doc.getObject(${pyStr(sketchNameProfile)})\n` +
+      `sp.Spine = (doc.getObject(${pyStr(sketchNamePath)}), ['Edge1'])\n` +
+      `doc.recompute()\n` +
+      `if ('Invalid' in sp.State) or sp.Shape.isNull():\n` +
+      `    doc.removeObject(sp.Name)\n` +
+      `    doc.recompute()\n` +
+      `    raise ValueError('subtractive pipe failed — the path must be an open line on a DIFFERENT plane from the profile, and there must be material to cut. Pick a face, then New Sketch, to draw the path.')\n` +
+      volGuardTail('sp', 'subtractive pipe removed nothing' + SAME_PLANE_HINT).trimEnd()
     );
   },
 
@@ -388,6 +480,7 @@ export const emit = {
   // path run through the profile's own plane and self-intersect at any pitch.
   additiveHelix(bodyName, sketchName, featName, height, turns) {
     return wrapStatus(
+      helixPitchGuard(sketchName, pyNum(height, 'height'), pyNum(turns, 'turns')) +
       `ah = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::AdditiveHelix", ${pyStr(featName)})\n` +
       `ah.Profile = doc.getObject(${pyStr(sketchName)})\n` +
       `ah.ReferenceAxis = (doc.getObject(${pyStr(sketchName)}), ['N_Axis'])\n` +
@@ -405,6 +498,7 @@ export const emit = {
   // Subtractive helix: the same helical ride, removing material.
   subtractiveHelix(bodyName, sketchName, featName, height, turns) {
     return wrapStatus(
+      helixPitchGuard(sketchName, pyNum(height, 'height'), pyNum(turns, 'turns')) +
       `sh = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::SubtractiveHelix", ${pyStr(featName)})\n` +
       `sh.Profile = doc.getObject(${pyStr(sketchName)})\n` +
       `sh.ReferenceAxis = (doc.getObject(${pyStr(sketchName)}), ['N_Axis'])\n` +
@@ -656,6 +750,11 @@ export function attachCommands(session) {
   session.additivePipe = (bodyName, profile, path, featName) => {
     const res = session.read(emit.additivePipe(bodyName, profile, path, featName));
     if (!res.ok) throw new Error(res.error || 'pipe failed');
+    return featName;
+  };
+  session.subtractivePipe = (bodyName, profile, path, featName) => {
+    const res = session.read(emit.subtractivePipe(bodyName, profile, path, featName));
+    if (!res.ok) throw new Error(res.error || 'subtractive pipe failed');
     return featName;
   };
   session.additiveHelix = (bodyName, sketchName, featName, height, turns) => {

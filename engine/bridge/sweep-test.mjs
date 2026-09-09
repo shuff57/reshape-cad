@@ -89,7 +89,8 @@ test('every sweep emitter carries the clean-failure branch and its message', () 
     [emit.groove('Body', 'S', 'G'), 'gr', 'groove failed — the profile must be a closed loop that does not cross the vertical axis'],
     [emit.subtractiveLoft('Body', 'S', 'T', 'L'), 'ls', 'subtractive loft failed — the two profiles must be closed loops of the same shape'],
     [emit.additiveLoft('Body', 'S', 'T', 'L'), 'lo', 'additive loft failed — the two profiles must be closed loops of the same shape'],
-    [emit.additivePipe('Body', 'S', 'P', 'X'), 'ap', 'pipe failed — the path must be an open line the profile can follow'],
+    [emit.additivePipe('Body', 'S', 'P', 'X'), 'ap', 'pipe failed — the path must be an open line the profile can follow, on a DIFFERENT plane from the profile. Pick a face, then New Sketch, to draw it.'],
+    [emit.subtractivePipe('Body', 'S', 'P', 'X'), 'sp', 'subtractive pipe failed — the path must be an open line on a DIFFERENT plane from the profile, and there must be material to cut. Pick a face, then New Sketch, to draw the path.'],
     [emit.additiveHelix('Body', 'S', 'H', 30, 5), 'ah', 'helix failed — the profile must be a closed loop'],
     [emit.subtractiveHelix('Body', 'S', 'H', 30, 5), 'sh', 'subtractive helix failed — the profile must be a closed loop'],
   ];
@@ -97,6 +98,38 @@ test('every sweep emitter carries the clean-failure branch and its message', () 
     assert.ok(py.includes(`if ('Invalid' in ${v}.State) or ${v}.Shape.isNull():`), py);
     assert.ok(py.includes(`doc.removeObject(${v}.Name)`), py);
     assert.ok(py.includes(`raise ValueError('${msg}')`), py);
+  }
+});
+
+// The two guards added after the P1c-3 kernel gate found sweeps that SUCCEED
+// and do nothing, and a helix that grinds instead of refusing. Both are string
+// tests here and behaviour tests in engine/bridge/p1c3-test.mjs; this side is
+// what fails fast if someone deletes a guard while refactoring.
+test('the two-sketch sweeps carry the volume-change guard', () => {
+  const cases = [
+    [emit.additiveLoft('Body', 'S', 'T', 'L'), 'lo', 'loft added nothing'],
+    [emit.subtractiveLoft('Body', 'S', 'T', 'L'), 'ls', 'subtractive loft removed nothing'],
+    [emit.additivePipe('Body', 'S', 'P', 'X'), 'ap', 'pipe added nothing'],
+    [emit.subtractivePipe('Body', 'S', 'P', 'X'), 'sp', 'subtractive pipe removed nothing'],
+  ];
+  for (const [py, v, msg] of cases) {
+    assert.ok(py.includes('_v0 = _body.Shape.Volume'), py);
+    assert.ok(py.includes('_v1 = _body.Shape.Volume'), py);
+    assert.ok(py.includes('if abs(_v1 - _v0) < 1e-6:'), py);
+    assert.ok(py.includes(`doc.removeObject(${v}.Name)`), py);
+    assert.ok(py.includes(msg), py);
+    assert.ok(py.includes('same plane'), py);
+  }
+});
+
+test('both helixes refuse a pitch smaller than the profile BEFORE building', () => {
+  for (const py of [emit.additiveHelix('Body', 'S', 'H', 30, 5), emit.subtractiveHelix('Body', 'S', 'H', 30, 5)]) {
+    assert.ok(py.includes('_dia = max(_hp.XLength, _hp.YLength)'), py);
+    assert.ok(py.includes('_pitch = (30) / (5)'), py);
+    assert.ok(py.includes('if _pitch < _dia:'), py);
+    assert.ok(py.includes('the turns would overlap and the sweep can hang'), py);
+    // the guard must run BEFORE newObject, or the grind has already started
+    assert.ok(py.indexOf('_pitch') < py.indexOf('newObject'), 'pitch guard must precede newObject');
   }
 });
 
