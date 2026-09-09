@@ -66,9 +66,28 @@ than read back off the implementation: prism hex 5196.152, triangle 2598.076,
 No ledger change: `prism` and `wedge` were already `shipped` and stay `shipped`.
 The status was not wrong about intent — it was just untrue until today.
 
-**Still open — `groove` has no exact number.** Its slice asserts only that
-material moved. The swept ring's geometry was never derived, and inventing an
-expected value after the fact is a guess dressed as a gate.
+**The trap was already documented, in the same file, and still violated
+twice.** `occt-build.ts:465-467` carries the note *"the single-argument
+overload binds to gp_Torus in this build"* on `sketchFace()`. So this was known,
+written down where the next reader would meet it, and the prism and wedge
+branches were written wrong anyway. A comment is not a gate.
+
+**CLOSED — `groove` now has an exact number.** `revolveProfileFace()` maps a
+sketch point `(u, v)` with `a.u` and **`a.n`**, not `a.u`/`a.v`, so the profile
+is laid in the plane *containing* the rotation axis. That makes the groove a
+Pappus solid of revolution, and a rectangle spanning radius r0..r1 and axial
+v0..v1 turned `deg` removes exactly `π(r1²−r0²)(v1−v0)·deg/360`.
+
+Why no number was derivable before: the original fixture's ring (radius 10..15)
+stuck out past the box's `z = ±10` faces, so the cut was a **clipped** ring
+with no simple closed form. Moving the fixture to radius 4..8 — wholly interior
+— makes Pappus apply unmodified. Three slices now: a full ring (30944.425), a
+half turn that must remove half (31472.212), and a ring straddling the axial
+origin (31321.416), because a fixture entirely on the positive side cannot tell
+a correct height from one measured off zero.
+
+**Gate now 12/12, and every ModelDoc kind is measured against a closed form.**
+No "it changed" assertions remain.
 
 **Open — the harness needs a kernel path it does not own.** `RESHAPE_KERNEL_DIR`
 defaults to the shCode checkout, the only place on any box with the `.wasm`. On

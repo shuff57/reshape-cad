@@ -121,22 +121,55 @@ function boxDoc() {
   check('harness live: extrude 20x10 by 5', s ? volume(s) : NaN, 1000);
 }
 
-// --- slice 1: groove, retro-gated ------------------------------------------
-// P1a shipped this branch and it has never been executed. Not asserting an
-// exact volume: the swept ring's geometry was never derived, and inventing an
-// expected number now would be a guess dressed as a gate. What IS asserted is
-// the thing that was actually in doubt -- that it removes material at all.
-{
+// --- slice 1: groove, with an exact number ---------------------------------
+// This slice first shipped asserting only that material MOVED, because the
+// swept ring's geometry had not been derived. It has been now.
+//
+// revolveProfileFace() maps a sketch point (u, v) with `a.u` and `a.n` -- NOT
+// a.u and a.v -- so the profile is laid in the plane CONTAINING the rotation
+// axis, which is what makes this a Pappus solid of revolution rather than a
+// flat annulus of zero volume. A rectangle spanning radius r0..r1 and axial
+// v0..v1, turned `deg`, removes:
+//
+//     pi * (r1^2 - r0^2) * (v1 - v0) * deg/360
+//
+// THE FIXTURE MUST SIT ENTIRELY INSIDE THE BOX. The original 10..15 ring stuck
+// out past the box's z = +-10 faces, so the cut was a CLIPPED ring with no
+// simple closed form -- which is exactly why no exact number was derivable
+// from it, and why the first version of this slice settled for "it changed".
+// 4..8 is wholly interior, so Pappus applies unmodified.
+const ringVol = (r0, r1, h, deg) => Math.PI * (r1 * r1 - r0 * r0) * h * (deg / 360);
+
+function grooveDoc(r0, r1, v0, v1, deg) {
   const { doc, body } = boxDoc();
-  const prof = mt.newRectangleSketch(doc, 'xz', [10, 5], [15, 12]);
+  const prof = mt.newRectangleSketch(doc, 'xz', [r0, v0], [r1, v1]);
   doc.features.push(prof);
   const gr = mt.newGroove(doc, prof.id, body.id);
-  gr.angle = 360;
+  gr.angle = deg;
   doc.features.push(gr);
   const res = buildDoc(oc, doc, arc);
-  const cut = res.shapes.get(gr.id);
-  checkChanged('groove (P1a) removes material', 32000, cut ? volume(cut) : NaN);
+  return res.shapes.get(gr.id);
 }
+
+slice('groove: full ring r4..8, 7 tall', () => {
+  const s = grooveDoc(4, 8, 5, 12, 360);
+  check('groove: full ring r4..8, 7 tall', s ? volume(s) : NaN, 32000 - ringVol(4, 8, 7, 360));
+});
+
+// Half the turn must remove half the material. An `angle` the branch reads but
+// never applies would still pass the slice above.
+slice('groove: half turn removes half', () => {
+  const s = grooveDoc(4, 8, 5, 12, 180);
+  check('groove: half turn removes half', s ? volume(s) : NaN, 32000 - ringVol(4, 8, 7, 180));
+});
+
+// Straddling the axial origin (v -4..4), because v0 and v1 are used as a
+// difference and a fixture entirely on the positive side cannot tell a correct
+// height from one measured off zero.
+slice('groove: ring straddling v=0', () => {
+  const s = grooveDoc(3, 6, -4, 4, 360);
+  check('groove: ring straddling v=0', s ? volume(s) : NaN, 32000 - ringVol(3, 6, 8, 360));
+});
 
 // --- slice 2: pocket on xy, the headline number ----------------------------
 // 40x40x20 box, a 10x8 profile on xy at offset 0, cut 5 deep.
