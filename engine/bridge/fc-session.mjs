@@ -199,6 +199,48 @@ export function createFcSession(Module) {
     return Module.FS.readFile(fcstdPath);
   }
 
+  // Export one object's solid to an ASCII STL and return its bytes
+  // (Uint8Array) for download. Same portable channel as saveDocument: the
+  // kernel writes into the engine FS (MEMFS in the browser, the host mount
+  // under NODERAWFS) and JS reads the file back out.
+  //
+  // Deflection is an ABSOLUTE chord tolerance in mm (TopoShape.cpp:1002 passes
+  // isRelative=false), so 0.01 means 0.01mm regardless of model size -- fine
+  // for a 10mm part, slow and enormous for a 1000mm one. It is a parameter
+  // rather than a constant for that reason, but nothing in the UI passes it
+  // yet; the default matches TopoShapePyImp.cpp's own.
+  function exportStl(objectName, stlPath = '/tmp/model.stl', deflection = 0.01) {
+    // Clear the target FIRST. Without this, an export that writes nothing
+    // leaves the PREVIOUS run's file in place and readFile happily returns
+    // it -- the user downloads a stale model under a new name and there is
+    // no symptom at all. Unlink before, and "the file exists after" becomes
+    // real proof this export produced it.
+    try { Module.FS.unlink(stlPath); } catch { /* first run: nothing to clear */ }
+    const { rc, out } = exec(
+      `import FreeCAD as App\n` +
+      `_o = App.ActiveDocument.getObject(${JSON.stringify(objectName)})\n` +
+      `if _o is None: raise ValueError('no such object: ' + ${JSON.stringify(objectName)})\n` +
+      `_o.Shape.exportStl(${JSON.stringify(stlPath)}, ${Number(deflection)})\n`
+    );
+    if (rc !== 0) throw new Error(`exportStl failed:\n${out}`);
+    // Module.FS.readFile throws an Emscripten ErrnoError, which does NOT
+    // carry a .message. studio.js's guard() does `e.message.split(...)`, so
+    // letting it escape crashes the handler and the user sees NOTHING -- no
+    // log line, no download, no error. Measured in the browser: exporting a
+    // bare Sketch (state.tip can be one) got exactly that. Translate it into
+    // a real Error that says what to do instead.
+    let bytes;
+    try { bytes = Module.FS.readFile(stlPath); }
+    catch {
+      throw new Error(
+        `exportStl: ${objectName} wrote no STL. Only a solid has faces to mesh — ` +
+        `a sketch or a bare wire exports nothing. Pad it into a solid first.`
+      );
+    }
+    if (!bytes.length) throw new Error(`exportStl: ${objectName} exported an empty STL (0 bytes)`);
+    return bytes;
+  }
+
   // Open a .FCStd from bytes (Uint8Array): write it into the engine FS, then
   // App.openDocument() -- which becomes the new ActiveDocument, so subsequent
   // mesh()/tree()/commands operate on it. Returns the opened document's Name.
@@ -222,6 +264,7 @@ export function createFcSession(Module) {
     tree,
     saveDocument,
     openDocument,
+    exportStl,
     // typed PartDesign/Sketcher commands are attached in fc-commands.mjs
     // (mechanical Python emitters) so this core stays small and stable.
   };

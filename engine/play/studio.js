@@ -415,6 +415,14 @@ on('pad', 'click', guard(() => {
   }
   updatePocketButton(); // state.tip / state.sketch just changed
   updateRevolveButton();
+  // ...and so do the tip-dependent buttons (Export STL, Linear/Polar Pattern).
+  // They live in updateSweepButtons(), which until now was only reached via
+  // render() -- and none of the five handlers that assign state.tip (pad,
+  // pocket, revolve, fillet, chamfer) calls render(). Measured: after the most
+  // ordinary path there is, Rect Sketch -> Pad, Export STL stayed disabled and
+  // so did both pattern buttons. A solid exists and the button that ships it
+  // is greyed out.
+  updateSweepButtons();
 }));
 
 on('apply', 'click', guard(() => {
@@ -444,6 +452,7 @@ on('pocket', 'click', guard(() => {
   refreshTree();
   updatePocketButton();
   updateRevolveButton();
+  updateSweepButtons(); // state.tip changed — see the Pad handler's note
 }));
 
 // Spins the drawn profile around the sketch's own vertical (Y) axis into a
@@ -466,6 +475,7 @@ on('revolve', 'click', guard(() => {
   refreshTree();
   updatePocketButton();
   updateRevolveButton();
+  updateSweepButtons(); // state.tip changed — see the Pad handler's note
 }));
 
 // The bridge's fillet/chamfer now REJECT an impossible radius/size BEFORE
@@ -508,6 +518,7 @@ on('fillet', 'click', guard(() => {
   updateSelectionReadout(null); // the tip changed under the old selection — clear it
   refreshTree();
   updatePocketButton(); // state.tip just changed — Pocket's other operand
+  updateSweepButtons(); // ...and Export STL / the patterns, same reason
 }));
 
 on('chamfer', 'click', guard(() => {
@@ -525,6 +536,7 @@ on('chamfer', 'click', guard(() => {
   updateSelectionReadout(null);
   refreshTree();
   updatePocketButton();
+  updateSweepButtons(); // ...and Export STL / the patterns, same reason
 }));
 
 // --- script box ---------------------------------------------------------------
@@ -700,6 +712,8 @@ function updateSweepButtons() {
   if (lin) lin.disabled = !(session && state.tip);
   const pol = $('polPatBtn');
   if (pol) pol.disabled = !(session && state.tip);
+  const stl = $('exportStl');
+  if (stl) stl.disabled = !(session && state.tip);
 }
 
 // Save the live document to a real .FCStd and hand it to the browser download.
@@ -712,6 +726,21 @@ on('save', 'click', guard(() => {
   a.click();
   URL.revokeObjectURL(a.href);
   log(`saved model.FCStd (${bytes.length} bytes)`);
+}));
+
+// Export the current tip solid to STL and hand it to the browser download.
+// Mirrors the Save .FCStd handler above -- same bytes-to-Blob channel, since
+// the wasm FS is not reachable from the page any other way.
+on('exportStl', 'click', guard(() => {
+  if (!state.tip) return log('make a feature first (Pad, Prism, …)');
+  const bytes = session.exportStl(state.tip);
+  const blob = new Blob([bytes], { type: 'model/stl' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `${state.tip}.stl`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  log(`exported ${state.tip}.stl (${bytes.length} bytes)`);
 }));
 
 // Open a .FCStd the user picks; it becomes the active document. Re-derive the
