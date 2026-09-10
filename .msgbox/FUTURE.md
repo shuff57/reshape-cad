@@ -6,6 +6,61 @@ parked rather than done.
 
 ---
 
+## 2026-09-09 — CI is live, and the two things deliberately left off it
+
+**Decided and shipped.** The repo is published at
+`github.com/shuff57/reshape-cad` (public) and CI runs `npm ci`, an ordered
+build, and `npm test` on every push and PR. Green at `f2cf59b` in 21 s with
+zero annotations.
+
+It **failed on its first run**, on the step it exists for. `npm run build
+--workspaces` builds in workspace order (kernel, script, sketch, studio) while
+the dependency order is sketch → script → kernel → studio, so `kernel`
+compiled first and could not resolve `@shuff57/reshape-script/model-types` —
+`dist/` is gitignored, so on a fresh checkout the `.d.ts` did not exist yet.
+Every *"implicitly has an any type"* error in that log was downstream of it.
+It had passed on every developer machine because `packages/*/dist` was already
+lying there from an earlier build, which is the whole argument for having CI at
+all.
+
+### Open — put the browser test in CI
+
+`shCode/scripts/drive-point-rules.py` is the only thing that exercises the
+rendered Point rules panel, and **nothing runs it automatically**. Putting it in
+CI needs a dev-server step: start `npm run dev` on :3002, wait for the port,
+run the script, tear it down. Two known traps are already recorded above and
+both would bite a naive workflow — `.next` does not pick up changes through a
+`file:` symlink, and stopping the shell does not kill `npm run dev`'s node
+child, so the port stays held and a "restart" silently binds nothing.
+
+It would also have to live in **shCode's** CI, not this repo's: the script, the
+server and the Playwright install are all there, and shCode has no workflows at
+all today.
+
+### Open — TypeScript project references, but not yet
+
+`tsc -b` with project references would **derive** the build order from the
+dependency graph instead of the hardcoded chain now in the root `build` script.
+That is the better end state and it is deliberately parked.
+
+**Why parked:** CI already catches a stale order, from a clean checkout, which
+is exactly how the order bug surfaced. So `tsc -b` currently buys redundancy
+over an existing check, at real cost — `composite: true` changes `rootDir`
+handling, and shCode's `build-brep-kernel.mjs` compiles these same sources with
+its own per-package `--rootDir` that its header documents as deliberate and
+fiddly. Rewriting four tsconfigs, with the risk landing in a second repo, to
+re-derive an order that is already enforced, is a bad trade today.
+
+**Revisit when the workspace grows past four packages**, or when a new
+dependency appears among the existing four. That is when hand-maintaining one
+line starts costing more than the rewrite.
+
+**Correction on the record:** the trailer on `12c89fe` says of the hardcoded
+order "nothing checks it". True when written, false ten minutes later — CI
+checks it on every push. `f2cf59b` says so.
+
+---
+
 ## 2026-09-09 — P1f dogfooded in a browser; the caveat is closed
 
 `3a3be70` shipped with `Not-tested: NO BROWSER`. That is now resolved, and the
