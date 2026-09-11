@@ -540,28 +540,74 @@ see `FreeCadEngineAdapter`'s own comment on its `else` branch. v1 is also
 single-body-per-chain (`combine` is the one place two independent chains
 would need to merge into one Body, and does not).
 
-### 6.2 Picking is unimplemented, and now provably so under load
+### 6.2 Picking: implemented for the primitive/between-primitive case, real geometry only
 
-`resolveFace`/`resolveEdge`/`nameFace`/`nameEdge` all throw "not yet
-implemented" on `FreeCadEngineAdapter` -- real topological-naming resolution
-against a live FreeCAD shape (§4 risk 3) was never scheduled for this
-cutover. Step 10 adds two more methods to the same "throws, not guesses"
-list: `faceSize`/`edgeLength` (found mid-refactor -- see §3.1's interface;
-`OcctEngineAdapter` moved the existing measurement logic over verbatim,
-`FreeCadEngineAdapter` throws the same way its naming methods already do).
+Superseding this section's earlier claim ("all four throw 'not yet
+implemented'") -- `resolveFace`/`resolveEdge`/`nameFace`/`nameEdge`, plus
+`faceSize`/`edgeLength`, are now implemented on `FreeCadEngineAdapter`
+(`packages/kernel/src/freecad-engine-adapter.ts`), narrowed to exactly the
+causes this adapter's feature set can produce:
 
-This is no longer theoretical: `BrepViewportThree.tsx`'s `pickAt()` calls all
-of these on a real click, and under `VITE_RESHAPE_ENGINE=freecad` in a real
-browser, clicking a face throws "not yet implemented" the instant it is
-reached. Step 10 wraps every one of these calls in a local `try/catch` that
-treats the throw as an honest `null` (the same "no answer over a wrong one"
-outcome an OCCT pick already returns for a face/edge with no traceable
-lineage) -- so a click under the FreeCAD engine still highlights the face or
-edge, just without a name or a measured size, and Round/Fillet stays
-unreachable from the UI on that engine until §4 risk 3 is actually
-scheduled. Confirmed live (`packages/sandbox-dev`, `VITE_RESHAPE_ENGINE=freecad`):
-clicking a face reads "Box 1 · face" (no name, no size) with no console
-error, instead of crashing the click handler.
+- `primitive` face names (a box/cylinder's own `+x`/`-x`/.../`side`) --
+  resolved by the same direction-of-centre + area-tiebreak scoring
+  `resolvePrimitiveEdgeName()` already used for the fillet-build path,
+  generalized to every part in one kernel round trip
+  (`queryPrimitiveGeometry()`), run against whichever FreeCAD object is
+  CURRENTLY on screen for that primitive's chain -- not a frozen historical
+  shape, so a face untouched by a later fillet/chamfer on the SAME chain
+  still resolves correctly.
+- `between` edge names over two `primitive` faces of the SAME box/cylinder --
+  reuses `resolvePrimitiveEdgeName()` directly for the general picking path
+  too, not just the fillet-build path it originally existed for.
+- A fillet/chamfer chain is walked back to its box/cylinder ancestor
+  (`findPrimitiveAncestor()`) so a pick on the FILLET's own current shape
+  still names correctly-rooted `primitive` faces; the round's own new curved
+  face correctly returns `null` (verified against the real kernel: on a
+  box+fillet, 6 of 8 faces on the filleted solid still name rooted at the
+  box, 1 honestly returns null for the corner the round replaced with two
+  new faces, 1 for the round's own second new face).
+
+**NOT implemented, and not guessable without more design work**: naming a
+face/edge on an extrude/pocket-built solid that came from a SWEPT sketch
+edge or an end CAP (`topo-name.ts`'s `swept`/`cap` causes). The OCCT side
+answers these via `BuildResult.sweeps`, a per-feature record of which
+`TopoDS_Edge` each sketch edge generated (`topo-history.ts`'s
+`generatedFrom()`/`capOf()`, built from `BRepBuilderAPI_MakeShape`'s own
+`Generated()` history). FreeCAD's bridge has no equivalent history channel
+today -- `session.meshFaces()` reports `"Face{n}"`/`"Edge{n}"` and nothing
+about which sketch edge or `PartDesign::Pad` end produced which one.
+Building that is a real, unscheduled design question (either a second,
+FreeCAD-specific history tracker parallel to `topo-history.ts`'s OCCT one,
+or leaning on FreeCAD's own `Generated()`/`Modified()` Python API across a
+Pad/Pocket) -- not something this phase closed by extending the primitive
+resolver. A pick on such a face/edge (a Pad's side wall, its top/bottom cap)
+still highlights; `resolveFace`/`resolveEdge`/`nameFace`/`nameEdge` just
+return `null` for it, same as any other unresolvable name.
+
+A real internal fix this required: `faceAt()`/`edges()` used to return a
+bare `"Face{n}"`/`"Edge{n}"` string with no record of which FreeCAD object
+it came from -- fine for `mesh()`'s own consumer (never round-trips the
+handle back into the kernel), but ambiguous the moment `faceSize()`/
+`edgeLength()`/`nameFace()`/`nameEdge()` need to know WHICH object's `Shape`
+to query, which is always true past the first built feature. Both now
+return an `FcElementRef` (`{objName, name}`) instead -- still `unknown` at
+the `EngineAdapter` boundary (`BrepViewportThree.tsx` never inspects the
+shape of a face/edge handle), so this is an internal representation fix,
+not an interface change.
+
+Verified against the real kernel (`fc-kernel-pd-final`,
+`packages/kernel/test/freecad-picking.manual.mjs`): a 40x30x20 box's all 6
+faces name and round-trip through `resolveFace` back to the exact same
+`Face{n}`, `faceSize()` matches the box's own dimensions per face, all 12
+edges name (`between`, two `primitive` faces) and round-trip through
+`resolveEdge`, `edgeLength()` returns a positive number for each -- 90 of 90
+checks passed. `BrepViewportThree.tsx`'s `pickAt()`/`restorePicks()` no
+longer need their `try/catch`-as-null fallback to survive a FreeCAD-engine
+click (it still wraps every call, unchanged, since `null` remains the
+correct answer for anything outside this narrowed scope) -- a click on a
+box or cylinder's own flat face or straight edge, even past a fillet/
+chamfer applied to the SAME chain, now returns a real name and a real
+measured size.
 
 ### 6.3 FreeCAD-kernel numbers: now measured for real, via `fc-kernel-pd-final`
 

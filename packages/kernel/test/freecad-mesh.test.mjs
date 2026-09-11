@@ -108,19 +108,24 @@ test('mesh() returns null for a sketch (non-solid) shape without calling the ses
   assert.equal(called, false, 'a sketch is never meshed');
 });
 
-test('faceAt()/edges() follow FreeCAD\'s own Face{n+1}/Edge{n+1} sub-element convention', () => {
+test('faceAt()/edges() follow FreeCAD\'s own Face{n+1}/Edge{n+1} sub-element convention, tagged with their owning object', () => {
   const raw = unitCubeMeshFacesJson();
   raw.edges = [{ id: 0, points: [0, 0, 0, 1, 0, 0] }, { id: 1, points: [1, 0, 0, 1, 1, 0] }];
   const adapter = makeAdapter(raw);
   const shape = { objName: 'Pad', kind: 'solid', bodyName: 'Body1', featureId: 'box1', featureKind: 'box' };
 
-  assert.equal(adapter.faceAt(shape, 0), 'Face1');
-  assert.equal(adapter.faceAt(shape, 5), 'Face6');
+  // faceAt()/edges() return an FcElementRef ({objName, name}), not a bare
+  // name string -- a bare "Face3" is ambiguous the moment more than one
+  // FreeCAD object exists, which is always true past the first feature, and
+  // faceSize()/edgeLength()/nameFace()/nameEdge() all need to know WHICH
+  // object's Shape to query. See freecad-engine-adapter.ts's own header.
+  assert.deepEqual(adapter.faceAt(shape, 0), { objName: 'Pad', name: 'Face1' });
+  assert.deepEqual(adapter.faceAt(shape, 5), { objName: 'Pad', name: 'Face6' });
   assert.equal(adapter.faceAt(shape, -1), null);
 
   const edges = adapter.edges(shape);
   assert.equal(edges.length, 2);
-  assert.equal(edges[0].edge, 'Edge1');
-  assert.equal(edges[1].edge, 'Edge2');
+  assert.deepEqual(edges[0].edge, { objName: 'Pad', name: 'Edge1' });
+  assert.deepEqual(edges[1].edge, { objName: 'Pad', name: 'Edge2' });
   assert.equal(edges[0].geometry.getAttribute('position').count, 2);
 });

@@ -38,24 +38,57 @@
 //     wrong one" rule topo-resolve.ts's own header states.
 //
 // Picking (resolveFace/resolveEdge/nameFace/nameEdge, plus faceSize/
-// edgeLength -- found during step 10's own seam refactor, see
-// engine-adapter.ts's header) is the SAME risk-3 work, unscheduled in
-// build-sequence steps 7-9 and implemented here as a clear "not yet
-// implemented" throw rather than a guess. edges()/faceAt() need no naming
-// history at all -- they are FreeCAD's own OWN documented Face{n}/Edge{n}
-// sub-element convention (fc-session.mjs's meshFaces() comment: "faceId i ==
-// 'Face{i+1}'") -- so those ARE implemented.
+// edgeLength) is now implemented -- §4 risk 3, narrowed to exactly the
+// causes this adapter's own feature set can produce and verify:
 //
-// Step 10 exercised this adapter live, in a real browser, for the first time
-// (packages/sandbox-dev, VITE_RESHAPE_ENGINE=freecad) -- confirming box
-// build/rebuild render correctly through BrepViewportThree.tsx's adapter
-// seam, and that a click under this engine degrades to an honest "no name"
-// highlight (the four throws above, caught by the component) rather than
-// crashing. Full account, including a real bug this surfaced and fixed
-// (packages/engine/src/load-browser.mjs had no Module.locateFile) and what
-// is still unverified (fillet/chamfer volumes and the angle-constraint sign
-// convention against the REAL GCS solver, not a mock), is
-// docs/specs/SPEC-engine-port.md's "Known gaps" section (§6).
+//   - `primitive` face names (a box/cylinder's own +x/-x/.../side faces) --
+//     resolved geometrically (direction-of-centre + area tiebreak, the same
+//     scoring resolvePrimitiveEdgeName() already proved) against whichever
+//     FreeCAD object is CURRENTLY on screen for that primitive's chain, not
+//     against a frozen historical shape.
+//   - `between` edge names over two `primitive` faces of the SAME
+//     box/cylinder -- reuses resolvePrimitiveEdgeName() directly, both for
+//     the fillet-build path (already existed) and now for the general
+//     resolveEdge()/nameEdge() picking path too.
+//   - A face/edge picked on a Fillet/Chamfer's OWN result still resolves
+//     to a `primitive` name when it is an untouched flat face (the
+//     direction scorer runs against the CURRENT shape, so a face the round
+//     did not touch is still found); the round's OWN new curved face
+//     correctly returns null -- no `primitive` part scores as "this is it"
+//     for a surface that is not axis-flat, matching topo-name.ts's own
+//     documented rule that a round's own face has no primitive lineage.
+//
+// NOT implemented, and NOT guessable without more design work: naming a
+// face/edge on an extrude/pocket-built solid that came from a SWEPT sketch
+// edge or an end CAP (topo-name.ts's `swept`/`cap` causes). The OCCT side
+// answers these via BuildResult.sweeps, a per-feature record of which
+// TopoDS_Edge each sketch edge generated (topo-history.ts's
+// generatedFrom()/capOf(), built from BRepBuilderAPI_MakeShape's own
+// Generated() history). FreeCAD's bridge has no equivalent history channel
+// today -- session.meshFaces() reports "Face{n}"/"Edge{n}" and nothing about
+// which sketch edge or PartDesign::Pad end produced which one. Building
+// that would mean either (a) a second, FreeCAD-specific "what came from
+// what" tracker parallel to topo-history.ts's OCCT one, or (b) leaning on
+// FreeCAD's own Generated()/Modified() Python API across a Pad/Pocket the
+// same way OCCT's does -- both are real, unscheduled design questions, not
+// a gap this file can close by extending the primitive resolver. A pick on
+// such a face/edge (a Pad's side wall, its top/bottom cap) still highlights
+// -- resolveFace/resolveEdge/nameFace/nameEdge just return null for it, the
+// same "no answer over a wrong one" outcome any unresolvable name already
+// gets. See docs/specs/SPEC-engine-port.md §6.2 for the full account.
+//
+// A second real internal fix this required: faceAt()/edges() used to return
+// a BARE "Face{n}"/"Edge{n}" string with no record of which FreeCAD object
+// it came from. That was fine for mesh()'s own consumer (which never round-
+// trips the handle back into the kernel) but cannot answer faceSize()/
+// edgeLength()/nameFace()/nameEdge() -- those need to know WHICH object's
+// Shape to run getElement() against, and a bare "Face3" is ambiguous the
+// moment more than one FreeCAD object exists (always true past the first
+// feature). Both now return an FcElementRef ({objName, name}) instead --
+// still `unknown` at the EngineAdapter boundary (BrepViewportThree.tsx never
+// inspects the shape of a face/edge handle, only passes it back into this
+// SAME adapter's own methods), so this is an internal representation fix,
+// not an interface change.
 
 import type { Feature, ModelDoc, SketchFeature, Vec3 } from '@shuff57/reshape-script/model-types';
 import type { TopoName } from '@shuff57/reshape-script/topo-name';
@@ -111,6 +144,17 @@ export interface FcBuiltFeature {
    *  lookup into `doc.features`. */
   featureId: string;
   featureKind: Feature['kind'];
+}
+
+/** A FreeCAD face/edge handle: which object's Shape it lives on, plus its
+ *  own "Face{n}"/"Edge{n}" sub-element name. Bare name strings are ambiguous
+ *  past the first built object (see this file's own header) -- every method
+ *  that hands a face/edge to a caller, or receives one back, uses this
+ *  instead. Still `unknown` at the EngineAdapter boundary (see engine-
+ *  adapter.ts): nothing outside this file inspects the shape. */
+interface FcElementRef {
+  objName: string;
+  name: string;
 }
 
 const num = (v: number, what: string): number => {
@@ -451,69 +495,251 @@ export class FreeCadEngineAdapter implements EngineAdapter {
     return raw.edges.map((e) => {
       const geometry = new this.THREE.BufferGeometry();
       geometry.setAttribute('position', new this.THREE.Float32BufferAttribute(e.points, 3));
-      return { edge: `Edge${e.id + 1}`, geometry };
+      const ref: FcElementRef = { objName: s.objName, name: `Edge${e.id + 1}` };
+      return { edge: ref, geometry };
     });
   }
 
   /** The reverse of mesh()'s own FaceRange.index -- FreeCAD's own
    *  `"Face" + (index+1)` convention (same source comment as edges()
-   *  above), needing no kernel round-trip to answer. */
+   *  above), needing no kernel round-trip to answer. Returns an
+   *  FcElementRef, not a bare name -- see this file's own header. */
   faceAt(shape: unknown, index: number): unknown | null {
     const s = shape as FcBuiltFeature | null;
     if (!s || s.kind !== 'solid' || index < 0) return null;
-    return `Face${index + 1}`;
+    const ref: FcElementRef = { objName: s.objName, name: `Face${index + 1}` };
+    return ref;
   }
 
-  resolveFace(_name: TopoName, _build: EngineBuildResult): unknown | null {
-    throw new Error(
-      'FreeCadEngineAdapter.resolveFace: general topological-name resolution for this engine is not yet '
-        + 'implemented (SPEC-engine-port.md §4 risk 3) -- only fillet/chamfer edge lookup has a narrow, '
-        + 'internal resolver so far.',
-    );
+  /** Walk a fillet/chamfer chain back to the box/cylinder primitive that
+   *  started it, within the SAME body -- v1 is single-body-per-chain (this
+   *  file's own header), so this chain is always linear and always ends at
+   *  exactly one primitive or nothing. Anything else in the chain (a
+   *  sketch, an extrude, a pocket, a sphere) is out of naming scope today --
+   *  see this file's own header on `swept`/`cap` -- and stops the walk with
+   *  null rather than guessing past it. */
+  private findPrimitiveAncestor(
+    build: EngineBuildResult, doc: ModelDoc, featureId: string,
+  ): { id: string; kind: 'box' | 'cylinder' } | null {
+    let id: string | undefined = featureId;
+    const seen = new Set<string>();
+    while (id && !seen.has(id)) {
+      seen.add(id);
+      const bf = build.shapes.get(id) as FcBuiltFeature | undefined;
+      if (!bf) return null;
+      if (bf.featureKind === 'box' || bf.featureKind === 'cylinder') return { id, kind: bf.featureKind };
+      if (bf.featureKind !== 'fillet') return null;
+      const docFeature = doc.features.find((f) => f.id === id) as { target?: string } | undefined;
+      id = docFeature?.target;
+    }
+    return null;
   }
 
-  resolveEdge(_name: TopoName, _build: EngineBuildResult): unknown | null {
-    throw new Error(
-      'FreeCadEngineAdapter.resolveEdge: general topological-name resolution for this engine is not yet '
-        + 'implemented (SPEC-engine-port.md §4 risk 3) -- only fillet/chamfer edge lookup has a narrow, '
-        + 'internal resolver so far.',
-    );
+  /**
+   * The direction+area scoring resolvePrimitiveEdgeName() already proved for
+   * one part pair, generalized: computes every candidate part's CURRENT
+   * FreeCAD face name in ONE kernel round trip, and -- when `edgeIdx` is
+   * given -- which two (by name) of those faces border that edge. Runs
+   * against `target.objName` AS IT STANDS NOW, so a part untouched by a
+   * later fillet/chamfer on the SAME chain still resolves correctly (the
+   * scorer just finds the current face that best faces that direction);
+   * the round's own new face never wins any part's contest, which is how a
+   * pick on it correctly comes back unnamed rather than guessed.
+   */
+  private queryPrimitiveGeometry(
+    session: FcSessionLike, target: FcBuiltFeature, primitiveKind: 'box' | 'cylinder', edgeIdx: number | null,
+  ): { parts: Record<string, string>; adjacent: string[] } {
+    const parts = [...(primitiveKind === 'box' ? BOX_PARTS : CYLINDER_PARTS)];
+    const py =
+      `import json, FreeCAD as App\n` +
+      `doc = App.ActiveDocument\n` +
+      `o = doc.getObject(${pyStr(target.objName)})\n` +
+      `sh = o.Shape\n` +
+      `bb = sh.BoundBox\n` +
+      `cx=(bb.XMin+bb.XMax)/2.0; cy=(bb.YMin+bb.YMax)/2.0; cz=(bb.ZMin+bb.ZMax)/2.0\n` +
+      `DIRS = {'+x':(1.0,0.0,0.0),'-x':(-1.0,0.0,0.0),'+y':(0.0,1.0,0.0),'-y':(0.0,-1.0,0.0),'+z':(0.0,0.0,1.0),'-z':(0.0,0.0,-1.0)}\n` +
+      `def _score(f, d):\n` +
+      `    c = f.CenterOfMass\n` +
+      `    return (c.x-cx)*d[0] + (c.y-cy)*d[1] + (c.z-cz)*d[2]\n` +
+      `def _resolve_face(part):\n` +
+      `    if part in DIRS:\n` +
+      `        d = DIRS[part]\n` +
+      `        best=None; best_s=-1e18; best_a=-1e18\n` +
+      `        for f in sh.Faces:\n` +
+      `            s = _score(f, d); a = f.Area\n` +
+      `            if s > best_s + 1e-7 or (abs(s-best_s) <= 1e-7 and a > best_a):\n` +
+      `                best=f; best_s=max(s,best_s); best_a=a\n` +
+      `        return best\n` +
+      `    if part == 'side':\n` +
+      `        top = _resolve_face('+z'); bot = _resolve_face('-z')\n` +
+      `        def _same(x,y):\n` +
+      `            return x is not None and (x.CenterOfMass - y.CenterOfMass).Length < 1e-7\n` +
+      `        for f in sh.Faces:\n` +
+      `            if not _same(top,f) and not _same(bot,f):\n` +
+      `                return f\n` +
+      `    return None\n` +
+      `faces = list(sh.Faces)\n` +
+      `edges = list(sh.Edges)\n` +
+      `result = {}\n` +
+      `for part in ${JSON.stringify(parts)}:\n` +
+      `    f = _resolve_face(part)\n` +
+      `    if f is not None:\n` +
+      `        for i, ff in enumerate(faces):\n` +
+      `            if ff.isSame(f):\n` +
+      `                result[part] = 'Face%d' % (i+1)\n` +
+      `                break\n` +
+      `adjacent = []\n` +
+      `eidx = ${edgeIdx === null ? 'None' : num(edgeIdx, 'edgeIdx')}\n` +
+      `if eidx is not None and 0 <= eidx < len(edges):\n` +
+      `    e = edges[eidx]\n` +
+      `    for i, f in enumerate(faces):\n` +
+      `        if any(e.isSame(fe) for fe in f.Edges):\n` +
+      `            adjacent.append('Face%d' % (i+1))\n` +
+      `open(${pyStr(OUT_PATH)}, 'w').write(json.dumps({'parts': result, 'adjacent': adjacent}))\n`;
+    const res = session.read(py);
+    return { parts: (res && res.parts) || {}, adjacent: (res && res.adjacent) || [] };
   }
 
-  nameFace(_build: EngineBuildResult, _doc: ModelDoc, _pickedFeature: string, _face: unknown): TopoName | null {
-    throw new Error(
-      'FreeCadEngineAdapter.nameFace: naming a picked face on this engine is not yet implemented '
-        + '(SPEC-engine-port.md §4 risk 3).',
-    );
+  private edgeIndexFromName(name: string): number | null {
+    const m = /^Edge(\d+)$/.exec(name);
+    return m ? parseInt(m[1], 10) - 1 : null;
   }
 
-  nameEdge(_build: EngineBuildResult, _doc: ModelDoc, _pickedFeature: string, _edge: unknown): TopoName | null {
-    throw new Error(
-      'FreeCadEngineAdapter.nameEdge: naming a picked edge on this engine is not yet implemented '
-        + '(SPEC-engine-port.md §4 risk 3).',
-    );
+  /** `primitive` cause only -- `between` names an edge, not a face, and
+   *  every other cause (`swept`, `cap`, `carried`, `split`, `made`) needs
+   *  history this adapter does not track (this file's own header). Resolves
+   *  against `build.shapes.get(name.feature)` directly -- that IS the
+   *  primitive's own built entry by construction (nameFace() below only
+   *  ever writes a `primitive` name with `feature` set to the primitive
+   *  ancestor id, never an intermediate fillet), so no ancestor walk is
+   *  needed here, unlike nameFace()/nameEdge(). */
+  resolveFace(name: TopoName, build: EngineBuildResult): unknown | null {
+    const session = this.requireSession();
+    if (name.cause !== 'primitive' || name.kind !== 'face') return null;
+    const target = build.shapes.get(name.feature) as FcBuiltFeature | undefined;
+    if (!target || target.kind !== 'solid') return null;
+    if (target.featureKind !== 'box' && target.featureKind !== 'cylinder') return null;
+    const parts = target.featureKind === 'box' ? BOX_PARTS : CYLINDER_PARTS;
+    if (!parts.has(name.part)) return null;
+    const { parts: found } = this.queryPrimitiveGeometry(session, target, target.featureKind, null);
+    const faceName = found[name.part];
+    return faceName ? ({ objName: target.objName, name: faceName } satisfies FcElementRef) : null;
   }
 
-  // faceSize()/edgeLength() -- found during step 10's seam refactor (the
-  // component's own module-level helpers reached into kernel.oc directly,
-  // same as every other call EngineAdapter already covers). Real measurement
-  // against a live FreeCAD Face{n}/Edge{n} handle is unscheduled §4 risk-3
-  // work, same as resolveFace/resolveEdge/nameFace/nameEdge above -- and in
-  // practice unreachable from BrepViewportThree.tsx's own pick path today,
-  // since nameFace()/nameEdge() already throw first for any picked
-  // face/edge under this engine.
-
-  faceSize(_face: unknown): [number, number] | null {
-    throw new Error(
-      'FreeCadEngineAdapter.faceSize: measuring a picked face on this engine is not yet implemented '
-        + '(SPEC-engine-port.md §4 risk 3).',
-    );
+  /** `between` cause only, over two `primitive` faces of the SAME
+   *  box/cylinder -- exactly resolvePrimitiveEdgeName()'s own scope,
+   *  reused directly rather than duplicated (it already takes a `target`
+   *  and re-derives it here from `name.of[0].feature`, which is what that
+   *  edge's own `.feature` is set to by nameEdge() below and by
+   *  nameEdgeOnCurrentShape()'s OCCT counterpart alike). */
+  resolveEdge(name: TopoName, build: EngineBuildResult): unknown | null {
+    const session = this.requireSession();
+    if (name.cause !== 'between') return null;
+    const [a, b] = name.of;
+    if (a.cause !== 'primitive' || b.cause !== 'primitive' || a.feature !== b.feature) return null;
+    const target = build.shapes.get(a.feature) as FcBuiltFeature | undefined;
+    if (!target || target.kind !== 'solid') return null;
+    const edgeName = this.resolvePrimitiveEdgeName(session, target, name);
+    return edgeName ? ({ objName: target.objName, name: edgeName } satisfies FcElementRef) : null;
   }
 
-  edgeLength(_edge: unknown): number | null {
-    throw new Error(
-      'FreeCadEngineAdapter.edgeLength: measuring a picked edge on this engine is not yet implemented '
-        + '(SPEC-engine-port.md §4 risk 3).',
-    );
+  /** Name a face the student just clicked on `pickedFeature`'s CURRENT
+   *  shape. Walks back to the box/cylinder primitive that chain started
+   *  from (findPrimitiveAncestor -- null for anything else, including a
+   *  sketch/extrude/pocket chain, per this file's own header), then scores
+   *  every part against THAT shape as it stands right now and looks for the
+   *  one whose current face matches what was clicked. */
+  nameFace(build: EngineBuildResult, _doc: ModelDoc, pickedFeature: string, face: unknown): TopoName | null {
+    const session = this.requireSession();
+    const ref = face as FcElementRef | null;
+    if (!ref || typeof ref.name !== 'string') return null;
+    const target = build.shapes.get(pickedFeature) as FcBuiltFeature | undefined;
+    if (!target || target.kind !== 'solid') return null;
+    const ancestor = this.findPrimitiveAncestor(build, _doc, pickedFeature);
+    if (!ancestor) return null;
+    const { parts } = this.queryPrimitiveGeometry(session, target, ancestor.kind, null);
+    for (const [part, faceName] of Object.entries(parts)) {
+      if (faceName === ref.name) return { cause: 'primitive', feature: ancestor.id, kind: 'face', part };
+    }
+    return null;
+  }
+
+  /** Name an edge the student just clicked, as the `between` of its two
+   *  adjacent faces -- same primitive-ancestor walk as nameFace(), one
+   *  kernel round trip via queryPrimitiveGeometry() covers both the part
+   *  scoring and the edge's own adjacency. */
+  nameEdge(build: EngineBuildResult, doc: ModelDoc, pickedFeature: string, edge: unknown): TopoName | null {
+    const session = this.requireSession();
+    const ref = edge as FcElementRef | null;
+    if (!ref || typeof ref.name !== 'string') return null;
+    const target = build.shapes.get(pickedFeature) as FcBuiltFeature | undefined;
+    if (!target || target.kind !== 'solid') return null;
+    const ancestor = this.findPrimitiveAncestor(build, doc, pickedFeature);
+    if (!ancestor) return null;
+    const edgeIdx = this.edgeIndexFromName(ref.name);
+    if (edgeIdx === null) return null;
+    const { parts, adjacent } = this.queryPrimitiveGeometry(session, target, ancestor.kind, edgeIdx);
+    if (adjacent.length !== 2) return null;
+    const nameForFace = (faceName: string): TopoName | null => {
+      for (const [part, fn] of Object.entries(parts)) {
+        if (fn === faceName) return { cause: 'primitive', feature: ancestor.id, kind: 'face', part };
+      }
+      return null;
+    };
+    const a = nameForFace(adjacent[0]);
+    const b = nameForFace(adjacent[1]);
+    return a && b ? { cause: 'between', feature: a.feature, kind: 'edge', of: [a, b] } : null;
+  }
+
+  /** The picked face's own in-plane size, off the BUILT geometry -- same
+   *  "drop the near-zero axis, report the other two smallest-first" rule as
+   *  OcctEngineAdapter.faceSize(), computed from FreeCAD's own BoundBox on
+   *  the specific sub-element (Shape.getElement(name), the exact call
+   *  fc-session.mjs's own meshFaces() comment already verifies against:
+   *  "getElement('Face1').Area == Faces[0].Area"). Null for a curved or
+   *  non-axis-aligned face, or when the object/element cannot be found --
+   *  same "no answer over a wrong one" rule as resolveFace. */
+  faceSize(face: unknown): [number, number] | null {
+    const session = this.requireSession();
+    const ref = face as FcElementRef | null;
+    if (!ref || typeof ref.objName !== 'string' || typeof ref.name !== 'string') return null;
+    const py =
+      `import json, FreeCAD as App\n` +
+      `doc = App.ActiveDocument\n` +
+      `size = None\n` +
+      `o = doc.getObject(${pyStr(ref.objName)})\n` +
+      `if o is not None:\n` +
+      `    el = o.Shape.getElement(${pyStr(ref.name)})\n` +
+      `    if el is not None:\n` +
+      `        bb = el.BoundBox\n` +
+      `        ext = [bb.XMax-bb.XMin, bb.YMax-bb.YMin, bb.ZMax-bb.ZMin]\n` +
+      `        flat = next((i for i, e in enumerate(ext) if e < 0.05), None)\n` +
+      `        if flat is not None:\n` +
+      `            rest = sorted(e for i, e in enumerate(ext) if i != flat)\n` +
+      `            size = [round(rest[0], 2), round(rest[1], 2)]\n` +
+      `open(${pyStr(OUT_PATH)}, 'w').write(json.dumps({'size': size}))\n`;
+    const res = session.read(py);
+    return res && Array.isArray(res.size) ? (res.size as [number, number]) : null;
+  }
+
+  /** A picked edge's own true arc length, via FreeCAD's own Edge.Length
+   *  (already accounts for a curved edge, not the endpoint-to-endpoint
+   *  straight-line distance). Same getElement() lookup as faceSize(). */
+  edgeLength(edge: unknown): number | null {
+    const session = this.requireSession();
+    const ref = edge as FcElementRef | null;
+    if (!ref || typeof ref.objName !== 'string' || typeof ref.name !== 'string') return null;
+    const py =
+      `import json, FreeCAD as App\n` +
+      `doc = App.ActiveDocument\n` +
+      `length = None\n` +
+      `o = doc.getObject(${pyStr(ref.objName)})\n` +
+      `if o is not None:\n` +
+      `    el = o.Shape.getElement(${pyStr(ref.name)})\n` +
+      `    if el is not None and el.Length and el.Length > 0:\n` +
+      `        length = round(el.Length, 2)\n` +
+      `open(${pyStr(OUT_PATH)}, 'w').write(json.dumps({'length': length}))\n`;
+    const res = session.read(py);
+    return typeof res?.length === 'number' && Number.isFinite(res.length) ? res.length : null;
   }
 }
