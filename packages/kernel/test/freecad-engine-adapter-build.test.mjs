@@ -64,6 +64,14 @@ function makeFakeSession({ edgeReads = {} } = {}) {
     cone(bodyName, featName, radius1, radius2, height) { record('cone', [bodyName, featName, radius1, radius2, height]); return featName; },
     torus(bodyName, featName, ringRadius, tubeRadius) { record('torus', [bodyName, featName, ringRadius, tubeRadius]); return featName; },
     prism(bodyName, featName, radius, height, sides) { record('prism', [bodyName, featName, radius, height, sides]); return featName; },
+    linearPattern(bodyName, featureName, count, step, axis, patternName = 'LinearPattern') {
+      record('linearPattern', [bodyName, featureName, count, step, axis, patternName]);
+      return patternName;
+    },
+    polarPattern(bodyName, featureName, count, angle, axis, patternName = 'PolarPattern') {
+      record('polarPattern', [bodyName, featureName, count, angle, axis, patternName]);
+      return patternName;
+    },
     fillet(bodyName, baseName, edgeNames, radius) {
       record('fillet', [bodyName, baseName, edgeNames, radius]);
       if (radius > 1000) throw new Error('radius too large for this solid');
@@ -269,6 +277,118 @@ test('prism sides clamps to the 3..12 range, same bound occt-build.ts uses', () 
   adapter.build({ version: 1, features: [{ id: 'p1', kind: 'prism', sides: 40, radius: 6, height: 15, center: [0, 0, 0] }] });
   const prismCall = session.calls.find((c) => c.name === 'prism');
   assert.equal(prismCall.args[4], 12);
+});
+
+test('pattern: linear along a single world axis -- Length is signed step*(count-1), axis auto-detected', () => {
+  const session = makeFakeSession();
+  const adapter = makeAdapter(session);
+  const doc = {
+    version: 1,
+    features: [
+      { id: 'box1', kind: 'box', size: [10, 10, 10], center: [0, 0, 0] },
+      { id: 'pat1', kind: 'pattern', target: 'box1', mode: 'linear', count: 3, step: [20, 0, 0] },
+    ],
+  };
+  const result = adapter.build(doc);
+  assert.equal(result.refusals, undefined);
+  const call = session.calls.find((c) => c.name === 'linearPattern');
+  const boxBody = result.shapes.get('box1').bodyName;
+  assert.equal(call.args[0], boxBody);
+  assert.equal(call.args[2], 3, 'count passes through as Occurrences');
+  assert.equal(call.args[3], 40, 'Length = step(20) * (count(3) - 1)');
+  assert.equal(call.args[4], 'x');
+  assert.equal(call.args[5], 'pat1_pattern', 'a per-feature-id name, not the emitter default');
+  assert.notEqual(result.shapes.get('pat1').objName, result.shapes.get('box1').objName);
+});
+
+test('pattern: circular around z builds; a non-z axis refuses per-feature', () => {
+  const session = makeFakeSession();
+  const adapter = makeAdapter(session);
+  const okDoc = {
+    version: 1,
+    features: [
+      { id: 'box1', kind: 'box', size: [10, 10, 10], center: [30, 0, 0] },
+      { id: 'pat1', kind: 'pattern', target: 'box1', mode: 'circular', count: 6, axis: 'z', totalAngle: 360 },
+    ],
+  };
+  const result = adapter.build(okDoc);
+  assert.equal(result.refusals, undefined);
+  const call = session.calls.find((c) => c.name === 'polarPattern');
+  assert.equal(call.args[2], 6);
+  assert.equal(call.args[3], 360);
+  assert.equal(call.args[4], 'z');
+
+  const session2 = makeFakeSession();
+  const adapter2 = makeAdapter(session2);
+  const xDoc = {
+    version: 1,
+    features: [
+      { id: 'box1', kind: 'box', size: [10, 10, 10], center: [30, 0, 0] },
+      { id: 'pat1', kind: 'pattern', target: 'box1', mode: 'circular', count: 6, axis: 'x', totalAngle: 360 },
+    ],
+  };
+  const result2 = adapter2.build(xDoc);
+  assert.ok(result2.refusals?.get('pat1')?.includes("'x'"), result2.refusals?.get('pat1'));
+  assert.equal(result2.shapes.get('pat1'), result2.shapes.get('box1'));
+});
+
+test('pattern: circular on a sphere/cone/torus/prism target refuses (their local geometry sits on the very axis the pattern orbits)', () => {
+  const session = makeFakeSession();
+  const adapter = makeAdapter(session);
+  const doc = {
+    version: 1,
+    features: [
+      { id: 'sph1', kind: 'sphere', radius: 5, center: [30, 0, 0] },
+      { id: 'pat1', kind: 'pattern', target: 'sph1', mode: 'circular', count: 4, axis: 'z', totalAngle: 360 },
+    ],
+  };
+  const result = adapter.build(doc);
+  assert.ok(result.refusals?.get('pat1')?.includes('sphere, cone, torus or prism'), result.refusals?.get('pat1'));
+  assert.equal(session.calls.find((c) => c.name === 'polarPattern'), undefined);
+});
+
+test('pattern: a rotated target refuses rather than patterning along the wrong (body-local) axis', () => {
+  const session = makeFakeSession();
+  const adapter = makeAdapter(session);
+  const doc = {
+    version: 1,
+    features: [
+      { id: 'box1', kind: 'box', size: [10, 10, 10], center: [0, 0, 0], rotate: [0, 0, 30] },
+      { id: 'pat1', kind: 'pattern', target: 'box1', mode: 'linear', count: 3, step: [20, 0, 0] },
+    ],
+  };
+  const result = adapter.build(doc);
+  assert.ok(result.refusals?.get('pat1')?.includes('rotated'), result.refusals?.get('pat1'));
+  assert.equal(result.shapes.get('pat1'), result.shapes.get('box1'));
+  assert.equal(session.calls.find((c) => c.name === 'linearPattern'), undefined);
+});
+
+test('pattern: a diagonal step (more than one nonzero axis) refuses rather than guessing a direction', () => {
+  const session = makeFakeSession();
+  const adapter = makeAdapter(session);
+  const doc = {
+    version: 1,
+    features: [
+      { id: 'box1', kind: 'box', size: [10, 10, 10], center: [0, 0, 0] },
+      { id: 'pat1', kind: 'pattern', target: 'box1', mode: 'linear', count: 3, step: [20, 20, 0] },
+    ],
+  };
+  const result = adapter.build(doc);
+  assert.ok(result.refusals?.get('pat1')?.includes('more than'), result.refusals?.get('pat1'));
+});
+
+test('pattern: count < 1 refuses, matching occt-build.ts\'s own guard', () => {
+  const session = makeFakeSession();
+  const adapter = makeAdapter(session);
+  const doc = {
+    version: 1,
+    features: [
+      { id: 'box1', kind: 'box', size: [10, 10, 10], center: [0, 0, 0] },
+      { id: 'pat1', kind: 'pattern', target: 'box1', mode: 'linear', count: 0, step: [20, 0, 0] },
+    ],
+  };
+  const result = adapter.build(doc);
+  assert.ok(result.refusals?.get('pat1')?.includes('needs at least one copy'));
 });
 
 test('unsupported feature kinds throw a clear, named error', () => {

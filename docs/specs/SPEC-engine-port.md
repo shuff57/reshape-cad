@@ -540,13 +540,14 @@ browser -- so this is what was actually found, not a forecast.
 `FreeCadEngineAdapter.build()` (`packages/kernel/src/freecad-engine-adapter.ts`)
 builds `box`, `cylinder`, `sphere`, `sketch` (plane `'xy'` at offset `0`
 only -- any other plane/offset throws its own specific message), `extrude`,
-`pocket`, `fillet`/`chamfer`, and -- added in a later pass, see below --
-`cone`, `torus`, `prism`. Every other `Feature['kind']`
-(`packages/script/src/model-types.ts`) throws
+`pocket`, `fillet`/`chamfer`, `cone`, `torus`, `prism` (added in a later
+pass, see below), and -- added in a further pass, see "pattern lands"
+below -- `pattern` (linear + polar, narrowed). Every other
+`Feature['kind']` (`packages/script/src/model-types.ts`) throws
 `"not yet supported on the FreeCAD engine: <kind>"`:
 
-`wedge`, `groove`, `blend`, `combine`, `revolve`, `mirror`, `pattern`,
-`hole`, `shell`, `draft`, `move` -- 11 kinds. `revolve`/`groove`
+`wedge`, `groove`, `blend`, `combine`, `revolve`, `mirror`,
+`hole`, `shell`, `draft`, `move` -- 10 kinds. `revolve`/`groove`
 specifically are a found orientation mismatch, not unstarted work -- see
 `FreeCadEngineAdapter`'s own comment on its `else` branch. v1 is also
 single-body-per-chain (`combine` is the one place two independent chains
@@ -578,13 +579,80 @@ pass could close by guessing a property mapping. `hole`/`shell`/`draft`/
 untouched -- each would need real, unscheduled design work (a hole's own
 sketch-plane-vs.-already-placed-body question in particular is a genuine
 open question, not a small gap), not a two-line follow of an existing
-pattern the way cone/torus/prism were. `pattern` has proven bridge
-commands too (`linearPattern`/`polarPattern`, `engine/bridge/
-pattern-test.mjs`) but was not attempted this pass: its semantics were
-never checked against `occt-build.ts`'s own world-axis-orbit convention
-(§4 risk 6's kind of question, not confirmed either way), and the
-placement bug below ate the rest of this pass's time budget before it
-could be chased down -- left as a named follow-up, not a silent gap.
+pattern the way cone/torus/prism were.
+
+**`pattern` (linear + polar) added in a further pass** (SPEC-studio-
+canonical.md phase 2), closing the follow-up named above. Built in the
+target's own body via `fc-commands.mjs`'s native `PartDesign::
+LinearPattern`/`PolarPattern` emitters (previously proven only at the
+string level, `engine/bridge/pattern-test.mjs`), matching fillet/chamfer/
+extrude/pocket's own "continue in the target's body" convention. Verified
+against `fc-kernel-pd-final`
+(`packages/kernel/test/freecad-pattern.manual.mjs`, 26/26 passing): a
+3-copy non-overlapping linear pattern's volume and bbox span match OCCT
+exactly, a 4-copy 90°-spaced polar pattern's volume and span match OCCT
+exactly (ruling out FreeCAD spacing occurrences at 360/(count-1) instead
+of 360/count, which would have fused a duplicate at the seam), a negative
+step correctly reverses direction, and two independent patterns built in
+one document keep distinct object names.
+
+Getting there found and fixed three real, previously-unknown bugs, all in
+`fc-commands.mjs`'s emitters, none in this pass's own new adapter code:
+1. **`Body.Tip` never advances to a `newObject()`-created pattern.**
+   `Body.Shape` kept reflecting the PRE-pattern feature (measured: a
+   3-instance linear pattern's own bbox came back as a single instance's
+   extent) until this pass added an explicit `body.Tip = lp` (`= pp` for
+   polar), with the previous Tip restored on the existing rollback-on-
+   failure path.
+2. **A negative `Length` does not reverse direction -- it errors.**
+   `PartDesign::LinearPattern.Length` rejected a negative Quantity outright
+   ("Pattern length too small") rather than patterning the other way.
+   Fixed by moving direction into the separate `Reversed` boolean property
+   and always sending a positive magnitude.
+3. **A second `PartDesign::Body` in the same document auto-suffixes its
+   own axis datum's internal NAME on collision.** `origin.getObject
+   ('Z_Axis')` is a name-based lookup; measured directly against the
+   kernel, the first Body's Z axis really is named `Z_Axis`, but the
+   SECOND Body's is silently renamed `Z_Axis001` by FreeCAD itself, so the
+   original lookup returned `None` for every body past the first and threw
+   the exact "type of first element in tuple must be 'DocumentObject', not
+   NoneType" exception this same file's own header already names as a
+   DIFFERENT bug (msgbox #97) with the identical symptom. Fixed by
+   resolving through `origin.OriginFeatures`' own `.Role` property instead
+   of `Name` -- `Role` ('X_Axis'/'Y_Axis'/'Z_Axis'/...) is not renamed on
+   collision.
+
+Three further, genuine semantic gaps were found (not bugs in this pass's
+own code -- structural mismatches between the two engines, the same kind
+`revolve`/`groove` and `wedge` already are) and REFUSED per-feature
+(`EngineBuildResult.refusals`, the same "no answer over a wrong one" rule
+fillet's own edge resolution already follows) rather than built wrong,
+all traceable to one root cause: occt-build.ts's own pattern always works
+in WORLD coordinates, but FreeCAD's `LinearPattern`/`PolarPattern` resolve
+their `Direction`/`Axis` through the owning Body's own Origin datum, fixed
+at BODY-LOCAL (0,0,0), which has no knowledge of where `Body.Placement`
+will later put the body in the world:
+- **A rotated target.** The pattern's own axis would rotate with the body
+  instead of staying on the world axis ModelDoc asked for.
+- **A non-'z' circular axis.** Unreachable via the studio UI today
+  (`ModelEditor.tsx`'s `newPattern()` hardcodes `axis: 'z'`), narrowed
+  rather than solved.
+- **A circular pattern of a sphere/cone/torus/prism target.** Found ONLY
+  by running against the real kernel, not from reading the code: those
+  four kinds never bake `f.center` into their own local geometry (center
+  is applied purely via `Body.Placement`), so their local shape sits
+  at/near body-local (0,0,0) -- exactly where the pattern's own axis also
+  sits, regardless of how far from the world origin `f.center` actually
+  placed them. Measured: a radius-5 sphere at center `[30,0,0]`, patterned
+  4x around `'z'`, built with no error and no refusal but came back with
+  the volume of exactly one sphere, not four. `box`/`cylinder` are
+  unaffected (their sketch geometry DOES bake `f.center` into local x/y),
+  and so is any non-primitive chain (sketch/extrude/pocket/fillet/chamfer
+  never call `setBodyPlacement` at all, so `Body.Placement` stays identity
+  and body-local IS world for them).
+
+Full account, including the exact refusal wording, is
+`FreeCadEngineAdapter`'s own comment on its `pattern` branch.
 
 Verified against the real kernel (`fc-kernel-pd-final`,
 `packages/kernel/test/freecad-new-kinds.manual.mjs`): cone/torus/prism

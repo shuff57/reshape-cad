@@ -22,7 +22,28 @@
 //     with no way to pass ModelDoc's `sides` field -- fixed with an
 //     optional `sides` parameter, default 6, so every existing caller that
 //     does not pass it is unaffected.
-//   - Everything else -- wedge, combine, blend, mirror, pattern, hole,
+//   - pattern (linear + polar), added in a later pass -- see
+//     docs/specs/SPEC-studio-canonical.md phase 2 -- via fc-commands.mjs's
+//     own native PartDesign::LinearPattern/PolarPattern emitters (previously
+//     proven only at the string level, engine/bridge/pattern-test.mjs).
+//     Built in the target's own body, same "continue in the target's body"
+//     convention as fillet/chamfer/extrude/pocket. NARROWED, not a full
+//     port of PatternFeature's shape -- see the 'pattern' branch's own
+//     comment for the three found semantic gaps (a rotated target's
+//     pattern axis co-rotates with the body instead of staying
+//     world-frame; a non-'z' circular axis is unsupported; a circular
+//     pattern of a sphere/cone/torus/prism target is a geometric no-op,
+//     found only by running against the real kernel) -- all three REFUSED
+//     per-feature (EngineBuildResult.refusals) rather than built wrong.
+//     The axis narrowing is invisible in practice
+//     -- ModelEditor.tsx's newPattern() hardcodes axis 'z' and never
+//     exposes another axis in its own UI. The rotated-target refusal IS
+//     reachable, though: whyCannotOrbit() only gates a target sitting ON
+//     the orbit axis (center too close to it), not a target that has been
+//     turned via canRotate()'s own Turn control -- a box rotated then
+//     patterned hits this refusal for real. Named here, not silently
+//     narrowed away; see this port's own report.
+//   - Everything else -- wedge, combine, blend, mirror, hole,
 //     shell, move, draft, and (see the note on the 'revolve' branch's
 //     absence below) revolve/groove -- throws a clear "not yet supported
 //     on the FreeCAD engine: <kind>", per step 7's own instruction, rather
@@ -143,6 +164,8 @@ export interface FcSessionLike extends SketchSession {
   prism(bodyName: string, featName: string, radius: number, height: number, sides?: number): string;
   fillet(bodyName: string, baseName: string, edgeNames: string[], radius: number): string;
   chamfer(bodyName: string, baseName: string, edgeNames: string[], size: number): string;
+  linearPattern(bodyName: string, featureName: string, count: number, step: number, axis?: 'x' | 'y' | 'z', patternName?: string): string;
+  polarPattern(bodyName: string, featureName: string, count: number, angle?: number, axis?: 'x' | 'y' | 'z', patternName?: string): string;
 }
 
 /** One built feature's FreeCAD identity: which Body it lives in, the name of
@@ -227,6 +250,31 @@ export class FreeCadEngineAdapter implements EngineAdapter {
     const shapes = new Map<string, unknown>();
     const refusals = new Map<string, string>();
     const built = new Map<string, FcBuiltFeature>();
+    // Which rotation (ModelDoc's own f.rotate, [0,0,0] when absent/identity)
+    // each Body was placed with -- set alongside setBodyPlacement() below,
+    // read by the 'pattern' branch. Needed because PartDesign::LinearPattern/
+    // PolarPattern's Direction/Axis resolve through the Body's OWN Origin
+    // datum, which lives in BODY-LOCAL space and therefore co-rotates with
+    // Body.Placement -- unlike occt-build.ts's pattern, whose step/axis is
+    // always a literal WORLD-frame vector (see the 'pattern' branch's own
+    // comment below for the full explanation).
+    const bodyRotate = new Map<string, Vec3>();
+    // true for box/cylinder, whose sketch geometry bakes f.center directly
+    // into its own LOCAL x/y coordinates; false for sphere/cone/torus/prism,
+    // whose local geometry sits at/near local (0,0,0) regardless of f.center
+    // (center is applied ONLY via Body.Placement, per each branch's own
+    // comment below). This matters for the SAME reason bodyRotate does: a
+    // circular pattern's Axis resolves through the Body's own Origin datum,
+    // fixed at body-LOCAL (0,0) -- for a target whose local geometry is
+    // ALSO effectively at (0,0) (false here), orbiting it around that axis
+    // is a geometric no-op (every copy lands on the original), regardless
+    // of how far from the WORLD origin f.center actually placed it.
+    // Measured against the real kernel: a radius-5 sphere at center
+    // [30,0,0], patterned 4x around 'z', built with no error and no
+    // refusal but came back with the volume of exactly ONE sphere, not
+    // four -- confirming the four copies had silently collapsed onto each
+    // other. Refused in the 'pattern' branch below rather than shipped.
+    const bodyLocalCentered = new Map<string, boolean>();
 
     let bodyCounter = 0;
     const freshBody = (): string => {
@@ -254,7 +302,8 @@ export class FreeCadEngineAdapter implements EngineAdapter {
         );
         const padName = `${f.id}_pad`;
         session.pad(bodyName, sketchName, padName, h);
-        this.setBodyPlacement(session, bodyName, f.center, f.rotate, -h / 2);
+        this.setBodyPlacement(session, bodyName, f.center, f.rotate, -h / 2, bodyRotate);
+        bodyLocalCentered.set(bodyName, true);
         const entry: FcBuiltFeature = { bodyName, objName: padName, kind: 'solid', featureId: f.id, featureKind: f.kind };
         built.set(f.id, entry);
         shapes.set(f.id, entry);
@@ -264,7 +313,8 @@ export class FreeCadEngineAdapter implements EngineAdapter {
         session.sketchCircle(bodyName, sketchName, f.radius, f.center[0], f.center[1]);
         const padName = `${f.id}_pad`;
         session.pad(bodyName, sketchName, padName, f.height);
-        this.setBodyPlacement(session, bodyName, f.center, f.rotate, -f.height / 2);
+        this.setBodyPlacement(session, bodyName, f.center, f.rotate, -f.height / 2, bodyRotate);
+        bodyLocalCentered.set(bodyName, true);
         const entry: FcBuiltFeature = { bodyName, objName: padName, kind: 'solid', featureId: f.id, featureKind: f.kind };
         built.set(f.id, entry);
         shapes.set(f.id, entry);
@@ -272,7 +322,8 @@ export class FreeCadEngineAdapter implements EngineAdapter {
         const bodyName = freshBody();
         const featName = `${f.id}_sph`;
         session.sphere(bodyName, featName, f.radius);
-        this.setBodyPlacement(session, bodyName, f.center, undefined, 0);
+        this.setBodyPlacement(session, bodyName, f.center, undefined, 0, bodyRotate);
+        bodyLocalCentered.set(bodyName, false);
         const entry: FcBuiltFeature = { bodyName, objName: featName, kind: 'solid', featureId: f.id, featureKind: f.kind };
         built.set(f.id, entry);
         shapes.set(f.id, entry);
@@ -285,7 +336,8 @@ export class FreeCadEngineAdapter implements EngineAdapter {
         const bodyName = freshBody();
         const featName = `${f.id}_cone`;
         session.cone(bodyName, featName, f.radius, 0, f.height);
-        this.setBodyPlacement(session, bodyName, f.center, f.rotate, -f.height / 2);
+        this.setBodyPlacement(session, bodyName, f.center, f.rotate, -f.height / 2, bodyRotate);
+        bodyLocalCentered.set(bodyName, false);
         const entry: FcBuiltFeature = { bodyName, objName: featName, kind: 'solid', featureId: f.id, featureKind: f.kind };
         built.set(f.id, entry);
         shapes.set(f.id, entry);
@@ -297,7 +349,8 @@ export class FreeCadEngineAdapter implements EngineAdapter {
         const bodyName = freshBody();
         const featName = `${f.id}_torus`;
         session.torus(bodyName, featName, f.ringRadius, f.tubeRadius);
-        this.setBodyPlacement(session, bodyName, f.center, f.rotate, 0);
+        this.setBodyPlacement(session, bodyName, f.center, f.rotate, 0, bodyRotate);
+        bodyLocalCentered.set(bodyName, false);
         const entry: FcBuiltFeature = { bodyName, objName: featName, kind: 'solid', featureId: f.id, featureKind: f.kind };
         built.set(f.id, entry);
         shapes.set(f.id, entry);
@@ -311,7 +364,8 @@ export class FreeCadEngineAdapter implements EngineAdapter {
         const featName = `${f.id}_prism`;
         const sides = Math.max(3, Math.min(12, Math.round(f.sides)));
         session.prism(bodyName, featName, f.radius, f.height, sides);
-        this.setBodyPlacement(session, bodyName, f.center, f.rotate, -f.height / 2);
+        this.setBodyPlacement(session, bodyName, f.center, f.rotate, -f.height / 2, bodyRotate);
+        bodyLocalCentered.set(bodyName, false);
         const entry: FcBuiltFeature = { bodyName, objName: featName, kind: 'solid', featureId: f.id, featureKind: f.kind };
         built.set(f.id, entry);
         shapes.set(f.id, entry);
@@ -383,6 +437,142 @@ export class FreeCadEngineAdapter implements EngineAdapter {
         const entry: FcBuiltFeature = { bodyName: target.bodyName, objName: resultName, kind: 'solid', featureId: f.id, featureKind: f.kind };
         built.set(f.id, entry);
         shapes.set(f.id, entry);
+      } else if (f.kind === 'pattern') {
+        // fc-commands.mjs already carries native PartDesign::LinearPattern/
+        // PolarPattern emitters (engine/bridge/pattern-test.mjs proved them
+        // at the string level; this is the first live-kernel use). Built in
+        // the SAME body as the target, matching fillet/chamfer/extrude/
+        // pocket's own "continue in the target's body" convention.
+        //
+        // THREE genuine semantic gaps were found here, of the same kind as
+        // the revolve/groove orientation mismatch and wedge's missing-
+        // parameter gap this file's own header already documents -- each
+        // narrower, though: each affects a SUBSET of inputs, not every
+        // pattern, so the subset that is verified-correct against the real
+        // kernel is built for real rather than refusing pattern outright.
+        // All three trace back to the same root cause: occt-build.ts's own
+        // comment on its pattern branch is explicit that BOTH modes work in
+        // WORLD coordinates -- linear moves by a literal world-frame
+        // vector, circular orbits a line through the WORLD origin along
+        // f.axis, regardless of where the target sits, how it is rotated,
+        // or what kind of primitive it is. FreeCAD's LinearPattern/
+        // PolarPattern instead resolve their Direction/Axis through the
+        // owning Body's OWN Origin datum (Body.Origin.X_Axis/Y_Axis/
+        // Z_Axis) -- a line fixed at BODY-LOCAL (0,0,0), which co-rotates
+        // with Body.Placement and has no knowledge of where Placement will
+        // later put the body in the world.
+        //
+        // 1. A ROTATED target (setBodyPlacement's own f.rotate, tracked
+        //    per-body in `bodyRotate` above): the pattern would silently
+        //    repeat along the body's own tilted local axis instead of the
+        //    world axis ModelDoc asked for. Refused below for any pattern,
+        //    linear or circular, on a rotated target.
+        // 2. A non-'z' circular axis: v1 narrows circular mode to 'z' only,
+        //    matching every pattern the studio UI itself can actually
+        //    produce (ModelEditor.tsx's newPattern() hardcodes axis: 'z',
+        //    never exposes another axis in the Dimensions panel).
+        // 3. Found ONLY by running against the real kernel, not from
+        //    reading the code: a circular pattern of a sphere/cone/torus/
+        //    prism target. Those four kinds never bake f.center into their
+        //    own local geometry at all (center is applied purely via
+        //    Body.Placement, per each branch's own comment above) -- so
+        //    their local shape sits at/near body-local (0,0,0), exactly
+        //    where the pattern's own Origin-datum axis also sits, REGARDLESS
+        //    of how far from the world origin f.center actually placed
+        //    them. Orbiting them is a geometric no-op. Measured: a
+        //    radius-5 sphere at center [30,0,0], patterned 4x around 'z',
+        //    built with no error and no refusal but came back with the
+        //    volume of exactly one sphere, not four -- see
+        //    `bodyLocalCentered`'s own declaration above and this port's
+        //    own report. box/cylinder are unaffected (they DO bake
+        //    f.center into local x/y, so their local geometry sits away
+        //    from the axis), and so is any non-primitive chain
+        //    (sketch/extrude/pocket/fillet/chamfer never call
+        //    setBodyPlacement at all, so Body.Placement stays identity and
+        //    body-local IS world for them).
+        // Linear patterns are unaffected by gaps 2 and 3 -- translation has
+        // no "wrong pivot" the way rotation does.
+        const target = requireBuilt(f.target, `pattern ${f.id}`);
+        if (target.kind !== 'solid') throw new Error(`cannot build pattern ${f.id}: '${f.target}' is not a solid`);
+
+        if (f.count < 1) {
+          refusals.set(f.id, `${f.id} needs at least one copy -- ${f.id} is shown without it.`);
+          built.set(f.id, target);
+          shapes.set(f.id, target);
+          continue;
+        }
+
+        const rootRotate = bodyRotate.get(target.bodyName) ?? [0, 0, 0];
+        if (rootRotate.some((v) => v !== 0)) {
+          refusals.set(
+            f.id,
+            `${f.id} could not be built on the FreeCAD engine -- patterning a rotated primitive is not `
+              + `yet supported (the pattern's own axis would rotate with the body instead of staying on `
+              + `the world axis); ${f.id} is shown without it.`,
+          );
+          built.set(f.id, target);
+          shapes.set(f.id, target);
+          continue;
+        }
+
+        const patternName = `${f.id}_pattern`;
+        let resultName: string | null = null;
+
+        if (f.mode === 'linear') {
+          const step = f.step ?? [0, 0, 0];
+          const AXES: Array<'x' | 'y' | 'z'> = ['x', 'y', 'z'];
+          const nonzero = AXES.map((_, i) => i).filter((i) => Math.abs(step[i]) > 1e-9);
+          if (nonzero.length > 1) {
+            refusals.set(
+              f.id,
+              `${f.id} could not be built on the FreeCAD engine -- a linear pattern step along more than `
+                + `one world axis at once is not yet supported; ${f.id} is shown without it.`,
+            );
+          } else {
+            const idx = nonzero[0] ?? 0;
+            const axis = AXES[idx];
+            // Signed, not absolute -- FreeCAD's own Length is a plain
+            // Quantity and a negative value reverses direction along the
+            // datum axis's positive sense (verified against the real
+            // kernel, see this port's own report). i = 0..count-1, so the
+            // total span from first to last instance is step*(count-1),
+            // matching occt-build.ts's own `moved(oc, src, step[axis]*i)`.
+            const length = step[idx] * (f.count - 1);
+            resultName = session.linearPattern(target.bodyName, target.objName, f.count, length, axis, patternName);
+          }
+        } else {
+          const axis = f.axis ?? 'z';
+          if (axis !== 'z') {
+            refusals.set(
+              f.id,
+              `${f.id} could not be built on the FreeCAD engine -- circular patterns around the '${axis}' `
+                + `axis are not yet supported (only 'z' is built today); ${f.id} is shown without it.`,
+            );
+          } else if (bodyLocalCentered.get(target.bodyName) === false) {
+            // See bodyLocalCentered's own declaration above -- a sphere/
+            // cone/torus/prism target's local geometry sits at/near the
+            // SAME body-local origin the pattern orbits, so every copy
+            // would silently land on the original. Measured against the
+            // real kernel, not assumed: see this port's own report.
+            refusals.set(
+              f.id,
+              `${f.id} could not be built on the FreeCAD engine -- a circular pattern of a sphere, cone, `
+                + `torus or prism is not yet supported (every copy would land on the original); `
+                + `${f.id} is shown without it.`,
+            );
+          } else {
+            resultName = session.polarPattern(target.bodyName, target.objName, f.count, f.totalAngle ?? 360, 'z', patternName);
+          }
+        }
+
+        if (resultName === null) {
+          built.set(f.id, target);
+          shapes.set(f.id, target);
+          continue;
+        }
+        const entry: FcBuiltFeature = { bodyName: target.bodyName, objName: resultName, kind: 'solid', featureId: f.id, featureKind: f.kind };
+        built.set(f.id, entry);
+        shapes.set(f.id, entry);
       } else {
         // revolve/groove: occt-build.ts's own revolve reads a flat sketch's
         // (u, v) as (radius, height) about the PLANE'S NORMAL
@@ -420,7 +610,9 @@ export class FreeCadEngineAdapter implements EngineAdapter {
    *  together. */
   private setBodyPlacement(
     session: FcSessionLike, bodyName: string, center: Vec3, rotate: Vec3 | undefined, localZShift: number,
+    bodyRotate?: Map<string, Vec3>,
   ): void {
+    bodyRotate?.set(bodyName, rotate ?? [0, 0, 0]);
     const [cx, cy, cz] = center;
     const [rx, ry, rz] = rotate ?? [0, 0, 0];
     const py =

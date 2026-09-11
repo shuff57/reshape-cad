@@ -1,7 +1,14 @@
 # SPEC: make packages/studio (via sandbox-dev) the canonical sandbox
 
 Status (2026-09-11): phase 1 DONE (commit 79ab6c0) -- sandbox-dev has a
-real Code side, verified via bowser. Phase 2 (pattern support) in progress.
+real Code side, verified via bowser. Phase 2 (pattern support) DONE --
+linear + polar patterns build in `freecad-engine-adapter.ts`, verified
+against the real fc-kernel-pd-final kernel (26/26 checks). Three found
+semantic gaps (rotated target, non-'z' circular axis, circular pattern of
+a sphere/cone/torus/prism target) are refused per-feature, not built
+wrong -- see `freecad-engine-adapter.ts`'s own 'pattern' branch comment
+and SPEC-engine-port.md §6.1 for the full account. Phase 3 (general
+topo-naming for picking) next.
 
 ## 0. Decision
 
@@ -68,9 +75,37 @@ correctness-critical CAD kernel work.
    `BoxFeature.round` at all (distinct from the single-picked-edge Fillet
    path this same phase's plan text already flags as primitive-only).
    Not fixed here — logged for future triage, out of this phase's scope.
-2. **Pattern support in freecad-engine-adapter** — linear + polar, backed by
-   real FreeCAD PartDesign array features. UI/model already exist; this is
-   adapter `build()` work only.
+2. **DONE. Pattern support in freecad-engine-adapter** — linear + polar, backed
+   by real `PartDesign::LinearPattern`/`PolarPattern`. UI/model already
+   existed; this was adapter `build()` work only. Verified against
+   `fc-kernel-pd-final` (`packages/kernel/test/freecad-pattern.manual.mjs`,
+   26/26 passing): 3-copy non-overlapping linear pattern volume/span exact
+   vs OCCT, 4-copy 90°-spaced polar pattern volume/span exact vs OCCT
+   (rules out a 72°/duplicate-at-seam spacing), negative step correctly
+   reverses direction, two independent patterns in one document keep
+   distinct object names. Found and fixed three real bugs along the way
+   (all in `fc-commands.mjs`'s `linearPattern`/`polarPattern` emitters, none
+   in this phase's own new code): `Body.Tip` never advanced to the new
+   pattern object (`Body.Shape` kept showing the pre-pattern feature) --
+   fixed by setting it explicitly; a negative `Length` errored
+   ("Pattern length too small") instead of reversing direction -- fixed by
+   moving direction into the separate `Reversed` boolean and always sending
+   a positive magnitude; a second `PartDesign::Body` in the same document
+   auto-suffixes its own axis datum's internal NAME on collision (measured:
+   `Z_Axis` on the first body, `Z_Axis001` on the second), so the original
+   `origin.getObject('Z_Axis')` name-based lookup silently returned `None`
+   past the first body -- fixed by resolving through `OriginFeatures`'
+   `.Role` property instead, which is not renamed. Also found, and REFUSED
+   rather than built wrong (per-feature, `EngineBuildResult.refusals`,
+   matching this file's existing "no answer over a wrong one" convention):
+   a rotated target (the pattern's own axis would rotate with the body
+   instead of the world), a non-'z' circular axis (unreachable via the
+   studio UI, which hardcodes 'z'), and a circular pattern of a sphere/
+   cone/torus/prism target (their local geometry sits on the very axis the
+   pattern orbits, so every copy silently lands on the original --
+   confirmed only by running against the real kernel, not from reading the
+   code). Full account in `freecad-engine-adapter.ts`'s own 'pattern'
+   branch comment.
 3. **General (non-primitive) topo-naming for picking** — the deeper "item B"
    work: resolve faces/edges on sketch-derived solids (extrude/pocket walls
    and caps), not just primitives. This is what makes Fillet/Chamfer usable

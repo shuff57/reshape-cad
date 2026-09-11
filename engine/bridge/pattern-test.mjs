@@ -28,10 +28,11 @@ test('linearPattern: PartDesign::LinearPattern, Originals by name, Length + Occu
   assert.ok(py.includes('lp.Occurrences = 3'), py);
 });
 
-test('linearPattern: the world axis resolves through the Body Origin datum by NAME', () => {
+test('linearPattern: the world axis resolves through the Body Origin datum by ROLE, not Name (a second Body auto-suffixes its axis names)', () => {
   const py = emit.linearPattern('Body', 'Pad', 3, 20, 'x');
   assert.ok(py.includes("origin = getattr(body, 'Origin', None)"), py);
-  assert.ok(py.includes('"X_Axis")'), py);
+  assert.ok(py.includes('for _f in origin.OriginFeatures'), py);
+  assert.ok(py.includes('"X_Axis"'), py);
   assert.ok(py.includes("lp.Direction = (axisObj, [''])"), py);
 });
 
@@ -54,4 +55,11 @@ test('both patterns carry the clean-failure branch', () => {
 test('non-finite numbers throw', () => {
   assert.throws(() => emit.linearPattern('Body', 'Pad', NaN, 20));
   assert.throws(() => emit.polarPattern('Body', 'Pad', 4, 'x'));
+});
+
+test('patternName is requested by the caller, not hardcoded -- a second pattern in the same document must not collide on the return value', () => {
+  const lp = emit.linearPattern('Body', 'Pad', 3, 20, 'x', 'pat1_pattern');
+  assert.ok(lp.includes('newObject("PartDesign::LinearPattern", "pat1_pattern")'), lp);
+  const pp = emit.polarPattern('Body', 'Pad', 4, 360, 'z', 'pat2_pattern');
+  assert.ok(pp.includes('newObject("PartDesign::PolarPattern", "pat2_pattern")'), pp);
 });

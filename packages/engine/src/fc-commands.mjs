@@ -523,22 +523,60 @@ export const emit = {
   // doc.Objects scan for 'App::Origin' whose InList check matched nothing,
   // handing (None, ['']) to Direction and throwing "type of first element
   // in tuple must be 'DocumentObject', not NoneType".
-  linearPattern(bodyName, featureName, count, step, axis = 'z') {
+  //
+  // A SECOND, different cause of that exact same exception was found and
+  // fixed in this pass: `origin.getObject('Z_Axis')` looks the axis up by
+  // its own INTERNAL NAME, but that name is only unique DOCUMENT-WIDE, not
+  // per-body -- a second PartDesign Body in the same document gets its own
+  // axis auto-suffixed by FreeCAD itself (measured: 'Z_Axis' on the first
+  // body, 'Z_Axis001' on the second), so a literal-name lookup silently
+  // returns None for every body after the first. `origin.OriginFeatures`'s
+  // own `.Role` property ('X_Axis'/'Y_Axis'/'Z_Axis'/...) is NOT renamed on
+  // collision -- resolving through Role, not Name, is what actually survives
+  // more than one Body per document.
+  // `patternName` (default 'LinearPattern', matching the original hardcoded
+  // literal so every existing caller/test that omits it is unaffected) is
+  // the REQUESTED internal object name -- FreeCAD auto-suffixes on a
+  // collision (a second pattern in the same document would silently become
+  // "LinearPattern001"), so a caller building more than one pattern per
+  // document must pass a name unique across that whole document, not just
+  // this body, and use session.linearPattern()'s own return value (the name
+  // actually requested) rather than assuming the literal 'LinearPattern'.
+  // `step` is SIGNED -- a negative value means "the other way along axis".
+  // Measured against the real kernel: PartDesign::LinearPattern.Length
+  // rejects a negative Quantity outright ("Pattern length too small"), so
+  // direction has to go through the separate `Reversed` boolean property
+  // instead, with Length always the (positive) magnitude.
+  linearPattern(bodyName, featureName, count, step, axis = 'z', patternName = 'LinearPattern') {
     const c = pyNum(count, 'count');
     const s = pyNum(step, 'step');
+    const magnitude = Math.abs(s);
+    const reversed = s < 0 ? 'True' : 'False';
     const AXIS_DATUM = { x: 'X_Axis', y: 'Y_Axis', z: 'Z_Axis' };
     const datum = AXIS_DATUM[axis] ?? 'Z_Axis';
     return wrapStatus(
-      `lp = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::LinearPattern", "LinearPattern")\n` +
+      `lp = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::LinearPattern", ${pyStr(patternName)})\n` +
       `lp.Originals = [doc.getObject(${pyStr(featureName)})]\n` +
       `body = doc.getObject(${pyStr(bodyName)})\n` +
       `origin = getattr(body, 'Origin', None)\n` +
-      `axisObj = origin.getObject(${JSON.stringify(datum)}) if origin is not None else None\n` +
+      // Role, not Name -- see this file's own comment above linearPattern.
+      `axisObj = None\n` +
+      `if origin is not None:\n` +
+      `    for _f in origin.OriginFeatures:\n` +
+      `        if getattr(_f, 'Role', None) == ${JSON.stringify(datum)}:\n` +
+      `            axisObj = _f\n` +
+      `            break\n` +
       `lp.Direction = (axisObj, [''])\n` +
-      `lp.Length = ${s}\n` +
+      `lp.Length = ${magnitude}\n` +
+      `lp.Reversed = ${reversed}\n` +
       `lp.Occurrences = ${c}\n` +
+      // newObject() does NOT itself advance Body.Tip (measured against the
+      // real kernel -- Body.Shape kept reflecting the PRE-pattern feature
+      // until this was added), unlike the GUI command it stands in for.
+      `body.Tip = lp\n` +
       `doc.recompute()\n` +
       `if ('Invalid' in lp.State) or lp.Shape.isNull():\n` +
+      `    body.Tip = doc.getObject(${pyStr(featureName)})\n` +
       `    doc.removeObject(lp.Name)\n` +
       `    doc.recompute()\n` +
       `    raise ValueError('pattern failed — the feature to repeat must exist')`
@@ -548,22 +586,33 @@ export const emit = {
   // Polar pattern: repeat the named feature around a world axis. Same Body-
   // Origin datum resolution as linearPattern; Angle is the total sweep the
   // occurrences span (360 = the full ring).
-  polarPattern(bodyName, featureName, count, angle = 360, axis = 'z') {
+  // `patternName` -- same reasoning as linearPattern's own comment above.
+  polarPattern(bodyName, featureName, count, angle = 360, axis = 'z', patternName = 'PolarPattern') {
     const c = pyNum(count, 'count');
     const a = pyNum(angle, 'angle');
     const AXIS_DATUM = { x: 'X_Axis', y: 'Y_Axis', z: 'Z_Axis' };
     const datum = AXIS_DATUM[axis] ?? 'Z_Axis';
     return wrapStatus(
-      `pp = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::PolarPattern", "PolarPattern")\n` +
+      `pp = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::PolarPattern", ${pyStr(patternName)})\n` +
       `pp.Originals = [doc.getObject(${pyStr(featureName)})]\n` +
       `body = doc.getObject(${pyStr(bodyName)})\n` +
       `origin = getattr(body, 'Origin', None)\n` +
-      `axisObj = origin.getObject(${JSON.stringify(datum)}) if origin is not None else None\n` +
+      // Role, not Name -- see this file's own comment above linearPattern.
+      `axisObj = None\n` +
+      `if origin is not None:\n` +
+      `    for _f in origin.OriginFeatures:\n` +
+      `        if getattr(_f, 'Role', None) == ${JSON.stringify(datum)}:\n` +
+      `            axisObj = _f\n` +
+      `            break\n` +
       `pp.Axis = (axisObj, [''])\n` +
       `pp.Angle = ${a}\n` +
       `pp.Occurrences = ${c}\n` +
+      // newObject() does NOT itself advance Body.Tip -- same measured fact
+      // as linearPattern's own comment above.
+      `body.Tip = pp\n` +
       `doc.recompute()\n` +
       `if ('Invalid' in pp.State) or pp.Shape.isNull():\n` +
+      `    body.Tip = doc.getObject(${pyStr(featureName)})\n` +
       `    doc.removeObject(pp.Name)\n` +
       `    doc.recompute()\n` +
       `    raise ValueError('pattern failed — the feature to repeat must exist')`
@@ -769,15 +818,15 @@ export function attachCommands(session) {
     if (!res.ok) throw new Error(res.error || 'subtractive helix failed');
     return featName;
   };
-  session.linearPattern = (bodyName, featureName, count, step, axis = 'z') => {
-    const res = session.read(emit.linearPattern(bodyName, featureName, count, step, axis));
+  session.linearPattern = (bodyName, featureName, count, step, axis = 'z', patternName = 'LinearPattern') => {
+    const res = session.read(emit.linearPattern(bodyName, featureName, count, step, axis, patternName));
     if (!res.ok) throw new Error(res.error || 'linear pattern failed');
-    return 'LinearPattern';
+    return patternName;
   };
-  session.polarPattern = (bodyName, featureName, count, angle = 360, axis = 'z') => {
-    const res = session.read(emit.polarPattern(bodyName, featureName, count, angle, axis));
+  session.polarPattern = (bodyName, featureName, count, angle = 360, axis = 'z', patternName = 'PolarPattern') => {
+    const res = session.read(emit.polarPattern(bodyName, featureName, count, angle, axis, patternName));
     if (!res.ok) throw new Error(res.error || 'polar pattern failed');
-    return 'PolarPattern';
+    return patternName;
   };
   // editable history
   session.featureInfo = (objName) => session.read(emit.featureInfo(objName));
