@@ -10,7 +10,8 @@
 //        /work/build/bin/FreeCADCmd.js
 
 import assert from 'node:assert/strict';
-import { createFcSession, loadNodeKernel } from './fc-session.mjs';
+import { createFcSession } from '../../packages/engine/src/fc-session.mjs';
+import { loadNodeKernel } from '../../packages/engine/src/fc-session-node.mjs';
 
 const kernelJs = process.argv[2] || '/work/build/bin/FreeCADCmd.js';
 

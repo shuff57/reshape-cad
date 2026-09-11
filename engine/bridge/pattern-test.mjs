@@ -9,7 +9,7 @@
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { emit } from './fc-commands.mjs';
+import { emit } from '../../packages/engine/src/fc-commands.mjs';
 
 const WRAP_HEAD = 'import json\nimport FreeCAD as App\nimport Part\nimport Sketcher\ndoc = App.ActiveDocument\n';
 

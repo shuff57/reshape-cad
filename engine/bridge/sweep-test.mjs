@@ -11,7 +11,7 @@
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { emit } from './fc-commands.mjs';
+import { emit } from '../../packages/engine/src/fc-commands.mjs';
 
 // Every sweep emitter is a wrapStatus body: opens with `import json` + the
 // defensive head, ends with the status-write.

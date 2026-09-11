@@ -9,7 +9,7 @@
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { emit } from './fc-commands.mjs';
+import { emit } from '../../packages/engine/src/fc-commands.mjs';
 
 test('holeThrough opens with the defensive import/rebind head (wrapStatus shape)', () => {
   const py = emit.holeThrough('Body', 'Sketch', 'Hole');

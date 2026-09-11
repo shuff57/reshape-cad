@@ -15,12 +15,32 @@ const KERNEL_DIR =
 
 const KERNEL_URL_PREFIX = '/reshape/kernel/';
 
+// The FreeCAD engine artifact set -- unlike the replicad kernel above, it
+// lives INSIDE this repo, split across two directories: the compiled kernel
+// (engine/build/g5-artifacts/FreeCADCmd.js + .wasm -- the G5 browser build,
+// NODERAWFS=OFF; NOT engine/build/g3-artifacts, which serve.mjs's own
+// comment says is "known to fail in a browser") and the Emscripten data pack
+// (engine/play/freecad-data.js + .data). No sibling-checkout assumption, so
+// there's no single default dir the way RESHAPE_KERNEL_DIR has one --
+// RESHAPE_ENGINE_DIR is kept for override symmetry anyway: when set, it
+// replaces BOTH in-repo defaults with one directory expected to contain all
+// four files (e.g. an assembled deployment bundle).
+const ENGINE_DIRS = process.env.RESHAPE_ENGINE_DIR
+  ? [process.env.RESHAPE_ENGINE_DIR]
+  : [
+      path.resolve(__dirname, '../../engine/build/g5-artifacts'),
+      path.resolve(__dirname, '../../engine/play'),
+    ];
+
+const ENGINE_URL_PREFIX = '/reshape/engine/';
+
 const CONTENT_TYPES: Record<string, string> = {
   '.wasm': 'application/wasm',
   '.js': 'text/javascript',
   '.mjs': 'text/javascript',
   '.html': 'text/html',
   '.json': 'application/json',
+  '.data': 'application/octet-stream',
 };
 
 // Serves the pre-built kernel from disk at the default getKernelBaseUrl()
@@ -54,8 +74,45 @@ function kernelStaticServer(): Plugin {
   };
 }
 
+// Serves the FreeCAD engine artifact set at /reshape/engine/ (the default
+// getEngineBaseUrl() path, packages/engine/src/config.ts), trying each of
+// ENGINE_DIRS in order for a given relative path -- mirrors
+// kernelStaticServer() above, split across two directories instead of one.
+function engineStaticServer(): Plugin {
+  return {
+    name: 'reshape-engine-static',
+    configureServer(server) {
+      for (const dir of ENGINE_DIRS) {
+        if (!fs.existsSync(dir)) {
+          console.warn(
+            `[reshape-sandbox-dev] engine artifact dir not found at ${dir} -- ` +
+              'set RESHAPE_ENGINE_DIR to override, or check engine/build/g5-artifacts and engine/play.'
+          );
+        }
+      }
+
+      server.middlewares.use((req, res, next) => {
+        if (!req.url || !req.url.startsWith(ENGINE_URL_PREFIX)) return next();
+
+        const relPath = decodeURIComponent(req.url.slice(ENGINE_URL_PREFIX.length).split('?')[0]);
+
+        for (const dir of ENGINE_DIRS) {
+          const filePath = path.join(dir, relPath);
+          if (!filePath.startsWith(dir) || !fs.existsSync(filePath)) continue;
+
+          const ext = path.extname(filePath);
+          res.setHeader('Content-Type', CONTENT_TYPES[ext] ?? 'application/octet-stream');
+          fs.createReadStream(filePath).pipe(res);
+          return;
+        }
+        next();
+      });
+    },
+  };
+}
+
 export default defineConfig({
-  plugins: [react(), kernelStaticServer()],
+  plugins: [react(), kernelStaticServer(), engineStaticServer()],
   server: {
     headers: {
       'Cross-Origin-Opener-Policy': 'same-origin',

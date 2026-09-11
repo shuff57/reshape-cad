@@ -1,0 +1,21 @@
+{
+  "name": "@shuff57/reshape-engine",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./fc-session": "./src/fc-session.mjs",
+    "./fc-session-node": "./src/fc-session-node.mjs",
+    "./fc-commands": "./src/fc-commands.mjs",
+    "./fc-sketch": "./src/fc-sketch.mjs",
+    "./config": "./dist/config.js",
+    "./load-browser": "./src/load-browser.mjs"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {}
+}

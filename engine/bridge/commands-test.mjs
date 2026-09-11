@@ -9,7 +9,7 @@
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { emit } from './fc-commands.mjs';
+import { emit } from '../../packages/engine/src/fc-commands.mjs';
 
 // Every snippet re-imports and rebinds defensively; the imports are part of
 // the contract (idempotent, safe to exec one snippet at a time).

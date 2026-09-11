@@ -27,9 +27,12 @@ const playRoot = here;
 //                    as "not ready yet" and falls back to /kernel/.
 const kernelRoot = resolve(here, '..', 'build', 'g3-artifacts');
 const kernelBrowserRoot = resolve(here, '..', 'build', 'g5-artifacts');
-// /bridge/ -> engine/bridge (fc-session.mjs, fc-commands.mjs) so the studio
-// page can import the command bridge as ES modules over the same origin.
-const bridgeRoot = resolve(here, '..', 'bridge');
+// /bridge/ -> packages/engine/src (fc-session.mjs, fc-commands.mjs,
+// fc-sketch.mjs) so the studio page can import the command bridge as ES
+// modules over the same origin. Moved out of engine/bridge into the
+// packages/engine workspace package (SPEC-engine-port.md §2.1); this path
+// changed, the served URL and file contents did not.
+const bridgeRoot = resolve(here, '..', '..', 'packages', 'engine', 'src');
 // /script/ -> packages/script/src (transpile.mjs) — the studio's script box
 // imports the transpiler directly; it is a dependency-free ESM module.
 const scriptRoot = resolve(here, '..', '..', 'packages', 'script', 'src');

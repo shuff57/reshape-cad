@@ -1,20 +1,18 @@
-// engine/bridge/fc-session.mjs
+// packages/engine/src/fc-session.mjs
 //
 // The command bridge: a persistent FreeCAD document living inside the wasm
 // engine, mutated by incremental commands, with the tip solid's mesh and the
 // feature tree read back to JS after each op.
 //
-// Two layers:
-//   createFcSession(Module) -- PORTABLE. Given an already-loaded, already-
-//     initialized Emscripten module (freecad_run_python available, main()
-//     already run once), returns a session with exec/read/mesh/tree + typed
-//     PartDesign commands. Same code path in Node and in the browser; only the
-//     module *loading* differs, and that is the caller's job.
-//   loadNodeKernel(kernelJsPath) -- NODE/TEST ONLY. Reproduces the proven
-//     loader (preRun ENV, FREECAD_HOME staging, noInitialRun + callMain
-//     placeholder) from engine/scripts/smoke.mjs and hands back a Module ready
-//     for createFcSession. The browser loader (engine/play/play.js) does the
-//     equivalent with a preload data pack instead of host staging.
+// PORTABLE half only. createFcSession(Module) -- given an already-loaded,
+// already-initialized Emscripten module (freecad_run_python available,
+// main() already run once), returns a session with exec/read/mesh/tree +
+// typed PartDesign commands. Same code path in Node and in the browser; only
+// the module *loading* differs, and that is the caller's job -- see
+// fc-session-node.mjs (Node/test-only) or load-browser.mjs (browser) for the
+// two loaders. Split out of a single fc-session.mjs (SPEC-engine-port.md
+// §2.1): loadNodeKernel() uses node:fs/node:child_process/node:module and
+// must never ship in the browser bundle this file is part of.
 //
 // Readback contract: Python prints exactly one line of the form
 //   @@RESHAPE:<json>@@
@@ -268,65 +266,4 @@ export function createFcSession(Module) {
     // typed PartDesign/Sketcher commands are attached in fc-commands.mjs
     // (mechanical Python emitters) so this core stays small and stable.
   };
-}
-
-// ---------------------------------------------------------------------------
-// Node/test-only loader. Mirrors engine/scripts/smoke.mjs's proven sequence:
-// FREECAD_HOME staging (bind Mod/Ext at HOME and HOME/share, cp fallback),
-// preRun ENV (the ONLY hook std::getenv sees), noInitialRun + a single
-// placeholder callMain (keeps the app alive without opening a real file).
-// Runs inside the kernel-build-final container where the resource trees exist.
-// ---------------------------------------------------------------------------
-export async function loadNodeKernel(kernelJsPath) {
-  const { createRequire } = await import('node:module');
-  const { existsSync, mkdirSync, readdirSync, cpSync } = await import('node:fs');
-  const { execFileSync } = await import('node:child_process');
-  const { resolve } = await import('node:path');
-  const require = createRequire(import.meta.url);
-
-  const MOD = process.env.FREECAD_MOD_SRC || '/work/fw/src/Mod';
-  const EXT = process.env.FREECAD_EXT_SRC || '/work/build/Ext';
-  const HOME = process.env.FREECAD_HOME || '/freecad_home';
-  const PYTHON_HOME = process.env.FREECAD_PYTHONHOME || '/opt/toolchains/python-wasm';
-  const PYTHON_PATH = process.env.FREECAD_PYTHONPATH || `${PYTHON_HOME}/lib/python3.14`;
-
-  function ensureMounted(target, linkPath) {
-    if (existsSync(linkPath) && readdirSync(linkPath).length > 0) return;
-    mkdirSync(linkPath, { recursive: true });
-    try {
-      execFileSync('mount', ['--bind', target, linkPath], { stdio: 'pipe' });
-      return;
-    } catch {
-      cpSync(target, linkPath, { recursive: true, dereference: true });
-    }
-  }
-  if (existsSync(MOD) && existsSync(EXT)) {
-    mkdirSync(HOME, { recursive: true });
-    ensureMounted(MOD, resolve(HOME, 'Mod'));
-    ensureMounted(EXT, resolve(HOME, 'Ext'));
-    // getResourceDir() == AppHomePath + "/share/", so mirror one level deeper.
-    ensureMounted(MOD, resolve(HOME, 'share', 'Mod'));
-    ensureMounted(EXT, resolve(HOME, 'share', 'Ext'));
-  }
-
-  const createFreeCAD = require(kernelJsPath);
-  // Capture at creation time -- see the note in createFcSession on why a later
-  // Module.print reassignment cannot work.
-  const lines = [];
-  const Module = await createFreeCAD({
-    preRun: [
-      (m) => {
-        m.ENV.FREECAD_WASM_KERNEL = '1';
-        m.ENV.PYTHONHOME = PYTHON_HOME;
-        m.ENV.PYTHONPATH = PYTHON_PATH;
-        m.ENV.FREECAD_HOME = HOME;
-      },
-    ],
-    noInitialRun: true,
-    print: (s) => { lines.push(s); console.log(s); },
-    printErr: (s) => { lines.push(s); console.error(s); },
-  });
-  Module.__reshapeLines = lines;
-  Module.callMain(['/nonexistent-placeholder.FCStd']);
-  return Module;
 }
