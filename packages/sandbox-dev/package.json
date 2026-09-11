@@ -1,0 +1,24 @@
+{
+  "name": "@shuff57/reshape-sandbox-dev",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite"
+  },
+  "dependencies": {
+    "@shuff57/reshape-studio": "file:../studio",
+    "@shuff57/reshape-kernel": "file:../kernel",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "three": "^0.185.1",
+    "lucide-react": "1.41.0"
+  },
+  "devDependencies": {
+    "vite": "^6.3.6",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.9.3",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0"
+  }
+}

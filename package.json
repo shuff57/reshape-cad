@@ -7,6 +7,7 @@
   ],
   "scripts": {
     "build": "npm run build -w @shuff57/reshape-sketch && npm run build -w @shuff57/reshape-script && npm run build -w @shuff57/reshape-kernel && npm run build -w @shuff57/reshape-studio",
+    "dev:sandbox": "npm run dev -w @shuff57/reshape-sandbox-dev",
     "test": "node scripts/check-record.mjs bench/record.json && npm test --workspaces --if-present && npm run test:occt",
     "test:occt": "node scripts/occt-modeldoc-gate.mjs"
   },
