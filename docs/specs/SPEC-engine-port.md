@@ -1,10 +1,21 @@
 # SPEC engine-port — packages/engine: wiring the FreeCAD kernel in beside replicad
 
-Blueprint only — no code written against this spec yet. Written after reading
-in full: `engine/bridge/fc-session.mjs`, `fc-commands.mjs`, `fc-sketch.mjs`;
-`packages/kernel/src/occt-api.ts`, `occt-build.ts`, `occt-mesh.ts`,
-`occt-three.ts`, `config.ts`; `packages/studio/src/model/BrepViewportThree.tsx`
-(the kernel-loading and build/mesh effects); `packages/script/src/model-types.ts`;
+**Status (2026-09-11): the build sequence below is DONE and this spec is now
+the live status doc for the FreeCAD engine, not just a blueprint** — §5's 11
+steps all landed (commits `077e10a` through `91e3539`), plus a real
+closure-pin bug found and fixed post-launch (`25f4fda`) and 3 more
+`Feature.kind`s built (`3681d5b`). §6 "Known gaps" is the current, maintained
+account of what still throws/refuses and why — read that section, not just
+this header, for what's actually true today. The original blueprint premise
+below (§0-§5) is kept as-written for its reasoning, not edited to sound
+retroactively finished.
+
+Originally written as a blueprint only — no code written against it yet — after
+reading in full: `engine/bridge/fc-session.mjs`, `fc-commands.mjs`,
+`fc-sketch.mjs`; `packages/kernel/src/occt-api.ts`, `occt-build.ts`,
+`occt-mesh.ts`, `occt-three.ts`, `config.ts`;
+`packages/studio/src/model/BrepViewportThree.tsx` (the kernel-loading and
+build/mesh effects); `packages/script/src/model-types.ts`;
 `packages/sketch/src/sketch-solve.ts`; `packages/sandbox-dev/vite.config.ts`;
 `engine/play/studio.js` and `serve.mjs`. Every claim below is sourced to one
 of those files, not assumed.
