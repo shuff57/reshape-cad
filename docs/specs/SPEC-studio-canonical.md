@@ -50,6 +50,23 @@ correctness-critical CAD kernel work.
    Verify every already-EXISTS feature (sketch constraints, primitive
    picking, primitive fillet/chamfer, history/undo/redo, STL export)
    actually works end-to-end in the browser sandbox, not just unit tests.
+
+   **Known issue found during phase 1 verification (2026-09-11, bowser/
+   sandbox-p1-verify), pre-existing and NOT introduced by this phase's
+   diff** (confirmed via `git log` — `freecad-engine-adapter.ts` and
+   `ModelEditor.tsx` last changed in `3681d5b`, before this phase touched
+   only `packages/sandbox-dev/*`): clicking **Round** on a selected primitive
+   box (no edge picked first, so it takes the "round every edge" path) shows
+   a success notice ("Rounded every edge...") and adds a "Box 1 corner"
+   slider to the Dimensions panel (`BoxFeature.round`, set), but the 3D mesh
+   never visibly updates — the box stays sharp-cornered. Reproduced twice,
+   including a 1s wait and a hi-res screenshot to rule out a render-timing
+   fluke. Undo cleanly removes the slider afterward, so the doc/history
+   state itself is consistent; only the BUILT geometry disagrees with it.
+   Likely the FreeCAD engine adapter's box builder not honoring
+   `BoxFeature.round` at all (distinct from the single-picked-edge Fillet
+   path this same phase's plan text already flags as primitive-only).
+   Not fixed here — logged for future triage, out of this phase's scope.
 2. **Pattern support in freecad-engine-adapter** — linear + polar, backed by
    real FreeCAD PartDesign array features. UI/model already exist; this is
    adapter `build()` work only.

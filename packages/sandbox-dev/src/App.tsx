@@ -1,6 +1,9 @@
-import { forwardRef, useState } from 'react';
-import ReshapeStudio, { type ReshapePreviewComponent } from '@shuff57/reshape-studio/ReshapeStudio';
+import { useState } from 'react';
+import ReshapeStudio from '@shuff57/reshape-studio/ReshapeStudio';
 import { setEngineMode } from '@shuff57/reshape-kernel/config';
+import CodeEditor from './CodeEditor.js';
+import ReshapePreview from './ReshapePreview.js';
+import { ScriptProvider } from './script-context.js';
 
 // SPEC-engine-port.md §3.3's own pattern, same as RESHAPE_KERNEL_DIR's
 // vite.config.ts side: VITE_RESHAPE_ENGINE (the VITE_ prefix is what makes
@@ -23,32 +26,20 @@ if (envEngineMode === 'freecad' || envEngineMode === 'occt') {
   setEngineMode(envEngineMode);
 }
 
-// The Code side is unused here (sides=['build']), but ReshapeStudio's props
-// require these two host-supplied components regardless -- see the sandbox
-// README for why we don't build real versions of either.
-function CodeEditorStub() {
-  return <div />;
-}
-
-const ReshapePreviewStub: ReshapePreviewComponent = forwardRef(function ReshapePreviewStub(
-  _props,
-  _ref
-) {
-  return null;
-});
-
 export default function App() {
   const [value, setValue] = useState('');
 
   return (
-    <ReshapeStudio
-      value={value}
-      onChange={setValue}
-      sides={['build']}
-      lessonId="sandbox-dev"
-      autoRunOnMount={false}
-      CodeEditor={CodeEditorStub}
-      ReshapePreview={ReshapePreviewStub}
-    />
+    <ScriptProvider value={value} onChange={setValue}>
+      <ReshapeStudio
+        value={value}
+        onChange={setValue}
+        sides={['build', 'code']}
+        lessonId="sandbox-dev"
+        autoRunOnMount={false}
+        CodeEditor={CodeEditor}
+        ReshapePreview={ReshapePreview}
+      />
+    </ScriptProvider>
   );
 }

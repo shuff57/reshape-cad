@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>reSHape script runner</title>
+    <style>
+      /* Never actually looked at -- ReshapePreview.tsx's iframe has no
+         visible content of its own (runScript() only builds a ModelDoc;
+         BrepViewport draws the result once it lands back in the parent).
+         Dark background just so a stray flash-of-white doesn't stand out
+         against the rest of the sandbox's dark chrome. */
+      html, body { margin: 0; height: 100%; background: #282a36; }
+    </style>
+  </head>
+  <body>
+    <script type="module" src="/src/script-runner-entry.ts"></script>
+  </body>
+</html>
