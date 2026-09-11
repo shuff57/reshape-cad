@@ -346,6 +346,30 @@ function loadEngine(THREE: typeof THREE_NS): Promise<EngineAdapter> {
   return enginePromise;
 }
 
+/** Automatic fallback engine for when the FreeCAD kernel refuses to build a
+ *  ModelDoc it doesn't support yet -- see the build effect below. Cached
+ *  module-level the same way `enginePromise` is, so a second mounted
+ *  component (or a second fallback within the same mount) reuses the same
+ *  loaded OcctEngineAdapter rather than fetching the ~23MB wasm twice.
+ *  EAGER, not lazy: the mount effect below calls this alongside the primary
+ *  engine's own load(), before phase ever reaches 'ready', so by the time
+ *  the build effect could possibly need it, it is already sitting resolved
+ *  -- no async gap mid-build-effect, which stays fully synchronous. The
+ *  cost is a real one (an extra ~23MB fetch on every FreeCAD-mode session,
+ *  even one that never hits an unsupported feature), but a lazy
+ *  load-on-first-refusal was rejected here as the harder-to-get-right
+ *  option: it would force the (currently fully synchronous) build effect to
+ *  become async, and would risk a race if `doc` changes again while that
+ *  first load is still in flight. */
+let occtFallbackPromise: Promise<EngineAdapter> | null = null;
+function loadOcctFallback(THREE: typeof THREE_NS): Promise<EngineAdapter> {
+  if (!occtFallbackPromise) {
+    const engine = new OcctEngineAdapter(THREE);
+    occtFallbackPromise = engine.load().then(() => engine);
+  }
+  return occtFallbackPromise;
+}
+
 /**
  * three.js itself, loaded dynamically so it code-splits out of the main
  * bundle rather than shipping to every page in the app. A REAL import()
@@ -466,6 +490,12 @@ export default function BrepViewportThree({
   const [preset, setPreset] = useState<'home' | 'top' | 'front' | 'underneath' | null>('home');
   const [loadError, setLoadError] = useState<string | null>(null);
   const [buildError, setBuildError] = useState<string | null>(null);
+  // Set once, the first time (if ever) a FreeCAD build refuses a feature and
+  // this component instance falls back to OcctEngineAdapter for the whole
+  // doc -- see the build effect's own comment. Never cleared afterwards:
+  // this component permanently stays on the fallback engine once it falls
+  // back once, so the note stays visible for as long as that's true.
+  const [engineFallbackNote, setEngineFallbackNote] = useState<string | null>(null);
   // A stage that is empty ON PURPOSE (nothing yet, or only flat sketches)
   // gets a hint, not the red panel. Measured 2026-09-03: a beginner who had
   // just drawn a circle read "Could not build this model" as their mistake.
@@ -633,6 +663,11 @@ export default function BrepViewportThree({
    *  actual kernel rebuild -- see the effect below that watches `pick`. */
   const lastBuiltRef = useRef<EngineBuildResult | null>(null);
   const lastMeshesRef = useRef<THREE_NS.Mesh[]>([]);
+  /** Pre-warmed OcctEngineAdapter, ready to swap in synchronously if the
+   *  FreeCAD engine refuses a feature -- see loadOcctFallback()'s own
+   *  comment for why this is loaded eagerly rather than on first refusal.
+   *  Stays null in 'occt' mode (never loaded, never needed). */
+  const fallbackEngineRef = useRef<EngineAdapter | null>(null);
 
   // ---- load the engine + three.js once --------------------------------------
   //
@@ -651,11 +686,21 @@ export default function BrepViewportThree({
       .then((three) => {
         if (cancelled) return undefined;
         threeRef.current = three;
-        return loadEngine(three.THREE);
+        // In 'freecad' mode, also bring up the OCCT fallback adapter NOW,
+        // in parallel with the primary engine -- see loadOcctFallback()'s
+        // own comment for why eager beats lazy here. In 'occt' mode there
+        // is nothing to fall back to (occt IS the fallback engine), so
+        // skip the extra ~23MB fetch entirely.
+        const fallbackLoad = getEngineMode() === 'freecad'
+          ? loadOcctFallback(three.THREE)
+          : Promise.resolve(null);
+        return Promise.all([loadEngine(three.THREE), fallbackLoad]);
       })
-      .then((engine) => {
-        if (cancelled || !engine) return;
+      .then((result) => {
+        if (cancelled || !result) return;
+        const [engine, fallback] = result;
         engineRef.current = engine;
+        fallbackEngineRef.current = fallback;
         setLoadingNote(`${getEngineMode()} engine ready`);
         setPhase('ready');
       })
@@ -2117,14 +2162,72 @@ export default function BrepViewportThree({
   // ---- build + mesh + draw, whenever the doc (or deflection) changes -------
   useEffect(() => {
     if (phase !== 'ready') return;
-    const engine = engineRef.current;
+    let engine = engineRef.current;
     const three = threeRef.current;
     if (!engine || !three || !rendererRef.current) return;
     let cancelled = false;
 
     try {
       const t0 = performance.now();
-      const built = engine.build(doc);
+      let built: EngineBuildResult;
+      try {
+        built = engine.build(doc);
+      } catch (e: any) {
+        // Automatic whole-document fallback (2026-09-11, flipping the
+        // default engine to 'freecad'). SPEC-engine-port.md §6.1's 11
+        // still-refused Feature.kind's, plus revolve/groove's own
+        // orientation mismatch, all throw this SAME named shape from
+        // FreeCadEngineAdapter.build() -- "not yet supported on the
+        // FreeCAD engine: <detail>". That prefix is deliberately the ONLY
+        // thing this catches: anything else (a real bug, a crash) is
+        // re-thrown below unchanged into the normal setBuildError path --
+        // never paper over an error whose shape isn't recognised, the same
+        // lesson this session already learned the hard way from
+        // sketch-translate.ts's closure-pin fix (25f4fda).
+        //
+        // fallbackEngineRef is a pre-warmed OcctEngineAdapter (loaded
+        // eagerly alongside the primary engine -- see the mount effect and
+        // loadOcctFallback()'s own comment), so this retry is synchronous,
+        // no async gap mid-effect. `engineRef.current` itself is
+        // reassigned here, not just this local `engine` variable, so every
+        // OTHER place in this file that reads engineRef.current fresh --
+        // drawGeoms()'s engine.edges() call, restorePicks()'s
+        // resolveEdge/faceAt/nameFace, the pick-only effect below -- ends
+        // up on the SAME engine that actually built these shapes, never a
+        // mismatch between "what built it" and "what picks it."
+        //
+        // Permanent for this mount, on purpose: once reassigned,
+        // engineRef.current stays the fallback adapter for this
+        // component instance's whole lifetime, even if a later edit
+        // removes the unsupported feature -- v1 does not attempt to
+        // detect "the doc no longer needs the fallback" (real, unwritten
+        // logic; simpler and safe to just stay on OCCT, which builds
+        // everything FreeCAD does). This also means the check below never
+        // has to ask "did we already fall back": once engineRef.current
+        // IS the fallback adapter, ITS OWN build() throws OCCT-shaped
+        // errors, which never match the FreeCAD refusal prefix, so this
+        // branch naturally never re-fires for the rest of this mount.
+        const msg = String(e?.message ?? e);
+        const fallback = fallbackEngineRef.current;
+        if (
+          getEngineMode() !== 'freecad'
+          || !fallback
+          || !/^not yet supported on the FreeCAD engine:/.test(msg)
+        ) {
+          throw e;
+        }
+        engine = fallback;
+        engineRef.current = fallback;
+        setEngineFallbackNote(
+          `This model uses a feature FreeCAD can't build yet (${msg.replace(/^not yet supported on the FreeCAD engine: /, '')}) -- showing it with the other engine.`,
+        );
+        built = engine.build(doc);
+      }
+      // A plain `const`, not the `let engine` above -- TS (correctly) can't
+      // prove a closure below won't run after some later reassignment of
+      // `engine`, even though nothing in this effect does that past this
+      // point. Fixing the type is simpler than convincing the compiler.
+      const activeEngine: EngineAdapter = engine;
       const buildMs = performance.now() - t0;
 
       const shapes = topLevel(doc)
@@ -2188,7 +2291,7 @@ export default function BrepViewportThree({
       const t1 = performance.now();
       const meshed = shapes
         .map((s) => {
-          const m = engine.mesh(s.shape, { deflection });
+          const m = activeEngine.mesh(s.shape, { deflection });
           return m ? { id: s.id, kind: s.kind, shape: s.shape, geometry: m.geometry, faces: m.faces } : null;
         })
         .filter((m): m is NonNullable<typeof m> => m !== null);
@@ -2379,6 +2482,15 @@ export default function BrepViewportThree({
           <div style={{ color: COLORS.fg }}>{buildError}</div>
         </div>
       )}
+      {/* Honest, non-alarming status -- same pill family as stageHint, not
+          the red error panel -- for the one time this component silently
+          swapped which kernel is drawing the model. Independent of
+          buildError/stageHint (can show alongside either): it is a fact
+          about which engine is running, not a hint about what to do next
+          or a report that something failed. */}
+      {phase === 'ready' && engineFallbackNote && (
+        <div style={engineFallbackNoteStyle}>{engineFallbackNote}</div>
+      )}
       {phase === 'ready' && (
         // Four plain-word camera presets, not an icon strip -- the gap this
         // fixes isn't that orbiting is hard, it's that nothing on screen
@@ -2503,6 +2615,18 @@ const viewStripActiveStyle: React.CSSProperties = {
 const stageHintStyle: React.CSSProperties = {
   position: 'absolute', top: 56, left: '50%', transform: 'translateX(-50%)',
   padding: '4px 10px', background: COLORS.panel, border: `1px solid ${COLORS.line}`, borderRadius: 999,
+  font: '12px ui-monospace, Menlo, Consolas, monospace', color: COLORS.fg, pointerEvents: 'none',
+};
+
+// Same pill family and horizontal placement as stageHintStyle, stacked
+// directly below it (top: 92, not 56) so the two can show at the same time
+// without drawing on top of each other -- rare in practice (a doc that both
+// needs the Pull hint AND just fell back), but not impossible, so this
+// doesn't assume mutual exclusion the way stageHint/buildError do.
+const engineFallbackNoteStyle: React.CSSProperties = {
+  position: 'absolute', top: 92, left: '50%', transform: 'translateX(-50%)',
+  padding: '4px 10px', maxWidth: 420, textAlign: 'center',
+  background: COLORS.panel, border: `1px solid ${COLORS.line}`, borderRadius: 999,
   font: '12px ui-monospace, Menlo, Consolas, monospace', color: COLORS.fg, pointerEvents: 'none',
 };
 

@@ -7,10 +7,21 @@ import { setEngineMode } from '@shuff57/reshape-kernel/config';
 // Vite expose it to client code via import.meta.env) is read ONCE, at module
 // load, before ReshapeStudio ever mounts -- BrepViewportThree.tsx's own
 // loadEngine() reads getEngineMode() at first load, so this has to run
-// before that, not inside a useEffect that could lose the race. Any value
-// other than the literal 'freecad' keeps the default ('occt') -- no change
-// in behaviour for every existing dev session that never sets this.
-setEngineMode(import.meta.env.VITE_RESHAPE_ENGINE === 'freecad' ? 'freecad' : 'occt');
+// before that, not inside a useEffect that could lose the race.
+//
+// Only call setEngineMode() when the env var EXPLICITLY names one of the two
+// modes -- otherwise leave packages/kernel/src/config.ts's own default
+// alone. Fixed 2026-09-11: this used to fall back to the literal 'occt'
+// whenever the var wasn't exactly 'freecad', which was fine while config.ts
+// itself defaulted to 'occt' (a no-op override), but silently defeated the
+// point the moment that default flipped to 'freecad' -- this dev app calls
+// setEngineMode() unconditionally on every load with no env var set, so it
+// would have kept forcing 'occt' regardless of what the shared default
+// became.
+const envEngineMode = import.meta.env.VITE_RESHAPE_ENGINE;
+if (envEngineMode === 'freecad' || envEngineMode === 'occt') {
+  setEngineMode(envEngineMode);
+}
 
 // The Code side is unused here (sides=['build']), but ReshapeStudio's props
 // require these two host-supplied components regardless -- see the sandbox

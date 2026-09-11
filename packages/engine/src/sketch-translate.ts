@@ -23,6 +23,18 @@
 import type { SketchFeature } from '@shuff57/reshape-script/model-types';
 import { arcFromBulge, circleOf, outlineOf, segmentRoles } from '@shuff57/reshape-sketch/sketch-arc';
 
+// This module ships to the browser (bundled into any app that builds
+// through FreeCadEngineAdapter -- e.g. packages/sandbox-dev, and, as of the
+// 2026-09-11 default-engine flip, every such app by default), where there
+// is no global `process`. A bare `process.env...` reference throws
+// `ReferenceError: process is not defined` the instant this runs, not just
+// when the debug flag is actually wanted -- found live, blocking every
+// sketch-based build under the new default. `typeof process !== 'undefined'`
+// is the standard guard: unlike referencing `process` directly, `typeof` on
+// an undeclared identifier never throws.
+const SKETCH_TRANSLATE_DEBUG =
+  typeof process !== 'undefined' && !!process.env?.SKETCH_TRANSLATE_DEBUG;
+
 /** 1=start, 2=end, 3=center -- fc-sketch.mjs's own PointPos convention (see
  *  that file's header). */
 export type PointPos = 1 | 2 | 3;
@@ -150,7 +162,7 @@ function pinAxisIfNeeded(
   const coord = axis === 'x' ? 0 : 1;
   const matches = already !== null && Math.abs(already[coord] - value) < CLOSURE_TOLERANCE_MM;
   const uninformative = after.dof === before.dof;
-  if (process.env.SKETCH_TRANSLATE_DEBUG) {
+  if (SKETCH_TRANSLATE_DEBUG) {
     console.error(
       `DEBUG closure ${axis} pin conflicted (geoId ${ref.geoId} pointPos ${ref.pointPos}): `
       + `before.dof=${before.dof} after.dof=${after.dof} already=${JSON.stringify(already)} `
@@ -396,7 +408,7 @@ export function translateSketch(
 
   // ---- §4.5.3: DoF closure --------------------------------------------------
   let state = session.sketchState(sketchName);
-  if (process.env.SKETCH_TRANSLATE_DEBUG) {
+  if (SKETCH_TRANSLATE_DEBUG) {
     console.error('DEBUG pre-closure state:', JSON.stringify({ dof: state.dof, conflicting: state.conflicting, redundant: state.redundant, malformed: state.malformed }));
     console.error('DEBUG cornerRefs:', JSON.stringify([...cornerRefs.entries()]));
     console.error('DEBUG geometry:', JSON.stringify(state.geometry));
@@ -431,14 +443,14 @@ export function translateSketch(
       const ref = cornerRefs.get(c);
       if (!ref) continue;
       const [x, y] = sketch.points[c];
-      if (process.env.SKETCH_TRANSLATE_DEBUG) {
+      if (SKETCH_TRANSLATE_DEBUG) {
         console.error(`DEBUG closure pin corner ${c}: geoId ${ref.geoId} pointPos ${ref.pointPos} -> (${x}, ${y})`);
       }
       pinAxisIfNeeded(session, sketchName, ref, 'x', x);
       pinAxisIfNeeded(session, sketchName, ref, 'y', y);
     }
     state = session.sketchState(sketchName);
-    if (process.env.SKETCH_TRANSLATE_DEBUG) {
+    if (SKETCH_TRANSLATE_DEBUG) {
       console.error('DEBUG post-closure state:', JSON.stringify({ dof: state.dof, conflicting: state.conflicting, redundant: state.redundant, malformed: state.malformed }));
       console.error('DEBUG post-closure geometry:', JSON.stringify(state.geometry));
     }
