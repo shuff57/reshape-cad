@@ -1,6 +1,7 @@
 # SPEC: make packages/studio (via sandbox-dev) the canonical sandbox
 
-Status (2026-09-11): planning complete, phase 1 not yet started.
+Status (2026-09-11): phase 1 DONE (commit 79ab6c0) -- sandbox-dev has a
+real Code side, verified via bowser. Phase 2 (pattern support) in progress.
 
 ## 0. Decision
 
