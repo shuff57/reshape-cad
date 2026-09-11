@@ -1,0 +1,6 @@
+/* ReshapeStudio's own container is height: 100% -- without an ancestor
+   chain that actually has a height, it collapses to near-zero. */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
