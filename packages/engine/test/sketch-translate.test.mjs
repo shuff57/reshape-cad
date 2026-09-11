@@ -37,15 +37,60 @@ import { translateSketch } from '../dist/sketch-translate.js';
  *  a real FreeCAD Sketcher constraint of that kind would remove. Good enough
  *  to prove translateSketch()'s OWN control flow (when does it call
  *  sketchState(), when does it emit closure pins, when does it throw) --
- *  see the file header for what it cannot prove. */
-function makeFakeSession(cornerCount, { conflicting = [] } = {}) {
+ *  see the file header for what it cannot prove.
+ *
+ *  `spuriousConflict: {geoId, pointPos, axis: 'x'|'y', already, informative}`,
+ *  when given, simulates SPEC-engine-port.md §6.3's closure-pin tolerance
+ *  gap on ONE axis of ONE corner's pin -- X and Y are pinned and checked
+ *  SEPARATELY by pinAxisIfNeeded() (sketch-translate.ts), matching a real,
+ *  measured case where one axis was genuinely redundant while the other
+ *  was genuinely still free. `informative: true` simulates the axis that
+ *  must NOT be silently dropped (dof actually decreases when it's added,
+ *  even though FreeCAD ALSO flags it conflicting) -- the exact shape of the
+ *  regression this file's tests exist to catch. */
+function makeFakeSession(cornerCount, { conflicting = [], spuriousConflict = null } = {}) {
   const calls = [];
   let nextGeoId = 0;
+  let nextIndex = 0;
   let removed = 0;
-  const totalDof = cornerCount * 4;
+  // The redundant case pre-spends 1 DoF (as if some OTHER, unmodelled
+  // constraint chain already fixed that ONE axis before closure ran, so
+  // this fake's total never counted it as needing to come from closure at
+  // all); the informative case really does close real dof when added, so
+  // the total is not pre-reduced.
+  const totalDof = cornerCount * 4 - (spuriousConflict && !spuriousConflict.informative ? 1 : 0);
   let stateCalls = 0;
+  let triggered = false;
+  let stillPinned = false;
 
   const record = (name, args) => calls.push({ name, args });
+  // Tracks whether EACH constraint index actually incremented `removed`
+  // when added, so delConstraint() can mirror it symmetrically -- a
+  // redundant pin that added zero real dof-reduction must not SUBTRACT one
+  // on deletion either, or "undo the redundant pin" looks like it destroys
+  // dof closure that was never really there.
+  const contributedByIndex = new Map();
+  const nextIdx = (contributed = true) => {
+    const i = nextIndex++;
+    contributedByIndex.set(i, contributed);
+    return i;
+  };
+
+  // Returns true when THIS call is the triggering, non-informative pin --
+  // the caller must then skip `removed += 1` for it, since "already fixed
+  // elsewhere" means this constraint adds literally zero new closure
+  // (before.dof === after.dof, the real signature pinAxisIfNeeded checks
+  // for). An informative trigger still arms/reports the conflict but DOES
+  // remove real dof, same as any other constraint.
+  const maybeArm = (axis, g1, p1) => {
+    const isTrigger = !!spuriousConflict && !triggered && spuriousConflict.axis === axis
+      && g1 === spuriousConflict.geoId && p1 === spuriousConflict.pointPos;
+    if (isTrigger) {
+      triggered = true;
+      stillPinned = true;
+    }
+    return isTrigger && !spuriousConflict.informative;
+  };
 
   return {
     calls,
@@ -61,26 +106,56 @@ function makeFakeSession(cornerCount, { conflicting = [] } = {}) {
       record('sketchAddCircle', [sk, cx, cy, r]);
       return nextGeoId++;
     },
-    constrainHorizontal(sk, g) { record('constrainHorizontal', [sk, g]); removed += 1; return 0; },
-    constrainVertical(sk, g) { record('constrainVertical', [sk, g]); removed += 1; return 0; },
-    constrainDistance(sk, g1, p1, g2, p2, v) { record('constrainDistance', [sk, g1, p1, g2, p2, v]); removed += 1; return 0; },
-    constrainEqual(sk, g1, g2) { record('constrainEqual', [sk, g1, g2]); removed += 1; return 0; },
-    constrainParallel(sk, g1, g2) { record('constrainParallel', [sk, g1, g2]); removed += 1; return 0; },
-    constrainPerpendicular(sk, g1, g2) { record('constrainPerpendicular', [sk, g1, g2]); removed += 1; return 0; },
-    constrainDistanceX(sk, g1, p1, g2, p2, v) { record('constrainDistanceX', [sk, g1, p1, g2, p2, v]); removed += 1; return 0; },
-    constrainDistanceY(sk, g1, p1, g2, p2, v) { record('constrainDistanceY', [sk, g1, p1, g2, p2, v]); removed += 1; return 0; },
-    constrainSymmetric(sk, g1, p1, g2, p2, g3, p3) { record('constrainSymmetric', [sk, g1, p1, g2, p2, g3, p3]); removed += 2; return 0; },
-    constrainAngle(sk, g1, g2, degrees) { record('constrainAngle', [sk, g1, g2, degrees]); removed += 1; return 0; },
-    constrainRadius(sk, g, value) { record('constrainRadius', [sk, g, value]); removed += 1; return 0; },
-    constrainCoincident(sk, g1, p1, g2, p2) { record('constrainCoincident', [sk, g1, p1, g2, p2]); removed += 2; return 0; },
+    constrainHorizontal(sk, g) { record('constrainHorizontal', [sk, g]); removed += 1; return nextIdx(); },
+    constrainVertical(sk, g) { record('constrainVertical', [sk, g]); removed += 1; return nextIdx(); },
+    constrainDistance(sk, g1, p1, g2, p2, v) { record('constrainDistance', [sk, g1, p1, g2, p2, v]); removed += 1; return nextIdx(); },
+    constrainEqual(sk, g1, g2) { record('constrainEqual', [sk, g1, g2]); removed += 1; return nextIdx(); },
+    constrainParallel(sk, g1, g2) { record('constrainParallel', [sk, g1, g2]); removed += 1; return nextIdx(); },
+    constrainPerpendicular(sk, g1, g2) { record('constrainPerpendicular', [sk, g1, g2]); removed += 1; return nextIdx(); },
+    constrainDistanceX(sk, g1, p1, g2, p2, v) {
+      record('constrainDistanceX', [sk, g1, p1, g2, p2, v]);
+      const contributes = !maybeArm('x', g1, p1);
+      if (contributes) removed += 1;
+      return nextIdx(contributes);
+    },
+    constrainDistanceY(sk, g1, p1, g2, p2, v) {
+      record('constrainDistanceY', [sk, g1, p1, g2, p2, v]);
+      const contributes = !maybeArm('y', g1, p1);
+      if (contributes) removed += 1;
+      return nextIdx(contributes);
+    },
+    constrainSymmetric(sk, g1, p1, g2, p2, g3, p3) { record('constrainSymmetric', [sk, g1, p1, g2, p2, g3, p3]); removed += 2; return nextIdx(); },
+    constrainAngle(sk, g1, g2, degrees) { record('constrainAngle', [sk, g1, g2, degrees]); removed += 1; return nextIdx(); },
+    constrainRadius(sk, g, value) { record('constrainRadius', [sk, g, value]); removed += 1; return nextIdx(); },
+    constrainCoincident(sk, g1, p1, g2, p2) { record('constrainCoincident', [sk, g1, p1, g2, p2]); removed += 2; return nextIdx(); },
+    delConstraint(sk, cIndex) {
+      record('delConstraint', [sk, cIndex]);
+      if (contributedByIndex.get(cIndex)) removed -= 1;
+      stillPinned = false;
+    },
     sketchState(sk) {
       stateCalls += 1;
       record('sketchState', [sk]);
       const dof = Math.max(0, totalDof - removed);
+      // Keeps reporting the conflict on EVERY call while the triggering pin
+      // is still in place -- a real GCS wouldn't "forget" a conflict just
+      // because someone re-asked; only delConstraint()-ing it away clears
+      // it, same as the tests below rely on.
+      const stillConflicting = triggered && stillPinned;
+      // The "already" value is a fact about this sketch from the START --
+      // some OTHER, earlier constraint chain fixed it before closure ever
+      // touched it (real bug: lock+horizontal+length, applied before this
+      // file's own closure loop runs) -- not something that only appears
+      // once a conflict is detected. Always present when configured, so a
+      // `before` snapshot taken ahead of the triggering pin (exactly what
+      // sketch-translate.ts's own closure loop does) sees it too.
+      const geometry = spuriousConflict
+        ? [{ id: spuriousConflict.geoId, x1: spuriousConflict.already[0], y1: spuriousConflict.already[1] }]
+        : [];
       return {
-        geometry: [], constraints: [], dof,
+        geometry, constraints: [], dof,
         fully: dof === 0,
-        conflicting: stateCalls === 1 ? conflicting : [],
+        conflicting: stillConflicting ? [999] : (stateCalls === 1 ? conflicting : []),
         redundant: [], malformed: [],
       };
     },
@@ -249,4 +324,85 @@ test('refuses (throws) on a constraint naming an out-of-range edge', () => {
   };
   const session = makeFakeSession(4);
   assert.throws(() => translateSketch(session, 'Sketch', sketch), /edge 99/);
+});
+
+// §6.3's closure-pin tolerance gap: a closure pin can land on a point some
+// OTHER, already-exact constraint chain already fixed, at a value that
+// differs by only float noise -- FreeCAD reports that as conflicting, but
+// it is not a translation bug. X and Y are checked SEPARATELY
+// (pinAxisIfNeeded) -- a real, measured regression (rounded-rectangle built
+// with the wrong volume, 12706.8583 instead of 11935.6194) came from an
+// earlier version of this fix treating a corner's pin as one all-or-nothing
+// unit: one axis was genuinely redundant while the other was genuinely
+// still needed, and deleting both together silently dropped the needed
+// one. These three tests prove all three outcomes the per-axis check must
+// tell apart.
+
+test('DoF closure: a spuriously-conflicting pin on an already-exact point is undone, not refused', () => {
+  // Corner 1 is geoId 1, pointPos 1 (edge n's line starts at corner n --
+  // the same convention every other test here relies on). Simulate
+  // FreeCAD's own solve already having that point's X at EXACTLY 40 --
+  // matching sketch.points[1][0] to within tolerance, AND contributing zero
+  // new dof (the real signature of "some other constraint already fixed
+  // this") -- while the closure pin we are about to add carries a hair of
+  // float noise, same shape as the real bug (packages/sketch's
+  // least-squares residual, not an exact algebraic answer).
+  const sketch = {
+    id: 'skT1', kind: 'sketch', plane: 'xy', offset: 0,
+    points: [[0, 0], [40.00000001, 0], [40, 25], [0, 25]],
+  };
+  const session = makeFakeSession(4, {
+    spuriousConflict: { geoId: 1, pointPos: 1, axis: 'x', already: [40, 0], informative: false },
+  });
+  let refs;
+  assert.doesNotThrow(() => { refs = translateSketch(session, 'Sketch', sketch); });
+  assert.equal(refs.size, 4);
+
+  const deletes = session.calls.filter((c) => c.name === 'delConstraint');
+  assert.equal(deletes.length, 1, 'only the spurious axis (X) was undone, not the whole corner');
+
+  const finalState = session.calls.filter((c) => c.name === 'sketchState').at(-1);
+  assert.ok(finalState, 'translateSketch still checked final state after undoing the spurious pin');
+});
+
+test('DoF closure: a GENUINELY conflicting pin (not just float noise) still refuses', () => {
+  // Same shape as the test above, but "already" is nowhere near
+  // sketch.points[1][0] -- a real mismatch, not tolerance noise. Must NOT
+  // be silently undone; the whole sketch build must still refuse, the same
+  // way it always has for an honest conflict.
+  const sketch = {
+    id: 'skT2', kind: 'sketch', plane: 'xy', offset: 0,
+    points: [[0, 0], [40, 0], [40, 25], [0, 25]],
+  };
+  const session = makeFakeSession(4, {
+    spuriousConflict: { geoId: 1, pointPos: 1, axis: 'x', already: [999, 999], informative: false },
+  });
+  assert.throws(() => translateSketch(session, 'Sketch', sketch), /conflict/i);
+
+  const deletes = session.calls.filter((c) => c.name === 'delConstraint');
+  assert.equal(deletes.length, 0, 'a real mismatch is never silently undone');
+});
+
+test('DoF closure: an INFORMATIVE pin that also conflicts is kept, not dropped (the actual regression)', () => {
+  // Same shape again, but this time the axis genuinely removes real dof
+  // when added (informative: true -- packages/kernel/test's own measured
+  // corner: before.dof=3, after.dof=2) even though FreeCAD ALSO flags it
+  // conflicting. An earlier version of this fix deleted it anyway because
+  // the VALUE happened to be numerically close (every corner starts near
+  // its target -- geometry is always constructed from the solved
+  // coordinates, see the file header), silently under-constraining the
+  // sketch and letting the solver settle on the WRONG shape. Correct
+  // behavior: leave it in place and let the sketch honestly refuse rather
+  // than build something wrong.
+  const sketch = {
+    id: 'skT3', kind: 'sketch', plane: 'xy', offset: 0,
+    points: [[0, 0], [40.00000001, 0], [40, 25], [0, 25]],
+  };
+  const session = makeFakeSession(4, {
+    spuriousConflict: { geoId: 1, pointPos: 1, axis: 'x', already: [40, 0], informative: true },
+  });
+  assert.throws(() => translateSketch(session, 'Sketch', sketch), /conflict/i);
+
+  const deletes = session.calls.filter((c) => c.name === 'delConstraint');
+  assert.equal(deletes.length, 0, 'an informative pin is never dropped just because it also conflicts');
 });

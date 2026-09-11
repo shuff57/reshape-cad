@@ -56,6 +56,7 @@ export interface SketchSession {
   constrainAngle(sk: string, g1: number, g2: number, degrees: number): number;
   constrainRadius(sk: string, g: number, value: number): number;
   constrainCoincident(sk: string, g1: number, p1: number, g2: number, p2: number): number;
+  delConstraint(sk: string, cIndex: number): void;
   sketchState(sk: string): {
     geometry: unknown[];
     constraints: unknown[];
@@ -73,16 +74,90 @@ const ORIGIN_POS: PointPos = 1;
 /** Pin one corner's already-solved (x, y) against the sketch origin -- the
  *  `lock` synthesis (§4.5.2's last row), reused verbatim for DoF closure
  *  (§4.5.3 step 4), since a closure pin IS a lock pin, just written for a
- *  corner the student did not explicitly lock. */
+ *  corner the student did not explicitly lock. Returns the two new
+ *  constraints' own indices -- DoF closure (below) needs them to undo a
+ *  pin that turns out to conflict with an already-exact value. */
 function pinCornerToOrigin(
   session: SketchSession, sketchName: string, ref: CornerRef, x: number, y: number,
-): void {
-  session.constrainDistanceX(sketchName, ref.geoId, ref.pointPos, ORIGIN_GEO, ORIGIN_POS, x);
-  session.constrainDistanceY(sketchName, ref.geoId, ref.pointPos, ORIGIN_GEO, ORIGIN_POS, y);
+): [xIndex: number, yIndex: number] {
+  const xIndex = session.constrainDistanceX(sketchName, ref.geoId, ref.pointPos, ORIGIN_GEO, ORIGIN_POS, x);
+  const yIndex = session.constrainDistanceY(sketchName, ref.geoId, ref.pointPos, ORIGIN_GEO, ORIGIN_POS, y);
+  return [xIndex, yIndex];
+}
+
+/** DoF-closure's own tolerance for "this point is already exactly where we
+ *  were about to pin it" (§4.5.3, closure-pin float-tolerance gap). mm --
+ *  loose enough to absorb packages/sketch's least-squares solver's own
+ *  float residue (measured: ~1e-8 off an exact algebraic answer), tight
+ *  enough that a genuinely wrong translation (wrong corner, a sign error,
+ *  anything off by a real distance) still refuses instead of being waved
+ *  through. */
+const CLOSURE_TOLERANCE_MM = 1e-4;
+
+/** Read one point back out of sketchState().geometry -- the same shape
+ *  fc-sketch.mjs's state() already returns (id/type/x1/y1/x2/y2/... per
+ *  FreeCAD geometry element), by geoId + PointPos (1=start, 2=end -- the
+ *  only two DoF closure ever pins; center/pointPos 3 is arc/circle-only,
+ *  never a closure target since rounded corners are skipped). Returns null
+ *  if the geometry entry or the requested point isn't present -- a caller
+ *  extending this to a shape this file does not yet emit, not a bug here. */
+function readPoint(geometry: unknown[], geoId: number, pointPos: PointPos): [number, number] | null {
+  const entry = (geometry as Array<Record<string, unknown>>).find((g) => g.id === geoId);
+  if (!entry) return null;
+  const [xKey, yKey] = pointPos === 2 ? ['x2', 'y2'] : pointPos === 1 ? ['x1', 'y1'] : ['cx', 'cy'];
+  const x = entry[xKey];
+  const y = entry[yKey];
+  return typeof x === 'number' && typeof y === 'number' ? [x, y] : null;
 }
 
 function refuse(sketch: SketchFeature, message: string): never {
   throw new Error(`sketch ${sketch.id}: ${message}`);
+}
+
+/** DoF closure's own per-axis pin (§4.5.3, closure-pin tolerance gap fix).
+ *  X and Y are checked SEPARATELY, not as `pinCornerToOrigin`'s bundled
+ *  pair -- measured on the real kernel: one axis of a corner can be
+ *  genuinely redundant (some OTHER, already-exact constraint chain fixed
+ *  it) while the OTHER axis of that SAME corner is genuinely still free.
+ *  Bundling them meant either keeping a spurious conflict (refuses
+ *  everything) or deleting BOTH (silently dropping real closure on the
+ *  informative half -- measured regression: the rounded-rectangle fixture
+ *  built with the wrong volume once, 12706.8583 instead of 11935.6194,
+ *  from exactly this).
+ *
+ *  A conflicted pin is undone ONLY when BOTH:
+ *  - matches: the point was already within CLOSURE_TOLERANCE_MM of this
+ *    value BEFORE this pin (proximity ALONE is not reliable evidence on
+ *    its own -- every corner starts out near its target value, since
+ *    geometry is always constructed from the solved coordinates to begin
+ *    with; see the file header. It is necessary, not sufficient.)
+ *  - uninformative: dof did not drop when this pin was added -- the real
+ *    signal that it contributed literally nothing new, the actual
+ *    definition of redundant, not just numerically close.
+ *  Either alone is not enough. Only when both hold is a conflict provably
+ *  spurious; otherwise it is a real mismatch and must be left in place for
+ *  the final check below to refuse honestly, not hidden. */
+function pinAxisIfNeeded(
+  session: SketchSession, sketchName: string, ref: CornerRef, axis: 'x' | 'y', value: number,
+): void {
+  const before = session.sketchState(sketchName);
+  const index = axis === 'x'
+    ? session.constrainDistanceX(sketchName, ref.geoId, ref.pointPos, ORIGIN_GEO, ORIGIN_POS, value)
+    : session.constrainDistanceY(sketchName, ref.geoId, ref.pointPos, ORIGIN_GEO, ORIGIN_POS, value);
+  const after = session.sketchState(sketchName);
+  if (after.conflicting.length === 0 && after.malformed.length === 0) return;
+  const already = readPoint(before.geometry, ref.geoId, ref.pointPos);
+  const coord = axis === 'x' ? 0 : 1;
+  const matches = already !== null && Math.abs(already[coord] - value) < CLOSURE_TOLERANCE_MM;
+  const uninformative = after.dof === before.dof;
+  if (process.env.SKETCH_TRANSLATE_DEBUG) {
+    console.error(
+      `DEBUG closure ${axis} pin conflicted (geoId ${ref.geoId} pointPos ${ref.pointPos}): `
+      + `before.dof=${before.dof} after.dof=${after.dof} already=${JSON.stringify(already)} `
+      + `target=${value} matches=${matches} uninformative=${uninformative}`,
+    );
+  }
+  if (matches && uninformative) session.delConstraint(sketchName, index);
 }
 
 /**
@@ -337,10 +412,13 @@ export function translateSketch(
     // Pin EVERY design corner, not only the ones sk.DoF would call free --
     // fc-sketch.mjs's state() reports only the AGGREGATE dof, with no
     // per-point breakdown, so there is no cheap way to ask "which corners
-    // specifically". Pinning all of them is safe per §4.5.3 step 5: a pin
-    // that lands on an already-constrained corner is REDUNDANT, not
-    // conflicting (both agree on the same point by construction), and
-    // FreeCAD's own Redundant classification exists for exactly this.
+    // specifically". X and Y are pinned and checked SEPARATELY
+    // (pinAxisIfNeeded, above) -- see that function's own comment for why
+    // bundling them (an earlier version of this loop did) is unsafe: one
+    // axis of a corner can be genuinely redundant while the other is
+    // genuinely still free, and undoing both together silently dropped the
+    // needed one (measured regression, now fixed -- see git history/
+    // SPEC-engine-port.md §6.3 for the full account).
     for (let c = 0; c < cornerCount; c++) {
       // A rounded corner's arc is already fully pinned above (radius +
       // center) -- its start point is DETERMINED by that, not free, and
@@ -356,7 +434,8 @@ export function translateSketch(
       if (process.env.SKETCH_TRANSLATE_DEBUG) {
         console.error(`DEBUG closure pin corner ${c}: geoId ${ref.geoId} pointPos ${ref.pointPos} -> (${x}, ${y})`);
       }
-      pinCornerToOrigin(session, sketchName, ref, x, y);
+      pinAxisIfNeeded(session, sketchName, ref, 'x', x);
+      pinAxisIfNeeded(session, sketchName, ref, 'y', y);
     }
     state = session.sketchState(sketchName);
     if (process.env.SKETCH_TRANSLATE_DEBUG) {

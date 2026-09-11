@@ -628,26 +628,53 @@ each verified fixed by re-running the same script:
    the `lock` constraint handler (locking a rounded corner is now a refusal,
    not a silent wrong pin -- there is no single coordinate to lock it to).
 
-**One gap found, not yet fixed** -- the `skA` (angle-constraint) fixture
-still fails DoF closure, but for a narrower reason than the three above:
+### 6.3.1 The closure-pin tolerance gap: fixed, per-axis, with a real regression along the way
+
 `packages/sketch`'s residual solver (`solveSketch`) is a least-squares
 minimizer, so its output (`jsSolved.points`) carries small floating-point
 residue (e.g. corner 1 lands at `29.99999999989688`, not exactly `30`) even
 for a corner FreeCAD's own `lock`+`horizontal`+`length` constraints already
-determine *exactly*. Closure then re-pins that same, already-exactly-fixed
-point to the epsilon-different value -- a genuine numerical conflict, not
-the "redundant, both agree by construction" case §4.5.3 step 5 assumed.
-Confirmed via `SKETCH_TRANSLATE_DEBUG=1` (an env-gated debug trace left in
-`sketch-translate.ts`, harmless when unset): pre-closure state for `skA` is
-`dof:3, conflicting:[]` -- clean -- and only turns conflicting once closure
-re-pins corners the explicit constraints had already exactly resolved.
-Needs either (a) a way to ask fc-sketch.mjs's `sketchState()` which points
-are already fully constrained, so closure only pins the genuinely-free ones,
-or (b) a tolerance-aware pin (read FreeCAD's own already-converged value
-back and skip re-pinning if it's within epsilon of `sketch.points[c]`,
-rather than trusting the JS solver's approximation over FreeCAD's own exact
-answer). Not attempted this session -- flagged for the next pass rather than
-patched blind.
+determine *exactly*. Closure re-pinning that same, already-exactly-fixed
+point to the epsilon-different value is a genuine numerical conflict, not
+the "redundant, both agree by construction" case §4.5.3 step 5 originally
+assumed.
+
+**Fix, in `sketch-translate.ts`'s closure loop**: `pinAxisIfNeeded()` pins
+and checks X and Y **separately**, not as `pinCornerToOrigin()`'s bundled
+pair. When a pin conflicts, it is undone (`session.delConstraint`) only
+when **both**:
+- `matches` -- the point was already within `CLOSURE_TOLERANCE_MM` (1e-4mm)
+  of the target value *before* this pin, read back from
+  `sketchState().geometry`; and
+- `uninformative` -- `dof` did not drop when the pin was added (the actual
+  definition of redundant, not just numerically close).
+
+Proximity alone is **not sufficient evidence** and was the source of a real,
+measured regression: since sketch geometry is always *constructed* from the
+already-solved coordinates (§4.5.1), every corner starts out numerically
+near its target regardless of whether anything actually holds it there.
+An earlier version of this fix bundled X+Y together and deleted both halves
+whenever either one conflicted-and-matched; against the real kernel, this
+built the rounded-rectangle fixture with the **wrong volume**
+(`12706.8583` instead of `11935.6194`) because one axis of a corner's pin
+was genuinely needed (measured: `before.dof=3, after.dof=2`) but got
+deleted anyway alongside a genuinely-redundant one on a *different* corner.
+Splitting the check to per-axis, gated on both conditions, fixed it --
+re-verified against the real kernel three consecutive runs, all matching
+OCCT exactly (`12000.0000`, `11935.6194`).
+
+**`skA` (the angle-constraint fixture) itself still refuses** -- correctly,
+now, not a bug. One axis of corner 2's closure pin is genuinely informative
+(`before.dof=3, after.dof=2` -- it really does close real freedom) *and*
+FreeCAD's own solver flags it conflicting. `pinAxisIfNeeded` now leaves that
+axis in place rather than silently dropping it (dropping it is exactly what
+caused the regression above), so the sketch refuses honestly instead of
+building a shape nobody verified. This is a real, narrower, unresolved
+question -- why does an informative pin also conflict here -- left for a
+follow-up; three unit tests (`packages/engine/test/sketch-translate.test.mjs`)
+pin down all three outcomes (redundant+undone, genuinely-mismatched+refused,
+informative-but-conflicting+kept) so a future fix can't silently regress
+either direction again.
 
 ### 6.4 A real, fixed bug: `packages/engine/src/load-browser.mjs` had no `locateFile`
 

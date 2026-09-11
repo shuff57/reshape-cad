@@ -53,6 +53,7 @@ function makeFakeSession({ edgeReads = {} } = {}) {
     constrainAngle() { record('constrainAngle', arguments); return 0; },
     constrainRadius() { record('constrainRadius', arguments); return 0; },
     constrainCoincident() { record('constrainCoincident', arguments); return 0; },
+    delConstraint() { record('delConstraint', arguments); },
     sketchState() {
       record('sketchState', []);
       return { geometry: [], constraints: [], dof: 0, fully: true, conflicting: [], redundant: [], malformed: [] };
