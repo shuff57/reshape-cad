@@ -12,12 +12,26 @@
 //     (session-test.mjs) already proves a 40x40 rect sketch + Pad(20)
 //     against this exact kernel, which is the pattern reused here),
 //     sketch (translated via ./sketch-translate.js, plane 'xy' offset 0
-//     only), extrude -> Pad, pocket, fillet, chamfer.
-//   - Everything else -- cone, torus, prism, wedge, combine, blend, mirror,
-//     pattern, hole, shell, move, draft, and (see the note on the 'revolve'
-//     branch's absence below) revolve/groove -- throws a clear "not yet
-//     supported on the FreeCAD engine: <kind>", per step 7's own
-//     instruction, rather than silently building the wrong shape.
+//     only), extrude -> Pad, pocket, fillet, chamfer, and -- added in a
+//     later pass, see docs/specs/SPEC-engine-port.md §6.1 -- cone, torus,
+//     prism. Those three build via fc-commands.mjs's own native
+//     PartDesign::Cone/Torus/Prism emitters (previously only string-level
+//     tested, never run against a live kernel until this pass), each
+//     verified against OcctEngineAdapter's own volume for the same doc.
+//     prism's own emit.prism() used to hardcode a hexagon (`Polygon = 6`)
+//     with no way to pass ModelDoc's `sides` field -- fixed with an
+//     optional `sides` parameter, default 6, so every existing caller that
+//     does not pass it is unaffected.
+//   - Everything else -- wedge, combine, blend, mirror, pattern, hole,
+//     shell, move, draft, and (see the note on the 'revolve' branch's
+//     absence below) revolve/groove -- throws a clear "not yet supported
+//     on the FreeCAD engine: <kind>", per step 7's own instruction, rather
+//     than silently building the wrong shape. wedge specifically was
+//     investigated and rejected, not merely unstarted: fc-commands.mjs's
+//     emit.wedge() only ever sets PartDesign::Wedge's Width and Height,
+//     with no parameter for ModelDoc's own WedgeFeature.depth at all -- a
+//     found mismatch of the same kind as revolve/groove's orientation gap,
+//     not something this pass can close by guessing a property mapping.
 //   - v1 is SINGLE-BODY-PER-CHAIN: every primitive/sketch starts its own
 //     fresh PartDesign::Body, and only extrude/pocket/fillet/chamfer -- which
 //     all take a `target` naming an earlier feature -- continue building
@@ -124,6 +138,9 @@ export interface FcSessionLike extends SketchSession {
   pad(bodyName: string, sketchName: string, padName: string, length: number): string;
   pocket(bodyName: string, sketchName: string, pocketName: string, length: number): string;
   sphere(bodyName: string, featName: string, radius: number): string;
+  cone(bodyName: string, featName: string, radius1: number, radius2: number, height: number): string;
+  torus(bodyName: string, featName: string, ringRadius: number, tubeRadius: number): string;
+  prism(bodyName: string, featName: string, radius: number, height: number, sides?: number): string;
   fillet(bodyName: string, baseName: string, edgeNames: string[], radius: number): string;
   chamfer(bodyName: string, baseName: string, edgeNames: string[], size: number): string;
 }
@@ -256,6 +273,45 @@ export class FreeCadEngineAdapter implements EngineAdapter {
         const featName = `${f.id}_sph`;
         session.sphere(bodyName, featName, f.radius);
         this.setBodyPlacement(session, bodyName, f.center, undefined, 0);
+        const entry: FcBuiltFeature = { bodyName, objName: featName, kind: 'solid', featureId: f.id, featureKind: f.kind };
+        built.set(f.id, entry);
+        shapes.set(f.id, entry);
+      } else if (f.kind === 'cone') {
+        // PartDesign::Cone is a frustum (Radius1 at its own local z=0,
+        // Radius2 at z=height); Radius2=0 tapers it to a point, matching
+        // occt-build.ts's coneOf() (base full radius at z=0, apex at
+        // z=height) exactly. Centred the same way as cylinder/prism --
+        // built at local z in [0,height], then re-centred by localZShift.
+        const bodyName = freshBody();
+        const featName = `${f.id}_cone`;
+        session.cone(bodyName, featName, f.radius, 0, f.height);
+        this.setBodyPlacement(session, bodyName, f.center, f.rotate, -f.height / 2);
+        const entry: FcBuiltFeature = { bodyName, objName: featName, kind: 'solid', featureId: f.id, featureKind: f.kind };
+        built.set(f.id, entry);
+        shapes.set(f.id, entry);
+      } else if (f.kind === 'torus') {
+        // PartDesign::Torus is already centred on its own local origin, flat
+        // in its own XY plane -- same as occt-build.ts's BRepPrimAPI_MakeTorus
+        // (no z-shift needed), so this follows sphere's placement exactly:
+        // localZShift 0, center/rotate applied directly to the Body.
+        const bodyName = freshBody();
+        const featName = `${f.id}_torus`;
+        session.torus(bodyName, featName, f.ringRadius, f.tubeRadius);
+        this.setBodyPlacement(session, bodyName, f.center, f.rotate, 0);
+        const entry: FcBuiltFeature = { bodyName, objName: featName, kind: 'solid', featureId: f.id, featureKind: f.kind };
+        built.set(f.id, entry);
+        shapes.set(f.id, entry);
+      } else if (f.kind === 'prism') {
+        // PartDesign::Prism's own vertex convention (a vertex at angle 0, the
+        // polygon built from a Circumradius) already matches occt-build.ts's
+        // own prism branch -- that file's own comment says so directly, this
+        // is not a re-derivation. Centred the same way as cylinder/cone: the
+        // solid sits at local z in [0,height], re-centred by localZShift.
+        const bodyName = freshBody();
+        const featName = `${f.id}_prism`;
+        const sides = Math.max(3, Math.min(12, Math.round(f.sides)));
+        session.prism(bodyName, featName, f.radius, f.height, sides);
+        this.setBodyPlacement(session, bodyName, f.center, f.rotate, -f.height / 2);
         const entry: FcBuiltFeature = { bodyName, objName: featName, kind: 'solid', featureId: f.id, featureKind: f.kind };
         built.set(f.id, entry);
         shapes.set(f.id, entry);
@@ -452,12 +508,40 @@ export class FreeCadEngineAdapter implements EngineAdapter {
 
   // ---- mesh ------------------------------------------------------------
 
+  // A REAL, PRE-EXISTING BUG this pass found while verifying torus/prism at
+  // an off-origin center: setBodyPlacement() sets the BODY's own
+  // Placement, but a PartDesign feature object's OWN .Shape stays in
+  // BODY-LOCAL coordinates -- only doc.getObject(bodyName).Shape (not
+  // doc.getObject(featureObjName).Shape) reflects that Placement. Measured
+  // directly against the kernel with plain session.sphere() + a manual
+  // Placement set, no adapter code involved: the feature's own Shape.BoundBox
+  // stayed at [-5,5] while the BODY's Shape.BoundBox correctly showed
+  // [25,35] for a center=[30,0,0] placement. This silently misrendered
+  // EVERY off-origin primitive already shipped (box/cylinder/sphere), not
+  // just the cone/torus/prism this pass adds -- it was invisible until now
+  // because every prior real-kernel fixture in this port used center
+  // [0,0,0]. Fixed here (the rendering path only -- mesh()/edges() are what
+  // a viewport actually calls) by meshing the owning BODY, not the feature:
+  // Body.Shape is, by construction, the body's current Tip transformed by
+  // Body.Placement, and for v1's single-body-per-chain design `bodyName`
+  // always names the SAME body whose Tip is exactly this shape's own
+  // objName at the moment it was built (see FcBuiltFeature's own header --
+  // v1 never has two live tips in one body). NOT extended to
+  // resolvePrimitiveEdgeName()/queryPrimitiveGeometry() (edge/face naming
+  // and fillet's own Base reference) -- those intentionally stay on
+  // objName's body-LOCAL shape, because PartDesign::Fillet.Base itself
+  // takes a body-local feature reference, and topo-name.ts's own +x/-x/etc
+  // convention is understood in the primitive's own pre-Placement frame the
+  // same way occt-build.ts builds a box unrotated-then-rotated. Whether that
+  // picking path also needs a rotation-aware fix is a real, separate,
+  // UNVERIFIED question this pass did not have scope to chase down -- see
+  // this port's own report.
   mesh(shape: unknown, opts?: { deflection?: number }): EngineMesh | null {
     const session = this.requireSession();
     const s = shape as FcBuiltFeature | null;
     if (!s || s.kind !== 'solid') return null;
 
-    const raw = session.meshFaces(s.objName, opts?.deflection ?? 0.1);
+    const raw = session.meshFaces(s.bodyName, opts?.deflection ?? 0.1);
     if (!raw || raw.empty || !raw.faces || raw.faces.length === 0) return null;
 
     const positions: number[] = [];
@@ -485,17 +569,24 @@ export class FreeCadEngineAdapter implements EngineAdapter {
 
   /** FreeCAD's own documented sub-element convention (fc-session.mjs's
    *  meshFaces() comment: "edgeId j == 'Edge{j+1}'"), converted straight to
-   *  a drawable line -- no naming history needed, unlike resolveEdge(). */
+   *  a drawable line -- no naming history needed, unlike resolveEdge().
+   *  Queries the owning BODY, not the feature -- same reason and same
+   *  fix as mesh()'s own header comment: only Body.Shape carries
+   *  setBodyPlacement()'s transform, so drawing off s.objName's own local
+   *  Shape would draw the line in the wrong world position. The returned
+   *  ref's objName is the body too, so faceSize()/edgeLength() (which
+   *  getElement() straight off ref.objName) stay consistent with what was
+   *  actually drawn here. */
   edges(shape: unknown): Array<{ edge: unknown; geometry: THREE_NS.BufferGeometry }> {
     const session = this.requireSession();
     const s = shape as FcBuiltFeature | null;
     if (!s || s.kind !== 'solid') return [];
-    const raw = session.meshFaces(s.objName);
+    const raw = session.meshFaces(s.bodyName);
     if (!raw || raw.empty || !raw.edges) return [];
     return raw.edges.map((e) => {
       const geometry = new this.THREE.BufferGeometry();
       geometry.setAttribute('position', new this.THREE.Float32BufferAttribute(e.points, 3));
-      const ref: FcElementRef = { objName: s.objName, name: `Edge${e.id + 1}` };
+      const ref: FcElementRef = { objName: s.bodyName, name: `Edge${e.id + 1}` };
       return { edge: ref, geometry };
     });
   }
@@ -503,11 +594,14 @@ export class FreeCadEngineAdapter implements EngineAdapter {
   /** The reverse of mesh()'s own FaceRange.index -- FreeCAD's own
    *  `"Face" + (index+1)` convention (same source comment as edges()
    *  above), needing no kernel round-trip to answer. Returns an
-   *  FcElementRef, not a bare name -- see this file's own header. */
+   *  FcElementRef, not a bare name -- see this file's own header. objName
+   *  is the owning BODY, matching mesh()'s own bodyName-based indexing
+   *  (see that method's header) -- a bare s.objName here would give a
+   *  face index into the wrong (untransformed) Shape.Faces ordering. */
   faceAt(shape: unknown, index: number): unknown | null {
     const s = shape as FcBuiltFeature | null;
     if (!s || s.kind !== 'solid' || index < 0) return null;
-    const ref: FcElementRef = { objName: s.objName, name: `Face${index + 1}` };
+    const ref: FcElementRef = { objName: s.bodyName, name: `Face${index + 1}` };
     return ref;
   }
 

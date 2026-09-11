@@ -338,11 +338,13 @@ export const emit = {
     );
   },
 
-  prism(bodyName, featName, radius, height) {
+  // `sides` defaults to 6 (the original hardcoded value) so every existing
+  // caller/test that does not pass it keeps building a hexagon unchanged.
+  prism(bodyName, featName, radius, height, sides = 6) {
     return (
       HEAD +
       `pr = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::Prism", ${pyStr(featName)})\n` +
-      `pr.Polygon = 6\n` +
+      `pr.Polygon = ${pyNum(sides, 'sides')}\n` +
       `pr.Circumradius = ${pyNum(radius, 'radius')}\n` +
       `pr.Height = ${pyNum(height, 'height')}\n` +
       RECT_END
@@ -717,8 +719,8 @@ export function attachCommands(session) {
     run('torus', emit.torus(bodyName, featName, ringRadius, tubeRadius));
     return featName;
   };
-  session.prism = (bodyName, featName, radius, height) => {
-    run('prism', emit.prism(bodyName, featName, radius, height));
+  session.prism = (bodyName, featName, radius, height, sides = 6) => {
+    run('prism', emit.prism(bodyName, featName, radius, height, sides));
     return featName;
   };
   session.wedge = (bodyName, featName, width, height) => {

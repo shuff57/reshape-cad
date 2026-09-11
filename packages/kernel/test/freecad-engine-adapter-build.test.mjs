@@ -61,6 +61,9 @@ function makeFakeSession({ edgeReads = {} } = {}) {
     pad(bodyName, sketchName, padName, length) { record('pad', [bodyName, sketchName, padName, length]); return padName; },
     pocket(bodyName, sketchName, pocketName, length) { record('pocket', [bodyName, sketchName, pocketName, length]); return pocketName; },
     sphere(bodyName, featName, radius) { record('sphere', [bodyName, featName, radius]); return featName; },
+    cone(bodyName, featName, radius1, radius2, height) { record('cone', [bodyName, featName, radius1, radius2, height]); return featName; },
+    torus(bodyName, featName, ringRadius, tubeRadius) { record('torus', [bodyName, featName, ringRadius, tubeRadius]); return featName; },
+    prism(bodyName, featName, radius, height, sides) { record('prism', [bodyName, featName, radius, height, sides]); return featName; },
     fillet(bodyName, baseName, edgeNames, radius) {
       record('fillet', [bodyName, baseName, edgeNames, radius]);
       if (radius > 1000) throw new Error('radius too large for this solid');
@@ -234,10 +237,43 @@ test('sketch -> pocket cuts into the same body as its target', () => {
   );
 });
 
+test('cone, torus, prism build via the proven PartDesign primitive paths', () => {
+  const session = makeFakeSession();
+  const adapter = makeAdapter(session);
+  const doc = {
+    version: 1,
+    features: [
+      { id: 'c1', kind: 'cone', radius: 5, height: 10, center: [0, 0, 0] },
+      { id: 't1', kind: 'torus', ringRadius: 10, tubeRadius: 2, center: [30, 0, 0] },
+      { id: 'p1', kind: 'prism', sides: 8, radius: 6, height: 15, center: [0, 30, 0] },
+    ],
+  };
+  const result = adapter.build(doc);
+  assert.ok(result.shapes.get('c1'));
+  assert.ok(result.shapes.get('t1'));
+  assert.ok(result.shapes.get('p1'));
+
+  const coneCall = session.calls.find((c) => c.name === 'cone');
+  assert.deepEqual(coneCall.args.slice(2), [5, 0, 10], 'radius1=f.radius, radius2=0 (tapers to a point), height');
+
+  const torusCall = session.calls.find((c) => c.name === 'torus');
+  assert.deepEqual(torusCall.args.slice(2), [10, 2]);
+
+  const prismCall = session.calls.find((c) => c.name === 'prism');
+  assert.deepEqual(prismCall.args.slice(2), [6, 15, 8], 'radius, height, sides all pass through');
+});
+
+test('prism sides clamps to the 3..12 range, same bound occt-build.ts uses', () => {
+  const session = makeFakeSession();
+  const adapter = makeAdapter(session);
+  adapter.build({ version: 1, features: [{ id: 'p1', kind: 'prism', sides: 40, radius: 6, height: 15, center: [0, 0, 0] }] });
+  const prismCall = session.calls.find((c) => c.name === 'prism');
+  assert.equal(prismCall.args[4], 12);
+});
+
 test('unsupported feature kinds throw a clear, named error', () => {
   for (const feature of [
-    { id: 'c1', kind: 'cone', radius: 5, height: 10, center: [0, 0, 0] },
-    { id: 't1', kind: 'torus', ringRadius: 10, tubeRadius: 2, center: [0, 0, 0] },
+    { id: 'w1', kind: 'wedge', width: 30, depth: 20, height: 25, center: [0, 0, 0] },
     { id: 'rev1', kind: 'revolve', target: 'sk1', angle: 360 },
   ]) {
     const session = makeFakeSession();

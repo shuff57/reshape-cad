@@ -529,16 +529,93 @@ browser -- so this is what was actually found, not a forecast.
 `FreeCadEngineAdapter.build()` (`packages/kernel/src/freecad-engine-adapter.ts`)
 builds `box`, `cylinder`, `sphere`, `sketch` (plane `'xy'` at offset `0`
 only -- any other plane/offset throws its own specific message), `extrude`,
-`pocket`, and `fillet`/`chamfer`. Every other `Feature['kind']`
+`pocket`, `fillet`/`chamfer`, and -- added in a later pass, see below --
+`cone`, `torus`, `prism`. Every other `Feature['kind']`
 (`packages/script/src/model-types.ts`) throws
 `"not yet supported on the FreeCAD engine: <kind>"`:
 
-`cone`, `torus`, `prism`, `wedge`, `groove`, `blend`, `combine`, `revolve`,
-`mirror`, `pattern`, `hole`, `shell`, `draft`, `move` -- 14 kinds. `revolve`/
-`groove` specifically are a found orientation mismatch, not unstarted work --
-see `FreeCadEngineAdapter`'s own comment on its `else` branch. v1 is also
+`wedge`, `groove`, `blend`, `combine`, `revolve`, `mirror`, `pattern`,
+`hole`, `shell`, `draft`, `move` -- 11 kinds. `revolve`/`groove`
+specifically are a found orientation mismatch, not unstarted work -- see
+`FreeCadEngineAdapter`'s own comment on its `else` branch. v1 is also
 single-body-per-chain (`combine` is the one place two independent chains
 would need to merge into one Body, and does not).
+
+**`cone`/`torus`/`prism` added, `wedge` investigated and rejected.**
+`fc-commands.mjs` already carried native `PartDesign::Cone`/`Torus`/
+`Prism`/`Wedge` emitters -- the same "additive primitive on a fresh Body"
+pattern `sphere` already used, proven at the STRING level
+(`engine/bridge/prims-test.mjs`) but never run against a live kernel until
+this pass. `cone`/`torus`/`prism` all matched their OCCT (`occt-build.ts`)
+semantics directly enough to build for real: `PartDesign::Cone`'s
+`Radius1`/`Radius2` frustum with `Radius2=0` tapers to a point exactly
+like `coneOf()`'s own base-at-z=0/apex-at-z=height construction;
+`PartDesign::Torus` is centred on its own local origin like
+`BRepPrimAPI_MakeTorus`, no z-shift needed; `PartDesign::Prism`'s own
+vertex-at-angle-0 convention already matches `occt-build.ts`'s own prism
+branch by that file's own comment. `prism` needed one real fix:
+`emit.prism()` hardcoded `Polygon = 6` with no way to pass
+`PrismFeature.sides` (3..12) at all -- fixed with an optional `sides`
+parameter (default 6, so every existing caller/test that omits it is
+unaffected). `wedge` was investigated and REJECTED, not merely unstarted:
+`emit.wedge()` only ever sets `PartDesign::Wedge`'s `Width` and `Height`,
+with no parameter for `WedgeFeature.depth` at all -- a found mismatch of
+the same kind as `revolve`/`groove`'s orientation gap, not something this
+pass could close by guessing a property mapping. `hole`/`shell`/`draft`/
+`move`/`mirror` have no native bridge emitters at all (no `emit.hole`,
+`emit.shell`, `emit.draft`, `emit.move`, `emit.mirror`) and were left
+untouched -- each would need real, unscheduled design work (a hole's own
+sketch-plane-vs.-already-placed-body question in particular is a genuine
+open question, not a small gap), not a two-line follow of an existing
+pattern the way cone/torus/prism were. `pattern` has proven bridge
+commands too (`linearPattern`/`polarPattern`, `engine/bridge/
+pattern-test.mjs`) but was not attempted this pass: its semantics were
+never checked against `occt-build.ts`'s own world-axis-orbit convention
+(§4 risk 6's kind of question, not confirmed either way), and the
+placement bug below ate the rest of this pass's time budget before it
+could be chased down -- left as a named follow-up, not a silent gap.
+
+Verified against the real kernel (`fc-kernel-pd-final`,
+`packages/kernel/test/freecad-new-kinds.manual.mjs`): cone/torus/prism
+volumes match OCCT exactly (cone 261.7994, torus 789.5684, octagon prism
+1527.3506), and -- once the placement bug below was fixed -- a translated
+torus and a translated-AND-rotated prism's own bounding boxes match OCCT's
+to four decimal places too, not just their volumes.
+
+**A real, pre-existing bug found (and fixed) while verifying this pass's
+own additions at an off-origin center:** `setBodyPlacement()` sets the
+owning `PartDesign::Body`'s own `.Placement`, but a PartDesign feature
+object's OWN `.Shape` stays in BODY-LOCAL coordinates -- only
+`doc.getObject(bodyName).Shape` (never `doc.getObject(featureObjName)
+.Shape`) reflects that transform. Measured directly against the kernel
+with a plain `session.sphere()` call plus a manual `Placement` set, no
+adapter code involved: the feature's own `Shape.BoundBox` stayed at
+`[-5,5]` on every axis while the BODY's `Shape.BoundBox` correctly showed
+`[25,35]` on X for a `center: [30,0,0]` placement. This silently
+misrendered and mis-measured EVERY off-origin primitive already shipped
+(`box`/`cylinder`/`sphere`), not only the kinds this pass adds -- it was
+invisible until now because every prior real-kernel fixture in this port
+(§6.2's picking sweep, §6.3's volume comparisons) happened to use `center:
+[0,0,0]`. Fixed in the RENDERING/MEASUREMENT path only --
+`mesh()`/`edges()`/`faceAt()` now query and index off the owning Body
+(`s.bodyName`), not the feature (`s.objName`) -- verified this both fixes
+the position (translated torus, translated+rotated prism bboxes now match
+OCCT exactly, see above) and does not regress the existing picking suite
+(`freecad-picking.manual.mjs`, still 90/90) or the existing volume
+fixtures (`freecad-vs-occt.manual.mjs`, still all passing). Deliberately
+NOT extended to `resolvePrimitiveEdgeName()`/`queryPrimitiveGeometry()`
+(edge/face naming, and fillet's own `Base` reference) -- those
+intentionally stay on the feature's body-LOCAL `Shape`, because
+`PartDesign::Fillet.Base` itself takes a body-local feature reference
+(changing that would risk breaking fillet's own internal chain-building,
+which was out of this pass's job to touch) and `topo-name.ts`'s own
+`+x`/`-x`/etc convention is understood in a primitive's own
+pre-Placement frame, the same way `occt-build.ts` builds a box
+unrotated-then-rotated. Whether that picking path also needs a
+rotation/translation-aware fix for an off-origin, rotated primitive is a
+real, separate, UNVERIFIED question this pass did not have scope to chase
+down -- named here as a follow-up, not silently left for the next person
+to rediscover from scratch.
 
 ### 6.2 Picking: implemented for the primitive/between-primitive case, real geometry only
 

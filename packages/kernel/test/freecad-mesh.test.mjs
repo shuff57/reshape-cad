@@ -119,13 +119,21 @@ test('faceAt()/edges() follow FreeCAD\'s own Face{n+1}/Edge{n+1} sub-element con
   // FreeCAD object exists, which is always true past the first feature, and
   // faceSize()/edgeLength()/nameFace()/nameEdge() all need to know WHICH
   // object's Shape to query. See freecad-engine-adapter.ts's own header.
-  assert.deepEqual(adapter.faceAt(shape, 0), { objName: 'Pad', name: 'Face1' });
-  assert.deepEqual(adapter.faceAt(shape, 5), { objName: 'Pad', name: 'Face6' });
+  //
+  // objName here is the owning BODY ('Body1'), not the feature ('Pad') --
+  // only Body.Shape carries setBodyPlacement()'s transform (a real,
+  // pre-existing bug found and fixed while verifying this pass's own
+  // torus/prism additions at an off-origin center; see mesh()'s own header
+  // comment). Meshing/indexing off the feature's own local Shape would draw
+  // and measure everything at the wrong world position the moment a
+  // primitive's center is not [0,0,0].
+  assert.deepEqual(adapter.faceAt(shape, 0), { objName: 'Body1', name: 'Face1' });
+  assert.deepEqual(adapter.faceAt(shape, 5), { objName: 'Body1', name: 'Face6' });
   assert.equal(adapter.faceAt(shape, -1), null);
 
   const edges = adapter.edges(shape);
   assert.equal(edges.length, 2);
-  assert.deepEqual(edges[0].edge, { objName: 'Pad', name: 'Edge1' });
-  assert.deepEqual(edges[1].edge, { objName: 'Pad', name: 'Edge2' });
+  assert.deepEqual(edges[0].edge, { objName: 'Body1', name: 'Edge1' });
+  assert.deepEqual(edges[1].edge, { objName: 'Body1', name: 'Edge2' });
   assert.equal(edges[0].geometry.getAttribute('position').count, 2);
 });
