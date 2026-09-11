@@ -17,7 +17,15 @@
 // engine/build/g5-artifacts/ (FreeCADCmd.js/.wasm) and
 // engine/play/freecad-data.* at that prefix.
 
-import { getEngineBaseUrl } from './config.js';
+// './config.js' would be the natural sibling import, but config.ts compiles
+// to ../dist/config.js -- there is no such file in src/. A bundler (Vite,
+// webpack) that understands the TS-authored-.js-for-.ts-file convention
+// resolves './config.js' to config.ts's compiled output either way, but
+// this file is also imported directly under plain Node (no bundler) by
+// packages/kernel/src/freecad-engine-adapter.ts's own test fixtures, which
+// only ever had ../dist/config.js to find. Reaching into dist explicitly
+// works under both.
+import { getEngineBaseUrl } from '../dist/config.js';
 
 // Track U #5 fix, carried over verbatim from engine/play/studio.js: the
 // FreeCAD-web port's glue reads a bare `resolveGlobalSymbol` (an Emscripten

@@ -12,10 +12,15 @@
     "./fc-commands": "./src/fc-commands.mjs",
     "./fc-sketch": "./src/fc-sketch.mjs",
     "./config": "./dist/config.js",
-    "./load-browser": "./src/load-browser.mjs"
+    "./load-browser": "./src/load-browser.mjs",
+    "./sketch-translate": "./dist/sketch-translate.js"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json"
+    "build": "tsc -p tsconfig.json",
+    "test": "node --test \"test/*.test.mjs\""
   },
-  "dependencies": {}
+  "dependencies": {
+    "@shuff57/reshape-script": "file:../script",
+    "@shuff57/reshape-sketch": "file:../sketch"
+  }
 }

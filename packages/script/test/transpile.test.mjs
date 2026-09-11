@@ -6,7 +6,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { transpile } from '../src/transpile.mjs';
-import { emit } from '../../../engine/bridge/fc-commands.mjs';
+import { emit } from '../../engine/src/fc-commands.mjs';
 
 // Collapse runs of whitespace so assertions survive line-wrap differences
 // that carry no meaning.

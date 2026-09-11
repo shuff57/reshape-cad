@@ -15,3 +15,20 @@ export function getKernelBaseUrl(): string {
 export function setKernelBaseUrl(url: string): void {
   kernelBaseUrl = url;
 }
+
+// Which kernel BrepViewportThree.tsx's loadEngine() should bring up --
+// SPEC-engine-port.md §3.3. Default 'occt' must not change existing
+// behaviour: nothing today calls setEngineMode(), so every session still
+// gets the replicad/OCCT path exactly as before this flag existed.
+// sandbox-dev reads VITE_RESHAPE_ENGINE at startup and calls this once, the
+// same pattern RESHAPE_KERNEL_DIR already uses for the URL above; a future
+// UI toggle calls it directly.
+let engineMode: 'occt' | 'freecad' = 'occt';
+
+export function getEngineMode(): 'occt' | 'freecad' {
+  return engineMode;
+}
+
+export function setEngineMode(mode: 'occt' | 'freecad'): void {
+  engineMode = mode;
+}
