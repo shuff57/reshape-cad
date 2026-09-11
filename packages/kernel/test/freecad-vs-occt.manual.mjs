@@ -209,7 +209,17 @@ if (!fcKernelJs) {
     const fcRoundedVolume = session.mesh(fcRounded.shapes.get('pull2').objName).volume;
     check('FreeCAD rounded-rectangle extrude volume vs OCCT', fcRoundedVolume, occtRoundedVolume, 0.5);
 
-    const fcAngleDoc = { version: 1, features: [{ id: 'skA', kind: 'sketch', plane: 'xy', offset: 0, points: anglePts, constraints: angleConstraints }] };
+    // sketch-translate.ts's own §4.5.3 design assumes `points` is ALREADY
+    // the solved output (its DoF-closure pins reuse those coordinates
+    // directly, on purpose -- "packages/sketch already solved this, don't
+    // ask FreeCAD to re-derive it"). anglePts is the pre-solve/as-drawn
+    // rectangle; jsSolved.points (computed above) is what the angle
+    // constraint actually resolves corner 2 to. Passing anglePts here first
+    // produced "DoF-closure pins conflicted" against the real GCS solver --
+    // not a translateSketch() bug, a test-fixture one: it fed the wrong
+    // corner coordinates, the same ones the angle constraint had already
+    // moved away from.
+    const fcAngleDoc = { version: 1, features: [{ id: 'skA', kind: 'sketch', plane: 'xy', offset: 0, points: jsSolved.points, constraints: angleConstraints }] };
     const fcAngle = adapter.build(fcAngleDoc);
     const fcState = session.sketchState(fcAngle.shapes.get('skA').objName);
     console.log('FreeCAD angle-sketch solved geometry:', JSON.stringify(fcState.geometry));

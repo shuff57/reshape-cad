@@ -55,6 +55,7 @@ export interface SketchSession {
   constrainSymmetric(sk: string, g1: number, p1: number, g2: number, p2: number, g3: number, p3: number): number;
   constrainAngle(sk: string, g1: number, g2: number, degrees: number): number;
   constrainRadius(sk: string, g: number, value: number): number;
+  constrainCoincident(sk: string, g1: number, p1: number, g2: number, p2: number): number;
   sketchState(sk: string): {
     geometry: unknown[];
     constraints: unknown[];
@@ -174,11 +175,50 @@ export function translateSketch(
       if (bulge > 0 && a1 < a0) a1 += 2 * Math.PI;
       if (bulge < 0 && a1 > a0) a1 -= 2 * Math.PI;
       gid = session.sketchAddArc(sketchName, center[0], center[1], radius, a0, a1);
+      // An arc's construction values are only the solver's STARTING guess,
+      // not a fixed fact -- nothing tells the GCS to keep them there. Two
+      // real bugs found here, in order, both via the actual GCS solver:
+      // (1) pinning only radius+center left a0/a1 free -- the weld to each
+      // neighbour (below) ties the arc's endpoints to THEIR position, but
+      // if those neighbours are themselves only pinned at ONE end (the far
+      // corner), the near end can still slide around the now-fixed circle:
+      // "3 degree(s) of freedom" (radius+center) closed the circle itself,
+      // but left exactly 2 more (a0, a1) for the solver to report next.
+      // (2) the fix is to pin what is actually already known exactly --
+      // `a`/`b` above ARE the arc's own start/end trim points, computed by
+      // outlineOf() the same as any line's endpoints -- so pin those
+      // directly (matching every other segment's own endpoints) instead of
+      // trying to fix the circle's abstract parameters and hoping the welds
+      // propagate an angle. Radius stays pinned too (start+end alone still
+      // admit two circles through the same chord; the construction's own
+      // center is the correct one, and a solver seeded there converges to
+      // it, not its mirror).
+      session.constrainRadius(sketchName, gid, radius);
+      pinCornerToOrigin(session, sketchName, { geoId: gid, pointPos: 1 }, a[0], a[1]);
+      pinCornerToOrigin(session, sketchName, { geoId: gid, pointPos: 2 }, b[0], b[1]);
     }
     geoIds.push(gid);
     const role = roles[i];
     if (role.role === 'edge') edgeRoleSeg.set(role.index, i);
     else cornerRoleSeg.set(role.index, i);
+  }
+
+  // Weld the loop shut. sketchAddLine()/sketchAddArc() each create an
+  // independent geometry element with its OWN two endpoints -- FreeCAD's
+  // Sketcher does NOT infer that segment i's end sits at segment i+1's
+  // start just because outlineOf() computed matching coordinates for both.
+  // Without an explicit Coincident constraint per shared vertex, those
+  // "same point" endpoints remain two separate, independently-free points
+  // (found the hard way: DoF closure below pinned every design corner's
+  // OWN point and the real GCS solver still reported n*2 degrees of
+  // freedom left over -- exactly the n segments' unwelded END points,
+  // never referenced by cornerRefs at all since cornerRefs only ever
+  // tracks pointPos 1 (§4.5.1). fc-sketch.mjs's own worked example
+  // (this file's header comment) already does exactly this weld for its
+  // 4-line demo; this loop generalises it to n segments, straight or arc).
+  for (let i = 0; i < n; i++) {
+    const next = (i + 1) % n;
+    session.constrainCoincident(sketchName, geoIds[i], 2, geoIds[next], 1);
   }
 
   // A rounded/chamfered corner's ref resolves to its OWN 'corner'-role
@@ -187,9 +227,21 @@ export function translateSketch(
   // the corner (§4.5.1: "Plain, unrounded corner n is the start point of
   // the line segment emitted for edge n").
   const cornerCount = sketch.points.length;
+  // Tracks which design corners resolved through the ARC branch (a rounded
+  // corner), not the plain-line one -- §4.5.3's closure loop below must NOT
+  // pin these against sketch.points[c]: rounding TRIMS the corner, so the
+  // arc's actual start point sits at outlineOf()'s trim point, not at the
+  // original design coordinate. Pinning both (the arc's own radius/center
+  // constraints above, which already fully determine where its start point
+  // must land, AND a closure pin at the wrong, untrimmed coordinate) is a
+  // genuine conflict, not redundancy -- found via the real GCS solver
+  // reporting "DoF-closure pins conflicted" the first time this ran.
+  const roundedCorners = new Set<number>();
   for (let c = 0; c < cornerCount; c++) {
-    const segIdx = cornerRoleSeg.get(c) ?? edgeRoleSeg.get(c);
+    const arcSeg = cornerRoleSeg.get(c);
+    const segIdx = arcSeg ?? edgeRoleSeg.get(c);
     if (segIdx === undefined) continue; // no surviving segment for this design corner -- refused lazily below if referenced
+    if (arcSeg !== undefined) roundedCorners.add(c);
     cornerRefs.set(c, { geoId: geoIds[segIdx], pointPos: 1 });
   }
 
@@ -250,6 +302,15 @@ export function translateSketch(
       // -> radians conversion.
       session.constrainAngle(sketchName, geoIdForEdge(c.edge), geoIdForEdge(c.other), c.degrees);
     } else if (c.kind === 'lock') {
+      // A rounded corner's arc is already fully pinned (radius + center,
+      // emitted above) -- sketch.points[c.corner] is the PRE-round design
+      // coordinate, not where the trimmed arc's start point actually lives,
+      // so locking to it would fight the arc's own constraints exactly the
+      // way the closure loop below found out the hard way. Refuse rather
+      // than pin the wrong point.
+      if (roundedCorners.has(c.corner)) {
+        refuse(sketch, `corner ${c.corner} cannot be locked -- it is a rounded/chamfered corner, whose built position is not sketch.points[${c.corner}]`);
+      }
       const ref = refForCorner(c.corner);
       const [x, y] = sketch.points[c.corner];
       pinCornerToOrigin(session, sketchName, ref, x, y);
@@ -260,6 +321,11 @@ export function translateSketch(
 
   // ---- §4.5.3: DoF closure --------------------------------------------------
   let state = session.sketchState(sketchName);
+  if (process.env.SKETCH_TRANSLATE_DEBUG) {
+    console.error('DEBUG pre-closure state:', JSON.stringify({ dof: state.dof, conflicting: state.conflicting, redundant: state.redundant, malformed: state.malformed }));
+    console.error('DEBUG cornerRefs:', JSON.stringify([...cornerRefs.entries()]));
+    console.error('DEBUG geometry:', JSON.stringify(state.geometry));
+  }
   if (state.conflicting.length > 0 || state.malformed.length > 0) {
     refuse(
       sketch,
@@ -276,12 +342,27 @@ export function translateSketch(
     // conflicting (both agree on the same point by construction), and
     // FreeCAD's own Redundant classification exists for exactly this.
     for (let c = 0; c < cornerCount; c++) {
+      // A rounded corner's arc is already fully pinned above (radius +
+      // center) -- its start point is DETERMINED by that, not free, and
+      // sketch.points[c] is the wrong (pre-round) coordinate to pin it to
+      // even if it were still free. Pinning it anyway does not add missing
+      // DoF closure, it manufactures a conflict against constraints already
+      // in place (found via the real GCS solver's own "DoF-closure pins
+      // conflicted" report).
+      if (roundedCorners.has(c)) continue;
       const ref = cornerRefs.get(c);
       if (!ref) continue;
       const [x, y] = sketch.points[c];
+      if (process.env.SKETCH_TRANSLATE_DEBUG) {
+        console.error(`DEBUG closure pin corner ${c}: geoId ${ref.geoId} pointPos ${ref.pointPos} -> (${x}, ${y})`);
+      }
       pinCornerToOrigin(session, sketchName, ref, x, y);
     }
     state = session.sketchState(sketchName);
+    if (process.env.SKETCH_TRANSLATE_DEBUG) {
+      console.error('DEBUG post-closure state:', JSON.stringify({ dof: state.dof, conflicting: state.conflicting, redundant: state.redundant, malformed: state.malformed }));
+      console.error('DEBUG post-closure geometry:', JSON.stringify(state.geometry));
+    }
     if (state.conflicting.length > 0 || state.malformed.length > 0) {
       refuse(
         sketch,

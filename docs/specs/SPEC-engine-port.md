@@ -563,19 +563,91 @@ scheduled. Confirmed live (`packages/sandbox-dev`, `VITE_RESHAPE_ENGINE=freecad`
 clicking a face reads "Box 1 · face" (no name, no size) with no console
 error, instead of crashing the click handler.
 
-### 6.3 FreeCAD-kernel numbers are unverified against the real GCS solver
+### 6.3 FreeCAD-kernel numbers: now measured for real, via `fc-kernel-pd-final`
 
-Phase 2's 14 `packages/kernel/test/*.test.mjs` cases exercise
-`FreeCadEngineAdapter` against a synthetic/mocked session, not the real
-FreeCAD wasm kernel -- fillet/chamfer volumes, and the angle-constraint sign
-convention `packages/engine/src/sketch-translate.ts`'s own header names as
-"needs a measured check, not assumed" (§4.5.2's table), have never been
-cross-checked against the real GCS solver. `freecad-vs-occt.manual.mjs`
-(phase 2) exists to run that check the moment a kernel-build container is
-available; it was not available in any session through this phase either.
-Step 10 DID exercise the real kernel live (see §6.4) but only for a bare box
-and a dimension edit -- no fillet, no sketch, no constraint went through the
-real GCS solver at any point in this cutover.
+Superseding this section's earlier claim ("never been cross-checked") --
+`fc-kernel-pd-final:latest` (9.4GB, built in an earlier session) was already
+sitting in this machine's local Docker image cache. Once Docker Desktop was
+running, `freecad-vs-occt.manual.mjs` ran for real inside it
+(`docker run --rm --privileged -v <repo>:/mnt/host/c/Users/.../reshape-cad
+fc-kernel-pd-final node --experimental-wasm-exnref
+/mnt/host/.../packages/kernel/test/freecad-vs-occt.manual.mjs
+/work/build/bin/FreeCADCmd.js` -- the mount path must match the WSL2
+host-mount convention `npm install`'s own workspace symlinks were written
+against, `/mnt/host/c/...`, not an arbitrary bind path, or every
+`@shuff57/*` import resolves to a dangling symlink). Measured results:
+
+| Case | OCCT | FreeCAD | Match |
+|---|---|---|---|
+| box + fillet volume | 31785.3982 | 31785.3982 | exact |
+| unconstrained rectangle extrude | 12000.0000 | 12000.0000 | exact |
+| rounded-rectangle extrude | 11935.6194 | 11935.6194 | exact |
+| angle-constraint corner 2, pre-closure | JS solver: `[38.0069, 15.9893]` | FreeCAD's own solve: `(38.006855, 15.98932)` | matches to the precision shown |
+
+**The angle-constraint sign convention (§4.5.2's flagged uncertainty) is
+CONFIRMED, not assumed**: read directly from `sketchState().geometry`
+*before* any closure pin touches that corner -- FreeCAD's `Angle` constraint
+between two line geoIds, emitted start-to-end exactly as
+`sketch-translate.ts` already does, converges to the same corner position
+`sketch-solve.ts`'s own `atan2(cross,dot)` residual computes. No sign flip
+needed in the mapping table.
+
+Getting here found and fixed three real, previously-unknown bugs -- all in
+`translateSketch()`'s geometry-emission/closure code, none in the FreeCAD
+bridge itself, each caught by the real GCS solver refusing to converge and
+each verified fixed by re-running the same script:
+
+1. **Segments were never welded into a closed loop.** `sketchAddLine()`/
+   `sketchAddArc()` each create an independent geometry element with its own
+   endpoints -- FreeCAD does not infer that segment *i*'s end sits at
+   segment *i+1*'s start just because `outlineOf()` computed matching
+   coordinates for both. First measured symptom: DoF closure pinned every
+   design corner and the solver still reported `n*2` degrees of freedom left
+   -- exactly the *n* segments' un-welded end points, which `cornerRefs`
+   never tracks at all (it only ever holds `pointPos 1`). Fixed with an
+   explicit `constrainCoincident(geoIds[i], 2, geoIds[(i+1)%n], 1)` loop
+   after geometry emission, closing the polygon for real.
+2. **An arc's construction values are a starting guess, not a fact.** After
+   the weld fix, a rounded-corner sketch still failed:
+   `gp_Circ::SetRadius() - radius should be positive number` mid-solve, the
+   GCS solver wandering into an invalid guess because nothing told it the
+   arc's radius/center were meant to be fixed. First fix attempt (pin
+   radius + center, mirroring the circle branch) closed 3 of 3 reported DoF
+   but left the arc's start/end *angles* free -- the weld to each neighbour
+   only constrains the endpoint if that neighbour's OTHER end is itself
+   already fixed, which is not true in general. Final fix: pin the arc's own
+   two endpoints directly (`a`/`b` -- already known exactly, the same values
+   used to construct the arc) plus radius, instead of trying to fix the
+   circle's abstract parameters and hoping the welds propagate an angle.
+3. **A rounded corner's closure pin used the wrong (pre-round) coordinate.**
+   `sketch.points[c]` is the *design* corner, not where rounding trims the
+   outline to -- pinning a rounded corner's arc-backed `CornerRef` to that
+   stale coordinate directly conflicted with the arc's own (now-correct)
+   endpoint pins. Fixed by tracking which corners resolved through the arc
+   branch (`roundedCorners`) and skipping them in both the closure loop and
+   the `lock` constraint handler (locking a rounded corner is now a refusal,
+   not a silent wrong pin -- there is no single coordinate to lock it to).
+
+**One gap found, not yet fixed** -- the `skA` (angle-constraint) fixture
+still fails DoF closure, but for a narrower reason than the three above:
+`packages/sketch`'s residual solver (`solveSketch`) is a least-squares
+minimizer, so its output (`jsSolved.points`) carries small floating-point
+residue (e.g. corner 1 lands at `29.99999999989688`, not exactly `30`) even
+for a corner FreeCAD's own `lock`+`horizontal`+`length` constraints already
+determine *exactly*. Closure then re-pins that same, already-exactly-fixed
+point to the epsilon-different value -- a genuine numerical conflict, not
+the "redundant, both agree by construction" case §4.5.3 step 5 assumed.
+Confirmed via `SKETCH_TRANSLATE_DEBUG=1` (an env-gated debug trace left in
+`sketch-translate.ts`, harmless when unset): pre-closure state for `skA` is
+`dof:3, conflicting:[]` -- clean -- and only turns conflicting once closure
+re-pins corners the explicit constraints had already exactly resolved.
+Needs either (a) a way to ask fc-sketch.mjs's `sketchState()` which points
+are already fully constrained, so closure only pins the genuinely-free ones,
+or (b) a tolerance-aware pin (read FreeCAD's own already-converged value
+back and skip re-pinning if it's within epsilon of `sketch.points[c]`,
+rather than trusting the JS solver's approximation over FreeCAD's own exact
+answer). Not attempted this session -- flagged for the next pass rather than
+patched blind.
 
 ### 6.4 A real, fixed bug: `packages/engine/src/load-browser.mjs` had no `locateFile`
 

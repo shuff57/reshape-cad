@@ -24,7 +24,16 @@ import assert from 'node:assert/strict';
 import { translateSketch } from '../dist/sketch-translate.js';
 
 /** A session that records every call and reports a heuristic DoF: each
- *  corner starts with 2 (x, y); every constraint call below removes the DoF
+ *  SEGMENT starts with 4 raw DoF (its own two endpoints, x+y each) -- not
+ *  each design corner with 2, the way an earlier version of this fake
+ *  modelled it. That earlier model implicitly assumed the emitted line/arc
+ *  segments were already topologically welded into one polygon, which is
+ *  not how FreeCAD's Sketcher works (see sketch-translate.ts's own comment
+ *  on the weld loop) -- the real GCS solver caught this the first time this
+ *  port ran against it, reporting cornerCount*2 leftover DoF even after
+ *  every design corner was pinned, exactly the segments' un-welded end
+ *  points. Every constraint call below (constrainCoincident included, since
+ *  the weld loop is now part of what this fake must model) removes the DoF
  *  a real FreeCAD Sketcher constraint of that kind would remove. Good enough
  *  to prove translateSketch()'s OWN control flow (when does it call
  *  sketchState(), when does it emit closure pins, when does it throw) --
@@ -33,7 +42,7 @@ function makeFakeSession(cornerCount, { conflicting = [] } = {}) {
   const calls = [];
   let nextGeoId = 0;
   let removed = 0;
-  const totalDof = cornerCount * 2;
+  const totalDof = cornerCount * 4;
   let stateCalls = 0;
 
   const record = (name, args) => calls.push({ name, args });
@@ -63,6 +72,7 @@ function makeFakeSession(cornerCount, { conflicting = [] } = {}) {
     constrainSymmetric(sk, g1, p1, g2, p2, g3, p3) { record('constrainSymmetric', [sk, g1, p1, g2, p2, g3, p3]); removed += 2; return 0; },
     constrainAngle(sk, g1, g2, degrees) { record('constrainAngle', [sk, g1, g2, degrees]); removed += 1; return 0; },
     constrainRadius(sk, g, value) { record('constrainRadius', [sk, g, value]); removed += 1; return 0; },
+    constrainCoincident(sk, g1, p1, g2, p2) { record('constrainCoincident', [sk, g1, p1, g2, p2]); removed += 2; return 0; },
     sketchState(sk) {
       stateCalls += 1;
       record('sketchState', [sk]);
@@ -90,6 +100,9 @@ test('unconstrained rectangle: 4 lines emitted, closure pins all 4 corners, reac
   assert.equal(refs.size, 4, 'one CornerRef per design corner');
   for (let n = 0; n < 4; n++) assert.equal(refs.get(n).pointPos, 1);
 
+  const welds = session.calls.filter((c) => c.name === 'constrainCoincident');
+  assert.equal(welds.length, 4, 'one Coincident weld per segment, closing the loop');
+
   const pins = session.calls.filter((c) => c.name === 'constrainDistanceX' || c.name === 'constrainDistanceY');
   assert.equal(pins.length, 8, 'DoF closure pins all 4 corners (X+Y each)');
   for (const p of pins) assert.deepEqual([p.args[3], p.args[4]], [-1, 1], 'pinned against the sketch origin');
@@ -112,9 +125,11 @@ test('a rectangle constrained to dof 0 by RECTANGLE_CONSTRAINTS alone needs no e
       { kind: 'length', edge: 1, value: 25 },
     ],
   };
-  // 4 corners * 2 dof = 8. horizontal/vertical remove 1 each (4), lock's own
-  // two DistanceX/Y pins remove 2, the two lengths remove 1 each (2) -- 8
-  // total, landing exactly at dof 0 with no closure pins beyond the lock's.
+  // 4 segments * 4 raw dof = 16. The weld loop's 4 Coincident constraints
+  // close the loop, removing 2 each (8). horizontal/vertical remove 1 each
+  // (4), lock's own two DistanceX/Y pins remove 2, the two lengths remove 1
+  // each (2) -- 8+4+2+2=16 total, landing exactly at dof 0 with no closure
+  // pins beyond the lock's.
   const session = makeFakeSession(4);
   translateSketch(session, 'Sketch', sketch);
 
