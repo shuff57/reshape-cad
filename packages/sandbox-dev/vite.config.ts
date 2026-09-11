@@ -10,8 +10,19 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // pre-built artifact that already lives in shCode, the app this studio
 // component was extracted out of. RESHAPE_KERNEL_DIR overrides the default
 // for anyone whose shCode checkout isn't a sibling of this repo.
-const KERNEL_DIR =
-  process.env.RESHAPE_KERNEL_DIR ?? path.resolve(__dirname, '../../../shCode/public/reshape/kernel');
+// path.resolve(), not the raw env var -- found while verifying step 10's
+// self-check (a): an override given with forward slashes (the README's own
+// example, `RESHAPE_KERNEL_DIR=/path/to/...`) stays forward-slash on disk,
+// while path.join(KERNEL_DIR, relPath) below always returns a
+// BACKSLASH-separated string on win32 -- so filePath.startsWith(KERNEL_DIR)
+// silently came back false for every request, and every kernel file request
+// fell through to Vite's SPA index.html fallback with a 200, not a 404 (the
+// one shape of failure serveStaticMiddleware's own 404 would have made
+// obvious). path.resolve() normalises either separator style to the
+// platform's own, so KERNEL_DIR and every filePath built from it agree.
+const KERNEL_DIR = path.resolve(
+  process.env.RESHAPE_KERNEL_DIR ?? path.resolve(__dirname, '../../../shCode/public/reshape/kernel')
+);
 
 const KERNEL_URL_PREFIX = '/reshape/kernel/';
 
@@ -25,8 +36,11 @@ const KERNEL_URL_PREFIX = '/reshape/kernel/';
 // RESHAPE_ENGINE_DIR is kept for override symmetry anyway: when set, it
 // replaces BOTH in-repo defaults with one directory expected to contain all
 // four files (e.g. an assembled deployment bundle).
+// Same path.resolve() normalisation as KERNEL_DIR above, and for the same
+// reason -- RESHAPE_ENGINE_DIR is the identical override pattern and would
+// hit the identical startsWith() mismatch given a forward-slash value.
 const ENGINE_DIRS = process.env.RESHAPE_ENGINE_DIR
-  ? [process.env.RESHAPE_ENGINE_DIR]
+  ? [path.resolve(process.env.RESHAPE_ENGINE_DIR)]
   : [
       path.resolve(__dirname, '../../engine/build/g5-artifacts'),
       path.resolve(__dirname, '../../engine/play'),

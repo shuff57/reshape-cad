@@ -37,13 +37,25 @@
 //     rather than guessing, the same "no answer is better than a confidently
 //     wrong one" rule topo-resolve.ts's own header states.
 //
-// Picking (resolveFace/resolveEdge/nameFace/nameEdge) is the SAME risk-3
-// work, unscheduled in build-sequence steps 7-9 (nothing calls them this
-// phase -- step 10, the BrepViewportThree.tsx seam refactor, is phase 3) and
-// implemented here as a clear "not yet implemented" throw rather than a
-// guess. edges()/faceAt() need no naming history at all -- they are FreeCAD's
-// own OWN documented Face{n}/Edge{n} sub-element convention (fc-session.mjs's
-// meshFaces() comment: "faceId i == 'Face{i+1}'") -- so those ARE implemented.
+// Picking (resolveFace/resolveEdge/nameFace/nameEdge, plus faceSize/
+// edgeLength -- found during step 10's own seam refactor, see
+// engine-adapter.ts's header) is the SAME risk-3 work, unscheduled in
+// build-sequence steps 7-9 and implemented here as a clear "not yet
+// implemented" throw rather than a guess. edges()/faceAt() need no naming
+// history at all -- they are FreeCAD's own OWN documented Face{n}/Edge{n}
+// sub-element convention (fc-session.mjs's meshFaces() comment: "faceId i ==
+// 'Face{i+1}'") -- so those ARE implemented.
+//
+// Step 10 exercised this adapter live, in a real browser, for the first time
+// (packages/sandbox-dev, VITE_RESHAPE_ENGINE=freecad) -- confirming box
+// build/rebuild render correctly through BrepViewportThree.tsx's adapter
+// seam, and that a click under this engine degrades to an honest "no name"
+// highlight (the four throws above, caught by the component) rather than
+// crashing. Full account, including a real bug this surfaced and fixed
+// (packages/engine/src/load-browser.mjs had no Module.locateFile) and what
+// is still unverified (fillet/chamfer volumes and the angle-constraint sign
+// convention against the REAL GCS solver, not a mock), is
+// docs/specs/SPEC-engine-port.md's "Known gaps" section (§6).
 
 import type { Feature, ModelDoc, SketchFeature, Vec3 } from '@shuff57/reshape-script/model-types';
 import type { TopoName } from '@shuff57/reshape-script/topo-name';
@@ -478,6 +490,29 @@ export class FreeCadEngineAdapter implements EngineAdapter {
   nameEdge(_build: EngineBuildResult, _doc: ModelDoc, _pickedFeature: string, _edge: unknown): TopoName | null {
     throw new Error(
       'FreeCadEngineAdapter.nameEdge: naming a picked edge on this engine is not yet implemented '
+        + '(SPEC-engine-port.md §4 risk 3).',
+    );
+  }
+
+  // faceSize()/edgeLength() -- found during step 10's seam refactor (the
+  // component's own module-level helpers reached into kernel.oc directly,
+  // same as every other call EngineAdapter already covers). Real measurement
+  // against a live FreeCAD Face{n}/Edge{n} handle is unscheduled §4 risk-3
+  // work, same as resolveFace/resolveEdge/nameFace/nameEdge above -- and in
+  // practice unreachable from BrepViewportThree.tsx's own pick path today,
+  // since nameFace()/nameEdge() already throw first for any picked
+  // face/edge under this engine.
+
+  faceSize(_face: unknown): [number, number] | null {
+    throw new Error(
+      'FreeCadEngineAdapter.faceSize: measuring a picked face on this engine is not yet implemented '
+        + '(SPEC-engine-port.md §4 risk 3).',
+    );
+  }
+
+  edgeLength(_edge: unknown): number | null {
+    throw new Error(
+      'FreeCadEngineAdapter.edgeLength: measuring a picked edge on this engine is not yet implemented '
         + '(SPEC-engine-port.md §4 risk 3).',
     );
   }

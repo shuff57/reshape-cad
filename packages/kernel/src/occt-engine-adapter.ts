@@ -42,6 +42,8 @@ import type { EngineAdapter, EngineBuildResult, EngineMesh } from './engine-adap
  *  should have to import the other's file to get it). */
 let kernelImportStrategy: 'webpackIgnore' | 'new-function' | null = null;
 
+const round2 = (n: number) => Math.round(n * 100) / 100;
+
 async function dynamicImportKernel(path: string): Promise<any> {
   const url = `${getKernelBaseUrl()}/${path}`;
   if (kernelImportStrategy === 'new-function') {
@@ -122,5 +124,67 @@ export class OcctEngineAdapter implements EngineAdapter {
 
   nameEdge(build: EngineBuildResult, doc: ModelDoc, pickedFeature: string, edge: unknown): TopoName | null {
     return nameEdgeOnCurrentShape(this.requireOc(), build as unknown as BuildResult, doc, pickedFeature, edge);
+  }
+
+  // Moved verbatim from BrepViewportThree.tsx's own module-level faceSize()/
+  // edgeLength() helpers (found during the step-10 seam refactor -- both
+  // reached into kernel.oc directly, the same class of call every other
+  // method on this class already wraps). No logic changed; only `oc` now
+  // comes from requireOc() instead of a parameter.
+
+  /** Item H (P20): the picked face's own in-plane size, e.g. [40, 40] for a
+   *  box's top face -- read off the BUILT geometry (a real bounding box on
+   *  this one face, not the doc's own fields), so it stays right after a
+   *  Round, Hole or Hollow reshapes the solid those fields still describe.
+   *
+   *  A planar, axis-aligned face (every primitive's own flat face, and every
+   *  flat face a Hollow/Hole/Round leaves alone) has one bbox axis pinned to
+   *  (near) zero width -- its own normal. Dropping that axis and reporting
+   *  the other two, smallest first for a stable "W x D" reading regardless
+   *  of which world axes they happen to be, is exactly "40 x 40". A curved
+   *  or non-axis-aligned face has no single degenerate axis to drop; null
+   *  there rather than a bbox number nobody asked for and nobody could act
+   *  on. */
+  faceSize(face: unknown): [number, number] | null {
+    const oc = this.requireOc();
+    // Defensive, not load-bearing: a size the kernel could not compute (a
+    // binding-signature mismatch on some build, a degenerate face) is a
+    // missing THIRD word in the pill, never a reason to lose the pick
+    // itself.
+    try {
+      const box = new oc.Bnd_Box();
+      oc.BRepBndLib.Add(face, box, true);
+      if (box.IsVoid?.()) return null;
+      const lo = box.CornerMin();
+      const hi = box.CornerMax();
+      const extents = [hi.X() - lo.X(), hi.Y() - lo.Y(), hi.Z() - lo.Z()];
+      const flatAxis = extents.findIndex((e) => e < 0.05);
+      if (flatAxis < 0) return null;
+      const rest = extents.filter((_, i) => i !== flatAxis).sort((a, b) => a - b);
+      return [round2(rest[0]), round2(rest[1])];
+    } catch {
+      return null;
+    }
+  }
+
+  /** Item H: a picked edge's own true arc length via
+   *  BRepGProp.LinearProperties (a curved edge's length is not its two
+   *  endpoints' straight-line distance), so a rounded edge reads correctly
+   *  too, not just a straight one. */
+  edgeLength(edge: unknown): number | null {
+    const oc = this.requireOc();
+    try {
+      const g = new oc.GProp_GProps();
+      // Same (shape, props, ...flags) shape as VolumeProperties/
+      // SurfaceProperties elsewhere in this codebase (see occt-build.ts's
+      // measureShape) -- this build's binding refuses the 2-argument call
+      // outright (measured: "invalid signature ... expects
+      // (TopoDS_Shape,GProp_GProps,boolean,boolean)").
+      oc.BRepGProp.LinearProperties(edge, g, false, false);
+      const len = g.Mass();
+      return Number.isFinite(len) && len > 0 ? round2(len) : null;
+    } catch {
+      return null;
+    }
   }
 }

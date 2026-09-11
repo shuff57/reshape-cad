@@ -70,19 +70,24 @@ import type { LineSegmentsGeometry as LineSegmentsGeometryType } from 'three/exa
 import type { LineMaterial as LineMaterialType } from 'three/examples/jsm/lines/LineMaterial.js';
 import type { Feature, ModelDoc } from '@shuff57/reshape-script/model-types';
 import { topLevel } from '@shuff57/reshape-script/model-types';
-import { edgesToThree, tessellateToThree, type FaceRange } from '@shuff57/reshape-kernel/occt-three';
-import { facesOf, nameEdgeOnCurrentShape, nameFaceOnCurrentShape, resolveName } from '@shuff57/reshape-kernel/topo-resolve';
+import type { FaceRange } from '@shuff57/reshape-kernel/occt-three';
 import { rootFeature, type TopoName } from '@shuff57/reshape-script/topo-name';
-import type { BuildResult } from '@shuff57/reshape-kernel/occt-build';
+import type { EngineAdapter, EngineBuildResult } from '@shuff57/reshape-kernel/engine-adapter';
+import { OcctEngineAdapter } from '@shuff57/reshape-kernel/occt-engine-adapter';
+import { FreeCadEngineAdapter } from '@shuff57/reshape-kernel/freecad-engine-adapter';
+import { getEngineMode } from '@shuff57/reshape-kernel/config';
 import type { HandleSpec } from '@shuff57/reshape-script/model-handles';
 import type { AnchorPoint } from './HandleOverlay.js';
 import { mergeMeshes, type MeshInput } from '../mesh-export.js';
 import { bboxCenter, DEFAULT_FILL_FRACTION, fitDistance, type Box3Like } from '../camera-fit.js';
-import { getKernelBaseUrl } from '@shuff57/reshape-kernel/config';
 
-// Read live rather than frozen at module load, so a host that calls
-// setKernelBaseUrl() after this module is first imported (e.g. once an async
-// config fetch resolves) still takes effect on the next kernel import.
+// getEngineMode() is read live, at the moment loadEngine() runs, rather than
+// frozen at module load -- same discipline getKernelBaseUrl() used to
+// document here (see packages/kernel/src/config.ts): a host that calls
+// setEngineMode() before this component's loading effect fires still takes
+// effect. getKernelBaseUrl() itself moved out of this file entirely -- it is
+// now read inside OcctEngineAdapter's own dynamicImportKernel(), the only
+// place left that imports the kernel by URL.
 
 /** The Dracula palette this app already uses everywhere else -- see
  *  app/globals.css and BrepViewport.tsx. */
@@ -161,62 +166,12 @@ export type ViewportPick =
   | { kind: 'face'; target: string; faceIndex: number; name: TopoName | null; size?: [number, number] }
   | { kind: 'edge'; target: string; name: TopoName | null; size?: number };
 
-/**
- * Item H (P20): the picked face's own in-plane size, e.g. [40, 40] for a
- * box's top face -- read off the BUILT geometry (a real bounding box on
- * this one face, not the doc's own fields), so it stays right after a
- * Round, Hole or Hollow reshapes the solid those fields still describe.
- *
- * A planar, axis-aligned face (every primitive's own flat face, and every
- * flat face a Hollow/Hole/Round leaves alone) has one bbox axis pinned to
- * (near) zero width -- its own normal. Dropping that axis and reporting
- * the other two, smallest first for a stable "W x D" reading regardless of
- * which world axes they happen to be, is exactly "40 x 40". A curved or
- * non-axis-aligned face has no single degenerate axis to drop; null there
- * rather than a bbox number nobody asked for and nobody could act on.
- */
-function faceSize(oc: any, face: any): [number, number] | null {
-  // Defensive, not load-bearing: a size the kernel could not compute (a
-  // binding-signature mismatch on some build, a degenerate face) is a
-  // missing THIRD word in the pill, never a reason to lose the pick
-  // itself -- see hitAt()'s own caller, which still needs `name` even
-  // when this returns null.
-  try {
-    const box = new oc.Bnd_Box();
-    oc.BRepBndLib.Add(face, box, true);
-    if (box.IsVoid?.()) return null;
-    const lo = box.CornerMin();
-    const hi = box.CornerMax();
-    const extents = [hi.X() - lo.X(), hi.Y() - lo.Y(), hi.Z() - lo.Z()];
-    const flatAxis = extents.findIndex((e) => e < 0.05);
-    if (flatAxis < 0) return null;
-    const rest = extents.filter((_, i) => i !== flatAxis).sort((a, b) => a - b);
-    const round = (n: number) => Math.round(n * 100) / 100;
-    return [round(rest[0]), round(rest[1])];
-  } catch {
-    return null;
-  }
-}
-
-/** Item H: a picked edge's own length -- true arc length via
- *  BRepGProp.LinearProperties (a curved edge's length is not its two
- *  endpoints' straight-line distance), so a rounded edge reads correctly
- *  too, not just a straight one. */
-function edgeLength(oc: any, edge: any): number | null {
-  try {
-    const g = new oc.GProp_GProps();
-    // Same (shape, props, ...flags) shape as VolumeProperties/
-    // SurfaceProperties elsewhere in this codebase (see occt-build.ts's
-    // measureShape) -- this build's binding refuses the 2-argument call
-    // outright (measured: "invalid signature ... expects
-    // (TopoDS_Shape,GProp_GProps,boolean,boolean)").
-    oc.BRepGProp.LinearProperties(edge, g, false, false);
-    const len = g.Mass();
-    return Number.isFinite(len) && len > 0 ? Math.round(len * 100) / 100 : null;
-  } catch {
-    return null;
-  }
-}
+// faceSize()/edgeLength() used to live here as module-level helpers taking a
+// raw `oc` handle -- moved onto EngineAdapter itself (see engine-adapter.ts's
+// own doc comment on why) during the step-10 seam refactor, since they were
+// two more direct kernel.oc reaches the original grep-based method list had
+// not named. Call sites below now read `engine.faceSize(face)` /
+// `engine.edgeLength(edge)`.
 
 interface Props {
   doc: ModelDoc;
@@ -353,58 +308,42 @@ interface Props {
   panelOcclusionPx?: number;
 }
 
-/** The handful of kernel exports this component calls, loaded once. Loose
- *  typing throughout -- same trade lib/occt-build.ts documents: a wrong name
- *  fails at the first call instead of silently. */
-interface Kernel {
-  oc: any;
-  buildDoc: (oc: any, doc: ModelDoc, arc?: any) => BuildResult;
-  arc: any;
-}
+// loadKernel()/dynamicImportKernel()/kernelImportStrategy used to live here,
+// hand-loading replicad_single.js + occt-build.js + sketch-arc.js by a
+// runtime-computed URL. That whole loader moved into OcctEngineAdapter's own
+// load() (packages/kernel/src/occt-engine-adapter.ts) as part of §3.3's
+// step-10 seam refactor -- SPEC-engine-port.md's own §3.3 names this file's
+// loadKernel() as becoming loadEngine() -- with one real difference, not a
+// regression: occt-build.js is no longer fetched as a separate dynamic
+// import. OcctEngineAdapter imports buildDoc() as an ordinary static import
+// (occt-build.ts is already bundled into @shuff57/reshape-kernel), so
+// load() now only dynamically imports replicad_single.js + sketch-arc.js --
+// one fewer network round trip than before this port, not a missing one.
 
-let kernelPromise: Promise<Kernel> | null = null;
-/** Which import strategy actually worked, set once on the first successful
- *  load. Purely diagnostic -- see BrepViewport.tsx's own copy of this. */
-let kernelImportStrategy: 'webpackIgnore' | 'new-function' | null = null;
+/** Cached per engine mode (not just once) so a future setEngineMode() call
+ *  (SPEC-engine-port.md §3.3's own "a future UI toggle just calls
+ *  setEngineMode() directly") gets a fresh adapter instead of reusing
+ *  whichever engine happened to load first -- today only one mode is ever
+ *  selected before mount, so this never actually re-triggers, but getting it
+ *  right costs nothing. */
+let enginePromise: Promise<EngineAdapter> | null = null;
+let enginePromiseMode: 'occt' | 'freecad' | null = null;
 
-/** Import one kernel module by a runtime-computed URL, hidden from webpack's
- *  static analysis. Copied from BrepViewport.tsx -- see that file for the
- *  full account of why two strategies are tried in order. */
-async function dynamicImportKernel(path: string): Promise<any> {
-  const url = `${getKernelBaseUrl()}/${path}`;
-  if (kernelImportStrategy === 'new-function') {
-    return new Function('u', 'return import(u)')(url);
+/** Bring up the EngineAdapter for the CURRENT getEngineMode() -- OcctEngineAdapter
+ *  (default) or FreeCadEngineAdapter (SPEC-engine-port.md §3.3). Needs THREE
+ *  already resolved (both adapters take it constructor-injected, same
+ *  discipline occt-three.ts's own tessellateToThree() follows), so the
+ *  loading effect below awaits loadThree() first -- see that effect's own
+ *  comment for the one timing consequence of that ordering. */
+function loadEngine(THREE: typeof THREE_NS): Promise<EngineAdapter> {
+  const mode = getEngineMode();
+  if (!enginePromise || enginePromiseMode !== mode) {
+    enginePromiseMode = mode;
+    const engine: EngineAdapter =
+      mode === 'freecad' ? new FreeCadEngineAdapter(THREE) : new OcctEngineAdapter(THREE);
+    enginePromise = engine.load().then(() => engine);
   }
-  try {
-    const mod = await import(/* webpackIgnore: true */ url as any);
-    kernelImportStrategy = 'webpackIgnore';
-    // eslint-disable-next-line no-console
-    console.info('[BrepViewportThree] kernel import strategy: webpackIgnore', path);
-    return mod;
-  } catch (e) {
-    const mod = await new Function('u', 'return import(u)')(url);
-    kernelImportStrategy = 'new-function';
-    // eslint-disable-next-line no-console
-    console.info('[BrepViewportThree] kernel import strategy: new-function (webpackIgnore failed:', e, ')', path);
-    return mod;
-  }
-}
-
-function loadKernel(): Promise<Kernel> {
-  if (!kernelPromise) {
-    kernelPromise = (async () => {
-      const [replicadMod, buildMod, arcMod] = await Promise.all([
-        dynamicImportKernel('replicad_single.js'),
-        dynamicImportKernel('occt-build.js'),
-        dynamicImportKernel('sketch-arc.js'),
-      ]);
-      // replicad_single.js's default export is an emscripten factory -- it
-      // returns a PROMISE of the initialised module, not the module itself.
-      const oc = await replicadMod.default();
-      return { oc, buildDoc: buildMod.buildDoc, arc: arcMod };
-    })();
-  }
-  return kernelPromise;
+  return enginePromise;
 }
 
 /**
@@ -556,11 +495,13 @@ export default function BrepViewportThree({
    *  dependency array. */
   const [hoveringEdge, setHoveringEdge] = useState(false);
   const [loadingNote, setLoadingNote] = useState(
-    'loading the modelling kernel + three.js -- the kernel is ~22.9 MB, once per session'
+    getEngineMode() === 'freecad'
+      ? 'loading the FreeCAD kernel + three.js -- the kernel is ~58 MB, once per session'
+      : 'loading the modelling kernel + three.js -- the kernel is ~22.9 MB, once per session'
   );
 
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const kernelRef = useRef<Kernel | null>(null);
+  const engineRef = useRef<EngineAdapter | null>(null);
   const threeRef = useRef<Awaited<ReturnType<typeof loadThree>> | null>(null);
 
   /** Created once per mount, on the first successful draw, and reused for
@@ -690,18 +631,32 @@ export default function BrepViewportThree({
    *  student cleared the selection from the model tree, say, rather than by
    *  clicking the viewport) can re-run restorePicks() without repeating the
    *  actual kernel rebuild -- see the effect below that watches `pick`. */
-  const lastBuiltRef = useRef<BuildResult | null>(null);
+  const lastBuiltRef = useRef<EngineBuildResult | null>(null);
   const lastMeshesRef = useRef<THREE_NS.Mesh[]>([]);
 
-  // ---- load the kernel + three.js once -------------------------------------
+  // ---- load the engine + three.js once --------------------------------------
+  //
+  // Sequenced (loadThree() first, then loadEngine(three.THREE)) rather than
+  // Promise.all()'d the way loadKernel()/loadThree() used to be -- both
+  // EngineAdapter implementations take THREE constructor-injected (see
+  // loadEngine()'s own comment), so the adapter cannot be built, let alone
+  // told to load(), before three.js itself has resolved. The one real
+  // consequence: the wasm kernel's own download no longer starts
+  // concurrently with three.js's chunk fetch, a few tens of ms at most
+  // against a multi-second wasm load and not a functional difference --
+  // nothing about WHICH interaction surface works depends on this ordering.
   useEffect(() => {
     let cancelled = false;
-    Promise.all([loadKernel(), loadThree()])
-      .then(([kernel, three]) => {
-        if (cancelled) return;
-        kernelRef.current = kernel;
+    loadThree()
+      .then((three) => {
+        if (cancelled) return undefined;
         threeRef.current = three;
-        setLoadingNote(`kernel ready (${kernelImportStrategy}) -- ${Object.keys(kernel.oc).length} exports`);
+        return loadEngine(three.THREE);
+      })
+      .then((engine) => {
+        if (cancelled || !engine) return;
+        engineRef.current = engine;
+        setLoadingNote(`${getEngineMode()} engine ready`);
         setPhase('ready');
       })
       .catch((e) => {
@@ -1243,12 +1198,21 @@ export default function BrepViewportThree({
         // so the first/closest still wins, exactly as before) are
         // untouched, and this never runs at all for the common case of a
         // single edge in the band.
-        if (surviving.length > 1 && lastBuiltRef.current && kernelRef.current?.oc) {
+        if (surviving.length > 1 && lastBuiltRef.current && engineRef.current) {
           const built = lastBuiltRef.current;
-          const oc = kernelRef.current.oc;
+          const engine = engineRef.current;
           const named = surviving.find((c) => {
             const { featureId, kernelEdge } = c.line.userData as { featureId: string; kernelEdge: any };
-            return nameEdgeOnCurrentShape(oc, built, docRef.current, featureId, kernelEdge) !== null;
+            // A throw here (FreeCadEngineAdapter.nameEdge: not yet
+            // implemented) is honest, not an error -- same "no answer" case
+            // this disambiguation already treats null as; see the try/catch
+            // pattern repeated at every nameFace/nameEdge/resolveFace/
+            // resolveEdge call site below, for the same reason.
+            try {
+              return engine.nameEdge(built, docRef.current, featureId, kernelEdge) !== null;
+            } catch {
+              return false;
+            }
           });
           if (named) return { kind: 'edge', line: named.line };
         }
@@ -1326,22 +1290,29 @@ export default function BrepViewportThree({
         paintFaceHighlight(THREE, selectedFaceMesh, hit.mesh, hit.range);
         setSelectedEdgeTube(null);
         // Resolved the same way an edge's `name` is, just off the other end
-        // of facesOf()'s own walk: FaceRange.index is this face's position
+        // of faceAt()'s own walk: FaceRange.index is this face's position
         // in that SAME stable order (see FaceRange's own doc comment in
         // lib/occt-three.ts), so indexing back into it recovers the exact
-        // kernel TopoDS_Face the click landed on.
+        // kernel face handle the click landed on.
         const built = lastBuiltRef.current;
+        const engine = engineRef.current!;
         const shape = built?.shapes.get(featureId);
-        const kernelFace = shape ? facesOf(kernelRef.current!.oc, shape)[hit.range.index] : undefined;
-        const name = built && kernelFace
-          ? nameFaceOnCurrentShape(kernelRef.current!.oc, built, docRef.current, featureId, kernelFace)
-          : null;
+        const kernelFace = shape ? engine.faceAt(shape, hit.range.index) : undefined;
+        let name: TopoName | null = null;
+        if (built && kernelFace) {
+          // See hitAt()'s own comment on why a throw here (FreeCAD's naming
+          // is not yet implemented) is treated the same as an honest null.
+          try { name = engine.nameFace(built, docRef.current, featureId, kernelFace); } catch { name = null; }
+        }
         // A pick that lands inside the first frames of a rebuild can miss
         // its name (measured 2026-09-03: 1 of 20 picks at 0 ms after a
         // resize). Remember whether it was named so restorePicks() can try
         // again on the build that replaces this one.
         unnamedFacePickRef.current = name ? null : { featureId, faceIndex: hit.range.index };
-        const size = kernelFace ? faceSize(kernelRef.current!.oc, kernelFace) ?? undefined : undefined;
+        let size: [number, number] | undefined;
+        if (kernelFace) {
+          try { size = engine.faceSize(kernelFace) ?? undefined; } catch { size = undefined; }
+        }
         onPickRef.current?.({ kind: 'face', target: featureId, faceIndex: hit.range.index, name, size });
       } else {
         const { featureId, kernelEdge } = hit.line.userData as {
@@ -1357,13 +1328,16 @@ export default function BrepViewportThree({
         // recent BuildResult -- the same one drawGeoms() just drew from --
         // so this never re-runs the kernel build to answer a click.
         const built = lastBuiltRef.current;
-        const name = built
-          ? nameEdgeOnCurrentShape(kernelRef.current!.oc, built, docRef.current, featureId, kernelEdge)
-          : null;
+        const engine = engineRef.current!;
+        let name: TopoName | null = null;
+        if (built) {
+          try { name = engine.nameEdge(built, docRef.current, featureId, kernelEdge); } catch { name = null; }
+        }
         setSelectedEdgeTube(hit.line.userData.tubeMesh as THREE_NS.Mesh);
         selectedFaceMesh.visible = false;
         selectedFaceStateRef.current = null;
-        const size = edgeLength(kernelRef.current!.oc, kernelEdge) ?? undefined;
+        let size: number | undefined;
+        try { size = engine.edgeLength(kernelEdge) ?? undefined; } catch { size = undefined; }
         onPickRef.current?.({ kind: 'edge', target: featureId, name, size });
       }
       renderNow();
@@ -1967,14 +1941,14 @@ export default function BrepViewportThree({
     geometry: THREE_NS.BufferGeometry; faces: FaceRange[];
   }>): THREE_NS.Mesh[] {
     const three = threeRef.current;
-    const kernel = kernelRef.current;
+    const engine = engineRef.current;
     const group = solidGroupRef.current;
     const renderer = rendererRef.current;
     const scene = sceneRef.current;
     const camera = cameraRef.current;
     const hoverFaceMesh = hoverFaceMeshRef.current;
     const selectedFaceMesh = selectedFaceMeshRef.current;
-    if (!three || !kernel || !group || !renderer || !scene || !camera
+    if (!three || !engine || !group || !renderer || !scene || !camera
       || !hoverFaceMesh || !selectedFaceMesh) {
       throw new Error('the three.js scene has not been created yet');
     }
@@ -2033,7 +2007,7 @@ export default function BrepViewportThree({
       // be drawn -- three.js does not consult `.visible` during a raycast
       // (confirmed against node_modules/three/src/core/Raycaster.js; no
       // `visible` check exists there), which is exactly what is wanted here.
-      for (const { edge, geometry: lineGeom } of edgesToThree(THREE, kernel.oc, shape)) {
+      for (const { edge, geometry: lineGeom } of engine.edges(shape)) {
         const line = new THREE.Line(lineGeom, pickLineMaterial);
         line.visible = false;
         line.userData.featureId = id;
@@ -2080,11 +2054,11 @@ export default function BrepViewportThree({
    * Also called on its own, without a rebuild, when only the `pick` PROP
    * changes -- see the effect below that watches it.
    */
-  function restorePicks(meshes: THREE_NS.Mesh[], built: BuildResult) {
+  function restorePicks(meshes: THREE_NS.Mesh[], built: EngineBuildResult) {
     const three = threeRef.current;
-    const kernel = kernelRef.current;
+    const engine = engineRef.current;
     const selectedFaceMesh = selectedFaceMeshRef.current;
-    if (!three || !kernel || !selectedFaceMesh) return;
+    if (!three || !engine || !selectedFaceMesh) return;
     const { THREE } = three;
 
     // No geometry construction here either -- resolve the NAME to a real
@@ -2093,12 +2067,17 @@ export default function BrepViewportThree({
     // tubes is that same edge by IsSame(), and just hand it the selected
     // role. Either nothing is picked, the name no longer resolves (see
     // whyNameLost() in lib/topo-name.ts for why in words a student can act
-    // on -- that story is the caller's to tell), or -- should not happen,
-    // handled the same honest way regardless -- it resolves but no tube in
-    // the current pool matches: all three collapse to the same
-    // "nothing selected" outcome via the ?? null below.
+    // on -- that story is the caller's to tell), the engine has not
+    // implemented resolution at all yet (FreeCadEngineAdapter -- caught
+    // below, same as every other name/measure call in this file), or --
+    // should not happen, handled the same honest way regardless -- it
+    // resolves but no tube in the current pool matches: all collapse to the
+    // same "nothing selected" outcome via the ?? null below.
     const p = pickRef.current;
-    const edge = p ? resolveName(kernel.oc, p.name, built) : null;
+    let edge: unknown | null = null;
+    if (p) {
+      try { edge = engine.resolveEdge(p.name, built); } catch { edge = null; }
+    }
     const line = edge
       ? edgePickLinesRef.current.find((l) => {
           const kernelEdge = l.userData.kernelEdge;
@@ -2117,13 +2096,15 @@ export default function BrepViewportThree({
       const pending = unnamedFacePickRef.current;
       if (pending && sel && pending.featureId === sel.featureId && pending.faceIndex === sel.faceIndex) {
         const shape = built.shapes.get(sel.featureId);
-        const kernelFace = shape ? facesOf(kernel.oc, shape)[sel.faceIndex] : undefined;
-        const name = kernelFace
-          ? nameFaceOnCurrentShape(kernel.oc, built, docRef.current, sel.featureId, kernelFace)
-          : null;
+        const kernelFace = shape ? engine.faceAt(shape, sel.faceIndex) : undefined;
+        let name: TopoName | null = null;
+        if (kernelFace) {
+          try { name = engine.nameFace(built, docRef.current, sel.featureId, kernelFace); } catch { name = null; }
+        }
         if (name) {
           unnamedFacePickRef.current = null;
-          const size = kernelFace ? faceSize(kernel.oc, kernelFace) ?? undefined : undefined;
+          let size: [number, number] | undefined;
+          try { size = engine.faceSize(kernelFace) ?? undefined; } catch { size = undefined; }
           onPickRef.current?.({ kind: 'face', target: sel.featureId, faceIndex: sel.faceIndex, name, size });
         }
       }
@@ -2136,14 +2117,14 @@ export default function BrepViewportThree({
   // ---- build + mesh + draw, whenever the doc (or deflection) changes -------
   useEffect(() => {
     if (phase !== 'ready') return;
-    const kernel = kernelRef.current;
+    const engine = engineRef.current;
     const three = threeRef.current;
-    if (!kernel || !three || !rendererRef.current) return;
+    if (!engine || !three || !rendererRef.current) return;
     let cancelled = false;
 
     try {
       const t0 = performance.now();
-      const built = kernel.buildDoc(kernel.oc, doc, kernel.arc);
+      const built = engine.build(doc);
       const buildMs = performance.now() - t0;
 
       const shapes = topLevel(doc)
@@ -2207,13 +2188,13 @@ export default function BrepViewportThree({
       const t1 = performance.now();
       const meshed = shapes
         .map((s) => {
-          const m = tessellateToThree(three.THREE, kernel.oc, s.shape, { deflection });
+          const m = engine.mesh(s.shape, { deflection });
           return m ? { id: s.id, kind: s.kind, shape: s.shape, geometry: m.geometry, faces: m.faces } : null;
         })
         .filter((m): m is NonNullable<typeof m> => m !== null);
       const meshMs = performance.now() - t1;
       if (meshed.length === 0) {
-        throw new Error('The kernel built a solid, but tessellateToThree() returned nothing drawable for it.');
+        throw new Error('The kernel built a solid, but meshing it returned nothing drawable.');
       }
 
       const t2 = performance.now();

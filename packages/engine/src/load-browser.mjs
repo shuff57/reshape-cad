@@ -69,6 +69,29 @@ export async function loadFreeCadEngine(baseUrl = getEngineBaseUrl()) {
     print: (m) => lines.push(m),
     printErr: (m) => lines.push(`[err] ${m}`),
     noInitialRun: true,
+    // Found while verifying SPEC-engine-port.md step 10's self-check (b):
+    // FreeCADCmd.js's OWN wasm-binary fetch already resolves correctly
+    // without this (its locateFile() default falls back to
+    // `new URL('.', document.currentScript.src).href + path`, i.e. relative
+    // to wherever loadScript() below actually put the <script> tag). But
+    // freecad-data.js is a DIFFERENT, older-style Emscripten data-packager
+    // output: its own REMOTE_PACKAGE_NAME is
+    // `Module['locateFile']?.(name, '') ?? name` -- a BARE filename with no
+    // script-relative fallback at all when locateFile is absent, so its
+    // `fetch('freecad-data.data')` resolves against the PAGE's own origin,
+    // not `base`. engine/play/studio.js's own inline copy of this bootstrap
+    // never needed this because its page (studio.html) happens to be served
+    // from the exact same root its data file sits at -- a coincidence
+    // sandbox-dev's SPA route (serving freecad-data.data under
+    // /reshape/engine/, not page root) does not share. Measured directly:
+    // without this, the wrong bytes (Vite's own index.html, via its SPA
+    // fallback) silently became the "data pack", and Python's own stdlib
+    // never mounted -- ModuleNotFoundError: No module named 'encodings' on
+    // the very first newDocument() call, not a load-time error. Supplying
+    // `base` here also covers FreeCADCmd.js's own wasm fetch (same
+    // resolution its own default already computes), so this changes nothing
+    // for the case that already worked.
+    locateFile: (path) => `${base}${path}`,
     preRun: [(m) => {
       m.ENV.FREECAD_WASM_KERNEL = '1';
       m.ENV.FREECAD_HOME = '/freecad';

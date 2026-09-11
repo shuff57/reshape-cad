@@ -515,3 +515,100 @@ every path is absolute or repo-relative and exact.
     that throws today, so the gap doesn't silently bit-rot as more
     `ModelDoc` features are added elsewhere in the app without a matching
     FreeCAD translation.
+
+---
+
+## 6. Known gaps (step 11)
+
+Written after step 10 actually wired `BrepViewportThree.tsx` to `EngineAdapter`
+and exercised both engines live, through `packages/sandbox-dev`, in a real
+browser -- so this is what was actually found, not a forecast.
+
+### 6.1 `Feature.kind`s that throw on the FreeCAD engine
+
+`FreeCadEngineAdapter.build()` (`packages/kernel/src/freecad-engine-adapter.ts`)
+builds `box`, `cylinder`, `sphere`, `sketch` (plane `'xy'` at offset `0`
+only -- any other plane/offset throws its own specific message), `extrude`,
+`pocket`, and `fillet`/`chamfer`. Every other `Feature['kind']`
+(`packages/script/src/model-types.ts`) throws
+`"not yet supported on the FreeCAD engine: <kind>"`:
+
+`cone`, `torus`, `prism`, `wedge`, `groove`, `blend`, `combine`, `revolve`,
+`mirror`, `pattern`, `hole`, `shell`, `draft`, `move` -- 14 kinds. `revolve`/
+`groove` specifically are a found orientation mismatch, not unstarted work --
+see `FreeCadEngineAdapter`'s own comment on its `else` branch. v1 is also
+single-body-per-chain (`combine` is the one place two independent chains
+would need to merge into one Body, and does not).
+
+### 6.2 Picking is unimplemented, and now provably so under load
+
+`resolveFace`/`resolveEdge`/`nameFace`/`nameEdge` all throw "not yet
+implemented" on `FreeCadEngineAdapter` -- real topological-naming resolution
+against a live FreeCAD shape (§4 risk 3) was never scheduled for this
+cutover. Step 10 adds two more methods to the same "throws, not guesses"
+list: `faceSize`/`edgeLength` (found mid-refactor -- see §3.1's interface;
+`OcctEngineAdapter` moved the existing measurement logic over verbatim,
+`FreeCadEngineAdapter` throws the same way its naming methods already do).
+
+This is no longer theoretical: `BrepViewportThree.tsx`'s `pickAt()` calls all
+of these on a real click, and under `VITE_RESHAPE_ENGINE=freecad` in a real
+browser, clicking a face throws "not yet implemented" the instant it is
+reached. Step 10 wraps every one of these calls in a local `try/catch` that
+treats the throw as an honest `null` (the same "no answer over a wrong one"
+outcome an OCCT pick already returns for a face/edge with no traceable
+lineage) -- so a click under the FreeCAD engine still highlights the face or
+edge, just without a name or a measured size, and Round/Fillet stays
+unreachable from the UI on that engine until §4 risk 3 is actually
+scheduled. Confirmed live (`packages/sandbox-dev`, `VITE_RESHAPE_ENGINE=freecad`):
+clicking a face reads "Box 1 · face" (no name, no size) with no console
+error, instead of crashing the click handler.
+
+### 6.3 FreeCAD-kernel numbers are unverified against the real GCS solver
+
+Phase 2's 14 `packages/kernel/test/*.test.mjs` cases exercise
+`FreeCadEngineAdapter` against a synthetic/mocked session, not the real
+FreeCAD wasm kernel -- fillet/chamfer volumes, and the angle-constraint sign
+convention `packages/engine/src/sketch-translate.ts`'s own header names as
+"needs a measured check, not assumed" (§4.5.2's table), have never been
+cross-checked against the real GCS solver. `freecad-vs-occt.manual.mjs`
+(phase 2) exists to run that check the moment a kernel-build container is
+available; it was not available in any session through this phase either.
+Step 10 DID exercise the real kernel live (see §6.4) but only for a bare box
+and a dimension edit -- no fillet, no sketch, no constraint went through the
+real GCS solver at any point in this cutover.
+
+### 6.4 A real, fixed bug: `packages/engine/src/load-browser.mjs` had no `locateFile`
+
+Found while running step 10's self-check (b) for real (not just reading the
+code): `FreeCadEngineAdapter` failed on its very first `newDocument()` call
+under `packages/sandbox-dev`, with `ModuleNotFoundError: No module named
+'encodings'` -- Python's own stdlib never mounted. Root cause: the
+Emscripten-generated `freecad-data.js` (a different, older data-packager
+output than `FreeCADCmd.js`'s own module glue) resolves its own `.data` file
+via `Module['locateFile']?.(name, '') ?? name` -- a BARE filename with no
+script-relative fallback when `locateFile` is absent -- so its
+`fetch('freecad-data.data')` resolved against the PAGE's own origin, not the
+engine's base URL. `engine/play/studio.js`'s own copy of this same bootstrap
+never surfaced this because that page happens to be served from the same
+root its data file sits at -- a coincidence `packages/sandbox-dev`'s SPA
+route (serving `freecad-data.data` under `/reshape/engine/`, not page root)
+does not share. Fixed by adding one `locateFile: (path) => \`${base}${path}\``
+line to `load-browser.mjs`'s `Module` config -- verified this also does not
+change `FreeCADCmd.js`'s own (already-correct) wasm resolution, since both
+now agree on the same `base`. `engine/play/*` was left untouched per this
+phase's own scope constraint; its bootstrap still "works" there only by the
+coincidence above.
+
+### 6.5 Loading timing: three.js now loads before the kernel starts fetching, not alongside it
+
+`BrepViewportThree.tsx`'s pre-refactor `loadKernel()`/`loadThree()` ran via
+one `Promise.all(...)`, so the wasm kernel's own download started
+concurrently with three.js's own chunk fetch. Both `EngineAdapter`
+implementations take `THREE` constructor-injected (§3.2, unchanged by this
+phase), so `loadEngine()` cannot construct or `load()` an adapter until
+`loadThree()` has already resolved -- the two can no longer run in parallel.
+Not a functional regression (self-check (a) is unaffected: build, pick,
+fillet, undo all still work identically), and the wasm kernel (23-58 MB) so
+dominates the load time over three.js's own chunk that the effect is likely
+sub-second in absolute terms, but it is a genuine, unmeasured timing
+difference from before this phase, named here rather than silently accepted.

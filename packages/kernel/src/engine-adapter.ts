@@ -35,12 +35,17 @@
 //
 // `oc` itself is intentionally NOT part of this interface: every OCCT-shaped
 // call the component makes (per the list above) goes through one of these
-// methods. The one exception -- a local `faceSize(kernel.oc, kernelFace)`
-// helper the component keeps for itself, plus a diagnostic
-// `Object.keys(kernel.oc).length` -- reaches for the raw handle directly and
-// has no adapter method here; §3.3's step-10 seam refactor (out of scope
-// this phase) has to decide what those become when kernel.oc is no longer
-// reachable at all under the FreeCAD engine.
+// methods. Step 10 (the seam refactor itself) found two more direct `oc`
+// reaches this list had not named -- a local `faceSize(oc, face)` /
+// `edgeLength(oc, edge)` pair, and a purely diagnostic
+// `Object.keys(kernel.oc).length` in the loading-note text -- and closed the
+// first two as `faceSize`/`edgeLength` above (OcctEngineAdapter moves the
+// existing Bnd_Box/BRepGProp logic in verbatim; FreeCadEngineAdapter throws
+// "not yet implemented", same as resolveFace/nameFace, since real
+// measurement against a FreeCAD shape is unscheduled §4 risk-3 work). The
+// third had no adapter-neutral equivalent (a FreeCAD session has no `oc`
+// export count to report) and was simply replaced with engine-mode-neutral
+// loading text -- see BrepViewportThree.tsx's own loadEngine().
 
 import type { ModelDoc } from '@shuff57/reshape-script/model-types';
 import type { TopoName } from '@shuff57/reshape-script/topo-name';
@@ -111,4 +116,20 @@ export interface EngineAdapter {
    *  recorded path back to a nameable primitive", not an error. */
   nameFace(build: EngineBuildResult, doc: ModelDoc, pickedFeature: string, face: unknown): TopoName | null;
   nameEdge(build: EngineBuildResult, doc: ModelDoc, pickedFeature: string, edge: unknown): TopoName | null;
+
+  /** A picked face's own in-plane size (e.g. [40, 40] for a box's top face),
+   *  read off the BUILT geometry -- the adapter form of
+   *  BrepViewportThree.tsx's own module-level faceSize(oc, face) helper,
+   *  found during the step-10 seam refactor: it reached into `kernel.oc`
+   *  directly (Bnd_Box/BRepBndLib), same as every other call this interface
+   *  already covers, so it moves here rather than staying a stray exception.
+   *  Null for a curved or non-axis-aligned face, or whenever the size cannot
+   *  be computed -- same "no answer over a wrong one" rule as resolveFace. */
+  faceSize(face: unknown): [number, number] | null;
+
+  /** A picked edge's own true arc length -- the adapter form of
+   *  BrepViewportThree.tsx's own module-level edgeLength(oc, edge) helper,
+   *  moved here for the same reason as faceSize above. Null whenever it
+   *  cannot be computed. */
+  edgeLength(edge: unknown): number | null;
 }
