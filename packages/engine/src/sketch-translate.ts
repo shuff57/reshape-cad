@@ -88,12 +88,33 @@ const ORIGIN_POS: PointPos = 1;
  *  (§4.5.3 step 4), since a closure pin IS a lock pin, just written for a
  *  corner the student did not explicitly lock. Returns the two new
  *  constraints' own indices -- DoF closure (below) needs them to undo a
- *  pin that turns out to conflict with an already-exact value. */
+ *  pin that turns out to conflict with an already-exact value.
+ *
+ *  ORIGIN FIRST, POINT SECOND -- found and fixed as a real, previously-
+ *  shipped sign bug (SPEC-studio-canonical.md phase 3's own report):
+ *  FreeCAD's `Sketcher::Constraint('DistanceX'/'DistanceY', g1, p1, g2, p2,
+ *  value)` is measured (against the real kernel, not assumed) to mean
+ *  `value = coordinate(g2, p2) - coordinate(g1, p1)`, second point minus
+ *  first. The original code called this with the CORNER first and the
+ *  origin second (`ref` then `ORIGIN_GEO`), which pins
+ *  `0 - coordinate(corner) = value`, i.e. `coordinate(corner) = -value` --
+ *  every closure-pinned or `lock`-ed corner landed at the NEGATIVE of its
+ *  intended (x, y), a full point-reflection of the sketch through its own
+ *  origin. Volume-only checks (freecad-vs-occt.manual.mjs) never caught
+ *  this because a point reflection is an isometry -- it changes WHERE the
+ *  shape sits, never its volume or its bounding-box extents when the sketch
+ *  is centred near the origin, which every fixture measured so far happens
+ *  to be. Found chasing this port's own wall-naming self-check: an
+ *  extrude's own wall centroids came back at exactly the design's
+ *  180-degree-rotated positions ((-20,0) instead of (20,0), etc. -- see
+ *  this port's own report for the full measured trail). Swapping the
+ *  argument order so the ORIGIN is `g1` fixes it: `value = coordinate(ref)
+ *  - 0 = coordinate(ref)`, which is what every caller already intends. */
 function pinCornerToOrigin(
   session: SketchSession, sketchName: string, ref: CornerRef, x: number, y: number,
 ): [xIndex: number, yIndex: number] {
-  const xIndex = session.constrainDistanceX(sketchName, ref.geoId, ref.pointPos, ORIGIN_GEO, ORIGIN_POS, x);
-  const yIndex = session.constrainDistanceY(sketchName, ref.geoId, ref.pointPos, ORIGIN_GEO, ORIGIN_POS, y);
+  const xIndex = session.constrainDistanceX(sketchName, ORIGIN_GEO, ORIGIN_POS, ref.geoId, ref.pointPos, x);
+  const yIndex = session.constrainDistanceY(sketchName, ORIGIN_GEO, ORIGIN_POS, ref.geoId, ref.pointPos, y);
   return [xIndex, yIndex];
 }
 
@@ -153,9 +174,12 @@ function pinAxisIfNeeded(
   session: SketchSession, sketchName: string, ref: CornerRef, axis: 'x' | 'y', value: number,
 ): void {
   const before = session.sketchState(sketchName);
+  // Origin first, point second -- see pinCornerToOrigin()'s own header for
+  // why (the same real, measured sign bug; this call site pins the same way
+  // for the same reason).
   const index = axis === 'x'
-    ? session.constrainDistanceX(sketchName, ref.geoId, ref.pointPos, ORIGIN_GEO, ORIGIN_POS, value)
-    : session.constrainDistanceY(sketchName, ref.geoId, ref.pointPos, ORIGIN_GEO, ORIGIN_POS, value);
+    ? session.constrainDistanceX(sketchName, ORIGIN_GEO, ORIGIN_POS, ref.geoId, ref.pointPos, value)
+    : session.constrainDistanceY(sketchName, ORIGIN_GEO, ORIGIN_POS, ref.geoId, ref.pointPos, value);
   const after = session.sketchState(sketchName);
   if (after.conflicting.length === 0 && after.malformed.length === 0) return;
   const already = readPoint(before.geometry, ref.geoId, ref.pointPos);
@@ -202,8 +226,11 @@ export function translateSketch(
   if (circle) {
     const gid = session.sketchAddCircle(sketchName, circle.center[0], circle.center[1], circle.radius);
     session.constrainRadius(sketchName, gid, circle.radius);
-    session.constrainDistanceX(sketchName, gid, 3, ORIGIN_GEO, ORIGIN_POS, circle.center[0]);
-    session.constrainDistanceY(sketchName, gid, 3, ORIGIN_GEO, ORIGIN_POS, circle.center[1]);
+    // Origin first, point second -- see pinCornerToOrigin()'s own header for
+    // the real, measured sign bug this avoids (a circle center pinned the
+    // old way would land at its own negative coordinate).
+    session.constrainDistanceX(sketchName, ORIGIN_GEO, ORIGIN_POS, gid, 3, circle.center[0]);
+    session.constrainDistanceY(sketchName, ORIGIN_GEO, ORIGIN_POS, gid, 3, circle.center[1]);
     const state = session.sketchState(sketchName);
     if (state.conflicting.length > 0 || state.malformed.length > 0) {
       refuse(sketch, `circle geometry conflicts on the FreeCAD engine (conflicting: ${state.conflicting.join(',')}, malformed: ${state.malformed.join(',')})`);

@@ -60,18 +60,18 @@
 //     inside THAT feature's own body. combine (needed to join two
 //     independent chains into one) is out of scope (§4 risk 6 names this as
 //     an open design question, not resolved here).
-//   - Edge naming for fillet/chamfer is intentionally narrow. §4 risk 3
-//     scopes real topological-naming resolution for this engine as separate,
-//     unscheduled work ("a second, separate implementation"); this file
-//     implements only the case the build-sequence's own self-check needs --
-//     a `between` name over two `primitive`-cause faces of the SAME fresh
-//     box/cylinder feature, matching topo-resolve.ts's own
-//     nameEdgeBetweenPrimitiveFaces() vocabulary ('+x'/'-x'/'+y'/'-y'/'+z'/
-//     '-z'/'side'), resolved geometrically against the live FreeCAD shape.
-//     Anything else -- an edge from a sweep, a rounded corner, a carried or
-//     split face -- reports a per-feature refusal (EngineBuildResult.refusals)
-//     rather than guessing, the same "no answer is better than a confidently
-//     wrong one" rule topo-resolve.ts's own header states.
+//   - Edge naming for fillet/chamfer, inside build() itself, tries a
+//     `between` name over two `primitive`-cause faces of the SAME fresh
+//     box/cylinder feature first (resolvePrimitiveEdgeName(), matching
+//     topo-resolve.ts's own nameEdgeBetweenPrimitiveFaces() vocabulary --
+//     '+x'/'-x'/'+y'/'-y'/'+z'/'-z'/'side'), then -- added in the sketch-
+//     naming pass below -- a `between` name over two sketch-derived
+//     (`swept`/`rounded`/`cap`) faces of the SAME Pad, via the general
+//     resolveEdge() this file's own EngineAdapter methods use for picking.
+//     Anything else -- an edge from a carried or split face -- reports a
+//     per-feature refusal (EngineBuildResult.refusals) rather than
+//     guessing, the same "no answer is better than a confidently wrong
+//     one" rule topo-resolve.ts's own header states.
 //
 // Picking (resolveFace/resolveEdge/nameFace/nameEdge, plus faceSize/
 // edgeLength) is now implemented -- §4 risk 3, narrowed to exactly the
@@ -94,24 +94,60 @@
 //     for a surface that is not axis-flat, matching topo-name.ts's own
 //     documented rule that a round's own face has no primitive lineage.
 //
-// NOT implemented, and NOT guessable without more design work: naming a
-// face/edge on an extrude/pocket-built solid that came from a SWEPT sketch
-// edge or an end CAP (topo-name.ts's `swept`/`cap` causes). The OCCT side
-// answers these via BuildResult.sweeps, a per-feature record of which
-// TopoDS_Edge each sketch edge generated (topo-history.ts's
-// generatedFrom()/capOf(), built from BRepBuilderAPI_MakeShape's own
-// Generated() history). FreeCAD's bridge has no equivalent history channel
-// today -- session.meshFaces() reports "Face{n}"/"Edge{n}" and nothing about
-// which sketch edge or PartDesign::Pad end produced which one. Building
-// that would mean either (a) a second, FreeCAD-specific "what came from
-// what" tracker parallel to topo-history.ts's OCCT one, or (b) leaning on
-// FreeCAD's own Generated()/Modified() Python API across a Pad/Pocket the
-// same way OCCT's does -- both are real, unscheduled design questions, not
-// a gap this file can close by extending the primitive resolver. A pick on
-// such a face/edge (a Pad's side wall, its top/bottom cap) still highlights
-// -- resolveFace/resolveEdge/nameFace/nameEdge just return null for it, the
-// same "no answer over a wrong one" outcome any unresolvable name already
-// gets. See docs/specs/SPEC-engine-port.md §6.2 for the full account.
+// SKETCH-DERIVED (Pad) naming -- `swept`/`rounded`/`cap` -- is now also
+// implemented (SPEC-studio-canonical.md phase 3), closing the gap the
+// paragraph above used to describe as unscheduled design work. Neither
+// option that paragraph raised (a second FreeCAD-specific "what came from
+// what" tracker, or FreeCAD's own Generated()/Modified() Python API) turned
+// out to be necessary -- a real-kernel MEASUREMENT was enough instead: a
+// PartDesign::Pad's own Shape.Faces, queried by name directly off that SAME
+// frozen object (never the owning Body or a later feature's current tip),
+// comes back in a stable, predictable order (wall 0..n-1 in the profile's
+// own outlineOf()/segmentRoles() order, then the bottom cap, then the top
+// cap) that survives whatever is built on top of it later in the same
+// Body -- see FcSweepInfo's own header for the exact measurement and the
+// design this enables:
+//   - resolveFace/resolveEdge (a stored name -> a face) always query the
+//     extrude's OWN object directly and trust FcSweepInfo's cached ORDINAL
+//     Face index -- no kernel round trip, safe specifically because that
+//     object never changes once built.
+//   - nameFace/nameEdge (a picked face -> a name) may be picking on a LATER
+//     feature (a Fillet, a Pocket) whose own current Face order is NOT
+//     ordinally stable (measured: two of a Pad's own untouched walls swap
+//     position once a Pocket is added on top) -- so these instead identify
+//     each wall/cap GEOMETRICALLY, via a point known to lie on it, checked
+//     against the CURRENT shape with Part.Vertex(...).distToShape(...) --
+//     the same "point known to lie on it" technique topo-history.ts's own
+//     pointOnFace()/distanceTo() already use on the OCCT side, for the same
+//     reason (querySketchGeometry(), findSketchAncestor()).
+// Verified against the real kernel
+// (packages/kernel/test/freecad-sketch-picking.manual.mjs, 88/88): a
+// rectangle Pad's 4 walls + 2 caps and all 12 edges name and round-trip; a
+// rounded-corner Pad's arc wall names `rounded` (the rest `swept`); a
+// Fillet was built for real from a pick on a sketch-derived wall edge (this
+// required generalizing build()'s OWN internal fillet-edge resolver too,
+// which previously only ever tried resolvePrimitiveEdgeName()); a
+// pad-then-pocket chain's untouched walls still name when picked on the
+// POCKET's own current shape, while the pocket's own new hole geometry
+// stays an honest null.
+//
+// NARROWED, deliberately, not merely unfinished: a POCKET's own newly-cut
+// faces (its hole's wall, its floor) are never nameable, on purpose -- this
+// matches OCCT's OWN scope for the identical case (occt-build.ts's pocket
+// branch records no sweep history either, "a cut's faces come from the
+// boolean, not the prism"), so this is parity with the other engine, not a
+// gap. A circle-shaped sketch profile has no `sweep` cached at all (no
+// per-edge/per-corner vocabulary to name a circular Pad's one wall after).
+// A concave sketch's own cap point (the outline's vertex-average) is not
+// guaranteed to land inside the polygon -- same limitation
+// topo-history.ts's own pointOnFace() centroid heuristic already documents
+// for OCCT; every fixture measured here is convex. A negative-bulge
+// (clockwise) rounded corner's own wall midpoint is unverified against the
+// real kernel (only the positive-bulge/CCW fixture was measured). See
+// docs/specs/SPEC-engine-port.md §6.2a for the full account, including a
+// real, previously-shipped sign bug in sketch-translate.ts's own
+// origin-pinning helper found (and fixed) while building this
+// verification -- unrelated to naming itself, but blocking it.
 //
 // A second real internal fix this required: faceAt()/edges() used to return
 // a BARE "Face{n}"/"Edge{n}" string with no record of which FreeCAD object
@@ -134,6 +170,7 @@ import { attachCommands } from '@shuff57/reshape-engine/fc-commands';
 import { attachSketchCommands } from '@shuff57/reshape-engine/fc-sketch';
 import { loadFreeCadEngine } from '@shuff57/reshape-engine/load-browser';
 import { translateSketch, type SketchSession } from '@shuff57/reshape-engine/sketch-translate';
+import { arcFromBulge, circleOf, outlineOf, segmentRoles } from '@shuff57/reshape-sketch/sketch-arc';
 import type { EngineAdapter, EngineBuildResult, EngineMesh } from './engine-adapter.js';
 import type { FaceRange } from './occt-three.js';
 
@@ -185,6 +222,99 @@ export interface FcBuiltFeature {
    *  lookup into `doc.features`. */
   featureId: string;
   featureKind: Feature['kind'];
+  /** Present only on an 'extrude' entry whose profile sketch is a
+   *  non-circular outline (outlineOf() succeeded, circleOf() did not) --
+   *  see FcSweepInfo's own header for what this makes nameable and why. */
+  sweep?: FcSweepInfo;
+}
+
+/** One outline segment of a Pad's own profile sketch, matched to its wall's
+ *  ordinal position -- see FcSweepInfo's own header for the measurement this
+ *  is built on. `at` is a point KNOWN TO LIE ON this wall's own surface, at
+ *  local z = height/2 (never z=0 or z=height, which are the CAPS' own planes
+ *  and would make the point ambiguous between a wall and a cap) -- used only
+ *  by querySketchGeometry() to identify this wall on a shape OTHER than the
+ *  extrude's own frozen object (a later fillet/chamfer/pocket's current
+ *  tip), where ordinal Face position is no longer reliable (see this file's
+ *  header on the measured reordering). */
+interface FcSweepSegment {
+  role: 'edge' | 'corner';
+  index: number;
+  faceIndex: number;
+  at: [number, number];
+}
+
+/**
+ * What a Pad needs remembered about its own profile sketch to name a wall
+ * (`swept`/`rounded`) or a cap (`cap`) later -- the FreeCAD-specific
+ * counterpart of occt-build.ts's SweepRecord, cached on the extrude's OWN
+ * FcBuiltFeature entry rather than in a side map, since nothing else in this
+ * adapter needs to look one up by feature id alone.
+ *
+ * MEASURED, not assumed (real-kernel script against fc-kernel-pd-final, see
+ * this port's own report): for a Pad built from an n-segment outline
+ * (outlineOf()'s own segment order, straight or arc alike), the Pad's OWN
+ * `Shape.Faces` -- queried against THAT SAME FROZEN OBJECT, by name, never
+ * against the owning Body or a later feature's current tip -- comes back in
+ * EXACTLY this order: wall for segment 0, wall for segment 1, ..., wall for
+ * segment n-1, then the bottom cap (the profile's own z=0 plane), then the
+ * top cap (z=height). This holds for a plain rectangle (n=4), a rectangle
+ * with one rounded corner (n=5, the arc's own wall landing at exactly its
+ * emission position with a Cylinder surface type), and continues to hold on
+ * the Pad's OWN object even after a LATER feature (a Pocket, measured) is
+ * built on top of it in the same Body -- a PartDesign feature object's own
+ * `.Shape` is frozen at whatever it computed to and does not get rewritten
+ * by a later feature in the chain (the same fact this file's own `mesh()`
+ * header already relies on for Body.Placement). It is exactly why
+ * `resolveFace`/`resolveEdge` (below) can use this ordinal mapping directly,
+ * with no further geometry: they always query `objName` (this Pad's own
+ * object), never the current tip.
+ *
+ * The SAME measurement also found the ordering is NOT stable on the BODY's
+ * (or any later feature's) own CURRENT `Shape.Faces` once something is built
+ * on top -- e.g. after a Pocket, two of the Pad's own untouched walls
+ * appeared at different ordinal positions than before, and the modified
+ * bottom cap moved position too. So `nameFace`/`nameEdge` (picking, where
+ * the clicked object can be ANY later feature in the chain) do NOT trust
+ * this ordinal mapping directly -- they use `at`/`capAt`, a point known to
+ * lie on the intended face, checked geometrically against the CURRENT
+ * object's Faces via `Part.Vertex(...).distToShape(...)` (querySketchGeometry
+ * below), the same "point known to lie on it" technique
+ * lib/topo-history.ts's own pointOnFace()/distanceTo() already use on the
+ * OCCT side for exactly the same reason (never trust kernel-assigned face
+ * order across a rebuild).
+ *
+ * NARROWED, honestly, not guessed past: `circleOf(sketch)` sketches (no
+ * outline segments to name a wall after) have no `sweep` at all -- a circular
+ * profile's Pad/Pocket has no nameable wall or cap under this scheme, same
+ * "no answer over a wrong one" rule as everywhere else in this file. A
+ * NEGATIVE-bulge (clockwise-wound) rounded corner's own wall midpoint angle
+ * is UNVERIFIED against the real kernel -- only a positive-bulge (CCW)
+ * fixture was measured (same caveat sketch-translate.ts's own header already
+ * states for the identical arc-orientation question). `capAt` is the
+ * outline's own vertex-average, which is a reliable interior point for a
+ * convex (or mildly non-convex) polygon but is NOT guaranteed to lie inside
+ * a genuinely concave one -- same documented limitation as
+ * lib/topo-history.ts's own pointOnFace() centroid heuristic; a concave
+ * sketch's cap would come back an honest null rather than a wrong face, not
+ * a crash, but this pass did not add topo-history.ts's own grid-search
+ * fallback for it.
+ */
+interface FcSweepInfo {
+  /** The ModelDoc sketch feature id this Pad's profile came from -- checked
+   *  against a `swept`/`rounded` name's own `.from` before trusting it. */
+  from: string;
+  segments: FcSweepSegment[];
+  /** Ordinal position of the bottom (z=0) and top (z=height) cap on the
+   *  Pad's OWN object -- always `segments.length` and `segments.length + 1`
+   *  respectively, per the measurement above; kept as explicit fields rather
+   *  than recomputed at every call site. */
+  bottomFaceIndex: number;
+  topFaceIndex: number;
+  /** A point on each cap's own interior, at z=0 for bottom / z=height for
+   *  top -- see this interface's own header for the concave-polygon caveat. */
+  capAt: [number, number];
+  height: number;
 }
 
 /** A FreeCAD face/edge handle: which object's Shape it lives on, plus its
@@ -406,7 +536,9 @@ export class FreeCadEngineAdapter implements EngineAdapter {
         if (src.kind !== 'sketch') throw new Error(`cannot build extrude ${f.id}: '${f.target}' is not a sketch`);
         const padName = `${f.id}_pad`;
         session.pad(src.bodyName, src.objName, padName, f.height);
-        const entry: FcBuiltFeature = { bodyName: src.bodyName, objName: padName, kind: 'solid', featureId: f.id, featureKind: f.kind };
+        const srcSketch = doc.features.find((x) => x.id === f.target) as SketchFeature | undefined;
+        const sweep = srcSketch ? this.buildSweepInfo(srcSketch, f.height) : undefined;
+        const entry: FcBuiltFeature = { bodyName: src.bodyName, objName: padName, kind: 'solid', featureId: f.id, featureKind: f.kind, sweep };
         built.set(f.id, entry);
         shapes.set(f.id, entry);
       } else if (f.kind === 'pocket') {
@@ -424,12 +556,29 @@ export class FreeCadEngineAdapter implements EngineAdapter {
       } else if (f.kind === 'fillet') {
         const target = requireBuilt(f.target, `${f.style} ${f.id}`);
         if (target.kind !== 'solid') throw new Error(`cannot build ${f.style} ${f.id}: '${f.target}' is not a solid`);
-        const edgeName = this.resolvePrimitiveEdgeName(session, target, f.edge);
+        // Primitive edges first (resolvePrimitiveEdgeName's own direct scope,
+        // unchanged); a sketch-derived (swept/rounded/cap) `between` pair
+        // falls through to the generalized resolveEdge() this port's own
+        // sketch-picking phase added -- it resolves independently off the
+        // name's own `.feature` (always the extrude ancestor, by
+        // construction), so it works here with no ancestor walk of its own.
+        // The objName match is a safety guard, not decoration: a fillet's
+        // own PartDesign::Fillet.Base must name a sub-element of `target`'s
+        // OWN object, and resolveEdge() has no reason to know that -- a
+        // mismatch (which should not arise for a direct, un-chained fillet,
+        // the only case this pass verified) is refused rather than fed to
+        // the kernel as a cross-object reference.
+        let edgeName: string | null = this.resolvePrimitiveEdgeName(session, target, f.edge);
+        if (!edgeName) {
+          const resolved = this.resolveEdge(f.edge, { shapes: built }) as FcElementRef | null;
+          if (resolved && resolved.objName === target.objName) edgeName = resolved.name;
+        }
         if (!edgeName) {
           refusals.set(
             f.id,
             `${f.id}'s edge could not be found on the FreeCAD engine -- only an edge between two named `
-              + `faces of a fresh box or cylinder primitive resolves today; ${f.id} is shown without it.`,
+              + `faces of a fresh box/cylinder primitive, or two named walls/caps of a sketch-derived Pad, `
+              + `resolves today; ${f.id} is shown without it.`,
           );
           built.set(f.id, target);
           shapes.set(f.id, target);
@@ -614,6 +763,65 @@ export class FreeCadEngineAdapter implements EngineAdapter {
     }
 
     return { shapes, refusals: refusals.size ? refusals : undefined };
+  }
+
+  /** Build the cached wall/cap geometry an extrude's own FcBuiltFeature
+   *  entry needs for resolveFace/resolveEdge/nameFace/nameEdge -- see
+   *  FcSweepInfo's own header for the measurement this is built on. Mirrors
+   *  sketch-translate.ts's own geometry-emission loop EXACTLY (same
+   *  outlineOf()/segmentRoles() calls, same segment order, same bulge ->
+   *  arc math) because the Pad's own wall order is measured to match that
+   *  SAME emission order one-for-one -- a divergence between the two loops
+   *  would silently mis-name every wall past the first. Returns undefined
+   *  for a circle-shaped sketch (no outline segments to name a wall after)
+   *  or an outline that failed to build (collapsed design, <3 segments) --
+   *  an honest "nothing cached" rather than a guess. */
+  private buildSweepInfo(sketch: SketchFeature, height: number): FcSweepInfo | undefined {
+    if (circleOf(sketch)) return undefined;
+    const outline = outlineOf(sketch);
+    if (!outline.ok) return undefined;
+    const pts = outline.points;
+    const bulges = outline.bulges ?? {};
+    const n = pts.length;
+    if (n < 3) return undefined;
+    const roles = segmentRoles(outline.basis);
+    const segments: FcSweepSegment[] = [];
+    let cxSum = 0;
+    let cySum = 0;
+    for (let i = 0; i < n; i++) {
+      const a = pts[i];
+      const b = pts[(i + 1) % n];
+      cxSum += a[0];
+      cySum += a[1];
+      const bulge = bulges[i];
+      let at: [number, number];
+      if (bulge) {
+        // The arc's own midpoint (by angle, not by chord) -- a point known
+        // to lie on the CURVED wall, unlike the chord's midpoint (which sits
+        // inside the material, off the surface). Same a0/a1 CCW-normalising
+        // fixup sketch-translate.ts's own arc branch already applies, for
+        // the same reason: arcFromBulge()'s raw startAngle/endAngle can wrap
+        // either way and the bulge's own sign says which is meant.
+        const { center, radius, startAngle, endAngle } = arcFromBulge(a, b, bulge);
+        let a0 = startAngle;
+        let a1 = endAngle;
+        if (bulge > 0 && a1 < a0) a1 += 2 * Math.PI;
+        if (bulge < 0 && a1 > a0) a1 -= 2 * Math.PI;
+        const mid = (a0 + a1) / 2;
+        at = [center[0] + radius * Math.cos(mid), center[1] + radius * Math.sin(mid)];
+      } else {
+        at = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+      }
+      segments.push({ role: roles[i].role, index: roles[i].index, faceIndex: i, at });
+    }
+    return {
+      from: sketch.id,
+      segments,
+      bottomFaceIndex: n,
+      topFaceIndex: n + 1,
+      capAt: [cxSum / n, cySum / n],
+      height,
+    };
   }
 
   /** Apply a ModelDoc primitive's center + rotate to the Body that holds it.
@@ -864,6 +1072,156 @@ export class FreeCadEngineAdapter implements EngineAdapter {
     return null;
   }
 
+  /** The `swept`/`rounded`/`cap` counterpart of findPrimitiveAncestor(): walk
+   *  a chain back to the `extrude` (Pad) feature that started it, carrying
+   *  its cached FcSweepInfo along. `fillet`/`chamfer` continue the SAME
+   *  chain as findPrimitiveAncestor already follows (`.target`); `pocket`
+   *  follows `.into` instead -- the solid it cut, not `.target` (the
+   *  CUTTING sketch, a different feature entirely, per this file's own
+   *  `pocket` build() branch). A pocket's OWN newly-cut faces (its hole's
+   *  wall/floor) are never reached by this walk -- there is no design edge
+   *  of ITS OWN cutting profile in the vocabulary to name them after,
+   *  matching occt-build.ts's own pocket branch, which records no sweep
+   *  history at all for the same reason ("a cut's faces come from the
+   *  boolean, not the prism") -- so an untouched Pad wall/cap survives being
+   *  cut into elsewhere on the same solid, but the cut's own new geometry
+   *  stays unnamed, an honest null from querySketchGeometry() below rather
+   *  than a guess. An extrude entry with no cached `sweep` (a circle profile,
+   *  or an outline that failed to build -- see FcSweepInfo's own header)
+   *  stops the walk with null, same as anything else this scope does not
+   *  cover. */
+  private findSketchAncestor(
+    build: EngineBuildResult, doc: ModelDoc, featureId: string,
+  ): { id: string; sweep: FcSweepInfo } | null {
+    let id: string | undefined = featureId;
+    const seen = new Set<string>();
+    while (id && !seen.has(id)) {
+      seen.add(id);
+      const bf = build.shapes.get(id) as FcBuiltFeature | undefined;
+      if (!bf) return null;
+      if (bf.featureKind === 'extrude') return bf.sweep ? { id, sweep: bf.sweep } : null;
+      if (bf.featureKind === 'fillet') {
+        const docFeature = doc.features.find((f) => f.id === id) as { target?: string } | undefined;
+        id = docFeature?.target;
+        continue;
+      }
+      if (bf.featureKind === 'pocket') {
+        const docFeature = doc.features.find((f) => f.id === id) as { into?: string } | undefined;
+        id = docFeature?.into;
+        continue;
+      }
+      return null;
+    }
+    return null;
+  }
+
+  /**
+   * The geometric counterpart of queryPrimitiveGeometry(), for a sketch-
+   * derived (Pad) wall/cap instead of a primitive's direction-scored face.
+   * Identifies each of `sweep`'s candidates on `target.objName`'s CURRENT
+   * Shape by checking whether a point KNOWN to lie on it (`FcSweepSegment.at`
+   * at local z = height/2 for a wall, `capAt` at z=0/z=height for a cap) is
+   * within tolerance of that face -- `Part.Vertex(...).distToShape(...)`,
+   * the same "point known to lie on it" technique lib/topo-history.ts's own
+   * pointOnFace()/distanceTo() use on the OCCT side, chosen for the same
+   * reason: this runs against whichever object was actually picked, which
+   * per FcSweepInfo's own header measurement can be a LATER feature (a
+   * Pocket, a Fillet) whose own Face ordering no longer matches the Pad's
+   * original emission order. Candidates are keyed 'edge:N'/'corner:N' (a
+   * wall) or 'cap:top'/'cap:bottom' -- nameForSweepKey() below turns a hit
+   * back into the right TopoName cause. `adjacent`, when `edgeIdx` is given,
+   * is the (by Face name) faces bordering that edge -- same one-round-trip
+   * shape queryPrimitiveGeometry() already uses so nameEdge() need not run a
+   * second query. */
+  private querySketchGeometry(
+    session: FcSessionLike, target: FcBuiltFeature, sweep: FcSweepInfo, edgeIdx: number | null,
+  ): { parts: Record<string, string>; adjacent: string[] } {
+    const candidates: Array<[string, [number, number, number]]> = [];
+    for (const seg of sweep.segments) {
+      candidates.push([`${seg.role}:${seg.index}`, [seg.at[0], seg.at[1], sweep.height / 2]]);
+    }
+    candidates.push(['cap:bottom', [sweep.capAt[0], sweep.capAt[1], 0]]);
+    candidates.push(['cap:top', [sweep.capAt[0], sweep.capAt[1], sweep.height]]);
+
+    const py =
+      `import json, FreeCAD as App, Part\n` +
+      `doc = App.ActiveDocument\n` +
+      `o = doc.getObject(${pyStr(target.objName)})\n` +
+      `sh = o.Shape\n` +
+      `faces = list(sh.Faces)\n` +
+      `edges = list(sh.Edges)\n` +
+      `TOL = 1e-4\n` +
+      `def _face_at(pt):\n` +
+      `    v = Part.Vertex(App.Vector(pt[0], pt[1], pt[2]))\n` +
+      `    for i, f in enumerate(faces):\n` +
+      `        try:\n` +
+      `            d = v.distToShape(f)[0]\n` +
+      `        except Exception:\n` +
+      `            continue\n` +
+      `        if d <= TOL:\n` +
+      `            return i\n` +
+      `    return None\n` +
+      `result = {}\n` +
+      `for key, pt in ${JSON.stringify(candidates)}:\n` +
+      `    i = _face_at(pt)\n` +
+      `    if i is not None:\n` +
+      `        result[key] = 'Face%d' % (i+1)\n` +
+      `adjacent = []\n` +
+      `eidx = ${edgeIdx === null ? 'None' : num(edgeIdx, 'edgeIdx')}\n` +
+      `if eidx is not None and 0 <= eidx < len(edges):\n` +
+      `    e = edges[eidx]\n` +
+      `    for i, f in enumerate(faces):\n` +
+      `        if any(e.isSame(fe) for fe in f.Edges):\n` +
+      `            adjacent.append('Face%d' % (i+1))\n` +
+      `open(${pyStr(OUT_PATH)}, 'w').write(json.dumps({'parts': result, 'adjacent': adjacent}))\n`;
+    const res = session.read(py);
+    return { parts: (res && res.parts) || {}, adjacent: (res && res.adjacent) || [] };
+  }
+
+  /** Turn a querySketchGeometry() candidate key back into the TopoName it
+   *  stands for, rooted at `feature` (the extrude/Pad ancestor's own id) and
+   *  checked against `sweep.from` implicitly by construction (the key came
+   *  from `sweep.segments` in the first place). Null for a key this scheme
+   *  does not recognise -- defensive, never expected in practice since the
+   *  key vocabulary is generated by querySketchGeometry() itself. */
+  private nameForSweepKey(feature: string, sweep: FcSweepInfo, key: string): TopoName | null {
+    if (key === 'cap:bottom') return { cause: 'cap', feature, kind: 'face', end: 'bottom' };
+    if (key === 'cap:top') return { cause: 'cap', feature, kind: 'face', end: 'top' };
+    const m = /^(edge|corner):(\d+)$/.exec(key);
+    if (!m) return null;
+    const index = Number(m[2]);
+    return m[1] === 'edge'
+      ? { cause: 'swept', feature, kind: 'face', from: sweep.from, edge: index }
+      : { cause: 'rounded', feature, kind: 'face', from: sweep.from, corner: index };
+  }
+
+  /** The shared-edge lookup resolveEdge() needs for a sketch-derived
+   *  `between` pair, once both faces already have real Face{n} names (via
+   *  resolveFace()) -- unlike resolvePrimitiveEdgeName(), no direction
+   *  scoring is needed here, since the two Face names are already known;
+   *  this is exactly resolvePrimitiveEdgeName()'s own edge-finding tail,
+   *  extracted so it is not duplicated a third time. */
+  private sharedEdgeByName(session: FcSessionLike, objName: string, faceNameA: string, faceNameB: string): string | null {
+    const py =
+      `import json, FreeCAD as App\n` +
+      `doc = App.ActiveDocument\n` +
+      `o = doc.getObject(${pyStr(objName)})\n` +
+      `sh = o.Shape\n` +
+      `fa = sh.getElement(${pyStr(faceNameA)})\n` +
+      `fb = sh.getElement(${pyStr(faceNameB)})\n` +
+      `idx = None\n` +
+      `if fa is not None and fb is not None:\n` +
+      `    for i, e in enumerate(sh.Edges):\n` +
+      `        onA = any(e.isSame(ea) for ea in fa.Edges)\n` +
+      `        onB = any(e.isSame(eb) for eb in fb.Edges)\n` +
+      `        if onA and onB:\n` +
+      `            idx = i\n` +
+      `            break\n` +
+      `open(${pyStr(OUT_PATH)}, 'w').write(json.dumps({'edge': ('Edge%d' % (idx+1)) if idx is not None else None}))\n`;
+    const res = session.read(py);
+    return res.edge ?? null;
+  }
+
   /**
    * The direction+area scoring resolvePrimitiveEdgeName() already proved for
    * one part pair, generalized: computes every candidate part's CURRENT
@@ -934,84 +1292,148 @@ export class FreeCadEngineAdapter implements EngineAdapter {
     return m ? parseInt(m[1], 10) - 1 : null;
   }
 
-  /** `primitive` cause only -- `between` names an edge, not a face, and
-   *  every other cause (`swept`, `cap`, `carried`, `split`, `made`) needs
-   *  history this adapter does not track (this file's own header). Resolves
-   *  against `build.shapes.get(name.feature)` directly -- that IS the
-   *  primitive's own built entry by construction (nameFace() below only
-   *  ever writes a `primitive` name with `feature` set to the primitive
-   *  ancestor id, never an intermediate fillet), so no ancestor walk is
-   *  needed here, unlike nameFace()/nameEdge(). */
+  /** `primitive` (a box/cylinder face) or `swept`/`rounded`/`cap` (a Pad's
+   *  own wall or cap) -- `between` names an edge, not a face, and every
+   *  other cause (`carried`, `split`, `made`) needs history this adapter
+   *  does not track (this file's own header). Both branches resolve against
+   *  `build.shapes.get(name.feature)` directly -- that IS the primitive's or
+   *  the extrude's own built entry by construction (nameFace() below only
+   *  ever writes a name with `feature` set to that ancestor's own id, never
+   *  an intermediate fillet/pocket), so no ancestor walk is needed here,
+   *  unlike nameFace()/nameEdge(). The `swept`/`rounded`/`cap` branch trusts
+   *  FcSweepInfo's own cached ORDINAL Face index directly (no geometry
+   *  re-derivation) -- safe here specifically because it always queries the
+   *  extrude's OWN object by name, which FcSweepInfo's own header measured
+   *  to keep a frozen, unchanging Shape regardless of what is built on top
+   *  of it later in the same Body. */
   resolveFace(name: TopoName, build: EngineBuildResult): unknown | null {
-    const session = this.requireSession();
-    if (name.cause !== 'primitive' || name.kind !== 'face') return null;
-    const target = build.shapes.get(name.feature) as FcBuiltFeature | undefined;
-    if (!target || target.kind !== 'solid') return null;
-    if (target.featureKind !== 'box' && target.featureKind !== 'cylinder') return null;
-    const parts = target.featureKind === 'box' ? BOX_PARTS : CYLINDER_PARTS;
-    if (!parts.has(name.part)) return null;
-    const { parts: found } = this.queryPrimitiveGeometry(session, target, target.featureKind, null);
-    const faceName = found[name.part];
-    return faceName ? ({ objName: target.objName, name: faceName } satisfies FcElementRef) : null;
+    if (name.cause === 'primitive') {
+      const session = this.requireSession();
+      if (name.kind !== 'face') return null;
+      const target = build.shapes.get(name.feature) as FcBuiltFeature | undefined;
+      if (!target || target.kind !== 'solid') return null;
+      if (target.featureKind !== 'box' && target.featureKind !== 'cylinder') return null;
+      const parts = target.featureKind === 'box' ? BOX_PARTS : CYLINDER_PARTS;
+      if (!parts.has(name.part)) return null;
+      const { parts: found } = this.queryPrimitiveGeometry(session, target, target.featureKind, null);
+      const faceName = found[name.part];
+      return faceName ? ({ objName: target.objName, name: faceName } satisfies FcElementRef) : null;
+    }
+    if (name.cause === 'swept' || name.cause === 'rounded') {
+      const entry = build.shapes.get(name.feature) as FcBuiltFeature | undefined;
+      if (!entry || entry.kind !== 'solid' || !entry.sweep || entry.sweep.from !== name.from) return null;
+      const want = name.cause === 'swept' ? 'edge' : 'corner';
+      const at = name.cause === 'swept' ? name.edge : name.corner;
+      const seg = entry.sweep.segments.find((s) => s.role === want && s.index === at);
+      return seg ? ({ objName: entry.objName, name: `Face${seg.faceIndex + 1}` } satisfies FcElementRef) : null;
+    }
+    if (name.cause === 'cap') {
+      const entry = build.shapes.get(name.feature) as FcBuiltFeature | undefined;
+      if (!entry || entry.kind !== 'solid' || !entry.sweep) return null;
+      const idx = name.end === 'bottom' ? entry.sweep.bottomFaceIndex : entry.sweep.topFaceIndex;
+      return { objName: entry.objName, name: `Face${idx + 1}` } satisfies FcElementRef;
+    }
+    return null;
   }
 
-  /** `between` cause only, over two `primitive` faces of the SAME
-   *  box/cylinder -- exactly resolvePrimitiveEdgeName()'s own scope,
-   *  reused directly rather than duplicated (it already takes a `target`
-   *  and re-derives it here from `name.of[0].feature`, which is what that
-   *  edge's own `.feature` is set to by nameEdge() below and by
-   *  nameEdgeOnCurrentShape()'s OCCT counterpart alike). */
+  /** `between` over two `primitive` faces of the SAME box/cylinder --
+   *  exactly resolvePrimitiveEdgeName()'s own scope, reused directly -- OR
+   *  two `swept`/`rounded`/`cap` faces of the SAME Pad, resolved to real
+   *  Face names via resolveFace() above and then joined by
+   *  sharedEdgeByName(). A mismatched cause pair, or two names rooted at
+   *  different features, is an honest null in both branches, same as
+   *  before. */
   resolveEdge(name: TopoName, build: EngineBuildResult): unknown | null {
     const session = this.requireSession();
     if (name.cause !== 'between') return null;
     const [a, b] = name.of;
-    if (a.cause !== 'primitive' || b.cause !== 'primitive' || a.feature !== b.feature) return null;
-    const target = build.shapes.get(a.feature) as FcBuiltFeature | undefined;
-    if (!target || target.kind !== 'solid') return null;
-    const edgeName = this.resolvePrimitiveEdgeName(session, target, name);
-    return edgeName ? ({ objName: target.objName, name: edgeName } satisfies FcElementRef) : null;
+    if (a.feature !== b.feature) return null;
+    if (a.cause === 'primitive' && b.cause === 'primitive') {
+      const target = build.shapes.get(a.feature) as FcBuiltFeature | undefined;
+      if (!target || target.kind !== 'solid') return null;
+      const edgeName = this.resolvePrimitiveEdgeName(session, target, name);
+      return edgeName ? ({ objName: target.objName, name: edgeName } satisfies FcElementRef) : null;
+    }
+    const SKETCH_CAUSES = new Set(['swept', 'rounded', 'cap']);
+    if (SKETCH_CAUSES.has(a.cause) && SKETCH_CAUSES.has(b.cause)) {
+      const faceA = this.resolveFace(a, build) as FcElementRef | null;
+      const faceB = this.resolveFace(b, build) as FcElementRef | null;
+      if (!faceA || !faceB || faceA.objName !== faceB.objName) return null;
+      const edgeName = this.sharedEdgeByName(session, faceA.objName, faceA.name, faceB.name);
+      return edgeName ? ({ objName: faceA.objName, name: edgeName } satisfies FcElementRef) : null;
+    }
+    return null;
   }
 
   /** Name a face the student just clicked on `pickedFeature`'s CURRENT
-   *  shape. Walks back to the box/cylinder primitive that chain started
-   *  from (findPrimitiveAncestor -- null for anything else, including a
-   *  sketch/extrude/pocket chain, per this file's own header), then scores
-   *  every part against THAT shape as it stands right now and looks for the
-   *  one whose current face matches what was clicked. */
-  nameFace(build: EngineBuildResult, _doc: ModelDoc, pickedFeature: string, face: unknown): TopoName | null {
+   *  shape. Tries the box/cylinder primitive ancestor first
+   *  (findPrimitiveAncestor), then the Pad/extrude ancestor
+   *  (findSketchAncestor) -- a chain roots at exactly one of the two kinds,
+   *  never both, so this is an either/or, not a fallback-after-failure. The
+   *  sketch branch scores every wall/cap candidate against THAT shape as it
+   *  stands right now (querySketchGeometry(), the geometric counterpart of
+   *  queryPrimitiveGeometry()'s direction scoring) and looks for the one
+   *  whose current face matches what was clicked. */
+  nameFace(build: EngineBuildResult, doc: ModelDoc, pickedFeature: string, face: unknown): TopoName | null {
     const session = this.requireSession();
     const ref = face as FcElementRef | null;
     if (!ref || typeof ref.name !== 'string') return null;
     const target = build.shapes.get(pickedFeature) as FcBuiltFeature | undefined;
     if (!target || target.kind !== 'solid') return null;
-    const ancestor = this.findPrimitiveAncestor(build, _doc, pickedFeature);
-    if (!ancestor) return null;
-    const { parts } = this.queryPrimitiveGeometry(session, target, ancestor.kind, null);
-    for (const [part, faceName] of Object.entries(parts)) {
-      if (faceName === ref.name) return { cause: 'primitive', feature: ancestor.id, kind: 'face', part };
+
+    const primAncestor = this.findPrimitiveAncestor(build, doc, pickedFeature);
+    if (primAncestor) {
+      const { parts } = this.queryPrimitiveGeometry(session, target, primAncestor.kind, null);
+      for (const [part, faceName] of Object.entries(parts)) {
+        if (faceName === ref.name) return { cause: 'primitive', feature: primAncestor.id, kind: 'face', part };
+      }
+      return null;
+    }
+
+    const sketchAncestor = this.findSketchAncestor(build, doc, pickedFeature);
+    if (!sketchAncestor) return null;
+    const { parts } = this.querySketchGeometry(session, target, sketchAncestor.sweep, null);
+    for (const [key, faceName] of Object.entries(parts)) {
+      if (faceName === ref.name) return this.nameForSweepKey(sketchAncestor.id, sketchAncestor.sweep, key);
     }
     return null;
   }
 
   /** Name an edge the student just clicked, as the `between` of its two
-   *  adjacent faces -- same primitive-ancestor walk as nameFace(), one
-   *  kernel round trip via queryPrimitiveGeometry() covers both the part
-   *  scoring and the edge's own adjacency. */
+   *  adjacent faces -- same either/or ancestor walk as nameFace(), one
+   *  kernel round trip via queryPrimitiveGeometry()/querySketchGeometry()
+   *  covers both the part scoring and the edge's own adjacency. */
   nameEdge(build: EngineBuildResult, doc: ModelDoc, pickedFeature: string, edge: unknown): TopoName | null {
     const session = this.requireSession();
     const ref = edge as FcElementRef | null;
     if (!ref || typeof ref.name !== 'string') return null;
     const target = build.shapes.get(pickedFeature) as FcBuiltFeature | undefined;
     if (!target || target.kind !== 'solid') return null;
-    const ancestor = this.findPrimitiveAncestor(build, doc, pickedFeature);
-    if (!ancestor) return null;
     const edgeIdx = this.edgeIndexFromName(ref.name);
     if (edgeIdx === null) return null;
-    const { parts, adjacent } = this.queryPrimitiveGeometry(session, target, ancestor.kind, edgeIdx);
+
+    const primAncestor = this.findPrimitiveAncestor(build, doc, pickedFeature);
+    if (primAncestor) {
+      const { parts, adjacent } = this.queryPrimitiveGeometry(session, target, primAncestor.kind, edgeIdx);
+      if (adjacent.length !== 2) return null;
+      const nameForFace = (faceName: string): TopoName | null => {
+        for (const [part, fn] of Object.entries(parts)) {
+          if (fn === faceName) return { cause: 'primitive', feature: primAncestor.id, kind: 'face', part };
+        }
+        return null;
+      };
+      const a = nameForFace(adjacent[0]);
+      const b = nameForFace(adjacent[1]);
+      return a && b ? { cause: 'between', feature: a.feature, kind: 'edge', of: [a, b] } : null;
+    }
+
+    const sketchAncestor = this.findSketchAncestor(build, doc, pickedFeature);
+    if (!sketchAncestor) return null;
+    const { parts, adjacent } = this.querySketchGeometry(session, target, sketchAncestor.sweep, edgeIdx);
     if (adjacent.length !== 2) return null;
     const nameForFace = (faceName: string): TopoName | null => {
-      for (const [part, fn] of Object.entries(parts)) {
-        if (fn === faceName) return { cause: 'primitive', feature: ancestor.id, kind: 'face', part };
+      for (const [key, fn] of Object.entries(parts)) {
+        if (fn === faceName) return this.nameForSweepKey(sketchAncestor.id, sketchAncestor.sweep, key);
       }
       return null;
     };

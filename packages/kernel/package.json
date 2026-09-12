@@ -28,7 +28,8 @@
   },
   "dependencies": {
     "@shuff57/reshape-script": "file:../script",
-    "@shuff57/reshape-engine": "file:../engine"
+    "@shuff57/reshape-engine": "file:../engine",
+    "@shuff57/reshape-sketch": "file:../sketch"
   },
   "peerDependencies": {
     "three": "^0.185.1"

@@ -112,15 +112,20 @@ function makeFakeSession(cornerCount, { conflicting = [], spuriousConflict = nul
     constrainEqual(sk, g1, g2) { record('constrainEqual', [sk, g1, g2]); removed += 1; return nextIdx(); },
     constrainParallel(sk, g1, g2) { record('constrainParallel', [sk, g1, g2]); removed += 1; return nextIdx(); },
     constrainPerpendicular(sk, g1, g2) { record('constrainPerpendicular', [sk, g1, g2]); removed += 1; return nextIdx(); },
+    // Origin-relative pins (pinCornerToOrigin/pinAxisIfNeeded/the circle
+    // branch) now call with the ORIGIN as g1/p1 and the actual point as
+    // g2/p2 -- see sketch-translate.ts's own pinCornerToOrigin() header for
+    // the real, measured sign bug that ordering fixes. maybeArm() matches
+    // against g2/p2, the point being pinned, not g1/p1.
     constrainDistanceX(sk, g1, p1, g2, p2, v) {
       record('constrainDistanceX', [sk, g1, p1, g2, p2, v]);
-      const contributes = !maybeArm('x', g1, p1);
+      const contributes = !maybeArm('x', g2, p2);
       if (contributes) removed += 1;
       return nextIdx(contributes);
     },
     constrainDistanceY(sk, g1, p1, g2, p2, v) {
       record('constrainDistanceY', [sk, g1, p1, g2, p2, v]);
-      const contributes = !maybeArm('y', g1, p1);
+      const contributes = !maybeArm('y', g2, p2);
       if (contributes) removed += 1;
       return nextIdx(contributes);
     },
@@ -180,7 +185,11 @@ test('unconstrained rectangle: 4 lines emitted, closure pins all 4 corners, reac
 
   const pins = session.calls.filter((c) => c.name === 'constrainDistanceX' || c.name === 'constrainDistanceY');
   assert.equal(pins.length, 8, 'DoF closure pins all 4 corners (X+Y each)');
-  for (const p of pins) assert.deepEqual([p.args[3], p.args[4]], [-1, 1], 'pinned against the sketch origin');
+  // Origin FIRST, point second -- see pinCornerToOrigin()'s own header in
+  // sketch-translate.ts for the real, measured sign bug this order avoids
+  // (FreeCAD's DistanceX/Y is `value = coord(g2,p2) - coord(g1,p1)`; origin
+  // as g1 makes that `coord(point) - 0`, which is what every caller means).
+  for (const p of pins) assert.deepEqual([p.args[1], p.args[2]], [-1, 1], 'pinned against the sketch origin, origin first');
 
   const finalState = session.calls.filter((c) => c.name === 'sketchState').at(-1);
   assert.ok(finalState);
@@ -209,7 +218,7 @@ test('a rectangle constrained to dof 0 by RECTANGLE_CONSTRAINTS alone needs no e
   translateSketch(session, 'Sketch', sketch);
 
   const originPins = session.calls.filter(
-    (c) => (c.name === 'constrainDistanceX' || c.name === 'constrainDistanceY') && c.args[3] === -1,
+    (c) => (c.name === 'constrainDistanceX' || c.name === 'constrainDistanceY') && c.args[1] === -1,
   );
   // Exactly the lock's own 2 -- no closure loop ran because dof was already 0.
   assert.equal(originPins.length, 2, 'no extra closure pins beyond the explicit lock');

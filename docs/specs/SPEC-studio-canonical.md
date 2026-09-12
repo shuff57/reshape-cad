@@ -8,7 +8,12 @@ semantic gaps (rotated target, non-'z' circular axis, circular pattern of
 a primitive target) are refused per-feature, not built wrong -- see
 `freecad-engine-adapter.ts`'s own 'pattern' branch comment and
 SPEC-engine-port.md §6.1 for the full account. Phase 3 (general
-topo-naming for picking) next.
+topo-naming for picking) DONE for extrude (sketch-derived wall/cap naming,
+88/88 checks against the real kernel); pocket's own newly-cut geometry
+stays refused, deliberately matching OCCT's own scope for the same case --
+see SPEC-engine-port.md §6.2a for the full account, including a real,
+previously-shipped sketch-translate.ts sign bug found and fixed along the
+way. Phase 4 (Save/Open .FCStd) next.
 
 Out-of-band bugfix (2026-09-11, separate from the phase sequence above): a
 real, pre-existing bug in the box/cylinder branches of `build()` -- `f.center`
@@ -125,10 +130,40 @@ correctness-critical CAD kernel work.
    an out-of-band bugfix pass, see this file's own status note above, once
    their separate double-translation bug was fixed). Full account in
    `freecad-engine-adapter.ts`'s own 'pattern' branch comment.
-3. **General (non-primitive) topo-naming for picking** — the deeper "item B"
-   work: resolve faces/edges on sketch-derived solids (extrude/pocket walls
-   and caps), not just primitives. This is what makes Fillet/Chamfer usable
-   on real modeled parts, not just raw boxes/cylinders.
+3. **DONE (extrude; pocket's own new geometry stays refused, by design). General
+   (non-primitive) topo-naming for picking** — resolve faces/edges on
+   sketch-derived solids, not just primitives, so Fillet/Chamfer works on
+   real modeled parts, not just raw boxes/cylinders. Closed via a real-kernel
+   measurement, not FreeCAD's own history API: a `PartDesign::Pad`'s own
+   `Shape.Faces`, queried directly off that same frozen object, comes back
+   in a stable, predictable order (wall 0..n-1 in the profile's own segment
+   order, then bottom cap, then top cap) that survives later features being
+   built on top -- so `resolveFace`/`resolveEdge` trust a cached ordinal
+   index outright, while `nameFace`/`nameEdge` (which may be picking on a
+   LATER feature's current, no-longer-ordinally-stable shape) fall back to
+   geometric point-matching, the same "point known to lie on it" technique
+   `topo-history.ts` already uses on the OCCT side. Verified against
+   `fc-kernel-pd-final` (`packages/kernel/test/freecad-sketch-picking.
+   manual.mjs`, 88/88): a rectangle Pad's 4 walls + 2 caps and all 12 edges
+   name and round-trip; a rounded-corner Pad's arc wall names `rounded`, the
+   rest `swept`; a Fillet was built for real from a pick on a sketch-derived
+   wall edge; a pad-then-pocket chain's untouched walls still name when
+   picked on the pocket's own current shape, while the pocket's own new
+   hole geometry stays an honest null. REFUSED, not guessed: naming a
+   pocket's own newly-cut faces at all -- deliberately matching OCCT's own
+   scope (which records no sweep history for pocket either, so this is
+   parity, not a gap); a circle-shaped sketch profile (no per-edge
+   vocabulary to name a wall after); a concave sketch's cap (same centroid
+   limitation `topo-history.ts` already documents for OCCT). Found and fixed
+   along the way, unrelated to naming itself but blocking this phase's own
+   verification: a real, previously-shipped sign bug in
+   `sketch-translate.ts`'s origin-pinning helper had every closure-pinned or
+   `lock`-ed sketch corner (and every circle-sketch center) building at the
+   NEGATIVE of its intended coordinate -- a full point-reflection through
+   the sketch origin, invisible to every prior volume-only real-kernel check
+   since a point reflection does not change volume. Full account, including
+   the exact measurement and the fix's precise scope, in
+   `SPEC-engine-port.md` §6.2a.
 4. **Save/Open .FCStd** — new `EngineAdapter` methods. Straightforward on
    the FreeCAD side (native format); OCCT adapter can throw
    "not supported on this engine" per the established fallback-refusal

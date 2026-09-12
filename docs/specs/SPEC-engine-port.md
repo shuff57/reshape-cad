@@ -263,7 +263,12 @@ any regression is attributable to the refactor and nothing else.
    matching against FreeCAD shapes; the `FreeCadEngineAdapter`'s naming
    methods must resolve through FreeCAD's own `Face{n}`/`Edge{n}` sub-element
    names (already what `meshFaces()` tags), a second, separate
-   implementation.
+   implementation. **Update (SPEC-studio-canonical.md phase 3):** primitive
+   naming closed first (§6.2); sketch-derived (Pad wall/cap) naming closed
+   in a further pass, §6.2a below — a real ordinal Face-position measurement
+   against the live kernel, not FreeCAD's own Generated()/Modified() API,
+   turned out to be sufficient. Pocket's own newly-cut geometry is still
+   unnameable, matching OCCT's own scope for the same case (see §6.2a).
 
 4. **Crash-safety guards are kernel-specific, not portable.**
    `fc-commands.mjs`'s fillet/chamfer emitters cap radius **before**
@@ -824,6 +829,159 @@ correct answer for anything outside this narrowed scope) -- a click on a
 box or cylinder's own flat face or straight edge, even past a fillet/
 chamfer applied to the SAME chain, now returns a real name and a real
 measured size.
+
+### 6.2a Sketch-derived (Pad) naming: `swept`/`rounded`/`cap`, closed for extrude; pocket's own new geometry stays refused
+
+SPEC-studio-canonical.md phase 3. Superseding §6.2's "NOT implemented"
+paragraph for the `extrude` case specifically -- `resolveFace`/`resolveEdge`/
+`nameFace`/`nameEdge` now also cover a Pad's own side walls (`swept` for a
+straight design edge, `rounded` for an arc from a rounded/chamfered corner)
+and its two caps (`cap`, `end: 'top' | 'bottom'`), closing exactly the gap
+§6.2 named as unscheduled design work -- and without needing either option
+that paragraph raised (a second FreeCAD-specific history tracker, or
+FreeCAD's own `Generated()`/`Modified()` Python API). A simpler, measured
+fact was enough instead.
+
+**What was measured, against `fc-kernel-pd-final`, before any code was
+written** (a throwaway script, not shipped): for a `PartDesign::Pad` built
+from an n-segment outline (straight or arc segments alike, `outlineOf()`'s
+own order), the Pad's **own** `Shape.Faces` — queried by name, directly off
+that **same, frozen** object, never off the owning Body or a later
+feature's current tip — comes back in **exactly** wall-0, wall-1, ...,
+wall-(n-1), then the bottom cap, then the top cap, every time. Verified for
+a plain rectangle (n=4), a rectangle with one rounded corner (n=5, the arc's
+own wall landing at its emission position with a `Cylinder` surface type,
+not a `Plane`), and confirmed to **keep holding on that SAME Pad object**
+even after a further feature (a Pocket) was built on top of it in the same
+Body — a `PartDesign` feature object's own `.Shape` is computed once and
+does not get rewritten by a later feature in the chain (the same fact
+`mesh()`'s own header already relies on for `Body.Placement`). The **same**
+measurement also confirmed the opposite is true of the owning Body's (or
+any later feature's) own **current** `Shape.Faces`: after the Pocket, two of
+the Pad's own untouched walls had swapped ordinal positions and the modified
+cap had moved too — kernel-assigned face order is not to be trusted the
+moment anything is built on top, exactly the caution `topo-history.ts`'s own
+header already gives for the OCCT side.
+
+**The design this measurement enabled, in two halves matching that split:**
+
+- `resolveFace`/`resolveEdge` (a stored name → a face) always query the
+  extrude's **own** object directly (`build.shapes.get(name.feature)`,
+  never an ancestor walk) and trust the **cached ordinal** Face index
+  (`FcSweepInfo`, computed once at `build()` time by mirroring
+  `sketch-translate.ts`'s own geometry-emission loop exactly — same
+  `outlineOf()`/`segmentRoles()` calls, same order). No kernel round trip at
+  all for this direction; the measurement above is what makes trusting the
+  cache safe.
+- `nameFace`/`nameEdge` (a picked face → a name) can be picking on **any**
+  later feature in the chain (a Fillet, a Pocket), where ordinal trust does
+  not hold — so these query the picked object's **current** Shape and
+  identify each wall/cap candidate **geometrically**: a point known to lie
+  on it (a wall's own arc-or-chord midpoint at local z = height/2; a cap's
+  own outline-vertex-average at z = 0 or z = height) checked against every
+  current face via `Part.Vertex(...).distToShape(...)` — the same
+  "point known to lie on it" technique `topo-history.ts`'s own
+  `pointOnFace()`/`distanceTo()` already use on the OCCT side, for the same
+  reason (`querySketchGeometry()`, the geometric counterpart of the
+  primitive path's `queryPrimitiveGeometry()` direction-scoring).
+  `findSketchAncestor()` walks a `fillet`/`chamfer` (`.target`) or `pocket`
+  (`.into`) chain back to its `extrude` root, mirroring
+  `findPrimitiveAncestor()`.
+
+Verified against the real kernel
+(`packages/kernel/test/freecad-sketch-picking.manual.mjs`, 88/88 checks): a
+plain rectangle Pad's 4 walls and 2 caps all name and round-trip; a
+rounded-corner Pad's arc wall names with cause `rounded` (not `swept`) and
+the other 4 still `swept`, all round-trip; all 12 edges of the plain
+rectangle name as `between` two `swept`/`cap` faces and round-trip, with a
+real positive `edgeLength()`; a Fillet was **built for real from a pick** on
+one of those wall edges (the payoff this phase exists for — Round/Chamfer
+on a real modeled part, not only a raw box/cylinder); and, on a genuine
+pad-then-pocket chain, the Pad's untouched walls/cap still name and resolve
+correctly when picked on the **pocket's own current** (reordered) shape,
+while the pocket's own new geometry (the hole's wall, its floor, and the
+modified cap it cut into) comes back an honest `null` — proving both halves
+of the design above against real geometry, not just against a fake session.
+
+**Narrowed, honestly, matching this file's own "no answer over a wrong one"
+rule throughout:**
+
+- **Pocket's own newly-cut faces are never nameable, on purpose** — not a
+  gap this pass ran out of time for, but a deliberate match to what OCCT
+  **already** does: `occt-build.ts`'s own `pocket` branch records no sweep
+  history at all ("a cut's faces come from the boolean, not the prism"),
+  and no code path anywhere ever constructs a `made`-cause name for one
+  either (`topo-name.ts`'s own header names `made` as a real, open design
+  question, not a solved one). Naming a pocket's own hole would have made
+  the FreeCAD engine's naming **strictly more capable than OCCT's** for
+  this one case — a real design decision this phase declined to make
+  unilaterally, not an oversight.
+- **A circle-shaped sketch profile has no `sweep` cached at all** — there is
+  no per-edge/per-corner vocabulary to name a circular Pad's one wall after
+  (`circleOf()` short-circuits `buildSweepInfo()`), matching how a circle
+  sketch never populates `matchSegments()`'s marks on the OCCT side either.
+- **A concave sketch's cap point (the outline's own vertex-average) is not
+  guaranteed to land inside the polygon** — same documented limitation as
+  `topo-history.ts`'s own `pointOnFace()` centroid heuristic; every fixture
+  measured here is convex (a rectangle, a rounded rectangle) so this never
+  triggered, but a concave cap could come back an honest `null` rather than
+  a wrong face. `topo-history.ts`'s own grid-search fallback was not ported.
+- **A negative-bulge (clockwise-wound) rounded corner's own wall midpoint is
+  unverified against the real kernel** — only the positive-bulge (CCW)
+  fixture this port's own rounded-rectangle test uses was measured; same
+  caveat `sketch-translate.ts`'s own header already states for the
+  identical arc-orientation question there.
+- **A pocket cannot actually be reached today through `FreeCadEngineAdapter
+  .build()` with a real, ordinary `ModelDoc`** — a real, pre-existing,
+  already-documented v1 scope limit this phase found itself blocked by
+  while writing its own verification script, not something it introduced or
+  is positioned to fix: `'sketch'` always opens a **fresh** Body
+  (`freshBody()`, unconditional), and `pocket`'s own build() branch throws
+  "cuts across two different bodies" the instant its target sketch is not
+  already in the **same** body as `into` — which requires a face-attached
+  sketch (`sketchNewOnFace`, which the bridge itself has and
+  `engine/bridge/pocket-test.mjs` already proves against the real kernel)
+  that this adapter's own `'pocket'` build() branch has never been wired to
+  create. The pad-then-pocket verification above worked around this by
+  driving the same body directly through the session (mirroring the
+  existing `freecad-engine-adapter-build.test.mjs`'s own "sketch -> pocket
+  cuts into the same body" test, whose own body **proves the throw**, not a
+  success) — real progress on naming, but pocket's own single-body reach is
+  unchanged and still named here as open, not silently worked around.
+
+**A real, previously-shipped, previously-undiscovered bug found (and
+fixed) while building this verification, unrelated to naming itself:**
+`sketch-translate.ts`'s own origin-pinning helper (`pinCornerToOrigin`,
+also used by `pinAxisIfNeeded`'s DoF-closure loop and the `circleOf()`
+branch's own center pin) called FreeCAD's `Sketcher::Constraint('DistanceX'
+/'DistanceY', g1, p1, g2, p2, value)` with the design **corner first, the
+origin second** — measured directly against the real kernel (not assumed):
+this constraint means `value = coordinate(g2, p2) - coordinate(g1, p1)`,
+second point minus first, so pinning `(corner, origin, value=x)` actually
+pins `coordinate(corner) = -x` — every closure-pinned or `lock`-ed corner,
+and every `circleOf()` center, landed at the **negative** of its intended
+coordinate, a full point-reflection of the sketch through its own origin.
+**Volume-only checks never caught this** (§6.3's own "rectangle extrude:
+12000.0000, exact" included) because a point reflection is an isometry — it
+changes *where* a shape sits, never its volume, and every real-kernel
+fixture measured before this phase happened to be checked by volume alone.
+Found chasing this phase's own wall-naming self-check: an extrude's wall
+centroids came back at exactly the design's 180°-rotated positions
+(`(-20,0)` instead of `(20,0)`, etc.) on the very first real-kernel run.
+Fixed by swapping the argument order (origin first, corner second) in all
+three call sites; `packages/engine/test/sketch-translate.test.mjs`'s own
+argument-order assertions were updated to match, and the fix was
+re-verified directly against the real kernel (the same sketch's own
+`Sketch.Geometry` reads back at its correct, un-reflected coordinates).
+**Scope of the fix, stated precisely**: only the three call sites that pin
+something **against the sketch origin** (`ORIGIN_GEO`/`ORIGIN_POS`) were
+touched. The *separate* `distanceX`/`distanceY` **constraint kinds**
+(§4.5.2's own table row, between two *named*, non-origin corners) use a
+different code path entirely and were not touched, checked, or implicated
+by this finding — their own sign convention was independently verified
+already (§6.3's "angle-constraint corner 2" measurement exercises a
+different corner via explicit constraints, not this closure mechanism) and
+auditing it further is out of this phase's own scope.
 
 ### 6.3 FreeCAD-kernel numbers: now measured for real, via `fc-kernel-pd-final`
 
