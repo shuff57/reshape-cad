@@ -22,6 +22,10 @@ declare module '@shuff57/reshape-engine/fc-sketch' {
   export function attachSketchCommands(session: any): any;
 }
 
+declare module '@shuff57/reshape-engine/fc-drawing' {
+  export function attachDrawingCommands(session: any): any;
+}
+
 declare module '@shuff57/reshape-engine/load-browser' {
   export function loadFreeCadEngine(baseUrl?: string): Promise<unknown>;
 }

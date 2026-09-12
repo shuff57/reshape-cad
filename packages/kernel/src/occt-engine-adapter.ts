@@ -31,7 +31,7 @@ import {
   facesOf, nameEdgeOnCurrentShape, nameFaceOnCurrentShape, resolveName,
 } from './topo-resolve.js';
 import { getKernelBaseUrl } from './config.js';
-import type { EngineAdapter, EngineBuildResult, EngineMesh } from './engine-adapter.js';
+import type { DrawingOptions, EngineAdapter, EngineBuildResult, EngineMesh } from './engine-adapter.js';
 
 /** Which import strategy actually worked, set once on the first successful
  *  load. Same two-strategy fallback and same purely-diagnostic role as
@@ -202,5 +202,13 @@ export class OcctEngineAdapter implements EngineAdapter {
 
   openDocument(_bytes: Uint8Array): ModelDoc | null {
     throw new Error('not supported on the OCCT engine: Open (.FCStd) requires the FreeCAD engine');
+  }
+
+  // TechDraw is a FreeCAD-only concept -- OCCT/replicad has no page/view/
+  // sheet object at all, so there is no partial or degraded answer here
+  // either, only a clear refusal. Same message family as saveDocument()/
+  // openDocument() above.
+  exportDrawing(_doc: ModelDoc, _opts?: DrawingOptions): Uint8Array {
+    throw new Error('not supported on the OCCT engine: Export Drawing requires the FreeCAD engine');
   }
 }

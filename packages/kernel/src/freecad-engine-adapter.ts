@@ -301,10 +301,11 @@ import type * as THREE_NS from 'three';
 import { createFcSession } from '@shuff57/reshape-engine/fc-session';
 import { attachCommands } from '@shuff57/reshape-engine/fc-commands';
 import { attachSketchCommands } from '@shuff57/reshape-engine/fc-sketch';
+import { attachDrawingCommands } from '@shuff57/reshape-engine/fc-drawing';
 import { loadFreeCadEngine } from '@shuff57/reshape-engine/load-browser';
 import { translateSketch, type SketchSession } from '@shuff57/reshape-engine/sketch-translate';
 import { arcFromBulge, circleOf, outlineOf, segmentRoles } from '@shuff57/reshape-sketch/sketch-arc';
-import type { EngineAdapter, EngineBuildResult, EngineMesh } from './engine-adapter.js';
+import type { DrawingOptions, DrawingView, EngineAdapter, EngineBuildResult, EngineMesh } from './engine-adapter.js';
 import type { FaceRange } from './occt-three.js';
 
 /** The slice of the bridge session (fc-session.mjs core + fc-commands.mjs +
@@ -312,6 +313,12 @@ import type { FaceRange } from './occt-three.js';
  *  discipline occt-build.ts's `Occt` uses -- the bridge is plain .mjs with
  *  no .d.ts of its own. */
 export interface FcSessionLike extends SketchSession {
+  /** The raw Emscripten module -- exportDrawing() needs FS.writeFile/
+   *  readFile/unlink directly, the same portable-channel access
+   *  saveDocument()/exportStl() already use inside fc-session.mjs itself;
+   *  everything else on this interface stays at the higher session.*()
+   *  level. */
+  Module: { FS: { writeFile(path: string, data: Uint8Array): void; readFile(path: string): Uint8Array; unlink(path: string): void } };
   newDocument(name?: string): void;
   exec(code: string): { rc: number; out: string };
   read(code: string): any;
@@ -359,6 +366,12 @@ export interface FcSessionLike extends SketchSession {
   partBoolean(op: 'union' | 'subtract' | 'intersect', baseName: string, toolName: string, resultName: string): string;
   bore(bodyName: string, sketchName: string, pocketName: string, radius: number,
        worldCenters: Vec3[], worldOrigin: Vec3, worldAxis: Vec3, depth: number): string;
+  exportDrawing(opts: {
+    objName: string; sheetPath: string; outPath: string;
+    views: DrawingView[]; projection: 'first-angle' | 'third-angle';
+    scale: number | null; hiddenLines: boolean;
+    area: [number, number, number, number]; titleblock: [number, number];
+  }): { ok: boolean; reason: string | null; scale: number | null; views: Array<{ name: string; type: string }>; bbox: [number, number, number, number] | null };
 }
 
 /** One built feature's FreeCAD identity: which Body it lives in, the name of
@@ -514,6 +527,82 @@ const CYLINDER_PARTS = new Set(['+z', '-z', 'side']);
  *  what actually decides the file is trustworthy. */
 const MODELDOC_MARKER = 'RESHAPE_MODELDOC_V1:';
 
+// ---- exportDrawing() -------------------------------------------------------
+//
+// The app owns the sheet template (SPEC-techdraw-export.md's "Skip
+// `freecad:editable` entirely" finding -- EditableTexts round-trips through
+// the kernel correctly but PageResult comes back with the placeholder
+// UNCHANGED, so the substitution has to happen here, before the kernel ever
+// sees the file, not through FreeCAD's own GUI-only text-edit machinery).
+
+const SHEET_PATH = '/tmp/reshape-sheet.svg';
+const OUT_SVG = '/tmp/reshape-drawing.svg';
+
+interface SheetSpec {
+  width: number;
+  height: number;
+  /** [x0,y0,x1,y1] mm, SVG (Y-down) coords -- the full usable area inside
+   *  the sheet's own margin, titleblock still included. */
+  frame: [number, number, number, number];
+  /** Titleblock's own top-left corner, SVG coords -- bottom-right of the
+   *  sheet, so this is always the frame's own (fx1 - tbWidth, fy1 - tbHeight). */
+  titleblock: [number, number];
+  template: string;
+}
+
+const escapeXml = (s: string): string =>
+  String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+/** A minimal, self-drawn sheet: border + a bottom-right titleblock box with
+ *  {{TITLE}}/{{SCALE}}/{{DATE}} tokens -- substituted by fillTitleBlock()
+ *  below, JS-side, before the kernel ever reads the file (see this file's
+ *  own header note on why kernel-side substitution does not work). `width`/
+ *  `height` are REAL attributes (not just a viewBox) -- the kernel's own
+ *  DrawSVGTemplate reads the page size from them; a template missing them
+ *  silently produces a zero-size page. */
+function makeSheet(width: number, height: number, tbWidth = 120, tbHeight = 30): SheetSpec {
+  const margin = 10;
+  const frame: [number, number, number, number] = [margin, margin, width - margin, height - margin];
+  const titleblock: [number, number] = [frame[2] - tbWidth, frame[3] - tbHeight];
+  const [tbX, tbY] = titleblock;
+  const template =
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${width}mm" height="${height}mm" viewBox="0 0 ${width} ${height}">\n` +
+    `<rect x="0" y="0" width="${width}" height="${height}" fill="#ffffff" stroke="none"/>\n` +
+    `<rect x="${margin}" y="${margin}" width="${width - 2 * margin}" height="${height - 2 * margin}" fill="none" stroke="#000000" stroke-width="0.5"/>\n` +
+    `<rect x="${tbX}" y="${tbY}" width="${tbWidth}" height="${tbHeight}" fill="none" stroke="#000000" stroke-width="0.5"/>\n` +
+    `<text x="${tbX + 4}" y="${tbY + 10}" font-family="sans-serif" font-size="5">{{TITLE}}</text>\n` +
+    `<text x="${tbX + 4}" y="${tbY + 20}" font-family="sans-serif" font-size="4">Scale {{SCALE}}</text>\n` +
+    `<text x="${tbX + 4}" y="${tbY + 28}" font-family="sans-serif" font-size="3.5">{{DATE}}</text>\n` +
+    `</svg>\n`;
+  return { width, height, frame, titleblock, template };
+}
+
+const SHEETS: Record<NonNullable<DrawingOptions['sheet']>, SheetSpec> = {
+  'A4-landscape': makeSheet(297, 210, 120, 30),
+  'A3-landscape': makeSheet(420, 297, 160, 36),
+  'USLetter-landscape': makeSheet(279.4, 215.9, 120, 30),
+};
+
+/** Substitute {{TITLE}}/{{DATE}} always; {{SCALE}} only when a value is
+ *  given. Leaving it out when `scale` is falsy is deliberate -- see
+ *  exportDrawing()'s own comment: autoscale means the real number is not
+ *  known until the kernel returns it, so the token has to SURVIVE into the
+ *  composed bytes for one final substitution afterward, not be replaced
+ *  with an empty string now. */
+function fillTitleBlock(template: string, values: { title: string; scale: string; date: string }): string {
+  let out = template
+    .replace(/\{\{TITLE\}\}/g, escapeXml(values.title))
+    .replace(/\{\{DATE\}\}/g, escapeXml(values.date));
+  if (values.scale) out = out.replace(/\{\{SCALE\}\}/g, escapeXml(values.scale));
+  return out;
+}
+
+/** "1:1" / "2:1" / "1:2" engineering-drawing scale notation. */
+function formatScale(scale: number): string {
+  const round3 = (n: number) => Math.round(n * 1000) / 1000;
+  return scale >= 1 ? `${round3(scale)}:1` : `1:${round3(1 / scale)}`;
+}
+
 export class FreeCadEngineAdapter implements EngineAdapter {
   private session: FcSessionLike | null = null;
   private loadPromise: Promise<void> | null = null;
@@ -532,7 +621,7 @@ export class FreeCadEngineAdapter implements EngineAdapter {
     if (!this.loadPromise) {
       this.loadPromise = (async () => {
         const Module = await this.loadModule();
-        const session = attachSketchCommands(attachCommands(createFcSession(Module))) as FcSessionLike;
+        const session = attachDrawingCommands(attachSketchCommands(attachCommands(createFcSession(Module)))) as FcSessionLike;
         this.session = session;
       })();
     }
@@ -2402,5 +2491,102 @@ export class FreeCadEngineAdapter implements EngineAdapter {
       return null;
     }
     return parsed as ModelDoc;
+  }
+
+  // ---- exportDrawing() ------------------------------------------------------
+  //
+  // See engine-adapter.ts's own exportDrawing() doc comment for the full
+  // "why SVG, why per-view composition, why OCCT throws" design rationale,
+  // and docs/specs/SPEC-techdraw-export.md for the measured evidence behind
+  // every step below. Layer split: this method owns the sheet template and
+  // the titleblock text (JS-side, since kernel-side substitution does not
+  // survive PageResult -- see fillTitleBlock()'s own comment); fc-drawing.mjs
+  // (session.exportDrawing()) owns the projected geometry.
+
+  exportDrawing(doc: ModelDoc, opts: DrawingOptions = {}): Uint8Array {
+    const session = this.requireSession();
+
+    // (a) Rebuild, exactly as saveDocument() does -- guarantees the drawing
+    //     matches the `doc` the caller handed in, not whatever the session
+    //     last built.
+    const build = this.build(doc);
+
+    // (b) The tip solid is the LAST entry with kind === 'solid'. Same rule
+    //     mesh()'s own _active_solid() uses in Python; passing the name
+    //     explicitly is more honest than re-deriving it kernel-side.
+    let objName: string | null = null;
+    let tipEntry: FcBuiltFeature | null = null;
+    for (const v of build.shapes.values()) {
+      const e = v as FcBuiltFeature;
+      if (e.kind === 'solid') { objName = e.objName; tipEntry = e; }
+    }
+    if (!objName) {
+      throw new Error(
+        'exportDrawing: nothing to draw -- this model has no solid yet. '
+          + 'A sketch on its own projects no edges; pad or extrude it into a solid first.',
+      );
+    }
+
+    // (c) Sheet: the app's own template string, titleblock filled in HERE.
+    //     Kernel-side substitution does NOT work (measured: EditableTexts is
+    //     stored and read back correctly but PageResult comes out byte-identical
+    //     with the placeholder intact -- the substitution lives in the GUI item).
+    //     ModelDoc has no document-level `name` (model-types.ts's own
+    //     ModelDoc is just {version, features}) -- default to the tip
+    //     solid's OWN feature.name when the caller set one, same as the
+    //     tree/label the studio UI already shows for it.
+    const sheet = SHEETS[opts.sheet ?? 'A4-landscape'];
+    const tipFeature = doc.features.find((f) => f.id === tipEntry!.featureId);
+    const svgTemplate = fillTitleBlock(sheet.template, {
+      title: opts.title ?? tipFeature?.name ?? 'UNTITLED',
+      scale: opts.scale ? formatScale(opts.scale) : '', // filled in after autoscale
+      date: new Date().toISOString().slice(0, 10),
+    });
+    session.Module.FS.writeFile(SHEET_PATH, new TextEncoder().encode(svgTemplate));
+
+    // (d) Clear the target FIRST -- exportStl's own guard. Without it a failed
+    //     export silently returns the PREVIOUS run's file and the user
+    //     downloads a stale drawing with no symptom at all.
+    try { session.Module.FS.unlink(OUT_SVG); } catch { /* first run */ }
+
+    // (e) Kernel side.
+    const info = session.exportDrawing({
+      objName,
+      sheetPath: SHEET_PATH,
+      outPath: OUT_SVG,
+      views: opts.views ?? (['front', 'top', 'right', 'iso'] as DrawingView[]),
+      projection: opts.projection ?? 'third-angle',
+      scale: opts.scale ?? null,
+      hiddenLines: opts.hiddenLines ?? true,
+      area: sheet.frame,
+      titleblock: sheet.titleblock,
+    });
+
+    if (!info.ok) throw new Error(`exportDrawing: ${info.reason}`);
+
+    // (f) Read the bytes back -- saveDocument/exportStl's exact pattern.
+    //     Module.FS.readFile throws an Emscripten ErrnoError with NO .message;
+    //     letting it escape crashes studio.js's guard() (which does
+    //     e.message.split(...)) and the user sees NOTHING -- no log line, no
+    //     download, no error. exportStl already hit this and translates it
+    //     (fc-session.mjs:231-237); do the same.
+    let bytes: Uint8Array;
+    try { bytes = session.Module.FS.readFile(OUT_SVG); }
+    catch {
+      throw new Error(
+        'exportDrawing: the kernel wrote no SVG. Only a solid projects edges -- '
+          + 'a sketch or a bare wire draws nothing. Pad it into a solid first.',
+      );
+    }
+    if (!bytes.length) throw new Error('exportDrawing: produced an empty SVG (0 bytes)');
+
+    // (g) Autoscale: the real scale was not known until the kernel returned
+    //     it, so the {{SCALE}} token survived fillTitleBlock() untouched --
+    //     fill it in now, once, on the returned bytes.
+    if (!opts.scale && typeof info.scale === 'number') {
+      const text = new TextDecoder('utf8').decode(bytes).replace(/\{\{SCALE\}\}/g, formatScale(info.scale));
+      bytes = new TextEncoder().encode(text);
+    }
+    return bytes;
   }
 }

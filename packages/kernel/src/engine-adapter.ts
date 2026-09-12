@@ -75,6 +75,23 @@ export interface EngineMesh {
   faces: FaceRange[];
 }
 
+export type DrawingView = 'front' | 'top' | 'right' | 'left' | 'rear' | 'bottom' | 'iso';
+
+export interface DrawingOptions {
+  /** Sheet size. Default 'A4-landscape' (297x210mm). */
+  sheet?: 'A4-landscape' | 'A3-landscape' | 'USLetter-landscape';
+  /** Default ['front','top','right','iso']. */
+  views?: DrawingView[];
+  /** Default 'third-angle'. */
+  projection?: 'first-angle' | 'third-angle';
+  /** Omit for automatic (fit to sheet). */
+  scale?: number;
+  /** Dashed hidden-line rendering on the orthographic views. Default true. */
+  hiddenLines?: boolean;
+  /** Titleblock text. Default: the doc's own name. */
+  title?: string;
+}
+
 export interface EngineAdapter {
   /** Bring the underlying kernel up (load the wasm, or open a session).
    *  Idempotent-ish in spirit -- called once before the first build(). */
@@ -172,4 +189,19 @@ export interface EngineAdapter {
    *
    *  OcctEngineAdapter throws -- same reasoning as saveDocument(). */
   openDocument(bytes: Uint8Array): ModelDoc | null;
+
+  /** Render `doc` as a real 2D engineering drawing -- a standard multi-view
+   *  projection on a titled sheet -- and return SVG bytes, the same "adapter
+   *  returns bytes, caller owns the Blob/download" split saveDocument() and
+   *  packages/studio's mesh exporters already follow.
+   *
+   *  SVG, not PDF, deliberately: this kernel has NO App-layer PDF writer at
+   *  all (verified -- TechDrawGui, which owns every QPrinter/QSvgGenerator
+   *  path, is not built into the headless kernel). A caller wanting PDF
+   *  converts the SVG browser-side; that is not this seam's job.
+   *
+   *  OcctEngineAdapter throws -- OCCT has no TechDraw concept at all, the
+   *  same real "not supported on this engine" condition saveDocument() and
+   *  openDocument() already established. Gate the UI on getEngineMode(). */
+  exportDrawing(doc: ModelDoc, opts?: DrawingOptions): Uint8Array;
 }

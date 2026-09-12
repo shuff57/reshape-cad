@@ -21,12 +21,13 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
 import { FreeCadEngineAdapter } from '../dist/freecad-engine-adapter.js';
+import { OcctEngineAdapter } from '../dist/occt-engine-adapter.js';
 
 /** Records every call. `read()` and `exec()` are driven by a small
  *  dictionary of canned responses keyed by a recognisable substring of the
  *  Python, since resolvePrimitiveEdgeName()/setBodyPlacement() build real
  *  (if synthetic-answered) snippets. */
-function makeFakeSession({ edgeReads = {}, bodyTip = {} } = {}) {
+function makeFakeSession({ edgeReads = {}, bodyTip = {}, exportDrawingResult = null } = {}) {
   const calls = [];
   const record = (name, args) => { calls.push({ name, args }); };
   let bodyCounter = 0;
@@ -165,6 +166,44 @@ function makeFakeSession({ edgeReads = {}, bodyTip = {} } = {}) {
         if (code.includes(needle)) return response;
       }
       return { edge: null };
+    },
+    // In-memory FS -- exportDrawing() writes the sheet template, reads the
+    // composed drawing back, and clears any stale file first (exportStl's
+    // own "clear the target before" guard, see freecad-engine-adapter.ts's
+    // own comment on why). A real Map is enough to prove write-then-read
+    // round-trips and that unlink() runs before the kernel call.
+    Module: {
+      FS: {
+        files: new Map(),
+        writeFile(path, data) { record('FS.writeFile', [path, data]); this.files.set(path, data); },
+        readFile(path) {
+          record('FS.readFile', [path]);
+          if (!this.files.has(path)) { const e = new Error(); delete e.message; throw e; }
+          return this.files.get(path);
+        },
+        unlink(path) {
+          record('FS.unlink', [path]);
+          if (!this.files.has(path)) throw new Error('ENOENT');
+          this.files.delete(path);
+        },
+      },
+    },
+    // exportDrawing() itself: the mock's response is driven by `exportDrawingResult`
+    // (or a function of the call args), same opt-in style as edgeReads/bodyTip
+    // above -- a test that wants a specific {ok,reason,scale,...} shape says so.
+    exportDrawing(opts) {
+      record('exportDrawing', [opts]);
+      const result = typeof exportDrawingResult === 'function' ? exportDrawingResult(opts) : exportDrawingResult;
+      if (result) return result;
+      // Default happy path: write a fake composed SVG so readFile succeeds,
+      // and report the views/scale the caller asked for.
+      this.Module.FS.files.set(opts.outPath, new TextEncoder().encode('<svg width="1" height="1">{{SCALE}}</svg>'));
+      return {
+        ok: true, reason: null,
+        scale: opts.scale ?? 1,
+        views: opts.views.map((v) => ({ name: v, type: v })),
+        bbox: [0, 0, 10, 10],
+      };
     },
   };
 }
@@ -1360,4 +1399,131 @@ test('hole: the FreeCAD kernel itself refusing the bore lands in refusals, not a
   assert.ok(result.refusals && result.refusals.get('boreholefail'));
   assert.match(result.refusals.get('boreholefail'), /did not work/);
   assert.equal(result.shapes.get('boreholefail'), result.shapes.get('box1'));
+});
+
+// ---------------------------------------------------------------------------
+// exportDrawing() -- SPEC-techdraw-export.md. Mock-session orchestration
+// only (does this call the kernel with the right shape, does it throw the
+// right message for each refusal, does the titleblock/scale substitution
+// happen where the spec says it must); the real projected-geometry
+// correctness (recentring invariant, id stripping, arc-aware bbox) is only
+// provable against the live TechDraw kernel -- see
+// freecad-drawing.manual.mjs.
+// ---------------------------------------------------------------------------
+
+test('exportDrawing: no solid built yet throws before ever calling the kernel', () => {
+  const session = makeFakeSession();
+  const adapter = makeAdapter(session);
+  const doc = { version: 1, features: [{ id: 'sk1', kind: 'sketch', plane: 'xy', offset: 0, points: [[0, 0], [10, 0], [10, 10], [0, 10]] }] };
+  assert.throws(() => adapter.exportDrawing(doc), /nothing to draw -- this model has no solid yet/);
+  assert.equal(session.calls.find((c) => c.name === 'exportDrawing'), undefined);
+});
+
+test('exportDrawing: happy path writes the sheet template, calls the kernel with the tip solid + defaults, and returns the composed bytes', () => {
+  const session = makeFakeSession();
+  const adapter = makeAdapter(session);
+  const doc = { version: 1, features: [{ id: 'box1', kind: 'box', size: [10, 10, 10], center: [0, 0, 0] }] };
+
+  const bytes = adapter.exportDrawing(doc);
+  assert.ok(bytes instanceof Uint8Array && bytes.length > 0);
+
+  const call = session.calls.find((c) => c.name === 'exportDrawing');
+  assert.ok(call, 'session.exportDrawing must be called');
+  const opts = call.args[0];
+  assert.equal(opts.objName, 'box1_pad');
+  assert.deepEqual(opts.views, ['front', 'top', 'right', 'iso']);
+  assert.equal(opts.projection, 'third-angle');
+  assert.equal(opts.scale, null);
+  assert.equal(opts.hiddenLines, true);
+  assert.deepEqual(opts.area, [10, 10, 287, 200]); // A4-landscape default
+  assert.deepEqual(opts.titleblock, [167, 170]);
+
+  const wrote = session.calls.find((c) => c.name === 'FS.writeFile');
+  assert.ok(wrote, 'the sheet template must be written before the kernel call');
+  const sheetText = new TextDecoder().decode(wrote.args[1]);
+  assert.match(sheetText, /UNTITLED/, 'default title falls back to UNTITLED with no feature.name and no opts.title');
+  assert.doesNotMatch(sheetText, /\{\{TITLE\}\}/);
+  assert.doesNotMatch(sheetText, /\{\{DATE\}\}/);
+  assert.match(sheetText, /\{\{SCALE\}\}/, 'autoscale must leave the SCALE token for the post-kernel substitution');
+
+  // Autoscale: the mock's exportDrawing() reports scale=1, which must land
+  // in the RETURNED bytes' {{SCALE}} token (the sheet file on "disk" stays
+  // untouched -- only the read-back copy is patched).
+  const outText = new TextDecoder().decode(bytes);
+  assert.match(outText, /1:1/, 'autoscale substitutes {{SCALE}} with the kernel-reported scale on the returned bytes');
+});
+
+test('exportDrawing: an explicit opts.scale is NOT re-substituted -- the token is filled in once, JS-side, before the kernel call', () => {
+  const session = makeFakeSession();
+  const adapter = makeAdapter(session);
+  const doc = { version: 1, features: [{ id: 'box1', kind: 'box', size: [10, 10, 10], center: [0, 0, 0] }] };
+
+  adapter.exportDrawing(doc, { scale: 2 });
+  const call = session.calls.find((c) => c.name === 'exportDrawing');
+  assert.equal(call.args[0].scale, 2);
+
+  const wrote = session.calls.find((c) => c.name === 'FS.writeFile');
+  const sheetText = new TextDecoder().decode(wrote.args[1]);
+  assert.match(sheetText, /2:1/, 'an explicit scale is formatted into the sheet template immediately');
+  assert.doesNotMatch(sheetText, /\{\{SCALE\}\}/);
+});
+
+test('exportDrawing: opts override sheet/views/projection/hiddenLines/title through to the kernel call', () => {
+  const session = makeFakeSession();
+  const adapter = makeAdapter(session);
+  const doc = { version: 1, features: [{ id: 'box1', kind: 'box', size: [10, 10, 10], center: [0, 0, 0] }] };
+
+  adapter.exportDrawing(doc, {
+    sheet: 'A3-landscape', views: ['front', 'top'], projection: 'first-angle',
+    hiddenLines: false, title: 'My Part',
+  });
+  const opts = session.calls.find((c) => c.name === 'exportDrawing').args[0];
+  assert.deepEqual(opts.views, ['front', 'top']);
+  assert.equal(opts.projection, 'first-angle');
+  assert.equal(opts.hiddenLines, false);
+  assert.deepEqual(opts.area, [10, 10, 410, 287]); // A3-landscape
+  assert.deepEqual(opts.titleblock, [250, 251]);
+
+  const sheetText = new TextDecoder().decode(session.calls.find((c) => c.name === 'FS.writeFile').args[1]);
+  assert.match(sheetText, /My Part/);
+});
+
+test('exportDrawing: a kernel-reported refusal (info.ok=false) throws with the reason, not a generic message', () => {
+  const session = makeFakeSession({ exportDrawingResult: { ok: false, reason: 'the projected views produced no visible geometry', scale: null, views: [], bbox: null } });
+  const adapter = makeAdapter(session);
+  const doc = { version: 1, features: [{ id: 'box1', kind: 'box', size: [10, 10, 10], center: [0, 0, 0] }] };
+  assert.throws(() => adapter.exportDrawing(doc), /the projected views produced no visible geometry/);
+});
+
+test('exportDrawing: an empty-SVG readback (kernel reported ok but wrote nothing) refuses with a clear message, not an ErrnoError with no .message', () => {
+  // exportDrawingResult set (not a default-branch fall-through) means the
+  // mock's own "write a fake composed SVG" step never runs -- readFile on
+  // OUT_SVG must throw the ErrnoError-with-no-.message shape exportStl
+  // already found and translates (fc-session.mjs:224-237).
+  const session = makeFakeSession({
+    exportDrawingResult: { ok: true, reason: null, scale: 1, views: [], bbox: [0, 0, 1, 1] },
+  });
+  const adapter = makeAdapter(session);
+  const doc = { version: 1, features: [{ id: 'box1', kind: 'box', size: [10, 10, 10], center: [0, 0, 0] }] };
+  assert.throws(() => adapter.exportDrawing(doc), /the kernel wrote no SVG/);
+});
+
+test('exportDrawing: no extra body/document churn beyond one ordinary build() -- the ReshapePage/Group/Template lifecycle lives entirely in fc-drawing.mjs\'s own Python, not JS', () => {
+  const doc = { version: 1, features: [{ id: 'box1', kind: 'box', size: [10, 10, 10], center: [0, 0, 0] }] };
+
+  const baselineSession = makeFakeSession();
+  makeAdapter(baselineSession).build(doc);
+  const baseline = baselineSession.calls.filter((c) => c.name === 'newDocument' || c.name === 'newBody').length;
+
+  const session = makeFakeSession();
+  makeAdapter(session).exportDrawing(doc);
+  const actual = session.calls.filter((c) => c.name === 'newDocument' || c.name === 'newBody').length;
+
+  assert.equal(actual, baseline, 'exportDrawing must rebuild exactly once via build() -- no extra body/document churn of its own');
+});
+
+test('OcctEngineAdapter.exportDrawing throws a clear "not supported" error, same family as saveDocument/openDocument', () => {
+  const occt = new OcctEngineAdapter({});
+  const doc = { version: 1, features: [] };
+  assert.throws(() => occt.exportDrawing(doc), /not supported on the OCCT engine: Export Drawing requires the FreeCAD engine/);
 });

@@ -11,6 +11,7 @@
     "./fc-session-node": "./src/fc-session-node.mjs",
     "./fc-commands": "./src/fc-commands.mjs",
     "./fc-sketch": "./src/fc-sketch.mjs",
+    "./fc-drawing": "./src/fc-drawing.mjs",
     "./config": "./dist/config.js",
     "./load-browser": "./src/load-browser.mjs",
     "./sketch-translate": "./dist/sketch-translate.js"
