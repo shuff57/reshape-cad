@@ -143,6 +143,22 @@ const FEATURE_PARAM =
   "'PartDesign::Revolution':'Angle', 'PartDesign::Fillet':'Radius', " +
   "'PartDesign::Chamfer':'Size'}\n";
 
+// Emits the body of the world-frame axis proxy sketch used by emit.patternAxis
+// and by linearPattern/polarPattern's own worldAxis branch below -- see
+// emit.patternAxis's own header comment for the full explanation and the
+// real-kernel verification this formula rests on.
+const axisSketchPy = (bodyVar, sketchName, origin, direction) => {
+  const [ox, oy, oz] = origin;
+  const [dx, dy, dz] = direction;
+  return (
+    `${sketchName}_obj = ${bodyVar}.newObject("Sketcher::SketchObject", ${pyStr(sketchName)})\n` +
+    `worldPos = App.Vector(${pyNum(ox, 'origin.x')}, ${pyNum(oy, 'origin.y')}, ${pyNum(oz, 'origin.z')})\n` +
+    `worldDir = App.Vector(${pyNum(dx, 'direction.x')}, ${pyNum(dy, 'direction.y')}, ${pyNum(dz, 'direction.z')})\n` +
+    `worldRot = App.Rotation(App.Vector(0,1,0), worldDir)\n` +
+    `${sketchName}_obj.Placement = ${bodyVar}.Placement.inverse().multiply(App.Placement(worldPos, worldRot))\n`
+  );
+};
+
 export const emit = {
   // Add a PartDesign Body to the active document. Returns the Python source.
   newBody(name = 'Body') {
@@ -254,6 +270,49 @@ export const emit = {
     );
   },
 
+  // Hollow (shell) a solid to a wall thickness via PartDesign::Thickness --
+  // the third DressUp sibling of Fillet/Chamfer (PROPERTY_SOURCE(PartDesign::
+  // Thickness, PartDesign::DressUp) in FeatureThickness.cpp), so it takes the
+  // exact same Base = (base, subElementNames) tuple shape and the same
+  // Invalid/null-shape rollback as fillet()/chamfer() above. faceNames is the
+  // list of faces to REMOVE (open) -- MUST be non-empty, enforced by
+  // pyStrList()'s own guard, not merely documented: FeatureThickness.cpp's
+  // own execute() early-returns the UNCHANGED base shape (no exception) the
+  // instant Base's sub-element list is empty, and the underlying
+  // TopoShape::makeElementThickSolid (TopoShapeExpansion.cpp) throws "Null
+  // input shape" if it is ever reached with zero faces at all -- this
+  // kernel's OWN restriction, not vanilla FreeCAD/OCCT's MakeThickSolidByJoin
+  // (which accepts an empty closing list). There is therefore no way to
+  // build a fully-closed hollow (no opening) via this command; callers must
+  // always name at least one face.
+  // Value is POSITIVE for an inward hollow -- do NOT negate it the way
+  // occt-build.ts negates its own OCCT call. Measured directly:
+  // PartDesign::Thickness.Reversed defaults to true (Thickness::Thickness(),
+  // FeatureThickness.cpp) and its execute() computes
+  // `thickness = (reversed ? -1. : 1.) * Value`, so Reversed=true already
+  // supplies the negation -- passing a positive Value with Reversed left at
+  // its default (set explicitly below anyway, not left to chance) reproduces
+  // occt-build.ts's own `-f.thickness` inward offset exactly. A positive
+  // Value with Reversed=True measured as a correct inward hollow (box
+  // 40x40x20, one face open, thickness 2 -> volume 10112, well under the
+  // 32000 solid); the same Value negative left the shape volume UNCHANGED at
+  // 32000 instead of erroring, so a wrong sign fails silently, not loudly --
+  // pass f.thickness through unmodified.
+  thickness(bodyName, baseName, faceNames, value) {
+    const v = pyNum(value, 'thickness value');
+    return wrapStatus(
+      `th = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::Thickness", "Thickness")\n` +
+      `th.Base = (doc.getObject(${pyStr(baseName)}), ${pyStrList(faceNames)})\n` +
+      `th.Value = ${v}\n` +
+      `th.Reversed = True\n` +
+      `doc.recompute()\n` +
+      `if ('Invalid' in th.State) or th.Shape.isNull():\n` +
+      `    doc.removeObject(th.Name)\n` +
+      `    doc.recompute()\n` +
+      `    raise ValueError('hollowing failed for this face — try a smaller thickness')`
+    );
+  },
+
   // Pocket: cut a closed profile (a sketch, usually attached to a face) inward
   // by `length`. Subtractive counterpart to Pad. Same clean-status wrapper: an
   // open/invalid profile leaves a null shape — detect it, delete, report a
@@ -299,6 +358,77 @@ export const emit = {
       `    doc.removeObject(pk.Name)\n` +
       `    doc.recompute()\n` +
       `    raise ValueError('hole failed — the profile must be one closed loop lying on the solid')`
+    );
+  },
+
+  // Cut N circular bores along an arbitrary WORLD axis, each spanning
+  // +-depth/2 about the profile plane -- the geometry occt-build.ts builds
+  // with MakeCylinder + moved(-depth/2) + Cut.
+  //
+  // The profile sketch is UNATTACHED -- no face, no datum -- positioned only
+  // by body.Placement.inverse() * App.Placement(worldPos, worldRot), the same
+  // proxy formula axisSketchPy()/neutralPlane() already use, here as a PROFILE
+  // rather than a REFERENCE for the first time. MEASURED to hold through body
+  // rotation: a box rotated rz=90 bored along world X at world y=+12 removed
+  // exactly 20 of material, and Shape.isInside() put the void at world y=+12,
+  // not where a body-frame leak would.
+  //
+  // N circles in ONE sketch = N bores in ONE Pocket -- measured
+  // 29738.053289415348 for the 4-corner case on BOTH engines. More correct
+  // than N chained cuts, for the reason occt-build.ts:1035-1039 fuses its
+  // bores into one tool first: sequential cuts of overlapping bores can refill
+  // material.
+  //
+  // Midplane=True, Reversed NEVER set -- Midplane makes the cut symmetric so
+  // pocket()'s direction trap (msgbox #91/#92) cannot recur. Measured on a
+  // top-face plane: Midplane 31858.628, Reversed=False 31717.257,
+  // Reversed=True 32000 (no cut at all).
+  //
+  // World centres are projected into the sketch plane by FreeCAD itself
+  // (inv.multVec), never by hand-derived per-axis 2D algebra -- the local
+  // X/Y basis App.Rotation(Z, axis) yields differs per axis, and that is
+  // exactly what passes the 'z' fixture and breaks on 'x'.
+  //
+  // multVec, NOT multiply -- FOUND live-kernel (this pass, not SPEC-hole.md's
+  // own measurement, which had this line as `inv.multiply(App.Vector(*_w))`):
+  // Base.Placement.multiply() only ever composes two Placements together and
+  // raises "argument 1 must be Base.Placement, not Base.Vector" the instant
+  // it is handed a bare Vector -- it does NOT transform a point. The FreeCAD
+  // API for "apply this placement to a point" is Placement.multVec(vector),
+  // a different method entirely. Every real-kernel case in this file's own
+  // manual test caught this identically (every hole refused with that exact
+  // AttributeError-shaped message) until this was fixed.
+  //
+  // NO volGuard (fc-commands.mjs:99-111): a bore that misses the solid is a
+  // silent no-op here AND on OCCT, whose Cut with a non-intersecting tool
+  // returns the base shape. Parity, not a defect -- it must not raise.
+  bore(bodyName, sketchName, pocketName, radius, worldCenters, worldOrigin, worldAxis, depth) {
+    const r = pyNum(radius, 'radius');
+    const centersPy = '[' + worldCenters.map((c, i) =>
+      `(${pyNum(c[0], `c${i}.x`)},${pyNum(c[1], `c${i}.y`)},${pyNum(c[2], `c${i}.z`)})`).join(',') + ']';
+    return wrapStatus(
+      `body = doc.getObject(${pyStr(bodyName)})\n` +
+      `frame = App.Placement(${vec(worldOrigin[0], worldOrigin[1], worldOrigin[2])}, ` +
+        `App.Rotation(App.Vector(0,0,1), ${vec(worldAxis[0], worldAxis[1], worldAxis[2])}))\n` +
+      `s = body.newObject("Sketcher::SketchObject", ${pyStr(sketchName)})\n` +
+      `s.Placement = body.Placement.inverse().multiply(frame)\n` +
+      `inv = frame.inverse()\n` +
+      `for _w in ${centersPy}:\n` +
+      `    _p = inv.multVec(App.Vector(*_w))\n` +
+      `    s.addGeometry(Part.Circle(App.Vector(_p.x, _p.y, 0), App.Vector(0,0,1), ${r}), False)\n` +
+      `doc.recompute()\n` +
+      `_tip = body.Tip\n` +
+      `pk = body.newObject("PartDesign::Pocket", ${pyStr(pocketName)})\n` +
+      `pk.Profile = s\n` +
+      `pk.Length = ${pyNum(depth, 'depth')}\n` +
+      `pk.Midplane = True\n` +
+      `doc.recompute()\n` +
+      `if ('Invalid' in pk.State) or pk.Shape.isNull():\n` +
+      `    body.Tip = _tip\n` +
+      `    doc.removeObject(pk.Name)\n` +
+      `    doc.removeObject(${pyStr(sketchName)})\n` +
+      `    doc.recompute()\n` +
+      `    raise ValueError('hole failed — the bore could not be cut here')`
     );
   },
 
@@ -515,6 +645,40 @@ export const emit = {
     );
   },
 
+  // A WORLD-FRAME axis proxy for LinearPattern.Direction / PolarPattern.Axis.
+  // Needed because those properties resolve through a DocumentObject in the
+  // TARGET BODY'S OWN local frame (the Body.Origin X/Y/Z_Axis datum the
+  // existing fallback below uses) -- which co-rotates with Body.Placement
+  // (wrong once the body is rotated) and sits pinned at body-local (0,0,0)
+  // (wrong for a circular pattern axis that must pass through the WORLD
+  // origin regardless of body placement). Both gaps, one fix.
+  //
+  // Built as a plain, UNattached Sketcher::SketchObject inside the target
+  // Body (so it lives in body-local space like every PartDesign feature),
+  // with its own .Placement set directly to
+  //   body.Placement.inverse() * worldPlacement
+  // where worldPlacement puts local Y (== the sketch's own V_Axis, the same
+  // reference form revolve()/groove() already use) along world `direction`
+  // and the local origin at world `origin`. Re-applying body.Placement on
+  // the way back to world space cancels the inverse exactly.
+  //
+  // Verified against the real kernel (fc-kernel-pd-final, coord-fix-probe.mjs
+  // pre-checks A/B): App.Rotation(vecA, vecB)'s two-vector constructor
+  // rotates vecA onto vecB as assumed, and
+  // body.Placement.inverse().multiply(worldPlacement) round-trips back to
+  // worldPlacement via body.Placement.multiply(...) -- the composition this
+  // formula relies on. Degenerate case (direction anti-parallel to local Y)
+  // picks an arbitrary perpendicular axis -- still the correct LINE, which is
+  // all a pattern axis needs (sign doesn't matter), and unreachable today
+  // since occt-build.ts only ever offers 'x'|'y'|'z', never negative.
+  patternAxis(bodyName, sketchName, origin, direction) {
+    return wrapStatus(
+      `body = doc.getObject(${pyStr(bodyName)})\n` +
+      axisSketchPy('body', sketchName, origin, direction) +
+      `doc.recompute()\n`
+    );
+  },
+
   // Linear pattern: repeat the named feature along a world axis. PartDesign's
   // LinearPattern takes Originals (features to repeat) + a Direction link.
   // The world axis is the Body's own Origin datum axis (every PartDesign Body
@@ -547,26 +711,46 @@ export const emit = {
   // rejects a negative Quantity outright ("Pattern length too small"), so
   // direction has to go through the separate `Reversed` boolean property
   // instead, with Length always the (positive) magnitude.
-  linearPattern(bodyName, featureName, count, step, axis = 'z', patternName = 'LinearPattern') {
+  //
+  // `worldAxis: { origin: [x,y,z], direction: [x,y,z] } | null` -- optional,
+  // trailing, defaults to null. When given, Direction is resolved through a
+  // fresh world-frame axis-proxy sketch (axisSketchPy(), see emit.patternAxis's
+  // own header) instead of the Body's own Origin datum, closing the
+  // rotated-target gap this port's own report names. Every existing
+  // caller/test that omits it keeps hitting the untouched Body.Origin
+  // Role-lookup branch byte-for-byte -- this is a regression-guarded
+  // addition, not a rewrite.
+  linearPattern(bodyName, featureName, count, step, axis = 'z', patternName = 'LinearPattern', worldAxis = null) {
     const c = pyNum(count, 'count');
     const s = pyNum(step, 'step');
     const magnitude = Math.abs(s);
     const reversed = s < 0 ? 'True' : 'False';
-    const AXIS_DATUM = { x: 'X_Axis', y: 'Y_Axis', z: 'Z_Axis' };
-    const datum = AXIS_DATUM[axis] ?? 'Z_Axis';
+    const axisSketchName = `${patternName}_axis`;
+    let axisSetup, directionExpr, cleanupExtra = '';
+    if (worldAxis) {
+      axisSetup = axisSketchPy('body', axisSketchName, worldAxis.origin, worldAxis.direction);
+      directionExpr = `(${axisSketchName}_obj, ['V_Axis'])`;
+      cleanupExtra = `    doc.removeObject(${pyStr(axisSketchName)})\n`;
+    } else {
+      const AXIS_DATUM = { x: 'X_Axis', y: 'Y_Axis', z: 'Z_Axis' };
+      const datum = AXIS_DATUM[axis] ?? 'Z_Axis';
+      axisSetup =
+        `origin = getattr(body, 'Origin', None)\n` +
+        `axisObj = None\n` +
+        `if origin is not None:\n` +
+        `    for _f in origin.OriginFeatures:\n` +
+        // Role, not Name -- see this file's own comment above linearPattern.
+        `        if getattr(_f, 'Role', None) == ${JSON.stringify(datum)}:\n` +
+        `            axisObj = _f\n` +
+        `            break\n`;
+      directionExpr = `(axisObj, [''])`;
+    }
     return wrapStatus(
       `lp = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::LinearPattern", ${pyStr(patternName)})\n` +
       `lp.Originals = [doc.getObject(${pyStr(featureName)})]\n` +
       `body = doc.getObject(${pyStr(bodyName)})\n` +
-      `origin = getattr(body, 'Origin', None)\n` +
-      // Role, not Name -- see this file's own comment above linearPattern.
-      `axisObj = None\n` +
-      `if origin is not None:\n` +
-      `    for _f in origin.OriginFeatures:\n` +
-      `        if getattr(_f, 'Role', None) == ${JSON.stringify(datum)}:\n` +
-      `            axisObj = _f\n` +
-      `            break\n` +
-      `lp.Direction = (axisObj, [''])\n` +
+      axisSetup +
+      `lp.Direction = ${directionExpr}\n` +
       `lp.Length = ${magnitude}\n` +
       `lp.Reversed = ${reversed}\n` +
       `lp.Occurrences = ${c}\n` +
@@ -578,6 +762,7 @@ export const emit = {
       `if ('Invalid' in lp.State) or lp.Shape.isNull():\n` +
       `    body.Tip = doc.getObject(${pyStr(featureName)})\n` +
       `    doc.removeObject(lp.Name)\n` +
+      cleanupExtra +
       `    doc.recompute()\n` +
       `    raise ValueError('pattern failed — the feature to repeat must exist')`
     );
@@ -587,25 +772,57 @@ export const emit = {
   // Origin datum resolution as linearPattern; Angle is the total sweep the
   // occurrences span (360 = the full ring).
   // `patternName` -- same reasoning as linearPattern's own comment above.
-  polarPattern(bodyName, featureName, count, angle = 360, axis = 'z', patternName = 'PolarPattern') {
+  // `worldAxis` -- same shape/default/reasoning as linearPattern's own
+  // comment above; closes the non-'z'-axis and circular-pattern-of-a-
+  // primitive gaps for circular mode.
+  //
+  // Angle-spacing correction, WORLDAXIS PATH ONLY: measured against the real
+  // kernel (coord-fix-probe.mjs P2) that PartDesign::PolarPattern spaces its
+  // Occurrences at Angle/(Occurrences-1) for any Angle strictly under 360 --
+  // NOT Angle/Occurrences, which is occt-build.ts's own convention
+  // (`(f.totalAngle ?? 360) / f.count) * i`) and what every caller of this
+  // adapter actually asked for. At exactly Angle=360 FreeCAD special-cases a
+  // full ring and already lands on Angle/Occurrences with no correction
+  // needed. Passing `correctedAngle = angle*(count-1)/count` collapses both
+  // cases onto the same measured Angle/(Occurrences-1) formula and reproduces
+  // occt's exact spacing in every case checked (180/4, 180/3, 90/2, 360/4) --
+  // verified against the kernel by re-deriving each instance's angle from its
+  // own CenterOfMass, not assumed. Scoped to the worldAxis branch only: the
+  // OLD Body.Origin-datum path is a pre-existing, independent bug (present
+  // before this fix, not part of it) and pattern-test.mjs's own byte-
+  // identical assertions on that path must survive unmodified.
+  polarPattern(bodyName, featureName, count, angle = 360, axis = 'z', patternName = 'PolarPattern', worldAxis = null) {
     const c = pyNum(count, 'count');
     const a = pyNum(angle, 'angle');
-    const AXIS_DATUM = { x: 'X_Axis', y: 'Y_Axis', z: 'Z_Axis' };
-    const datum = AXIS_DATUM[axis] ?? 'Z_Axis';
+    const axisSketchName = `${patternName}_axis`;
+    let axisSetup, axisExpr, cleanupExtra = '';
+    let effectiveAngle = a;
+    if (worldAxis) {
+      axisSetup = axisSketchPy('body', axisSketchName, worldAxis.origin, worldAxis.direction);
+      axisExpr = `(${axisSketchName}_obj, ['V_Axis'])`;
+      cleanupExtra = `    doc.removeObject(${pyStr(axisSketchName)})\n`;
+      effectiveAngle = c > 1 ? (a * (c - 1)) / c : a;
+    } else {
+      const AXIS_DATUM = { x: 'X_Axis', y: 'Y_Axis', z: 'Z_Axis' };
+      const datum = AXIS_DATUM[axis] ?? 'Z_Axis';
+      axisSetup =
+        `origin = getattr(body, 'Origin', None)\n` +
+        `axisObj = None\n` +
+        `if origin is not None:\n` +
+        `    for _f in origin.OriginFeatures:\n` +
+        // Role, not Name -- see this file's own comment above linearPattern.
+        `        if getattr(_f, 'Role', None) == ${JSON.stringify(datum)}:\n` +
+        `            axisObj = _f\n` +
+        `            break\n`;
+      axisExpr = `(axisObj, [''])`;
+    }
     return wrapStatus(
       `pp = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::PolarPattern", ${pyStr(patternName)})\n` +
       `pp.Originals = [doc.getObject(${pyStr(featureName)})]\n` +
       `body = doc.getObject(${pyStr(bodyName)})\n` +
-      `origin = getattr(body, 'Origin', None)\n` +
-      // Role, not Name -- see this file's own comment above linearPattern.
-      `axisObj = None\n` +
-      `if origin is not None:\n` +
-      `    for _f in origin.OriginFeatures:\n` +
-      `        if getattr(_f, 'Role', None) == ${JSON.stringify(datum)}:\n` +
-      `            axisObj = _f\n` +
-      `            break\n` +
-      `pp.Axis = (axisObj, [''])\n` +
-      `pp.Angle = ${a}\n` +
+      axisSetup +
+      `pp.Axis = ${axisExpr}\n` +
+      `pp.Angle = ${effectiveAngle}\n` +
       `pp.Occurrences = ${c}\n` +
       // newObject() does NOT itself advance Body.Tip -- same measured fact
       // as linearPattern's own comment above.
@@ -614,8 +831,236 @@ export const emit = {
       `if ('Invalid' in pp.State) or pp.Shape.isNull():\n` +
       `    body.Tip = doc.getObject(${pyStr(featureName)})\n` +
       `    doc.removeObject(pp.Name)\n` +
+      cleanupExtra +
       `    doc.recompute()\n` +
       `    raise ValueError('pattern failed — the feature to repeat must exist')`
+    );
+  },
+
+  // A WORLD-FRAME neutral-plane proxy for PartDesign::Draft.NeutralPlane.
+  // Built exactly like axisSketchPy's own world-frame axis proxy, but for a
+  // PLANE instead of a LINE: an empty Sketcher::SketchObject inside the
+  // target Body, with its own Placement set to
+  //   body.Placement.inverse() * Placement(worldPos, rotation mapping local Z to worldNormal)
+  // so the sketch's OWN plane (referenced later as (sketchObj, [''])) sits at
+  // the caller's WORLD position/orientation regardless of the body's own
+  // Placement. `direction` is the plane's NORMAL -- today's only caller
+  // (freecad-engine-adapter.ts's 'draft' branch) always passes world Z
+  // ([0,0,1]), since only a 'z' pull is supported on this engine (see that
+  // branch's own header for why), but the parameter is kept general the same
+  // way axisSketchPy's `direction` is, in case a future pass finds a way to
+  // support a non-'z' pull.
+  //
+  // MEASURED against the real kernel (engine/bridge/draft-probe2/6/7.mjs):
+  // NeutralPlane accepts (sketchObj, ['']) directly (NOT ['V_Axis'] --
+  // NeutralPlane is not one of the ReferenceAxis/Direction/Axis properties
+  // that special-case a sketch's virtual axis names; it wants a real planar
+  // reference, and an empty sketch's own plane satisfies that) and genuinely
+  // honours the WORLD offset: a box drafted with this proxy at world z=10
+  // (a box spanning local z 0..20) pivots EXACTLY at that height (volume
+  // unchanged at the symmetric midpoint, bounding-box growth of
+  // tan(angle)*10 at the far end, matching the analytic prediction to 6
+  // decimal places) -- the same "honours the referenced object's own world
+  // position" property PolarPattern.Axis was proven (SPEC-coord-fix.md P1)
+  // to have for a line's base point.
+  neutralPlane(bodyName, sketchName, origin, direction) {
+    return wrapStatus(
+      `body = doc.getObject(${pyStr(bodyName)})\n` +
+      `worldPos = ${vec(origin[0], origin[1], origin[2])}\n` +
+      `worldNormal = ${vec(direction[0], direction[1], direction[2])}\n` +
+      `worldRot = App.Rotation(App.Vector(0,0,1), worldNormal)\n` +
+      `${sketchName}_obj = body.newObject("Sketcher::SketchObject", ${pyStr(sketchName)})\n` +
+      `${sketchName}_obj.Placement = body.Placement.inverse().multiply(App.Placement(worldPos, worldRot))\n` +
+      `doc.recompute()\n`
+    );
+  },
+
+  // Draft: tilt one named face of a Body's tip solid by Angle degrees,
+  // pivoting about neutralSketchName's own plane. PartDesign::Draft is its
+  // own class (not a DressUp subclass like Fillet/Chamfer/Thickness), but
+  // shares their Base=(base,[faceName]) tuple shape.
+  //
+  // SCOPE, measured directly against this kernel (fc-kernel-pd-final, NOT
+  // assumed -- engine/bridge/draft-probe*.mjs), not a general Draft port:
+  //   - PullDirection is intentionally NEVER set here. Every explicit
+  //     PullDirection reference this pass tried -- a raw sketch's V_Axis, a
+  //     raw sketch's own drawn Edge, a real edge of the SOLID ITSELF, a
+  //     PartDesign::Line datum, even the Body's own Origin Z_Axis datum (an
+  //     object that already IS the implicit default direction) -- fails
+  //     identically ("TopoShapeExpansion.cpp: Failed to add some face for
+  //     drafting, skip" / a blank recompute error) on THIS kernel build,
+  //     while leaving PullDirection at its None default builds successfully.
+  //     A genuine per-fork kernel limitation, the same class of finding as
+  //     Thickness's own "cannot build a fully-closed hollow" gap (this
+  //     file's own thickness() comment) -- not a port gap. The caller
+  //     (freecad-engine-adapter.ts's 'draft' branch) therefore only ever
+  //     calls this for a 'z' pull on an UNROTATED body, where the implicit
+  //     default direction (measured: body-local Z) is already correct.
+  //   - Angle is passed through UNCHANGED, deliberately re-checked rather
+  //     than assumed from DraftFeature's own doc comment ("positive leans
+  //     outward from the neutral plane"). MEASURED (draft-probe6/7.mjs,
+  //     then cross-checked against occt-build.ts's OWN drafted() -- the same
+  //     BRepOffsetAPI_DraftAngle call -- via freecad-draft.manual.mjs): with
+  //     NeutralPlane set explicitly and PullDirection left at its implicit
+  //     default, this kernel's own Angle, PASSED THROUGH UNNEGATED, produces
+  //     the IDENTICAL volume occt-build.ts's own drafted() produces for the
+  //     SAME (face, pull='z', angle, neutral) inputs -- verified on a
+  //     40x40x20 box (angle=10, neutral=box bottom: both engines land on
+  //     30589.3842) and independently again on a cylinder's side face. An
+  //     earlier version of this comment negated Angle here, reasoning from
+  //     DraftFeature's doc-comment wording alone without cross-checking
+  //     occt-build.ts's actual output -- that negation was WRONG (it made
+  //     this kernel's own output the MIRROR of OCCT's, not a match) and was
+  //     caught only by the cross-engine volume check freecad-draft.manual.mjs
+  //     runs; the doc comment's "positive leans outward" phrasing and OCCT's
+  //     own actual BRepOffsetAPI_DraftAngle sign convention are evidently NOT
+  //     the same axis convention. Trust the measured cross-engine number, not
+  //     the doc comment, if the two are ever revisited.
+  //   - MEASURED, also directly: an oversized/self-intersecting Angle
+  //     (85 degrees on a 40-wide, 20-tall box) fails SAFELY on this kernel
+  //     (a plain Invalid state / null Shape) rather than corrupting the wasm
+  //     heap the way an oversized fillet radius does -- no pre-check radius-
+  //     style cap is needed here, unlike fillet()/chamfer() above.
+  draft(bodyName, baseName, faceName, angleDegrees, neutralSketchName) {
+    const angle = pyNum(angleDegrees, 'angle');
+    return wrapStatus(
+      `dr = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::Draft", "Draft")\n` +
+      `dr.Base = (doc.getObject(${pyStr(baseName)}), [${pyStr(faceName)}])\n` +
+      `dr.Angle = ${angle}\n` +
+      `dr.NeutralPlane = (doc.getObject(${pyStr(neutralSketchName)}), [''])\n` +
+      `doc.recompute()\n` +
+      `if ('Invalid' in dr.State) or dr.Shape.isNull():\n` +
+      `    doc.removeObject(dr.Name)\n` +
+      `    doc.removeObject(${pyStr(neutralSketchName)})\n` +
+      `    doc.recompute()\n` +
+      `    raise ValueError('draft failed for this face — try a smaller angle')`
+    );
+  },
+
+  // PartDesign::Mirrored -- reflects `baseName` across `planeSketchName`'s
+  // own plane and KEEPS BOTH (original + reflection combined into one
+  // Shape), by design: Mirrored is a PartDesign::FeatureTransformedPattern,
+  // the SAME family as LinearPattern/PolarPattern (fc-commands.mjs's own
+  // linearPattern()/polarPattern() above), not a DressUp like Fillet/Draft.
+  // That additive-by-construction behaviour is exactly reshape's own Mirror
+  // contract (MirrorFeature's own doc comment in model-types.ts: "the source
+  // feature stays visible and the mirrored copy is added alongside it") --
+  // MEASURED against the real kernel (engine/bridge/mirror-probe.mjs): a
+  // Mirrored feature's own Shape.Volume comes back as exactly 2x the
+  // original (no overlap), with no separate boolean Fuse call needed the way
+  // occt-build.ts's own mirror branch requires -- PartDesign::Mirrored
+  // already does the fuse internally.
+  //
+  // planeSketchName MUST be a world-frame proxy built via neutralPlane()
+  // above (NOT a bare Body.Origin datum plane) -- MEASURED (mirror-probe.mjs):
+  // MirrorPlane accepts (sketchObj, ['']) exactly like NeutralPlane does, and
+  // genuinely honours the proxy's own WORLD position, not just its
+  // orientation -- a proxy built off-origin (world x=0) on a body placed at
+  // world x=20 produced a mirror that reflected through world x=0, not
+  // through the body's own local origin (verified via the resulting
+  // Shape.BoundBox span, converted back to world through Body.Placement).
+  // This is the SAME "honours the referenced object's own world position"
+  // property PolarPattern.Axis (SPEC-coord-fix.md P1) and NeutralPlane
+  // (draft, above) both already have -- MirrorPlane joins that list rather
+  // than PullDirection's "rejects every explicit reference" one.
+  //
+  // Same explicit-Tip-advance discipline as linearPattern/polarPattern
+  // (NOT auto-advanced by newObject() for this feature family, unlike the
+  // DressUp classes) -- verified in the same probe.
+  mirrored(bodyName, baseName, planeSketchName, mirrorName = 'Mirrored') {
+    return wrapStatus(
+      `mir = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::Mirrored", ${pyStr(mirrorName)})\n` +
+      `mir.Originals = [doc.getObject(${pyStr(baseName)})]\n` +
+      `mir.MirrorPlane = (doc.getObject(${pyStr(planeSketchName)}), [''])\n` +
+      `body = doc.getObject(${pyStr(bodyName)})\n` +
+      `body.Tip = mir\n` +
+      `doc.recompute()\n` +
+      `if ('Invalid' in mir.State) or mir.Shape.isNull():\n` +
+      `    body.Tip = doc.getObject(${pyStr(baseName)})\n` +
+      `    doc.removeObject(mir.Name)\n` +
+      `    doc.removeObject(${pyStr(planeSketchName)})\n` +
+      `    doc.recompute()\n` +
+      `    raise ValueError('mirror failed for this plane')`
+    );
+  },
+
+  // Move: translate a Body's own Placement by a WORLD-frame offset in place.
+  // A move never rewrites the feature geometry itself -- Body.Shape is only
+  // ever the frame applied at read time -- so any face/edge name written
+  // against this body BEFORE the move (a fillet's own Base, say) still
+  // resolves correctly afterward with no new naming machinery, unlike the
+  // OCCT engine's own move branch (occt-build.ts), which has to record an
+  // OpRecord for exactly this reason.
+  //
+  // LEFT-multiply, not right: offset is a WORLD translation, so it must be
+  // applied in world space BEFORE the body's own (possibly rotated)
+  // Placement, not along the body's own rotated local axes. MEASURED both
+  // ways on a body rotated rz=90: left-multiplying gave world +x as asked;
+  // right-multiplying gave world +y instead. The two agree on an unrotated
+  // body, so the wrong order passes every unrotated fixture and only breaks
+  // on a turned target -- verify against a rotated fixture, not just an
+  // axis-aligned one.
+  moveBody(bodyName, offset) {
+    const dx = pyNum(offset[0], 'offset.x');
+    const dy = pyNum(offset[1], 'offset.y');
+    const dz = pyNum(offset[2], 'offset.z');
+    return wrapStatus(
+      `b = doc.getObject(${pyStr(bodyName)})\n` +
+      `if b is None:\n    raise ValueError('no such body')\n` +
+      `before = b.Placement\n` +
+      `b.Placement = App.Placement(App.Vector(${dx},${dy},${dz}), App.Rotation()).multiply(b.Placement)\n` +
+      `doc.recompute()\n` +
+      `bad = [o.Label for o in doc.Objects if 'Invalid' in o.State]\n` +
+      `if bad:\n    b.Placement = before\n    doc.recompute()\n` +
+      `    raise ValueError('moving this shape broke %s' % ', '.join(bad))`
+    );
+  },
+
+  // Move+copy: duplicate a whole Body (doc.copyObject with its own
+  // dependencies -- a Body brings its Sketch/Pad/axes/planes/origin along,
+  // ~11 objects for one Pad-based body, not just the Body itself) and
+  // translate the COPY's own Placement, leaving the source untouched. Every
+  // object copyObject() added is tracked so a failed copy can be fully
+  // unwound -- removing only the Body would strand the rest (sketch, pad,
+  // axes, planes, origin) as orphaned objects in the document.
+  copyBodyMoved(bodyName, offset) {
+    const dx = pyNum(offset[0], 'offset.x');
+    const dy = pyNum(offset[1], 'offset.y');
+    const dz = pyNum(offset[2], 'offset.z');
+    return wrapStatus(
+      `src = doc.getObject(${pyStr(bodyName)})\n` +
+      `if src is None:\n    raise ValueError('no such body')\n` +
+      `before = set(o.Name for o in doc.Objects)\n` +
+      `cp = doc.copyObject(src, True)\n` +
+      `obj = cp[0] if isinstance(cp, list) else cp\n` +
+      `added = [o.Name for o in doc.Objects if o.Name not in before]\n` +
+      `def _undo():\n` +
+      `    for n in reversed(added):\n` +
+      `        try:\n            doc.removeObject(n)\n        except Exception:\n            pass\n` +
+      `    doc.recompute()\n` +
+      `if obj is None or obj.TypeId != 'PartDesign::Body':\n` +
+      `    _undo()\n    raise ValueError('copying this shape did not produce a body')\n` +
+      `obj.Placement = App.Placement(App.Vector(${dx},${dy},${dz}), App.Rotation()).multiply(obj.Placement)\n` +
+      `doc.recompute()\n` +
+      `if obj.Tip is None or obj.Shape.isNull() or ('Invalid' in obj.State):\n` +
+      `    _undo()\n    raise ValueError('copying this shape did not work')\n` +
+      `_res['bodyName'] = obj.Name\n` +
+      `_res['tipName'] = obj.Tip.Name`
+    );
+  },
+
+  // Plain readback of a Body's own current Tip object name -- used by the
+  // 'move' build branch to refuse moving a body that already has something
+  // else built on top of its target feature (moving the body would move
+  // that later feature too, silently, which is a different bug than moving
+  // in place). Not wrapStatus: nothing here can raise, so there is no
+  // status to report, matching featureInfo's own plain-readback convention.
+  bodyTip(bodyName) {
+    return (
+      'import json\n' + HEAD +
+      `b = doc.getObject(${pyStr(bodyName)})\n` +
+      `_t = None if (b is None or b.Tip is None) else b.Tip.Name\n` +
+      `open(${JSON.stringify(OUT_PATH)}, 'w').write(json.dumps({'tip': _t}))\n`
     );
   },
 
@@ -667,6 +1112,41 @@ export const emit = {
       `    setattr(o, p, oldv)\n` +
       `    doc.recompute()\n` +
       `    raise ValueError('that value broke a later feature (%s) — reverted' % ', '.join(bad))`
+    );
+  },
+
+  // Combine: a document-level Part::Fuse/Cut/Common across two finished Body
+  // shapes. PartDesign::Boolean exists on this kernel but was PROBED and
+  // rejected: it places the tool at its own world position but reads the
+  // base body-local (measured: two boxes that should fuse to 48000 came back
+  // 56000). Part::Fuse/Cut/Common instead read both bodies' WORLD placements
+  // directly (Base/Tool point straight at the Body objects, not at a
+  // PartDesign feature inside one) and leave both input Bodies completely
+  // untouched and reusable -- no coordinate work needed at all. Created via
+  // doc.addObject, NOT body.newObject -- a Part:: boolean is document-level,
+  // not owned by any Body.
+  partBoolean(op, baseName, toolName, resultName) {
+    const TYPES = { union: 'Part::Fuse', subtract: 'Part::Cut', intersect: 'Part::Common' };
+    const typeId = TYPES[op];
+    if (!typeId) throw new Error(`partBoolean: unknown op ${JSON.stringify(op)}`);
+    return wrapStatus(
+      `_base = doc.getObject(${pyStr(baseName)})\n` +
+      `_tool = doc.getObject(${pyStr(toolName)})\n` +
+      `if _base is None or _tool is None:\n` +
+      `    raise ValueError('one of the two shapes is missing')\n` +
+      `bo = doc.addObject(${pyStr(typeId)}, ${pyStr(resultName)})\n` +
+      `bo.Base = _base\n` +
+      `bo.Tool = _tool\n` +
+      `doc.recompute()\n` +
+      // MEASURED: a disjoint Part::Common does NOT raise -- State stays
+      // 'Up-to-date', isNull() is False, Volume 0, Solids 0. Without this
+      // explicit check it reaches the viewport as "built a solid, meshing
+      // returned nothing drawable" and errors the WHOLE model, not just this
+      // feature.
+      `if ('Invalid' in bo.State) or bo.Shape is None or bo.Shape.isNull() or len(bo.Shape.Solids) == 0:\n` +
+      `    doc.removeObject(bo.Name)\n` +
+      `    doc.recompute()\n` +
+      `    raise ValueError('the two shapes leave nothing behind')`
     );
   },
 
@@ -744,6 +1224,11 @@ export function attachCommands(session) {
     if (!res.ok) throw new Error(res.error || 'chamfer failed');
     return 'Chamfer';
   };
+  session.thickness = (bodyName, baseName, faceNames, value) => {
+    const res = session.read(emit.thickness(bodyName, baseName, faceNames, value));
+    if (!res.ok) throw new Error(res.error || 'thickness failed');
+    return 'Thickness';
+  };
   session.pocket = (bodyName, sketchName, pocketName, length) => {
     const res = session.read(emit.pocket(bodyName, sketchName, pocketName, length));
     if (!res.ok) throw new Error(res.error || 'pocket failed');
@@ -753,6 +1238,11 @@ export function attachCommands(session) {
     const res = session.read(emit.holeThrough(bodyName, sketchName, holeName));
     if (!res.ok) throw new Error(res.error || 'hole failed');
     return holeName;
+  };
+  session.bore = (bodyName, sketchName, pocketName, radius, worldCenters, worldOrigin, worldAxis, depth) => {
+    const res = session.read(emit.bore(bodyName, sketchName, pocketName, radius, worldCenters, worldOrigin, worldAxis, depth));
+    if (!res.ok) throw new Error(res.error || 'hole failed');
+    return pocketName;
   };
   // Additive primitives build from positive dimensions alone, so they use
   // pad's run() pattern (not the read/status pattern) — no wrapStatus.
@@ -818,15 +1308,59 @@ export function attachCommands(session) {
     if (!res.ok) throw new Error(res.error || 'subtractive helix failed');
     return featName;
   };
-  session.linearPattern = (bodyName, featureName, count, step, axis = 'z', patternName = 'LinearPattern') => {
-    const res = session.read(emit.linearPattern(bodyName, featureName, count, step, axis, patternName));
+  session.linearPattern = (bodyName, featureName, count, step, axis = 'z', patternName = 'LinearPattern', worldAxis = null) => {
+    const res = session.read(emit.linearPattern(bodyName, featureName, count, step, axis, patternName, worldAxis));
     if (!res.ok) throw new Error(res.error || 'linear pattern failed');
     return patternName;
   };
-  session.polarPattern = (bodyName, featureName, count, angle = 360, axis = 'z', patternName = 'PolarPattern') => {
-    const res = session.read(emit.polarPattern(bodyName, featureName, count, angle, axis, patternName));
+  session.polarPattern = (bodyName, featureName, count, angle = 360, axis = 'z', patternName = 'PolarPattern', worldAxis = null) => {
+    const res = session.read(emit.polarPattern(bodyName, featureName, count, angle, axis, patternName, worldAxis));
     if (!res.ok) throw new Error(res.error || 'polar pattern failed');
     return patternName;
+  };
+  session.patternAxis = (bodyName, sketchName, origin, direction) => {
+    const res = session.read(emit.patternAxis(bodyName, sketchName, origin, direction));
+    if (!res.ok) throw new Error(res.error || 'pattern axis failed');
+    return sketchName;
+  };
+  session.neutralPlane = (bodyName, sketchName, origin, direction) => {
+    const res = session.read(emit.neutralPlane(bodyName, sketchName, origin, direction));
+    if (!res.ok) throw new Error(res.error || 'neutral plane failed');
+    return sketchName;
+  };
+  session.draft = (bodyName, baseName, faceName, angleDegrees, neutralSketchName) => {
+    const res = session.read(emit.draft(bodyName, baseName, faceName, angleDegrees, neutralSketchName));
+    if (!res.ok) throw new Error(res.error || 'draft failed');
+    return 'Draft';
+  };
+  // Same requested-name-not-actual-name caveat as linearPattern/polarPattern
+  // above (FreeCAD auto-suffixes on a same-document name collision) -- a
+  // caller building more than one mirror per document must pass a unique
+  // mirrorName.
+  session.mirrored = (bodyName, baseName, planeSketchName, mirrorName = 'Mirrored') => {
+    const res = session.read(emit.mirrored(bodyName, baseName, planeSketchName, mirrorName));
+    if (!res.ok) throw new Error(res.error || 'mirror failed');
+    return mirrorName;
+  };
+  session.moveBody = (bodyName, offset) => {
+    const res = session.read(emit.moveBody(bodyName, offset));
+    if (!res.ok) throw new Error(res.error || 'move failed');
+    return bodyName;
+  };
+  // Names come back from the kernel readback (res.bodyName/res.tipName),
+  // never derived/guessed as a `NNN` suffix -- FreeCAD's auto-suffix counter
+  // is DOCUMENT-global, not per-body (measured: a third copy's pad landed on
+  // 'box1_pad003'), so guessing from the request would silently drift.
+  session.copyBodyMoved = (bodyName, offset) => {
+    const res = session.read(emit.copyBodyMoved(bodyName, offset));
+    if (!res.ok) throw new Error(res.error || 'move copy failed');
+    return { bodyName: res.bodyName, tipName: res.tipName };
+  };
+  session.bodyTip = (bodyName) => session.read(emit.bodyTip(bodyName)).tip ?? null;
+  session.partBoolean = (op, baseName, toolName, resultName) => {
+    const res = session.read(emit.partBoolean(op, baseName, toolName, resultName));
+    if (!res.ok) throw new Error(res.error || 'combine failed');
+    return resultName;
   };
   // editable history
   session.featureInfo = (objName) => session.read(emit.featureInfo(objName));

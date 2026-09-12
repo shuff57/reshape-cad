@@ -63,3 +63,67 @@ test('patternName is requested by the caller, not hardcoded -- a second pattern 
   const pp = emit.polarPattern('Body', 'Pad', 4, 360, 'z', 'pat2_pattern');
   assert.ok(pp.includes('newObject("PartDesign::PolarPattern", "pat2_pattern")'), pp);
 });
+
+// ---------------------------------------------------------------------------
+// Coordinate-frame fix (docs/specs/SPEC-coord-fix.md): patternAxis + worldAxis
+// ---------------------------------------------------------------------------
+
+test('emit.patternAxis contains the Placement/inverse/multiply lines', () => {
+  const py = emit.patternAxis('Body', 'pat1_axis', [30, 0, 0], [0, 1, 0]);
+  assert.ok(py.includes('worldPos = App.Vector(30, 0, 0)'), py);
+  assert.ok(py.includes('worldDir = App.Vector(0, 1, 0)'), py);
+  assert.ok(py.includes('worldRot = App.Rotation(App.Vector(0,1,0), worldDir)'), py);
+  assert.ok(py.includes('pat1_axis_obj.Placement = body.Placement.inverse().multiply(App.Placement(worldPos, worldRot))'), py);
+  assert.ok(py.includes('newObject("Sketcher::SketchObject", "pat1_axis")'), py);
+});
+
+test('linearPattern/polarPattern called WITHOUT worldAxis still use the Body.Origin Role-lookup branch, unchanged (hard regression guard -- the 7 tests above already pin the exact byte-for-byte output of this path)', () => {
+  const lp = emit.linearPattern('Body', 'Pad', 3, 20, 'x');
+  assert.ok(lp.includes("origin = getattr(body, 'Origin', None)"), lp);
+  assert.ok(lp.includes('for _f in origin.OriginFeatures'), lp);
+  assert.ok(!lp.includes('Sketcher::SketchObject'), lp);
+  assert.ok(!lp.includes('doc.removeObject("LinearPattern_axis")'), lp);
+
+  const pp = emit.polarPattern('Body', 'Pad', 4, 180);
+  assert.ok(pp.includes("origin = getattr(body, 'Origin', None)"), pp);
+  assert.ok(pp.includes('for _f in origin.OriginFeatures'), pp);
+  assert.ok(pp.includes('pp.Angle = 180'), pp); // no correction applied on the old path
+  assert.ok(!pp.includes('Sketcher::SketchObject'), pp);
+});
+
+test('linearPattern called WITH worldAxis emits the axis-sketch + V_Axis reference, not the Body.Origin Role loop', () => {
+  const py = emit.linearPattern('Body', 'Pad', 3, 20, 'x', 'pat1_pattern', { origin: [0, 0, 0], direction: [1, 0, 0] });
+  assert.ok(!py.includes("getattr(body, 'Origin', None)"), py);
+  assert.ok(!py.includes('OriginFeatures'), py);
+  assert.ok(py.includes('newObject("Sketcher::SketchObject", "pat1_pattern_axis")'), py);
+  assert.ok(py.includes("lp.Direction = (pat1_pattern_axis_obj, ['V_Axis'])"), py);
+  assert.ok(py.includes('doc.removeObject("pat1_pattern_axis")'), py);
+});
+
+test('polarPattern called WITH worldAxis emits the axis-sketch + V_Axis reference, not the Body.Origin Role loop', () => {
+  const py = emit.polarPattern('Body', 'Pad', 4, 360, 'z', 'pat2_pattern', { origin: [0, 0, 0], direction: [0, 0, 1] });
+  assert.ok(!py.includes("getattr(body, 'Origin', None)"), py);
+  assert.ok(!py.includes('OriginFeatures'), py);
+  assert.ok(py.includes('newObject("Sketcher::SketchObject", "pat2_pattern_axis")'), py);
+  assert.ok(py.includes("pp.Axis = (pat2_pattern_axis_obj, ['V_Axis'])"), py);
+  assert.ok(py.includes('doc.removeObject("pat2_pattern_axis")'), py);
+});
+
+test('polarPattern WITH worldAxis corrects the angle-spacing bug (Angle*(count-1)/count) -- measured against the real kernel, coord-fix-probe.mjs P2', () => {
+  const py = emit.polarPattern('Body', 'Pad', 4, 180, 'z', 'PP', { origin: [0, 0, 0], direction: [0, 0, 1] });
+  assert.ok(py.includes('pp.Angle = 135'), py); // 180 * 3 / 4
+  const full = emit.polarPattern('Body', 'Pad', 4, 360, 'z', 'PP', { origin: [0, 0, 0], direction: [0, 0, 1] });
+  assert.ok(full.includes('pp.Angle = 270'), full); // 360 * 3 / 4
+  // No worldAxis -- the OLD path is untouched, no correction applied.
+  const old = emit.polarPattern('Body', 'Pad', 4, 180);
+  assert.ok(old.includes('pp.Angle = 180'), old);
+});
+
+test('emit.sketchNewOnOrigin resolves by .Role, not .Name', async () => {
+  const { emit: sketchEmit } = await import('../../packages/engine/src/fc-sketch.mjs');
+  const py = sketchEmit.sketchNewOnOrigin('Body', 'RevSk', 'XZ_Plane');
+  assert.ok(py.includes("getattr(_f, 'Role', None) == \"XZ_Plane\""), py);
+  assert.ok(!py.includes("doc.getObject(\"XZ_Plane\")"), py);
+  assert.ok(py.includes('sk.AttachmentSupport = [(planeObj, \'\')]'), py);
+  assert.ok(py.includes("sk.MapMode = 'FlatFace'"), py);
+});

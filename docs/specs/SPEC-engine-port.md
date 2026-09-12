@@ -292,13 +292,22 @@ any regression is attributable to the refactor and nothing else.
    compare volume/bbox, the same bar `occt-api.ts`'s own header sets for
    itself) before code depends on the assumption.
 
-6. **PartDesign body linearity vs. `ModelDoc`'s flatter graph.** FreeCAD's
-   `Body.Tip`/`BaseFeature` chain is strictly linear; `ModelDoc`'s `combine`
-   feature can reference arbitrary earlier features, and it's not yet
-   confirmed whether `ModelDoc` supports multiple independent bodies in one
-   document the way `topLevel()` picking several root shapes suggests it
-   might. Flag as an open question for whoever writes the replay logic in
-   §5 step 6, not something this blueprint resolves.
+6. **PartDesign body linearity vs. `ModelDoc`'s flatter graph — RESOLVED for
+   `combine` (2026-09-12), measured against `fc-kernel-pd-final`.** The
+   linearity concern is real for anything living *inside* a `PartDesign::Body`,
+   but `combine` doesn't need to: `Part::Fuse`/`Cut`/`Common` are
+   document-level features that read two finished Body shapes directly,
+   correctly honoring each Body's own world `Placement` with zero coordinate
+   work, and leave both input Bodies untouched and reusable. 20/30 live-kernel
+   checks confirmed exact volume+bbox parity vs `occt-build.ts` across
+   2-target and 3-target chains, rotated bodies, and disjoint-result refusal.
+   `PartDesign::Boolean` (the native "merge a Body in" feature) DOES exist on
+   this kernel but was measured to have its own coordinate bug (reads the tool
+   at world position but the base body-local) whose only fix physically
+   relocates the tool Body — rejected as destructive shared state. The real,
+   narrow cost: a combine result carries `container: 'part'` on
+   `FcBuiltFeature`, and nothing PartDesign can be built on top of it (a
+   `notInABody()` refusal now guards all 7 branches that could try).
 
 7. **Payload size.** ≈58 MB (FreeCAD) vs. ≈23 MB (replicad, per
    `config.ts`'s own comment) — about 2.5x. Fine behind an opt-in flag
@@ -546,6 +555,31 @@ Written after step 10 actually wired `BrepViewportThree.tsx` to `EngineAdapter`
 and exercised both engines live, through `packages/sandbox-dev`, in a real
 browser -- so this is what was actually found, not a forecast.
 
+**STATUS UPDATE (2026-09-12) — read this before trusting §6.1 below as
+current.** `revolve`/`groove` (their coordinate-frame mismatch), `shell`,
+`draft`, `mirror`, `move` and `combine` are ALL now built and verified against
+the real kernel (`fc-kernel-pd-final`), most with a real scope narrowing found
+along the way (documented per-feature below and in `docs/specs/SPEC-coord-fix.md`
+for revolve/groove/pattern). §6.1's own text was written before any of that
+landed and still describes them as throwing outright -- it is kept below for
+its still-accurate parts (the primitives list, the sketch-plane restriction)
+but the unsupported-kinds list at the end of this subsection is stale. `hole` closed
+2026-09-12 too (`docs/specs/SPEC-hole.md`) -- `PartDesign::Pocket` from an
+unattached, world-positioned circle-profile sketch, `Midplane=True`, native
+and chain-safe (deliberately NOT `Part::Cut`/combine, which would have broken
+the app's own documented `box -> hollow -> hole -> round(edge)` flagship
+example by making everything downstream refuse; deliberately NOT the native
+`PartDesign::Hole` either, which has three silent-wrong-answer bugs on this
+kernel -- ignores drill direction on 2 of 3 axes, under-drills a multi-circle
+profile, and cones every blind hole's bottom instead of leaving it flat, all
+three returning `Up-to-date` with no error). Current list of what still
+throws `"not yet supported on the FreeCAD engine: <kind>"`: `wedge`, `blend`.
+Everything else in the original 10-kind list is closed, several with a
+documented partial-scope refusal rather than full support -- see each
+feature's own section below for the exact boundary (`draft`: single named
+face, `pull:'z'` only, unrotated body only, `whole` body-draft refuses;
+`mirror`, `move`, `combine`, `hole`: no scope narrowing needed).
+
 ### 6.1 `Feature.kind`s that throw on the FreeCAD engine
 
 `FreeCadEngineAdapter.build()` (`packages/kernel/src/freecad-engine-adapter.ts`)
@@ -553,9 +587,10 @@ builds `box`, `cylinder`, `sphere`, `sketch` (plane `'xy'` at offset `0`
 only -- any other plane/offset throws its own specific message), `extrude`,
 `pocket`, `fillet`/`chamfer`, `cone`, `torus`, `prism` (added in a later
 pass, see below), and -- added in a further pass, see "pattern lands"
-below -- `pattern` (linear + polar, narrowed). Every other
-`Feature['kind']` (`packages/script/src/model-types.ts`) throws
-`"not yet supported on the FreeCAD engine: <kind>"`:
+below -- `pattern` (linear + polar, narrowed). At the time this subsection was
+written, every other `Feature['kind']` (`packages/script/src/model-types.ts`)
+threw `"not yet supported on the FreeCAD engine: <kind>"` -- see the STATUS
+UPDATE just above for what has since closed:
 
 `wedge`, `groove`, `blend`, `combine`, `revolve`, `mirror`,
 `hole`, `shell`, `draft`, `move` -- 10 kinds. `revolve`/`groove`

@@ -22,24 +22,27 @@
 //      instance's extent, not the whole pattern's). Fixed by setting
 //      body.Tip explicitly.
 // A fourth, DIFFERENT-IN-KIND finding (not a bug in this pass's own code, a
-// genuine semantic gap): a circular pattern of ANY primitive target (box,
-// cylinder, sphere, cone, torus, prism) is a geometric no-op on this engine
-// (every copy lands on the original) -- see freecad-engine-adapter.ts's own
-// comment on `bodyLocalCentered` for why, and this port's own report.
-// Verified below to REFUSE, not silently build a collapsed ring.
+// genuine semantic gap, at the time): a circular pattern of ANY primitive
+// target (box, cylinder, sphere, cone, torus, prism) was a geometric no-op
+// on this engine (every copy landed on the original) -- see
+// freecad-engine-adapter.ts's own comment on the (now-removed)
+// `bodyLocalCentered` map for why. This, plus a rotated target and a non-'z'
+// circular axis, were CLOSED by docs/specs/SPEC-coord-fix.md's world-frame
+// axis-proxy fix -- the 'circular pattern' and 'refusal paths' sections below
+// were updated to expect a BUILT pattern, not a refusal, for all three; see
+// engine/bridge/pattern-axis-live-test.mjs for the fix's own dedicated
+// concrete-fixture verification (rotated targets, non-'z' axes, and the
+// P2 angle-spacing bug found in passing).
 //
 // Bbox comparisons use SPAN (max-min per axis), not absolute position.
 // UPDATE (out-of-band bugfix pass): box/cylinder used to bake `center` into
 // their own local sketch coordinates AND get it applied a second time via
 // Body.Placement, doubling an off-origin box/cylinder's ABSOLUTE world
 // position -- that bug is now FIXED (freecad-engine-adapter.ts's box/cylinder
-// branches now build at local (0,0), same as every other primitive), and as
-// a direct consequence box/cylinder now ALSO hit the circular-pattern no-op
-// gap above, same as sphere/cone/torus/prism always did (see the 'circular
-// pattern' section below, which now expects a refusal for an off-origin box,
-// not a built ring). Span/volume were never affected by the fixed bug either
-// way, so they remain a valid signal for the pattern feature's own
-// correctness in every OTHER scenario this file checks.
+// branches now build at local (0,0), same as every other primitive). Span/
+// volume were never affected by that fixed bug either way, so they remain a
+// valid signal for the pattern feature's own correctness in every OTHER
+// scenario this file checks.
 //
 // USAGE
 //   node packages/kernel/test/freecad-pattern.manual.mjs <pathToFreeCADCmd.js>
@@ -95,12 +98,9 @@ const linDoc = {
 // 360 around world Z -- at 90 degree spacing (occt-build.ts's own
 // totalAngle/count convention) the 4 copies sit at 0/90/180/270 around a
 // radius-30 circle, far enough apart (30 >> 10) that none overlap, so OCCT's
-// own fused volume must be exactly 4x one box (checked below as the OCCT
-// reference number only). On the FreeCAD engine, an off-origin box is now
-// (since the box/cylinder double-translation fix) subject to the SAME
-// circular-pattern-is-a-geometric-no-op gap sphere/cone/torus/prism always
-// had -- see this file's own header update -- so this is verified below to
-// REFUSE, not to build a 4x ring.
+// own fused volume must be exactly 4x one box. CLOSED (SPEC-coord-fix.md):
+// the FreeCAD engine now builds this for real via the world-frame axis
+// proxy, instead of refusing it as a geometric no-op.
 const circDoc = {
   version: 1,
   features: [
@@ -182,20 +182,20 @@ for (let i = 0; i < 3; i++) {
   check(`linear span[${i}] (confirms Length = step*(count-1), not step alone)`, fcLinSpan[i], occtLinSpan[i], 0.5);
 }
 
-console.log('\n--- circular pattern of an off-origin box (now refuses -- see this file\'s own header update) ---');
+console.log('\n--- circular pattern of an off-origin box (CLOSED -- SPEC-coord-fix.md, now builds) ---');
 const fcCirc = adapter.build(circDoc);
 if (fcCirc.refusals?.size) console.log('refusals:', [...fcCirc.refusals.entries()]);
-checkTrue(
-  'circular pattern of an off-origin box refuses (the box/cylinder double-translation fix means their local '
-    + 'geometry now sits at body-local origin too, same geometric-no-op gap as sphere/cone/torus/prism)',
-  !!fcCirc.refusals?.get('pat2'),
-  fcCirc.refusals?.get('pat2'),
-);
-checkTrue('a refused circular pattern falls back to its target shape', fcCirc.shapes.get('pat2') === fcCirc.shapes.get('box2'));
-// occtCirc (4x volume, span 70/70/10) stays computed above as a documented
-// OCCT reference number for anyone re-checking this by hand -- it is not
-// compared against a FreeCAD build here anymore, since FreeCAD correctly
-// refuses to build this case at all now.
+checkTrue('circular pattern of an off-origin box built (no refusal)', !fcCirc.refusals?.get('pat2'));
+const circEntry = fcCirc.shapes.get('pat2');
+const fcCircMesh = session.mesh(circEntry.objName);
+check('FreeCAD circular pattern volume vs OCCT (4 non-overlapping boxes)', fcCircMesh.volume, occtCirc.volume);
+const fcCircBbox = bodyBBox(circEntry.bodyName);
+const fcCircSpan = span(fcCircBbox);
+console.log(`FreeCAD circular pattern bbox: ${JSON.stringify(fcCircBbox)}  span ${JSON.stringify(fcCircSpan)}`);
+const occtCircSpan = span(occtCirc.bbox);
+for (let i = 0; i < 3; i++) {
+  check(`circular span[${i}] (proves the axis genuinely orbits the WORLD origin, not the body's own local origin)`, fcCircSpan[i], occtCircSpan[i], 0.5);
+}
 
 console.log('\n--- negative-step linear pattern (direction reversal) ---');
 const fcNeg = adapter.build(negDoc);
@@ -238,7 +238,7 @@ checkTrue('both patterns kept their own distinct, requested object names (no aut
 check('pattern 1 of 2 volume unaffected by a second pattern in the same document', session.mesh(both6.objName).volume, occtBoth6.volume);
 check('pattern 2 of 2 volume unaffected by a second pattern in the same document', session.mesh(both7.objName).volume, occtBoth7.volume);
 
-console.log('\n--- refusal paths, run for real (not just against the fake session) ---');
+console.log('\n--- formerly-refused paths, run for real -- all three CLOSED by SPEC-coord-fix.md (see engine/bridge/pattern-axis-live-test.mjs for the fix\'s own dedicated concrete-fixture verification) ---');
 const rotDoc = {
   version: 1,
   features: [
@@ -247,8 +247,7 @@ const rotDoc = {
   ],
 };
 const fcRot = adapter.build(rotDoc);
-checkTrue('a rotated target refuses (not throws, not silently wrong)', !!fcRot.refusals?.get('pat4'), fcRot.refusals?.get('pat4'));
-checkTrue('a refused pattern falls back to its target shape', fcRot.shapes.get('pat4') === fcRot.shapes.get('box4'));
+checkTrue('a rotated target now builds (not throws, not refused)', !fcRot.refusals?.get('pat4'), fcRot.refusals?.get('pat4'));
 
 const xAxisDoc = {
   version: 1,
@@ -258,7 +257,7 @@ const xAxisDoc = {
   ],
 };
 const fcXAxis = adapter.build(xAxisDoc);
-checkTrue("a non-z circular axis refuses", !!fcXAxis.refusals?.get('pat5'), fcXAxis.refusals?.get('pat5'));
+checkTrue("a non-z circular axis now builds", !fcXAxis.refusals?.get('pat5'), fcXAxis.refusals?.get('pat5'));
 
 const sphereCircDoc = {
   version: 1,
@@ -269,10 +268,12 @@ const sphereCircDoc = {
 };
 const fcSphereCirc = adapter.build(sphereCircDoc);
 checkTrue(
-  'a circular pattern of a sphere target refuses (the real-kernel-only-visible no-op gap)',
-  !!fcSphereCirc.refusals?.get('pat8'),
+  'a circular pattern of a sphere target now builds (the real-kernel-only-visible no-op gap, closed)',
+  !fcSphereCirc.refusals?.get('pat8'),
   fcSphereCirc.refusals?.get('pat8'),
 );
+const sphereCircEntry = fcSphereCirc.shapes.get('pat8');
+check('sphere circular pattern volume ~= 4x sphere (2094.3951)', session.mesh(sphereCircEntry.objName).volume, 2094.3951, 0.01);
 
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail > 0 ? 1 : 0);

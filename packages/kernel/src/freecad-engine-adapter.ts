@@ -27,39 +27,158 @@
 //     own native PartDesign::LinearPattern/PolarPattern emitters (previously
 //     proven only at the string level, engine/bridge/pattern-test.mjs).
 //     Built in the target's own body, same "continue in the target's body"
-//     convention as fillet/chamfer/extrude/pocket. NARROWED, not a full
-//     port of PatternFeature's shape -- see the 'pattern' branch's own
-//     comment for the three found semantic gaps (a rotated target's
-//     pattern axis co-rotates with the body instead of staying
-//     world-frame; a non-'z' circular axis is unsupported; a circular
-//     pattern of ANY primitive target -- box, cylinder, sphere, cone,
-//     torus, or prism -- is a geometric no-op, found only by running
-//     against the real kernel) -- all three REFUSED per-feature
-//     (EngineBuildResult.refusals) rather than built wrong.
-//     The axis narrowing is invisible in practice
-//     -- ModelEditor.tsx's newPattern() hardcodes axis 'z' and never
-//     exposes another axis in its own UI. The rotated-target refusal IS
-//     reachable, though: whyCannotOrbit() only gates a target sitting ON
-//     the orbit axis (center too close to it), not a target that has been
-//     turned via canRotate()'s own Turn control -- a box rotated then
-//     patterned hits this refusal for real. Named here, not silently
-//     narrowed away; see this port's own report.
-//   - Everything else -- wedge, combine, blend, mirror, hole,
-//     shell, move, draft, and (see the note on the 'revolve' branch's
-//     absence below) revolve/groove -- throws a clear "not yet supported
-//     on the FreeCAD engine: <kind>", per step 7's own instruction, rather
-//     than silently building the wrong shape. wedge specifically was
-//     investigated and rejected, not merely unstarted: fc-commands.mjs's
-//     emit.wedge() only ever sets PartDesign::Wedge's Width and Height,
-//     with no parameter for ModelDoc's own WedgeFeature.depth at all -- a
-//     found mismatch of the same kind as revolve/groove's orientation gap,
-//     not something this pass can close by guessing a property mapping.
+//     convention as fillet/chamfer/extrude/pocket.
+//     CLOSED (docs/specs/SPEC-coord-fix.md): this port used to REFUSE three
+//     cases -- a rotated target (pattern axis co-rotates with the body
+//     instead of staying world-frame), a non-'z' circular axis, and a
+//     circular pattern of ANY primitive target (box, cylinder, sphere, cone,
+//     torus, prism) -- all three traced to the same root cause, PartDesign's
+//     pattern axis resolving in BODY-LOCAL space while ModelDoc's own
+//     step/axis is always WORLD-frame. Fixed by a world-frame axis-proxy
+//     sketch (fc-commands.mjs's axisSketchPy()/emit.patternAxis(), built from
+//     body.Placement.inverse() * worldPlacement) passed to
+//     linearPattern()/polarPattern() as `worldAxis` instead of the bare axis
+//     string -- see the 'pattern' branch's own comment below for the
+//     mechanism and SPEC-coord-fix.md for the real-kernel verification
+//     (coord-fix-probe.mjs P1, load-bearing) that PolarPattern.Axis honours
+//     the referenced line's base point, not just its direction, which is
+//     what makes the circular-pattern-of-a-primitive case fixable this way.
+//   - revolve / groove (docs/specs/SPEC-coord-fix.md): the profile sketch is
+//     now built via fc-sketch.mjs's sketchNewOnOrigin(), attached to the
+//     Body's own XZ_Plane origin datum (measured convention: local X = world
+//     X, local Y = world Z) instead of the bare flat-XY sketch every other
+//     translateSketch() caller uses -- see the 'revolve'/'groove' branches
+//     below and latheProfileRefusal() for the profile-crosses-axis refusal
+//     FreeCAD's own PartDesign::Revolution/Groove enforce that occt-build.ts
+//     does not.
+//   - shell (this pass): via fc-commands.mjs's native PartDesign::Thickness
+//     emitter -- the third DressUp sibling of Fillet/Chamfer, so it reuses
+//     the SAME Base=(base, subElementNames) tuple and resolveFace()'s own
+//     picking. CANNOT build a fully-closed hollow (no `open` face): measured
+//     directly against this kernel's own C++ (FeatureThickness.cpp,
+//     TopoShapeExpansion.cpp), an empty face list either silently no-ops
+//     (the PartDesign feature) or throws "Null input shape" (the raw OCCT
+//     call) -- a real engine-level restriction this fork adds on top of
+//     vanilla FreeCAD/OCCT's own MakeThickSolidByJoin, which occt-build.ts's
+//     shell branch relies on accepting an empty closing list for its own
+//     "no `open` -> closed" default. So on THIS engine, `f.open` absent or
+//     unresolvable both refuse cleanly rather than build an unrequested
+//     opening or fake a closed hollow this kernel cannot make -- see the
+//     'shell' branch's own comment below.
+//   - draft (this pass): via fc-commands.mjs's native PartDesign::Draft
+//     emitter, SCOPED DOWN from DraftFeature's full design -- only a single
+//     named face (`f.face`, not `whole: true` Body Draft) on a 'z' pull with
+//     an UNROTATED target body. MEASURED directly against this kernel
+//     (engine/bridge/draft-probe*.mjs): PartDesign::Draft.PullDirection
+//     cannot be set to ANY explicit reference on this kernel build (a raw
+//     sketch's V_Axis, a raw sketch's own edge, a real edge of the solid
+//     itself, a PartDesign::Line datum, even the Body's own Origin Z_Axis
+//     datum all fail identically), while its implicit default (body-local Z)
+//     builds fine -- a genuine per-fork gap, same class as Thickness's own
+//     "cannot build a fully-closed hollow" finding. NeutralPlane, unlike
+//     PullDirection, DOES accept an explicit world-frame proxy sketch
+//     (referenced via (sketchObj, ['']), not ['V_Axis']) and DOES honour a
+//     genuine world offset, the same "honours the referenced object's own
+//     world position" property SPEC-coord-fix.md's P1 already proved for
+//     PolarPattern.Axis. Angle is passed through UNCHANGED -- cross-checked
+//     against occt-build.ts's own drafted() (the SAME BRepOffsetAPI_
+//     DraftAngle call) via freecad-draft.manual.mjs, not merely assumed from
+//     DraftFeature's own doc-comment wording; see fc-commands.mjs's draft()
+//     header for the negation this pass tried and measured WRONG.
+//   - mirror (this pass): via fc-commands.mjs's native PartDesign::Mirrored
+//     emitter. MirrorPlane -- an unknown going in, since this fork's other
+//     plane/axis references split unpredictably per-feature (PolarPattern.
+//     Axis and Draft's NeutralPlane DO honour a world-frame proxy sketch;
+//     Draft's own PullDirection rejects every explicit reference tried) --
+//     was PROBED FRESH against this kernel (engine/bridge/mirror-probe.mjs)
+//     before writing this branch, rather than assumed from either sibling.
+//     MEASURED: MirrorPlane joins NeutralPlane/PolarPattern.Axis's side of
+//     that split -- it accepts (sketchObj, ['']) and genuinely honours the
+//     proxy's own WORLD position (a proxy built at world x=0 on a body
+//     placed at world x=20 produced a mirror reflecting through world x=0,
+//     not the body's own local origin), so neutralPlane() is reused
+//     directly rather than duplicated. The branch reproduces occt-build.ts's
+//     own documented "mirror through the target's own near bounding-box
+//     face along the axis, not the world origin" contract by building that
+//     proxy at the target's measured near-face WORLD coordinate. Also
+//     MEASURED: PartDesign::Mirrored keeps BOTH the original and its
+//     reflection fused into one Shape by construction (a
+//     FeatureTransformedPattern, the same family as LinearPattern/
+//     PolarPattern, not a DressUp) -- Shape.Volume comes back as exactly 2x
+//     the original, so no separate boolean fuse is needed here the way
+//     occt-build.ts's own mirror branch (BRepAlgoAPI_Fuse) requires. See the
+//     'mirror' branch's own comment below for the full account.
+//   - move (this pass): via fc-commands.mjs's native moveBody()/
+//     copyBodyMoved() -- a plain Body.Placement translation, NOT a rebuild of
+//     any feature geometry. FreeCAD's Body.Shape is only ever the Placement
+//     frame applied to the underlying feature shape AT READ TIME, so a move
+//     needs zero of the naming machinery the OCCT engine's own 'move' branch
+//     requires (occt-build.ts records an OpRecord specifically so a name
+//     written before a move still resolves after it) -- a name written
+//     against this body before a move still resolves correctly afterward
+//     for free. `copy: false` reuses the SAME bodyName/objName as the
+//     target (only the frame moved, in place); `copy: true` duplicates the
+//     whole Body (doc.copyObject, ~11 objects for one Pad-based body:
+//     sketch, pad, 3 axes, 3 planes, 2 origins, body) and gets a NEW
+//     bodyName/objName, leaving the original untouched and top-level (see
+//     topLevel()'s own `f.kind === 'move' && !f.copy` check in
+//     model-types.ts). Refuses (rather than silently moving too much) when
+//     the target's Body.Tip is not the target's own object -- something was
+//     already built on top of it in the same body, and moving the body
+//     would move that later feature too -- and when a copy's offset is
+//     exactly zero (the copy would sit exactly on the original with nothing
+//     to distinguish it). See the 'move' branch's own comment below and
+//     findPrimitiveAncestor()/findSketchAncestor()'s own `move` case for how
+//     naming survives through a `copy: false` move but deliberately returns
+//     null through a `copy: true` one (the duplicate's body-local geometry
+//     is byte-identical to the original's, so resolving a name through it
+//     would silently attribute a pick on one copy to the other).
+//   - combine (this pass): CLOSES SPEC-engine-port.md §6.1's stale claim that
+//     combine "needs multi-body support v1 doesn't have" -- it needs none.
+//     PartDesign::Boolean exists on this kernel but has its own coordinate-
+//     frame bug (places the tool at its world position but reads the base
+//     body-local); Part::Fuse/Cut/Common -- document-level features taking
+//     two finished Body shapes directly -- read both bodies' world
+//     placements correctly with zero coordinate work and leave both input
+//     Bodies untouched and reusable. See fc-commands.mjs's own
+//     partBoolean() header and the 'combine' branch below for the full
+//     account.
+//   - hole (this pass, docs/specs/SPEC-hole.md): occt-build.ts's own
+//     "sugar over cylinder + subtract" -- but built here as ONE
+//     PartDesign::Pocket per drill plane, cut from an unattached,
+//     world-positioned circle-profile sketch, NOT as a Part::Cut the way
+//     `combine` above builds its own booleans. A Part::Cut result sets
+//     `container: 'part'`, and notInABody() would then refuse the app's own
+//     documented flagship chain (reshape-docs.ts:139, "box -> hollow -> hole
+//     -> round(edge)") the instant a later PartDesign feature tried to build
+//     on the hole. FreeCAD's own PartDesign::Hole was tried and rejected too
+//     -- three silent-wrong-answer bugs measured against this kernel (drill
+//     direction ignored on 2 of 3 axes, a multi-circle profile under-drilled,
+//     a coned bottom instead of flat), all reporting 'Up-to-date' with no
+//     error. The Pocket-from-a-profile-sketch design stays fully native
+//     (inside the target's own Body, no `container` field needed) and
+//     reuses the same world-frame proxy formula
+//     (body.Placement.inverse() * worldPlacement) already proven for
+//     PolarPattern.Axis/Draft's NeutralPlane/Mirrored's MirrorPlane, here as
+//     a PROFILE for the first time rather than a REFERENCE. See the 'hole'
+//     branch's own comment below and fc-commands.mjs's bore() header for the
+//     full measured account (SPEC-hole.md).
+//   - Everything else -- wedge, blend --
+//     throws a clear "not yet supported on the FreeCAD engine: <kind>", per
+//     step 7's own instruction, rather than silently building the wrong
+//     shape. wedge specifically was investigated and rejected, not
+//     merely unstarted: fc-commands.mjs's emit.wedge() only ever sets
+//     PartDesign::Wedge's Width and Height, with no parameter for ModelDoc's
+//     own WedgeFeature.depth at all -- a found mismatch of the same kind
+//     revolve/groove used to have, not something this pass can close by
+//     guessing a property mapping.
 //   - v1 is SINGLE-BODY-PER-CHAIN: every primitive/sketch starts its own
 //     fresh PartDesign::Body, and only extrude/pocket/fillet/chamfer -- which
 //     all take a `target` naming an earlier feature -- continue building
-//     inside THAT feature's own body. combine (needed to join two
-//     independent chains into one) is out of scope (§4 risk 6 names this as
-//     an open design question, not resolved here).
+//     inside THAT feature's own body. combine joins two independent chains
+//     by building a document-level Part:: object OUTSIDE any Body instead
+//     (see `container: 'part'` on FcBuiltFeature and notInABody() below) --
+//     the one place a ModelDoc feature does not live in a PartDesign::Body.
 //   - Edge naming for fillet/chamfer, inside build() itself, tries a
 //     `between` name over two `primitive`-cause faces of the SAME fresh
 //     box/cylinder feature first (resolvePrimitiveEdgeName(), matching
@@ -176,7 +295,7 @@
 // probe that measured Comment (and Meta) actually surviving a save/open
 // round trip on this kernel build before committing to the design.
 
-import type { Feature, ModelDoc, SketchFeature, Vec3 } from '@shuff57/reshape-script/model-types';
+import type { Feature, ModelDoc, MoveFeature, SketchFeature, Vec3 } from '@shuff57/reshape-script/model-types';
 import type { TopoName } from '@shuff57/reshape-script/topo-name';
 import type * as THREE_NS from 'three';
 import { createFcSession } from '@shuff57/reshape-engine/fc-session';
@@ -218,8 +337,28 @@ export interface FcSessionLike extends SketchSession {
   prism(bodyName: string, featName: string, radius: number, height: number, sides?: number): string;
   fillet(bodyName: string, baseName: string, edgeNames: string[], radius: number): string;
   chamfer(bodyName: string, baseName: string, edgeNames: string[], size: number): string;
-  linearPattern(bodyName: string, featureName: string, count: number, step: number, axis?: 'x' | 'y' | 'z', patternName?: string): string;
-  polarPattern(bodyName: string, featureName: string, count: number, angle?: number, axis?: 'x' | 'y' | 'z', patternName?: string): string;
+  thickness(bodyName: string, baseName: string, faceNames: string[], value: number): string;
+  linearPattern(
+    bodyName: string, featureName: string, count: number, step: number, axis?: 'x' | 'y' | 'z',
+    patternName?: string, worldAxis?: { origin: Vec3; direction: Vec3 } | null,
+  ): string;
+  polarPattern(
+    bodyName: string, featureName: string, count: number, angle?: number, axis?: 'x' | 'y' | 'z',
+    patternName?: string, worldAxis?: { origin: Vec3; direction: Vec3 } | null,
+  ): string;
+  revolve(bodyName: string, sketchName: string, revName: string, angle?: number): string;
+  groove(bodyName: string, sketchName: string, featName: string, angle?: number): string;
+  patternAxis(bodyName: string, axisName: string, origin: Vec3, direction: Vec3): string;
+  sketchNewOnOrigin(bodyName: string, sketchName: string, planeRole?: string): string;
+  neutralPlane(bodyName: string, sketchName: string, origin: Vec3, direction: Vec3): string;
+  draft(bodyName: string, baseName: string, faceName: string, angleDegrees: number, neutralSketchName: string): string;
+  mirrored(bodyName: string, baseName: string, planeSketchName: string, mirrorName?: string): string;
+  moveBody(bodyName: string, offset: Vec3): string;
+  copyBodyMoved(bodyName: string, offset: Vec3): { bodyName: string; tipName: string };
+  bodyTip(bodyName: string): string | null;
+  partBoolean(op: 'union' | 'subtract' | 'intersect', baseName: string, toolName: string, resultName: string): string;
+  bore(bodyName: string, sketchName: string, pocketName: string, radius: number,
+       worldCenters: Vec3[], worldOrigin: Vec3, worldAxis: Vec3, depth: number): string;
 }
 
 /** One built feature's FreeCAD identity: which Body it lives in, the name of
@@ -242,6 +381,13 @@ export interface FcBuiltFeature {
    *  non-circular outline (outlineOf() succeeded, circleOf() did not) --
    *  see FcSweepInfo's own header for what this makes nameable and why. */
   sweep?: FcSweepInfo;
+  /** Absent (the norm) = `bodyName` names a real PartDesign::Body and a
+   *  PartDesign feature can be built inside it. 'part' = a DOCUMENT-LEVEL
+   *  Part::Cut/Fuse/Common (a combine result) where bodyName === objName and no
+   *  Body exists at all. MEASURED: session.fillet()/session.thickness() on one
+   *  raise "'Part.Feature' object has no attribute 'newObject'" -- gate on this
+   *  BEFORE the call (notInABody()), never catch the kernel's AttributeError. */
+  container?: 'part';
 }
 
 /** One outline segment of a Pad's own profile sketch, matched to its wall's
@@ -408,46 +554,16 @@ export class FreeCadEngineAdapter implements EngineAdapter {
     const refusals = new Map<string, string>();
     const built = new Map<string, FcBuiltFeature>();
     // Which rotation (ModelDoc's own f.rotate, [0,0,0] when absent/identity)
-    // each Body was placed with -- set alongside setBodyPlacement() below,
-    // read by the 'pattern' branch. Needed because PartDesign::LinearPattern/
-    // PolarPattern's Direction/Axis resolve through the Body's OWN Origin
-    // datum, which lives in BODY-LOCAL space and therefore co-rotates with
-    // Body.Placement -- unlike occt-build.ts's pattern, whose step/axis is
-    // always a literal WORLD-frame vector (see the 'pattern' branch's own
-    // comment below for the full explanation).
+    // each Body was placed with -- set alongside setBodyPlacement() below.
+    // USED TO be read by the 'pattern' branch to refuse a rotated target
+    // (PartDesign's pattern axis used to resolve through the Body's OWN
+    // Origin datum, body-local, so a rotated body would silently repeat
+    // along its own tilted axis) -- CLOSED by the world-frame axis-proxy fix
+    // (docs/specs/SPEC-coord-fix.md, see the 'pattern' branch's own comment),
+    // which makes the axis genuinely world-frame regardless of body rotation.
+    // No remaining reader; kept (not deleted) since setBodyPlacement() still
+    // threads it through and a future per-body rotation query may want it.
     const bodyRotate = new Map<string, Vec3>();
-    // false for EVERY primitive kind (box, cylinder, sphere, cone, torus,
-    // prism) -- each one's own sketch/native-feature geometry sits at/near
-    // local (0,0,0) regardless of f.center; center is applied ONLY via
-    // Body.Placement, per each branch's own comment below. Has no entry
-    // (undefined, not false) for a sketch/extrude/pocket/fillet/chamfer
-    // chain, which never calls setBodyPlacement at all, so Body.Placement
-    // stays identity and body-local IS world for those.
-    //
-    // box/cylinder USED to bake f.center directly into their own sketch's
-    // local x/y coordinates (true here) -- that was a real, separate bug
-    // (see setBodyPlacement's own header): center got applied TWICE, once
-    // baked into the sketch and once again via Body.Placement, doubling an
-    // off-origin box/cylinder's world position (measured live: center
-    // [30,20,0] came back with a world bbox center of [60,40,0]). Fixed by
-    // moving their sketch geometry to local (0,0), matching sphere/cone/
-    // torus/prism's existing convention -- so box/cylinder are false here
-    // too now, same as every other primitive.
-    //
-    // This matters for the SAME reason bodyRotate does: a circular
-    // pattern's Axis resolves through the Body's own Origin datum, fixed at
-    // body-LOCAL (0,0) -- for a target whose local geometry is ALSO
-    // effectively at (0,0) (false here), orbiting it around that axis is a
-    // geometric no-op (every copy lands on the original), regardless of how
-    // far from the WORLD origin f.center actually placed it. Measured
-    // against the real kernel: a radius-5 sphere at center [30,0,0],
-    // patterned 4x around 'z', built with no error and no refusal but came
-    // back with the volume of exactly ONE sphere, not four -- confirming
-    // the four copies had silently collapsed onto each other. Since the
-    // box/cylinder fix above, this is now true for EVERY primitive kind,
-    // not just sphere/cone/torus/prism -- see the 'pattern' branch's own
-    // refusal below, which now covers all six. Refused rather than shipped.
-    const bodyLocalCentered = new Map<string, boolean>();
 
     let bodyCounter = 0;
     const freshBody = (): string => {
@@ -476,7 +592,6 @@ export class FreeCadEngineAdapter implements EngineAdapter {
         const padName = `${f.id}_pad`;
         session.pad(bodyName, sketchName, padName, h);
         this.setBodyPlacement(session, bodyName, f.center, f.rotate, -h / 2, bodyRotate);
-        bodyLocalCentered.set(bodyName, false);
         const entry: FcBuiltFeature = { bodyName, objName: padName, kind: 'solid', featureId: f.id, featureKind: f.kind };
         built.set(f.id, entry);
         shapes.set(f.id, entry);
@@ -487,7 +602,6 @@ export class FreeCadEngineAdapter implements EngineAdapter {
         const padName = `${f.id}_pad`;
         session.pad(bodyName, sketchName, padName, f.height);
         this.setBodyPlacement(session, bodyName, f.center, f.rotate, -f.height / 2, bodyRotate);
-        bodyLocalCentered.set(bodyName, false);
         const entry: FcBuiltFeature = { bodyName, objName: padName, kind: 'solid', featureId: f.id, featureKind: f.kind };
         built.set(f.id, entry);
         shapes.set(f.id, entry);
@@ -496,7 +610,6 @@ export class FreeCadEngineAdapter implements EngineAdapter {
         const featName = `${f.id}_sph`;
         session.sphere(bodyName, featName, f.radius);
         this.setBodyPlacement(session, bodyName, f.center, undefined, 0, bodyRotate);
-        bodyLocalCentered.set(bodyName, false);
         const entry: FcBuiltFeature = { bodyName, objName: featName, kind: 'solid', featureId: f.id, featureKind: f.kind };
         built.set(f.id, entry);
         shapes.set(f.id, entry);
@@ -510,7 +623,6 @@ export class FreeCadEngineAdapter implements EngineAdapter {
         const featName = `${f.id}_cone`;
         session.cone(bodyName, featName, f.radius, 0, f.height);
         this.setBodyPlacement(session, bodyName, f.center, f.rotate, -f.height / 2, bodyRotate);
-        bodyLocalCentered.set(bodyName, false);
         const entry: FcBuiltFeature = { bodyName, objName: featName, kind: 'solid', featureId: f.id, featureKind: f.kind };
         built.set(f.id, entry);
         shapes.set(f.id, entry);
@@ -523,7 +635,6 @@ export class FreeCadEngineAdapter implements EngineAdapter {
         const featName = `${f.id}_torus`;
         session.torus(bodyName, featName, f.ringRadius, f.tubeRadius);
         this.setBodyPlacement(session, bodyName, f.center, f.rotate, 0, bodyRotate);
-        bodyLocalCentered.set(bodyName, false);
         const entry: FcBuiltFeature = { bodyName, objName: featName, kind: 'solid', featureId: f.id, featureKind: f.kind };
         built.set(f.id, entry);
         shapes.set(f.id, entry);
@@ -538,7 +649,6 @@ export class FreeCadEngineAdapter implements EngineAdapter {
         const sides = Math.max(3, Math.min(12, Math.round(f.sides)));
         session.prism(bodyName, featName, f.radius, f.height, sides);
         this.setBodyPlacement(session, bodyName, f.center, f.rotate, -f.height / 2, bodyRotate);
-        bodyLocalCentered.set(bodyName, false);
         const entry: FcBuiltFeature = { bodyName, objName: featName, kind: 'solid', featureId: f.id, featureKind: f.kind };
         built.set(f.id, entry);
         shapes.set(f.id, entry);
@@ -571,8 +681,17 @@ export class FreeCadEngineAdapter implements EngineAdapter {
         const target = requireBuilt(f.target, `pocket ${f.id}`);
         const into = requireBuilt(f.into, `pocket ${f.id}`);
         if (target.kind !== 'sketch') throw new Error(`cannot build pocket ${f.id}: '${f.target}' is not a sketch`);
+        {
+          const why = this.notInABody(into, f.id, 'a pocket');
+          if (why) {
+            refusals.set(f.id, why);
+            built.set(f.id, into);
+            shapes.set(f.id, into);
+            continue;
+          }
+        }
         if (target.bodyName !== into.bodyName) {
-          throw new Error(`not yet supported on the FreeCAD engine: pocket ${f.id} cuts across two different bodies (no combine yet)`);
+          throw new Error(`not yet supported on the FreeCAD engine: pocket ${f.id} cuts across two different bodies`);
         }
         const pocketName = `${f.id}_pocket`;
         session.pocket(into.bodyName, target.objName, pocketName, f.depth);
@@ -582,6 +701,15 @@ export class FreeCadEngineAdapter implements EngineAdapter {
       } else if (f.kind === 'fillet') {
         const target = requireBuilt(f.target, `${f.style} ${f.id}`);
         if (target.kind !== 'solid') throw new Error(`cannot build ${f.style} ${f.id}: '${f.target}' is not a solid`);
+        {
+          const why = this.notInABody(target, f.id, `a ${f.style}`);
+          if (why) {
+            refusals.set(f.id, why);
+            built.set(f.id, target);
+            shapes.set(f.id, target);
+            continue;
+          }
+        }
         // Primitive edges first (resolvePrimitiveEdgeName's own direct scope,
         // unchanged); a sketch-derived (swept/rounded/cap) `between` pair
         // falls through to the generalized resolveEdge() this port's own
@@ -630,66 +758,48 @@ export class FreeCadEngineAdapter implements EngineAdapter {
         built.set(f.id, entry);
         shapes.set(f.id, entry);
       } else if (f.kind === 'pattern') {
-        // fc-commands.mjs already carries native PartDesign::LinearPattern/
-        // PolarPattern emitters (engine/bridge/pattern-test.mjs proved them
-        // at the string level; this is the first live-kernel use). Built in
-        // the SAME body as the target, matching fillet/chamfer/extrude/
-        // pocket's own "continue in the target's body" convention.
+        // fc-commands.mjs carries native PartDesign::LinearPattern/
+        // PolarPattern emitters (engine/bridge/pattern-test.mjs proves them
+        // at the string level). Built in the SAME body as the target,
+        // matching fillet/chamfer/extrude/pocket's own "continue in the
+        // target's body" convention.
         //
-        // THREE genuine semantic gaps were found here, of the same kind as
-        // the revolve/groove orientation mismatch and wedge's missing-
-        // parameter gap this file's own header already documents -- each
-        // narrower, though: each affects a SUBSET of inputs, not every
-        // pattern, so the subset that is verified-correct against the real
-        // kernel is built for real rather than refusing pattern outright.
-        // All three trace back to the same root cause: occt-build.ts's own
-        // comment on its pattern branch is explicit that BOTH modes work in
-        // WORLD coordinates -- linear moves by a literal world-frame
+        // CLOSED (docs/specs/SPEC-coord-fix.md): this used to refuse a
+        // rotated target, a non-'z' circular axis, and a circular pattern of
+        // ANY primitive target -- all three traced to one root cause.
+        // occt-build.ts's own pattern branch is explicit that BOTH modes
+        // work in WORLD coordinates -- linear moves by a literal world-frame
         // vector, circular orbits a line through the WORLD origin along
-        // f.axis, regardless of where the target sits, how it is rotated,
-        // or what kind of primitive it is. FreeCAD's LinearPattern/
-        // PolarPattern instead resolve their Direction/Axis through the
-        // owning Body's OWN Origin datum (Body.Origin.X_Axis/Y_Axis/
-        // Z_Axis) -- a line fixed at BODY-LOCAL (0,0,0), which co-rotates
-        // with Body.Placement and has no knowledge of where Placement will
-        // later put the body in the world.
-        //
-        // 1. A ROTATED target (setBodyPlacement's own f.rotate, tracked
-        //    per-body in `bodyRotate` above): the pattern would silently
-        //    repeat along the body's own tilted local axis instead of the
-        //    world axis ModelDoc asked for. Refused below for any pattern,
-        //    linear or circular, on a rotated target.
-        // 2. A non-'z' circular axis: v1 narrows circular mode to 'z' only,
-        //    matching every pattern the studio UI itself can actually
-        //    produce (ModelEditor.tsx's newPattern() hardcodes axis: 'z',
-        //    never exposes another axis in the Dimensions panel).
-        // 3. Found ONLY by running against the real kernel, not from
-        //    reading the code: a circular pattern of ANY primitive target
-        //    (box, cylinder, sphere, cone, torus, prism). None of the six
-        //    bake f.center into their own local geometry at all (center is
-        //    applied purely via Body.Placement, per each branch's own
-        //    comment above) -- so their local shape sits at/near body-local
-        //    (0,0,0), exactly where the pattern's own Origin-datum axis also
-        //    sits, REGARDLESS of how far from the world origin f.center
-        //    actually placed them. Orbiting them is a geometric no-op.
-        //    Measured: a radius-5 sphere at center [30,0,0], patterned 4x
-        //    around 'z', built with no error and no refusal but came back
-        //    with the volume of exactly one sphere, not four -- see
-        //    `bodyLocalCentered`'s own declaration above and this port's
-        //    own report. box/cylinder USED to be unaffected (their sketch
-        //    geometry baked f.center into local x/y, so their local shape
-        //    sat away from the axis) -- but that was itself a real,
-        //    separate bug (setBodyPlacement's own header: center got
-        //    applied twice, doubling their world position), fixed by moving
-        //    their sketch geometry to local (0,0) too. Now every primitive
-        //    kind hits this gap the same way. A non-primitive chain
-        //    (sketch/extrude/pocket/fillet/chamfer never calls
-        //    setBodyPlacement at all, so Body.Placement stays identity and
-        //    body-local IS world for them) is still unaffected.
-        // Linear patterns are unaffected by gaps 2 and 3 -- translation has
-        // no "wrong pivot" the way rotation does.
+        // f.axis, regardless of where the target sits, how it is rotated, or
+        // what kind of primitive it is. FreeCAD's LinearPattern/
+        // PolarPattern instead resolve their Direction/Axis through a
+        // DocumentObject, which the OLD code below resolved via the owning
+        // Body's OWN Origin datum (Body.Origin.X_Axis/Y_Axis/Z_Axis) -- a
+        // line fixed at BODY-LOCAL (0,0,0), which co-rotates with
+        // Body.Placement and has no knowledge of where Placement will later
+        // put the body in the world. Passing a world-frame axis-proxy sketch
+        // (fc-commands.mjs's axisSketchPy()/emit.patternAxis(), built from
+        // body.Placement.inverse() * worldPlacement) as `worldAxis` instead
+        // fixes all three at once: the axis line now genuinely sits at the
+        // WORLD origin along the WORLD axis, regardless of the target
+        // body's own rotation, so `bodyRotate` (still tracked above, no
+        // longer read here) no longer needs to gate anything, non-'z' axes
+        // work the same way 'z' does, and a primitive's local geometry no
+        // longer needs to sit away from the axis for the pattern to be
+        // non-degenerate -- verified against the real kernel
+        // (coord-fix-probe.mjs P1, load-bearing): PolarPattern.Axis honours
+        // the referenced line's WORLD base point, not just its direction.
         const target = requireBuilt(f.target, `pattern ${f.id}`);
         if (target.kind !== 'solid') throw new Error(`cannot build pattern ${f.id}: '${f.target}' is not a solid`);
+        {
+          const why = this.notInABody(target, f.id, 'a pattern');
+          if (why) {
+            refusals.set(f.id, why);
+            built.set(f.id, target);
+            shapes.set(f.id, target);
+            continue;
+          }
+        }
 
         if (f.count < 1) {
           refusals.set(f.id, `${f.id} needs at least one copy -- ${f.id} is shown without it.`);
@@ -698,19 +808,7 @@ export class FreeCadEngineAdapter implements EngineAdapter {
           continue;
         }
 
-        const rootRotate = bodyRotate.get(target.bodyName) ?? [0, 0, 0];
-        if (rootRotate.some((v) => v !== 0)) {
-          refusals.set(
-            f.id,
-            `${f.id} could not be built on the FreeCAD engine -- patterning a rotated primitive is not `
-              + `yet supported (the pattern's own axis would rotate with the body instead of staying on `
-              + `the world axis); ${f.id} is shown without it.`,
-          );
-          built.set(f.id, target);
-          shapes.set(f.id, target);
-          continue;
-        }
-
+        const AXIS_VEC: Record<'x' | 'y' | 'z', Vec3> = { x: [1, 0, 0], y: [0, 1, 0], z: [0, 0, 1] };
         const patternName = `${f.id}_pattern`;
         let resultName: string | null = null;
 
@@ -734,32 +832,17 @@ export class FreeCadEngineAdapter implements EngineAdapter {
             // total span from first to last instance is step*(count-1),
             // matching occt-build.ts's own `moved(oc, src, step[axis]*i)`.
             const length = step[idx] * (f.count - 1);
-            resultName = session.linearPattern(target.bodyName, target.objName, f.count, length, axis, patternName);
+            resultName = session.linearPattern(
+              target.bodyName, target.objName, f.count, length, axis, patternName,
+              { origin: [0, 0, 0], direction: AXIS_VEC[axis] },
+            );
           }
         } else {
           const axis = f.axis ?? 'z';
-          if (axis !== 'z') {
-            refusals.set(
-              f.id,
-              `${f.id} could not be built on the FreeCAD engine -- circular patterns around the '${axis}' `
-                + `axis are not yet supported (only 'z' is built today); ${f.id} is shown without it.`,
-            );
-          } else if (bodyLocalCentered.get(target.bodyName) === false) {
-            // See bodyLocalCentered's own declaration above -- EVERY
-            // primitive target's (box, cylinder, sphere, cone, torus,
-            // prism) local geometry sits at/near the SAME body-local origin
-            // the pattern orbits, so every copy would silently land on the
-            // original. Measured against the real kernel, not assumed: see
-            // this port's own report.
-            refusals.set(
-              f.id,
-              `${f.id} could not be built on the FreeCAD engine -- a circular pattern of a primitive `
-                + `(box, cylinder, sphere, cone, torus or prism) is not yet supported (every copy would `
-                + `land on the original); ${f.id} is shown without it.`,
-            );
-          } else {
-            resultName = session.polarPattern(target.bodyName, target.objName, f.count, f.totalAngle ?? 360, 'z', patternName);
-          }
+          resultName = session.polarPattern(
+            target.bodyName, target.objName, f.count, f.totalAngle ?? 360, axis, patternName,
+            { origin: [0, 0, 0], direction: AXIS_VEC[axis] },
+          );
         }
 
         if (resultName === null) {
@@ -770,25 +853,728 @@ export class FreeCadEngineAdapter implements EngineAdapter {
         const entry: FcBuiltFeature = { bodyName: target.bodyName, objName: resultName, kind: 'solid', featureId: f.id, featureKind: f.kind };
         built.set(f.id, entry);
         shapes.set(f.id, entry);
+      } else if (f.kind === 'revolve') {
+        // CLOSED (docs/specs/SPEC-coord-fix.md): occt-build.ts's own
+        // revolveProfileFace() lays a flat 'xy'-plane sketch's (u,v) into the
+        // plane spanned by {sketch-U, plane-normal} = world {X, Z} and spins
+        // about the normal = world Z. Reproduced by attaching the profile
+        // sketch to the Body's own XZ_Plane origin datum (fc-sketch.mjs's
+        // sketchNewOnOrigin(), measured convention: local X = world X, local
+        // Y = world Z) instead of the bare flat-XY sketch translateSketch()
+        // otherwise lands on -- translateSketch() itself is unmodified, it
+        // only ever emits local (x,y) geometry and is plane-agnostic.
+        const src = requireBuilt(f.target, `revolve ${f.id}`);
+        if (src.kind !== 'sketch') throw new Error(`cannot build revolve ${f.id}: '${f.target}' is not a sketch`);
+        const srcSketch = doc.features.find((x) => x.id === f.target) as SketchFeature | undefined;
+        if (!srcSketch || (srcSketch.plane ?? 'xy') !== 'xy' || (srcSketch.offset ?? 0) !== 0) {
+          throw new Error(`not yet supported on the FreeCAD engine: revolve ${f.id} on a sketch plane other than 'xy' at offset 0`);
+        }
+        const why = this.latheProfileRefusal(srcSketch, f.id);
+        if (why) {
+          refusals.set(f.id, why);
+          built.set(f.id, src);
+          shapes.set(f.id, src);
+          continue;
+        }
+        const revSketchName = `${f.id}_rsk`;
+        session.sketchNewOnOrigin(src.bodyName, revSketchName, 'XZ_Plane');
+        translateSketch(session, revSketchName, srcSketch);
+        const revName = `${f.id}_rev`;
+        try {
+          session.revolve(src.bodyName, revSketchName, revName, f.angle ?? 360);
+        } catch (e) {
+          refusals.set(
+            f.id,
+            `Spinning ${f.id} through ${f.angle ?? 360} degrees did not produce a solid -- `
+              + `${f.id} is shown without it. (${e instanceof Error ? e.message : String(e)})`,
+          );
+          built.set(f.id, src);
+          shapes.set(f.id, src);
+          continue;
+        }
+        const entry: FcBuiltFeature = { bodyName: src.bodyName, objName: revName, kind: 'solid', featureId: f.id, featureKind: f.kind };
+        built.set(f.id, entry);
+        shapes.set(f.id, entry);
+      } else if (f.kind === 'groove') {
+        // Subtractive counterpart of revolve -- same orientation fix, cut
+        // from the `into` target's own body instead of building a fresh one.
+        const src = requireBuilt(f.target, `groove ${f.id}`);
+        const into = requireBuilt(f.into, `groove ${f.id}`);
+        if (src.kind !== 'sketch') throw new Error(`cannot build groove ${f.id}: '${f.target}' is not a sketch`);
+        {
+          const why = this.notInABody(into, f.id, 'a groove');
+          if (why) {
+            refusals.set(f.id, why);
+            built.set(f.id, into);
+            shapes.set(f.id, into);
+            continue;
+          }
+        }
+        if (src.bodyName !== into.bodyName) {
+          throw new Error(`not yet supported on the FreeCAD engine: groove ${f.id} cuts across two different bodies`);
+        }
+        const srcSketch = doc.features.find((x) => x.id === f.target) as SketchFeature | undefined;
+        if (!srcSketch || (srcSketch.plane ?? 'xy') !== 'xy' || (srcSketch.offset ?? 0) !== 0) {
+          throw new Error(`not yet supported on the FreeCAD engine: groove ${f.id} on a sketch plane other than 'xy' at offset 0`);
+        }
+        const why = this.latheProfileRefusal(srcSketch, f.id);
+        if (why) {
+          refusals.set(f.id, why);
+          built.set(f.id, into);
+          shapes.set(f.id, into);
+          continue;
+        }
+        const grvSketchName = `${f.id}_gsk`;
+        session.sketchNewOnOrigin(into.bodyName, grvSketchName, 'XZ_Plane');
+        translateSketch(session, grvSketchName, srcSketch);
+        const grooveName = `${f.id}_grv`;
+        try {
+          session.groove(into.bodyName, grvSketchName, grooveName, f.angle ?? 360);
+        } catch (e) {
+          refusals.set(
+            f.id,
+            `Cutting ${f.id} out of ${f.into} did not remove anything -- ${f.id} is shown `
+              + `without it. (${e instanceof Error ? e.message : String(e)})`,
+          );
+          built.set(f.id, into);
+          shapes.set(f.id, into);
+          continue;
+        }
+        const entry: FcBuiltFeature = { bodyName: into.bodyName, objName: grooveName, kind: 'solid', featureId: f.id, featureKind: f.kind };
+        built.set(f.id, entry);
+        shapes.set(f.id, entry);
+      } else if (f.kind === 'shell') {
+        // PartDesign::Thickness -- the third DressUp sibling of Fillet/
+        // Chamfer (PROPERTY_SOURCE(PartDesign::Thickness, PartDesign::
+        // DressUp), FeatureThickness.cpp), so its Base is the same
+        // (base, subElementNames) tuple fillet/chamfer already use, and this
+        // branch resolves f.open through resolveFace() exactly the way the
+        // 'fillet' branch above resolves f.edge through resolveEdge() --
+        // same objName-matches-target safety check, same refusal-not-throw
+        // discipline.
+        //
+        // CANNOT match occt-build.ts's own "no `open` -> fully closed"
+        // default. MEASURED directly against this kernel's own C++, not
+        // assumed: FeatureThickness.cpp's execute() early-returns the
+        // UNCHANGED base shape (no exception raised, State stays
+        // 'Up-to-date') the instant Base's sub-element list is empty, and
+        // the underlying TopoShape::makeElementThickSolid
+        // (TopoShapeExpansion.cpp) throws "Null input shape" if it is ever
+        // reached with zero faces at all -- a real engine-level restriction
+        // in this fork, not vanilla FreeCAD/OCCT's MakeThickSolidByJoin
+        // (which occt-build.ts's own shell-branch comment notes DOES accept
+        // an empty closing list, and which is exactly what that file's own
+        // "no `open` -> closed" default and its "`open` given but
+        // unresolved -> falls back to closed" behavior both depend on).
+        // Neither is achievable here: a fully closed hollow cannot be built
+        // via PartDesign::Thickness on this engine at all, so BOTH cases --
+        // f.open absent, and f.open present but unresolved -- collapse into
+        // the SAME honest refusal below, rather than silently building an
+        // open shell nobody asked for or faking a closed one this kernel
+        // cannot make. This is a genuine kernel-capability gap, not a port
+        // gap -- same "no answer over a wrong one" rule the revolve/groove
+        // profile-crossing refusal above already follows for a different
+        // real OCCT/FreeCAD divergence.
+        const target = requireBuilt(f.target, `shell ${f.id}`);
+        if (target.kind !== 'solid') throw new Error(`cannot build shell ${f.id}: '${f.target}' is not a solid`);
+        {
+          const why = this.notInABody(target, f.id, 'hollowing');
+          if (why) {
+            refusals.set(f.id, why);
+            built.set(f.id, target);
+            shapes.set(f.id, target);
+            continue;
+          }
+        }
+
+        if (f.thickness <= 0) {
+          refusals.set(f.id, `${f.id}'s thickness must be greater than zero -- ${f.id} is shown without it.`);
+          built.set(f.id, target);
+          shapes.set(f.id, target);
+          continue;
+        }
+
+        const bboxPy =
+          `import json, FreeCAD as App\n` +
+          `doc = App.ActiveDocument\n` +
+          `bb = doc.getObject(${pyStr(target.objName)}).Shape.BoundBox\n` +
+          `open(${pyStr(OUT_PATH)}, 'w').write(json.dumps({'size': [bb.XLength, bb.YLength, bb.ZLength]}))\n`;
+        const { size } = session.read(bboxPy) as { size: Vec3 };
+        const smallest = Math.min(size[0], size[1], size[2]);
+        if (2 * f.thickness >= smallest) {
+          refusals.set(
+            f.id,
+            `Hollowing ${f.id} to ${f.thickness} thick would collapse it -- `
+              + `the wall has to be under ${Math.floor(smallest / 2 * 10) / 10}. `
+              + `${f.id} is shown without it.`,
+          );
+          built.set(f.id, target);
+          shapes.set(f.id, target);
+          continue;
+        }
+
+        let faceName: string | null = null;
+        if (f.open) {
+          const resolved = this.resolveFace(f.open, { shapes: built }) as FcElementRef | null;
+          if (resolved && resolved.objName === target.objName) faceName = resolved.name;
+        }
+        if (!faceName) {
+          refusals.set(
+            f.id,
+            `${f.id} could not be built on the FreeCAD engine -- PartDesign::Thickness needs a face to open `
+              + `here (this engine's own Thickness cannot make a fully closed hollow with no opening at all); `
+              + `${f.id} is shown without it.`,
+          );
+          built.set(f.id, target);
+          shapes.set(f.id, target);
+          continue;
+        }
+
+        let resultName: string;
+        try {
+          resultName = session.thickness(target.bodyName, target.objName, [faceName], f.thickness);
+        } catch (e) {
+          refusals.set(
+            f.id,
+            `Hollowing ${f.id} to ${f.thickness} thick did not work -- ${f.id} is shown without it. `
+              + `(${e instanceof Error ? e.message : String(e)})`,
+          );
+          built.set(f.id, target);
+          shapes.set(f.id, target);
+          continue;
+        }
+        const entry: FcBuiltFeature = { bodyName: target.bodyName, objName: resultName, kind: 'solid', featureId: f.id, featureKind: f.kind };
+        built.set(f.id, entry);
+        shapes.set(f.id, entry);
+      } else if (f.kind === 'hole') {
+        // Sugar over cylinder + subtract on the OCCT engine (occt-build.ts:974).
+        // Here: one PartDesign::Pocket per drill plane, cut by a circle profile
+        // sketch positioned in the WORLD frame -- see fc-commands.mjs's bore()
+        // header for what was measured.
+        //
+        // Deliberately NOT Part::Cut (the combine path): a Part:: result sets
+        // container:'part' and notInABody() then refuses every later PartDesign
+        // feature -- and the chain AFTER a hole is this app's documented flagship
+        // example (reshape-docs.ts:139, "The order that always builds": box ->
+        // hollow -> hole -> round(edge)), with ModelEditor.tsx carrying a measured
+        // 2026-09-04 regression note about a Fillet whose target IS the Hole.
+        //
+        // Deliberately NOT PartDesign::Hole either: it exists, builds, and stays
+        // in the Body -- but is silently WRONG three ways on this kernel (all
+        // State 'Up-to-date', no error): ignores the profile's drill direction (an
+        // 'x' bore returns the 'z' answer), under-drills a multi-circle profile (4
+        // circles cut 2), and DrillPoint defaults to 'Angled', coning the bottom
+        // of every blind hole. Its only value-add over a Pocket
+        // (Threaded/HoleCutType/Tapered) has no counterpart in HoleFeature.
+        const target = requireBuilt(f.target, `hole ${f.id}`);
+        if (target.kind !== 'solid') throw new Error(`cannot build hole ${f.id}: '${f.target}' is not a solid`);
+
+        {
+          const why = this.notInABody(target, f.id, 'a hole');
+          if (why) {
+            refusals.set(f.id, why);
+            built.set(f.id, target);
+            shapes.set(f.id, target);
+            continue;
+          }
+        }
+
+        if (f.diameter <= 0 || f.depth <= 0) {
+          refusals.set(f.id,
+            `${f.id}'s diameter and depth must both be greater than zero -- ${f.id} is shown without it.`);
+          built.set(f.id, target); shapes.set(f.id, target); continue;
+        }
+
+        const holeAxis = f.axis === 'x' ? 0 : f.axis === 'y' ? 1 : 2;
+        const axisVec: Vec3 = [0, 0, 0];
+        axisVec[holeAxis] = 1;
+
+        // WORLD bbox: Body.Shape, NEVER target.objName's own Shape (a PartDesign
+        // feature object's Shape stays body-local). f.center is an offset from
+        // the target's world bbox centre, not a world position.
+        const holeBboxPy =
+          `import json, FreeCAD as App\n` +
+          `doc = App.ActiveDocument\n` +
+          `bb = doc.getObject(${pyStr(target.bodyName)}).Shape.BoundBox\n` +
+          `open(${pyStr(OUT_PATH)}, 'w').write(json.dumps({'bbox': [[bb.XMin,bb.YMin,bb.ZMin],[bb.XMax,bb.YMax,bb.ZMax]]}))\n`;
+        const { bbox: holeBbox } = session.read(holeBboxPy) as { bbox: [Vec3, Vec3] };
+        const holeC: Vec3 = [
+          (holeBbox[0][0] + holeBbox[1][0]) / 2 + f.center[0],
+          (holeBbox[0][1] + holeBbox[1][1]) / 2 + f.center[1],
+          (holeBbox[0][2] + holeBbox[1][2]) / 2 + f.center[2],
+        ];
+
+        // Fit gate -- same check and wording as occt-build.ts:996-1005. This
+        // engine will NOT refuse on its own: a bore that misses exits Up-to-date
+        // with the volume unchanged (measured), so it lives here.
+        const holePerp = holeAxis === 0
+          ? [holeBbox[1][1] - holeBbox[0][1], holeBbox[1][2] - holeBbox[0][2]]
+          : holeAxis === 1
+            ? [holeBbox[1][0] - holeBbox[0][0], holeBbox[1][2] - holeBbox[0][2]]
+            : [holeBbox[1][0] - holeBbox[0][0], holeBbox[1][1] - holeBbox[0][1]];
+        if (f.diameter > Math.min(...holePerp)) {
+          refusals.set(f.id,
+            `Boring ${f.id} at diameter ${f.diameter} would not fit ${f.target} -- ${f.id} is shown without it.`);
+          built.set(f.id, target); shapes.set(f.id, target); continue;
+        }
+
+        // Bore centres, VERBATIM from occt-build.ts:1027-1034 -- corners.dx/dy are
+        // the half-offsets themselves, applied to world X/Y regardless of f.axis.
+        // Match the quirk; newHoleCorners() only emits axis 'z'.
+        const holeCenters: Vec3[] = f.corners
+          ? [
+              [holeC[0] - f.corners.dx, holeC[1] - f.corners.dy, holeC[2]],
+              [holeC[0] + f.corners.dx, holeC[1] - f.corners.dy, holeC[2]],
+              [holeC[0] - f.corners.dx, holeC[1] + f.corners.dy, holeC[2]],
+              [holeC[0] + f.corners.dx, holeC[1] + f.corners.dy, holeC[2]],
+            ]
+          : [holeC];
+
+        // ONE sketch + ONE Pocket per drill plane. Centres sharing their
+        // component along f.axis share a plane -> one sketch, N circles. MEASURED:
+        // 4 circles in one profile cut 4 bores in a single Pocket,
+        // 29738.053289415348 on BOTH engines. Also more correct than 4 chained
+        // cuts, for the reason occt-build.ts:1035-1039 fuses its bores into one
+        // tool first: sequential cuts of overlapping bores can refill material.
+        const holePlanes = new Map<string, Vec3[]>();
+        for (const w of holeCenters) {
+          const key = w[holeAxis].toFixed(6);
+          const g = holePlanes.get(key);
+          if (g) g.push(w); else holePlanes.set(key, [w]);
+        }
+
+        let holeObjName = target.objName;
+        let holeFailure: string | null = null;
+        let holeGi = 0;
+        for (const group of holePlanes.values()) {
+          try {
+            holeObjName = session.bore(
+              target.bodyName, `${f.id}_boresk${holeGi}`, `${f.id}_bore${holeGi}`,
+              f.diameter / 2, group, group[0], axisVec, f.depth,
+            );
+          } catch (e) {
+            holeFailure = e instanceof Error ? e.message : String(e);
+            break;
+          }
+          holeGi++;
+        }
+        if (holeFailure) {
+          refusals.set(f.id,
+            `Boring ${f.id} into ${f.target} did not work -- ${f.id} is shown without it. (${holeFailure})`);
+          built.set(f.id, target);
+          shapes.set(f.id, target);
+          continue;
+        }
+
+        // NO `container` field: the result is a PartDesign::Pocket inside the
+        // target's OWN Body, so a later fillet/hole/draft/pattern builds on it
+        // normally. That is the entire reason for this design over Part::Cut.
+        const holeEntry: FcBuiltFeature = {
+          bodyName: target.bodyName,
+          objName: holeObjName,             // the LAST pocket name (the body's new Tip)
+          kind: 'solid',
+          featureId: f.id,
+          featureKind: f.kind,
+        };
+        built.set(f.id, holeEntry);
+        shapes.set(f.id, holeEntry);
+      } else if (f.kind === 'draft') {
+        // PartDesign::Draft -- see fc-commands.mjs's own draft()/
+        // neutralPlane() header comments for the full account of what was
+        // measured against the real kernel and why. SCOPED DOWN from
+        // DraftFeature's full two-mode design, deliberately, not merely
+        // unfinished:
+        //   - `whole: true` (Body Draft) is refused. This engine has no
+        //     enumerate-every-face-and-identify-the-two-caps machinery for
+        //     an ARBITRARY solid (only resolveFace's own narrow primitive/
+        //     swept/rounded/cap vocabulary) -- building it would be new,
+        //     unproven plumbing, not a port of something already measured
+        //     against this kernel. Same "a real, reasoned partial gap beats
+        //     a guessed full implementation" rule as SPEC-engine-port.md
+        //     §6.1.
+        //   - Only `pull === 'z'` on an UNROTATED body is supported.
+        //     MEASURED (engine/bridge/draft-probe*.mjs): PartDesign::Draft.
+        //     PullDirection is a real property but EVERY explicit reference
+        //     this pass tried (a raw sketch's V_Axis, a raw sketch's own
+        //     drawn Edge, a real edge of the solid itself, a PartDesign::
+        //     Line datum, even the Body's own Origin Z_Axis datum -- an
+        //     object that already IS the implicit default direction) fails
+        //     identically on this kernel build, while leaving PullDirection
+        //     unset builds successfully. A genuine per-fork kernel
+        //     limitation (same class as Thickness's own "cannot build a
+        //     fully-closed hollow" gap, this file's own 'shell' branch), not
+        //     fixable by any reference form this pass could find. Since the
+        //     implicit default direction is body-local Z, a rotated body's
+        //     draft would silently follow the body's own tilt rather than
+        //     stay world-frame (the same class of bug SPEC-coord-fix.md's
+        //     pattern/revolve/groove fixes closed) with no world-frame-proxy
+        //     fix available here -- refused, not silently misbuilt.
+        const target = requireBuilt(f.target, `draft ${f.id}`);
+        if (target.kind !== 'solid') throw new Error(`cannot build draft ${f.id}: '${f.target}' is not a solid`);
+        {
+          const why = this.notInABody(target, f.id, 'a draft');
+          if (why) {
+            refusals.set(f.id, why);
+            built.set(f.id, target);
+            shapes.set(f.id, target);
+            continue;
+          }
+        }
+
+        if (f.whole) {
+          refusals.set(
+            f.id,
+            `${f.id} could not be built on the FreeCAD engine -- Body Draft (every face but the `
+              + `two ${f.pull}-axis caps) is not yet supported here; only a single named face `
+              + `resolves today. ${f.id} is shown without it.`,
+          );
+          built.set(f.id, target);
+          shapes.set(f.id, target);
+          continue;
+        }
+        if (f.pull !== 'z') {
+          refusals.set(
+            f.id,
+            `${f.id} could not be built on the FreeCAD engine -- a draft pull direction other `
+              + `than 'z' is not supported here (this engine's own Draft feature cannot take a `
+              + `custom pull direction); ${f.id} is shown without it.`,
+          );
+          built.set(f.id, target);
+          shapes.set(f.id, target);
+          continue;
+        }
+        const rot = bodyRotate.get(target.bodyName) ?? [0, 0, 0];
+        if (rot.some((r) => Math.abs(r) > 1e-9)) {
+          refusals.set(
+            f.id,
+            `${f.id} could not be built on the FreeCAD engine -- draft on a rotated body is not `
+              + `supported here (the pull direction would follow the body's own tilt instead of `
+              + `staying world-frame); ${f.id} is shown without it.`,
+          );
+          built.set(f.id, target);
+          shapes.set(f.id, target);
+          continue;
+        }
+        if (!f.face) {
+          refusals.set(f.id, `${f.id} needs a face to draft -- ${f.id} is shown without it.`);
+          built.set(f.id, target);
+          shapes.set(f.id, target);
+          continue;
+        }
+        const resolved = this.resolveFace(f.face, { shapes: built }) as FcElementRef | null;
+        const faceName = resolved && resolved.objName === target.objName ? resolved.name : null;
+        if (!faceName) {
+          refusals.set(
+            f.id,
+            `${f.id}'s face could not be found on the FreeCAD engine -- ${f.id} is shown without it.`,
+          );
+          built.set(f.id, target);
+          shapes.set(f.id, target);
+          continue;
+        }
+
+        const neutralSketchName = `${f.id}_neutral`;
+        try {
+          session.neutralPlane(target.bodyName, neutralSketchName, [0, 0, f.neutral], [0, 0, 1]);
+        } catch (e) {
+          refusals.set(
+            f.id,
+            `${f.id} could not be built on the FreeCAD engine -- setting up its neutral plane `
+              + `failed. (${e instanceof Error ? e.message : String(e)})`,
+          );
+          built.set(f.id, target);
+          shapes.set(f.id, target);
+          continue;
+        }
+
+        let resultName: string;
+        try {
+          resultName = session.draft(target.bodyName, target.objName, faceName, f.angle, neutralSketchName);
+        } catch (e) {
+          refusals.set(
+            f.id,
+            `Drafting ${f.id} at ${f.angle} degrees would not fit its face -- ${f.id} is shown `
+              + `without it. (${e instanceof Error ? e.message : String(e)})`,
+          );
+          built.set(f.id, target);
+          shapes.set(f.id, target);
+          continue;
+        }
+        const entry: FcBuiltFeature = { bodyName: target.bodyName, objName: resultName, kind: 'solid', featureId: f.id, featureKind: f.kind };
+        built.set(f.id, entry);
+        shapes.set(f.id, entry);
+      } else if (f.kind === 'mirror') {
+        // PartDesign::Mirrored -- see fc-commands.mjs's own mirrored()/
+        // neutralPlane() header comments for the full account measured
+        // against the real kernel (engine/bridge/mirror-probe.mjs).
+        // Reproduces occt-build.ts's own documented "mirror through the
+        // target's own near bounding-box face along the axis, NOT the world
+        // origin" contract (see that file's own 'mirror' branch comment) --
+        // MirrorPlane is set to a world-frame proxy sketch, built at that
+        // near-face world coordinate, via neutralPlane() REUSED DIRECTLY
+        // rather than duplicated: MEASURED to behave exactly like
+        // PolarPattern.Axis/Draft's own NeutralPlane, honouring the proxy's
+        // own world position, NOT like PullDirection (draft's own gap
+        // above), which rejects every explicit reference tried.
+        //
+        // PartDesign::Mirrored keeps BOTH the original and its reflection
+        // fused into one Shape BY CONSTRUCTION -- it is a
+        // PartDesign::FeatureTransformedPattern, the SAME family as
+        // LinearPattern/PolarPattern above, not a DressUp like Fillet/Draft.
+        // MEASURED: its own Shape.Volume comes back as exactly 2x the
+        // original (no overlap), so -- unlike occt-build.ts's own mirror
+        // branch, which needs a separate BRepAlgoAPI_Fuse call -- no boolean
+        // fuse is needed here at all. This is exactly reshape's own Mirror
+        // contract (MirrorFeature's own doc comment in model-types.ts: the
+        // source feature stays visible, the mirrored copy is added
+        // alongside it), so the two engines converge on the same shape by a
+        // different route: an explicit fuse on one side, a native additive
+        // PartDesign transform on the other.
+        const target = requireBuilt(f.target, `mirror ${f.id}`);
+        if (target.kind !== 'solid') throw new Error(`cannot build mirror ${f.id}: '${f.target}' is not a solid`);
+        {
+          const why = this.notInABody(target, f.id, 'a mirror');
+          if (why) {
+            refusals.set(f.id, why);
+            built.set(f.id, target);
+            shapes.set(f.id, target);
+            continue;
+          }
+        }
+
+        const axis = f.plane === 'yz' ? 0 : f.plane === 'xz' ? 1 : 2;
+        const normal: Vec3 = [0, 0, 0];
+        normal[axis] = 1;
+
+        // WORLD-frame bbox: Body.Shape (not target.objName's OWN Shape)
+        // reflects Body.Placement -- see this file's own comment on mesh()
+        // above for the measured "a PartDesign feature object's own Shape
+        // stays body-local" fact this relies on. target.objName is the
+        // body's current Tip at this point in the build (v1's
+        // single-body-per-chain design, same invariant mesh() itself uses).
+        const bboxPy =
+          `import json, FreeCAD as App\n` +
+          `doc = App.ActiveDocument\n` +
+          `bb = doc.getObject(${pyStr(target.bodyName)}).Shape.BoundBox\n` +
+          `open(${pyStr(OUT_PATH)}, 'w').write(json.dumps({'bbox': [[bb.XMin,bb.YMin,bb.ZMin],[bb.XMax,bb.YMax,bb.ZMax]]}))\n`;
+        const { bbox } = session.read(bboxPy) as { bbox: [Vec3, Vec3] };
+        const lo = bbox[0][axis];
+        const hi = bbox[1][axis];
+        const at = Math.abs(lo) <= Math.abs(hi) ? lo : hi;
+        const through: Vec3 = [0, 0, 0];
+        through[axis] = at;
+
+        const planeSketchName = `${f.id}_mirrorplane`;
+        const mirrorName = `${f.id}_mirror`;
+        try {
+          session.neutralPlane(target.bodyName, planeSketchName, through, normal);
+        } catch (e) {
+          refusals.set(
+            f.id,
+            `${f.id} could not be built on the FreeCAD engine -- setting up its mirror plane failed. `
+              + `(${e instanceof Error ? e.message : String(e)})`,
+          );
+          built.set(f.id, target);
+          shapes.set(f.id, target);
+          continue;
+        }
+
+        let resultName: string;
+        try {
+          resultName = session.mirrored(target.bodyName, target.objName, planeSketchName, mirrorName);
+        } catch (e) {
+          refusals.set(
+            f.id,
+            `Mirroring ${f.id} across the '${f.plane}' plane did not work -- ${f.id} is shown without it. `
+              + `(${e instanceof Error ? e.message : String(e)})`,
+          );
+          built.set(f.id, target);
+          shapes.set(f.id, target);
+          continue;
+        }
+        const entry: FcBuiltFeature = { bodyName: target.bodyName, objName: resultName, kind: 'solid', featureId: f.id, featureKind: f.kind };
+        built.set(f.id, entry);
+        shapes.set(f.id, entry);
+      } else if (f.kind === 'move') {
+        // Body.Placement is a frame applied only when Body.Shape is read --
+        // a move never rewrites the underlying feature geometry, so a
+        // face/edge named before the move still resolves after it with no
+        // new naming machinery (see this file's own header on 'move' and
+        // findPrimitiveAncestor()/findSketchAncestor()'s own `move` case).
+        const target = requireBuilt(f.target, `move ${f.id}`);
+        if (target.kind !== 'solid') throw new Error(`cannot build move ${f.id}: '${f.target}' is not a solid`);
+
+        // Refuse rather than silently move more than asked: if something
+        // else was already built on top of the target in the SAME body
+        // (the target's Body.Tip is no longer the target's own object),
+        // moving the body would move that later feature too.
+        if (session.bodyTip(target.bodyName) !== target.objName) {
+          refusals.set(
+            f.id,
+            `${f.id} could not be built on the FreeCAD engine -- moving ${f.target} would also move `
+              + `what was built on top of it. Move the last shape in the chain instead. `
+              + `${f.id} is shown without it.`,
+          );
+          built.set(f.id, target);
+          shapes.set(f.id, target);
+          continue;
+        }
+
+        if (!f.copy) {
+          try {
+            session.moveBody(target.bodyName, f.offset);
+          } catch (e) {
+            refusals.set(
+              f.id,
+              `Moving ${f.id} did not work -- ${f.id} is shown without it. `
+                + `(${e instanceof Error ? e.message : String(e)})`,
+            );
+            built.set(f.id, target);
+            shapes.set(f.id, target);
+            continue;
+          }
+          // SAME bodyName/objName as the target -- only the frame moved, so
+          // a later feature built on top of THIS move still resolves against
+          // the same body/object, exactly as if the target had never moved.
+          const entry: FcBuiltFeature = { ...target, featureId: f.id, featureKind: f.kind };
+          built.set(f.id, entry);
+          shapes.set(f.id, entry);
+        } else {
+          if (Math.hypot(f.offset[0], f.offset[1], f.offset[2]) < 1e-9) {
+            refusals.set(
+              f.id,
+              `${f.id} would sit exactly on top of ${f.target} -- give the copy `
+                + `somewhere to go. ${f.id} is shown without it.`,
+            );
+            built.set(f.id, target);
+            shapes.set(f.id, target);
+            continue;
+          }
+          let copied: { bodyName: string; tipName: string };
+          try {
+            copied = session.copyBodyMoved(target.bodyName, f.offset);
+          } catch (e) {
+            refusals.set(
+              f.id,
+              `Copying ${f.target} did not work -- ${f.id} is shown without it. `
+                + `(${e instanceof Error ? e.message : String(e)})`,
+            );
+            built.set(f.id, target);
+            shapes.set(f.id, target);
+            continue;
+          }
+          // NEW bodyName/objName -- the original stays top-level, unmoved,
+          // and still meshes on its own (see topLevel()'s own
+          // `f.kind === 'move' && !f.copy` check, which never consumes the
+          // target when copy is true).
+          const entry: FcBuiltFeature = {
+            bodyName: copied.bodyName, objName: copied.tipName, kind: 'solid',
+            featureId: f.id, featureKind: f.kind,
+          };
+          built.set(f.id, entry);
+          shapes.set(f.id, entry);
+        }
+      } else if (f.kind === 'combine') {
+        // See fc-commands.mjs's partBoolean() header for what was measured against
+        // this kernel and why PartDesign::Boolean -- which DOES exist here -- was
+        // probed first and rejected. This CLOSES SPEC-engine-port.md §6.1's claim
+        // that combine "needs multi-body support v1 doesn't have": it needs none.
+        // A Part:: boolean is a document-level feature reading two finished shapes,
+        // leaving both Bodies untouched and reusable.
+        //
+        // The ONE place a ModelDoc feature does not live in a PartDesign::Body: two
+        // independent chains meet, and Body.Tip/BaseFeature is strictly linear
+        // (SPEC-engine-port.md §6, risk 6), so there is no Body for the result to
+        // belong to. `container: 'part'` records that; notInABody() (below) turns
+        // it into a clean refusal for anything built on top.
+        //
+        // Folded PAIRWISE in ModelDoc order, exactly as occt-build.ts's combine
+        // branch folds Fuse/Cut/Common -- a loop not a reduce, same reason that
+        // file gives. For `subtract` the first target is the body being cut, per
+        // CombineFeature's own doc comment.
+        //
+        // live[i].bodyName, NOT objName -- LOAD-BEARING. Only the BODY's Shape
+        // carries Body.Placement (the same measurement mesh()'s own header and the
+        // 'mirror' branch rest on); objName would drop every center/rotate, giving
+        // the right volume in the wrong place -- exactly the bug class
+        // freecad-mirror.manual.mjs's header warns a volume-only test misses.
+        const live = f.targets
+          .map((id) => built.get(id))
+          .filter((e): e is FcBuiltFeature => !!e && e.kind === 'solid');
+
+        if (live.length < 2) {
+          refusals.set(f.id, `${f.id} needs two solid shapes to combine -- ${f.id} is shown without it.`);
+          if (live[0]) { built.set(f.id, live[0]); shapes.set(f.id, live[0]); }
+          continue;
+        }
+
+        const VERB = { union: 'Joining', subtract: 'Cutting', intersect: 'Overlapping' } as const;
+        let cur = live[0].bodyName;
+        let failed: string | null = null;
+        for (let i = 1; i < live.length; i++) {
+          try {
+            cur = session.partBoolean(f.op, cur, live[i].bodyName, `${f.id}_op${i}`);
+          } catch (e) {
+            failed = e instanceof Error ? e.message : String(e);
+            break;
+          }
+        }
+        if (failed) {
+          refusals.set(
+            f.id,
+            `${VERB[f.op]} these shapes left nothing behind -- they may not touch each other. `
+              + `${f.id} is shown without it. (${failed})`,
+          );
+          built.set(f.id, live[0]);
+          shapes.set(f.id, live[0]);
+          continue;
+        }
+        const entry: FcBuiltFeature = {
+          bodyName: cur, objName: cur, kind: 'solid', container: 'part',
+          featureId: f.id, featureKind: f.kind,
+        };
+        built.set(f.id, entry);
+        shapes.set(f.id, entry);
       } else {
-        // revolve/groove: occt-build.ts's own revolve reads a flat sketch's
-        // (u, v) as (radius, height) about the PLANE'S NORMAL
-        // (revolveProfileFace's own comment); FreeCAD's PartDesign::Revolution
-        // spins a profile about an axis LYING IN the profile's own plane. A
-        // sketch built by translateSketch() here is flat on world XY, which
-        // is the wrong orientation for FreeCAD's Revolution outright -- it
-        // would need a SEPARATE profile sketch built in a plane containing
-        // the axis (e.g. attached to the Body's own XZ_Plane datum), which
-        // this port has not built or verified. Rather than ship a lathe
-        // profile with an unverified orientation, this is named here as a
-        // found mismatch (matching this task's own instruction to stop and
-        // report rather than improvise past it) and throws, same as the
-        // other unimplemented kinds.
         throw new Error(`not yet supported on the FreeCAD engine: ${f.kind}`);
       }
     }
 
     return { shapes, refusals: refusals.size ? refusals : undefined };
+  }
+
+  /** Every PartDesign feature is created by `doc.getObject(bodyName).newObject(...)`,
+   *  which needs bodyName to be a real PartDesign::Body. A combine result is a
+   *  document-level Part::Cut/Fuse/Common instead -- MEASURED: session.fillet()
+   *  and session.thickness() on one both raise "'Part.Feature' object has no
+   *  attribute 'newObject'". Gate BEFORE the call so it surfaces as a per-feature
+   *  refusal rather than a kernel AttributeError that fails the whole model. */
+  private notInABody(target: FcBuiltFeature, id: string, what: string): string | null {
+    if (target.container !== 'part') return null;
+    return `${id} could not be built on the FreeCAD engine -- ${what} works inside a PartDesign `
+      + `Body, and the combine it is built on lives outside one here. ${id} is shown without it.`;
+  }
+
+  /** revolve/groove pre-check: FreeCAD's own PartDesign::Revolution/Groove
+   *  raise if the profile crosses the spin axis; occt-build.ts's MakeRevol
+   *  does not -- it silently builds a self-intersecting solid. A genuine,
+   *  deliberate divergence between the two engines (not a bug to hide):
+   *  refuse rather than build wrong, same "no answer over a wrong one" rule
+   *  fillet's own edge resolution already follows. `u = 0` is allowed -- a
+   *  cone's triangle touches the axis without crossing it. */
+  private latheProfileRefusal(sketch: SketchFeature, id: string): string | null {
+    const outline = outlineOf(sketch);
+    if (!outline.ok) {
+      return `${id} could not be built on the FreeCAD engine -- its profile sketch `
+        + `'${sketch.id}' does not close into one outline; ${id} is shown without it.`;
+    }
+    const minU = Math.min(...(outline.points as number[][]).map((p) => p[0]));
+    if (minU < -1e-9) {
+      return `${id} could not be built on the FreeCAD engine -- its profile crosses the `
+        + `spin axis (it reaches x = ${minU.toFixed(3)}); move the sketch so it sits `
+        + `entirely at or right of x = 0. ${id} is shown without it.`;
+    }
+    return null;
   }
 
   /** Build the cached wall/cap geometry an extrude's own FcBuiltFeature
@@ -1091,6 +1877,17 @@ export class FreeCadEngineAdapter implements EngineAdapter {
       const bf = build.shapes.get(id) as FcBuiltFeature | undefined;
       if (!bf) return null;
       if (bf.featureKind === 'box' || bf.featureKind === 'cylinder') return { id, kind: bf.featureKind };
+      if (bf.featureKind === 'move') {
+        const mv = doc.features.find((x) => x.id === id) as MoveFeature | undefined;
+        // copy: true -> honest null, not a walk-through: the duplicate's
+        // body-local geometry is byte-identical to the original's, so
+        // resolving a name through it would silently attribute a pick on
+        // the copy to the original (or vice versa) -- same rule
+        // pattern/mirror already follow for their own copies.
+        if (!mv || mv.copy) return null;
+        id = mv.target;
+        continue;
+      }
       if (bf.featureKind !== 'fillet') return null;
       const docFeature = doc.features.find((f) => f.id === id) as { target?: string } | undefined;
       id = docFeature?.target;
@@ -1126,6 +1923,14 @@ export class FreeCadEngineAdapter implements EngineAdapter {
       const bf = build.shapes.get(id) as FcBuiltFeature | undefined;
       if (!bf) return null;
       if (bf.featureKind === 'extrude') return bf.sweep ? { id, sweep: bf.sweep } : null;
+      if (bf.featureKind === 'move') {
+        // Same copy:true -> null rule as findPrimitiveAncestor's own `move`
+        // case above -- see that comment for why.
+        const mv = doc.features.find((x) => x.id === id) as MoveFeature | undefined;
+        if (!mv || mv.copy) return null;
+        id = mv.target;
+        continue;
+      }
       if (bf.featureKind === 'fillet') {
         const docFeature = doc.features.find((f) => f.id === id) as { target?: string } | undefined;
         id = docFeature?.target;

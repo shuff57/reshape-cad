@@ -72,6 +72,33 @@ export const emit = {
     );
   },
 
+  // Empty sketch ATTACHED to one of a Body's own Origin planes (XY_Plane/
+  // XZ_Plane/YZ_Plane) -- revolve/groove need their profile drawn in a plane
+  // CONTAINING the spin axis, unlike sketchNew()'s bare flat-XY sketch.
+  // Resolved by .Role, not .Name: a second Body's own origin planes are
+  // auto-suffixed by FreeCAD on name collision (the same reasoning already
+  // applied to linearPattern/polarPattern's Origin-axis lookup), so a
+  // literal-name lookup silently fails for every body after the first.
+  sketchNewOnOrigin(bodyName, sketchName, planeRole = 'XZ_Plane') {
+    return (
+      HEAD +
+      `body = doc.getObject(${pyStr(bodyName)})\n` +
+      `origin = getattr(body, 'Origin', None)\n` +
+      `planeObj = None\n` +
+      `if origin is not None:\n` +
+      `    for _f in origin.OriginFeatures:\n` +
+      `        if getattr(_f, 'Role', None) == ${pyStr(planeRole)}:\n` +
+      `            planeObj = _f\n` +
+      `            break\n` +
+      `if planeObj is None:\n` +
+      `    raise ValueError('could not find %s on the Body Origin' % ${pyStr(planeRole)})\n` +
+      `sk = body.newObject("Sketcher::SketchObject", ${pyStr(sketchName)})\n` +
+      `sk.AttachmentSupport = [(planeObj, '')]\n` +
+      `sk.MapMode = 'FlatFace'\n` +
+      `doc.recompute()\n`
+    );
+  },
+
   // Add one line segment; returns {geoId}.
   addLine(sketchName, x1, y1, x2, y2) {
     return (
@@ -358,6 +385,10 @@ export function attachSketchCommands(session) {
   };
   session.sketchNewOnFace = (bodyName, sketchName, baseName, faceName) => {
     runExec('sketchNewOnFace', emit.sketchNewOnFace(bodyName, sketchName, baseName, faceName));
+    return sketchName;
+  };
+  session.sketchNewOnOrigin = (bodyName, sketchName, planeRole = 'XZ_Plane') => {
+    runExec('sketchNewOnOrigin', emit.sketchNewOnOrigin(bodyName, sketchName, planeRole));
     return sketchName;
   };
   session.sketchAddLine = (sk, x1, y1, x2, y2) =>
