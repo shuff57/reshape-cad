@@ -33,7 +33,7 @@
     "y1": null,
     "y2": null,
     "y3": null,
-    "notes": "G3 PASS: FreeCADCmd.wasm 52,419,635 bytes raw (optimized -O3, wasm-opt completed). 8 OCCT TUs compiled with -fignore-exceptions (clang try_table + Binaryen translate bugs). Transfer/load/RAM cells wait for G5 page measurement. G4 PASS (node): Box-Cyl volume 29738.053 mm^3, .FCStd reload exact, STEP/STL exported. Lead-reproduced 2026-09-05 23:40: PASS, exit 0. C2 was LOCKED IN as the engine (~/.claude/plans/freecad-browser.md's DIRECTION LOCK, 2026-09-06); these cells stay as the historical bake-off measurement, not a live status field -- for what the engine can build TODAY (build sequence, feature coverage, real-kernel-verified volumes), see docs/specs/SPEC-engine-port.md, current as of commit 3681d5b (2026-09-11)."
+    "notes": "G3 PASS: FreeCADCmd.wasm 52,419,635 bytes raw (optimized -O3, wasm-opt completed). 8 OCCT TUs compiled with -fignore-exceptions (clang try_table + Binaryen translate bugs). Transfer/load/RAM cells wait for G5 page measurement. G4 PASS (node): Box-Cyl volume 29738.053 mm^3, .FCStd reload exact, STEP/STL exported. Lead-reproduced 2026-09-05 23:40: PASS, exit 0. C2 was LOCKED IN as the engine (~/.claude/plans/freecad-browser.md's DIRECTION LOCK, 2026-09-06); these cells stay as the historical bake-off measurement, not a live status field -- for what the engine can build TODAY (build sequence, feature coverage, real-kernel-verified volumes), see docs/specs/SPEC-engine-port.md, current as of commit ca882f8 (2026-09-11, Save/Open .FCStd, the last of today's four studio-canonicalization phases)."
   },
   {
     "candidate": "C3",

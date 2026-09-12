@@ -1,53 +1,37 @@
-# reSHape Studio (browser modeler) — run it locally
+# engine/play — retired prototype UI, live wasm data pack
 
-A parametric CAD modeler running entirely in the browser: FreeCAD's headless
-kernel compiled to WebAssembly, driven by the command bridge
-(`engine/bridge/fc-session.mjs` + `fc-commands.mjs`), rendered with three.js.
+**The studio UI that used to live here is retired (2026-09-11).** It was the
+original vanilla-JS FreeCAD modeler (`studio.html` + `studio.js` +
+`play.js` + `pick3d.js` + `sketch.js`), used to prove the FreeCAD-wasm engine
+end-to-end before `packages/studio` (mounted via `packages/sandbox-dev`)
+reached feature parity with it. That parity work is
+`docs/specs/SPEC-studio-canonical.md`; the decision to retire this prototype
+is phase 5 there. `docs/specs/SPEC-engine-port.md` is the maintained detail
+doc for the FreeCAD `EngineAdapter` those five files helped prove out.
 
-## Run
+**The retired UI files moved to `engine/play/_archive/`** (`git mv`, history
+preserved, not deleted — see that folder's own README).
 
-```sh
-node engine/play/serve.mjs 8791
-```
+**What's still here, and still load-bearing:**
 
-Then open **http://localhost:8791/studio.html** in Chrome or Edge.
+- `freecad-data.js` / `freecad-data.data` — the Emscripten data pack (Python
+  stdlib + `Mod`/`Ext` trees, ~6 MB). **Do not move or delete these.**
+  `packages/sandbox-dev/vite.config.ts`'s `engineStaticServer()` serves them
+  from this exact directory as a fallback behind `engine/build/g5-artifacts/`
+  (which holds the compiled `FreeCADCmd.js`/`.wasm` kernel itself) — every
+  live FreeCAD-engine session in `sandbox-dev` depends on this path.
+- `index.html` — the older, lower-level G5 playground (a raw-Python textarea
+  + Run button), predating even `studio.html`. Left in place but its
+  `<script src="/play.js">` now 404s since `play.js` moved into
+  `_archive/`; nothing else references this page.
+- `serve.mjs` — the standalone static server used to run the prototype
+  locally outside `sandbox-dev`. No longer needed for day-to-day work
+  (`sandbox-dev`'s own Vite dev server replaces it), left in place since it
+  still correctly serves `/bridge/`, `/script/`, and the kernel paths if
+  ever needed for low-level bridge probing.
+- `_workspace/`, `.playwright-cli/` — unrelated local test-run artifacts,
+  untouched by this retirement.
 
-The server sets the COOP/COEP headers the kernel needs (`crossOriginIsolated`),
-and serves three paths:
-
-| Path              | Serves                                            |
-|-------------------|---------------------------------------------------|
-| `/`               | this folder (`studio.html`, `studio.js`, the data pack) |
-| `/kernel-browser/`| the browser wasm kernel — `engine/build/g5-artifacts/` |
-| `/bridge/`        | the command bridge modules — `engine/bridge/`     |
-
-First load fetches a ~53 MB wasm kernel (~16 MB gzipped) plus a ~6 MB data
-pack, so give it 30–90 s the first time; the status pane at the bottom logs
-progress and every command result.
-
-## What the buttons do
-
-1. **New Body** — start a PartDesign Body.
-2. **Rect Sketch** (W × H) or **Circle Sketch** (r) — draw a profile on the body.
-3. **Pad** (Length) — extrude the profile into a solid.
-4. **Set Length** — change the current Pad's length; the solid updates live (parametric edit).
-5. **Save .FCStd** — download a real FreeCAD file (opens in desktop FreeCAD 1.1.3).
-6. **Open .FCStd** — load a `.FCStd` back in.
-
-Pocket / Fillet appear disabled — they need interactive face/edge selection,
-which isn't wired yet.
-
-## The two pages
-
-- `studio.html` — the modeler (this doc).
-- `index.html` — the older G5 playground: a raw-Python textarea + Run, used to
-  bring the engine up first. Kept as a low-level probe.
-
-## Rebuilding the kernel / data pack
-
-The wasm kernel is built by `engine/docker/Dockerfile.kernel` (target
-`kernel-artifacts-browser`); the preload data pack (FREECAD_HOME subset incl.
-`Mod/PartDesign` + a pruned Python stdlib) is staged and packed with
-emscripten's `file_packager.py` inside the kernel-build container. Both are
-checked in under `engine/build/g5-artifacts/` and here (`freecad-data.*`) so the
-studio runs from a clone without the toolchain.
+**Going forward, `packages/sandbox-dev` (packages/studio) is the canonical
+sandbox** for both build and code sides of the FreeCAD/OCCT engines. See
+`docs/specs/SPEC-studio-canonical.md` for the full story.

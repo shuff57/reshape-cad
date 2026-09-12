@@ -21,7 +21,14 @@ OCCT engine rather than showing an error after a click. See
 SPEC-engine-port.md §6.6 for the full account, including the real design
 question this phase was flagged to stop and report on (an arbitrary
 real-world .FCStd cannot in general be reconstructed as a ModelDoc) and how
-it was resolved without guessing.
+it was resolved without guessing. Phase 5 (retire engine/play/studio.html)
+DONE -- studio.html/studio.js/play.js/pick3d.js/sketch.js moved (git mv,
+history preserved) to engine/play/_archive/; the wasm data pack
+(freecad-data.js/.data) stayed in engine/play/ since packages/sandbox-dev's
+own engineStaticServer() still serves it from there (confirmed unaffected:
+200s on both files post-move, and a live bowser check rebuilt a box on the
+FreeCAD engine through sandbox-dev with no console errors). packages/studio
+(via packages/sandbox-dev) is now the one canonical sandbox.
 
 Out-of-band bugfix (2026-09-11, separate from the phase sequence above): a
 real, pre-existing bug in the box/cylinder branches of `build()` -- `f.center`
@@ -210,9 +217,16 @@ correctness-critical CAD kernel work.
    9,246-byte `.FCStd`, Clear model emptied the viewport, and Open on that
    same file correctly restored the identical box -- no console errors.
    Full account in SPEC-engine-port.md §6.6.
-5. **Retire `engine/play/studio.html`** — once 1-4 are verified, archive
-   (not delete) the vanilla prototype, update `SPEC-engine-port.md`, the
-   plan file, and `bench/record.json` to point at the sandbox as canonical.
+5. **DONE. Retire `engine/play/studio.html`** — archived (not deleted,
+   `git mv`) to `engine/play/_archive/`: `studio.html`, `studio.js`,
+   `play.js`, `pick3d.js`, `sketch.js`. The wasm data pack
+   (`freecad-data.js`/`.data`) stayed in `engine/play/`, still served by
+   `packages/sandbox-dev/vite.config.ts`'s `engineStaticServer()` — verified
+   unaffected (both files still 200 post-move; a live bowser check rebuilt a
+   box on the FreeCAD engine through `sandbox-dev` with no console errors).
+   `SPEC-engine-port.md`, `~/.claude/plans/freecad-browser.md`, and
+   `bench/record.json`'s C2 note updated to point at the sandbox as
+   canonical.
 
 ## 3. Explicitly out of scope for this pass
 
