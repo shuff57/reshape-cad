@@ -536,8 +536,31 @@ RUN mkdir -p qttools-build && cd qttools-build \
 # `-platform wasm-emscripten` mkspec (Qt has first-party Emscripten support;
 # this is NOT a generic emcmake/CMAKE_TOOLCHAIN_FILE build like the other
 # deps -- Qt's configure invokes em++ itself once emsdk_env.sh is on PATH,
-# which the base image already provides). Core/Network/Xml/Concurrent only,
-# matching FreeCAD's own FREECAD_QT_COMPONENTS list for BUILD_GUI=OFF.
+# which the base image already provides).
+#
+# UPDATED for TechDraw (BUILD_TECHDRAW=ON): originally Core/Network/Xml/
+# Concurrent only, matching FreeCAD's FREECAD_QT_COMPONENTS list for
+# BUILD_GUI=OFF. TechDraw's own App-layer code (Preferences.cpp,
+# LineGenerator.h, Cosmetic.h) uses QApplication/QPen/QColor as plain DATA
+# TYPES even with no GUI shown -- confirmed by the actual compile errors,
+# not assumed -- so Gui and Widgets are now enabled too. Using qt-wasm-aqt's
+# prebuilt Qt 6.8.3 for these instead (it already has Widgets) was rejected:
+# it is a DIFFERENT Qt version built by a different toolchain than this
+# from-source 6.11.1 tree, and mixing prebuilt-binary Gui/Widgets objects
+# with from-source Core/Concurrent objects at link time risks silent ABI
+# mismatch -- one consistent from-source build is safer than two combined.
+# -no-opengl tried first and REJECTED: Qt's own WebAssembly platform-
+# integration plugin (QWasmIntegrationPlugin, src/plugins/platforms/wasm) is
+# not merely OpenGL-accelerated -- it structurally requires it
+# (qwasmopenglcontext.h subclasses QPlatformOpenGLContext unconditionally),
+# so -no-opengl fails to compile the plugin outright ("base class has
+# incomplete type", confirmed by an actual build, not assumed). Switched to
+# -opengl es2 (WebGL ES2 via Emscripten), the same configuration the
+# prebuilt qt-wasm-aqt package already ships and the standard, well-trodden
+# Qt-for-WebAssembly setup -- not novel territory the way the wasm-EH flags
+# below are. Never actually exercised at runtime unless FreeCAD's own code
+# creates a visible window, which BUILD_GUI=OFF at the FreeCAD level (a
+# separate switch from this Qt-level one) does not do.
 # ----------------------------------------------------------------------------
 FROM qt-host-wasm AS qt-wasm-core
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -575,7 +598,7 @@ RUN mkdir -p qt-wasm-build && cd qt-wasm-build \
     && ../qtbase-src/configure -prefix /opt/toolchains/qt-wasm \
          -platform wasm-emscripten -qt-host-path /opt/toolchains/qt-host \
          -release -static \
-         -no-gui -no-widgets -no-opengl -no-dbus \
+         -gui -widgets -opengl es2 -no-dbus \
          -nomake examples -nomake tests \
          -- -DCMAKE_CXX_FLAGS="${EM_WASM_EH_FLAGS} -sSUPPORT_LONGJMP=wasm" \
             -DCMAKE_C_FLAGS="${EM_WASM_EH_FLAGS} -sSUPPORT_LONGJMP=wasm" \

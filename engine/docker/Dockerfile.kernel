@@ -34,6 +34,26 @@ WORKDIR /work
 RUN git clone --filter=blob:none --no-checkout https://github.com/magik6k/freecad-web.git fw \
     && cd fw && git checkout "${FREECAD_WEB_SHA}"
 
+# TechDraw source patch (BUILD_TECHDRAW=ON): cMake/FreeCAD_Helpers/SetupQt.cmake
+# gates Widgets/Gui/OpenGL/PrintSupport entirely behind `if(BUILD_GUI)` --
+# confirmed by an actual failed build, not assumed: even after the toolchain's
+# Qt was rebuilt WITH Widgets/Gui/OpenGL-ES2 available, TechDraw's own
+# Preferences.cpp/LineGenerator.h/Cosmetic.h still failed on
+# 'QApplication'/'QPen'/'QColor' file not found, because find_package(Qt6
+# COMPONENTS Widgets) was simply never called -- the CMake target
+# Qt6::Widgets did not exist in this configure run at all, independent of
+# whether the library was actually built. This is a FreeCAD CMake-config
+# gap, not a toolchain gap. Minimal, additive patch: request Widgets (which
+# transitively pulls in Gui via Qt6WidgetsConfig.cmake's own
+# find_dependency(Qt6 Gui)) whenever TechDraw is being built without the
+# full GUI, rather than loosening the BUILD_GUI gate itself for every other
+# module.
+RUN sed -i \
+      '/^set(FREECAD_QT_COMPONENTS Core Concurrent Network Xml)$/a\
+if(BUILD_TECHDRAW AND NOT BUILD_GUI)\n    list(APPEND FREECAD_QT_COMPONENTS Widgets)\nendif()' \
+      fw/cMake/FreeCAD_Helpers/SetupQt.cmake \
+    && grep -A3 'FREECAD_QT_COMPONENTS Core Concurrent' fw/cMake/FreeCAD_Helpers/SetupQt.cmake
+
 # ----------------------------------------------------------------------------
 # configure: G2. Toolchain prefixes point at our /opt/toolchains layout
 # (built in Dockerfile.toolchain) rather than upstream's /opt/toolchains
@@ -138,10 +158,10 @@ RUN emcmake cmake -S . -B /work/build -G Ninja \
       -DZLIB_LIBRARY=$SY/lib/wasm32-emscripten/libz.a \
       -DBUILD_GUI=OFF \
       -DBUILD_PART=ON -DBUILD_SKETCHER=ON -DBUILD_MATERIAL=ON \
-      -DBUILD_PART_DESIGN=ON -DBUILD_SPREADSHEET=OFF -DBUILD_START=OFF \
-      -DBUILD_MEASURE=OFF -DBUILD_MESH=OFF -DBUILD_MESH_PART=OFF \
-      -DBUILD_IMPORT=OFF -DBUILD_DRAFT=OFF -DBUILD_BIM=OFF -DBUILD_CAM=OFF \
-      -DBUILD_FEM=OFF -DBUILD_TECHDRAW=OFF -DBUILD_ASSEMBLY=OFF -DBUILD_ROBOT=OFF \
+      -DBUILD_PART_DESIGN=ON -DBUILD_SPREADSHEET=ON -DBUILD_START=OFF \
+      -DBUILD_MEASURE=ON -DBUILD_MESH=OFF -DBUILD_MESH_PART=OFF \
+      -DBUILD_IMPORT=ON -DBUILD_DRAFT=OFF -DBUILD_BIM=OFF -DBUILD_CAM=OFF \
+      -DBUILD_FEM=OFF -DBUILD_TECHDRAW=ON -DBUILD_ASSEMBLY=OFF -DBUILD_ROBOT=OFF \
       -DBUILD_SURFACE=OFF -DBUILD_POINTS=OFF -DBUILD_INSPECTION=OFF \
       -DBUILD_REVERSEENGINEERING=OFF -DBUILD_OPENSCAD=OFF -DBUILD_PLOT=OFF \
       -DBUILD_SHOW=OFF -DBUILD_TUX=OFF -DBUILD_WEB=OFF -DBUILD_HELP=OFF \
