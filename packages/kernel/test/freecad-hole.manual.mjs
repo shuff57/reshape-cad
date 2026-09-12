@@ -364,17 +364,33 @@ console.log('\n--- 11. hole on a combine result: kills a missing notInABody() ga
   checkTrue('the combine itself is untouched and still shown', fc.shapes.get('h11') === fc.shapes.get('cu'));
 }
 
-console.log('\n--- 12. diameter <= 0 / depth <= 0: refuses cleanly before touching the kernel ---');
+console.log('\n--- 12. diameter <= 0 / depth <= 0 (including a NEGATIVE depth): refuses cleanly before touching the kernel ---');
 {
   const docD = { version: 1, features: [box('b12d', [40, 40, 20], [0, 0, 0]), hole('h12d', 'b12d', { diameter: 0 })] };
   const fcD = adapter.build(docD);
   const whyD = fcD.refusals?.get('h12d');
-  checkTrue('diameter <= 0 refuses', !!whyD, whyD);
-  checkTrue('refusal names both diameter and depth', !!whyD && whyD.includes('diameter') && whyD.includes('depth'));
+  checkTrue('diameter:0 refuses', !!whyD, whyD);
+  checkTrue(
+    'refusal matches occt-build.ts\'s own wording ("...must both be greater than zero...")',
+    !!whyD && whyD.includes('diameter') && whyD.includes('depth') && whyD.includes('must both be greater than zero'),
+    whyD,
+  );
 
   const docZ = { version: 1, features: [box('b12z', [40, 40, 20], [0, 0, 0]), hole('h12z', 'b12z', { depth: 0 })] };
   const fcZ = adapter.build(docZ);
-  checkTrue('depth <= 0 refuses', !!fcZ.refusals?.get('h12z'));
+  checkTrue('depth:0 refuses', !!fcZ.refusals?.get('h12z'));
+
+  // depth:-1 is a SEPARATE case from depth:0 -- `<= 0` should catch a
+  // genuinely negative value too, not just the zero boundary.
+  const docN = { version: 1, features: [box('b12n', [40, 40, 20], [0, 0, 0]), hole('h12n', 'b12n', { depth: -1 })] };
+  const fcN = adapter.build(docN);
+  const whyN = fcN.refusals?.get('h12n');
+  checkTrue('depth:-1 (negative, not just zero) refuses', !!whyN, whyN);
+  checkTrue(
+    'refusal matches occt-build.ts\'s own wording',
+    !!whyN && whyN.includes('must both be greater than zero'),
+    whyN,
+  );
 }
 
 console.log("--- 13. diameter too large for the target's cross-section: refuses with the fit-check wording ---");
@@ -385,6 +401,124 @@ console.log("--- 13. diameter too large for the target's cross-section: refuses 
   checkTrue('too-large diameter refuses', !!why, why);
   checkTrue('refusal matches occt-build.ts\'s own "would not fit" wording', !!why && why.includes('would not fit'));
   checkTrue('the target is still shown without the hole', fc.shapes.get('h13') === fc.shapes.get('b13'));
+
+  // diameter:500 on a 40-wide box, once per axis -- coverage that EVERY
+  // axis branch of the fit-check ternary refuses (not just 'z', the one
+  // every other case above happens to exercise). A diameter this absurd
+  // exceeds every possible cross-section, so on its own it does not prove
+  // the CORRECT two axes were compared -- the discriminating fixture right
+  // after this loop does that.
+  for (const axis of ['x', 'y', 'z']) {
+    const docBig = { version: 1, features: [box(`b13big${axis}`, [40, 40, 20], [0, 0, 0]), hole(`h13big${axis}`, `b13big${axis}`, { axis, diameter: 500 })] };
+    const fcBig = adapter.build(docBig);
+    const whyBig = fcBig.refusals?.get(`h13big${axis}`);
+    checkTrue(`diameter:500, axis '${axis}': refuses`, !!whyBig, whyBig);
+    checkTrue(`diameter:500, axis '${axis}': matches occt-build.ts's own "would not fit" wording`, !!whyBig && whyBig.includes('would not fit'));
+  }
+
+  // Discriminator: a box with a DIFFERENT dimension on every axis, and a
+  // diameter that fits ONE axis's own perpendicular pair but not the other
+  // two -- box [40,30,10] (x=40,y=30,z=10), diameter 20.
+  //   axis 'x' -> perpendicular pair is [y,z] = [30,10], min 10 -> 20 > 10, REFUSES
+  //   axis 'y' -> perpendicular pair is [x,z] = [40,10], min 10 -> 20 > 10, REFUSES
+  //   axis 'z' -> perpendicular pair is [x,y] = [40,30], min 30 -> 20 <= 30, FITS
+  // A "compare against the wrong two axes" bug (e.g. always checking x/y
+  // regardless of f.axis) would flip AT LEAST one of these three verdicts:
+  // axis 'x' would wrongly FIT (checking [x,y]=[40,30] instead of [y,z]),
+  // and axis 'z' would wrongly REFUSE if the bug instead always checked
+  // [y,z]. diameter:500 above cannot catch this -- it exceeds every pair.
+  const discSize = [40, 30, 10];
+  for (const [axis, shouldFit] of [['x', false], ['y', false], ['z', true]]) {
+    const id = `hdisc${axis}`;
+    const docDisc = { version: 1, features: [box(`bdisc${axis}`, discSize, [0, 0, 0]), hole(id, `bdisc${axis}`, { axis, diameter: 20, depth: 5 })] };
+    const fcDisc = adapter.build(docDisc);
+    const whyDisc = fcDisc.refusals?.get(id);
+    checkTrue(
+      `perpendicular-axis discriminator, axis '${axis}' (box [40,30,10], d20): ${shouldFit ? 'fits' : 'refuses'}`,
+      shouldFit ? !whyDisc : !!whyDisc,
+      whyDisc ?? '(built, no refusal)',
+    );
+  }
+}
+
+console.log('\n--- 14. hole into a body whose Tip is a FeatureTransformedPattern (pattern/mirror, not a Pad/primitive) ---');
+{
+  // Both fixtures below build a single CONTIGUOUS 80x40x20 solid (two
+  // touching 40x40x20 boxes, fused by the pattern/mirror's own additive
+  // construction -- see freecad-engine-adapter.ts's own 'pattern'/'mirror'
+  // branch comments) so the bore's own removed volume is exactly one clean
+  // d4 through-cut, depth 10, fully inside the 20-tall material:
+  // pi*2^2*10 = 125.66370614359172 (4*pi*10), matching SPEC-hole.md's own
+  // measured row for both a LinearPattern-tipped and a Mirrored-tipped body.
+  const EXPECTED_REMOVED = 4 * Math.PI * 10;
+
+  // pattern -> hole: box + LinearPattern (count 2, step 40 along x) ->
+  // combined world bbox x in [-20,60] (two touching 40-wide boxes) -> centre
+  // (20,0,0). Bore at that centre, axis z, d4, depth 10 (contained inside
+  // the 20-tall material -- no clipping).
+  {
+    const doc = {
+      version: 1,
+      features: [
+        box('bp14', [40, 40, 20], [0, 0, 0]),
+        { id: 'pp14', kind: 'pattern', target: 'bp14', mode: 'linear', count: 2, step: [40, 0, 0] },
+        hole('hp14', 'pp14', { diameter: 4, depth: 10 }),
+      ],
+    };
+    const fc = adapter.build(doc);
+    checkTrue('pattern built (no refusal)', !fc.refusals?.get('pp14'));
+    checkTrue('hole on the pattern result built (no refusal)', !fc.refusals?.get('hp14'));
+    const entry = fc.shapes.get('hp14');
+    const m = meshOf(entry);
+    const patternEntry = fc.shapes.get('pp14');
+    const removed = meshOf(patternEntry).volume - m.volume;
+    check('removed volume = 4*pi*10 = 125.664 (pattern-tipped body)', removed, EXPECTED_REMOVED, 0.5);
+  }
+
+  // mirror -> hole: box + Mirrored across its own near face (plane 'yz') ->
+  // combined world bbox x in [-60,20] (box [-20,20] + its own reflection
+  // [-60,-20], touching at x=-20) -> centre (-20,0,0). Same bore as above.
+  {
+    const doc = {
+      version: 1,
+      features: [
+        box('bm14', [40, 40, 20], [0, 0, 0]),
+        { id: 'mm14', kind: 'mirror', target: 'bm14', plane: 'yz' },
+        hole('hm14', 'mm14', { diameter: 4, depth: 10 }),
+      ],
+    };
+    const fc = adapter.build(doc);
+    checkTrue('mirror built (no refusal)', !fc.refusals?.get('mm14'));
+    checkTrue('hole on the mirror result built (no refusal)', !fc.refusals?.get('hm14'));
+    const entry = fc.shapes.get('hm14');
+    const m = meshOf(entry);
+    const mirrorEntry = fc.shapes.get('mm14');
+    const removed = meshOf(mirrorEntry).volume - m.volume;
+    check('removed volume = 4*pi*10 = 125.664 (mirror-tipped body)', removed, EXPECTED_REMOVED, 0.5);
+  }
+}
+
+console.log('\n--- 15. a bore placed entirely outside the material: passes silently, volume UNCHANGED (not an over-eager volGuard) ---');
+{
+  // f.center is a huge offset -- the fit-check only compares diameter
+  // against the target's OWN cross-section dimensions (it has no idea
+  // where f.center will actually place the bore), so this must NOT refuse;
+  // it must build, and the Pocket's own cut removes nothing because the
+  // profile circle never touches the box at all. See fc-commands.mjs's own
+  // bore() header: "NO volGuard -- a bore that misses the solid is a
+  // silent no-op here AND on OCCT ... it must not raise."
+  const doc = { version: 1, features: [box('b15', [40, 40, 20], [0, 0, 0]), hole('h15', 'b15', { center: [1000, 0, 0] })] };
+  const occt = occtOf(doc, 'h15');
+  const fc = adapter.build(doc);
+  checkTrue('built (no refusal, no over-eager volGuard)', !fc.refusals?.get('h15'));
+  const entry = fc.shapes.get('h15');
+  const m = meshOf(entry);
+  check('volume UNCHANGED (32000) -- the bore missed the solid entirely', m.volume, 32000, 0.5);
+  check('volume vs OCCT (same no-op parity occt-build.ts\'s own Cut gives for a non-intersecting tool)', m.volume, occt.volume, 0.5);
+  checkTrue(
+    'Tip still ADVANCES to a new object even though geometry is unchanged (matches SPEC-hole.md\'s own measured note)',
+    entry.objName !== fc.shapes.get('b15').objName,
+  );
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);

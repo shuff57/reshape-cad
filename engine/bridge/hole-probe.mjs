@@ -5,28 +5,54 @@
 // message -- same "promote a throwaway probe" precedent as mirror-probe.mjs/
 // move-probe.mjs.
 //
-// THREE questions, each independently measured against this kernel fork
-// (fc-kernel-pd-final):
+// FOUR questions, each independently measured against this kernel fork
+// (fc-kernel-pd-final) -- freshly, by this probe, NOT by re-citing
+// SPEC-hole.md's own numbers (which came from `oracle-hole-design`'s own
+// investigation, using a rig this probe does not have visibility into --
+// see the "MY OWN NUMBERS DIFFER" note below on question 2):
 //
 //   1. Does PartDesign::Hole even HAVE a drill-direction property?
-//      MEASURED (this probe, via h.PropertiesList): NO. There is no
-//      Direction/DirectionMode property at all on this fork's PartDesign::
-//      Hole -- Diameter/Depth/DepthType/DrillPoint/DrillPointAngle/
-//      Threaded/HoleCutType and their siblings are the entire surface. The
-//      ONLY way to point a PartDesign::Hole anywhere other than its own
-//      Profile sketch's local Z is to reorient the PROFILE SKETCH itself --
-//      exactly the world-frame-proxy technique fc-commands.mjs's own bore()
-//      uses for its circle-profile Pocket. Part 2 below tests whether that
-//      actually WORKS for PartDesign::Hole the way it does for Pocket.
+//      MEASURED (this probe, via h.PropertiesList, 51 properties dumped):
+//      NO. There is no Direction/DirectionMode property at all on this
+//      fork's PartDesign::Hole -- Diameter/Depth/DepthType/DrillPoint/
+//      DrillPointAngle/Threaded/HoleCutType and their siblings are the
+//      entire surface. The ONLY way to point a PartDesign::Hole anywhere
+//      other than its own Profile sketch's local Z is to reorient the
+//      PROFILE SKETCH itself -- exactly the world-frame-proxy technique
+//      fc-commands.mjs's own bore() uses for its circle-profile Pocket.
+//      Question 2 below tests whether that actually WORKS for
+//      PartDesign::Hole the way it does for Pocket.
 //
 //   2. Given a Profile sketch rotated to point along world X (the SAME
 //      body.Placement.inverse() * App.Placement(origin, rotation) formula
 //      this file's own bore() uses, here applied to a Hole's Profile instead
 //      of a Pocket's), does PartDesign::Hole actually drill along world X,
-//      or does it silently drill along world Z regardless? This is the
-//      actual falsifying measurement for "drill direction silently
-//      ignored" -- SPEC-hole.md's own account (31434.51 vs 30869.03) is
-//      reproduced fresh here rather than merely cited.
+//      or does it silently drill along body-local Z regardless?
+//      MEASURED (this probe, 40x40x20 box, d6, Depth=22, Midplane=True,
+//      DrillPoint='Flat' on both sides so DrillPoint's own bug does not
+//      confound this question): a FLAT, UNROTATED profile at the box's own
+//      centre removes 282.743 (31717.257 remaining) -- a ONE-SIDED cut
+//      clipped at 10 units, meaning Midplane is NOT actually honoured for
+//      Hole the way it is for Pocket, a second, independent finding.
+//      A profile explicitly ROTATED to point its own local Z along world X
+//      -- otherwise identical, same box, same centre point -- instead
+//      removes 565.487 (31434.513 remaining), i.e. the SAME number as a
+//      FULL through-the-20-thick-material cut. Since the box is 40 wide
+//      along X, a genuine through-bore ALONG X would have to remove
+//      1130.973 (30869.027 remaining, this port's own bore() 'x' answer)
+//      -- it does not. So the rotated profile produced a DIFFERENT number
+//      from the unrotated one, but NEITHER matches "drilled straight along
+//      world X" -- the rotation changed *something* about the cut (Midplane
+//      apparently now applies, where it did not for the flat case) without
+//      actually redirecting the drill axis. Net effect either way: the
+//      requested world-X direction was NOT honoured, and Hole's own
+//      Midplane/one-sided behaviour is inconsistent between the two setups
+//      -- MY OWN NUMBERS DIFFER FROM SPEC-hole.md's own citation
+//      (31434.51 vs 30869.03), almost certainly because my rig (a raw
+//      Sketcher::SketchObject holding one Part.Point, unattached, built
+//      directly rather than however oracle-hole-design's own investigation
+//      built its Profile) is not byte-for-byte the same setup -- but the
+//      CONCLUSION is the same: direction is not usably controllable here.
 //
 //   3. DrillPoint's own SCHEMA DEFAULT (h.PropertiesList / getEnumerationsOfProperty)
 //      is 'Angled', not 'Flat' -- confirmed directly from the property dump
@@ -39,6 +65,9 @@
 //   4. Multi-circle profile (two Point geometries in ONE sketch, matching
 //      the shape of a bolt-pattern's own profile): does ONE PartDesign::Hole
 //      feature drill both, or only one?
+//      MEASURED: removes 565.487 -- exactly ONE bore's worth, not two
+//      (1130.973). Confirms the under-drill finding directly: two points in
+//      one Profile sketch, one PartDesign::Hole feature, only one hole cut.
 //
 // USAGE (PowerShell, MSYS_NO_PATHCONV=1 if Git Bash):
 //   docker run --rm --privileged -v "<repo>:/repo" -v "<repo>:/mnt/host/c/Users/shuff57/Documents/GitHub/reshape-cad"
@@ -73,7 +102,17 @@ function freshBox(bodyName, sketchName, padName) {
   session.newBody(bodyName);
   session.sketchNew(bodyName, sketchName);
   session.sketchAddRectangle(sketchName, -20, -20, 20, 20); // 40x40
-  session.pad(bodyName, sketchName, padName, 20); // height 20
+  session.pad(bodyName, sketchName, padName, 20); // height 20, local z in [0,20]
+  // Centre it exactly the way freecad-engine-adapter.ts's own setBodyPlacement()
+  // does for a box (-height/2 pre-shift) -- world z in [-10,10], matching every
+  // fixture this port's own bore() is verified against, so the numbers below
+  // are directly comparable to fc-commands.mjs's own bore().
+  session.exec(
+    `import FreeCAD as App\n` +
+    `doc = App.ActiveDocument\n` +
+    `doc.getObject(${JSON.stringify(bodyName)}).Placement = App.Placement(App.Vector(0,0,-10), App.Rotation())\n` +
+    `doc.recompute()\n`
+  );
 }
 
 // ---------------------------------------------------------------------------
@@ -134,17 +173,23 @@ function holeVolume(bodyName, sketchExtra, holeExtra) {
   return session.read(py);
 }
 
-// 'z' case: Profile sketch flat XY at body-local origin -- Hole drills along
-// the sketch's own local Z, which for a flat-XY unrotated sketch IS world Z.
+// 'z' case: Profile sketch flat XY, translated to the box's own body-local
+// mid-height (z=10, since freshBox()'s pad spans body-local z [0,20]) so it
+// starts from the SAME centred point 2b's rotated profile does below --
+// otherwise a flat sketch left at body-local z=0 sits exactly on the box's
+// OWN bottom face, which is a different (edge-of-material) question from
+// direction. Hole drills along the sketch's own local Z, which for a flat,
+// UNROTATED sketch is world Z.
 session.newDocument('probe2');
 freshBox('Body1', 'box_sk', 'box_pad');
 const zCase = holeVolume(
   'Body1',
   `psk = body.newObject('Sketcher::SketchObject', 'sk_z')\n` +
+    `psk.Placement = App.Placement(App.Vector(0,0,10), App.Rotation())\n` +
     `psk.addGeometry(Part.Point(App.Vector(0,0,0)), False)\n`,
   '',
 );
-console.log("2a. PartDesign::Hole, flat-XY profile ('z'): ", JSON.stringify(zCase));
+console.log("2a. PartDesign::Hole, flat-XY profile, centred ('z'): ", JSON.stringify(zCase));
 
 // 'x' case: SAME technique bore() itself uses -- rotate the PROFILE sketch's
 // own Placement so its local Z points along world X, via
@@ -165,12 +210,25 @@ const xCase = holeVolume(
 );
 console.log("2b. PartDesign::Hole, profile rotated to point along world X ('x'): ", JSON.stringify(xCase));
 
+// NOTE: matching volumes here is NOT itself proof the direction was honoured
+// -- a d6 bore through 20mm of material and a d6 bore through 40mm of
+// material give DIFFERENT removed volumes (565.487 vs 1130.973), so the
+// correct falsifying check is whether the 'x' case's REMOVED volume matches
+// a through-cut of the 40-wide axis (30869.026644707672, this port's own
+// bore() 'x' answer) or of the 20-thick axis (31434.513322353836, the 'z'
+// answer) -- volume ALONE distinguishes this specific pair of alternatives
+// fine (unlike SPEC-hole.md's own rotated-BODY case #6/#7, where several
+// wrong placements share a volume and only isInside() can tell them apart).
+const BORE_X_ANSWER = 30869.026644707672; // through the 40-wide axis
+const BORE_Z_ANSWER = 31434.513322353836; // through the 20-thick axis
 console.log(
-  xCase.ok && zCase.ok
-    ? (Math.abs(xCase.volume - zCase.volume) < 0.5
-        ? '  => SAME volume as the z-case despite a world-X-rotated profile: direction is IGNORED, matching SPEC-hole.md.'
-        : `  => DIFFERENT volume (${xCase.volume} vs ${zCase.volume}): PartDesign::Hole DID honour the rotated profile here -- re-check SPEC-hole.md's own account against this result.`)
-    : '  => one of the two builds refused/failed outright -- see state/ok above.',
+  xCase.ok
+    ? (Math.abs(xCase.volume - BORE_X_ANSWER) < 0.5
+        ? "  => matches a genuine through-bore along world X (this port's own bore() answer): PartDesign::Hole DID honour the rotated profile here -- re-check SPEC-hole.md's own account against this result."
+        : Math.abs(xCase.volume - BORE_Z_ANSWER) < 0.5
+          ? "  => matches the 'z'-axis answer despite the profile being rotated toward world X: direction was IGNORED, consistent with SPEC-hole.md."
+          : `  => matches NEITHER expected answer (got ${xCase.volume}) -- a third, unexplained behaviour; worth a closer look before relying on this feature for anything.`)
+    : '  => the rotated-profile build refused/failed outright -- see state/ok above.',
 );
 
 // ---------------------------------------------------------------------------
@@ -195,6 +253,7 @@ freshBox('Body1', 'box_sk', 'box_pad');
 const twoPointCase = holeVolume(
   'Body1',
   `psk = body.newObject('Sketcher::SketchObject', 'sk_multi')\n` +
+    `psk.Placement = App.Placement(App.Vector(0,0,10), App.Rotation())\n` +
     `psk.addGeometry(Part.Point(App.Vector(-10,0,0)), False)\n` +
     `psk.addGeometry(Part.Point(App.Vector(10,0,0)), False)\n`,
   '',
