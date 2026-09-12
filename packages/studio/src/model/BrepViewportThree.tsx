@@ -306,6 +306,20 @@ interface Props {
    * fitToModel()'s own "never on every rebuild" rule).
    */
   panelOcclusionPx?: number;
+  /**
+   * Fired with the live EngineAdapter instance (and which kind it is)
+   * whenever this component (re)assigns `engineRef.current` -- once after
+   * the initial load, and again if the FreeCAD-refusal fallback above swaps
+   * in OcctEngineAdapter mid-session. Exists so a caller that needs to drive
+   * the adapter directly for something this component's own props don't
+   * cover -- Save/Open .FCStd (ReshapeStudio.tsx's own Save/Open buttons),
+   * which need `engine.saveDocument()`/`engine.openDocument()`, not a build/
+   * mesh/pick concern this component already owns -- can reach it, and can
+   * gray itself out correctly even during a live fallback (getEngineMode()
+   * alone would keep reporting 'freecad' through that swap; `kind` here
+   * reflects the ACTUAL engine currently active, not the configured mode).
+   */
+  onEngine?: (engine: EngineAdapter, kind: 'occt' | 'freecad') => void;
 }
 
 // loadKernel()/dynamicImportKernel()/kernelImportStrategy used to live here,
@@ -480,7 +494,7 @@ const EDGE_TUBE_RADIUS = 0.75;
  */
 export default function BrepViewportThree({
   doc, deflection, onStats, onPick, pick, selectedCount, selectionLabel, anchors, onAnchors, onMesh, registerPickAt,
-  sketchPlane, panelOcclusionPx, ruleActivityAt,
+  sketchPlane, panelOcclusionPx, ruleActivityAt, onEngine,
 }: Props) {
   const [phase, setPhase] = useState<'loading' | 'ready' | 'error'>('loading');
   // Which view-strip preset the camera is sitting on, or null once the
@@ -592,6 +606,8 @@ export default function BrepViewportThree({
   onStatsRef.current = onStats;
   const onMeshRef = useRef(onMesh);
   onMeshRef.current = onMesh;
+  const onEngineRef = useRef(onEngine);
+  onEngineRef.current = onEngine;
   const registerPickAtRef = useRef(registerPickAt);
   registerPickAtRef.current = registerPickAt;
   // The scene-setup effect below only re-runs on a `phase` change (see its
@@ -701,6 +717,7 @@ export default function BrepViewportThree({
         const [engine, fallback] = result;
         engineRef.current = engine;
         fallbackEngineRef.current = fallback;
+        onEngineRef.current?.(engine, getEngineMode());
         setLoadingNote(`${getEngineMode()} engine ready`);
         setPhase('ready');
       })
@@ -2218,6 +2235,7 @@ export default function BrepViewportThree({
         }
         engine = fallback;
         engineRef.current = fallback;
+        onEngineRef.current?.(fallback, 'occt');
         setEngineFallbackNote(
           `This model uses a feature FreeCAD can't build yet (${msg.replace(/^not yet supported on the FreeCAD engine: /, '')}) -- showing it with the other engine.`,
         );

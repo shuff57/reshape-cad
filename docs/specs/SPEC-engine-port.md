@@ -1131,3 +1131,70 @@ fillet, undo all still work identically), and the wasm kernel (23-58 MB) so
 dominates the load time over three.js's own chunk that the effect is likely
 sub-second in absolute terms, but it is a genuine, unmeasured timing
 difference from before this phase, named here rather than silently accepted.
+
+### 6.6 Save/Open `.FCStd` (SPEC-studio-canonical.md phase 4) -- `EngineAdapter` grows two methods
+
+`EngineAdapter` (§3.1) gained `saveDocument(doc: ModelDoc): Uint8Array` and
+`openDocument(bytes: Uint8Array): ModelDoc | null`, matching
+`fc-session.mjs`'s own bridge-level `saveDocument()`/`openDocument()` naming
+(a real, ModelDoc-agnostic primitive already proven by `engine/play/
+studio.js`'s own Save/Open buttons, found already there before writing any
+new code here). The bridge stays ModelDoc-agnostic on purpose (this file's
+own §2.1, "the FreeCAD bridge knows nothing about ModelDoc") -- the new
+adapter-level methods are the ModelDoc-aware half, living in
+`freecad-engine-adapter.ts` instead.
+
+**The real design question this phase was flagged to stop and report on
+instead of guessing**: a `.FCStd` can hold arbitrary FreeCAD Part/PartDesign/
+Sketcher trees built entirely outside this app (`studio.html`'s own Open
+button supports exactly that), while `ModelDoc` (`model-types.ts`) is a much
+narrower, single-body-per-chain vocabulary of ~13 `Feature.kind`s. Resolved
+by NOT attempting to reverse-engineer a general FreeCAD feature tree back
+into a `ModelDoc` at all: `saveDocument()` writes a real, independently-
+openable native `.FCStd`, but ALSO embeds the original `ModelDoc` as a
+marker-prefixed JSON string in `App::Document.Comment` (a plain string
+property every FreeCAD document already has). `openDocument()` looks for
+that marker and returns the embedded `ModelDoc`, structurally exact, when
+present; returns `null` -- refuses, per this port's established "no answer
+over a wrong one" rule (topo-resolve.ts's own header; the pattern refusals
+in §6.1) -- for any file that does not carry it, i.e. any `.FCStd` this
+adapter did not itself save. `App::Document.Meta` (a dict-valued property)
+was also measured to round-trip the same way and was considered instead;
+`Comment` was chosen for being one plain string field, no dict-marshalling
+edge case to carry across a Python binding this port has already found real
+surprises in more than once (`Body.Tip`, `OriginFeatures` naming in §6.1).
+Both were confirmed, not assumed, via a standalone probe script against
+`fc-kernel-pd-final` before writing any adapter code.
+
+`OcctEngineAdapter` implements both methods as an unconditional throw
+(`"not supported on the OCCT engine: ..."`) -- OCCT has no `.FCStd` concept
+at all, so there is no degraded answer to give, only a clear refusal
+distinguishable from `FreeCadEngineAdapter`'s own per-feature `"not yet
+supported on the FreeCAD engine: <kind>"` refusals (a different failure
+shape: a whole capability, not one unbuilt feature). `ReshapeStudio.tsx`'s
+Save/Open buttons gray out on the OCCT engine instead of relying on this
+throw at all -- `BrepViewportThree.tsx` grew an `onEngine` prop (fired with
+the live `EngineAdapter` instance and which kind is ACTUALLY active) so the
+UI can gray out correctly even mid-session, after a FreeCAD-refusal fallback
+(§6.1's per-doc OCCT fallback) has silently swapped the live engine to OCCT
+underneath a `getEngineMode()` that still reports `'freecad'`.
+
+**Verified against the real kernel**
+(`packages/kernel/test/freecad-save-open.manual.mjs`, 10/10): building a
+box+pattern `ModelDoc`, saving it, and reopening the raw bytes through the
+BRIDGE directly (no `ModelDoc` involved at all) reproduces the identical
+mesh volume -- a genuine native round trip, not just "no error thrown"; the
+adapter's own `openDocument()` reconstructs a `ModelDoc` structurally equal
+to the original; rebuilding THAT reconstructed `ModelDoc` from scratch,
+independently, reproduces the same volume a third way; a `.FCStd` built via
+raw bridge commands with no embedded marker correctly returns `null`, not a
+guessed document; `OcctEngineAdapter.saveDocument()`/`openDocument()` both
+throw the expected clear message.
+
+**Verified live in the browser** (bowser, `packages/sandbox-dev`, real
+FreeCAD wasm kernel): built a 40x40x20 box, confirmed Save/Open were enabled
+once a shape existed, clicked Save and captured the real download (`reshape-
+1-feature-<timestamp>.FCStd`, 9,246 bytes), cleared the model, clicked Open
+and selected that same file via a native file chooser, and confirmed the
+identical box reappeared in the viewport a few seconds later with no console
+errors attributable to Save/Open or the kernel.

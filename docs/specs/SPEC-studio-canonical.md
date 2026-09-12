@@ -13,7 +13,15 @@ topo-naming for picking) DONE for extrude (sketch-derived wall/cap naming,
 stays refused, deliberately matching OCCT's own scope for the same case --
 see SPEC-engine-port.md §6.2a for the full account, including a real,
 previously-shipped sketch-translate.ts sign bug found and fixed along the
-way. Phase 4 (Save/Open .FCStd) next.
+way. Phase 4 (Save/Open .FCStd) DONE -- EngineAdapter grew
+saveDocument()/openDocument(); FreeCAD saves a real, independently-openable
+.FCStd that also embeds the original ModelDoc as JSON (so it round-trips
+exactly), OCCT throws a clear refusal, and the UI grays out Save/Open on the
+OCCT engine rather than showing an error after a click. See
+SPEC-engine-port.md §6.6 for the full account, including the real design
+question this phase was flagged to stop and report on (an arbitrary
+real-world .FCStd cannot in general be reconstructed as a ModelDoc) and how
+it was resolved without guessing.
 
 Out-of-band bugfix (2026-09-11, separate from the phase sequence above): a
 real, pre-existing bug in the box/cylinder branches of `build()` -- `f.center`
@@ -164,10 +172,44 @@ correctness-critical CAD kernel work.
    since a point reflection does not change volume. Full account, including
    the exact measurement and the fix's precise scope, in
    `SPEC-engine-port.md` §6.2a.
-4. **Save/Open .FCStd** — new `EngineAdapter` methods. Straightforward on
-   the FreeCAD side (native format); OCCT adapter can throw
-   "not supported on this engine" per the established fallback-refusal
-   pattern.
+4. **DONE. Save/Open .FCStd** -- `EngineAdapter` grew `saveDocument(doc):
+   Uint8Array` / `openDocument(bytes): ModelDoc | null`, matching
+   fc-session.mjs's own bridge-level naming. FreeCAD's own saveAs/
+   openDocument (already proven by studio.js's Save/Open buttons) write a
+   real, independently-openable `.FCStd`, which also embeds the ORIGINAL
+   ModelDoc as marker-prefixed JSON in `App::Document.Comment` -- measured,
+   not assumed, to round-trip byte-for-byte through saveAs()/openDocument()
+   via a standalone probe against fc-kernel-pd-final before writing any
+   adapter code (App::Document.Meta, a dict property, was also measured to
+   work and considered, but Comment's single-string shape has fewer
+   Python-binding edge cases on a kernel that has already surprised this
+   port more than once). `openDocument()` returns the embedded ModelDoc
+   exactly for anything this adapter saved, and refuses (null) for anything
+   else -- an arbitrary real-world `.FCStd` (studio.html's own Open button
+   supports exactly that) has no ModelDoc-shaped history at all, and
+   guessing one from a general FreeCAD Part/PartDesign/Sketcher tree would
+   silently misrepresent the model the moment the guess is wrong, so this
+   follows the same "no answer over a wrong one" rule as the pattern/picking
+   refusals in phases 2-3 rather than attempting a partial import.
+   `OcctEngineAdapter` throws a clear "not supported on the OCCT engine"
+   error for both methods (OCCT has no `.FCStd` concept at all); the UI
+   (`ReshapeStudio.tsx`'s new Save/Open toolbar buttons) grays both out on
+   the OCCT engine instead of relying on that throw, via a new `onEngine`
+   prop on `BrepViewportThree.tsx` that reports which engine is ACTUALLY
+   live (correct even through the phase-1-documented per-doc OCCT fallback,
+   not just the configured getEngineMode()). Verified against
+   `fc-kernel-pd-final`
+   (`packages/kernel/test/freecad-save-open.manual.mjs`, 10/10): a genuine
+   three-way round trip (native bytes reopened through the bridge directly
+   reproduce the same mesh volume; the embedded ModelDoc reconstructs
+   structurally exact; rebuilding that reconstructed ModelDoc from scratch
+   reproduces the same volume again), a foreign `.FCStd` with no embedded
+   marker correctly refuses, and both OCCT methods throw the expected
+   message. Also verified live in the browser (bowser, sandbox-dev,
+   fully-wired FreeCAD engine): built a real box, Save downloaded a real
+   9,246-byte `.FCStd`, Clear model emptied the viewport, and Open on that
+   same file correctly restored the identical box -- no console errors.
+   Full account in SPEC-engine-port.md §6.6.
 5. **Retire `engine/play/studio.html`** — once 1-4 are verified, archive
    (not delete) the vanilla prototype, update `SPEC-engine-port.md`, the
    plan file, and `bench/record.json` to point at the sandbox as canonical.

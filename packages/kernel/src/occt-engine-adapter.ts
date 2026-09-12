@@ -187,4 +187,20 @@ export class OcctEngineAdapter implements EngineAdapter {
       return null;
     }
   }
+
+  // .FCStd is a FreeCAD-native format -- OCCT/replicad has no concept of it
+  // at all, so there is no partial or degraded answer to give here, only a
+  // clear refusal. Prefixed distinctly from FreeCadEngineAdapter's own
+  // "not yet supported on the FreeCAD engine: <kind>" refusals (which name a
+  // SPECIFIC unbuilt feature kind, not a whole capability) so a caller can
+  // tell the two apart if it ever needs to -- callers should prefer gating
+  // Save/Open on getEngineMode() (packages/kernel/src/config.ts) instead of
+  // relying on catching this message.
+  saveDocument(_doc: ModelDoc): Uint8Array {
+    throw new Error('not supported on the OCCT engine: Save (.FCStd) requires the FreeCAD engine');
+  }
+
+  openDocument(_bytes: Uint8Array): ModelDoc | null {
+    throw new Error('not supported on the OCCT engine: Open (.FCStd) requires the FreeCAD engine');
+  }
 }

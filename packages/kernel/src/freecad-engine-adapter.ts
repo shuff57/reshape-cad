@@ -161,6 +161,20 @@
 // inspects the shape of a face/edge handle, only passes it back into this
 // SAME adapter's own methods), so this is an internal representation fix,
 // not an interface change.
+//
+// SAVE/OPEN .FCStd (SPEC-studio-canonical.md phase 4) -- saveDocument()/
+// openDocument() below. save is a real, independently-openable FreeCAD
+// document (verified against the real kernel: a fresh session's
+// openDocument() on the saved bytes reproduces the identical mesh volume),
+// PLUS the original ModelDoc embedded as JSON in the document's own Comment
+// property, so open can round-trip anything this adapter saved exactly. Open
+// REFUSES (returns null) for any `.FCStd` it did not save itself -- an
+// arbitrary real-world FreeCAD file has no ModelDoc-shaped history at all,
+// and guessing one from its native Part/PartDesign tree would silently
+// misrepresent the model -- see engine-adapter.ts's own doc comment on these
+// two methods for the full reasoning, and this port's own report for the
+// probe that measured Comment (and Meta) actually surviving a save/open
+// round trip on this kernel build before committing to the design.
 
 import type { Feature, ModelDoc, SketchFeature, Vec3 } from '@shuff57/reshape-script/model-types';
 import type { TopoName } from '@shuff57/reshape-script/topo-name';
@@ -182,6 +196,8 @@ export interface FcSessionLike extends SketchSession {
   newDocument(name?: string): void;
   exec(code: string): { rc: number; out: string };
   read(code: string): any;
+  saveDocument(fcstdPath?: string): Uint8Array;
+  openDocument(bytes: Uint8Array, fcstdPath?: string): string;
   meshFaces(objName?: string | null, deflection?: number): {
     object?: string;
     faces: Array<{ id: number; positions: number[]; indices: number[] }>;
@@ -341,6 +357,16 @@ const OUT_PATH = '/tmp/reshape_out.json';
 
 const BOX_PARTS = new Set(['+x', '-x', '+y', '-y', '+z', '-z']);
 const CYLINDER_PARTS = new Set(['+z', '-z', 'side']);
+
+/** Prefix stamped on the ORIGINAL ModelDoc JSON before it is stashed in
+ *  App::Document.Comment (see saveDocument()/openDocument() below) -- lets
+ *  openDocument() tell "this is a ModelDoc this adapter wrote" apart from an
+ *  arbitrary real .FCStd file whose own author happened to write a Comment
+ *  that is coincidentally valid JSON (a real, if unlikely, risk with no
+ *  prefix check at all). Not a security boundary, just a cheap sanity gate
+ *  before JSON.parse -- the version/features shape check right after it is
+ *  what actually decides the file is trustworthy. */
+const MODELDOC_MARKER = 'RESHAPE_MODELDOC_V1:';
 
 export class FreeCadEngineAdapter implements EngineAdapter {
   private session: FcSessionLike | null = null;
@@ -1492,5 +1518,84 @@ export class FreeCadEngineAdapter implements EngineAdapter {
       `open(${pyStr(OUT_PATH)}, 'w').write(json.dumps({'length': length}))\n`;
     const res = session.read(py);
     return typeof res?.length === 'number' && Number.isFinite(res.length) ? res.length : null;
+  }
+
+  // ---- Save/Open .FCStd ----------------------------------------------------
+  //
+  // fc-session.mjs already carries the bridge-level primitives this needs
+  // (saveDocument()/openDocument(), proven since engine/play/studio.js's own
+  // Save/Open buttons) -- both are ModelDoc-agnostic on purpose ("the FreeCAD
+  // bridge knows nothing about ModelDoc", this file's own header), so the
+  // ModelDoc-specific half (embedding/reading the JSON, deciding when to
+  // refuse) lives here instead of in the bridge.
+  //
+  // See engine-adapter.ts's own saveDocument()/openDocument() doc comments
+  // for the full design rationale (why open() refuses rather than guesses).
+  // MEASURED against the real kernel, not assumed: App::Document.Comment (a
+  // plain string property every FreeCAD document already has) round-trips a
+  // multi-hundred-byte JSON string byte-for-byte through saveAs()/
+  // openDocument() on fc-kernel-pd-final -- see this port's own report for
+  // the probe script and its output. Chosen over App::Document.Meta (a
+  // dict-valued property that ALSO round-trips, measured the same way) for
+  // being one plain string field with no dict-marshalling edge cases to
+  // carry across a Python binding this session has already found surprises
+  // in more than once (Body.Tip, OriginFeatures naming).
+
+  saveDocument(doc: ModelDoc): Uint8Array {
+    const session = this.requireSession();
+    // Rebuild fresh from `doc` itself rather than trusting whatever the
+    // session's ActiveDocument happens to currently hold -- a caller could
+    // otherwise save a stale or mid-drag preview document that does not
+    // match the `doc` it asked to save. build()'s own v1-full-replay
+    // discipline (this file's header) makes this cheap and exact: the same
+    // session.newDocument('reshape') + full re-emit every build() already
+    // does, not a second code path.
+    this.build(doc);
+    const json = JSON.stringify(doc);
+    const { rc, out } = session.exec(
+      `import FreeCAD as App\n` +
+      `_doc = App.ActiveDocument\n` +
+      `_doc.Comment = ${pyStr(MODELDOC_MARKER + json)}\n`,
+    );
+    if (rc !== 0) throw new Error(`saveDocument: could not embed ModelDoc metadata:\n${out}`);
+    return session.saveDocument();
+  }
+
+  openDocument(bytes: Uint8Array): ModelDoc | null {
+    const session = this.requireSession();
+    // Always actually opens the file into the engine's own session -- even
+    // when the ModelDoc reconstruction below fails and this returns null,
+    // the bytes were still real, kernel-verified `.FCStd` content (openDocument
+    // throws on anything that isn't). The very next build() call replaces
+    // whatever this leaves active anyway (v1 full-replay, same as save()
+    // above), so leaving it loaded costs nothing and matches
+    // fc-session.mjs's own openDocument() contract ("becomes the new
+    // ActiveDocument").
+    session.openDocument(bytes);
+    let comment: string | undefined;
+    try {
+      comment = session.read(
+        `import json, FreeCAD as App\n` +
+        `_doc = App.ActiveDocument\n` +
+        `open(${pyStr(OUT_PATH)}, 'w').write(json.dumps({'comment': _doc.Comment}))\n`,
+      )?.comment;
+    } catch {
+      return null;
+    }
+    if (typeof comment !== 'string' || !comment.startsWith(MODELDOC_MARKER)) return null;
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(comment.slice(MODELDOC_MARKER.length));
+    } catch {
+      return null;
+    }
+    if (
+      !parsed || typeof parsed !== 'object'
+      || (parsed as { version?: unknown }).version !== 1
+      || !Array.isArray((parsed as { features?: unknown }).features)
+    ) {
+      return null;
+    }
+    return parsed as ModelDoc;
   }
 }

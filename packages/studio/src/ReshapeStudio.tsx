@@ -17,9 +17,9 @@
 
 import {
   useCallback, useEffect, useMemo, useRef, useState,
-  type ComponentType, type ForwardRefExoticComponent, type ReactNode, type RefAttributes,
+  type ChangeEvent, type ComponentType, type ForwardRefExoticComponent, type ReactNode, type RefAttributes,
 } from 'react';
-import { Download, RotateCcw } from 'lucide-react';
+import { Download, FolderOpen, RotateCcw, Save } from 'lucide-react';
 import ReshapeParamsPanel, { type ParamDef, type ParamValues } from './ReshapeParamsPanel.js';
 import ModelEditor from './model/ModelEditor.js';
 import BrepViewport, { type BrepViewportStats, type ViewportPick } from './model/BrepViewportThree.js';
@@ -40,6 +40,7 @@ import {
 } from '@shuff57/reshape-script/model-codegen';
 import { toScript, type ScriptParamRef } from '@shuff57/reshape-script/reshape-script-gen';
 import { getKernelBaseUrl } from '@shuff57/reshape-kernel/config';
+import type { EngineAdapter } from '@shuff57/reshape-kernel/engine-adapter';
 
 /** The two pieces of shCode's lesson/sandbox chrome this component does not
  *  own -- CodeEditor is the shared, store-backed code editor used well
@@ -382,6 +383,15 @@ export default function ReshapeStudio({
   const [anchors, setAnchors] = useState<AnchorPoint[]>([]);
   const meshRef = useRef<MeshInput | null>(null);
   const [hasMesh, setHasMesh] = useState(false);
+  // The live EngineAdapter instance, handed up by BrepViewport's own
+  // onEngine prop -- see that prop's own comment. `engineKind` tracks which
+  // kind is ACTUALLY active (not just the configured getEngineMode()): a
+  // FreeCAD-refusal fallback can swap the live engine to OCCT mid-session,
+  // and Save/Open need to gray out for that too, not just for a session that
+  // started in 'occt' mode. Null until the viewport's first load finishes.
+  const engineRef = useRef<EngineAdapter | null>(null);
+  const [engineKind, setEngineKind] = useState<'occt' | 'freecad' | null>(null);
+  const openInputRef = useRef<HTMLInputElement | null>(null);
   const pickAtRef = useRef<((clientX: number, clientY: number) => void) | null>(null);
   const specsRef = useRef<unknown[]>([]);
   const frameRef = useRef<HTMLIFrameElement | null>(null);
@@ -904,6 +914,64 @@ export default function ReshapeStudio({
     URL.revokeObjectURL(url);
   }
 
+  // Save/Open .FCStd -- packages/kernel/src/engine-adapter.ts's own
+  // saveDocument()/openDocument(), FreeCAD-only (see engineRef/engineKind's
+  // own comment above for why the button grays out on OCCT rather than
+  // failing after a click). Mirrors exportSTL()'s bytes-to-Blob download
+  // pattern above; Open mirrors engine/play/studio.js's own hidden-
+  // <input type="file"> pattern (retiring, but its Save/Open buttons are the
+  // ones this replaces).
+  function saveFCStd() {
+    const engine = engineRef.current;
+    if (!engine) return;
+    try {
+      const bytes = engine.saveDocument(docRef.current);
+      const blob = new Blob([bytes.buffer as ArrayBuffer], { type: 'application/octet-stream' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = exportFilename('FCStd');
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      window.alert(`Could not save: ${e instanceof Error ? e.message : String(e)}`);
+    }
+  }
+
+  function openFCStdClick() {
+    openInputRef.current?.click();
+  }
+
+  async function openFCStdFile(e: ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = ''; // allow re-opening the same file
+    if (!file) return;
+    const engine = engineRef.current;
+    if (!engine) return;
+    try {
+      const bytes = new Uint8Array(await file.arrayBuffer());
+      // Null is a real, expected answer here -- see openDocument()'s own
+      // doc comment -- not something to treat as a crash: a `.FCStd` this
+      // app didn't save has no ModelDoc-shaped history to recover.
+      const next = engine.openDocument(bytes);
+      if (!next) {
+        window.alert(`"${file.name}" wasn't created by this app's Save, so it can't be reopened here.`);
+        return;
+      }
+      loadDoc(next);
+      setSelected([]);
+      setPickedEdge(null);
+      setPickedFace(null);
+      past.current = [];
+      future.current = [];
+      setDepth({ back: 0, forward: 0 });
+    } catch (e) {
+      window.alert(`Could not open "${file.name}": ${e instanceof Error ? e.message : String(e)}`);
+    }
+  }
+
   const showBrep = build;
   // Code's own visible model: once a Run (or the mount hydration) has built
   // something, Code shows the SAME B-rep viewport Build uses, fed by the
@@ -994,6 +1062,41 @@ export default function ReshapeStudio({
               <Download size={12} />
               Export 3MF
             </button>
+            {/* .FCStd is FreeCAD-native -- OcctEngineAdapter has no concept of
+                it at all (see occt-engine-adapter.ts's own saveDocument()/
+                openDocument()), so these gray out on the OCCT engine (or
+                before the engine has loaded) rather than showing an error
+                after a click, same "disable, don't fail" bar as the
+                hasMesh-gated Export buttons above. */}
+            <button
+              style={engineKind === 'freecad' && hasMesh ? chipStyle : { ...chipStyle, opacity: 0.35, cursor: 'not-allowed' }}
+              onClick={saveFCStd}
+              disabled={!(engineKind === 'freecad' && hasMesh)}
+              title={
+                engineKind !== 'freecad'
+                  ? 'Save/Open .FCStd needs the FreeCAD engine'
+                  : hasMesh ? 'Download the current model as a FreeCAD .FCStd file' : 'Build a shape first'
+              }
+            >
+              <Save size={12} />
+              Save
+            </button>
+            <button
+              style={engineKind === 'freecad' ? chipStyle : { ...chipStyle, opacity: 0.35, cursor: 'not-allowed' }}
+              onClick={openFCStdClick}
+              disabled={engineKind !== 'freecad'}
+              title={engineKind === 'freecad' ? 'Open a previously-saved .FCStd file' : 'Save/Open .FCStd needs the FreeCAD engine'}
+            >
+              <FolderOpen size={12} />
+              Open
+            </button>
+            <input
+              ref={openInputRef}
+              type="file"
+              accept=".FCStd,.fcstd"
+              style={{ display: 'none' }}
+              onChange={openFCStdFile}
+            />
           </>
         )}
         {toolbarExtra}
@@ -1108,6 +1211,10 @@ export default function ReshapeStudio({
                 onMesh={(m) => {
                   meshRef.current = m;
                   setHasMesh(m !== null);
+                }}
+                onEngine={(engine, kind) => {
+                  engineRef.current = engine;
+                  setEngineKind(kind);
                 }}
                 registerPickAt={(fn) => { pickAtRef.current = fn; }}
               />
