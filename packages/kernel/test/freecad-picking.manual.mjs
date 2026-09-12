@@ -153,5 +153,74 @@ for (let i = 0; i < 8; i += 1) {
 checkTruthy('at least 4 of the filleted box\'s flat faces still name (only +x/+z\'s corner is touched)', filletNamedCount >= 4);
 checkTruthy('at least one face (the round\'s own new curved surface) is an honest null, not a guess', filletUnnamedCount >= 1);
 
+// ---------------------------------------------------------------------------
+// 4. Regression check for the box/cylinder double-translation fix
+//    (SPEC-engine-port.md §6.1a): resolvePrimitiveEdgeName()/
+//    queryPrimitiveGeometry() compute their own direction-scoring reference
+//    frame from the shape's CURRENT BoundBox on every call, never from a
+//    stored f.center, so moving box/cylinder's sketch geometry to local
+//    (0,0) should not change anything here. Confirmed live, not assumed --
+//    every case above already used center [0,0,0], which cannot tell the
+//    old (buggy) and new (fixed) behavior apart.
+// ---------------------------------------------------------------------------
+console.log('\n--- off-origin box/cylinder: picking unaffected by the double-translation fix ---');
+const offOriginBoxDoc = { version: 1, features: [{ id: 'box3', kind: 'box', size: [20, 30, 40], center: [30, 20, 5] }] };
+const offOriginBoxBuilt = adapter.build(offOriginBoxDoc);
+for (const part of ['+x', '-x', '+y', '-y', '+z', '-z']) {
+  const ref = adapter.resolveFace({ cause: 'primitive', feature: 'box3', kind: 'face', part }, offOriginBoxBuilt);
+  checkTruthy(`off-origin box resolveFace('${part}')`, !!ref);
+}
+const offOriginEdgeName = {
+  cause: 'between',
+  of: [
+    { cause: 'primitive', feature: 'box3', kind: 'face', part: '+x' },
+    { cause: 'primitive', feature: 'box3', kind: 'face', part: '+z' },
+  ],
+};
+const offOriginEdgeRef = adapter.resolveEdge(offOriginEdgeName, offOriginBoxBuilt);
+checkTruthy('off-origin box resolveEdge(between +x/+z)', !!offOriginEdgeRef);
+if (offOriginEdgeRef) {
+  // +x face spans (y,z), +z face spans (x,y) -- their shared edge runs
+  // along Y, so its length is the box's own d = 30.
+  check('off-origin box edgeLength matches d=30', adapter.edgeLength(offOriginEdgeRef), 30);
+}
+const offOriginFilletDoc = {
+  version: 1,
+  features: [
+    { id: 'box4', kind: 'box', size: [20, 30, 40], center: [30, 20, 5] },
+    {
+      id: 'f2',
+      kind: 'fillet',
+      style: 'fillet',
+      target: 'box4',
+      size: 2,
+      edge: {
+        cause: 'between',
+        of: [
+          { cause: 'primitive', feature: 'box4', kind: 'face', part: '+x' },
+          { cause: 'primitive', feature: 'box4', kind: 'face', part: '+z' },
+        ],
+      },
+    },
+  ],
+};
+const offOriginFilletBuilt = adapter.build(offOriginFilletDoc);
+checkTruthy('fillet on off-origin box built with no refusal', !offOriginFilletBuilt.refusals || !offOriginFilletBuilt.refusals.get('f2'));
+
+const offOriginCylDoc = { version: 1, features: [{ id: 'cyl1', kind: 'cylinder', radius: 5, height: 10, center: [30, 20, 5] }] };
+const offOriginCylBuilt = adapter.build(offOriginCylDoc);
+for (const part of ['+z', '-z', 'side']) {
+  const ref = adapter.resolveFace({ cause: 'primitive', feature: 'cyl1', kind: 'face', part }, offOriginCylBuilt);
+  checkTruthy(`off-origin cylinder resolveFace('${part}')`, !!ref);
+}
+const offOriginCylEdgeRef = adapter.resolveEdge({
+  cause: 'between',
+  of: [
+    { cause: 'primitive', feature: 'cyl1', kind: 'face', part: 'side' },
+    { cause: 'primitive', feature: 'cyl1', kind: 'face', part: '+z' },
+  ],
+}, offOriginCylBuilt);
+checkTruthy('off-origin cylinder resolveEdge(between side/+z)', !!offOriginCylEdgeRef);
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail > 0 ? 1 : 0);

@@ -101,7 +101,13 @@ function makeAdapter(session) {
 const boxNamed = (id, part) => ({ cause: 'primitive', feature: id, kind: 'face', part });
 const betweenBox = (id, partA, partB) => ({ cause: 'between', feature: id, kind: 'edge', of: [boxNamed(id, partA), boxNamed(id, partB)] });
 
-test('box: centred rectangle sketch + pad + Body.Placement carrying center/rotation', () => {
+test('box: rectangle sketch at LOCAL origin (not center) + pad + Body.Placement carrying ALL of center/rotation', () => {
+  // `center` used to get baked into the sketch's own local x/y coordinates
+  // AND applied again via Body.Placement -- a real double-translation bug,
+  // fixed by drawing the sketch at local (0,0) unconditionally and letting
+  // setBodyPlacement's Body.Placement carry `center` exclusively, same
+  // convention as sphere/cone/torus/prism. See freecad-engine-adapter.ts's
+  // own comments on the box/cylinder branches and setBodyPlacement.
   const session = makeFakeSession();
   const adapter = makeAdapter(session);
   const doc = {
@@ -114,15 +120,16 @@ test('box: centred rectangle sketch + pad + Body.Placement carrying center/rotat
   assert.equal(result.refusals, undefined);
 
   const rect = session.calls.find((c) => c.name === 'sketchAddRectangle');
-  // center [5,0,0], size [40,20,10] -> x in [5-20,5+20]=[-15,25], y in [-10,10]
-  assert.deepEqual(rect.args.slice(1), [-15, -10, 25, 10]);
+  // size [40,20,10] -> x in [-20,20], y in [-10,10] -- centred on LOCAL
+  // origin regardless of `center`, which never appears here anymore.
+  assert.deepEqual(rect.args.slice(1), [-20, -10, 20, 10]);
 
   const pad = session.calls.find((c) => c.name === 'pad');
   assert.equal(pad.args[3], 10, 'pad length = box height');
 
   const placementExec = session.calls.find((c) => c.name === 'exec' && c.args[0].includes('body.Placement'));
   assert.ok(placementExec, 'setBodyPlacement must run an exec() snippet');
-  assert.match(placementExec.args[0], /App\.Vector\(5,0,0\)/, 'placement carries the box center');
+  assert.match(placementExec.args[0], /App\.Vector\(5,0,0\)/, 'placement carries the box center -- the ONLY place center is applied now');
   assert.match(placementExec.args[0], /-5\)/, 'placement pre-shift carries -height\\/2 = -5');
   assert.match(placementExec.args[0], /App\.Rotation\(App\.Vector\(0,0,1\), 30\)/, 'placement carries the Z rotation');
 });
@@ -301,14 +308,24 @@ test('pattern: linear along a single world axis -- Length is signed step*(count-
   assert.notEqual(result.shapes.get('pat1').objName, result.shapes.get('box1').objName);
 });
 
-test('pattern: circular around z builds; a non-z axis refuses per-feature', () => {
+test('pattern: circular around z builds on a non-primitive (sketch/extrude) chain; a non-z axis refuses per-feature', () => {
+  // A box/cylinder/sphere/cone/torus/prism target ALWAYS refuses a circular
+  // pattern (see the 'pattern: circular on a primitive target refuses' test
+  // below) -- every primitive's own local geometry sits at/near body-local
+  // (0,0,0), exactly where the pattern's own Origin-datum axis also sits,
+  // since the box/cylinder double-translation fix put box/cylinder in that
+  // same bucket. A sketch->extrude chain never calls setBodyPlacement(), so
+  // Body.Placement stays identity and body-local IS world for it -- this is
+  // the one shape this adapter can circular-pattern for real, and the one
+  // used here to exercise the polarPattern() call itself.
   const session = makeFakeSession();
   const adapter = makeAdapter(session);
   const okDoc = {
     version: 1,
     features: [
-      { id: 'box1', kind: 'box', size: [10, 10, 10], center: [30, 0, 0] },
-      { id: 'pat1', kind: 'pattern', target: 'box1', mode: 'circular', count: 6, axis: 'z', totalAngle: 360 },
+      { id: 'sk1', kind: 'sketch', plane: 'xy', offset: 0, points: [[25, -5], [35, -5], [35, 5], [25, 5]] },
+      { id: 'ext1', kind: 'extrude', target: 'sk1', height: 10 },
+      { id: 'pat1', kind: 'pattern', target: 'ext1', mode: 'circular', count: 6, axis: 'z', totalAngle: 360 },
     ],
   };
   const result = adapter.build(okDoc);
@@ -323,28 +340,48 @@ test('pattern: circular around z builds; a non-z axis refuses per-feature', () =
   const xDoc = {
     version: 1,
     features: [
-      { id: 'box1', kind: 'box', size: [10, 10, 10], center: [30, 0, 0] },
-      { id: 'pat1', kind: 'pattern', target: 'box1', mode: 'circular', count: 6, axis: 'x', totalAngle: 360 },
+      { id: 'sk1', kind: 'sketch', plane: 'xy', offset: 0, points: [[25, -5], [35, -5], [35, 5], [25, 5]] },
+      { id: 'ext1', kind: 'extrude', target: 'sk1', height: 10 },
+      { id: 'pat1', kind: 'pattern', target: 'ext1', mode: 'circular', count: 6, axis: 'x', totalAngle: 360 },
     ],
   };
   const result2 = adapter2.build(xDoc);
   assert.ok(result2.refusals?.get('pat1')?.includes("'x'"), result2.refusals?.get('pat1'));
-  assert.equal(result2.shapes.get('pat1'), result2.shapes.get('box1'));
+  assert.equal(result2.shapes.get('pat1'), result2.shapes.get('ext1'));
 });
 
-test('pattern: circular on a sphere/cone/torus/prism target refuses (their local geometry sits on the very axis the pattern orbits)', () => {
-  const session = makeFakeSession();
-  const adapter = makeAdapter(session);
-  const doc = {
-    version: 1,
-    features: [
-      { id: 'sph1', kind: 'sphere', radius: 5, center: [30, 0, 0] },
-      { id: 'pat1', kind: 'pattern', target: 'sph1', mode: 'circular', count: 4, axis: 'z', totalAngle: 360 },
-    ],
-  };
-  const result = adapter.build(doc);
-  assert.ok(result.refusals?.get('pat1')?.includes('sphere, cone, torus or prism'), result.refusals?.get('pat1'));
-  assert.equal(session.calls.find((c) => c.name === 'polarPattern'), undefined);
+test('pattern: circular on a primitive target (box, cylinder, sphere, cone, torus, or prism) refuses (their local geometry sits on the very axis the pattern orbits)', () => {
+  // box/cylinder joined this list in an out-of-band bugfix pass (see
+  // freecad-engine-adapter.ts's own comments on the box/cylinder branches
+  // and the 'pattern' branch): they used to bake `center` into their own
+  // local sketch coordinates, which put their local geometry away from the
+  // pattern's orbit axis -- but that was itself a double-translation bug
+  // (center applied twice), fixed by moving their sketch geometry to local
+  // (0,0), same as every other primitive. This test used to cover only
+  // sphere/cone/torus/prism; box is now included to confirm the fix
+  // actually extends this refusal to it, not just in the real-kernel manual
+  // tests but in this fake-session orchestration check too.
+  for (const feature of [
+    { id: 'box1', kind: 'box', size: [10, 10, 10], center: [30, 0, 0] },
+    { id: 'cyl1', kind: 'cylinder', radius: 5, height: 10, center: [30, 0, 0] },
+    { id: 'sph1', kind: 'sphere', radius: 5, center: [30, 0, 0] },
+  ]) {
+    const session = makeFakeSession();
+    const adapter = makeAdapter(session);
+    const doc = {
+      version: 1,
+      features: [
+        feature,
+        { id: 'pat1', kind: 'pattern', target: feature.id, mode: 'circular', count: 4, axis: 'z', totalAngle: 360 },
+      ],
+    };
+    const result = adapter.build(doc);
+    assert.ok(
+      result.refusals?.get('pat1')?.includes('box, cylinder, sphere, cone, torus or prism'),
+      `${feature.kind}: ${result.refusals?.get('pat1')}`,
+    );
+    assert.equal(session.calls.find((c) => c.name === 'polarPattern'), undefined, `${feature.kind} must not call polarPattern`);
+  }
 });
 
 test('pattern: a rotated target refuses rather than patterning along the wrong (body-local) axis', () => {

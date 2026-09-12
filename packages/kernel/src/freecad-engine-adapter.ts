@@ -32,9 +32,10 @@
 //     comment for the three found semantic gaps (a rotated target's
 //     pattern axis co-rotates with the body instead of staying
 //     world-frame; a non-'z' circular axis is unsupported; a circular
-//     pattern of a sphere/cone/torus/prism target is a geometric no-op,
-//     found only by running against the real kernel) -- all three REFUSED
-//     per-feature (EngineBuildResult.refusals) rather than built wrong.
+//     pattern of ANY primitive target -- box, cylinder, sphere, cone,
+//     torus, or prism -- is a geometric no-op, found only by running
+//     against the real kernel) -- all three REFUSED per-feature
+//     (EngineBuildResult.refusals) rather than built wrong.
 //     The axis narrowing is invisible in practice
 //     -- ModelEditor.tsx's newPattern() hardcodes axis 'z' and never
 //     exposes another axis in its own UI. The rotated-target refusal IS
@@ -259,21 +260,37 @@ export class FreeCadEngineAdapter implements EngineAdapter {
     // always a literal WORLD-frame vector (see the 'pattern' branch's own
     // comment below for the full explanation).
     const bodyRotate = new Map<string, Vec3>();
-    // true for box/cylinder, whose sketch geometry bakes f.center directly
-    // into its own LOCAL x/y coordinates; false for sphere/cone/torus/prism,
-    // whose local geometry sits at/near local (0,0,0) regardless of f.center
-    // (center is applied ONLY via Body.Placement, per each branch's own
-    // comment below). This matters for the SAME reason bodyRotate does: a
-    // circular pattern's Axis resolves through the Body's own Origin datum,
-    // fixed at body-LOCAL (0,0) -- for a target whose local geometry is
-    // ALSO effectively at (0,0) (false here), orbiting it around that axis
-    // is a geometric no-op (every copy lands on the original), regardless
-    // of how far from the WORLD origin f.center actually placed it.
-    // Measured against the real kernel: a radius-5 sphere at center
-    // [30,0,0], patterned 4x around 'z', built with no error and no
-    // refusal but came back with the volume of exactly ONE sphere, not
-    // four -- confirming the four copies had silently collapsed onto each
-    // other. Refused in the 'pattern' branch below rather than shipped.
+    // false for EVERY primitive kind (box, cylinder, sphere, cone, torus,
+    // prism) -- each one's own sketch/native-feature geometry sits at/near
+    // local (0,0,0) regardless of f.center; center is applied ONLY via
+    // Body.Placement, per each branch's own comment below. Has no entry
+    // (undefined, not false) for a sketch/extrude/pocket/fillet/chamfer
+    // chain, which never calls setBodyPlacement at all, so Body.Placement
+    // stays identity and body-local IS world for those.
+    //
+    // box/cylinder USED to bake f.center directly into their own sketch's
+    // local x/y coordinates (true here) -- that was a real, separate bug
+    // (see setBodyPlacement's own header): center got applied TWICE, once
+    // baked into the sketch and once again via Body.Placement, doubling an
+    // off-origin box/cylinder's world position (measured live: center
+    // [30,20,0] came back with a world bbox center of [60,40,0]). Fixed by
+    // moving their sketch geometry to local (0,0), matching sphere/cone/
+    // torus/prism's existing convention -- so box/cylinder are false here
+    // too now, same as every other primitive.
+    //
+    // This matters for the SAME reason bodyRotate does: a circular
+    // pattern's Axis resolves through the Body's own Origin datum, fixed at
+    // body-LOCAL (0,0) -- for a target whose local geometry is ALSO
+    // effectively at (0,0) (false here), orbiting it around that axis is a
+    // geometric no-op (every copy lands on the original), regardless of how
+    // far from the WORLD origin f.center actually placed it. Measured
+    // against the real kernel: a radius-5 sphere at center [30,0,0],
+    // patterned 4x around 'z', built with no error and no refusal but came
+    // back with the volume of exactly ONE sphere, not four -- confirming
+    // the four copies had silently collapsed onto each other. Since the
+    // box/cylinder fix above, this is now true for EVERY primitive kind,
+    // not just sphere/cone/torus/prism -- see the 'pattern' branch's own
+    // refusal below, which now covers all six. Refused rather than shipped.
     const bodyLocalCentered = new Map<string, boolean>();
 
     let bodyCounter = 0;
@@ -297,24 +314,24 @@ export class FreeCadEngineAdapter implements EngineAdapter {
         session.sketchNew(bodyName, sketchName);
         session.sketchAddRectangle(
           sketchName,
-          f.center[0] - w / 2, f.center[1] - d / 2,
-          f.center[0] + w / 2, f.center[1] + d / 2,
+          -w / 2, -d / 2,
+          w / 2, d / 2,
         );
         const padName = `${f.id}_pad`;
         session.pad(bodyName, sketchName, padName, h);
         this.setBodyPlacement(session, bodyName, f.center, f.rotate, -h / 2, bodyRotate);
-        bodyLocalCentered.set(bodyName, true);
+        bodyLocalCentered.set(bodyName, false);
         const entry: FcBuiltFeature = { bodyName, objName: padName, kind: 'solid', featureId: f.id, featureKind: f.kind };
         built.set(f.id, entry);
         shapes.set(f.id, entry);
       } else if (f.kind === 'cylinder') {
         const bodyName = freshBody();
         const sketchName = `${f.id}_sk`;
-        session.sketchCircle(bodyName, sketchName, f.radius, f.center[0], f.center[1]);
+        session.sketchCircle(bodyName, sketchName, f.radius, 0, 0);
         const padName = `${f.id}_pad`;
         session.pad(bodyName, sketchName, padName, f.height);
         this.setBodyPlacement(session, bodyName, f.center, f.rotate, -f.height / 2, bodyRotate);
-        bodyLocalCentered.set(bodyName, true);
+        bodyLocalCentered.set(bodyName, false);
         const entry: FcBuiltFeature = { bodyName, objName: padName, kind: 'solid', featureId: f.id, featureKind: f.kind };
         built.set(f.id, entry);
         shapes.set(f.id, entry);
@@ -472,24 +489,28 @@ export class FreeCadEngineAdapter implements EngineAdapter {
         //    produce (ModelEditor.tsx's newPattern() hardcodes axis: 'z',
         //    never exposes another axis in the Dimensions panel).
         // 3. Found ONLY by running against the real kernel, not from
-        //    reading the code: a circular pattern of a sphere/cone/torus/
-        //    prism target. Those four kinds never bake f.center into their
-        //    own local geometry at all (center is applied purely via
-        //    Body.Placement, per each branch's own comment above) -- so
-        //    their local shape sits at/near body-local (0,0,0), exactly
-        //    where the pattern's own Origin-datum axis also sits, REGARDLESS
-        //    of how far from the world origin f.center actually placed
-        //    them. Orbiting them is a geometric no-op. Measured: a
-        //    radius-5 sphere at center [30,0,0], patterned 4x around 'z',
-        //    built with no error and no refusal but came back with the
-        //    volume of exactly one sphere, not four -- see
+        //    reading the code: a circular pattern of ANY primitive target
+        //    (box, cylinder, sphere, cone, torus, prism). None of the six
+        //    bake f.center into their own local geometry at all (center is
+        //    applied purely via Body.Placement, per each branch's own
+        //    comment above) -- so their local shape sits at/near body-local
+        //    (0,0,0), exactly where the pattern's own Origin-datum axis also
+        //    sits, REGARDLESS of how far from the world origin f.center
+        //    actually placed them. Orbiting them is a geometric no-op.
+        //    Measured: a radius-5 sphere at center [30,0,0], patterned 4x
+        //    around 'z', built with no error and no refusal but came back
+        //    with the volume of exactly one sphere, not four -- see
         //    `bodyLocalCentered`'s own declaration above and this port's
-        //    own report. box/cylinder are unaffected (they DO bake
-        //    f.center into local x/y, so their local geometry sits away
-        //    from the axis), and so is any non-primitive chain
-        //    (sketch/extrude/pocket/fillet/chamfer never call
+        //    own report. box/cylinder USED to be unaffected (their sketch
+        //    geometry baked f.center into local x/y, so their local shape
+        //    sat away from the axis) -- but that was itself a real,
+        //    separate bug (setBodyPlacement's own header: center got
+        //    applied twice, doubling their world position), fixed by moving
+        //    their sketch geometry to local (0,0) too. Now every primitive
+        //    kind hits this gap the same way. A non-primitive chain
+        //    (sketch/extrude/pocket/fillet/chamfer never calls
         //    setBodyPlacement at all, so Body.Placement stays identity and
-        //    body-local IS world for them).
+        //    body-local IS world for them) is still unaffected.
         // Linear patterns are unaffected by gaps 2 and 3 -- translation has
         // no "wrong pivot" the way rotation does.
         const target = requireBuilt(f.target, `pattern ${f.id}`);
@@ -549,16 +570,17 @@ export class FreeCadEngineAdapter implements EngineAdapter {
                 + `axis are not yet supported (only 'z' is built today); ${f.id} is shown without it.`,
             );
           } else if (bodyLocalCentered.get(target.bodyName) === false) {
-            // See bodyLocalCentered's own declaration above -- a sphere/
-            // cone/torus/prism target's local geometry sits at/near the
-            // SAME body-local origin the pattern orbits, so every copy
-            // would silently land on the original. Measured against the
-            // real kernel, not assumed: see this port's own report.
+            // See bodyLocalCentered's own declaration above -- EVERY
+            // primitive target's (box, cylinder, sphere, cone, torus,
+            // prism) local geometry sits at/near the SAME body-local origin
+            // the pattern orbits, so every copy would silently land on the
+            // original. Measured against the real kernel, not assumed: see
+            // this port's own report.
             refusals.set(
               f.id,
-              `${f.id} could not be built on the FreeCAD engine -- a circular pattern of a sphere, cone, `
-                + `torus or prism is not yet supported (every copy would land on the original); `
-                + `${f.id} is shown without it.`,
+              `${f.id} could not be built on the FreeCAD engine -- a circular pattern of a primitive `
+                + `(box, cylinder, sphere, cone, torus or prism) is not yet supported (every copy would `
+                + `land on the original); ${f.id} is shown without it.`,
             );
           } else {
             resultName = session.polarPattern(target.bodyName, target.objName, f.count, f.totalAngle ?? 360, 'z', patternName);
@@ -595,19 +617,28 @@ export class FreeCadEngineAdapter implements EngineAdapter {
   }
 
   /** Apply a ModelDoc primitive's center + rotate to the Body that holds it.
-   *  The primitive's own geometry is built LOCALLY: X/Y already centred at
-   *  `center` (box/cylinder bake it directly into the sketch's own
-   *  coordinates; sphere is centred at its own object origin already, per
-   *  occt-build.ts's own comment on its sphere branch), Z running
-   *  [0, height] from the pad. `localZShift` (usually -height/2) re-centres
-   *  Z locally BEFORE rotation, matching occt-build.ts's own centre-at-
-   *  origin-then-rotate-then-translate sequence for a box/cylinder
-   *  (`turned(oc, moved(oc, raw, [-w/2,-d/2,-h/2]), f.rotate, [0,0,0])`,
-   *  then `moved(oc, shape, f.center)` in the caller) -- X/Y are already
-   *  centred by construction here, so only Z needs the pre-rotation shift.
-   *  Composed as ONE FreeCAD Placement multiplication so the whole Body
-   *  (and every feature built inside it afterward, fillets included) moves
-   *  together. */
+   *  `center` is applied EXCLUSIVELY here, via Body.Placement -- every
+   *  primitive's own local geometry is built at/near local (0,0,0)
+   *  (box/cylinder's sketch at local (0,0), sphere/cone/torus/prism at
+   *  their own native object origin, per each branch's own comment above),
+   *  Z running [0, height] from the pad/native feature. `localZShift`
+   *  (usually -height/2) re-centres Z locally BEFORE rotation, matching
+   *  occt-build.ts's own centre-at-origin-then-rotate-then-translate
+   *  sequence for a box/cylinder (`turned(oc, moved(oc, raw,
+   *  [-w/2,-d/2,-h/2]), f.rotate, [0,0,0])`, then `moved(oc, shape,
+   *  f.center)` in the caller) -- X/Y are already centred by construction
+   *  here, so only Z needs the pre-rotation shift. Composed as ONE FreeCAD
+   *  Placement multiplication so the whole Body (and every feature built
+   *  inside it afterward, fillets included) moves together.
+   *
+   *  box/cylinder used NOT to follow this "local geometry at (0,0,0)"
+   *  convention -- their sketch baked `center`'s X/Y directly into its own
+   *  local coordinates, which then got a SECOND translation from this very
+   *  function's Body.Placement, doubling an off-origin box/cylinder's world
+   *  position (center [30,20,0] measured back as world bbox center
+   *  [60,40,0] against the real kernel). Fixed by moving their sketch
+   *  geometry to local (0,0) too, so this function is now the ONLY place
+   *  `center` is ever applied, for every primitive kind alike. */
   private setBodyPlacement(
     session: FcSessionLike, bodyName: string, center: Vec3, rotate: Vec3 | undefined, localZShift: number,
     bodyRotate?: Map<string, Vec3>,
@@ -724,10 +755,22 @@ export class FreeCadEngineAdapter implements EngineAdapter {
   // objName's body-LOCAL shape, because PartDesign::Fillet.Base itself
   // takes a body-local feature reference, and topo-name.ts's own +x/-x/etc
   // convention is understood in the primitive's own pre-Placement frame the
-  // same way occt-build.ts builds a box unrotated-then-rotated. Whether that
-  // picking path also needs a rotation-aware fix is a real, separate,
-  // UNVERIFIED question this pass did not have scope to chase down -- see
-  // this port's own report.
+  // same way occt-build.ts builds a box unrotated-then-rotated.
+  //
+  // CONFIRMED, not assumed, against the real kernel (out-of-band bugfix
+  // pass that moved box/cylinder's own sketch geometry to local (0,0), see
+  // this file's own header on the box/cylinder branches and on
+  // setBodyPlacement): resolvePrimitiveEdgeName()/queryPrimitiveGeometry()
+  // both compute cx/cy/cz from `target.objName`'s OWN CURRENT BoundBox on
+  // every call, never from a stored f.center, so face/edge direction
+  // scoring is entirely self-relative to whatever local geometry the shape
+  // actually has -- it does not matter whether that local geometry sits at
+  // local origin or away from it. Re-verified on an off-origin box (center
+  // [30,20,5]) and cylinder (center [30,20,5]) after the fix: every face
+  // resolves, every face round-trips through nameFace() back to its own
+  // part, edge-between-two-faces resolves and measures correctly, and a
+  // fillet on that resolved edge still builds. No regression from the
+  // box/cylinder fix.
   mesh(shape: unknown, opts?: { deflection?: number }): EngineMesh | null {
     const session = this.requireSession();
     const s = shape as FcBuiltFeature | null;

@@ -5,10 +5,27 @@ real Code side, verified via bowser. Phase 2 (pattern support) DONE --
 linear + polar patterns build in `freecad-engine-adapter.ts`, verified
 against the real fc-kernel-pd-final kernel (26/26 checks). Three found
 semantic gaps (rotated target, non-'z' circular axis, circular pattern of
-a sphere/cone/torus/prism target) are refused per-feature, not built
-wrong -- see `freecad-engine-adapter.ts`'s own 'pattern' branch comment
-and SPEC-engine-port.md §6.1 for the full account. Phase 3 (general
+a primitive target) are refused per-feature, not built wrong -- see
+`freecad-engine-adapter.ts`'s own 'pattern' branch comment and
+SPEC-engine-port.md §6.1 for the full account. Phase 3 (general
 topo-naming for picking) next.
+
+Out-of-band bugfix (2026-09-11, separate from the phase sequence above): a
+real, pre-existing bug in the box/cylinder branches of `build()` -- `f.center`
+was applied TWICE (once baked into the sketch's own local coordinates, once
+again via `setBodyPlacement()`'s Body.Placement), doubling an off-origin
+box/cylinder's world position (measured: center `[30,20,0]` came back as
+world bbox center `[60,40,0]`). Fixed by moving their sketch geometry to
+local `(0,0)`, matching sphere/cone/torus/prism's existing convention. Direct
+consequence: box/cylinder now ALSO hit the circular-pattern-is-a-geometric-
+no-op gap above, which used to name only "sphere, cone, torus or prism" --
+now every primitive kind. See `freecad-engine-adapter.ts`'s own comments on
+the box/cylinder branches, `setBodyPlacement`, and the 'pattern' branch, and
+SPEC-engine-port.md §6.1's own update, for the full account. Picking
+(`resolveFace`/`resolveEdge`/fillet-edge-resolution) was checked live against
+an off-origin box/cylinder after the fix and is unaffected -- it computes its
+own reference frame from the shape's current BoundBox every call, never from
+a stored `f.center`.
 
 ## 0. Decision
 
@@ -100,12 +117,14 @@ correctness-critical CAD kernel work.
    matching this file's existing "no answer over a wrong one" convention):
    a rotated target (the pattern's own axis would rotate with the body
    instead of the world), a non-'z' circular axis (unreachable via the
-   studio UI, which hardcodes 'z'), and a circular pattern of a sphere/
-   cone/torus/prism target (their local geometry sits on the very axis the
-   pattern orbits, so every copy silently lands on the original --
-   confirmed only by running against the real kernel, not from reading the
-   code). Full account in `freecad-engine-adapter.ts`'s own 'pattern'
-   branch comment.
+   studio UI, which hardcodes 'z'), and a circular pattern of a primitive
+   target -- box, cylinder, sphere, cone, torus, or prism (their local
+   geometry sits on the very axis the pattern orbits, so every copy
+   silently lands on the original -- confirmed only by running against the
+   real kernel, not from reading the code; box/cylinder joined this list in
+   an out-of-band bugfix pass, see this file's own status note above, once
+   their separate double-translation bug was fixed). Full account in
+   `freecad-engine-adapter.ts`'s own 'pattern' branch comment.
 3. **General (non-primitive) topo-naming for picking** — the deeper "item B"
    work: resolve faces/edges on sketch-derived solids (extrude/pocket walls
    and caps), not just primitives. This is what makes Fillet/Chamfer usable

@@ -22,20 +22,24 @@
 //      instance's extent, not the whole pattern's). Fixed by setting
 //      body.Tip explicitly.
 // A fourth, DIFFERENT-IN-KIND finding (not a bug in this pass's own code, a
-// genuine semantic gap): a circular pattern of a sphere/cone/torus/prism
-// target is a geometric no-op on this engine (every copy lands on the
-// original) -- see freecad-engine-adapter.ts's own comment on
-// `bodyLocalCentered` for why, and this port's own report. Verified below to
-// REFUSE, not silently build a collapsed ring.
+// genuine semantic gap): a circular pattern of ANY primitive target (box,
+// cylinder, sphere, cone, torus, prism) is a geometric no-op on this engine
+// (every copy lands on the original) -- see freecad-engine-adapter.ts's own
+// comment on `bodyLocalCentered` for why, and this port's own report.
+// Verified below to REFUSE, not silently build a collapsed ring.
 //
-// Bbox comparisons use SPAN (max-min per axis), not absolute position. A
-// separate, pre-existing, OUT-OF-SCOPE bug this pass found but did NOT fix
-// (box/cylinder bake `center` into their own local sketch coordinates AND
-// get it applied a second time via Body.Placement) shifts an off-origin
-// box/cylinder's ABSOLUTE world position -- but never changes its SPAN or
-// its volume, so both remain a valid, uncontaminated signal for whether the
-// pattern feature itself is correct. See this port's own report for the
-// pre-existing bug's own repro numbers.
+// Bbox comparisons use SPAN (max-min per axis), not absolute position.
+// UPDATE (out-of-band bugfix pass): box/cylinder used to bake `center` into
+// their own local sketch coordinates AND get it applied a second time via
+// Body.Placement, doubling an off-origin box/cylinder's ABSOLUTE world
+// position -- that bug is now FIXED (freecad-engine-adapter.ts's box/cylinder
+// branches now build at local (0,0), same as every other primitive), and as
+// a direct consequence box/cylinder now ALSO hit the circular-pattern no-op
+// gap above, same as sphere/cone/torus/prism always did (see the 'circular
+// pattern' section below, which now expects a refusal for an off-origin box,
+// not a built ring). Span/volume were never affected by the fixed bug either
+// way, so they remain a valid signal for the pattern feature's own
+// correctness in every OTHER scenario this file checks.
 //
 // USAGE
 //   node packages/kernel/test/freecad-pattern.manual.mjs <pathToFreeCADCmd.js>
@@ -90,9 +94,13 @@ const linDoc = {
 // Circular: 4 copies of a 10x10x10 box centred at [30,0,0], orbited a full
 // 360 around world Z -- at 90 degree spacing (occt-build.ts's own
 // totalAngle/count convention) the 4 copies sit at 0/90/180/270 around a
-// radius-30 circle, far enough apart (30 >> 10) that none overlap, so fused
-// volume must be exactly 4x one box. A 72-degree (Angle/(count-1)) spacing
-// would instead place a duplicate at the seam and read back as 3x.
+// radius-30 circle, far enough apart (30 >> 10) that none overlap, so OCCT's
+// own fused volume must be exactly 4x one box (checked below as the OCCT
+// reference number only). On the FreeCAD engine, an off-origin box is now
+// (since the box/cylinder double-translation fix) subject to the SAME
+// circular-pattern-is-a-geometric-no-op gap sphere/cone/torus/prism always
+// had -- see this file's own header update -- so this is verified below to
+// REFUSE, not to build a 4x ring.
 const circDoc = {
   version: 1,
   features: [
@@ -174,20 +182,20 @@ for (let i = 0; i < 3; i++) {
   check(`linear span[${i}] (confirms Length = step*(count-1), not step alone)`, fcLinSpan[i], occtLinSpan[i], 0.5);
 }
 
-console.log('\n--- circular pattern ---');
+console.log('\n--- circular pattern of an off-origin box (now refuses -- see this file\'s own header update) ---');
 const fcCirc = adapter.build(circDoc);
 if (fcCirc.refusals?.size) console.log('refusals:', [...fcCirc.refusals.entries()]);
-const circEntry = fcCirc.shapes.get('pat2');
-checkTrue('circular pattern built (no refusal)', !fcCirc.refusals?.get('pat2'));
-const fcCircMesh = session.mesh(circEntry.objName);
-check('FreeCAD circular pattern volume vs OCCT (4 non-overlapping boxes -- rules out a 72-degree/duplicate-at-seam spacing)', fcCircMesh.volume, occtCirc.volume);
-const fcCircBbox = bodyBBox(circEntry.bodyName);
-const fcCircSpan = span(fcCircBbox);
-console.log(`FreeCAD circular pattern bbox: ${JSON.stringify(fcCircBbox)}  span ${JSON.stringify(fcCircSpan)}`);
-const occtCircSpan = span(occtCirc.bbox);
-for (let i = 0; i < 3; i++) {
-  check(`circular span[${i}] (a valid 90-degree-spaced ring has the same footprint regardless of the pre-existing box-placement bug's absolute shift)`, fcCircSpan[i], occtCircSpan[i], 0.5);
-}
+checkTrue(
+  'circular pattern of an off-origin box refuses (the box/cylinder double-translation fix means their local '
+    + 'geometry now sits at body-local origin too, same geometric-no-op gap as sphere/cone/torus/prism)',
+  !!fcCirc.refusals?.get('pat2'),
+  fcCirc.refusals?.get('pat2'),
+);
+checkTrue('a refused circular pattern falls back to its target shape', fcCirc.shapes.get('pat2') === fcCirc.shapes.get('box2'));
+// occtCirc (4x volume, span 70/70/10) stays computed above as a documented
+// OCCT reference number for anyone re-checking this by hand -- it is not
+// compared against a FreeCAD build here anymore, since FreeCAD correctly
+// refuses to build this case at all now.
 
 console.log('\n--- negative-step linear pattern (direction reversal) ---');
 const fcNeg = adapter.build(negDoc);

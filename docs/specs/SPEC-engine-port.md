@@ -637,19 +637,19 @@ will later put the body in the world:
 - **A non-'z' circular axis.** Unreachable via the studio UI today
   (`ModelEditor.tsx`'s `newPattern()` hardcodes `axis: 'z'`), narrowed
   rather than solved.
-- **A circular pattern of a sphere/cone/torus/prism target.** Found ONLY
-  by running against the real kernel, not from reading the code: those
-  four kinds never bake `f.center` into their own local geometry (center
-  is applied purely via `Body.Placement`), so their local shape sits
-  at/near body-local (0,0,0) -- exactly where the pattern's own axis also
-  sits, regardless of how far from the world origin `f.center` actually
-  placed them. Measured: a radius-5 sphere at center `[30,0,0]`, patterned
-  4x around `'z'`, built with no error and no refusal but came back with
-  the volume of exactly one sphere, not four. `box`/`cylinder` are
-  unaffected (their sketch geometry DOES bake `f.center` into local x/y),
-  and so is any non-primitive chain (sketch/extrude/pocket/fillet/chamfer
-  never call `setBodyPlacement` at all, so `Body.Placement` stays identity
-  and body-local IS world for them).
+- **A circular pattern of a primitive target.** Found ONLY by running
+  against the real kernel, not from reading the code: every primitive kind
+  (originally sphere/cone/torus/prism; box/cylinder joined this list in an
+  out-of-band bugfix pass, see §6.1a below) never bakes `f.center` into its
+  own local geometry (center is applied purely via `Body.Placement`), so
+  its local shape sits at/near body-local (0,0,0) -- exactly where the
+  pattern's own axis also sits, regardless of how far from the world origin
+  `f.center` actually placed it. Measured: a radius-5 sphere at center
+  `[30,0,0]`, patterned 4x around `'z'`, built with no error and no
+  refusal but came back with the volume of exactly one sphere, not four.
+  Any non-primitive chain (sketch/extrude/pocket/fillet/chamfer never call
+  `setBodyPlacement` at all, so `Body.Placement` stays identity and
+  body-local IS world for them) is unaffected.
 
 Full account, including the exact refusal wording, is
 `FreeCadEngineAdapter`'s own comment on its `pattern` branch.
@@ -695,6 +695,63 @@ rotation/translation-aware fix for an off-origin, rotated primitive is a
 real, separate, UNVERIFIED question this pass did not have scope to chase
 down -- named here as a follow-up, not silently left for the next person
 to rediscover from scratch.
+
+### 6.1a A real, pre-existing bug found (and fixed): box/cylinder double-translation
+
+Out-of-band bugfix pass (2026-09-11, separate from the phase sequence
+`SPEC-studio-canonical.md` tracks): `build()`'s `box` and `cylinder`
+branches did TWO things with `f.center` -- baked it directly into the
+sketch's own local x/y coordinates (`session.sketchAddRectangle`/
+`sketchCircle`), AND ALSO passed it to `setBodyPlacement()`, which applies
+it a second time via `Body.Placement`. For an identity rotation this
+doubled an off-origin box/cylinder's true world position. Measured live,
+before any fix, against the real kernel (`fc-kernel-pd-final`): a box and a
+cylinder both built with `center: [30, 20, 0]` came back with a world bbox
+center of `[60, 40, 0]`, not `[30, 20, 0]` -- confirming the bug exactly as
+`setBodyPlacement()`'s own Python codegen suggested on inspection, not
+assumed from reading the code alone.
+
+sphere/cone/torus/prism never had this bug -- each of those already builds
+its own native geometry at/near local (0,0,0) and applies `center` ONLY via
+`setBodyPlacement()` (see `bodyLocalCentered`, `false` for all of them).
+Fixed by making box/cylinder follow the exact same convention: their sketch
+now draws at local `(0,0)` (`-w/2..w/2` etc., no `f.center` offset), so
+`setBodyPlacement()`'s `Body.Placement` is the ONLY place `center` is ever
+applied, for every primitive kind alike. Re-verified against the real
+kernel after the fix: the same off-origin box/cylinder now comes back with
+a world bbox center of exactly `[30, 20, 0]`, both at identity rotation and
+at a 45-degree rotation about Z.
+
+**Direct consequence, worked through per this pass's own instructions
+rather than left as a surprise:** box/cylinder's local geometry now sits at
+body-local (0,0,0) too, exactly where a circular pattern's Origin-datum
+axis also sits -- so box/cylinder now hit the SAME circular-pattern-is-a-
+geometric-no-op gap §6.1 above documents for sphere/cone/torus/prism.
+`bodyLocalCentered` is set to `false` for box/cylinder too (previously
+`true`), which automatically extends the existing `pattern` branch's
+`bodyLocalCentered.get(...) === false` refusal to them with no additional
+condition needed -- confirmed by re-running
+`packages/kernel/test/freecad-pattern.manual.mjs` against the real kernel:
+its `circDoc` fixture (an off-origin box, circular-patterned) now correctly
+REFUSES instead of building a collapsed single-copy "ring", and the test's
+own expectations were updated to match (23/23 checks pass, up from the
+previous 22/26 -- the four failures being exactly the box-specific circular-
+pattern checks that assumed the old, buggy "unaffected" behavior). The
+refusal message, which used to name "a sphere, cone, torus or prism"
+specifically, now says "a primitive (box, cylinder, sphere, cone, torus or
+prism)" since it covers all six.
+
+**Picking checked for a regression, not assumed safe:** `resolvePrimitiveEdgeName()`/
+`queryPrimitiveGeometry()` (§6.2 below) compute their own direction-scoring
+reference frame (`cx`/`cy`/`cz`) from `target.objName`'s CURRENT `Shape.BoundBox`
+on every call, never from a stored `f.center` -- so whether the local
+geometry sits at local origin or away from it makes no difference to face/edge
+naming. Verified live on an off-origin box (`center: [30, 20, 5]`) and
+cylinder (same center) after the fix: every face resolves via `resolveFace`,
+every face round-trips through `nameFace()` back to its own part, an edge
+between two named faces resolves via `resolveEdge` and measures the correct
+length, and a fillet built on that resolved edge still succeeds with no
+refusal. No regression.
 
 ### 6.2 Picking: implemented for the primitive/between-primitive case, real geometry only
 
@@ -757,7 +814,10 @@ faces name and round-trip through `resolveFace` back to the exact same
 `Face{n}`, `faceSize()` matches the box's own dimensions per face, all 12
 edges name (`between`, two `primitive` faces) and round-trip through
 `resolveEdge`, `edgeLength()` returns a positive number for each -- 90 of 90
-checks passed. `BrepViewportThree.tsx`'s `pickAt()`/`restorePicks()` no
+checks passed. (Since extended, §6.1a: an off-origin box/cylinder
+regression section was added to the same file after the box/cylinder
+double-translation fix -- 103 of 103 checks passing overall.)
+`BrepViewportThree.tsx`'s `pickAt()`/`restorePicks()` no
 longer need their `try/catch`-as-null fallback to survive a FreeCAD-engine
 click (it still wraps every call, unchanged, since `null` remains the
 correct answer for anything outside this narrowed scope) -- a click on a
