@@ -72,9 +72,27 @@ real SVG fragment (`svg_len=308`) — `window.crossOriginIsolated` was `true` th
 non-fatal warning appeared repeatedly: `Line Group File:
 /freecad/share/Mod/TechDraw/LineGroup/LineGroup.csv is not readable` — the browser's preloaded
 MEMFS data pack (`engine/play/freecad-data.data`) was built for the old Part/Sketcher/Material-
-only kernel and doesn't include TechDraw's `Mod/TechDraw/Resources` tree. It didn't block
-`viewPartAsSvg`, but if a future feature needs line-group/line-style resources, that data pack
-needs rebuilding too — not attempted here, flagged for whoever touches this next.
+only kernel and doesn't include TechDraw's `Mod/TechDraw/Resources` tree.
+
+**Fixed 2026-09-13.** Rather than rebuilding the whole pack from scratch (its original recipe
+was never committed as a reusable script -- see `engine/build/src/fw-tmp/deps/build/
+pack-mods-fixed.sh` for upstream's own version, which hardcodes a different build machine's
+paths), the EXISTING pack was decompiled using its own manifest (`engine/play/freecad-data.js`'s
+embedded `{filename, start, end}` byte offsets into `freecad-data.data`) to recover all 629
+files losslessly, `Mod/TechDraw/LineGroup/LineGroup.csv` (1073 bytes, mirrored under both
+`/freecad/...` and `/freecad/share/...` the way every other module already is) was added, and
+`file_packager.py` (from inside `fc-kernel-techdraw-full`, which has both the tool and the
+TechDraw source tree) re-packed all 631 files into a new `freecad-data.data`/`.js` pair (5.95MB,
+grew by exactly 2×1073 bytes). Only `LineGroup.csv` was added, not TechDraw's full 32MB source
+tree -- `Gui/` (26MB) is GUI-only and irrelevant to a headless kernel, `Templates/` (3.5MB) is
+unused since `exportDrawing()` authors its own sheet SVG rather than using FreeCAD's stock
+templates, and `Patterns`/`Symbols`/`CSVdata` support hatching/GD&T/dimensioning, none of which
+v1 does. Verified live in `sandbox-dev`'s actual Studio UI (not just `engine/play`): built a box,
+clicked the real "Export Drawing" button, captured every browser console message from page load
+through the download -- zero mentions of "LineGroup" anywhere, download still succeeds
+identically (3125 bytes). `engine/play/freecad-data.data`/`.js` are git-tracked (unlike
+`engine/build/g5-artifacts/`), so the old version is recoverable from git history rather than a
+kept backup file.
 
 The below was the original (now-superseded) prerequisite note, kept for history: every
 measurement in this spec had run only against the Docker/Node kernel
