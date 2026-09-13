@@ -57,18 +57,30 @@ job. Automatic GD&T dimensioning is a much bigger, fuzzier problem than this fea
 try to solve in v1; the projected views themselves (front/top/right/iso on a titled sheet)
 are the actual deliverable.
 
-## CRITICAL PREREQUISITE — read before implementing
+## Browser prerequisite — RESOLVED 2026-09-12
 
-**The shipped browser wasm (`engine/build/g5-artifacts/`, dated 2026-09-06, ~53MB) contains
-ZERO occurrences of `TechDraw`.** Every measurement above ran against the Docker/Node kernel
-(`fc-kernel-techdraw-full`, built this session from `engine/docker/Dockerfile.kernel`'s
-`kernel-build-final` target with `BUILD_TECHDRAW=ON`). The Dockerfile has a parallel
-`kernel-artifacts-browser` target for the actual browser-deployed wasm — **that target has
-never been rebuilt with TechDraw enabled.** Implementing the TS/JS side of this feature and
-testing it only in Node/Docker will pass every test and then silently do nothing in the real
-app. Rebuilding and redeploying `kernel-artifacts-browser` is a real, separate step (matches
-the `NODERAWFS=OFF` browser-variant build already documented in `Dockerfile.kernel`'s own
-comments) that must happen before this feature reaches users.
+**`engine/build/g5-artifacts/` was rebuilt from `kernel-artifacts-browser` and now has TechDraw
+compiled in.** New artifacts: `FreeCADCmd.wasm` 63,622,106 bytes (up from 53,334,897),
+`FreeCADCmd.js` 293,897 bytes (up from 181,513) — the old ones are kept at
+`engine/build/g5-artifacts-backup-2026-09-06/` for rollback. `engine/build/` is gitignored, so
+this deploy is not a git commit.
+
+Verified live in a real headless-browser tab (not just Node), via `engine/play/index.html` +
+`serve.mjs` against `/kernel-browser/`: `import TechDraw` succeeds, a `TechDraw::DrawPage` +
+`DrawSVGTemplate` + `DrawViewPart` recomputes, and `TechDraw.viewPartAsSvg(view)` returns a
+real SVG fragment (`svg_len=308`) — `window.crossOriginIsolated` was `true` throughout. One
+non-fatal warning appeared repeatedly: `Line Group File:
+/freecad/share/Mod/TechDraw/LineGroup/LineGroup.csv is not readable` — the browser's preloaded
+MEMFS data pack (`engine/play/freecad-data.data`) was built for the old Part/Sketcher/Material-
+only kernel and doesn't include TechDraw's `Mod/TechDraw/Resources` tree. It didn't block
+`viewPartAsSvg`, but if a future feature needs line-group/line-style resources, that data pack
+needs rebuilding too — not attempted here, flagged for whoever touches this next.
+
+The below was the original (now-superseded) prerequisite note, kept for history: every
+measurement in this spec had run only against the Docker/Node kernel
+(`fc-kernel-techdraw-full`), and `kernel-artifacts-browser` had never been rebuilt with
+`BUILD_TECHDRAW=ON` — meaning `exportDrawing()` would have passed every test and then silently
+done nothing in the real app. That gap is now closed.
 
 ## Interface addition
 
