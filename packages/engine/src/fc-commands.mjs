@@ -563,6 +563,65 @@ export const emit = {
     );
   },
 
+  // Skin two closed profile sketches into ONE solid: a PartDesign::AdditiveLoft
+  // with the lower outline as Profile and the upper as its single Section.
+  // The ModelDoc 'blend' feature's whole implementation, and the reason it is
+  // separate from additiveLoft() above rather than a parameter on it:
+  //
+  //   - additiveLoft()'s guard message ends in SAME_PLANE_HINT ("the two
+  //     sketches are on the same plane ... Pick a face on the solid, then New
+  //     Sketch"). For a blend that is FALSE twice over: whyCannotBlend()
+  //     GUARANTEES both sketches are on the same plane at different offsets,
+  //     and Build mode has no pick-a-face step. Right for its caller, wrong
+  //     for this one.
+  //   - This caller OWNS its two profile sketches (freecad-engine-adapter.ts's
+  //     'blend' branch builds them as proxies for the occasion), so they must
+  //     be removed on failure -- exactly as bore() removes its own profile
+  //     sketch. additiveLoft()'s caller does NOT own its sketches and must
+  //     keep them, so the cleanup cannot be added there.
+  //   - The guard measures the LOFT's own Shape.Volume, not the Body's.
+  //     additiveLoft()'s volGuard reads the Body, which happens to be right
+  //     for a fresh Body (_v0 == 0) and says something else than it means.
+  //
+  // Ruled and Closed are left at their False defaults, deliberately and not by
+  // omission. MEASURED (SPEC-blend.md): both flip to True with a
+  // BIT-IDENTICAL 18666.666666666664 on a 40sq->20sq taper. That is geometry,
+  // not coincidence -- a BlendFeature has exactly TWO sections, and a spline
+  // through two points in the transverse direction IS the straight line
+  // between them, so Ruled cannot matter until there is a third section,
+  // which BlendFeature cannot express. False also matches OCCT's own
+  // BRepOffsetAPI_ThruSections(isSolid=true, ruled=FALSE, 1e-6)
+  // (occt-build.ts:719) literally as well as numerically.
+  //
+  // Body.Tip: MEASURED to advance to the loft on its own, unlike
+  // LinearPattern/PolarPattern (which need an explicit body.Tip = ...). _tip
+  // is captured anyway so the ROLLBACK can restore it -- the same shape
+  // bore()'s own rollback has.
+  //
+  // The volume guard is NOT optional here. MEASURED: a self-intersecting
+  // (bowtie) outline recomputes 'Up-to-date' with a non-null Shape and adds
+  // ZERO volume -- no Invalid state, no error, a feature in the tree and
+  // nothing on screen. Same silent-success family as fc-commands.mjs:76-98.
+  loftBetween(bodyName, loSketch, hiSketch, featName) {
+    return wrapStatus(
+      `body = doc.getObject(${pyStr(bodyName)})\n` +
+      `_v0 = body.Shape.Volume if (body.Shape is not None and not body.Shape.isNull()) else 0.0\n` +
+      `_tip = body.Tip\n` +
+      `lo = body.newObject("PartDesign::AdditiveLoft", ${pyStr(featName)})\n` +
+      `lo.Profile = doc.getObject(${pyStr(loSketch)})\n` +
+      `lo.Sections = [doc.getObject(${pyStr(hiSketch)})]\n` +
+      `doc.recompute()\n` +
+      `_v1 = lo.Shape.Volume if (lo.Shape is not None and not lo.Shape.isNull()) else 0.0\n` +
+      `if ('Invalid' in lo.State) or lo.Shape is None or lo.Shape.isNull() or abs(_v1 - _v0) < 1e-6:\n` +
+      `    body.Tip = _tip\n` +
+      `    doc.removeObject(lo.Name)\n` +
+      `    doc.removeObject(${pyStr(loSketch)})\n` +
+      `    doc.removeObject(${pyStr(hiSketch)})\n` +
+      `    doc.recompute()\n` +
+      `    raise ValueError('the two outlines could not be skinned into one solid')`
+    );
+  },
+
   // Additive pipe: sweep a closed profile along an open path sketch (the
   // spine's first edge is the ride; a full path ride is a v2 concern).
   additivePipe(bodyName, sketchNameProfile, sketchNamePath, featName) {
@@ -1286,6 +1345,11 @@ export function attachCommands(session) {
   session.additiveLoft = (bodyName, sketchA, sketchB, featName) => {
     const res = session.read(emit.additiveLoft(bodyName, sketchA, sketchB, featName));
     if (!res.ok) throw new Error(res.error || 'additive loft failed');
+    return featName;
+  };
+  session.loftBetween = (bodyName, loSketch, hiSketch, featName) => {
+    const res = session.read(emit.loftBetween(bodyName, loSketch, hiSketch, featName));
+    if (!res.ok) throw new Error(res.error || 'loft failed');
     return featName;
   };
   session.additivePipe = (bodyName, profile, path, featName) => {

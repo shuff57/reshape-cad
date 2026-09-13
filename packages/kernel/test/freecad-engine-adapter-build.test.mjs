@@ -81,6 +81,19 @@ function makeFakeSession({ edgeReads = {}, bodyTip = {}, exportDrawingResult = n
       record('sketchNewOnOrigin', [bodyName, sketchName, planeRole]);
       return sketchName;
     },
+    sketchNewPlaced(bodyName, sketchName, origin, uAxis, vAxis) {
+      record('sketchNewPlaced', [bodyName, sketchName, origin, uAxis, vAxis]);
+      return sketchName;
+    },
+    // Same "key the failure off the requested name" style as mirrored/draft/
+    // partBoolean/bore above -- a featName containing 'fail' (derived from
+    // f.id, e.g. id 'blendfail' -> 'blendfail_loft') is this mock's own
+    // failure trigger.
+    loftBetween(bodyName, loSketch, hiSketch, featName) {
+      record('loftBetween', [bodyName, loSketch, hiSketch, featName]);
+      if (featName.includes('fail')) throw new Error('the two outlines could not be skinned into one solid');
+      return featName;
+    },
     revolve(bodyName, sketchName, revName, angle = 360) {
       record('revolve', [bodyName, sketchName, revName, angle]);
       return revName;
@@ -959,16 +972,103 @@ test('groove across two different bodies still throws -- unrelated pre-existing 
   );
 });
 
-test('sketch on a non-xy plane or nonzero offset refuses rather than building the wrong plane', () => {
+test('sketch on any plane + offset now builds via sketchNewPlaced with the right world origin/u/v', () => {
+  // WIDENED (docs/specs/SPEC-blend.md): the old unconditional throw for
+  // anything but 'xy'@0 is gone -- whyCannotBlend() requires a blend's two
+  // sketches to sit at DIFFERENT offsets, so this had to open up for blend
+  // to ever reach its own branch. Pins the handedness finding against
+  // regression: local Z is derived as u x v, so 'xz' (a left-handed plane in
+  // occt-build.ts's own PLANE_AXES) must NOT be handed a normal.
+  const cases = [
+    { plane: 'xy', offset: 15, origin: [0, 0, 15], u: [1, 0, 0], v: [0, 1, 0] },
+    { plane: 'xz', offset: 10, origin: [0, 10, 0], u: [1, 0, 0], v: [0, 0, 1] },
+    { plane: 'yz', offset: -8, origin: [-8, 0, 0], u: [0, 1, 0], v: [0, 0, 1] },
+  ];
+  for (const c of cases) {
+    const session = makeFakeSession();
+    const adapter = makeAdapter(session);
+    const result = adapter.build({
+      version: 1,
+      features: [{ id: 'sk1', kind: 'sketch', plane: c.plane, offset: c.offset, points: [[0, 0], [1, 0], [1, 1]] }],
+    });
+    assert.equal(result.refusals, undefined);
+    const placed = session.calls.find((call) => call.name === 'sketchNewPlaced');
+    assert.ok(placed, `sketchNewPlaced must be called for plane ${c.plane}`);
+    // Normalize -0 (e.g. 0 * -8 for the untouched axes) to 0 -- a sign-of-zero
+    // artifact of the multiplication, not a placement difference.
+    const origin = placed.args[2].map((v) => (v === 0 ? 0 : v));
+    assert.deepEqual(origin, c.origin, `origin for plane ${c.plane}@${c.offset}`);
+    assert.deepEqual(placed.args[3], c.u, `uAxis for plane ${c.plane}`);
+    assert.deepEqual(placed.args[4], c.v, `vAxis for plane ${c.plane}`);
+  }
+});
+
+test('blend: two sketches skin into one PartDesign::AdditiveLoft via proxies in a fresh Body', () => {
   const session = makeFakeSession();
   const adapter = makeAdapter(session);
-  assert.throws(
-    () => adapter.build({
-      version: 1,
-      features: [{ id: 'sk1', kind: 'sketch', plane: 'xz', offset: 0, points: [[0, 0], [1, 0], [1, 1]] }],
-    }),
-    /plane 'xz'/,
-  );
+  const doc = {
+    version: 1,
+    features: [
+      { id: 'sk1', kind: 'sketch', plane: 'xy', offset: 0, points: [[-20, -20], [20, -20], [20, 20], [-20, 20]] },
+      { id: 'sk2', kind: 'sketch', plane: 'xy', offset: 20, points: [[-10, -10], [10, -10], [10, 10], [-10, 10]] },
+      { id: 'bl1', kind: 'blend', targets: ['sk1', 'sk2'] },
+    ],
+  };
+  const result = adapter.build(doc);
+  assert.equal(result.refusals, undefined, result.refusals?.get('bl1'));
+
+  const bodies = session.calls.filter((c) => c.name === 'newBody').map((c) => c.args[0]);
+  assert.equal(bodies.length, 3, 'each sketch plus the blend gets its OWN fresh Body -- proxies, not the sketch branch\'s own objects');
+  const blendBody = bodies[2];
+
+  const placedForBlend = session.calls.filter((c) => c.name === 'sketchNewPlaced' && c.args[0] === blendBody);
+  assert.equal(placedForBlend.length, 2, 'blend builds two proxy sketches in its OWN body');
+  const [loProxy, hiProxy] = placedForBlend.map((c) => c.args[1]);
+  assert.notEqual(loProxy, 'sk1_sk', 'the blend must NOT reuse the sketch branch\'s own object name');
+  assert.notEqual(hiProxy, 'sk2_sk', 'the blend must NOT reuse the sketch branch\'s own object name');
+
+  const loft = session.calls.find((c) => c.name === 'loftBetween');
+  assert.ok(loft, 'session.loftBetween must be called');
+  assert.equal(loft.args[0], blendBody);
+  assert.equal(loft.args[1], loProxy);
+  assert.equal(loft.args[2], hiProxy);
+
+  const entry = result.shapes.get('bl1');
+  assert.equal(entry.kind, 'solid');
+  assert.equal(entry.bodyName, blendBody);
+  assert.equal(entry.container, undefined, 'a blend is a real PartDesign feature, not container:"part"');
+});
+
+test('blend: fewer than two sketch targets refuses rather than throwing', () => {
+  const session = makeFakeSession();
+  const adapter = makeAdapter(session);
+  const doc = {
+    version: 1,
+    features: [
+      { id: 'sk1', kind: 'sketch', plane: 'xy', offset: 0, points: [[0, 0], [1, 0], [1, 1]] },
+      { id: 'box1', kind: 'box', size: [10, 10, 10], center: [0, 0, 0] },
+      { id: 'bl1', kind: 'blend', targets: ['sk1', 'box1'] },
+    ],
+  };
+  const result = adapter.build(doc);
+  assert.ok(result.refusals?.get('bl1'), 'a non-sketch target must refuse, not throw');
+  assert.equal(session.calls.find((c) => c.name === 'loftBetween'), undefined);
+});
+
+test('blend: a loftBetween failure (self-intersecting outline) refuses and registers nothing', () => {
+  const session = makeFakeSession();
+  const adapter = makeAdapter(session);
+  const doc = {
+    version: 1,
+    features: [
+      { id: 'sk1', kind: 'sketch', plane: 'xy', offset: 0, points: [[-20, -20], [20, -20], [20, 20], [-20, 20]] },
+      { id: 'sk2', kind: 'sketch', plane: 'xy', offset: 20, points: [[-10, -10], [10, -10], [10, 10], [-10, 10]] },
+      { id: 'blendfail', kind: 'blend', targets: ['sk1', 'sk2'] },
+    ],
+  };
+  const result = adapter.build(doc);
+  assert.ok(result.refusals?.get('blendfail'));
+  assert.equal(result.shapes.get('blendfail'), undefined, 'a refused blend registers NOTHING -- it has no earlier solid to fall back to');
 });
 
 test('move: copy=false translates the target in place, reusing the same bodyName/objName', () => {

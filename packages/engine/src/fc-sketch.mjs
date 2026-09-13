@@ -99,6 +99,53 @@ export const emit = {
     );
   },
 
+  // Empty sketch on a Body, UNATTACHED -- no face, no datum -- carrying its own
+  // world Placement, so the sketch's 2D (u, v) coordinates land at
+  //   world = origin + u * uAxis + v * vAxis
+  // regardless of the owning Body's own Placement. The third
+  // "positioned by Placement alone" use of the proxy formula
+  // body.Placement.inverse() * worldPlacement, after axisSketchPy()/
+  // neutralPlane() (a REFERENCE) and bore() (a cutting PROFILE); here it is a
+  // sketch meant to be built on directly, by Pad or by AdditiveLoft.
+  //
+  // An App.Matrix, NOT App.Rotation(App.Vector(0,0,1), normal) -- MEASURED
+  // (docs/specs/SPEC-blend.md, the handedness table). The shortest-arc
+  // rotation from local Z to a plane normal leaves the IN-PLANE basis
+  // unconstrained, and for ModelDoc's 'xz' plane it lands 180 degrees out:
+  // a 30x5 rectangle drawn in the +u/+v quadrant came back at world bbox
+  // [[-30,0,-5],[0,20,0]] instead of [[0,0,0],[30,20,5]] -- at the IDENTICAL
+  // volume, so no volume check can see it. The matrix pins all three axes.
+  //
+  // Local Z is derived as uAxis x vAxis, deliberately, and is NOT a parameter:
+  // occt-build.ts's own 'xz' plane basis is LEFT-handed (its PLANE_AXES row
+  // carries `dir: -1` for exactly this reason), and App.Placement cannot hold
+  // a left-handed frame at all. Taking the normal from the caller would let a
+  // caller ask for one; deriving it cannot. The caller's plane normal is still
+  // honoured where it is actually needed -- as the direction the sketch's
+  // OFFSET is measured along -- because that is baked into `origin`.
+  sketchNewPlaced(bodyName, sketchName, origin, uAxis, vAxis) {
+    const u = uAxis.map((c, i) => pyNum(c, `uAxis[${i}]`));
+    const v = vAxis.map((c, i) => pyNum(c, `vAxis[${i}]`));
+    const o = origin.map((c, i) => pyNum(c, `origin[${i}]`));
+    // App.Matrix takes 16 numbers ROW-major, so each row is
+    // (u_i, v_i, w_i, origin_i) -- the basis vectors are its COLUMNS, which is
+    // what maps local (1,0,0)/(0,1,0)/(0,0,1) onto u/v/w.
+    const w = [
+      u[1] * v[2] - u[2] * v[1],
+      u[2] * v[0] - u[0] * v[2],
+      u[0] * v[1] - u[1] * v[0],
+    ];
+    const row = (i) => `${u[i]},${v[i]},${w[i]},${o[i]}`;
+    return (
+      HEAD +
+      `body = doc.getObject(${pyStr(bodyName)})\n` +
+      `sk = body.newObject("Sketcher::SketchObject", ${pyStr(sketchName)})\n` +
+      `world = App.Placement(App.Matrix(${row(0)}, ${row(1)}, ${row(2)}, 0,0,0,1))\n` +
+      `sk.Placement = body.Placement.inverse().multiply(world)\n` +
+      `doc.recompute()\n`
+    );
+  },
+
   // Add one line segment; returns {geoId}.
   addLine(sketchName, x1, y1, x2, y2) {
     return (
@@ -389,6 +436,10 @@ export function attachSketchCommands(session) {
   };
   session.sketchNewOnOrigin = (bodyName, sketchName, planeRole = 'XZ_Plane') => {
     runExec('sketchNewOnOrigin', emit.sketchNewOnOrigin(bodyName, sketchName, planeRole));
+    return sketchName;
+  };
+  session.sketchNewPlaced = (bodyName, sketchName, origin, uAxis, vAxis) => {
+    runExec('sketchNewPlaced', emit.sketchNewPlaced(bodyName, sketchName, origin, uAxis, vAxis));
     return sketchName;
   };
   session.sketchAddLine = (sk, x1, y1, x2, y2) =>

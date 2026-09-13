@@ -163,7 +163,20 @@
 //     a PROFILE for the first time rather than a REFERENCE. See the 'hole'
 //     branch's own comment below and fc-commands.mjs's bore() header for the
 //     full measured account (SPEC-hole.md).
-//   - Everything else -- wedge, blend --
+//   - blend (this pass, docs/specs/SPEC-blend.md): occt-build.ts's own
+//     BRepOffsetAPI_ThruSections(isSolid=true, ruled=false) over two placed
+//     wires -- here ONE PartDesign::AdditiveLoft over two PROXY profile
+//     sketches built fresh in the blend's own Body. Part::Loft was probed and
+//     rejected (container:'part', so session.fillet() on one raises
+//     "'Part.Feature' object has no attribute 'newObject'"), and so was
+//     reusing the two source sketches' own objects cross-body (it builds, but
+//     the kernel prints "links are out of scope" every recompute, and a
+//     source-body placement measured as silently ignored). Ruled is left
+//     False: with exactly TWO sections it is provably inert, and MEASURED
+//     bit-identical. This pass also WIDENED the 'sketch' branch, which had to
+//     happen for blend to be reachable at all -- see that branch's own
+//     comment.
+//   - Everything else -- wedge --
 //     throws a clear "not yet supported on the FreeCAD engine: <kind>", per
 //     step 7's own instruction, rather than silently building the wrong
 //     shape. wedge specifically was investigated and rejected, not
@@ -357,6 +370,7 @@ export interface FcSessionLike extends SketchSession {
   groove(bodyName: string, sketchName: string, featName: string, angle?: number): string;
   patternAxis(bodyName: string, axisName: string, origin: Vec3, direction: Vec3): string;
   sketchNewOnOrigin(bodyName: string, sketchName: string, planeRole?: string): string;
+  sketchNewPlaced(bodyName: string, sketchName: string, origin: Vec3, uAxis: Vec3, vAxis: Vec3): string;
   neutralPlane(bodyName: string, sketchName: string, origin: Vec3, direction: Vec3): string;
   draft(bodyName: string, baseName: string, faceName: string, angleDegrees: number, neutralSketchName: string): string;
   mirrored(bodyName: string, baseName: string, planeSketchName: string, mirrorName?: string): string;
@@ -366,6 +380,7 @@ export interface FcSessionLike extends SketchSession {
   partBoolean(op: 'union' | 'subtract' | 'intersect', baseName: string, toolName: string, resultName: string): string;
   bore(bodyName: string, sketchName: string, pocketName: string, radius: number,
        worldCenters: Vec3[], worldOrigin: Vec3, worldAxis: Vec3, depth: number): string;
+  loftBetween(bodyName: string, loSketch: string, hiSketch: string, featName: string): string;
   exportDrawing(opts: {
     objName: string; sheetPath: string; outPath: string;
     views: DrawingView[]; projection: 'first-angle' | 'third-angle';
@@ -513,6 +528,30 @@ const num = (v: number, what: string): number => {
 const pyStr = (s: string): string => JSON.stringify(String(s));
 
 const OUT_PATH = '/tmp/reshape_out.json';
+
+/**
+ * The world frame a ModelDoc SketchFeature's own `plane` describes: its two
+ * in-plane directions, plus the direction its `offset` is measured along.
+ *
+ * A DELIBERATE DUPLICATE of occt-build.ts's own PLANE_AXES (occt-build.ts:339),
+ * which is module-private there and not reachable from this file. The two MUST
+ * stay in step: if they ever disagree, the same sketch lands in a different
+ * place on each engine, and that is a bug no volume check can see -- measured
+ * (SPEC-blend.md's handedness table) as a full 180-degree rotation at a
+ * BIT-IDENTICAL volume. Same warning lib/model-handles.ts's own `world()`
+ * carries against occt-build.ts's `onPlane()`.
+ *
+ * `n` is the OFFSET direction ONLY, never the sketch's own local Z. The 'xz'
+ * row is LEFT-handed (u x v = -n -- exactly what occt-build.ts's own
+ * `dir: -1` field on that row records), and App.Placement cannot hold a
+ * left-handed frame at all, so session.sketchNewPlaced() derives local Z as
+ * u x v and this table never supplies it.
+ */
+const SKETCH_BASIS: Record<string, { u: Vec3; v: Vec3; n: Vec3 }> = {
+  xy: { u: [1, 0, 0], v: [0, 1, 0], n: [0, 0, 1] },
+  xz: { u: [1, 0, 0], v: [0, 0, 1], n: [0, 1, 0] },
+  yz: { u: [0, 1, 0], v: [0, 0, 1], n: [1, 0, 0] },
+};
 
 const BOX_PARTS = new Set(['+x', '-x', '+y', '-y', '+z', '-z']);
 const CYLINDER_PARTS = new Set(['+z', '-z', 'side']);
@@ -742,17 +781,33 @@ export class FreeCadEngineAdapter implements EngineAdapter {
         built.set(f.id, entry);
         shapes.set(f.id, entry);
       } else if (f.kind === 'sketch') {
+        // WIDENED from 'plane xy at offset 0 only' (this branch used to throw
+        // unconditionally for anything else). Not scope creep: whyCannotBlend()
+        // REQUIRES a blend's two sketches to sit at DIFFERENT offsets, and
+        // doc.features always orders them BEFORE the blend, so the old throw
+        // fired on the second sketch and no blend could ever reach its own
+        // branch regardless of how that branch was written.
+        //
+        // Placement lives on the SKETCH, not on its Body. MEASURED
+        // (SPEC-blend.md): a sketch at identity inside a Body placed at z=20
+        // reads its geometry back at z=0, and a loft consuming it produced
+        // volume 0 -- a Sketcher::SketchObject's own Shape is body-local and
+        // Body.Placement does not reach it, unlike a PartDesign solid
+        // feature's. So the box/cylinder setBodyPlacement() analogy does not
+        // transfer here.
+        //
+        // BLAST RADIUS, measured rather than assumed -- the one other thing
+        // that consumes a raw 'sketch' entry and could now newly succeed is
+        // 'extrude' (and 'pocket', which still refuses its own cross-body case
+        // independently, unchanged). A Pad of a placed sketch reproduces
+        // OcctEngineAdapter's OWN bbox and volume exactly on every plane and
+        // offset tried -- xy@0, xy@15, xz@0, xz@10, yz@-8, all five MATCH --
+        // so extrude gains real, correct reach here. What extrude does NOT
+        // gain is NAMING: see its own branch below for the sweep guard and why.
         const sk: SketchFeature = f;
-        if ((sk.plane ?? 'xy') !== 'xy' || (sk.offset ?? 0) !== 0) {
-          throw new Error(
-            `not yet supported on the FreeCAD engine: sketch on plane '${sk.plane ?? 'xy'}'`
-              + `${sk.offset ? ` at offset ${sk.offset}` : ''} -- only plane 'xy' at offset 0 is built today`,
-          );
-        }
         const bodyName = freshBody();
         const sketchName = `${f.id}_sk`;
-        session.sketchNew(bodyName, sketchName);
-        translateSketch(session, sketchName, sk);
+        this.placeSketch(session, bodyName, sketchName, sk);
         const entry: FcBuiltFeature = { bodyName, objName: sketchName, kind: 'sketch', featureId: f.id, featureKind: f.kind };
         built.set(f.id, entry);
         shapes.set(f.id, entry);
@@ -762,7 +817,23 @@ export class FreeCadEngineAdapter implements EngineAdapter {
         const padName = `${f.id}_pad`;
         session.pad(src.bodyName, src.objName, padName, f.height);
         const srcSketch = doc.features.find((x) => x.id === f.target) as SketchFeature | undefined;
-        const sweep = srcSketch ? this.buildSweepInfo(srcSketch, f.height) : undefined;
+        // sweep is withheld for any sketch NOT on plane 'xy' at offset 0.
+        // buildSweepInfo() caches wall/cap probe points as bare (u, v) pairs at
+        // local z = height/2 / 0 / height, and querySketchGeometry() turns them
+        // into Part.Vertex(u, v, z) against the Pad's own BODY-LOCAL Shape.
+        // That identity only holds while the profile sketch sits unplaced at
+        // the body origin. MEASURED once the 'sketch' branch above places it:
+        // a Pad of an xy@15 sketch has its faces at local z 15..25, so every
+        // probe point misses by exactly the offset and every wall/cap would
+        // come back a WRONG face rather than no face. An honest `undefined`
+        // instead -- the same "no answer over a wrong one" outcome a
+        // circle-profile Pad already gets (buildSweepInfo() returns undefined
+        // for circleOf() sketches), and a strictly smaller loss than the
+        // unconditional throw this replaces, which built nothing at all.
+        // Teaching buildSweepInfo()/querySketchGeometry() the full 3D frame is
+        // a real, separable piece of work; it is not blend's.
+        const onBareXy = !!srcSketch && (srcSketch.plane ?? 'xy') === 'xy' && (srcSketch.offset ?? 0) === 0;
+        const sweep = onBareXy ? this.buildSweepInfo(srcSketch, f.height) : undefined;
         const entry: FcBuiltFeature = { bodyName: src.bodyName, objName: padName, kind: 'solid', featureId: f.id, featureKind: f.kind, sweep };
         built.set(f.id, entry);
         shapes.set(f.id, entry);
@@ -1624,6 +1695,107 @@ export class FreeCadEngineAdapter implements EngineAdapter {
         };
         built.set(f.id, entry);
         shapes.set(f.id, entry);
+      } else if (f.kind === 'blend') {
+        // occt-build.ts:714's own BRepOffsetAPI_ThruSections(isSolid=true,
+        // ruled=false, 1e-6) over two wires, each already placed on its own
+        // sketch plane -- here ONE PartDesign::AdditiveLoft over two proxy
+        // profile sketches, built fresh in the blend's OWN Body.
+        //
+        // NOT Part::Loft, even though it exists here and produces the same
+        // volume to 12 figures (18666.666666666668 vs ...664). A Part:: result
+        // sets container:'part' and notInABody() then refuses every later
+        // PartDesign feature -- MEASURED: session.fillet() on a Part::Loft
+        // raises "'Part.Feature' object has no attribute 'newObject'". Same
+        // ground SPEC-hole.md ruled out Part::Cut on, and it bites harder
+        // here: a blend is a BASE solid, the shape most likely to be rounded,
+        // drilled or patterned next. As a PartDesign::AdditiveLoft it stays
+        // fully native -- fillet, bore, linearPattern, mirrored, thickness,
+        // moveBody and partBoolean were each measured building ON the loft.
+        //
+        // PROXY profiles, not the sketch objects the 'sketch' branch already
+        // built. Pointing Profile/Sections at those DOES work on this kernel,
+        // but the kernel itself prints "PartDesign::AdditiveLoft: <name> links
+        // are out of scope. Out of scope links to: ..." on every recompute --
+        // it is telling us the construction breaks its own scope rules, and
+        // this adapter writes real .FCStd files. The deciding reason is
+        // fidelity, though, not the warning: occt-build.ts builds FRESH wires
+        // from the ModelDoc for each side and shares nothing with any other
+        // feature's shape, so a blend's geometry there is a function of the
+        // ModelDoc alone. Proxies keep that true. The cross-body form does
+        // not, and the gap already leaks -- MEASURED: moving the source
+        // sketch's Body to world x=50 left the loft exactly where it was.
+        //
+        // NO notInABody() gate, unlike every other branch that builds on an
+        // earlier feature: a blend's targets are SKETCHES, and the 'sketch'
+        // branch never sets container:'part'. There is no combine result this
+        // can be handed.
+        //
+        // NO `sweep` on the entry. MEASURED: a loft's own Shape.Faces come
+        // back as [bottom cap, wall, top cap, wall, wall, wall] -- the caps
+        // are NOT last the way a Pad's are (FcSweepInfo's header) -- and even
+        // a straight taper's walls are Part::GeomBSplineSurface, not
+        // GeomPlane. The Pad ordinal convention does not transfer, so a
+        // blend's faces are deliberately not nameable, the same honest null a
+        // circle-profile Pad already returns.
+        const [loId, hiId] = f.targets;
+        const loSk = doc.features.find((x) => x.id === loId);
+        const hiSk = doc.features.find((x) => x.id === hiId);
+        if (f.targets.length !== 2 || !loSk || !hiSk || loSk.kind !== 'sketch' || hiSk.kind !== 'sketch') {
+          // Unreachable through the UI (whyCannotBlend() refuses a non-sketch
+          // target with a sentence before newBlend() is ever called) and
+          // through reshape-script.ts (newBlend() takes two SketchFeatures by
+          // type). A refusal rather than a throw anyway, for the reason
+          // combine's own `live.length < 2` path is one: a hand-edited or
+          // imported doc should lose one feature, not the whole model.
+          refusals.set(f.id,
+            `${f.id} needs exactly two flat outlines to skin between -- ${f.id} is shown without it.`);
+          continue;
+        }
+
+        // Bottom-first by construction (newBlend() sorts by offset), and the
+        // order turns out not to matter anyway -- MEASURED: passing offsets
+        // 20 -> 0 produced the identical 18666.6667 and the identical bbox as
+        // 0 -> 20. The offsets carry the geometry; the argument order does
+        // not. No re-sort here, so the FreeCAD Profile is always the same
+        // sketch occt-build.ts's own `const [loId, hiId] = f.targets` makes
+        // its first AddWire().
+        const blendBody = freshBody();
+        const blendLo = `${f.id}_lo`;
+        const blendHi = `${f.id}_hi`;
+        this.placeSketch(session, blendBody, blendLo, loSk as SketchFeature);
+        this.placeSketch(session, blendBody, blendHi, hiSk as SketchFeature);
+
+        let blendObj: string;
+        try {
+          blendObj = session.loftBetween(blendBody, blendLo, blendHi, `${f.id}_loft`);
+        } catch (e) {
+          // loftBetween() has already rolled back BOTH proxy sketches and the
+          // loft, so what is left is an empty Body -- see its own header.
+          // The kernel's own message is deliberately NOT echoed: for the one
+          // reachable case (a self-intersecting outline) it says only "the two
+          // outlines could not be skinned into one solid", and the sibling
+          // emitter's wording would be worse than silence here (it blames two
+          // sketches being on the same plane, which whyCannotBlend()
+          // GUARANTEES they are).
+          //
+          // Nothing registered in `built`/`shapes`: a blend has no earlier
+          // solid to fall back to the way hole/shell/draft fall back to their
+          // target -- BOTH its targets are flat sketches. Same outcome as
+          // combine's own zero-solid path, and with the same consequence: a
+          // later feature naming this blend hits requireBuilt() and throws.
+          refusals.set(f.id,
+            `Skinning ${loId} and ${hiId} into one solid did not work on the FreeCAD engine `
+              + `-- one of the outlines may cross itself. ${f.id} is shown without it. `
+              + `(${e instanceof Error ? e.message : String(e)})`);
+          continue;
+        }
+
+        const entry: FcBuiltFeature = {
+          bodyName: blendBody, objName: blendObj, kind: 'solid',
+          featureId: f.id, featureKind: f.kind,
+        };
+        built.set(f.id, entry);
+        shapes.set(f.id, entry);
       } else {
         throw new Error(`not yet supported on the FreeCAD engine: ${f.kind}`);
       }
@@ -1772,6 +1944,31 @@ export class FreeCadEngineAdapter implements EngineAdapter {
       `doc.recompute()\n`;
     const { rc, out } = session.exec(py);
     if (rc !== 0) throw new Error(`setBodyPlacement(${bodyName}) failed:\n${out}`);
+  }
+
+  /** Create the FreeCAD sketch for one ModelDoc SketchFeature, positioned at
+   *  the world plane+offset that sketch actually describes, and fill it with
+   *  the sketch's own geometry. The one place a ModelDoc sketch's plane+offset
+   *  is turned into a FreeCAD Placement -- both the 'sketch' branch (the
+   *  student's own sketch feature) and the 'blend' branch (its two proxy
+   *  profiles) go through here, so the two can never drift apart.
+   *
+   *  translateSketch() may THROW -- a chamfered sketch is currently
+   *  untranslatable on either plane ("DoF closure left 16 degree(s) of freedom
+   *  unpinned"), verified to be a PRE-EXISTING sketch-translate.ts limit that
+   *  reproduces on plane 'xy' at offset 0 and has nothing to do with
+   *  placement. Left to propagate exactly as it already does, rather than
+   *  converted here into a refusal that would change behaviour this pass did
+   *  not measure. */
+  private placeSketch(
+    session: FcSessionLike, bodyName: string, sketchName: string, sk: SketchFeature,
+  ): string {
+    const basis = SKETCH_BASIS[sk.plane ?? 'xy'] ?? SKETCH_BASIS.xy;
+    const offset = sk.offset ?? 0;
+    const origin: Vec3 = [basis.n[0] * offset, basis.n[1] * offset, basis.n[2] * offset];
+    session.sketchNewPlaced(bodyName, sketchName, origin, basis.u, basis.v);
+    translateSketch(session, sketchName, sk);
+    return sketchName;
   }
 
   /** §4 risk 3, narrowed to exactly what the box+fillet self-check needs:

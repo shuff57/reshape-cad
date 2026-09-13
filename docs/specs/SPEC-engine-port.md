@@ -573,7 +573,16 @@ example by making everything downstream refuse; deliberately NOT the native
 kernel -- ignores drill direction on 2 of 3 axes, under-drills a multi-circle
 profile, and cones every blind hole's bottom instead of leaving it flat, all
 three returning `Up-to-date` with no error). Current list of what still
-throws `"not yet supported on the FreeCAD engine: <kind>"`: `wedge`, `blend`.
+throws `"not yet supported on the FreeCAD engine: <kind>"`: `wedge` (a genuine
+property mismatch -- `emit.wedge()` has no parameter for `WedgeFeature.depth`
+-- not merely unstarted). `blend` closed 2026-09-12 (`docs/specs/SPEC-blend.md`):
+a `PartDesign::AdditiveLoft` over two PROXY profile sketches built fresh in the
+blend's own Body, `Part::Loft` rejected (sets `container: 'part'`, so a later
+`fillet`/`bore`/etc. on it would refuse). Closing `blend` also WIDENED the
+`sketch` branch itself -- see below -- since `whyCannotBlend()` requires its
+two sketches at different offsets, and the old `sketch` branch threw for any
+nonzero offset unconditionally, so no blend could ever reach its own branch
+regardless of how that branch was written.
 Everything else in the original 10-kind list is closed, several with a
 documented partial-scope refusal rather than full support -- see each
 feature's own section below for the exact boundary (`draft`: single named
@@ -583,8 +592,11 @@ face, `pull:'z'` only, unrotated body only, `whole` body-draft refuses;
 ### 6.1 `Feature.kind`s that throw on the FreeCAD engine
 
 `FreeCadEngineAdapter.build()` (`packages/kernel/src/freecad-engine-adapter.ts`)
-builds `box`, `cylinder`, `sphere`, `sketch` (plane `'xy'` at offset `0`
-only -- any other plane/offset throws its own specific message), `extrude`,
+builds `box`, `cylinder`, `sphere`, `sketch` (WIDENED 2026-09-12 to every
+plane and offset, as part of closing `blend` -- was plane `'xy'` at offset
+`0` only, throwing its own specific message otherwise; the sketch's own
+`Placement` now carries the plane+offset, not its Body's -- see
+`SPEC-blend.md`), `extrude`,
 `pocket`, `fillet`/`chamfer`, `cone`, `torus`, `prism` (added in a later
 pass, see below), and -- added in a further pass, see "pattern lands"
 below -- `pattern` (linear + polar, narrowed). At the time this subsection was
