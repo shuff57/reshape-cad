@@ -201,3 +201,8 @@
 {"ts":"2026-09-13T15:46:18.053Z","kind":"claim","from":"claude","paths":["packages/studio/src/ReshapeStudio.tsx","packages/studio/src/model/ModelEditor.tsx","packages/studio/src/MenuBar.tsx"]}
 {"ts":"2026-09-13T16:45:05.949Z","kind":"claim","from":"claude","paths":["packages/studio/src/model/HandleOverlay.tsx","packages/studio/src/model/SketchConstraints.tsx","packages/studio/src/ReshapeParamsPanel.tsx","packages/studio/src/model/BrepViewportThree.tsx"]}
 {"ts":"2026-09-13T17:00:51.128Z","kind":"claim","from":"claude","paths":["packages/script/src/model-handles.ts","packages/script/src/model-codegen.ts","packages/script/src/model-types.ts","packages/sandbox-dev/src/CodeEditor.tsx","packages/sandbox-dev/src/App.tsx","packages/sandbox-dev/package.json"]}
+{"ts":"2026-09-13T17:28:47.707Z","kind":"release","from":"claude","all":true}
+{"ts":"2026-09-13T17:31:25.429Z","kind":"claim","from":"claude","paths":["packages/kernel/src/freecad-engine-adapter.ts","packages/engine/src/fc-session.mjs"]}
+{"ts":"2026-09-13T17:42:25.701Z","kind":"claim","from":"claude","paths":["packages/engine/src/sketch-translate.ts"]}
+{"ts":"2026-09-13T17:50:31.318Z","kind":"release","from":"claude","paths":["packages/engine/src/sketch-translate.ts"]}
+{"ts":"2026-09-13T17:56:36.945Z","kind":"release","from":"claude","all":true}
