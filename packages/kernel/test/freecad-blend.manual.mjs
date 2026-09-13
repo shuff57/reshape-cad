@@ -136,6 +136,10 @@ const { createFcSession } = await load('packages/engine/src/fc-session.mjs');
 const { attachCommands } = await load('packages/engine/src/fc-commands.mjs');
 const { attachSketchCommands } = await load('packages/engine/src/fc-sketch.mjs');
 const { FreeCadEngineAdapter } = await load('packages/kernel/dist/freecad-engine-adapter.js');
+// X2 below drives translateSketch() directly (not through the adapter, which
+// gives every sketch its own fresh body) so a profile can share a body with
+// the pad it cuts -- the one arrangement the adapter itself refuses today.
+const { translateSketch } = await load('packages/engine/dist/sketch-translate.js');
 
 const Module = await loadNodeKernel(fcKernelJs);
 const session = attachSketchCommands(attachCommands(createFcSession(Module)));
@@ -644,6 +648,128 @@ console.log('\n--- 24. extrude of a placed sketch (the WIDENED \'sketch\' branch
       c.nameable ? entry.sweep !== undefined : entry.sweep === undefined,
     );
   }
+}
+
+// ---------------------------------------------------------------------------
+// docs/specs/SPEC-pocket-drag-handle.md sec 4.3/7 -- X1/X2. Pocket direction,
+// cross-engine, on the ONE doc FreeCadEngineAdapter can actually build.
+// ---------------------------------------------------------------------------
+
+console.log('\n--- X1. pocket(sk1, extrude(sk1)) -- the ONLY pocket doc FreeCadEngineAdapter accepts (SPEC-pocket-drag-handle.md sec 4.3) ---');
+{
+  // Every other pocket doc throws "cuts across two different bodies"
+  // (freecad-engine-adapter.ts:859-861) -- this is the one shape where the
+  // profile and the victim share a bodyName (the pad's own sketch, chained).
+  // The pad's material is all at +Z; post-fix (fc-commands.mjs:332's
+  // `pk.Reversed = True` deleted) a pocket cuts -Z, so it must remove
+  // NOTHING -- 32000, not 24000.
+  const doc = {
+    version: 1,
+    features: [
+      sketch('x1sk', 'xy', 0, sq(20)),
+      { id: 'x1pull', kind: 'extrude', target: 'x1sk', height: 20 },
+      { id: 'x1pk', kind: 'pocket', target: 'x1sk', into: 'x1pull', depth: 5 },
+    ],
+  };
+  const occt = occtOf(doc, 'x1pk');
+  check('OCCT volume (expect 32000, removes nothing)', occt.volume, 32000, 0.5);
+
+  const fc = adapter.build(doc);
+  checkTrue('built (no refusal)', !fc.refusals?.get('x1pk'), JSON.stringify(fc.refusals?.get('x1pk') ?? null));
+  const entry = fc.shapes.get('x1pk');
+  checkTrue('entry exists -- a thrown build or rolled-back Pocket is a DIFFERENT failure and must not read as a pass', !!entry);
+  if (entry) {
+    const m = meshOf(entry);
+    check('FreeCAD volume vs OCCT', m.volume, occt.volume, 0.5);
+    check('FreeCAD volume (expect 32000, removes nothing)', m.volume, 32000, 0.5);
+    checkBbox('FreeCAD world bbox', worldBbox(entry.bodyName), [[-20, -20, 0], [20, 20, 20]]);
+    // The point 2.5mm above the sketch plane is inside the pad and is the
+    // FIRST thing a wrong +Z cut would remove -- must read INSIDE post-fix.
+    // (It reads false pre-fix -- that is the bug this whole pass closes.)
+    const inside = solidAt(entry.bodyName, [[0, 0, 2.5]]);
+    checkTrue('solidAt [0,0,2.5] is inside the pad (post-fix: pocket cuts -Z, not +Z)', inside[0] === true, JSON.stringify(inside));
+  }
+}
+
+console.log('\n--- X2. regression guard: freeze the OLD Reversed=True behaviour (SPEC-pocket-drag-handle.md sec 1.2/7) ---');
+{
+  // A far-cap fixture -- the shape that can actually distinguish the two
+  // settings (sec 4.1: a box straddling the sketch plane cannot, since both
+  // directions land in material). Built by hand, driving the raw session
+  // directly (NOT through the adapter, which gives every sketch its own
+  // fresh body and would refuse this cross-feature-but-same-body doc) --
+  // matching exactly how the sec 1.2 measurement was taken: a 40x40 profile
+  // padded 20 in its OWN body, then a second placed sketch (10x8, centred on
+  // the far cap) cut with a PartDesign::Pocket of length 5, once via the
+  // SHIPPED emitter (Reversed no longer set) and once with Reversed=True
+  // re-emitted BY HAND to freeze the old, wrong measurement -- so this test
+  // cannot start silently passing again if fc-commands.mjs:332 is restored
+  // without anyone noticing the direction flipped back.
+  const OUT_PATH = '/tmp/reshape_out.json';
+  function emitPocketReversedByHand(bodyName, sketchName, pocketName, length) {
+    // A hand reconstruction of fc-commands.mjs's PRE-FIX emit.pocket() body,
+    // with `pk.Reversed = True` restored. Deliberately NOT importing
+    // anything from fc-commands.mjs -- the whole point is to freeze what the
+    // OLD wrong behaviour measured, independent of whatever emit.pocket()
+    // does today.
+    return (
+      `import json, FreeCAD as App\n` +
+      `doc = App.ActiveDocument\n` +
+      `_res = {'ok': True}\n` +
+      `try:\n` +
+      `    pk = doc.getObject(${JSON.stringify(bodyName)}).newObject("PartDesign::Pocket", ${JSON.stringify(pocketName)})\n` +
+      `    pk.Profile = doc.getObject(${JSON.stringify(sketchName)})\n` +
+      `    pk.Length = ${length}\n` +
+      `    pk.Reversed = True\n` +
+      `    doc.recompute()\n` +
+      `    if ('Invalid' in pk.State) or pk.Shape.isNull():\n` +
+      `        doc.removeObject(pk.Name)\n` +
+      `        doc.recompute()\n` +
+      `        raise ValueError('pocket failed')\n` +
+      `except Exception as _e:\n` +
+      `    _res = {'ok': False, 'error': str(_e)}\n` +
+      `open(${JSON.stringify(OUT_PATH)}, 'w').write(json.dumps(_res))\n`
+    );
+  }
+
+  // Measured (probe, this pass): session.sketchRect(bodyName,...,40,40) then
+  // session.pad(...,20) puts the pad at world bbox [[0,0,0],[40,40,20]] --
+  // corner-based, NOT centred like the primitive-adapter path. The 10x8
+  // profile is centred on the top face (20,20,20) instead of the origin so
+  // it lands wholly within material on the far cap regardless of direction.
+  function farCapPocketBody(bodyName, useOldReversed) {
+    session.newBody(bodyName);
+    const baseSk = `${bodyName}_base`;
+    session.sketchRect(bodyName, baseSk, 40, 40);
+    const padName = `${bodyName}_pad`;
+    session.pad(bodyName, baseSk, padName, 20);
+    const profSk = `${bodyName}_prof`;
+    session.sketchNewPlaced(bodyName, profSk, [0, 0, 20], [1, 0, 0], [0, 1, 0]);
+    translateSketch(session, profSk, {
+      id: profSk, kind: 'sketch', plane: 'xy', offset: 0,
+      points: [[15, 16], [25, 16], [25, 24], [15, 24]],
+    });
+    const pkName = `${bodyName}_pk`;
+    if (useOldReversed) {
+      const res = session.read(emitPocketReversedByHand(bodyName, profSk, pkName, 5));
+      if (!res.ok) throw new Error(res.error || 'pocket (old Reversed=True) failed');
+    } else {
+      session.pocket(bodyName, profSk, pkName, 5);
+    }
+    return { bodyName, pkName };
+  }
+
+  const shipped = farCapPocketBody('BodyX2Shipped', false);
+  check(
+    'shipped emitter (Reversed NOT set): far-cap pocket removes 400 -> 31600',
+    session.mesh(shipped.pkName).volume, 31600, 0.5,
+  );
+
+  const oldReversed = farCapPocketBody('BodyX2OldReversed', true);
+  check(
+    'OLD Reversed=True re-emitted by hand: removes NOTHING -> 32000 (frozen sec 1.2 measurement)',
+    session.mesh(oldReversed.pkName).volume, 32000, 0.5,
+  );
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);

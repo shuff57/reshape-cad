@@ -1254,6 +1254,7 @@ export function topLevel(doc: ModelDoc): Feature[] {
     // as the round having done nothing.
     if (f.kind === 'fillet') consumed.add(f.target);
     if (f.kind === 'draft') consumed.add(f.target);
+    if (f.kind === 'pocket') consumed.add(f.into);
     // A mirror's target is deliberately never consumed here — see
     // MirrorFeature's doc comment. The source stays visible and the mirrored
     // copy is a second, independent top-level shape.

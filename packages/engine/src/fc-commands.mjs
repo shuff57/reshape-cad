@@ -317,19 +317,31 @@ export const emit = {
   // by `length`. Subtractive counterpart to Pad. Same clean-status wrapper: an
   // open/invalid profile leaves a null shape — detect it, delete, report a
   // clear message instead of a phantom feature.
-  // Reversed = True (kernel-measured, msgbox #91/#92): a bare XY sketch under
-  // a Pad cuts -Z by default — empty space below the solid — so the pocket
-  // removed NOTHING (vol came back the base solid's, 32000). Midplane was the
-  // wrong first fix (it splits the depth symmetrically, so only half falls
-  // in material, 31800). Reversed aims the whole depth the other way: +Z,
-  // straight into the material. (holeThrough keeps Midplane because a
-  // THROUGH-all cut has no depth to halve — symmetric is free there.)
+  //
+  // Reversed is deliberately NOT set. A PartDesign::Pocket cuts along the
+  // profile sketch's local -Z by default, and sketchNewPlaced() derives that
+  // local Z as u x v (fc-sketch.mjs:119-125), which is occt-build.ts's own
+  // n * dir. So the default IS occt-build.ts:635's `-depth * a.dir`, and
+  // PocketFeature.depth's documented contract -- cut OPPOSITE the way extrude
+  // pulls -- holds on both engines with nothing to keep in step.
+  //
+  // It USED to set Reversed = True (msgbox #91/#92). That measurement was
+  // right about its own fixture and wrong as a rule: it was taken on the one
+  // shape this adapter can actually build -- a pocket whose profile is the
+  // SAME sketch the Pad was made from -- where every bit of material lies on
+  // the + side, so the default correctly cut air and Reversed correctly cut
+  // material. MEASURED 2026-09-13 on the live kernel with the profile on the
+  // pad's FAR cap instead, xy/xz/yz: Reversed=True removed 0 on all three
+  // (vol 32000, State "Up-to-date", no error); the default removed 400 on all
+  // three (31600). Do not restore it from a single-sided fixture again.
+  //
+  // holeThrough() and bore() are NOT affected: both use Midplane, which makes
+  // the cut symmetric and has no direction to get wrong.
   pocket(bodyName, sketchName, pocketName, length) {
     return wrapStatus(
       `pk = doc.getObject(${pyStr(bodyName)}).newObject("PartDesign::Pocket", ${pyStr(pocketName)})\n` +
       `pk.Profile = doc.getObject(${pyStr(sketchName)})\n` +
       `pk.Length = ${pyNum(length, 'length')}\n` +
-      `pk.Reversed = True\n` +
       `doc.recompute()\n` +
       `if ('Invalid' in pk.State) or pk.Shape.isNull():\n` +
       `    doc.removeObject(pk.Name)\n` +

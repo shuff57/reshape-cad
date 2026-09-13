@@ -338,6 +338,75 @@ function extrudeHandles(f: Extract<Feature, { kind: 'extrude' }>, doc?: ModelDoc
   }];
 }
 
+/**
+ * The one handle a Pocket carries: its depth, sitting on the FLOOR the cut
+ * moves, pointing the way the cut deepens.
+ *
+ * The mirror of extrudeHandles(), and deliberately written as its mirror: a
+ * pocket is an extrude with the sweep negated, so this is that function with
+ * `-SWEEP_DIR` in place of `SWEEP_DIR` and `depth`/'deep' in place of
+ * `height`/'height'. Nothing else differs.
+ *
+ * MEASURED on both engines 2026-09-13 (docs/specs/SPEC-pocket-drag-handle.md
+ * section 1): OCCT cuts -(n * dir) -- occt-build.ts:635's `-f.depth * a.dir`.
+ * FreeCAD reaches the same direction by a different route -- a
+ * PartDesign::Pocket runs along the profile sketch's local -Z, and
+ * sketchNewPlaced() derives local Z as u x v = n * dir -- ONCE
+ * fc-commands.mjs's `pk.Reversed = True` is gone. That line is part of this
+ * change; without it FreeCAD cuts the opposite way and this handle sits on
+ * the wrong side of the solid there.
+ *
+ * `-(SWEEP_DIR[plane])`, not a second table: the relationship is total on
+ * every plane, so a POCKET_DIR table would be a restatement that has to be
+ * kept in step by hand.
+ */
+function pocketHandles(f: Extract<Feature, { kind: 'pocket' }>, doc?: ModelDoc): HandleSpec[] {
+  if (!doc) return [];
+  const sk = doc.features.find((x) => x.id === f.target);
+  if (!sk || sk.kind !== 'sketch') return [];
+  // Same outline test extrudeHandles() applies: a profile that cannot close
+  // builds no cut on either engine, and a dot over nothing is a control that
+  // claims to work and silently doesn't.
+  const closed = sk.shape === 'circle' ? sk.points.length === 2 : sk.points.length >= 3;
+  if (!closed) return [];
+  // A pocket also names the solid it cuts. If that is gone there is no pocket,
+  // only a sketch -- and dragging a depth would edit a feature that builds
+  // nothing. extrude has no equivalent check because it has no `into`.
+  if (!doc.features.some((x) => x.id === f.into)) return [];
+
+  const plane = sk.plane ?? 'xy';
+  const { u, v } = planeAxes(plane);
+  const n = planeNormal(plane);
+  const cut = -(SWEEP_DIR[plane] ?? 1);
+  const [cu, cv] = sketchBBoxCentre(sk.points);
+  // offset places the sketch plane (the mouth); cut * depth carries the floor
+  // off it, into the material.
+  const reach = (sk.offset ?? 0) + cut * f.depth;
+
+  return [{
+    kind: 'size',
+    // Exactly the name generatedParams() emits (model-codegen.ts:114, via
+    // pname(id,'depth')) and applyParam() writes back (model-codegen.ts:360).
+    param: `${f.id}_depth`,
+    origin: [
+      u[0] * cu + v[0] * cv + n[0] * reach,
+      u[1] * cu + v[1] * cv + n[1] * reach,
+      u[2] * cu + v[2] * cv + n[2] * reach,
+    ],
+    axis: [n[0] * cut, n[1] * cut, n[2] * cut],
+    // 1, not 2: the floor moves the WHOLE depth. Same reasoning as
+    // extrudeHandles() -- a centred box face moves half its own size, which is
+    // why the box rows are 2.
+    scale: 1,
+    // 'deep', not 'depth' -- generatedParams' caption for this slot is
+    // `${label} deep` (model-codegen.ts:114), and a handle and a slider driving
+    // the SAME parameter must not use two different words. This codebase has
+    // already paid for that (the "Angled Corner"/"bevel"/"Bevel" split,
+    // model-types.ts:1174-1179). Note the SLOT is still 'depth'.
+    label: 'deep',
+  }];
+}
+
 export function handlesFor(f: Feature, doc?: ModelDoc): HandleSpec[] {
   // A sketch gets its own two-axis corner handles; see sketchHandles.
   if (f.kind === 'sketch') return sketchHandles(f);
@@ -349,6 +418,9 @@ export function handlesFor(f: Feature, doc?: ModelDoc): HandleSpec[] {
   // has to be caught before the isShape() guard below, which would otherwise
   // send it straight to the empty return.
   if (f.kind === 'extrude') return extrudeHandles(f, doc);
+  // A pocket is not a shape either -- it names a sketch and a solid -- so it
+  // has to be caught before the isShape() guard below.
+  if (f.kind === 'pocket') return pocketHandles(f, doc);
   if (!isShape(f)) return [];
   const [cx, cy, cz] = f.center;
   const size: HandleSpec[] = [];
