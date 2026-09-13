@@ -19,7 +19,7 @@ import {
   useCallback, useEffect, useMemo, useRef, useState,
   type ChangeEvent, type ComponentType, type ForwardRefExoticComponent, type ReactNode, type RefAttributes,
 } from 'react';
-import { Download, FolderOpen, RotateCcw, Save } from 'lucide-react';
+import { Download, FileText, FolderOpen, RotateCcw, Save } from 'lucide-react';
 import ReshapeParamsPanel, { type ParamDef, type ParamValues } from './ReshapeParamsPanel.js';
 import ModelEditor from './model/ModelEditor.js';
 import BrepViewport, { type BrepViewportStats, type ViewportPick } from './model/BrepViewportThree.js';
@@ -940,6 +940,29 @@ export default function ReshapeStudio({
     }
   }
 
+  // 2D engineering drawing (front/top/right/iso on a titled sheet) --
+  // packages/kernel/src/engine-adapter.ts's own exportDrawing(), FreeCAD-only
+  // (OcctEngineAdapter throws "not supported"), same "disable, don't fail"
+  // bar and Blob-download pattern as saveFCStd() above.
+  function exportDrawing() {
+    const engine = engineRef.current;
+    if (!engine) return;
+    try {
+      const bytes = engine.exportDrawing(docRef.current);
+      const blob = new Blob([bytes.buffer as ArrayBuffer], { type: 'image/svg+xml' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = exportFilename('svg');
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      window.alert(`Could not export drawing: ${e instanceof Error ? e.message : String(e)}`);
+    }
+  }
+
   function openFCStdClick() {
     openInputRef.current?.click();
   }
@@ -1080,6 +1103,19 @@ export default function ReshapeStudio({
             >
               <Save size={12} />
               Save
+            </button>
+            <button
+              style={engineKind === 'freecad' && hasMesh ? chipStyle : { ...chipStyle, opacity: 0.35, cursor: 'not-allowed' }}
+              onClick={exportDrawing}
+              disabled={!(engineKind === 'freecad' && hasMesh)}
+              title={
+                engineKind !== 'freecad'
+                  ? 'Export Drawing needs the FreeCAD engine'
+                  : hasMesh ? 'Download a 2D engineering drawing (SVG) of the current model' : 'Build a shape first'
+              }
+            >
+              <FileText size={12} />
+              Export Drawing
             </button>
             <button
               style={engineKind === 'freecad' ? chipStyle : { ...chipStyle, opacity: 0.35, cursor: 'not-allowed' }}
