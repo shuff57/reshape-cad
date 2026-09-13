@@ -194,3 +194,5 @@
 {"ts":"2026-09-12T18:15:52.006Z","kind":"release","from":"claude","all":true}
 {"ts":"2026-09-12T21:53:46.782Z","kind":"claim","from":"claude","paths":["packages/kernel/src/engine-adapter.ts","packages/kernel/src/freecad-engine-adapter.ts","packages/kernel/src/occt-engine-adapter.ts","packages/engine/src/fc-drawing.mjs"]}
 {"ts":"2026-09-12T22:12:06.592Z","kind":"release","from":"claude","all":true}
+{"ts":"2026-09-13T03:52:39.154Z","kind":"claim","from":"claude","paths":["packages/engine/src/fc-sketch.mjs","packages/engine/src/fc-commands.mjs","packages/kernel/src/freecad-engine-adapter.ts","packages/kernel/test/freecad-engine-adapter-build.test.mjs"]}
+{"ts":"2026-09-13T04:09:28.901Z","kind":"release","from":"claude","paths":["packages/engine/src/fc-sketch.mjs","packages/engine/src/fc-commands.mjs","packages/kernel/src/freecad-engine-adapter.ts","packages/kernel/test/freecad-engine-adapter-build.test.mjs"]}
