@@ -19,9 +19,10 @@ import {
   useCallback, useEffect, useMemo, useRef, useState,
   type ChangeEvent, type ComponentType, type ForwardRefExoticComponent, type ReactNode, type RefAttributes,
 } from 'react';
-import { Download, FileOutput, FileText, FolderOpen, RotateCcw, Save } from 'lucide-react';
+import { Maximize2, Minimize2, PanelRightClose, PanelRightOpen } from 'lucide-react';
 import ReshapeParamsPanel, { type ParamDef, type ParamValues } from './ReshapeParamsPanel.js';
-import ModelEditor from './model/ModelEditor.js';
+import ModelEditor, { type ToolActions } from './model/ModelEditor.js';
+import MenuBar from './MenuBar.js';
 import BrepViewport, { type BrepViewportStats, type ViewportPick } from './model/BrepViewportThree.js';
 import HandleOverlay, { type AnchorPoint, type SketchOutline, type SketchPart } from './model/HandleOverlay.js';
 import type { RuleActions, TouchedPart } from './model/SketchConstraints.js';
@@ -120,6 +121,15 @@ export type ReshapeStudioProps = {
 const TIMELINE_HEIGHT_PX = 58;
 const RULES_PANEL_WIDTH_PX = 280;
 const PREVIEW_DEGRADE_MS = 25;
+// The new literal File/Edit/View/Insert/Modify menu bar's own row height, in
+// Build mode -- where it sits, in normal flow, above the ribbon/export-chip
+// toolbar, which THIS number pushes down (see `.reshape-studio.is-build
+// .reshape-studio-toolbar`'s own `top`). Every other build-mode absolute
+// offset that used to hardcode "48px" (the toolbar's own reserved height)
+// now adds this constant instead, so the whole stack (menu bar, toolbar,
+// tool card, rules pane, params pane) stays non-overlapping as one number.
+const MENUBAR_HEIGHT_PX = 28;
+const BUILD_CHROME_TOP_PX = 48 + MENUBAR_HEIGHT_PX;
 
 function capitalize(name: string): string {
   return name.length ? name[0].toUpperCase() + name.slice(1) : name;
@@ -173,19 +183,6 @@ function refusalsUnchanged(
   }
   return true;
 }
-
-const chipStyle: React.CSSProperties = {
-  padding: '6px 14px',
-  borderRadius: 4,
-  background: 'transparent',
-  color: '#6272a4',
-  border: '1px solid #44475a',
-  cursor: 'pointer',
-  fontSize: 13,
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: 5,
-};
 
 export default function ReshapeStudio({
   value,
@@ -299,6 +296,12 @@ export default function ReshapeStudio({
   // time, and nothing here needs to re-render when it changes.
   const [selectedSketchParts, setSelectedSketchParts] = useState<SketchPart[]>([]);
   const ruleActionsRef = useRef<RuleActions | null>(null);
+  // ModelEditor's own Create/Modify/Delete handlers, handed up the same way
+  // `ruleActionsRef` above is -- see ModelEditor's `registerToolActions` doc
+  // comment. MenuBar (below) reads this ref directly at render/click time;
+  // unlike `ruleActionsRef` it has no second, foreign consumer that needs a
+  // stable proxy object, so a plain ref is enough here.
+  const toolActionsRef = useRef<ToolActions | null>(null);
   // A stable object, created once, whose own methods dereference the ref
   // above at CALL time rather than at prop-pass time -- the same reasoning
   // `onTap={(x, y) => pickAtRef.current?.(x, y)}` below already relies on.
@@ -380,6 +383,39 @@ export default function ReshapeStudio({
   const future = useRef<ModelDoc[]>([]);
   const [depth, setDepth] = useState({ back: 0, forward: 0 });
   const [toolsHidden, setToolsHidden] = useState(false);
+  // Code mode's own chrome, shared regardless of which `CodeEditor` a host
+  // plugs in -- see this file's header + the plan doc for why this lives
+  // here rather than inside CodeEditor itself. `codeHidden` mirrors
+  // `toolsHidden`'s rail-collapse (the .reshape-pane viewport reclaims the
+  // freed width); `codeFullscreen` instead takes over the WHOLE app area
+  // (menu bar/toolbar/viewport/params/timeline all hidden), Escape-able the
+  // same way drawTool/the sketch selection strip already are below.
+  const [codeHidden, setCodeHidden] = useState(false);
+  const [codeFullscreen, setCodeFullscreen] = useState(false);
+  useEffect(() => {
+    if (!codeFullscreen) return;
+    // Escape exits fullscreen -- but only when nothing ELSE already owns
+    // Escape for something more locally modal: the sketch draw tool and the
+    // Rules panel's own selection strip (both above) bind the same key.
+    // Checking their own state here (rather than a shared "who owns Escape"
+    // registry) keeps this a one-line addition; if a THIRD Escape consumer
+    // ever appears, that's the point to build a real stack.
+    function onKey(e: KeyboardEvent) {
+      if (e.key !== 'Escape') return;
+      if (drawTool) return; // the draw-tool handler above already clears itself
+      if (selectedSketchParts.length) return; // ditto the selection-strip handler
+      setCodeFullscreen(false);
+    }
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [codeFullscreen, drawTool, selectedSketchParts.length]);
+  // Leaving Code mode (or the panel losing its host entirely) with
+  // fullscreen still on would strand the rest of the chrome hidden the next
+  // time Build is chosen -- of the two, only fullscreen needs this: a
+  // collapsed rail is harmless left collapsed.
+  useEffect(() => {
+    if (build && codeFullscreen) setCodeFullscreen(false);
+  }, [build, codeFullscreen]);
   const [cardHasContent, setCardHasContent] = useState(true);
   const [anchors, setAnchors] = useState<AnchorPoint[]>([]);
   const meshRef = useRef<MeshInput | null>(null);
@@ -1029,8 +1065,37 @@ export default function ReshapeStudio({
         + (build ? ' is-build' : '')
         + (build && toolsHidden ? ' is-tools-hidden' : '')
         + (build && !cardHasContent ? ' is-card-empty' : '')
+        + (!build && codeFullscreen ? ' is-code-fullscreen' : '')
       }
     >
+      {/* The literal File/Edit/View/Insert/Modify menu bar -- pure
+          discoverability alongside the ribbon above, never a second
+          implementation of what it does (see MenuBar.tsx's own file
+          comment). Build-mode only, same gate the ribbon and every export
+          chip below already use: almost nothing on it has meaning in Code
+          mode (Insert/Modify act on the B-rep doc; the export/save chips
+          are already build-only in the toolbar below). */}
+      {build && (
+        <MenuBar
+          canUndo={depth.back > 0}
+          canRedo={depth.forward > 0}
+          onUndo={undo}
+          onRedo={redo}
+          canClearModel={canBuild}
+          onClearModel={clearModel}
+          hasMesh={hasMesh}
+          engineKind={engineKind}
+          onExportSTL={exportSTL}
+          onExportOBJ={exportOBJ}
+          onExport3MF={export3MF}
+          onSaveFCStd={saveFCStd}
+          onOpenFCStd={openFCStdClick}
+          onExportDrawing={exportDrawing}
+          toolsHidden={toolsHidden}
+          onToggleTools={() => setToolsHidden((v) => !v)}
+          toolActionsRef={toolActionsRef}
+        />
+      )}
       <div className="reshape-studio-toolbar">
         {canBuild && canCode && (
           <div className="sandbox-modes" role="group" aria-label="Editing mode">
@@ -1057,104 +1122,27 @@ export default function ReshapeStudio({
         {!build && canCode && (
           <button className="btn-run" onClick={run}>▶ Run</button>
         )}
-        {build && canBuild && (
-          <button style={chipStyle} onClick={clearModel}>
-            <RotateCcw size={12} />
-            Clear model
-          </button>
-        )}
-        {build && (
-          <>
-            <button
-              style={hasMesh ? chipStyle : { ...chipStyle, opacity: 0.35, cursor: 'not-allowed' }}
-              onClick={exportSTL}
-              disabled={!hasMesh}
-              title={hasMesh ? 'Download the current model as an STL file' : 'Build a shape first'}
-            >
-              <Download size={12} />
-              Export STL
-            </button>
-            <button
-              style={hasMesh ? chipStyle : { ...chipStyle, opacity: 0.35, cursor: 'not-allowed' }}
-              onClick={exportOBJ}
-              disabled={!hasMesh}
-              title={hasMesh ? 'Download the current model as an OBJ file' : 'Build a shape first'}
-            >
-              <Download size={12} />
-              Export OBJ
-            </button>
-            <button
-              style={hasMesh ? chipStyle : { ...chipStyle, opacity: 0.35, cursor: 'not-allowed' }}
-              onClick={export3MF}
-              disabled={!hasMesh}
-              title={hasMesh ? 'Download the current model as a 3MF file' : 'Build a shape first'}
-            >
-              <Download size={12} />
-              Export 3MF
-            </button>
-            {/* .FCStd is FreeCAD-native -- OcctEngineAdapter has no concept of
-                it at all (see occt-engine-adapter.ts's own saveDocument()/
-                openDocument()), so these gray out on the OCCT engine (or
-                before the engine has loaded) rather than showing an error
-                after a click, same "disable, don't fail" bar as the
-                hasMesh-gated Export buttons above. */}
-            <button
-              style={engineKind === 'freecad' && hasMesh ? chipStyle : { ...chipStyle, opacity: 0.35, cursor: 'not-allowed' }}
-              onClick={saveFCStd}
-              disabled={!(engineKind === 'freecad' && hasMesh)}
-              title={
-                engineKind !== 'freecad'
-                  ? 'Save/Open .FCStd needs the FreeCAD engine'
-                  : hasMesh ? 'Download the current model as a FreeCAD .FCStd file' : 'Build a shape first'
-              }
-            >
-              <Save size={12} />
-              Save
-            </button>
-            <button
-              style={engineKind === 'freecad' && hasMesh ? chipStyle : { ...chipStyle, opacity: 0.35, cursor: 'not-allowed' }}
-              onClick={() => exportDrawing('svg')}
-              disabled={!(engineKind === 'freecad' && hasMesh)}
-              title={
-                engineKind !== 'freecad'
-                  ? 'Export Drawing needs the FreeCAD engine'
-                  : hasMesh ? 'Download a 2D engineering drawing (SVG) of the current model' : 'Build a shape first'
-              }
-            >
-              <FileText size={12} />
-              Export Drawing
-            </button>
-            <button
-              style={engineKind === 'freecad' && hasMesh ? chipStyle : { ...chipStyle, opacity: 0.35, cursor: 'not-allowed' }}
-              onClick={() => exportDrawing('pdf')}
-              disabled={!(engineKind === 'freecad' && hasMesh)}
-              title={
-                engineKind !== 'freecad'
-                  ? 'Export PDF needs the FreeCAD engine'
-                  : hasMesh ? 'Download a 2D engineering drawing (PDF) of the current model' : 'Build a shape first'
-              }
-            >
-              <FileOutput size={12} />
-              Export PDF
-            </button>
-            <button
-              style={engineKind === 'freecad' ? chipStyle : { ...chipStyle, opacity: 0.35, cursor: 'not-allowed' }}
-              onClick={openFCStdClick}
-              disabled={engineKind !== 'freecad'}
-              title={engineKind === 'freecad' ? 'Open a previously-saved .FCStd file' : 'Save/Open .FCStd needs the FreeCAD engine'}
-            >
-              <FolderOpen size={12} />
-              Open
-            </button>
-            <input
-              ref={openInputRef}
-              type="file"
-              accept=".FCStd,.fcstd"
-              style={{ display: 'none' }}
-              onChange={openFCStdFile}
-            />
-          </>
-        )}
+        {/* Clear model / Export STL,OBJ,3MF / Save,Open / Export Drawing
+            (SVG,PDF) used to live here as a fixed row of chips. Removed
+            2026-09-13: they starved the ribbon of width (the ONLY flexible
+            item in this flex row) down to a 230px sliver that silently
+            clipped most of its 30 icons with no scrollbar -- a real bug, not
+            a taste call, caught live by the user right after these same
+            actions were ALSO added to the new File/Edit menu (MenuBar.tsx),
+            making the chip row pure redundant clutter on top of the squeeze.
+            Every one of these actions is still reachable, unchanged, from
+            File (Open/Save/Export STL,OBJ,3MF/Export Drawing SVG,PDF) or
+            Edit (Clear model) -- see MenuBar.tsx. The hidden file input
+            below is kept: MenuBar's File > Open still drives it via
+            openFCStdClick()/openInputRef, it just never needed to be next
+            to a visible button of its own. */}
+        <input
+          ref={openInputRef}
+          type="file"
+          accept=".FCStd,.fcstd"
+          style={{ display: 'none' }}
+          onChange={openFCStdFile}
+        />
         {toolbarExtra}
       </div>
 
@@ -1173,6 +1161,7 @@ export default function ReshapeStudio({
               hoveredPart={pointerHoverPart}
               onHoverPart={(p) => { setRowHoverPart(p); if (p) touchRuleActivity(); }}
               registerActions={(actions) => { ruleActionsRef.current = actions; }}
+              registerToolActions={(actions) => { toolActionsRef.current = actions; }}
               onTouch={handleTouch}
               onUndo={undo}
               onRedo={redo}
@@ -1193,8 +1182,47 @@ export default function ReshapeStudio({
           </div>
         )}
         {!build && canCode && (
-          <div className="reshape-studio-code">
-            <CodeEditor />
+          <div className={codeHidden ? 'reshape-studio-code is-collapsed' : 'reshape-studio-code'}>
+            {codeHidden ? (
+              <div className="reshape-code-collapsed" role="group" aria-label="Code editor">
+                <button
+                  type="button"
+                  onClick={() => setCodeHidden(false)}
+                  title="Show the code editor"
+                  aria-label="Show the code editor"
+                >
+                  <PanelRightOpen size={14} />
+                </button>
+              </div>
+            ) : (
+              <>
+                {/* The one primary, must-find affordance: right on the panel
+                    itself, not buried behind View menu (which is build-mode
+                    only anyway -- see MenuBar.tsx's own build-only gate). */}
+                <div className="reshape-code-toolbar" role="group" aria-label="Code panel view controls">
+                  <button
+                    type="button"
+                    onClick={() => setCodeFullscreen((v) => !v)}
+                    title={codeFullscreen ? 'Exit full screen (Esc)' : 'Full screen the code editor'}
+                    aria-label={codeFullscreen ? 'Exit full screen' : 'Full screen the code editor'}
+                    aria-pressed={codeFullscreen}
+                  >
+                    {codeFullscreen ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
+                  </button>
+                  {!codeFullscreen && (
+                    <button
+                      type="button"
+                      onClick={() => setCodeHidden(true)}
+                      title="Collapse the code editor, so the model fills the window"
+                      aria-label="Collapse the code editor"
+                    >
+                      <PanelRightClose size={14} />
+                    </button>
+                  )}
+                </div>
+                <CodeEditor />
+              </>
+            )}
           </div>
         )}
 
@@ -1346,7 +1374,58 @@ export default function ReshapeStudio({
       <div id="reshapeTimeline" className={build ? 'reshape-studio-timeline' : 'reshape-studio-timeline is-hidden'} aria-hidden={!build} />
 
       <style>{`
+        /* The one place every --reshape-* token is defined -- everything
+           else in this component (and MenuBar.tsx, model/ModelEditor.tsx,
+           model/HandleOverlay.tsx, model/SketchConstraints.tsx,
+           ReshapeParamsPanel.tsx) only ever references var(--reshape-*).
+           Values are the Dracula palette this app and shCode's own embedded
+           reSHape chrome already agreed on before this pass just never
+           centralized it -- see .claude/plans/reshape-studio-design-tokens.md
+           for the research this was pulled from. --reshape-pink and
+           --reshape-yellow extend that plan's own 10-token list: both hexes
+           (#ff79c6, #f1fa8c) were already load-bearing live colors here
+           (HandleOverlay's "panel is pointing at this" cue and its point-
+           handle border) with no reshape token assigned to them yet. */
         .reshape-studio {
+          --reshape-bg: #282a36;
+          --reshape-surface: #1e1f29;
+          --reshape-surface-alt: #36333a;
+          --reshape-border: #44475a;
+          --reshape-text: #f8f8f2;
+          --reshape-text-muted: #6272a4;
+          --reshape-accent: #8be9fd;
+          --reshape-accent-2: #bd93f9;
+          --reshape-success: #50fa7b;
+          --reshape-warn: #ffb86c;
+          --reshape-danger: #ff5555;
+          --reshape-pink: #ff79c6;
+          --reshape-yellow: #f1fa8c;
+
+          --reshape-space-1: 2px;
+          --reshape-space-2: 4px;
+          --reshape-space-3: 8px;
+          --reshape-space-4: 12px;
+          --reshape-space-5: 16px;
+          --reshape-space-6: 24px;
+          --reshape-radius: 4px;
+
+          --reshape-font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+          --reshape-font-mono: ui-monospace, "Fira Code", Consolas, monospace;
+          --reshape-font-size-sm: 12px;
+          --reshape-font-size-base: 13px;
+          --reshape-font-size-lg: 15px;
+
+          font-family: var(--reshape-font-ui);
+          /* Pure fallback fill, not a layout change: nothing under this rule
+             ever painted the root itself (every dark surface below is a
+             child that starts its own margin-top/absolute box further down
+             -- see BUILD_CHROME_TOP_PX). Standalone (packages/sandbox-dev,
+             no shCode host page behind it) that left a real white sliver
+             above the Dimensions panel until its own margin-top began,
+             visible in this session's own build-mode screenshot -- caught
+             by the exact "transparent where a card background should be"
+             check this migration's verification step calls for. */
+          background: var(--reshape-bg);
           display: flex;
           flex-direction: column;
           flex: 1 1 auto;
@@ -1374,15 +1453,28 @@ export default function ReshapeStudio({
           position: absolute;
           left: 0;
           right: 0;
-          top: 0;
+          top: ${MENUBAR_HEIGHT_PX}px;
           z-index: 50;
           padding: 4px 10px;
           background: transparent;
         }
-        /* The one flexible child: it, not the mode toggle or the Reset/
-           Export chips either side of it, gives way (scrolling its own
-           tool icons) if the row is ever too narrow for all of it -- see
-           the flex-shrink:0 on .sandbox-modes and button[style] below.
+        /* The new File/Edit/View/Insert/Modify menu bar: its own row, ABOVE
+           the toolbar above (which the top offset there now leaves room
+           for), never overlapping it. See MenuBar.tsx's own comment for why
+           it measures its dropdowns off the clicked label rather than
+           trusting a CSS-only position:absolute -- same reasoning as the
+           ribbon's own FlyoutButton. */
+        .reshape-menu-bar {
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 0;
+          height: ${MENUBAR_HEIGHT_PX}px;
+          z-index: 51;
+        }
+        /* The one flexible child: it, not the mode toggle beside it, gives
+           way (scrolling its own tool icons) if the row is ever too narrow
+           for all of it -- see the flex-shrink:0 on .sandbox-modes below.
            Measured 2026-09-04: without this "Build" clipped to "Buil" at
            1440px, .sandbox-modes shrinking along with everything else. */
         .reshape-studio-ribbon { flex: 1 1 auto; min-width: 0; overflow-x: auto; display: flex; align-items: center; }
@@ -1390,33 +1482,32 @@ export default function ReshapeStudio({
         .sandbox-modes {
           display: inline-flex;
           flex-shrink: 0;
-          border: 1px solid #44475a;
-          border-radius: 4px;
+          border: 1px solid var(--reshape-border);
+          border-radius: var(--reshape-radius);
           overflow: hidden;
         }
         .sandbox-mode {
           padding: 6px 13px;
           background: transparent;
-          color: #6272a4;
+          color: var(--reshape-text-muted);
           border: 0;
-          border-right: 1px solid #44475a;
+          border-right: 1px solid var(--reshape-border);
           cursor: pointer;
           font-size: 13px;
         }
         .sandbox-mode:last-child { border-right: 0; }
-        .sandbox-mode:hover { color: var(--text); }
-        .sandbox-mode.is-active { background: #44475a; color: #f8f8f2; }
-        /* The mode toggle and Reset/Export chips lose their chip borders and
-           read as flat ribbon buttons, same as the pre-extraction sandbox. */
+        .sandbox-mode:hover { color: var(--text, var(--reshape-text)); }
+        .sandbox-mode.is-active { background: var(--reshape-border); color: var(--reshape-text); }
+        /* The mode toggle loses its chip border and reads as a flat ribbon
+           control, same as the pre-extraction sandbox. (The Export/Save/
+           Open chip row this rule also used to cover -- via a button[style]
+           selector, no backticks here, see the NB a few lines below -- was
+           removed 2026-09-13; see the toolbar JSX's own comment on why, and
+           MenuBar.tsx for where those actions live now.) */
         .reshape-studio.is-build .sandbox-modes { border: 0; background: transparent; }
         .reshape-studio.is-build .sandbox-mode { border-right: 0; color: #d3d5e3; }
-        .reshape-studio.is-build .sandbox-mode.is-active { background: #44475a; color: #f8f8f2; }
-        .reshape-studio.is-build .sandbox-mode:hover { color: #f8f8f2; }
-        .reshape-studio.is-build .reshape-studio-toolbar button[style] {
-          border: 0 !important;
-          color: #d3d5e3;
-          flex-shrink: 0;
-        }
+        .reshape-studio.is-build .sandbox-mode.is-active { background: var(--reshape-border); color: var(--reshape-text); }
+        .reshape-studio.is-build .sandbox-mode:hover { color: var(--reshape-text); }
         .reshape-studio-body {
           display: flex;
           flex: 1 1 auto;
@@ -1432,12 +1523,12 @@ export default function ReshapeStudio({
         .reshape-studio.is-build .reshape-studio-tools {
           position: absolute;
           left: 12px;
-          top: 48px;
+          top: ${BUILD_CHROME_TOP_PX}px;
           bottom: 12px;
           height: auto;
           width: min(420px, 45%);
           z-index: 40;
-          background: var(--card);
+          background: var(--card, var(--reshape-surface));
           border: 1px solid #565a70;
           border-radius: 6px;
           box-shadow: 0 12px 36px rgba(0,0,0,0.6);
@@ -1459,27 +1550,77 @@ export default function ReshapeStudio({
         .reshape-studio-tools {
           min-width: 0;
           overflow-y: auto;
-          border: 1px solid var(--border);
-          border-radius: 4px;
-          background: var(--card);
+          border: 1px solid var(--border, var(--reshape-border));
+          border-radius: var(--reshape-radius);
+          background: var(--card, var(--reshape-surface));
         }
         .reshape-studio-tools .model-tools { display: none; }
         .reshape-studio-code {
           flex: 1 1 40%;
           min-width: 0;
           display: flex;
-          border: 1px solid var(--border);
-          border-radius: 4px;
+          position: relative;
+          border: 1px solid var(--border, var(--reshape-border));
+          border-radius: var(--reshape-radius);
           overflow: hidden;
         }
+        /* Collapsed by the student -- mirrors .reshape-studio-tools' own
+           46px rail treatment above, minus the Undo/Redo/Sketch shortcuts
+           that rail keeps (this panel has no equivalent "useful while
+           collapsed" content -- a bare re-expand button is the whole rail). */
+        .reshape-studio-code.is-collapsed { flex: 0 0 32px; }
+        .reshape-code-collapsed {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding-top: 6px;
+          width: 100%;
+          background: rgba(40, 42, 54, 0.72);
+        }
+        .reshape-code-toolbar {
+          position: absolute;
+          top: 6px;
+          right: 6px;
+          z-index: 5;
+          display: flex;
+          gap: 4px;
+        }
+        .reshape-code-collapsed button,
+        .reshape-code-toolbar button {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 24px;
+          height: 24px;
+          padding: 0;
+          background: var(--reshape-surface-alt);
+          border: 1px solid var(--reshape-border);
+          border-radius: var(--reshape-radius);
+          color: var(--reshape-text-muted);
+          cursor: pointer;
+        }
+        .reshape-code-collapsed button:hover,
+        .reshape-code-toolbar button:hover {
+          color: var(--reshape-text);
+          border-color: var(--reshape-accent);
+        }
+        /* Full screen: the code panel takes the entire body row (the menu
+           bar/ribbon above are already build-only -- see their own build-
+           gated JSX above -- so Code mode never renders them in the first
+           place; what THIS class hides is the viewport+params pane, the one
+           other thing sharing the row in Code mode). NB: no backticks in
+           this comment -- see the block's own top-of-style-tag warning on
+           why one here breaks the whole template literal. */
+        .reshape-studio.is-code-fullscreen .reshape-pane { display: none; }
+        .reshape-studio.is-code-fullscreen .reshape-studio-code { flex: 1 1 auto; }
         .reshape-pane { flex: 1 1 auto; min-width: 0; display: flex; position: relative; }
         .reshape-pane-rules:empty { display: none; }
         .reshape-pane-rules:not(:empty) {
           flex: 0 0 ${RULES_PANEL_WIDTH_PX}px;
           min-width: 0;
           overflow-y: auto;
-          border-right: 1px solid var(--border);
-          background: var(--card);
+          border-right: 1px solid var(--border, var(--reshape-border));
+          background: var(--card, var(--reshape-surface));
         }
         /* Clears the floating ribbon and stops short of the timeline, the
            same offsets #reshapeRules used pre-extraction. */
@@ -1501,8 +1642,8 @@ export default function ReshapeStudio({
            exactly what broke this file the first time this comment was
            written. */
         .reshape-studio.is-build .reshape-pane-rules:not(:empty) {
-          margin-top: 48px;
-          height: calc(100% - 48px - ${TIMELINE_HEIGHT_PX}px);
+          margin-top: ${BUILD_CHROME_TOP_PX}px;
+          height: calc(100% - ${BUILD_CHROME_TOP_PX}px - ${TIMELINE_HEIGHT_PX}px);
           margin-left: calc(min(420px, 45%) + 24px);
         }
         .reshape-studio.is-build.is-card-empty .reshape-pane-rules:not(:empty) {
@@ -1517,13 +1658,13 @@ export default function ReshapeStudio({
         .reshape-pane-params {
           flex: 0 0 208px;
           min-width: 0;
-          border-left: 1px solid var(--border);
-          background: var(--card);
+          border-left: 1px solid var(--border, var(--reshape-border));
+          background: var(--card, var(--reshape-surface));
           display: flex;
           flex-direction: column;
           overflow: hidden;
         }
-        .reshape-studio.is-build .reshape-pane-params { margin-top: 48px; }
+        .reshape-studio.is-build .reshape-pane-params { margin-top: ${BUILD_CHROME_TOP_PX}px; }
         .reshape-studio-timeline {
           position: absolute;
           bottom: 0;
@@ -1531,8 +1672,8 @@ export default function ReshapeStudio({
           display: flex;
           align-items: stretch;
           background: rgba(40, 42, 54, 0.88);
-          border-top: 1px solid #44475a;
-          border-radius: 0 0 4px 4px;
+          border-top: 1px solid var(--reshape-border);
+          border-radius: 0 0 var(--reshape-radius) var(--reshape-radius);
         }
         .reshape-studio.is-build .reshape-studio-timeline {
           left: calc(min(420px, 45%) + 24px);

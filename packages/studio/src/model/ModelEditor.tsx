@@ -233,10 +233,69 @@ interface Props {
   /** Item U: pure pass-through of SketchConstraints' own `onTouch` -- see
    *  that prop's own doc comment. */
   onTouch?: (touched: TouchedPart | null) => void;
+  /** Hands the ribbon's OWN Create/Modify/Delete click handlers upward, so
+   *  a literal top menu bar (MenuBar.tsx, a sibling of this component under
+   *  ReshapeStudio, not a child of it) can call the EXACT SAME functions
+   *  the ribbon buttons below already call, instead of a second
+   *  implementation that could drift the moment one changes and not the
+   *  other. Deliberately a NEW, separate prop rather than reusing
+   *  `registerActions` above -- that name and shape already belong to
+   *  SketchConstraints' RuleActions. Same no-deps-effect + ref-store
+   *  pattern (see ToolActions' own doc comment, and registerActions'
+   *  comment just above, for why this re-registers every render). */
+  registerToolActions?: (actions: ToolActions | null) => void;
 }
 
 type BoolOp = 'union' | 'subtract' | 'intersect';
 type PatternMode = 'linear' | 'circular';
+
+/** One item ToolActions hands upward: the ribbon's own click handler,
+ *  paired with the SAME disabled/title condition the ribbon button already
+ *  computes for it -- a menu item greys out in exactly the situations its
+ *  ribbon equivalent already does, without a second copy of the gating
+ *  logic living in MenuBar.tsx. */
+export interface ToolAction {
+  run: () => void;
+  disabled: boolean;
+  title?: string;
+}
+
+/** See `registerToolActions` on the Props interface above for the full
+ *  rationale. Trimmed to the ribbon families the top menu bar's Insert and
+ *  Modify menus actually offer (Create's shapes/Pull/Spin/Blend, Modify's
+ *  Round/Turn/Hole/Hollow/Pattern/Mirror/Move-Copy/Combine groups, and the
+ *  end-group's Delete) -- Corner and the Circle/Rectangle/Polygon sketch
+ *  starters are ribbon-only, not on MenuBar's own Insert list. */
+export interface ToolActions {
+  sketch: ToolAction;
+  /** Box/Cylinder/Cone/Torus/Sphere -- never disabled, matching the
+   *  ribbon's own FlyoutButton main button (`disabled={false}`), so this is
+   *  a plain callback rather than a ToolAction. */
+  addShape: (kind: ShapeKind) => void;
+  pull: ToolAction;
+  spin: ToolAction;
+  blend: ToolAction;
+  /** Round (fillet) and Chamfer are the SAME flyout family's two variants
+   *  (ROUND_STYLES below) -- one function, called with each style. */
+  round: (style: RoundStyle) => ToolAction;
+  turn: ToolAction;
+  hole: ToolAction;
+  /** The Hole flyout's own "Four Corners" variant. */
+  holeFourCorners: ToolAction;
+  hollow: ToolAction;
+  /** The Hollow flyout's own "Open hollow" variant. */
+  openHollow: ToolAction;
+  patternLinear: ToolAction;
+  patternCircular: ToolAction;
+  /** The Mirror flyout's three plane variants. */
+  mirror: (plane: SketchPlane) => ToolAction;
+  move: ToolAction;
+  copy: ToolAction;
+  join: ToolAction;
+  cut: ToolAction;
+  overlap: ToolAction;
+  deleteSelected: ToolAction;
+}
 type MenuId = 'shape' | 'bool' | 'round' | 'pattern' | 'move' | 'mirror' | 'hole' | 'hollow' | null;
 
 function shapeIcon(kind: ShapeKind) {
@@ -485,7 +544,7 @@ function FlyoutButton({
 
 export default function ModelEditor({
   doc, onChange, selected, onSelect, onUndo, onRedo, canUndo, canRedo, collapsible, onCollapsed, onContentChange, rollbackIndex, onRollback, onStartDraw, drawTool, pickedEdge, onClearPickedEdge, pickedFace, onClearPickedFace, pickedEdges, onClearPickedEdges, refusals,
-  hoveredPart, onHoverPart, registerActions, onTouch, historyGen,
+  hoveredPart, onHoverPart, registerActions, onTouch, historyGen, registerToolActions,
 }: Props) {
   const [note, setNote] = useState<string | null>(null);
   // Which single rule the student most recently set or changed in the Rules
@@ -1584,6 +1643,108 @@ export default function ModelEditor({
   const patternBoolVisible = ['Join', 'Cut', 'Overlap'].some(matches);
   const patternVisible = patternSelectVisible || patternBoolVisible;
 
+  // Hands the SAME create/modify/delete closures the ribbon buttons below
+  // call up to ReshapeStudio, so MenuBar.tsx's Insert/Modify/Delete items
+  // invoke them directly rather than re-implementing "create a box" a
+  // second time. No-deps effect, same reasoning as SketchConstraints.tsx's
+  // own registerActions (see that component's comment): every entry below
+  // closes over `doc`/`chosen`/`onChange` and the same disabled/title
+  // conditions the ribbon buttons above already compute, so re-running this
+  // after every render is the only way the handed-out object stays
+  // current -- the receiver only ever stores it in a ref.
+  useEffect(() => {
+    registerToolActions?.({
+      sketch: {
+        run: startSketch, disabled: false,
+        title: 'Draw a flat outline to pull or spin into a solid',
+      },
+      addShape: (kind) => addShape(kind),
+      pull: {
+        run: pull,
+        disabled: chosen.length !== 1 || chosen[0]?.kind !== 'sketch',
+        title: chosen.length !== 1 || chosen[0]?.kind !== 'sketch'
+          ? 'Pick a sketch to pull into a solid.'
+          : 'Pull the selected sketch straight up into a solid',
+      },
+      spin: {
+        run: spin,
+        disabled: chosen.length !== 1 || chosen[0]?.kind !== 'sketch',
+        title: chosen.length !== 1 || chosen[0]?.kind !== 'sketch'
+          ? 'Pick a sketch to spin into a solid.'
+          : 'Spin the selected sketch around to make a solid',
+      },
+      blend: {
+        run: blend,
+        disabled: chosen.length !== 2 || chosen.some((c) => c.kind !== 'sketch'),
+        title: chosen.length !== 2 || chosen.some((c) => c.kind !== 'sketch')
+          ? 'Blend joins exactly two sketches. Click one, then hold Shift (or Ctrl, or Cmd) and click the other.'
+          : 'Skin two sketches together into one tapered solid',
+      },
+      round: (style) => ({
+        run: () => round(style),
+        disabled: !canRound,
+        title: roundBlockedBy ?? roundDescription(style, pickedEdgeUsable),
+      }),
+      turn: {
+        run: turn,
+        disabled: chosen.length !== 1 || !canRotate(chosen[0]),
+        title: turnBlockedBy ?? 'Turn this shape',
+      },
+      hole: {
+        run: drillHole, disabled: !canSolidOp,
+        title: solidOpBlockedBy ?? 'Drill a round hole through the selected solid',
+      },
+      holeFourCorners: {
+        run: drillHoleCorners, disabled: !canSolidOp,
+        title: solidOpBlockedBy ?? 'Drill four holes at once, the same distance in from every side — a bolt pattern with matching offsets on every corner',
+      },
+      hollow: {
+        run: hollow, disabled: !canSolidOp,
+        title: solidOpBlockedBy ?? 'Hollow the selected solid out, leaving a wall',
+      },
+      openHollow: {
+        run: openHollow,
+        disabled: openHollowBlockedBy !== null,
+        title: openHollowBlockedBy ?? 'Hollow out, leaving the face you clicked open',
+      },
+      patternLinear: {
+        run: () => repeat('linear'), disabled: !canSolidOp,
+        title: solidOpBlockedBy ?? 'Copies in a straight row',
+      },
+      patternCircular: {
+        run: () => repeat('circular'), disabled: !canSolidOp,
+        title: solidOpBlockedBy ?? 'Copies around a circle',
+      },
+      mirror: (plane) => ({
+        run: () => mirror(plane),
+        disabled: !canSolidOp,
+        title: solidOpBlockedBy ?? mirrorPlaneTitle(plane),
+      }),
+      move: {
+        run: () => moveTool(false), disabled: !canSolidOp,
+        title: solidOpBlockedBy ?? 'Shift the selected solid',
+      },
+      copy: {
+        run: () => moveTool(true), disabled: !canSolidOp,
+        title: solidOpBlockedBy ?? 'Add a copy, shifted over',
+      },
+      join: {
+        run: () => combine('union'), disabled: !canCombine,
+        title: canCombine ? 'Join the selected shapes into one' : 'Pick two shapes first — click one, then hold Shift (or Ctrl, or Cmd) and click another.',
+      },
+      cut: {
+        run: () => combine('subtract'), disabled: !canCombine,
+        title: canCombine ? 'Cut the later shapes out of the first' : 'Pick two shapes first — click one, then hold Shift (or Ctrl, or Cmd) and click another.',
+      },
+      overlap: {
+        run: () => combine('intersect'), disabled: !canCombine,
+        title: canCombine ? 'Keep only where they overlap' : 'Pick two shapes first — click one, then hold Shift (or Ctrl, or Cmd) and click another.',
+      },
+      deleteSelected: { run: remove, disabled: !chosen.length, title: 'Delete the selected' },
+    });
+    return () => registerToolActions?.(null);
+  }); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <div className="model-editor">
       {collapsible && collapsed && (
@@ -2258,15 +2419,15 @@ export default function ModelEditor({
         .model-tools {
           display: flex; flex-wrap: nowrap; align-items: center; gap: 2px;
           height: 38px; padding: 0 6px; box-sizing: border-box;
-          border-bottom: 1px solid var(--border); flex-shrink: 0; position: relative;
+          border-bottom: 1px solid var(--border, var(--reshape-border)); flex-shrink: 0; position: relative;
           overflow-x: auto; overflow-y: visible; scrollbar-width: thin;
         }
         .model-tools::-webkit-scrollbar { height: 4px; }
-        .model-tools::-webkit-scrollbar-thumb { background: #44475a; border-radius: 2px; }
+        .model-tools::-webkit-scrollbar-thumb { background: var(--reshape-border); border-radius: 2px; }
         .model-tool-group { display: inline-flex; gap: 2px; align-items: center; flex: 0 0 auto; }
         .model-tool-divider {
           align-self: center; flex: 0 0 1px; width: 1px; height: 20px;
-          background: #44475a; margin: 0 4px;
+          background: var(--reshape-border); margin: 0 4px;
         }
         .model-tool-end { margin-left: auto; padding-left: 6px; flex: 0 0 auto; }
         /* ponytail: font-size:0 blanks the bare text node sitting beside each
@@ -2283,11 +2444,11 @@ export default function ModelEditor({
           flex: 0 0 auto;
         }
         .model-tools button:hover:not(:disabled) {
-          background: #3d4051; border-color: #565a70; color: #f8f8f2;
+          background: #3d4051; border-color: #565a70; color: var(--reshape-text);
         }
-        .model-tools button:active:not(:disabled) { background: #44475a; }
+        .model-tools button:active:not(:disabled) { background: var(--reshape-border); }
         .model-tools button:disabled { opacity: 0.35; cursor: not-allowed; }
-        .model-tools button:focus-visible { outline: 1px solid #8be9fd; outline-offset: 1px; }
+        .model-tools button:focus-visible { outline: 1px solid var(--reshape-accent); outline-offset: 1px; }
         /* A click-to-draw tool waiting for its placement click -- Rectangle
            or Polygon armed. Distinct from :active (a fleeting mouse-down)
            and from hover: this has to read as "still on" between clicks,
@@ -2295,10 +2456,10 @@ export default function ModelEditor({
            token, not the hover grey, so it survives a hover/unhover over the
            SAME button while armed. */
         .model-tools button[aria-pressed="true"] {
-          background: #44475a; border-color: #bd93f9; color: #f8f8f2;
+          background: var(--reshape-border); border-color: var(--reshape-accent-2); color: var(--reshape-text);
         }
         .model-tools button[aria-pressed="true"]:hover:not(:disabled) {
-          background: #4b4e63; border-color: #bd93f9;
+          background: #4b4e63; border-color: var(--reshape-accent-2);
         }
         .model-flyout { position: relative; display: inline-flex; flex: 0 0 auto; }
         /* Sits ON the main button's corner, Onshape-style: the corner opens
@@ -2309,12 +2470,12 @@ export default function ModelEditor({
           border-color: transparent !important; border-radius: 0 3px 0 4px !important;
           background: transparent !important; color: #8a8fa8;
         }
-        .model-flyout-caret:hover:not(:disabled) { color: #f8f8f2; }
-        .model-flyout:hover .model-flyout-caret { color: #f8f8f2; }
+        .model-flyout-caret:hover:not(:disabled) { color: var(--reshape-text); }
+        .model-flyout:hover .model-flyout-caret { color: var(--reshape-text); }
         .model-flyout-menu {
           position: fixed; z-index: 60;
           display: flex; flex-direction: column; gap: 1px;
-          background: #282a36; border: 1px solid #44475a; border-radius: 3px;
+          background: var(--reshape-bg); border: 1px solid var(--reshape-border); border-radius: 3px;
           padding: 3px; min-width: 168px; box-shadow: 0 6px 18px rgba(0,0,0,0.5);
         }
         .model-flyout-menu button {
@@ -2326,22 +2487,22 @@ export default function ModelEditor({
           display: inline-flex; align-items: center; gap: 6px;
           flex: 0 1 auto; min-width: 30px; overflow: hidden;
           margin-left: 6px; padding: 4px 8px; font-size: 12px;
-          background: #1e1f29; border: 1px solid #44475a; border-radius: 3px;
-          color: #6272a4;
+          background: var(--reshape-surface); border: 1px solid var(--reshape-border); border-radius: 3px;
+          color: var(--reshape-text-muted);
         }
         .model-tool-search input {
           background: transparent; border: none; outline: none;
-          color: var(--text); font-size: 12px;
+          color: var(--text, var(--reshape-text)); font-size: 12px;
           flex: 1 1 108px; width: 108px; min-width: 0;
         }
-        .model-tool-search input::placeholder { color: #6272a4; }
+        .model-tool-search input::placeholder { color: var(--reshape-text-muted); }
         /* The magnifier is the last thing to go, so a squeezed search still
            reads as a search rather than as an empty chip. */
         .model-tool-search > svg { flex: 0 0 auto; }
         .model-note {
           margin: 0; padding: 7px 10px; font-size: 12px; line-height: 1.45;
-          color: #ffb86c; background-color: #3a2f22;
-          border-left: 2px solid #ffb86c; flex-shrink: 0;
+          color: var(--reshape-warn); background-color: #3a2f22;
+          border-left: 2px solid var(--reshape-warn); flex-shrink: 0;
         }
         .model-note-timeline { align-self: center; margin-left: 8px; margin-right: 8px; max-width: 46ch; order: 2; }
         /* Dracula red -- the same accent HandleOverlay.tsx already uses for
@@ -2351,17 +2512,17 @@ export default function ModelEditor({
         .model-confirm-delete {
           display: flex; align-items: center; gap: 8px; flex-shrink: 0;
           margin: 0; padding: 7px 10px; font-size: 12px; line-height: 1.45;
-          color: #ff5555; background-color: #3a2328;
-          border-left: 2px solid #ff5555;
+          color: var(--reshape-danger); background-color: #3a2328;
+          border-left: 2px solid var(--reshape-danger);
         }
         .model-confirm-delete-timeline { align-self: center; margin-left: 8px; margin-right: 8px; max-width: 52ch; order: 2; }
         .model-confirm-delete-go, .model-confirm-delete-keep {
           flex-shrink: 0; padding: 3px 10px; font-size: 12px; border-radius: 3px;
           cursor: pointer;
         }
-        .model-confirm-delete-go { background: #ff5555; border: 1px solid #ff5555; color: #282a36; }
+        .model-confirm-delete-go { background: var(--reshape-danger); border: 1px solid var(--reshape-danger); color: var(--reshape-bg); }
         .model-confirm-delete-go:hover { background: #ff7777; border-color: #ff7777; }
-        .model-confirm-delete-keep { background: transparent; border: 1px solid #ff5555; color: #ff5555; }
+        .model-confirm-delete-keep { background: transparent; border: 1px solid var(--reshape-danger); color: var(--reshape-danger); }
         .model-confirm-delete-keep:hover { background: #3a2328; }
         .model-list { margin: 0; padding: 6px; list-style: none; overflow-y: auto; flex: 1 1 auto; }
         /* The parametric timeline: the same feature list, laid out as a
@@ -2388,14 +2549,14 @@ export default function ModelEditor({
           min-width: 96px;
           max-width: 180px;
           padding: 5px 8px;
-          border: 1px solid #44475a;
-          border-radius: 4px;
+          border: 1px solid var(--reshape-border);
+          border-radius: var(--reshape-radius);
           background: rgba(40, 42, 54, 0.6);
         }
         .model-timeline .model-row:hover { background: #343746; }
         .model-timeline .model-row.is-on {
-          background: #44475a;
-          border-color: #6272a4;
+          background: var(--reshape-border);
+          border-color: var(--reshape-text-muted);
         }
         .model-timeline .model-row.is-consumed { opacity: 0.55; }
         /* Suppressed by the rollback bar: features at or past the boundary are
@@ -2422,11 +2583,11 @@ export default function ModelEditor({
         .model-timeline .model-rollback-line {
           width: 2px;
           height: 100%;
-          background: #6272a4;
+          background: var(--reshape-text-muted);
           border-radius: 1px;
         }
         .model-timeline .model-rollback-handle.is-active .model-rollback-line {
-          background: #8be9fd;
+          background: var(--reshape-accent);
         }
         .model-timeline .model-step {
           flex: 0 0 auto;
@@ -2460,46 +2621,46 @@ export default function ModelEditor({
           padding: 1px;
           background: transparent;
           border: 0;
-          color: #6272a4;
+          color: var(--reshape-text-muted);
           cursor: pointer;
           border-radius: 2px;
         }
-        .model-timeline .model-move button:hover:not(:disabled) { color: var(--text); background: #6272a4; }
+        .model-timeline .model-move button:hover:not(:disabled) { color: var(--text, var(--reshape-text)); background: var(--reshape-text-muted); }
         .model-timeline .model-move button:disabled { opacity: 0.25; cursor: default; }
         .model-timeline .model-empty {
           flex: 0 0 auto;
           align-self: center;
           padding: 0 10px;
-          color: #6272a4;
+          color: var(--reshape-text-muted);
           font-size: 12px;
           line-height: 1.5;
         }
-        .model-empty { padding: 14px 10px; color: #6272a4; font-size: 12px; line-height: 1.6; }
+        .model-empty { padding: 14px 10px; color: var(--reshape-text-muted); font-size: 12px; line-height: 1.6; }
         .model-row {
           display: flex; align-items: center; gap: 8px;
-          padding: 6px 8px; border-radius: 4px; cursor: pointer;
-          font-size: 12px; color: var(--text);
+          padding: 6px 8px; border-radius: var(--reshape-radius); cursor: pointer;
+          font-size: 12px; color: var(--text, var(--reshape-text));
         }
         .model-row:hover { background: #343746; }
-        .model-row.is-on { background: #44475a; }
+        .model-row.is-on { background: var(--reshape-border); }
         /* Consumed by a later step, so it is no longer its own shape. */
-        .model-row.is-consumed .model-name { color: #6272a4; }
+        .model-row.is-consumed .model-name { color: var(--reshape-text-muted); }
         .model-step {
-          flex: 0 0 18px; text-align: right; color: #6272a4;
+          flex: 0 0 18px; text-align: right; color: var(--reshape-text-muted);
           font-variant-numeric: tabular-nums; font-size: 11px;
         }
         .model-name { flex: 1 1 auto; min-width: 0; }
-        .model-detail { color: #6272a4; font-style: normal; }
+        .model-detail { color: var(--reshape-text-muted); font-style: normal; }
         /* A refused feature: built around, but not the feature itself. The ⚠
            shows in BOTH the timeline and the panel list; the sentence after
            the name is panel-only -- hidden in the timeline, where the row's
            title and aria-label carry the sentence instead. Orange, not red:
            the part built and is still usable, one step of it is missing. */
-        .model-refused { color: #ffb86c; margin-left: 4px; }
+        .model-refused { color: var(--reshape-warn); margin-left: 4px; }
         .model-refused-why {
           display: block;
           margin-left: 4px;
-          color: #ffb86c;
+          color: var(--reshape-warn);
           font-style: normal;
           font-size: 11px;
           white-space: normal;
@@ -2507,16 +2668,16 @@ export default function ModelEditor({
         .model-move { display: inline-flex; gap: 2px; }
         .model-move button {
           padding: 2px; line-height: 0; background: transparent;
-          border: 0; color: #6272a4; cursor: pointer; border-radius: 3px;
+          border: 0; color: var(--reshape-text-muted); cursor: pointer; border-radius: 3px;
         }
-        .model-move button:hover:not(:disabled) { color: var(--text); background: #6272a4; }
+        .model-move button:hover:not(:disabled) { color: var(--text, var(--reshape-text)); background: var(--reshape-text-muted); }
         .model-move button:disabled { opacity: 0.25; cursor: default; }
         /* The collapsed strip: a thin rail of the essential tools on the
            canvas's left edge, dressed like the full toolbar. */
         .model-collapsed {
           display: flex; flex-direction: column; align-items: center; gap: 4px;
           padding: 6px 0; height: 100%; box-sizing: border-box;
-          background: var(--card); border-right: 1px solid var(--border);
+          background: var(--card, var(--reshape-surface)); border-right: 1px solid var(--border, var(--reshape-border));
         }
         .model-collapsed button {
           display: inline-flex; align-items: center; justify-content: center;
@@ -2525,10 +2686,10 @@ export default function ModelEditor({
           border: 1px solid transparent; border-radius: 3px; cursor: pointer;
         }
         .model-collapsed button:hover:not(:disabled) {
-          background: #3d4051; border-color: #565a70; color: #f8f8f2;
+          background: #3d4051; border-color: #565a70; color: var(--reshape-text);
         }
         .model-collapsed button:disabled { opacity: 0.35; cursor: not-allowed; }
-        .model-collapsed button:focus-visible { outline: 1px solid #8be9fd; outline-offset: 1px; }
+        .model-collapsed button:focus-visible { outline: 1px solid var(--reshape-accent); outline-offset: 1px; }
       `}</style>
     </div>
   );

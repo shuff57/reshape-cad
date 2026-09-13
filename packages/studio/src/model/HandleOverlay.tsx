@@ -691,7 +691,7 @@ export default function HandleOverlay({
   // "the mouse happens to be over it" with no new prop: whenever the LOCAL
   // pointer hover is empty and the prop is not, the cue is panel-driven, and
   // gets the stronger selection treatment below -- the same pink a picked
-  // solid edge gets (#ff79c6), with a bold label -- rather than just the
+  // solid edge gets (var(--reshape-pink)), with a bold label -- rather than just the
   // plain pill a raw pointer hover already drew. Measured 2026-09-04: round
   // 4's blind judge could not tell what was specifically selected from a
   // dashed outline drawn around the whole sketch regardless of task.
@@ -1163,9 +1163,9 @@ export default function HandleOverlay({
                 {[...chips].map(([edge, glyphs]) => {
                   const spot = laidOut[`${n}:chip-${edge}`] ?? chipSpots.get(edge);
                   if (!spot) return null;
-                  // #bd93f9 is the same purple the panel paints a set control
+                  // var(--reshape-accent-2) is the same purple the panel paints a set control
                   // with, so "this rule is on" looks the same in both places.
-                  // The first pass used #6272a4 and measured unreadable at 4x
+                  // The first pass used var(--reshape-text-muted) and measured unreadable at 4x
                   // against the sketch outline -- a marker nobody notices is
                   // the one failure this whole feature exists to avoid.
                   const STEP = 13;
@@ -1196,8 +1196,8 @@ export default function HandleOverlay({
                         width={w}
                         height={18}
                         rx={3}
-                        fill="#282a36"
-                        stroke={anyLosing ? '#ff5555' : '#44475a'}
+                        fill="var(--reshape-bg)"
+                        stroke={anyLosing ? 'var(--reshape-danger)' : 'var(--reshape-border)'}
                         strokeWidth={1}
                         opacity={0.95}
                       />
@@ -1205,7 +1205,7 @@ export default function HandleOverlay({
                         <text
                           key={gi}
                           x={-w / 2 + 4 + STEP * gi + STEP / 2}
-                          fill={g.losing ? '#ff5555' : '#bd93f9'}
+                          fill={g.losing ? 'var(--reshape-danger)' : 'var(--reshape-accent-2)'}
                           fontSize={12}
                           fontWeight={600}
                           textAnchor="middle"
@@ -1230,7 +1230,7 @@ export default function HandleOverlay({
                   const edgeHit = (e?: number) => e !== undefined && stickyEdges.includes(e - 1);
                   const cornerHit = m.corner !== undefined && stickyCorners.includes(m.corner - 1);
                   const touched = edgeHit(m.edge1) || edgeHit(m.edge2) || cornerHit;
-                  const stroke = m.losing ? '#ff5555' : touched ? '#ff79c6' : '#bd93f9';
+                  const stroke = m.losing ? 'var(--reshape-danger)' : touched ? 'var(--reshape-pink)' : 'var(--reshape-accent-2)';
                   return (
                     <g
                       key={m.id}
@@ -1794,27 +1794,27 @@ export default function HandleOverlay({
         .sketch-lines { position: absolute; inset: 0; width: 100%; height: 100%; }
         .sketch-lines polygon {
           fill: rgba(139, 233, 253, 0.12);
-          stroke: #8be9fd; stroke-width: 1.5; stroke-dasharray: 5 3;
+          stroke: var(--reshape-accent); stroke-width: 1.5; stroke-dasharray: 5 3;
         }
         /* Corner dots on the rubber band -- see the comment where these are
            rendered for why a thin-but-correct preview needs them. */
         .sketch-lines .rubber-band-corner {
-          fill: #8be9fd; stroke: #282a36; stroke-width: 1;
+          fill: var(--reshape-accent); stroke: var(--reshape-bg); stroke-width: 1;
         }
         /* Still dashed, so it still reads as a sketch line rather than a new
            kind of geometry. Wider than the outline underneath it so the red
            wins cleanly where the two overlap. */
         .sketch-lines .is-losing {
           fill: none;
-          stroke: #ff5555; stroke-width: 2.5; stroke-dasharray: 5 3;
+          stroke: var(--reshape-danger); stroke-width: 2.5; stroke-dasharray: 5 3;
         }
         /* Solid, not dashed -- unlike a losing rule, "this is what you just
            touched" is not an error, so it should not read as one. Same pink
-           as a picked solid edge in the 3D viewport (#ff79c6), so the cue
+           as a picked solid edge in the 3D viewport (var(--reshape-pink)), so the cue
            means the same thing in both places. */
         .sketch-lines .is-sticky-edge {
           fill: none;
-          stroke: #ff79c6; stroke-width: 2.5;
+          stroke: var(--reshape-pink); stroke-width: 2.5;
         }
         /* The rule glyph's own ~1s flash when its edge is freshly touched --
            separate from is-sticky-edge above, which stays lit indefinitely.
@@ -1825,7 +1825,7 @@ export default function HandleOverlay({
           animation: sk-chip-flash 1s ease-out;
         }
         @keyframes sk-chip-flash {
-          0% { filter: drop-shadow(0 0 5px #ff79c6) drop-shadow(0 0 5px #ff79c6); }
+          0% { filter: drop-shadow(0 0 5px var(--reshape-pink)) drop-shadow(0 0 5px var(--reshape-pink)); }
           100% { filter: drop-shadow(0 0 0 transparent); }
         }
         /* The three kinds of number drawn on top of a sketch: a plain length
@@ -1837,16 +1837,16 @@ export default function HandleOverlay({
            glyphs' purple/red -- those already mean "which rule, and is it
            losing"; these mean "what is the number right now". */
         .sketch-lines .sketch-len-text {
-          fill: #6272a4; font-size: 11px; font-variant-numeric: tabular-nums;
-          paint-order: stroke; stroke: #282a36; stroke-width: 3px;
+          fill: var(--reshape-text-muted); font-size: 11px; font-variant-numeric: tabular-nums;
+          paint-order: stroke; stroke: var(--reshape-bg); stroke-width: 3px;
         }
         .sketch-lines .sketch-dim-text {
-          fill: #f8f8f2; font-size: 11px; font-weight: 600; font-variant-numeric: tabular-nums;
-          paint-order: stroke; stroke: #282a36; stroke-width: 3px;
+          fill: var(--reshape-text); font-size: 11px; font-weight: 600; font-variant-numeric: tabular-nums;
+          paint-order: stroke; stroke: var(--reshape-bg); stroke-width: 3px;
         }
         .sketch-lines .sketch-round-text {
-          fill: #ffb86c; font-size: 11px; font-weight: 600; font-variant-numeric: tabular-nums;
-          paint-order: stroke; stroke: #282a36; stroke-width: 3px;
+          fill: var(--reshape-warn); font-size: 11px; font-weight: 600; font-variant-numeric: tabular-nums;
+          paint-order: stroke; stroke: var(--reshape-bg); stroke-width: 3px;
         }
         /* The label of whichever edge or corner a Rules control just
            committed a value for -- bold and the same selection pink as
@@ -1854,13 +1854,13 @@ export default function HandleOverlay({
            had (a driven dimension is still bold at 600; this just changes
            the colour and, for a plain length, adds the weight it lacked). */
         .sketch-lines .is-sticky {
-          fill: #ff79c6 !important; font-weight: 700;
+          fill: var(--reshape-pink) !important; font-weight: 700;
         }
         /* A dimension line's own stroke, thin and solid -- jsketcher draws
            these with a lighter weight than the outline itself, which is what
            tells a measurement apart from geometry at a glance. */
         .sketch-lines .sketch-dim line {
-          stroke: #f8f8f2; stroke-width: 1; opacity: 0.7;
+          stroke: var(--reshape-text); stroke-width: 1; opacity: 0.7;
         }
         /* Every rule mark's line work -- ticks, the perpendicular square's
            three sides, a lock's stem -- shares one stroke treatment.
@@ -1883,10 +1883,10 @@ export default function HandleOverlay({
            every other pill in this app already wears, just small enough to
            sit beside a single edge or corner without crowding the handle. */
         .sketch-lines .sketch-name-pill rect {
-          fill: #282a36; stroke: #6272a4; stroke-width: 1;
+          fill: var(--reshape-bg); stroke: var(--reshape-text-muted); stroke-width: 1;
         }
         .sketch-lines .sketch-name-pill text {
-          fill: #f8f8f2; font-size: 11px; font-weight: 600;
+          fill: var(--reshape-text); font-size: 11px; font-weight: 600;
         }
         /* Item R: the contextual rule strip. Same dark-panel family as the
            pill just above (a plain HTML div, not SVG, since it needs real
@@ -1899,19 +1899,19 @@ export default function HandleOverlay({
           position: absolute; transform: translateX(-50%);
           display: flex; gap: 4px; max-width: 320px; flex-wrap: wrap;
           padding: 5px 6px; border-radius: 7px;
-          background: #282a36; border: 1px solid #6272a4;
+          background: var(--reshape-bg); border: 1px solid var(--reshape-text-muted);
           box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
           pointer-events: auto;
         }
         .sketch-rule-strip button {
-          background: transparent; color: #f8f8f2;
-          border: 1px solid #44475a; border-radius: 5px;
+          background: transparent; color: var(--reshape-text);
+          border: 1px solid var(--reshape-border); border-radius: 5px;
           padding: 3px 8px; font-size: 11px; line-height: 1.3;
           cursor: pointer; white-space: nowrap;
         }
-        .sketch-rule-strip button:hover { border-color: #8be9fd; }
+        .sketch-rule-strip button:hover { border-color: var(--reshape-accent); }
         .sketch-rule-strip button.on {
-          background: #bd93f9; color: #282a36; border-color: #bd93f9;
+          background: var(--reshape-accent-2); color: var(--reshape-bg); border-color: var(--reshape-accent-2);
         }
         /* The Rules panel names which rules disagree and this does not repeat
            that -- it exists to be impossible to miss and to point at the red. */
@@ -1928,60 +1928,60 @@ export default function HandleOverlay({
           display: flex; align-items: center; gap: 9px;
           max-width: calc(100% - 24px);
           padding: 7px 8px 7px 12px;
-          background: #282a36; border: 1px solid #ff5555; border-radius: 6px;
-          color: #f8f8f2; font-size: 13px; line-height: 1.35;
+          background: var(--reshape-bg); border: 1px solid var(--reshape-danger); border-radius: 6px;
+          color: var(--reshape-text); font-size: 13px; line-height: 1.35;
           box-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
           pointer-events: auto;
         }
-        .sketch-alarm .warn { color: #ffb86c; font-size: 15px; }
+        .sketch-alarm .warn { color: var(--reshape-warn); font-size: 15px; }
         .sketch-alarm button {
-          background: none; border: 0; color: #6272a4; cursor: pointer;
+          background: none; border: 0; color: var(--reshape-text-muted); cursor: pointer;
           font-size: 17px; line-height: 1; padding: 1px 4px;
         }
-        .sketch-alarm button:hover { color: #f8f8f2; }
+        .sketch-alarm button:hover { color: var(--reshape-text); }
         .handle.is-point {
-          background: #8be9fd; border-radius: 2px;
+          background: var(--reshape-accent); border-radius: 2px;
           width: 10px; height: 10px; margin: -5px 0 0 -5px;
         }
-        .handle.is-point:hover, .handle.is-point.is-on { background: #ff79c6; }
+        .handle.is-point:hover, .handle.is-point.is-on { background: var(--reshape-pink); }
         /* Round, not square, and orange: it sits ON the outline where a corner
            handle would look like a corner, and it drives a radius rather than a
            position. The title attribute above carries the live number, which is
            the only place in the app a student could read a fillet radius. */
         .handle.is-radius {
-          background: transparent; border-color: #ffb86c;
+          background: transparent; border-color: var(--reshape-warn);
           width: 11px; height: 11px; margin: -6px 0 0 -6px;
         }
-        .handle.is-radius:hover, .handle.is-radius.is-on { background: #ffb86c; }
+        .handle.is-radius:hover, .handle.is-radius.is-on { background: var(--reshape-warn); }
         .handle {
           position: absolute;
           width: 13px; height: 13px; margin: -7px 0 0 -7px; padding: 0;
           border-radius: 50%;
-          background: #50fa7b; border: 2px solid #282a36;
+          background: var(--reshape-success); border: 2px solid var(--reshape-bg);
           cursor: grab; pointer-events: auto;
           box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.45);
         }
-        .handle:hover { background: #8be9fd; }
+        .handle:hover { background: var(--reshape-accent); }
         /* Position reads as a different job from size, so it gets a different
            shape and colour rather than another green dot to guess at. */
         .handle.is-move {
-          background: #bd93f9;
+          background: var(--reshape-accent-2);
           border-radius: 2px;
           transform: rotate(45deg);
           width: 11px; height: 11px; margin: -6px 0 0 -6px;
         }
-        .handle.is-move:hover { background: #ff79c6; }
-        .handle.is-move.is-on { background: #ff79c6; transform: rotate(45deg) scale(1.25); }
+        .handle.is-move:hover { background: var(--reshape-pink); }
+        .handle.is-move.is-on { background: var(--reshape-pink); transform: rotate(45deg) scale(1.25); }
         /* Turn is a ring, because that is the shape of what it does. */
         .handle.is-turn {
           background: transparent;
-          border: 3px solid #f1fa8c;
+          border: 3px solid var(--reshape-yellow);
           width: 15px; height: 15px; margin: -8px 0 0 -8px;
         }
-        .handle.is-turn:hover { border-color: #ffb86c; background: transparent; }
-        .handle.is-turn.is-on { border-color: #ffb86c; background: transparent; transform: scale(1.25); }
-        .handle:focus-visible { outline: 2px solid #bd93f9; outline-offset: 2px; }
-        .handle.is-on { background: #8be9fd; cursor: grabbing; transform: scale(1.25); }
+        .handle.is-turn:hover { border-color: var(--reshape-warn); background: transparent; }
+        .handle.is-turn.is-on { border-color: var(--reshape-warn); background: transparent; transform: scale(1.25); }
+        .handle:focus-visible { outline: 2px solid var(--reshape-accent-2); outline-offset: 2px; }
+        .handle.is-on { background: var(--reshape-accent); cursor: grabbing; transform: scale(1.25); }
       `}</style>
     </div>
   );

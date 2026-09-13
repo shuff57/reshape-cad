@@ -354,22 +354,22 @@ const PAIR_CHOICES: { kind: PairKind | null; word: string; mark: string }[] = [
 ];
 
 const PANEL_CSS = `
-        .sk-rules { border-top: 1px solid var(--border); padding: 8px 10px; font-size: 12px; }
+        .sk-rules { border-top: 1px solid var(--border, var(--reshape-border)); padding: 8px 10px; font-size: 12px; }
         .sk-rules-head {
           display: flex; justify-content: space-between; align-items: baseline;
           font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
-          color: #6272a4; margin-bottom: 6px;
+          color: var(--reshape-text-muted); margin-bottom: 6px;
         }
-        .sk-rules-warn { color: #ffb86c; text-transform: none; letter-spacing: 0; }
+        .sk-rules-warn { color: var(--reshape-warn); text-transform: none; letter-spacing: 0; }
         .sk-rules-note {
           margin: 0 0 8px; padding: 6px 8px; font-size: 11px; line-height: 1.45;
-          color: #ffb86c; background-color: #3a2f22; border-left: 2px solid #ffb86c;
+          color: var(--reshape-warn); background-color: #3a2f22; border-left: 2px solid var(--reshape-warn);
         }
         /* The settled-not-stuck case: purple, the same "a rule is set" colour
            the table's own .on buttons use, not the amber a genuine conflict
            still gets -- this note is reporting a fix, not a warning. */
         .sk-rules-note-info {
-          color: #bd93f9; background-color: #2d2b3a; border-left-color: #bd93f9;
+          color: var(--reshape-accent-2); background-color: #2d2b3a; border-left-color: var(--reshape-accent-2);
         }
         /* The one visual difference between "a rule settled quietly" and
            "these rules are actually fighting" that survives a screenshot
@@ -379,39 +379,39 @@ const PANEL_CSS = `
         .sk-rules-note-glyph {
           display: inline-flex; align-items: center; justify-content: center;
           width: 13px; height: 13px; border-radius: 50%; margin-right: 2px;
-          background: #bd93f9; color: #2d2b3a; font-size: 10px; font-weight: 700;
+          background: var(--reshape-accent-2); color: #2d2b3a; font-size: 10px; font-weight: 700;
           font-style: italic; line-height: 1;
         }
         .sk-table { width: 100%; border-collapse: collapse; }
         .sk-table th {
-          text-align: left; font-weight: normal; color: #6272a4;
+          text-align: left; font-weight: normal; color: var(--reshape-text-muted);
           font-size: 11px; padding: 2px 4px;
         }
-        .sk-table td { padding: 2px 4px; color: var(--text); }
-        .sk-shape { color: #6272a4; font-size: 11px; }
+        .sk-table td { padding: 2px 4px; color: var(--text, var(--reshape-text)); }
+        .sk-shape { color: var(--reshape-text-muted); font-size: 11px; }
         .sk-table button, .sk-pins button, .sk-drops button, .sk-planes button {
           min-width: 24px; padding: 2px 6px; font-size: 12px;
-          background: transparent; color: #6272a4;
-          border: 1px solid #44475a; border-radius: 3px; cursor: pointer;
+          background: transparent; color: var(--reshape-text-muted);
+          border: 1px solid var(--reshape-border); border-radius: 3px; cursor: pointer;
         }
         /* A removal that costs something is marked, not blocked -- amber is
            already this app's "read the tooltip" colour on the radius handle. */
-        .sk-drops button.costly { border-color: #ffb86c; color: #ffb86c; }
+        .sk-drops button.costly { border-color: var(--reshape-warn); color: var(--reshape-warn); }
         .sk-drops button:disabled { opacity: 0.4; cursor: not-allowed; }
         /* Wider than the numbered buttons beside it -- these carry words. */
         .sk-planes button { width: auto; padding: 0 8px; }
-        .sk-planes button.on { background: #44475a; color: #f8f8f2; border-color: #bd93f9; }
+        .sk-planes button.on { background: var(--reshape-border); color: var(--reshape-text); border-color: var(--reshape-accent-2); }
         .sk-planes { margin-top: 0; margin-bottom: 8px; }
         .sk-table button.on, .sk-pins button.on {
-          background: #bd93f9; color: #282a36; border-color: #bd93f9;
+          background: var(--reshape-accent-2); color: var(--reshape-bg); border-color: var(--reshape-accent-2);
         }
         /* Item O: the pill a pressed Level/Upright toggle carries -- kept
            small (11px, tight padding) since it lives in an already-narrow
            column and the 240px docked width (item O) does not grow for it. */
         .sk-toggle-pill { margin-left: 3px; font-size: 11px; }
         .sk-table input {
-          width: 62px; background: var(--bg); color: var(--text);
-          border: 1px solid var(--border); border-radius: 3px;
+          width: 62px; background: var(--bg, var(--reshape-bg)); color: var(--text, var(--reshape-text));
+          border: 1px solid var(--border, var(--reshape-border)); border-radius: 3px;
           padding: 2px 5px; font-size: 12px; font-variant-numeric: tabular-nums;
         }
         /* A rule that is losing the argument. Onshape red-boxes exactly the
@@ -427,14 +427,14 @@ const PANEL_CSS = `
         .sk-table button.fighting,
         .sk-table input.fighting,
         .sk-pairs-grid td button.fighting {
-          border-color: #ff5555;
-          box-shadow: 0 0 0 1px #ff5555;
+          border-color: var(--reshape-danger);
+          box-shadow: 0 0 0 1px var(--reshape-danger);
         }
         /* Unset controls also take the red text; a set one keeps the dark text
            its purple fill needs for contrast. */
         .sk-table button.fighting:not(.on),
         .sk-table input.fighting,
-        .sk-pairs-grid td button.fighting:not(.on) { color: #ff5555; }
+        .sk-pairs-grid td button.fighting:not(.on) { color: var(--reshape-danger); }
         .sk-table button:disabled { opacity: 0.35; cursor: not-allowed; }
         .sk-table input:disabled { opacity: 0.35; cursor: not-allowed; }
         /* Lights up the whole edge row (or the matching Pin-corner button)
@@ -445,22 +445,22 @@ const PANEL_CSS = `
            NB: no backticks in this comment -- see the note further up this
            same style block for why. */
         tr.sk-row-hovered { background: rgba(189, 147, 249, 0.14); }
-        button.sk-row-hovered { box-shadow: 0 0 0 1px #bd93f9; }
-        .sk-pins, .sk-rounds, .sk-chamfers, .sk-bows, .sk-drops, .sk-planes { display: flex; align-items: center; gap: 4px; margin-top: 8px; color: #6272a4; }
+        button.sk-row-hovered { box-shadow: 0 0 0 1px var(--reshape-accent-2); }
+        .sk-pins, .sk-rounds, .sk-chamfers, .sk-bows, .sk-drops, .sk-planes { display: flex; align-items: center; gap: 4px; margin-top: 8px; color: var(--reshape-text-muted); }
         .sk-rounds input, .sk-chamfers input, .sk-bows input {
-          width: 42px; background: var(--bg); color: var(--text);
-          border: 1px solid #44475a; border-radius: 3px;
+          width: 42px; background: var(--bg, var(--reshape-bg)); color: var(--text, var(--reshape-text));
+          border: 1px solid var(--reshape-border); border-radius: 3px;
           padding: 2px 5px; font-size: 12px; font-variant-numeric: tabular-nums;
         }
         .sk-pairs { margin-top: 8px; }
-        .sk-pairs-head { font-size: 11px; color: #6272a4; margin-bottom: 3px; }
+        .sk-pairs-head { font-size: 11px; color: var(--reshape-text-muted); margin-bottom: 3px; }
         .sk-pairs-legend {
-          font-size: 11px; color: #6272a4; line-height: 1.4;
+          font-size: 11px; color: var(--reshape-text-muted); line-height: 1.4;
           margin: 0 0 6px; max-width: 240px; white-space: normal;
         }
         .sk-pairs-grid { border-collapse: collapse; }
         .sk-pairs-grid th {
-          font-weight: normal; color: #6272a4; font-size: 11px;
+          font-weight: normal; color: var(--reshape-text-muted); font-size: 11px;
           min-width: 24px; padding: 1px 3px; text-align: center;
           white-space: nowrap;
         }
@@ -476,11 +476,11 @@ const PANEL_CSS = `
         .sk-pairs-grid td button {
           min-width: 24px; height: 20px; padding: 0 5px;
           font-size: 11px; line-height: 1; white-space: nowrap;
-          background: transparent; color: #6272a4;
-          border: 1px solid #44475a; border-radius: 3px; cursor: pointer;
+          background: transparent; color: var(--reshape-text-muted);
+          border: 1px solid var(--reshape-border); border-radius: 3px; cursor: pointer;
         }
         .sk-pairs-grid td button.on {
-          background: #bd93f9; color: #282a36; border-color: #bd93f9;
+          background: var(--reshape-accent-2); color: var(--reshape-bg); border-color: var(--reshape-accent-2);
         }
         .sk-pairs-grid td button:disabled { opacity: 0.35; cursor: not-allowed; }
         /* A faint "+", not a blank cell -- an empty cell with nothing in it
@@ -496,27 +496,27 @@ const PANEL_CSS = `
         .sk-pair-picker {
           position: absolute; top: 100%; left: 0; z-index: 20;
           margin-top: 2px; min-width: 128px; max-width: 200px;
-          background: #282a36; border: 1px solid #44475a; border-radius: 4px;
+          background: var(--reshape-bg); border: 1px solid var(--reshape-border); border-radius: var(--reshape-radius);
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
           display: flex; flex-direction: column; padding: 3px;
         }
         .sk-pair-picker button {
           display: flex; align-items: center; gap: 6px;
           background: transparent; border: none; border-radius: 3px;
-          color: var(--text); font-size: 12px; text-align: left;
+          color: var(--text, var(--reshape-text)); font-size: 12px; text-align: left;
           padding: 4px 6px; cursor: pointer; white-space: nowrap;
         }
         .sk-pair-picker button[aria-selected="true"] {
-          background: #bd93f9; color: #282a36;
+          background: var(--reshape-accent-2); color: var(--reshape-bg);
         }
         .sk-pair-picker button.sk-pair-picker-hi:not([aria-selected="true"]) {
-          background: #44475a;
+          background: var(--reshape-border);
         }
         .sk-pair-picker-mark {
           display: inline-flex; align-items: center; justify-content: center;
-          width: 16px; font-size: 12px; color: #6272a4; flex-shrink: 0;
+          width: 16px; font-size: 12px; color: var(--reshape-text-muted); flex-shrink: 0;
         }
-        .sk-pair-picker button[aria-selected="true"] .sk-pair-picker-mark { color: #282a36; }
+        .sk-pair-picker button[aria-selected="true"] .sk-pair-picker-mark { color: var(--reshape-bg); }
         /* P1f: the Point rules section -- the four kinds the solver honours
            that had no control here (distanceX, distanceY, symmetric, angle).
            Same palette and type sizes as the rest of the panel; selects are
@@ -524,29 +524,29 @@ const PANEL_CSS = `
            do without a canvas selection channel. Rows wrap rather than
            widen the 240px docked column (item O). */
         .sk-point-rows { margin-top: 8px; }
-        .sk-point-row { display: flex; align-items: center; gap: 4px; margin-top: 4px; color: #6272a4; flex-wrap: wrap; }
+        .sk-point-row { display: flex; align-items: center; gap: 4px; margin-top: 4px; color: var(--reshape-text-muted); flex-wrap: wrap; }
         .sk-point-row-name { min-width: 52px; }
         .sk-point-row select, .sk-point-row input {
-          background: var(--bg); color: var(--text);
-          border: 1px solid #44475a; border-radius: 3px;
+          background: var(--bg, var(--reshape-bg)); color: var(--text, var(--reshape-text));
+          border: 1px solid var(--reshape-border); border-radius: 3px;
           padding: 2px 4px; font-size: 12px; font-variant-numeric: tabular-nums;
           max-width: 92px;
         }
         .sk-point-row input { width: 56px; }
         .sk-point-row button {
           min-width: 24px; padding: 2px 6px; font-size: 12px;
-          background: transparent; color: #6272a4;
-          border: 1px solid #44475a; border-radius: 3px; cursor: pointer;
+          background: transparent; color: var(--reshape-text-muted);
+          border: 1px solid var(--reshape-border); border-radius: 3px; cursor: pointer;
         }
         .sk-point-row button:disabled { opacity: 0.35; cursor: not-allowed; }
         .sk-point-list { margin: 6px 0 0; padding: 0; list-style: none; }
-        .sk-point-list li { display: flex; align-items: center; gap: 6px; margin-top: 3px; color: var(--text); }
+        .sk-point-list li { display: flex; align-items: center; gap: 6px; margin-top: 3px; color: var(--text, var(--reshape-text)); }
         .sk-point-list button {
           min-width: 24px; padding: 1px 6px; font-size: 11px;
-          background: transparent; color: #6272a4;
-          border: 1px solid #44475a; border-radius: 3px; cursor: pointer;
+          background: transparent; color: var(--reshape-text-muted);
+          border: 1px solid var(--reshape-border); border-radius: 3px; cursor: pointer;
         }
-        .sk-point-list button:hover { color: var(--text); border-color: #6272a4; }
+        .sk-point-list button:hover { color: var(--text, var(--reshape-text)); border-color: var(--reshape-text-muted); }
       `;
 
 export default function SketchConstraints({ points, bulges, rounds, chamfers, constraints, onChange, onRound, onChamfer, onBow, onRemoveCorner, plane, onPlane, shape, hoveredPart, onHoverPart, registerActions, onTouch }: Props) {

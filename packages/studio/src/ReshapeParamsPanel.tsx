@@ -155,8 +155,8 @@ export default function ReshapeParamsPanel({
           </>
         )}
         <style>{`
-          .reshape-params-empty { padding: 10px 12px; color: #6272a4; font-size: 12px; line-height: 1.5; }
-          .reshape-params-empty code { color: #8be9fd; }
+          .reshape-params-empty { padding: 10px 12px; color: var(--reshape-text-muted); font-size: 12px; line-height: 1.5; }
+          .reshape-params-empty code { color: var(--reshape-accent); }
         `}</style>
       </div>
     );
@@ -364,14 +364,14 @@ export default function ReshapeParamsPanel({
         .reshape-params-head {
           display: flex; align-items: baseline; justify-content: space-between;
           font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
-          color: #6272a4; padding-bottom: 6px; margin-bottom: 4px;
-          border-bottom: 1px solid var(--border);
+          color: var(--reshape-text-muted); padding-bottom: 6px; margin-bottom: 4px;
+          border-bottom: 1px solid var(--border, var(--reshape-border));
         }
         .reshape-params-ms {
-          font-variant-numeric: tabular-nums; color: #50fa7b;
+          font-variant-numeric: tabular-nums; color: var(--reshape-success);
           text-transform: none; letter-spacing: 0;
         }
-        .reshape-params-unit { color: #6272a4; font-weight: 400; text-transform: none; letter-spacing: 0; margin-left: 4px; }
+        .reshape-params-unit { color: var(--reshape-text-muted); font-weight: 400; text-transform: none; letter-spacing: 0; margin-left: 4px; }
         .reshape-params-empty-warn {
           /* Sticky: the panel scrolls, and a student who has scrolled down to a
              field is exactly the person who needs to know why the shape went
@@ -379,27 +379,27 @@ export default function ReshapeParamsPanel({
           position: sticky; top: 0; z-index: 1;
           margin: 0 0 6px; padding: 6px 8px;
           background-color: #3a2f22;
-          border-left: 2px solid #ffb86c;
-          color: #ffb86c; font-size: 11px; line-height: 1.45;
+          border-left: 2px solid var(--reshape-warn);
+          color: var(--reshape-warn); font-size: 11px; line-height: 1.45;
         }
         .reshape-param-row { display: flex; flex-direction: column; gap: 3px; padding: 5px 0; }
-        .reshape-param-row > label { font-size: 12px; color: var(--text); }
+        .reshape-param-row > label { font-size: 12px; color: var(--text, var(--reshape-text)); }
         /* Slider on its own line. Sharing a row with the number box inside a
            208px panel collapsed it to a ~14px dot — still draggable by a test
            driving its bounding box, useless to a hand. */
         .reshape-param-controls { display: flex; flex-direction: column; gap: 5px; }
         .reshape-param-controls input[type="range"] {
-          width: 100%; min-width: 0; margin: 0; accent-color: #bd93f9;
+          width: 100%; min-width: 0; margin: 0; accent-color: var(--reshape-accent-2);
         }
         .reshape-param-controls input[type="text"] { width: 100%; }
         .reshape-param-row input[type="text"], .reshape-param-row select {
-          background: var(--bg); color: var(--text);
-          border: 1px solid var(--border); border-radius: 3px;
+          background: var(--bg, var(--reshape-bg)); color: var(--text, var(--reshape-text));
+          border: 1px solid var(--border, var(--reshape-border)); border-radius: 3px;
           padding: 3px 6px; font-size: 12px; font-variant-numeric: tabular-nums;
         }
-        .reshape-param-row input.is-bad { border-color: #ff5555; color: #ff5555; }
+        .reshape-param-row input.is-bad { border-color: var(--reshape-danger); color: var(--reshape-danger); }
         .reshape-param-check { flex-direction: row; align-items: center; gap: 7px; }
-        .reshape-param-check span { font-size: 12px; color: var(--text); }
+        .reshape-param-check span { font-size: 12px; color: var(--text, var(--reshape-text)); }
       `}</style>
     </div>
   );
