@@ -9,7 +9,7 @@
 // box grows both ways at once, so its face only keeps up with the pointer if
 // the width changes by twice the drag.
 
-import { isShape, type Feature, type ModelDoc, type SketchPlane } from './model-types.js';
+import { isShape, sketchBBoxCentre, type Feature, type ModelDoc, type SketchPlane } from './model-types.js';
 import { maxFilletRadius } from '@shuff57/reshape-sketch/sketch-arc';
 
 export type HandleKind = 'size' | 'move' | 'turn' | 'point' | 'radius';
@@ -91,6 +91,25 @@ export function planeAxes(plane: string) {
 function planeNormal(plane: SketchPlane): [number, number, number] {
   return plane === 'xy' ? [0, 0, 1] : plane === 'xz' ? [0, 1, 0] : [1, 0, 0];
 }
+
+/**
+ * Which way an extrude actually PULLS, as a multiple of planeNormal().
+ *
+ * NOT the same thing as planeNormal() itself, which is the OFFSET direction --
+ * occt-build.ts's own PLANE_AXES (occt-build.ts:339) carries both, and its
+ * `dir` is -1 on 'xz' because that basis is LEFT-handed (u x v = -n). The
+ * FreeCAD engine reaches the identical direction by a different route:
+ * sketchNewPlaced() derives the sketch's local Z as u x v and PartDesign::Pad
+ * runs along it (emit.pad sets Length only -- Reversed and Midplane stay
+ * False). So the two engines agree, and this one table is engine-neutral like
+ * the rest of this file.
+ *
+ * MEASURED on both, not derived: docs/specs/SPEC-blend.md fixture 24 pads a
+ * 30x5 RECT 12mm on five plane/offset combinations and asserts the world bbox
+ * through OcctEngineAdapter AND FreeCadEngineAdapter. xz@0 comes out
+ * [[0,-12,0],[30,0,5]] -- the cap at y = -12, not +12.
+ */
+const SWEEP_DIR: Record<SketchPlane, number> = { xy: 1, xz: -1, yz: 1 };
 
 /**
  * A single anchor at a sketch plane's own origin -- what a click-to-draw
@@ -264,6 +283,61 @@ function filletHandles(f: Extract<Feature, { kind: 'fillet' }>, doc?: ModelDoc):
   }];
 }
 
+/**
+ * The one handle a Pull carries: its height, sitting on the cap the pull
+ * MOVES, pointing the way the pull grows.
+ *
+ * `doc` is required (not optional) for the same reason filletHandles()'s is --
+ * an extrude has no geometry of its own to measure. Everything below comes
+ * from the sketch it names: that sketch's plane basis, its offset, and where
+ * its profile sits in plane coordinates.
+ *
+ * The origin rides the height, so it moves outward as the solid grows. That is
+ * what every other size handle does (a box's height handle sits at cz + h/2)
+ * and what the overlay's own mid-drag rendering requires: it draws the dragged
+ * handle at its pointerdown position PLUS the pointer offset, which only looks
+ * right if the handle is the thing that moves.
+ */
+function extrudeHandles(f: Extract<Feature, { kind: 'extrude' }>, doc?: ModelDoc): HandleSpec[] {
+  if (!doc) return [];
+  const sk = doc.features.find((x) => x.id === f.target);
+  if (!sk || sk.kind !== 'sketch') return [];
+  // The same outline test whyCannotBlend() applies (model-types.ts:880). A
+  // profile that cannot close builds no solid on either engine, and a dot
+  // floating over nothing is a control that claims to work and silently
+  // doesn't -- the defect species this codebase keeps closing.
+  const closed = sk.shape === 'circle' ? sk.points.length === 2 : sk.points.length >= 3;
+  if (!closed) return [];
+
+  const plane = sk.plane ?? 'xy';
+  const { u, v } = planeAxes(plane);
+  const n = planeNormal(plane);
+  const dir = SWEEP_DIR[plane] ?? 1;
+  const [cu, cv] = sketchBBoxCentre(sk.points);
+  // offset places the sketch plane; dir * height carries the cap off it.
+  const reach = (sk.offset ?? 0) + dir * f.height;
+
+  return [{
+    kind: 'size',
+    // Exactly the name generatedParams() already emits for this slot
+    // (model-codegen.ts:165) and applyParam() already writes back
+    // (model-codegen.ts:428) -- the panel slider and this handle drive one
+    // parameter, not two that have to be kept in step.
+    param: `${f.id}_height`,
+    origin: [
+      u[0] * cu + v[0] * cv + n[0] * reach,
+      u[1] * cu + v[1] * cv + n[1] * reach,
+      u[2] * cu + v[2] * cv + n[2] * reach,
+    ],
+    axis: [n[0] * dir, n[1] * dir, n[2] * dir],
+    // 1, not 2: the cap moves the WHOLE height, unlike a centred box face
+    // which moves half its own size. No symmetric-extrude concept exists in
+    // ModelDoc or in either engine -- see SPEC-extrude-drag-handle.md §4.
+    scale: 1,
+    label: 'height',
+  }];
+}
+
 export function handlesFor(f: Feature, doc?: ModelDoc): HandleSpec[] {
   // A sketch gets its own two-axis corner handles; see sketchHandles.
   if (f.kind === 'sketch') return sketchHandles(f);
@@ -271,6 +345,10 @@ export function handlesFor(f: Feature, doc?: ModelDoc): HandleSpec[] {
   // caught before the isShape() guard below, which would otherwise send it
   // straight to the empty return.
   if (f.kind === 'fillet') return filletHandles(f, doc);
+  // An extrude is not a shape either -- it names a sketch it pulls -- so it
+  // has to be caught before the isShape() guard below, which would otherwise
+  // send it straight to the empty return.
+  if (f.kind === 'extrude') return extrudeHandles(f, doc);
   if (!isShape(f)) return [];
   const [cx, cy, cz] = f.center;
   const size: HandleSpec[] = [];
