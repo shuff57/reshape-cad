@@ -90,6 +90,20 @@ export interface DrawingOptions {
   hiddenLines?: boolean;
   /** Titleblock text. Default: the doc's own name. */
   title?: string;
+  /** Overall-extent dimensions on the orthographic views: the view's own
+   *  projected width and height, plus a diameter callout per visible circle.
+   *  Default 'none'.
+   *
+   *  'overall' is the honest name and the whole scope. It is NOT GD&T
+   *  auto-dimensioning: no feature-relative positions, no fillet radii, no
+   *  angles, no tolerances, no datums, and nothing at all on an isometric
+   *  view (its edges project as ellipses and skewed lines, which cannot be
+   *  dimensioned meaningfully). See docs/specs/SPEC-drawing-pdf-dimensions.md
+   *  Part 2 for what was measured and what was deferred.
+   *
+   *  A view whose projection yields no straight edge and no closed circle
+   *  gets NO dimensions and is reported in `skipped` rather than guessed at. */
+  dimensions?: 'none' | 'overall';
 }
 
 export interface EngineAdapter {

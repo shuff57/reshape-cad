@@ -386,7 +386,13 @@ export interface FcSessionLike extends SketchSession {
     views: DrawingView[]; projection: 'first-angle' | 'third-angle';
     scale: number | null; hiddenLines: boolean;
     area: [number, number, number, number]; titleblock: [number, number];
-  }): { ok: boolean; reason: string | null; scale: number | null; views: Array<{ name: string; type: string }>; bbox: [number, number, number, number] | null };
+    dimensions: 'none' | 'overall';
+  }): {
+    ok: boolean; reason: string | null; scale: number | null; views: Array<{ name: string; type: string }>;
+    bbox: [number, number, number, number] | null;
+    dimensions: Array<{ view: string; values: number[] }>;
+    skipped: string[];
+  };
 }
 
 /** One built feature's FreeCAD identity: which Body it lives in, the name of
@@ -2757,6 +2763,7 @@ export class FreeCadEngineAdapter implements EngineAdapter {
       hiddenLines: opts.hiddenLines ?? true,
       area: sheet.frame,
       titleblock: sheet.titleblock,
+      dimensions: opts.dimensions ?? 'none',
     });
 
     if (!info.ok) throw new Error(`exportDrawing: ${info.reason}`);

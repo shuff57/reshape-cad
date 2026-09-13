@@ -19,13 +19,14 @@ import {
   useCallback, useEffect, useMemo, useRef, useState,
   type ChangeEvent, type ComponentType, type ForwardRefExoticComponent, type ReactNode, type RefAttributes,
 } from 'react';
-import { Download, FileText, FolderOpen, RotateCcw, Save } from 'lucide-react';
+import { Download, FileOutput, FileText, FolderOpen, RotateCcw, Save } from 'lucide-react';
 import ReshapeParamsPanel, { type ParamDef, type ParamValues } from './ReshapeParamsPanel.js';
 import ModelEditor from './model/ModelEditor.js';
 import BrepViewport, { type BrepViewportStats, type ViewportPick } from './model/BrepViewportThree.js';
 import HandleOverlay, { type AnchorPoint, type SketchOutline, type SketchPart } from './model/HandleOverlay.js';
 import type { RuleActions, TouchedPart } from './model/SketchConstraints.js';
 import { writeSTL, writeOBJ, write3MF, type MeshInput } from './mesh-export.js';
+import { svgToPdf } from './svg-pdf.js';
 import { outlineOf } from '@shuff57/reshape-sketch/sketch-arc';
 import { handlesFor, planeAnchor } from '@shuff57/reshape-script/model-handles';
 import { EMPTY_DOC, type Feature, isSketchOnly, type ModelDoc, nameMap, newPolygonSketch, newRectangleSketch } from '@shuff57/reshape-script/model-types';
@@ -943,17 +944,23 @@ export default function ReshapeStudio({
   // 2D engineering drawing (front/top/right/iso on a titled sheet) --
   // packages/kernel/src/engine-adapter.ts's own exportDrawing(), FreeCAD-only
   // (OcctEngineAdapter throws "not supported"), same "disable, don't fail"
-  // bar and Blob-download pattern as saveFCStd() above.
-  function exportDrawing() {
+  // bar and Blob-download pattern as saveFCStd() above. `format` only changes
+  // what happens to the bytes AFTER the kernel returns them -- the kernel has
+  // no PDF writer at all (docs/specs/SPEC-drawing-pdf-dimensions.md Part 1),
+  // so the conversion is a pure byte transform here, the same split
+  // mesh-export.ts's writeSTL/writeOBJ/write3MF already use.
+  function exportDrawing(format: 'svg' | 'pdf' = 'svg') {
     const engine = engineRef.current;
     if (!engine) return;
     try {
-      const bytes = engine.exportDrawing(docRef.current);
-      const blob = new Blob([bytes.buffer as ArrayBuffer], { type: 'image/svg+xml' });
+      const svg = engine.exportDrawing(docRef.current);
+      const bytes = format === 'pdf' ? svgToPdf(svg) : svg;
+      const type = format === 'pdf' ? 'application/pdf' : 'image/svg+xml';
+      const blob = new Blob([bytes.buffer as ArrayBuffer], { type });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = exportFilename('svg');
+      a.download = exportFilename(format);
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -1106,7 +1113,7 @@ export default function ReshapeStudio({
             </button>
             <button
               style={engineKind === 'freecad' && hasMesh ? chipStyle : { ...chipStyle, opacity: 0.35, cursor: 'not-allowed' }}
-              onClick={exportDrawing}
+              onClick={() => exportDrawing('svg')}
               disabled={!(engineKind === 'freecad' && hasMesh)}
               title={
                 engineKind !== 'freecad'
@@ -1116,6 +1123,19 @@ export default function ReshapeStudio({
             >
               <FileText size={12} />
               Export Drawing
+            </button>
+            <button
+              style={engineKind === 'freecad' && hasMesh ? chipStyle : { ...chipStyle, opacity: 0.35, cursor: 'not-allowed' }}
+              onClick={() => exportDrawing('pdf')}
+              disabled={!(engineKind === 'freecad' && hasMesh)}
+              title={
+                engineKind !== 'freecad'
+                  ? 'Export PDF needs the FreeCAD engine'
+                  : hasMesh ? 'Download a 2D engineering drawing (PDF) of the current model' : 'Build a shape first'
+              }
+            >
+              <FileOutput size={12} />
+              Export PDF
             </button>
             <button
               style={engineKind === 'freecad' ? chipStyle : { ...chipStyle, opacity: 0.35, cursor: 'not-allowed' }}

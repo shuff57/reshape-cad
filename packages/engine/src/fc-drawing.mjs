@@ -43,10 +43,16 @@ const LABEL = {
 
 export const emit = {
   // opts: { objName, sheetPath, outPath, views, projection, scale,
-  //         hiddenLines, area: [x0,y0,x1,y1], titleblock: [tbX, tbY] }
+  //         hiddenLines, area: [x0,y0,x1,y1], titleblock: [tbX, tbY],
+  //         dimensions: 'none' | 'overall' }
   //
   // Returns Python that ALWAYS writes exactly one JSON object to OUT_PATH:
-  // {ok, reason, scale, views, bbox}. Never raises on an expected refusal
+  // {ok, reason, scale, views, bbox, dimensions, skipped}. `dimensions` is
+  // [{view, values}] (per-orthographic-view measured dimension values, page
+  // order) and `skipped` lists view Types that got no dimensions (isometric,
+  // deliberately, or a view whose projection yielded no straight edge and no
+  // closed circle) -- both empty when dimensions='none' (the default). See
+  // docs/specs/SPEC-drawing-pdf-dimensions.md Part 2. Never raises on an expected refusal
   // (no solid, empty output, doesn't fit any scale step) -- only a genuine
   // kernel-internal error escapes as a non-zero rc, same "wrapStatus"-style
   // discipline fc-commands.mjs uses, done here as a `def run(): ... return`
@@ -57,7 +63,7 @@ export const emit = {
   exportDrawing(opts) {
     const {
       objName, sheetPath, outPath, views, projection,
-      scale, hiddenLines, area, titleblock,
+      scale, hiddenLines, area, titleblock, dimensions,
     } = opts;
     if (!Array.isArray(views) || views.length === 0) {
       throw new TypeError('exportDrawing: views must be a non-empty array');
@@ -78,9 +84,10 @@ export const emit = {
     const scalePy = pyNone(scale, 'scale');
     const projLabelsPy = pyStrList(views.map((v) => LABEL[v]));
     const viewKindsPy = pyStrList(views);
+    const dimensionsPy = pyStr(dimensions ?? 'none');
 
     return (
-      'import json, re\n' +
+      'import json, re, math\n' +
       'import FreeCAD as App\n' +
       'import TechDraw\n' +
       `OBJ_NAME = ${pyStr(objName)}\n` +
@@ -93,6 +100,7 @@ export const emit = {
       `VIEW_KINDS = ${viewKindsPy}\n` +
       `FRAME = (${x0}, ${y0}, ${x1}, ${y1})\n` +
       `TB_X, TB_Y = ${tbX}, ${tbY}\n` +
+      `DIMENSIONS = ${dimensionsPy}\n` +
       'NUM = r"-?\\d+\\.?\\d*(?:[eE]-?\\d+)?"\n' +
       // Command-aware bbox extractor. An 'A' (elliptical arc) path command
       // is rx,ry,x-rotation,large-arc-flag,sweep-flag,x,y -- only the LAST
@@ -127,9 +135,113 @@ export const emit = {
       '    return (min(xs), max(xs), min(ys), max(ys)) if xs else None\n' +
       'def _q(v):\n' +
       '    return v.Value if hasattr(v, "Value") else float(v)\n' +
+      // ---- overall-extent dimension emitter (SPEC-drawing-pdf-dimensions.md
+      // Part 2). Sizes are PAGE mm constants, which is correct precisely
+      // because placement coordinates are already page mm: dimension text
+      // stays 3.5mm tall whether the part is drawn at 2:1 or 1:20.
+      'TEXT_H  = 3.5\n' +
+      'ARROW_L = 2.5\n' +
+      'ARROW_W = 0.9\n' +
+      'GAP     = 2.0\n' +
+      'OFFSET  = 10.0\n' +
+      'EXT     = 2.0\n' +
+      'DTOL = 1e-6\n' +
+      'def _fmt(v):\n' +
+      '    s = ("%.2f" % round(v, 2)).rstrip("0").rstrip(".")\n' +
+      '    return s or "0"\n' +
+      'def _dline(x1, y1, x2, y2, w):\n' +
+      '    return (\'<path d="M %.4f %.4f L %.4f %.4f" fill="none" stroke="#000000" \'\n' +
+      '            \'stroke-width="%g"/>\\n\' % (x1, y1, x2, y2, w))\n' +
+      'def _arrow(x, y, dx, dy):\n' +
+      '    m = math.hypot(dx, dy)\n' +
+      '    if m < DTOL:\n' +
+      '        return ""\n' +
+      '    ux, uy = dx / m, dy / m\n' +
+      '    px, py = -uy, ux\n' +
+      '    bx, by = x - ux * ARROW_L, y - uy * ARROW_L\n' +
+      '    return (\'<path d="M %.4f %.4f L %.4f %.4f L %.4f %.4f Z" fill="#000000" \'\n' +
+      '            \'stroke="none"/>\\n\'\n' +
+      '            % (x, y, bx + px * ARROW_W, by + py * ARROW_W,\n' +
+      '               bx - px * ARROW_W, by - py * ARROW_W))\n' +
+      'def _label(x, y, s, anchor="middle"):\n' +
+      '    return (\'<text x="%.4f" y="%.4f" font-family="sans-serif" font-size="%g" \'\n' +
+      '            \'fill="#000000" text-anchor="%s">%s</text>\\n\'\n' +
+      '            % (x, y, TEXT_H, anchor, s))\n' +
+      'def _linear(a, b, base, value, vertical, flip):\n' +
+      '    sgn = -1.0 if flip else 1.0\n' +
+      '    dl = base + sgn * OFFSET\n' +
+      '    g  = base + sgn * GAP\n' +
+      '    e  = dl + sgn * EXT\n' +
+      '    out = []\n' +
+      '    if not vertical:\n' +
+      '        out.append(_dline(a, g, a, e, 0.18))\n' +
+      '        out.append(_dline(b, g, b, e, 0.18))\n' +
+      '        out.append(_dline(a, dl, b, dl, 0.25))\n' +
+      '        out.append(_arrow(a, dl, -1, 0))\n' +
+      '        out.append(_arrow(b, dl, 1, 0))\n' +
+      '        out.append(_label((a + b) / 2.0, dl - 1.2, _fmt(value)))\n' +
+      '    else:\n' +
+      '        out.append(_dline(g, a, e, a, 0.18))\n' +
+      '        out.append(_dline(g, b, e, b, 0.18))\n' +
+      '        out.append(_dline(dl, a, dl, b, 0.25))\n' +
+      '        out.append(_arrow(dl, a, 0, -1))\n' +
+      '        out.append(_arrow(dl, b, 0, 1))\n' +
+      '        out.append(\'<g transform="translate(%.4f,%.4f) rotate(-90)">\'\n' +
+      '                   \'<text x="0" y="0" font-family="sans-serif" font-size="%g" \'\n' +
+      '                   \'fill="#000000" text-anchor="middle">%s</text></g>\\n\'\n' +
+      '                   % (dl - 1.2, (a + b) / 2.0, TEXT_H, _fmt(value)))\n' +
+      '    return "".join(out)\n' +
+      'def _diameter(cx, cy, rp, value):\n' +
+      '    k = 0.70710678\n' +
+      '    sx, sy = cx + rp * k, cy - rp * k\n' +
+      '    ex, ey = cx + (rp + 6.0) * k, cy - (rp + 6.0) * k\n' +
+      '    return (_dline(sx, sy, ex, ey, 0.18)\n' +
+      '            + _dline(ex, ey, ex + 1.5, ey, 0.18)\n' +
+      '            + _arrow(sx, sy, sx - cx, sy - cy)\n' +
+      '            + _label(ex + 2.2, ey - 1.0, u"\\u00d8" + _fmt(value), "start"))\n' +
+      'def _dimension_view(view):\n' +
+      '    S = float(view.Scale) or 1.0\n' +
+      '    lines, circles = [], []\n' +
+      '    for e in view.getVisibleEdges():\n' +
+      '        k = type(e.Curve).__name__\n' +
+      '        if k == "Line":\n' +
+      '            a, b = e.Vertexes[0].Point, e.Vertexes[-1].Point\n' +
+      '            lines.append((a.x, a.y, b.x, b.y))\n' +
+      '        elif k == "Circle" and e.isClosed():\n' +
+      '            c = e.Curve\n' +
+      '            circles.append((c.Center.x, c.Center.y, c.Radius))\n' +
+      '    if not lines and not circles:\n' +
+      '        return "", None, []\n' +
+      '    xs, ys = [], []\n' +
+      '    for (ax, ay, bx, by) in lines:\n' +
+      '        xs += [ax, bx]; ys += [ay, by]\n' +
+      '    for (cx, cy, r) in circles:\n' +
+      '        xs += [cx - r, cx + r]; ys += [cy - r, cy + r]\n' +
+      '    px0, px1, py0, py1 = min(xs), max(xs), min(ys), max(ys)\n' +
+      '    out, vals = [], []\n' +
+      '    ex, ey = [px0, px1], [py0, py1]\n' +
+      '    w_true = (px1 - px0) / S\n' +
+      '    h_true = (py1 - py0) / S\n' +
+      '    if w_true > DTOL:\n' +
+      '        out.append(_linear(px0, px1, py1, w_true, False, False))\n' +
+      '        vals.append(round(w_true, 4)); ey.append(py1 + OFFSET + EXT)\n' +
+      '    if h_true > DTOL:\n' +
+      '        out.append(_linear(py0, py1, px0, h_true, True, True))\n' +
+      '        vals.append(round(h_true, 4)); ex.append(px0 - OFFSET - EXT)\n' +
+      '    seen = set()\n' +
+      '    for (cx, cy, r) in circles:\n' +
+      '        key = (round(cx, 4), round(cy, 4), round(r, 4))\n' +
+      '        if key in seen:\n' +
+      '            continue\n' +
+      '        seen.add(key)\n' +
+      '        out.append(_diameter(cx, cy, r, 2 * r / S))\n' +
+      '        vals.append(round(2 * r / S, 4))\n' +
+      '        ex.append(cx + (r + 6.0) * 0.7071 + 14.0)\n' +
+      '        ey.append(cy - (r + 6.0) * 0.7071)\n' +
+      '    return "".join(out), (min(ex), max(ex), min(ey), max(ey)), vals\n' +
       'def run():\n' +
       '    doc = App.ActiveDocument\n' +
-      '    res = {"ok": False, "reason": None, "scale": None, "views": [], "bbox": None}\n' +
+      '    res = {"ok": False, "reason": None, "scale": None, "views": [], "bbox": None, "dimensions": [], "skipped": []}\n' +
       '    src = doc.getObject(OBJ_NAME)\n' +
       '    if src is None or getattr(src, "Shape", None) is None or src.Shape.isNull() or len(src.Shape.Faces) == 0:\n' +
       '        res["reason"] = "no solid to project"\n' +
@@ -171,6 +283,8 @@ export const emit = {
       '        gx, gy = _q(grp.X), _q(grp.Y)\n' +
       '        page_h = float(page.PageHeight)\n' +
       '        frags = []\n' +
+      '        dim_report = []\n' +
+      '        skipped = []\n' +
       '        minx = miny = 1e9; maxx = maxy = -1e9\n' +
       '        for it in grp.Views:\n' +
       '            frag = TechDraw.viewPartAsSvg(it)\n' +
@@ -184,12 +298,21 @@ export const emit = {
       '            if HIDDEN_LINES:\n' +
       '                frag = frag.replace(\'stroke-width="0.35"\', \'stroke-width="0.35" stroke-dasharray="2,1"\')\n' +
       '            ox, oy = gx + _q(it.X), page_h - (gy + _q(it.Y))\n' +
-      '            ex = _extent(frag)\n' +
+      '            dims, dext, dvals = "", None, []\n' +
+      '            if DIMENSIONS == "overall" and it.Type != "FrontTopRight":\n' +
+      '                dims, dext, dvals = _dimension_view(it)\n' +
+      '                if dvals:\n' +
+      '                    dim_report.append({"view": it.Type, "values": dvals})\n' +
+      '                else:\n' +
+      '                    skipped.append(it.Type)\n' +
+      '            elif DIMENSIONS == "overall":\n' +
+      '                skipped.append(it.Type)\n' +
+      '            ex = dext if dext is not None else _extent(frag)\n' +
       '            if ex:\n' +
       '                minx = min(minx, ox + ex[0]); maxx = max(maxx, ox + ex[1])\n' +
       '                miny = min(miny, oy + ex[2]); maxy = max(maxy, oy + ex[3])\n' +
-      '            frags.append((it.Name, it.Type, ox, oy, frag))\n' +
-      '        return frags, minx, miny, maxx, maxy\n' +
+      '            frags.append((it.Name, it.Type, ox, oy, frag + dims))\n' +
+      '        return frags, minx, miny, maxx, maxy, dim_report, skipped\n' +
       // Autoscale (ScaleType='Automatic') sizes to the PAGE, not the frame
       // minus titleblock, so it can still overflow the usable drawing
       // area -- step scale down and re-measure until it fits, or give up.
@@ -198,6 +321,8 @@ export const emit = {
       '    scale_steps = [1.0, 0.5, 0.2, 0.1, 0.05]\n' +
       '    fx0, fy0, fx1, fy1 = FRAME\n' +
       '    frags = minx = miny = maxx = maxy = None\n' +
+      '    dim_report = []\n' +
+      '    skipped = []\n' +
       '    fy1_eff = fy1\n' +
       '    fit = False\n' +
       '    attempt = 0\n' +
@@ -206,7 +331,7 @@ export const emit = {
       '            grp.ScaleType = "Custom"\n' +
       '            grp.Scale = SCALE if SCALE is not None else scale_steps[attempt]\n' +
       '            doc.recompute()\n' +
-      '        frags, minx, miny, maxx, maxy = compose_once()\n' +
+      '        frags, minx, miny, maxx, maxy, dim_report, skipped = compose_once()\n' +
       '        if not frags:\n' +
       '            break\n' +
       // grp.X/grp.Y is the group's own ANCHOR point, not the block's
@@ -245,6 +370,8 @@ export const emit = {
       '        scale=float(grp.Scale),\n' +
       '        views=[{"name": n, "type": t} for (n, t, _x, _y, _f) in frags],\n' +
       '        bbox=[minx + dx, miny + dy, maxx + dx, maxy + dy],\n' +
+      '        dimensions=dim_report,\n' +
+      '        skipped=skipped,\n' +
       '    )\n' +
       '    cleanup()\n' +
       '    return res\n' +

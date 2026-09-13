@@ -156,5 +156,102 @@ checkTrue('explicit scale 0.5 formats as 1:2', svgText2.includes('1:2'));
 checkTrue('custom title appears in the titleblock', svgText2.includes('Bracket'));
 checkTrue('width/height reflect the A3-landscape sheet (420mm)', svgText2.includes('width="420mm"'));
 
+// ---------------------------------------------------------------------------
+// 4. Dimensions (SPEC-drawing-pdf-dimensions.md Part 2): the golden box+hole
+//    at scale 1.0 AND 0.5 must produce IDENTICAL dimension VALUES -- this is
+//    the regression pin for the getVisibleEdges()-divided-by-Scale fix (an
+//    earlier draft multiplied instead, and silently mislabelled a 60mm edge
+//    as "30" at 0.5 scale).
+// ---------------------------------------------------------------------------
+console.log('\n--- dimensions: golden box+hole, scale 1.0 vs 0.5, values must match ---');
+
+// Pull every dimension-label text out of the COMPOSED view bodies (never the
+// titleblock, which also contains text) -- bare numbers ("60", "40") from
+// _label(), and Ø-prefixed diameter callouts ("Ø16") from _diameter().
+function dimensionLabels(svgText) {
+  const composedBody = svgText.slice(svgText.indexOf('<g transform='));
+  const out = [];
+  const RE = /<text[^>]*>([^<]*)<\/text>/g;
+  let m;
+  while ((m = RE.exec(composedBody))) {
+    const t = m[1].trim();
+    if (/^\d+(\.\d+)?$/.test(t) || /^Ø\d+(\.\d+)?$/.test(t)) out.push(t);
+  }
+  return out;
+}
+
+const bytesDim1 = adapter.exportDrawing(goldenDoc, { dimensions: 'overall' });
+const svgDim1 = new TextDecoder('utf8').decode(bytesDim1);
+const labels1 = dimensionLabels(svgDim1);
+checkTrue('scale 1.0: at least one dimension label emitted', labels1.length > 0, JSON.stringify(labels1));
+
+const bytesDim05 = adapter.exportDrawing(goldenDoc, { dimensions: 'overall', scale: 0.5 });
+const svgDim05 = new TextDecoder('utf8').decode(bytesDim05);
+const labels05 = dimensionLabels(svgDim05);
+checkTrue('scale 0.5: at least one dimension label emitted', labels05.length > 0, JSON.stringify(labels05));
+
+checkTrue(
+  'dimension VALUES are identical at scale 1.0 and 0.5 (the scale-division regression pin)',
+  JSON.stringify([...labels1].sort()) === JSON.stringify([...labels05].sort()),
+  `1.0: ${JSON.stringify(labels1)}  vs  0.5: ${JSON.stringify(labels05)}`,
+);
+
+checkTrue('a Ø16 diameter callout is present at scale 1.0', labels1.includes('Ø16'), JSON.stringify(labels1));
+checkTrue('the box outline\'s own 60 and 40 dimensions are present', labels1.includes('60') && labels1.includes('40'), JSON.stringify(labels1));
+
+// ---------------------------------------------------------------------------
+// 5. Dimensions on a plate-shaped fixture (120x80x10 + 4xO10 holes) -- the
+//    fixture the spec's own doc says the golden 60x40 case does NOT catch:
+//    (a) HLR reports every circle in BOTH the visible and hidden edge lists,
+//        so a naive pass draws each hole diameter TWICE -- dedupe must bring
+//        8 reported circles down to exactly 4 callouts;
+//    (b) the plate's dimension block is wide enough to overflow the sheet
+//        when the composer folds only _extent(frag) into the fit/recentre
+//        maths instead of _dimension_view's own (wider) extent -- this is
+//        the actual "must-fix" the spec measured (x 76.50..334.21 against a
+//        frame ending at 287).
+// ---------------------------------------------------------------------------
+console.log('\n--- dimensions: 120x80x10 plate + 4xØ10 holes, dedupe + no-overflow ---');
+const plateDoc = {
+  version: 1,
+  features: [
+    { id: 'plate1', kind: 'box', size: [120, 80, 10], center: [0, 0, 0] },
+    {
+      id: 'holes1', kind: 'hole', target: 'plate1', diameter: 10, depth: 15,
+      center: [0, 0, 0], axis: 'z', corners: { dx: 40, dy: 25 },
+    },
+  ],
+};
+
+const bytesPlate = adapter.exportDrawing(plateDoc, { dimensions: 'overall' });
+const svgPlate = new TextDecoder('utf8').decode(bytesPlate);
+const plateLabels = dimensionLabels(svgPlate);
+const plateDiaCount = plateLabels.filter((t) => t === 'Ø10').length;
+checkTrue(
+  'the plate\'s 4 holes dedupe to EXACTLY 4 diameter callouts (not 8)',
+  plateDiaCount === 4,
+  `found ${plateDiaCount}: ${JSON.stringify(plateLabels)}`,
+);
+checkTrue('the plate\'s overall 120 and 80 extents are present', plateLabels.includes('120') && plateLabels.includes('80'), JSON.stringify(plateLabels));
+
+// No-overflow check: every numeric coordinate inside a composed <path>/
+// <circle>/<text> primitive (dimension graphics included) must land inside
+// the A4-landscape sheet's own outer bounds (0..297, 0..210mm) -- generous
+// on purpose (the sheet frame itself is 10..287/10..200; this only catches
+// the gross "ran off the physical page" failure the spec measured, x up to
+// 334.21 against a 297mm sheet).
+const plateComposedBody = svgPlate.slice(svgPlate.indexOf('<g transform='));
+const plateNums = (plateComposedBody.match(/-?\d+\.?\d*(?:[eE]-?\d+)?/g) || []).map(Number);
+// Coordinates appear inside "d", "cx/cy/r", and translate()/rotate() -- filter
+// out the handful of legitimate non-coordinate numbers (stroke-width values
+// like 0.18/0.25, font-size 3.5, rotate(-90)) by bounding on magnitude only;
+// none of those exceed 90 in absolute value, well under the sheet bound.
+const offSheet = plateNums.filter((n) => Math.abs(n) > 297);
+checkTrue(
+  'no composed coordinate (part geometry + dimension graphics) falls outside the A4-landscape sheet -- the must-fix overflow bug',
+  offSheet.length === 0,
+  `${offSheet.length} out-of-range values, e.g. ${JSON.stringify(offSheet.slice(0, 5))}`,
+);
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail > 0 ? 1 : 0);

@@ -11,6 +11,7 @@
     "./ReshapeParamsPanel": "./dist/ReshapeParamsPanel.js",
     "./format-number": "./dist/format-number.js",
     "./mesh-export": "./dist/mesh-export.js",
+    "./svg-pdf": "./dist/svg-pdf.js",
     "./camera-fit": "./dist/camera-fit.js",
     "./model/BrepViewportThree": "./dist/model/BrepViewportThree.js",
     "./model/HandleOverlay": "./dist/model/HandleOverlay.js",
