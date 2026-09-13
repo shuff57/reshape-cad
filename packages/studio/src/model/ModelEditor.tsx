@@ -1769,50 +1769,53 @@ export default function ModelEditor({
         {sketchVisible && (
           <>
             <div className="model-tool-group">
-              {matches('Sketch') && (
-                <button onClick={startSketch} title="Draw a flat outline to pull or spin into a solid">
-                  <PenLine size={14} /> Sketch
-                </button>
-              )}
-              {matches('Circle') && (
-                <button onClick={startCircleSketch} title="Draw a circle to pull or spin into a solid">
-                  <Circle size={14} /> Circle
-                </button>
-              )}
-              {matches('Rectangle') && (
-                <button
-                  onClick={() => onStartDraw?.('rect')}
-                  aria-pressed={drawTool === 'rect'}
-                  title={drawTool === 'rect'
-                    ? 'Click two corners to draw a rectangle (armed -- Escape cancels)'
-                    : 'Click two corners to draw a rectangle'}
-                >
-                  <Square size={14} /> Rectangle
-                </button>
-              )}
-              {matches('Polygon') && (
-                <button
-                  onClick={() => onStartDraw?.('polygon')}
-                  aria-pressed={drawTool === 'polygon'}
-                  title={drawTool === 'polygon'
-                    ? 'Click a center, then a corner, to draw a hexagon (armed -- Escape cancels)'
-                    : 'Click a center, then a corner, to draw a hexagon'}
-                >
-                  <Hexagon size={14} /> Polygon
-                </button>
-              )}
-              {matches('Corner') && (
-                <button
-                  onClick={corner}
-                  disabled={
-                    chosen.length !== 1 || chosen[0]?.kind !== 'sketch' ||
-                    (chosen[0].kind === 'sketch' && chosen[0].shape === 'circle')
-                  }
-                  title="Add a corner to the selected sketch"
-                >
-                  <Plus size={14} /> Corner
-                </button>
-              )}
+              <div className="model-tool-icons">
+                {matches('Sketch') && (
+                  <button onClick={startSketch} title="Draw a flat outline to pull or spin into a solid">
+                    <PenLine size={14} /> Sketch
+                  </button>
+                )}
+                {matches('Circle') && (
+                  <button onClick={startCircleSketch} title="Draw a circle to pull or spin into a solid">
+                    <Circle size={14} /> Circle
+                  </button>
+                )}
+                {matches('Rectangle') && (
+                  <button
+                    onClick={() => onStartDraw?.('rect')}
+                    aria-pressed={drawTool === 'rect'}
+                    title={drawTool === 'rect'
+                      ? 'Click two corners to draw a rectangle (armed -- Escape cancels)'
+                      : 'Click two corners to draw a rectangle'}
+                  >
+                    <Square size={14} /> Rectangle
+                  </button>
+                )}
+                {matches('Polygon') && (
+                  <button
+                    onClick={() => onStartDraw?.('polygon')}
+                    aria-pressed={drawTool === 'polygon'}
+                    title={drawTool === 'polygon'
+                      ? 'Click a center, then a corner, to draw a hexagon (armed -- Escape cancels)'
+                      : 'Click a center, then a corner, to draw a hexagon'}
+                  >
+                    <Hexagon size={14} /> Polygon
+                  </button>
+                )}
+                {matches('Corner') && (
+                  <button
+                    onClick={corner}
+                    disabled={
+                      chosen.length !== 1 || chosen[0]?.kind !== 'sketch' ||
+                      (chosen[0].kind === 'sketch' && chosen[0].shape === 'circle')
+                    }
+                    title="Add a corner to the selected sketch"
+                  >
+                    <Plus size={14} /> Corner
+                  </button>
+                )}
+              </div>
+              <span className="model-tool-group-label">Sketch</span>
             </div>
             <div className="model-tool-divider" />
           </>
@@ -1821,50 +1824,53 @@ export default function ModelEditor({
         {createVisible && (
           <>
             <div className="model-tool-group">
-              <FlyoutButton
-                label={shapeLabel(lastShape)}
-                icon={shapeIcon(lastShape)}
-                onMain={() => addShape(lastShape)}
-                disabled={false}
-                title={`Add a ${shapeLabel(lastShape).toLowerCase()}`}
-                open={menu === 'shape'}
-                onToggleOpen={() => toggleMenu('shape')}
-                matches={matches}
-                searchActive={searchActive}
-                variants={SHAPE_KINDS.map((k) => ({
-                  id: k,
-                  label: shapeLabel(k),
-                  icon: shapeIcon(k),
-                  onClick: () => addShape(k),
-                }))}
-              />
-              {matches('Pull') && (
-                <button
-                  onClick={pull}
-                  disabled={chosen.length !== 1 || chosen[0]?.kind !== 'sketch'}
-                  title="Pull the selected sketch straight up into a solid"
-                >
-                  <MoveUp size={14} /> Pull
-                </button>
-              )}
-              {matches('Spin') && (
-                <button
-                  onClick={spin}
-                  disabled={chosen.length !== 1 || chosen[0]?.kind !== 'sketch'}
-                  title="Spin the selected sketch around to make a solid"
-                >
-                  <Disc3 size={14} /> Spin
-                </button>
-              )}
-              {matches('Blend') && (
-                <button
-                  onClick={blend}
-                  disabled={chosen.length !== 2 || chosen.some((c) => c.kind !== 'sketch')}
-                  title="Skin two sketches together into one tapered solid"
-                >
-                  <Layers size={14} /> Blend
-                </button>
-              )}
+              <div className="model-tool-icons">
+                <FlyoutButton
+                  label={shapeLabel(lastShape)}
+                  icon={shapeIcon(lastShape)}
+                  onMain={() => addShape(lastShape)}
+                  disabled={false}
+                  title={`Add a ${shapeLabel(lastShape).toLowerCase()}`}
+                  open={menu === 'shape'}
+                  onToggleOpen={() => toggleMenu('shape')}
+                  matches={matches}
+                  searchActive={searchActive}
+                  variants={SHAPE_KINDS.map((k) => ({
+                    id: k,
+                    label: shapeLabel(k),
+                    icon: shapeIcon(k),
+                    onClick: () => addShape(k),
+                  }))}
+                />
+                {matches('Pull') && (
+                  <button
+                    onClick={pull}
+                    disabled={chosen.length !== 1 || chosen[0]?.kind !== 'sketch'}
+                    title="Pull the selected sketch straight up into a solid"
+                  >
+                    <MoveUp size={14} /> Pull
+                  </button>
+                )}
+                {matches('Spin') && (
+                  <button
+                    onClick={spin}
+                    disabled={chosen.length !== 1 || chosen[0]?.kind !== 'sketch'}
+                    title="Spin the selected sketch around to make a solid"
+                  >
+                    <Disc3 size={14} /> Spin
+                  </button>
+                )}
+                {matches('Blend') && (
+                  <button
+                    onClick={blend}
+                    disabled={chosen.length !== 2 || chosen.some((c) => c.kind !== 'sketch')}
+                    title="Skin two sketches together into one tapered solid"
+                  >
+                    <Layers size={14} /> Blend
+                  </button>
+                )}
+              </div>
+              <span className="model-tool-group-label">Create</span>
             </div>
             <div className="model-tool-divider" />
           </>
@@ -1873,78 +1879,81 @@ export default function ModelEditor({
         {modifyVisible && (
           <>
             <div className="model-tool-group">
-              <FlyoutButton
-                label={roundLabel(lastRound)}
-                icon={roundIcon(lastRound)}
-                onMain={() => round(lastRound)}
-                disabled={!canRound}
-                title={roundBlockedBy ?? roundDescription(lastRound, pickedEdgeUsable)}
-                open={menu === 'round'}
-                onToggleOpen={() => toggleMenu('round')}
-                matches={matches}
-                searchActive={searchActive}
-                alias={lastRound === 'chamfer' ? 'Angled Corner' : undefined}
-                variants={ROUND_STYLES.map((s) => ({
-                  id: s,
-                  label: roundLabel(s),
-                  icon: roundIcon(s),
-                  onClick: () => round(s),
-                  title: s === 'fillet' ? 'Round the edges off (fillet)' : 'Slice the edge off at an angle (a bevel)',
-                  alias: s === 'chamfer' ? 'Angled Corner' : undefined,
-                }))}
-              />
-              {matches('Turn') && (
-                <button
-                  onClick={turn}
-                  disabled={chosen.length !== 1 || !canRotate(chosen[0])}
-                  title={turnBlockedBy ?? 'Turn this shape'}
-                >
-                  <RotateCw size={14} /> Turn
-                </button>
-              )}
-              <FlyoutButton
-                label="Hole"
-                icon={<CircleDot size={14} />}
-                onMain={drillHole}
-                disabled={!canSolidOp}
-                title={solidOpBlockedBy ?? 'Drill a round hole through the selected solid'}
-                open={menu === 'hole'}
-                onToggleOpen={() => toggleMenu('hole')}
-                matches={matches}
-                searchActive={searchActive}
-                variants={[
-                  {
-                    id: 'four-corners', label: 'Four Corners', icon: <Grid2x2 size={14} />,
-                    onClick: drillHoleCorners,
-                    // Item P: "evenly spaced from the middle" was true of the
-                    // stored numbers but not of what the panel showed a
-                    // student typing -- the corner spacing fields now say
-                    // exactly what they measure (in from each side), so the
-                    // tooltip does too.
-                    title: 'Drill four holes at once, the same distance in from every side — a bolt pattern with matching offsets on every corner',
-                  },
-                ]}
-              />
-              <FlyoutButton
-                label="Hollow"
-                icon={<PackageOpen size={14} />}
-                onMain={hollow}
-                disabled={!canSolidOp}
-                title={solidOpBlockedBy ?? 'Hollow the selected solid out, leaving a wall'}
-                open={menu === 'hollow'}
-                onToggleOpen={() => toggleMenu('hollow')}
-                matches={matches}
-                searchActive={searchActive}
-                variants={[
-                  {
-                    id: 'open-face', label: 'Open hollow',
-                    icon: <PackageOpen size={14} />,
-                    onClick: openHollow,
-                    disabled: openHollowBlockedBy !== null,
-                    title: openHollowBlockedBy ?? 'Hollow out, leaving the face you clicked open',
-                  },
-                ]}
-              />
+              <div className="model-tool-icons">
+                <FlyoutButton
+                  label={roundLabel(lastRound)}
+                  icon={roundIcon(lastRound)}
+                  onMain={() => round(lastRound)}
+                  disabled={!canRound}
+                  title={roundBlockedBy ?? roundDescription(lastRound, pickedEdgeUsable)}
+                  open={menu === 'round'}
+                  onToggleOpen={() => toggleMenu('round')}
+                  matches={matches}
+                  searchActive={searchActive}
+                  alias={lastRound === 'chamfer' ? 'Angled Corner' : undefined}
+                  variants={ROUND_STYLES.map((s) => ({
+                    id: s,
+                    label: roundLabel(s),
+                    icon: roundIcon(s),
+                    onClick: () => round(s),
+                    title: s === 'fillet' ? 'Round the edges off (fillet)' : 'Slice the edge off at an angle (a bevel)',
+                    alias: s === 'chamfer' ? 'Angled Corner' : undefined,
+                  }))}
+                />
+                {matches('Turn') && (
+                  <button
+                    onClick={turn}
+                    disabled={chosen.length !== 1 || !canRotate(chosen[0])}
+                    title={turnBlockedBy ?? 'Turn this shape'}
+                  >
+                    <RotateCw size={14} /> Turn
+                  </button>
+                )}
+                <FlyoutButton
+                  label="Hole"
+                  icon={<CircleDot size={14} />}
+                  onMain={drillHole}
+                  disabled={!canSolidOp}
+                  title={solidOpBlockedBy ?? 'Drill a round hole through the selected solid'}
+                  open={menu === 'hole'}
+                  onToggleOpen={() => toggleMenu('hole')}
+                  matches={matches}
+                  searchActive={searchActive}
+                  variants={[
+                    {
+                      id: 'four-corners', label: 'Four Corners', icon: <Grid2x2 size={14} />,
+                      onClick: drillHoleCorners,
+                      // Item P: "evenly spaced from the middle" was true of the
+                      // stored numbers but not of what the panel showed a
+                      // student typing -- the corner spacing fields now say
+                      // exactly what they measure (in from each side), so the
+                      // tooltip does too.
+                      title: 'Drill four holes at once, the same distance in from every side — a bolt pattern with matching offsets on every corner',
+                    },
+                  ]}
+                />
+                <FlyoutButton
+                  label="Hollow"
+                  icon={<PackageOpen size={14} />}
+                  onMain={hollow}
+                  disabled={!canSolidOp}
+                  title={solidOpBlockedBy ?? 'Hollow the selected solid out, leaving a wall'}
+                  open={menu === 'hollow'}
+                  onToggleOpen={() => toggleMenu('hollow')}
+                  matches={matches}
+                  searchActive={searchActive}
+                  variants={[
+                    {
+                      id: 'open-face', label: 'Open hollow',
+                      icon: <PackageOpen size={14} />,
+                      onClick: openHollow,
+                      disabled: openHollowBlockedBy !== null,
+                      title: openHollowBlockedBy ?? 'Hollow out, leaving the face you clicked open',
+                    },
+                  ]}
+                />
+              </div>
+              <span className="model-tool-group-label">Modify</span>
             </div>
             <div className="model-tool-divider" />
           </>
@@ -1954,66 +1963,69 @@ export default function ModelEditor({
           <>
             {patternSelectVisible && (
               <div className="model-tool-group">
-                <FlyoutButton
-                  label={patternLabel(lastPattern)}
-                  icon={patternIcon(lastPattern)}
-                  onMain={() => repeat(lastPattern)}
-                  disabled={!canSolidOp}
-                  title={solidOpBlockedBy ?? 'Make copies of the selected solid'}
-                  open={menu === 'pattern'}
-                  onToggleOpen={() => toggleMenu('pattern')}
-                  matches={matches}
-                  searchActive={searchActive}
-                  variants={PATTERN_MODES.map((m) => ({
-                    id: m,
-                    label: patternLabel(m),
-                    icon: patternIcon(m),
-                    onClick: () => repeat(m),
-                    title: m === 'linear' ? 'Copies in a straight row' : 'Copies around a circle',
-                  }))}
-                />
-                <FlyoutButton
-                  label="Mirror"
-                  icon={lastMirrorPlane ? mirrorPlaneIcon(lastMirrorPlane) : <FlipHorizontal2 size={14} />}
-                  // No remembered plane yet -- the main click opens the picker
-                  // instead of guessing, the same way the caret would. Once a
-                  // student has chosen once, repeating THEIR choice on click is
-                  // a shortcut, not a silent default.
-                  onMain={() => (lastMirrorPlane ? mirror(lastMirrorPlane) : toggleMenu('mirror'))}
-                  disabled={!canSolidOp}
-                  title={
-                    solidOpBlockedBy
-                      ?? (lastMirrorPlane
-                        ? mirrorPlaneTitle(lastMirrorPlane)
-                        : 'Pick which way to flip the copy')
-                  }
-                  open={menu === 'mirror'}
-                  onToggleOpen={() => toggleMenu('mirror')}
-                  matches={matches}
-                  searchActive={searchActive}
-                  variants={MIRROR_PLANES.map((pl) => ({
-                    id: pl,
-                    label: mirrorPlaneLabel(pl),
-                    icon: mirrorPlaneIcon(pl),
-                    onClick: () => mirror(pl),
-                    title: mirrorPlaneTitle(pl),
-                  }))}
-                />
-                <FlyoutButton
-                  label={moveLabel(lastMoveCopy)}
-                  icon={moveIcon(lastMoveCopy)}
-                  onMain={() => moveTool(lastMoveCopy)}
-                  disabled={!canSolidOp}
-                  title={solidOpBlockedBy ?? (lastMoveCopy ? 'Add a copy, shifted over' : 'Shift the selected solid')}
-                  open={menu === 'move'}
-                  onToggleOpen={() => toggleMenu('move')}
-                  matches={matches}
-                  searchActive={searchActive}
-                  variants={[
-                    { id: 'move', label: 'Move', icon: <MoveIcon size={14} />, onClick: () => moveTool(false), title: 'Shift the selected solid' },
-                    { id: 'copy', label: 'Copy', icon: <CopyIcon size={14} />, onClick: () => moveTool(true), title: 'Add a copy, shifted over' },
-                  ]}
-                />
+                <div className="model-tool-icons">
+                  <FlyoutButton
+                    label={patternLabel(lastPattern)}
+                    icon={patternIcon(lastPattern)}
+                    onMain={() => repeat(lastPattern)}
+                    disabled={!canSolidOp}
+                    title={solidOpBlockedBy ?? 'Make copies of the selected solid'}
+                    open={menu === 'pattern'}
+                    onToggleOpen={() => toggleMenu('pattern')}
+                    matches={matches}
+                    searchActive={searchActive}
+                    variants={PATTERN_MODES.map((m) => ({
+                      id: m,
+                      label: patternLabel(m),
+                      icon: patternIcon(m),
+                      onClick: () => repeat(m),
+                      title: m === 'linear' ? 'Copies in a straight row' : 'Copies around a circle',
+                    }))}
+                  />
+                  <FlyoutButton
+                    label="Mirror"
+                    icon={lastMirrorPlane ? mirrorPlaneIcon(lastMirrorPlane) : <FlipHorizontal2 size={14} />}
+                    // No remembered plane yet -- the main click opens the picker
+                    // instead of guessing, the same way the caret would. Once a
+                    // student has chosen once, repeating THEIR choice on click is
+                    // a shortcut, not a silent default.
+                    onMain={() => (lastMirrorPlane ? mirror(lastMirrorPlane) : toggleMenu('mirror'))}
+                    disabled={!canSolidOp}
+                    title={
+                      solidOpBlockedBy
+                        ?? (lastMirrorPlane
+                          ? mirrorPlaneTitle(lastMirrorPlane)
+                          : 'Pick which way to flip the copy')
+                    }
+                    open={menu === 'mirror'}
+                    onToggleOpen={() => toggleMenu('mirror')}
+                    matches={matches}
+                    searchActive={searchActive}
+                    variants={MIRROR_PLANES.map((pl) => ({
+                      id: pl,
+                      label: mirrorPlaneLabel(pl),
+                      icon: mirrorPlaneIcon(pl),
+                      onClick: () => mirror(pl),
+                      title: mirrorPlaneTitle(pl),
+                    }))}
+                  />
+                  <FlyoutButton
+                    label={moveLabel(lastMoveCopy)}
+                    icon={moveIcon(lastMoveCopy)}
+                    onMain={() => moveTool(lastMoveCopy)}
+                    disabled={!canSolidOp}
+                    title={solidOpBlockedBy ?? (lastMoveCopy ? 'Add a copy, shifted over' : 'Shift the selected solid')}
+                    open={menu === 'move'}
+                    onToggleOpen={() => toggleMenu('move')}
+                    matches={matches}
+                    searchActive={searchActive}
+                    variants={[
+                      { id: 'move', label: 'Move', icon: <MoveIcon size={14} />, onClick: () => moveTool(false), title: 'Shift the selected solid' },
+                      { id: 'copy', label: 'Copy', icon: <CopyIcon size={14} />, onClick: () => moveTool(true), title: 'Add a copy, shifted over' },
+                    ]}
+                  />
+                </div>
+                <span className="model-tool-group-label">Arrange</span>
               </div>
             )}
             {/* The selection rule changes here: everything to the left needs
@@ -2023,60 +2035,66 @@ export default function ModelEditor({
             {patternSelectVisible && patternBoolVisible && <div className="model-tool-divider" />}
             {patternBoolVisible && (
               <div className="model-tool-group">
-                {/* Unlike every other flyout family on this bar, the Combine
-                    group's main button does NOT show "the last variant used"
-                    (see the file-top comment). A student who just Cut two
-                    shapes and comes back later expects Join to still be
-                    where they left it -- and "More join tools" to still say
-                    "join" -- not to have to remember the button now reads
-                    "Cut" and search under "More cut tools" to find Join
-                    again (P19b/P19c). Join is pinned; Cut and Overlap live
-                    only in the flyout. */}
-                <FlyoutButton
-                  label={boolLabel('union')}
-                  icon={boolIcon('union')}
-                  onMain={() => combine('union')}
-                  disabled={!canCombine}
-                  title={canCombine ? boolLabel('union') : 'Pick two shapes first — click one, then hold Shift (or Ctrl, or Cmd) and click another.'}
-                  open={menu === 'bool'}
-                  onToggleOpen={() => toggleMenu('bool')}
-                  matches={matches}
-                  searchActive={searchActive}
-                  variants={BOOL_OPS.map((op) => ({
-                    id: op,
-                    label: boolLabel(op),
-                    icon: boolIcon(op),
-                    onClick: () => combine(op),
-                    title:
-                      op === 'union' ? 'Join the selected shapes into one'
-                      : op === 'subtract' ? 'Cut the later shapes out of the first'
-                      : 'Keep only where they overlap',
-                  }))}
-                />
+                <div className="model-tool-icons">
+                  {/* Unlike every other flyout family on this bar, the Combine
+                      group's main button does NOT show "the last variant used"
+                      (see the file-top comment). A student who just Cut two
+                      shapes and comes back later expects Join to still be
+                      where they left it -- and "More join tools" to still say
+                      "join" -- not to have to remember the button now reads
+                      "Cut" and search under "More cut tools" to find Join
+                      again (P19b/P19c). Join is pinned; Cut and Overlap live
+                      only in the flyout. */}
+                  <FlyoutButton
+                    label={boolLabel('union')}
+                    icon={boolIcon('union')}
+                    onMain={() => combine('union')}
+                    disabled={!canCombine}
+                    title={canCombine ? boolLabel('union') : 'Pick two shapes first — click one, then hold Shift (or Ctrl, or Cmd) and click another.'}
+                    open={menu === 'bool'}
+                    onToggleOpen={() => toggleMenu('bool')}
+                    matches={matches}
+                    searchActive={searchActive}
+                    variants={BOOL_OPS.map((op) => ({
+                      id: op,
+                      label: boolLabel(op),
+                      icon: boolIcon(op),
+                      onClick: () => combine(op),
+                      title:
+                        op === 'union' ? 'Join the selected shapes into one'
+                        : op === 'subtract' ? 'Cut the later shapes out of the first'
+                        : 'Keep only where they overlap',
+                    }))}
+                  />
+                </div>
+                <span className="model-tool-group-label">Combine</span>
               </div>
             )}
           </>
         )}
 
         <div className="model-tool-group model-tool-end">
-          {collapsible && (
-            <button
-              onClick={() => collapse(true)}
-              title="Collapse the tools to a rail, so the shape fills the window"
-              aria-label="Collapse the tools"
-            >
-              <PanelLeftClose size={14} />
+          <div className="model-tool-icons">
+            {collapsible && (
+              <button
+                onClick={() => collapse(true)}
+                title="Collapse the tools to a rail, so the shape fills the window"
+                aria-label="Collapse the tools"
+              >
+                <PanelLeftClose size={14} />
+              </button>
+            )}
+            <button onClick={onUndo} disabled={!canUndo} title="Undo (Ctrl+Z)" aria-label="Undo">
+              <Undo2 size={14} />
             </button>
-          )}
-          <button onClick={onUndo} disabled={!canUndo} title="Undo (Ctrl+Z)" aria-label="Undo">
-            <Undo2 size={14} />
-          </button>
-          <button onClick={onRedo} disabled={!canRedo} title="Redo (Ctrl+Shift+Z)" aria-label="Redo">
-            <Redo2 size={14} />
-          </button>
-          <button onClick={remove} disabled={!chosen.length} title="Delete the selected" aria-label="Delete">
-            <Trash2 size={14} />
-          </button>
+            <button onClick={onRedo} disabled={!canRedo} title="Redo (Ctrl+Shift+Z)" aria-label="Redo">
+              <Redo2 size={14} />
+            </button>
+            <button onClick={remove} disabled={!chosen.length} title="Delete the selected" aria-label="Delete">
+              <Trash2 size={14} />
+            </button>
+          </div>
+          <span className="model-tool-group-label">Edit</span>
         </div>
 
         {searchOpen || searchActive ? (
@@ -2418,15 +2436,25 @@ export default function ModelEditor({
            you cannot build muscle memory on. */
         .model-tools {
           display: flex; flex-wrap: nowrap; align-items: center; gap: 2px;
-          height: 38px; padding: 0 6px; box-sizing: border-box;
+          height: 46px; padding: 0 6px; box-sizing: border-box;
           border-bottom: 1px solid var(--border, var(--reshape-border)); flex-shrink: 0; position: relative;
           overflow-x: auto; overflow-y: visible; scrollbar-width: thin;
         }
         .model-tools::-webkit-scrollbar { height: 4px; }
         .model-tools::-webkit-scrollbar-thumb { background: var(--reshape-border); border-radius: 2px; }
-        .model-tool-group { display: inline-flex; gap: 2px; align-items: center; flex: 0 0 auto; }
+        /* A Fusion-360-style command group: the icon row is the tool, the
+           caption below names the group (CREATE/MODIFY/...) the way the
+           ui-ref screenshots' ribbon does -- pure labeling, every icon still
+           calls the exact same handler it did as a flat row. */
+        .model-tool-group { display: inline-flex; flex-direction: column; align-items: center; gap: 2px; flex: 0 0 auto; }
+        .model-tool-icons { display: inline-flex; gap: 2px; align-items: center; }
+        .model-tool-group-label {
+          font-size: 9px; line-height: 1; letter-spacing: 0.04em;
+          text-transform: uppercase; color: var(--reshape-text-muted);
+          white-space: nowrap;
+        }
         .model-tool-divider {
-          align-self: center; flex: 0 0 1px; width: 1px; height: 20px;
+          align-self: center; flex: 0 0 1px; width: 1px; height: 34px;
           background: var(--reshape-border); margin: 0 4px;
         }
         .model-tool-end { margin-left: auto; padding-left: 6px; flex: 0 0 auto; }

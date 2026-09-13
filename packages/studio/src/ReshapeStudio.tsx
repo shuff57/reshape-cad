@@ -129,7 +129,11 @@ const PREVIEW_DEGRADE_MS = 25;
 // now adds this constant instead, so the whole stack (menu bar, toolbar,
 // tool card, rules pane, params pane) stays non-overlapping as one number.
 const MENUBAR_HEIGHT_PX = 28;
-const BUILD_CHROME_TOP_PX = 48 + MENUBAR_HEIGHT_PX;
+// The ribbon grew a group-caption row under each icon cluster (Fusion-360-
+// style CREATE/MODIFY/... labels, ui-ref/*.png) -- 48 was tuned for the old
+// icon-only 34px ribbon; the ribbon's own .model-tools is now 42px plus the
+// toolbar's own 4px+4px padding, so this reserves 56.
+const BUILD_CHROME_TOP_PX = 56 + MENUBAR_HEIGHT_PX;
 
 function capitalize(name: string): string {
   return name.length ? name[0].toUpperCase() + name.slice(1) : name;
@@ -1478,7 +1482,7 @@ export default function ReshapeStudio({
            Measured 2026-09-04: without this "Build" clipped to "Buil" at
            1440px, .sandbox-modes shrinking along with everything else. */
         .reshape-studio-ribbon { flex: 1 1 auto; min-width: 0; overflow-x: auto; display: flex; align-items: center; }
-        .reshape-studio-ribbon .model-tools { height: 34px; background: transparent; border-bottom: 0; }
+        .reshape-studio-ribbon .model-tools { height: 42px; background: transparent; border-bottom: 0; }
         .sandbox-modes {
           display: inline-flex;
           flex-shrink: 0;
