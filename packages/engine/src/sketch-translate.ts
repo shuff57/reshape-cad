@@ -169,7 +169,18 @@ function refuse(sketch: SketchFeature, message: string): never {
  *    definition of redundant, not just numerically close.
  *  Either alone is not enough. Only when both hold is a conflict provably
  *  spurious; otherwise it is a real mismatch and must be left in place for
- *  the final check below to refuse honestly, not hidden. */
+ *  the final check below to refuse honestly, not hidden.
+ *
+ *  Deliberately does NOT also look at `after.redundant` here -- tried
+ *  first, measured to be order-dependent and unreliable mid-loop: a pin
+ *  added early can look INFORMATIVE by this function's own dof-before/
+ *  dof-after delta (the only signal available with just the pins added SO
+ *  FAR), yet FreeCAD's own solver, once every later pin has also landed,
+ *  still calls that exact constraint redundant. Whether a specific pin
+ *  ends up in FreeCAD's redundant set is a property of the FULL final
+ *  constraint set, not of this function's own partial, incremental view --
+ *  see translateSketch()'s own post-closure-loop sweep, which checks
+ *  `redundant` once the whole set is in place instead. */
 function pinAxisIfNeeded(
   session: SketchSession, sketchName: string, ref: CornerRef, axis: 'x' | 'y', value: number,
 ): void {
@@ -490,6 +501,74 @@ export function translateSketch(
     }
     if (state.dof !== 0) {
       refuse(sketch, `DoF closure left ${state.dof} degree(s) of freedom unpinned -- a translation bug, not a geometry problem`);
+    }
+
+    // Final redundant-constraint sweep -- CLOSED, a real bug this pass found
+    // live against the real kernel, not guessed at: pinning EVERY design
+    // corner's x AND y (above) is genuinely over-determined for a sketch
+    // whose explicit constraints already partially close it -- exactly
+    // model-types.ts's own RECTANGLE_CONSTRAINTS (horizontal/vertical on
+    // all four edges), which every "Sketch" tool default rectangle
+    // carries. pinAxisIfNeeded()'s own conflicting/malformed check (its own
+    // header explains why) cannot catch this: FreeCAD's `sk.solve()`
+    // reports these extra pins as perfectly consistent (conflicting: [],
+    // malformed: [], dof already 0) and ONLY classifies them as `redundant`
+    // -- a fact that measurably depends on the FULL final constraint set,
+    // not on the partial, incremental view pinAxisIfNeeded sees pin-by-pin
+    // (an early pin can look informative there and still land in
+    // FreeCAD's own `redundant` list once every later pin has also been
+    // added). Left in place, this silently broke Sketch -> Pull end to
+    // end: FreeCAD's REAL solve -- run during the full-document
+    // doc.recompute() that session.pad() triggers, a stricter path than
+    // this file's own sk.solve() probe -- refuses to compute a Shape at
+    // all for a sketch that still carries a redundant constraint, leaving
+    // it (and the Pad built on it) `Touched` with `Shape.isNull()` true
+    // and NO exception thrown. That surfaced three call frames away, in
+    // FreeCadEngineAdapter.mesh() (which only reads `sh.Faces` off an
+    // already-valid Shape) finding nothing to mesh, reported by
+    // BrepViewportThree.tsx as "meshing returned nothing drawable" -- with
+    // zero console errors, since nothing on the FreeCAD side ever raised
+    // one. A primitive (box/cylinder) never hits this: its own inline
+    // rectangle (fc-commands.mjs's sketchRect()) carries ZERO constraints,
+    // so it can never have a redundant one.
+    //
+    // Safe to delete unconditionally here, unlike mid-loop: dof is ALREADY
+    // 0 and conflict-free (both checked immediately above), so anything
+    // FreeCAD still calls redundant at this final state adds no
+    // information the remaining constraints don't already supply --
+    // removing it cannot leave anything unpinned. Verified against the
+    // real kernel: deleting exactly the reported set (and nothing else)
+    // took the default rectangle sketch from `Touched`/`Shape.isNull()`
+    // true to `Up-to-date`/a real 1-wire profile (perimeter 130mm,
+    // matching a 40x25 rectangle exactly) with no other change. Descending
+    // order so deleting one reported index never shifts another
+    // not-yet-deleted index in the SAME batch.
+    //
+    // `sk.RedundantConstraints` (fc-sketch.mjs's state()) is 1-BASED, not
+    // 0-based like delConstraint's own argument -- measured directly:
+    // FreeCAD's Report View printed "Remove the following redundant
+    // constraints: 12, 13, 15, 16" for a sketch whose ConstraintCount was
+    // 16 (valid 0-based indices 0..15, so 16 alone proves the offset), and
+    // deleting 0-based [11,12,14,15] -- one less than each reported number
+    // -- is what actually fixed it; deleting the reported numbers directly
+    // throws "Not able to delete a constraint with the given index: 16".
+    if (state.redundant.length > 0) {
+      for (const idx of [...state.redundant].sort((a, b) => b - a)) session.delConstraint(sketchName, idx - 1);
+      state = session.sketchState(sketchName);
+      if (SKETCH_TRANSLATE_DEBUG) {
+        console.error('DEBUG post-redundant-sweep state:', JSON.stringify({ dof: state.dof, conflicting: state.conflicting, redundant: state.redundant, malformed: state.malformed }));
+      }
+      // Should never fire given the reasoning above -- an honest refusal
+      // beats silently shipping a shape this sweep cannot actually prove
+      // is still correct.
+      if (state.conflicting.length > 0 || state.malformed.length > 0 || state.dof !== 0) {
+        refuse(
+          sketch,
+          `removing FreeCAD's own reported redundant constraints left the sketch `
+            + `${state.dof !== 0 ? `with ${state.dof} degree(s) of freedom unpinned` : 'conflicting'} `
+            + `on the FreeCAD engine -- a translation bug, not a geometry problem`,
+        );
+      }
     }
   }
 
