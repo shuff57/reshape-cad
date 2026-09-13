@@ -26,13 +26,16 @@
 // Chromium), which is what makes error line numbers possible below without a
 // parser of our own -- see lineOf().
 //
-// THE LINE-NUMBER OFFSET IS MEASURED, NOT ASSUMED. `new Function(a, b, body)`
-// synthesizes `function anonymous(a,b\n) {\n<body>\n}`, so V8 reports every
-// line inside <body> two lines higher than it actually sits. Measured
-// directly against this exact construction (see the shell session that
-// produced this file): a `throw` on body line 3 is reported at line 5,
-// regardless of how many parameter names are passed. LINE_OFFSET encodes that
-// gap in one place rather than as a magic number wherever a stack is parsed.
+// THE LINE-NUMBER OFFSET IS MEASURED, NOT ASSUMED. `new Function(a, body)`
+// synthesizes `function anonymous(a\n) {\n<body>\n}`, so V8 reports every
+// line inside <body> some fixed number of lines higher than it actually
+// sits. The exact gap changed 2026-09-13 when the vocabulary stopped being
+// passed as 37 separate parameters (see SCOPE_NAME below) and `body` itself
+// gained one extra leading line (`with(SCOPE){`) that <source> is nested
+// inside. Measured directly against THIS construction: a `throw` on source
+// line 3 is reported at line 6, regardless of how many lines <source> has
+// or what's in it. LINE_OFFSET encodes that gap in one place rather than as
+// a magic number wherever a stack is parsed.
 
 import {
   type Feature,
@@ -208,9 +211,14 @@ export interface RunOptions {
 // ---------------------------------------------------------------------------
 
 const SOURCE_NAME = 'reshape-user-script.js';
-// See the file header: measured against `new Function(...)` on this exact
-// engine family (V8 -- Node and Chromium both), not derived from a spec.
-const LINE_OFFSET = 2;
+// The `with(SCOPE_NAME){...}` binding name below -- deliberately unlikely to
+// collide with a student's own variable (see runScript's "run it" section).
+const SCOPE_NAME = '__RESHAPE_SCOPE__';
+// See the file header: measured against `new Function(SCOPE_NAME, wrapped)`
+// on this exact engine family (V8 -- Node and Chromium both), not derived
+// from a spec. Bumped 2 -> 3 2026-09-13 for the `with(SCOPE){` wrapper line
+// -- see the header comment and SCOPE_NAME below.
+const LINE_OFFSET = 3;
 
 function lineOf(err: unknown): number | null {
   const stack = err instanceof Error ? err.stack : undefined;
@@ -285,6 +293,22 @@ function friendlyMessage(err: unknown): string {
       return closeEnough
         ? `${name} is not a tool here. Did you mean ${nearest}()?`
         : `${name} is not a tool here.`;
+    }
+    // 2026-09-13: `const box = box(40, 40, 20)` -- naming a variable the
+    // SAME word as the tool that builds it, the single most natural name
+    // to reach for. Legal in a Build-mouse-clicks world, illegal in JS: a
+    // `const`/`let` declares its name for the WHOLE enclosing block from
+    // the top, so the right-hand `box(...)` call is already inside that
+    // name's temporal dead zone before its own declaration finishes. No
+    // scope trick fixes this (measured -- see the shell session that
+    // produced this fix); the only real fix is a different name. VOCABULARY
+    // membership, not edit distance, decides this branch -- SCOPE's `set`
+    // trap below only ever throws Error, so a ReferenceError this exact
+    // shape is never anything BUT this.
+    const tdz = /^Cannot access '([A-Za-z_$][\w$]*)' before initialization$/.exec(err.message);
+    if (tdz && (VOCABULARY as readonly string[]).includes(tdz[1])) {
+      const name = tdz[1];
+      return `You can't build ${name}() into a variable named "${name}" on the same line -- JS reserves that name for the whole line before ${name}(...) even runs. Give the result its own name instead, e.g. const my${name[0].toUpperCase()}${name.slice(1)} = ${name}(...).`;
     }
   }
   return messageOf(err);
@@ -1509,8 +1533,36 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     extrude: pull, revolve: spin, loft: blend,
   };
   const globals: Record<string, unknown> = fns;
-  const names: string[] = [...VOCABULARY];
-  const wrapped = `${source}\n//# sourceURL=${SOURCE_NAME}`;
+
+  // scope is a `with()` base object, not a parameter list (changed
+  // 2026-09-13; see the file header and LINE_OFFSET's own comment for why).
+  // Passing the 37 VOCABULARY words as `new Function` PARAMETER names meant a
+  // student's own `const box = ...`, `let ring = ...`, or `class hollow {}`
+  // was a SyntaxError -- "Identifier 'box' has already been declared" --
+  // because `let`/`const`/`class` can never redeclare a name already bound
+  // as a parameter, in the SAME scope, even for a totally reasonable reason.
+  // `var box = 5` "worked" instead, silently reusing the parameter slot and
+  // permanently losing the tool for the rest of the script -- worse, not
+  // better. `with(scope){...}` fixes both: a `let`/`const`/`class`/function
+  // declaration of any tool's name creates its own LOCAL binding that simply
+  // shadows the tool, same as shadowing any other outer variable in JS.
+  // Only a BARE assignment with no declaring keyword still reaches the tool
+  // itself (`with` routes `box = ...` to the base object precisely because
+  // no local binding exists to catch it first) -- the `set` trap below turns
+  // that one remaining case into a clear error instead of silently
+  // overwriting the tool for the rest of the run (measured: an unguarded
+  // plain object let `box = 5` through, turning every LATER `box(...)` call
+  // in the same script into "box is not a function").
+  const scope = new Proxy(globals, {
+    set(_target, prop) {
+      const name = String(prop);
+      throw new Error(
+        `"${name}" is already a reSHape tool here (you call it like ${name}(...)) -- you can't assign to it directly with "${name} = ...". ` +
+          `If you want your own value with that name, declare it first: "const ${name} = ...".`
+      );
+    },
+  });
+  const wrapped = `with(${SCOPE_NAME}){\n${source}\n}\n//# sourceURL=${SOURCE_NAME}`;
 
   // INTENTIONAL new Function(). `source` is a STUDENT PROGRAM, not untrusted
   // input to be sanitized -- running arbitrary student JavaScript is this
@@ -1526,11 +1578,15 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
   // comment on why Code -> Build only ever adopts a doc the sandboxed frame
   // already produced, rather than calling this function directly. Nothing
   // here is string-concatenated from a value an attacker chooses; `wrapped`
-  // is the source text itself plus one fixed comment.
+  // is the source text itself, one fixed `with()` line, and one fixed
+  // comment -- `with` here binds a single trusted internal object, not user
+  // input, so it carries none of the usual "avoid with()" ambiguous-scope
+  // risk (that risk is about WHICH names resolve where in code someone else
+  // has to read later; there is exactly one base object, chosen by us).
   const errors: ScriptError[] = [];
   try {
-    const fn = new Function(...names, wrapped);
-    fn(...names.map((n) => globals[n]));
+    const fn = new Function(SCOPE_NAME, wrapped);
+    fn(scope);
   } catch (err) {
     errors.push({ message: friendlyMessage(err), line: lineOf(err) });
   }
