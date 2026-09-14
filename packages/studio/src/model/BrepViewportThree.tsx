@@ -123,6 +123,11 @@ const HOME_DIR: [number, number, number] = [140, 160, 130];
 const TOP_DIR: [number, number, number] = [0.001, 0.001, 1];
 const FRONT_DIR: [number, number, number] = [0, 1, 0];
 const UNDERNEATH_DIR: [number, number, number] = [0.001, 0.001, -1];
+// Nav cube's other three faces -- same Z-up/Y-front convention as above, no
+// epsilon needed since none of these sit on the up axis.
+const RIGHT_DIR: [number, number, number] = [1, 0, 0];
+const LEFT_DIR: [number, number, number] = [-1, 0, 0];
+const BACK_DIR: [number, number, number] = [0, -1, 0];
 
 // A sketch's own (u, v) axes and normal, per plane -- fitToModel()'s only use
 // (see that function's own comment for why). Matches lib/model-handles.ts's
@@ -502,6 +507,11 @@ export default function BrepViewportThree({
   // Underneath view from Top -- straight up and straight down look alike --
   // so the strip itself says which one is active.
   const [preset, setPreset] = useState<'home' | 'top' | 'front' | 'underneath' | null>('home');
+  // Nav cube: DOM node whose CSS transform is synced to the live camera
+  // orientation every frame (see the rAF effect below) -- a ref, not state,
+  // so 60x/sec orientation reads never trigger a React re-render.
+  const navCubeInnerRef = useRef<HTMLDivElement | null>(null);
+  const cubeDragRef = useRef({ dragging: false, x: 0, y: 0, moved: false });
   const [loadError, setLoadError] = useState<string | null>(null);
   const [buildError, setBuildError] = useState<string | null>(null);
   // Set once, the first time (if ever) a FreeCAD build refuses a feature and
@@ -530,6 +540,36 @@ export default function BrepViewportThree({
     const timer = setTimeout(() => setShowStageHint(true), 3000 - elapsed);
     return () => clearTimeout(timer);
   }, [stageHint, ruleActivityAt]);
+  /** Keeps the nav cube's CSS rotation in lockstep with the real camera,
+   *  every frame, regardless of what moved it (drag on the canvas, a preset
+   *  click, dragging the cube itself) -- a plain rAF poll rather than piggy-
+   *  backing on the render-on-demand/dampingTick machinery above, because
+   *  this never needs a WebGL render, just a style write. theta/phi are
+   *  spherical angles of (camera - target) about the world's Z-up axis, not
+   *  three.js's own Y-up Spherical helper. rotateY carries azimuth (the
+   *  screen-vertical axis) and rotateX carries elevation (screen-
+   *  horizontal); face-to-direction assignment is derived and checked in
+   *  the JSX below's own comment. */
+  useEffect(() => {
+    let raf = 0;
+    const tick = () => {
+      const camera = cameraRef.current;
+      const controls = controlsRef.current;
+      const el = navCubeInnerRef.current;
+      if (camera && controls && el) {
+        const rel = camera.position.clone().sub(controls.target);
+        const r = rel.length() || 1;
+        const theta = Math.atan2(rel.y, rel.x);
+        const phi = Math.acos(Math.min(1, Math.max(-1, rel.z / r)));
+        const elevDeg = (phi - Math.PI / 2) * (180 / Math.PI);
+        const azimDeg = -theta * (180 / Math.PI);
+        el.style.transform = `rotateX(${elevDeg}deg) rotateY(${azimDeg}deg)`;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, []);
   /** Whether the pointer is CURRENTLY over a pickable edge -- drives the
    *  "click this edge" hint below. React state, not a ref, because it has to
    *  cause a render (the hint is JSX); set from inside applyHover(), which
@@ -1516,6 +1556,51 @@ export default function BrepViewportThree({
     // sync never fires for this. Same reasoning as the ResizeObserver
     // callback above: reproject right here instead.
     projectAnchors();
+  }
+
+  /** Free orbit driven by dragging the nav cube itself -- same "preserve
+   *  distance, re-derive OrbitControls' spherical state via controls.update()"
+   *  shape as lookFrom() above, but walking an arbitrary (dThetaDeg,
+   *  dPhiDeg) delta instead of snapping to one of the preset DIRs. phi is
+   *  clamped just shy of the poles for the same reason TOP_DIR/UNDERNEATH_DIR
+   *  carry an epsilon -- landing exactly on the up axis is a spherical
+   *  singularity. Clears `preset`: an arbitrary orbit is not any named view. */
+  function orbitByDelta(dThetaDeg: number, dPhiDeg: number) {
+    const three = threeRef.current;
+    const camera = cameraRef.current;
+    const controls = controlsRef.current;
+    const renderer = rendererRef.current;
+    const scene = sceneRef.current;
+    if (!three || !camera || !controls || !renderer || !scene) return;
+    const rel = camera.position.clone().sub(controls.target);
+    const r = rel.length();
+    if (r < 1e-6) return;
+    const EPS = 0.001;
+    const theta = Math.atan2(rel.y, rel.x) + (dThetaDeg * Math.PI) / 180;
+    let phi = Math.acos(Math.min(1, Math.max(-1, rel.z / r))) + (dPhiDeg * Math.PI) / 180;
+    phi = Math.min(Math.PI - EPS, Math.max(EPS, phi));
+    camera.position.set(
+      controls.target.x + r * Math.sin(phi) * Math.cos(theta),
+      controls.target.y + r * Math.sin(phi) * Math.sin(theta),
+      controls.target.z + r * Math.cos(phi),
+    );
+    controls.update();
+    renderer.render(scene, camera);
+    projectAnchors();
+    setPreset(null);
+  }
+
+  /** Snaps the camera to one nav-cube face's direction, by CSS face key
+   *  (NAV_CUBE_FACES above). Looked up by key rather than called inline so
+   *  the pointerup handler below (which resolves the face via
+   *  elementFromPoint, not the button's own onClick -- see that handler's
+   *  comment for why) and the button's onClick (kept for keyboard
+   *  Enter/Space activation) both go through the exact same path. */
+  function fireFace(key: string) {
+    const entry = NAV_CUBE_FACES.find((f) => f.key === key);
+    if (!entry) return;
+    lookFrom(entry.dir);
+    setPreset(entry.preset);
   }
 
   /**
@@ -2510,26 +2595,87 @@ export default function BrepViewportThree({
         <div style={engineFallbackNoteStyle}>{engineFallbackNote}</div>
       )}
       {phase === 'ready' && (
-        // Four plain-word camera presets, not an icon strip -- the gap this
-        // fixes isn't that orbiting is hard, it's that nothing on screen
-        // says orbiting is POSSIBLE at all (OrbitControls has no
-        // maxPolarAngle, but a beginner who never tries dragging past
-        // vertical has no way to discover that). Bottom-left, same pill
-        // family as selectionBadgeStyle/edgeHintStyle so it reads as this
-        // app's existing "small overlay" language rather than a new one.
+        // Home alone, bottom-left -- Top/Front/Underneath moved onto the nav
+        // cube (bottom-right, below), since a physical cube already says
+        // "you can look from any side" better than three more words could.
+        // Home stays a button because fitToModel() re-centres AND re-fits
+        // distance, a different job than a face-look, with no cube-face
+        // equivalent.
         <div style={viewStripStyle}>
           <button type="button" title="Back to the starting view" style={preset === 'home' ? viewStripActiveStyle : viewStripButtonStyle} aria-pressed={preset === 'home'} onClick={() => { fitToModel(HOME_DIR); setPreset('home'); }}>
             Home
           </button>
-          <button type="button" title="Look from above" style={preset === 'top' ? viewStripActiveStyle : viewStripButtonStyle} aria-pressed={preset === 'top'} onClick={() => { lookFrom(TOP_DIR); setPreset('top'); }}>
-            Top
-          </button>
-          <button type="button" title="Look from the front" style={preset === 'front' ? viewStripActiveStyle : viewStripButtonStyle} aria-pressed={preset === 'front'} onClick={() => { lookFrom(FRONT_DIR); setPreset('front'); }}>
-            Front
-          </button>
-          <button type="button" title="Look at the underside" style={preset === 'underneath' ? viewStripActiveStyle : viewStripButtonStyle} aria-pressed={preset === 'underneath'} onClick={() => { lookFrom(UNDERNEATH_DIR); setPreset('underneath'); }}>
-            Underneath
-          </button>
+        </div>
+      )}
+      {phase === 'ready' && (
+        // Nav cube: click a face to snap to that view (lookFrom, same
+        // preserve-distance behaviour the old Top/Front/Underneath buttons
+        // had), or drag the cube to free-orbit the camera. The cube's own
+        // rotation is synced to the live camera every frame by the rAF
+        // effect above; face-to-world-direction assignment (NAV_CUBE_FACES
+        // above) was solved algebraically against that same rotation
+        // formula (rotateX = elevation, rotateY = azimuth) and confirmed by
+        // driving a real browser: identity (elevDeg=0, azimDeg=0) happens at
+        // camera dir RIGHT_DIR, so the CSS "front" face (no static rotation)
+        // = RIGHT; rotateY(-90) brings the CSS "right" face (static
+        // rotateY(90)) to front, which happens at FRONT_DIR -- so "right" =
+        // FRONT, and by the same steps "back" = LEFT, "left" = BACK, "top" =
+        // TOP, "bottom" = BOTTOM.
+        //
+        // The wrapper captures the pointer on down (needed so a fast drag
+        // that leaves the ~88px widget still keeps delivering move events),
+        // but a captured pointer's up/click retarget to the CAPTURING
+        // element, not whichever face button is visually underneath it --
+        // measured empirically: a real click landed on the wrapper, not the
+        // button, so the button's own onClick never fired for a mouse user
+        // at all. `elementFromPoint` re-does real hit-testing at the release
+        // point, bypassing that retargeting, so pointerup resolves the face
+        // itself via `fireFace()` instead of trusting the click. The face
+        // buttons' own onClick is kept anyway, but only as the keyboard
+        // (Enter/Space) path -- that activation never goes through a
+        // captured pointer, so it isn't affected by any of the above.
+        <div
+          style={navCubeWrapStyle}
+          title="Drag to orbit, click a face to snap to that view"
+          onPointerDown={(e) => {
+            (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+            cubeDragRef.current = { dragging: true, x: e.clientX, y: e.clientY, moved: false };
+          }}
+          onPointerMove={(e) => {
+            const drag = cubeDragRef.current;
+            if (!drag.dragging) return;
+            const dx = e.clientX - drag.x;
+            const dy = e.clientY - drag.y;
+            drag.x = e.clientX; drag.y = e.clientY;
+            if (Math.abs(dx) > 2 || Math.abs(dy) > 2) drag.moved = true;
+            // Vertical flipped from the naive "camera azimuth/elevation
+            // delta" sign (2026-09-14, user report) -- grabbing the CUBE and
+            // dragging it should spin the cube (and model) toward you the
+            // way turning a physical ball does, opposite the sign that
+            // dragging the bare canvas uses (that drags the CAMERA, not the
+            // object). Horizontal was reported inverted after that first
+            // flip, so it stays on the original sign -- only vertical flips.
+            orbitByDelta(-dx * 0.4, -dy * 0.4);
+          }}
+          onPointerUp={(e) => {
+            const wasDrag = cubeDragRef.current.moved;
+            cubeDragRef.current.dragging = false;
+            try { (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId); } catch { /* already released */ }
+            if (wasDrag) return;
+            const hit = document.elementFromPoint(e.clientX, e.clientY) as HTMLElement | null;
+            const face = hit?.closest<HTMLElement>('[data-face]')?.dataset.face;
+            if (face) fireFace(face);
+          }}
+        >
+          <div style={navCubeSceneStyle}>
+            <div ref={navCubeInnerRef} style={navCubeInnerStyle}>
+              {NAV_CUBE_FACES.map((f) => (
+                <button key={f.key} type="button" data-face={f.key} style={navCubeFaceStyle(f.key)} onClick={() => fireFace(f.key)}>
+                  {f.label}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       )}
       {phase === 'ready' && (hoveringEdge && !pick || !!selectedCount) && (
@@ -2619,6 +2765,63 @@ const viewStripActiveStyle: React.CSSProperties = {
   // warns (and can mis-apply) when a longhand overrides it on rerender.
   ...viewStripButtonStyle, background: COLORS.fg, color: COLORS.bg, border: `1px solid ${COLORS.fg}`,
 };
+
+// Bottom-right, mirroring viewStripStyle's bottom-left placement. touchAction
+// 'none' stops a touch-drag on the cube from also scrolling/panning the page
+// (the containing canvas already claims its own pointer gestures the same
+// way for orbiting).
+const NAV_CUBE_SIZE = 64;
+const navCubeWrapStyle: React.CSSProperties = {
+  position: 'absolute', right: 12, bottom: 12, width: NAV_CUBE_SIZE + 24, height: NAV_CUBE_SIZE + 24,
+  display: 'flex', alignItems: 'center', justifyContent: 'center',
+  cursor: 'grab', touchAction: 'none', userSelect: 'none',
+};
+
+const navCubeSceneStyle: React.CSSProperties = {
+  width: NAV_CUBE_SIZE, height: NAV_CUBE_SIZE, perspective: 400,
+};
+
+const navCubeInnerStyle: React.CSSProperties = {
+  position: 'relative', width: '100%', height: '100%', transformStyle: 'preserve-3d',
+};
+
+// Six faces, standard CSS-cube boilerplate (translateZ half the side length,
+// rotate the other five into place around it) -- see the JSX comment above
+// for which world direction each one was solved to represent.
+const NAV_CUBE_FACE_TRANSFORMS: Record<string, string> = {
+  front: `translateZ(${NAV_CUBE_SIZE / 2}px)`,
+  back: `rotateY(180deg) translateZ(${NAV_CUBE_SIZE / 2}px)`,
+  right: `rotateY(90deg) translateZ(${NAV_CUBE_SIZE / 2}px)`,
+  left: `rotateY(-90deg) translateZ(${NAV_CUBE_SIZE / 2}px)`,
+  top: `rotateX(90deg) translateZ(${NAV_CUBE_SIZE / 2}px)`,
+  bottom: `rotateX(-90deg) translateZ(${NAV_CUBE_SIZE / 2}px)`,
+};
+
+// Single source of truth for the six faces -- JSX below maps over this
+// instead of hand-writing six near-identical buttons, so the CSS face key,
+// its world DIR, and its (if any) matching old-preset name can never drift
+// out of sync with each other the way six copy-pasted onClick bodies could.
+const NAV_CUBE_FACES: {
+  key: keyof typeof NAV_CUBE_FACE_TRANSFORMS; label: string;
+  dir: [number, number, number]; preset: 'top' | 'front' | 'underneath' | null;
+}[] = [
+  { key: 'front', label: 'RIGHT', dir: RIGHT_DIR, preset: null },
+  { key: 'back', label: 'LEFT', dir: LEFT_DIR, preset: null },
+  { key: 'right', label: 'FRONT', dir: FRONT_DIR, preset: 'front' },
+  { key: 'left', label: 'BACK', dir: BACK_DIR, preset: null },
+  { key: 'top', label: 'TOP', dir: TOP_DIR, preset: 'top' },
+  { key: 'bottom', label: 'BOTTOM', dir: UNDERNEATH_DIR, preset: 'underneath' },
+];
+
+function navCubeFaceStyle(face: keyof typeof NAV_CUBE_FACE_TRANSFORMS): React.CSSProperties {
+  return {
+    position: 'absolute', inset: 0, width: '100%', height: '100%',
+    transform: NAV_CUBE_FACE_TRANSFORMS[face],
+    background: COLORS.panel, border: `1px solid ${COLORS.line}`, color: COLORS.fg,
+    font: '10px ui-monospace, Menlo, Consolas, monospace', letterSpacing: '0.05em',
+    display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'grab',
+  };
+}
 
 // Same visual family as selectionBadgeStyle (same pill), deliberately -- a
 // student who has already learned "small pill top-right = status" should
