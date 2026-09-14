@@ -21,8 +21,7 @@ import {
 } from 'react';
 import { Maximize2, Minimize2, PanelRightClose, PanelRightOpen } from 'lucide-react';
 import ReshapeParamsPanel, { type ParamDef, type ParamValues } from './ReshapeParamsPanel.js';
-import ModelEditor, { type ToolActions } from './model/ModelEditor.js';
-import MenuBar from './MenuBar.js';
+import ModelEditor from './model/ModelEditor.js';
 import BrepViewport, { type BrepViewportStats, type ViewportPick } from './model/BrepViewportThree.js';
 import HandleOverlay, { type AnchorPoint, type SketchOutline, type SketchPart } from './model/HandleOverlay.js';
 import type { RuleActions, TouchedPart } from './model/SketchConstraints.js';
@@ -30,7 +29,7 @@ import { writeSTL, writeOBJ, write3MF, type MeshInput } from './mesh-export.js';
 import { svgToPdf } from './svg-pdf.js';
 import { outlineOf } from '@shuff57/reshape-sketch/sketch-arc';
 import { handlesFor, planeAnchor } from '@shuff57/reshape-script/model-handles';
-import { EMPTY_DOC, type Feature, isSketchOnly, type ModelDoc, nameMap, newPolygonSketch, newRectangleSketch } from '@shuff57/reshape-script/model-types';
+import { EMPTY_DOC, type Feature, isSketchOnly, type ModelDoc, nameMap, newPolygonSketch, newRectangleSketch, type SketchPlane } from '@shuff57/reshape-script/model-types';
 import { ownerOf } from '@shuff57/reshape-script/model-selection';
 import { partWordFor, type TopoName } from '@shuff57/reshape-script/topo-name';
 import {
@@ -121,19 +120,19 @@ export type ReshapeStudioProps = {
 const TIMELINE_HEIGHT_PX = 58;
 const RULES_PANEL_WIDTH_PX = 280;
 const PREVIEW_DEGRADE_MS = 25;
-// The new literal File/Edit/View/Insert/Modify menu bar's own row height, in
-// Build mode -- where it sits, in normal flow, above the ribbon/export-chip
-// toolbar, which THIS number pushes down (see `.reshape-studio.is-build
-// .reshape-studio-toolbar`'s own `top`). Every other build-mode absolute
-// offset that used to hardcode "48px" (the toolbar's own reserved height)
-// now adds this constant instead, so the whole stack (menu bar, toolbar,
-// tool card, rules pane, params pane) stays non-overlapping as one number.
-const MENUBAR_HEIGHT_PX = 28;
+// Build mode's toolbar (ribbon + mode toggle) floats over the canvas at
+// top:0 -- this reserves its own height so nothing else (tool card, rules
+// pane, params pane) draws underneath it. The literal File/Edit/View/
+// Insert/Modify menu bar that used to sit above this toolbar is gone
+// (2026-09-13): its File/Edit actions moved into the ribbon's own File and
+// Edit groups (model/ModelEditor.tsx), Insert/Modify were pure ribbon
+// duplicates, and View's one item duplicated the ribbon's own collapse
+// button -- so there is no second row to reserve height for any more.
 // The ribbon grew a group-caption row under each icon cluster (Fusion-360-
 // style CREATE/MODIFY/... labels, ui-ref/*.png) -- 48 was tuned for the old
 // icon-only 34px ribbon; the ribbon's own .model-tools is now 42px plus the
 // toolbar's own 4px+4px padding, so this reserves 56.
-const BUILD_CHROME_TOP_PX = 56 + MENUBAR_HEIGHT_PX;
+const BUILD_CHROME_TOP_PX = 56;
 
 function capitalize(name: string): string {
   return name.length ? name[0].toUpperCase() + name.slice(1) : name;
@@ -300,12 +299,6 @@ export default function ReshapeStudio({
   // time, and nothing here needs to re-render when it changes.
   const [selectedSketchParts, setSelectedSketchParts] = useState<SketchPart[]>([]);
   const ruleActionsRef = useRef<RuleActions | null>(null);
-  // ModelEditor's own Create/Modify/Delete handlers, handed up the same way
-  // `ruleActionsRef` above is -- see ModelEditor's `registerToolActions` doc
-  // comment. MenuBar (below) reads this ref directly at render/click time;
-  // unlike `ruleActionsRef` it has no second, foreign consumer that needs a
-  // stable proxy object, so a plain ref is enough here.
-  const toolActionsRef = useRef<ToolActions | null>(null);
   // A stable object, created once, whose own methods dereference the ref
   // above at CALL time rather than at prop-pass time -- the same reasoning
   // `onTap={(x, y) => pickAtRef.current?.(x, y)}` below already relies on.
@@ -382,6 +375,13 @@ export default function ReshapeStudio({
   };
   const [rollbackIndex, setRollbackIndex] = useState<number | null>(null);
   const [drawTool, setDrawTool] = useState<'rect' | 'polygon' | null>(null);
+  // Which plane a new Sketch/Circle/Rectangle/Polygon starts on -- set by
+  // clicking a plane in the ribbon's left Planes tree (model/ModelEditor.tsx).
+  // The model layer (newSketch/newCircleSketch/newRectangleSketch/
+  // newPolygonSketch, packages/script/src/model-types.ts) already accepts any
+  // SketchPlane; only the UI never threaded a choice through before, always
+  // hardcoding 'xy'.
+  const [activePlane, setActivePlane] = useState<SketchPlane>('xy');
   const [drawFirst, setDrawFirst] = useState<[number, number] | null>(null);
   const past = useRef<ModelDoc[]>([]);
   const future = useRef<ModelDoc[]>([]);
@@ -646,11 +646,11 @@ export default function ReshapeStudio({
   }, [selected, doc, pickedFace, pickedEdge, pickedEdges, pickedFaces, pickedSize]);
 
   const activeSketchPlane = useMemo<'xy' | 'xz' | 'yz' | null>(() => {
-    if (drawTool) return 'xy';
+    if (drawTool) return activePlane;
     if (selected.length !== 1) return null;
     const f = doc.features.find((x) => x.id === selected[0]);
     return f && f.kind === 'sketch' ? (f.plane ?? 'xy') : null;
-  }, [drawTool, selected, doc]);
+  }, [drawTool, activePlane, selected, doc]);
 
   const outlines = useMemo(
     () => {
@@ -694,7 +694,7 @@ export default function ReshapeStudio({
   function handlePlace(u: number, v: number) {
     if (drawTool === 'rect') {
       if (!drawFirst) { setDrawFirst([u, v]); return; }
-      const f = newRectangleSketch(doc, 'xy', drawFirst, [u, v]);
+      const f = newRectangleSketch(doc, activePlane, drawFirst, [u, v]);
       if (!f) return;
       applyDoc({ ...doc, features: [...doc.features, f] });
       setSelected([f.id]);
@@ -702,7 +702,7 @@ export default function ReshapeStudio({
       setDrawFirst(null);
     } else if (drawTool === 'polygon') {
       if (!drawFirst) { setDrawFirst([u, v]); return; }
-      const f = newPolygonSketch(doc, 'xy', drawFirst, [u, v]);
+      const f = newPolygonSketch(doc, activePlane, drawFirst, [u, v]);
       if (!f) return;
       applyDoc({ ...doc, features: [...doc.features, f] });
       setSelected([f.id]);
@@ -1072,34 +1072,6 @@ export default function ReshapeStudio({
         + (!build && codeFullscreen ? ' is-code-fullscreen' : '')
       }
     >
-      {/* The literal File/Edit/View/Insert/Modify menu bar -- pure
-          discoverability alongside the ribbon above, never a second
-          implementation of what it does (see MenuBar.tsx's own file
-          comment). Build-mode only, same gate the ribbon and every export
-          chip below already use: almost nothing on it has meaning in Code
-          mode (Insert/Modify act on the B-rep doc; the export/save chips
-          are already build-only in the toolbar below). */}
-      {build && (
-        <MenuBar
-          canUndo={depth.back > 0}
-          canRedo={depth.forward > 0}
-          onUndo={undo}
-          onRedo={redo}
-          canClearModel={canBuild}
-          onClearModel={clearModel}
-          hasMesh={hasMesh}
-          engineKind={engineKind}
-          onExportSTL={exportSTL}
-          onExportOBJ={exportOBJ}
-          onExport3MF={export3MF}
-          onSaveFCStd={saveFCStd}
-          onOpenFCStd={openFCStdClick}
-          onExportDrawing={exportDrawing}
-          toolsHidden={toolsHidden}
-          onToggleTools={() => setToolsHidden((v) => !v)}
-          toolActionsRef={toolActionsRef}
-        />
-      )}
       <div className="reshape-studio-toolbar">
         {canBuild && canCode && (
           <div className="sandbox-modes" role="group" aria-label="Editing mode">
@@ -1127,19 +1099,13 @@ export default function ReshapeStudio({
           <button className="btn-run" onClick={run}>▶ Run</button>
         )}
         {/* Clear model / Export STL,OBJ,3MF / Save,Open / Export Drawing
-            (SVG,PDF) used to live here as a fixed row of chips. Removed
-            2026-09-13: they starved the ribbon of width (the ONLY flexible
-            item in this flex row) down to a 230px sliver that silently
-            clipped most of its 30 icons with no scrollbar -- a real bug, not
-            a taste call, caught live by the user right after these same
-            actions were ALSO added to the new File/Edit menu (MenuBar.tsx),
-            making the chip row pure redundant clutter on top of the squeeze.
-            Every one of these actions is still reachable, unchanged, from
-            File (Open/Save/Export STL,OBJ,3MF/Export Drawing SVG,PDF) or
-            Edit (Clear model) -- see MenuBar.tsx. The hidden file input
-            below is kept: MenuBar's File > Open still drives it via
-            openFCStdClick()/openInputRef, it just never needed to be next
-            to a visible button of its own. */}
+            (SVG,PDF) used to live here as a fixed row of chips, then in a
+            separate File/Edit/View/Insert/Modify menu bar (MenuBar.tsx).
+            Both are gone now (2026-09-13): the ribbon's own File and Edit
+            groups (model/ModelEditor.tsx) call these same handlers directly,
+            so there is exactly one place these actions live, not three. The
+            hidden file input below is kept: the ribbon's Open button still
+            drives it via openFCStdClick()/openInputRef. */}
         <input
           ref={openInputRef}
           type="file"
@@ -1165,7 +1131,6 @@ export default function ReshapeStudio({
               hoveredPart={pointerHoverPart}
               onHoverPart={(p) => { setRowHoverPart(p); if (p) touchRuleActivity(); }}
               registerActions={(actions) => { ruleActionsRef.current = actions; }}
-              registerToolActions={(actions) => { toolActionsRef.current = actions; }}
               onTouch={handleTouch}
               onUndo={undo}
               onRedo={redo}
@@ -1182,6 +1147,18 @@ export default function ReshapeStudio({
               pickedEdges={pickedEdges}
               onClearPickedEdges={() => setPickedEdges([])}
               refusals={refusals}
+              hasMesh={hasMesh}
+              engineKind={engineKind}
+              onSaveFCStd={saveFCStd}
+              onOpenFCStd={openFCStdClick}
+              onExportSTL={exportSTL}
+              onExportOBJ={exportOBJ}
+              onExport3MF={export3MF}
+              onExportDrawing={exportDrawing}
+              canClearModel={canBuild}
+              onClearModel={clearModel}
+              activePlane={activePlane}
+              onActivePlaneChange={setActivePlane}
             />
           </div>
         )}
@@ -1201,8 +1178,9 @@ export default function ReshapeStudio({
             ) : (
               <>
                 {/* The one primary, must-find affordance: right on the panel
-                    itself, not buried behind View menu (which is build-mode
-                    only anyway -- see MenuBar.tsx's own build-only gate). */}
+                    itself, not buried behind a menu -- there is no build-mode
+                    menu bar any more, and this control has no ribbon home in
+                    Code mode's editor-only chrome anyway. */}
                 <div className="reshape-code-toolbar" role="group" aria-label="Code panel view controls">
                   <button
                     type="button"
@@ -1379,7 +1357,7 @@ export default function ReshapeStudio({
 
       <style>{`
         /* The one place every --reshape-* token is defined -- everything
-           else in this component (and MenuBar.tsx, model/ModelEditor.tsx,
+           else in this component (and model/ModelEditor.tsx,
            model/HandleOverlay.tsx, model/SketchConstraints.tsx,
            ReshapeParamsPanel.tsx) only ever references var(--reshape-*).
            Values are the Dracula palette this app and shCode's own embedded
@@ -1457,24 +1435,10 @@ export default function ReshapeStudio({
           position: absolute;
           left: 0;
           right: 0;
-          top: ${MENUBAR_HEIGHT_PX}px;
+          top: 0;
           z-index: 50;
           padding: 4px 10px;
           background: transparent;
-        }
-        /* The new File/Edit/View/Insert/Modify menu bar: its own row, ABOVE
-           the toolbar above (which the top offset there now leaves room
-           for), never overlapping it. See MenuBar.tsx's own comment for why
-           it measures its dropdowns off the clicked label rather than
-           trusting a CSS-only position:absolute -- same reasoning as the
-           ribbon's own FlyoutButton. */
-        .reshape-menu-bar {
-          position: absolute;
-          left: 0;
-          right: 0;
-          top: 0;
-          height: ${MENUBAR_HEIGHT_PX}px;
-          z-index: 51;
         }
         /* The one flexible child: it, not the mode toggle beside it, gives
            way (scrolling its own tool icons) if the row is ever too narrow
@@ -1506,8 +1470,9 @@ export default function ReshapeStudio({
            control, same as the pre-extraction sandbox. (The Export/Save/
            Open chip row this rule also used to cover -- via a button[style]
            selector, no backticks here, see the NB a few lines below -- was
-           removed 2026-09-13; see the toolbar JSX's own comment on why, and
-           MenuBar.tsx for where those actions live now.) */
+           removed 2026-09-13; see the toolbar JSX's own comment on why. Those
+           actions now live in the ribbon's own File/Edit groups,
+           model/ModelEditor.tsx.) */
         .reshape-studio.is-build .sandbox-modes { border: 0; background: transparent; }
         .reshape-studio.is-build .sandbox-mode { border-right: 0; color: #d3d5e3; }
         .reshape-studio.is-build .sandbox-mode.is-active { background: var(--reshape-border); color: var(--reshape-text); }

@@ -62,6 +62,10 @@ import {
   Square,
   Octagon,
   Hexagon,
+  Save,
+  FolderOpen,
+  Download,
+  Eraser,
 } from 'lucide-react';
 import SketchConstraints, { type RuleActions, type TouchedPart } from './SketchConstraints.js';
 import {
@@ -233,70 +237,31 @@ interface Props {
   /** Item U: pure pass-through of SketchConstraints' own `onTouch` -- see
    *  that prop's own doc comment. */
   onTouch?: (touched: TouchedPart | null) => void;
-  /** Hands the ribbon's OWN Create/Modify/Delete click handlers upward, so
-   *  a literal top menu bar (MenuBar.tsx, a sibling of this component under
-   *  ReshapeStudio, not a child of it) can call the EXACT SAME functions
-   *  the ribbon buttons below already call, instead of a second
-   *  implementation that could drift the moment one changes and not the
-   *  other. Deliberately a NEW, separate prop rather than reusing
-   *  `registerActions` above -- that name and shape already belong to
-   *  SketchConstraints' RuleActions. Same no-deps-effect + ref-store
-   *  pattern (see ToolActions' own doc comment, and registerActions'
-   *  comment just above, for why this re-registers every render). */
-  registerToolActions?: (actions: ToolActions | null) => void;
+  /** The File group's own gates -- same conditions the retired MenuBar.tsx
+   *  used to compute (engineKind/hasMesh), now read directly by the ribbon's
+   *  File group instead of being handed up to a second component. */
+  hasMesh: boolean;
+  engineKind: 'occt' | 'freecad' | null;
+  onSaveFCStd: () => void;
+  onOpenFCStd: () => void;
+  onExportSTL: () => void;
+  onExportOBJ: () => void;
+  onExport3MF: () => void;
+  onExportDrawing: (format: 'svg' | 'pdf') => void;
+  /** Same `canBuild` gate the retired MenuBar's Clear-model item used. */
+  canClearModel: boolean;
+  onClearModel: () => void;
+  /** Which plane a new Sketch/Circle/Rectangle/Polygon starts on -- set by
+   *  clicking a plane in this component's own Planes tree (see the
+   *  `model-browser` JSX below). Lives in the caller (ReshapeStudio) since
+   *  the Rectangle/Polygon draw tool's own placement handler is there too. */
+  activePlane: SketchPlane;
+  onActivePlaneChange: (plane: SketchPlane) => void;
 }
 
 type BoolOp = 'union' | 'subtract' | 'intersect';
 type PatternMode = 'linear' | 'circular';
-
-/** One item ToolActions hands upward: the ribbon's own click handler,
- *  paired with the SAME disabled/title condition the ribbon button already
- *  computes for it -- a menu item greys out in exactly the situations its
- *  ribbon equivalent already does, without a second copy of the gating
- *  logic living in MenuBar.tsx. */
-export interface ToolAction {
-  run: () => void;
-  disabled: boolean;
-  title?: string;
-}
-
-/** See `registerToolActions` on the Props interface above for the full
- *  rationale. Trimmed to the ribbon families the top menu bar's Insert and
- *  Modify menus actually offer (Create's shapes/Pull/Spin/Blend, Modify's
- *  Round/Turn/Hole/Hollow/Pattern/Mirror/Move-Copy/Combine groups, and the
- *  end-group's Delete) -- Corner and the Circle/Rectangle/Polygon sketch
- *  starters are ribbon-only, not on MenuBar's own Insert list. */
-export interface ToolActions {
-  sketch: ToolAction;
-  /** Box/Cylinder/Cone/Torus/Sphere -- never disabled, matching the
-   *  ribbon's own FlyoutButton main button (`disabled={false}`), so this is
-   *  a plain callback rather than a ToolAction. */
-  addShape: (kind: ShapeKind) => void;
-  pull: ToolAction;
-  spin: ToolAction;
-  blend: ToolAction;
-  /** Round (fillet) and Chamfer are the SAME flyout family's two variants
-   *  (ROUND_STYLES below) -- one function, called with each style. */
-  round: (style: RoundStyle) => ToolAction;
-  turn: ToolAction;
-  hole: ToolAction;
-  /** The Hole flyout's own "Four Corners" variant. */
-  holeFourCorners: ToolAction;
-  hollow: ToolAction;
-  /** The Hollow flyout's own "Open hollow" variant. */
-  openHollow: ToolAction;
-  patternLinear: ToolAction;
-  patternCircular: ToolAction;
-  /** The Mirror flyout's three plane variants. */
-  mirror: (plane: SketchPlane) => ToolAction;
-  move: ToolAction;
-  copy: ToolAction;
-  join: ToolAction;
-  cut: ToolAction;
-  overlap: ToolAction;
-  deleteSelected: ToolAction;
-}
-type MenuId = 'shape' | 'bool' | 'round' | 'pattern' | 'move' | 'mirror' | 'hole' | 'hollow' | null;
+type MenuId = 'shape' | 'bool' | 'round' | 'pattern' | 'move' | 'mirror' | 'hole' | 'hollow' | 'export' | null;
 
 function shapeIcon(kind: ShapeKind) {
   if (kind === 'box') return <BoxIcon size={14} />;
@@ -544,7 +509,9 @@ function FlyoutButton({
 
 export default function ModelEditor({
   doc, onChange, selected, onSelect, onUndo, onRedo, canUndo, canRedo, collapsible, onCollapsed, onContentChange, rollbackIndex, onRollback, onStartDraw, drawTool, pickedEdge, onClearPickedEdge, pickedFace, onClearPickedFace, pickedEdges, onClearPickedEdges, refusals,
-  hoveredPart, onHoverPart, registerActions, onTouch, historyGen, registerToolActions,
+  hoveredPart, onHoverPart, registerActions, onTouch, historyGen,
+  hasMesh, engineKind, onSaveFCStd, onOpenFCStd, onExportSTL, onExportOBJ, onExport3MF, onExportDrawing,
+  canClearModel, onClearModel, activePlane, onActivePlaneChange,
 }: Props) {
   const [note, setNote] = useState<string | null>(null);
   // Which single rule the student most recently set or changed in the Rules
@@ -641,16 +608,24 @@ export default function ModelEditor({
   // bar from a parent it no longer had. The host is a sibling of the card in
   // the toolbar, so it exists before this component mounts and there is no
   // portal-target race.
+  // Not gated on `collapsed` -- unlike the Parts/Planes tree below (and the
+  // Rules panel further down), the ribbon is a fixed top toolbar now, not
+  // part of the collapsible left card it used to share a "tools card" with.
+  // Collapsing used to hide the ribbon and timeline along with the tree
+  // (they all gated on the same `collapsible && !collapsed`), which meant
+  // the one button meant to shrink the left panel also blanked the entire
+  // toolbar -- collapse now only affects the tree/rail below.
   const ribbonHost =
-    typeof document !== 'undefined' && collapsible && !collapsed
+    typeof document !== 'undefined' && collapsible
       ? document.getElementById('reshapeRibbon')
       : null;
   // The feature list is the parametric timeline: a horizontal strip across
   // the bottom of the canvas, Fusion 360 style, instead of a vertical list
   // in the left card. Same portal pattern as the ribbon -- the host is a
-  // sibling rendered by the sandbox, so it exists before this mounts.
+  // sibling rendered by the sandbox, so it exists before this mounts. Same
+  // "not gated on collapsed" reasoning as ribbonHost just above.
   const timelineHost =
-    typeof document !== 'undefined' && collapsible && !collapsed
+    typeof document !== 'undefined' && collapsible
       ? document.getElementById('reshapeTimeline')
       : null;
   // The Rules panel is a docked column beside the canvas (Fusion/Onshape
@@ -700,7 +675,8 @@ export default function ModelEditor({
 
   const chosen = doc.features.filter((f) => selected.includes(f.id));
   const names = nameMap(doc);
-  const shownIds = new Set(topLevel(doc).map((f) => f.id));
+  const parts = topLevel(doc);
+  const shownIds = new Set(parts.map((f) => f.id));
 
   function matches(text: string): boolean {
     const q = search.trim().toLowerCase();
@@ -910,7 +886,7 @@ export default function ModelEditor({
   }
 
   function startSketch() {
-    const f = newSketch(doc);
+    const f = newSketch(doc, activePlane);
     onChange({ ...doc, features: [...doc.features, f] });
     setSelected([f.id]);
     say('Drag the blue corners to shape it, then press Pull or Spin to make it solid.');
@@ -931,7 +907,7 @@ export default function ModelEditor({
       chosen.length === 1 && chosen[0].kind === 'sketch' ? (chosen[0] as SketchFeature)
         : sketches.length === 1 ? sketches[0]
           : null;
-    const f = newCircleSketch(doc, target?.plane ?? 'xy', target ? sketchBBoxCentre(target.points) : undefined);
+    const f = newCircleSketch(doc, target?.plane ?? activePlane, target ? sketchBBoxCentre(target.points) : undefined);
     onChange({ ...doc, features: [...doc.features, f] });
     setSelected([f.id]);
     say('Drag either handle to resize it, then press Pull or Spin to make it solid.');
@@ -1560,17 +1536,12 @@ export default function ModelEditor({
 
   // The feature list lives in the bottom timeline (Fusion 360 style) and the
   // sketch rules live in the docked #reshapeRules column now (see rulesHost's
-  // own comment), so the card only holds the note. When that is gone too the
-  // card is empty and collapses to the rail on its own -- an empty card over
-  // the canvas is a click-eater with nothing to say.
-  // In Build mode the note is shown in the timeline strip (below), not in
-  // the card: measured 2026-09-03, the "Rounded every edge..." teaching note
-  // opened the card to 420 px over the canvas and it never closed, covering
-  // the view strip's Home button.
-  // `activeSketch` only still forces the card open when there is no
-  // `rulesHost` to dock into -- the inline-fallback path (a bare embed with
-  // no docked column) still needs the card for it, same as before.
-  const cardHasContent = (Boolean(note) && !timelineHost) || (Boolean(activeSketch) && !rulesHost);
+  // own comment). The card itself now always holds the Parts/Planes browser
+  // tree (see `model-browser` in the JSX below) whenever it isn't collapsed
+  // to the rail -- unlike the note/rules it used to gate on, the tree is
+  // never empty (Planes always lists xy/xz/yz), so there is no "empty card
+  // over the canvas" case left to collapse away from.
+  const cardHasContent = true;
   useEffect(() => {
     onContentChange?.(cardHasContent);
   }, [cardHasContent, onContentChange]);
@@ -1643,108 +1614,6 @@ export default function ModelEditor({
   const patternBoolVisible = ['Join', 'Cut', 'Overlap'].some(matches);
   const patternVisible = patternSelectVisible || patternBoolVisible;
 
-  // Hands the SAME create/modify/delete closures the ribbon buttons below
-  // call up to ReshapeStudio, so MenuBar.tsx's Insert/Modify/Delete items
-  // invoke them directly rather than re-implementing "create a box" a
-  // second time. No-deps effect, same reasoning as SketchConstraints.tsx's
-  // own registerActions (see that component's comment): every entry below
-  // closes over `doc`/`chosen`/`onChange` and the same disabled/title
-  // conditions the ribbon buttons above already compute, so re-running this
-  // after every render is the only way the handed-out object stays
-  // current -- the receiver only ever stores it in a ref.
-  useEffect(() => {
-    registerToolActions?.({
-      sketch: {
-        run: startSketch, disabled: false,
-        title: 'Draw a flat outline to pull or spin into a solid',
-      },
-      addShape: (kind) => addShape(kind),
-      pull: {
-        run: pull,
-        disabled: chosen.length !== 1 || chosen[0]?.kind !== 'sketch',
-        title: chosen.length !== 1 || chosen[0]?.kind !== 'sketch'
-          ? 'Pick a sketch to pull into a solid.'
-          : 'Pull the selected sketch straight up into a solid',
-      },
-      spin: {
-        run: spin,
-        disabled: chosen.length !== 1 || chosen[0]?.kind !== 'sketch',
-        title: chosen.length !== 1 || chosen[0]?.kind !== 'sketch'
-          ? 'Pick a sketch to spin into a solid.'
-          : 'Spin the selected sketch around to make a solid',
-      },
-      blend: {
-        run: blend,
-        disabled: chosen.length !== 2 || chosen.some((c) => c.kind !== 'sketch'),
-        title: chosen.length !== 2 || chosen.some((c) => c.kind !== 'sketch')
-          ? 'Blend joins exactly two sketches. Click one, then hold Shift (or Ctrl, or Cmd) and click the other.'
-          : 'Skin two sketches together into one tapered solid',
-      },
-      round: (style) => ({
-        run: () => round(style),
-        disabled: !canRound,
-        title: roundBlockedBy ?? roundDescription(style, pickedEdgeUsable),
-      }),
-      turn: {
-        run: turn,
-        disabled: chosen.length !== 1 || !canRotate(chosen[0]),
-        title: turnBlockedBy ?? 'Turn this shape',
-      },
-      hole: {
-        run: drillHole, disabled: !canSolidOp,
-        title: solidOpBlockedBy ?? 'Drill a round hole through the selected solid',
-      },
-      holeFourCorners: {
-        run: drillHoleCorners, disabled: !canSolidOp,
-        title: solidOpBlockedBy ?? 'Drill four holes at once, the same distance in from every side — a bolt pattern with matching offsets on every corner',
-      },
-      hollow: {
-        run: hollow, disabled: !canSolidOp,
-        title: solidOpBlockedBy ?? 'Hollow the selected solid out, leaving a wall',
-      },
-      openHollow: {
-        run: openHollow,
-        disabled: openHollowBlockedBy !== null,
-        title: openHollowBlockedBy ?? 'Hollow out, leaving the face you clicked open',
-      },
-      patternLinear: {
-        run: () => repeat('linear'), disabled: !canSolidOp,
-        title: solidOpBlockedBy ?? 'Copies in a straight row',
-      },
-      patternCircular: {
-        run: () => repeat('circular'), disabled: !canSolidOp,
-        title: solidOpBlockedBy ?? 'Copies around a circle',
-      },
-      mirror: (plane) => ({
-        run: () => mirror(plane),
-        disabled: !canSolidOp,
-        title: solidOpBlockedBy ?? mirrorPlaneTitle(plane),
-      }),
-      move: {
-        run: () => moveTool(false), disabled: !canSolidOp,
-        title: solidOpBlockedBy ?? 'Shift the selected solid',
-      },
-      copy: {
-        run: () => moveTool(true), disabled: !canSolidOp,
-        title: solidOpBlockedBy ?? 'Add a copy, shifted over',
-      },
-      join: {
-        run: () => combine('union'), disabled: !canCombine,
-        title: canCombine ? 'Join the selected shapes into one' : 'Pick two shapes first — click one, then hold Shift (or Ctrl, or Cmd) and click another.',
-      },
-      cut: {
-        run: () => combine('subtract'), disabled: !canCombine,
-        title: canCombine ? 'Cut the later shapes out of the first' : 'Pick two shapes first — click one, then hold Shift (or Ctrl, or Cmd) and click another.',
-      },
-      overlap: {
-        run: () => combine('intersect'), disabled: !canCombine,
-        title: canCombine ? 'Keep only where they overlap' : 'Pick two shapes first — click one, then hold Shift (or Ctrl, or Cmd) and click another.',
-      },
-      deleteSelected: { run: remove, disabled: !chosen.length, title: 'Delete the selected' },
-    });
-    return () => registerToolActions?.(null);
-  }); // eslint-disable-line react-hooks/exhaustive-deps
-
   return (
     <div className="model-editor">
       {collapsible && collapsed && (
@@ -1764,8 +1633,140 @@ export default function ModelEditor({
           </button>
         </div>
       )}
+      {/* The left panel's own content, Fusion-360-Browser-style (ui-ref/*.png):
+          Parts (topLevel(doc) -- the bodies the model actually shows, same set
+          the timeline's own "consumed" dimming already keys off) and Planes
+          (the 3 fixed origin planes -- there is no separate plane ENTITY
+          anywhere in the model, see SketchPlane's own doc comment, so these
+          are synthesized here rather than read off `doc`). Clicking a Parts
+          row selects it, same as clicking its timeline row (reuses `pick()`).
+          Clicking a Planes row sets `activePlane`, which is what
+          startSketch()/startCircleSketch() below and ReshapeStudio's own
+          handlePlace() (Rectangle/Polygon) now build the NEXT new sketch on
+          -- previously hardcoded to 'xy' with no way to reach xz/yz from the
+          UI at all, even though the model layer already accepted any plane. */}
+      {!(collapsible && collapsed) && (
+        <div className="model-browser">
+          <div className="model-browser-section">
+            <div className="model-browser-heading">Parts</div>
+            {parts.length === 0 ? (
+              <p className="model-browser-empty">Nothing built yet.</p>
+            ) : parts.map((f) => (
+              <button
+                key={f.id}
+                type="button"
+                className={'model-browser-row' + (selected.includes(f.id) ? ' is-on' : '')}
+                onClick={(e) => pick(f.id, e.ctrlKey || e.metaKey || e.shiftKey)}
+              >
+                {names[f.id]}
+              </button>
+            ))}
+          </div>
+          <div className="model-browser-section">
+            <div className="model-browser-heading">Planes</div>
+            {(['xy', 'xz', 'yz'] as const).map((pl) => (
+              <button
+                key={pl}
+                type="button"
+                className={'model-browser-row' + (activePlane === pl ? ' is-on' : '')}
+                onClick={() => onActivePlaneChange(pl)}
+                title={`Use the ${pl.toUpperCase()} plane for the next new sketch`}
+              >
+                {pl.toUpperCase()} Plane
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
       {ribbonHost ? createPortal(
         <div className="model-tools" ref={toolsRef}>
+        {/* File and Edit sit at the top-left, ahead of the Sketch/Create/...
+            command groups -- ui-ref/*.png's own layout, where document-level
+            actions (open/save, undo/redo) anchor the left of the ribbon
+            rather than trailing after every tool group. */}
+        <div className="model-tool-group">
+          <div className="model-tool-icons">
+            {collapsible && (
+              <button
+                onClick={() => collapse(true)}
+                title="Collapse the tools to a rail, so the shape fills the window"
+                aria-label="Collapse the tools"
+              >
+                <PanelLeftClose size={14} />
+              </button>
+            )}
+            {matches('Open') && (
+              <button
+                onClick={onOpenFCStd}
+                disabled={engineKind !== 'freecad'}
+                title={engineKind === 'freecad' ? 'Open a previously-saved .FCStd file' : 'Save/Open .FCStd needs the FreeCAD engine'}
+              >
+                <FolderOpen size={14} /> Open
+              </button>
+            )}
+            {matches('Save') && (
+              <button
+                onClick={onSaveFCStd}
+                disabled={!(engineKind === 'freecad' && hasMesh)}
+                title={
+                  engineKind !== 'freecad' ? 'Save/Open .FCStd needs the FreeCAD engine'
+                  : hasMesh ? 'Download the current model as a FreeCAD .FCStd file' : 'Build a shape first'
+                }
+              >
+                <Save size={14} /> Save
+              </button>
+            )}
+            <FlyoutButton
+              label="Export"
+              icon={<Download size={14} />}
+              onMain={onExportSTL}
+              disabled={!hasMesh}
+              title={hasMesh ? 'Download the current model as an STL file' : 'Build a shape first'}
+              open={menu === 'export'}
+              onToggleOpen={() => toggleMenu('export')}
+              matches={matches}
+              searchActive={searchActive}
+              variants={[
+                { id: 'export-obj', label: 'Export OBJ', onClick: onExportOBJ, disabled: !hasMesh, title: hasMesh ? 'Download as an OBJ file' : 'Build a shape first' },
+                { id: 'export-3mf', label: 'Export 3MF', onClick: onExport3MF, disabled: !hasMesh, title: hasMesh ? 'Download as a 3MF file' : 'Build a shape first' },
+                {
+                  id: 'export-drawing-svg', label: 'Export Drawing (SVG)', onClick: () => onExportDrawing('svg'),
+                  disabled: !(engineKind === 'freecad' && hasMesh),
+                  title: engineKind !== 'freecad' ? 'Export Drawing needs the FreeCAD engine'
+                    : hasMesh ? 'Download a 2D engineering drawing (SVG)' : 'Build a shape first',
+                },
+                {
+                  id: 'export-drawing-pdf', label: 'Export Drawing (PDF)', onClick: () => onExportDrawing('pdf'),
+                  disabled: !(engineKind === 'freecad' && hasMesh),
+                  title: engineKind !== 'freecad' ? 'Export Drawing needs the FreeCAD engine'
+                    : hasMesh ? 'Download a 2D engineering drawing (PDF)' : 'Build a shape first',
+                },
+              ]}
+            />
+          </div>
+          <span className="model-tool-group-label">File</span>
+        </div>
+        <div className="model-tool-divider" />
+
+        <div className="model-tool-group">
+          <div className="model-tool-icons">
+            <button onClick={onUndo} disabled={!canUndo} title="Undo (Ctrl+Z)" aria-label="Undo">
+              <Undo2 size={14} />
+            </button>
+            <button onClick={onRedo} disabled={!canRedo} title="Redo (Ctrl+Shift+Z)" aria-label="Redo">
+              <Redo2 size={14} />
+            </button>
+            <button onClick={remove} disabled={!chosen.length} title="Delete the selected" aria-label="Delete">
+              <Trash2 size={14} />
+            </button>
+            <button onClick={onClearModel} disabled={!canClearModel} title="Clear the model and start again" aria-label="Clear model">
+              <Eraser size={14} />
+            </button>
+          </div>
+          <span className="model-tool-group-label">Edit</span>
+        </div>
+        <div className="model-tool-divider" />
+
         {sketchVisible && (
           <>
             <div className="model-tool-group">
@@ -2072,30 +2073,6 @@ export default function ModelEditor({
             )}
           </>
         )}
-
-        <div className="model-tool-group model-tool-end">
-          <div className="model-tool-icons">
-            {collapsible && (
-              <button
-                onClick={() => collapse(true)}
-                title="Collapse the tools to a rail, so the shape fills the window"
-                aria-label="Collapse the tools"
-              >
-                <PanelLeftClose size={14} />
-              </button>
-            )}
-            <button onClick={onUndo} disabled={!canUndo} title="Undo (Ctrl+Z)" aria-label="Undo">
-              <Undo2 size={14} />
-            </button>
-            <button onClick={onRedo} disabled={!canRedo} title="Redo (Ctrl+Shift+Z)" aria-label="Redo">
-              <Redo2 size={14} />
-            </button>
-            <button onClick={remove} disabled={!chosen.length} title="Delete the selected" aria-label="Delete">
-              <Trash2 size={14} />
-            </button>
-          </div>
-          <span className="model-tool-group-label">Edit</span>
-        </div>
 
         {searchOpen || searchActive ? (
           <div className="model-tool-search" title="Search tools (Alt+C)">
@@ -2457,7 +2434,6 @@ export default function ModelEditor({
           align-self: center; flex: 0 0 1px; width: 1px; height: 34px;
           background: var(--reshape-border); margin: 0 4px;
         }
-        .model-tool-end { margin-left: auto; padding-left: 6px; flex: 0 0 auto; }
         /* ponytail: font-size:0 blanks the bare text node sitting beside each
            icon, which is what makes the bar icon-only without wrapping twenty
            labels in spans. The words stay in the DOM for screen readers and
@@ -2510,11 +2486,13 @@ export default function ModelEditor({
           justify-content: flex-start; border: none; border-radius: 2px;
           width: 100%; height: 26px; padding: 0 8px; gap: 8px; font-size: 12px;
         }
-        .model-tool-searchbtn { margin-left: 4px; }
+        /* File/Edit moved to the ribbon's top-left (ui-ref/*.png), so the
+           search box is now the only thing left to push to the far right. */
+        .model-tool-searchbtn { margin-left: auto; }
         .model-tool-search {
           display: inline-flex; align-items: center; gap: 6px;
           flex: 0 1 auto; min-width: 30px; overflow: hidden;
-          margin-left: 6px; padding: 4px 8px; font-size: 12px;
+          margin-left: auto; padding: 4px 8px; font-size: 12px;
           background: var(--reshape-surface); border: 1px solid var(--reshape-border); border-radius: 3px;
           color: var(--reshape-text-muted);
         }
@@ -2718,6 +2696,23 @@ export default function ModelEditor({
         }
         .model-collapsed button:disabled { opacity: 0.35; cursor: not-allowed; }
         .model-collapsed button:focus-visible { outline: 1px solid var(--reshape-accent); outline-offset: 1px; }
+        /* The Fusion-360-Browser-style tree that fills the card whenever it
+           isn't collapsed to the rail above -- see this block's own JSX
+           comment. */
+        .model-browser { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 8px 0; }
+        .model-browser-section + .model-browser-section { margin-top: 10px; }
+        .model-browser-heading {
+          font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+          color: var(--reshape-text-muted); padding: 0 10px 4px;
+        }
+        .model-browser-empty { margin: 0; padding: 2px 10px; font-size: 12px; color: var(--reshape-text-muted); }
+        .model-browser-row {
+          display: block; width: 100%; text-align: left;
+          background: transparent; border: none; color: var(--reshape-text);
+          font-size: 13px; padding: 5px 10px; cursor: pointer;
+        }
+        .model-browser-row:hover { background: #3d4051; }
+        .model-browser-row.is-on { background: var(--reshape-border); color: var(--reshape-accent-2); }
       `}</style>
     </div>
   );
