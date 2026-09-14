@@ -206,3 +206,10 @@
 {"ts":"2026-09-13T17:42:25.701Z","kind":"claim","from":"claude","paths":["packages/engine/src/sketch-translate.ts"]}
 {"ts":"2026-09-13T17:50:31.318Z","kind":"release","from":"claude","paths":["packages/engine/src/sketch-translate.ts"]}
 {"ts":"2026-09-13T17:56:36.945Z","kind":"release","from":"claude","all":true}
+{"ts":"2026-09-13T21:18:55.348Z","kind":"claim","from":"claude","paths":["packages/engine/src/sketch-translate.ts","packages/kernel/test/","docs/specs/"]}
+{"ts":"2026-09-13T21:27:34.014Z","kind":"release","from":"claude","paths":["packages/engine/src/sketch-translate.ts","packages/kernel/test/"]}
+{"ts":"2026-09-13T21:35:31.504Z","kind":"claim","from":"claude","paths":["packages/engine/src/fc-commands.mjs","packages/script/src/model-types.ts","packages/script/src/model-handles.ts","packages/script/test/model-handles.test.mjs","scripts/occt-modeldoc-gate.mjs","packages/kernel/test/"]}
+{"ts":"2026-09-13T21:35:31.755Z","kind":"release","from":"claude","paths":["docs/specs/"]}
+{"ts":"2026-09-13T22:07:13.492Z","kind":"release","from":"claude","paths":["packages/engine/src/fc-commands.mjs","packages/script/src/model-types.ts","packages/script/src/model-handles.ts","packages/script/test/model-handles.test.mjs","scripts/occt-modeldoc-gate.mjs","packages/kernel/test/"]}
+{"ts":"2026-09-14T14:16:53.983Z","kind":"claim","from":"claude","paths":["packages/kernel/src/freecad-engine-adapter.ts","packages/script/src/model-types.ts","packages/kernel/test/freecad-sketch-picking.manual.mjs","packages/kernel/test/freecad-engine-adapter-build.test.mjs","packages/kernel/test/freecad-pocket-crossbody.manual.mjs","packages/script/test/model-handles.test.mjs","packages/script/test/model-deps.test.mjs"]}
+{"ts":"2026-09-14T14:30:12.726Z","kind":"release","from":"claude","all":true}

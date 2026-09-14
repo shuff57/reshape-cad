@@ -1477,7 +1477,14 @@ export default function HandleOverlay({
               const px = dx * a.dirX + dy * a.dirY;
               setAlongPx(px);
               const next = start.current.value + (px / a.pxPerUnit) * (scales[a.param] ?? 1);
-              push([{ param: a.param, value: Math.max(0.1, Math.round(next * 100) / 100) }]);
+              const rounded = Math.round(next * 100) / 100;
+              // The 0.1 floor is a SIZE thing (no zero/negative width). A
+              // move handle is a position and a turn handle is an angle --
+              // both cross zero legitimately, so clamping them the same way
+              // pinned every negative-direction drag at exactly 0.1 (dogfood
+              // 2026-09-14, handle-dogfood report).
+              const clamped = a.kind === 'move' || a.kind === 'turn' ? rounded : Math.max(0.1, rounded);
+              push([{ param: a.param, value: clamped }]);
             }}
             onPointerUp={(e) => {
               try { e.currentTarget.releasePointerCapture(e.pointerId); } catch { /* gone */ }
