@@ -282,6 +282,29 @@ function pocketFixtureDoc(n) {
   }
 }
 
+// --- SPEC-pocket-crossbody.md §8.3/§4.4 pin -----------------------------
+// No behaviour change expected here: pocketHandles() reads only sk.plane,
+// sk.offset, f.depth and the EXISTENCE of f.into, all off the ModelDoc --
+// never a body, an engine, a face, or an EngineBuildResult. `into` naming a
+// separate feature (rather than the profile's own extrude) is already the
+// shape it guards for, so lifting the FreeCAD engine's cross-body pocket
+// refusal needed no handle work. This pins that a doc of three genuinely
+// independent features -- box, sketch, pocket -- still yields exactly one
+// handle, so a later reader does not "fix" pocketHandles() for this case.
+test('pocket into a cross-body target (box + sketch + pocket, three independent features) -> exactly one handle, unchanged', () => {
+  const box1 = box('box1', [100, 100, 100], [0, 0, 0]);
+  const sk1 = sketch('sk1', 'xy', 6, SQ8);
+  const p1 = pocket('p1', 'sk1', 'box1', 5);
+  const doc = docWith(box1, sk1, p1);
+  const specs = handlesFor(p1, doc);
+  assert.equal(specs.length, 1);
+  const s = specs[0];
+  assert.equal(s.kind, 'size');
+  assert.equal(s.param, 'p1_depth');
+  closeVec(s.origin, [0, 0, 1], 'origin z = offset(6) - depth(5) = 1');
+  closeVec(s.axis, [0, 0, -1]);
+});
+
 // --- pocket #1: xy@0 RECT, depth 12 -------------------------------------
 test('pocket #1 xy@0 RECT depth12 -> exactly one spec at the floor', () => {
   const doc = pocketFixtureDoc(1);

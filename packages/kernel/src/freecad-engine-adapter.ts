@@ -856,11 +856,47 @@ export class FreeCadEngineAdapter implements EngineAdapter {
             continue;
           }
         }
-        if (target.bodyName !== into.bodyName) {
-          throw new Error(`not yet supported on the FreeCAD engine: pocket ${f.id} cuts across two different bodies`);
-        }
+        // CLOSED (docs/specs/SPEC-pocket-crossbody.md): this used to throw
+        // "cuts across two different bodies" whenever the profile sketch was a
+        // separate feature from the solid -- which is almost always, because the
+        // 'sketch' branch above unconditionally freshBody()s every raw sketch.
+        //
+        // The profile is NOT reused cross-body: that was already MEASURED and
+        // rejected for blend (the kernel prints "links are out of scope" every
+        // recompute, and a source-body placement is silently ignored). It is
+        // RE-PLACED as a second, unattached, world-positioned sketch inside
+        // `into`'s OWN body -- the same thing groove does via sketchNewOnOrigin()
+        // and bore() does via body.Placement.inverse() * frame.
+        //
+        // NOT sketchNewOnFace(): MEASURED that a face-attached sketch and a
+        // placeSketch()'d one at the same world plane carry the IDENTICAL
+        // Placement (base/u/v/localZ all equal), so attaching buys no geometry
+        // and costs a face-resolution step that only resolves for a bare-'xy'
+        // Pad (sweep.topFaceIndex) or a fresh primitive. SPEC section 7.
+        //
+        // No direction work: sketchNewPlaced() derives local Z as u x v = n*dir
+        // and PartDesign::Pocket cuts along local -Z, which IS occt-build.ts:635's
+        // -depth * a.dir. Verified on all three planes, at non-zero offsets, on a
+        // body with a non-identity Placement, on two rotations, and on three
+        // cases where the cut misses the solid -- ten fixtures, volume AND world
+        // bbox, exact parity with OCCT. SPEC section 2.
+        const srcSketch = doc.features.find((x) => x.id === f.target) as SketchFeature | undefined;
+        if (!srcSketch) throw new Error(`cannot build pocket ${f.id}: its profile '${f.target}' is not a sketch feature`);
+        const profName = `${f.id}_psk`;
+        this.placeSketch(session, into.bodyName, profName, srcSketch);
         const pocketName = `${f.id}_pocket`;
-        session.pocket(into.bodyName, target.objName, pocketName, f.depth);
+        try {
+          session.pocket(into.bodyName, profName, pocketName, f.depth);
+        } catch (e) {
+          refusals.set(
+            f.id,
+            `Cutting ${f.id} out of ${f.into} did not remove anything -- ${f.id} is shown `
+              + `without it. (${e instanceof Error ? e.message : String(e)})`,
+          );
+          built.set(f.id, into);
+          shapes.set(f.id, into);
+          continue;
+        }
         const entry: FcBuiltFeature = { bodyName: into.bodyName, objName: pocketName, kind: 'solid', featureId: f.id, featureKind: f.kind };
         built.set(f.id, entry);
         shapes.set(f.id, entry);

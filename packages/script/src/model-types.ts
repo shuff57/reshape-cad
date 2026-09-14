@@ -477,9 +477,15 @@ export type Feature =
  */
 export function dependsOn(f: Feature): string[] {
   const named = topoRefs(f);
-  if ('targets' in f) return [...new Set([...f.targets, ...named])];
-  if ('target' in f) return [...new Set([f.target, ...named])];
-  return named;
+  // `into` is a real dependency and the only one no `target`/`targets` field
+  // reaches: pocket and groove both name the SOLID they cut separately from
+  // the PROFILE they cut it with, and reshape-script-gen.ts emits both as
+  // variable references. Deleting the solid used to leave the cut pointing
+  // at an undeclared name -- the exact ReferenceError this file exists for.
+  const into = 'into' in f && typeof f.into === 'string' ? [f.into] : [];
+  if ('targets' in f) return [...new Set([...f.targets, ...into, ...named])];
+  if ('target' in f) return [...new Set([f.target, ...into, ...named])];
+  return [...new Set([...into, ...named])];
 }
 
 /**
