@@ -245,21 +245,35 @@ const chainSession = adapter['session'];
 const topFaceName = `Face${padEntry.sweep.topFaceIndex + 1}`;
 chainSession.sketchNewOnFace(padEntry.bodyName, 'sk4_manual', padEntry.objName, topFaceName);
 chainSession.sketchAddCircle('sk4_manual', 20, 15, 5);
-// session.pocket()'s own emitter (fc-commands.mjs) hardcodes Reversed=True,
-// measured correct for the ONLY case FreeCadEngineAdapter.build() actually
-// produces -- a BARE, unattached XY sketch (translateSketch() never calls
-// sketchNewOnFace). Measured HERE, separately, that Reversed=True is a
-// silent NO-OP on a FACE-attached sketch instead (vol stayed exactly
-// 24000, not 23371.68) -- the attached sketch's local +Z sense runs the
-// opposite way for this direction property. This is a genuine, narrower
-// finding than a bug in shipped code: the real adapter never builds a
-// face-attached pocket today (that would need sketchNewOnFace wired into
-// the 'pocket' build() branch, real unscheduled design work, not part of
-// this phase), so this convention difference has no shipped consequence --
-// named here rather than silently worked around, per this port's own
-// report. Driven via raw exec() with Reversed=False instead of
-// session.pocket() so this probe's own workaround does not misreport a
-// pocket failure that has nothing to do with the naming work being tested.
+// session.pocket()'s own emitter (fc-commands.mjs) hardcodes Reversed=True.
+// This probe once measured Reversed=True as a silent NO-OP here (vol stayed
+// exactly 24000, not 23371.68) and read that as "a face-attached sketch's
+// local +Z sense runs opposite a bare sketch's". CORRECTED
+// (docs/specs/SPEC-pocket-crossbody.md §3.2/§3.3): that inference is false.
+// Re-measured on the current (post-8a7be8d) emitter by reading each
+// sketch's own getGlobalPlacement() back and transforming its local basis
+// into world -- a sketchNewOnFace() profile on this same Pad's top cap
+// (z=20) and a placeSketch()'d one at { plane: 'xy', offset: 20 } carry the
+// BIT-IDENTICAL Placement: base [0,0,20], u [1,0,0], v [0,1,0], local Z
+// [0,0,1]. There is no face-attached sign exception, on any plane.
+// What actually differs between this fixture and the msgbox #91/#92 fixture
+// (a bare sketch at the Pad's own BOTTOM, z=0) is which side of the profile
+// plane the material sits on -- here the sketch is on the Pad's TOP cap, so
+// all the material is at z < 20, which is the opposite side from the
+// bottom-sketch fixture where all the material is at z > 0. One unreversed
+// convention (default cuts local -Z) explains both: default cuts -Z into
+// material on the bottom-sketch fixture (needs Reversed to hit material)
+// and default cuts -Z into material here too, so Reversed is the one that
+// misses. This is a genuine, narrower finding than a bug in shipped code:
+// the real adapter never builds a face-attached pocket today (that would
+// need sketchNewOnFace wired into the 'pocket' build() branch, real
+// unscheduled design work -- see SPEC-pocket-crossbody.md §7 for why that
+// mechanism was measured and rejected for the cross-body fix instead), so
+// this fixture's own Reversed choice has no shipped consequence -- named
+// here rather than silently worked around, per this port's own report.
+// Driven via raw exec() with Reversed=False instead of session.pocket() so
+// this probe's own workaround does not misreport a pocket failure that has
+// nothing to do with the naming work being tested.
 const pocketObjName = 'p1_pocket';
 {
   const py =

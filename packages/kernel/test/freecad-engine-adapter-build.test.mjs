@@ -60,7 +60,16 @@ function makeFakeSession({ edgeReads = {}, bodyTip = {}, exportDrawingResult = n
       return { geometry: [], constraints: [], dof: 0, fully: true, conflicting: [], redundant: [], malformed: [] };
     },
     pad(bodyName, sketchName, padName, length) { record('pad', [bodyName, sketchName, padName, length]); return padName; },
-    pocket(bodyName, sketchName, pocketName, length) { record('pocket', [bodyName, sketchName, pocketName, length]); return pocketName; },
+    // Same "key the failure off the requested name" style as mirrored/draft/
+    // partBoolean/bore/loftBetween above -- a pocketName containing 'fail'
+    // (derived from f.id, e.g. id 'pfail' -> 'pfail_pocket') is this mock's
+    // own failure trigger. Message copied from the real wrapStatus text
+    // (SPEC-pocket-crossbody.md §9) rather than invented.
+    pocket(bodyName, sketchName, pocketName, length) {
+      record('pocket', [bodyName, sketchName, pocketName, length]);
+      if (pocketName.includes('fail')) throw new Error('pocket failed — the profile must be one closed loop lying on the face');
+      return pocketName;
+    },
     sphere(bodyName, featName, radius) { record('sphere', [bodyName, featName, radius]); return featName; },
     cone(bodyName, featName, radius1, radius2, height) { record('cone', [bodyName, featName, radius1, radius2, height]); return featName; },
     torus(bodyName, featName, ringRadius, tubeRadius) { record('torus', [bodyName, featName, ringRadius, tubeRadius]); return featName; },
@@ -706,25 +715,17 @@ test('sketch -> extrude: pad targets the translated sketch object', () => {
   assert.equal(result.shapes.get('pull1').kind, 'solid');
 });
 
-test('sketch -> pocket cuts into the same body as its target', () => {
+test('sketch -> pocket re-places its profile inside the into-solid\'s body', () => {
+  // CLOSED (docs/specs/SPEC-pocket-crossbody.md): the pocket branch used to
+  // throw "cuts across two different bodies" here, because the 'sketch'
+  // branch always freshBody()s a raw sketch, so its body never matches the
+  // target solid's. The fix builds a SECOND, unattached, world-positioned
+  // profile inside the target's OWN body via placeSketch() -- the same
+  // pattern groove/hole/blend already use -- rather than reusing the
+  // sketch's own object cross-body.
   const session = makeFakeSession();
   const adapter = makeAdapter(session);
   const doc = {
-    version: 1,
-    features: [
-      { id: 'box1', kind: 'box', size: [40, 40, 20], center: [0, 0, 0] },
-    ],
-  };
-  // Build the box first to get its real body name, then extend the doc with
-  // a pocket targeting a sketch in that SAME body -- mirroring how a real
-  // pocket in this app always targets a face-attached sketch on an existing
-  // solid; sketchNewOnFace itself is out of this phase's scope, so this
-  // fixture instead pins the pocket's `into` at the box's own body by
-  // constructing the sketch feature directly (v1 plane 'xy' only).
-  const built1 = adapter.build(doc);
-  const boxBody = built1.shapes.get('box1').bodyName;
-
-  const doc2 = {
     version: 1,
     features: [
       { id: 'box1', kind: 'box', size: [40, 40, 20], center: [0, 0, 0] },
@@ -732,11 +733,85 @@ test('sketch -> pocket cuts into the same body as its target', () => {
       { id: 'p1', kind: 'pocket', target: 'sk1', into: 'box1', depth: 5 },
     ],
   };
-  assert.throws(
-    () => adapter.build(doc2),
-    /pocket p1 cuts across two different bodies/,
-    'v1 has no combine, so a pocket whose sketch landed in its OWN fresh body (not on-a-face of the target) correctly refuses rather than guessing',
+  const result = adapter.build(doc);
+  assert.equal(result.refusals, undefined, 'a cross-body pocket must now build, not refuse');
+
+  const boxBody = result.shapes.get('box1').bodyName;
+  const skBody = result.shapes.get('sk1').bodyName;
+  assert.notEqual(skBody, boxBody, 'the raw sketch feature still lives in its own fresh body (unchanged)');
+
+  const placedCall = session.calls.find((c) => c.name === 'sketchNewPlaced' && c.args[1] === 'p1_psk');
+  assert.ok(placedCall, 'the pocket branch must build its own profile via sketchNewPlaced, named after the pocket feature');
+  assert.equal(placedCall.args[0], boxBody, 'the re-placed profile must land in the TARGET solid\'s body, not the sketch feature\'s own body');
+  assert.deepEqual(placedCall.args[2], [0, 0, 0], 'xy plane at offset 0 -> origin [0,0,0]');
+  assert.deepEqual(placedCall.args[3], [1, 0, 0], 'xy plane u axis');
+  assert.deepEqual(placedCall.args[4], [0, 1, 0], 'xy plane v axis');
+
+  const pocketCall = session.calls.find((c) => c.name === 'pocket');
+  assert.equal(pocketCall.args[0], boxBody, 'pocket must cut against the target solid\'s body');
+  assert.equal(pocketCall.args[1], 'p1_psk', 'pocket must cut with the re-placed profile, not the sketch feature\'s own object');
+  assert.equal(pocketCall.args[3], 5);
+
+  assert.equal(
+    session.calls.some((c) => c.name === 'pocket' && c.args[0] === skBody),
+    false,
+    'the sketch feature\'s own fresh body must never be passed to pocket',
   );
+});
+
+test('pocket profile placement matches SKETCH_BASIS on every plane, mirroring the sketch-branch pin', () => {
+  // Mirrors 'sketch on any plane + offset now builds via sketchNewPlaced ...'
+  // above, but through the POCKET branch's own placeSketch() call rather
+  // than the raw 'sketch' branch's -- both must derive the identical world
+  // origin/u/v from the same SKETCH_BASIS table (SPEC-pocket-crossbody.md §2/§3.1).
+  const cases = [
+    { plane: 'xy', offset: 6, origin: [0, 0, 6], u: [1, 0, 0], v: [0, 1, 0] },
+    { plane: 'xz', offset: 2, origin: [0, 2, 0], u: [1, 0, 0], v: [0, 0, 1] },
+    { plane: 'yz', offset: 6, origin: [6, 0, 0], u: [0, 1, 0], v: [0, 0, 1] },
+  ];
+  for (const c of cases) {
+    const session = makeFakeSession();
+    const adapter = makeAdapter(session);
+    const result = adapter.build({
+      version: 1,
+      features: [
+        { id: 'box1', kind: 'box', size: [40, 40, 20], center: [0, 0, 0] },
+        { id: 'sk1', kind: 'sketch', plane: c.plane, offset: c.offset, points: [[0, 0], [1, 0], [1, 1]] },
+        { id: 'p1', kind: 'pocket', target: 'sk1', into: 'box1', depth: 5 },
+      ],
+    });
+    assert.equal(result.refusals, undefined, result.refusals?.get('p1'));
+    const placed = session.calls.find((call) => call.name === 'sketchNewPlaced' && call.args[1] === 'p1_psk');
+    assert.ok(placed, `pocket's own sketchNewPlaced must be called for plane ${c.plane}`);
+    const origin = placed.args[2].map((v) => (v === 0 ? 0 : v));
+    assert.deepEqual(origin, c.origin, `origin for plane ${c.plane}@${c.offset}`);
+    assert.deepEqual(placed.args[3], c.u, `uAxis for plane ${c.plane}`);
+    assert.deepEqual(placed.args[4], c.v, `vAxis for plane ${c.plane}`);
+  }
+});
+
+test('pocket: the FreeCAD kernel itself refusing the cut lands in refusals, not a thrown error', () => {
+  // Pins the new try/catch (SPEC-pocket-crossbody.md §4.1 point 3) --
+  // 'pocket' used to be the only profile-driven branch without one
+  // (fillet/revolve/groove all have one). Now that cross-body pockets are
+  // reachable with real user-authored profiles, wrapStatus's own
+  // 'Invalid' in pk.State guard can fire for the first time.
+  const session = makeFakeSession();
+  const adapter = makeAdapter(session);
+  const doc = {
+    version: 1,
+    features: [
+      { id: 'box1', kind: 'box', size: [40, 40, 20], center: [0, 0, 0] },
+      { id: 'sk1', kind: 'sketch', plane: 'xy', offset: 0, points: [[5, 5], [15, 5], [15, 15], [5, 15]] },
+      // id chosen so the mock's own failure trigger (pocketName containing
+      // 'fail') fires -- see makeFakeSession's own pocket() comment.
+      { id: 'pfail', kind: 'pocket', target: 'sk1', into: 'box1', depth: 5 },
+    ],
+  };
+  const result = adapter.build(doc);
+  assert.ok(result.refusals && result.refusals.get('pfail'), 'a kernel-refused pocket must land in refusals, not throw');
+  assert.match(result.refusals.get('pfail'), /did not remove anything/);
+  assert.equal(result.shapes.get('pfail'), result.shapes.get('box1'), 'a refused pocket falls back to its into-target\'s shape');
 });
 
 test('cone, torus, prism build via the proven PartDesign primitive paths', () => {
@@ -955,6 +1030,12 @@ test('groove now builds when target and into share a body -- CLOSED (SPEC-coord-
   assert.equal(grv.args[3], 360);
 });
 
+// Deliberately deferred, not an oversight: pocket's identical throw was lifted
+// (SPEC-pocket-crossbody.md), but groove's stays. MEASURED (SPEC-pocket-crossbody.md
+// §5): FreeCAD's own Groove removes exactly HALF a v-straddling profile's analytic
+// ring (30391.5046 vs OCCT's 28783.0091) -- a pre-existing sweep defect, unrelated to
+// body identity. Lifting this throw today would swap an honest refusal for a silent
+// 2x-wrong answer, so it is left exactly as-is until the sweep itself is fixed.
 test('groove across two different bodies still throws -- unrelated pre-existing constraint (no combine yet), same as pocket', () => {
   const session = makeFakeSession();
   const adapter = makeAdapter(session);
@@ -1327,6 +1408,17 @@ test('combine result: container "part" gates every PartDesign-building branch vi
   assert.ok(pocketWhy, 'pocket into a combine result must refuse');
   assert.match(pocketWhy, /works inside a PartDesign Body/);
   assert.equal(session.calls.filter((c) => c.name === 'pocket').length, 0);
+  // notInABody() must gate ABOVE placeSketch(), not just above pocket() --
+  // a combine result has no `newObject` to attach a re-placed profile to,
+  // so building the profile first would throw the wrong error (SPEC-pocket
+  // -crossbody.md §4.1 point 1). Scoped to the pocket's OWN profile name
+  // (not a bare sketchNewPlaced count) because the 'sk1' raw sketch feature
+  // built just above this legitimately calls sketchNewPlaced for ITS OWN
+  // fresh body.
+  assert.equal(
+    session.calls.filter((c) => c.name === 'sketchNewPlaced' && c.args[1] === 'pk1_psk').length, 0,
+    'a refused pocket must never build its re-placed profile either',
+  );
 
   const grooveResult = adapter.build({
     version: 1,

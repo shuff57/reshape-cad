@@ -5,6 +5,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { handlesFor } from '../dist/model-handles.js';
 import { generatedParams, applyParam } from '../dist/model-codegen.js';
+import { topLevel } from '../dist/model-types.js';
 
 const EPS = 1e-9;
 const close = (a, b, msg) => assert.ok(Math.abs(a - b) < EPS, msg ?? `expected ${a} ~= ${b}`);
@@ -250,4 +251,251 @@ test('#18 every fixture #1-#8 emits a unit-length axis', () => {
       close(len, 1, `fixture #${n}: axis length ${len} !~ 1`);
     }
   }
+});
+
+// =====================================================================
+// SPEC-pocket-drag-handle.md — the Pocket depth handle. §7's table,
+// rows 1-18. `RECT`/`SQ8` and the [M] markers are the spec's own.
+// =====================================================================
+
+const SQ8 = [[-5, -4], [5, -4], [5, 4], [-5, 4]]; // centre [0, 0]
+
+function pocket(id, target, into, depth) {
+  return { id, kind: 'pocket', target, into, depth };
+}
+
+function box(id, size, center) {
+  return { id, kind: 'box', size, center };
+}
+
+// Every pocket fixture also carries box1 so the `into` guard is satisfied.
+function pocketFixtureDoc(n) {
+  const box1 = box('box1', [100, 100, 100], [0, 0, 0]);
+  switch (n) {
+    case 1: return docWith(box1, sketch('sk1', 'xy', 0, RECT), pocket('pk1', 'sk1', 'box1', 12));
+    case 2: return docWith(box1, sketch('sk1', 'xy', 6, SQ8), pocket('pk1', 'sk1', 'box1', 5));
+    case 3: return docWith(box1, sketch('sk1', 'xz', 2, SQ8), pocket('pk1', 'sk1', 'box1', 5));
+    case 4: return docWith(box1, sketch('sk1', 'yz', 6, SQ8), pocket('pk1', 'sk1', 'box1', 5));
+    case 5: return docWith(box1, sketch('sk1', 'xz', 10, RECT), pocket('pk1', 'sk1', 'box1', 6));
+    case 6: return docWith(box1, sketch('sk1', 'xy', 6, [[7, -6], [17, -6]], 'circle'), pocket('pk1', 'sk1', 'box1', 5));
+    default: throw new Error(`no pocket fixture ${n}`);
+  }
+}
+
+// --- SPEC-pocket-crossbody.md §8.3/§4.4 pin -----------------------------
+// No behaviour change expected here: pocketHandles() reads only sk.plane,
+// sk.offset, f.depth and the EXISTENCE of f.into, all off the ModelDoc --
+// never a body, an engine, a face, or an EngineBuildResult. `into` naming a
+// separate feature (rather than the profile's own extrude) is already the
+// shape it guards for, so lifting the FreeCAD engine's cross-body pocket
+// refusal needed no handle work. This pins that a doc of three genuinely
+// independent features -- box, sketch, pocket -- still yields exactly one
+// handle, so a later reader does not "fix" pocketHandles() for this case.
+test('pocket into a cross-body target (box + sketch + pocket, three independent features) -> exactly one handle, unchanged', () => {
+  const box1 = box('box1', [100, 100, 100], [0, 0, 0]);
+  const sk1 = sketch('sk1', 'xy', 6, SQ8);
+  const p1 = pocket('p1', 'sk1', 'box1', 5);
+  const doc = docWith(box1, sk1, p1);
+  const specs = handlesFor(p1, doc);
+  assert.equal(specs.length, 1);
+  const s = specs[0];
+  assert.equal(s.kind, 'size');
+  assert.equal(s.param, 'p1_depth');
+  closeVec(s.origin, [0, 0, 1], 'origin z = offset(6) - depth(5) = 1');
+  closeVec(s.axis, [0, 0, -1]);
+});
+
+// --- pocket #1: xy@0 RECT, depth 12 -------------------------------------
+test('pocket #1 xy@0 RECT depth12 -> exactly one spec at the floor', () => {
+  const doc = pocketFixtureDoc(1);
+  const pk1 = doc.features.find((f) => f.kind === 'pocket');
+  const specs = handlesFor(pk1, doc);
+  assert.equal(specs.length, 1);
+  const s = specs[0];
+  assert.equal(s.kind, 'size');
+  assert.equal(s.param, 'pk1_depth');
+  closeVec(s.origin, [15, 2.5, -12]);
+  closeVec(s.axis, [0, 0, -1]);
+  assert.equal(s.scale, 1);
+  assert.equal(s.label, 'deep');
+});
+
+// --- pocket #2: xy@6 SQ8, depth 5 -- fixture G1 -------------------------
+test('pocket #2 [M] xy@6 SQ8 depth5 -- fixture G1, floor at z=1', () => {
+  const doc = pocketFixtureDoc(2);
+  const pk1 = doc.features.find((f) => f.kind === 'pocket');
+  const specs = handlesFor(pk1, doc);
+  assert.equal(specs.length, 1);
+  closeVec(specs[0].origin, [0, 0, 1]);
+  closeVec(specs[0].axis, [0, 0, -1]);
+});
+
+// --- pocket #3: xz@2 SQ8, depth 5 -- fixture G2 -------------------------
+test('pocket #3 [M] xz@2 SQ8 depth5 -- fixture G2, floor at y=7', () => {
+  const doc = pocketFixtureDoc(3);
+  const pk1 = doc.features.find((f) => f.kind === 'pocket');
+  const specs = handlesFor(pk1, doc);
+  assert.equal(specs.length, 1);
+  closeVec(specs[0].origin, [0, 7, 0]);
+  closeVec(specs[0].axis, [0, 1, 0]);
+});
+
+// --- pocket #4: yz@6 SQ8, depth 5 -- fixture G3 -------------------------
+test('pocket #4 [M] yz@6 SQ8 depth5 -- fixture G3, floor at x=1', () => {
+  const doc = pocketFixtureDoc(4);
+  const pk1 = doc.features.find((f) => f.kind === 'pocket');
+  const specs = handlesFor(pk1, doc);
+  assert.equal(specs.length, 1);
+  closeVec(specs[0].origin, [1, 0, 0]);
+  closeVec(specs[0].axis, [-1, 0, 0]);
+});
+
+// --- pocket #5: xz@10 RECT, depth 6 -- the worked example ---------------
+test('pocket #5 [M] xz@10 RECT depth6 -- worked example, measured 71100/24600', () => {
+  const doc = pocketFixtureDoc(5);
+  const pk1 = doc.features.find((f) => f.kind === 'pocket');
+  const specs = handlesFor(pk1, doc);
+  assert.equal(specs.length, 1);
+  closeVec(specs[0].origin, [15, 16, 2.5]);
+  closeVec(specs[0].axis, [0, 1, 0]);
+});
+
+// --- pocket #6: xy@6 circle off-centre, depth 5 -- fixture G5 -----------
+test('pocket #6 [M] xy@6 circle depth5 -- fixture G5, bbox centre off-axis', () => {
+  const doc = pocketFixtureDoc(6);
+  const pk1 = doc.features.find((f) => f.kind === 'pocket');
+  const specs = handlesFor(pk1, doc);
+  assert.equal(specs.length, 1);
+  closeVec(specs[0].origin, [12, -6, 1]);
+});
+
+// --- pocket #7: target names no feature ---------------------------------
+test('pocket #7 pk1.target names no feature -> []', () => {
+  const box1 = box('box1', [100, 100, 100], [0, 0, 0]);
+  const pk1 = pocket('pk1', 'sk1', 'box1', 12);
+  const doc = docWith(box1, pk1);
+  assert.deepEqual(handlesFor(pk1, doc), []);
+});
+
+// --- pocket #8: target names a box --------------------------------------
+test('pocket #8 pk1.target names a box, not a sketch -> []', () => {
+  const box1 = box('box1', [100, 100, 100], [0, 0, 0]);
+  const box2 = box('box2', [10, 10, 10], [0, 0, 0]);
+  const pk1 = pocket('pk1', 'box2', 'box1', 12);
+  const doc = docWith(box1, box2, pk1);
+  assert.deepEqual(handlesFor(pk1, doc), []);
+});
+
+// --- pocket #9: into names no feature ------------------------------------
+test('pocket #9 pk1.into names no feature -> []', () => {
+  const sk1 = sketch('sk1', 'xy', 0, RECT);
+  const pk1 = pocket('pk1', 'sk1', 'box1', 12);
+  const doc = docWith(sk1, pk1);
+  assert.deepEqual(handlesFor(pk1, doc), []);
+});
+
+// --- pocket #10: no doc at all --------------------------------------------
+test('pocket #10 handlesFor(pk1) with no doc -> []', () => {
+  const pk1 = pocket('pk1', 'sk1', 'box1', 12);
+  assert.deepEqual(handlesFor(pk1), []);
+});
+
+// --- pocket #11: sketch cannot close --------------------------------------
+test('pocket #11 target sketch has 2 points, not tagged circle -> []', () => {
+  const box1 = box('box1', [100, 100, 100], [0, 0, 0]);
+  const sk1 = sketch('sk1', 'xy', 0, [[0, 0], [10, 0]]);
+  const pk1 = pocket('pk1', 'sk1', 'box1', 12);
+  const doc = docWith(box1, sk1, pk1);
+  assert.deepEqual(handlesFor(pk1, doc), []);
+});
+
+// --- pocket #12: generatedParams param name matches -----------------------
+test('pocket #12 generatedParams emits pk1_depth=12 matching the handle param', () => {
+  const doc = pocketFixtureDoc(1);
+  const pk1 = doc.features.find((f) => f.kind === 'pocket');
+  const params = generatedParams(doc);
+  const p = params.find((x) => x.name === 'pk1_depth');
+  assert.ok(p, 'pk1_depth exists in generatedParams');
+  assert.equal(p.value, 12);
+  const specs = handlesFor(pk1, doc);
+  assert.equal(specs[0].param, p.name);
+});
+
+// --- pocket #13: applyParam writes back the depth, nothing else -----------
+test('pocket #13 applyParam(doc, "pk1_depth", 25) sets pk1.depth, nothing else changes', () => {
+  const doc = pocketFixtureDoc(1);
+  const pk1 = doc.features.find((f) => f.kind === 'pocket');
+  const sk1 = doc.features.find((f) => f.id === 'sk1');
+  const next = applyParam(doc, 'pk1_depth', 25);
+  const nextPk1 = next.features.find((f) => f.id === 'pk1');
+  const nextSk1 = next.features.find((f) => f.id === 'sk1');
+  assert.equal(nextPk1.depth, 25);
+  assert.deepEqual(nextSk1, sk1);
+});
+
+// --- pocket #14: origin tracks the value it drives, for every fixture #1-#6 -
+for (let n = 1; n <= 6; n++) {
+  test(`pocket #14 fixture #${n}: origin moves exactly 5 x axis after applyParam(+5)`, () => {
+    const doc = pocketFixtureDoc(n);
+    const pk1 = doc.features.find((f) => f.kind === 'pocket');
+    const before = handlesFor(pk1, doc)[0];
+    const nextDoc = applyParam(doc, before.param, pk1.depth + 5);
+    const nextPk1 = nextDoc.features.find((f) => f.id === pk1.id);
+    const after = handlesFor(nextPk1, nextDoc)[0];
+
+    closeVec(after.axis, before.axis, `pocket fixture #${n} axis unchanged`);
+    assert.equal(after.scale, before.scale, `pocket fixture #${n} scale unchanged`);
+    for (let i = 0; i < 3; i++) {
+      const moved = after.origin[i] - before.origin[i];
+      const expected = 5 * before.axis[i];
+      close(moved, expected, `pocket fixture #${n} axis ${i}: moved ${moved} !~ expected ${expected}`);
+    }
+  });
+}
+
+// --- pocket #15: every emitted axis is a unit vector -----------------------
+test('pocket #15 every fixture #1-#6 emits a unit-length axis', () => {
+  for (let n = 1; n <= 6; n++) {
+    const doc = pocketFixtureDoc(n);
+    const pk1 = doc.features.find((f) => f.kind === 'pocket');
+    const specs = handlesFor(pk1, doc);
+    for (const s of specs) {
+      const len = Math.hypot(s.axis[0], s.axis[1], s.axis[2]);
+      close(len, 1, `pocket fixture #${n}: axis length ${len} !~ 1`);
+    }
+  }
+});
+
+// --- pocket #16: scales map builds scale 1 ----------------------------------
+test('pocket #16 scales map from specs -> pk1_depth is 1', () => {
+  const doc = pocketFixtureDoc(1);
+  const pk1 = doc.features.find((f) => f.kind === 'pocket');
+  const specs = handlesFor(pk1, doc);
+  const scales = Object.fromEntries(specs.map((h) => [h.param, h.scale]));
+  assert.equal(scales['pk1_depth'], 1);
+});
+
+// --- pocket #17: extrude vs pocket on the same sketch -- exact negatives ----
+test('pocket #17 [M] same sketch, extrude vs pocket -> axes are exact componentwise negatives on xy/xz/yz', () => {
+  const box1 = box('box1', [100, 100, 100], [0, 0, 0]);
+  for (const plane of ['xy', 'xz', 'yz']) {
+    const sk1 = sketch('sk1', plane, 0, RECT);
+    const pull1 = extrude('pull1', 'sk1', 12);
+    const pk1 = pocket('pk1', 'sk1', 'box1', 12);
+    const doc = docWith(box1, sk1, pull1, pk1);
+    const extrudeAxis = handlesFor(pull1, doc)[0].axis;
+    const pocketAxis = handlesFor(pk1, doc)[0].axis;
+    for (let i = 0; i < 3; i++) {
+      close(pocketAxis[i], -extrudeAxis[i], `plane ${plane} axis ${i}: pocket ${pocketAxis[i]} !~ -extrude ${-extrudeAxis[i]}`);
+    }
+  }
+});
+
+// --- pocket #18: topLevel() consumes the pocket's victim --------------------
+test('pocket #18 topLevel(doc) for fixture #1 does not contain box1, does contain pk1', () => {
+  const doc = pocketFixtureDoc(1);
+  const top = topLevel(doc);
+  const ids = top.map((f) => f.id);
+  assert.ok(!ids.includes('box1'), `topLevel should not contain box1, got ${ids}`);
+  assert.ok(ids.includes('pk1'), `topLevel should contain pk1, got ${ids}`);
 });

@@ -224,6 +224,10 @@ slice('groove: ring straddling v=0', () => {
 // 40x40x20 box, a 10x8 profile on xy at offset 0, cut 5 deep.
 // Exactly 32000 - 10*8*5 = 31600. Returning 32000 means the prism went the
 // wrong way and cut air: the feature succeeded and did nothing.
+// BLIND TO DIRECTION: the box is centred on the sketch plane (z -10..+10,
+// profile at z=0), so 31600 comes back whichever way the prism points. G1-G5
+// below (one-sided slabs thinner than the cut) are what can actually tell a
+// correct direction from a wrong one.
 slice('pocket on xy: 10x8 cut 5 deep', () => {
   const { doc, body } = boxDoc();
   const prof = mt.newRectangleSketch(doc, 'xy', [-5, -4], [5, 4]);
@@ -240,6 +244,9 @@ slice('pocket on xy: 10x8 cut 5 deep', () => {
 // The same 400 mm^3 removed on the one plane whose `dir` is negative. A sign
 // that is accidentally right on xy and wrong here passes slice 2 and fails
 // this one, which is the whole reason this slice exists.
+// BLIND TO DIRECTION for the same reason slice 2 is: the box straddles the
+// sketch plane, so 31600 comes back either way. G1-G5 are the fixtures that
+// can actually see it.
 slice('pocket on xz (dir = -1): 10x8 cut 5 deep', () => {
   const { doc, body } = boxDoc();
   const prof = mt.newRectangleSketch(doc, 'xz', [-5, -4], [5, 4]);
@@ -255,6 +262,8 @@ slice('pocket on xz (dir = -1): 10x8 cut 5 deep', () => {
 // --- slice 4: depth scales the cut -----------------------------------------
 // A depth the branch reads but never applies would still pass slice 2 if the
 // prism happened to be the right size. Doubling it must double the loss.
+// BLIND TO DIRECTION too -- same centred box, depth 10 still fits inside
+// z +-10 either way it points. G1-G5 below are the ones that pin direction.
 slice('pocket depth 10 removes twice as much', () => {
   const { doc, body } = boxDoc();
   const prof = mt.newRectangleSketch(doc, 'xy', [-5, -4], [5, 4]);
@@ -265,6 +274,113 @@ slice('pocket depth 10 removes twice as much', () => {
   const res = buildDoc(oc, doc, arc);
   const cut = res.shapes.get(pk.id);
   check('pocket depth 10 removes twice as much', cut ? volume(cut) : NaN, 31200);
+});
+
+// --- slices G1-G5: fixtures that can actually see the cut direction --------
+// docs/specs/SPEC-pocket-drag-handle.md §4.2. Slices 2-4 above cannot
+// distinguish "correct" from "wrong direction" because their box straddles
+// the sketch plane -- a prism pointed either way lands wholly inside 40mm of
+// material. Put the solid ENTIRELY on one side of the plane and make it
+// THINNER than the cut depth on that side: now the wrong direction clips
+// against the far face and removes a different (smaller) volume than the
+// right one, so volume alone is decisive.
+//
+// A slab merely placed on one side is not enough by itself -- if it is
+// thicker than the depth, a wrong-direction cut that still lands in material
+// removes the same volume as the right one. The thinness is load-bearing.
+function slabDoc(size, center) {
+  const doc = { features: [] };
+  const body = mt.newShape(doc, 'box');
+  body.size = size;
+  body.center = center;
+  doc.features.push(body);
+  return { doc, body };
+}
+
+// G1: xy, box [40,40,8] @ [0,0,4] (z 0..8), sketch xy@6, 10x8 profile, depth 5.
+// Correct: cut z 1..6, wholly inside -- removes 400 -> 12400.
+// Wrong: cut z 6..11, clipped to 6..8 -- removes 160 -> 12640.
+slice('pocket G1: xy one-sided slab thinner than depth', () => {
+  const { doc, body } = slabDoc([40, 40, 8], [0, 0, 4]);
+  const prof = mt.newRectangleSketch(doc, 'xy', [-5, -4], [5, 4]);
+  prof.offset = 6;
+  doc.features.push(prof);
+  const pk = mt.newPocket(doc, prof.id, body.id);
+  pk.depth = 5;
+  doc.features.push(pk);
+  const res = buildDoc(oc, doc, arc);
+  const cut = res.shapes.get(pk.id);
+  check('pocket G1: xy one-sided slab thinner than depth', cut ? volume(cut) : NaN, 12400);
+});
+
+// G2: xz, box [40,8,40] @ [0,4,0] (y 0..8), sketch xz@2, 10x8 profile, depth 5.
+// Correct: cut y 2..7, wholly inside -- removes 400 -> 12400.
+// Wrong: cut y -3..2, clipped to 0..2 -- removes 160 -> 12640.
+slice('pocket G2: xz one-sided slab thinner than depth', () => {
+  const { doc, body } = slabDoc([40, 8, 40], [0, 4, 0]);
+  const prof = mt.newRectangleSketch(doc, 'xz', [-5, -4], [5, 4]);
+  prof.offset = 2;
+  doc.features.push(prof);
+  const pk = mt.newPocket(doc, prof.id, body.id);
+  pk.depth = 5;
+  doc.features.push(pk);
+  const res = buildDoc(oc, doc, arc);
+  const cut = res.shapes.get(pk.id);
+  check('pocket G2: xz one-sided slab thinner than depth', cut ? volume(cut) : NaN, 12400);
+});
+
+// G3: yz, box [8,40,40] @ [4,0,0] (x 0..8), sketch yz@6, 10x8 profile, depth 5.
+// Correct: cut x 1..6, wholly inside -- removes 400 -> 12400.
+// Wrong: cut x 6..11, clipped to 6..8 -- removes 160 -> 12640.
+slice('pocket G3: yz one-sided slab thinner than depth', () => {
+  const { doc, body } = slabDoc([8, 40, 40], [4, 0, 0]);
+  const prof = mt.newRectangleSketch(doc, 'yz', [-5, -4], [5, 4]);
+  prof.offset = 6;
+  doc.features.push(prof);
+  const pk = mt.newPocket(doc, prof.id, body.id);
+  pk.depth = 5;
+  doc.features.push(pk);
+  const res = buildDoc(oc, doc, arc);
+  const cut = res.shapes.get(pk.id);
+  check('pocket G3: yz one-sided slab thinner than depth', cut ? volume(cut) : NaN, 12400);
+});
+
+// G4: xz, box [60,14,30] @ [15,7,2.5] (y 0..14), sketch xz@10, 30x5 RECT
+// profile, depth 6. Pins a NON-ZERO offset with the overshoot running the
+// OTHER way round -- here the correct answer is the SMALLER cut, so a
+// fixture that passes by accident on "correct removes more" fails this one.
+// Correct: cut y 10..16, clipped to 10..14 -- removes 600 -> 24600.
+// Wrong: cut y 4..10, wholly inside -- removes 900 -> 24300.
+slice('pocket G4: xz non-zero offset, overshoot the other way', () => {
+  const { doc, body } = slabDoc([60, 14, 30], [15, 7, 2.5]);
+  const prof = mt.newRectangleSketch(doc, 'xz', [0, 0], [30, 5]);
+  prof.offset = 10;
+  doc.features.push(prof);
+  const pk = mt.newPocket(doc, prof.id, body.id);
+  pk.depth = 6;
+  doc.features.push(pk);
+  const res = buildDoc(oc, doc, arc);
+  const cut = res.shapes.get(pk.id);
+  check('pocket G4: xz non-zero offset, overshoot the other way', cut ? volume(cut) : NaN, 24600);
+});
+
+// G5: xy, box [60,60,8] @ [0,0,4] (z 0..8), sketch xy@6, Ø10 circle profile
+// off-centre at [12,-6], depth 5. Pins the circle-profile path and an
+// off-centre profile at once.
+// Correct: cut z 1..6, wholly inside -- removes pi*5^2*5 = 392.699 -> 28407.301.
+// Wrong: cut z 6..11, clipped to 6..8 -- removes pi*5^2*2 = 157.08 -> 28642.92.
+slice('pocket G5: xy off-centre circle profile', () => {
+  const { doc, body } = slabDoc([60, 60, 8], [0, 0, 4]);
+  const prof = mt.newCircleSketch(doc, 'xy', [12, -6]);
+  prof.points = [[7, -6], [17, -6]];
+  prof.offset = 6;
+  doc.features.push(prof);
+  const pk = mt.newPocket(doc, prof.id, body.id);
+  pk.depth = 5;
+  doc.features.push(pk);
+  const res = buildDoc(oc, doc, arc);
+  const cut = res.shapes.get(pk.id);
+  check('pocket G5: xy off-centre circle profile', cut ? volume(cut) : NaN, 28407.301, 1e-1);
 });
 
 // --- slices 5-8: prism and wedge, retro-gated ------------------------------
