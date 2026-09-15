@@ -1,0 +1,1917 @@
+//! Layer `build`: primitives, and the transforms (move, mirror, pattern) that
+//! act on them (§4.4). Depends on `math`, `geom`, `topo`.
+
+use crate::geom::{self, Cone, Curve, Cylinder, Plane, SphereSurf, Surface, TorusSurf};
+use crate::math::{add, cross, scale, sub, Aabb, Transform, Vec3};
+use crate::topo::{self, Edge, Face, Shell, Solid, Wire};
+use std::cell::RefCell;
+use std::rc::Rc;
+
+pub type Curve3 = Curve;
+pub type Surface3 = Surface;
+pub type TSolid = Solid<Curve3, Surface3>;
+pub type TFace = topo::FaceRef<Curve3, Surface3>;
+pub type TEdge = topo::EdgeRef<Curve3>;
+
+/// The fields of a `BoxFeature` this slice reads. `round`/`roundStyle` are
+/// parsed and refused rather than silently dropped: a silently sharp box is the
+/// exact failure occt-build.ts's `roundedEdges()` comment documents.
+#[derive(Clone, Debug, Default)]
+pub struct BoxFeature {
+    pub id: String,
+    pub size: Vec3,
+    pub center: Vec3,
+    pub rotate: Option<Vec3>,
+    pub round: Option<f64>,
+}
+
+#[derive(Clone, Debug, Default)]
+pub struct MoveFeature {
+    pub id: String,
+    pub target: String,
+    pub offset: Vec3,
+    pub copy: bool,
+}
+
+/// The eight corners of the local box, in a fixed index order:
+/// idx = i*4 + j*2 + k, where i is the x bin, j the y bin and k the z bin.
+fn corner_index(i: usize, j: usize, k: usize) -> usize {
+    i * 4 + j * 2 + k
+}
+
+/// Build a centred box as a B-rep solid with six planar faces, twelve shared
+/// edges and eight shared vertices. Faces are wound CCW seen from outside, so
+/// the divergence-theorem volume is positive.
+///
+/// The shared-handle property (§4.2) is built in: the twelve edges are created
+/// once, keyed by their unordered vertex-index pair, and every face that borders
+/// an edge holds the SAME handle, with `forward` saying which way that face
+/// uses it.
+pub fn box_solid(size: Vec3, center: Vec3, rotate: Option<Vec3>) -> TSolid {
+    let [w, d, h] = size;
+    let lo = add(center, [-w / 2.0, -d / 2.0, -h / 2.0]);
+    let hi = add(center, [w / 2.0, d / 2.0, h / 2.0]);
+
+    let mut verts: Vec<topo::VertexRef> = Vec::with_capacity(8);
+    for i in 0..2 {
+        for j in 0..2 {
+            for k in 0..2 {
+                let p = [
+                    if i == 0 { lo[0] } else { hi[0] },
+                    if j == 0 { lo[1] } else { hi[1] },
+                    if k == 0 { lo[2] } else { hi[2] },
+                ];
+                let _ = corner_index(i, j, k);
+                verts.push(topo::vertex(p));
+            }
+        }
+    }
+
+    // Twelve edges, created once. Key is the unordered vertex-index pair; the
+    // stored edge runs min-index -> max-index.
+    let mut edges: Vec<(usize, usize, TEdge)> = Vec::new();
+    let mut edge_of = |a: usize, b: usize| -> (TEdge, bool) {
+        let (kai, kbi) = (a.min(b), a.max(b));
+        let forward = a == kai;
+        if let Some((_, _, e)) = edges.iter().find(|(x, y, _)| *x == kai && *y == kbi) {
+            return (e.clone(), forward);
+        }
+        let e = topo::edge(
+            verts[kai].clone(),
+            verts[kbi].clone(),
+            true,
+            Curve::Segment {
+                a: verts[kai].borrow().point,
+                b: verts[kbi].borrow().point,
+            },
+        );
+        edges.push((kai, kbi, e.clone()));
+        (e, forward)
+    };
+
+    // Six quads as vertex-index rings, CCW seen from outside.
+    let quads: [(Vec3, [usize; 4]); 6] = [
+        ([0.0, 0.0, 1.0], [corner_index(0, 0, 1), corner_index(1, 0, 1), corner_index(1, 1, 1), corner_index(0, 1, 1)]),
+        ([0.0, 0.0, -1.0], [corner_index(0, 1, 0), corner_index(1, 1, 0), corner_index(1, 0, 0), corner_index(0, 0, 0)]),
+        ([1.0, 0.0, 0.0], [corner_index(1, 0, 0), corner_index(1, 1, 0), corner_index(1, 1, 1), corner_index(1, 0, 1)]),
+        ([-1.0, 0.0, 0.0], [corner_index(0, 1, 0), corner_index(0, 0, 0), corner_index(0, 0, 1), corner_index(0, 1, 1)]),
+        ([0.0, 1.0, 0.0], [corner_index(1, 1, 0), corner_index(0, 1, 0), corner_index(0, 1, 1), corner_index(1, 1, 1)]),
+        ([0.0, -1.0, 0.0], [corner_index(0, 0, 0), corner_index(1, 0, 0), corner_index(1, 0, 1), corner_index(0, 0, 1)]),
+    ];
+
+    let mut faces: Vec<TFace> = Vec::new();
+    for (n, ring) in quads {
+        let p: Vec<Vec3> = ring.iter().map(|i| verts[*i].borrow().point).collect();
+        let plane = Plane::new(p[0], n);
+        let mut wire = Vec::new();
+        for i in 0..4 {
+            let (e, forward) = edge_of(ring[i], ring[(i + 1) % 4]);
+            let (sa, sb) = if forward { (p[i], p[(i + 1) % 4]) } else { (p[(i + 1) % 4], p[i]) };
+            wire.push(topo::EdgeUse {
+                edge: e,
+                forward,
+                pcurve: topo::Pcurve {
+                    start: plane.project(sa),
+                    end: plane.project(sb),
+                    mid: plane.project(scale(add(sa, sb), 0.5)),
+                },
+            });
+        }
+        let wref = Rc::new(RefCell::new(Wire { edges: wire }));
+        faces.push(Rc::new(RefCell::new(Face {
+            boundary: vec![wref],
+            forward: true,
+            surface: Surface::Plane(plane),
+            uv_domain: [[0.0, 1.0], [0.0, 1.0]],
+        })));
+    }
+
+    let shell = Rc::new(RefCell::new(Shell { faces }));
+    let solid = Solid { shells: vec![shell] };
+    if let Some(r) = rotate {
+        if r[0] != 0.0 || r[1] != 0.0 || r[2] != 0.0 {
+            // About the box's OWN centre, matching occt-build.ts's ordering:
+            // centre the shape, then turn it, then place it.
+            let t = Transform::euler_deg(r[0], r[1], r[2]).about(center);
+            return transform_solid(&solid, &t);
+        }
+    }
+    solid
+}
+
+/// Build a hexahedron from eight corner positions, in `box_solid`'s corner
+/// index order (idx = i*4 + j*2 + k, i the x bin, j the y bin, k the z bin):
+/// the same twelve shared edges and six quad faces, but each face's plane is
+/// read off its own ring by Newell's method instead of assumed axis-aligned.
+/// This is what a drafted box needs -- five faces stay on their original
+/// planes and the drafted face tilts, every one still planar.
+pub fn corner_solid(verts: &[Vec3; 8]) -> TSolid {
+    let at = |i: usize, j: usize, k: usize| verts[i * 4 + j * 2 + k];
+
+    let mut vrefs: Vec<topo::VertexRef> = Vec::with_capacity(8);
+    for v in verts {
+        vrefs.push(topo::vertex(*v));
+    }
+
+    let mut edges: Vec<(usize, usize, TEdge)> = Vec::new();
+    let mut edge_of = |a: usize, b: usize| -> (TEdge, bool) {
+        let (kai, kbi) = (a.min(b), a.max(b));
+        let forward = a == kai;
+        if let Some((_, _, e)) = edges.iter().find(|(x, y, _)| *x == kai && *y == kbi) {
+            return (e.clone(), forward);
+        }
+        let e = topo::edge(
+            vrefs[kai].clone(),
+            vrefs[kbi].clone(),
+            true,
+            Curve::Segment {
+                a: vrefs[kai].borrow().point,
+                b: vrefs[kbi].borrow().point,
+            },
+        );
+        edges.push((kai, kbi, e.clone()));
+        (e, forward)
+    };
+
+    let quads: [[usize; 4]; 6] = [
+        [corner_index(0, 0, 1), corner_index(1, 0, 1), corner_index(1, 1, 1), corner_index(0, 1, 1)],
+        [corner_index(0, 1, 0), corner_index(1, 1, 0), corner_index(1, 0, 0), corner_index(0, 0, 0)],
+        [corner_index(1, 0, 0), corner_index(1, 1, 0), corner_index(1, 1, 1), corner_index(1, 0, 1)],
+        [corner_index(0, 1, 0), corner_index(0, 0, 0), corner_index(0, 0, 1), corner_index(0, 1, 1)],
+        [corner_index(1, 1, 0), corner_index(0, 1, 0), corner_index(0, 1, 1), corner_index(1, 1, 1)],
+        [corner_index(0, 0, 0), corner_index(1, 0, 0), corner_index(1, 0, 1), corner_index(0, 0, 1)],
+    ];
+
+    let newell = |ring: &[Vec3]| -> Vec3 {
+        let mut acc = [0.0, 0.0, 0.0];
+        for i in 0..ring.len() {
+            let j = (i + 1) % ring.len();
+            acc = add(acc, cross(sub(ring[i], ring[0]), sub(ring[j], ring[0])));
+        }
+        acc
+    };
+
+    let mut faces: Vec<TFace> = Vec::new();
+    for ring in &quads {
+        let p: Vec<Vec3> = ring.iter().map(|i| vrefs[*i].borrow().point).collect();
+        let nrm = crate::math::normalize(newell(&p));
+        let plane = Plane::new(p[0], nrm);
+        let mut wire = Vec::new();
+        for i in 0..4 {
+            let (e, forward) = edge_of(ring[i], ring[(i + 1) % 4]);
+            let (sa, sb) = if forward { (p[i], p[(i + 1) % 4]) } else { (p[(i + 1) % 4], p[i]) };
+            wire.push(topo::EdgeUse {
+                edge: e,
+                forward,
+                pcurve: topo::Pcurve {
+                    start: plane.project(sa),
+                    end: plane.project(sb),
+                    mid: plane.project(scale(add(sa, sb), 0.5)),
+                },
+            });
+        }
+        let wref = Rc::new(RefCell::new(Wire { edges: wire }));
+        faces.push(Rc::new(RefCell::new(Face {
+            boundary: vec![wref],
+            forward: true,
+            surface: Surface::Plane(plane),
+            uv_domain: [[0.0, 1.0], [0.0, 1.0]],
+        })));
+    }
+
+    let shell = Rc::new(RefCell::new(Shell { faces }));
+    Solid { shells: vec![shell] }
+}
+
+/// Apply a rigid transform to every vertex point and geometry payload. Handle
+/// sharing is preserved by `topo::Solid::map_geom`; vertex POINTS are moved
+/// afterwards, and each face's plane frame and pcurves rebuilt from the moved
+/// boundary so the stored surface sits on the transformed face.
+pub fn transform_solid(solid: &TSolid, t: &Transform) -> TSolid {
+    let moved = solid.map_geom(&|c: &Curve3| c.transform(t), &|s: &Surface3| s.transform(t));
+    for v in moved.vertices() {
+        let p = v.borrow().point;
+        v.borrow_mut().point = t.apply(p);
+    }
+    for fc in moved.faces() {
+        // Only a planar face has its pcurves rebuilt from the boundary; a
+        // curved face's pcurves already follow its surface through map_geom.
+        let plane = match &fc.borrow().surface {
+            Surface3::Plane(p) => Some(p.clone()),
+            _ => None,
+        };
+        let Some(plane) = plane else { continue };
+        let pts = {
+            let f = fc.borrow();
+            face_ring_points(&f)
+        };
+        if pts.len() < 3 {
+            continue;
+        }
+        let mut fb = fc.borrow_mut();
+        for w in &mut fb.boundary {
+            let uses = &mut w.borrow_mut().edges;
+            for u in uses.iter_mut() {
+                let (a, b) = {
+                    let eb = u.edge.borrow();
+                    let a = eb.a.borrow().point;
+                    let b = eb.b.borrow().point;
+                    (a, b)
+                };
+                let (sa, sb) = if u.forward { (a, b) } else { (b, a) };
+                u.pcurve = topo::Pcurve {
+                    start: plane.project(sa),
+                    end: plane.project(sb),
+                    mid: plane.project(scale(add(sa, sb), 0.5)),
+                };
+            }
+        }
+    }
+    moved
+}
+
+/// Combine the shells of two solids into one solid with no boolean. This is
+/// only valid when the pieces do NOT overlap: every face survives with its own
+/// handle and the divergence-theorem volume sums both shells exactly. Callers
+/// must check for overlap first (see `aabbs_overlap`) and refuse otherwise.
+pub fn combine(a: &TSolid, b: &TSolid) -> TSolid {
+    let mut shells = a.shells.clone();
+    shells.extend(b.shells.iter().cloned());
+    Solid { shells }
+}
+
+/// True when two bounding boxes overlap with positive interior in every axis./// CONSERVATIVE: it can say yes when only the boxes interpenetrate, but it is
+/// never wrong when it says no. A pair that merely touches (mirror plane,
+/// adjacent pattern instance) reports false, which is what lets disjoint
+/// pieces be combined without a boolean.
+pub fn aabbs_overlap(a: &Aabb, b: &Aabb) -> bool {
+    if a.is_empty() || b.is_empty() {
+        return false;
+    }
+    (0..3).all(|i| a.lo[i] < b.hi[i] - 1e-9 && b.lo[i] < a.hi[i] - 1e-9)
+}
+
+/// The ordered vertex ring of a face's outer wire, honouring each edge's
+/// orientation flag. This is the polygon area and volume consume.
+pub fn face_ring_points(face: &Face<Curve3, Surface3>) -> Vec<Vec3> {
+    let Some(w) = face.boundary.first() else {
+        return Vec::new();
+    };
+    let uses = w.borrow().edges.clone();
+    let mut out = Vec::with_capacity(uses.len());
+    for u in uses {
+        let e = u.edge.borrow();
+        // The USE carries the orientation: the shared edge has one intrinsic
+        // direction, and each face that borders it traverses it either way.
+        out.push(if u.forward {
+            e.a.borrow().point
+        } else {
+            e.b.borrow().point
+        });
+    }
+    out
+}
+
+/// The exact volume of a solid, by the divergence theorem. Every face
+/// contributes its surface integral ∫∫ r·n dS: a planar face is `area · n·centroid`
+/// (which works for a circular cap, where a triangle fan from a vertex ring would
+/// not), a curved face integrates ∂r/∂u × ∂r/∂v over its parameter domain.
+/// For an outward-wound closed boundary the sum is 3V.
+pub fn solid_volume(solid: &TSolid) -> f64 {
+    signed_volume(solid).abs()
+}
+
+/// The signed divergence-theorem sum, `acc / 3`: positive when the boundary is
+/// wound outward, negative when a built solid came out inside-out. A swept
+/// prism's walls are inverted whenever the sweep opposes the profile's own
+/// handedness (`dot(cross(u_axis, v_axis), sweep) < 0`), so builders of a
+/// negative-sweep tool check this sign rather than trusting `solid_volume`.
+pub fn signed_volume(solid: &TSolid) -> f64 {
+    let mut acc = 0.0;
+    for fc in solid.faces() {
+        let (surface, plane, edges) = {
+            let f = fc.borrow();
+            (
+                f.surface.clone(),
+                match &f.surface {
+                    Surface3::Plane(p) => Some(p.clone()),
+                    _ => None,
+                },
+                match &f.surface {
+                    Surface3::Plane(_) => face_edges(&f),
+                    _ => Vec::new(),
+                },
+            )
+        };
+        match (&surface, plane) {
+            (Surface3::Plane(_), Some(p)) => {
+                let (area, c) = geom::planar_measure(&p, &edges);
+                acc += area * crate::math::dot(p.n, c);
+            }
+            _ => acc += surface.volume_term(),
+        }
+    }
+    acc / 3.0
+}
+
+/// Build a copy of `solid` whose faces all wind outward, if a negative signed
+/// volume says the whole solid came out inside-out. Used for a pocket tool
+/// swept along a direction that opposes the profile's handedness; without this
+/// the void shell's normals point the wrong way and the volume is wrong.
+pub fn ensure_outward(solid: &TSolid) -> TSolid {
+    if signed_volume(solid) >= 0.0 {
+        return solid.clone();
+    }
+    let shells = solid
+        .shells
+        .iter()
+        .map(|sh| {
+            let faces = sh
+                .borrow()
+                .faces
+                .iter()
+                .map(|f| reversed_face(&f.borrow()))
+                .collect();
+            Rc::new(RefCell::new(Shell { faces }))
+        })
+        .collect();
+    Solid { shells }
+}
+
+/// A face with its surface orientation reversed (outward normal flipped),
+/// the boundary wires kept as-is. Planar and cylindrical faces -- everything a
+/// swept tool can have -- reverse their frame; anything else is returned
+/// unchanged, which a caller should treat as "could not fix".
+fn reversed_face(face: &Face<Curve3, Surface3>) -> TFace {
+    let surf = match &face.surface {
+        Surface::Plane(p) => Surface::Plane(Plane { origin: p.origin, n: scale(p.n, -1.0), u: p.u, v: p.v }),
+        Surface::Cylinder(c) => Surface::Cylinder(Cylinder {
+            origin: c.origin,
+            axis: c.axis,
+            e1: c.e1,
+            e2: scale(c.e2, -1.0),
+            radius: c.radius,
+            vmin: c.vmin,
+            vmax: c.vmax,
+            arc: c.arc.clone(),
+        }),
+        other => other.clone(),
+    };
+    Rc::new(RefCell::new(Face {
+        boundary: face.boundary.clone(),
+        forward: face.forward,
+        surface: surf,
+        uv_domain: face.uv_domain,
+    }))
+}
+
+pub fn solid_aabb(solid: &TSolid) -> Aabb {
+    let mut b = Aabb::empty();
+    for fc in solid.faces() {
+        let (surface, edges) = {
+            let f = fc.borrow();
+            (
+                f.surface.clone(),
+                match &f.surface {
+                    // The curve's own aabb, not just its endpoints: a planar
+                    // face can be bounded by an Arc (SPEC pinned math, a
+                    // sphere-cut box wall), which bulges past the straight
+                    // line between its vertices. For a segment-only face
+                    // this is identical to the old vertex-ring box.
+                    Surface3::Plane(_) => face_edges(&f),
+                    _ => Vec::new(),
+                },
+            )
+        };
+        if matches!(surface, Surface3::Plane(_)) {
+            for e in edges {
+                b.union(&e.curve.aabb());
+            }
+        } else {
+            b.union(&surface.aabb());
+        }
+    }
+    b
+}
+
+/// The area and centroid of a face. A planar face is measured from its
+/// boundary; an analytic curved face integrates over its parameter domain.
+pub fn face_area_centroid(face: &Face<Curve3, Surface3>) -> (f64, Vec3) {
+    match &face.surface {
+        Surface3::Plane(p) => {
+            let edges = face_edges(face);
+            geom::planar_measure(p, &edges)
+        }
+        surface => surface.area_centroid(),
+    }
+}
+
+/// The (curve, use-orientation) of every edge of a face's outer wire.
+fn face_edges(face: &Face<Curve3, Surface3>) -> Vec<geom::EdgeOnFace> {
+    let mut out = Vec::new();
+    for w in &face.boundary {
+        for u in &w.borrow().edges {
+            out.push(geom::EdgeOnFace {
+                curve: u.edge.borrow().curve.clone(),
+                forward: u.forward,
+            });
+        }
+    }
+    out
+}
+
+/// The linear length of an edge and its centroid.
+pub fn edge_length_centroid(edge: &Edge<Curve3>) -> (f64, Vec3) {
+    (edge.curve.length(), edge.curve.centroid())
+}
+
+// ---------------------------------------------------------------------------
+// Curved primitives (§4.4). Each is built directly as analytic B-rep: a curved
+// lateral face, a cap on top and a cap on the bottom, sharing the rim edges
+// the way a boolean later expects (§4.2).
+// ---------------------------------------------------------------------------
+
+/// One face assembled from a surface, a uv domain and a boundary of edge uses.
+fn make_face(
+    surface: Surface,
+    uv_domain: [[f64; 2]; 2],
+    uses: Vec<topo::EdgeUse<Curve3>>,
+) -> TFace {
+    let wref = Rc::new(RefCell::new(Wire { edges: uses }));
+    Rc::new(RefCell::new(Face {
+        boundary: vec![wref],
+        forward: true,
+        surface,
+        uv_domain,
+    }))
+}
+
+
+/// A cylinder centred on `center`, axis +Z, radius `radius`, height `height`.
+pub fn cylinder_solid(center: Vec3, radius: f64, height: f64, axis: Vec3) -> TSolid {
+    let axis = crate::math::normalize(axis);
+    let (e1, e2, z) = geom::frame(axis);
+    let zlo = add(center, scale(z, -height / 2.0));
+    let zhi = add(center, scale(z, height / 2.0));
+
+    // One vertical seam vertex on each rim, at angle 0 (the e1 direction).
+    let v_seam_lo = topo::vertex(add(zlo, scale(e1, radius)));
+    let v_seam_hi = topo::vertex(add(zhi, scale(e1, radius)));
+
+    let rim = |zc: Vec3| Curve::Circle {
+        center: zc,
+        radius,
+        normal: z,
+    };
+    let seam_lo = topo::edge(
+        v_seam_lo.clone(),
+        v_seam_lo.clone(),
+        true,
+        rim(zlo),
+    );
+    let seam_hi = topo::edge(
+        v_seam_hi.clone(),
+        v_seam_hi.clone(),
+        true,
+        rim(zhi),
+    );
+
+    // Lateral face: seam edge up, then the top rim backwards. u = angle
+    // (0 at e1, increasing toward e2), v = height from zlo to zhi.
+    let lateral = make_face(
+        Surface::Cylinder(Cylinder {
+            origin: zlo,
+            axis: z,
+            e1,
+            e2,
+            radius,
+            vmin: 0.0,
+            vmax: height,
+            arc: None,
+        }),
+        [[0.0, 0.0], [0.0, height]],
+        vec![
+            topo::EdgeUse {
+                edge: seam_lo.clone(),
+                forward: true,
+                pcurve: topo::Pcurve { start: [0.0, 0.0], end: [0.0, height], mid: [0.0, height / 2.0] },
+            },
+            topo::EdgeUse {
+                edge: seam_hi.clone(),
+                forward: false,
+                pcurve: topo::Pcurve { start: [2.0 * std::f64::consts::PI, height], end: [0.0, height], mid: [std::f64::consts::PI, height] },
+            },
+            topo::EdgeUse {
+                edge: seam_lo.clone(),
+                forward: false,
+                pcurve: topo::Pcurve { start: [0.0, height], end: [0.0, 0.0], mid: [0.0, height / 2.0] },
+            },
+        ],
+    );
+
+    let top = disk_face(
+        topo::vertex(add(zhi, scale(e1, radius))),
+        rim(zhi),
+        z,
+        e1,
+        e2,
+        radius,
+        height,
+    );
+    let bottom = disk_face(
+        v_seam_lo.clone(),
+        rim(zlo),
+        scale(z, -1.0),
+        e1,
+        scale(e2, -1.0),
+        radius,
+        0.0,
+    );
+
+    let shell = Rc::new(RefCell::new(Shell {
+        faces: vec![top, bottom, lateral],
+    }));
+    Solid { shells: vec![shell] }
+}
+
+/// A full-disk planar cap with one circular boundary edge. `v` is the plane's
+/// own offset on the parent surface, used only for the pcurve bookkeeping.
+fn disk_face(
+    seam: topo::VertexRef,
+    circle: Curve,
+    normal: Vec3,
+    u_axis: Vec3,
+    v_axis: Vec3,
+    radius: f64,
+    _v: f64,
+) -> TFace {
+    let e = topo::edge(seam.clone(), seam.clone(), true, circle);
+    let plane = Plane::new(seam.borrow().point, normal);
+    let _ = (u_axis, v_axis, radius);
+    let use_ = topo::EdgeUse {
+        edge: e,
+        forward: true,
+        pcurve: topo::Pcurve {
+            start: [0.0, 0.0],
+            end: [0.0, 0.0],
+            mid: [0.0, 0.0],
+        },
+    };
+    make_face(Surface::Plane(plane), [[0.0, 1.0], [0.0, 1.0]], vec![use_])
+}
+
+/// A cone centred on `center`, base at -height/2, apex at +height/2.
+pub fn cone_solid(center: Vec3, radius: f64, height: f64, axis: Vec3) -> TSolid {
+    let axis = crate::math::normalize(axis);
+    let (e1, e2, z) = geom::frame(axis);
+    let zlo = add(center, scale(z, -height / 2.0));
+    let zhi = add(center, scale(z, height / 2.0));
+    let slant = (radius * radius + height * height).sqrt();
+    let half_angle = radius.atan2(height);
+
+    let v_seam = topo::vertex(add(zlo, scale(e1, radius)));
+    let apex_v = topo::vertex(zhi);
+
+    let base_circle = Curve::Circle {
+        center: zlo,
+        radius,
+        normal: scale(z, -1.0),
+    };
+    let base_rim = topo::edge(v_seam.clone(), v_seam.clone(), true, base_circle.clone());
+    let seam_line = topo::edge(v_seam.clone(), apex_v.clone(), true, Curve::Segment {
+        a: v_seam.borrow().point,
+        b: apex_v.borrow().point,
+    });
+
+    // Lateral face: up the seam to the apex, then no top rim (degenerate), back
+    // down. The apex is a degenerate edge in the parameter domain.
+    let lateral = make_face(
+        Surface::Cone(Cone {
+            base: zlo,
+            axis: z,
+            e1,
+            e2,
+            base_radius: radius,
+            half_angle,
+            slant,
+        }),
+        [[0.0, 0.0], [0.0, slant]],
+        vec![
+            topo::EdgeUse {
+                edge: seam_line.clone(),
+                forward: true,
+                pcurve: topo::Pcurve { start: [0.0, 0.0], end: [0.0, slant], mid: [0.0, slant / 2.0] },
+            },
+            topo::EdgeUse {
+                edge: seam_line.clone(),
+                forward: false,
+                pcurve: topo::Pcurve { start: [2.0 * std::f64::consts::PI, slant], end: [0.0, 0.0], mid: [std::f64::consts::PI, slant / 2.0] },
+            },
+        ],
+    );
+    let base = disk_face(
+        v_seam.clone(),
+        base_circle,
+        scale(z, -1.0),
+        e1,
+        scale(e2, -1.0),
+        radius,
+        0.0,
+    );
+    let _ = e2;
+    let _ = base_rim;
+
+    let shell = Rc::new(RefCell::new(Shell {
+        faces: vec![base, lateral],
+    }));
+    Solid { shells: vec![shell] }
+}
+
+/// A sphere centred on `center`.
+pub fn sphere_solid(center: Vec3, radius: f64, axis: Vec3) -> TSolid {
+    let axis = crate::math::normalize(axis);
+    let (e1, e2, z) = geom::frame(axis);
+    let seam_v = topo::vertex(add(center, scale(e1, radius)));
+    let seam = topo::edge(
+        seam_v.clone(),
+        seam_v.clone(),
+        true,
+        Curve::Circle {
+            center,
+            radius,
+            normal: z,
+        },
+    );
+    let sphere = make_face(
+        Surface::Sphere(SphereSurf::full(center, radius, z, e1, e2)),
+        [[0.0, 0.0], [0.0, std::f64::consts::PI]],
+        vec![
+            topo::EdgeUse {
+                edge: seam.clone(),
+                forward: true,
+                pcurve: topo::Pcurve { start: [0.0, 0.0], end: [0.0, std::f64::consts::PI], mid: [0.0, std::f64::consts::FRAC_PI_2] },
+            },
+            topo::EdgeUse {
+                edge: seam,
+                forward: false,
+                pcurve: topo::Pcurve { start: [2.0 * std::f64::consts::PI, std::f64::consts::PI], end: [0.0, 0.0], mid: [std::f64::consts::PI, std::f64::consts::FRAC_PI_2] },
+            },
+        ],
+    );
+    let shell = Rc::new(RefCell::new(Shell { faces: vec![sphere] }));
+    Solid { shells: vec![shell] }
+}
+
+/// A torus centred on `center`, ring radius `ring`, tube radius `tube`.
+pub fn torus_solid(center: Vec3, ring: f64, tube: f64, axis: Vec3) -> TSolid {
+    let axis = crate::math::normalize(axis);
+    let (e1, e2, z) = geom::frame(axis);
+    // Seam on the outer equator (v = 0), at u = 0.
+    let seam_v = topo::vertex(add(center, scale(e1, ring + tube)));
+    let seam = topo::edge(
+        seam_v.clone(),
+        seam_v.clone(),
+        true,
+        Curve::Circle {
+            center,
+            radius: ring + tube,
+            normal: z,
+        },
+    );
+    let uv = 2.0 * std::f64::consts::PI;
+    let torus = make_face(
+        Surface::Torus(TorusSurf {
+            center,
+            axis: z,
+            e1,
+            e2,
+            ring,
+            tube,
+        }),
+        [[0.0, uv], [0.0, uv]],
+        vec![
+            topo::EdgeUse {
+                edge: seam.clone(),
+                forward: true,
+                pcurve: topo::Pcurve { start: [0.0, 0.0], end: [uv, 0.0], mid: [std::f64::consts::PI, 0.0] },
+            },
+            topo::EdgeUse {
+                edge: seam,
+                forward: false,
+                pcurve: topo::Pcurve { start: [uv, uv], end: [0.0, uv], mid: [std::f64::consts::PI, uv] },
+            },
+        ],
+    );
+    let shell = Rc::new(RefCell::new(Shell { faces: vec![torus] }));
+    Solid { shells: vec![shell] }
+}
+
+/// A regular n-gon prism, extruded along +Z, centred on `center`.
+pub fn prism_solid(center: Vec3, sides: usize, radius: f64, height: f64, axis: Vec3) -> TSolid {
+    let axis = crate::math::normalize(axis);
+    let (e1, e2, z) = geom::frame(axis);
+    let n = sides.max(3).min(12);
+    let zlo = add(center, scale(z, -height / 2.0));
+    let zhi = add(center, scale(z, height / 2.0));
+    let ang = |i: usize| 2.0 * std::f64::consts::PI * i as f64 / n as f64;
+    let ring_lo: Vec<topo::VertexRef> = (0..n)
+        .map(|i| topo::vertex(add(zlo, add(scale(e1, radius * ang(i).cos()), scale(e2, radius * ang(i).sin())))))
+        .collect();
+    let ring_hi: Vec<topo::VertexRef> = (0..n)
+        .map(|i| topo::vertex(add(zhi, add(scale(e1, radius * ang(i).cos()), scale(e2, radius * ang(i).sin())))))
+        .collect();
+
+    let mut faces: Vec<TFace> = Vec::new();
+    let mut sides_uses = Vec::new();
+    for i in 0..n {
+        let j = (i + 1) % n;
+        let a = ring_lo[i].clone();
+        let b = ring_lo[j].clone();
+        let c = ring_hi[j].clone();
+        let d = ring_hi[i].clone();
+        // Outward normal of this quad.
+        let p0 = a.borrow().point;
+        let p1 = b.borrow().point;
+        let p2 = d.borrow().point;
+        let nrm = crate::math::normalize(cross(sub(p1, p0), sub(p2, p0)));
+        let plane = Plane::new(p0, nrm);
+        let uses = {
+            let mk = |va: &topo::VertexRef, vb: &topo::VertexRef| -> topo::EdgeUse<Curve3> {
+                let e = topo::edge(
+                    va.clone(),
+                    vb.clone(),
+                    true,
+                    Curve::Segment { a: va.borrow().point, b: vb.borrow().point },
+                );
+                topo::EdgeUse {
+                    edge: e,
+                    forward: true,
+                    pcurve: topo::Pcurve {
+                        start: plane.project(va.borrow().point),
+                        end: plane.project(vb.borrow().point),
+                        mid: plane.project(scale(add(va.borrow().point, vb.borrow().point), 0.5)),
+                    },
+                }
+            };
+            vec![mk(&a, &b), mk(&b, &c), mk(&c, &d), mk(&d, &a)]
+        };
+        sides_uses.push(());
+        faces.push(make_face(
+            Surface::Plane(plane),
+            [[0.0, 1.0], [0.0, 1.0]],
+            uses,
+        ));
+    }
+    let top = polygon_cap_face(&ring_hi, z, zhi);
+    let bottom = polygon_cap_face(&ring_lo, scale(z, -1.0), zlo);
+    faces.push(top);
+    faces.push(bottom);
+    std::mem::drop(sides_uses);
+
+    let shell = Rc::new(RefCell::new(Shell { faces }));
+    Solid { shells: vec![shell] }
+}
+
+/// A planar n-gon cap from an ordered vertex ring, wound so its normal is `n`.
+fn polygon_cap_face(ring: &[topo::VertexRef], n: Vec3, _at: Vec3) -> TFace {
+    let p: Vec<Vec3> = ring.iter().map(|v| v.borrow().point).collect();
+    let plane = Plane::new(p[0], n);
+    let mut uses = Vec::new();
+    for i in 0..ring.len() {
+        let va = &ring[i];
+        let vb = &ring[(i + 1) % ring.len()];
+        let (pa, pb) = (va.borrow().point, vb.borrow().point);
+        let e = topo::edge(
+            va.clone(),
+            vb.clone(),
+            true,
+            Curve::Segment { a: pa, b: pb },
+        );
+        uses.push(topo::EdgeUse {
+            edge: e,
+            forward: true,
+            pcurve: topo::Pcurve {
+                start: plane.project(pa),
+                end: plane.project(pb),
+                mid: plane.project(scale(add(pa, pb), 0.5)),
+            },
+        });
+    }
+    make_face(Surface::Plane(plane), [[0.0, 1.0], [0.0, 1.0]], uses)
+}
+
+/// A right wedge: a right-triangle profile in the XY plane, extruded along +Z,
+/// centred on `center`. The triangle has corners (0,0), (width,0), (0,depth).
+pub fn wedge_solid(center: Vec3, width: f64, depth: f64, height: f64, axis: Vec3) -> TSolid {
+    let axis = crate::math::normalize(axis);
+    let (e1, e2, z) = geom::frame(axis);
+    let zlo = add(center, scale(z, -height / 2.0));
+    let zhi = add(center, scale(z, height / 2.0));
+    let local = |u: f64, v: f64, w: f64| {
+        add(
+            add(scale(e1, u - width / 2.0), scale(e2, v - depth / 2.0)),
+            scale(z, w - height / 2.0),
+        )
+    };
+    let tri = [[0.0, 0.0], [width, 0.0], [0.0, depth]];
+    let lo: Vec<topo::VertexRef> = tri.iter().map(|p| topo::vertex(local(p[0], p[1], 0.0))).collect();
+    let hi: Vec<topo::VertexRef> = tri.iter().map(|p| topo::vertex(local(p[0], p[1], height))).collect();
+    let _ = (zlo, zhi);
+
+    let mut faces: Vec<TFace> = Vec::new();
+    // Three side quads.
+    for i in 0..3 {
+        let j = (i + 1) % 3;
+        let a = lo[i].clone();
+        let b = lo[j].clone();
+        let c = hi[j].clone();
+        let d = hi[i].clone();
+        let p0 = a.borrow().point;
+        let p1 = b.borrow().point;
+        let p2 = d.borrow().point;
+        let nrm = crate::math::normalize(cross(sub(p1, p0), sub(p2, p0)));
+        let plane = Plane::new(p0, nrm);
+        let uses = {
+            let mk = |va: &topo::VertexRef, vb: &topo::VertexRef| -> topo::EdgeUse<Curve3> {
+                let e = topo::edge(
+                    va.clone(),
+                    vb.clone(),
+                    true,
+                    Curve::Segment { a: va.borrow().point, b: vb.borrow().point },
+                );
+                topo::EdgeUse {
+                    edge: e,
+                    forward: true,
+                    pcurve: topo::Pcurve {
+                        start: plane.project(va.borrow().point),
+                        end: plane.project(vb.borrow().point),
+                        mid: plane.project(scale(add(va.borrow().point, vb.borrow().point), 0.5)),
+                    },
+                }
+            };
+            vec![mk(&a, &b), mk(&b, &c), mk(&c, &d), mk(&d, &a)]
+        };
+        // Wound so the normal points away from the solid.
+        faces.push(make_face(
+            Surface::Plane(plane),
+            [[0.0, 1.0], [0.0, 1.0]],
+            uses,
+        ));
+    }
+    // Caps. The triangle (0,0),(w,0),(0,d) has area w*d/2; with outward +z the
+    // top is wound CCW seen from +z.
+    let top_plane = Plane::new(hi[0].borrow().point, z);
+    faces.push(triangle_cap_face(&hi, z));
+    faces.push(triangle_cap_face(&lo, scale(z, -1.0)));
+    let _ = top_plane;
+
+    let shell = Rc::new(RefCell::new(Shell { faces }));
+    Solid { shells: vec![shell] }
+}
+
+fn triangle_cap_face(ring: &[topo::VertexRef], n: Vec3) -> TFace {
+    let p: Vec<Vec3> = ring.iter().map(|v| v.borrow().point).collect();
+    let plane = Plane::new(p[0], n);
+    let mut uses = Vec::new();
+    for i in 0..ring.len() {
+        let va = &ring[i];
+        let vb = &ring[(i + 1) % ring.len()];
+        let e = topo::edge(
+            va.clone(),
+            vb.clone(),
+            true,
+            Curve::Segment { a: va.borrow().point, b: vb.borrow().point },
+        );
+        uses.push(topo::EdgeUse {
+            edge: e,
+            forward: true,
+            pcurve: topo::Pcurve {
+                start: plane.project(va.borrow().point),
+                end: plane.project(vb.borrow().point),
+                mid: plane.project(scale(add(va.borrow().point, vb.borrow().point), 0.5)),
+            },
+        });
+    }
+    make_face(Surface::Plane(plane), [[0.0, 1.0], [0.0, 1.0]], uses)
+}
+
+/// One segment of an extruded profile, in the sketch plane's (u, v)
+/// coordinates. A `Line` becomes a planar wall; an `Arc` becomes a genuine
+/// partial cylindrical wall, so a rounded corner or bowed edge is exact rather
+/// than a sampled polygon.
+#[derive(Clone, Debug)]
+pub enum ProfileSeg {
+    Line { a: [f64; 2], b: [f64; 2] },
+    Arc {
+        centre: [f64; 2],
+        radius: f64,
+        start: f64,
+        sweep: f64,
+    },
+}
+
+impl ProfileSeg {
+    /// The segment's start and end points in (u, v).
+    pub fn endpoints(&self) -> ([f64; 2], [f64; 2]) {
+        match self {
+            ProfileSeg::Line { a, b } => (*a, *b),
+            ProfileSeg::Arc { centre, radius, start, sweep } => (
+                [centre[0] + radius * start.cos(), centre[1] + radius * start.sin()],
+                [
+                    centre[0] + radius * (start + sweep).cos(),
+                    centre[1] + radius * (start + sweep).sin(),
+                ],
+            ),
+        }
+    }
+}
+
+/// Extrude a profile (a closed loop of straight and circular segments) given in
+/// the sketch plane's (u, v), along `sweep`. The solid spans from the profile
+/// to the profile translated by `sweep`, matching OCCT's MakePrism.
+pub fn extrude_profile(
+    segs: &[ProfileSeg],
+    origin: Vec3,
+    u_axis: Vec3,
+    v_axis: Vec3,
+    sweep: Vec3,
+) -> TSolid {
+    let n = segs.len();
+    let at = |p: [f64; 2]| add(origin, add(scale(u_axis, p[0]), scale(v_axis, p[1])));
+    let sweep_unit = crate::math::normalize(sweep);
+    let height = crate::math::len(sweep);
+
+    let base_v: Vec<topo::VertexRef> = segs
+        .iter()
+        .map(|s| topo::vertex(at(s.endpoints().0)))
+        .collect();
+    let top_v: Vec<topo::VertexRef> = base_v
+        .iter()
+        .map(|v| topo::vertex(add(v.borrow().point, sweep)))
+        .collect();
+
+    // One 3D curve per base and top segment.
+    let base_curve = |s: &ProfileSeg| -> Curve {
+        match s {
+            ProfileSeg::Line { a, b } => Curve::Segment { a: at(*a), b: at(*b) },
+            ProfileSeg::Arc { centre, radius, start, sweep } => Curve::Arc {
+                center: at(*centre),
+                radius: *radius,
+                normal: sweep_unit,
+                // Curve::Arc always begins at angle 0 from its x_axis, so the
+                // axis is rotated to the arc's own start angle; otherwise the
+                // edge would be the arc reflected back to angle 0.
+                x_axis: add(scale(u_axis, start.cos()), scale(v_axis, start.sin())),
+                sweep: *sweep,
+            },
+        }
+    };
+    let top_curve = |s: &ProfileSeg| -> Curve {
+        match base_curve(s) {
+            Curve::Segment { a, b } => Curve::Segment { a: add(a, sweep), b: add(b, sweep) },
+            Curve::Arc { center, radius, normal, x_axis, sweep: sw } => Curve::Arc {
+                center: add(center, sweep),
+                radius,
+                normal,
+                x_axis,
+                sweep: sw,
+            },
+            _ => base_curve(s),
+        }
+    };
+
+    let e_base: Vec<TEdge> = (0..n)
+        .map(|i| topo::edge(base_v[i].clone(), base_v[(i + 1) % n].clone(), true, base_curve(&segs[i])))
+        .collect();
+    let e_top: Vec<TEdge> = (0..n)
+        .map(|i| topo::edge(top_v[i].clone(), top_v[(i + 1) % n].clone(), true, top_curve(&segs[i])))
+        .collect();
+    let vert: Vec<TEdge> = (0..n)
+        .map(|i| {
+            let (a, b) = (base_v[i].borrow().point, top_v[i].borrow().point);
+            topo::edge(base_v[i].clone(), top_v[i].clone(), true, Curve::Segment { a, b })
+        })
+        .collect();
+
+    let mut faces: Vec<TFace> = Vec::new();
+    // A wall's outward normal must be independent of the sweep's sign: the cap
+    // normals below (base = -sweep_unit, top = +sweep_unit) do not reverse when
+    // the sweep does, and a normal of `cross(edge, sweep)` WOULD, turning every
+    // wall inside-out for a negative sweep (a pocket). Read the profile's own
+    // winding in the plane's true (right-handed) frame instead: for a CCW uv
+    // profile the outward side is to the right of travel.
+    let frame_normal = crate::math::normalize(cross(u_axis, v_axis));
+    let mut a2 = 0.0;
+    for i in 0..n {
+        let (p, q) = (segs[i].endpoints().0, segs[i].endpoints().1);
+        a2 += p[0] * q[1] - q[0] * p[1];
+    }
+    let winding = if a2 >= 0.0 { 1.0 } else { -1.0 };
+    for i in 0..n {
+        let j = (i + 1) % n;
+        let (a_uv, b_uv) = segs[i].endpoints();
+        let (ab, bb) = (at(a_uv), at(b_uv));
+        match &segs[i] {
+            ProfileSeg::Line { .. } => {
+                let edge_world = sub(bb, ab);
+                // Right of travel for a CCW profile, left for a CW one.
+                let nrm = crate::math::normalize(cross(scale(edge_world, winding), frame_normal));
+                let plane = Plane::new(ab, nrm);
+                let uses = vec![
+                    planar_seg_use(&plane, &e_base[i], true, ab, bb),
+                    planar_seg_use(&plane, &vert[j], true, base_at(&base_v[j]), base_at(&top_v[j])),
+                    planar_seg_use(&plane, &e_top[i], false, base_at(&top_v[j]), base_at(&top_v[i])),
+                    planar_seg_use(&plane, &vert[i], false, base_at(&top_v[i]), base_at(&base_v[i])),
+                ];
+                faces.push(make_face(Surface::Plane(plane), [[0.0, 1.0], [0.0, 1.0]], uses));
+            }
+            ProfileSeg::Arc { centre, radius, start, sweep: sw } => {
+                let centre_w = at(*centre);
+                // The arc wall's cylinder frame must agree with the straight
+                // walls' outward side; a CW profile flips the radial frame.
+                let (e1, e2) = if winding >= 0.0 {
+                    (u_axis, v_axis)
+                } else {
+                    (scale(u_axis, -1.0), scale(v_axis, -1.0))
+                };
+                let wall = Surface::Cylinder(Cylinder {
+                    origin: centre_w,
+                    axis: sweep_unit,
+                    e1,
+                    e2,
+                    radius: *radius,
+                    vmin: 0.0,
+                    vmax: height,
+                    arc: Some(geom::ArcRange { start: *start, span: *sw }),
+                });
+                let mut uses = Vec::new();
+                // The base and top arcs ride the cylinder's own (u, v) space;
+                // the two vertical seams sit at constant angle.
+                uses.push(cyl_arc_use(&e_base[i], true, *start, *start + *sw, 0.0, height));
+                uses.push(cyl_arc_use(&vert[j], true, *start + *sw, *start + *sw, 0.0, height));
+                uses.push(cyl_arc_use(&e_top[i], false, *start + *sw, *start, height, height));
+                uses.push(cyl_arc_use(&vert[i], false, *start, *start, height, 0.0));
+                faces.push(make_face(wall, [[*start, *start + *sw], [0.0, height]], uses));
+            }
+        }
+    }
+    // Caps. Base's outward normal is -sweep, top's is +sweep.
+    let base_plane = Plane::new(at(segs[0].endpoints().0), scale(sweep_unit, -1.0));
+    let top_plane = Plane::new(add(at(segs[0].endpoints().0), sweep), sweep_unit);
+    let base_uses = (0..n)
+        .map(|i| {
+            let (a, b) = segs[i].endpoints();
+            planar_seg_use(&base_plane, &e_base[i], true, at(a), at(b))
+        })
+        .collect();
+    let top_uses = (0..n)
+        .map(|i| {
+            let (a, b) = segs[i].endpoints();
+            planar_seg_use(&top_plane, &e_top[i], true, add(at(a), sweep), add(at(b), sweep))
+        })
+        .collect();
+    faces.push(make_face(Surface::Plane(base_plane), [[0.0, 1.0], [0.0, 1.0]], base_uses));
+    faces.push(make_face(Surface::Plane(top_plane), [[0.0, 1.0], [0.0, 1.0]], top_uses));
+
+    let shell = Rc::new(RefCell::new(Shell { faces }));
+    Solid { shells: vec![shell] }
+}
+
+/// Loft between two matching closed outlines given as world-space points,
+/// paired by index -- the ruled case of OCCT's BRepOffsetAPI_ThruSections (a
+/// `blend` of two straight-segment sketches on parallel planes). One planar
+/// quad per matching segment pair plus two planar caps, every edge a shared
+/// handle (§4.2) so a later boolean can consume the result. Returns None when
+/// a side quad is not coplanar within 1e-9 relative, the outlines wind
+/// opposite ways (a twisted loft) or a profile is degenerate -- the caller
+/// refuses the blend in words instead of building a wrong solid.
+pub fn blend_solid(lo: &[Vec3], hi: &[Vec3]) -> Option<TSolid> {
+    let n = lo.len();
+    if n < 3 || hi.len() != n {
+        return None;
+    }
+    // Each side quad's four points must be coplanar: the fourth point's
+    // distance from the other three's plane, relative to the quad's own size.
+    for i in 0..n {
+        let j = (i + 1) % n;
+        let a = sub(lo[j], lo[i]);
+        let b = sub(hi[j], lo[i]);
+        let c = sub(hi[i], lo[i]);
+        let nn = cross(a, b);
+        let ln = crate::math::len(nn);
+        let span = crate::math::len(a).max(crate::math::len(b)).max(crate::math::len(c));
+        if ln <= 1e-30 || crate::math::dot(c, nn).abs() / (ln * span) > 1e-9 {
+            return None;
+        }
+    }
+    let newell = |ring: &[Vec3]| -> Vec3 {
+        let mut acc = [0.0, 0.0, 0.0];
+        for i in 0..ring.len() {
+            let j = (i + 1) % ring.len();
+            acc = add(acc, cross(sub(ring[i], ring[0]), sub(ring[j], ring[0])));
+        }
+        acc
+    };
+    let nn_lo = newell(lo);
+    let nn_hi = newell(hi);
+    if crate::math::len(nn_lo) <= 1e-12 || crate::math::len(nn_hi) <= 1e-12 {
+        return None;
+    }
+    let axis = crate::math::normalize(nn_lo);
+    // Opposite windings would pair the points into twisted sides.
+    if crate::math::dot(nn_hi, axis) <= 0.0 {
+        return None;
+    }
+    let centroid = |ring: &[Vec3]| -> Vec3 {
+        let mut c = [0.0, 0.0, 0.0];
+        for p in ring {
+            c = add(c, *p);
+        }
+        scale(c, 1.0 / ring.len() as f64)
+    };
+    // Whether the shared winding normal points toward the hi outline or away
+    // from it; the caps' windings and the side rings flip with it.
+    let towards_hi = crate::math::dot(axis, sub(centroid(hi), centroid(lo))) > 0.0;
+
+    let lo_v: Vec<topo::VertexRef> = lo.iter().map(|p| topo::vertex(*p)).collect();
+    let hi_v: Vec<topo::VertexRef> = hi.iter().map(|p| topo::vertex(*p)).collect();
+    let e_lo: Vec<TEdge> = (0..n)
+        .map(|i| {
+            let j = (i + 1) % n;
+            topo::edge(lo_v[i].clone(), lo_v[j].clone(), true, Curve::Segment { a: lo[i], b: lo[j] })
+        })
+        .collect();
+    let e_hi: Vec<TEdge> = (0..n)
+        .map(|i| {
+            let j = (i + 1) % n;
+            topo::edge(hi_v[i].clone(), hi_v[j].clone(), true, Curve::Segment { a: hi[i], b: hi[j] })
+        })
+        .collect();
+    let e_side: Vec<TEdge> = (0..n)
+        .map(|i| {
+            topo::edge(lo_v[i].clone(), hi_v[i].clone(), true, Curve::Segment { a: lo[i], b: hi[i] })
+        })
+        .collect();
+
+    let mut faces: Vec<TFace> = Vec::new();
+    for i in 0..n {
+        let j = (i + 1) % n;
+        // With the winding normal toward hi, the ring [P_i, P_{i+1}, Q_{i+1},
+        // Q_i] faces outward; against it, [P_i, Q_i, Q_{i+1}, P_{i+1}] does.
+        let ring: [Vec3; 4] = if towards_hi {
+            [lo[i], lo[j], hi[j], hi[i]]
+        } else {
+            [lo[i], hi[i], hi[j], lo[j]]
+        };
+        let plane = Plane::new(ring[0], crate::math::normalize(newell(&ring)));
+        let mut uses = Vec::with_capacity(4);
+        if towards_hi {
+            uses.push(planar_seg_use(&plane, &e_lo[i], true, ring[0], ring[1]));
+            uses.push(planar_seg_use(&plane, &e_side[j], true, ring[1], ring[2]));
+            uses.push(planar_seg_use(&plane, &e_hi[i], false, ring[2], ring[3]));
+            uses.push(planar_seg_use(&plane, &e_side[i], false, ring[3], ring[0]));
+        } else {
+            uses.push(planar_seg_use(&plane, &e_side[i], true, ring[0], ring[1]));
+            uses.push(planar_seg_use(&plane, &e_hi[i], true, ring[1], ring[2]));
+            uses.push(planar_seg_use(&plane, &e_side[j], false, ring[2], ring[3]));
+            uses.push(planar_seg_use(&plane, &e_lo[i], false, ring[3], ring[0]));
+        }
+        faces.push(make_face(Surface::Plane(plane), [[0.0, 1.0], [0.0, 1.0]], uses));
+    }
+    // Caps. The lo cap points away from the solid, the hi cap into the
+    // direction hi lies in; each traverses its ring in the winding that makes
+    // its plane normal outward.
+    let lo_plane = Plane::new(lo[0], if towards_hi { scale(axis, -1.0) } else { axis });
+    let hi_plane = Plane::new(hi[0], if towards_hi { axis } else { scale(axis, -1.0) });
+    let lo_order: Vec<usize> = if towards_hi { (0..n).rev().collect() } else { (0..n).collect() };
+    let hi_order: Vec<usize> = if towards_hi { (0..n).collect() } else { (0..n).rev().collect() };
+    let cap_uses = |order: &[usize], pts: &[Vec3], edges: &[TEdge], plane: &Plane| -> Vec<topo::EdgeUse<Curve3>> {
+        (0..n)
+            .map(|k| {
+                let a = order[k];
+                let b = order[(k + 1) % n];
+                let (m, forward) = if b == (a + 1) % n { (a, true) } else { (b, false) };
+                planar_seg_use(plane, &edges[m], forward, pts[a], pts[b])
+            })
+            .collect()
+    };
+    faces.push(make_face(Surface::Plane(lo_plane.clone()), [[0.0, 1.0], [0.0, 1.0]], cap_uses(&lo_order, lo, &e_lo, &lo_plane)));
+    faces.push(make_face(Surface::Plane(hi_plane.clone()), [[0.0, 1.0], [0.0, 1.0]], cap_uses(&hi_order, hi, &e_hi, &hi_plane)));
+
+    let shell = Rc::new(RefCell::new(Shell { faces }));
+    Some(Solid { shells: vec![shell] })
+}
+
+/// Build a solid of revolution from a closed profile given in (radius, height)
+/// coordinates, spun a full turn about `axis`. `e1` is the direction radius 0
+/// points along at angle 0; the axis passes through the world origin.
+///
+/// The profile is read with its interior on a consistent side (its own winding
+/// decides the 2D outward normal of each segment), and that normal picks the
+/// direction each generated face points. Only segments PARALLEL or
+/// PERPENDICULAR to the axis are built: they revolve to a cylinder and a planar
+/// annulus, both of which this kernel measures exactly. A slanted segment would
+/// revolve to a cone frustum and returns None rather than a wrong solid -- the
+/// caller refuses that revolve in words instead.
+///
+/// Returns the solid and, per profile segment, the output face index it
+/// produced (None for a degenerate segment on the axis), so `swept` history can
+/// be written exactly as extrude writes it.
+pub fn revolve_profile(
+    profile: &[[f64; 2]],
+    axis: Vec3,
+    e1: Vec3,
+    angle_deg: f64,
+) -> Option<(TSolid, Vec<Option<usize>>)> {
+    let n = profile.len();
+    if n < 3 {
+        return None;
+    }
+    if (angle_deg.abs() - 360.0).abs() > 1e-9 {
+        return revolve_profile_partial(profile, axis, e1, angle_deg);
+    }
+    let axis = crate::math::normalize(axis);
+    let e1 = crate::math::normalize(sub(e1, scale(axis, crate::math::dot(axis, e1))));
+    let e2 = crate::math::normalize(cross(axis, e1));
+
+    // Shoelace signed area, in (radius, height). Its sign says which way the
+    // profile is wound, which decides each segment's outward 2D normal.
+    let mut a2 = 0.0;
+    for i in 0..n {
+        let p = profile[i];
+        let q = profile[(i + 1) % n];
+        a2 += p[0] * q[1] - q[0] * p[1];
+    }
+    if a2.abs() < 1e-12 {
+        return None;
+    }
+    let ccw = a2 > 0.0;
+
+    let mut faces: Vec<TFace> = Vec::new();
+    let mut map: Vec<Option<usize>> = Vec::with_capacity(n);
+    for i in 0..n {
+        let (r0, h0) = (profile[i][0], profile[i][1]);
+        let (r1, h1) = (profile[(i + 1) % n][0], profile[(i + 1) % n][1]);
+        let (dr, dh) = (r1 - r0, h1 - h0);
+        let len = (dr * dr + dh * dh).sqrt();
+        if len < 1e-12 {
+            map.push(None);
+            continue;
+        }
+        // Outward 2D normal (radius, height) of a CCW-wound profile; reversed
+        // for a CW one.
+        let (nr, nh) = if ccw {
+            (dh / len, -dr / len)
+        } else {
+            (-dh / len, dr / len)
+        };
+
+        if dr.abs() < 1e-9 {
+            // Parallel to the axis: a cylindrical wall of radius r0.
+            let r = r0;
+            if r < 1e-9 {
+                map.push(None); // on the axis -- a degenerate wall
+                continue;
+            }
+            let h_lo = h0.min(h1);
+            let hh = (h1 - h0).abs();
+            // e1 is flipped for an inward-pointing wall (the hole of an
+            // annulus), which flips cross(r_u, r_v) to point toward the axis.
+            let e1c = if nr >= 0.0 { e1 } else { scale(e1, -1.0) };
+            let surf = Surface::Cylinder(Cylinder {
+                origin: scale(axis, h_lo),
+                axis,
+                e1: e1c,
+                e2,
+                radius: r,
+                vmin: 0.0,
+                vmax: hh,
+                arc: None,
+            });
+            let pa = add(scale(e1c, r), scale(axis, h_lo));
+            let pb = add(scale(e1c, r), scale(axis, h_lo + hh));
+            let seam = topo::edge(
+                topo::vertex(pa),
+                topo::vertex(pb),
+                true,
+                Curve::Segment { a: pa, b: pb },
+            );
+            let use_ = topo::EdgeUse {
+                edge: seam,
+                forward: true,
+                pcurve: topo::Pcurve {
+                    start: [0.0, 0.0],
+                    end: [0.0, hh],
+                    mid: [0.0, hh / 2.0],
+                },
+            };
+            let f = make_face(
+                surf,
+                [[0.0, 2.0 * std::f64::consts::PI], [0.0, hh]],
+                vec![use_],
+            );
+            map.push(Some(faces.len()));
+            faces.push(f);
+        } else if dh.abs() < 1e-9 {
+            // Perpendicular to the axis: a planar annulus at height h0, with a
+            // hole of radius r_lo when the profile does not reach the axis.
+            let h = h0;
+            let r_lo = r0.min(r1);
+            let r_hi = r0.max(r1);
+            if r_hi < 1e-12 {
+                map.push(None);
+                continue;
+            }
+            let nrm = if nh >= 0.0 { axis } else { scale(axis, -1.0) };
+            let centre = scale(axis, h);
+            let plane = Plane::new(centre, nrm);
+            let zero_pc = topo::Pcurve {
+                start: [0.0, 0.0],
+                end: [0.0, 0.0],
+                mid: [0.0, 0.0],
+            };
+            let outer = {
+                let c = Curve::Circle {
+                    center: centre,
+                    radius: r_hi,
+                    normal: axis,
+                };
+                let v = topo::vertex(add(centre, scale(e1, r_hi)));
+                topo::EdgeUse {
+                    edge: topo::edge(v.clone(), v, true, c),
+                    // CCW about +axis when the face points along +axis; the
+                    // hole is the same loop reversed.
+                    forward: nh >= 0.0,
+                    pcurve: zero_pc.clone(),
+                }
+            };
+            let mut wires = vec![Rc::new(RefCell::new(Wire { edges: vec![outer] }))];
+            if r_lo > 1e-9 {
+                let c = Curve::Circle {
+                    center: centre,
+                    radius: r_lo,
+                    normal: axis,
+                };
+                let v = topo::vertex(add(centre, scale(e1, r_lo)));
+                let inner = topo::EdgeUse {
+                    edge: topo::edge(v.clone(), v, true, c),
+                    forward: nh < 0.0,
+                    pcurve: zero_pc.clone(),
+                };
+                wires.push(Rc::new(RefCell::new(Wire { edges: vec![inner] })));
+            }
+            let f = Rc::new(RefCell::new(Face {
+                boundary: wires,
+                forward: true,
+                surface: Surface::Plane(plane),
+                uv_domain: [[0.0, 1.0], [0.0, 1.0]],
+            }));
+            map.push(Some(faces.len()));
+            faces.push(f);
+        } else {
+            // Slanted: a cone frustum. Not built in this slice -- refusing is
+            // the honest answer, never a solid that is not what was asked for.
+            return None;
+        }
+    }
+    Some((
+        Solid {
+            shells: vec![Rc::new(RefCell::new(Shell { faces }))],
+        },
+        map,
+    ))
+}
+
+/// A partial-angle revolve: the same walls as a full turn, but each curved
+/// wall is restricted to [0, angle], each annulus becomes a planar sector, and
+/// two planar caps close the ends. Rotation is right-handed about `axis`: a
+/// point at radius r, height h sits at
+/// `h*axis + r*(e1 cos t + e2 sin t)`, matching OCCT's
+/// `BRepPrimAPI_MakeRevol(face, gp_Ax1(origin, axis), angle)`.
+fn revolve_profile_partial(
+    profile: &[[f64; 2]],
+    axis: Vec3,
+    e1: Vec3,
+    angle_deg: f64,
+) -> Option<(TSolid, Vec<Option<usize>>)> {
+    let n = profile.len();
+    if n < 3 {
+        return None;
+    }
+    let angle = angle_deg.to_radians();
+    if angle.abs() < 1e-12 || (angle.abs() - std::f64::consts::TAU).abs() < 1e-12 {
+        return None;
+    }
+    let axis = crate::math::normalize(axis);
+    let e1 = crate::math::normalize(sub(e1, scale(axis, crate::math::dot(axis, e1))));
+    let e2 = crate::math::normalize(cross(axis, e1));
+    let at = |r: f64, h: f64, t: f64| {
+        add(
+            scale(axis, h),
+            scale(add(scale(e1, t.cos()), scale(e2, t.sin())), r),
+        )
+    };
+
+    let mut a2 = 0.0;
+    for i in 0..n {
+        let p = profile[i];
+        let q = profile[(i + 1) % n];
+        a2 += p[0] * q[1] - q[0] * p[1];
+    }
+    if a2.abs() < 1e-12 {
+        return None;
+    }
+    let ccw = a2 > 0.0;
+
+    let mut faces: Vec<TFace> = Vec::new();
+    let mut map: Vec<Option<usize>> = Vec::with_capacity(n);
+    for i in 0..n {
+        let (r0, h0) = (profile[i][0], profile[i][1]);
+        let (r1, h1) = (profile[(i + 1) % n][0], profile[(i + 1) % n][1]);
+        let (dr, dh) = (r1 - r0, h1 - h0);
+        let len = (dr * dr + dh * dh).sqrt();
+        if len < 1e-12 {
+            map.push(None);
+            continue;
+        }
+        let (nr, nh) = if ccw {
+            (dh / len, -dr / len)
+        } else {
+            (-dh / len, dr / len)
+        };
+
+        if dr.abs() < 1e-9 {
+            // Parallel to the axis: a partial cylindrical wall. `e2` stays the
+            // one right-handed frame (never recomputed from a flipped `e1`):
+            // flipping `e1` alone is what makes an inward-pointing (hole) wall,
+            // and it also mirrors the arc's own start so the wall still covers
+            // the SAME angular range as its neighbours.
+            let r = r0;
+            if r < 1e-9 {
+                map.push(None);
+                continue;
+            }
+            let h_lo = h0.min(h1);
+            let hh = (h1 - h0).abs();
+            let e1c = if nr >= 0.0 { e1 } else { scale(e1, -1.0) };
+            let surf = Surface::Cylinder(Cylinder {
+                origin: scale(axis, h_lo),
+                axis,
+                e1: e1c,
+                e2,
+                radius: r,
+                vmin: 0.0,
+                vmax: hh,
+                arc: Some(geom::ArcRange { start: 0.0, span: angle.abs() }),
+            });
+            let pa = add(scale(e1c, r), scale(axis, h_lo));
+            let pb = add(scale(e1c, r), scale(axis, h_lo + hh));
+            let seam = topo::edge(
+                topo::vertex(pa),
+                topo::vertex(pb),
+                true,
+                Curve::Segment { a: pa, b: pb },
+            );
+            let use_ = topo::EdgeUse {
+                edge: seam,
+                forward: true,
+                pcurve: topo::Pcurve { start: [0.0, 0.0], end: [0.0, hh], mid: [0.0, hh / 2.0] },
+            };
+            let f = make_face(surf, [[0.0, angle.abs()], [0.0, hh]], vec![use_]);
+            map.push(Some(faces.len()));
+            faces.push(f);
+        } else if dh.abs() < 1e-9 {
+            // Perpendicular to the axis: a planar annulus sector at height h0,
+            // bounded by two real arcs and two radial segments. The plane's
+            // frame is (e1, ±e2) so the sector's angle is exactly the revolve
+            // angle; `v`'s sign matches the face's outward normal.
+            let h = h0;
+            let r_lo = r0.min(r1);
+            let r_hi = r0.max(r1);
+            if r_hi < 1e-12 {
+                map.push(None);
+                continue;
+            }
+            let nrm = if nh >= 0.0 { axis } else { scale(axis, -1.0) };
+            let vsign = crate::math::dot(nrm, axis).signum();
+            let v = scale(e2, vsign);
+            let centre = scale(axis, h);
+            let plane = Plane { origin: centre, n: nrm, u: e1, v };
+            let p_out0 = add(centre, scale(e1, r_hi));
+            let dir1 = add(scale(e1, angle.cos()), scale(e2, angle.sin()));
+            let p_out1 = add(centre, scale(dir1, r_hi));
+            let p_in0 = add(centre, scale(e1, r_lo));
+            let p_in1 = add(centre, scale(dir1, r_lo));
+            let seg = |a: Vec3, b: Vec3| {
+                topo::edge(topo::vertex(a), topo::vertex(b), true, Curve::Segment { a, b })
+            };
+            let arc = |center: Vec3, radius: f64, x_axis: Vec3, sweep: f64| {
+                topo::edge(
+                    topo::vertex(add(center, scale(x_axis, radius))),
+                    topo::vertex(add(
+                        center,
+                        scale(add(scale(x_axis, sweep.cos()), scale(e2, sweep.sin())), radius),
+                    )),
+                    true,
+                    // The arc's own frame is fixed to (e1, e2) about `axis` --
+                    // NOT the face's outward normal, which flips for a lower
+                    // annulus and would put its arc on the wrong side of the
+                    // axis, dragging the tool's bbox across the revolve plane.
+                    Curve::Arc { center, radius, normal: axis, x_axis, sweep },
+                )
+            };
+            let uses = vec![
+                planar_seg_use(&plane, &arc(centre, r_hi, e1, angle), true, p_out0, p_out1),
+                planar_seg_use(&plane, &seg(p_out1, p_in1), true, p_out1, p_in1),
+                planar_seg_use(&plane, &arc(centre, r_lo, dir1, -angle), true, p_in1, p_in0),
+                planar_seg_use(&plane, &seg(p_in0, p_out0), true, p_in0, p_out0),
+            ];
+            let f = make_face(Surface::Plane(plane), [[0.0, 1.0], [0.0, 1.0]], uses);
+            map.push(Some(faces.len()));
+            faces.push(f);
+        } else {
+            return None;
+        }
+    }
+
+    // Two planar caps, each a copy of the profile polygon, at angle 0 and
+    // angle `angle`. Their outward normals point away from the swept material:
+    // the cap at t=0 faces -dir(0), the one at t=angle faces +dir(angle).
+    let dir_at = |t: f64| add(scale(e1, -t.sin()), scale(e2, t.cos()));
+    let cap_face = |t: f64, outward: Vec3, faces: &mut Vec<TFace>| {
+        let ring: Vec<Vec3> = profile.iter().map(|p| at(p[0], p[1], t)).collect();
+        let plane = Plane::new(ring[0], outward);
+        let mut uses = Vec::new();
+        for k in 0..ring.len() {
+            let a = ring[k];
+            let b = ring[(k + 1) % ring.len()];
+            let e = topo::edge(topo::vertex(a), topo::vertex(b), true, Curve::Segment { a, b });
+            uses.push(planar_seg_use(&plane, &e, true, a, b));
+        }
+        faces.push(make_face(Surface::Plane(plane), [[0.0, 1.0], [0.0, 1.0]], uses));
+    };
+    cap_face(0.0, scale(dir_at(0.0), -1.0), &mut faces);
+    cap_face(angle, dir_at(angle), &mut faces);
+
+    Some((
+        Solid { shells: vec![Rc::new(RefCell::new(Shell { faces }))] },
+        map,
+    ))
+}
+
+fn base_at(v: &topo::VertexRef) -> Vec3 {
+    v.borrow().point
+}
+/// A plane just for projecting an arc wall's pcurves. The wall's real surface
+/// is the cylinder; this frame only needs to be perpendicular to the axis.
+fn wall_plane(centre: Vec3, u_axis: Vec3, v_axis: Vec3) -> Plane {
+    Plane::new(centre, crate::math::normalize(cross(u_axis, v_axis)))
+}
+
+/// One edge use of a cylindrical wall, in the cylinder's own (u = angle,
+/// v = height) parameter space.
+fn cyl_arc_use(
+    e: &TEdge,
+    forward: bool,
+    u0: f64,
+    u1: f64,
+    v0: f64,
+    v1: f64,
+) -> topo::EdgeUse<Curve3> {
+    topo::EdgeUse {
+        edge: e.clone(),
+        forward,
+        pcurve: topo::Pcurve {
+            start: [u0, v0],
+            end: [u1, v1],
+            mid: [(u0 + u1) / 2.0, (v0 + v1) / 2.0],
+        },
+    }
+}
+
+/// One edge use of a planar face, with the pcurve projected through `plane`.
+fn planar_seg_use(
+    plane: &Plane,
+    e: &TEdge,
+    forward: bool,
+    sa: Vec3,
+    sb: Vec3,
+) -> topo::EdgeUse<Curve3> {
+    topo::EdgeUse {
+        edge: e.clone(),
+        forward,
+        pcurve: topo::Pcurve {
+            start: plane.project(sa),
+            end: plane.project(sb),
+            mid: plane.project(scale(add(sa, sb), 0.5)),
+        },
+    }
+}
+
+/// Extrude a straight-edged polygon profile, given in the sketch plane's own
+/// (u, v) coordinates, along `sweep` (a world vector). `origin` is the plane's
+/// offset point; `u_axis`/`v_axis` are the world directions the sketch's u and v
+/// land on (PLANE_AXES in occt-build.ts). The solid spans from the profile to
+/// the profile translated by `sweep`, so a profile at z=0 extruded by +Z*h sits
+/// with its base on z=0, exactly as OCCT's MakePrism does.
+pub fn extrude_polygon(
+    pts_uv: &[[f64; 2]],
+    origin: Vec3,
+    u_axis: Vec3,
+    v_axis: Vec3,
+    sweep: Vec3,
+) -> TSolid {
+    let n = pts_uv.len();
+    let at = |p: [f64; 2]| add(origin, add(scale(u_axis, p[0]), scale(v_axis, p[1])));
+    let base: Vec<Vec3> = pts_uv.iter().map(|p| at(*p)).collect();
+    let top: Vec<Vec3> = base.iter().map(|p| add(*p, sweep)).collect();
+    let base_v: Vec<topo::VertexRef> = base.iter().map(|p| topo::vertex(*p)).collect();
+    let top_v: Vec<topo::VertexRef> = top.iter().map(|p| topo::vertex(*p)).collect();
+    let sweep_unit = crate::math::normalize(sweep);
+
+    // Base/top boundary edges, shared by the caps and the two lateral faces
+    // that meet along them (§4.2 shared handles).
+    let mut e_base: Vec<TEdge> = Vec::with_capacity(n);
+    let mut e_top: Vec<TEdge> = Vec::with_capacity(n);
+    for i in 0..n {
+        let j = (i + 1) % n;
+        e_base.push(topo::edge(
+            base_v[i].clone(),
+            base_v[j].clone(),
+            true,
+            Curve::Segment { a: base[i], b: base[j] },
+        ));
+        e_top.push(topo::edge(
+            top_v[i].clone(),
+            top_v[j].clone(),
+            true,
+            Curve::Segment { a: top[i], b: top[j] },
+        ));
+    }
+    // One vertical edge per profile vertex, shared by the two adjacent sides.
+    let vert: Vec<TEdge> = (0..n)
+        .map(|i| {
+            topo::edge(
+                base_v[i].clone(),
+                top_v[i].clone(),
+                true,
+                Curve::Segment { a: base[i], b: top[i] },
+            )
+        })
+        .collect();
+
+    let mut faces: Vec<TFace> = Vec::new();
+    // Lateral faces. Outward normal is cross(edge direction, sweep): on the
+    // ground plane edge (0)->(1) along +x with sweep +z gives -y, which is the
+    // outward side of the y=0 edge. The same construction is correct on xz/yz
+    // because the plane axes are chosen so n*dir == u x v (see PLANE_AXES).
+    for i in 0..n {
+        let j = (i + 1) % n;
+        let e = sub(base[j], base[i]);
+        let nrm = crate::math::normalize(cross(e, sweep));
+        let plane = Plane::new(base[i], nrm);
+        let uses = vec![
+            planar_seg_use(&plane, &e_base[i], true, base[i], base[j]),
+            planar_seg_use(&plane, &vert[j], true, base[j], top[j]),
+            planar_seg_use(&plane, &e_top[i], false, top[j], top[i]),
+            planar_seg_use(&plane, &vert[i], false, top[i], base[i]),
+        ];
+        faces.push(make_face(Surface::Plane(plane), [[0.0, 1.0], [0.0, 1.0]], uses));
+    }
+    // Caps. The base cap's outward normal is -sweep, the top cap's is +sweep.
+    let base_plane = Plane::new(base[0], scale(sweep_unit, -1.0));
+    let top_plane = Plane::new(top[0], sweep_unit);
+    let base_uses = (0..n)
+        .map(|i| planar_seg_use(&base_plane, &e_base[i], true, base[i], base[(i + 1) % n]))
+        .collect();
+    let top_uses = (0..n)
+        .map(|i| planar_seg_use(&top_plane, &e_top[i], true, top[i], top[(i + 1) % n]))
+        .collect();
+    faces.push(make_face(Surface::Plane(base_plane), [[0.0, 1.0], [0.0, 1.0]], base_uses));
+    faces.push(make_face(Surface::Plane(top_plane), [[0.0, 1.0], [0.0, 1.0]], top_uses));
+
+    let shell = Rc::new(RefCell::new(Shell { faces }));
+    Solid { shells: vec![shell] }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn box_has_six_faces_twelve_edges_eight_vertices() {
+        let s = box_solid([40.0, 30.0, 20.0], [0.0, 0.0, 0.0], None);
+        assert_eq!(s.faces().len(), 6);
+        assert_eq!(s.edges().len(), 12);
+        assert_eq!(s.vertices().len(), 8);
+    }
+
+    #[test]
+    fn box_volume_is_exact() {
+        let s = box_solid([40.0, 30.0, 20.0], [0.0, 0.0, 0.0], None);
+        assert!((solid_volume(&s) - 24000.0).abs() < 1e-9);
+    }
+
+    #[test]
+    fn box_aabb_is_tight_not_padded() {
+        let s = box_solid([40.0, 30.0, 20.0], [5.0, -3.0, 2.0], None);
+        let b = solid_aabb(&s);
+        assert_eq!(b.lo, [-15.0, -18.0, -8.0]);
+        assert_eq!(b.hi, [25.0, 12.0, 12.0]);
+    }
+
+    #[test]
+    fn every_box_edge_is_shared_by_exactly_two_faces() {
+        // §4.2: two faces that share an edge hold the SAME handle. An edge used
+        // by exactly two face-wires is the observable consequence.
+        let s = box_solid([10.0, 10.0, 10.0], [0.0, 0.0, 0.0], None);
+        for e in s.edges() {
+            let count = s
+                .faces()
+                .iter()
+                .filter(|f| {
+                    f.borrow().boundary.iter().any(|w| {
+                        w.borrow().edges.iter().any(|u| topo::same(&u.edge, &e))
+                    })
+                })
+                .count();
+            assert_eq!(count, 2, "every box edge borders exactly two faces");
+        }
+    }
+
+    #[test]
+    fn move_translates_and_preserves_volume_and_topology() {
+        let s = box_solid([20.0, 20.0, 20.0], [0.0, 0.0, 0.0], None);
+        let t = Transform::translation([15.0, 5.0, 0.0]);
+        let m = transform_solid(&s, &t);
+        assert_eq!(m.faces().len(), 6);
+        assert_eq!(m.edges().len(), 12);
+        assert!((solid_volume(&m) - 8000.0).abs() < 1e-9);
+        assert_eq!(solid_aabb(&m).lo, [5.0, -5.0, -10.0]);
+        assert_eq!(solid_aabb(&m).hi, [25.0, 15.0, 10.0]);
+    }
+
+    #[test]
+    fn move_preserves_shared_handles() {
+        let s = box_solid([20.0, 20.0, 20.0], [0.0, 0.0, 0.0], None);
+        let m = transform_solid(&s, &Transform::translation([15.0, 5.0, 0.0]));
+        assert_eq!(m.edges().len(), 12, "shared handles must not be duplicated");
+        assert_eq!(m.vertices().len(), 8);
+    }
+
+    fn close(got: f64, want: f64, tol: f64, what: &str) {
+        let d = (got - want).abs() / want.abs().max(1.0);
+        assert!(d < tol, "{what}: got {got}, want {want} (rel {d:e})");
+    }
+
+    #[test]
+    fn cylinder_volume_and_bbox() {
+        let s = cylinder_solid([0.0, 0.0, 0.0], 12.0, 30.0, [0.0, 0.0, 1.0]);
+        let want = std::f64::consts::PI * 144.0 * 30.0;
+        close(solid_volume(&s), want, 1e-12, "cylinder volume");
+        let b = solid_aabb(&s);
+        close(b.lo[0], -12.0, 1e-12, "cyl lo x");
+        close(b.hi[0], 12.0, 1e-12, "cyl hi x");
+        close(b.lo[2], -15.0, 1e-12, "cyl lo z");
+        close(b.hi[2], 15.0, 1e-12, "cyl hi z");
+    }
+
+    #[test]
+    fn cone_volume_and_bbox() {
+        let s = cone_solid([0.0, 0.0, 0.0], 12.0, 30.0, [0.0, 0.0, 1.0]);
+        let want = std::f64::consts::PI * 144.0 * 30.0 / 3.0;
+        close(solid_volume(&s), want, 1e-12, "cone volume");
+        let b = solid_aabb(&s);
+        close(b.lo[0], -12.0, 1e-12, "cone lo x");
+        close(b.hi[0], 12.0, 1e-12, "cone hi x");
+        close(b.hi[2], 15.0, 1e-12, "cone hi z");
+    }
+
+    #[test]
+    fn sphere_volume_and_bbox() {
+        let s = sphere_solid([0.0, 0.0, 0.0], 15.0, [0.0, 0.0, 1.0]);
+        let want = 4.0 / 3.0 * std::f64::consts::PI * 15.0f64.powi(3);
+        close(solid_volume(&s), want, 1e-12, "sphere volume");
+        let b = solid_aabb(&s);
+        close(b.lo[0], -15.0, 1e-12, "sphere lo x");
+        close(b.hi[2], 15.0, 1e-12, "sphere hi z");
+    }
+
+    #[test]
+    fn torus_volume_and_bbox() {
+        let s = torus_solid([0.0, 0.0, 0.0], 14.0, 4.0, [0.0, 0.0, 1.0]);
+        let want = 2.0 * std::f64::consts::PI * std::f64::consts::PI * 14.0 * 16.0;
+        close(solid_volume(&s), want, 1e-12, "torus volume");
+        let b = solid_aabb(&s);
+        close(b.lo[0], -18.0, 1e-12, "torus lo x");
+        close(b.hi[2], 4.0, 1e-12, "torus hi z");
+    }
+
+    #[test]
+    fn prism_hex_volume_and_bbox() {
+        let s = prism_solid([0.0, 0.0, 0.0], 6, 10.0, 20.0, [0.0, 0.0, 1.0]);
+        let want = 3.0f64.sqrt() / 2.0 * 100.0 * 6.0 / 2.0 * 20.0;
+        close(solid_volume(&s), want, 1e-12, "hex prism volume");
+        let b = solid_aabb(&s);
+        close(b.lo[0], -10.0, 1e-12, "prism lo x");
+        close(b.hi[2], 10.0, 1e-12, "prism hi z");
+    }
+
+    #[test]
+    fn wedge_volume_and_bbox() {
+        let s = wedge_solid([0.0, 0.0, 0.0], 20.0, 10.0, 6.0, [0.0, 0.0, 1.0]);
+        close(solid_volume(&s), 600.0, 1e-12, "wedge volume");
+        let b = solid_aabb(&s);
+        close(b.lo[0], -10.0, 1e-12, "wedge lo x");
+        close(b.hi[1], 5.0, 1e-12, "wedge hi y");
+    }
+
+    // A rectangular half-ring profile: radius r in [4, 8], height y in [5, 12],
+    // spun 180 degrees about +Y with radius 0 along +X (the xz-plane frame).
+    const HALF_RING: [[f64; 2]; 4] = [[4.0, 5.0], [8.0, 5.0], [8.0, 12.0], [4.0, 12.0]];
+
+    #[test]
+    fn partial_revolve_half_ring_volume_is_positive_and_exact() {
+        let (s, _) = revolve_profile(&HALF_RING, [0.0, 1.0, 0.0], [1.0, 0.0, 0.0], 180.0)
+            .expect("partial revolve builds");
+        let want = std::f64::consts::PI * (64.0 - 16.0) * 7.0 / 2.0;
+        assert!(signed_volume(&s) > 0.0, "half-ring tool must wind outward");
+        close(solid_volume(&s), want, 1e-9, "half-ring tool volume");
+    }
+
+    #[test]
+    fn groove_full_and_straddle_volumes() {
+        // The three groove fixtures: a box with an enclosed revolved ring cut
+        // out of it. Each ring sits strictly inside the 40x40x20 box.
+        let cases: [(f64, [[f64; 2]; 4], f64); 2] = [
+            (
+                30944.424868,
+                [[4.0, 5.0], [8.0, 5.0], [8.0, 12.0], [4.0, 12.0]],
+                32000.0 - std::f64::consts::PI * (64.0 - 16.0) * 7.0,
+            ),
+            (
+                31321.415987,
+                [[3.0, -4.0], [6.0, -4.0], [6.0, 4.0], [3.0, 4.0]],
+                32000.0 - std::f64::consts::PI * (36.0 - 9.0) * 8.0,
+            ),
+        ];
+        for (want_occt, prof, want) in cases {
+            let box_ = box_solid([40.0, 40.0, 20.0], [0.0, 0.0, 0.0], None);
+            let (tool, _) = revolve_profile(&prof, [0.0, 1.0, 0.0], [1.0, 0.0, 0.0], 360.0)
+                .expect("full revolve builds");
+            let cut = crate::ops::boolean("subtract", &box_, &tool).expect("groove cuts");
+            close(solid_volume(&cut), want, 1e-9, "groove volume");
+            close(solid_volume(&cut), want_occt, 1e-6, "groove volume vs OCCT");
+        }
+    }
+
+    #[test]
+    fn groove_half_volume() {
+        let box_ = box_solid([40.0, 40.0, 20.0], [0.0, 0.0, 0.0], None);
+        let (tool, _) = revolve_profile(&HALF_RING, [0.0, 1.0, 0.0], [1.0, 0.0, 0.0], 180.0)
+            .expect("partial revolve builds");
+        let cut = crate::ops::boolean("subtract", &box_, &tool).expect("groove-half cuts");
+        let want = 32000.0 - std::f64::consts::PI * (64.0 - 16.0) * 7.0 / 2.0;
+        close(solid_volume(&cut), want, 1e-9, "groove-half volume");
+    }
+}

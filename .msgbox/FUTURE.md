@@ -6,6 +6,107 @@ parked rather than done.
 
 ---
 
+## 2026-09-15 — brep-rs parity gate 58/58: narrow slices to widen
+
+**Decided.** All 20 kinds pass `scripts/brep-parity-gate.mjs` (58/58, exit 0,
+cargo test 43/43, gzipped wasm 122,189 bytes vs OCCT's ~7.25 MB). Several kinds
+were built only as wide as their fixtures need, and refuse everything else in
+plain words. That is honest, but it is not yet parity for real student parts.
+
+**Open, each needing a fixture that fails first (validated with `--reference-only`):**
+1. `fillet`: only one straight edge of an axis-aligned box. There is no fillet on
+   boolean results, curved edges, or multiple edges, and no naming history.
+2. `shell`: only axis-aligned boxes. OCCT uses a general offset
+   (`MakeThickSolidByJoin`).
+3. `draft`: only one side wall of an axis-aligned box. `whole` (Body Draft) is
+   refused.
+4. `blend`: only two matching straight outlines with planar sides. Twisted,
+   non-similar, rounded or circle lofts need ruled or NURBS surfaces.
+5. `revolve`: a partial angle is built for `groove` but still refused for plain
+   `revolve` (no fixture covers it). Slanted profile segments are refused.
+6. `hole`: overlapping bores are refused (OCCT fuses them first).
+7. booleans: `ops::boolean` is face-by-face on plane, cylinder and sphere cases
+   plus an enclosed-cavity path. There is no general surface-surface
+   intersection (torus, cone and NURBS operands).
+8. `mesh.rs` and `step.rs` are still stubs, so the kernel is not wired into the
+   studio viewport or export.
+9. There is no naming history for mirror, pattern, pocket, groove, hole, shell or
+   fillet results.
+
+See also the seam-edge entry below. It blocks item 1 on boolean results.
+
+---
+
+## 2026-09-15 — brep-rs: boolean seam edges are duplicated, not shared
+
+**Decided.** Leave it for now. `boolean-sphere-minus-box` passes (combine 13/13,
+gate 40/18) with each seam edge built twice.
+
+**The gap.** In `packages/brep-rs/src/ops.rs`, `build_mixed_face` (wall arcs) and
+`polar_hole_wire` (sphere hole arcs) each build their own copy of the same
+circular arc. So a wall face and the trimmed sphere face each hold a separate
+`Rc` edge along the same curve, and the corner vertices (+-5,+-5,+-sqrt(175))
+are also duplicated. Volume, area, bbox and face count are all unaffected, which
+is why the gate doesn't catch it.
+
+**Why it matters later.** SPEC-brep-kernel-rs §4.2 and §4.6 rely on topology
+shared by handle identity. A `between` name for an edge on that seam, which a
+fillet on a boolean result will need, finds no single edge used by both faces
+and fails to resolve. `faces()` and any edge count or edges() output would also
+over-count.
+
+**Open / fix.**
+1. After a boolean assembles its faces, weld coincident edges: match edges with
+   the same curve and same endpoints within tolerance, keep one `Rc`, and give
+   each face its own `EdgeUse` (orientation and pcurve stay per use, following
+   Departure 2).
+2. Add a fixture before the fix: `name-between-edge` on sphere-minus-box (a wall
+   face plus the sphere face), validated on OCCT with `--reference-only`, so the
+   gap fails first.
+3. Check the other boolean paths (`face_with_hole`, `partial_wall`) for the same
+   duplication. The cylinder cuts probably have it too.
+
+---
+
+## 2026-09-15 — Ollama credit burn is glm-5.3, not the kernel build
+
+**Decided.** The brep-rs kernel build stays on `ollama-cloud/deepseek-v4.1-flash`
+(operator's choice). It is cheap: five dispatches cost about $0.68. The glm
+cleanup below is parked, not dropped.
+
+**Measured** with `scripts/brep-spend.mjs`, which reads every ollama-cloud
+message from `~/.local/share/opencode/opencode.db` across all projects and
+prices it from ollama.com/pricing (fetched 2026-09-15). Its token counts match
+`opencode stats` exactly (glm-5.3: 1,626 msgs, 169.8M input, 52.4M cache,
+906.1K output). The dollar figures are estimates, not the bill.
+
+| model | since 2026-09-08 | USD per M tokens (in / out) |
+|---|---|---|
+| glm-5.3 | $158.05 (88%) | 1.40 / 4.40 |
+| glm-5.3-flash | $14.44 | 0.15 / 0.50 |
+| deepseek-v4-flash (both ids) | $6.34 | 0.22 / 0.66 |
+| deepseek-v4.1-flash | $0.68 | 0.15 / 0.60 |
+
+The largest single item was **$155 of glm-5.3 via plain `build` runs in this
+repo on 2026-09-07..08**, most likely the FreeCAD engine-port work. The shCode
+`cs-teacher-tester` runs were $16. An earlier claim in-session that the shCode
+testers drove most of it was wrong, and is corrected here.
+
+**Open.**
+1. The credit reset date is unknown. Estimated spend is $179.61 since
+   2026-09-08 and $322.41 since 2026-09-01, so the account is either about $120
+   under the $300 Max-plan credit or already over. `brep-spend.mjs --since
+   <reset date>` gives the real window once known. The builder currently uses
+   `--since 2026-09-15`, which hides earlier spend.
+2. `cs-teacher-tester` is the one roster agent pinned to glm-5.3. Moving it to
+   glm-5.3-flash would cut its cost about ninefold. This is a roster change in
+   agent-evo (`roster/cs-teacher-tester.md`, then `bin/gen-agents.mjs`).
+3. Plain `opencode run -m glm-5.3` launches are the real cost. Anything that
+   needs glm should default to glm-5.3-flash unless a measured reason says
+   otherwise.
+
+---
+
 ## 2026-09-09 — CI is live, and the two things deliberately left off it
 
 **Decided and shipped.** The repo is published at
