@@ -26,6 +26,15 @@ const KERNEL_DIR = path.resolve(
 
 const KERNEL_URL_PREFIX = '/reshape/kernel/';
 
+// The brep-rs wasm kernel, unlike the replicad one above, lives IN this repo
+// at packages/brep-rs/pkg (wasm-pack output). Served under a sub-path of
+// KERNEL_URL_PREFIX so BrepRsEngineAdapter can build its URLs from the same
+// getKernelBaseUrl() every other engine uses -- which is why the middleware
+// below has to check this prefix FIRST, before the generic branch looks for
+// the file under KERNEL_DIR and misses.
+const BREP_RS_URL_PREFIX = '/reshape/kernel/brep-rs/';
+const BREP_RS_DIR = path.resolve(__dirname, '../brep-rs/pkg');
+
 // The FreeCAD engine artifact set -- unlike the replicad kernel above, it
 // lives INSIDE this repo, split across two directories: the compiled kernel
 // (engine/build/g5-artifacts/FreeCADCmd.js + .wasm -- the G5 browser build,
