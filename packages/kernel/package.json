@@ -15,7 +15,8 @@
     "./config": "./dist/config.js",
     "./engine-adapter": "./dist/engine-adapter.js",
     "./occt-engine-adapter": "./dist/occt-engine-adapter.js",
-    "./freecad-engine-adapter": "./dist/freecad-engine-adapter.js"
+    "./freecad-engine-adapter": "./dist/freecad-engine-adapter.js",
+    "./brep-rs-engine-adapter": "./dist/brep-rs-engine-adapter.js"
   },
   "typesVersions": {
     "*": {

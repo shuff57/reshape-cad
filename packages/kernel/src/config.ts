@@ -25,12 +25,12 @@ export function setKernelBaseUrl(url: string): void {
 // reads VITE_RESHAPE_ENGINE at startup and calls this once, the same
 // pattern RESHAPE_KERNEL_DIR already uses for the URL above; a future UI
 // toggle calls it directly.
-let engineMode: 'occt' | 'freecad' = 'freecad';
+let engineMode: 'occt' | 'freecad' | 'brep-rs' = 'freecad';
 
-export function getEngineMode(): 'occt' | 'freecad' {
+export function getEngineMode(): 'occt' | 'freecad' | 'brep-rs' {
   return engineMode;
 }
 
-export function setEngineMode(mode: 'occt' | 'freecad'): void {
+export function setEngineMode(mode: 'occt' | 'freecad' | 'brep-rs'): void {
   engineMode = mode;
 }

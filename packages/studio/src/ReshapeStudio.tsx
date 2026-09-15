@@ -431,7 +431,7 @@ export default function ReshapeStudio({
   // and Save/Open need to gray out for that too, not just for a session that
   // started in 'occt' mode. Null until the viewport's first load finishes.
   const engineRef = useRef<EngineAdapter | null>(null);
-  const [engineKind, setEngineKind] = useState<'occt' | 'freecad' | null>(null);
+  const [engineKind, setEngineKind] = useState<'occt' | 'freecad' | 'brep-rs' | null>(null);
   const openInputRef = useRef<HTMLInputElement | null>(null);
   const pickAtRef = useRef<((clientX: number, clientY: number) => void) | null>(null);
   const specsRef = useRef<unknown[]>([]);

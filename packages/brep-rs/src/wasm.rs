@@ -8,6 +8,7 @@ use crate::build::{self, TSolid};
 use crate::geom::Surface;
 use crate::ops;
 use crate::history::{self, Fate, History, OpRecord, OpKind, PartRef};
+use crate::topo;
 use crate::math::{add, scale, Vec3};
 use serde_json::{json, Map, Value};
 use wasm_bindgen::prelude::*;
@@ -15,6 +16,46 @@ use wasm_bindgen::prelude::*;
 #[wasm_bindgen]
 pub fn version() -> String {
     "brep-rs 0.1.0".to_string()
+}
+
+/// The last built doc, keyed by its exact JSON string, so repeated calls on
+/// the same doc (adapter build -> mesh -> resolve -> measure) don't rebuild.
+thread_local! {
+    static LAST_DOC: std::cell::RefCell<Option<String>> = std::cell::RefCell::new(None);
+    static LAST_HIST: std::cell::RefCell<Option<std::rc::Rc<History>>> =
+        std::cell::RefCell::new(None);
+}
+
+fn cached_build(doc_json: &str) -> std::rc::Rc<History> {
+    let hit = LAST_DOC.with(|c| c.borrow().as_deref() == Some(doc_json));
+    if hit {
+        if let Some(h) = LAST_HIST.with(|c| c.borrow().clone()) {
+            return h;
+        }
+    }
+    let doc: Value = match serde_json::from_str(doc_json) {
+        Ok(v) => v,
+        Err(_) => return std::rc::Rc::new(History::new()),
+    };
+    let (hist, _) = build_doc(&doc);
+    let shared = std::rc::Rc::new(clone_shapes(&hist));
+    LAST_DOC.with(|c| *c.borrow_mut() = Some(doc_json.to_string()));
+    LAST_HIST.with(|c| *c.borrow_mut() = Some(std::rc::Rc::clone(&shared)));
+    shared
+}
+
+/// A shape-only copy of a history (Rc-shared faces make it cheap): the parts
+/// every export consumer reads. Ops/sweeps come along by reference-clone.
+fn clone_shapes(hist: &History) -> History {
+    let mut out = History::new();
+    for id in &hist.order {
+        if let Some(s) = hist.shapes.get(id) {
+            out.insert(id, s.clone());
+        }
+    }
+    out.sweeps = hist.sweeps.clone();
+    out.ops = hist.ops.clone();
+    out
 }
 
 fn v3(v: &Value) -> Option<Vec3> {
@@ -330,7 +371,7 @@ fn revolve_tool(
 /// Build every feature in the document, in order. Returns the history and the
 /// per-feature refusals. A feature this slice does not implement is refused
 /// with a plain reason rather than silently absent (§4.5's refusal contract).
-fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
+pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
     let mut hist = History::new();
     let mut refusals: Map<String, Value> = Map::new();
     // Sketch features are flat, so they are held aside for the sweep that
@@ -1369,11 +1410,50 @@ pub fn measure_doc(doc_json: &str) -> String {
                     "volume": build::solid_volume(solid),
                     "bbox": bbox_json(solid),
                     "faces": solid.faces().len(),
+                    "edges": solid.edges().len(),
                 }),
             );
         }
     }
     json!({ "shapes": shapes, "refusals": refusals }).to_string()
+}
+
+/// Tessellate one feature's built solid for three.js (SPEC-brep-mesh). Returns
+/// positions/indices/faces/edges JSON, or `{"error": ...}` when the feature is
+/// missing, was refused, or the face set is not tessellable yet.
+#[wasm_bindgen]
+pub fn mesh_feature(doc_json: &str, feature_id: &str, deflection: f64) -> String {
+    let doc: Value = match serde_json::from_str(doc_json) {
+        Ok(v) => v,
+        Err(e) => return json!({ "error": format!("bad doc json: {e}") }).to_string(),
+    };
+    let (hist, _) = build_doc(&doc);
+    let Some(solid) = hist.shapes.get(feature_id) else {
+        return json!({ "error": format!("feature {feature_id} not found") }).to_string();
+    };
+    match crate::mesh::mesh_solid(solid, deflection) {
+        Some(m) => {
+            let positions: Vec<f64> = m
+                .positions
+                .iter()
+                .flat_map(|p| [p[0], p[1], p[2]])
+                .collect();
+            let faces: Vec<Value> = m
+                .faces
+                .iter()
+                .enumerate()
+                .map(|(i, (start, count))| json!({ "index": i, "start": start, "count": count }))
+                .collect();
+            json!({
+                "positions": positions,
+                "indices": m.indices,
+                "faces": faces,
+                "edges": m.edges,
+            })
+            .to_string()
+        }
+        None => json!({ "error": format!("brep-rs cannot tessellate {feature_id} yet") }).to_string(),
+    }
 }
 
 /// Resolve one TopoName against the document. Returns the face's area/centroid,
@@ -1388,18 +1468,285 @@ pub fn resolve(doc_json: &str, name_json: &str) -> String {
         Ok(v) => v,
         Err(_) => return "null".to_string(),
     };
-    let (hist, _) = build_doc(&doc);
+    let hist = cached_build(doc_json);
+    // Index enrichment: a resolved face/edge also reports its position in the
+    // solid's faces()/edges() order, and the feature a `primitive`/`swept`
+    // name named -- what the adapter's resolveFace/resolveEdge turn into
+    // handles. Existing fields stay (the parity gate reads them).
+    let enriched = |hist: &History, name: &Value, r: &Resolved| -> Value {
+        let mut out = match r {
+            Resolved::Face(area, c) => json!({
+                "kind": "face", "area": area, "centroid": [c[0], c[1], c[2]]
+            }),
+            Resolved::Edge(length, c) => json!({
+                "kind": "edge", "length": length, "centroid": [c[0], c[1], c[2]]
+            }),
+        };
+        if let Some(feature) = name.get("feature").and_then(|f| f.as_str()) {
+            out["feature"] = json!(feature);
+        }
+        let solid = hist
+            .shapes
+            .get(name.get("feature").and_then(|f| f.as_str()).unwrap_or(""));
+        if let Some(solid) = solid {
+            match r {
+                Resolved::Face(_, _) => {
+                    let b = name.get("part").and_then(|p| p.as_str());
+                    if let Some(part) = b {
+                        if let Some(i) = primitive_face_index(solid, part) {
+                            out["faceIndex"] = json!(i);
+                        }
+                    }
+                }
+                Resolved::Edge(_, _) => {
+                    if let (Some(a), Some(bb)) = (
+                        name.get("of").and_then(|o| o.get(0)),
+                        name.get("of").and_then(|o| o.get(1)),
+                    ) {
+                        if let Some(i) = edge_index_between(hist, solid, a, bb) {
+                            out["edgeIndex"] = json!(i);
+                        }
+                    }
+                }
+            }
+        }
+        out
+    };
+    let _ = &hist;
     match resolve_name(&hist, &name) {
-        Some(Resolved::Face(area, c)) => json!({
-            "kind": "face", "area": area, "centroid": [c[0], c[1], c[2]]
-        })
-        .to_string(),
-        Some(Resolved::Edge(length, c)) => json!({
-            "kind": "edge", "length": length, "centroid": [c[0], c[1], c[2]]
-        })
-        .to_string(),
+        Some(r) => enriched(&hist, &name, &r).to_string(),
         None => "null".to_string(),
     }
+}
+
+/// The face index a primitive `part` names, in faces() order -- what
+/// `faceIndex` reports. Same centroid-on-extreme test name_face() uses.
+fn primitive_face_index(solid: &TSolid, part: &str) -> Option<usize> {
+    let dir = history::dir_vec(part);
+    if dir == [0.0, 0.0, 0.0] {
+        return None;
+    }
+    let axis = (0..3).find(|i| dir[*i].abs() > 0.5)?;
+    let sign = if dir[axis] > 0.0 { 1usize } else { 0 };
+    let bb = build::solid_aabb(solid);
+    let extreme = if sign == 1 { bb.hi[axis] } else { bb.lo[axis] };
+    solid.faces().iter().position(|f| {
+        let b = f.borrow();
+        match &b.surface {
+            Surface::Plane(p) => {
+                p.n[axis].abs() > 1.0 - 1e-7
+                    && (p.origin[axis] - extreme).abs() <= 1e-6
+                    && p.n[axis] * if sign == 1 { 1.0 } else { -1.0 } > 0.0
+            }
+            _ => false,
+        }
+    })
+}
+
+/// The edge index where two named primitive faces meet, in edges() order.
+fn edge_index_between(
+    hist: &History,
+    solid: &TSolid,
+    a: &Value,
+    b: &Value,
+) -> Option<usize> {
+    let fa = resolve_face(hist, a)?;
+    let fb = resolve_face(hist, b)?;
+    let edge = hist.edge_between(&fa, &fb)?;
+    solid.edges().iter().position(|e| topo::same(e, &edge))
+}
+
+/// Build every feature in `doc_json`, in order. Returns
+/// `{"built":[ids], "refusals":{id: reason}}` -- the adapter's `build()`
+/// answer, mirroring buildDoc()'s own result shape (§4.5).
+#[wasm_bindgen]
+pub fn build_doc_json(doc_json: &str) -> String {
+    let doc: Value = match serde_json::from_str(doc_json) {
+        Ok(v) => v,
+        Err(e) => {
+            return json!({ "built": [], "refusals": { "_doc": format!("bad doc json: {e}") } })
+                .to_string();
+        }
+    };
+    let (hist, refusals) = build_doc(&doc);
+    // Prime the cache so the adapter's mesh/resolve/measure calls on the SAME
+    // doc string don't rebuild.
+    let shared = std::rc::Rc::new(clone_shapes(&hist));
+    LAST_DOC.with(|c| *c.borrow_mut() = Some(doc_json.to_string()));
+    LAST_HIST.with(|c| *c.borrow_mut() = Some(std::rc::Rc::clone(&shared)));
+    json!({
+        "built": hist.order.iter().filter(|id| hist.shapes.contains_key(*id)).collect::<Vec<_>>(),
+        "refusals": refusals,
+    })
+    .to_string()
+}
+
+/// The `[w, h]` (smallest first, rounded to 0.01) of a planar axis-aligned
+/// face, else `null` -- the wasm form of OcctEngineAdapter.faceSize (§H).
+#[wasm_bindgen]
+pub fn face_size(doc_json: &str, feature_id: &str, face_index: usize) -> String {
+    let hist = cached_build(doc_json);
+    let Some(solid) = hist.shapes.get(feature_id) else {
+        return "null".to_string();
+    };
+    let faces = solid.faces();
+    let Some(face) = faces.get(face_index) else {
+        return "null".to_string();
+    };
+    let plane = match &face.borrow().surface {
+        Surface::Plane(p) => p.clone(),
+        _ => return "null".to_string(),
+    };
+    let pts: Vec<[f64; 3]> = build::face_ring_points(&face.borrow());
+    // A planar axis-aligned face has every ring point on one extreme plane
+    // (its normal's axis) and spans the other two axes; its bbox gives [w, h].
+    let mut lo = pts[0];
+    let mut hi = pts[0];
+    for p in &pts {
+        for i in 0..3 {
+            lo[i] = lo[i].min(p[i]);
+            hi[i] = hi[i].max(p[i]);
+        }
+    }
+    let axis = (0..3).find(|i| plane.n[*i].abs() > 1.0 - 1e-7);
+    let Some(axis) = axis else { return "null".to_string() };
+    for p in &pts {
+        if (p[axis] - plane.origin[axis]).abs() > 1e-6 {
+            return "null".to_string();
+        }
+    }
+    let mut rest: Vec<f64> = (0..3)
+        .filter(|i| *i != axis)
+        .map(|i| hi[i] - lo[i])
+        .collect();
+    rest.sort_by(|a: &f64, b2: &f64| a.partial_cmp(b2).unwrap());
+    json!([round2(rest[0]), round2(rest[1])]).to_string()
+}
+
+fn round2(n: f64) -> f64 {
+    (n * 100.0).round() / 100.0
+}
+
+/// The true curve length of one edge, rounded to 0.01, or `null`.
+#[wasm_bindgen]
+pub fn edge_length(doc_json: &str, feature_id: &str, edge_index: usize) -> String {
+    let hist = cached_build(doc_json);
+    let Some(solid) = hist.shapes.get(feature_id) else {
+        return "null".to_string();
+    };
+    let edges = solid.edges();
+    let Some(edge) = edges.get(edge_index) else {
+        return "null".to_string();
+    };
+    let (len, _) = history::edge_measure(edge);
+    if len.is_finite() && len > 0.0 {
+        json!(round2(len)).to_string()
+    } else {
+        "null".to_string()
+    }
+}
+
+/// A TopoName JSON for a face of a primitive (box ±x/±y/±z) or an extrude
+/// cap/side the sweep history records, else `null` (§4.6).
+#[wasm_bindgen]
+pub fn name_face(doc_json: &str, feature_id: &str, face_index: usize) -> String {
+    let hist = cached_build(doc_json);
+    let Some(solid) = hist.shapes.get(feature_id) else {
+        return "null".to_string();
+    };
+    let faces = solid.faces();
+    let Some(face) = faces.get(face_index) else {
+        return "null".to_string();
+    };
+    // Primitive first: part is the ± axis the face's normal points along and
+    // the face sits on the doc solid's extreme in that axis.
+    if let Some(part) = primitive_part(&hist, feature_id, face) {
+        return json!({
+            "cause": "primitive", "feature": feature_id, "kind": "face", "part": part
+        })
+        .to_string();
+    }
+    // Extrude cap/side, from the sweep history.
+    if let Some(name) = sweep_name(&hist, feature_id, face) {
+        return name.to_string();
+    }
+    "null".to_string()
+}
+
+/// A TopoName JSON for an edge. Always `null` in this slice: only
+/// `between`-cause edge names exist and they need two faces, not an index
+/// (§4.6 scope).
+#[wasm_bindgen]
+pub fn name_edge(_doc_json: &str, _feature_id: &str, _edge_index: usize) -> String {
+    "null".to_string()
+}
+
+/// The `part` string of a primitive face, when `feature` is a plain
+/// axis-aligned primitive (the same `part` vocabulary
+/// resolve_primitive_face accepts).
+fn primitive_part(hist: &History, feature_id: &str, face: &build::TFace) -> Option<String> {
+    let b = face.borrow();
+    let p = match &b.surface {
+        Surface::Plane(p) => p,
+        _ => return None,
+    };
+    let (axis, sign) = face_axis_local(p.n)?;
+    // The face must sit on the solid's own extreme plane in its normal's
+    // axis (the side wall of THAT box), else it is not a primitive face.
+    let solid = hist.shapes.get(feature_id)?;
+    let bb = build::solid_aabb(solid);
+    let extreme = if sign == 1 { bb.hi[axis] } else { bb.lo[axis] };
+    if (p.origin[axis] - extreme).abs() > 1e-6 {
+        return None;
+    }
+    let sign_ch = if sign == 1 { '+' } else { '-' };
+    let axis_ch = ["x", "y", "z"][axis];
+    Some(format!("{sign_ch}{axis_ch}"))
+}
+
+/// Which world axis a unit normal is along, and its + (1) / - (0) side.
+fn face_axis_local(n: Vec3) -> Option<(usize, usize)> {
+    (0..3).find_map(|i| {
+        if n[i].abs() > 1.0 - 1e-7
+            && n[(i + 1) % 3].abs() < 1e-7
+            && n[(i + 2) % 3].abs() < 1e-7
+        {
+            Some((i, if n[i] > 0.0 { 1 } else { 0 }))
+        } else {
+            None
+        }
+    })
+}
+
+/// A `swept`/`cap` TopoName for an extrude's wall or cap, from its
+/// SweepRecord, mirroring occt-build.ts's own segment bookkeeping.
+fn sweep_name(hist: &History, feature_id: &str, face: &build::TFace) -> Option<Value> {
+    let rec = hist.sweeps.get(feature_id)?;
+    let idx = hist
+        .shapes
+        .get(feature_id)?
+        .faces()
+        .iter()
+        .position(|f| std::rc::Rc::ptr_eq(f, face))?;
+    if let Some(fi) = rec.cap_top {
+        if fi == idx {
+            return Some(json!({
+                "cause": "cap", "feature": feature_id, "kind": "face", "end": "top"
+            }));
+        }
+    }
+    if let Some(fi) = rec.cap_bottom {
+        if fi == idx {
+            return Some(json!({
+                "cause": "cap", "feature": feature_id, "kind": "face", "end": "bottom"
+            }));
+        }
+    }
+    let seg = rec.segments.iter().find(|s| s.face == idx)?;
+    Some(json!({
+        "cause": "swept", "feature": feature_id, "kind": "face",
+        "from": rec.from, "edge": seg.index
+    }))
 }
 
 enum Resolved {

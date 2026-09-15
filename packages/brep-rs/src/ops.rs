@@ -1465,12 +1465,27 @@ pub fn boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
         process_face(&f, a, op, false, &mut faces)?;
     }
     dedupe(&mut faces);
+    drop_degenerate_faces(&mut faces);
     if faces.is_empty() {
         return None;
     }
     Some(Solid {
         shells: vec![Rc::new(RefCell::new(Shell { faces }))],
     })
+}
+
+/// Remove zero-area output faces. A boolean can emit a planar face that is a
+/// single zero-length segment when the two operands' surfaces touch tangentially
+/// (coplanar-subtract-caps: a cylinder's cap lies coplanar with the box's, so its
+/// whole circle is trimmed away and its boundary collapses to a point). Such a
+/// face has no area, contributes nothing to volume, and cannot be tessellated
+/// (its boundary does not close), so it is not a real face of the result. Faces
+/// with a genuine (if small) area are kept.
+fn drop_degenerate_faces(faces: &mut Vec<TFace>) {
+    faces.retain(|f| {
+        let (area, _) = build::face_area_centroid(&f.borrow());
+        area > 1e-9
+    });
 }
 
 /// Does `p` lie strictly inside every face's own surface (and inside the arc
@@ -1614,6 +1629,16 @@ fn flip_face(face: &TFace) -> TFace {
                     uses.push(u.clone());
                 }
             }
+            // Flipping e2 turns p(u) = R(e1 cos u + e2 sin u) into the point
+            // at angle -u, which reverses the surface's normal -- but it also
+            // MIRRORS a partial arc (an angular range [a, a+s] would land on
+            // the opposite half of the circle, the groove-half bug). Reflect
+            // the range too so the flipped wall covers the SAME arc points in
+            // reverse, keeping it shared with the neighbouring caps.
+            let arc = cy.arc.as_ref().map(|a| crate::geom::ArcRange {
+                start: -(a.start + a.span),
+                span: a.span,
+            });
             let surf = Surface::Cylinder(Cylinder {
                 origin: cy.origin,
                 axis: cy.axis,
@@ -1622,7 +1647,7 @@ fn flip_face(face: &TFace) -> TFace {
                 radius: cy.radius,
                 vmin: cy.vmin,
                 vmax: cy.vmax,
-                arc: cy.arc.clone(),
+                arc,
             });
             make_face(surf, fb.uv_domain, uses)
         }

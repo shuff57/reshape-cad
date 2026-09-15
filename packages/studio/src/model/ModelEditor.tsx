@@ -241,7 +241,7 @@ interface Props {
    *  used to compute (engineKind/hasMesh), now read directly by the ribbon's
    *  File group instead of being handed up to a second component. */
   hasMesh: boolean;
-  engineKind: 'occt' | 'freecad' | null;
+  engineKind: 'occt' | 'freecad' | 'brep-rs' | null;
   onSaveFCStd: () => void;
   onOpenFCStd: () => void;
   onExportSTL: () => void;

@@ -74,6 +74,25 @@ function kernelStaticServer(): Plugin {
 
       server.middlewares.use((req, res, next) => {
         if (!req.url || !req.url.startsWith(KERNEL_URL_PREFIX)) return next();
+        // /reshape/kernel/brep-rs/* is served from packages/brep-rs/pkg
+        // (in-repo), checked BEFORE the outer kernel dir -- it is a
+        // sub-path of /reshape/kernel/, so the generic branch would
+        // otherwise look for it under KERNEL_DIR and miss.
+        if (req.url.startsWith(BREP_RS_URL_PREFIX))) {
+          const brepRel = decodeURIComponent(
+            req.url.slice(BREP_RS_URL_PREFIX.length).split('?')[0]),
+          );
+          const brepPath = path.join(BREP_RS_DIR, brepRel);
+          if (brepPath.startsWith(BREP_RS_DIR) && fs.existsSync(brepPath))) {
+            const ext = path.extname(brepPath);
+            // .wasm must come back as application/wasm: streaming
+            // WebAssembly.instantiate rejects any other MIME type.
+            res.setHeader('Content-Type', CONTENT_TYPES[ext] ?? 'application/octet-stream');
+            fs.createReadStream(brepPath).pipe(res);
+            return;
+          }
+          return next();
+        }
 
         const relPath = decodeURIComponent(req.url.slice(KERNEL_URL_PREFIX.length).split('?')[0]);
         const filePath = path.join(KERNEL_DIR, relPath);
