@@ -27,9 +27,20 @@ Screenshots were in the agent's scratchpad and are gone; re-run the pass to rege
 2. **The fallback banner is clipped by the Parts sidebar.** It is centred in the whole
    viewport pane (measured `left: 314.5px`) while the opaque sidebar covers 0-433px, so
    about 27% of the text is unreadable. Centre it in the visible area instead.
-3. **The fallback banner is stale.** After Clear model plus a fresh plain box that needs
-   no fallback, the banner stays up, still naming a feature that no longer exists.
-   Clear it when a build produces no refusals.
+3. ~~**The fallback banner is stale.**~~ FIXED in `a5716a6`, verified in a browser: the
+   note now sits 157.75px clear of the tools card (measured), reads in full, and is gone
+   from the DOM after a build that needs no fallback.
+
+4. **NEW, exposed by that fix: nothing tells you the session is still on the fallback
+   engine.** The swap is permanent for the mount (`BrepViewportThree.tsx:2356`) and the
+   note only fires when a *brep-rs* build returns refusals (`:2352`). After the first
+   swap every later build runs on OCCT, which refuses nothing, so no note appears --
+   measured in a browser: Box + Round, Clear model, Box + Round again, and the second one
+   silently rounds on OCCT with no notice. The old never-clearing note had been
+   accidentally covering this. The fix is a SEPARATE persistent indicator (a small "using
+   OCCT" badge, or a status-bar line) that lives as long as the swap does, distinct from
+   the per-build refusal note. Design call: decide whether the swap should stay permanent
+   at all, or re-try the configured engine on the next build.
 
 **Code-mode Run: RESOLVED, no fix needed (diagnosed 2026-09-15).** The visual pass saw
 `box(20, 20, 10);` + Run build nothing in either engine. A follow-up diagnosis could not
