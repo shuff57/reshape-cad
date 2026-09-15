@@ -525,6 +525,11 @@ export default function BrepViewportThree({
   // this component permanently stays on the fallback engine once it falls
   // back once, so the note stays visible for as long as that's true.
   const [engineFallbackNote, setEngineFallbackNote] = useState<string | null>(null);
+  // Set once, the first time the component swaps to the fallback engine; like
+  // the swap itself this is never cleared (the swap is permanent for this
+  // mount). Drives the persistent "using OCCT" badge, unlike the per-build
+  // fallback note which is cleared at the top of each build.
+  const [engineSwappedTo, setEngineSwappedTo] = useState<'occt' | null>(null);
   // A stage that is empty ON PURPOSE (nothing yet, or only flat sketches)
   // gets a hint, not the red panel. Measured 2026-09-03: a beginner who had
   // just drawn a circle read "Could not build this model" as their mistake.
@@ -2333,6 +2338,7 @@ export default function BrepViewportThree({
           engine = fallback;
           engineRef.current = fallback;
           onEngineRef.current?.(fallback, 'occt');
+          setEngineSwappedTo('occt');
           setEngineFallbackNote(
             `This model uses a feature FreeCAD can't build yet (${msg.replace(/^not yet supported on the FreeCAD engine: /, '')}) -- showing it with the other engine.`,
           );
@@ -2355,6 +2361,7 @@ export default function BrepViewportThree({
         engine = fallback;
         engineRef.current = fallback;
         onEngineRef.current?.(fallback, 'occt');
+        setEngineSwappedTo('occt');
         const firstRefusal = built.refusals.values().next().value ?? '';
         setEngineFallbackNote(
           `This model uses a feature brep-rs can't build yet (${firstRefusal}) -- showing it with the other engine.`,
@@ -2629,6 +2636,26 @@ export default function BrepViewportThree({
       {phase === 'ready' && engineFallbackNote && (
         <div style={engineFallbackNoteStyle}>{engineFallbackNote}</div>
       )}
+      {/* Persistent "using OCCT" status badge: set once at the swap, never
+          cleared, so it stays on screen for the rest of this mount even
+          after later builds stop triggering the (per-build) note above.
+          Quieter than the note -- same pill family, dim colour, no border
+          weight -- and stacked below the note's slot (top: 128 vs 92) so
+          both can be on screen at once on the build that triggered the
+          swap, same non-overlap trick the note and stage hint use. */}
+      {phase === 'ready' && engineSwappedTo && (
+        <div
+          style={engineSwappedBadgeStyle}
+          // Engine-NEUTRAL wording on purpose: this badge is set from BOTH
+          // fallback branches (the FreeCAD throw path and the brep-rs
+          // refusals path), so naming brep-rs here would be a wrong sentence
+          // in freecad mode. The note above already names the specific
+          // feature and engine on the build that triggered the swap.
+          title="A feature in this model could not be built by the configured engine, so the OCCT engine is drawing it for the rest of this session."
+        >
+          using {engineSwappedTo === 'occt' ? 'OCCT' : engineSwappedTo}
+        </div>
+      )}
       {phase === 'ready' && (
         // Home alone, bottom-left -- Top/Front/Underneath moved onto the nav
         // cube (bottom-right, below), since a physical cube already says
@@ -2890,6 +2917,17 @@ const engineFallbackNoteStyle: React.CSSProperties = {
   padding: '4px 10px', maxWidth: 420, textAlign: 'center',
   background: COLORS.panel, border: `1px solid ${COLORS.line}`, borderRadius: 999,
   font: '12px ui-monospace, Menlo, Consolas, monospace', color: COLORS.fg, pointerEvents: 'none',
+};
+
+// Persistent "using OCCT" badge -- status, not alert: same pill family and
+// font stack as engineFallbackNoteStyle, but dim text, no border, smaller
+// padding, and a fixed top below the note slot so both can be on screen at
+// once (the note is one build long; this stays for the whole session).
+const engineSwappedBadgeStyle: React.CSSProperties = {
+  position: 'absolute', top: 128, left: 'calc((100% + min(420px, 45%)) / 2 + 6px)', transform: 'translateX(-50%)',
+  padding: '2px 8px',
+  background: COLORS.panel, borderRadius: 999,
+  font: '12px ui-monospace, Menlo, Consolas, monospace', color: COLORS.dim, pointerEvents: 'auto',
 };
 
 const edgeHintStyle: React.CSSProperties = {
