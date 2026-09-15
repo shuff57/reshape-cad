@@ -43,6 +43,20 @@ export function fixtures() {
     made('wedge', 'wedge', (mt, doc) => { const f = mt.newShape(doc, 'wedge'); Object.assign(f, { width: 20, depth: 10, height: 6, center: [0, 0, 0] }); doc.features.push(f); return f.id; }),
     made('wedge-2', 'wedge', (mt, doc) => { const f = mt.newShape(doc, 'wedge'); Object.assign(f, { width: 30, depth: 12, height: 8, center: [0, 0, 0] }); doc.features.push(f); return f.id; }),
 
+    // --- the primitive `round` property (NOT the fillet feature) --------------
+    // Added 2026-09-15 after a visual pass: the studio's Round button sets
+    // f.round/f.roundStyle straight on a box or cylinder (ModelEditor.tsx's own
+    // "round/roundStyle fields a box or cylinder carries directly"), which
+    // occt-build.ts builds with roundedEdges() on EVERY edge. That is a
+    // different path from the `fillet` feature the fixtures above cover, and it
+    // was refused by brep-rs while the gate stayed green -- the button a student
+    // actually presses fell back to OCCT. `approx` because a rounded solid's
+    // volume is rounded to 1e-4 by the reference measure, same as the fillet
+    // fixtures.
+    raw('box-round-fillet', 'round', [{ id: 'b1', kind: 'box', size: [40, 40, 20], center: [0, 0, 0], round: 4, roundStyle: 'fillet' }], { tol: 'approx' }),
+    raw('box-round-chamfer', 'round', [{ id: 'b1', kind: 'box', size: [40, 40, 20], center: [0, 0, 0], round: 4, roundStyle: 'chamfer' }], { tol: 'approx' }),
+    raw('cylinder-round-fillet', 'round', [{ id: 'c1', kind: 'cylinder', radius: 12, height: 30, center: [0, 0, 0], round: 3, roundStyle: 'fillet' }], { tol: 'approx' }),
+
     // --- sketch sweeps ----------------------------------------------------------
     raw('sketch-extrude', 'extrude', [
       { id: 'sk1', kind: 'sketch', plane: 'xy', offset: 0, points: [[0, 0], [40, 0], [40, 25], [0, 25]] },
