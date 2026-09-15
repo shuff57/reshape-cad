@@ -6,6 +6,36 @@ parked rather than done.
 
 ---
 
+## 2026-09-15 — brep-rs renders in the studio; 3 gaps the visual pass found
+
+**Decided and shipped.** `BrepRsEngineAdapter` + `VITE_RESHAPE_ENGINE=brep-rs`. A visual
+pass (eyes-and-ears, headless playwright, brep-rs on :5288 vs OCCT on :5377) found box,
+cylinder, sphere and a box+hole boolean all rendering correctly and matching OCCT, with
+face and edge picking working ("Box 1 · top face · 40 x 40", "Box 1 · edge · 40"), no
+console or network errors, and brep-rs builds faster in every case (14-75ms vs 36-119ms).
+Screenshots were in the agent's scratchpad and are gone; re-run the pass to regenerate.
+
+**Open.**
+1. **The box/cylinder `round` property is unimplemented and no fixture covers it.** The
+   studio's Round button sets `f.round` + `f.roundStyle` on the primitive
+   (`ModelEditor.tsx:850`), NOT a `fillet` feature. brep-rs refuses it at
+   `wasm.rs:401` (box) and `:456` (cylinder), so the studio silently falls back to OCCT
+   for the rest of the session. The parity gate's fillet fixtures use the separate
+   `fillet` feature, so the gate is green while the button a student actually presses is
+   not supported. Add fixtures for a box and a cylinder with `round` set (both
+   `roundStyle` values), then build it.
+2. **The fallback banner is clipped by the Parts sidebar.** It is centred in the whole
+   viewport pane (measured `left: 314.5px`) while the opaque sidebar covers 0-433px, so
+   about 27% of the text is unreadable. Centre it in the visible area instead.
+3. **The fallback banner is stale.** After Clear model plus a fresh plain box that needs
+   no fallback, the banner stays up, still naming a feature that no longer exists.
+   Clear it when a build produces no refusals.
+
+Also unexplained, not chased: in the sandbox's Code mode, `box(20, 20, 10);` + Run built
+nothing in either engine (the toolbar path worked fine). Not known to be brep-rs-related.
+
+---
+
 ## 2026-09-15 — brep-rs parity gate 58/58: narrow slices to widen
 
 **Decided.** All 20 kinds pass `scripts/brep-parity-gate.mjs` (58/58, exit 0,
