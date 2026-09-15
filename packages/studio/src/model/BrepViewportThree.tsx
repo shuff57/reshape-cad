@@ -2277,6 +2277,11 @@ export default function BrepViewportThree({
 
     try {
       const t0 = performance.now();
+      // Clear any note from a PREVIOUS build first: a fallback note that
+      // outlives the feature it named is worse than none (measured
+      // 2026-09-15 -- it survived a Clear model and still named a deleted
+      // box). The fallback branches below re-set it within this same build.
+      setEngineFallbackNote(null);
       let built: EngineBuildResult;
       try {
         built = engine.build(doc);
@@ -2875,7 +2880,13 @@ const stageHintStyle: React.CSSProperties = {
 // needs the Pull hint AND just fell back), but not impossible, so this
 // doesn't assume mutual exclusion the way stageHint/buildError do.
 const engineFallbackNoteStyle: React.CSSProperties = {
-  position: 'absolute', top: 92, left: '50%', transform: 'translateX(-50%)',
+  // Centred in the VISIBLE area, not the whole canvas: in Build mode the
+  // floating tools card (ReshapeStudio's `.reshape-studio-tools`, width
+  // min(420px, 45%) at left:12) is position:absolute OVER this canvas, so a
+  // plain 50% centre put the pill's left edge behind the opaque card,
+  // unreadable (measured 2026-09-15: left:314.5px against a 433px card).
+  // Reuses the card's own CSS width expression -- no hard-coded pixel width.
+  position: 'absolute', top: 92, left: 'calc((100% + min(420px, 45%)) / 2 + 6px)', transform: 'translateX(-50%)',
   padding: '4px 10px', maxWidth: 420, textAlign: 'center',
   background: COLORS.panel, border: `1px solid ${COLORS.line}`, borderRadius: 999,
   font: '12px ui-monospace, Menlo, Consolas, monospace', color: COLORS.fg, pointerEvents: 'none',
