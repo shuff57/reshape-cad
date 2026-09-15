@@ -31,8 +31,17 @@ Screenshots were in the agent's scratchpad and are gone; re-run the pass to rege
    no fallback, the banner stays up, still naming a feature that no longer exists.
    Clear it when a build produces no refusals.
 
-Also unexplained, not chased: in the sandbox's Code mode, `box(20, 20, 10);` + Run built
-nothing in either engine (the toolbar path worked fine). Not known to be brep-rs-related.
+**Code-mode Run: RESOLVED, no fix needed (diagnosed 2026-09-15).** The visual pass saw
+`box(20, 20, 10);` + Run build nothing in either engine. A follow-up diagnosis could not
+reproduce it: Run works on brep-rs and on OCCT, first try, with a fresh reload and with
+both keyboard typing and direct fill, and the whole chain checks out (ReshapeStudio's
+`run()` -> ReshapePreview postMessage -> script-runner-entry -> `reshape-doc` ->
+BrepViewportThree). The likely cause is the 73-second window between commits `88ec7ee`
+and `a8e021d`, when `vite.config.ts` threw a ReferenceError on EVERY `/reshape/kernel/`
+request -- engine-agnostic, which matches "both engines". Unprovable now: the original
+pass's screenshots and console logs are gone. If it recurs, restart (don't just reload)
+the dev server after editing `vite.config.ts`, and smoke-test a kernel URL, since nothing
+type-checks that file.
 
 ---
 
