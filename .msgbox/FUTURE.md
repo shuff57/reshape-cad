@@ -16,7 +16,11 @@ console or network errors, and brep-rs builds faster in every case (14-75ms vs 3
 Screenshots were in the agent's scratchpad and are gone; re-run the pass to regenerate.
 
 **Open.**
-1. **The box/cylinder `round` property is unimplemented and no fixture covers it.** The
+1. **RESOLVED 2026-09-16** — built for box fillet + chamfer (26 faces) and cylinder fillet
+   (5 faces); parity 61/0 and mesh 61/0, lead-verified. Cylinder CHAMFER is still refused in
+   words (a cone-frustum rim, no fixture). Two flash models died on this spec before sonnet
+   built it. The original note follows.
+   ~~**The box/cylinder `round` property is unimplemented and no fixture covers it.**~~ The
    studio's Round button sets `f.round` + `f.roundStyle` on the primitive
    (`ModelEditor.tsx:850`), NOT a `fillet` feature. brep-rs refuses it at
    `wasm.rs:401` (box) and `:456` (cylinder), so the studio silently falls back to OCCT
