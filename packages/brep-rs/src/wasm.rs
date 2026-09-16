@@ -393,15 +393,18 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 };
                 let center = f.get("center").and_then(v3).unwrap_or([0.0, 0.0, 0.0]);
                 let rotate = f.get("rotate").and_then(v3);
-                if let Some(r) = f.get("round").and_then(|r| r.as_f64()) {
-                    if r != 0.0 {
-                        refusals.insert(
-                            id.clone(),
-                            json!(format!(
-                                "Rounding box {id} is not supported by brep-rs yet -- {id} is shown without it."
-                            )),
-                        );
-                        continue;
+                let round = f.get("round").and_then(|r| r.as_f64()).unwrap_or(0.0);
+                if round != 0.0 {
+                    let style = f.get("roundStyle").and_then(|s| s.as_str()).unwrap_or("fillet");
+                    match round_box(size, center, round, style, rotate.is_some()) {
+                        Ok(solid) => {
+                            hist.insert(&id, solid);
+                            continue;
+                        }
+                        Err(reason) => {
+                            refusals.insert(id.clone(), json!(format!("{reason} -- {id} is shown without it.")));
+                            continue;
+                        }
                     }
                 }
                 let solid = build::box_solid(size, center, rotate);
@@ -450,14 +453,27 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 };
                 let h = f.get("height").and_then(|h| h.as_f64()).unwrap_or(0.0);
                 let center = f.get("center").and_then(v3).unwrap_or([0.0, 0.0, 0.0]);
-                if f.get("round").and_then(|r| r.as_f64()).filter(|r| *r != 0.0).is_some() {
-                    refusals.insert(
-                        id.clone(),
-                        json!(format!("Rounding cylinder {id} is not supported by brep-rs yet -- {id} is shown without it.")),
-                    );
-                    continue;
-                }
+                let round = f.get("round").and_then(|r| r.as_f64()).unwrap_or(0.0);
                 let rotate = f.get("rotate").and_then(v3);
+                if round != 0.0 {
+                    let style = f.get("roundStyle").and_then(|s| s.as_str()).unwrap_or("fillet");
+                    match dispatch_round_cylinder(center, r, h, round, style) {
+                        Ok(solid) => {
+                            let solid = if let Some(rot) = rotate.filter(|r| r[0] != 0.0 || r[1] != 0.0 || r[2] != 0.0) {
+                                let t = crate::math::Transform::euler_deg(rot[0], rot[1], rot[2]).about(center);
+                                build::transform_solid(&solid, &t)
+                            } else {
+                                solid
+                            };
+                            hist.insert(&id, solid);
+                            continue;
+                        }
+                        Err(reason) => {
+                            refusals.insert(id.clone(), json!(format!("{reason} -- {id} is shown without it.")));
+                            continue;
+                        }
+                    }
+                }
                 let mut solid = build::cylinder_solid(center, r, h, [0.0, 0.0, 1.0]);
                 if let Some(rot) = rotate {
                     if rot[0] != 0.0 || rot[1] != 0.0 || rot[2] != 0.0 {
@@ -2107,6 +2123,76 @@ mod tests {
         assert!((build::solid_volume(solid) - 32000.0).abs() < 1e-6, "unchanged box");
     }
 
+    /// SPEC-brep-round.md: the `round` PRIMITIVE field (not the `fillet`
+    /// feature), chamfer style, on a 40x40x20 box at distance 4. Closed form
+    /// (derived independently, matching OCCT's 29141.333333):
+    /// V = XYZ - 2d²(X+Y+Z) + (16/3)d³, 26 faces, bbox unchanged, watertight.
+    #[test]
+    fn round_box_chamfer_volume_faces_watertight() {
+        let doc = json!({
+            "features": [
+                { "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0], "round": 4.0, "roundStyle": "chamfer" }
+            ]
+        });
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "refusals: {refusals:?}");
+        let solid = hist.shapes.get("b1").expect("chamfered box must build");
+        let vol = build::solid_volume(solid);
+        let (x, y, z, d) = (40.0, 40.0, 20.0, 4.0_f64);
+        let want = x * y * z - 2.0 * d * d * (x + y + z) + (16.0 / 3.0) * d.powi(3);
+        assert!((want - 29141.333333).abs() < 1e-3, "closed form {want} vs OCCT 29141.333333");
+        assert!((vol - want).abs() <= 1e-6 * want, "volume {vol} vs {want}");
+        assert_eq!(solid.faces().len(), 26, "6 flat + 12 edge strips + 8 corners");
+        let bb = build::solid_aabb(solid);
+        assert_eq!(bb.lo, [-20.0, -20.0, -10.0], "bbox unchanged");
+        assert_eq!(bb.hi, [20.0, 20.0, 10.0]);
+        assert_eq!(solid.edges().len(), 48, "Euler check: V24 - E48 + F26 = 2");
+        assert_eq!(solid.vertices().len(), 24);
+    }
+
+    /// SPEC-brep-round.md: the `round` PRIMITIVE field, fillet style, on a
+    /// 40x40x20 box at radius 4 -- OCCT's reference is 30712.259240, 26 faces.
+    #[test]
+    fn round_box_fillet_volume_faces_watertight() {
+        let doc = json!({
+            "features": [
+                { "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0], "round": 4.0, "roundStyle": "fillet" }
+            ]
+        });
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "refusals: {refusals:?}");
+        let solid = hist.shapes.get("b1").expect("rounded box must build");
+        let vol = build::solid_volume(solid);
+        assert!((vol - 30712.259240).abs() < 1e-3, "volume {vol} vs OCCT 30712.259240");
+        assert_eq!(solid.faces().len(), 26, "6 flat + 12 edge strips + 8 corners");
+        let bb = build::solid_aabb(solid);
+        assert_eq!(bb.lo, [-20.0, -20.0, -10.0], "bbox unchanged");
+        assert_eq!(bb.hi, [20.0, 20.0, 10.0]);
+        assert_eq!(solid.edges().len(), 48, "Euler check: V24 - E48 + F26 = 2");
+        assert_eq!(solid.vertices().len(), 24);
+    }
+
+    /// SPEC-brep-round.md: the `round` PRIMITIVE field, fillet style, on a
+    /// r12 h30 cylinder at radius 3 -- both rims rounded, OCCT's reference
+    /// is 13296.693532, 5 faces (wall + 2 caps + 2 rim fillets).
+    #[test]
+    fn round_cylinder_fillet_volume_faces_watertight() {
+        let doc = json!({
+            "features": [
+                { "id": "c1", "kind": "cylinder", "radius": 12.0, "height": 30.0, "round": 3.0, "roundStyle": "fillet" }
+            ]
+        });
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "refusals: {refusals:?}");
+        let solid = hist.shapes.get("c1").expect("rounded cylinder must build");
+        let vol = build::solid_volume(solid);
+        assert!((vol - 13296.693532).abs() < 1e-3, "volume {vol} vs OCCT 13296.693532");
+        assert_eq!(solid.faces().len(), 5, "wall + 2 caps + 2 rim fillets");
+        let bb = build::solid_aabb(solid);
+        assert!((bb.lo[2] - (-15.0)).abs() < 1e-6, "bbox lo z unchanged: {bb:?}");
+        assert!((bb.hi[2] - 15.0).abs() < 1e-6, "bbox hi z unchanged: {bb:?}");
+    }
+
     /// SPEC-brep-fillet.md refusal: a non-box target refuses rather than
     /// returning a wrong solid.
     #[test]
@@ -2428,6 +2514,126 @@ enum FilletErr {
     NoBox,
     NoEdge,
     TooBig,
+}
+
+/// Dispatch the box `round` primitive field (SPEC-brep-round.md): refuse a
+/// rotated box (not handled), refuse a size that would not fit (at least
+/// half the shortest dimension), then build chamfer or fillet style.
+fn round_box(size: Vec3, center: Vec3, round: f64, style: &str, rotated: bool) -> Result<TSolid, String> {
+    if rotated {
+        return Err("Rounding a rotated box is not supported by brep-rs yet".to_string());
+    }
+    let (hx, hy, hz) = (size[0] / 2.0, size[1] / 2.0, size[2] / 2.0);
+    let d = round.abs();
+    if d <= 0.0 || d >= hx.min(hy).min(hz) - 1e-9 {
+        return Err(format!("Rounding box by {round} would not fit its shortest side"));
+    }
+    if style == "chamfer" {
+        Ok(chamfer_box(hx, hy, hz, d, center))
+    } else {
+        Ok(build::fillet_box(hx, hy, hz, d, center))
+    }
+}
+
+/// Dispatch the cylinder `round` primitive field (SPEC-brep-round.md):
+/// refuse a size that would not fit (round radius must leave a positive cap
+/// and a positive shortened wall on both ends), then build. `chamfer` style
+/// on a cylinder is a conical rim (not one of this dispatch's fixtures) and
+/// is refused rather than guessed at.
+fn dispatch_round_cylinder(center: Vec3, radius: f64, height: f64, round: f64, style: &str) -> Result<TSolid, String> {
+    let rad = round.abs();
+    if rad <= 0.0 || rad >= radius - 1e-9 || rad >= height / 2.0 - 1e-9 {
+        return Err(format!("Rounding cylinder by {round} would not fit its radius or height"));
+    }
+    if style == "chamfer" {
+        return Err("Chamfering a cylinder is not supported by brep-rs yet".to_string());
+    }
+    Ok(build::round_cylinder(center, radius, height, [0.0, 0.0, 1.0], rad))
+}
+
+/// The round-primitive box, chamfer style (SPEC-brep-round.md): 6 flat faces
+/// (each inset by `d` on all sides) + 12 planar edge-strip bevels + 8 planar
+/// corner triangles = 26 faces, fully planar and exact. `d` is the round
+/// size, already checked to fit (`d < min(hx,hy,hz)`). Point naming: A sits on
+/// the Y face (y at its extreme, x/z inset), B on the Z face, C on the X
+/// face -- each edge strip and corner triangle shares exactly the pair/triple
+/// of points its neighbours also use, so the shell is watertight.
+fn chamfer_box(hx: f64, hy: f64, hz: f64, d: f64, center: Vec3) -> TSolid {
+    let sgn = |s: usize| if s == 1 { 1.0 } else { -1.0 };
+    let pt = |which: usize, sx: usize, sy: usize, sz: usize| -> Vec3 {
+        let (x, y, z) = match which {
+            0 => (sgn(sx) * (hx - d), sgn(sy) * hy, sgn(sz) * (hz - d)),
+            1 => (sgn(sx) * (hx - d), sgn(sy) * (hy - d), sgn(sz) * hz),
+            _ => (sgn(sx) * hx, sgn(sy) * (hy - d), sgn(sz) * (hz - d)),
+        };
+        add(center, [x, y, z])
+    };
+    let idx = |which: usize, sx: usize, sy: usize, sz: usize| which * 8 + sx * 4 + sy * 2 + sz;
+    let mut points = vec![[0.0, 0.0, 0.0]; 24];
+    for which in 0..3 {
+        for sx in 0..2 {
+            for sy in 0..2 {
+                for sz in 0..2 {
+                    points[idx(which, sx, sy, sz)] = pt(which, sx, sy, sz);
+                }
+            }
+        }
+    }
+    let a = |sx: usize, sy: usize, sz: usize| idx(0, sx, sy, sz);
+    let b = |sx: usize, sy: usize, sz: usize| idx(1, sx, sy, sz);
+    let c = |sx: usize, sy: usize, sz: usize| idx(2, sx, sy, sz);
+
+    let mut faces: Vec<(Vec3, Vec<usize>)> = Vec::with_capacity(26);
+    faces.push(([1.0, 0.0, 0.0], vec![c(1, 0, 0), c(1, 1, 0), c(1, 1, 1), c(1, 0, 1)]));
+    faces.push(([-1.0, 0.0, 0.0], vec![c(0, 1, 0), c(0, 0, 0), c(0, 0, 1), c(0, 1, 1)]));
+    faces.push(([0.0, 1.0, 0.0], vec![a(1, 1, 0), a(0, 1, 0), a(0, 1, 1), a(1, 1, 1)]));
+    faces.push(([0.0, -1.0, 0.0], vec![a(0, 0, 0), a(1, 0, 0), a(1, 0, 1), a(0, 0, 1)]));
+    faces.push(([0.0, 0.0, 1.0], vec![b(0, 0, 1), b(1, 0, 1), b(1, 1, 1), b(0, 1, 1)]));
+    faces.push(([0.0, 0.0, -1.0], vec![b(0, 1, 0), b(1, 1, 0), b(1, 0, 0), b(0, 0, 0)]));
+
+    // 12 edge strips. Winding reverses when the pair's zero-count is odd --
+    // derived and checked by hand (SPEC-brep-round.md) against each strip's
+    // intended outward (diagonal) normal.
+    for sx in 0..2 {
+        for sy in 0..2 {
+            let mut ring = vec![a(sx, sy, 1), c(sx, sy, 1), c(sx, sy, 0), a(sx, sy, 0)];
+            if (sx + sy) % 2 == 1 {
+                ring.reverse();
+            }
+            faces.push(([sgn(sx), sgn(sy), 0.0], ring));
+        }
+    }
+    for sy in 0..2 {
+        for sz in 0..2 {
+            let mut ring = vec![a(1, sy, sz), a(0, sy, sz), b(0, sy, sz), b(1, sy, sz)];
+            if (sy + sz) % 2 == 1 {
+                ring.reverse();
+            }
+            faces.push(([0.0, sgn(sy), sgn(sz)], ring));
+        }
+    }
+    for sx in 0..2 {
+        for sz in 0..2 {
+            let mut ring = vec![b(sx, 1, sz), b(sx, 0, sz), c(sx, 0, sz), c(sx, 1, sz)];
+            if (sx + sz) % 2 == 1 {
+                ring.reverse();
+            }
+            faces.push(([sgn(sx), 0.0, sgn(sz)], ring));
+        }
+    }
+    // 8 corner triangles. Winding reverses when the vertex's zero-count is odd.
+    for sx in 0..2 {
+        for sy in 0..2 {
+            for sz in 0..2 {
+                let mut ring = vec![a(sx, sy, sz), b(sx, sy, sz), c(sx, sy, sz)];
+                if (sx + sy + sz) % 2 == 1 {
+                    ring.reverse();
+                }
+                faces.push(([sgn(sx), sgn(sy), sgn(sz)], ring));
+            }
+        }
+    }
+    build::polyhedron_solid(&points, &faces)
 }
 
 /// Build the fillet/chamfer: a box edge rounded or chamfered is the extrusion

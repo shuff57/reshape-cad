@@ -515,6 +515,147 @@ fn mesh_curved_band(
     Some(())
 }
 
+/// Tessellate a bounded torus rim (SPEC-brep-round.md's quarter-torus
+/// cylinder fillet): two full circles of DIFFERENT radii (the wall-side and
+/// cap-side rims), bridged as a periodic band. `mesh_curved_band` needs the
+/// two loops to have the SAME point count (true for a trimmed sphere's two
+/// equal polar holes); these are independently deflection-sampled at their
+/// own, different radii, so they generally do not. Bridge them with the
+/// standard "zipper" walk instead: advance whichever ring's next point is
+/// angularly closer, so every triangle uses only the rings' own already-
+/// shared boundary samples -- no new vertex is invented, so neither
+/// neighbour (the wall, or the cap) can crack against this face.
+fn mesh_torus_band(
+    face: &TFace,
+    edges_cache: &HashMap<usize, Vec<Vec3>>,
+    out: &mut MeshBuilder,
+    defl: f64,
+    surface: &crate::geom::Surface,
+) -> Option<()> {
+    let (v0, v1) = match surface {
+        crate::geom::Surface::Torus(t) => (t.v_range[0], t.v_range[1]),
+        _ => return None,
+    };
+    let mut lo: Vec<[f64; 2]> = Vec::new();
+    let mut hi: Vec<[f64; 2]> = Vec::new();
+    for w in &face.borrow().boundary {
+        for u in &w.borrow().edges {
+            let k = std::rc::Rc::as_ptr(&u.edge) as *const () as usize;
+            let poly = match edges_cache.get(&k) {
+                Some(p) => p.clone(),
+                None => edge_polyline(&u.edge, defl),
+            };
+            let pts: Vec<Vec3> = if u.forward { poly } else { poly.into_iter().rev().collect() };
+            let mut ring: Vec<[f64; 2]> = Vec::with_capacity(pts.len());
+            for p in &pts {
+                let Some(mut q) = surface_uv(surface, *p) else { continue };
+                while q[0] < 0.0 {
+                    q[0] += TAU;
+                }
+                while q[0] >= TAU {
+                    q[0] -= TAU;
+                }
+                ring.push(q);
+            }
+            if ring.len() < 2 {
+                continue;
+            }
+            let vlo = ring.iter().fold(f64::MAX, |a, p| a.min(p[1]));
+            let vhi = ring.iter().fold(f64::MIN, |a, p| a.max(p[1]));
+            if vhi - vlo > 1e-6 {
+                continue; // the meridian seam, not a ring
+            }
+            if ring.len() > 2 && (ring[0][0] - ring.last().unwrap()[0]).abs() < 1e-7 {
+                ring.pop();
+            }
+            let mean_v = 0.5 * (vlo + vhi);
+            if (mean_v - v0).abs() < (mean_v - v1).abs() {
+                if lo.is_empty() {
+                    lo = ring;
+                }
+            } else if hi.is_empty() {
+                hi = ring;
+            }
+        }
+    }
+    if lo.len() < 3 || hi.len() < 3 {
+        return None;
+    }
+    lo.sort_by(|a, b| a[0].partial_cmp(&b[0]).unwrap());
+    hi.sort_by(|a, b| a[0].partial_cmp(&b[0]).unwrap());
+    let n1 = lo.len();
+    let n2 = hi.len();
+    let n_out_at = |u: f64, v: f64| -> Vec3 {
+        let (du, dv) = surface.dparam(u, v);
+        cross(du, dv)
+    };
+
+    // Interior rows all reuse `lo`'s own u-samples (a plain quad grid, no
+    // zipper needed there); only the LAST row-to-`hi` band bridges the two
+    // different counts, since `hi` alone may have a different sample count.
+    // The tube (v) direction needs its own refinement to meet deflection --
+    // a raw 2-row band would sag by roughly `rad*(1-cos(span/2))`, far past
+    // `d` for a small fillet radius.
+    let (_, rv) = surface_radii(surface);
+    let dv_step = angle_step(rv, defl * 0.5);
+    let m = (((v1 - v0).abs() / dv_step).ceil() as usize).max(1);
+
+    let start = out.indices.len();
+    let mut rows: Vec<Vec<u32>> = Vec::with_capacity(m);
+    for r in 0..m {
+        let v = v0 + (v1 - v0) * (r as f64 / m as f64);
+        rows.push(lo.iter().map(|p| out.push(surface.param(p[0], v))).collect());
+    }
+    for r in 0..rows.len().saturating_sub(1) {
+        let (v_r, v_r1) = (v0 + (v1 - v0) * (r as f64 / m as f64), v0 + (v1 - v0) * ((r + 1) as f64 / m as f64));
+        for i in 0..n1 {
+            let j = (i + 1) % n1;
+            let (a, b, c, d) = (rows[r][i], rows[r][j], rows[r + 1][j], rows[r + 1][i]);
+            let n_out = n_out_at(lo[i][0], 0.5 * (v_r + v_r1));
+            out.tri_oriented([a, b, c], n_out);
+            out.tri_oriented([a, c, d], n_out);
+        }
+    }
+
+    // Zipper the last interior row (still `lo`'s angles, at v just below v1)
+    // onto `hi` (its own angles, exactly at v1).
+    let last_row = rows.last().unwrap().clone();
+    let last_v = v0 + (v1 - v0) * ((m - 1) as f64 / m as f64);
+    let hi_ids: Vec<u32> = hi.iter().map(|p| out.push(surface.param(p[0], p[1]))).collect();
+    let lo_angles: Vec<f64> = lo.iter().map(|p| p[0]).collect();
+    let hi_angles: Vec<f64> = hi.iter().map(|p| p[0]).collect();
+    let ang = |a: &[f64], k: usize| -> f64 { a[k % a.len()] + (k / a.len()) as f64 * TAU };
+    let mut i = 0usize;
+    let mut j = 0usize;
+    while i < n1 || j < n2 {
+        let take_lo = if i >= n1 {
+            false
+        } else if j >= n2 {
+            true
+        } else {
+            ang(&lo_angles, i + 1) <= ang(&hi_angles, j + 1)
+        };
+        let a = last_row[i % n1];
+        let b = hi_ids[j % n2];
+        let n_out = n_out_at(lo_angles[i % n1], 0.5 * (last_v + v1));
+        if take_lo {
+            let c = last_row[(i + 1) % n1];
+            out.tri_oriented([a, b, c], n_out);
+            i += 1;
+        } else {
+            let c = hi_ids[(j + 1) % n2];
+            out.tri_oriented([a, b, c], n_out);
+            j += 1;
+        }
+    }
+    let count = out.indices.len() - start;
+    if count == 0 {
+        return None;
+    }
+    out.faces.push((start, count));
+    Some(())
+}
+
 /// Tessellate one face of the solid.
 fn mesh_face(
     face: &TFace,
@@ -529,6 +670,18 @@ fn mesh_face(
         if sp.trim.is_some() {
             let surface = face.borrow().surface.clone();
             if mesh_curved_band(face, edges_cache, out, defl, &surface).is_some() {
+                return Some(());
+            }
+        }
+    }
+    // A round-primitive cylinder rim (SPEC-brep-round.md): a bounded torus
+    // whose two rim circles have different radii, so the structured (u,v)
+    // grid's single shared u-column list cannot match both at once (see
+    // `mesh_torus_band`'s own doc comment).
+    if let crate::geom::Surface::Torus(t) = &face.borrow().surface {
+        if (t.v_range[1] - t.v_range[0] - TAU).abs() >= 1e-9 {
+            let surface = face.borrow().surface.clone();
+            if mesh_torus_band(face, edges_cache, out, defl, &surface).is_some() {
                 return Some(());
             }
         }
@@ -905,10 +1058,30 @@ fn mesh_curved_face(
     // full turn; its v is a straight length with no sag. A sphere/torus is one
     // closed face with no neighbour: both parameters are angles and are filled
     // to meet the deflection.
+    // A round-primitive corner (SPEC-brep-round.md) is a spherical OCTANT: a
+    // real 3-edge boundary shared with its two neighbouring edge-strips, not
+    // a full closed sphere with a self-seam. Fill/wrap logic there would
+    // both sample past its own [0, hp] domain and ignore the boundary
+    // stations the strips already fixed, crocking the shared arc. Detect it
+    // by domain span (a full sphere is always u=[0,2pi], v=[0,pi]) and fall
+    // back to the same bounded, boundary-driven path a partial cylinder uses.
     let (u_periodic, v_periodic, u_fill, v_fill) = match &surface {
         crate::geom::Surface::Cylinder(c) => (c.arc.is_none(), false, false, false),
         crate::geom::Surface::Cone(_) => (true, false, false, false),
-        crate::geom::Surface::Sphere(_) | crate::geom::Surface::Torus(_) => (true, true, true, true),
+        crate::geom::Surface::Sphere(s) => {
+            let full_u = (s.u_range[1] - s.u_range[0] - TAU).abs() < 1e-9;
+            let full_v = (s.v_range[1] - s.v_range[0] - std::f64::consts::PI).abs() < 1e-9;
+            if full_u && full_v { (true, true, true, true) } else { (false, false, false, false) }
+        }
+        crate::geom::Surface::Torus(s) => {
+            // The ring direction (u) is always a full turn. The tube
+            // direction (v) is full for a stand-alone torus_solid() but a
+            // round-primitive cylinder rim (SPEC-brep-round.md) is a
+            // quarter torus, [0, pi/2] -- bounded, boundary-driven, exactly
+            // like a partial-arc Cylinder's own v.
+            let full_v = (s.v_range[1] - s.v_range[0] - TAU).abs() < 1e-9;
+            if full_v { (true, true, true, true) } else { (true, false, false, false) }
+        }
         crate::geom::Surface::Plane(_) => (false, false, false, false),
     };
     // A filled grid's worst sag is on the cell DIAGONAL, so its step is halved
@@ -917,7 +1090,15 @@ fn mesh_curved_face(
     // face) case uses these; a fill-off wall is capped by its boundary samples.
     let su_f = if u_fill { angle_step(ru, defl * 0.5) } else { su };
     let sv_f = if v_fill { angle_step(rv, defl * 0.5) } else { sv };
-    let nu_lat = if u_fill || cyl_lattice { 0 } else { arc_segments(ru, u1 - u0, defl, 8) };
+    // A bounded torus (a round-primitive rim) is periodic in u like a full
+    // cylinder wall, but has no `cyl_lattice`-style supplementary frame to
+    // inject: its own two shared rim circles (radius `radius` at the wall,
+    // `radius - rad` at the cap) already supply the boundary samples both
+    // neighbours use, and adding a THIRD lattice at yet another sample count
+    // is what was cracking the shared seam. So it is gated off exactly like
+    // `cyl_lattice`.
+    let bounded_torus = matches!(&surface, crate::geom::Surface::Torus(s) if !((s.v_range[1] - s.v_range[0] - TAU).abs() < 1e-9));
+    let nu_lat = if u_fill || cyl_lattice || bounded_torus { 0 } else { arc_segments(ru, u1 - u0, defl, 8) };
     let nv_lat = if v_fill { 0 } else { 0 };
     let (us, u_wrap) = stations(us, u0, u1, su_f, u_periodic, u_fill, nu_lat);
     let (vs, v_wrap) = stations(vs, v0, v1, sv_f, v_periodic, v_fill, nv_lat);

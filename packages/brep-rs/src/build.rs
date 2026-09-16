@@ -223,6 +223,314 @@ pub fn corner_solid(verts: &[Vec3; 8]) -> TSolid {
     Solid { shells: vec![shell] }
 }
 
+/// Build a solid from an explicit planar polyhedron: `points` are the vertex
+/// positions, and each entry of `faces_in` is (outward normal, ring of vertex
+/// indices, CCW seen from outside). Any polygon size is allowed (triangle,
+/// quad, ...). Edges are shared by vertex-index pair exactly like
+/// `box_solid`/`corner_solid`, so two rings that name the same pair (in
+/// either order) get the same edge handle -- what keeps the round-primitive
+/// box (26 faces: 6 flat + 12 edge strips + 8 corner triangles) watertight.
+pub fn polyhedron_solid(points: &[Vec3], faces_in: &[(Vec3, Vec<usize>)]) -> TSolid {
+    let verts: Vec<topo::VertexRef> = points.iter().map(|p| topo::vertex(*p)).collect();
+    let mut edges: Vec<(usize, usize, TEdge)> = Vec::new();
+    let mut edge_of = |a: usize, b: usize| -> (TEdge, bool) {
+        let (kai, kbi) = (a.min(b), a.max(b));
+        let forward = a == kai;
+        if let Some((_, _, e)) = edges.iter().find(|(x, y, _)| *x == kai && *y == kbi) {
+            return (e.clone(), forward);
+        }
+        let e = topo::edge(
+            verts[kai].clone(),
+            verts[kbi].clone(),
+            true,
+            Curve::Segment {
+                a: verts[kai].borrow().point,
+                b: verts[kbi].borrow().point,
+            },
+        );
+        edges.push((kai, kbi, e.clone()));
+        (e, forward)
+    };
+    let mut faces: Vec<TFace> = Vec::new();
+    for (n, ring) in faces_in {
+        let p: Vec<Vec3> = ring.iter().map(|i| verts[*i].borrow().point).collect();
+        let plane = Plane::new(p[0], *n);
+        let m = ring.len();
+        let mut wire = Vec::with_capacity(m);
+        for i in 0..m {
+            let (e, forward) = edge_of(ring[i], ring[(i + 1) % m]);
+            let (sa, sb) = if forward { (p[i], p[(i + 1) % m]) } else { (p[(i + 1) % m], p[i]) };
+            wire.push(topo::EdgeUse {
+                edge: e,
+                forward,
+                pcurve: topo::Pcurve {
+                    start: plane.project(sa),
+                    end: plane.project(sb),
+                    mid: plane.project(scale(add(sa, sb), 0.5)),
+                },
+            });
+        }
+        let wref = Rc::new(RefCell::new(Wire { edges: wire }));
+        faces.push(Rc::new(RefCell::new(Face {
+            boundary: vec![wref],
+            forward: true,
+            surface: Surface::Plane(plane),
+            uv_domain: [[0.0, 1.0], [0.0, 1.0]],
+        })));
+    }
+    let shell = Rc::new(RefCell::new(Shell { faces }));
+    Solid { shells: vec![shell] }
+}
+
+/// The round-primitive box, fillet style (SPEC-brep-round.md): the same 6
+/// flat faces as `chamfer_box`/`polyhedron_solid` would give (each inset by
+/// `rad`), but the 12 edge bevels are quarter-cylinders and the 8 corners
+/// spherical octants, all tangent to their neighbours so the shell stays
+/// watertight. Point naming: A sits on the Y face, B on the Z face, C on the
+/// X face -- same convention the chamfer build uses.
+pub fn fillet_box(hx: f64, hy: f64, hz: f64, rad: f64, center: Vec3) -> TSolid {
+    let sgn = |s: usize| if s == 1 { 1.0 } else { -1.0 };
+    let pt = |which: usize, sx: usize, sy: usize, sz: usize| -> Vec3 {
+        let (x, y, z) = match which {
+            0 => (sgn(sx) * (hx - rad), sgn(sy) * hy, sgn(sz) * (hz - rad)),
+            1 => (sgn(sx) * (hx - rad), sgn(sy) * (hy - rad), sgn(sz) * hz),
+            _ => (sgn(sx) * hx, sgn(sy) * (hy - rad), sgn(sz) * (hz - rad)),
+        };
+        add(center, [x, y, z])
+    };
+    let idx = |which: usize, sx: usize, sy: usize, sz: usize| which * 8 + sx * 4 + sy * 2 + sz;
+    let verts: Vec<topo::VertexRef> = (0..24)
+        .map(|i| topo::vertex(pt(i / 8, (i / 4) % 2, (i / 2) % 2, i % 2)))
+        .collect();
+    let av = |sx: usize, sy: usize, sz: usize| verts[idx(0, sx, sy, sz)].clone();
+    let bv = |sx: usize, sy: usize, sz: usize| verts[idx(1, sx, sy, sz)].clone();
+    let cv = |sx: usize, sy: usize, sz: usize| verts[idx(2, sx, sy, sz)].clone();
+
+    let hp = std::f64::consts::FRAC_PI_2;
+    let seg = |va: &topo::VertexRef, vb: &topo::VertexRef| -> TEdge {
+        topo::edge(va.clone(), vb.clone(), true, Curve::Segment { a: va.borrow().point, b: vb.borrow().point })
+    };
+    let arc = |centre: Vec3, radius: f64, normal: Vec3, x_axis: Vec3, va: &topo::VertexRef, vb: &topo::VertexRef| -> TEdge {
+        topo::edge(va.clone(), vb.clone(), true, Curve::Arc { center: centre, radius, normal, x_axis, sweep: hp })
+    };
+    // Whether `e`'s own intrinsic direction (its `a` endpoint) starts at
+    // `from`. A strip's own two end arcs are always built to match how that
+    // strip's wire uses them, but a corner sphere shares those SAME arc
+    // handles under its own (independent) parity, so its wire below asks
+    // this rather than assuming a fixed true/false.
+    let dir = |e: &TEdge, from: &topo::VertexRef| -> bool { Rc::ptr_eq(&e.borrow().a, from) };
+
+    use std::collections::HashMap;
+    let mut long_a_varx: HashMap<(usize, usize), TEdge> = HashMap::new();
+    let mut long_a_varz: HashMap<(usize, usize), TEdge> = HashMap::new();
+    let mut long_b_varx: HashMap<(usize, usize), TEdge> = HashMap::new();
+    let mut long_b_vary: HashMap<(usize, usize), TEdge> = HashMap::new();
+    let mut long_c_vary: HashMap<(usize, usize), TEdge> = HashMap::new();
+    let mut long_c_varz: HashMap<(usize, usize), TEdge> = HashMap::new();
+    let mut arc_z: HashMap<(usize, usize, usize), TEdge> = HashMap::new();
+    let mut arc_x: HashMap<(usize, usize, usize), TEdge> = HashMap::new();
+    let mut arc_y: HashMap<(usize, usize, usize), TEdge> = HashMap::new();
+
+    let mut faces: Vec<TFace> = Vec::with_capacity(26);
+
+    // 4 Z-strips: axis +Z, e1/e2 -> C/A (swapped when sx!=sy, to keep
+    // cross(e1,e2) == +axis -- otherwise the cylinder's own outward sense
+    // flips and its volume contribution cancels instead of adding (found by
+    // running `debug_fillet_box_face_breakdown`: the 4 Z-strip volume terms
+    // were +,-,-,+ in (sx,sy) order, i.e. exactly this parity). Shortened by
+    // `rad` at both z-ends; the end arcs are shared with the corner spheres.
+    for sx in 0..2 {
+        for sy in 0..2 {
+            let origin = add(center, [sgn(sx) * (hx - rad), sgn(sy) * (hy - rad), 0.0]);
+            let axis = [0.0, 0.0, 1.0];
+            let flip = sx != sy;
+            let (e1, e2) = if !flip { ([sgn(sx), 0.0, 0.0], [0.0, sgn(sy), 0.0]) } else { ([0.0, sgn(sy), 0.0], [sgn(sx), 0.0, 0.0]) };
+            let (vmin, vmax) = (-(hz - rad), hz - rad);
+            let (c_lo, a_lo, c_hi, a_hi) = (cv(sx, sy, 0), av(sx, sy, 0), cv(sx, sy, 1), av(sx, sy, 1));
+            let (u0_lo, u0_hi, upi2_lo, upi2_hi) = if !flip { (&c_lo, &c_hi, &a_lo, &a_hi) } else { (&a_lo, &a_hi, &c_lo, &c_hi) };
+            let arc_lo = arc(add(origin, [0.0, 0.0, vmin]), rad, axis, e1, u0_lo, upi2_lo);
+            let arc_hi = arc(add(origin, [0.0, 0.0, vmax]), rad, axis, e1, u0_hi, upi2_hi);
+            let long_a = long_a_varz.entry((sx, sy)).or_insert_with(|| seg(&a_lo, &a_hi)).clone();
+            let long_c = long_c_varz.entry((sx, sy)).or_insert_with(|| seg(&c_lo, &c_hi)).clone();
+            let (long_u0, long_upi2) = if !flip { (&long_c, &long_a) } else { (&long_a, &long_c) };
+            let uses = vec![
+                cyl_arc_use(&arc_lo, true, 0.0, hp, vmin, vmin),
+                cyl_arc_use(long_upi2, true, hp, hp, vmin, vmax),
+                cyl_arc_use(&arc_hi, false, hp, 0.0, vmax, vmax),
+                cyl_arc_use(long_u0, false, 0.0, 0.0, vmax, vmin),
+            ];
+            faces.push(make_face(
+                Surface::Cylinder(Cylinder { origin, axis, e1, e2, radius: rad, vmin, vmax, arc: Some(geom::ArcRange { start: 0.0, span: hp }) }),
+                [[0.0, hp], [vmin, vmax]],
+                uses,
+            ));
+            arc_z.insert((sx, sy, 0), arc_lo);
+            arc_z.insert((sx, sy, 1), arc_hi);
+        }
+    }
+    // 4 X-strips: axis +X, e1/e2 -> A/B (swapped when sy!=sz).
+    for sy in 0..2 {
+        for sz in 0..2 {
+            let origin = add(center, [0.0, sgn(sy) * (hy - rad), sgn(sz) * (hz - rad)]);
+            let axis = [1.0, 0.0, 0.0];
+            let flip = sy != sz;
+            let (e1, e2) = if !flip { ([0.0, sgn(sy), 0.0], [0.0, 0.0, sgn(sz)]) } else { ([0.0, 0.0, sgn(sz)], [0.0, sgn(sy), 0.0]) };
+            let (vmin, vmax) = (-(hx - rad), hx - rad);
+            let (a_lo, b_lo, a_hi, b_hi) = (av(0, sy, sz), bv(0, sy, sz), av(1, sy, sz), bv(1, sy, sz));
+            let (u0_lo, u0_hi, upi2_lo, upi2_hi) = if !flip { (&a_lo, &a_hi, &b_lo, &b_hi) } else { (&b_lo, &b_hi, &a_lo, &a_hi) };
+            let arc_lo = arc(add(origin, [vmin, 0.0, 0.0]), rad, axis, e1, u0_lo, upi2_lo);
+            let arc_hi = arc(add(origin, [vmax, 0.0, 0.0]), rad, axis, e1, u0_hi, upi2_hi);
+            let long_a = long_a_varx.entry((sy, sz)).or_insert_with(|| seg(&a_lo, &a_hi)).clone();
+            let long_b = long_b_varx.entry((sy, sz)).or_insert_with(|| seg(&b_lo, &b_hi)).clone();
+            let (long_u0, long_upi2) = if !flip { (&long_a, &long_b) } else { (&long_b, &long_a) };
+            let uses = vec![
+                cyl_arc_use(&arc_lo, true, 0.0, hp, vmin, vmin),
+                cyl_arc_use(long_upi2, true, hp, hp, vmin, vmax),
+                cyl_arc_use(&arc_hi, false, hp, 0.0, vmax, vmax),
+                cyl_arc_use(long_u0, false, 0.0, 0.0, vmax, vmin),
+            ];
+            faces.push(make_face(
+                Surface::Cylinder(Cylinder { origin, axis, e1, e2, radius: rad, vmin, vmax, arc: Some(geom::ArcRange { start: 0.0, span: hp }) }),
+                [[0.0, hp], [vmin, vmax]],
+                uses,
+            ));
+            arc_x.insert((0, sy, sz), arc_lo);
+            arc_x.insert((1, sy, sz), arc_hi);
+        }
+    }
+    // 4 Y-strips: axis +Y, e1/e2 -> B/C (swapped when sx!=sz).
+    for sx in 0..2 {
+        for sz in 0..2 {
+            let origin = add(center, [sgn(sx) * (hx - rad), 0.0, sgn(sz) * (hz - rad)]);
+            let axis = [0.0, 1.0, 0.0];
+            let flip = sx != sz;
+            let (e1, e2) = if !flip { ([0.0, 0.0, sgn(sz)], [sgn(sx), 0.0, 0.0]) } else { ([sgn(sx), 0.0, 0.0], [0.0, 0.0, sgn(sz)]) };
+            let (vmin, vmax) = (-(hy - rad), hy - rad);
+            let (b_lo, c_lo, b_hi, c_hi) = (bv(sx, 0, sz), cv(sx, 0, sz), bv(sx, 1, sz), cv(sx, 1, sz));
+            let (u0_lo, u0_hi, upi2_lo, upi2_hi) = if !flip { (&b_lo, &b_hi, &c_lo, &c_hi) } else { (&c_lo, &c_hi, &b_lo, &b_hi) };
+            let arc_lo = arc(add(origin, [0.0, vmin, 0.0]), rad, axis, e1, u0_lo, upi2_lo);
+            let arc_hi = arc(add(origin, [0.0, vmax, 0.0]), rad, axis, e1, u0_hi, upi2_hi);
+            let long_b = long_b_vary.entry((sx, sz)).or_insert_with(|| seg(&b_lo, &b_hi)).clone();
+            let long_c = long_c_vary.entry((sx, sz)).or_insert_with(|| seg(&c_lo, &c_hi)).clone();
+            let (long_u0, long_upi2) = if !flip { (&long_b, &long_c) } else { (&long_c, &long_b) };
+            let uses = vec![
+                cyl_arc_use(&arc_lo, true, 0.0, hp, vmin, vmin),
+                cyl_arc_use(long_upi2, true, hp, hp, vmin, vmax),
+                cyl_arc_use(&arc_hi, false, hp, 0.0, vmax, vmax),
+                cyl_arc_use(long_u0, false, 0.0, 0.0, vmax, vmin),
+            ];
+            faces.push(make_face(
+                Surface::Cylinder(Cylinder { origin, axis, e1, e2, radius: rad, vmin, vmax, arc: Some(geom::ArcRange { start: 0.0, span: hp }) }),
+                [[0.0, hp], [vmin, vmax]],
+                uses,
+            ));
+            arc_y.insert((sx, 0, sz), arc_lo);
+            arc_y.insert((sx, 1, sz), arc_hi);
+        }
+    }
+
+    // 6 flat faces, same rings as the chamfer build, reusing the long edges
+    // the strips above already created.
+    let xface = |sx: usize| -> TFace {
+        let n = [sgn(sx), 0.0, 0.0];
+        let ring: [(usize, usize); 4] = if sx == 1 { [(0, 0), (1, 0), (1, 1), (0, 1)] } else { [(1, 0), (0, 0), (0, 1), (1, 1)] };
+        let p: Vec<Vec3> = ring.iter().map(|&(sy, sz)| pt(2, sx, sy, sz)).collect();
+        let plane = Plane::new(p[0], n);
+        let edge_for = |i: usize| -> (TEdge, bool) {
+            let (sy0, sz0) = ring[i];
+            let (sy1, sz1) = ring[(i + 1) % 4];
+            if sy0 != sy1 {
+                (long_c_vary[&(sx, sz0)].clone(), sy0 < sy1)
+            } else {
+                (long_c_varz[&(sx, sy0)].clone(), sz0 < sz1)
+            }
+        };
+        let uses = (0..4).map(|i| planar_seg_use(&plane, &edge_for(i).0, edge_for(i).1, p[i], p[(i + 1) % 4])).collect();
+        make_face(Surface::Plane(plane), [[0.0, 1.0], [0.0, 1.0]], uses)
+    };
+    let yface = |sy: usize| -> TFace {
+        let n = [0.0, sgn(sy), 0.0];
+        let ring: [(usize, usize); 4] = if sy == 1 { [(1, 0), (0, 0), (0, 1), (1, 1)] } else { [(0, 0), (1, 0), (1, 1), (0, 1)] };
+        let p: Vec<Vec3> = ring.iter().map(|&(sx, sz)| pt(0, sx, sy, sz)).collect();
+        let plane = Plane::new(p[0], n);
+        let edge_for = |i: usize| -> (TEdge, bool) {
+            let (sx0, sz0) = ring[i];
+            let (sx1, sz1) = ring[(i + 1) % 4];
+            if sx0 != sx1 {
+                (long_a_varx[&(sy, sz0)].clone(), sx0 < sx1)
+            } else {
+                (long_a_varz[&(sx0, sy)].clone(), sz0 < sz1)
+            }
+        };
+        let uses = (0..4).map(|i| planar_seg_use(&plane, &edge_for(i).0, edge_for(i).1, p[i], p[(i + 1) % 4])).collect();
+        make_face(Surface::Plane(plane), [[0.0, 1.0], [0.0, 1.0]], uses)
+    };
+    let zface = |sz: usize| -> TFace {
+        let n = [0.0, 0.0, sgn(sz)];
+        let ring: [(usize, usize); 4] = if sz == 1 { [(0, 0), (1, 0), (1, 1), (0, 1)] } else { [(0, 1), (1, 1), (1, 0), (0, 0)] };
+        let p: Vec<Vec3> = ring.iter().map(|&(sx, sy)| pt(1, sx, sy, sz)).collect();
+        let plane = Plane::new(p[0], n);
+        let edge_for = |i: usize| -> (TEdge, bool) {
+            let (sx0, sy0) = ring[i];
+            let (sx1, sy1) = ring[(i + 1) % 4];
+            if sx0 != sx1 {
+                (long_b_varx[&(sy0, sz)].clone(), sx0 < sx1)
+            } else {
+                (long_b_vary[&(sx0, sz)].clone(), sy0 < sy1)
+            }
+        };
+        let uses = (0..4).map(|i| planar_seg_use(&plane, &edge_for(i).0, edge_for(i).1, p[i], p[(i + 1) % 4])).collect();
+        make_face(Surface::Plane(plane), [[0.0, 1.0], [0.0, 1.0]], uses)
+    };
+    for sx in 0..2 { faces.push(xface(sx)); }
+    for sy in 0..2 { faces.push(yface(sy)); }
+    for sz in 0..2 { faces.push(zface(sz)); }
+
+    // 8 corner spheres: an octant tangent to the 3 adjacent strips, sharing
+    // their end arcs. axis picks the pole toward +sz*z; e1/e2 toward +sx*x
+    // and +sy*y, so u=0 -> B (v=0 pole), the u=0 meridian is arc_y (B->C),
+    // the v=hp equator is arc_z (C->A) and the u=hp meridian is arc_x (A->B).
+    for sx in 0..2 {
+        for sy in 0..2 {
+            for sz in 0..2 {
+                let centre = add(center, [sgn(sx) * (hx - rad), sgn(sy) * (hy - rad), sgn(sz) * (hz - rad)]);
+                let axis = [0.0, 0.0, -sgn(sz)];
+                // Same cross(e1,e2)==+axis requirement as the strips: swap
+                // e1/e2 when the corner's own sign parity is odd, which
+                // (per the same debug run) swaps which strip-shared arc sits
+                // at u=0 vs u=hp, while the v=hp equator arc (arc_z) keeps
+                // its slot either way.
+                let flip = (sx + sy + sz) % 2 == 1;
+                let (e1, e2) = if !flip { ([sgn(sx), 0.0, 0.0], [0.0, sgn(sy), 0.0]) } else { ([0.0, sgn(sy), 0.0], [sgn(sx), 0.0, 0.0]) };
+                let (apt, bpt, cpt) = (av(sx, sy, sz), bv(sx, sy, sz), cv(sx, sy, sz));
+                let ay = arc_y[&(sx, sy, sz)].clone();
+                let az = arc_z[&(sx, sy, sz)].clone();
+                let ax = arc_x[&(sx, sy, sz)].clone();
+                // Intended traversal (independent of each arc's own flip,
+                // fixed by the strips): slot0 B->{C,A}, az {C,A}->{A,C},
+                // slot2 {A,C}->B -- `dir` reads the actual forward off
+                // whichever end this shared arc happens to have been built
+                // with, since the strip's own parity need not match this
+                // corner's.
+                let (slot0, slot2, az_from, slot2_from) = if !flip { (&ay, &ax, &cpt, &apt) } else { (&ax, &ay, &apt, &cpt) };
+                let uses = vec![
+                    cyl_arc_use(slot0, dir(slot0, &bpt), 0.0, 0.0, 0.0, hp),
+                    cyl_arc_use(&az, dir(&az, az_from), 0.0, hp, hp, hp),
+                    cyl_arc_use(slot2, dir(slot2, slot2_from), hp, hp, hp, 0.0),
+                ];
+                faces.push(make_face(
+                    Surface::Sphere(SphereSurf { center: centre, radius: rad, axis, e1, e2, u_range: [0.0, hp], v_range: [0.0, hp], trim: None }),
+                    [[0.0, hp], [0.0, hp]],
+                    uses,
+                ));
+            }
+        }
+    }
+
+    let shell = Rc::new(RefCell::new(Shell { faces }));
+    Solid { shells: vec![shell] }
+}
+
 /// Apply a rigid transform to every vertex point and geometry payload. Handle
 /// sharing is preserved by `topo::Solid::map_geom`; vertex POINTS are moved
 /// afterwards, and each face's plane frame and pcurves rebuilt from the moved
@@ -600,6 +908,100 @@ fn disk_face(
     make_face(Surface::Plane(plane), [[0.0, 1.0], [0.0, 1.0]], vec![use_])
 }
 
+/// A disk cap sharing a pre-built rim edge (unlike `disk_face`, which always
+/// makes its own) -- needed so the same circle is the boundary of both the
+/// cap and its adjoining round-primitive torus rim.
+fn disk_face_shared(edge: TEdge, seam_point: Vec3, normal: Vec3) -> TFace {
+    let plane = Plane::new(seam_point, normal);
+    let use_ = topo::EdgeUse {
+        edge,
+        forward: true,
+        pcurve: topo::Pcurve { start: [0.0, 0.0], end: [0.0, 0.0], mid: [0.0, 0.0] },
+    };
+    make_face(Surface::Plane(plane), [[0.0, 1.0], [0.0, 1.0]], vec![use_])
+}
+
+/// The round-primitive cylinder, fillet style (SPEC-brep-round.md): both rims
+/// get a quarter-torus fillet between the (shortened) wall and a shrunken
+/// cap -- 5 faces (wall, 2 caps, 2 rim fillets), matching OCCT's count.
+pub fn round_cylinder(center: Vec3, radius: f64, height: f64, axis: Vec3, rad: f64) -> TSolid {
+    let axis = crate::math::normalize(axis);
+    let (e1, e2, z) = geom::frame(axis);
+    let hh = height / 2.0 - rad;
+    let cap_r = radius - rad;
+    let zlo_wall = add(center, scale(z, -hh));
+    let zhi_wall = add(center, scale(z, hh));
+    let zlo_cap = add(center, scale(z, -(height / 2.0)));
+    let zhi_cap = add(center, scale(z, height / 2.0));
+
+    let rim_wall = |zc: Vec3| Curve::Circle { center: zc, radius, normal: z };
+    let rim_cap = |zc: Vec3| Curve::Circle { center: zc, radius: cap_r, normal: z };
+    let v_wall_lo = topo::vertex(add(zlo_wall, scale(e1, radius)));
+    let v_wall_hi = topo::vertex(add(zhi_wall, scale(e1, radius)));
+    let v_cap_lo = topo::vertex(add(zlo_cap, scale(e1, cap_r)));
+    let v_cap_hi = topo::vertex(add(zhi_cap, scale(e1, cap_r)));
+    let e_wall_lo = topo::edge(v_wall_lo.clone(), v_wall_lo.clone(), true, rim_wall(zlo_wall));
+    let e_wall_hi = topo::edge(v_wall_hi.clone(), v_wall_hi.clone(), true, rim_wall(zhi_wall));
+    let e_cap_lo = topo::edge(v_cap_lo.clone(), v_cap_lo.clone(), true, rim_cap(zlo_cap));
+    let e_cap_hi = topo::edge(v_cap_hi.clone(), v_cap_hi.clone(), true, rim_cap(zhi_cap));
+
+    let hp = std::f64::consts::FRAC_PI_2;
+    let two_pi = 2.0 * std::f64::consts::PI;
+    let pi = std::f64::consts::PI;
+
+    let wall = make_face(
+        Surface::Cylinder(Cylinder { origin: zlo_wall, axis: z, e1, e2, radius, vmin: 0.0, vmax: 2.0 * hh, arc: None }),
+        [[0.0, 0.0], [0.0, 2.0 * hh]],
+        vec![
+            topo::EdgeUse { edge: e_wall_lo.clone(), forward: true, pcurve: topo::Pcurve { start: [0.0, 0.0], end: [0.0, 2.0 * hh], mid: [0.0, hh] } },
+            topo::EdgeUse { edge: e_wall_hi.clone(), forward: false, pcurve: topo::Pcurve { start: [two_pi, 2.0 * hh], end: [0.0, 2.0 * hh], mid: [pi, 2.0 * hh] } },
+            topo::EdgeUse { edge: e_wall_lo.clone(), forward: false, pcurve: topo::Pcurve { start: [0.0, 2.0 * hh], end: [0.0, 0.0], mid: [0.0, hh] } },
+        ],
+    );
+    let top_cap = disk_face_shared(e_cap_hi.clone(), v_cap_hi.borrow().point, z);
+    let bottom_cap = disk_face_shared(e_cap_lo.clone(), v_cap_lo.borrow().point, scale(z, -1.0));
+
+    // The u=0 meridian, shared as the torus wire's own "vertical" edge --
+    // the same seam-plus-arc shape `extrude_profile`'s partial-cylinder wall
+    // uses. Its `normal` is chosen so y_axis = normal x_axis works out to the
+    // torus's own axis, i.e. the point at v=hp lands on the cap, not off it
+    // (checked against both rim positions in SPEC-brep-round.md's derivation).
+    let meridian = |ring_c: Vec3, va: &topo::VertexRef, vb: &topo::VertexRef, arc_normal: Vec3| -> TEdge {
+        topo::edge(va.clone(), vb.clone(), true, Curve::Arc { center: ring_c, radius: rad, normal: arc_normal, x_axis: e1, sweep: hp })
+    };
+    let torus_wire = |e_wall: TEdge, e_cap: TEdge, seam: TEdge| -> Vec<topo::EdgeUse<Curve3>> {
+        vec![
+            topo::EdgeUse { edge: e_wall, forward: true, pcurve: topo::Pcurve { start: [0.0, 0.0], end: [two_pi, 0.0], mid: [pi, 0.0] } },
+            topo::EdgeUse { edge: seam.clone(), forward: true, pcurve: topo::Pcurve { start: [two_pi, 0.0], end: [two_pi, hp], mid: [two_pi, hp / 2.0] } },
+            topo::EdgeUse { edge: e_cap, forward: false, pcurve: topo::Pcurve { start: [two_pi, hp], end: [0.0, hp], mid: [pi, hp] } },
+            topo::EdgeUse { edge: seam, forward: false, pcurve: topo::Pcurve { start: [0.0, hp], end: [0.0, 0.0], mid: [0.0, hp / 2.0] } },
+        ]
+    };
+
+    let seam_top = meridian(add(zhi_wall, scale(e1, cap_r)), &v_wall_hi, &v_cap_hi, scale(e2, -1.0));
+    let top_torus = make_face(
+        Surface::Torus(TorusSurf { center: zhi_wall, axis: z, e1, e2, ring: cap_r, tube: rad, v_range: [0.0, hp] }),
+        [[0.0, two_pi], [0.0, hp]],
+        torus_wire(e_wall_hi, e_cap_hi, seam_top),
+    );
+    let seam_bot = meridian(add(zlo_wall, scale(e1, cap_r)), &v_wall_lo, &v_cap_lo, e2);
+    // e2 negated (axis already flipped to -z for this rim): cross(e1,e2)
+    // must equal the surface's own axis for its volume term to come out
+    // with the right sign (found by `debug_round_cylinder_face_breakdown`:
+    // the bottom rim's contribution had the opposite sign of the top's,
+    // same class of bug as the box fillet's strip/sphere parity). The
+    // meridian curve above is untouched -- it is defined in world space by
+    // (e1, e2) directly, not through this struct.
+    let bottom_torus = make_face(
+        Surface::Torus(TorusSurf { center: zlo_wall, axis: scale(z, -1.0), e1, e2: scale(e2, -1.0), ring: cap_r, tube: rad, v_range: [0.0, hp] }),
+        [[0.0, two_pi], [0.0, hp]],
+        torus_wire(e_wall_lo, e_cap_lo, seam_bot),
+    );
+
+    let shell = Rc::new(RefCell::new(Shell { faces: vec![wall, top_cap, bottom_cap, top_torus, bottom_torus] }));
+    Solid { shells: vec![shell] }
+}
+
 /// A cone centred on `center`, base at -height/2, apex at +height/2.
 pub fn cone_solid(center: Vec3, radius: f64, height: f64, axis: Vec3) -> TSolid {
     let axis = crate::math::normalize(axis);
@@ -720,14 +1122,7 @@ pub fn torus_solid(center: Vec3, ring: f64, tube: f64, axis: Vec3) -> TSolid {
     );
     let uv = 2.0 * std::f64::consts::PI;
     let torus = make_face(
-        Surface::Torus(TorusSurf {
-            center,
-            axis: z,
-            e1,
-            e2,
-            ring,
-            tube,
-        }),
+        Surface::Torus(TorusSurf::full(center, z, e1, e2, ring, tube)),
         [[0.0, uv], [0.0, uv]],
         vec![
             topo::EdgeUse {

@@ -609,6 +609,17 @@ pub struct TorusSurf {
     pub e2: Vec3,
     pub ring: f64,
     pub tube: f64,
+    /// The tube-angle (v) domain, [0, 2pi] for a full torus. A round-primitive
+    /// cylinder rim (SPEC-brep-round.md) is a quarter torus -- [0, pi/2] --
+    /// between the wall (v=0) and the shrunken cap (v=pi/2). u (the ring
+    /// angle) is always the full turn.
+    pub v_range: [f64; 2],
+}
+
+impl TorusSurf {
+    pub fn full(center: Vec3, axis: Vec3, e1: Vec3, e2: Vec3, ring: f64, tube: f64) -> Self {
+        TorusSurf { center, axis, e1, e2, ring, tube, v_range: [0.0, 2.0 * std::f64::consts::PI] }
+    }
 }
 
 /// The surfaces the kernel knows.
@@ -661,6 +672,7 @@ impl Surface {
                 e2: normalize(t.dir(s.e2)),
                 ring: s.ring,
                 tube: s.tube,
+                v_range: s.v_range,
             }),
         }
     }
@@ -687,7 +699,7 @@ impl Surface {
             }
             Surface::Cone(c) => ([0.0, two_pi], [0.0, c.slant]),
             Surface::Sphere(s) => (s.u_range, s.v_range),
-            Surface::Torus(_) => ([0.0, two_pi], [0.0, two_pi]),
+            Surface::Torus(s) => ([0.0, two_pi], s.v_range),
         }
     }
 
