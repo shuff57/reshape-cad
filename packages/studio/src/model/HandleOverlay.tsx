@@ -108,10 +108,15 @@ interface Props {
    * pixels. Defaults to 0 -- plain `inset:0`, filling its containing block
    * exactly.
    *
-   * EXISTS BECAUSE `inset:0` ON AN ABSOLUTELY POSITIONED ELEMENT RESOLVES
-   * AGAINST THE CONTAINING BLOCK'S PADDING EDGE, NOT ITS CONTENT EDGE -- a
-   * genuine CSS rule, not a bug, but one the host that renders this overlay
-   * got backwards for a while. SandboxWorkspace.tsx's Build mode reserves
+   * GEOMETRY NOW (docked grid, adoption step 2, 2026-09-16): the timeline is
+   * a grid row OUTSIDE the pane-view, and the status bar is outside too, so
+   * normal bottomInset is 0. The prop remains for hosts that reserve bottom
+   * space in the pane-view itself (e.g. old hosts passing 84).
+   *
+   * MECHANICS, for hosts that do pass it: `inset:0` ON AN ABSOLUTELY
+   * POSITIONED ELEMENT RESOLVES AGAINST THE CONTAINING BLOCK'S PADDING
+   * EDGE, NOT ITS CONTENT EDGE -- a genuine CSS rule, not a bug, but one the
+   * host that renders this overlay got backwards for a while. SandboxWorkspace.tsx's Build mode reserves
    * space for its timeline strip with `padding-bottom` on the shared
    * container this layer sits in, on the (documented, and wrong) assumption
    * that padding on that ancestor would shrink this layer the same way it
@@ -1922,16 +1927,14 @@ export default function HandleOverlay({
         }
         /* The Rules panel names which rules disagree and this does not repeat
            that -- it exists to be impossible to miss and to point at the red. */
-        /* Top RIGHT, not Onshape's top centre, and 60px down rather than 12px.
-           Both are forced by what else floats over this same layer, measured
-           live rather than guessed: the tools bar is a 48px ribbon across the
-           top (a banner at 12px sat on the buttons and ate their clicks), and
-           the Rules panel overlays the left ~450px -- and grows taller exactly
-           when a conflict exists, which is exactly when this banner shows, so
-           a centred banner is clipped precisely when it is needed. The top
-           right corner is the one part of the canvas nothing else claims. */
+        /* Top RIGHT, top: 12px. The tools ribbon (48px) and Rules panel no
+           longer overlay this canvas -- ReshapeStudio is a docked CSS grid
+           as of adoption step 2 (2026-09-16) and the tools card + rules panel
+           live in grid columns outside the pane-view, so the alarm anchors
+           straight to the canvas corner. (Was 60px down / 16px right to dodge
+           those floaters, measured live back when they were real.) */
         .sketch-alarm {
-          position: absolute; top: 60px; right: 16px;
+          position: absolute; top: 12px; right: 12px;
           display: flex; align-items: center; gap: 9px;
           max-width: calc(100% - 24px);
           padding: 7px 8px 7px 12px;

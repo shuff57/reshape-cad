@@ -21,6 +21,7 @@ import {
 } from 'react';
 import { Maximize2, Minimize2, PanelRightClose, PanelRightOpen } from 'lucide-react';
 import ReshapeParamsPanel, { type ParamDef, type ParamValues } from './ReshapeParamsPanel.js';
+import { noteColor, type StudioNote } from './notes.js';
 import ModelEditor from './model/ModelEditor.js';
 import BrepViewport, { type BrepViewportStats, type ViewportPick } from './model/BrepViewportThree.js';
 import HandleOverlay, { type AnchorPoint, type SketchOutline, type SketchPart } from './model/HandleOverlay.js';
@@ -118,21 +119,15 @@ export type ReshapeStudioProps = {
 // ---- constants carried over from SandboxWorkspace.tsx verbatim -----------
 // (see that file's own comments for why these particular numbers)
 const TIMELINE_HEIGHT_PX = 58;
+// The status bar's own height -- docked grid row 4 (adoption step 1,
+// SPEC-ui-revamp-decisions.md §5).
+const STATUS_BAR_HEIGHT_PX = 26;
+// The toolbar's own height -- docked grid row 1 (adoption step 2): the
+// ribbon's own .model-tools is 42px, so this row centers it with room to
+// spare. It is a row, not an overlay, so nothing draws underneath it.
+const TOOLBAR_HEIGHT_PX = 52;
 const RULES_PANEL_WIDTH_PX = 280;
 const PREVIEW_DEGRADE_MS = 25;
-// Build mode's toolbar (ribbon + mode toggle) floats over the canvas at
-// top:0 -- this reserves its own height so nothing else (tool card, rules
-// pane, params pane) draws underneath it. The literal File/Edit/View/
-// Insert/Modify menu bar that used to sit above this toolbar is gone
-// (2026-09-13): its File/Edit actions moved into the ribbon's own File and
-// Edit groups (model/ModelEditor.tsx), Insert/Modify were pure ribbon
-// duplicates, and View's one item duplicated the ribbon's own collapse
-// button -- so there is no second row to reserve height for any more.
-// The ribbon grew a group-caption row under each icon cluster (Fusion-360-
-// style CREATE/MODIFY/... labels, ui-ref/*.png) -- 48 was tuned for the old
-// icon-only 34px ribbon; the ribbon's own .model-tools is now 42px plus the
-// toolbar's own 4px+4px padding, so this reserves 56.
-const BUILD_CHROME_TOP_PX = 56;
 
 function capitalize(name: string): string {
   return name.length ? name[0].toUpperCase() + name.slice(1) : name;
@@ -390,9 +385,9 @@ export default function ReshapeStudio({
   // Code mode's own chrome, shared regardless of which `CodeEditor` a host
   // plugs in -- see this file's header + the plan doc for why this lives
   // here rather than inside CodeEditor itself. `codeHidden` mirrors
-  // `toolsHidden`'s rail-collapse (the .reshape-pane viewport reclaims the
-  // freed width); `codeFullscreen` instead takes over the WHOLE app area
-  // (menu bar/toolbar/viewport/params/timeline all hidden), Escape-able the
+  // `toolsHidden`'s rail-collapse (the row-2 middle cell reclaims the freed
+  // width); `codeFullscreen` instead takes over the WHOLE main row
+  // (toolbar/viewport/params/timeline all hidden around it), Escape-able the
   // same way drawTool/the sketch selection strip already are below.
   const [codeHidden, setCodeHidden] = useState(false);
   const [codeFullscreen, setCodeFullscreen] = useState(false);
@@ -420,7 +415,6 @@ export default function ReshapeStudio({
   useEffect(() => {
     if (build && codeFullscreen) setCodeFullscreen(false);
   }, [build, codeFullscreen]);
-  const [cardHasContent, setCardHasContent] = useState(true);
   const [anchors, setAnchors] = useState<AnchorPoint[]>([]);
   const meshRef = useRef<MeshInput | null>(null);
   const [hasMesh, setHasMesh] = useState(false);
@@ -440,6 +434,11 @@ export default function ReshapeStudio({
   const [scriptDoc, setScriptDoc] = useState<ModelDoc | null>(null);
   const [scriptNamedParams, setScriptNamedParams] = useState<ScriptParamRef[] | null>(null);
   const [scriptErrorMessage, setScriptErrorMessage] = useState<string | null>(null);
+  // The status bar's model dimensions, fed by BrepViewport's own onStats
+  // (computeSceneBox()) -- see the onStats handler and dimsMm on
+  // BrepViewportStats. Null until the viewport reports an extent, so the
+  // readout hides rather than shows zeros.
+  const [bboxMm, setBboxMm] = useState<{ x: number; y: number; z: number } | null>(null);
   const [code, setCode] = useState('');
   const [runKey, setRunKey] = useState(0);
   // Whether the very first build (mount hydration, or the first manual Run)
@@ -1062,16 +1061,59 @@ export default function ReshapeStudio({
   // something to execute it.
   const wantsHydrationShadow = showBrep || showBrepOnCode;
 
-  return (
-    <div
-      className={
-        'reshape-studio'
-        + (build ? ' is-build' : '')
-        + (build && toolsHidden ? ' is-tools-hidden' : '')
-        + (build && !cardHasContent ? ' is-card-empty' : '')
-        + (!build && codeFullscreen ? ' is-code-fullscreen' : '')
+  // ---- the status bar's note ticker ---------------------------------------
+  // One note at a time, derived fresh each render from state this component
+  // ALREADY owns -- nothing new to track, and nothing here duplicates a panel
+  // row: the ticker is the app-wide readout for notes that outlast the
+  // interaction (SPEC §2 principle 3, §5.9). FINAL priority order, after the
+  // 2026-09-16 rework: (1) stale 'error' WITH a script error -> conflict
+  // (the script message itself -- Code mode's preview-error sets BOTH
+  // stale='error' and scriptErrorMessage, and the specific message must
+  // outrank the generic build-failed note); (2) stale 'error' WITHOUT one ->
+  // conflict (first refusal, else the generic build-failed text); (3) a
+  // refusal -> conflict; (4) a script error on its own -> conflict;
+  // (5) stale 'empty' -> status ("the last version that worked is on
+  // screen"); (6) rebuild timing -> status; (7) quiet (null).
+  const statusNote: StudioNote | null = useMemo(() => {
+    if (stale === 'error') {
+      if (scriptErrorMessage) {
+        return { severity: 'conflict', text: scriptErrorMessage, source: 'script' };
       }
-    >
+      const first = refusals instanceof Map && refusals.size > 0
+        ? refusals.entries().next().value
+        : undefined;
+      return first
+        ? { severity: 'conflict', text: first[1], source: first[0] }
+        : { severity: 'conflict', text: 'Build failed -- the last version that worked is on screen.' };
+    }
+    if (refusals instanceof Map && refusals.size > 0) {
+      const entry = refusals.entries().next().value;
+      return entry
+        ? { severity: 'conflict', text: entry[1], source: entry[0] }
+        : null;
+    }
+    if (scriptErrorMessage) {
+      return { severity: 'conflict', text: scriptErrorMessage, source: 'script' };
+    }
+    if (stale === 'empty') {
+      return { severity: 'status', text: 'The last version that worked is on screen.' };
+    }
+    if (rebuildMs != null) {
+      return { severity: 'status', text: `rebuilt in ${rebuildMs} ms` };
+    }
+    return null;
+  }, [stale, refusals, scriptErrorMessage, rebuildMs]);
+
+  return (
+          <div
+            className={
+              'reshape-studio'
+              + (build ? ' is-build' : '')
+              + (build && toolsHidden ? ' is-tools-hidden' : '')
+              + (!build && codeHidden ? ' is-code-collapsed' : '')
+              + (!build && codeFullscreen ? ' is-code-fullscreen' : '')
+            }
+          >
       <div className="reshape-studio-toolbar">
         {canBuild && canCode && (
           <div className="sandbox-modes" role="group" aria-label="Editing mode">
@@ -1096,7 +1138,7 @@ export default function ReshapeStudio({
         {/* ModelEditor's shape-tools bar portals in here when build. */}
         <span id="reshapeRibbon" className="reshape-studio-ribbon" aria-hidden={!build} />
         {!build && canCode && (
-          <button className="btn-run" onClick={run}>▶ Run</button>
+          <button className="btn-run" style={{ flexShrink: 0 }} onClick={run}>▶ Run</button>
         )}
         {/* Clear model / Export STL,OBJ,3MF / Save,Open / Export Drawing
             (SVG,PDF) used to live here as a fixed row of chips, then in a
@@ -1117,9 +1159,18 @@ export default function ReshapeStudio({
       </div>
 
       <div className="reshape-studio-body">
+        {/* The left dock (grid-area tools): ModelEditor's collapsible card
+            on top, the portal target for its Rules panel below it --
+            #reshapeRules must stay an UNCONDITIONAL rendered node either
+            way, because ModelEditor resolves the host by getElementById
+            (model/ModelEditor.tsx) before it decides where to portal the
+            rules, and this wrapper is a sibling of the pane, not a child of
+            it -- the ribbon and timeline hosts are untouched. */}
         {build && (
-          <div className="reshape-studio-tools">
-            <ModelEditor
+          <div className="reshape-studio-left">
+            <div className="reshape-studio-tools">
+              <div className="reshape-studio-tools-kicker">Browser</div>
+              <ModelEditor
               doc={doc}
               onChange={applyDoc}
               selected={selected}
@@ -1139,7 +1190,6 @@ export default function ReshapeStudio({
               historyGen={historyGen}
               collapsible
               onCollapsed={setToolsHidden}
-              onContentChange={setCardHasContent}
               pickedEdge={pickedEdge}
               onClearPickedEdge={() => setPickedEdge(null)}
               pickedFace={pickedFace}
@@ -1160,10 +1210,12 @@ export default function ReshapeStudio({
               activePlane={activePlane}
               onActivePlaneChange={setActivePlane}
             />
+            </div>
+            <div id="reshapeRules" className="reshape-studio-rules" aria-hidden={!build} />
           </div>
         )}
         {!build && canCode && (
-          <div className={codeHidden ? 'reshape-studio-code is-collapsed' : 'reshape-studio-code'}>
+            <div className="reshape-studio-code">
             {codeHidden ? (
               <div className="reshape-code-collapsed" role="group" aria-label="Code editor">
                 <button
@@ -1208,8 +1260,13 @@ export default function ReshapeStudio({
           </div>
         )}
 
+        {/* Viewport + params: grid row 2. The pane holds both internally
+            (view flexes; the params aside keeps its fixed 240px) -- Build's
+            tools dock is the only other row-2 cell. The rules host moved
+            next to the tools card in the left dock above; the is-code-
+            fullscreen hide is the pane-hiding mechanism that survives the
+            grid. */}
         <div className="reshape-pane">
-          <div id="reshapeRules" className="reshape-pane-rules" aria-hidden={!build} />
           <div className="reshape-pane-view">
             {(showBrep || showBrepOnCode) ? (
               <BrepViewport
@@ -1224,6 +1281,9 @@ export default function ReshapeStudio({
                   setRebuildMs(Math.round(total));
                   setStale(st.triangles > 0 || isSketchOnly(shownDoc) ? null : 'empty');
                   if (!refusalsUnchanged(refusals, st.refusals)) setRefusals(st.refusals);
+                  // The same measurement Home/fit already computes, lifted so
+                  // the status bar can show the model's own mm extents.
+                  setBboxMm(st.dimsMm ?? null);
                 }}
                 onPick={showBrep ? (p: ViewportPick | null) => {
                   if (!p) {
@@ -1282,6 +1342,7 @@ export default function ReshapeStudio({
                   engineRef.current = engine;
                   setEngineKind(kind);
                 }}
+                badgesInStatusBar={true}
                 registerPickAt={(fn) => { pickAtRef.current = fn; }}
               />
             ) : (
@@ -1322,7 +1383,7 @@ export default function ReshapeStudio({
                 selectedParts={selectedSketchParts}
                 onSelectPart={handleSelectPart}
                 ruleActions={ruleActionsProxy}
-                bottomInset={TIMELINE_HEIGHT_PX}
+                bottomInset={0}
               />
             )}
           </div>
@@ -1354,6 +1415,75 @@ export default function ReshapeStudio({
       {/* The parametric timeline strip: ModelEditor portals its feature
           list here, Fusion-360-style, across the bottom of the canvas. */}
       <div id="reshapeTimeline" className={build ? 'reshape-studio-timeline' : 'reshape-studio-timeline is-hidden'} aria-hidden={!build} />
+
+      {/* The status bar (adoption step 1): the single home every note,
+          selection readout, and engine/bbox fact reports to -- a persistent
+          26px docked row, last flex child so it always spans the bottom
+          (mockup-A's grid). role=status/aria-live=polite so a screen reader
+          hears the ticker without it stealing focus. Persists in Code mode
+          and Code-fullscreen by design: it is app chrome, not Build chrome,
+          and in Code mode its ticker carries scriptErrorMessage instead. */}
+      <footer
+        className="reshape-studio-status"
+        role="status"
+        aria-live="polite"
+      >
+        {selectionLabel ? (
+          <button
+            type="button"
+            className="reshape-studio-status-sel"
+            title="Click to clear the selection"
+            aria-label="Clear the selection"
+            onClick={() => setSelected([])}
+          >
+            {selectionLabel}
+          </button>
+        ) : showBrep ? (
+          <span className="reshape-studio-status-sel is-muted">Nothing selected</span>
+        ) : (
+          <span className="reshape-studio-status-sel is-muted">Code</span>
+        )}
+        <span className="reshape-studio-status-grow" />
+        {statusNote && (
+          <span
+            className="reshape-studio-status-note"
+            style={{ color: noteColor(statusNote.severity) }}
+            title={statusNote.source ? `${statusNote.source} — ${statusNote.text}` : statusNote.text}
+          >
+            {statusNote.source ? `${statusNote.source} — ` : ''}{statusNote.text}
+          </span>
+        )}
+        <span
+          className="reshape-studio-status-eng"
+          title={
+            stale == null && rebuildMs != null
+              ? `rebuild ok (${rebuildMs} ms)`
+              : undefined
+          }
+        >
+          {/* The engine-state dot stays amber on stale 'error' (engine state)
+              while the ticker note renders red (message severity) -- a
+              deliberate split: state indicator vs message color. Do not unify. */}
+          <i
+            aria-hidden="true"
+            className="reshape-studio-status-eng-dot"
+            style={{
+              background: engineKind != null && stale == null
+                ? 'var(--reshape-success)'
+                : stale === 'error'
+                  ? 'var(--reshape-warn)'
+                  : 'var(--reshape-text-muted)',
+            }}
+          />
+          {engineKind ?? 'engine loading'}
+        </span>
+        {showBrep && bboxMm && (
+          <span className="reshape-studio-status-bbox">
+            {bboxMm.x} × {bboxMm.y} × {bboxMm.z} mm
+          </span>
+        )}
+        <span className="reshape-studio-status-nav">Right-drag orbit · Scroll zoom</span>
+      </footer>
 
       <style>{`
         /* The one place every --reshape-* token is defined -- everything
@@ -1399,17 +1529,28 @@ export default function ReshapeStudio({
 
           font-family: var(--reshape-font-ui);
           /* Pure fallback fill, not a layout change: nothing under this rule
-             ever painted the root itself (every dark surface below is a
-             child that starts its own margin-top/absolute box further down
-             -- see BUILD_CHROME_TOP_PX). Standalone (packages/sandbox-dev,
-             no shCode host page behind it) that left a real white sliver
-             above the Dimensions panel until its own margin-top began,
-             visible in this session's own build-mode screenshot -- caught
-             by the exact "transparent where a card background should be"
-             check this migration's verification step calls for. */
+             ever painted the root itself, and standalone (packages/
+             sandbox-dev, no shCode host page behind it) that left a real
+             white sliver above the docked toolbar until its own surface
+             began -- caught by the exact "transparent where a card
+             background should be" check this migration's verification step
+             calls for. */
           background: var(--reshape-bg);
-          display: flex;
-          flex-direction: column;
+          /* Docked grid shell (adoption step 2, SPEC-ui-revamp-decisions.md
+             section 1: Mockup A's rows/columns). Every child docks into a
+             named area -- no absolute chrome, nothing floats over anything,
+             so the whole floating-card collision class the five measured
+             hacks were built to paper over dies here. Rows use the constants
+             above so HandleOverlay and the portaled timeline keep single
+             sources of truth. */
+          display: grid;
+          grid-template-rows: ${TOOLBAR_HEIGHT_PX}px 1fr ${TIMELINE_HEIGHT_PX}px ${STATUS_BAR_HEIGHT_PX}px;
+          grid-template-columns: 280px 1fr;
+          grid-template-areas:
+            "toolbar toolbar"
+            "tools view"
+            "timeline timeline"
+            "status status";
           flex: 1 1 auto;
           width: 100%;
           min-width: 0;
@@ -1417,28 +1558,31 @@ export default function ReshapeStudio({
           min-height: 0;
           position: relative;
         }
+        /* Code mode re-maps the shell: no left dock (the tools card is
+            Build's own chrome), and the row-2 cells split as the old ~40/60
+            flex did -- the code editor in the narrow column, the pane
+            (which keeps view + the fixed-240px params aside internally) in
+            the wide one. The timeline row is collapsed to 0 in Code mode:
+            the #reshapeTimeline host stays mounted (ModelEditor resolves it
+            by id), it just has no row to occupy -- its is-hidden class is
+            now redundant but harmless. */
+        .reshape-studio:not(.is-build) {
+          grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+          grid-template-rows: ${TOOLBAR_HEIGHT_PX}px 1fr 0px ${STATUS_BAR_HEIGHT_PX}px;
+          grid-template-areas:
+            "toolbar toolbar"
+            "tools view"
+            "timeline timeline"
+            "status status";
+        }
+        .reshape-studio:not(.is-build) .reshape-studio-left { display: none; }
         .reshape-studio-toolbar {
+          grid-area: toolbar;
           display: flex;
           align-items: center;
           gap: 8px;
-          flex: 0 0 auto;
-          padding: 4px 0 8px;
-        }
-        /* Build: the toolbar floats over the canvas instead of taking its own
-           row -- the ribbon (ModelEditor's shape tools, portaled into
-           #reshapeRibbon below), Reset/Export/Full-screen (toolbarExtra) all
-           read as one strip directly under the site nav, Onshape-style. This
-           is the exact chrome the parity loop's blind rounds were judged
-           against (scratchpad/parity/ours-r5/3d/*.png) -- restored here
-           after a plainer flex layout regressed it (SPEC-A1 rework 1). */
-        .reshape-studio.is-build .reshape-studio-toolbar {
-          position: absolute;
-          left: 0;
-          right: 0;
-          top: 0;
-          z-index: 50;
+          min-width: 0;
           padding: 4px 10px;
-          background: transparent;
         }
         /* The one flexible child: it, not the mode toggle beside it, gives
            way (scrolling its own tool icons) if the row is ever too narrow
@@ -1477,67 +1621,91 @@ export default function ReshapeStudio({
         .reshape-studio.is-build .sandbox-mode { border-right: 0; color: #d3d5e3; }
         .reshape-studio.is-build .sandbox-mode.is-active { background: var(--reshape-border); color: var(--reshape-text); }
         .reshape-studio.is-build .sandbox-mode:hover { color: var(--reshape-text); }
+        /* The JSX wrapper div: its children are the real grid items, so the
+           wrapper itself steps out of layout entirely (display: contents) --
+           the grid owns placement, the wrapper contributes no box. */
         .reshape-studio-body {
-          display: flex;
-          flex: 1 1 auto;
-          min-height: 0;
-          gap: 8px;
-          position: relative;
+          display: contents;
         }
-        /* Build: the tool card floats over the canvas at the left edge
-           instead of sharing the row with it -- see #editorPane's own
-           history in the pre-extraction SandboxWorkspace for the exact
-           numbers this restores (measured against Playwright screenshots,
-           not guessed). */
-        .reshape-studio.is-build .reshape-studio-tools {
-          position: absolute;
-          left: 12px;
-          top: ${BUILD_CHROME_TOP_PX}px;
-          bottom: 12px;
-          height: auto;
-          width: min(420px, 45%);
-          z-index: 40;
+        /* The left dock (grid-area tools): ModelEditor's collapsible card
+           fills the top of the column; the rules host sits below it, still
+           scrollable and clamped, behind a hairline. Docked, not floating:
+           border-right hairline, no shadow, no z-index, no canvas overlap --
+           the margin dodges the floating card used to force on the rules
+           pane and the timeline die with the card itself. */
+        .reshape-studio-left {
+          grid-area: tools;
+          display: flex;
+          flex-direction: column;
+          min-width: 0;
+          min-height: 0;
           background: var(--card, var(--reshape-surface));
-          border: 1px solid #565a70;
-          border-radius: 6px;
-          box-shadow: 0 12px 36px rgba(0,0,0,0.6);
+          border-right: 1px solid var(--border, var(--reshape-border));
           overflow: hidden;
         }
-        /* Collapsed by the student (is-tools-hidden) or empty on its own
-           (is-card-empty, e.g. no note and no docked sketch rules -- the
-           feature LIST lives in the bottom timeline, not this card) --
-           either way it shrinks to a rail rather than an empty box over the
-           canvas. Only is-card-empty also pulls the timeline's own left
-           edge in (below); a MANUAL collapse leaves room in case the
-           student reopens it. */
-        .reshape-studio.is-tools-hidden .reshape-studio-tools,
-        .reshape-studio.is-card-empty .reshape-studio-tools {
-          width: 46px;
-          box-shadow: none;
+        /* Collapsed by the student (is-tools-hidden) -- the dock track
+           itself shrinks to a rail (the old item width hack left a 234px
+           dead strip because the 280px track never moved), the rules host
+           hidden with it (ModelEditor only portals rules while its own card
+           is expanded, so the host is empty in that state anyway). */
+        .reshape-studio.is-tools-hidden {
+          grid-template-columns: 46px minmax(0, 1fr);
+        }
+        .reshape-studio.is-tools-hidden .reshape-studio-left {
           background: rgba(40, 42, 54, 0.72);
         }
+        .reshape-studio.is-tools-hidden .reshape-studio-rules { display: none; }
         .reshape-studio-tools {
-          min-width: 0;
+          flex: 1 1 auto;
+          min-height: 0;
           overflow-y: auto;
-          border: 1px solid var(--border, var(--reshape-border));
-          border-radius: var(--reshape-radius);
+        }
+        .reshape-studio-tools-kicker {
+          flex: 0 0 auto;
+          padding: 6px 10px;
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: var(--reshape-text-muted);
+          border-bottom: 1px solid var(--border, var(--reshape-border));
+        }
+        /* The docked rules host -- ModelEditor portals its Rules panel into
+           #reshapeRules here (unconditional node; :empty collapses it to
+           nothing when no sketch is active, same discipline the old pane
+           child used). */
+        .reshape-studio-rules:empty { display: none; }
+        .reshape-studio-rules:not(:empty) {
+          flex: 0 1 auto;
+          min-height: 0;
+          overflow-y: auto;
+          border-top: 1px solid var(--border, var(--reshape-border));
           background: var(--card, var(--reshape-surface));
         }
         .reshape-studio-tools .model-tools { display: none; }
         .reshape-studio-code {
-          flex: 1 1 40%;
+          grid-area: tools;
           min-width: 0;
+          min-height: 0;
           display: flex;
           position: relative;
           border: 1px solid var(--border, var(--reshape-border));
           border-radius: var(--reshape-radius);
           overflow: hidden;
         }
-        /* Collapsed by the student -- mirrors .reshape-studio-tools' own
-           46px rail treatment above, minus the Undo/Redo/Sketch shortcuts
-           that rail keeps (this panel has no equivalent "useful while
-           collapsed" content -- a bare re-expand button is the whole rail). */
-        .reshape-studio-code.is-collapsed { flex: 0 0 32px; }
+        /* Collapsed by the student -- the code track shrinks to a rail, the
+           pane takes the rest (mockup-H spirit: cols are the collapse
+           behavior, items span their area). Mirrors .reshape-studio-tools'
+           own 46px rail treatment above, minus the Undo/Redo/Sketch
+           shortcuts that rail keeps (this panel has no equivalent "useful
+           while collapsed" content -- a bare re-expand button is the whole
+           rail). */
+        .reshape-studio:not(.is-build).is-code-collapsed {
+          grid-template-columns: 32px minmax(0, 1fr);
+        }
+        .reshape-studio:not(.is-build).is-code-collapsed .reshape-studio-code {
+          background: rgba(40, 42, 54, 0.72);
+        }
         .reshape-code-collapsed {
           display: flex;
           flex-direction: column;
@@ -1573,59 +1741,23 @@ export default function ReshapeStudio({
           color: var(--reshape-text);
           border-color: var(--reshape-accent);
         }
-        /* Full screen: the code panel takes the entire body row (the menu
-           bar/ribbon above are already build-only -- see their own build-
-           gated JSX above -- so Code mode never renders them in the first
-           place; what THIS class hides is the viewport+params pane, the one
-           other thing sharing the row in Code mode). NB: no backticks in
-           this comment -- see the block's own top-of-style-tag warning on
-           why one here breaks the whole template literal. */
-        .reshape-studio.is-code-fullscreen .reshape-pane { display: none; }
-        .reshape-studio.is-code-fullscreen .reshape-studio-code { flex: 1 1 auto; }
-        .reshape-pane { flex: 1 1 auto; min-width: 0; display: flex; position: relative; }
-        .reshape-pane-rules:empty { display: none; }
-        .reshape-pane-rules:not(:empty) {
-          flex: 0 0 ${RULES_PANEL_WIDTH_PX}px;
-          min-width: 0;
-          overflow-y: auto;
-          border-right: 1px solid var(--border, var(--reshape-border));
-          background: var(--card, var(--reshape-surface));
+        /* Full screen: the code panel takes the entire main row. The pane's
+            grid-area is display:none, and the columns squeeze to one track
+            so the editor's tools cell IS the full row (without the squeeze
+            the 3fr track would sit empty beside it). The menu bar/ribbon
+            above are already build-gated JSX, so Code mode never renders
+            them in the first place. NB: no backticks in this comment --
+            see the block's own top-of-style-tag warning on why one here
+            breaks the whole template literal. */
+        .reshape-studio.is-code-fullscreen:not(.is-build) {
+          grid-template-columns: minmax(0, 1fr) 0px;
         }
-        /* Clears the floating ribbon and stops short of the timeline, the
-           same offsets #reshapeRules used pre-extraction. */
-        /* margin-left below also clears the floating tools card SIDEWAYS,
-           the one dimension the comment above never covered:
-           .reshape-studio-tools is position:absolute and z-index:40, so
-           it visually and interactively sits ON TOP of whatever the
-           (position:relative, z-index:auto) rules pane draws underneath
-           it, even at its collapsed 46px rail width -- a real mouse click
-           at a "Rules between two edges" cell within that band lands on
-           the rail's own div instead (measured 2026-09-04, S08/S12: a
-           click at the button's own live getBoundingClientRect() center
-           resolved via document.elementFromPoint to .model-editor inside
-           .reshape-studio-tools, not the button). The timeline strip below
-           already dodges the same card this way; the rules pane never got
-           the equivalent margin.
-           NB: no backticks in this comment -- this whole block is a
-           template literal, and a backtick here closes it early, which is
-           exactly what broke this file the first time this comment was
-           written. */
-        .reshape-studio.is-build .reshape-pane-rules:not(:empty) {
-          margin-top: ${BUILD_CHROME_TOP_PX}px;
-          height: calc(100% - ${BUILD_CHROME_TOP_PX}px - ${TIMELINE_HEIGHT_PX}px);
-          margin-left: calc(min(420px, 45%) + 24px);
-        }
-        .reshape-studio.is-build.is-card-empty .reshape-pane-rules:not(:empty) {
-          margin-left: 66px;
-        }
+        .reshape-studio.is-code-fullscreen:not(.is-build) .reshape-pane { display: none; }
+        .reshape-pane { grid-area: view; min-width: 0; display: flex; position: relative; min-height: 0; }
         .reshape-pane-view { flex: 1 1 auto; min-width: 0; display: flex; position: relative; }
         .reshape-pane-view .reshape-frame, .reshape-pane-view .reshape-empty { flex: 1; }
-        /* Reserves the timeline strip's own height so the render surface
-           (and the handle overlay, via its own bottomInset prop) end above
-           it instead of underneath it. */
-        .reshape-studio.is-build .reshape-pane-view { padding-bottom: ${TIMELINE_HEIGHT_PX}px; }
         .reshape-pane-params {
-          flex: 0 0 208px;
+          flex: 0 0 240px;
           min-width: 0;
           border-left: 1px solid var(--border, var(--reshape-border));
           background: var(--card, var(--reshape-surface));
@@ -1633,24 +1765,85 @@ export default function ReshapeStudio({
           flex-direction: column;
           overflow: hidden;
         }
-        .reshape-studio.is-build .reshape-pane-params { margin-top: ${BUILD_CHROME_TOP_PX}px; }
         .reshape-studio-timeline {
-          position: absolute;
-          bottom: 0;
+          grid-area: timeline;
           height: ${TIMELINE_HEIGHT_PX}px;
           display: flex;
           align-items: stretch;
           background: rgba(40, 42, 54, 0.88);
           border-top: 1px solid var(--reshape-border);
-          border-radius: 0 0 var(--reshape-radius) var(--reshape-radius);
         }
-        .reshape-studio.is-build .reshape-studio-timeline {
-          left: calc(min(420px, 45%) + 24px);
-          right: 220px;
-        }
-        .reshape-studio.is-build.is-card-empty .reshape-studio-timeline { left: 66px; }
         .reshape-studio-timeline.is-hidden { display: none; }
         .reshape-studio-timeline .model-timeline { flex: 1 1 auto; min-width: 0; }
+        /* The status bar (mockup-H's .status, in this file's own tokens):
+           26px docked row, flat, hairline top border, kicker typography on
+           its labels, mono only where the readout is numeric. NO backticks
+           anywhere in this block -- see the NB comments above on why one
+           here would close the whole template literal. */
+        .reshape-studio-status {
+          grid-area: status;
+          height: ${STATUS_BAR_HEIGHT_PX}px;
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          padding: 0 12px;
+          background: var(--reshape-bg);
+          border-top: 1px solid var(--reshape-border);
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: var(--reshape-text-muted);
+          overflow: hidden;
+          white-space: nowrap;
+        }
+        .reshape-studio-status-sel {
+          background: transparent;
+          border: 0;
+          padding: 0;
+          font: inherit;
+          letter-spacing: inherit;
+          text-transform: inherit;
+          color: var(--reshape-text-muted);
+          text-align: left;
+          cursor: pointer;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .reshape-studio-status-sel:hover { color: var(--reshape-text); }
+        .reshape-studio-status-sel.is-muted { color: var(--reshape-text-muted); cursor: default; }
+        .reshape-studio-status-grow { flex: 1 1 auto; }
+        .reshape-studio-status-note {
+          min-width: 0;
+          flex: 0 1 auto;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          font-weight: 400;
+          text-transform: none;
+          letter-spacing: 0;
+        }
+        .reshape-studio-status-eng {
+          flex: none;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+        }
+        .reshape-studio-status-eng-dot {
+          width: 7px;
+          height: 7px;
+          border-radius: 999px;
+          display: inline-block;
+        }
+        .reshape-studio-status-bbox {
+          flex: none;
+          font-family: var(--reshape-font-mono);
+          font-size: 11px;
+          font-weight: 400;
+          text-transform: none;
+          letter-spacing: 0;
+          font-variant-numeric: tabular-nums;
+        }
+        .reshape-studio-status-nav { flex: none; white-space: nowrap; }
       `}</style>
     </div>
   );

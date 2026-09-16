@@ -152,6 +152,11 @@ export interface BrepViewportStats {
    *  Absent or empty means everything in the document built. Comes straight
    *  from BuildResult.refusals; see lib/occt-build.ts. */
   refusals?: Map<string, string>;
+  /** The world-space extent of everything on screen (computeSceneBox()'s own
+   *  box), rounded to 1 decimal, mm -- the same measurement Home/fit already
+   *  computes. Absent when the scene is not ready or nothing is drawn, so a
+   *  caller's readout can hide rather than show zeros. */
+  dimsMm?: { x: number; y: number; z: number };
 }
 
 /**
@@ -326,6 +331,15 @@ interface Props {
    * reflects the ACTUAL engine currently active, not the configured mode).
    */
   onEngine?: (engine: EngineAdapter, kind: 'occt' | 'freecad' | 'brep-rs') => void;
+  /**
+   * Step-1 note taxonomy (SPEC-ui-revamp-decisions.md §5): when true, the
+   * top-right selection badge + edge-hover-hint stack is NOT rendered here --
+   * the selection readout lives in the caller's status bar instead. The
+   * engine fallback/swap notice stack is NOT covered by this flag (it is
+   * engine state, not selection state) and always renders as before.
+   * Default false: every existing caller keeps its badges.
+   */
+  badgesInStatusBar?: boolean;
 }
 
 // loadKernel()/dynamicImportKernel()/kernelImportStrategy used to live here,
@@ -504,7 +518,7 @@ const EDGE_TUBE_RADIUS = 0.75;
  */
 export default function BrepViewportThree({
   doc, deflection, onStats, onPick, pick, selectedCount, selectionLabel, anchors, onAnchors, onMesh, registerPickAt,
-  sketchPlane, panelOcclusionPx, ruleActivityAt, onEngine,
+  sketchPlane, panelOcclusionPx, ruleActivityAt, onEngine, badgesInStatusBar = false,
 }: Props) {
   const [phase, setPhase] = useState<'loading' | 'ready' | 'error'>('loading');
   // Which view-strip preset the camera is sitting on, or null once the
@@ -2423,9 +2437,20 @@ export default function BrepViewportThree({
             hasFitOnceRef.current = true;
             fitToModel(HOME_DIR);
           }
+          const sketched = computeSceneBox();
           onStatsRef.current?.({
             buildMs: round(buildMs), meshMs: 0, drawMs: round(performance.now() - t), triangles: 0,
             refusals: built.refusals,
+            // A sketch-only stage still has an extent worth reporting (the
+            // sketch's own corner points -- see computeSceneBox's doc); the
+            // truly empty stage has none, so dims stay absent there.
+            ...(sketched && !sketched.isEmpty()
+              ? { dimsMm: {
+                  x: round(sketched.max.x - sketched.min.x),
+                  y: round(sketched.max.y - sketched.min.y),
+                  z: round(sketched.max.z - sketched.min.z),
+                } }
+              : null),
           });
           onMeshRef.current?.(null);
           return;
@@ -2474,9 +2499,17 @@ export default function BrepViewportThree({
         animateFitToModel(HOME_DIR);
       }
       const triangles = meshed.reduce((n, m) => n + (m.geometry.getIndex()?.count ?? 0) / 3, 0);
+      const solidBox = computeSceneBox();
       onStatsRef.current?.({
         buildMs: round(buildMs), meshMs: round(meshMs), drawMs: round(drawMs), triangles,
         refusals: built.refusals,
+        ...(solidBox && !solidBox.isEmpty()
+          ? { dimsMm: {
+              x: round(solidBox.max.x - solidBox.min.x),
+              y: round(solidBox.max.y - solidBox.min.y),
+              z: round(solidBox.max.z - solidBox.min.z),
+            } }
+          : null),
       });
       // The same triangles just drawn, handed out structurally for
       // SandboxWorkspace's Export STL button -- see the onMesh prop doc.
@@ -2743,7 +2776,7 @@ export default function BrepViewportThree({
           </div>
         </div>
       )}
-      {phase === 'ready' && (hoveringEdge && !pick || !!selectedCount) && (
+      {phase === 'ready' && !badgesInStatusBar && (hoveringEdge && !pick || !!selectedCount) && (
         <div style={topRightStackStyle}>
           {/* Shown ONLY while hovering an edge with nothing picked yet --
              the only on-screen word telling a student single-edge rounding
@@ -2776,11 +2809,12 @@ const errorPanelStyle: React.CSSProperties = {
   font: '13px ui-monospace, Menlo, Consolas, monospace', pointerEvents: 'none',
 };
 
-// top: 56, not 12 -- Build mode floats a 48px tool ribbon OVER the top of
-// this component's own canvas (see HANDOFF.md's "Build floats a 48px ribbon
-// over that band"), so a plain top-right corner sits directly under its
-// buttons. This clears it while staying a normal top-right stack on every
-// OTHER host (app/brep-three/page.tsx has no ribbon at all).
+// top: 12 -- plain top-right corner. The Build ribbon no longer overlays
+// this canvas: ReshapeStudio is a docked CSS grid as of adoption step 2
+// (2026-09-16), so nothing floats over the top band anymore. The stack is
+// still live for ribbon-less hosts like app/brep-three (default
+// badgesInStatusBar=false) and dead in-studio (ReshapeStudio passes true at
+// its own ~1342, routing badges to the status bar instead).
 //
 // A column, not a single fixed-position badge, because the hint and the
 // selection badge can be true AT THE SAME TIME -- a shape already selected
@@ -2788,7 +2822,7 @@ const errorPanelStyle: React.CSSProperties = {
 // edges before clicking. Stacking avoids the two pills drawing on top of
 // each other in that case; either can also appear alone.
 const topRightStackStyle: React.CSSProperties = {
-  position: 'absolute', top: 56, right: 12, display: 'flex', flexDirection: 'column',
+  position: 'absolute', top: 12, right: 12, display: 'flex', flexDirection: 'column',
   alignItems: 'flex-end', gap: 6, pointerEvents: 'none',
 };
 
@@ -2802,20 +2836,18 @@ const selectionBadgeStyle: React.CSSProperties = {
 // rest of the canvas -- only the small box the four buttons actually
 // occupy is clickable.
 //
-// left: 70, not 12 -- FOUND BY AN ACTUAL FAILED CLICK, not by inspection.
-// SandboxWorkspace.tsx's Build-mode host collapses its "Code" card to a
-// 46px-wide rail (`#editorPane.is-card-empty`/`.is-tools-hidden`) pinned at
-// `left: 12px` for the ENTIRE canvas height (top:48 to bottom:12) whenever
-// there is no note or sketch to show -- exactly the state a fresh
-// box-then-hole document is in. That rail sits on TOP of this canvas (the
-// two panes are absolutely positioned over the same area, not laid out
-// side by side), so a literal left:12 strip lands directly under it: a
-// real click on "Home" there hit the rail, not this button. 70 clears the
-// rail's right edge (12 + 46 = 58) with an 12px gap. On a host with no such
-// rail (app/brep-three/page.tsx, app/brep-test/page.tsx) this is just a
-// slightly wider left margin than the minimum -- no functional cost.
+// left: 12 (was 70). The 46px collapsed rail it dodged is now a docked
+// column outside the canvas -- SandboxWorkspace.tsx's Build-mode "Code" card
+// rail (`#editorPane.is-card-empty`/`.is-tools-hidden`) no longer overlays
+// this component. HISTORICAL (resolved 2026-09-16, adoption step 2): FOUND
+// BY AN ACTUAL FAILED CLICK, not by inspection -- that rail was pinned at
+// left:12 for the ENTIRE canvas height over this canvas (the two panes were
+// absolutely positioned over the same area, not laid out side by side), so a
+// literal left:12 strip landed directly under it: a real click on "Home"
+// there hit the rail, not this button. 70 cleared the rail's right edge
+// (12 + 46 = 58) with an 12px gap. With the docked grid that dodge is dead.
 const viewStripStyle: React.CSSProperties = {
-  position: 'absolute', left: 70, bottom: 12, display: 'flex', gap: 6,
+  position: 'absolute', left: 12, bottom: 12, display: 'flex', gap: 6,
 };
 
 // Same pill family as selectionBadgeStyle/edgeHintStyle, but NOT
@@ -2892,37 +2924,31 @@ function navCubeFaceStyle(face: keyof typeof NAV_CUBE_FACE_TRANSFORMS): React.CS
 // student who has already learned "small pill top-right = status" should
 // not have to learn a second visual language for this one.
 // Centred over the stage, same pill family: a hint, not an error.
-// top: 56, not 12 -- same reasoning as topRightStackStyle's own comment
-// above: Build mode floats a 48px tool ribbon over the top of this
-// component's own canvas, so a plain top:12 pill sits directly under the
-// ribbon's buttons rather than below them. Measured 2026-09-04: "A sketch is
-// flat. Select it and press Pull to make it solid." was drawn over the
-// Rectangle/Polygon/Corner icons, covering them while it was showing.
+// top: 12 -- docked grid, no overlay above canvas (adoption step 2,
+// 2026-09-16): ReshapeStudio no longer floats a tools ribbon over the top
+// band, so a plain top-right/centre placement is safe.
 const stageHintStyle: React.CSSProperties = {
-  position: 'absolute', top: 56, left: '50%', transform: 'translateX(-50%)',
+  position: 'absolute', top: 12, left: '50%', transform: 'translateX(-50%)',
   padding: '4px 10px', background: COLORS.panel, border: `1px solid ${COLORS.line}`, borderRadius: 999,
   font: '12px ui-monospace, Menlo, Consolas, monospace', color: COLORS.fg, pointerEvents: 'none',
 };
 
 // Same pill family and horizontal placement as stageHintStyle, stacked
-// directly below it (top: 92, not 56) so the two can show at the same time
-// without drawing on top of each other -- rare in practice (a doc that both
-// needs the Pull hint AND just fell back), but not impossible, so this
-// doesn't assume mutual exclusion the way stageHint/buildError do.
-// The column that owns PLACEMENT for both engine notices. Centred in the
-// VISIBLE area, not the whole canvas: in Build mode the floating tools card
-// (ReshapeStudio's `.reshape-studio-tools`, width min(420px, 45%) at left:12)
-// is position:absolute OVER this canvas, so a plain 50% centre put the pill's
-// left edge behind the opaque card, unreadable (measured 2026-09-15:
-// left:314.5px against a 433px card). Reuses the card's own CSS width
-// expression -- no hard-coded pixel width.
+// directly below it so the two can show at the same time without drawing on
+// top of each other -- rare in practice (a doc that both needs the Pull hint
+// AND just fell back), but not impossible, so this doesn't assume mutual
+// exclusion the way stageHint/buildError do.
+// The column that owns PLACEMENT for both engine notices. Centred on the
+// canvas (top: 12, left 50% + translateX): the floating tools card this used
+// to dodge -- ReshapeStudio's `.reshape-studio-tools`, width min(420px, 45%)
+// at left:12, position:absolute OVER this canvas -- no longer exists; the
+// docked grid (adoption step 2, 2026-09-16) removed it, so the phantom card
+// width in the old left calc is retired and a plain centre is readable.
 //
-// A flex column rather than two fixed tops: the note wraps to three lines at
-// this width and ends at y=144, which the badge's old top:128 sat inside
-// (measured 2026-09-16, a 16px overlap that covered part of the sentence).
-// Stacking cannot go wrong at any width or line count.
+// A flex column rather than two fixed tops: the note can wrap to multiple
+// lines, and stacking cannot go wrong at any width or line count.
 const engineNoticeStackStyle: React.CSSProperties = {
-  position: 'absolute', top: 92, left: 'calc((100% + min(420px, 45%)) / 2 + 6px)', transform: 'translateX(-50%)',
+  position: 'absolute', top: 12, left: '50%', transform: 'translateX(-50%)',
   display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6,
   pointerEvents: 'none',
 };
