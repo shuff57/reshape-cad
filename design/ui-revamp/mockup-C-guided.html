@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<!-- Mockup C — guided stages; pairs with design/ui-revamp/SPEC-ui-revamp.md -->
+<!--
+  Mockup C — GUIDED-STAGES variant of the reSHape Studio CAD UI.
+  Audience: first-CS-course students; the UI always shows WHERE YOU ARE and WHAT'S NEXT.
+
+  Signature elements:
+    1. Stage rail (top, 40px) — five pills, done/current/upcoming, micro-instruction in the current pill.
+    2. Coach card (right dock) — green-bordered "Next: Round" card naming the single next action.
+
+  Anti-slop discipline (documented, single source of truth):
+    - ONE corner-radius scale: 6px on controls (buttons, inputs, chips, notes), 8px on panels/cards.
+      Pills (999px) are allowed ONLY for stage chips and the Home pill. Nothing else is rounded.
+    - No gradients, no glow, no pure #000 (ground is #1a1c21), AA contrast on all text.
+    - Every state designed: hover, focus-visible, selected, disabled/gated, done/current/upcoming.
+    - Icons: consistent stroke-1.6 line icons, currentColor, no filled shapes.
+
+  Shared scene: desk tray — 60×40mm footprint, 12mm walls, 40×20mm recessed pocket
+  (6mm deep, centered), ⌀6mm through-hole near one end, 3mm rounded top rim.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>reSHape Studio — Guided Stages (Mockup C)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ---------- tokens (shared family, verbatim) ---------- */
+  :root{
+    --ground:#14171c; --panel:#1c2027; --raised:#242a33; --hairline:#2e353f;
+    --text:#d7dde5; --muted:#8b95a3;
+    --accent:#5aa9e6; --additive:#e0b64d; --subtractive:#e0685a;
+    --good:#5fbf8f; --conflict:#e05252; --info:#b08bef;
+    --hover-cyan:#8be9fd; --sel-pink:#ff79c6;
+    --font-ui:"IBM Plex Sans","Segoe UI",system-ui,-apple-system,sans-serif;
+    --font-mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;
+    --text-xs:11px; --text-sm:12.5px; --text-md:13.5px; --text-lg:15px; --text-xl:18px;
+    --r-ctl:6px;   /* controls */
+    --r-panel:8px; /* panels & cards */
+    --r-pill:999px;/* stage chips + Home pill ONLY */
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--ground);color:var(--text);
+    font-family:var(--font-ui);font-size:var(--text-md);
+    overflow:hidden;
+  }
+  button{font-family:var(--font-ui);font-size:var(--text-sm);color:var(--text);
+    background:none;border:none;cursor:pointer}
+  button:disabled{cursor:not-allowed}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-radius:var(--r-ctl)}
+  .mono{font-family:var(--font-mono)}
+  .micro{font-size:var(--text-xs);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+  /* ---------- app grid (docked chrome, nothing floats except
+       handles / selection strip / hover pills / Home / nav cube) ---------- */
+  .app{
+    display:grid;height:100vh;
+    grid-template-columns:280px 1fr 240px;
+    grid-template-rows:44px 40px 1fr 56px 26px;
+    grid-template-areas:
+      "topbar topbar topbar"
+      "rail   rail   rail"
+      "left   view   right"
+      "timeline timeline timeline"
+      "status status status";
+  }
+  .app.free{
+    grid-template-rows:44px 16px 1fr 56px 26px;
+  }
+
+  /* ---------- topbar ---------- */
+  .topbar{
+    grid-area:topbar;display:flex;align-items:center;gap:12px;
+    background:var(--panel);border-bottom:1px solid var(--hairline);padding:0 10px;
+  }
+  .wordmark{display:flex;align-items:baseline;gap:6px;font-size:var(--text-lg);font-weight:600}
+  .wordmark em{font-style:normal;color:var(--accent)}
+  .wordmark span{color:var(--muted);font-weight:400;font-size:var(--text-sm)}
+  .mode-switch{
+    position:absolute;left:50%;transform:translateX(-50%);
+    display:flex;background:var(--raised);border:1px solid var(--hairline);
+    border-radius:var(--r-ctl);overflow:hidden;
+  }
+  .mode-switch button{padding:4px 16px;font-size:var(--text-sm);color:var(--muted)}
+  .mode-switch button[aria-pressed="true"]{background:var(--accent);color:#171a20;font-weight:600}
+  .topbar .spacer{flex:1}
+  .engine-badge{display:flex;align-items:center;gap:6px;font-size:var(--text-xs);
+    color:var(--muted);border:1px solid var(--hairline);border-radius:var(--r-ctl);
+    padding:3px 8px;background:var(--raised)}
+  .engine-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--good)}
+  .tbtn{display:flex;align-items:center;gap:5px;padding:4px 8px;border-radius:var(--r-ctl);
+    border:1px solid transparent;color:var(--muted)}
+  .tbtn:hover{border-color:var(--hairline);background:var(--raised);color:var(--text)}
+  .tbtn svg{stroke:currentColor}
+
+  /* ---------- stage rail (signature element #1) ---------- */
+  .rail{
+    grid-area:rail;display:flex;align-items:center;gap:8px;
+    background:var(--panel);border-bottom:1px solid var(--hairline);padding:0 10px;
+    overflow:hidden;
+  }
+  .app.free .rail{justify-content:flex-start}
+  .legend-chip{
+    font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;
+    color:var(--accent);border:1px solid var(--accent);border-radius:var(--r-ctl);
+    padding:1px 5px;flex:none;
+  }
+  .stage-pill{
+    display:flex;align-items:center;gap:6px;flex:none;
+    border-radius:var(--r-pill);padding:4px 10px;
+    border:1px solid var(--hairline);color:var(--muted);
+    font-size:var(--text-sm);white-space:nowrap;
+  }
+  .stage-pill .num{
+    font-family:var(--font-mono);font-size:10px;width:16px;height:16px;
+    display:flex;align-items:center;justify-content:center;
+    border:1px solid var(--hairline);border-radius:50%;color:var(--muted);
+  }
+  .stage-pill.done{color:var(--muted);border-color:var(--hairline);padding:2px 8px}
+  .stage-pill.done .num{border-color:var(--good);color:var(--good)}
+  .stage-pill .check{display:none}
+  .stage-pill.done .check{display:inline}
+  .stage-pill.current .check{display:none}
+  .stage-pill.done .check{color:var(--good)}
+  .stage-pill.current{
+    background:var(--accent);border-color:var(--accent);color:#171a20;
+    padding:5px 12px;font-weight:600;
+  }
+  .stage-pill.current .num{border-color:#171a20;color:#171a20}
+  .stage-pill.current .stage-hint{
+    font-weight:400;font-size:var(--text-xs);color:#171a20;opacity:.85;
+    text-transform:none;letter-spacing:0;
+  }
+  .stage-pill.upcoming{border-style:dashed;color:var(--muted);opacity:.75}
+  .stage-connector{flex:none;width:22px;height:1px;background:var(--hairline)}
+  .rail .grow{flex:1}
+  .rail-toggle{display:flex;align-items:center;gap:6px;flex:none;
+    padding:3px 9px;border:1px solid var(--hairline);border-radius:var(--r-ctl);
+    color:var(--muted);font-size:var(--text-xs)}
+  .rail-toggle[aria-pressed="true"]{color:var(--accent);border-color:var(--accent)}
+  .ghost-btn{padding:3px 10px;border:1px dashed var(--hairline);border-radius:var(--r-ctl);
+    color:var(--muted);font-size:var(--text-xs)}
+  .ghost-btn:hover{color:var(--text);border-color:var(--muted);border-style:solid}
+  .rail-strip-label{display:none;font-size:var(--text-xs);color:var(--muted);
+    letter-spacing:.08em;text-transform:uppercase}
+  .app.free .stage-pill,.app.free .stage-connector,.app.free .rail .legend-chip,
+  .app.free .stage-connector{display:none}
+  .app.free .rail-strip-label{display:inline}
+
+  /* ---------- left dock ---------- */
+  .left{
+    grid-area:left;background:var(--panel);border-right:1px solid var(--hairline);
+    overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;
+  }
+  .dock-section{border-bottom:1px solid var(--hairline);padding:8px 10px 10px}
+  .dock-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+  .dock-head h3{font-size:var(--text-xs);letter-spacing:.08em;text-transform:uppercase;
+    color:var(--muted);font-weight:500}
+  .dock-head .grow{flex:1}
+  .dim{opacity:.45;transition:opacity .15s}
+  .gated{opacity:.35}
+  .gated-note{font-size:var(--text-xs);color:var(--muted);font-style:normal;margin-top:4px}
+
+  /* toolbox (stage-gating demo) */
+  .tool-group{margin-bottom:8px}
+  .tool-group:last-child{margin-bottom:0}
+  .tool-group .micro{display:block;margin-bottom:4px}
+  .tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+  .tool{
+    display:flex;align-items:center;gap:6px;padding:4px 6px;
+    border:1px solid var(--hairline);border-radius:var(--r-ctl);background:var(--raised);
+    font-size:var(--text-xs);color:var(--text);text-align:left;
+  }
+  .tool:hover{border-color:var(--accent);color:var(--hover-cyan)}
+  .tool svg{flex:none;stroke:currentColor}
+  .tool.additive svg{color:var(--additive)}
+  .tool.subtractive svg{color:var(--subtractive)}
+
+  /* parts tree */
+  .tree-row{display:flex;align-items:center;gap:7px;padding:3px 6px;border-radius:var(--r-ctl);
+    font-size:var(--text-sm);width:100%;text-align:left}
+  .tree-row:hover{background:var(--raised)}
+  .tree-row.selected{background:var(--raised);color:var(--sel-pink)}
+  .tree-row .swatch{width:8px;height:8px;border-radius:2px;flex:none}
+  .tree-row .sub{margin-left:auto;font-size:var(--text-xs);color:var(--muted)}
+  .tree-row.consumed{opacity:.45}
+  .tree-row.pending{opacity:.55;border:1px dashed var(--hairline);border-radius:var(--r-ctl)}
+  .tree-row .warn{color:var(--conflict)}
+
+  /* planes */
+  .plane-row{display:flex;align-items:center;gap:7px;padding:3px 6px;border-radius:var(--r-ctl);
+    font-size:var(--text-sm);width:100%;text-align:left;color:var(--muted)}
+  .plane-row:hover{background:var(--raised)}
+  .plane-row.active{color:var(--text)}
+  .plane-row .mono{font-size:var(--text-xs)}
+  .plane-row .state{margin-left:auto;font-size:var(--text-xs);color:var(--good)}
+
+  /* tabs */
+  .tabs{display:flex;gap:2px;padding:0 10px;border-bottom:1px solid var(--hairline);
+    background:var(--panel)}
+  .tabs [role="tab"]{padding:6px 10px;font-size:var(--text-sm);color:var(--muted);
+    border-bottom:2px solid transparent}
+  .tabs [role="tab"][aria-selected="true"]{color:var(--text);border-bottom-color:var(--accent)}
+  .rules-body{padding:8px 10px 10px;font-size:var(--text-sm)}
+  .rules-title{font-size:var(--text-md);font-weight:600;margin-bottom:2px}
+  .rules-sits{font-size:var(--text-xs);color:var(--muted);margin-bottom:8px}
+  .edge-table{width:100%;border-collapse:collapse;font-size:var(--text-xs)}
+  .edge-table th{color:var(--muted);font-weight:500;text-align:left;
+    padding:3px 4px;border-bottom:1px solid var(--hairline);white-space:nowrap}
+  .edge-table td{padding:3px 4px;border-bottom:1px solid var(--hairline);
+    font-family:var(--font-mono);font-size:11px}
+  .edge-table td.shape{font-family:var(--font-ui)}
+  .edge-table tr.sel-row td{color:var(--sel-pink);background:rgba(255,121,198,.07)}
+  .edge-table .ok{color:var(--good)}
+  .pair-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;margin-top:8px;max-width:190px}
+  .pair-grid .cell{height:16px;display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-mono);font-size:9px;color:var(--muted)}
+  .pair-grid .cell.head{font-size:10px}
+  .pair-grid .dotk{width:8px;height:8px;border-radius:50%}
+  .pair-legend{display:flex;gap:10px;margin-top:6px;font-size:var(--text-xs);color:var(--muted)}
+  .pair-legend i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px}
+  .pin-row{display:flex;align-items:center;gap:8px;margin-top:10px;padding:6px 8px;
+    border:1px solid var(--hairline);border-radius:var(--r-ctl);background:var(--raised)}
+  .pin-row .pin-ico{color:var(--info)}
+  .pin-row .pin-val{margin-left:auto;font-family:var(--font-mono);font-size:11px;color:var(--muted)}
+  .history-list{list-style:none;font-size:var(--text-sm)}
+  .history-list li{display:flex;gap:8px;padding:3px 0;border-bottom:1px solid var(--hairline);
+    color:var(--muted)}
+  .history-list li .mono{margin-left:auto;font-size:11px}
+
+  /* ---------- right dock ---------- */
+  .right{
+    grid-area:right;background:var(--panel);border-left:1px solid var(--hairline);
+    overflow-y:auto;display:flex;flex-direction:column;
+  }
+  .dims-head{display:flex;align-items:center;gap:8px;padding:8px 10px 4px}
+  .dims-head h3{font-size:var(--text-xs);letter-spacing:.08em;text-transform:uppercase;
+    color:var(--muted);font-weight:500}
+  .rebuild-badge{margin-left:auto;font-family:var(--font-mono);font-size:10px;
+    color:var(--muted);border:1px solid var(--hairline);border-radius:var(--r-ctl);padding:1px 6px}
+  .dim-row{padding:6px 10px 2px}
+  .dim-line{display:flex;align-items:baseline}
+  .dim-line label{font-size:var(--text-sm)}
+  .dim-line .val{margin-left:auto;font-family:var(--font-mono);font-size:var(--text-md)}
+  .dim-line .unit{font-size:var(--text-xs);color:var(--muted);margin-left:4px}
+  .dim-row input[type="range"]{
+    width:100%;margin:4px 0 2px;appearance:none;height:4px;border-radius:2px;
+    background:var(--hairline);outline-offset:4px;
+  }
+  .dim-row input[type="range"]::-webkit-slider-thumb{
+    appearance:none;width:12px;height:12px;border-radius:50%;
+    background:var(--accent);border:2px solid var(--panel);
+  }
+  .dim-row input[type="range"]:focus-visible{outline:2px solid var(--accent)}
+
+  /* coach card (signature element #2) */
+  .coach-card{
+    margin:10px;border:1px solid var(--good);border-left-width:3px;
+    border-radius:var(--r-panel);background:var(--raised);padding:10px 12px;
+  }
+  .coach-card .coach-kicker{font-size:var(--text-xs);letter-spacing:.08em;
+    text-transform:uppercase;color:var(--good);margin-bottom:4px}
+  .coach-card .coach-title{font-size:var(--text-lg);font-weight:600;margin-bottom:4px}
+  .coach-card .coach-line{font-size:var(--text-sm);color:var(--text);margin-bottom:8px}
+  .coach-card .ghost-btn{color:var(--good);border-color:var(--good)}
+  .coach-card .ghost-btn:hover{background:rgba(95,191,143,.08);color:var(--good);border-style:solid}
+
+  /* amber instruction note card */
+  .note-card{
+    margin:0 10px 10px;border-left:3px solid var(--additive);
+    border-radius:var(--r-panel);background:var(--raised);padding:9px 10px;
+  }
+  .note-card .note-kicker{font-size:var(--text-xs);letter-spacing:.08em;
+    text-transform:uppercase;color:var(--additive);margin-bottom:3px}
+  .note-card .note-line{font-size:var(--text-sm);color:var(--text)}
+
+  /* ---------- viewport ---------- */
+  .view{grid-area:view;position:relative;background:var(--ground);overflow:hidden}
+  .scene{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+  .scene svg{max-width:72%;max-height:78%}
+  .home-pill{
+    position:absolute;left:14px;bottom:14px;display:flex;align-items:center;gap:6px;
+    background:var(--panel);border:1px solid var(--hairline);border-radius:var(--r-pill);
+    padding:4px 12px;font-size:var(--text-xs);color:var(--muted);
+  }
+  .home-pill:hover{color:var(--text);border-color:var(--accent)}
+  .nav-cube{
+    position:absolute;right:14px;bottom:14px;width:64px;height:64px;
+    background:var(--panel);border:1px solid var(--hairline);border-radius:var(--r-panel);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  }
+  .nav-cube .faces{display:flex;gap:3px}
+  .nav-cube .face{min-width:14px;height:14px;padding:0 2px;border:1px solid var(--hairline);
+    border-radius:2px;background:var(--raised);display:flex;align-items:center;
+    justify-content:center;font-family:var(--font-mono);font-size:8px;color:var(--muted)}
+  .nav-cube .face.on{border-color:var(--accent);color:var(--accent)}
+  .nav-cube .lbl{font-family:var(--font-mono);font-size:9px;color:var(--muted)}
+  /* hover pill — anchored to the hovered rim edge (right-front), never a corner */
+  .hover-pill{
+    position:absolute;right:20%;top:46%;
+    background:var(--panel);border:1px solid var(--hover-cyan);border-radius:var(--r-pill);
+    padding:2px 9px;font-family:var(--font-mono);font-size:var(--text-xs);color:var(--hover-cyan);
+  }
+  /* contextual selection strip — anchored above Edge 2 (pocket left rim) */
+  .sel-strip{
+    position:absolute;left:26%;top:17%;display:flex;align-items:center;gap:4px;
+    background:var(--panel);border:1px solid var(--hairline);border-radius:var(--r-ctl);
+    padding:3px 5px;box-shadow:0 2px 8px rgba(0,0,0,.35);
+  }
+  .sel-strip .chip{font-family:var(--font-mono);font-size:var(--text-xs);
+    color:var(--sel-pink);padding:2px 6px;border-radius:var(--r-ctl)}
+  .sel-strip .verb{font-size:var(--text-xs);color:var(--muted);padding:2px 7px;
+    border:1px solid var(--hairline);border-radius:var(--r-ctl)}
+  .sel-strip .verb:hover{color:var(--text);border-color:var(--accent)}
+  .sel-strip .x{color:var(--muted);padding:2px 6px}
+  .sel-strip .x:hover{color:var(--conflict)}
+  @keyframes edgeflash{0%,100%{stroke:#6d7689}50%{stroke:var(--hover-cyan)}}
+  .flash-edge{animation:edgeflash 1.2s ease-in-out 2}
+  .handle-label{font-family:var(--font-mono);font-size:9px;fill:var(--muted)}
+
+  /* ---------- timeline ---------- */
+  .timeline{
+    grid-area:timeline;display:flex;align-items:center;gap:6px;
+    background:var(--panel);border-top:1px solid var(--hairline);padding:0 10px;overflow:hidden;
+  }
+  .tl-chip{
+    display:flex;align-items:center;gap:5px;flex:none;position:relative;
+    border:1px solid var(--hairline);border-radius:var(--r-ctl);background:var(--raised);
+    padding:4px 9px;font-size:var(--text-xs);color:var(--text);
+  }
+  .tl-chip:hover{border-color:var(--accent)}
+  .tl-chip .stage-badge{
+    position:absolute;top:-7px;left:-7px;width:14px;height:14px;
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-mono);font-size:9px;
+    background:var(--panel);border:1px solid var(--hairline);border-radius:50%;
+    color:var(--muted);
+  }
+  .tl-chip .glyph{font-family:var(--font-mono);font-size:10px}
+  .tl-chip.additive .glyph{color:var(--additive)}
+  .tl-chip.subtractive .glyph{color:var(--subtractive)}
+  .tl-chip.neutral .glyph{color:var(--text)} /* muted fails AA on raised (4.4) */
+  .tl-chip.selected{border-color:var(--sel-pink);color:var(--sel-pink);
+    background:rgba(255,121,198,.08)}
+  .tl-chip.selected .stage-badge{border-color:var(--sel-pink);color:var(--sel-pink)}
+  .tl-chip.consumed{opacity:.45}
+  /* conflict marks: dark-on-red badges — conflict-on-panel text fails AA (4.07),
+     so red is carried by the badge fill, not the glyph color */
+  .warn-badge{
+    display:inline-flex;align-items:center;justify-content:center;
+    background:var(--conflict);color:#171a20;font-size:10px;
+    padding:0 4px;border-radius:3px;font-weight:600;
+  }
+  .tl-chip .warn{font-size:10px}
+  .tree-row .sub.warn{color:var(--text);background:rgba(224,82,82,.16);
+    border-radius:3px;padding:0 4px}
+  .tl-tick{flex:none;width:2px;height:22px;background:var(--hairline);cursor:col-resize}
+  .tl-tick:hover{background:var(--accent)}
+  .tl-caption{margin-left:auto;flex:none;display:flex;align-items:center;gap:6px;
+    font-size:var(--text-xs);color:var(--text);max-width:360px;overflow:hidden;
+    text-overflow:ellipsis;white-space:nowrap;border-left:2px solid var(--conflict);
+    padding-left:8px}
+  .tl-caption .micro{color:var(--muted)}
+  .tl-legend{flex:none;display:flex;align-items:center;gap:5px;font-size:var(--text-xs);
+    color:var(--muted);border-left:1px solid var(--hairline);padding-left:10px;margin-left:6px}
+
+  /* ---------- status bar ---------- */
+  .status{
+    grid-area:status;display:flex;align-items:center;gap:14px;
+    background:var(--panel);border-top:1px solid var(--hairline);
+    padding:0 12px;font-size:var(--text-xs);color:var(--muted);overflow:hidden;
+  }
+  .status .sel-readout{color:var(--text);padding:2px 8px;border-radius:var(--r-ctl)}
+  .status .sel-readout:hover{background:var(--raised)}
+  .status .stage-name{display:flex;align-items:center;gap:6px}
+  .status .stage-name .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+  .status .grow{flex:1}
+  .status .bbox{font-family:var(--font-mono);font-size:11px}
+  .status .nav-hint{white-space:nowrap}
+
+  /* ---------- responsive: below 1100px, docks shrink; rail micro-text hides ---------- */
+  @media (max-width:1100px){
+    .app{grid-template-columns:240px 1fr 200px}
+    .stage-pill.current .stage-hint{display:none}
+    .stage-pill{padding:3px 8px}
+    .tl-caption{display:none}
+    .tl-legend{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="app" id="app">
+
+  <!-- ================= TOPBAR ================= -->
+  <header class="topbar" role="banner">
+    <div class="wordmark"><em>re</em>SHape <span>Studio</span></div>
+    <div class="mode-switch" role="group" aria-label="Mode">
+      <button id="mode-build" aria-pressed="true">Build</button>
+      <button id="mode-code" aria-pressed="false">Code</button>
+    </div>
+    <div class="spacer"></div>
+    <span class="engine-badge" title="Geometry engine in use"><span class="dot"></span>FreeCAD kernel</span>
+    <button class="tbtn" id="btn-fit" title="Fit the whole model in view">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke-width="1.6">
+        <path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/>
+      </svg>Fit</button>
+    <button class="tbtn" id="btn-undo" title="Undo (Ctrl+Z)">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke-width="1.6">
+        <path d="M6 3L2.5 6.5 6 10M3 6.5h7a4 4 0 0 1 0 8H7"/>
+      </svg>Undo</button>
+    <button class="tbtn" id="btn-redo" title="Redo (Ctrl+Y)">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke-width="1.6">
+        <path d="M10 3l3.5 3.5L10 10M13 6.5H6a4 4 0 0 0 0 8h3"/>
+      </svg>Redo</button>
+  </header>
+
+  <!-- ================= STAGE RAIL (signature #1) ================= -->
+  <nav class="rail" id="rail" aria-label="Lesson stages">
+    <span class="legend-chip" title="New in this mockup: a guided stage rail">NEW</span>
+    <!-- pills are static markup (no-JS readable); JS only toggles done/current/upcoming + moves the hint -->
+    <button class="stage-pill done" data-stage="1" title="Stage 1 — done">
+      <span class="num">1</span>Pick a plane
+      <svg class="check" width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 6.5l2.5 2.5L10 3.5"/></svg>
+    </button><span class="stage-connector" aria-hidden="true"></span>
+    <button class="stage-pill done" data-stage="2" title="Stage 2 — done">
+      <span class="num">2</span>Draw
+      <svg class="check" width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 6.5l2.5 2.5L10 3.5"/></svg>
+    </button><span class="stage-connector" aria-hidden="true"></span>
+    <button class="stage-pill done" data-stage="3" title="Stage 3 — done">
+      <span class="num">3</span>Pull
+      <svg class="check" width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 6.5l2.5 2.5L10 3.5"/></svg>
+    </button><span class="stage-connector" aria-hidden="true"></span>
+    <button class="stage-pill current" data-stage="4" aria-current="step" title="Stage 4 — you are here">
+      <span class="num">4</span>Shape it
+      <span class="stage-hint">Shape it — round an edge or drill a hole</span>
+      <svg class="check" width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 6.5l2.5 2.5L10 3.5"/></svg>
+    </button><span class="stage-connector" aria-hidden="true"></span>
+    <button class="stage-pill upcoming" data-stage="5" title="Stage 5 — not yet">
+      <span class="num">5</span>Finish
+    </button>
+    <span class="grow"></span>
+    <button class="rail-toggle" id="free-toggle" aria-pressed="false"
+      title="Turn off the guided walkthrough and unlock every tool">Free mode</button>
+    <button class="ghost-btn" id="reset-walk" title="Restart the walkthrough at stage 1">Reset walkthrough</button>
+    <span class="rail-strip-label micro" hidden>Free mode — all tools unlocked</span>
+  </nav>
+
+  <!-- ================= LEFT DOCK ================= -->
+  <aside class="left" aria-label="Parts, planes and rules">
+
+    <!-- Toolbox: Sketch/Create groups are stage-gated during "Shape it";
+         data-stages = stages where the toolbox is relevant (pill click dims it otherwise) -->
+    <section class="dock-section" id="sec-toolbox" data-stages="2,4">
+      <div class="dock-head"><h3>Tools</h3></div>
+
+      <div class="tool-group gated" id="grp-sketch" title="Not part of this step — switch to Free mode to use them">
+        <span class="micro">Sketch</span>
+        <div class="tool-grid">
+          <button class="tool" title="the real name: sketch line"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><path d="M2 12L12 2"/></svg>Line</button>
+          <button class="tool" title="the real name: sketch circle"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><circle cx="7" cy="7" r="5"/></svg>Circle</button>
+          <button class="tool" title="the real name: sketch rectangle"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><rect x="2" y="3" width="10" height="8" rx="1"/></svg>Rectangle</button>
+          <button class="tool" title="the real name: sketch polygon"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><path d="M7 2l5 3.5-2 5.5H4L2 5.5z"/></svg>Polygon</button>
+        </div>
+      </div>
+
+      <div class="tool-group gated" id="grp-create" title="Not part of this step — switch to Free mode to use them">
+        <span class="micro">Create</span>
+        <div class="tool-grid">
+          <button class="tool additive" title="the real name: Pad — pulls a sketch into a solid"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><path d="M7 12V3M3.5 6.5L7 3l3.5 3.5"/></svg>Pull</button>
+          <button class="tool additive" title="the real name: Revolution — spins a sketch around an axis"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><path d="M11 4a5 5 0 1 0 2 4M11 4l2-1M11 4l1 2.5"/></svg>Spin</button>
+        </div>
+      </div>
+
+      <div class="tool-group" id="grp-modify">
+        <span class="micro">Modify</span>
+        <div class="tool-grid">
+          <button class="tool" title="the real name: Fillet — rounds an edge"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><path d="M2 12V6a4 4 0 0 1 4-4h6"/></svg>Round</button>
+          <button class="tool" title="the real name: Chamfer — bevels an edge"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><path d="M2 12V7l5-5h5"/></svg>Bevel</button>
+          <button class="tool" title="the real name: rotate — turns the selection around an axis"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><circle cx="7" cy="7" r="5"/><circle cx="7" cy="7" r="1.6"/></svg>Turn</button>
+          <button class="tool subtractive" title="the real name: hole — drills a hole"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><circle cx="7" cy="7" r="5"/><path d="M7 4.5v5M4.5 7h5"/></svg>Hole</button>
+          <button class="tool subtractive" title="the real name: Shell — hollows the part"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><rect x="2" y="2" width="10" height="10" rx="1"/><rect x="5" y="5" width="4" height="4"/></svg>Hollow</button>
+        </div>
+      </div>
+
+      <div class="tool-group" id="grp-arrange">
+        <span class="micro">Arrange</span>
+        <div class="tool-grid">
+          <button class="tool" title="the real name: Transform — moves the selection"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><path d="M7 1v3M7 10v3M1 7h3M10 7h3M7 7h.01"/></svg>Move</button>
+          <button class="tool" title="the real name: copy — makes a copy"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><rect x="2" y="2" width="7" height="7"/><rect x="5" y="5" width="7" height="7"/></svg>Copy</button>
+          <button class="tool" title="the real name: Mirrored — flips a copy across a plane"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><path d="M7 1v12M4 4L1.5 10h5zM10 4l2.5 6h-5z"/></svg>Mirror</button>
+          <button class="tool" title="the real name: MultiTransform — repeats a change in a line"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><rect x="1.5" y="5" width="4" height="4"/><rect x="9.5" y="5" width="4" height="4"/><path d="M5.5 7h4"/></svg>Repeat</button>
+          <button class="tool" title="the real name: CircularPattern — repeats a change around a circle"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><circle cx="7" cy="7" r="4.5"/><circle cx="7" cy="2.5" r="1.4"/><circle cx="10.9" cy="9.2" r="1.4"/><circle cx="3.1" cy="9.2" r="1.4"/></svg>Repeat Around</button>
+        </div>
+      </div>
+
+      <div class="tool-group" id="grp-combine">
+        <span class="micro">Combine</span>
+        <div class="tool-grid">
+          <button class="tool" title="the real name: Fuse — merges parts into one"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><path d="M2 8h4V4h6v6H6"/></svg>Join</button>
+          <button class="tool subtractive" title="the real name: Cut — subtracts one part from another"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><circle cx="4.5" cy="9.5" r="2.5"/><circle cx="9.5" cy="9.5" r="2.5"/><path d="M6 8L11 2M8 8L3 2"/></svg>Cut</button>
+          <button class="tool" title="the real name: Common — keeps only the shared volume"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><rect x="2" y="2" width="7" height="7"/><rect x="5" y="5" width="7" height="7"/></svg>Overlap</button>
+          <button class="tool" title="the real name: Loft — blends between two shapes"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><rect x="2" y="2" width="4" height="4"/><rect x="8" y="8" width="4" height="4"/><path d="M6 4c2 0 2 6 2 6"/></svg>Blend</button>
+        </div>
+      </div>
+      <p class="gated-note" id="gated-note" hidden>Not part of this step — switch to Free mode to use them.</p>
+    </section>
+
+    <!-- Parts tree -->
+    <section class="dock-section" id="sec-parts">
+      <div class="dock-head"><h3>Parts</h3></div>
+      <button class="tree-row consumed" data-feature="Sketch 1" title="This sketch was used up by Pull 1 — it stays in history only">
+        <span class="swatch" style="background:var(--muted)"></span>Sketch 1
+        <span class="sub">consumed</span>
+      </button>
+      <button class="tree-row" data-feature="Pull 1" title="the real name: Pad — pulled 12 mm">
+        <span class="swatch" style="background:var(--additive)"></span>Pull 1
+        <span class="sub">pulled 12 mm</span>
+      </button>
+      <button class="tree-row" data-feature="Sketch 2" title="the real name: Sketch on top face">
+        <span class="swatch" style="background:var(--muted)"></span>Sketch 2
+        <span class="sub">4 edges</span>
+      </button>
+      <button class="tree-row selected" data-feature="Pocket 1" title="the real name: Pocket — cut down 6 mm">
+        <span class="swatch" style="background:var(--subtractive)"></span>Pocket 1
+        <span class="sub">cut 40 × 20 × 6</span>
+      </button>
+      <button class="tree-row" data-feature="Hole 1" title="the real name: Hole — refused, see the warning">
+        <span class="swatch" style="background:var(--conflict)"></span>Hole 1
+        <span class="sub warn">⚠ refused</span>
+      </button>
+      <button class="tree-row pending" data-feature="Round 1" title="the real name: Fillet — not applied yet">
+        <span class="swatch" style="background:var(--good)"></span>Round 1
+        <span class="sub">pending</span>
+      </button>
+    </section>
+
+    <!-- Planes -->
+    <section class="dock-section" id="sec-planes" data-stages="1">
+      <div class="dock-head"><h3>Planes</h3></div>
+      <button class="plane-row active" title="the real name: the xy plane"><span class="mono">XY</span>Top plane<span class="state">active</span></button>
+      <button class="plane-row" title="the real name: the xz plane"><span class="mono">XZ</span>Front plane</button>
+      <button class="plane-row" title="the real name: the yz plane"><span class="mono">YZ</span>Side plane</button>
+    </section>
+
+    <!-- Rules / History tabs -->
+    <div class="tabs" role="tablist" aria-label="Sketch panel">
+      <button role="tab" id="tab-rules" aria-selected="true" aria-controls="panel-rules">Rules</button>
+      <button role="tab" id="tab-history" aria-selected="false" aria-controls="panel-history">History</button>
+    </div>
+    <section class="rules-body" id="panel-rules" role="tabpanel" aria-labelledby="tab-rules">
+      <div class="rules-title">Sketch 2 — Rules</div>
+      <div class="rules-sits">Sits on: top of Pull 1</div>
+      <table class="edge-table">
+        <thead><tr>
+          <th>Edge</th><th>Shape</th><th>↔ Level</th><th>↕ Upright</th><th>Length</th>
+        </tr></thead>
+        <tbody>
+          <tr><td>E1</td><td class="shape">line</td><td>0</td><td class="ok">✓</td><td>40</td></tr>
+          <tr class="sel-row"><td>E2</td><td class="shape">line</td><td>0</td><td class="ok">✓</td><td>20</td></tr>
+          <tr><td>E3</td><td class="shape">line</td><td>10</td><td class="ok">✓</td><td>40</td></tr>
+          <tr><td>E4</td><td class="shape">line</td><td>10</td><td class="ok">✓</td><td>20</td></tr>
+        </tbody>
+      </table>
+      <div class="pair-grid" role="img" aria-label="Pair rules between sketch edges — all settled">
+        <span class="cell head"></span><span class="cell head">E1</span><span class="cell head">E2</span><span class="cell head">E3</span><span class="cell head">E4</span>
+        <span class="cell head">E1</span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span>
+        <span class="cell head">E2</span><span class="cell"><i class="dotk" style="background:var(--good)"></i></span><span class="cell"></span><span class="cell"></span><span class="cell"></span>
+        <span class="cell head">E3</span><span class="cell"><i class="dotk" style="background:var(--good)"></i></span><span class="cell"><i class="dotk" style="background:var(--info)"></i></span><span class="cell"></span><span class="cell"></span>
+        <span class="cell head">E4</span><span class="cell"><i class="dotk" style="background:var(--good)"></i></span><span class="cell"><i class="dotk" style="background:var(--good)"></i></span><span class="cell"><i class="dotk" style="background:var(--good)"></i></span><span class="cell"></span>
+      </div>
+      <div class="pair-legend">
+        <span><i style="background:var(--good)"></i>settled</span>
+        <span><i style="background:var(--info)"></i>auto</span>
+        <span><i style="background:var(--conflict)"></i>conflict</span>
+      </div>
+      <div class="pin-row">
+        <svg class="pin-ico" width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 1l4 4-3 1-4 4-2-2 4-4zM4 10l-3 3"/></svg>
+        <span>Pin a corner</span>
+        <span class="pin-val">E1 ∩ E2</span>
+      </div>
+    </section>
+    <section class="rules-body" id="panel-history" role="tabpanel" aria-labelledby="tab-history" hidden>
+      <div class="rules-title">Sketch 2 — History</div>
+      <ul class="history-list">
+        <li>Drawn on top of Pull 1 <span class="mono">12:04</span></li>
+        <li>Rectangle placed 40 × 20 <span class="mono">12:04</span></li>
+        <li>Auto-settled 1 pair rule <span class="mono">12:05</span></li>
+        <li>Became Pocket 1 <span class="mono">12:06</span></li>
+      </ul>
+    </section>
+  </aside>
+
+  <!-- ================= VIEWPORT ================= -->
+  <main class="view" id="view" aria-label="3D viewport">
+    <div class="scene">
+      <!-- Shared scene: desk tray (60×40×12, 40×20 pocket 6 deep, ⌀6 through-hole, 3mm rim).
+           Isometric basis (px per mm): ex=(2.772,1.6) ey=(-2.772,1.6) ez vertical 3.2.
+           Local origin = tray top corner (x0,y0,z12). Tray mm→px: 60→166.3 40→110.9 drop12→38.4. -->
+      <svg width="320" height="250" viewBox="0 0 320 250" role="img"
+           aria-label="Desk tray: 60 by 40 millimetres, 12 tall, with a 40 by 20 pocket and one 6 millimetre hole">
+        <defs>
+          <pattern id="floor" width="24" height="24" patternUnits="userSpaceOnUse"
+                   patternTransform="matrix(1,0.5,-1,0.5,0,0)">
+            <path d="M24 0H0V24" fill="none" stroke="#343946" stroke-width="1" opacity="0.5"/>
+          </pattern>
+        </defs>
+        <g transform="translate(132.3,25.8)">
+          <!-- subtle 24px iso grid floor -->
+          <polygon points="160,50 310,125 160,200 10,125" fill="url(#floor)" opacity="0.6"/>
+          <!-- tray: visible outer walls (x=60 face and y=40 face), body #4a5261 -->
+          <polygon points="166.3,96 55.4,160 55.4,198.4 166.3,134.4" fill="#4a5261"/>
+          <polygon points="-110.9,64 55.4,160 55.4,198.4 -110.9,102.4" fill="#4a5261"/>
+          <!-- top face with pocket opening (even-odd ring), tops #5b6475 -->
+          <path fill-rule="evenodd" fill="#5b6475"
+            d="M0,0 L166.3,96 L55.4,160 L-110.9,64 Z
+               M0,32 L-55.4,64 L55.4,128 L110.9,96 Z"/>
+          <!-- pocket cut faces #333a45, floor darker -->
+          <polygon points="0,32 110.9,96 110.9,115.2 0,51.2" fill="#333a45"/>
+          <polygon points="0,32 -55.4,64 -55.4,83.2 0,51.2" fill="#333a45"/>
+          <polygon points="0,51.2 110.9,115.2 55.4,147.2 -55.4,83.2" fill="#2e3540"/>
+          <!-- ⌀6 through-hole in the 6mm floor, near the right end (tray x44 y20) -->
+          <ellipse cx="66.5" cy="121.6" rx="11.8" ry="6.8" fill="#1d2027"/>
+          <ellipse cx="66.5" cy="121.6" rx="11.8" ry="6.8" fill="none" stroke="#333a45" stroke-width="1.2"/>
+          <!-- hairline edges: outer top boundary, wall verticals, bottom near edges, pocket rim + wall feet -->
+          <path d="M0,0 L166.3,96 L55.4,160 L-110.9,64 Z M-110.9,64 V102.4 M55.4,160 V198.4 L166.3,134.4 V96 M55.4,198.4 L-110.9,102.4"
+                fill="none" stroke="#343946" stroke-width="1"/>
+          <path d="M0,32 L110.9,96 V115.2 L0,51.2 M0,32 L-55.4,64 V83.2 L0,51.2 L110.9,115.2"
+                fill="none" stroke="#343946" stroke-width="1"/>
+          <!-- 3mm rounded top rim: lighter stroke (also the "Show me" flash target) -->
+          <path id="rim" d="M0,0 L166.3,96 L55.4,160 L-110.9,64 Z"
+                fill="none" stroke="#6d7689" stroke-width="1.6" stroke-linejoin="round"/>
+          <!-- drag handles (anchored to geometry) -->
+          <circle cx="83.2" cy="112" r="6" fill="#5fbf8f" stroke="#1a1c21" stroke-width="1.6"/>
+          <text class="handle-label" x="74" y="106" text-anchor="end">size</text>
+          <circle cx="0" cy="32" r="3.5" fill="#5aa9e6" stroke="#1a1c21" stroke-width="1.4"/>
+          <circle cx="-55.4" cy="64" r="3.5" fill="#5aa9e6" stroke="#1a1c21" stroke-width="1.4"/>
+          <text class="handle-label" x="8" y="24">sketch point</text>
+          <rect x="118" y="92" width="9" height="9" fill="#b08bef" stroke="#1a1c21" stroke-width="1.4"/>
+          <text class="handle-label" x="114" y="106" text-anchor="end">move</text>
+          <circle cx="140" cy="88" r="7" fill="none" stroke="#e0b64d" stroke-width="2.2"/>
+          <text class="handle-label" x="132" y="80" text-anchor="end">radius</text>
+        </g>
+      </svg>
+    </div>
+
+    <!-- hover pill: anchored to the hovered edge -->
+    <span class="hover-pill" title="the real name: top rim edge, 20 mm">Edge 3 · 20</span>
+
+    <!-- contextual selection strip: anchored above Edge 2 -->
+    <div class="sel-strip" id="sel-strip" role="toolbar" aria-label="Edge 2 actions">
+      <span class="chip">Edge 2 · 20</span>
+      <button class="verb" title="Keep this edge level with its opposite">↔ Level</button>
+      <button class="verb" title="Keep this edge upright">↕ Upright</button>
+      <button class="verb" title="Set a length rule for this edge">Length…</button>
+      <button class="x" id="strip-x" aria-label="Clear selection">×</button>
+    </div>
+
+    <button class="home-pill" id="home" title="Go to the saved home view">
+      <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 6L6 2l4 4M4 5.5V10h4V5.5"/></svg>
+      Home</button>
+
+    <div class="nav-cube" aria-label="View cube">
+      <span class="faces">
+        <span class="face on">TOP</span>
+      </span>
+      <span class="faces">
+        <span class="face">FR</span><span class="face">RT</span>
+      </span>
+      <span class="lbl mono" id="navcube-lbl">TOP</span>
+    </div>
+  </main>
+
+  <!-- ================= RIGHT DOCK ================= -->
+  <aside class="right" aria-label="Dimensions and coaching">
+    <section id="sec-dims">
+      <div class="dims-head">
+        <h3 id="dims-title">Dimensions — Pocket 1</h3>
+        <span class="rebuild-badge" title="Time the engine took to rebuild this feature">12 ms</span>
+      </div>
+      <div class="dim-row">
+        <div class="dim-line"><label for="dim-w">Width</label>
+          <span class="val" id="val-w">40</span><span class="unit">mm</span></div>
+        <input type="range" id="dim-w" min="20" max="56" step="0.1" value="40"
+          title="Width of the pocket — drag to preview, release to commit">
+      </div>
+      <div class="dim-row">
+        <div class="dim-line"><label for="dim-d">Depth</label>
+          <span class="val" id="val-d">20</span><span class="unit">mm</span></div>
+        <input type="range" id="dim-d" min="10" max="36" step="0.1" value="20"
+          title="Depth of the pocket — drag to preview, release to commit">
+      </div>
+      <div class="dim-row">
+        <div class="dim-line"><label for="dim-h">Height</label>
+          <span class="val" id="val-h">6</span><span class="unit">mm</span></div>
+        <input type="range" id="dim-h" min="2" max="10" step="0.1" value="6"
+          title="How deep the cut goes — drag to preview, release to commit">
+      </div>
+    </section>
+
+    <!-- Coach card (signature #2) -->
+    <section class="coach-card" aria-label="Coach">
+      <div class="coach-kicker" id="coach-kicker">Next</div>
+      <div class="coach-title" id="coach-title">Next: Round</div>
+      <p class="coach-line" id="coach-line">Click the top edge of the tray, then press Round.</p>
+      <button class="ghost-btn" id="coach-show">Show me</button>
+    </section>
+
+    <!-- amber instruction note example -->
+    <section class="note-card" aria-label="Note">
+      <div class="note-kicker">Heads-up</div>
+      <p class="note-line">The cut is deeper than the part — showing the last version that worked.</p>
+    </section>
+  </aside>
+
+  <!-- ================= TIMELINE ================= -->
+  <div class="timeline" role="toolbar" aria-label="Feature timeline">
+    <button class="tl-chip neutral consumed" data-feature="Sketch 1" data-stage="2" title="the real name: Sketch — used up by Pull 1">
+      <span class="stage-badge" title="Created in stage 2">2</span>
+      <span class="glyph">·</span>Sketch 1
+    </button>
+    <span class="tl-tick" title="Drag to roll back to here" aria-hidden="true"></span>
+    <button class="tl-chip additive" data-feature="Pull 1" data-stage="3" title="the real name: Pad">
+      <span class="stage-badge" title="Created in stage 3">3</span>
+      <span class="glyph">▲</span>Pull 1
+    </button>
+    <span class="tl-tick" aria-hidden="true"></span>
+    <button class="tl-chip neutral" data-feature="Sketch 2" data-stage="2" title="the real name: Sketch">
+      <span class="stage-badge" title="Created in stage 2">2</span>
+      <span class="glyph">□</span>Sketch 2
+    </button>
+    <span class="tl-tick" aria-hidden="true"></span>
+    <button class="tl-chip subtractive selected" data-feature="Pocket 1" data-stage="4" title="the real name: Pocket">
+      <!-- stage badge = stage that CREATED this feature (pinned sequence 2,3,2,3,4,4);
+           data-stage = where the rail advances when clicked (Pocket → stage 4) -->
+      <span class="stage-badge" title="Created in stage 3, while shaping the pulled part">3</span>
+      <span class="glyph">▼</span>Pocket 1
+    </button>
+    <span class="tl-tick" aria-hidden="true"></span>
+    <button class="tl-chip subtractive" data-feature="Hole 1" data-stage="4" title="the real name: Hole — refused">
+      <span class="stage-badge" title="Shaped in stage 4">4</span>
+      <span class="glyph">○</span>Hole 1
+      <span class="warn-badge" title="This feature was refused — see the reason in the timeline caption">⚠</span>
+    </button>
+    <span class="tl-tick" aria-hidden="true"></span>
+    <button class="tl-chip additive" data-feature="Round 1" data-stage="4" title="the real name: Fillet — pending">
+      <span class="stage-badge" title="Shaped in stage 4">4</span>
+      <span class="glyph">◜</span>Round 1
+    </button>
+    <div class="tl-caption">
+      <span class="micro" title="NEW here: each chip shows the stage it came from, and clicking one moves the stage rail">NEW</span>
+      <span class="mono">2 3 2 3 4 4</span>
+      <span title="Hole 1 was refused: an 8 mm hole will not fit inside the 10 mm end margin. Shrink it to 6 or delete Hole 1.">
+        ⚠ Hole 1 refused — ⌀8 won't fit the 10 mm margin. Shrink it to ⌀6 or delete Hole 1.</span>
+    </div>
+  </div>
+
+  <!-- ================= STATUS BAR ================= -->
+  <footer class="status" role="contentinfo">
+    <button class="sel-readout" id="sel-readout" title="Click to clear the selection">Pocket 1 · 1 selected</button>
+    <span class="stage-name"><span class="dot"></span><span id="status-stage">Stage 4 — Shape it</span></span>
+    <span class="grow"></span>
+    <span class="bbox" id="status-bbox">60 × 40 × 12 mm</span>
+    <span class="nav-hint">Right-drag orbit · Scroll zoom</span>
+  </footer>
+</div>
+
+<script>
+/* Mockup C — guided stages. Vanilla JS, no dependencies. */
+(function(){
+  "use strict";
+  var app = document.getElementById("app");
+  var rail = document.getElementById("rail");
+  var pills = Array.prototype.slice.call(rail.querySelectorAll(".stage-pill"));
+  var chips = Array.prototype.slice.call(document.querySelectorAll(".tl-chip"));
+  var treeRows = Array.prototype.slice.call(document.querySelectorAll(".tree-row"));
+  var statusStage = document.getElementById("status-stage");
+  var selReadout = document.getElementById("sel-readout");
+  var dimsTitle = document.getElementById("dims-title");
+  var stageNames = {
+    1:"Stage 1 — Pick a plane", 2:"Stage 2 — Draw", 3:"Stage 3 — Pull",
+    4:"Stage 4 — Shape it", 5:"Stage 5 — Finish"
+  };
+  var stageHints = {
+    1:"Pick a plane — choose where the sketch lives",
+    2:"Draw — sketch the pocket outline",
+    3:"Pull — give the sketch height",
+    4:"Shape it — round an edge or drill a hole",
+    5:"Finish — check, name, and hand in"
+  };
+  var state = { stage:4, freeMode:false, feature:"Pocket 1" };
+
+  /* ---------- stage rail ---------- */
+  var pillTitles = {1:"Stage 1 — done", 2:"Stage 2 — done", 3:"Stage 3 — done",
+                    4:"Stage 4 — you are here", 5:"Stage 5 — not yet"};
+  function renderRail(){
+    pills.forEach(function(p){
+      var n = +p.dataset.stage;
+      p.classList.remove("done","current","upcoming");
+      p.removeAttribute("aria-current");
+      if (n < state.stage){ p.classList.add("done"); p.title = "Stage " + n + " — done"; }
+      else if (n === state.stage){ p.classList.add("current"); p.setAttribute("aria-current","step");
+        p.title = "Stage " + n + " — you are here"; }
+      else { p.classList.add("upcoming"); p.title = "Stage " + n + " — not yet"; }
+      /* keep micro-instruction only on the current pill */
+      var hint = p.querySelector(".stage-hint");
+      if (!hint && n === state.stage){
+        hint = document.createElement("span");
+        hint.className = "stage-hint";
+        p.appendChild(hint);
+      }
+      if (hint){ hint.textContent = stageHints[n]; hint.hidden = (n !== state.stage); }
+    });
+    statusStage.textContent = stageNames[state.stage];
+    selReadout.title = "Click to clear the selection";
+    applyGating();
+  }
+
+  /* ---------- stage gating: dim docks that are not part of this stage ---------- */
+  function applyGating(){
+    var gate = (state.stage === 4) && !state.freeMode;
+    ["grp-sketch","grp-create"].forEach(function(id){
+      var g = document.getElementById(id);
+      g.classList.toggle("gated", gate);
+      g.title = gate ? "Not part of this step — switch to Free mode to use them" : "";
+    });
+    document.getElementById("gated-note").hidden = !gate;
+    document.querySelectorAll(".dock-section[data-stages]").forEach(function(sec){
+      var rel = sec.dataset.stages.split(",").map(Number);
+      sec.classList.toggle("dim", rel.indexOf(state.stage) === -1);
+    });
+  }
+
+  pills.forEach(function(p){
+    p.addEventListener("click", function(){
+      state.stage = +p.dataset.stage;
+      renderRail();
+    });
+  });
+
+  /* ---------- timeline chips: select feature, update right dock + status, advance rail ---------- */
+  function selectFeature(name, stage){
+    state.feature = name;
+    chips.forEach(function(c){ c.classList.toggle("selected", c.dataset.feature === name); });
+    treeRows.forEach(function(r){ r.classList.toggle("selected", r.dataset.feature === name); });
+    dimsTitle.textContent = "Dimensions — " + name;
+    selReadout.textContent = name + " · 1 selected";
+    if (stage){ state.stage = stage; renderRail(); }
+  }
+  chips.forEach(function(c){
+    c.addEventListener("click", function(){
+      selectFeature(c.dataset.feature, +c.dataset.stage);
+    });
+  });
+  treeRows.forEach(function(r){
+    r.addEventListener("click", function(){
+      var chip = chips.filter(function(c){ return c.dataset.feature === r.dataset.feature; })[0];
+      selectFeature(r.dataset.feature, chip ? +chip.dataset.stage : null);
+    });
+  });
+
+  /* ---------- free mode collapses the rail to a thin muted strip ---------- */
+  var freeToggle = document.getElementById("free-toggle");
+  freeToggle.addEventListener("click", function(){
+    state.freeMode = !state.freeMode;
+    freeToggle.setAttribute("aria-pressed", String(state.freeMode));
+    app.classList.toggle("free", state.freeMode);
+    document.querySelector(".rail-strip-label").hidden = !state.freeMode;
+    syncFreeToggle();
+    applyGating();
+  });
+
+  /* ---------- reset walkthrough ---------- */
+  var resetBtn = document.getElementById("reset-walk");
+  resetBtn.addEventListener("click", function(){
+    state.stage = 1; state.freeMode = false;
+    freeToggle.setAttribute("aria-pressed","false");
+    app.classList.remove("free");
+    document.querySelector(".rail-strip-label").hidden = true;
+    syncFreeToggle();
+    renderRail();
+  });
+
+  function syncFreeToggle(){
+    resetBtn.hidden = state.freeMode; /* nothing to reset while free */
+  }
+
+  /* ---------- rules/history tabs ---------- */
+  var tabRules = document.getElementById("tab-rules");
+  var tabHistory = document.getElementById("tab-history");
+  var panelRules = document.getElementById("panel-rules");
+  var panelHistory = document.getElementById("panel-history");
+  function setTab(rulesActive){
+    tabRules.setAttribute("aria-selected", String(rulesActive));
+    tabHistory.setAttribute("aria-selected", String(!rulesActive));
+    panelRules.hidden = !rulesActive;
+    panelHistory.hidden = rulesActive;
+  }
+  tabRules.addEventListener("click", function(){ setTab(true); });
+  tabHistory.addEventListener("click", function(){ setTab(false); });
+
+  /* ---------- coach card "Show me" flashes the target rim edge ---------- */
+  document.getElementById("coach-show").addEventListener("click", function(){
+    var rim = document.getElementById("rim");
+    if (!rim) return;
+    rim.classList.remove("flash-edge");
+    void rim.getBoundingClientRect(); /* restart animation */
+    rim.classList.add("flash-edge");
+    setTimeout(function(){ rim.classList.remove("flash-edge"); }, 2600);
+  });
+
+  /* ---------- selection strip × clears it ---------- */
+  var strip = document.getElementById("sel-strip");
+  document.getElementById("strip-x").addEventListener("click", function(){
+    strip.hidden = true;
+    selReadout.textContent = "Nothing selected";
+    var row = document.querySelector(".edge-table tr.sel-row");
+    if (row) row.classList.remove("sel-row");
+  });
+
+  /* ---------- status readout: click clears the selection ---------- */
+  selReadout.addEventListener("click", function(){
+    chips.forEach(function(c){ c.classList.remove("selected"); });
+    treeRows.forEach(function(r){ r.classList.remove("selected"); });
+    selReadout.textContent = "Nothing selected";
+  });
+
+  /* ---------- Escape: one stack, tier 2 demo — clear selection ---------- */
+  document.addEventListener("keydown", function(e){
+    if (e.key === "Escape"){
+      if (!strip.hidden){ document.getElementById("strip-x").click(); return; }
+      chips.forEach(function(c){ c.classList.remove("selected"); });
+      treeRows.forEach(function(r){ r.classList.remove("selected"); });
+      selReadout.textContent = "Nothing selected";
+    }
+  });
+
+  /* ---------- dimension sliders: live value preview ---------- */
+  [["dim-w","val-w"],["dim-d","val-d"],["dim-h","val-h"]].forEach(function(pair){
+    var input = document.getElementById(pair[0]), out = document.getElementById(pair[1]);
+    input.addEventListener("input", function(){ out.textContent = input.value; });
+  });
+
+  /* ---------- undo/redo refusals name the fix (status readout) ---------- */
+  document.getElementById("btn-undo").addEventListener("click", function(){
+    selReadout.textContent = "Nothing to undo — you are at the start of this step.";
+  });
+  document.getElementById("btn-redo").addEventListener("click", function(){
+    selReadout.textContent = "Nothing to redo — undo something first.";
+  });
+
+  /* ---------- build/code toggle ---------- */
+  var modeBuild = document.getElementById("mode-build");
+  var modeCode = document.getElementById("mode-code");
+  modeBuild.addEventListener("click", function(){
+    modeBuild.setAttribute("aria-pressed","true");
+    modeCode.setAttribute("aria-pressed","false");
+  });
+  modeCode.addEventListener("click", function(){
+    modeCode.setAttribute("aria-pressed","true");
+    modeBuild.setAttribute("aria-pressed","false");
+    selReadout.textContent = "Code view is a stub in this mockup.";
+  });
+
+  renderRail();
+})();
+</script>
+</body>
+</html>

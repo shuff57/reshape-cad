@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<!-- Mockup A — docked discipline; pairs with design/ui-revamp/SPEC-ui-revamp.md -->
+<!--
+  Mockup A — DOCKED-DISCIPLINE variant of the reSHape Studio CAD UI.
+  The whole point: nothing floats over the canvas except drag handles, the
+  selection strip, hover pills, the Home pill and the nav cube. Every tool
+  lives in a reserved dock row: topbar / toolbar / [left | viewport | right]
+  / timeline / status — 1px hairline borders between cells, no z-index
+  stacking except the one open flyout.
+
+  Anti-slop discipline (shared family, single source of truth):
+    - ONE corner-radius scale: 6px controls, 8px panels, pills only for Home.
+    - No gradients, no glow, no pure #000, AA contrast on all text.
+    - Icons: consistent stroke-1.6 line icons, currentColor, no filled shapes.
+    - Plain-English names; CAD terms only in tooltips ("the real name: ...").
+
+  Shared scene: desk tray — 60×40mm footprint, 12mm walls, 40×20mm recessed
+  pocket (6mm deep, centered), ⌀6mm through-hole near one end, 3mm rounded rim.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>reSHape Studio — Docked Discipline (Mockup A)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ---------- tokens (shared family, verbatim) ---------- */
+  :root{
+    --ground:#14171c; --panel:#1c2027; --raised:#242a33; --hairline:#2e353f;
+    --text:#d7dde5; --muted:#8b95a3;
+    --accent:#5aa9e6; --additive:#e0b64d; --subtractive:#e0685a;
+    --good:#5fbf8f; --conflict:#e05252; --info:#b08bef;
+    --hover-cyan:#8be9fd; --sel-pink:#ff79c6;
+    --font-ui:"IBM Plex Sans","Segoe UI",system-ui,-apple-system,sans-serif;
+    --font-mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;
+    --text-xs:11px; --text-sm:12.5px; --text-md:13.5px; --text-lg:15px; --text-xl:18px;
+    --r-ctl:6px;   /* controls */
+    --r-panel:8px; /* panels & cards */
+    --r-pill:999px;/* Home pill ONLY in this mockup */
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--ground);color:var(--text);
+    font-family:var(--font-ui);font-size:var(--text-md);
+    overflow:hidden;
+  }
+  button{font-family:var(--font-ui);font-size:var(--text-sm);color:var(--text);
+    background:none;border:none;cursor:pointer}
+  button:disabled{cursor:not-allowed}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-radius:var(--r-ctl)}
+  .mono{font-family:var(--font-mono)}
+  .micro{font-size:var(--text-xs);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .grow{flex:1}
+
+  /* ---------- app grid: docked chrome, one row per dock ---------- */
+  .app{
+    display:grid;height:100vh;
+    grid-template-columns:280px 1fr 240px;
+    grid-template-rows:44px 52px 1fr 56px 26px;
+    grid-template-areas:
+      "topbar topbar topbar"
+      "toolbar toolbar toolbar"
+      "left view right"
+      "timeline timeline timeline"
+      "status status status";
+  }
+  /* Build|Code: code variant re-maps the main row (left dock hidden) */
+  .app.code{
+    grid-template-columns:1fr 240px;
+    grid-template-areas:
+      "topbar topbar"
+      "toolbar toolbar"
+      "code right"
+      "timeline timeline"
+      "status status";
+  }
+  .codepane{grid-area:code;display:none;flex-direction:column;background:var(--ground);overflow:hidden}
+  .app.code .codepane{display:flex}
+  .app.code .left,.app.code .view{display:none}
+  .app.code #dock-build{display:none}
+  #dock-run{display:none;flex-direction:column}
+  .app.code #dock-run{display:flex}
+
+  /* ---------- topbar ---------- */
+  .topbar{
+    grid-area:topbar;display:flex;align-items:center;gap:12px;
+    background:var(--panel);border-bottom:1px solid var(--hairline);padding:0 10px;
+  }
+  .wordmark{display:flex;align-items:baseline;gap:6px;font-size:var(--text-lg);font-weight:600}
+  .wordmark em{font-style:normal;color:var(--accent)}
+  .wordmark span{color:var(--muted);font-weight:400;font-size:var(--text-sm)}
+  .mode-switch{
+    position:absolute;left:50%;transform:translateX(-50%);
+    display:flex;background:var(--raised);border:1px solid var(--hairline);
+    border-radius:var(--r-ctl);overflow:hidden;
+  }
+  .mode-switch button{padding:4px 16px;font-size:var(--text-sm);color:var(--muted)}
+  .mode-switch button[aria-pressed="true"]{background:var(--accent);color:#171a20;font-weight:600}
+  .topbar .spacer{flex:1}
+  .engine-badge{display:flex;align-items:center;gap:6px;font-size:var(--text-xs);
+    color:var(--muted);border:1px solid var(--hairline);border-radius:var(--r-ctl);
+    padding:3px 8px;background:var(--raised)}
+  .engine-badge .dot,.eng-dot{width:7px;height:7px;border-radius:50%;background:var(--good)}
+  .tbtn{display:flex;align-items:center;gap:5px;padding:4px 8px;border-radius:var(--r-ctl);
+    border:1px solid transparent;color:var(--muted)}
+  .tbtn:hover{border-color:var(--hairline);background:var(--raised);color:var(--text)}
+  .tbtn svg,.tico svg{stroke:currentColor}
+
+  /* ---------- toolbar (Fusion-style: captions BELOW icon clusters) ---------- */
+  .toolbar{
+    grid-area:toolbar;display:flex;align-items:stretch;gap:4px;position:relative;
+    background:var(--panel);border-bottom:1px solid var(--hairline);padding:0 8px;
+    overflow:visible;
+  }
+  .tgroup{display:flex;flex-direction:column;align-items:center;gap:2px;
+    padding:4px 8px 3px;border-right:1px solid var(--hairline)}
+  .tgroup:last-of-type{border-right:none}
+  .ticons{display:flex;align-items:center;gap:2px}
+  .tcap{font-size:var(--text-xs);color:var(--muted);line-height:1}
+  .tico{position:relative;width:26px;height:24px;display:flex;align-items:center;
+    justify-content:center;border-radius:var(--r-ctl);border:1px solid transparent}
+  .tico:hover{border-color:var(--hairline);background:var(--raised);color:var(--hover-cyan)}
+  .tico.caret{width:14px}
+  .tico.additive{color:var(--additive)}
+  .tico.subtractive{color:var(--subtractive)}
+  .pindot{position:absolute;top:3px;right:3px;width:5px;height:5px;border-radius:50%;background:var(--good)}
+  .tb-search{display:flex;align-items:center;gap:6px;margin:auto 0;padding:4px 10px;
+    border:1px solid var(--hairline);border-radius:var(--r-ctl);color:var(--muted)}
+  .tb-search:hover{color:var(--text);border-color:var(--accent)}
+  .tb-search svg{stroke:currentColor}
+  /* the ONE flyout allowed to stack (two exist; only one open at a time) */
+  .split{position:relative;display:flex;align-items:center}
+  .flyout{
+    position:absolute;top:calc(100% + 4px);left:0;z-index:40;display:none;
+    flex-direction:column;min-width:150px;padding:4px;
+    background:var(--panel);border:1px solid var(--hairline);
+    border-radius:var(--r-panel);box-shadow:0 4px 14px rgba(0,0,0,.4);
+  }
+  .flyout.open{display:flex}
+  .flyout button{display:flex;align-items:center;gap:8px;padding:5px 9px;
+    border-radius:var(--r-ctl);font-size:var(--text-sm);text-align:left}
+  .flyout button:hover{background:var(--raised);color:var(--hover-cyan)}
+  .flyout svg{stroke:currentColor;flex:none}
+
+  /* ---------- left dock ---------- */
+  .left{
+    grid-area:left;background:var(--panel);border-right:1px solid var(--hairline);
+    overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;
+  }
+  .dock-section{border-bottom:1px solid var(--hairline);padding:8px 10px 10px}
+  .dock-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+  .dock-head h3{font-size:var(--text-xs);letter-spacing:.08em;text-transform:uppercase;
+    color:var(--muted);font-weight:500}
+  .tree-row{display:flex;align-items:center;gap:7px;padding:3px 6px;border-radius:var(--r-ctl);
+    font-size:var(--text-sm);width:100%;text-align:left}
+  .tree-row:hover{background:var(--raised)}
+  .tree-row.selected{background:var(--raised);color:var(--sel-pink)}
+  .tree-row .swatch{width:8px;height:8px;border-radius:2px;flex:none}
+  .tree-row .sub{margin-left:auto;font-size:var(--text-xs);color:var(--muted)}
+  .tree-row.consumed{opacity:.45}
+  .tree-row.pending{opacity:.55;border:1px dashed var(--hairline);border-radius:var(--r-ctl)}
+  .tree-row .sub.warn{color:var(--text);background:rgba(224,82,82,.16);
+    border-radius:3px;padding:0 4px}
+  .subhead{display:block;margin:8px 0 4px}
+  .plane-row{display:flex;align-items:center;gap:7px;padding:3px 6px;border-radius:var(--r-ctl);
+    font-size:var(--text-sm);width:100%;text-align:left;color:var(--muted)}
+  .plane-row:hover{background:var(--raised)}
+  .plane-row.active{color:var(--text)}
+  .plane-row .mono{font-size:var(--text-xs)}
+  .plane-row .state{margin-left:auto;font-size:var(--text-xs);color:var(--good)}
+  .tabs{display:flex;gap:2px;padding:0 10px;border-bottom:1px solid var(--hairline);
+    background:var(--panel)}
+  .tabs [role="tab"]{padding:6px 10px;font-size:var(--text-sm);color:var(--muted);
+    border-bottom:2px solid transparent}
+  .tabs [role="tab"][aria-selected="true"]{color:var(--text);border-bottom-color:var(--accent)}
+  .rules-body{padding:8px 10px 10px;font-size:var(--text-sm)}
+  .rules-title{font-size:var(--text-md);font-weight:600;margin-bottom:2px}
+  .rules-sits{font-size:var(--text-xs);color:var(--muted);margin-bottom:8px}
+  .edge-table{width:100%;border-collapse:collapse;font-size:var(--text-xs)}
+  .edge-table th{color:var(--muted);font-weight:500;text-align:left;
+    padding:3px 4px;border-bottom:1px solid var(--hairline);white-space:nowrap}
+  .edge-table td{padding:3px 4px;border-bottom:1px solid var(--hairline);
+    font-family:var(--font-mono);font-size:11px}
+  .edge-table td.shape{font-family:var(--font-ui)}
+  .edge-table tr.sel-row td{color:var(--sel-pink);background:rgba(255,121,198,.07)}
+  .edge-table .ok{color:var(--good)}
+  .pair-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:8px;max-width:96px}
+  .pair-grid .cell{height:16px;display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-mono);font-size:9px;color:var(--muted)}
+  .pair-grid .cell.head{font-size:10px}
+  .pair-grid .dotk{width:8px;height:8px;border-radius:50%}
+  .pair-legend{display:flex;gap:10px;margin-top:6px;font-size:var(--text-xs);color:var(--muted)}
+  .pair-legend i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px}
+  .pin-row{display:flex;align-items:center;gap:8px;margin-top:10px;padding:6px 8px;
+    border:1px solid var(--hairline);border-radius:var(--r-ctl);background:var(--raised)}
+  .pin-row .pin-ico{color:var(--info)}
+  .pin-row .pin-val{margin-left:auto;font-family:var(--font-mono);font-size:11px;color:var(--muted)}
+  .history-list{list-style:none;font-size:var(--text-sm)}
+  .history-list li{display:flex;gap:8px;padding:3px 0;border-bottom:1px solid var(--hairline);
+    color:var(--muted)}
+  .history-list li .mono{margin-left:auto;font-size:11px}
+
+  /* ---------- viewport (everything inside its own cell; no overlays on docks) ---------- */
+  .view{grid-area:view;position:relative;background:var(--ground);overflow:hidden}
+  .scene{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+  .scene svg{max-width:78%;max-height:82%}
+  .handle-label{font-family:var(--font-mono);font-size:9px;fill:var(--muted)}
+  .home-pill{
+    position:absolute;left:14px;bottom:14px;display:flex;align-items:center;gap:6px;
+    background:var(--panel);border:1px solid var(--hairline);border-radius:var(--r-pill);
+    padding:4px 12px;font-size:var(--text-xs);color:var(--muted);
+  }
+  .home-pill:hover{color:var(--text);border-color:var(--accent)}
+  .nav-cube{
+    position:absolute;right:14px;bottom:14px;width:64px;
+    background:var(--panel);border:1px solid var(--hairline);border-radius:var(--r-panel);
+    display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;
+  }
+  .nav-cube .faces{display:flex;gap:3px}
+  .nav-cube .face{border:1px solid var(--hairline);border-radius:2px;background:var(--raised);
+    padding:1px 3px;font-family:var(--font-mono);font-size:8px;color:var(--muted)}
+  .nav-cube .face.on{border-color:var(--accent);color:var(--accent)}
+  .nav-cube .home{font-size:var(--text-xs);color:var(--muted);padding:1px 6px;
+    border:1px solid var(--hairline);border-radius:var(--r-ctl)}
+  .nav-cube .home:hover{color:var(--text);border-color:var(--accent)}
+  /* hover pill — anchored to the hovered rim edge (right-front), never a corner */
+  .hover-pill{
+    position:absolute;right:20%;top:46%;
+    background:var(--panel);border:1px solid var(--hover-cyan);border-radius:var(--r-pill);
+    padding:2px 9px;font-family:var(--font-mono);font-size:var(--text-xs);color:var(--hover-cyan);
+  }
+  /* contextual selection strip — anchored above Edge 2 (pocket left rim) */
+  .sel-strip{
+    position:absolute;left:26%;top:17%;display:flex;align-items:center;gap:4px;
+    background:var(--panel);border:1px solid var(--hairline);border-radius:var(--r-ctl);
+    padding:3px 5px;box-shadow:0 2px 8px rgba(0,0,0,.35);
+  }
+  .sel-strip .chip{font-family:var(--font-mono);font-size:var(--text-xs);
+    color:var(--sel-pink);padding:2px 6px;border-radius:var(--r-ctl)}
+  .sel-strip .verb{font-size:var(--text-xs);color:var(--muted);padding:2px 7px;
+    border:1px solid var(--hairline);border-radius:var(--r-ctl)}
+  .sel-strip .verb:hover{color:var(--text);border-color:var(--accent)}
+  .sel-strip .x{color:var(--muted);padding:2px 6px}
+  .sel-strip .x:hover{color:var(--conflict)}
+
+  /* ---------- right dock ---------- */
+  .right{
+    grid-area:right;background:var(--panel);border-left:1px solid var(--hairline);
+    overflow-y:auto;display:flex;flex-direction:column;
+  }
+  .dims-head{display:flex;align-items:center;gap:8px;padding:8px 10px 4px}
+  .dims-head h3{font-size:var(--text-xs);letter-spacing:.08em;text-transform:uppercase;
+    color:var(--muted);font-weight:500}
+  .rebuild-badge{margin-left:auto;font-family:var(--font-mono);font-size:10px;
+    color:var(--muted);border:1px solid var(--hairline);border-radius:var(--r-ctl);padding:1px 6px}
+  .dim-row{padding:6px 10px 2px}
+  .dim-line{display:flex;align-items:baseline}
+  .dim-line label{font-size:var(--text-sm)}
+  .dim-line .val{margin-left:auto;font-family:var(--font-mono);font-size:var(--text-md)}
+  .dim-line .unit{font-size:var(--text-xs);color:var(--muted);margin-left:4px}
+  .dim-row input[type="range"]{
+    width:100%;margin:4px 0 2px;appearance:none;height:4px;border-radius:2px;
+    background:var(--hairline);outline-offset:4px;
+  }
+  .dim-row input[type="range"]::-webkit-slider-thumb{
+    appearance:none;width:12px;height:12px;border-radius:50%;
+    background:var(--accent);border:2px solid var(--panel);
+  }
+  .dim-row input[type="range"]:focus-visible{outline:2px solid var(--accent)}
+  .hollow-demo{margin:10px;border:1px solid var(--hairline);border-radius:var(--r-panel);
+    background:var(--raised);padding:9px 10px}
+  .hollow-btn{width:100%;padding:5px 0;border:1px dashed var(--hairline);border-radius:var(--r-ctl);
+    background:var(--panel);color:var(--muted)}
+  .refusal{margin-top:5px;font-size:var(--text-xs);color:var(--muted)}
+  .run-btn{margin:10px;padding:7px 0;border:1px solid var(--good);border-radius:var(--r-ctl);
+    background:var(--raised);color:var(--good);font-weight:600}
+  .run-btn:hover{background:rgba(95,191,143,.08)}
+  .run-out{list-style:none;margin:0 10px 10px;font-size:var(--text-xs);color:var(--muted)}
+  .run-out li{padding:3px 0;border-bottom:1px solid var(--hairline)}
+  .run-out li.ok{color:var(--good)}
+  .run-out li.warnline{color:var(--text);border-left:2px solid var(--conflict);padding-left:6px}
+
+  /* ---------- code variant (center) ---------- */
+  .code-head{display:flex;align-items:center;gap:8px;padding:8px 12px;
+    background:var(--panel);border-bottom:1px solid var(--hairline)}
+  .code-head .fname{font-family:var(--font-mono);font-size:var(--text-sm)}
+  .code-badge{margin-left:auto;font-size:var(--text-xs);color:var(--muted);
+    border:1px solid var(--hairline);border-radius:var(--r-ctl);padding:1px 7px}
+  .code-edit{flex:1;overflow:auto;margin:0;padding:12px 16px;
+    font-family:var(--font-mono);font-size:12.5px;line-height:1.6;color:var(--text)}
+  .code-edit .ck{color:var(--muted)}
+  .code-edit .cs{color:var(--additive)}
+  .code-edit .cw{color:var(--conflict)}
+
+  /* ---------- timeline (docked, 56px) ---------- */
+  .timeline{
+    grid-area:timeline;display:flex;align-items:center;gap:6px;
+    background:var(--panel);border-top:1px solid var(--hairline);padding:0 10px;overflow:hidden;
+  }
+  .tl-chip{
+    display:flex;align-items:center;gap:5px;flex:none;
+    border:1px solid var(--hairline);border-radius:var(--r-ctl);background:var(--raised);
+    padding:4px 9px;font-size:var(--text-xs);color:var(--text);
+  }
+  .tl-chip:hover{border-color:var(--accent)}
+  .tl-chip .glyph{font-family:var(--font-mono);font-size:10px}
+  .tl-chip.additive .glyph{color:var(--additive)}
+  .tl-chip.subtractive .glyph{color:var(--subtractive)}
+  .tl-chip.neutral .glyph{color:var(--text)} /* muted fails AA on raised (4.4) */
+  .tl-chip.selected{border-color:var(--sel-pink);color:var(--sel-pink);
+    background:rgba(255,121,198,.08)}
+  .tl-chip.consumed{opacity:.45}
+  /* conflict marks: dark-on-red badges — conflict-on-panel text fails AA (4.07) */
+  .warn-badge{
+    display:inline-flex;align-items:center;justify-content:center;
+    background:var(--conflict);color:#171a20;font-size:10px;
+    padding:0 4px;border-radius:3px;font-weight:600;
+  }
+  .tl-tick{flex:none;width:2px;height:22px;background:var(--hairline);cursor:col-resize}
+  .tl-tick:hover{background:var(--accent)}
+  .tl-caption{margin-left:auto;flex:none;display:flex;align-items:center;gap:6px;
+    font-size:var(--text-xs);color:var(--text);max-width:360px;overflow:hidden;
+    text-overflow:ellipsis;white-space:nowrap;border-left:2px solid var(--conflict);
+    padding-left:8px}
+  .tl-hint{flex:none;font-size:var(--text-xs);color:var(--muted);
+    border-left:1px solid var(--hairline);padding-left:10px;margin-left:6px;white-space:nowrap}
+
+  /* ---------- status bar ---------- */
+  .status{
+    grid-area:status;display:flex;align-items:center;gap:14px;
+    background:var(--panel);border-top:1px solid var(--hairline);
+    padding:0 12px;font-size:var(--text-xs);color:var(--muted);overflow:hidden;
+  }
+  .status .sel-readout{color:var(--text);text-align:left}
+  .status .grow{flex:1}
+  .status .eng-dot{flex:none}
+  .status .bbox{font-family:var(--font-mono);font-size:11px}
+  .status .nav-hint{white-space:nowrap}
+
+  /* ---------- responsive: below 1100px the docks shrink ---------- */
+  @media (max-width:1100px){
+    .app{grid-template-columns:240px 1fr 200px}
+    .app.code{grid-template-columns:1fr 200px}
+    .tl-caption{display:none}
+    .tl-hint{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="app" id="app">
+
+  <!-- ================= TOPBAR ================= -->
+  <header class="topbar" role="banner">
+    <div class="wordmark"><em>re</em>SHape <span>Studio</span></div>
+    <div class="mode-switch" role="group" aria-label="Mode">
+      <button id="mode-build" aria-pressed="true">Build</button>
+      <button id="mode-code" aria-pressed="false">Code</button>
+    </div>
+    <div class="spacer"></div>
+    <span class="engine-badge" title="Geometry engine in use"><span class="dot"></span>FreeCAD kernel</span>
+    <button class="tbtn" id="btn-fit" title="Fit the whole model in view">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke-width="1.6">
+        <path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/>
+      </svg>Fit</button>
+    <button class="tbtn" id="btn-undo" title="Undo (Ctrl+Z)">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke-width="1.6">
+        <path d="M6 3L2.5 6.5 6 10M3 6.5h7a4 4 0 0 1 0 8H7"/>
+      </svg>Undo</button>
+    <button class="tbtn" id="btn-redo" title="Redo (Ctrl+Y)">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke-width="1.6">
+        <path d="M10 3l3.5 3.5L10 10M13 6.5H6a4 4 0 0 0 0 8h3"/>
+      </svg>Redo</button>
+  </header>
+
+  <!-- ================= TOOLBAR (captions BELOW icon clusters) ================= -->
+  <nav class="toolbar" role="toolbar" aria-label="Tools">
+    <div class="tgroup">
+      <div class="ticons">
+        <button class="tico" title="Open a model file"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><path d="M2 11V4h4l1.5 2H12v5z"/></svg></button>
+        <button class="tico" title="Save"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><path d="M3 3h8l2 2v6H3z M5 3v4h5V3 M5 11V8h4v3"/></svg></button>
+        <button class="tico" title="Export STL"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><path d="M8 10V3M5 6l3-3 3 3M3 10v2h10v-2"/></svg></button>
+        <button class="tico caret" title="More export formats"><svg width="10" height="10" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><path d="M4 6l3 3 3-3"/></svg></button>
+      </div><span class="tcap">File</span>
+    </div>
+    <div class="tgroup">
+      <div class="ticons">
+        <button class="tico" title="Undo (Ctrl+Z)"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke-width="1.6"><path d="M6 3L2.5 6.5 6 10M3 6.5h7a4 4 0 0 1 0 8H7"/></svg></button>
+        <button class="tico" title="Redo (Ctrl+Y)"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke-width="1.6"><path d="M10 3l3.5 3.5L10 10M13 6.5H6a4 4 0 0 0 0 8h3"/></svg></button>
+        <button class="tico" title="Delete the selection"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><path d="M3 4h10M6 4V2.5h2V4M4.5 4l.8 8h3.4l.8-8M6 6.5v3.5M8 6.5v3.5"/></svg></button>
+      </div><span class="tcap">Edit</span>
+    </div>
+    <div class="tgroup">
+      <div class="ticons">
+        <button class="tico" title="Start a sketch — the real name: Sketch"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><path d="M2 12l1-3 7-7 2 2-7 7z"/></svg></button>
+        <button class="tico" title="the real name: sketch circle"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><circle cx="7" cy="7" r="5"/></svg></button>
+        <button class="tico" title="the real name: sketch rectangle"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><rect x="2" y="3" width="10" height="8" rx="1"/></svg></button>
+        <button class="tico" title="the real name: sketch polygon"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><path d="M7 2l5 3.5-2 5.5H4L2 5.5z"/></svg></button>
+      </div><span class="tcap">Sketch</span>
+    </div>
+    <div class="tgroup">
+      <div class="ticons">
+        <span class="split">
+          <button class="tico fly-toggle" data-fly="shape" aria-controls="flyout-shape"
+            aria-haspopup="true" aria-expanded="true" title="Primitive shapes — one flyout, only this one is open">
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><path d="M7 1.5l5 2.8v5.4l-5 2.8-5-2.8V4.3z M2 4.3l5 2.8 5-2.8 M7 7.1v5.4"/></svg></button>
+          <button class="tico caret fly-toggle" data-fly="shape" aria-controls="flyout-shape"
+            aria-expanded="true" title="Primitive shapes menu"><svg width="10" height="10" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><path d="M4 6l3 3 3-3"/></svg></button>
+          <div class="flyout open" id="flyout-shape" role="menu" aria-label="Shape primitives">
+            <button role="menuitem" title="the real name: Box primitive"><svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><rect x="2.5" y="2.5" width="9" height="9" rx="1"/></svg>Box</button>
+            <button role="menuitem" title="the real name: Cylinder primitive"><svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><ellipse cx="7" cy="3.5" rx="4.5" ry="1.8"/><path d="M2.5 3.5v7M11.5 3.5v7"/></svg>Cylinder</button>
+            <button role="menuitem" title="the real name: Sphere primitive"><svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><circle cx="7" cy="7" r="5"/><path d="M2.2 7h9.6"/></svg>Sphere</button>
+            <button role="menuitem" title="the real name: Cone primitive"><svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><path d="M7 2l4 9H3z"/><ellipse cx="7" cy="11" rx="4" ry="1.2"/></svg>Cone</button>
+            <button role="menuitem" title="the real name: Torus"><svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><circle cx="7" cy="7" r="5"/><circle cx="7" cy="7" r="2"/></svg>Ring</button>
+          </div>
+        </span>
+        <button class="tico additive" title="the real name: Pad — pulls a sketch into a solid"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><path d="M7 12V3M3.5 6.5L7 3l3.5 3.5"/></svg></button>
+        <button class="tico additive" title="the real name: Revolution — spins a sketch around an axis"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><path d="M11 4a5 5 0 1 0 2 4M11 4l2-1M11 4l1 2.5"/></svg></button>
+        <button class="tico" title="the real name: Loft — blends between two shapes"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><rect x="2" y="2" width="4" height="4"/><rect x="8" y="8" width="4" height="4"/><path d="M6 4c2 0 2 6 2 6"/></svg></button>
+      </div><span class="tcap">Create</span>
+    </div>
+    <div class="tgroup">
+      <div class="ticons">
+        <span class="split">
+          <button class="tico" title="the real name: Fillet — rounds an edge"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><path d="M2 12V6a4 4 0 0 1 4-4h6"/></svg></button>
+          <button class="tico caret" title="Round or Bevel — pick one"><svg width="10" height="10" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><path d="M4 6l3 3 3-3"/></svg></button>
+        </span>
+        <button class="tico" title="the real name: rotate — turns the selection around an axis"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><circle cx="7" cy="7" r="5"/><circle cx="7" cy="7" r="1.6"/></svg></button>
+        <button class="tico subtractive" title="the real name: drill — cuts a hole"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><circle cx="7" cy="7" r="5"/><path d="M7 4.5v5M4.5 7h5"/></svg></button>
+        <button class="tico subtractive" title="the real name: Shell — hollows the part"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><rect x="2" y="2" width="10" height="10" rx="1"/><rect x="5" y="5" width="4" height="4"/></svg></button>
+      </div><span class="tcap">Modify</span>
+    </div>
+    <div class="tgroup">
+      <div class="ticons">
+        <span class="split">
+          <button class="tico" title="the real name: MultiTransform — repeats a change in a line"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><rect x="1.5" y="5" width="4" height="4"/><rect x="9.5" y="5" width="4" height="4"/><path d="M5.5 7h4"/></svg></button>
+          <button class="tico caret" title="Repeat variations"><svg width="10" height="10" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><path d="M4 6l3 3 3-3"/></svg></button>
+        </span>
+        <button class="tico" title="the real name: Mirrored — flips a copy across a plane"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><path d="M7 1v12M4 4L1.5 10h5zM10 4l2.5 6h-5z"/></svg></button>
+        <button class="tico" title="the real name: Transform — moves the selection"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><path d="M7 1v3M7 10v3M1 7h3M10 7h3M7 7h.01"/></svg></button>
+      </div><span class="tcap">Arrange</span>
+    </div>
+    <div class="tgroup">
+      <div class="ticons">
+        <button class="tico" title="Join — the real name: Fuse. A face is pinned: top of Pocket 1"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><path d="M2 8h4V4h6v6H6"/></svg><span class="pindot"></span></button>
+        <button class="tico caret fly-toggle" data-fly="cut" aria-controls="flyout-cut"
+          aria-haspopup="true" aria-expanded="false" title="Cut / Overlap menu">
+          <svg width="10" height="10" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><path d="M4 6l3 3 3-3"/></svg></button>
+        <div class="flyout" id="flyout-cut" role="menu" aria-label="Combine more">
+          <button role="menuitem" title="the real name: Cut — subtracts one part from another"><svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><circle cx="4.5" cy="9.5" r="2.5"/><circle cx="9.5" cy="9.5" r="2.5"/><path d="M6 8L11 2M8 8L3 2"/></svg>Cut</button>
+          <button role="menuitem" title="the real name: Common — keeps only the shared volume"><svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><rect x="2" y="2" width="7" height="7"/><rect x="5" y="5" width="7" height="7"/></svg>Overlap</button>
+        </div>
+      </div><span class="tcap">Combine</span>
+    </div>
+    <button class="tb-search" id="btn-search" title="Search tools and features (Ctrl+/)">
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke-width="1.6"><circle cx="6" cy="6" r="4"/><path d="M9 9l3 3"/></svg>Search</button>
+  </nav>
+
+  <!-- ================= LEFT DOCK ================= -->
+  <aside class="left" aria-label="Browser, planes and rules">
+    <section class="dock-section" id="sec-browser">
+      <div class="dock-head"><h3>Browser</h3></div>
+      <span class="micro subhead">Parts</span>
+      <button class="tree-row consumed" data-feature="Sketch 1" title="This sketch was used up by Pull 1 — it stays in history only">
+        <span class="swatch" style="background:var(--muted)"></span>Sketch 1
+        <span class="sub">consumed</span>
+      </button>
+      <button class="tree-row" data-feature="Pull 1" style="padding-left:18px" title="the real name: Pad — pulled 12 mm">
+        <span class="swatch" style="background:var(--additive)"></span>Pull 1
+        <span class="sub">pulled 12 mm</span>
+      </button>
+      <button class="tree-row" data-feature="Sketch 2" style="padding-left:30px" title="the real name: Sketch on the top face">
+        <span class="swatch" style="background:var(--muted)"></span>Sketch 2
+        <span class="sub">4 edges</span>
+      </button>
+      <button class="tree-row selected" data-feature="Pocket 1" style="padding-left:42px" title="the real name: Pocket — cut down 6 mm">
+        <span class="swatch" style="background:var(--subtractive)"></span>Pocket 1
+        <span class="sub">cut 40 × 20 × 6</span>
+      </button>
+      <button class="tree-row" data-feature="Hole 1" style="padding-left:36px" title="the real name: Hole — refused, see the timeline warning">
+        <span class="swatch" style="background:var(--conflict)"></span>Hole 1
+        <span class="sub warn">⚠ refused</span>
+      </button>
+      <button class="tree-row pending" data-feature="Round 1" style="padding-left:36px" title="the real name: Fillet — not applied yet">
+        <span class="swatch" style="background:var(--good)"></span>Round 1
+        <span class="sub">pending</span>
+      </button>
+      <span class="micro subhead">Planes</span>
+      <button class="plane-row active" title="the real name: the xy plane"><span class="mono">XY</span>Top plane<span class="state">active</span></button>
+      <button class="plane-row" title="the real name: the xz plane"><span class="mono">XZ</span>Front plane</button>
+      <button class="plane-row" title="the real name: the yz plane"><span class="mono">YZ</span>Side plane</button>
+    </section>
+
+    <div class="tabs" role="tablist" aria-label="Sketch panel">
+      <button role="tab" id="tab-rules" aria-selected="true" aria-controls="panel-rules">Rules</button>
+      <button role="tab" id="tab-history" aria-selected="false" aria-controls="panel-history">History</button>
+    </div>
+    <section class="rules-body" id="panel-rules" role="tabpanel" aria-labelledby="tab-rules">
+      <div class="rules-title">Sketch 2 — Rules</div>
+      <div class="rules-sits">Sits on: top of Pull 1</div>
+      <table class="edge-table">
+        <thead><tr>
+          <th>Edge</th><th>Shape</th><th>↔ Level</th><th>↕ Upright</th><th>Length</th>
+        </tr></thead>
+        <tbody>
+          <tr><td>E1</td><td class="shape">line</td><td>0</td><td class="ok">✓</td><td>40</td></tr>
+          <tr class="sel-row"><td>E2</td><td class="shape">line</td><td>0</td><td class="ok">✓</td><td>20</td></tr>
+          <tr><td>E3</td><td class="shape">line</td><td>10</td><td class="ok">✓</td><td>40</td></tr>
+          <tr><td>E4</td><td class="shape">line</td><td>10</td><td class="ok">✓</td><td>20</td></tr>
+        </tbody>
+      </table>
+      <div class="pair-grid" role="img" aria-label="Pair rules between sketch edges — all settled">
+        <span class="cell head"></span><span class="cell head">E1</span><span class="cell head">E2</span>
+        <span class="cell head">E1</span><span class="cell"></span><span class="cell"><i class="dotk" style="background:var(--good)"></i></span>
+        <span class="cell head">E2</span><span class="cell"><i class="dotk" style="background:var(--info)"></i></span><span class="cell"></span>
+      </div>
+      <div class="pair-legend">
+        <span><i style="background:var(--good)"></i>settled</span>
+        <span><i style="background:var(--info)"></i>auto</span>
+      </div>
+      <div class="pin-row">
+        <svg class="pin-ico" width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 1l4 4-3 1-4 4-2-2 4-4zM4 10l-3 3"/></svg>
+        <span>Pin a corner</span>
+        <span class="pin-val">E1 ∩ E2</span>
+      </div>
+    </section>
+    <section class="rules-body" id="panel-history" role="tabpanel" aria-labelledby="tab-history" hidden>
+      <div class="rules-title">Sketch 2 — History</div>
+      <ul class="history-list">
+        <li>Drawn on top of Pull 1 <span class="mono">12:04</span></li>
+        <li>Rectangle placed 40 × 20 <span class="mono">12:04</span></li>
+        <li>Auto-settled 1 pair rule <span class="mono">12:05</span></li>
+        <li>Became Pocket 1 <span class="mono">12:06</span></li>
+      </ul>
+    </section>
+  </aside>
+
+  <!-- ================= VIEWPORT ================= -->
+  <!-- no top:56 hacks anymore; docks reserve their own rows -->
+  <main class="view" id="view" aria-label="3D viewport">
+    <div class="scene">
+      <!-- Shared scene: desk tray (60×40×12, 40×20 pocket 6 deep, ⌀6 through-hole, 3mm rim).
+           Isometric basis (px per mm): ex=(2.772,1.6) ey=(-2.772,1.6) ez vertical 3.2.
+           Local origin = tray top corner (x0,y0,z12). Tray mm→px: 60→166.3 40→110.9 drop12→38.4. -->
+      <svg width="380" height="297" viewBox="0 0 320 250" role="img"
+           aria-label="Desk tray: 60 by 40 millimetres, 12 tall, with a 40 by 20 pocket and one 6 millimetre hole">
+        <defs>
+          <pattern id="floor" width="24" height="24" patternUnits="userSpaceOnUse"
+                   patternTransform="matrix(1,0.5,-1,0.5,0,0)">
+            <path d="M24 0H0V24" fill="none" stroke="#343946" stroke-width="1" opacity="0.5"/>
+          </pattern>
+        </defs>
+        <g transform="translate(132.3,25.8)">
+          <!-- subtle 24px iso grid floor -->
+          <polygon points="160,50 310,125 160,200 10,125" fill="url(#floor)" opacity="0.6"/>
+          <!-- tray: visible outer walls (x=60 face and y=40 face), body #4a5261 -->
+          <polygon points="166.3,96 55.4,160 55.4,198.4 166.3,134.4" fill="#4a5261"/>
+          <polygon points="-110.9,64 55.4,160 55.4,198.4 -110.9,102.4" fill="#4a5261"/>
+          <!-- top face with pocket opening (even-odd ring), tops #5b6475 -->
+          <path fill-rule="evenodd" fill="#5b6475"
+            d="M0,0 L166.3,96 L55.4,160 L-110.9,64 Z
+               M0,32 L-55.4,64 L55.4,128 L110.9,96 Z"/>
+          <!-- pocket cut faces #333a45, floor darker -->
+          <polygon points="0,32 110.9,96 110.9,115.2 0,51.2" fill="#333a45"/>
+          <polygon points="0,32 -55.4,64 -55.4,83.2 0,51.2" fill="#333a45"/>
+          <polygon points="0,51.2 110.9,115.2 55.4,147.2 -55.4,83.2" fill="#2e3540"/>
+          <!-- ⌀6 through-hole in the 6mm floor, near the right end (tray x44 y20) -->
+          <ellipse cx="66.5" cy="121.6" rx="11.8" ry="6.8" fill="#1d2027"/>
+          <ellipse cx="66.5" cy="121.6" rx="11.8" ry="6.8" fill="none" stroke="#333a45" stroke-width="1.2"/>
+          <!-- hairline edges: outer top boundary, wall verticals, bottom near edges, pocket rim + wall feet -->
+          <path d="M0,0 L166.3,96 L55.4,160 L-110.9,64 Z M-110.9,64 V102.4 M55.4,160 V198.4 L166.3,134.4 V96 M55.4,198.4 L-110.9,102.4"
+                fill="none" stroke="#343946" stroke-width="1"/>
+          <path d="M0,32 L110.9,96 V115.2 L0,51.2 M0,32 L-55.4,64 V83.2 L0,51.2 L110.9,115.2"
+                fill="none" stroke="#343946" stroke-width="1"/>
+          <!-- Pocket 1 is selected: pink stroke on the pocket rim (model state only) -->
+          <path class="sel-rim" d="M0,32 L-55.4,64 L55.4,128 L110.9,96 Z"
+                fill="none" stroke="#ff79c6" stroke-width="1.6" stroke-linejoin="round"/>
+          <!-- 3mm rounded top rim: lighter stroke -->
+          <path id="rim" d="M0,0 L166.3,96 L55.4,160 L-110.9,64 Z"
+                fill="none" stroke="#6d7689" stroke-width="1.6" stroke-linejoin="round"/>
+          <!-- drag handles (anchored to geometry) -->
+          <circle cx="83.2" cy="112" r="6" fill="#5fbf8f" stroke="#1a1c21" stroke-width="1.6"/>
+          <text class="handle-label" x="74" y="106" text-anchor="end">size</text>
+          <circle cx="0" cy="32" r="3.5" fill="#5aa9e6" stroke="#1a1c21" stroke-width="1.4"/>
+          <circle cx="-55.4" cy="64" r="3.5" fill="#5aa9e6" stroke="#1a1c21" stroke-width="1.4"/>
+          <text class="handle-label" x="8" y="24">sketch point</text>
+          <rect x="118" y="92" width="9" height="9" fill="#b08bef" stroke="#1a1c21" stroke-width="1.4"/>
+          <text class="handle-label" x="114" y="106" text-anchor="end">move</text>
+          <circle cx="140" cy="88" r="7" fill="none" stroke="#e0b64d" stroke-width="2.2"/>
+          <text class="handle-label" x="132" y="80" text-anchor="end">radius</text>
+        </g>
+      </svg>
+    </div>
+
+    <!-- hover pill: anchored to the hovered edge -->
+    <span class="hover-pill" title="the real name: top rim edge, 20 mm">Edge 3 · 20</span>
+
+    <!-- contextual selection strip: anchored above Edge 2 -->
+    <div class="sel-strip" id="sel-strip" role="toolbar" aria-label="Edge 2 actions">
+      <span class="chip">Edge 2 · 20</span>
+      <button class="verb" title="Keep this edge level with its opposite">↔ Level</button>
+      <button class="verb" title="Keep this edge upright">↕ Upright</button>
+      <button class="verb" title="Set a length rule for this edge">Length…</button>
+      <button class="x" id="strip-x" aria-label="Clear selection">×</button>
+    </div>
+
+    <button class="home-pill" id="home" title="Go to the saved home view">
+      <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 6L6 2l4 4M4 5.5V10h4V5.5"/></svg>
+      Home</button>
+
+    <div class="nav-cube" aria-label="View cube">
+      <span class="faces">
+        <button class="face on" data-face="TOP" title="Look from the top">TOP</button>
+      </span>
+      <span class="faces">
+        <button class="face" data-face="FRONT" title="Look from the front">FRONT</button>
+      </span>
+      <span class="faces">
+        <button class="face" data-face="RIGHT" title="Look from the right">RIGHT</button>
+      </span>
+      <button class="home" id="cube-home" title="Home — back to the isometric view">Home</button>
+    </div>
+  </main>
+
+  <!-- ================= CODE VARIANT (center, Build|Code toggle) ================= -->
+  <section class="codepane" id="codepane" aria-label="Script editor">
+    <div class="code-head">
+      <span class="fname">tray.rcad</span>
+      <span class="code-badge">read-only mock</span>
+    </div>
+    <pre class="code-edit"><span class="ck">// tray.rcad — reSHape script</span>
+model <span class="cs">"Desk tray"</span>
+
+<span class="ck">// block 1 — base</span>
+plane <span class="cs">"XY"</span>
+sketch <span class="cs">"S1"</span> { rect <span class="cs">60, 40</span> }
+pull <span class="cs">"Pull 1"</span>, 12
+
+<span class="ck">// block 2 — pocket</span>
+face <span class="cs">"top of Pull 1"</span>
+sketch <span class="cs">"S2"</span> {
+  rect <span class="cs">40, 20</span>, center
+  rule level(E1, E3)
+  rule upright(E2, E4)
+}
+pocket <span class="cs">"Pocket 1"</span>, 6
+
+<span class="ck">// block 3 — finish</span>
+hole <span class="cs">"Hole 1"</span>, d 8 at 44, 20  <span class="cw">// ⚠ refused</span>
+round <span class="cs">"Round 1"</span>, 3
+
+export <span class="cs">"tray.stl"</span></pre>
+  </section>
+
+  <!-- ================= RIGHT DOCK ================= -->
+  <aside class="right" aria-label="Dimensions">
+    <section id="dock-build">
+      <div class="dims-head">
+        <h3 id="dims-title">Dimensions — Pocket 1</h3>
+        <span class="rebuild-badge" title="Time the engine took to rebuild this feature">12 ms</span>
+      </div>
+      <div class="dim-row">
+        <div class="dim-line"><label for="dim-w">Width</label>
+          <span class="val" id="val-w">40</span><span class="unit">mm</span></div>
+        <input type="range" id="dim-w" min="20" max="56" step="0.1" value="40"
+          title="Width of the pocket — drag to preview, release to commit">
+      </div>
+      <div class="dim-row">
+        <div class="dim-line"><label for="dim-d">Depth</label>
+          <span class="val" id="val-d">20</span><span class="unit">mm</span></div>
+        <input type="range" id="dim-d" min="10" max="36" step="0.1" value="20"
+          title="Depth of the pocket — drag to preview, release to commit">
+      </div>
+      <div class="dim-row">
+        <div class="dim-line"><label for="dim-h">Height</label>
+          <span class="val" id="val-h">6</span><span class="unit">mm</span></div>
+        <input type="range" id="dim-h" min="2" max="10" step="0.1" value="6"
+          title="How deep the cut goes — drag to preview, release to commit">
+      </div>
+      <div class="hollow-demo">
+        <button class="hollow-btn" disabled title="the real name: Shell — needs an open face first">Open hollow</button>
+        <p class="refusal">Click the face to leave open, then Open hollow.</p>
+      </div>
+    </section>
+
+    <section id="dock-run" role="tabpanel" aria-label="Run panel">
+      <div class="dims-head"><h3>Run</h3>
+        <span class="rebuild-badge" id="run-badge" title="Time the last run took">12 ms</span></div>
+      <button class="run-btn" id="btn-run">Run</button>
+      <ul class="run-out" id="run-out">
+        <li class="ok">✓ rebuilt 6 features</li>
+        <li class="warnline">⚠ Hole 1 refused — ⌀8 won't fit the 10 mm margin</li>
+      </ul>
+    </section>
+  </aside>
+
+  <!-- ================= TIMELINE (docked, 56px) ================= -->
+  <div class="timeline" role="toolbar" aria-label="Feature timeline">
+    <button class="tl-chip neutral consumed" data-feature="Sketch 1" title="the real name: Sketch — used up by Pull 1">
+      <span class="glyph">·</span>Sketch 1
+    </button>
+    <span class="tl-tick" title="Drag to roll back to here" aria-hidden="true"></span>
+    <button class="tl-chip additive" data-feature="Pull 1" title="the real name: Pad">
+      <span class="glyph">▲</span>Pull 1
+    </button>
+    <span class="tl-tick" title="Drag to roll back to here" aria-hidden="true"></span>
+    <button class="tl-chip neutral" data-feature="Sketch 2" title="the real name: Sketch">
+      <span class="glyph">□</span>Sketch 2
+    </button>
+    <span class="tl-tick" title="Drag to roll back to here" aria-hidden="true"></span>
+    <button class="tl-chip subtractive selected" data-feature="Pocket 1" title="the real name: Pocket">
+      <span class="glyph">▼</span>Pocket 1
+    </button>
+    <span class="tl-tick" title="Drag to roll back to here" aria-hidden="true"></span>
+    <button class="tl-chip subtractive" data-feature="Hole 1" title="the real name: Hole — refused">
+      <span class="glyph">○</span>Hole 1
+      <span class="warn-badge" title="This feature was refused — see the reason at the right of the strip">⚠</span>
+    </button>
+    <span class="tl-tick" title="Drag to roll back to here" aria-hidden="true"></span>
+    <button class="tl-chip additive" data-feature="Round 1" title="the real name: Fillet — pending">
+      <span class="glyph">◜</span>Round 1
+    </button>
+    <div class="tl-caption" title="Hole 1 was refused: an 8 mm hole will not fit inside the 10 mm end margin. Shrink it to 6 or delete Hole 1.">
+      ⚠ Hole 1 refused — ⌀8 won't fit the 10 mm margin. Shrink it to ⌀6 or delete Hole 1.</div>
+    <span class="tl-hint">Click a chip to see its numbers</span>
+  </div>
+
+  <!-- ================= STATUS BAR ================= -->
+  <footer class="status" role="contentinfo">
+    <span class="sel-readout" id="status-sel">Pocket 1 selected — drag green handles or edit Dimensions</span>
+    <span class="grow"></span>
+    <span class="eng-dot" title="FreeCAD kernel — rebuild ok" role="img" aria-label="Engine ready"></span>
+    <span class="bbox" id="status-bbox">60 × 40 × 12 mm</span>
+    <span class="nav-hint">Right-drag orbit · Scroll zoom</span>
+  </footer>
+</div>
+
+<script>
+/* Mockup A — docked discipline. Vanilla JS, no dependencies. */
+(function(){
+  "use strict";
+  var app = document.getElementById("app");
+  var $ = function(id){ return document.getElementById(id); };
+  var statusSel = $("status-sel");
+  var dimsTitle = $("dims-title");
+  var chips = Array.prototype.slice.call(document.querySelectorAll(".tl-chip"));
+  var rows = Array.prototype.slice.call(document.querySelectorAll(".tree-row"));
+  var STATUS = {
+    "Sketch 1":"Sketch 1 — consumed by Pull 1; it stays in history only",
+    "Pull 1":"Pull 1 selected — the pad that gave the sketch its 12 mm height",
+    "Sketch 2":"Sketch 2 selected — 4 edges, every pair rule settled",
+    "Pocket 1":"Pocket 1 selected — drag green handles or edit Dimensions",
+    "Hole 1":"Hole 1 — refused: ⌀8 will not fit the 10 mm end margin",
+    "Round 1":"Round 1 — pending: click the top rim edge, then Round"
+  };
+
+  /* ---------- timeline chips + browser rows: one selection, pink ---------- */
+  function selectFeature(name){
+    chips.forEach(function(c){ c.classList.toggle("selected", c.dataset.feature === name); });
+    rows.forEach(function(r){ r.classList.toggle("selected", r.dataset.feature === name); });
+    dimsTitle.textContent = "Dimensions — " + name;
+    statusSel.textContent = STATUS[name] || name + " selected";
+  }
+  chips.forEach(function(c){
+    c.addEventListener("click", function(){ selectFeature(c.dataset.feature); });
+  });
+  rows.forEach(function(r){
+    r.addEventListener("click", function(){ selectFeature(r.dataset.feature); });
+  });
+
+  /* ---------- Build | Code toggle: re-maps the main row ---------- */
+  var modeBuild = $("mode-build"), modeCode = $("mode-code");
+  function setMode(code){
+    app.classList.toggle("code", code);
+    modeBuild.setAttribute("aria-pressed", String(!code));
+    modeCode.setAttribute("aria-pressed", String(code));
+  }
+  modeBuild.addEventListener("click", function(){ setMode(false); });
+  modeCode.addEventListener("click", function(){ setMode(true); });
+
+  /* ---------- flyouts: only ONE open at a time ---------- */
+  var toggles = Array.prototype.slice.call(document.querySelectorAll(".fly-toggle"));
+  var flyouts = { shape: $("flyout-shape"), cut: $("flyout-cut") };
+  function closeFlyouts(except){
+    Object.keys(flyouts).forEach(function(k){
+      if (k !== except) flyouts[k].classList.remove("open");
+    });
+    toggles.forEach(function(t){
+      if (t.dataset.fly !== except) t.setAttribute("aria-expanded", "false");
+    });
+  }
+  toggles.forEach(function(t){
+    t.addEventListener("click", function(){
+      var k = t.dataset.fly, fl = flyouts[k];
+      var open = fl.classList.contains("open");
+      closeFlyouts(k);
+      fl.classList.toggle("open", !open);
+      toggles.forEach(function(b){
+        if (b.dataset.fly === k) b.setAttribute("aria-expanded", String(!open));
+      });
+    });
+  });
+  document.addEventListener("keydown", function(e){
+    if (e.key === "Escape") closeFlyouts();
+  });
+
+  /* ---------- Rules | History tabs ---------- */
+  var tabRules = $("tab-rules"), tabHistory = $("tab-history");
+  var panelRules = $("panel-rules"), panelHistory = $("panel-history");
+  function setTab(rulesActive){
+    tabRules.setAttribute("aria-selected", String(rulesActive));
+    tabHistory.setAttribute("aria-selected", String(!rulesActive));
+    panelRules.hidden = !rulesActive;
+    panelHistory.hidden = rulesActive;
+  }
+  tabRules.addEventListener("click", function(){ setTab(true); });
+  tabHistory.addEventListener("click", function(){ setTab(false); });
+
+  /* ---------- dimension sliders: live value preview ---------- */
+  [["dim-w","val-w"],["dim-d","val-d"],["dim-h","val-h"]].forEach(function(pair){
+    var input = $(pair[0]), out = $(pair[1]);
+    input.addEventListener("input", function(){ out.textContent = input.value; });
+  });
+
+  /* ---------- nav cube faces + Home ---------- */
+  var faces = Array.prototype.slice.call(document.querySelectorAll(".nav-cube .face"));
+  function faceOn(el){
+    faces.forEach(function(f){ f.classList.remove("on"); });
+    if (el) el.classList.add("on");
+  }
+  faces.forEach(function(f){
+    f.addEventListener("click", function(){
+      faceOn(f);
+      statusSel.textContent = "View: " + f.dataset.face.toLowerCase() + " — the model is unchanged";
+    });
+  });
+  $("cube-home").addEventListener("click", function(){ faceOn(faces[0]); });
+  $("home").addEventListener("click", function(){ faceOn(faces[0]); });
+
+  /* ---------- topbar buttons: refusals name the fix ---------- */
+  [["btn-fit","Fit — whole model in view"],
+   ["btn-undo","Nothing to undo — you are at the start of this step"],
+   ["btn-redo","Nothing to redo — undo something first"],
+   ["btn-search","Search tools and features (Ctrl+/)"]].forEach(function(p){
+    $(p[0]).addEventListener("click", function(){ statusSel.textContent = p[1]; });
+  });
+
+  /* ---------- Run panel (code variant) ---------- */
+  $("btn-run").addEventListener("click", function(){
+    $("run-badge").textContent = "12 ms";
+    var li = document.createElement("li");
+    li.className = "ok";
+    li.textContent = "✓ rebuilt 6 features — just now";
+    $("run-out").appendChild(li);
+  });
+
+  /* ---------- selection strip × clears it ---------- */
+  $("strip-x").addEventListener("click", function(){
+    $("sel-strip").hidden = true;
+    chips.forEach(function(c){ c.classList.remove("selected"); });
+    rows.forEach(function(r){ r.classList.remove("selected"); });
+    statusSel.textContent = "Nothing selected";
+    var row = document.querySelector(".edge-table tr.sel-row");
+    if (row) row.classList.remove("sel-row");
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1459 @@
+<!doctype html>
+<!--
+  UI kit — pick-and-choose element sheet; pairs with SPEC-ui-revamp.md
+  Tokens match design/studio-mockup-dark.html exactly.
+  Every component lives on its own card with card-scoped classes (.k-<thing>-*)
+  so any card can be adopted independently. Static demo: hover/focus states
+  only, no JavaScript.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>reSHape UI Kit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    /* tokens — must match design/studio-mockup-dark.html */
+    --ground:#14171c;
+    --panel:#1c2027;
+    --raised:#242a33;
+    --hairline:#2e353f;
+    --text:#d7dde5;
+    --muted:#8b95a3;
+    --accent:#5aa9e6;
+    --additive:#e0b64d;
+    --subtractive:#e0685a;
+    --good:#5fbf8f;
+
+    /* hover / selection (spec) */
+    --hover:#8be9fd;
+    --selected:#ff79c6;
+
+    /* kit extensions — NOT in the sibling mockup; flagged for review */
+    --violet:#b08bef;          /* auto-settle notes, move handle */
+    --turn:#f2d560;            /* turn handle yellow (distinct from amber additive) */
+
+    --font-ui: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+    --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+
+    --text-xs: 11px;
+    --text-sm: 12.5px;
+    --text-md: 13.5px;
+    --text-lg: 15px;
+    --text-xl: 18px;
+
+    color-scheme: dark;
+  }
+
+  *{ box-sizing:border-box; }
+
+  body{
+    margin:0;
+    background: var(--ground);
+    color: var(--text);
+    font-family: var(--font-ui);
+    font-size: var(--text-md);
+    line-height:1.45;
+  }
+
+  button, input, select{ font-family: inherit; color: inherit; }
+
+  :focus-visible{
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+    border-radius: 2px;
+  }
+
+  .uc{
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    font-size: var(--text-xs);
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  /* ---------- header strip ---------- */
+
+  .kit-head{
+    display:flex; align-items:center; justify-content:space-between;
+    flex-wrap:wrap; gap:14px;
+    padding: 16px 18px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .kit-title{
+    margin:0;
+    font-size: var(--text-xl);
+    font-weight:700;
+    letter-spacing:.01em;
+  }
+  .kit-title .re{ color: var(--muted); font-weight:500; }
+  .kit-sub{
+    margin:2px 0 0;
+    font-size: var(--text-sm);
+    color: var(--muted);
+  }
+
+  .kit-swatches{
+    display:flex; flex-wrap:wrap; gap:8px 14px;
+    max-width: 760px;
+  }
+  .sw{ display:flex; align-items:center; gap:6px; }
+  .sw i{
+    width:16px; height:16px; border-radius:4px;
+    border:1px solid var(--hairline);
+    flex-shrink:0;
+  }
+  .sw span{
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--muted);
+  }
+
+  /* ---------- card grid + card chrome ---------- */
+
+  .kit-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap:14px;
+    padding: 18px;
+  }
+
+  .k-card{
+    background: var(--panel);
+    border: 1px solid var(--hairline);
+    border-radius: 10px;
+    display:flex; flex-direction:column;
+    min-height: 250px;
+    overflow:hidden;
+  }
+  .k-name{
+    margin:0;
+    padding: 10px 14px 0;
+    font-size: var(--text-xs);
+    font-weight:600;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color: var(--muted);
+  }
+  .k-name b{ color: var(--text); font-weight:600; }
+  .k-why{
+    margin:0;
+    padding: 3px 14px 10px;
+    font-size: var(--text-sm);
+    color: var(--muted);
+  }
+  .k-why em{ font-style:normal; color: var(--text); }
+
+  .k-demo{
+    flex:1;
+    margin: 0 14px;
+    padding: 16px 14px;
+    background: var(--ground);
+    border: 1px solid var(--hairline);
+    border-radius: 8px;
+    display:flex; flex-direction:column;
+    gap:12px; justify-content:center; align-items:stretch;
+    min-height: 120px;
+  }
+  /* viewport-flavoured demo area for things that float over geometry */
+  .k-demo-stage{
+    background: radial-gradient(ellipse at 50% 38%, #1a1e25 0%, #14171c 72%);
+  }
+
+  .k-foot{
+    display:flex; align-items:center; gap:6px;
+    padding: 8px 14px 10px;
+    flex-shrink:0;
+  }
+  .k-tag{
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing:.05em;
+    padding: 2px 7px;
+    border-radius: 4px;
+    border: 1px solid var(--hairline);
+    color: var(--muted);
+    white-space:nowrap;
+  }
+  .k-tag-propsd{ color: var(--accent); border-color: rgba(90,169,230,.45); background: rgba(90,169,230,.08); }
+  .k-tag-restyled{ color: var(--good); border-color: rgba(95,191,143,.4); background: rgba(95,191,143,.07); }
+  .k-tag-decide{ color: var(--additive); border-color: rgba(224,182,77,.4); background: rgba(224,182,77,.07); }
+
+  /* 00 · decision checklist */
+  .k-check{ list-style:none; margin:0 14px; padding:0; display:flex; flex-direction:column; gap:4px; counter-reset:kcheck; }
+  .k-check li{ counter-increment:kcheck; font-size: var(--text-sm); }
+  .k-check li::before{ content: counter(kcheck) ". "; font-family: var(--font-mono); font-size: 10px; color: var(--muted); }
+  .k-check label{ display:flex; align-items:center; gap:7px; cursor:pointer; }
+  .k-check input{ accent-color: var(--accent); }
+  .k-check b{ color: var(--text); font-weight:600; }
+  .k-check .k-tag{ margin-left:auto; }
+
+  .k-hint{
+    margin:0;
+    font-size: var(--text-xs);
+    color: var(--muted);
+  }
+  .k-hint b{ color: var(--text); font-weight:600; }
+
+  /* =====================================================
+     01 · ribbon group
+     ===================================================== */
+
+  .k-ribbon{ display:flex; gap:10px; align-items:stretch; justify-content:center; }
+  .k-ribbon-group{
+    display:flex; flex-direction:column; align-items:center; gap:4px;
+    padding: 6px 10px;
+    border: 1px solid var(--hairline);
+    border-radius: 8px;
+    background: var(--panel);
+  }
+  .k-ribbon-btns{ display:flex; align-items:center; gap:2px; }
+  .k-rib-btn{
+    appearance:none; border:1px solid transparent; background:transparent; cursor:pointer;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px;
+    width:52px; height:44px; border-radius:6px;
+    color: var(--text);
+    font-size: 9.5px; line-height:1; color: var(--muted);
+    transition: background .12s ease;
+  }
+  .k-rib-btn svg{ width:17px; height:17px; color: var(--text); }
+  .k-rib-btn:hover{ background: var(--raised); color: var(--text); }
+  .k-rib-btn:hover span{ color: var(--text); }
+  .k-ribbon-caption{
+    font-size: var(--text-xs);
+    text-transform:uppercase; letter-spacing:.08em;
+    color: var(--muted); font-weight:600;
+  }
+  .k-rib-caret{
+    display:inline-block; width:0; height:0;
+    border-left:3.5px solid transparent; border-right:3.5px solid transparent;
+    border-top:4px solid var(--muted);
+    margin-left:3px;
+  }
+  .k-rib-fly{ position:relative; }
+  .k-rib-fly[aria-expanded="true"]{ background: var(--raised); color: var(--text); }
+  .k-rib-menu{
+    position:absolute; top:calc(100% + 5px); left:50%; transform:translateX(-50%);
+    background: var(--raised);
+    border: 1px solid var(--hairline);
+    border-radius: 7px;
+    box-shadow: 0 10px 26px rgba(0,0,0,.5);
+    padding: 4px;
+    display:flex; flex-direction:column; gap:1px;
+    min-width: 128px;
+    z-index:3;
+  }
+  .k-rib-menu button{
+    appearance:none; border:none; background:transparent; cursor:pointer; text-align:left;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding: 5px 9px; border-radius:5px;
+    font-size: var(--text-sm); color: var(--text);
+    white-space:nowrap;
+  }
+  .k-rib-menu button small{ font-size: var(--text-xs); color: var(--muted); }
+  .k-rib-menu button:hover{ background: rgba(90,169,230,.16); }
+  .k-ribbon-closed{
+    justify-content:center;
+    cursor:default;
+    border-style:dashed;
+    opacity:.65;
+  }
+  .k-ribbon-closed .k-ribbon-caption{ display:flex; align-items:center; gap:5px; }
+
+  /* =====================================================
+     02 · flyout button
+     ===================================================== */
+
+  .k-flyout{ position:relative; display:flex; flex-direction:column; align-items:center; gap:8px; }
+  .k-fly-face{
+    appearance:none; cursor:pointer;
+    display:flex; align-items:center; gap:7px;
+    padding: 7px 12px;
+    background: var(--raised);
+    border: 1px solid var(--hairline);
+    border-radius: 7px;
+    font-size: var(--text-md); font-weight:600; color: var(--text);
+    transition: background .12s ease;
+  }
+  .k-fly-face:hover{ border-color: var(--accent); }
+  .k-fly-face .k-rib-caret{ border-top-color: var(--muted); }
+  .k-fly-menu{
+    background: var(--raised);
+    border: 1px solid var(--hairline);
+    border-radius: 8px;
+    box-shadow: 0 12px 30px rgba(0,0,0,.5);
+    padding: 4px;
+    display:flex; flex-direction:column; gap:1px;
+    min-width: 168px;
+  }
+  .k-fly-item{
+    appearance:none; border:none; background:transparent; cursor:pointer; text-align:left;
+    display:flex; align-items:center; gap:8px;
+    padding: 6px 10px; border-radius: 6px;
+    font-size: var(--text-md); color: var(--text);
+  }
+  .k-fly-item svg{ width:15px; height:15px; color: var(--additive); flex-shrink:0; }
+  .k-fly-item:hover{ background: rgba(90,169,230,.16); }
+  .k-fly-item.is-last{ color: var(--hover); }
+  .k-fly-item .k-fly-last{
+    margin-left:auto;
+    font-size: var(--text-xs); color: var(--muted);
+    border:1px solid var(--hairline); border-radius:3px; padding:1px 5px;
+  }
+  .k-fly-item[disabled]{
+    opacity:.45; cursor:not-allowed;
+  }
+  .k-fly-item[disabled] svg{ color: var(--muted); }
+  .k-fly-refusal{
+    margin:0; max-width:250px;
+    font-size: var(--text-xs);
+    color: var(--additive);
+    text-align:center;
+  }
+
+  /* =====================================================
+     03 · selection strip
+     ===================================================== */
+
+  .k-strip-stage{
+    position:relative;
+    height: 92px;
+    display:flex; align-items:flex-start; justify-content:center;
+  }
+  .k-strip-anchor{
+    position:absolute; left:34%; top:20px;
+    width:26px; height:14px;
+  }
+  .k-strip{
+    position:absolute; top:34px;
+    display:flex; align-items:center; gap:2px;
+    background: var(--raised);
+    border: 1px solid var(--hairline);
+    border-radius: 7px;
+    box-shadow: 0 8px 22px rgba(0,0,0,.4);
+    padding: 3px;
+    z-index:2;
+  }
+  .k-strip-id{
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--text);
+    padding: 3px 8px;
+    white-space:nowrap;
+  }
+  .k-strip-btn{
+    appearance:none; border:none; background:transparent; cursor:pointer;
+    padding: 3px 8px; border-radius:5px;
+    font-size: var(--text-sm); color: var(--text);
+    white-space:nowrap;
+    transition: background .12s ease;
+  }
+  .k-strip-btn:hover{ background: rgba(139,233,253,.14); color: var(--hover); }
+  .k-strip-x{
+    appearance:none; border:none; background:transparent; cursor:pointer;
+    width:20px; height:20px; border-radius:4px;
+    color: var(--muted); display:flex; align-items:center; justify-content:center;
+    font-size: 12px;
+  }
+  .k-strip-x:hover{ background: var(--panel); color: var(--text); }
+  .k-strip-2{ position:static; align-self:center; }
+
+  /* =====================================================
+     04 · context bar
+     ===================================================== */
+
+  .k-ctx{
+    display:inline-flex; align-items:center; gap:2px;
+    align-self:center;
+    background: var(--raised);
+    border: 1px solid var(--hairline);
+    border-radius: 999px;
+    padding: 3px;
+    box-shadow: 0 8px 22px rgba(0,0,0,.35);
+  }
+  .k-ctx-btn{
+    appearance:none; border:1px solid transparent; background:transparent; cursor:pointer;
+    display:flex; align-items:center; gap:5px;
+    padding: 5px 10px; border-radius: 999px;
+    font-size: var(--text-sm); color: var(--text);
+    white-space:nowrap;
+    transition: background .12s ease;
+  }
+  .k-ctx-btn:hover{ background: rgba(90,169,230,.16); }
+  .k-ctx-btn .k-rib-caret{ border-top-color: var(--muted); }
+  .k-ctx-btn.k-ctx-sub{ color: var(--subtractive); }
+  .k-ctx-btn.k-ctx-sub:hover{ background: rgba(224,104,90,.14); }
+  .k-ctx-sep{ width:1px; height:16px; background: var(--hairline); margin:0 2px; }
+
+  /* =====================================================
+     05 · timeline chip
+     ===================================================== */
+
+  .k-chipwrap{ display:flex; flex-direction:column; gap:12px; }
+  .k-chip-anat{ display:flex; align-items:center; justify-content:center; gap:14px; }
+  .k-chipbig{
+    display:inline-flex; align-items:center; gap:7px;
+    padding: 9px 12px;
+    background: var(--raised);
+    border: 1.5px solid var(--selected);
+    border-radius: 9px;
+    font-size: var(--text-lg);
+    box-shadow: 0 6px 18px rgba(0,0,0,.4);
+  }
+  .k-chipbig .k-chip-icon{ width:18px; height:18px; color: var(--subtractive); }
+  .k-chipbig .k-chip-warn{ color: var(--additive); font-size: var(--text-md); }
+  .k-chip-ticks{
+    display:flex; flex-direction:column; gap:5px; align-items:center;
+  }
+  .k-chip-ticks i{
+    display:block; width:12px; height:0;
+    border-top: 2px solid var(--accent);
+  }
+  .k-chip-legend{
+    list-style:none; margin:0; padding:0;
+    display:flex; flex-direction:column; gap:3px;
+    font-size: var(--text-xs); color: var(--muted);
+  }
+  .k-chip-legend i{
+    display:inline-block; width:10px; height:10px; border-radius:3px;
+    margin-right:6px; vertical-align:-1px;
+  }
+  .k-chip-legend .lg-sel{ background: var(--selected); }
+  .k-chip-legend .lg-warn{ background: var(--additive); }
+  .k-chip-legend .lg-dim{ background: var(--hairline); }
+  .k-chip-legend .lg-tick{ background: var(--accent); }
+
+  .k-chip-row{
+    display:flex; align-items:center; gap:4px; flex-wrap:wrap; justify-content:center;
+  }
+  .k-chip{
+    display:inline-flex; align-items:center; gap:5px;
+    padding: 4px 8px;
+    background: var(--raised);
+    border: 1px solid var(--hairline);
+    border-radius: 6px;
+    font-size: var(--text-xs);
+    color: var(--text);
+    white-space:nowrap;
+    cursor:pointer;
+    transition: border-color .12s ease;
+  }
+  .k-chip:hover{ border-color: var(--hairline); background:#2b323d; }
+  .k-chip svg{ width:12px; height:12px; flex-shrink:0; }
+  .k-chip.ic-additive svg{ color: var(--additive); }
+  .k-chip.ic-subtractive svg{ color: var(--subtractive); }
+  .k-chip.ic-neutral svg{ color: var(--muted); }
+  .k-chip.is-selected{ border-color: var(--selected); box-shadow: 0 0 0 1px var(--selected); }
+  .k-chip.is-consumed{ color: var(--muted); }
+  .k-chip.is-consumed .k-chip-name{ text-decoration: line-through; text-decoration-color: var(--hairline); }
+  .k-chip .k-chip-warn{ color: var(--additive); font-size:10px; }
+  .k-chip-arrow{ color: var(--hairline); font-size:10px; }
+
+  /* =====================================================
+     06 · rollback ui
+     ===================================================== */
+
+  .k-rollback-opts{ display:flex; flex-direction:column; gap:12px; }
+  .k-rb-opt{ display:flex; flex-direction:column; gap:5px; }
+  .k-rb-chips{ display:flex; align-items:center; gap:0; justify-content:center; }
+  .k-rb-tick{
+    position:relative;
+    width:26px; height:30px;
+    display:flex; align-items:center; justify-content:center;
+    cursor:grab;
+  }
+  .k-rb-tick i{
+    display:block; width:100%; height:0;
+    border-top: 2px solid var(--accent);
+  }
+  .k-rb-tick .k-rb-grab{
+    position:absolute; left:50%; top:50%;
+    width:9px; height:9px; border-radius:3px;
+    background: var(--accent);
+    transform: translate(-50%,-50%);
+    box-shadow: 0 0 0 2px var(--ground);
+  }
+  .k-rb-tree{
+    background: var(--panel);
+    border: 1px solid var(--hairline);
+    border-radius: 7px;
+    padding: 6px 0;
+  }
+  .k-rb-trow{
+    display:flex; align-items:center; gap:6px;
+    padding: 3px 10px 3px 24px;
+    font-size: var(--text-sm); color: var(--text);
+  }
+  .k-rb-trow svg{ width:12px; height:12px; color: var(--additive); }
+  .k-rb-bar{
+    position:relative;
+    margin: 5px 10px 5px 24px;
+    height:0;
+    border-top: 1px dashed var(--accent);
+    opacity:.85;
+  }
+  .k-rb-bar .k-rb-grab{
+    position:absolute; left:-5px; top:-4.5px;
+    width:9px; height:9px; border-radius:2px;
+    background: var(--accent);
+    box-shadow: 0 0 0 2px var(--panel);
+  }
+  .k-rb-bar .k-rb-tiptag{
+    position:absolute; right:-2px; top:-8px;
+    background: var(--accent); color:#0d1116;
+    font-size:9px; font-weight:700; letter-spacing:.04em;
+    padding:1px 5px; border-radius:3px;
+  }
+
+  /* =====================================================
+     07 · dimension row
+     ===================================================== */
+
+  .k-dims{ display:flex; flex-direction:column; gap:12px; }
+  .k-dim{ display:flex; flex-direction:column; gap:4px; }
+  .k-dim-top{ display:flex; align-items:baseline; justify-content:space-between; gap:8px; }
+  .k-dim-top label{ font-size: var(--text-sm); color: var(--muted); }
+  .k-dim-val{
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--text);
+    background: var(--raised);
+    border: 1px solid var(--hairline);
+    border-radius: 5px;
+    padding: 2px 8px;
+    transition: border-color .12s ease, color .12s ease;
+  }
+  .k-dim:hover .k-dim-val, .k-dim.is-hover .k-dim-val{
+    border-color: var(--hover); color: var(--hover);
+  }
+  .k-dim-line{ display:flex; align-items:center; gap:8px; }
+  .k-dim-line input[type="range"]{
+    flex:1; appearance:none; height:3px; border-radius:2px;
+    background: linear-gradient(to right, var(--accent) var(--fill,35%), var(--hairline) var(--fill,35%));
+    cursor:pointer;
+    margin:0;
+  }
+  .k-dim-line input[type="range"]::-webkit-slider-thumb{
+    appearance:none; width:13px; height:13px; border-radius:50%;
+    background: var(--accent); border:2px solid var(--ground);
+    box-shadow: 0 0 0 1px var(--hairline);
+  }
+  .k-dim:hover input[type="range"]::-webkit-slider-thumb, .k-dim.is-hover input[type="range"]::-webkit-slider-thumb{
+    background: var(--hover);
+  }
+  .k-dim-unit{
+    font-family: var(--font-mono);
+    font-size: var(--text-xs); color: var(--muted);
+    width:22px; text-align:right;
+  }
+  .k-dim.is-error .k-dim-val{
+    border-color: var(--subtractive);
+    color: var(--subtractive);
+    box-shadow: 0 0 0 1px rgba(224,104,90,.35);
+  }
+  .k-dim.is-error input[type="range"]::-webkit-slider-thumb{ background: var(--subtractive); }
+  .k-dim-err{
+    margin:0;
+    font-size: var(--text-xs);
+    color: var(--subtractive);
+    padding-left: 2px;
+  }
+
+  /* =====================================================
+     08 · note / message taxonomy
+     ===================================================== */
+
+  .k-notes{ display:flex; flex-direction:column; gap:6px; }
+  .k-note{
+    display:flex; gap:9px;
+    background: var(--raised);
+    border: 1px solid var(--hairline);
+    border-radius: 6px;
+    padding: 6px 9px;
+    font-size: var(--text-sm);
+    line-height:1.4;
+  }
+  .k-note i{ width:3px; border-radius:2px; flex-shrink:0; }
+  .k-note p{ margin:0; }
+  .k-note-ins i{ background: var(--additive); }
+  .k-note-con i{ background: var(--subtractive); }
+  .k-note-auto i{ background: var(--violet); }
+  .k-note-ok i{ background: var(--good); }
+  .k-note-status{ color: var(--muted); background: transparent; border-style:dashed; }
+  .k-note-status i{ background: var(--muted); }
+  .k-note-kind{
+    display:block;
+    font-size: var(--text-xs);
+    text-transform:uppercase; letter-spacing:.07em;
+    font-weight:600; margin-bottom:1px;
+  }
+  .k-note-ins .k-note-kind{ color: var(--additive); }
+  .k-note-con .k-note-kind{ color: var(--subtractive); }
+  .k-note-set .k-note-kind{ color: var(--violet); }
+  .k-note-ok .k-note-kind{ color: var(--good); }
+
+  /* =====================================================
+     09 · disabled button with reason
+     ===================================================== */
+
+  .k-nosilent{ display:flex; flex-direction:column; align-items:center; gap:8px; padding-top:6px; }
+  .k-btn{
+    appearance:none; cursor:pointer; border-radius:6px;
+    padding: 7px 15px;
+    font-size: var(--text-md); font-weight:600;
+    border: 1px solid var(--hairline);
+    background: var(--raised);
+    color: var(--text);
+    transition: background .12s ease;
+  }
+  .k-btn:hover{ background:#2b323d; }
+  .k-btn[disabled]{
+    opacity:.4; cursor:not-allowed;
+  }
+  .k-btn[disabled]:hover{ background: var(--raised); }
+  .k-btn-refusal{
+    margin:0; max-width:260px; text-align:center;
+    font-size: var(--text-xs);
+    color: var(--additive);
+  }
+
+  /* =====================================================
+     10 · handle language
+     ===================================================== */
+
+  .k-handles{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
+  .k-handle-tile{
+    display:flex; flex-direction:column; align-items:center; gap:5px;
+    width: 88px;
+    padding: 10px 6px 8px;
+    background: var(--panel);
+    border: 1px solid var(--hairline);
+    border-radius: 8px;
+  }
+  .k-handle-fig{
+    width:40px; height:40px;
+    display:flex; align-items:center; justify-content:center;
+    background: var(--ground);
+    border-radius: 6px;
+  }
+  .k-h-size{
+    width:22px; height:22px; border-radius:50%;
+    background: var(--good);
+    border: 2px solid rgba(95,191,143,.35);
+    box-shadow: 0 0 0 1px var(--ground) inset;
+  }
+  .k-h-point{ width:10px; height:10px; border-radius:50%; background: var(--accent); }
+  .k-h-move{ width:18px; height:18px; border-radius:4px; background: var(--violet); }
+  .k-h-turn{
+    width:22px; height:22px; border-radius:50%;
+    background: transparent;
+    border: 4px solid var(--turn);
+  }
+  .k-h-radius{
+    width:22px; height:22px; border-radius:50%;
+    background: transparent;
+    border: 4px solid var(--additive);
+  }
+  .k-handle-name{
+    font-size: var(--text-xs); font-weight:600; color: var(--text);
+  }
+  .k-handle-when{
+    font-size: 10px; color: var(--muted); text-align:center; line-height:1.3;
+  }
+  .k-handle-legend{
+    display:flex; flex-wrap:wrap; gap:4px 14px; justify-content:center;
+    padding-top: 4px;
+    border-top: 1px solid var(--hairline);
+  }
+  .k-handle-legend span{
+    display:inline-flex; align-items:center; gap:5px;
+    font-size: var(--text-xs); color: var(--muted);
+  }
+  .k-handle-legend i{ width:9px; height:9px; border-radius:50%; flex-shrink:0; }
+
+  /* =====================================================
+     11 · hover pill
+     ===================================================== */
+
+  .k-pills{ display:flex; flex-direction:column; gap:10px; align-items:center; }
+  .k-pill{
+    display:inline-flex; align-items:center; gap:7px;
+    padding: 5px 11px;
+    background: rgba(139,233,253,.09);
+    border: 1px solid var(--hover);
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--hover);
+    white-space:nowrap;
+  }
+  .k-pill small{
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    color: var(--muted);
+    border-left: 1px solid var(--hairline);
+    padding-left: 8px;
+  }
+  .k-pill-face i{
+    display:inline-block; width:11px; height:11px; border-radius:2px;
+    background: var(--raised); border:1px solid var(--hover);
+    border-top-width:3px;
+    vertical-align:-1px;
+  }
+
+  /* =====================================================
+     12 · nav cube
+     ===================================================== */
+
+  .k-navwrap{ display:flex; flex-direction:column; align-items:center; gap:8px; }
+  .k-nav-scene{ width:72px; height:72px; perspective: 360px; }
+  .k-nav{
+    position:relative; width:100%; height:100%;
+    transform-style: preserve-3d;
+    transform: rotateX(-18deg) rotateY(38deg);
+  }
+  .k-nav .k-nav-face{
+    position:absolute; width:72px; height:72px;
+    background: var(--raised);
+    border: 1px solid var(--hairline);
+    display:flex; align-items:center; justify-content:center;
+    font-size: 9.5px; font-weight:600; letter-spacing:.07em;
+    color: var(--muted);
+    cursor:pointer;
+    transition: background .12s ease, color .12s ease, border-color .12s ease;
+  }
+  .k-nav .k-nav-face:hover{ color: var(--text); background:#2b323d; }
+  .k-nav .k-nav-face.is-active{
+    background: rgba(90,169,230,.2);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .k-nav .top{ transform: rotateX(90deg) translateZ(36px); }
+  .k-nav .front{ transform: translateZ(36px); }
+  .k-nav .right{ transform: rotateY(90deg) translateZ(36px); }
+  .k-nav-home{
+    width:24px; height:24px; border-radius:6px;
+    background: var(--raised); border:1px solid var(--hairline);
+    color: var(--muted); display:flex; align-items:center; justify-content:center; cursor:pointer;
+  }
+  .k-nav-home:hover{ color: var(--text); background:#2b323d; }
+  .k-nav-home svg{ width:13px; height:13px; }
+
+  /* =====================================================
+     13 · stage rail
+     ===================================================== */
+
+  .k-stagewrap{ display:flex; flex-direction:column; gap:10px; }
+  .k-stage{
+    list-style:none; margin:0; padding:0;
+    display:flex; align-items:stretch; gap:4px; flex-wrap:wrap;
+  }
+  .k-stage-pill{
+    display:flex; flex-direction:column; gap:2px;
+    padding: 6px 10px;
+    border: 1px solid var(--hairline);
+    border-radius: 8px;
+    background: var(--panel);
+    font-size: var(--text-sm);
+    color: var(--muted);
+    min-width:0;
+  }
+  .k-stage-pill .stg-num{
+    font-family: var(--font-mono);
+    font-size: 10px; color: var(--muted);
+    letter-spacing:.04em;
+  }
+  .k-stage-pill .stg-name{ font-weight:600; color: var(--muted); display:flex; gap:5px; align-items:center; }
+  .k-stage-pill.is-done{ border-style: dashed; }
+  .k-stage-pill.is-done .stg-name{ color: var(--good); }
+  .k-stage-pill.is-done .stg-name::after{ content:" ✓"; }
+  .k-stage-pill.is-current{
+    background: var(--raised);
+    border-color: var(--accent);
+    flex: 1 1 150px;
+  }
+  .k-stage-pill.is-current .stg-name{ color: var(--text); }
+  .k-stage-pill.is-current .stg-num{ color: var(--accent); }
+  .k-stage-hint{
+    margin:2px 0 0;
+    font-size: var(--text-xs);
+    color: var(--muted);
+    line-height:1.35;
+  }
+  .k-stage-pill.is-next{ opacity:.55; border-style:dashed; }
+  .k-stage-free{
+    display:flex; align-items:center; gap:8px;
+    font-size: var(--text-sm); color: var(--muted);
+    align-self:flex-end;
+  }
+  .k-stage-switch{
+    appearance:none; width:30px; height:17px; border-radius:999px;
+    background: var(--raised); border:1px solid var(--hairline);
+    position:relative; cursor:pointer; margin:0;
+  }
+  .k-stage-switch::-webkit-slider-thumb{
+    appearance:none; width:11px; height:11px; border-radius:50%;
+    background: var(--muted);
+    transform: translateX(2px);
+  }
+
+  /* =====================================================
+     14 · inline dimension flag
+     ===================================================== */
+
+  .k-flags{ display:flex; flex-direction:column; gap:14px; }
+  .k-flag-stage{
+    position:relative;
+    height: 58px;
+    display:flex; align-items:flex-start; justify-content:center;
+  }
+  .k-flag-edge{
+    position:absolute; top:44px; left:12%; right:12%;
+    border-top: 1.5px dashed var(--accent);
+    opacity:.6;
+  }
+  .k-flag{
+    position:relative;
+    display:inline-flex; align-items:center; gap:5px;
+    margin-top: 12px;
+    padding: 3px 9px 3px 6px;
+    background: var(--raised);
+    border: 1px solid var(--hairline);
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: var(--text-md);
+    color: var(--text);
+    box-shadow: 0 4px 12px rgba(0,0,0,.35);
+    z-index:2;
+  }
+  .k-flag::after{
+    content:"";
+    position:absolute; left:50%; top:100%;
+    width:1px; height:12px;
+    background: var(--hover);
+    opacity:.7;
+  }
+  .k-flag-nub{
+    width:10px; height:10px; border-radius:50%;
+    background: var(--good);
+    flex-shrink:0;
+    cursor:ew-resize;
+  }
+  .k-flag-pen{
+    font-size: 10px; color: var(--hover);
+    display:none;
+  }
+  .k-flag-stage:hover .k-flag-pen{ display:inline; }
+  .k-flag.is-hover{ border-color: var(--hover); }
+  .k-flag.is-edit{
+    border-color: var(--accent);
+    padding-right:5px;
+  }
+  .k-flag-caret{
+    display:inline-block; width:1.5px; height:14px;
+    background: var(--text);
+    animation: k-blink 1s steps(1) infinite;
+  }
+  @keyframes k-blink{ 0%,49%{ opacity:1; } 50%,100%{ opacity:0; } }
+  @media (prefers-reduced-motion: reduce){
+    .k-flag-caret{ animation:none; }
+  }
+  .k-flag-ok{ color: var(--good); font-size:11px; cursor:pointer; }
+  .k-flag-x{ color: var(--subtractive); font-size:11px; cursor:pointer; }
+
+  /* =====================================================
+     15 · search tools
+     ===================================================== */
+
+  .k-search{ display:flex; flex-direction:column; align-items:center; gap:8px; }
+  .k-search-field{
+    display:flex; align-items:center; gap:7px;
+    background: var(--raised);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 6px 10px;
+    min-width: 210px;
+  }
+  .k-search-field svg{ width:14px; height:14px; color: var(--muted); flex-shrink:0; }
+  .k-search-q{
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--text);
+    display:flex; align-items:center; gap:1px;
+  }
+  .k-search-caret{
+    display:inline-block; width:1.5px; height:13px;
+    background: var(--accent);
+  }
+  .k-search-res{
+    width: 240px;
+    background: var(--raised);
+    border: 1px solid var(--hairline);
+    border-radius: 8px;
+    box-shadow: 0 10px 26px rgba(0,0,0,.4);
+    padding: 4px;
+    display:flex; flex-direction:column; gap:1px;
+  }
+  .k-search-res-head{
+    padding: 4px 9px 2px;
+    font-size: 10px; text-transform:uppercase; letter-spacing:.07em;
+    color: var(--muted); font-weight:600;
+  }
+  .k-search-hit{
+    display:flex; align-items:center; gap:8px;
+    padding: 5px 9px; border-radius:6px;
+    font-size: var(--text-sm); color: var(--text);
+    cursor:pointer;
+  }
+  .k-search-hit svg{ width:14px; height:14px; color: var(--muted); flex-shrink:0; }
+  .k-search-hit small{ margin-left:auto; font-size: var(--text-xs); color: var(--muted); }
+  .k-search-hit.is-match{
+    background: rgba(90,169,230,.16);
+    outline: 1px solid var(--accent);
+  }
+  .k-search-hit.is-match mark{
+    background: rgba(90,169,230,.28);
+    color: var(--hover);
+    border-radius:2px; padding:0 1px;
+  }
+
+  /* =====================================================
+     16 · status bar
+     ===================================================== */
+
+  .k-status{
+    display:flex; align-items:center; gap:14px;
+    background: var(--raised);
+    border: 1px solid var(--hairline);
+    border-radius: 6px;
+    padding: 0 12px;
+    height: 30px;
+    font-size: var(--text-xs);
+    color: var(--muted);
+    overflow:hidden;
+  }
+  .k-status-sel{
+    flex:1; min-width:0;
+    color: var(--text);
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  }
+  .k-status-sel b{ font-weight:600; }
+  .k-status-sel .k-status-arrow{ color: var(--accent); }
+  .k-status-engine{
+    display:inline-flex; align-items:center; gap:5px;
+    flex-shrink:0;
+    color: var(--muted);
+  }
+  .k-status-engine i{
+    width:7px; height:7px; border-radius:50%;
+    background: var(--good);
+    box-shadow: 0 0 5px rgba(95,191,143,.7);
+  }
+  .k-status-bbox{
+    font-family: var(--font-mono);
+    color: var(--text);
+    white-space:nowrap;
+    flex-shrink:0;
+  }
+  .k-status-nav{
+    white-space:nowrap; flex-shrink:0;
+    padding-left: 12px;
+    border-left: 1px solid var(--hairline);
+  }
+
+  /* ---------- misc ---------- */
+
+  @media (prefers-reduced-motion: reduce){
+    * { transition-duration: 0.001ms !important; animation-duration: 0.001ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="kit-head">
+  <div>
+    <h1 class="kit-title"><span class="re">re</span>SHape UI Kit</h1>
+    <p class="kit-sub">pick elements, adopt independently — every card is self-contained</p>
+  </div>
+  <div class="kit-swatches" role="img" aria-label="Design token swatches matching studio-mockup-dark.html">
+    <span class="sw"><i style="background:#14171c"></i><span>ground 14171c</span></span>
+    <span class="sw"><i style="background:#1c2027"></i><span>panel 1c2027</span></span>
+    <span class="sw"><i style="background:#242a33"></i><span>raised 242a33</span></span>
+    <span class="sw"><i style="background:#2e353f"></i><span>hairline 2e353f</span></span>
+    <span class="sw"><i style="background:#d7dde5"></i><span>text d7dde5</span></span>
+    <span class="sw"><i style="background:#8b95a3"></i><span>muted 8b95a3</span></span>
+    <span class="sw"><i style="background:#5aa9e6"></i><span>accent 5aa9e6</span></span>
+    <span class="sw"><i style="background:#e0b64d"></i><span>additive e0b64d</span></span>
+    <span class="sw"><i style="background:#e0685a"></i><span>subtractive e0685a</span></span>
+    <span class="sw"><i style="background:#5fbf8f"></i><span>good 5fbf8f</span></span>
+    <span class="sw"><i style="background:#8be9fd"></i><span>hover 8be9fd</span></span>
+    <span class="sw"><i style="background:#ff79c6"></i><span>selected ff79c6</span></span>
+  </div>
+</header>
+
+<main class="kit-grid">
+
+  <!-- ============ 00 · DECISION CHECKLIST ============ -->
+  <section class="k-card" aria-labelledby="k0-name">
+    <h2 class="k-name" id="k0-name">00 · Decision checklist</h2>
+    <p class="k-why">A worksheet — <em>tick each card as you adopt it.</em></p>
+    <ol class="k-check">
+      <li><label><input type="checkbox"> Ribbon group <span class="k-tag k-tag-restyled">[BUILT+RESTYLED]</span></label></li>
+      <li><label><input type="checkbox"> Flyout button <span class="k-tag k-tag-propsd">[PROPOSED]</span></label></li>
+      <li><label><input type="checkbox"> Selection strip <span class="k-tag k-tag-propsd">[PROPOSED]</span></label></li>
+      <li><label><input type="checkbox"> Context bar <span class="k-tag k-tag-propsd">[PROPOSED]</span></label></li>
+      <li><label><input type="checkbox"> Timeline chip <span class="k-tag k-tag-restyled">[BUILT+RESTYLED]</span></label></li>
+      <li><label><input type="checkbox"> Rollback UI <span class="k-tag k-tag-restyled">[BUILT+RESTYLED]</span> <span class="k-tag k-tag-decide">pick one</span></label></li>
+      <li><label><input type="checkbox"> Dimension row <span class="k-tag k-tag-restyled">[BUILT+RESTYLED]</span></label></li>
+      <li><label><input type="checkbox"> Note &amp; message taxonomy <span class="k-tag k-tag-propsd">[PROPOSED]</span></label></li>
+      <li><label><input type="checkbox"> Disabled button with reason <span class="k-tag k-tag-propsd">[PROPOSED]</span></label></li>
+      <li><label><input type="checkbox"> Handle language <span class="k-tag k-tag-propsd">[PROPOSED]</span></label></li>
+      <li><label><input type="checkbox"> Hover pill <span class="k-tag k-tag-propsd">[PROPOSED]</span></label></li>
+      <li><label><input type="checkbox"> Nav cube <span class="k-tag k-tag-restyled">[BUILT+RESTYLED]</span></label></li>
+      <li><label><input type="checkbox"> Stage rail <span class="k-tag k-tag-propsd">[PROPOSED]</span></label></li>
+      <li><label><input type="checkbox"> Inline dimension flag <span class="k-tag k-tag-propsd">[PROPOSED]</span></label></li>
+      <li><label><input type="checkbox"> Search tools <span class="k-tag">[BUILT]</span></label></li>
+      <li><label><input type="checkbox"> Status bar <span class="k-tag k-tag-propsd">[PROPOSED]</span></label></li>
+    </ol>
+    <p class="k-hint">Tick as you decide — the companion SPEC-ui-revamp-decisions.md records the recommendations.</p>
+  </section>
+
+  <!-- ============ 01 · RIBBON GROUP ============ -->
+  <section class="k-card" aria-labelledby="k1-name">
+    <h2 class="k-name" id="k1-name">01 · Ribbon group</h2>
+    <p class="k-why">One place per job — <em>kills the toolbar where related buttons scatter across rows.</em></p>
+    <div class="k-demo">
+      <div class="k-ribbon">
+        <div class="k-ribbon-group">
+          <div class="k-ribbon-btns">
+            <button class="k-rib-btn" title="Open — load a model file" aria-label="Open">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8V6a1 1 0 0 1 1-1h5l2 2h9a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/></svg>
+              <span>Open</span>
+            </button>
+            <button class="k-rib-btn" title="Save — write the model to disk" aria-label="Save">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h11l3 3v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M8 3v5h7V3M8 21v-6h8v6"/></svg>
+              <span>Save</span>
+            </button>
+            <button class="k-rib-btn" aria-expanded="true" aria-haspopup="menu" title="Export — write the model out in another format" aria-label="Export">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4M8 7.5 12 4l4 3.5"/><path d="M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/></svg>
+              <span>Export<i class="k-rib-caret"></i></span>
+              <div class="k-rib-menu" role="menu" aria-label="Export variants">
+                <button role="menuitem">OBJ <small>mesh</small></button>
+                <button role="menuitem">3MF <small>print</small></button>
+                <button role="menuitem">Drawing SVG <small>flat</small></button>
+                <button role="menuitem">Drawing PDF <small>sheet</small></button>
+              </div>
+            </button>
+          </div>
+          <span class="k-ribbon-caption">File</span>
+        </div>
+        <div class="k-ribbon-group k-ribbon-closed" title="Closed group — click the caption to unfold it">
+          <span class="k-ribbon-caption">Draw <span aria-hidden="true">▸</span></span>
+        </div>
+      </div>
+    </div>
+    <div class="k-foot"><span class="k-tag k-tag-restyled">[BUILT+RESTYLED]</span></div>
+  </section>
+
+  <!-- ============ 02 · FLYOUT BUTTON ============ -->
+  <section class="k-card" aria-labelledby="k2-name">
+    <h2 class="k-name" id="k2-name">02 · Flyout button</h2>
+    <p class="k-why">The face repeats your last choice — <em>kills re-picking the same variant every single time.</em></p>
+    <div class="k-demo">
+      <div class="k-flyout">
+        <button class="k-fly-face" aria-expanded="true" aria-haspopup="menu" title="Add a primitive — last used: Box">
+          Box <i class="k-rib-caret"></i>
+        </button>
+        <div class="k-fly-menu" role="menu" aria-label="Primitive variants">
+          <button class="k-fly-item is-last" role="menuitem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3 20 7.5v9L12 21 4 16.5v-9z"/><path d="M12 12 4 7.5M12 12l8-4.5M12 12v9"/></svg>
+            Box <span class="k-fly-last">last used</span>
+          </button>
+          <button class="k-fly-item" role="menuitem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><ellipse cx="12" cy="5.5" rx="7" ry="2.5"/><path d="M5 5.5v13c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5v-13"/></svg>
+            Cylinder
+          </button>
+          <button class="k-fly-item" role="menuitem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="8"/></svg>
+            Ball
+          </button>
+          <button class="k-fly-item" role="menuitem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M8 5h8l-4 14z"/><ellipse cx="12" cy="5" rx="4" ry="1.6"/></svg>
+            Cone
+          </button>
+          <button class="k-fly-item" role="menuitem" disabled aria-describedby="k-fly-refuse">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.4"/></svg>
+            Ring
+          </button>
+        </div>
+        <p class="k-fly-refusal" id="k-fly-refuse">Ring needs a drawn circle to spin — sketch one first, then Ring unlocks.</p>
+      </div>
+    </div>
+    <div class="k-foot"><span class="k-tag k-tag-propsd">[PROPOSED]</span></div>
+  </section>
+
+  <!-- ============ 03 · SELECTION STRIP ============ -->
+  <section class="k-card" aria-labelledby="k3-name">
+    <h2 class="k-name" id="k3-name">03 · Selection strip</h2>
+    <p class="k-why">Choices appear at the thing you clicked — <em>no round trip to a far-off toolbar.</em></p>
+    <div class="k-demo k-demo-stage">
+      <div class="k-strip-stage">
+        <svg class="k-strip-anchor" viewBox="0 0 26 14" aria-hidden="true">
+          <circle cx="4" cy="4" r="3" fill="var(--accent)"/>
+          <line x1="4" y1="4" x2="13" y2="13" stroke="var(--accent)" stroke-width="1.2"/>
+        </svg>
+        <div class="k-strip" role="toolbar" aria-label="Edge 2 actions">
+          <span class="k-strip-id">Edge 2 · 20</span>
+          <button class="k-strip-btn" title="Level — make the edge horizontal (CAD: Horizontal constraint)">↔ Level</button>
+          <button class="k-strip-btn" title="Upright — make the edge vertical (CAD: Vertical constraint)">↕ Upright</button>
+          <button class="k-strip-btn" title="Edit the edge length">Length…</button>
+          <button class="k-strip-x" aria-label="Dismiss strip">×</button>
+        </div>
+      </div>
+      <div class="k-strip k-strip-2" role="toolbar" aria-label="Corner 1 actions" style="position:static; align-self:center;">
+        <span class="k-strip-id">Corner 1</span>
+        <button class="k-strip-btn" title="Pin — hold the corner where it is (CAD: Fixed constraint)">Pin</button>
+        <button class="k-strip-x" aria-label="Dismiss strip">×</button>
+      </div>
+    </div>
+    <div class="k-foot"><span class="k-tag k-tag-propsd">[PROPOSED]</span></div>
+  </section>
+
+  <!-- ============ 04 · CONTEXT BAR ============ -->
+  <section class="k-card" aria-labelledby="k4-name">
+    <h2 class="k-name" id="k4-name">04 · Context bar</h2>
+    <p class="k-why">One bar reshapes itself around the selection — <em>ends hunting the right tab for the thing you picked.</em></p>
+    <div class="k-demo">
+      <div class="k-ctx" role="toolbar" aria-label="Pocket 1 actions">
+        <button class="k-ctx-btn" aria-haspopup="true" title="Selected feature: Pocket 1 (CAD: PartDesign::Pocket)">Pocket 1 <i class="k-rib-caret"></i></button>
+        <span class="k-ctx-sep" aria-hidden="true"></span>
+        <button class="k-ctx-btn" title="Edit the sizes of this Pocket">✎ Dimensions</button>
+        <button class="k-ctx-btn" title="Move the Pocket to a new spot">⌖ Move</button>
+        <button class="k-ctx-btn" title="Duplicate the Pocket">⧉ Copy</button>
+        <button class="k-ctx-btn k-ctx-sub" title="Remove material (CAD: subtractive cut)">⊘ Cut away…</button>
+        <button class="k-ctx-btn" aria-label="More actions" title="More actions">⋯</button>
+      </div>
+      <p class="k-hint" style="text-align:center;">Pill swaps its buttons per selection type — sketch edge, face, feature.</p>
+    </div>
+    <div class="k-foot"><span class="k-tag k-tag-propsd">[PROPOSED]</span></div>
+  </section>
+
+  <!-- ============ 05 · TIMELINE CHIP ============ -->
+  <section class="k-card" aria-labelledby="k5-name">
+    <h2 class="k-name" id="k5-name">05 · Timeline chip</h2>
+    <p class="k-why">The whole build story in one row — <em>click any step to walk straight back to it.</em></p>
+    <div class="k-demo">
+      <div class="k-chipwrap">
+        <div class="k-chip-anat">
+          <span class="k-chip-ticks" aria-hidden="true"><i></i><i></i></span>
+          <span class="k-chipbig" role="img" aria-label="Enlarged timeline chip, selected state with warning slot">
+            <span aria-hidden="true" style="width:16px;height:16px;color:var(--subtractive);display:inline-flex;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="5" width="14" height="7" rx="1"/><path d="M12 14v7"/></svg>
+            </span>
+            Pocket 1
+            <span class="k-chip-warn" title="Feature failed to rebuild" aria-label="Warning">⚠</span>
+          </span>
+          <span class="k-chip-ticks" aria-hidden="true"><i></i><i></i></span>
+          <ul class="k-chip-legend">
+            <li><i class="lg-sel"></i>selected → pink border</li>
+            <li><i class="lg-warn"></i>⚠ slot → needs attention</li>
+            <li><i class="lg-tick"></i>rollback ticks sit either side</li>
+            <li><i class="lg-dim"></i>consumed → dimmed + struck</li>
+          </ul>
+        </div>
+        <div class="k-chip-row" role="list" aria-label="Timeline of features">
+          <span class="k-chip ic-neutral is-consumed" role="listitem" title="Sketch 1 — used up by Pull 1 (CAD: consumed sketch)">Sketch 1</span>
+          <span class="k-chip-arrow" aria-hidden="true">→</span>
+          <span class="k-chip ic-additive" title="Pull 1 — grew Sketch 1 into a solid (CAD: Pad)">Pull 1</span>
+          <span class="k-chip-arrow" aria-hidden="true">→</span>
+          <span class="k-chip ic-neutral" title="Sketch 2 — drawn on the top face">Sketch 2</span>
+          <span class="k-chip-arrow" aria-hidden="true">→</span>
+          <span class="k-chip ic-subtractive is-selected" title="Pocket 1 — selected (CAD: Pocket)">Pocket 1</span>
+          <span class="k-chip-arrow" aria-hidden="true">→</span>
+          <span class="k-chip ic-subtractive" title="Hole 1 — failed: check its depth (CAD: Hole)"><span class="k-chip-warn" aria-label="Warning">⚠</span> Hole 1</span>
+          <span class="k-chip-arrow" aria-hidden="true">→</span>
+          <span class="k-chip ic-neutral" title="Round 1 — softened an edge (CAD: Fillet)">Round 1</span>
+        </div>
+      </div>
+    </div>
+    <div class="k-foot"><span class="k-tag k-tag-restyled">[BUILT+RESTYLED]</span></div>
+  </section>
+
+  <!-- ============ 06 · ROLLBACK UI ============ -->
+  <section class="k-card" aria-labelledby="k6-name">
+    <h2 class="k-name" id="k6-name">06 · Rollback UI</h2>
+    <p class="k-why">Step back to an earlier step — <em>without deleting everything that came after.</em></p>
+    <div class="k-demo">
+      <div class="k-rollback-opts">
+        <div class="k-rb-opt">
+          <span class="uc" style="font-size:10px;">a · ticks between chips</span>
+          <div class="k-rb-chips">
+            <span class="k-chip ic-additive" title="Pull 1 (CAD: Pad)">Pull 1</span>
+            <span class="k-rb-tick" role="slider" aria-label="Rollback mark — drag to rewind the model to just after Pull 1" aria-valuemin="1" aria-valuemax="6" aria-valuenow="2" title="Drag to roll the model back">
+              <i></i><span class="k-rb-grab"></span>
+            </span>
+            <span class="k-chip ic-neutral" title="Sketch 2">Sketch 2</span>
+          </div>
+        </div>
+        <div class="k-rb-opt">
+          <span class="uc" style="font-size:10px;">b · dashed bar in the tree</span>
+          <div class="k-rb-tree">
+            <div class="k-rb-trow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="5" y="12" width="14" height="7" rx="1"/><path d="M12 10V3"/></svg>
+              Pull 1
+            </div>
+            <div class="k-rb-bar" role="slider" aria-label="Rollback bar — drag to rewind the model" aria-valuemin="1" aria-valuemax="6" aria-valuenow="2" title="Drag to roll the model back">
+              <span class="k-rb-grab"></span>
+              <span class="k-rb-tiptag">tip</span>
+            </div>
+            <div class="k-rb-trow" style="color:var(--muted);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="4" width="16" height="16" rx="1.5" stroke-dasharray="2.4 2"/></svg>
+              Sketch 2
+            </div>
+          </div>
+        </div>
+        <p class="k-hint" style="text-align:center;">Same job, two costumes — <b>adopt one, drop the other.</b></p>
+      </div>
+    </div>
+    <div class="k-foot">
+      <span class="k-tag k-tag-restyled">[BUILT+RESTYLED]</span>
+      <span class="k-tag k-tag-decide">pick one</span>
+    </div>
+  </section>
+
+  <!-- ============ 07 · DIMENSION ROW ============ -->
+  <section class="k-card" aria-labelledby="k7-name">
+    <h2 class="k-name" id="k7-name">07 · Dimension row</h2>
+    <p class="k-why">Type it or drag it, same line — <em>no more digging a slider out of a dialog.</em></p>
+    <div class="k-demo">
+      <div class="k-dims">
+        <div class="k-dim">
+          <div class="k-dim-top"><label for="k7-a">Length</label><span class="k-dim-val">12.5</span></div>
+          <div class="k-dim-line"><input type="range" id="k7-a" min="0" max="40" value="12.5" aria-label="Length in millimeters"><span class="k-dim-unit">mm</span></div>
+        </div>
+        <div class="k-dim is-hover">
+          <div class="k-dim-top"><label for="k7-b">Length <span style="color:var(--hover);font-size:10px;">· hover</span></label><span class="k-dim-val">20</span></div>
+          <div class="k-dim-line"><input type="range" id="k7-b" min="0" max="40" value="20" style="--fill:50%"><span class="k-dim-unit">mm</span></div>
+        </div>
+        <div class="k-dim is-error">
+          <div class="k-dim-top"><label for="k7-c">Radius · rejected</label><span class="k-dim-val">1</span></div>
+          <div class="k-dim-line"><input type="range" id="k7-c" min="0" max="40" value="1" aria-invalid="true" aria-describedby="k7-err"><span class="k-dim-unit">mm</span></div>
+          <p class="k-dim-err" id="k7-err" role="status">A size has to be more than 0, so 1 was used.</p>
+        </div>
+      </div>
+    </div>
+    <div class="k-foot"><span class="k-tag k-tag-restyled">[BUILT+RESTYLED]</span></div>
+  </section>
+
+  <!-- ============ 08 · NOTE / MESSAGE TAXONOMY ============ -->
+  <section class="k-card" aria-labelledby="k8-name">
+    <h2 class="k-name" id="k8-name">08 · Note &amp; message taxonomy</h2>
+    <p class="k-why">The color tells you the kind of news first — <em>no more parsing a wall of identical warnings.</em></p>
+    <div class="k-demo" style="justify-content:flex-start; padding-top:12px;">
+      <div class="k-notes">
+        <div class="k-note k-note-ins"><i aria-hidden="true"></i><p><span class="k-note-kind">Instruction</span>Draw the pocket's shape first, then Pull it.</p></div>
+        <div class="k-note k-note-con"><i aria-hidden="true"></i><p><span class="k-note-kind">Conflict</span>These rules cannot all be true: Edge 2 = 20, Edge 3 level. Remove one to settle it.</p></div>
+        <div class="k-note k-note-set"><i aria-hidden="true"></i><p><span class="k-note-kind">Auto-settle</span>Edge 2's length 20 was removed so edge 1 = edge 2 could hold.</p></div>
+        <div class="k-note k-note-ok"><i aria-hidden="true"></i><p><span class="k-note-kind">Success</span>Rounded 1 edge. To round just one, click it first.</p></div>
+        <div class="k-note k-note-status"><i aria-hidden="true"></i><p>Engine ready — FreeCAD 1.0 loaded.</p></div>
+      </div>
+    </div>
+    <div class="k-foot"><span class="k-tag k-tag-propsd">[PROPOSED]</span></div>
+  </section>
+
+  <!-- ============ 09 · DISABLED BUTTON WITH REASON ============ -->
+  <section class="k-card" aria-labelledby="k9-name">
+    <h2 class="k-name" id="k9-name">09 · Disabled button with reason</h2>
+    <p class="k-why">A button that can't fire says why — <em>no silent buttons that swallow clicks.</em></p>
+    <div class="k-demo">
+      <div class="k-nosilent">
+        <button class="k-btn" disabled aria-describedby="k9-why">Open hollow</button>
+        <p class="k-btn-refusal" id="k9-why">Click the face to leave open, then Open hollow.</p>
+        <p class="k-hint">Title carries the same sentence on hover; the caption keeps it visible without one.</p>
+      </div>
+    </div>
+    <div class="k-foot"><span class="k-tag k-tag-propsd">[PROPOSED]</span></div>
+  </section>
+
+  <!-- ============ 10 · HANDLE LANGUAGE ============ -->
+  <section class="k-card" aria-labelledby="k10-name">
+    <h2 class="k-name" id="k10-name">10 · Handle language</h2>
+    <p class="k-why">One shape per meaning — <em>you stop poke-testing to find out what a dot will do.</em></p>
+    <div class="k-demo">
+      <div class="k-handles">
+        <div class="k-handle-tile">
+          <span class="k-handle-fig"><span class="k-h-size"></span></span>
+          <span class="k-handle-name">Size</span>
+          <span class="k-handle-when">drag to resize a face or edge</span>
+        </div>
+        <div class="k-handle-tile">
+          <span class="k-handle-fig"><span class="k-h-point"></span></span>
+          <span class="k-handle-name">Point</span>
+          <span class="k-handle-when">snap anchor on a sketch</span>
+        </div>
+        <div class="k-handle-tile">
+          <span class="k-handle-fig"><span class="k-h-move"></span></span>
+          <span class="k-handle-name">Move</span>
+          <span class="k-handle-when">drag the whole feature</span>
+        </div>
+        <div class="k-handle-tile">
+          <span class="k-handle-fig"><span class="k-h-turn"></span></span>
+          <span class="k-handle-name">Turn</span>
+          <span class="k-handle-when">drag to rotate about an axis</span>
+        </div>
+        <div class="k-handle-tile">
+          <span class="k-handle-fig"><span class="k-h-radius"></span></span>
+          <span class="k-handle-name">Radius</span>
+          <span class="k-handle-when">drag an arc's size</span>
+        </div>
+      </div>
+      <div class="k-handle-legend" role="list" aria-label="Handle legend">
+        <span role="listitem"><i style="background:var(--good)"></i>circle = size</span>
+        <span role="listitem"><i style="background:var(--accent)"></i>dot = point</span>
+        <span role="listitem"><i style="background:var(--violet);border-radius:2px;"></i>square = move</span>
+        <span role="listitem"><i style="background:transparent;border:3px solid var(--turn)"></i>ring = turn</span>
+        <span role="listitem"><i style="background:transparent;border:3px solid var(--additive)"></i>ring = radius</span>
+      </div>
+    </div>
+    <div class="k-foot"><span class="k-tag k-tag-propsd">[PROPOSED]</span></div>
+  </section>
+
+  <!-- ============ 11 · HOVER PILL ============ -->
+  <section class="k-card" aria-labelledby="k11-name">
+    <h2 class="k-name" id="k11-name">11 · Hover pill</h2>
+    <p class="k-why">Point at geometry and its numbers introduce themselves — <em>no clicking just to see a size.</em></p>
+    <div class="k-demo k-demo-stage">
+      <div class="k-pills">
+        <span class="k-pill" role="status">Edge 3 · 20</span>
+        <span class="k-pill k-pill-face" role="status"><i aria-hidden="true"></i>Box 1 · top face · 40 × 40</span>
+      </div>
+      <p class="k-hint" style="text-align:center;">Cyan = pointing only; the pill never asks for a click.</p>
+    </div>
+    <div class="k-foot"><span class="k-tag k-tag-propsd">[PROPOSED]</span></div>
+  </section>
+
+  <!-- ============ 12 · NAV CUBE ============ -->
+  <section class="k-card" aria-labelledby="k12-name">
+    <h2 class="k-name" id="k12-name">12 · Nav cube</h2>
+    <p class="k-why">Orientation you can click — <em>no compass-decoding to face a view square on.</em></p>
+    <div class="k-demo">
+      <div class="k-navwrap">
+        <div class="k-nav-scene">
+          <div class="k-nav" role="group" aria-label="View cube">
+            <div class="k-nav-face top is-active" role="button" tabindex="0" aria-pressed="true" title="Top view (CAD: Top)">TOP</div>
+            <div class="k-nav-face front" role="button" tabindex="0" title="Front view (CAD: Front)">FRONT</div>
+            <div class="k-nav-face right" role="button" tabindex="0" title="Right view (CAD: Right)">RIGHT</div>
+          </div>
+        </div>
+        <button class="k-nav-home" title="Home — back to the isometric view" aria-label="Home view">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11 12 4l8 7"/><path d="M6 10v9h12v-9"/></svg>
+        </button>
+        <p class="k-hint">Active face tinted blue; hover lights a face before you commit.</p>
+      </div>
+    </div>
+    <div class="k-foot"><span class="k-tag k-tag-restyled">[BUILT+RESTYLED]</span></div>
+  </section>
+
+  <!-- ============ 13 · STAGE RAIL ============ -->
+  <section class="k-card" aria-labelledby="k13-name">
+    <h2 class="k-name" id="k13-name">13 · Stage rail</h2>
+    <p class="k-why">The next step is always the next pill — <em>beginners stop wondering what to do now.</em></p>
+    <div class="k-demo">
+      <div class="k-stagewrap">
+        <ol class="k-stage" aria-label="Guided stages">
+          <li class="k-stage-pill is-done"><span class="stg-num">1</span><span class="stg-name">Pick a plane</span></li>
+          <li class="k-stage-pill is-done"><span class="stg-num">2</span><span class="stg-name">Draw</span></li>
+          <li class="k-stage-pill is-done"><span class="stg-num">3</span><span class="stg-name">Pull</span></li>
+          <li class="k-stage-pill is-current" aria-current="step">
+            <span class="stg-num">4</span><span class="stg-name">Shape it</span>
+            <p class="k-stage-hint">Drag a green handle, or type a size below.</p>
+          </li>
+          <li class="k-stage-pill is-next"><span class="stg-num">5</span><span class="stg-name">Finish</span></li>
+        </ol>
+        <label class="k-stage-free">
+          Free
+          <input type="range" class="k-stage-switch" min="0" max="1" value="0" aria-label="Free mode — turn off the guided stages">
+        </label>
+      </div>
+    </div>
+    <div class="k-foot"><span class="k-tag k-tag-propsd">[PROPOSED]</span></div>
+  </section>
+
+  <!-- ============ 14 · INLINE DIMENSION FLAG ============ -->
+  <section class="k-card" aria-labelledby="k14-name">
+    <h2 class="k-name" id="k14-name">14 · Inline dimension flag</h2>
+    <p class="k-why">Edit the number where the size lives — <em>no trip to the properties panel.</em></p>
+    <div class="k-demo k-demo-stage">
+      <div class="k-flags">
+        <div class="k-flag-stage">
+          <span class="k-flag-edge" aria-hidden="true"></span>
+          <span class="k-flag"><span class="k-flag-nub" role="slider" aria-label="Drag to change this dimension" aria-valuemin="1" aria-valuemax="80" aria-valuenow="40"></span>40</span>
+        </div>
+        <div class="k-flag-stage">
+          <span class="k-flag-edge" aria-hidden="true"></span>
+          <span class="k-flag is-hover" role="img" aria-label="Hover state: pencil shows the flag is editable"><span class="k-flag-nub" aria-hidden="true"></span>40 <span class="k-flag-pen k-flag-pen" aria-hidden="true" style="font-size:10px;color:var(--hover);">✎</span></span>
+        </div>
+        <div class="k-flag-stage">
+          <span class="k-flag-edge" aria-hidden="true"></span>
+          <span class="k-flag is-edit" role="img" aria-label="Editing state, value 4 with caret, confirm or cancel">
+            <span class="k-flag-nub" aria-hidden="true"></span><span class="k-flag-caret" aria-hidden="true"></span>4
+            <span class="k-flag-ok" role="button" aria-label="Accept value">✓</span><span class="k-flag-x" role="button" aria-label="Cancel edit">✕</span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="k-foot"><span class="k-tag k-tag-propsd">[PROPOSED]</span></div>
+  </section>
+
+  <!-- ============ 15 · SEARCH TOOLS ============ -->
+  <section class="k-card" aria-labelledby="k15-name">
+    <h2 class="k-name" id="k15-name">15 · Search tools</h2>
+    <p class="k-why">Type the word you already know — <em>CAD names stop being a memory test.</em></p>
+    <div class="k-demo">
+      <div class="k-search">
+        <div class="k-search-field" role="search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.8-3.8"/></svg>
+          <span class="k-search-q" role="img" aria-label="Search box with chamfer typed">chamfer<span class="k-search-caret" aria-hidden="true"></span></span>
+        </div>
+        <div class="k-search-res" role="listbox" aria-label="Tool results">
+          <span class="k-search-res-head">Edge tools — matched "chamfer"</span>
+          <div class="k-search-hit" role="option" aria-selected="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 20V10a6 6 0 0 1 6-6h10"/></svg>
+            Round <small>softens an edge</small>
+          </div>
+          <div class="k-search-hit is-match" role="option" aria-selected="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 20V8l4-4h12v16z"/></svg>
+            <span>Bevel — <mark>cham</mark>fer</span>
+            <small>alias match</small>
+          </div>
+        </div>
+        <p class="k-hint">CAD words resolve to their plain tool: <b>chamfer → Bevel</b>.</p>
+      </div>
+    </div>
+    <div class="k-foot"><span class="k-tag">[BUILT]</span></div>
+  </section>
+
+  <!-- ============ 16 · STATUS BAR ============ -->
+  <section class="k-card" aria-labelledby="k16-name">
+    <h2 class="k-name" id="k16-name">16 · Status bar</h2>
+    <p class="k-why">The app narrates itself — <em>what's picked, what's running, how big it is, how to look around.</em></p>
+    <div class="k-demo" style="justify-content:center;">
+      <div class="k-status" role="status">
+        <span class="k-status-sel"><b>Pocket 1</b> — drag green handles or edit Dimensions <span class="k-status-arrow">→</span></span>
+        <span class="k-status-engine" title="Geometry engine"><i aria-hidden="true"></i>FreeCAD</span>
+        <span class="k-status-bbox">60 × 40 × 12 mm</span>
+        <span class="k-status-nav">Right-drag orbit · Scroll zoom</span>
+      </div>
+    </div>
+    <div class="k-foot"><span class="k-tag k-tag-propsd">[PROPOSED]</span></div>
+  </section>
+
+</main>
+
+</body>
+</html>
