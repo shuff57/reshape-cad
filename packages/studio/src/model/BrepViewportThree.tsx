@@ -2633,27 +2633,30 @@ export default function BrepViewportThree({
           buildError/stageHint (can show alongside either): it is a fact
           about which engine is running, not a hint about what to do next
           or a report that something failed. */}
-      {phase === 'ready' && engineFallbackNote && (
-        <div style={engineFallbackNoteStyle}>{engineFallbackNote}</div>
-      )}
-      {/* Persistent "using OCCT" status badge: set once at the swap, never
-          cleared, so it stays on screen for the rest of this mount even
-          after later builds stop triggering the (per-build) note above.
-          Quieter than the note -- same pill family, dim colour, no border
-          weight -- and stacked below the note's slot (top: 128 vs 92) so
-          both can be on screen at once on the build that triggered the
-          swap, same non-overlap trick the note and stage hint use. */}
-      {phase === 'ready' && engineSwappedTo && (
-        <div
-          style={engineSwappedBadgeStyle}
-          // Engine-NEUTRAL wording on purpose: this badge is set from BOTH
-          // fallback branches (the FreeCAD throw path and the brep-rs
-          // refusals path), so naming brep-rs here would be a wrong sentence
-          // in freecad mode. The note above already names the specific
-          // feature and engine on the build that triggered the swap.
-          title="A feature in this model could not be built by the configured engine, so the OCCT engine is drawing it for the rest of this session."
-        >
-          using {engineSwappedTo === 'occt' ? 'OCCT' : engineSwappedTo}
+      {/* ONE column owns both engine notices, so the badge always sits BELOW
+          the note however many lines the note wraps to. Two fixed tops (92 and
+          128) assumed a one-line note; measured 2026-09-16, the real sentence
+          wraps to three lines and ends at y=144, so the badge covered part of
+          it. The per-build note comes and goes; the badge, set once at the
+          swap, stays for the rest of the mount. */}
+      {phase === 'ready' && (engineFallbackNote || engineSwappedTo) && (
+        <div style={engineNoticeStackStyle}>
+          {engineFallbackNote && (
+            <div style={engineFallbackNoteStyle}>{engineFallbackNote}</div>
+          )}
+          {engineSwappedTo && (
+            <div
+              style={engineSwappedBadgeStyle}
+              // Engine-NEUTRAL wording on purpose: this badge is set from BOTH
+              // fallback branches (the FreeCAD throw path and the brep-rs
+              // refusals path), so naming brep-rs here would be a wrong sentence
+              // in freecad mode. The note above already names the specific
+              // feature and engine on the build that triggered the swap.
+              title="A feature in this model could not be built by the configured engine, so the OCCT engine is drawing it for the rest of this session."
+            >
+              using {engineSwappedTo === 'occt' ? 'OCCT' : engineSwappedTo}
+            </div>
+          )}
         </div>
       )}
       {phase === 'ready' && (
@@ -2906,28 +2909,42 @@ const stageHintStyle: React.CSSProperties = {
 // without drawing on top of each other -- rare in practice (a doc that both
 // needs the Pull hint AND just fell back), but not impossible, so this
 // doesn't assume mutual exclusion the way stageHint/buildError do.
-const engineFallbackNoteStyle: React.CSSProperties = {
-  // Centred in the VISIBLE area, not the whole canvas: in Build mode the
-  // floating tools card (ReshapeStudio's `.reshape-studio-tools`, width
-  // min(420px, 45%) at left:12) is position:absolute OVER this canvas, so a
-  // plain 50% centre put the pill's left edge behind the opaque card,
-  // unreadable (measured 2026-09-15: left:314.5px against a 433px card).
-  // Reuses the card's own CSS width expression -- no hard-coded pixel width.
+// The column that owns PLACEMENT for both engine notices. Centred in the
+// VISIBLE area, not the whole canvas: in Build mode the floating tools card
+// (ReshapeStudio's `.reshape-studio-tools`, width min(420px, 45%) at left:12)
+// is position:absolute OVER this canvas, so a plain 50% centre put the pill's
+// left edge behind the opaque card, unreadable (measured 2026-09-15:
+// left:314.5px against a 433px card). Reuses the card's own CSS width
+// expression -- no hard-coded pixel width.
+//
+// A flex column rather than two fixed tops: the note wraps to three lines at
+// this width and ends at y=144, which the badge's old top:128 sat inside
+// (measured 2026-09-16, a 16px overlap that covered part of the sentence).
+// Stacking cannot go wrong at any width or line count.
+const engineNoticeStackStyle: React.CSSProperties = {
   position: 'absolute', top: 92, left: 'calc((100% + min(420px, 45%)) / 2 + 6px)', transform: 'translateX(-50%)',
+  display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6,
+  pointerEvents: 'none',
+};
+
+const engineFallbackNoteStyle: React.CSSProperties = {
   padding: '4px 10px', maxWidth: 420, textAlign: 'center',
   background: COLORS.panel, border: `1px solid ${COLORS.line}`, borderRadius: 999,
   font: '12px ui-monospace, Menlo, Consolas, monospace', color: COLORS.fg, pointerEvents: 'none',
 };
 
 // Persistent "using OCCT" badge -- status, not alert: same pill family and
-// font stack as engineFallbackNoteStyle, but dim text, no border, smaller
-// padding, and a fixed top below the note slot so both can be on screen at
-// once (the note is one build long; this stays for the whole session).
+// font stack as engineFallbackNoteStyle, but dim text, no border and smaller
+// padding. Placement is the stack's job above, not this style's: the note is
+// one build long, this stays for the whole session, and the column keeps them
+// from colliding whatever the note's line count.
 const engineSwappedBadgeStyle: React.CSSProperties = {
-  position: 'absolute', top: 128, left: 'calc((100% + min(420px, 45%)) / 2 + 6px)', transform: 'translateX(-50%)',
   padding: '2px 8px',
   background: COLORS.panel, borderRadius: 999,
-  font: '12px ui-monospace, Menlo, Consolas, monospace', color: COLORS.dim, pointerEvents: 'auto',
+  font: '12px ui-monospace, Menlo, Consolas, monospace', color: COLORS.dim,
+  // 'auto' against the column's 'none': the badge is the one piece here that
+  // wants a hover, for its title tooltip.
+  pointerEvents: 'auto',
 };
 
 const edgeHintStyle: React.CSSProperties = {
