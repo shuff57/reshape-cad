@@ -1466,6 +1466,7 @@ pub fn boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
     }
     dedupe(&mut faces);
     drop_degenerate_faces(&mut faces);
+    weld_shared_edges(&mut faces);
     if faces.is_empty() {
         return None;
     }
@@ -1486,6 +1487,197 @@ fn drop_degenerate_faces(faces: &mut Vec<TFace>) {
         let (area, _) = build::face_area_centroid(&f.borrow());
         area > 1e-9
     });
+}
+
+/// Tolerance for the seam weld, in mm. The duplicated copies are computed by
+/// different formulas: a wall's clip disk is taken at the probe-offset plane
+/// (`keep_polygon` probes `PROBE` inside the other solid), while
+/// `polar_hole_wire` uses the exact sphere -- the two agree to about 3.8e-7
+/// here (measured on sphere-minus-box), not to float precision. One micron is
+/// 100x below the parity gate's `approx` tolerance and above the mesh gate's
+/// own 5e-7 vertex weld, so the seam joins without merging real features.
+const WELD_TOL: f64 = 1e-6;
+
+fn near3(p: Vec3, q: Vec3) -> bool {
+    crate::math::len(sub(p, q)) <= WELD_TOL
+}
+
+/// Do two edges carry the same curve geometry? Same type and parameters, and --
+/// for arcs -- the same angular span (each arc's sampled points must lie on the
+/// other's range, so a sub-arc is NOT a match). Handle identity is never
+/// considered here; this is the geometric test the seam weld needs, and it does
+/// not replace `topo::same` anywhere identity is the question (§4.2).
+fn same_edge_geometry(a: &topo::Edge<Curve3>, b: &topo::Edge<Curve3>) -> bool {
+    let parallel = |p: Vec3, q: Vec3| crate::math::len(cross(p, q)) <= 1e-9;
+    match (&a.curve, &b.curve) {
+        (Curve::Segment { a: p1, b: p2 }, Curve::Segment { a: q1, b: q2 }) => {
+            (near3(*p1, *q1) && near3(*p2, *q2)) || (near3(*p1, *q2) && near3(*p2, *q1))
+        }
+        (
+            Curve::Circle { center: c1, radius: r1, normal: n1 },
+            Curve::Circle { center: c2, radius: r2, normal: n2 },
+        ) => near3(*c1, *c2) && (r1 - r2).abs() <= WELD_TOL && parallel(*n1, *n2),
+        (
+            Curve::Arc { center: c1, radius: r1, normal: n1, x_axis: x1, sweep: s1 },
+            Curve::Arc { center: c2, radius: r2, normal: n2, x_axis: x2, sweep: s2 },
+        ) => {
+            if !(near3(*c1, *c2) && (r1 - r2).abs() <= WELD_TOL && parallel(*n1, *n2)) {
+                return false;
+            }
+            // Same circle; same span iff every sample of each arc lies on the
+            // other's curve (radius AND angular range).
+            let on = |p: Vec3, c: Vec3, r: f64, n: Vec3, x: Vec3, sweep: f64| {
+                let d = sub(p, c);
+                if (crate::math::len(d) - r).abs() > WELD_TOL {
+                    return false;
+                }
+                let xa = normalize(x);
+                let ya = normalize(cross(n, xa));
+                let ang = dot(d, ya).atan2(dot(d, xa));
+                let tol_a = WELD_TOL / r.max(1e-9);
+                if sweep >= 0.0 {
+                    let mut rel = ang;
+                    while rel < -tol_a {
+                        rel += TWO_PI;
+                    }
+                    rel <= sweep + tol_a
+                } else {
+                    let mut rel = ang;
+                    while rel > tol_a {
+                        rel -= TWO_PI;
+                    }
+                    rel >= sweep - tol_a
+                }
+            };
+            let curve_a = Curve::Arc { center: *c1, radius: *r1, normal: *n1, x_axis: *x1, sweep: *s1 };
+            let curve_b = Curve::Arc { center: *c2, radius: *r2, normal: *n2, x_axis: *x2, sweep: *s2 };
+            [0.0, 0.25, 0.5, 0.75, 1.0].iter().all(|t| {
+                on(curve_a.point_at(*t), *c2, *r2, *n2, *x2, *s2)
+                    && on(curve_b.point_at(*t), *c1, *r1, *n1, *x1, *s1)
+            })
+        }
+        _ => false,
+    }
+}
+
+/// W0 seam weld (SPEC-brep-kernel-rs §4.2): a boolean must share one edge
+/// handle per seam, not one per side. The pieces that make a seam — a wall's
+/// mixed segment/arc boundary (`build_mixed_face`), a trimmed sphere's polar
+/// hole (`polar_hole_wire`) and the adjacent walls' own corner segments — each
+/// build their own `Rc` along the same curve, so no SINGLE edge is used by both
+/// faces and a `between` name on that seam cannot resolve (FUTURE.md
+/// 2026-09-15). Volume, area, bbox and face count cannot see the duplication.
+///
+/// Every group of geometrically equal edges (same curve, compatible endpoints)
+/// keeps its first handle as canonical; every later use is rewritten to that
+/// handle, with `forward` set so the face still traverses the same geometric
+/// direction. The pcurve is expressed in the face's own uv at the traversal's
+/// start/end points, so it needs no change. Coincident end vertices are welded
+/// the same way, or a corner name still sees two vertices at one point.
+fn weld_shared_edges(faces: &mut [TFace]) {
+    // 1. Every distinct edge handle in the result.
+    let mut edges: Vec<topo::EdgeRef<Curve3>> = Vec::new();
+    for f in faces.iter() {
+        for w in &f.borrow().boundary {
+            for u in &w.borrow().edges {
+                if !edges.iter().any(|e| topo::same(e, &u.edge)) {
+                    edges.push(u.edge.clone());
+                }
+            }
+        }
+    }
+    // 2. Which earlier edge each duplicate welds to.
+    let mut weld_to: Vec<Option<usize>> = vec![None; edges.len()];
+    for i in 0..edges.len() {
+        for j in 0..i {
+            let canonical = weld_to[j].unwrap_or(j);
+            if !same_edge_geometry(&edges[i].borrow(), &edges[canonical].borrow()) {
+                continue;
+            }
+            // Endpoints must line up in one direction or the other; a full
+            // circle with a different seam vertex is not welded (nothing needs
+            // it and a wrong merge is worse than a duplicate).
+            let (ca, cb) = {
+                let c = edges[canonical].borrow();
+                let (pa, pb) = (c.a.borrow().point, c.b.borrow().point);
+                (pa, pb)
+            };
+            let (ea, eb) = {
+                let e = edges[i].borrow();
+                let (pa, pb) = (e.a.borrow().point, e.b.borrow().point);
+                (pa, pb)
+            };
+            if (near3(ea, ca) && near3(eb, cb)) || (near3(ea, cb) && near3(eb, ca)) {
+                weld_to[i] = Some(canonical);
+                break;
+            }
+        }
+    }
+    // 3. Rewrite every use to its canonical handle.
+    for f in faces.iter() {
+        for w in &f.borrow().boundary {
+            for u in w.borrow_mut().edges.iter_mut() {
+                let Some(idx) = edges.iter().position(|e| topo::same(e, &u.edge)) else {
+                    continue;
+                };
+                let Some(target) = weld_to[idx] else { continue };
+                let (ca, cb) = {
+                    let c = edges[target].borrow();
+                    let (pa, pb) = (c.a.borrow().point, c.b.borrow().point);
+                    (pa, pb)
+                };
+                let (ea, eb) = {
+                    let e = edges[idx].borrow();
+                    let (pa, pb) = (e.a.borrow().point, e.b.borrow().point);
+                    (pa, pb)
+                };
+                let use_start = if u.forward { ea } else { eb };
+                let use_end = if u.forward { eb } else { ea };
+                if near3(use_start, ca) && near3(use_end, cb) {
+                    u.edge = edges[target].clone();
+                    u.forward = true;
+                } else if near3(use_start, cb) && near3(use_end, ca) {
+                    u.edge = edges[target].clone();
+                    u.forward = false;
+                }
+            }
+        }
+    }
+    // 4. Weld coincident end vertices to one handle.
+    let mut verts: Vec<topo::VertexRef> = Vec::new();
+    for e in &edges {
+        let eb = e.borrow();
+        for v in [&eb.a, &eb.b] {
+            if !verts.iter().any(|u| Rc::ptr_eq(u, v)) {
+                verts.push(v.clone());
+            }
+        }
+    }
+    let mut canon: Vec<Option<usize>> = vec![None; verts.len()];
+    for i in 0..verts.len() {
+        for j in 0..i {
+            let target = canon[j].unwrap_or(j);
+            if near3(verts[i].borrow().point, verts[target].borrow().point) {
+                canon[i] = Some(target);
+                break;
+            }
+        }
+    }
+    for e in &edges {
+        let (ka, kb) = {
+            let eb = e.borrow();
+            let ka = verts.iter().position(|v| Rc::ptr_eq(v, &eb.a)).unwrap();
+            let kb = verts.iter().position(|v| Rc::ptr_eq(v, &eb.b)).unwrap();
+            drop(eb);
+            (ka, kb)
+        };
+        let (ta, tb) = (canon[ka].unwrap_or(ka), canon[kb].unwrap_or(kb));
+        if ta != ka || tb != kb {
+            let mut eb = e.borrow_mut();
+            eb.a = verts[ta].clone();
+            eb.b = verts[tb].clone();
+        }
+    }
 }
 
 /// Does `p` lie strictly inside every face's own surface (and inside the arc
@@ -1796,6 +1988,66 @@ mod tests {
             let mut out = Vec::new();
             let r = process_face(f, &a, "union", false, &mut out);
             println!("B face {i}: {:?} -> {} faces", r.is_some(), out.len());
+        }
+    }
+
+    /// W0: a boolean must not emit two DIFFERENT edge handles for the same
+    /// seam curve. `build_mixed_face` (wall arcs) and `polar_hole_wire`
+    /// (sphere hole arcs) each construct their own copy of the same circle,
+    /// so today a wall and the trimmed sphere face hold separate `Rc` edges
+    /// along one seam and the corner vertices are duplicated. Volume, area,
+    /// bbox and face count cannot see it -- a `between` name on that seam
+    /// cannot resolve, because no SINGLE edge is used by both faces.
+    #[test]
+    fn boolean_seam_edges_are_shared_not_duplicated() {
+        let s = build::sphere_solid([0.0, 0.0, 0.0], 15.0, [0.0, 0.0, 1.0]);
+        let b = build::box_solid([10.0, 10.0, 40.0], [0.0, 0.0, 0.0], None);
+        let result = boolean("subtract", &s, &b).expect("sphere-minus-box must not refuse");
+        let edges = result.edges();
+        let mut dupes = 0;
+        for i in 0..edges.len() {
+            for j in (i + 1)..edges.len() {
+                let (ei, ej) = (edges[i].borrow(), edges[j].borrow());
+                if same_edge_geometry(&ei, &ej) {
+                    dupes += 1;
+                    eprintln!(
+                        "duplicate seam edge: {:?} vs {:?}",
+                        ei.curve.point_at(0.0),
+                        ej.curve.point_at(0.0)
+                    );
+                }
+            }
+        }
+        assert_eq!(dupes, 0, "{dupes} duplicated seam edge(s) -- not a shared B-rep shell");
+        // The seam edge of a wall must be used by BOTH the wall and the
+        // trimmed sphere face: one handle, two face uses.
+        let mut seam_uses: Vec<usize> = Vec::new();
+        for f in result.faces() {
+            for w in &f.borrow().boundary {
+                for u in &w.borrow().edges {
+                    if seam_uses.iter().any(|k| topo::same(&edges[*k], &u.edge)) {
+                        continue;
+                    }
+                    if matches!(&u.edge.borrow().curve, Curve::Arc { .. }) {
+                        seam_uses.push(edges.iter().position(|e| topo::same(e, &u.edge)).unwrap());
+                    }
+                }
+            }
+        }
+        for k in seam_uses {
+            let uses = result
+                .faces()
+                .iter()
+                .flat_map(|f| {
+                    f.borrow()
+                        .boundary
+                        .iter()
+                        .flat_map(|w| w.borrow().edges.clone())
+                        .collect::<Vec<_>>()
+                })
+                .filter(|u| topo::same(&edges[k], &u.edge))
+                .count();
+            assert_eq!(uses, 2, "seam edge at {:?} is used {uses} time(s), want 2", edges[k].borrow().curve.point_at(0.0));
         }
     }
 

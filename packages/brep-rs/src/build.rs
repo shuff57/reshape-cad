@@ -1002,6 +1002,109 @@ pub fn round_cylinder(center: Vec3, radius: f64, height: f64, axis: Vec3, rad: f
     Solid { shells: vec![shell] }
 }
 
+/// The round-primitive cylinder, CHAMFER style: the same 5-face topology as
+/// `round_cylinder`, but each rim is a bounded 45-degree cone band between the
+/// shortened wall (radius `radius` at v=0) and the shrunken cap (radius
+/// `radius - rad` at v=rad*sqrt(2)). Fully analytic: the removed ring is a
+/// right triangle of legs (rad, rad) by Pappus, so the closed form is
+/// pi*R^2*h - 2*pi*rad^2*(R - rad/3) -- lead-pinned against OCCT at
+/// 12949.644918 for r12 h30 rad3.
+pub fn chamfer_cylinder(center: Vec3, radius: f64, height: f64, axis: Vec3, rad: f64) -> TSolid {
+    let axis = crate::math::normalize(axis);
+    let (e1, e2, z) = geom::frame(axis);
+    let hh = height / 2.0 - rad;
+    let cap_r = radius - rad;
+    let zlo_wall = add(center, scale(z, -hh));
+    let zhi_wall = add(center, scale(z, hh));
+    let zlo_cap = add(center, scale(z, -(height / 2.0)));
+    let zhi_cap = add(center, scale(z, height / 2.0));
+
+    let rim_wall = |zc: Vec3| Curve::Circle { center: zc, radius, normal: z };
+    let rim_cap = |zc: Vec3| Curve::Circle { center: zc, radius: cap_r, normal: z };
+    let v_wall_lo = topo::vertex(add(zlo_wall, scale(e1, radius)));
+    let v_wall_hi = topo::vertex(add(zhi_wall, scale(e1, radius)));
+    let v_cap_lo = topo::vertex(add(zlo_cap, scale(e1, cap_r)));
+    let v_cap_hi = topo::vertex(add(zhi_cap, scale(e1, cap_r)));
+    let e_wall_lo = topo::edge(v_wall_lo.clone(), v_wall_lo.clone(), true, rim_wall(zlo_wall));
+    let e_wall_hi = topo::edge(v_wall_hi.clone(), v_wall_hi.clone(), true, rim_wall(zhi_wall));
+    let e_cap_lo = topo::edge(v_cap_lo.clone(), v_cap_lo.clone(), true, rim_cap(zlo_cap));
+    let e_cap_hi = topo::edge(v_cap_hi.clone(), v_cap_hi.clone(), true, rim_cap(zhi_cap));
+
+    let two_pi = 2.0 * std::f64::consts::PI;
+    let pi = std::f64::consts::PI;
+    let half_angle = std::f64::consts::FRAC_PI_4;
+    let slant = rad * std::f64::consts::SQRT_2;
+
+    let wall = make_face(
+        Surface::Cylinder(Cylinder { origin: zlo_wall, axis: z, e1, e2, radius, vmin: 0.0, vmax: 2.0 * hh, arc: None }),
+        [[0.0, 0.0], [0.0, 2.0 * hh]],
+        vec![
+            topo::EdgeUse { edge: e_wall_lo.clone(), forward: true, pcurve: topo::Pcurve { start: [0.0, 0.0], end: [0.0, 2.0 * hh], mid: [0.0, hh] } },
+            topo::EdgeUse { edge: e_wall_hi.clone(), forward: false, pcurve: topo::Pcurve { start: [two_pi, 2.0 * hh], end: [0.0, 2.0 * hh], mid: [pi, 2.0 * hh] } },
+            topo::EdgeUse { edge: e_wall_lo.clone(), forward: false, pcurve: topo::Pcurve { start: [0.0, 2.0 * hh], end: [0.0, 0.0], mid: [0.0, hh] } },
+        ],
+    );
+    let top_cap = disk_face_shared(e_cap_hi.clone(), v_cap_hi.borrow().point, z);
+    let bottom_cap = disk_face_shared(e_cap_lo.clone(), v_cap_lo.borrow().point, scale(z, -1.0));
+
+    // The u=0 meridian, a straight segment from the wall rim to the cap rim --
+    // the chamfer's own profile line (a fillet's would be an arc). Same
+    // seam-plus-two-rims wire shape `round_cylinder`'s torus band uses.
+    let meridian = |va: &topo::VertexRef, vb: &topo::VertexRef| -> TEdge {
+        topo::edge(
+            va.clone(),
+            vb.clone(),
+            true,
+            Curve::Segment { a: va.borrow().point, b: vb.borrow().point },
+        )
+    };
+    let band_wire = |e_wall: TEdge, e_cap: TEdge, seam: TEdge| -> Vec<topo::EdgeUse<Curve3>> {
+        vec![
+            topo::EdgeUse { edge: e_wall, forward: true, pcurve: topo::Pcurve { start: [0.0, 0.0], end: [two_pi, 0.0], mid: [pi, 0.0] } },
+            topo::EdgeUse { edge: seam.clone(), forward: true, pcurve: topo::Pcurve { start: [two_pi, 0.0], end: [two_pi, slant], mid: [two_pi, slant / 2.0] } },
+            topo::EdgeUse { edge: e_cap, forward: false, pcurve: topo::Pcurve { start: [two_pi, slant], end: [0.0, slant], mid: [pi, slant] } },
+            topo::EdgeUse { edge: seam, forward: false, pcurve: topo::Pcurve { start: [0.0, slant], end: [0.0, 0.0], mid: [0.0, slant / 2.0] } },
+        ]
+    };
+
+    let seam_top = meridian(&v_wall_hi, &v_cap_hi);
+    let top_band = make_face(
+        Surface::Cone(Cone {
+            base: zhi_wall,
+            axis: z,
+            e1,
+            e2,
+            base_radius: radius,
+            half_angle,
+            slant,
+            v_range: [0.0, slant],
+        }),
+        [[0.0, two_pi], [0.0, slant]],
+        band_wire(e_wall_hi, e_cap_hi, seam_top),
+    );
+    let seam_bot = meridian(&v_wall_lo, &v_cap_lo);
+    // e2 negated (axis already flipped to -z): cross(e1, e2) must equal the
+    // surface's own axis or the band's volume term comes out with the wrong
+    // sign -- the same parity the bottom torus rim needed, same reasoning.
+    let bottom_band = make_face(
+        Surface::Cone(Cone {
+            base: zlo_wall,
+            axis: scale(z, -1.0),
+            e1,
+            e2: scale(e2, -1.0),
+            base_radius: radius,
+            half_angle,
+            slant,
+            v_range: [0.0, slant],
+        }),
+        [[0.0, two_pi], [0.0, slant]],
+        band_wire(e_wall_lo, e_cap_lo, seam_bot),
+    );
+
+    let shell = Rc::new(RefCell::new(Shell { faces: vec![wall, top_cap, bottom_cap, top_band, bottom_band] }));
+    Solid { shells: vec![shell] }
+}
+
 /// A cone centred on `center`, base at -height/2, apex at +height/2.
 pub fn cone_solid(center: Vec3, radius: f64, height: f64, axis: Vec3) -> TSolid {
     let axis = crate::math::normalize(axis);
@@ -1036,6 +1139,7 @@ pub fn cone_solid(center: Vec3, radius: f64, height: f64, axis: Vec3) -> TSolid 
             base_radius: radius,
             half_angle,
             slant,
+            v_range: [0.0, slant],
         }),
         [[0.0, 0.0], [0.0, slant]],
         vec![
@@ -1878,9 +1982,15 @@ fn revolve_profile_partial(
         if dr.abs() < 1e-9 {
             // Parallel to the axis: a partial cylindrical wall. `e2` stays the
             // one right-handed frame (never recomputed from a flipped `e1`):
-            // flipping `e1` alone is what makes an inward-pointing (hole) wall,
-            // and it also mirrors the arc's own start so the wall still covers
-            // the SAME angular range as its neighbours.
+            // flipping `e1` alone is what makes an inward-pointing (hole) wall.
+            // The flip MIRRORS the frame, so the arc's own range must be
+            // reflected with it: a point at original angle t sits at u = pi - t
+            // in the flipped frame, so the sector [0, angle] becomes
+            // [pi - angle, pi]. Leaving the range at [0, angle] put the hole
+            // wall on the OPPOSITE half of the circle -- invisible to volume
+            // (a sector has the same volume wherever it sits) and to the 180-
+            // degree groove fixture (mirror-symmetric), caught by W6's
+            // 90-degree bbox as x reaching -10 instead of 0.
             let r = r0;
             if r < 1e-9 {
                 map.push(None);
@@ -1888,7 +1998,11 @@ fn revolve_profile_partial(
             }
             let h_lo = h0.min(h1);
             let hh = (h1 - h0).abs();
-            let e1c = if nr >= 0.0 { e1 } else { scale(e1, -1.0) };
+            let (e1c, arc_start) = if nr >= 0.0 {
+                (e1, 0.0)
+            } else {
+                (scale(e1, -1.0), std::f64::consts::PI - angle.abs())
+            };
             let surf = Surface::Cylinder(Cylinder {
                 origin: scale(axis, h_lo),
                 axis,
@@ -1897,7 +2011,7 @@ fn revolve_profile_partial(
                 radius: r,
                 vmin: 0.0,
                 vmax: hh,
-                arc: Some(geom::ArcRange { start: 0.0, span: angle.abs() }),
+                arc: Some(geom::ArcRange { start: arc_start, span: angle.abs() }),
             });
             let pa = add(scale(e1c, r), scale(axis, h_lo));
             let pb = add(scale(e1c, r), scale(axis, h_lo + hh));
@@ -1910,9 +2024,9 @@ fn revolve_profile_partial(
             let use_ = topo::EdgeUse {
                 edge: seam,
                 forward: true,
-                pcurve: topo::Pcurve { start: [0.0, 0.0], end: [0.0, hh], mid: [0.0, hh / 2.0] },
+                pcurve: topo::Pcurve { start: [arc_start, 0.0], end: [arc_start, hh], mid: [arc_start, hh / 2.0] },
             };
-            let f = make_face(surf, [[0.0, angle.abs()], [0.0, hh]], vec![use_]);
+            let f = make_face(surf, [[arc_start, arc_start + angle.abs()], [0.0, hh]], vec![use_]);
             map.push(Some(faces.len()));
             faces.push(f);
         } else if dh.abs() < 1e-9 {

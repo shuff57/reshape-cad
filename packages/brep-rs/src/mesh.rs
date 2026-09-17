@@ -515,17 +515,16 @@ fn mesh_curved_band(
     Some(())
 }
 
-/// Tessellate a bounded torus rim (SPEC-brep-round.md's quarter-torus
-/// cylinder fillet): two full circles of DIFFERENT radii (the wall-side and
-/// cap-side rims), bridged as a periodic band. `mesh_curved_band` needs the
-/// two loops to have the SAME point count (true for a trimmed sphere's two
-/// equal polar holes); these are independently deflection-sampled at their
-/// own, different radii, so they generally do not. Bridge them with the
-/// standard "zipper" walk instead: advance whichever ring's next point is
-/// angularly closer, so every triangle uses only the rings' own already-
-/// shared boundary samples -- no new vertex is invented, so neither
-/// neighbour (the wall, or the cap) can crack against this face.
-fn mesh_torus_band(
+/// Tessellate a bounded band of revolution between two rims of DIFFERENT
+/// radii: a quarter-torus fillet rim (SPEC-brep-round.md) or a 45-degree cone
+/// chamfer rim (campaign ledger W11). The structured grid's single shared
+/// u-column list cannot match both rims at once because each is sampled
+/// independently at its own radius; bridge them with the standard "zipper"
+/// walk instead: advance whichever ring's next point is angularly closer, so
+/// every triangle uses only the rings' own already-shared boundary samples --
+/// no new vertex is invented, so neither neighbour (the wall, or the cap) can
+/// crack against this face.
+fn mesh_revolution_band(
     face: &TFace,
     edges_cache: &HashMap<usize, Vec<Vec3>>,
     out: &mut MeshBuilder,
@@ -534,6 +533,7 @@ fn mesh_torus_band(
 ) -> Option<()> {
     let (v0, v1) = match surface {
         crate::geom::Surface::Torus(t) => (t.v_range[0], t.v_range[1]),
+        crate::geom::Surface::Cone(c) => (c.v_range[0], c.v_range[1]),
         _ => return None,
     };
     let mut lo: Vec<[f64; 2]> = Vec::new();
@@ -595,10 +595,15 @@ fn mesh_torus_band(
     // different counts, since `hi` alone may have a different sample count.
     // The tube (v) direction needs its own refinement to meet deflection --
     // a raw 2-row band would sag by roughly `rad*(1-cos(span/2))`, far past
-    // `d` for a small fillet radius.
+    // `d` for a small fillet radius. A cone band (chamfer) is straight in v,
+    // so it never sags and needs only the single interior split the zipper
+    // requires; `angle_step` on a straight v would otherwise ask for
+    // many rows at a large `rv`.
     let (_, rv) = surface_radii(surface);
-    let dv_step = angle_step(rv, defl * 0.5);
-    let m = (((v1 - v0).abs() / dv_step).ceil() as usize).max(1);
+    let m = match surface {
+        crate::geom::Surface::Cone(_) => 2,
+        _ => (((v1 - v0).abs() / angle_step(rv, defl * 0.5)).ceil() as usize).max(1),
+    };
 
     let start = out.indices.len();
     let mut rows: Vec<Vec<u32>> = Vec::with_capacity(m);
@@ -675,15 +680,19 @@ fn mesh_face(
         }
     }
     // A round-primitive cylinder rim (SPEC-brep-round.md): a bounded torus
-    // whose two rim circles have different radii, so the structured (u,v)
-    // grid's single shared u-column list cannot match both at once (see
-    // `mesh_torus_band`'s own doc comment).
-    if let crate::geom::Surface::Torus(t) = &face.borrow().surface {
-        if (t.v_range[1] - t.v_range[0] - TAU).abs() >= 1e-9 {
-            let surface = face.borrow().surface.clone();
-            if mesh_torus_band(face, edges_cache, out, defl, &surface).is_some() {
-                return Some(());
-            }
+    // (fillet) or bounded cone band (chamfer) whose two rim circles have
+    // different radii, so the structured (u,v) grid's single shared u-column
+    // list cannot match both at once (see `mesh_revolution_band`'s own doc
+    // comment).
+    let bounded_band = match &face.borrow().surface {
+        crate::geom::Surface::Torus(t) => (t.v_range[1] - t.v_range[0] - TAU).abs() >= 1e-9,
+        crate::geom::Surface::Cone(c) => (c.v_range[1] - c.v_range[0] - TAU).abs() >= 1e-9,
+        _ => false,
+    };
+    if bounded_band {
+        let surface = face.borrow().surface.clone();
+        if mesh_revolution_band(face, edges_cache, out, defl, &surface).is_some() {
+            return Some(());
         }
     }
     match &face.borrow().surface {
@@ -781,7 +790,7 @@ fn surface_radii(s: &crate::geom::Surface) -> (f64, f64) {
     use crate::geom::Surface;
     match s {
         Surface::Cylinder(c) => (c.radius, c.vmax - c.vmin),
-        Surface::Cone(c) => (c.base_radius.max(1e-9), c.slant),
+        Surface::Cone(c) => (c.base_radius.max(1e-9), c.v_range[1] - c.v_range[0]),
         Surface::Sphere(sp) => (sp.radius, sp.radius),
         Surface::Torus(t) => (t.ring + t.tube, t.tube),
         Surface::Plane(_) => (1.0, 1.0),
@@ -1250,6 +1259,47 @@ mod tests {
         let s = crate::build::cylinder_solid([0.0, 0.0, 0.0], 12.0, 30.0, [0.0, 0.0, 1.0]);
         let m = mesh_solid(&s, 0.05).expect("cylinder meshes");
         assert!(watertight(&m));
+    }
+
+    /// W11: the chamfered cylinder's two bounded cone bands must mesh
+    /// watertight and inside the deflection volume bound, at both gate
+    /// deflections. The bands are the same two-different-rims case as the
+    /// fillet's torus rims, so this is what proves the generalized
+    /// `mesh_revolution_band` handles the Cone arm too.
+    #[test]
+    fn chamfered_cylinder_watertight() {
+        for defl in [0.05_f64, 0.5] {
+            let s = crate::build::chamfer_cylinder([0.0, 0.0, 0.0], 12.0, 30.0, [0.0, 0.0, 1.0], 3.0);
+            let m = mesh_solid(&s, defl).unwrap_or_else(|| panic!("chamfered cylinder did not mesh at d={defl}"));
+            assert!(watertight(&m), "not watertight at d={defl}");
+            let vol: f64 = m
+                .indices
+                .chunks(3)
+                .map(|t| {
+                    let (a, b, c) = (
+                        m.positions[t[0] as usize],
+                        m.positions[t[1] as usize],
+                        m.positions[t[2] as usize],
+                    );
+                    crate::math::dot(a, crate::math::cross(b, c)) / 6.0
+                })
+                .sum();
+            let exact = std::f64::consts::PI * 12.0f64.powi(2) * 30.0
+                - 2.0 * std::f64::consts::PI * 3.0f64.powi(2) * (12.0 - 1.0);
+            // The gate's own accepted-deficit bound: an inscribed mesh loses at
+            // most `d * A * 1.05`, with A the exact surface area (wall, two
+            // caps, and the two frustum bands).
+            let area = 2.0 * std::f64::consts::PI * 12.0 * 24.0
+                + 2.0 * std::f64::consts::PI * 9.0f64.powi(2)
+                + 2.0 * std::f64::consts::PI * 21.0 * 3.0 * std::f64::consts::SQRT_2;
+            assert!(
+                vol <= exact + 1e-6 && vol >= exact - defl * area * 1.05,
+                "volume {vol} vs exact {exact} (deficit {} > bound {}) at d={defl}",
+                exact - vol,
+                defl * area * 1.05
+            );
+            assert_eq!(m.faces.len(), 5, "5 face ranges at d={defl}");
+        }
     }
 
     #[test]

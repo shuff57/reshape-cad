@@ -83,6 +83,41 @@ fn plane_frame(plane: &str) -> (Vec3, Vec3, Vec3, f64) {
     }
 }
 
+/// S1 (sketch-on-a-face): the frame a sketch is laid in.
+///
+/// A sketch written before frames existed carries only `plane` (one of xy/xz/
+/// yz) and a scalar `offset`; that path is unchanged, including `dir`'s sign
+/// quirks. A sketch authored on a PICKED FACE carries `frame` instead --
+/// `origin` (its plane point), `u` and `v` (its two in-plane axes) -- and the
+/// normal is u x v, which is what makes an arbitrary planar face expressible.
+/// The three named planes are NOT re-expressed through this path: routing them
+/// through a cross product would flip xz's sweep direction and change every
+/// existing doc.
+struct SketchFrame {
+    origin: Vec3,
+    u: Vec3,
+    v: Vec3,
+    n: Vec3,
+    dir: f64,
+}
+
+fn sketch_frame(sk: &Value) -> SketchFrame {
+    if let Some(fr) = sk.get("frame") {
+        let origin = fr.get("origin").and_then(v3).unwrap_or([0.0, 0.0, 0.0]);
+        let u = fr.get("u").and_then(v3).unwrap_or([1.0, 0.0, 0.0]);
+        let v = fr.get("v").and_then(v3).unwrap_or([0.0, 1.0, 0.0]);
+        let u = crate::math::normalize(u);
+        let v = crate::math::normalize(v);
+        let n = crate::math::normalize(crate::math::cross(u, v));
+        return SketchFrame { origin, u, v, n, dir: 1.0 };
+    }
+    let plane = sk.get("plane").and_then(|p| p.as_str()).unwrap_or("xy");
+    let (u, v, n, dir) = plane_frame(plane);
+    let offset = sk.get("offset").and_then(|o| o.as_f64()).unwrap_or(0.0);
+    let origin = scale(n, offset);
+    SketchFrame { origin, u, v, n, dir }
+}
+
 /// The profile outline in plane (u, v) coordinates after rounds/chamfers are
 /// applied -- the JS outlineOf()/tessellate() semantics. A bulge on an edge
 /// becomes an arc, emitted as sampled segments so the extruded solid's faces
@@ -317,10 +352,10 @@ enum PrismKind {
 /// (a pocket's `-depth`) sweeps the profile INTO the material; the resulting
 /// prism can come out inside-out, so its orientation is fixed here rather than
 /// leaving a void shell with inward-facing walls.
-fn extrude_prism(sk: &Value, plane: &str, height: f64) -> Option<(TSolid, PrismKind)> {
-    let (u_axis, v_axis, n, dir) = plane_frame(plane);
-    let offset = sk.get("offset").and_then(|o| o.as_f64()).unwrap_or(0.0);
-    let origin = scale(n, offset);
+fn extrude_prism(sk: &Value, _plane: &str, height: f64) -> Option<(TSolid, PrismKind)> {
+    let fr = sketch_frame(sk);
+    let (u_axis, v_axis, n, dir) = (fr.u, fr.v, fr.n, fr.dir);
+    let origin = fr.origin;
     if sk.get("shape").and_then(|s| s.as_str()) == Some("circle") {
         let (centre, radius) = circle_of_value(sk)?;
         let centre_w = uv_world(origin, u_axis, v_axis, centre);
@@ -357,12 +392,11 @@ fn revolve_tool(
     // the plane NORMAL -- a plane CONTAINING the axis, not the sketch plane
     // (revolveProfileFace in occt-build.ts). So p[0] is radius along a.u and
     // p[1] is height along a.n, and the spin axis is a.n through the origin.
-    let plane = sk.get("plane").and_then(|p| p.as_str()).unwrap_or("xy");
-    let (u_axis, _v_axis, n, _dir) = plane_frame(plane);
+    let fr = sketch_frame(sk);
+    let (u_axis, n) = (fr.u, fr.n);
     let (mut solid, face_map) = build::revolve_profile(&points, n, u_axis, angle)?;
-    let offset = sk.get("offset").and_then(|o| o.as_f64()).unwrap_or(0.0);
-    if offset != 0.0 {
-        let t = crate::math::Transform::translation(scale(n, offset));
+    if fr.origin != [0.0, 0.0, 0.0] {
+        let t = crate::math::Transform::translation(fr.origin);
         solid = build::transform_solid(&solid, &t);
     }
     Some((solid, face_map, points, basis, u_axis, n))
@@ -560,9 +594,9 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     refusals.insert(id.clone(), json!(format!("extrude {id} cannot find sketch {target}")));
                     continue;
                 };
-                let plane = sk.get("plane").and_then(|p| p.as_str()).unwrap_or("xy");
-                let (_u_axis, _v_axis, _n, dir) = plane_frame(plane);
-                let Some((solid, prism)) = extrude_prism(sk, plane, height) else {
+                let fr = sketch_frame(sk);
+                let dir = fr.dir;
+                let Some((solid, prism)) = extrude_prism(sk, "", height) else {
                     refusals.insert(id.clone(), json!(format!("extrude {id}: sketch {target} has no usable outline")));
                     continue;
                 };
@@ -626,11 +660,10 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     refusals.insert(id.clone(), json!(format!("pocket {id} cannot find solid {into}")));
                     continue;
                 };
-                let plane = sk.get("plane").and_then(|p| p.as_str()).unwrap_or("xy");
                 // A pocket is the extrude prism with the sweep NEGATED: pad up,
                 // pocket down (occt-build.ts's `h = -f.depth * a.dir`). The tool
                 // is oriented outward by extrude_prism, then cut from the base.
-                let Some((tool, _)) = extrude_prism(sk, plane, -depth) else {
+                let Some((tool, _)) = extrude_prism(sk, "", -depth) else {
                     refusals.insert(id.clone(), json!(format!("pocket {id}: sketch {target} has no usable outline")));
                     continue;
                 };
@@ -774,17 +807,21 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     refusals.insert(id.clone(), json!(format!("revolve {id}: a circle sketch has no outline to spin")));
                     continue;
                 }
-                // Only a full turn in this slice. A partial revolve needs two
-                // cap faces and their pcurve bookkeeping; refusing is the honest
-                // answer rather than shipping a solid that is not what was asked.
-                if (angle.abs() - 360.0).abs() > 1e-9 {
-                    refusals.insert(id.clone(), json!(format!("revolve {id}: only a 360-degree revolve is supported by brep-rs yet")));
-                    continue;
-                }
-                let Some((solid, face_map, points, basis, _u_axis, _n)) = revolve_tool(sk, 360.0) else {
+                // A full turn is closed (no caps, no seam); a partial one is an
+                // open sector with two planar caps. `revolve_profile` already
+                // builds both paths (groove has used the partial one all along);
+                // this branch supplies the naming history each needs, and the
+                // caps' own face indices for a partial.
+                let closed = (angle.abs() - 360.0).abs() <= 1e-9;
+                let Some((solid, face_map, points, basis, _u_axis, _n)) = revolve_tool(sk, angle) else {
                     refusals.insert(id.clone(), json!(format!("revolve {id}: brep-rs supports only profiles parallel or perpendicular to the axis yet")));
                     continue;
                 };
+                // Face indices for the naming history: the walls come back in
+                // `face_map` (one entry per profile segment, in segment order);
+                // the partial path appends its two caps AFTER them, in the
+                // order it built them (t=0, then t=angle).
+                let n_walls = solid.faces().len() - if closed { 0 } else { 2 };
                 let m = points.len();
                 let segments: Vec<history::SweepSeg> = (0..m)
                     .filter_map(|i| {
@@ -792,14 +829,19 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                         face_map[i].map(|face| history::SweepSeg { role, index, face })
                     })
                     .collect();
+                let (cap_bottom, cap_top) = if closed {
+                    (None, None)
+                } else {
+                    (Some(n_walls), Some(n_walls + 1))
+                };
                 hist.sweeps.insert(
                     id.clone(),
                     history::SweepRecord {
                         from: target.to_string(),
                         segments,
-                        cap_bottom: None,
-                        cap_top: None,
-                        closed: true,
+                        cap_bottom,
+                        cap_top,
+                        closed,
                     },
                 );
                 hist.insert(&id, solid);
@@ -824,10 +866,9 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     if !bulges.is_empty() {
                         return None;
                     }
-                    let plane = sk.get("plane").and_then(|p| p.as_str()).unwrap_or("xy");
-                    let (u_axis, v_axis, n, _dir) = plane_frame(plane);
-                    let offset = sk.get("offset").and_then(|o| o.as_f64()).unwrap_or(0.0);
-                    let origin = scale(n, offset);
+                    let fr = sketch_frame(sk);
+                    let (u_axis, v_axis) = (fr.u, fr.v);
+                    let origin = fr.origin;
                     Some(points.iter().map(|p| uv_world(origin, u_axis, v_axis, *p)).collect())
                 };
                 let lo = targets.first().and_then(|t| read_target(t, &sketches));
@@ -1150,16 +1191,76 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     _ => (2, [0.0, 0.0, 1.0]),
                 };
                 let neutral = f.get("neutral").and_then(|n| n.as_f64()).unwrap_or(0.0);
-                // Body Draft: not in this slice. The target is kept, shown
-                // without the feature, as every refusal here does.
+                // Body Draft (`whole: true`): every side face tilts, so a
+                // cross-section at pull coordinate `u` has half-extent
+                // `h - (u - neutral) * tan(angle)` on both transverse axes.
+                // That is OCCT's own BRepOffsetAPI_DraftAngle semantics with
+                // all four side faces in ONE operation, verified against it to
+                // ~1e-8 on all three pull axes, both angle signs, and neutrals
+                // inside, on, below and above the box.
+                //
+                // NOTE: occt-build.ts's own whole branch applies the faces one
+                // at a time with handles taken from the ORIGINAL shape, and
+                // OCCT rejects the two later stale handles -- measured, it
+                // drafts only 2 of 4 walls (29751.346645 rather than the true
+                // 27713.378369). That is a defect in that caller, not the
+                // reference; this builds the honest 4-wall result.
                 if f.get("whole").and_then(|w| w.as_bool()).unwrap_or(false) {
-                    refusals.insert(
-                        id.clone(),
-                        json!(format!(
-                            "brep-rs can only draft one face yet -- {label} is shown without it."
-                        )),
-                    );
-                    hist.insert(&id, src);
+                    let Some(bb) = box_extent(&src) else {
+                        refusals.insert(
+                            id.clone(),
+                            json!(format!(
+                                "brep-rs can only Body Draft an axis-aligned box yet -- {label} is shown without it."
+                            )),
+                        );
+                        hist.insert(&id, src);
+                        continue;
+                    };
+                    let t = angle.to_radians().tan();
+                    let half: Vec<f64> = (0..3).map(|a| (bb.hi[a] - bb.lo[a]) / 2.0).collect();
+                    // Fit: the transverse half-extent must stay positive at
+                    // BOTH ends of the box along the pull.
+                    let mut wont_fit = !t.is_finite();
+                    for end in 0..2 {
+                        let u = if end == 0 { bb.lo[pi] } else { bb.hi[pi] };
+                        let inset = (u - neutral) * t;
+                        for a in 0..3 {
+                            if a != pi && half[a] - inset <= 1e-9 {
+                                wont_fit = true;
+                            }
+                        }
+                    }
+                    if wont_fit {
+                        refusals.insert(
+                            id.clone(),
+                            json!(format!(
+                                "Tilting {label} at {angle} degrees would not fit -- {label} is shown without it."
+                            )),
+                        );
+                        hist.insert(&id, src);
+                        continue;
+                    }
+                    let mut verts: [Vec3; 8] = [[0.0; 3]; 8];
+                    for i in 0..2 {
+                        for j in 0..2 {
+                            for k in 0..2 {
+                                let idx = i * 4 + j * 2 + k;
+                                let s = [i, j, k];
+                                let mut q = [0.0; 3];
+                                let u = if s[pi] == 0 { bb.lo[pi] } else { bb.hi[pi] };
+                                let inset = (u - neutral) * t;
+                                for a in 0..3 {
+                                    let centre = (bb.hi[a] + bb.lo[a]) / 2.0;
+                                    let sign = if s[a] == 0 { -1.0 } else { 1.0 };
+                                    let h = if a == pi { half[a] } else { half[a] - inset };
+                                    q[a] = centre + sign * h;
+                                }
+                                verts[idx] = q;
+                            }
+                        }
+                    }
+                    let solid = build::corner_solid(&verts);
+                    hist.insert(&id, build::ensure_outward(&solid));
                     continue;
                 }
                 let Some(face_name) = f.get("face") else {
@@ -1513,6 +1614,31 @@ pub fn resolve(doc_json: &str, name_json: &str) -> String {
                             out["faceIndex"] = json!(i);
                         }
                     }
+                    // A swept/cap/rounded name reports its face index from the
+                    // sweep record, exactly as a primitive does -- without it
+                    // the adapter cannot turn a resolved cap or side into a
+                    // handle (resolveFace requires faceIndex).
+                    if out.get("faceIndex").is_none() {
+                        let feature = name.get("feature").and_then(|f| f.as_str()).unwrap_or("");
+                        let cause = name.get("cause").and_then(|c| c.as_str()).unwrap_or("");
+                        let idx = match cause {
+                            "swept" | "rounded" => {
+                                let from = name.get("from").and_then(|f| f.as_str()).unwrap_or("");
+                                let (role, key) = if cause == "swept" { ("edge", "edge") } else { ("corner", "corner") };
+                                name.get(key)
+                                    .and_then(|v| v.as_u64())
+                                    .and_then(|v| hist.sweep_face_index(feature, from, role, v as usize))
+                            }
+                            "cap" => name
+                                .get("end")
+                                .and_then(|e| e.as_str())
+                                .and_then(|end| hist.sweep_cap_index(feature, end)),
+                            _ => None,
+                        };
+                        if let Some(i) = idx {
+                            out["faceIndex"] = json!(i);
+                        }
+                    }
                 }
                 Resolved::Edge(_, _) => {
                     if let (Some(a), Some(bb)) = (
@@ -1662,6 +1788,77 @@ pub fn edge_length(doc_json: &str, feature_id: &str, edge_index: usize) -> Strin
     }
 }
 
+/// A TopoName JSON for a face, from the causes already covered: a primitive
+/// (± axis) face, a sweep's cap/side, or a face a BOOLEAN carried through.
+/// Shared by `name_face` and `name_edge` (an edge name is built FROM its two
+/// faces' names, exactly as OcctAdapter's nameEdgeOnCurrentShape does).
+///
+/// Precedence matters: a feature that ran an operation or a sweep is named
+/// from ITS history, never by the primitive heuristic. An extrude's cap is a
+/// planar axis-aligned face at the solid's z extreme and an `op1` side wall is
+/// one at its x extreme, so `primitive_part` alone would misname both
+/// (`e1.face[+z]` instead of `e1.cap[top]`, `op1.face[+x]` instead of
+/// `op1.same[b1.face[+x]]`). OCCT's nameFaceOnCurrentShape names through the
+/// history the same way.
+fn name_face_of(hist: &History, feature_id: &str, face: &build::TFace) -> Option<Value> {
+    if hist.ops.contains_key(feature_id) {
+        return carried_name(hist, feature_id, face);
+    }
+    if hist.sweeps.contains_key(feature_id) {
+        return sweep_name(hist, feature_id, face);
+    }
+    if let Some(part) = primitive_part(hist, feature_id, face) {
+        return Some(json!({
+            "cause": "primitive", "feature": feature_id, "kind": "face", "part": part
+        }));
+    }
+    None
+}
+
+/// The `carried` name for an output face of a boolean (or any op that records
+/// fates): which INPUT face's `Fate::Kept` entry points at this output face,
+/// named on its own feature. `hist.carried_face` is the same lookup forwards
+/// (name -> handle); this is its reverse, and the two must agree or a
+/// `name_face` result will not resolve (W1b).
+fn carried_name(hist: &History, feature_id: &str, face: &build::TFace) -> Option<Value> {
+    let recs = hist.ops.get(feature_id)?;
+    let out_solid = hist.shapes.get(feature_id)?;
+    let out_idx = out_solid
+        .faces()
+        .iter()
+        .position(|f| std::rc::Rc::ptr_eq(f, face))?;
+    for rec in recs {
+        // Boolean records carry fates from the kernel; Transform (move) records
+        // fill one Kept per part. Fillet and Shell records are not this
+        // reverse lookup's business yet (their fates are not populated the same
+        // way), so a face of those keeps the old heuristic path.
+        if rec.kind != OpKind::Boolean && rec.kind != OpKind::Transform {
+            continue;
+        }
+        // face_fates concatenates each input's faces in `inputs` order (the
+        // same layout `carried_face` walks).
+        let mut offset = 0usize;
+        for input_id in &rec.inputs {
+            let Some(input_solid) = hist.shapes.get(input_id) else {
+                continue;
+            };
+            let in_faces = input_solid.faces();
+            for (k, inf) in in_faces.iter().enumerate() {
+                if let Some(Fate::Kept(PartRef::Face(fi))) = rec.face_fates.get(offset + k) {
+                    if *fi == out_idx {
+                        let of = name_face_of(hist, input_id, inf)?;
+                        return Some(json!({
+                            "cause": "carried", "feature": feature_id, "kind": "face", "of": of
+                        }));
+                    }
+                }
+            }
+            offset += in_faces.len();
+        }
+    }
+    None
+}
+
 /// A TopoName JSON for a face of a primitive (box ±x/±y/±z) or an extrude
 /// cap/side the sweep history records, else `null` (§4.6).
 #[wasm_bindgen]
@@ -1674,27 +1871,59 @@ pub fn name_face(doc_json: &str, feature_id: &str, face_index: usize) -> String 
     let Some(face) = faces.get(face_index) else {
         return "null".to_string();
     };
-    // Primitive first: part is the ± axis the face's normal points along and
-    // the face sits on the doc solid's extreme in that axis.
-    if let Some(part) = primitive_part(&hist, feature_id, face) {
-        return json!({
-            "cause": "primitive", "feature": feature_id, "kind": "face", "part": part
-        })
-        .to_string();
+    match name_face_of(&hist, feature_id, face) {
+        Some(name) => name.to_string(),
+        None => "null".to_string(),
     }
-    // Extrude cap/side, from the sweep history.
-    if let Some(name) = sweep_name(&hist, feature_id, face) {
-        return name.to_string();
-    }
-    "null".to_string()
 }
 
-/// A TopoName JSON for an edge. Always `null` in this slice: only
-/// `between`-cause edge names exist and they need two faces, not an index
-/// (§4.6 scope).
+/// A TopoName JSON for an edge: the `between` cause, naming the two faces
+/// that share it (§4.6). The rule is OcctAdapter's `nameEdgeOnCurrentShape`'s
+/// exactly -- an edge used by OTHER than two faces gets no name, and both
+/// faces must themselves be nameable, or the answer is null rather than a
+/// guess. `between` is the only edge cause in the vocabulary.
 #[wasm_bindgen]
-pub fn name_edge(_doc_json: &str, _feature_id: &str, _edge_index: usize) -> String {
-    "null".to_string()
+pub fn name_edge(doc_json: &str, feature_id: &str, edge_index: usize) -> String {
+    let hist = cached_build(doc_json);
+    let Some(solid) = hist.shapes.get(feature_id) else {
+        return "null".to_string();
+    };
+    let edges = solid.edges();
+    let Some(edge) = edges.get(edge_index) else {
+        return "null".to_string();
+    };
+    // The faces that use this edge handle. The weld in `ops::boolean` is what
+    // makes this return exactly 2 for a boolean seam (W0).
+    let mut adjacent: Vec<build::TFace> = Vec::new();
+    for f in solid.faces() {
+        let uses = f
+            .borrow()
+            .boundary
+            .iter()
+            .any(|w| w.borrow().edges.iter().any(|u| topo::same(&u.edge, edge)));
+        if uses {
+            adjacent.push(f.clone());
+        }
+    }
+    if adjacent.len() != 2 {
+        return "null".to_string();
+    }
+    let a = name_face_of(&hist, feature_id, &adjacent[0]);
+    let b = name_face_of(&hist, feature_id, &adjacent[1]);
+    match (a, b) {
+        (Some(a), Some(b)) => {
+            let feature = a
+                .get("feature")
+                .and_then(|f| f.as_str())
+                .unwrap_or(feature_id)
+                .to_string();
+            json!({
+                "cause": "between", "feature": feature, "kind": "edge", "of": [a, b]
+            })
+            .to_string()
+        }
+        _ => "null".to_string(),
+    }
 }
 
 /// The `part` string of a primitive face, when `feature` is a plain
@@ -1782,8 +2011,15 @@ fn same_surface(a: &Surface, b: &Surface) -> bool {
         d > 1.0 - 1e-6
     };
     match (a, b) {
+        // A plane's normal is SIGNED: the +x and -x faces of a box centered on
+        // the origin are parallel AND have equal n.origin (both 20), so an
+        // abs-dot test calls them the same surface and `carry_fate` then points
+        // both input faces at whichever output face comes first. Require the
+        // normals to agree component-wise. A face whose normal a subtract
+        // flipped no longer matches its input, so naming it answers null
+        // rather than returning the mirrored face.
         (Surface::Plane(p), Surface::Plane(q)) => {
-            parallel(p.n, q.n) && close(crate::math::dot(p.n, p.origin), crate::math::dot(q.n, q.origin))
+            close3(p.n, q.n) && close(crate::math::dot(p.n, p.origin), crate::math::dot(q.n, q.origin))
         }
         (Surface::Cylinder(c), Surface::Cylinder(d)) => {
             parallel(c.axis, d.axis) && close(c.radius, d.radius) && close3(c.origin, d.origin)
@@ -1897,6 +2133,15 @@ fn resolve_face(hist: &History, name: &Value) -> Option<build::TFace> {
         let end = name.get("end")?.as_str()?;
         let fi = hist.sweep_cap_index(feature, end)?;
         return hist.shapes.get(feature)?.faces().get(fi).cloned();
+    }
+    if cause == "carried" {
+        // Required for a `between` name on a boolean result: its two face
+        // names are `carried`, and resolve_name's own carried arm goes through
+        // this same lookup (`carried_face`) but only for a top-level name.
+        let of = name.get("of")?;
+        let of_feature = of.get("feature")?.as_str()?;
+        let parent = resolve_face(hist, of)?;
+        return hist.carried_face(feature, of_feature, &parent);
     }
     None
 }
@@ -2211,6 +2456,369 @@ mod tests {
         assert!(text.contains("can only round an edge of a box yet"), "refusal: {text}");
         let solid = hist.shapes.get("r1").expect("target kept");
         assert!((build::solid_volume(solid) - 32000.0).abs() < 1e-6, "unchanged box");
+    }
+
+    /// W1a: `name_edge` names a box edge as `between` its two adjacent
+    /// primitive faces, and `resolve` reads that name back to the same edge.
+    /// Before W1a this returned null for every edge in the kernel.
+    #[test]
+    fn name_edge_between_box_faces_round_trips() {
+        let doc = json!({
+            "features": [
+                { "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0], "center": [0.0, 0.0, 0.0] }
+            ]
+        });
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "refusals: {refusals:?}");
+        let solid = hist.shapes.get("b1").expect("box must build");
+        let edges = solid.edges();
+        assert_eq!(edges.len(), 12, "a box has 12 edges");
+        // Every box edge lies between exactly two primitive faces, so every
+        // one of the 12 must get a `between` name -- and it must RESOLVE back.
+        let doc_json = doc.to_string();
+        for (i, edge) in edges.iter().enumerate() {
+            let text = name_edge(&doc_json, "b1", i);
+            let parsed: Value = serde_json::from_str(&text).expect("valid JSON name");
+            assert_eq!(parsed["cause"], "between", "edge {i} name: {text}");
+            assert_eq!(parsed["feature"], "b1");
+            assert_eq!(parsed["kind"], "edge");
+            let of = parsed["of"].as_array().expect("two faces");
+            assert_eq!(of.len(), 2, "edge {i} must name exactly 2 faces: {text}");
+            for f in of {
+                assert_eq!(f["cause"], "primitive", "adjacent face name: {text}");
+                assert_eq!(f["kind"], "face");
+            }
+            // Resolve the name back: the round trip must land on the SAME edge.
+            let resolved = resolve(&doc_json, &text);
+            let r: Value = serde_json::from_str(&resolved).expect("valid resolve JSON");
+            assert_eq!(r["kind"], "edge", "edge {i} resolve: {resolved}");
+            assert_eq!(r["edgeIndex"], i, "edge {i} resolved to {:?}", r["edgeIndex"]);
+            let (len, _) = history::edge_measure(edge);
+            let got = r["length"].as_f64().expect("length");
+            assert!((got - len).abs() <= 1e-9 * len, "edge {i} length {got} vs {len}");
+        }
+    }
+
+    /// W1a negative: an edge whose adjacent faces have no name cause yet
+    /// returns null rather than inventing one -- the same "no answer over a
+    /// wrong one" rule OcctAdapter's nameEdgeOnCurrentShape follows when a
+    /// face cannot be named. A cone's top face is a `Circle` cap with no
+    /// `cap`/`primitive` cause in the history, so its rim edge cannot be named.
+    #[test]
+    fn name_edge_unnamed_faces_returns_null() {
+        let doc = json!({
+            "features": [
+                { "id": "c1", "kind": "cone", "radius": 10.0, "height": 20.0, "center": [0.0, 0.0, 0.0] }
+            ]
+        });
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "refusals: {refusals:?}");
+        let solid = hist.shapes.get("c1").expect("cone must build");
+        let n = solid.edges().len();
+        assert!(n > 0, "a cone has edges");
+        let doc_json = doc.to_string();
+        for i in 0..n {
+            assert_eq!(
+                name_edge(&doc_json, "c1", i),
+                "null",
+                "cone edge {i} must not be named yet"
+            );
+        }
+    }
+
+    /// W1b: a face of a BOOLEAN result names through the history (`carried`
+    /// from the input face it descends from), not by the primitive heuristic --
+    /// the output face of `op1` at the box's x extreme is `op1`'s own face, and
+    /// calling it `op1.face[+x]` would be a name that cannot resolve.
+    /// And with W0's weld, an edge between two carried faces IS nameable: the
+    /// `between` cause needs exactly two faces and both must be nameable.
+    #[test]
+    fn name_face_and_edge_carried_after_boolean_round_trip() {
+        let doc = json!({
+            "features": [
+                { "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0], "center": [0.0, 0.0, 0.0] },
+                { "id": "c1", "kind": "cylinder", "radius": 8.0, "height": 40.0, "center": [0.0, 0.0, 0.0] },
+                { "id": "op1", "kind": "combine", "op": "subtract", "targets": ["b1", "c1"] }
+            ]
+        });
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "refusals: {refusals:?}");
+        let solid = hist.shapes.get("op1").expect("boolean must build");
+        let doc_json = doc.to_string();
+
+        // Every output face whose input face is itself nameable (the six box
+        // sides) must name as `carried` and resolve back to the SAME face.
+        let mut carried = 0;
+        for (i, face) in solid.faces().iter().enumerate() {
+            let text = name_face(&doc_json, "op1", i);
+            if text == "null" {
+                continue; // the cylinder wall: no `side` name cause yet
+            }
+            let parsed: Value = serde_json::from_str(&text).expect("valid name");
+            assert_eq!(parsed["cause"], "carried", "face {i}: {text}");
+            assert_eq!(parsed["feature"], "op1");
+            assert_eq!(parsed["of"]["feature"], "b1", "face {i}: {text}");
+            let resolved: Value = serde_json::from_str(&resolve(&doc_json, &text)).expect("resolve");
+            assert_eq!(resolved["kind"], "face", "face {i}: {resolved}");
+            let (want_area, want_c) = history::face_measure(face);
+            let got_area = resolved["area"].as_f64().expect("area");
+            assert!(
+                (got_area - want_area).abs() <= 1e-9 * want_area.max(1.0),
+                "face {i} area {got_area} vs {want_area}"
+            );
+            let c = resolved["centroid"].as_array().expect("centroid");
+            for k in 0..3 {
+                let got = c[k].as_f64().unwrap();
+                assert!((got - want_c[k]).abs() <= 1e-7, "face {i} centroid[{k}]");
+            }
+            carried += 1;
+        }
+        assert_eq!(carried, 6, "all six box sides are carried; the bore wall is not nameable yet");
+
+        // The weld (W0) makes the box's own edges shared by two carried faces,
+        // so they pick up a `between` name. Every named edge must resolve back
+        // to the same curve length.
+        let edges = solid.edges();
+        let mut named = 0;
+        for (i, edge) in edges.iter().enumerate() {
+            let text = name_edge(&doc_json, "op1", i);
+            if text == "null" {
+                continue;
+            }
+            let parsed: Value = serde_json::from_str(&text).expect("valid name");
+            assert_eq!(parsed["cause"], "between", "edge {i}: {text}");
+            let resolved: Value = serde_json::from_str(&resolve(&doc_json, &text)).expect("resolve");
+            assert_eq!(resolved["kind"], "edge", "edge {i}: {resolved}");
+            let (want_len, _) = history::edge_measure(edge);
+            let got = resolved["length"].as_f64().expect("length");
+            assert!((got - want_len).abs() <= 1e-9 * want_len.max(1.0), "edge {i}: {got} vs {want_len}");
+            named += 1;
+        }
+        assert!(named >= 12, "the box's 12 edges must be nameable on the boolean result, got {named}");
+    }
+
+    /// SPEC-brep-round.md, extended by the campaign ledger W11: the cylinder
+    /// `round` PRIMITIVE field, CHAMFER style, r12 h30 at 3. OCCT lead-measures
+    /// 12949.644918 on 5 faces; closed form pi*R^2*h - 2*pi*d^2*(R - d/3) is
+    /// the same number (an exact 45-degree ring removed at each rim). Both
+    /// rims' bands are real analytic Cone surfaces, never faceted.
+    #[test]
+    fn round_cylinder_chamfer_volume_faces_bbox() {
+        let doc = json!({
+            "features": [
+                { "id": "c1", "kind": "cylinder", "radius": 12.0, "height": 30.0, "center": [0.0, 0.0, 0.0], "round": 3.0, "roundStyle": "chamfer" }
+            ]
+        });
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "refusals: {refusals:?}");
+        let solid = hist.shapes.get("c1").expect("chamfered cylinder must build");
+        let vol = build::solid_volume(solid);
+        let (r, h, d) = (12.0_f64, 30.0_f64, 3.0_f64);
+        let want = std::f64::consts::PI * r * r * h - 2.0 * std::f64::consts::PI * d * d * (r - d / 3.0);
+        assert!((want - 12949.644918).abs() < 1e-3, "closed form {want} vs OCCT 12949.644918");
+        assert!((vol - want).abs() <= 1e-6 * want, "volume {vol} vs {want}");
+        assert_eq!(solid.faces().len(), 5, "wall + 2 caps + 2 chamfer bands");
+        let bb = build::solid_aabb(solid);
+        for i in 0..2 {
+            assert!((bb.lo[i] + 12.0).abs() <= 1e-6, "bbox lo[{i}] {}", bb.lo[i]);
+            assert!((bb.hi[i] - 12.0).abs() <= 1e-6, "bbox hi[{i}] {}", bb.hi[i]);
+        }
+        assert!((bb.lo[2] + 15.0).abs() <= 1e-6, "bbox lo[2] {}", bb.lo[2]);
+        assert!((bb.hi[2] - 15.0).abs() <= 1e-6, "bbox hi[2] {}", bb.hi[2]);
+    }
+
+    /// W6: a PARTIAL revolve of the same annulus profile the 360 fixtures use
+    /// (r 10..20, h 0..30, 90 degrees). OCCT lead-measures 7068.583471 on 6
+    /// faces, bbox [0,0,0]..[20,20,30]; the closed form is the full annulus
+    /// pi*(20^2-10^2)*30 / 4 = the same number. Before W6 the branch refused
+    /// "only a 360-degree revolve is supported".
+    #[test]
+    fn revolve_partial_90deg_volume_faces_bbox() {
+        let doc = json!({
+            "features": [
+                { "id": "sk1", "kind": "sketch", "plane": "xy", "offset": 0.0, "points": [[10.0, 0.0], [20.0, 0.0], [20.0, 30.0], [10.0, 30.0]] },
+                { "id": "r1", "kind": "revolve", "target": "sk1", "angle": 90.0 }
+            ]
+        });
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "refusals: {refusals:?}");
+        let solid = hist.shapes.get("r1").expect("partial revolve must build");
+        let vol = build::solid_volume(solid);
+        let want = std::f64::consts::PI * (400.0 - 100.0) * 30.0 / 4.0;
+        assert!((want - 7068.583471).abs() < 1e-3, "closed form {want} vs OCCT 7068.583471");
+        assert!((vol - want).abs() <= 1e-6 * want, "volume {vol} vs {want}");
+        assert_eq!(solid.faces().len(), 6, "4 walls + 2 caps");
+        let bb = build::solid_aabb(solid);
+        for i in 0..3 {
+            assert!(bb.lo[i].abs() <= 1e-9, "bbox lo[{i}] {}", bb.lo[i]);
+        }
+        let want_hi = [20.0, 20.0, 30.0];
+        for i in 0..3 {
+            assert!((bb.hi[i] - want_hi[i]).abs() <= 1e-9, "bbox hi[{i}] {}", bb.hi[i]);
+        }
+        // Naming: both caps exist and resolve through the history, and the
+        // walls keep their `swept` names (same vocabulary as the full turn).
+        let doc_json = doc.to_string();
+        for (end, want_idx) in [("bottom", 4usize), ("top", 5usize)] {
+            let name = json!({ "cause": "cap", "feature": "r1", "kind": "face", "end": end });
+            let resolved: Value = serde_json::from_str(&resolve(&doc_json, &name.to_string()))
+                .expect("cap name must resolve");
+            assert_eq!(resolved["kind"], "face", "cap {end}");
+            assert_eq!(resolved["faceIndex"], want_idx, "cap {end} index");
+        }
+        let side = json!({ "cause": "swept", "feature": "r1", "kind": "face", "from": "sk1", "edge": 0 });
+        let resolved: Value = serde_json::from_str(&resolve(&doc_json, &side.to_string()))
+            .expect("wall name must resolve");
+        assert_eq!(resolved["kind"], "face", "wall edge0");
+    }
+
+    /// W4: Body Draft (`whole: true`) of a 40x40x20 box, 8 degrees, pull z.
+    /// The model is OCCT's own one-operation DraftAngle semantics (all four
+    /// side faces at once): a cross-section at pull coordinate `u` has
+    /// half-extent `20 - (u - neutral) * tan(8)`. OCCT lead-measured via the
+    /// gate's harness at ~1e-9 on the three neutrals below. Before W4 the
+    /// branch refused "can only draft one face yet".
+    #[test]
+    fn draft_whole_volume_faces_bbox() {
+        let t = 8.0_f64.to_radians().tan();
+        let h = 10.0_f64;
+        // V = integral over u in [-h, h] of (2(a - t u))^2, a = 20 + neutral*t.
+        // Simpson with 3 points is exact for this quadratic integrand.
+        let vol_of = |neutral: f64| {
+            let a = 20.0 + neutral * t;
+            let f = |u: f64| 4.0 * (a - t * u).powi(2);
+            2.0 * h / 6.0 * (f(-h) + 4.0 * f(0.0) + f(h))
+        };
+        // OCCT one-op references (gate harness, 2026-09-15).
+        for (neutral, want) in [
+            (-10.0_f64, 27713.378369_f64),
+            (0.0, 32052.671270),
+            (10.0, 36707.991790),
+        ] {
+            let doc = json!({
+                "features": [
+                    { "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0], "center": [0.0, 0.0, 0.0] },
+                    { "id": "d1", "kind": "draft", "target": "b1", "angle": 8.0, "pull": "z", "neutral": neutral, "whole": true }
+                ]
+            });
+            let (hist, refusals) = build_doc(&doc);
+            assert!(refusals.is_empty(), "neutral {neutral} refusals: {refusals:?}");
+            let solid = hist.shapes.get("d1").expect("whole draft must build");
+            let vol = build::solid_volume(solid);
+            assert!(
+                (vol - want).abs() <= 1e-4,
+                "neutral {neutral}: volume {vol} vs OCCT {want}"
+            );
+            let closed = vol_of(neutral);
+            assert!(
+                (vol - closed).abs() <= 1e-6 * closed,
+                "neutral {neutral}: volume {vol} vs closed form {closed}"
+            );
+            assert_eq!(solid.faces().len(), 6, "still a hexahedron");
+            // bbox: the transverse half-extent is linear in the pull
+            // coordinate, so its widest value is at one of the two ends; the
+            // pull extents are untouched. (Signs differ by end when the
+            // neutral sits outside the box, hence the max over both.)
+            let mut far = 20.0_f64;
+            for u in [-h, h] {
+                far = far.max(20.0 - (u - neutral) * t);
+            }
+            let bb = build::solid_aabb(solid);
+            let want_lo = [-far, -far, -10.0];
+            let want_hi = [far, far, 10.0];
+            for i in 0..3 {
+                assert!((bb.lo[i] - want_lo[i]).abs() <= 1e-6, "neutral {neutral} bbox lo[{i}] {}", bb.lo[i]);
+                assert!((bb.hi[i] - want_hi[i]).abs() <= 1e-6, "neutral {neutral} bbox hi[{i}] {}", bb.hi[i]);
+            }
+        }
+    }
+
+    /// W4 refusal: a whole draft that would collapse a wall (here 60 degrees
+    /// with the neutral at the bottom) is refused with the Tilting sentence
+    /// and the target is kept. OCCT's own one-op Build returns not-done on
+    /// this input (measured), so refusing is parity, not a shortcut.
+    #[test]
+    fn draft_whole_too_steep_refuses() {
+        let doc = json!({
+            "features": [
+                { "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0], "center": [0.0, 0.0, 0.0] },
+                { "id": "d1", "kind": "draft", "target": "b1", "angle": 60.0, "pull": "z", "neutral": -10.0, "whole": true }
+            ]
+        });
+        let (hist, refusals) = build_doc(&doc);
+        let text = refusals.get("d1").and_then(|v| v.as_str()).unwrap_or_default();
+        assert!(text.contains("would not fit") && text.contains("without it"), "refusal: {text}");
+        let solid = hist.shapes.get("d1").expect("target kept");
+        assert!((build::solid_volume(solid) - 32000.0).abs() < 1e-6, "unchanged box");
+        let name = name_edge(&doc.to_string(), "b1", 0);
+        assert!(name != "null", "the kept box is still nameable: {name}");
+    }
+
+    /// S1: a sketch carrying an explicit `frame` extrudes flat on that frame.
+    /// A 40x25 rectangle swept 12 along the frame normal is the same prism
+    /// volume as the named-plane fixture (12000), with the same 6 faces -- but
+    /// here the frame is an arbitrary tilted plane, which no named plane can
+    /// express. The normal is u x v, so the extrude direction follows the
+    /// frame rather than any world axis.
+    #[test]
+    fn sketch_frame_arbitrary_plane_extrudes() {
+        // A frame tilted 45 degrees: u along +X, v up-and-out, n = u x v.
+        let s = std::f64::consts::FRAC_1_SQRT_2;
+        let doc = json!({
+            "features": [
+                {
+                    "id": "sk1", "kind": "sketch", "plane": "xy", "offset": 0.0,
+                    "frame": { "origin": [0.0, 0.0, 0.0], "u": [1.0, 0.0, 0.0], "v": [0.0, s, s] },
+                    "points": [[0.0, 0.0], [40.0, 0.0], [40.0, 25.0], [0.0, 25.0]]
+                },
+                { "id": "e1", "kind": "extrude", "target": "sk1", "height": 12.0 }
+            ]
+        });
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "refusals: {refusals:?}");
+        let solid = hist.shapes.get("e1").expect("framed extrude must build");
+        let vol = build::solid_volume(solid);
+        assert!((vol - 12000.0).abs() <= 1e-6 * 12000.0, "volume {vol} vs 12000");
+        assert_eq!(solid.faces().len(), 6, "a swept rectangle is 6 faces");
+        // Swept along n = u x v = (0, -s, s): the prism's z reach is the
+        // rectangle's own v extent (25) PLUS the 12-unit sweep, both scaled by
+        // s -- the frame tilts the whole solid, not just the sweep.
+        let bb = build::solid_aabb(solid);
+        let z_expect = (25.0 + 12.0) * s;
+        assert!((bb.hi[2] - z_expect).abs() <= 1e-5, "bbox z hi {} vs {z_expect}", bb.hi[2]);
+        assert!((bb.hi[0] - 40.0).abs() <= 1e-9, "u axis is untouched: {}", bb.hi[0]);
+    }
+
+    /// S1: a framed sketch's volume is INDEPENDENT of the frame's world
+    /// orientation (the prism is congruent), which is the property that makes
+    /// sketch-on-a-face safe to add without touching the named-plane path.
+    #[test]
+    fn sketch_frame_orientation_invariant_volume() {
+        let vols: Vec<f64> = [
+            ([1.0, 0.0, 0.0], [0.0, 1.0, 0.0]),
+            ([0.0, 1.0, 0.0], [0.0, 0.0, 1.0]),
+            ([1.0, 0.0, 0.0], [0.0, 0.0, 1.0]),
+        ]
+        .iter()
+        .map(|(u, v)| {
+            let doc = json!({
+                "features": [
+                    {
+                        "id": "sk1", "kind": "sketch", "plane": "xy", "offset": 0.0,
+                        "frame": { "origin": [0.0, 0.0, 0.0], "u": *u, "v": *v },
+                        "points": [[0.0, 0.0], [40.0, 0.0], [40.0, 25.0], [0.0, 25.0]]
+                    },
+                    { "id": "e1", "kind": "extrude", "target": "sk1", "height": 12.0 }
+                ]
+            });
+            let (hist, refusals) = build_doc(&doc);
+            assert!(refusals.is_empty(), "refusals: {refusals:?}");
+            build::solid_volume(hist.shapes.get("e1").expect("must build"))
+        })
+        .collect();
+        for v in &vols {
+            assert!((v - 12000.0).abs() <= 1e-6 * 12000.0, "volume {v} vs 12000");
+        }
     }
 
     /// SPEC-brep-blend.md fixture: a square frustum, square 40 at z=0 to
@@ -2537,18 +3145,18 @@ fn round_box(size: Vec3, center: Vec3, round: f64, style: &str, rotated: bool) -
 
 /// Dispatch the cylinder `round` primitive field (SPEC-brep-round.md):
 /// refuse a size that would not fit (round radius must leave a positive cap
-/// and a positive shortened wall on both ends), then build. `chamfer` style
-/// on a cylinder is a conical rim (not one of this dispatch's fixtures) and
-/// is refused rather than guessed at.
+/// and a positive shortened wall on both ends), then build fillet (quarter
+/// torus) or chamfer (bounded 45-degree cone band).
 fn dispatch_round_cylinder(center: Vec3, radius: f64, height: f64, round: f64, style: &str) -> Result<TSolid, String> {
     let rad = round.abs();
     if rad <= 0.0 || rad >= radius - 1e-9 || rad >= height / 2.0 - 1e-9 {
         return Err(format!("Rounding cylinder by {round} would not fit its radius or height"));
     }
     if style == "chamfer" {
-        return Err("Chamfering a cylinder is not supported by brep-rs yet".to_string());
+        Ok(build::chamfer_cylinder(center, radius, height, [0.0, 0.0, 1.0], rad))
+    } else {
+        Ok(build::round_cylinder(center, radius, height, [0.0, 0.0, 1.0], rad))
     }
-    Ok(build::round_cylinder(center, radius, height, [0.0, 0.0, 1.0], rad))
 }
 
 /// The round-primitive box, chamfer style (SPEC-brep-round.md): 6 flat faces

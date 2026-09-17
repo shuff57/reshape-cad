@@ -503,6 +503,11 @@ pub struct Cone {
     pub half_angle: f64,
     /// Slant height from base to apex.
     pub slant: f64,
+    /// The slant (v) domain, [0, slant] for a full cone. A cylinder's chamfered
+    /// rim (SPEC-brep-round.md) is a bounded 45-degree band between the
+    /// shortened wall (v=0) and the shrunken cap (v=slant), same shape of
+    /// trim the round-primitive torus rim uses. u is always the full turn.
+    pub v_range: [f64; 2],
 }
 
 #[derive(Clone, Debug)]
@@ -654,6 +659,7 @@ impl Surface {
                 base_radius: c.base_radius,
                 half_angle: c.half_angle,
                 slant: c.slant,
+                v_range: c.v_range,
             }),
             Surface::Sphere(s) => Surface::Sphere(SphereSurf {
                 center: t.apply(s.center),
@@ -697,7 +703,7 @@ impl Surface {
                 };
                 (ur, [c.vmin, c.vmax])
             }
-            Surface::Cone(c) => ([0.0, two_pi], [0.0, c.slant]),
+            Surface::Cone(c) => ([0.0, two_pi], c.v_range),
             Surface::Sphere(s) => (s.u_range, s.v_range),
             Surface::Torus(s) => ([0.0, two_pi], s.v_range),
         }
@@ -924,20 +930,29 @@ impl Surface {
             }
             Surface::Cone(c) => {
                 let a = normalize(c.axis);
-                // base disk
+                // A cone is a disk of radius r(v) swept along the axis: the
+                // radial extreme in world axis i is r(v0)*sqrt(1-a_i^2) at the
+                // WIDEST end (r shrinks with v), and the axial term spans the
+                // v_range's own endpoints. For the full cone that reduces to
+                // the base disk plus the apex; for a bounded 45-degree chamfer
+                // band it is the band's two rims, never the missing apex.
+                let (v0, v1) = (c.v_range[0], c.v_range[1]);
+                let max_r = (c.base_radius - v0 * c.half_angle.sin()).max(0.0);
+                let (ax0, ax1) = (v0 * c.half_angle.cos(), v1 * c.half_angle.cos());
                 for i in 0..3 {
                     let s = (1.0 - a[i] * a[i]).max(0.0).sqrt();
-                    let mut p = c.base;
-                    p[i] += c.base_radius * s;
-                    b.expand(p);
-                    let mut q = c.base;
-                    q[i] -= c.base_radius * s;
-                    b.expand(q);
+                    let (alo, ahi) = {
+                        let p = a[i] * ax0;
+                        let q = a[i] * ax1;
+                        (p.min(q), p.max(q))
+                    };
+                    let mut lo = c.base;
+                    lo[i] += -max_r * s + alo;
+                    let mut hi = c.base;
+                    hi[i] += max_r * s + ahi;
+                    b.expand(lo);
+                    b.expand(hi);
                 }
-                b.expand(c.base);
-                // apex
-                let apex = add(c.base, scale(a, c.slant * c.half_angle.cos()));
-                b.expand(apex);
             }
             Surface::Sphere(s) => {
                 // Untrimmed: isotropic, so ±radius on every world axis is
