@@ -1,8 +1,9 @@
 //! Layer `wasm`: the wasm-bindgen surface, the only module that knows about JS
 //! (§4.7). JSON in, JSON out, so the gate stays independent of the Rust types.
 //!
-//! Exports exactly `version`, `measure_doc` and `resolve`, with the names and
-//! shapes §4.7 fixes. Do not change them.
+//! Exports `version`, `measure_doc` and `resolve` (the §4.7 gate contract --
+//! do not change their names or shapes) plus `mesh_feature`, `export_step`
+//! and `measure_step`.
 
 use crate::build::{self, TSolid};
 use crate::geom::Surface;
@@ -1599,6 +1600,26 @@ pub fn export_step(doc_json: &str, feature_id: &str) -> String {
     }
 }
 
+/// Measure one imported STEP part file (SPEC §4.5). The shape is ONE ENTRY of
+/// `measure_doc`'s `shapes` map -- `{volume, bbox, faces, edges}`, no
+/// `shapes` wrapper -- so an imported solid is measurable exactly like a
+/// built one. `read_solid` refuses in plain words rather than returning a
+/// wrong solid (SPEC §4.5), so `{"error": ...}` is the honest path, not a
+/// crash.
+#[wasm_bindgen]
+pub fn measure_step(text: &str) -> String {
+    match crate::step_in::read_solid(text) {
+        Ok(solid) => json!({
+            "volume": build::solid_volume(&solid),
+            "bbox": bbox_json(&solid),
+            "faces": solid.faces().len(),
+            "edges": solid.edges().len(),
+        })
+        .to_string(),
+        Err(why) => json!({ "error": why }).to_string(),
+    }
+}
+
 /// Resolve one TopoName against the document. Returns the face's area/centroid,
 /// the edge's length/centroid, or null — never a guess (§4.7).
 #[wasm_bindgen]
@@ -3039,6 +3060,56 @@ mod tests {
         );
         let solid = hist.shapes.get("d1").expect("src kept");
         assert!((build::solid_volume(solid) - 32000.0).abs() < 1e-6, "unchanged box");
+    }
+
+    /// `measure_step` refuses in JSON, never by crashing or panicking: an
+    /// empty string and a non-STEP text must both parse to an object with an
+    /// `error` key (asserted by parsing, not substring sniffing).
+    #[test]
+    fn measure_step_bad_text_is_json_error() {
+        for text in ["", "not a step file"] {
+            let out: Value =
+                serde_json::from_str(&measure_step(text)).expect("output must be valid json");
+            assert!(out.get("error").is_some(), "{text:?}: expected error key, got {out}");
+        }
+    }
+
+    /// measure_step's success payload must be ONE ENTRY of measure_doc's
+    /// `shapes` map: exactly `volume`, `bbox`, `faces`, `edges`, no `shapes`
+    /// wrapper. `read_solid` is a stub (`Err`) today, so the Ok arm cannot be
+    /// reached end-to-end yet; this pins the contract on measure_doc's real
+    /// entry plus the same json! block measure_step returns, and the imported
+    /// solid case itself is the orchestrator's OCCT-oracle harness once
+    /// `read_solid` lands.
+    #[test]
+    fn measure_step_success_shape_is_one_measure_doc_entry() {
+        let doc = json!({
+            "features": [{ "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0] }]
+        });
+        // measure_doc's real per-shape entry:
+        let parsed: Value =
+            serde_json::from_str(&measure_doc(&doc.to_string())).expect("measure_doc json");
+        let entry = parsed["shapes"]["b1"].clone();
+        let mut doc_keys: Vec<&str> =
+            entry.as_object().expect("shape object").keys().map(|k| k.as_str()).collect();
+        doc_keys.sort_unstable();
+
+        // The payload measure_step's Ok arm builds (same json! block):
+        let (hist, _) = build_doc(&doc);
+        let solid = hist.shapes.get("b1").expect("box must build");
+        let step_shape = json!({
+            "volume": build::solid_volume(solid),
+            "bbox": bbox_json(solid),
+            "faces": solid.faces().len(),
+            "edges": solid.edges().len(),
+        });
+        let mut step_keys: Vec<&str> =
+            step_shape.as_object().expect("shape object").keys().map(|k| k.as_str()).collect();
+        step_keys.sort_unstable();
+
+        assert_eq!(doc_keys, ["bbox", "edges", "faces", "volume"], "measure_doc entry keys");
+        assert_eq!(step_keys, doc_keys, "measure_step success shape == one measure_doc entry");
+        assert!(step_shape.get("shapes").is_none(), "no shapes wrapper");
     }
 }
 
