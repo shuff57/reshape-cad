@@ -12,6 +12,8 @@
 //! history   per-operation naming history (§4.6)
 //! mesh      tessellation for three.js
 //! step      STEP read/write
+//! step_read STEP part-file tokenizer and entity graph
+//! step_in   rebuild a solid from a parsed STEP graph
 //! wasm      wasm-bindgen surface, the only module that knows about JS (§4.7)
 //! ```
 //!
@@ -27,4 +29,6 @@ pub mod ops;
 pub mod history;
 pub mod mesh;
 pub mod step;
+pub mod step_read;
+pub mod step_in;
 pub mod wasm;
