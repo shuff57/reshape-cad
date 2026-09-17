@@ -2838,7 +2838,8 @@ const selectionBadgeStyle: React.CSSProperties = {
 //
 // left: 12 (was 70). The 46px collapsed rail it dodged is now a docked
 // column outside the canvas -- SandboxWorkspace.tsx's Build-mode "Code" card
-// rail (`#editorPane.is-card-empty`/`.is-tools-hidden`) no longer overlays
+// rail (is-card-empty state removed in adoption step 2; `.is-tools-hidden`)
+// no longer overlays
 // this component. HISTORICAL (resolved 2026-09-16, adoption step 2): FOUND
 // BY AN ACTUAL FAILED CLICK, not by inspection -- that rail was pinned at
 // left:12 for the ENTIRE canvas height over this canvas (the two panes were

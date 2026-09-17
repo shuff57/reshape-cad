@@ -1072,8 +1072,10 @@ export default function ReshapeStudio({
   // outrank the generic build-failed note); (2) stale 'error' WITHOUT one ->
   // conflict (first refusal, else the generic build-failed text); (3) a
   // refusal -> conflict; (4) a script error on its own -> conflict;
-  // (5) stale 'empty' -> status ("the last version that worked is on
-  // screen"); (6) rebuild timing -> status; (7) quiet (null).
+  // (5) stale 'empty' -> status (Build: "the last version that worked is on
+  // screen"; Code: "Script ran but built nothing..." -- the runner withholds
+  // the doc for an empty result, so Code has no last version); (6) rebuild
+  // timing -> status; (7) quiet (null).
   const statusNote: StudioNote | null = useMemo(() => {
     if (stale === 'error') {
       if (scriptErrorMessage) {
@@ -1096,13 +1098,18 @@ export default function ReshapeStudio({
       return { severity: 'conflict', text: scriptErrorMessage, source: 'script' };
     }
     if (stale === 'empty') {
-      return { severity: 'status', text: 'The last version that worked is on screen.' };
+      // Mode-aware (2026-09-16 polish): a script that built nothing withholds
+      // its doc entirely, so in Code mode "the last version that worked" is a
+      // lie -- nothing ran to completion. Build mode keeps the original text.
+      return build
+        ? { severity: 'status', text: 'The last version that worked is on screen.' }
+        : { severity: 'status', text: 'Script ran but built nothing — add a shape (box, cylinder…) and Run again.' };
     }
     if (rebuildMs != null) {
       return { severity: 'status', text: `rebuilt in ${rebuildMs} ms` };
     }
     return null;
-  }, [stale, refusals, scriptErrorMessage, rebuildMs]);
+  }, [stale, refusals, scriptErrorMessage, rebuildMs, build]);
 
   return (
           <div
@@ -1655,6 +1662,9 @@ export default function ReshapeStudio({
           background: rgba(40, 42, 54, 0.72);
         }
         .reshape-studio.is-tools-hidden .reshape-studio-rules { display: none; }
+        /* The 46px rail can't hold the kicker's label ("Browser" truncates) --
+           hide the strip entirely; the rail's own tools below stay intact. */
+        .reshape-studio.is-tools-hidden .reshape-studio-tools-kicker { display: none; }
         .reshape-studio-tools {
           flex: 1 1 auto;
           min-height: 0;

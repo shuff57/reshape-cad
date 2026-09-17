@@ -2164,7 +2164,7 @@ export default function ModelEditor({
                 </button>
                 <li
                   className={
-                    'model-row' + (on ? ' is-on' : '') + (shownIds.has(f.id) ? '' : ' is-consumed') + (rolledBack ? ' is-rolled-back' : '')
+                    'model-row' + (on ? ' is-on' : '') + (shownIds.has(f.id) ? '' : ' is-consumed') + (rolledBack ? ' is-rolled-back' : '') + (refusedWhy ? ' is-refused' : '')
                   }
                   onClick={(e) => pick(f.id, e.ctrlKey || e.metaKey || e.shiftKey)}
                   title={refusedWhy}
@@ -2554,24 +2554,36 @@ export default function ModelEditor({
           gap: 2px;
           min-width: 96px;
           max-width: 180px;
-          padding: 5px 8px;
+          padding: 5px 8px 3px;
           border: 1px solid var(--reshape-border);
-          border-radius: var(--reshape-radius);
+          border-bottom: 2px solid var(--reshape-text-muted);
+          border-radius: 3px;
           background: rgba(40, 42, 54, 0.6);
+          font-size: 11px;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.04em;
         }
         .model-timeline .model-row:hover { background: #343746; }
         .model-timeline .model-row.is-on {
           background: var(--reshape-border);
-          border-color: var(--reshape-text-muted);
+          border-color: var(--reshape-pink);
+          border-bottom-color: var(--reshape-pink);
         }
         .model-timeline .model-row.is-consumed { opacity: 0.55; }
+        /* Chip state accents (shCode skin, §4a): the 2px bottom bar carries
+           the chip's state -- selected pink, refused danger, everything
+           else pending-muted. */
+        .model-timeline .model-row.is-refused {
+          border-bottom-color: var(--reshape-danger);
+        }
         /* Suppressed by the rollback bar: features at or past the boundary are
            hidden from the rebuilt model. More suppressed than is-consumed so
            the two read as distinct states (a feature can be both). */
         .model-timeline .model-row.is-rolled-back { opacity: 0.35; filter: grayscale(0.6); }
-        /* The rollback bar handle: a thin vertical divider between chips.
-           Click-to-set, not drag -- a deliberate adaptation of Onshape's
-           draggable bar to reSHape's horizontal timeline. */
+        /* The rollback tick between chips: a hairline divider, click-to-set
+           (not drag -- a deliberate adaptation of Onshape's draggable bar to
+           reSHape's horizontal timeline). */
         .model-timeline .model-rollback-handle {
           flex: 0 0 auto;
           align-self: stretch;
@@ -2585,13 +2597,14 @@ export default function ModelEditor({
           cursor: pointer;
           border-radius: 2px;
         }
-        .model-timeline .model-rollback-handle:hover { background: #343746; }
+        .model-timeline .model-rollback-handle:hover { background: transparent; }
         .model-timeline .model-rollback-line {
-          width: 2px;
-          height: 100%;
+          width: 1px;
+          height: 16px;
           background: var(--reshape-text-muted);
           border-radius: 1px;
         }
+        .model-timeline .model-rollback-handle:hover .model-rollback-line,
         .model-timeline .model-rollback-handle.is-active .model-rollback-line {
           background: var(--reshape-accent);
         }
@@ -2603,7 +2616,7 @@ export default function ModelEditor({
         .model-timeline .model-name {
           flex: 1 1 auto;
           min-width: 0;
-          font-size: 12px;
+          font-size: 11px;
           line-height: 1.3;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -2614,6 +2627,22 @@ export default function ModelEditor({
            nothing (see .model-timeline .model-name), so there the row's title
            and aria-label carry it, with the ⚠ glyph alone as the marker. */
         .model-timeline .model-refused-why { display: none; }
+        /* The ⚠ as a shCode warn badge (§4a idiom): danger tint at 13% bg /
+           33% border, tiny chip radius. Timeline-only -- the panel list keeps
+           the bare glyph. */
+        .model-timeline .model-refused {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          margin-left: 4px;
+          padding: 0 4px;
+          font-size: 11px;
+          font-weight: 600;
+          color: var(--reshape-danger);
+          background: rgba(255, 85, 85, 0.13);
+          border: 1px solid rgba(255, 85, 85, 0.33);
+          border-radius: 3px;
+        }
         .model-timeline .model-move {
           position: absolute;
           right: 2px;
