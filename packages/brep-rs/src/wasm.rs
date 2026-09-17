@@ -1573,6 +1573,32 @@ pub fn mesh_feature(doc_json: &str, feature_id: &str, deflection: f64) -> String
     }
 }
 
+/// Write one feature's built solid as a STEP part file (SPEC §3: "STEP export
+/// and import"). Returns `{"step": "<file text>"}`, or `{"error": ...}` when the
+/// feature is missing, was refused, or holds geometry `step::write_solid` has no
+/// exact STEP counterpart for. JSON either way, so a caller tells the two apart
+/// without sniffing the payload.
+#[wasm_bindgen]
+pub fn export_step(doc_json: &str, feature_id: &str) -> String {
+    let doc: Value = match serde_json::from_str(doc_json) {
+        Ok(v) => v,
+        Err(e) => return json!({ "error": format!("bad doc json: {e}") }).to_string(),
+    };
+    let (hist, refusals) = build_doc(&doc);
+    let Some(solid) = hist.shapes.get(feature_id) else {
+        let why = refusals
+            .get(feature_id)
+            .and_then(|r| r.as_str())
+            .map(|r| r.to_string())
+            .unwrap_or_else(|| format!("feature {feature_id} not found"));
+        return json!({ "error": why }).to_string();
+    };
+    match crate::step::write_solid(solid, feature_id) {
+        Ok(text) => json!({ "step": text }).to_string(),
+        Err(why) => json!({ "error": why }).to_string(),
+    }
+}
+
 /// Resolve one TopoName against the document. Returns the face's area/centroid,
 /// the edge's length/centroid, or null — never a guess (§4.7).
 #[wasm_bindgen]

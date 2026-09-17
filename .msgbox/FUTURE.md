@@ -98,11 +98,17 @@ current map, 3D and 2D, is the closeout section at the end of
    plus an enclosed-cavity path. There is no general surface-surface
    intersection. **Still open, and now understood as the keystone (W5)**: items
    1, 2 and 6 all bottom out here.
-8. ~~`mesh.rs` and `step.rs` are still stubs~~ **HALF RESOLVED.** `mesh.rs` is
-   done (1,319 lines, its own lead-owned gate at 61/61, adapter wired, and it
-   renders in the studio — see the entry above). `step.rs` is still four lines
-   and a `placeholder()`, so export/import is untouched. It is the one spec
-   clause that depends on nothing else.
+8. ~~`mesh.rs` and `step.rs` are still stubs~~ **RESOLVED for `mesh.rs`, and
+   `step.rs` now WRITES (W9a, 2026-09-17).** `mesh.rs` is done (1,319 lines, its
+   own lead-owned gate at 61/61, adapter wired, and it renders in the studio —
+   see the entry above). `step.rs` exports an AP214 advanced B-rep, verified by
+   reading every written file back through OCCT's own `STEPControl_Reader`:
+   55 of 61 fixtures written and all 55 agree with the kernel on volume, bbox
+   and face count, with cone/sphere/torus refused in plain words. **Still open:
+   STEP IMPORT**, which has a hazard of its own — a face's trim lives on the
+   surface here and in the loops in STEP, and a boolean-carved sphere trim
+   cannot be recovered from loops, so an importer must refuse rather than
+   rebuild a face that then measures wrong. See W9a in `docs/kernel-campaign.md`.
 9. There is no naming history for mirror, pattern, pocket, groove, hole, shell or
    fillet results. **Still open verbatim, re-verified 2026-09-17:** `OpRecord`
    is constructed at exactly two sites, `move` and `combine`, and

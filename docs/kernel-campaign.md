@@ -307,6 +307,96 @@ OCCT 31773.805329, 8 faces) to the `hole` kind. It pins the silent-wrong-volume
 class the gate could not see. The corner-bore and counterbore cases are NOT
 ready for fixtures -- they still differ/refuse.
 
+## W9a — STEP export — DONE (2026-09-17)
+
+**Problem.** `step.rs` was four lines and a `placeholder()`, so of the campaign's
+five definition-of-done clauses this was the only one with no code at all. It is
+also the only clause that depends on nothing else, which is why it went first
+rather than waiting behind W5.
+
+**What it writes.** An AP214 `ADVANCED_BREP_SHAPE_REPRESENTATION` with real
+analytic geometry: `PLANE` and `CYLINDRICAL_SURFACE`, `LINE` and `CIRCLE`,
+welded `EDGE_CURVE`s, `CLOSED_SHELL`, and `MANIFOLD_SOLID_BREP` per body or
+`BREP_WITH_VOIDS` when a body encloses a cavity. A faceted STEP was considered
+and rejected: the tessellator is already gated and would have been far easier,
+but §4.5's REJECTED note rules out shipping a faceted approximation in place of
+a B-rep, and the extension on the file does not change that.
+
+**Refuses, in plain words:** conical, spherical and toroidal faces (6 of the 61
+fixtures: `cone`, `sphere`, `torus`, `box-round-fillet`, `cylinder-round-fillet`,
+`boolean-sphere-minus-box`), a cylindrical face with a hole in it, a planar wire
+that is not a closed chain, and a shape with several bodies AND cavities at once
+(which body a cavity sits in is a containment question this does not answer, and
+guessing it would hand back a wrong solid). The whole solid is refused, never
+part of it.
+
+**THE VERIFICATION IS OCCT, NOT A ROUND TRIP.** A writer that only round-trips
+through its own reader proves nothing about the format. The bundled OCCT wasm
+binds `STEPControl_Reader`, so every written file is read back by a FOREIGN
+kernel and compared against `measure_doc` for the same feature: volume and bbox
+to 1e-6 relative, face count exactly, and `BRepCheck_Analyzer` must call the
+shape valid. **55 of 61 fixtures written, all 55 pass; 6 refused.**
+
+**Five defects OCCT found that no self-round-trip could have:**
+1. **Complex entity part order.** `( NAMED_UNIT(*) LENGTH_UNIT(*) SI_UNIT(...) )`
+   must be alphabetical, `( LENGTH_UNIT() NAMED_UNIT(*) SI_UNIT(...) )`, and only
+   the supertype whose attribute is redeclared takes `*`. Wrong order threw NO
+   error: OCCT failed to bind the length unit, fell back to METRE, and every
+   solid came back 1e9 times too big.
+2. **Loop winding.** A loop is counterclockwise in the SURFACE's parameter
+   space, and the face's `same_sense` together with the bound's own orientation
+   flag carry any flip -- OCCT's invariant in all three of its own files read
+   while writing this. Turning a bore's loop round instead was rejected by
+   `BRepCheck` on 12 fixtures at once.
+3. **Cylinder loops cannot be translated from the face's wire.** A rim is a full
+   circle, so a wire of [rim, seam, rim, seam] passes any point-continuity test
+   however each rim is recorded, and the kernel does not keep them consistent
+   because nothing that measures a cylinder reads them. `boolean-union` had both
+   rims turning the same way: closed in space, wound TWICE in parameter space,
+   rebuilt by OCCT as one edge of two full turns, 2608.37 of volume gone.
+   Cylindrical boundaries are now synthesised from `vmin`/`vmax`/`arc` -- the
+   same fields the kernel's own volume integral uses.
+4. **Who fixes a rim's seam vertex.** A closed circle's vertex is arbitrary on
+   its own (a cap's hole bound is one circle and joins nothing) but a wall
+   chains that circle to a seam ruling and the two must meet. Writing the cap
+   first put a bore's rim vertex 90 degrees from its own seam and left the wire
+   disconnected -- valid edges, invalid wire. Chained faces are written first.
+5. **Welding is per SHELL, not per solid.** `mirror` leaves two boxes meeting at
+   x=20; welding by geometry across them merged 4 edges and 4 vertices into one
+   non-manifold shell, which OCCT took apart again into 13 faces and 3 shells
+   for a 12-face 2-body shape. The kernel's own shell list is the authority on
+   which faces form a body.
+
+**Evidence.** cargo 68/68 (was 63: five new tests in `step.rs`); parity 61/0;
+mesh 61/61; OCCT ModelDoc 17/17; kernel JS suite 98/98; `tsc` clean on all five
+packages. Cross-kernel STEP check 55/55 as above. New wasm export
+`export_step(doc_json, feature_id) -> {"step": ...} | {"error": ...}`; the three
+gate-contract exports (§4.7) are untouched.
+
+**NOT done, and the clause is only half closed: STEP IMPORT.** Export was the
+half worth having first -- it is what a student sending a part to a printer
+needs -- but §3 asks for both. Import is a separate slice with a hazard of its
+own: the trim of a face lives on the SURFACE here (`SphereSurf::trim`,
+`Cylinder::arc`), while in STEP it lives in the loops, and the boolean-carved
+sphere trim cannot be recovered from loops at all. An importer must therefore
+REFUSE what it cannot represent exactly rather than rebuild a face whose area
+and volume then measure wrong -- the silent-wrong-volume class of W2a. Do not
+start it without that rule.
+
+**Also not done:** cone, sphere and torus surfaces. Each needs degenerate
+topology (an apex, two poles, or a doubly-closed surface) which is where STEP
+writers usually go wrong, and each should be added against the OCCT read-back
+one at a time.
+
+**Fixture request for the lead:** none. This needs a GATE, not a fixture --
+`scripts/brep-parity-gate.mjs` cannot see `export_step` at all. The harness used
+here is a scratch script (`/tmp/opencode/step-parity.mjs`, uncommitted, in V0's
+tradition): for each fixture it calls `export_step`, reads the file with
+`STEPControl_Reader`, and compares against `measure_doc` plus
+`BRepCheck_Analyzer`. Promoting that into a lead-owned `brep-step-gate.mjs`
+would make this a real gate; until then W9a is held by native tests and a
+scratch harness only.
+
 ## Closeout map — what is left, 2026-09-17
 
 A read-only survey, not a slice: no code was built and no gate was run (see
@@ -339,10 +429,17 @@ The header states five clauses. Where each one stands, read from source today:
    `OpKind::Fillet` and `OpKind::Shell` are declared in history.rs and never
    constructed. So mirror, pattern, pocket, groove, hole, shell and fillet
    record no history at all, and a name cannot be carried through any of them.
-4. **"STEP export/import exists" — NOT met.** `step.rs` is four lines and a
-   `placeholder()`. Both directions are in spec §3 scope.
-5. **"all gates green" — last recorded green at W2a (2026-09-16):** cargo 63/63,
-   parity 61/0, mesh 61/61, OCCT ModelDoc 17/17. Not re-run since.
+4. **"STEP export/import exists" — HALF met (W9a, 2026-09-17).** Export is real
+   and verified against OCCT's own reader on 55 of 61 fixtures, with cone,
+   sphere and torus refused. Import is untouched, and W9a's entry records the
+   trim hazard that has to be designed for before it starts.
+5. **"all gates green" — YES, re-run 2026-09-17:** cargo 68/68, parity 61/0,
+   mesh 61/61, OCCT ModelDoc 17/17, kernel JS 98/98, `tsc` clean. One
+   pre-existing failure in `packages/script` (101 tests, 1 fail) is an artifact
+   of running the suites under `bun` rather than node: bun's JSC writes
+   "Cannot access 'box' before initialization." with a trailing period, and
+   `reshape-script.ts:308` anchors its TDZ regex on `initialization$`. It passes
+   on real node; nothing was changed to accommodate it.
 
 Size is the one clause already won outright: ~122 KB gzipped against the
 7,250,252-byte OCCT target (§8 decision 3), a ~59x margin.
@@ -372,10 +469,9 @@ slices bottom out here:
 
 **Independent of W5, can run in parallel:**
 
-- **W9 — STEP.** Touches only `step.rs`. The one remaining spec clause with no
-  dependency on anything else, and round-trip (write, read back, compare volume
-  and face count) is checkable in `cargo test` without OCCT. The cheapest whole
-  clause left to close.
+- **W9 — STEP.** Export DONE (W9a, above). What is left is IMPORT, plus the
+  cone/sphere/torus surfaces on the export side, plus promoting the scratch
+  cross-kernel harness into a lead-owned gate. Still independent of W5.
 - **History for the seven kinds that record none** -- mirror, pattern, pocket,
   groove, hole, shell, fillet (clause 3 above). Mechanical next to W5, and
   `OpKind::Fillet`/`OpKind::Shell` already exist as variants waiting to be
@@ -441,11 +537,25 @@ the frame-mirror bug W6 found.
 
 ### Verification note
 
-This survey was written on a machine with **no Rust toolchain, no `wasm-pack`,
-no npm and no `node_modules`**, and `packages/brep-rs/pkg` does not exist, so
-cargo, the parity gate and the mesh gate could not be run. Everything above is
-read from source or quoted from earlier slice reports, and every line number was
-checked against the file today. The two checkers that are dependency-free WERE
-run: `check-record.mjs` (OK, 3 rows) and `check-freecad-parity.mjs` (30/46
-shipped, 5 queued, 11 refused, exit 1) -- the latter showing `docs/parity.md`
-had been stale at 22/46, now corrected.
+The survey above was first written with **no toolchain on the machine at all**,
+from source alone. The toolchain was then installed and every claim that a gate
+could check was checked; W9a was built and verified on the same setup. What it
+took, recorded because the machine has no C compiler and no root:
+
+- `rustup` (minimal profile) warns `no default linker (cc) found` and cannot
+  link a native test binary. `gcc` and `glibc-devel` are not installed and
+  `sudo` wants a password, but `dnf download` needs neither -- the rpms extract
+  into a scratch prefix with `rpm2archive`, and a three-line `cc` shim passing
+  `-B` at that prefix links fine. Fedora's `libc.so` is a linker script naming
+  `/usr/lib64/libc_nonshared.a` by absolute path, so that one line needs
+  repointing at the extracted copy.
+- `npm` does not exist and `node` is a `bun` shim. `bun install` populates
+  `node_modules` (including `replicad-opencascadejs`), `node_modules/.bin/tsc`
+  builds the five packages in the root script's order, and all four gates run
+  under bun unchanged. The JS test suites need `bun test` rather than
+  `node --test`, which bun's shim does not implement.
+
+The two dependency-free checkers were run first and still pass:
+`check-record.mjs` (OK, 3 rows) and `check-freecad-parity.mjs` (30/46 shipped,
+5 queued, 11 refused, exit 1) -- the latter showing `docs/parity.md` had been
+stale at 22/46, now corrected.
