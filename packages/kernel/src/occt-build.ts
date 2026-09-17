@@ -342,15 +342,44 @@ const PLANE_AXES: Record<string, { u: Vec3; v: Vec3; n: Vec3; dir: number }> = {
   yz: { u: [0, 1, 0], v: [0, 0, 1], n: [1, 0, 0], dir: 1 },
 };
 
+/**
+ * The world frame a sketch is laid in, whether it names one of the three
+ * planes or carries an explicit `frame` (sketch-on-a-face; see SketchFrame in
+ * packages/script/src/model-types.ts).
+ *
+ * Mirrors `sketch_frame` in packages/brep-rs/src/wasm.rs EXACTLY: a framed
+ * sketch's normal is u x v (unit), and a named plane is taken verbatim from
+ * PLANE_AXES -- never re-expressed through a cross product, which would flip
+ * xz's own `dir` and change every existing document.
+ */
+function sketchFrame(f: any): { u: Vec3; v: Vec3; n: Vec3; dir: number; origin: Vec3 } {
+  if (f && f.frame) {
+    const { origin, u, v } = f.frame as { origin: Vec3; u: Vec3; v: Vec3 };
+    const n: Vec3 = [
+      u[1] * v[2] - u[2] * v[1],
+      u[2] * v[0] - u[0] * v[2],
+      u[0] * v[1] - u[1] * v[0],
+    ];
+    const len = Math.hypot(n[0], n[1], n[2]) || 1;
+    return { u, v, n: [n[0] / len, n[1] / len, n[2] / len], dir: 1, origin };
+  }
+  const a = PLANE_AXES[f?.plane ?? 'xy'] ?? PLANE_AXES.xy;
+  const off = f?.offset ?? 0;
+  return { u: a.u, v: a.v, n: a.n, dir: a.dir, origin: [a.n[0] * off, a.n[1] * off, a.n[2] * off] };
+}
+
 /** A sketch point in plane coordinates, placed in the world. Mirrors the
  *  `world()` helper in lib/model-handles.ts exactly -- if these two ever
- *  disagree, the drag handles stop landing on the shape. */
-function onPlane(oc: Occt, plane: string, offset: number, pu: number, pv: number): any {
-  const a = PLANE_AXES[plane] ?? PLANE_AXES.xy;
+ *  disagree, the drag handles stop landing on the shape. Reads the sketch's
+ *  frame through `sketchFrame`, so a framed (on-a-face) sketch lands on its
+ *  own frame and a named-plane sketch is bit-identical to before. */
+function onPlane(oc: Occt, f: any, pu: number, pv: number): any {
+  const a = sketchFrame(f);
+  const o = a.origin;
   return new oc.gp_Pnt(
-    a.u[0] * pu + a.v[0] * pv + a.n[0] * offset,
-    a.u[1] * pu + a.v[1] * pv + a.n[1] * offset,
-    a.u[2] * pu + a.v[2] * pv + a.n[2] * offset,
+    a.u[0] * pu + a.v[0] * pv + o[0],
+    a.u[1] * pu + a.v[1] * pv + o[1],
+    a.u[2] * pu + a.v[2] * pv + o[2],
   );
 }
 
@@ -367,13 +396,11 @@ function onPlane(oc: Occt, plane: string, offset: number, pu: number, pv: number
  * nearly flat.
  */
 function sketchWire(oc: Occt, arc: any, f: any, marks?: Mark[]): any {
-  const plane = f.plane ?? 'xy';
-  const offset = f.offset ?? 0;
-  const at = (p: number[]) => onPlane(oc, plane, offset, p[0], p[1]);
+  const at = (p: number[]) => onPlane(oc, f, p[0], p[1]);
 
   const circle = arc.circleOf(f);
   if (circle) {
-    const a = PLANE_AXES[plane] ?? PLANE_AXES.xy;
+    const a = sketchFrame(f);
     const centre = at(circle.center);
     const axis = new oc.gp_Ax2(centre, new oc.gp_Dir(a.n[0], a.n[1], a.n[2]));
     const edge = new oc.BRepBuilderAPI_MakeEdge(new oc.gp_Circ(axis, circle.radius)).Edge();
@@ -433,13 +460,17 @@ function sketchWire(oc: Occt, arc: any, f: any, marks?: Mark[]): any {
  * planes at all.
  */
 function revolveProfileFace(oc: Occt, arc: any, f: any, marks?: Mark[]): any {
-  const a = PLANE_AXES[f.plane ?? 'xy'] ?? PLANE_AXES.xy;
+  const a = sketchFrame(f);
   const outline = arc.outlineOf(f);
   if (!outline.ok) return null;
   const pts: number[][] = outline.points;
   const n = pts.length;
   if (n < 3) return null;
   const roles = arc.segmentRoles(outline.basis);
+  // Built at the WORLD ORIGIN: the spin axis is the frame normal through the
+  // origin (MakeRevol's own axis below), and the caller translates the spun
+  // solid by the frame's origin afterward. Adding the origin here too would
+  // move the profile twice.
   const at = (p: number[]) => new oc.gp_Pnt(
     a.u[0] * p[0] + a.n[0] * p[1],
     a.u[1] * p[0] + a.n[1] * p[1],
@@ -601,17 +632,17 @@ export function buildDoc(oc: Occt, doc: ModelDoc, arc?: any): BuildResult {
       const src = doc.features.find((x) => x.id === f.target);
       const base = built.get(f.into);
       if (arc && src && src.kind === 'sketch' && base) {
-        const a = PLANE_AXES[src.plane ?? 'xy'] ?? PLANE_AXES.xy;
+        const a = sketchFrame(src);
         const marks: Mark[] = [];
         const face = revolveProfileFace(oc, arc, src, marks);
         if (face) {
           const axis = new oc.gp_Ax1(new oc.gp_Pnt(0, 0, 0), new oc.gp_Dir(a.n[0], a.n[1], a.n[2]));
           const spun = new oc.BRepPrimAPI_MakeRevol(face, axis, (f.angle * Math.PI) / 180, true).Shape();
-          const off = src.offset ?? 0;
+          const o = a.origin;
           let tool: any = spun;
-          if (off !== 0) {
+          if (o[0] !== 0 || o[1] !== 0 || o[2] !== 0) {
             const after = new oc.gp_Trsf();
-            after.SetTranslation(new oc.gp_Vec(a.n[0] * off, a.n[1] * off, a.n[2] * off));
+            after.SetTranslation(new oc.gp_Vec(o[0], o[1], o[2]));
             tool = new oc.BRepBuilderAPI_Transform(spun, after, false).Shape();
           }
           shape = boolean('BRepAlgoAPI_Cut', base, tool, f.id, [f.into]);
@@ -627,7 +658,7 @@ export function buildDoc(oc: Occt, doc: ModelDoc, arc?: any): BuildResult {
       const src = doc.features.find((x) => x.id === f.target);
       const base = built.get(f.into);
       if (face && src && src.kind === 'sketch' && base) {
-        const a = PLANE_AXES[src.plane ?? 'xy'] ?? PLANE_AXES.xy;
+        const a = sketchFrame(src);
         // NEGATIVE where extrude is positive: a pad pulls the profile up out
         // of the plane, a pocket pushes it down into the material. `depth` is
         // documented positive so this sign lives here, once, rather than in
@@ -663,7 +694,7 @@ export function buildDoc(oc: Occt, doc: ModelDoc, arc?: any): BuildResult {
       const face = built.get(f.target);
       const src = doc.features.find((x) => x.id === f.target);
       if (face && src && src.kind === 'sketch') {
-        const a = PLANE_AXES[src.plane ?? 'xy'] ?? PLANE_AXES.xy;
+        const a = sketchFrame(src);
         const h = f.height * a.dir;
         const v = new oc.gp_Vec(a.n[0] * h, a.n[1] * h, a.n[2] * h);
         const op = new oc.BRepPrimAPI_MakePrism(face, v, false, true);
@@ -679,7 +710,7 @@ export function buildDoc(oc: Occt, doc: ModelDoc, arc?: any): BuildResult {
     } else if (f.kind === 'revolve') {
       const src = doc.features.find((x) => x.id === f.target);
       if (arc && src && src.kind === 'sketch') {
-        const a = PLANE_AXES[src.plane ?? 'xy'] ?? PLANE_AXES.xy;
+        const a = sketchFrame(src);
         const marks: Mark[] = [];
         const face = revolveProfileFace(oc, arc, src, marks);
         if (face) {
@@ -691,15 +722,15 @@ export function buildDoc(oc: Occt, doc: ModelDoc, arc?: any): BuildResult {
           );
           const op = new oc.BRepPrimAPI_MakeRevol(face, axis, (f.angle * Math.PI) / 180, true);
           const spun = op.Shape();
-          const off = src.offset ?? 0;
+          const o = a.origin;
           // The offset translation is recorded, not just applied: the faces
           // this revolve generated belong to the UNMOVED solid, and handing one
           // back without moving it too gives a face floating where the part
           // used to be. See placed() in lib/topo-history.ts.
           let after: any = null;
-          if (off !== 0) {
+          if (o[0] !== 0 || o[1] !== 0 || o[2] !== 0) {
             after = new oc.gp_Trsf();
-            after.SetTranslation(new oc.gp_Vec(a.n[0] * off, a.n[1] * off, a.n[2] * off));
+            after.SetTranslation(new oc.gp_Vec(o[0], o[1], o[2]));
           }
           shape = after ? new oc.BRepBuilderAPI_Transform(spun, after, false).Shape() : spun;
           sweeps.set(f.id, {

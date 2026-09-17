@@ -151,6 +151,70 @@ export interface PocketFeature {
 /** Which flat plane a sketch is drawn on. Extrusion runs perpendicular to it. */
 export type SketchPlane = 'xy' | 'xz' | 'yz';
 
+/**
+ * An arbitrary planar frame a sketch can be laid in -- the sketch-on-a-face
+ * form, where the three named planes are not enough. `origin` is a point on
+ * the plane (a face's own point), and `u`/`v` are two unit in-plane axes; the
+ * normal is u x v, so the frame is right-handed by construction and the
+ * sweep/cap conventions match the named planes exactly.
+ *
+ * A sketch carrying a `frame` ignores `plane` and `offset` entirely. The two
+ * are kept as separate representations rather than folding the named planes
+ * into frames: routing xz through a cross product would flip its sweep
+ * direction and change every existing doc (see packages/brep-rs/src/wasm.rs's
+ * `sketch_frame`).
+ */
+export interface SketchFrame {
+  origin: Vec3;
+  u: Vec3;
+  v: Vec3;
+}
+
+/** The resolved world frame of a sketch, whatever form it was written in. */
+export interface ResolvedSketchFrame {
+  origin: Vec3;
+  u: Vec3;
+  v: Vec3;
+  n: Vec3;
+}
+
+/** The named planes' world axes, matching PLANE_AXES in occt-build.ts and
+ *  plane_frame in brep-rs/src/wasm.rs. Kept as the one JS copy so a frame
+ *  consumer cannot disagree with the kernels. */
+const NAMED_PLANE_FRAMES: Record<SketchPlane, { u: Vec3; v: Vec3; n: Vec3 }> = {
+  xy: { u: [1, 0, 0], v: [0, 1, 0], n: [0, 0, 1] },
+  xz: { u: [1, 0, 0], v: [0, 0, 1], n: [0, 1, 0] },
+  yz: { u: [0, 1, 0], v: [0, 0, 1], n: [1, 0, 0] },
+};
+
+/**
+ * Resolve a sketch's world frame, whether it names a plane or carries a frame.
+ *
+ * Named planes take their axes from NAMED_PLANE_FRAMES verbatim -- NOT through
+ * a cross product, so xz keeps its -Y sweep direction exactly as before. A
+ * sketch with `frame` gets its normal as u x v (normalised), so an arbitrary
+ * planar face is expressible while the right-handed convention is preserved.
+ */
+export function sketchFrameOf(f: Pick<SketchFeature, 'plane' | 'offset' | 'frame'>): ResolvedSketchFrame {
+  if (f.frame) {
+    const { origin, u, v } = f.frame;
+    const n: Vec3 = [
+      u[1] * v[2] - u[2] * v[1],
+      u[2] * v[0] - u[0] * v[2],
+      u[0] * v[1] - u[1] * v[0],
+    ];
+    return { origin, u, v, n };
+  }
+  const a = NAMED_PLANE_FRAMES[f.plane] ?? NAMED_PLANE_FRAMES.xy;
+  const offset = f.offset ?? 0;
+  return {
+    origin: [a.n[0] * offset, a.n[1] * offset, a.n[2] * offset],
+    u: a.u,
+    v: a.v,
+    n: a.n,
+  };
+}
+
 /** A closed outline, drawn flat. Not a solid until something extrudes it. */
 export interface SketchFeature {
   id: string;
@@ -159,6 +223,13 @@ export interface SketchFeature {
   plane: SketchPlane;
   /** How far the plane sits from the origin along its own normal. */
   offset: number;
+  /**
+   * Sketch-on-a-face: an explicit world frame, used INSTEAD of `plane` and
+   * `offset`. Set when the sketch was authored by picking a planar face;
+   * absent for every sketch drawn on one of the three named planes, which is
+   * every sketch saved before frames existed. See [`SketchFrame`] and
+   * [`sketchFrameOf`]. */
+  frame?: SketchFrame;
   /**
    * The DESIGN corners, in plane coordinates and in order -- the points the
    * student actually placed, and the only ones any mover may touch. The
@@ -746,6 +817,30 @@ export function newSketch(doc: ModelDoc, plane: SketchPlane = 'xy'): SketchFeatu
     plane,
     offset: 0,
     points: [[0, 0], [40, 0], [40, 25], [0, 25]],
+    constraints: RECTANGLE_CONSTRAINTS.slice(),
+  };
+}
+
+/**
+ * Sketch on a picked planar FACE: the sketch-on-a-face form. `frame` is the
+ * face's own world frame (origin on the face, u/v spanning it), so the same
+ * rectangle a named-plane sketch starts from lands flat on that face.
+ *
+ * `plane` is set to 'xy' purely as a required-field placeholder -- `sketchFrameOf`
+ * reads `frame` first and IGNORES `plane`/`offset` for a framed sketch, and
+ * every consumer goes through that resolver. Storing a named plane here would
+ * be a second source of truth that could drift.
+ */
+export function newSketchOnFace(
+  doc: ModelDoc, frame: SketchFrame, points: Array<[number, number]> = [[0, 0], [40, 0], [40, 25], [0, 25]],
+): SketchFeature {
+  return {
+    id: nextId(doc, 'sk'),
+    kind: 'sketch',
+    plane: 'xy',
+    offset: 0,
+    frame,
+    points: points.map((p) => [p[0], p[1]] as [number, number]),
     constraints: RECTANGLE_CONSTRAINTS.slice(),
   };
 }
