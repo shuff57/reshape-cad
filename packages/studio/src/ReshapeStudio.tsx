@@ -25,11 +25,13 @@ import { noteColor, type StudioNote } from './notes.js';
 import ModelEditor from './model/ModelEditor.js';
 import BrepViewport, { type BrepViewportStats, type ViewportPick } from './model/BrepViewportThree.js';
 import HandleOverlay, { type AnchorPoint, type SketchOutline, type SketchPart } from './model/HandleOverlay.js';
+import ContextBar, { type ContextBarAction } from './model/ContextBar.js';
+import type { ContextActions } from './model/ModelEditor.js';
 import type { RuleActions, TouchedPart } from './model/SketchConstraints.js';
 import { writeSTL, writeOBJ, write3MF, type MeshInput } from './mesh-export.js';
 import { svgToPdf } from './svg-pdf.js';
 import { outlineOf } from '@shuff57/reshape-sketch/sketch-arc';
-import { handlesFor, planeAnchor } from '@shuff57/reshape-script/model-handles';
+import { handlesFor, planeAnchor, featureCenter, type HandleSpec } from '@shuff57/reshape-script/model-handles';
 import { EMPTY_DOC, type Feature, isSketchOnly, type ModelDoc, nameMap, newPolygonSketch, newRectangleSketch, type SketchPlane } from '@shuff57/reshape-script/model-types';
 import { ownerOf } from '@shuff57/reshape-script/model-selection';
 import { partWordFor, type TopoName } from '@shuff57/reshape-script/topo-name';
@@ -391,18 +393,27 @@ export default function ReshapeStudio({
   // same way drawTool/the sketch selection strip already are below.
   const [codeHidden, setCodeHidden] = useState(false);
   const [codeFullscreen, setCodeFullscreen] = useState(false);
+  // Piece B: whether the context bar is on screen right now, as a ref so the
+  // Escape tiering below (declared before the bar's own derived state, which
+  // needs `anchors`/`effectiveDoc` from further down) can read it at
+  // keypress time without reordering half this component. Assigned fresh on
+  // every render, below, from the same expression the mount itself uses.
+  const ctxBarVisibleRef = useRef(false);
   useEffect(() => {
     if (!codeFullscreen) return;
     // Escape exits fullscreen -- but only when nothing ELSE already owns
-    // Escape for something more locally modal: the sketch draw tool and the
-    // Rules panel's own selection strip (both above) bind the same key.
-    // Checking their own state here (rather than a shared "who owns Escape"
-    // registry) keeps this a one-line addition; if a THIRD Escape consumer
-    // ever appears, that's the point to build a real stack.
+    // Escape for something more locally modal: the sketch draw tool, the
+    // Rules panel's own selection strip (both above), and now the context
+    // bar itself (piece B -- its own listener dismisses it, so one keypress
+    // must not ALSO exit fullscreen). Checking their own state here
+    // (rather than a shared "who owns Escape" registry) keeps this a
+    // one-line addition; if a FOURTH Escape consumer ever appears, that's
+    // the point to build a real stack.
     function onKey(e: KeyboardEvent) {
       if (e.key !== 'Escape') return;
       if (drawTool) return; // the draw-tool handler above already clears itself
       if (selectedSketchParts.length) return; // ditto the selection-strip handler
+      if (ctxBarVisibleRef.current) return; // ditto the context bar's own dismiss
       setCodeFullscreen(false);
     }
     window.addEventListener('keydown', onKey);
@@ -416,6 +427,38 @@ export default function ReshapeStudio({
     if (build && codeFullscreen) setCodeFullscreen(false);
   }, [build, codeFullscreen]);
   const [anchors, setAnchors] = useState<AnchorPoint[]>([]);
+  // ---- the context bar (adoption step 4, piece B) ---------------------------
+  // One Escape-tier dismissal per selection: ContextBar itself owns the
+  // Escape listener while mounted, but "the bar came back the instant I
+  // pressed Escape" would be the same bar refusing to leave, so the press
+  // records a dismissal that lives until the SELECTION changes. ModelEditor's
+  // verbs (registered up via registerContextActions, same pattern its own
+  // SketchConstraints actions use) ride in a REF, not state: ModelEditor
+  // registers a FRESH object every render (its own comment explains why
+  // memoizing would pin stale doc closures), so storing that object in
+  // state would setState every render and loop. The state beside it tracks
+  // only PRESENCE -- registered or not -- which is all the "omit buttons
+  // until registered" gate needs; the buttons' onRun wrappers read the ref
+  // at CLICK time, so every click gets this render's fresh closures.
+  const [ctxDismissed, setCtxDismissed] = useState(false);
+  const ctxActionsRef = useRef<ContextActions | null>(null);
+  const [ctxActions, setCtxActions] = useState(false);
+  useEffect(() => { setCtxDismissed(false); }, [selected[0]]);
+  // The ✎ Dimensions action: point at the params aside, not just scroll --
+  // a 600ms accent border flash is the "it happened, there" cue (the CSS
+  // class lives in this file's own <style> block below).
+  const flashParamsRef = useRef<HTMLDivElement | null>(null);
+  const focusParams = useCallback(() => {
+    const el = flashParamsRef.current;
+    if (!el) return;
+    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    el.classList.remove('reshape-params-flash');
+    // restart the animation even when the class was still on it
+    void el.offsetWidth;
+    el.classList.add('reshape-params-flash');
+    const t = setTimeout(() => el.classList.remove('reshape-params-flash'), 600);
+    return () => clearTimeout(t);
+  }, []);
   const meshRef = useRef<MeshInput | null>(null);
   const [hasMesh, setHasMesh] = useState(false);
   // The live EngineAdapter instance, handed up by BrepViewport's own
@@ -586,7 +629,29 @@ export default function ReshapeStudio({
       .filter((f): f is Feature & { kind: 'sketch' } =>
         f.kind === 'sketch' && !selected.includes(f.id) && sketchIsUnconsumed(doc, f.id))
       .flatMap((f) => handlesFor(f, doc));
-    return [...picked, ...otherSketches];
+    // Piece B: one synthetic spec at the single selected feature's own
+    // centre, so the context bar has an anchor even when the feature has
+    // no drag handles of its own (a hole, a shell, a move). 'point' is the
+    // least-intrusive existing kind: BrepViewportThree's projector passes
+    // every kind through, and HandleOverlay draws a 'point' as a plain
+    // small square. The __ctx_ prefix keys the projected anchor without
+    // colliding with any generated param name (applyParam splits at the
+    // LAST underscore, so a drag would ask for feature id __ctx, which no
+    // feature has -- it lands as a no-op rather than a mutation).
+    let ctx: HandleSpec[] = [];
+    if (selected.length === 1 && !drawTool) {
+      const f = doc.features.find((x) => x.id === selected[0]);
+      const c = f ? featureCenter(f, doc) : null;
+      if (f && c) ctx = [{
+        kind: 'point',
+        param: `__ctx_${f.id}`,
+        origin: c,
+        axis: [1, 0, 0],
+        scale: 1,
+        label: 'context',
+      }];
+    }
+    return [...picked, ...otherSketches, ...ctx];
   }, [build, doc, selected, drawTool]);
 
   const brepParamDefs = useMemo(() => {
@@ -612,6 +677,109 @@ export default function ReshapeStudio({
     () => Object.fromEntries(specs.map((h) => [h.param, h.scale])),
     [specs]
   );
+
+  // ---- the context bar's own derived state (piece B) -----------------------
+  // ctxFeature reads effectiveDoc (rollback-respecting), not doc: a feature
+  // the rollback bar suppresses is not on screen, so a bar floating over the
+  // spot it WOULD occupy is the "bar over nothing" state featureCenter()
+  // refuses. Single selection only -- "2 selected" has no one anchor.
+  const ctxFeature = useMemo(
+    () => selected.length === 1 ? effectiveDoc.features.find((f) => f.id === selected[0]) : undefined,
+    [selected, effectiveDoc]
+  );
+  // The anchor: the synthetic __ctx_ spec first, then (for features with no
+  // centre -- a hole, a shell) the first of the feature's own real handle
+  // anchors, which at least floats the bar over the feature's geometry.
+  const ctxAnchor = useMemo(() => {
+    if (selected.length !== 1) return null;
+    const id = selected[0];
+    const direct = anchors.find((a) => a.param === `__ctx_${id}`);
+    if (direct) return { x: direct.x, y: direct.y };
+    const fallback = anchors.find((a) => a.param.startsWith(`${id}_`));
+    return fallback ? { x: fallback.x, y: fallback.y } : null;
+  }, [anchors, selected]);
+  const ctxRefusal = selected.length === 1 ? refusals?.get(selected[0]) ?? null : null;
+  // Up to three mono readouts off the SAME defs the Dimensions panel shows
+  // (brepParamDefs already filters to the selection), mapped to short
+  // student words -- the chip says "Depth 12" (or "⌀6"), not
+  // "Box 1 depth". The suffix map keeps the panel and the chip honest
+  // about the same slot: a cylinder's _radius param IS its across number.
+  const ctxChips = useMemo(() => {
+    if (!ctxFeature) return [];
+    const short: Record<string, string> = {
+      diameter: '⌀', radius: '⌀', depth: 'Depth', width: 'Width', height: 'Height',
+      ring: '⌀', tube: 'Tube', thickness: 'Wall', across: '⌀', size: 'Size',
+    };
+    return brepParamDefs.slice(0, 3).map((p) => {
+      const slot = p.name.slice(p.name.lastIndexOf('_') + 1);
+      const label = short[slot] ?? capitalize(slot);
+      const value = paramValues[p.name];
+      return { label, value: typeof value === 'number' ? String(value) : String(p.initial) };
+    });
+  }, [ctxFeature, brepParamDefs, paramValues]);
+  // The action list is per feature kind, built inline in the mount below --
+  // it reads ctxActions (state from ModelEditor) and focusParams, both of
+  // which already gate themselves. Every registered verb is optional-chained:
+  // a missing verb omits its button rather than showing a dead one.
+  // The one mount condition, shared with the Escape tier above via a ref:
+  // Build side, one selected feature the rollback has not suppressed, the
+  // bar not dismissed, and a screen anchor to float over.
+  const ctxBarVisible = build && !!ctxFeature && !ctxDismissed && !!ctxAnchor;
+  ctxBarVisibleRef.current = ctxBarVisible;
+  const ctxActionsList: ContextBarAction[] = useMemo(() => {
+    if (!ctxFeature) return [];
+    const hasActions = ctxActions;
+    const dims: ContextBarAction = {
+      label: '✎ Dimensions', title: 'Show this step\u2019s numbers in the panel',
+      primary: true, onRun: focusParams,
+    };
+    // Delete is the one verb the bar always offers once the registrar exists:
+    // it calls ModelEditor's own remove(), so the dependents-confirm flow
+    // stays exactly where it lives.
+    const del: ContextBarAction | null = hasActions ? { label: 'Delete', title: 'Delete the selected', onRun: () => ctxActionsRef.current?.remove() } : null;
+    const kind = ctxFeature.kind;
+    if (kind === 'sketch') {
+      const out: ContextBarAction[] = [dims];
+      if (hasActions) {
+        out.push(
+          { label: 'Pull', title: 'Pull the sketch straight up into a solid', onRun: () => ctxActionsRef.current?.pull() },
+          { label: 'Spin', title: 'Spin the sketch around to make a solid', onRun: () => ctxActionsRef.current?.spin() },
+        );
+      }
+      if (del) out.push(del);
+      return out;
+    }
+    if (kind === 'box' || kind === 'cylinder' || kind === 'sphere' || kind === 'cone' || kind === 'torus') {
+      const out: ContextBarAction[] = [dims];
+      if (hasActions) {
+        out.push(
+          { label: 'Move', title: 'Shift the selected solid', onRun: () => ctxActionsRef.current?.moveTool(false) },
+          { label: 'Copy', title: 'Add a copy, shifted over', onRun: () => ctxActionsRef.current?.moveTool(true) },
+          { label: 'Round', title: 'Round the edges off (fillet)', onRun: () => ctxActionsRef.current?.round('fillet') },
+        );
+        if (kind !== 'sphere') out.push({ label: 'Turn', title: 'Turn this shape', onRun: () => ctxActionsRef.current?.turn() });
+        out.push(
+          { label: 'Hole', title: 'Drill a round hole through the selected solid', onRun: () => ctxActionsRef.current?.drillHole() },
+          { label: 'Hollow', title: 'Hollow the selected solid out, leaving a wall', onRun: () => ctxActionsRef.current?.hollow() },
+          { label: 'Repeat', title: 'Make copies of the selected solid', onRun: () => ctxActionsRef.current?.repeat('linear') },
+          { label: 'Mirror', title: 'Flip a copy left to right (the yz plane)', onRun: () => ctxActionsRef.current?.mirror('yz') },
+        );
+      }
+      if (del) out.push(del);
+      return out;
+    }
+    // Every other kind (extrude/pocket/fillet/hole/shell/pattern/move/...):
+    // the modify verbs need a plain solid, so the bar offers the safe set.
+    const out: ContextBarAction[] = [dims];
+    if (hasActions) {
+      out.push(
+        { label: 'Move', title: 'Shift the selected solid', onRun: () => ctxActionsRef.current?.moveTool(false) },
+        { label: 'Copy', title: 'Add a copy, shifted over', onRun: () => ctxActionsRef.current?.moveTool(true) },
+      );
+    }
+    if (del) out.push(del);
+    return out;
+  }, [ctxFeature, ctxActions, focusParams]);
 
   const selectionLabel = useMemo(() => {
     if (selected.length === 0) return null;
@@ -1189,6 +1357,7 @@ export default function ReshapeStudio({
               hoveredPart={pointerHoverPart}
               onHoverPart={(p) => { setRowHoverPart(p); if (p) touchRuleActivity(); }}
               registerActions={(actions) => { ruleActionsRef.current = actions; }}
+              registerContextActions={(a) => { const had = ctxActionsRef.current != null; const has = a != null; ctxActionsRef.current = a; if (had !== has) setCtxActions(has); }}
               onTouch={handleTouch}
               onUndo={undo}
               onRedo={redo}
@@ -1376,7 +1545,7 @@ export default function ReshapeStudio({
             )}
             {build && (
               <HandleOverlay
-                points={anchors}
+                points={anchors.filter((a) => !a.param.startsWith('__ctx_'))}
                 values={paramValues}
                 scales={scales}
                 onDrag={(param, val) => { sendParams({ [param]: val }); touchRuleActivity(); }}
@@ -1393,9 +1562,27 @@ export default function ReshapeStudio({
                 bottomInset={0}
               />
             )}
+            {ctxBarVisible && ctxFeature && ctxAnchor && (
+              // Piece B: the context bar. anchor/point/absolute inside
+              // .reshape-pane-view (position:relative), the same offset
+              // parent HandleOverlay's handles use, so the bar floats over
+              // the selection and never the docked rows. viewWidth is left
+              // undefined in v1 (ContextBar's own comment: absent means no
+              // horizontal clamp) -- the bar is short and the pane wide.
+              <ContextBar
+                featureKind={ctxFeature.kind}
+                name={nameMap(doc)[ctxFeature.id] ?? ctxFeature.id}
+                anchor={ctxAnchor}
+                chips={ctxChips}
+                refusal={ctxRefusal}
+                actions={ctxActionsList}
+                onDismiss={() => setCtxDismissed(true)}
+                canDismiss={() => !drawTool && selectedSketchParts.length === 0}
+              />
+            )}
           </div>
           {(runKey > 0 || build) && (
-            <aside className="reshape-pane-params">
+            <aside className="reshape-pane-params" ref={flashParamsRef}>
               <ReshapeParamsPanel
                 defs={brepParamDefs}
                 emptyMessage={build
@@ -1774,6 +1961,14 @@ export default function ReshapeStudio({
           display: flex;
           flex-direction: column;
           overflow: hidden;
+        }
+        /* The context bar's Dimensions focus cue (piece B): a 600ms accent
+           border flash saying "the numbers are HERE". Added and removed by
+           focusParams() in this file; a transition, not an animation, so it
+           fades in on add and out on remove with no keyframes needed. */
+        .reshape-pane-params.reshape-params-flash {
+          border-left: 2px solid var(--reshape-accent);
+          transition: border-color 150ms ease-in;
         }
         .reshape-studio-timeline {
           grid-area: timeline;

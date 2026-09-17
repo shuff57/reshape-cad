@@ -470,3 +470,37 @@ export function handlesFor(f: Feature, doc?: ModelDoc): HandleSpec[] {
     : [];
   return [...size, ...moveHandles(f.id, f.center, reach), ...turn];
 }
+
+/**
+ * A representative world point for a feature -- the one a context bar or any
+ * other selection-anchored chrome should float above. Pure: no doc mutation,
+ * no camera, no projection; the caller owns turning this into screen space.
+ *
+ * Shapes answer their own centre. A sketch answers its bbox centre pushed
+ * through the plane basis (the same world() math sketchHandles uses), so a
+ * framed sketch-on-a-face is covered by that same arithmetic rather than a
+ * second copy of it. The handle helpers for extrude/pocket/fillet already
+ * compute exactly the origins their one solid sits on, so those are reused
+ * verbatim -- one source of truth for "where this feature is". Everything
+ * else (hole/shell/move/pattern/mirror/combine/blend/groove/draft/prism/
+ * wedge) has no cheap representative point yet and reads as null: no anchor,
+ * no bar, which is the honest state rather than a bar floating over
+ * nothing.
+ */
+export function featureCenter(f: Feature, doc: ModelDoc): [number, number, number] | null {
+  if (isShape(f)) return f.center;
+  if (f.kind === 'sketch') {
+    const { u, v } = planeAxes(f.plane);
+    const n = planeNormal(f.plane);
+    const [cu, cv] = sketchBBoxCentre(f.points);
+    return [
+      u[0] * cu + v[0] * cv + n[0] * (f.offset ?? 0),
+      u[1] * cu + v[1] * cv + n[1] * (f.offset ?? 0),
+      u[2] * cu + v[2] * cv + n[2] * (f.offset ?? 0),
+    ];
+  }
+  if (f.kind === 'extrude') return extrudeHandles(f, doc)[0]?.origin ?? null;
+  if (f.kind === 'pocket') return pocketHandles(f, doc)[0]?.origin ?? null;
+  if (f.kind === 'fillet') return filletHandles(f, doc)[0]?.origin ?? null;
+  return null;
+}

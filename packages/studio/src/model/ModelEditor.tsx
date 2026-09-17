@@ -234,6 +234,13 @@ interface Props {
    *  up so ReshapeStudio can hand them to HandleOverlay for a canvas-side
    *  contextual strip -- same pass-through as onHoverPart just above. */
   registerActions?: (actions: RuleActions | null) => void;
+  /** Adoption step 4 piece B: this component's own toolbar verbs (the same
+   *  remove/round/hole/... closures the ribbon buttons call), handed UP the
+   *  same way registerActions hands SketchConstraints' actions up, so
+   *  ReshapeStudio's context bar can offer them without owning a second
+   *  copy of any verb. Null on unmount/collapse of the thing being handed;
+   *  the caller treats null as "no actions, omit the buttons". */
+  registerContextActions?: (actions: ContextActions | null) => void;
   /** Item U: pure pass-through of SketchConstraints' own `onTouch` -- see
    *  that prop's own doc comment. */
   onTouch?: (touched: TouchedPart | null) => void;
@@ -262,6 +269,25 @@ interface Props {
 type BoolOp = 'union' | 'subtract' | 'intersect';
 type PatternMode = 'linear' | 'circular';
 type MenuId = 'shape' | 'bool' | 'round' | 'pattern' | 'move' | 'mirror' | 'hole' | 'hollow' | 'export' | null;
+
+/** Adoption step 4 piece B: the toolbar's own verbs, handed up to the caller
+ *  (ReshapeStudio's context bar) via registerContextActions. Each entry IS
+ *  the same closure the ribbon button calls -- thin arrows, no second
+ *  implementation of any verb, so a context-bar Round and a ribbon Round
+ *  can never drift apart. RoundStyle/SketchPlane/PatternMode mirror the
+ *  toolbar's own flyout signatures. */
+export interface ContextActions {
+  remove: () => void;
+  moveTool: (copy: boolean) => void;
+  round: (style: RoundStyle) => void;
+  drillHole: () => void;
+  hollow: () => void;
+  pull: () => void;
+  spin: () => void;
+  turn: () => void;
+  repeat: (mode: PatternMode) => void;
+  mirror: (plane: SketchPlane) => void;
+}
 
 function shapeIcon(kind: ShapeKind) {
   if (kind === 'box') return <BoxIcon size={14} />;
@@ -509,7 +535,7 @@ function FlyoutButton({
 
 export default function ModelEditor({
   doc, onChange, selected, onSelect, onUndo, onRedo, canUndo, canRedo, collapsible, onCollapsed, onContentChange, rollbackIndex, onRollback, onStartDraw, drawTool, pickedEdge, onClearPickedEdge, pickedFace, onClearPickedFace, pickedEdges, onClearPickedEdges, refusals,
-  hoveredPart, onHoverPart, registerActions, onTouch, historyGen,
+  hoveredPart, onHoverPart, registerActions, registerContextActions, onTouch, historyGen,
   hasMesh, engineKind, onSaveFCStd, onOpenFCStd, onExportSTL, onExportOBJ, onExport3MF, onExportDrawing,
   canClearModel, onClearModel, activePlane, onActivePlaneChange,
 }: Props) {
@@ -1613,6 +1639,33 @@ export default function ModelEditor({
   ].some(matches);
   const patternBoolVisible = ['Join', 'Cut', 'Overlap'].some(matches);
   const patternVisible = patternSelectVisible || patternBoolVisible;
+
+  // Piece B: hand the caller this render's own verb closures -- the same
+  // ones the ribbon buttons above call, wrapped as thin arrows. Re-registers
+  // every render rather than off a dependency list, the same
+  // SketchConstraints/registerActions pattern: every verb below closes over
+  // `doc`/`chosen`/`pickedEdge` state that changes on renders this component
+  // has no reason to otherwise re-run an effect for, and the receiver
+  // (ReshapeStudio) only ever stores the object in state it re-reads at
+  // render -- one redundant register costs nothing a student could notice.
+  // useCallback would be the WRONG tool here: a memoized object would pin
+  // stale doc closures until its deps changed, which is the exact drift this
+  // hand-off exists to prevent.
+  useEffect(() => {
+    registerContextActions?.({
+      remove: () => remove(),
+      moveTool: (copy: boolean) => moveTool(copy),
+      round: (style: RoundStyle) => round(style),
+      drillHole: () => drillHole(),
+      hollow: () => hollow(),
+      pull: () => pull(),
+      spin: () => spin(),
+      turn: () => turn(),
+      repeat: (mode: PatternMode) => repeat(mode),
+      mirror: (plane: SketchPlane) => mirror(plane),
+    });
+    return () => registerContextActions?.(null);
+  }); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="model-editor">

@@ -284,6 +284,29 @@ by 09. Standing "no render" caveat retired 2026-09-16: subagent-driven
 Playwright capture + orchestrator image review is now part of the loop
 (design/ui-revamp/shots/, gitignored).
 
+### Step 4 — SHIPPED (2026-09-17)
+
+Context bar shipped: new packages/studio/src/model/ContextBar.tsx -- presentational
+pill (who + ✎ Dimensions primary + per-kind toolbar verbs + mono param chips +
+⚠ refusal sentence), anchored above the selection, flips below near the top edge,
+Escape/click-away dismiss. Anchor via a synthetic `__ctx_` HandleSpec from new
+`featureCenter()` (packages/script/src/model-handles.ts) through the EXISTING
+projection pipeline -- no BrepViewportThree changes, answering open question #3's
+projection concern. Actions via `registerContextActions` (the SketchConstraints
+registerActions pattern) handing out ModelEditor's real closures --
+dependents-confirm delete flow preserved. Per-kind contents: shapes
+Round/Turn/Hole/Hollow/Repeat/Mirror/Move/Copy; sketch Pull/Spin; param features
+Dimensions/Move/Copy/Delete. Rolled-back features auto-hide (effectiveDoc gate).
+
+Review history: review 1 FAIL -- #2 infinite render loop (registrar→setState;
+fixed receiver-side: ctxActionsRef + presence-boolean, reads at click time),
+#1 stray `__ctx_` dot (filtered from HandleOverlay points), #4 Escape double-fire
+(canDismiss gate); re-review PASS all three. Gates: tsc clean, 28/28, root build
+clean. Visual proof: capture attempts repeatedly cancelled (nested claude-CLI
+hung overnight waiting on an unanswerable question -- wrapper pattern hardened:
+skip-permissions + stdin closed); visual proof of the bar is the ONE step-4 item
+NOT yet screenshot-verified, eyeball via `npm run dev:sandbox` remains.
+
 ## 6. Open questions remaining
 
 1. **Build|Code toggle placement.** All three mockups assume topbar center
@@ -297,6 +320,8 @@ Playwright capture + orchestrator image review is now part of the loop
    API on BrepViewportThree.** Does one exist to build on? HandleOverlay
    already projects anchors -- if that path is reusable, the defer-shortens
    to "after drag-handle refactor" rather than "new API."
+   (answered 2026-09-17: projection API exists and is reusable -- synthetic
+   anchor spec through projectAnchors; see Step 4)
 4. **Touch/tablet posture remains out of scope** (SPEC §8.5). Confirm; no
    touch affordance ships in any adopted step above.
 
