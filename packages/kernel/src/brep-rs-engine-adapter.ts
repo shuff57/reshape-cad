@@ -261,9 +261,20 @@ export class BrepRsEngineAdapter implements EngineAdapter {
     }
   }
 
-  nameEdge(_build: EngineBuildResult, _doc: ModelDoc, _pickedFeature: string, _edge: unknown): TopoName | null {
-    // No edge naming in this slice: wasm's name_edge is null outright.
-    return null;
+  nameEdge(_build: EngineBuildResult, doc: ModelDoc, pickedFeature: string, edge: unknown): TopoName | null {
+    const wasm = this.requireWasm();
+    const part = edge as BrepPart;
+    if (!part || typeof part.index !== 'number') return null;
+    // wasm's name_edge builds the `between` cause from the edge's two adjacent
+    // faces and returns "null" when either face has no name cause (a bore wall
+    // on a boolean result, for instance) -- a real null, not an error.
+    const raw = wasm.name_edge(JSON.stringify(doc), pickedFeature, part.index);
+    if (raw === 'null') return null;
+    try {
+      return JSON.parse(raw) as TopoName;
+    } catch {
+      return null;
+    }
   }
 
   faceSize(face: unknown): [number, number] | null {

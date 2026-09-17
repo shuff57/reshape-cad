@@ -111,6 +111,26 @@ test('fillet fixture (round-one-edge) meshes with 7 face ranges', () => {
   assert.equal(meshed.faces.length, 7, '7 face ranges (5 walls + 2 caps)');
 });
 
+test('nameEdge names a box edge as between its two primitive faces and resolveEdge round-trips', () => {
+  const built = adapter.build(BOX_DOC);
+  const edges = adapter.edges(built.shapes.get('b1'));
+  assert.equal(edges.length, 12, '12 edges');
+  let named = 0;
+  for (const e of edges) {
+    const name = adapter.nameEdge(built, BOX_DOC, 'b1', e.edge);
+    assert.ok(name, 'every box edge is nameable');
+    assert.equal(name.cause, 'between');
+    assert.equal(name.feature, 'b1');
+    assert.equal(name.kind, 'edge');
+    assert.equal(name.of.length, 2, 'names exactly two faces');
+    const back = adapter.resolveEdge(name, built);
+    assert.ok(back, 'resolveEdge resolves the name it was given');
+    assert.equal(adapter.edgeLength(back), adapter.edgeLength(e.edge), 'same edge length');
+    named++;
+  }
+  assert.equal(named, 12, 'all 12 box edges round-trip');
+});
+
 test('a refused feature shows up in refusals', () => {
   const doc = {
     features: [
