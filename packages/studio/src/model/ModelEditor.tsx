@@ -2568,7 +2568,6 @@ export default function ModelEditor({
         .model-timeline .model-row.is-on {
           background: var(--reshape-border);
           border-color: var(--reshape-pink);
-          border-bottom-color: var(--reshape-pink);
         }
         .model-timeline .model-row.is-consumed { opacity: 0.55; }
         /* Chip state accents (shCode skin, §4a): the 2px bottom bar carries
@@ -2597,7 +2596,6 @@ export default function ModelEditor({
           cursor: pointer;
           border-radius: 2px;
         }
-        .model-timeline .model-rollback-handle:hover { background: transparent; }
         .model-timeline .model-rollback-line {
           width: 1px;
           height: 16px;
@@ -2691,7 +2689,7 @@ export default function ModelEditor({
            the name is panel-only -- hidden in the timeline, where the row's
            title and aria-label carry the sentence instead. Orange, not red:
            the part built and is still usable, one step of it is missing. */
-        .model-refused { color: var(--reshape-warn); margin-left: 4px; }
+        .model-refused { color: var(--reshape-danger); margin-left: 4px; }
         .model-refused-why {
           display: block;
           margin-left: 4px;

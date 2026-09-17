@@ -263,6 +263,27 @@ collapses, fullscreen) remains the human check via `npm run dev:sandbox`. Step 2
 retires the dead-code list from §3 -- the "five measured hacks die the day the
 grid ships" paragraph is now historical.
 
+### Step 3 — SHIPPED (2026-09-16)
+
+Timeline chip restyle: 2px state accent bars (selected `--reshape-pink`,
+refused `--reshape-danger`, pending muted), 3px radius, 11px/600/uppercase/
+.04em -- the shCode badge idiom from §4a. Rollback ticks restyled on the
+PRE-EXISTING `.model-rollback-handle` buttons (no new DOM, keyboard-accessible):
+tick-before-chip-k → `onRollback(k)` → `slice(0,k)`, semantics unchanged. The
+refused ⚠ badge adopts the shCode warn idiom (rgba .13/.33); card glyph
+severity unified to danger. Polish fold-ins from the visual audit: BROWSER
+kicker hidden in the 46px collapsed rail; Code-mode empty-run note "Script ran
+but built nothing…" (mode-aware stale-empty, severity status).
+
+Review: PASS-WITH-NITS, 3 cosmetic nits fixed (card glyph severity unified,
+2 redundant CSS decls). VERIFIED BY SCREENSHOT (a first for this effort):
+design/ui-revamp/shots/ 07/08/09 -- chips+ticks live with a two-box model,
+bbox readout showing real dims, kicker gone in rail, empty-run note rendering.
+Note: 06-timeline.png missed its subject (empty doc = no chips) -- superseded
+by 09. Standing "no render" caveat retired 2026-09-16: subagent-driven
+Playwright capture + orchestrator image review is now part of the loop
+(design/ui-revamp/shots/, gitignored).
+
 ## 6. Open questions remaining
 
 1. **Build|Code toggle placement.** All three mockups assume topbar center
