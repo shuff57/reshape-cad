@@ -307,9 +307,145 @@ OCCT 31773.805329, 8 faces) to the `hole` kind. It pins the silent-wrong-volume
 class the gate could not see. The corner-bore and counterbore cases are NOT
 ready for fixtures -- they still differ/refuse.
 
-## Next
+## Closeout map — what is left, 2026-09-17
 
-**W5 — general surface-surface intersection** is the keystone on the critical
-path (W2 fillet-on-boolean, W3 shell, W8 overlapping bores all bottom out
-there). W2 can start on box-only edges (W1 now supplies the naming); W9 (STEP)
-is independent and can run in parallel on `step.rs` with its own claim.
+A read-only survey, not a slice: no code was built and no gate was run (see
+"Verification note" at the end). Written because the remaining scope was spread
+across nine slice reports, `.msgbox/FUTURE.md` and the spec, and no single place
+said what is left.
+
+### Measured against this campaign's own definition of done
+
+The header states five clauses. Where each one stands, read from source today:
+
+1. **"every refusal reachable from a valid `ModelDoc` is implemented or has a
+   fixture proving OCCT refuses it too" — NOT met.** Eighteen distinct
+   capability refusals remain in `wasm.rs`, across 23 sites (blend repeats one
+   message 3 times, the draft side-wall one 4 times). Sixteen are real feature
+   gaps and OCCT builds the cases behind most of them; the other two are the
+   unknown-`kind` fallback (:1501, unreachable while all 20 kinds dispatch) and
+   the tessellation error (:1572). They are grouped by slice below.
+2. **"`name_edge` is real" — met in code, ungated.** W1 built it and the adapter
+   is wired, but the parity gate calls only `measure_doc`, `resolve` and
+   `version`: NEITHER `name_edge` NOR `name_face` is ever called, so the whole
+   naming surface is held by native tests alone. (`resolve` does cover
+   `between` names, which is why naming regressions have been caught at all.)
+   The gate change W1 asked for is still outstanding, and it is a gate change
+   rather than a fixture — the one item here the builder cannot do.
+3. **"history covers every op" — NOT met.** Verified by reading every dispatch
+   arm: `OpRecord` is constructed at exactly two sites, `move` (`OpKind::Transform`,
+   wasm.rs:463) and `combine` (`OpKind::Boolean`, wasm.rs:1005), plus
+   `SweepRecord` for `extrude` (:607, :631) and `revolve` (:839).
+   `OpKind::Fillet` and `OpKind::Shell` are declared in history.rs and never
+   constructed. So mirror, pattern, pocket, groove, hole, shell and fillet
+   record no history at all, and a name cannot be carried through any of them.
+4. **"STEP export/import exists" — NOT met.** `step.rs` is four lines and a
+   `placeholder()`. Both directions are in spec §3 scope.
+5. **"all gates green" — last recorded green at W2a (2026-09-16):** cargo 63/63,
+   parity 61/0, mesh 61/61, OCCT ModelDoc 17/17. Not re-run since.
+
+Size is the one clause already won outright: ~122 KB gzipped against the
+7,250,252-byte OCCT target (§8 decision 3), a ~59x margin.
+
+### The 3D remainder, in dependency order
+
+**W5 — general surface-surface intersection. The keystone.** `ops::boolean` is
+face-by-face special casing over plane, cylinder and sphere plus an
+enclosed-cavity path; there is no general trimmed-face membership. Four other
+slices bottom out here:
+
+- **W8, counterbores / overlapping bores** (wasm.rs:770, :794). Drill then widen
+  is student-reachable and refuses. OCCT builds all three probed variants:
+  30429.203673 / 31032.389463 / 30992.925928.
+- **The one silent wrong volume still open** — four corner bores flush with the
+  top: 31038.672648 against OCCT and closed form 31095.221316, one floor lost,
+  no refusal. Root cause recorded under W2a: `region_inside` has no notion of a
+  SUBTRACTED void in `other`. This is the highest-severity item left, because
+  SPEC §4.5 forbids the class outright.
+- **W2, fillet width** (wasm.rs:1171, :3164). Box edges and cylinder rims work
+  (round and chamfer, W11); rotated boxes and boolean results refuse. Note that
+  "multiple edges" is NOT a gap: `FilletFeature.edge` is a single `TopoName`,
+  and occt-build.ts fillets one named edge too.
+- **W3, shell** (wasm.rs:1478, :1491). Axis-aligned boxes only, via an inner-box
+  subtract. OCCT uses a general offset (`MakeThickSolidByJoin`), which needs
+  real face offsetting.
+
+**Independent of W5, can run in parallel:**
+
+- **W9 — STEP.** Touches only `step.rs`. The one remaining spec clause with no
+  dependency on anything else, and round-trip (write, read back, compare volume
+  and face count) is checkable in `cargo test` without OCCT. The cheapest whole
+  clause left to close.
+- **History for the seven kinds that record none** -- mirror, pattern, pocket,
+  groove, hole, shell, fillet (clause 3 above). Mechanical next to W5, and
+  `OpKind::Fillet`/`OpKind::Shell` already exist as variants waiting to be
+  constructed.
+- **Draft on non-boxes** (wasm.rs:1213, :1292-:1330). W4 closed `whole` for
+  axis-aligned boxes exactly. **Blocked on a lead-owned file, not on brep-rs:**
+  see the W4 entry -- `occt-build.ts`'s whole branch takes face handles from the
+  original shape, so two go stale and it drafts 2 of 4 walls (29751.346645 vs
+  the correct 27713.378369). A `draft-whole` fixture would fail against a wrong
+  reference. Re-resolving each handle from `cur` is the fix; it changes what
+  parity means, so it stays the lead's call.
+- **Blend/loft** (wasm.rs:878, :883, :901). Two matching straight outlines with
+  planar sides. Twisted, non-similar, rounded and circle lofts need ruled or
+  NURBS surfaces -- the geometry §4.3 promises and nothing has needed yet.
+- **Slanted profile segments in revolve and groove** (wasm.rs:817, :926). Only
+  profiles parallel or perpendicular to the axis. W6 closed partial angles.
+- **Mirror and pattern with overlapping copies** (wasm.rs:1048, :1125). These
+  refuse rather than union, which is a boolean call, not new geometry.
+
+### The 2D remainder
+
+Not previously covered in this ledger. There is no Rust 2D kernel: 2D lives in
+`packages/sketch` (TypeScript -- least-squares solver, sketch-arc, sketch-outline),
+with the OUTLINE layer ported into `wasm.rs` (`extruded_profile`,
+`profile_corners`, `role_of`) so both kernels agree on what a sketch means.
+
+- **Inside brep-rs.** Extrude keeps bulges as exact arcs, so a rounded corner
+  extrudes to a real partial cylinder. Revolve, groove and blend read straight
+  segments only -- that is the 2D-shaped gap on the Rust side, and it is the
+  same item as "slanted profile segments" above.
+- **The solver is the larger 2D gap.** `solveSketch` takes `Point[]`: corners
+  are the only unknowns. All eleven constraint kinds are straight-edge or corner
+  rules. No radius, tangent, concentric or point-on-object is expressible,
+  because a curve is a bulge rebuilt AFTER the solve -- the solver never holds a
+  radius or a centre. `.msgbox/FUTURE.md` (2026-09-08) sizes promoting bulge to a
+  solved unknown as a P1a-scale change. It is a solver-architecture slice, not a
+  kernel one.
+- **Sketch model limits.** One closed loop of design points plus
+  rounds/chamfers/bulges, or the `shape: 'circle'` tag. No open profiles, no
+  inner loops (a hole drawn inside a profile), no ellipse or spline entities.
+- **Sketch-on-a-face.** S1 landed the `frame` plumbing, with `sketchFrameOf`,
+  `sketch_frame` and `sketchFrame` agreeing verbatim on the named planes. S2/S3
+  -- the face PICK that produces a frame, and the on-face sketch editor -- are
+  not built and were claimed by another writer.
+
+### Fixture requests outstanding, consolidated
+
+Five slices each ended with a request and none are in the gate yet. Gathered
+here so they can be actioned in one pass; all numbers are this ledger's own
+OCCT measurements:
+
+| fixture | kind | OCCT reference | asked by | blocked? |
+|---|---|---|---|---|
+| `cylinder-round-chamfer` | round | 12949.644918, 5 faces | W11 | no |
+| `revolve-quarter` | revolve | 7068.583471, 6 faces | W6 | no |
+| `hole-blind-flush-top` | hole | 31773.805329, 8 faces | W2a | no |
+| `name-between-edge-after-cut` | edge | (gate must call `name_edge` first) | W1 | needs a gate change, not just a fixture |
+| `draft-whole` | draft | 27713.378369 (the 4-wall answer) | W4 | yes -- occt-build.ts drafts 2 of 4 walls |
+
+W6 also suggested a groove fixture at an asymmetric angle: the existing
+`groove-half` is 180 degrees and mirror-symmetric, so it could never have caught
+the frame-mirror bug W6 found.
+
+### Verification note
+
+This survey was written on a machine with **no Rust toolchain, no `wasm-pack`,
+no npm and no `node_modules`**, and `packages/brep-rs/pkg` does not exist, so
+cargo, the parity gate and the mesh gate could not be run. Everything above is
+read from source or quoted from earlier slice reports, and every line number was
+checked against the file today. The two checkers that are dependency-free WERE
+run: `check-record.mjs` (OK, 3 rows) and `check-freecad-parity.mjs` (30/46
+shipped, 5 queued, 11 refused, exit 1) -- the latter showing `docs/parity.md`
+had been stale at 22/46, now corrected.

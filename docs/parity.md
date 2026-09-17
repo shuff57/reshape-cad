@@ -65,23 +65,36 @@ stays queued and the gate keeps asking for it. Both halves must move.
 ## Current state
 
 `node scripts/check-freecad-parity.mjs` → `FreeCAD PartDesign parity:
-22/46 shipped, 17 queued, 7 refused` (exit 1 — queued tools remain; that is
-correct today).
+30/46 shipped, 5 queued, 11 refused` (exit 1 — queued tools remain; that is
+correct today). Re-measured 2026-09-17.
 
-The 7 refusals: ShapeBinder, SubShapeBinder and Clone (multi-body plumbing a
-single-body student tool does not need); the two Ellipsoids and Scaled
-(non-uniform stretch is the one operation this wasm build cannot do —
-BRepBuilderAPI_GTransform is not bound, measured in script-surface.ts's `scale`
-entry; the axisymmetric cases are already covered by revolve/groove);
-MultiTransform (expert stacking of patterns the student words already
-compose — linearPattern(linearPattern(x, …)) is the lesson, not a new word).
+The 11 refusals, in four groups:
 
-The 17 queued are honest future words: Body, datum plumbing (Plane, Line,
-Point, CoordinateSystem), Pocket (the UI Pocket is sketch-driven; the parity
-word will land with the sketch-statement work), the six sweep features
-(groove, lofts, pipes, helixes — bridge emitters are kernel-gated in
-engine/bridge, but the parity cross-check requires the word in
-reshape-script.ts's VOCABULARY, which means a ModelDoc feature kind and a
-kernel path first), prism/wedge (transpiler statements exist; same
-VOCABULARY gate), and Hole's remaining depth (counterbore, countersink,
-thread, standard sizes — the reason Hole is `partial`).
+- **Multi-body plumbing** — ShapeBinder, SubShapeBinder, Clone. A single-body
+  student tool does not need to import or link another body.
+- **Unequal-axis stretch** — both Ellipsoids and Scaled. This is the one
+  operation the wasm build cannot do: `BRepBuilderAPI_GTransform` is not bound,
+  measured in script-surface.ts's `scale` entry. The axisymmetric cases are
+  already covered by revolve/groove.
+- **Operations the wasm kernel does not bind at all** — both Pipes and both
+  Helixes. Zero exports match `BRepOffsetAPI_MakePipe`/`MakePipeShell`, and
+  there is no helix curve to ride one on. Measured, not merely deferred: the
+  word cannot be written until the kernel build binds the operation.
+- **MultiTransform** — expert stacking of patterns the student words already
+  compose; `linearPattern(linearPattern(x, …))` is the lesson, not a new word.
+
+The 5 queued are now one family plus one depth:
+
+- **The datum family** — Plane, Line, Point, CoordinateSystem. Deferred as a
+  group behind sketch-on-plane (`.msgbox/FUTURE.md`, 2026-09-08): a datum is
+  only useful once a sketch can be attached to one.
+- **Hole**, carried as `partial` rather than `queued` — `hole()` makes a simple
+  through/depth hole; counterbore, countersink, thread and standard sizes are
+  the remaining depth. The kernel half of that same gap is W8 in
+  `docs/kernel-campaign.md`, where overlapping bores still refuse.
+
+**What moved since this file last recorded 22/46.** Pocket, Groove, both Lofts,
+prism/wedge and Body became shipped words; the pipes and helixes moved from
+queued to refused-with-a-measured-reason. The old text called "the six sweep
+features" future work — four of those six are refused by the kernel build, not
+queued, so the honest to-do list is much shorter than it read.

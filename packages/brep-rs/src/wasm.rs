@@ -120,9 +120,9 @@ fn sketch_frame(sk: &Value) -> SketchFrame {
 
 /// The profile outline in plane (u, v) coordinates after rounds/chamfers are
 /// applied -- the JS outlineOf()/tessellate() semantics. A bulge on an edge
-/// becomes an arc, emitted as sampled segments so the extruded solid's faces
-/// are planar and the volume is exact. Returns None for a circle sketch (its
-/// own path) or a collapsed outline.
+/// becomes a genuine circular arc, kept exact as centre/radius/start/sweep, so
+/// the extruded wall is a partial cylinder and the volume is exact. Returns
+/// None for a circle sketch (its own path) or a collapsed outline.
 fn extruded_profile(sk: &Value) -> Option<(Vec<build::ProfileSeg>, Vec<(String, usize)>)> {
     if sk.get("shape").and_then(|s| s.as_str()) == Some("circle") {
         return None;

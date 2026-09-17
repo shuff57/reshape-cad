@@ -67,27 +67,50 @@ cargo test 43/43, gzipped wasm 122,189 bytes vs OCCT's ~7.25 MB). Several kinds
 were built only as wide as their fixtures need, and refuse everything else in
 plain words. That is honest, but it is not yet parity for real student parts.
 
-**Open, each needing a fixture that fails first (validated with `--reference-only`):**
-1. `fillet`: only one straight edge of an axis-aligned box. There is no fillet on
-   boolean results, curved edges, or multiple edges, and no naming history.
+**Open, each needing a fixture that fails first (validated with `--reference-only`).**
+Re-checked against source 2026-09-17; four of the nine have moved. The full
+current map, 3D and 2D, is the closeout section at the end of
+`docs/kernel-campaign.md` — this list is kept for the record.
+
+1. **PARTLY RESOLVED (W11, 2026-09-16).** Box round + chamfer and cylinder round
+   + chamfer are built. ~~only one straight edge of an axis-aligned box~~ Still
+   open: no fillet on boolean results or curved edges generally, a rotated box
+   is refused (`wasm.rs:3164`), and there is still no naming history. Note
+   "multiple edges" was never a gap — `FilletFeature.edge` is a single
+   `TopoName` and occt-build.ts fillets one named edge too.
 2. `shell`: only axis-aligned boxes. OCCT uses a general offset
-   (`MakeThickSolidByJoin`).
-3. `draft`: only one side wall of an axis-aligned box. `whole` (Body Draft) is
-   refused.
+   (`MakeThickSolidByJoin`). **Still open verbatim.**
+3. ~~`draft`: `whole` (Body Draft) is refused.~~ **RESOLVED (W4, 2026-09-15)**
+   for axis-aligned boxes, exact on all three pull axes. Still open: non-box
+   targets. The `draft-whole` FIXTURE is blocked on `occt-build.ts`, which
+   drafts 2 of 4 walls from stale handles — a lead-owned reference-path fix.
 4. `blend`: only two matching straight outlines with planar sides. Twisted,
-   non-similar, rounded or circle lofts need ruled or NURBS surfaces.
-5. `revolve`: a partial angle is built for `groove` but still refused for plain
-   `revolve` (no fixture covers it). Slanted profile segments are refused.
-6. `hole`: overlapping bores are refused (OCCT fuses them first).
+   non-similar, rounded or circle lofts need ruled or NURBS surfaces. **Still
+   open verbatim.**
+5. ~~`revolve`: a partial angle is still refused for plain `revolve`.~~
+   **RESOLVED (W6, 2026-09-15)**, and it turned up a latent mirror bug in
+   `revolve_profile_partial` that only an asymmetric angle could catch. Still
+   open: slanted profile segments, in both `revolve` and `groove`.
+6. `hole`: overlapping bores are refused (OCCT fuses them first). **Still open
+   (W8)** — and W2a added a worse one next to it: four corner bores flush with a
+   face give a WRONG volume with no refusal (31038.672648 vs 31095.221316).
 7. booleans: `ops::boolean` is face-by-face on plane, cylinder and sphere cases
    plus an enclosed-cavity path. There is no general surface-surface
-   intersection (torus, cone and NURBS operands).
-8. `mesh.rs` and `step.rs` are still stubs, so the kernel is not wired into the
-   studio viewport or export.
+   intersection. **Still open, and now understood as the keystone (W5)**: items
+   1, 2 and 6 all bottom out here.
+8. ~~`mesh.rs` and `step.rs` are still stubs~~ **HALF RESOLVED.** `mesh.rs` is
+   done (1,319 lines, its own lead-owned gate at 61/61, adapter wired, and it
+   renders in the studio — see the entry above). `step.rs` is still four lines
+   and a `placeholder()`, so export/import is untouched. It is the one spec
+   clause that depends on nothing else.
 9. There is no naming history for mirror, pattern, pocket, groove, hole, shell or
-   fillet results.
+   fillet results. **Still open verbatim, re-verified 2026-09-17:** `OpRecord`
+   is constructed at exactly two sites, `move` and `combine`, and
+   `OpKind::Fillet`/`OpKind::Shell` are declared but never built.
 
-See also the seam-edge entry below. It blocks item 1 on boolean results.
+~~See also the seam-edge entry below. It blocks item 1 on boolean results.~~
+The seam-edge entry below was **RESOLVED by W0 (2026-09-15)**
+(`ops::weld_shared_edges`), which is what made `name_edge` possible in W1.
 
 ---
 
