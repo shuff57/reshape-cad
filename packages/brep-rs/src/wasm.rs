@@ -2159,6 +2159,38 @@ mod tests {
 
     /// SPEC-brep-shell.md: closed hollow of a 40x40x20 box at thickness 2 is
     /// 32000 - 36*36*16 = 11264, on 12 faces (6 outer + 6 inner).
+    /// SPEC-brep-shell.md: closed hollow of a 40x40x20 box at thickness 2 is
+    /// 32000 - 36*36*16 = 11264, on 12 faces (6 outer + 6 inner).
+    /// A blind hole whose MOUTH is coplanar with the base's face: tool z[2,10]
+    /// in a box z[-10,10]. This was a SILENT wrong volume (31754.955773, no
+    /// refusal) from two bugs the coplanarity exposed: flip_planar rebuilt a
+    /// disk cap from its vertex ring (one point) and drop_degenerate_faces
+    /// deleted the floor, and the tool's mouth cap was classified "inside"
+    /// because the probe offset exactly equalled the membership slack. Closed
+    /// form: 32000 - pi*9*8 = 31773.805329, 8 faces (6 box faces with the top
+    /// holed + wall + floor).
+    #[test]
+    fn blind_hole_flush_with_face_is_exact() {
+        for (label, center) in [("top", [0.0, 0.0, 6.0]), ("bottom", [0.0, 0.0, -6.0])] {
+            let doc = json!({
+                "features": [
+                    { "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0] },
+                    { "id": "h1", "kind": "hole", "target": "b1", "diameter": 6.0, "depth": 8.0, "center": center, "axis": "z" }
+                ]
+            });
+            let (hist, refusals) = build_doc(&doc);
+            assert!(refusals.is_empty(), "{label}: refusals {refusals:?}");
+            let solid = hist.shapes.get("h1").expect("hole must build");
+            let want = 32000.0 - std::f64::consts::PI * 9.0 * 8.0;
+            let vol = build::solid_volume(solid);
+            assert!((vol - want).abs() <= 1e-6 * want, "{label}: volume {vol} vs {want}");
+            assert_eq!(solid.faces().len(), 8, "{label}: 6 box + wall + floor");
+            let bb = build::solid_aabb(solid);
+            assert_eq!(bb.lo, [-20.0, -20.0, -10.0]);
+            assert_eq!(bb.hi, [20.0, 20.0, 10.0]);
+        }
+    }
+
     #[test]
     fn closed_hollow_volume_and_faces() {
         let doc = json!({

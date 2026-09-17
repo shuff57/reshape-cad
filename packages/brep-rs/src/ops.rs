@@ -1135,6 +1135,14 @@ fn keep_disk(
 ) -> Option<()> {
     let sign = offset_sign(op, is_a)?;
     let region = region_inside(other, plane, scale(plane.n, sign * PROBE))?;
+    // Region membership slack, in plane-uv units. MUST be strictly below PROBE:
+    // when this face is coplanar with a face of `other`, the probe sits exactly
+    // PROBE past that face, so its half-plane evaluates to +PROBE. A slack equal
+    // to PROBE read that as "inside" and kept a spurious flipped cap on the
+    // opening of a flush blind hole (volume off by the cap's own term, no
+    // refusal); anything below PROBE classifies the coincidence as outside,
+    // which is what "this surface is on the base's boundary" means.
+    const REGION_EPS: f64 = 1e-9;
     let mut inside_count = 0;
     let mut total = 0;
     let mut probe = |p: Vec3, inside_count: &mut usize, total: &mut usize| {
@@ -1144,9 +1152,9 @@ fn keep_disk(
         } else if let Some((c, r)) = region.disk {
             let d = [(uv[0] - c[0]) as f64, (uv[1] - c[1]) as f64];
             d[0] * d[0] + d[1] * d[1] <= r * r + 1e-7
-                && region.hs.iter().all(|h| h[0] * uv[0] + h[1] * uv[1] + h[2] <= 1e-6)
+                && region.hs.iter().all(|h| h[0] * uv[0] + h[1] * uv[1] + h[2] <= REGION_EPS)
         } else {
-            region.hs.iter().all(|h| h[0] * uv[0] + h[1] * uv[1] + h[2] <= 1e-6)
+            region.hs.iter().all(|h| h[0] * uv[0] + h[1] * uv[1] + h[2] <= REGION_EPS)
         };
         *total += 1;
         if yes { *inside_count += 1; }
@@ -1395,17 +1403,23 @@ fn flip_planar(face: &TFace) -> TFace {
     let fb = face.borrow();
     if let Surface::Plane(p) = &fb.surface {
         let flipped = Plane { origin: p.origin, n: scale(p.n, -1.0), u: p.u, v: p.v };
-        let mut ring = Vec::new();
-        if let Some(w) = fb.boundary.first() {
-            for u in &w.borrow().edges {
-                let eb = u.edge.borrow();
-                ring.push(if u.forward { eb.a.borrow().point } else { eb.b.borrow().point });
-            }
-        }
-        ring.reverse();
-        return build_poly_face(&flipped, &ring.iter().map(|p| flipped.project(*p)).collect::<Vec<_>>());
+        // Keep the ORIGINAL boundary wires, exactly as flip_face does and for
+        // the same measured reason: rebuilding from a vertex ring collapses a
+        // DISK cap (its wire is a single closed circle, so the ring has one
+        // point) to zero area, and drop_degenerate_faces then deletes the face
+        // silently -- a blind hole whose mouth is coplanar with a base face
+        // lost its floor that way, with no refusal (volume off by exactly the
+        // floor's divergence term). Only the surface's outward normal is
+        // reversed; the wires are geometry, not orientation.
+        Rc::new(RefCell::new(Face {
+            boundary: fb.boundary.clone(),
+            forward: fb.forward,
+            surface: Surface::Plane(flipped),
+            uv_domain: fb.uv_domain,
+        }))
+    } else {
+        face.clone()
     }
-    face.clone()
 }
 
 /// A disk-shaped planar face with outward normal `plane.n`.

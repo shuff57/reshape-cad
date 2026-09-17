@@ -255,6 +255,58 @@ Native tests: `sketch_frame_arbitrary_plane_extrudes`,
 **Not done (needs the studio, claimed by another writer):** the face PICK that
 produces a frame, and the on-face sketch editor UI. S2/S3.
 
+## W2a — two silent wrong volumes in the boring family — DONE (2026-09-16)
+
+**What it was.** Reconnaissance for W5/W8 (counterbores) turned up two cases that
+returned a WRONG SOLID with NO refusal -- the class SPEC §4.5 forbids outright,
+found by comparing against closed form and OCCT rather than by any gate:
+
+1. **Blind hole flush with a face** (box 40x40x20, hole d6 depth8 centred so the
+   tool's mouth cap is coplanar with the top): brep-rs 31754.955773 vs 31773.805329
+   (= 32000 - pi*9*8) on both OCCT and closed form. Error was exactly the floor
+   disk's divergence term (6*pi).
+2. **Through + second blind hole, flush or not** (d6 through + d6 depth8 at
+   [14,0,0]): 31283.716875 vs 31208.318651.
+
+**Root causes, both in the coplanar path only:**
+- `flip_planar` rebuilt the flipped face from its vertex RING; a disk cap's wire
+  is one closed circle, so the ring is a single point -> zero area ->
+  `drop_degenerate_faces` deleted the tool's FLOOR silently. `flip_face` already
+  documented this exact collapse for the enclosed-cavity path; `flip_planar` had
+  the same bug with no comment. Fixed: keep the original wires, reverse only the
+  plane normal (one line of geometry, matching `flip_face`).
+- `keep_disk`'s region-membership slack was `1e-6`, EXACTLY the probe offset
+  `PROBE`. For a face coplanar with a face of the other solid, the probe sits
+  exactly PROBE past it, its half-plane evaluates to +PROBE, and the cap read as
+  "inside" -- a spurious zero-thickness cap kept on the opening. Fixed with
+  `REGION_EPS = 1e-9`, strictly below PROBE so a coincidence classifies as
+  outside (which is what "on the base's boundary" means).
+
+**Evidence.** New native test `blind_hole_flush_with_face_is_exact` (top and
+bottom flush; volume within 1e-6 relative, exactly 8 faces). Cross-kernel
+verification through the gate harness: brep-rs and OCCT agree to 6 decimals and
+match face-for-face on all four of flush-top (31773.805329, 8), flush-bottom
+(31773.805329, 8), interior (31773.805329, 9), through (31434.513322, 7). Visual
+pair renders (brep-rs vs OCCT, clipped) show the floor present in both. cargo
+63/63, parity 61/0, mesh 61/61, OCCT ModelDoc gate 17/17, npm run build clean.
+
+**Still open, measured and NOT fixed (needs its own slice):**
+- **Multiple corner bores, flush**: 4 corner holes at dx15 dy10 flush with the
+  top give brep-rs 31038.672648 vs OCCT/closed form 31095.221316 (one floor
+  lost). Cause is deeper than W2a: `region_inside` treats an existing bore in
+  the base as solid material for the membership of the NEXT tool's cap (the
+  region algebra is an intersection of half-planes/disks and has no notion of a
+  SUBTRACTED void in `other`), so a cap spanning a prior bore reads as partly
+  outside. That is the same "general trimmed-face membership" gap W5 targets.
+- **Counterbores refuse**: d6 through + any second bore cut into the result
+  (d10 through, d10 blind, offset d6/d6) -> "brep-rs cannot cut this hole yet".
+  OCCT: 30429.203673 / 31032.389463 / 30992.925928. W8.
+
+**Fixture request for the lead:** add `hole-blind-flush-top` (the W2a test doc;
+OCCT 31773.805329, 8 faces) to the `hole` kind. It pins the silent-wrong-volume
+class the gate could not see. The corner-bore and counterbore cases are NOT
+ready for fixtures -- they still differ/refuse.
+
 ## Next
 
 **W5 — general surface-surface intersection** is the keystone on the critical
