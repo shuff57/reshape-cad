@@ -5,6 +5,7 @@
 //!
 //! ```text
 //! math      vectors, points, matrices, tolerances, root finding
+//! sketch    2D constraint parameter block, residuals and Jacobians
 //! geom      curves and surfaces (§4.3)
 //! topo      vertex/edge/wire/face/shell/solid (§4.2)
 //! build     primitives, sweep, revolve, mirror, pattern, move (§4.4)
@@ -21,7 +22,13 @@
 //! geometry types, the way truck keeps `truck-topology` independent of
 //! `truck-geometry`.
 
+//! `sketch` sits directly under `math` because it needs nothing else. A sketch
+//! is solved in its own plane, in two dimensions, and hands `build` a profile;
+//! it has no business knowing what a face or a solid is, and keeping it above
+//! `geom` is what lets the constraint solver be tested without a kernel behind
+//! it.
 pub mod math;
+pub mod sketch;
 pub mod geom;
 pub mod topo;
 pub mod build;

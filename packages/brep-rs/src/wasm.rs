@@ -373,7 +373,10 @@ fn extrude_prism(sk: &Value, _plane: &str, height: f64) -> Option<(TSolid, Prism
     }
     let (segs, roles) = extruded_profile(sk)?;
     let nseg = segs.len();
-    let solid = build::extrude_profile(&segs, origin, u_axis, v_axis, scale(n, height * dir));
+    let solid = match build::extrude_profile(&segs, origin, u_axis, v_axis, scale(n, height * dir)) {
+        Ok(s) => s,
+        Err(_) => return None,
+    };
     let solid = build::ensure_outward(&solid);
     Some((solid, PrismKind::Outline { nseg, roles }))
 }
@@ -2204,6 +2207,82 @@ fn surface_of(face: &build::TFace) -> Option<Surface> {
 mod tests {
     use super::*;
 
+    // ---- sketch session seam (SPEC-sketcher2 §5.1) ---------------------
+
+    /// The §2 rows for a closed square: 4 lines + 4 coincidents + H + V.
+    /// The seed IS a solution, so LM stops at once.
+    fn square_topology() -> String {
+        r#"{
+            "geoms": [
+                { "k": "line", "id": 1, "a": [0, 0], "b": [10, 0] },
+                { "k": "line", "id": 2, "a": [10, 0], "b": [10, 10] },
+                { "k": "line", "id": 3, "a": [10, 10], "b": [0, 10] },
+                { "k": "line", "id": 4, "a": [0, 10], "b": [0, 0] }
+            ],
+            "rules": [
+                { "k": "coincident", "a": 1, "aEnd": "b", "b": 2, "bEnd": "a" },
+                { "k": "coincident", "a": 2, "aEnd": "b", "b": 3, "bEnd": "a" },
+                { "k": "coincident", "a": 3, "aEnd": "b", "b": 4, "bEnd": "a" },
+                { "k": "coincident", "a": 4, "aEnd": "b", "b": 1, "bEnd": "a" },
+                { "k": "horizontal", "a": 1 },
+                { "k": "vertical", "a": 2 }
+            ]
+        }"#
+        .to_string()
+    }
+
+    fn conflicting_topology() -> String {
+        r#"{
+            "geoms": [
+                { "k": "point", "id": 1, "p": [0, 0] },
+                { "k": "point", "id": 2, "p": [40, 0] }
+            ],
+            "rules": [
+                { "k": "distance", "a": 1, "aEnd": "a", "b": 2, "bEnd": "a", "value": 40 },
+                { "k": "distance", "a": 1, "aEnd": "a", "b": 2, "bEnd": "a", "value": 20 }
+            ]
+        }"#
+        .to_string()
+    }
+
+    #[test]
+    fn sketch_seam_open_solve_profile_a_square() {
+        let h = sketch_open(&square_topology());
+        assert!(h != 0, "open returns a handle");
+        // Pass an empty params slice: the session solves from its warm start.
+        let solved = sketch_solve(h, &[], &[], 0.0, 0.0);
+        assert!(solved.is_some(), "solve succeeds: {:?}", LAST_SKETCH_ERROR.with(|le| le.borrow().clone()));
+        let p = solved.unwrap();
+        assert_eq!(p.len(), 26, "built-ins (10 slots) + 4 lines x 4 slots");
+        let profile = sketch_profile(h);
+        assert!(profile.is_some(), "profile succeeds");
+        let text = profile.unwrap();
+        assert!(!text.contains("refusal"), "a square profiles clean: {text}");
+        // debug below
+        let v: Value = serde_json::from_str(&text).unwrap();
+        let segs = v.get("segs").and_then(|s| s.as_array()).unwrap();
+        assert!(!segs.is_empty(), "the profile has segments");
+        sketch_close(h);
+    }
+
+    #[test]
+    fn sketch_conflicting_never_profiles() {
+        // Refusal 11 (oracle O7 #11): a converged CONFLICTING sketch must
+        // never reach the profile path. 40 and 20 on one pair genuinely
+        // conflict; LM cannot converge, the diagnosis bucket is Conflicting
+        // (or the solve refuses), and sketch_profile returns a refusal.
+        let h = sketch_open(&conflicting_topology());
+        assert!(h != 0, "open succeeds: {:?}", LAST_SKETCH_ERROR.with(|le| le.borrow().clone()));
+        let _solved = sketch_solve(h, &[], &[], 0.0, 0.0);
+        let profile = sketch_profile(h);
+        let text = profile.expect("profile returns a verdict, not None");
+        assert!(
+            text.contains("refusal"),
+            "a conflicting sketch refuses its profile, got: {text}"
+        );
+        sketch_close(h);
+    }
+
     /// SPEC-brep-shell.md: closed hollow of a 40x40x20 box at thickness 2 is
     /// 32000 - 36*36*16 = 11264, on 12 faces (6 outer + 6 inner).
     /// SPEC-brep-shell.md: closed hollow of a 40x40x20 box at thickness 2 is
@@ -3467,6 +3546,203 @@ fn build_fillet(
     v_axis[vax] = 1.0;
     let mut sweep = [0.0, 0.0, 0.0];
     sweep[eax] = bb.hi[eax] - bb.lo[eax];
-    let solid = build::extrude_profile(&segs, origin, u_axis, v_axis, sweep);
+    let solid = match build::extrude_profile(&segs, origin, u_axis, v_axis, sweep) {
+        Ok(s) => s,
+        Err(_) => return Err(FilletErr::NoBox),
+    };
     Ok(build::ensure_outward(&solid))
+}
+
+// ---------------------------------------------------------------------------
+// Sketch sessions (SPEC-sketcher2 §5.1): typed-array in/out on the hot path.
+// A handle is 1-based; 0 is "no session". sketch_close drops it.
+// ---------------------------------------------------------------------------
+
+thread_local! {
+    static SKETCH_SESSIONS: std::cell::RefCell<Vec<Option<crate::sketch::session::SketchSession>>> =
+        const { std::cell::RefCell::new(Vec::new()) };
+}
+
+/// Open a warm sketch session from the schema contract's rows. Returns the
+/// handle, or u32::MAX with the sentence available via sketch_last_error.
+#[wasm_bindgen]
+pub fn sketch_open(topology_json: &str) -> u32 {
+    let opened = crate::sketch::session::SketchSession::open(topology_json);
+    SKETCH_SESSIONS.with(|ss| {
+        let mut list = ss.borrow_mut();
+        match opened {
+            Ok(s) => {
+                list.push(Some(s));
+                list.len() as u32
+            }
+            Err(e) => {
+                LAST_SKETCH_ERROR.with(|le| *le.borrow_mut() = Some(e));
+                0
+            }
+        }
+    })
+}
+
+thread_local! {
+    static LAST_SKETCH_ERROR: std::cell::RefCell<Option<String>> =
+        const { std::cell::RefCell::new(None) };
+}
+
+/// The last sketch seam error, or "". The u32-returning exports cannot carry
+/// a sentence, so the sentence waits here for the caller that asked.
+#[wasm_bindgen]
+pub fn sketch_last_error() -> Option<String> {
+    LAST_SKETCH_ERROR.with(|le| le.borrow_mut().take())
+}
+
+/// Solve from the warm start. `params` is the full parameter vector in slot
+/// order (a memcpy round trip); `drag` is 2 doubles: the dragged point's two
+/// FULL-vector slots, or a slice of length 0 for no drag. Returns the solved
+/// vector, or an empty vector (check sketch_last_error) on refusal.
+#[wasm_bindgen]
+pub fn sketch_solve(h: u32, params: &[f64], drag_slots: &[f64], drag_target_x: f64, drag_target_y: f64) -> Option<Vec<f64>> {
+    SKETCH_SESSIONS.with(|ss| {
+        let mut list = ss.borrow_mut();
+        let idx = (h - 1) as usize;
+        let Some(slot) = list.get_mut(idx) else {
+            LAST_SKETCH_ERROR.with(|le| *le.borrow_mut() = Some("sketch_solve: no such session".to_string()));
+            return None;
+        };
+        let Some(session) = slot.as_mut() else {
+            LAST_SKETCH_ERROR.with(|le| *le.borrow_mut() = Some("sketch_solve: session closed".to_string()));
+            return None;
+        };
+        let drag = if drag_slots.len() == 2 {
+            Some(crate::sketch::solve::DragPull {
+                slots: [drag_slots[0] as usize, drag_slots[1] as usize],
+                target: [drag_target_x, drag_target_y],
+            })
+        } else {
+            None
+        };
+        match session.solve(params, drag) {
+            Ok((p, _st)) => Some(p),
+            Err(e) => {
+                LAST_SKETCH_ERROR.with(|le| *le.borrow_mut() = Some(e));
+                None
+            }
+        }
+    })
+}
+
+/// Diagnose at the current point: rank, DoF, bucket, blame — JSON.
+#[wasm_bindgen]
+pub fn sketch_diagnose(h: u32) -> Option<String> {
+    SKETCH_SESSIONS.with(|ss| {
+        let list = ss.borrow();
+        let idx = (h - 1) as usize;
+        let Some(slot) = list.get(idx) else {
+            LAST_SKETCH_ERROR.with(|le| *le.borrow_mut() = Some("sketch_diagnose: no such session".to_string()));
+            return None;
+        };
+        let Some(session) = slot.as_ref() else {
+            LAST_SKETCH_ERROR.with(|le| *le.borrow_mut() = Some("sketch_diagnose: session closed".to_string()));
+            return None;
+        };
+        match session.diagnose() {
+            Ok(d) => Some(
+                json!({
+                    "rank": diagnosis_rank(&session),
+                    "dof": diagnosis_dof(&session),
+                    "bucket": bucket_name(&session),
+                    "blame": diagnosis_blame(&session),
+                })
+                .to_string(),
+            ),
+            Err(e) => {
+                LAST_SKETCH_ERROR.with(|le| *le.borrow_mut() = Some(e));
+                None
+            }
+        }
+    })
+}
+
+fn diagnosis_dof(session: &crate::sketch::session::SketchSession) -> usize {
+    crate::sketch::diagnose::diagnose(&session.block, &session.constraints, &session.params)
+        .map(|d| d.dof)
+        .unwrap_or(0)
+}
+
+fn diagnosis_rank(session: &crate::sketch::session::SketchSession) -> usize {
+    crate::sketch::diagnose::diagnose(&session.block, &session.constraints, &session.params)
+        .map(|d| d.rank)
+        .unwrap_or(0)
+}
+
+fn diagnosis_blame(session: &crate::sketch::session::SketchSession) -> Vec<serde_json::Value> {
+    crate::sketch::diagnose::diagnose(&session.block, &session.constraints, &session.params)
+        .map(|d| d.blame.iter().map(|b| json!(b)).collect())
+        .unwrap_or_default()
+}
+
+fn bucket_name(session: &crate::sketch::session::SketchSession) -> &'static str {
+    match crate::sketch::diagnose::diagnose(&session.block, &session.constraints, &session.params) {
+        Ok(d) => match d.bucket {
+            crate::sketch::solve::Bucket::Consistent => "consistent",
+            crate::sketch::solve::Bucket::GloballyInfeasible => "globallyInfeasible",
+            crate::sketch::solve::Bucket::Redundant => "redundant",
+            crate::sketch::solve::Bucket::Conflicting => "conflicting",
+        },
+        Err(_) => "error",
+    }
+}
+
+/// The solved profile: closed loops, construction dropped. JSON: a `segs`
+/// array of {a,b} lines and {centre,radius,start,sweep} arcs, or `{"refusal":
+/// sentence}`.
+#[wasm_bindgen]
+pub fn sketch_profile(h: u32) -> Option<String> {
+    SKETCH_SESSIONS.with(|ss| {
+        let list = ss.borrow();
+        let idx = (h - 1) as usize;
+        let Some(slot) = list.get(idx) else {
+            LAST_SKETCH_ERROR.with(|le| *le.borrow_mut() = Some("sketch_profile: no such session".to_string()));
+            return None;
+        };
+        let Some(session) = slot.as_ref() else {
+            LAST_SKETCH_ERROR.with(|le| *le.borrow_mut() = Some("sketch_profile: session closed".to_string()));
+            return None;
+        };
+        // The refusal-11 gate: a converged sketch whose constraints are
+        // CONFLICTING must never reach the profile path.
+        if let Ok(d) = session.diagnose() {
+            if d.bucket == crate::sketch::solve::Bucket::Conflicting {
+                return Some(json!({ "refusal": "the sketch's rules conflict, so no profile can be trusted; resolve the conflict first" }).to_string());
+            }
+        }
+        match session.profile() {
+            Ok(segs) => {
+                let segs: Vec<serde_json::Value> = segs
+                    .iter()
+                    .map(|s| match s {
+                        crate::sketch::wires::WireSeg::Line { a, b } => json!({
+                            "k": "line", "a": a, "b": b,
+                        }),
+                        crate::sketch::wires::WireSeg::Arc { centre, radius, start, sweep } => json!({
+                            "k": "arc", "centre": centre, "radius": radius, "start": start, "sweep": sweep,
+                        }),
+                    })
+                    .collect();
+                Some(json!({ "segs": segs }).to_string())
+            }
+            Err(r) => Some(json!({ "refusal": r.sentence }).to_string()),
+        }
+    })
+}
+
+/// Close a session and free its slot.
+#[wasm_bindgen]
+pub fn sketch_close(h: u32) {
+    SKETCH_SESSIONS.with(|ss| {
+        let mut list = ss.borrow_mut();
+        let idx = (h - 1) as usize;
+        if idx < list.len() {
+            list[idx] = None;
+        }
+    });
 }

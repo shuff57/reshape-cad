@@ -1467,14 +1467,87 @@ impl ProfileSeg {
 
 /// Extrude a profile (a closed loop of straight and circular segments) given in
 /// the sketch plane's (u, v), along `sweep`. The solid spans from the profile
-/// to the profile translated by `sweep`, matching OCCT's MakePrism.
+/// to the profile translated by `sweep`, matching OCCT's MakePrism. Returns
+/// `Err` naming the problem, rather than a wrong or garbage solid, when the
+/// profile cannot be trusted to close (SPEC-sketcher2 §7).
 pub fn extrude_profile(
     segs: &[ProfileSeg],
     origin: Vec3,
     u_axis: Vec3,
     v_axis: Vec3,
     sweep: Vec3,
-) -> TSolid {
+) -> Result<TSolid, String> {
+    let n = segs.len();
+    // ---- §7 guards: what the polygon path could never produce, a soup can ----
+    // n == 1: (0 + 1) % 1 == 0, so the lone edge runs base_v[0] -> base_v[0]
+    // and the profile cannot close -- UNLESS the lone segment is a full-circle
+    // arc, whose corrected shoelace area below is a real disk. Same reading
+    // for n == 2: a straight there-and-back digon has zero enclosed area and
+    // is refused, while two half-circle arcs are a legitimate circle.
+    let chord_area = |a: [f64; 2], b: [f64; 2]| a[0] * b[1] - b[0] * a[1];
+    let mut profile_area2 = 0.0;
+    for s in segs {
+        let (p, q) = s.endpoints();
+        profile_area2 += chord_area(p, q);
+        if let ProfileSeg::Arc { radius, sweep: sw, .. } = s {
+            profile_area2 += radius * radius * (sw - sw.sin());
+        }
+    }
+    // A scale for the emit gate: the profile's own extent in the plane,
+    // floored at 1.0 so a unit sketch never reads as degenerate.
+    let mut hi = [f64::MIN; 2];
+    let mut lo = [f64::MAX; 2];
+    for s in segs {
+        let (p, q) = s.endpoints();
+        for pt in [p, q] {
+            for k in 0..2 {
+                hi[k] = hi[k].max(pt[k]);
+                lo[k] = pt[k].min(lo[k]);
+            }
+        }
+    }
+    let profile_scale = ((hi[0] - lo[0]) * (hi[1] - lo[1]))
+        .sqrt()
+        .max(1.0);
+    let eps_weld = 1e-7 * profile_scale;
+    if n == 1 {
+        return Err("a single segment cannot close an outline".to_string());
+    }
+    if n == 2 {
+        let both_lines = segs.iter().all(|s| matches!(s, ProfileSeg::Line { .. }));
+        if both_lines {
+            return Err("a 2-gon has no interior and must refuse".to_string());
+        }
+    }
+    // §7.1 (the rest of the fix): walls and caps are built assuming the walk
+    // goes CCW with positive arc spans, and a CW arc chain otherwise produces
+    // an inside-out solid even with the winding flag set, because a negative
+    // span double-flips the cylinder's own (u, v) walk. Normalize instead:
+    // a CW profile is reversed into its CCW twin before any face is built, so
+    // every downstream path sees the one orientation it was written for.
+    let segs: Vec<ProfileSeg> = if profile_area2 < 0.0 {
+        let mut out: Vec<ProfileSeg> = Vec::with_capacity(segs.len());
+        for i in (0..segs.len()).rev() {
+            let (p, q) = segs[i].endpoints();
+            match &segs[i] {
+                ProfileSeg::Line { .. } => out.push(ProfileSeg::Line { a: q, b: p }),
+                ProfileSeg::Arc { centre, radius, start, sweep } => {
+                    // The same arc walked the other way: it starts where the
+                    // original ended, runs the opposite sense, and sweeps the
+                    // negated amount.
+                    out.push(ProfileSeg::Arc {
+                        centre: *centre,
+                        radius: *radius,
+                        start: *start + *sweep,
+                        sweep: -*sweep,
+                    });
+                }
+            }
+        }
+        out
+    } else {
+        segs.to_vec()
+    };
     let n = segs.len();
     let at = |p: [f64; 2]| add(origin, add(scale(u_axis, p[0]), scale(v_axis, p[1])));
     let sweep_unit = crate::math::normalize(sweep);
@@ -1540,12 +1613,30 @@ pub fn extrude_profile(
     // winding in the plane's true (right-handed) frame instead: for a CCW uv
     // profile the outward side is to the right of travel.
     let frame_normal = crate::math::normalize(cross(u_axis, v_axis));
-    let mut a2 = 0.0;
-    for i in 0..n {
-        let (p, q) = (segs[i].endpoints().0, segs[i].endpoints().1);
-        a2 += p[0] * q[1] - q[0] * p[1];
-    }
+    // §7.1: the chord-only shoelace is exactly 0 for a circle built from two
+    // diametral arcs, so the CW version used to come out inside-out. The arc
+    // contributes its circular-segment area r^2 (sweep - sin sweep) beyond the
+    // chord, which makes the sum exact for any arc chain (a full circle from
+    // one arc of sweep 2*pi contributes r^2 * 2*pi = 2 * pi r^2; a half-disk
+    // contributes r^2 * pi = 2 * (pi r^2 / 2)).
+    let mut a2 = profile_area2;
     let winding = if a2 >= 0.0 { 1.0 } else { -1.0 };
+    // §7.2 emit gate: ProfileSeg carries no endpoints, so `endpoints()`
+    // RECOMPUTES them, and nothing checked that segment i's end agrees with
+    // segment i+1's start. A solve that moved an endpoint after the profile
+    // was serialized used to build a gapped wire silently; now it refuses and
+    // names both segments and the gap.
+    for i in 0..n {
+        let j = (i + 1) % n;
+        let (_, end_i) = segs[i].endpoints();
+        let (start_j, _) = segs[j].endpoints();
+        let gap = ((end_i[0] - start_j[0]).powi(2) + (end_i[1] - start_j[1]).powi(2)).sqrt();
+        if gap > eps_weld {
+            return Err(format!(
+                "segment {i}'s end and segment {j}'s start are {gap:.3} mm apart; the profile does not close"
+            ));
+        }
+    }
     for i in 0..n {
         let j = (i + 1) % n;
         let (a_uv, b_uv) = segs[i].endpoints();
@@ -1568,6 +1659,11 @@ pub fn extrude_profile(
                 let centre_w = at(*centre);
                 // The arc wall's cylinder frame must agree with the straight
                 // walls' outward side; a CW profile flips the radial frame.
+                // The arc wall's cylinder frame must agree with the straight
+                // walls' outward side; a CW profile flips the radial frame.
+                // (For arcs this only matters once the profile is normalized
+                // to CCW below, where winding is always +1; the branch is kept
+                // for safety.)
                 let (e1, e2) = if winding >= 0.0 {
                     (u_axis, v_axis)
                 } else {
@@ -1613,7 +1709,7 @@ pub fn extrude_profile(
     faces.push(make_face(Surface::Plane(top_plane), [[0.0, 1.0], [0.0, 1.0]], top_uses));
 
     let shell = Rc::new(RefCell::new(Shell { faces }));
-    Solid { shells: vec![shell] }
+    Ok(Solid { shells: vec![shell] })
 }
 
 /// Loft between two matching closed outlines given as world-space points,
@@ -2423,4 +2519,72 @@ mod tests {
         let want = 32000.0 - std::f64::consts::PI * (64.0 - 16.0) * 7.0 / 2.0;
         close(solid_volume(&cut), want, 1e-9, "groove-half volume");
     }
+
+    // SPEC-sketcher2 §7: two pre-existing extrude_profile bugs, unreachable
+    // from the polygon sketcher's own paths but trivially reachable from a
+    // soup sketch's hand-built ProfileSeg chain. RED until the fixes land.
+
+    #[test]
+    fn two_arc_circle_cw_winds_cw() {
+        // Two half-circle arcs swept clockwise (0 -> -pi -> -2pi). Their
+        // chords are diametral, so the shoelace sum over chord endpoints
+        // alone is exactly 0 for EITHER winding (§7.1) -- today's
+        // `a2 >= 0.0` picks CCW regardless, and this CW circle comes out
+        // inside-out.
+        let pi = std::f64::consts::PI;
+        let segs = vec![
+            ProfileSeg::Arc { centre: [0.0, 0.0], radius: 5.0, start: 0.0, sweep: -pi },
+            ProfileSeg::Arc { centre: [0.0, 0.0], radius: 5.0, start: -pi, sweep: -pi },
+        ];
+        let s = extrude_profile(&segs, [0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 10.0])
+            .expect("a two-arc circle is a valid closed profile");
+        assert!(signed_volume(&s) > 0.0, "a CW two-arc circle must wind outward, not inside-out");
+    }
+
+    #[test]
+    fn n1_profile_refuses() {
+        // One segment can never enclose an area; base_v[0] -> base_v[0]
+        // wraps the sole edge onto itself.
+        let segs = vec![ProfileSeg::Line { a: [0.0, 0.0], b: [10.0, 0.0] }];
+        let r = extrude_profile(&segs, [0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 10.0]);
+        assert!(r.is_err(), "a single segment has no interior and must refuse");
+    }
+
+    #[test]
+    fn n2_gon_refuses() {
+        // A straight there-and-back digon, zero enclosed area -- distinct
+        // from the legitimate 2-arc circle above, which also has n == 2
+        // but real area once the shoelace correction is in.
+        let segs = vec![
+            ProfileSeg::Line { a: [0.0, 0.0], b: [10.0, 0.0] },
+            ProfileSeg::Line { a: [10.0, 0.0], b: [0.0, 0.0] },
+        ];
+        let r = extrude_profile(&segs, [0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 10.0]);
+        assert!(r.is_err(), "a 2-gon has no interior and must refuse");
+    }
+
+    #[test]
+    fn emit_gate_refuses_drift() {
+        // A line, an arc, and a closing line: every join is exact except
+        // the arc-end -> closing-line-start join, drifted 0.4mm in u, as if
+        // a solve moved the arc's endpoint after the profile was
+        // serialized (§7.2). The emit gate must recompute endpoints and
+        // refuse, naming both segments on either side of the gap (0-based
+        // "segment N", matching the `endpoints()` index into `segs`).
+        let pi = std::f64::consts::PI;
+        let segs = vec![
+            ProfileSeg::Line { a: [0.0, 0.0], b: [10.0, 0.0] },
+            ProfileSeg::Arc { centre: [10.0, 5.0], radius: 5.0, start: -pi / 2.0, sweep: pi },
+            ProfileSeg::Line { a: [10.4, 10.0], b: [0.0, 0.0] },
+        ];
+        let r = extrude_profile(&segs, [0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 10.0]);
+        let err = match r {
+            Ok(_) => panic!("a 0.4mm drifted endpoint must refuse, not build a gapped wire"),
+            Err(e) => e,
+        };
+        assert!(err.contains("segment 1"), "the refusal names the first segment: {err}");
+        assert!(err.contains("segment 2"), "the refusal names the second segment: {err}");
+        assert!(err.contains("0.4"), "the refusal names the drift distance: {err}");
+    }
 }
+
