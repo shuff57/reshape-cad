@@ -33,7 +33,7 @@ const WELD: f64 = 1e-6;
 /// about, so the STEP `CIRCLE` written from it runs `a` -> `mid` -> `b`; `a`
 /// equals `b` on a full circle, which is legal and is how a rim is written.
 #[derive(Clone, Debug)]
-enum Seg {
+pub(crate) enum Seg {
     Line {
         a: Vec3,
         b: Vec3,
@@ -425,7 +425,7 @@ fn cylinder_loop(c: &Cylinder) -> Vec<Seg> {
 /// counterclockwise about the SURFACE's normal. Each arc adds its own circular
 /// segment on top of the chord the shoelace sum already counted, so a bulge
 /// that crosses the chord line still measures correctly.
-fn planar_signed_area(segs: &[Seg], p: &Plane) -> f64 {
+pub(crate) fn planar_signed_area(segs: &[Seg], p: &Plane) -> f64 {
     let u = p.u;
     let v = cross(p.n, u);
     let flat = |q: Vec3| {
