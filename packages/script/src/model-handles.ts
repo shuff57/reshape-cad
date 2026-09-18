@@ -104,10 +104,9 @@ function planeNormal(plane: SketchPlane): [number, number, number] {
  * False). So the two engines agree, and this one table is engine-neutral like
  * the rest of this file.
  *
- * MEASURED on both, not derived: docs/specs/SPEC-blend.md fixture 24 pads a
- * 30x5 RECT 12mm on five plane/offset combinations and asserts the world bbox
- * through OcctEngineAdapter AND FreeCadEngineAdapter. xz@0 comes out
- * [[0,-12,0],[30,0,5]] -- the cap at y = -12, not +12.
+ * MEASURED, not derived: docs/specs/SPEC-blend.md fixture 24 pads a 30x5
+ * RECT 12mm on five plane/offset combinations and asserts the world bbox.
+ * xz@0 comes out [[0,-12,0],[30,0,5]] -- the cap at y = -12, not +12.
  */
 const SWEEP_DIR: Record<SketchPlane, number> = { xy: 1, xz: -1, yz: 1 };
 

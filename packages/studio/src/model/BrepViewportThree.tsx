@@ -1226,11 +1226,10 @@ export default function BrepViewportThree({
           const engine = engineRef.current;
           const named = surviving.find((c) => {
             const { featureId, kernelEdge } = c.line.userData as { featureId: string; kernelEdge: any };
-            // A throw here (FreeCadEngineAdapter.nameEdge: not yet
-            // implemented) is honest, not an error -- same "no answer" case
-            // this disambiguation already treats null as; see the try/catch
-            // pattern repeated at every nameFace/nameEdge/resolveFace/
-            // resolveEdge call site below, for the same reason.
+            // A throw here is honest, not an error -- the same "no answer"
+            // case this disambiguation already treats null as; see the
+            // try/catch pattern repeated at every nameFace/nameEdge/
+            // resolveFace/resolveEdge call site below, for the same reason.
             try {
               return engine.nameEdge(built, docRef.current, featureId, kernelEdge) !== null;
             } catch {

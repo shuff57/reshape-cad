@@ -11,9 +11,8 @@
 // string back into the wasm export, where a single-entry thread_local cache
 // (wasm.rs's LAST_DOC/LAST_HIST) keeps repeated calls from rebuilding.
 //
-// `THREE` is constructor-injected rather than statically imported, matching
-// OcctEngineAdapter's discipline (three stays a peer dependency this package
-// never hard-imports at runtime).
+// `THREE` is constructor-injected rather than statically imported, so three
+// stays a peer dependency this package never hard-imports at runtime.
 
 import type { ModelDoc } from '@shuff57/reshape-script/model-types';
 import type { TopoName } from '@shuff57/reshape-script/topo-name';
@@ -22,10 +21,9 @@ import { getKernelBaseUrl } from './config.js';
 import type { EngineAdapter, EngineBuildResult, EngineMesh, FaceRange } from './engine-adapter.js';
 
 /** Which import strategy actually worked, set once on the first successful
- *  load. Same two-strategy fallback and same purely-diagnostic role as
- *  OcctEngineAdapter's copy (see that file's own comment) -- duplicated here
- *  rather than shared, the same discipline occt-three.ts/topo-resolve.ts
- *  already apply to their duplicated walkers. */
+ *  load. Purely diagnostic: the two-strategy fallback exists because a
+ *  bundler that rewrites a runtime-computed import() breaks the URL load,
+ *  and new Function is the escape hatch that is never rewritten. */
 let kernelImportStrategy: 'webpackIgnore' | 'new-function' | null = null;
 
 async function dynamicImportKernel(url: string): Promise<any> {
@@ -43,10 +41,10 @@ async function dynamicImportKernel(url: string): Promise<any> {
   }
 }
 
-/** The one wasm module, shared by every BrepRsEngineAdapter instance -- same
- *  module-level-once discipline OcctEngineAdapter's kernelImportStrategy and
- *  BrepViewportThree.tsx's enginePromise both follow (two viewports in one
- *  session must not fetch the wasm twice). */
+/** The one wasm module, shared by every BrepRsEngineAdapter instance -- the
+ *  same module-level-once discipline BrepViewportThree.tsx's enginePromise
+ *  follows, because two viewports in one session must not fetch the wasm
+ *  twice. */
 let wasmPromise: Promise<any> | null = null;
 
 async function loadWasm(): Promise<any> {

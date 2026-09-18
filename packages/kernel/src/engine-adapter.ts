@@ -33,17 +33,12 @@
 //     itself, which is cause-generic in topo-resolve.ts and does not
 //     distinguish face names from edge names.
 //
-// `oc` itself is intentionally NOT part of this interface: every OCCT-shaped
-// call the component makes (per the list above) goes through one of these
-// methods. Step 10 (the seam refactor itself) found two more direct `oc`
-// reaches this list had not named -- a local `faceSize(oc, face)` /
-// `edgeLength(oc, edge)` pair, and a purely diagnostic
-// `Object.keys(kernel.oc).length` in the loading-note text -- and closed the
-// first two as `faceSize`/`edgeLength` above (OcctEngineAdapter moves the
-// existing Bnd_Box/BRepGProp logic in verbatim; FreeCadEngineAdapter throws
-// "not yet implemented", same as resolveFace/nameFace, since real
-// measurement against a FreeCAD shape is unscheduled §4 risk-3 work). The
-// third had no adapter-neutral equivalent (a FreeCAD session has no `oc`
+// No kernel handle is part of this interface: every kernel-shaped call the
+// component makes (per the list above) goes through one of these methods.
+// The seam refactor found two more direct reaches the list had not named --
+// a local faceSize/edgeLength pair -- and closed them as the `faceSize` /
+// `edgeLength` methods below. A third, a diagnostic export count, had no
+// adapter-neutral equivalent (
 // export count to report) and was simply replaced with engine-mode-neutral
 // loading text -- see BrepViewportThree.tsx's own loadEngine().
 
@@ -82,11 +77,9 @@ export interface EngineBuildResult {
   refusals?: Map<string, string>;
 }
 
-/** A meshed shape, three.js-ready -- the adapter-neutral shape of
- *  occt-three.ts's BrepThreeMesh. Both adapters converge on this even though
- *  OcctEngineAdapter gets it for free (tessellateToThree already returns
- *  this shape) and FreeCadEngineAdapter has to build it from
- *  session.meshFaces()'s JSON (§2 build sequence step 8). */
+/** A meshed shape, three.js-ready. Adapter-neutral on purpose: an
+ *  implementation converges on this whether its kernel hands back geometry
+ *  directly or it has to assemble one from JSON. */
 export interface EngineMesh {
   geometry: THREE.BufferGeometry;
   faces: FaceRange[];
@@ -97,10 +90,8 @@ export interface EngineAdapter {
    *  Idempotent-ish in spirit -- called once before the first build(). */
   load(): Promise<void>;
 
-  /** Rebuild every shape in `doc`. OcctEngineAdapter forwards straight to
-   *  buildDoc(); FreeCadEngineAdapter replays the whole feature list through
-   *  fresh FreeCAD commands (SPEC-engine-port.md §4 risk 1 -- v1 is full
-   *  replay, not an incremental diff). */
+  /** Rebuild every shape in `doc`. Full replay, not an incremental diff:
+   *  every call rebuilds the whole feature list from scratch. */
   build(doc: ModelDoc): EngineBuildResult;
 
   /** Mesh one already-built shape for three.js. Returns null exactly when
