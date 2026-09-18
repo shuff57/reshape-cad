@@ -1,11 +1,14 @@
 # Build and test on every push and pull request.
 #
-# WHY THIS DID NOT EXIST BEFORE. It could not: `npm test` runs the ModelDoc
+# WHY THIS DID NOT EXIST BEFORE. It could not: `npm test` ran the ModelDoc
 # OCCT gate, and until 0366d95 that gate needed RESHAPE_KERNEL_DIR pointed at a
 # sibling shCode checkout holding a 23 MB gitignored replicad_single.wasm. No
-# runner has that. The kernel is a pinned devDependency now
-# (replicad-opencascadejs), so `npm ci` is the whole setup and this file is
-# just the thing that presses the button.
+# runner has that. That gate is no longer in `npm test` at all, and OCCT
+# arrives as a pinned devDependency; `npm ci` covers the JavaScript half.
+#
+# The OTHER half is Rust. Since brep-rs became the only kernel, `npm ci` is no
+# longer the whole setup: the wasm has to be built here or the kernel suite
+# cannot import it.
 #
 # WHAT IT RUNS, and the order matters: the test suites import from
 # `packages/*/dist`, not from `src`, because dist is what a browser and shCode
@@ -42,6 +45,44 @@ jobs:
       - name: Install
         run: npm ci
 
+      # THE KERNEL IS RUST NOW, and this step is why CI has never actually run
+      # the test suite. packages/brep-rs/pkg is wasm-pack output, gitignored
+      # (pkg/.gitignore is `*`), so a fresh checkout has no wasm at all --
+      # measured: with pkg/ moved aside the kernel suite exits 1 (1 fail, 1
+      # error) because brep-rs-engine-adapter.test.mjs readFileSync's the
+      # .wasm at module load. Every green run this file has ever had predates
+      # that test. Build the kernel before anything imports it.
+      - name: Add the wasm target
+        run: rustup target add wasm32-unknown-unknown
+
+      # Keyed on Cargo.lock, and it caches ~/.cargo/bin so wasm-pack itself is
+      # installed once rather than compiled on every run (a cold
+      # `cargo install wasm-pack` is minutes, not seconds).
+      - name: Cache cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin
+            ~/.cargo/registry
+            ~/.cargo/git
+            packages/brep-rs/target
+          key: cargo-${{ runner.os }}-${{ hashFiles('packages/brep-rs/Cargo.lock') }}
+          restore-keys: cargo-${{ runner.os }}-
+
+      - name: Install wasm-pack
+        run: command -v wasm-pack || cargo install wasm-pack --locked
+
+      - name: Build the kernel wasm
+        run: wasm-pack build --release --target web --out-dir pkg
+        working-directory: packages/brep-rs
+
+      # The kernel's own native tests. They never needed wasm and so were never
+      # run here either; the toolchain is present now, so there is no reason
+      # for the Rust half of the product to stay unmeasured on push.
+      - name: Test the kernel natively
+        run: cargo test --release
+        working-directory: packages/brep-rs
+
       # `npm run build`, NOT `npm run build --workspaces`. Measured on this
       # workflow's own first run: --workspaces builds in workspace order
       # (kernel, script, sketch, studio) while the dependency order is
@@ -53,10 +94,10 @@ jobs:
       - name: Build every workspace, in dependency order
         run: npm run build
 
-      # Runs check-record, the three workspace suites, and the ModelDoc/OCCT
-      # gate, which resolves its kernel from node_modules with no env var set.
-      # The gate PRINTS which kernel it used and that file's size -- if a slice
-      # ever disagrees between this runner's copy and the one shCode deploys,
-      # that disagreement is a finding, so leave the printing in.
+      # check-record, then the workspace suites. NOT the gates: they measure
+      # brep-rs against OpenCascade as a referee, on demand, and a referee
+      # disagreeing is a finding for a person to read rather than a red build.
+      # The product's own coverage is what runs here -- including the kernel
+      # adapter suite, which exercises the real wasm built above.
       - name: Test
         run: npm test
