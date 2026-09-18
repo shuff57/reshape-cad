@@ -185,6 +185,55 @@ export function fixtures() {
       { id: 'op1', kind: 'combine', op: 'subtract', targets: ['e1', 'c'] },
     ]),
 
+    // --- Class 1 regressions (W8/W3) --------------------------------------------
+    // W8: boolean subtract overlapping cylinders (parallel axes)
+    raw('boolean-cylinder-minus-cylinder', 'combine', [
+      cyl('c1', 12, 30, [0, 0, 0]),
+      cyl('c2', 8, 30, [10, 0, 0]),
+      { id: 'op1', kind: 'combine', op: 'subtract', targets: ['c1', 'c2'] },
+    ]),
+    // W8: boolean intersect overlapping cylinders
+    raw('boolean-cylinder-intersect-cylinder', 'combine', [
+      cyl('c1', 12, 30, [0, 0, 0]),
+      cyl('c2', 8, 30, [10, 0, 0]),
+      { id: 'op1', kind: 'combine', op: 'intersect', targets: ['c1', 'c2'] },
+    ]),
+    // W8: boolean union overlapping cylinders
+    raw('boolean-cylinder-union-cylinder', 'combine', [
+      cyl('c1', 12, 30, [0, 0, 0]),
+      cyl('c2', 8, 30, [10, 0, 0]),
+      { id: 'op1', kind: 'combine', op: 'union', targets: ['c1', 'c2'] },
+    ]),
+    // W3: general offset (shell) on a cylinder — OPEN at the top cap: the
+    // outer caps become annuli, the void wall is exposed. Pinned volume is
+    // OCCT-measured via the parity gate's live referee.
+    raw('shell-cylinder-open-top', 'shell', [
+      cyl('c1', 12, 30, [0, 0, 0]),
+      { id: 'sh1', kind: 'shell', target: 'c1', thickness: 2, open: face('c1', '+z') },
+    ]),
+    // W3: closed cylinder hollow (enclosed void shell).
+    raw('shell-cylinder-closed', 'shell', [
+      cyl('c1', 12, 30, [0, 0, 0]),
+      { id: 'sh1', kind: 'shell', target: 'c1', thickness: 2 },
+    ]),
+    // W2: the fillet feature on ONE rim of a cylinder (between the +z cap
+    // and the curved side wall). OCCT's both-rims reference for r12 h30
+    // rad3 is 13296.693532; each rim removes half the total removal, so
+    // OCCT live-measures 13434.186898 here on 4 faces.
+    raw('fillet-cylinder-edge', 'fillet', [
+      cyl('c1', 12, 30, [0, 0, 0]),
+      { id: 'r1', kind: 'fillet', target: 'c1', size: 3, style: 'fillet',
+        edge: { cause: 'between', feature: 'c1', kind: 'edge',
+                of: [face('c1', '+z'), face('c1', 'side')] } },
+    ], { tol: 'approx' }),
+    // W2: the same rim, chamfer style — OCCT live-measures 13260.662591.
+    raw('chamfer-cylinder-edge', 'fillet', [
+      cyl('c1', 12, 30, [0, 0, 0]),
+      { id: 'r1', kind: 'fillet', target: 'c1', size: 3, style: 'chamfer',
+        edge: { cause: 'between', feature: 'c1', kind: 'edge',
+                of: [face('c1', '-z'), face('c1', 'side')] } },
+    ], { tol: 'approx' }),
+
     // --- NEW: named resolution (SPEC §4.6) ------------------------------------
     raw('name-primitive-face', 'box', [box('b1', [40, 40, 20])], { resolve: face('b1', '+z') }),
     raw('name-between-edge', 'fillet', [box('b1', [40, 40, 20])], {
