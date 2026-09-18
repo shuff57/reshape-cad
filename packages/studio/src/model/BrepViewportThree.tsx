@@ -74,7 +74,6 @@ import type { FaceRange } from '@shuff57/reshape-kernel/occt-three';
 import { rootFeature, type TopoName } from '@shuff57/reshape-script/topo-name';
 import type { EngineAdapter, EngineBuildResult } from '@shuff57/reshape-kernel/engine-adapter';
 import { OcctEngineAdapter } from '@shuff57/reshape-kernel/occt-engine-adapter';
-import { FreeCadEngineAdapter } from '@shuff57/reshape-kernel/freecad-engine-adapter';
 import { BrepRsEngineAdapter } from '@shuff57/reshape-kernel/brep-rs-engine-adapter';
 import { getEngineMode } from '@shuff57/reshape-kernel/config';
 import type { HandleSpec } from '@shuff57/reshape-script/model-handles';
@@ -330,7 +329,7 @@ interface Props {
    * alone would keep reporting 'freecad' through that swap; `kind` here
    * reflects the ACTUAL engine currently active, not the configured mode).
    */
-  onEngine?: (engine: EngineAdapter, kind: 'occt' | 'freecad' | 'brep-rs') => void;
+  onEngine?: (engine: EngineAdapter, kind: 'occt' | 'brep-rs') => void;
   /**
    * Step-1 note taxonomy (SPEC-ui-revamp-decisions.md §5): when true, the
    * top-right selection badge + edge-hover-hint stack is NOT rendered here --
@@ -361,10 +360,10 @@ interface Props {
  *  selected before mount, so this never actually re-triggers, but getting it
  *  right costs nothing. */
 let enginePromise: Promise<EngineAdapter> | null = null;
-let enginePromiseMode: 'occt' | 'freecad' | 'brep-rs' | null = null;
+let enginePromiseMode: 'occt' | 'brep-rs' | null = null;
 
 /** Bring up the EngineAdapter for the CURRENT getEngineMode() -- OcctEngineAdapter
- *  (default) or FreeCadEngineAdapter (SPEC-engine-port.md §3.3). Needs THREE
+ *  (default) or BrepRsEngineAdapter. Needs THREE
  *  already resolved (both adapters take it constructor-injected, same
  *  discipline occt-three.ts's own tessellateToThree() follows), so the
  *  loading effect below awaits loadThree() first -- see that effect's own
@@ -374,17 +373,15 @@ function loadEngine(THREE: typeof THREE_NS): Promise<EngineAdapter> {
   if (!enginePromise || enginePromiseMode !== mode) {
     enginePromiseMode = mode;
     const engine: EngineAdapter =
-      mode === 'freecad'
-        ? new FreeCadEngineAdapter(THREE)
-        : mode === 'brep-rs'
-          ? new BrepRsEngineAdapter(THREE)
-          : new OcctEngineAdapter(THREE);
+      mode === 'brep-rs'
+        ? new BrepRsEngineAdapter(THREE)
+        : new OcctEngineAdapter(THREE);
     enginePromise = engine.load().then(() => engine);
   }
   return enginePromise;
 }
 
-/** Automatic fallback engine for when the FreeCAD kernel refuses to build a
+/** Automatic fallback engine for when the brep-rs kernel refuses to build a
  *  ModelDoc it doesn't support yet -- see the build effect below. Cached
  *  module-level the same way `enginePromise` is, so a second mounted
  *  component (or a second fallback within the same mount) reuses the same
@@ -393,7 +390,7 @@ function loadEngine(THREE: typeof THREE_NS): Promise<EngineAdapter> {
  *  engine's own load(), before phase ever reaches 'ready', so by the time
  *  the build effect could possibly need it, it is already sitting resolved
  *  -- no async gap mid-build-effect, which stays fully synchronous. The
- *  cost is a real one (an extra ~23MB fetch on every FreeCAD-mode session,
+ *  cost is a real one (an extra ~23MB fetch on every brep-rs-mode session,
  *  even one that never hits an unsupported feature), but a lazy
  *  load-on-first-refusal was rejected here as the harder-to-get-right
  *  option: it would force the (currently fully synchronous) build effect to
@@ -603,9 +600,7 @@ export default function BrepViewportThree({
    *  dependency array. */
   const [hoveringEdge, setHoveringEdge] = useState(false);
   const [loadingNote, setLoadingNote] = useState(
-    getEngineMode() === 'freecad'
-      ? 'loading the FreeCAD kernel + three.js -- the kernel is ~58 MB, once per session'
-      : 'loading the modelling kernel + three.js -- the kernel is ~22.9 MB, once per session'
+    'loading the modelling kernel + three.js -- the kernel is ~22.9 MB, once per session'
   );
 
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -766,13 +761,13 @@ export default function BrepViewportThree({
       .then((three) => {
         if (cancelled) return undefined;
         threeRef.current = three;
-        // In 'freecad' mode, also bring up the OCCT fallback adapter NOW,
+        // In 'brep-rs' mode, also bring up the OCCT fallback adapter NOW,
         // in parallel with the primary engine -- see loadOcctFallback()'s
         // own comment for why eager beats lazy here. In 'occt' mode there
         // is nothing to fall back to (occt IS the fallback engine), so
         // skip the extra ~23MB fetch entirely.
         const fallbackLoad =
-          getEngineMode() === 'freecad' || getEngineMode() === 'brep-rs'
+          getEngineMode() === 'brep-rs'
             ? loadOcctFallback(three.THREE)
             : Promise.resolve(null);
         return Promise.all([loadEngine(three.THREE), fallbackLoad]);
@@ -2240,7 +2235,7 @@ export default function BrepViewportThree({
     // role. Either nothing is picked, the name no longer resolves (see
     // whyNameLost() in lib/topo-name.ts for why in words a student can act
     // on -- that story is the caller's to tell), the engine has not
-    // implemented resolution at all yet (FreeCadEngineAdapter -- caught
+    // implemented resolution at all yet (brep-rs -- caught
     // below, same as every other name/measure call in this file), or --
     // should not happen, handled the same honest way regardless -- it
     // resolves but no tube in the current pool matches: all collapse to the
@@ -2294,7 +2289,7 @@ export default function BrepViewportThree({
     if (!engine || !three || !rendererRef.current) return;
     let cancelled = false;
 
-    try {
+try {
       const t0 = performance.now();
       // Clear any note from a PREVIOUS build first: a fallback note that
       // outlives the feature it named is worse than none (measured
@@ -2302,70 +2297,12 @@ export default function BrepViewportThree({
       // box). The fallback branches below re-set it within this same build.
       setEngineFallbackNote(null);
       let built: EngineBuildResult;
-      try {
-        built = engine.build(doc);
-      } catch (e: any) {
-        // Automatic whole-document fallback (2026-09-11, flipping the
-        // default engine to 'freecad'). SPEC-engine-port.md §6.1's 11
-        // still-refused Feature.kind's, plus revolve/groove's own
-        // orientation mismatch, all throw this SAME named shape from
-        // FreeCadEngineAdapter.build() -- "not yet supported on the
-        // FreeCAD engine: <detail>". That prefix is deliberately the ONLY
-        // thing this catches: anything else (a real bug, a crash) is
-        // re-thrown below unchanged into the normal setBuildError path --
-        // never paper over an error whose shape isn't recognised, the same
-        // lesson this session already learned the hard way from
-        // sketch-translate.ts's closure-pin fix (25f4fda).
-        //
-        // fallbackEngineRef is a pre-warmed OcctEngineAdapter (loaded
-        // eagerly alongside the primary engine -- see the mount effect and
-        // loadOcctFallback()'s own comment), so this retry is synchronous,
-        // no async gap mid-effect. `engineRef.current` itself is
-        // reassigned here, not just this local `engine` variable, so every
-        // OTHER place in this file that reads engineRef.current fresh --
-        // drawGeoms()'s engine.edges() call, restorePicks()'s
-        // resolveEdge/faceAt/nameFace, the pick-only effect below -- ends
-        // up on the SAME engine that actually built these shapes, never a
-        // mismatch between "what built it" and "what picks it."
-        //
-        // Permanent for this mount, on purpose: once reassigned,
-        // engineRef.current stays the fallback adapter for this
-        // component instance's whole lifetime, even if a later edit
-        // removes the unsupported feature -- v1 does not attempt to
-        // detect "the doc no longer needs the fallback" (real, unwritten
-        // logic; simpler and safe to just stay on OCCT, which builds
-        // everything FreeCAD does). This also means the check below never
-        // has to ask "did we already fall back": once engineRef.current
-        // IS the fallback adapter, ITS OWN build() throws OCCT-shaped
-        // errors, which never match the FreeCAD refusal prefix, so this
-        // branch naturally never re-fires for the rest of this mount.
-        const msg = String(e?.message ?? e);
-        const fallback = fallbackEngineRef.current;
-        // brep-rs refuses per-feature (build_doc_json's refusals map), never
-        // by throwing -- so unlike FreeCAD there is no whole-doc throw to
-        // catch here. A brep-rs fallback happens when the wasm kernel refuses
-        // a feature OCCT can build: detect via the refusals the build
-        // REPORTS, not an exception.
-        const freecadRefusal = /^not yet supported on the FreeCAD engine:/.test(msg);
-        if (freecadRefusal) {
-          if (getEngineMode() !== 'freecad' || !fallback) throw e;
-          engine = fallback;
-          engineRef.current = fallback;
-          onEngineRef.current?.(fallback, 'occt');
-          setEngineSwappedTo('occt');
-          setEngineFallbackNote(
-            `This model uses a feature FreeCAD can't build yet (${msg.replace(/^not yet supported on the FreeCAD engine: /, '')}) -- showing it with the other engine.`,
-          );
-          built = engine.build(doc);
-        } else {
-          throw e;
-        }
-      }
+      built = engine.build(doc);
       // brep-rs refuses per-feature as DATA (build_doc_json's refusals map),
       // never by throwing -- so its fallback to OCCT is checked HERE, after
       // the build, rather than in the catch above. Same fallback engine,
       // same permanent swap, same note: a feature brep-rs won't build shows
-      // with the other engine, exactly as freecad mode does.
+      // with the other engine.
       if (
         getEngineMode() === 'brep-rs' &&
         fallbackEngineRef.current &&
@@ -2681,10 +2618,11 @@ export default function BrepViewportThree({
             <div
               style={engineSwappedBadgeStyle}
               // Engine-NEUTRAL wording on purpose: this badge is set from BOTH
-              // fallback branches (the FreeCAD throw path and the brep-rs
-              // refusals path), so naming brep-rs here would be a wrong sentence
-              // in freecad mode. The note above already names the specific
-              // feature and engine on the build that triggered the swap.
+              // fallback branches (the brep-rs refusals path and the OCCT
+              // kernel's own limits), so naming brep-rs here would be a wrong
+              // sentence when OCCT swaps for its own reasons. The note above
+              // already names the specific feature and engine on the build that
+              // triggered the swap.
               title="A feature in this model could not be built by the configured engine, so the OCCT engine is drawing it for the rest of this session."
             >
               using {engineSwappedTo === 'occt' ? 'OCCT' : engineSwappedTo}

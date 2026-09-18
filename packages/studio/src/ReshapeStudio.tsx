@@ -29,7 +29,6 @@ import ContextBar, { type ContextBarAction } from './model/ContextBar.js';
 import type { ContextActions } from './model/ModelEditor.js';
 import type { RuleActions, TouchedPart } from './model/SketchConstraints.js';
 import { writeSTL, writeOBJ, write3MF, type MeshInput } from './mesh-export.js';
-import { svgToPdf } from './svg-pdf.js';
 import { outlineOf } from '@shuff57/reshape-sketch/sketch-arc';
 import { handlesFor, planeAnchor, featureCenter, type HandleSpec } from '@shuff57/reshape-script/model-handles';
 import { EMPTY_DOC, type Feature, isSketchOnly, type ModelDoc, nameMap, newPolygonSketch, newRectangleSketch, type SketchPlane } from '@shuff57/reshape-script/model-types';
@@ -464,12 +463,11 @@ export default function ReshapeStudio({
   // The live EngineAdapter instance, handed up by BrepViewport's own
   // onEngine prop -- see that prop's own comment. `engineKind` tracks which
   // kind is ACTUALLY active (not just the configured getEngineMode()): a
-  // FreeCAD-refusal fallback can swap the live engine to OCCT mid-session,
+  // brep-rs-refusal fallback can swap the live engine to OCCT mid-session,
   // and Save/Open need to gray out for that too, not just for a session that
   // started in 'occt' mode. Null until the viewport's first load finishes.
   const engineRef = useRef<EngineAdapter | null>(null);
-  const [engineKind, setEngineKind] = useState<'occt' | 'freecad' | 'brep-rs' | null>(null);
-  const openInputRef = useRef<HTMLInputElement | null>(null);
+  const [engineKind, setEngineKind] = useState<'occt' | 'brep-rs' | null>(null);
   const pickAtRef = useRef<((clientX: number, clientY: number) => void) | null>(null);
   const specsRef = useRef<unknown[]>([]);
   const frameRef = useRef<HTMLIFrameElement | null>(null);
@@ -1122,93 +1120,6 @@ export default function ReshapeStudio({
     URL.revokeObjectURL(url);
   }
 
-  // Save/Open .FCStd -- packages/kernel/src/engine-adapter.ts's own
-  // saveDocument()/openDocument(), FreeCAD-only (see engineRef/engineKind's
-  // own comment above for why the button grays out on OCCT rather than
-  // failing after a click). Mirrors exportSTL()'s bytes-to-Blob download
-  // pattern above; Open mirrors engine/play/studio.js's own hidden-
-  // <input type="file"> pattern (retiring, but its Save/Open buttons are the
-  // ones this replaces).
-  function saveFCStd() {
-    const engine = engineRef.current;
-    if (!engine) return;
-    try {
-      const bytes = engine.saveDocument(docRef.current);
-      const blob = new Blob([bytes.buffer as ArrayBuffer], { type: 'application/octet-stream' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = exportFilename('FCStd');
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
-    } catch (e) {
-      window.alert(`Could not save: ${e instanceof Error ? e.message : String(e)}`);
-    }
-  }
-
-  // 2D engineering drawing (front/top/right/iso on a titled sheet) --
-  // packages/kernel/src/engine-adapter.ts's own exportDrawing(), FreeCAD-only
-  // (OcctEngineAdapter throws "not supported"), same "disable, don't fail"
-  // bar and Blob-download pattern as saveFCStd() above. `format` only changes
-  // what happens to the bytes AFTER the kernel returns them -- the kernel has
-  // no PDF writer at all (docs/specs/SPEC-drawing-pdf-dimensions.md Part 1),
-  // so the conversion is a pure byte transform here, the same split
-  // mesh-export.ts's writeSTL/writeOBJ/write3MF already use.
-  function exportDrawing(format: 'svg' | 'pdf' = 'svg') {
-    const engine = engineRef.current;
-    if (!engine) return;
-    try {
-      const svg = engine.exportDrawing(docRef.current);
-      const bytes = format === 'pdf' ? svgToPdf(svg) : svg;
-      const type = format === 'pdf' ? 'application/pdf' : 'image/svg+xml';
-      const blob = new Blob([bytes.buffer as ArrayBuffer], { type });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = exportFilename(format);
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
-    } catch (e) {
-      window.alert(`Could not export drawing: ${e instanceof Error ? e.message : String(e)}`);
-    }
-  }
-
-  function openFCStdClick() {
-    openInputRef.current?.click();
-  }
-
-  async function openFCStdFile(e: ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    e.target.value = ''; // allow re-opening the same file
-    if (!file) return;
-    const engine = engineRef.current;
-    if (!engine) return;
-    try {
-      const bytes = new Uint8Array(await file.arrayBuffer());
-      // Null is a real, expected answer here -- see openDocument()'s own
-      // doc comment -- not something to treat as a crash: a `.FCStd` this
-      // app didn't save has no ModelDoc-shaped history to recover.
-      const next = engine.openDocument(bytes);
-      if (!next) {
-        window.alert(`"${file.name}" wasn't created by this app's Save, so it can't be reopened here.`);
-        return;
-      }
-      loadDoc(next);
-      setSelected([]);
-      setPickedEdge(null);
-      setPickedFace(null);
-      past.current = [];
-      future.current = [];
-      setDepth({ back: 0, forward: 0 });
-    } catch (e) {
-      window.alert(`Could not open "${file.name}": ${e instanceof Error ? e.message : String(e)}`);
-    }
-  }
-
   const showBrep = build;
   // Code's own visible model: once a Run (or the mount hydration) has built
   // something, Code shows the SAME B-rep viewport Build uses, fed by the
@@ -1320,16 +1231,7 @@ export default function ReshapeStudio({
             separate File/Edit/View/Insert/Modify menu bar (MenuBar.tsx).
             Both are gone now (2026-09-13): the ribbon's own File and Edit
             groups (model/ModelEditor.tsx) call these same handlers directly,
-            so there is exactly one place these actions live, not three. The
-            hidden file input below is kept: the ribbon's Open button still
-            drives it via openFCStdClick()/openInputRef. */}
-        <input
-          ref={openInputRef}
-          type="file"
-          accept=".FCStd,.fcstd"
-          style={{ display: 'none' }}
-          onChange={openFCStdFile}
-        />
+            so there is exactly one place these actions live, not three. */}
         {toolbarExtra}
       </div>
 
@@ -1375,12 +1277,9 @@ export default function ReshapeStudio({
               refusals={refusals}
               hasMesh={hasMesh}
               engineKind={engineKind}
-              onSaveFCStd={saveFCStd}
-              onOpenFCStd={openFCStdClick}
               onExportSTL={exportSTL}
               onExportOBJ={exportOBJ}
               onExport3MF={export3MF}
-              onExportDrawing={exportDrawing}
               canClearModel={canBuild}
               onClearModel={clearModel}
               activePlane={activePlane}

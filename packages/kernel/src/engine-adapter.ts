@@ -75,37 +75,6 @@ export interface EngineMesh {
   faces: FaceRange[];
 }
 
-export type DrawingView = 'front' | 'top' | 'right' | 'left' | 'rear' | 'bottom' | 'iso';
-
-export interface DrawingOptions {
-  /** Sheet size. Default 'A4-landscape' (297x210mm). */
-  sheet?: 'A4-landscape' | 'A3-landscape' | 'USLetter-landscape';
-  /** Default ['front','top','right','iso']. */
-  views?: DrawingView[];
-  /** Default 'third-angle'. */
-  projection?: 'first-angle' | 'third-angle';
-  /** Omit for automatic (fit to sheet). */
-  scale?: number;
-  /** Dashed hidden-line rendering on the orthographic views. Default true. */
-  hiddenLines?: boolean;
-  /** Titleblock text. Default: the doc's own name. */
-  title?: string;
-  /** Overall-extent dimensions on the orthographic views: the view's own
-   *  projected width and height, plus a diameter callout per visible circle.
-   *  Default 'none'.
-   *
-   *  'overall' is the honest name and the whole scope. It is NOT GD&T
-   *  auto-dimensioning: no feature-relative positions, no fillet radii, no
-   *  angles, no tolerances, no datums, and nothing at all on an isometric
-   *  view (its edges project as ellipses and skewed lines, which cannot be
-   *  dimensioned meaningfully). See docs/specs/SPEC-drawing-pdf-dimensions.md
-   *  Part 2 for what was measured and what was deferred.
-   *
-   *  A view whose projection yields no straight edge and no closed circle
-   *  gets NO dimensions and is reported in `skipped` rather than guessed at. */
-  dimensions?: 'none' | 'overall';
-}
-
 export interface EngineAdapter {
   /** Bring the underlying kernel up (load the wasm, or open a session).
    *  Idempotent-ish in spirit -- called once before the first build(). */
@@ -163,59 +132,4 @@ export interface EngineAdapter {
    *  moved here for the same reason as faceSize above. Null whenever it
    *  cannot be computed. */
   edgeLength(edge: unknown): number | null;
-
-  /** Serialize `doc` to a real `.FCStd` (a zip archive) -- bytes for the
-   *  caller to hand off as a browser download, the same "adapter returns
-   *  bytes, caller owns the Blob/download" split packages/studio's own
-   *  mesh-export.ts writers already follow for Export STL/OBJ/3MF.
-   *
-   *  The file's own embedded FreeCAD geometry is a faithful, independently
-   *  openable `.FCStd` (real PartDesign/Sketcher objects, verified against
-   *  the real kernel) -- but it ALSO carries the ORIGINAL ModelDoc as JSON in
-   *  the document's own metadata, so openDocument() below can round-trip
-   *  anything THIS method saved exactly, without reverse-engineering a
-   *  general FreeCAD feature tree back into ModelDoc's own narrower
-   *  vocabulary. See openDocument()'s own comment for why that reverse
-   *  direction is refused instead of guessed.
-   *
-   *  OcctEngineAdapter throws -- OCCT has no `.FCStd` concept at all, so this
-   *  is a real "not supported on this engine" condition, not a bug; callers
-   *  should gate the UI on the current engine mode rather than only catching
-   *  this (packages/kernel/src/config.ts's getEngineMode()). */
-  saveDocument(doc: ModelDoc): Uint8Array;
-
-  /** Reconstruct a ModelDoc from `.FCStd` bytes. Succeeds ONLY for a file
-   *  saveDocument() (on some FreeCadEngineAdapter) produced -- detected via
-   *  the embedded ModelDoc metadata described above -- and returns null for
-   *  anything else. An arbitrary real-world `.FCStd`, built in actual
-   *  FreeCAD Part/PartDesign workflows outside this app, has no ModelDoc-
-   *  shaped history at all: any body count, feature kinds this app's own
-   *  Feature vocabulary cannot name, Sketcher constraints its own translator
-   *  never emits, multi-body assemblies this adapter's v1 (single-body-per-
-   *  chain) cannot represent... Reconstructing a GUESSED ModelDoc from a
-   *  general feature tree would silently misrepresent the model the moment
-   *  the guess is wrong -- refused outright instead, the same "no answer
-   *  over a wrong one" rule as resolveFace/resolveEdge and the pattern
-   *  refusals in freecad-engine-adapter.ts. Null is a real, expected answer
-   *  for "not a file this app produced" (or a corrupt one), not an error --
-   *  the caller decides how to tell the student (e.g. "this file wasn't
-   *  created by this app and can't be reopened here").
-   *
-   *  OcctEngineAdapter throws -- same reasoning as saveDocument(). */
-  openDocument(bytes: Uint8Array): ModelDoc | null;
-
-  /** Render `doc` as a real 2D engineering drawing -- a standard multi-view
-   *  projection on a titled sheet -- and return SVG bytes, the same "adapter
-   *  returns bytes, caller owns the Blob/download" split saveDocument() and
-   *  packages/studio's mesh exporters already follow.
-   *
-   *  SVG, not PDF, deliberately: this kernel has NO App-layer PDF writer at
-   *  all (verified -- TechDrawGui, which owns every QPrinter/QSvgGenerator
-   *  path, is not built into the headless kernel). A caller wanting PDF
-   *  converts the SVG browser-side; that is not this seam's job.
-   *
-   *  OcctEngineAdapter throws -- OCCT has no TechDraw concept at all, the
-   *  same real "not supported on this engine" condition saveDocument() and
-   *  openDocument() already established. Gate the UI on getEngineMode(). */
-  exportDrawing(doc: ModelDoc, opts?: DrawingOptions): Uint8Array;
 }

@@ -20,7 +20,7 @@ import type { TopoName } from '@shuff57/reshape-script/topo-name';
 import type * as THREE_NS from 'three';
 import type { FaceRange } from './occt-three.js';
 import { getKernelBaseUrl } from './config.js';
-import type { DrawingOptions, EngineAdapter, EngineBuildResult, EngineMesh } from './engine-adapter.js';
+import type { EngineAdapter, EngineBuildResult, EngineMesh } from './engine-adapter.js';
 
 /** Which import strategy actually worked, set once on the first successful
  *  load. Same two-strategy fallback and same purely-diagnostic role as
@@ -302,22 +302,7 @@ export class BrepRsEngineAdapter implements EngineAdapter {
     return Number.isFinite(len) && len > 0 ? round2(len) : null;
   }
 
-  // .FCStd is a FreeCAD-native format and TechDraw a FreeCAD-only concept --
-  // the same real "not supported on this engine" condition
-  // OcctEngineAdapter establishes, same message family so callers can treat
-  // them alike. Callers should gate on getEngineMode() instead of catching.
-  saveDocument(_doc: ModelDoc): Uint8Array {
-    throw new Error('not supported on the brep-rs engine: Save (.FCStd) requires the FreeCAD engine');
   }
-
-  openDocument(_bytes: Uint8Array): ModelDoc | null {
-    throw new Error('not supported on the brep-rs engine: Open (.FCStd) requires the FreeCAD engine');
-  }
-
-  exportDrawing(_doc: ModelDoc, _opts?: DrawingOptions): Uint8Array {
-    throw new Error('not supported on the brep-rs engine: Export Drawing requires the FreeCAD engine');
-  }
-}
 
 /** The exact doc JSON one of this adapter's builds ran on. Handles carry it,
  *  but an EngineBuildResult arriving from a FRESH doc build carries nothing

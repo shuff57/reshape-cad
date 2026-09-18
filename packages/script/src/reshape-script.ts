@@ -176,7 +176,7 @@ export interface RunResult {
 // course words (box, ring, round, bevel, pull, spin, blend, hollow, cut, join,
 // keep, repeat, repeatAround) remain documented ALIASES pointing at the SAME
 // function — same reference, not a wrapper, so the two vocabularies can never
-// drift apart. Mirrors transpile.mjs's OFFICIAL_NAMES fold.
+// drift apart. OFFICIAL_NAMES fold lives here.
 export const VOCABULARY = [
   // student words (course-facing, documented in the lesson pages)
   'box', 'cylinder', 'sphere', 'cone', 'ring',

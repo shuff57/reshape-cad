@@ -248,13 +248,10 @@ interface Props {
    *  used to compute (engineKind/hasMesh), now read directly by the ribbon's
    *  File group instead of being handed up to a second component. */
   hasMesh: boolean;
-  engineKind: 'occt' | 'freecad' | 'brep-rs' | null;
-  onSaveFCStd: () => void;
-  onOpenFCStd: () => void;
+  engineKind: 'occt' | 'brep-rs' | null;
   onExportSTL: () => void;
   onExportOBJ: () => void;
   onExport3MF: () => void;
-  onExportDrawing: (format: 'svg' | 'pdf') => void;
   /** Same `canBuild` gate the retired MenuBar's Clear-model item used. */
   canClearModel: boolean;
   onClearModel: () => void;
@@ -536,7 +533,7 @@ function FlyoutButton({
 export default function ModelEditor({
   doc, onChange, selected, onSelect, onUndo, onRedo, canUndo, canRedo, collapsible, onCollapsed, onContentChange, rollbackIndex, onRollback, onStartDraw, drawTool, pickedEdge, onClearPickedEdge, pickedFace, onClearPickedFace, pickedEdges, onClearPickedEdges, refusals,
   hoveredPart, onHoverPart, registerActions, registerContextActions, onTouch, historyGen,
-  hasMesh, engineKind, onSaveFCStd, onOpenFCStd, onExportSTL, onExportOBJ, onExport3MF, onExportDrawing,
+  hasMesh, engineKind, onExportSTL, onExportOBJ, onExport3MF,
   canClearModel, onClearModel, activePlane, onActivePlaneChange,
 }: Props) {
   const [note, setNote] = useState<string | null>(null);
@@ -1748,27 +1745,6 @@ export default function ModelEditor({
                 <PanelLeftClose size={14} />
               </button>
             )}
-            {matches('Open') && (
-              <button
-                onClick={onOpenFCStd}
-                disabled={engineKind !== 'freecad'}
-                title={engineKind === 'freecad' ? 'Open a previously-saved .FCStd file' : 'Save/Open .FCStd needs the FreeCAD engine'}
-              >
-                <FolderOpen size={14} /> Open
-              </button>
-            )}
-            {matches('Save') && (
-              <button
-                onClick={onSaveFCStd}
-                disabled={!(engineKind === 'freecad' && hasMesh)}
-                title={
-                  engineKind !== 'freecad' ? 'Save/Open .FCStd needs the FreeCAD engine'
-                  : hasMesh ? 'Download the current model as a FreeCAD .FCStd file' : 'Build a shape first'
-                }
-              >
-                <Save size={14} /> Save
-              </button>
-            )}
             <FlyoutButton
               label="Export"
               icon={<Download size={14} />}
@@ -1782,18 +1758,6 @@ export default function ModelEditor({
               variants={[
                 { id: 'export-obj', label: 'Export OBJ', onClick: onExportOBJ, disabled: !hasMesh, title: hasMesh ? 'Download as an OBJ file' : 'Build a shape first' },
                 { id: 'export-3mf', label: 'Export 3MF', onClick: onExport3MF, disabled: !hasMesh, title: hasMesh ? 'Download as a 3MF file' : 'Build a shape first' },
-                {
-                  id: 'export-drawing-svg', label: 'Export Drawing (SVG)', onClick: () => onExportDrawing('svg'),
-                  disabled: !(engineKind === 'freecad' && hasMesh),
-                  title: engineKind !== 'freecad' ? 'Export Drawing needs the FreeCAD engine'
-                    : hasMesh ? 'Download a 2D engineering drawing (SVG)' : 'Build a shape first',
-                },
-                {
-                  id: 'export-drawing-pdf', label: 'Export Drawing (PDF)', onClick: () => onExportDrawing('pdf'),
-                  disabled: !(engineKind === 'freecad' && hasMesh),
-                  title: engineKind !== 'freecad' ? 'Export Drawing needs the FreeCAD engine'
-                    : hasMesh ? 'Download a 2D engineering drawing (PDF)' : 'Build a shape first',
-                },
               ]}
             />
           </div>

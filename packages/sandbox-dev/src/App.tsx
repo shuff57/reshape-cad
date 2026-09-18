@@ -22,7 +22,7 @@ import { ScriptProvider } from './script-context.js';
 // would have kept forcing 'occt' regardless of what the shared default
 // became.
 const envEngineMode = import.meta.env.VITE_RESHAPE_ENGINE;
-if (envEngineMode === 'freecad' || envEngineMode === 'occt' || envEngineMode === 'brep-rs') {
+if (envEngineMode === 'occt' || envEngineMode === 'brep-rs') {
   setEngineMode(envEngineMode);
 }
 

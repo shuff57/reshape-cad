@@ -3,8 +3,6 @@ dist/
 *.wasm
 *.wasm.br
 *.wasm.gz
-engine/build/
-engine/toolchains/
 .msgbox/cursor*
 .playwright-cli/
 .msgbox/events.jsonl

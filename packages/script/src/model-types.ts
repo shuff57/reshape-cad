@@ -132,7 +132,7 @@ export interface GrooveFeature {
 
 /** A subtractive extrude — the pocket. Pulls the target sketch's profile
  *  straight DOWN into an earlier solid and cuts it away. The ModelDoc twin of
- *  the bridge's PartDesign::Pocket emitter and of transpile.mjs's pocket()
+ *  the bridge's PartDesign::Pocket emitter and of the pocket() emitter
  *  statement; the additive twin already exists as ExtrudeFeature. */
 export interface PocketFeature {
   id: string;
