@@ -8,3 +8,6 @@ engine/toolchains/
 .msgbox/cursor*
 .playwright-cli/
 .msgbox/events.jsonl
+
+# opencode agent session state, not project memory
+.omo/run-continuation/
