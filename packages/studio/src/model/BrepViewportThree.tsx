@@ -70,9 +70,8 @@ import type { LineSegmentsGeometry as LineSegmentsGeometryType } from 'three/exa
 import type { LineMaterial as LineMaterialType } from 'three/examples/jsm/lines/LineMaterial.js';
 import type { Feature, ModelDoc } from '@shuff57/reshape-script/model-types';
 import { topLevel } from '@shuff57/reshape-script/model-types';
-import type { FaceRange } from '@shuff57/reshape-kernel/occt-three';
 import { rootFeature, type TopoName } from '@shuff57/reshape-script/topo-name';
-import type { EngineAdapter, EngineBuildResult } from '@shuff57/reshape-kernel/engine-adapter';
+import type { EngineAdapter, EngineBuildResult, FaceRange } from '@shuff57/reshape-kernel/engine-adapter';
 import { OcctEngineAdapter } from '@shuff57/reshape-kernel/occt-engine-adapter';
 import { BrepRsEngineAdapter } from '@shuff57/reshape-kernel/brep-rs-engine-adapter';
 import { getEngineMode } from '@shuff57/reshape-kernel/config';

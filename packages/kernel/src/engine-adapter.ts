@@ -50,7 +50,24 @@
 import type { ModelDoc } from '@shuff57/reshape-script/model-types';
 import type { TopoName } from '@shuff57/reshape-script/topo-name';
 import type * as THREE from 'three';
-import type { FaceRange } from './occt-three.js';
+
+/**
+ * Which triangle-index range in a meshed geometry's `index` buffer came from
+ * one face of the solid.
+ *
+ * `index` is that face's position in the shape's OWN face list -- the same
+ * order faceAt() indexes into, and the same order the kernel's own faces()
+ * walk produces -- not just among the faces that meshed successfully. A face
+ * that produced no triangles still holds its place, so a face index survives
+ * a re-mesh of the same shape (which is what picking depends on).
+ * `start`/`count` are index-BUFFER offsets, 3 per triangle, matching what
+ * BufferGeometry.index / drawRange already expect.
+ */
+export interface FaceRange {
+  index: number;
+  start: number;
+  count: number;
+}
 
 /** What one build produced, in adapter-neutral terms. `shapes` mirrors
  *  BuildResult.shapes (feature id -> built shape) -- kept as `unknown`

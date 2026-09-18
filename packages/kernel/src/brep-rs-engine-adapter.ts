@@ -18,9 +18,8 @@
 import type { ModelDoc } from '@shuff57/reshape-script/model-types';
 import type { TopoName } from '@shuff57/reshape-script/topo-name';
 import type * as THREE_NS from 'three';
-import type { FaceRange } from './occt-three.js';
 import { getKernelBaseUrl } from './config.js';
-import type { EngineAdapter, EngineBuildResult, EngineMesh } from './engine-adapter.js';
+import type { EngineAdapter, EngineBuildResult, EngineMesh, FaceRange } from './engine-adapter.js';
 
 /** Which import strategy actually worked, set once on the first successful
  *  load. Same two-strategy fallback and same purely-diagnostic role as
