@@ -1,34 +1,31 @@
 # packages/kernel
 
 ## OVERVIEW
-One `EngineAdapter` contract, three wasm kernel implementations (replicad OCCT, FreeCAD, brep-rs), plus the shared OCCT build pipeline and topology-name resolver.
+The `EngineAdapter` seam and its one implementation (brep-rs). Also holds three OCCT files that are NOT app code -- see REFEREE APPARATUS below before deleting anything that looks orphaned here.
 
 ## WHERE TO LOOK
 | Task | File | Notes |
 |------|------|-------|
-| Adapter contract | src/engine-adapter.ts | `EngineAdapter`, `EngineBuildResult` (shapes + per-feature `refusals`) |
-| OCCT build | src/occt-build.ts | `buildDoc()`; keeps `OpRecord`/`SweepRecord` op objects alive, their history is what naming resolves through |
-| Name resolution | src/topo-resolve.ts | `resolveName()`, one branch per `TopoName` cause; returns null over guessing |
-| OCCT adapter | src/occt-engine-adapter.ts | Thin shell over occt-build + topo-resolve |
-| FreeCAD adapter | src/freecad-engine-adapter.ts | ~2800 lines; per-kind build branches, save/open, drawing export |
-| brep-rs adapter | src/brep-rs-engine-adapter.ts | Shapes are `{doc, feature}` JSON handles the Rust wasm re-parses per call |
-| Mode + asset URL | src/config.ts | `getEngineMode()` / `getKernelBaseUrl()`, module-level state |
-| Kernel API slice | src/occt-api.ts | Hand-written `Occt` interface; the real .d.ts is 1.54MB and not vendored |
-| Mesh helpers | src/occt-mesh.ts, src/occt-three.ts | Tessellation, per-face `FaceRange` groups for picking |
+| Adapter contract | src/engine-adapter.ts | `EngineAdapter`, `EngineBuildResult` (shapes + per-feature `refusals`), `EngineMesh`, `FaceRange` |
+| The one adapter | src/brep-rs-engine-adapter.ts | Shapes are `{doc, feature}` JSON handles the Rust wasm re-parses per call |
+| Asset URL | src/config.ts | `getKernelBaseUrl()` only -- there is no engine mode |
+| Barrel | src/index.ts | Nothing imports via bare `.`; documents what is deliberately NOT exported |
 
 Naming types (`TopoName`, `whyNameLost`) and op-history helpers (`faceFate`, `sharedEdge`, ...) live in packages/script (`topo-name.ts`, `topo-history.ts`), not here. This package only records and resolves.
 
+## REFEREE APPARATUS
+`src/occt-build.ts`, `src/occt-mesh.ts` and `src/topo-resolve.ts` have no importer anywhere and are exported from neither the barrel nor package.json. They are not dead. `scripts/brep-parity-gate.mjs` and `scripts/brep-mesh-gate.mjs` load them out of `dist/` **by filesystem path**, build every fixture on OCCT as well as on brep-rs, and compare -- the only independent oracle over a kernel whose signature failure is the wrong answer rather than the missing one. They compile because `tsconfig.json` includes `src/**/*.ts`; that is the whole mechanism keeping them alive. `replicad-opencascadejs` is a root devDependency for these gates and nothing else.
+
 ## CONVENTIONS
-- **Constructor injection for tests**: adapters take `THREE` (and FreeCAD's `loadModule`) as constructor args; `BrepRsEngineAdapter.loadFromBytes()` is a test-only seam, not part of the contract.
-- **Kernel wasm is never vendored**: replicad_single (23MB) and brep-rs pkg are gitignored, served by the host app; always read the URL from `getKernelBaseUrl()`.
-- **`refusals` and pass-through are one behaviour**: a refused feature keeps its unmodified source shape in `shapes` AND a reason in `refusals`. Any caller reading a build result must surface the refusals map; pass-through alone recreates the "feature reports success but is not what its row says" defect.
-- **FreeCAD build is v1 full replay**: every `build()` opens a fresh document and re-emits the whole ModelDoc. Never diff against the live session. `saveDocument()` rebuilds first rather than trusting the active document, and stashes the ModelDoc JSON in `Document.Comment` behind a marker for `openDocument()`.
-- **Engine-only features throw**: OCCT and brep-rs adapters throw plain sentences for save/open/drawing. Callers gate on `getEngineMode()`; they do not catch the message text.
+- **Constructor injection for tests**: the adapter takes `THREE` as a constructor arg; `BrepRsEngineAdapter.loadFromBytes()` is a test-only seam (node has no fetch for the wasm), not part of the contract.
+- **Kernel wasm is never vendored**: `packages/brep-rs/pkg` is gitignored and served by the host app; always read the URL from `getKernelBaseUrl()`.
+- **`refusals` and pass-through are one behaviour**: a refused feature keeps its unmodified source shape in `shapes` AND a reason in `refusals`. Any caller reading a build result must surface the refusals map; pass-through alone recreates the "feature reports success but is not what its row says" defect. With no second engine to retry on, this map is the whole story the student gets.
+- **No engine mode**: `config.ts` exports the base URL and nothing else. `packages/kernel/test/config.test.mjs` asserts `getEngineMode`/`setEngineMode` do not exist, so a second engine cannot creep back in unnoticed.
 
 ## ANTI-PATTERNS
-- **Do not swap the hand-written `Occt` slice for the full generated .d.ts.** The 1.54MB declarations are deliberately not vendored; a wrong entry point fails loudly at first call, which is the trade.
+- **Do not delete the referee apparatus** (see above) because it has no importer. That is what it looks like when it is working.
+- **Do not export the OCCT files from the barrel or package.json.** The gates reach them by dist path; an export would advertise a second kernel this app does not have.
 - **Do not resolve `carried`/`split` names against the final shape.** The ancestor resolves on its own feature's pre-op shape, then pushes forward through the recorded op chain.
 - **Do not treat brep-rs shape handles as kernel objects.** They are opaque `{doc, feature}` keys; every mesh/resolve/measure call re-parses the doc JSON in the wasm.
 - **Do not hardcode kernel asset paths.** `/reshape/kernel` is only today's default; consumers read `getKernelBaseUrl()` so the wasm can move to R2 without code edits.
-- **Do not generalize a FreeCAD branch without probing the kernel first.** Each existing branch records what was measured against this fork, and the fork's answers differ per feature. Probe fresh (engine/bridge/*-probe.mjs) before writing a new one.
 - **Do not "fix" the `made` cause by guessing a face.** It returns null on purpose; the design question is left open in topo-resolve.ts's header.

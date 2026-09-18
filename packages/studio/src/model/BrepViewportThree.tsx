@@ -138,7 +138,8 @@ export interface BrepViewportStats {
   triangles: number;
   /** Feature id -> the sentence saying why that feature could not be built.
    *  Absent or empty means everything in the document built. Comes straight
-   *  from BuildResult.refusals; see lib/occt-build.ts. */
+   *  from EngineBuildResult.refusals, and with no fallback engine this is the
+   *  ONLY way a refusal reaches the student -- surface it. */
   refusals?: Map<string, string>;
   /** The world-space extent of everything on screen (computeSceneBox()'s own
    *  box), rounded to 1 decimal, mm -- the same measurement Home/fit already
@@ -174,8 +175,8 @@ export type ViewportPick =
 
 interface Props {
   doc: ModelDoc;
-  /** Passed straight through to tessellateToThree() -- see lib/occt-mesh.ts
-   *  for what it trades off. Left undefined to take that file's own default. */
+  /** Chord tolerance in mm, passed straight to the adapter's mesh(). Left
+   *  undefined to take the kernel's own default. */
   deflection?: number;
   onStats?: (s: BrepViewportStats) => void;
   /** Fired on every click that lands on the model (a face or an edge), and
@@ -438,12 +439,10 @@ const EDGE_OCCLUSION_TOLERANCE_FRACTION = 0.05;
 const EDGE_TUBE_RADIUS = 0.75;
 
 /**
- * Renders a ModelDoc through the OpenCascade B-rep kernel, live, in the page,
- * using three.js instead of @jscad/regl-renderer.
+ * Renders a ModelDoc through the brep-rs B-rep kernel, live, in the page.
  *
- * Face picking and incremental (feature-level) rebuild are NOT here, same
- * scope line BrepViewport.tsx draws: every doc change rebuilds every feature
- * from scratch through lib/occt-build.ts.
+ * Incremental (feature-level) rebuild is NOT here: every doc change rebuilds
+ * every feature from scratch through the adapter's build().
  */
 export default function BrepViewportThree({
   doc, deflection, onStats, onPick, pick, selectedCount, selectionLabel, anchors, onAnchors, onMesh, registerPickAt,

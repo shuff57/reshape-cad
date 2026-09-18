@@ -15,15 +15,17 @@ npm run build
 
 ## Kernel assets
 
-The wasm kernel (`replicad_single.wasm`/`.js`, `runner-brep.html`, etc.) isn't
-in this repo -- it's a pre-built artifact from shCode. `vite.config.ts`
-defaults to `../../../shCode/public/reshape/kernel` (a sibling checkout under
-the same `GitHub/` directory). If your shCode checkout lives elsewhere, point
-`RESHAPE_KERNEL_DIR` at its `public/reshape/kernel` before starting:
+The kernel is `packages/brep-rs`, in this repo, but its wasm is gitignored
+build output. Build it once (and again after any Rust change):
 
 ```
-RESHAPE_KERNEL_DIR=/path/to/shCode/public/reshape/kernel npm run dev
+cd ../brep-rs && wasm-pack build --release --target web --out-dir pkg
 ```
+
+`vite.config.ts` serves that `pkg/` at `/reshape/kernel/brep-rs/`, which is
+the URL `BrepRsEngineAdapter` builds from `getKernelBaseUrl()`. No sibling
+checkout and no env var are involved; if the wasm is missing the dev server
+says so at startup.
 
 ## Run it
 
@@ -34,16 +36,5 @@ npm run dev
 or from the repo root: `npm run dev:sandbox`. Boots on Vite's default port
 (`http://localhost:5173`).
 
-## Switching engines
-
-Defaults to the replicad/OCCT kernel above. Set `VITE_RESHAPE_ENGINE=freecad`
-to boot with the FreeCAD kernel instead (`engine/build/g5-artifacts` +
-`engine/play/freecad-data.*`, served at `/reshape/engine/` -- see
-`vite.config.ts`'s own `engineStaticServer()`). Only a narrow subset of
-`ModelDoc` builds on that engine today; see
-`packages/kernel/src/freecad-engine-adapter.ts`'s own header, or
-`docs/specs/SPEC-engine-port.md`'s "Known gaps" section, for exactly what:
-
-```
-VITE_RESHAPE_ENGINE=freecad npm run dev
-```
+There is one kernel, so there is nothing to switch: `VITE_RESHAPE_ENGINE` is
+gone, along with the engine-mode API it used to call.
