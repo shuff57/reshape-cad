@@ -519,9 +519,13 @@ fn region_inside(other: &TSolid, plane: &Plane, offset: Vec3) -> Option<Region> 
                     let point_on_surface = add(cy.origin, add(scale(cy.e1, cy.radius), scale(cy.axis, vm)));
                     let axis_proj = add(cy.origin, scale(cy.axis, dot(sub(point_on_surface, cy.origin), cy.axis)));
                     let radial = sub(point_on_surface, axis_proj);
-                    // Face normal at u=0: for a cylinder, the surface normal is radial.
-                    // The face's forward flag determines if it aligns with the surface normal.
-                    let surface_normal = cross(cy.axis, cy.e1); // outward at u=0
+                    // Face normal at u=0. p(u)=origin+R(e1·cosu+e2·sinu)+axis·v, so the
+                    // outward surface normal at u=0 is cross(axis, e1) = e2 (the
+                    // frame is right-handed); e1 is the radial POSITION, not the
+                    // normal. `flip_face` reverses a bore wall by negating e2
+                    // with forward kept true, so the real outward normal is
+                    // cross(axis, e1) · (face.forward ? 1 : -1) regardless.
+                    let surface_normal = cross(cy.axis, cy.e1);
                     let face_normal = if face.forward { surface_normal } else { scale(surface_normal, -1.0) };
                     if dot(face_normal, radial) < 0.0 {
                         // Void wall - skip (bounds empty space, not material)
@@ -543,6 +547,36 @@ fn region_inside(other: &TSolid, plane: &Plane, offset: Vec3) -> Option<Region> 
                         region.push_hl(h);
                     }
                 } else {
+                    return None;
+                }
+            }
+            Surface::Cone(c) => {
+                let ad = dot(c.axis, plane.n).abs();
+                if (ad - 1.0).abs() < 1e-9 {
+                    // Plane perpendicular to the axis: the cross-section is a
+                    // disk of radius r(along) = base_radius − along·tan,
+                    // centered on the axis — expressible. Outside the face's
+                    // own v band the face bounds nothing here; the solid's
+                    // cap planes constrain the region instead (the same
+                    // fall-through the sphere arm uses).
+                    let axis = normalize(c.axis);
+                    let probe = add(plane.origin, offset);
+                    let along = dot(sub(probe, c.base), axis);
+                    let band_lo = c.v_range[0] * c.half_angle.cos();
+                    let band_hi = c.v_range[1] * c.half_angle.cos();
+                    if along >= band_lo - TOL && along <= band_hi + TOL {
+                        let r = c.base_radius - along * c.half_angle.tan();
+                        if r <= TOL {
+                            return Some(Region::empty());
+                        }
+                        let centre3 = add(c.base, scale(axis, along));
+                        region.intersect_disk(plane.project(centre3), r);
+                    }
+                } else {
+                    // Parallel to the axis the section is a hyperbola; oblique,
+                    // an ellipse or parabola. The convex region algebra
+                    // (half-planes + one disk) cannot express a conic, so the
+                    // caller refuses rather than approximate one.
                     return None;
                 }
             }
@@ -734,58 +768,93 @@ fn intersect_arc_intervals(a: &[(f64, f64)], b: &[(f64, f64)]) -> Vec<(f64, f64)
 }
 
 /// A partial cylindrical wall with an arc range (u-clipping for cylinder-cylinder boolean).
-fn partial_wall_arc(
-    cy: &Cylinder,
-    vlo: f64,
-    vhi: f64,
-    reverse: bool,
-    arc: crate::geom::ArcRange,
-) -> TFace {
-    let e2 = if reverse { scale(cy.e2, -1.0) } else { cy.e2 };
+/// An arc-bounded partial cylindrical wall, spanning angles
+/// [arc.start, arc.start + arc.span] at radius `cy.radius`, v in [vlo, vhi].
+/// Four edges like `extrude_profile`'s corner wall (build.rs:1567): two
+/// vertical seams at the arc's ends, and two true arc rims (Curve::Arc) that
+/// the adjoining caps share — so the wire closes at four distinct corners and
+/// the surface integral covers only the arc's own angular range. A reversed
+/// wall (the tool side of a subtract) is produced by [`flip_face`], which
+/// already knows how to negate e2 and reflect the arc range while KEEPING
+/// the boundary wires — this builder stays un-reflected so its pcurves,
+/// rims and surface domain all live in the same (unreflected) u frame.
+fn partial_wall_arc(cy: &Cylinder, vlo: f64, vhi: f64, arc: crate::geom::ArcRange) -> TFace {
+    let axis = normalize(cy.axis);
+    let a0 = arc.start;
+    let span = arc.span;
+    let p_lo = add(cy.origin, scale(axis, vlo));
+    let p_hi = add(cy.origin, scale(axis, vhi));
+    let at_angle = |p: Vec3, ang: f64| -> Vec3 {
+        add(p, add(scale(cy.e1, cy.radius * ang.cos()), scale(cy.e2, cy.radius * ang.sin())))
+    };
+    // The two seam vertices per rim: arc start (s) and arc end (t).
+    let v_lo_s = topo::vertex(at_angle(p_lo, a0));
+    let v_lo_t = topo::vertex(at_angle(p_lo, a0 + arc.span));
+    let v_hi_s = topo::vertex(at_angle(p_hi, a0));
+    let v_hi_t = topo::vertex(at_angle(p_hi, a0 + arc.span));
+    let seam_s = topo::edge(
+        v_lo_s.clone(),
+        v_hi_s.clone(),
+        true,
+        Curve::Segment { a: v_lo_s.borrow().point, b: v_hi_s.borrow().point },
+    );
+    let seam_t = topo::edge(
+        v_lo_t.clone(),
+        v_hi_t.clone(),
+        true,
+        Curve::Segment { a: v_lo_t.borrow().point, b: v_hi_t.borrow().point },
+    );
+    // Rim arcs as real Curve::Arc: x_axis rotated to the edge's own start
+    // angle (Curve::Arc always begins at angle 0 from x_axis), sweep = ±span.
+    // The top rim is traversed a0 -> a0+span (x_axis at a0, sweep +span);
+    // the bottom rim closes the wire the other way, a0+span -> a0
+    // (x_axis at a0+span, sweep -span), so the wire walks a closed loop.
+    let rim_hi_f = topo::edge(
+        v_hi_s.clone(),
+        v_hi_t.clone(),
+        true,
+        Curve::Arc {
+            center: p_hi,
+            radius: cy.radius,
+            normal: axis,
+            x_axis: add(scale(cy.e1, a0.cos()), scale(cy.e2, a0.sin())),
+            sweep: arc.span,
+        },
+    );
+    let rim_lo_b = topo::edge(
+        v_lo_t.clone(),
+        v_lo_s.clone(),
+        true,
+        Curve::Arc {
+            center: p_lo,
+            radius: cy.radius,
+            normal: axis,
+            x_axis: add(scale(cy.e1, (a0 + arc.span).cos()), scale(cy.e2, (a0 + arc.span).sin())),
+            sweep: -arc.span,
+        },
+    );
+    let vm = 0.5 * (vlo + vhi);
+    let uses = vec![
+        topo::EdgeUse { edge: seam_s.clone(), forward: true, pcurve: topo::Pcurve { start: [a0, vlo], end: [a0, vhi], mid: [a0, vm] } },
+        topo::EdgeUse { edge: rim_hi_f.clone(), forward: true, pcurve: topo::Pcurve { start: [a0, vhi], end: [a0 + arc.span, vhi], mid: [a0 + arc.span * 0.5, vhi] } },
+        topo::EdgeUse { edge: seam_t.clone(), forward: true, pcurve: topo::Pcurve { start: [a0 + arc.span, vhi], end: [a0 + arc.span, vlo], mid: [a0 + arc.span, vm] } },
+        topo::EdgeUse { edge: rim_lo_b.clone(), forward: true, pcurve: topo::Pcurve { start: [a0 + arc.span, vlo], end: [a0, vlo], mid: [a0 + arc.span * 0.5, vlo] } },
+    ];
     let surf = Surface::Cylinder(Cylinder {
         origin: cy.origin,
         axis: cy.axis,
         e1: cy.e1,
-        e2,
+        e2: cy.e2,
         radius: cy.radius,
         vmin: vlo,
         vmax: vhi,
-        arc: Some(arc.clone()),
+        arc: Some(arc),
     });
-    let p_lo = add(cy.origin, scale(cy.axis, vlo));
-    let p_hi = add(cy.origin, scale(cy.axis, vhi));
-    let v_lo = topo::vertex(add(p_lo, scale(cy.e1, cy.radius)));
-    let v_hi = topo::vertex(add(p_hi, scale(cy.e1, cy.radius)));
-    let seam = topo::edge(
-        v_lo.clone(),
-        v_hi.clone(),
-        true,
-        Curve::Segment { a: v_lo.borrow().point, b: v_hi.borrow().point },
-    );
-    let rim_lo = topo::edge(
-        v_lo.clone(),
-        v_lo.clone(),
-        true,
-        Curve::Circle { center: p_lo, radius: cy.radius, normal: cy.axis },
-    );
-    let rim_hi = topo::edge(
-        v_hi.clone(),
-        v_hi.clone(),
-        true,
-        Curve::Circle { center: p_hi, radius: cy.radius, normal: cy.axis },
-    );
-    let vm = 0.5 * (vlo + vhi);
-    let uses = vec![
-        topo::EdgeUse { edge: seam.clone(), forward: true, pcurve: topo::Pcurve { start: [arc.start, vlo], end: [arc.start, vhi], mid: [arc.start, vm] } },
-        topo::EdgeUse { edge: rim_hi.clone(), forward: true, pcurve: topo::Pcurve { start: [arc.start, vhi], end: [arc.start + arc.span, vhi], mid: [arc.start + arc.span * 0.5, vhi] } },
-        topo::EdgeUse { edge: seam.clone(), forward: false, pcurve: topo::Pcurve { start: [arc.start + arc.span, vhi], end: [arc.start + arc.span, vlo], mid: [arc.start + arc.span, vm] } },
-        topo::EdgeUse { edge: rim_lo.clone(), forward: false, pcurve: topo::Pcurve { start: [arc.start + arc.span, vlo], end: [arc.start, vlo], mid: [arc.start + arc.span * 0.5, vlo] } },
-    ];
     Rc::new(RefCell::new(Face {
         boundary: vec![Rc::new(RefCell::new(Wire { edges: uses }))],
         forward: true,
         surface: surf,
-        uv_domain: [[arc.start, arc.start + arc.span], [vlo, vhi]],
+        uv_domain: [[a0, a0 + span], [vlo, vhi]],
     }))
 }
 
@@ -1037,7 +1106,29 @@ fn face_with_hole(face: &TFace, plane: &Plane, hole: &Hole) -> TFace {
                 ring.push(plane.project(p));
             }
         }
-        signed_area2(&ring) > 0.0
+        let area = signed_area2(&ring);
+        if ring.len() == 1 {
+            // A single full-circle outer wire: its vertex ring collapses to
+            // ONE point (start == end) and the shoelace sum is 0, which would
+            // read as "not CCW" and wind the hole the SAME way as the outer —
+            // an annulus whose hole ADDS its area (measured: the open-top
+            // hollow's outer cap came out pi*(R^2+r^2) instead of the
+            // annulus). A circle traversed forward is CCW about its own
+            // normal; in the plane's right-handed (u, v, n) that is CCW in
+            // uv exactly when the circle's normal agrees with plane.n.
+            let w = fb.boundary.first().expect("checked above");
+            let u0 = &w.borrow().edges[0];
+            let eb = u0.edge.borrow();
+            match &eb.curve {
+                Curve::Circle { normal, .. } => {
+                    let fwd = dot(*normal, plane.n) > 0.0;
+                    if u0.forward { fwd } else { !fwd }
+                }
+                _ => area > 0.0,
+            }
+        } else {
+            area > 0.0
+        }
     };
     let mut wires: Vec<topo::WireRef<Curve3>> = Vec::new();
     {
@@ -1278,18 +1369,33 @@ fn keep_disk(
     out: &mut Vec<TFace>,
 ) -> Option<()> {
     let sign = offset_sign(op, is_a)?;
-    let region = region_inside(other, plane, scale(plane.n, sign * PROBE))?;
+    // UNION's kept tool faces are the tool's own OUTSIDE: the tool cap in a
+    // union is kept where it lies OUTSIDE the base. A tool cap COPLANAR with
+    // a base cap must be probed AT the plane (offset 0, inclusive) — probing
+    // +PROBE past it classifies every point of the coplanar base face as
+    // outside, which would keep the tool's whole disk (a full overlap, a
+    // wrong union) instead of the lune. Subtract does not take this path (a
+    // flush tool cap must vanish, which the +PROBE probe achieves), and the
+    // base's own faces keep the coplanar-reads-outside rule either way, so
+    // the branch is union+tool only.
+    let region = if op == "union" && !is_a {
+        region_inside(other, plane, scale(plane.n, 0.0))?
+    } else {
+        region_inside(other, plane, scale(plane.n, sign * PROBE))?
+    };
     // Region membership slack, in plane-uv units. MUST be strictly below PROBE:
     // when this face is coplanar with a face of `other`, the probe sits exactly
     // PROBE past that face, so its half-plane evaluates to +PROBE. A slack equal
     // to PROBE read that as "inside" and kept a spurious flipped cap on the
     // opening of a flush blind hole (volume off by the cap's own term, no
     // refusal); anything below PROBE classifies the coincidence as outside,
-    // which is what "this surface is on the base's boundary" means.
+    // which is what "this surface is on the base's boundary" means. For the
+    // union-at-zero probe above the same slack makes the coplanar boundary
+    // itself (exactly 0) read inside, which is what that probe wants.
     const REGION_EPS: f64 = 1e-9;
     let mut inside_count = 0;
     let mut total = 0;
-    let mut probe = |p: Vec3, inside_count: &mut usize, total: &mut usize| {
+    let probe = |p: Vec3, inside_count: &mut usize, total: &mut usize| {
         let uv = plane.project(p);
         let yes = if region.empty {
             false
@@ -1314,8 +1420,77 @@ fn keep_disk(
     // does not read as a partial overlap, while a genuine sliver still does.
     let full = inside_count * 20 >= total * 19;
     let empty = inside_count * 20 <= total;
+    let center_uv = plane.project(center);
+    // Does the disk region (centre `c`, radius `r`), possibly cut by the
+    // half-planes, sit strictly inside this face's disk? In-plane cuts are
+    // real boundaries (a half-plane whose line crosses the disk); a
+    // degenerate (0,0,c) half-plane is the coplanar face itself and cuts
+    // nothing in-plane.
+    let cuts = |hs: &[[f64; 3]], cuv: [f64; 2]| -> bool {
+        hs.iter().any(|h| {
+            let den = (h[0] * h[0] + h[1] * h[1]).sqrt();
+            if den < 1e-7 {
+                return false;
+            }
+            let num = h[0] * cuv[0] + h[1] * cuv[1] + h[2];
+            (num / den).abs() < radius - 1e-7
+        })
+    };
     if !full && !empty {
+        // A partial overlap between two COPLANAR cylinders' caps (W8): the
+        // kept shape is a lens (inside the other's disk) or a lune (this disk
+        // minus the other's) — buildable exactly as two circle arcs, unless a
+        // half-plane cuts the base disk (a three-piece loop, still not built).
+        if !cuts(&region.hs, center_uv) {
+            if let Some((c, r)) = region.disk {
+                // Containment: the other's disk entirely inside this face's
+                // disk. A tool cap fully inside a base cap is interior (kept
+                // inside = drop it); a keep-outside operation instead bites a
+                // circular hole out of this cap (an annulus).
+                let d = [c[0] - center_uv[0], c[1] - center_uv[1]];
+                let dist = (d[0] * d[0] + d[1] * d[1]).sqrt();
+                if dist + r <= radius - 1e-7 {
+                    if keeps_inside(op, is_a) {
+                        return Some(());
+                    }
+                    let reverse = op == "subtract" && !is_a;
+                    let kept_plane = if reverse {
+                        Plane { origin: plane.origin, n: scale(plane.n, -1.0), u: plane.u, v: plane.v }
+                    } else {
+                        plane.clone()
+                    };
+                    out.push(face_with_hole(face, &kept_plane, &Hole::Circle(c, r)));
+                    return Some(());
+                }
+                return keep_disk_two_arcs(&plane, center_uv, radius, c, r, op, is_a, out);
+            }
+        }
         return None;
+    }
+    // W3 (open-top hollow): a tool disk strictly inside this cap reads
+    // "empty" at the +PROBE probe — the tool's own flush cap plane sits
+    // exactly PROBE past this face, so every probe fails it — yet for a
+    // keep-outside operation the tool still bites a circular hole out of
+    // this cap (the outer cap of a hollowed cylinder becomes an annulus).
+    // Re-probe AT the plane: coplanar faces then satisfy their own
+    // half-planes (exactly 0 <= eps) and the region is the tool's true
+    // cross-section; containment (its disk inside this one) builds the
+    // annulus. A cutting half-plane or a non-contained disk still refuses.
+    if empty && !keeps_inside(op, is_a) {
+        if let Some(region0) = region_inside(other, plane, [0.0, 0.0, 0.0]) {
+            if !region0.empty {
+                if let Some((c, r)) = region0.disk {
+                    if !cuts(&region0.hs, center_uv) {
+                        let d = [c[0] - center_uv[0], c[1] - center_uv[1]];
+                        let dist = (d[0] * d[0] + d[1] * d[1]).sqrt();
+                        if dist + r <= radius - 1e-7 {
+                            out.push(face_with_hole(face, &plane, &Hole::Circle(c, r)));
+                            return Some(());
+                        }
+                    }
+                }
+            }
+        }
     }
     let reverse = op == "subtract" && !is_a;
     let kept_plane = if reverse {
@@ -1336,6 +1511,117 @@ fn keep_disk(
     Some(())
 }
 
+/// A disk-shaped planar face partially overlapped by another disk (W8
+/// coplanar caps): the kept region is a lens (inside both disks) or a lune
+/// (this disk minus the other), built exactly as two circle arcs. Worked
+/// example behind the angle bookkeeping: disk1 R5 at origin, disk2 R5 at
+/// (6,0) — intersections (3,±4); the lens walks circle1's near arc
+/// (angles −θ₁→+θ₁, through (5,0)) then circle2's near arc back (through
+/// (1,0)), both CCW; the lune walks circle1's long arc CCW (through (−5,0))
+/// then circle2's near arc clockwise. `None` when containment makes the
+/// partial shape undefined (the callers' probes already routed those).
+fn keep_disk_two_arcs(
+    plane: &Plane,
+    center: [f64; 2],
+    radius: f64,
+    other_c: [f64; 2],
+    other_r: f64,
+    op: &str,
+    is_a: bool,
+    out: &mut Vec<TFace>,
+) -> Option<()> {
+    let d = [other_c[0] - center[0], other_c[1] - center[1]];
+    let dist = (d[0] * d[0] + d[1] * d[1]).sqrt();
+    if dist < 1e-12 {
+        return None; // concentric: a pure containment, not a partial overlap
+    }
+    if dist >= radius + other_r - 1e-9 || dist <= (radius - other_r).abs() + 1e-9 {
+        return None; // tangent or containment: not this builder's case
+    }
+    let theta1 = ((radius * radius + dist * dist - other_r * other_r) / (2.0 * radius * dist))
+        .clamp(-1.0, 1.0)
+        .acos();
+    let theta2 = ((other_r * other_r + dist * dist - radius * radius)
+        / (2.0 * other_r * dist))
+        .clamp(-1.0, 1.0)
+        .acos();
+    let phi = d[1].atan2(d[0]); // from this disk's centre toward the other's
+    let keep_inside = keeps_inside(op, is_a);
+    // Arc pieces as (centre_uv, radius, start_angle, signed span), chained
+    // CCW for the lens and per the worked example for the lune.
+    let pieces: Vec<([f64; 2], f64, f64, f64)> = if keep_inside {
+        vec![
+            (center, radius, phi - theta1, 2.0 * theta1),
+            (other_c, other_r, phi + std::f64::consts::PI - theta2, 2.0 * theta2),
+        ]
+    } else {
+        vec![
+            (center, radius, phi + theta1, TWO_PI - 2.0 * theta1),
+            (other_c, other_r, phi + std::f64::consts::PI + theta2, -2.0 * theta2),
+        ]
+    };
+    let reverse = op == "subtract" && !is_a;
+    let kept_plane = if reverse {
+        Plane { origin: plane.origin, n: scale(plane.n, -1.0), u: plane.u, v: plane.v }
+    } else {
+        plane.clone()
+    };
+    out.push(build_arc_loop_face(&kept_plane, &pieces));
+    if reverse {
+        // flip_planar keeps the boundary and negates the surface normal; the
+        // built face's own plane is `kept_plane`, so flipping it restores the
+        // original n as the OUTWARD one pointing into the removed void.
+        let built = out.pop().expect("just pushed");
+        out.push(flip_planar(&built));
+    }
+    Some(())
+}
+
+/// A planar face whose single boundary wire is a chain of circular arcs given
+/// in the plane's uv: (centre, radius, start angle, signed sweep) per piece,
+/// each starting where the previous ended. Angles are CCW in (plane.u,
+/// plane.v) when the (u, v, n) triple is right-handed; the arcs are built as
+/// real Curve::Arc so measurement, meshing and STEP all treat them exactly.
+fn build_arc_loop_face(plane: &Plane, pieces: &[([f64; 2], f64, f64, f64)]) -> TFace {
+    let pt = |c: [f64; 2], r: f64, ang: f64| -> [f64; 2] {
+        [c[0] + r * ang.cos(), c[1] + r * ang.sin()]
+    };
+    let mut uses: Vec<topo::EdgeUse<Curve3>> = Vec::with_capacity(pieces.len());
+    let n = pieces.len();
+    for (i, (c, r, start, sweep)) in pieces.iter().enumerate() {
+        let a_uv = pt(*c, *r, *start);
+        let b_uv = pt(*c, *r, *start + *sweep);
+        let a3 = plane.point(a_uv);
+        let b3 = plane.point(b_uv);
+        let mid_ang = *start + 0.5 * *sweep;
+        let m3 = plane.point(pt(*c, *r, mid_ang));
+        let e = topo::edge(
+            topo::vertex(a3),
+            topo::vertex(b3),
+            true,
+            Curve::Arc {
+                center: plane.point(*c),
+                radius: *r,
+                normal: plane.n,
+                x_axis: add(scale(plane.u, start.cos()), scale(plane.v, start.sin())),
+                sweep: *sweep,
+            },
+        );
+        let _last = i + 1 == n;
+        uses.push(topo::EdgeUse {
+            edge: e,
+            forward: true,
+            pcurve: topo::Pcurve { start: a_uv, end: b_uv, mid: plane.project(m3) },
+        });
+    }
+    Rc::new(RefCell::new(Face {
+        boundary: vec![Rc::new(RefCell::new(Wire { edges: uses }))],
+        forward: true,
+        surface: Surface::Plane(plane.clone()),
+        uv_domain: [[0.0, 1.0], [0.0, 1.0]],
+    }))
+}
+
 /// Process one face of a source solid, emitting the faces of the result that
 /// descend from it. `None` refuses the whole boolean.
 fn process_face(
@@ -1349,11 +1635,11 @@ fn process_face(
     match &fb.surface {
         Surface::Plane(p) => {
             let plane = p.clone();
-            if let Some((center, radius)) = circle_boundary(&fb) {
-                return keep_disk(face, &plane, center, radius, other, op, is_a, out);
-            }
-            keep_polygon(face, &plane, other, op, is_a, out)
+        if let Some((center, radius)) = circle_boundary(&fb) {
+            return keep_disk(face, &plane, center, radius, other, op, is_a, out);
         }
+        keep_polygon(face, &plane, other, op, is_a, out)
+    }
         Surface::Cylinder(cy) => {
             if cy.arc.is_some() {
                 return None;
@@ -1397,6 +1683,10 @@ fn process_face(
                             return None;
                         }
                     }
+                    Surface::Sphere(_) => {
+                        // A sphere can cut the wall; u-clipping is not built.
+                        return None;
+                    }
                     Surface::Cylinder(cy2) => {
                         // Cylinder vs Cylinder: handle parallel axes case (W8 keystone).
                         // If axes are parallel, the tool cylinder's caps (planes) are already
@@ -1409,10 +1699,6 @@ fn process_face(
                         }
                         // Axes are parallel. Store for u-clipping in v-segment loop.
                         parallel_cylinders.push(cy2.clone());
-                    }
-                    Surface::Sphere(_) => {
-                        // A sphere can cut the wall; u-clipping is not built.
-                        return None;
                     }
                     _ => return None,
                 }
@@ -1444,10 +1730,49 @@ fn process_face(
                             break; // completely outside all tool cylinders
                         }
                     }
-                    if !arcs.is_empty() {
-                        for (start, end) in arcs {
+                    // For keep_inside=true (tool faces in subtract), keep arcs inside other.
+                    // For keep_inside=false (base faces in subtract), keep arcs outside other (complement).
+                    // The complement walks [0, 2π) in order, so the intervals
+                    // must be sorted with wrap-fragments rotated to the start
+                    // (a (5.56, 2π) piece sorts BEFORE (0, 0.72) but walks last).
+                    let mut sorted = arcs.clone();
+                    // Clamp any piece whose end exceeds 2π (a defensive clamp;
+                    // `circle_intersection_arcs` never emits one) so the
+                    // complement walk below stays inside [0, 2π).
+                    for (_start, end) in sorted.iter_mut() {
+                        if *end > TWO_PI { *end = TWO_PI; }
+                    }
+                    let head = sorted.iter().position(|(s, _)| *s < 1e-9);
+                    let ordered: Vec<(f64, f64)> = match head {
+                        Some(h) => {
+                            let mut it = sorted[h..].to_vec();
+                            it.extend_from_slice(&sorted[..h]);
+                            it
+                        }
+                        None => sorted,
+                    };
+                    let final_arcs: Vec<(f64, f64)> = if keep_inside {
+                        ordered
+                    } else {
+                        // Complement of arcs in [0, 2π)
+                        let mut comp = Vec::new();
+                        let mut prev_end = 0.0;
+                        for (start, end) in &ordered {
+                            if *start - prev_end > 1e-9 {
+                                comp.push((prev_end, *start));
+                            }
+                            prev_end = prev_end.max(*end);
+                        }
+                        if TWO_PI - prev_end > 1e-9 {
+                            comp.push((prev_end, TWO_PI));
+                        }
+                        comp
+                    };
+                    if !final_arcs.is_empty() {
+                        for (start, end) in final_arcs {
                             let arc_range = crate::geom::ArcRange { start, span: end - start };
-                            out.push(partial_wall_arc(cy, vlo, vhi, reverse, arc_range));
+                            let wall = partial_wall_arc(cy, vlo, vhi, arc_range);
+                            out.push(if reverse { flip_face(&wall) } else { wall });
                         }
                     }
                     continue;
@@ -1650,6 +1975,509 @@ fn same_planar_patch(a: &TFace, b: &TFace) -> bool {
     }
 }
 
+/// W8: boolean of two parallel-axis cylinders whose caps are coplanar
+/// (same height). The dedicated builder exists because the generic
+/// face-by-face path builds each side in its own frame — a cap arc in the
+/// cap plane's (u, v) samples a different point set than the wall rim it
+/// borders, which the mesh gate catches as T-vertex cracks. Here every
+/// wall rim AND cap arc is built in the owning cylinder's own (e1, e2)
+/// frame at the arc's start angle, so a rim and the cap arc sharing one
+/// world arc are the same polyline pointwise, before any welding.
+///
+/// Layout (subtract, a − b): a's wall keeps its outside arc, b's wall keeps
+/// its inside arc flipped (via [`flip_face`]), a's caps are the LUNE
+/// (a's disk minus b's), b's caps are dropped (interior). Union: both walls
+/// keep their outside arcs, a's caps stay whole, b's caps become the lune.
+/// Intersect: both walls keep their inside arcs, caps become the lens.
+/// `None` for any configuration this does not cover (different heights,
+/// non-coplanar caps, non-parallel axes) — the caller falls through to the
+/// general path, which refuses honestly if it cannot build it either.
+pub fn cylinder_pair_boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
+    let Some((wa, ca_lo, ca_hi, fa_lo, fa_hi)) = cylinder_parts(a) else { return None };
+    let (wb, cb_lo, cb_hi, fb_lo, fb_hi) = cylinder_parts(b)?;
+    // Parallel axes, coplanar caps, matching v-ranges (equal heights).
+    let axis_a = normalize(wa.axis);
+    if (dot(axis_a, normalize(wb.axis)).abs() - 1.0).abs() > 1e-9 {
+        return None;
+    }
+    for (p, q) in [(ca_lo, cb_lo), (ca_hi, cb_hi)] {
+        // Coplanar caps: same HEIGHT along the axis. The centres differ by
+        // the radial offset (that is the whole point of the pair), so only
+        // the axial component must agree.
+        if dot(sub(p, q), axis_a).abs() > 1e-7 {
+            return None;
+        }
+    }
+    if (wa.vmin - wb.vmin).abs() > 1e-9 || (wa.vmax - wb.vmax).abs() > 1e-9 {
+        return None;
+    }
+    // The circles in the world plane of the caps, in a's own (e1, e2) frame.
+    // b's frame may be rotated (both come from geom::frame, which is
+    // deterministic per axis, so if the axes AGREE in direction the frames
+    // agree too; opposite axes are mirrored — reject rather than re-derive,
+    // the fixtures build both cylinders the same way).
+    if dot(axis_a, normalize(wb.axis)) < 1.0 - 1e-9 {
+        return None;
+    }
+    let (r1, r2) = (wa.radius, wb.radius);
+    let d = sub(cb_lo, ca_lo);
+    let dx = dot(d, wa.e1);
+    let dy = dot(d, wa.e2);
+    let dist = crate::math::len([dx, dy, 0.0]);
+    let phi = dy.atan2(dx); // b's centre seen from a's centre, in a's frame
+    // Disjoint / contained cases reduce to full or empty arcs.
+    let (theta1, theta2) = if dist < 1e-12 {
+        // concentric
+        if r1 <= r2 + 1e-9 { (0.0f64, std::f64::consts::PI) } else { (std::f64::consts::PI, 0.0) }
+    } else {
+        let t1 = ((r1 * r1 + dist * dist - r2 * r2) / (2.0 * r1 * dist)).clamp(-1.0, 1.0).acos();
+        let t2 = ((r2 * r2 + dist * dist - r1 * r1) / (2.0 * r2 * dist)).clamp(-1.0, 1.0).acos();
+        (t1, t2)
+    };
+    let disjoint = dist >= r1 + r2 - 1e-9;
+    let b_in_a = dist + r2 <= r1 + 1e-9;
+    let a_in_b = dist + r1 <= r2 + 1e-9;
+    // The two crossing world angles on EACH circle (a's frame for circle-a,
+    // b's frame for circle-b: b's frame == a's frame given the axis check).
+    let a_in = phi - theta1; // where a's rim enters b's disk
+    let a_in2 = phi + theta1;
+    let phi_b = (-dy).atan2(-dx); // a's centre seen from b's centre
+    let b_in = phi_b - theta2;
+    let b_in2 = phi_b + theta2;
+    let _ = (a_in, a_in2, b_in, b_in2, disjoint, b_in_a, a_in_b, fa_lo, fa_hi, fb_lo, fb_hi);
+    build_cyl_pair_result(op, &wa, ca_lo, ca_hi, &wb, cb_lo, r1, r2, dist, phi, phi_b, theta1, theta2)
+}
+
+/// The wall face and cap planes/circles of a "pure" cylinder solid: one
+/// full-turn wall (arc None) plus two planar disk caps. Returns
+/// (wall_cylinder, bottom_cap_center, top_cap_center, bottom_rim_edge, top_rim_edge).
+/// The rim edges are reused in the output so the caps and walls share
+/// handles by construction, not by welding.
+#[allow(clippy::type_complexity)]
+pub fn cylinder_parts(
+    s: &TSolid,
+) -> Option<(
+    Cylinder,
+    Vec3,
+    Vec3,
+    topo::EdgeRef<Curve3>,
+    topo::EdgeRef<Curve3>,
+)> {
+    let faces = s.faces();
+    if faces.len() != 3 {
+        return None;
+    }
+    let mut wall: Option<Cylinder> = None;
+    let mut cap_lo: Option<(Vec3, topo::EdgeRef<Curve3>)> = None;
+    let mut cap_hi: Option<(Vec3, topo::EdgeRef<Curve3>)> = None;
+    for f in &faces {
+        let fb = f.borrow();
+        match &fb.surface {
+            Surface::Cylinder(cy) => {
+                if cy.arc.is_some() || wall.is_some() {
+                    return None;
+                }
+                wall = Some(cy.clone());
+            }
+            Surface::Plane(_) => {
+                let Some((center, _radius)) = circle_boundary_of_wire(&fb) else {
+                    return None;
+                };
+                let Some(e) = single_circle_edge(&fb) else {
+                    return None;
+                };
+                // outward normal +axis → top cap; −axis → bottom.
+                // The wall is known only after the loop; classify by comparing
+                // the rim centre's height along +e1 after the wall is read.
+                if cap_lo.is_none() {
+                    cap_lo = Some((center, e));
+                } else {
+                    cap_hi = Some((center, e));
+                }
+            }
+            _ => return None,
+        }
+    }
+    let wall = wall?;
+    let (mut ca_lo, mut ea_lo) = cap_lo?;
+    let (mut ca_hi, mut ea_hi) = cap_hi?;
+    let axis = normalize(wall.axis);
+    // Order the caps by height along the wall's axis: the wall spans
+    // [vmin, vmax] from its origin, so the bottom cap sits at
+    // origin + axis·vmin.
+    let h_lo = dot(sub(ca_lo, wall.origin), axis);
+    let h_hi = dot(sub(ca_hi, wall.origin), axis);
+    if (h_lo - wall.vmin).abs() > 1e-7 || (h_hi - wall.vmax).abs() > 1e-7 {
+        // Swap so cap_lo really is the vmin end (cylinder_solid builds
+        // bottom-first, but do not rely on face order).
+        std::mem::swap(&mut ca_lo, &mut ca_hi);
+        std::mem::swap(&mut ea_lo, &mut ea_hi);
+    }
+    // The cap rim circles must match the wall's radius and position.
+    for (cap_center, e) in [(&ca_lo, &ea_lo), (&ca_hi, &ea_hi)] {
+        let _ = cap_center;
+        match &e.borrow().curve {
+            Curve::Circle { radius, .. } if (radius - wall.radius).abs() <= 1e-7 => {}
+            _ => return None,
+        }
+    }
+    Some((wall, ca_lo, ca_hi, ea_lo, ea_hi))
+}
+
+/// The single full-circle boundary edge of a disk planar face, if any.
+fn single_circle_edge(fb: &Face<Curve3, Surface3>) -> Option<topo::EdgeRef<Curve3>> {
+    let w = fb.boundary.first()?;
+    let uses = w.borrow().edges.clone();
+    if uses.len() != 1 {
+        return None;
+    }
+    let is_circle = matches!(&uses[0].edge.borrow().curve, Curve::Circle { .. });
+    if is_circle {
+        Some(uses[0].edge.clone())
+    } else {
+        None
+    }
+}
+
+/// `circle_boundary` without the single-wire requirement — reads the first
+/// wire's circle geometry.
+fn circle_boundary_of_wire(fb: &Face<Curve3, Surface3>) -> Option<(Vec3, f64)> {
+    let w = fb.boundary.first()?;
+    let mut found: Option<(Vec3, f64)> = None;
+    for u in &w.borrow().edges {
+        match &u.edge.borrow().curve {
+            Curve::Circle { center, radius, .. } => found = Some((*center, *radius)),
+            _ => return None,
+        }
+    }
+    found
+}
+
+/// W3 (shell on a cylinder), open-top flush case, built directly with shared
+/// edge handles — the same frame-consistency discipline as
+/// [`cylinder_pair_boolean`]: the generic boolean path rebuilds rims in
+/// different sample phases than the annuli's hole rings, which the mesh gate
+/// catches as T-vertex cracks. Here every rim circle is ONE edge handle
+/// reused by the wall piece(s) and cap(s) that border it, and `curve_points`'s
+/// Circle sampling is frame-sign-robust (`frame(+axis)` and `frame(-axis)`
+/// produce the same point set), so a rim shared through a flipped use still
+/// samples identically on both sides.
+///
+/// Layout (subtract, outer `a`, inner `b`, b's top cap FLUSH with a's, b's
+/// bottom strictly inside): the void spans z in [b.lo, a.hi], so the result
+/// is 6 faces — a's wall split at b's bottom plane (2 pieces), b's wall
+/// flipped (the void wall), a's own bottom cap (full disk, untouched), the
+/// top annulus (a's top rim + b's top rim reversed), and b's bottom cap
+/// flipped (the void floor). `None` for any other configuration.
+pub fn cylinder_open_hollow(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
+    if op != "subtract" {
+        return None;
+    }
+    let Some((wa, ca_lo, ca_hi, fa_lo, fa_hi)) = cylinder_parts(a) else { return None };
+    let Some((wb, cb_lo, cb_hi, _fb_lo, fb_hi)) = cylinder_parts(b) else { return None };
+    let axis = normalize(wa.axis);
+    if (dot(axis, normalize(wb.axis)) - 1.0).abs() > 1e-9 {
+        return None;
+    }
+    let off = sub(cb_lo, ca_lo);
+    if crate::math::len(sub(off, scale(axis, dot(off, axis)))) > 1e-9 {
+        return None; // not coaxial
+    }
+    if wb.radius >= wa.radius - 1e-9 {
+        return None;
+    }
+    if crate::math::len(sub(ca_hi, cb_hi)) > 1e-7 {
+        return None; // top caps not flush
+    }
+    let bottom_gap = dot(sub(cb_lo, ca_lo), axis);
+    let height = wa.vmax - wa.vmin;
+    if bottom_gap <= 1e-9 || bottom_gap >= height - 1e-9 {
+        return None;
+    }
+    // a's original bottom cap (full disk, untouched by the void) and bottom
+    // rim are reused as-is; the wall splits at the tool's bottom plane.
+    let cap_bottom = a
+        .faces()
+        .into_iter()
+        .find(|f| matches!(&f.borrow().surface, Surface::Plane(p) if dot(p.n, axis) < -1e-9))?;
+    // b's bottom cap, flipped into the void's floor.
+    let floor = {
+        let bf = b
+            .faces()
+            .into_iter()
+            .find(|f| matches!(&f.borrow().surface, Surface::Plane(p) if dot(p.n, axis) < -1e-9))?;
+        flip_planar(&bf)
+    };
+    // The split rim circle at b's bottom height, in a's frame (+axis normal
+    // so both wall pieces and any neighbour sample the same set).
+    let rim_split_centre = add(wa.origin, scale(axis, bottom_gap));
+    let rim_split = topo::edge(
+        topo::vertex(add(rim_split_centre, scale(wa.e1, wa.radius))),
+        topo::vertex(add(rim_split_centre, scale(wa.e1, wa.radius))),
+        true,
+        Curve::Circle { center: rim_split_centre, radius: wa.radius, normal: axis },
+    );
+    // A full-turn wall piece over [vlo, vhi] reusing the shared rim handles
+    // (same wire shape as [`partial_wall`], rims supplied not built).
+    let wall_piece = |vlo: f64, vhi: f64, rim_lo: &topo::EdgeRef<Curve3>, rim_hi: &topo::EdgeRef<Curve3>| -> TFace {
+        let pa = add(wa.origin, scale(axis, vlo));
+        let pb = add(wa.origin, scale(axis, vhi));
+        let v_lo = topo::vertex(add(pa, scale(wa.e1, wa.radius)));
+        let v_hi = topo::vertex(add(pb, scale(wa.e1, wa.radius)));
+        let seam = topo::edge(
+            v_lo.clone(),
+            v_hi.clone(),
+            true,
+            Curve::Segment { a: v_lo.borrow().point, b: v_hi.borrow().point },
+        );
+        let vm = 0.5 * (vlo + vhi);
+        let uses = vec![
+            topo::EdgeUse { edge: seam.clone(), forward: true, pcurve: topo::Pcurve { start: [0.0, vlo], end: [0.0, vhi], mid: [0.0, vm] } },
+            topo::EdgeUse { edge: rim_hi.clone(), forward: true, pcurve: topo::Pcurve { start: [0.0, vhi], end: [TWO_PI, vhi], mid: [std::f64::consts::PI, vhi] } },
+            topo::EdgeUse { edge: seam.clone(), forward: false, pcurve: topo::Pcurve { start: [TWO_PI, vhi], end: [TWO_PI, vlo], mid: [TWO_PI, vm] } },
+            topo::EdgeUse { edge: rim_lo.clone(), forward: false, pcurve: topo::Pcurve { start: [TWO_PI, vlo], end: [0.0, vlo], mid: [std::f64::consts::PI, vlo] } },
+        ];
+        let surf = Surface::Cylinder(Cylinder {
+            origin: wa.origin,
+            axis: wa.axis,
+            e1: wa.e1,
+            e2: wa.e2,
+            radius: wa.radius,
+            vmin: vlo,
+            vmax: vhi,
+            arc: None,
+        });
+        Rc::new(RefCell::new(Face {
+            boundary: vec![Rc::new(RefCell::new(Wire { edges: uses }))],
+            forward: true,
+            surface: surf,
+            uv_domain: [[0.0, TWO_PI], [vlo, vhi]],
+        }))
+    };
+    let wall_lower = wall_piece(wa.vmin, bottom_gap, &fa_lo, &rim_split);
+    let wall_upper = wall_piece(bottom_gap, wa.vmax, &rim_split, &fa_hi);
+    // The void wall: b's wall flipped; its rim handles (fb_lo/fb_hi) stay
+    // b's, which the annulus hole and the floor reuse.
+    let wall_inner = flip_face(
+        &b.faces()
+            .into_iter()
+            .find(|f| matches!(&f.borrow().surface, Surface::Cylinder(c) if c.arc.is_none() && (c.radius - wb.radius).abs() < 1e-9))?,
+    );
+    // The top annulus: outer ring = a's top rim (forward, CCW about +axis
+    // as a's own cap used it), hole ring = b's top rim wound the other way.
+    let annulus = |outer: &topo::EdgeRef<Curve3>, hole: &topo::EdgeRef<Curve3>, at: Vec3, normal: Vec3| -> TFace {
+        let plane = Plane::new(at, normal);
+        let zero = topo::Pcurve { start: [0.0, 0.0], end: [0.0, 0.0], mid: [0.0, 0.0] };
+        Rc::new(RefCell::new(Face {
+            boundary: vec![
+                Rc::new(RefCell::new(Wire { edges: vec![topo::EdgeUse { edge: outer.clone(), forward: true, pcurve: zero } ] })),
+                Rc::new(RefCell::new(Wire { edges: vec![topo::EdgeUse { edge: hole.clone(), forward: false, pcurve: zero } ] })),
+            ],
+            forward: true,
+            surface: Surface::Plane(plane),
+            uv_domain: [[0.0, 1.0], [0.0, 1.0]],
+        }))
+    };
+    let top = annulus(&fa_hi, &fb_hi, ca_hi, axis);
+    Some(Solid {
+        shells: vec![Rc::new(RefCell::new(Shell {
+            faces: vec![wall_lower, wall_upper, wall_inner, cap_bottom, top, floor],
+        }))],
+    })
+}
+
+#[allow(clippy::too_many_arguments)]
+fn build_cyl_pair_result(
+    op: &str,
+    wa: &Cylinder,
+    ca_lo: Vec3,
+    ca_hi: Vec3,
+    wb: &Cylinder,
+    cb_lo: Vec3,
+    r1: f64,
+    r2: f64,
+    dist: f64,
+    phi: f64,
+    phi_b: f64,
+    theta1: f64,
+    theta2: f64,
+) -> Option<TSolid> {
+    let axis = normalize(wa.axis);
+    let (vlo, vhi) = (wa.vmin, wa.vmax);
+    let cb_hi = add(cb_lo, scale(axis, vhi - vlo));
+    // Only true partial overlaps are built here; disjoint/contained cases
+    // fall through to the general path (identity, subtract_enclosed, refuse).
+    if dist >= r1 + r2 - 1e-9 || dist + r2 <= r1 + 1e-9 || dist + r1 <= r2 + 1e-9 {
+        return None;
+    }
+    // Crossing angles per circle, in each cylinder's own frame (the frames
+    // agree because the axes agree in direction and geom::frame is
+    // deterministic per axis).
+    let (a_in0, a_in1) = (phi - theta1, phi + theta1);
+    let (b_in0, b_in1) = (phi_b - theta2, phi_b + theta2);
+    let at = |c: &Cylinder, centre: Vec3, ang: f64| -> Vec3 {
+        add(centre, add(scale(c.e1, c.radius * ang.cos()), scale(c.e2, c.radius * ang.sin())))
+    };
+    // The four world crossing points per cap: on a's rim (Pa_lo/Pa_hi at
+    // angles a_in0/a_in1) and on b's rim (Pb_lo/Pb_hi at b_in0/b_in1). The
+    // pair (Pa, Pb) at the same cap coincide (the circles' intersection),
+    // so a's rim vertex and b's rim vertex are the same world point.
+    let pa_lo0 = at(wa, ca_lo, a_in0);
+    let pa_lo1 = at(wa, ca_lo, a_in1);
+    let pa_hi0 = at(wa, ca_hi, a_in0);
+    let pa_hi1 = at(wa, ca_hi, a_in1);
+    let pb_lo0 = at(wb, cb_lo, b_in0);
+    let pb_lo1 = at(wb, cb_lo, b_in1);
+    let pb_hi0 = at(wb, cb_hi, b_in0);
+    let pb_hi1 = at(wb, cb_hi, b_in1);
+
+    // --- Edges. Rim arcs are built ONCE per (circle, cap, world arc) in the
+    // owning cylinder's own frame (x_axis at the arc's start, normal +axis),
+    // and are SHARED by the wall and the cap via the same handle — the
+    // frame-consistency that makes the mesh watertight without relying on
+    // the geometric welder.
+    let arc_edge = |centre: Vec3, e1: Vec3, e2: Vec3, radius: f64, start: f64, sweep: f64| -> topo::EdgeRef<Curve3> {
+        topo::edge(
+            topo::vertex(add(centre, add(scale(e1, radius * start.cos()), scale(e2, radius * start.sin())))),
+            topo::vertex(add(centre, add(scale(e1, radius * (start + sweep).cos()), scale(e2, radius * (start + sweep).sin())))),
+            true,
+            Curve::Arc {
+                center: centre,
+                radius,
+                normal: axis,
+                x_axis: add(scale(e1, start.cos()), scale(e2, start.sin())),
+                sweep,
+            },
+        )
+    };
+    // Ruling seams between the two crossing points at each crossing angle.
+    let seam_edge = |centre_lo: Vec3, e1: Vec3, e2: Vec3, radius: f64, ang: f64| -> topo::EdgeRef<Curve3> {
+        let pa = add(centre_lo, add(scale(e1, radius * ang.cos()), scale(e2, radius * ang.sin())));
+        let pb = add(pa, scale(axis, vhi - vlo));
+        topo::edge(topo::vertex(pa), topo::vertex(pb), true, Curve::Segment { a: pa, b: pb })
+    };
+
+    // a's rim arcs: inside arc traversed a_in0 -> a_in1 (x_axis at a_in0,
+    // sweep +2·theta1); outside arc traversed a_in1 -> a_in0 the long way
+    // (x_axis at a_in1, sweep −(2π−2·theta1)). Same for b.
+    let a_in_sweep = 2.0 * theta1;
+    let a_out_sweep = TWO_PI - 2.0 * theta1;
+    let b_in_sweep = 2.0 * theta2;
+    let b_out_sweep = TWO_PI - 2.0 * theta2;
+    // Per circle, per cap: (inside_arc, outside_arc). The rim edges are the
+    // SAME handles the walls and caps both use.
+    let e_a_in_lo = arc_edge(ca_lo, wa.e1, wa.e2, r1, a_in0, a_in_sweep);
+    let e_a_in_hi = arc_edge(ca_hi, wa.e1, wa.e2, r1, a_in0, a_in_sweep);
+    let e_a_out_lo = arc_edge(ca_lo, wa.e1, wa.e2, r1, a_in1, a_out_sweep);
+    let e_a_out_hi = arc_edge(ca_hi, wa.e1, wa.e2, r1, a_in1, a_out_sweep);
+    let e_b_in_lo = arc_edge(cb_lo, wb.e1, wb.e2, r2, b_in0, b_in_sweep);
+    let e_b_in_hi = arc_edge(cb_hi, wb.e1, wb.e2, r2, b_in0, b_in_sweep);
+    let e_b_out_lo = arc_edge(cb_lo, wb.e1, wb.e2, r2, b_in1, b_out_sweep);
+    let e_b_out_hi = arc_edge(cb_hi, wb.e1, wb.e2, r2, b_in1, b_out_sweep);
+    let e_seam_a0 = seam_edge(ca_lo, wa.e1, wa.e2, r1, a_in0);
+    let e_seam_a1 = seam_edge(ca_lo, wa.e1, wa.e2, r1, a_in1);
+    let e_seam_b0 = seam_edge(cb_lo, wb.e1, wb.e2, r2, b_in0);
+    let e_seam_b1 = seam_edge(cb_lo, wb.e1, wb.e2, r2, b_in1);
+
+    // --- Walls. partial-wall surface + 4 uses, referencing the SHARED rim
+    // edges. The pcurves live in the cylinder's own (angle, v) space.
+    // Built UNREVERSED: a tool-side wall (subtract's b) is reversed by
+    // [`flip_face`] at the call site, which negates e2 and reflects the arc
+    // range while keeping the boundary wires and their shared handles.
+    let wall = |c: &Cylinder, centre_lo: Vec3, e_seam0: &topo::EdgeRef<Curve3>, e_seam1: &topo::EdgeRef<Curve3>, e_rim_lo: topo::EdgeRef<Curve3>, e_rim_hi: topo::EdgeRef<Curve3>, start: f64, sweep: f64| -> TFace {
+        let vm = 0.5 * (vlo + vhi);
+        let (s0, s1) = (start, start + sweep);
+        let uses = vec![
+            topo::EdgeUse { edge: e_seam0.clone(), forward: true, pcurve: topo::Pcurve { start: [s0, vlo], end: [s0, vhi], mid: [s0, vm] } },
+            topo::EdgeUse { edge: e_rim_hi.clone(), forward: true, pcurve: topo::Pcurve { start: [s0, vhi], end: [s1, vhi], mid: [0.5 * (s0 + s1), vhi] } },
+            topo::EdgeUse { edge: e_seam1.clone(), forward: true, pcurve: topo::Pcurve { start: [s1, vhi], end: [s1, vlo], mid: [s1, vm] } },
+            topo::EdgeUse { edge: e_rim_lo.clone(), forward: false, pcurve: topo::Pcurve { start: [s1, vlo], end: [s0, vlo], mid: [0.5 * (s0 + s1), vlo] } },
+        ];
+        let surf = Surface::Cylinder(Cylinder {
+            origin: centre_lo,
+            axis: c.axis,
+            e1: c.e1,
+            e2: c.e2,
+            radius: c.radius,
+            vmin: vlo,
+            vmax: vhi,
+            arc: Some(crate::geom::ArcRange { start, span: sweep }),
+        });
+        Rc::new(RefCell::new(Face {
+            boundary: vec![Rc::new(RefCell::new(Wire { edges: uses }))],
+            forward: true,
+            surface: surf,
+            uv_domain: [[s0, s1], [vlo, vhi]],
+        }))
+    };
+
+    // --- Caps. A cap is a two-arc loop reusing the shared rim edges.
+    // Circle-a's lune (a's disk minus b's): a's outside arc + b's outside
+    // arc traversed back. The lens: a's inside arc + b's inside arc back.
+    // `flip` inverts the outward normal (a tool-side cap in a subtract).
+    let two_arc_cap = |centre: Vec3, normal: Vec3, e_outer: topo::EdgeRef<Curve3>, fwd_outer: bool, e_inner: topo::EdgeRef<Curve3>, fwd_inner: bool| -> TFace {
+        let plane = Plane::new(centre, normal);
+        let mk = |e: &topo::EdgeRef<Curve3>, fwd: bool| {
+            let eb = e.borrow();
+            let pa = if fwd { eb.a.borrow().point } else { eb.b.borrow().point };
+            let pb = if fwd { eb.b.borrow().point } else { eb.a.borrow().point };
+            topo::EdgeUse {
+                edge: e.clone(),
+                forward: fwd,
+                pcurve: topo::Pcurve { start: plane.project(pa), end: plane.project(pb), mid: plane.project(scale(add(pa, pb), 0.5)) },
+            }
+        };
+        Rc::new(RefCell::new(Face {
+            boundary: vec![Rc::new(RefCell::new(Wire { edges: vec![mk(&e_outer, fwd_outer), mk(&e_inner, fwd_inner)] }))],
+            forward: true,
+            surface: Surface::Plane(plane),
+            uv_domain: [[0.0, 1.0], [0.0, 1.0]],
+        }))
+    };
+
+    let n_top = axis;
+    let n_bot = scale(axis, -1.0);
+    let faces: Vec<TFace> = match op {
+        "subtract" => {
+            // a's wall outside arc, b's wall inside arc flipped. a's caps
+            // = lune (a outside b); b's caps dropped (interior).
+            let wall_a = wall(wa, ca_lo, &e_seam_a1, &e_seam_a0, e_a_out_lo.clone(), e_a_out_hi.clone(), a_in1, a_out_sweep);
+            let wall_b = wall(wb, cb_lo, &e_seam_b0, &e_seam_b1, e_b_in_lo.clone(), e_b_in_hi.clone(), b_in0, b_in_sweep);
+            // a's caps = the LUNE: a's outside arc (a_in1 -> a_in0 the far
+            // way) chained with b's INSIDE arc traversed backwards
+            // (b_in1 -> b_in0), since the removed lens region is bounded by
+            // b's inside rim.
+            let cap_a_lo = two_arc_cap(ca_lo, n_bot, e_a_out_lo.clone(), true, e_b_in_lo.clone(), false);
+            let cap_a_hi = two_arc_cap(ca_hi, n_top, e_a_out_hi.clone(), true, e_b_in_hi.clone(), false);
+            vec![wall_a, flip_face(&wall_b), cap_a_lo, cap_a_hi]
+        }
+        "union" => {
+            // Both walls keep their outside arcs. Each cap is ONE face: the
+            // outer boundary of the union of the two disks — a's outside arc
+            // (a_in1 -> a_in0 the far way) chained with b's outside arc
+            // (b_in1 -> b_in0 the far way), which share the crossing points.
+            // A full disk + a separate lune would double-cover the lens
+            // region with two coplanar faces (non-manifold, cracked mesh).
+            let cap_lo = two_arc_cap(ca_lo, n_bot, e_a_out_lo.clone(), true, e_b_out_lo.clone(), true);
+            let cap_hi = two_arc_cap(ca_hi, n_top, e_a_out_hi.clone(), true, e_b_out_hi.clone(), true);
+            let wall_a = wall(wa, ca_lo, &e_seam_a1, &e_seam_a0, e_a_out_lo.clone(), e_a_out_hi.clone(), a_in1, a_out_sweep);
+            let wall_b = wall(wb, cb_lo, &e_seam_b1, &e_seam_b0, e_b_out_lo.clone(), e_b_out_hi.clone(), b_in1, b_out_sweep);
+            vec![wall_a, wall_b, cap_lo, cap_hi]
+        }
+        "intersect" => {
+            // Both walls keep their inside arcs (outward normals); caps = lens.
+            let wall_a = wall(wa, ca_lo, &e_seam_a0, &e_seam_a1, e_a_in_lo.clone(), e_a_in_hi.clone(), a_in0, a_in_sweep);
+            let wall_b = wall(wb, cb_lo, &e_seam_b0, &e_seam_b1, e_b_in_lo.clone(), e_b_in_hi.clone(), b_in0, b_in_sweep);
+            let cap_lo = two_arc_cap(ca_lo, n_bot, e_a_in_lo.clone(), true, e_b_in_lo.clone(), true);
+            let cap_hi = two_arc_cap(ca_hi, n_top, e_a_in_hi.clone(), true, e_b_in_hi.clone(), true);
+            vec![wall_a, wall_b, cap_lo, cap_hi]
+        }
+        _ => return None,
+    };
+    let _ = (n_bot, n_top, at, pa_lo0, pa_lo1, pa_hi0, pa_hi1, pb_lo0, pb_lo1, pb_hi0, pb_hi1, e_seam_a1, e_seam_b1, e_seam_b0, e_seam_a0);
+    Some(Solid { shells: vec![Rc::new(RefCell::new(Shell { faces }))] })
+}
+
 /// Boolean two solids of the `combine` kind. Returns None when the kernel
 /// cannot build the exact result, so the caller refuses the feature in words.
 pub fn boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
@@ -1657,6 +2485,12 @@ pub fn boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
         if let Some(cavity) = subtract_enclosed(a, b) {
             return Some(cavity);
         }
+    }
+    if let Some(r) = cylinder_pair_boolean(op, a, b) {
+        return Some(r);
+    }
+    if let Some(r) = cylinder_open_hollow(op, a, b) {
+        return Some(r);
     }
     let mut faces: Vec<TFace> = Vec::new();
     for f in a.faces() {
@@ -1971,12 +2805,27 @@ fn subtract_enclosed(a: &TSolid, b: &TSolid) -> Option<TSolid> {
     }
     // No face of a may lie inside b. (a's own faces lie on its surface, and
     // b's bbox is clear of that surface by the margin checked above.)
+    // A CURVED face's area centroid can sit ON ITS AXIS (a cylinder wall's
+    // centroid is on the axis, a sphere's at the centre) — inside any coaxial
+    // tool even though the SURFACE is clear of it. Probe a point on the
+    // surface instead: the face's uv midpoint (an enclosed void's wall,
+    // coaxial, is genuinely clear of the tool by the margin checked above).
     for g in &a_faces {
         let (area, c) = build::face_area_centroid(&g.borrow());
         if area <= 0.0 {
             return None;
         }
-        if inside_solid(b, c) {
+        let probe = match &g.borrow().surface {
+            Surface::Plane(_) => c,
+            surface => {
+                let (u0, u1) = surface.domain();
+                let (_, v1) = surface.domain();
+                let u_mid = 0.5 * (u0[0] + u0[1]);
+                let v_mid = 0.5 * (v1[0] + v1[1]);
+                surface.param(u_mid, v_mid)
+            }
+        };
+        if inside_solid(b, probe) {
             return None;
         }
     }
@@ -2047,8 +2896,6 @@ fn flip_face(face: &TFace) -> TFace {
         _ => face.clone(),
     }
 }
-
-
 
 #[cfg(test)]
 mod tests {
@@ -2154,7 +3001,8 @@ mod tests {
         for i in 0..pts.len() {
             segs.push(crate::build::ProfileSeg::Line { a: pts[i], b: pts[(i + 1) % pts.len()] });
         }
-        let a = build::extrude_profile(&segs, [0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 10.0]).unwrap();
+        let a = build::extrude_profile(&segs, [0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 10.0])
+            .expect("debug fixture profile closes");
         let c = build::cylinder_solid([5.0, 20.0, 5.0], 3.0, 30.0, [0.0, 0.0, 1.0]);
         show("subtract", &a, &c, "nonconvex");
     }
@@ -2361,7 +3209,8 @@ mod tests {
             build::ProfileSeg::Line { a: [5.0, 4.0], b: [-5.0, 4.0] },
             build::ProfileSeg::Line { a: [-5.0, 4.0], b: [-5.0, -4.0] },
         ];
-        let tool = build::extrude_profile(&segs, [0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, -5.0]).unwrap();
+        let tool = build::extrude_profile(&segs, [0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, -5.0])
+            .expect("test profile closes");
         // extrude_profile's walls read the profile's winding, so a negative
         // sweep is outward too (not inside-out), and its volume is positive.
         assert!(
@@ -2378,13 +3227,143 @@ mod tests {
             (build::solid_aabb(&fixed).lo[2] + 5.0).abs() < 1e-9,
             "the tool must occupy z in [-5, 0]"
         );
-    }
+}
+}
 
-    /// SPEC-brep-hole.md: four pairwise-disjoint bores subtracted one after
-    /// another must give the same solid as a single fused cut. box 40x40x20
-    /// minus 4 x r3 through-holes at (±15, ±10): 32000 - 4*9*pi*20, 10 faces.
-    #[test]
-    fn four_disjoint_successive_cuts() {
+
+/// Watertight check mirroring the mesh gate: every welded directed edge must
+/// have exactly one opposite partner.
+pub fn check_watertight(m: &crate::mesh::Mesh) -> bool {
+    let key = |p: [f64; 3]| [(p[0] / 1e-6).round() as i64, (p[1] / 1e-6).round() as i64, (p[2] / 1e-6).round() as i64];
+    let mut wid = std::collections::HashMap::new();
+    let mut canon = vec![0usize; m.positions.len()];
+    for (i, p) in m.positions.iter().enumerate() {
+        let n = wid.len();
+        canon[i] = *wid.entry(key(*p)).or_insert(n);
+    }
+    let mut dir: std::collections::HashMap<(usize, usize), i32> = std::collections::HashMap::new();
+    for t in m.indices.chunks(3) {
+        let ids = [canon[t[0] as usize], canon[t[1] as usize], canon[t[2] as usize]];
+        for e in 0..3 {
+            let (u, v) = (ids[e], ids[(e + 1) % 3]);
+            if u != v {
+                *dir.entry((u, v)).or_insert(0) += 1;
+            }
+        }
+    }
+    let mut open = 0usize;
+    for (&(u, v), &c) in &dir {
+        if dir.get(&(v, u)).copied().unwrap_or(0) != c {
+            open += 1;
+            if open <= 8 {
+                let find = |id: usize| -> [f64; 3] {
+                    for (i, p) in m.positions.iter().enumerate() {
+                        if canon[i] == id { return *p; }
+                    }
+                    [0.0; 3]
+                };
+                eprintln!("  open edge {}->{} c={} at {:?} / {:?}", u, v, c, find(u), find(v));
+            }
+        }
+    }
+    eprintln!("  open directed edges: {open}");
+    open == 0
+}
+
+/// W8: subtract of two overlapping parallel-axis cylinders. Pinned against
+/// OCCT via the parity fixture boolean-cylinder-minus-cylinder
+/// (10055.344981); here the volume is checked against the closed form
+/// c1 + c2's overlap: V = pi*(r1^2 - lens_area/... ) — computed as
+/// c1_volume - lens_volume with the lens from the intersect test's own
+/// number, and the mesh must be watertight (the gate's stricter check).
+#[test]
+fn cylinder_cylinder_boolean_subtract() {
+    let c1 = build::cylinder_solid([0.0, 0.0, 0.0], 12.0, 30.0, [0.0, 0.0, 1.0]);
+    let c2 = build::cylinder_solid([10.0, 0.0, 0.0], 8.0, 30.0, [0.0, 0.0, 1.0]);
+    let result = boolean("subtract", &c1, &c2).expect("cylinder-cylinder subtract must not refuse");
+    let vol = build::solid_volume(&result);
+    // lens volume (verified against OCCT by the intersect fixture):
+    let lens = 3516.3352821993412;
+    let want = build::solid_volume(&c1) - lens;
+    assert!((vol - want).abs() <= 1e-6 * want, "volume {vol} vs {want}");
+    assert_eq!(result.faces().len(), 4, "2 walls + 2 lune caps");
+    let m = crate::mesh::mesh_solid(&result, 0.05).expect("subtract meshes");
+    assert!(check_watertight(&m), "subtract mesh must be watertight");
+}
+
+/// W8: intersect of two overlapping parallel-axis cylinders. Lens prism
+/// volume pinned against OCCT (boolean-cylinder-intersect-cylinder).
+#[test]
+fn cylinder_cylinder_boolean_intersect() {
+    let c1 = build::cylinder_solid([0.0, 0.0, 0.0], 12.0, 30.0, [0.0, 0.0, 1.0]);
+    let c2 = build::cylinder_solid([10.0, 0.0, 0.0], 8.0, 30.0, [0.0, 0.0, 1.0]);
+    let result = boolean("intersect", &c1, &c2).expect("cylinder-cylinder intersect must not refuse");
+    let vol = build::solid_volume(&result);
+    assert!((vol - 3516.3352821993412).abs() <= 1e-6 * vol, "volume {vol}");
+    assert_eq!(result.faces().len(), 4, "2 walls + 2 lens caps");
+    let m = crate::mesh::mesh_solid(&result, 0.05).expect("intersect meshes");
+    assert!(check_watertight(&m), "intersect mesh must be watertight");
+}
+
+/// W8: union of two overlapping parallel-axis cylinders:
+/// V = c1 + c2 - lens, pinned against OCCT (boolean-cylinder-union-cylinder).
+#[test]
+fn cylinder_cylinder_boolean_union() {
+    let c1 = build::cylinder_solid([0.0, 0.0, 0.0], 12.0, 30.0, [0.0, 0.0, 1.0]);
+    let c2 = build::cylinder_solid([10.0, 0.0, 0.0], 8.0, 30.0, [0.0, 0.0, 1.0]);
+    let result = boolean("union", &c1, &c2).expect("cylinder-cylinder union must not refuse");
+    let vol = build::solid_volume(&result);
+    let want = build::solid_volume(&c1) + build::solid_volume(&c2) - 3516.3352821993412;
+    assert!((vol - want).abs() <= 1e-6 * want, "volume {vol} vs {want}");
+    assert_eq!(result.faces().len(), 4, "2 walls + 2 outer-boundary caps");
+    let m = crate::mesh::mesh_solid(&result, 0.05).expect("union meshes");
+    assert!(check_watertight(&m), "union mesh must be watertight");
+}
+
+/// W3 (shell on a cylinder), open-top case via the flush subtract: the
+/// inner void is a cylinder of radius r − thickness and height h − t,
+/// top face FLUSH with the outer cap, bottom inset by t. Outer caps keep
+/// an annulus (disk with a circular hole); the void wall is the tool's
+/// wall flipped. Pinned volume: pi*R^2*h − (pi*(R−t)^2*(h−t)).
+#[test]
+fn shell_cylinder_open_top_flush_subtract() {
+    let outer = build::cylinder_solid([0.0, 0.0, 0.0], 12.0, 30.0, [0.0, 0.0, 1.0]);
+    let inner = build::cylinder_solid([0.0, 0.0, 1.0], 10.0, 28.0, [0.0, 0.0, 1.0]);
+    let result = boolean("subtract", &outer, &inner).expect("open-top cylinder hollow must not refuse");
+    let want = std::f64::consts::PI * 144.0 * 30.0 - std::f64::consts::PI * 100.0 * 28.0;
+    let vol = build::solid_volume(&result);
+    assert!((vol - want).abs() <= 1e-6 * want, "volume {vol} vs {want}");
+    assert_eq!(result.faces().len(), 6, "2 outer walls + void wall + bottom cap + top annulus + void floor");
+    let m = crate::mesh::mesh_solid(&result, 0.05).expect("open-top hollow meshes");
+    assert!(check_watertight(&m), "open-top hollow mesh must be watertight");
+}
+
+/// W3 closed case: a fully-enclosed cylindrical void inside a cylinder is
+/// one inner shell (the existing subtract_enclosed path handles it if its
+/// per-face checks accept cylinders; if it refuses, the boolean still must
+/// not return a wrong solid).
+#[test]
+fn shell_cylinder_closed_void() {
+    let outer = build::cylinder_solid([0.0, 0.0, 0.0], 12.0, 30.0, [0.0, 0.0, 1.0]);
+    let inner = build::cylinder_solid([0.0, 0.0, 0.0], 10.0, 28.0, [0.0, 0.0, 1.0]);
+    match boolean("subtract", &outer, &inner) {
+        Some(result) => {
+            let want = std::f64::consts::PI * (144.0 * 30.0 - 100.0 * 28.0);
+            let vol = build::solid_volume(&result);
+            assert!((vol - want).abs() <= 1e-6 * want, "volume {vol} vs {want}");
+        }
+        None => {
+            // An honest refusal is acceptable for the closed case; the
+            // open-top path is the fixture-class one (shell-open-top).
+        }
+    }
+}
+
+/// SPEC-brep-hole.md: four pairwise-disjoint bores subtracted one after
+/// another must give the same solid as a single fused cut. box 40x40x20
+/// minus 4 x r3 through-holes at (±15, ±10): 32000 - 4*9*pi*20, 10 faces.
+#[test]
+fn four_disjoint_successive_cuts() {
         let mut shape = build::box_solid([40.0, 40.0, 20.0], [0.0, 0.0, 0.0], None);
         for c in [[-15.0, -10.0, 0.0], [15.0, -10.0, 0.0], [-15.0, 10.0, 0.0], [15.0, 10.0, 0.0]] {
             let tool = build::cylinder_solid(c, 3.0, 22.0, [0.0, 0.0, 1.0]);
@@ -2400,7 +3379,6 @@ mod tests {
         assert_eq!(bb.hi, [20.0, 20.0, 10.0]);
     }
 
-}
 
 #[cfg(test)]
 mod shell_flush_tests {
