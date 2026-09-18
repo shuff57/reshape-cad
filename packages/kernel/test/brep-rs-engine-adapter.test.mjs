@@ -142,8 +142,8 @@ test('a refused feature shows up in refusals', () => {
   assert.ok(built.refusals && built.refusals.has('m1'), 'refusal recorded');
 });
 
-test('default engine mode stays freecad (spec constraint 3)', () => {
-  setEngineMode('freecad');
-  assert.equal(getEngineMode(), 'freecad');
+test('default engine mode stays brep-rs (spec constraint 3)', () => {
+  setEngineMode('brep-rs');
+  assert.equal(getEngineMode(), 'brep-rs');
 });
 

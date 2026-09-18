@@ -17,20 +17,16 @@ export function setKernelBaseUrl(url: string): void {
 }
 
 // Which kernel BrepViewportThree.tsx's loadEngine() should bring up --
-// SPEC-engine-port.md §3.3. Default flipped to 'freecad' (2026-09-11, per
-// the original plan's DECISION A: commit to the FreeCAD kernel, replicad
-// stays only as a fallback) now that BrepViewportThree.tsx's build effect
-// automatically falls back to an OcctEngineAdapter for anything FreeCAD
-// still refuses to build -- see that effect's own comment. sandbox-dev
-// reads VITE_RESHAPE_ENGINE at startup and calls this once, the same
-// pattern RESHAPE_KERNEL_DIR already uses for the URL above; a future UI
-// toggle calls it directly.
-let engineMode: 'occt' | 'freecad' | 'brep-rs' = 'freecad';
+// Default flipped to 'brep-rs' (2026-09-17, FreeCAD kernel removed).
+// sandbox-dev reads VITE_RESHAPE_ENGINE at startup and calls this once,
+// the same pattern RESHAPE_KERNEL_DIR already uses for the URL above;
+// a future UI toggle calls it directly.
+let engineMode: 'occt' | 'brep-rs' = 'brep-rs';
 
-export function getEngineMode(): 'occt' | 'freecad' | 'brep-rs' {
+export function getEngineMode(): 'occt' | 'brep-rs' {
   return engineMode;
 }
 
-export function setEngineMode(mode: 'occt' | 'freecad' | 'brep-rs'): void {
+export function setEngineMode(mode: 'occt' | 'brep-rs'): void {
   engineMode = mode;
 }
