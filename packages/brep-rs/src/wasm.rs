@@ -1475,14 +1475,59 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                         }
                     }
                 }
-                let Some(inner) = shell_inner_box(&src, thickness, open_side) else {
-                    refusals.insert(
-                        id.clone(),
-                        json!(format!(
-                            "brep-rs can only hollow a box yet -- {id} is shown without it."
-                        )),
-                    );
-                    continue;
+                // W3: a pure cylinder hollows too. The void is a coaxial
+                // cylinder of radius r - thickness; OPEN at the +axis cap the
+                // void runs flush to it (the outer caps become annuli and the
+                // void wall is exposed), closed it is inset at both ends (an
+                // enclosed void shell). Anything else falls to the box path.
+                let inner = ops::cylinder_parts(&src).and_then(|(wall, _c_lo, _c_hi, _, _)| {
+                    let axis = crate::math::normalize(wall.axis);
+                    // Only a world-z-aligned cylinder takes this arm: the
+                    // open-side resolution above indexes bbox axes, and a
+                    // rotated cylinder's open face would land on another
+                    // axis' extreme.
+                    if (axis[2] - 1.0).abs() > 1e-9 {
+                        return None;
+                    }
+                    match open_side {
+                        Some((2, 1)) | None => {}
+                        _ => return None,
+                    }
+                    let inner_r = wall.radius - thickness;
+                    if inner_r <= 1e-9 {
+                        return None;
+                    }
+                    let (vlo, vhi) = match open_side {
+                        Some((2, 1)) => (wall.vmin + thickness, wall.vmax),
+                        _ => (wall.vmin + thickness, wall.vmax - thickness),
+                    };
+                    if vhi - vlo <= 1e-9 {
+                        return None;
+                    }
+                    Some(build::cylinder_solid(
+                        crate::math::add(
+                            wall.origin,
+                            crate::math::scale(axis, 0.5 * (vlo + vhi)),
+                        ),
+                        inner_r,
+                        vhi - vlo,
+                        axis,
+                    ))
+                });
+                let inner = match inner {
+                    Some(i) => i,
+                    None => match shell_inner_box(&src, thickness, open_side) {
+                        Some(b) => b,
+                        None => {
+                            refusals.insert(
+                                id.clone(),
+                                json!(format!(
+                                    "brep-rs can only hollow a box or a straight cylinder yet -- {id} is shown without it."
+                                )),
+                            );
+                            continue;
+                        }
+                    },
                 };
                 match ops::boolean("subtract", &src, &inner) {
                     Some(result) => {
@@ -2427,10 +2472,13 @@ mod tests {
         assert!((vol - want).abs() <= 1e-6 * want, "closed-fallback volume {vol}");
     }
 
-    /// SPEC-brep-shell.md scope: a non-box solid refuses rather than returning
-    /// a wrong hollow.
+    /// SPEC-brep-shell.md scope, updated by W3: a CLOSED cylinder hollows
+    /// exactly (pi*R^2*h - pi*(R-t)^2*(h-2t), 6 faces: outer wall + 2
+    /// annuli + void wall + 2 void caps), and a solid the kernel cannot
+    /// hollow still refuses rather than returning a wrong shape.
     #[test]
     fn non_box_refuses() {
+        // A cylinder now builds.
         let doc = json!({
             "features": [
                 { "id": "c1", "kind": "cylinder", "radius": 10.0, "height": 20.0 },
@@ -2439,8 +2487,24 @@ mod tests {
         });
         let (hist, refusals) = build_doc(&doc);
         let text = refusals.get("sh1").and_then(|v| v.as_str()).unwrap_or_default();
+        assert!(text.is_empty(), "cylinder hollow must build, refused: {text}");
+        let solid = hist.shapes.get("sh1").expect("cylinder hollow builds");
+        let want = std::f64::consts::PI * (100.0 * 20.0 - 64.0 * 16.0);
+        let vol = build::solid_volume(solid);
+        assert!((vol - want).abs() <= 1e-6 * want, "closed cylinder hollow volume {vol} vs {want}");
+        assert_eq!(solid.faces().len(), 6, "outer wall + 2 annuli + void wall + 2 void caps");
+
+        // A sphere still refuses (no hollow path for it yet).
+        let doc = json!({
+            "features": [
+                { "id": "s1", "kind": "sphere", "radius": 10.0 },
+                { "id": "sh1", "kind": "shell", "target": "s1", "thickness": 2.0 }
+            ]
+        });
+        let (hist, refusals) = build_doc(&doc);
+        let text = refusals.get("sh1").and_then(|v| v.as_str()).unwrap_or_default();
         assert!(
-            text.contains("can only hollow a box yet"),
+            text.contains("can only hollow"),
             "refusal text: {text}"
         );
         assert!(hist.shapes.get("sh1").is_none(), "no wrong solid");
@@ -2594,6 +2658,71 @@ mod tests {
         let bb = build::solid_aabb(solid);
         assert!((bb.lo[2] - (-15.0)).abs() < 1e-6, "bbox lo z unchanged: {bb:?}");
         assert!((bb.hi[2] - 15.0).abs() < 1e-6, "bbox hi z unchanged: {bb:?}");
+    }
+
+    /// W2 (SPEC-brep-fillet.md): the `fillet` feature on ONE rim of a
+    /// cylinder (between the +z cap and the side wall). OCCT's both-rims
+    /// number is pinned at 13296.693532 for r12 h30 rad3; each rim's
+    /// removal is congruent by symmetry, so one rim removes half of
+    /// 13571.680264 - 13296.693532, and the volume is 13434.186898 on
+    /// 4 faces (wall + 2 caps + 1 rim band). The surviving rim stays
+    /// nameable: the untreated rim edge is one handle shared by the wall
+    /// and its cap.
+    #[test]
+    fn cylinder_rim_fillet_one_edge_volume_faces() {
+        let doc = json!({
+            "features": [
+                { "id": "c1", "kind": "cylinder", "radius": 12.0, "height": 30.0 },
+                { "id": "r1", "kind": "fillet", "target": "c1", "size": 3.0, "style": "fillet",
+                  "edge": { "cause": "between", "feature": "c1", "kind": "edge",
+                            "of": [
+                                { "cause": "primitive", "feature": "c1", "kind": "face", "part": "+z" },
+                                { "cause": "primitive", "feature": "c1", "kind": "face", "part": "side" }
+                            ] } }
+            ]
+        });
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "refusals: {refusals:?}");
+        let solid = hist.shapes.get("r1").expect("rim fillet must build");
+        let vol = build::solid_volume(solid);
+        assert!((vol - 13434.186898).abs() <= 1e-5, "volume {vol} vs 13434.186898");
+        assert_eq!(solid.faces().len(), 4, "wall + 2 caps + 1 rim band");
+        let bb = build::solid_aabb(solid);
+        assert!((bb.lo[2] + 15.0).abs() < 1e-6, "bbox lo z unchanged: {bb:?}");
+        assert!((bb.hi[2] - 15.0).abs() < 1e-6, "bbox hi z unchanged: {bb:?}");
+        for i in 0..2 {
+            assert!((bb.lo[i] + 12.0).abs() < 1e-6, "bbox lo[{i}] unchanged: {bb:?}");
+            assert!((bb.hi[i] - 12.0).abs() < 1e-6, "bbox hi[{i}] unchanged: {bb:?}");
+        }
+        let m = crate::mesh::mesh_solid(solid, 0.05).expect("rim fillet meshes");
+        assert!(ops::check_watertight(&m), "rim fillet mesh must be watertight");
+    }
+
+    /// W2: the same rim, CHAMFER style. The both-rims removal is the
+    /// OCCT-pinned 12949.644918 closed form; one rim removes
+    /// pi*rad^2*(R - rad/3) = pi*99, so the volume is 13260.662591 on
+    /// 4 faces.
+    #[test]
+    fn cylinder_rim_chamfer_one_edge_volume_faces() {
+        let doc = json!({
+            "features": [
+                { "id": "c1", "kind": "cylinder", "radius": 12.0, "height": 30.0 },
+                { "id": "r1", "kind": "fillet", "target": "c1", "size": 3.0, "style": "chamfer",
+                  "edge": { "cause": "between", "feature": "c1", "kind": "edge",
+                            "of": [
+                                { "cause": "primitive", "feature": "c1", "kind": "face", "part": "-z" },
+                                { "cause": "primitive", "feature": "c1", "kind": "face", "part": "side" }
+                            ] } }
+            ]
+        });
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "refusals: {refusals:?}");
+        let solid = hist.shapes.get("r1").expect("rim chamfer must build");
+        let vol = build::solid_volume(solid);
+        assert!((vol - 13260.662591).abs() <= 1e-5, "volume {vol} vs 13260.662591");
+        assert_eq!(solid.faces().len(), 4, "wall + 2 caps + 1 chamfer band");
+        let m = crate::mesh::mesh_solid(solid, 0.05).expect("rim chamfer meshes");
+        assert!(ops::check_watertight(&m), "rim chamfer mesh must be watertight");
     }
 
     /// SPEC-brep-fillet.md refusal: a non-box target refuses rather than
@@ -3463,6 +3592,41 @@ fn build_fillet(
     round: bool,
 ) -> Result<TSolid, FilletErr> {
     let (fa, fb) = fillet_face_pair(hist, f).ok_or(FilletErr::NoEdge)?;
+    // W2 (SPEC-brep-fillet.md): a plain cylinder's rim — the edge between a
+    // cap and its curved wall — rounds or chamfers with the same band the
+    // `round` primitive pins at both rims. Detected from the solid's actual
+    // geometry (a pure cylinder) and the face pair (exactly one curved wall
+    // + one cap); the cap's own outward normal names the treated rim. A
+    // rotated cylinder or any other shape falls to the box path below.
+    let is_wall = |fc: &build::TFace| {
+        matches!(&fc.borrow().surface, Surface::Cylinder(c) if c.arc.is_none())
+    };
+    let a_wall = is_wall(&fa);
+    let b_wall = is_wall(&fb);
+    if a_wall != b_wall {
+        if let Some((wall, _, _, _, _)) = ops::cylinder_parts(src) {
+            let cap = if a_wall { &fb } else { &fa };
+            let cap_n = match &cap.borrow().surface {
+                Surface::Plane(p) => p.n,
+                _ => unreachable!("the non-wall face is a cap plane"),
+            };
+            let axis = crate::math::normalize(wall.axis);
+            if (axis[2] - 1.0).abs() <= 1e-9 {
+                let height = wall.vmax - wall.vmin;
+                if size <= 0.0 || size >= wall.radius - 1e-9 || size >= height / 2.0 - 1e-9 {
+                    return Err(FilletErr::TooBig);
+                }
+                let treated_top = crate::math::dot(cap_n, axis) > 0.0;
+                let center = crate::math::add(wall.origin, crate::math::scale(axis, height / 2.0));
+                let solid = if round {
+                    build::round_cylinder_one_rim(center, wall.radius, height, axis, size, treated_top)
+                } else {
+                    build::chamfer_cylinder_one_rim(center, wall.radius, height, axis, size, treated_top)
+                };
+                return Ok(solid);
+            }
+        }
+    }
     let bb = box_extent(src).ok_or(FilletErr::NoBox)?;
     let (ax1, s1) = face_axis(&fa).ok_or(FilletErr::NoBox)?;
     let (ax2, s2) = face_axis(&fb).ok_or(FilletErr::NoBox)?;
