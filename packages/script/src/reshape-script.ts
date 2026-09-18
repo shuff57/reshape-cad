@@ -78,6 +78,8 @@ import {
   canRotate,
   whyCannotRound,
   whyCannotOrbit,
+  type SoupGeom,
+  type SoupRule,
 } from './model-types.js';
 import { generatedParams, applyParam, pname } from './model-codegen.js';
 // addConstraintSettling is the SAME beginner-friendly settle a click on the
@@ -594,6 +596,11 @@ export interface SketchHandle {
   distY(a: unknown, b: unknown, value: unknown): SketchHandle;
   symmetric(a: unknown, b: unknown, center: unknown): SketchHandle;
   angle(edge: unknown, other: unknown, degrees: unknown): SketchHandle;
+  // The soup (SPEC-sketcher2.md §6.1): array-of-objects, evaluated as real
+  // JS, so a row's `value` can be a param() reference -- the whole reason
+  // rows beat an opaque blob (a blob cannot hold a param).
+  geom(rows: unknown): SketchHandle;
+  rules(rows: unknown): SketchHandle;
 }
 
 function isHandle(v: unknown): v is SolidHandle {
@@ -951,6 +958,132 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     }
   }
 
+  // -- soup row readers (SPEC-sketcher2 §2.3/§2.5) --------------------------
+  // The interpreter validates every row's SHAPE (the k discriminator and the
+  // fields that kind carries) so a malformed row refuses here, with a line
+  // number, instead of arriving in the kernel as a puzzle.
+
+  const GEOM_SHAPES: Record<string, string[]> = {
+    point: ['id', 'p'],
+    line: ['id', 'a', 'b'],
+    circle: ['id', 'c', 'r'],
+    arc: ['id', 'c', 'r', 'a', 'b', 'sense'],
+  };
+  const GEOM_KEYS = new Set(['k', ...Object.values(GEOM_SHAPES).flat(), 'construction']);
+
+  function readVec2(where: string, what: string, v: unknown): [number, number] {
+    if (
+      Array.isArray(v) && v.length === 2 &&
+      typeof v[0] === 'number' && Number.isFinite(v[0]) &&
+      typeof v[1] === 'number' && Number.isFinite(v[1])
+    ) {
+      return [v[0], v[1]];
+    }
+    throw new Error(`${where} needs ${what} as [u, v], got ${describe(v)}.`);
+  }
+
+  function readSoupGeom(where: string, v: unknown): SoupGeom {
+    if (!v || typeof v !== 'object' || Array.isArray(v)) {
+      throw new Error(`${where} needs geometry row objects like { k: 'line', id: 1, a: [0, 0], b: [40, 0] }, got ${describe(v)}.`);
+    }
+    const o = v as Record<string, unknown>;
+    const k = o.k;
+    const shape = typeof k === 'string' ? GEOM_SHAPES[k] : undefined;
+    if (!shape) {
+      throw new Error(
+        `${where} row k must be one of point, line, circle, arc; got ${describe(k)}.`,
+      );
+    }
+    if (typeof o.id !== 'number' || !Number.isInteger(o.id) || o.id <= 0) {
+      throw new Error(`${where} row id must be a positive whole number, got ${describe(o.id)}.`);
+    }
+    for (const field of shape) {
+      if (o[field] === undefined) {
+        throw new Error(`${where} row ${k} needs a ${field}.`);
+      }
+    }
+    if (k === 'point') {
+      return { k, id: o.id as number, p: readVec2(where, 'p', o.p), ...(o.construction === true ? { construction: true } : {}) };
+    }
+    if (k === 'line') {
+      return {
+        k, id: o.id as number,
+        a: readVec2(where, 'a', o.a), b: readVec2(where, 'b', o.b),
+        ...(o.construction === true ? { construction: true as const } : {}),
+      };
+    }
+    const r = o.r;
+    // A radius may be a param() reference (§6.2) -- the wrapper unwraps
+    // through num() in the caller once the feature id is known. A plain
+    // number must still be positive HERE.
+    if (r instanceof ParamNumber) {
+      // shape-only check: the number itself is validated by num() below.
+    } else if (typeof r !== 'number' || !(r > 0)) {
+      throw new Error(`${where} row ${k} needs a positive radius r, got ${describe(r)}.`);
+    }
+    if (k === 'circle') {
+      return { k, id: o.id as number, c: readVec2(where, 'c', o.c), r: r as number, ...(o.construction === true ? { construction: true as const } : {}) };
+    }
+    const sense = o.sense;
+    if (sense !== 'ccw' && sense !== 'cw') {
+      throw new Error(`${where} row arc needs sense 'ccw' or 'cw', got ${describe(sense)}.`);
+    }
+    return {
+      k: 'arc', id: o.id as number, c: readVec2(where, 'c', o.c), r: r as number,
+      a: readVec2(where, 'a', o.a), b: readVec2(where, 'b', o.b),
+      sense, ...(o.construction === true ? { construction: true as const } : {}),
+    };
+  }
+
+  const RULE_SHAPES: Record<string, string[]> = {
+    coincident: ['a', 'b'],
+    pointOnObject: ['a', 'b'],
+    horizontal: ['a'],
+    vertical: ['a'],
+    parallel: ['a', 'b'],
+    perpendicular: ['a', 'b'],
+    tangent: ['a', 'b'],
+    equal: ['a', 'b'],
+    symmetric: ['a', 'b', 'c'],
+    distance: ['a', 'b', 'value'],
+    distanceX: ['a', 'b', 'value'],
+    distanceY: ['a', 'b', 'value'],
+    radius: ['a', 'value'],
+    diameter: ['a', 'value'],
+    angle: ['a', 'b', 'value'],
+    lock: ['a'],
+  };
+
+  function readSoupRule(where: string, v: unknown): SoupRule {
+    if (!v || typeof v !== 'object' || Array.isArray(v)) {
+      throw new Error(`${where} needs constraint row objects like { k: 'tangent', a: 2, aEnd: 'b', b: 3, bEnd: 'a' }, got ${describe(v)}.`);
+    }
+    const o = v as Record<string, unknown>;
+    const k = o.k;
+    const fields = typeof k === 'string' ? RULE_SHAPES[k] : undefined;
+    if (!fields) {
+      throw new Error(`${where} row k must be one of the 16 constraint kinds, got ${describe(k)}.`);
+    }
+    for (const field of fields) {
+      if (o[field] === undefined) {
+        throw new Error(`${where} row ${k} needs a ${field}.`);
+      }
+    }
+    for (const gref of ['a', 'b', 'c']) {
+      if (o[gref] !== undefined) {
+        if (typeof o[gref] !== 'number' || !Number.isInteger(o[gref] as number)) {
+          throw new Error(`${where} row ${k} names geometry by whole id, got ${describe(o[gref])}.`);
+        }
+      }
+    }
+    if (o.value !== undefined) {
+      if (typeof o.value !== 'number' && !(o.value instanceof ParamNumber)) {
+        throw new Error(`${where} row ${k} needs a number (or a param()) as value, got ${describe(o.value)}.`);
+      }
+    }
+    return o as unknown as SoupRule;
+  }
+
   function makeSketchHandle(id: string): SketchHandle {
     const handle: SketchHandle = {
       __reshapeSketch: true,
@@ -1148,6 +1281,118 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
           kind: 'angle', edge: Math.min(i, j), other: Math.max(i, j),
           degrees: num(v, id, `ang${Math.min(i, j)}_${Math.max(i, j)}`),
         });
+        return handle;
+      },
+      geom(rows) {
+        // SPEC-sketcher2 §2.1: ids are dense and 1-BASED, id == index + 1.
+        // The explicit id is validated, never silently renumbered: soup
+        // constraints reference geometry by id, so a round trip that
+        // renumbers dangles every constraint (§2.1).
+        if (!Array.isArray(rows)) throw new Error('.geom() needs an array of geometry rows.');
+        const cur = findFeature(id) as SketchFeature;
+        const out: SoupGeom[] = [];
+        rows.forEach((row: unknown, i: number) => {
+          const g = readSoupGeom('.geom()', row);
+          // A row's coordinates may be param() references (§6.2: any numeric
+          // slot may hold one). A param()'d radius stores its NAME in the doc
+          // so the round trip re-binds it; the slot override is recorded by
+          // num() either way.
+          if (g.k === 'circle') {
+            num(g.r, id, `g${g.id}r`);
+            const pn = paramNameOf(g.r);
+            g.r = (pn ?? unwrap(g.r)) as number;
+          }
+          if (g.k === 'arc') {
+            num(g.r, id, `g${g.id}r`);
+            const pn = paramNameOf(g.r);
+            g.r = (pn ?? unwrap(g.r)) as number;
+          }
+          if (g.id !== i + 1) {
+            throw new Error(
+              `.geom() row ${i + 1} says id ${g.id} but sits at position ${i + 1}. ` +
+                'Soup ids are sketch-local and dense: row ' + (i + 1) + ' carries id ' + (i + 1) + '.',
+            );
+          }
+          out.push(g);
+        });
+        replaceFeature(id, { ...cur, geoms: out, geom: out });
+        return handle;
+      },
+      rules(rows) {
+        if (!Array.isArray(rows)) throw new Error('.rules() needs an array of constraint rows.');
+        const cur = findFeature(id) as SketchFeature;
+        const geoms = cur.geoms ?? cur.geom ?? [];
+        const kindOf = new Map<number, SoupGeom['k']>();
+        for (const g of geoms) kindOf.set(g.id, g.k);
+        // Built-ins are fixed by the kernel and nameable by every rule form
+        // that takes a line or a point.
+        const builtinKind = (gid: number): string | null => {
+          if (gid === -1) return 'point';
+          if (gid === -2 || gid === -3) return 'line';
+          return null;
+        };
+        const out: SoupRule[] = [];
+        rows.forEach((row: unknown, i: number) => {
+          const r = readSoupRule('.rules()', row);
+          // Point-ref validation (§2.2): a line exposes 'a' and 'b' only, a
+          // circle only 'c' -- and the archived UI's latent NaN came from
+          // exactly this check being missing (pointWorld() read line fields
+          // for a Point and produced NaN silently).
+          const check = (gref: number, end: unknown) => {
+            if (end === undefined || end === null) return;
+            const kind = builtinKind(gref) ?? kindOf.get(gref);
+            if (!kind) {
+              throw new Error(
+                `.rules() row ${i + 1} names geometry ${gref}, which this sketch does not have.`,
+              );
+            }
+            const valid =
+              (kind === 'point' && end === 'a') ||
+              (kind === 'line' && (end === 'a' || end === 'b')) ||
+              (kind === 'circle' && end === 'c') ||
+              kind === 'arc';
+            if (!valid) {
+              throw new Error(
+                `.rules() row ${i + 1} names point '${end}' on geometry ${gref}, but a ${kind} has no '${end}'.`,
+              );
+            }
+          };
+          const rr = r as { a?: unknown; b?: unknown; aEnd?: unknown; bEnd?: unknown; c?: unknown; cEnd?: unknown };
+          if (rr.a !== undefined) check(rr.a as number, rr.aEnd);
+          if (rr.b !== undefined) check(rr.b as number, rr.bEnd);
+          if (rr.c !== undefined) check(rr.c as number, rr.cEnd);
+          // equal across kinds is refused, not coerced (O18): a radius is
+          // not a length in the same sense, and picking a reading would be
+          // guessing at what the user meant.
+          if (r.k === 'equal') {
+            const ka = builtinKind(r.a) ?? kindOf.get(r.a);
+            const kb = builtinKind(r.b) ?? kindOf.get(r.b);
+            const isLen = (t?: string | null) => t === 'line';
+            const isRad = (t?: string | null) => t === 'circle' || t === 'arc';
+            if (ka && kb && ((isLen(ka) && isRad(kb)) || (isRad(ka) && isLen(kb)))) {
+              throw new Error(
+                '.rules() equal between a line and a circle is not defined; constrain lengths to lengths or radii to radii.',
+              );
+            }
+          }
+          // Only a rule's numeric value becomes a panel slot, named
+          // rule${i}-value with the 0-based rules index (D8). A param()
+          // reference is stored IN THE DOC as the param's NAME (a string):
+          // the whole reason rows beat a blob (§6.2) is that the doc keeps
+          // the binding, so toScript can re-emit the name and a reload can
+          // re-bind it. num() still runs for its slotOverride side effect.
+          const value = (r as { value?: unknown }).value;
+          if (value !== undefined) {
+            // num() FIRST, always: its slotOverride side effect is the only
+            // place the pname-key -> param-name correlation is recorded; the
+            // doc then keeps the NAME so the round trip re-binds it (§6.2).
+            num(value, id, `rule${i}-value`);
+            const pname0 = paramNameOf(value);
+            (r as { value: unknown }).value = pname0 ?? num(value, id, `rule${i}-value`);
+          }
+          out.push(r);
+        });
+        replaceFeature(id, { ...cur, rules: out });
         return handle;
       },
     };
@@ -1626,7 +1871,11 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     const named = overrideName ? namedParams.get(overrideName) : undefined;
     if (named) {
       consumedNames.add(named.name);
-      return { name: p.name, caption: named.caption, value: p.value, min: named.min, max: named.max, step: named.step };
+      // A soup rule's slot row carries NaN when the doc's value is the
+      // param's NAME (the binding itself, §6.2) -- the numeric default lives
+      // in the named param, so it substitutes here.
+      const value = Number.isFinite(p.value) ? p.value : named.value;
+      return { name: p.name, caption: named.caption, value, min: named.min, max: named.max, step: named.step };
     }
     return { name: p.name, caption: p.caption, value: p.value, min: p.min, max: p.max, step: p.step };
   });

@@ -53,6 +53,9 @@ import {
   newSketch,
   RECTANGLE_CONSTRAINTS,
   extentAlong,
+  type SoupGeom,
+  type SoupPointRef,
+  type SoupRule,
 } from './model-types.js';
 import { generatedParams, pname } from './model-codegen.js';
 import type { TopoName } from './topo-name.js';
@@ -238,6 +241,70 @@ function paramBindings(namedParams: readonly ScriptParamRef[] | undefined): Map<
  *  lib/reshape-script.ts's num(), and re-emitting the same variable name
  *  where that raw value used to go reproduces the identical doc field when
  *  the transform reapplies on the next run. */
+/** The soup coordinate emitter (§6.3): 1e-9, NOT lit()'s 1e-6. The
+ *  coordinates in a geom() row are the BASIN SELECTOR -- they are what makes
+ *  a reload deterministic, because the load-time solve starts at the answer.
+ *  Rounding them to 1e-6 would make a reload land a micron away from where
+ *  the solve put it, and a micron is enough to pick a different basin when
+ *  two candidate solutions sit close. They are NOT redundant with the
+ *  constraints; do not delete them. */
+function lit9(n: number): string {
+  const v = Math.round(n * 1e9) / 1e9;
+  if (Number.isInteger(v)) return String(v);
+  return v.toFixed(9).replace(/0+$/, '').replace(/\.$/, '');
+}
+
+/** A soup geometry row as script text, one line, §2.3's shape. */
+function geomRowText(g: SoupGeom): string {
+  const c = (v: boolean) => (v ? ', construction: true' : '');
+  if (g.k === 'point') return `{ k:'point', id:${g.id}, p:[${lit9(g.p[0])}, ${lit9(g.p[1])}]${c(g.construction === true)} }`;
+  if (g.k === 'line') {
+    return `{ k:'line', id:${g.id}, a:[${lit9(g.a[0])}, ${lit9(g.a[1])}], b:[${lit9(g.b[0])}, ${lit9(g.b[1])}]${c(g.construction === true)} }`;
+  }
+  if (g.k === 'circle') {
+    return `{ k:'circle', id:${g.id}, c:[${lit9(g.c[0])}, ${lit9(g.c[1])}], r:${lit9(g.r)}${c(g.construction === true)} }`;
+  }
+  return `{ k:'arc', id:${g.id}, c:[${lit9(g.c[0])}, ${lit9(g.c[1])}], r:${lit9(g.r)}, a:[${lit9(g.a[0])}, ${lit9(g.a[1])}], b:[${lit9(g.b[0])}, ${lit9(g.b[1])}], sense:'${g.sense}'${c(g.construction === true)} }`;
+}
+
+/** A soup constraint row as script text, one line, §2.5's shape. A `value`
+ *  slot goes through numText() at the rule${i}-value binding (D8) so a
+ *  param() name survives the round trip. */
+function ruleRowText(bindings: Map<string, string>, featureId: string, index: number, r: SoupRule): string {
+  const n = (x: number) => String(x);
+  const val = (value: number) => numText(bindings, featureId, `rule${index}-value`, lit9(value));
+  const pt = (side: 'a' | 'b' | 'c', ref: number, end?: SoupPointRef) =>
+    ` ${side}:${n(ref)}${end ? `, ${side}End:'${end}'` : ''}`;
+  switch (r.k) {
+    case 'coincident': return `{ k:'coincident',${pt('a', r.a, r.aEnd)}${pt('b', r.b, r.bEnd)} }`;
+    case 'pointOnObject': return `{ k:'pointOnObject', a:${n(r.a)}${r.aEnd ? `, aEnd:'${r.aEnd}'` : ''}, b:${n(r.b)} }`;
+    case 'horizontal': return `{ k:'horizontal', a:${n(r.a)} }`;
+    case 'vertical': return `{ k:'vertical', a:${n(r.a)} }`;
+    case 'parallel': return `{ k:'parallel', a:${n(r.a)}, b:${n(r.b)} }`;
+    case 'perpendicular': return `{ k:'perpendicular', a:${n(r.a)}, b:${n(r.b)} }`;
+    case 'tangent': {
+      const ends = r.aEnd !== undefined || r.bEnd !== undefined
+        ? `${r.aEnd ? `, aEnd:'${r.aEnd}'` : ''}${r.bEnd ? `, bEnd:'${r.bEnd}'` : ''}`
+        : '';
+      const side = r.side !== undefined ? `, side:${n(r.side)}` : '';
+      const mode = r.mode ? `, mode:'${r.mode}'` : '';
+      return `{ k:'tangent', a:${n(r.a)}${ends}, b:${n(r.b)}${r.bEnd ? `, bEnd:'${r.bEnd}'` : ''}${side}${mode} }`;
+    }
+    case 'equal': return `{ k:'equal', a:${n(r.a)}, b:${n(r.b)} }`;
+    case 'symmetric': return `{ k:'symmetric', a:${n(r.a)}${r.aEnd ? `, aEnd:'${r.aEnd}'` : ''}, b:${n(r.b)}${r.bEnd ? `, bEnd:'${r.bEnd}'` : ''}, c:${n(r.c)}${r.cEnd ? `, cEnd:'${r.cEnd}'` : ''} }`;
+    case 'distance': return `{ k:'distance', a:${n(r.a)}${r.aEnd ? `, aEnd:'${r.aEnd}'` : ''}, b:${n(r.b)}${r.bEnd ? `, bEnd:'${r.bEnd}'` : ''}, value:${val(r.value)} }`;
+    case 'distanceX': return `{ k:'distanceX', a:${n(r.a)}${r.aEnd ? `, aEnd:'${r.aEnd}'` : ''}, b:${n(r.b)}${r.bEnd ? `, bEnd:'${r.bEnd}'` : ''}, value:${val(r.value)} }`;
+    case 'distanceY': return `{ k:'distanceY', a:${n(r.a)}${r.aEnd ? `, aEnd:'${r.aEnd}'` : ''}, b:${n(r.b)}${r.bEnd ? `, bEnd:'${r.bEnd}'` : ''}, value:${val(r.value)} }`;
+    case 'radius': return `{ k:'radius', a:${n(r.a)}, value:${val(r.value)} }`;
+    case 'diameter': return `{ k:'diameter', a:${n(r.a)}, value:${val(r.value)} }`;
+    case 'angle': {
+      const q = r.quadrant !== undefined ? `, quadrant:${n(r.quadrant)}` : '';
+      return `{ k:'angle', a:${n(r.a)}, b:${n(r.b)}, value:${val(r.value)}${q} }`;
+    }
+    case 'lock': return `{ k:'lock', a:${n(r.a)}${r.aEnd ? `, aEnd:'${r.aEnd}'` : ''} }`;
+  }
+}
+
 function numText(bindings: Map<string, string>, featureId: string, slot: string, literalText: string): string {
   return bindings.get(pname(featureId, slot)) ?? literalText;
 }
@@ -388,6 +455,18 @@ export function toScript(doc: ModelDoc, namedParams?: readonly ScriptParamRef[])
       const plane = PLANE_WORD[f.plane] ?? 'top';
       const offsetArg = f.offset !== 0 ? `, ${lit(f.offset)}` : '';
       lines.push(`const ${f.id} = sketch('${plane}'${offsetArg})`);
+      // A soup sketch emits its rows INSTEAD of the polygon language: the
+      // soup is the newer representation and the one the kernel solves from
+      // (SPEC-sketcher2 §6). If a doc somehow carries both, the soup wins --
+      // the polygon fields are the legacy representation.
+      if (f.geoms) {
+        lines.push(`${f.id}.geom([${(f.geoms as SoupGeom[]).map(geomRowText).join(', ')}])`);
+        const rules = (f.rules ?? []) as SoupRule[];
+        if (rules.length > 0) {
+          lines.push(`${f.id}.rules([${rules.map((r, i) => ruleRowText(bindings, f.id, i, r)).join(', ')}])`);
+        }
+        return;
+      }
       const fresh = newSketch({ version: 1, features: [] }, f.plane);
       // A sketch whose points ARE an axis-aligned rectangle and whose rules
       // ARE exactly the rectangle set (lib/model-types.ts's own

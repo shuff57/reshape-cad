@@ -113,6 +113,31 @@ export function generatedParams(doc: ModelDoc): GeneratedParam[] {
     } else if (f.kind === 'pocket') {
       push('depth', 'deep', f.depth);
     } else if (f.kind === 'sketch') {
+      // A soup sketch (SPEC-sketcher2 §6) carries rows, not corners: its
+      // panel slots are the rules' values, named rule${i}-value (D8), and
+      // its coordinates are the basin selector -- they get NO slots, or a
+      // 30-primitive sketch floods the panel with ~200 rows nobody can use.
+      if (f.geoms) {
+        (f.rules ?? []).forEach((raw, i) => {
+          const r = raw as { k?: string; value?: number | string };
+          if (r.value === undefined) return;
+          // A param()-bound rule stores its NAME in the doc (§6.2); the slot
+          // row's numeric default is then unknown here -- the named param's
+          // own default is what runScript's assembly substitutes (it prefers
+          // named.value for a non-finite generated value).
+          const numeric = typeof r.value === 'number' ? r.value : NaN;
+          out.push({
+            name: pname(f.id, `rule${i}-value`),
+            caption: `${label} ${r.k ?? 'rule'}`,
+            value: numeric,
+            min: 0,
+            max: Math.max(Number.isFinite(numeric) ? Math.abs(numeric) * 4 : 100, 100),
+            step: 1,
+          });
+        });
+        push('offset', 'offset', f.offset, { min: -500, max: 500, step: 1 });
+        return out;
+      }
       if (f.shape === 'circle' && f.points.length === 2) {
         // A circle is stored as the two ends of a diameter (see
         // newCircleSketch's own comment on why) -- but that is a storage

@@ -294,7 +294,103 @@ export interface SketchFeature {
   chamfers?: Record<number, number>;
   /** Rules the corners must obey. Absent means free-hand. */
   constraints?: SketchConstraint[];
+
+  // -----------------------------------------------------------------------
+  // The soup (SPEC-sketcher2.md §2): an unordered set of independent
+  // primitives stitched by EXPLICIT constraints, where topology is a solver
+  // OUTPUT and closure must be discovered. A sketch carries EITHER the
+  // legacy ordered-polygon `points` above OR this soup; if a doc somehow
+  // carries both, the soup wins — the polygon fields are the legacy
+  // representation and the soup is the one the kernel solves from.
+
+  /**
+   * The soup's geometry rows, in sketch-plane (u, v) coordinates. Ids are
+   * SKETCH-LOCAL, DENSE and 1-BASED: row i carries id i + 1, and the
+   * explicit `id` in each row is a redundancy the interpreter VALIDATES and
+   * refuses on mismatch. That matters because the project requires a script
+   * and the equivalent clicks to produce byte-comparable docs, and soup
+   * constraints reference geometry BY ID — if ids came from anywhere but
+   * array position, a round trip would renumber and every constraint would
+   * dangle. Built-in ids -1 (origin point), -2 (X axis) and -3 (Y axis) are
+   * FIXED by the kernel and never appear here.
+   *
+   * The coordinates in these rows are the SOLVED state, and they are the
+   * BASIN SELECTOR (§6.3): they are NOT redundant with `rules`. They are
+   * what makes a reload deterministic, because the load-time solve starts
+   * at the answer. Someone will eventually read them as duplication and try
+   * to delete them; that would make a reload land in whichever solution the
+   * solver happens to reach, which is a different part.
+   */
+  geoms?: SoupGeom[];
+  /**
+   * The same rows under the field name the script surface spells: a student
+   * reads `sk.geom` (the word is singular, matching `s1.geom([...])`), while
+   * `geoms` is the plural the kernel JSON uses. The interpreter keeps the
+   * two in step -- a write to one writes both -- so they cannot drift.
+   */
+  geom?: SoupGeom[];
+  /**
+   * The soup's constraint rows, 16 kinds / 17 forms (§2.5). Only a rule's
+   * numeric `value` becomes a Dimensions-panel slot, named
+   * pname(featureId, `rule${i}-value`) with the 0-based rules index — the
+   * same key a panel row already uses (D8). Coordinates never get slots:
+   * a 30-primitive sketch would flood the panel with ~200 rows nobody can
+   * use.
+   */
+  rules?: SoupRule[];
 }
+
+/** One point reference a soup row names: 'a' = start, 'b' = end,
+ *  'c' = centre. A point exposes only 'a', a line 'a' and 'b', a circle only
+ *  'c', an arc all three. */
+export type SoupPointRef = 'a' | 'b' | 'c';
+
+/** Which way an arc runs from a to b. NON-SOLVER data: the kernel's solver
+ *  holds an arc as centre + radius + both endpoints (7 numbers, no angle
+ *  variables), and the emitter needs the sense only to pick a sweep
+ *  direction at emit time. Never feed it to a residual. */
+export type SoupSense = 'ccw' | 'cw';
+
+/** A soup geometry row (§2.3). Four kinds; `construction` marks geometry the
+ *  solver solves but the profile ignores — the v2 trim story needs it, the
+ *  schema carries it from day one so a v1 doc does not need a migration. */
+export type SoupGeom =
+  | { k: 'point'; id: number; p: [number, number]; construction?: boolean }
+  | { k: 'line'; id: number; a: [number, number]; b: [number, number]; construction?: boolean }
+  | { k: 'circle'; id: number; c: [number, number]; r: number; construction?: boolean }
+  | {
+      k: 'arc';
+      id: number;
+      c: [number, number];
+      r: number;
+      a: [number, number];
+      b: [number, number];
+      sense: SoupSense;
+      construction?: boolean;
+    };
+
+/** A soup constraint row (§2.5). 16 kinds, 17 forms: `symmetric` has a
+ *  three-point form (cEnd present) and an about-a-line form (cEnd absent,
+ *  c names a line). `tangent`'s simple and endpoint forms are one row shape
+ *  distinguished by whether the ends are present, with `side` carrying the
+ *  recorded sigma/tau and `mode` the external/internal choice (O2). */
+export type SoupRule =
+  | { k: 'coincident'; a: number; aEnd?: SoupPointRef; b: number; bEnd?: SoupPointRef }
+  | { k: 'pointOnObject'; a: number; aEnd?: SoupPointRef; b: number }
+  | { k: 'horizontal'; a: number }
+  | { k: 'vertical'; a: number }
+  | { k: 'parallel'; a: number; b: number }
+  | { k: 'perpendicular'; a: number; b: number }
+  | { k: 'tangent'; a: number; aEnd?: SoupPointRef; b: number; bEnd?: SoupPointRef; side?: number; mode?: 'external' | 'internal' }
+  | { k: 'equal'; a: number; b: number }
+  | { k: 'symmetric'; a: number; aEnd?: SoupPointRef; b: number; bEnd?: SoupPointRef; c: number; cEnd?: SoupPointRef }
+  | { k: 'distance'; a: number; aEnd?: SoupPointRef; b: number; bEnd?: SoupPointRef; value: number }
+  | { k: 'distanceX'; a: number; aEnd?: SoupPointRef; b: number; bEnd?: SoupPointRef; value: number }
+  | { k: 'distanceY'; a: number; aEnd?: SoupPointRef; b: number; bEnd?: SoupPointRef; value: number }
+  | { k: 'radius'; a: number; value: number }
+  | { k: 'diameter'; a: number; value: number }
+  | { k: 'angle'; a: number; b: number; value: number; quadrant?: number }
+  | { k: 'lock'; a: number; aEnd?: SoupPointRef };
 
 export interface ExtrudeFeature {
   id: string;
