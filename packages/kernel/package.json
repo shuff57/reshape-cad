@@ -7,14 +7,8 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": "./dist/index.js",
-    "./occt-build": "./dist/occt-build.js",
-    "./occt-api": "./dist/occt-api.js",
-    "./occt-mesh": "./dist/occt-mesh.js",
-    "./occt-three": "./dist/occt-three.js",
-    "./topo-resolve": "./dist/topo-resolve.js",
     "./config": "./dist/config.js",
     "./engine-adapter": "./dist/engine-adapter.js",
-    "./occt-engine-adapter": "./dist/occt-engine-adapter.js",
     "./brep-rs-engine-adapter": "./dist/brep-rs-engine-adapter.js"
   },
   "typesVersions": {

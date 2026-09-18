@@ -1,14 +1,14 @@
-// occt-api and occt-mesh both export `Occt`, and occt-mesh/occt-three both
-// export `signedVolume`/`triangleCount` (occt-three re-exports occt-mesh's
-// MeshOptions/Occt types too) -- a flat `export *` across all three is
-// ambiguous. Nothing currently imports this package via its bare `.` entry
-// point (every consumer uses a subpath, e.g.
-// '@shuff57/reshape-kernel/occt-build'); this barrel exists for
-// completeness, so the ambiguous ones are namespaced instead of flattened.
-export * as occtApi from './occt-api.js';
-export * as occtMesh from './occt-mesh.js';
-export * as occtThree from './occt-three.js';
+// Nothing imports this package through its bare `.` entry point -- every
+// consumer uses a subpath, e.g. '@shuff57/reshape-kernel/engine-adapter' --
+// so this barrel exists for completeness.
+//
+// occt-build.ts, occt-mesh.ts and topo-resolve.ts are deliberately absent.
+// They are not part of this app: since brep-rs became the only engine they
+// survive solely as the referee's apparatus for scripts/brep-parity-gate.mjs
+// and scripts/brep-mesh-gate.mjs, which build every fixture on OCCT as well
+// as on brep-rs and compare the two. Those gates load them out of dist/ by
+// filesystem path, so they need no export here -- and giving them one would
+// advertise a second kernel this app does not have.
 export * from './config.js';
-// occt-build.ts and topo-resolve.ts are not re-exported here either, for the
-// same reason and the same fix: import '@shuff57/reshape-kernel/occt-build'
-// or '@shuff57/reshape-kernel/topo-resolve' directly.
+export * from './engine-adapter.js';
+export { BrepRsEngineAdapter } from './brep-rs-engine-adapter.js';

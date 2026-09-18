@@ -27,7 +27,6 @@ const brep = await import(
 brep.initSync({ module: readFileSync(path.join(PKG, 'brep_rs_bg.wasm')) });
 
 const { BrepRsEngineAdapter } = await import('../dist/brep-rs-engine-adapter.js');
-const { getEngineMode, setEngineMode } = await import('../dist/config.js');
 
 const adapter = new BrepRsEngineAdapter(THREE);
 adapter.loadFromBytes(brep);
@@ -140,10 +139,5 @@ test('a refused feature shows up in refusals', () => {
   };
   const built = adapter.build(doc);
   assert.ok(built.refusals && built.refusals.has('m1'), 'refusal recorded');
-});
-
-test('default engine mode stays brep-rs (spec constraint 3)', () => {
-  setEngineMode('brep-rs');
-  assert.equal(getEngineMode(), 'brep-rs');
 });
 
