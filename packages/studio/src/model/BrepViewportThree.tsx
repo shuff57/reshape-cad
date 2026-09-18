@@ -72,21 +72,11 @@ import type { Feature, ModelDoc } from '@shuff57/reshape-script/model-types';
 import { topLevel } from '@shuff57/reshape-script/model-types';
 import { rootFeature, type TopoName } from '@shuff57/reshape-script/topo-name';
 import type { EngineAdapter, EngineBuildResult, FaceRange } from '@shuff57/reshape-kernel/engine-adapter';
-import { OcctEngineAdapter } from '@shuff57/reshape-kernel/occt-engine-adapter';
 import { BrepRsEngineAdapter } from '@shuff57/reshape-kernel/brep-rs-engine-adapter';
-import { getEngineMode } from '@shuff57/reshape-kernel/config';
 import type { HandleSpec } from '@shuff57/reshape-script/model-handles';
 import type { AnchorPoint } from './HandleOverlay.js';
 import { mergeMeshes, type MeshInput } from '../mesh-export.js';
 import { bboxCenter, DEFAULT_FILL_FRACTION, fitDistance, type Box3Like } from '../camera-fit.js';
-
-// getEngineMode() is read live, at the moment loadEngine() runs, rather than
-// frozen at module load -- same discipline getKernelBaseUrl() used to
-// document here (see packages/kernel/src/config.ts): a host that calls
-// setEngineMode() before this component's loading effect fires still takes
-// effect. getKernelBaseUrl() itself moved out of this file entirely -- it is
-// now read inside OcctEngineAdapter's own dynamicImportKernel(), the only
-// place left that imports the kernel by URL.
 
 /** The Dracula palette this app already uses everywhere else -- see
  *  app/globals.css and BrepViewport.tsx. */
@@ -316,92 +306,35 @@ interface Props {
    */
   panelOcclusionPx?: number;
   /**
-   * Fired with the live EngineAdapter instance (and which kind it is)
-   * whenever this component (re)assigns `engineRef.current` -- once after
-   * the initial load, and again if the FreeCAD-refusal fallback above swaps
-   * in OcctEngineAdapter mid-session. Exists so a caller that needs to drive
-   * the adapter directly for something this component's own props don't
-   * cover -- Save/Open .FCStd (ReshapeStudio.tsx's own Save/Open buttons),
-   * which need `engine.saveDocument()`/`engine.openDocument()`, not a build/
-   * mesh/pick concern this component already owns -- can reach it, and can
-   * gray itself out correctly even during a live fallback (getEngineMode()
-   * alone would keep reporting 'freecad' through that swap; `kind` here
-   * reflects the ACTUAL engine currently active, not the configured mode).
+   * Fired once, with the live EngineAdapter, as soon as the kernel is up.
+   * There is one kernel and this component never swaps it mid-session, so a
+   * caller can read the first call as "the engine is ready" and keep the
+   * instance for anything this component's own props do not cover.
    */
-  onEngine?: (engine: EngineAdapter, kind: 'occt' | 'brep-rs') => void;
+  onEngine?: (engine: EngineAdapter) => void;
   /**
    * Step-1 note taxonomy (SPEC-ui-revamp-decisions.md §5): when true, the
    * top-right selection badge + edge-hover-hint stack is NOT rendered here --
-   * the selection readout lives in the caller's status bar instead. The
-   * engine fallback/swap notice stack is NOT covered by this flag (it is
-   * engine state, not selection state) and always renders as before.
+   * the selection readout lives in the caller's status bar instead.
    * Default false: every existing caller keeps its badges.
    */
   badgesInStatusBar?: boolean;
 }
 
-// loadKernel()/dynamicImportKernel()/kernelImportStrategy used to live here,
-// hand-loading replicad_single.js + occt-build.js + sketch-arc.js by a
-// runtime-computed URL. That whole loader moved into OcctEngineAdapter's own
-// load() (packages/kernel/src/occt-engine-adapter.ts) as part of §3.3's
-// step-10 seam refactor -- SPEC-engine-port.md's own §3.3 names this file's
-// loadKernel() as becoming loadEngine() -- with one real difference, not a
-// regression: occt-build.js is no longer fetched as a separate dynamic
-// import. OcctEngineAdapter imports buildDoc() as an ordinary static import
-// (occt-build.ts is already bundled into @shuff57/reshape-kernel), so
-// load() now only dynamically imports replicad_single.js + sketch-arc.js --
-// one fewer network round trip than before this port, not a missing one.
-
-/** Cached per engine mode (not just once) so a future setEngineMode() call
- *  (SPEC-engine-port.md §3.3's own "a future UI toggle just calls
- *  setEngineMode() directly") gets a fresh adapter instead of reusing
- *  whichever engine happened to load first -- today only one mode is ever
- *  selected before mount, so this never actually re-triggers, but getting it
- *  right costs nothing. */
+/** Module-level, not per-component: two viewports in one session share the
+ *  one loaded kernel instead of fetching the wasm twice. */
 let enginePromise: Promise<EngineAdapter> | null = null;
-let enginePromiseMode: 'occt' | 'brep-rs' | null = null;
 
-/** Bring up the EngineAdapter for the CURRENT getEngineMode() -- OcctEngineAdapter
- *  (default) or BrepRsEngineAdapter. Needs THREE
- *  already resolved (both adapters take it constructor-injected, same
- *  discipline occt-three.ts's own tessellateToThree() follows), so the
- *  loading effect below awaits loadThree() first -- see that effect's own
- *  comment for the one timing consequence of that ordering. */
+/** Bring up the kernel. Needs THREE already resolved -- the adapter takes it
+ *  constructor-injected, so a page that never mounts a viewport never pays
+ *  for three.js -- which is why the loading effect below awaits loadThree()
+ *  first; see that effect's own comment for the one timing consequence. */
 function loadEngine(THREE: typeof THREE_NS): Promise<EngineAdapter> {
-  const mode = getEngineMode();
-  if (!enginePromise || enginePromiseMode !== mode) {
-    enginePromiseMode = mode;
-    const engine: EngineAdapter =
-      mode === 'brep-rs'
-        ? new BrepRsEngineAdapter(THREE)
-        : new OcctEngineAdapter(THREE);
+  if (!enginePromise) {
+    const engine: EngineAdapter = new BrepRsEngineAdapter(THREE);
     enginePromise = engine.load().then(() => engine);
   }
   return enginePromise;
-}
-
-/** Automatic fallback engine for when the brep-rs kernel refuses to build a
- *  ModelDoc it doesn't support yet -- see the build effect below. Cached
- *  module-level the same way `enginePromise` is, so a second mounted
- *  component (or a second fallback within the same mount) reuses the same
- *  loaded OcctEngineAdapter rather than fetching the ~23MB wasm twice.
- *  EAGER, not lazy: the mount effect below calls this alongside the primary
- *  engine's own load(), before phase ever reaches 'ready', so by the time
- *  the build effect could possibly need it, it is already sitting resolved
- *  -- no async gap mid-build-effect, which stays fully synchronous. The
- *  cost is a real one (an extra ~23MB fetch on every brep-rs-mode session,
- *  even one that never hits an unsupported feature), but a lazy
- *  load-on-first-refusal was rejected here as the harder-to-get-right
- *  option: it would force the (currently fully synchronous) build effect to
- *  become async, and would risk a race if `doc` changes again while that
- *  first load is still in flight. */
-let occtFallbackPromise: Promise<EngineAdapter> | null = null;
-function loadOcctFallback(THREE: typeof THREE_NS): Promise<EngineAdapter> {
-  if (!occtFallbackPromise) {
-    const engine = new OcctEngineAdapter(THREE);
-    occtFallbackPromise = engine.load().then(() => engine);
-  }
-  return occtFallbackPromise;
 }
 
 /**
@@ -529,17 +462,6 @@ export default function BrepViewportThree({
   const cubeDragRef = useRef({ dragging: false, x: 0, y: 0, moved: false });
   const [loadError, setLoadError] = useState<string | null>(null);
   const [buildError, setBuildError] = useState<string | null>(null);
-  // Set once, the first time (if ever) a FreeCAD build refuses a feature and
-  // this component instance falls back to OcctEngineAdapter for the whole
-  // doc -- see the build effect's own comment. Never cleared afterwards:
-  // this component permanently stays on the fallback engine once it falls
-  // back once, so the note stays visible for as long as that's true.
-  const [engineFallbackNote, setEngineFallbackNote] = useState<string | null>(null);
-  // Set once, the first time the component swaps to the fallback engine; like
-  // the swap itself this is never cleared (the swap is permanent for this
-  // mount). Drives the persistent "using OCCT" badge, unlike the per-build
-  // fallback note which is cleared at the top of each build.
-  const [engineSwappedTo, setEngineSwappedTo] = useState<'occt' | null>(null);
   // A stage that is empty ON PURPOSE (nothing yet, or only flat sketches)
   // gets a hint, not the red panel. Measured 2026-09-03: a beginner who had
   // just drawn a circle read "Could not build this model" as their mistake.
@@ -598,9 +520,7 @@ export default function BrepViewportThree({
    *  across renders -- no staleness risk from that effect's `[phase]`-only
    *  dependency array. */
   const [hoveringEdge, setHoveringEdge] = useState(false);
-  const [loadingNote, setLoadingNote] = useState(
-    'loading the modelling kernel + three.js -- the kernel is ~22.9 MB, once per session'
-  );
+  const [loadingNote, setLoadingNote] = useState('loading the modelling kernel + three.js');
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const engineRef = useRef<EngineAdapter | null>(null);
@@ -737,22 +657,16 @@ export default function BrepViewportThree({
    *  actual kernel rebuild -- see the effect below that watches `pick`. */
   const lastBuiltRef = useRef<EngineBuildResult | null>(null);
   const lastMeshesRef = useRef<THREE_NS.Mesh[]>([]);
-  /** Pre-warmed OcctEngineAdapter, ready to swap in synchronously if the
-   *  FreeCAD engine refuses a feature -- see loadOcctFallback()'s own
-   *  comment for why this is loaded eagerly rather than on first refusal.
-   *  Stays null in 'occt' mode (never loaded, never needed). */
-  const fallbackEngineRef = useRef<EngineAdapter | null>(null);
 
   // ---- load the engine + three.js once --------------------------------------
   //
   // Sequenced (loadThree() first, then loadEngine(three.THREE)) rather than
-  // Promise.all()'d the way loadKernel()/loadThree() used to be -- both
-  // EngineAdapter implementations take THREE constructor-injected (see
-  // loadEngine()'s own comment), so the adapter cannot be built, let alone
-  // told to load(), before three.js itself has resolved. The one real
-  // consequence: the wasm kernel's own download no longer starts
-  // concurrently with three.js's chunk fetch, a few tens of ms at most
-  // against a multi-second wasm load and not a functional difference --
+  // Promise.all()'d the way loadKernel()/loadThree() used to be -- the
+  // adapter takes THREE constructor-injected (see loadEngine()'s own
+  // comment), so it cannot be built, let alone told to load(), before
+  // three.js itself has resolved. The one real consequence: the wasm
+  // kernel's own download no longer starts concurrently with three.js's
+  // chunk fetch, a few tens of ms at most and not a functional difference --
   // nothing about WHICH interaction surface works depends on this ordering.
   useEffect(() => {
     let cancelled = false;
@@ -760,24 +674,13 @@ export default function BrepViewportThree({
       .then((three) => {
         if (cancelled) return undefined;
         threeRef.current = three;
-        // In 'brep-rs' mode, also bring up the OCCT fallback adapter NOW,
-        // in parallel with the primary engine -- see loadOcctFallback()'s
-        // own comment for why eager beats lazy here. In 'occt' mode there
-        // is nothing to fall back to (occt IS the fallback engine), so
-        // skip the extra ~23MB fetch entirely.
-        const fallbackLoad =
-          getEngineMode() === 'brep-rs'
-            ? loadOcctFallback(three.THREE)
-            : Promise.resolve(null);
-        return Promise.all([loadEngine(three.THREE), fallbackLoad]);
+        return loadEngine(three.THREE);
       })
-      .then((result) => {
-        if (cancelled || !result) return;
-        const [engine, fallback] = result;
+      .then((engine) => {
+        if (cancelled || !engine) return;
         engineRef.current = engine;
-        fallbackEngineRef.current = fallback;
-        onEngineRef.current?.(engine, getEngineMode());
-        setLoadingNote(`${getEngineMode()} engine ready`);
+        onEngineRef.current?.(engine);
+        setLoadingNote('kernel ready');
         setPhase('ready');
       })
       .catch((e) => {
@@ -2290,38 +2193,11 @@ export default function BrepViewportThree({
 
 try {
       const t0 = performance.now();
-      // Clear any note from a PREVIOUS build first: a fallback note that
-      // outlives the feature it named is worse than none (measured
-      // 2026-09-15 -- it survived a Clear model and still named a deleted
-      // box). The fallback branches below re-set it within this same build.
-      setEngineFallbackNote(null);
-      let built: EngineBuildResult;
-      built = engine.build(doc);
-      // brep-rs refuses per-feature as DATA (build_doc_json's refusals map),
-      // never by throwing -- so its fallback to OCCT is checked HERE, after
-      // the build, rather than in the catch above. Same fallback engine,
-      // same permanent swap, same note: a feature brep-rs won't build shows
-      // with the other engine.
-      if (
-        getEngineMode() === 'brep-rs' &&
-        fallbackEngineRef.current &&
-        built.refusals && built.refusals.size > 0
-      ) {
-        const fallback = fallbackEngineRef.current;
-        engine = fallback;
-        engineRef.current = fallback;
-        onEngineRef.current?.(fallback, 'occt');
-        setEngineSwappedTo('occt');
-        const firstRefusal = built.refusals.values().next().value ?? '';
-        setEngineFallbackNote(
-          `This model uses a feature brep-rs can't build yet (${firstRefusal}) -- showing it with the other engine.`,
-        );
-        built = engine.build(doc);
-      }
-      // A plain `const`, not the `let engine` above -- TS (correctly) can't
-      // prove a closure below won't run after some later reassignment of
-      // `engine`, even though nothing in this effect does that past this
-      // point. Fixing the type is simpler than convincing the compiler.
+      // The kernel refuses per-feature as DATA (build_doc_json's refusals
+      // map), never by throwing, and there is no second engine to retry on:
+      // a refusal reaches the student as its own sentence, via
+      // BrepViewportStats.refusals, alongside whatever DID build.
+      const built: EngineBuildResult = engine.build(doc);
       const activeEngine: EngineAdapter = engine;
       const buildMs = performance.now() - t0;
 
@@ -2596,39 +2472,6 @@ try {
           <div style={{ color: COLORS.fg }}>{buildError}</div>
         </div>
       )}
-      {/* Honest, non-alarming status -- same pill family as stageHint, not
-          the red error panel -- for the one time this component silently
-          swapped which kernel is drawing the model. Independent of
-          buildError/stageHint (can show alongside either): it is a fact
-          about which engine is running, not a hint about what to do next
-          or a report that something failed. */}
-      {/* ONE column owns both engine notices, so the badge always sits BELOW
-          the note however many lines the note wraps to. Two fixed tops (92 and
-          128) assumed a one-line note; measured 2026-09-16, the real sentence
-          wraps to three lines and ends at y=144, so the badge covered part of
-          it. The per-build note comes and goes; the badge, set once at the
-          swap, stays for the rest of the mount. */}
-      {phase === 'ready' && (engineFallbackNote || engineSwappedTo) && (
-        <div style={engineNoticeStackStyle}>
-          {engineFallbackNote && (
-            <div style={engineFallbackNoteStyle}>{engineFallbackNote}</div>
-          )}
-          {engineSwappedTo && (
-            <div
-              style={engineSwappedBadgeStyle}
-              // Engine-NEUTRAL wording on purpose: this badge is set from BOTH
-              // fallback branches (the brep-rs refusals path and the OCCT
-              // kernel's own limits), so naming brep-rs here would be a wrong
-              // sentence when OCCT swaps for its own reasons. The note above
-              // already names the specific feature and engine on the build that
-              // triggered the swap.
-              title="A feature in this model could not be built by the configured engine, so the OCCT engine is drawing it for the rest of this session."
-            >
-              using {engineSwappedTo === 'occt' ? 'OCCT' : engineSwappedTo}
-            </div>
-          )}
-        </div>
-      )}
       {phase === 'ready' && (
         // Home alone, bottom-left -- Top/Front/Underneath moved onto the nav
         // cube (bottom-right, below), since a physical cube already says
@@ -2869,46 +2712,6 @@ const stageHintStyle: React.CSSProperties = {
   position: 'absolute', top: 12, left: '50%', transform: 'translateX(-50%)',
   padding: '4px 10px', background: COLORS.panel, border: `1px solid ${COLORS.line}`, borderRadius: 999,
   font: '12px ui-monospace, Menlo, Consolas, monospace', color: COLORS.fg, pointerEvents: 'none',
-};
-
-// Same pill family and horizontal placement as stageHintStyle, stacked
-// directly below it so the two can show at the same time without drawing on
-// top of each other -- rare in practice (a doc that both needs the Pull hint
-// AND just fell back), but not impossible, so this doesn't assume mutual
-// exclusion the way stageHint/buildError do.
-// The column that owns PLACEMENT for both engine notices. Centred on the
-// canvas (top: 12, left 50% + translateX): the floating tools card this used
-// to dodge -- ReshapeStudio's `.reshape-studio-tools`, width min(420px, 45%)
-// at left:12, position:absolute OVER this canvas -- no longer exists; the
-// docked grid (adoption step 2, 2026-09-16) removed it, so the phantom card
-// width in the old left calc is retired and a plain centre is readable.
-//
-// A flex column rather than two fixed tops: the note can wrap to multiple
-// lines, and stacking cannot go wrong at any width or line count.
-const engineNoticeStackStyle: React.CSSProperties = {
-  position: 'absolute', top: 12, left: '50%', transform: 'translateX(-50%)',
-  display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6,
-  pointerEvents: 'none',
-};
-
-const engineFallbackNoteStyle: React.CSSProperties = {
-  padding: '4px 10px', maxWidth: 420, textAlign: 'center',
-  background: COLORS.panel, border: `1px solid ${COLORS.line}`, borderRadius: 999,
-  font: '12px ui-monospace, Menlo, Consolas, monospace', color: COLORS.fg, pointerEvents: 'none',
-};
-
-// Persistent "using OCCT" badge -- status, not alert: same pill family and
-// font stack as engineFallbackNoteStyle, but dim text, no border and smaller
-// padding. Placement is the stack's job above, not this style's: the note is
-// one build long, this stays for the whole session, and the column keeps them
-// from colliding whatever the note's line count.
-const engineSwappedBadgeStyle: React.CSSProperties = {
-  padding: '2px 8px',
-  background: COLORS.panel, borderRadius: 999,
-  font: '12px ui-monospace, Menlo, Consolas, monospace', color: COLORS.dim,
-  // 'auto' against the column's 'none': the badge is the one piece here that
-  // wants a hover, for its title tooltip.
-  pointerEvents: 'auto',
 };
 
 const edgeHintStyle: React.CSSProperties = {

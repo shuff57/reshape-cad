@@ -244,11 +244,10 @@ interface Props {
   /** Item U: pure pass-through of SketchConstraints' own `onTouch` -- see
    *  that prop's own doc comment. */
   onTouch?: (touched: TouchedPart | null) => void;
-  /** The File group's own gates -- same conditions the retired MenuBar.tsx
-   *  used to compute (engineKind/hasMesh), now read directly by the ribbon's
-   *  File group instead of being handed up to a second component. */
+  /** The File group's own gate -- the same condition the retired MenuBar.tsx
+   *  used to compute, now read directly by the ribbon's File group instead of
+   *  being handed up to a second component. */
   hasMesh: boolean;
-  engineKind: 'occt' | 'brep-rs' | null;
   onExportSTL: () => void;
   onExportOBJ: () => void;
   onExport3MF: () => void;
@@ -533,7 +532,7 @@ function FlyoutButton({
 export default function ModelEditor({
   doc, onChange, selected, onSelect, onUndo, onRedo, canUndo, canRedo, collapsible, onCollapsed, onContentChange, rollbackIndex, onRollback, onStartDraw, drawTool, pickedEdge, onClearPickedEdge, pickedFace, onClearPickedFace, pickedEdges, onClearPickedEdges, refusals,
   hoveredPart, onHoverPart, registerActions, registerContextActions, onTouch, historyGen,
-  hasMesh, engineKind, onExportSTL, onExportOBJ, onExport3MF,
+  hasMesh, onExportSTL, onExportOBJ, onExport3MF,
   canClearModel, onClearModel, activePlane, onActivePlaneChange,
 }: Props) {
   const [note, setNote] = useState<string | null>(null);

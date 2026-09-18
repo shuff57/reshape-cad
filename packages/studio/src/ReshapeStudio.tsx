@@ -42,8 +42,6 @@ import {
   solveSketchDrag,
 } from '@shuff57/reshape-script/model-codegen';
 import { toScript, type ScriptParamRef } from '@shuff57/reshape-script/reshape-script-gen';
-import { getKernelBaseUrl } from '@shuff57/reshape-kernel/config';
-import type { EngineAdapter } from '@shuff57/reshape-kernel/engine-adapter';
 
 /** The two pieces of shCode's lesson/sandbox chrome this component does not
  *  own -- CodeEditor is the shared, store-backed code editor used well
@@ -460,14 +458,7 @@ export default function ReshapeStudio({
   }, []);
   const meshRef = useRef<MeshInput | null>(null);
   const [hasMesh, setHasMesh] = useState(false);
-  // The live EngineAdapter instance, handed up by BrepViewport's own
-  // onEngine prop -- see that prop's own comment. `engineKind` tracks which
-  // kind is ACTUALLY active (not just the configured getEngineMode()): a
-  // brep-rs-refusal fallback can swap the live engine to OCCT mid-session,
-  // and Save/Open need to gray out for that too, not just for a session that
-  // started in 'occt' mode. Null until the viewport's first load finishes.
-  const engineRef = useRef<EngineAdapter | null>(null);
-  const [engineKind, setEngineKind] = useState<'occt' | 'brep-rs' | null>(null);
+  const [engineReady, setEngineReady] = useState(false);
   const pickAtRef = useRef<((clientX: number, clientY: number) => void) | null>(null);
   const specsRef = useRef<unknown[]>([]);
   const frameRef = useRef<HTMLIFrameElement | null>(null);
@@ -904,16 +895,6 @@ export default function ReshapeStudio({
         doc?: ModelDoc; params?: unknown; namedParams?: ScriptParamRef[];
         error?: { message?: string; line?: number | null };
       };
-      if (d?.type === 'brep-kernel-please') {
-        const from = e.source;
-        fetch(`${getKernelBaseUrl()}/replicad_single.wasm`)
-          .then((r) => r.arrayBuffer())
-          .then((bytes) => {
-            (from as Window | null)?.postMessage({ type: 'brep-kernel-bytes', bytes }, '*', [bytes]);
-          })
-          .catch(() => { /* the runner falls back to its own network fetch */ });
-        return;
-      }
       if (d?.source === 'reshape-params') {
         frameRef.current?.contentWindow?.postMessage(
           { source: 'reshape-set-anchors', anchors: specsRef.current },
@@ -1276,7 +1257,6 @@ export default function ReshapeStudio({
               onClearPickedEdges={() => setPickedEdges([])}
               refusals={refusals}
               hasMesh={hasMesh}
-              engineKind={engineKind}
               onExportSTL={exportSTL}
               onExportOBJ={exportOBJ}
               onExport3MF={export3MF}
@@ -1413,10 +1393,7 @@ export default function ReshapeStudio({
                   meshRef.current = m;
                   setHasMesh(m !== null);
                 }}
-                onEngine={(engine, kind) => {
-                  engineRef.current = engine;
-                  setEngineKind(kind);
-                }}
+                onEngine={() => setEngineReady(true)}
                 badgesInStatusBar={true}
                 registerPickAt={(fn) => { pickAtRef.current = fn; }}
               />
@@ -1561,14 +1538,14 @@ export default function ReshapeStudio({
             aria-hidden="true"
             className="reshape-studio-status-eng-dot"
             style={{
-              background: engineKind != null && stale == null
+              background: engineReady && stale == null
                 ? 'var(--reshape-success)'
                 : stale === 'error'
                   ? 'var(--reshape-warn)'
                   : 'var(--reshape-text-muted)',
             }}
           />
-          {engineKind ?? 'engine loading'}
+          {engineReady ? 'brep-rs' : 'engine loading'}
         </span>
         {showBrep && bboxMm && (
           <span className="reshape-studio-status-bbox">
