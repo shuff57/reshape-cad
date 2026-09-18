@@ -89,6 +89,16 @@ pub fn curve_points(c: &Curve, defl: f64) -> Vec<Vec3> {
             // inserted in arc order so the polyline stays monotone.
             let mut angs: Vec<f64> = (0..=n).map(|i| *sweep * i as f64 / n as f64).collect();
             for i in 0..3 {
+                // A component that is CONSTANT along the arc (both x[i] and
+                // y[i] ~0: an xy-planar arc's z) has no extremum, and
+                // atan2(0,0)=0 + k*pi would inject non-extremal samples that
+                // land at DIFFERENT world angles for opposite-sweep copies of
+                // the same arc (the +sweep copy at arc pi, the -sweep copy at
+                // arc -pi) — two rim polylines of one wall then disagree and
+                // the caps crack. Skip it; only real extrema get injected.
+                if x[i].abs() < 1e-12 && y[i].abs() < 1e-12 {
+                    continue;
+                }
                 let theta = y[i].atan2(x[i]);
                 for k in -3..=3 {
                     let cand = theta + (k as f64) * std::f64::consts::PI;
@@ -1037,13 +1047,19 @@ fn mesh_curved_face(
         } else {
             // Partial wall: the arc's own uniform lattice in the e1 frame its
             // cap arcs use, so columns land on their samples -- plus the
-            // world-component extrema that `curve_points` now inserts into those
-            // cap arcs (where d/du of a component vanishes), so the two agree.
+            // world-component extrema, guarded against CONSTANT components
+            // (both e1[i] and e2[i] ~0: an xy-planar cylinder's z) whose
+            // atan2(0,0)=0 + k*pi would inject non-extremal stations. The
+            // guard matches `curve_points`'s own Arc sampling, so a wall's
+            // stations and its shared rim edge's polyline agree.
             let n = arc_segments(ru, span, defl, 4).max(1);
             for k in 0..=n {
                 add_station(&mut us, u0 + span * k as f64 / n as f64, u0, u1);
             }
             for i in 0..3 {
+                if c.e1[i].abs() < 1e-12 && c.e2[i].abs() < 1e-12 {
+                    continue;
+                }
                 let theta = c.e2[i].atan2(c.e1[i]);
                 for k in -3..=3 {
                     let cand = theta + (k as f64) * std::f64::consts::PI;

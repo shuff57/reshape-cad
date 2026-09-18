@@ -508,6 +508,25 @@ fn region_inside(other: &TSolid, plane: &Plane, offset: Vec3) -> Option<Region> 
             Surface::Cylinder(cy) => {
                 let ad = dot(cy.axis, plane.n).abs();
                 if (ad - 1.0).abs() < 1e-9 {
+                    // Cylinder axis perpendicular to plane: the intersection is a disk.
+                    // But if this cylindrical face bounds a void (inward-facing normal),
+                    // it should not constrain the region. Void walls occur when a prior
+                    // bore's wall becomes part of the base solid -- its normal points
+                    // toward the cylinder axis (into the void), not away into material.
+                    let face = f.borrow();
+                    // Use a point on the cylinder surface (u=0, v=mid) to compute radial.
+                    let vm = 0.5 * (cy.vmin + cy.vmax);
+                    let point_on_surface = add(cy.origin, add(scale(cy.e1, cy.radius), scale(cy.axis, vm)));
+                    let axis_proj = add(cy.origin, scale(cy.axis, dot(sub(point_on_surface, cy.origin), cy.axis)));
+                    let radial = sub(point_on_surface, axis_proj);
+                    // Face normal at u=0: for a cylinder, the surface normal is radial.
+                    // The face's forward flag determines if it aligns with the surface normal.
+                    let surface_normal = cross(cy.axis, cy.e1); // outward at u=0
+                    let face_normal = if face.forward { surface_normal } else { scale(surface_normal, -1.0) };
+                    if dot(face_normal, radial) < 0.0 {
+                        // Void wall - skip (bounds empty space, not material)
+                        continue;
+                    }
                     let r = cyl_perp_region(cy, plane, offset);
                     if r.empty {
                         return Some(Region::empty());
@@ -643,6 +662,131 @@ fn clip_convex_poly_by_disk(poly: &[[f64; 2]], c: [f64; 2], r: f64) -> Option<Ve
         }
     }
     Some(pieces)
+}
+
+/// Compute the angular intervals on circle 1 (radius r1, center at origin in its own frame)
+/// that lie inside circle 2 (radius r2, center at offset d from circle 1's center).
+/// Returns a list of (start, end) angles in [0, 2π), CCW from e1.
+/// The frame is defined by e1 (x-axis) and e2 (y-axis) of the base cylinder.
+fn circle_intersection_arcs(
+    r1: f64,
+    r2: f64,
+    dist: f64,
+    e1: Vec3,
+    e2: Vec3,
+    d: Vec3,
+) -> Vec<(f64, f64)> {
+    if dist >= r1 + r2 - 1e-9 {
+        // Separate or tangent externally: no overlap
+        return Vec::new();
+    }
+    if dist <= (r1 - r2).abs() + 1e-9 {
+        // One circle contains the other
+        if r1 <= r2 {
+            // Circle 1 fully inside circle 2
+            return vec![(0.0, TWO_PI)];
+        } else {
+            // Circle 2 fully inside circle 1: no part of circle 1's boundary is inside
+            return Vec::new();
+        }
+    }
+    // Partial overlap: two intersection points
+    // Law of cosines: cos(θ) = (r1² + d² - r2²) / (2*r1*d)
+    let cos_theta = (r1 * r1 + dist * dist - r2 * r2) / (2.0 * r1 * dist);
+    let cos_theta = cos_theta.clamp(-1.0, 1.0);
+    let theta = cos_theta.acos();
+    // Direction from base center to tool center in base's (e1, e2) frame
+    let dx = dot(d, e1);
+    let dy = dot(d, e2);
+    let phi = dy.atan2(dx); // angle of tool center from base's e1
+    // Intersection points are at phi ± theta
+    let start = phi - theta;
+    let end = phi + theta;
+    // Normalize to [0, 2π)
+    let norm = |a: f64| {
+        let mut a = a % TWO_PI;
+        if a < 0.0 { a += TWO_PI; }
+        a
+    };
+    let start = norm(start);
+    let end = norm(end);
+    if end > start {
+        vec![(start, end)]
+    } else {
+        // Wraps around 2π
+        vec![(start, TWO_PI), (0.0, end)]
+    }
+}
+
+/// Intersect two lists of arc intervals (each as (start, end) with start < end, no wrap).
+fn intersect_arc_intervals(a: &[(f64, f64)], b: &[(f64, f64)]) -> Vec<(f64, f64)> {
+    let mut result = Vec::new();
+    for (a_start, a_end) in a {
+        for (b_start, b_end) in b {
+            let start = a_start.max(*b_start);
+            let end = a_end.min(*b_end);
+            if end - start > 1e-9 {
+                result.push((start, end));
+            }
+        }
+    }
+    result
+}
+
+/// A partial cylindrical wall with an arc range (u-clipping for cylinder-cylinder boolean).
+fn partial_wall_arc(
+    cy: &Cylinder,
+    vlo: f64,
+    vhi: f64,
+    reverse: bool,
+    arc: crate::geom::ArcRange,
+) -> TFace {
+    let e2 = if reverse { scale(cy.e2, -1.0) } else { cy.e2 };
+    let surf = Surface::Cylinder(Cylinder {
+        origin: cy.origin,
+        axis: cy.axis,
+        e1: cy.e1,
+        e2,
+        radius: cy.radius,
+        vmin: vlo,
+        vmax: vhi,
+        arc: Some(arc.clone()),
+    });
+    let p_lo = add(cy.origin, scale(cy.axis, vlo));
+    let p_hi = add(cy.origin, scale(cy.axis, vhi));
+    let v_lo = topo::vertex(add(p_lo, scale(cy.e1, cy.radius)));
+    let v_hi = topo::vertex(add(p_hi, scale(cy.e1, cy.radius)));
+    let seam = topo::edge(
+        v_lo.clone(),
+        v_hi.clone(),
+        true,
+        Curve::Segment { a: v_lo.borrow().point, b: v_hi.borrow().point },
+    );
+    let rim_lo = topo::edge(
+        v_lo.clone(),
+        v_lo.clone(),
+        true,
+        Curve::Circle { center: p_lo, radius: cy.radius, normal: cy.axis },
+    );
+    let rim_hi = topo::edge(
+        v_hi.clone(),
+        v_hi.clone(),
+        true,
+        Curve::Circle { center: p_hi, radius: cy.radius, normal: cy.axis },
+    );
+    let vm = 0.5 * (vlo + vhi);
+    let uses = vec![
+        topo::EdgeUse { edge: seam.clone(), forward: true, pcurve: topo::Pcurve { start: [arc.start, vlo], end: [arc.start, vhi], mid: [arc.start, vm] } },
+        topo::EdgeUse { edge: rim_hi.clone(), forward: true, pcurve: topo::Pcurve { start: [arc.start, vhi], end: [arc.start + arc.span, vhi], mid: [arc.start + arc.span * 0.5, vhi] } },
+        topo::EdgeUse { edge: seam.clone(), forward: false, pcurve: topo::Pcurve { start: [arc.start + arc.span, vhi], end: [arc.start + arc.span, vlo], mid: [arc.start + arc.span, vm] } },
+        topo::EdgeUse { edge: rim_lo.clone(), forward: false, pcurve: topo::Pcurve { start: [arc.start + arc.span, vlo], end: [arc.start, vlo], mid: [arc.start + arc.span * 0.5, vlo] } },
+    ];
+    Rc::new(RefCell::new(Face {
+        boundary: vec![Rc::new(RefCell::new(Wire { edges: uses }))],
+        forward: true,
+        surface: surf,
+        uv_domain: [[arc.start, arc.start + arc.span], [vlo, vhi]],
+    }))
 }
 
 /// Signed sweep (CCW positive, matching `normal = cross`-derived y_axis) from
@@ -1225,6 +1369,8 @@ fn process_face(
             // first bore the base carries a cylindrical wall, and a second bore
             // far away would otherwise refuse on a surface kind it never meets.
             let wall_box = fb.surface.aabb();
+            // Collect parallel cylinder tools for u-clipping (W8).
+            let mut parallel_cylinders: Vec<Cylinder> = Vec::new();
             for f in other.faces() {
                 let s = f.borrow().surface.clone();
                 if let Some(fb_box) = face_reach_box(&f) {
@@ -1251,6 +1397,19 @@ fn process_face(
                             return None;
                         }
                     }
+                    Surface::Cylinder(cy2) => {
+                        // Cylinder vs Cylinder: handle parallel axes case (W8 keystone).
+                        // If axes are parallel, the tool cylinder's caps (planes) are already
+                        // handled above as they appear as Planes in other.faces(). The wall
+                        // intersection requires u-clipping at each v-segment.
+                        let a2 = normalize(cy2.axis);
+                        let parallel = (dot(axis, a2).abs() - 1.0).abs() < 1e-9;
+                        if !parallel {
+                            return None; // non-parallel axes: not yet implemented
+                        }
+                        // Axes are parallel. Store for u-clipping in v-segment loop.
+                        parallel_cylinders.push(cy2.clone());
+                    }
                     Surface::Sphere(_) => {
                         // A sphere can cut the wall; u-clipping is not built.
                         return None;
@@ -1263,6 +1422,34 @@ fn process_face(
             for w in breaks.windows(2) {
                 let (vlo, vhi) = (w[0], w[1]);
                 if vhi - vlo < 1e-9 {
+                    continue;
+                }
+                // If there are parallel cylinder tools, compute arc intervals at mid-v.
+                if !parallel_cylinders.is_empty() {
+                    let vm = 0.5 * (vlo + vhi);
+                    let base_center = add(cy.origin, scale(axis, vm));
+                    // Compute arcs where base cylinder is inside each tool cylinder.
+                    let mut arcs: Vec<(f64, f64)> = vec![(0.0, TWO_PI)]; // start with full circle
+                    for cy2 in &parallel_cylinders {
+                        // Tool cylinder center at this v (same axis, so center projects to same line).
+                        let tool_center = add(cy2.origin, scale(axis, vm));
+                        let d = sub(tool_center, base_center);
+                        let dist = crate::math::len(d);
+                        let r1 = cy.radius;
+                        let r2 = cy2.radius;
+                        // Two circles intersection: find angular intervals on base circle inside tool circle.
+                        let new_arcs = circle_intersection_arcs(r1, r2, dist, cy.e1, cy.e2, d);
+                        arcs = intersect_arc_intervals(&arcs, &new_arcs);
+                        if arcs.is_empty() {
+                            break; // completely outside all tool cylinders
+                        }
+                    }
+                    if !arcs.is_empty() {
+                        for (start, end) in arcs {
+                            let arc_range = crate::geom::ArcRange { start, span: end - start };
+                            out.push(partial_wall_arc(cy, vlo, vhi, reverse, arc_range));
+                        }
+                    }
                     continue;
                 }
                 let vm = 0.5 * (vlo + vhi);
@@ -1967,7 +2154,7 @@ mod tests {
         for i in 0..pts.len() {
             segs.push(crate::build::ProfileSeg::Line { a: pts[i], b: pts[(i + 1) % pts.len()] });
         }
-        let a = build::extrude_profile(&segs, [0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 10.0]);
+        let a = build::extrude_profile(&segs, [0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 10.0]).unwrap();
         let c = build::cylinder_solid([5.0, 20.0, 5.0], 3.0, 30.0, [0.0, 0.0, 1.0]);
         show("subtract", &a, &c, "nonconvex");
     }
@@ -2174,7 +2361,7 @@ mod tests {
             build::ProfileSeg::Line { a: [5.0, 4.0], b: [-5.0, 4.0] },
             build::ProfileSeg::Line { a: [-5.0, 4.0], b: [-5.0, -4.0] },
         ];
-        let tool = build::extrude_profile(&segs, [0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, -5.0]);
+        let tool = build::extrude_profile(&segs, [0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, -5.0]).unwrap();
         // extrude_profile's walls read the profile's winding, so a negative
         // sweep is outward too (not inside-out), and its volume is positive.
         assert!(
