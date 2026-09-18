@@ -397,6 +397,100 @@ tradition): for each fixture it calls `export_step`, reads the file with
 would make this a real gate; until then W9a is held by native tests and a
 scratch harness only.
 
+## W9b — STEP import, the planar half — DONE (2026-09-17)
+
+**Problem.** W9a left the §3 clause half met: export was real and gated, import
+was untouched. W9a's own entry recorded the hazard to design for first -- a
+face's trim lives on the SURFACE in this kernel and in the LOOPS in STEP, so an
+importer that rebuilds a face whose trim it guessed produces the
+silent-wrong-volume class §4.5 forbids.
+
+**The oracle came first, and it is not our own writer.** A reader tested against
+files its own writer produced proves nothing. `/tmp/opencode/occt-corpus.mjs`
+writes an OCCT-authored `.step` for all 61 parity fixtures with
+`STEPControl_Writer` and records OCCT's own measurement of each in `index.json`.
+That pair -- foreign file plus trusted number -- is what the importer is judged
+against. 61 written, 0 skipped; one fixture (`bowed-edge`) shows a 1e-11 wobble
+on an exact-zero bbox coordinate with volume identical to 12 digits, which is
+b-spline bbox noise rather than OCCT disagreeing with itself.
+
+**What it reads.** One `MANIFOLD_SOLID_BREP` whose every face is a `PLANE`
+bounded by straight edges. **23 of the 61 OCCT files import and measure within
+1e-6 relative of OCCT's own volume, with bbox to 1e-6 and face count exact. The
+other 38 refuse, each naming its cause.**
+
+**Why that boundary and not a wider one.** The kernel measures the two halves
+differently, and only one half is recoverable from a STEP file. A planar face is
+measured FROM ITS WIRES (`build::face_edges` feeds every boundary wire to
+`geom::planar_measure`, exact for arcs by Green's theorem), so it is exactly
+recoverable. A curved face is measured FROM SURFACE TRIM FIELDS -- a cylinder's
+`vmin`/`vmax`/`arc` -- that the loops alone do not determine, and the wires are
+never consulted. Guessing them is precisely the W2a failure class. Cylindrical
+faces and the circular edges that come with them therefore refuse in plain
+words and get their own slice.
+
+**Three refusals that no other check could make.** An adversarial review built a
+scratch crate and MEASURED each attack rather than reasoning about it:
+1. **Units.** An inch file read as millimetres is wrong by 16387x while staying
+   positive, finite, closed and self-consistent. `step.rs:772` records the same
+   hole read the other way -- OCCT failed to bind a unit, fell back to METRE,
+   and every solid came back 1e9 times too big with no error anywhere. A file
+   with no unit context is refused rather than defaulted.
+2. **Placement.** An ignored `ITEM_DEFINED_TRANSFORMATION` yields a correctly
+   shaped solid in the WRONG PLACE with an exactly correct volume.
+3. **Face orientation.** One inverted planar face on a 100^3 box measures
+   666666.667 against 1000000, with a bit-identical bbox. Worse, on a box with
+   its CORNER AT THE ORIGIN, flipping three of its six faces changes NOTHING --
+   `area * dot(n, centroid)` is zero for any plane through the origin whichever
+   way `n` points. So the normal derived from `same_sense` is cross-checked
+   against the outer loop's own signed area, and a disagreement refuses rather
+   than picking a winner. The final positive-volume check is kept because it is
+   free, but it caught exactly one of eight measured attacks and is not a net.
+
+**The defect the corpus found that self-round-trip could not.**
+`FACE_BOUND.orientation` reverses the LOOP; `ADVANCED_FACE.same_sense` reverses
+the SURFACE; the two COMPOSE. Reading only `same_sense` refused all 61 OCCT
+files -- while our own writer's output round-tripped perfectly, because a built
+solid has `face.forward = true`, so `step.rs` writes `.T.` on both flags and
+never exercises the difference. Same lesson as W9a's five defects, from the
+opposite direction.
+
+**Also learned the expensive way.** `SURFACE_CURVE`/`SEAM_CURVE`/`TRIMMED_CURVE`
+must be unwrapped to their basis curve BEFORE classifying, or every cylinder
+OCCT has ever written is refused on its seam. `BREP_WITH_VOIDS` must be tested
+BEFORE the root count, because `groove-full` carries a void and ZERO manifold
+roots. And STEP's typed parameters are real in every file
+(`LENGTH_MEASURE(1.E-07)`), so a value type with no slot for them cannot parse
+the corpus at all.
+
+**Refuses, in plain words:** a cylindrical, conical, spherical, toroidal or
+b-spline face; a circular, elliptical or b-spline edge; a `VERTEX_LOOP` bound;
+a length unit that is not millimetres; a placement transformation; an enclosed
+void; anything but exactly one solid; a face whose outer bound disagrees with
+its normal; a shell whose edge is not used exactly twice in opposite
+directions; and a result whose volume is not positive.
+
+**Evidence.** cargo 103/103 (was 84). With `STEP_CORPUS` set, the census in
+`step_in.rs` asserts the EXACT 23/38 split as well as the numbers, so a fixture
+that imports when it should refuse cannot pass as green. Export gate 55/0/6,
+parity 61/0, mesh 61/61, ModelDoc 17/17, kernel JS 98/98. New wasm export
+`measure_step(text)` returns one entry of `measure_doc`'s shape map, so an
+imported solid is measurable exactly like a built one. `step.rs` gains
+`pub(crate)` on `Seg` and `planar_signed_area`; visibility only.
+
+**NOT done.** Cylindrical faces and circular edges (18 corpus files wait on
+exactly that, plus 3 whose refusal currently names "cylindrical" where the end
+state should name spherical or toroidal). `BREP_WITH_VOIDS` (10 files) needs the
+`ORIENTED_CLOSED_SHELL` flag handled, or an unreversed void shell ADDS its
+volume instead of subtracting. Assembly placements (3 files).
+`/tmp/opencode/step-import-parity.mjs` still asserts the end-state 41/20 and so
+exits 1 listing the 21 remaining: that is deliberate, it is an honest progress
+meter and goes green only when import is finished.
+
+**Fixture request for the lead:** none. Like W9a this needs a GATE rather than a
+fixture -- promoting `step-import-parity.mjs` alongside `brep-step-gate.mjs`
+once the cylinder slice lands would close both halves of §3 under one roof.
+
 ## Closeout map — what is left, 2026-09-17
 
 A read-only survey, not a slice: no code was built and no gate was run (see
@@ -429,10 +523,13 @@ The header states five clauses. Where each one stands, read from source today:
    `OpKind::Fillet` and `OpKind::Shell` are declared in history.rs and never
    constructed. So mirror, pattern, pocket, groove, hole, shell and fillet
    record no history at all, and a name cannot be carried through any of them.
-4. **"STEP export/import exists" — HALF met (W9a, 2026-09-17).** Export is real
-   and verified against OCCT's own reader on 55 of 61 fixtures, with cone,
-   sphere and torus refused. Import is untouched, and W9a's entry records the
-   trim hazard that has to be designed for before it starts.
+4. **"STEP export/import exists" — BOTH HALVES STARTED, neither complete
+   (W9a + W9b, 2026-09-17).** Export is real and verified against OCCT's own
+   reader on 55 of 61 fixtures, with cone, sphere and torus refused. Import now
+   reads planar solids and is verified against 61 OCCT-AUTHORED files: 23
+   import and measure within 1e-6 of OCCT's own numbers, 38 refuse by name.
+   What is left on the import side is cylindrical faces and circular edges (18
+   files), BREP_WITH_VOIDS (10) and assembly placements (3). See W9b.
 5. **"all gates green" — YES, re-run 2026-09-17:** cargo 68/68, parity 61/0,
    mesh 61/61, OCCT ModelDoc 17/17, kernel JS 98/98, `tsc` clean. One
    pre-existing failure in `packages/script` (101 tests, 1 fail) is an artifact
@@ -469,9 +566,13 @@ slices bottom out here:
 
 **Independent of W5, can run in parallel:**
 
-- **W9 — STEP.** Export DONE (W9a, above). What is left is IMPORT, plus the
-  cone/sphere/torus surfaces on the export side, plus promoting the scratch
-  cross-kernel harness into a lead-owned gate. Still independent of W5.
+- **W9 — STEP.** Export DONE (W9a) and now GATED: `scripts/brep-step-gate.mjs`
+  runs the cross-kernel check the lead asked for, 55 pass / 6 refuse. Import's
+  planar half is DONE (W9b). What is left is cylindrical faces and circular
+  edges on the import side, BREP_WITH_VOIDS and assembly placements, the
+  cone/sphere/torus surfaces on the export side, and promoting
+  `/tmp/opencode/step-import-parity.mjs` into a second lead-owned gate. Still
+  independent of W5.
 - **History for the seven kinds that record none** -- mirror, pattern, pocket,
   groove, hole, shell, fillet (clause 3 above). Mechanical next to W5, and
   `OpKind::Fillet`/`OpKind::Shell` already exist as variants waiting to be
