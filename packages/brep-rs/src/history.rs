@@ -12,7 +12,7 @@
 
 use crate::build::{self, TEdge, TFace, TSolid};
 use crate::geom::Surface;
-use crate::math::Vec3;
+use crate::math::{sub, Vec3};
 use crate::topo;
 use std::collections::HashMap;
 
@@ -115,7 +115,27 @@ impl History {
     pub fn primitive_face(&self, feature: &str, part: &str) -> Option<TFace> {
         let solid = self.shapes.get(feature)?;
         if part == "side" {
-            // The curved wall of a cylinder; no cylinder in this slice yet.
+            // The curved wall of a cylinder or cone: the face that is neither
+            // cap. Mirrors resolvePrimitiveFace's own 'side' arm in
+            // topo-resolve.ts: a cap's centroid sits AT its axis extreme,
+            // while a curved wall's area centroid sits on the axis BETWEEN
+            // the extremes, so the two-cap exclusion picks exactly the wall.
+            let top = self.primitive_face(feature, "+z")?;
+            let bottom = self.primitive_face(feature, "-z")?;
+            let (top_c, bot_c) = {
+                let tb = top.borrow();
+                let bb = bottom.borrow();
+                (build::face_area_centroid(&tb).1, build::face_area_centroid(&bb).1)
+            };
+            for f in solid.faces() {
+                let (_, c) = {
+                    let fb = f.borrow();
+                    build::face_area_centroid(&fb)
+                };
+                if crate::math::len(sub(c, top_c)) >= 1e-7 && crate::math::len(sub(c, bot_c)) >= 1e-7 {
+                    return Some(f);
+                }
+            }
             return None;
         }
         let dir = dir_vec(part);

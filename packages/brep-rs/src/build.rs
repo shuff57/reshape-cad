@@ -857,24 +857,14 @@ pub fn cylinder_solid(center: Vec3, radius: f64, height: f64, axis: Vec3) -> TSo
         ],
     );
 
-    let top = disk_face(
-        topo::vertex(add(zhi, scale(e1, radius))),
-        rim(zhi),
-        z,
-        e1,
-        e2,
-        radius,
-        height,
-    );
-    let bottom = disk_face(
-        v_seam_lo.clone(),
-        rim(zlo),
-        scale(z, -1.0),
-        e1,
-        scale(e2, -1.0),
-        radius,
-        0.0,
-    );
+    // The rim circles are SHARED handles: the wall's seam edges ARE the
+    // caps' boundary circles, so a `between` name (cap meets wall) resolves
+    // by handle identity in History::edge_between (W2: a cylinder rim is a
+    // nameable edge, exactly as a box edge is). disk_face would build its
+    // own copy of each circle, leaving two DIFFERENT handles for one rim;
+    // disk_face_shared is the same thing with the handle supplied.
+    let top = disk_face_shared(seam_hi.clone(), v_seam_hi.borrow().point, z);
+    let bottom = disk_face_shared(seam_lo.clone(), v_seam_lo.borrow().point, scale(z, -1.0));
 
     let shell = Rc::new(RefCell::new(Shell {
         faces: vec![top, bottom, lateral],
@@ -1102,6 +1092,233 @@ pub fn chamfer_cylinder(center: Vec3, radius: f64, height: f64, axis: Vec3, rad:
     );
 
     let shell = Rc::new(RefCell::new(Shell { faces: vec![wall, top_cap, bottom_cap, top_band, bottom_band] }));
+    Solid { shells: vec![shell] }
+}
+
+/// W2 (SPEC-brep-fillet.md): the `fillet` feature naming ONE rim of a
+/// cylinder (between its cap and its wall). The treated rim gets the same
+/// quarter-torus band `round_cylinder` pins at both rims; the opposite rim
+/// keeps its full radius and its own edge handle, so the result is 4 faces
+/// (wall, 2 caps, 1 band). `treated_top` selects the +axis rim. The removed
+/// ring is one of the two congruent bands whose pair gives the OCCT-pinned
+/// both-rims removal, so the volume is pi*R^2*h minus half that removal --
+/// 13434.186898 for r12 h30 rad3.
+pub fn round_cylinder_one_rim(center: Vec3, radius: f64, height: f64, axis: Vec3, rad: f64, treated_top: bool) -> TSolid {
+    let ax = crate::math::normalize(axis);
+    let (e1, e2, z) = geom::frame(ax);
+    let cap_r = radius - rad;
+    let two_pi = 2.0 * std::f64::consts::PI;
+    let pi = std::f64::consts::PI;
+    let hp = std::f64::consts::FRAC_PI_2;
+
+    // The wall runs from the untreated cap plane to `rad` short of the
+    // treated one; v runs along +z from the wall's lower rim.
+    let (z_lo_wall, z_hi_wall, z_cap_treated) = if treated_top {
+        (
+            add(center, scale(z, -height / 2.0)),
+            add(center, scale(z, height / 2.0 - rad)),
+            add(center, scale(z, height / 2.0)),
+        )
+    } else {
+        (
+            add(center, scale(z, -(height / 2.0 - rad))),
+            add(center, scale(z, height / 2.0)),
+            add(center, scale(z, -(height / 2.0))),
+        )
+    };
+    let z_untreated = if treated_top { z_lo_wall } else { z_hi_wall };
+    let z_treated_wall = if treated_top { z_hi_wall } else { z_lo_wall };
+
+    let v_untreated = topo::vertex(add(z_untreated, scale(e1, radius)));
+    let v_treated_wall = topo::vertex(add(z_treated_wall, scale(e1, radius)));
+    let v_cap_treated = topo::vertex(add(z_cap_treated, scale(e1, cap_r)));
+    // The untreated rim: ONE handle shared by the wall's rim use there and
+    // the untreated cap (the same sharing cylinder_solid uses, so the
+    // surviving rim stays nameable in the result).
+    let e_untreated = topo::edge(
+        v_untreated.clone(),
+        v_untreated.clone(),
+        true,
+        Curve::Circle { center: z_untreated, radius, normal: z },
+    );
+    let e_wall_treated = topo::edge(
+        v_treated_wall.clone(),
+        v_treated_wall.clone(),
+        true,
+        Curve::Circle { center: z_treated_wall, radius, normal: z },
+    );
+    let e_cap_treated = topo::edge(
+        v_cap_treated.clone(),
+        v_cap_treated.clone(),
+        true,
+        Curve::Circle { center: z_cap_treated, radius: cap_r, normal: z },
+    );
+
+    // Wall: origin at the LOWER rim in z (v runs up along +z); the v=0 rim
+    // doubles as the u=0 seam, exactly as cylinder_solid's lateral does.
+    let e_v0 = if treated_top { e_untreated.clone() } else { e_wall_treated.clone() };
+    let e_v1 = if treated_top { e_wall_treated.clone() } else { e_untreated.clone() };
+    let wall = make_face(
+        Surface::Cylinder(Cylinder { origin: z_lo_wall, axis: z, e1, e2, radius, vmin: 0.0, vmax: height - rad, arc: None }),
+        [[0.0, 0.0], [0.0, height - rad]],
+        vec![
+            topo::EdgeUse { edge: e_v0.clone(), forward: true, pcurve: topo::Pcurve { start: [0.0, 0.0], end: [0.0, height - rad], mid: [0.0, (height - rad) / 2.0] } },
+            topo::EdgeUse { edge: e_v1.clone(), forward: false, pcurve: topo::Pcurve { start: [two_pi, height - rad], end: [0.0, height - rad], mid: [pi, height - rad] } },
+            topo::EdgeUse { edge: e_v0.clone(), forward: false, pcurve: topo::Pcurve { start: [0.0, height - rad], end: [0.0, 0.0], mid: [0.0, (height - rad) / 2.0] } },
+        ],
+    );
+    let (untreated_normal, treated_normal) = if treated_top {
+        (scale(z, -1.0), z)
+    } else {
+        (z, scale(z, -1.0))
+    };
+    let cap_untreated = disk_face_shared(e_untreated, v_untreated.borrow().point, untreated_normal);
+    let cap_treated = disk_face_shared(e_cap_treated.clone(), v_cap_treated.borrow().point, treated_normal);
+
+    // The band: round_cylinder's own torus pattern at the treated rim --
+    // axis +z at the top, axis -z with e2 negated at the bottom (the same
+    // parity note round_cylinder records for its bottom band), and the
+    // meridian's normal chosen so its v=hp point lands on the cap.
+    let meridian = |va: &topo::VertexRef, vb: &topo::VertexRef, arc_normal: Vec3| -> TEdge {
+        topo::edge(va.clone(), vb.clone(), true, Curve::Arc { center: add(z_treated_wall, scale(e1, cap_r)), radius: rad, normal: arc_normal, x_axis: e1, sweep: hp })
+    };
+    let band_wire = |e_wall: TEdge, e_cap: TEdge, seam: TEdge| -> Vec<topo::EdgeUse<Curve3>> {
+        vec![
+            topo::EdgeUse { edge: e_wall, forward: true, pcurve: topo::Pcurve { start: [0.0, 0.0], end: [two_pi, 0.0], mid: [pi, 0.0] } },
+            topo::EdgeUse { edge: seam.clone(), forward: true, pcurve: topo::Pcurve { start: [two_pi, 0.0], end: [two_pi, hp], mid: [two_pi, hp / 2.0] } },
+            topo::EdgeUse { edge: e_cap, forward: false, pcurve: topo::Pcurve { start: [two_pi, hp], end: [0.0, hp], mid: [pi, hp] } },
+            topo::EdgeUse { edge: seam, forward: false, pcurve: topo::Pcurve { start: [0.0, hp], end: [0.0, 0.0], mid: [0.0, hp / 2.0] } },
+        ]
+    };
+    let band = if treated_top {
+        let seam = meridian(&v_treated_wall, &v_cap_treated, scale(e2, -1.0));
+        make_face(
+            Surface::Torus(TorusSurf { center: z_treated_wall, axis: z, e1, e2, ring: cap_r, tube: rad, v_range: [0.0, hp] }),
+            [[0.0, two_pi], [0.0, hp]],
+            band_wire(e_wall_treated, e_cap_treated, seam),
+        )
+    } else {
+        let seam = meridian(&v_treated_wall, &v_cap_treated, e2);
+        make_face(
+            Surface::Torus(TorusSurf { center: z_treated_wall, axis: scale(z, -1.0), e1, e2: scale(e2, -1.0), ring: cap_r, tube: rad, v_range: [0.0, hp] }),
+            [[0.0, two_pi], [0.0, hp]],
+            band_wire(e_wall_treated, e_cap_treated, seam),
+        )
+    };
+
+    let _ = pi;
+    let shell = Rc::new(RefCell::new(Shell { faces: vec![wall, cap_untreated, cap_treated, band] }));
+    Solid { shells: vec![shell] }
+}
+
+/// W2: the CHAMFER one-rim variant of [`round_cylinder_one_rim`] -- the
+/// treated rim is a bounded 45-degree cone band (the removed ring is a right
+/// triangle of legs (rad, rad) by Pappus: pi*rad^2*(R - rad/3)), 4 faces.
+pub fn chamfer_cylinder_one_rim(center: Vec3, radius: f64, height: f64, axis: Vec3, rad: f64, treated_top: bool) -> TSolid {
+    let ax = crate::math::normalize(axis);
+    let (e1, e2, z) = geom::frame(ax);
+    let cap_r = radius - rad;
+    let two_pi = 2.0 * std::f64::consts::PI;
+    let pi = std::f64::consts::PI;
+    let half_angle = std::f64::consts::FRAC_PI_4;
+    let slant = rad * std::f64::consts::SQRT_2;
+
+    let (z_lo_wall, z_hi_wall, z_cap_treated) = if treated_top {
+        (
+            add(center, scale(z, -height / 2.0)),
+            add(center, scale(z, height / 2.0 - rad)),
+            add(center, scale(z, height / 2.0)),
+        )
+    } else {
+        (
+            add(center, scale(z, -(height / 2.0 - rad))),
+            add(center, scale(z, height / 2.0)),
+            add(center, scale(z, -(height / 2.0))),
+        )
+    };
+    let z_untreated = if treated_top { z_lo_wall } else { z_hi_wall };
+    let z_treated_wall = if treated_top { z_hi_wall } else { z_lo_wall };
+
+    let v_untreated = topo::vertex(add(z_untreated, scale(e1, radius)));
+    let v_treated_wall = topo::vertex(add(z_treated_wall, scale(e1, radius)));
+    let v_cap_treated = topo::vertex(add(z_cap_treated, scale(e1, cap_r)));
+    let e_untreated = topo::edge(
+        v_untreated.clone(),
+        v_untreated.clone(),
+        true,
+        Curve::Circle { center: z_untreated, radius, normal: z },
+    );
+    let e_wall_treated = topo::edge(
+        v_treated_wall.clone(),
+        v_treated_wall.clone(),
+        true,
+        Curve::Circle { center: z_treated_wall, radius, normal: z },
+    );
+    let e_cap_treated = topo::edge(
+        v_cap_treated.clone(),
+        v_cap_treated.clone(),
+        true,
+        Curve::Circle { center: z_cap_treated, radius: cap_r, normal: z },
+    );
+
+    let e_v0 = if treated_top { e_untreated.clone() } else { e_wall_treated.clone() };
+    let e_v1 = if treated_top { e_wall_treated.clone() } else { e_untreated.clone() };
+    let wall = make_face(
+        Surface::Cylinder(Cylinder { origin: z_lo_wall, axis: z, e1, e2, radius, vmin: 0.0, vmax: height - rad, arc: None }),
+        [[0.0, 0.0], [0.0, height - rad]],
+        vec![
+            topo::EdgeUse { edge: e_v0.clone(), forward: true, pcurve: topo::Pcurve { start: [0.0, 0.0], end: [0.0, height - rad], mid: [0.0, (height - rad) / 2.0] } },
+            topo::EdgeUse { edge: e_v1.clone(), forward: false, pcurve: topo::Pcurve { start: [two_pi, height - rad], end: [0.0, height - rad], mid: [pi, height - rad] } },
+            topo::EdgeUse { edge: e_v0.clone(), forward: false, pcurve: topo::Pcurve { start: [0.0, height - rad], end: [0.0, 0.0], mid: [0.0, (height - rad) / 2.0] } },
+        ],
+    );
+    let (untreated_normal, treated_normal) = if treated_top {
+        (scale(z, -1.0), z)
+    } else {
+        (z, scale(z, -1.0))
+    };
+    let cap_untreated = disk_face_shared(e_untreated, v_untreated.borrow().point, untreated_normal);
+    let cap_treated = disk_face_shared(e_cap_treated.clone(), v_cap_treated.borrow().point, treated_normal);
+
+    // The band: chamfer_cylinder's own cone band pattern; the meridian is
+    // the chamfer's straight profile line from the wall rim to the cap rim.
+    let meridian = |va: &topo::VertexRef, vb: &topo::VertexRef| -> TEdge {
+        topo::edge(
+            va.clone(),
+            vb.clone(),
+            true,
+            Curve::Segment { a: va.borrow().point, b: vb.borrow().point },
+        )
+    };
+    let band_wire = |e_wall: TEdge, e_cap: TEdge, seam: TEdge| -> Vec<topo::EdgeUse<Curve3>> {
+        vec![
+            topo::EdgeUse { edge: e_wall, forward: true, pcurve: topo::Pcurve { start: [0.0, 0.0], end: [two_pi, 0.0], mid: [pi, 0.0] } },
+            topo::EdgeUse { edge: seam.clone(), forward: true, pcurve: topo::Pcurve { start: [two_pi, 0.0], end: [two_pi, slant], mid: [two_pi, slant / 2.0] } },
+            topo::EdgeUse { edge: e_cap, forward: false, pcurve: topo::Pcurve { start: [two_pi, slant], end: [0.0, slant], mid: [pi, slant] } },
+            topo::EdgeUse { edge: seam, forward: false, pcurve: topo::Pcurve { start: [0.0, slant], end: [0.0, 0.0], mid: [0.0, slant / 2.0] } },
+        ]
+    };
+    let band = if treated_top {
+        let seam = meridian(&v_treated_wall, &v_cap_treated);
+        make_face(
+            Surface::Cone(Cone { base: z_treated_wall, axis: z, e1, e2, base_radius: radius, half_angle, slant, v_range: [0.0, slant] }),
+            [[0.0, two_pi], [0.0, slant]],
+            band_wire(e_wall_treated, e_cap_treated, seam),
+        )
+    } else {
+        let seam = meridian(&v_treated_wall, &v_cap_treated);
+        // e2 negated (axis flipped to -z): cross(e1, e2) must equal the
+        // band's own axis for its volume term's sign -- the same parity
+        // chamfer_cylinder records for its bottom band.
+        make_face(
+            Surface::Cone(Cone { base: z_treated_wall, axis: scale(z, -1.0), e1, e2: scale(e2, -1.0), base_radius: radius, half_angle, slant, v_range: [0.0, slant] }),
+            [[0.0, two_pi], [0.0, slant]],
+            band_wire(e_wall_treated, e_cap_treated, seam),
+        )
+    };
+
+    let _ = pi;
+    let shell = Rc::new(RefCell::new(Shell { faces: vec![wall, cap_untreated, cap_treated, band] }));
     Solid { shells: vec![shell] }
 }
 
