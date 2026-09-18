@@ -305,7 +305,13 @@ function friendlyMessage(err: unknown): string {
     // membership, not edit distance, decides this branch -- SCOPE's `set`
     // trap below only ever throws Error, so a ReferenceError this exact
     // shape is never anything BUT this.
-    const tdz = /^Cannot access '([A-Za-z_$][\w$]*)' before initialization$/.exec(err.message);
+    // The trailing `\.?` is not cosmetic: V8 ends this message without a full
+    // stop and JavaScriptCore ends it with one (measured -- bun 1.4.2, which
+    // is JSC, reports "Cannot access 'box' before initialization."). Anchored
+    // without it, the whole rewrite below fired on Chrome and Firefox and
+    // silently did not on Safari, where a student got the raw TDZ text instead
+    // of the sentence telling them what to do about it.
+    const tdz = /^Cannot access '([A-Za-z_$][\w$]*)' before initialization\.?$/.exec(err.message);
     if (tdz && (VOCABULARY as readonly string[]).includes(tdz[1])) {
       const name = tdz[1];
       return `You can't build ${name}() into a variable named "${name}" on the same line -- JS reserves that name for the whole line before ${name}(...) even runs. Give the result its own name instead, e.g. const my${name[0].toUpperCase()}${name.slice(1)} = ${name}(...).`;
