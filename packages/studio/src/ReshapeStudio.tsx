@@ -25,6 +25,7 @@ import { noteColor, type StudioNote } from './notes.js';
 import ModelEditor from './model/ModelEditor.js';
 import BrepViewport, { type BrepViewportStats, type ViewportPick } from './model/BrepViewportThree.js';
 import HandleOverlay, { type AnchorPoint, type SketchOutline, type SketchPart } from './model/HandleOverlay.js';
+import SketchCanvas2D from './model/SketchCanvas2D.js';
 import ContextBar, { type ContextBarAction } from './model/ContextBar.js';
 import type { ContextActions } from './model/ModelEditor.js';
 import type { RuleActions, TouchedPart } from './model/SketchConstraints.js';
@@ -377,6 +378,9 @@ export default function ReshapeStudio({
   // hardcoding 'xy'.
   const [activePlane, setActivePlane] = useState<SketchPlane>('xy');
   const [drawFirst, setDrawFirst] = useState<[number, number] | null>(null);
+  // The soup sketcher (SPEC-sketcher2 §7): the id of the sketch open in the
+  // 2D canvas, or null. While set, SketchCanvas2D replaces the 3D viewport.
+  const [sketchEditId, setSketchEditId] = useState<string | null>(null);
   const past = useRef<ModelDoc[]>([]);
   const future = useRef<ModelDoc[]>([]);
   const [depth, setDepth] = useState({ back: 0, forward: 0 });
@@ -728,7 +732,9 @@ export default function ReshapeStudio({
     const del: ContextBarAction | null = hasActions ? { label: 'Delete', title: 'Delete the selected', onRun: () => ctxActionsRef.current?.remove() } : null;
     const kind = ctxFeature.kind;
     if (kind === 'sketch') {
-      const out: ContextBarAction[] = [dims];
+      const out: ContextBarAction[] = [
+        { label: 'Edit 2D', title: 'Open this sketch in the 2D constraint sketcher', primary: true, onRun: () => setSketchEditId(ctxFeature.id) },
+      ];
       if (hasActions) {
         out.push(
           { label: 'Pull', title: 'Pull the sketch straight up into a solid', onRun: () => ctxActionsRef.current?.pull() },
@@ -1323,7 +1329,22 @@ export default function ReshapeStudio({
             grid. */}
         <div className="reshape-pane">
           <div className="reshape-pane-view">
-            {(showBrep || showBrepOnCode) ? (
+            {sketchEditId && (() => {
+              const sk = doc.features.find((f) => f.id === sketchEditId);
+              return sk && sk.kind === 'sketch' ? (
+                <SketchCanvas2D
+                  key={sk.id}
+                  sketch={sk}
+                  doc={doc}
+                  onChange={applyDoc}
+                  onExit={() => setSketchEditId(null)}
+                />
+              ) : (
+                setSketchEditId(null),
+                null
+              );
+            })()}
+            {!sketchEditId && (showBrep || showBrepOnCode) ? (
               <BrepViewport
                 doc={shownDoc}
                 ruleActivityAt={ruleActivityAt}
@@ -1419,7 +1440,9 @@ export default function ReshapeStudio({
                 <ReshapePreview ref={frameRef} code={code} runKey={runKey} engine="script" />
               </div>
             )}
-            {build && (
+            {build && !sketchEditId && (
+              // Hidden while the 2D sketcher owns the pane: its handles and
+              // draw-catcher would sit over the canvas and eat its clicks.
               <HandleOverlay
                 points={anchors.filter((a) => !a.param.startsWith('__ctx_'))}
                 values={paramValues}
@@ -1438,7 +1461,7 @@ export default function ReshapeStudio({
                 bottomInset={0}
               />
             )}
-            {ctxBarVisible && ctxFeature && ctxAnchor && (
+            {ctxBarVisible && !sketchEditId && ctxFeature && ctxAnchor && (
               // Piece B: the context bar. anchor/point/absolute inside
               // .reshape-pane-view (position:relative), the same offset
               // parent HandleOverlay's handles use, so the bar floats over

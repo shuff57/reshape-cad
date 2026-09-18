@@ -9,7 +9,8 @@
     ".": "./dist/index.js",
     "./config": "./dist/config.js",
     "./engine-adapter": "./dist/engine-adapter.js",
-    "./brep-rs-engine-adapter": "./dist/brep-rs-engine-adapter.js"
+    "./brep-rs-engine-adapter": "./dist/brep-rs-engine-adapter.js",
+    "./sketch-session": "./dist/sketch-session.js"
   },
   "typesVersions": {
     "*": {
