@@ -1293,19 +1293,18 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
         const out: SoupGeom[] = [];
         rows.forEach((row: unknown, i: number) => {
           const g = readSoupGeom('.geom()', row);
-          // A row's coordinates may be param() references (§6.2: any numeric
-          // slot may hold one). A param()'d radius stores its NAME in the doc
-          // so the round trip re-binds it; the slot override is recorded by
-          // num() either way.
+          // A row's radius may be a param() reference (§6.2: any numeric
+          // slot may hold one). num() records the slot-key -> name binding
+          // that the round trip re-binds through; the doc keeps the RESOLVED
+          // number, exactly like every other feature -- the kernel reads
+          // these rows directly, so a string here is a refusal.
           if (g.k === 'circle') {
             num(g.r, id, `g${g.id}r`);
-            const pn = paramNameOf(g.r);
-            g.r = (pn ?? unwrap(g.r)) as number;
+            g.r = unwrap(g.r);
           }
           if (g.k === 'arc') {
             num(g.r, id, `g${g.id}r`);
-            const pn = paramNameOf(g.r);
-            g.r = (pn ?? unwrap(g.r)) as number;
+            g.r = unwrap(g.r);
           }
           if (g.id !== i + 1) {
             throw new Error(
@@ -1384,11 +1383,16 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
           const value = (r as { value?: unknown }).value;
           if (value !== undefined) {
             // num() FIRST, always: its slotOverride side effect is the only
-            // place the pname-key -> param-name correlation is recorded; the
-            // doc then keeps the NAME so the round trip re-binds it (§6.2).
-            num(value, id, `rule${i}-value`);
-            const pname0 = paramNameOf(value);
-            (r as { value: unknown }).value = pname0 ?? num(value, id, `rule${i}-value`);
+            // place the pname-key -> param-name correlation is recorded. The
+            // doc keeps the RESOLVED NUMBER, like every other feature (a
+            // cuboid's width, a ring's across): the emitter re-binds by slot
+            // key through numText() (§6.2's own mechanism). Storing the NAME
+            // here instead made the doc lie about its own types -- value is
+            // number -- and three consumers measured tripping on it: the
+            // kernel refused the build, the emitter wrote NaN for the radius,
+            // and applyParam's slider no-op'd on typeof !== 'number'.
+            const v0 = num(value, id, `rule${i}-value`);
+            (r as { value: unknown }).value = v0;
           }
           out.push(r);
         });

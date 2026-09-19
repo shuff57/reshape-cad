@@ -135,31 +135,43 @@ test('5: rules() refuses point ref c on a line', () => {
 //    because param('holeR', 5) needs a slot to bind to; the binding lands in
 //    the rule's value slot, keyed pname(featureId, slot) like every other
 //    panel row (D8).
-test('6: param(holeR, 5) feeding a radius rule lands in the rule value slot', () => {
+test('6: param(holeR, 5) feeding a radius rule binds by slot, doc stays numeric', () => {
   const r = runScript(
     "const holeR = param('holeR', 5);" +
       "const s1 = sketch('top'); s1.geom([{ k:'circle', id:1, c:[20,20], r:holeR }]);" +
-      " s1.rules([{ k:'radius', a:1, value:holeR }])",
+     " s1.rules([{ k:'radius', a:1, value:holeR }])",
   );
   assert.deepEqual(r.errors, [], `script should run clean, got: ${JSON.stringify(r.errors)}`);
   const sk = r.doc.features.find((f) => f.kind === 'sketch');
   assert.ok(sk, 'a sketch feature exists');
   const radiusRule = (sk.rules ?? []).find((c) => c.k === 'radius');
   assert.ok(radiusRule, 'a radius rule exists');
-  // The value slot carries the param reference, not a baked literal -- the
-  // whole reason rows beat a blob (§6.2).
+  // THE DOC STAYS NUMERIC. Every other feature (a cuboid's width, a ring's
+  // across) stores the resolved number and re-binds by slot key at emit time
+  // (numText) -- the mechanism §6.2 actually argues for. Storing the NAME
+  // here made the doc lie about its own types (both fields are number): the
+  // kernel refused the build ("needs a positive radius r"), the emitter wrote
+  // r:NaN, and applyParam's slider no-op'd on typeof !== 'number'. Measured
+  // 2026-09-18, all three.
   assert.equal(
     radiusRule.value,
-    'holeR',
-    `value slot should hold the param reference, got: ${JSON.stringify(radiusRule.value)}`,
+    5,
+    `value slot should hold the resolved number, got: ${JSON.stringify(radiusRule.value)}`,
   );
+  const circle = (sk.geoms ?? []).find((g) => g.k === 'circle');
+  assert.ok(circle, 'a circle row exists');
+  assert.equal(circle.r, 5, `the circle's radius must be numeric too, got: ${JSON.stringify(circle.r)}`);
   // And the panel-facing slot key exists, keyed pname(featureId, slot) like
   // every other dimension (D8), so the Dimensions panel can find it.
   const slotKey = r.params.find((p) => p.name === `${sk.id}_rule0-value`);
   assert.ok(slotKey, `a param row keyed ${sk.id}_rule0-value exists, got: ${JSON.stringify(r.params.map((p) => p.name))}`);
   assert.equal(slotKey.value, 5);
 });
+
 // 7: applyParam writes a rule-value slot back into rules[i].value (D8) --
+//    the Dimensions panel's write path for soup sketches. RED first: the
+//    slot was generated but applyParam had no soup arm, so the edit was a
+//    silent no-op.
 //    the Dimensions panel's write path for soup sketches. RED first: the
 //    slot was generated but applyParam had no soup arm, so the edit was a
 //    silent no-op.

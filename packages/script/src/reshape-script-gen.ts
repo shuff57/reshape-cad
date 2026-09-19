@@ -254,17 +254,21 @@ function lit9(n: number): string {
   return v.toFixed(9).replace(/0+$/, '').replace(/\.$/, '');
 }
 
-/** A soup geometry row as script text, one line, §2.3's shape. */
-function geomRowText(g: SoupGeom): string {
+/** A soup geometry row as script text, one line, §2.3's shape. The radius
+ *  re-binds by slot key (g{id}r, recorded by the interpreter's num()) when a
+ *  param() was there -- the same numText() path ruleRowText uses; without it
+ *  a param()'d radius came back r:NaN (lit9 of the NAME string). */
+function geomRowText(bindings: Map<string, string>, featureId: string, g: SoupGeom): string {
   const c = (v: boolean) => (v ? ', construction: true' : '');
   if (g.k === 'point') return `{ k:'point', id:${g.id}, p:[${lit9(g.p[0])}, ${lit9(g.p[1])}]${c(g.construction === true)} }`;
   if (g.k === 'line') {
     return `{ k:'line', id:${g.id}, a:[${lit9(g.a[0])}, ${lit9(g.a[1])}], b:[${lit9(g.b[0])}, ${lit9(g.b[1])}]${c(g.construction === true)} }`;
   }
+  const radius = () => numText(bindings, featureId, `g${g.id}r`, lit9(g.r));
   if (g.k === 'circle') {
-    return `{ k:'circle', id:${g.id}, c:[${lit9(g.c[0])}, ${lit9(g.c[1])}], r:${lit9(g.r)}${c(g.construction === true)} }`;
+    return `{ k:'circle', id:${g.id}, c:[${lit9(g.c[0])}, ${lit9(g.c[1])}], r:${radius()}${c(g.construction === true)} }`;
   }
-  return `{ k:'arc', id:${g.id}, c:[${lit9(g.c[0])}, ${lit9(g.c[1])}], r:${lit9(g.r)}, a:[${lit9(g.a[0])}, ${lit9(g.a[1])}], b:[${lit9(g.b[0])}, ${lit9(g.b[1])}], sense:'${g.sense}'${c(g.construction === true)} }`;
+  return `{ k:'arc', id:${g.id}, c:[${lit9(g.c[0])}, ${lit9(g.c[1])}], r:${radius()}, a:[${lit9(g.a[0])}, ${lit9(g.a[1])}], b:[${lit9(g.b[0])}, ${lit9(g.b[1])}], sense:'${g.sense}'${c(g.construction === true)} }`;
 }
 
 /** A soup constraint row as script text, one line, §2.5's shape. A `value`
@@ -460,7 +464,7 @@ export function toScript(doc: ModelDoc, namedParams?: readonly ScriptParamRef[])
       // (SPEC-sketcher2 §6). If a doc somehow carries both, the soup wins --
       // the polygon fields are the legacy representation.
       if (f.geoms) {
-        lines.push(`${f.id}.geom([${(f.geoms as SoupGeom[]).map(geomRowText).join(', ')}])`);
+        lines.push(`${f.id}.geom([${(f.geoms as SoupGeom[]).map((g) => geomRowText(bindings, f.id, g)).join(', ')}])`);
         const rules = (f.rules ?? []) as SoupRule[];
         if (rules.length > 0) {
           lines.push(`${f.id}.rules([${rules.map((r, i) => ruleRowText(bindings, f.id, i, r)).join(', ')}])`);
