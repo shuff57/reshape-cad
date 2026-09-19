@@ -70,7 +70,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
   const [pointer, setPointer] = useState<Pt | null>(null);
   const [hoverSnap, setHoverSnap] = useState<{ id: number; at: 'a' | 'b' | 'c'; world: Pt } | null>(null);
   const [dim, setDim] = useState<{
-    kind: 'distance' | 'radius' | 'distanceX' | 'distanceY' | 'angle';
+    kind: 'distance' | 'radius' | 'diameter' | 'distanceX' | 'distanceY' | 'angle';
     a: Sel | null;
     b: Sel | null;
     value: string;
@@ -557,21 +557,35 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
   const canCoin = selPoints.length === 2;
   const canParallel = selShapes.length === 2 && bothLines(selShapes.map((s) => s.id), solved);
   const canEqual = canParallel;
+  const canPerp = canParallel;
+  // Tangent is between a line and a curve, or two curves -- never two lines,
+  // which is what parallel/perpendicular are for.
+  const canTangent = selShapes.length === 2 && !bothLines(selShapes.map((s) => s.id), solved);
+  // A picked point placed onto a picked object -- one of each, from the same
+  // click-accumulated selection (onSelectClick splits point-picks from
+  // shape-picks by whether the click snapped).
+  const canPointOnObject = selPoints.length === 1 && selShapes.length === 1;
+  // Three points: the first two go symmetric about the third.
+  const canSymmetric = selPoints.length === 3;
+  const canLock = selPoints.length === 1;
   const canDimLine = selShapes.length === 1 && geomKind(selShapes[0].id, solved) === 'line';
   const canDimRadius =
     selShapes.length === 1 && ['circle', 'arc'].includes(String(geomKind(selShapes[0].id, solved)));
+  const canDimDiameter = canDimRadius;
 
   const openDim = useCallback(
-    (kind: 'distance' | 'radius' | 'distanceX' | 'distanceY' | 'angle') => {
+    (kind: 'distance' | 'radius' | 'diameter' | 'distanceX' | 'distanceY' | 'angle') => {
       const g = solved.find((x) => x.id === selShapes[0]?.id);
       if (!g) return;
-      if (kind === 'radius' && g.k !== 'circle' && g.k !== 'arc') return;
+      if ((kind === 'radius' || kind === 'diameter') && g.k !== 'circle' && g.k !== 'arc') return;
       const initial =
         kind === 'radius'
           ? String(g.r)
-          : kind === 'distance'
-            ? String(Math.hypot((g.b?.[0] ?? 0) - (g.a?.[0] ?? 0), (g.b?.[1] ?? 0) - (g.a?.[1] ?? 0)))
-            : '0';
+          : kind === 'diameter'
+            ? String(2 * (g.r ?? 0))
+            : kind === 'distance'
+              ? String(Math.hypot((g.b?.[0] ?? 0) - (g.a?.[0] ?? 0), (g.b?.[1] ?? 0) - (g.a?.[1] ?? 0)))
+              : '0';
       setDim({ kind, a: selShapes[0] ?? null, b: null, value: initial });
     },
     [selShapes, solved],
@@ -587,6 +601,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     const g = dim.a ? solved.find((x) => x.id === dim.a!.id) : null;
     if (!g) return;
     if (dim.kind === 'radius') applyRule({ k: 'radius', a: g.id, value: v });
+    else if (dim.kind === 'diameter') applyRule({ k: 'diameter', a: g.id, value: v });
     else if (dim.kind === 'distance') applyRule({ k: 'distance', a: g.id, aEnd: 'a', b: g.id, bEnd: 'b', value: v });
     setDim(null);
   }, [applyRule, dim, solved]);
@@ -884,6 +899,62 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
               >
                 =
               </button>
+              <button
+                className="sk2d-tool"
+                disabled={!canPerp}
+                title="Perpendicular"
+                onClick={() => {
+                  const [a, b] = selShapes as [Sel, Sel];
+                  applyRule({ k: 'perpendicular', a: a.id, b: b.id });
+                }}
+              >
+                ⟂
+              </button>
+              <button
+                className="sk2d-tool"
+                disabled={!canTangent}
+                title="Tangent"
+                onClick={() => {
+                  const [a, b] = selShapes as [Sel, Sel];
+                  applyRule({ k: 'tangent', a: a.id, b: b.id });
+                }}
+              >
+                Tangent
+              </button>
+              <button
+                className="sk2d-tool"
+                disabled={!canPointOnObject}
+                title="Point on object"
+                onClick={() => {
+                  const [p] = selPoints as [Sel];
+                  const [s] = selShapes as [Sel];
+                  applyRule({ k: 'pointOnObject', a: p.id, aEnd: p.at!, b: s.id });
+                }}
+              >
+                On Object
+              </button>
+              <button
+                className="sk2d-tool"
+                disabled={!canSymmetric}
+                title="Symmetric about the third selected point"
+                onClick={() => {
+                  const [a, b, c] = selPoints as [Sel, Sel, Sel];
+                  applyRule({ k: 'symmetric', a: a.id, aEnd: a.at!, b: b.id, bEnd: b.at!, c: c.id, cEnd: c.at! });
+                }}
+              >
+                Symmetric
+              </button>
+              <button
+                className="sk2d-tool"
+                disabled={!canLock}
+                title="Lock this point where it is"
+                onClick={() => {
+                  const [p] = selPoints as [Sel];
+                  applyRule({ k: 'lock', a: p.id, aEnd: p.at! });
+                }}
+              >
+                Lock
+              </button>
             </div>
             <span className="model-tool-group-label">Constrain</span>
           </div>
@@ -895,6 +966,9 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
               </button>
               <button className="sk2d-tool" disabled={!canDimRadius} onClick={() => openDim('radius')}>
                 R
+              </button>
+              <button className="sk2d-tool" disabled={!canDimDiameter} title="Diameter" onClick={() => openDim('diameter')}>
+                ⌀
               </button>
               {dim && (
                 <span className="sk2d-dim">
