@@ -1874,32 +1874,42 @@ pub fn extrude_profile(
             }
             ProfileSeg::Arc { centre, radius, start, sweep: sw } => {
                 let centre_w = at(*centre);
-                // The arc wall's cylinder frame must agree with the straight
-                // walls' outward side; a CW profile flips the radial frame.
-                // The arc wall's cylinder frame must agree with the straight
-                // walls' outward side; a CW profile flips the radial frame.
-                // (For arcs this only matters once the profile is normalized
-                // to CCW below, where winding is always +1; the branch is kept
-                // for safety.)
-                let (e1, e2) = if winding >= 0.0 {
+                // Which side of the wall is material decides the frame's
+                // HANDEDNESS, and the sweep's SIGN is what says which side.
+                // `r_u x r_v` of a right-handed (e1, e2, axis) frame points
+                // radially OUTWARD (e1 x axis = -e2, e2 x axis = e1). The
+                // profile is normalized to CCW above, so material is left of
+                // travel and the outward normal is right of it:
+                //   sweep > 0 -- the centre is left of travel, material lies
+                //     OUTSIDE the arc's circle, and outward IS radially out;
+                //   sweep < 0 -- the centre is right of travel, material lies
+                //     INSIDE it (a bore, or a bite cut into an edge), and the
+                //     outward normal must point AT the axis instead.
+                // Negating exactly ONE axis is what flips that. This branch
+                // used to negate BOTH on `winding < 0`, which is a rotation by
+                // pi and not a reflection: it left the handedness -- and so the
+                // sign of `Cylinder::volume_term` -- exactly as it was, and
+                // `winding` is always +1 by this point anyway, so it could
+                // never fire. Measured on a 40x40 square with a semicircular
+                // r5 bite (`concave_arc_wall_volume_is_exact`): the wall's term
+                // came out +250*pi where it must be -250*pi, for a volume of
+                // 16130.899694 against an exact 15607.300918 -- 3.35% wrong,
+                // refused by nothing.
+                // Negating e2 sends a world point at frame angle `theta` to
+                // `-theta`, so the arc's own range travels with it; that is the
+                // same axis, for the same reason, that `reversed_face` negates.
+                let inward = *sw < 0.0;
+                let (e1, e2) = if inward {
+                    (u_axis, scale(v_axis, -1.0))
+                } else {
                     (u_axis, v_axis)
-                } else {
-                    (scale(u_axis, -1.0), scale(v_axis, -1.0))
                 };
-                // A NEGATIVE span is legal wire data: the soup wire stores
-                // each arc in its own travel orientation, and a ccw outline
-                // can legitimately walk one cap clockwise (a slot's inner
-                // half). The wall's (u, v) domain needs u0 < u1 regardless,
-                // or mesh_curved_face's `u1 <= u0` gate refuses to
-                // tessellate the face and the whole solid goes unmeshable.
-                // Sort the span into the domain and flip the use ranges to
-                // match; the boundary walk direction itself lives in the
-                // uses and is untouched.
-                let (u_lo, u_hi) = if *sw >= 0.0 {
-                    (*start, *start + *sw)
-                } else {
-                    (*start + *sw, *start)
-                };
+                let (a0, span) = if inward { (-*start, -*sw) } else { (*start, *sw) };
+                // `span` is non-negative either way now, so the (u, v) domain
+                // comes out sorted on its own -- which is what
+                // mesh_curved_face's `u1 <= u0` gate needs (the reason the
+                // previous code sorted the span by hand here).
+                let (u_lo, u_hi) = (a0, a0 + span);
                 let wall = Surface::Cylinder(Cylinder {
                     origin: centre_w,
                     axis: sweep_unit,
@@ -1908,15 +1918,15 @@ pub fn extrude_profile(
                     radius: *radius,
                     vmin: 0.0,
                     vmax: height,
-                    arc: Some(geom::ArcRange { start: *start, span: *sw }),
+                    arc: Some(geom::ArcRange { start: a0, span }),
                 });
                 let mut uses = Vec::new();
                 // The base and top arcs ride the cylinder's own (u, v) space;
                 // the two vertical seams sit at constant angle.
-                uses.push(cyl_arc_use(&e_base[i], true, *start, *start + *sw, 0.0, height));
-                uses.push(cyl_arc_use(&vert[j], true, *start + *sw, *start + *sw, 0.0, height));
-                uses.push(cyl_arc_use(&e_top[i], false, *start + *sw, *start, height, height));
-                uses.push(cyl_arc_use(&vert[i], false, *start, *start, height, 0.0));
+                uses.push(cyl_arc_use(&e_base[i], true, a0, a0 + span, 0.0, height));
+                uses.push(cyl_arc_use(&vert[j], true, a0 + span, a0 + span, 0.0, height));
+                uses.push(cyl_arc_use(&e_top[i], false, a0 + span, a0, height, height));
+                uses.push(cyl_arc_use(&vert[i], false, a0, a0, height, 0.0));
                 faces.push(make_face(wall, [[u_lo, u_hi], [0.0, height]], uses));
             }
         }
@@ -2816,6 +2826,51 @@ mod tests {
         assert!(err.contains("segment 1"), "the refusal names the first segment: {err}");
         assert!(err.contains("segment 2"), "the refusal names the second segment: {err}");
         assert!(err.contains("0.4"), "the refusal names the drift distance: {err}");
+        assert!(err.contains("0.4"), "the refusal names the drift distance: {err}");
+    }
+
+    // A 40x40 square with a semicircular BITE of radius 5 cut into its bottom
+    // edge: the outline walks (0,0) -> (15,0), a concave half-arc bulging INTO
+    // the material up to (20,5) and back down to (25,0), then (40,0) ->
+    // (40,40) -> (0,40) -> (0,0). The arc is traversed CW about its own centre
+    // (start = pi, sweep = -pi), so material lies INSIDE its circle and the
+    // wall's outward normal must point radially INWARD.
+    #[test]
+    fn concave_arc_wall_volume_is_exact() {
+        let pi = std::f64::consts::PI;
+        let segs = vec![
+            ProfileSeg::Line { a: [0.0, 0.0], b: [15.0, 0.0] },
+            ProfileSeg::Arc { centre: [20.0, 0.0], radius: 5.0, start: pi, sweep: -pi },
+            ProfileSeg::Line { a: [25.0, 0.0], b: [40.0, 0.0] },
+            ProfileSeg::Line { a: [40.0, 0.0], b: [40.0, 40.0] },
+            ProfileSeg::Line { a: [40.0, 40.0], b: [0.0, 40.0] },
+            ProfileSeg::Line { a: [0.0, 40.0], b: [0.0, 0.0] },
+        ];
+        let s = extrude_profile(&segs, [0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 10.0])
+            .expect("a bitten square is a valid closed profile");
+        let want = (1600.0 - pi * 25.0 / 2.0) * 10.0;
+        close(solid_volume(&s), want, 1e-9, "concave arc wall volume");
+    }
+
+    // The same square with the half-arc bulging OUT of the bottom edge
+    // (start = pi, sweep = +pi): material lies OUTSIDE the arc's circle, the
+    // natural right-handed frame is already correct, and this must pass both
+    // before and after the concave fix.
+    #[test]
+    fn convex_arc_wall_volume_unchanged() {
+        let pi = std::f64::consts::PI;
+        let segs = vec![
+            ProfileSeg::Line { a: [0.0, 0.0], b: [15.0, 0.0] },
+            ProfileSeg::Arc { centre: [20.0, 0.0], radius: 5.0, start: pi, sweep: pi },
+            ProfileSeg::Line { a: [25.0, 0.0], b: [40.0, 0.0] },
+            ProfileSeg::Line { a: [40.0, 0.0], b: [40.0, 40.0] },
+            ProfileSeg::Line { a: [40.0, 40.0], b: [0.0, 40.0] },
+            ProfileSeg::Line { a: [0.0, 40.0], b: [0.0, 0.0] },
+        ];
+        let s = extrude_profile(&segs, [0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 10.0])
+            .expect("a bulged square is a valid closed profile");
+        let want = (1600.0 + pi * 25.0 / 2.0) * 10.0;
+        close(solid_volume(&s), want, 1e-9, "convex arc wall volume");
     }
 }
 
