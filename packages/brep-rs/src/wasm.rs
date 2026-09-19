@@ -124,9 +124,86 @@ fn sketch_frame(sk: &Value) -> SketchFrame {
 /// becomes a genuine circular arc, kept exact as centre/radius/start/sweep, so
 /// the extruded wall is a partial cylinder and the volume is exact. Returns
 /// None for a circle sketch (its own path) or a collapsed outline.
+thread_local! {
+    /// The wire refusal sentence from the last soup extrude attempt, when the
+    /// soup arm refused. The extrude/pocket arms read it to per-feature-refuse
+    /// with the same sentence the session would have shown. None clears it.
+    static LAST_PRISM_REFUSAL: std::cell::RefCell<Option<String>> =
+        const { std::cell::RefCell::new(None) };
+}
+
+/// The soup arm of extruded_profile: solve the sketch's geoms+rules through
+/// the sketch session, then extrude the DISCOVERED wire (SPEC-sketcher2
+/// §5.3). Returns None and leaves a sentence in LAST_PRISM_REFUSAL when the
+/// sketch cannot be trusted (conflicting rules, wire discovery refusal); the
+/// legacy `points` path never touches this thread_local.
+fn soup_profile(sk: &Value) -> Option<(Vec<build::ProfileSeg>, Vec<(String, usize)>)> {
+    LAST_PRISM_REFUSAL.with(|lr| *lr.borrow_mut() = None);
+    let json = sk.to_string();
+    let mut session = match crate::sketch::session::SketchSession::open(&json) {
+        Ok(s) => s,
+        Err(e) => {
+            LAST_PRISM_REFUSAL.with(|lr| *lr.borrow_mut() = Some(e));
+            return None;
+        }
+    };
+    // Solve from the rows themselves (the seed). A solve failure is a refusal
+    // too: LM refusing a sketch whose rows cannot be satisfied is honest, and
+    // the diagnosis sentence is what the UI would show.
+    if session.solve(&[], None).is_err() {
+        LAST_PRISM_REFUSAL.with(|lr| {
+            *lr.borrow_mut() = Some(
+                "the sketch's rules cannot be solved; resolve the conflict first".to_string(),
+            )
+        });
+        return None;
+    }
+    if let Ok(d) = session.diagnose() {
+        if d.bucket == crate::sketch::solve::Bucket::Conflicting {
+            LAST_PRISM_REFUSAL.with(|lr| {
+                *lr.borrow_mut() = Some(
+                    "the sketch's rules conflict, so no profile can be trusted; resolve the conflict first"
+                        .to_string(),
+                )
+            });
+            return None;
+        }
+    }
+    match session.profile() {
+        Ok(segs) => {
+            let out = segs
+                .iter()
+                .map(|s| match s {
+                    crate::sketch::wires::WireSeg::Line { a, b } => build::ProfileSeg::Line { a: *a, b: *b },
+                    crate::sketch::wires::WireSeg::Arc { centre, radius, start, sweep } => build::ProfileSeg::Arc {
+                        centre: *centre,
+                        radius: *radius,
+                        start: *start,
+                        sweep: *sweep,
+                    },
+                })
+                .collect::<Vec<_>>();
+            let roles = (0..out.len()).map(|i| ("edge".to_string(), i)).collect();
+            Some((out, roles))
+        }
+        Err(r) => {
+            LAST_PRISM_REFUSAL.with(|lr| *lr.borrow_mut() = Some(r.sentence));
+            None
+        }
+    }
+}
+
 fn extruded_profile(sk: &Value) -> Option<(Vec<build::ProfileSeg>, Vec<(String, usize)>)> {
     if sk.get("shape").and_then(|s| s.as_str()) == Some("circle") {
         return None;
+    }
+    // SPEC-sketcher2 §5.3: soup rows first. A sketch carrying geoms solves
+    // through the sketch session and extrudes its DISCOVERED wire; the legacy
+    // `points` path below is for the ordered-polygon representation. A
+    // conflict (or any wire refusal) leaves a sentence in LAST_PRISM_REFUSAL
+    // for the extrude/pocket callers to surface per-feature.
+    if sk.get("geoms").and_then(|g| g.as_array()).map_or(false, |g| !g.is_empty()) {
+        return soup_profile(sk);
     }
     let (points, basis, work_bulges) = profile_corners(sk)?;
 
@@ -601,7 +678,12 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 let fr = sketch_frame(sk);
                 let dir = fr.dir;
                 let Some((solid, prism)) = extrude_prism(sk, "", height) else {
-                    refusals.insert(id.clone(), json!(format!("extrude {id}: sketch {target} has no usable outline")));
+                    // A soup sketch's wire refusal names the real problem
+                    // (conflict, unsatisfiable rules); the legacy path's
+                    // fixed sentence stands when no soup ran.
+                    let sentence = LAST_PRISM_REFUSAL.with(|lr| lr.borrow().clone())
+                        .unwrap_or_else(|| format!("sketch {target} has no usable outline"));
+                    refusals.insert(id.clone(), json!(format!("extrude {id}: {sentence}")));
                     continue;
                 };
                 match prism {
@@ -668,7 +750,9 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 // pocket down (occt-build.ts's `h = -f.depth * a.dir`). The tool
                 // is oriented outward by extrude_prism, then cut from the base.
                 let Some((tool, _)) = extrude_prism(sk, "", -depth) else {
-                    refusals.insert(id.clone(), json!(format!("pocket {id}: sketch {target} has no usable outline")));
+                    let sentence = LAST_PRISM_REFUSAL.with(|lr| lr.borrow().clone())
+                        .unwrap_or_else(|| format!("sketch {target} has no usable outline"));
+                    refusals.insert(id.clone(), json!(format!("pocket {id}: {sentence}")));
                     continue;
                 };
                 match ops::boolean("subtract", &base, &tool) {
@@ -3108,6 +3192,71 @@ mod tests {
         }
     }
 
+    /// SPEC-sketcher2 §5.3: a sketch carrying SOUP rows (geoms + rules)
+    /// extrudes from the SOLVED wire, not from any `points` field. A 40x25
+    /// soup square with coincidents + H + V solves to the same 12000 mm^3
+    /// prism, 6 faces, as the legacy polygon -- the two representations are
+    /// one sketch format, not two features.
+    #[test]
+    fn soup_sketch_extrudes_from_solved_wire() {
+        let doc = json!({
+            "features": [
+                {
+                    "id": "sk1", "kind": "sketch", "plane": "xy", "offset": 0.0,
+                    "geoms": [
+                        { "k": "line", "id": 1, "a": [0.0, 0.0], "b": [40.0, 0.0] },
+                        { "k": "line", "id": 2, "a": [40.0, 0.0], "b": [40.0, 25.0] },
+                        { "k": "line", "id": 3, "a": [40.0, 25.0], "b": [0.0, 25.0] },
+                        { "k": "line", "id": 4, "a": [0.0, 25.0], "b": [0.0, 0.0] }
+                    ],
+                    "rules": [
+                        { "k": "coincident", "a": 1, "aEnd": "b", "b": 2, "bEnd": "a" },
+                        { "k": "coincident", "a": 2, "aEnd": "b", "b": 3, "bEnd": "a" },
+                        { "k": "coincident", "a": 3, "aEnd": "b", "b": 4, "bEnd": "a" },
+                        { "k": "coincident", "a": 4, "aEnd": "b", "b": 1, "bEnd": "a" },
+                        { "k": "horizontal", "a": 1 },
+                        { "k": "vertical", "a": 2 }
+                    ]
+                },
+                { "id": "e1", "kind": "extrude", "target": "sk1", "height": 12.0 }
+            ]
+        });
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "refusals: {refusals:?}");
+        let solid = hist.shapes.get("e1").expect("soup extrude must build");
+        let vol = build::solid_volume(solid);
+        assert!((vol - 12000.0).abs() <= 1e-6 * 12000.0, "volume {vol} vs 12000");
+        assert_eq!(solid.faces().len(), 6, "a swept soup rectangle is 6 faces");
+    }
+
+    /// A soup sketch whose rules CONFLICT refuses its extrude with the wire
+    /// refusal sentence (refusal 11's gate moved to build time): the profile
+    /// of a conflicting sketch cannot be trusted, so extruding one would be
+    /// the wrong-solid defect with extra steps.
+    #[test]
+    fn soup_sketch_conflicting_extrude_refuses_with_sentence() {
+        let doc = json!({
+            "features": [
+                {
+                    "id": "sk1", "kind": "sketch", "plane": "xy", "offset": 0.0,
+                    "geoms": [
+                        { "k": "point", "id": 1, "p": [0.0, 0.0] },
+                        { "k": "point", "id": 2, "p": [40.0, 0.0] }
+                    ],
+                    "rules": [
+                        { "k": "distance", "a": 1, "aEnd": "a", "b": 2, "bEnd": "a", "value": 40 },
+                        { "k": "distance", "a": 1, "aEnd": "a", "b": 2, "bEnd": "a", "value": 20 }
+                    ]
+                },
+                { "id": "e1", "kind": "extrude", "target": "sk1", "height": 12.0 }
+            ]
+        });
+        let (_hist, refusals) = build_doc(&doc);
+        assert!(refusals.contains_key("e1"), "the extrude must refuse: {refusals:?}");
+        let msg = refusals.get("e1").and_then(|v| v.as_str()).unwrap_or("");
+        assert!(msg.contains("conflict") || msg.contains("conflicting"), "the refusal names the conflict: {msg}");
+    }
+
     /// SPEC-brep-blend.md fixture: a square frustum, square 40 at z=0 to
     /// square 10 at z=30. OCCT lead-measures 21000 (= h/3 * (A1+A2+sqrt(A1*A2))
     /// = 10*(1600+100+400)), 6 faces, bbox x/y [-20,20], z [0,30].
@@ -3910,3 +4059,4 @@ pub fn sketch_close(h: u32) {
         }
     });
 }
+

@@ -1886,6 +1886,20 @@ pub fn extrude_profile(
                 } else {
                     (scale(u_axis, -1.0), scale(v_axis, -1.0))
                 };
+                // A NEGATIVE span is legal wire data: the soup wire stores
+                // each arc in its own travel orientation, and a ccw outline
+                // can legitimately walk one cap clockwise (a slot's inner
+                // half). The wall's (u, v) domain needs u0 < u1 regardless,
+                // or mesh_curved_face's `u1 <= u0` gate refuses to
+                // tessellate the face and the whole solid goes unmeshable.
+                // Sort the span into the domain and flip the use ranges to
+                // match; the boundary walk direction itself lives in the
+                // uses and is untouched.
+                let (u_lo, u_hi) = if *sw >= 0.0 {
+                    (*start, *start + *sw)
+                } else {
+                    (*start + *sw, *start)
+                };
                 let wall = Surface::Cylinder(Cylinder {
                     origin: centre_w,
                     axis: sweep_unit,
@@ -1903,7 +1917,7 @@ pub fn extrude_profile(
                 uses.push(cyl_arc_use(&vert[j], true, *start + *sw, *start + *sw, 0.0, height));
                 uses.push(cyl_arc_use(&e_top[i], false, *start + *sw, *start, height, height));
                 uses.push(cyl_arc_use(&vert[i], false, *start, *start, height, 0.0));
-                faces.push(make_face(wall, [[*start, *start + *sw], [0.0, height]], uses));
+                faces.push(make_face(wall, [[u_lo, u_hi], [0.0, height]], uses));
             }
         }
     }

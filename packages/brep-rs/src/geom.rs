@@ -697,8 +697,16 @@ impl Surface {
         match self {
             Surface::Plane(_) => ([0.0, 0.0], [0.0, 0.0]),
             Surface::Cylinder(c) => {
+                // A partial arc's span can be NEGATIVE (the soup wire stores
+                // each arc in its own travel orientation, and a ccw outline
+                // can walk one cap clockwise). The domain is a BOX; sort the
+                // range so u1 > u0 regardless of the walk direction, or
+                // mesh_curved_face's `u1 <= u0` gate refuses to tessellate
+                // the wall and the whole solid goes unmeshable. The uses'
+                // pcurve start/end still carry the travel direction.
                 let ur = match &c.arc {
-                    Some(a) => [a.start, a.start + a.span],
+                    Some(a) if a.span >= 0.0 => [a.start, a.start + a.span],
+                    Some(a) => [a.start + a.span, a.start],
                     None => [0.0, two_pi],
                 };
                 (ur, [c.vmin, c.vmax])
