@@ -779,19 +779,34 @@ pub fn edge_length_centroid(edge: &Edge<Curve3>) -> (f64, Vec3) {
 // the way a boolean later expects (§4.2).
 // ---------------------------------------------------------------------------
 
+/// One face assembled from a surface, a uv domain and one wire per boundary
+/// loop: the first is the outer wire and the rest are holes, as `topo::Face`
+/// documents. A hole wire must oppose the outer's winding -- see
+/// `extrude_profile_loops`, which is where that gets established.
+fn make_face_multi(
+    surface: Surface,
+    uv_domain: [[f64; 2]; 2],
+    uses_per_wire: Vec<Vec<topo::EdgeUse<Curve3>>>,
+) -> TFace {
+    let boundary = uses_per_wire
+        .into_iter()
+        .map(|uses| Rc::new(RefCell::new(Wire { edges: uses })))
+        .collect();
+    Rc::new(RefCell::new(Face {
+        boundary,
+        forward: true,
+        surface,
+        uv_domain,
+    }))
+}
+
 /// One face assembled from a surface, a uv domain and a boundary of edge uses.
 fn make_face(
     surface: Surface,
     uv_domain: [[f64; 2]; 2],
     uses: Vec<topo::EdgeUse<Curve3>>,
 ) -> TFace {
-    let wref = Rc::new(RefCell::new(Wire { edges: uses }));
-    Rc::new(RefCell::new(Face {
-        boundary: vec![wref],
-        forward: true,
-        surface,
-        uv_domain,
-    }))
+    make_face_multi(surface, uv_domain, vec![uses])
 }
 
 
@@ -1682,11 +1697,467 @@ impl ProfileSeg {
     }
 }
 
-/// Extrude a profile (a closed loop of straight and circular segments) given in
-/// the sketch plane's (u, v), along `sweep`. The solid spans from the profile
-/// to the profile translated by `sweep`, matching OCCT's MakePrism. Returns
-/// `Err` naming the problem, rather than a wrong or garbage solid, when the
-/// profile cannot be trusted to close (SPEC-sketcher2 §7).
+// ---------------------------------------------------------------------------
+// SPEC-sketcher2 §8.2: a profile is one OUTER loop plus N INNER hole loops --
+// a washer. Everything below works per loop (`(i + 1) % this_loop.len()`,
+// never one flat index) and the two caps carry one wire per loop.
+// ---------------------------------------------------------------------------
+
+/// The loop's signed area x2: the chord shoelace plus each arc's own circular
+/// segment. §7.1: the chords of a circle built from two diametral arcs sum to
+/// exactly 0, so a chord-only shoelace cannot tell CW from CCW.
+fn loop_area2(segs: &[ProfileSeg]) -> f64 {
+    let mut a2 = 0.0;
+    for s in segs {
+        let (p, q) = s.endpoints();
+        a2 += p[0] * q[1] - q[0] * p[1];
+        if let ProfileSeg::Arc { radius, sweep, .. } = s {
+            a2 += radius * radius * (sweep - sweep.sin());
+        }
+    }
+    a2
+}
+
+/// The same loop walked the other way: every segment reversed, in reverse
+/// order. An arc starts where it ended, runs the opposite sense, and sweeps
+/// the negated amount.
+fn reverse_loop(segs: &[ProfileSeg]) -> Vec<ProfileSeg> {
+    let mut out: Vec<ProfileSeg> = Vec::with_capacity(segs.len());
+    for s in segs.iter().rev() {
+        match s {
+            ProfileSeg::Line { a, b } => out.push(ProfileSeg::Line { a: *b, b: *a }),
+            ProfileSeg::Arc { centre, radius, start, sweep } => out.push(ProfileSeg::Arc {
+                centre: *centre,
+                radius: *radius,
+                start: *start + *sweep,
+                sweep: -*sweep,
+            }),
+        }
+    }
+    out
+}
+
+/// A loop sampled into a closed polyline. This exists ONLY so the nesting
+/// gates below can ask "is this point inside that loop"; no face is ever built
+/// from it, so §4.4's ban on faceted geometry is untouched.
+fn loop_polyline(segs: &[ProfileSeg]) -> Vec<[f64; 2]> {
+    let two_pi = 2.0 * std::f64::consts::PI;
+    let mut pts: Vec<[f64; 2]> = Vec::new();
+    for s in segs {
+        match s {
+            ProfileSeg::Line { a, .. } => pts.push(*a),
+            ProfileSeg::Arc { centre, radius, start, sweep } => {
+                // 64 chords per full turn puts the sagitta at 0.12% of the
+                // radius: a hole that close to a wall is a defect either way.
+                // Clamped at both ends so a garbage sweep cannot ask for a
+                // huge allocation or divide by zero.
+                let steps = (sweep.abs() / two_pi * 64.0).ceil().max(4.0).min(256.0);
+                let k_max = steps as usize;
+                for k in 0..k_max {
+                    let t = start + sweep * (k as f64) / (k_max as f64);
+                    pts.push([centre[0] + radius * t.cos(), centre[1] + radius * t.sin()]);
+                }
+            }
+        }
+    }
+    pts
+}
+
+/// Crossing-number point-in-polygon. A point on an edge is not "inside": the
+/// gates want STRICTLY inside, and a hole that touches its outline is not a
+/// washer.
+fn point_in_polyline(p: [f64; 2], poly: &[[f64; 2]]) -> bool {
+    let n = poly.len();
+    if n < 3 {
+        return false;
+    }
+    let mut inside = false;
+    for i in 0..n {
+        let a = poly[i];
+        let b = poly[(i + 1) % n];
+        if (a[1] > p[1]) != (b[1] > p[1]) {
+            let dv = b[1] - a[1];
+            if dv != 0.0 {
+                let x = a[0] + (p[1] - a[1]) / dv * (b[0] - a[0]);
+                if p[0] < x {
+                    inside = !inside;
+                }
+            }
+        }
+    }
+    inside
+}
+
+/// How many of `inner`'s sampled points land inside `outer`. All of them is
+/// nesting, none is disjoint, and anything between is a crossing.
+fn points_inside(inner: &[[f64; 2]], outer: &[[f64; 2]]) -> usize {
+    inner.iter().filter(|p| point_in_polyline(**p, outer)).count()
+}
+
+/// The centre of a loop's bounding box -- the position a refusal names, so the
+/// sentence points at something on screen instead of at a loop index.
+fn loop_marker(poly: &[[f64; 2]]) -> [f64; 2] {
+    let mut lo = [f64::MAX; 2];
+    let mut hi = [f64::MIN; 2];
+    for p in poly {
+        for k in 0..2 {
+            lo[k] = lo[k].min(p[k]);
+            hi[k] = hi[k].max(p[k]);
+        }
+    }
+    if lo[0] > hi[0] {
+        return [0.0, 0.0];
+    }
+    [(lo[0] + hi[0]) / 2.0, (lo[1] + hi[1]) / 2.0]
+}
+
+/// Extrude a profile of one OUTER loop plus any number of INNER hole loops --
+/// a washer -- given in the sketch plane's (u, v), along `sweep`. `loops[0]`
+/// is the outline; every later loop is a hole through it. The solid spans from
+/// the profile to the profile translated by `sweep`, matching OCCT's MakePrism.
+/// Returns `Err` naming the problem, rather than a wrong or garbage solid,
+/// when a loop cannot be trusted to close or the holes are not simply nested
+/// inside the outline (§7, §8.2).
+pub fn extrude_profile_loops(
+    loops: &[Vec<ProfileSeg>],
+    origin: Vec3,
+    u_axis: Vec3,
+    v_axis: Vec3,
+    sweep: Vec3,
+) -> Result<TSolid, String> {
+    let no_outline = || "an outline needs at least one closed loop".to_string();
+    // A scale for the emit gate: the sketch's own extent in the plane, floored
+    // at 1.0 so a unit sketch never reads as degenerate. ONE scale for all the
+    // loops, not one each -- the weld tolerance has to mean the same distance
+    // on a hole as on the outline.
+    let mut hi = [f64::MIN; 2];
+    let mut lo = [f64::MAX; 2];
+    for lp in loops {
+        for s in lp {
+            let (p, q) = s.endpoints();
+            for pt in [p, q] {
+                for k in 0..2 {
+                    hi[k] = hi[k].max(pt[k]);
+                    lo[k] = pt[k].min(lo[k]);
+                }
+            }
+        }
+    }
+    if lo[0] > hi[0] {
+        return Err(no_outline());
+    }
+    let profile_scale = ((hi[0] - lo[0]) * (hi[1] - lo[1]))
+        .sqrt()
+        .max(1.0);
+    let eps_weld = 1e-7 * profile_scale;
+
+    // ---- §7 guards and winding, PER LOOP ----
+    // The outline is normalised CCW and every hole CW, so on either cap a
+    // hole's wire opposes the outer's. That relative convention is
+    // `revolve_profile`'s annulus: the outer wire is pushed first with
+    // `forward: nh >= 0.0` (build.rs:2435) and the bore gets the exact
+    // opposite, `forward: nh < 0.0` (build.rs:2449), so relative to the face's
+    // own outward normal the outer runs CCW and the hole runs CW. It has to
+    // hold: `geom::planar_measure` sums EVERY wire of a face, so a hole wound
+    // WITH its outer adds its area instead of subtracting it, and the volume
+    // comes out wrong with nothing anywhere to catch it.
+    let mut rings: Vec<Vec<ProfileSeg>> = Vec::with_capacity(loops.len());
+    for (li, lp) in loops.iter().enumerate() {
+        let outer = li == 0;
+        let n = lp.len();
+        let here = || {
+            let m = loop_marker(&loop_polyline(lp));
+            format!("({:.1}, {:.1}) mm", m[0], m[1])
+        };
+        if n == 0 {
+            return Err(if outer {
+                no_outline()
+            } else {
+                "a hole needs at least one segment".to_string()
+            });
+        }
+        // n == 1: (0 + 1) % 1 == 0, so the lone edge runs base_v[0] ->
+        // base_v[0] and the loop cannot close -- a full-circle arc included,
+        // which is why a bore is spelled as two half arcs. Same reading for
+        // n == 2: a straight there-and-back digon has zero enclosed area and
+        // is refused, while two half-circle arcs are a legitimate circle.
+        if n == 1 {
+            return Err(if outer {
+                "a single segment cannot close an outline".to_string()
+            } else {
+                format!(
+                    "the hole near {} is a single segment and cannot close; use two arcs",
+                    here()
+                )
+            });
+        }
+        if n == 2 && lp.iter().all(|s| matches!(s, ProfileSeg::Line { .. })) {
+            return Err(if outer {
+                "a 2-gon has no interior and must refuse".to_string()
+            } else {
+                format!("the hole near {} is a 2-gon and has no interior", here())
+            });
+        }
+        let a2 = loop_area2(lp);
+        if !outer && a2.abs() < 1e-12 * profile_scale * profile_scale {
+            return Err(format!("the hole near {} encloses no area", here()));
+        }
+        // §7.1: walls and caps are built assuming the walk goes one way, and a
+        // loop walked the other way produces an inside-out solid even with a
+        // winding flag set, because a negative span double-flips the
+        // cylinder's own (u, v) walk. Normalize instead: the loop is reversed
+        // into its twin before any face is built, so every downstream path
+        // sees the one orientation it was written for.
+        rings.push(if (a2 < 0.0) == outer {
+            reverse_loop(lp)
+        } else {
+            lp.to_vec()
+        });
+    }
+
+    // §7.2 emit gate, per loop: ProfileSeg carries no endpoints, so
+    // `endpoints()` RECOMPUTES them, and nothing checked that segment i's end
+    // agrees with segment i+1's start. A solve that moved an endpoint after
+    // the profile was serialized used to build a gapped wire silently; now it
+    // refuses and names both segments and the gap.
+    for (li, ring) in rings.iter().enumerate() {
+        let n = ring.len();
+        for i in 0..n {
+            let j = (i + 1) % n;
+            let (_, end_i) = ring[i].endpoints();
+            let (start_j, _) = ring[j].endpoints();
+            let gap = ((end_i[0] - start_j[0]).powi(2) + (end_i[1] - start_j[1]).powi(2)).sqrt();
+            if gap <= eps_weld {
+                continue;
+            }
+            if li == 0 {
+                return Err(format!(
+                    "segment {i}'s end and segment {j}'s start are {gap:.3} mm apart; the profile does not close"
+                ));
+            }
+            let m = loop_marker(&loop_polyline(ring));
+            return Err(format!(
+                "the hole near ({:.1}, {:.1}) mm does not close: segment {i}'s end and segment {j}'s start are {gap:.3} mm apart",
+                m[0], m[1]
+            ));
+        }
+    }
+
+    // ---- §8.2 nesting, the build-layer backstop ----
+    // The sketch layer will say this in its own words later. Refusing here is
+    // what stops a hole that wanders outside its outline, or an island inside
+    // a hole, from becoming a solid nobody asked for.
+    let polys: Vec<Vec<[f64; 2]>> = rings.iter().map(|r| loop_polyline(r)).collect();
+    let Some(outer_poly) = polys.first() else {
+        return Err(no_outline());
+    };
+    for (li, poly) in polys.iter().enumerate().skip(1) {
+        let m = loop_marker(poly);
+        if points_inside(poly, outer_poly) != poly.len() {
+            return Err(format!(
+                "the hole near ({:.1}, {:.1}) mm is not fully inside the outline; move it in, or make the outline bigger",
+                m[0], m[1]
+            ));
+        }
+        for (lj, other) in polys.iter().enumerate().skip(1) {
+            if lj == li {
+                continue;
+            }
+            let n_in = points_inside(poly, other);
+            let mo = loop_marker(other);
+            if n_in == poly.len() {
+                return Err(format!(
+                    "the shape near ({:.1}, {:.1}) mm sits inside the hole near ({:.1}, {:.1}) mm; an island inside a hole is not a shape this builds",
+                    m[0], m[1], mo[0], mo[1]
+                ));
+            }
+            if n_in > 0 {
+                return Err(format!(
+                    "the holes near ({:.1}, {:.1}) mm and ({:.1}, {:.1}) mm overlap; merge them into one hole",
+                    m[0], m[1], mo[0], mo[1]
+                ));
+            }
+        }
+    }
+
+    // ---- build ----
+    let at = |p: [f64; 2]| add(origin, add(scale(u_axis, p[0]), scale(v_axis, p[1])));
+    let sweep_unit = crate::math::normalize(sweep);
+    let height = crate::math::len(sweep);
+    // A wall's outward normal must be independent of the sweep's sign: the cap
+    // normals below (base = -sweep_unit, top = +sweep_unit) do not reverse when
+    // the sweep does, and a normal of `cross(edge, sweep)` WOULD, turning every
+    // wall inside-out for a negative sweep (a pocket). Read the walk's own
+    // direction in the plane's true (right-handed) frame instead. Every loop is
+    // normalised above so the material is to the RIGHT of travel -- CCW for the
+    // outline, CW for a hole -- which is one rule for both.
+    let frame_normal = crate::math::normalize(cross(u_axis, v_axis));
+
+    let Some(first_seg) = rings.first().and_then(|r| r.first()) else {
+        return Err(no_outline());
+    };
+    // Caps. Base's outward normal is -sweep, top's is +sweep. Both planes are
+    // pinned to the outline, not to a hole.
+    let base_plane = Plane::new(at(first_seg.endpoints().0), scale(sweep_unit, -1.0));
+    let top_plane = Plane::new(add(at(first_seg.endpoints().0), sweep), sweep_unit);
+
+    let mut faces: Vec<TFace> = Vec::new();
+    let mut base_wires: Vec<Vec<topo::EdgeUse<Curve3>>> = Vec::with_capacity(rings.len());
+    let mut top_wires: Vec<Vec<topo::EdgeUse<Curve3>>> = Vec::with_capacity(rings.len());
+
+    for ring in &rings {
+        let n = ring.len();
+        // One 3D curve per base and top segment. These stay in world terms and
+        // are shared with the caps, so nothing here knows about hole frames.
+        let base_curve = |s: &ProfileSeg| -> Curve {
+            match s {
+                ProfileSeg::Line { a, b } => Curve::Segment { a: at(*a), b: at(*b) },
+                ProfileSeg::Arc { centre, radius, start, sweep } => Curve::Arc {
+                    center: at(*centre),
+                    radius: *radius,
+                    normal: sweep_unit,
+                    // Curve::Arc always begins at angle 0 from its x_axis, so
+                    // the axis is rotated to the arc's own start angle;
+                    // otherwise the edge would be the arc reflected back to
+                    // angle 0.
+                    x_axis: add(scale(u_axis, start.cos()), scale(v_axis, start.sin())),
+                    sweep: *sweep,
+                },
+            }
+        };
+        let top_curve = |s: &ProfileSeg| -> Curve {
+            match base_curve(s) {
+                Curve::Segment { a, b } => Curve::Segment { a: add(a, sweep), b: add(b, sweep) },
+                Curve::Arc { center, radius, normal, x_axis, sweep: sw } => Curve::Arc {
+                    center: add(center, sweep),
+                    radius,
+                    normal,
+                    x_axis,
+                    sweep: sw,
+                },
+                _ => base_curve(s),
+            }
+        };
+
+        let base_v: Vec<topo::VertexRef> = ring
+            .iter()
+            .map(|s| topo::vertex(at(s.endpoints().0)))
+            .collect();
+        let top_v: Vec<topo::VertexRef> = base_v
+            .iter()
+            .map(|v| topo::vertex(add(v.borrow().point, sweep)))
+            .collect();
+        let e_base: Vec<TEdge> = (0..n)
+            .map(|i| topo::edge(base_v[i].clone(), base_v[(i + 1) % n].clone(), true, base_curve(&ring[i])))
+            .collect();
+        let e_top: Vec<TEdge> = (0..n)
+            .map(|i| topo::edge(top_v[i].clone(), top_v[(i + 1) % n].clone(), true, top_curve(&ring[i])))
+            .collect();
+        let vert: Vec<TEdge> = (0..n)
+            .map(|i| {
+                let (a, b) = (base_v[i].borrow().point, top_v[i].borrow().point);
+                topo::edge(base_v[i].clone(), top_v[i].clone(), true, Curve::Segment { a, b })
+            })
+            .collect();
+
+        for i in 0..n {
+            let j = (i + 1) % n;
+            let (a_uv, b_uv) = ring[i].endpoints();
+            let (ab, bb) = (at(a_uv), at(b_uv));
+            match &ring[i] {
+                ProfileSeg::Line { .. } => {
+                    let edge_world = sub(bb, ab);
+                    // Right of travel, which is the material's side on every
+                    // normalised loop, hole included.
+                    let nrm = crate::math::normalize(cross(edge_world, frame_normal));
+                    let plane = Plane::new(ab, nrm);
+                    let uses = vec![
+                        planar_seg_use(&plane, &e_base[i], true, ab, bb),
+                        planar_seg_use(&plane, &vert[j], true, base_at(&base_v[j]), base_at(&top_v[j])),
+                        planar_seg_use(&plane, &e_top[i], false, base_at(&top_v[j]), base_at(&top_v[i])),
+                        planar_seg_use(&plane, &vert[i], false, base_at(&top_v[i]), base_at(&base_v[i])),
+                    ];
+                    faces.push(make_face(Surface::Plane(plane), [[0.0, 1.0], [0.0, 1.0]], uses));
+                }
+                ProfileSeg::Arc { centre, radius, start, sweep: sw } => {
+                    let centre_w = at(*centre);
+                    // A NEGATIVE span is legal wire data: a hole is walked CW,
+                    // and a CCW outline can bite inward (a slot's inner half).
+                    // For such an arc the material is INSIDE the arc's own
+                    // circle, so the wall's normal has to aim at the arc's
+                    // centre. Measured with the right-handed (u_axis, v_axis)
+                    // frame, a half-circle bite of r=5 through a 40x40x10 block
+                    // contributed volume_term +785.40 where the exact answer is
+                    // -785.40, reading 16130.90 mm3 for a part that is
+                    // 15607.30. Flipping ONE frame axis flips cross(r_u, r_v)
+                    // to point at the axis: `revolve_profile` flips e1 for an
+                    // annulus's bore (build.rs:2371) and `reversed_face` flips
+                    // e2 (build.rs:700). e2 is the one that composes here --
+                    // with e2 negated the frame angle is just -theta, so the
+                    // arc's range and every pcurve negate along with it.
+                    let inward = *sw < 0.0;
+                    let (e1, e2) = if inward {
+                        (u_axis, scale(v_axis, -1.0))
+                    } else {
+                        (u_axis, v_axis)
+                    };
+                    let (t0, tsw) = if inward { (-*start, -*sw) } else { (*start, *sw) };
+                    // The (u, v) domain needs u0 < u1 or mesh_curved_face's
+                    // `u1 <= u0` gate refuses to tessellate the wall and the
+                    // whole solid goes unmeshable. Both branches leave tsw >= 0,
+                    // so this sort is belt and braces.
+                    let (u_lo, u_hi) = if tsw >= 0.0 { (t0, t0 + tsw) } else { (t0 + tsw, t0) };
+                    let wall = Surface::Cylinder(Cylinder {
+                        origin: centre_w,
+                        axis: sweep_unit,
+                        e1,
+                        e2,
+                        radius: *radius,
+                        vmin: 0.0,
+                        vmax: height,
+                        arc: Some(geom::ArcRange { start: t0, span: tsw }),
+                    });
+                    // The base and top arcs ride the cylinder's own (u, v)
+                    // space; the two vertical seams sit at constant angle.
+                    let uses = vec![
+                        cyl_arc_use(&e_base[i], true, t0, t0 + tsw, 0.0, height),
+                        cyl_arc_use(&vert[j], true, t0 + tsw, t0 + tsw, 0.0, height),
+                        cyl_arc_use(&e_top[i], false, t0 + tsw, t0, height, height),
+                        cyl_arc_use(&vert[i], false, t0, t0, height, 0.0),
+                    ];
+                    faces.push(make_face(wall, [[u_lo, u_hi], [0.0, height]], uses));
+                }
+            }
+        }
+
+        base_wires.push(
+            (0..n)
+                .map(|i| {
+                    let (a, b) = ring[i].endpoints();
+                    planar_seg_use(&base_plane, &e_base[i], true, at(a), at(b))
+                })
+                .collect(),
+        );
+        top_wires.push(
+            (0..n)
+                .map(|i| {
+                    let (a, b) = ring[i].endpoints();
+                    planar_seg_use(&top_plane, &e_top[i], true, add(at(a), sweep), add(at(b), sweep))
+                })
+                .collect(),
+        );
+    }
+
+    faces.push(make_face_multi(Surface::Plane(base_plane), [[0.0, 1.0], [0.0, 1.0]], base_wires));
+    faces.push(make_face_multi(Surface::Plane(top_plane), [[0.0, 1.0], [0.0, 1.0]], top_wires));
+
+    let shell = Rc::new(RefCell::new(Shell { faces }));
+    Ok(Solid { shells: vec![shell] })
+}
+
+/// Extrude one closed loop of straight and circular segments, given in the
+/// sketch plane's (u, v), along `sweep` -- the outline-only case of
+/// `extrude_profile_loops`, which is what most callers have.
 pub fn extrude_profile(
     segs: &[ProfileSeg],
     origin: Vec3,
@@ -1694,263 +2165,7 @@ pub fn extrude_profile(
     v_axis: Vec3,
     sweep: Vec3,
 ) -> Result<TSolid, String> {
-    let n = segs.len();
-    // ---- §7 guards: what the polygon path could never produce, a soup can ----
-    // n == 1: (0 + 1) % 1 == 0, so the lone edge runs base_v[0] -> base_v[0]
-    // and the profile cannot close -- UNLESS the lone segment is a full-circle
-    // arc, whose corrected shoelace area below is a real disk. Same reading
-    // for n == 2: a straight there-and-back digon has zero enclosed area and
-    // is refused, while two half-circle arcs are a legitimate circle.
-    let chord_area = |a: [f64; 2], b: [f64; 2]| a[0] * b[1] - b[0] * a[1];
-    let mut profile_area2 = 0.0;
-    for s in segs {
-        let (p, q) = s.endpoints();
-        profile_area2 += chord_area(p, q);
-        if let ProfileSeg::Arc { radius, sweep: sw, .. } = s {
-            profile_area2 += radius * radius * (sw - sw.sin());
-        }
-    }
-    // A scale for the emit gate: the profile's own extent in the plane,
-    // floored at 1.0 so a unit sketch never reads as degenerate.
-    let mut hi = [f64::MIN; 2];
-    let mut lo = [f64::MAX; 2];
-    for s in segs {
-        let (p, q) = s.endpoints();
-        for pt in [p, q] {
-            for k in 0..2 {
-                hi[k] = hi[k].max(pt[k]);
-                lo[k] = pt[k].min(lo[k]);
-            }
-        }
-    }
-    let profile_scale = ((hi[0] - lo[0]) * (hi[1] - lo[1]))
-        .sqrt()
-        .max(1.0);
-    let eps_weld = 1e-7 * profile_scale;
-    if n == 1 {
-        return Err("a single segment cannot close an outline".to_string());
-    }
-    if n == 2 {
-        let both_lines = segs.iter().all(|s| matches!(s, ProfileSeg::Line { .. }));
-        if both_lines {
-            return Err("a 2-gon has no interior and must refuse".to_string());
-        }
-    }
-    // §7.1 (the rest of the fix): walls and caps are built assuming the walk
-    // goes CCW with positive arc spans, and a CW arc chain otherwise produces
-    // an inside-out solid even with the winding flag set, because a negative
-    // span double-flips the cylinder's own (u, v) walk. Normalize instead:
-    // a CW profile is reversed into its CCW twin before any face is built, so
-    // every downstream path sees the one orientation it was written for.
-    let segs: Vec<ProfileSeg> = if profile_area2 < 0.0 {
-        let mut out: Vec<ProfileSeg> = Vec::with_capacity(segs.len());
-        for i in (0..segs.len()).rev() {
-            let (p, q) = segs[i].endpoints();
-            match &segs[i] {
-                ProfileSeg::Line { .. } => out.push(ProfileSeg::Line { a: q, b: p }),
-                ProfileSeg::Arc { centre, radius, start, sweep } => {
-                    // The same arc walked the other way: it starts where the
-                    // original ended, runs the opposite sense, and sweeps the
-                    // negated amount.
-                    out.push(ProfileSeg::Arc {
-                        centre: *centre,
-                        radius: *radius,
-                        start: *start + *sweep,
-                        sweep: -*sweep,
-                    });
-                }
-            }
-        }
-        out
-    } else {
-        segs.to_vec()
-    };
-    let n = segs.len();
-    let at = |p: [f64; 2]| add(origin, add(scale(u_axis, p[0]), scale(v_axis, p[1])));
-    let sweep_unit = crate::math::normalize(sweep);
-    let height = crate::math::len(sweep);
-
-    let base_v: Vec<topo::VertexRef> = segs
-        .iter()
-        .map(|s| topo::vertex(at(s.endpoints().0)))
-        .collect();
-    let top_v: Vec<topo::VertexRef> = base_v
-        .iter()
-        .map(|v| topo::vertex(add(v.borrow().point, sweep)))
-        .collect();
-
-    // One 3D curve per base and top segment.
-    let base_curve = |s: &ProfileSeg| -> Curve {
-        match s {
-            ProfileSeg::Line { a, b } => Curve::Segment { a: at(*a), b: at(*b) },
-            ProfileSeg::Arc { centre, radius, start, sweep } => Curve::Arc {
-                center: at(*centre),
-                radius: *radius,
-                normal: sweep_unit,
-                // Curve::Arc always begins at angle 0 from its x_axis, so the
-                // axis is rotated to the arc's own start angle; otherwise the
-                // edge would be the arc reflected back to angle 0.
-                x_axis: add(scale(u_axis, start.cos()), scale(v_axis, start.sin())),
-                sweep: *sweep,
-            },
-        }
-    };
-    let top_curve = |s: &ProfileSeg| -> Curve {
-        match base_curve(s) {
-            Curve::Segment { a, b } => Curve::Segment { a: add(a, sweep), b: add(b, sweep) },
-            Curve::Arc { center, radius, normal, x_axis, sweep: sw } => Curve::Arc {
-                center: add(center, sweep),
-                radius,
-                normal,
-                x_axis,
-                sweep: sw,
-            },
-            _ => base_curve(s),
-        }
-    };
-
-    let e_base: Vec<TEdge> = (0..n)
-        .map(|i| topo::edge(base_v[i].clone(), base_v[(i + 1) % n].clone(), true, base_curve(&segs[i])))
-        .collect();
-    let e_top: Vec<TEdge> = (0..n)
-        .map(|i| topo::edge(top_v[i].clone(), top_v[(i + 1) % n].clone(), true, top_curve(&segs[i])))
-        .collect();
-    let vert: Vec<TEdge> = (0..n)
-        .map(|i| {
-            let (a, b) = (base_v[i].borrow().point, top_v[i].borrow().point);
-            topo::edge(base_v[i].clone(), top_v[i].clone(), true, Curve::Segment { a, b })
-        })
-        .collect();
-
-    let mut faces: Vec<TFace> = Vec::new();
-    // A wall's outward normal must be independent of the sweep's sign: the cap
-    // normals below (base = -sweep_unit, top = +sweep_unit) do not reverse when
-    // the sweep does, and a normal of `cross(edge, sweep)` WOULD, turning every
-    // wall inside-out for a negative sweep (a pocket). Read the profile's own
-    // winding in the plane's true (right-handed) frame instead: for a CCW uv
-    // profile the outward side is to the right of travel.
-    let frame_normal = crate::math::normalize(cross(u_axis, v_axis));
-    // §7.1: the chord-only shoelace is exactly 0 for a circle built from two
-    // diametral arcs, so the CW version used to come out inside-out. The arc
-    // contributes its circular-segment area r^2 (sweep - sin sweep) beyond the
-    // chord, which makes the sum exact for any arc chain (a full circle from
-    // one arc of sweep 2*pi contributes r^2 * 2*pi = 2 * pi r^2; a half-disk
-    // contributes r^2 * pi = 2 * (pi r^2 / 2)).
-    let mut a2 = profile_area2;
-    let winding = if a2 >= 0.0 { 1.0 } else { -1.0 };
-    // §7.2 emit gate: ProfileSeg carries no endpoints, so `endpoints()`
-    // RECOMPUTES them, and nothing checked that segment i's end agrees with
-    // segment i+1's start. A solve that moved an endpoint after the profile
-    // was serialized used to build a gapped wire silently; now it refuses and
-    // names both segments and the gap.
-    for i in 0..n {
-        let j = (i + 1) % n;
-        let (_, end_i) = segs[i].endpoints();
-        let (start_j, _) = segs[j].endpoints();
-        let gap = ((end_i[0] - start_j[0]).powi(2) + (end_i[1] - start_j[1]).powi(2)).sqrt();
-        if gap > eps_weld {
-            return Err(format!(
-                "segment {i}'s end and segment {j}'s start are {gap:.3} mm apart; the profile does not close"
-            ));
-        }
-    }
-    for i in 0..n {
-        let j = (i + 1) % n;
-        let (a_uv, b_uv) = segs[i].endpoints();
-        let (ab, bb) = (at(a_uv), at(b_uv));
-        match &segs[i] {
-            ProfileSeg::Line { .. } => {
-                let edge_world = sub(bb, ab);
-                // Right of travel for a CCW profile, left for a CW one.
-                let nrm = crate::math::normalize(cross(scale(edge_world, winding), frame_normal));
-                let plane = Plane::new(ab, nrm);
-                let uses = vec![
-                    planar_seg_use(&plane, &e_base[i], true, ab, bb),
-                    planar_seg_use(&plane, &vert[j], true, base_at(&base_v[j]), base_at(&top_v[j])),
-                    planar_seg_use(&plane, &e_top[i], false, base_at(&top_v[j]), base_at(&top_v[i])),
-                    planar_seg_use(&plane, &vert[i], false, base_at(&top_v[i]), base_at(&base_v[i])),
-                ];
-                faces.push(make_face(Surface::Plane(plane), [[0.0, 1.0], [0.0, 1.0]], uses));
-            }
-            ProfileSeg::Arc { centre, radius, start, sweep: sw } => {
-                let centre_w = at(*centre);
-                // Which side of the wall is material decides the frame's
-                // HANDEDNESS, and the sweep's SIGN is what says which side.
-                // `r_u x r_v` of a right-handed (e1, e2, axis) frame points
-                // radially OUTWARD (e1 x axis = -e2, e2 x axis = e1). The
-                // profile is normalized to CCW above, so material is left of
-                // travel and the outward normal is right of it:
-                //   sweep > 0 -- the centre is left of travel, material lies
-                //     OUTSIDE the arc's circle, and outward IS radially out;
-                //   sweep < 0 -- the centre is right of travel, material lies
-                //     INSIDE it (a bore, or a bite cut into an edge), and the
-                //     outward normal must point AT the axis instead.
-                // Negating exactly ONE axis is what flips that. This branch
-                // used to negate BOTH on `winding < 0`, which is a rotation by
-                // pi and not a reflection: it left the handedness -- and so the
-                // sign of `Cylinder::volume_term` -- exactly as it was, and
-                // `winding` is always +1 by this point anyway, so it could
-                // never fire. Measured on a 40x40 square with a semicircular
-                // r5 bite (`concave_arc_wall_volume_is_exact`): the wall's term
-                // came out +250*pi where it must be -250*pi, for a volume of
-                // 16130.899694 against an exact 15607.300918 -- 3.35% wrong,
-                // refused by nothing.
-                // Negating e2 sends a world point at frame angle `theta` to
-                // `-theta`, so the arc's own range travels with it; that is the
-                // same axis, for the same reason, that `reversed_face` negates.
-                let inward = *sw < 0.0;
-                let (e1, e2) = if inward {
-                    (u_axis, scale(v_axis, -1.0))
-                } else {
-                    (u_axis, v_axis)
-                };
-                let (a0, span) = if inward { (-*start, -*sw) } else { (*start, *sw) };
-                // `span` is non-negative either way now, so the (u, v) domain
-                // comes out sorted on its own -- which is what
-                // mesh_curved_face's `u1 <= u0` gate needs (the reason the
-                // previous code sorted the span by hand here).
-                let (u_lo, u_hi) = (a0, a0 + span);
-                let wall = Surface::Cylinder(Cylinder {
-                    origin: centre_w,
-                    axis: sweep_unit,
-                    e1,
-                    e2,
-                    radius: *radius,
-                    vmin: 0.0,
-                    vmax: height,
-                    arc: Some(geom::ArcRange { start: a0, span }),
-                });
-                let mut uses = Vec::new();
-                // The base and top arcs ride the cylinder's own (u, v) space;
-                // the two vertical seams sit at constant angle.
-                uses.push(cyl_arc_use(&e_base[i], true, a0, a0 + span, 0.0, height));
-                uses.push(cyl_arc_use(&vert[j], true, a0 + span, a0 + span, 0.0, height));
-                uses.push(cyl_arc_use(&e_top[i], false, a0 + span, a0, height, height));
-                uses.push(cyl_arc_use(&vert[i], false, a0, a0, height, 0.0));
-                faces.push(make_face(wall, [[u_lo, u_hi], [0.0, height]], uses));
-            }
-        }
-    }
-    // Caps. Base's outward normal is -sweep, top's is +sweep.
-    let base_plane = Plane::new(at(segs[0].endpoints().0), scale(sweep_unit, -1.0));
-    let top_plane = Plane::new(add(at(segs[0].endpoints().0), sweep), sweep_unit);
-    let base_uses = (0..n)
-        .map(|i| {
-            let (a, b) = segs[i].endpoints();
-            planar_seg_use(&base_plane, &e_base[i], true, at(a), at(b))
-        })
-        .collect();
-    let top_uses = (0..n)
-        .map(|i| {
-            let (a, b) = segs[i].endpoints();
-            planar_seg_use(&top_plane, &e_top[i], true, add(at(a), sweep), add(at(b), sweep))
-        })
-        .collect();
-    faces.push(make_face(Surface::Plane(base_plane), [[0.0, 1.0], [0.0, 1.0]], base_uses));
-    faces.push(make_face(Surface::Plane(top_plane), [[0.0, 1.0], [0.0, 1.0]], top_uses));
-
-    let shell = Rc::new(RefCell::new(Shell { faces }));
-    Ok(Solid { shells: vec![shell] })
+    extrude_profile_loops(&[segs.to_vec()], origin, u_axis, v_axis, sweep)
 }
 
 /// Loft between two matching closed outlines given as world-space points,
@@ -2872,5 +3087,156 @@ mod tests {
         let want = (1600.0 + pi * 25.0 / 2.0) * 10.0;
         close(solid_volume(&s), want, 1e-9, "convex arc wall volume");
     }
-}
 
+    // SPEC-sketcher2 §8.2: a profile is one OUTER loop plus N INNER hole
+    // loops. The seam was a single flat `&[ProfileSeg]` indexed `(i+1)%n`,
+    // so a washer could not be spelled at all.
+
+    /// A 40 x 25 rectangle walked CCW from the origin corner.
+    fn washer_outer() -> Vec<ProfileSeg> {
+        vec![
+            ProfileSeg::Line { a: [0.0, 0.0], b: [40.0, 0.0] },
+            ProfileSeg::Line { a: [40.0, 0.0], b: [40.0, 25.0] },
+            ProfileSeg::Line { a: [40.0, 25.0], b: [0.0, 25.0] },
+            ProfileSeg::Line { a: [0.0, 25.0], b: [0.0, 0.0] },
+        ]
+    }
+
+    /// A radius-5 bore at the rectangle's centre, as TWO half-circle arcs.
+    /// One full-circle arc is not an option: the n == 1 guard refuses it
+    /// unconditionally, and two arcs is what the sketch layer's `circle_segs`
+    /// emits anyway. `ccw` picks the traversal sense.
+    fn washer_hole(ccw: bool) -> Vec<ProfileSeg> {
+        let pi = std::f64::consts::PI;
+        let s = if ccw { pi } else { -pi };
+        vec![
+            ProfileSeg::Arc { centre: [20.0, 12.5], radius: 5.0, start: 0.0, sweep: s },
+            ProfileSeg::Arc { centre: [20.0, 12.5], radius: 5.0, start: s, sweep: s },
+        ]
+    }
+
+    #[test]
+    fn extrude_profile_loops_washer_annulus_caps() {
+        let loops = vec![washer_outer(), washer_hole(true)];
+        let s = extrude_profile_loops(
+            &loops,
+            [0.0, 0.0, 0.0],
+            [1.0, 0.0, 0.0],
+            [0.0, 1.0, 0.0],
+            [0.0, 0.0, 12.0],
+        )
+        .expect("a rectangle with one bore is a valid washer profile");
+        let want = (1000.0 - 25.0 * std::f64::consts::PI) * 12.0;
+        close(solid_volume(&s), want, 1e-6, "washer volume");
+        let b = solid_aabb(&s);
+        for (got, want, what) in [
+            (b.lo[0], 0.0, "lo x"),
+            (b.lo[1], 0.0, "lo y"),
+            (b.lo[2], 0.0, "lo z"),
+            (b.hi[0], 40.0, "hi x"),
+            (b.hi[1], 25.0, "hi y"),
+            (b.hi[2], 12.0, "hi z"),
+        ] {
+            close(got, want, 1e-9, what);
+        }
+        // Four walls, two half-bore walls, two caps. A bore spelled as two
+        // half-arcs is two partial-cylinder faces, so OCCT's extrude-then-bore
+        // of the same washer reports one full cylinder wall and disagrees here
+        // by one face while agreeing on volume and bbox.
+        assert_eq!(s.faces().len(), 8, "washer face count");
+    }
+
+    #[test]
+    fn washer_hole_winding_is_normalised() {
+        // `planar_measure` sums every boundary wire of a cap, so a hole wound
+        // the same way as its outer ADDS its area instead of subtracting it --
+        // a wrong volume with no error anywhere. The hole's traversal sense is
+        // the caller's business, not the solid's.
+        let ccw = extrude_profile_loops(
+            &[washer_outer(), washer_hole(true)],
+            [0.0, 0.0, 0.0],
+            [1.0, 0.0, 0.0],
+            [0.0, 1.0, 0.0],
+            [0.0, 0.0, 12.0],
+        )
+        .expect("ccw-walked bore builds");
+        let cw = extrude_profile_loops(
+            &[washer_outer(), washer_hole(false)],
+            [0.0, 0.0, 0.0],
+            [1.0, 0.0, 0.0],
+            [0.0, 1.0, 0.0],
+            [0.0, 0.0, 12.0],
+        )
+        .expect("cw-walked bore builds");
+        close(solid_volume(&cw), solid_volume(&ccw), 1e-9, "bore winding is normalised");
+        assert_eq!(cw.faces().len(), ccw.faces().len(), "same solid either way");
+    }
+
+    #[test]
+    fn extrude_profile_single_loop_unchanged() {
+        // The wrapper's equivalence pin: one loop through the new path is the
+        // solid the old flat-slice path built, face for face.
+        let axes = ([0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 12.0]);
+        let one = extrude_profile_loops(&[washer_outer()], axes.0, axes.1, axes.2, axes.3)
+            .expect("a plain rectangle builds");
+        let flat = extrude_profile(&washer_outer(), axes.0, axes.1, axes.2, axes.3)
+            .expect("the wrapper builds the same rectangle");
+        close(solid_volume(&one), 12000.0, 1e-12, "single-loop volume");
+        close(solid_volume(&flat), 12000.0, 1e-12, "wrapper volume");
+        assert_eq!(one.faces().len(), flat.faces().len(), "same face count as the old path");
+    }
+
+
+
+    #[test]
+    fn hole_outside_the_outline_refuses() {
+        // §8.2 backstop: a bore centred past the outline's right wall. The
+        // caps would measure a wire that is not a hole at all, and the volume
+        // would be wrong with nothing to catch it -- refuse instead, naming
+        // where on the sketch to look.
+        let pi = std::f64::consts::PI;
+        let stray = vec![
+            ProfileSeg::Arc { centre: [50.0, 12.5], radius: 5.0, start: 0.0, sweep: pi },
+            ProfileSeg::Arc { centre: [50.0, 12.5], radius: 5.0, start: pi, sweep: pi },
+        ];
+        let r = extrude_profile_loops(
+            &[washer_outer(), stray],
+            [0.0, 0.0, 0.0],
+            [1.0, 0.0, 0.0],
+            [0.0, 1.0, 0.0],
+            [0.0, 0.0, 12.0],
+        );
+        let err = match r {
+            Ok(_) => panic!("a hole outside its outline must refuse, not build a wrong solid"),
+            Err(e) => e,
+        };
+        assert!(err.contains("50.0"), "the refusal names where the hole is: {err}");
+        assert!(err.contains("inside the outline"), "the refusal says what is wrong: {err}");
+    }
+
+    #[test]
+    fn island_inside_a_hole_refuses() {
+        // Nesting depth greater than 1: a small loop sitting inside the bore.
+        // Every loop after the first is a hole, so this one would be cut out
+        // of a void -- a shape the seam cannot express, and a refusal rather
+        // than a guess.
+        let pi = std::f64::consts::PI;
+        let island = vec![
+            ProfileSeg::Arc { centre: [20.0, 12.5], radius: 2.0, start: 0.0, sweep: pi },
+            ProfileSeg::Arc { centre: [20.0, 12.5], radius: 2.0, start: pi, sweep: pi },
+        ];
+        let r = extrude_profile_loops(
+            &[washer_outer(), washer_hole(true), island],
+            [0.0, 0.0, 0.0],
+            [1.0, 0.0, 0.0],
+            [0.0, 1.0, 0.0],
+            [0.0, 0.0, 12.0],
+        );
+        let err = match r {
+            Ok(_) => panic!("an island inside a hole must refuse"),
+            Err(e) => e,
+        };
+        assert!(err.contains("20.0"), "the refusal names where to look: {err}");
+        assert!(err.contains("inside the hole"), "the refusal says what is wrong: {err}");
+    }
+}
