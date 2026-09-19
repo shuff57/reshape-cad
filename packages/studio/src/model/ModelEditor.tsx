@@ -36,7 +36,6 @@ import {
   PenLine,
   MoveUp,
   PanelLeftClose,
-  Plus,
   RotateCw,
   Trash2,
   Undo2,
@@ -59,13 +58,12 @@ import {
   Move as MoveIcon,
   Copy as CopyIcon,
   SquareRoundCorner,
-  Square,
   Octagon,
-  Hexagon,
   Save,
   FolderOpen,
   Download,
   Eraser,
+  ArrowLeft,
 } from 'lucide-react';
 import SketchConstraints, { type RuleActions, type TouchedPart } from './SketchConstraints.js';
 import {
@@ -91,14 +89,12 @@ import {
   type RoundStyle,
   type SketchFeature,
   type SketchPlane,
-  addCorner,
   canRotate,
   dependsOn,
   extentAlong,
   isRoundable,
   maxRound,
   nameMap,
-  newCircleSketch,
   newExtrude,
   newHole,
   newHoleCorners,
@@ -110,7 +106,6 @@ import {
   newShell,
   newSketch,
   shellInsertion,
-  sketchBBoxCentre,
   whyCannotBlend,
   newMove,
   nextId,
@@ -162,16 +157,6 @@ interface Props {
   rollbackIndex?: number | null;
   /** Set the rollback boundary, or null to clear it (show the full model). */
   onRollback?: (i: number | null) => void;
-  /** Start a click-to-draw tool. The sandbox owns the draw state machine and
-   *  this just flips it on; the tool stays active until two clicks place a
-   *  shape or Escape cancels it. */
-  onStartDraw?: (tool: 'rect' | 'polygon') => void;
-  /** Which click-to-draw tool is currently armed, or null -- the sandbox's
-   *  own `drawTool` state, mirrored down so the Rectangle/Polygon buttons can
-   *  show they are waiting for a click rather than looking identical to
-   *  every other tool. Escape already clears the sandbox's own state (see
-   *  its own keydown listener), so this alone is what makes that visible. */
-  drawTool?: 'rect' | 'polygon' | null;
   /**
    * An edge picked in the 3D viewport (BrepViewportThree's `onPick`), lifted
    * up alongside `selected` for the same reason: the pick outlives any one
@@ -260,6 +245,16 @@ interface Props {
    *  the Rectangle/Polygon draw tool's own placement handler is there too. */
   activePlane: SketchPlane;
   onActivePlaneChange: (plane: SketchPlane) => void;
+  /** True while a sketch is open in the 2D constraint sketcher (ReshapeStudio's
+   *  sketchEditId is set). The ribbon shows only File/Edit and a Done button
+   *  while this holds, and Sketch/Circle route into 2D instead of the legacy
+   *  drag-corners-in-3D flow -- the clear 2D/3D tool divide this exists for. */
+  sketchMode?: boolean;
+  /** Create a sketch, then hand its id to the caller to open in the 2D
+   *  sketcher -- the caller owns sketchEditId (see sketchMode above). */
+  onOpenSketch2D?: (id: string) => void;
+  /** Leave the 2D sketcher and return to the 3D ribbon. */
+  onExitSketch2D?: () => void;
 }
 
 type BoolOp = 'union' | 'subtract' | 'intersect';
@@ -530,10 +525,11 @@ function FlyoutButton({
 }
 
 export default function ModelEditor({
-  doc, onChange, selected, onSelect, onUndo, onRedo, canUndo, canRedo, collapsible, onCollapsed, onContentChange, rollbackIndex, onRollback, onStartDraw, drawTool, pickedEdge, onClearPickedEdge, pickedFace, onClearPickedFace, pickedEdges, onClearPickedEdges, refusals,
+  doc, onChange, selected, onSelect, onUndo, onRedo, canUndo, canRedo, collapsible, onCollapsed, onContentChange, rollbackIndex, onRollback, pickedEdge, onClearPickedEdge, pickedFace, onClearPickedFace, pickedEdges, onClearPickedEdges, refusals,
   hoveredPart, onHoverPart, registerActions, registerContextActions, onTouch, historyGen,
   hasMesh, onExportSTL, onExportOBJ, onExport3MF,
   canClearModel, onClearModel, activePlane, onActivePlaneChange,
+  sketchMode, onOpenSketch2D, onExitSketch2D,
 }: Props) {
   const [note, setNote] = useState<string | null>(null);
   // Which single rule the student most recently set or changed in the Rules
@@ -911,28 +907,8 @@ export default function ModelEditor({
     const f = newSketch(doc, activePlane);
     onChange({ ...doc, features: [...doc.features, f] });
     setSelected([f.id]);
-    say('Drag the blue corners to shape it, then press Pull or Spin to make it solid.');
-  }
-
-  function startCircleSketch() {
-    // A circle born at the origin, next to a rectangle sitting somewhere
-    // else on the same plane, made "a circle at the rectangle's centre" a
-    // hand-typed-numbers exercise -- see newCircleSketch()'s own doc
-    // comment. Reuses `chosen`, not `activeSketch` (defined further down,
-    // after this function), for the exactly-one-sketch-selected case; a
-    // sketch that is the ONLY one in the document counts too, so drawing a
-    // rectangle and immediately pressing Circle (nothing explicitly
-    // selected yet beyond the rectangle newSketch() itself just selected)
-    // still centres on it.
-    const sketches = doc.features.filter((x): x is SketchFeature => x.kind === 'sketch');
-    const target: SketchFeature | null =
-      chosen.length === 1 && chosen[0].kind === 'sketch' ? (chosen[0] as SketchFeature)
-        : sketches.length === 1 ? sketches[0]
-          : null;
-    const f = newCircleSketch(doc, target?.plane ?? activePlane, target ? sketchBBoxCentre(target.points) : undefined);
-    onChange({ ...doc, features: [...doc.features, f] });
-    setSelected([f.id]);
-    say('Drag either handle to resize it, then press Pull or Spin to make it solid.');
+    say(null);
+    onOpenSketch2D?.(f.id);
   }
 
   function pull() {
@@ -970,32 +946,6 @@ export default function ModelEditor({
     const r = newRevolve(doc, f.id);
     onChange({ ...doc, features: [...doc.features, r] });
     setSelected([r.id]);
-    say(null);
-  }
-
-  function corner() {
-    const f = chosen[0];
-    if (chosen.length !== 1 || !f || f.kind !== 'sketch') {
-      say('Pick a sketch to add a corner to.');
-      return;
-    }
-    // A circle sketch has no corners -- its two points are diameter ends,
-    // not a polyline, and splicing a third point in degrades that reading
-    // silently (Finding 3, sketch gauntlet round 2): circleOf() would then
-    // read points[0]/points[1] as the diameter, which the splice just moved.
-    if (f.shape === 'circle') {
-      say('A circle has no corners to add. Start a Sketch instead if you want straight edges to work with.');
-      return;
-    }
-    // Always inserts after corner 0 -- there is no way yet to click a
-    // specific edge to split, so this is deliberately a fixed choice rather
-    // than the `x === f ? 0 : 0` dead ternary that used to sit here (always
-    // 0 either way, which read as if it meant something). A specific corner
-    // is chosen in the Rules panel, not here.
-    onChange({
-      ...doc,
-      features: doc.features.map((x) => (x.id === f.id ? addCorner(f, 0) : x)),
-    });
     say(null);
   }
 
@@ -1619,7 +1569,7 @@ export default function ModelEditor({
 
   // Group visibility for the search filter: a group's divider and wrapper
   // only render when at least one of its tools' names still matches.
-  const sketchVisible = ['Sketch', 'Corner', 'Circle'].some(matches);
+  const sketchVisible = matches('Sketch');
   const createVisible = [...SHAPE_KINDS.map(shapeLabel), 'Pull', 'Spin'].some(matches);
   // 'Bevel' is the button's own current name; 'Fillet'/'Chamfer' are its
   // real CAD terms; 'Angled Corner' is the retired name kept searchable
@@ -1690,10 +1640,9 @@ export default function ModelEditor({
           are synthesized here rather than read off `doc`). Clicking a Parts
           row selects it, same as clicking its timeline row (reuses `pick()`).
           Clicking a Planes row sets `activePlane`, which is what
-          startSketch()/startCircleSketch() below and ReshapeStudio's own
-          handlePlace() (Rectangle/Polygon) now build the NEXT new sketch on
-          -- previously hardcoded to 'xy' with no way to reach xz/yz from the
-          UI at all, even though the model layer already accepted any plane. */}
+          startSketch() below builds the next new sketch on -- previously
+          hardcoded to 'xy' with no way to reach xz/yz from the UI at all,
+          even though the model layer already accepted any plane. */}
       {!(collapsible && collapsed) && (
         <div className="model-browser">
           <div className="model-browser-section">
@@ -1783,54 +1732,13 @@ export default function ModelEditor({
         </div>
         <div className="model-tool-divider" />
 
-        {sketchVisible && (
+        {sketchMode && (
           <>
             <div className="model-tool-group">
               <div className="model-tool-icons">
-                {matches('Sketch') && (
-                  <button onClick={startSketch} title="Draw a flat outline to pull or spin into a solid">
-                    <PenLine size={14} /> Sketch
-                  </button>
-                )}
-                {matches('Circle') && (
-                  <button onClick={startCircleSketch} title="Draw a circle to pull or spin into a solid">
-                    <Circle size={14} /> Circle
-                  </button>
-                )}
-                {matches('Rectangle') && (
-                  <button
-                    onClick={() => onStartDraw?.('rect')}
-                    aria-pressed={drawTool === 'rect'}
-                    title={drawTool === 'rect'
-                      ? 'Click two corners to draw a rectangle (armed -- Escape cancels)'
-                      : 'Click two corners to draw a rectangle'}
-                  >
-                    <Square size={14} /> Rectangle
-                  </button>
-                )}
-                {matches('Polygon') && (
-                  <button
-                    onClick={() => onStartDraw?.('polygon')}
-                    aria-pressed={drawTool === 'polygon'}
-                    title={drawTool === 'polygon'
-                      ? 'Click a center, then a corner, to draw a hexagon (armed -- Escape cancels)'
-                      : 'Click a center, then a corner, to draw a hexagon'}
-                  >
-                    <Hexagon size={14} /> Polygon
-                  </button>
-                )}
-                {matches('Corner') && (
-                  <button
-                    onClick={corner}
-                    disabled={
-                      chosen.length !== 1 || chosen[0]?.kind !== 'sketch' ||
-                      (chosen[0].kind === 'sketch' && chosen[0].shape === 'circle')
-                    }
-                    title="Add a corner to the selected sketch"
-                  >
-                    <Plus size={14} /> Corner
-                  </button>
-                )}
+                <button onClick={onExitSketch2D} title="Leave the 2D sketcher and return to the 3D tools">
+                  <ArrowLeft size={14} /> Done
+                </button>
               </div>
               <span className="model-tool-group-label">Sketch</span>
             </div>
@@ -1838,7 +1746,21 @@ export default function ModelEditor({
           </>
         )}
 
-        {createVisible && (
+        {sketchVisible && !sketchMode && (
+          <>
+            <div className="model-tool-group">
+              <div className="model-tool-icons">
+                <button onClick={startSketch} title="Draw a flat sketch to pull or spin into a solid">
+                  <PenLine size={14} /> Sketch
+                </button>
+              </div>
+              <span className="model-tool-group-label">Sketch</span>
+            </div>
+            <div className="model-tool-divider" />
+          </>
+        )}
+
+        {createVisible && !sketchMode && (
           <>
             <div className="model-tool-group">
               <div className="model-tool-icons">
@@ -1893,7 +1815,7 @@ export default function ModelEditor({
           </>
         )}
 
-        {modifyVisible && (
+        {modifyVisible && !sketchMode && (
           <>
             <div className="model-tool-group">
               <div className="model-tool-icons">
@@ -1976,7 +1898,7 @@ export default function ModelEditor({
           </>
         )}
 
-        {patternVisible && (
+        {patternVisible && !sketchMode && (
           <>
             {patternSelectVisible && (
               <div className="model-tool-group">

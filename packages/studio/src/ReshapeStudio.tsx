@@ -32,7 +32,7 @@ import type { RuleActions, TouchedPart } from './model/SketchConstraints.js';
 import { writeSTL, writeOBJ, write3MF, type MeshInput } from './mesh-export.js';
 import { outlineOf } from '@shuff57/reshape-sketch/sketch-arc';
 import { handlesFor, planeAnchor, featureCenter, type HandleSpec } from '@shuff57/reshape-script/model-handles';
-import { EMPTY_DOC, type Feature, isSketchOnly, type ModelDoc, nameMap, newPolygonSketch, newRectangleSketch, type SketchPlane } from '@shuff57/reshape-script/model-types';
+import { EMPTY_DOC, type Feature, isSketchOnly, type ModelDoc, nameMap, type SketchPlane } from '@shuff57/reshape-script/model-types';
 import { ownerOf } from '@shuff57/reshape-script/model-selection';
 import { partWordFor, type TopoName } from '@shuff57/reshape-script/topo-name';
 import {
@@ -369,15 +369,9 @@ export default function ReshapeStudio({
     );
   };
   const [rollbackIndex, setRollbackIndex] = useState<number | null>(null);
-  const [drawTool, setDrawTool] = useState<'rect' | 'polygon' | null>(null);
-  // Which plane a new Sketch/Circle/Rectangle/Polygon starts on -- set by
-  // clicking a plane in the ribbon's left Planes tree (model/ModelEditor.tsx).
-  // The model layer (newSketch/newCircleSketch/newRectangleSketch/
-  // newPolygonSketch, packages/script/src/model-types.ts) already accepts any
-  // SketchPlane; only the UI never threaded a choice through before, always
-  // hardcoding 'xy'.
+  // Which plane a new sketch starts on -- set by clicking a plane in the
+  // ribbon's left Planes tree (model/ModelEditor.tsx).
   const [activePlane, setActivePlane] = useState<SketchPlane>('xy');
-  const [drawFirst, setDrawFirst] = useState<[number, number] | null>(null);
   // The soup sketcher (SPEC-sketcher2 §7): the id of the sketch open in the
   // 2D canvas, or null. While set, SketchCanvas2D replaces the 3D viewport.
   const [sketchEditId, setSketchEditId] = useState<string | null>(null);
@@ -391,7 +385,7 @@ export default function ReshapeStudio({
   // `toolsHidden`'s rail-collapse (the row-2 middle cell reclaims the freed
   // width); `codeFullscreen` instead takes over the WHOLE main row
   // (toolbar/viewport/params/timeline all hidden around it), Escape-able the
-  // same way drawTool/the sketch selection strip already are below.
+  // same way the sketch selection strip already is below.
   const [codeHidden, setCodeHidden] = useState(false);
   const [codeFullscreen, setCodeFullscreen] = useState(false);
   // Piece B: whether the context bar is on screen right now, as a ref so the
@@ -403,23 +397,22 @@ export default function ReshapeStudio({
   useEffect(() => {
     if (!codeFullscreen) return;
     // Escape exits fullscreen -- but only when nothing ELSE already owns
-    // Escape for something more locally modal: the sketch draw tool, the
-    // Rules panel's own selection strip (both above), and now the context
-    // bar itself (piece B -- its own listener dismisses it, so one keypress
-    // must not ALSO exit fullscreen). Checking their own state here
-    // (rather than a shared "who owns Escape" registry) keeps this a
-    // one-line addition; if a FOURTH Escape consumer ever appears, that's
-    // the point to build a real stack.
+    // Escape for something more locally modal: the Rules panel's own
+    // selection strip (above), and now the context bar itself (piece B --
+    // its own listener dismisses it, so one keypress must not ALSO exit
+    // fullscreen). Checking their own state here (rather than a shared
+    // "who owns Escape" registry) keeps this a one-line addition; if a
+    // THIRD Escape consumer ever appears, that's the point to build a real
+    // stack.
     function onKey(e: KeyboardEvent) {
       if (e.key !== 'Escape') return;
-      if (drawTool) return; // the draw-tool handler above already clears itself
       if (selectedSketchParts.length) return; // ditto the selection-strip handler
       if (ctxBarVisibleRef.current) return; // ditto the context bar's own dismiss
       setCodeFullscreen(false);
     }
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [codeFullscreen, drawTool, selectedSketchParts.length]);
+  }, [codeFullscreen, selectedSketchParts.length]);
   // Leaving Code mode (or the panel losing its host entirely) with
   // fullscreen still on would strand the rest of the chrome hidden the next
   // time Build is chosen -- of the two, only fullscreen needs this: a
@@ -615,7 +608,6 @@ export default function ReshapeStudio({
 
   const specs = useMemo(() => {
     if (!build) return [];
-    if (drawTool) return [planeAnchor('xy', 0)];
     if (doc.features.length === 0) return [planeAnchor('xy', 0)];
     const picked = doc.features.filter((f) => selected.includes(f.id)).flatMap((f) => handlesFor(f, doc));
     const otherSketches = doc.features
@@ -632,7 +624,7 @@ export default function ReshapeStudio({
     // LAST underscore, so a drag would ask for feature id __ctx, which no
     // feature has -- it lands as a no-op rather than a mutation).
     let ctx: HandleSpec[] = [];
-    if (selected.length === 1 && !drawTool) {
+    if (selected.length === 1) {
       const f = doc.features.find((x) => x.id === selected[0]);
       const c = f ? featureCenter(f, doc) : null;
       if (f && c) ctx = [{
@@ -645,7 +637,7 @@ export default function ReshapeStudio({
       }];
     }
     return [...picked, ...otherSketches, ...ctx];
-  }, [build, doc, selected, drawTool]);
+  }, [build, doc, selected]);
 
   const brepParamDefs = useMemo(() => {
     if (selected.length === 0) return [];
@@ -808,11 +800,10 @@ export default function ReshapeStudio({
   }, [selected, doc, pickedFace, pickedEdge, pickedEdges, pickedFaces, pickedSize]);
 
   const activeSketchPlane = useMemo<'xy' | 'xz' | 'yz' | null>(() => {
-    if (drawTool) return activePlane;
     if (selected.length !== 1) return null;
     const f = doc.features.find((x) => x.id === selected[0]);
     return f && f.kind === 'sketch' ? (f.plane ?? 'xy') : null;
-  }, [drawTool, activePlane, selected, doc]);
+  }, [selected, doc]);
 
   const outlines = useMemo(
     () => {
@@ -844,34 +835,6 @@ export default function ReshapeStudio({
     if (specs.length === 0) setAnchors([]);
   }, [specs]);
 
-  useEffect(() => {
-    if (!drawTool) return;
-    function onKey(e: KeyboardEvent) {
-      if (e.key === 'Escape') { setDrawTool(null); setDrawFirst(null); }
-    }
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [drawTool]);
-
-  function handlePlace(u: number, v: number) {
-    if (drawTool === 'rect') {
-      if (!drawFirst) { setDrawFirst([u, v]); return; }
-      const f = newRectangleSketch(doc, activePlane, drawFirst, [u, v]);
-      if (!f) return;
-      applyDoc({ ...doc, features: [...doc.features, f] });
-      setSelected([f.id]);
-      setDrawTool(null);
-      setDrawFirst(null);
-    } else if (drawTool === 'polygon') {
-      if (!drawFirst) { setDrawFirst([u, v]); return; }
-      const f = newPolygonSketch(doc, activePlane, drawFirst, [u, v]);
-      if (!f) return;
-      applyDoc({ ...doc, features: [...doc.features, f] });
-      setSelected([f.id]);
-      setDrawTool(null);
-      setDrawFirst(null);
-    }
-  }
 
   // ---- the seam: value <-> doc -------------------------------------------
 
@@ -1241,8 +1204,6 @@ export default function ReshapeStudio({
               onSelect={setSelected}
               rollbackIndex={rollbackIndex}
               onRollback={setRollbackIndex}
-              onStartDraw={setDrawTool}
-              drawTool={drawTool}
               hoveredPart={pointerHoverPart}
               onHoverPart={(p) => { setRowHoverPart(p); if (p) touchRuleActivity(); }}
               registerActions={(actions) => { ruleActionsRef.current = actions; }}
@@ -1270,6 +1231,9 @@ export default function ReshapeStudio({
               onClearModel={clearModel}
               activePlane={activePlane}
               onActivePlaneChange={setActivePlane}
+              sketchMode={sketchEditId !== null}
+              onOpenSketch2D={setSketchEditId}
+              onExitSketch2D={() => setSketchEditId(null)}
             />
             </div>
             <div id="reshapeRules" className="reshape-studio-rules" aria-hidden={!build} />
@@ -1451,8 +1415,6 @@ export default function ReshapeStudio({
                 onCommit={() => { commitParams(); touchRuleActivity(); }}
                 onTap={(x, y) => pickAtRef.current?.(x, y)}
                 outlines={outlines}
-                drawing={drawTool ?? false}
-                onPlace={handlePlace}
                 onHoverPart={setPointerHoverPart}
                 forcedHoverPart={rowHoverPart}
                 selectedParts={selectedSketchParts}
@@ -1476,7 +1438,7 @@ export default function ReshapeStudio({
                 refusal={ctxRefusal}
                 actions={ctxActionsList}
                 onDismiss={() => setCtxDismissed(true)}
-                canDismiss={() => !drawTool && selectedSketchParts.length === 0}
+                canDismiss={() => selectedSketchParts.length === 0}
               />
             )}
           </div>
