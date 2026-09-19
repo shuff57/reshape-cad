@@ -24,14 +24,13 @@ import ReshapeParamsPanel, { type ParamDef, type ParamValues } from './ReshapePa
 import { noteColor, type StudioNote } from './notes.js';
 import ModelEditor from './model/ModelEditor.js';
 import BrepViewport, { type BrepViewportStats, type ViewportPick } from './model/BrepViewportThree.js';
-import HandleOverlay, { type AnchorPoint, type SketchOutline, type SketchPart } from './model/HandleOverlay.js';
+import HandleOverlay, { type AnchorPoint, type SketchOutline } from './model/HandleOverlay.js';
 import SketchCanvas2D from './model/SketchCanvas2D.js';
 import ContextBar, { type ContextBarAction } from './model/ContextBar.js';
 import type { ContextActions } from './model/ModelEditor.js';
-import type { RuleActions, TouchedPart } from './model/SketchConstraints.js';
 import { writeSTL, writeOBJ, write3MF, type MeshInput } from './mesh-export.js';
 import { outlineOf } from '@shuff57/reshape-sketch/sketch-arc';
-import { handlesFor, planeAnchor, featureCenter, type HandleSpec } from '@shuff57/reshape-script/model-handles';
+import { handlesFor, featureCenter, type HandleSpec } from '@shuff57/reshape-script/model-handles';
 import { EMPTY_DOC, type Feature, isSketchOnly, type ModelDoc, nameMap, type SketchPlane } from '@shuff57/reshape-script/model-types';
 import { ownerOf } from '@shuff57/reshape-script/model-selection';
 import { partWordFor, type TopoName } from '@shuff57/reshape-script/topo-name';
@@ -126,7 +125,6 @@ const STATUS_BAR_HEIGHT_PX = 26;
 // ribbon's own .model-tools is 42px, so this row centers it with room to
 // spare. It is a row, not an overlay, so nothing draws underneath it.
 const TOOLBAR_HEIGHT_PX = 52;
-const RULES_PANEL_WIDTH_PX = 280;
 const PREVIEW_DEGRADE_MS = 25;
 
 function capitalize(name: string): string {
@@ -272,102 +270,12 @@ export default function ReshapeStudio({
   }, []);
   const [pickedEdges, setPickedEdges] = useState<Array<{ target: string; edge: TopoName }>>([]);
   const [pickedFaces, setPickedFaces] = useState<Array<{ target: string; face: TopoName }>>([]);
-  const [pointerHoverPart, setPointerHoverPart] = useState<{ kind: 'edge' | 'corner'; index: number } | null>(null);
-  const [rowHoverPart, setRowHoverPart] = useState<
-    { kind: 'edge' | 'corner'; index: number } | { kind: 'edge' | 'corner'; index: number }[] | null
-  >(null);
-  // Item N: when the Rules panel or a handle was last actually touched --
-  // a click that commits a value (setRowHoverPart only fires with a real
-  // touch, never on a plain mouse-leave clear) or a handle drag/commit.
+  // Item N: when a handle was last actually touched (a drag/commit) -- 
   // BrepViewportThree.tsx uses this to hold its own "A sketch is flat..."
-  // Pull hint off screen while a student is visibly busy in the panel,
-  // rather than refreshing it on top of every rule they set.
+  // Pull hint off screen while a student is visibly busy dragging a handle,
+  // rather than refreshing it on top of every drag they make.
   const [ruleActivityAt, setRuleActivityAt] = useState<number | null>(null);
   const touchRuleActivity = () => setRuleActivityAt(Date.now());
-  // Item R: which edge(s)/corner of the active sketch a canvas CLICK has
-  // selected -- see SketchPart's own doc comment for why this outlives a
-  // hover. `ruleActionsRef` is the matching handle-out: SketchConstraints
-  // (mounted inside ModelEditor, a sibling of HandleOverlay here) registers
-  // its own row/cell handlers into it on every render, the same
-  // `registerPickAt` pattern this file already uses for BrepViewportThree's
-  // 3D pick. A plain ref, not state: the strip's buttons read it at click
-  // time, and nothing here needs to re-render when it changes.
-  const [selectedSketchParts, setSelectedSketchParts] = useState<SketchPart[]>([]);
-  const ruleActionsRef = useRef<RuleActions | null>(null);
-  // A stable object, created once, whose own methods dereference the ref
-  // above at CALL time rather than at prop-pass time -- the same reasoning
-  // `onTap={(x, y) => pickAtRef.current?.(x, y)}` below already relies on.
-  // Without this indirection, HandleOverlay's `ruleActions` prop would be
-  // whatever `ruleActionsRef.current` happened to be during ReshapeStudio's
-  // OWN last render, one tick behind SketchConstraints' own render (a
-  // child, whose registration effect runs after this component's).
-  const ruleActionsProxy = useRef<RuleActions>({
-    toggleEdge: (kind, edge) => ruleActionsRef.current?.toggleEdge(kind, edge),
-    openLength: (edge) => ruleActionsRef.current?.openLength(edge),
-    setPair: (a, b, kind) => ruleActionsRef.current?.setPair(a, b, kind),
-    togglePin: (corner) => ruleActionsRef.current?.togglePin(corner),
-    clearTouch: () => ruleActionsRef.current?.clearTouch(),
-  }).current;
-  const handleSelectPart = (part: SketchPart, opts: { shift: boolean }) => {
-    touchRuleActivity();
-    setSelectedSketchParts((cur) => {
-      if (part.kind === 'corner') {
-        // A corner selection is always solo; re-clicking the same one
-        // clears it, the only way to dismiss the strip short of Escape
-        // or clicking something else.
-        return cur.length === 1 && cur[0].kind === 'corner' && cur[0].index === part.index
-          ? [] : [part];
-      }
-      if (!opts.shift) {
-        return cur.length === 1 && cur[0].kind === 'edge' && cur[0].index === part.index
-          ? [] : [part];
-      }
-      const edges = cur.filter((p): p is SketchPart & { kind: 'edge' } => p.kind === 'edge');
-      if (edges.some((p) => p.index === part.index)) {
-        // Shift-clicking an already-selected edge removes it, same
-        // toggle-within-a-multi-selection convention item E's 3D
-        // multi-select already uses.
-        return edges.filter((p) => p.index !== part.index);
-      }
-      // A pair rule only ever names two edges -- a third Shift-click drops
-      // the older of the two rather than growing without bound.
-      return [...edges.slice(-1), part];
-    });
-  };
-  // Switching which feature the model tree has selected (a different
-  // sketch, or none) makes any standing selection meaningless -- its
-  // indices belong to whichever sketch's Rules panel was open when it was
-  // made. Escape is the other way to clear it, for a student who wants the
-  // strip gone without picking something else.
-  useEffect(() => { setSelectedSketchParts([]); }, [selected]);
-  // Item U: "Escape clears both" -- the canvas selection right here, AND
-  // the Rules panel's OWN sticky "last touched" pink highlight, which
-  // lives as SketchConstraints' own local state and is otherwise never
-  // told a selection just ended. Goes through the same ref-backed proxy
-  // its other three actions already do, so this reaches whichever sketch
-  // is currently open without this file needing to know its shape.
-  useEffect(() => {
-    function onKey(e: KeyboardEvent) {
-      if (e.key === 'Escape') { setSelectedSketchParts([]); ruleActionsProxy.clearTouch(); }
-    }
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, []);
-  // Item U: a panel row/cell commit (typing a length, pressing Level, a
-  // pair rule, a pin) IS the canvas selection now, not a second state a
-  // click has to separately catch up to -- round-6's own finding was an
-  // edge left lit pink with no strip beside it, because "touched in the
-  // panel" and "selected on the canvas" disagreed. `null` (Escape, or a
-  // rule that removed itself) clears the selection the same way a plain
-  // canvas click on nothing would.
-  const handleTouch = (touched: TouchedPart | null) => {
-    if (!touched) { setSelectedSketchParts([]); return; }
-    setSelectedSketchParts(
-      touched.kind === 'edge'
-        ? touched.indices.map((index): SketchPart => ({ kind: 'edge', index }))
-        : [{ kind: 'corner', index: touched.index }]
-    );
-  };
   const [rollbackIndex, setRollbackIndex] = useState<number | null>(null);
   // Which plane a new sketch starts on -- set by clicking a plane in the
   // ribbon's left Planes tree (model/ModelEditor.tsx).
@@ -397,22 +305,20 @@ export default function ReshapeStudio({
   useEffect(() => {
     if (!codeFullscreen) return;
     // Escape exits fullscreen -- but only when nothing ELSE already owns
-    // Escape for something more locally modal: the Rules panel's own
-    // selection strip (above), and now the context bar itself (piece B --
-    // its own listener dismisses it, so one keypress must not ALSO exit
-    // fullscreen). Checking their own state here (rather than a shared
-    // "who owns Escape" registry) keeps this a one-line addition; if a
-    // THIRD Escape consumer ever appears, that's the point to build a real
-    // stack.
+    // Escape for something more locally modal: the context bar itself
+    // (piece B -- its own listener dismisses it, so one keypress must not
+    // ALSO exit fullscreen). Checking its own state here (rather than a
+    // shared "who owns Escape" registry) keeps this a one-line addition;
+    // if a SECOND Escape consumer ever appears, that's the point to build
+    // a real stack.
     function onKey(e: KeyboardEvent) {
       if (e.key !== 'Escape') return;
-      if (selectedSketchParts.length) return; // ditto the selection-strip handler
       if (ctxBarVisibleRef.current) return; // ditto the context bar's own dismiss
       setCodeFullscreen(false);
     }
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [codeFullscreen, selectedSketchParts.length]);
+  }, [codeFullscreen]);
   // Leaving Code mode (or the panel losing its host entirely) with
   // fullscreen still on would strand the rest of the chrome hidden the next
   // time Build is chosen -- of the two, only fullscreen needs this: a
@@ -426,8 +332,8 @@ export default function ReshapeStudio({
   // Escape listener while mounted, but "the bar came back the instant I
   // pressed Escape" would be the same bar refusing to leave, so the press
   // records a dismissal that lives until the SELECTION changes. ModelEditor's
-  // verbs (registered up via registerContextActions, same pattern its own
-  // SketchConstraints actions use) ride in a REF, not state: ModelEditor
+  // verbs (registered up via registerContextActions) ride in a REF, not
+  // state: ModelEditor
   // registers a FRESH object every render (its own comment explains why
   // memoizing would pin stale doc closures), so storing that object in
   // state would setState every render and loop. The state beside it tracks
@@ -608,7 +514,6 @@ export default function ReshapeStudio({
 
   const specs = useMemo(() => {
     if (!build) return [];
-    if (doc.features.length === 0) return [planeAnchor('xy', 0)];
     const picked = doc.features.filter((f) => selected.includes(f.id)).flatMap((f) => handlesFor(f, doc));
     const otherSketches = doc.features
       .filter((f): f is Feature & { kind: 'sketch' } =>
@@ -818,12 +723,10 @@ export default function ReshapeStudio({
             basis: o.basis,
             shape: f.shape,
             bulges: o.bulges,
-            constraints: f.constraints ?? [],
-            selected: selected.includes(f.id),
           };
         });
     },
-    [doc, selected]
+    [doc]
   );
 
   useEffect(() => {
@@ -1186,13 +1089,10 @@ export default function ReshapeStudio({
       </div>
 
       <div className="reshape-studio-body">
-        {/* The left dock (grid-area tools): ModelEditor's collapsible card
-            on top, the portal target for its Rules panel below it --
-            #reshapeRules must stay an UNCONDITIONAL rendered node either
-            way, because ModelEditor resolves the host by getElementById
-            (model/ModelEditor.tsx) before it decides where to portal the
-            rules, and this wrapper is a sibling of the pane, not a child of
-            it -- the ribbon and timeline hosts are untouched. */}
+        {/* The left dock (grid-area tools): ModelEditor's collapsible card,
+           the only thing in it now that the Rules panel is gone (it lived
+           in this same grid area, below the card -- see reshape-studio-left's
+           own history if that host is ever needed again). */}
         {build && (
           <div className="reshape-studio-left">
             <div className="reshape-studio-tools">
@@ -1204,11 +1104,7 @@ export default function ReshapeStudio({
               onSelect={setSelected}
               rollbackIndex={rollbackIndex}
               onRollback={setRollbackIndex}
-              hoveredPart={pointerHoverPart}
-              onHoverPart={(p) => { setRowHoverPart(p); if (p) touchRuleActivity(); }}
-              registerActions={(actions) => { ruleActionsRef.current = actions; }}
               registerContextActions={(a) => { const had = ctxActionsRef.current != null; const has = a != null; ctxActionsRef.current = a; if (had !== has) setCtxActions(has); }}
-              onTouch={handleTouch}
               onUndo={undo}
               onRedo={redo}
               canUndo={depth.back > 0}
@@ -1236,7 +1132,6 @@ export default function ReshapeStudio({
               onExitSketch2D={() => setSketchEditId(null)}
             />
             </div>
-            <div id="reshapeRules" className="reshape-studio-rules" aria-hidden={!build} />
           </div>
         )}
         {!build && canCode && (
@@ -1371,7 +1266,6 @@ export default function ReshapeStudio({
                 selectedCount={showBrep ? selected.length : 0}
                 selectionLabel={showBrep ? selectionLabel : null}
                 sketchPlane={activeSketchPlane}
-                panelOcclusionPx={activeSketchPlane ? RULES_PANEL_WIDTH_PX : 0}
                 anchors={specs}
                 onAnchors={setAnchors}
                 onMesh={(m) => {
@@ -1382,15 +1276,27 @@ export default function ReshapeStudio({
                 badgesInStatusBar={true}
                 registerPickAt={(fn) => { pickAtRef.current = fn; }}
               />
-            ) : (
+            ) : !sketchEditId ? (
               <ReshapePreview
                 ref={frameRef}
                 code={code}
                 runKey={runKey}
                 engine="script"
               />
+            ) : null}
+            {/* Sketch mode keeps a hydration runner alive even though the
+                visible pane is SketchCanvas2D: the 0x0 shadow below would
+                unmount here otherwise (build is still true), and the next
+                Run after Done would have nothing mounted to execute. The
+                visible ReshapePreview branch above skips sketch mode too --
+                its iframe sat OVER the 2D canvas (same inset:0 box) and ate
+                every click. */}
+            {sketchEditId && build && (
+              <div style={{ position: 'absolute', width: 0, height: 0, overflow: 'hidden' }}>
+                <ReshapePreview ref={frameRef} code={code} runKey={runKey} engine="script" />
+              </div>
             )}
-            {wantsHydrationShadow && (
+            {wantsHydrationShadow && !sketchEditId && (
               // Never shown -- see wantsHydrationShadow's own comment. Its
               // only job is to run `code` through the sandbox on mount so
               // `doc` can be hydrated from `value` while the visible pane
@@ -1400,6 +1306,9 @@ export default function ReshapeStudio({
               // when autoRunOnMount is off, e.g. the sandbox) is an ordinary
               // visible <div>, not styled hidden the way its iframe is, and
               // painted straight into this pane over the B-rep canvas.
+              // Sketch mode has its OWN shadow branch above -- the same
+              // runner kept alive while SketchCanvas2D owns the visible
+              // pane, so the two branches must never both mount.
               <div style={{ position: 'absolute', width: 0, height: 0, overflow: 'hidden' }}>
                 <ReshapePreview ref={frameRef} code={code} runKey={runKey} engine="script" />
               </div>
@@ -1408,18 +1317,21 @@ export default function ReshapeStudio({
               // Hidden while the 2D sketcher owns the pane: its handles and
               // draw-catcher would sit over the canvas and eat its clicks.
               <HandleOverlay
-                points={anchors.filter((a) => !a.param.startsWith('__ctx_'))}
+                points={anchors.filter((a) => {
+                  if (a.param.startsWith('__ctx_')) return false;
+                  // A sketch's own corner/round anchors are excluded here --
+                  // they exist only so outlineAnchors below can project its
+                  // read-only outline; a sketch is edited in SketchCanvas2D's
+                  // 2D canvas now, not by dragging a handle in this view.
+                  return !doc.features.some((f) => f.kind === 'sketch' && a.param.startsWith(`${f.id}_`));
+                })}
                 values={paramValues}
                 scales={scales}
                 onDrag={(param, val) => { sendParams({ [param]: val }); touchRuleActivity(); }}
                 onCommit={() => { commitParams(); touchRuleActivity(); }}
                 onTap={(x, y) => pickAtRef.current?.(x, y)}
                 outlines={outlines}
-                onHoverPart={setPointerHoverPart}
-                forcedHoverPart={rowHoverPart}
-                selectedParts={selectedSketchParts}
-                onSelectPart={handleSelectPart}
-                ruleActions={ruleActionsProxy}
+                outlineAnchors={anchors}
                 bottomInset={0}
               />
             )}
@@ -1438,7 +1350,6 @@ export default function ReshapeStudio({
                 refusal={ctxRefusal}
                 actions={ctxActionsList}
                 onDismiss={() => setCtxDismissed(true)}
-                canDismiss={() => selectedSketchParts.length === 0}
               />
             )}
           </div>
@@ -1543,7 +1454,7 @@ export default function ReshapeStudio({
       <style>{`
         /* The one place every --reshape-* token is defined -- everything
            else in this component (and model/ModelEditor.tsx,
-           model/HandleOverlay.tsx, model/SketchConstraints.tsx,
+           model/HandleOverlay.tsx,
            ReshapeParamsPanel.tsx) only ever references var(--reshape-*).
            Values are the Dracula palette this app and shCode's own embedded
            reSHape chrome already agreed on before this pass just never
@@ -1709,7 +1620,6 @@ export default function ReshapeStudio({
         .reshape-studio.is-tools-hidden .reshape-studio-left {
           background: rgba(40, 42, 54, 0.72);
         }
-        .reshape-studio.is-tools-hidden .reshape-studio-rules { display: none; }
         /* The 46px rail can't hold the kicker's label ("Browser" truncates) --
            hide the strip entirely; the rail's own tools below stay intact. */
         .reshape-studio.is-tools-hidden .reshape-studio-tools-kicker { display: none; }
@@ -1727,18 +1637,6 @@ export default function ReshapeStudio({
           text-transform: uppercase;
           color: var(--reshape-text-muted);
           border-bottom: 1px solid var(--border, var(--reshape-border));
-        }
-        /* The docked rules host -- ModelEditor portals its Rules panel into
-           #reshapeRules here (unconditional node; :empty collapses it to
-           nothing when no sketch is active, same discipline the old pane
-           child used). */
-        .reshape-studio-rules:empty { display: none; }
-        .reshape-studio-rules:not(:empty) {
-          flex: 0 1 auto;
-          min-height: 0;
-          overflow-y: auto;
-          border-top: 1px solid var(--border, var(--reshape-border));
-          background: var(--card, var(--reshape-surface));
         }
         .reshape-studio-tools .model-tools { display: none; }
         .reshape-studio-code {

@@ -12,6 +12,7 @@
 // sketch-canvas-core.ts (pure, test-proven); this file only calls it.
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import type { ModelDoc, SketchFeature, SoupGeom, SoupRule } from '@shuff57/reshape-script/model-types';
 import {
   angleInArcRange,
@@ -811,118 +812,156 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
         : `${diagnosis.dof} DoF`
     : '';
 
+  // Docked into the ribbon, same portal target ModelEditor's own toolbar
+  // uses -- while a sketch is open, ModelEditor hides its 3D groups behind
+  // that same host and leaves File/Edit/Done, so this renders right after
+  // them rather than floating a second toolbar over the canvas.
+  const ribbonHost = typeof document !== 'undefined' ? document.getElementById('reshapeRibbon') : null;
   return (
     <div className="sk2d-host">
       <style>{SK2D_CSS}</style>
-      <div className="sk2d-toolbar">
-        {(
-          [
-            ['select', 'Select'],
-            ['line', 'Line'],
-            ['rect', 'Rect'],
-            ['circle', 'Circle'],
-            ['arc', 'Arc'],
-            ['slot', 'Slot'],
-            ['trim', 'Trim'],
-          ] as Array<[Tool, string]>
-        ).map(([t, label]) => (
-          <button key={t} className={`sk2d-tool${tool === t ? ' is-active' : ''}`} onClick={() => setTool(t)}>
-            {label}
-          </button>
-        ))}
-        <span className="sk2d-sep" />
-        <button className="sk2d-tool" disabled={!canHoriz} onClick={() => applyRule({ k: 'horizontal', a: selShapes[0].id })}>
-          ⟷
-        </button>
-        <button className="sk2d-tool" disabled={!canVert} onClick={() => applyRule({ k: 'vertical', a: selShapes[0].id })}>
-          ↕
-        </button>
-        <button
-          className="sk2d-tool"
-          disabled={!canCoin}
-          onClick={() => {
-            const [a, b] = selPoints as [Sel, Sel];
-            applyRule({ k: 'coincident', a: a.id, aEnd: a.at!, b: b.id, bEnd: b.at! });
-          }}
-        >
-          Coincident
-        </button>
-        <button
-          className="sk2d-tool"
-          disabled={!canParallel}
-          onClick={() => {
-            const [a, b] = selShapes as [Sel, Sel];
-            applyRule({ k: 'parallel', a: a.id, b: b.id });
-          }}
-        >
-          ∥
-        </button>
-        <button
-          className="sk2d-tool"
-          disabled={!canEqual}
-          onClick={() => {
-            const [a, b] = selShapes as [Sel, Sel];
-            applyRule({ k: 'equal', a: a.id, b: b.id });
-          }}
-        >
-          =
-        </button>
-        <button className="sk2d-tool" disabled={!canDimLine} onClick={() => openDim('distance')}>
-          Dim
-        </button>
-        <button className="sk2d-tool" disabled={!canDimRadius} onClick={() => openDim('radius')}>
-          R
-        </button>
-        <button className="sk2d-tool" disabled={sel.length === 0} onClick={onDeleteClick}>
-          Delete
-        </button>
-        <button
-          className="sk2d-tool"
-          disabled={selShapes.length === 0}
-          title="Toggle construction geometry (dashed; solved but never profiled)"
-          onClick={onConstrClick}
-        >
-          Constr
-        </button>
-        <button
-          className="sk2d-tool"
-          disabled={selShapes.length === 0}
-          title="Mirror the selected rows about the Y axis (x -> -x)"
-          onClick={() => onMirror('y')}
-        >
-          Mirror
-        </button>
-        <button
-          className="sk2d-tool"
-          disabled={selShapes.length === 0}
-          title="Copy the selected rows, shifted 10mm right"
-          onClick={() => onCopy(10, 0)}
-        >
-          Copy
-        </button>
-        <span className="sk2d-sep" />
-        <label className="sk2d-auto">
-          <input type="checkbox" checked={auto} onChange={(e) => setAuto(e.target.checked)} /> auto
-        </label>
-        <span className={`sk-dof ${dofClass}`}>{dofClass === 'sk-dof-bad' ? '⨯ ' : ''}{dofText}</span>
-        {dim && (
-          <span className="sk2d-dim">
-            <input
-              autoFocus
-              value={dim.value}
-              onChange={(e) => setDim({ ...dim, value: e.target.value })}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') commitDim();
-                if (e.key === 'Escape') setDim(null);
-              }}
-              size={6}
-            />
-            <button onClick={commitDim}>✓</button>
-            <button onClick={() => setDim(null)}>✕</button>
-          </span>
-        )}
-        {status && <span className="sk2d-status">{status}</span>}
-      </div>
+      {ribbonHost && createPortal(
+        <div className="model-tools">
+          <div className="model-tool-group">
+            <div className="model-tool-icons">
+              {(
+                [
+                  ['select', 'Select'],
+                  ['line', 'Line'],
+                  ['rect', 'Rect'],
+                  ['circle', 'Circle'],
+                  ['arc', 'Arc'],
+                  ['slot', 'Slot'],
+                  ['trim', 'Trim'],
+                ] as Array<[Tool, string]>
+              ).map(([t, label]) => (
+                <button key={t} className="sk2d-tool" aria-pressed={tool === t} onClick={() => setTool(t)}>
+                  {label}
+                </button>
+              ))}
+            </div>
+            <span className="model-tool-group-label">Draw</span>
+          </div>
+          <div className="model-tool-divider" />
+          <div className="model-tool-group">
+            <div className="model-tool-icons">
+              <button className="sk2d-tool" disabled={!canHoriz} title="Horizontal" onClick={() => applyRule({ k: 'horizontal', a: selShapes[0].id })}>
+                ⟷
+              </button>
+              <button className="sk2d-tool" disabled={!canVert} title="Vertical" onClick={() => applyRule({ k: 'vertical', a: selShapes[0].id })}>
+                ↕
+              </button>
+              <button
+                className="sk2d-tool"
+                disabled={!canCoin}
+                title="Coincident"
+                onClick={() => {
+                  const [a, b] = selPoints as [Sel, Sel];
+                  applyRule({ k: 'coincident', a: a.id, aEnd: a.at!, b: b.id, bEnd: b.at! });
+                }}
+              >
+                Coincident
+              </button>
+              <button
+                className="sk2d-tool"
+                disabled={!canParallel}
+                title="Parallel"
+                onClick={() => {
+                  const [a, b] = selShapes as [Sel, Sel];
+                  applyRule({ k: 'parallel', a: a.id, b: b.id });
+                }}
+              >
+                ∥
+              </button>
+              <button
+                className="sk2d-tool"
+                disabled={!canEqual}
+                title="Equal"
+                onClick={() => {
+                  const [a, b] = selShapes as [Sel, Sel];
+                  applyRule({ k: 'equal', a: a.id, b: b.id });
+                }}
+              >
+                =
+              </button>
+            </div>
+            <span className="model-tool-group-label">Constrain</span>
+          </div>
+          <div className="model-tool-divider" />
+          <div className="model-tool-group">
+            <div className="model-tool-icons">
+              <button className="sk2d-tool" disabled={!canDimLine} onClick={() => openDim('distance')}>
+                Dim
+              </button>
+              <button className="sk2d-tool" disabled={!canDimRadius} onClick={() => openDim('radius')}>
+                R
+              </button>
+              {dim && (
+                <span className="sk2d-dim">
+                  <input
+                    autoFocus
+                    value={dim.value}
+                    onChange={(e) => setDim({ ...dim, value: e.target.value })}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') commitDim();
+                      if (e.key === 'Escape') setDim(null);
+                    }}
+                    size={6}
+                  />
+                  <button className="sk2d-tool" onClick={commitDim}>✓</button>
+                  <button className="sk2d-tool" onClick={() => setDim(null)}>✕</button>
+                </span>
+              )}
+            </div>
+            <span className="model-tool-group-label">Dimension</span>
+          </div>
+          <div className="model-tool-divider" />
+          <div className="model-tool-group">
+            <div className="model-tool-icons">
+              <button className="sk2d-tool" disabled={sel.length === 0} onClick={onDeleteClick}>
+                Delete
+              </button>
+              <button
+                className="sk2d-tool"
+                disabled={selShapes.length === 0}
+                title="Toggle construction geometry (dashed; solved but never profiled)"
+                onClick={onConstrClick}
+              >
+                Constr
+              </button>
+              <button
+                className="sk2d-tool"
+                disabled={selShapes.length === 0}
+                title="Mirror the selected rows about the Y axis (x -> -x)"
+                onClick={() => onMirror('y')}
+              >
+                Mirror
+              </button>
+              <button
+                className="sk2d-tool"
+                disabled={selShapes.length === 0}
+                title="Copy the selected rows, shifted 10mm right"
+                onClick={() => onCopy(10, 0)}
+              >
+                Copy
+              </button>
+            </div>
+            <span className="model-tool-group-label">Modify</span>
+          </div>
+          <div className="model-tool-divider" />
+          <div className="model-tool-group">
+            <div className="model-tool-icons">
+              <label className="sk2d-auto">
+                <input type="checkbox" checked={auto} onChange={(e) => setAuto(e.target.checked)} /> auto
+              </label>
+              <span className={`sk-dof ${dofClass}`}>{dofClass === 'sk-dof-bad' ? '⨯ ' : ''}{dofText}</span>
+              {status && <span className="sk2d-status">{status}</span>}
+            </div>
+            <span className="model-tool-group-label">Status</span>
+          </div>
+        </div>,
+        ribbonHost
+      )}
       <svg
         ref={svgRef}
         className="sk2d-svg"
@@ -983,19 +1022,16 @@ function gridNodes(): React.ReactNode[] {
 }
 
 const SK2D_CSS = `
-.sk2d-host { position: absolute; inset: 0; display: flex; flex-direction: column;
-  z-index: 30; background: var(--reshape-bg, #282a36); }
-.sk2d-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: var(--reshape-space-2, 4px);
-  padding: var(--reshape-space-2, 4px) var(--reshape-space-3, 8px);
-  border-bottom: 1px solid var(--reshape-border, #44475a); flex: none; z-index: 2;
-  overflow: visible; }
-.sk2d-tool { padding: 3px 8px; border-radius: var(--reshape-radius, 4px); border: none;
-  background: none; color: var(--reshape-text, #f8f8f2); cursor: pointer;
-  font-size: var(--reshape-font-size-sm, 12px); font-family: var(--reshape-font-ui); }
-.sk2d-tool:hover:not(:disabled) { background: var(--reshape-surface-alt, #36333a); color: var(--reshape-accent, #8be9fd); }
-.sk2d-tool:disabled { opacity: 0.35; cursor: default; }
-.sk2d-tool.is-active { background: var(--reshape-surface-alt, #36333a); color: var(--reshape-pink, #ff79c6); }
-.sk2d-sep { width: 1px; height: 16px; background: var(--reshape-border, #44475a); }
+.sk2d-host { position: absolute; inset: 0; background: var(--reshape-bg, #282a36); }
+/* Docked in the ribbon (see ribbonHost above), so these match the ribbon's
+   own button language rather than the standalone-floating-bar padding this
+   toolbar used before. */
+.sk2d-tool { height: 28px; padding: 0 8px; border-radius: 3px; border: 1px solid transparent;
+  background: transparent; color: #d3d5e3; cursor: pointer;
+  font-size: 12px; font-family: var(--reshape-font-ui); }
+.sk2d-tool:hover:not(:disabled) { background: #3d4051; border-color: #565a70; color: var(--reshape-text); }
+.sk2d-tool:disabled { opacity: 0.35; cursor: not-allowed; }
+.sk2d-tool[aria-pressed="true"] { background: var(--reshape-border); border-color: var(--reshape-accent-2); color: var(--reshape-text); }
 .sk2d-auto { display: flex; align-items: center; gap: 3px; font-size: 12px; color: var(--reshape-text-muted, #6272a4); }
 .sk-dof { font-family: var(--reshape-font-mono, monospace); font-size: 12px; padding: 1px 8px;
   border-radius: 999px; border: 1px solid var(--reshape-border, #44475a); }
@@ -1007,7 +1043,7 @@ const SK2D_CSS = `
   border: 1px solid var(--reshape-accent, #8be9fd); border-radius: var(--reshape-radius, 4px);
   padding: 2px 6px; font-family: var(--reshape-font-mono, monospace); }
 .sk2d-status { color: var(--reshape-warn, #ffb86c); font-size: 12px; }
-.sk2d-svg { flex: 1; width: 100%; height: 100%; cursor: crosshair; touch-action: none; }
+.sk2d-svg { width: 100%; height: 100%; cursor: crosshair; touch-action: none; }
 .sk-grid { stroke: var(--reshape-text, #f8f8f2); stroke-width: 0.3; opacity: 0.25; }
 .sk-axis-x { stroke: #e0685a; stroke-width: 0.25; opacity: 0.85; }
 .sk-axis-y { stroke: #5fbf8f; stroke-width: 0.25; opacity: 0.85; }

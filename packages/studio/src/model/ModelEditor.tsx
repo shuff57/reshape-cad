@@ -65,23 +65,7 @@ import {
   Eraser,
   ArrowLeft,
 } from 'lucide-react';
-import SketchConstraints, { type RuleActions, type TouchedPart } from './SketchConstraints.js';
-import {
-  solveSketch, seedForNewRule, collapsedByRatio, type Constraint, type Point,
-} from '@shuff57/reshape-sketch/sketch-solve';
 import { withoutFeatures, orphanedBy } from '@shuff57/reshape-script/model-deps';
-import {
-  bowEdge,
-  removeCorner,
-  maxChamferDistance,
-  maxFilletRadius,
-  outlineOf,
-  whyCannotBowEdge,
-  whyCannotRemoveCorner,
-  whyRemovingCornerCosts,
-  whyCannotChamferCorner,
-  whyCannotRoundCorner,
-} from '@shuff57/reshape-sketch/sketch-arc';
 import {
   type Feature,
   type FilletFeature,
@@ -201,34 +185,12 @@ interface Props {
    *  A refused feature is ABSENT from the model but still present in the
    *  history, which without this marker looks like the app ignoring a click. */
   refusals?: Map<string, string>;
-  /** Which edge/corner of the active sketch's outline the CANVAS is
-   *  currently hovering (HandleOverlay's own `hoveredPart`, lifted through
-   *  SandboxWorkspace since HandleOverlay and this component are siblings,
-   *  not parent/child) -- forwarded straight to SketchConstraints so it can
-   *  light the matching Rules row. */
-  hoveredPart?: { kind: 'edge' | 'corner'; index: number } | null;
-  /** The reverse direction: SketchConstraints reports its OWN row hover
-   *  here, forwarded straight up to SandboxWorkspace so HandleOverlay can
-   *  show the same floating pill it would for a canvas hover. Widened to
-   *  also carry an array -- see SketchConstraints.tsx's own onHoverPart doc
-   *  comment for why (a pair rule touches two edges at once). This
-   *  component is a pure pass-through for the prop either way. */
-  onHoverPart?: (part: { kind: 'edge' | 'corner'; index: number }
-    | { kind: 'edge' | 'corner'; index: number }[] | null) => void;
-  /** Item R: SketchConstraints' own row/cell handlers, forwarded straight
-   *  up so ReshapeStudio can hand them to HandleOverlay for a canvas-side
-   *  contextual strip -- same pass-through as onHoverPart just above. */
-  registerActions?: (actions: RuleActions | null) => void;
   /** Adoption step 4 piece B: this component's own toolbar verbs (the same
-   *  remove/round/hole/... closures the ribbon buttons call), handed UP the
-   *  same way registerActions hands SketchConstraints' actions up, so
+   *  remove/round/hole/... closures the ribbon buttons call), handed UP so
    *  ReshapeStudio's context bar can offer them without owning a second
    *  copy of any verb. Null on unmount/collapse of the thing being handed;
    *  the caller treats null as "no actions, omit the buttons". */
   registerContextActions?: (actions: ContextActions | null) => void;
-  /** Item U: pure pass-through of SketchConstraints' own `onTouch` -- see
-   *  that prop's own doc comment. */
-  onTouch?: (touched: TouchedPart | null) => void;
   /** The File group's own gate -- the same condition the retired MenuBar.tsx
    *  used to compute, now read directly by the ribbon's File group instead of
    *  being handed up to a second component. */
@@ -335,33 +297,6 @@ function roundLabel(style: RoundStyle) {
 }
 function roundIcon(style: RoundStyle) {
   return style === 'fillet' ? <SquareRoundCorner size={14} /> : <Octagon size={14} />;
-}
-/**
- * Item L: commits a constraint solve's own points alongside its new
- * constraints, in the SAME write -- pulled out to a named top-level
- * function so scripts/check-sketch-movers.mjs' census can name and
- * register it, rather than misattributing the write to whichever
- * top-level declaration happens to sit above setConstraints() in the
- * file (that census is column-0-anchored on purpose; a function nested
- * inside the component does not count as one).
- *
- * The answer that census demands: rounds and chamfers are keyed by
- * CORNER index and bulges by EDGE index, and a constraint solve moves
- * points -- it never reorders or removes a corner, splits an edge, or
- * merges two -- so every round, chamfer, and bulge carries over
- * UNCHANGED, still describing the exact corner/edge it always did. If a
- * moved corner's own round radius no longer fits the shorter edges now
- * beside it, outlineOf() already clamps that at render/build time, the
- * same path a handle drag or a typed Length already goes through --
- * this function does not need a second copy of that clamp.
- */
-function commitSettledPoints(
-  doc: ModelDoc, featureId: string, points: Point[], constraints: Constraint[],
-): ModelDoc {
-  return {
-    ...doc,
-    features: doc.features.map((x) => (x.id === featureId ? { ...x, points, constraints } : x)),
-  };
 }
 // `edgePicked` is `pickedEdgeUsable` at the call site: round() tries the
 // single-edge Fillet path FIRST whenever that is true (see round()'s own
@@ -526,7 +461,7 @@ function FlyoutButton({
 
 export default function ModelEditor({
   doc, onChange, selected, onSelect, onUndo, onRedo, canUndo, canRedo, collapsible, onCollapsed, onContentChange, rollbackIndex, onRollback, pickedEdge, onClearPickedEdge, pickedFace, onClearPickedFace, pickedEdges, onClearPickedEdges, refusals,
-  hoveredPart, onHoverPart, registerActions, registerContextActions, onTouch, historyGen,
+  registerContextActions, historyGen,
   hasMesh, onExportSTL, onExportOBJ, onExport3MF,
   canClearModel, onClearModel, activePlane, onActivePlaneChange,
   sketchMode, onOpenSketch2D, onExitSketch2D,
@@ -541,7 +476,6 @@ export default function ModelEditor({
   // is exactly the case this exists to catch. Cleared whenever the student
   // re-clicks a chip (pick(), below) -- a fresh click on the sketch's own
   // chip is what re-arms "the sketch goes" per item B.
-  const [lastRuleTouched, setLastRuleTouched] = useState<{ sketchId: string; constraint: Constraint } | null>(null);
   // Pending confirmation for a Delete that would take dependents with it
   // (item B / D4): named in the course's words, Delete or Keep, Undo still
   // works afterward same as any other edit. A delete with NOTHING riding on
@@ -562,11 +496,6 @@ export default function ModelEditor({
   useEffect(() => {
     if (!historyGenMounted.current) { historyGenMounted.current = true; return; }
     setNote(null);
-    // Same reasoning as the note above: an Undo/Redo can put the constraint
-    // list back to something that no longer contains -- or no longer
-    // matches -- whatever rule was "last touched", and a stale confirm
-    // dialog naming steps a Redo already brought back is worse than none.
-    setLastRuleTouched(null);
     setConfirmDelete(null);
   }, [historyGen]);
   // An empty document has nothing for a note to be about: Reset clears the
@@ -586,7 +515,6 @@ export default function ModelEditor({
       } else {
         setNote(null);
       }
-      setLastRuleTouched(null);
       setConfirmDelete(null);
     }
   }, [doc.features.length]);
@@ -646,19 +574,6 @@ export default function ModelEditor({
     typeof document !== 'undefined' && collapsible
       ? document.getElementById('reshapeTimeline')
       : null;
-  // The Rules panel is a docked column beside the canvas (Fusion/Onshape
-  // style), not an overlay inside this card -- same portal pattern as the
-  // ribbon and the timeline, and the same reason: the host is a real flex
-  // sibling of the viewport SandboxWorkspace renders, so it exists before
-  // this component mounts and narrowing the canvas is normal CSS layout
-  // rather than something this component has to reach out and cause itself.
-  // Measured 2026-09-04: as a floating card overlay it sat at x=32-450 over
-  // the canvas and clipped a corner's own "20" label under it.
-  const rulesHost =
-    typeof document !== 'undefined' && collapsible && !collapsed
-      ? document.getElementById('reshapeRules')
-      : null;
-
   // Alt+C (Onshape's own shortcut) focuses Search tools; Escape closes
   // whichever flyout is open, wherever focus happens to be.
   useEffect(() => {
@@ -949,211 +864,6 @@ export default function ModelEditor({
     say(null);
   }
 
-  function roundSketchCorner(f: Extract<Feature, { kind: 'sketch' }>, corner: number, radius: number) {
-    // f.bulges, not just the points: a corner whose neighbour is already an
-    // imported arc cannot be rounded (the fillet construction reads both
-    // adjacent edges as straight chords), and without the bulges this asks
-    // about a different sketch than the one on screen and gets told yes.
-    // Un-rounding comes first and is never refused: a corner that HAS a round
-    // may since have been dragged somewhere unroundable, and refusing to take
-    // the round off it would strand the student with a shape they cannot undo.
-    if (!(radius > 0)) {
-      if ((f.rounds?.[corner] ?? 0) <= 0) { say(null); return; }
-      const rounds = { ...(f.rounds ?? {}) };
-      delete rounds[corner];
-      onChange({
-        ...doc,
-        features: doc.features.map((x) => (x.id === f.id ? { ...x, rounds } : x)),
-      });
-      say(null);
-      return;
-    }
-
-    const why = whyCannotRoundCorner(f.points, corner, f.bulges);
-    if (why) { say(why); return; }
-
-    // Record the REQUEST, not the geometry. This used to call filletCorner()
-    // and write its trim points straight into f.points, where nothing could
-    // tell them apart from corners the student had placed -- so the drag
-    // handles, the constraint solver and the Rules panel all moved them, each
-    // one rescaling the arc it belonged to without touching its bulge.
-    // outlineOf() derives them instead, every time they are needed.
-    //
-    // Two things fall out for free. The corner is not deleted any more, so a
-    // pin on it survives the round (it used to be dropped, with a message
-    // saying so). And rounding the same corner again just overwrites the
-    // number, which is what makes the radius editable at all.
-    const next = { ...f, rounds: { ...(f.rounds ?? {}), [corner]: radius } };
-    onChange({
-      ...doc,
-      features: doc.features.map((x) => (x.id === f.id ? next : x)),
-    });
-
-    // What this corner could take ON ITS OWN, from the design polygon.
-    const ceiling = maxFilletRadius(f.points, corner, f.bulges);
-    const ownLimit = radius > ceiling;
-    // What it could take once every OTHER round had its share of the shared
-    // edges -- the number outlineOf() actually used, which is smaller when a
-    // neighbour got there first. Reporting the design-only ceiling here would
-    // name a radius the student cannot actually have.
-    const note = outlineOf(next).notes.find((x) => x.corner === corner);
-    const n = f.points.length;
-    // A neighbouring corner can be eating the shared edge via EITHER a round
-    // or a chamfer (round-wins-if-both is handled inside outlineOf()). This
-    // lookup names the actual neighbour in the clamp message, so it has to
-    // check both maps -- a neighbour that used a chamfer would otherwise be
-    // missed and the message would blame the design ceiling instead.
-    const neighbour = [(corner - 1 + n) % n, (corner + 1) % n]
-      .find((c) => (f.rounds?.[c] ?? 0) > 0 || (f.chamfers?.[c] ?? 0) > 0);
-
-    let clamped: string | null = null;
-    if (note && (ownLimit || neighbour === undefined)) {
-      // Its own two edges are the limit. Both remedies are reachable from
-      // here: this panel has a Length box per edge, and every design corner
-      // carries a drag handle on the canvas.
-      clamped = `That corner can only take a round of ${note.got.toFixed(1)}, so that is `
-        + 'what I used. Make its two edges longer if you want a bigger one.';
-    } else if (note && neighbour !== undefined && note.got > 0) {
-      // The remedy names the Round box on the neighbouring corner, which is
-      // in this same panel and takes a new number at any time.
-      clamped = `That corner can only take a round of ${note.got.toFixed(1)} once corner `
-        + `${neighbour + 1} has taken its share of the edge between them. Put a smaller `
-        + `round on corner ${neighbour + 1} if you want a bigger one here.`;
-    } else if (note && neighbour !== undefined) {
-      clamped = `There is no room left to round that corner -- corner ${neighbour + 1}'s `
-        + `round has taken the whole edge between them. Put a smaller round on corner `
-        + `${neighbour + 1} first.`;
-    }
-    say(clamped);
-  }
-
-  function setSketchPlane(f: Extract<Feature, { kind: 'sketch' }>, plane: SketchPlane) {
-    if (f.plane === plane) return;
-    // A plain field write. The plane has always been part of the feature and
-    // the codegen has always honoured it -- extrudeOnPlane() builds on all
-    // three and the codegen tests pin xz and yz -- but newSketch()'s plane
-    // argument had exactly one caller passing nothing, so every sketch in the
-    // app was born on xy and could never leave. Same shape of gap as the
-    // bulge writer: a finished pipeline with nothing at the top of it.
-    //
-    // The sketch's own coordinates do not change, so the outline, the rules,
-    // the rounds and the corners all come with it -- the shape stands up on
-    // a different wall rather than being redrawn.
-    onChange({
-      ...doc,
-      features: doc.features.map((x) => (x.id === f.id ? { ...x, plane } : x)),
-    });
-    say(null);
-  }
-
-  function dropSketchCorner(f: Extract<Feature, { kind: 'sketch' }>, corner: number) {
-    const why = whyCannotRemoveCorner(f, corner);
-    if (why) { say(why); return; }
-    // The cost is read BEFORE the removal, off the sketch that still has the
-    // corner in it -- afterwards there is nothing left to count.
-    const cost = whyRemovingCornerCosts(f, corner);
-    onChange({
-      ...doc,
-      features: doc.features.map((x) => (x.id === f.id ? removeCorner(x as typeof f, corner) : x)),
-    });
-    say(cost ?? null);
-  }
-
-  function bowSketchEdge(f: Extract<Feature, { kind: 'sketch' }>, edge: number, bow: number) {
-    // Straightening comes first and is never refused, same reason un-rounding
-    // and un-chamfering are not: an edge that HAS a bow may since have had a
-    // corner dragged onto its neighbour, and refusing to take the curve off it
-    // would strand the student with a shape they cannot undo.
-    if (bow === 0) {
-      onChange({
-        ...doc,
-        features: doc.features.map((x) => (x.id === f.id ? bowEdge(x as typeof f, edge, 0) : x)),
-      });
-      say(null);
-      return;
-    }
-
-    const why = whyCannotBowEdge(f.points, edge, bow);
-    if (why) { say(why); return; }
-
-    onChange({
-      ...doc,
-      features: doc.features.map((x) => (x.id === f.id ? bowEdge(x as typeof f, edge, bow) : x)),
-    });
-    say(`Edge ${edge + 1} now curves. Across, Up and Length only apply to straight edges, so they are off for it.`);
-  }
-
-  function chamferSketchCorner(f: Extract<Feature, { kind: 'sketch' }>, corner: number, distance: number) {
-    // f.bulges, not just the points: a corner whose neighbour is already an
-    // imported arc cannot be chamfered (the chamfer construction reads both
-    // adjacent edges as straight chords), and without the bulges this asks
-    // about a different sketch than the one on screen and gets told yes.
-    // Un-chamfering comes first and is never refused: a corner that HAS a
-    // chamfer may since have been dragged somewhere unchamferable, and
-    // refusing to take the chamfer off it would strand the student with a
-    // shape they cannot undo.
-    if (!(distance > 0)) {
-      if ((f.chamfers?.[corner] ?? 0) <= 0) { say(null); return; }
-      const chamfers = { ...(f.chamfers ?? {}) };
-      delete chamfers[corner];
-      onChange({
-        ...doc,
-        features: doc.features.map((x) => (x.id === f.id ? { ...x, chamfers } : x)),
-      });
-      say(null);
-      return;
-    }
-
-    const why = whyCannotChamferCorner(f.points, corner, f.bulges);
-    if (why) { say(why); return; }
-
-    // Record the REQUEST, not the geometry -- same division of labour as
-    // roundSketchCorner: outlineOf() derives the trim points every time they
-    // are needed, so nothing here writes into f.points.
-    const next = { ...f, chamfers: { ...(f.chamfers ?? {}), [corner]: distance } };
-    onChange({
-      ...doc,
-      features: doc.features.map((x) => (x.id === f.id ? next : x)),
-    });
-
-    // What this corner could take ON ITS OWN, from the design polygon.
-    const ceiling = maxChamferDistance(f.points, corner, f.bulges);
-    const ownLimit = distance > ceiling;
-    // What it could take once every OTHER chamfer had its share of the shared
-    // edges -- the number outlineOf() actually used, which is smaller when a
-    // neighbour got there first. Reporting the design-only ceiling here would
-    // name a distance the student cannot actually have.
-    const note = outlineOf(next).notes.find((x) => x.corner === corner);
-    const n = f.points.length;
-    // A neighbouring corner can be eating the shared edge via EITHER a round
-    // or a chamfer (round-wins-if-both is handled inside outlineOf()). This
-    // lookup names the actual neighbour in the clamp message, so it has to
-    // check both maps -- a neighbour that used a round would otherwise be
-    // missed and the message would blame the design ceiling instead.
-    const neighbour = [(corner - 1 + n) % n, (corner + 1) % n]
-      .find((c) => (f.rounds?.[c] ?? 0) > 0 || (f.chamfers?.[c] ?? 0) > 0);
-
-    let clamped: string | null = null;
-    if (note && (ownLimit || neighbour === undefined)) {
-      // Its own two edges are the limit. Both remedies are reachable from
-      // here: this panel has a Length box per edge, and every design corner
-      // carries a drag handle on the canvas.
-      clamped = `That corner can only take a chamfer of ${note.got.toFixed(1)}, so that is `
-        + 'what I used. Make its two edges longer if you want a bigger one.';
-    } else if (note && neighbour !== undefined && note.got > 0) {
-      // The remedy names the Chamfer box on the neighbouring corner, which is
-      // in this same panel and takes a new number at any time.
-      clamped = `That corner can only take a chamfer of ${note.got.toFixed(1)} once corner `
-        + `${neighbour + 1} has taken its share of the edge between them. Put a smaller `
-        + `chamfer on corner ${neighbour + 1} if you want a bigger one here.`;
-    } else if (note && neighbour !== undefined) {
-      clamped = `There is no room left to chamfer that corner -- corner ${neighbour + 1}'s `
-        + `chamfer has taken the whole edge between them. Put a smaller chamfer on corner `
-        + `${neighbour + 1} first.`;
-    }
-    say(clamped);
-  }
-
   function mirror(plane: SketchPlane) {
     const why = whyCannotSolidOp(chosen, 'mirror');
     if (why) { say(why); return; }
@@ -1314,22 +1024,6 @@ export default function ModelEditor({
 
   function remove() {
     if (!chosen.length) return;
-    // A rule row the student just set or changed wins over the whole
-    // feature it lives on: EXPLORE-2d.md's own reproduction (cycle Edges 1
-    // and 2 to equal, press the toolbar Delete) took out the entire sketch
-    // for what was clearly meant as "undo that one rule". Only fires when
-    // the sketch that rule belongs to is the (sole) thing selected -- a
-    // fresh click on the chip (pick(), above) clears lastRuleTouched and
-    // falls straight through to the ordinary path below.
-    if (lastRuleTouched && chosen.length === 1 && chosen[0].id === lastRuleTouched.sketchId
-      && chosen[0].kind === 'sketch') {
-      const f = chosen[0];
-      const touchedJson = JSON.stringify(lastRuleTouched.constraint);
-      const next = (f.constraints ?? []).filter((c) => JSON.stringify(c) !== touchedJson);
-      setLastRuleTouched(null);
-      setConstraints(f, next);
-      return;
-    }
     // Everything built from what is going has to go too, however far down the
     // chain. Filtering only combines -- which is what this did -- left a Pull
     // pointing at a deleted sketch, and the generated source then referred to a
@@ -1428,87 +1122,10 @@ export default function ModelEditor({
         : [id]
     );
     say(null);
-    // A fresh click on a chip is what item B means by "the sketch chip
-    // itself is selected" -- it re-arms the toolbar Delete for the whole
-    // feature, overriding whatever rule was last touched in the panel.
-    setLastRuleTouched(null);
   }
 
-  // Only records the rules. Solving happens where the doc is adopted, which is
-  // the one place guaranteed to hold the current points -- solving here would
-  // use whatever this render was given, and lose any edit still in flight.
-  function setConstraints(f: Extract<Feature, { kind: 'sketch' }>, next: Constraint[]) {
-    // The solver will happily satisfy a rule by pulling an edge to zero
-    // length: one Up on a horizontal edge of a fresh rectangle lands both its
-    // corners on the same point, residual 0, nothing over-constrained, no
-    // complaint -- and Pull then extrudes the collapsed outline into a solid.
-    // Residual cannot catch it, because the collapse is what SATISFIES the
-    // rule. So the rule is tried here first and refused with a reason; the
-    // same gate runs again inside solveDoc(), silently, for every other way a
-    // doc gets adopted.
-    //
-    // Solved from seedForNewRule()'s seed, not the raw points, for a
-    // between-edges rule (parallel/perpendicular/equal): that seed holds
-    // every corner not on the far edge still and only rotates/scales that
-    // edge, which is the fewest-movers attempt a beginner expects -- a plain
-    // least-squares solve is free to shrink an edge toward the other one
-    // instead of just turning it, and a small shrink is a legitimate part of
-    // the cheapest joint answer (S09, 2026-09-04: `parallel` between two
-    // edges of a trapezoid squeezed all four corners to a ~0.3mm sliver,
-    // residual 0, nothing over-constrained). It falls back to `points`
-    // unchanged for every other kind, so this is also the ordinary solve.
-    const rawPoints = f.points.map((p): Point => [p[0], p[1]]);
-    const solved = solveSketch(seedForNewRule(rawPoints, next), next);
-    const points = solved.points.map((p) => [p[0], p[1]] as [number, number]);
-    const outline = outlineOf({ ...f, points });
-    // A near-collapse is not caught by outlineOf() -- it only refuses a
-    // TRUE zero-length edge, and a rule can be satisfied by squeezing the
-    // shape to a sliver well short of that (same S09 case as above). The
-    // gate here is proportion, not exact collapse: any edge or the whole
-    // outline losing more than 3/4 of what it was before this solve reads
-    // as the sketch breaking, not the rule succeeding.
-    const shrunk = collapsedByRatio(rawPoints, points);
-    if (!outline.ok || shrunk) {
-      // The remedy is the corner handles, which really are on screen right
-      // now: this panel only renders for a selected sketch, and
-      // sketchHandles() emits one two-axis handle per design corner, drawn by
-      // HandleOverlay as the blue squares.
-      const why = outline.why
-        ?? 'That would squeeze this sketch down to a sliver, leaving it barely '
-          + 'a shape at all. It has been left as it was.';
-      say(`${why} Drag that edge into the direction you want first -- `
-        + 'the blue corner handles move it -- then set the rule.');
-      return;
-    }
-    // Item L: commit the SEEDED solve's own points along with the new
-    // constraints, not just the constraints. This gate already computed
-    // `points` above to check the rule would not collapse the sketch --
-    // discarding them and committing only `constraints` meant solveDoc()'s
-    // own later, UNSEEDED re-solve (every doc adoption runs it) was free to
-    // land somewhere else entirely, including a genuinely worse basin for a
-    // between-edges rule than the fewest-movers seed above just found. That
-    // gap is exactly how a successful settle here could still leave the
-    // fighting banner up afterward (a real, separate report this session
-    // does not own the deeper fix for -- see HANDOFF.md-adjacent notes) --
-    // solveDoc re-solving from the OLD points instead of these new ones.
-    onChange(commitSettledPoints(doc, f.id, points, next));
-    say(null);
-    // The rule this call added or changed, so the toolbar Delete has
-    // something to target instead of the whole sketch (see
-    // lastRuleTouched's own comment). A pure removal (next has nothing old
-    // did not) leaves nothing to point at -- that row already reads "no
-    // rule" -- so it clears the tracked rule rather than guessing.
-    const before = new Set((f.constraints ?? []).map((c) => JSON.stringify(c)));
-    const touched = next.find((c) => !before.has(JSON.stringify(c))) ?? null;
-    setLastRuleTouched(touched ? { sketchId: f.id, constraint: touched } : null);
-  }
-
-  const activeSketch =
-    chosen.length === 1 && chosen[0].kind === 'sketch' ? chosen[0] : null;
-
-  // The feature list lives in the bottom timeline (Fusion 360 style) and the
-  // sketch rules live in the docked #reshapeRules column now (see rulesHost's
-  // own comment). The card itself now always holds the Parts/Planes browser
+  // The feature list lives in the bottom timeline (Fusion 360 style). The card
+  // itself always holds the Parts/Planes browser
   // tree (see `model-browser` in the JSX below) whenever it isn't collapsed
   // to the rail -- unlike the note/rules it used to gate on, the tree is
   // never empty (Planes always lists xy/xz/yz), so there is no "empty card
@@ -1589,7 +1206,7 @@ export default function ModelEditor({
   // Piece B: hand the caller this render's own verb closures -- the same
   // ones the ribbon buttons above call, wrapped as thin arrows. Re-registers
   // every render rather than off a dependency list, the same
-  // SketchConstraints/registerActions pattern: every verb below closes over
+  // registerContextActions pattern: every verb below closes over
   // `doc`/`chosen`/`pickedEdge` state that changes on renders this component
   // has no reason to otherwise re-run an effect for, and the receiver
   // (ReshapeStudio) only ever stores the object in state it re-reads at
@@ -2306,38 +1923,6 @@ export default function ModelEditor({
         </ol>
       )}
 
-      {/* A circle reaches the panel too now. It gets the plane row alone --
-          it has no edges to rule and no corners to pin -- but before this the
-          whole panel was skipped for it, so a circle was born on the ground
-          and could never stand up.
-          Portaled into the docked #reshapeRules host when one exists (see
-          rulesHost's own comment); falls back to rendering right here, as
-          before, for any host that never mounted the docked column (a bare
-          embed of this component with no SandboxWorkspace around it). */}
-      {activeSketch && (() => {
-        const rules = (
-          <SketchConstraints
-            points={activeSketch.points}
-            bulges={activeSketch.bulges}
-            rounds={activeSketch.rounds}
-            chamfers={activeSketch.chamfers}
-            constraints={activeSketch.constraints ?? []}
-            onChange={(next) => setConstraints(activeSketch, next)}
-            onRound={(corner, radius) => roundSketchCorner(activeSketch, corner, radius)}
-            onChamfer={(corner, distance) => chamferSketchCorner(activeSketch, corner, distance)}
-            onBow={(edge, bow) => bowSketchEdge(activeSketch, edge, bow)}
-            onRemoveCorner={(corner) => dropSketchCorner(activeSketch, corner)}
-            plane={activeSketch.plane}
-            shape={activeSketch.shape}
-            onPlane={(plane) => setSketchPlane(activeSketch, plane)}
-            hoveredPart={hoveredPart}
-            onHoverPart={onHoverPart}
-            registerActions={registerActions}
-            onTouch={onTouch}
-          />
-        );
-        return rulesHost ? createPortal(rules, rulesHost) : rules;
-      })()}
 
       <style>{`
         .model-editor { display: flex; flex-direction: column; height: 100%; min-height: 0; overflow: hidden; }

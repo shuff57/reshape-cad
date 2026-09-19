@@ -15,8 +15,7 @@
     "./camera-fit": "./dist/camera-fit.js",
     "./model/BrepViewportThree": "./dist/model/BrepViewportThree.js",
     "./model/HandleOverlay": "./dist/model/HandleOverlay.js",
-    "./model/ModelEditor": "./dist/model/ModelEditor.js",
-    "./model/SketchConstraints": "./dist/model/SketchConstraints.js"
+    "./model/ModelEditor": "./dist/model/ModelEditor.js"
   },
   "typesVersions": {
     "*": {
