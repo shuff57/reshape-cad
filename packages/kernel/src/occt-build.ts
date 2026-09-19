@@ -383,6 +383,532 @@ function onPlane(oc: Occt, f: any, pu: number, pv: number): any {
   );
 }
 
+// --- soup sketches (SPEC-sketcher2 §5.3, §8.2) -------------------------------
+//
+// A soup sketch stores GEOMETRY ROWS plus RULES instead of an ordered ring of
+// corners: `{k:'line', a, b}`, `{k:'circle', c, r}`, `{k:'arc', c, r, a, b,
+// sense}`. brep-rs solves those rules at build time and extrudes the loops its
+// own `sketch::wires::discover_wires` finds -- an outline plus any number of
+// holes through it, which is how a washer exists at all. Until this path
+// existed the parity gate could not build one on OCCT, so brep-rs's
+// 11057.522204 was the kernel marking its own homework.
+//
+// THIS PATH ONLY READS, AND MUST NOT GAIN A SOLVER. A second least-squares
+// implementation is not an independent oracle; it is a second guess that can
+// agree with the first for the same wrong reason. The coordinates in the rows
+// ARE the solved state, and that is a real constraint on whoever writes a
+// fixture -- measured, not assumed: perturbing one corner of the washer to
+// [40, 3] while leaving its `horizontal` rule in place makes brep-rs report
+// 10337.605014 with a bbox y-min of 1.4999999999 (the least-squares mean of 0
+// and 3), NOT the coordinates as given. Rows that do not already satisfy their
+// own rules make the two kernels build different solids and fail for the wrong
+// reason, exactly the way W4's draft-whole reference would have.
+//
+// WHO DECIDES WHICH LOOP IS THE HOLE: not this file. OCCT does, through
+// `ShapeFix_Face`, measured on this build to repair BOTH a swapped outer/hole
+// classification and an unreversed inner wire back to the same 11057.522204.
+// That is the whole point. Re-deriving containment here in TypeScript would
+// mirror brep-rs's own `point_in_loop`/`nesting` and could share its blind
+// spot; handing OCCT the loops in discovery order and letting it classify is
+// what makes this an oracle rather than a copy.
+
+type SoupPt = [number, number];
+/** A segment with two ends, so it can be chained. */
+type SoupOpen =
+  | { k: 'line'; a: SoupPt; b: SoupPt }
+  | { k: 'arc'; c: SoupPt; r: number; a: SoupPt; b: SoupPt; start: number; sweep: number };
+/** ...or a circle, which is a whole loop on its own and chains to nothing. */
+type SoupSeg = SoupOpen | { k: 'circle'; c: SoupPt; r: number };
+
+const TAU = Math.PI * 2;
+/** The smallest sweep this path will call an arc, and how near a full turn it
+ *  tolerates. The SAME 1e-6 brep-rs uses (`sketch/wires.rs` SWEEP_MIN), so the
+ *  two kernels call the same arcs degenerate; `Flaw::SweepZero` and
+ *  `Flaw::SweepFull` are what it is mirroring. */
+const SWEEP_MIN = 1e-6;
+
+/** Soup rows, or not. `shape: 'circle'` is tested FIRST because brep-rs's own
+ *  `extruded_profile` tests them in exactly that order. */
+function isSoup(f: any): boolean {
+  return f?.shape !== 'circle' && Array.isArray(f?.geoms) && f.geoms.length > 0;
+}
+
+const soupPt = (v: any): SoupPt | null =>
+  Array.isArray(v) && v.length === 2 && Number.isFinite(v[0]) && Number.isFinite(v[1])
+    ? [v[0], v[1]]
+    : null;
+
+/** The soup rows chained into closed loops, in discovery order, with the
+ *  sketch's own scale -- or the sentence saying why they are not loops.
+ *  Deliberately does NOT decide which loop is the outline; see the header. */
+function soupLoops(f: any): { loops: SoupSeg[][]; scale: number } | { refusal: string } {
+  const rows: any[] = f.geoms ?? [];
+  const rules: any[] = f.rules ?? [];
+  const where = (p: SoupPt) => `(${p[0].toFixed(1)}, ${p[1].toFixed(1)}) mm`;
+
+  // A construction POINT is not drawn and cuts nothing, so it is not the
+  // question being declined here; a construction CURVE is.
+  const drawn = rows.find((g) => g?.construction === true && g?.k !== 'point');
+  if (drawn) {
+    // MEASURED, not assumed: brep-rs parses `construction` and throws the flag
+    // away (sketch/session.rs `let _ = construction;`), so a construction
+    // circle still cuts a bore there -- 11057.522204, not 12000 -- while the
+    // doc comment on `profile()` a few lines below it says "construction
+    // geometry dropped". Implementing either reading here would make parity
+    // assert a semantic no spec has settled, so the referee declines instead.
+    return {
+      refusal: `${drawn.k} ${drawn.id} is construction geometry, and this reference cannot referee it yet: brep-rs reads that flag and discards it, so the row still draws`,
+    };
+  }
+
+  const loops: SoupSeg[][] = [];
+  const open = new Map<number, SoupOpen>();
+  /** Every point the rows define, for the scale below. */
+  const marks: SoupPt[] = [];
+  let rmax = 0;
+  /** id -> kind, for checking what a rule names. Points included: they draw
+   *  nothing, but a rule may legitimately hang a weld on one. */
+  const kindOf = new Map<number, string>();
+  for (const g of rows) {
+    if (typeof g?.id === 'number' && typeof g?.k === 'string') kindOf.set(g.id, g.k);
+  }
+  for (const g of rows) {
+    if (g?.k === 'point') continue;
+    if (g?.k === 'circle') {
+      const c = soupPt(g.c);
+      if (!c || !(g.r > 0)) return { refusal: `circle ${g.id} has no centre and radius to draw` };
+      loops.push([{ k: 'circle', c, r: g.r }]);
+      marks.push(c);
+      rmax = Math.max(rmax, g.r);
+      continue;
+    }
+    if (g?.k === 'line') {
+      const a = soupPt(g.a);
+      const b = soupPt(g.b);
+      if (!a || !b) return { refusal: `line ${g.id} has no two ends` };
+      open.set(g.id, { k: 'line', a, b });
+      marks.push(a, b);
+      continue;
+    }
+    if (g?.k === 'arc') {
+      const c = soupPt(g.c);
+      const a = soupPt(g.a);
+      const b = soupPt(g.b);
+      if (!c || !a || !b || !(g.r > 0)) return { refusal: `arc ${g.id} has no centre, radius and two ends` };
+      // Strict, because brep-rs is: `sketch/session.rs` refuses an arc whose
+      // sense is missing or unknown rather than assuming one, and a referee
+      // that quietly picked counterclockwise would build where the kernel
+      // honestly refused -- which the parity gate scores as the KERNEL's fault.
+      if (g.sense !== 'ccw' && g.sense !== 'cw') {
+        return { refusal: `arc ${g.id} near ${where(a)} needs sense 'ccw' or 'cw', and has ${JSON.stringify(g.sense) ?? 'none'}` };
+      }
+      // Exactly brep-rs's own read (sketch/wires.rs `read_curves`): the angles
+      // come from the stored ends, and the SENSE -- not the winding of the row
+      // -- decides which way round the circle the arc runs.
+      const pos = (t: number) => { const m = t % TAU; return m < 0 ? m + TAU : m; };
+      const ta = Math.atan2(a[1] - c[1], a[0] - c[0]);
+      const tb = Math.atan2(b[1] - c[1], b[0] - c[0]);
+      const sweep = g.sense === 'cw' ? -pos(ta - tb) : pos(tb - ta);
+      if (Math.abs(sweep) < SWEEP_MIN || Math.abs(sweep) > TAU - SWEEP_MIN) {
+        return {
+          refusal: `arc ${g.id} near ${where(a)} sweeps ${Math.abs(sweep) < SWEEP_MIN ? 'nothing at all' : 'a whole turn'}; give it two distinct ends`,
+        };
+      }
+      open.set(g.id, { k: 'arc', c, r: g.r, a, b, start: ta, sweep });
+      marks.push(a, b, c);
+      rmax = Math.max(rmax, g.r);
+      continue;
+    }
+    return { refusal: `this sketch has a ${String(g?.k)} row, which this reference path does not read yet` };
+  }
+
+  // SCALE, the same one brep-rs measures (`ParamBlock::measure_scale`): the
+  // diagonal of everything the rows define, never below the widest diameter,
+  // never below 1. Both the tolerance and the area floor hang off it, so they
+  // mean the same thing in a 4 mm sketch and a 4000 mm one.
+  let scale = 1;
+  if (marks.length) {
+    const xs = marks.map((p) => p[0]);
+    const ys = marks.map((p) => p[1]);
+    scale = Math.hypot(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));
+  }
+  scale = Math.max(scale, 2 * rmax, 1);
+
+  // This tolerance NEVER decides topology -- see the weld graph below. It only
+  // asks whether two ends a rule says MEET actually do, which is the §6.3
+  // contract that these rows are already solved. 1e-7 of the sketch's own size
+  // is solver noise; anything wider means the rows were never solved, and the
+  // two kernels would then build different solids from them.
+  const tol = 1e-7 * scale;
+  const gap = (p: SoupPt, q: SoupPt) => Math.hypot(p[0] - q[0], p[1] - q[1]);
+
+  for (const [id, s] of open) {
+    if (s.k === 'line' && gap(s.a, s.b) <= tol) {
+      return { refusal: `line ${id} at ${where(s.a)} has no length; both its ends are the same point` };
+    }
+  }
+
+  // EVERY RULE IS CHECKED, AND AN UNCHECKABLE ONE IS REFUSED. This is the
+  // sharpest edge on the whole path, so it is worth being plain about why.
+  //
+  // This file reads rows; brep-rs SOLVES them. That is only safe while the rows
+  // already satisfy their own rules, because a rule this path merely ignored is
+  // one the kernel still obeys -- and obeying it MOVES THE GEOMETRY. Measured
+  // on a 40x25 rectangle that reads 12000 here: one extra `angle` rule makes
+  // brep-rs build 12315.30, one `distance` makes it 15600.00, and a `diameter`
+  // on the washer's bore takes it from 11057.52 to 11764.38. None of those is a
+  // refusal on either side -- both kernels build, and the gate prints the
+  // difference as a FAIL of brep-rs. A wrong reference VOLUME is the one thing
+  // a referee must never produce, so silence is not an option here.
+  //
+  // The rule therefore is: satisfaction is VERIFIED, never assumed and never
+  // solved for. A kind this path cannot verify in one line of arithmetic is
+  // refused by name rather than waved through -- declining the question, the
+  // same stance construction geometry gets above.
+  const ENDS_ON: Record<string, string[]> = {
+    point: ['a'], line: ['a', 'b'], circle: ['c'], arc: ['a', 'b', 'c'],
+  };
+  const rowOf = new Map<number, any>();
+  for (const g of rows) if (typeof g?.id === 'number') rowOf.set(g.id, g);
+  const pointAt = (id: number, at: string): SoupPt | null => {
+    const g = rowOf.get(id);
+    if (!g) return null;
+    if (g.k === 'point') return at === 'a' ? soupPt(g.p) : null;
+    if (g.k === 'line') return at === 'a' ? soupPt(g.a) : at === 'b' ? soupPt(g.b) : null;
+    if (g.k === 'circle') return at === 'c' ? soupPt(g.c) : null;
+    if (g.k === 'arc') return at === 'c' ? soupPt(g.c) : at === 'a' ? soupPt(g.a) : at === 'b' ? soupPt(g.b) : null;
+    return null;
+  };
+  const lineOf = (id: number): SoupPt | null => {
+    const g = rowOf.get(id);
+    return g?.k === 'line' ? [g.b[0] - g.a[0], g.b[1] - g.a[1]] : null;
+  };
+  const radiusOf = (id: number): number | null => {
+    const g = rowOf.get(id);
+    return g?.k === 'circle' || g?.k === 'arc' ? g.r : null;
+  };
+
+  for (let i = 0; i < rules.length; i++) {
+    const r = rules[i];
+    const row = `rule ${i + 1}`;
+    // The geometry a rule names has to be there, and has to have the point it
+    // is asked for -- measured: a rule naming geometry 99, or asking a line for
+    // its 'c', built a 12000 plate here while brep-rs refused each by name.
+    for (const side of ['a', 'b', 'c'] as const) {
+      const id = r?.[side];
+      if (typeof id !== 'number') continue;
+      const kind = kindOf.get(id);
+      if (!kind) return { refusal: `${row} names geometry ${id}, which this sketch does not have` };
+      const at = r[`${side}End`];
+      if (at === undefined) continue;
+      if (!(ENDS_ON[kind] ?? []).includes(String(at))) {
+        return { refusal: `${row} asks geometry ${id} for its '${String(at)}', which a ${kind} does not have` };
+      }
+    }
+
+    const off = (by: number, what: string) =>
+      by <= tol
+        ? null
+        : { refusal: `${row} (${String(r.k)}) is off by ${by.toExponential(2)} mm: ${what}. These rows have not been solved, and this reference reads them rather than solving them` };
+    const needs = (what: string) => ({ refusal: `${row} asks geometry ${r.a} to be ${String(r.k)}, which only ${what} can be` });
+    const value = typeof r?.value === 'number' ? r.value : NaN;
+    let bad: { refusal: string } | null = null;
+
+    switch (String(r?.k)) {
+      case 'lock':
+        // Fixes a point where it already is. Nothing to be off by.
+        break;
+      case 'coincident': {
+        const p = pointAt(r.a, String(r.aEnd ?? 'a'));
+        const q = pointAt(r.b, String(r.bEnd ?? 'a'));
+        if (!p || !q) break;
+        bad = off(gap(p, q), `${where(p)} and ${where(q)} are not the same point`);
+        break;
+      }
+      case 'horizontal':
+      case 'vertical': {
+        const d = lineOf(r.a);
+        if (!d) return needs('a line');
+        bad = off(Math.abs(String(r.k) === 'horizontal' ? d[1] : d[0]), `edge ${r.a} does not lie along the axis`);
+        break;
+      }
+      case 'radius':
+      case 'diameter': {
+        const rad = radiusOf(r.a);
+        if (rad === null) return needs('a circle or an arc');
+        const have = String(r.k) === 'radius' ? rad : 2 * rad;
+        bad = off(Math.abs(have - value), `geometry ${r.a} measures ${have} where the rule says ${value}`);
+        break;
+      }
+      case 'distance':
+      case 'distanceX':
+      case 'distanceY': {
+        const p = pointAt(r.a, String(r.aEnd ?? 'a'));
+        const q = pointAt(r.b, String(r.bEnd ?? 'a'));
+        if (!p || !q) break;
+        const have = String(r.k) === 'distanceX' ? Math.abs(p[0] - q[0])
+          : String(r.k) === 'distanceY' ? Math.abs(p[1] - q[1])
+            : gap(p, q);
+        bad = off(Math.abs(have - Math.abs(value)), `${where(p)} to ${where(q)} measures ${have} where the rule says ${value}`);
+        break;
+      }
+      case 'parallel':
+      case 'perpendicular': {
+        const u = lineOf(r.a);
+        const v = lineOf(r.b);
+        if (!u || !v) return needs('two lines');
+        const lu = Math.hypot(u[0], u[1]) || 1;
+        const lv = Math.hypot(v[0], v[1]) || 1;
+        const t = String(r.k) === 'parallel' ? u[0] * v[1] - u[1] * v[0] : u[0] * v[0] + u[1] * v[1];
+        bad = off((Math.abs(t) / (lu * lv)) * scale, `edges ${r.a} and ${r.b} are not ${String(r.k)}`);
+        break;
+      }
+      case 'equal': {
+        const u = lineOf(r.a);
+        const v = lineOf(r.b);
+        if (u && v) {
+          bad = off(Math.abs(Math.hypot(u[0], u[1]) - Math.hypot(v[0], v[1])), `edges ${r.a} and ${r.b} are not the same length`);
+          break;
+        }
+        const ra = radiusOf(r.a);
+        const rb = radiusOf(r.b);
+        if (ra === null || rb === null) return needs('two lines, or two curves');
+        bad = off(Math.abs(ra - rb), `geometry ${r.a} and ${r.b} are not the same size`);
+        break;
+      }
+      default:
+        // tangent's recorded sigma/tau, angle's recorded quadrant, symmetric's
+        // midpoint and pointOnObject's projection each have a sign or a branch
+        // this path would have to GUESS at to check. Guessing is how a referee
+        // starts lying, so it says so instead.
+        return {
+          refusal: `${row} is a ${String(r?.k)} rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied`,
+        };
+    }
+    if (bad) return bad;
+  }
+
+  // WHICH ENDS MEET IS READ, NOT GUESSED. brep-rs joins two curve ends only
+  // because a `coincident` rule says so -- measured: a rectangle whose corners
+  // are BIT-IDENTICAL but carry no rules is refused there, "edge 1 has a loose
+  // end; the outline must close". Welding by proximity instead would build
+  // where the kernel refuses, and would need a tolerance to invent topology
+  // with. Reading the rules is the honest reading and needs none.
+  //
+  // A weld runs through whatever it is written through, including a bare point
+  // two edges are both tied to, so the ends are grouped rather than paired.
+  const parent = new Map<string, string>();
+  const find = (k: string): string => {
+    let r = k;
+    for (;;) {
+      const up = parent.get(r);
+      if (up === undefined || up === r) return r;
+      r = up;
+    }
+  };
+  const union = (x: string, y: string) => {
+    if (!parent.has(x)) parent.set(x, x);
+    if (!parent.has(y)) parent.set(y, y);
+    const rx = find(x);
+    const ry = find(y);
+    if (rx !== ry) parent.set(rx, ry);
+  };
+  for (const r of rules) {
+    if (r?.k !== 'coincident') continue;
+    union(`${r.a}:${r.aEnd ?? 'a'}`, `${r.b}:${r.bEnd ?? 'a'}`);
+  }
+
+  const mates = new Map<string, string[]>();
+  for (const id of open.keys()) {
+    for (const at of ['a', 'b'] as const) {
+      const key = `${id}:${at}`;
+      const root = find(key);
+      mates.set(root, [...(mates.get(root) ?? []), key]);
+    }
+  }
+  const at_ = (s: SoupOpen, at: 'a' | 'b') => (at === 'a' ? s.a : s.b);
+  const flip = (s: SoupOpen): SoupOpen =>
+    s.k === 'line'
+      ? { k: 'line', a: s.b, b: s.a }
+      : { k: 'arc', c: s.c, r: s.r, a: s.b, b: s.a, start: s.start + s.sweep, sweep: -s.sweep };
+
+  const used = new Set<number>();
+  for (const [headId, headSeg] of open) {
+    if (used.has(headId)) continue;
+    used.add(headId);
+    const chain: SoupOpen[] = [headSeg];
+    const goal = `${headId}:a`;
+    // Entered the first edge at its own 'a', so we leave by its 'b'.
+    let from: { id: number; at: 'a' | 'b'; seg: SoupOpen } = { id: headId, at: 'b', seg: headSeg };
+    for (;;) {
+      const key = `${from.id}:${from.at}`;
+      const here = at_(from.seg, from.at);
+      const met = (mates.get(find(key)) ?? []).filter((x) => x !== key);
+      if (met.length === 0) {
+        return { refusal: `edge ${from.id} has a loose end at ${where(here)}; nothing says it meets another edge, so the outline does not close` };
+      }
+      if (met.length > 1) {
+        return { refusal: `${met.length + 1} edge ends are tied together at ${where(here)}, so the outline forks; each loop must be a single chain` };
+      }
+      const [nid, nat] = (met[0] as string).split(':') as [string, 'a' | 'b'];
+      const nextId = Number(nid);
+      const nextSeg = open.get(nextId);
+      if (!nextSeg) return { refusal: `a rule ties edge ${from.id} to geometry ${nextId}, which is not an edge` };
+      const there = at_(nextSeg, nat);
+      if (gap(here, there) > tol) {
+        return {
+          refusal: `edges ${from.id} and ${nextId} are ruled to meet at ${where(here)} but their ends are ${gap(here, there).toExponential(2)} mm apart; these rows have not been solved`,
+        };
+      }
+      if (`${nextId}:${nat}` === goal) break;
+      if (used.has(nextId)) {
+        return { refusal: `edge ${nextId} near ${where(there)} is used twice; a loop must not double back on itself` };
+      }
+      used.add(nextId);
+      // Entered at `nat`, so the row runs forward when that is its own 'a'.
+      chain.push(nat === 'a' ? nextSeg : flip(nextSeg));
+      from = { id: nextId, at: nat === 'a' ? 'b' : 'a', seg: nextSeg };
+    }
+    loops.push(chain);
+  }
+
+  if (!loops.length) return { refusal: 'this sketch has nothing to extrude' };
+  return { loops, scale };
+}
+
+/** A loop's signed area in sketch coordinates: the shoelace over its ends plus,
+ *  for each arc, the circular segment between the arc and its own chord
+ *  (`r^2 (theta - sin theta) / 2`, signed with the sweep). Exact for arcs, which
+ *  is the point -- a sampled approximation here would make the checksum below
+ *  weaker than the thing it is checking. */
+function loopArea(segs: SoupSeg[]): number {
+  const first = segs[0];
+  if (segs.length === 1 && first && first.k === 'circle') return Math.PI * first.r * first.r;
+  let a = 0;
+  for (const s of segs) {
+    if (s.k === 'circle') continue;
+    a += (s.a[0] * s.b[1] - s.b[0] * s.a[1]) / 2;
+    if (s.k === 'arc') a += (s.r * s.r * (s.sweep - Math.sin(s.sweep))) / 2;
+  }
+  return a;
+}
+
+/** One loop as an OCCT wire, on the sketch's own frame. */
+function soupWire(oc: Occt, f: any, segs: SoupSeg[]): any {
+  const at = (p: SoupPt) => onPlane(oc, f, p[0], p[1]);
+  const w = new oc.BRepBuilderAPI_MakeWire();
+  for (const s of segs) {
+    if (s.k === 'circle') {
+      const a = sketchFrame(f);
+      const axis = new oc.gp_Ax2(at(s.c), new oc.gp_Dir(a.n[0], a.n[1], a.n[2]));
+      w.Add(new oc.BRepBuilderAPI_MakeEdge(new oc.gp_Circ(axis, s.r)).Edge());
+      continue;
+    }
+    if (s.k === 'line') {
+      w.Add(new oc.BRepBuilderAPI_MakeEdge(at(s.a), at(s.b)).Edge());
+      continue;
+    }
+    // Three points, the one arc constructor bound in this build (see
+    // sketchWire). The through-point comes from the CENTRE and RADIUS rather
+    // than from the chord, so the edge follows brep-rs's arc rather than a
+    // circle fitted to whatever the stored ends happen to be.
+    const mid = s.start + s.sweep / 2;
+    const through: SoupPt = [s.c[0] + s.r * Math.cos(mid), s.c[1] + s.r * Math.sin(mid)];
+    const made = new oc.GC_MakeArcOfCircle(at(s.a), at(through), at(s.b));
+    w.Add(new oc.BRepBuilderAPI_MakeEdge(made.Value()).Edge());
+  }
+  return w.Wire();
+}
+
+/**
+ * The soup sketch as one flat face, holes and all -- or the sentence saying why
+ * it is not one.
+ *
+ * Two guards, because a face with a hole has three ways to be WRONG WHILE
+ * LOOKING RIGHT, all three measured on this build before this code existed: an
+ * inner wire taken as built ADDS its bore (12942.477796 for the washer), swapped
+ * roles come out NEGATIVE (-11057.522204), and a dropped inner wire is a solid
+ * plate (12000). The parity gate would report any of those as AGREEMENT if the
+ * kernel happened to make the same mistake, which is the one failure a referee
+ * must not have.
+ */
+function soupFace(oc: Occt, f: any): { face: any } | { refusal: string } {
+  const got = soupLoops(f);
+  if ('refusal' in got) return got;
+
+  // Guard 1: no loop may be too small to be real. The floor is brep-rs's own,
+  // `EPS_AREA_REL * scale^2` (sketch/wires.rs), times four -- deliberately
+  // WIDER than the kernel's rather than equal to it. The direction matters: a
+  // referee whose floor is LOWER builds where the kernel refuses, and the gate
+  // scores that against the KERNEL; a referee whose floor is higher refuses
+  // first, and the gate says "the FIXTURE is broken". Only one of those blames
+  // the right thing. The margin also covers this path's area check being
+  // relative at 1e-6, under which a dropped loop that small would otherwise
+  // sail through -- measured: a circle of r <= 0.01 outside a 40x25 rectangle
+  // came back as a plain 1000 mm2 plate with every other guard passing.
+  const areas = got.loops.map((l) => Math.abs(loopArea(l)));
+  const widest = Math.max(...areas);
+  const floor = 4e-6 * got.scale * got.scale;
+  const tiny = areas.findIndex((a) => a < floor);
+  if (tiny >= 0) {
+    return {
+      refusal: `this sketch has a loop of ${areas[tiny].toExponential(2)} mm2 in a sketch ${got.scale.toFixed(3)} mm across, which is too small for this reference to tell from nothing`,
+    };
+  }
+
+  const wires = got.loops.map((l) => soupWire(oc, f, l));
+  if (wires.some((w) => !w)) return { refusal: 'this sketch has an edge OpenCascade could not build' };
+
+  const mk = new oc.BRepBuilderAPI_MakeFace(wires[0], false);
+  for (let i = 1; i < wires.length; i++) mk.Add(wires[i]);
+  // OCCT classifies, not us. Perform() sorts the wires; FixOrientation() turns
+  // whichever ones it decided are holes.
+  const fix = new oc.ShapeFix_Face(mk.Face());
+  fix.Perform();
+  fix.FixOrientation();
+  const face = fix.Face();
+
+  // Guard 2: every loop handed in must still be there. OCCT quietly DROPS a
+  // wire it cannot place rather than complaining -- measured: a 40x25 rectangle
+  // plus a 25x20 square beside it comes back as a ONE-wire face of just the
+  // square, valid to BRepCheck and, because 2*1000 - 1500 is exactly 500, an
+  // exact match for guard 4's arithmetic as well. Counting wires is what
+  // catches a loop going missing; nothing downstream can.
+  let kept = 0;
+  const seen = new oc.TopExp_Explorer(face, oc.TopAbs_ShapeEnum.TopAbs_WIRE, oc.TopAbs_ShapeEnum.TopAbs_SHAPE);
+  while (seen.More()) { kept += 1; seen.Next(); }
+  if (kept !== got.loops.length) {
+    return {
+      refusal: `this sketch draws ${got.loops.length} loops but OpenCascade kept ${kept} of them; they do not sit one inside another the way an outline and its holes must`,
+    };
+  }
+
+  // Guard 3: OCCT's own verdict on the face it just repaired.
+  if (!new oc.BRepCheck_Analyzer(face, true, false).IsValid()) {
+    return { refusal: 'these loops do not make one flat face OpenCascade will accept' };
+  }
+
+  // Guard 4: the area OCCT measures must be the area the rows describe. With
+  // every loop present (guard 2) the only reading left is one outline and the
+  // rest holes, and the widest loop is the only candidate for the outline -- a
+  // loop containing another necessarily holds more area. If OCCT classified it
+  // differently from that, or turned a hole the wrong way, the areas stop
+  // matching and we refuse instead of handing the gate a reference.
+  const want = 2 * widest - areas.reduce((s, a) => s + a, 0);
+  if (!(want > 0)) {
+    return { refusal: 'the holes in this sketch take up more room than the outline they sit in' };
+  }
+  const g = new oc.GProp_GProps();
+  oc.BRepGProp.SurfaceProperties(face, g, false, false);
+  const mine = g.Mass();
+  if (!(Math.abs(mine - want) <= 1e-6 * Math.max(1, want))) {
+    return {
+      refusal: `this sketch measures ${mine.toFixed(6)} mm2 as a face where its outline and ${got.loops.length - 1} hole(s) come to ${want.toFixed(6)} mm2`,
+    };
+  }
+  return { face };
+}
+
 /**
  * The sketch's outline as a closed wire.
  *
@@ -396,6 +922,11 @@ function onPlane(oc: Occt, f: any, pu: number, pv: number): any {
  * nearly flat.
  */
 function sketchWire(oc: Occt, arc: any, f: any, marks?: Mark[]): any {
+  // Soup rows are not one ordered ring and have no single wire -- a washer is
+  // two. `soupFace` builds those; anything still arriving here (the loft
+  // branch) gets null rather than `outlineOf`'s TypeError on a missing
+  // `points`.
+  if (isSoup(f)) return null;
   const at = (p: number[]) => onPlane(oc, f, p[0], p[1]);
 
   const circle = arc.circleOf(f);
@@ -460,6 +991,10 @@ function sketchWire(oc: Occt, arc: any, f: any, marks?: Mark[]): any {
  * planes at all.
  */
 function revolveProfileFace(oc: Occt, arc: any, f: any, marks?: Mark[]): any {
+  // Spin reads straight segments off an ordered outline; a soup sketch has
+  // neither, and `outlineOf` would throw on its missing `points` rather than
+  // refuse. The revolve and groove branches turn this null into a sentence.
+  if (isSoup(f)) return null;
   const a = sketchFrame(f);
   const outline = arc.outlineOf(f);
   if (!outline.ok) return null;
@@ -599,7 +1134,19 @@ export function buildDoc(oc: Occt, doc: ModelDoc, arc?: any): BuildResult {
     const sk = doc.features.find((x) => x.id === id);
     // A closed outline has as many design edges as design corners -- see the
     // same rule in whyNameLost()'s own doc comment in lib/topo-name.ts.
-    return sk && sk.kind === 'sketch' ? sk.points.length : null;
+    //
+    // A soup sketch is counted by its CURVE ROWS instead, and the two are not
+    // exclusive: migrating a legacy sketch keeps its `points` alongside the new
+    // rows (`SketchCanvas2D`'s `{ ...f, geoms, geom, rules }`, and `.geom()` in
+    // the interpreter does the same), so testing `points` first would report a
+    // stale count for every migrated sketch. `isSoup` decides, the same way the
+    // build branch does.
+    if (!sk || sk.kind !== 'sketch') return null;
+    if (isSoup(sk)) {
+      const rows: any[] = (sk as any).geoms ?? [];
+      return rows.filter((g) => g?.k !== 'point' && g?.construction !== true).length;
+    }
+    return sk.points ? sk.points.length : null;
   };
   /** Filled by the sketch branch, read by the extrude branch. The profile face
    *  is built once and only once -- rebuilding it to get the marks would be two
@@ -635,6 +1182,9 @@ export function buildDoc(oc: Occt, doc: ModelDoc, arc?: any): BuildResult {
         const a = sketchFrame(src);
         const marks: Mark[] = [];
         const face = revolveProfileFace(oc, arc, src, marks);
+        if (!face && isSoup(src)) {
+          refusals.set(f.id, `${label(f.id)}: sketch ${label(src.id)} is drawn as rows and rules, which this reference path cannot spin yet`);
+        }
         if (face) {
           const axis = new oc.gp_Ax1(new oc.gp_Pnt(0, 0, 0), new oc.gp_Dir(a.n[0], a.n[1], a.n[2]));
           const spun = new oc.BRepPrimAPI_MakeRevol(face, axis, (f.angle * Math.PI) / 180, true).Shape();
@@ -685,7 +1235,23 @@ export function buildDoc(oc: Occt, doc: ModelDoc, arc?: any): BuildResult {
       // own -- an extrude or a revolve consumes it -- the same rule the old
       // JSCAD path followed too, and why a bare sketch is not returned as
       // the model.
-      if (arc) {
+      if (isSoup(f)) {
+        // Rows and rules (SPEC-sketcher2 §5.3). Needs no `arc` at all: the
+        // outline layer's rounds and bulges mean nothing here, because the
+        // rows already carry their own arcs.
+        const got = soupFace(oc, f);
+        if ('refusal' in got) {
+          refusals.set(f.id, `${label(f.id)}: ${got.refusal}`);
+        } else {
+          shape = got.face;
+          // No marks, deliberately. brep-rs numbers a soup sketch's segments
+          // outline-first with every hole REVERSED (wasm.rs soup_profile);
+          // reproducing that order here would be this file guessing at an
+          // ordering no spec pins, and a `swept` name resolving to the WRONG
+          // edge is worse than one that does not resolve at all.
+          sketchMarks.set(f.id, []);
+        }
+      } else if (arc) {
         const marks: Mark[] = [];
         shape = sketchFace(oc, arc, f, marks);
         if (shape) sketchMarks.set(f.id, marks);
@@ -713,6 +1279,9 @@ export function buildDoc(oc: Occt, doc: ModelDoc, arc?: any): BuildResult {
         const a = sketchFrame(src);
         const marks: Mark[] = [];
         const face = revolveProfileFace(oc, arc, src, marks);
+        if (!face && isSoup(src)) {
+          refusals.set(f.id, `${label(f.id)}: sketch ${label(src.id)} is drawn as rows and rules, which this reference path cannot spin yet`);
+        }
         if (face) {
           // About the plane NORMAL, which is the axis the profile was laid
           // against -- see revolveProfileFace.
@@ -750,11 +1319,21 @@ export function buildDoc(oc: Occt, doc: ModelDoc, arc?: any): BuildResult {
       const lo = doc.features.find((x) => x.id === loId);
       const hi = doc.features.find((x) => x.id === hiId);
       if (arc && lo && hi && lo.kind === 'sketch' && hi.kind === 'sketch') {
-        const through = new oc.BRepOffsetAPI_ThruSections(true, false, 1e-6);
-        through.AddWire(sketchWire(oc, arc, lo));
-        through.AddWire(sketchWire(oc, arc, hi));
-        through.Build(new oc.Message_ProgressRange());
-        shape = through.Shape();
+        if (isSoup(lo) || isSoup(hi)) {
+          // ThruSections skins between two SINGLE wires. A soup sketch can be
+          // several, and which loop pairs with which is a question this file
+          // must not answer on its own.
+          refusals.set(
+            f.id,
+            `${label(f.id)}: ${label(isSoup(lo) ? loId : hiId)} is drawn as rows and rules, and this reference path lofts between single outlines only`,
+          );
+        } else {
+          const through = new oc.BRepOffsetAPI_ThruSections(true, false, 1e-6);
+          through.AddWire(sketchWire(oc, arc, lo));
+          through.AddWire(sketchWire(oc, arc, hi));
+          through.Build(new oc.Message_ProgressRange());
+          shape = through.Shape();
+        }
       }
     } else if (f.kind === 'fillet') {
       // The payoff of the naming work, and the tool .gauntlet/parity.json
