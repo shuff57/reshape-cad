@@ -159,3 +159,18 @@ test('6: param(holeR, 5) feeding a radius rule lands in the rule value slot', ()
   assert.ok(slotKey, `a param row keyed ${sk.id}_rule0-value exists, got: ${JSON.stringify(r.params.map((p) => p.name))}`);
   assert.equal(slotKey.value, 5);
 });
+// 7: applyParam writes a rule-value slot back into rules[i].value (D8) --
+//    the Dimensions panel's write path for soup sketches. RED first: the
+//    slot was generated but applyParam had no soup arm, so the edit was a
+//    silent no-op.
+test('7: applyParam ruleN-value writes rules[i].value', async () => {
+  const { applyParam } = await import('../dist/model-codegen.js');
+  const sk = soupOf(
+    "const s1 = sketch('top'); s1.geom([{ k:'line', id:1, a:[0,0], b:[40,0] }])" +
+      ".rules([{ k:'distance', a:1, aEnd:'a', b:1, bEnd:'b', value:40 }])",
+  );
+  const doc = { features: [sk] };
+  const next = applyParam(doc, `${sk.id}_rule0-value`, 55);
+  const f = next.features.find((x) => x.id === sk.id);
+  assert.equal(f.rules[0].value, 55, 'the rule value took the new number');
+});

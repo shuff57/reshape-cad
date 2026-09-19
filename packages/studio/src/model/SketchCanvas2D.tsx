@@ -27,7 +27,15 @@ import {
   renumber,
   sampleArc,
   snapAxis,
+  slotRows,
   arcAngles,
+  toggleConstruction,
+  trimLine,
+  trimPick,
+  splitWeldedCircles,
+  mirrorSelection,
+  copySelection,
+  densifyIds,
   type CoreGeom,
   type LineChain,
   type Pt,
@@ -41,7 +49,7 @@ const AXIS_TOL_DEG = 4;
 /** mm of sketch plane visible around the origin, both axes. */
 const VIEW = 100;
 
-type Tool = 'select' | 'line' | 'rect' | 'circle' | 'arc' | 'delete';
+type Tool = 'select' | 'line' | 'rect' | 'circle' | 'arc' | 'slot' | 'trim';
 type Sel = { id: number; at: 'a' | 'b' | 'c' | null };
 
 interface Props {
@@ -99,7 +107,15 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
   const pendingDrag = useRef<{ sa: number; sb: number; tx: number; ty: number } | null>(null);
 
   const writeDoc = useCallback(
-    (nextGeoms: SoupGeom[], nextRules: SoupRule[]) => {
+    (rawGeoms: SoupGeom[], rawRules: SoupRule[]) => {
+      // Circle-in-mixed-wire canonicalization (kernel §5.3.10's own advice,
+      // applied mechanically): a circle welded to lines by 2 tangencies
+      // becomes an arc pair split at the contact points, so wire discovery
+      // walks it like any other curve. Sketches without such a circle pass
+      // through untouched.
+      const split = splitWeldedCircles(rawGeoms as CoreGeom[], rawRules as unknown as Array<Record<string, any>>);
+      const nextGeoms = split.geoms as SoupGeom[];
+      const nextRules = split.rules as unknown as SoupRule[];
       onChange({
         ...doc,
         features: doc.features.map((f) =>
@@ -417,6 +433,27 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     [clicks, findSnap, pushGeom, worldFromEvent],
   );
 
+  const onSlotClick = useCallback(
+    (e: React.MouseEvent) => {
+      if (clicks.length < 2) {
+        const snap = findSnap(e);
+        setClicks([...(clicks as Pt[]), snap ? snap.world : worldFromEvent(e)]);
+        return;
+      }
+      const [cA, cB] = clicks as [Pt, Pt];
+      const base = nextGeomId(geoms as CoreGeom[]);
+      const slot = slotRows(cA, cB, worldFromEvent(e), base);
+      if (!slot) {
+        setStatus('slot: the radius needs a point off the first centre');
+        setClicks([]);
+        return;
+      }
+      writeDoc([...(geoms as SoupGeom[]), ...(slot.geoms as unknown as SoupGeom[])], [...rules, ...(slot.rules as unknown as SoupRule[])]);
+      setClicks([]);
+    },
+    [clicks, findSnap, geoms, rules, worldFromEvent, writeDoc],
+  );
+
   const onDeleteClick = useCallback(() => {
     if (sel.length === 0) return;
     // Descending id order: renumber() shifts ids above the removed one, so a
@@ -435,8 +472,75 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     setSel([]);
   }, [geoms, rules, sel, writeDoc]);
 
+  // Trim: click a line; it splits at the nearest crossing with another line
+  // and the half under the click is deleted. The split point is found pure
+  // (trimPick), the piece bookkeeping pure (trimLine).
+  const onTrimClick = useCallback(
+    (e: { clientX: number; clientY: number }) => {
+      const hit = findHit(e);
+      if (!hit) {
+        setStatus('trim: click on a line');
+        return;
+      }
+      const click = worldFromEvent(e);
+      const pick = trimPick(geoms as CoreGeom[], hit.id, click);
+      if (!pick) {
+        setStatus('trim: the line has no crossing with another line to trim at');
+        return;
+      }
+      const out = trimLine(
+        geoms as CoreGeom[],
+        rules as unknown as Array<Record<string, any>>,
+        hit.id,
+        pick.at,
+        click,
+      );
+      writeDoc(out.geoms as SoupGeom[], out.rules as SoupRule[]);
+      setSel([]);
+      setStatus('');
+    },
+    [findHit, geoms, rules, worldFromEvent, writeDoc],
+  );
+  
   // --- constraint buttons -----------------------------------------------------------
   const selShapes = useMemo(() => sel.filter((s) => s.at === null), [sel]);
+  // Mirror the selected rows about the X or Y axis; copy them shifted. Both
+  // duplicate with id offsets, then densifyIds renumbers the whole sketch.
+  const onMirror = useCallback(
+    (axis: 'x' | 'y') => {
+      const ids = selShapes.map((s) => s.id);
+      if (ids.length === 0) return;
+      const out = mirrorSelection(geoms as CoreGeom[], rules as unknown as Array<Record<string, any>>[], ids, axis);
+      if (!out) return;
+      const dense = densifyIds(out.geoms, out.rules);
+      writeDoc(dense.geoms as SoupGeom[], dense.rules as unknown as SoupRule[]);
+      setSel([]);
+    },
+    [geoms, rules, selShapes, writeDoc],
+  );
+
+  const onCopy = useCallback(
+    (dx: number, dy: number) => {
+      const ids = selShapes.map((s) => s.id);
+      if (ids.length === 0) return;
+      const out = copySelection(geoms as CoreGeom[], rules as unknown as Array<Record<string, any>>[], ids, dx, dy);
+      if (!out) return;
+      const dense = densifyIds(out.geoms, out.rules);
+      writeDoc(dense.geoms as SoupGeom[], dense.rules as unknown as SoupRule[]);
+      setSel([]);
+    },
+    [geoms, rules, selShapes, writeDoc],
+  );
+  // Construction toggle, majority semantics (the archived cConstr): any
+  // non-construction shape in the selection turns ALL of them construction;
+  // only an all-construction selection toggles back.
+  const onConstrClick = useCallback(() => {
+    const ids = selShapes.map((s) => s.id);
+    if (ids.length === 0) return;
+    writeDoc(toggleConstruction(geoms, ids) as SoupGeom[], rules);
+  }, [geoms, rules, selShapes, writeDoc]);
+
+
   const selPoints = useMemo(() => sel.filter((s) => s.at !== null), [sel]);
 
   const applyRule = useCallback(
@@ -666,6 +770,30 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
       const pts = sampleArc(arc.cx, arc.cy, arc.r, arc.a0, arc.sweep);
       preview = <polyline className="sk-preview" points={pts.map((p) => `${p.x},${-p.y}`).join(' ')} />;
     }
+  } else if (tool === 'slot' && clicks.length === 2 && pointer) {
+    // Slot preview: the two cap circles + the two side lines, at the live
+    // radius. The committed rows run the same math (slotRows).
+    const [cA, cB] = clicks as [Pt, Pt];
+    const r = Math.hypot(pointer.x - cA.x, pointer.y - cA.y);
+    if (r > 1e-9) {
+      const dx = cB.x - cA.x, dy = cB.y - cA.y;
+      const len = Math.hypot(dx, dy);
+      if (len > 1e-9) {
+        const px = (-dy / len) * r, py = (dx / len) * r;
+        const p1 = { x: cA.x + px, y: cA.y + py };
+        const p2 = { x: cB.x + px, y: cB.y + py };
+        const p3 = { x: cB.x - px, y: cB.y - py };
+        const p4 = { x: cA.x - px, y: cA.y - py };
+        preview = (
+          <>
+            <circle className="sk-preview" cx={cA.x} cy={-cA.y} r={r} />
+            <circle className="sk-preview" cx={cB.x} cy={-cB.y} r={r} />
+            <line className="sk-preview" x1={p1.x} y1={-p1.y} x2={p2.x} y2={-p2.y} />
+            <line className="sk-preview" x1={p3.x} y1={-p3.y} x2={p4.x} y2={-p4.y} />
+          </>
+        );
+      }
+    }
   }
 
   const dofClass = diagnosis
@@ -694,6 +822,8 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
             ['rect', 'Rect'],
             ['circle', 'Circle'],
             ['arc', 'Arc'],
+            ['slot', 'Slot'],
+            ['trim', 'Trim'],
           ] as Array<[Tool, string]>
         ).map(([t, label]) => (
           <button key={t} className={`sk2d-tool${tool === t ? ' is-active' : ''}`} onClick={() => setTool(t)}>
@@ -746,6 +876,30 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
         <button className="sk2d-tool" disabled={sel.length === 0} onClick={onDeleteClick}>
           Delete
         </button>
+        <button
+          className="sk2d-tool"
+          disabled={selShapes.length === 0}
+          title="Toggle construction geometry (dashed; solved but never profiled)"
+          onClick={onConstrClick}
+        >
+          Constr
+        </button>
+        <button
+          className="sk2d-tool"
+          disabled={selShapes.length === 0}
+          title="Mirror the selected rows about the Y axis (x -> -x)"
+          onClick={() => onMirror('y')}
+        >
+          Mirror
+        </button>
+        <button
+          className="sk2d-tool"
+          disabled={selShapes.length === 0}
+          title="Copy the selected rows, shifted 10mm right"
+          onClick={() => onCopy(10, 0)}
+        >
+          Copy
+        </button>
         <span className="sk2d-sep" />
         <label className="sk2d-auto">
           <input type="checkbox" checked={auto} onChange={(e) => setAuto(e.target.checked)} /> auto
@@ -780,6 +934,8 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
           else if (tool === 'rect') onRectClick(e);
           else if (tool === 'circle') onCircleClick(e);
           else if (tool === 'arc') onArcClick(e);
+          else if (tool === 'slot') onSlotClick(e);
+          else if (tool === 'trim') onTrimClick(e);
         }}
         onPointerMove={onPointerMove}
         onPointerDown={onPointerDown}

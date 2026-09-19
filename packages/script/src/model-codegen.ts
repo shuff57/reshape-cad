@@ -449,6 +449,19 @@ export function applyParam(doc: ModelDoc, name: string, value: number): ModelDoc
         }
       }
       if (slot === 'offset') { changed = true; return { ...f, offset: value }; }
+      // A soup rule's value slot (D8): rule${i}-value writes back into
+      // rules[i].value, the same field the emitter reads. The kernel solves
+      // the soup at build time, so the doc write IS the solve request.
+      const rm = /^rule(\d+)-value$/.exec(slot);
+      if (rm && f.rules) {
+        const i = Number(rm[1]);
+        const r = f.rules[i] as { value?: number | string } | undefined;
+        if (r && typeof r.value === 'number') {
+          const rules = f.rules.map((x, j) => (j === i ? { ...x, value } : x));
+          changed = true;
+          return { ...f, rules };
+        }
+      }
     }
     if (f.kind === 'extrude' && slot === 'height') {
       changed = true;

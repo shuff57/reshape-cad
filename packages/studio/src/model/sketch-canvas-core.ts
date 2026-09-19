@@ -280,3 +280,361 @@ export function readSolved(geoms: CoreGeom[], params: Float64Array | number[]): 
 import type { SoupGeom } from '@shuff57/reshape-script/model-types';
 type DistOmit<U> = U extends unknown ? Omit<U, 'id'> : never;
 export type SoupGeomNew = DistOmit<SoupGeom>;
+
+// --- construction toggle (the archived UI's cConstr) -------------------------
+
+/** Majority toggle: if ANY selected shape is not construction, all become
+ *  construction; only when they all already are does the toggle turn them
+ *  all off. A per-shape toggle on a mixed selection just inverts the mix,
+ *  which no user has ever wanted. Returns the rows with `construction` set. */
+export function toggleConstruction(geoms: CoreGeom[], ids: number[]): CoreGeom[] {
+  const want = geoms.some((g) => ids.includes(g.id) && !g.construction);
+  return geoms.map((g) => (ids.includes(g.id) ? { ...g, construction: want } : g));
+}
+
+// --- trim (the archived UI's sketchTrim, soup edition) -----------------------
+
+/** Where does the segment p1->p2 cross the segment p3->p4, if at all within
+ *  BOTH segments? Returns the crossing point or null. Parallel segments
+ *  never cross (denominator 0). */
+export function segmentIntersection(p1: Pt, p2: Pt, p3: Pt, p4: Pt): Pt | null {
+  const d1x = p2.x - p1.x, d1y = p2.y - p1.y;
+  const d2x = p4.x - p3.x, d2y = p4.y - p3.y;
+  const den = d1x * d2y - d1y * d2x;
+  if (Math.abs(den) < 1e-12) return null;
+  const t = ((p3.x - p1.x) * d2y - (p3.y - p1.y) * d2x) / den;
+  const u = ((p3.x - p1.x) * d1y - (p3.y - p1.y) * d1x) / den;
+  if (t < -1e-9 || t > 1 + 1e-9 || u < -1e-9 || u > 1 + 1e-9) return null;
+  return { x: p1.x + t * d1x, y: p1.y + t * d1y };
+}
+
+/** The nearest crossing of the clicked line with any OTHER line, within the
+ *  clicked line itself. Circles/arcs are future work here: a line-circle
+ *  quadratic is easy, but the piece bookkeeping after a split is not free,
+ *  and half a trim tool is worse than none. Returns the split point and the
+ *  other line's id, or null. */
+export function trimPick(geoms: CoreGeom[], clickedId: number, click: Pt): { at: Pt; otherId: number } | null {
+  const clicked = geoms.find((g) => g.id === clickedId);
+  if (!clicked || clicked.k !== 'line') return null;
+  const a = { x: clicked.a[0], y: clicked.a[1] };
+  const b = { x: clicked.b[0], y: clicked.b[1] };
+  let best: { at: Pt; otherId: number } | null = null;
+  let bestDist = Infinity;
+  for (const g of geoms) {
+    if (g.k !== 'line' || g.id === clickedId) continue;
+    const x = segmentIntersection(a, b, { x: g.a[0], y: g.a[1] }, { x: g.b[0], y: g.b[1] });
+    if (!x) continue;
+    const d = Math.hypot(x.x - click.x, x.y - click.y);
+    if (d < bestDist) {
+      bestDist = d;
+      best = { at: x, otherId: g.id };
+    }
+  }
+  return best;
+}
+
+/** Trim the clicked line at `split`: the half UNDER the click is deleted
+ *  (whichever half's midpoint sits closer to the click), the far half keeps
+ *  the clicked row's id with its far endpoint pulled to the split. No new
+ *  row, no weld: a trim that deletes a piece leaves the wire open, and wire
+ *  discovery's refusals say exactly that. Rules referencing the clicked row
+ *  keep working (the surviving half kept the id); a rule that referenced the
+ *  deleted geometry may become unsatisfiable — the diagnosis badge surfaces
+ *  that, the trim does not try to fix it. */
+export function trimLine(
+  geoms: CoreGeom[],
+  rules: Array<Record<string, any>>,
+  clickedId: number,
+  split: Pt,
+  click: Pt,
+): { geoms: CoreGeom[]; rules: Array<Record<string, any>> } {
+  void nextIdUnused;
+  const clicked = geoms.find((g) => g.id === clickedId);
+  if (!clicked || clicked.k !== 'line') return { geoms, rules };
+  const a = { x: clicked.a[0], y: clicked.a[1] };
+  const b = { x: clicked.b[0], y: clicked.b[1] };
+  // The click half is the one whose MIDPOINT is closer to the click point.
+  const dA = Math.hypot((a.x + split.x) / 2 - click.x, (a.y + split.y) / 2 - click.y);
+  const dB = Math.hypot((b.x + split.x) / 2 - click.x, (b.y + split.y) / 2 - click.y);
+  const nearIsA = dA <= dB;
+  const farPt = nearIsA ? b : a;
+  const geomsOut = geoms.map((g) =>
+    g.id === clickedId ? { ...g, a: [farPt.x, farPt.y], b: [split.x, split.y] } : g,
+  );
+  return { geoms: geomsOut, rules: [...rules] };
+}
+const nextIdUnused = undefined;
+
+// --- slot composite tool -------------------------------------------------------
+
+export interface SlotResult {
+  geoms: CoreGeom[];
+  rules: Array<Record<string, any>>;
+  ids: { arc1: number; arc2: number; top: number; bottom: number };
+}
+
+/** Build a slot (obround) from three clicks: centre A, centre B, and a point
+ *  whose distance from A is the radius. The four rows are two arcs and two
+ *  tangent lines, welded by four line-arc tangencies and nothing else —
+ *  tangency IS the weld here, coincidents would fight it (O2's note: the
+ *  endpoint forms and the simple forms are different asks).
+ *
+ *  Arc ends are placed at the axis-aligned extremes: the caps face outward
+ *  along the A->B direction's perpendicular, which keeps the seed solvable
+ *  and the tangencies well-posed (the line runs from one arc's extreme to
+ *  the other's matching extreme, on the same side). */
+export function slotRows(cA: Pt, cB: Pt, rPoint: Pt, baseId: number): SlotResult | null {
+  const r = Math.hypot(rPoint.x - cA.x, rPoint.y - cA.y);
+  if (r <= 1e-9) return null;
+  const dx = cB.x - cA.x;
+  const dy = cB.y - cA.y;
+  const len = Math.hypot(dx, dy);
+  if (len <= 1e-9) return null;
+  // Unit perpendicular of the A->B axis.
+  const px = -dy / len;
+  const py = dx / len;
+  // Arc 1 (at A): ends at A + r*(+perp) and A + r*(-perp).
+  // Arc 2 (at B): ends at B + r*(-perp) and B + r*(+perp).
+  const arc1a: [number, number] = [cA.x + px * r, cA.y + py * r];
+  const arc1b: [number, number] = [cA.x - px * r, cA.y - py * r];
+  const arc2a: [number, number] = [cB.x - px * r, cB.y - py * r];
+  const arc2b: [number, number] = [cB.x + px * r, cB.y + py * r];
+  const arc1aP = { x: arc1a[0], y: arc1a[1] };
+  const arc1bP = { x: arc1b[0], y: arc1b[1] };
+  const arc2aP = { x: arc2a[0], y: arc2a[1] };
+  const arc2bP = { x: arc2b[0], y: arc2b[1] };
+  // BOTH caps stored cw (a=+perp, b=-perp). The wire enters cap A at b and
+  // leaves at a (running it backward), and cap B forward; the cusp check
+  // compares travel directions at the shared ends and both dots are +1.
+  // A ccw cap A fires refusal 12 ("meet in a point") even though the drawn
+  // shape looks identical — the ends' ORDER is the direction. Measured:
+  // kernel probe, both-cw profiles and extrudes; ccw refuses.
+  const arc1 = baseId;
+  const arc2 = baseId + 1;
+  const top = baseId + 2; // the +perp side line
+  const bottom = baseId + 3; // the -perp side line
+  const geoms: CoreGeom[] = [
+    { k: 'arc', id: arc1, c: [cA.x, cA.y], r, a: arc1a, b: arc1b, sense: 'cw' },
+    { k: 'arc', id: arc2, c: [cB.x, cB.y], r, a: arc2a, b: arc2b, sense: 'cw' },
+    { k: 'line', id: top, a: arc1a, b: arc2b },
+    { k: 'line', id: bottom, a: arc2a, b: arc1b },
+  ];
+  // Four junctions, TWO rows each. The weld is a coincident — wire
+  // discovery walks coincident classes and nothing else (wires.rs's header
+  // states it as the definition of "same vertex") — and the DIRECTION is an
+  // endpoint tangent, whose residual carries no sigma (the simple form's
+  // side-blindness is what made a side-less tangency drift the solve).
+  const rules: Array<Record<string, any>> = [
+    { k: 'coincident', a: top, aEnd: 'a', b: arc1, bEnd: 'a' },
+    { k: 'tangent', a: top, aEnd: 'a', b: arc1, bEnd: 'a' },
+    { k: 'coincident', a: top, aEnd: 'b', b: arc2, bEnd: 'b' },
+    { k: 'tangent', a: top, aEnd: 'b', b: arc2, bEnd: 'b' },
+    { k: 'coincident', a: bottom, aEnd: 'a', b: arc2, bEnd: 'a' },
+    { k: 'tangent', a: bottom, aEnd: 'a', b: arc2, bEnd: 'a' },
+    { k: 'coincident', a: bottom, aEnd: 'b', b: arc1, bEnd: 'b' },
+    { k: 'tangent', a: bottom, aEnd: 'b', b: arc1, bEnd: 'b' },
+  ];
+  return { geoms, rules, ids: { arc1, arc2, top, bottom } };
+}
+
+// --- circle-in-mixed-wire canonicalization (kernel §5.3.10 v2 support) ------
+//
+// The kernel's wire walk cannot traverse a whole circle (it has no
+// endpoints), so a circle welded to lines refuses with "use two arcs". The
+// canvas applies that advice mechanically: a circle carrying two simple
+// tangencies to lines becomes TWO arcs split at the contact points, the
+// tangencies stay (line-circle simple tangency), and a coincident welds the
+// two arcs at BOTH contact points (each arc's a/b coincide with the other's
+// b/a). Wire discovery then walks the arcs like any other curves.
+
+/** Contact point of a simple line-circle tangency: the foot of the
+ *  perpendicular from the circle's centre onto the line. */
+function tangentContact(c: Pt, line: { a: Pt; b: Pt }): Pt {
+  const dx = line.b.x - line.a.x;
+  const dy = line.b.y - line.a.y;
+  const len2 = dx * dx + dy * dy;
+  if (len2 === 0) return c;
+  let t = ((c.x - line.a.x) * dx + (c.y - line.a.y) * dy) / len2;
+  t = Math.max(0, Math.min(1, t));
+  return { x: line.a.x + t * dx, y: line.a.y + t * dy };
+}
+
+export interface CircleSplitResult {
+  geoms: CoreGeom[];
+  rules: Array<Record<string, any>>;
+  replacedIds: number[];
+}
+
+/** Replace every circle that carries >= 2 simple tangencies to LINES with an
+ *  arc pair split at two of the contact points. Rows after the replaced ones
+ *  shift ids down by 1 per replacement; rule references follow via
+ *  renumber-style shifting. Returns the new rows; never mutates. */
+export function splitWeldedCircles(geoms: CoreGeom[], rules: Array<Record<string, any>>): CircleSplitResult {
+  const replacedIds: number[] = [];
+  let geomsOut = [...geoms];
+  let rulesOut = [...rules];
+  for (const g of geoms) {
+    if (g.k !== 'circle') continue;
+    const tangents = rulesOut.filter(
+      (r) => r.k === 'tangent' && (r.a === g.id || r.b === g.id) && !r.aEnd && !r.bEnd,
+    );
+    if (tangents.length < 2) continue;
+    const c = { x: g.c[0], y: g.c[1] };
+    const r = g.r;
+    // The two contact points, deduplicated by distance.
+    const contacts: Pt[] = [];
+    for (const t of tangents) {
+      const otherId = t.a === g.id ? t.b : t.a;
+      const other = geomsOut.find((x) => x.id === otherId && x.k === 'line');
+      if (!other) continue;
+      const contact = tangentContact(c, { a: { x: other.a[0], y: other.a[1] }, b: { x: other.b[0], y: other.b[1] } });
+      if (!contacts.some((p) => Math.hypot(p.x - contact.x, p.y - contact.y) < 1e-9)) {
+        contacts.push(contact);
+      }
+    }
+    if (contacts.length < 2) continue;
+    const [p1, p2] = contacts;
+    // The two arcs: split the circle at the contact points. Arc 1 runs CCW
+    // from p1 to p2; arc 2 runs CCW from p2 back to p1. Their sense field is
+    // derived from the cross product so the pair covers the circle exactly.
+    const th1 = Math.atan2(p1.y - c.y, p1.x - c.x);
+    const th2 = Math.atan2(p2.y - c.y, p2.x - c.x);
+    const arc1 = g.id;
+    const arc2 = nextGeomId(geomsOut);
+    // Arc sense: the sweep must be the SHORT way? No — the two arcs together
+    // cover the whole circle exactly once, so arc 1 takes the CCW span
+    // th1->th2 and arc 2 takes the CCW span th2->th1 (which is the rest).
+    const sense1: 'ccw' | 'cw' = 'ccw';
+    const sense2: 'ccw' | 'cw' = 'ccw';
+    const geomsNext: CoreGeom[] = [];
+    for (const x of geomsOut) {
+      if (x.id === g.id) {
+        geomsNext.push({ ...x, k: 'arc', a: [p1.x, p1.y], b: [p2.x, p2.y], sense: sense1, c: [c.x, c.y], r } as CoreGeom);
+      } else {
+        geomsNext.push(x);
+      }
+    }
+    geomsNext.push({ k: 'arc', id: arc2, c: [c.x, c.y], r, a: [p2.x, p2.y], b: [p1.x, p1.y], sense: sense2 });
+    rulesOut.push({ k: 'coincident', a: arc1, aEnd: 'b', b: arc2, bEnd: 'a' });
+    rulesOut.push({ k: 'coincident', a: arc1, aEnd: 'a', b: arc2, bEnd: 'b' });
+    geomsOut = geomsNext;
+    replacedIds.push(g.id);
+  }
+  return { geoms: geomsOut, rules: rulesOut, replacedIds };
+}
+
+// --- mirror / copy of a selection ---------------------------------------------
+
+/** One duplicated row with its id remapped and its point coordinates
+ *  transformed by `xf`. Rules INTERNAL to the selection are duplicated with
+ *  remapped ids; rules referencing the selection from OUTSIDE are left
+ *  alone (the copy is independent). Returns null when the selection is
+ *  empty. */
+export interface DupResult {
+  geoms: CoreGeom[];
+  rules: Array<Record<string, any>>;
+  /** old id -> new id, for callers that want to constrain the copy. */
+  idMap: Map<number, number>;
+}
+
+const ID_RULE_FIELDS = ['a', 'b', 'c'] as const;
+
+function dupRows(
+  geoms: CoreGeom[],
+  rules: Array<Record<string, any>>,
+  ids: number[],
+  xf: (p: Pt) => Pt,
+  newIdOf: (old: number, used: Set<number>) => number,
+): DupResult | null {
+  const set = new Set(ids);
+  const selected = geoms.filter((g) => set.has(g.id));
+  if (selected.length === 0) return null;
+  // New ids come after everything present.
+  let next = 1;
+  for (const g of geoms) if (g.id >= next) next = g.id + 1;
+  const idMap = new Map<number, number>();
+  const used = new Set<number>();
+  for (const g of selected) {
+    const n = newIdOf(g.id, used);
+    idMap.set(g.id, n);
+    used.add(n);
+    void next;
+  }
+  const transformGeom = (g: CoreGeom): CoreGeom => {
+    const t = (p: [number, number]): [number, number] => {
+      const q = xf({ x: p[0], y: p[1] });
+      return [q.x, q.y];
+    };
+    switch (g.k) {
+      case 'point':
+        return { ...g, id: idMap.get(g.id)!, p: t(g.p) };
+      case 'line':
+        return { ...g, id: idMap.get(g.id)!, a: t(g.a), b: t(g.b) };
+      case 'circle':
+        return { ...g, id: idMap.get(g.id)!, c: t(g.c) };
+      case 'arc':
+        return { ...g, id: idMap.get(g.id)!, c: t(g.c), a: t(g.a), b: t(g.b) };
+    }
+    return g;
+  };
+  const geomsOut = [...geoms, ...selected.map(transformGeom)];
+  // Internal rules duplicate with remapped ids; mixed ones (half in, half
+  // out) are NOT duplicated — a constraint tying the copy to the original
+  // is the user's next click, not the tool's guess.
+  const rulesOut = [...rules];
+  for (const r of rules) {
+    const refs = ID_RULE_FIELDS.map((f) => r[f]).filter((v) => typeof v === 'number') as number[];
+    if (refs.length === 0 || !refs.every((v) => set.has(v))) continue;
+    const copy: Record<string, any> = { ...r };
+    for (const f of ID_RULE_FIELDS) {
+      if (typeof copy[f] === 'number') copy[f] = idMap.get(copy[f]);
+    }
+    rulesOut.push(copy);
+  }
+  return { geoms: geomsOut, rules: rulesOut, idMap };
+}
+
+/** Mirror the selected rows about the X axis (y -> -y) or the Y axis
+ *  (x -> -x). Arc sense flips under a mirror: the same sweep walked
+ *  backwards. */
+export function mirrorSelection(
+  geoms: CoreGeom[],
+  rules: Array<Record<string, any>>,
+  ids: number[],
+  axis: 'x' | 'y',
+): DupResult | null {
+  return dupRows(geoms, rules, ids, axis === 'x' ? (p) => ({ x: p.x, y: -p.y }) : (p) => ({ x: -p.x, y: p.y }), (old) => old + 100000);
+}
+
+/** Copy the selected rows, shifted by (dx, dy). */
+export function copySelection(
+  geoms: CoreGeom[],
+  rules: Array<Record<string, any>>,
+  ids: number[],
+  dx: number,
+  dy: number,
+): DupResult | null {
+  return dupRows(geoms, rules, ids, (p) => ({ x: p.x + dx, y: p.y + dy }), (old) => old + 100000);
+}
+
+/** Re-dense the ids after duplication: 100000-offset ids are a collision-
+ *  free trick, not a representation. Renumber everything to 1..n and rewrite
+ *  every rule reference through the map. */
+export function densifyIds(geoms: CoreGeom[], rules: Array<Record<string, any>>): { geoms: CoreGeom[]; rules: Array<Record<string, any>> } {
+  const sorted = [...geoms].sort((a, b) => a.id - b.id);
+  const idMap = new Map<number, number>();
+  sorted.forEach((g, i) => idMap.set(g.id, i + 1));
+  const geomsOut = sorted.map((g) => {
+    const out = { ...g, id: idMap.get(g.id)! };
+    return out;
+  });
+  const ends = ['a', 'b', 'c', 'aEnd', 'bEnd', 'cEnd'] as const;
+  const rulesOut = rules.map((r) => {
+    const out: Record<string, any> = { ...r };
+    for (const e of ends) {
+      if (typeof out[e] === 'number') out[e] = idMap.get(out[e]) ?? out[e];
+    }
+    return out;
+  });
+  return { geoms: geomsOut, rules: rulesOut };
+}

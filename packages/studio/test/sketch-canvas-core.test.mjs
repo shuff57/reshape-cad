@@ -19,6 +19,15 @@ import {
   distToCircleStroke,
   angleInArcRange,
   sampleArc,
+  toggleConstruction,
+  trimLine,
+  trimPick,
+  segmentIntersection,
+  slotRows,
+  splitWeldedCircles,
+  mirrorSelection,
+  copySelection,
+  densifyIds,
 } from '../dist/model/sketch-canvas-core.js';
 
 const LINE = { k: 'line', id: 1, a: [0, 0], b: [40, 0] };
@@ -117,4 +126,156 @@ test('9: hit-test distances and arc range', () => {
   const pts = sampleArc(0, 0, 10, 0, Math.PI / 2, 4);
   assert.equal(pts.length, 5);
   assert.ok(Math.abs(pts[4].x) < 1e-9 && Math.abs(pts[4].y - 10) < 1e-9);
+});
+
+// 10: construction toggle is MAJORITY, not per-shape.
+test('10: toggleConstruction turns a mixed selection all-on, an all-on selection off', () => {
+  const geoms = [
+    { k: 'line', id: 1, a: [0, 0], b: [10, 0] },
+    { k: 'line', id: 2, a: [10, 0], b: [10, 10], construction: true },
+  ];
+  // Mixed: 1 is normal -> both become construction.
+  const on = toggleConstruction(geoms, [1, 2]);
+  assert.equal(on[0].construction, true);
+  assert.equal(on[1].construction, true);
+  // All construction -> all toggle back off.
+  const off = toggleConstruction(on, [1, 2]);
+  assert.equal(off[0].construction, false);
+  assert.equal(off[1].construction, false);
+  // Unselected rows are untouched.
+  const keep = toggleConstruction(geoms, [1]);
+  assert.equal(keep[0].construction, true);
+  assert.equal(keep[1].construction, true, "an unselected row keeps its own flag");
+});
+
+// 11: trim splits at the nearest crossing and DELETES the clicked half.
+test('11: trimLine splits the clicked line and deletes the clicked half', () => {
+  const geoms = [
+    { k: 'line', id: 1, a: [0, 0], b: [40, 0] },   // the clicked line
+    { k: 'line', id: 2, a: [20, -10], b: [20, 30] }, // crosses at (20, 0)
+  ];
+  const rules = [];
+  const pick = trimPick(geoms, 1, { x: 35, y: 0 });
+  assert.ok(pick, 'a crossing exists');
+  assert.equal(pick.otherId, 2);
+  assert.deepEqual([Math.round(pick.at.x), Math.round(pick.at.y)], [20, 0]);
+  // Click at x=35 (right of the split): the RIGHT half is deleted, the LEFT
+  // half survives as row 1 with its far endpoint pulled to the split. No
+  // new row, no weld: the wire is now open, and discovery says so.
+  const out = trimLine(geoms, rules, 1, pick.at, { x: 35, y: 0 });
+  assert.equal(out.geoms.length, 2, 'no row added: the clicked half is gone');
+  const one = out.geoms.find((g) => g.id === 1);
+  assert.deepEqual(one.a, [0, 0], 'the surviving half keeps the far endpoint');
+  assert.deepEqual(one.b, [20, 0], 'and now ends at the split');
+  assert.deepEqual(out.rules, rules, 'no weld: the piece is deleted');
+});
+
+// 12: segmentIntersection basics.
+test('12: segmentIntersection crosses within both segments or not at all', () => {
+  const x = segmentIntersection({ x: 0, y: 0 }, { x: 10, y: 0 }, { x: 5, y: -5 }, { x: 5, y: 5 });
+  assert.deepEqual(x, { x: 5, y: 0 });
+  assert.equal(segmentIntersection({ x: 0, y: 0 }, { x: 10, y: 0 }, { x: 5, y: 1 }, { x: 5, y: 5 }), null, 'miss');
+  assert.equal(segmentIntersection({ x: 0, y: 0 }, { x: 10, y: 0 }, { x: 0, y: 1 }, { x: 10, y: 1 }), null, 'parallel');
+});
+
+// 13: slot rows: 2 arcs + 2 lines + 4 tangencies, seed consistent.
+test('13: slotRows emits 2 arcs + 2 tangent lines with 4 tangencies', () => {
+  const out = slotRows({ x: 0, y: 0 }, { x: 40, y: 0 }, { x: 0, y: 8 }, 10);
+  assert.ok(out, 'a valid slot builds');
+  assert.equal(out.geoms.length, 4);
+  const arcs = out.geoms.filter((g) => g.k === 'arc');
+  const lines = out.geoms.filter((g) => g.k === 'line');
+  assert.equal(arcs.length, 2);
+  assert.equal(lines.length, 2);
+  assert.equal(out.rules.length, 8, 'each junction is a coincident weld + an endpoint tangency');
+  assert.equal(out.rules.filter((r) => r.k === 'tangent').length, 4, 'endpoint tangents carry no side');
+  assert.ok(out.rules.filter((r) => r.k === 'tangent').every((r) => r.aEnd && r.bEnd), 'tangents are endpoint-form (no sigma)');
+  assert.equal(out.rules.filter((r) => r.k === 'coincident').length, 4, 'the welds');
+  // Both arcs carry the same radius (the click set it).
+  assert.equal(arcs[0].r, 8);
+  assert.equal(arcs[1].r, 8);
+  // Both caps run CW (the wire travels top-line -> arc2's outer half ->
+  // bottom-line -> arc1's outer half; a ccw cap meets back-to-back, refusal 12).
+  assert.ok(arcs.every((a) => a.sense === 'cw'), 'caps run cw');
+  // The top line connects the two +perp extremes.
+  const top = lines.find((l) => l.id === 12);
+  assert.deepEqual(top.a, [0, 8]);
+  assert.deepEqual(top.b, [40, 8]);
+});
+
+// 14: slotRows refuses a degenerate ask (zero radius or zero length).
+test('14: slotRows refuses a zero radius or a zero length', () => {
+  assert.equal(slotRows({ x: 0, y: 0 }, { x: 0, y: 0 }, { x: 5, y: 0 }, 1), null, 'zero length');
+  assert.equal(slotRows({ x: 0, y: 0 }, { x: 40, y: 0 }, { x: 0, y: 0 }, 1), null, 'zero radius');
+});
+
+// 15: a circle welded by 2 tangencies becomes an arc pair; untouched circles
+//     pass through.
+test('15: splitWeldedCircles turns a tangent-welded circle into an arc pair', () => {
+  const geoms = [
+    { k: 'line', id: 1, a: [0, 0], b: [30, 0] },
+    { k: 'line', id: 2, a: [30, 0], b: [30, 16] },
+    { k: 'circle', id: 3, c: [20, 8], r: 8 },
+    { k: 'line', id: 4, a: [30, 16], b: [0, 16] },
+  ];
+  const rules = [
+    { k: 'tangent', a: 3, b: 1 },
+    { k: 'tangent', a: 3, b: 4 },
+    { k: 'coincident', a: 1, aEnd: 'b', b: 2, bEnd: 'a' },
+  ];
+  const out = splitWeldedCircles(geoms, rules);
+  assert.deepEqual(out.replacedIds, [3]);
+  const arcs = out.geoms.filter((g) => g.k === 'arc');
+  assert.equal(arcs.length, 2, 'the circle became an arc pair');
+  assert.equal(arcs[0].id, 3, 'the first arc keeps the circle id');
+  // Both arcs share the circle's centre and radius.
+  for (const a of arcs) {
+    assert.deepEqual(a.c, [20, 8]);
+    assert.equal(a.r, 8);
+  }
+  // The arc pair is welded at both junctions.
+  const welds = out.rules.filter((r) => r.k === 'coincident');
+  assert.equal(welds.length, 3, 'the original coincident + 2 new welds');
+  // An untouched circle passes through.
+  const out2 = splitWeldedCircles([{ k: 'circle', id: 1, c: [0, 0], r: 5 }], []);
+  assert.deepEqual(out2.replacedIds, []);
+  assert.equal(out2.geoms.length, 1);
+});
+
+// 16: mirror about Y flips x, duplicates internal rules, flips arc sense.
+test('16: mirrorSelection duplicates the selection mirrored about an axis', () => {
+  const geoms = [
+    { k: 'line', id: 1, a: [5, 0], b: [15, 0] },
+    { k: 'line', id: 2, a: [15, 0], b: [15, 10] },
+  ];
+  const rules = [{ k: 'coincident', a: 1, aEnd: 'b', b: 2, bEnd: 'a' }];
+  const out = mirrorSelection(geoms, rules, [1, 2], 'y');
+  assert.ok(out, 'a mirror happened');
+  assert.equal(out.geoms.length, 4, '2 originals + 2 copies');
+  const mirrored = out.geoms.find((g) => g.id === out.idMap.get(1));
+  assert.ok(mirrored);
+  assert.deepEqual(mirrored.a, [-5, 0], 'x flipped');
+  // The internal rule was duplicated with remapped ids.
+  assert.equal(out.rules.length, 2);
+  const copy = out.rules[1];
+  assert.equal(copy.k, 'coincident');
+  assert.equal(copy.a, out.idMap.get(1));
+  assert.equal(copy.b, out.idMap.get(2));
+  // Rules that only touch unselected rows stay alone.
+  const out2 = mirrorSelection(geoms, [{ k: 'horizontal', a: 1 }], [2], 'y');
+  assert.equal(out2.rules.length, 1, 'a rule outside the selection is not duplicated');
+});
+
+// 17: copy shifts, densifyIds renumbers 100000-offset ids to 1..n.
+test('17: copySelection shifts and densifyIds renumbers everything', () => {
+  const geoms = [{ k: 'line', id: 1, a: [0, 0], b: [10, 0] }];
+  const out = copySelection(geoms, [], [1], 5, 3);
+  assert.ok(out);
+  const copyId = out.idMap.get(1);
+  const copy = out.geoms.find((g) => g.id === copyId);
+  assert.deepEqual(copy.a, [5, 3]);
+  assert.deepEqual(copy.b, [15, 3]);
+  // Densify: the 100001 row becomes 2.
+  const dense = densifyIds(out.geoms, out.rules);
+  assert.deepEqual(dense.geoms.map((g) => g.id), [1, 2]);
 });
