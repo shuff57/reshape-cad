@@ -78,7 +78,9 @@ test('2: open + solve a square; profile has 4 segments', () => {
   assert.equal(d.dof, 6);
   const prof = session.profile();
   assert.ok(!('refusal' in prof), `a square profiles clean: ${JSON.stringify(prof)}`);
-  assert.equal(prof.segs.length, 4, 'the closed wire has 4 segments');
+  assert.equal(prof.loops.length, 1, 'a square is one outline and no holes');
+  assert.equal(prof.loops[0].role, 'outer');
+  assert.equal(prof.loops[0].segs.length, 4, 'the closed wire has 4 segments');
 });
 
 test('3: a conflicting sketch refuses its profile with a sentence', () => {
@@ -164,4 +166,27 @@ test('7: a bad row refuses open with the kernel sentence', () => {
   );
   assert.ok(err, 'a non-dense id refuses open');
   assert.match(err, /id/i);
+});
+
+test('8: profile exposes outer and hole loops', () => {
+  // SPEC-sketcher2 §8.2 across the seam: a washer -- the 40x30 square with a
+  // 5 mm bore -- comes back as two ROLE-TAGGED loops, the outline first.
+  // This is the shape the refusal-7 sentence used to stand in for.
+  const err = session.open(
+    [...SQUARE.geoms, { k: 'circle', id: 5, c: [20, 15], r: 5 }],
+    SQUARE.rules,
+  );
+  assert.equal(err, null, `open refused: ${err}`);
+  assert.equal(session.solve(), true, `solve refused: ${session.lastError()}`);
+  const prof = session.profile();
+  assert.ok(!('refusal' in prof), `a washer profiles clean: ${JSON.stringify(prof)}`);
+  assert.equal(prof.loops.length, 2, 'the outline and its bore');
+  assert.deepEqual(
+    prof.loops.map((l) => l.role),
+    ['outer', 'hole'],
+    'the outline first, then the hole',
+  );
+  assert.equal(prof.loops[0].segs.length, 4, 'the plate is four lines');
+  assert.equal(prof.loops[1].segs.length, 2, 'the bore is two half-arcs');
+  assert.equal(prof.loops[1].segs[0].k, 'arc');
 });

@@ -17,7 +17,7 @@
 use super::params::ParamBlock;
 use super::diagnose::diagnose;
 use super::solve::{self, DragPull, LmStatus};
-use super::wires::{self, Refusal, WireSeg};
+use super::wires::{self, Refusal, WireLoop};
 use super::{Constraint, ConstraintKind, SketchError};
 use serde_json::Value;
 use std::cell::RefCell;
@@ -139,8 +139,9 @@ impl SketchSession {
         diagnose(&self.block, &self.constraints, &self.params)
     }
 
-    /// The solved profile: closed loops, construction geometry dropped.
-    pub fn profile(&self) -> Result<Vec<WireSeg>, Refusal> {
+    /// The solved profile: the outline first, then every hole through it
+    /// (§8.2), construction geometry dropped.
+    pub fn profile(&self) -> Result<Vec<WireLoop>, Refusal> {
         wires::discover_wires(&self.block, &self.constraints, &self.params)
     }
 }

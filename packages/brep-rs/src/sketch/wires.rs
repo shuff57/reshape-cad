@@ -1,6 +1,7 @@
 //! `sketch::wires`: wire discovery. Turns a SOLVED parameter block plus the
-//! rules that produced it into ONE closed outline, or into a sentence saying
-//! why there isn't one (SPEC-sketcher2 §5.2, §5.3).
+//! rules that produced it into ONE closed outline and the holes through it,
+//! or into a sentence saying why there isn't one (SPEC-sketcher2 §5.2, §5.3,
+//! §8.2).
 //!
 //! # Weld by rule, never by distance
 //!
@@ -12,6 +13,17 @@
 //! a sentence they can act on. That asymmetry is the whole of §5.2 and it is
 //! the reason `eps_gap` produces a refusal while `eps_weld` produces one too —
 //! neither of them ever produces a vertex.
+//!
+//! # One outline, and the holes inside it
+//!
+//! §8.2: a sketch may describe more than one closed loop, and a washer is the
+//! shape that needs it. The loops are SEPARATE COMPONENTS of the half-edge
+//! graph — a washer's bore shares no vertex with its rim — so `trace` returns
+//! one positive interior cycle PER COMPONENT and the signed area cannot tell
+//! rim from bore: both come back counterclockwise. Containment is the only
+//! thing that can, and `point_in_loop` below answers it analytically, arcs
+//! included, because the alternative (chording every circle) reads a 0.02 mm
+//! wall as a crossing.
 //!
 //! # Why this file emits `WireSeg` and not `build::ProfileSeg`
 //!
@@ -29,10 +41,13 @@
 //! §5.3 numbers the refusals 1-12; this file runs them in that order with one
 //! deliberate exception, noted where it happens: the circle-in-a-mixed-wire
 //! check (10) runs BEFORE the traversal rather than after it. A circle welded
-//! into a wire always contributes a second loop, so leaving 10 in its listed
-//! position would mean every mixed-circle sketch got "this sketch has 2
-//! separate outlines" — true, useless, and not the fault the student needs to
-//! hear about. Refusal 11 (a CONFLICTING solve must never extrude) is not in
+//! into a wire always contributes a second loop, and since §8.2 a second loop
+//! is no longer refused on sight — it is CLASSIFIED. A circle welded to a
+//! corner of the wire it encloses would come back as an outline with that
+//! wire as its hole: a solid nobody drew, built in silence. Leaving 10 in its
+//! listed position would cost the student exactly that.
+//!
+//! Refusal 11 (a CONFLICTING solve must never extrude) is not in
 //! this file: it is a solver-diagnosis gate at the session layer, above the
 //! only input this function has.
 //!
@@ -104,6 +119,29 @@ impl WireSeg {
             ),
         }
     }
+}
+
+/// The part one discovered loop plays in the profile (§8.2).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum LoopRole {
+    /// The outline: the one loop no other loop contains.
+    Outer,
+    /// A hole through the outline.
+    Hole,
+}
+
+/// One closed loop of a discovered profile, and what it is.
+///
+/// `segs` always runs COUNTERCLOCKWISE, hole included: that is the one
+/// convention the traversal produces (`trace` keeps the positive cycle of
+/// every component) and re-winding a hole here would mean two sign
+/// conventions in one file for no gain. The build layer normalises a hole to
+/// clockwise itself, because that is where a wire becomes a face and the
+/// face's own normal decides the sign.
+#[derive(Clone, Debug, PartialEq)]
+pub struct WireLoop {
+    pub role: LoopRole,
+    pub segs: Vec<WireSeg>,
 }
 
 /// A coincident class wider than this has not converged on the very rule that
@@ -1228,7 +1266,238 @@ fn circle_segs(c: &Circ) -> Vec<WireSeg> {
     ]
 }
 
-/// Discover the one closed outline a solved sketch describes.
+// ---------------------------------------------------------------------------
+// §8.2: which loop is the outline, and which loops are holes through it
+// ---------------------------------------------------------------------------
+
+/// Where one loop sits relative to another.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum Nesting {
+    /// Every probe strictly inside: a hole in that loop.
+    Inside,
+    /// Every probe outside: two loops side by side.
+    Beside,
+    /// Some of each, which can only mean the two boundaries cross.
+    Crossing,
+}
+
+/// How many points along one segment the nesting question is asked at.
+///
+/// This is not a tolerance on POSITION — the ray cast below is exact on both
+/// segment kinds — only on WHERE the question gets asked, so the thing it
+/// could miss is a loop that pokes out of another between two neighbouring
+/// probes. Refusal 4 already tests every pair of lines and arcs for a proper
+/// crossing; the one pair it skips is a circle against anything (:806), and a
+/// circle that straddles a wire leaves a whole arc of itself outside, never a
+/// sliver between two probes.
+const PROBES_PER_SEG: usize = 16;
+
+/// Points spread along a loop, for the nesting question.
+fn loop_probes(segs: &[WireSeg]) -> Vec<[f64; 2]> {
+    let mut pts: Vec<[f64; 2]> = Vec::with_capacity(segs.len() * PROBES_PER_SEG);
+    for s in segs {
+        match s {
+            WireSeg::Line { a, b } => {
+                for k in 0..PROBES_PER_SEG {
+                    let t = k as f64 / PROBES_PER_SEG as f64;
+                    pts.push([a[0] + t * (b[0] - a[0]), a[1] + t * (b[1] - a[1])]);
+                }
+            }
+            WireSeg::Arc {
+                centre,
+                radius,
+                start,
+                sweep,
+            } => {
+                // The same spacing a wall gets, and more when the segment is
+                // a long way round: a half circle takes 32, so a bore is
+                // never asked about more coarsely than a straight edge.
+                let want = sweep.abs() / TAU * 64.0;
+                let steps = if want.is_finite() {
+                    want.ceil().max(PROBES_PER_SEG as f64).min(256.0)
+                } else {
+                    PROBES_PER_SEG as f64
+                };
+                let n = steps as usize;
+                for k in 0..n {
+                    let th = start + sweep * (k as f64) / (n as f64);
+                    pts.push([centre[0] + radius * th.cos(), centre[1] + radius * th.sin()]);
+                }
+            }
+        }
+    }
+    pts
+}
+
+/// Is `p` strictly inside this loop? A crossing count along the ray running
+/// in +u from `p`, ANALYTIC on both segment kinds: an arc is cut at its own
+/// top and bottom into pieces that are monotone in v, and each piece then
+/// takes the same half-open straddle test a straight edge takes.
+///
+/// Analytic rather than chorded because the margin this has to resolve is the
+/// WALL of a washer. A 64-chord r20 circle sinks 1.5e-3 mm inside its own arc
+/// at every chord's middle, which against a 0.02 mm wall is most of what
+/// there is; the faces stay exact either way, so an approximation here would
+/// only ever invent a refusal.
+///
+/// A point ON the boundary is not defined either way, deliberately: the
+/// caller asks about many points of a whole loop, and a loop that lies along
+/// another's boundary comes back mixed, which is a refusal.
+fn point_in_loop(p: [f64; 2], segs: &[WireSeg]) -> bool {
+    let mut n = 0usize;
+    for s in segs {
+        match s {
+            WireSeg::Line { a, b } => {
+                if (a[1] > p[1]) != (b[1] > p[1]) {
+                    let dv = b[1] - a[1];
+                    if dv != 0.0 && a[0] + (p[1] - a[1]) / dv * (b[0] - a[0]) > p[0] {
+                        n += 1;
+                    }
+                }
+            }
+            WireSeg::Arc {
+                centre,
+                radius,
+                start,
+                sweep,
+            } => n += arc_ray_crossings(p, *centre, *radius, *start, *sweep),
+        }
+    }
+    n % 2 == 1
+}
+
+/// How many times the +u ray from `p` crosses this arc.
+fn arc_ray_crossings(p: [f64; 2], centre: [f64; 2], radius: f64, start: f64, sweep: f64) -> usize {
+    if !(radius > 0.0) || sweep == 0.0 {
+        return 0;
+    }
+    let t = (p[1] - centre[1]) / radius;
+    if !(t.abs() < 1.0) {
+        // The ray's line misses the arc's circle, or grazes it: a tangential
+        // touch changes no parity. A NaN lands here too.
+        return 0;
+    }
+    // Both crossings of the full circle sit this far either side of the
+    // centre; which one a piece takes is decided by the half it lives on.
+    let half = radius * (1.0 - t * t).sqrt();
+    let (lo, hi) = if sweep > 0.0 {
+        (start, start + sweep)
+    } else {
+        (start + sweep, start)
+    };
+    let mut breaks: Vec<f64> = Vec::with_capacity(6);
+    breaks.push(lo);
+    // The arc's own top and bottom. Between two of those it climbs or falls
+    // in v without turning, and a monotone piece is exactly what the straddle
+    // test is written for. A sweep is at most a full turn, so at most three
+    // of these land inside it.
+    let k0 = ((lo - PI / 2.0) / PI).floor();
+    for i in 0..6 {
+        let th = PI / 2.0 + (k0 + i as f64) * PI;
+        if th > lo && th < hi {
+            breaks.push(th);
+        }
+    }
+    breaks.push(hi);
+    let mut n = 0usize;
+    for w in breaks.windows(2) {
+        let (Some(&u), Some(&v)) = (w.first(), w.get(1)) else {
+            continue;
+        };
+        let yu = centre[1] + radius * u.sin();
+        let yv = centre[1] + radius * v.sin();
+        if (yu > p[1]) == (yv > p[1]) {
+            continue;
+        }
+        let x = if (0.5 * (u + v)).cos() >= 0.0 {
+            centre[0] + half
+        } else {
+            centre[0] - half
+        };
+        if x > p[0] {
+            n += 1;
+        }
+    }
+    n
+}
+
+/// Where `inner` sits relative to `outer`.
+fn nesting(inner: &[WireSeg], outer: &[WireSeg]) -> Nesting {
+    let probes = loop_probes(inner);
+    if probes.is_empty() {
+        return Nesting::Beside;
+    }
+    let n_in = probes.iter().filter(|q| point_in_loop(**q, outer)).count();
+    if n_in == 0 {
+        Nesting::Beside
+    } else if n_in == probes.len() {
+        Nesting::Inside
+    } else {
+        Nesting::Crossing
+    }
+}
+
+fn stretch(lo: &mut [f64; 2], hi: &mut [f64; 2], p: [f64; 2]) {
+    *lo = [lo[0].min(p[0]), lo[1].min(p[1])];
+    *hi = [hi[0].max(p[0]), hi[1].max(p[1])];
+}
+
+/// The centre of a loop's bounding box: the position a refusal names, so the
+/// sentence points at something on screen instead of at a loop index. The
+/// same marker `build::loop_marker` prints, and exact rather than sampled —
+/// an arc contributes its ends plus whichever cardinal directions it actually
+/// sweeps through, so a bore's marker lands on its own centre.
+fn loop_marker(segs: &[WireSeg]) -> [f64; 2] {
+    let mut lo = [f64::MAX; 2];
+    let mut hi = [f64::MIN; 2];
+    for s in segs {
+        let (p, q) = s.endpoints();
+        stretch(&mut lo, &mut hi, p);
+        stretch(&mut lo, &mut hi, q);
+        let WireSeg::Arc {
+            centre,
+            radius,
+            start,
+            sweep,
+        } = s
+        else {
+            continue;
+        };
+        let (a, b) = if *sweep > 0.0 {
+            (*start, *start + *sweep)
+        } else {
+            (*start + *sweep, *start)
+        };
+        let k0 = (a / (PI / 2.0)).floor();
+        for i in 0..6 {
+            let th = (k0 + i as f64) * PI / 2.0;
+            if th > a && th < b {
+                stretch(
+                    &mut lo,
+                    &mut hi,
+                    [centre[0] + radius * th.cos(), centre[1] + radius * th.sin()],
+                );
+            }
+        }
+    }
+    if lo[0] > hi[0] {
+        return [0.0, 0.0];
+    }
+    [(lo[0] + hi[0]) / 2.0, (hi[1] + lo[1]) / 2.0]
+}
+
+/// One discovered loop, before it is known what part it plays.
+struct Cand {
+    segs: Vec<WireSeg>,
+    /// The area it encloses now, and the area it enclosed before the solve.
+    /// Refusal 9 needs both: a rule can be satisfied by collapsing a loop, and
+    /// a residual of zero does not say so.
+    area: f64,
+    pre_area: f64,
+}
+
+/// Discover the closed loops a solved sketch describes: the outline first,
+/// then every hole through it (§8.2).
 ///
 /// `solved` is the FULL parameter vector, fixed slots included, in the block's
 /// own layout — the same vector shape `ParamBlock::values()` returns.
@@ -1236,7 +1505,7 @@ pub fn discover_wires(
     block: &ParamBlock,
     constraints: &[Constraint],
     solved: &[f64],
-) -> Result<Vec<WireSeg>, Refusal> {
+) -> Result<Vec<WireLoop>, Refusal> {
     let plan = Plan::read(block, constraints, solved)?;
 
     plan.dangling()?;
@@ -1253,22 +1522,12 @@ pub fn discover_wires(
         .filter(|c| cycle_area(c, &plan.curves) > 0.0)
         .collect();
 
+    // Every closed loop the sketch describes, with the area it started from.
     // A circle is a loop of its own, and refusal 10 has already established
     // that it is welded to nothing.
-    let loops = interior.len() + plan.circles.len();
-    if loops == 0 {
-        return Err(Refusal::say("no closed loop found"));
-    }
-    if loops > 1 {
-        return Err(Refusal::say(format!(
-            "this sketch has {loops} separate outlines; extrude can use only one in this version"
-        )));
-    }
-
-    let (segs, area, pre_area) = if let Some(cycle) = interior.first() {
-        let (pre_curves, _) = read_curves(block, block.values(), plan.scale)?;
-        let area = cycle_area(cycle, &plan.curves);
-        let pre = cycle_area(cycle, &pre_curves);
+    let (pre_curves, pre_circles) = read_curves(block, block.values(), plan.scale)?;
+    let mut cands: Vec<Cand> = Vec::with_capacity(interior.len() + plan.circles.len());
+    for cycle in &interior {
         let mut segs = Vec::with_capacity(cycle.len());
         for h in cycle.iter().copied() {
             let Some(c) = plan.curves.get(h / 2) else {
@@ -1276,40 +1535,158 @@ pub fn discover_wires(
             };
             segs.push(c.seg(h % 2 == 0));
         }
-        (segs, area, pre)
-    } else {
-        let Some(circle) = plan.circles.first() else {
-            return Err(Refusal::say("no closed loop found"));
-        };
-        let (_, pre_circles) = read_curves(block, block.values(), plan.scale)?;
+        cands.push(Cand {
+            area: cycle_area(cycle, &plan.curves),
+            pre_area: cycle_area(cycle, &pre_curves),
+            segs,
+        });
+    }
+    for circle in &plan.circles {
         let pre_r = pre_circles
             .iter()
             .find(|c| c.id == circle.id)
             .map(|c| c.radius)
             .unwrap_or(circle.radius);
-        (
-            circle_segs(circle),
-            PI * circle.radius * circle.radius,
-            PI * pre_r * pre_r,
-        )
+        cands.push(Cand {
+            area: PI * circle.radius * circle.radius,
+            pre_area: PI * pre_r * pre_r,
+            segs: circle_segs(circle),
+        });
+    }
+
+    // Refusal 8.
+    if cands.is_empty() {
+        return Err(Refusal::say("no closed loop found"));
+    }
+
+    let markers: Vec<[f64; 2]> = cands.iter().map(|c| loop_marker(&c.segs)).collect();
+    let at = |i: usize| -> String {
+        markers
+            .get(i)
+            .map(|m| format!("({:.1}, {:.1}) mm", m[0], m[1]))
+            .unwrap_or_else(|| "the sketch".to_string())
     };
 
-    // Refusal 9. Residual zero LIES when a rule can be satisfied by collapsing
-    // an edge, which is the lesson `collapsedByRatio` already learned, so the
-    // area the student started with is part of the check and not just the
-    // absolute floor.
-    let floor = EPS_AREA_REL * plan.scale * plan.scale;
-    if area.abs() < floor || area.abs() < COLLAPSE_RATIO * pre_area.abs() {
+    // Refusal 7, retired (§8.2): more than one loop is a washer, not a
+    // mistake. The outline is the loop that contains every other one, and a
+    // loop containing another necessarily holds more area, so the widest loop
+    // is the only candidate for it. Which is not an assumption the rest can
+    // skip: every other loop is then MADE to prove it lies strictly inside
+    // this one, and the arrangements that cannot are the refusals below.
+    let mut outer = 0usize;
+    for (i, c) in cands.iter().enumerate() {
+        let Some(best) = cands.get(outer) else { continue };
+        if c.area > best.area {
+            outer = i;
+        }
+    }
+
+    let mut holes: Vec<usize> = Vec::new();
+    let mut beside: Vec<usize> = Vec::new();
+    for i in 0..cands.len() {
+        if i == outer {
+            continue;
+        }
+        let (Some(a), Some(b)) = (cands.get(i), cands.get(outer)) else {
+            continue;
+        };
+        match nesting(&a.segs, &b.segs) {
+            Nesting::Inside => holes.push(i),
+            Nesting::Beside => beside.push(i),
+            // The two boundaries cross. `crossings` (refusal 4) tests every
+            // pair of lines and arcs, so a pair that gets this far has a
+            // circle in it (:806) — and a circle hanging half out of its
+            // outline would cut a bite out of nothing.
+            Nesting::Crossing => {
+                return Err(Refusal::say(format!(
+                    "the hole near {} is not fully inside the outline; move it in, or make the outline bigger",
+                    at(i)
+                )))
+            }
+        }
+    }
+    if let Some(&first) = beside.first() {
         return Err(Refusal::say(format!(
-            "the outline collapsed while solving: {} square mm of area became {}",
-            millimetres(pre_area.abs()),
-            millimetres(area.abs())
+            "this sketch has {} separate outlines, near {} and {}; extrude needs one outline, with any other loop inside it as a hole",
+            beside.len() + 1,
+            at(outer),
+            at(first)
+        )));
+    }
+
+    // Holes against each other. Nesting one level deep is the shape a cap can
+    // carry (`make_face_multi`, one wire per loop); a plug inside a bore is a
+    // second solid, and two bores that run into each other are one
+    // figure-eight boundary that no single wire describes.
+    for (n, &i) in holes.iter().enumerate() {
+        for &j in holes.iter().skip(n + 1) {
+            let (Some(a), Some(b)) = (cands.get(i), cands.get(j)) else {
+                continue;
+            };
+            let island = |inner: usize, hole: usize| {
+                Refusal::say(format!(
+                    "the shape near {} sits inside the hole near {}; an island inside a hole is not a shape this builds",
+                    at(inner),
+                    at(hole)
+                ))
+            };
+            match (nesting(&a.segs, &b.segs), nesting(&b.segs, &a.segs)) {
+                (Nesting::Beside, Nesting::Beside) => {}
+                (Nesting::Inside, _) => return Err(island(i, j)),
+                (_, Nesting::Inside) => return Err(island(j, i)),
+                _ => {
+                    return Err(Refusal::say(format!(
+                        "the holes near {} and {} overlap; merge them into one hole",
+                        at(i),
+                        at(j)
+                    )))
+                }
+            }
+        }
+    }
+
+    // Refusal 9, on EVERY loop. Residual zero LIES when a rule can be
+    // satisfied by collapsing an edge, which is the lesson `collapsedByRatio`
+    // already learned, so the area the student started with is part of the
+    // check and not just the absolute floor. A hole solved flat is a
+    // degenerate face just as surely as a flat outline is, and the sentence
+    // has to say which loop went.
+    let mut order: Vec<usize> = Vec::with_capacity(1 + holes.len());
+    order.push(outer);
+    order.extend(holes.iter().copied());
+    let floor = EPS_AREA_REL * plan.scale * plan.scale;
+    for &i in &order {
+        let Some(c) = cands.get(i) else { continue };
+        if c.area.abs() >= floor && c.area.abs() >= COLLAPSE_RATIO * c.pre_area.abs() {
+            continue;
+        }
+        let which = if i == outer {
+            "the outline".to_string()
+        } else {
+            format!("the hole near {}", at(i))
+        };
+        return Err(Refusal::say(format!(
+            "{which} collapsed while solving: {} square mm of area became {}",
+            millimetres(c.pre_area.abs()),
+            millimetres(c.area.abs())
         )));
     }
 
     plan.cusps()?;
 
-    Ok(segs)
+    let mut out: Vec<WireLoop> = Vec::with_capacity(order.len());
+    for &i in &order {
+        let Some(c) = cands.get(i) else { continue };
+        out.push(WireLoop {
+            role: if i == outer {
+                LoopRole::Outer
+            } else {
+                LoopRole::Hole
+            },
+            segs: c.segs.clone(),
+        });
+    }
+    Ok(out)
 }
 
 #[cfg(test)]
@@ -1389,18 +1766,44 @@ mod tests {
             v
         }
 
-        fn run(&self) -> Result<Vec<WireSeg>, Refusal> {
+        /// Every loop, in the order discovery returns them: outline first.
+        fn run_loops(&self) -> Result<Vec<WireLoop>, Refusal> {
             discover_wires(&self.block, &self.cons, &self.coords())
         }
 
-        fn run_with(&self, solved: &[f64]) -> Result<Vec<WireSeg>, Refusal> {
-            discover_wires(&self.block, &self.cons, solved)
+        /// The OUTLINE alone. Most fixtures below are one loop, and reading
+        /// `[0].segs` in each of them would say nothing the name does not.
+        fn run(&self) -> Result<Vec<WireSeg>, Refusal> {
+            self.run_loops().map(outer_segs)
         }
+
+        fn run_with(&self, solved: &[f64]) -> Result<Vec<WireSeg>, Refusal> {
+            discover_wires(&self.block, &self.cons, solved).map(outer_segs)
+        }
+    }
+
+    fn outer_segs(loops: Vec<WireLoop>) -> Vec<WireSeg> {
+        loops.first().map(|l| l.segs.clone()).unwrap_or_default()
     }
 
     fn sentence_of(r: Result<Vec<WireSeg>, Refusal>) -> String {
         match r {
             Ok(segs) => format!("<accepted, {} segments, no refusal>", segs.len()),
+            Err(e) => e.sentence,
+        }
+    }
+
+    /// The same verdict for a whole profile: what it holds, or why it has
+    /// nothing.
+    fn loops_sentence(r: Result<Vec<WireLoop>, Refusal>) -> String {
+        match r {
+            Ok(loops) => {
+                let parts: Vec<String> = loops
+                    .iter()
+                    .map(|l| format!("{:?} of {} segments", l.role, l.segs.len()))
+                    .collect();
+                format!("<accepted, {}, no refusal>", parts.join(" + "))
+            }
             Err(e) => e.sentence,
         }
     }
@@ -1771,7 +2174,11 @@ mod tests {
             "arc 4 has sweep near zero",
         );
 
-        // 7. Two closed triangles, each perfectly valid on its own.
+        // 7. Two closed triangles, each perfectly valid on its own, and
+        //    neither inside the other. §8.2 retired the blanket "more than
+        //    one loop" refusal — a washer's two loops now build — so what is
+        //    left of 7 is this: SIDE BY SIDE is still two outlines, and
+        //    extrude takes one. The sentence names where they both are.
         let mut two = triangle();
         let m1 = two.line([300.0, 0.0], [400.0, 0.0]);
         let m2 = two.line([400.0, 0.0], [350.0, 80.0]);
@@ -1780,9 +2187,9 @@ mod tests {
         two.join(m2, PointRef::B, m3, PointRef::A);
         two.join(m3, PointRef::B, m1, PointRef::A);
         assert_says(
-            "r7 more than one loop",
+            "r7 two outlines side by side",
             sentence_of(two.run()),
-            "this sketch has 2 separate outlines; extrude can use only one in this version",
+            "this sketch has 2 separate outlines, near (50.0, 40.0) mm and (350.0, 40.0) mm; extrude needs one outline, with any other loop inside it as a hole",
         );
 
         // 8. Nothing to close.
@@ -1906,6 +2313,260 @@ mod tests {
             close(signed_area(&two), PI * 25.0),
             "and enclose the circle's area, got {}",
             signed_area(&two)
+        );
+    }
+
+    // -----------------------------------------------------------------
+    // SPEC-sketcher2 §8.2: one outline, holes inside it
+    // -----------------------------------------------------------------
+
+    /// A closed rectangle of four welded lines, counterclockwise.
+    fn rect(f: &mut Fix, lo: [f64; 2], hi: [f64; 2]) -> [GeoId; 4] {
+        let p = [
+            [lo[0], lo[1]],
+            [hi[0], lo[1]],
+            [hi[0], hi[1]],
+            [lo[0], hi[1]],
+        ];
+        let mut ids = [0; 4];
+        for i in 0..4 {
+            let j = (i + 1) % 4;
+            let (Some(a), Some(b)) = (p.get(i), p.get(j)) else {
+                continue;
+            };
+            if let Some(slot) = ids.get_mut(i) {
+                *slot = f.line(*a, *b);
+            }
+        }
+        for i in 0..4 {
+            let j = (i + 1) % 4;
+            let (Some(&a), Some(&b)) = (ids.get(i), ids.get(j)) else {
+                continue;
+            };
+            f.join(a, PointRef::B, b, PointRef::A);
+        }
+        ids
+    }
+
+    fn roles_of(loops: &[WireLoop]) -> Vec<LoopRole> {
+        loops.iter().map(|l| l.role).collect()
+    }
+
+    #[test]
+    fn washer_rect_and_circle_discovers_two_loops() {
+        // The shape refusal 7 used to turn away: a 40x25 plate with a 10 mm
+        // bore. Both loops come back from `trace` COUNTERCLOCKWISE (they are
+        // separate components, each with its own positive interior cycle), so
+        // the only thing that tells rim from bore is containment.
+        let mut f = Fix::new();
+        rect(&mut f, [0.0, 0.0], [40.0, 25.0]);
+        f.circle([20.0, 12.5], 5.0);
+
+        let loops = match f.run_loops() {
+            Ok(l) => l,
+            Err(e) => {
+                assert!(false, "a washer is an outline with a hole: {}", e.sentence);
+                return;
+            }
+        };
+        assert_eq!(
+            roles_of(&loops),
+            vec![LoopRole::Outer, LoopRole::Hole],
+            "the outline first, then its hole: {loops:?}"
+        );
+        let (Some(outer), Some(hole)) = (loops.first(), loops.get(1)) else {
+            assert!(false, "two loops");
+            return;
+        };
+        assert_eq!(outer.segs.len(), 4, "the plate is four lines");
+        assert_eq!(hole.segs.len(), 2, "the bore is two half-arcs");
+        assert!(chain_closes(&outer.segs), "the outline closes: {:?}", outer.segs);
+        assert!(chain_closes(&hole.segs), "the bore closes: {:?}", hole.segs);
+        assert!(
+            close(signed_area(&outer.segs), 1000.0),
+            "40 x 25 is 1000 square mm, got {}",
+            signed_area(&outer.segs)
+        );
+        assert!(
+            close(signed_area(&hole.segs), PI * 25.0),
+            "the bore keeps its own counterclockwise area (build winds it back), got {}",
+            signed_area(&hole.segs)
+        );
+    }
+
+    #[test]
+    fn two_disjoint_rects_refuse_two_outlines() {
+        // Side by side, neither inside the other: still two outlines, and
+        // still a refusal — a plate is not two plates.
+        let mut f = Fix::new();
+        rect(&mut f, [0.0, 0.0], [40.0, 25.0]);
+        rect(&mut f, [60.0, 0.0], [100.0, 25.0]);
+        assert_says(
+            "two separate outlines",
+            loops_sentence(f.run_loops()),
+            "this sketch has 2 separate outlines, near",
+        );
+    }
+
+    #[test]
+    fn island_in_hole_refuses() {
+        // A plate, a bore, and a plug drawn inside the bore. Nothing crosses
+        // anything, so no earlier refusal fires; the nesting DEPTH is the
+        // whole fault, and an extrude that silently dropped the plug would be
+        // the wrong solid.
+        let mut f = Fix::new();
+        rect(&mut f, [0.0, 0.0], [40.0, 25.0]);
+        f.circle([20.0, 12.5], 8.0);
+        rect(&mut f, [17.0, 10.0], [23.0, 15.0]);
+        assert_says(
+            "an island inside a hole",
+            loops_sentence(f.run_loops()),
+            "an island inside a hole is not a shape this builds",
+        );
+    }
+
+    #[test]
+    fn circle_hole_poking_outside_refuses() {
+        // The adversarial one. `crossings` (refusal 4) skips circles by
+        // design (:806), so a circle that straddles the outline reaches
+        // classification untouched: this containment test is the ONLY thing
+        // between it and a solid with a bite taken out of nothing.
+        let mut f = Fix::new();
+        rect(&mut f, [0.0, 0.0], [40.0, 25.0]);
+        f.circle([40.0, 5.0], 5.0);
+        assert_says(
+            "a hole half outside its outline",
+            loops_sentence(f.run_loops()),
+            "is not fully inside the outline; move it in, or make the outline bigger",
+        );
+    }
+
+    #[test]
+    fn a_hair_of_a_hole_outside_still_refuses() {
+        // The probe spacing's own test: this bore crosses the right wall by
+        // 0.01 mm, a fiftieth of eps_gap. It is caught because `circle_segs`
+        // seams at theta = 0 and pi, so the two points furthest out in u are
+        // always probed — the sampling is not luck. Nothing else in the file
+        // looks at this: refusal 2 counts endpoints and a circle has none,
+        // and refusal 4 skips circles.
+        let mut f = Fix::new();
+        rect(&mut f, [0.0, 0.0], [40.0, 25.0]);
+        f.circle([35.01, 12.5], 5.0);
+        assert_says(
+            "a bore 0.01 mm proud of its wall",
+            loops_sentence(f.run_loops()),
+            "the hole near (35.0, 12.5) mm is not fully inside the outline",
+        );
+
+        // And the same bore a hundredth of a millimetre the other way is a
+        // washer, not a refusal: the test above is measuring the geometry,
+        // not a margin that refuses everything near a wall.
+        let mut g = Fix::new();
+        rect(&mut g, [0.0, 0.0], [40.0, 25.0]);
+        g.circle([34.99, 12.5], 5.0);
+        assert_eq!(
+            roles_of(&g.run_loops().unwrap_or_default()),
+            vec![LoopRole::Outer, LoopRole::Hole],
+            "0.01 mm of wall is still wall"
+        );
+    }
+
+    #[test]
+    fn two_overlapping_circle_holes_refuse() {
+        // Two bores 7 mm apart with 5 mm radii. Their union is one
+        // peanut-shaped hole with a figure-eight boundary, which is not a
+        // wire this layer can hand over; the kernel would cut one of them and
+        // never mention the other.
+        let mut f = Fix::new();
+        rect(&mut f, [0.0, 0.0], [40.0, 25.0]);
+        f.circle([15.0, 12.5], 5.0);
+        f.circle([22.0, 12.5], 5.0);
+        assert_says(
+            "two bores that overlap",
+            loops_sentence(f.run_loops()),
+            "overlap; merge them into one hole",
+        );
+    }
+
+    #[test]
+    fn collapsed_hole_refuses() {
+        // Refusal 9 used to look at the first loop only. A hole solved flat
+        // is a degenerate face just as surely as a flat outline is, and the
+        // sentence has to say WHICH loop went.
+        let mut f = Fix::new();
+        rect(&mut f, [0.0, 0.0], [40.0, 25.0]);
+        rect(&mut f, [10.0, 8.0], [30.0, 18.0]);
+        // The bore's top edge solved down onto its bottom edge: 200 square mm
+        // of area became 10. Half a millimetre apart, which is wider than
+        // eps_gap (1e-3 * S = 0.047 mm here), so this is a collapse and not a
+        // near-touch.
+        let flat = f.moved(&[
+            (6, PointRef::B, [30.0, 8.5]),
+            (7, PointRef::A, [30.0, 8.5]),
+            (7, PointRef::B, [10.0, 8.5]),
+            (8, PointRef::A, [10.0, 8.5]),
+        ]);
+        assert_says(
+            "a hole solved flat",
+            loops_sentence(discover_wires(&f.block, &f.cons, &flat)),
+            "collapsed while solving",
+        );
+        assert_says(
+            "and it names the hole, not the plate",
+            loops_sentence(discover_wires(&f.block, &f.cons, &flat)),
+            "the hole near",
+        );
+    }
+
+    #[test]
+    fn thin_wall_washer_honest_verdict() {
+        // A 0.02 mm wall: r20 rim, r19.98 bore. eps_gap is 1e-3 * S = 0.04 mm
+        // here, so the wall is INSIDE the distance that refuses two loose
+        // ends — but refusal 2 counts ENDPOINTS, and a circle has none, so it
+        // never looks. This test pins what actually happens rather than what
+        // a reading of eps_gap alone would predict, and it is the reason
+        // `point_in_loop` is analytic: a 64-chord circle sinks 1.5e-3 mm
+        // below its own arc, and against a 0.02 mm wall that is a quarter of
+        // the margin.
+        let mut f = Fix::new();
+        f.circle([0.0, 0.0], 20.0);
+        f.circle([0.0, 0.0], 19.98);
+        assert_eq!(
+            f.block.scale(),
+            40.0,
+            "S is the rim's diameter, so eps_gap is 0.04 mm"
+        );
+        let loops = match f.run_loops() {
+            Ok(l) => l,
+            Err(e) => {
+                assert!(false, "MEASURED verdict, pinned: {}", e.sentence);
+                return;
+            }
+        };
+        assert_eq!(
+            roles_of(&loops),
+            vec![LoopRole::Outer, LoopRole::Hole],
+            "the wider circle is the rim: {loops:?}"
+        );
+    }
+
+    #[test]
+    fn two_circles_drawn_on_top_of_each_other_refuse() {
+        // Neither is inside the other and neither is beside it. Whatever the
+        // ray cast makes of a probe sitting exactly on the boundary it is
+        // asking about, the one thing that must not happen is a solid.
+        let mut f = Fix::new();
+        f.circle([10.0, 10.0], 5.0);
+        f.circle([10.0, 10.0], 5.0);
+        // MEASURED: every probe sits exactly ON the loop it is being asked
+        // about, and the ray cast splits them -- a probe on the right half
+        // reads outside, one on the left reads inside -- so the pair comes
+        // back mixed, which is the crossing refusal. The wording is aimed at
+        // the wrong fault, but a duplicate circle is not a solid either way.
+        assert_says(
+            "one circle drawn twice",
+            loops_sentence(f.run_loops()),
+            "is not fully inside the outline",
         );
     }
 }

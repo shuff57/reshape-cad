@@ -42,6 +42,10 @@ export type ProfileSeg =
   | { k: 'line'; a: [number, number]; b: [number, number] }
   | { k: 'arc'; centre: [number, number]; radius: number; start: number; sweep: number };
 
+/** One solved profile loop (sketch_profile): the sketch's outline, or a hole
+ *  through it (SPEC-sketcher2 §8.2). */
+export type ProfileLoop = { role: 'outer' | 'hole'; segs: ProfileSeg[] };
+
 /** Slots per geometry kind, in layout order, after the 10 built-in slots. */
 const KIND_SLOTS: Record<SessionGeom['k'], number> = { point: 2, line: 4, circle: 3, arc: 7 };
 const BUILTIN_SLOTS = 10;
@@ -183,15 +187,16 @@ export class SketchSession2D {
     return JSON.parse(text) as Diagnosis;
   }
 
-  /** The solved profile, or { refusal } when the sketch cannot be trusted. */
-  profile(): { segs: ProfileSeg[] } | { refusal: string } {
+  /** The solved profile, or { refusal } when the sketch cannot be trusted.
+   *  `loops[0]` is the outline; every later loop is a hole through it. */
+  profile(): { loops: ProfileLoop[] } | { refusal: string } {
     const wasm = this.requireWasm();
     if (this.handle === 0) return { refusal: 'no open sketch session' };
     const text = wasm.sketch_profile(this.handle);
     if (!text) {
       return { refusal: this.lastError() ?? 'sketch_profile refused for an unknown reason' };
     }
-    return JSON.parse(text) as { segs: ProfileSeg[] } | { refusal: string };
+    return JSON.parse(text) as { loops: ProfileLoop[] } | { refusal: string };
   }
 
   /** The last wasm-side sentence (open/solve/diagnose failures). */

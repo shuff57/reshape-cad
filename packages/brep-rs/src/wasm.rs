@@ -133,11 +133,12 @@ thread_local! {
 }
 
 /// The soup arm of extruded_profile: solve the sketch's geoms+rules through
-/// the sketch session, then extrude the DISCOVERED wire (SPEC-sketcher2
-/// §5.3). Returns None and leaves a sentence in LAST_PRISM_REFUSAL when the
-/// sketch cannot be trusted (conflicting rules, wire discovery refusal); the
-/// legacy `points` path never touches this thread_local.
-fn soup_profile(sk: &Value) -> Option<(Vec<build::ProfileSeg>, Vec<(String, usize)>)> {
+/// the sketch session, then extrude the DISCOVERED loops (SPEC-sketcher2
+/// §5.3, §8.2) -- the outline first, then every hole through it. Returns None
+/// and leaves a sentence in LAST_PRISM_REFUSAL when the sketch cannot be
+/// trusted (conflicting rules, wire discovery refusal); the legacy `points`
+/// path never touches this thread_local.
+fn soup_profile(sk: &Value) -> Option<(Vec<Vec<build::ProfileSeg>>, Vec<(String, usize)>)> {
     LAST_PRISM_REFUSAL.with(|lr| *lr.borrow_mut() = None);
     let json = sk.to_string();
     let mut session = match crate::sketch::session::SketchSession::open(&json) {
@@ -170,20 +171,47 @@ fn soup_profile(sk: &Value) -> Option<(Vec<build::ProfileSeg>, Vec<(String, usiz
         }
     }
     match session.profile() {
-        Ok(segs) => {
-            let out = segs
-                .iter()
-                .map(|s| match s {
-                    crate::sketch::wires::WireSeg::Line { a, b } => build::ProfileSeg::Line { a: *a, b: *b },
-                    crate::sketch::wires::WireSeg::Arc { centre, radius, start, sweep } => build::ProfileSeg::Arc {
-                        centre: *centre,
-                        radius: *radius,
-                        start: *start,
-                        sweep: *sweep,
-                    },
-                })
-                .collect::<Vec<_>>();
-            let roles = (0..out.len()).map(|i| ("edge".to_string(), i)).collect();
+        Ok(loops) => {
+            // §8.2: the outline first, then its holes. build normalises a
+            // hole to CLOCKWISE (`(a2 < 0.0) == outer`, build.rs:1897) and
+            // discovery hands every loop over counterclockwise, so the hole
+            // is reversed HERE rather than inside the builder: reverse_loop
+            // would permute the hole's wall faces out from under `roles`,
+            // whose whole meaning is "wall face i is profile segment i".
+            let mut out: Vec<Vec<build::ProfileSeg>> = Vec::with_capacity(loops.len());
+            for lp in &loops {
+                let mut segs: Vec<build::ProfileSeg> = lp
+                    .segs
+                    .iter()
+                    .map(|s| match s {
+                        crate::sketch::wires::WireSeg::Line { a, b } => build::ProfileSeg::Line { a: *a, b: *b },
+                        crate::sketch::wires::WireSeg::Arc { centre, radius, start, sweep } => build::ProfileSeg::Arc {
+                            centre: *centre,
+                            radius: *radius,
+                            start: *start,
+                            sweep: *sweep,
+                        },
+                    })
+                    .collect();
+                if lp.role == crate::sketch::wires::LoopRole::Hole {
+                    segs = segs
+                        .iter()
+                        .rev()
+                        .map(|s| match s {
+                            build::ProfileSeg::Line { a, b } => build::ProfileSeg::Line { a: *b, b: *a },
+                            build::ProfileSeg::Arc { centre, radius, start, sweep } => build::ProfileSeg::Arc {
+                                centre: *centre,
+                                radius: *radius,
+                                start: *start + *sweep,
+                                sweep: -*sweep,
+                            },
+                        })
+                        .collect();
+                }
+                out.push(segs);
+            }
+            let nseg: usize = out.iter().map(|l| l.len()).sum();
+            let roles = (0..nseg).map(|i| ("edge".to_string(), i)).collect();
             Some((out, roles))
         }
         Err(r) => {
@@ -193,7 +221,9 @@ fn soup_profile(sk: &Value) -> Option<(Vec<build::ProfileSeg>, Vec<(String, usiz
     }
 }
 
-fn extruded_profile(sk: &Value) -> Option<(Vec<build::ProfileSeg>, Vec<(String, usize)>)> {
+/// The loops a sketch extrudes: `[0]` is the outline, every later loop a hole
+/// through it. The legacy `points` path is one loop by construction.
+fn extruded_profile(sk: &Value) -> Option<(Vec<Vec<build::ProfileSeg>>, Vec<(String, usize)>)> {
     if sk.get("shape").and_then(|s| s.as_str()) == Some("circle") {
         return None;
     }
@@ -255,7 +285,7 @@ fn extruded_profile(sk: &Value) -> Option<(Vec<build::ProfileSeg>, Vec<(String, 
         }
         segs.push(build::ProfileSeg::Arc { centre, radius, start: start_angle, sweep });
     }
-    Some((segs, roles))
+    Some((vec![segs], roles))
 }
 
 /// The design role of outline segment `i`, from the parallel `basis` array --
@@ -416,11 +446,15 @@ fn circle_of_value(sk: &Value) -> Option<([f64; 2], f64)> {
 }
 
 /// What an `extrude_prism` produced, so `extrude` can still write its sweep
-/// history. `pocket` ignores it (a cut records no sweep, matching OCCT).
+/// history, and so `pocket` can see whether its tool is annular.
 enum PrismKind {
     Circle,
     Outline {
+        /// Walls, summed over every loop: the caps sit at `nseg` and
+        /// `nseg + 1`, which is still true of a washer.
         nseg: usize,
+        /// 1 for a plain outline, more when the profile carries holes.
+        nloops: usize,
         roles: Vec<(String, usize)>,
     },
 }
@@ -448,14 +482,22 @@ fn extrude_prism(sk: &Value, _plane: &str, height: f64) -> Option<(TSolid, Prism
         );
         return Some((solid, PrismKind::Circle));
     }
-    let (segs, roles) = extruded_profile(sk)?;
-    let nseg = segs.len();
-    let solid = match build::extrude_profile(&segs, origin, u_axis, v_axis, scale(n, height * dir)) {
+    let (loops, roles) = extruded_profile(sk)?;
+    // One wall per segment of EVERY loop, then the two caps -- the order
+    // extrude_profile_loops pushes them in (build.rs:2009 walls, :2152 caps).
+    let nseg: usize = loops.iter().map(|l| l.len()).sum();
+    let solid = match build::extrude_profile_loops(&loops, origin, u_axis, v_axis, scale(n, height * dir)) {
         Ok(s) => s,
-        Err(_) => return None,
+        Err(e) => {
+            // The build layer's §8.2 backstop says what is wrong with the
+            // arrangement; dropping it here would leave the student with
+            // "no usable outline", which names nothing.
+            LAST_PRISM_REFUSAL.with(|lr| *lr.borrow_mut() = Some(e));
+            return None;
+        }
     };
     let solid = build::ensure_outward(&solid);
-    Some((solid, PrismKind::Outline { nseg, roles }))
+    Some((solid, PrismKind::Outline { nseg, nloops: loops.len(), roles }))
 }
 
 
@@ -703,10 +745,12 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                             },
                         );
                     }
-                    PrismKind::Outline { nseg, roles } => {
-                        // extrude_profile pushes one wall per segment then the
-                        // base cap (n) then the top cap (n+1). `dir` decides
-                        // which end is the top: the sweep runs toward `n`.
+                    PrismKind::Outline { nseg, roles, .. } => {
+                        // extrude_profile_loops pushes one wall per segment of
+                        // every loop, then the base cap (nseg) then the top cap
+                        // (nseg + 1); a washer's caps are the same two faces,
+                        // each carrying one wire per loop. `dir` decides which
+                        // end is the top: the sweep runs toward `n`.
                         let (cap_bottom, cap_top) = if dir >= 0.0 {
                             (Some(nseg), Some(nseg + 1))
                         } else {
@@ -749,12 +793,36 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 // A pocket is the extrude prism with the sweep NEGATED: pad up,
                 // pocket down (occt-build.ts's `h = -f.depth * a.dir`). The tool
                 // is oriented outward by extrude_prism, then cut from the base.
-                let Some((tool, _)) = extrude_prism(sk, "", -depth) else {
+                let Some((tool, kind)) = extrude_prism(sk, "", -depth) else {
                     let sentence = LAST_PRISM_REFUSAL.with(|lr| lr.borrow().clone())
                         .unwrap_or_else(|| format!("sketch {target} has no usable outline"));
                     refusals.insert(id.clone(), json!(format!("pocket {id}: {sentence}")));
                     continue;
                 };
+                // §8.2 extrudes an annular profile, and `ops::boolean` then
+                // cannot cut the result: MEASURED, a 20x20 pocket with a r3
+                // bore into a 40x40x20 box comes back None from subtract,
+                // where the same pocket without the bore cuts exactly
+                // (30000.000000 mm3, 11 faces). The generic sentence below
+                // would blame enclosure or a surface pair for it, which is
+                // not what is wrong.
+                if let PrismKind::Outline { nloops, .. } = kind {
+                    if nloops > 1 {
+                        let holes = nloops - 1;
+                        let what = if holes == 1 {
+                            "a hole".to_string()
+                        } else {
+                            format!("{holes} holes")
+                        };
+                        refusals.insert(
+                            id.clone(),
+                            json!(format!(
+                                "pocket {id}: sketch {target} has {what} through its outline, and brep-rs cannot cut a pocket with an annular tool yet -- {id} is shown without it."
+                            )),
+                        );
+                        continue;
+                    }
+                }
                 match ops::boolean("subtract", &base, &tool) {
                     Some(result) => {
                         // The cut's faces come from the boolean, not the prism,
@@ -2387,10 +2455,13 @@ mod tests {
         assert!(profile.is_some(), "profile succeeds");
         let text = profile.unwrap();
         assert!(!text.contains("refusal"), "a square profiles clean: {text}");
-        // debug below
         let v: Value = serde_json::from_str(&text).unwrap();
-        let segs = v.get("segs").and_then(|s| s.as_array()).unwrap();
-        assert!(!segs.is_empty(), "the profile has segments");
+        let loops = v.get("loops").and_then(|s| s.as_array()).unwrap();
+        assert_eq!(loops.len(), 1, "a square is one outline and no holes");
+        let first = loops.first().unwrap();
+        assert_eq!(first.get("role").and_then(|r| r.as_str()), Some("outer"));
+        let segs = first.get("segs").and_then(|s| s.as_array()).unwrap();
+        assert_eq!(segs.len(), 4, "four edges in, four segments out");
         sketch_close(h);
     }
 
@@ -3229,6 +3300,143 @@ mod tests {
         assert_eq!(solid.faces().len(), 6, "a swept soup rectangle is 6 faces");
     }
 
+    /// SPEC-sketcher2 §8.2, end to end: a soup washer -- a 40x25 plate with a
+    /// 10 mm bore -- builds through build_doc_json. (1000 - 25*pi) * 12 =
+    /// 11057.522204 mm^3 on 4 plate walls + 2 bore walls + 2 caps, each cap
+    /// carrying both wires.
+    #[test]
+    fn soup_washer_extrudes() {
+        let doc = json!({
+            "features": [
+                {
+                    "id": "sk1", "kind": "sketch", "plane": "xy", "offset": 0.0,
+                    "geoms": [
+                        { "k": "line", "id": 1, "a": [0.0, 0.0], "b": [40.0, 0.0] },
+                        { "k": "line", "id": 2, "a": [40.0, 0.0], "b": [40.0, 25.0] },
+                        { "k": "line", "id": 3, "a": [40.0, 25.0], "b": [0.0, 25.0] },
+                        { "k": "line", "id": 4, "a": [0.0, 25.0], "b": [0.0, 0.0] },
+                        { "k": "circle", "id": 5, "c": [20.0, 12.5], "r": 5.0 }
+                    ],
+                    "rules": [
+                        { "k": "coincident", "a": 1, "aEnd": "b", "b": 2, "bEnd": "a" },
+                        { "k": "coincident", "a": 2, "aEnd": "b", "b": 3, "bEnd": "a" },
+                        { "k": "coincident", "a": 3, "aEnd": "b", "b": 4, "bEnd": "a" },
+                        { "k": "coincident", "a": 4, "aEnd": "b", "b": 1, "bEnd": "a" },
+                        { "k": "horizontal", "a": 1 },
+                        { "k": "vertical", "a": 2 }
+                    ]
+                },
+                { "id": "e1", "kind": "extrude", "target": "sk1", "height": 12.0 }
+            ]
+        });
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "refusals: {refusals:?}");
+        let solid = hist.shapes.get("e1").expect("the washer must build");
+        let want = (1000.0 - 25.0 * std::f64::consts::PI) * 12.0;
+        let vol = build::solid_volume(solid);
+        assert!((vol - want).abs() <= 1e-6 * want, "volume {vol} vs {want}");
+        assert_eq!(solid.faces().len(), 8, "4 plate walls + 2 bore walls + 2 caps");
+        let bb = build::solid_aabb(solid);
+        assert_eq!(bb.lo, [0.0, 0.0, 0.0], "the bore takes nothing off the box");
+        assert_eq!(bb.hi, [40.0, 25.0, 12.0]);
+        // The sweep record's caps must still land on the multi-wire caps: the
+        // walls are summed over BOTH loops, so they are faces 6 and 7.
+        let sweep = hist.sweeps.get("e1").expect("the extrude records a sweep");
+        assert_eq!(sweep.segments.len(), 6, "one wall per segment of both loops");
+        assert_eq!(sweep.cap_bottom, Some(6), "the base cap sits after every wall");
+        assert_eq!(sweep.cap_top, Some(7));
+        // And MEASURED, not just counted: a cap holds 1000 - 25*pi mm^2, which
+        // no wall of this prism does (the widest is 40 x 12 = 480), so an
+        // index that had slipped onto a wall would fail here.
+        let faces = solid.faces();
+        let cap_area = 1000.0 - 25.0 * std::f64::consts::PI;
+        for i in [6usize, 7] {
+            let face = faces.get(i).expect("the cap exists");
+            let (area, _) = history::face_measure(face);
+            assert!(
+                (area - cap_area).abs() <= 1e-9 * cap_area,
+                "face {i} is a cap carrying both wires: area {area} vs {cap_area}"
+            );
+        }
+        // The whole face layout, which is what the SweepRecord's role indices
+        // mean: the outline's four walls, then the bore's two, then the caps.
+        // The bore's walls are half cylinders, 5*pi*12 = 188.495559 each.
+        let bore_wall = 5.0 * std::f64::consts::PI * 12.0;
+        for (i, want) in [
+            (0usize, 480.0),
+            (1, 300.0),
+            (2, 480.0),
+            (3, 300.0),
+            (4, bore_wall),
+            (5, bore_wall),
+        ] {
+            let face = faces.get(i).expect("the wall exists");
+            let (area, _) = history::face_measure(face);
+            assert!(
+                (area - want).abs() <= 1e-9 * want,
+                "face {i}: area {area} vs {want}"
+            );
+        }
+    }
+
+    /// The other side of §8.2: an annular profile EXTRUDES, and the same
+    /// profile used as a pocket TOOL does not cut. Measured against the
+    /// control -- the identical pocket without the bore cuts exactly, 30000
+    /// mm^3 on 11 faces -- so the annulus is the part `ops::boolean` cannot
+    /// do, and the refusal says that rather than blaming enclosure.
+    #[test]
+    fn soup_annular_pocket_refuses_by_name() {
+        let soup = |bore: bool| {
+            let mut geoms = vec![
+                json!({ "k": "line", "id": 1, "a": [-10.0, -10.0], "b": [10.0, -10.0] }),
+                json!({ "k": "line", "id": 2, "a": [10.0, -10.0], "b": [10.0, 10.0] }),
+                json!({ "k": "line", "id": 3, "a": [10.0, 10.0], "b": [-10.0, 10.0] }),
+                json!({ "k": "line", "id": 4, "a": [-10.0, 10.0], "b": [-10.0, -10.0] }),
+            ];
+            if bore {
+                geoms.push(json!({ "k": "circle", "id": 5, "c": [0.0, 0.0], "r": 3.0 }));
+            }
+            json!({
+                "features": [
+                    { "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0] },
+                    {
+                        "id": "sk1", "kind": "sketch", "plane": "xy", "offset": 10.0,
+                        "geoms": geoms,
+                        "rules": [
+                            { "k": "coincident", "a": 1, "aEnd": "b", "b": 2, "bEnd": "a" },
+                            { "k": "coincident", "a": 2, "aEnd": "b", "b": 3, "bEnd": "a" },
+                            { "k": "coincident", "a": 3, "aEnd": "b", "b": 4, "bEnd": "a" },
+                            { "k": "coincident", "a": 4, "aEnd": "b", "b": 1, "bEnd": "a" },
+                            { "k": "horizontal", "a": 1 },
+                            { "k": "vertical", "a": 2 }
+                        ]
+                    },
+                    { "id": "pk1", "kind": "pocket", "target": "sk1", "into": "b1", "depth": 5.0 }
+                ]
+            })
+        };
+
+        // The control first, so the refusal below cannot be read as "soup
+        // pockets do not work".
+        let (hist, refusals) = build_doc(&soup(false));
+        assert!(refusals.is_empty(), "a plain soup pocket cuts: {refusals:?}");
+        let cut = hist.shapes.get("pk1").expect("the control must build");
+        let vol = build::solid_volume(cut);
+        assert!((vol - 30000.0).abs() <= 1e-6 * 30000.0, "volume {vol} vs 30000");
+
+        let (hist, refusals) = build_doc(&soup(true));
+        let msg = refusals.get("pk1").and_then(|v| v.as_str()).unwrap_or("");
+        assert!(
+            msg.contains("has a hole through its outline")
+                && msg.contains("cannot cut a pocket with an annular tool yet"),
+            "the refusal names the bore, not enclosure: {msg}"
+        );
+        assert!(
+            hist.shapes.get("pk1").is_none(),
+            "and no solid is left behind pretending the cut happened"
+        );
+    }
+
     /// A soup sketch whose rules CONFLICT refuses its extrude with the wire
     /// refusal sentence (refusal 11's gate moved to build time): the profile
     /// of a conflicting sketch cannot be trusted, so extruding one would be
@@ -4005,9 +4213,10 @@ fn bucket_name(session: &crate::sketch::session::SketchSession) -> &'static str 
     }
 }
 
-/// The solved profile: closed loops, construction dropped. JSON: a `segs`
-/// array of {a,b} lines and {centre,radius,start,sweep} arcs, or `{"refusal":
-/// sentence}`.
+/// The solved profile: closed loops, construction dropped. JSON: a `loops`
+/// array of `{ role: "outer" | "hole", segs: [...] }`, the outline first and
+/// every hole after it (§8.2); each seg is a {a,b} line or a
+/// {centre,radius,start,sweep} arc. Or `{"refusal": sentence}`.
 #[wasm_bindgen]
 pub fn sketch_profile(h: u32) -> Option<String> {
     SKETCH_SESSIONS.with(|ss| {
@@ -4029,19 +4238,30 @@ pub fn sketch_profile(h: u32) -> Option<String> {
             }
         }
         match session.profile() {
-            Ok(segs) => {
-                let segs: Vec<serde_json::Value> = segs
+            Ok(loops) => {
+                let loops: Vec<serde_json::Value> = loops
                     .iter()
-                    .map(|s| match s {
-                        crate::sketch::wires::WireSeg::Line { a, b } => json!({
-                            "k": "line", "a": a, "b": b,
-                        }),
-                        crate::sketch::wires::WireSeg::Arc { centre, radius, start, sweep } => json!({
-                            "k": "arc", "centre": centre, "radius": radius, "start": start, "sweep": sweep,
-                        }),
+                    .map(|lp| {
+                        let segs: Vec<serde_json::Value> = lp
+                            .segs
+                            .iter()
+                            .map(|s| match s {
+                                crate::sketch::wires::WireSeg::Line { a, b } => json!({
+                                    "k": "line", "a": a, "b": b,
+                                }),
+                                crate::sketch::wires::WireSeg::Arc { centre, radius, start, sweep } => json!({
+                                    "k": "arc", "centre": centre, "radius": radius, "start": start, "sweep": sweep,
+                                }),
+                            })
+                            .collect();
+                        let role = match lp.role {
+                            crate::sketch::wires::LoopRole::Outer => "outer",
+                            crate::sketch::wires::LoopRole::Hole => "hole",
+                        };
+                        json!({ "role": role, "segs": segs })
                     })
                     .collect();
-                Some(json!({ "segs": segs }).to_string())
+                Some(json!({ "loops": loops }).to_string())
             }
             Err(r) => Some(json!({ "refusal": r.sentence }).to_string()),
         }
