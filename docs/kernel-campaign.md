@@ -825,3 +825,133 @@ sites (revolve, groove) share the same class is unmeasured.
 **Commits:** `58f1bc3` (sign fix), `397ea49` (Slot tool), `3b388d1` (param()
 fix), `bf99ba8` (multi-loop build seam), `82ec736` (multi-loop wire
 discovery), `d065c27` (adversarial mesh/STEP/naming hunt).
+
+## The OCCT referee reads soup sketches (occt-build.ts geoms/rules) — DONE (2026-09-19)
+
+**Target.** The kernel side shipped multi-loop profiles -- a rectangle with a
+circle inside it extrudes to a washer -- with no independent oracle over them:
+`occt-build.ts` read only `points`, so any sketch carrying `geoms` threw
+`TypeError: undefined is not an object (evaluating 'f.points.map')` and
+`scripts/brep-parity-gate.mjs` could not build a soup sketch on OCCT at all.
+The washer's 11057.522204 was brep-rs marking its own homework.
+`packages/kernel/AGENTS.md` calls this file the only independent oracle over a
+kernel whose signature failure is the wrong answer rather than the missing
+one; a kernel feature this file cannot read has no referee.
+
+**The spike that had to come first.** Before any production code, two
+assumptions were measured on this embind build, because the whole design
+rests on them: `BRepBuilderAPI_MakeFace.Add` IS bound, and `ShapeFix_Face`
+repairs BOTH a swapped outer/hole classification and an unreversed inner wire
+back to the same 11057.522204. That is why the reader hands OCCT every loop
+in discovery order and lets OCCT decide which one is the outline, rather than
+re-deriving containment in TypeScript -- a TypeScript re-derivation would
+mirror brep-rs's own `point_in_loop`/`nesting` and could share its blind
+spot, which would make the referee a copy of the thing it judges.
+
+**The headline number.** The soup washer measures 11057.522203923061 on 7
+faces on OCCT against brep-rs's 11057.522203923063 on 8, a relative delta of
+1.65e-16. The face counts differ legitimately -- brep-rs splits the bore into
+two half cylinders -- and the gate's face check at `brep-parity-gate.mjs:181`
+is `mine.faces > 2 * occtFaces + 4`, a BOUND rather than an equality, so that
+disagreement was never actually a blocker, though it was floated as a concern
+earlier in this campaign's conversation.
+
+**Four guards in `soupFace`, each with the measured failure that earned it.**
+- Guard 1, a degeneracy floor: a circle of r <= 0.01 outside the rectangle
+  came back as a plain 1000 mm2 plate with every other guard passing -- a
+  too-small loop dropped invisibly under the area checksum's own 1e-6
+  relative resolution. The floor here is brep-rs's own
+  `EPS_AREA_REL * scale^2` times four, deliberately WIDER than the kernel's,
+  so the referee refuses first and the gate blames the fixture rather than
+  the kernel.
+- Guard 2, counting wires: OCCT quietly DROPS a wire it cannot place -- a
+  40x25 outline beside a 25x20 one returns a one-wire face of just the
+  square, which BRepCheck calls perfectly valid because it IS a valid face,
+  just not the sketch; and because 2*1000 - 1500 is exactly 500, an exact
+  match for the area check as well. Counting wires against loops is the only
+  thing that sees it.
+- Guard 3, BRepCheck validity: an inner wire taken as built ADDS its bore
+  (12942.477796) and swapped roles come out NEGATIVE (-11057.522204); both
+  are caught by OCCT's own analyzer after the ShapeFix repair.
+- Guard 4, the area checksum itself: twice the widest loop minus the sum of
+  all loop areas must match what OCCT measures on the built face, so a
+  mis-classified outline or a hole turned the wrong way stops matching and
+  the reader refuses instead of handing the gate a wrong reference.
+
+**Two design findings that changed the code.** Joins are read, never guessed:
+the chaining is a union-find over the `coincident` rules' own end references,
+not a proximity search, and the measured fact behind that is a rectangle
+whose corners are bit-identical but carry no rules is refused by brep-rs -- a
+proximity chain would need a tolerance to invent topology with. The sharpest
+finding: a rule this reader IGNORES is one brep-rs still SOLVES, and solving
+it MOVES THE GEOMETRY to a genuinely different, wrong reference volume, not a
+refusal on either side. On a rectangle that reads 12000, one extra `angle`
+rule makes brep-rs build 12315.30 and a `distance` makes it 15600.00; a
+`diameter` on the washer's bore takes it from 11057.52 to 11764.38. Neither
+kernel refuses, so the gate would print the difference as a FAIL of brep-rs,
+which is why satisfaction is checked for the kinds that are one line of
+arithmetic and `tangent`/`angle`/`symmetric`/`pointOnObject` are declined by
+name. Found while VERIFYING the second adversarial review round, not by
+either reviewer.
+
+**Process honesty.** Two adversarial review rounds by a separate agent, not
+one. The first found nine defects, two of them a face silently WRONG rather
+than merely disagreeing -- a dropped wire (a 40x25 outline beside a 25x20 one
+returning a one-wire face of just the square) and a loop dropped under the
+area checksum's own resolution -- plus a crash on a zero-length edge, a
+buildability split on a missing/bogus arc `sense`, a stale comment claiming
+`SWEEP_MIN` mirrored brep-rs's when it did not, a false refusal on a
+construction POINT, and unruled proximity welding standing in for the rules
+brep-rs actually reads. The second round, re-run on the fix, found three
+more: rules naming geometry that is not there, a degeneracy floor still
+looser than brep-rs's own, and a test pinning a refusal brep-rs does not
+share on unsolved rows.
+Twelve defects total, and eleven were fixed. The twelfth is one documented,
+deliberate divergence -- when a fixture's rows do not
+satisfy their own rules, brep-rs SOLVES them (a least-squares compromise that
+moves the geometry) while the reference REFUSES rather than guess. The
+direction the gate treats that refusal is the reason refusing is safe: an
+OCCT refusal is caught by the gate's own try/catch (`brep-parity-gate.mjs:124`)
+as "the FIXTURE is broken, not the kernel", NOT scored as a FAIL against
+brep-rs.
+
+**Also guarded, not changed.** Revolve, groove and loft refuse a soup sketch
+in words instead of throwing on its missing `points`, and `sketchEdgeCount`
+counts curve rows for one -- migration keeps `points` alongside the new rows
+(SketchCanvas2D's `{ ...f, geoms, geom, rules }`), so testing `points` first
+would report a stale count for every migrated sketch.
+
+**Evidence.** All re-run today on this machine: packages/kernel `bun test` 35
+pass, 0 fail (the new `occt-build-soup.test.mjs` alone is 483 lines and 20
+tests; `occt-build.ts` is now 1855 lines). Parity gate 68 passed, 0 failed,
+exit 0; mesh gate 68 passed, 0 failed, exit 0. The commit body claims both
+gates came out BYTE-IDENTICAL to the pre-change baseline; no baseline log
+survives to diff against, but the claim's logic holds and what I confirmed
+personally is the current state: 68/0 exit 0 on both, and zero fixtures use
+soup rows today, so no existing fixture's verdict could have moved. tsc clean
+across sketch, script and kernel.
+
+**Lead-ownership note.** `packages/kernel/AGENTS.md` never says the builder
+must not edit `occt-build.ts` -- only `scripts/brep-*.mjs` and
+`scripts/brep-parity-fixtures.mjs` carry that restriction (per
+`packages/brep-rs/AGENTS.md`). But an earlier entry in this same ledger (the
+closeout map's draft-on-non-boxes item) treated a change to `occt-build.ts`
+as something needing the lead's decision, and in W4 an equivalent ask was
+declined. This slice edited `occt-build.ts` directly, with the user's
+explicit authorization mid-session -- recorded here as a precedent, not
+silently glossed over.
+
+**Fixture status.** The parked patch at
+`/tmp/opencode/wave1-park/fixtures.patch` used a classic points-based
+box+hole proxy because OCCT could not read soup sketches at all. That proxy
+is now superseded: the patch was updated in this same session to add
+`washer-extrude-soup`, the real multi-loop doc (the same `geoms`/`rules` as
+the headline number above), kept alongside the original `washer-extrude-bore`
+proxy rather than replacing it. Verified against the current tree --
+`git apply --check` clean, both kernels build without refusing, volumes agree
+to 1.65e-16 relative, face count 8 against a bound of 18 -- so it would pass
+the gate's own comparison as-is.
+`scripts/brep-parity-fixtures.mjs` remains lead-owned either way; nothing
+here is committed to it.
+
+**Commits:** `cd44376` (the OCCT referee learns to read a soup sketch).
