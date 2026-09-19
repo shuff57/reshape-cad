@@ -3437,10 +3437,121 @@ mod tests {
         );
     }
 
-    /// A soup sketch whose rules CONFLICT refuses its extrude with the wire
-    /// refusal sentence (refusal 11's gate moved to build time): the profile
-    /// of a conflicting sketch cannot be trusted, so extruding one would be
-    /// the wrong-solid defect with extra steps.
+    /// Adversarial hunt for 82ec736: the washer's caps are the first MULTI-WIRE
+    /// faces `mesh_solid`, `step::write_solid`, and the naming lookups have ever
+    /// seen through the soup path. None of soup_washer_extrudes's own asserts
+    /// touch mesh, STEP, or names -- this does.
+    #[test]
+    fn soup_washer_meshes_names_and_steps() {
+        let doc = json!({
+            "features": [
+                {
+                    "id": "sk1", "kind": "sketch", "plane": "xy", "offset": 0.0,
+                    "geoms": [
+                        { "k": "line", "id": 1, "a": [0.0, 0.0], "b": [40.0, 0.0] },
+                        { "k": "line", "id": 2, "a": [40.0, 0.0], "b": [40.0, 25.0] },
+                        { "k": "line", "id": 3, "a": [40.0, 25.0], "b": [0.0, 25.0] },
+                        { "k": "line", "id": 4, "a": [0.0, 25.0], "b": [0.0, 0.0] },
+                        { "k": "circle", "id": 5, "c": [20.0, 12.5], "r": 5.0 }
+                    ],
+                    "rules": [
+                        { "k": "coincident", "a": 1, "aEnd": "b", "b": 2, "bEnd": "a" },
+                        { "k": "coincident", "a": 2, "aEnd": "b", "b": 3, "bEnd": "a" },
+                        { "k": "coincident", "a": 3, "aEnd": "b", "b": 4, "bEnd": "a" },
+                        { "k": "coincident", "a": 4, "aEnd": "b", "b": 1, "bEnd": "a" },
+                        { "k": "horizontal", "a": 1 },
+                        { "k": "vertical", "a": 2 }
+                    ]
+                },
+                { "id": "e1", "kind": "extrude", "target": "sk1", "height": 12.0 }
+            ]
+        });
+        let doc_json = doc.to_string();
+
+        // --- mesh: watertight, and the two multi-wire caps triangulate with a
+        // hole ---
+        let hist = build_doc(&doc);
+        let solid = hist.0.shapes.get("e1").expect("the washer must build");
+        let m = crate::mesh::mesh_solid(solid, 0.05).expect("the washer meshes");
+        assert_eq!(m.faces.len(), 8, "one range per B-rep face");
+        // Watertight: every directed welded edge has an equal-count opposite.
+        use std::collections::HashMap;
+        let key = |p: [f64; 3]| {
+            [
+                (p[0] / 1e-6).round() as i64,
+                (p[1] / 1e-6).round() as i64,
+                (p[2] / 1e-6).round() as i64,
+            ]
+        };
+        let mut wid: HashMap<[i64; 3], usize> = HashMap::new();
+        let mut canon = vec![0usize; m.positions.len()];
+        for (i, p) in m.positions.iter().enumerate() {
+            let n = wid.len();
+            canon[i] = *wid.entry(key(*p)).or_insert(n);
+        }
+        let mut dir: HashMap<(usize, usize), i32> = HashMap::new();
+        for t in m.indices.chunks(3) {
+            let ids = [canon[t[0] as usize], canon[t[1] as usize], canon[t[2] as usize]];
+            for e in 0..3 {
+                let (u, v) = (ids[e], ids[(e + 1) % 3]);
+                if u != v {
+                    *dir.entry((u, v)).or_insert(0) += 1;
+                }
+            }
+        }
+        let open: usize = dir
+            .iter()
+            .filter(|(&(u, v), c)| dir.get(&(v, u)).copied().unwrap_or(0) != **c)
+            .count();
+        assert_eq!(open, 0, "the washer mesh is watertight -- a hole would crack it");
+        // A cap's range must be more than the 2 triangles a hole-blind
+        // triangulator would produce for an annulus (earcut needs >= 8 for a
+        // 4-sided outer ring around one hole).
+        let (cap_start, cap_count) = m.faces[6];
+        assert!(cap_count >= 8 * 3, "cap 6 (annulus) undertriangulated: {cap_count} indices");
+        let _ = cap_start;
+
+        // --- STEP: exports (or refuses by name -- this kernel refuses conical/
+        // spherical/toroidal faces, and a washer's bore walls are cylindrical,
+        // so it must export, not silently drop the hole) ---
+        let step = crate::step::write_solid(solid, "e1");
+        let text = step.expect("a washer is planar walls + cylinders, no refusal");
+        assert!(text.contains("MANIFOLD_SOLID_BREP") || text.contains("BREP_WITH_VOIDS"),
+            "a STEP solid entity must be present");
+        // The plate's two caps must each carry TWO bounds (outer + bore) --
+        // exactly the multi-wire-face defect class W9a's own report warned about.
+        let advanced_faces = text.matches("ADVANCED_FACE").count();
+        assert!(advanced_faces >= 8, "8 faces must appear as ADVANCED_FACEs: {advanced_faces}");
+
+        // --- naming: name_face on a bore wall and a cap resolve; name_edge
+        // between a cap and a bore wall resolves (the multi-wire face's OWN
+        // wire boundary, not just its outer one) ---
+        let cap_name = name_face_of(&hist.0, "e1", &solid.faces()[6]);
+        assert!(cap_name.is_some(), "a cap of a multi-wire face must still name (sweep record)");
+        let bore_wall_name = name_face_of(&hist.0, "e1", &solid.faces()[4]);
+        assert!(bore_wall_name.is_some(), "a bore wall must still name (sweep record)");
+        // Find an edge shared by the cap (face 6) and a bore wall (face 4 or 5):
+        // the bore's rim circle. If exactly 2 faces use it, name_edge resolves.
+        let edges = solid.edges();
+        let bore_rim = edges.iter().position(|e| {
+            let mut n = 0;
+            for f in solid.faces() {
+                let used = f.borrow().boundary.iter().any(|w| {
+                    w.borrow().edges.iter().any(|u| topo::same(&u.edge, e))
+                });
+                if used { n += 1; }
+            }
+            n == 2
+                && solid.faces()[6].borrow().boundary.iter().any(|w| {
+                    w.borrow().edges.iter().any(|u| topo::same(&u.edge, e))
+                })
+        });
+        assert!(bore_rim.is_some(), "the bore rim must be shared by exactly the cap and one wall");
+        let idx = bore_rim.unwrap();
+        let a = name_edge(&doc_json, "e1", idx);
+        assert_ne!(a, "null", "name_edge on the bore rim (cap<->bore-wall) must resolve, got: {a}");
+    }
+
     #[test]
     fn soup_sketch_conflicting_extrude_refuses_with_sentence() {
         let doc = json!({
