@@ -594,25 +594,67 @@ slices bottom out here:
 
 ### The 2D remainder
 
-Not previously covered in this ledger. There is no Rust 2D kernel: 2D lives in
-`packages/sketch` (TypeScript -- least-squares solver, sketch-arc, sketch-outline),
-with the OUTLINE layer ported into `wasm.rs` (`extruded_profile`,
-`profile_corners`, `role_of`) so both kernels agree on what a sketch means.
+Not previously covered in this ledger.
+
+> **Corrected 2026-09-19.** Two claims below have gone false since, and the
+> `wasm.rs:NNN` references throughout this Closeout map have drifted. Both are
+> recorded rather than silently patched: a dated survey's worth is that it says
+> what was believed on its date.
+>
+> - *"There is no Rust 2D kernel"* was true when written on 09-17 and stopped
+>   being true about twenty-five hours later. `6369cee` (2026-09-18 14:03, "2D
+>   sketch layer -- constraint solver, diagnosis, wires, warm seam") added
+>   `packages/brep-rs/src/sketch/` -- ten files, 7372 lines with their tests as
+>   it landed, 8034 today -- and no entry here records its arrival. One bullet
+>   below is wrong as a consequence; a second died later, in this campaign's own
+>   washer slice. Both are marked.
+> - **Do not trust a line number in this map; grep the sentence.** The sites
+>   cited above moved as `wasm.rs` grew after 09-17. Spot checked: revolve's
+>   slanted-profile refusal is at :973, not :817, and groove's at :1082, not
+>   :926 -- while :817 now lands on the annular-pocket refusal the washer slice
+>   added, a DIFFERENT refusal that reads plausibly at the old address.
+
+2D ships as two models, not one:
+
+- **The classic outline** -- `packages/sketch` (TypeScript least-squares
+  `solveSketch`, sketch-arc, sketch-outline), with the OUTLINE layer ported
+  into `wasm.rs` (`extruded_profile`, `profile_corners`, `role_of`) so both
+  kernels agree on what a sketch means. Still the path `packages/script` takes
+  (`reshape-script.ts:951`, `model-codegen.ts:545`, `solveSketchDrag`).
+- **The soup sketch** -- geometry rows plus rules, solved in Rust by
+  `sketch::SketchSession` (`open`/`solve`/`diagnose`/`profile`) over
+  Levenberg-Marquardt in More's formulation, with hand-written analytic
+  derivatives checked against central differences on every free column, to 1e-6
+  relative with the denominator floored at 1 (`sketch/fd.rs:737` -- a purely
+  relative test would demand 1e-6 of two numbers that are both rounding noise).
+  `SketchCanvas2D` drives it through `SketchSession2D`, and since `2b19a05` it
+  is the studio's only sketch editor; a legacy points-only sketch migrates to
+  soup rows on open.
 
 - **Inside brep-rs.** Extrude keeps bulges as exact arcs, so a rounded corner
   extrudes to a real partial cylinder. Revolve, groove and blend read straight
   segments only -- that is the 2D-shaped gap on the Rust side, and it is the
   same item as "slanted profile segments" above.
-- **The solver is the larger 2D gap.** `solveSketch` takes `Point[]`: corners
-  are the only unknowns. All eleven constraint kinds are straight-edge or corner
-  rules. No radius, tangent, concentric or point-on-object is expressible,
-  because a curve is a bulge rebuilt AFTER the solve -- the solver never holds a
-  radius or a centre. `.msgbox/FUTURE.md` (2026-09-08) sizes promoting bulge to a
-  solved unknown as a P1a-scale change. It is a solver-architecture slice, not a
-  kernel one.
-- **Sketch model limits.** One closed loop of design points plus
-  rounds/chamfers/bulges, or the `shape: 'circle'` tag. No open profiles, no
-  inner loops (a hole drawn inside a profile), no ellipse or spline entities.
+- **"The solver is the larger 2D gap" -- FALSE since `6369cee`.** It holds for
+  `solveSketch`, which does take `Point[]`: corners are its only unknowns, and
+  all eleven of its kinds are straight-edge or corner rules. It never held for
+  the Rust solver, which holds exactly what the bullet said nothing here did.
+  `Geo::Circle { c, r }` and `Geo::Arc { c, r, a, b, sense }` put a centre and
+  a radius into the parameter vector as free columns
+  (`ParamBlock::radius_slot`), so a curve is a solved unknown rather than a
+  bulge rebuilt AFTER the solve; and of the four rules the bullet called
+  inexpressible, three are first-class `ConstraintKind` variants -- `Radius`,
+  `Tangent` and `PointOnObject`, alongside `Diameter`, sixteen kinds in all.
+  Concentric is the fourth and still has no kind of its own.
+  `.msgbox/FUTURE.md` (2026-09-08) sizes promoting bulge to a solved unknown as
+  a P1a-scale change; that stays open for the CLASSIC model only.
+- **Sketch model limits -- "no inner loops (a hole drawn inside a profile)" is
+  FALSE since `82ec736`** (the washer slice at the end of this file). The rest
+  of the bullet stands. Classic: one closed loop of design points plus
+  rounds/chamfers/bulges, or the `shape: 'circle'` tag. Soup: `point`, `line`,
+  `circle` and `arc` rows, an outline carrying any number of holes, nested one
+  level deep -- a plug inside a bore is a second solid and refuses. Neither
+  model has open profiles, ellipses or splines.
 - **Sketch-on-a-face.** S1 landed the `frame` plumbing, with `sketchFrameOf`,
   `sketch_frame` and `sketchFrame` agreeing verbatim on the named planes. S2/S3
   -- the face PICK that produces a frame, and the on-face sketch editor -- are
@@ -620,7 +662,7 @@ with the OUTLINE layer ported into `wasm.rs` (`extruded_profile`,
 
 ### Fixture requests outstanding, consolidated
 
-Five slices each ended with a request and none are in the gate yet. Gathered
+Six slices each ended with a request and none are in the gate yet. Gathered
 here so they can be actioned in one pass; all numbers are this ledger's own
 OCCT measurements:
 
@@ -631,6 +673,7 @@ OCCT measurements:
 | `hole-blind-flush-top` | hole | 31773.805329, 8 faces | W2a | no |
 | `name-between-edge-after-cut` | edge | (gate must call `name_edge` first) | W1 | needs a gate change, not just a fixture |
 | `draft-whole` | draft | 27713.378369 (the 4-wall answer) | W4 | yes -- occt-build.ts drafts 2 of 4 walls |
+| `washer-extrude-bore` | hole (cross-construction) | 11057.522204, 7 faces | washers | no -- rows spelled out below |
 
 W6 also suggested a groove fixture at an asymmetric angle: the existing
 `groove-half` is 180 degrees and mirror-symmetric, so it could never have caught
@@ -758,10 +801,18 @@ bore, height 12. OCCT measured live via the gate's own harness at
 confirmed cross-construction since `occt-build.ts` has no soup-sketch support
 of its own and cannot build a two-wire face directly -- OCCT's number was
 pinned via the equivalent box+hole boolean route, then compared against
-brep-rs's soup washer). A patch adding this fixture is parked at
-`/tmp/opencode/wave1-park/fixtures.patch` (applies cleanly against
-`scripts/brep-parity-fixtures.mjs` at HEAD) rather than committed --
-`packages/brep-rs/AGENTS.md` lead-owns that file.
+`brep-rs`'s soup washer). Not committed: `packages/brep-rs/AGENTS.md` lead-owns
+`scripts/brep-parity-fixtures.mjs`. The patch is parked at
+`/tmp/opencode/wave1-park/fixtures.patch` (`git apply --check` clean at HEAD),
+and since `/tmp` does not survive, the row it adds, in full: a `raw` fixture
+named `washer-extrude-bore` of kind `hole`, holding a `sketch` `sk1` on `xy` at
+offset 0 with `points: [[0,0],[40,0],[40,25],[0,25]]`, an `extrude` `e1` of
+`sk1` to `height: 12`, and a `hole` `hole1` on `e1` with `diameter: 10`,
+`depth: 14`, `center: [0,0,0]`, `axis: 'z'`. It uses `points` (a CLASSIC
+sketch) on purpose -- `occt-build.ts` reads only `points`, so the fixture builds
+the same solid the one way OCCT can, and the soup washer is refereed against
+it. One bore only: several blind bores hit the `region_inside` defect class
+recorded under W2a, and `depth: 0` hangs OCCT (`AGENTS.md`).
 
 **Coverage-shape finding:** the concave-arc sign bug is the second
 silent-wrong-volume class found this campaign (after W2a's coplanar-cap
