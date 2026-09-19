@@ -802,6 +802,68 @@ mod tests {
         assert!(c.residual(b.values(), b.scale(), &mut out).is_err());
     }
 
+    /// The exact class `coincident_residual`'s own comment already names --
+    /// "the FD fixtures never caught this because their args all named A" --
+    /// found in `pointOnObject`, which never got that fix: it read arg 0's
+    /// slots at a hardcoded `PointRef::A` regardless of which end the row
+    /// actually named. A line's 'b' end sitting exactly on a circle, with 'a'
+    /// nowhere near it, proves it: the row names 'b', so the residual must be
+    /// zero, not the ~7.44 mm you get from silently measuring 'a' instead.
+    #[test]
+    fn point_on_object_honours_the_named_end() {
+        let mut b = ParamBlock::new();
+        b.add(1, Geo::Line { a: [0.0, 0.0], b: [10.0, 0.0] })
+            .expect("line adds");
+        b.add(2, Geo::Circle { c: [10.0, 3.0], r: 3.0 })
+            .expect("circle adds");
+        let a = b.arg(1, Some(PointRef::B)).expect("line has a 'b'");
+        let t = b.arg(2, None).expect("circle needs no end");
+        let c = Constraint::binary(ConstraintKind::PointOnObject, a, t);
+        let mut out = [0.0; 1];
+        c.residual(b.values(), b.scale(), &mut out)
+            .expect("residual computes");
+        assert!(
+            out[0].abs() < 1e-9,
+            "line 1's 'b' end sits exactly on circle 2's boundary, so the row's \
+             own 'bEnd' must be honoured: residual {}",
+            out[0]
+        );
+    }
+
+    /// The identical class again, found live while wiring the studio's
+    /// Symmetric button to a real sketch: three point-picks where two share
+    /// one geometry (a line's 'a' and 'b') and the third is a DIFFERENT
+    /// curve's own endpoint, not a bare `point` geometry. Two independent
+    /// bugs made this refuse with "the two corners ... coincide": (1) `a`/`b`
+    /// hardcoded to `PointRef::A` collapsed line 1's 'a' and 'b' onto the
+    /// same slot, and (2) the three-point/about-a-line split read `cen.kind`
+    /// instead of the schema's own documented discriminator -- `cEnd`
+    /// present (model-types.ts) -- so a curve's endpoint used as the centre
+    /// was mistaken for "mirror about this whole line".
+    #[test]
+    fn symmetric_honours_named_ends_and_the_ceend_discriminator() {
+        let mut b = ParamBlock::new();
+        b.add(1, Geo::Line { a: [0.0, 0.0], b: [10.0, 0.0] })
+            .expect("line 1 adds");
+        // Line 2's own 'a' end sits exactly at line 1's midpoint (5, 0); its
+        // 'b' end is elsewhere, so a bug reading the WRONG end of line 2
+        // would not coincidentally pass.
+        b.add(2, Geo::Line { a: [5.0, 0.0], b: [5.0, -5.0] })
+            .expect("line 2 adds");
+        let a = b.arg(1, Some(PointRef::A)).expect("line 1 has an 'a'");
+        let end = b.arg(1, Some(PointRef::B)).expect("line 1 has a 'b'");
+        let centre = b.arg(2, Some(PointRef::A)).expect("line 2 has an 'a'");
+        let c = Constraint::ternary(ConstraintKind::Symmetric, a, end, centre);
+        let mut out = [0.0; 2];
+        c.residual(b.values(), b.scale(), &mut out)
+            .expect("a curve endpoint is a valid three-point centre, not a refusal");
+        assert!(
+            out[0].abs() < 1e-9 && out[1].abs() < 1e-9,
+            "midpoint of (0,0) and (10,0) is (5,0), exactly line 2's 'a': residual {:?}",
+            out
+        );
+    }
+
     #[test]
     fn jacobian_drops_fixed_slots_and_refuses_impossible_ones() {
         let mut b = ParamBlock::new();

@@ -197,10 +197,10 @@ impl Build {
     }
 }
 
-/// Every argument shape the harness covers. 16 kinds, 25 shapes: the kinds that
+/// Every argument shape the harness covers. 16 kinds, 26 shapes: the kinds that
 /// behave differently against a line, a circle and an arc get one entry each,
 /// because a derivative can be right for one and wrong for another.
-pub const FORMS: [&str; 25] = [
+pub const FORMS: [&str; 26] = [
     "coincident/point-point",
     "coincident/line-b-arc-a",
     "pointOnObject/point-line",
@@ -218,6 +218,7 @@ pub const FORMS: [&str; 25] = [
     "equal/line-line",
     "equal/circle-circle",
     "symmetric/three-point",
+    "symmetric/three-point-shared-line",
     "symmetric/about-line",
     "distance/point-point",
     "distanceX/point-point",
@@ -302,6 +303,18 @@ pub fn fixture(name: &'static str) -> Result<Fixture, String> {
                 Constraint::binary(K::PointOnObject, b.arg(g1, Some(A))?, b.arg(g2, None)?),
             )
         }
+        // The gap `coincident/line-b-arc-a` already closed for coincident:
+        // a POINT argument built from a curve's non-A end. Regression for the
+        // hardcoded-PointRef::A bug (see mod.rs's own
+        // point_on_object_honours_the_named_end).
+        "pointOnObject/line-b-circle" => {
+            let g1 = b.line()?;
+            let g2 = b.circle()?;
+            (
+                K::PointOnObject,
+                Constraint::binary(K::PointOnObject, b.arg(g1, Some(B))?, b.arg(g2, None)?),
+            )
+        }
         "horizontal/line" => {
             let g1 = b.line()?;
             (K::Horizontal, Constraint::unary(K::Horizontal, b.arg(g1, None)?))
@@ -337,6 +350,26 @@ pub fn fixture(name: &'static str) -> Result<Fixture, String> {
                     b.arg(g2, Some(A))?,
                     // cEnd ABSENT -> the about-a-line form (O17).
                     b.arg(g3, None)?,
+                ),
+            )
+        }
+        // The gap `pointOnObject/line-b-circle` already closed for that rule:
+        // a/b sharing ONE geometry at two different ends (line 'a' and 'b'),
+        // and the centre a curve's own endpoint rather than a bare point --
+        // regression for the hardcoded-PointRef::A and kind-vs-cEnd bugs (see
+        // mod.rs's own symmetric_honours_named_ends_and_the_ceend_discriminator).
+        "symmetric/three-point-shared-line" => {
+            let g1 = b.line()?;
+            let g2 = b.line()?;
+            (
+                K::Symmetric,
+                Constraint::ternary(
+                    K::Symmetric,
+                    b.arg(g1, Some(A))?,
+                    b.arg(g1, Some(B))?,
+                    // cEnd PRESENT on a LINE's own endpoint -- still the
+                    // three-point form; the centre's KIND must not decide.
+                    b.arg(g2, Some(A))?,
                 ),
             )
         }
@@ -871,6 +904,11 @@ mod tests {
     }
 
     #[test]
+    fn fd_point_on_object_line_b() {
+        assert_fd("pointOnObject/line-b-circle");
+    }
+
+    #[test]
     fn fd_horizontal_line() {
         assert_fd("horizontal/line");
     }
@@ -928,6 +966,11 @@ mod tests {
     #[test]
     fn fd_symmetric_three_point() {
         assert_fd("symmetric/three-point");
+    }
+
+    #[test]
+    fn fd_symmetric_three_point_shared_line() {
+        assert_fd("symmetric/three-point-shared-line");
     }
 
     #[test]

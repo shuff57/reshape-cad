@@ -125,7 +125,11 @@ pub fn point_on_object_residual(
 ) -> Result<(), String> {
     let a = c.arg(0)?;
     let t = c.arg(1)?;
-    let [ux, uy] = a.slots_of(PointRef::A)?;
+    // The row named the end; the family honours it (§2.2, same fix as
+    // coincident_residual above) -- a point argument built from `line1.b`
+    // must be read at 'b', not silently defaulted to 'a'.
+    let pa = a.at.unwrap_or(PointRef::A);
+    let [ux, uy] = a.slots_of(pa)?;
     let px = param_at(p, ux)?;
     let py = param_at(p, uy)?;
     match t.kind {
@@ -175,7 +179,8 @@ pub fn point_on_object_jacobian(
 ) -> Result<(), String> {
     let a = c.arg(0)?;
     let t = c.arg(1)?;
-    let [ux, uy] = a.slots_of(PointRef::A)?;
+    let pa = a.at.unwrap_or(PointRef::A);
+    let [ux, uy] = a.slots_of(pa)?;
     let px = param_at(p, ux)?;
     let py = param_at(p, uy)?;
     match t.kind {
@@ -317,14 +322,28 @@ pub fn symmetric_residual(
     let a = c.arg(0)?;
     let b = c.arg(1)?;
     let cen = c.arg(2)?;
-    if cen.kind == GeoKind::Point {
+    // The centre is a 3-point midpoint when the row named it a POINT (an
+    // explicit cEnd) -- honouring the schema's own documented discriminator
+    // (model-types.ts: "cEnd present" is the three-point form), not the
+    // centre geometry's kind. A curve's own endpoint (a line's 'b', an arc's
+    // 'a') is exactly as valid a 3-point centre as a bare point geometry --
+    // only a BARE line/arc/circle named with no end at all means "mirror
+    // about this whole line".
+    if cen.at.is_some() {
         // 3-point form: c is the MIDPOINT of a and b — symmetry about a point,
         // the reading FreeCAD's own 3-point Symmetric puts on the same three
         // clicks. Two rows, not one: max(|mx|, |my|) has a kink and LM's
         // central differences straddle it (header note).
-        let [ax, ay] = a.slots_of(PointRef::A)?;
-        let [bx, by] = b.slots_of(PointRef::A)?;
-        let [cx, cy] = cen.slots_of(PointRef::A)?;
+        //
+        // a, b and c all honour the ROW's named end (§2.2, the same fix
+        // coincident_residual and point_on_object_residual already carry):
+        // three picked points can share one geometry (a line's 'a' and 'b'
+        // both feeding this rule) and must not collapse onto the same slot.
+        let pa = a.at.unwrap_or(PointRef::A);
+        let pb = b.at.unwrap_or(PointRef::A);
+        let [ax, ay] = a.slots_of(pa)?;
+        let [bx, by] = b.slots_of(pb)?;
+        let [cx, cy] = cen.slots_of(cen.at.unwrap_or(PointRef::A))?;
         set_row(
             out,
             0,
@@ -335,14 +354,16 @@ pub fn symmetric_residual(
             1,
             (param_at(p, ay)? + param_at(p, by)?) / 2.0 - param_at(p, cy)?,
         )
-    } else if cen.kind == GeoKind::Line {
+    } else if cen.at.is_none() && cen.kind == GeoKind::Line {
         // About a line (O17): the midpoint of a and b lies ON the line, and
         // the chord b - a is PERPENDICULAR to the line's direction. Row A is
         // the signed cross-distance (a length); row B is the same
         // S*dot/(L1*L2) kernel the direction family uses, scaled to a length
         // by S so no row here is dimensionless.
-        let [ax, ay] = a.slots_of(PointRef::A)?;
-        let [bx, by] = b.slots_of(PointRef::A)?;
+        let pa = a.at.unwrap_or(PointRef::A);
+        let pb = b.at.unwrap_or(PointRef::A);
+        let [ax, ay] = a.slots_of(pa)?;
+        let [bx, by] = b.slots_of(pb)?;
         let [l0x, l0y] = cen.slots_of(PointRef::A)?;
         let [l1x, l1y] = cen.slots_of(PointRef::B)?;
         let mx = (param_at(p, ax)? + param_at(p, bx)?) / 2.0;
@@ -388,11 +409,13 @@ pub fn symmetric_jacobian(
     let a = c.arg(0)?;
     let b = c.arg(1)?;
     let cen = c.arg(2)?;
-    if cen.kind == GeoKind::Point {
+    if cen.at.is_some() {
         // Linear, constant: half weights on a and b, -1 on the centre.
-        let [ax, ay] = a.slots_of(PointRef::A)?;
-        let [bx, by] = b.slots_of(PointRef::A)?;
-        let [cx, cy] = cen.slots_of(PointRef::A)?;
+        let pa = a.at.unwrap_or(PointRef::A);
+        let pb = b.at.unwrap_or(PointRef::A);
+        let [ax, ay] = a.slots_of(pa)?;
+        let [bx, by] = b.slots_of(pb)?;
+        let [cx, cy] = cen.slots_of(cen.at.unwrap_or(PointRef::A))?;
         out.add(0, ax, 0.5)?;
         out.add(0, bx, 0.5)?;
         out.add(0, cx, -1.0)?;
@@ -413,8 +436,10 @@ pub fn symmetric_jacobian(
     //   dN/ddx = ry, dN/ddy = -rx.
     // Row B: eB = S * D / (len * clen), D = dx*cx + dy*cy,
     //   chord = b - a, clen = |chord|.
-    let [px, py] = a.slots_of(PointRef::A)?;
-    let [qx, qy] = b.slots_of(PointRef::A)?;
+    let pa = a.at.unwrap_or(PointRef::A);
+    let pb = b.at.unwrap_or(PointRef::A);
+    let [px, py] = a.slots_of(pa)?;
+    let [qx, qy] = b.slots_of(pb)?;
     let [l0x, l0y] = cen.slots_of(PointRef::A)?;
     let [l1x, l1y] = cen.slots_of(PointRef::B)?;
     let mx = (param_at(p, px)? + param_at(p, qx)?) / 2.0;
