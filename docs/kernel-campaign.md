@@ -660,3 +660,117 @@ The two dependency-free checkers were run first and still pass:
 `check-record.mjs` (OK, 3 rows) and `check-freecad-parity.mjs` (30/46 shipped,
 5 queued, 11 refused, exit 1) -- the latter showing `docs/parity.md` had been
 stale at 22/46, now corrected.
+
+## Multi-loop profiles (soup washers) + three shipped bugs found alongside — DONE (2026-09-18/19)
+
+**Target.** SPEC-sketcher2 §8.2's refusal 7: a soup sketch with a hole through
+its outline (rect + inner circle -- a washer) refused wire discovery outright.
+`Face.boundary: Vec<WireRef<C>>` already supported holes as extra wires; nothing
+walked a disjoint second loop into one.
+
+**Fix, kernel side.** `sketch::wires::discover_wires` gains `LoopRole` and
+`WireLoop`: each connected component of the half-edge planar subdivision yields
+one CCW loop (a rim and a bore are two SEPARATE components, not one two-loop
+face, so signed area cannot tell outer from hole -- containment can). Analytic
+`point_in_loop` (v-monotone arc splitting, not sampled) classifies the
+largest-area loop as the outline and tests every other loop for containment;
+anything not cleanly inside (a hair poking outside, two overlapping holes, an
+island inside a hole) still refuses, now by the more specific reason. New
+tests: `washer_rect_and_circle_discovers_two_loops`,
+`island_in_hole_refuses`, `circle_hole_poking_outside_refuses`,
+`two_overlapping_circle_holes_refuse`, among others.
+
+**Fix, build side.** `build::extrude_profile_loops` walks N loops (outer +
+holes) into one multi-wire `Face`; `make_face_multi` replaces the single-wire
+`make_face` internals (which now delegates to it, all 43 call sites
+untouched). `wasm.rs`'s `soup_profile`/`extruded_profile`/`extrude_prism`
+widen to carry loops end to end. An annular POCKET (cut, not extrude) still
+refuses by name -- `ops::boolean` returns `None` on an annular tool -- rather
+than silently dropping the hole: *"pocket {id}: sketch {target} has {what}
+through its outline, and brep-rs cannot cut a pocket with an annular tool
+yet"*.
+
+**Evidence.** `soup_washer_extrudes`: a 40x25 plate, 10mm bore, height 12 --
+`(1000 - 25*pi) * 12` = **11057.522204 mm³**, 8 faces (4 plate walls + 2 bore
+walls + 2 caps, each cap carrying both wires), bbox unchanged by the bore.
+Adversarial hunt (`soup_washer_meshes_names_and_steps`, written after the
+feature looked done, specifically to try to break the new multi-wire caps):
+mesh is watertight (every edge pairs exactly twice), cap triangle count >=
+8*3 (rules out a hole-blind triangulator silently ignoring the inner wire),
+STEP export produces `BREP_WITH_VOIDS` with >= 8 `ADVANCED_FACE`, and
+`name_face`/`name_edge` resolve correctly on a bore wall, a cap, and the
+shared bore-rim edge. All passed on the first run. cargo (brep-rs) full suite
+green throughout.
+
+**Bug found alongside, fixed standalone first (per instruction: land the fix
+before the feature): a concave arc wall silently signed its volume outward.**
+`extrude_profile`'s `ProfileSeg::Arc` arm built the wall's `(e1, e2)` surface
+frame by NEGATING both axes for a clockwise/inward arc -- a 180-degree
+rotation, not the reflection the divergence-theorem integral needs, so
+`cross(e1, e2)` kept the SAME sign it would have had for a convex arc. A part
+with a concave arc wall (a notch cut INTO a profile, distinct from a bore)
+measured **16130.899694 mm³** when the closed form and OCCT both say
+**15607.300918 mm³** -- a 3.35% silent error, reachable from the shipped Slot
+tool (any slot whose radius exceeds its own construction produces a concave
+wall) and undetected because no existing fixture exercised a concave arc.
+Fixed (`58f1bc3`) by reflecting one axis (`v_axis` negated, matching the
+existing `e2`-flip precedent in `reversed_face`) and swapping the arc's own
+start/span for the inward case, rather than negating both. TDD: RED captured
+verbatim (`16130.899693899575` vs `15607.300918301276`) before the fix,
+GREEN after, full regression clean.
+
+**Two more bugs found by dogfooding the Slot tool while chasing the arc sign
+bug, both fixed standalone:**
+- **`fix(studio): the Slot tool bit notches out of its own ends` (`397ea49`).**
+  `slotRows` emitted the two end-cap arcs with their endpoints in the wrong
+  order, so both the canvas render and the kernel build agreed on a
+  notched-rectangle shape, not a true obround -- a source-data bug, not a
+  kernel/canvas disagreement. Fixed by reversing both caps' arc endpoint order
+  (sense unchanged) and the four rules referencing them. New tests pin the
+  drawn x-extent and assert every slot weld names two coincident points.
+- **`fix(script): a param() on a soup radius made the sketch unbuildable`
+  (`3b388d1`).** `geom()`'s circle/arc arms stored a bound `param()`'s NAME
+  in the row instead of its resolved number, so the kernel refused the build
+  and the emitter wrote `r: NaN`. Fixed by resolving through `num()` at
+  authoring time, same as `rules()` already did; test 6 rewritten from the
+  broken contract it had been pinning.
+
+**Browser dogfood (SPEC §10 checklist).** Drew a 40x25 rectangle and an
+8mm-radius circle in Edit-2D (PASS -- both tools work via two-click placement,
+not drag, confirmed by reading `SketchCanvas2D.tsx`'s `onClick` dispatch
+directly rather than assuming), Pulled to height 12, and watched a real hole
+appear in the 3D viewport (PASS, confirmed three ways: analytic volume
+9587.256842 mm³ = `40*25*12 - pi*8^2*12` to float precision, mesh vertices at
+exactly radius 8.0 from the bore axis, and a visible dark bore opening in a
+tilted screenshot -- the straight-down screenshot alone was inconclusive, an
+8mm hole in a 40x25 face reads as a faint mark from directly above). One
+authoring gotcha surfaced and is worth recording for whoever writes soup
+sketches by hand next: `sk1.geom([...])` alone is not a closed outline --
+`sk1.rules([...])` needs the four `coincident` rules tying the rectangle's
+corners together, or the kernel correctly refuses with "edge 1 has a loose
+end; the outline must close" even though the coordinates numerically match.
+The UI's own draw tools (`onRectClick` etc.) always emit these rules; only a
+hand-typed script can hit this.
+
+**Fixture request for the lead:** `washer-extrude-bore` -- 40x25 plate, 10mm
+bore, height 12. OCCT measured live via the gate's own harness at
+**11057.522204 mm³, 7 faces** (parity 69/0 against brep-rs's matching number,
+confirmed cross-construction since `occt-build.ts` has no soup-sketch support
+of its own and cannot build a two-wire face directly -- OCCT's number was
+pinned via the equivalent box+hole boolean route, then compared against
+brep-rs's soup washer). A patch adding this fixture is parked at
+`/tmp/opencode/wave1-park/fixtures.patch` (applies cleanly against
+`scripts/brep-parity-fixtures.mjs` at HEAD) rather than committed --
+`packages/brep-rs/AGENTS.md` lead-owns that file.
+
+**Coverage-shape finding:** the concave-arc sign bug is the second
+silent-wrong-volume class found this campaign (after W2a's coplanar-cap
+bugs) by construction/dogfooding rather than by any gate catching it. Neither
+the parity gate's fixture set nor the native test suite had ever built a
+profile with a concave arc segment before this session. The class is now
+covered by `concave_arc_wall_volume_is_exact`; whether OTHER concave-arc call
+sites (revolve, groove) share the same class is unmeasured.
+
+**Commits:** `58f1bc3` (sign fix), `397ea49` (Slot tool), `3b388d1` (param()
+fix), `bf99ba8` (multi-loop build seam), `82ec736` (multi-loop wire
+discovery), `d065c27` (adversarial mesh/STEP/naming hunt).
