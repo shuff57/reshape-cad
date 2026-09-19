@@ -399,23 +399,31 @@ export function slotRows(cA: Pt, cB: Pt, rPoint: Pt, baseId: number): SlotResult
   const arc1b: [number, number] = [cA.x - px * r, cA.y - py * r];
   const arc2a: [number, number] = [cB.x - px * r, cB.y - py * r];
   const arc2b: [number, number] = [cB.x + px * r, cB.y + py * r];
-  const arc1aP = { x: arc1a[0], y: arc1a[1] };
-  const arc1bP = { x: arc1b[0], y: arc1b[1] };
-  const arc2aP = { x: arc2a[0], y: arc2a[1] };
-  const arc2bP = { x: arc2b[0], y: arc2b[1] };
-  // BOTH caps stored cw (a=+perp, b=-perp). The wire enters cap A at b and
-  // leaves at a (running it backward), and cap B forward; the cusp check
-  // compares travel directions at the shared ends and both dots are +1.
-  // A ccw cap A fires refusal 12 ("meet in a point") even though the drawn
-  // shape looks identical — the ends' ORDER is the direction. Measured:
-  // kernel probe, both-cw profiles and extrudes; ccw refuses.
+  // WHICH END IS `a` IS THE DIRECTION, and it is what decides whether a cap
+  // bulges away from the axis (an obround) or into it (a notch). A cw arc
+  // runs from `a` DOWN in angle to `b`, so cap A must start at -perp and end
+  // at +perp to sweep the far side; starting at +perp sweeps the near side
+  // and bites a semicircle out of the slot instead.
+  //
+  // This shipped the near way round. Measured 2026-09-18 through the canvas's
+  // own arcAngles + sampleArc and then through the kernel: the drawn outline
+  // spanned x over [0, 40] for centres at x=0 and x=40 with r=10 -- it must
+  // reach [-10, 50] -- and the extrude measured 4858.407346 where an obround
+  // is 11141.592654, a 56% error a student could SEE.
+  //
+  // Flipping `sense` to ccw is NOT the fix: it draws the right shape and then
+  // refuses ("edge 3 and arc 1 meet in a point rather than running smoothly;
+  // reverse one of them"), because the ends' ORDER, not the sense, is what
+  // the wire walk reads as travel direction. The refusal named the fix; it was
+  // read as a verdict on the sense. Reversing both caps' ends builds the
+  // obround exactly, on the same cw sense, with no refusal.
   const arc1 = baseId;
   const arc2 = baseId + 1;
   const top = baseId + 2; // the +perp side line
   const bottom = baseId + 3; // the -perp side line
   const geoms: CoreGeom[] = [
-    { k: 'arc', id: arc1, c: [cA.x, cA.y], r, a: arc1a, b: arc1b, sense: 'cw' },
-    { k: 'arc', id: arc2, c: [cB.x, cB.y], r, a: arc2a, b: arc2b, sense: 'cw' },
+    { k: 'arc', id: arc1, c: [cA.x, cA.y], r, a: arc1b, b: arc1a, sense: 'cw' },
+    { k: 'arc', id: arc2, c: [cB.x, cB.y], r, a: arc2b, b: arc2a, sense: 'cw' },
     { k: 'line', id: top, a: arc1a, b: arc2b },
     { k: 'line', id: bottom, a: arc2a, b: arc1b },
   ];
@@ -425,14 +433,14 @@ export function slotRows(cA: Pt, cB: Pt, rPoint: Pt, baseId: number): SlotResult
   // endpoint tangent, whose residual carries no sigma (the simple form's
   // side-blindness is what made a side-less tangency drift the solve).
   const rules: Array<Record<string, any>> = [
-    { k: 'coincident', a: top, aEnd: 'a', b: arc1, bEnd: 'a' },
-    { k: 'tangent', a: top, aEnd: 'a', b: arc1, bEnd: 'a' },
-    { k: 'coincident', a: top, aEnd: 'b', b: arc2, bEnd: 'b' },
-    { k: 'tangent', a: top, aEnd: 'b', b: arc2, bEnd: 'b' },
-    { k: 'coincident', a: bottom, aEnd: 'a', b: arc2, bEnd: 'a' },
-    { k: 'tangent', a: bottom, aEnd: 'a', b: arc2, bEnd: 'a' },
-    { k: 'coincident', a: bottom, aEnd: 'b', b: arc1, bEnd: 'b' },
-    { k: 'tangent', a: bottom, aEnd: 'b', b: arc1, bEnd: 'b' },
+    { k: 'coincident', a: top, aEnd: 'a', b: arc1, bEnd: 'b' },
+    { k: 'tangent', a: top, aEnd: 'a', b: arc1, bEnd: 'b' },
+    { k: 'coincident', a: top, aEnd: 'b', b: arc2, bEnd: 'a' },
+    { k: 'tangent', a: top, aEnd: 'b', b: arc2, bEnd: 'a' },
+    { k: 'coincident', a: bottom, aEnd: 'a', b: arc2, bEnd: 'b' },
+    { k: 'tangent', a: bottom, aEnd: 'a', b: arc2, bEnd: 'b' },
+    { k: 'coincident', a: bottom, aEnd: 'b', b: arc1, bEnd: 'a' },
+    { k: 'tangent', a: bottom, aEnd: 'b', b: arc1, bEnd: 'a' },
   ];
   return { geoms, rules, ids: { arc1, arc2, top, bottom } };
 }

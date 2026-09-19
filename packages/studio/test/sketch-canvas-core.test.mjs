@@ -18,6 +18,7 @@ import {
   distToSegment,
   distToCircleStroke,
   angleInArcRange,
+  arcAngles,
   sampleArc,
   toggleConstruction,
   trimLine,
@@ -278,4 +279,49 @@ test('17: copySelection shifts and densifyIds renumbers everything', () => {
   // Densify: the 100001 row becomes 2.
   const dense = densifyIds(out.geoms, out.rules);
   assert.deepEqual(dense.geoms.map((g) => g.id), [1, 2]);
+});
+
+// 18: THE SHAPE. A slot is an obround: each cap bulges AWAY from the other,
+// so the drawn outline reaches the radius PAST both centres. Measured
+// 2026-09-18 on the shipped rows: the caps bulged INWARD, drawing x over
+// [0, 40] for centres at x=0 and x=40 with r=10 -- a rectangle with two
+// semicircular notches, which the kernel then built at 4858.407346 against
+// an obround's 11141.592654. A student saw the wrong PART, not just a wrong
+// number. Pinned through the same arcAngles + sampleArc the canvas renders
+// with, so the assertion reads what is drawn rather than what is stored.
+test('18: slotRows draws an obround, its caps bulging away from the axis', () => {
+  const out = slotRows({ x: 0, y: 0 }, { x: 40, y: 0 }, { x: 0, y: 10 }, 1);
+  assert.ok(out, 'a valid slot builds');
+  const xs = [];
+  for (const g of out.geoms) {
+    if (g.k !== 'arc') { xs.push(g.a[0], g.b[0]); continue; }
+    const ang = arcAngles(g);
+    for (const p of sampleArc(g.c[0], g.c[1], g.r, ang.a0, ang.sweep)) xs.push(p.x);
+  }
+  const lo = Math.min(...xs);
+  const hi = Math.max(...xs);
+  assert.ok(Math.abs(lo + 10) < 1e-9, `cap A must reach x=-10, drawn min was ${lo}`);
+  assert.ok(Math.abs(hi - 50) < 1e-9, `cap B must reach x=50, drawn max was ${hi}`);
+});
+
+// 19: every weld names two points that are actually in the same place. The
+// direction fix in 18 swaps each cap's ENDS, and a coincident whose end ref
+// did not follow would weld a cap to the wrong corner -- a solve dragged
+// inside out rather than an honest refusal.
+test('19: every slot weld names two points that coincide', () => {
+  const out = slotRows({ x: 0, y: 0 }, { x: 40, y: 0 }, { x: 0, y: 10 }, 1);
+  assert.ok(out);
+  const at = (id, end) => {
+    const g = out.geoms.find((x) => x.id === id);
+    return end === 'a' ? g.a : g.b;
+  };
+  for (const r of out.rules) {
+    if (r.k !== 'coincident') continue;
+    const p = at(r.a, r.aEnd);
+    const q = at(r.b, r.bEnd);
+    assert.ok(
+      Math.hypot(p[0] - q[0], p[1] - q[1]) < 1e-9,
+      `weld ${r.a}.${r.aEnd} <-> ${r.b}.${r.bEnd} names [${p}] and [${q}]`,
+    );
+  }
 });
