@@ -54,7 +54,14 @@
 // part of. A chip looks like a label at rest and like a box once focused.
 // The ribbon's own Dim / R / diameter buttons are untouched -- they still open
 // the ribbon-docked box on the current selection.
-
+//
+// CONSTRAINT GLYPHS (SPEC-mouse-parity Phase 2 item 8, 2026-09-20). Every row
+// in `rules` is drawn where it applies: the six kinds carrying a `value` as
+// the value chip above (the number IS the glyph), the other ten as an icon at
+// a constant screen size. Hover highlights on the same pointermove path the
+// snap glyphs ride, a click selects, Del removes -- one onChange, so one undo
+// entry. A glyph swallows its own pointerdown and click, which is why
+// clicking one never draws geometry underneath it.
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -130,12 +137,16 @@ const ORIGIN_R_PX = 3;
  *  one marker per snap KIND, drawn at a constant screen size. */
 const SNAP_GLYPH_PX = 9;
 const AXIS_HINT_PX = 11;
-/** How far apart two dimension labels landing on the same anchor are fanned,
- *  screen pixels, multiplied by mm-per-px at render time same as above. */
+/** Full width of a CONSTRAINT glyph (SPEC-mouse-parity Phase 2 item 8), the
+ *  screen-pixel radius within which a pointermove counts as hovering one, and
+ *  how far apart two rules landing on the same anchor are fanned. All screen
+ *  pixels, all multiplied by mm-per-px at render time, same as above. */
+const RULE_GLYPH_PX = 11;
+const RULE_HIT_PX = 9;
 const RULE_GLYPH_STEP_PX = 15;
-/** How far up-and-right of its anchor a mark that has never been placed by
- *  hand is DRAWN, screen px: a number centred on the line it measures is
- *  unreadable. */
+/** How far up-and-right of its anchor a glyph is DRAWN, screen px. See the
+ *  glyph loop for why a mark sitting exactly on its own geometry is not a
+ *  mark at all. */
 const GLYPH_NUDGE_PX = 9;
 /** Grid: the smallest 1-2-5 step whose spacing is at least this many screen
  *  pixels, and a ceiling on how many lines one frame may draw. */
@@ -231,6 +242,10 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
    *  Enter reverts rather than half-writing. */
   const [draft, setDraft] = useState<Record<number, string>>({});
   const [editingRule, setEditingRule] = useState<number | null>(null);
+  // The constraint glyph under the cursor and the one that is picked (P2.8).
+  // Both are rule INDICES -- the identity a rule has in the doc's own list.
+  const [hoverRule, setHoverRule] = useState<number | null>(null);
+  const [selRule, setSelRule] = useState<number | null>(null);
 
   // The rows as the doc carries them (soup or migrated from the legacy
   // polygon -- a legacy sketch's points arrive as soup rows the first time
@@ -1006,6 +1021,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     writeDoc(geoms, [...rules, row]);
     if (place.at) setLabelAt((m) => ({ ...m, [index]: place.at as Pt }));
     setPlace(null);
+    setSelRule(null);
     setStatus('');
   }, [geoms, place, rules, writeDoc]);
 
@@ -1034,6 +1050,31 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     [draft, geoms, rules, writeDoc],
   );
 
+  /** Delete the rule a glyph names. One writeDoc = one undo entry, and the
+   *  rows effect re-opens and re-solves the session because `rules` changed.
+   *  Label positions above the hole shift down with it -- they are keyed by
+   *  index, and a stale key would move someone else's label. */
+  const removeRuleAt = useCallback(
+    (i: number) => {
+      if (i < 0 || i >= rules.length) return;
+      writeDoc(geoms, rules.filter((_, j) => j !== i));
+      setSelRule(null);
+      setHoverRule(null);
+      setEditingRule(null);
+      const shiftKeys = <T,>(m: Record<number, T>): Record<number, T> => {
+        const out: Record<number, T> = {};
+        for (const [k, v] of Object.entries(m)) {
+          const n = Number(k);
+          if (n === i) continue;
+          out[n > i ? n - 1 : n] = v;
+        }
+        return out;
+      };
+      setLabelAt(shiftKeys);
+      setDraft(shiftKeys);
+    },
+    [geoms, rules, writeDoc],
+  );
 
   // --- drag to solve / drag to create ------------------------------------------------
   const draggingRef = useRef<{ id: number; at: 'a' | 'b' | 'c' } | null>(null);
@@ -1340,12 +1381,18 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
       if (e.key === 'Escape') {
         if (dim) setDim(null);
         else if (place) setPlace(null);
+        else if (selRule !== null) setSelRule(null);
         else if (chain || clicks.length) {
           setChain(null);
           setClicks([]);
         } else onExit?.();
-      } else if ((e.key === 'Delete' || e.key === 'Backspace') && tool === 'select') {
-        onDeleteClick();
+      } else if (e.key === 'Delete' || e.key === 'Backspace') {
+        // A picked constraint glyph outranks a picked shape: the glyph is
+        // what the user is looking at, and it is the narrower thing to lose.
+        if (selRule !== null) {
+          removeRuleAt(selRule);
+          e.preventDefault();
+        } else if (tool === 'select') onDeleteClick();
       } else if (e.key.toLowerCase() === 'f' && e.shiftKey && !e.metaKey && !e.ctrlKey) {
         fit();
       } else if (!e.metaKey && !e.ctrlKey && !e.altKey) {
@@ -1367,7 +1414,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [chain, clicks.length, dim, fit, onDeleteClick, onExit, openDimFromSelection, place, tool]);
+  }, [chain, clicks.length, dim, fit, onDeleteClick, onExit, openDimFromSelection, place, removeRuleAt, selRule, tool]);
 
   // Arming another tool drops a half-placed dimension: a ghost label trailing
   // the cursor while the line tool draws is a lie about what the next click
@@ -1532,7 +1579,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
         : `${diagnosis.dof} DoF`
     : '';
 
-  // --- the dimension chips (P2.7) -------------------------------------------
+  // --- the constraint layer (P2.8) + the dimension chips (P2.7) ------------
   // One anchor per rule, index-aligned with `rules`, fanned out where several
   // land on the same spot. Pure math over the solved rows; recomputed when
   // they change, not on a frame.
@@ -1540,6 +1587,52 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     () => ruleGlyphAnchors(solved as CoreGeom[], rules as unknown as Array<Record<string, any>>, RULE_GLYPH_STEP_PX * mmPerPx),
     [solved, rules, mmPerPx],
   );
+
+  const ruleNodes: React.ReactNode[] = [];
+  rules.forEach((r, i) => {
+    const anchor = ruleAnchors[i];
+    // A value rule is drawn by its CHIP below -- the number is its glyph --
+    // so only the icon kinds get one here.
+    if (!anchor || isDimensionRule(r.k)) return;
+    const hovered = hoverRule === i;
+    const picked = selRule === i;
+    // The anchor is the midpoint, and the glyph is drawn a constant SCREEN
+    // nudge up-and-right of it. Without the nudge a horizontal mark on a
+    // horizontal edge is drawn exactly along the line it describes and
+    // disappears into it -- measured in the P2.8 smoke screenshot. Diagonal,
+    // so it clears a vertical edge too. The hit circle moves with it: you
+    // hover what you can see.
+    const x = anchor.x + GLYPH_NUDGE_PX * mmPerPx;
+    const y = -anchor.y - GLYPH_NUDGE_PX * mmPerPx; // the file-wide flip
+    ruleNodes.push(
+      <g
+        key={`r${i}`}
+        className={`sk-rule-glyph${hovered ? ' sk-rule-hover' : ''}${picked ? ' sk-rule-sel' : ''}`}
+        data-rule={i}
+        data-rule-kind={r.k}
+        data-rule-hover={hovered ? 'true' : undefined}
+        data-rule-selected={picked ? 'true' : undefined}
+        onPointerMove={() => setHoverRule(i)}
+        onPointerLeave={() => setHoverRule((h) => (h === i ? null : h))}
+        onPointerDown={(e) => {
+          // The press stops here: it must not start a marquee, an entity
+          // drag, or a create gesture underneath the glyph.
+          e.stopPropagation();
+        }}
+        onClick={(e) => {
+          // And neither may the click reach a draw tool -- clicking a glyph
+          // picks the rule, it never adds geometry.
+          e.stopPropagation();
+          setSelRule(i);
+          setSel([]);
+        }}
+      >
+        <circle className="sk-rule-hit" cx={x} cy={y} r={RULE_HIT_PX * mmPerPx} />
+        <circle className="sk-rule-bg" cx={x} cy={y} r={(RULE_GLYPH_PX * 0.75) * mmPerPx} />
+        <g className="sk-rule-icon">{ruleIcon(r.k, x, y, (RULE_GLYPH_PX / 2) * mmPerPx)}</g>
+      </g>,
+    );
+  });
 
   /** Screen position of a world point under the CURRENT view -- the same math
    *  the viewBox is derived from, so the HTML chips sit exactly where the svg
@@ -1563,12 +1656,16 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
         s.y -= GLYPH_NUDGE_PX;
       }
       const committed = formatDim(Number((r as unknown as Record<string, any>).value ?? 0));
+      const hovered = hoverRule === i;
+      const picked = selRule === i;
       dimChips.push(
         <input
           key={`dc${i}`}
-          className="sk2d-dim-chip"
+          className={`sk2d-dim-chip${hovered ? ' sk-rule-hover' : ''}${picked ? ' sk-rule-sel' : ''}`}
           data-rule={i}
           data-rule-kind={r.k}
+          data-rule-hover={hovered ? 'true' : undefined}
+          data-rule-selected={picked ? 'true' : undefined}
           data-editing={editingRule === i ? 'true' : undefined}
           style={{ left: `${s.x}px`, top: `${s.y}px` }}
           size={Math.max(3, committed.length + 1)}
@@ -1578,6 +1675,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
           onChange={(e) => setDraft((d) => ({ ...d, [i]: e.target.value }))}
           onFocus={(e) => {
             setEditingRule(i);
+            setSelRule(i);
             e.currentTarget.select();
           }}
           onBlur={() => {
@@ -1599,6 +1697,8 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
               e.currentTarget.blur();
             }
           }}
+          onPointerMove={() => setHoverRule(i)}
+          onPointerLeave={() => setHoverRule((h) => (h === i ? null : h))}
           // The named edge case: a press on a value box must never reach the
           // canvas, or the gesture it belongs to gets cancelled underneath it.
           onPointerDown={(e) => e.stopPropagation()}
@@ -1889,6 +1989,9 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
             suppressClickRef.current = false;
             return;
           }
+          // A click that reaches the canvas is a click BESIDE every glyph --
+          // a glyph stops its own -- so it drops the picked constraint.
+          if (selRule !== null) setSelRule(null);
           if (tool === 'line') onLineClick(e);
           else if (tool === 'select') onSelectClick(e);
           else if (tool === 'rect') onRectClick(e);
@@ -1925,6 +2028,9 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
             height={Math.abs(marquee.to.y - marquee.from.y)}
           />
         )}
+        {/* The constraint layer sits ABOVE the geometry: a glyph is small and
+            must not hide under the line it describes. */}
+        <g className="sk2d-rules">{ruleNodes}</g>
         {hoverSnap && snapGlyph(hoverSnap, mmPerPx)}
       </svg>
       {/* The dimension chips are HTML over the svg, not inside it: native
@@ -2041,6 +2147,99 @@ function snapGlyph(hit: SnapHit, mmPerPx: number): React.ReactNode {
   }
 }
 
+/** One icon per CONSTRAINT kind (SPEC-mouse-parity Phase 2 item 8), centred
+ *  on (x, y) in SVG coordinates -- the caller has already applied the
+ *  file-wide flip -- at half-width `h` world units, which the caller derived
+ *  from a screen-pixel constant. Strokes hold their screen width through
+ *  non-scaling-stroke, the same pair snapGlyph uses; nothing here reinvents
+ *  that.
+ *
+ *  These are the TEN kinds SoupRule has that carry no `value`. The six that
+ *  do -- distance, distanceX, distanceY, radius, diameter, angle -- are drawn
+ *  as value chips instead, because a dimension whose number you cannot read
+ *  is not a dimension. There is no eleventh icon waiting: `k` is a closed
+ *  union of sixteen and this covers the ten. */
+function ruleIcon(kind: string, x: number, y: number, h: number): React.ReactNode {
+  switch (kind) {
+    case 'horizontal':
+      // A bar with end ticks, not a bare line: a bare horizontal line beside
+      // a horizontal edge is indistinguishable from more edge.
+      return (
+        <>
+          <line x1={x - h} y1={y} x2={x + h} y2={y} />
+          <line x1={x - h} y1={y - h * 0.5} x2={x - h} y2={y + h * 0.5} />
+          <line x1={x + h} y1={y - h * 0.5} x2={x + h} y2={y + h * 0.5} />
+        </>
+      );
+    case 'vertical':
+      return (
+        <>
+          <line x1={x} y1={y - h} x2={x} y2={y + h} />
+          <line x1={x - h * 0.5} y1={y - h} x2={x + h * 0.5} y2={y - h} />
+          <line x1={x - h * 0.5} y1={y + h} x2={x + h * 0.5} y2={y + h} />
+        </>
+      );
+    case 'parallel':
+      return (
+        <>
+          <line x1={x - h * 0.55} y1={y + h} x2={x + h * 0.15} y2={y - h} />
+          <line x1={x - h * 0.15} y1={y + h} x2={x + h * 0.55} y2={y - h} />
+        </>
+      );
+    case 'perpendicular':
+      return <polyline points={`${x - h * 0.6},${y - h} ${x - h * 0.6},${y + h * 0.6} ${x + h},${y + h * 0.6}`} />;
+    case 'equal':
+      return (
+        <>
+          <line x1={x - h} y1={y - h * 0.4} x2={x + h} y2={y - h * 0.4} />
+          <line x1={x - h} y1={y + h * 0.4} x2={x + h} y2={y + h * 0.4} />
+        </>
+      );
+    case 'coincident':
+      // Two rings sharing a centre: the point that is the same point.
+      return (
+        <>
+          <circle cx={x} cy={y} r={h * 0.85} />
+          <circle className="sk-rule-dot" cx={x} cy={y} r={h * 0.3} />
+        </>
+      );
+    case 'pointOnObject':
+      // A dot sitting ON a line rather than beside it.
+      return (
+        <>
+          <line x1={x - h} y1={y + h * 0.55} x2={x + h} y2={y + h * 0.55} />
+          <circle className="sk-rule-dot" cx={x} cy={y - h * 0.15} r={h * 0.32} />
+        </>
+      );
+    case 'tangent':
+      // A circle and the line that grazes it.
+      return (
+        <>
+          <circle cx={x} cy={y - h * 0.2} r={h * 0.6} />
+          <line x1={x - h} y1={y + h * 0.5} x2={x + h} y2={y + h * 0.5} />
+        </>
+      );
+    case 'symmetric':
+      // Two arrowheads facing the mirror between them.
+      return (
+        <>
+          <line className="sk-rule-mirror" x1={x} y1={y - h} x2={x} y2={y + h} />
+          <polygon className="sk-rule-dot" points={`${x - h},${y - h * 0.45} ${x - h},${y + h * 0.45} ${x - h * 0.35},${y}`} />
+          <polygon className="sk-rule-dot" points={`${x + h},${y - h * 0.45} ${x + h},${y + h * 0.45} ${x + h * 0.35},${y}`} />
+        </>
+      );
+    case 'lock':
+      // A padlock: the shackle over the body.
+      return (
+        <>
+          <path d={`M ${x - h * 0.45} ${y} L ${x - h * 0.45} ${y - h * 0.5} A ${h * 0.45} ${h * 0.45} 0 0 1 ${x + h * 0.45} ${y - h * 0.5} L ${x + h * 0.45} ${y}`} />
+          <rect x={x - h * 0.75} y={y} width={h * 1.5} height={h * 0.9} />
+        </>
+      );
+  }
+  return null;
+}
+
 /** The 1-2-5 step whose screen spacing first clears GRID_MIN_PX. A fixed
  *  10mm step (what this drew when the viewBox was fixed) fills solid two
  *  zoom notches out and vanishes two notches in. */
@@ -2131,6 +2330,28 @@ const SK2D_CSS = `
 .sk-preview { stroke: var(--reshape-accent, #8be9fd); stroke-width: 1.4; fill: none; opacity: 0.8; vector-effect: non-scaling-stroke; }
 .sk-axis-hint { fill: var(--reshape-accent, #8be9fd); }
 .sk-dim-ghost { fill: var(--reshape-accent-2, #bd93f9); font-family: var(--reshape-font-mono, monospace); pointer-events: none; }
+/* Constraint glyphs (SPEC-mouse-parity Phase 2 item 8). Same pair as every
+   other fixed-size mark here: the geometry is world units scaled by
+   mm-per-px, the stroke is held in screen pixels by non-scaling-stroke. The
+   hit circle is invisible but pointer-events: all, so the catch area is a
+   comfortable radius rather than the 1px strokes themselves. */
+.sk-rule-glyph { cursor: pointer; }
+/* The icon's shapes are painted through .sk-rule-icon's CHILDREN, never
+   through bare element selectors on the group: ".sk-rule-glyph circle" beats
+   a plain ".sk-rule-hit" on specificity (0,1,1 vs 0,1,0), which drew a
+   visible ring around every icon out of the two invisible circles behind it.
+   Caught in the P2.8 smoke screenshot. */
+.sk-rule-icon > * { fill: none; stroke: var(--reshape-accent-2, #bd93f9); stroke-width: 1.4; vector-effect: non-scaling-stroke; }
+.sk-rule-icon > .sk-rule-dot { fill: var(--reshape-accent-2, #bd93f9); stroke: none; }
+.sk-rule-icon > .sk-rule-mirror { stroke-dasharray: 3 2; }
+.sk-rule-hit { fill: none; stroke: none; pointer-events: all; }
+.sk-rule-bg { fill: none; stroke: none; }
+.sk-rule-glyph.sk-rule-hover .sk-rule-bg { fill: var(--reshape-accent-2, #bd93f9); fill-opacity: 0.18; }
+.sk-rule-glyph.sk-rule-sel .sk-rule-bg { fill: var(--reshape-pink, #ff79c6); fill-opacity: 0.25; }
+/* Selected reads PINK, the same colour a selected shape or vertex already
+   wears here -- one selection language, not a second one for constraints. */
+.sk-rule-glyph.sk-rule-sel .sk-rule-icon > * { stroke: var(--reshape-pink, #ff79c6); }
+.sk-rule-glyph.sk-rule-sel .sk-rule-icon > .sk-rule-dot { fill: var(--reshape-pink, #ff79c6); stroke: none; }
 /* The dimension value chips (SPEC-mouse-parity Phase 2 item 7): an HTML layer
    over the svg. The layer itself is transparent to the pointer so the canvas
    underneath keeps every click; only the chips themselves catch one. A chip
@@ -2141,6 +2362,8 @@ const SK2D_CSS = `
   min-width: 2.5em; text-align: center; padding: 1px 4px; border-radius: 3px;
   border: 1px solid transparent; background: var(--reshape-bg, #282a36); color: var(--reshape-accent-2, #bd93f9);
   font-family: var(--reshape-font-mono, monospace); font-size: 12px; cursor: text; }
+.sk2d-dim-chip.sk-rule-hover { border-color: var(--reshape-accent-2, #bd93f9); }
+.sk2d-dim-chip.sk-rule-sel { border-color: var(--reshape-pink, #ff79c6); color: var(--reshape-pink, #ff79c6); }
 .sk2d-dim-chip[data-editing="true"], .sk2d-dim-chip:focus { outline: none;
   background: var(--reshape-surface, #1e1f29); border-color: var(--reshape-accent, #8be9fd); color: var(--reshape-text, #f8f8f2); }
 `;
