@@ -207,3 +207,42 @@ test('24: edgesOf/facesOf/verticesOf/bodiesOf on a state with none of that kind 
   assert.deepEqual(verticesOf(state), []);
   assert.deepEqual(bodiesOf(state), []);
 });
+
+// Todo 8 / SPEC-mouse-parity.md Phase 3 item 3 (mixed selection) closure:
+// selection-model.ts itself is filter-agnostic by design (its ops never
+// read `state.filters` -- see toggle()/add()'s own comments) because the
+// ONE place a SelectionItem of a filtered-out kind is ever produced is the
+// raycast pick pipeline and the box-select candidate loop in
+// BrepViewportThree.tsx (`if (filters.face)`/`if (filters.edge)` etc. at
+// :1416,:1460,:1533,:1545 for a click and :1761,:1767,:1796,:1812 for a box
+// drag, Phase 3.2, commit 1cb9a3b -- unchanged by this todo). These two
+// tests encode that contract at the selection-model.ts boundary: a state
+// built the way an all-filters-open pick stream builds it holds a face AND
+// an edge together (mixed selection applies); a state built the way an
+// edges-only pick stream builds it -- because a face pick never reaches
+// add()/toggle() in the first place -- never acquires a face item at all.
+// The raycast gate itself needs a live THREE.Camera/DOM and is out of
+// node --test's reach; that half is source-code-verified above, not
+// independently re-run here (see this todo's final report for the split).
+test('25: a mixed face+edge selection is accepted (both present) when no filter chip narrows the state (Phase 3.3 applies)', () => {
+  const edge = { kind: 'edge', target: 'b1', name: edgeName('b1', '+x') };
+  const face = { kind: 'face', target: 'b1', name: faceName('b1', '+z') };
+  const state = add(add(emptySelection(), face), edge);
+  assert.deepEqual(state.filters, { face: true, edge: true, vertex: true, body: true });
+  assert.deepEqual(facesOf(state), [face]);
+  assert.deepEqual(edgesOf(state), [edge]);
+});
+
+test('26: with an "edges only" filter chip active, a state built from that pick stream never acquires a face item (P3.2 filter narrowing, unweakened)', () => {
+  const edge = { kind: 'edge', target: 'b1', name: edgeName('b1', '+x') };
+  let state = emptySelection();
+  state = { ...state, filters: { face: false, edge: true, vertex: false, body: false } };
+  // No face/vertex/body item is ever constructed here -- an "edges only"
+  // filter means BrepViewportThree's raycast never returns anything but
+  // an edge (or null) pick to begin with, so the only item this stream
+  // ever adds is the edge, matching what onPick's reducer (ReshapeStudio.tsx)
+  // then feeds straight into add()/toggle() with no second filter check.
+  state = add(state, edge);
+  assert.deepEqual(edgesOf(state), [edge]);
+  assert.deepEqual(facesOf(state), []);
+});
