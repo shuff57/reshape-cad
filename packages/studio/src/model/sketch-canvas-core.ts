@@ -822,3 +822,178 @@ export function densifyIds(geoms: CoreGeom[], rules: Array<Record<string, any>>)
   });
   return { geoms: geomsOut, rules: rulesOut };
 }
+
+// --- on-canvas dimensions + constraint glyphs (SPEC-mouse-parity P2.7/P2.8) ---
+//
+// Both features need the same thing first: WHERE on the canvas a thing that
+// is not geometry belongs. A dimension label hangs off the geometry it
+// measures, a constraint glyph off the geometry (or geometries) its rule
+// names, and both answers are the midpoint of what they refer to. That is
+// one pure function of the solved rows, so it lives here rather than inline
+// in the component.
+
+/** The six rule kinds that carry a numeric `value`. They are drawn as a
+  * VALUE LABEL rather than an icon -- the number is the glyph -- which is
+  * also the set the on-canvas dimension flow can write. */
+export const DIMENSION_RULE_KINDS = ['distance', 'distanceX', 'distanceY', 'radius', 'diameter', 'angle'] as const;
+export type DimKind = (typeof DIMENSION_RULE_KINDS)[number];
+
+export function isDimensionRule(k: string): k is DimKind {
+  return (DIMENSION_RULE_KINDS as readonly string[]).includes(k);
+}
+
+/** The middle of a geometry row: a line's halfway point, a circle's centre,
+  * an arc's MID-SWEEP point (not its chord's middle -- a label on the chord
+  * of a half circle sits nowhere near the curve), a point's own location.
+  * Returns null for anything that is not one of the four soup kinds. */
+export function geomMidpoint(g: CoreGeom): Pt | null {
+  switch (g.k) {
+    case 'point':
+      return { x: g.p[0], y: g.p[1] };
+    case 'line':
+      return { x: (g.a[0] + g.b[0]) / 2, y: (g.a[1] + g.b[1]) / 2 };
+    case 'circle':
+      return { x: g.c[0], y: g.c[1] };
+    case 'arc': {
+      const ang = arcAngles(g);
+      if (!ang) return null;
+      const mid = ang.a0 + ang.sweep / 2;
+      return { x: g.c[0] + g.r * Math.cos(mid), y: g.c[1] + g.r * Math.sin(mid) };
+    }
+  }
+  return null;
+}
+
+/** One end of a dimension: a geometry id plus which of its named points, or
+  * null for "the whole row". */
+export interface DimPick {
+  id: number;
+  at: 'a' | 'b' | 'c' | null;
+}
+
+export interface AutoDimension {
+  kind: DimKind;
+  /** What the geometry measures RIGHT NOW -- what the input box opens on. */
+  value: number;
+  /** Where the label rests until the user places it somewhere else. */
+  anchor: Pt;
+  /** The ends the committed rule will name. */
+  a: DimPick;
+  b: DimPick | null;
+}
+
+/** What dimension does a pick (or a pair of point picks) ASK for? A line
+  * wants the distance between its own two ends; a circle or an arc wants its
+  * radius -- the convention SketchCanvas2D's own openDimFromSelection already
+  * uses, so the on-canvas flow and the ribbon buttons cannot disagree about
+  * what `D` on a circle means; two picked points want the distance between
+  * them.
+  *
+  * Returns null when there is nothing to measure: ONE point pick (it is half
+  * a dimension, and the caller waits for the other half), a bare point row,
+  * or an id that is not in `geoms`. */
+export function autoDimension(geoms: CoreGeom[], a: DimPick, b: DimPick | null = null): AutoDimension | null {
+  const ga = geoms.find((x) => x.id === a.id);
+  if (!ga) return null;
+  if (b) {
+    const gb = geoms.find((x) => x.id === b.id);
+    if (!gb || a.at === null || b.at === null) return null;
+    const pa = pointWorld(ga, a.at);
+    const pb = pointWorld(gb, b.at);
+    if (!pa || !pb) return null;
+    return {
+      kind: 'distance',
+      value: Math.hypot(pb.x - pa.x, pb.y - pa.y),
+      anchor: { x: (pa.x + pb.x) / 2, y: (pa.y + pb.y) / 2 },
+      a,
+      b,
+    };
+  }
+  if (a.at !== null) return null;
+  const anchor = geomMidpoint(ga);
+  if (!anchor) return null;
+  if (ga.k === 'line') {
+    return {
+      kind: 'distance',
+      value: Math.hypot(ga.b[0] - ga.a[0], ga.b[1] - ga.a[1]),
+      anchor,
+      a: { id: ga.id, at: 'a' },
+      b: { id: ga.id, at: 'b' },
+    };
+  }
+  if (ga.k === 'circle' || ga.k === 'arc') {
+    return { kind: 'radius', value: ga.r, anchor, a: { id: ga.id, at: null }, b: null };
+  }
+  return null;
+}
+
+/** Why the solver cannot take this text, in a sentence, or null when it can.
+  * The caller shows the sentence on the status line and writes NOTHING --
+  * a refused dimension must not grow the undo stack.
+  *
+  * distanceX/distanceY are the only SIGNED kinds: a negative one names the
+  * other direction and a zero one names a shared axis, so neither is absurd
+  * there the way a zero-length distance or a negative radius is. */
+export function dimensionValueError(kind: DimKind, text: string): string | null {
+  const t = String(text ?? '').trim();
+  if (!t) return 'dimension: type a number -- an empty box sets nothing';
+  const v = Number(t);
+  if (!Number.isFinite(v)) return `dimension: "${t}" is not a number`;
+  const signed = kind === 'distanceX' || kind === 'distanceY';
+  if (!signed && v <= 0) return `dimension: a ${kind} of ${t} is not a shape -- give a positive number`;
+  return null;
+}
+
+/** The id/point-ref field pairs a rule row can carry. `symmetric` about a
+  * line is the widest: three geometries, the third of which has no end. */
+const RULE_REF_FIELDS = [
+  ['a', 'aEnd'],
+  ['b', 'bEnd'],
+  ['c', 'cEnd'],
+] as const;
+
+/** The midpoint of everything one rule names: the named POINT where the rule
+  * names one (a coincident's two ends), the geometry's own midpoint where it
+  * does not (a parallel's two lines). Null when any reference is missing --
+  * the kernel's built-in ids (-1 origin, -2/-3 the axes) are never rows in
+  * `geoms`, so a rule against an axis has no on-canvas anchor and is skipped
+  * rather than drawn at the origin. */
+function ruleAnchor(geoms: CoreGeom[], r: Record<string, any>): Pt | null {
+  let sx = 0;
+  let sy = 0;
+  let n = 0;
+  for (const [idField, endField] of RULE_REF_FIELDS) {
+    const id = r[idField];
+    if (typeof id !== 'number') continue;
+    const g = geoms.find((x) => x.id === id);
+    if (!g) return null;
+    const at = r[endField];
+    const p = at === 'a' || at === 'b' || at === 'c' ? pointWorld(g, at) : geomMidpoint(g);
+    if (!p) return null;
+    sx += p.x;
+    sy += p.y;
+    n += 1;
+  }
+  if (n === 0) return null;
+  return { x: sx / n, y: sy / n };
+}
+
+/** One anchor per rule, INDEX-ALIGNED with `rules` (a rule the canvas cannot
+  * place keeps its slot as null) because the glyph layer identifies a rule by
+  * its index and a shifted array would delete the wrong one.
+  *
+  * Rules that land on the same spot are fanned out along +x by `stepWorld`
+  * each: a rectangle's bottom edge carries a horizontal AND a distance, and
+  * stacked on one pixel they are one unreadable blur. */
+export function ruleGlyphAnchors(geoms: CoreGeom[], rules: Array<Record<string, any>>, stepWorld: number): Array<Pt | null> {
+  const seen = new Map<string, number>();
+  const q = stepWorld > 0 ? stepWorld : 1;
+  return rules.map((r) => {
+    const p = ruleAnchor(geoms, r);
+    if (!p) return null;
+    const key = `${Math.round(p.x / q)}:${Math.round(p.y / q)}`;
+    const n = seen.get(key) ?? 0;
+    seen.set(key, n + 1);
+    return n === 0 ? p : { x: p.x + n * stepWorld, y: p.y };
+  });
+}

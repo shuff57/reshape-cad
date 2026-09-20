@@ -37,11 +37,24 @@
 // it calls setSel and never writeDoc, so it adds no undo entry at all.
 //
 // TOOL KEYS AND CURSORS (SPEC-mouse-parity Phase 2 item 6, 2026-09-20). One
-// letter arms one tool (L R C A S T V, Fusion's own), D opens the dimension
-// the ribbon's Dim button opens, and every one of them is deaf while a text
-// field has focus. The armed tool also sets the canvas cursor, so which tool
-// is live is readable without looking up at the ribbon. The Esc cascade above
-// them is untouched.
+// letter arms one tool (L R C A S T V, Fusion's own), D opens a dimension,
+// and every one of them is deaf while a text field has focus. The armed tool
+// also sets the canvas cursor, so which tool is live is readable without
+// looking up at the ribbon. The Esc cascade above them is untouched.
+//
+// ON-CANVAS DIMENSIONS (SPEC-mouse-parity Phase 2 item 7, 2026-09-20). The
+// Dim tool picks an entity, auto-detects what it asks for (a line wants the
+// distance between its ends, a circle or an arc its radius, two picked points
+// the distance between them -- autoDimension decides, not this file), trails a
+// ghost label off the cursor, and drops the label where the second click
+// lands. Every dimension the sketch carries is then a real <input> chip in an
+// HTML overlay OVER the svg, not inside it: that is what makes Tab cycle
+// between them for free (native focus order) and what keeps a pointerdown on
+// a value box from reaching the canvas and cancelling the placement it is
+// part of. A chip looks like a label at rest and like a box once focused.
+// The ribbon's own Dim / R / diameter buttons are untouched -- they still open
+// the ribbon-docked box on the current selection.
+
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -50,15 +63,19 @@ import {
   angleInArcRange,
   arcEnds,
   arcFromClicks,
+  autoDimension,
+  dimensionValueError,
   distToCircleStroke,
   distToSegment,
   findSnap as findSnapCore,
   inferLineConstraint,
+  isDimensionRule,
   namedPointsOf,
   nextGeomId,
   pointWorld,
   readSolved,
   renumber,
+  ruleGlyphAnchors,
   sampleArc,
   snapAxis,
   slotRows,
@@ -70,7 +87,10 @@ import {
   mirrorSelection,
   copySelection,
   densifyIds,
+  type AutoDimension,
   type CoreGeom,
+  type DimKind,
+  type DimPick,
   type LineChain,
   type Pt,
   type SnapHit,
@@ -82,6 +102,7 @@ import {
   fitView,
   panByPx,
   screenPxToWorld,
+  worldToScreen,
   type BBox2Like,
   type SizePx,
   type SketchView,
@@ -109,6 +130,13 @@ const ORIGIN_R_PX = 3;
  *  one marker per snap KIND, drawn at a constant screen size. */
 const SNAP_GLYPH_PX = 9;
 const AXIS_HINT_PX = 11;
+/** How far apart two dimension labels landing on the same anchor are fanned,
+ *  screen pixels, multiplied by mm-per-px at render time same as above. */
+const RULE_GLYPH_STEP_PX = 15;
+/** How far up-and-right of its anchor a mark that has never been placed by
+ *  hand is DRAWN, screen px: a number centred on the line it measures is
+ *  unreadable. */
+const GLYPH_NUDGE_PX = 9;
 /** Grid: the smallest 1-2-5 step whose spacing is at least this many screen
  *  pixels, and a ceiling on how many lines one frame may draw. */
 const GRID_MIN_PX = 9;
@@ -117,7 +145,7 @@ const GRID_MAX_LINES = 400;
  *  flow -- not the drag-to-create gesture -- owns it. Screen px. */
 const DRAG_PX = 3;
 
-type Tool = 'select' | 'line' | 'rect' | 'circle' | 'arc' | 'slot' | 'trim';
+type Tool = 'select' | 'line' | 'rect' | 'circle' | 'arc' | 'slot' | 'trim' | 'dim';
 /** The tools a single drag can finish on its own (SPEC-mouse-parity Phase 2
  *  item 2). Line and arc are not among them: a chain and a three-point arc
  *  need more points than one drag carries. */
@@ -139,7 +167,7 @@ const TOOL_KEYS: Record<string, Tool> = {
 /** The cursor each tool wears. A draw tool aims at a POINT, so it keeps the
  *  crosshair this canvas used to wear for every tool including select; select
  *  is the arrow the rest of the UI uses; trim takes `cell`, the nearest thing
- *  CSS has to Fusion's scissors. */
+ *  CSS has to Fusion's scissors; dim aims at an entity, so it aims. */
 const TOOL_CURSOR: Record<Tool, string> = {
   select: 'default',
   line: 'crosshair',
@@ -148,7 +176,14 @@ const TOOL_CURSOR: Record<Tool, string> = {
   arc: 'crosshair',
   slot: 'crosshair',
   trim: 'cell',
+  dim: 'crosshair',
 };
+
+/** A dimension value as a box shows it: full precision would put 39.99999999
+ *  in front of a user who asked for 40. */
+function formatDim(v: number): string {
+  return String(Math.round(v * 1e4) / 1e4);
+}
 
 interface Props {
   sketch: SketchFeature;
@@ -176,6 +211,26 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     value: string;
   } | null>(null);
   const [status, setStatus] = useState<string>('');
+  // The on-canvas dimension in flight (P2.7). `pending` holds a lone point
+  // pick waiting for its partner; `dim` is what autoDimension decided; `at`
+  // is null while the ghost label still trails the cursor and holds the
+  // placed world position once the second click lands.
+  const [place, setPlace] = useState<{
+    pending: DimPick | null;
+    dim: AutoDimension | null;
+    at: Pt | null;
+    value: string;
+  } | null>(null);
+  /** Where each placed dimension's label was dropped, by RULE INDEX. This is
+   *  UI state on purpose: SoupRule has no label-position field and inventing
+   *  one would change the script schema every doc round-trips through. A
+   *  dimension with no entry here rests at its geometry's own anchor. */
+  const [labelAt, setLabelAt] = useState<Record<number, Pt>>({});
+  /** What is typed in a value chip but not yet committed, by rule index. A
+   *  chip with no draft shows the rule's committed value, so a blur without
+   *  Enter reverts rather than half-writing. */
+  const [draft, setDraft] = useState<Record<number, string>>({});
+  const [editingRule, setEditingRule] = useState<number | null>(null);
 
   // The rows as the doc carries them (soup or migrated from the legacy
   // polygon -- a legacy sketch's points arrive as soup rows the first time
@@ -851,14 +906,17 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
   );
 
   /** What the ribbon's dimension buttons do, reached from the keyboard (P2.6's
-   *  `D`). The on-canvas dimension flow -- click an entity, place a label, type
-   *  the value -- is Phase 2 item 7 and does not exist yet; until it does, D is
-   *  the same entry point the Dim / R buttons are, and says what it wants when
-   *  nothing dimensionable is picked rather than doing nothing. */
+   *  `D`). With something dimensionable picked this is exactly what it was
+   *  before P2.7 -- the ribbon-docked box on the selection. With nothing
+   *  picked it now ARMS the on-canvas flow instead of only complaining, which
+   *  is the entry point item 7 asks for. */
   const openDimFromSelection = useCallback(() => {
     if (canDimLine) openDim('distance');
     else if (canDimRadius) openDim('radius');
-    else setStatus('dimension: select a line, circle or arc first');
+    else {
+      setTool('dim');
+      setStatus('dimension: click a line, a circle, an arc, or two points');
+    }
   }, [canDimLine, canDimRadius, openDim]);
 
   const commitDim = useCallback(() => {
@@ -875,6 +933,107 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     else if (dim.kind === 'distance') applyRule({ k: 'distance', a: g.id, aEnd: 'a', b: g.id, bEnd: 'b', value: v });
     setDim(null);
   }, [applyRule, dim, solved]);
+
+  // --- the on-canvas dimension flow (P2.7) ---------------------------------
+
+  /** Click one: what is under the cursor, and what does it want measured?
+   *  Click two: where the label lands. A pick that snapped to a named POINT is
+   *  half of a point-to-point distance and waits for the other half; anything
+   *  else is an entity autoDimension can read on its own. */
+  const onDimClick = useCallback(
+    (e: React.MouseEvent) => {
+      if (place?.dim && !place.at) {
+        // The label lands here and the box opens on the measured value, so
+        // Enter alone is a no-op and typing over it is the edit.
+        setPlace({ ...place, at: worldFromEvent(e), value: formatDim(place.dim.value) });
+        return;
+      }
+      const snap = findSnap(e);
+      if (snap) {
+        const first = place?.pending ?? null;
+        if (!first) {
+          setPlace({ pending: { id: snap.id, at: snap.at }, dim: null, at: null, value: '' });
+          setStatus('dimension: pick the second point');
+          return;
+        }
+        const pair = autoDimension(solved as CoreGeom[], first, { id: snap.id, at: snap.at });
+        if (!pair) {
+          setStatus('dimension: those two picks have no distance between them');
+          setPlace(null);
+          return;
+        }
+        setPlace({ pending: null, dim: pair, at: null, value: '' });
+        setStatus('');
+        return;
+      }
+      const hit = findHit(e);
+      const found = hit ? autoDimension(solved as CoreGeom[], { id: hit.id, at: null }) : null;
+      if (!found) {
+        setStatus('dimension: click a line, a circle, an arc, or two points');
+        return;
+      }
+      setPlace({ pending: null, dim: found, at: null, value: '' });
+      setStatus('');
+    },
+    [findHit, findSnap, place, solved, worldFromEvent],
+  );
+
+  /** Commit the placed dimension as ONE rule row through ONE writeDoc, which
+   *  is ONE onChange and therefore exactly one undo entry. A value the solver
+   *  cannot take leaves the doc completely alone -- the note says why and the
+   *  undo stack does not grow. */
+  const commitPlacedDim = useCallback(() => {
+    const d = place?.dim;
+    if (!place || !d) return;
+    const err = dimensionValueError(d.kind, place.value);
+    if (err) {
+      setStatus(err);
+      return;
+    }
+    const v = Number(place.value.trim());
+    const row: SoupRule =
+      d.kind === 'radius'
+        ? { k: 'radius', a: d.a.id, value: v }
+        : {
+            k: 'distance',
+            a: d.a.id,
+            aEnd: d.a.at ?? 'a',
+            b: (d.b ?? d.a).id,
+            bEnd: d.b?.at ?? 'b',
+            value: v,
+          };
+    const index = rules.length;
+    writeDoc(geoms, [...rules, row]);
+    if (place.at) setLabelAt((m) => ({ ...m, [index]: place.at as Pt }));
+    setPlace(null);
+    setStatus('');
+  }, [geoms, place, rules, writeDoc]);
+
+  /** Re-type an ALREADY placed dimension: same one-writeDoc discipline, and
+   *  the same refusal that writes nothing. */
+  const commitRuleValue = useCallback(
+    (i: number) => {
+      const r = rules[i] as unknown as Record<string, any> | undefined;
+      if (!r || !isDimensionRule(String(r.k))) return;
+      const text = draft[i];
+      if (text === undefined) return;
+      const err = dimensionValueError(r.k as DimKind, text);
+      if (err) {
+        setStatus(err);
+        return;
+      }
+      const v = Number(text.trim());
+      writeDoc(geoms, rules.map((x, j) => (j === i ? ({ ...x, value: v } as SoupRule) : x)));
+      setDraft((d) => {
+        const next = { ...d };
+        delete next[i];
+        return next;
+      });
+      setStatus('');
+    },
+    [draft, geoms, rules, writeDoc],
+  );
+
 
   // --- drag to solve / drag to create ------------------------------------------------
   const draggingRef = useRef<{ id: number; at: 'a' | 'b' | 'c' } | null>(null);
@@ -1180,6 +1339,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
       if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || el?.isContentEditable) return;
       if (e.key === 'Escape') {
         if (dim) setDim(null);
+        else if (place) setPlace(null);
         else if (chain || clicks.length) {
           setChain(null);
           setClicks([]);
@@ -1207,7 +1367,14 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [chain, clicks.length, dim, fit, onDeleteClick, onExit, openDimFromSelection, tool]);
+  }, [chain, clicks.length, dim, fit, onDeleteClick, onExit, openDimFromSelection, place, tool]);
+
+  // Arming another tool drops a half-placed dimension: a ghost label trailing
+  // the cursor while the line tool draws is a lie about what the next click
+  // does. Nothing here touches the doc.
+  useEffect(() => {
+    if (tool !== 'dim') setPlace(null);
+  }, [tool]);
 
   // --- render --------------------------------------------------------------------------
   const selKey = (id: number, at: 'a' | 'b' | 'c' | null) => `${id}:${at ?? ''}`;
@@ -1320,6 +1487,27 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     // radius. The committed rows run the same math (slotRows).
     const [cA, cB] = clicks as [Pt, Pt];
     preview = slotPreview(cA, cB, Math.hypot(pointer.x - cA.x, pointer.y - cA.y));
+  } else if (tool === 'dim' && place?.dim && !place.at && pointer) {
+    // The ghost label (P2.7): a leader from what is being measured to the
+    // cursor, and the live value riding beside it, so the user sees WHAT they
+    // picked before they commit to where the label goes.
+    const from = place.dim.anchor;
+    const prefix = place.dim.kind === 'radius' ? 'R' : place.dim.kind === 'diameter' ? '⌀' : '';
+    preview = (
+      <>
+        <line className="sk-rubber" x1={from.x} y1={-from.y} x2={pointer.x} y2={-pointer.y} />
+        <text
+          className="sk-dim-ghost"
+          data-dim-ghost="true"
+          x={pointer.x + 4 * mmPerPx}
+          y={-pointer.y - 4 * mmPerPx}
+          fontSize={AXIS_HINT_PX * mmPerPx}
+        >
+          {prefix}
+          {formatDim(place.dim.value)}
+        </text>
+      </>
+    );
   }
 
   // Which marquee is being dragged, decided by the same pure function that
@@ -1344,6 +1532,119 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
         : `${diagnosis.dof} DoF`
     : '';
 
+  // --- the dimension chips (P2.7) -------------------------------------------
+  // One anchor per rule, index-aligned with `rules`, fanned out where several
+  // land on the same spot. Pure math over the solved rows; recomputed when
+  // they change, not on a frame.
+  const ruleAnchors = useMemo(
+    () => ruleGlyphAnchors(solved as CoreGeom[], rules as unknown as Array<Record<string, any>>, RULE_GLYPH_STEP_PX * mmPerPx),
+    [solved, rules, mmPerPx],
+  );
+
+  /** Screen position of a world point under the CURRENT view -- the same math
+   *  the viewBox is derived from, so the HTML chips sit exactly where the svg
+   *  would have drawn them. Read during render, so it cannot use the live CTM
+   *  (which still holds the previous viewBox until React commits). */
+  const chipAt = (p: Pt) => worldToScreen(view, p, size);
+
+  const dimChips: React.ReactNode[] = [];
+  if (size.width > 0) {
+    rules.forEach((r, i) => {
+      if (!isDimensionRule(r.k)) return;
+      const placed = labelAt[i];
+      const anchor = placed ?? ruleAnchors[i];
+      if (!anchor) return;
+      // A label the user dropped goes exactly where they dropped it; one that
+      // has never been placed takes the same nudge the icons do, for the same
+      // reason -- a number centred on its own line is unreadable.
+      const s = chipAt(anchor);
+      if (!placed) {
+        s.x += GLYPH_NUDGE_PX;
+        s.y -= GLYPH_NUDGE_PX;
+      }
+      const committed = formatDim(Number((r as unknown as Record<string, any>).value ?? 0));
+      dimChips.push(
+        <input
+          key={`dc${i}`}
+          className="sk2d-dim-chip"
+          data-rule={i}
+          data-rule-kind={r.k}
+          data-editing={editingRule === i ? 'true' : undefined}
+          style={{ left: `${s.x}px`, top: `${s.y}px` }}
+          size={Math.max(3, committed.length + 1)}
+          value={draft[i] ?? committed}
+          // Every chip is a real focusable input, ALWAYS mounted: that is what
+          // makes Tab walk from one dimension to the next for free.
+          onChange={(e) => setDraft((d) => ({ ...d, [i]: e.target.value }))}
+          onFocus={(e) => {
+            setEditingRule(i);
+            e.currentTarget.select();
+          }}
+          onBlur={() => {
+            // A blur without Enter REVERTS: half a number is not an edit.
+            setEditingRule((v) => (v === i ? null : v));
+            setDraft((d) => {
+              if (d[i] === undefined) return d;
+              const next = { ...d };
+              delete next[i];
+              return next;
+            });
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              commitRuleValue(i);
+            } else if (e.key === 'Escape') {
+              e.preventDefault();
+              e.currentTarget.blur();
+            }
+          }}
+          // The named edge case: a press on a value box must never reach the
+          // canvas, or the gesture it belongs to gets cancelled underneath it.
+          onPointerDown={(e) => e.stopPropagation()}
+          onClick={(e) => e.stopPropagation()}
+          onDoubleClick={(e) => {
+            // Reopen an already-placed label on its CURRENT value.
+            e.stopPropagation();
+            e.currentTarget.focus();
+            e.currentTarget.select();
+          }}
+        />,
+      );
+    });
+    // The dimension being placed right now has no rule row yet, so it carries
+    // its own chip until Enter turns it into one.
+    if (place?.dim && place.at) {
+      const s = chipAt(place.at);
+      dimChips.push(
+        <input
+          key="dc-pending"
+          className="sk2d-dim-chip"
+          data-dim-pending="true"
+          data-rule-kind={place.dim.kind}
+          data-editing="true"
+          autoFocus
+          style={{ left: `${s.x}px`, top: `${s.y}px` }}
+          size={Math.max(3, place.value.length + 1)}
+          value={place.value}
+          onChange={(e) => setPlace((p) => (p ? { ...p, value: e.target.value } : p))}
+          onFocus={(e) => e.currentTarget.select()}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              commitPlacedDim();
+            } else if (e.key === 'Escape') {
+              e.preventDefault();
+              setPlace(null);
+            }
+          }}
+          onPointerDown={(e) => e.stopPropagation()}
+          onClick={(e) => e.stopPropagation()}
+        />,
+      );
+    }
+  }
+
   // Docked into the ribbon, same portal target ModelEditor's own toolbar
   // uses -- while a sketch is open, ModelEditor hides its 3D groups behind
   // that same host and leaves File/Edit/Done, so this renders right after
@@ -1365,9 +1666,20 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
                   ['arc', 'Arc'],
                   ['slot', 'Slot'],
                   ['trim', 'Trim'],
+                  // The ON-CANVAS dimension tool (P2.7). The Dimension group's
+                  // own Dim / R / diameter buttons are a different thing and
+                  // are left exactly as they were: they open the ribbon box on
+                  // the current selection. This one arms a tool.
+                  ['dim', 'Dim'],
                 ] as Array<[Tool, string]>
               ).map(([t, label]) => (
-                <button key={t} className="sk2d-tool" aria-pressed={tool === t} onClick={() => setTool(t)}>
+                <button
+                  key={t}
+                  className="sk2d-tool"
+                  aria-pressed={tool === t}
+                  title={t === 'dim' ? 'Dimension (D): click an entity, place the label, type the value' : undefined}
+                  onClick={() => setTool(t)}
+                >
                   {label}
                 </button>
               ))}
@@ -1584,6 +1896,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
           else if (tool === 'arc') onArcClick(e);
           else if (tool === 'slot') onSlotClick(e);
           else if (tool === 'trim') onTrimClick(e);
+          else if (tool === 'dim') onDimClick(e);
         }}
         onPointerMove={onPointerMove}
         onPointerDown={onPointerDown}
@@ -1614,6 +1927,11 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
         )}
         {hoverSnap && snapGlyph(hoverSnap, mmPerPx)}
       </svg>
+      {/* The dimension chips are HTML over the svg, not inside it: native
+          focus order is what makes Tab walk from one to the next, and an
+          input that is not a descendant of the canvas cannot leak a
+          pointerdown into the gesture it belongs to. */}
+      <div className="sk2d-dims">{dimChips}</div>
     </div>
   );
 }
@@ -1812,4 +2130,17 @@ const SK2D_CSS = `
 .sk-rubber { stroke: var(--reshape-accent, #8be9fd); stroke-width: 1.4; stroke-dasharray: 5 4; fill: none; vector-effect: non-scaling-stroke; }
 .sk-preview { stroke: var(--reshape-accent, #8be9fd); stroke-width: 1.4; fill: none; opacity: 0.8; vector-effect: non-scaling-stroke; }
 .sk-axis-hint { fill: var(--reshape-accent, #8be9fd); }
+.sk-dim-ghost { fill: var(--reshape-accent-2, #bd93f9); font-family: var(--reshape-font-mono, monospace); pointer-events: none; }
+/* The dimension value chips (SPEC-mouse-parity Phase 2 item 7): an HTML layer
+   over the svg. The layer itself is transparent to the pointer so the canvas
+   underneath keeps every click; only the chips themselves catch one. A chip
+   is a flat label at rest and grows its box once focused, which is what
+   "the input reopens" looks like. */
+.sk2d-dims { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.sk2d-dim-chip { position: absolute; transform: translate(-50%, -50%); pointer-events: auto;
+  min-width: 2.5em; text-align: center; padding: 1px 4px; border-radius: 3px;
+  border: 1px solid transparent; background: var(--reshape-bg, #282a36); color: var(--reshape-accent-2, #bd93f9);
+  font-family: var(--reshape-font-mono, monospace); font-size: 12px; cursor: text; }
+.sk2d-dim-chip[data-editing="true"], .sk2d-dim-chip:focus { outline: none;
+  background: var(--reshape-surface, #1e1f29); border-color: var(--reshape-accent, #8be9fd); color: var(--reshape-text, #f8f8f2); }
 `;

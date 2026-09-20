@@ -30,6 +30,10 @@ import {
   copySelection,
   densifyIds,
   findSnap,
+  geomMidpoint,
+  autoDimension,
+  dimensionValueError,
+  ruleGlyphAnchors,
 } from '../dist/model/sketch-canvas-core.js';
 
 const LINE = { k: 'line', id: 1, a: [0, 0], b: [40, 0] };
@@ -450,4 +454,118 @@ test('26: snapVertex still works through the findSnap delegation', () => {
   assert.equal(hit.id, 1);
   assert.equal(hit.at, 'b');
   assert.equal(snapVertex(geoms, { x: 40, y: 0 }, () => 20, 8), null);
+});
+
+// --- on-canvas dimensions + constraint glyphs (SPEC-mouse-parity P2.7/P2.8) ---
+
+// 27: the midpoint a glyph or a dimension label hangs off, per geometry kind.
+test('27: geomMidpoint reads each geometry kind', () => {
+  assert.deepEqual(geomMidpoint(LINE), { x: 20, y: 0 });
+  assert.deepEqual(geomMidpoint(CIRCLE), { x: 20, y: 20 });
+  assert.deepEqual(geomMidpoint({ k: 'point', id: 9, p: [3, 4] }), { x: 3, y: 4 });
+  // The arc's mid-SWEEP point, not the chord's middle: a quarter arc from
+  // (10,0) to (0,10) about the origin peaks at 45 degrees.
+  const m = geomMidpoint(ARC);
+  assert.ok(Math.abs(m.x - 10 * Math.SQRT1_2) < 1e-9);
+  assert.ok(Math.abs(m.y - 10 * Math.SQRT1_2) < 1e-9);
+  assert.equal(geomMidpoint({ k: 'blob', id: 1 }), null);
+});
+
+// 28: a picked LINE auto-detects as the distance between its own endpoints.
+test('28: autoDimension turns a line pick into an endpoint distance', () => {
+  const d = autoDimension([LINE], { id: 1, at: null });
+  assert.equal(d.kind, 'distance');
+  assert.equal(d.value, 40);
+  assert.deepEqual(d.a, { id: 1, at: 'a' });
+  assert.deepEqual(d.b, { id: 1, at: 'b' });
+  assert.deepEqual(d.anchor, { x: 20, y: 0 });
+});
+
+// 29: a circle and an arc both auto-detect as RADIUS -- the convention
+// openDimFromSelection already uses, so the canvas and the ribbon agree.
+test('29: autoDimension reads a circle and an arc as radius', () => {
+  const c = autoDimension([CIRCLE], { id: 2, at: null });
+  assert.equal(c.kind, 'radius');
+  assert.equal(c.value, 5);
+  assert.equal(c.b, null);
+  const a = autoDimension([ARC], { id: 3, at: null });
+  assert.equal(a.kind, 'radius');
+  assert.equal(a.value, 10);
+});
+
+// 30: two picked POINTS auto-detect as a point-to-point distance.
+test('30: autoDimension turns two point picks into a point distance', () => {
+  const geoms = [LINE, { k: 'line', id: 4, a: [0, 30], b: [40, 30] }];
+  const d = autoDimension(geoms, { id: 1, at: 'a' }, { id: 4, at: 'a' });
+  assert.equal(d.kind, 'distance');
+  assert.equal(d.value, 30);
+  assert.deepEqual(d.anchor, { x: 0, y: 15 });
+});
+
+// 31: nothing to dimension -- a lone point pick waits for its partner, a
+// bare point row and a dangling id have no dimension at all.
+test('31: autoDimension refuses what it cannot measure', () => {
+  assert.equal(autoDimension([LINE], { id: 1, at: 'a' }), null, 'one point is not a distance');
+  assert.equal(autoDimension([LINE], { id: 99, at: null }), null, 'dangling id');
+  assert.equal(autoDimension([{ k: 'point', id: 1, p: [0, 0] }], { id: 1, at: null }), null);
+});
+
+// 32: the invalid values that must produce a status note and no doc change.
+test('32: dimensionValueError names every value the solver cannot take', () => {
+  assert.ok(dimensionValueError('distance', ''));
+  assert.ok(dimensionValueError('distance', '   '));
+  assert.ok(dimensionValueError('distance', 'abc'));
+  assert.ok(dimensionValueError('distance', '0'));
+  assert.ok(dimensionValueError('distance', '-5'));
+  assert.ok(dimensionValueError('radius', '-1'));
+  assert.ok(dimensionValueError('angle', '0'));
+  assert.equal(dimensionValueError('distance', '30'), null);
+  assert.equal(dimensionValueError('radius', '2.5'), null);
+  // distanceX/distanceY are SIGNED offsets: a negative one names the other
+  // direction and zero names a shared axis, so both are real answers.
+  assert.equal(dimensionValueError('distanceX', '-12'), null);
+  assert.equal(dimensionValueError('distanceY', '0'), null);
+});
+
+// 33: where each rule kind's glyph hangs -- one geometry's midpoint, the
+// midpoint of two, or the named point itself.
+test('33: ruleGlyphAnchors places a glyph per rule', () => {
+  const geoms = [LINE, { k: 'line', id: 4, a: [0, 30], b: [40, 30] }];
+  const [horiz, para, coin] = ruleGlyphAnchors(
+    geoms,
+    [
+      { k: 'horizontal', a: 1 },
+      { k: 'parallel', a: 1, b: 4 },
+      { k: 'coincident', a: 1, aEnd: 'b', b: 4, bEnd: 'b' },
+    ],
+    2,
+  );
+  assert.deepEqual(horiz, { x: 20, y: 0 }, 'a unary rule sits on its line');
+  assert.deepEqual(para, { x: 20, y: 15 }, 'a pair rule sits between the two');
+  assert.deepEqual(coin, { x: 40, y: 15 }, 'a point rule sits between the points');
+});
+
+// 34: rules that land on the SAME spot fan out, so a line carrying both a
+// horizontal and a distance shows two readable glyphs rather than one blur.
+test('34: ruleGlyphAnchors fans out rules that share an anchor', () => {
+  const anchors = ruleGlyphAnchors([LINE], [{ k: 'horizontal', a: 1 }, { k: 'distance', a: 1, aEnd: 'a', b: 1, bEnd: 'b', value: 40 }], 3);
+  assert.deepEqual(anchors[0], { x: 20, y: 0 });
+  assert.deepEqual(anchors[1], { x: 23, y: 0 });
+  // The array is INDEX-ALIGNED with the rules it was given: the glyph layer
+  // identifies a rule by its index, and a hole must stay a hole.
+  const withHole = ruleGlyphAnchors([LINE], [{ k: 'vertical', a: 77 }, { k: 'horizontal', a: 1 }], 3);
+  assert.equal(withHole.length, 2);
+  assert.equal(withHole[0], null, 'a rule naming geometry that is not here has no anchor');
+  assert.deepEqual(withHole[1], { x: 20, y: 0 });
+});
+
+// 35: symmetric names three geometries and averages all three.
+test('35: ruleGlyphAnchors averages a three-point symmetric rule', () => {
+  const geoms = [
+    { k: 'point', id: 1, p: [0, 0] },
+    { k: 'point', id: 2, p: [30, 0] },
+    { k: 'point', id: 3, p: [15, 30] },
+  ];
+  const [a] = ruleGlyphAnchors(geoms, [{ k: 'symmetric', a: 1, aEnd: 'a', b: 2, bEnd: 'a', c: 3, cEnd: 'a' }], 2);
+  assert.deepEqual(a, { x: 15, y: 10 });
 });
