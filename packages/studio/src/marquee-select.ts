@@ -140,3 +140,41 @@ export function marqueeSelect(geoms: CoreGeom[], drag: MarqueeDrag): number[] {
   const pick = kind === 'window' ? windowSelect : crossingSelect;
   return geoms.filter((g) => pick(g, r)).map((g) => g.id);
 }
+
+/** Segment pairs of `pts` for the boundary-crossing probe: every consecutive
+ *  pair, plus (only once there are more than two points) the pair that
+ *  closes the last point back to the first. Two points (an edge's own
+ *  endpoints) stay OPEN -- closing them back would just re-test the same
+ *  segment reversed; four points (a face/body screen bbox's own corners,
+ *  tl/tr/br/bl in order) close into the bbox's own four sides. */
+function segmentsOf(pts: Pt[]): Array<[Pt, Pt]> {
+  const segs: Array<[Pt, Pt]> = [];
+  for (let i = 0; i + 1 < pts.length; i++) segs.push([pts[i], pts[i + 1]]);
+  if (pts.length > 2) segs.push([pts[pts.length - 1], pts[0]]);
+  return segs;
+}
+
+/** Generic point-SET containment test for the SAME window/crossing rule
+ *  windowSelect/crossingSelect above apply to a CoreGeom -- generalised so a
+ *  caller whose candidate is not sketch geometry (BrepViewportThree.tsx's
+ *  3D-projected face/edge/vertex/body picks, SPEC-mouse-parity.md Phase 3
+ *  item 4) can reuse the exact same containment math rather than
+ *  re-implementing it. `pts` is the candidate already reduced to screen
+ *  points: one for a vertex, two (its own endpoints) for an edge, four (its
+ *  bbox corners, tl/tr/br/bl) for a face or a whole body. Window: every
+ *  point lies inside the rect AND no segment between them crosses its
+ *  boundary (the same defensive pair windowSelect's own 'line' case
+ *  checks). Crossing: window, OR any point lies inside, OR any segment
+ *  crosses -- exactly crossingSelect's per-shape logic, generalised past
+ *  one fixed point count. A degenerate drag (zero area) selects nothing,
+ *  same as marqueeSelect(). */
+export function pointSetSelect(pts: Pt[], drag: MarqueeDrag): boolean {
+  const r = normalize(drag);
+  if (r.x1 - r.x0 <= 1e-12 || r.y1 - r.y0 <= 1e-12) return false;
+  const segs = segmentsOf(pts);
+  const allInside = pts.every((p) => inside(p, r));
+  const anyCrosses = segs.some(([a, b]) => crossesEdges(a, b, r));
+  if (marqueeKind(drag) === 'window') return allInside && !anyCrosses;
+  if (allInside && !anyCrosses) return true;
+  return pts.some((p) => inside(p, r)) || anyCrosses;
+}

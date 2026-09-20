@@ -217,6 +217,29 @@ export function featuresOf(state: SelectionState): string[] {
   return state.items.filter((item) => item.kind === 'feature').map((item) => item.target);
 }
 
+/** Every edge-kind item, in item order -- SPEC-mouse-parity.md Phase 3 item
+ *  3's mixed-selection consumers (round()'s fillet, which uses only these)
+ *  read this instead of filtering `state.items` by hand. */
+export function edgesOf(state: SelectionState): SelectionItem[] {
+  return state.items.filter((item) => item.kind === 'edge');
+}
+
+/** Every face-kind item, in item order -- the face-only counterpart of
+ *  edgesOf() above (e.g. hollow()'s open face). */
+export function facesOf(state: SelectionState): SelectionItem[] {
+  return state.items.filter((item) => item.kind === 'face');
+}
+
+/** Every vertex-kind item, in item order. */
+export function verticesOf(state: SelectionState): SelectionItem[] {
+  return state.items.filter((item) => item.kind === 'vertex');
+}
+
+/** Every body-kind item, in item order. */
+export function bodiesOf(state: SelectionState): SelectionItem[] {
+  return state.items.filter((item) => item.kind === 'body');
+}
+
 /** Every item that belongs to `ownerId`, via the real ownerOf() -- replaces
  *  the filtering pattern at ReshapeStudio.tsx:686-687
  *  (`pickedEdges.filter((e) => ownerOf(doc, e) === id)`,

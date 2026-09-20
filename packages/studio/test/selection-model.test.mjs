@@ -16,6 +16,10 @@ import {
   primaryOf,
   featuresOf,
   ownerScoped,
+  edgesOf,
+  facesOf,
+  verticesOf,
+  bodiesOf,
 } from '../dist/selection-model.js';
 
 const edgeName = (feature, part) => ({ cause: 'primitive', feature, kind: 'edge', part });
@@ -182,4 +186,24 @@ test('22: a feature-kind item is its own owner (ownerOf falls through to target 
   const doc = docWith('b1', 'b2');
   const state = add(add(emptySelection(), FEAT_A), FEAT_B);
   assert.deepEqual(ownerScoped(state, doc, 'b1'), [FEAT_A]);
+});
+
+test('23: edgesOf/facesOf/verticesOf/bodiesOf each extract exactly one kind\'s items, in item order (SPEC-mouse-parity P3.3 mixed selection)', () => {
+  const edge = { kind: 'edge', target: 'b1', name: edgeName('b1', '+x') };
+  const face = { kind: 'face', target: 'b1', name: faceName('b1', '+z') };
+  const vertex = { kind: 'vertex', target: 'b1', name: null };
+  const body = { kind: 'body', target: 'b2', name: null };
+  const state = add(add(add(add(add(emptySelection(), FEAT_A), edge), face), vertex), body);
+  assert.deepEqual(edgesOf(state), [edge]);
+  assert.deepEqual(facesOf(state), [face]);
+  assert.deepEqual(verticesOf(state), [vertex]);
+  assert.deepEqual(bodiesOf(state), [body]);
+});
+
+test('24: edgesOf/facesOf/verticesOf/bodiesOf on a state with none of that kind return []', () => {
+  const state = replace(emptySelection(), FEAT_A);
+  assert.deepEqual(edgesOf(state), []);
+  assert.deepEqual(facesOf(state), []);
+  assert.deepEqual(verticesOf(state), []);
+  assert.deepEqual(bodiesOf(state), []);
 });

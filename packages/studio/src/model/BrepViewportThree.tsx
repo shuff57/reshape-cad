@@ -81,7 +81,8 @@ import { DEFAULT_SCHEME_NAME, MOUSE_SCHEMES, loadSchemeName, saveSchemeName, sch
 import { CameraMode, loadCameraMode, orthoFrustumFromPerspective, saveCameraMode } from '../ortho-camera.js';
 import { computeSelectionFit, computeWindowZoomFit, type Vec3 } from '../window-zoom-fit.js';
 import { nearestVisible } from '../pick-helpers.js';
-import type { SelectionFilters } from '../selection-model.js';
+import type { SelectionFilters, SelectionItem } from '../selection-model.js';
+import { marqueeKind, pointSetSelect, type MarqueeDrag } from '../marquee-select.js';
 
 /** The Dracula palette this app already uses everywhere else -- see
  *  app/globals.css and BrepViewport.tsx. */
@@ -366,6 +367,23 @@ interface Props {
    * `onPick` already draws between "renders a pick" and "owns selection".
    */
   onFiltersChange?: (next: SelectionFilters) => void;
+  /**
+   * Fired once a box-select drag completes (SPEC-mouse-parity.md Phase 3
+   * item 4) with every candidate the drag's window/crossing rect kept,
+   * filtered by `filters` the same way a single click already is -- a
+   * filtered-out kind is never in this list, same as it is never
+   * click-pickable. `shiftKey` mirrors a click's own accumulate-vs-replace
+   * choice (Ctrl's "add if absent" has no separate meaning for a whole
+   * batch, so only Shift's distinction survives here): held, the caller
+   * adds every item to whatever is already selected; released, the caller
+   * replaces the selection with exactly these. Never fired for a drag
+   * that stayed under the 4px threshold or started on a real pick target
+   * -- both fall through to the ordinary click-to-pick path (`onPick`)
+   * instead, same as before this prop existed. Absent means box select
+   * still WORKS (the drag gesture and its rectangle overlay do not depend
+   * on this prop), it just has nowhere to report its result.
+   */
+  onBoxSelect?: (items: SelectionItem[], shiftKey: boolean) => void;
 }
 
 /** Module-level, not per-component: two viewports in one session share the
@@ -516,7 +534,7 @@ const FILTER_CHIPS: { key: keyof SelectionFilters; label: string }[] = [
  */
 export default function BrepViewportThree({
   doc, deflection, onStats, onPick, pick, selectedCount, selectionLabel, anchors, onAnchors, onMesh, registerPickAt,
-  sketchPlane, panelOcclusionPx, ruleActivityAt, onEngine, badgesInStatusBar = false, filters, onFiltersChange,
+  sketchPlane, panelOcclusionPx, ruleActivityAt, onEngine, badgesInStatusBar = false, filters, onFiltersChange, onBoxSelect,
 }: Props) {
   const [phase, setPhase] = useState<'loading' | 'ready' | 'error'>('loading');
   // Which view-strip preset the camera is sitting on, or null once the
@@ -542,6 +560,15 @@ export default function BrepViewportThree({
   // rectangle div; the bookkeeping the pointer handlers mutate lives beside
   // it in windowZoomRef.
   const [windowZoom, setWindowZoom] = useState<{ x: number; y: number; w: number; h: number } | 'armed' | null>(null);
+  // Box select (SPEC-mouse-parity.md Phase 3 item 4): the drag rectangle
+  // overlay, plus which window/crossing rule it is currently drawing under
+  // -- same convention SketchCanvas2D's own 2D marquee state uses (its
+  // `marquee`/`marqueeKind` split), adapted to screen pixels instead of SVG
+  // world units. React state because it drives the overlay div below; the
+  // in-progress drag bookkeeping the pointer handlers mutate every move
+  // lives beside it in boxSelectRef, the same split windowZoom/
+  // windowZoomRef use.
+  const [boxSelect, setBoxSelect] = useState<{ x: number; y: number; w: number; h: number; kind: 'window' | 'crossing' } | null>(null);
   // Nav cube: DOM node whose CSS transform is synced to the live camera
   // orientation every frame (see the rAF effect below) -- a ref, not state,
   // so 60x/sec orientation reads never trigger a React re-render.
@@ -635,6 +662,13 @@ export default function BrepViewportThree({
    *  effect's `[phase]`-only handlers can read the flag they were created
    *  before. */
   const windowZoomRef = useRef<{ armed: boolean } | null>(null);
+  /** The in-progress box-select drag: where it started (client px) and
+   *  where the pointer is now, plus whether it has crossed the 4px
+   *  click-vs-drag threshold yet -- same shape SketchCanvas2D's own
+   *  marqueeRef uses. Null whenever no box-select drag is in flight --
+   *  armed implicitly by an empty-space pointerdown, not a toolbar toggle
+   *  the way window-zoom is (see onCanvasPointerDown). */
+  const boxSelectRef = useRef<{ startX: number; startY: number; endX: number; endY: number; moved: boolean } | null>(null);
   /** The current solid(s), as a group, so a rebuild can dispose the old
    *  geometry rather than leaking a WebGL buffer per edit. */
   const solidGroupRef = useRef<THREE_NS.Group | null>(null);
@@ -712,6 +746,11 @@ export default function BrepViewportThree({
   // effect below, not on every render.
   const filtersRef = useRef<SelectionFilters>(filters ?? DEFAULT_FILTERS);
   filtersRef.current = filters ?? DEFAULT_FILTERS;
+  // Same stale-closure reasoning as onPickRef above -- onBoxSelect is fired
+  // from inside the scene-setup effect's onCanvasPointerUp, set up once,
+  // not on every render.
+  const onBoxSelectRef = useRef(onBoxSelect);
+  onBoxSelectRef.current = onBoxSelect;
   // Same stale-closure reasoning as docRef above: projectAnchors() is a
   // component-level function (reads refs, not props) so it can be called
   // both from inside the scene-setup effect's camera-change handler and from
@@ -1681,51 +1720,209 @@ export default function BrepViewportThree({
     // React state so the overlay div draws it, and pointerup hands the
     // finished rect to applyWindowZoomRect(). `windowZoomRef.current !== null`
     // means "armed, and the next left-drag is the rectangle".
+    /** Every pickable candidate a box-select drag's rect keeps, respecting
+     *  the SAME filters a click already does (hitAt() reads filtersRef the
+     *  same way). Each candidate reduces to a screen-space point set for
+     *  pointSetSelect() -- a vertex to its own projected point, an edge to
+     *  its two projected endpoints, a face or a whole body to its own
+     *  screen bbox corners (SPEC-mouse-parity.md Phase 3 item 4's own
+     *  wording) -- and resolves the SAME name a click on that face/edge
+     *  would (nameFace()/nameEdge(), the identical try/catch-is-honest-null
+     *  pattern pickAt() already uses), so a box-selected edge is just as
+     *  usable by round()/hollow() as a clicked one. No occlusion test: a
+     *  click has a real surface hit to occlude against, a drag rectangle
+     *  does not, and a tightly-drawn box around visible geometry does not,
+     *  in practice, also enclose the model's own hidden far side. */
+    function collectBoxSelection(
+      startClientX: number, startClientY: number, endClientX: number, endClientY: number,
+    ): SelectionItem[] {
+      const group = solidGroupRef.current;
+      if (!group) return [];
+      const rect = renderer.domElement.getBoundingClientRect();
+      const drag: MarqueeDrag = {
+        startX: startClientX - rect.left, startY: startClientY - rect.top,
+        endX: endClientX - rect.left, endY: endClientY - rect.top,
+      };
+      const toScreen = (v: THREE_NS.Vector3): { x: number; y: number } => {
+        const p = v.clone().project(camera);
+        return { x: (p.x * 0.5 + 0.5) * rect.width, y: (1 - (p.y * 0.5 + 0.5)) * rect.height };
+      };
+      const filters = filtersRef.current;
+      const built = lastBuiltRef.current;
+      const engine = engineRef.current;
+      const found: SelectionItem[] = [];
+
+      for (const obj of group.children as THREE_NS.Mesh[]) {
+        const featureId = obj.userData.featureId as string | undefined;
+        const pos = obj.geometry.getAttribute('position');
+        if (!featureId || !pos) continue;
+        const worldAt = (i: number) => new THREE.Vector3(pos.getX(i), pos.getY(i), pos.getZ(i)).applyMatrix4(obj.matrixWorld);
+
+        if (filters.vertex) {
+          for (let i = 0; i < pos.count; i++) {
+            if (pointSetSelect([toScreen(worldAt(i))], drag)) found.push({ kind: 'vertex', target: featureId, name: null });
+          }
+        }
+
+        if (filters.face) {
+          const idx = obj.geometry.getIndex();
+          const ranges: FaceRange[] = obj.userData.faceRanges ?? [];
+          if (idx) {
+            for (const range of ranges) {
+              let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+              for (let k = range.start; k < range.start + range.count; k++) {
+                const s = toScreen(worldAt(idx.getX(k)));
+                if (s.x < minX) minX = s.x;
+                if (s.x > maxX) maxX = s.x;
+                if (s.y < minY) minY = s.y;
+                if (s.y > maxY) maxY = s.y;
+              }
+              if (minX > maxX) continue;
+              const corners = [{ x: minX, y: minY }, { x: maxX, y: minY }, { x: maxX, y: maxY }, { x: minX, y: maxY }];
+              if (!pointSetSelect(corners, drag)) continue;
+              let name: TopoName | null = null;
+              const shape = obj.userData.kernelShape;
+              if (built && engine && shape) {
+                try {
+                  const face = engine.faceAt(shape, range.index);
+                  if (face) name = engine.nameFace(built, docRef.current, featureId, face);
+                } catch { name = null; }
+              }
+              found.push({ kind: 'face', target: featureId, name });
+            }
+          }
+        }
+
+        if (filters.body) {
+          let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+          for (let i = 0; i < pos.count; i++) {
+            const s = toScreen(worldAt(i));
+            if (s.x < minX) minX = s.x;
+            if (s.x > maxX) maxX = s.x;
+            if (s.y < minY) minY = s.y;
+            if (s.y > maxY) maxY = s.y;
+          }
+          if (minX <= maxX) {
+            const corners = [{ x: minX, y: minY }, { x: maxX, y: minY }, { x: maxX, y: maxY }, { x: minX, y: maxY }];
+            if (pointSetSelect(corners, drag)) found.push({ kind: 'body', target: featureId, name: null });
+          }
+        }
+      }
+
+      if (filters.edge) {
+        for (const line of edgePickLinesRef.current) {
+          const edgePos = line.geometry.getAttribute('position');
+          if (!edgePos || edgePos.count < 1) continue;
+          const a = new THREE.Vector3(edgePos.getX(0), edgePos.getY(0), edgePos.getZ(0)).applyMatrix4(line.matrixWorld);
+          const last = edgePos.count - 1;
+          const b = new THREE.Vector3(edgePos.getX(last), edgePos.getY(last), edgePos.getZ(last)).applyMatrix4(line.matrixWorld);
+          if (!pointSetSelect([toScreen(a), toScreen(b)], drag)) continue;
+          const { featureId, kernelEdge } = line.userData as { featureId: string; kernelEdge: any };
+          let name: TopoName | null = null;
+          if (built && engine) {
+            try { name = engine.nameEdge(built, docRef.current, featureId, kernelEdge); } catch { name = null; }
+          }
+          found.push({ kind: 'edge', target: featureId, name });
+        }
+      }
+
+      return found;
+    }
+
     let downAt: { x: number; y: number } | null = null;
     const CLICK_DRAG_TOLERANCE_PX = 4;
     function onCanvasPointerDown(e: PointerEvent) {
       if (e.button !== 0) return;
       downAt = { x: e.clientX, y: e.clientY };
-      if (windowZoomRef.current === null) return;
-      // Arming already set the ref; from here on the drag is the rectangle.
-      e.preventDefault();
-      renderer.domElement.setPointerCapture(e.pointerId);
+      if (windowZoomRef.current !== null) {
+        // Arming already set the ref; from here on the drag is the rectangle.
+        e.preventDefault();
+        renderer.domElement.setPointerCapture(e.pointerId);
+        controls.enabled = false;
+        return;
+      }
+      // Box select (SPEC-mouse-parity.md Phase 3 item 4): a left-press
+      // starting on EMPTY space -- the same hitAt() a click would use, so a
+      // press ON a pickable face/edge/vertex/body falls straight through to
+      // the ordinary orbit/click path below, untouched. Disables orbit for
+      // just this gesture up front, the same eager-disable window-zoom uses
+      // above, rather than waiting to see whether it crosses the drag
+      // threshold: OrbitControls binds LEFT to rotate in BOTH mouse-scheme
+      // presets (camera-controls.ts's own MOUSE_SCHEMES), so by the time a
+      // threshold check could fire the camera would already have moved.
+      if (hitAt(e.clientX, e.clientY) !== null) return;
+      boxSelectRef.current = { startX: e.clientX, startY: e.clientY, endX: e.clientX, endY: e.clientY, moved: false };
       controls.enabled = false;
+      renderer.domElement.setPointerCapture(e.pointerId);
     }
     function onCanvasPointerMove(e: PointerEvent) {
-      if (windowZoomRef.current === null) return;
-      if (downAt === null) return;
+      if (windowZoomRef.current !== null) {
+        if (downAt === null) return;
+        const bounds = renderer.domElement.getBoundingClientRect();
+        setWindowZoom({
+          x: Math.min(downAt.x, e.clientX) - bounds.left,
+          y: Math.min(downAt.y, e.clientY) - bounds.top,
+          w: Math.abs(e.clientX - downAt.x),
+          h: Math.abs(e.clientY - downAt.y),
+        });
+        return;
+      }
+      const bs = boxSelectRef.current;
+      if (!bs) return;
+      bs.endX = e.clientX;
+      bs.endY = e.clientY;
+      if (!bs.moved && Math.hypot(e.clientX - bs.startX, e.clientY - bs.startY) >= CLICK_DRAG_TOLERANCE_PX) bs.moved = true;
+      if (!bs.moved) return;
       const bounds = renderer.domElement.getBoundingClientRect();
-      setWindowZoom({
-        x: Math.min(downAt.x, e.clientX) - bounds.left,
-        y: Math.min(downAt.y, e.clientY) - bounds.top,
-        w: Math.abs(e.clientX - downAt.x),
-        h: Math.abs(e.clientY - downAt.y),
+      setBoxSelect({
+        x: Math.min(bs.startX, bs.endX) - bounds.left,
+        y: Math.min(bs.startY, bs.endY) - bounds.top,
+        w: Math.abs(bs.endX - bs.startX),
+        h: Math.abs(bs.endY - bs.startY),
+        kind: marqueeKind({ startX: bs.startX, startY: bs.startY, endX: bs.endX, endY: bs.endY }),
       });
     }
     function onCanvasPointerUp(e: PointerEvent) {
-      if (windowZoomRef.current === null) return;
+      if (windowZoomRef.current !== null) {
+        try { renderer.domElement.releasePointerCapture(e.pointerId); } catch { /* already released */ }
+        controls.enabled = true;
+        windowZoomRef.current = null;
+        setWindowZoom(null);
+        const start = downAt;
+        downAt = null;
+        if (start === null) return;
+        const width = Math.abs(e.clientX - start.x);
+        const height = Math.abs(e.clientY - start.y);
+        if (width <= CLICK_DRAG_TOLERANCE_PX || height <= CLICK_DRAG_TOLERANCE_PX) return;
+        const bounds = renderer.domElement.getBoundingClientRect();
+        applyWindowZoomRectRef.current?.(
+          {
+            x: Math.min(start.x, e.clientX) - bounds.left,
+            y: Math.min(start.y, e.clientY) - bounds.top,
+            width,
+            height,
+          },
+          bounds.width,
+          bounds.height,
+        );
+        return;
+      }
+      const bs = boxSelectRef.current;
+      if (!bs) return;
+      boxSelectRef.current = null;
       try { renderer.domElement.releasePointerCapture(e.pointerId); } catch { /* already released */ }
       controls.enabled = true;
-      windowZoomRef.current = null;
-      setWindowZoom(null);
-      const start = downAt;
-      downAt = null;
-      if (start === null) return;
-      const width = Math.abs(e.clientX - start.x);
-      const height = Math.abs(e.clientY - start.y);
-      if (width <= CLICK_DRAG_TOLERANCE_PX || height <= CLICK_DRAG_TOLERANCE_PX) return;
-      const bounds = renderer.domElement.getBoundingClientRect();
-      applyWindowZoomRectRef.current?.(
-        {
-          x: Math.min(start.x, e.clientX) - bounds.left,
-          y: Math.min(start.y, e.clientY) - bounds.top,
-          width,
-          height,
-        },
-        bounds.width,
-        bounds.height,
-      );
+      setBoxSelect(null);
+      // Below the 4px threshold: a genuine click, not a drag -- `downAt` is
+      // left exactly as onCanvasPointerDown set it, so the native `click`
+      // handler's own movement check runs pickAt() normally (the same
+      // empty-space click-clears path this drag started from). A drag past
+      // the threshold leaves `downAt` alone too -- onClick's own check
+      // already rejects a moved press on its own, the same way it always
+      // has for an ordinary orbit drag.
+      if (!bs.moved) return;
+      const items = collectBoxSelection(bs.startX, bs.startY, bs.endX, bs.endY);
+      onBoxSelectRef.current?.(items, e.shiftKey);
     }
     function onClick(e: MouseEvent) {
       if (e.button !== 0) return;
@@ -3110,6 +3307,27 @@ try {
           />
         );
       })()}
+      {/* SPEC-mouse-parity.md Phase 3 item 4: the box-select rectangle, same
+          DOM-overlay-not-canvas convention as the window-zoom rect above.
+          Dashed/purple for a window (left-to-right) select, dotted/green for
+          a crossing (right-to-left) one -- the same window-vs-crossing colour
+          split SketchCanvas2D's own 2D marquee uses, adapted to this
+          component's own COLORS palette (no --reshape-* custom properties in
+          scope here; see COLORS's own doc comment). */}
+      {phase === 'ready' && boxSelect && (
+        <div
+          style={{
+            position: 'absolute',
+            left: boxSelect.x,
+            top: boxSelect.y,
+            width: boxSelect.w,
+            height: boxSelect.h,
+            border: boxSelect.kind === 'window' ? `1px dashed ${COLORS.accent}` : `1px dotted ${COLORS.ok}`,
+            background: boxSelect.kind === 'window' ? 'rgba(189, 147, 249, 0.08)' : 'rgba(80, 250, 123, 0.08)',
+            pointerEvents: 'none',
+          }}
+        />
+      )}
       {phase === 'ready' && (
         // Home alone, bottom-left -- Top/Front/Underneath moved onto the nav
         // cube (bottom-right, below), since a physical cube already says

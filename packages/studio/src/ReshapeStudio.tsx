@@ -31,8 +31,11 @@ import type { ContextActions } from './model/ModelEditor.js';
 import { writeSTL, writeOBJ, write3MF, type MeshInput } from './mesh-export.js';
 import {
   add as addSelection,
+  bodiesOf,
   clear as clearSelection,
+  edgesOf,
   emptySelection,
+  facesOf,
   featuresOf,
   ownerScoped,
   primaryOf,
@@ -40,6 +43,7 @@ import {
   toggle as toggleSelection,
   type SelectionItem,
   type SelectionState,
+  verticesOf,
 } from './selection-model.js';
 import { outlineOf } from '@shuff57/reshape-sketch/sketch-arc';
 import { handlesFor, featureCenter, type HandleSpec } from '@shuff57/reshape-script/model-handles';
@@ -720,8 +724,13 @@ export default function ReshapeStudio({
     // solid still drops out, the same guard round()'s multi-edge path
     // applies before it builds anything.
     const scoped = ownerScoped(selection, doc, id);
-    const edgesHere = scoped.filter((i) => i.kind === 'edge');
-    const facesHere = scoped.filter((i) => i.kind === 'face');
+    // P3.3: the kind-filtered views, not hand-rolled .filter calls -- the
+    // same views the commands read, so label and command can never drift.
+    const scopedState: SelectionState = { ...selection, items: scoped };
+    const edgesHere = edgesOf(scopedState);
+    const facesHere = facesOf(scopedState);
+    const verticesHere = verticesOf(scopedState);
+    const bodiesHere = bodiesOf(scopedState);
     // Item H (P20): a single picked edge/face carries its own kernel-
     // measured size as a third segment -- "Box 1 · top face · 40 x 40",
     // "Box 1 · edge · 20" -- but a multi-selection ("3 edges") has no one
@@ -736,21 +745,31 @@ export default function ReshapeStudio({
     const here = primaryPick && ownerOf(doc, { target: primaryPick.target, name: primaryPick.name ?? null }) === id
       ? primaryPick
       : null;
-    const part = edgesHere.length > 1
-      ? `${edgesHere.length} edges`
-      : facesHere.length > 1
-        ? `${facesHere.length} faces`
-        : here?.kind === 'edge'
-          ? (partWordFor(here.name) ?? 'edge')
-            + (single && typeof size === 'number' ? ` · ${size}` : '')
-          : here?.kind === 'face'
-            ? (partWordFor(here.name) ?? 'face')
-              + (single && Array.isArray(size) ? ` · ${size[0]} x ${size[1]}` : '')
-            : here?.kind === 'vertex'
-              ? 'vertex'
-              : here?.kind === 'body'
-                ? 'body'
-                : null;
+    // P3.3: a mixed selection says so -- "1 face + 1 edge + 1 vertex" --
+    // instead of reading as whichever kind happened to be picked last.
+    const held = [
+      facesHere.length ? `${facesHere.length} face${facesHere.length > 1 ? 's' : ''}` : null,
+      edgesHere.length ? `${edgesHere.length} edge${edgesHere.length > 1 ? 's' : ''}` : null,
+      verticesHere.length ? `${verticesHere.length} ${verticesHere.length > 1 ? 'vertices' : 'vertex'}` : null,
+      bodiesHere.length ? `${bodiesHere.length} bod${bodiesHere.length > 1 ? 'ies' : 'y'}` : null,
+    ].filter((s): s is string => s != null);
+    const part = held.length > 1
+      ? held.join(' + ')
+      : edgesHere.length > 1
+        ? `${edgesHere.length} edges`
+        : facesHere.length > 1
+          ? `${facesHere.length} faces`
+          : here?.kind === 'edge'
+            ? (partWordFor(here.name) ?? 'edge')
+              + (single && typeof size === 'number' ? ` · ${size}` : '')
+            : here?.kind === 'face'
+              ? (partWordFor(here.name) ?? 'face')
+                + (single && Array.isArray(size) ? ` · ${size[0]} x ${size[1]}` : '')
+              : here?.kind === 'vertex'
+                ? 'vertex'
+                : here?.kind === 'body'
+                  ? 'body'
+                  : null;
     return part ? `${base} · ${part}` : base;
   }, [selected, doc, selection, primaryPick]);
 
@@ -1298,10 +1317,25 @@ export default function ReshapeStudio({
                   const ctrl = p.ctrlKey || p.metaKey;
                   const shift = p.shiftKey;
                   setSelection((prev) => {
-                    // Picking an edge empties the face multi-pick and the
-                    // other way round: the multi-pick used to be two separate
-                    // arrays, each emptied by the other kind's branch.
-                    const kin: SelectionState = { ...prev, items: prev.items.filter((i) => i.kind === p.kind) };
+                    // SPEC-mouse-parity.md Phase 3 item 3 (mixed selection):
+                    // Ctrl/Shift accumulate across EVERY kind now, not just
+                    // the kind just clicked -- toggle()/addIfAbsent() already
+                    // compare by kind+target+name (selection-model.ts's own
+                    // sameItem() rule), so a face and an edge are never
+                    // mistaken for each other; the only thing standing in the
+                    // way of holding both at once was this reducer
+                    // pre-filtering `prev.items` down to the just-clicked
+                    // kind before handing it to them -- the two-separate-
+                    // arrays quirk P3.2's vertex/body work (commit 1cb9a3b)
+                    // inherited rather than fixed, since fixing it was always
+                    // this later item's job. A plain click still replaces
+                    // everything regardless of kind (replaceSelection ignores
+                    // `prev.items` entirely), and an unresolved pick still
+                    // clears everything (clearSelection ditto) -- neither of
+                    // those two ever read the filtered copy this used to
+                    // compute, so reading `prev` straight changes nothing
+                    // about them.
+                    //
                     // vertex/body (SPEC-mouse-parity.md Phase 3 item 2) have
                     // no naming machinery of their own -- ViewportPick's own
                     // `name` is always null for them, not sometimes-null the
@@ -1314,8 +1348,8 @@ export default function ReshapeStudio({
                     // plain feature-kind item's already is.
                     const canSelect = p.kind === 'vertex' || p.kind === 'body' || !!p.name;
                     const members = canSelect
-                      ? (shift ? toggleSelection(kin, item) : ctrl ? addIfAbsent(kin, item) : replaceSelection(kin, item))
-                      : clearSelection(kin);
+                      ? (shift ? toggleSelection(prev, item) : ctrl ? addIfAbsent(prev, item) : replaceSelection(prev, item))
+                      : clearSelection(prev);
                     // An owner-less pick leaves the feature ids alone, the
                     // same way `if (owner) setSelected([owner])` did -- see
                     // ownerOf()'s own comment on why it answers null.
@@ -1346,6 +1380,41 @@ export default function ReshapeStudio({
                 badgesInStatusBar={true}
                 filters={selection.filters}
                 onFiltersChange={(next) => setSelection((s) => ({ ...s, filters: next }))}
+                onBoxSelect={showBrep ? (items, shiftKey) => {
+                  // SPEC-mouse-parity.md Phase 3 item 4: a box-select drag's
+                  // result lands here -- pure UI state, setSelection only,
+                  // so it adds ZERO undo entries (undo history is doc
+                  // history; `past`/`future` above are never touched).
+                  // Shift held: every item joins whatever is already
+                  // selected (addIfAbsent, the same no-duplicate rule a
+                  // Ctrl-click uses); released: the box REPLACES the whole
+                  // selection, the same way a plain click does. An empty
+                  // box result replaces with nothing -- the same
+                  // click-on-empty-space clears.
+                  setSelection((prev) => {
+                    // Shift + an empty box result is a complete no-op --
+                    // "add nothing to what is there" must not fall through
+                    // to the withFeatureIds() below and wipe the feature ids
+                    // the drag started from.
+                    if (shiftKey && items.length === 0) return prev;
+                    const base = shiftKey ? prev : clearSelection(prev);
+                    let next = base;
+                    // addIfAbsent, not add: a box's corner vertex occupies
+                    // several of the mesh's own position slots, so the raw
+                    // result carries repeated identical items -- the same
+                    // no-duplicate rule a Ctrl-click already applies.
+                    for (const item of items) next = addIfAbsent(next, item);
+                    const last = items[items.length - 1] ?? null;
+                    const owner = last ? ownerOf(doc, { target: last.target, name: last.name ?? null }) : null;
+                    return {
+                      // An empty box result replaces with NOTHING -- the
+                      // same click-on-empty-space clears -- so the feature
+                      // ids the drag started from are not resurrected here.
+                      ...withFeatureIds(next, owner ? [owner] : last ? featuresOf(prev) : []),
+                      primary: last,
+                    };
+                  });
+                } : undefined}
                 registerPickAt={(fn) => { pickAtRef.current = fn; }}
               />
             ) : !sketchEditId ? (

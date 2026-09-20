@@ -100,7 +100,7 @@ import {
 } from '@shuff57/reshape-script/model-types';
 import { partWordFor, type TopoName } from '@shuff57/reshape-script/topo-name';
 import { ownerOf } from '@shuff57/reshape-script/model-selection';
-import { featuresOf, ownerScoped, primaryOf, type SelectionState } from '../selection-model.js';
+import { edgesOf, featuresOf, ownerScoped, primaryOf, type SelectionItem, type SelectionState } from '../selection-model.js';
 
 interface Props {
   doc: ModelDoc;
@@ -672,6 +672,20 @@ export default function ModelEditor({
     say(null);
   }
 
+  /** SPEC-mouse-parity.md Phase 3 item 3 (mixed selection): fillet only ever
+   *  consumes edges -- a face/vertex/body riding along in the same selection
+   *  (Ctrl/Shift-picked alongside the edges, same owning solid) is used by
+   *  nothing here, so round() must say so rather than silently drop it, the
+   *  same way every other refusal in this file is a sentence, not a no-op. */
+  function mixedSelectionNote(scoped: SelectionItem[]): string | null {
+    const ignored = scoped.filter((i) => i.kind !== 'edge');
+    if (!ignored.length) return null;
+    const counts = new Map<string, number>();
+    for (const i of ignored) counts.set(i.kind, (counts.get(i.kind) ?? 0) + 1);
+    const parts = [...counts.entries()].map(([kind, n]) => `${n} ${kind}${n > 1 ? 's' : ''}`);
+    return `fillet: ignoring ${parts.join(', ')} — edges only`;
+  }
+
   function round(style: RoundStyle) {
     // Item E: two or more Shift-selected edges on the SAME solid as `chosen`
     // round/bevel together from one click. ownerOf() re-checks each one the
@@ -688,13 +702,16 @@ export default function ModelEditor({
     // several timeline rows instead of one; flagged rather than silently
     // presented as a single feature.
     // ownerScoped() IS that ownerOf() re-check, run over the shared
-    // selection's own items; the kind filter is what keeps this the
-    // multi-EDGE path (a face pick lives in the same list now).
-    const multi: Array<{ target: string; edge: TopoName }> = chosen.length === 1
-      ? ownerScoped(selection, doc, chosen[0].id)
-        .filter((i) => i.kind === 'edge' && i.name != null)
-        .map((i) => ({ target: i.target, edge: i.name as TopoName }))
-      : [];
+    // selection's own items -- hoisted so the single-edge branch below can
+    // also report what it ignored (mixedSelectionNote() above).
+    const scoped: SelectionItem[] = chosen.length === 1 ? ownerScoped(selection, doc, chosen[0].id) : [];
+    // P3.3: the kind-filtered view, not a hand-rolled .filter -- the same
+    // helper the status label reads, so label and command can never drift.
+    const scopedState: SelectionState = { ...selection, items: scoped };
+    const scopedEdges = edgesOf(scopedState);
+    const multi: Array<{ target: string; edge: TopoName }> = scopedEdges
+      .filter((i) => i.name != null)
+      .map((i) => ({ target: i.target, edge: i.name as TopoName }));
     if (multi.length > 1) {
       let building = doc;
       const made: FilletFeature[] = [];
@@ -718,7 +735,36 @@ export default function ModelEditor({
       clearPickedEdge();
       setLastRound(style);
       setMenu(null);
-      say(null);
+      say(mixedSelectionNote(scoped));
+      return;
+    }
+    // P3.3: exactly ONE named edge in the selection, with other kinds riding
+    // along. The multi branch above needs 2+, and the pickedEdge branch below
+    // only fires when the edge is the PRIMARY (the most recent click) -- so a
+    // Ctrl-picked edge sitting in `items` beside a face used to fall through
+    // to the whole-shape round, silently ignoring the edge the student
+    // explicitly picked. This branch rounds it and lets the note say what
+    // was ignored; `scoped` is already ownerScoped to chosen[0], so no
+    // second ownerOf() re-check is needed here.
+    if (multi.length === 1 && chosen.length === 1) {
+      const e = multi[0];
+      const root = doc.features.find((x) => x.id === e.edge.feature);
+      const size = root && isRoundable(root) ? Math.min(maxRound(root), 4) : 4;
+      const f: FilletFeature = {
+        id: nextId(doc, style === 'chamfer' ? 'bevel' : 'round'),
+        kind: 'fillet',
+        target: e.target,
+        edge: e.edge,
+        size,
+        style,
+      };
+      onChange({ ...doc, features: [...doc.features, f] });
+      setSelected([f.id]);
+      clearPickedEdgeItems();
+      clearPickedEdge();
+      setLastRound(style);
+      setMenu(null);
+      say(mixedSelectionNote(scoped));
       return;
     }
     // A picked EDGE (a click in the 3D viewport) takes priority over the
@@ -773,7 +819,7 @@ export default function ModelEditor({
       clearPickedEdge();
       setLastRound(style);
       setMenu(null);
-      say(null);
+      say(mixedSelectionNote(scoped));
       return;
     }
     if (chosen.length !== 1) {
