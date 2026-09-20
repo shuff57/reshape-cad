@@ -164,10 +164,19 @@ export interface BrepViewportStats {
  * in lib/topo-resolve.ts for which faces/edges that covers and which they
  * honestly refuse. The caller can still show it was picked; it just cannot
  * build a Fillet, or an open Hollow, from it.
+ *
+ * `ctrlKey`/`shiftKey`/`metaKey` are read straight off the triggering
+ * PointerEvent/MouseEvent at the moment of the pick (SPEC-mouse-parity.md
+ * Phase 3 item 1), never a global keyboard listener -- the stopgap that
+ * used to fake Shift this way is gone precisely because
+ * a page-wide listener could not tell "Shift held while clicking this
+ * canvas" from "Shift held while the runner iframe has focus". A pick with
+ * no real triggering event (restorePicks()'s own re-emission once a name
+ * resolves post-rebuild) carries all three false.
  */
 export type ViewportPick =
-  | { kind: 'face'; target: string; faceIndex: number; name: TopoName | null; size?: [number, number] }
-  | { kind: 'edge'; target: string; name: TopoName | null; size?: number };
+  | { kind: 'face'; target: string; faceIndex: number; name: TopoName | null; size?: [number, number]; ctrlKey: boolean; shiftKey: boolean; metaKey: boolean }
+  | { kind: 'edge'; target: string; name: TopoName | null; size?: number; ctrlKey: boolean; shiftKey: boolean; metaKey: boolean };
 
 // faceSize()/edgeLength() used to live here as module-level helpers taking a
 // raw `oc` handle -- moved onto EngineAdapter itself (see engine-adapter.ts's
@@ -1401,7 +1410,8 @@ export default function BrepViewportThree({
     // so it can also run for a HandleOverlay tap (see registerPickAt's own
     // doc comment) -- same naming, same highlight paint, same onPick emission
     // either way, rather than a second copy that could drift from this one.
-    function pickAt(clientX: number, clientY: number) {
+    function pickAt(clientX: number, clientY: number, mods?: { ctrlKey: boolean; shiftKey: boolean; metaKey: boolean }) {
+      const { ctrlKey = false, shiftKey = false, metaKey = false } = mods ?? {};
       const hit = hitAt(clientX, clientY);
       if (!hit) {
         selectedFaceMesh.visible = false;
@@ -1440,7 +1450,7 @@ export default function BrepViewportThree({
         if (kernelFace) {
           try { size = engine.faceSize(kernelFace) ?? undefined; } catch { size = undefined; }
         }
-        onPickRef.current?.({ kind: 'face', target: featureId, faceIndex: hit.range.index, name, size });
+        onPickRef.current?.({ kind: 'face', target: featureId, faceIndex: hit.range.index, name, size, ctrlKey, shiftKey, metaKey });
       } else {
         const { featureId, kernelEdge } = hit.line.userData as {
           featureId: string; kernelEdge: any;
@@ -1465,7 +1475,7 @@ export default function BrepViewportThree({
         selectedFaceStateRef.current = null;
         let size: number | undefined;
         try { size = engine.edgeLength(kernelEdge) ?? undefined; } catch { size = undefined; }
-        onPickRef.current?.({ kind: 'edge', target: featureId, name, size });
+        onPickRef.current?.({ kind: 'edge', target: featureId, name, size, ctrlKey, shiftKey, metaKey });
       }
       renderNow();
     }
@@ -1545,7 +1555,7 @@ export default function BrepViewportThree({
       if (downAt === null) return;
       const moved = Math.hypot(e.clientX - downAt.x, e.clientY - downAt.y);
       if (moved > CLICK_DRAG_TOLERANCE_PX) return;
-      pickAt(e.clientX, e.clientY);
+      pickAt(e.clientX, e.clientY, { ctrlKey: e.ctrlKey, shiftKey: e.shiftKey, metaKey: e.metaKey });
     }
     renderer.domElement.addEventListener('pointermove', onPointerMove);
     renderer.domElement.addEventListener('pointerleave', onPointerLeave);
@@ -2559,7 +2569,10 @@ export default function BrepViewportThree({
           unnamedFacePickRef.current = null;
           let size: [number, number] | undefined;
           try { size = engine.faceSize(kernelFace) ?? undefined; } catch { size = undefined; }
-          onPickRef.current?.({ kind: 'face', target: sel.featureId, faceIndex: sel.faceIndex, name, size });
+          // Not a real click -- see this function's own header -- so there is no
+          // event to read real modifiers off; SPEC-mouse-parity.md Phase 3 item 1
+          // treats that as "none held", same as any other programmatic pick.
+          onPickRef.current?.({ kind: 'face', target: sel.featureId, faceIndex: sel.faceIndex, name, size, ctrlKey: false, shiftKey: false, metaKey: false });
         }
       }
     } else {

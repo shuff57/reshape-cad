@@ -30,6 +30,7 @@ import ContextBar, { type ContextBarAction } from './model/ContextBar.js';
 import type { ContextActions } from './model/ModelEditor.js';
 import { writeSTL, writeOBJ, write3MF, type MeshInput } from './mesh-export.js';
 import {
+  add as addSelection,
   clear as clearSelection,
   emptySelection,
   featuresOf,
@@ -40,7 +41,6 @@ import {
   type SelectionItem,
   type SelectionState,
 } from './selection-model.js';
-import { useShiftHeld } from './pick-modifiers.js';
 import { outlineOf } from '@shuff57/reshape-sketch/sketch-arc';
 import { handlesFor, featureCenter, type HandleSpec } from '@shuff57/reshape-script/model-handles';
 import { EMPTY_DOC, type Feature, isSketchOnly, type ModelDoc, nameMap, type SketchPlane } from '@shuff57/reshape-script/model-types';
@@ -96,6 +96,23 @@ function withFeatureIds(state: SelectionState, ids: string[]): SelectionState {
  *  selection-model.ts's deviation list). */
 function itemOfPick(p: ViewportPick): SelectionItem {
   return { kind: p.kind, target: p.target, name: p.name, size: p.size };
+}
+
+/** Ctrl/Meta-click: add `item` to the selection unless an equal item (same
+ *  kind+target+name -- selection-model.ts's own sameItem() equality, which
+ *  toggle()'s hit-check already uses) is already in it, in which case the
+ *  selection is left untouched. selection-model.ts's own add() is a raw,
+ *  no-presence-check append BY DESIGN (see its doc comment: "a caller that
+ *  wants add only if absent calls toggle() after checking") precisely
+ *  because Ctrl and Shift need DIFFERENT answers to "item already
+ *  selected": Shift removes it (toggle()), Ctrl must never (it only ever
+ *  adds) -- so the presence check happens here, once, rather than being a
+ *  second copy of toggle()'s own. */
+function addIfAbsent(state: SelectionState, item: SelectionItem): SelectionState {
+  const present = state.items.some(
+    (i) => i.kind === item.kind && i.target === item.target && JSON.stringify(i.name ?? null) === JSON.stringify(item.name ?? null),
+  );
+  return present ? state : addSelection(state, item);
 }
 
 export type ReshapeStudioProps = {
@@ -287,14 +304,6 @@ export default function ReshapeStudio({
   useEffect(() => {
     setSelection((s) => withFeatureIds(s, featuresOf(s).filter((id) => doc.features.some((f) => f.id === id))));
   }, [doc]);
-  // Item E: a Shift-held click on a second edge/face adds it to the
-  // selection instead of replacing it, the same way the timeline/browser
-  // rows already work (ModelEditor.tsx's pick()). BrepViewportThree.tsx's
-  // onPick carries no modifier-key info, so Shift is still tracked from
-  // window listeners rather than threaded through the pick payload -- that
-  // listener now lives in pick-modifiers.ts, with its own comment on why it
-  // is a stopgap and which spec item deletes it (Phase 3 item 1).
-  const shiftHeld = useShiftHeld();
   // Item N: when a handle was last actually touched (a drag/commit) -- 
   // BrepViewportThree.tsx uses this to hold its own "A sketch is flat..."
   // Pull hint off screen while a student is visibly busy dragging a handle,
@@ -1257,7 +1266,11 @@ export default function ReshapeStudio({
                 onPick={showBrep ? (p: ViewportPick | null) => {
                   if (!p) {
                     // A click on nothing clears every axis at once -- what
-                    // six separate setters used to spell out one per line.
+                    // six separate setters used to spell out one per line --
+                    // regardless of any modifier held: Ctrl+click on empty
+                    // space clears too (SPEC-mouse-parity.md Phase 3 item 1's
+                    // "empty click clears"), so there is no way to leave a
+                    // stale selection stuck on by accident.
                     setSelection(clearSelection);
                     return;
                   }
@@ -1268,14 +1281,25 @@ export default function ReshapeStudio({
                   // ViewportPick's own comment) cannot join a multi-select,
                   // since Round/Angled Corner need a real name to build
                   // from same as the single-edge path already does.
-                  const shift = shiftHeld.current;
+                  //
+                  // Real modifiers, read off the triggering event at the
+                  // moment of the pick (ViewportPick's own ctrlKey/shiftKey/
+                  // metaKey) rather than a window keydown/keyup listener
+                  // guessing at the live keyboard state -- SPEC-mouse-parity.md
+                  // Phase 3 item 1. metaKey stands in for ctrlKey so a Mac's
+                  // Cmd-click matches a PC's Ctrl-click. Both held at once:
+                  // Shift wins (toggle) -- Fusion does not define this
+                  // combination, so this file does, the same as it already
+                  // has to for everything else `[CONFIRM ...]` in the spec.
+                  const ctrl = p.ctrlKey || p.metaKey;
+                  const shift = p.shiftKey;
                   setSelection((prev) => {
                     // Picking an edge empties the face multi-pick and the
                     // other way round: the multi-pick used to be two separate
                     // arrays, each emptied by the other kind's branch.
                     const kin: SelectionState = { ...prev, items: prev.items.filter((i) => i.kind === p.kind) };
                     const members = p.name
-                      ? (shift ? toggleSelection(kin, item) : replaceSelection(kin, item))
+                      ? (shift ? toggleSelection(kin, item) : ctrl ? addIfAbsent(kin, item) : replaceSelection(kin, item))
                       : clearSelection(kin);
                     // An owner-less pick leaves the feature ids alone, the
                     // same way `if (owner) setSelected([owner])` did -- see
