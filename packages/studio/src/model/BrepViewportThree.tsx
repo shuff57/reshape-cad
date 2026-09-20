@@ -77,6 +77,9 @@ import type { HandleSpec } from '@shuff57/reshape-script/model-handles';
 import type { AnchorPoint } from './HandleOverlay.js';
 import { mergeMeshes, type MeshInput } from '../mesh-export.js';
 import { bboxCenter, DEFAULT_FILL_FRACTION, fitDistance, type Box3Like } from '../camera-fit.js';
+import { DEFAULT_SCHEME_NAME, MOUSE_SCHEMES, loadSchemeName, saveSchemeName, schemeToMouseButtons, schemeToTouches, type MouseScheme } from '../camera-controls.js';
+import { CameraMode, loadCameraMode, orthoFrustumFromPerspective, saveCameraMode } from '../ortho-camera.js';
+import { computeSelectionFit, computeWindowZoomFit, type Vec3 } from '../window-zoom-fit.js';
 
 /** The Dracula palette this app already uses everywhere else -- see
  *  app/globals.css and BrepViewport.tsx. */
@@ -454,6 +457,24 @@ export default function BrepViewportThree({
   // Underneath view from Top -- straight up and straight down look alike --
   // so the strip itself says which one is active.
   const [preset, setPreset] = useState<'home' | 'top' | 'front' | 'underneath' | null>('home');
+  // SPEC-mouse-parity Phase 1: which mouse-button preset OrbitControls is
+  // bound to ('legacy' = stock three.js L-orbit/M-dolly/R-pan, what this
+  // viewport has always done; 'fusion' = M-pan / R-dolly) and whether the
+  // live camera is perspective or orthographic. Both persist across sessions.
+  const [mouseScheme, setMouseScheme] = useState<MouseScheme>(() => loadSchemeName());
+  const mouseSchemeRef = useRef<MouseScheme>(mouseScheme);
+  mouseSchemeRef.current = mouseScheme;
+  const [cameraKind, setCameraKind] = useState<CameraMode>(() => loadCameraMode());
+  // Same stale-closure reasoning as docRef below: the scene-setup effect's
+  // applyCameraMode() was created once and reads this ref, never the state.
+  const cameraKindRef = useRef<CameraMode>(cameraKind);
+  cameraKindRef.current = cameraKind;
+  // Window-zoom: null = inert; 'armed' = the next left-drag draws a zoom
+  // rectangle instead of orbiting; a rect = mid-drag (drives the overlay).
+  // React state because arming changes the cursor and mid-drag re-renders the
+  // rectangle div; the bookkeeping the pointer handlers mutate lives beside
+  // it in windowZoomRef.
+  const [windowZoom, setWindowZoom] = useState<{ x: number; y: number; w: number; h: number } | 'armed' | null>(null);
   // Nav cube: DOM node whose CSS transform is synced to the live camera
   // orientation every frame (see the rAF effect below) -- a ref, not state,
   // so 60x/sec orientation reads never trigger a React re-render.
@@ -531,8 +552,22 @@ export default function BrepViewportThree({
    *  the exact per-edit cost this component exists to avoid. */
   const rendererRef = useRef<THREE_NS.WebGLRenderer | null>(null);
   const sceneRef = useRef<THREE_NS.Scene | null>(null);
-  const cameraRef = useRef<THREE_NS.PerspectiveCamera | null>(null);
+  /** The live camera. Phase 1 (SPEC-mouse-parity) swaps between a
+   *  PerspectiveCamera and an OrthographicCamera in place (applyCameraMode
+   *  below); typed as the union because every consumer treats both the same
+   *  except for the projection details each swap carries across itself. */
+  const cameraRef = useRef<THREE_NS.PerspectiveCamera | THREE_NS.OrthographicCamera | null>(null);
+  /** The camera NOT currently live -- kept constructed so a mode toggle never
+   *  re-measures the container or re-states clipping planes. */
+  const inactiveCameraRef = useRef<THREE_NS.PerspectiveCamera | THREE_NS.OrthographicCamera | null>(null);
   const controlsRef = useRef<OrbitControlsType | null>(null);
+  /** Pointer-down bookkeeping for the scene-setup effect's click-vs-drag
+   *  threshold and the window-zoom rectangle drag; see its onPointerDown.
+   *  `null` when no window-zoom is armed; `{ armed: true }` from the Win Zoom
+   *  button until the effect's pointerup consumes it. A ref, not state, so the
+   *  effect's `[phase]`-only handlers can read the flag they were created
+   *  before. */
+  const windowZoomRef = useRef<{ armed: boolean } | null>(null);
   /** The current solid(s), as a group, so a rebuild can dispose the old
    *  geometry rather than leaking a WebGL buffer per edit. */
   const solidGroupRef = useRef<THREE_NS.Group | null>(null);
@@ -587,6 +622,12 @@ export default function BrepViewportThree({
   onEngineRef.current = onEngine;
   const registerPickAtRef = useRef(registerPickAt);
   registerPickAtRef.current = registerPickAt;
+  /** The scene-setup effect's window-zoom drag (a `[phase]`-only closure) hands
+   *  its finished rectangle to the component-level applyWindowZoomRect through
+   *  here -- same stale-closure pattern as registerPickAtRef itself, one
+   *  indirection so an effect created once can call a function written below
+   *  it in the file. */
+  const applyWindowZoomRectRef = useRef<((rect: { x: number; y: number; width: number; height: number }, viewportWidth: number, viewportHeight: number) => void) | null>(null);
   // The scene-setup effect below only re-runs on a `phase` change (see its
   // own dep array), so its onClick closure is created ONCE and would
   // otherwise keep reading whatever `doc` was current at that moment --
@@ -700,14 +741,33 @@ export default function BrepViewportThree({
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(COLORS.bg);
 
-    const camera = new THREE.PerspectiveCamera(
-      45, container.clientWidth / Math.max(1, container.clientHeight), 0.1, 5000,
+    // SPEC-mouse-parity Phase 1: both camera kinds exist from the start so the
+    // view-strip's Persp/Ortho toggle (applyCameraMode below, bound by the
+    // camera-mode effect further down) never has to re-measure the container--
+    // the toggle only re-derives the ortho frustum at the current target
+    // distance and copies placement across. `camera` is whichever kind the
+    // persisted mode (loadCameraMode) says; everything below keeps compiling
+    // against it unchanged because the union carries both kinds' members.
+    const initialKind = cameraKindRef.current;
+    const aspect0 = container.clientWidth / Math.max(1, container.clientHeight);
+    const perspCamera = new THREE.PerspectiveCamera(45, aspect0, 0.1, 5000);
+    perspCamera.up.set(0, 0, 1);
+    perspCamera.position.set(140, 160, 130);
+    perspCamera.lookAt(0, 0, 0);
+    const orthoDist0 = perspCamera.position.length();
+    const orthoFrame0 = orthoFrustumFromPerspective(
+      { fov: perspCamera.fov, aspect: aspect0, near: perspCamera.near, far: perspCamera.far },
+      orthoDist0,
     );
-    // Z-up, matching every other view of a ModelDoc in this app (the sketch
-    // planes, the JSCAD/regl viewport) -- extrude runs along +Z, not +Y.
-    camera.up.set(0, 0, 1);
-    camera.position.set(140, 160, 130);
-    camera.lookAt(0, 0, 0);
+    const orthoCamera = new THREE.OrthographicCamera(
+      orthoFrame0.left, orthoFrame0.right, orthoFrame0.top, orthoFrame0.bottom,
+      orthoFrame0.near, orthoFrame0.far,
+    );
+    orthoCamera.up.set(0, 0, 1);
+    orthoCamera.position.set(140, 160, 130);
+    orthoCamera.lookAt(0, 0, 0);
+    const camera = initialKind === CameraMode.ORTHOGRAPHIC ? orthoCamera : perspCamera;
+    inactiveCameraRef.current = initialKind === CameraMode.ORTHOGRAPHIC ? perspCamera : orthoCamera;
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -852,9 +912,43 @@ export default function BrepViewportThree({
 
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.target.set(0, 0, 0);
-    controls.enableDamping = true;
     controls.dampingFactor = 0.1;
-
+    // SPEC-mouse-parity Phase 1 items 1+2: bind the persisted mouse scheme's
+    // button/touch map and zoom the wheel toward the cursor. camera-controls
+    // .ts is action->button-number; OrbitControls is slot->action (LEFT
+    // /MIDDLE/RIGHT, ONE/TWO), so the mapping inverts through THREE's own
+    // MOUSE/TOUCH enums. Effect-scoped because the scheme effect below is the
+    // only other caller, and it reaches this same instance via controlsRef.
+    //
+    // Touches: the scheme's 0/1/2 slot index maps onto ONE(=0)/TWO(=1); index
+    // 2 ("middle") has no slot on three.js's touches today and is dropped --
+    // the stock configuration never bound it either.
+    const bindMouseScheme = (c: OrbitControlsType, scheme: MouseScheme) => {
+      const buttons = schemeToMouseButtons(scheme);
+      const mb: { LEFT?: number; MIDDLE?: number; RIGHT?: number } = {};
+      if (buttons.ORBIT === 0) mb.LEFT = THREE.MOUSE.ROTATE;
+      else if (buttons.ORBIT === 1) mb.MIDDLE = THREE.MOUSE.ROTATE;
+      else if (buttons.ORBIT === 2) mb.RIGHT = THREE.MOUSE.ROTATE;
+      if (buttons.PAN === 0) mb.LEFT = THREE.MOUSE.PAN;
+      else if (buttons.PAN === 1) mb.MIDDLE = THREE.MOUSE.PAN;
+      else if (buttons.PAN === 2) mb.RIGHT = THREE.MOUSE.PAN;
+      if (buttons.DOLLY === 0) mb.LEFT = THREE.MOUSE.DOLLY;
+      else if (buttons.DOLLY === 1) mb.MIDDLE = THREE.MOUSE.DOLLY;
+      else if (buttons.DOLLY === 2) mb.RIGHT = THREE.MOUSE.DOLLY;
+      c.mouseButtons = mb as OrbitControlsType['mouseButtons'];
+      const t = schemeToTouches(scheme);
+      const touches: { ONE?: number; TWO?: number } = {};
+      if (t.ORBIT === 0) touches.ONE = THREE.TOUCH.ROTATE;
+      else if (t.ORBIT === 1) touches.TWO = THREE.TOUCH.ROTATE;
+      if (t.PAN === 0) touches.ONE = THREE.TOUCH.PAN;
+      else if (t.PAN === 1) touches.TWO = THREE.TOUCH.PAN;
+      if (t.DOLLY === 0) touches.ONE = THREE.TOUCH.DOLLY_PAN;
+      else if (t.DOLLY === 1) touches.TWO = THREE.TOUCH.DOLLY_PAN;
+      c.touches = touches as OrbitControlsType['touches'];
+    };
+    bindMouseScheme(controls, mouseSchemeRef.current);
+    schemeBindRef.current = (scheme) => bindMouseScheme(controls, scheme);
+    controls.zoomToCursor = true;
     const renderNow = () => renderer.render(scene, camera);
 
     // RENDER ON DEMAND, not a continuous rAF loop -- this is the point of the
@@ -931,7 +1025,18 @@ export default function BrepViewportThree({
       // would compare CSS pixels against DEVICE pixels the moment
       // devicePixelRatio is not 1, which is a false-mismatch on every call.
       renderer.setSize(w, h);
-      camera.aspect = w / h;
+      // The union makes `camera` look like it carries both projection shapes;
+      // guard on the real kind instead of reaching for `aspect`/frustum fields
+      // the other kind does not have. Both branches end with the same
+      // updateProjectionMatrix() + LineMaterial resolution refresh below.
+      if ((camera as THREE_NS.PerspectiveCamera).isPerspectiveCamera) {
+        (camera as THREE_NS.PerspectiveCamera).aspect = w / h;
+      } else {
+        const ortho = camera as THREE_NS.OrthographicCamera;
+        const hh = (ortho.top - ortho.bottom) / 2;
+        const hw = hh * (w / h);
+        ortho.left = -hw; ortho.right = hw;
+      }
       camera.updateProjectionMatrix();
       // LineMaterial (item V's grid/axes) computes its own screen-space
       // line width from this -- stale after a resize would draw them too
@@ -1364,15 +1469,97 @@ export default function BrepViewportThree({
       }
       renderNow();
     }
-    function onClick(e: MouseEvent) {
-      // Left click only. This app's own navigation convention is right-drag
-      // to orbit and left-drag is a deliberate no-op (see HANDOFF.md), so a
-      // plain left click never contends with OrbitControls for the gesture.
+    // CLICK vs DRAG, and WINDOW-ZOOM as its own drag gesture. The pick gesture
+    // is a left-button click WITHOUT a drag; OrbitControls itself never fires
+    // a `click` for a drag it consumed, but a click fires the moment ANY press
+    // releases, moved or not -- so this component tells the two apart itself:
+    // pointerdown records where the press started, and a `click` whose pointer
+    // moved past a few pixels since then is the tail end of an orbit/pan/dolly
+    // gesture, not a pick. This check stays a movement threshold even though
+    // the scheme preset above makes which-BUTTON-orbits configurable, because
+    // the button that was pressed is not the question -- whether the pointer
+    // MOVED is.
+    //
+    // Window-zoom is armed from the view strip (button below), then runs as
+    // its own captured-pointer drag on the canvas: `controls.enabled` goes
+    // false for just that drag (the ONE supported way to keep OrbitControls
+    // out of a gesture it would otherwise claim), the rectangle is tracked in
+    // React state so the overlay div draws it, and pointerup hands the
+    // finished rect to applyWindowZoomRect(). `windowZoomRef.current !== null`
+    // means "armed, and the next left-drag is the rectangle".
+    let downAt: { x: number; y: number } | null = null;
+    const CLICK_DRAG_TOLERANCE_PX = 4;
+    function onCanvasPointerDown(e: PointerEvent) {
       if (e.button !== 0) return;
+      downAt = { x: e.clientX, y: e.clientY };
+      if (windowZoomRef.current === null) return;
+      // Arming already set the ref; from here on the drag is the rectangle.
+      e.preventDefault();
+      renderer.domElement.setPointerCapture(e.pointerId);
+      controls.enabled = false;
+    }
+    function onCanvasPointerMove(e: PointerEvent) {
+      if (windowZoomRef.current === null) return;
+      if (downAt === null) return;
+      const bounds = renderer.domElement.getBoundingClientRect();
+      setWindowZoom({
+        x: Math.min(downAt.x, e.clientX) - bounds.left,
+        y: Math.min(downAt.y, e.clientY) - bounds.top,
+        w: Math.abs(e.clientX - downAt.x),
+        h: Math.abs(e.clientY - downAt.y),
+      });
+    }
+    function onCanvasPointerUp(e: PointerEvent) {
+      if (windowZoomRef.current === null) return;
+      try { renderer.domElement.releasePointerCapture(e.pointerId); } catch { /* already released */ }
+      controls.enabled = true;
+      windowZoomRef.current = null;
+      setWindowZoom(null);
+      const start = downAt;
+      downAt = null;
+      if (start === null) return;
+      const width = Math.abs(e.clientX - start.x);
+      const height = Math.abs(e.clientY - start.y);
+      if (width <= CLICK_DRAG_TOLERANCE_PX || height <= CLICK_DRAG_TOLERANCE_PX) return;
+      const bounds = renderer.domElement.getBoundingClientRect();
+      applyWindowZoomRectRef.current?.(
+        {
+          x: Math.min(start.x, e.clientX) - bounds.left,
+          y: Math.min(start.y, e.clientY) - bounds.top,
+          width,
+          height,
+        },
+        bounds.width,
+        bounds.height,
+      );
+    }
+    function onClick(e: MouseEvent) {
+      if (e.button !== 0) return;
+      // The stale comment this replaces claimed "right-drag orbits" -- it did
+      // not (stock OrbitControls binds LEFT-drag to orbit, and always has),
+      // and with the scheme preset above that binding is user-switchable
+      // besides, so no orbit button can be named here at all. What stays true
+      // is the split itself: a drag of ANY button is navigation, and the
+      // movement check below is what keeps its release from ever reaching
+      // pickAt().
+      if (downAt === null) return;
+      const moved = Math.hypot(e.clientX - downAt.x, e.clientY - downAt.y);
+      if (moved > CLICK_DRAG_TOLERANCE_PX) return;
       pickAt(e.clientX, e.clientY);
     }
     renderer.domElement.addEventListener('pointermove', onPointerMove);
     renderer.domElement.addEventListener('pointerleave', onPointerLeave);
+    renderer.domElement.addEventListener('pointermove', onPointerMove);
+    renderer.domElement.addEventListener('pointerleave', onPointerLeave);
+    // pointerdown/move/up sit BESIDE click here, not inside the existing
+    // onPointerMove above -- that one is throttled to a hover raycast and
+    // returns early when none is in flight, which is the wrong shape for a
+    // state machine that has to see EVERY move of a drag gesture. The three
+    // below are raw and cheap (four compares against null on the hover path).
+    renderer.domElement.addEventListener('pointerdown', onCanvasPointerDown);
+    renderer.domElement.addEventListener('pointermove', onCanvasPointerMove);
+    renderer.domElement.addEventListener('pointerup', onCanvasPointerUp);
+    renderer.domElement.addEventListener('pointercancel', onCanvasPointerUp);
     renderer.domElement.addEventListener('click', onClick);
     registerPickAtRef.current?.(pickAt);
 
@@ -1385,6 +1572,10 @@ export default function BrepViewportThree({
       resizeObserver.disconnect();
       renderer.domElement.removeEventListener('pointermove', onPointerMove);
       renderer.domElement.removeEventListener('pointerleave', onPointerLeave);
+      renderer.domElement.removeEventListener('pointerdown', onCanvasPointerDown);
+      renderer.domElement.removeEventListener('pointermove', onCanvasPointerMove);
+      renderer.domElement.removeEventListener('pointerup', onCanvasPointerUp);
+      renderer.domElement.removeEventListener('pointercancel', onCanvasPointerUp);
       renderer.domElement.removeEventListener('click', onClick);
       if (pendingHoverRaf !== null) cancelAnimationFrame(pendingHoverRaf);
       if (dampingRafRef.current !== null) cancelAnimationFrame(dampingRafRef.current);
@@ -1408,6 +1599,7 @@ export default function BrepViewportThree({
       rendererRef.current = null;
       sceneRef.current = null;
       cameraRef.current = null;
+      inactiveCameraRef.current = null;
       controlsRef.current = null;
       solidGroupRef.current = null;
       hoverFaceMeshRef.current = null;
@@ -1417,6 +1609,7 @@ export default function BrepViewportThree({
       hoveredEdgeTubeRef.current = null;
       selectedEdgeTubeRef.current = null;
       edgePickLinesRef.current = [];
+      windowZoomRef.current = null;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase]);
@@ -1605,7 +1798,8 @@ export default function BrepViewportThree({
       max: [box.max.x, box.max.y, box.max.z],
     };
     const center = bboxCenter(bbox);
-    const distance = fitDistance(bbox, container.clientWidth, container.clientHeight, camera.fov);
+    const perspCamera = camera as THREE_NS.PerspectiveCamera;
+    const distance = fitDistance(bbox, container.clientWidth, container.clientHeight, perspCamera.fov ?? 45);
 
     const direction = new THREE.Vector3(dir[0], dir[1], dir[2]).normalize();
     controls.target.set(center[0], center[1], center[2]);
@@ -1631,7 +1825,198 @@ export default function BrepViewportThree({
    *
    * Respects prefers-reduced-motion by skipping straight to the instant
    * fitToModel() behaviour (0ms is still "the same fit", just not eased).
+  /**
+   * SPEC-mouse-parity Phase 1 item 3: swap the live camera for the other kind,
+   * keeping the current orbit (position + controls.target) and the framing at
+   * that target distance, so the toggle reads as the same model flattened, not
+   * a jump-cut. The one OrbitControls instance just gets told which object to
+   * drive; its internal spherical state re-derives off the new camera on the
+   * next controls.update() the same way lookFrom() re-keys it after a preset.
    */
+  function applyCameraMode(next: CameraMode) {
+    const three = threeRef.current;
+    const controls = controlsRef.current;
+    const renderer = rendererRef.current;
+    const scene = sceneRef.current;
+    const container = containerRef.current;
+    if (!three || !controls || !renderer || !scene || !container) return;
+    const { THREE } = three;
+    const current = cameraRef.current;
+    const other = inactiveCameraRef.current;
+    if (!current || !other) return;
+    if (next === cameraKindRef.current) return;
+
+    // Placement + target carry over verbatim -- both cameras orbit the same
+    // point at the same distance.
+    other.position.copy(current.position);
+    other.up.copy(current.up);
+    controls.object = other;
+    cameraRef.current = other;
+    inactiveCameraRef.current = current;
+    cameraKindRef.current = next;
+    // Resize handler reads the live camera's own kind, so it keeps whichever
+    // projection this swap landed on aspect-correct from here on.
+    const w = container.clientWidth;
+    const h = Math.max(1, container.clientHeight);
+    if (next === CameraMode.ORTHOGRAPHIC) {
+      const persp = current as THREE_NS.PerspectiveCamera;
+      const targetDistance = current.position.distanceTo(controls.target);
+      const frame = orthoFrustumFromPerspective(
+        { fov: persp.fov, aspect: w / h, near: persp.near, far: persp.far },
+        targetDistance,
+      );
+      const ortho = other as THREE_NS.OrthographicCamera;
+      ortho.left = frame.left; ortho.right = frame.right;
+      ortho.top = frame.top; ortho.bottom = frame.bottom;
+      ortho.near = frame.near; ortho.far = frame.far;
+      ortho.zoom = 1;
+      ortho.updateProjectionMatrix();
+    } else {
+      // Restoring the perspective camera preserves ITS fov/near/far (the swap
+      // never touched them); only aspect may have drifted since the last time
+      // it was live.
+      const persp = other as THREE_NS.PerspectiveCamera;
+      persp.aspect = w / h;
+      persp.updateProjectionMatrix();
+    }
+    controls.update();
+    renderer.render(scene, other);
+    projectAnchors();
+    setCameraKind(next);
+  }
+
+  /**
+   * SPEC-mouse-parity Phase 1 item 4: frame the selection as the new orbit
+   * target. The selection this component itself can reach is its OWN pick state
+   * (the picked face's feature+index, or the picked edge's feature) -- the
+   * `pick`/`selectedCount` props stop at display, so a window into
+   * ReshapeStudio's feature-tree selection is not rebuilt here. Boxes come
+   * from the live meshes drawGeoms() already tagged with featureId; an empty
+   * pick is a no-op button (disabled, and never rendered hot).
+   *
+   * A snap, not an eased fly-to -- the same deliberate instant-ness the Home
+   * button's own fitToModel() keeps for on-demand framing; the automatic
+   * first-solid path below is the only eased one (see animateFitToModel's
+   * own comment).
+   */
+  function fitSelection() {
+    const three = threeRef.current;
+    const camera = cameraRef.current;
+    const controls = controlsRef.current;
+    const renderer = rendererRef.current;
+    const scene = sceneRef.current;
+    const container = containerRef.current;
+    const group = solidGroupRef.current;
+    if (!three || !camera || !controls || !renderer || !scene || !container || !group) return;
+    const persp = cameraKindRef.current === CameraMode.PERSPECTIVE ? (camera as THREE_NS.PerspectiveCamera) : null;
+    // The fit math (computeSelectionFit) is written for a perspective-fov
+    // camera. Ortho mode asks the same question of the perspective camera it
+    // would swap BACK to (inactiveCameraRef) -- the frustum width/height at
+    // target distance matches, which is all the fit needs.
+    const fovCam = persp ?? (inactiveCameraRef.current as THREE_NS.PerspectiveCamera | null);
+    if (!fovCam) return;
+
+    const wanted = new Set<string>();
+    const facePick = selectedFaceStateRef.current;
+    if (facePick) wanted.add(facePick.featureId);
+    if (pick && pick.target) wanted.add(pick.target);
+    if (wanted.size === 0) return;
+    const boxes: Array<{ min: Vec3; max: Vec3 }> = [];
+    for (const child of group.children) {
+      const mesh = child as THREE_NS.Mesh;
+      const featureId = mesh.userData?.featureId as string | undefined;
+      if (!featureId || !wanted.has(featureId)) continue;
+      if (!mesh.geometry) continue;
+      mesh.geometry.computeBoundingBox();
+      const b = mesh.geometry.boundingBox;
+      if (!b) continue;
+      // computeSelectionFit takes plain tuples, not THREE.Box3 -- convert at
+      // the call site (its own file's note).
+      boxes.push({ min: [b.min.x, b.min.y, b.min.z], max: [b.max.x, b.max.y, b.max.z] });
+    }
+    if (boxes.length === 0) return;
+    const target: Vec3 = [controls.target.x, controls.target.y, controls.target.z];
+    const fit = computeSelectionFit(
+      boxes,
+      {
+        position: [camera.position.x, camera.position.y, camera.position.z],
+        fov: fovCam.fov ?? 45,
+        near: camera.near,
+        far: camera.far,
+      },
+      target,
+      container.clientWidth,
+      container.clientHeight,
+    );
+    if (!fit.valid) return;
+    const distance = Math.max(fit.distance, camera.near * 2);
+    const toTarget = new three.THREE.Vector3(fit.target[0], fit.target[1], fit.target[2]);
+    const direction = new three.THREE.Vector3(
+      camera.position.x - controls.target.x,
+      camera.position.y - controls.target.y,
+      camera.position.z - controls.target.z,
+    );
+    if (direction.lengthSq() < 1e-12) direction.set(140, 160, 130);
+    direction.normalize();
+    controls.target.copy(toTarget);
+    camera.position.copy(toTarget).addScaledVector(direction, distance);
+    controls.update();
+    renderer.render(scene, camera);
+    projectAnchors();
+  }
+
+  /** The scene-setup effect's captured drag hands its finished rectangle here
+   *  via applyWindowZoomRectRef -- kept component-level, not in the effect,
+   *  because it needs the live camera and controls the same way fitSelection
+   *  above does. A snap (not the eased animateFitToModel path) on purpose: this
+   *  is the student's own deliberate drag, the same on-demand class of gesture
+   *  the Home button already snaps for. */
+  function applyWindowZoomRect(rect: { x: number; y: number; width: number; height: number }, viewportWidth: number, viewportHeight: number) {
+    const three = threeRef.current;
+    const camera = cameraRef.current;
+    const controls = controlsRef.current;
+    const renderer = rendererRef.current;
+    const scene = sceneRef.current;
+    if (!three || !camera || !controls || !renderer || !scene) return;
+    const persp = cameraKindRef.current === CameraMode.PERSPECTIVE ? (camera as THREE_NS.PerspectiveCamera) : null;
+    const fovCam = persp ?? (inactiveCameraRef.current as THREE_NS.PerspectiveCamera | null);
+    if (!fovCam) return;
+    const sceneBox = computeSceneBox();
+    const boxTuple = sceneBox && !sceneBox.isEmpty()
+      ? { min: [sceneBox.min.x, sceneBox.min.y, sceneBox.min.z] as Vec3, max: [sceneBox.max.x, sceneBox.max.y, sceneBox.max.z] as Vec3 }
+      : null;
+    const target: Vec3 = [controls.target.x, controls.target.y, controls.target.z];
+    const fit = computeWindowZoomFit(
+      rect,
+      viewportWidth,
+      viewportHeight,
+      {
+        position: [camera.position.x, camera.position.y, camera.position.z],
+        fov: fovCam.fov ?? 45,
+        near: camera.near,
+        far: camera.far,
+      },
+      target,
+      boxTuple,
+    );
+    if (!fit.valid) return;
+    const { THREE } = three;
+    const direction = new THREE.Vector3(
+      camera.position.x - controls.target.x,
+      camera.position.y - controls.target.y,
+      camera.position.z - controls.target.z,
+    );
+    if (direction.lengthSq() < 1e-12) direction.set(140, 160, 130);
+    direction.normalize();
+    controls.target.set(fit.target[0], fit.target[1], fit.target[2]);
+    camera.position.copy(controls.target).addScaledVector(direction, fit.distance);
+    controls.update();
+    renderer.render(scene, camera);
+    projectAnchors();
+  }
+  applyWindowZoomRectRef.current = applyWindowZoomRect;
+
+
   function animateFitToModel(dir: [number, number, number], durationMs = 250) {
     const three = threeRef.current;
     const camera = cameraRef.current;
@@ -1649,7 +2034,8 @@ export default function BrepViewportThree({
       max: [box.max.x, box.max.y, box.max.z],
     };
     const center = bboxCenter(bbox);
-    const distance = fitDistance(bbox, container.clientWidth, container.clientHeight, camera.fov);
+    const perspCamera = camera as THREE_NS.PerspectiveCamera;
+    const distance = fitDistance(bbox, container.clientWidth, container.clientHeight, perspCamera.fov ?? 45);
     const direction = new THREE.Vector3(dir[0], dir[1], dir[2]).normalize();
 
     const toTarget = new THREE.Vector3(center[0], center[1], center[2]);
@@ -1792,8 +2178,9 @@ export default function BrepViewportThree({
       ? { min: [box.min.x, box.min.y, box.min.z], max: [box.max.x, box.max.y, box.max.z] }
       : { min: [-60, -60, 0], max: [60, 60, 0] };
     const center = bboxCenter(bbox);
+    const perspCamera = camera as THREE_NS.PerspectiveCamera;
     const distance = fitDistance(
-      bbox, container.clientWidth, container.clientHeight, camera.fov,
+      bbox, container.clientWidth, container.clientHeight, perspCamera.fov ?? 45,
       DEFAULT_FILL_FRACTION, occludedWidthPx,
     );
 
@@ -1808,7 +2195,7 @@ export default function BrepViewportThree({
     // world-per-pixel relationship fitDistance()'s own derivation uses,
     // inverted), then applied to BOTH camera.position and controls.target
     // so the orbit still turns around the same visual point afterward.
-    const worldPerPixel = (2 * distance * Math.tan((camera.fov * Math.PI) / 360)) / container.clientHeight;
+    const worldPerPixel = (2 * distance * Math.tan(((perspCamera.fov ?? 45) * Math.PI) / 360)) / container.clientHeight;
     const shiftWorld = (occludedWidthPx / 2) * worldPerPixel;
     const right = new THREE.Vector3().crossVectors(direction, camera.up).normalize();
 
@@ -2433,11 +2820,33 @@ try {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase, anchors]);
 
+  // ---- Phase 1 live bindings -----------------------------------------------
+  // The scene-setup effect is `[phase]`-only, so a preset switch or an ortho
+  // toggle after mount has to reach INTO the live instances from outside it --
+  // these effects are that seam. Both are no-ops until `phase` flips ready.
+  const schemeBindRef = useRef<((scheme: MouseScheme) => void) | null>(null);
+  useEffect(() => {
+    const controls = controlsRef.current;
+    if (phase !== 'ready' || !controls) return;
+    // The scene-setup effect's bindMouseScheme is a `[phase]`-only closure, so
+    // this same conversion has to reach it via the ref it stashed at setup
+    // time rather than re-defining the translation here.
+    schemeBindRef.current?.(mouseScheme);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase, mouseScheme]);
+
+  useEffect(() => {
+    if (phase !== 'ready') return;
+    applyCameraMode(cameraKind);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase, cameraKind]);
+
+
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: 320, background: COLORS.bg }}>
       <div
         ref={containerRef}
-        style={{ width: '100%', height: '100%', touchAction: 'none', cursor: phase === 'ready' ? 'grab' : 'default' }}
+        style={{ width: '100%', height: '100%', touchAction: 'none', cursor: phase === 'ready' ? (windowZoom !== null ? 'crosshair' : 'grab') : 'default' }}
       />
       {phase === 'loading' && (
         <div style={overlayStyle}>
@@ -2470,6 +2879,26 @@ try {
           <div style={{ color: COLORS.fg }}>{buildError}</div>
         </div>
       )}
+      {/* SPEC-mouse-parity Phase 1: the window-zoom rectangle, drawn as a DOM
+          overlay (not on the WebGL canvas) so it paints without a renderer render
+          and never leaves the render-on-demand loop. pointerEvents 'none' because
+          it is purely a readout of the drag already captured on the canvas. */}
+      {phase === 'ready' && typeof windowZoom === 'object' && windowZoom !== null && (() => {
+        const rect = windowZoom;
+        return (
+          <div
+            style={{
+              position: 'absolute',
+              left: rect.x,
+              top: rect.y,
+              width: rect.w,
+              height: rect.h,
+              border: `1px dashed ${COLORS.dim}`,
+              pointerEvents: 'none',
+            }}
+          />
+        );
+      })()}
       {phase === 'ready' && (
         // Home alone, bottom-left -- Top/Front/Underneath moved onto the nav
         // cube (bottom-right, below), since a physical cube already says
@@ -2480,6 +2909,55 @@ try {
         <div style={viewStripStyle}>
           <button type="button" title="Back to the starting view" style={preset === 'home' ? viewStripActiveStyle : viewStripButtonStyle} aria-pressed={preset === 'home'} onClick={() => { fitToModel(HOME_DIR); setPreset('home'); }}>
             Home
+          </button>
+          {/* SPEC-mouse-parity Phase 1: the same self-contained view strip the
+              Home button already lives in. All three of these are viewport-local
+              -- they write this component's own refs/state and localStorage, and
+              no parent file knows they exist. */}
+          <button
+            type="button"
+            title="Mouse-button preset (click to switch)"
+            style={viewStripButtonStyle}
+            onClick={() => {
+              const next: MouseScheme = mouseScheme === 'legacy' ? 'fusion' : 'legacy';
+              saveSchemeName(next);
+              setMouseScheme(next);
+            }}
+          >
+            {mouseScheme === 'legacy' ? 'Mouse: Legacy' : 'Mouse: Fusion'}
+          </button>
+          <button
+            type="button"
+            title={cameraKind === CameraMode.PERSPECTIVE ? 'Switch to an orthographic camera' : 'Switch to a perspective camera'}
+            style={viewStripButtonStyle}
+            onClick={() => {
+              const next = cameraKind === CameraMode.PERSPECTIVE ? CameraMode.ORTHOGRAPHIC : CameraMode.PERSPECTIVE;
+              saveCameraMode(next);
+              setCameraKind(next);
+            }}
+          >
+            {cameraKind === CameraMode.PERSPECTIVE ? 'Persp' : 'Ortho'}
+          </button>
+          <button
+            type="button"
+            title="Frame the current selection"
+            style={viewStripButtonStyle}
+            disabled={!pick && !selectedFaceStateRef.current}
+            onClick={() => fitSelection()}
+          >
+            Fit Selection
+          </button>
+          <button
+            type="button"
+            title="Draw a rectangle to zoom into it"
+            style={windowZoom !== null ? viewStripActiveStyle : viewStripButtonStyle}
+            aria-pressed={windowZoom !== null}
+            onClick={() => {
+              setWindowZoom(windowZoom !== null ? null : 'armed');
+              windowZoomRef.current = windowZoom !== null ? null : { armed: true };
+            }}
+          >
+            Win Zoom
           </button>
         </div>
       )}
