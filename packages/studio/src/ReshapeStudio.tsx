@@ -746,7 +746,11 @@ export default function ReshapeStudio({
           : here?.kind === 'face'
             ? (partWordFor(here.name) ?? 'face')
               + (single && Array.isArray(size) ? ` · ${size[0]} x ${size[1]}` : '')
-            : null;
+            : here?.kind === 'vertex'
+              ? 'vertex'
+              : here?.kind === 'body'
+                ? 'body'
+                : null;
     return part ? `${base} · ${part}` : base;
   }, [selected, doc, selection, primaryPick]);
 
@@ -1298,7 +1302,18 @@ export default function ReshapeStudio({
                     // other way round: the multi-pick used to be two separate
                     // arrays, each emptied by the other kind's branch.
                     const kin: SelectionState = { ...prev, items: prev.items.filter((i) => i.kind === p.kind) };
-                    const members = p.name
+                    // vertex/body (SPEC-mouse-parity.md Phase 3 item 2) have
+                    // no naming machinery of their own -- ViewportPick's own
+                    // `name` is always null for them, not sometimes-null the
+                    // way a face/edge pick's resolution can fail (see
+                    // ViewportPick's own doc comment) -- so the "an unnamed
+                    // pick can't join a multi-select" rule above only ever
+                    // meant a resolution FAILURE, not a kind with no name
+                    // concept to begin with. `target` (the owning feature
+                    // id) is always fully resolved for them, the same way a
+                    // plain feature-kind item's already is.
+                    const canSelect = p.kind === 'vertex' || p.kind === 'body' || !!p.name;
+                    const members = canSelect
                       ? (shift ? toggleSelection(kin, item) : ctrl ? addIfAbsent(kin, item) : replaceSelection(kin, item))
                       : clearSelection(kin);
                     // An owner-less pick leaves the feature ids alone, the
@@ -1329,6 +1344,8 @@ export default function ReshapeStudio({
                 }}
                 onEngine={() => setEngineReady(true)}
                 badgesInStatusBar={true}
+                filters={selection.filters}
+                onFiltersChange={(next) => setSelection((s) => ({ ...s, filters: next }))}
                 registerPickAt={(fn) => { pickAtRef.current = fn; }}
               />
             ) : !sketchEditId ? (

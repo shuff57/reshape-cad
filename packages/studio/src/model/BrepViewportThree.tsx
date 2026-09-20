@@ -80,6 +80,8 @@ import { bboxCenter, DEFAULT_FILL_FRACTION, fitDistance, type Box3Like } from '.
 import { DEFAULT_SCHEME_NAME, MOUSE_SCHEMES, loadSchemeName, saveSchemeName, schemeToMouseButtons, schemeToTouches, type MouseScheme } from '../camera-controls.js';
 import { CameraMode, loadCameraMode, orthoFrustumFromPerspective, saveCameraMode } from '../ortho-camera.js';
 import { computeSelectionFit, computeWindowZoomFit, type Vec3 } from '../window-zoom-fit.js';
+import { nearestVisible } from '../pick-helpers.js';
+import type { SelectionFilters } from '../selection-model.js';
 
 /** The Dracula palette this app already uses everywhere else -- see
  *  app/globals.css and BrepViewport.tsx. */
@@ -173,10 +175,20 @@ export interface BrepViewportStats {
  * canvas" from "Shift held while the runner iframe has focus". A pick with
  * no real triggering event (restorePicks()'s own re-emission once a name
  * resolves post-rebuild) carries all three false.
+ *
+ * `vertex`/`body` (SPEC-mouse-parity.md Phase 3 item 2) have no naming
+ * machinery of their own -- there is no kernel concept of a stable vertex
+ * or whole-body name the way a TopoName resolves a face or edge -- so
+ * `name` is always `null` for them, not sometimes-null like a face/edge
+ * pick whose resolution merely failed. `size` is likewise never present:
+ * nothing measures a point, and a body's own size is just its owning
+ * feature's, already shown elsewhere.
  */
 export type ViewportPick =
   | { kind: 'face'; target: string; faceIndex: number; name: TopoName | null; size?: [number, number]; ctrlKey: boolean; shiftKey: boolean; metaKey: boolean }
-  | { kind: 'edge'; target: string; name: TopoName | null; size?: number; ctrlKey: boolean; shiftKey: boolean; metaKey: boolean };
+  | { kind: 'edge'; target: string; name: TopoName | null; size?: number; ctrlKey: boolean; shiftKey: boolean; metaKey: boolean }
+  | { kind: 'vertex'; target: string; name: null; size?: undefined; ctrlKey: boolean; shiftKey: boolean; metaKey: boolean }
+  | { kind: 'body'; target: string; name: null; size?: undefined; ctrlKey: boolean; shiftKey: boolean; metaKey: boolean };
 
 // faceSize()/edgeLength() used to live here as module-level helpers taking a
 // raw `oc` handle -- moved onto EngineAdapter itself (see engine-adapter.ts's
@@ -332,6 +344,28 @@ interface Props {
    * Default false: every existing caller keeps its badges.
    */
   badgesInStatusBar?: boolean;
+  /**
+   * Which pickable kinds are currently active -- SPEC-mouse-parity.md Phase 3
+   * item 2's filter toolbar. Rendered HERE, beside this component's own view
+   * strip, rather than in ReshapeStudio.tsx: every other piece of viewport
+   * chrome (the view strip itself, the nav cube, the selection badge) already
+   * lives in this component's own JSX, driven by props the caller owns --
+   * `filters` follows that same split rather than inventing a second
+   * viewport-overlay convention. Read through a ref (see filtersRef below)
+   * the same way `onPick`/`pick` are, so hitAt()'s pointermove/click
+   * listeners -- set up once by the scene-setup effect, not on every prop
+   * change -- see a toggle the instant it happens. Absent (no caller has
+   * wired the toolbar) defaults to every kind pickable, i.e. today's actual
+   * behaviour before this filter existed -- see DEFAULT_FILTERS.
+   */
+  filters?: SelectionFilters;
+  /**
+   * Fired with the next filters value on a chip click. ReshapeStudio.tsx
+   * owns the real SelectionState.filters this only reflects; this component
+   * renders the toggle UI and reports the requested change, the same split
+   * `onPick` already draws between "renders a pick" and "owns selection".
+   */
+  onFiltersChange?: (next: SelectionFilters) => void;
 }
 
 /** Module-level, not per-component: two viewports in one session share the
@@ -450,6 +484,30 @@ const EDGE_OCCLUSION_TOLERANCE_FRACTION = 0.05;
  *  unit boxes and cylinders). */
 const EDGE_TUBE_RADIUS = 0.75;
 
+/** World-space radius of the vertex highlight marker -- a small sphere
+ *  centred on the picked point, real geometry for the same reason edge
+ *  highlights are (edgeTubeGeometry()'s own doc comment): no WebGL
+ *  implementation guarantees a screen-space point size. Bigger than
+ *  EDGE_TUBE_RADIUS on purpose -- tuned by eye so a single point still
+ *  reads as its own thing next to a tube it might sit right beside. */
+const VERTEX_MARKER_RADIUS = 1.4;
+
+/** Every kind pickable -- the default `filters` prop value when no caller
+ *  has wired the toolbar yet, identical to emptySelection()'s own filters
+ *  default in selection-model.ts. */
+const DEFAULT_FILTERS: SelectionFilters = { face: true, edge: true, vertex: true, body: true };
+
+// Single source of truth for the filter strip's four chips -- same reason
+// NAV_CUBE_FACES is one below: the JSX maps over this instead of hand-writing
+// four near-identical buttons, so a filter key and its label can never drift
+// out of sync with each other.
+const FILTER_CHIPS: { key: keyof SelectionFilters; label: string }[] = [
+  { key: 'face', label: 'Faces' },
+  { key: 'edge', label: 'Edges' },
+  { key: 'vertex', label: 'Vertices' },
+  { key: 'body', label: 'Bodies' },
+];
+
 /**
  * Renders a ModelDoc through the brep-rs B-rep kernel, live, in the page.
  *
@@ -458,7 +516,7 @@ const EDGE_TUBE_RADIUS = 0.75;
  */
 export default function BrepViewportThree({
   doc, deflection, onStats, onPick, pick, selectedCount, selectionLabel, anchors, onAnchors, onMesh, registerPickAt,
-  sketchPlane, panelOcclusionPx, ruleActivityAt, onEngine, badgesInStatusBar = false,
+  sketchPlane, panelOcclusionPx, ruleActivityAt, onEngine, badgesInStatusBar = false, filters, onFiltersChange,
 }: Props) {
   const [phase, setPhase] = useState<'loading' | 'ready' | 'error'>('loading');
   // Which view-strip preset the camera is sitting on, or null once the
@@ -649,6 +707,11 @@ export default function BrepViewportThree({
   onPickRef.current = onPick;
   const pickRef = useRef(pick);
   pickRef.current = pick;
+  // Same stale-closure reasoning as onPickRef above -- filters is read by
+  // hitAt()'s pointermove/click listeners, set up once by the scene-setup
+  // effect below, not on every render.
+  const filtersRef = useRef<SelectionFilters>(filters ?? DEFAULT_FILTERS);
+  filtersRef.current = filters ?? DEFAULT_FILTERS;
   // Same stale-closure reasoning as docRef above: projectAnchors() is a
   // component-level function (reads refs, not props) so it can be called
   // both from inside the scene-setup effect's camera-change handler and from
@@ -679,6 +742,12 @@ export default function BrepViewportThree({
    *  restorePicks(). */
   const hoverFaceMeshRef = useRef<THREE_NS.Mesh | null>(null);
   const selectedFaceMeshRef = useRef<THREE_NS.Mesh | null>(null);
+  // Same pooling convention, for the vertex marker (a small sphere, not a
+  // borrowed triangle range) -- see the scene-setup effect for why a sphere
+  // needs no per-pick geometry work at all, only a position + a visibility
+  // flag.
+  const hoverVertexMeshRef = useRef<THREE_NS.Mesh | null>(null);
+  const selectedVertexMeshRef = useRef<THREE_NS.Mesh | null>(null);
   // Edge highlights are POOLED TUBE MESHES, one built per topological edge in
   // drawGeoms() -- see the pooling note above their material definitions in
   // the scene-setup effect. These two refs hold the two SHARED materials
@@ -1109,6 +1178,30 @@ export default function BrepViewportThree({
     selectedFaceMesh.renderOrder = 1;
     scene.add(selectedFaceMesh);
 
+    // A vertex marker is a real 3D sphere, not a flat overlay -- unlike the
+    // face highlights above, it has genuine depth separation from the
+    // surface it sits on (half embedded, half protruding), so normal depth
+    // testing alone places it correctly with no polygon-offset trick needed:
+    // the embedded half is correctly hidden by the solid, the protruding
+    // half correctly shows. Same hover/selected colour convention as every
+    // other highlight; pooled the same way (see hoverVertexMeshRef's own
+    // comment) -- a click only ever moves it and flips `.visible`.
+    const hoverVertexMesh = new THREE.Mesh(
+      new THREE.SphereGeometry(VERTEX_MARKER_RADIUS, 12, 8),
+      new THREE.MeshBasicMaterial({ color: 0x8be9fd }),
+    );
+    hoverVertexMesh.visible = false;
+    hoverVertexMesh.renderOrder = 2;
+    scene.add(hoverVertexMesh);
+
+    const selectedVertexMesh = new THREE.Mesh(
+      new THREE.SphereGeometry(VERTEX_MARKER_RADIUS, 12, 8),
+      new THREE.MeshBasicMaterial({ color: 0xff79c6 }),
+    );
+    selectedVertexMesh.visible = false;
+    selectedVertexMesh.renderOrder = 2;
+    scene.add(selectedVertexMesh);
+
     // Edges highlight as TUBE MESHES (real geometry, real width -- see
     // edgeTubeGeometry()'s doc comment) rather than THREE.Line, drawn ON TOP
     // (depthTest off) rather than offset like the faces above: a face
@@ -1166,6 +1259,8 @@ export default function BrepViewportThree({
 
     hoverFaceMeshRef.current = hoverFaceMesh;
     selectedFaceMeshRef.current = selectedFaceMesh;
+    hoverVertexMeshRef.current = hoverVertexMesh;
+    selectedVertexMeshRef.current = selectedVertexMesh;
 
     // ---- raycasting -----------------------------------------------------
     const raycaster = new THREE.Raycaster();
@@ -1173,8 +1268,10 @@ export default function BrepViewportThree({
     let lastPointer: { x: number; y: number } | null = null;
 
     type Hit =
+      | { kind: 'vertex'; mesh: THREE_NS.Mesh; position: THREE_NS.Vector3 }
       | { kind: 'face'; mesh: THREE_NS.Mesh; range: FaceRange }
-      | { kind: 'edge'; line: THREE_NS.Line };
+      | { kind: 'edge'; line: THREE_NS.Line }
+      | { kind: 'body'; mesh: THREE_NS.Mesh };
 
     // The closest point on ONE edge's screen-space polyline to the cursor,
     // in CSS pixels, plus the world distance from the camera to that closest
@@ -1241,6 +1338,7 @@ export default function BrepViewportThree({
     }
 
     function hitAt(clientX: number, clientY: number): Hit | null {
+      const filters = filtersRef.current;
       const rect = renderer.domElement.getBoundingClientRect();
       if (rect.width === 0 || rect.height === 0) return null;
       const cursor = { x: clientX - rect.left, y: clientY - rect.top };
@@ -1251,11 +1349,50 @@ export default function BrepViewportThree({
       raycaster.setFromCamera(ndc, camera);
 
       // Face hit, tested first here purely to have a DEPTH reference for the
-      // edge occlusion check below -- which kind actually gets RETURNED is
-      // still edge-first, same priority as before (see the return logic at
-      // the bottom of this function).
+      // edge/vertex occlusion checks below -- which kind actually gets
+      // RETURNED depends on `filters` and the priority order below (vertex,
+      // then edge, then face, then body), not on this test order.
       const faceHits = raycaster.intersectObjects(solidGroup.children, false);
       const faceHit = faceHits.find((h) => h.faceIndex != null);
+      const camDist = camera.position.distanceTo(controls.target);
+      const occlusionMaxDepth = faceHit
+        ? faceHit.distance + Math.max(0.5, camDist * EDGE_OCCLUSION_TOLERANCE_FRACTION)
+        : Infinity;
+
+      // VERTEX (SPEC-mouse-parity.md Phase 3 item 2), tried first among the
+      // filters that are on: the most specific pickable thing at a point
+      // wins over the face/edge/body sitting at that same point. Walks
+      // every solid mesh's own raw position buffer -- candidate mesh
+      // vertices -- projecting each one to screen space the same way
+      // closestEdgeScreenDist() below projects an edge's discretised
+      // points, and reuses `faceHit`'s own depth as the occlusion
+      // reference exactly like the edge candidates do: a vertex behind the
+      // surface the cursor is actually over must lose to one facing the
+      // camera, and a MISSING faceHit (cursor off the mesh entirely, e.g.
+      // just past a silhouette corner) means nothing to reject against --
+      // the same fallback the edge candidates rely on. The pure
+      // nearest-in-tolerance decision lives in pick-helpers.ts, testable
+      // without a THREE.Camera; only the projection itself, which needs a
+      // live camera, stays here.
+      if (filters.vertex) {
+        const vertexCandidates: { distPx: number; depth: number; mesh: THREE_NS.Mesh; world: THREE_NS.Vector3 }[] = [];
+        for (const mesh of solidGroup.children as THREE_NS.Mesh[]) {
+          const pos = mesh.geometry.getAttribute('position');
+          if (!pos) continue;
+          for (let i = 0; i < pos.count; i++) {
+            const world = new THREE.Vector3(pos.getX(i), pos.getY(i), pos.getZ(i)).applyMatrix4(mesh.matrixWorld);
+            const depth = camera.position.distanceTo(world);
+            const proj = world.clone().project(camera);
+            const distPx = Math.hypot(
+              cursor.x - (proj.x * 0.5 + 0.5) * rect.width,
+              cursor.y - (1 - (proj.y * 0.5 + 0.5)) * rect.height,
+            );
+            vertexCandidates.push({ distPx, depth, mesh, world });
+          }
+        }
+        const vertexWinner = nearestVisible(vertexCandidates, EDGE_HIT_BAND_PX, occlusionMaxDepth);
+        if (vertexWinner) return { kind: 'vertex', mesh: vertexWinner.mesh, position: vertexWinner.world };
+      }
 
       // EDGE HIT TEST, IN SCREEN PIXELS -- NOT a world-space distance.
       //
@@ -1281,97 +1418,113 @@ export default function BrepViewportThree({
       // CLOSEST-FIRST, and the first one to pass the occlusion check below
       // is returned immediately, so whichever is nearer in screen space
       // still wins whenever both are genuinely visible.
-      const candidates: { distPx: number; depth: number; line: THREE_NS.Line }[] = [];
-      for (const line of edgePickLinesRef.current) {
-        const { distPx, depth } = closestEdgeScreenDist(line, rect.width, rect.height, cursor);
-        if (distPx <= EDGE_HIT_BAND_PX) candidates.push({ distPx, depth, line });
-      }
-      candidates.sort((a, b) => a.distPx - b.distPx);
-
-      // An edge sits ON the boundary of whichever face(s) meet there, so its
-      // depth should match a face hit at the same pixel almost exactly; this
-      // tolerance is only slack for the edge's own discretisation and the
-      // two hits' slightly different sample points, not a second occlusion
-      // system -- it exists so a genuinely FAR edge (the back of a box,
-      // glimpsed through open space near a front edge in screen space) can
-      // never out-rank a face that is actually in front of it.
-      //
-      // THE BUG THIS REPLACED: only ever tracking the single screen-closest
-      // candidate. A square-footprint box viewed from this app's own
-      // slightly off-axis default camera (140, 160, 130 -- not a true 45
-      // degree isometric) can put a genuinely FAR, hidden edge fractions of
-      // a pixel closer to the cursor than the true visible one at certain
-      // points along it -- measured 2026-09-04: hovering the box's own
-      // top-left edge found a "closest" candidate at depth 132 while every
-      // other visible top-face edge sat at depth ~90-100, a ~40-unit gap
-      // (the box's own 40mm width) that is a different edge entirely, not
-      // discretisation slop. The occlusion check correctly rejected that
-      // far edge -- but with only one candidate ever tried, rejecting it
-      // meant giving up on the pixel entirely, even though the TRUE visible
-      // edge was very likely a second candidate within the very same band.
-      // Trying every in-band candidate, nearest first, until one survives
-      // occlusion fixes exactly that without loosening the occlusion test
-      // itself (which stays exactly as strict, and still does its real job
-      // of rejecting a genuinely hidden edge glimpsed through open space).
-      const dist = camera.position.distanceTo(controls.target);
-      const surviving = candidates.filter((c) => {
-        const occluded = !!faceHit && c.depth > faceHit.distance + Math.max(0.5, dist * EDGE_OCCLUSION_TOLERANCE_FRACTION);
-        return !occluded;
-      });
-      if (surviving.length > 0) {
-        // Item J (D3): an open hollow's outer rim (inherited from the box
-        // underneath -- nameEdgeOnCurrentShape() resolves it) and its own
-        // BRAND NEW inner rim (no primitive lineage, resolves to null --
-        // same "no answer" case a Hole's own fresh wall already has, per
-        // that function's own comment) sit only the wall's thickness apart
-        // in world space. Most camera angles foreshorten that to a couple
-        // of screen pixels, well inside distPx's own float/discretisation
-        // noise -- close enough that "closest wins outright" started
-        // picking the inner edge (or missing both and falling through to
-        // the interior wall face) for a click plainly meant for the outer
-        // one. Only consulted once there is more than one edge candidate
-        // actually surviving occlusion -- the ordinary one-edge and
-        // same-primitive-corner cases (both candidates resolve to a name,
-        // so the first/closest still wins, exactly as before) are
-        // untouched, and this never runs at all for the common case of a
-        // single edge in the band.
-        if (surviving.length > 1 && lastBuiltRef.current && engineRef.current) {
-          const built = lastBuiltRef.current;
-          const engine = engineRef.current;
-          const named = surviving.find((c) => {
-            const { featureId, kernelEdge } = c.line.userData as { featureId: string; kernelEdge: any };
-            // A throw here is honest, not an error -- the same "no answer"
-            // case this disambiguation already treats null as; see the
-            // try/catch pattern repeated at every nameFace/nameEdge/
-            // resolveFace/resolveEdge call site below, for the same reason.
-            try {
-              return engine.nameEdge(built, docRef.current, featureId, kernelEdge) !== null;
-            } catch {
-              return false;
-            }
-          });
-          if (named) return { kind: 'edge', line: named.line };
+      if (filters.edge) {
+        const candidates: { distPx: number; depth: number; line: THREE_NS.Line }[] = [];
+        for (const line of edgePickLinesRef.current) {
+          const { distPx, depth } = closestEdgeScreenDist(line, rect.width, rect.height, cursor);
+          if (distPx <= EDGE_HIT_BAND_PX) candidates.push({ distPx, depth, line });
         }
-        return { kind: 'edge', line: surviving[0].line };
+        candidates.sort((a, b) => a.distPx - b.distPx);
+
+        // An edge sits ON the boundary of whichever face(s) meet there, so its
+        // depth should match a face hit at the same pixel almost exactly; this
+        // tolerance is only slack for the edge's own discretisation and the
+        // two hits' slightly different sample points, not a second occlusion
+        // system -- it exists so a genuinely FAR edge (the back of a box,
+        // glimpsed through open space near a front edge in screen space) can
+        // never out-rank a face that is actually in front of it.
+        //
+        // THE BUG THIS REPLACED: only ever tracking the single screen-closest
+        // candidate. A square-footprint box viewed from this app's own
+        // slightly off-axis default camera (140, 160, 130 -- not a true 45
+        // degree isometric) can put a genuinely FAR, hidden edge fractions of
+        // a pixel closer to the cursor than the true visible one at certain
+        // points along it -- measured 2026-09-04: hovering the box's own
+        // top-left edge found a "closest" candidate at depth 132 while every
+        // other visible top-face edge sat at depth ~90-100, a ~40-unit gap
+        // (the box's own 40mm width) that is a different edge entirely, not
+        // discretisation slop. The occlusion check correctly rejected that
+        // far edge -- but with only one candidate ever tried, rejecting it
+        // meant giving up on the pixel entirely, even though the TRUE visible
+        // edge was very likely a second candidate within the very same band.
+        // Trying every in-band candidate, nearest first, until one survives
+        // occlusion fixes exactly that without loosening the occlusion test
+        // itself (which stays exactly as strict, and still does its real job
+        // of rejecting a genuinely hidden edge glimpsed through open space).
+        const surviving = candidates.filter((c) => c.depth <= occlusionMaxDepth);
+        if (surviving.length > 0) {
+          // Item J (D3): an open hollow's outer rim (inherited from the box
+          // underneath -- nameEdgeOnCurrentShape() resolves it) and its own
+          // BRAND NEW inner rim (no primitive lineage, resolves to null --
+          // same "no answer" case a Hole's own fresh wall already has, per
+          // that function's own comment) sit only the wall's thickness apart
+          // in world space. Most camera angles foreshorten that to a couple
+          // of screen pixels, well inside distPx's own float/discretisation
+          // noise -- close enough that "closest wins outright" started
+          // picking the inner edge (or missing both and falling through to
+          // the interior wall face) for a click plainly meant for the outer
+          // one. Only consulted once there is more than one edge candidate
+          // actually surviving occlusion -- the ordinary one-edge and
+          // same-primitive-corner cases (both candidates resolve to a name,
+          // so the first/closest still wins, exactly as before) are
+          // untouched, and this never runs at all for the common case of a
+          // single edge in the band.
+          if (surviving.length > 1 && lastBuiltRef.current && engineRef.current) {
+            const built = lastBuiltRef.current;
+            const engine = engineRef.current;
+            const named = surviving.find((c) => {
+              const { featureId, kernelEdge } = c.line.userData as { featureId: string; kernelEdge: any };
+              // A throw here is honest, not an error -- the same "no answer"
+              // case this disambiguation already treats null as; see the
+              // try/catch pattern repeated at every nameFace/nameEdge/
+              // resolveFace/resolveEdge call site below, for the same reason.
+              try {
+                return engine.nameEdge(built, docRef.current, featureId, kernelEdge) !== null;
+              } catch {
+                return false;
+              }
+            });
+            if (named) return { kind: 'edge', line: named.line };
+          }
+          return { kind: 'edge', line: surviving[0].line };
+        }
       }
 
-      if (!faceHit) return null;
-      const range = faceRangeFor(faceHit.object as THREE_NS.Mesh, faceHit.faceIndex!);
-      return range ? { kind: 'face', mesh: faceHit.object as THREE_NS.Mesh, range } : null;
+      if (faceHit) {
+        if (filters.face) {
+          const range = faceRangeFor(faceHit.object as THREE_NS.Mesh, faceHit.faceIndex!);
+          return range ? { kind: 'face', mesh: faceHit.object as THREE_NS.Mesh, range } : null;
+        }
+        // BODY (SPEC-mouse-parity.md Phase 3 item 2): only reached once
+        // filters.face is OFF -- the branch above always returns (a face
+        // pick or null) whenever it runs, so with every filter on a face
+        // click stays a face pick byte-for-byte (T8's already-verified
+        // matrix); body only gets a turn once face-kind picking has
+        // explicitly stepped aside. Selects the whole owning feature -- see
+        // paintFaceHighlight()'s own `range`-less call in pickAt() for how
+        // "whole" is painted -- with no per-face resolution needed at all.
+        if (filters.body) {
+          return { kind: 'body', mesh: faceHit.object as THREE_NS.Mesh };
+        }
+      }
+
+      return null;
     }
 
     function applyHover(hit: Hit | null) {
       hoverFaceMesh.visible = false;
+      hoverVertexMesh.visible = false;
       // A cheap, immediate second cue: the cursor tells a student an edge or
       // face is interactive before they have even noticed the highlight, or
-      // known that picking exists at all. `crosshair` for an edge, distinct
-      // from `pointer` for a face, so the cursor itself hints that an edge
-      // click is a DIFFERENT, more precise action than a face click -- it
-      // used to be `pointer` for both, plus idle-over-model, which told a
-      // student nothing. Reverts to the container's own CSS cursor (the
-      // inline 'grab' set below, while phase is 'ready') rather than a
-      // hardcoded default.
-      renderer.domElement.style.cursor = hit ? (hit.kind === 'edge' ? 'crosshair' : 'pointer') : '';
+      // known that picking exists at all. `crosshair` for an edge or a
+      // vertex -- both a more precise action than a face/body click -- and
+      // `pointer` for the other two: it used to be `pointer` for both, plus
+      // idle-over-model, which told a student nothing. Reverts to the
+      // container's own CSS cursor (the inline 'grab' set below, while
+      // phase is 'ready') rather than a hardcoded default.
+      renderer.domElement.style.cursor = hit
+        ? (hit.kind === 'edge' || hit.kind === 'vertex' ? 'crosshair' : 'pointer')
+        : '';
       // Drives the "click this edge" hint (JSX below) -- see hoveringEdge's
       // own doc comment for why this is React state, not a ref.
       setHoveringEdge(hit?.kind === 'edge');
@@ -1382,8 +1535,18 @@ export default function BrepViewportThree({
       if (hit.kind === 'face') {
         setHoveredEdgeTube(null);
         paintFaceHighlight(THREE, hoverFaceMesh, hit.mesh, hit.range);
-      } else {
+      } else if (hit.kind === 'edge') {
         setHoveredEdgeTube(hit.line.userData.tubeMesh as THREE_NS.Mesh);
+      } else if (hit.kind === 'vertex') {
+        setHoveredEdgeTube(null);
+        hoverVertexMesh.position.copy(hit.position);
+        hoverVertexMesh.visible = true;
+      } else {
+        // body: the same highlight mesh and material a face hover uses,
+        // just spanning its full index instead of one FaceRange -- see
+        // paintFaceHighlight()'s own doc comment for the `range`-less case.
+        setHoveredEdgeTube(null);
+        paintFaceHighlight(THREE, hoverFaceMesh, hit.mesh);
       }
     }
 
@@ -1415,6 +1578,7 @@ export default function BrepViewportThree({
       const hit = hitAt(clientX, clientY);
       if (!hit) {
         selectedFaceMesh.visible = false;
+        selectedVertexMesh.visible = false;
         setSelectedEdgeTube(null);
         selectedFaceStateRef.current = null;
         onPickRef.current?.(null);
@@ -1426,6 +1590,7 @@ export default function BrepViewportThree({
         selectedFaceStateRef.current = { featureId, faceIndex: hit.range.index };
         paintFaceHighlight(THREE, selectedFaceMesh, hit.mesh, hit.range);
         setSelectedEdgeTube(null);
+        selectedVertexMesh.visible = false;
         // Resolved the same way an edge's `name` is, just off the other end
         // of faceAt()'s own walk: FaceRange.index is this face's position
         // in that SAME stable order (see FaceRange's own doc comment in
@@ -1451,7 +1616,7 @@ export default function BrepViewportThree({
           try { size = engine.faceSize(kernelFace) ?? undefined; } catch { size = undefined; }
         }
         onPickRef.current?.({ kind: 'face', target: featureId, faceIndex: hit.range.index, name, size, ctrlKey, shiftKey, metaKey });
-      } else {
+      } else if (hit.kind === 'edge') {
         const { featureId, kernelEdge } = hit.line.userData as {
           featureId: string; kernelEdge: any;
         };
@@ -1473,9 +1638,28 @@ export default function BrepViewportThree({
         setSelectedEdgeTube(hit.line.userData.tubeMesh as THREE_NS.Mesh);
         selectedFaceMesh.visible = false;
         selectedFaceStateRef.current = null;
+        selectedVertexMesh.visible = false;
         let size: number | undefined;
         try { size = engine.edgeLength(kernelEdge) ?? undefined; } catch { size = undefined; }
         onPickRef.current?.({ kind: 'edge', target: featureId, name, size, ctrlKey, shiftKey, metaKey });
+      } else if (hit.kind === 'vertex') {
+        setSelectedEdgeTube(null);
+        selectedFaceMesh.visible = false;
+        selectedFaceStateRef.current = null;
+        selectedVertexMesh.position.copy(hit.position);
+        selectedVertexMesh.visible = true;
+        const featureId = hit.mesh.userData.featureId as string;
+        onPickRef.current?.({ kind: 'vertex', target: featureId, name: null, ctrlKey, shiftKey, metaKey });
+      } else {
+        // body: whole-mesh highlight, same shared mesh/material a face pick
+        // uses, just spanning the full index -- see paintFaceHighlight()'s
+        // own doc comment.
+        setSelectedEdgeTube(null);
+        selectedVertexMesh.visible = false;
+        selectedFaceStateRef.current = null;
+        paintFaceHighlight(THREE, selectedFaceMesh, hit.mesh);
+        const featureId = hit.mesh.userData.featureId as string;
+        onPickRef.current?.({ kind: 'body', target: featureId, name: null, ctrlKey, shiftKey, metaKey });
       }
       renderNow();
     }
@@ -1596,7 +1780,7 @@ export default function BrepViewportThree({
         const mesh = obj as THREE_NS.Mesh;
         mesh.geometry?.dispose?.();
       });
-      [hoverFaceMesh, selectedFaceMesh].forEach((obj) => {
+      [hoverFaceMesh, selectedFaceMesh, hoverVertexMesh, selectedVertexMesh].forEach((obj) => {
         obj.geometry.dispose();
         (obj.material as THREE_NS.Material).dispose();
       });
@@ -1614,6 +1798,8 @@ export default function BrepViewportThree({
       solidGroupRef.current = null;
       hoverFaceMeshRef.current = null;
       selectedFaceMeshRef.current = null;
+      hoverVertexMeshRef.current = null;
+      selectedVertexMeshRef.current = null;
       hoverEdgeMaterialRef.current = null;
       selectedEdgeMaterialRef.current = null;
       hoveredEdgeTubeRef.current = null;
@@ -2286,7 +2472,11 @@ export default function BrepViewportThree({
    * Paint one face's triangle range into a highlight mesh, by sharing the
    * source mesh's own position/normal attributes (zero-copy -- the same
    * BufferAttribute objects, not clones) and slicing a VIEW of its index
-   * buffer down to just this FaceRange.
+   * buffer down to just this FaceRange. `range` omitted paints the WHOLE
+   * mesh instead -- every face, not one -- by sharing its full index
+   * directly rather than slicing a view of it; SPEC-mouse-parity.md Phase 3
+   * item 2's body-kind pick uses this to highlight an entire owning feature
+   * with no per-face resolution needed at all.
    *
    * Shared attributes are safe to keep past this call because a highlight
    * mesh's geometry only ever gets REPOINTED, never read after the source it
@@ -2299,7 +2489,7 @@ export default function BrepViewportThree({
    * after a rebuild -- see restorePicks().
    */
   function paintFaceHighlight(
-    THREE: typeof THREE_NS, target: THREE_NS.Mesh, source: THREE_NS.Mesh, range: FaceRange,
+    THREE: typeof THREE_NS, target: THREE_NS.Mesh, source: THREE_NS.Mesh, range?: FaceRange,
   ) {
     const geom = target.geometry;
     const position = source.geometry.getAttribute('position');
@@ -2308,11 +2498,15 @@ export default function BrepViewportThree({
     if (normal) geom.setAttribute('normal', normal);
     const idx = source.geometry.getIndex();
     if (idx) {
-      // tessellateToThree() hands a plain number[] to BufferGeometry.setIndex(),
-      // which picks Uint16 or Uint32 for itself depending on the largest
-      // value -- so this cannot assume either width and reads it back as `any`.
-      const arr: any = idx.array;
-      geom.setIndex(new THREE.BufferAttribute(arr.subarray(range.start, range.start + range.count), 1));
+      if (range) {
+        // tessellateToThree() hands a plain number[] to BufferGeometry.setIndex(),
+        // which picks Uint16 or Uint32 for itself depending on the largest
+        // value -- so this cannot assume either width and reads it back as `any`.
+        const arr: any = idx.array;
+        geom.setIndex(new THREE.BufferAttribute(arr.subarray(range.start, range.start + range.count), 1));
+      } else {
+        geom.setIndex(idx);
+      }
     }
     target.visible = true;
   }
@@ -2412,8 +2606,10 @@ export default function BrepViewportThree({
     const camera = cameraRef.current;
     const hoverFaceMesh = hoverFaceMeshRef.current;
     const selectedFaceMesh = selectedFaceMeshRef.current;
+    const hoverVertexMesh = hoverVertexMeshRef.current;
+    const selectedVertexMesh = selectedVertexMeshRef.current;
     if (!three || !engine || !group || !renderer || !scene || !camera
-      || !hoverFaceMesh || !selectedFaceMesh) {
+      || !hoverFaceMesh || !selectedFaceMesh || !hoverVertexMesh || !selectedVertexMesh) {
       throw new Error('the three.js scene has not been created yet');
     }
     const { THREE } = three;
@@ -2429,6 +2625,8 @@ export default function BrepViewportThree({
     // pool.
     hoverFaceMesh.visible = false;
     selectedFaceMesh.visible = false;
+    hoverVertexMesh.visible = false;
+    selectedVertexMesh.visible = false;
     hoveredEdgeTubeRef.current = null;
     selectedEdgeTubeRef.current = null;
 
@@ -2974,6 +3172,32 @@ try {
           </button>
         </div>
       )}
+      {phase === 'ready' && (() => {
+        // SPEC-mouse-parity.md Phase 3 item 2: which pickable kinds are
+        // active. `liveFilters` mirrors hitAt()'s own `filters ?? DEFAULT_FILTERS`
+        // fallback, so this renders the exact same "everything on" state a
+        // caller that has not wired the prop yet already gets when picking.
+        const liveFilters = filters ?? DEFAULT_FILTERS;
+        return (
+          <div style={filterStripStyle}>
+            {FILTER_CHIPS.map(({ key, label }) => {
+              const active = liveFilters[key];
+              return (
+                <button
+                  key={key}
+                  type="button"
+                  title={`${active ? 'Stop' : 'Allow'} picking ${label.toLowerCase()}`}
+                  style={active ? viewStripActiveStyle : viewStripButtonStyle}
+                  aria-pressed={active}
+                  onClick={() => onFiltersChange?.({ ...liveFilters, [key]: !active })}
+                >
+                  {label}
+                </button>
+              );
+            })}
+          </div>
+        );
+      })()}
       {phase === 'ready' && (
         // Nav cube: click a face to snap to that view (lookFrom, same
         // preserve-distance behaviour the old Top/Front/Underneath buttons
@@ -3118,6 +3342,14 @@ const selectionBadgeStyle: React.CSSProperties = {
 // (12 + 46 = 58) with an 12px gap. With the docked grid that dodge is dead.
 const viewStripStyle: React.CSSProperties = {
   position: 'absolute', left: 12, bottom: 12, display: 'flex', gap: 6,
+};
+
+// Directly above viewStripStyle's own row (bottom: 12 there), same left
+// edge, same gap -- "near the view strip" per SPEC-mouse-parity.md Phase 3
+// item 2, stacked rather than appended onto the same row so camera controls
+// and selection filters read as two separate groups, not one long strip.
+const filterStripStyle: React.CSSProperties = {
+  ...viewStripStyle, bottom: 48,
 };
 
 // Same pill family as selectionBadgeStyle/edgeHintStyle, but NOT
