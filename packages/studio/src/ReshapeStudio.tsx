@@ -40,6 +40,7 @@ import {
   ownerScoped,
   primaryOf,
   replace as replaceSelection,
+  selectAllFeatures,
   toggle as toggleSelection,
   type SelectionItem,
   type SelectionState,
@@ -397,6 +398,20 @@ export default function ReshapeStudio({
     const t = setTimeout(() => el.classList.remove('reshape-params-flash'), 600);
     return () => clearTimeout(t);
   }, []);
+  // Double-click entry point (SPEC-mouse-parity.md Phase 3.6): a feature
+  // body in the viewport, or a timeline row in ModelEditor.tsx, selects
+  // the feature and then reuses whichever per-kind "open this" action the
+  // context bar already offers a single-selected feature -- Edit 2D for a
+  // sketch (setSketchEditId, same as its own button), focusParams for
+  // every other kind (same flash-and-scroll the Dimensions button already
+  // triggers). Not a second way to open either panel, just a second way
+  // to reach the first one.
+  const editFeature = useCallback((id: string) => {
+    selectFeatures([id]);
+    const f = doc.features.find((x) => x.id === id);
+    if (f?.kind === 'sketch') setSketchEditId(id);
+    else focusParams();
+  }, [doc, selectFeatures, focusParams]);
   const meshRef = useRef<MeshInput | null>(null);
   const [hasMesh, setHasMesh] = useState(false);
   const [engineReady, setEngineReady] = useState(false);
@@ -1196,6 +1211,7 @@ export default function ReshapeStudio({
               sketchMode={sketchEditId !== null}
               onOpenSketch2D={setSketchEditId}
               onExitSketch2D={() => setSketchEditId(null)}
+              onEditFeature={editFeature}
             />
             </div>
           </div>
@@ -1415,6 +1431,9 @@ export default function ReshapeStudio({
                     };
                   });
                 } : undefined}
+                onFeatureDoubleClick={showBrep ? editFeature : undefined}
+                onSelectAll={showBrep ? () => setSelection(selectAllFeatures(doc)) : undefined}
+                onDeleteSelected={showBrep ? () => ctxActionsRef.current?.remove() : undefined}
                 registerPickAt={(fn) => { pickAtRef.current = fn; }}
               />
             ) : !sketchEditId ? (

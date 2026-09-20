@@ -80,7 +80,7 @@ import { bboxCenter, DEFAULT_FILL_FRACTION, fitDistance, type Box3Like } from '.
 import { DEFAULT_SCHEME_NAME, MOUSE_SCHEMES, loadSchemeName, saveSchemeName, schemeToMouseButtons, schemeToTouches, type MouseScheme } from '../camera-controls.js';
 import { CameraMode, loadCameraMode, orthoFrustumFromPerspective, saveCameraMode } from '../ortho-camera.js';
 import { computeSelectionFit, computeWindowZoomFit, type Vec3 } from '../window-zoom-fit.js';
-import { nearestVisible, nextCycleIndex } from '../pick-helpers.js';
+import { nearestVisible, nextCycleIndex, shouldHandleViewportDelete } from '../pick-helpers.js';
 import { HOLD_CYCLE_DELAY_MS, HOLD_CYCLE_DEAD_ZONE_PX } from '../input-threshold.js';
 import type { SelectionFilters, SelectionItem } from '../selection-model.js';
 import { marqueeKind, pointSetSelect, type MarqueeDrag } from '../marquee-select.js';
@@ -385,6 +385,34 @@ interface Props {
    * on this prop), it just has nowhere to report its result.
    */
   onBoxSelect?: (items: SelectionItem[], shiftKey: boolean) => void;
+  /**
+   * Double-click a feature body (SPEC-mouse-parity.md Phase 3.6): fired
+   * with the feature id hitAt() resolves at the click point. Never fired
+   * for a double-click on empty space -- the caller's job is "open this
+   * feature's params panel, focused", which has nothing to open when
+   * nothing was hit. A single click's own onPick keeps selecting exactly
+   * as it always has; this is purely additive.
+   */
+  onFeatureDoubleClick?: (featureId: string) => void;
+  /**
+   * Ctrl+A while the canvas has focus (SPEC-mouse-parity.md Phase 3.6):
+   * select every feature. Fired with no arguments, the same
+   * "renders the gesture, reports it, the caller owns SelectionState"
+   * split `onFiltersChange`/`onBoxSelect` already draw -- the caller writes
+   * `selectAllFeatures(doc)` itself.
+   */
+  onSelectAll?: () => void;
+  /**
+   * Delete/Backspace while the canvas has focus (SPEC-mouse-parity.md
+   * Phase 3.6): delete the current selection through the SAME doc-edit
+   * path the caller's own Delete button already uses. Guarded internally
+   * by `shouldHandleViewportDelete()` (pick-helpers.ts) so a Delete/
+   * Backspace typed into a text field elsewhere on the page is never
+   * intercepted -- the listener lives on the canvas element itself, so it
+   * only ever sees a keydown that targeted (or bubbled through) the
+   * canvas in the first place.
+   */
+  onDeleteSelected?: () => void;
 }
 
 /** Module-level, not per-component: two viewports in one session share the
@@ -536,6 +564,7 @@ const FILTER_CHIPS: { key: keyof SelectionFilters; label: string }[] = [
 export default function BrepViewportThree({
   doc, deflection, onStats, onPick, pick, selectedCount, selectionLabel, anchors, onAnchors, onMesh, registerPickAt,
   sketchPlane, panelOcclusionPx, ruleActivityAt, onEngine, badgesInStatusBar = false, filters, onFiltersChange, onBoxSelect,
+  onFeatureDoubleClick, onSelectAll, onDeleteSelected,
 }: Props) {
   const [phase, setPhase] = useState<'loading' | 'ready' | 'error'>('loading');
   // Which view-strip preset the camera is sitting on, or null once the
@@ -752,6 +781,15 @@ export default function BrepViewportThree({
   // not on every render.
   const onBoxSelectRef = useRef(onBoxSelect);
   onBoxSelectRef.current = onBoxSelect;
+  // Same stale-closure reasoning as onBoxSelectRef above -- these three are
+  // read from the scene-setup effect's dblclick/keydown listeners, set up
+  // once, not on every render.
+  const onFeatureDoubleClickRef = useRef(onFeatureDoubleClick);
+  onFeatureDoubleClickRef.current = onFeatureDoubleClick;
+  const onSelectAllRef = useRef(onSelectAll);
+  onSelectAllRef.current = onSelectAll;
+  const onDeleteSelectedRef = useRef(onDeleteSelected);
+  onDeleteSelectedRef.current = onDeleteSelected;
   // Same stale-closure reasoning as docRef above: projectAnchors() is a
   // component-level function (reads refs, not props) so it can be called
   // both from inside the scene-setup effect's camera-change handler and from
@@ -898,6 +936,15 @@ export default function BrepViewportThree({
     renderer.setPixelRatio(window.devicePixelRatio || 1);
     renderer.setSize(container.clientWidth, container.clientHeight);
     container.appendChild(renderer.domElement);
+    // Focusable (SPEC-mouse-parity.md Phase 3.6): Ctrl+A/Delete below are
+    // ordinary keydown listeners on this element, so they only ever see a
+    // key press that targeted (or bubbled through) the canvas -- a Delete
+    // typed into some other focused text field on the page never reaches
+    // them. A plain <canvas> is not focusable without this. outline is
+    // suppressed the same way a click-to-pick canvas already reads as
+    // "clicked, not tabbed to" -- the selection badge is the focus cue.
+    renderer.domElement.tabIndex = 0;
+    renderer.domElement.style.outline = 'none';
 
     const ambient = new THREE.AmbientLight(0xffffff, 0.6);
     const key = new THREE.DirectionalLight(0xffffff, 1.4);
@@ -2142,6 +2189,45 @@ export default function BrepViewportThree({
       if (moved > CLICK_DRAG_TOLERANCE_PX) return;
       pickAt(e.clientX, e.clientY, { ctrlKey: e.ctrlKey, shiftKey: e.shiftKey, metaKey: e.metaKey });
     }
+    // Double-click (SPEC-mouse-parity.md Phase 3.6): reuses hitAt() --
+    // pickAt()'s own resolver -- rather than a second raycast helper, so
+    // "what did the dblclick land on" can never disagree with what a plain
+    // click at the same point would have picked. A miss (empty space) hits
+    // the same `if (!hit) return` every other hitAt() caller uses -- no
+    // event reaches the caller at all, so "nothing opens" needs no special
+    // case on either side of this prop.
+    function featureIdOfHit(hit: Hit): string {
+      return hit.kind === 'edge'
+        ? (hit.line.userData as { featureId: string }).featureId
+        : (hit.mesh.userData.featureId as string);
+    }
+    function onDblClick(e: MouseEvent) {
+      if (e.button !== 0) return;
+      const hit = hitAt(e.clientX, e.clientY);
+      if (!hit) return;
+      onFeatureDoubleClickRef.current?.(featureIdOfHit(hit));
+    }
+    // Ctrl+A / Delete-Backspace (SPEC-mouse-parity.md Phase 3.6). Lives on
+    // the canvas element itself (tabIndex set above), not window -- the
+    // same "scoped to viewport focus" split onDblClick draws -- so a
+    // Ctrl+A/Delete typed anywhere else on the page (the code editor, a
+    // param box) never reaches this listener at all. The
+    // shouldHandleViewportDelete() check is defence in depth for the one
+    // case that split alone does not cover: the canvas keeping focus from
+    // an earlier click while a DIFFERENT element (reached by Tab, not a
+    // click) is what the keydown's own activeElement actually names.
+    function onCanvasKeyDown(e: KeyboardEvent) {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'a') {
+        e.preventDefault();
+        onSelectAllRef.current?.();
+        return;
+      }
+      if (e.key !== 'Delete' && e.key !== 'Backspace') return;
+      const active = document.activeElement;
+      if (!shouldHandleViewportDelete(active ? active.tagName : '')) return;
+      e.preventDefault();
+      onDeleteSelectedRef.current?.();
+    }
     renderer.domElement.addEventListener('pointermove', onPointerMove);
     renderer.domElement.addEventListener('pointerleave', onPointerLeave);
     renderer.domElement.addEventListener('pointermove', onPointerMove);
@@ -2156,6 +2242,8 @@ export default function BrepViewportThree({
     renderer.domElement.addEventListener('pointerup', onCanvasPointerUp);
     renderer.domElement.addEventListener('pointercancel', onCanvasPointerUp);
     renderer.domElement.addEventListener('click', onClick);
+    renderer.domElement.addEventListener('dblclick', onDblClick);
+    renderer.domElement.addEventListener('keydown', onCanvasKeyDown);
     registerPickAtRef.current?.(pickAt);
 
     renderNow();
@@ -2172,6 +2260,8 @@ export default function BrepViewportThree({
       renderer.domElement.removeEventListener('pointerup', onCanvasPointerUp);
       renderer.domElement.removeEventListener('pointercancel', onCanvasPointerUp);
       renderer.domElement.removeEventListener('click', onClick);
+      renderer.domElement.removeEventListener('dblclick', onDblClick);
+      renderer.domElement.removeEventListener('keydown', onCanvasKeyDown);
       if (holdTimer !== null) clearTimeout(holdTimer);
       if (pendingHoverRaf !== null) cancelAnimationFrame(pendingHoverRaf);
       if (dampingRafRef.current !== null) cancelAnimationFrame(dampingRafRef.current);

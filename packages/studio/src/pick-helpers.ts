@@ -49,3 +49,16 @@ export function nextCycleIndex(currentIndex: number, candidateCount: number): nu
   if (candidateCount <= 0) return 0;
   return (currentIndex + 1) % candidateCount;
 }
+
+/** Whether a Delete/Backspace keydown over the viewport should delete the
+ *  current selection (SPEC-mouse-parity.md Phase 3.6), or pass through
+ *  untouched. False only for the element kinds that own their own
+ *  Delete/Backspace behaviour -- a text field editing its own contents --
+ *  so a student clearing a parameter's typed value never loses the
+ *  feature it belongs to. Takes the plain tag name string (not an Element)
+ *  so it is testable under node --test without a DOM, the same convention
+ *  nearestVisible()/nextCycleIndex() above follow. */
+export function shouldHandleViewportDelete(activeElementTagName: string): boolean {
+  const tag = activeElementTagName.toUpperCase();
+  return tag !== 'INPUT' && tag !== 'TEXTAREA';
+}

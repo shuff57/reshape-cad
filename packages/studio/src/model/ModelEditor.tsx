@@ -192,6 +192,12 @@ interface Props {
   onOpenSketch2D?: (id: string) => void;
   /** Leave the 2D sketcher and return to the 3D ribbon. */
   onExitSketch2D?: () => void;
+  /** Double-click a timeline row (SPEC-mouse-parity.md Phase 3.6): open
+   *  that feature's params panel, focused -- the caller's own per-kind
+   *  "open this" action (Edit 2D for a sketch, Dimensions otherwise), the
+   *  same one the context bar's own buttons already call, not a second
+   *  entry point. A single click's own `pick()` below is unaffected. */
+  onEditFeature?: (id: string) => void;
 }
 
 type BoolOp = 'union' | 'subtract' | 'intersect';
@@ -439,7 +445,7 @@ export default function ModelEditor({
   registerContextActions, historyGen,
   hasMesh, onExportSTL, onExportOBJ, onExport3MF,
   canClearModel, onClearModel, activePlane, onActivePlaneChange,
-  sketchMode, onOpenSketch2D, onExitSketch2D,
+  sketchMode, onOpenSketch2D, onExitSketch2D, onEditFeature,
 }: Props) {
   const [note, setNote] = useState<string | null>(null);
   // Which single rule the student most recently set or changed in the Rules
@@ -1779,6 +1785,7 @@ export default function ModelEditor({
                     'model-row' + (on ? ' is-on' : '') + (shownIds.has(f.id) ? '' : ' is-consumed') + (rolledBack ? ' is-rolled-back' : '') + (refusedWhy ? ' is-refused' : '')
                   }
                   onClick={(e) => pick(f.id, e.ctrlKey || e.metaKey || e.shiftKey)}
+                  onDoubleClick={() => onEditFeature?.(f.id)}
                   title={refusedWhy}
                   aria-label={refusedWhy ? `${names[f.id]}: ${refusedWhy}` : undefined}
                 >
@@ -1895,6 +1902,7 @@ export default function ModelEditor({
                   'model-row' + (on ? ' is-on' : '') + (shownIds.has(f.id) ? '' : ' is-consumed')
                 }
                 onClick={(e) => pick(f.id, e.ctrlKey || e.metaKey || e.shiftKey)}
+                onDoubleClick={() => onEditFeature?.(f.id)}
                 title={refusedWhy}
                 aria-label={refusedWhy ? `${names[f.id]}: ${refusedWhy}` : undefined}
               >
