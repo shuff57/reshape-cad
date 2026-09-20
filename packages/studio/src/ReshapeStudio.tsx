@@ -29,11 +29,23 @@ import SketchCanvas2D from './model/SketchCanvas2D.js';
 import ContextBar, { type ContextBarAction } from './model/ContextBar.js';
 import type { ContextActions } from './model/ModelEditor.js';
 import { writeSTL, writeOBJ, write3MF, type MeshInput } from './mesh-export.js';
+import {
+  clear as clearSelection,
+  emptySelection,
+  featuresOf,
+  ownerScoped,
+  primaryOf,
+  replace as replaceSelection,
+  toggle as toggleSelection,
+  type SelectionItem,
+  type SelectionState,
+} from './selection-model.js';
+import { useShiftHeld } from './pick-modifiers.js';
 import { outlineOf } from '@shuff57/reshape-sketch/sketch-arc';
 import { handlesFor, featureCenter, type HandleSpec } from '@shuff57/reshape-script/model-handles';
 import { EMPTY_DOC, type Feature, isSketchOnly, type ModelDoc, nameMap, type SketchPlane } from '@shuff57/reshape-script/model-types';
 import { ownerOf } from '@shuff57/reshape-script/model-selection';
-import { partWordFor, type TopoName } from '@shuff57/reshape-script/topo-name';
+import { partWordFor } from '@shuff57/reshape-script/topo-name';
 import {
   applyParam,
   generatedParams,
@@ -54,12 +66,36 @@ export type ReshapePreviewComponent = ForwardRefExoticComponent<
   { code: string; runKey: number; engine: 'brep' | 'script' } & RefAttributes<HTMLIFrameElement>
 >;
 
-/** Structural equality for a TopoName -- a plain, serializable object (see
- *  lib/topo-name.ts), so JSON.stringify is a safe and cheap comparison. Used
- *  only to dedupe/toggle a Shift-click multi-selection (item E); nothing
- *  here builds a Fillet from the comparison itself. */
-function sameTopo(a: TopoName, b: TopoName): boolean {
-  return JSON.stringify(a) === JSON.stringify(b);
+/** Swap the FEATURE ids in a selection, leaving every viewport pick -- the
+ *  edge/face items and the `primary` slot -- exactly where it was. This is
+ *  what each old `setSelected([...])` call did back when `selected` was its
+ *  own useState sitting beside the four pick states selection-model.ts's
+ *  header names, and it is the ONE transition ModelEditor asks for through
+ *  `onSelect`. Returns the SAME state object when the ids are already those
+ *  ids, so the doc-prune effect below stays the no-op its
+ *  `keep.length === s.length` check made it. Feature items lead, in the
+ *  order given: selection ORDER is load-bearing (ModelEditor's combine()
+ *  cuts the first-clicked shape with the second, not the first in list
+ *  order). */
+function withFeatureIds(state: SelectionState, ids: string[]): SelectionState {
+  const features = state.items.filter((i) => i.kind === 'feature');
+  if (features.length === ids.length && features.every((f, i) => f.target === ids[i])) return state;
+  return {
+    ...state,
+    items: [
+      ...ids.map((id): SelectionItem => ({ kind: 'feature', target: id })),
+      ...state.items.filter((i) => i.kind !== 'feature'),
+    ],
+  };
+}
+
+/** The one SelectionItem a viewport pick IS: kind/target/name straight off
+ *  the payload, plus the kernel-measured `size` the old `pickedSize` state
+ *  held. ViewportPick's own `faceIndex` stays out -- a mesh re-highlight
+ *  shortcut, a rendering concern rather than a selection one (see
+ *  selection-model.ts's deviation list). */
+function itemOfPick(p: ViewportPick): SelectionItem {
+  return { kind: p.kind, target: p.target, name: p.name, size: p.size };
 }
 
 export type ReshapeStudioProps = {
@@ -226,50 +262,39 @@ export default function ReshapeStudio({
   const [refusals, setRefusals] = useState<Map<string, string> | undefined>(undefined);
 
   const [doc, setDoc] = useState<ModelDoc>(EMPTY_DOC);
-  const [selected, setSelected] = useState<string[]>([]);
-  useEffect(() => {
-    setSelected((s) => {
-      const keep = s.filter((id) => doc.features.some((f) => f.id === id));
-      return keep.length === s.length ? s : keep;
-    });
-  }, [doc]);
-  const [pickedEdge, setPickedEdge] = useState<{ target: string; edge: TopoName | null } | null>(null);
-  const [pickedFace, setPickedFace] = useState<{ target: string; face: TopoName | null } | null>(null);
-  // Item H (P20): the most recent pick's own size, straight off the kernel
-  // (see BrepViewportThree.tsx's faceSize()/edgeLength()) -- kept separate
-  // from pickedEdge/pickedFace above rather than added onto their shape,
-  // since those two are also ModelEditor's own props and every existing
-  // consumer there (round()'s edge-picked branch, Hole/Hollow's face
-  // requirement, the disabled-state messages) only ever needed WHICH edge
-  // or face, never its size. Purely additive, read only by selectionLabel
-  // below.
-  const [pickedSize, setPickedSize] = useState<number | [number, number] | null>(null);
-  // Item E: a Shift-held click on a second edge/face adds it to the
-  // selection instead of replacing it, the same way the timeline/sketch
-  // chips already work (ModelEditor.tsx's pick()). `pickedEdge`/`pickedFace`
-  // above stay exactly as they were -- "the most recent pick", which every
-  // existing single-edge/single-face consumer (round(), Hole, Hollow, the
-  // tooltip text) still reads unchanged -- these two arrays are purely
-  // additive, read only by the multi-edge Round path and the selection pill.
-  // BrepViewportThree.tsx's onPick carries no modifier-key info (a separate
-  // team owns that file), so Shift is tracked here independently via
-  // plain window listeners rather than threaded through the pick payload.
-  const shiftHeldRef = useRef(false);
-  useEffect(() => {
-    const down = (e: KeyboardEvent) => { if (e.key === 'Shift') shiftHeldRef.current = true; };
-    const up = (e: KeyboardEvent) => { if (e.key === 'Shift') shiftHeldRef.current = false; };
-    const blur = () => { shiftHeldRef.current = false; };
-    window.addEventListener('keydown', down);
-    window.addEventListener('keyup', up);
-    window.addEventListener('blur', blur);
-    return () => {
-      window.removeEventListener('keydown', down);
-      window.removeEventListener('keyup', up);
-      window.removeEventListener('blur', blur);
-    };
+  // ONE selection state for the whole shell (SPEC-mouse-parity.md Phase 3
+  // item 7). It replaces six useStates that had to be kept in step by hand:
+  // `selected` (the feature ids, set both by ModelEditor's pick() and by a
+  // viewport pick's resolved owner), `pickedEdge`/`pickedFace`/`pickedSize`
+  // (the single most recent viewport pick -- now the one `primary` slot,
+  // which is faithful because onPick has always set one of those two and
+  // nulled the other on every pick), and the two Shift-accumulated
+  // multi-pick arrays beside them -- now the edge/face `items`. Every read
+  // below goes through selection-model.ts's own ops, and ModelEditor is
+  // handed this same object rather than a parallel copy of half of it.
+  const [selection, setSelection] = useState<SelectionState>(emptySelection);
+  const selected = useMemo(() => featuresOf(selection), [selection]);
+  const primaryPick = primaryOf(selection);
+  /** Replace the selected feature ids, leaving the viewport picks alone --
+   *  ModelEditor's `onSelect`, and this file's own clear-the-selection
+   *  affordances. */
+  const selectFeatures = useCallback((ids: string[]) => {
+    setSelection((s) => withFeatureIds(s, ids));
   }, []);
-  const [pickedEdges, setPickedEdges] = useState<Array<{ target: string; edge: TopoName }>>([]);
-  const [pickedFaces, setPickedFaces] = useState<Array<{ target: string; face: TopoName }>>([]);
+  // A selection can outlive its feature (an undo, a rollback, a delete), so
+  // prune ids the doc no longer has -- withFeatureIds hands back the same
+  // state object when there is nothing to prune, so this stays a no-op.
+  useEffect(() => {
+    setSelection((s) => withFeatureIds(s, featuresOf(s).filter((id) => doc.features.some((f) => f.id === id))));
+  }, [doc]);
+  // Item E: a Shift-held click on a second edge/face adds it to the
+  // selection instead of replacing it, the same way the timeline/browser
+  // rows already work (ModelEditor.tsx's pick()). BrepViewportThree.tsx's
+  // onPick carries no modifier-key info, so Shift is still tracked from
+  // window listeners rather than threaded through the pick payload -- that
+  // listener now lives in pick-modifiers.ts, with its own comment on why it
+  // is a stopgap and which spec item deletes it (Phase 3 item 1).
+  const shiftHeld = useShiftHeld();
   // Item N: when a handle was last actually touched (a drag/commit) -- 
   // BrepViewportThree.tsx uses this to hold its own "A sketch is flat..."
   // Pull hint off screen while a student is visibly busy dragging a handle,
@@ -680,29 +705,41 @@ export default function ReshapeStudio({
     if (!doc.features.some((f) => f.id === id)) return null;
     const base = nameMap(doc)[id] ?? id;
     // Item E: "3 edges"/"2 faces" once a Shift-click multi-selection is two
-    // or more deep on the currently selected solid -- ownerOf() filters out
-    // anything a stray pick left pointing at a different solid, the same
-    // guard round()'s multi-edge path applies before it builds anything.
-    const edgesHere = pickedEdges.filter((e) => ownerOf(doc, e) === id);
-    const facesHere = pickedFaces.filter((f) => ownerOf(doc, f) === id);
+    // or more deep on the currently selected solid -- ownerScoped() runs the
+    // same ownerOf() filter this used to spell out over the two multi-pick
+    // arrays, so anything a stray pick left pointing at a different
+    // solid still drops out, the same guard round()'s multi-edge path
+    // applies before it builds anything.
+    const scoped = ownerScoped(selection, doc, id);
+    const edgesHere = scoped.filter((i) => i.kind === 'edge');
+    const facesHere = scoped.filter((i) => i.kind === 'face');
     // Item H (P20): a single picked edge/face carries its own kernel-
     // measured size as a third segment -- "Box 1 · top face · 40 x 40",
     // "Box 1 · edge · 20" -- but a multi-selection ("3 edges") has no one
-    // size to show, so pickedSize is read only in the single-pick branches.
+    // size to show, so the primary pick's size is read only in the
+    // single-pick branches.
+    const size = primaryPick?.size ?? null;
     const single = edgesHere.length <= 1 && facesHere.length <= 1;
+    // The most recent pick, only while it still belongs to this solid --
+    // the `pickedEdge && ownerOf(doc, pickedEdge) === id` guard the two
+    // branches below each used to carry, asked once now that one `primary`
+    // slot holds whichever kind was picked.
+    const here = primaryPick && ownerOf(doc, { target: primaryPick.target, name: primaryPick.name ?? null }) === id
+      ? primaryPick
+      : null;
     const part = edgesHere.length > 1
       ? `${edgesHere.length} edges`
       : facesHere.length > 1
         ? `${facesHere.length} faces`
-        : pickedEdge && ownerOf(doc, pickedEdge) === id
-          ? (partWordFor(pickedEdge.edge) ?? 'edge')
-            + (single && typeof pickedSize === 'number' ? ` · ${pickedSize}` : '')
-          : pickedFace && ownerOf(doc, pickedFace) === id
-            ? (partWordFor(pickedFace.face) ?? 'face')
-              + (single && Array.isArray(pickedSize) ? ` · ${pickedSize[0]} x ${pickedSize[1]}` : '')
+        : here?.kind === 'edge'
+          ? (partWordFor(here.name) ?? 'edge')
+            + (single && typeof size === 'number' ? ` · ${size}` : '')
+          : here?.kind === 'face'
+            ? (partWordFor(here.name) ?? 'face')
+              + (single && Array.isArray(size) ? ` · ${size[0]} x ${size[1]}` : '')
             : null;
     return part ? `${base} · ${part}` : base;
-  }, [selected, doc, pickedFace, pickedEdge, pickedEdges, pickedFaces, pickedSize]);
+  }, [selected, doc, selection, primaryPick]);
 
   const activeSketchPlane = useMemo<'xy' | 'xz' | 'yz' | null>(() => {
     if (selected.length !== 1) return null;
@@ -911,9 +948,11 @@ export default function ReshapeStudio({
   function clearModel() {
     if (!window.confirm('Clear the model and start again? Unsaved work will be lost.')) return;
     loadDoc(EMPTY_DOC);
-    setSelected([]);
-    setPickedEdge(null);
-    setPickedFace(null);
+    // The feature ids and the most recent pick go; the Shift-accumulated
+    // edge/face items stay, exactly as this read when it was setSelected([])
+    // beside setPickedEdge(null)/setPickedFace(null), with the two multi-pick
+    // arrays left alone.
+    setSelection((s) => ({ ...withFeatureIds(s, []), primary: null }));
     past.current = [];
     future.current = [];
     setDepth({ back: 0, forward: 0 });
@@ -1100,8 +1139,9 @@ export default function ReshapeStudio({
               <ModelEditor
               doc={doc}
               onChange={applyDoc}
-              selected={selected}
-              onSelect={setSelected}
+              selection={selection}
+              onSelect={selectFeatures}
+              onSelectionChange={setSelection}
               rollbackIndex={rollbackIndex}
               onRollback={setRollbackIndex}
               registerContextActions={(a) => { const had = ctxActionsRef.current != null; const has = a != null; ctxActionsRef.current = a; if (had !== has) setCtxActions(has); }}
@@ -1112,12 +1152,6 @@ export default function ReshapeStudio({
               historyGen={historyGen}
               collapsible
               onCollapsed={setToolsHidden}
-              pickedEdge={pickedEdge}
-              onClearPickedEdge={() => setPickedEdge(null)}
-              pickedFace={pickedFace}
-              onClearPickedFace={() => setPickedFace(null)}
-              pickedEdges={pickedEdges}
-              onClearPickedEdges={() => setPickedEdges([])}
               refusals={refusals}
               hasMesh={hasMesh}
               onExportSTL={exportSTL}
@@ -1222,47 +1256,44 @@ export default function ReshapeStudio({
                 }}
                 onPick={showBrep ? (p: ViewportPick | null) => {
                   if (!p) {
-                    setSelected([]);
-                    setPickedEdge(null);
-                    setPickedFace(null);
-                    setPickedEdges([]);
-                    setPickedFaces([]);
-                    setPickedSize(null);
+                    // A click on nothing clears every axis at once -- what
+                    // six separate setters used to spell out one per line.
+                    setSelection(clearSelection);
                     return;
                   }
                   const owner = ownerOf(doc, p);
-                  if (owner) setSelected([owner]);
-                  setPickedEdge(p.kind === 'edge' ? { target: p.target, edge: p.name } : null);
-                  setPickedFace(p.kind === 'face' ? { target: p.target, face: p.name } : null);
-                  setPickedSize(p.size ?? null);
+                  const item = itemOfPick(p);
                   // Item E: an unnamed pick (nameEdgeOnCurrentShape/
                   // nameFaceOnCurrentShape honestly refused it -- see
                   // ViewportPick's own comment) cannot join a multi-select,
                   // since Round/Angled Corner need a real name to build
                   // from same as the single-edge path already does.
-                  const shift = shiftHeldRef.current;
-                  if (p.kind === 'edge' && p.name) {
-                    const name = p.name;
-                    setPickedEdges((prev) => {
-                      const hit = shift && prev.some((e) => e.target === p.target && sameTopo(e.edge, name));
-                      if (hit) return prev.filter((e) => !(e.target === p.target && sameTopo(e.edge, name)));
-                      return shift ? [...prev, { target: p.target, edge: name }] : [{ target: p.target, edge: name }];
-                    });
-                    setPickedFaces([]);
-                  } else if (p.kind === 'face' && p.name) {
-                    const name = p.name;
-                    setPickedFaces((prev) => {
-                      const hit = shift && prev.some((e) => e.target === p.target && sameTopo(e.face, name));
-                      if (hit) return prev.filter((e) => !(e.target === p.target && sameTopo(e.face, name)));
-                      return shift ? [...prev, { target: p.target, face: name }] : [{ target: p.target, face: name }];
-                    });
-                    setPickedEdges([]);
-                  } else {
-                    setPickedEdges([]);
-                    setPickedFaces([]);
-                  }
-                } : () => { /* Code's viewport is read-only: no ModelEditor here to act on a pick, and `selected`/`pickedEdge` are Build's own state, resolved against `doc`, not `scriptDoc` -- reusing them here would risk a stale/wrong-looking selection. */ }}
-                pick={showBrep && pickedEdge?.edge ? { target: pickedEdge.target, name: pickedEdge.edge } : null}
+                  const shift = shiftHeld.current;
+                  setSelection((prev) => {
+                    // Picking an edge empties the face multi-pick and the
+                    // other way round: the multi-pick used to be two separate
+                    // arrays, each emptied by the other kind's branch.
+                    const kin: SelectionState = { ...prev, items: prev.items.filter((i) => i.kind === p.kind) };
+                    const members = p.name
+                      ? (shift ? toggleSelection(kin, item) : replaceSelection(kin, item))
+                      : clearSelection(kin);
+                    // An owner-less pick leaves the feature ids alone, the
+                    // same way `if (owner) setSelected([owner])` did -- see
+                    // ownerOf()'s own comment on why it answers null.
+                    return {
+                      ...withFeatureIds(members, owner ? [owner] : featuresOf(prev)),
+                      // `primary` is the RAW pick, set apart from multi-select
+                      // membership: pickedEdge/pickedFace/pickedSize were
+                      // overwritten by whatever was just clicked even when that
+                      // same click Shift-toggled the edge back OFF the
+                      // multi-selection, so toggle()'s own primary-on-remove
+                      // rule cannot stand in for this (selection-model.ts's
+                      // header calls out that exact quirk).
+                      primary: item,
+                    };
+                  });
+                } : () => { /* Code's viewport is read-only: no ModelEditor here to act on a pick, and `selection` is Build's own state, resolved against `doc`, not `scriptDoc` -- reusing it here would risk a stale/wrong-looking selection. */ }}
+                pick={showBrep && primaryPick?.kind === 'edge' && primaryPick.name ? { target: primaryPick.target, name: primaryPick.name } : null}
                 selectedCount={showBrep ? selected.length : 0}
                 selectionLabel={showBrep ? selectionLabel : null}
                 sketchPlane={activeSketchPlane}
@@ -1400,7 +1431,7 @@ export default function ReshapeStudio({
             className="reshape-studio-status-sel"
             title="Click to clear the selection"
             aria-label="Clear the selection"
-            onClick={() => setSelected([])}
+            onClick={() => selectFeatures([])}
           >
             {selectionLabel}
           </button>

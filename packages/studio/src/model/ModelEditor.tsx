@@ -100,13 +100,28 @@ import {
 } from '@shuff57/reshape-script/model-types';
 import { partWordFor, type TopoName } from '@shuff57/reshape-script/topo-name';
 import { ownerOf } from '@shuff57/reshape-script/model-selection';
+import { featuresOf, ownerScoped, primaryOf, type SelectionState } from '../selection-model.js';
 
 interface Props {
   doc: ModelDoc;
   onChange: (next: ModelDoc) => void;
-  /** Lifted so the preview knows whose drag handles to draw. */
-  selected: string[];
+  /** The ONE selection state, owned by ReshapeStudio and shared with the
+   *  viewport (SPEC-mouse-parity.md Phase 3 item 7). It carries what used to
+   *  arrive here as four separate props -- the selected feature ids plus the
+   *  picked edge/face -- so a pick made in the viewport and a click made on a
+   *  row below are the same state, not two copies that have to agree. Read
+   *  through selection-model.ts's ops just below the destructure. */
+  selection: SelectionState;
+  /** Replace the selected feature ids, leaving the viewport picks alone --
+   *  every `setSelected([...])` in this file. The caller owns that swap (it
+   *  owns the state), so this signature is unchanged from when `selected`
+   *  was its own prop. */
   onSelect: (ids: string[]) => void;
+  /** Write the whole selection. Takes a next state OR an updater, the same
+   *  shape React's own setState does, because several verbs here write it
+   *  twice in one handler -- round() selects the new fillets, then drops the
+   *  edge they consumed -- and the second write has to see the first. */
+  onSelectionChange: (next: SelectionState | ((prev: SelectionState) => SelectionState)) => void;
   onUndo: () => void;
   onRedo: () => void;
   canUndo: boolean;
@@ -141,46 +156,6 @@ interface Props {
   rollbackIndex?: number | null;
   /** Set the rollback boundary, or null to clear it (show the full model). */
   onRollback?: (i: number | null) => void;
-  /**
-   * An edge picked in the 3D viewport (BrepViewportThree's `onPick`), lifted
-   * up alongside `selected` for the same reason: the pick outlives any one
-   * render and the sandbox is what owns the viewport this came from.
-   *
-   * `edge` is null when the picked edge is real (and highlighted in the
-   * viewport) but could not be turned into a TopoName -- anything past a box
-   * or cylinder; see nameEdgeBetweenPrimitiveFaces() in lib/topo-resolve.ts.
-   * round() below only acts on a non-null edge and otherwise falls back to
-   * the whole-shape tool, same as picking nothing at all.
-   */
-  pickedEdge?: { target: string; edge: TopoName | null } | null;
-  /** Called once a picked edge has been consumed into a new FilletFeature,
-   *  so the sandbox stops pinning a selection that no longer points at
-   *  anything useful (its target feature is now consumed -- see topLevel()). */
-  onClearPickedEdge?: () => void;
-  /** The last FACE picked in the viewport, the same way pickedEdge tracks an
-   *  edge -- see ShellFeature.open. `face` is null the same way pickedEdge's
-   *  `edge` can be: a real pick that could not be traced back to a named
-   *  primitive face (see nameFaceOnCurrentShape() in lib/topo-resolve.ts).
-   *  openHollow() below only acts on a non-null face and otherwise refuses
-   *  with a reason, rather than falling back to a closed hollow silently. */
-  pickedFace?: { target: string; face: TopoName | null } | null;
-  /** Called once a picked face has been consumed into a new open ShellFeature,
-   *  the same reason onClearPickedEdge exists. */
-  onClearPickedFace?: () => void;
-  /**
-   * Every edge the student has Shift-added to the selection (item E), most
-   * recent last -- purely additive over `pickedEdge` above, which keeps
-   * meaning "the most recent pick" for every consumer that only ever cared
-   * about one edge (the tooltip, the disabled-state message, Hole/Hollow's
-   * own single-face requirement). round() below only takes the multi-edge
-   * path once two or more of these resolve to the SAME solid as `chosen`;
-   * otherwise it falls straight through to the single-edge/whole-shape
-   * logic that already existed, unchanged.
-   */
-  pickedEdges?: Array<{ target: string; edge: TopoName }>;
-  /** Called once every edge in a multi-selection has been consumed into new
-   *  FilletFeatures, the same reason onClearPickedEdge exists. */
-  onClearPickedEdges?: () => void;
   /** Feature id -> why that feature could not be built, from the B-rep build.
    *  A refused feature is ABSENT from the model but still present in the
    *  history, which without this marker looks like the app ignoring a click. */
@@ -460,7 +435,7 @@ function FlyoutButton({
 }
 
 export default function ModelEditor({
-  doc, onChange, selected, onSelect, onUndo, onRedo, canUndo, canRedo, collapsible, onCollapsed, onContentChange, rollbackIndex, onRollback, pickedEdge, onClearPickedEdge, pickedFace, onClearPickedFace, pickedEdges, onClearPickedEdges, refusals,
+  doc, onChange, selection, onSelect, onSelectionChange, onUndo, onRedo, canUndo, canRedo, collapsible, onCollapsed, onContentChange, rollbackIndex, onRollback, refusals,
   registerContextActions, historyGen,
   hasMesh, onExportSTL, onExportOBJ, onExport3MF,
   canClearModel, onClearModel, activePlane, onActivePlaneChange,
@@ -539,6 +514,37 @@ export default function ModelEditor({
   // wrong, so the first click has to ask rather than guess.
   const [lastMirrorPlane, setLastMirrorPlane] = useState<SketchPlane | null>(null);
   const setSelected = onSelect;
+  // The shared selection, read back in the shapes this file already had
+  // props for, so every consumer below -- round()'s single-edge path,
+  // hollow()'s open face, pickedEdgeUsable and the disabled-state messages
+  // -- reads exactly what it always did:
+  //   selected    the feature ids            (featuresOf)
+  //   pickedEdge  the most recent pick, when that pick was an edge
+  //   pickedFace  ditto for a face
+  // One `primary` slot standing in for what were two separate useStates in
+  // the caller is faithful rather than lossy: its onPick has always set one
+  // of those two and nulled the other on every single pick, so they were
+  // never both live at once.
+  const selected = featuresOf(selection);
+  const primary = primaryOf(selection);
+  const pickedEdge = primary?.kind === 'edge' ? { target: primary.target, edge: primary.name ?? null } : null;
+  const pickedFace = primary?.kind === 'face' ? { target: primary.target, face: primary.name ?? null } : null;
+  /** Forget the most recent pick when it is an edge -- what the caller's own
+   *  onClearPickedEdge() (setPickedEdge(null)) did, called once a picked edge
+   *  has been consumed into a new FilletFeature so nothing stays pinned to a
+   *  selection that no longer points at anything useful. A face primary is
+   *  left alone, exactly as two independent useStates left it. Updater form:
+   *  see onSelectionChange's own doc comment. */
+  const clearPickedEdge = () => onSelectionChange((s) => (s.primary?.kind === 'edge' ? { ...s, primary: null } : s));
+  /** The same for a picked face, once it is consumed into an open Shell. */
+  const clearPickedFace = () => onSelectionChange((s) => (s.primary?.kind === 'face' ? { ...s, primary: null } : s));
+  /** Drop every Shift-added edge, once a multi-edge Round has consumed them
+   *  all. Face items stay: the two multi-pick arrays this replaces were
+   *  independent of each other. */
+  const clearPickedEdgeItems = () => onSelectionChange((s) => {
+    const items = s.items.filter((i) => i.kind !== 'edge');
+    return items.length === s.items.length ? s : { ...s, items };
+  });
 
   const toolsRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
@@ -681,9 +687,14 @@ export default function ModelEditor({
     // selected edge in one step" -- one click, every edge rounds -- just as
     // several timeline rows instead of one; flagged rather than silently
     // presented as a single feature.
-    const multi = (pickedEdges ?? []).filter(
-      (e) => chosen.length === 1 && chosen[0].id === ownerOf(doc, e)
-    );
+    // ownerScoped() IS that ownerOf() re-check, run over the shared
+    // selection's own items; the kind filter is what keeps this the
+    // multi-EDGE path (a face pick lives in the same list now).
+    const multi: Array<{ target: string; edge: TopoName }> = chosen.length === 1
+      ? ownerScoped(selection, doc, chosen[0].id)
+        .filter((i) => i.kind === 'edge' && i.name != null)
+        .map((i) => ({ target: i.target, edge: i.name as TopoName }))
+      : [];
     if (multi.length > 1) {
       let building = doc;
       const made: FilletFeature[] = [];
@@ -703,8 +714,8 @@ export default function ModelEditor({
       }
       onChange(building);
       setSelected(made.map((f) => f.id));
-      onClearPickedEdges?.();
-      onClearPickedEdge?.();
+      clearPickedEdgeItems();
+      clearPickedEdge();
       setLastRound(style);
       setMenu(null);
       say(null);
@@ -759,7 +770,7 @@ export default function ModelEditor({
       };
       onChange({ ...doc, features: [...doc.features, f] });
       setSelected([f.id]);
-      onClearPickedEdge?.();
+      clearPickedEdge();
       setLastRound(style);
       setMenu(null);
       say(null);
@@ -983,7 +994,7 @@ export default function ModelEditor({
     const { next, feature, note } = insertShell(openFace);
     onChange(next);
     setSelected([feature.id]);
-    if (openFace) onClearPickedFace?.();
+    if (openFace) clearPickedFace();
     say(note);
   }
 
@@ -1006,7 +1017,7 @@ export default function ModelEditor({
     const { next, feature, note } = insertShell(pickedFace.face);
     onChange(next);
     setSelected([feature.id]);
-    onClearPickedFace?.();
+    clearPickedFace();
     setMenu(null);
     say(note ?? 'Hollowed, open at the face you clicked.');
   }
