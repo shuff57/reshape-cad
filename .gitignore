@@ -9,3 +9,6 @@ dist/
 
 # opencode agent session state, not project memory
 .omo/run-continuation/
+
+# parity-record.mjs recorded scenario videos - never committed
+.omo/evidence/parity-recordings/
