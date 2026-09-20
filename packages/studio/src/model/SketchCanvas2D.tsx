@@ -28,6 +28,13 @@
 // grid -- so a midpoint reads differently from an intersection before the
 // click lands. It rides the pointermove hover path that was already here; no
 // frame loop was added for it.
+//
+// MARQUEE SELECT (SPEC-mouse-parity Phase 2 item 5, 2026-09-20). A select-tool
+// press that lands on EMPTY space drags a band instead of an entity: dragged
+// left-to-right it windows (fully inside only), right-to-left it crosses
+// (touched counts), both decided by marquee-select.ts, the same pure module
+// the 3D box select will use. The gesture is selection and nothing else --
+// it calls setSel and never writeDoc, so it adds no undo entry at all.
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -72,6 +79,7 @@ import {
   type SizePx,
   type SketchView,
 } from '../sketch-view.js';
+import { marqueeKind, marqueeSelect } from '../marquee-select.js';
 import { loadSchemeName, schemeToMouseButtons } from '../camera-controls.js';
 
 const SNAP_PX = 8;
@@ -850,6 +858,13 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     applied: boolean;
     refused: boolean;
   } | null>(null);
+  // Marquee select (SPEC-mouse-parity Phase 2 item 5). Same ref/state split as
+  // drag-to-create, and the same DRAG_PX gate: under it the press stays a
+  // plain pick. The band is world-space so it rides the viewBox like every
+  // other drawn thing; the direction that decides window vs crossing is read
+  // off the raw from/to pair, never off the normalized box.
+  const marqueeRef = useRef<{ from: Pt; to: Pt; startX: number; startY: number; moved: boolean } | null>(null);
+  const [marquee, setMarquee] = useState<{ from: Pt; to: Pt } | null>(null);
 
   /** Apply whatever pulls are queued, in ONE animation frame, and read the
    *  result back. Not a render loop: the frame is a coalescer for a burst of
@@ -936,13 +951,27 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
         }
         return;
       }
-      // No handle under the press, but a BODY: drag the whole row. Every one
-      // of its named points moves by the same delta -- both ends of a line,
-      // a circle's centre, an arc's centre and both ends -- each as one
+      // No handle under the press: NOTHING under it drags a marquee, a BODY
+      // under it drags the whole row.
+      const hit = findHit(e);
+      if (!hit) {
+        // EMPTY space under the press: a marquee, not an edit. Nothing in
+        // this gesture touches the doc -- no writeDoc, no onChange, no undo
+        // entry -- it only ever calls setSel on pointerup.
+        const w0 = worldFromEvent(e);
+        marqueeRef.current = { from: w0, to: w0, startX: e.clientX, startY: e.clientY, moved: false };
+        try {
+          (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
+        } catch {
+          // no active pointer: the svg still sees the moves
+        }
+        return;
+      }
+      if (hit.at !== null) return;
+      // Every named point of the row moves by the same delta -- both ends of a
+      // line, a circle's centre, an arc's centre and both ends -- each as one
       // solver drag() of the slot pair behind it. The centre goes first so an
       // arc translates its frame before its ends follow it.
-      const hit = findHit(e);
-      if (!hit || hit.at !== null) return;
       const g = solved.find((x) => x.id === hit.id);
       if (!g) return;
       if (diagnosis && diagnosis.dof === 0) {
@@ -991,6 +1020,13 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
       const w = worldFromEvent(e);
       setPointer(w);
       setHoverSnap(findHoverSnap(e));
+      const mq = marqueeRef.current;
+      if (mq) {
+        mq.to = w;
+        if (!mq.moved && Math.hypot(e.clientX - mq.startX, e.clientY - mq.startY) >= DRAG_PX) mq.moved = true;
+        if (mq.moved) setMarquee({ from: mq.from, to: mq.to });
+        return;
+      }
       const create = createRef.current;
       if (create) {
         const snap = findSnap(e);
@@ -1023,9 +1059,36 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     [findHit, findHoverSnap, findSnap, geoms, scheduleSolve, view, worldFromEvent],
   );
 
-  const onPointerUp = useCallback(() => {
+  const onPointerUp = useCallback((e: React.PointerEvent) => {
     if (panRef.current) {
       panRef.current = null;
+      return;
+    }
+    const mq = marqueeRef.current;
+    marqueeRef.current = null;
+    if (mq) {
+      setMarquee(null);
+      if (mq.moved) {
+        // Pure UI selection: marqueeSelect is a function of the solved rows
+        // and the dragged box, and the only thing it feeds is React state.
+        // A marquee therefore adds ZERO undo entries.
+        const ids = marqueeSelect(solved as CoreGeom[], {
+          startX: mq.from.x,
+          startY: mq.from.y,
+          endX: mq.to.x,
+          endY: mq.to.y,
+        });
+        setSel((prev) => {
+          const next = e.shiftKey ? [...prev] : [];
+          for (const id of ids) {
+            if (!next.some((s) => s.id === id && s.at === null)) next.push({ id, at: null });
+          }
+          return next;
+        });
+        // The click the browser fires after this press would otherwise run
+        // onSelectClick on empty space and clear what the marquee just picked.
+        suppressClickRef.current = true;
+      }
       return;
     }
     const create = createRef.current;
@@ -1061,7 +1124,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     // into the doc (one onChange per gesture = one undo entry).
     const rows = readSolved(geoms as CoreGeom[], sessionRef.current.params) as SoupGeom[];
     writeDoc(rows, rules);
-  }, [commitCircle, commitRect, commitSlotBox, geoms, rules, writeDoc]);
+  }, [commitCircle, commitRect, commitSlotBox, geoms, rules, solved, writeDoc]);
 
   // --- keyboard -----------------------------------------------------------------------
   useEffect(() => {
@@ -1197,6 +1260,13 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     const [cA, cB] = clicks as [Pt, Pt];
     preview = slotPreview(cA, cB, Math.hypot(pointer.x - cA.x, pointer.y - cA.y));
   }
+
+  // Which marquee is being dragged, decided by the same pure function that
+  // will pick the rows on pointerup -- the band cannot promise one rule and
+  // the selection apply the other.
+  const marqueeNow = marquee
+    ? marqueeKind({ startX: marquee.from.x, startY: marquee.from.y, endX: marquee.to.x, endY: marquee.to.y })
+    : null;
 
   const dofClass = diagnosis
     ? diagnosis.bucket === 'conflicting'
@@ -1469,6 +1539,16 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
         <g className="sk2d-grid">{gridNodes(view, size)}</g>
         <g className="sk2d-geom">{shapes}</g>
         <g className="sk2d-preview">{preview}</g>
+        {marquee && marqueeNow && (
+          <rect
+            className={`sk-marquee sk-marquee-${marqueeNow}`}
+            data-marquee={marqueeNow}
+            x={Math.min(marquee.from.x, marquee.to.x)}
+            y={-Math.max(marquee.from.y, marquee.to.y)}
+            width={Math.abs(marquee.to.x - marquee.from.x)}
+            height={Math.abs(marquee.to.y - marquee.from.y)}
+          />
+        )}
         {hoverSnap && snapGlyph(hoverSnap, mmPerPx)}
       </svg>
     </div>
@@ -1656,6 +1736,14 @@ const SK2D_CSS = `
 .sk-snap-glyph, .sk-snap-glyph > * { fill: none; stroke: var(--reshape-accent, #8be9fd); stroke-width: 1.5;
   vector-effect: non-scaling-stroke; pointer-events: none; }
 .sk-snap-glyph[data-snap="grid"] { fill: var(--reshape-accent, #8be9fd); }
+/* The two marquees have to be told apart mid-drag, before the button comes
+   up: long blue dashes for WINDOW (left-to-right, fully inside only), short
+   green dashes for CROSSING (right-to-left, touched counts). Both colours are
+   existing --reshape-* tokens (notes.ts's rule -- no new palette entries), and
+   non-scaling-stroke keeps the dash pattern in screen pixels through zoom. */
+.sk-marquee { stroke-width: 1.2; fill-opacity: 0.1; pointer-events: none; vector-effect: non-scaling-stroke; }
+.sk-marquee-window { stroke: var(--reshape-accent, #8be9fd); fill: var(--reshape-accent, #8be9fd); stroke-dasharray: 9 4; }
+.sk-marquee-crossing { stroke: var(--reshape-success, #50fa7b); fill: var(--reshape-success, #50fa7b); stroke-dasharray: 3 3; }
 .sk-rubber { stroke: var(--reshape-accent, #8be9fd); stroke-width: 1.4; stroke-dasharray: 5 4; fill: none; vector-effect: non-scaling-stroke; }
 .sk-preview { stroke: var(--reshape-accent, #8be9fd); stroke-width: 1.4; fill: none; opacity: 0.8; vector-effect: non-scaling-stroke; }
 .sk-axis-hint { fill: var(--reshape-accent, #8be9fd); }
