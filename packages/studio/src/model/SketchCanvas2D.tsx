@@ -35,6 +35,13 @@
 // (touched counts), both decided by marquee-select.ts, the same pure module
 // the 3D box select will use. The gesture is selection and nothing else --
 // it calls setSel and never writeDoc, so it adds no undo entry at all.
+//
+// TOOL KEYS AND CURSORS (SPEC-mouse-parity Phase 2 item 6, 2026-09-20). One
+// letter arms one tool (L R C A S T V, Fusion's own), D opens the dimension
+// the ribbon's Dim button opens, and every one of them is deaf while a text
+// field has focus. The armed tool also sets the canvas cursor, so which tool
+// is live is readable without looking up at the ribbon. The Esc cascade above
+// them is untouched.
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -117,6 +124,31 @@ type Tool = 'select' | 'line' | 'rect' | 'circle' | 'arc' | 'slot' | 'trim';
 type CreateTool = 'rect' | 'circle' | 'slot';
 const isCreateTool = (t: Tool): t is CreateTool => t === 'rect' || t === 'circle' || t === 'slot';
 type Sel = { id: number; at: 'a' | 'b' | 'c' | null };
+/** Fusion's sketch keys (SPEC-mouse-parity Phase 2 item 6). D is absent on
+ *  purpose: it opens a dimension rather than arming a tool, so it is handled
+ *  beside these rather than in the table. */
+const TOOL_KEYS: Record<string, Tool> = {
+  l: 'line',
+  r: 'rect',
+  c: 'circle',
+  a: 'arc',
+  s: 'slot',
+  t: 'trim',
+  v: 'select',
+};
+/** The cursor each tool wears. A draw tool aims at a POINT, so it keeps the
+ *  crosshair this canvas used to wear for every tool including select; select
+ *  is the arrow the rest of the UI uses; trim takes `cell`, the nearest thing
+ *  CSS has to Fusion's scissors. */
+const TOOL_CURSOR: Record<Tool, string> = {
+  select: 'default',
+  line: 'crosshair',
+  rect: 'crosshair',
+  circle: 'crosshair',
+  arc: 'crosshair',
+  slot: 'crosshair',
+  trim: 'cell',
+};
 
 interface Props {
   sketch: SketchFeature;
@@ -818,6 +850,17 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     [selShapes, solved],
   );
 
+  /** What the ribbon's dimension buttons do, reached from the keyboard (P2.6's
+   *  `D`). The on-canvas dimension flow -- click an entity, place a label, type
+   *  the value -- is Phase 2 item 7 and does not exist yet; until it does, D is
+   *  the same entry point the Dim / R buttons are, and says what it wants when
+   *  nothing dimensionable is picked rather than doing nothing. */
+  const openDimFromSelection = useCallback(() => {
+    if (canDimLine) openDim('distance');
+    else if (canDimRadius) openDim('radius');
+    else setStatus('dimension: select a line, circle or arc first');
+  }, [canDimLine, canDimRadius, openDim]);
+
   const commitDim = useCallback(() => {
     if (!dim) return;
     const v = Number(dim.value);
@@ -1129,8 +1172,12 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
   // --- keyboard -----------------------------------------------------------------------
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      const tag = (e.target as HTMLElement)?.tagName;
-      if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+      // Never while a text field owns the keys: the dimension value box is one
+      // keystroke away from every letter below, and D typed into it must stay
+      // a D.
+      const el = e.target as HTMLElement | null;
+      const tag = el?.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || el?.isContentEditable) return;
       if (e.key === 'Escape') {
         if (dim) setDim(null);
         else if (chain || clicks.length) {
@@ -1141,12 +1188,26 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
         onDeleteClick();
       } else if (e.key.toLowerCase() === 'f' && e.shiftKey && !e.metaKey && !e.ctrlKey) {
         fit();
-      } else if (e.key === 'l' && !e.metaKey && !e.ctrlKey) setTool('line');
-      else if (e.key === 's' && !e.metaKey && !e.ctrlKey) setTool('select');
+      } else if (!e.metaKey && !e.ctrlKey && !e.altKey) {
+        // The tool letters (SPEC-mouse-parity Phase 2 item 6). Shift is not
+        // excluded -- an upper-case L is still the line tool -- but anything
+        // that means "a browser or OS command" is.
+        const key = e.key.toLowerCase();
+        const picked = TOOL_KEYS[key];
+        // A consumed shortcut swallows its own keystroke: D opens a value box
+        // that autofocuses, and without this the D itself lands in it.
+        if (picked) {
+          setTool(picked);
+          e.preventDefault();
+        } else if (key === 'd') {
+          openDimFromSelection();
+          e.preventDefault();
+        }
+      }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [chain, clicks.length, dim, fit, onDeleteClick, onExit, tool]);
+  }, [chain, clicks.length, dim, fit, onDeleteClick, onExit, openDimFromSelection, tool]);
 
   // --- render --------------------------------------------------------------------------
   const selKey = (id: number, at: 'a' | 'b' | 'c' | null) => `${id}:${at ?? ''}`;
@@ -1504,6 +1565,8 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
       <svg
         ref={svgRef}
         className="sk2d-svg"
+        data-tool={tool}
+        style={{ cursor: TOOL_CURSOR[tool] }}
         viewBox={viewBox}
         preserveAspectRatio="xMidYMid meet"
         onClick={(e) => {
@@ -1719,7 +1782,9 @@ const SK2D_CSS = `
   border: 1px solid var(--reshape-accent, #8be9fd); border-radius: var(--reshape-radius, 4px);
   padding: 2px 6px; font-family: var(--reshape-font-mono, monospace); }
 .sk2d-status { color: var(--reshape-warn, #ffb86c); font-size: 12px; }
-.sk2d-svg { width: 100%; height: 100%; cursor: crosshair; touch-action: none; }
+/* No cursor here: it is per-tool (TOOL_CURSOR), set inline from the active
+   tool, so the canvas itself says which tool is armed. */
+.sk2d-svg { width: 100%; height: 100%; touch-action: none; }
 /* Stroke widths are SCREEN pixels via non-scaling-stroke: with a live
    pxPerMm a world-unit stroke is a hairline zoomed out and a slab zoomed
    in. Dash patterns ride the same space, hence the px-scale dasharrays. */
