@@ -10,6 +10,17 @@
 // SketchSession2D parameter vector, and every edit is one onChange(doc) so the
 // studio's undo records exactly one entry per gesture. Decision logic lives in
 // sketch-canvas-core.ts (pure, test-proven); this file only calls it.
+//
+// VIEW STATE (SPEC-mouse-parity Phase 2 item 1, 2026-09-20). The fixed
+// +/-100mm viewBox is gone: the canvas navigates a {cx, cy, pxPerMm}
+// SketchView from sketch-view.ts -- wheel zooms to the cursor, the active
+// mouse scheme's own PAN button drags, Fit / Shift+F frames the content --
+// and the viewBox is DERIVED from that state plus the measured element
+// size. Two consequences shape the rest of the file: SNAP_PX / HIT_PX are
+// screen pixels, so every tolerance goes through screenPxToWorld(view) at
+// the point of use, and anything drawn at a fixed SCREEN size (vertex dots,
+// stroke widths, the grid step) is scaled by the current pxPerMm instead of
+// being a world-unit literal.
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -20,6 +31,7 @@ import {
   arcFromClicks,
   distToCircleStroke,
   distToSegment,
+  findSnap as findSnapCore,
   inferLineConstraint,
   namedPointsOf,
   nextGeomId,
@@ -43,12 +55,39 @@ import {
   type SoupGeomNew,
 } from './sketch-canvas-core.js';
 import { pointSlots } from '@shuff57/reshape-kernel/sketch-session';
+import {
+  applyWheelZoom,
+  fitView,
+  panByPx,
+  screenPxToWorld,
+  type BBox2Like,
+  type SizePx,
+  type SketchView,
+} from '../sketch-view.js';
+import { loadSchemeName, schemeToMouseButtons } from '../camera-controls.js';
 
 const SNAP_PX = 8;
 const HIT_PX = 6;
 const AXIS_TOL_DEG = 4;
-/** mm of sketch plane visible around the origin, both axes. */
-const VIEW = 100;
+/** Half-size (mm) of the frame an EMPTY sketch opens on -- what is left of
+ *  the fixed +/-100 viewBox this replaced, now only a fit target. */
+const DEFAULT_HALF_MM = 60;
+/** Margin Fit keeps on every side, screen px. */
+const FIT_PAD_PX = 24;
+/** Wheel: one 100px notch multiplies the scale by e^0.15 ~= 1.16. deltaMode
+ *  1 (lines) and 2 (pages) are normalised to pixels first. */
+const WHEEL_ZOOM_RATE = 0.0015;
+const WHEEL_LINE_PX = 16;
+/** Screen sizes of the marks that used to be world-unit literals back when
+ *  the scale was fixed; multiplied by mm-per-px at render time. */
+const VERTEX_R_PX = 3.2;
+const ORIGIN_R_PX = 3;
+const SNAP_RING_R_PX = 5.5;
+const AXIS_HINT_PX = 11;
+/** Grid: the smallest 1-2-5 step whose spacing is at least this many screen
+ *  pixels, and a ceiling on how many lines one frame may draw. */
+const GRID_MIN_PX = 9;
+const GRID_MAX_LINES = 400;
 
 type Tool = 'select' | 'line' | 'rect' | 'circle' | 'arc' | 'slot' | 'trim';
 type Sel = { id: number; at: 'a' | 'b' | 'c' | null };
@@ -181,8 +220,44 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     };
   }, [geoms, rules]);
 
-  // --- coordinate mapping ------------------------------------------------------
-  const view = useMemo(() => `${-VIEW} ${-VIEW} ${VIEW * 2} ${VIEW * 2}`, []);
+  // --- view state + coordinate mapping -----------------------------------------
+  // The viewBox is DERIVED from {cx, cy, pxPerMm} and the measured element
+  // size: a viewBox whose aspect ratio already matches the element makes
+  // "meet" a no-op, so one screen pixel is exactly 1/pxPerMm mm on both axes
+  // and the SVG's own CTM agrees with sketch-view's worldToScreen.
+  const [view, setView] = useState<SketchView>({ cx: 0, cy: 0, pxPerMm: 4 });
+  const [size, setSize] = useState<SizePx>({ width: 0, height: 0 });
+  /** mm per screen pixel: the multiplier for everything drawn at a fixed
+   *  SCREEN size (dots, the grid step, the axis hint) in world coordinates. */
+  const mmPerPx = 1 / view.pxPerMm;
+
+  useEffect(() => {
+    const el = svgRef.current;
+    if (!el) return;
+    const measure = () => {
+      const r = el.getBoundingClientRect();
+      setSize((prev) => (prev.width === r.width && prev.height === r.height ? prev : { width: r.width, height: r.height }));
+    };
+    measure();
+    if (typeof ResizeObserver === 'undefined') {
+      window.addEventListener('resize', measure);
+      return () => window.removeEventListener('resize', measure);
+    }
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  const viewBox = useMemo(() => {
+    if (!(size.width > 0) || !(size.height > 0)) {
+      return `${-DEFAULT_HALF_MM} ${-DEFAULT_HALF_MM} ${DEFAULT_HALF_MM * 2} ${DEFAULT_HALF_MM * 2}`;
+    }
+    const w = size.width / view.pxPerMm;
+    const h = size.height / view.pxPerMm;
+    // svgY = -y (the file-wide flip), so the top edge is the centre's
+    // NEGATED y minus half the height.
+    return `${view.cx - w / 2} ${-view.cy - h / 2} ${w} ${h}`;
+  }, [size, view]);
 
   const worldFromEvent = useCallback((e: { clientX: number; clientY: number }): Pt => {
     const svg = svgRef.current;
@@ -204,33 +279,106 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     return { x: q.x, y: q.y };
   }, []);
 
+  /** The world bbox of everything solved, for Fit. An empty or degenerate
+   *  sketch (no rows, a single point, a zero-radius circle) fits the default
+   *  frame instead: fitView's own fallback for a zero-extent bbox is
+   *  MIN_PX_PER_MM, which would park the sketch a million-fold away. */
+  const contentBBox = useMemo<BBox2Like>(() => {
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    const add = (x: number, y: number) => {
+      if (x < minX) minX = x;
+      if (y < minY) minY = y;
+      if (x > maxX) maxX = x;
+      if (y > maxY) maxY = y;
+    };
+    for (const g of solved) {
+      if (g.k === 'line') {
+        add(g.a[0], g.a[1]);
+        add(g.b[0], g.b[1]);
+      } else if (g.k === 'circle' || g.k === 'arc') {
+        add(g.c[0] - g.r, g.c[1] - g.r);
+        add(g.c[0] + g.r, g.c[1] + g.r);
+      } else if (g.k === 'point') {
+        add(g.p[0], g.p[1]);
+      }
+    }
+    if (!(maxX - minX > 1e-9) && !(maxY - minY > 1e-9)) {
+      const cx = Number.isFinite(minX) ? (minX + maxX) / 2 : 0;
+      const cy = Number.isFinite(minY) ? (minY + maxY) / 2 : 0;
+      return { min: [cx - DEFAULT_HALF_MM, cy - DEFAULT_HALF_MM], max: [cx + DEFAULT_HALF_MM, cy + DEFAULT_HALF_MM] };
+    }
+    return { min: [minX, minY], max: [maxX, maxY] };
+  }, [solved]);
+
+  const fit = useCallback(() => {
+    const r = svgRef.current?.getBoundingClientRect();
+    const s = r && r.width > 0 ? { width: r.width, height: r.height } : size;
+    if (!(s.width > 0) || !(s.height > 0)) return;
+    setView(fitView(contentBBox, s, FIT_PAD_PX));
+  }, [contentBBox, size]);
+
+  // The opening frame, ONCE. An existing sketch's rows reach the doc before
+  // the solver has run on them, so the fit waits for the first solved rows
+  // rather than framing the default box and never coming back; after that
+  // an edit never re-frames (nothing is worse than the canvas moving under
+  // a click mid-chain).
+  const didFit = useRef(false);
+  useEffect(() => {
+    if (didFit.current || !(size.width > 0) || !(size.height > 0)) return;
+    if (geoms.length > 0 && solved.length === 0) return;
+    didFit.current = true;
+    setView(fitView(contentBBox, size, FIT_PAD_PX));
+  }, [contentBBox, geoms.length, size, solved.length]);
+
+  // Wheel zoom is a NATIVE listener: React registers onWheel passively, so a
+  // preventDefault() there is ignored and the page scrolls under the canvas.
+  // One event, one setView -- no rAF loop.
+  useEffect(() => {
+    const el = svgRef.current;
+    if (!el) return;
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      const r = el.getBoundingClientRect();
+      if (!(r.width > 0) || !(r.height > 0)) return;
+      const px = e.deltaMode === 1 ? e.deltaY * WHEEL_LINE_PX : e.deltaMode === 2 ? e.deltaY * r.height : e.deltaY;
+      const factor = Math.exp(-px * WHEEL_ZOOM_RATE);
+      const cursor = { x: e.clientX - r.left, y: e.clientY - r.top };
+      setView((v) => applyWheelZoom(v, cursor, { width: r.width, height: r.height }, factor));
+    };
+    el.addEventListener('wheel', onWheel, { passive: false });
+    return () => el.removeEventListener('wheel', onWheel);
+  }, []);
+
+  // Which button pans: the ACTIVE scheme's own PAN binding (Phase 1's table),
+  // so a user who picked Fusion for the 3D viewport pans with the same finger
+  // here. Only PAN is read -- the table's ORBIT and DOLLY rows have no 2D
+  // meaning (nothing to orbit; the wheel owns zoom) -- and it transfers
+  // as-is because three.js MOUSE.LEFT/MIDDLE/RIGHT are 0/1/2, the numbering
+  // PointerEvent.button already uses. The middle button pans under EVERY
+  // scheme as well: it is unbound in 2D otherwise, and MMB-pan is the habit
+  // every CAD user arrives with.
+  const panButton = useMemo(() => schemeToMouseButtons(loadSchemeName()).PAN, []);
+  const panRef = useRef<{ x: number; y: number } | null>(null);
   // --- tool plumbing -----------------------------------------------------------
+  // Vertex snap through the ONE snap engine (sketch-canvas-core's findSnap):
+  // SNAP_PX is screen pixels, converted to a world tolerance for the current
+  // zoom, so the ring catches at the same distance from the cursor whatever
+  // pxPerMm is.
   const findSnap = useCallback(
     (e: { clientX: number; clientY: number }) => {
-      let best: { id: number; at: 'a' | 'b' | 'c'; world: Pt } | null = null;
-      let bestDist = SNAP_PX;
-      for (const g of solved) {
-        for (const { at } of namedPointsOf(g)) {
-          const w = pointWorld(g, at);
-          if (!w) continue;
-          const s = screenFromWorld(w);
-          const d = Math.hypot(s.x - e.clientX, s.y - e.clientY);
-          if (d < bestDist) {
-            bestDist = d;
-            best = { id: g.id, at, world: w };
-          }
-        }
-      }
-      return best;
+      const w = worldFromEvent(e);
+      const hit = findSnapCore(solved as CoreGeom[], w, screenPxToWorld(SNAP_PX, view), { kinds: ['vertex'] });
+      if (!hit || hit.id === undefined || !hit.at) return null;
+      return { id: hit.id, at: hit.at, world: hit.world };
     },
-    [solved, screenFromWorld, worldFromEvent],
+    [solved, view, worldFromEvent],
   );
 
   const findHit = useCallback(
     (e: { clientX: number; clientY: number }) => {
       const w = worldFromEvent(e);
       let best: Sel | null = null;
-      let bestDist = HIT_PX;
+      let bestDist = screenPxToWorld(HIT_PX, view);
       for (const g of solved) {
         if (g.k === 'line') {
           const d = distToSegment(w, { x: g.a[0], y: g.a[1] }, { x: g.b[0], y: g.b[1] });
@@ -258,7 +406,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
       }
       return best;
     },
-    [solved, worldFromEvent],
+    [solved, view, worldFromEvent],
   );
 
   // --- doc row writers -----------------------------------------------------------
@@ -611,6 +759,19 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
 
   const onPointerDown = useCallback(
     (e: React.PointerEvent) => {
+      if (e.button === panButton || e.button === 1) {
+        panRef.current = { x: e.clientX, y: e.clientY };
+        try {
+          (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
+        } catch {
+          // no active pointer (a synthetic driver): the svg still sees moves
+        }
+        e.preventDefault();
+        return;
+      }
+      // Only the primary button draws or drags. Touch and pen report 0 for
+      // their primary contact, so this is not a mouse-only gate.
+      if (e.button !== 0) return;
       if (tool !== 'select') return;
       const snap = findSnap(e);
       if (!snap) return;
@@ -624,11 +785,21 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
         // no active pointer: nothing to capture, keep the drag ref
       }
     },
-    [findSnap, tool],
+    [findSnap, panButton, tool],
   );
 
   const onPointerMove = useCallback(
     (e: React.PointerEvent) => {
+      const pan = panRef.current;
+      if (pan) {
+        // Pan is pure view math, one setView per move event -- the pointer's
+        // own coalescing is the only rate limit it needs.
+        const dx = e.clientX - pan.x;
+        const dy = e.clientY - pan.y;
+        panRef.current = { x: e.clientX, y: e.clientY };
+        setView((v) => panByPx(v, dx, dy));
+        return;
+      }
       const w = worldFromEvent(e);
       setPointer(w);
       setHoverSnap(findSnap(e));
@@ -656,6 +827,10 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
   );
 
   const onPointerUp = useCallback(() => {
+    if (panRef.current) {
+      panRef.current = null;
+      return;
+    }
     const d = draggingRef.current;
     draggingRef.current = null;
     if (!d) return;
@@ -678,12 +853,14 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
         } else onExit?.();
       } else if ((e.key === 'Delete' || e.key === 'Backspace') && tool === 'select') {
         onDeleteClick();
+      } else if (e.key.toLowerCase() === 'f' && e.shiftKey && !e.metaKey && !e.ctrlKey) {
+        fit();
       } else if (e.key === 'l' && !e.metaKey && !e.ctrlKey) setTool('line');
       else if (e.key === 's' && !e.metaKey && !e.ctrlKey) setTool('select');
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [chain, clicks.length, dim, onDeleteClick, onExit, tool]);
+  }, [chain, clicks.length, dim, fit, onDeleteClick, onExit, tool]);
 
   // --- render --------------------------------------------------------------------------
   const selKey = (id: number, at: 'a' | 'b' | 'c' | null) => `${id}:${at ?? ''}`;
@@ -697,7 +874,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
         className={`sk-vertex${selected ? ' sk-vertex-sel' : ''}`}
         cx={w.x}
         cy={-w.y}
-        r={0.9}
+        r={VERTEX_R_PX * mmPerPx}
         data-part={`v:${id}:${at}`}
       />
     );
@@ -757,7 +934,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
       <>
         <line className="sk-rubber" x1={from.x} y1={-from.y} x2={pt.x} y2={-pt.y} />
         {axisKind && (
-          <text className="sk-axis-hint" x={pt.x + 1.2} y={-pt.y - 1.2}>
+          <text className="sk-axis-hint" x={pt.x + 4 * mmPerPx} y={-pt.y - 4 * mmPerPx} fontSize={AXIS_HINT_PX * mmPerPx}>
             {axisKind === 'horizontal' ? '—' : '|'}
           </text>
         )}
@@ -1025,6 +1202,15 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
           <div className="model-tool-divider" />
           <div className="model-tool-group">
             <div className="model-tool-icons">
+              <button className="sk2d-tool" title="Fit the sketch in the view (Shift+F)" onClick={fit}>
+                Fit
+              </button>
+            </div>
+            <span className="model-tool-group-label">View</span>
+          </div>
+          <div className="model-tool-divider" />
+          <div className="model-tool-group">
+            <div className="model-tool-icons">
               <label className="sk2d-auto">
                 <input type="checkbox" checked={auto} onChange={(e) => setAuto(e.target.checked)} /> auto
               </label>
@@ -1039,7 +1225,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
       <svg
         ref={svgRef}
         className="sk2d-svg"
-        viewBox={view}
+        viewBox={viewBox}
         preserveAspectRatio="xMidYMid meet"
         onClick={(e) => {
           if (tool === 'line') onLineClick(e);
@@ -1053,16 +1239,22 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
         onPointerMove={onPointerMove}
         onPointerDown={onPointerDown}
         onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+        onContextMenu={(e) => {
+          // Only when the active scheme pans with the right button; any other
+          // scheme leaves the browser menu alone (Phase 4 owns the real one).
+          if (panButton === 2) e.preventDefault();
+        }}
         onDoubleClick={() => {
           setChain(null);
           setClicks([]);
         }}
       >
-        <g className="sk2d-grid">{gridNodes()}</g>
+        <g className="sk2d-grid">{gridNodes(view, size)}</g>
         <g className="sk2d-geom">{shapes}</g>
         <g className="sk2d-preview">{preview}</g>
         {hoverSnap && (
-          <circle className="sk-snap-ring" cx={hoverSnap.world.x} cy={-hoverSnap.world.y} r={1.4} />
+          <circle className="sk-snap-ring" cx={hoverSnap.world.x} cy={-hoverSnap.world.y} r={SNAP_RING_R_PX * mmPerPx} />
         )}
       </svg>
     </div>
@@ -1082,16 +1274,40 @@ function bothLines(ids: number[], geoms: CoreGeom[]): boolean {
   return ids.every((id) => geomKind(id, geoms) === 'line');
 }
 
-function gridNodes(): React.ReactNode[] {
-  const nodes: React.ReactNode[] = [];
-  for (let i = -VIEW; i <= VIEW; i += 10) {
-    if (i === 0) continue;
-    nodes.push(<line key={`v${i}`} className="sk-grid" x1={i} y1={-VIEW} x2={i} y2={VIEW} />);
-    nodes.push(<line key={`h${i}`} className="sk-grid" x1={-VIEW} y1={i} x2={VIEW} y2={i} />);
+/** The 1-2-5 step whose screen spacing first clears GRID_MIN_PX. A fixed
+ *  10mm step (what this drew when the viewBox was fixed) fills solid two
+ *  zoom notches out and vanishes two notches in. */
+function gridStepMm(pxPerMm: number): number {
+  const want = GRID_MIN_PX / pxPerMm;
+  const pow = Math.pow(10, Math.floor(Math.log10(want)));
+  for (const m of [1, 2, 5]) {
+    if (pow * m >= want) return pow * m;
   }
-  nodes.push(<line key="ax" className="sk-axis-x" x1={-VIEW} y1={0} x2={VIEW} y2={0} />);
-  nodes.push(<line key="ay" className="sk-axis-y" x1={0} y1={-VIEW} x2={0} y2={VIEW} />);
-  nodes.push(<circle key="o" className="sk-origin" cx={0} cy={0} r={0.8} />);
+  return pow * 10;
+}
+
+/** Grid + axes for the CURRENT view: only the lines the frame can show, and
+ *  never more than GRID_MAX_LINES of them. */
+function gridNodes(view: SketchView, size: SizePx): React.ReactNode[] {
+  const nodes: React.ReactNode[] = [];
+  if (!(size.width > 0) || !(size.height > 0) || !(view.pxPerMm > 0)) return nodes;
+  const halfW = size.width / view.pxPerMm / 2;
+  const halfH = size.height / view.pxPerMm / 2;
+  const x0 = view.cx - halfW, x1 = view.cx + halfW;
+  const y0 = view.cy - halfH, y1 = view.cy + halfH;
+  const step = gridStepMm(view.pxPerMm);
+  let drawn = 0;
+  for (let x = Math.ceil(x0 / step) * step; x <= x1 && drawn < GRID_MAX_LINES; x += step, drawn++) {
+    if (Math.abs(x) < step / 2) continue; // the Y axis draws this one
+    nodes.push(<line key={`v${Math.round(x / step)}`} className="sk-grid" x1={x} y1={-y0} x2={x} y2={-y1} />);
+  }
+  for (let y = Math.ceil(y0 / step) * step; y <= y1 && drawn < GRID_MAX_LINES; y += step, drawn++) {
+    if (Math.abs(y) < step / 2) continue; // the X axis draws this one
+    nodes.push(<line key={`h${Math.round(y / step)}`} className="sk-grid" x1={x0} y1={-y} x2={x1} y2={-y} />);
+  }
+  nodes.push(<line key="ax" className="sk-axis-x" x1={x0} y1={0} x2={x1} y2={0} />);
+  nodes.push(<line key="ay" className="sk-axis-y" x1={0} y1={-y0} x2={0} y2={-y1} />);
+  nodes.push(<circle key="o" className="sk-origin" cx={0} cy={0} r={ORIGIN_R_PX / view.pxPerMm} />);
   return nodes;
 }
 
@@ -1118,18 +1334,21 @@ const SK2D_CSS = `
   padding: 2px 6px; font-family: var(--reshape-font-mono, monospace); }
 .sk2d-status { color: var(--reshape-warn, #ffb86c); font-size: 12px; }
 .sk2d-svg { width: 100%; height: 100%; cursor: crosshair; touch-action: none; }
-.sk-grid { stroke: var(--reshape-text, #f8f8f2); stroke-width: 0.3; opacity: 0.25; }
-.sk-axis-x { stroke: #e0685a; stroke-width: 0.25; opacity: 0.85; }
-.sk-axis-y { stroke: #5fbf8f; stroke-width: 0.25; opacity: 0.85; }
+/* Stroke widths are SCREEN pixels via non-scaling-stroke: with a live
+   pxPerMm a world-unit stroke is a hairline zoomed out and a slab zoomed
+   in. Dash patterns ride the same space, hence the px-scale dasharrays. */
+.sk-grid { stroke: var(--reshape-text, #f8f8f2); stroke-width: 1; opacity: 0.18; vector-effect: non-scaling-stroke; }
+.sk-axis-x { stroke: #e0685a; stroke-width: 1.25; opacity: 0.85; vector-effect: non-scaling-stroke; }
+.sk-axis-y { stroke: #5fbf8f; stroke-width: 1.25; opacity: 0.85; vector-effect: non-scaling-stroke; }
 .sk-origin { fill: var(--reshape-accent, #8be9fd); }
 .sk-line, .sk-circle, .sk-arc, polyline { fill: none; }
-.sk-shape { stroke: var(--reshape-text, #f8f8f2); stroke-width: 0.35; fill: none; }
-.sk-constr { stroke-dasharray: 1 0.8; opacity: 0.6; }
+.sk-shape { stroke: var(--reshape-text, #f8f8f2); stroke-width: 1.6; fill: none; vector-effect: non-scaling-stroke; }
+.sk-constr { stroke-dasharray: 5 4; opacity: 0.6; }
 .sk-shape-sel { stroke: var(--reshape-pink, #ff79c6) !important; }
 .sk-vertex { fill: var(--reshape-text, #f8f8f2); }
 .sk-vertex-sel { fill: var(--reshape-pink, #ff79c6); }
-.sk-snap-ring { fill: none; stroke: var(--reshape-accent, #8be9fd); stroke-width: 0.3; }
-.sk-rubber { stroke: var(--reshape-accent, #8be9fd); stroke-width: 0.3; stroke-dasharray: 0.8 0.5; fill: none; }
-.sk-preview { stroke: var(--reshape-accent, #8be9fd); stroke-width: 0.3; fill: none; opacity: 0.8; }
-.sk-axis-hint { fill: var(--reshape-accent, #8be9fd); font-size: 2.5px; }
+.sk-snap-ring { fill: none; stroke: var(--reshape-accent, #8be9fd); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+.sk-rubber { stroke: var(--reshape-accent, #8be9fd); stroke-width: 1.4; stroke-dasharray: 5 4; fill: none; vector-effect: non-scaling-stroke; }
+.sk-preview { stroke: var(--reshape-accent, #8be9fd); stroke-width: 1.4; fill: none; opacity: 0.8; vector-effect: non-scaling-stroke; }
+.sk-axis-hint { fill: var(--reshape-accent, #8be9fd); }
 `;
