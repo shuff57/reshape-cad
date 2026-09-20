@@ -152,7 +152,10 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
   const [solved, setSolved] = useState<CoreGeom[]>([]);
   const [diagnosis, setDiagnosis] = useState<{ dof: number; bucket: string; blame: number[] } | null>(null);
   const rafRef = useRef<number | null>(null);
-  const pendingDrag = useRef<{ sa: number; sb: number; tx: number; ty: number } | null>(null);
+  // A LIST of point pulls, not one: a point drag queues a single pair of
+  // slots, a whole-entity drag queues one per named point of the row and the
+  // solve applies them in order, each warm-starting from the last.
+  const pendingDrag = useRef<Array<{ sa: number; sb: number; tx: number; ty: number }> | null>(null);
 
   const writeDoc = useCallback(
     (rawGeoms: SoupGeom[], rawRules: SoupRule[]) => {
@@ -597,7 +600,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
       commitCircle(c, worldFromEvent(e));
       setClicks([]);
     },
-    [clicks, commitCircle, findSnap, pushGeom, worldFromEvent],
+    [clicks, commitCircle, findSnap, worldFromEvent],
   );
 
   const onArcClick = useCallback(
@@ -808,6 +811,60 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
   /** A committed drag must not let the browser's trailing click ALSO run the
    *  click-click flow, which would leave a half-started rect behind it. */
   const suppressClickRef = useRef(false);
+  // Whole-entity drag (SPEC-mouse-parity Phase 2 item 4): every named point
+  // of the grabbed row, with the slot pair behind it and where it stood when
+  // the gesture began, so each solver drag() aims at start + the pointer's
+  // total delta rather than accumulating per-move error.
+  const entityRef = useRef<{
+    id: number;
+    kind: string;
+    slots: Array<{ sa: number; sb: number; x0: number; y0: number; at: 'a' | 'b' | 'c' }>;
+    start: Pt;
+    want: number;
+    tol: number;
+    applied: boolean;
+    refused: boolean;
+  } | null>(null);
+
+  /** Apply whatever pulls are queued, in ONE animation frame, and read the
+   *  result back. Not a render loop: the frame is a coalescer for a burst of
+   *  pointermove events, asked for only when a move has queued work. */
+  const scheduleSolve = useCallback(() => {
+    if (rafRef.current !== null) return;
+    rafRef.current = requestAnimationFrame(() => {
+      rafRef.current = null;
+      const list = pendingDrag.current;
+      pendingDrag.current = null;
+      const s = sessionRef.current;
+      if (!list || !list.length || !s) return;
+      for (const p of list) {
+        if (!s.drag(p.sa, p.sb, p.tx, p.ty)) {
+          setStatus(s.lastError() ?? 'the drag did not solve');
+          return;
+        }
+      }
+      const rows = readSolved(geoms as CoreGeom[], s.params);
+      setSolved(rows);
+      const ent = entityRef.current;
+      if (!ent) return;
+      // Did the row actually go where the pointer asked? One pinned by its
+      // own rules solves fine and stays exactly where it was: saying so is
+      // the difference between a refusal and a canvas that looks broken.
+      const anchor = ent.slots[0];
+      const row = rows.find((x) => x.id === ent.id);
+      const now = row ? pointWorld(row, anchor.at) : null;
+      const moved = now ? Math.hypot(now.x - anchor.x0, now.y - anchor.y0) : 0;
+      if (moved > 1e-9) ent.applied = true;
+      if (!ent.refused && ent.want > ent.tol && moved < ent.want * 0.05) {
+        ent.refused = true;
+        // "held by its rules" rather than "fully constrained": a row pinned
+        // only ACROSS the drag direction refuses the hand on the mouse just
+        // the same, and claiming zero DoF for it would be a lie.
+        setStatus(`${ent.kind} ${ent.id} is held by its rules -- it did not follow the drag; remove a rule to move it`);
+      }
+    });
+  }, [geoms]);
+
   const onPointerDown = useCallback(
     (e: React.PointerEvent) => {
       if (e.button === panButton || e.button === 1) {
@@ -842,18 +899,56 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
       }
       if (tool !== 'select') return;
       const snap = findSnap(e);
-      if (!snap) return;
-      draggingRef.current = { id: snap.id, at: snap.at };
-      // Capture keeps moves flowing outside the svg on a real pointer; a
-      // synthetic driver has no active pointer, and capture throws NotFound
-      // there — losing it is fine, the move handler still fires on the svg.
+      if (snap) {
+        draggingRef.current = { id: snap.id, at: snap.at };
+        // Capture keeps moves flowing outside the svg on a real pointer; a
+        // synthetic driver has no active pointer, and capture throws NotFound
+        // there — losing it is fine, the move handler still fires on the svg.
+        try {
+          (e.target as Element).setPointerCapture?.(e.pointerId);
+        } catch {
+          // no active pointer: nothing to capture, keep the drag ref
+        }
+        return;
+      }
+      // No handle under the press, but a BODY: drag the whole row. Every one
+      // of its named points moves by the same delta -- both ends of a line,
+      // a circle's centre, an arc's centre and both ends -- each as one
+      // solver drag() of the slot pair behind it. The centre goes first so an
+      // arc translates its frame before its ends follow it.
+      const hit = findHit(e);
+      if (!hit || hit.at !== null) return;
+      const g = solved.find((x) => x.id === hit.id);
+      if (!g) return;
+      if (diagnosis && diagnosis.dof === 0) {
+        setStatus(`${g.k} ${g.id} is fully constrained; remove a rule to move it`);
+        return;
+      }
+      const order = (at: 'a' | 'b' | 'c') => (at === 'c' ? 0 : 1);
+      const slots: Array<{ sa: number; sb: number; x0: number; y0: number; at: 'a' | 'b' | 'c' }> = [];
+      for (const { at } of [...namedPointsOf(g)].sort((p, q) => order(p.at) - order(q.at))) {
+        const w0 = pointWorld(g, at);
+        const pair = pointSlots(geoms as any, hit.id, at);
+        if (w0 && pair) slots.push({ sa: pair[0], sb: pair[1], x0: w0.x, y0: w0.y, at });
+      }
+      if (!slots.length) return;
+      entityRef.current = {
+        id: hit.id,
+        kind: g.k,
+        slots,
+        start: worldFromEvent(e),
+        want: 0,
+        tol: 0,
+        applied: false,
+        refused: false,
+      };
       try {
         (e.target as Element).setPointerCapture?.(e.pointerId);
       } catch {
         // no active pointer: nothing to capture, keep the drag ref
       }
     },
-    [clicks.length, findSnap, panButton, tool, worldFromEvent],
+    [clicks.length, diagnosis, findHit, findSnap, geoms, panButton, solved, tool, worldFromEvent],
   );
 
   const onPointerMove = useCallback(
@@ -881,27 +976,26 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
         if (create.moved) setDragCreate({ tool: create.tool, from: create.from, to: create.to });
         return;
       }
+      const ent = entityRef.current;
+      if (ent && sessionRef.current) {
+        const dx = w.x - ent.start.x;
+        const dy = w.y - ent.start.y;
+        ent.want = Math.hypot(dx, dy);
+        // Two DRAG_PX of travel is the point past which "it did not move" is
+        // a fact about the sketch rather than about the mouse.
+        ent.tol = screenPxToWorld(DRAG_PX * 2, view);
+        pendingDrag.current = ent.slots.map((s) => ({ sa: s.sa, sb: s.sb, tx: s.x0 + dx, ty: s.y0 + dy }));
+        scheduleSolve();
+        return;
+      }
       const d = draggingRef.current;
       if (!d || !sessionRef.current) return;
       const slots = pointSlots(geoms as any, d.id, d.at);
       if (!slots) return;
-      const payload = { sa: slots[0], sb: slots[1], tx: w.x, ty: w.y };
-      pendingDrag.current = payload;
-      if (rafRef.current !== null) return;
-      rafRef.current = requestAnimationFrame(() => {
-        rafRef.current = null;
-        const p = pendingDrag.current;
-        pendingDrag.current = null;
-        if (!p) return;
-        const s = sessionRef.current;
-        if (s.drag(p.sa, p.sb, p.tx, p.ty)) {
-          setSolved(readSolved(geoms as CoreGeom[], s.params));
-        } else {
-          setStatus(s.lastError() ?? 'the drag did not solve');
-        }
-      });
+      pendingDrag.current = [{ sa: slots[0], sb: slots[1], tx: w.x, ty: w.y }];
+      scheduleSolve();
     },
-    [findSnap, geoms, worldFromEvent],
+    [findHit, findSnap, geoms, scheduleSolve, view, worldFromEvent],
   );
 
   const onPointerUp = useCallback(() => {
@@ -920,6 +1014,18 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
         if (create.tool === 'rect') commitRect(create.from, create.to);
         else if (create.tool === 'circle') commitCircle(create.from, create.to);
         else commitSlotBox(create.from, create.to);
+      }
+      return;
+    }
+    const ent = entityRef.current;
+    entityRef.current = null;
+    if (ent) {
+      // ONE undo entry per gesture: every intermediate solve moved only the
+      // session's parameter vector, and a row that never moved (a refusal)
+      // writes nothing at all.
+      if (ent.applied) {
+        const rows = readSolved(geoms as CoreGeom[], sessionRef.current.params) as SoupGeom[];
+        writeDoc(rows, rules);
       }
       return;
     }
