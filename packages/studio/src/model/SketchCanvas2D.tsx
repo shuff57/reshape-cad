@@ -88,8 +88,16 @@ const AXIS_HINT_PX = 11;
  *  pixels, and a ceiling on how many lines one frame may draw. */
 const GRID_MIN_PX = 9;
 const GRID_MAX_LINES = 400;
+/** Pointer travel under which a press is a CLICK, so the click-click tool
+ *  flow -- not the drag-to-create gesture -- owns it. Screen px. */
+const DRAG_PX = 3;
 
 type Tool = 'select' | 'line' | 'rect' | 'circle' | 'arc' | 'slot' | 'trim';
+/** The tools a single drag can finish on its own (SPEC-mouse-parity Phase 2
+ *  item 2). Line and arc are not among them: a chain and a three-point arc
+ *  need more points than one drag carries. */
+type CreateTool = 'rect' | 'circle' | 'slot';
+const isCreateTool = (t: Tool): t is CreateTool => t === 'rect' || t === 'circle' || t === 'slot';
 type Sel = { id: number; at: 'a' | 'b' | 'c' | null };
 
 interface Props {
@@ -503,19 +511,15 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     [findHit, findSnap],
   );
 
-  const onRectClick = useCallback(
-    (e: React.MouseEvent) => {
-      const w = worldFromEvent(e);
-      if (clicks.length === 0) {
-        setClicks([w]);
-        return;
-      }
-      const [c1] = clicks as [Pt];
-      const id = nextGeomId(geoms as CoreGeom[]);
+  // The rect/circle/slot commits, factored out so the click-click flow and
+  // the drag-to-create gesture write the SAME rows -- a second copy of the
+  // row bookkeeping is how the two flows would drift apart.
+  const commitRect = useCallback(
+    (c1: Pt, c2: Pt) => {
       const a: [number, number] = [c1.x, c1.y];
-      const b2: [number, number] = [w.x, c1.y];
-      const c: [number, number] = [w.x, w.y];
-      const d: [number, number] = [c1.x, w.y];
+      const b2: [number, number] = [c2.x, c1.y];
+      const c: [number, number] = [c2.x, c2.y];
+      const d: [number, number] = [c1.x, c2.y];
       const base = nextGeomId(geoms as CoreGeom[]);
       const nextGeoms: SoupGeom[] = [
         ...(geoms as SoupGeom[]),
@@ -534,9 +538,52 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
         { k: 'vertical', a: base + 1 },
       ];
       writeDoc(nextGeoms, nextRules);
+    },
+    [geoms, rules, writeDoc],
+  );
+
+  const commitCircle = useCallback(
+    (c: Pt, rim: Pt) => {
+      const r = Math.hypot(rim.x - c.x, rim.y - c.y);
+      if (r > 1e-9) pushGeom({ k: 'circle', c: [c.x, c.y], r });
+    },
+    [pushGeom],
+  );
+
+  /** The obround inscribed in a dragged box (drag-to-create's slot). The
+   *  click-click slot asks for three points; a drag gives two, and reading
+   *  BOTH box dimensions is what keeps the radius measured rather than
+   *  invented. A square (or a straight) drag holds no obround and refuses. */
+  const commitSlotBox = useCallback(
+    (p0: Pt, p1: Pt) => {
+      const box = slotFromBox(p0, p1);
+      if (!box) {
+        setStatus('slot: drag a box longer than it is wide -- a square holds no slot');
+        return;
+      }
+      const base = nextGeomId(geoms as CoreGeom[]);
+      const slot = slotRows(box.cA, box.cB, { x: box.cA.x + box.r, y: box.cA.y }, base);
+      if (!slot) {
+        setStatus('slot: drag a box longer than it is wide -- a square holds no slot');
+        return;
+      }
+      writeDoc([...(geoms as SoupGeom[]), ...(slot.geoms as unknown as SoupGeom[])], [...rules, ...(slot.rules as unknown as SoupRule[])]);
+    },
+    [geoms, rules, writeDoc],
+  );
+
+  const onRectClick = useCallback(
+    (e: React.MouseEvent) => {
+      const w = worldFromEvent(e);
+      if (clicks.length === 0) {
+        setClicks([w]);
+        return;
+      }
+      const [c1] = clicks as [Pt];
+      commitRect(c1, w);
       setClicks([]);
     },
-    [clicks, geoms, rules, writeDoc, worldFromEvent],
+    [clicks, commitRect, worldFromEvent],
   );
 
   const onCircleClick = useCallback(
@@ -547,14 +594,10 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
         return;
       }
       const [c] = clicks as [Pt];
-      const w = worldFromEvent(e);
-      const r = Math.hypot(w.x - c.x, w.y - c.y);
-      if (r > 1e-9) {
-        pushGeom({ k: 'circle', c: [c.x, c.y], r });
-      }
+      commitCircle(c, worldFromEvent(e));
       setClicks([]);
     },
-    [clicks, findSnap, pushGeom, worldFromEvent],
+    [clicks, commitCircle, findSnap, pushGeom, worldFromEvent],
   );
 
   const onArcClick = useCallback(
@@ -754,9 +797,17 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     setDim(null);
   }, [applyRule, dim, solved]);
 
-  // --- drag to solve -----------------------------------------------------------------
+  // --- drag to solve / drag to create ------------------------------------------------
   const draggingRef = useRef<{ id: number; at: 'a' | 'b' | 'c' } | null>(null);
-
+  // Drag-to-create (SPEC-mouse-parity Phase 2 item 2). The ref carries the
+  // gesture (it must be exact on pointerup, not a render behind); the state
+  // carries only what the rubber band draws. Below DRAG_PX of travel the
+  // press was a CLICK and the click-click flow keeps it, untouched.
+  const createRef = useRef<{ tool: CreateTool; from: Pt; to: Pt | null; startX: number; startY: number; moved: boolean } | null>(null);
+  const [dragCreate, setDragCreate] = useState<{ tool: CreateTool; from: Pt; to: Pt } | null>(null);
+  /** A committed drag must not let the browser's trailing click ALSO run the
+   *  click-click flow, which would leave a half-started rect behind it. */
+  const suppressClickRef = useRef(false);
   const onPointerDown = useCallback(
     (e: React.PointerEvent) => {
       if (e.button === panButton || e.button === 1) {
@@ -772,6 +823,23 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
       // Only the primary button draws or drags. Touch and pen report 0 for
       // their primary contact, so this is not a mouse-only gate.
       if (e.button !== 0) return;
+      if (isCreateTool(tool) && clicks.length === 0) {
+        const snap = findSnap(e);
+        createRef.current = {
+          tool,
+          from: snap ? snap.world : worldFromEvent(e),
+          to: null,
+          startX: e.clientX,
+          startY: e.clientY,
+          moved: false,
+        };
+        try {
+          (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
+        } catch {
+          // no active pointer: the svg still sees the moves
+        }
+        return;
+      }
       if (tool !== 'select') return;
       const snap = findSnap(e);
       if (!snap) return;
@@ -785,7 +853,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
         // no active pointer: nothing to capture, keep the drag ref
       }
     },
-    [findSnap, panButton, tool],
+    [clicks.length, findSnap, panButton, tool, worldFromEvent],
   );
 
   const onPointerMove = useCallback(
@@ -803,6 +871,16 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
       const w = worldFromEvent(e);
       setPointer(w);
       setHoverSnap(findSnap(e));
+      const create = createRef.current;
+      if (create) {
+        const snap = findSnap(e);
+        create.to = snap ? snap.world : w;
+        if (!create.moved && Math.hypot(e.clientX - create.startX, e.clientY - create.startY) >= DRAG_PX) {
+          create.moved = true;
+        }
+        if (create.moved) setDragCreate({ tool: create.tool, from: create.from, to: create.to });
+        return;
+      }
       const d = draggingRef.current;
       if (!d || !sessionRef.current) return;
       const slots = pointSlots(geoms as any, d.id, d.at);
@@ -831,6 +909,20 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
       panRef.current = null;
       return;
     }
+    const create = createRef.current;
+    createRef.current = null;
+    if (create) {
+      setDragCreate(null);
+      if (create.moved && create.to) {
+        // ONE writeDoc for the whole gesture: the rubber band never entered
+        // the doc, so this is the first and only undo entry it makes.
+        suppressClickRef.current = true;
+        if (create.tool === 'rect') commitRect(create.from, create.to);
+        else if (create.tool === 'circle') commitCircle(create.from, create.to);
+        else commitSlotBox(create.from, create.to);
+      }
+      return;
+    }
     const d = draggingRef.current;
     draggingRef.current = null;
     if (!d) return;
@@ -838,7 +930,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     // into the doc (one onChange per gesture = one undo entry).
     const rows = readSolved(geoms as CoreGeom[], sessionRef.current.params) as SoupGeom[];
     writeDoc(rows, rules);
-  }, [geoms, rules, writeDoc]);
+  }, [commitCircle, commitRect, commitSlotBox, geoms, rules, writeDoc]);
 
   // --- keyboard -----------------------------------------------------------------------
   useEffect(() => {
@@ -940,22 +1032,24 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
         )}
       </>
     );
-  } else if (tool === 'rect' && clicks.length === 1 && pointer) {
-    const [c1] = clicks as [Pt];
+  } else if (tool === 'rect' && (dragCreate || (clicks.length === 1 && pointer))) {
+    // One rubber band, two ways in: the drag gesture carries its own
+    // from/to, the click-click flow the first click plus the live pointer.
+    const c1 = dragCreate ? dragCreate.from : (clicks[0] as Pt);
+    const p = dragCreate ? dragCreate.to : (pointer as Pt);
     preview = (
       <rect
         className="sk-preview"
-        x={Math.min(c1.x, pointer.x)}
-        y={-Math.max(c1.y, pointer.y)}
-        width={Math.abs(pointer.x - c1.x)}
-        height={Math.abs(pointer.y - c1.y)}
+        x={Math.min(c1.x, p.x)}
+        y={-Math.max(c1.y, p.y)}
+        width={Math.abs(p.x - c1.x)}
+        height={Math.abs(p.y - c1.y)}
       />
     );
-  } else if (tool === 'circle' && clicks.length === 1 && pointer) {
-    const [c] = clicks as [Pt];
-    preview = (
-      <circle className="sk-preview" cx={c.x} cy={-c.y} r={Math.hypot(pointer.x - c.x, pointer.y - c.y)} />
-    );
+  } else if (tool === 'circle' && (dragCreate || (clicks.length === 1 && pointer))) {
+    const c = dragCreate ? dragCreate.from : (clicks[0] as Pt);
+    const p = dragCreate ? dragCreate.to : (pointer as Pt);
+    preview = <circle className="sk-preview" cx={c.x} cy={-c.y} r={Math.hypot(p.x - c.x, p.y - c.y)} />;
   } else if (tool === 'arc' && clicks.length === 2 && pointer) {
     const [c1, c2] = clicks as [Pt, Pt];
     const arc = arcFromClicks(c1, c2, pointer);
@@ -963,30 +1057,14 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
       const pts = sampleArc(arc.cx, arc.cy, arc.r, arc.a0, arc.sweep);
       preview = <polyline className="sk-preview" points={pts.map((p) => `${p.x},${-p.y}`).join(' ')} />;
     }
+  } else if (tool === 'slot' && dragCreate) {
+    const box = slotFromBox(dragCreate.from, dragCreate.to);
+    if (box) preview = slotPreview(box.cA, box.cB, box.r);
   } else if (tool === 'slot' && clicks.length === 2 && pointer) {
     // Slot preview: the two cap circles + the two side lines, at the live
     // radius. The committed rows run the same math (slotRows).
     const [cA, cB] = clicks as [Pt, Pt];
-    const r = Math.hypot(pointer.x - cA.x, pointer.y - cA.y);
-    if (r > 1e-9) {
-      const dx = cB.x - cA.x, dy = cB.y - cA.y;
-      const len = Math.hypot(dx, dy);
-      if (len > 1e-9) {
-        const px = (-dy / len) * r, py = (dx / len) * r;
-        const p1 = { x: cA.x + px, y: cA.y + py };
-        const p2 = { x: cB.x + px, y: cB.y + py };
-        const p3 = { x: cB.x - px, y: cB.y - py };
-        const p4 = { x: cA.x - px, y: cA.y - py };
-        preview = (
-          <>
-            <circle className="sk-preview" cx={cA.x} cy={-cA.y} r={r} />
-            <circle className="sk-preview" cx={cB.x} cy={-cB.y} r={r} />
-            <line className="sk-preview" x1={p1.x} y1={-p1.y} x2={p2.x} y2={-p2.y} />
-            <line className="sk-preview" x1={p3.x} y1={-p3.y} x2={p4.x} y2={-p4.y} />
-          </>
-        );
-      }
-    }
+    preview = slotPreview(cA, cB, Math.hypot(pointer.x - cA.x, pointer.y - cA.y));
   }
 
   const dofClass = diagnosis
@@ -1228,6 +1306,13 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
         viewBox={viewBox}
         preserveAspectRatio="xMidYMid meet"
         onClick={(e) => {
+          // A drag-to-create gesture already committed on pointerup; the
+          // click the browser fires after it must not ALSO open a
+          // click-click flow on the same spot.
+          if (suppressClickRef.current) {
+            suppressClickRef.current = false;
+            return;
+          }
           if (tool === 'line') onLineClick(e);
           else if (tool === 'select') onSelectClick(e);
           else if (tool === 'rect') onRectClick(e);
@@ -1272,6 +1357,46 @@ function geomKind(id: number, geoms: CoreGeom[]): string | null {
 
 function bothLines(ids: number[], geoms: CoreGeom[]): boolean {
   return ids.every((id) => geomKind(id, geoms) === 'line');
+}
+
+/** The obround inscribed in a dragged box: the long axis carries the two cap
+ *  centres, the short side is the diameter. A square (or straight) drag holds
+ *  no obround -- null, and the caller says so rather than guessing a width. */
+function slotFromBox(p0: Pt, p1: Pt): { cA: Pt; cB: Pt; r: number } | null {
+  const w = Math.abs(p1.x - p0.x);
+  const h = Math.abs(p1.y - p0.y);
+  const r = Math.min(w, h) / 2;
+  if (!(r > 1e-9)) return null;
+  const midX = Math.min(p0.x, p1.x) + w / 2;
+  const midY = Math.min(p0.y, p1.y) + h / 2;
+  const half = Math.max(w, h) / 2 - r;
+  if (!(half > 1e-9)) return null;
+  return w > h
+    ? { cA: { x: midX - half, y: midY }, cB: { x: midX + half, y: midY }, r }
+    : { cA: { x: midX, y: midY - half }, cB: { x: midX, y: midY + half }, r };
+}
+
+/** The slot rubber band: two cap circles and the two tangent sides, the same
+ *  four rows slotRows commits. Both the click-click and the drag flow draw
+ *  through here so the preview cannot describe a different slot. */
+function slotPreview(cA: Pt, cB: Pt, r: number): React.ReactNode {
+  if (!(r > 1e-9)) return null;
+  const dx = cB.x - cA.x, dy = cB.y - cA.y;
+  const len = Math.hypot(dx, dy);
+  if (!(len > 1e-9)) return null;
+  const px = (-dy / len) * r, py = (dx / len) * r;
+  const p1 = { x: cA.x + px, y: cA.y + py };
+  const p2 = { x: cB.x + px, y: cB.y + py };
+  const p3 = { x: cB.x - px, y: cB.y - py };
+  const p4 = { x: cA.x - px, y: cA.y - py };
+  return (
+    <>
+      <circle className="sk-preview" cx={cA.x} cy={-cA.y} r={r} />
+      <circle className="sk-preview" cx={cB.x} cy={-cB.y} r={r} />
+      <line className="sk-preview" x1={p1.x} y1={-p1.y} x2={p2.x} y2={-p2.y} />
+      <line className="sk-preview" x1={p3.x} y1={-p3.y} x2={p4.x} y2={-p4.y} />
+    </>
+  );
 }
 
 /** The 1-2-5 step whose screen spacing first clears GRID_MIN_PX. A fixed
