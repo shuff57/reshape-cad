@@ -21,6 +21,13 @@
 // the point of use, and anything drawn at a fixed SCREEN size (vertex dots,
 // stroke widths, the grid step) is scaled by the current pxPerMm instead of
 // being a world-unit literal.
+//
+// HOVER SNAP GLYPHS (SPEC-mouse-parity Phase 2 item 3, 2026-09-20). The snap
+// under the cursor is drawn as a marker for its KIND -- square endpoint,
+// triangle midpoint, crosshair centre, X intersection, diamond on-curve, dot
+// grid -- so a midpoint reads differently from an intersection before the
+// click lands. It rides the pointermove hover path that was already here; no
+// frame loop was added for it.
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -52,6 +59,7 @@ import {
   type CoreGeom,
   type LineChain,
   type Pt,
+  type SnapHit,
   type SoupGeomNew,
 } from './sketch-canvas-core.js';
 import { pointSlots } from '@shuff57/reshape-kernel/sketch-session';
@@ -82,7 +90,9 @@ const WHEEL_LINE_PX = 16;
  *  the scale was fixed; multiplied by mm-per-px at render time. */
 const VERTEX_R_PX = 3.2;
 const ORIGIN_R_PX = 3;
-const SNAP_RING_R_PX = 5.5;
+/** Full width of a hover snap glyph (SPEC-mouse-parity Phase 2 item 3):
+ *  one marker per snap KIND, drawn at a constant screen size. */
+const SNAP_GLYPH_PX = 9;
 const AXIS_HINT_PX = 11;
 /** Grid: the smallest 1-2-5 step whose spacing is at least this many screen
  *  pixels, and a ceiling on how many lines one frame may draw. */
@@ -115,7 +125,10 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
   const [sel, setSel] = useState<Sel[]>([]);
   const [auto, setAuto] = useState(true);
   const [pointer, setPointer] = useState<Pt | null>(null);
-  const [hoverSnap, setHoverSnap] = useState<{ id: number; at: 'a' | 'b' | 'c'; world: Pt } | null>(null);
+  // The snap under the cursor, WHATEVER kind: the glyph beside it is how a
+  // user tells a midpoint from an intersection before committing to a click
+  // (SPEC-mouse-parity Phase 2 item 3).
+  const [hoverSnap, setHoverSnap] = useState<SnapHit | null>(null);
   const [dim, setDim] = useState<{
     kind: 'distance' | 'radius' | 'diameter' | 'distanceX' | 'distanceY' | 'angle';
     a: Sel | null;
@@ -382,6 +395,18 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
       if (!hit || hit.id === undefined || !hit.at) return null;
       return { id: hit.id, at: hit.at, world: hit.world };
     },
+    [solved, view, worldFromEvent],
+  );
+
+  /** The hover snap: EVERY kind the engine knows, over the same screen-pixel
+   *  tolerance the tools use. Grid is not asked for -- no gridStep is passed --
+   *  because a grid hit would quantize a click the tools do not quantize; the
+   *  glyph renderer still draws one if a caller ever turns it on. The O(n^2)
+   *  intersection pass runs once per pointermove, not per frame: there is no
+   *  rAF loop behind this. */
+  const findHoverSnap = useCallback(
+    (e: { clientX: number; clientY: number }) =>
+      findSnapCore(solved as CoreGeom[], worldFromEvent(e), screenPxToWorld(SNAP_PX, view)),
     [solved, view, worldFromEvent],
   );
 
@@ -965,7 +990,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
       }
       const w = worldFromEvent(e);
       setPointer(w);
-      setHoverSnap(findSnap(e));
+      setHoverSnap(findHoverSnap(e));
       const create = createRef.current;
       if (create) {
         const snap = findSnap(e);
@@ -995,7 +1020,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
       pendingDrag.current = [{ sa: slots[0], sb: slots[1], tx: w.x, ty: w.y }];
       scheduleSolve();
     },
-    [findHit, findSnap, geoms, scheduleSolve, view, worldFromEvent],
+    [findHit, findHoverSnap, findSnap, geoms, scheduleSolve, view, worldFromEvent],
   );
 
   const onPointerUp = useCallback(() => {
@@ -1444,9 +1469,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
         <g className="sk2d-grid">{gridNodes(view, size)}</g>
         <g className="sk2d-geom">{shapes}</g>
         <g className="sk2d-preview">{preview}</g>
-        {hoverSnap && (
-          <circle className="sk-snap-ring" cx={hoverSnap.world.x} cy={-hoverSnap.world.y} r={SNAP_RING_R_PX * mmPerPx} />
-        )}
+        {hoverSnap && snapGlyph(hoverSnap, mmPerPx)}
       </svg>
     </div>
   );
@@ -1503,6 +1526,58 @@ function slotPreview(cA: Pt, cB: Pt, r: number): React.ReactNode {
       <line className="sk-preview" x1={p3.x} y1={-p3.y} x2={p4.x} y2={-p4.y} />
     </>
   );
+}
+
+/** The snap marker, one per KIND, at a constant SCREEN size: the world-unit
+ *  geometry is scaled by mm-per-px and the stroke held by non-scaling-stroke,
+ *  the same pair every other fixed-size mark in this file uses. CAD
+ *  convention throughout -- square = endpoint, triangle = midpoint,
+ *  circle + crosshair = centre, X = intersection, diamond = on-curve,
+ *  dot = grid. */
+function snapGlyph(hit: SnapHit, mmPerPx: number): React.ReactNode {
+  const x = hit.world.x;
+  const y = -hit.world.y; // the file-wide flip
+  const h = (SNAP_GLYPH_PX / 2) * mmPerPx;
+  const cls = 'sk-snap-glyph';
+  // A circle's or arc's centre is one of its NAMED points, so findSnap ranks
+  // it as a vertex (rank 1) and never reaches its own centre candidate (rank
+  // 2). It is a centre all the same, and the crosshair is what a CAD user
+  // reads there -- the marker names the point, not the candidate list it came
+  // out of.
+  const kind = hit.kind === 'vertex' && hit.at === 'c' ? 'center' : hit.kind;
+  switch (kind) {
+    case 'vertex':
+      return <rect className={cls} data-snap="vertex" x={x - h} y={y - h} width={2 * h} height={2 * h} />;
+    case 'midpoint':
+      return (
+        <polygon className={cls} data-snap="midpoint" points={`${x},${y - h} ${x + h},${y + h} ${x - h},${y + h}`} />
+      );
+    case 'center':
+      return (
+        <g className={cls} data-snap="center">
+          <circle cx={x} cy={y} r={h * 0.8} />
+          <line x1={x - h * 1.5} y1={y} x2={x + h * 1.5} y2={y} />
+          <line x1={x} y1={y - h * 1.5} x2={x} y2={y + h * 1.5} />
+        </g>
+      );
+    case 'intersection':
+      return (
+        <g className={cls} data-snap="intersection">
+          <line x1={x - h} y1={y - h} x2={x + h} y2={y + h} />
+          <line x1={x - h} y1={y + h} x2={x + h} y2={y - h} />
+        </g>
+      );
+    case 'onCurve':
+      return (
+        <polygon
+          className={cls}
+          data-snap="onCurve"
+          points={`${x},${y - h} ${x + h},${y} ${x},${y + h} ${x - h},${y}`}
+        />
+      );
+    case 'grid':
+      return <circle className={cls} data-snap="grid" cx={x} cy={y} r={h * 0.35} />;
+  }
 }
 
 /** The 1-2-5 step whose screen spacing first clears GRID_MIN_PX. A fixed
@@ -1578,7 +1653,9 @@ const SK2D_CSS = `
 .sk-shape-sel { stroke: var(--reshape-pink, #ff79c6) !important; }
 .sk-vertex { fill: var(--reshape-text, #f8f8f2); }
 .sk-vertex-sel { fill: var(--reshape-pink, #ff79c6); }
-.sk-snap-ring { fill: none; stroke: var(--reshape-accent, #8be9fd); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+.sk-snap-glyph, .sk-snap-glyph > * { fill: none; stroke: var(--reshape-accent, #8be9fd); stroke-width: 1.5;
+  vector-effect: non-scaling-stroke; pointer-events: none; }
+.sk-snap-glyph[data-snap="grid"] { fill: var(--reshape-accent, #8be9fd); }
 .sk-rubber { stroke: var(--reshape-accent, #8be9fd); stroke-width: 1.4; stroke-dasharray: 5 4; fill: none; vector-effect: non-scaling-stroke; }
 .sk-preview { stroke: var(--reshape-accent, #8be9fd); stroke-width: 1.4; fill: none; opacity: 0.8; vector-effect: non-scaling-stroke; }
 .sk-axis-hint { fill: var(--reshape-accent, #8be9fd); }
