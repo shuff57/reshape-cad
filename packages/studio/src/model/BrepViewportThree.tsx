@@ -80,7 +80,8 @@ import { bboxCenter, DEFAULT_FILL_FRACTION, fitDistance, type Box3Like } from '.
 import { DEFAULT_SCHEME_NAME, MOUSE_SCHEMES, loadSchemeName, saveSchemeName, schemeToMouseButtons, schemeToTouches, type MouseScheme } from '../camera-controls.js';
 import { CameraMode, loadCameraMode, orthoFrustumFromPerspective, saveCameraMode } from '../ortho-camera.js';
 import { computeSelectionFit, computeWindowZoomFit, type Vec3 } from '../window-zoom-fit.js';
-import { nearestVisible } from '../pick-helpers.js';
+import { nearestVisible, nextCycleIndex } from '../pick-helpers.js';
+import { HOLD_CYCLE_DELAY_MS, HOLD_CYCLE_DEAD_ZONE_PX } from '../input-threshold.js';
 import type { SelectionFilters, SelectionItem } from '../selection-model.js';
 import { marqueeKind, pointSetSelect, type MarqueeDrag } from '../marquee-select.js';
 
@@ -1550,6 +1551,112 @@ export default function BrepViewportThree({
       return null;
     }
 
+    /** Every raycast candidate at this pixel, ordered nearest-camera-first,
+     *  for whichever kind wins hitAt()'s own vertex > edge > face > body
+     *  priority -- used only by the click-and-hold "select other" cycling
+     *  gesture below (SPEC-mouse-parity.md Phase 3.5) to learn how many
+     *  overlapping picks sit at one screen point, and in what order to
+     *  cycle through them. hitAt() itself is left completely untouched,
+     *  including its own closest-screen-distance-first / named-edge-
+     *  preferred disambiguation for the SINGLE winner a plain click gets --
+     *  this walks the same candidate lists a SECOND way, ordered by DEPTH
+     *  (camera distance) rather than screen distance, because cycling is
+     *  about front-to-back stacking, not which candidate happens to project
+     *  nearest the cursor. Returns [] in every case hitAt() would return
+     *  null (same filter/occlusion decisions, mirrored branch for branch),
+     *  so `.length > 0` is a drop-in replacement for `hitAt(...) !== null`
+     *  at the box-select gate below -- a press on pickable geometry never
+     *  raycasts twice to answer both questions. */
+    function hitCandidatesAt(clientX: number, clientY: number): Hit[] {
+      const filters = filtersRef.current;
+      const rect = renderer.domElement.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) return [];
+      const cursor = { x: clientX - rect.left, y: clientY - rect.top };
+      const ndc = new THREE.Vector2(
+        (cursor.x / rect.width) * 2 - 1,
+        -(cursor.y / rect.height) * 2 + 1,
+      );
+      raycaster.setFromCamera(ndc, camera);
+
+      const faceHits = raycaster.intersectObjects(solidGroup.children, false);
+      const faceHit = faceHits.find((h) => h.faceIndex != null);
+      const camDist = camera.position.distanceTo(controls.target);
+      const occlusionMaxDepth = faceHit
+        ? faceHit.distance + Math.max(0.5, camDist * EDGE_OCCLUSION_TOLERANCE_FRACTION)
+        : Infinity;
+
+      if (filters.vertex) {
+        const vertexCandidates: { distPx: number; depth: number; mesh: THREE_NS.Mesh; world: THREE_NS.Vector3 }[] = [];
+        for (const mesh of solidGroup.children as THREE_NS.Mesh[]) {
+          const pos = mesh.geometry.getAttribute('position');
+          if (!pos) continue;
+          for (let i = 0; i < pos.count; i++) {
+            const world = new THREE.Vector3(pos.getX(i), pos.getY(i), pos.getZ(i)).applyMatrix4(mesh.matrixWorld);
+            const depth = camera.position.distanceTo(world);
+            const proj = world.clone().project(camera);
+            const distPx = Math.hypot(
+              cursor.x - (proj.x * 0.5 + 0.5) * rect.width,
+              cursor.y - (1 - (proj.y * 0.5 + 0.5)) * rect.height,
+            );
+            vertexCandidates.push({ distPx, depth, mesh, world });
+          }
+        }
+        const winners = vertexCandidates
+          .filter((c) => c.distPx <= EDGE_HIT_BAND_PX && c.depth <= occlusionMaxDepth)
+          .sort((a, b) => a.depth - b.depth);
+        if (winners.length > 0) {
+          return winners.map((w) => ({ kind: 'vertex' as const, mesh: w.mesh, position: w.world }));
+        }
+      }
+
+      if (filters.edge) {
+        const edgeCandidates: { distPx: number; depth: number; line: THREE_NS.Line }[] = [];
+        for (const line of edgePickLinesRef.current) {
+          const { distPx, depth } = closestEdgeScreenDist(line, rect.width, rect.height, cursor);
+          if (distPx <= EDGE_HIT_BAND_PX) edgeCandidates.push({ distPx, depth, line });
+        }
+        const surviving = edgeCandidates
+          .filter((c) => c.depth <= occlusionMaxDepth)
+          .sort((a, b) => a.depth - b.depth);
+        if (surviving.length > 0) {
+          return surviving.map((c) => ({ kind: 'edge' as const, line: c.line }));
+        }
+      }
+
+      if (faceHit) {
+        if (filters.face) {
+          // Mirrors hitAt()'s own null case exactly: if the PRIMARY (nearest)
+          // face hit cannot resolve a FaceRange, this returns [] rather than
+          // trying harder against the stacked hits behind it -- same as a
+          // plain click gets nothing there today.
+          const primaryRange = faceRangeFor(faceHit.object as THREE_NS.Mesh, faceHit.faceIndex!);
+          if (!primaryRange) return [];
+          const faceCandidates: Hit[] = [];
+          for (const h of faceHits) {
+            if (h.faceIndex == null) continue;
+            const range = faceRangeFor(h.object as THREE_NS.Mesh, h.faceIndex);
+            // faceHits is already nearest-first (three.js sorts
+            // intersectObjects by distance ascending), so no re-sort here.
+            if (range) faceCandidates.push({ kind: 'face', mesh: h.object as THREE_NS.Mesh, range });
+          }
+          return faceCandidates;
+        }
+        if (filters.body) {
+          const seen = new Set<THREE_NS.Mesh>();
+          const bodyCandidates: Hit[] = [];
+          for (const h of faceHits) {
+            if (h.faceIndex == null) continue;
+            const mesh = h.object as THREE_NS.Mesh;
+            if (seen.has(mesh)) continue;
+            seen.add(mesh);
+            bodyCandidates.push({ kind: 'body', mesh });
+          }
+          return bodyCandidates;
+        }
+      }
+
+      return [];
+    }
     function applyHover(hit: Hit | null) {
       hoverFaceMesh.visible = false;
       hoverVertexMesh.visible = false;
@@ -1613,7 +1720,6 @@ export default function BrepViewportThree({
     // doc comment) -- same naming, same highlight paint, same onPick emission
     // either way, rather than a second copy that could drift from this one.
     function pickAt(clientX: number, clientY: number, mods?: { ctrlKey: boolean; shiftKey: boolean; metaKey: boolean }) {
-      const { ctrlKey = false, shiftKey = false, metaKey = false } = mods ?? {};
       const hit = hitAt(clientX, clientY);
       if (!hit) {
         selectedFaceMesh.visible = false;
@@ -1624,6 +1730,16 @@ export default function BrepViewportThree({
         renderNow();
         return;
       }
+      commitHit(hit, mods);
+    }
+    // The actual selection side effects for ONE ALREADY-RESOLVED Hit, split
+    // out of pickAt() above so the click-and-hold "select other" cycling
+    // gesture below (SPEC-mouse-parity.md Phase 3.5) can commit whichever
+    // candidate a hold cycled onto directly. Re-running hitAt() there would
+    // just re-resolve pickAt()'s own single winner again -- not the specific
+    // stacked candidate the hold actually highlighted.
+    function commitHit(hit: Hit, mods?: { ctrlKey: boolean; shiftKey: boolean; metaKey: boolean }) {
+      const { ctrlKey = false, shiftKey = false, metaKey = false } = mods ?? {};
       if (hit.kind === 'face') {
         const featureId = hit.mesh.userData.featureId as string;
         selectedFaceStateRef.current = { featureId, faceIndex: hit.range.index };
@@ -1831,6 +1947,27 @@ export default function BrepViewportThree({
 
     let downAt: { x: number; y: number } | null = null;
     const CLICK_DRAG_TOLERANCE_PX = 4;
+    // Click-and-hold "select other" cycling state (SPEC-mouse-parity.md
+    // Phase 3.5, [CONFIRM behaviour]). `lastCycleKey`/`lastCycleIndex`
+    // persist ACROSS separate hold gestures, not just within one -- "hold,
+    // release, hold again" at the same stacked point has to advance one
+    // more step each time rather than re-landing on the same candidate, per
+    // the two-stacked-solids contract in mouse-parity-handover.md's T12
+    // entry ("hold cycles to the back one; hold again cycles back [to
+    // front]").
+    let holdTimer: ReturnType<typeof setTimeout> | null = null;
+    let holdCycleState: { candidates: Hit[]; index: number } | null = null;
+    let holdCycleCommitted = false;
+    let lastCycleKey: string | null = null;
+    let lastCycleIndex = 0;
+    function hitKey(hit: Hit): string {
+      switch (hit.kind) {
+        case 'vertex': return `v:${hit.mesh.uuid}:${hit.position.x.toFixed(5)},${hit.position.y.toFixed(5)},${hit.position.z.toFixed(5)}`;
+        case 'edge': return `e:${hit.line.uuid}`;
+        case 'face': return `f:${hit.mesh.uuid}:${hit.range.index}`;
+        case 'body': return `b:${hit.mesh.uuid}`;
+      }
+    }
     function onCanvasPointerDown(e: PointerEvent) {
       if (e.button !== 0) return;
       downAt = { x: e.clientX, y: e.clientY };
@@ -1850,12 +1987,55 @@ export default function BrepViewportThree({
       // threshold: OrbitControls binds LEFT to rotate in BOTH mouse-scheme
       // presets (camera-controls.ts's own MOUSE_SCHEMES), so by the time a
       // threshold check could fire the camera would already have moved.
-      if (hitAt(e.clientX, e.clientY) !== null) return;
+      // `hitCandidatesAt` (not `hitAt`) answers "is there anything here"
+      // (`.length > 0`, the same gate `hitAt(...) !== null` used) AND
+      // doubles as the click-and-hold candidate list below, so a press on
+      // pickable geometry never raycasts twice.
+      const candidates = hitCandidatesAt(e.clientX, e.clientY);
+      if (candidates.length > 0) {
+        // Click-and-hold "select other" (SPEC-mouse-parity.md Phase 3.5,
+        // [CONFIRM behaviour] -- see input-threshold.ts for the settled-
+        // number-vs-unverified-behavior split): armed ONLY with 2+
+        // overlapping candidates at this exact pixel -- a single-candidate
+        // press stays an ordinary click, no cycling timer at all, per the
+        // settled contract's own failure case. One setTimeout, cleared on
+        // move past the dead zone (onCanvasPointerMove) or on release
+        // (onCanvasPointerUp), whichever comes first; no rAF, no repeat-
+        // while-held tick -- a single hold advances the cycle by exactly
+        // one candidate, the same as pressing again later at the same
+        // point does (see lastCycleKey/lastCycleIndex above).
+        if (candidates.length >= 2) {
+          holdTimer = setTimeout(() => {
+            holdTimer = null;
+            const key = candidates.map(hitKey).join('|');
+            const baseIndex = key === lastCycleKey ? lastCycleIndex : 0;
+            const index = nextCycleIndex(baseIndex, candidates.length);
+            lastCycleKey = key;
+            lastCycleIndex = index;
+            holdCycleState = { candidates, index };
+            applyHover(candidates[index]);
+            renderNow();
+          }, HOLD_CYCLE_DELAY_MS);
+        }
+        return;
+      }
       boxSelectRef.current = { startX: e.clientX, startY: e.clientY, endX: e.clientX, endY: e.clientY, moved: false };
       controls.enabled = false;
       renderer.domElement.setPointerCapture(e.pointerId);
     }
     function onCanvasPointerMove(e: PointerEvent) {
+      if (holdTimer !== null && downAt !== null
+        && Math.hypot(e.clientX - downAt.x, e.clientY - downAt.y) >= HOLD_CYCLE_DEAD_ZONE_PX) {
+        // Movement past the dead zone before the delay elapses cancels the
+        // hold outright -- this is what lets hold-then-drag orbit normally
+        // (SPEC-mouse-parity.md Phase 3.5): nothing above disables
+        // `controls.enabled` for a press that landed on pickable geometry
+        // (unlike the box-select/window-zoom branches), so OrbitControls'
+        // own listener on this same element is already free to rotate the
+        // camera the moment the cursor moves -- no cycle is ever triggered.
+        clearTimeout(holdTimer);
+        holdTimer = null;
+      }
       if (windowZoomRef.current !== null) {
         if (downAt === null) return;
         const bounds = renderer.domElement.getBoundingClientRect();
@@ -1907,6 +2087,21 @@ export default function BrepViewportThree({
         );
         return;
       }
+      if (holdTimer !== null) {
+        clearTimeout(holdTimer);
+        holdTimer = null;
+      }
+      if (holdCycleState !== null) {
+        // The hold reached its 300ms delay and highlighted a candidate; a
+        // plain release (no further movement) COMMITS it -- see commitHit()
+        // for why this calls it directly rather than pickAt(), which would
+        // just re-raycast and land back on the ordinary nearest winner.
+        const { candidates, index } = holdCycleState;
+        holdCycleState = null;
+        holdCycleCommitted = true;
+        commitHit(candidates[index], { ctrlKey: e.ctrlKey, shiftKey: e.shiftKey, metaKey: e.metaKey });
+        return;
+      }
       const bs = boxSelectRef.current;
       if (!bs) return;
       boxSelectRef.current = null;
@@ -1926,6 +2121,15 @@ export default function BrepViewportThree({
     }
     function onClick(e: MouseEvent) {
       if (e.button !== 0) return;
+      if (holdCycleCommitted) {
+        // The hold-cycle gesture above already committed a candidate in
+        // onCanvasPointerUp; the DOM `click` that always follows a same-
+        // element pointerup must not re-pick (it would re-run hitAt() and
+        // silently overwrite the cycled selection with the plain nearest
+        // winner).
+        holdCycleCommitted = false;
+        return;
+      }
       // The stale comment this replaces claimed "right-drag orbits" -- it did
       // not (stock OrbitControls binds LEFT-drag to orbit, and always has),
       // and with the scheme preset above that binding is user-switchable
@@ -1968,6 +2172,7 @@ export default function BrepViewportThree({
       renderer.domElement.removeEventListener('pointerup', onCanvasPointerUp);
       renderer.domElement.removeEventListener('pointercancel', onCanvasPointerUp);
       renderer.domElement.removeEventListener('click', onClick);
+      if (holdTimer !== null) clearTimeout(holdTimer);
       if (pendingHoverRaf !== null) cancelAnimationFrame(pendingHoverRaf);
       if (dampingRafRef.current !== null) cancelAnimationFrame(dampingRafRef.current);
       controls.dispose();

@@ -5,7 +5,7 @@
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { nearestVisible } from '../dist/pick-helpers.js';
+import { nearestVisible, nextCycleIndex } from '../dist/pick-helpers.js';
 
 test('1: empty candidates -> null', () => {
   assert.equal(nearestVisible([], 8, Infinity), null);
@@ -63,4 +63,28 @@ test('11: a tie in screen distance keeps whichever the caller listed first', () 
   const first = { distPx: 4, depth: 10 };
   const second = { distPx: 4, depth: 12 };
   assert.equal(nearestVisible([first, second], 8, Infinity), first);
+});
+
+test('12: nextCycleIndex advances by one, wrapping after the last candidate', () => {
+  assert.equal(nextCycleIndex(0, 3), 1);
+  assert.equal(nextCycleIndex(1, 3), 2);
+  assert.equal(nextCycleIndex(2, 3), 0);
+});
+
+test('13: repeated cycle-advances visit every candidate exactly once before wrapping', () => {
+  for (const count of [2, 3, 5]) {
+    let index = -1;
+    const visited = [];
+    for (let step = 0; step < count; step++) {
+      index = nextCycleIndex(index, count);
+      visited.push(index);
+    }
+    assert.deepEqual([...visited].sort((a, b) => a - b), Array.from({ length: count }, (_, i) => i));
+    // one more advance wraps back to the very first index this run produced
+    assert.equal(nextCycleIndex(index, count), visited[0]);
+  }
+});
+
+test('14: candidateCount of 0 returns 0 rather than dividing by zero', () => {
+  assert.equal(nextCycleIndex(0, 0), 0);
 });
