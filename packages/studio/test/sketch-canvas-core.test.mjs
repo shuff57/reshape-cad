@@ -29,6 +29,7 @@ import {
   mirrorSelection,
   copySelection,
   densifyIds,
+  findSnap,
 } from '../dist/model/sketch-canvas-core.js';
 
 const LINE = { k: 'line', id: 1, a: [0, 0], b: [40, 0] };
@@ -324,4 +325,129 @@ test('19: every slot weld names two points that coincide', () => {
       `weld ${r.a}.${r.aEnd} <-> ${r.b}.${r.bEnd} names [${p}] and [${q}]`,
     );
   }
+});
+
+// 20: findSnap — the unified snap engine. Vertex/midpoint/center happy paths
+// and the rank order among them.
+test('20: findSnap ranks vertex over midpoint over onCurve within tolerance', () => {
+  const geoms = [
+    { k: 'line', id: 1, a: [0, 0], b: [40, 0] },
+    { k: 'circle', id: 2, c: [20, 20], r: 5 },
+  ];
+  // Vertex: the line's endpoint b.
+  const v = findSnap(geoms, { x: 40, y: 0.5 }, 1);
+  assert.equal(v.kind, 'vertex');
+  assert.equal(v.id, 1);
+  assert.equal(v.at, 'b');
+  assert.deepEqual(v.world, { x: 40, y: 0 });
+  // Midpoint of the line.
+  const m = findSnap(geoms, { x: 20, y: 0.5 }, 1);
+  assert.equal(m.kind, 'midpoint');
+  assert.deepEqual(m.world, { x: 20, y: 0 });
+  // Circle centre.
+  // Circle centre: it is ALSO a named point ('c'), so vertex (rank 1) wins
+  // over center (rank 2) per the decided rank table.
+  const c = findSnap(geoms, { x: 20, y: 20.5 }, 1);
+  assert.equal(c.kind, 'vertex');
+  assert.equal(c.at, 'c');
+  assert.equal(c.id, 2);
+  // The center kind itself, scoped:
+  const cOnly = findSnap(geoms, { x: 20, y: 20.5 }, 1, { kinds: ['center'] });
+  assert.equal(cOnly.kind, 'center');
+  assert.equal(cOnly.at, 'c');
+  assert.equal(cOnly.id, 2);
+  // onCurve: on the circle rim, away from any named point.
+  const o = findSnap(geoms, { x: 25, y: 20 }, 0.5);
+  assert.equal(o.kind, 'onCurve');
+  assert.ok(Math.hypot(o.world.x - 25, o.world.y - 20) < 1e-9);
+});
+
+// 21: intersections — line-line, line-circle, circle-circle; parallel lines
+// never report one.
+test('21: findSnap line-line, line-circle, circle-circle intersections', () => {
+  const lines = [
+    { k: 'line', id: 1, a: [0, 0], b: [40, 0] },
+    { k: 'line', id: 2, a: [20, -10], b: [20, 30] },
+  ];
+  const x = findSnap(lines, { x: 20, y: 0.5 }, 1);
+  assert.equal(x.kind, 'intersection');
+  assert.deepEqual(x.world, { x: 20, y: 0 });
+  // Parallel lines never cross (scoped to intersections: a midpoint of one
+  // of the lines is a legitimate hit here).
+  const par = [
+    { k: 'line', id: 1, a: [0, 0], b: [40, 0] },
+    { k: 'line', id: 2, a: [0, 5], b: [40, 5] },
+  ];
+  assert.equal(findSnap(par, { x: 20, y: 2.5 }, 3, { kinds: ['intersection'] }), null);
+  // Line-circle: the line y=20 crosses circle c=(20,20) r=5 at x=15 and x=25.
+  const lc = [
+    { k: 'line', id: 1, a: [0, 20], b: [40, 20] },
+    { k: 'circle', id: 2, c: [20, 20], r: 5 },
+  ];
+  const lcx = findSnap(lc, { x: 15, y: 20.5 }, 1);
+  assert.equal(lcx.kind, 'intersection');
+  assert.ok(Math.abs(lcx.world.x - 15) < 1e-9 && Math.abs(lcx.world.y - 20) < 1e-9);
+  // Circle-circle: c=(0,0) r=5 and c=(10,0) r=5 cross at (5, 0).
+  const cc = [
+    { k: 'circle', id: 1, c: [0, 0], r: 5 },
+    { k: 'circle', id: 2, c: [10, 0], r: 5 },
+  ];
+  const ccx = findSnap(cc, { x: 5, y: 0.5 }, 1);
+  assert.equal(ccx.kind, 'intersection');
+  assert.ok(Math.abs(ccx.world.x - 5) < 1e-9 && Math.abs(ccx.world.y) < 1e-9);
+});
+
+// 22: tolerance — null once past tolWorld; tolWorld=0 is exact-hit only.
+test('22: findSnap tolerance — null past tolWorld, exact at tolWorld=0', () => {
+  const geoms = [{ k: 'line', id: 1, a: [0, 0], b: [40, 0] }];
+  assert.equal(findSnap(geoms, { x: 20, y: 1.5 }, 1), null, 'past tolerance');
+  const exact = findSnap(geoms, { x: 20, y: 0 }, 0);
+  assert.ok(exact, 'an exact hit at tol 0 still snaps');
+  assert.equal(exact.kind, 'midpoint');
+  assert.equal(findSnap(geoms, { x: 20, y: 1e-9 }, 0), null, 'tol 0 admits nothing off the geometry');
+});
+
+// 23: an arc's midpoint snap respects the arc's actual sweep — a probe near
+// the full circle's geometric midpoint but outside the sweep does not snap.
+test('23: findSnap arc midpoint respects the sweep range', () => {
+  const geoms = [ARC]; // quarter arc ccw from +x to +y
+  const ang = arcAngles(ARC);
+  const mid = ang.a0 + ang.sweep / 2;
+  const midPt = { x: 10 * Math.cos(mid), y: 10 * Math.sin(mid) };
+  const hit = findSnap(geoms, { x: midPt.x + 0.3, y: midPt.y + 0.3 }, 1);
+  assert.equal(hit.kind, 'midpoint');
+  assert.ok(Math.hypot(hit.world.x - midPt.x, hit.world.y - midPt.y) < 1e-9);
+  // The full circle's geometric midpoint (180deg, (-10, 0)) is outside the
+  // arc's sweep: no midpoint, no onCurve, nothing.
+  assert.equal(findSnap(geoms, { x: -10 + 0.3, y: 0.3 }, 1), null);
+});
+
+// 24: onCurve never fires beyond a line segment's actual endpoints.
+test('24: findSnap onCurve stops at a line segment endpoint', () => {
+  const geoms = [{ k: 'line', id: 1, a: [0, 0], b: [40, 0] }];
+  const on = findSnap(geoms, { x: 10, y: 0.4 }, 0.5);
+  assert.equal(on.kind, 'onCurve');
+  assert.deepEqual(on.world, { x: 10, y: 0 });
+  // Far past the b endpoint: nothing within tolerance.
+  assert.equal(findSnap(geoms, { x: 45, y: 0 }, 2), null);
+});
+
+// 25: grid snaps only when gridStep is supplied.
+test('25: findSnap grid only when gridStep is given', () => {
+  const geoms = [{ k: 'line', id: 1, a: [0, 0], b: [40, 0] }];
+  assert.equal(findSnap(geoms, { x: 50, y: 50 }, 1), null, 'no gridStep, no grid snap');
+  const g = findSnap(geoms, { x: 50.3, y: 49.7 }, 1, { gridStep: 10 });
+  assert.equal(g.kind, 'grid');
+  assert.deepEqual(g.world, { x: 50, y: 50 });
+  assert.equal(g.id, undefined);
+  assert.equal(g.at, undefined);
+});
+
+// 26: snapVertex keeps its contract through the findSnap delegation.
+test('26: snapVertex still works through the findSnap delegation', () => {
+  const geoms = [LINE, CIRCLE];
+  const hit = snapVertex(geoms, { x: 40, y: 0 }, (p) => Math.hypot(p.x - 40, p.y - 0) * 2, 8);
+  assert.equal(hit.id, 1);
+  assert.equal(hit.at, 'b');
+  assert.equal(snapVertex(geoms, { x: 40, y: 0 }, () => 20, 8), null);
 });

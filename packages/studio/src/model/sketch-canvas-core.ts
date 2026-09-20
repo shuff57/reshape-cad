@@ -59,29 +59,205 @@ export function pointWorld(g: CoreGeom, at: 'a' | 'b' | 'c'): Pt | null {
 
 // --- snapping (the archived UI's findSnapVertex) -----------------------------
 
+export type SnapKind = 'vertex' | 'midpoint' | 'center' | 'intersection' | 'onCurve' | 'grid';
+
+export interface SnapHit {
+  kind: SnapKind;
+  at?: 'a' | 'b' | 'c';
+  world: Pt;
+  id?: number;
+}
+
+export interface FindSnapOpts {
+  gridStep?: number;
+  kinds?: SnapKind[];
+  dist?: (p: Pt) => number;
+}
+
+// Rank: an intersection beats a vertex beats a midpoint/centre beats an
+// on-curve point beats the grid. Lower wins; ties break by distance.
+const SNAP_RANK: Record<SnapKind, number> = {
+  intersection: 0, vertex: 1, midpoint: 2, center: 2, onCurve: 3, grid: 4,
+};
+
+/** Standard line-circle intersection: parametrize the segment p->p+d, solve
+ *  the quadratic against the circle, keep roots within [0,1]. */
+export function lineCircleIntersections(p: Pt, d: Pt, c: Pt, r: number): Pt[] {
+  const fx = p.x - c.x, fy = p.y - c.y;
+  const a = d.x * d.x + d.y * d.y;
+  if (a === 0) return [];
+  const b = 2 * (fx * d.x + fy * d.y);
+  const cc = fx * fx + fy * fy - r * r;
+  const disc = b * b - 4 * a * cc;
+  if (disc < 0) return [];
+  const sq = Math.sqrt(disc);
+  const out: Pt[] = [];
+  for (const t of [(-b - sq) / (2 * a), (-b + sq) / (2 * a)]) {
+    if (t >= -1e-9 && t <= 1 + 1e-9) out.push({ x: p.x + t * d.x, y: p.y + t * d.y });
+  }
+  return out;
+}
+
+/** Standard two-circle intersection via the radical line; [] when the circles
+ *  do not meet (or coincide). */
+export function circleCircleIntersections(c1: Pt, r1: number, c2: Pt, r2: number): Pt[] {
+  const dx = c2.x - c1.x, dy = c2.y - c1.y;
+  const d = Math.hypot(dx, dy);
+  if (d === 0 || d > r1 + r2 || d < Math.abs(r1 - r2)) return [];
+  const a = (r1 * r1 - r2 * r2 + d * d) / (2 * d);
+  const h2 = r1 * r1 - a * a;
+  const h = Math.sqrt(Math.max(0, h2));
+  const mx = c1.x + (a * dx) / d, my = c1.y + (a * dy) / d;
+  return [
+    { x: mx + (h * dy) / d, y: my - (h * dx) / d },
+    { x: mx - (h * dy) / d, y: my + (h * dx) / d },
+  ];
+}
+
+/** The best snap within `tolWorld` of `worldPt` over every kind: vertices,
+ *  midpoints, centres, intersections, on-curve points, and (when a gridStep is
+ *  given) grid crossings. Rank decides; distance breaks ties. `opts.kinds` and
+ *  `opts.dist` are the delegation seam snapVertex rides on. */
+export function findSnap(geoms: CoreGeom[], worldPt: Pt, tolWorld: number, opts: FindSnapOpts = {}): SnapHit | null {
+  const dist = opts.dist ?? ((p: Pt) => Math.hypot(p.x - worldPt.x, p.y - worldPt.y));
+  const want = (k: SnapKind) => !opts.kinds || opts.kinds.includes(k);
+  const cands: SnapHit[] = [];
+  const push = (h: SnapHit) => cands.push(h);
+
+  if (want('vertex')) {
+    for (const g of geoms) {
+      for (const { at } of namedPointsOf(g)) {
+        const w = pointWorld(g, at);
+        if (w) push({ kind: 'vertex', at, world: w, id: g.id });
+      }
+    }
+  }
+
+  if (want('midpoint')) {
+    for (const g of geoms) {
+      if (g.k === 'line') {
+        push({ kind: 'midpoint', world: { x: (g.a[0] + g.b[0]) / 2, y: (g.a[1] + g.b[1]) / 2 }, id: g.id });
+      } else if (g.k === 'arc') {
+        const ang = arcAngles(g);
+        if (!ang) continue;
+        const mid = ang.a0 + ang.sweep / 2;
+        push({ kind: 'midpoint', world: { x: g.c[0] + g.r * Math.cos(mid), y: g.c[1] + g.r * Math.sin(mid) }, id: g.id });
+      }
+    }
+  }
+
+  if (want('center')) {
+    for (const g of geoms) {
+      if (g.k === 'circle' || g.k === 'arc') {
+        push({ kind: 'center', at: 'c', world: { x: g.c[0], y: g.c[1] }, id: g.id });
+      }
+    }
+  }
+
+  if (want('intersection')) {
+    for (let i = 0; i < geoms.length; i++) {
+      for (let j = i + 1; j < geoms.length; j++) {
+        const g1 = geoms[i], g2 = geoms[j];
+        if (g1.k === 'line' && g2.k === 'line') {
+          const x = segmentIntersection(
+            { x: g1.a[0], y: g1.a[1] }, { x: g1.b[0], y: g1.b[1] },
+            { x: g2.a[0], y: g2.a[1] }, { x: g2.b[0], y: g2.b[1] },
+          );
+          if (x) push({ kind: 'intersection', world: x });
+        } else if (g1.k === 'line' && g2.k === 'circle') {
+          for (const p of lineCircleIntersections(
+            { x: g1.a[0], y: g1.a[1] },
+            { x: g1.b[0] - g1.a[0], y: g1.b[1] - g1.a[1] },
+            { x: g2.c[0], y: g2.c[1] }, g2.r,
+          )) push({ kind: 'intersection', world: p });
+        } else if (g1.k === 'circle' && g2.k === 'line') {
+          for (const p of lineCircleIntersections(
+            { x: g2.a[0], y: g2.a[1] },
+            { x: g2.b[0] - g2.a[0], y: g2.b[1] - g2.a[1] },
+            { x: g1.c[0], y: g1.c[1] }, g1.r,
+          )) push({ kind: 'intersection', world: p });
+        } else if (g1.k === 'circle' && g2.k === 'circle') {
+          for (const p of circleCircleIntersections(
+            { x: g1.c[0], y: g1.c[1] }, g1.r,
+            { x: g2.c[0], y: g2.c[1] }, g2.r,
+          )) push({ kind: 'intersection', world: p });
+        }
+        // Arcs are skipped: they still produce onCurve hits, which is the
+        // acceptable minimal scope (SPEC-mouse-parity Phase 2 item 3).
+      }
+    }
+  }
+
+  if (want('onCurve')) {
+    for (const g of geoms) {
+      if (g.k === 'line') {
+        const a = { x: g.a[0], y: g.a[1] };
+        const b = { x: g.b[0], y: g.b[1] };
+        const dx = b.x - a.x, dy = b.y - a.y;
+        const len2 = dx * dx + dy * dy;
+        if (len2 === 0) continue;
+        let t = ((worldPt.x - a.x) * dx + (worldPt.y - a.y) * dy) / len2;
+        t = Math.max(0, Math.min(1, t));
+        push({ kind: 'onCurve', world: { x: a.x + t * dx, y: a.y + t * dy }, id: g.id });
+      } else if (g.k === 'circle') {
+        const c = { x: g.c[0], y: g.c[1] };
+        const hyp = Math.hypot(worldPt.x - c.x, worldPt.y - c.y);
+        if (hyp < 1e-12) continue;
+        push({ kind: 'onCurve', world: { x: c.x + (g.r * (worldPt.x - c.x)) / hyp, y: c.y + (g.r * (worldPt.y - c.y)) / hyp }, id: g.id });
+      } else if (g.k === 'arc') {
+        const ang = arcAngles(g);
+        if (!ang) continue;
+        const c = { x: g.c[0], y: g.c[1] };
+        const hyp = Math.hypot(worldPt.x - c.x, worldPt.y - c.y);
+        if (hyp < 1e-12) continue;
+        let th = Math.atan2(worldPt.y - c.y, worldPt.x - c.x);
+        // Normalize the probe angle into [a0, a0+sweep] without wrapping
+        // past the arc's actual sweep.
+        const twoPi = Math.PI * 2;
+        th = th - Math.floor((th - ang.a0) / twoPi) * twoPi;
+        th = Math.max(ang.a0, Math.min(ang.a0 + ang.sweep, th));
+        push({ kind: 'onCurve', world: { x: c.x + g.r * Math.cos(th), y: c.y + g.r * Math.sin(th) }, id: g.id });
+      }
+    }
+  }
+
+  if (opts.gridStep && want('grid')) {
+    push({
+      kind: 'grid',
+      world: { x: Math.round(worldPt.x / opts.gridStep) * opts.gridStep, y: Math.round(worldPt.y / opts.gridStep) * opts.gridStep },
+    });
+  }
+
+  let best: SnapHit | null = null;
+  let bestRank = Infinity;
+  let bestDist = Infinity;
+  for (const cand of cands) {
+    if (!want(cand.kind)) continue;
+    const d = dist(cand.world);
+    if (d > tolWorld) continue;
+    const rank = SNAP_RANK[cand.kind];
+    if (rank < bestRank || (rank === bestRank && d < bestDist)) {
+      best = cand;
+      bestRank = rank;
+      bestDist = d;
+    }
+  }
+  return best;
+}
+
 /** The nearest named point within `snapPx` screen pixels of the pointer, or
  *  null. Screen distance is decided by the caller-supplied `distPx`, so the
- *  projection stays the component's business. */
+ *  projection stays the component's business. Delegates to findSnap with the
+ *  vertex kind only -- one snap engine, no duplicated logic. */
 export function snapVertex(
   geoms: CoreGeom[],
   target: Pt,
   distPx: (p: Pt) => number,
   snapPx: number,
 ): { id: number; at: 'a' | 'b' | 'c'; world: Pt } | null {
-  let best: { id: number; at: 'a' | 'b' | 'c'; world: Pt } | null = null;
-  let bestDist = snapPx;
-  for (const g of geoms) {
-    for (const { at } of namedPointsOf(g)) {
-      const w = pointWorld(g, at);
-      if (!w) continue;
-      const d = distPx(w);
-      if (d < bestDist) {
-        bestDist = d;
-        best = { id: g.id, at, world: w };
-      }
-    }
-  }
-  return best;
+  const hit = findSnap(geoms, target, snapPx, { kinds: ['vertex'], dist: distPx });
+  if (!hit || hit.id === undefined || !hit.at) return null;
+  return { id: hit.id, at: hit.at, world: hit.world };
 }
 
 // --- hit-testing (the archived UI's findShapeHit) ----------------------------
