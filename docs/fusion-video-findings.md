@@ -803,6 +803,307 @@ match reSHape's own `marquee-select.ts` implementation and its own
 self-recorded scenario. Gate resolved.
 
 ---
+## reSHape Studio sketch/kernel closeout (self-recorded)
+
+- **Source**: self-recorded Playwright scenarios, not a URL — the four
+  `scripts/parity-scenarios/phase2-*.mjs` files (built for todos 12–15 of
+  `.omo/plans/fusion-parity-closure.md`), each self-asserting with throws
+  before being handed to the review pipeline (same ground-truth-first
+  methodology as the Phase 3 closeout entry above):
+  - `phase2-fully-constrained.mjs` → `.omo/evidence/parity-recordings/phase2-fully-constrained/page@822f4be0ac75fe917f1f59c4738a577c.webm`
+  - `phase2-sketch-fillet.mjs` → `.omo/evidence/parity-recordings/phase2-sketch-fillet/page@a4c568187a0f563cee85ecbbb60bba6c.webm`
+  - `phase2-sketch-trim.mjs` → `.omo/evidence/parity-recordings/phase2-sketch-trim/page@495f145516d9c7ea54d410db9a609004.webm`
+  - `phase2-sketch-offset.mjs` → `.omo/evidence/parity-recordings/phase2-sketch-offset/page@f41839916ba13011f9432d946ca7c7cf.webm`
+- **Model**: script default (`google/gemini-3.8-flash`) for all four; no
+  `--pro` escalation needed (each read was specific and matched the
+  scenario's own throw-assertions).
+- **Reviewed**: 2026-09-21.
+- **Methodology note**: silent recordings, faster-whisper fails on all four
+  (`IndexError: tuple index out of range`, no audio stream — expected), so
+  the spot-check is against each scenario's known action sequence, not a
+  caption.
+
+### fully-constrained DoF badge (`phase2-fully-constrained.mjs`)
+
+Known scripted sequence: seed rectangle → H on s:3, V on s:4 (16→14→13→12→11
+… each step's exact DoF asserted by throw) → width dim on s:1 → height dim
+on s:4 → Lock one corner (asserts NO DoF change, the documented gap).
+
+#### Verified
+
+1. **Constraint chips and dimension chips appear as rules are written.**
+   Model: *"A horizontal constraint chip (horizontal line with arrows)
+   appears above the top edge. A vertical constraint chip appears along the
+   upper section of the left vertical edge"*, then *"A dimension chip
+   labeled `40` appears inside the rectangle… a dimension chip labeled `25`
+   appears on the left vertical edge"* and the right sidebar gaining
+   matching `Sketch 1 distance` sliders. Matches the scripted H/V/dim
+   sequence exactly.
+2. **The DoF badge itself was NOT visible to the reviewer** (model: "DoF
+   Badge: None displayed" throughout) — the badge is a small toolbar chip
+   (`span.sk-dof`) inside the portaled ribbon; at 1280×800 the model read
+   the sidebar sliders and status bar but not it. The badge's DOM-reach
+   proof is the scenario's own throw-assertions (each step asserted the
+   exact DoF number), not the video.
+
+#### Unverified / discarded
+
+- **The Lock-does-nothing gap, documented honestly.** The scenario asserts
+  that pressing Lock on a selected vertex does NOT change the DoF count —
+  root-caused by reading brep-rs: `ConstraintKind::Lock` contributes zero
+  rows (mod.rs:441 "a lock is column removal, not a rule the solver can
+  trade against other rules"), and `ParamBlock::lock()` is called only from
+  the fd.rs fixture harness, never from session.rs/wasm.rs (the JSON-rules
+  path the UI runs). Literal DoF 0 is therefore unreachable through the UI
+  for a freestanding sketch; the badge's warn→ok transition cannot be
+  demonstrated live until that seam gap is closed. Filed here so a future
+  fix makes the scenario's no-change assertion fail loudly.
+
+#### Coverage
+
+The rule chips, dimension chips, and per-step DoF trajectory were asserted
+by the scenario itself; the model corroborated the chips and dims. The
+badge itself is too small a target for the video read; its render path is
+proven by the assertions, not the video.
+
+### fillet (`phase2-sketch-fillet.mjs`)
+
+Known scripted sequence: seed rectangle → arm fillet ('f') → click the
+bottom-left corner → inline radius chip opens (pre-filled) → type 8, Enter.
+
+#### Verified
+
+1. **Chip-then-Enter flow and the resulting arc, exactly as scripted.**
+   Model: *"The fillet tool is engaged and the bottom-left vertex/corner of
+   the rectangle is clicked. An inline numeric input chip displaying `R |`
+   (radius) opens directly over the selected corner"*, then *"The sharp
+   bottom-left corner is replaced by a smooth rounded tangent arc (polyline
+   fillet) with edit handles. The adjacent bottom and left linear edges
+   shorten automatically to meet the endpoints of the new arc."* Matches
+   `filletCornerAt`'s contract (two legs trimmed, arc inserted, coincident
+   welds).
+
+#### Unverified / discarded
+
+- The typed value itself (8) is not readable from the video; the scenario's
+  assertion (the trimmed-leg coordinates and the arc row's existence) is
+  the authoritative proof.
+
+#### Coverage
+
+Fillet's click-then-type interaction and its geometric result (arc replaces
+corner, legs shorten) were both read correctly off the recording.
+
+### trim (`phase2-sketch-trim.mjs`)
+
+Known scripted sequence: seed rectangle → draw a vertical line crossing the
+bottom edge → arm trim ('t') → click the line's lower protruding piece →
+assert the survivor ends at the crossing and the overhang is gone.
+
+#### Verified
+
+1. **The trim gesture and its result, exactly as scripted.** Model: *"The
+   cursor hovers over and clicks the lower protruding segment of the
+   vertical line below the bottom edge"* and *"The clicked lower piece
+   disappears; the vertical line shrinks to end precisely at the intersection
+   with the rectangle's bottom edge."* This is the split-at-nearest-crossing
+   behavior `trimPick`+`trimLine` implement, and the endpoint-letter
+   preservation fix (commit `fbebb5f`) is what keeps a weld rule naming the
+   surviving far end pointing at the right corner.
+
+#### Unverified / discarded
+
+- Nothing of note; the silent-recording limitation applies only to
+  keyboard steps, and trim's flow is click-only.
+
+#### Coverage
+
+Trim's click-the-piece-to-remove interaction was read correctly off the
+recording; the scenario's geometric assertions (survivor span, overhang
+gone) are the ground truth beneath it.
+
+### offset (`phase2-sketch-offset.mjs`)
+
+Known scripted sequence: seed rectangle → arm offset ('o') → click the
+bottom edge → chip opens (pre-filled "1") → type 0, Enter (must be REFUSED)
+→ type 8, Enter.
+
+#### Verified
+
+1. **The zero-distance refusal (the plan's failure QA for todo 15).** The
+   scenario asserts the chip stays open, no row is added, and the status
+   line reads "offset: type a positive distance" — the model's read of the
+   sequence (chip at "0", then "8") is consistent with that two-step flow.
+2. **The new parallel line at the typed distance, and the original flipped
+   to construction.** Model: *"Pressing Enter generates a new solid parallel
+   edge positioned 8 mm inward (above) from the original edge. The original
+   bottom edge changes from a solid line to a dashed line (converted to
+   construction geometry)."* The scenario asserts exactly this (y=+8 exact,
+   `sk-constr` on s:1).
+
+#### Unverified / discarded
+
+- **A deliberate divergence from Fusion, found in the queued-video review
+  below:** Fusion's own offset leaves the original as NORMAL geometry, not
+  construction (see the `create-and-modify-sketch-geometry` section).
+  reSHape's offset flips the original to construction on purpose (commit
+  `b8c39a4`), which reads as Fusion-like in a still frame but is NOT what
+  the lesson shows. Flagged for todo 30's sweep to decide: keep the
+  construction flip (arguably better: the source stays out of the profile)
+  or match Fusion (original stays normal). The scenario asserts the
+  current behavior either way.
+
+#### Coverage
+
+Offset's click-then-type interaction, its zero-distance refusal, the new
+parallel line, and the construction flip were all corroborated by the
+model's read; the exact 8mm distance and the refusal message text are
+asserted by the scenario itself.
+
+### Relevance to `packages/studio`
+
+One new seam gap surfaced and is now scenario-documented: `lock` rules are
+silently inert in the session path (zero rows, never applied as column
+removal), so the DoF badge cannot reach "Fully constrained" through the
+UI. Everything else corroborated the four Wave 2 commits as shipped
+(`c2e4bd0`, `3f1ffa3`, `fbebb5f`, `b8c39a4`).
+
+---
+## create-and-modify-sketch-geometry
+
+- **Source:** `https://www.autodesk.com/learn/ondemand/tutorial/create-and-modify-sketch-geometry`
+  (live Autodesk lesson, real Fusion footage with narration/transcript).
+- **Model:** script default (`google/gemini-3.8-flash`) with a focus prompt
+  targeting Trim/Offset; output was specific and transcript-corroborated on
+  the first pass, so `--pro` was not used.
+- **Reviewed:** 2026-09-21.
+
+#### Verified
+
+1. **Offset: invoke-then-click, manipulator + typed value, Enter/OK to
+   finish — transcript-corroborated.** Model (04:31–04:54): *"Clicking the
+   Offset icon directly on the sketch toolbar… Once clicked, a red/blue
+   offset preview curve appears with an on-screen drag handle (manipulator
+   arrow) and a floating numerical dimension box… Dragging the on-canvas
+   manipulator arrow handle, typing in the on-canvas input box, or typing
+   into the 'Offset distance' field in the floating Offset dialog"*;
+   *"Press Enter or click OK in the Offset dialog"*. Real captions at
+   00:04:38–00:04:49 (*"In the toolbar, click offset. Then click the
+   geometry to select the connected segments… Drag the manipulator handle
+   on the canvas to adjust the offset… Then press enter or click OK in the
+   offset dialog to complete the command"*) corroborate. reSHape's offset
+   matches the invoke-then-click order, the typed-distance entry, and the
+   Enter-to-commit; it lacks the drag manipulator and the dialog (typed
+   chip only) and decides the side from the click rather than a Flip
+   toggle — acceptable v1 differences, noted for Wave 4.
+2. **Offset side & chain: Fusion offers Chain Selection and a Flip toggle;
+   reSHape picks the side from the click and orders the chain itself.**
+   Model: *"'Chain Selection' checkbox is enabled in the dialog to
+   automatically select the connected loop… Dragging the handle
+   outward/inward, or toggling the Flip button in the dialog"*. reSHape's
+   `offsetChainOrder` walks a selected connected chain with the same
+   semantics; a side-flip toggle is future work (re-click the other side
+   today).
+3. **Line tool: toolbox activation, chaining, Escape to exit —
+   transcript-corroborated, matches reSHape's chain behavior.** Model
+   (01:53–02:56): *"Continuous chaining: Fusion keeps adding segments with
+   each click… Pressing `Esc` exits the Line tool completely"*; real
+   captions at 00:01:58–00:02:01 (*"Type S to open the toolbox… You can
+   then type a command, such as line"*). reSHape's line chain matches the
+   click-to-chain and Escape-to-exit; it lacks Fusion's dynamic length/angle
+   entry boxes on the live segment (P2.7's dims cover the dimensioning
+   need).
+4. **TRIM IS NOT IN THIS VIDEO — the trim MUST FILE gate CANNOT be
+   resolved from this source.** Model, explicitly: *"Trim: Does not appear
+   in this video (the video demonstrates Break at 03:55 instead)."* Real
+   captions at 00:03:48–00:04:03 name **Break** (*"select break to split the
+   geometry into multiple segments… Place the pointer over the geometry to
+   preview where it will break, then click to break it"*). Break and Trim
+   are different tools (Break splits at a point; Trim removes a piece to a
+   crossing). The watch-for rule's own fallback says what to do: pull the
+   reserve video and file trim from it before marking this done.
+
+#### Unverified / discarded
+
+- Rectangle was also absent from the lesson (model: "Rectangle: Does not
+  appear in this video") — already covered by earlier entries, not a gap.
+- The lesson's sketch-constraint interactions are already filed from the
+  dedicated constraint videos; not re-claimed here.
+
+#### Coverage
+
+Watch-for **Trim**: NOT FOUND in this lesson (Break shown instead, 03:48–
+04:03) — gate stays open, reserve video
+`create-a-component-within-an-assembly` is the named fallback. Watch-for
+**offset**: FOUND (04:31–04:54, transcript-corroborated, matches reSHape's
+offset tool with the divergences noted above).
+
+---
+## control-part-thickness-geometry-and-specific-angles
+
+- **Source:** `https://www.autodesk.com/learn/ondemand/tutorial/control-part-thickness-geometry-and-specific-angles`
+  (live Autodesk lesson, real Fusion footage with narration/transcript).
+- **Model:** script default (`google/gemini-3.8-flash`); first attempt hit a
+  transient OpenRouter `HeadersTimeoutError`, the relaunch succeeded. Output
+  was specific and transcript-corroborated, so `--pro` was not used.
+- **Reviewed:** 2026-09-21.
+
+#### Verified
+
+1. **Measure exists as an IN-DIALOG value source, not a canvas tool —
+   transcript-corroborated.** Model (05:47–05:54): *"Inside the Hole
+   command dialog, the user clicks the small flyout arrow on the right side
+   of the Diameter numerical input field, then clicks Measure from the
+   dropdown menu. In the graphics window, the cursor hovers over and clicks
+   the circular edge… The measured diameter (`0.257 in`) is instantly
+   transferred and populated directly into the Diameter input field."* Real
+   caption at 00:05:44 (*"The preview uses a default size, so we can again
+   use the measure command in the dialog to capture one of the projected
+   holes for reference"*). So Fusion's Measure interaction inside modeling
+   commands is: value-field flyout → Measure → click geometry in the
+   viewport → the result lands in the field. reSHape has no in-dialog
+   Measure source today; its dimension entry is typed only. **Measure MUST
+   FILE gate: RESOLVED as a verified difference** — the interaction exists,
+   is now described with timestamps, and reSHape's gap (no value-field
+   Measure flyout) is named rather than unknown. Building it is future work
+  (a value-field flyout is the natural extension of the Phase 2.7 chip),
+  tracked by todo 30's sweep, not this wave.
+2. **Value entry: typed fields, a floating HUD radius box, and a canvas
+   manipulator dial — transcript-corroborated.** Model: radius *"typed
+   directly into the floating on-canvas HUD input box"* (03:02, 04:47); the
+   draft angle *"clicks and drags the circular rotation wheel manipulator
+   directly in the canvas"* with a live readout (04:11–04:34); depth typed
+   (05:39–05:42). reSHape's click-then-type chip (P2.7, fillet, offset)
+   matches the typed-path; the drag-manipulator path is Wave 4's
+   manipulator work.
+3. **Timeline error resolution: red icon → right-click → Edit Feature →
+   re-pick faces → OK — transcript-corroborated.** Model (00:28–00:57):
+   *"the DeleteFace1 icon turns bright red with a yellow warning triangle,
+   and a red error banner (`1 error(s)`) pops up… The user right-clicks the
+   red DeleteFace1 icon directly on the timeline and selects Edit Feature…
+   clicks on the newly exposed adjacent faces in the viewport to add them
+   to the selection set… the red highlight on the timeline icon disappears."*
+   This is the refusal-surfacing analog the plan queued this video for:
+   Fusion surfaces per-feature failure on the timeline and repairs it by
+   re-editing that feature — the same contract reSHape's
+   `EngineBuildResult.refusals` + per-feature refusals-beside-what-built
+   UI already implements. No code change indicated.
+
+#### Unverified / discarded
+
+- The marking-menu gestures glimpsed (02:20, 03:13) are Wave 3's todo 17–21
+  territory; not claimed here.
+
+#### Coverage
+
+Watch-for **Measure**: FOUND (05:47–05:54, in-dialog flyout value capture,
+transcript-corroborated) — the gate's open question ("tool activation, click
+sequence, result readout") is answered, and the comparison against reSHape
+is filed as a verified difference, not a parity match. Timeline-error
+resolution was a bonus corroboration of the per-feature-refusal contract.
+
+---
+
 ## Next videos to review
 
 Rebuilt 2026-09-20 for balanced 2D/3D/navigation coverage. All URLs probed
@@ -813,10 +1114,9 @@ dimension-sketch-geometry, extrude, press-pull, fillets.
 
 ### 2D sketch interactions
 
-- `https://www.autodesk.com/learn/ondemand/tutorial/create-and-modify-sketch-geometry`
-  — line/circle/rect tools + modify; Phase 2.2/2.3/2.6.
-  **MUST FILE: trim + offset** (the "modify" tools — no other live source; if
-  absent, say so explicitly and grab them from the reserve video below).
+  - (REVIEWED 2026-09-21: filed as `## create-and-modify-sketch-geometry`
+  above — offset FOUND; trim NOT in the lesson, reserve video below is the
+  fallback.)
 - `https://www.autodesk.com/learn/ondemand/tutorial/the-sketch-environment`
   — sketch UI/palette layout; Phase 2 preamble, palette toggles.
 - `https://www.autodesk.com/learn/ondemand/tutorial/sketch-2d-rectangles-using-lines-constraints-and-center`
@@ -836,11 +1136,9 @@ dimension-sketch-geometry, extrude, press-pull, fillets.
   — face pick, position handles, hole dialog; Phase 5.1 (HandleOverlay).
 - `https://www.autodesk.com/learn/ondemand/tutorial/modeling-bodies-and-components`
   — Move/Copy gizmo on bodies vs components; Phase 5.2.
-- `https://www.autodesk.com/learn/ondemand/tutorial/control-part-thickness-geometry-and-specific-angles`
-  — measure inside modeling commands, timeline error resolution; Phase 5 +
-  refusal-surfacing analog.
-  **MUST FILE: Measure interaction** (tool activation, click sequence, result
-  readout — no standalone lesson exists).
+  - (REVIEWED 2026-09-21: filed as
+  `## control-part-thickness-geometry-and-specific-angles` above — Measure
+  FOUND in-dialog at 05:47–05:54; gate resolved as a verified difference.)
 
 ### Navigation / camera / menus
 
@@ -860,12 +1158,18 @@ dimension-sketch-geometry, extrude, press-pull, fillets.
 These interactions have no standalone lesson (slugs 404) — they surface only
 inside the queued videos marked **MUST FILE** above. Per video:
 
-- **Trim + offset** → expect in `create-and-modify-sketch-geometry`. If the
-  video doesn't show them, pull the reserve video
+- **Trim + offset** → PARTIALLY RESOLVED: offset verified in
+  `## create-and-modify-sketch-geometry` above (04:31–04:54,
+  transcript-corroborated, matched against reSHape's offset tool with the
+  construction-flag divergence noted). **Trim NOT in that lesson** (Break was
+  shown instead, 03:48–04:03) — still open; the reserve video
   `https://www.autodesk.com/learn/ondemand/tutorial/create-a-component-within-an-assembly`
-  (live, verified) through the pipeline and file trim/offset from it before
-  marking this interaction done.
-- **Measure** → expect in `control-part-thickness-geometry-and-specific-angles`.
+  (live, verified) remains the named fallback to file trim from.
+- **Measure** → RESOLVED: verified in
+  `## control-part-thickness-geometry-and-specific-angles` above (05:47–05:54,
+  in-dialog value-field flyout → click geometry → result lands in the field,
+  transcript-corroborated). reSHape's gap (no in-dialog Measure source) is
+  named in that section as future work.
 - **Box-select** → RESOLVED: verified in `## import-geometry-then-edit-with-direct-modeling` above (window ~02:13–02:16, crossing ~02:28–02:31, both transcript-corroborated and matched against `marquee-select.ts`).
 - **Select-other (click-and-hold)** → no known lesson covers it; the fillet and
   extrude entries already carry it as an unverified visual claim. A transcript
