@@ -1183,6 +1183,16 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
       if (tool !== 'select') return;
       const snap = findSnap(e);
       if (snap) {
+        // Same fully-constrained guard the whole-row drag below already had
+        // (P2's own DoF badge, `diagnosis.dof === 0`) -- a named-point grab
+        // (this branch) bypassed it entirely: `dofClass`/`dofText` painted
+        // the sketch's DoF badge "Fully constrained ✓" while a single vertex
+        // could still be pulled anywhere, contradicting the badge outright.
+        const g = solved.find((x) => x.id === snap.id);
+        if (diagnosis && diagnosis.dof === 0) {
+          setStatus(`${g?.k ?? 'geometry'} ${snap.id} is fully constrained; remove a rule to move it`);
+          return;
+        }
         draggingRef.current = { id: snap.id, at: snap.at };
         // Capture keeps moves flowing outside the svg on a real pointer; a
         // synthetic driver has no active pointer, and capture throws NotFound
