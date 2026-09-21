@@ -1021,6 +1021,168 @@ export function copySelection(
   return dupRows(geoms, rules, ids, (p) => ({ x: p.x + dx, y: p.y + dy }), (old) => old + 100000);
 }
 
+// --- offset ------------------------------------------------------------------------
+// Fusion's sketch Offset: pick one or more CONNECTED edges, drag/type a
+// distance, get a new parallel chain on one side -- the originals untouched
+// (Fusion always keeps the source, offset never edits in place). v1 handles
+// lines only and a single simple open chain at a time, same "one case, not
+// every case" precedent as trimPick (lines only) and filletPick (line-line
+// corners only); circles/arcs and closed loops are future work.
+
+const OFFSET_COINCIDENT_TOL = 1e-6;
+
+/** Same math as segmentIntersection, but UNBOUNDED: the crossing of the two
+*  lines extended to infinity, not just within each segment. Offset needs
+*  this to miter adjacent offset segments back together at a sharp corner
+*  (the parallel-shifted segments no longer touch at the original joint).
+*  Kept private and separate from segmentIntersection on purpose -- trim and
+*  fillet both depend on that one staying bounded. */
+function infiniteLineIntersection(p1: Pt, p2: Pt, p3: Pt, p4: Pt): Pt | null {
+  const d1x = p2.x - p1.x, d1y = p2.y - p1.y;
+  const d2x = p4.x - p3.x, d2y = p4.y - p3.y;
+  const den = d1x * d2y - d1y * d2x;
+  if (Math.abs(den) < 1e-12) return null; // parallel: no single crossing
+  const t = ((p3.x - p1.x) * d2y - (p3.y - p1.y) * d2x) / den;
+  return { x: p1.x + t * d1x, y: p1.y + t * d1y };
+}
+
+/** Order the selected line ids into a single simple open chain, walking head
+*  to tail via shared (coincident, within tolerance) endpoints among ONLY
+*  the given ids. Refuses (null) branching (a T-junction), closed loops
+*  (every endpoint shared, no free end to start from), and disconnected
+*  pieces -- offsetting an ambiguous or non-chain selection is refused
+*  rather than guessed at. A lone id is trivially its own one-line chain. */
+export function offsetChainOrder(geoms: CoreGeom[], ids: number[]): Array<{ id: number; from: Pt; to: Pt }> | null {
+  if (ids.length === 0) return null;
+  const lines = ids.map((id) => geoms.find((g) => g.id === id));
+  if (lines.some((g) => !g || g.k !== 'line')) return null;
+  const rows = lines as CoreGeom[];
+  if (rows.length === 1) {
+    const g = rows[0];
+    return [{ id: g.id, from: pointWorld(g, 'a')!, to: pointWorld(g, 'b')! }];
+  }
+  const eq = (p: Pt, q: Pt) => Math.hypot(p.x - q.x, p.y - q.y) < OFFSET_COINCIDENT_TOL;
+  const ends = rows.map((g) => [pointWorld(g, 'a')!, pointWorld(g, 'b')!] as [Pt, Pt]);
+  const matchesOther = (i: number, p: Pt) =>
+    rows.some((_, j) => j !== i && (eq(p, ends[j][0]) || eq(p, ends[j][1])));
+  let startI = -1;
+  let startFrom: Pt | null = null;
+  let startTo: Pt | null = null;
+  for (let i = 0; i < rows.length; i++) {
+    if (!matchesOther(i, ends[i][0])) { startI = i; startFrom = ends[i][0]; startTo = ends[i][1]; break; }
+    if (!matchesOther(i, ends[i][1])) { startI = i; startFrom = ends[i][1]; startTo = ends[i][0]; break; }
+  }
+  if (startI === -1) return null; // every endpoint shared: a closed loop, refused in v1
+  const placed = new Set<number>([startI]);
+  const chain: Array<{ id: number; from: Pt; to: Pt }> = [{ id: rows[startI].id, from: startFrom!, to: startTo! }];
+  let tail = startTo!;
+  while (placed.size < rows.length) {
+    let nextI = -1, nextFrom: Pt | null = null, nextTo: Pt | null = null;
+    for (let j = 0; j < rows.length; j++) {
+      if (placed.has(j)) continue;
+      if (eq(tail, ends[j][0])) {
+        if (nextI !== -1) return null; // branching: two lines join at this joint
+        nextI = j; nextFrom = ends[j][0]; nextTo = ends[j][1];
+      } else if (eq(tail, ends[j][1])) {
+        if (nextI !== -1) return null;
+        nextI = j; nextFrom = ends[j][1]; nextTo = ends[j][0];
+      }
+    }
+    if (nextI === -1) return null; // dead end before every selected line was used: disconnected pieces
+    chain.push({ id: rows[nextI].id, from: nextFrom!, to: nextTo! });
+    placed.add(nextI);
+    tail = nextTo!;
+  }
+  return chain;
+}
+
+export interface OffsetPick {
+  chain: Array<{ id: number; from: Pt; to: Pt }>;
+  side: 1 | -1;
+}
+
+/** Order the picked ids into a chain (offsetChainOrder) and decide which
+*  perpendicular side `click` sits on, relative to whichever chain segment
+*  the click lands nearest -- the same nearest-segment idea trimPick uses
+*  to pick a crossing. Returns null if the ids are not a single chain. */
+export function offsetChainPick(geoms: CoreGeom[], ids: number[], click: Pt): OffsetPick | null {
+  const chain = offsetChainOrder(geoms, ids);
+  if (!chain || chain.length === 0) return null;
+  let best = chain[0];
+  let bestDist = Infinity;
+  for (const seg of chain) {
+    const d = distToSegment(click, seg.from, seg.to);
+    if (d < bestDist) { bestDist = d; best = seg; }
+  }
+  const dir = { x: best.to.x - best.from.x, y: best.to.y - best.from.y };
+  const rel = { x: click.x - best.from.x, y: click.y - best.from.y };
+  const cross = dir.x * rel.y - dir.y * rel.x;
+  const side: 1 | -1 = cross >= 0 ? 1 : -1;
+  return { chain, side };
+}
+
+/** Build the new offset chain at `distance` (> 0) on `side`: each segment
+*  is pushed perpendicular to its own direction, then adjacent offset
+*  segments are re-joined at their new mitered (infinite-line) intersection
+*  so the chain's corners stay sharp -- the same corner the ORIGINAL chain
+*  had, just pushed out by `distance`. Appends new line rows (fresh ids via
+*  nextGeomId) and welds each adjacent pair with the same coincident
+*  convention filletCornerAt's new arc uses. The originals keep their own
+*  position and id -- offset always creates new geometry alongside the
+*  source, never moves or deletes it -- but flip to construction=true
+*  (Fusion's own offset behavior: the source becomes a dashed reference,
+*  the new offset chain the real profile edge).
+*  `distance <= 0` is degenerate (a zero offset would duplicate the source
+*  in place) and is refused with null; the caller shows the message. */
+export function offsetChain(
+  geoms: CoreGeom[],
+  rules: Array<Record<string, any>>,
+  chain: Array<{ id: number; from: Pt; to: Pt }>,
+  side: 1 | -1,
+  distance: number,
+): { geoms: CoreGeom[]; rules: Array<Record<string, any>>; newIds: number[] } | null {
+  if (!(distance > 0) || chain.length === 0) return null;
+  const raw = chain.map((seg) => {
+    const len = Math.hypot(seg.to.x - seg.from.x, seg.to.y - seg.from.y);
+    if (len === 0) return null; // a zero-length selected line has no direction to offset
+    const dx = (seg.to.x - seg.from.x) / len, dy = (seg.to.y - seg.from.y) / len;
+    const px = -dy * side * distance, py = dx * side * distance;
+    return { from: { x: seg.from.x + px, y: seg.from.y + py }, to: { x: seg.to.x + px, y: seg.to.y + py } };
+  });
+  if (raw.some((r) => r === null)) return null;
+  let nextId = nextGeomId(geoms);
+  const newIds: number[] = [];
+  const newLines = raw.map((r) => {
+    const id = nextId++;
+    newIds.push(id);
+    return { k: 'line' as const, id, a: [r!.from.x, r!.from.y] as [number, number], b: [r!.to.x, r!.to.y] as [number, number] };
+  });
+  for (let i = 0; i < newLines.length - 1; i++) {
+    const A = newLines[i], B = newLines[i + 1];
+    const x = infiniteLineIntersection(
+      { x: A.a[0], y: A.a[1] }, { x: A.b[0], y: A.b[1] },
+      { x: B.a[0], y: B.a[1] }, { x: B.b[0], y: B.b[1] },
+    );
+    if (x) {
+      A.b = [x.x, x.y];
+      B.a = [x.x, x.y];
+    }
+    // Parallel adjacent segments (a straight run split into two selected
+    // pieces) have no single crossing to miter at -- each keeps its own
+    // independent offset, which already lines up since they were parallel.
+  }
+  const chainIds = new Set(chain.map((seg) => seg.id));
+  const geomsOut = [
+    ...geoms.map((g) => (chainIds.has(g.id) ? { ...g, construction: true } : g)),
+    ...newLines,
+  ];
+  const rulesOut = [...rules];
+  for (let i = 0; i < newLines.length - 1; i++) {
+    rulesOut.push({ k: 'coincident', a: newLines[i].id, aEnd: 'b', b: newLines[i + 1].id, bEnd: 'a' });
+  }
+  return { geoms: geomsOut, rules: rulesOut, newIds };
+}
+
 /** Re-dense the ids after duplication: 100000-offset ids are a collision-
  *  free trick, not a representation. Renumber everything to 1..n and rewrite
  *  every rule reference through the map. */

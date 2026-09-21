@@ -84,6 +84,9 @@ import {
   whyCannotFilletAt,
   filletCornerAt,
   applyEqualRadiusRule,
+  offsetChainOrder,
+  offsetChainPick,
+  offsetChain,
   pointWorld,
   readSolved,
   renumber,
@@ -105,6 +108,7 @@ import {
   type DimPick,
   type LineChain,
   type FilletPick,
+  type OffsetPick,
   type Pt,
   type SnapHit,
   type SoupGeomNew,
@@ -162,7 +166,7 @@ const GRID_MAX_LINES = 400;
  *  flow -- not the drag-to-create gesture -- owns it. Screen px. */
 const DRAG_PX = 3;
 
-type Tool = 'select' | 'line' | 'rect' | 'circle' | 'arc' | 'slot' | 'trim' | 'fillet' | 'dim';
+type Tool = 'select' | 'line' | 'rect' | 'circle' | 'arc' | 'slot' | 'trim' | 'fillet' | 'offset' | 'dim';
 /** The tools a single drag can finish on its own (SPEC-mouse-parity Phase 2
  *  item 2). Line and arc are not among them: a chain and a three-point arc
  *  need more points than one drag carries. */
@@ -180,6 +184,7 @@ const TOOL_KEYS: Record<string, Tool> = {
   s: 'slot',
   t: 'trim',
   f: 'fillet',
+  o: 'offset',
   v: 'select',
 };
 /** The cursor each tool wears. A draw tool aims at a POINT, so it keeps the
@@ -197,6 +202,9 @@ const TOOL_CURSOR: Record<Tool, string> = {
   slot: 'crosshair',
   trim: 'cell',
   fillet: 'crosshair',
+  // offset aims at an edge (or uses whatever is already selected) the same
+  // way trim does.
+  offset: 'cell',
   dim: 'crosshair',
 };
 
@@ -255,6 +263,10 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
   // rule, in the SAME writeDoc as the new fillet (one undo entry). Reset on
   // every tool change so leaving and rearming fillet starts a fresh chain.
   const lastFilletArc = useRef<{ arcId: number; radius: number } | null>(null);
+  // The offset chain picked and not yet committed, same click-then-type
+  // shape as filletPend: the click (or the prior selection it reused) is
+  // the whole pick, `value` is the typed distance.
+  const [offsetPend, setOffsetPend] = useState<(OffsetPick & { value: string }) | null>(null);
   /** Where each placed dimension's label was dropped, by RULE INDEX. This is
    *  UI state on purpose: SoupRule has no label-position field and inventing
    *  one would change the script schema every doc round-trips through. A
@@ -953,6 +965,60 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     writeDoc(toggleConstruction(geoms, ids) as SoupGeom[], rules);
   }, [geoms, rules, selShapes, writeDoc]);
 
+  // Offset: uses whatever is ALREADY selected (selShapes, the same source
+  // Mirror/Copy read) if the selection is non-empty, so a student can
+  // multi-select a connected chain with the select tool first; falls back
+  // to a single-line click (findHit), same one-click pick as trim, when
+  // nothing is selected yet. Either way the click ALSO decides which
+  // perpendicular side the offset goes -- offsetChainPick reads it off
+  // which side of the nearest chain segment the click landed on.
+  const onOffsetClick = useCallback(
+    (e: { clientX: number; clientY: number }) => {
+      const click = worldFromEvent(e);
+      const ids =
+        selShapes.length > 0
+          ? selShapes.map((s) => s.id)
+          : (() => {
+              const hit = findHit(e);
+              return hit ? [hit.id] : [];
+            })();
+      if (ids.length === 0) {
+        setStatus('offset: select one or more connected lines, or click one to offset');
+        return;
+      }
+      const pick = offsetChainPick(geoms as CoreGeom[], ids, click);
+      if (!pick) {
+        setStatus('offset: the selection is not a single connected chain of lines');
+        return;
+      }
+      setOffsetPend({ ...pick, value: formatDim(1) });
+      setStatus('');
+    },
+    [findHit, geoms, selShapes, worldFromEvent],
+  );
+
+  /** Commit the pending offset as ONE writeDoc = one undo entry. A
+   *  distance <= 0 is refused by offsetChain itself (returns null); the
+   *  message here covers that AND the plain non-numeric-input case. */
+  const commitOffset = useCallback(() => {
+    if (!offsetPend) return;
+    const v = Number(offsetPend.value.trim());
+    if (!Number.isFinite(v) || v <= 0) {
+      setStatus('offset: type a positive distance');
+      return;
+    }
+    const out = offsetChain(geoms as CoreGeom[], rules as unknown as Array<Record<string, any>>, offsetPend.chain, offsetPend.side, v);
+    if (!out) {
+      setStatus('offset: that distance could not be applied');
+      return;
+    }
+    writeDoc(out.geoms as SoupGeom[], out.rules as SoupRule[]);
+    setOffsetPend(null);
+    setSel([]);
+    setStatus('');
+  }, [offsetPend, geoms, rules, writeDoc]);
+
+
 
   const selPoints = useMemo(() => sel.filter((s) => s.at !== null), [sel]);
 
@@ -1526,6 +1592,11 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     }
   }, [tool]);
 
+  // Arming another tool drops a pending offset the same way.
+  useEffect(() => {
+    if (tool !== 'offset') setOffsetPend(null);
+  }, [tool]);
+
   // --- render --------------------------------------------------------------------------
   const selKey = (id: number, at: 'a' | 'b' | 'c' | null) => `${id}:${at ?? ''}`;
   const isSel = (id: number, at: 'a' | 'b' | 'c' | null) => sel.some((s) => s.id === id && s.at === at);
@@ -1877,6 +1948,38 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
         />,
       );
     }
+    // The pending offset distance: a chip at the picked chain's first
+    // point, same click-then-type input as the fillet chip above -- Enter
+    // commits through offsetChain, Escape drops the pick with no doc
+    // change.
+    if (offsetPend) {
+      const s = chipAt(offsetPend.chain[0].from);
+      dimChips.push(
+        <input
+          key="offset-pending"
+          className="sk2d-dim-chip"
+          data-offset-pending="true"
+          data-editing="true"
+          autoFocus
+          style={{ left: `${s.x}px`, top: `${s.y}px` }}
+          size={Math.max(3, offsetPend.value.length + 1)}
+          value={offsetPend.value}
+          onChange={(e) => setOffsetPend((p) => (p ? { ...p, value: e.target.value } : p))}
+          onFocus={(e) => e.currentTarget.select()}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              commitOffset();
+            } else if (e.key === 'Escape') {
+              e.preventDefault();
+              setOffsetPend(null);
+            }
+          }}
+          onPointerDown={(e) => e.stopPropagation()}
+          onClick={(e) => e.stopPropagation()}
+        />,
+      );
+    }
   }
 
   // Docked into the ribbon, same portal target ModelEditor's own toolbar
@@ -1901,6 +2004,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
                   ['slot', 'Slot'],
                   ['trim', 'Trim'],
                   ['fillet', 'Fillet'],
+                  ['offset', 'Offset'],
                   // The ON-CANVAS dimension tool (P2.7). The Dimension group's
                   // own Dim / R / diameter buttons are a different thing and
                   // are left exactly as they were: they open the ribbon box on
@@ -2135,6 +2239,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
           else if (tool === 'slot') onSlotClick(e);
           else if (tool === 'trim') onTrimClick(e);
           else if (tool === 'fillet') onFilletClick(e);
+          else if (tool === 'offset') onOffsetClick(e);
           else if (tool === 'dim') onDimClick(e);
         }}
         onPointerMove={onPointerMove}

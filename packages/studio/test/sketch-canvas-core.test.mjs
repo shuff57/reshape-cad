@@ -39,6 +39,9 @@ import {
   whyCannotFilletAt,
   filletCornerAt,
   applyEqualRadiusRule,
+  offsetChainOrder,
+  offsetChainPick,
+  offsetChain,
 } from '../dist/model/sketch-canvas-core.js';
 
 const LINE = { k: 'line', id: 1, a: [0, 0], b: [40, 0] };
@@ -732,4 +735,78 @@ test('41: trimLine keeps the surviving endpoint at its own letter, not relabeled
   const one = out.geoms.find((g) => g.id === 1);
   assert.deepEqual(one.a, [20, 0], "'a' is pulled to the split");
   assert.deepEqual(one.b, [40, 0], "'b' keeps its own original letter and coordinates");
+});
+
+// 42: offsetChain on a single line produces a new parallel line at exactly
+// the typed distance; the original keeps its position but flips to
+// construction (Fusion's own offset behavior: source becomes reference).
+test('42: offsetChain offsets a single line by the exact distance, original untouched', () => {
+  const geoms = [{ k: 'line', id: 1, a: [0, 0], b: [40, 0] }];
+  const pick = offsetChainPick(geoms, [1], { x: 20, y: 5 }); // click ABOVE the line
+  assert.ok(pick, 'a single line is trivially its own chain');
+  assert.equal(pick.side, 1, 'click above a left-to-right line is the +side');
+  const out = offsetChain(geoms, [], pick.chain, pick.side, 10);
+  assert.ok(out, 'a positive distance succeeds');
+  assert.equal(out.geoms.length, 2, 'one new row, the original stays');
+  const original = out.geoms.find((g) => g.id === 1);
+  assert.deepEqual(original.a, [0, 0], 'original position untouched');
+  assert.deepEqual(original.b, [40, 0], 'original position untouched');
+  assert.equal(original.construction, true, 'original flips to construction, Fusion parity');
+  const fresh = out.geoms.find((g) => g.id === out.newIds[0]);
+  assert.deepEqual(fresh.a, [0, 10], 'offset above by exactly 10');
+  assert.deepEqual(fresh.b, [40, 10], 'offset above by exactly 10');
+});
+
+// 43: a zero or negative distance is degenerate and refused, not silently
+// creating a duplicate coincident edge.
+test('43: offsetChain refuses a zero or negative distance', () => {
+  const geoms = [{ k: 'line', id: 1, a: [0, 0], b: [40, 0] }];
+  const chain = offsetChainOrder(geoms, [1]);
+  assert.equal(offsetChain(geoms, [], chain, 1, 0), null, 'zero distance refused');
+  assert.equal(offsetChain(geoms, [], chain, 1, -5), null, 'negative distance refused');
+});
+
+// 44: two CONNECTED edges (an L corner) offset together stay mitered at a
+// sharp new corner, welded by a coincident rule -- not two independently
+// offset segments left with a gap.
+test('44: offsetChain miters a two-line connected chain at the new corner', () => {
+  const geoms = [
+    { k: 'line', id: 1, a: [0, 0], b: [10, 0] },   // horizontal leg
+    { k: 'line', id: 2, a: [10, 0], b: [10, 10] }, // vertical leg, shares (10,0)
+  ];
+  const pick = offsetChainPick(geoms, [1, 2], { x: 5, y: -2 }); // click below/outside the corner
+  assert.ok(pick, 'a shared-endpoint pair is a valid chain');
+  assert.deepEqual(pick.chain.map((s) => s.id), [1, 2], 'walked head to tail starting from the free end');
+  assert.equal(pick.side, -1);
+  const out = offsetChain(geoms, [], pick.chain, pick.side, 3);
+  assert.ok(out);
+  assert.equal(out.geoms.length, 4, 'two new rows, both originals kept');
+  const one = out.geoms.find((g) => g.id === 1);
+  const two = out.geoms.find((g) => g.id === 2);
+  assert.deepEqual(one.a, [0, 0], 'original leg 1 position untouched');
+  assert.deepEqual(two.b, [10, 10], 'original leg 2 position untouched');
+  assert.equal(one.construction, true, 'leg 1 flips to construction');
+  assert.equal(two.construction, true, 'leg 2 flips to construction');
+  const [idA, idB] = out.newIds;
+  const a = out.geoms.find((g) => g.id === idA);
+  const b = out.geoms.find((g) => g.id === idB);
+  assert.deepEqual(a.a, [0, -3], 'leg 1 pushed 3 away, far end untouched by the miter');
+  assert.deepEqual(a.b, [13, -3], 'leg 1 near end pulled to the mitered corner');
+  assert.deepEqual(b.a, [13, -3], 'leg 2 near end is the SAME mitered corner -- no gap');
+  assert.deepEqual(b.b, [13, 10], 'leg 2 far end pushed 3 away, untouched by the miter');
+  assert.ok(
+    out.rules.some((r) => r.k === 'coincident' && r.a === idA && r.aEnd === 'b' && r.b === idB && r.bEnd === 'a'),
+    'the new corner is welded, same convention as a fillet arc',
+  );
+});
+
+// 45: a selection that is not a single simple chain (disconnected pieces,
+// here) is refused rather than guessed at.
+test('45: offsetChainOrder refuses a disconnected selection', () => {
+  const geoms = [
+    { k: 'line', id: 1, a: [0, 0], b: [10, 0] },
+    { k: 'line', id: 2, a: [100, 100], b: [110, 100] }, // shares no endpoint with line 1
+  ];
+  assert.equal(offsetChainOrder(geoms, [1, 2]), null);
+  assert.equal(offsetChainPick(geoms, [1, 2], { x: 5, y: 5 }), null);
 });
