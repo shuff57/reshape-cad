@@ -120,6 +120,24 @@ function addIfAbsent(state: SelectionState, item: SelectionItem): SelectionState
   return present ? state : addSelection(state, item);
 }
 
+/** Every DISTINCT feature id that owns at least one of `items`, in
+*  first-seen order. A box-select can span MULTIPLE bodies (unlike a
+*  single click's always-one-owner pick) -- collapsing to just the LAST
+*  item's owner silently dropped every other solid's items from
+*  `selected` (the status bar's "N selected" count and every
+*  owner-scoped reader downstream of it), even though the raw item list
+*  itself was correct. Exported so this box-select-multi-owner regression
+*  has a direct unit test without needing the full React/viewport
+*  harness (see onBoxSelect below, the one caller). */
+export function distinctOwners(doc: ModelDoc, items: SelectionItem[]): string[] {
+  const owners: string[] = [];
+  for (const item of items) {
+    const o = ownerOf(doc, { target: item.target, name: item.name ?? null });
+    if (o && !owners.includes(o)) owners.push(o);
+  }
+  return owners;
+}
+
 export type ReshapeStudioProps = {
   /** script.js text -- the ONE saved artifact. Controlled: Code edits it
    *  through the store-backed CodeEditor this component renders, and Build
@@ -1421,12 +1439,25 @@ export default function ReshapeStudio({
                     // no-duplicate rule a Ctrl-click already applies.
                     for (const item of items) next = addIfAbsent(next, item);
                     const last = items[items.length - 1] ?? null;
-                    const owner = last ? ownerOf(doc, { target: last.target, name: last.name ?? null }) : null;
+                    // Every DISTINCT owner among the new items, not just the
+                    // last one -- a box-select can span MULTIPLE bodies
+                    // (unlike a single click's always-one-owner pick), and
+                    // collapsing to the last item's owner alone silently
+                    // dropped every other solid's items from `selected`
+                    // (the status bar's "N selected" and every owner-scoped
+                    // reader downstream of it) even though addIfAbsent()
+                    // above had already added them to `next.items` -- a
+                    // window-select across two solids looked like it kept
+                    // both but visibly reported/scoped to only one.
+                    const owners = distinctOwners(doc, items);
+                    const ids = owners.length > 0
+                      ? (shiftKey ? Array.from(new Set([...featuresOf(prev), ...owners])) : owners)
+                      : items.length > 0 ? featuresOf(prev) : [];
                     return {
                       // An empty box result replaces with NOTHING -- the
                       // same click-on-empty-space clears -- so the feature
                       // ids the drag started from are not resurrected here.
-                      ...withFeatureIds(next, owner ? [owner] : last ? featuresOf(prev) : []),
+                      ...withFeatureIds(next, ids),
                       primary: last,
                     };
                   });
