@@ -713,3 +713,23 @@ test('40: whyCannotFilletAt names the refusal; filletCornerAt refuses without th
   assert.match(whyZero, /no length/i);
   assert.equal(filletCornerAt(zeroLen, [], 1, 'b', 2, 'a', 3), null);
 });
+
+// 41: trimLine preserves each endpoint's ORIGINAL LETTER -- it must not
+// relabel the surviving far point to whichever letter the split point took.
+test('41: trimLine keeps the surviving endpoint at its own letter, not relabeled to farPt', () => {
+  const geoms = [
+    { k: 'line', id: 1, a: [0, 0], b: [40, 0] },   // the clicked line
+    { k: 'line', id: 2, a: [20, -10], b: [20, 30] }, // crosses at (20, 0)
+  ];
+  const pick = trimPick(geoms, 1, { x: 5, y: 0 });
+  assert.ok(pick, 'a crossing exists');
+  // Click at x=5 (left of the split): the LEFT half (containing 'a') is
+  // deleted; 'a' moves to the split, 'b' survives UNTOUCHED at its own
+  // original coordinates AND letter. Before the fix, this always wrote
+  // farPt (here, b's own [40,0]) into the 'a' slot and the split into 'b'
+  // -- silently swapping which letter each value lived under.
+  const out = trimLine(geoms, [], 1, pick.at, { x: 5, y: 0 });
+  const one = out.geoms.find((g) => g.id === 1);
+  assert.deepEqual(one.a, [20, 0], "'a' is pulled to the split");
+  assert.deepEqual(one.b, [40, 0], "'b' keeps its own original letter and coordinates");
+});

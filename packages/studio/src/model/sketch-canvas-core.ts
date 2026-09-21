@@ -513,12 +513,21 @@ export function trimPick(geoms: CoreGeom[], clickedId: number, click: Pt): { at:
 
 /** Trim the clicked line at `split`: the half UNDER the click is deleted
  *  (whichever half's midpoint sits closer to the click), the far half keeps
- *  the clicked row's id with its far endpoint pulled to the split. No new
- *  row, no weld: a trim that deletes a piece leaves the wire open, and wire
- *  discovery's refusals say exactly that. Rules referencing the clicked row
- *  keep working (the surviving half kept the id); a rule that referenced the
- *  deleted geometry may become unsatisfiable — the diagnosis badge surfaces
- *  that, the trim does not try to fix it. */
+ *  the clicked row's id with its far endpoint pulled to the split. The far
+ *  endpoint keeps its ORIGINAL LETTER ('a' stays 'a', 'b' stays 'b') --
+ *  earlier this always wrote `{a: farPt, b: split}` regardless of which
+ *  letter farPt actually was, so trimming the line back from its 'a' end
+ *  silently RELABELED the surviving far point from 'b' to 'a'. Any weld
+ *  (coincident) rule naming that endpoint by letter (e.g. `aEnd: 'b'`)
+ *  then silently pointed at the fresh split point instead of the corner it
+ *  was welded to -- not a dangling reference (the id still exists), a
+ *  SILENTLY WRONG one, which is worse: diagnose() has nothing to flag,
+ *  since the rule is perfectly satisfiable, just against the wrong point.
+ *  No new row: a trim that deletes a piece leaves the wire open, and wire
+ *  discovery's refusals say exactly that. Rules referencing the clicked
+ *  row's SURVIVING letter keep working correctly; a rule that referenced
+ *  the DELETED letter may become unsatisfiable -- the diagnosis badge
+ *  surfaces that, the trim does not try to fix it. */
 export function trimLine(
   geoms: CoreGeom[],
   rules: Array<Record<string, any>>,
@@ -535,9 +544,15 @@ export function trimLine(
   const dA = Math.hypot((a.x + split.x) / 2 - click.x, (a.y + split.y) / 2 - click.y);
   const dB = Math.hypot((b.x + split.x) / 2 - click.x, (b.y + split.y) / 2 - click.y);
   const nearIsA = dA <= dB;
-  const farPt = nearIsA ? b : a;
+  // nearIsA: 'a' is under the click and gets pulled to the split; 'b'
+  // survives untouched at its original coordinates (and letter). Otherwise
+  // the reverse -- 'b' moves to the split, 'a' survives as-is.
   const geomsOut = geoms.map((g) =>
-    g.id === clickedId ? { ...g, a: [farPt.x, farPt.y], b: [split.x, split.y] } : g,
+    g.id === clickedId
+      ? nearIsA
+        ? { ...g, a: [split.x, split.y], b: [b.x, b.y] }
+        : { ...g, a: [a.x, a.y], b: [split.x, split.y] }
+      : g,
   );
   return { geoms: geomsOut, rules: [...rules] };
 }
