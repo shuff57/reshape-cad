@@ -561,6 +561,248 @@ for weighting future entries in this log.
 
 ---
 
+## reSHape Studio Phase 3 closeout (self-recorded)
+
+- **Source**: self-recorded Playwright scenarios, not a URL — the four
+  `scripts/parity-scenarios/phase3-*.mjs` files (built by todo 11 of
+  `.omo/plans/fusion-parity-closure.md`), each self-asserting via
+  `.reshape-studio-status-sel` text before being handed to the review
+  pipeline (a script that throws on a wrong result is stronger ground truth
+  than a video review alone):
+  - `phase3-box-select.mjs` → `.omo/evidence/parity-recordings/phase3-box-select/page@febed3d0983ac72b8f105c665623917f.webm`
+  - `phase3-mixed-select.mjs` → `.omo/evidence/parity-recordings/phase3-mixed-select/page@d15955a87ecc13b08c1217e6972e339f.webm`
+  - `phase3-select-other.mjs` → `.omo/evidence/parity-recordings/phase3-select-other/page@d1c4a590f111d389dee5c1258fc4a796.webm`
+  - `phase3-dblclick-keys.mjs` → `.omo/evidence/parity-recordings/phase3-dblclick-keys/page@ac1299379d50c8ba4bfca61c8269b2ea.webm`
+- **Model**: script default (`google/gemini-3.8-flash`) for all four; none of the
+  four outputs were vague/thin enough to warrant `--pro` escalation.
+- **Reviewed**: 2026-09-20.
+- **Methodology note**: same as the Phase 1+2 baseline entry above — silent
+  self-recordings, faster-whisper's local transcript path fails outright on
+  all four (`IndexError: tuple index out of range`, no audio stream —
+  expected, not a pipeline bug), so the spot-check below is against each
+  scenario script's own known action sequence, not a caption.
+
+### box-select (`phase3-box-select.mjs`)
+
+Known scripted sequence: three boxes side-by-side → FRONT view → window drag
+(left-to-right) enclosing box3+box2 → crossing drag (right-to-left) starting
+inside box1 and sweeping through box2 into box3.
+
+#### Verified
+
+1. **Selection-count readout matches the script's own assertions exactly.**
+   Model: *"Selection status dynamically updates in the bottom-left viewport
+   readout (`NOTHING SELECTED` → `BOX 1` → `3 SELECTED`)... When multiple
+   bodies are selected simultaneously, manipulation handles/nodes appear
+   concurrently across all selected objects."* This is the live, video-level
+   confirmation of the exact regression the script's own `throw` already
+   proved at the code level (window drag → `"2 selected"`, crossing drag →
+   `"3 selected"`) — `distinctOwners()`'s fix (ReshapeStudio.tsx, commit
+   `90ef0f7`) is what makes a multi-body drag report every owner instead of
+   collapsing to the last-clicked one.
+2. **Window vs. crossing drag direction correctly distinguished.** Model:
+   describes a left-to-right drag producing a clean multi-object selection
+   and separately calls out that filter chips (`Faces`, `Edges`, `Vertices`,
+   `Bodies`) gate which entity kind a drag can pick up — matches
+   `marqueeKind()`'s `endX >= startX` window / else-crossing rule and
+   `BrepViewportThree.tsx`'s `filtersRef`-gated `collectBoxSelection()`.
+
+#### Unverified / discarded
+
+- **Fourth independent observation of the stale orbit-hint text.** Model:
+  *"Right-Drag: Dedicated to 3D Orbit (`RIGHT-DRAG: ORBIT` indicated in
+  lower status bar)"* — same `ReshapeStudio.tsx:1592` bug the Phase 1+2
+  baseline entry above first flagged (left-drag orbits, not right-drag).
+  Not a new lead; reinforcing evidence that this fix is overdue.
+
+#### Coverage
+
+Both scripted drag gestures (window + crossing) and their resulting
+selection counts were correctly read off the live UI, corroborating the
+script's own assertions rather than just repeating them.
+
+### mixed selection (`phase3-mixed-select.mjs`)
+
+Known scripted sequence: Ctrl-click a face, then Ctrl-click an edge of the
+same box (Ctrl held via explicit `keyboard.down`/`up`, not `mouse.click`'s
+`modifiers` option — see the script's own header comment for why).
+
+#### Verified
+
+1. **Sub-entity selection label matches exactly.** Model: *"Selection state
+   transitions from `NOTHING SELECTED`... to `BOX 1`... and specific
+   sub-elements `1 FACE • 1 EDGE`"* — matches the script's own assertion
+   (`"Box 1 · 1 face + 1 edge"`) and `ModelEditor.tsx`'s
+   `mixedSelectionNote()` contract: the face rides along in the selection
+   rather than being silently dropped.
+
+#### Unverified / discarded
+
+- **The Ctrl modifier itself is not visually confirmable.** Model describes
+  the second click as a plain "Direct single-click on the top surface"
+  selecting the sub-element, with no mention of a held modifier key — this
+  is an inherent limitation of a silent recording with no on-screen
+  modifier-key overlay, not a claim the model got wrong per se. The
+  scenario script's own assertion (not the video) is the authoritative
+  proof that Ctrl was required for the selection to be additive rather than
+  a replace.
+
+#### Coverage
+
+The resulting mixed face+edge selection label was read correctly; the Ctrl
+gesture that produced it was not (and could not be, from video alone).
+
+### select-other (`phase3-select-other.mjs`)
+
+Known scripted sequence: two boxes at the IDENTICAL center via the Code side
+(`box(40,40,20,{at:[0,0,0]})` twice — the only way to get 2+ guaranteed
+overlapping candidates at one pixel, since the Box button's `newShape()`
+always auto-offsets siblings along +X) → click-and-hold 300ms+ at the shared
+center point, twice.
+
+#### Verified
+
+1. **Timeline shows both overlapping bodies and a selection change on the
+   second interaction.** Model: *"Timeline blocks (`BOX 1`, `BOX 2`) appear
+   at the bottom left. Clicking/focusing on `BOX 2` highlights the node with
+   a bounding border and an indexed tag (`2`)."* Consistent with the
+   script's own assertion that the status text differs between hold #1 and
+   hold #2 (confirmed live: cycles `Box 2 → Box 1 → Box 2 ...`).
+
+#### Unverified / discarded
+
+- **The hold-and-release gesture itself reads as a plain click.** Model:
+  *"Single-click on the timeline block (`BOX 2`) to select the feature"* —
+  the actual interaction is a 350ms press-and-release on the CANVAS, not a
+  timeline click; the model appears to be pattern-matching the resulting
+  selection-highlight change to whichever nearby UI element looks most
+  "clickable", another instance of the same silent-recording limitation
+  noted above (no visible hold-timer or modifier-key cue to read).
+- **`[CONFIRM]`-sourced timing is NOT settled by this entry.** The
+  300ms/4px hold-cycle constants (`input-threshold.ts`,
+  `HOLD_CYCLE_DELAY_MS`/`HOLD_CYCLE_DEAD_ZONE_PX`) implemented in todo 9 are
+  a `.omo/plans/mouse-parity-handover.md`-sourced default, not verified
+  against real Fusion footage — this self-recording proves reSHape's OWN
+  implementation behaves as coded, it does not and cannot confirm that
+  300ms/4px matches Fusion's actual qualitative behavior. The
+  `SPEC-mouse-parity.md` `[CONFIRM]` tag for Phase 3.5 stays open; no lesson
+  video demonstrating Fusion's own click-and-hold exists in the queue
+  (per this log's own "Watch-for rules" section below, unchanged).
+
+#### Coverage
+
+The selection-cycling RESULT was corroborated; the specific GESTURE that
+produced it (a timed hold, not a click) was not — expected, given no visual
+hold-timer indicator exists on screen to read.
+
+### double-click / Ctrl+A / Delete (`phase3-dblclick-keys.mjs`)
+
+Known scripted sequence: add a box → double-click its body (opens params via
+`focusParams()`'s flash) → add + exit a sketch → double-click its timeline
+row (reopens the 2D editor) → click canvas, Ctrl+A, Delete.
+
+#### Verified
+
+1. **Params sidebar opens on double-click, with the right values.** Model:
+   *"Selecting an object opens a right-hand sidebar (`DIMENSIONS mm`)
+   displaying continuous slider handles for each axis dimension (`width`,
+   `depth`, `height`)"* and *"inline parameter readouts (`Width 40`, `Depth
+   40`, `Height 20`)"* — matches the script's box dims exactly and
+   `editFeature()`'s `focusParams()` branch for a non-sketch feature.
+2. **Sketch mode re-entry via timeline shown.** Model: *"Transitioning into
+   sketch mode activates a 2D planar grid on the XY Plane... shifts the top
+   toolbar context to 2D sketching"* and *"Features are ordered sequentially
+   in the bottom timeline (`1: BOX 1` → `2: SKETCH 1`)"* — consistent with
+   `editFeature()`'s `setSketchEditId` branch for a sketch feature, reached
+   here via the timeline row double-click, not the `Sketch` toolbar button.
+
+#### Unverified / discarded
+
+- **Ctrl+A and Delete themselves are not visually confirmable**, same class
+  of limitation as the mixed-select and select-other entries above — no
+  on-screen keystroke indicator exists to read off. The script's own
+  assertion (`"2 selected"` after Ctrl+A, `"Nothing selected"` + 0 timeline
+  rows after Delete) is the authoritative proof, not the video.
+- **Fifth independent observation of the stale orbit-hint text** (same
+  `ReshapeStudio.tsx:1592` bug, again read correctly off-screen but
+  factually wrong about which drag button orbits).
+
+#### Coverage
+
+Both double-click targets (viewport body, timeline row) and their resulting
+panel states were correctly identified; the keyboard-only steps (Ctrl+A,
+Delete) were not visually confirmable, as expected.
+
+### Relevance to `packages/studio`
+
+No new code-level findings beyond the fifth cumulative sighting of the
+`ReshapeStudio.tsx:1592` stale orbit-hint bug (now confirmed across all six
+self-recorded scenarios spanning Phase 1 through Phase 3 — this is no
+longer a one-off, it should be fixed). The `distinctOwners()` box-select fix
+(commit `90ef0f7`) is now proven at three levels: the unit test
+(`box-select-owners.test.mjs`), the scenario script's own live assertion,
+and this video review's independent read of the same on-screen counts.
+
+---
+
+## import-geometry-then-edit-with-direct-modeling
+
+- **Source**: `https://www.autodesk.com/learn/ondemand/tutorial/import-geometry-then-edit-with-direct-modeling`
+  (live Autodesk lesson, real Fusion footage with narration/transcript).
+- **Model**: script default (`google/gemini-3.8-flash`) with a focus prompt
+  targeting box-select / marquee-select interactions specifically (window vs
+  crossing direction, modifier-key behavior); output was detailed and
+  transcript-corroborated on the first pass, so `--pro` was not used.
+- **Reviewed**: 2026-09-20.
+
+#### Verified
+
+1. **Window selection: drag direction and "fully enclosed only" semantics,
+   transcript-corroborated.** Model (~02:13–02:16): *"The user clicks and
+   drags a selection box from top-left to bottom-right... Acts as a Window
+   selection, only capturing entities that fall entirely within the
+   rectangular boundary. This cleanly isolates and selects just the faces of
+   the cylindrical boss (6 faces selected) without grabbing the adjacent
+   wall or support."* Real captions at 00:02:13 (*"Select the area to move,
+   right-click, and select move copy"*) place a selection action at exactly
+   this timestamp, corroborating the model's read.
+2. **Crossing selection: drag direction and "touched-or-enclosed" semantics,
+   transcript-corroborated.** Model (~02:28–02:31): *"the user clicks and
+   drags from right to left (bottom-right towards top-left)... selecting any
+   face that is either fully enclosed or merely touched/crossed... allows
+   quick selection of both the boss and its supporting bracket geometry
+   simultaneously (14 faces selected)."* The real caption at 00:02:27 says
+   it explicitly: *"use a crossing selection to select the boss and pillar,
+   then set the pivot point"* — narration and visual read agree.
+3. **This directly matches reSHape's own implementation, box-select MUST
+   FILE gate now resolved.** `marquee-select.ts`'s `marqueeKind()`
+   (`drag.endX >= drag.startX ? 'window' : 'crossing'`) and
+   `windowSelect()`/`crossingSelect()` (window = fully-inside only; crossing
+   = inside-or-touched) implement EXACTLY the left-to-right/window,
+   right-to-left/crossing split this real Fusion lesson demonstrates, with
+   the identical inclusion rule for each direction. The
+   `phase3-box-select.mjs` self-recording above (window drag → 2 objects
+   fully enclosed; crossing drag → 3 objects, including one only
+   touched/partially enclosed) is the SAME behavior against reSHape's own
+   UI. **This resolves the box-select `MUST FILE` gate** named in this
+   log's "Watch-for rules" section — no further video is queued for it.
+
+#### Unverified / discarded
+
+- The lesson's other named interactions (Move/Copy manipulator, chamfer via
+  marking menu, timeline Edit Feature — the reasons this video was queued
+  under "3D feature interactions") were not the focus of this pass; a
+  separate future review should target those if Wave 4's manipulator work
+  needs them. Not claimed here.
+
+#### Coverage
+
+Both box-select gestures (window, crossing) named by the plan's box-select
+MUST FILE requirement were found, transcript-corroborated, and confirmed to
+match reSHape's own `marquee-select.ts` implementation and its own
+self-recorded scenario. Gate resolved.
+
+---
 ## Next videos to review
 
 Rebuilt 2026-09-20 for balanced 2D/3D/navigation coverage. All URLs probed
@@ -594,11 +836,6 @@ dimension-sketch-geometry, extrude, press-pull, fillets.
   — face pick, position handles, hole dialog; Phase 5.1 (HandleOverlay).
 - `https://www.autodesk.com/learn/ondemand/tutorial/modeling-bodies-and-components`
   — Move/Copy gizmo on bodies vs components; Phase 5.2.
-- `https://www.autodesk.com/learn/ondemand/tutorial/import-geometry-then-edit-with-direct-modeling`
-  — Move/Copy manipulator, chamfer via marking menu, timeline Edit Feature;
-  Phases 4/5.2.
-  **MUST FILE: box-select** (window vs crossing, Phase 3.4/2.5 — no standalone
-  lesson exists).
 - `https://www.autodesk.com/learn/ondemand/tutorial/control-part-thickness-geometry-and-specific-angles`
   — measure inside modeling commands, timeline error resolution; Phase 5 +
   refusal-surfacing analog.
@@ -629,7 +866,7 @@ inside the queued videos marked **MUST FILE** above. Per video:
   (live, verified) through the pipeline and file trim/offset from it before
   marking this interaction done.
 - **Measure** → expect in `control-part-thickness-geometry-and-specific-angles`.
-- **Box-select** → expect in `import-geometry-then-edit-with-direct-modeling`.
+- **Box-select** → RESOLVED: verified in `## import-geometry-then-edit-with-direct-modeling` above (window ~02:13–02:16, crossing ~02:28–02:31, both transcript-corroborated and matched against `marquee-select.ts`).
 - **Select-other (click-and-hold)** → no known lesson covers it; the fillet and
   extrude entries already carry it as an unverified visual claim. A transcript
   run cannot settle it — needs a frame grab or the user's own recording; do not
