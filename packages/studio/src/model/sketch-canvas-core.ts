@@ -8,6 +8,8 @@
 // Soup coordinates: the same mm plane coordinates the doc stores in
 // SketchFeature.geoms. 'a'/'b'/'c' are the soup point refs (start/end/centre).
 
+import { arcFromBulge } from '@shuff57/reshape-sketch/sketch-arc';
+
 export type CoreGeom = {
   k: 'point' | 'line' | 'circle' | 'arc';
   id: number;
@@ -540,6 +542,209 @@ export function trimLine(
   return { geoms: geomsOut, rules: [...rules] };
 }
 const nextIdUnused = undefined;
+
+// --- fillet (soup-native corner rounding, SPEC-fusion-parity-closure #13) ---
+//
+// trimLine's sibling: same pure-geometric-splice discipline, but a fillet
+// inserts brand-new geometry (an arc) between the two lines it rounds, and
+// that arc must stay visually welded to them, so this is the one place a
+// soup mover writes NEW coincident rules rather than only editing points.
+// The trig below is filletCorner()'s own (sketch-arc.ts), ported off the
+// legacy points[]/bulges{} shape onto soup lines read by id/end instead.
+
+const FILLET_STRAIGHT_TOL = 1e-6;
+// Soup lines meant to connect share EXACT coordinates by construction (the
+// BASE_RULES coincident convention) -- a corner match is a tight epsilon,
+// not a snap tolerance.
+const FILLET_COINCIDENT_TOL = 1e-6;
+
+function otherEnd(at: 'a' | 'b'): 'a' | 'b' {
+  return at === 'a' ? 'b' : 'a';
+}
+
+export interface FilletPick {
+  lineA: number;
+  endA: 'a' | 'b';
+  lineB: number;
+  endB: 'a' | 'b';
+  corner: Pt;
+}
+
+/** The fillet-able corner nearest `click`: among every pair of DISTINCT
+ *  lines, the named ends that sit at (nearly) the same world point --
+ *  within `tolWorld` of the click. Only line-line corners are handled (v1);
+ *  circles/arcs are future work here, same precedent as trimPick. */
+export function filletPick(geoms: CoreGeom[], click: Pt, tolWorld: number): FilletPick | null {
+  const lines = geoms.filter((g) => g.k === 'line');
+  let best: FilletPick | null = null;
+  let bestDist = tolWorld;
+  for (const a of lines) {
+    for (const b of lines) {
+      if (a.id === b.id) continue;
+      for (const endA of ['a', 'b'] as const) {
+        for (const endB of ['a', 'b'] as const) {
+          const pa = pointWorld(a, endA)!;
+          const pb = pointWorld(b, endB)!;
+          if (Math.hypot(pa.x - pb.x, pa.y - pb.y) > FILLET_COINCIDENT_TOL) continue;
+          const d = Math.hypot(pa.x - click.x, pa.y - click.y);
+          if (d < bestDist) {
+            bestDist = d;
+            best = { lineA: a.id, endA, lineB: b.id, endB, corner: pa };
+          }
+        }
+      }
+    }
+  }
+  return best;
+}
+
+/** The two rays leaving a named corner, away from it: `c` at (lineA, endA)
+ *  (== (lineB, endB) by construction), `prev` at lineA's OTHER end, `next`
+ *  at lineB's OTHER end. Null when either row is missing or not a line. */
+function filletCornerRays(
+  geoms: CoreGeom[], lineA: number, endA: 'a' | 'b', lineB: number, endB: 'a' | 'b',
+): { c: Pt; prev: Pt; next: Pt } | null {
+  const ga = geoms.find((g) => g.id === lineA && g.k === 'line');
+  const gb = geoms.find((g) => g.id === lineB && g.k === 'line');
+  if (!ga || !gb) return null;
+  const c = pointWorld(ga, endA);
+  const prev = pointWorld(ga, otherEnd(endA));
+  const next = pointWorld(gb, otherEnd(endB));
+  if (!c || !prev || !next) return null;
+  return { c, prev, next };
+}
+
+/** The real ceiling on this corner's fillet radius -- maxFilletRadius()'s
+ *  own trig (sketch-arc.ts), reading the two lines' live coordinates
+ *  instead of a points array. 0 refuses: a zero-length adjacent edge, or a
+ *  corner that is straight within FILLET_STRAIGHT_TOL. */
+export function maxFilletRadiusAt(
+  geoms: CoreGeom[], lineA: number, endA: 'a' | 'b', lineB: number, endB: 'a' | 'b',
+): number {
+  const rays = filletCornerRays(geoms, lineA, endA, lineB, endB);
+  if (!rays) return 0;
+  const { c, prev, next } = rays;
+  const lenIn = Math.hypot(c.x - prev.x, c.y - prev.y);
+  const lenOut = Math.hypot(next.x - c.x, next.y - c.y);
+  if (lenIn === 0 || lenOut === 0) return 0;
+  const vIn = { x: prev.x - c.x, y: prev.y - c.y };
+  const vOut = { x: next.x - c.x, y: next.y - c.y };
+  const cosInterior = (vIn.x * vOut.x + vIn.y * vOut.y) / (lenIn * lenOut);
+  const interior = Math.acos(Math.max(-1, Math.min(1, cosInterior)));
+  if (Math.PI - interior < FILLET_STRAIGHT_TOL) return 0;
+  return (Math.min(lenIn, lenOut) / 2) * Math.tan(interior / 2);
+}
+
+/** Plain words for why this corner cannot take a fillet at all, or null
+ *  when some positive radius would work -- the soup-native mirror of
+ *  whyCannotRoundCorner()'s tone, written fresh (not imported) because the
+ *  soup has no bulges/curved-neighbour case to report. */
+export function whyCannotFilletAt(
+  geoms: CoreGeom[], lineA: number, endA: 'a' | 'b', lineB: number, endB: 'a' | 'b',
+): string | null {
+  if (maxFilletRadiusAt(geoms, lineA, endA, lineB, endB) > 0) return null;
+  const rays = filletCornerRays(geoms, lineA, endA, lineB, endB);
+  if (!rays) return 'That corner is not two lines meeting at a shared point.';
+  const { c, prev, next } = rays;
+  const lenIn = Math.hypot(c.x - prev.x, c.y - prev.y);
+  const lenOut = Math.hypot(next.x - c.x, next.y - c.y);
+  if (lenIn === 0 || lenOut === 0) {
+    return 'One of the two edges at this corner has no length at all.';
+  }
+  return 'This corner is straight -- nothing to round.';
+}
+
+/** Round one line-line corner into an arc, mutating no row in place.
+ *
+ *  Clamps `radius` to maxFilletRadiusAt (never trusts the caller's number
+ *  past what the corner can take, same as filletCorner()); refuses (null)
+ *  when even the smallest positive radius has nowhere to go. Both lines
+ *  REUSE their own ids for the surviving trimmed ends (trimLine's own
+ *  convention); only the new arc gets a fresh id via nextGeomId(). The one
+ *  sharp-corner coincident (if any existed) is dropped and replaced by two
+ *  new coincidents welding the arc to both trimmed lines -- the one place
+ *  fillet must do more than trim, because it inserts geometry the corner
+ *  never had. */
+export function filletCornerAt(
+  geoms: CoreGeom[],
+  rules: Array<Record<string, any>>,
+  lineA: number,
+  endA: 'a' | 'b',
+  lineB: number,
+  endB: 'a' | 'b',
+  radius: number,
+): { geoms: CoreGeom[]; rules: Array<Record<string, any>>; arcId: number } | null {
+  const rays = filletCornerRays(geoms, lineA, endA, lineB, endB);
+  if (!rays) return null;
+  const { c, prev, next } = rays;
+  const lenIn = Math.hypot(c.x - prev.x, c.y - prev.y);
+  const lenOut = Math.hypot(next.x - c.x, next.y - c.y);
+  if (lenIn === 0 || lenOut === 0) return null;
+  const vIn = { x: prev.x - c.x, y: prev.y - c.y };
+  const vOut = { x: next.x - c.x, y: next.y - c.y };
+  const cosInterior = (vIn.x * vOut.x + vIn.y * vOut.y) / (lenIn * lenOut);
+  const interior = Math.acos(Math.max(-1, Math.min(1, cosInterior)));
+  if (Math.PI - interior < FILLET_STRAIGHT_TOL) return null;
+
+  const safeRadius = (Math.min(lenIn, lenOut) / 2) * Math.tan(interior / 2);
+  const clampedRadius = Math.min(Math.max(0, radius), safeRadius);
+  if (clampedRadius <= 0) return null;
+  const trim = clampedRadius / Math.tan(interior / 2);
+
+  const pointIn: [number, number] = [c.x + (vIn.x / lenIn) * trim, c.y + (vIn.y / lenIn) * trim];
+  const pointOut: [number, number] = [c.x + (vOut.x / lenOut) * trim, c.y + (vOut.y / lenOut) * trim];
+
+  // Sign of the turn at C, filletCorner()'s own construction: inEdge is the
+  // direction ARRIVING at C (prev -> C), outEdge the direction LEAVING it
+  // (C -> next); the arc's sweep is the corner's exterior angle, signed by
+  // that turn.
+  const inEdge = { x: c.x - prev.x, y: c.y - prev.y };
+  const outEdge = { x: next.x - c.x, y: next.y - c.y };
+  const cross = inEdge.x * outEdge.y - inEdge.y * outEdge.x;
+  const sweep = Math.PI - interior;
+  const bulge = (cross >= 0 ? 1 : -1) * Math.tan(sweep / 4);
+  const { center, radius: r } = arcFromBulge(pointIn, pointOut, bulge);
+
+  const arcId = nextGeomId(geoms);
+  const geomsOut: CoreGeom[] = geoms.map((g) => {
+    if (g.id === lineA && g.k === 'line') return { ...g, [endA]: pointIn };
+    if (g.id === lineB && g.k === 'line') return { ...g, [endB]: pointOut };
+    return g;
+  });
+  geomsOut.push({
+    k: 'arc', id: arcId,
+    c: [center[0], center[1]], r,
+    a: pointIn, b: pointOut,
+    sense: bulge >= 0 ? 'ccw' : 'cw',
+  });
+
+  // The rule that WAS the sharp corner (if one explicitly existed) has
+  // nothing left to name -- both lines moved off that shared point -- so it
+  // is dropped; a corner can be geometric-only with no explicit rule, and
+  // that is fine too (trimLine tolerates the same).
+  const namesSharpCorner = (rr: Record<string, any>) =>
+    rr.k === 'coincident' &&
+    ((rr.a === lineA && rr.aEnd === endA && rr.b === lineB && rr.bEnd === endB) ||
+      (rr.a === lineB && rr.aEnd === endB && rr.b === lineA && rr.bEnd === endA));
+  const rulesOut: Array<Record<string, any>> = rules.filter((rr) => !namesSharpCorner(rr));
+  rulesOut.push({ k: 'coincident', a: lineA, aEnd: endA, b: arcId, bEnd: 'a' });
+  rulesOut.push({ k: 'coincident', a: arcId, aEnd: 'b', b: lineB, bEnd: endB });
+
+  return { geoms: geomsOut, rules: rulesOut, arcId };
+}
+
+/** Append an `equal` rule tying two arcs' radii, unless one already does
+ *  (either order) -- the auto-equal-radius heuristic commits alongside a
+ *  second same-radius fillet and must not pile up duplicates on repeat. */
+export function applyEqualRadiusRule(
+  rules: Array<Record<string, any>>, arcIdA: number, arcIdB: number,
+): Array<Record<string, any>> {
+  const already = rules.some(
+    (r) => r.k === 'equal' && ((r.a === arcIdA && r.b === arcIdB) || (r.a === arcIdB && r.b === arcIdA)),
+  );
+  if (already) return rules;
+  return [...rules, { k: 'equal', a: arcIdA, b: arcIdB }];
+}
 
 // --- slot composite tool -------------------------------------------------------
 

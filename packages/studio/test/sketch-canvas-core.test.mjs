@@ -34,6 +34,11 @@ import {
   autoDimension,
   dimensionValueError,
   ruleGlyphAnchors,
+  filletPick,
+  maxFilletRadiusAt,
+  whyCannotFilletAt,
+  filletCornerAt,
+  applyEqualRadiusRule,
 } from '../dist/model/sketch-canvas-core.js';
 
 const LINE = { k: 'line', id: 1, a: [0, 0], b: [40, 0] };
@@ -568,4 +573,143 @@ test('35: ruleGlyphAnchors averages a three-point symmetric rule', () => {
   ];
   const [a] = ruleGlyphAnchors(geoms, [{ k: 'symmetric', a: 1, aEnd: 'a', b: 2, bEnd: 'a', c: 3, cEnd: 'a' }], 2);
   assert.deepEqual(a, { x: 15, y: 10 });
+});
+
+// --- fillet (soup-native corner rounding, SPEC-fusion-parity-closure #13) --
+//
+// A right-angle corner: line 1 runs (0,10)->(0,0), line 2 runs (0,0)->(10,0),
+// sharing the point (0,0) at line 1's 'b' and line 2's 'a' -- exactly, per
+// the soup's own coincident convention, which is what filletPick's epsilon
+// match relies on.
+const SQUARE_CORNER_GEOMS = [
+  { k: 'line', id: 1, a: [0, 10], b: [0, 0] },
+  { k: 'line', id: 2, a: [0, 0], b: [10, 0] },
+];
+const SQUARE_CORNER_RULES = [{ k: 'coincident', a: 1, aEnd: 'b', b: 2, bEnd: 'a' }];
+
+// 36: filletPick finds the corner nearest the click, and only a corner
+// within tolWorld of it -- same shape of guard as trimPick.
+test('36: filletPick finds the shared endpoint nearest the click', () => {
+  const pick = filletPick(SQUARE_CORNER_GEOMS, { x: 1, y: 1 }, 5);
+  assert.ok(pick, 'the corner at (0,0) is within tolerance');
+  assert.equal(pick.lineA, 1);
+  assert.equal(pick.endA, 'b');
+  assert.equal(pick.lineB, 2);
+  assert.equal(pick.endB, 'a');
+  assert.deepEqual(pick.corner, { x: 0, y: 0 });
+  // Outside tolerance: no pick, even though the corner still exists.
+  assert.equal(filletPick(SQUARE_CORNER_GEOMS, { x: 1, y: 1 }, 0.5), null);
+  // Two lines that do NOT share a point offer no corner at all.
+  const disjoint = [
+    { k: 'line', id: 1, a: [0, 0], b: [10, 0] },
+    { k: 'line', id: 2, a: [0, 5], b: [10, 5] },
+  ];
+  assert.equal(filletPick(disjoint, { x: 5, y: 2 }, 10), null);
+});
+
+// 37 (task item a): a right-angle corner fillets into an arc of the expected
+// radius/center, and both lines' endpoints move to the correct trim points.
+test('37: filletCornerAt rounds a right-angle corner into the expected arc', () => {
+  const maxR = maxFilletRadiusAt(SQUARE_CORNER_GEOMS, 1, 'b', 2, 'a');
+  assert.ok(Math.abs(maxR - 5) < 1e-9, 'a 90deg corner on two length-10 edges caps at 5 (tan(45)=1)');
+  assert.equal(whyCannotFilletAt(SQUARE_CORNER_GEOMS, 1, 'b', 2, 'a'), null, 'a positive radius fits');
+
+  const out = filletCornerAt(SQUARE_CORNER_GEOMS, SQUARE_CORNER_RULES, 1, 'b', 2, 'a', 3);
+  assert.ok(out, 'a radius under the ceiling commits');
+  assert.equal(out.geoms.length, 3, 'one new arc row, no others added or removed');
+
+  const lineA = out.geoms.find((g) => g.id === 1);
+  const lineB = out.geoms.find((g) => g.id === 2);
+  const arc = out.geoms.find((g) => g.id === out.arcId);
+  assert.ok(arc && arc.k === 'arc');
+  // Both lines REUSE their own ids; only the corner-side end moved.
+  assert.deepEqual(lineA.a, [0, 10], 'the far end of line 1 is untouched');
+  assert.ok(Math.abs(lineA.b[0] - 0) < 1e-9 && Math.abs(lineA.b[1] - 3) < 1e-9, 'line 1 trims back 3 along its own edge');
+  assert.ok(Math.abs(lineB.a[0] - 3) < 1e-9 && Math.abs(lineB.a[1] - 0) < 1e-9, 'line 2 trims back 3 along its own edge');
+  assert.deepEqual(lineB.b, [10, 0], 'the far end of line 2 is untouched');
+  // Worked by hand (this file's own trig, ported from filletCorner()): a
+  // 90deg corner trimmed to (0,3) and (3,0) has its fillet centre at (3,3),
+  // radius 3 -- tangent to both axis-aligned edges at the trim points.
+  assert.ok(Math.abs(arc.r - 3) < 1e-9);
+  assert.ok(Math.abs(arc.c[0] - 3) < 1e-9 && Math.abs(arc.c[1] - 3) < 1e-9);
+  assert.ok(Math.abs(arc.a[0] - 0) < 1e-9 && Math.abs(arc.a[1] - 3) < 1e-9);
+  assert.ok(Math.abs(arc.b[0] - 3) < 1e-9 && Math.abs(arc.b[1] - 0) < 1e-9);
+  assert.equal(arc.sense, 'ccw');
+  // The sharp-corner coincident is gone, replaced by two welds to the arc.
+  assert.equal(out.rules.some((r) => r.k === 'coincident' && r.a === 1 && r.b === 2), false);
+  assert.ok(out.rules.some((r) => r.k === 'coincident' && r.a === 1 && r.aEnd === 'b' && r.b === out.arcId && r.bEnd === 'a'));
+  assert.ok(out.rules.some((r) => r.k === 'coincident' && r.a === out.arcId && r.aEnd === 'b' && r.b === 2 && r.bEnd === 'a'));
+});
+
+// 38 (task item b): two corners filleted at the SAME typed radius get an
+// `equal` rule between the resulting arcs -- the auto-equal-radius heuristic
+// the UI drives through applyEqualRadiusRule alongside the second commit.
+test('38: applyEqualRadiusRule ties two same-radius fillet arcs, once', () => {
+  // A square: corner 1 at (0,0) (lines 1,2), corner 2 at (10,10) (lines 2,3).
+  const square = [
+    { k: 'line', id: 1, a: [0, 10], b: [0, 0] },
+    { k: 'line', id: 2, a: [0, 0], b: [10, 0] },
+    { k: 'line', id: 3, a: [10, 0], b: [10, 10] },
+  ];
+  const first = filletCornerAt(square, [], 1, 'b', 2, 'a', 3);
+  assert.ok(first);
+  const second = filletCornerAt(first.geoms, first.rules, 2, 'b', 3, 'a', 3);
+  assert.ok(second, 'the second corner also fillets at the same 3mm radius');
+
+  let rules = applyEqualRadiusRule(second.rules, second.arcId, first.arcId);
+  assert.ok(rules.some((r) => r.k === 'equal' && r.a === second.arcId && r.b === first.arcId));
+  const equalCountAfterFirst = rules.filter((r) => r.k === 'equal').length;
+  assert.equal(equalCountAfterFirst, 1);
+  // Calling it again (either order) does not pile up a duplicate.
+  rules = applyEqualRadiusRule(rules, first.arcId, second.arcId);
+  assert.equal(rules.filter((r) => r.k === 'equal').length, 1, 'no duplicate in the reverse order either');
+});
+
+// 39 (task item c): a radius past the corner's ceiling clamps rather than
+// over-trims -- the trim distance never eats past HALF the shorter edge.
+test('39: filletCornerAt clamps an oversized radius instead of self-intersecting', () => {
+  // Asymmetric right angle: the short edge (line 1) is 4mm, the long edge
+  // (line 2) is 20mm -- min(lenIn,lenOut) is the short one.
+  const geoms = [
+    { k: 'line', id: 1, a: [0, 4], b: [0, 0] },
+    { k: 'line', id: 2, a: [0, 0], b: [20, 0] },
+  ];
+  const maxR = maxFilletRadiusAt(geoms, 1, 'b', 2, 'a');
+  assert.ok(Math.abs(maxR - 2) < 1e-9, 'min(4,20)/2 * tan(45) = 2');
+
+  const out = filletCornerAt(geoms, [], 1, 'b', 2, 'a', 100);
+  assert.ok(out, 'an oversized ask still commits, clamped');
+  const lineA = out.geoms.find((g) => g.id === 1);
+  const lineB = out.geoms.find((g) => g.id === 2);
+  const trimA = Math.hypot(lineA.b[0] - 0, lineA.b[1] - 0);
+  const trimB = Math.hypot(lineB.a[0] - 0, lineB.a[1] - 0);
+  assert.ok(trimA <= 4 && trimB <= 4, 'the trim never exceeds min(lenIn,lenOut)');
+  assert.ok(Math.abs(trimA - 2) < 1e-9 && Math.abs(trimB - 2) < 1e-9, 'clamped to the 2mm ceiling, not 100');
+  const arc = out.geoms.find((g) => g.id === out.arcId);
+  assert.ok(Math.abs(arc.r - 2) < 1e-9);
+});
+
+// 40 (task item d): a straight corner and a zero-length adjacent edge each
+// refuse with a plain-English sentence from whyCannotFilletAt, and
+// filletCornerAt returns null on both -- neither throws.
+test('40: whyCannotFilletAt names the refusal; filletCornerAt refuses without throwing', () => {
+  // A straight corner: both lines run along the same axis through (10,0).
+  const straight = [
+    { k: 'line', id: 1, a: [0, 0], b: [10, 0] },
+    { k: 'line', id: 2, a: [10, 0], b: [20, 0] },
+  ];
+  const whyStraight = whyCannotFilletAt(straight, 1, 'b', 2, 'a');
+  assert.equal(typeof whyStraight, 'string');
+  assert.match(whyStraight, /straight/i);
+  assert.equal(filletCornerAt(straight, [], 1, 'b', 2, 'a', 3), null);
+
+  // A zero-length adjacent edge: line 1's own two ends coincide.
+  const zeroLen = [
+    { k: 'line', id: 1, a: [0, 0], b: [0, 0] },
+    { k: 'line', id: 2, a: [0, 0], b: [10, 0] },
+  ];
+  const whyZero = whyCannotFilletAt(zeroLen, 1, 'b', 2, 'a');
+  assert.equal(typeof whyZero, 'string');
+  assert.match(whyZero, /no length/i);
+  assert.equal(filletCornerAt(zeroLen, [], 1, 'b', 2, 'a', 3), null);
 });

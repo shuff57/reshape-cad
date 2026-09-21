@@ -79,6 +79,11 @@ import {
   isDimensionRule,
   namedPointsOf,
   nextGeomId,
+  filletPick,
+  maxFilletRadiusAt,
+  whyCannotFilletAt,
+  filletCornerAt,
+  applyEqualRadiusRule,
   pointWorld,
   readSolved,
   renumber,
@@ -99,6 +104,7 @@ import {
   type DimKind,
   type DimPick,
   type LineChain,
+  type FilletPick,
   type Pt,
   type SnapHit,
   type SoupGeomNew,
@@ -156,7 +162,7 @@ const GRID_MAX_LINES = 400;
  *  flow -- not the drag-to-create gesture -- owns it. Screen px. */
 const DRAG_PX = 3;
 
-type Tool = 'select' | 'line' | 'rect' | 'circle' | 'arc' | 'slot' | 'trim' | 'dim';
+type Tool = 'select' | 'line' | 'rect' | 'circle' | 'arc' | 'slot' | 'trim' | 'fillet' | 'dim';
 /** The tools a single drag can finish on its own (SPEC-mouse-parity Phase 2
  *  item 2). Line and arc are not among them: a chain and a three-point arc
  *  need more points than one drag carries. */
@@ -173,12 +179,15 @@ const TOOL_KEYS: Record<string, Tool> = {
   a: 'arc',
   s: 'slot',
   t: 'trim',
+  f: 'fillet',
   v: 'select',
 };
 /** The cursor each tool wears. A draw tool aims at a POINT, so it keeps the
  *  crosshair this canvas used to wear for every tool including select; select
  *  is the arrow the rest of the UI uses; trim takes `cell`, the nearest thing
- *  CSS has to Fusion's scissors; dim aims at an entity, so it aims. */
+ *  CSS has to Fusion's scissors; fillet aims at a corner POINT the same way a
+ *  draw tool aims at one, so it keeps the crosshair rather than trim's
+ *  scissors; dim aims at an entity, so it aims. */
 const TOOL_CURSOR: Record<Tool, string> = {
   select: 'default',
   line: 'crosshair',
@@ -187,6 +196,7 @@ const TOOL_CURSOR: Record<Tool, string> = {
   arc: 'crosshair',
   slot: 'crosshair',
   trim: 'cell',
+  fillet: 'crosshair',
   dim: 'crosshair',
 };
 
@@ -232,6 +242,19 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     at: Pt | null;
     value: string;
   } | null>(null);
+  // The fillet corner picked and not yet committed (click-then-type, unlike
+  // dim's click-click-type: a corner is one point, so one click is the whole
+  // pick). `value` is the typed radius, pre-filled with half the corner's
+  // own ceiling. `maxR` rides along so the input's own placeholder/refusal
+  // text never has to re-derive it from stale geoms after a commit.
+  const [filletPend, setFilletPend] = useState<(FilletPick & { value: string; maxR: number }) | null>(null);
+  // The last arc THIS tool session filleted, and the radius it was filleted
+  // at -- auto-equal-radius (P13's own addition): while the fillet tool
+  // stays armed and the student does not retype the radius, the next
+  // corner they round ties its arc's radius to this one with one `equal`
+  // rule, in the SAME writeDoc as the new fillet (one undo entry). Reset on
+  // every tool change so leaving and rearming fillet starts a fresh chain.
+  const lastFilletArc = useRef<{ arcId: number; radius: number } | null>(null);
   /** Where each placed dimension's label was dropped, by RULE INDEX. This is
    *  UI state on purpose: SoupRule has no label-position field and inventing
    *  one would change the script schema every doc round-trips through. A
@@ -831,6 +854,66 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     },
     [findHit, geoms, rules, worldFromEvent, writeDoc],
   );
+
+  // Fillet: click a corner where two lines meet, type the radius, Enter
+  // commits. Unlike trim's single click-and-go, a fillet also needs a
+  // NUMBER -- the inline radius chip below mirrors the on-canvas dimension
+  // flow's click-THEN-type input, not its click-click-place: a corner is
+  // already the one point a fillet needs, so there is no second click to
+  // place a label.
+  const onFilletClick = useCallback(
+    (e: { clientX: number; clientY: number }) => {
+      const click = worldFromEvent(e);
+      const pick = filletPick(geoms as CoreGeom[], click, screenPxToWorld(HIT_PX, view));
+      if (!pick) {
+        setStatus('fillet: click a corner where two lines meet');
+        return;
+      }
+      const why = whyCannotFilletAt(geoms as CoreGeom[], pick.lineA, pick.endA, pick.lineB, pick.endB);
+      if (why) {
+        setStatus(why);
+        return;
+      }
+      const maxR = maxFilletRadiusAt(geoms as CoreGeom[], pick.lineA, pick.endA, pick.lineB, pick.endB);
+      setFilletPend({ ...pick, value: formatDim(maxR / 2), maxR });
+      setStatus('');
+    },
+    [geoms, view, worldFromEvent],
+  );
+
+  /** Commit the pending fillet as ONE writeDoc = one undo entry. Auto-equal-
+   *  radius rides along in the SAME call when the typed radius matches the
+   *  PREVIOUS fillet committed this tool session -- see lastFilletArc's own
+   *  comment for exactly what triggers it. */
+  const commitFillet = useCallback(() => {
+    if (!filletPend) return;
+    const v = Number(filletPend.value.trim());
+    if (!Number.isFinite(v) || v <= 0) {
+      setStatus('fillet: type a positive radius');
+      return;
+    }
+    const out = filletCornerAt(
+      geoms as CoreGeom[],
+      rules as unknown as Array<Record<string, any>>,
+      filletPend.lineA,
+      filletPend.endA,
+      filletPend.lineB,
+      filletPend.endB,
+      v,
+    );
+    if (!out) {
+      setStatus('fillet: that radius does not fit this corner');
+      return;
+    }
+    let nextRules = out.rules;
+    if (lastFilletArc.current && lastFilletArc.current.radius === v) {
+      nextRules = applyEqualRadiusRule(nextRules, out.arcId, lastFilletArc.current.arcId);
+    }
+    writeDoc(out.geoms as SoupGeom[], nextRules as SoupRule[]);
+    lastFilletArc.current = { arcId: out.arcId, radius: v };
+    setFilletPend(null);
+    setStatus('');
+  }, [filletPend, geoms, rules, writeDoc]);
   
   // --- constraint buttons -----------------------------------------------------------
   const selShapes = useMemo(() => sel.filter((s) => s.at === null), [sel]);
@@ -1433,6 +1516,16 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     if (tool !== 'dim') setPlace(null);
   }, [tool]);
 
+  // Arming another tool drops a pending fillet radius the same way, AND
+  // resets the auto-equal-radius chain: leaving fillet and coming back is a
+  // fresh session, not a continuation of whatever corner was rounded before.
+  useEffect(() => {
+    if (tool !== 'fillet') {
+      setFilletPend(null);
+      lastFilletArc.current = null;
+    }
+  }, [tool]);
+
   // --- render --------------------------------------------------------------------------
   const selKey = (id: number, at: 'a' | 'b' | 'c' | null) => `${id}:${at ?? ''}`;
   const isSel = (id: number, at: 'a' | 'b' | 'c' | null) => sel.some((s) => s.id === id && s.at === at);
@@ -1753,6 +1846,37 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
         />,
       );
     }
+    // The pending fillet radius: a chip at the picked corner, same input
+    // pattern as the pending dimension chip above -- Enter commits through
+    // filletCornerAt, Escape drops the pick with no doc change.
+    if (filletPend) {
+      const s = chipAt(filletPend.corner);
+      dimChips.push(
+        <input
+          key="fc-pending"
+          className="sk2d-dim-chip"
+          data-fillet-pending="true"
+          data-editing="true"
+          autoFocus
+          style={{ left: `${s.x}px`, top: `${s.y}px` }}
+          size={Math.max(3, filletPend.value.length + 1)}
+          value={filletPend.value}
+          onChange={(e) => setFilletPend((p) => (p ? { ...p, value: e.target.value } : p))}
+          onFocus={(e) => e.currentTarget.select()}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              commitFillet();
+            } else if (e.key === 'Escape') {
+              e.preventDefault();
+              setFilletPend(null);
+            }
+          }}
+          onPointerDown={(e) => e.stopPropagation()}
+          onClick={(e) => e.stopPropagation()}
+        />,
+      );
+    }
   }
 
   // Docked into the ribbon, same portal target ModelEditor's own toolbar
@@ -1776,6 +1900,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
                   ['arc', 'Arc'],
                   ['slot', 'Slot'],
                   ['trim', 'Trim'],
+                  ['fillet', 'Fillet'],
                   // The ON-CANVAS dimension tool (P2.7). The Dimension group's
                   // own Dim / R / diameter buttons are a different thing and
                   // are left exactly as they were: they open the ribbon box on
@@ -2009,6 +2134,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
           else if (tool === 'arc') onArcClick(e);
           else if (tool === 'slot') onSlotClick(e);
           else if (tool === 'trim') onTrimClick(e);
+          else if (tool === 'fillet') onFilletClick(e);
           else if (tool === 'dim') onDimClick(e);
         }}
         onPointerMove={onPointerMove}
