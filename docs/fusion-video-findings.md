@@ -1383,13 +1383,90 @@ Wave 4's five todos are corroborated as shipped (`a8806d3` manipulator,
 blue/red tint is a colour convention the recordings corroborate only
 indirectly (the pill HUD and value field, not the tint itself), and
 Phase 4.2's gesture numbers are still pending real footage.
+
+---
+
+## Navigation / camera (official Autodesk Fusion: "Navigate the Autodesk Fusion Interface Like a Pro! [UPDATED!!]")
+
+- **Source**: https://www.youtube.com/watch?v=FmMNIGVpCng (official Autodesk
+  Fusion channel), 6:14 — the navigation/camera queue entry below
+  ("ViewCube click/orbit, MMB pan, Shift+MMB orbit").
+- **Model**: script default (`google/gemini-3.8-flash`).
+- **Reviewed**: 2026-09-22.
+
+### Verified findings
+
+1. **MMB-drag pans the view.** 04:35: *"Here's a quick tip. Click and hold
+   your middle mouse button to pan your assembly."* The model reads the
+   matching demo at 04:40–04:44: "Press and hold **MMB** (scroll wheel
+   button) + drag mouse across canvas to pan the view." MMB-drag is PAN,
+   not orbit — MMB-orbit is nowhere in the footage.
+
+2. **Shift+MMB-drag orbits.** 04:45–04:50: *"Another way to orbit your part
+   is by pressing and holding the Shift key and middle mouse button and
+   then moving your mouse."* Model, 04:46–04:53: "Press and hold `Shift` +
+   MMB + drag mouse to 3D orbit around the model. A circular orbit pivot
+   glyph appears in the viewport."
+
+3. **ViewCube: click faces/edges/vertices to snap; left-click-drag on the
+   cube free-orbits.** 04:24: *"Here you can click on faces, edges, or
+   vertices to view different positions of your assembly."* 04:32: *"You
+   can also left-click on the view cube to orbit."* Model: single
+   left-click on a highlighted face/edge/corner snaps the camera to that
+   orthographic/isometric view (04:24–04:33); click-and-drag on the cube
+   is continuous free orbit (04:34–04:38); hover highlights the target
+   region in light blue (04:24–04:32).
+
+4. **Right-click: context menu, browser isolate, marking menu.** 04:07:
+   *"let's right-click on the lid of our box to find it in our browser"*;
+   04:12: *"Within the browser, we can also right-click on a part to
+   isolate and unisolate it if needed"*; 04:59: *"Within your canvas,
+   right-click to access the marking menu, which contains frequently used
+   commands in the wheel and additional commands in the overflow menu."*
+   The model names the wheel entries (Delete, Press Pull, Undo, Redo,
+   Hole, Move/Copy, Sketch) and the overflow (Pan, Zoom, Orbit, Display
+   settings) at 05:00–05:10 — visual read; the transcript corroborates
+   only the wheel/overflow split, not the item names.
+
+5. **Timeline right-click + drag.** 05:33–05:36: *"Right-click operations
+   to make changes. You can also drag operations to change the order in
+   which they are calculated."* Model: the right-click menu offers Edit
+   Feature / Delete / Rename / Suppress (05:33–05:39) and left-drag
+   reorders with a drop indicator (05:40–05:46) — menu contents are the
+   model's visual read.
+
+### Not shown / unverified
+
+- **Scroll-wheel zoom**: never mentioned or demonstrated — no transcript
+  line, no model observation.
+- **Left-click select on canvas geometry**: implied (04:03: *"Here is where
+  you'll be able to select objects from your assembly"*) but no explicit
+  LMB-select binding is stated or demoed.
+- **Nav bar buttons**: named only — 05:12–05:14: *"Navigation bar. This
+  contains commands used to orbit, look out, pan, zoom, fit"* — no button
+  is clicked, no binding shown.
+- **Default vs legacy mouse schemes**: the video shows ONE scheme (MMB pan,
+  Shift+MMB orbit) and never says "default" or "legacy"; no
+  preferences/scheme UI appears. The "default" label is the spec's
+  framing, not the footage's.
+
+### Relevance to `packages/studio`
+
+SPEC-mouse-parity Phase 1.1 (default scheme): the footage CONFIRMS
+MMB-drag = pan and Shift+MMB-drag = orbit as Fusion's scheme — both
+bindings are stated verbatim in the official narration with matching
+demos, and MMB-orbit is never shown. This settles Phase 1.1's `[CONFIRM]`
+in favor of the scheme reSHape already ships. Bonus for Phase 1.5:
+ViewCube face/edge/corner click-snap plus left-click-drag orbit on the
+cube itself (corner/isometric zones already flagged in `## Extrude`).
+
 ## Next videos to review
 
 Rebuilt 2026-09-20 for balanced 2D/3D/navigation coverage. All URLs probed
 live via `yt-dlp --skip-download` (the `.../curated/...` paths 404/403 — use
 the `ondemand/tutorial/<slug>` canonical paths). Already filed above:
 sketch-constraints, sketching-basics-overview, constrain-sketch-geometry,
-dimension-sketch-geometry, extrude, press-pull, fillets.
+dimension-sketch-geometry, extrude, press-pull, fillets, FmMNIGVpCng.
 
 ### 2D sketch interactions
 
