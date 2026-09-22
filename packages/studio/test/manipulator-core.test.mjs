@@ -9,6 +9,9 @@ import {
   manipulatorValue,
   manipulatorValueError,
   manipulatorLabel,
+  hasAngleParam,
+  angleValueError,
+  arcPoints,
 } from '../dist/model/manipulator-core.js';
 
 // Minimal doc fixtures -- the same plain-object shape model-types.ts
@@ -23,6 +26,7 @@ const doc = {
     { id: 'bx1', kind: 'box', size: [40, 20, 10], center: [0, 0, 0] },
     { id: 'fi1', kind: 'fillet', target: 'bx1', edge: { cause: 'between', of: [] }, size: 3, style: 'fillet' },
     { id: 'ho1', kind: 'hole', target: 'bx1', diameter: 6, depth: 4, center: [0, 0, 5] },
+    { id: 'dr1', kind: 'draft', target: 'bx1', angle: 8, pull: 'z', neutral: 0, whole: true },
   ],
   // The solver fields solveDoc() fills; the pure readers here never touch
   // them, but the doc type wants them, so cast below keeps the fixture
@@ -30,7 +34,7 @@ const doc = {
 };
 
 test('1: exactly the three Phase 5.1 feature kinds carry a manipulator', () => {
-  assert.deepEqual([...MANIPULATOR_KINDS], ['extrude', 'pocket', 'fillet']);
+  assert.deepEqual([...MANIPULATOR_KINDS], ['extrude', 'pocket', 'fillet', 'draft']);
   assert.equal(manipulatorParam({ id: 'bx1', kind: 'box', size: [10, 10, 10], center: [0, 0, 0] }), null,
     'a box already carries its own size handles -- no second manipulator');
   assert.equal(manipulatorParam({ id: 'ho1', kind: 'hole', target: 'bx1', diameter: 6, depth: 4, center: [0, 0, 5] }), null,
@@ -110,4 +114,52 @@ test('7: after a write, the doc-read reflects the new value (no cache)', () => {
   const bumped = { ...doc, features: doc.features.map((f) => (f.id === 'pk1' ? { ...f, depth: 12 } : f)) };
   assert.equal(manipulatorValue(bumped, 'pk1_depth'), 12);
   assert.equal(manipulatorValue(doc, 'pk1_depth'), 5, 'the original doc is untouched');
+});
+
+test("8: the taper arc follows the feature's own schema -- draft yes, fillet no", () => {
+  // The todo's visibility rule verbatim: presence is driven by the
+  // parameter schema, not a global toggle. DraftFeature.angle is the
+  // confirmed angle carrier; ExtrudeFeature has NO taper field.
+  const draft = { id: 'dr1', kind: 'draft', target: 'bx1', angle: 8, pull: 'z', neutral: 0, whole: true };
+  assert.equal(hasAngleParam(draft), true, 'a draft carries an angle parameter');
+  const fillet = { id: 'fi1', kind: 'fillet', target: 'bx1', edge: { cause: 'between', of: [] }, size: 3, style: 'fillet' };
+  assert.equal(hasAngleParam(fillet), false, 'a fillet carries only a radius');
+  const extrude = { id: 'ex1', kind: 'extrude', target: 'sk1', height: 12 };
+  assert.equal(hasAngleParam(extrude), false, 'an extrude has no taper field at all');
+  const pocket = { id: 'pk1', kind: 'pocket', target: 'sk1', into: 'bx1', depth: 5 };
+  assert.equal(hasAngleParam(pocket), false);
+  // And the draft's manipulator param IS its angle:
+  assert.equal(manipulatorParam(draft).param, 'dr1_angle');
+});
+
+test('9: taper angle refusals -- empty, non-numeric, and |angle| >= 90 refuse; 0 and negatives pass', () => {
+  assert.match(String(angleValueError('')), /type an angle/);
+  assert.match(String(angleValueError('abc')), /not a number/);
+  assert.match(String(angleValueError('90')), /fold the wall over/,
+    'exactly 90 is a degenerate wall');
+  assert.match(String(angleValueError('-90')), /fold the wall over/,
+    'the sign does not rescue a fold');
+  assert.match(String(angleValueError('120')), /fold the wall over/);
+  // 0 is ALLOWED: "remove the taper" is a real edit, and the kernel treats
+  // a 0-degree draft as identity.
+  assert.equal(angleValueError('0'), null);
+  assert.equal(angleValueError('-12'), null, 'leaning IN is a legitimate negative angle');
+  assert.equal(angleValueError('89.5'), null);
+});
+
+test('10: the taper arc generator emits sample points in order', () => {
+  const pts = arcPoints(100, 200, 46, -90, -10).split(' ');
+  assert.equal(pts.length, 25, '24 samples plus the endpoint');
+  const [first, , , , last] = [pts[0], pts[1], pts[2], pts[3], pts[pts.length - 1]];
+  // Start at -90 deg = straight up from centre (y-down SVG): (100, 154).
+  assert.equal(first, '100,154');
+  // End at -10 deg: x > cx, y slightly above cy.
+  const [lx, ly] = last.split(',').map(Number);
+  assert.ok(lx > 100, `last x ${lx} should sit right of centre`);
+  assert.ok(ly < 200 && ly > 150, `last y ${ly} should sit just above centre`);
+});
+
+test("11: a draft's committed angle reads off the doc", () => {
+  assert.equal(manipulatorValue(doc, 'dr1_angle'), 8, 'the fixture draft sits at 8 degrees');
+  assert.equal(manipulatorValue(doc, 'dr1_height'), null, 'a draft has no height slot');
 });

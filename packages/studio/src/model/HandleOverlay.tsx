@@ -19,7 +19,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { arcFromBulge, type Point } from '@shuff57/reshape-sketch/sketch-arc';
 import ValueBox, { formatValue } from './ValueBox.js';
-import { manipulatorParam, manipulatorValue, manipulatorValueError, type ManipulatorKind } from './manipulator-core.js';
+import { manipulatorParam, manipulatorValue, manipulatorValueError, angleValueError, hasAngleParam, arcPoints, type ManipulatorKind } from './manipulator-core.js';
 import type { Feature, ModelDoc } from '@shuff57/reshape-script/model-types';
 /**
  * One sketch's outline, in plane coordinates -- what the overlay needs to
@@ -239,6 +239,10 @@ const TAP_TOLERANCE_PX = 4;
  *  need the direction most. */
 const MANI_ARROW_PX = 64;
 
+/** Phase 5.1 part 2: the taper arc's screen radius. Same fixed-chrome
+ *  reasoning as the arrow's. */
+const MANI_TAPER_R_PX = 46;
+
 /** A triangular arrowhead at the END of a line from (x0,y0) along
  *  (dx,dy), at travel `at` px. Pure screen arithmetic, kept beside the
  *  SVG that draws it. */
@@ -329,7 +333,6 @@ export default function HandleOverlay({
     .filter((r): r is { n: number; pts: { x: number; y: number }[] } => r !== null);
 
   // ---- Phase 5.1 manipulator: arrow + drag-or-type value box -------------
-  // ---- Phase 5.1 manipulator: arrow + drag-or-type value box -------------
   // The single selected feature's own handle, located among the projected
   // anchors by its generated-param name. Everything below is null when
   // there is no manipulator prop, the feature carries no single positive-
@@ -361,6 +364,31 @@ export default function HandleOverlay({
     setManiNote(null);
     setManiDraft(null);
     manipulator.onDragParam(mani.param, Number(text.trim()));
+    manipulator.onCommitParam();
+  };
+
+  // Phase 5.1 part 2 (todo 23): the TAPER ARC. Present only when the
+  // feature's own parameter schema carries an angle -- a draft does, a
+  // fillet/extrude/pocket does not (hasAngleParam). Same drag-or-type
+  // convergence as the arrow's box, on the draft's `_angle` param.
+  const taper = mani && mani.kind === 'draft' && manipulator
+    && manipulator.feature.kind === 'draft'
+    ? { param: mani.param, value: manipulatorValue(manipulator.doc, `${manipulator.feature.id}_angle`) }
+    : null;
+  const [taperDraft, setTaperDraft] = useState<{ param: string; text: string } | null>(null);
+  const [taperNote, setTaperNote] = useState<string | null>(null);
+  const taperShownText = taper && taperDraft?.param === taper.param ? taperDraft.text : taper?.value != null ? formatValue(taper.value) : '';
+  const commitTaperText = () => {
+    if (!taper || !manipulator) return;
+    const text = taperDraft?.param === taper.param ? taperDraft.text : '';
+    const err = angleValueError(text);
+    if (err) {
+      setTaperNote(err);
+      return;
+    }
+    setTaperNote(null);
+    setTaperDraft(null);
+    manipulator.onDragParam(taper.param, Number(text.trim()));
     manipulator.onCommitParam();
   };
 
@@ -487,20 +515,35 @@ export default function HandleOverlay({
           />
         </svg>
       )}
-      {mani && maniAnchor && maniValue != null && manipulator && (
-        <div className="mani-value-wrap">
-          <ValueBox
-            testId="manipulator-value"
-            kind={mani.kind}
-            x={maniAnchor.x + maniAnchor.dirX * (MANI_ARROW_PX + 34)}
-            y={maniAnchor.y + maniAnchor.dirY * (MANI_ARROW_PX + 34)}
-            value={maniShownText}
-            onChange={(next) => setManiDraft({ param: mani.param, text: next })}
-            onCommit={commitManiText}
-            onCancel={() => { setManiDraft(null); setManiNote(null); }}
-          />
-          {maniNote && <div className="mani-note" role="status">{maniNote}</div>}
-        </div>
+      {/* Phase 5.1 part 2: the TAPER ARC, only for a feature whose schema
+          carries an angle (a draft). A quarter-arc beside the anchor with
+          the angle's own drag-or-type value box at its end -- the arc is
+          the SHAPE of what it does, the same reason a turn handle is a
+          ring. Absent, not disabled, for features with no angle param. */}
+      {taper && taper.value != null && maniAnchor && hasAngleParam(manipulator!.feature) && (
+        <>
+          <svg className="mani-taper" data-taper="true" aria-hidden="true">
+            <polyline points={arcPoints(
+              maniAnchor.x, maniAnchor.y,
+              MANI_TAPER_R_PX,
+              -90, -10,
+            )} />
+            <circle cx={maniAnchor.x + MANI_TAPER_R_PX} cy={maniAnchor.y - MANI_TAPER_R_PX * 0.17} r={3} />
+          </svg>
+          <div className="mani-value-wrap">
+            <ValueBox
+              testId="manipulator-taper"
+              kind="draft-angle"
+              x={maniAnchor.x + MANI_TAPER_R_PX + 30}
+              y={maniAnchor.y - MANI_TAPER_R_PX - 8}
+              value={taperShownText}
+              onChange={(next) => setTaperDraft({ param: taper.param, text: next })}
+              onCommit={commitTaperText}
+              onCancel={() => { setTaperDraft(null); setTaperNote(null); }}
+            />
+            {taperNote && <div className="mani-note" role="status">{taperNote}</div>}
+          </div>
+        </>
       )}
       <style>{`
         .handle-layer { position: absolute; inset: 0; pointer-events: none; }
@@ -553,6 +596,11 @@ export default function HandleOverlay({
         .mani-arrow { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
         .mani-arrow line { stroke: var(--reshape-accent-2, #bd93f9); stroke-width: 2.5; vector-effect: non-scaling-stroke; }
         .mani-arrow polygon { fill: var(--reshape-accent-2, #bd93f9); }
+        /* The taper arc: yellow (the turn-handle family colour -- an angle
+           is an angle, whatever drives it), same non-scaling rule. */
+        .mani-taper { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+        .mani-taper polyline { fill: none; stroke: var(--reshape-yellow, #f1fa8c); stroke-width: 2; vector-effect: non-scaling-stroke; }
+        .mani-taper circle { fill: var(--reshape-yellow, #f1fa8c); }
         .mani-value-wrap { position: absolute; inset: 0; pointer-events: none; }
         .mani-value-wrap input { pointer-events: auto; }
         .reshape-value-box { min-width: 2.5em; text-align: center; padding: 1px 4px; border-radius: 3px;

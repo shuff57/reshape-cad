@@ -406,6 +406,38 @@ function pocketHandles(f: Extract<Feature, { kind: 'pocket' }>, doc?: ModelDoc):
   }];
 }
 
+/**
+ * The one handle a Draft carries: its angle, sitting on the solid the
+ * draft tilts, pointing along the PULL axis (the direction the wall leans
+ * around). `doc` is required for the same reason filletHandles()'s is --
+ * a draft has no geometry of its own; everything below comes from the
+ * shape it names. The scale converts drag pixels into DEGREES: 1px at the
+ * anchor's pxPerUnit moves the angle by pxPerUnit degrees is wrong --
+ * scale is deliberately 1 so the value box shows the raw drag number in
+ * degrees, and a fine drag is what a beginner needs for a 5-15 degree
+ * taper anyway. The HandleOverlay draws the arc beside this anchor.
+ */
+function draftHandles(f: Extract<Feature, { kind: 'draft' }>, doc?: ModelDoc): HandleSpec[] {
+  if (!doc) return [];
+  const target = doc.features.find((x) => x.id === f.target);
+  if (!target || !('center' in target)) return [];
+  const c = (target as { center: readonly number[] }).center;
+  const axis: [number, number, number] = f.pull === 'x' ? [1, 0, 0] : f.pull === 'y' ? [0, 1, 0] : [0, 0, 1];
+  // A whole draft tilts every side face, so one angle handle at the top
+  // of the pull axis is the honest single control. A face draft (f.face)
+  // tilts one named face -- same handle, same param, the angle is shared.
+  return [{
+    kind: 'size',
+    // Exactly the name generatedParams() should emit for this slot --
+    // pname(id, 'angle'), the same shape every other handle here uses.
+    param: `${f.id}_angle`,
+    origin: [c[0] + axis[0] * 10, c[1] + axis[1] * 10, c[2] + axis[2] * 10],
+    axis,
+    scale: 1,
+    label: f.whole ? 'body draft angle' : 'draft angle',
+  }];
+}
+
 export function handlesFor(f: Feature, doc?: ModelDoc): HandleSpec[] {
   // A sketch gets its own two-axis corner handles; see sketchHandles.
   if (f.kind === 'sketch') return sketchHandles(f);
@@ -420,6 +452,11 @@ export function handlesFor(f: Feature, doc?: ModelDoc): HandleSpec[] {
   // A pocket is not a shape either -- it names a sketch and a solid -- so it
   // has to be caught before the isShape() guard below.
   if (f.kind === 'pocket') return pocketHandles(f, doc);
+  // Phase 5.1 part 2 (todo 23): a draft's angle is the one angle-bearing
+  // parameter Phase 5.1 covers, so it gets its own handle the taper arc
+  // can ride -- without it a draft selection projected no anchor at all
+  // (handlesFor fell through isShape() to the empty return).
+  if (f.kind === 'draft') return draftHandles(f, doc);
   if (!isShape(f)) return [];
   const [cx, cy, cz] = f.center;
   const size: HandleSpec[] = [];

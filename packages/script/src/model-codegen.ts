@@ -260,6 +260,12 @@ export function generatedParams(doc: ModelDoc): GeneratedParam[] {
         step: 0.5,
       });
     }
+    // Phase 5.1 part 2 (todo 23): the draft's angle joins the panel the
+    // same way it joins the manipulator -- one slot, one caption family.
+    // |angle| < 90; negative leans in, 0 is "no taper" (identity).
+    if (f.kind === 'draft') {
+      push('angle', 'taper angle', f.angle, { min: -89.5, max: 89.5, step: 0.5 });
+    }
     // mirror carries no numeric slot -- its only input is a plane choice.
   });
   return out;
@@ -523,6 +529,7 @@ export function applyParam(doc: ModelDoc, name: string, value: number): ModelDoc
       }
     }
     if (f.kind === 'fillet' && slot === 'size') { changed = true; return { ...f, size: value }; }
+    if (f.kind === 'draft' && slot === 'angle') { changed = true; return { ...f, angle: value }; }
     return f;
   });
 
