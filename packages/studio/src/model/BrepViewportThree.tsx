@@ -827,6 +827,11 @@ export default function BrepViewportThree({
   // directional gesture -- one function so a wedge fired either way does
   // exactly the same thing.
   const dispatchMarkingCommandRef = useRef<(id: string) => void>(() => {});
+  // Whether the JUST-ENDED right press classified as a menu click (set by
+  // onCanvasPointerUp's classifier, consumed by onCanvasContextMenu — which
+  // the browser fires for the same press). Cleared by every non-armed
+  // contextmenu so a stray native-menu event never opens the menu.
+  const rightMenuArmedRef = useRef(false);
   // Same stale-closure reasoning as docRef above: projectAnchors() is a
   // component-level function (reads refs, not props) so it can be called
   // both from inside the scene-setup effect's camera-change handler and from
@@ -2051,6 +2056,9 @@ export default function BrepViewportThree({
     // above (button-0-only) and not OrbitControls' own internal state (which
     // a pan/dolly drag mutates every move) -- see onCanvasContextMenu below.
     let rightDownAt: PointerSample | null = null;
+    // The pointer's last KNOWN sample: what classifyGesture/rightClickGuard
+    // read as the gesture's up-sample (see onCanvasPointerMove's comment).
+    let rightMoveAt: PointerSample | null = null;
     const CLICK_DRAG_TOLERANCE_PX = 4;
     // Click-and-hold "select other" cycling state (SPEC-mouse-parity.md
     // Phase 3.5, [CONFIRM behaviour]). `lastCycleKey`/`lastCycleIndex`
@@ -2130,6 +2138,14 @@ export default function BrepViewportThree({
       renderer.domElement.setPointerCapture(e.pointerId);
     }
     function onCanvasPointerMove(e: PointerEvent) {
+      // Todo 19/20's gesture classifier reads the pointer's LAST KNOWN
+      // position + timestamp, not the contextmenu event's: the browser fires
+      // contextmenu BEFORE pointerup (measured 2026-09-21: contextmenu's
+      // timeStamp equals pointerdown's, its coords are the DOWN point), so
+      // classifying from the contextmenu event itself reads a 0px/0ms
+      // gesture and opens the menu on ANY drag. The up-sample is the latest
+      // pointermove's own sample.
+      rightMoveAt = { x: e.clientX, y: e.clientY, t: e.timeStamp };
       if (holdTimer !== null && downAt !== null
         && Math.hypot(e.clientX - downAt.x, e.clientY - downAt.y) >= HOLD_CYCLE_DEAD_ZONE_PX) {
         // Movement past the dead zone before the delay elapses cancels the
@@ -2169,6 +2185,39 @@ export default function BrepViewportThree({
       });
     }
     function onCanvasPointerUp(e: PointerEvent) {
+      // Todo 19/20: THIS is where the right-button gesture classifies —
+      // pointerup carries the gesture's real end coords + timestamp (the
+      // contextmenu event does not: see onCanvasContextMenu's comment). A
+      // fast directional drag fires the wedge's command directly (no menu);
+      // a release within the dead zone arms the menu-open (the actual
+      // render happens on the contextmenu event, which the browser fires
+      // for the same press); a drag past the dead zone is the camera's and
+      // opens nothing.
+      if (e.button === 2) {
+        const downSample = rightDownAt;
+        rightDownAt = null;
+        const upSample = { x: e.clientX, y: e.clientY, t: e.timeStamp };
+        const verdict = classifyGesture(downSample, upSample, MARKING_GESTURE);
+        if (verdict.kind === 'wedge') {
+          // Fast directional drag: the wedge's command fires with no visible
+          // menu flash (SPEC :37-39). The wedge ids are the part-viewport
+          // config's own, in MarkingMenu.tsx's layout order.
+          const id = wedgesForMode('part-viewport')[verdict.wedgeIndex]?.id;
+          if (id) dispatchMarkingCommandRef.current?.(id);
+          return;
+        }
+        if (verdict.kind === 'menu' && rightClickGuard(downSample, upSample, HOLD_CYCLE_DEAD_ZONE_PX) === 'menu') {
+          // Click-shaped release: open the menu HERE. The contextmenu event
+          // for this same press has ALREADY fired by now (Chromium fires it
+          // at press time, before pointerup — measured 2026-09-21), so
+          // relaying through a flag would never be consumed; this handler
+          // is the last event of the gesture.
+          const bounds = renderer.domElement.getBoundingClientRect();
+          setMarkingMenu({ x: upSample.x - bounds.left, y: upSample.y - bounds.top });
+        }
+        // A slow drag: neither wedge nor menu — OrbitControls consumed it.
+        return;
+      }
       if (windowZoomRef.current !== null) {
         try { renderer.domElement.releasePointerCapture(e.pointerId); } catch { /* already released */ }
         controls.enabled = true;
@@ -2287,43 +2336,24 @@ export default function BrepViewportThree({
       e.preventDefault();
       onDeleteSelectedRef.current?.();
     }
-    // SPEC-mouse-parity.md Phase 4.1/4.2/4.3: a right-press that stays put
-    // through the gesture delay opens the marking menu; a right-DRAG past
-    // the dead zone before the delay keeps panning/orbiting, AND a fast
-    // directional drag fires the wedge's command directly WITHOUT ever
-    // rendering the menu (classifyGesture() is the shared todo-19 classifier
-    // in marking-menu-core.ts). Always preventDefault: the native browser
-    // menu is never wanted here, whether or not this gesture opens anything
-    // (a right-drag that pans still fires a contextmenu event on release,
-    // and the native menu popping up over an in-progress pan would be worse
-    // than no menu at all).
+    // Todo 19/20's classify-and-dispatch lives in onCanvasPointerUp (below),
+    // which has the pointer's REAL up-sample; the browser fires contextmenu
+    // BEFORE pointerup and BEFORE any drag's moves (measured 2026-09-21:
+    // Playwright/Chromium fire contextmenu at press time, coords = the DOWN
+    // point, timeStamp = pointerdown's), so a classifier on this event reads
+    // a 0px/0ms gesture and opens the menu on ANY drag. This handler only
+    // kills the native menu — always, whatever the gesture turns out to be
+    // (a right-drag that pans still fires contextmenu, and the native menu
+    // popping up over an in-progress pan would be worse than no menu).
     function onCanvasContextMenu(e: MouseEvent) {
       e.preventDefault();
-      const up: PointerSample = { x: e.clientX, y: e.clientY, t: e.timeStamp };
-      const downSample = rightDownAt;
-      const verdict = classifyGesture(downSample, up, MARKING_GESTURE);
-      rightDownAt = null;
-      if (verdict.kind === 'ignore') return;
+      if (!rightMenuArmedRef.current) return;
+      rightMenuArmedRef.current = false;
       const bounds = renderer.domElement.getBoundingClientRect();
-      if (verdict.kind === 'wedge') {
-        // Fast directional drag: the wedge's command fires with no visible
-        // menu flash (SPEC :37-39). The wedge ids are the part-viewport
-        // config's own, in MarkingMenu.tsx's layout order.
-        const id = wedgesForMode('part-viewport')[verdict.wedgeIndex]?.id;
-        if (id) dispatchMarkingCommandRef.current?.(id);
-        return;
-      }
-      // Todo 20's guard: the camera owns every right-DRAG (whichever camera
-      // action the active scheme binds to the right button); only a
-      // click-shaped release opens the menu. classifyGesture's 'menu' here
-      // covers BOTH the stationary hold AND the slow drag; the guard is what
-      // separates them -- OrbitControls has already consumed the drag.
-      if (rightClickGuard(downSample, up, HOLD_CYCLE_DEAD_ZONE_PX) !== 'menu') return;
       setMarkingMenu({ x: e.clientX - bounds.left, y: e.clientY - bounds.top });
     }
     renderer.domElement.addEventListener('pointermove', onPointerMove);
     renderer.domElement.addEventListener('pointerleave', onPointerLeave);
-    renderer.domElement.addEventListener('pointermove', onPointerMove);
     renderer.domElement.addEventListener('pointerleave', onPointerLeave);
     // pointerdown/move/up sit BESIDE click here, not inside the existing
     // onPointerMove above -- that one is throttled to a hover raycast and

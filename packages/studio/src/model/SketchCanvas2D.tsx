@@ -252,6 +252,14 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
   // move past the dead zone" by the time the contextmenu event fires.
   const [markingMenu, setMarkingMenu] = useState<{ x: number; y: number } | null>(null);
   const rightDownRef = useRef<PointerSample | null>(null);
+  // The pointer's last KNOWN sample: what classifyGesture/rightClickGuard
+  // read as the gesture's up-sample (see onPointerMove's comment).
+  const rightMoveRef = useRef<PointerSample | null>(null);
+  // Whether the JUST-ENDED right press classified as a menu click (set by
+  // onPointerUp's classifier, consumed by the onContextMenu prop — which the
+  // browser fires for the same press). Cleared by every non-armed
+  // contextmenu so a stray native-menu event never opens the menu.
+  const rightMenuArmedRef = useRef(false);
   const [auto, setAuto] = useState(true);
   const [pointer, setPointer] = useState<Pt | null>(null);
   // The snap under the cursor, WHATEVER kind: the glyph beside it is how a
@@ -1526,6 +1534,13 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
 
   const onPointerMove = useCallback(
     (e: React.PointerEvent) => {
+      // Todo 19/20's gesture classifier reads the pointer's LAST KNOWN
+      // sample, not the contextmenu event's: the browser fires contextmenu
+      // BEFORE pointerup (measured 2026-09-21: contextmenu's timeStamp
+      // equals pointerdown's, its coords are the DOWN point), so
+      // classifying from the contextmenu event itself reads a 0px/0ms
+      // gesture and opens the menu on ANY drag.
+      rightMoveRef.current = { x: e.clientX, y: e.clientY, t: e.timeStamp };
       const pan = panRef.current;
       if (pan) {
         // Pan is pure view math, one setView per move event -- the pointer's
@@ -1579,6 +1594,44 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
   );
 
   const onPointerUp = useCallback((e: React.PointerEvent) => {
+    // Todo 19/20: THIS is where the right-button gesture classifies —
+    // pointerup carries the gesture's real end coords + timestamp (the
+    // contextmenu event does not: see the onContextMenu prop's comment). A
+    // fast directional drag fires the wedge's command directly (no menu); a
+    // release within the dead zone arms the menu-open (the actual render
+    // happens on the contextmenu event, which the browser fires for the
+    // same press); a drag past the dead zone is the pan gesture's and
+    // opens nothing. Only when the active scheme pans with the right
+    // button. Falls through to the pan branch below so IT clears panRef —
+    // do not return before that.
+    if (e.button === 2) {
+      const downSample = rightDownRef.current;
+      rightDownRef.current = null;
+      if (panButton === 2) {
+        const upSample = { x: e.clientX, y: e.clientY, t: e.timeStamp };
+        const verdict = classifyGesture(downSample, upSample, MARKING_GESTURE);
+        if (verdict.kind === 'wedge') {
+          // Fast directional drag: the wedge's command fires with no
+          // visible menu flash (SPEC :37-39). The wedge ids are the
+          // sketch config's own, in MarkingMenu.tsx's layout order.
+          const id = wedgesForMode('sketch')[verdict.wedgeIndex]?.id;
+          if (id) dispatchMarkingMenuCommand(id);
+          return;
+        }
+        if (verdict.kind === 'menu' && rightClickGuard(downSample, upSample, HOLD_CYCLE_DEAD_ZONE_PX) === 'menu') {
+          // Click-shaped release: open the menu HERE. The contextmenu event
+          // for this same press has ALREADY fired by now (Chromium fires it
+          // at press time, before pointerup — measured 2026-09-21), so
+          // relaying through a flag would never be consumed; this handler
+          // is the last event of the gesture. The menu position is
+          // viewport-relative; the render positions it inside the host via
+          // its own container-relative math (the same offset onContextMenu
+          // would have computed).
+          const rect = svgRef.current?.getBoundingClientRect();
+          if (rect) setMarkingMenu({ x: upSample.x - rect.left, y: upSample.y - rect.top });
+        }
+      }
+    }
     if (panRef.current) {
       panRef.current = null;
       return;
@@ -2364,28 +2417,21 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
         onContextMenu={(e) => {
-          // Only when the active scheme pans with the right button; any other
-          // scheme leaves the browser menu alone (Phase 4 owns the real one).
+          // The classify-and-dispatch lives in onPointerUp (below), which
+          // has the pointer's REAL up-sample; the browser fires contextmenu
+          // BEFORE pointerup and BEFORE any drag's moves (measured
+          // 2026-09-21: Chromium fires it at press time, coords = the DOWN
+          // point), so a classifier on this event reads a 0px/0ms gesture
+          // and opens the menu on ANY drag. This handler kills the native
+          // menu — always — and opens the menu when onPointerUp armed it.
+          // Only when the active scheme pans with the right button; any
+          // other scheme leaves the browser menu alone (Phase 4 owns the
+          // real one).
           if (panButton !== 2) return;
           e.preventDefault();
-          const up: PointerSample = { x: e.clientX, y: e.clientY, t: e.timeStamp };
-          const downSample = rightDownRef.current;
-          const verdict = classifyGesture(downSample, up, MARKING_GESTURE);
-          rightDownRef.current = null;
-          if (verdict.kind === 'ignore') return;
+          if (!rightMenuArmedRef.current) return;
+          rightMenuArmedRef.current = false;
           const rect = e.currentTarget.getBoundingClientRect();
-          if (verdict.kind === 'wedge') {
-            // Fast directional drag: the wedge's command fires with no
-            // visible menu flash (SPEC :37-39). The wedge ids are the
-            // sketch config's own, in MarkingMenu.tsx's layout order.
-            const id = wedgesForMode('sketch')[verdict.wedgeIndex]?.id;
-            if (id) dispatchMarkingMenuCommand(id);
-            return;
-          }
-          // Todo 20's guard: only a click-shaped release opens the menu; a
-          // right-drag is pan in the legacy scheme (panButton === 2 here) and
-          // the pan gesture owns it.
-          if (rightClickGuard(downSample, up, HOLD_CYCLE_DEAD_ZONE_PX) !== 'menu') return;
           setMarkingMenu({ x: e.clientX - rect.left, y: e.clientY - rect.top });
         }}
         onDoubleClick={() => {
