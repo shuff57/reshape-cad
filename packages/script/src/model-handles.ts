@@ -407,6 +407,37 @@ function pocketHandles(f: Extract<Feature, { kind: 'pocket' }>, doc?: ModelDoc):
 }
 
 /**
+ * The three axis handles a Move feature drives: its offset's x/y/z
+ * (applyParam's move arm). The origin rides the TARGET's own centre
+ * (where the gizmo sits), pushed out along each axis by the offset so
+ * the arrows sit where the move has taken the part -- the same
+ * rides-its-value convention every size handle here uses. A copy-less
+ * move consumes its target in topLevel(), so the doc walk below reads
+ * the first shape the chain roots in, the same hop extentAlong() uses.
+ */
+function moveFeatureHandles(f: Extract<Feature, { kind: 'move' }>, doc?: ModelDoc): HandleSpec[] {
+  if (!doc) return [];
+  // Root the chain: walk target hops to the primitive whose centre the
+  // gizmo sits at (the same 16-hop discipline extentAlong uses).
+  let id: string | undefined = f.target;
+  let c: readonly number[] | null = null;
+  for (let hop = 0; hop < 16 && id; hop++) {
+    const t = doc.features.find((x) => x.id === id);
+    if (!t) return [];
+    if ('center' in t) { c = (t as { center: readonly number[] }).center; break; }
+    id = 'target' in t ? (t as { target: string }).target : undefined;
+  }
+  if (!c) return [];
+  const [ox, oy, oz] = f.offset;
+  const reach = Math.max(10, Math.hypot(ox, oy, oz) + 10);
+  return [
+    { kind: 'move', param: `${f.id}_x`, origin: [c[0] + ox + reach, c[1] + oy, c[2] + oz], axis: [1, 0, 0], scale: 1, label: 'move x' },
+    { kind: 'move', param: `${f.id}_y`, origin: [c[0] + ox, c[1] + oy + reach, c[2] + oz], axis: [0, 1, 0], scale: 1, label: 'move y' },
+    { kind: 'move', param: `${f.id}_z`, origin: [c[0] + ox, c[1] + oy, c[2] + oz + reach], axis: [0, 0, 1], scale: 1, label: 'move z' },
+  ];
+}
+
+/**
  * The one handle a Draft carries: its angle, sitting on the solid the
  * draft tilts, pointing along the PULL axis (the direction the wall leans
  * around). `doc` is required for the same reason filletHandles()'s is --
@@ -457,6 +488,11 @@ export function handlesFor(f: Feature, doc?: ModelDoc): HandleSpec[] {
   // can ride -- without it a draft selection projected no anchor at all
   // (handlesFor fell through isShape() to the empty return).
   if (f.kind === 'draft') return draftHandles(f, doc);
+  // Phase 5.2 (todo 24): a Move carries its offset as three axis
+  // parameters (applyParam's move arm writes x/y/z), so it gets the three
+  // axis arrows a gizmo is made of -- the same moveHandles() the shapes
+  // get, at the TARGET's own centre, scaled to the offset's reach.
+  if (f.kind === 'move') return moveFeatureHandles(f, doc);
   if (!isShape(f)) return [];
   const [cx, cy, cz] = f.center;
   const size: HandleSpec[] = [];

@@ -20,6 +20,7 @@ import { useEffect, useRef, useState } from 'react';
 import { arcFromBulge, type Point } from '@shuff57/reshape-sketch/sketch-arc';
 import ValueBox, { formatValue } from './ValueBox.js';
 import { manipulatorParam, manipulatorValue, manipulatorValueError, angleValueError, hasAngleParam, arcPoints, type ManipulatorKind } from './manipulator-core.js';
+import { snapDelta } from './move-gizmo-core.js';
 import type { Feature, ModelDoc } from '@shuff57/reshape-script/model-types';
 /**
  * One sketch's outline, in plane coordinates -- what the overlay needs to
@@ -135,6 +136,14 @@ interface Props {
    * sentence. Absent (Code mode, or no selection) draws nothing new.
    */
   manipulator?: { feature: Feature; doc: ModelDoc; onDragParam: (param: string, value: number) => void; onCommitParam: () => void } | null;
+  /**
+   * Phase 5.2's Incremental Move (todo 24): snap mode and step for
+   * drags on a MOVE feature's axis handles. 'adaptive' reads the model
+   * extent (move-gizmo-core.adaptiveStep); 'fixed' uses fixedStep; 'off'
+   * passes raw deltas through. modelExtent is the model's longest mm
+   * extent, which ReshapeStudio already owns from the stats readout.
+   */
+  incrementalMove?: { mode: 'adaptive' | 'fixed' | 'off'; fixedStep: number; modelExtent: number; onModeChange?: (mode: 'adaptive' | 'fixed' | 'off') => void; onStepChange?: (step: number) => void } | null;
 }
 
 /**
@@ -261,7 +270,7 @@ function arrowHead(x0: number, y0: number, dx: number, dy: number, at: number): 
 }
 
 export default function HandleOverlay({
-  points, values, scales, onDrag, onCommit, onTap, outlines, outlineAnchors, bottomInset = 0, manipulator,
+  points, values, scales, onDrag, onCommit, onTap, outlines, outlineAnchors, bottomInset = 0, manipulator, incrementalMove,
 }: Props) {
   const [dragging, setDragging] = useState<string | null>(null);
   // Whether the current pointerdown-to-pointerup has crossed TAP_TOLERANCE_PX
@@ -392,6 +401,17 @@ export default function HandleOverlay({
     manipulator.onCommitParam();
   };
 
+  // Phase 5.2 (todo 24): the gizmo mode chip -- a move selection's axis
+  // arrows ARE the gizmo (moveFeatureHandles); this renders the
+  // incremental-move toggle beside the first projected move anchor.
+  const gizmoAnchor = manipulator && manipulator.feature.kind === 'move'
+    ? points.find((a) => a.kind === 'move')
+    : undefined;
+  // (mode/step/fixed controls are caller-owned through the incrementalMove
+  // prop; the chip only needs the toggle callbacks, passed via
+  // incrementalMove.onModeChange when the caller renders the control. A
+  // prop without the callbacks renders the read-only chip.)
+
   if (!hasHandles && outlineRenders.length === 0 && !(mani && maniAnchor)) return null;
 
   return (
@@ -468,7 +488,19 @@ export default function HandleOverlay({
               // pinned every negative-direction drag at exactly 0.1 (dogfood
               // 2026-09-14, handle-dogfood report).
               const clamped = a.kind === 'move' || a.kind === 'turn' ? rounded : Math.max(0.1, rounded);
-              push([{ param: a.param, value: clamped }]);
+              // Phase 5.2's Incremental Move: a MOVE-feature axis drag with
+              // snapping on lands its VALUE on the increment grid. The
+              // delta snapped is the drag's own contribution (value - the
+              // value the gesture began at), so snapping never fights the
+              // drag start; adaptive/fixed/off per the prop. A non-move
+              // drag is untouched -- size and turn have no increment.
+              let finalValue = clamped;
+              if (a.kind === 'move' && incrementalMove && incrementalMove.mode !== 'off') {
+                const deltaValue = finalValue - start.current.value;
+                const [sx] = snapDelta([deltaValue, 0, 0], incrementalMove.mode, incrementalMove.fixedStep, incrementalMove.modelExtent);
+                finalValue = start.current.value + sx;
+              }
+              push([{ param: a.param, value: finalValue }]);
             }}
             onPointerUp={(e) => {
               try { e.currentTarget.releasePointerCapture(e.pointerId); } catch { /* gone */ }
@@ -545,6 +577,46 @@ export default function HandleOverlay({
           </div>
         </>
       )}
+      {/* Phase 5.2: the Incremental Move chip, only while a MOVE is
+          selected. Mode cycles adaptive -> fixed -> off; fixed shows a
+          step box. Same on-canvas family as the value boxes above. */}
+      {gizmoAnchor && incrementalMove && (
+        <div className="mani-value-wrap">
+          <div
+            className="move-snap-chip"
+            data-move-snap={incrementalMove.mode}
+            style={{ left: `${gizmoAnchor.x + 16}px`, top: `${gizmoAnchor.y - 30}px` }}
+          >
+            <span>Incremental move:</span>
+            <button
+              type="button"
+              className="move-snap-mode"
+              onClick={() => {
+                const order = ['adaptive', 'fixed', 'off'] as const;
+                const nextMode = order[(order.indexOf(incrementalMove.mode) + 1) % order.length];
+                incrementalMove.onModeChange?.(nextMode);
+              }}
+              title="Snap drag distance to grid increments: adaptive (from the model), fixed (a step you set), or off"
+            >
+              {incrementalMove.mode}
+            </button>
+            {incrementalMove.mode === 'fixed' && (
+              <input
+                className="move-snap-step"
+                size={4}
+                value={String(incrementalMove.fixedStep)}
+                onChange={(e) => {
+                  const v = Number(e.target.value);
+                  incrementalMove.onStepChange?.(Number.isFinite(v) && v > 0 ? v : incrementalMove.fixedStep);
+                }}
+                onPointerDown={(e) => e.stopPropagation()}
+                onClick={(e) => e.stopPropagation()}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === 'Escape') (e.currentTarget as HTMLInputElement).blur(); }}
+              />
+            )}
+          </div>
+        </div>
+      )}
       <style>{`
         .handle-layer { position: absolute; inset: 0; pointer-events: none; }
         .sketch-lines { position: absolute; inset: 0; width: 100%; height: 100%; }
@@ -610,6 +682,20 @@ export default function HandleOverlay({
           background: var(--reshape-surface, #1e1f29); border-color: var(--reshape-accent, #8be9fd); color: var(--reshape-text, #f8f8f2); }
         .mani-note { position: absolute; transform: translate(-50%, 0); white-space: nowrap;
           color: var(--reshape-warn, #ffb86c); font-size: 12px; }
+        /* Phase 5.2's Incremental Move chip. pointer-events auto so the
+           buttons/input catch presses; the WRAPPER above stays none so
+           the canvas underneath keeps orbiting drags. */
+        .move-snap-chip { position: absolute; transform: translateY(-50%); pointer-events: auto;
+          display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px; border-radius: 4px;
+          background: var(--reshape-bg, #282a36); border: 1px solid var(--reshape-border, #44475a);
+          color: var(--reshape-text-muted, #6272a4); font-size: 12px; }
+        .move-snap-chip .move-snap-mode { height: 20px; padding: 0 8px; border-radius: 3px;
+          border: 1px solid transparent; background: #3d4051; color: var(--reshape-text, #f8f8f2); cursor: pointer;
+          font-size: 11px; font-family: var(--reshape-font-ui, sans-serif); }
+        .move-snap-chip .move-snap-mode:hover { border-color: var(--reshape-accent-2); }
+        .move-snap-chip .move-snap-step { background: var(--reshape-surface, #1e1f29); color: var(--reshape-text);
+          border: 1px solid var(--reshape-accent, #8be9fd); border-radius: 3px; padding: 1px 4px;
+          font-family: var(--reshape-font-mono, monospace); font-size: 11px; }
       `}</style>
     </div>
   );

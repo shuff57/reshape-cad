@@ -398,6 +398,13 @@ export default function ReshapeStudio({
   // until registered" gate needs; the buttons' onRun wrappers read the ref
   // at CLICK time, so every click gets this render's fresh closures.
   const [ctxDismissed, setCtxDismissed] = useState(false);
+  // Phase 5.2's Incremental Move (todo 24): the snap mode + step. Adaptive
+  // by default (the nav bar's own wording); the fixed step is the ruler
+  // convention's 1mm unless the student changes it. Plain UI state --
+  // reset per selection like ctxDismissed above, never in the undo stack.
+  const [moveSnapMode, setMoveSnapMode] = useState<'adaptive' | 'fixed' | 'off'>('adaptive');
+  const [moveSnapStep, setMoveSnapStep] = useState(1);
+  useEffect(() => { setMoveSnapMode('adaptive'); }, [selected[0]]);
   const ctxActionsRef = useRef<ContextActions | null>(null);
   const [ctxActions, setCtxActions] = useState(false);
   useEffect(() => { setCtxDismissed(false); }, [selected[0]]);
@@ -1543,6 +1550,15 @@ export default function ReshapeStudio({
                       // applyParam) -- the convergence todo 22 requires.
                       onDragParam: (param, val) => { sendParams({ [param]: val }); touchRuleActivity(); },
                       onCommitParam: () => { commitParams(); touchRuleActivity(); },
+                    }
+                  : null}
+                incrementalMove={build
+                  ? {
+                      mode: moveSnapMode,
+                      fixedStep: moveSnapStep,
+                      modelExtent: bboxMm ? Math.max(bboxMm.x, bboxMm.y, bboxMm.z) : 40,
+                      onModeChange: setMoveSnapMode,
+                      onStepChange: setMoveSnapStep,
                     }
                   : null}
               />
