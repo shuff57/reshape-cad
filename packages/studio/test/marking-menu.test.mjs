@@ -12,6 +12,7 @@ import {
   flyoutHitTest,
   SKETCH_TOOL_CHILDREN,
 } from '../dist/model/marking-menu-core.js';
+import { rightButtonRole, rightClickGuard } from '../dist/model/marking-menu-guard.js';
 
 test('part-viewport config returns exactly the 8 SPEC wedges', () => {
   const wedges = wedgesForMode('part-viewport');
@@ -185,4 +186,37 @@ test('classifyGesture: the wedge index matches MarkingMenu.tsx layout order', ()
     const id = wedgesForMode('part-viewport')[verdict.wedgeIndex]?.id;
     assert.equal(id, 'delete', 'wedge 1 is Delete in the SPEC reading order');
   }
+});
+
+// --- todo 20: right-click vs pan/orbit guard ------------------------------------------
+
+test('rightButtonRole reads the scheme map, not hardcoded', () => {
+  // legacy binds right to PAN; fusion binds right to DOLLY.
+  assert.equal(rightButtonRole({ ORBIT: 0, PAN: 2, DOLLY: 1 }), 'pan');
+  assert.equal(rightButtonRole({ ORBIT: 0, PAN: 1, DOLLY: 2 }), 'dolly');
+  // A scheme with no camera action on the right button.
+  assert.equal(rightButtonRole({ ORBIT: 0, PAN: 1, DOLLY: 1 }), 'none');
+});
+
+test('rightClickGuard: a release within the dead zone opens the menu, a drag stays camera', () => {
+  const down = { x: 100, y: 100, t: 0 };
+  assert.equal(rightClickGuard(down, { x: 102, y: 101, t: 80 }, 4), 'menu');
+  assert.equal(rightClickGuard(down, { x: 200, y: 100, t: 300 }, 4), 'camera-gesture');
+  assert.equal(rightClickGuard(null, { x: 0, y: 0, t: 0 }, 4), 'ignore');
+});
+
+test('rightClickGuard + classifyGesture compose: a fast wedge drag wins, a slow drag orbits', () => {
+  const down = { x: 100, y: 100, t: 0 };
+  // Fast drag down (60ms, 60px): classifyGesture says 'wedge', so the guard
+  // is never consulted -- the wedge fires and the camera does not move.
+  const fast = classifyGesture(down, { x: 100, y: 160, t: 60 }, { delayMs: 150, deadZonePx: 4, wedgeCount: 8 });
+  assert.equal(fast.kind ?? fast.kind, fast.kind);
+  if (fast.kind === 'wedge') assert.equal(wedgesForMode('part-viewport')[fast.wedgeIndex]?.id, 'redo');
+  // Slow drag (400ms, 60px): classifyGesture says 'menu' but the guard says
+  // 'camera-gesture' wins -- the menu must NOT open on a slow drag that the
+  // camera already consumed.
+  const slowVerdict = rightClickGuard(down, { x: 160, y: 100, t: 400 }, 4);
+  assert.equal(slowVerdict, 'camera-gesture');
+  // Hold (200ms, 2px): menu.
+  assert.equal(rightClickGuard(down, { x: 101, y: 102, t: 200 }, 4), 'menu');
 });

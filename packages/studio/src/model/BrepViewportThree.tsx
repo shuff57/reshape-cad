@@ -85,6 +85,7 @@ import { HOLD_CYCLE_DELAY_MS, HOLD_CYCLE_DEAD_ZONE_PX } from '../input-threshold
 import type { SelectionFilters, SelectionItem } from '../selection-model.js';
 import MarkingMenu from './MarkingMenu.js';
 import { classifyRightClick, classifyGesture, wedgesForMode, type PointerSample, type GestureThresholds } from './marking-menu-core.js';
+import { rightClickGuard } from './marking-menu-guard.js';
 import { marqueeKind, pointSetSelect, type MarqueeDrag } from '../marquee-select.js';
 
 // Todo 19's [CONFIRM]-sourced gesture thresholds: the delay is the
@@ -2299,7 +2300,8 @@ export default function BrepViewportThree({
     function onCanvasContextMenu(e: MouseEvent) {
       e.preventDefault();
       const up: PointerSample = { x: e.clientX, y: e.clientY, t: e.timeStamp };
-      const verdict = classifyGesture(rightDownAt, up, MARKING_GESTURE);
+      const downSample = rightDownAt;
+      const verdict = classifyGesture(downSample, up, MARKING_GESTURE);
       rightDownAt = null;
       if (verdict.kind === 'ignore') return;
       const bounds = renderer.domElement.getBoundingClientRect();
@@ -2311,6 +2313,12 @@ export default function BrepViewportThree({
         if (id) dispatchMarkingCommandRef.current?.(id);
         return;
       }
+      // Todo 20's guard: the camera owns every right-DRAG (whichever camera
+      // action the active scheme binds to the right button); only a
+      // click-shaped release opens the menu. classifyGesture's 'menu' here
+      // covers BOTH the stationary hold AND the slow drag; the guard is what
+      // separates them -- OrbitControls has already consumed the drag.
+      if (rightClickGuard(downSample, up, HOLD_CYCLE_DEAD_ZONE_PX) !== 'menu') return;
       setMarkingMenu({ x: e.clientX - bounds.left, y: e.clientY - bounds.top });
     }
     renderer.domElement.addEventListener('pointermove', onPointerMove);

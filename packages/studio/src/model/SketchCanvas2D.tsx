@@ -137,6 +137,7 @@ import {
   type SketchGeomKind,
   type SketchSelectionEntry,
 } from './marking-menu-core.js';
+import { rightClickGuard } from './marking-menu-guard.js';
 
 // Todo 19's [CONFIRM]-sourced gesture thresholds, same shape as
 // BrepViewportThree's: the delay is the marking-menu gesture's own default
@@ -2380,6 +2381,10 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
             if (id) dispatchMarkingMenuCommand(id);
             return;
           }
+          // Todo 20's guard: only a click-shaped release opens the menu; a
+          // right-drag is pan in the legacy scheme (panButton === 2 here) and
+          // the pan gesture owns it.
+          if (rightClickGuard(rightDownRef.current, up, HOLD_CYCLE_DEAD_ZONE_PX) !== 'menu') return;
           setMarkingMenu({ x: e.clientX - rect.left, y: e.clientY - rect.top });
         }}
         onDoubleClick={() => {
