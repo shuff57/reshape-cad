@@ -7,6 +7,7 @@ import {
   MOUSE_SCHEMES,
   DEFAULT_SCHEME_NAME,
   loadSchemeName,
+  navHint,
   saveSchemeName,
   schemeToMouseButtons,
   schemeToTouches,
@@ -82,4 +83,17 @@ test('6: loadSchemeName ignores a garbage stored value', () => {
   } finally {
     delete globalThis.localStorage;
   }
+});
+
+test('7: navHint matches each scheme\'s real bindings', () => {
+  const fusion = navHint('fusion');
+  // fusion: ORBIT=0(L), PAN=1(M), DOLLY=2(R). Shift+M orbits (three's
+  // Pan+Shift=Rotate rule); Shift+L pans. Scroll always zooms.
+  assert.equal(fusion, 'Left-drag: orbit · Middle-drag: pan · Shift+Left-drag: pan · Shift+Middle-drag: orbit · Right-drag: dolly · Scroll: zoom');
+  const legacy = navHint('legacy');
+  // legacy: ORBIT=0(L), PAN=2(R), DOLLY=1(M). Shift+R orbits (three's
+  // Pan+Shift=Rotate rule), Shift+L pans; the wheel carries the zoom.
+  assert.equal(legacy, 'Left-drag: orbit · Right-drag: pan · Shift+Left-drag: pan · Shift+Right-drag: orbit · Scroll: zoom');
+  // The old hardcoded lie must be gone from either string.
+  assert.ok(!fusion.includes('Right-drag orbit'));
 });

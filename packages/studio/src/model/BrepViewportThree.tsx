@@ -78,7 +78,7 @@ import type { AnchorPoint } from './HandleOverlay.js';
 import { mergeMeshes, type MeshInput } from '../mesh-export.js';
 import { bboxCenter, DEFAULT_FILL_FRACTION, fitDistance, type Box3Like } from '../camera-fit.js';
 import { CUBE_ZONE_CELL, cubeZoneAt, cubeZoneDirs, type CubeFaceKey, type CubeZone } from './cube-zone.js';
-import { DEFAULT_SCHEME_NAME, MOUSE_SCHEMES, loadSchemeName, saveSchemeName, schemeToMouseButtons, schemeToTouches, type MouseScheme } from '../camera-controls.js';
+import { DEFAULT_SCHEME_NAME, MOUSE_SCHEMES, loadSchemeName, navHint, saveSchemeName, schemeToMouseButtons, schemeToTouches, type MouseScheme } from '../camera-controls.js';
 import { CameraMode, loadCameraMode, orthoFrustumFromPerspective, saveCameraMode } from '../ortho-camera.js';
 import { computeSelectionFit, computeWindowZoomFit, type Vec3 } from '../window-zoom-fit.js';
 import { nearestVisible, nextCycleIndex, shouldHandleViewportDelete } from '../pick-helpers.js';
@@ -356,6 +356,12 @@ interface Props {
    * Default false: every existing caller keeps its badges.
    */
   badgesInStatusBar?: boolean;
+  /** The status bar's mouse-binding hint, LIFTED to the caller like the
+   *  selection readout badgesInStatusBar lifts: the viewport owns the
+   *  scheme (its own chip writes it), the caller renders the words. Fired
+   *  on mount and on every scheme flip, with the pure navHint() string.
+   *  Absent: the caller renders nothing (app/brep-three callers). */
+  onNavHint?: (hint: string) => void;
   /**
    * Which pickable kinds are currently active -- SPEC-mouse-parity.md Phase 3
    * item 2's filter toolbar. Rendered HERE, beside this component's own view
@@ -601,7 +607,7 @@ const FILTER_CHIPS: { key: keyof SelectionFilters; label: string }[] = [
  */
 export default function BrepViewportThree({
   doc, deflection, onStats, onPick, pick, selectedCount, selectionLabel, anchors, onAnchors, onMesh, registerPickAt,
-  sketchPlane, panelOcclusionPx, ruleActivityAt, onEngine, badgesInStatusBar = false, filters, onFiltersChange, onBoxSelect,
+  sketchPlane, panelOcclusionPx, ruleActivityAt, onEngine, badgesInStatusBar = false, onNavHint, filters, onFiltersChange, onBoxSelect,
   onFeatureDoubleClick, onSelectAll, onDeleteSelected, onUndo, onRedo, onStartSketch, preview,
 }: Props) {
   const [phase, setPhase] = useState<'loading' | 'ready' | 'error'>('loading');
@@ -3737,6 +3743,8 @@ try {
   // toggle after mount has to reach INTO the live instances from outside it --
   // these effects are that seam. Both are no-ops until `phase` flips ready.
   const schemeBindRef = useRef<((scheme: MouseScheme) => void) | null>(null);
+  const onNavHintRef = useRef(onNavHint);
+  onNavHintRef.current = onNavHint;
   useEffect(() => {
     const controls = controlsRef.current;
     if (phase !== 'ready' || !controls) return;
@@ -3744,6 +3752,7 @@ try {
     // this same conversion has to reach it via the ref it stashed at setup
     // time rather than re-defining the translation here.
     schemeBindRef.current?.(mouseScheme);
+    onNavHintRef.current?.(navHint(mouseScheme));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase, mouseScheme]);
 

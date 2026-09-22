@@ -25,6 +25,7 @@ import { noteColor, type StudioNote } from './notes.js';
 import ModelEditor from './model/ModelEditor.js';
 import BrepViewport, { type BrepViewportStats, type ViewportPick } from './model/BrepViewportThree.js';
 import HandleOverlay, { type AnchorPoint, type SketchOutline } from './model/HandleOverlay.js';
+import { loadSchemeName, navHint, type MouseScheme } from './camera-controls.js';
 import SketchCanvas2D from './model/SketchCanvas2D.js';
 import ContextBar, { type ContextBarAction } from './model/ContextBar.js';
 import type { ContextActions } from './model/ModelEditor.js';
@@ -441,6 +442,10 @@ export default function ReshapeStudio({
   const meshRef = useRef<MeshInput | null>(null);
   const [hasMesh, setHasMesh] = useState(false);
   const [engineReady, setEngineReady] = useState(false);
+  // The status bar's mouse-binding hint, lifted from the viewport (its own
+  // Mouse chip writes the scheme). Seeded from the STORED scheme so the very
+  // first paint already matches the bindings.
+  const [navHintText, setNavHintText] = useState<string>(() => navHint(loadSchemeName() as MouseScheme));
   const pickAtRef = useRef<((clientX: number, clientY: number) => void) | null>(null);
   const specsRef = useRef<unknown[]>([]);
   const frameRef = useRef<HTMLIFrameElement | null>(null);
@@ -1420,6 +1425,7 @@ export default function ReshapeStudio({
                 }}
                 onEngine={() => setEngineReady(true)}
                 badgesInStatusBar={true}
+                onNavHint={setNavHintText}
                 // Phase 5.3 (todo 25): while a live drag preview exists
                 // (previewDoc != null) the viewport draws translucent in the
                 // selected feature's op colour; pointerup commits and drops it.
@@ -1686,7 +1692,7 @@ export default function ReshapeStudio({
             {bboxMm.x} × {bboxMm.y} × {bboxMm.z} mm
           </span>
         )}
-        <span className="reshape-studio-status-nav">Right-drag orbit · Scroll zoom</span>
+        <span className="reshape-studio-status-nav">{navHintText}</span>
       </footer>
 
       <style>{`

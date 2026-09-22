@@ -58,3 +58,33 @@ export function schemeToMouseButtons(scheme: MouseScheme): MouseButtons {
 export function schemeToTouches(scheme: MouseScheme): Touches {
   return MOUSE_SCHEMES[scheme].touches;
 }
+
+/** The status bar's one-line mouse-binding hint, derived from the scheme's
+ *  own button table so the words can never drift from the bindings (the
+ *  stale "Right-drag orbit" hint predates the fusion default flip and read
+ *  wrong under it: right-drag DOLLIES there). Both schemes orbit with the
+ *  left button; Shift+orbit-button becomes PAN and Shift+pan-button becomes
+ *  ORBIT via three.js OrbitControls' own modifier rule -- the fusion scheme's
+ *  Shift+MMB orbit is that built-in split, so the hint names it. */
+export function navHint(scheme: MouseScheme): string {
+  const b = MOUSE_SCHEMES[scheme].buttons;
+  const word = (btn: number): 'Left' | 'Middle' | 'Right' =>
+    btn === 0 ? 'Left' : btn === 1 ? 'Middle' : 'Right';
+  const shift = (btn: number): string => {
+    // The OTHER camera action on the same button (three.js's own modifier
+    // split: Rotate+Shift=Pan, Pan+Shift=Rotate). Dolly+Shift stays Dolly.
+    if (b.ORBIT === btn) return `Shift+${word(btn)}-drag: pan`;
+    if (b.PAN === btn) return `Shift+${word(btn)}-drag: orbit`;
+    return '';
+  };
+  const parts = [
+    `${word(b.ORBIT)}-drag: orbit`,
+    `${word(b.PAN)}-drag: pan`,
+    shift(b.ORBIT),
+    shift(b.PAN),
+    b.DOLLY === 1 ? 'Scroll: zoom' : `${word(b.DOLLY)}-drag: dolly`,
+  ].filter(Boolean);
+  // Scroll always zooms (OrbitControls' wheel handler is buttonless).
+  if (b.DOLLY !== 1) parts.push('Scroll: zoom');
+  return parts.join(' · ');
+}
