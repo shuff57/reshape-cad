@@ -27,10 +27,12 @@
 // element with no children to catch a keypress on has nowhere else to attach
 // the listener).
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   wedgesForMode,
   validSketchConstraints,
+  contextListFor,
+  flyoutHitTest,
   SKETCH_CONSTRAINT_IDS,
   type MarkingMenuMode,
   type MarkingMenuWedge,
@@ -60,7 +62,12 @@ export default function MarkingMenu({ x, y, mode, selection, onCommand, onClose 
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [onClose]);
-
+  // The flyout's parent wedge (data + its offset from the center). null
+  // means no flyout is open; hovering another wedge with children swaps it.
+  const [flyout, setFlyout] = useState<{ wedge: MarkingMenuWedge; wx: number; wy: number } | null>(null);
+  // The last cursor position INSIDE the wedge, kept so the dead-zone
+  // triangle stays anchored even after the cursor leaves the wedge itself.
+  const [cursorIn, setCursorIn] = useState<{ x: number; y: number } | null>(null);
   const wedges = wedgesForMode(mode);
   const validIds = mode === 'sketch' ? new Set(validSketchConstraints(selection ?? [])) : null;
 
@@ -89,6 +96,7 @@ export default function MarkingMenu({ x, y, mode, selection, onCommand, onClose 
           const wx = RADIUS * Math.cos(angle);
           const wy = RADIUS * Math.sin(angle);
           const enabled = isEnabled(w);
+          const hasChildren = Array.isArray(w.children) && w.children.length > 0 && enabled;
           return (
             <button
               key={w.id}
@@ -99,6 +107,18 @@ export default function MarkingMenu({ x, y, mode, selection, onCommand, onClose 
               title={w.shortcut ? `${w.label} (${w.shortcut})` : w.label}
               style={{ left: wx, top: wy }}
               onPointerDown={stop}
+              onPointerEnter={() => {
+                if (hasChildren) {
+                  setFlyout({ wedge: w, wx, wy });
+                } else {
+                  setFlyout(null);
+                }
+              }}
+              onPointerMove={(e) => {
+                // Track the cursor so the dead-zone triangle can judge
+                // diagonal-vs-away once it leaves the wedge's own hit area.
+                if (hasChildren) setCursorIn({ x: e.clientX, y: e.clientY });
+              }}
               onClick={(e) => {
                 stop(e);
                 if (enabled) onCommand(w.id);
@@ -108,6 +128,54 @@ export default function MarkingMenu({ x, y, mode, selection, onCommand, onClose 
             </button>
           );
         })}
+      </div>
+      {flyout && flyout.wedge.children && (
+        <div
+          className="marking-menu"
+          role="menu"
+          style={{ left: x + flyout.wx * 2, top: y + flyout.wy * 2 }}
+        >
+          {flyout.wedge.children.map((c) => (
+            <button
+              key={c.id}
+              type="button"
+              role="menuitem"
+              className="marking-menu-wedge marking-menu-flyout-item"
+              disabled={!isEnabled(c)}
+              title={c.label}
+              onPointerEnter={() => {
+                // The dead-zone check: the cursor's move from the parent
+                // wedge toward THIS child. Moving diagonally toward the
+                // flyout keeps it; moving back toward the center (through the
+                // wedge) closes it. cursorIn anchors the triangle when the
+                // cursor is between the two areas.
+                if (cursorIn) {
+                  const verdict = flyoutHitTest(
+                    { x: flyout.wx, y: flyout.wy },
+                    { x: flyout.wx * 2, y: flyout.wy * 2 },
+                    cursorIn,
+                  );
+                  if (verdict === 'close') setFlyout(null);
+                }
+              }}
+            >
+              {c.label}
+            </button>
+          ))}
+        </div>
+      )}
+      <div className="marking-menu-context" role="presentation">
+        {contextListFor(mode).map((c) => (
+          <button
+            key={c.id}
+            type="button"
+            className="marking-menu-context-row"
+            disabled={!isEnabled(c)}
+            title={c.label}
+          >
+            {c.label}
+          </button>
+        ))}
       </div>
       <style>{`
         .marking-menu-backdrop { position: fixed; inset: 0; z-index: 29; }
@@ -126,6 +194,20 @@ export default function MarkingMenu({ x, y, mode, selection, onCommand, onClose 
         .marking-menu-wedge:not(:disabled):hover {
           background: var(--reshape-surface-alt); color: var(--reshape-accent);
         }
+        .marking-menu-context {
+          position: absolute; left: -70px; top: 120px; width: 140px;
+          display: flex; flex-direction: column; gap: 2px; z-index: 30;
+        }
+        .marking-menu-context-row {
+          text-align: left; padding: 4px 8px; border-radius: 4px;
+          border: 1px solid var(--border, var(--reshape-border));
+          background: var(--card, var(--reshape-surface));
+          color: var(--text, var(--reshape-text));
+          font-size: var(--reshape-font-size-sm, 12px); font-family: var(--reshape-font-ui);
+          cursor: pointer;
+        }
+        .marking-menu-context-row:disabled { opacity: 0.4; cursor: not-allowed; }
+        .marking-menu-flyout-item { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45); }
       `}</style>
     </>
   );

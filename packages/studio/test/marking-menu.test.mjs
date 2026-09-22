@@ -7,6 +7,9 @@ import {
   wedgesForMode,
   validSketchConstraints,
   classifyRightClick,
+  contextListFor,
+  flyoutHitTest,
+  SKETCH_TOOL_CHILDREN,
 } from '../dist/model/marking-menu-core.js';
 
 test('part-viewport config returns exactly the 8 SPEC wedges', () => {
@@ -92,4 +95,46 @@ test('classifyRightClick: a release past the dead zone is a drag, not a click', 
 
 test('classifyRightClick: no matching pointerdown always ignores', () => {
   assert.equal(classifyRightClick(null, { x: 0, y: 0, t: 0 }, 4), 'ignore');
+});
+
+// --- todo 18: flyout + context list -------------------------------------------------
+
+test('contextListFor returns the SPEC :34-35 entries for both modes', () => {
+  const ids = contextListFor('part-viewport').map((w) => w.id);
+  assert.deepEqual(ids, ['ctx-pan-zoom-orbit', 'ctx-isolate', 'ctx-workspaces', 'ctx-saved-shortcuts']);
+  assert.deepEqual(contextListFor('sketch').map((w) => w.id), ids);
+});
+
+test('the part-viewport Sketch wedge carries a non-empty sketch-tool flyout', () => {
+  const sketch = wedgesForMode('part-viewport').find((w) => w.id === 'sketch');
+  assert.ok(sketch, 'the part-viewport config has a sketch wedge');
+  assert.ok(Array.isArray(sketch.children) && sketch.children.length > 0, 'Sketch wedge has children');
+  for (const c of sketch.children) {
+    assert.equal(typeof c.id, 'string');
+    assert.equal(typeof c.label, 'string');
+  }
+  const childIds = sketch.children.map((c) => c.id);
+  for (const expected of ['tool-line', 'tool-circle', 'tool-trim', 'tool-fillet']) {
+    assert.ok(childIds.includes(expected), `sketch flyout missing ${expected}`);
+  }
+});
+
+test('SKETCH_TOOL_CHILDREN matches the flyout data on the Sketch wedge', () => {
+  const sketch = wedgesForMode('part-viewport').find((w) => w.id === 'sketch');
+  assert.deepEqual(SKETCH_TOOL_CHILDREN(), sketch?.children);
+});
+
+test('flyoutHitTest: a diagonal move from the wedge toward the flyout STAYS open', () => {
+  // Wedge at (90, 0) on the menu circle; flyout anchored one radius further
+  // out at (180, 0). A diagonal path from the wedge toward the flyout stays
+  // inside the dead-zone triangle.
+  const verdict = flyoutHitTest({ x: 90, y: 0 }, { x: 180, y: 0 }, { x: 130, y: 20 });
+  assert.equal(verdict, 'stay');
+});
+
+test('flyoutHitTest: a move back toward the menu center CLOSES the flyout', () => {
+  // From the wedge back through the menu center is directly away from the
+  // flyout -- outside the triangle.
+  const verdict = flyoutHitTest({ x: 90, y: 0 }, { x: 180, y: 0 }, { x: 20, y: -10 });
+  assert.equal(verdict, 'close');
 });
