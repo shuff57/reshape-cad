@@ -502,6 +502,51 @@ fn region_inside(other: &TSolid, plane: &Plane, offset: Vec3) -> Option<Region> 
         let s = f.borrow().surface.clone();
         match &s {
             Surface::Plane(g) => {
+                // A planar face PARALLEL to the probe plane contributes the
+                // degenerate (0,0,c) half-plane: a CONSTANT over the whole
+                // probe plane. For a MATERIAL cap that is right (the solid
+                // ends at that plane); for a VOID face (a prior bore's
+                // floor/ceiling) it is wrong — material continues behind the
+                // plane everywhere else, and the constant kills the next
+                // bore's floor probes (the pi*9*8/3 residual of msgbox #329's
+                // flush case). Void signature: material EXISTS behind the
+                // plane (−n step) at a point OUTSIDE the face's own area —
+                // a material cap has nothing behind its plane except within
+                // its own area, a void face has the rest of the solid there.
+                {
+                    let fb = f.borrow();
+                    let (a_, b_) = (dot(g.n, plane.u).abs(), dot(g.n, plane.v).abs());
+                    if a_ < 1e-9 && b_ < 1e-9 {
+                        // Parallel. Sample beside the face: face centroid plus
+                        // 2x its own bbox half-diagonal, in-plane.
+                        let (area, c3) = build::face_area_centroid(&fb);
+                        if area > 0.0 {
+                            // face bbox in-plane radius
+                            let mut rr = 0.0f64;
+                            for w in &fb.boundary {
+                                let wb = w.borrow();
+                                for u in &wb.edges {
+                                    let eb = u.edge.borrow();
+                                    for p in [eb.a.borrow().point, eb.b.borrow().point] {
+                                        let d = crate::math::len(sub(p, c3));
+                                        if d > rr {
+                                            rr = d;
+                                        }
+                                    }
+                                }
+                            }
+                            // In-plane direction away from the face: plane.u.
+                            let beside = add(c3, scale(plane.u, 2.0 * rr + 1.0));
+                            let behind = sub(beside, scale(g.n, 4.0 * PROBE));
+                            if inside_solid(other, behind) {
+                                // Material continues behind this plane away
+                                // from the face: the face is a void surface,
+                                // not a cap. Skip it.
+                                continue;
+                            }
+                        }
+                    }
+                }
                 let h = halfplane_of(plane, g, offset);
                 region.push_hl(h);
             }
@@ -519,13 +564,17 @@ fn region_inside(other: &TSolid, plane: &Plane, offset: Vec3) -> Option<Region> 
                     let point_on_surface = add(cy.origin, add(scale(cy.e1, cy.radius), scale(cy.axis, vm)));
                     let axis_proj = add(cy.origin, scale(cy.axis, dot(sub(point_on_surface, cy.origin), cy.axis)));
                     let radial = sub(point_on_surface, axis_proj);
-                    // Face normal at u=0. p(u)=origin+R(e1·cosu+e2·sinu)+axis·v, so the
-                    // outward surface normal at u=0 is cross(axis, e1) = e2 (the
-                    // frame is right-handed); e1 is the radial POSITION, not the
-                    // normal. `flip_face` reverses a bore wall by negating e2
-                    // with forward kept true, so the real outward normal is
-                    // cross(axis, e1) · (face.forward ? 1 : -1) regardless.
-                    let surface_normal = cross(cy.axis, cy.e1);
+                    // Face normal at u=0. p(u,v)=origin+R(e1·cosu+e2·sinu)+axis·v;
+                    // dp/du at u=0 is R·e2, dp/dv is axis, and the outward
+                    // normal (dp/du × dp/dv) is R·(e2×axis) — i.e. +e1, the
+                    // radial direction, for the original frame. `flip_face`
+                    // reverses a bore wall by negating e2 with forward kept
+                    // true, which flips dp/du and hence the normal, so the
+                    // face's outward normal at u=0 is
+                    // cross(cy.e2, cy.axis) · (face.forward ? 1 : -1).
+                    // A void wall's normal points INTO the void: dot < 0 vs
+                    // the radial direction (probe at u=0, v=mid).
+                    let surface_normal = cross(cy.e2, cy.axis);
                     let face_normal = if face.forward { surface_normal } else { scale(surface_normal, -1.0) };
                     if dot(face_normal, radial) < 0.0 {
                         // Void wall - skip (bounds empty space, not material)
@@ -539,6 +588,27 @@ fn region_inside(other: &TSolid, plane: &Plane, offset: Vec3) -> Option<Region> 
                         region.intersect_disk(c, rr);
                     }
                 } else if ad < 1e-9 {
+                    // A VOID WALL (an inward-facing cylindrical face left by a
+                    // prior bore) bounds empty space, not material: it must
+                    // not constrain the region. Without this skip the wall's
+                    // half-planes collapse the region to the old bore's
+                    // cross-section and every later bore's floor is silently
+                    // dropped (msgbox #329: floors lost == prior-bore count).
+                    // Same normal formula the perpendicular arm uses: the
+                    // face's outward normal at u=0 is cross(cy.e2, cy.axis)
+                    // · forward; a void wall's points INTO the void.
+                    {
+                        let face = f.borrow();
+                        let vm = 0.5 * (cy.vmin + cy.vmax);
+                        let point_on_surface = add(cy.origin, add(scale(cy.e1, cy.radius), scale(cy.axis, vm)));
+                        let axis_proj = add(cy.origin, scale(cy.axis, dot(sub(point_on_surface, cy.origin), cy.axis)));
+                        let radial = sub(point_on_surface, axis_proj);
+                        let surface_normal = cross(cy.e2, cy.axis);
+                        let face_normal = if face.forward { surface_normal } else { scale(surface_normal, -1.0) };
+                        if dot(face_normal, radial) < 0.0 {
+                            continue;
+                        }
+                    }
                     let r = cyl_parallel_region(cy, plane, offset);
                     if r.empty {
                         return Some(Region::empty());
@@ -3400,4 +3470,48 @@ mod shell_flush_tests {
         assert!((vol - want).abs() <= 1e-6 * want, "volume {vol} vs {want}");
         assert_eq!(got.faces().len(), 11, "5 outer + top ring + 5 inner");
     }
+}
+
+/// THE CLASS-2 SILENT WRONG SOLID (msgbox #329): region_inside() builds a
+/// convex region from EVERY face of `other`. Once the base carries a bore,
+/// that bore's void wall/floor must not constrain the next tool's region --
+/// otherwise every subsequent bore's floor is silently dropped. Each blind
+/// bore removes exactly pi*r^2*depth: N disjoint blind d6 depth-8 bores in a
+/// 40x40x20 box give 32000 - N * 6pi * 8.
+#[test]
+fn successive_blind_bores_keep_every_floor() {
+    let base = build::box_solid([40.0, 40.0, 20.0], [0.0, 0.0, 0.0], None);
+    let offs: [[f64; 3]; 4] =
+        [[-15.0, -10.0, 0.0], [15.0, -10.0, 0.0], [-15.0, 10.0, 0.0], [15.0, 10.0, 0.0]];
+    let mut shape = base;
+    let mut want = 32000.0f64;
+    for off in offs {
+        let tool = build::cylinder_solid(off, 3.0, 8.0, [0.0, 0.0, 1.0]);
+        let r = boolean("subtract", &shape, &tool);
+        assert!(r.is_some(), "a disjoint blind bore must not refuse");
+        shape = r.unwrap();
+        want -= std::f64::consts::PI * 9.0 * 8.0;
+        let vol = build::solid_volume(&shape);
+        assert!(
+            (vol - want).abs() <= 1e-6 * want,
+            "bore at {off:?}: volume {vol} vs exact {want} (a lost floor is a silent wrong solid)"
+        );
+    }
+}
+
+/// The through-bore variant (msgbox #329 proof): a THROUGH bore's wall also
+/// poisons the next blind bore's floor -- exactly one floor lost when the
+/// through cut comes first and a blind bore elsewhere second.
+#[test]
+fn through_bore_then_blind_bore_keeps_the_floor() {
+    let base = build::box_solid([40.0, 40.0, 20.0], [0.0, 0.0, 0.0], None);
+    let through = build::cylinder_solid([-15.0, -10.0, 0.0], 3.0, 40.0, [0.0, 0.0, 1.0]);
+    let shape = boolean("subtract", &base, &through).expect("first bore cuts");
+    let blind = build::cylinder_solid([15.0, 10.0, 0.0], 3.0, 8.0, [0.0, 0.0, 1.0]);
+    let want =
+        32000.0 - std::f64::consts::PI * 9.0 * 20.0 - std::f64::consts::PI * 9.0 * 8.0;
+    let r = boolean("subtract", &shape, &blind);
+    assert!(r.is_some(), "a second, disjoint bore must not refuse");
+    let vol = build::solid_volume(&r.unwrap());
+    assert!((vol - want).abs() <= 1e-6 * want, "volume {vol} vs exact {want}");
 }
