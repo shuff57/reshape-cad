@@ -130,10 +130,19 @@ import { HOLD_CYCLE_DEAD_ZONE_PX } from '../input-threshold.js';
 import MarkingMenu from './MarkingMenu.js';
 import {
   classifyRightClick,
+  classifyGesture,
+  wedgesForMode,
+  type GestureThresholds,
   type PointerSample,
   type SketchGeomKind,
   type SketchSelectionEntry,
 } from './marking-menu-core.js';
+
+// Todo 19's [CONFIRM]-sourced gesture thresholds, same shape as
+// BrepViewportThree's: the delay is the marking-menu gesture's own default
+// (150ms, pending real-Fusion verification per SPEC open question #2); the
+// dead zone is the SHARED click-and-hold constant, not a second number.
+const MARKING_GESTURE: GestureThresholds = { delayMs: 150, deadZonePx: HOLD_CYCLE_DEAD_ZONE_PX, wedgeCount: 8 };
 
 const SNAP_PX = 8;
 const HIT_PX = 6;
@@ -2359,8 +2368,18 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
           if (panButton !== 2) return;
           e.preventDefault();
           const up: PointerSample = { x: e.clientX, y: e.clientY, t: e.timeStamp };
-          if (classifyRightClick(rightDownRef.current, up, HOLD_CYCLE_DEAD_ZONE_PX) !== 'menu') return;
+          const verdict = classifyGesture(rightDownRef.current, up, MARKING_GESTURE);
+          rightDownRef.current = null;
+          if (verdict.kind === 'ignore') return;
           const rect = e.currentTarget.getBoundingClientRect();
+          if (verdict.kind === 'wedge') {
+            // Fast directional drag: the wedge's command fires with no
+            // visible menu flash (SPEC :37-39). The wedge ids are the
+            // sketch config's own, in MarkingMenu.tsx's layout order.
+            const id = wedgesForMode('sketch')[verdict.wedgeIndex]?.id;
+            if (id) dispatchMarkingMenuCommand(id);
+            return;
+          }
           setMarkingMenu({ x: e.clientX - rect.left, y: e.clientY - rect.top });
         }}
         onDoubleClick={() => {

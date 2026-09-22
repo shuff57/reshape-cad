@@ -84,8 +84,14 @@ import { nearestVisible, nextCycleIndex, shouldHandleViewportDelete } from '../p
 import { HOLD_CYCLE_DELAY_MS, HOLD_CYCLE_DEAD_ZONE_PX } from '../input-threshold.js';
 import type { SelectionFilters, SelectionItem } from '../selection-model.js';
 import MarkingMenu from './MarkingMenu.js';
-import { classifyRightClick, type PointerSample } from './marking-menu-core.js';
+import { classifyRightClick, classifyGesture, wedgesForMode, type PointerSample, type GestureThresholds } from './marking-menu-core.js';
 import { marqueeKind, pointSetSelect, type MarqueeDrag } from '../marquee-select.js';
+
+// Todo 19's [CONFIRM]-sourced gesture thresholds: the delay is the
+// marking-menu gesture's own default (150ms, pending real-Fusion
+// verification per SPEC open question #2); the dead zone is the SHARED
+// click-and-hold constant from input-threshold.ts, not a second number.
+const MARKING_GESTURE: GestureThresholds = { delayMs: 150, deadZonePx: HOLD_CYCLE_DEAD_ZONE_PX, wedgeCount: 8 };
 
 /** The Dracula palette this app already uses everywhere else -- see
  *  app/globals.css and BrepViewport.tsx. */
@@ -815,12 +821,33 @@ export default function BrepViewportThree({
   onSelectAllRef.current = onSelectAll;
   const onDeleteSelectedRef = useRef(onDeleteSelected);
   onDeleteSelectedRef.current = onDeleteSelected;
+  // The marking menu's shared dispatch, for BOTH the rendered menu's wedges
+  // (the onClick near the bottom of this file) and todo 19's fast
+  // directional gesture -- one function so a wedge fired either way does
+  // exactly the same thing.
+  const dispatchMarkingCommandRef = useRef<(id: string) => void>(() => {});
   // Same stale-closure reasoning as docRef above: projectAnchors() is a
   // component-level function (reads refs, not props) so it can be called
   // both from inside the scene-setup effect's camera-change handler and from
   // the doc-rebuild effect, without either one recreating it.
   const anchorsRef = useRef<HandleSpec[]>(anchors ?? []);
   anchorsRef.current = anchors ?? [];
+  // The ONE marking-menu dispatch both entry points share: the rendered
+  // menu's onClick (near the bottom of this file) AND todo 19's fast
+  // directional gesture (which never renders the menu). Assignment during
+  // render (not an effect) keeps the ref fresh with no commit delay, and
+  // the dispatch reads props directly so there is no stale closure.
+  dispatchMarkingCommandRef.current = (id: string) => {
+    if (id === 'delete') onDeleteSelected?.();
+    else if (id === 'undo') onUndo?.();
+    else if (id === 'redo') onRedo?.();
+    else if (id === 'sketch') onStartSketch?.();
+    // repeat / press-pull / move-copy / hole: present-but-noop. Each needs
+    // new plumbing this base-component todo does not build -- a
+    // repeat-last-feature flow, a Press Pull command, a Move/Copy gizmo, a
+    // Hole feature dialog -- see marking-menu-core.ts's own comment on
+    // PART_VIEWPORT_WEDGES.
+  };
   const onAnchorsRef = useRef(onAnchors);
   onAnchorsRef.current = onAnchors;
   // Set by the camera's own 'change' event, consumed (and cleared) inside the
@@ -2259,21 +2286,31 @@ export default function BrepViewportThree({
       e.preventDefault();
       onDeleteSelectedRef.current?.();
     }
-    // SPEC-mouse-parity.md Phase 4.1/4.3: right-click opens the marking
-    // menu; a right-DRAG (beyond HOLD_CYCLE_DEAD_ZONE_PX between
-    // pointerdown and this event) must keep panning/orbiting instead --
-    // classifyRightClick() is the shared classifier todo 19/20 also use.
-    // Always preventDefault: the native browser menu is never wanted here,
-    // whether or not this one opens (a right-drag that pans still fires a
-    // contextmenu event on release, and the native menu popping up over an
-    // in-progress pan would be worse than no menu at all).
+    // SPEC-mouse-parity.md Phase 4.1/4.2/4.3: a right-press that stays put
+    // through the gesture delay opens the marking menu; a right-DRAG past
+    // the dead zone before the delay keeps panning/orbiting, AND a fast
+    // directional drag fires the wedge's command directly WITHOUT ever
+    // rendering the menu (classifyGesture() is the shared todo-19 classifier
+    // in marking-menu-core.ts). Always preventDefault: the native browser
+    // menu is never wanted here, whether or not this gesture opens anything
+    // (a right-drag that pans still fires a contextmenu event on release,
+    // and the native menu popping up over an in-progress pan would be worse
+    // than no menu at all).
     function onCanvasContextMenu(e: MouseEvent) {
       e.preventDefault();
       const up: PointerSample = { x: e.clientX, y: e.clientY, t: e.timeStamp };
-      const cls = classifyRightClick(rightDownAt, up, HOLD_CYCLE_DEAD_ZONE_PX);
+      const verdict = classifyGesture(rightDownAt, up, MARKING_GESTURE);
       rightDownAt = null;
-      if (cls !== 'menu') return;
+      if (verdict.kind === 'ignore') return;
       const bounds = renderer.domElement.getBoundingClientRect();
+      if (verdict.kind === 'wedge') {
+        // Fast directional drag: the wedge's command fires with no visible
+        // menu flash (SPEC :37-39). The wedge ids are the part-viewport
+        // config's own, in MarkingMenu.tsx's layout order.
+        const id = wedgesForMode('part-viewport')[verdict.wedgeIndex]?.id;
+        if (id) dispatchMarkingCommandRef.current?.(id);
+        return;
+      }
       setMarkingMenu({ x: e.clientX - bounds.left, y: e.clientY - bounds.top });
     }
     renderer.domElement.addEventListener('pointermove', onPointerMove);
@@ -3680,15 +3717,7 @@ try {
           mode="part-viewport"
           onCommand={(id) => {
             setMarkingMenu(null);
-            if (id === 'delete') onDeleteSelected?.();
-            else if (id === 'undo') onUndo?.();
-            else if (id === 'redo') onRedo?.();
-            else if (id === 'sketch') onStartSketch?.();
-            // repeat / press-pull / move-copy / hole: present-but-noop. Each
-            // needs new plumbing this base-component todo does not build --
-            // a repeat-last-feature flow, a Press Pull command, a Move/Copy
-            // gizmo, a Hole feature dialog -- see marking-menu-core.ts's own
-            // comment on PART_VIEWPORT_WEDGES.
+            dispatchMarkingCommandRef.current?.(id);
           }}
           onClose={() => setMarkingMenu(null)}
         />

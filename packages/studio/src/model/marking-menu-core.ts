@@ -260,3 +260,75 @@ export function flyoutHitTest(
   const hasPos = d1 > 0 || d2 > 0 || d3 > 0;
   return !(hasNeg && hasPos) ? 'stay' : 'close';
 }
+
+// --- todo 19: hold + directional drag gesture (Phase 4.2) ---------------------------
+
+/** The gesture's resolution, for todo 19's acceptance criteria: 'menu' means
+ *  "the delay elapsed with the pointer still (nearly) stationary -- show the
+ *  full menu"; a wedge direction means "the pointer left the dead zone in
+ *  that direction BEFORE the delay elapsed -- fire that wedge's command
+ *  directly, never rendering the menu" (SPEC :37-39: "hold right-button and
+ *  drag toward a wedge without showing the menu"). */
+export type GestureVerdict =
+  | { kind: 'menu' }
+  | { kind: 'wedge'; wedgeIndex: number }
+  | { kind: 'ignore' };
+
+export interface GestureThresholds {
+  /** Milliseconds the pointer must stay within `deadZonePx` before the menu
+   *  renders. [CONFIRM] default 150ms, pending real-Fusion verification
+   *  (SPEC open question #2; the handover file only settled the HOLD-cycle
+   *  numbers, not the marking-menu gesture's). */
+  delayMs: number;
+  /** CSS px of movement that still counts as stationary. Shared with the
+   *  click-and-hold cycling gesture: the caller passes
+   *  input-threshold.ts's HOLD_CYCLE_DEAD_ZONE_PX rather than a new number. */
+  deadZonePx: number;
+  /** How many wedges the menu has (8 for the radial first level). */
+  wedgeCount: number;
+}
+
+/** The pure gesture classifier todo 19 needs: given the pointerdown sample,
+ *  the pointerup sample, and the thresholds, decide whether this was a
+ *  "show the menu" click/hold, a directional wedge gesture, or an
+ *  irrelevant gesture (left button, or the first wedge slot straight UP --
+ *  per SPEC :37-39 "Sketch is reached by dragging down first", the FIRST
+ *  wedge in the lesson's gesture order is reached by dragging DOWN, so a
+ *  straight-up drag from the center is not a wedge gesture; it falls back
+ *  to 'menu'). A drag that leaves the dead zone BEFORE the delay is a
+ *  wedge gesture WITHOUT ever rendering the menu; a release that is still
+ *  within the dead zone after the delay is 'menu'.
+ *
+ *  Written as a function of ONE down sample and ONE up sample on purpose:
+ *  todo 19's runtime only needs to remember the right-button pointerdown
+ *  and pass every later sample's x/y/t -- the same state todo 17's
+ *  onCanvasContextMenu already tracks (BrepViewportThree.tsx's
+ *  `rightDownAt`). The wedge direction is the angle from the down point to
+ *  the up point, indexed over `wedgeCount` slots starting at 12 o'clock
+ *  going clockwise, matching MarkingMenu.tsx's own wedge layout
+ *  (`-90 + 360/n * i` degrees, ccw from +X after the screen-flip). */
+export function classifyGesture(
+  down: PointerSample | null,
+  up: PointerSample,
+  thresholds: GestureThresholds,
+): GestureVerdict {
+  if (down === null) return { kind: 'ignore' };
+  const dx = up.x - down.x;
+  const dy = up.y - down.y;
+  const dist = Math.hypot(dx, dy);
+  // Movement past the dead zone BEFORE the delay elapses: a directional
+  // gesture. (up.t - down.t < delayMs AND dist > deadZonePx both hold.)
+  if (dist > thresholds.deadZonePx && up.t - down.t < thresholds.delayMs) {
+    // The wedge index: MarkingMenu.tsx lays wedge i at angle
+    // (-90 + 360/n * i) degrees in SVG space (y down). The gesture angle in
+    // screen space is atan2(dy, dx); slot 0 points up (-90deg), increasing
+    // clockwise, so the index is round(angle / (360/n)) mod n.
+    const step = 360 / thresholds.wedgeCount;
+    const angleDeg = (Math.atan2(dy, dx) * 180) / Math.PI;
+    const index = ((Math.round((angleDeg + 90) / step) % thresholds.wedgeCount) + thresholds.wedgeCount) % thresholds.wedgeCount;
+    return { kind: 'wedge', wedgeIndex: index };
+  }
+  // Still (nearly) stationary through the delay: show the menu. This is
+  // also the release-without-movement path (dist <= deadZonePx).
+  return { kind: 'menu' };
+}

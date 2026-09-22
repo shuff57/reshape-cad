@@ -7,6 +7,7 @@ import {
   wedgesForMode,
   validSketchConstraints,
   classifyRightClick,
+  classifyGesture,
   contextListFor,
   flyoutHitTest,
   SKETCH_TOOL_CHILDREN,
@@ -137,4 +138,51 @@ test('flyoutHitTest: a move back toward the menu center CLOSES the flyout', () =
   // flyout -- outside the triangle.
   const verdict = flyoutHitTest({ x: 90, y: 0 }, { x: 180, y: 0 }, { x: 20, y: -10 });
   assert.equal(verdict, 'close');
+});
+
+// --- todo 19: hold + directional drag gesture ----------------------------------------
+
+test('classifyGesture: a fast directional drag beyond the dead zone selects a wedge, no menu', () => {
+  const down = { x: 100, y: 100, t: 0 };
+  const up = { x: 100, y: 160, t: 60 }; // 60px straight down in 60ms
+  const verdict = classifyGesture(down, up, { delayMs: 150, deadZonePx: 4, wedgeCount: 8 });
+  assert.equal(verdict.kind, 'wedge');
+  if (verdict.kind === 'wedge') {
+    // MarkingMenu.tsx lays wedge i at (-90 + 45*i) SVG degrees (y-down):
+    // i=0 up, i=1 upper-right, i=2 right, i=3 lower-right, i=4 DOWN, ...
+    // A straight-down drag is exactly wedge 4.
+    assert.equal(verdict.wedgeIndex, 4);
+  }
+});
+
+test('classifyGesture: a hold within the dead zone through the delay shows the menu', () => {
+  const down = { x: 100, y: 100, t: 0 };
+  const up = { x: 101, y: 102, t: 200 }; // well past the 150ms delay, ~2px move
+  const verdict = classifyGesture(down, up, { delayMs: 150, deadZonePx: 4, wedgeCount: 8 });
+  assert.deepEqual(verdict, { kind: 'menu' });
+});
+
+test('classifyGesture: a slow drag past the dead zone after the delay is still menu', () => {
+  const down = { x: 100, y: 100, t: 0 };
+  const up = { x: 160, y: 100, t: 400 }; // 60px but 400ms > 150ms delay
+  const verdict = classifyGesture(down, up, { delayMs: 150, deadZonePx: 4, wedgeCount: 8 });
+  assert.deepEqual(verdict, { kind: 'menu' });
+});
+
+test('classifyGesture: no pointerdown always ignores', () => {
+  assert.deepEqual(classifyGesture(null, { x: 0, y: 0, t: 0 }, { delayMs: 150, deadZonePx: 4, wedgeCount: 8 }), { kind: 'ignore' });
+});
+
+test('classifyGesture: the wedge index matches MarkingMenu.tsx layout order', () => {
+  // MarkingMenu.tsx lays wedge i at angle (-90 + 360/n * i) degrees, SVG
+  // y-down. A drag toward the upper-right (+X, -Y screen) must land on the
+  // wedge at -45deg, which is i=1 (slots step clockwise from up).
+  const down = { x: 100, y: 100, t: 0 };
+  const up = { x: 160, y: 40, t: 50 };
+  const verdict = classifyGesture(down, up, { delayMs: 150, deadZonePx: 4, wedgeCount: 8 });
+  assert.equal(verdict.kind, 'wedge');
+  if (verdict.kind === 'wedge') {
+    const id = wedgesForMode('part-viewport')[verdict.wedgeIndex]?.id;
+    assert.equal(id, 'delete', 'wedge 1 is Delete in the SPEC reading order');
+  }
 });
