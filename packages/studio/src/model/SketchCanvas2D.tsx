@@ -126,6 +126,14 @@ import {
 } from '../sketch-view.js';
 import { marqueeKind, marqueeSelect } from '../marquee-select.js';
 import { loadSchemeName, schemeToMouseButtons } from '../camera-controls.js';
+import { HOLD_CYCLE_DEAD_ZONE_PX } from '../input-threshold.js';
+import MarkingMenu from './MarkingMenu.js';
+import {
+  classifyRightClick,
+  type PointerSample,
+  type SketchGeomKind,
+  type SketchSelectionEntry,
+} from './marking-menu-core.js';
 
 const SNAP_PX = 8;
 const HIT_PX = 6;
@@ -227,6 +235,13 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
   const [chain, setChain] = useState<LineChain | null>(null);
   const [clicks, setClicks] = useState<Pt[]>([]);
   const [sel, setSel] = useState<Sel[]>([]);
+  // Right-click marking menu (SPEC-mouse-parity.md Phase 4.1): container-
+  // relative px, or null when closed. rightDownRef holds the ORIGINAL
+  // pointerdown position for the right button -- not panRef, which the pan
+  // gesture below mutates on every move, so it can't answer "did this press
+  // move past the dead zone" by the time the contextmenu event fires.
+  const [markingMenu, setMarkingMenu] = useState<{ x: number; y: number } | null>(null);
+  const rightDownRef = useRef<PointerSample | null>(null);
   const [auto, setAuto] = useState(true);
   const [pointer, setPointer] = useState<Pt | null>(null);
   // The snap under the cursor, WHATEVER kind: the glyph beside it is how a
@@ -1083,6 +1098,91 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     }
   }, [canDimLine, canDimRadius, openDim]);
 
+  // SPEC-mouse-parity.md Phase 4.1: the marking menu's own view of the
+  // current selection, as geometry kinds -- a named point (sel[i].at !==
+  // null) is 'point' regardless of its parent row's own kind, everything
+  // else is that row's geomKind() (fed straight to
+  // validSketchConstraints(), which is what actually decides which
+  // constraint wedges render enabled).
+  const markingMenuSelection = useMemo<SketchSelectionEntry[]>(() => {
+    const toGeomKind = (k: string | null): SketchGeomKind =>
+      k === 'circle' || k === 'arc' || k === 'point' ? k : 'line';
+    return sel.map((s) => ({ kind: s.at !== null ? 'point' : toGeomKind(geomKind(s.id, solved)) }));
+  }, [sel, solved]);
+
+  /** The marking menu's sketch-mode dispatch: mirrors, wedge for wedge, the
+   *  exact rule-row shapes the Constrain toolbar buttons below already build
+   *  (SketchCanvas2D.tsx's own applyRule() calls) -- a separate function
+   *  rather than a shared extraction, since the buttons' onClick bodies stay
+   *  untouched (this todo does not refactor them). The canX guards double-
+   *  check what MarkingMenu.tsx's own disabled= already enforces, in case a
+   *  stale selection reaches here between a render and a click. */
+  function dispatchMarkingMenuCommand(id: string) {
+    switch (id) {
+      case 'done':
+        onExit?.();
+        return;
+      case 'dim':
+        openDimFromSelection();
+        return;
+      case 'horizontal':
+        if (canHoriz) applyRule({ k: 'horizontal', a: selShapes[0].id });
+        return;
+      case 'vertical':
+        if (canVert) applyRule({ k: 'vertical', a: selShapes[0].id });
+        return;
+      case 'coincident': {
+        if (!canCoin) return;
+        const [a, b] = selPoints as [Sel, Sel];
+        applyRule({ k: 'coincident', a: a.id, aEnd: a.at!, b: b.id, bEnd: b.at! });
+        return;
+      }
+      case 'parallel': {
+        if (!canParallel) return;
+        const [a, b] = selShapes as [Sel, Sel];
+        applyRule({ k: 'parallel', a: a.id, b: b.id });
+        return;
+      }
+      case 'perpendicular': {
+        if (!canPerp) return;
+        const [a, b] = selShapes as [Sel, Sel];
+        applyRule({ k: 'perpendicular', a: a.id, b: b.id });
+        return;
+      }
+      case 'equal': {
+        if (!canEqual) return;
+        const [a, b] = selShapes as [Sel, Sel];
+        applyRule({ k: 'equal', a: a.id, b: b.id });
+        return;
+      }
+      case 'tangent': {
+        if (!canTangent) return;
+        const [a, b] = selShapes as [Sel, Sel];
+        applyRule({ k: 'tangent', a: a.id, b: b.id });
+        return;
+      }
+      case 'pointOnObject': {
+        if (!canPointOnObject) return;
+        const [p] = selPoints as [Sel];
+        const [s] = selShapes as [Sel];
+        applyRule({ k: 'pointOnObject', a: p.id, aEnd: p.at!, b: s.id });
+        return;
+      }
+      case 'symmetric': {
+        if (!canSymmetric) return;
+        const [a, b, c] = selPoints as [Sel, Sel, Sel];
+        applyRule({ k: 'symmetric', a: a.id, aEnd: a.at!, b: b.id, bEnd: b.at!, c: c.id, cEnd: c.at! });
+        return;
+      }
+      case 'lock': {
+        if (!canLock) return;
+        const [p] = selPoints as [Sel];
+        applyRule({ k: 'lock', a: p.id, aEnd: p.at! });
+        return;
+      }
+    }
+  }
+
   const commitDim = useCallback(() => {
     if (!dim) return;
     const v = Number(dim.value);
@@ -1299,6 +1399,13 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
 
   const onPointerDown = useCallback(
     (e: React.PointerEvent) => {
+      // The marking menu's own click-vs-drag classifier reads the ORIGINAL
+      // down position (see rightDownRef's own comment); recorded here,
+      // ahead of the pan branch below, so a right-drag that pans still
+      // leaves the down point this needs to tell it apart from a click.
+      if (e.button === 2) {
+        rightDownRef.current = { x: e.clientX, y: e.clientY, t: e.timeStamp };
+      }
       if (e.button === panButton || e.button === 1) {
         panRef.current = { x: e.clientX, y: e.clientY };
         try {
@@ -2249,7 +2356,12 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
         onContextMenu={(e) => {
           // Only when the active scheme pans with the right button; any other
           // scheme leaves the browser menu alone (Phase 4 owns the real one).
-          if (panButton === 2) e.preventDefault();
+          if (panButton !== 2) return;
+          e.preventDefault();
+          const up: PointerSample = { x: e.clientX, y: e.clientY, t: e.timeStamp };
+          if (classifyRightClick(rightDownRef.current, up, HOLD_CYCLE_DEAD_ZONE_PX) !== 'menu') return;
+          const rect = e.currentTarget.getBoundingClientRect();
+          setMarkingMenu({ x: e.clientX - rect.left, y: e.clientY - rect.top });
         }}
         onDoubleClick={() => {
           setChain(null);
@@ -2279,6 +2391,19 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
           input that is not a descendant of the canvas cannot leak a
           pointerdown into the gesture it belongs to. */}
       <div className="sk2d-dims">{dimChips}</div>
+      {markingMenu && (
+        <MarkingMenu
+          x={markingMenu.x}
+          y={markingMenu.y}
+          mode="sketch"
+          selection={markingMenuSelection}
+          onCommand={(id) => {
+            setMarkingMenu(null);
+            dispatchMarkingMenuCommand(id);
+          }}
+          onClose={() => setMarkingMenu(null)}
+        />
+      )}
     </div>
   );
 }

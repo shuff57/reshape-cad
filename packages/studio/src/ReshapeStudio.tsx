@@ -48,7 +48,7 @@ import {
 } from './selection-model.js';
 import { outlineOf } from '@shuff57/reshape-sketch/sketch-arc';
 import { handlesFor, featureCenter, type HandleSpec } from '@shuff57/reshape-script/model-handles';
-import { EMPTY_DOC, type Feature, isSketchOnly, type ModelDoc, nameMap, type SketchPlane } from '@shuff57/reshape-script/model-types';
+import { EMPTY_DOC, type Feature, isSketchOnly, type ModelDoc, nameMap, newSketch, type SketchPlane } from '@shuff57/reshape-script/model-types';
 import { ownerOf } from '@shuff57/reshape-script/model-selection';
 import { partWordFor } from '@shuff57/reshape-script/topo-name';
 import {
@@ -1465,6 +1465,18 @@ export default function ReshapeStudio({
                 onFeatureDoubleClick={showBrep ? editFeature : undefined}
                 onSelectAll={showBrep ? () => setSelection(selectAllFeatures(doc)) : undefined}
                 onDeleteSelected={showBrep ? () => ctxActionsRef.current?.remove() : undefined}
+                onUndo={showBrep ? undo : undefined}
+                onRedo={showBrep ? redo : undefined}
+                onStartSketch={showBrep ? () => {
+                  // The marking menu's Sketch wedge: the same three steps
+                  // ModelEditor's own startSketch() runs (ModelEditor.tsx:
+                  // 884-890), minus its local `say(null)` status message,
+                  // which has no equivalent here.
+                  const f = newSketch(doc, activePlane);
+                  applyDoc({ ...doc, features: [...doc.features, f] });
+                  selectFeatures([f.id]);
+                  setSketchEditId(f.id);
+                } : undefined}
                 registerPickAt={(fn) => { pickAtRef.current = fn; }}
               />
             ) : !sketchEditId ? (

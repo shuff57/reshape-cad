@@ -83,6 +83,8 @@ import { computeSelectionFit, computeWindowZoomFit, type Vec3 } from '../window-
 import { nearestVisible, nextCycleIndex, shouldHandleViewportDelete } from '../pick-helpers.js';
 import { HOLD_CYCLE_DELAY_MS, HOLD_CYCLE_DEAD_ZONE_PX } from '../input-threshold.js';
 import type { SelectionFilters, SelectionItem } from '../selection-model.js';
+import MarkingMenu from './MarkingMenu.js';
+import { classifyRightClick, type PointerSample } from './marking-menu-core.js';
 import { marqueeKind, pointSetSelect, type MarqueeDrag } from '../marquee-select.js';
 
 /** The Dracula palette this app already uses everywhere else -- see
@@ -413,6 +415,24 @@ interface Props {
    * canvas in the first place.
    */
   onDeleteSelected?: () => void;
+  /**
+   * The marking menu's Undo/Redo wedges (SPEC-mouse-parity.md Phase 4.1) --
+   * the SAME history ReshapeStudio.tsx's own toolbar buttons already call
+   * (`undo`/`redo`). Absent means those wedges render disabled: "renders the
+   * gesture, reports it, the caller owns the history" is the same split
+   * `onDeleteSelected`/`onSelectAll` above already draw.
+   */
+  onUndo?: () => void;
+  onRedo?: () => void;
+  /**
+   * The marking menu's Sketch wedge: start a new sketch on the caller's
+   * current active plane, the exact flow ModelEditor's own Sketch button
+   * (startSketch(), ModelEditor.tsx:884-890) runs -- this component has no
+   * `doc`-editing machinery of its own, so the caller supplies the whole
+   * gesture rather than this component reaching into `doc`/`activePlane`
+   * itself. Absent means the wedge renders disabled.
+   */
+  onStartSketch?: () => void;
 }
 
 /** Module-level, not per-component: two viewports in one session share the
@@ -564,7 +584,7 @@ const FILTER_CHIPS: { key: keyof SelectionFilters; label: string }[] = [
 export default function BrepViewportThree({
   doc, deflection, onStats, onPick, pick, selectedCount, selectionLabel, anchors, onAnchors, onMesh, registerPickAt,
   sketchPlane, panelOcclusionPx, ruleActivityAt, onEngine, badgesInStatusBar = false, filters, onFiltersChange, onBoxSelect,
-  onFeatureDoubleClick, onSelectAll, onDeleteSelected,
+  onFeatureDoubleClick, onSelectAll, onDeleteSelected, onUndo, onRedo, onStartSketch,
 }: Props) {
   const [phase, setPhase] = useState<'loading' | 'ready' | 'error'>('loading');
   // Which view-strip preset the camera is sitting on, or null once the
@@ -599,6 +619,11 @@ export default function BrepViewportThree({
   // lives beside it in boxSelectRef, the same split windowZoom/
   // windowZoomRef use.
   const [boxSelect, setBoxSelect] = useState<{ x: number; y: number; w: number; h: number; kind: 'window' | 'crossing' } | null>(null);
+  // The right-click marking menu (SPEC-mouse-parity.md Phase 4.1):
+  // container-relative px (same convention as boxSelect/windowZoom above,
+  // computed off renderer.domElement's own getBoundingClientRect() in the
+  // scene-setup effect's contextmenu listener below), or null when closed.
+  const [markingMenu, setMarkingMenu] = useState<{ x: number; y: number } | null>(null);
   // Nav cube: DOM node whose CSS transform is synced to the live camera
   // orientation every frame (see the rAF effect below) -- a ref, not state,
   // so 60x/sec orientation reads never trigger a React re-render.
@@ -1993,6 +2018,11 @@ export default function BrepViewportThree({
     }
 
     let downAt: { x: number; y: number } | null = null;
+    // The marking menu's own click-vs-drag classifier (SPEC-mouse-parity.md
+    // Phase 4.1/4.3) needs the ORIGINAL right-button down point, not `downAt`
+    // above (button-0-only) and not OrbitControls' own internal state (which
+    // a pan/dolly drag mutates every move) -- see onCanvasContextMenu below.
+    let rightDownAt: PointerSample | null = null;
     const CLICK_DRAG_TOLERANCE_PX = 4;
     // Click-and-hold "select other" cycling state (SPEC-mouse-parity.md
     // Phase 3.5, [CONFIRM behaviour]). `lastCycleKey`/`lastCycleIndex`
@@ -2016,6 +2046,7 @@ export default function BrepViewportThree({
       }
     }
     function onCanvasPointerDown(e: PointerEvent) {
+      if (e.button === 2) rightDownAt = { x: e.clientX, y: e.clientY, t: e.timeStamp };
       if (e.button !== 0) return;
       downAt = { x: e.clientX, y: e.clientY };
       if (windowZoomRef.current !== null) {
@@ -2228,6 +2259,23 @@ export default function BrepViewportThree({
       e.preventDefault();
       onDeleteSelectedRef.current?.();
     }
+    // SPEC-mouse-parity.md Phase 4.1/4.3: right-click opens the marking
+    // menu; a right-DRAG (beyond HOLD_CYCLE_DEAD_ZONE_PX between
+    // pointerdown and this event) must keep panning/orbiting instead --
+    // classifyRightClick() is the shared classifier todo 19/20 also use.
+    // Always preventDefault: the native browser menu is never wanted here,
+    // whether or not this one opens (a right-drag that pans still fires a
+    // contextmenu event on release, and the native menu popping up over an
+    // in-progress pan would be worse than no menu at all).
+    function onCanvasContextMenu(e: MouseEvent) {
+      e.preventDefault();
+      const up: PointerSample = { x: e.clientX, y: e.clientY, t: e.timeStamp };
+      const cls = classifyRightClick(rightDownAt, up, HOLD_CYCLE_DEAD_ZONE_PX);
+      rightDownAt = null;
+      if (cls !== 'menu') return;
+      const bounds = renderer.domElement.getBoundingClientRect();
+      setMarkingMenu({ x: e.clientX - bounds.left, y: e.clientY - bounds.top });
+    }
     renderer.domElement.addEventListener('pointermove', onPointerMove);
     renderer.domElement.addEventListener('pointerleave', onPointerLeave);
     renderer.domElement.addEventListener('pointermove', onPointerMove);
@@ -2244,6 +2292,7 @@ export default function BrepViewportThree({
     renderer.domElement.addEventListener('click', onClick);
     renderer.domElement.addEventListener('dblclick', onDblClick);
     renderer.domElement.addEventListener('keydown', onCanvasKeyDown);
+    renderer.domElement.addEventListener('contextmenu', onCanvasContextMenu);
     registerPickAtRef.current?.(pickAt);
 
     renderNow();
@@ -2262,6 +2311,7 @@ export default function BrepViewportThree({
       renderer.domElement.removeEventListener('click', onClick);
       renderer.domElement.removeEventListener('dblclick', onDblClick);
       renderer.domElement.removeEventListener('keydown', onCanvasKeyDown);
+      renderer.domElement.removeEventListener('contextmenu', onCanvasContextMenu);
       if (holdTimer !== null) clearTimeout(holdTimer);
       if (pendingHoverRaf !== null) cancelAnimationFrame(pendingHoverRaf);
       if (dampingRafRef.current !== null) cancelAnimationFrame(dampingRafRef.current);
@@ -3621,6 +3671,26 @@ try {
             background: boxSelect.kind === 'window' ? 'rgba(189, 147, 249, 0.08)' : 'rgba(80, 250, 123, 0.08)',
             pointerEvents: 'none',
           }}
+        />
+      )}
+      {phase === 'ready' && markingMenu && (
+        <MarkingMenu
+          x={markingMenu.x}
+          y={markingMenu.y}
+          mode="part-viewport"
+          onCommand={(id) => {
+            setMarkingMenu(null);
+            if (id === 'delete') onDeleteSelected?.();
+            else if (id === 'undo') onUndo?.();
+            else if (id === 'redo') onRedo?.();
+            else if (id === 'sketch') onStartSketch?.();
+            // repeat / press-pull / move-copy / hole: present-but-noop. Each
+            // needs new plumbing this base-component todo does not build --
+            // a repeat-last-feature flow, a Press Pull command, a Move/Copy
+            // gizmo, a Hole feature dialog -- see marking-menu-core.ts's own
+            // comment on PART_VIEWPORT_WEDGES.
+          }}
+          onClose={() => setMarkingMenu(null)}
         />
       )}
       {phase === 'ready' && (
