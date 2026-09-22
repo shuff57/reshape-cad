@@ -561,6 +561,27 @@ export default function HandleOverlay({
           the angle's own drag-or-type value box at its end -- the arc is
           the SHAPE of what it does, the same reason a turn handle is a
           ring. Absent, not disabled, for features with no angle param. */}
+      {/* Phase 5.1's value box at the arrow's tip (regression fix: the
+          block was dropped during todo 23's taper-arc edit -- the taper
+          ValueBox below renders only for draft features, so extrude /
+          pocket / fillet had an arrow with no box). Same drag-or-type
+          convergence as before: testId manipulator-value, kind = the
+          manipulator's own kind. */}
+      {mani && maniAnchor && maniValue != null && manipulator && (
+        <div className="mani-value-wrap">
+          <ValueBox
+            testId="manipulator-value"
+            kind={mani.kind}
+            x={maniAnchor.x + maniAnchor.dirX * (MANI_ARROW_PX + 34)}
+            y={maniAnchor.y + maniAnchor.dirY * (MANI_ARROW_PX + 34)}
+            value={maniShownText}
+            onChange={(next) => setManiDraft({ param: mani.param, text: next })}
+            onCommit={commitManiText}
+            onCancel={() => { setManiDraft(null); setManiNote(null); }}
+          />
+          {maniNote && <div className="mani-note" role="status">{maniNote}</div>}
+        </div>
+      )}
       {taper && taper.value != null && maniAnchor && hasAngleParam(manipulator!.feature) && (
         <>
           <svg className="mani-taper" data-taper="true" aria-hidden="true">

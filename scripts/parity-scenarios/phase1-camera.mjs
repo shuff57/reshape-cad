@@ -42,7 +42,14 @@ export async function run(page) {
   await page.mouse.up();
   await page.waitForTimeout(300);
 
-  // ViewCube face click.
-  await page.click('text="TOP"');
+  // ViewCube face click -- the raw mouse path (the TOP label now sits under
+  // its own transparent face-cell zone button, todo 28; Playwright's strict
+  // click would be intercepted by the overlay, and the wrapper's
+  // elementFromPoint resolver handles the zone exactly like every other).
+  const topFace = page.locator('button[data-face="top"]').first();
+  const tfb = await topFace.boundingBox();
+  await page.mouse.move(tfb.x + tfb.width / 2, tfb.y + tfb.height / 2);
+  await page.mouse.down();
+  await page.mouse.up();
   await page.waitForTimeout(300);
 }

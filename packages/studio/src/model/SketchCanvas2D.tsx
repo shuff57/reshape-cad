@@ -137,7 +137,7 @@ import {
   type SketchGeomKind,
   type SketchSelectionEntry,
 } from './marking-menu-core.js';
-import { rightClickGuard } from './marking-menu-guard.js';
+import { rightButtonRole, rightClickGuard } from './marking-menu-guard.js';
 
 // Todo 19's [CONFIRM]-sourced gesture thresholds, same shape as
 // BrepViewportThree's: the delay is the marking-menu gesture's own default
@@ -1607,7 +1607,11 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     if (e.button === 2) {
       const downSample = rightDownRef.current;
       rightDownRef.current = null;
-      if (panButton === 2) {
+      // Todo 20's guard decides by the right button's CAMERA ROLE, not by
+      // "is right the pan button": under the fusion default the right
+      // button dollies (PAN=1), which is still a camera action -- the menu
+      // must open on a click-shaped release there too, not just in legacy.
+      if (rightButtonRole(schemeToMouseButtons(loadSchemeName())) !== 'none') {
         const upSample = { x: e.clientX, y: e.clientY, t: e.timeStamp };
         const verdict = classifyGesture(downSample, upSample, MARKING_GESTURE);
         if (verdict.kind === 'wedge') {
@@ -2427,7 +2431,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
           // Only when the active scheme pans with the right button; any
           // other scheme leaves the browser menu alone (Phase 4 owns the
           // real one).
-          if (panButton !== 2) return;
+          if (rightButtonRole(schemeToMouseButtons(loadSchemeName())) === 'none') return;
           e.preventDefault();
           if (!rightMenuArmedRef.current) return;
           rightMenuArmedRef.current = false;

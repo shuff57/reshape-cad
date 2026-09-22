@@ -34,7 +34,16 @@ export async function run(page) {
 
   await page.click('button:has-text("Persp")');
   await page.waitForTimeout(200);
-  await page.click('text="FRONT"');
+  // Raw mouse path: the FRONT label sits under its own face-cell zone
+  // overlay (todo 28); the wrapper's elementFromPoint resolver handles it
+  // exactly like every other zone.
+  {
+    const front = page.locator('button[data-face="right"]').first(); // "FRONT" label is the CSS right face
+    const fb = await front.boundingBox();
+    await page.mouse.move(fb.x + fb.width / 2, fb.y + fb.height / 2);
+    await page.mouse.down();
+    await page.mouse.up();
+  }
   await page.waitForTimeout(400);
 
   // Face: dead center of the box's +y face. Ctrl held via explicit
