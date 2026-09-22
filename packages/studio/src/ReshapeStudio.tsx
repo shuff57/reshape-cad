@@ -1568,6 +1568,9 @@ export default function ReshapeStudio({
                       onStepChange: setMoveSnapStep,
                     }
                   : null}
+                activeCommand={build && ctxFeature && selected.length === 1
+                  ? { command: ctxFeature.kind, selectionCount: selected.length }
+                  : null}
               />
             )}
             {ctxBarVisible && !sketchEditId && ctxFeature && ctxAnchor && (

@@ -21,6 +21,7 @@ import { arcFromBulge, type Point } from '@shuff57/reshape-sketch/sketch-arc';
 import ValueBox, { formatValue } from './ValueBox.js';
 import { manipulatorParam, manipulatorValue, manipulatorValueError, angleValueError, hasAngleParam, arcPoints, type ManipulatorKind } from './manipulator-core.js';
 import { snapDelta } from './move-gizmo-core.js';
+import { stepTooltip } from './step-tooltips.js';
 import type { Feature, ModelDoc } from '@shuff57/reshape-script/model-types';
 /**
  * One sketch's outline, in plane coordinates -- what the overlay needs to
@@ -144,8 +145,15 @@ interface Props {
    * extent, which ReshapeStudio already owns from the stats readout.
    */
   incrementalMove?: { mode: 'adaptive' | 'fixed' | 'off'; fixedStep: number; modelExtent: number; onModeChange?: (mode: 'adaptive' | 'fixed' | 'off') => void; onStepChange?: (step: number) => void } | null;
+  /**
+   * Phase 5.4 (todo 26): the ACTIVE COMMAND's own state, for the
+   * step tooltip -- prompt string per command step rather than the
+   * single static string per hover target. `active: false` (command
+   * cancelled or ended) clears the tooltip rather than persisting a
+   * stale prompt. The command id is the manipulator feature's kind.
+   */
+  activeCommand?: { command: string; selectionCount: number } | null;
 }
-
 /**
  * A plane point Q, projected through corner `basis`'s own screen anchor --
  * P0.screen + (Q.u - P0.u)*(ux,uy) + (Q.v - P0.v)*(vx,vy). Pure client
@@ -270,7 +278,7 @@ function arrowHead(x0: number, y0: number, dx: number, dy: number, at: number): 
 }
 
 export default function HandleOverlay({
-  points, values, scales, onDrag, onCommit, onTap, outlines, outlineAnchors, bottomInset = 0, manipulator, incrementalMove,
+  points, values, scales, onDrag, onCommit, onTap, outlines, outlineAnchors, bottomInset = 0, manipulator, incrementalMove, activeCommand,
 }: Props) {
   const [dragging, setDragging] = useState<string | null>(null);
   // Whether the current pointerdown-to-pointerup has crossed TAP_TOLERANCE_PX
@@ -401,16 +409,17 @@ export default function HandleOverlay({
     manipulator.onCommitParam();
   };
 
+  // Phase 5.4 (todo 26): the step tooltip. While a command is active its
+  // prompt string follows the COMMAND's own step (no selection yet ->
+  // "Select...", selection held -> "Hold Ctrl..."); command end clears it.
+  const tooltip = activeCommand ? stepTooltip(activeCommand.command, { active: true, selectionCount: activeCommand.selectionCount }) : null;
+
   // Phase 5.2 (todo 24): the gizmo mode chip -- a move selection's axis
   // arrows ARE the gizmo (moveFeatureHandles); this renders the
   // incremental-move toggle beside the first projected move anchor.
   const gizmoAnchor = manipulator && manipulator.feature.kind === 'move'
     ? points.find((a) => a.kind === 'move')
     : undefined;
-  // (mode/step/fixed controls are caller-owned through the incrementalMove
-  // prop; the chip only needs the toggle callbacks, passed via
-  // incrementalMove.onModeChange when the caller renders the control. A
-  // prop without the callbacks renders the read-only chip.)
 
   if (!hasHandles && outlineRenders.length === 0 && !(mani && maniAnchor)) return null;
 
@@ -617,6 +626,12 @@ export default function HandleOverlay({
           </div>
         </div>
       )}
+      {/* Phase 5.4: the ACTIVE COMMAND's step tooltip -- one prompt that
+          follows the command state, top-center of the viewport. Cleared
+          (not persisted) when the command ends or is cancelled. */}
+      {tooltip && (
+        <div className="step-tooltip" role="status" data-active-command={activeCommand!.command}>{tooltip}</div>
+      )}
       <style>{`
         .handle-layer { position: absolute; inset: 0; pointer-events: none; }
         .sketch-lines { position: absolute; inset: 0; width: 100%; height: 100%; }
@@ -696,6 +711,11 @@ export default function HandleOverlay({
         .move-snap-chip .move-snap-step { background: var(--reshape-surface, #1e1f29); color: var(--reshape-text);
           border: 1px solid var(--reshape-accent, #8be9fd); border-radius: 3px; padding: 1px 4px;
           font-family: var(--reshape-font-mono, monospace); font-size: 11px; }
+        /* Phase 5.4's step tooltip: same pill family, pinned top-center. */
+        .step-tooltip { position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+          pointer-events: none; white-space: nowrap; padding: 3px 10px; border-radius: 999px;
+          background: var(--reshape-bg, #282a36); border: 1px solid var(--reshape-accent-2, #bd93f9);
+          color: var(--reshape-text, #f8f8f2); font-size: 12px; font-family: var(--reshape-font-ui, sans-serif); }
       `}</style>
     </div>
   );
