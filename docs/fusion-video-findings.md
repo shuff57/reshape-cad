@@ -1528,6 +1528,72 @@ cube itself (corner/isometric zones already flagged in `## Extrude`).
 met: every scenario asserts its own todo's acceptance criteria, every
 recording is a valid webm, and the two regressions the sweep found were
 fixed and re-recorded before this closeout.
+---
+## reSHape Studio marking menu vs. Fusion ("Using the Marking Menu" — official Autodesk Learn lesson)
+
+- **Source**: `https://www.autodesk.com/learn/ondemand/tutorial/using-the-marking-menu`
+  (official Autodesk Learn lesson, downloaded 2026-09-22), reviewed through
+  the Gemini pipeline (`google/gemini-3.8-flash`, transcript-corroborated).
+  This is the video the "Next videos to review" queue held for Phase 4.1/4.2
+  — the spec's `[CONFIRM delay and dead-zone]` question.
+
+### Verified (timestamps + transcript quotes)
+
+1. **Right-click opens an 8-wedge radial at the pointer, context list
+   beneath.** 00:10–00:29: *"Simply right-click anywhere on the canvas to
+   open the marking menu around your pointer."* Default design-workspace
+   commands named at 00:19: repeat, delete, press pull, undo, redo,
+   move/copy, hole, sketch — the same set SPEC `:33-35` recorded, and the
+   set `MarkingMenu.tsx`'s `PART_VIEWPORT_WEDGES` ships. Model confirms the
+   hover highlight is a solid-blue wedge fill (00:34–00:37).
+2. **Second-level radial opens on HOVER-dwell, with a back handle.**
+   00:37–00:58: *"Place the pointer over sketch for a moment and notice that
+   a second level radial menu opens around your pointer."* The sub-level's
+   tools: line, offset, project sketch, dimension, fit point spline, center
+   diameter circle, two-point rectangle, finish sketch. A circular back
+   handle with an up-arrow returns to the first level (00:59). Matches
+   reSHape's todo-18 flyout shape (hover-open, back affordance).
+3. **Wedge activation: hover, then click ANYWHERE in the highlighted
+   wedge.** 00:30: *"place your pointer over the command, then click anywhere
+   in the highlighted wedge."* reSHape matches (wedge hover → click fires).
+4. **Gestures are hold + fast directed drags THROUGH sub-levels, with a
+   mid-drag preview, not a timed gate.** 03:47–04:25: *"to activate the
+   two-point rectangle command, you drag down, then to the upper right. ...
+   straight down for the line command, down to the left for the offset"*
+   (L-shape for fit-point spline; down-then-halfway-up for finish sketch).
+   04:11: *"Right-click and hold, drag quickly down, then drag to the upper
+   right and let go when you see the command."* The model observed a thin
+   blue ink trail tracking the pointer during the gesture (04:13–04:15) —
+   the wedge lights up as the drag crosses it; the command name is the
+   commit signal. Right-click-hold + drag-straight-right = OK; the gesture
+   never renders the menu.
+
+### Phase 4.2's `[CONFIRM delay and dead-zone]` — partially resolved
+
+- **What the footage settles**: the gesture is a fast directed drag whose
+  target can sit in a SECOND-level radial (an L-shaped path through two
+  radials); the wedge preview appears when the drag crosses the wedge, and
+  release commits ("let go when you see the command"). No menu render on a
+  gesture — matches reSHape's shipped classifier.
+- **What stays a reSHape default**: the 150ms delay. Fusion's narration
+  shows no timed gate at all — the discriminator is speed/direction, not a
+  dwell. The 4px dead-zone stays the shared hold-cycle constant. The SPEC's
+  Phase 4.2 note stands amended: reSHape's 150ms is a documented engineering
+  default (handover), Fusion's own delay is unobservable from this lesson,
+  and the gesture-shape claims (multi-level drag, preview-on-crossing,
+  no-render) are now footage-verified.
+- **New divergence worth naming**: Fusion's gestures traverse sub-level
+  wedges (down → up-right lands on a second-level command). reSHape's
+  todo-19 gesture classifies a single fast directional drag against the
+  FIRST-level wedges only; multi-level gesture paths are not built. The
+  Phase 4 closeout's own non-claim stands; this is now a named future-work
+  item, not a silent gap.
+- **Also verified in passing**: Fusion's sketch marking-menu contents
+  (line, offset, dimension, circle, rectangle, finish sketch) — the
+  sketch-mode config reSHape ships covers these; the `R` rectangle hotkey
+  (03:05) matches the shipped `TOOL_KEYS` mapping.
+
+---
 ## Next videos to review
 
 Rebuilt 2026-09-20 for balanced 2D/3D/navigation coverage. All URLs probed
@@ -1566,9 +1632,10 @@ dimension-sketch-geometry, extrude, press-pull, fillets, FmMNIGVpCng.
 
 ### Navigation / camera / menus
 
-- `https://www.autodesk.com/learn/ondemand/tutorial/using-the-marking-menu`
-  — marking menu levels + gestures; Phase 4.1/4.2 (the spec's `[CONFIRM]`
-  delay/dead-zone question).
+  - (REVIEWED 2026-09-22: filed as the marking-menu closeout section above —
+  gestures ARE multi-level in Fusion; the 150ms delay stays a reSHape
+  default, the gesture-shape claims are footage-verified.)
+- `https://www.autodesk.com/learn/ondemand/tutorial/tour-the-fusion-user-interface`
 - `https://www.autodesk.com/learn/ondemand/tutorial/tour-the-fusion-user-interface`
   — nav bar, ViewCube, timeline placement; Phase 1/4.4.
 - `https://www.autodesk.com/learn/ondemand/tutorial/adjust-display-settings`

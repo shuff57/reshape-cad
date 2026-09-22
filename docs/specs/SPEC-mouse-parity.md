@@ -145,11 +145,16 @@ get `node --test` cases against `dist/` output; interaction verified in browser.
    keyed by mode (part, sketch, active command) — DONE (`9404fd6`, timeline menus+drag
    `f77225b`).
 2. **Gestures**: right-button hold + directional drag selects a wedge without rendering the
-   menu after a short delay, confirmed as documented defaults pending real-Fusion footage
-   (150ms delay / 4px dead zone — owner-approved, `mouse-parity-handover.md`; the Phase 4
-   closeout explicitly does NOT claim Fusion's exact numbers, only that reSHape's
-   implementation behaves as coded: `## reSHape Studio Phase 4 closeout (self-recorded)`
-   Unverified section) — DONE (behaviour; numbers stay defaults).
+   menu after a short delay — DONE (behaviour), with the footage check now filed:
+   Fusion's gesture is a fast directed drag whose target may sit in a SECOND-level
+   radial (down → up-right, an L-shaped path) with a wedge preview appearing as the
+   drag crosses it, release commits ("let go when you see the command"), and no menu
+   render — all footage-verified in the marking-menu closeout (official Autodesk
+   lesson "Using the Marking Menu", filed 2026-09-22). Fusion shows NO timed gate;
+   reSHape's 150ms delay / 4px dead zone stay documented engineering defaults
+   (handover), the delay being the one number no filed footage settles. reSHape's
+   gesture classifies FIRST-level wedges only — multi-level gesture paths are named
+   future work, not a silent gap.
 3. **Right-click must not break pan/orbit.** Distinguish a click (menu) from a drag by
    movement threshold; right-drag should remain available if the mouse preset uses it —
    DONE (`4677c5f` + the `0c1ae88` pointerup-classification fix).
