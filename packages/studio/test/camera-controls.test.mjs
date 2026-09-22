@@ -16,6 +16,22 @@ test('1: default scheme name is a real scheme', () => {
   assert.ok(MOUSE_SCHEMES[DEFAULT_SCHEME_NAME]);
 });
 
+// Todo 29 (SPEC-mouse-parity Phase 1.1, resolved against FmMNIGVpCng --
+// official Autodesk Fusion footage, filed as the "## Navigation / camera"
+// findings entry): MMB-drag pans (04:35 narration + demo) and Shift+MMB
+// orbits (04:45). The 'fusion' preset's MMB=PAN matches that verdict; the
+// modifier+MMB orbit is the SAME orbit gesture this table already assigns
+// to LMB in both schemes (three.js mouseButtons has no modifier channel),
+// so the flip is: new/first-time users get the Fusion scheme, stored
+// preferences keep winning (loadSchemeName already reads before the
+// default applies).
+test('1b: default is fusion, and its bindings match the FmMNIGVpCng verdict', () => {
+  assert.equal(DEFAULT_SCHEME_NAME, 'fusion');
+  const b = schemeToMouseButtons('fusion');
+  assert.equal(b.PAN, 1, 'MMB pans, per the filed footage');
+  assert.equal(b.ORBIT, 0, 'orbit is a plain-button gesture in this table');
+});
+
 test('2: legacy and fusion schemes assign three distinct buttons', () => {
   for (const name of ['legacy', 'fusion']) {
     const b = schemeToMouseButtons(name);

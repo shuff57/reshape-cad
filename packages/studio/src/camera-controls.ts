@@ -30,7 +30,12 @@ export const MOUSE_SCHEMES: Record<MouseScheme, { label: string; buttons: MouseB
   },
 };
 
-export const DEFAULT_SCHEME_NAME: MouseScheme = 'legacy';
+// Todo 29 (SPEC Phase 1.1): flipped from 'legacy' after the FmMNIGVpCng
+// review (official Autodesk Fusion footage, filed in fusion-video-findings.md
+// as "## Navigation / camera") CONFIRMED MMB-pan + Shift+MMB-orbit; the
+// 'fusion' preset's MMB=PAN matches, and a stored preference still wins via
+// loadSchemeName() -- the default only reaches first-time users.
+export const DEFAULT_SCHEME_NAME: MouseScheme = 'fusion';
 
 const STORAGE_KEY = 'reshape.mouseScheme';
 
