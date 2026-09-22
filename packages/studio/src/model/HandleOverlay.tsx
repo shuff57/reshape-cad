@@ -18,7 +18,9 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { arcFromBulge, type Point } from '@shuff57/reshape-sketch/sketch-arc';
-
+import ValueBox, { formatValue } from './ValueBox.js';
+import { manipulatorParam, manipulatorValue, manipulatorValueError, type ManipulatorKind } from './manipulator-core.js';
+import type { Feature, ModelDoc } from '@shuff57/reshape-script/model-types';
 /**
  * One sketch's outline, in plane coordinates -- what the overlay needs to
  * draw it as a read-only reference shape, alongside the corner param names
@@ -120,6 +122,19 @@ interface Props {
    * reservation back in here is what makes the two match again.
    */
   bottomInset?: number;
+  /**
+   * Phase 5.1's arrow+value-box manipulator (todo 22). The currently
+   * selected feature and the doc to read its committed value from; when
+   * the feature kind carries a single positive-extent parameter (extrude
+   * height / pocket depth / fillet size) the projected anchor for that
+   * parameter grows an on-canvas ARROW and a floating drag-or-type value
+   * box at its tip. Dragging stays the existing push/commit flow (the
+   * same rAF coalescer, one undo step on pointerup); typing commits
+   * through the same param name on Enter, so both paths converge on one
+   * parameter-update call. Refused text leaves the doc alone, in a
+   * sentence. Absent (Code mode, or no selection) draws nothing new.
+   */
+  manipulator?: { feature: Feature; doc: ModelDoc; onDragParam: (param: string, value: number) => void; onCommitParam: () => void } | null;
 }
 
 /**
@@ -218,8 +233,31 @@ function projectOutline(
  *  regardless of what the handle happens to be scaled to right now. */
 const TAP_TOLERANCE_PX = 4;
 
+/** Phase 5.1: the manipulator arrow's screen length. Fixed, like every
+ *  other overlay chrome here -- a world-scaled arrow would shrink to a dot
+ *  when the student zooms out to see the whole part, exactly when they
+ *  need the direction most. */
+const MANI_ARROW_PX = 64;
+
+/** A triangular arrowhead at the END of a line from (x0,y0) along
+ *  (dx,dy), at travel `at` px. Pure screen arithmetic, kept beside the
+ *  SVG that draws it. */
+function arrowHead(x0: number, y0: number, dx: number, dy: number, at: number): string {
+  const tipX = x0 + dx * at;
+  const tipY = y0 + dy * at;
+  const px = -dy;
+  const py = dx;
+  const backX = x0 + dx * (at - 10);
+  const backY = y0 + dy * (at - 10);
+  return [
+    `${tipX},${tipY}`,
+    `${backX + px * 4},${backY + py * 4}`,
+    `${backX - px * 4},${backY - py * 4}`,
+  ].join(' ');
+}
+
 export default function HandleOverlay({
-  points, values, scales, onDrag, onCommit, onTap, outlines, outlineAnchors, bottomInset = 0,
+  points, values, scales, onDrag, onCommit, onTap, outlines, outlineAnchors, bottomInset = 0, manipulator,
 }: Props) {
   const [dragging, setDragging] = useState<string | null>(null);
   // Whether the current pointerdown-to-pointerup has crossed TAP_TOLERANCE_PX
@@ -290,7 +328,43 @@ export default function HandleOverlay({
     })
     .filter((r): r is { n: number; pts: { x: number; y: number }[] } => r !== null);
 
-  if (!hasHandles && outlineRenders.length === 0) return null;
+  // ---- Phase 5.1 manipulator: arrow + drag-or-type value box -------------
+  // ---- Phase 5.1 manipulator: arrow + drag-or-type value box -------------
+  // The single selected feature's own handle, located among the projected
+  // anchors by its generated-param name. Everything below is null when
+  // there is no manipulator prop, the feature carries no single positive-
+  // extent parameter, or its anchor is not currently on screen.
+  const mani = manipulator ? manipulatorParam(manipulator.feature) : null;
+  const maniAnchor = mani
+    ? points.find((a) => a.param === mani.param && (a.kind === 'size' || a.kind === 'radius'))
+    : undefined;
+  const maniValue = mani && manipulator ? manipulatorValue(manipulator.doc, mani.param) : null;
+  // Typed text for the value box, parent-of-the-box owned. Kept OUTSIDE the
+  // early return below (hooks order) and keyed by param so a selection
+  // change starts from that feature's own committed value instead of the
+  // previous feature's draft.
+  const [maniDraft, setManiDraft] = useState<{ param: string; text: string } | null>(null);
+  const [maniNote, setManiNote] = useState<string | null>(null);
+  const maniShownText = mani && maniDraft?.param === mani.param ? maniDraft.text : maniValue != null ? formatValue(maniValue) : '';
+  /** The type half of drag-or-type. The same param name the drag pushes
+   *  (mani.param) -- the convergence the todo's acceptance criteria name.
+   *  A refusal shows the sentence and writes nothing, exactly like the
+   *  sketch dimension chips. */
+  const commitManiText = () => {
+    if (!mani || !manipulator) return;
+    const text = maniDraft?.param === mani.param ? maniDraft.text : '';
+    const err = manipulatorValueError(mani.kind as ManipulatorKind, text);
+    if (err) {
+      setManiNote(err);
+      return;
+    }
+    setManiNote(null);
+    setManiDraft(null);
+    manipulator.onDragParam(mani.param, Number(text.trim()));
+    manipulator.onCommitParam();
+  };
+
+  if (!hasHandles && outlineRenders.length === 0 && !(mani && maniAnchor)) return null;
 
   return (
     <div
@@ -389,8 +463,46 @@ export default function HandleOverlay({
           />
         );
       })}
+      {/* Phase 5.1: the on-canvas ARROW for the manipulator's handle -- an
+          SVG line from the anchor along its projected axis, arrowhead at
+          the far end, with the drag-or-type value box riding the tip. The
+          arrow IS the existing handle's direction made visible: dragging
+          the tip still drives the same handle drag flow, so pointer
+          capture and the one-undo-on-pointerup convention come along for
+          free. */}
+      {mani && maniAnchor && maniValue != null && (
+        <svg className="mani-arrow" data-manipulator={mani.kind} aria-hidden="true">
+          <line
+            x1={maniAnchor.x}
+            y1={maniAnchor.y}
+            x2={maniAnchor.x + maniAnchor.dirX * MANI_ARROW_PX}
+            y2={maniAnchor.y + maniAnchor.dirY * MANI_ARROW_PX}
+          />
+          <polygon
+            points={arrowHead(
+              maniAnchor.x, maniAnchor.y,
+              maniAnchor.dirX, maniAnchor.dirY,
+              MANI_ARROW_PX,
+            )}
+          />
+        </svg>
+      )}
+      {mani && maniAnchor && maniValue != null && manipulator && (
+        <div className="mani-value-wrap">
+          <ValueBox
+            testId="manipulator-value"
+            kind={mani.kind}
+            x={maniAnchor.x + maniAnchor.dirX * (MANI_ARROW_PX + 34)}
+            y={maniAnchor.y + maniAnchor.dirY * (MANI_ARROW_PX + 34)}
+            value={maniShownText}
+            onChange={(next) => setManiDraft({ param: mani.param, text: next })}
+            onCommit={commitManiText}
+            onCancel={() => { setManiDraft(null); setManiNote(null); }}
+          />
+          {maniNote && <div className="mani-note" role="status">{maniNote}</div>}
+        </div>
+      )}
       <style>{`
-        /* The layer must not eat orbit drags — only the handles themselves do. */
         .handle-layer { position: absolute; inset: 0; pointer-events: none; }
         .sketch-lines { position: absolute; inset: 0; width: 100%; height: 100%; }
         .sketch-lines polygon {
@@ -435,6 +547,21 @@ export default function HandleOverlay({
         .handle.is-radius:hover, .handle.is-radius.is-on { background: var(--reshape-warn); }
         .handle:focus-visible { outline: 2px solid var(--reshape-accent-2); outline-offset: 2px; }
         .handle.is-on { background: var(--reshape-accent); cursor: grabbing; transform: scale(1.25); }
+        /* Phase 5.1's arrow: same non-scaling screen-pixel discipline as
+           every other overlay mark; the value box sits in its own wrapper
+           so the note below it never shifts the box. */
+        .mani-arrow { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+        .mani-arrow line { stroke: var(--reshape-accent-2, #bd93f9); stroke-width: 2.5; vector-effect: non-scaling-stroke; }
+        .mani-arrow polygon { fill: var(--reshape-accent-2, #bd93f9); }
+        .mani-value-wrap { position: absolute; inset: 0; pointer-events: none; }
+        .mani-value-wrap input { pointer-events: auto; }
+        .reshape-value-box { min-width: 2.5em; text-align: center; padding: 1px 4px; border-radius: 3px;
+          border: 1px solid transparent; background: var(--reshape-bg, #282a36); color: var(--reshape-accent-2, #bd93f9);
+          font-family: var(--reshape-font-mono, monospace); font-size: 12px; cursor: text; }
+        .reshape-value-box:focus, .reshape-value-box[data-editing="true"] { outline: none;
+          background: var(--reshape-surface, #1e1f29); border-color: var(--reshape-accent, #8be9fd); color: var(--reshape-text, #f8f8f2); }
+        .mani-note { position: absolute; transform: translate(-50%, 0); white-space: nowrap;
+          color: var(--reshape-warn, #ffb86c); font-size: 12px; }
       `}</style>
     </div>
   );

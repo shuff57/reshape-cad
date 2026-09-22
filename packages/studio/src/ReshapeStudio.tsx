@@ -1533,9 +1533,18 @@ export default function ReshapeStudio({
                 onDrag={(param, val) => { sendParams({ [param]: val }); touchRuleActivity(); }}
                 onCommit={() => { commitParams(); touchRuleActivity(); }}
                 onTap={(x, y) => pickAtRef.current?.(x, y)}
-                outlines={outlines}
                 outlineAnchors={anchors}
                 bottomInset={0}
+                manipulator={build && ctxFeature && selected.length === 1
+                  ? {
+                      feature: ctxFeature,
+                      doc: effectiveDoc,
+                      // Same param-write path the drag uses (sendParams ->
+                      // applyParam) -- the convergence todo 22 requires.
+                      onDragParam: (param, val) => { sendParams({ [param]: val }); touchRuleActivity(); },
+                      onCommitParam: () => { commitParams(); touchRuleActivity(); },
+                    }
+                  : null}
               />
             )}
             {ctxBarVisible && !sketchEditId && ctxFeature && ctxAnchor && (
