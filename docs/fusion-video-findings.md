@@ -1458,8 +1458,76 @@ bindings are stated verbatim in the official narration with matching
 demos, and MMB-orbit is never shown. This settles Phase 1.1's `[CONFIRM]`
 in favor of the scheme reSHape already ships. Bonus for Phase 1.5:
 ViewCube face/edge/corner click-snap plus left-click-drag orbit on the
+demos, and MMB-orbit is never shown. This settles Phase 1.1's `[CONFIRM]`
+in favor of the scheme reSHape already ships. Bonus for Phase 1.5:
+ViewCube face/edge/corner click-snap plus left-click-drag orbit on the
 cube itself (corner/isometric zones already flagged in `## Extrude`).
 
+---
+
+## reSHape Studio full-suite closeout (self-recorded)
+
+- **Source**: the complete scenario library re-run in one batch on the
+  final tree (`node scripts/parity-record.mjs <scenario>` for every one of
+  the 22 interaction scenarios + smoke), 2026-09-22. **All 23 PASS** —
+  each module's own programmatic assertions exit 0 and each recording
+  verifies as a real webm (ffprobe, 23/23). Model for spot-checks:
+  `google/gemini-3.8-flash`; the full-suite re-run is the regression
+  gate itself, so no new Gemini review was needed for takes that only
+  re-prove already-filed behaviour.
+- **Regression fixes the sweep surfaced** (commit `3537d55`):
+  1. HandleOverlay's Phase 5.1 arrow-tip value box had been silently
+     dropped by todo 23's taper-arc edit — extrude/pocket/fillet had an
+     arrow with NO box; restored verbatim from `a8806d3`.
+  2. The sketch marking menu gated on `panButton === 2` and so died
+     under the todo 29 fusion default; now gates on the todo-20 guard's
+     `rightButtonRole(scheme) !== 'none'`.
+  3. phase1-camera / phase3-box-select / phase3-mixed-select click face
+     labels through the raw mouse path now (todo 28's zone overlays sit
+     over the labels; the wrapper's elementFromPoint resolver handles
+     them).
+
+### Wave-by-wave status
+
+- **Wave 0 (baseline, todos 1-3)**: camera presets, zoom-to-cursor,
+  ortho swap, fit/window-zoom, sketch pan/zoom + drag-create + snaps +
+  dimensions — landed before this plan, exercised by phase1-camera /
+  phase2-sketch (PASS).
+- **Wave 1 (todos 4, 7-10)**: sketch trim, fillet, offset, fully-
+  constrained gauge — scenarios PASS (phase2-sketch-trim / -fillet /
+  -offset / -fully-constrained).
+- **Wave 2 (todos 12-15, Phase 3 selection)**: box select
+  (phase3-box-select), double-click + Ctrl+A + Del (phase3-dblclick-keys),
+  mixed face+edge selection (phase3-mixed-select), click-and-hold select-
+  other with the settled 300ms/4px numbers (phase3-select-other) — PASS.
+- **Wave 3 (todos 17-21, Phase 4)**: radial base (phase4-marking-menu-
+  base), flyout + context list (phase4-marking-menu-flyout), directional
+  gesture (phase4-marking-gesture), right-click guard (phase4-
+  rightclick-guard), timeline menus + drag-reorder (phase4-timeline-
+  context) — PASS.
+- **Wave 4 (todos 22-26, Phase 5)**: arrow + drag-or-type box (phase5-
+  extrude-manipulator), taper arc (phase5-taper-handle), Move gizmo +
+  Incremental Move (phase5-move-gizmo), live blue/red preview with single
+  undo (phase5-live-preview), command-state step tooltips (phase5-step-
+  tooltips) — PASS.
+- **Wave 5 (todos 28-30)**: ViewCube 26-zone partition + camera menu
+  (phase1-viewcube-edges, commit `f6de04a`), fusion default scheme
+  verified against FmMNIGVpCng (phase1-default-scheme, commits `716ba42`
+ + `e19e09b`), the [CONFIRM] sweep with per-item citations (SPEC commit
+ `38c9f60`) — PASS.
+- **Standing, honestly-unfinished items** (carried, not silently closed):
+  Phase 4.2's exact gesture numbers against real Fusion footage; the
+  blue/red preview tint and the rendered tooltip remain unverified visual
+  claims (unit tests pin their logic); Fusion's range-selection and
+  symmetric-direction remain out of Scope IN, unimplemented.
+
+### Relevance to `packages/studio`
+
+`npm run build` + `npm test` green at the sweep commit (studio suite
+218/218; all workspace suites green). The plan's regression gate is
+met: every scenario asserts its own todo's acceptance criteria, every
+recording is a valid webm, and the two regressions the sweep found were
+fixed and re-recorded before this closeout.
 ## Next videos to review
 
 Rebuilt 2026-09-20 for balanced 2D/3D/navigation coverage. All URLs probed
