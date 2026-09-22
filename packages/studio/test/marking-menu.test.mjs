@@ -2,6 +2,7 @@
 // Imports from ../dist like every suite here; build first.
 
 import { test } from 'node:test';
+import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import {
   wedgesForMode,
@@ -219,4 +220,20 @@ test('rightClickGuard + classifyGesture compose: a fast wedge drag wins, a slow 
   assert.equal(slowVerdict, 'camera-gesture');
   // Hold (200ms, 2px): menu.
   assert.equal(rightClickGuard(down, { x: 101, y: 102, t: 200 }, 4), 'menu');
+});
+
+// --- todo 21: timeline context menu + drag-reorder -------------------------------------
+// The up/down buttons' SURVIVAL is asserted structurally (grep on the source)
+// because ModelEditor is a component file with no harness: node --test can
+// read the file's text; the buttons' behavior is tsc + the manual QA wave.
+
+test('todo 21: the up/down .model-move buttons remain in ModelEditor as the keyboard fallback', () => {
+  const src = fs.readFileSync(new URL('../src/model/ModelEditor.tsx', import.meta.url), 'utf8');
+  const moveSpans = src.split('<span className="model-move">').length - 1;
+  assert.ok(moveSpans >= 2, `expected the .model-move button pair in BOTH timeline row renderers, found ${moveSpans}`);
+  assert.ok(src.includes('draggable'), 'timeline rows must be draggable (the new primary interaction)');
+  assert.ok(src.includes('onDrop='), 'the drop handler that applies the reorder must exist');
+  assert.ok(src.includes('tl-menu'), 'the timeline context menu must be wired');
+  // The "not drag" comment todo 21 replaces is gone.
+  assert.ok(!/not drag -- a deliberate adaptation/.test(src), 'the stale not-drag comment should be removed');
 });

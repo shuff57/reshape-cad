@@ -510,6 +510,16 @@ export default function ModelEditor({
     setCollapsed(next);
     onCollapsed?.(next);
   };
+  // Timeline right-click context menu (SPEC-mouse-parity Phase 4.4): the
+  // feature id, plus the click's own client coords for positioning. null
+  // means closed; Escape or any click elsewhere closes it.
+  const [tlMenu, setTlMenu] = useState<{ id: string; x: number; y: number } | null>(null);
+  // HTML5 drag-and-drop reorder state: which feature id the drag carries
+  // (dataTransfer) and which row is the current drop target (for the
+  // insertion hairline). dataTransfer.setData is write-only on dragover in
+  // every browser, so the id is mirrored in a ref.
+  const [tlDrag, setTlDrag] = useState<{ over: string | null } | null>(null);
+  const tlDragIdRef = useRef<string | null>(null);
   const [lastShape, setLastShape] = useState<ShapeKind>('box');
   const [lastRound, setLastRound] = useState<RoundStyle>('fillet');
   const [lastPattern, setLastPattern] = useState<PatternMode>('linear');
@@ -595,6 +605,7 @@ export default function ModelEditor({
         setSearchOpen(true);
       } else if (e.key === 'Escape') {
         setMenu(null);
+        setTlMenu(null);
         setSearchOpen(false);
       }
     }
@@ -1085,6 +1096,32 @@ export default function ModelEditor({
     say(null);
   }
 
+  /** Delete ONE feature by id, from the timeline context menu (Phase 4.4).
+  *  Routes through the SAME guarded remove() path: set the selection to the
+  *  one id, let remove() run its dependents/confirm machinery on it. */
+  function deleteById(id: string) {
+    const row = doc.features.find((f) => f.id === id);
+    if (!row) return;
+    setSelected([id]);
+    // remove() reads `chosen`, which is derived state from `selected` -- it
+    // would miss this call's new id until the next render. Inline the same
+    // guarded body instead of a setState-then-call race:
+    const asked = [id];
+    const doomed = [...orphanedBy(doc, asked)];
+    const extra = doc.features.filter((f) => doomed.includes(f.id) && !asked.includes(f.id));
+    if (extra.length > 0) {
+      const extraNames = extra.map((f) => names[f.id] ?? f.id);
+      const list = extraNames.length === 1 ? extraNames[0] : extraNames.slice(0, -1).join(', ') + ' and ' + extraNames[extraNames.length - 1];
+      const verb = extraNames.length === 1 ? 'goes' : 'go';
+      const removedNames = doc.features.filter((f) => doomed.includes(f.id)).map((f) => names[f.id] ?? f.id);
+      setConfirmDelete({ ids: asked, message: `Delete ${names[id] ?? id}? ${list} ${verb} with it.`, removedNames });
+      return;
+    }
+    onChange(withoutFeatures(doc, asked));
+    if (selected.includes(id)) setSelected(selected.filter((x) => x !== id));
+    say(null);
+  }
+
   function remove() {
     if (!chosen.length) return;
     // Everything built from what is going has to go too, however far down the
@@ -1164,6 +1201,32 @@ export default function ModelEditor({
     // mirror, pattern, shell, move -- not just combine, so dragging a Hole
     // above the box it drills is caught the same as dragging a Cut above
     // its inputs.
+    const seen = new Set<string>();
+    for (const f of features) {
+      const missing = dependsOn(f).filter((t) => !seen.has(t));
+      if (missing.length) {
+        const what = missing.map((t) => names[t] ?? t).join(', ');
+        say(`That would put ${names[f.id]} before ${what}, which it is built from.`);
+        return;
+      }
+      seen.add(f.id);
+    }
+    onChange({ ...doc, features });
+    say(null);
+  }
+
+  /** Drag-reorder to a target INDEX (SPEC-mouse-parity Phase 4.4): same
+  *  dependsOn() guard as move() above, shared validation loop -- a drag
+  *  cannot put a Hole before the sketch it drills any more than the up/down
+  *  buttons can. */
+  function moveTo(id: string, toIndex: number) {
+    const i = doc.features.findIndex((f) => f.id === id);
+    if (i < 0) return;
+    const j = Math.max(0, Math.min(doc.features.length - 1, toIndex));
+    if (i === j) return;
+    const features = [...doc.features];
+    const [row] = features.splice(i, 1);
+    features.splice(j, 0, row);
     const seen = new Set<string>();
     for (const f of features) {
       const missing = dependsOn(f).filter((t) => !seen.has(t));
@@ -1786,6 +1849,43 @@ export default function ModelEditor({
                   }
                   onClick={(e) => pick(f.id, e.ctrlKey || e.metaKey || e.shiftKey)}
                   onDoubleClick={() => onEditFeature?.(f.id)}
+                  // Timeline right-click context menu (Phase 4.4): edit /
+                  // delete / rollback-to-here.
+                  onContextMenu={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setTlMenu({ id: f.id, x: e.clientX, y: e.clientY });
+                  }}
+                  // HTML5 drag-and-drop reorder (Phase 4.4). draggable on the
+                  // row; the up/down buttons below stay as the keyboard-
+                  // reachable fallback SPEC explicitly asks to keep.
+                  draggable
+                  onDragStart={(e) => {
+                    tlDragIdRef.current = f.id;
+                    e.dataTransfer.setData('text/plain', f.id);
+                    e.dataTransfer.effectAllowed = 'move';
+                  }}
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'move';
+                    setTlDrag((d) => (d?.over === f.id ? d : { over: f.id }));
+                  }}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const dragged = tlDragIdRef.current;
+                    setTlDrag(null);
+                    tlDragIdRef.current = null;
+                    if (!dragged || dragged === f.id) return;
+                    // The drop lands on the row; moving the dragged feature
+                    // TO this row's own index gives the Fusion semantics (the
+                    // dragged chip lands where the target chip was).
+                    moveTo(dragged, i);
+                  }}
+                  onDragEnd={() => {
+                    setTlDrag(null);
+                    tlDragIdRef.current = null;
+                  }}
                   title={refusedWhy}
                   aria-label={refusedWhy ? `${names[f.id]}: ${refusedWhy}` : undefined}
                 >
@@ -1988,6 +2088,64 @@ export default function ModelEditor({
         </ol>
       )}
 
+      {/* The timeline's right-click context menu (Phase 4.4): edit /
+          delete / rollback-to-here. Positioned at the click's own client
+          coords via position: fixed, so it floats above the timeline
+          regardless of the editor's own scroll; Escape and any click
+          elsewhere close it (the backdrop convention MarkingMenu.tsx
+          already uses). */}
+      {tlMenu && (
+        <>
+          <div
+            className="tl-menu-backdrop"
+            onClick={() => setTlMenu(null)}
+            onContextMenu={(e) => {
+              e.preventDefault();
+              setTlMenu(null);
+            }}
+          />
+          <div className="tl-menu" role="menu" style={{ left: tlMenu.x, top: tlMenu.y }}>
+            <button
+              type="button"
+              role="menuitem"
+              className="tl-menu-row"
+              onClick={() => {
+                const id = tlMenu.id;
+                setTlMenu(null);
+                onEditFeature?.(id);
+              }}
+            >
+              Edit
+            </button>
+            <button
+              type="button"
+              role="menuitem"
+              className="tl-menu-row"
+              onClick={() => {
+                const id = tlMenu.id;
+                setTlMenu(null);
+                deleteById(id);
+              }}
+            >
+              Delete
+            </button>
+            <button
+              type="button"
+              role="menuitem"
+              className="tl-menu-row"
+              onClick={() => {
+                const id = tlMenu.id;
+                setTlMenu(null);
+                const i = doc.features.findIndex((x) => x.id === id);
+                onRollback?.(rollbackIndex === i + 1 ? null : i + 1);
+              }}
+            >
+              Rollback to here
+            </button>
+          </div>
+        </>
+      )}
+
 
       <style>{`
         .model-editor { display: flex; flex-direction: column; height: 100%; min-height: 0; overflow: hidden; }
@@ -2169,8 +2327,8 @@ export default function ModelEditor({
            the two read as distinct states (a feature can be both). */
         .model-timeline .model-row.is-rolled-back { opacity: 0.35; filter: grayscale(0.6); }
         /* The rollback tick between chips: a hairline divider, click-to-set
-           (not drag -- a deliberate adaptation of Onshape's draggable bar to
-           reSHape's horizontal timeline). */
+           (the timeline's ROWS drag-reorder now, Phase 4.4; this tick stays
+           click-only). */
         .model-timeline .model-rollback-handle {
           flex: 0 0 auto;
           align-self: stretch;
@@ -2194,6 +2352,28 @@ export default function ModelEditor({
         .model-timeline .model-rollback-handle.is-active .model-rollback-line {
           background: var(--reshape-accent);
         }
+        /* The timeline's right-click context menu (Phase 4.4), fixed to the
+           click's own client coords so it floats above the editor's scroll.
+           Backdrop-under-the-menu, the same convention MarkingMenu.tsx uses
+           for "click elsewhere closes it". */
+        .tl-menu-backdrop { position: fixed; inset: 0; z-index: 39; }
+        .tl-menu {
+          position: fixed; z-index: 40; min-width: 140px;
+          display: flex; flex-direction: column;
+          border: 1px solid var(--border, var(--reshape-border));
+          background: var(--card, var(--reshape-surface));
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+          border-radius: 6px; overflow: hidden;
+        }
+        .tl-menu-row {
+          text-align: left; padding: 6px 12px; border: 0; cursor: pointer;
+          background: var(--card, var(--reshape-surface));
+          color: var(--text, var(--reshape-text));
+          font-size: var(--reshape-font-size-sm, 12px); font-family: var(--reshape-font-ui);
+        }
+        .tl-menu-row:hover { background: var(--reshape-surface-alt); color: var(--reshape-accent); }
+        /* The drop-target hairline while a drag is over a row. */
+        .model-timeline .model-row.is-drop-target { outline: 1px dashed var(--reshape-accent); }
         .model-timeline .model-step {
           flex: 0 0 auto;
           text-align: left;
