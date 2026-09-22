@@ -1103,7 +1103,200 @@ is filed as a verified difference, not a parity match. Timeline-error
 resolution was a bonus corroboration of the per-feature-refusal contract.
 
 ---
+## reSHape Studio Phase 4 closeout (self-recorded)
 
+- **Source**: self-recorded Playwright scenarios, not a URL — the five
+  `scripts/parity-scenarios/phase4-*.mjs` files (built for todos 17–21 of
+  `.omo/plans/fusion-parity-closure.md`), each self-asserting with throws
+  before being handed to the review pipeline (same ground-truth-first
+  methodology as the earlier closeout entries):
+  - `phase4-marking-menu-base.mjs` → `.omo/evidence/parity-recordings/phase4-marking-menu-base/page@468093b63a893217a21b8ad946eff561.webm`
+  - `phase4-marking-menu-flyout.mjs` → `.omo/evidence/parity-recordings/phase4-marking-menu-flyout/page@21d49943f80b3e09f71183889b313ce1.webm`
+  - `phase4-marking-gesture.mjs` → `.omo/evidence/parity-recordings/phase4-marking-gesture/page@4c492df1ed11d4dc5c448a62036c78e8.webm`
+  - `phase4-rightclick-guard.mjs` → `.omo/evidence/parity-recordings/phase4-rightclick-guard/page@09887dcb9d1b248fa3a8322bc6dccd88.webm`
+  - `phase4-timeline-context.mjs` → `.omo/evidence/parity-recordings/phase4-timeline-context/page@e72ba031d90ae7712fb523c3b9f7a41c.webm`
+- **Model**: script default (`google/gemini-3.8-flash`) for all five; no
+  `--pro` escalation needed.
+- **Reviewed**: 2026-09-21.
+- **Methodology note**: silent recordings, faster-whisper fails on all five
+  (no audio stream — expected), so the spot-check is against each
+  scenario's known action sequence, not a caption. A measured platform
+  fact this wave also documents: Chromium/Playwright fire a right press's
+  `contextmenu` event at PRESS time (coords = the down point, timestamp =
+  pointerdown's), BEFORE pointerup and before any drag's moves — the
+  classify-on-pointerup split in BrepViewportThree.tsx and SketchCanvas2D.tsx
+  exists because of that (see commit `0c1ae88`).
+
+### marking-menu base (`phase4-marking-menu-base.mjs`)
+
+Known scripted sequence: right-click in the part viewport → assert the
+eight SPEC wedges render → Escape closes → right-click in sketch mode →
+assert the sketch constraint wedges → Escape.
+
+#### Verified
+
+1. **All eight part-viewport wedges, in the SPEC's reading order, at the
+   right clock positions.** Model: *"Top (12 o'clock): Repeat… Top-Right:
+   Delete… Right: Press Pull… Bottom: Redo… Top-Left: Sketch"* — the exact
+   set and layout order `MARKING_MENU_CONFIG['part-viewport']` carries.
+2. **The context list renders with the SPEC :34-35 rows.** Model: *"a
+   vertical list appears containing: Pan/Zoom/Orbit, Isolate, Workspaces,
+   Saved shortcuts"* — matches `contextListFor()`'s four entries (disabled,
+   present-but-disabled).
+3. **Sketch-mode menu renders the constraint wedges** (script assertion:
+   Done/Horizontal/Vertical/Tangent/Lock all present after the sketch-mode
+   right-click; the model's read of the base take covers the part-viewport
+   menu and the sketch entry).
+
+#### Unverified / discarded
+
+- **Sixth cumulative sighting of the stale orbit-hint text** (`RIGHT-DRAG
+  ORBIT` in the status bar while left-drag orbits). Same
+  `ReshapeStudio.tsx` bug every earlier self-recorded entry flagged; todo
+  29's mouse-scheme flip is where it gets fixed.
+
+#### Coverage
+
+Both menus (part-viewport, sketch) rendered with mode-appropriate contents;
+Escape close asserted by the script.
+
+### marking-menu flyout (`phase4-marking-menu-flyout.mjs`)
+
+Known scripted sequence: right-click part-viewport → hover the Sketch
+wedge → the sketch-tool flyout opens (8 tools) → context rows present →
+Escape.
+
+#### Verified
+
+1. **The radial renders with all 8 wedges and the context list.** Model:
+   the full wedge list (Repeat…Sketch) plus *"Context List Rows (to the
+   upper-left of the radial menu): Pan/Zoom/Orbit, Isolate, Workspaces,
+   Saved shortcuts"*.
+2. **The flyout's per-child items were NOT read by the model** (model:
+   "Submenus / Flyouts: None visible"; a second run returned `null` for the
+   whole video) — the hover-opens-flyout step moves through the wedge
+   quickly at 1280×800 and the flyout's lifetime is ~1 frame of the
+   recording. The flyout's DOM-reach proof is the scenario's own
+   throw-assertions (each of the 8 tool labels asserted present in
+   `.marking-menu-flyout-item`), which the video corroborates only
+   indirectly (the wedge hover happened — no error was thrown).
+
+#### Unverified / discarded
+
+- The diagonal-toward vs directly-away dead-zone behavior (todo 18's
+  acceptance criterion) is asserted by the PURE unit test (flyoutHitTest's
+  two cases), not by this recording — a silent 1280×800 video cannot
+  resolve a cursor-path geometry claim. No real-Fusion lesson demonstrates
+  Fusion's own flyout dead-zone either; the [CONFIRM] split stays as filed.
+
+#### Coverage
+
+The radial + context list were read correctly; the flyout's contents were
+asserted by the script, the video read was inconclusive (too small/fast a
+target), the geometry is proven by the unit test.
+
+### marking gesture (`phase4-marking-gesture.mjs`)
+
+Known scripted sequence: two boxes → select one → fast right-drag toward
+the Delete wedge (upper-right, slot 1) → assert NO menu rendered and the
+body was deleted.
+
+#### Verified
+
+1. **The wedge gesture fires Delete with NO menu flash, transcript-free
+   but geometry-corroborated.** Model: *"Box 2 is deleted (the 3D body
+   disappears from the viewport, and the BOX 2 timeline card vanishes)…
+   Viewpoint has orbited, but no radial menu or drag indicator is visible."*
+   Matches the scripted classification exactly: the fast drag went to
+   Delete's wedge, the command fired, and the menu never rendered (the
+   model even notes the camera orbited — the right-press's motion was read
+   as navigation until the wedge fired).
+
+#### Unverified / discarded
+
+- **[CONFIRM]-sourced timing is NOT settled by this entry.** The 150ms
+  gesture delay is a documented default pending real-Fusion verification
+  (SPEC open question #2), flagged in `classifyGesture`'s own code comment;
+  the 4px dead zone is the SHARED hold-cycle constant (settled numbers,
+  see input-threshold.ts). This recording proves reSHape's own
+  implementation behaves as coded, not that Fusion's exact gesture
+  numbers match. SPEC-mouse-parity Phase 4.2's [CONFIRM delay and
+  dead-zone] tag stays open for todo 30's sweep.
+
+#### Coverage
+
+The wedge-fires-without-menu behavior was corroborated end-to-end (body
+gone, timeline row gone, no menu flash); the qualitative claim "Fusion
+uses this exact gesture" remains unverified against real footage.
+
+### right-click guard (`phase4-rightclick-guard.mjs`)
+
+Known scripted sequence: slow right-DRAG 200px (camera gesture) → assert
+no menu → clean right-click → assert the menu opens → Escape.
+
+#### Verified
+
+1. **The menu did NOT open on the slow drag** (model: *"None appear"*
+   throughout, and the scene description shows only the viewport loading —
+   the camera drag consumed the gesture). The scenario's own assertion
+   (`afterDrag === 0`) is the direct proof.
+2. **The measured event order the guard depends on is now documented.**
+   Chromium/Playwright fire contextmenu at PRESS time (coords = the down
+   point) — the reason classify-and-dispatch lives in onCanvasPointerUp
+   (commit `0c1ae88`'s body carries the full measurement). The model's
+   read corroborates the sequence: the drag happened while the viewport
+   stayed menu-free.
+
+#### Unverified / discarded
+
+- The model read the recording as "no gesture performed" (the drag and
+  click both landed between its sampled frames). The script's own
+  assertions — no menu on drag, menu on click — are the ground truth here,
+  not the video.
+
+#### Coverage
+
+The guard's both behaviors were asserted by the scenario; the video
+corroborates the session ran (kernel load → ready) without contradicting
+the assertions.
+
+### timeline context (`phase4-timeline-context.mjs`)
+
+Known scripted sequence: two boxes → HTML5-drag row 1 onto row 2 →
+assert the swap → click row 2's move-earlier button → assert the
+keyboard fallback restored the order → right-click row 1 → assert the
+Edit/Delete/Rollback-to-here menu.
+
+#### Verified
+
+1. **The drag-reorder swapped the rows.** Model: *"Timeline displays
+   [BOX 2] positioned before [BOX 1]"* after the drag — exactly the
+   moveTo() semantics the scenario asserts (row 1 lands where row 2 was).
+2. **The right-click context menu opened with the right rows.** Model:
+   *"Right-clicking on the BOX 1 timeline node opens a vertical context
+   menu popup"* — and the scenario's own assertion named Edit, Delete and
+   Rollback to present.
+
+#### Unverified / discarded
+
+- The keyboard-fallback click (row 2's move-earlier) is not readable from
+  the video (a button click inside a timeline chip at this resolution);
+  the scenario's throw-assertion (order restored) is the proof.
+
+#### Coverage
+
+Drag-reorder result and the context menu's opening were corroborated by
+the model's read; the button-fallback reordering is proven by the
+scenario's assertion. The up/down buttons' DOM survival is additionally
+asserted structurally by marking-menu.test.mjs's todo-21 test.
+
+### Relevance to `packages/studio`
+
+Wave 3's five todos are corroborated as shipped (`dc71103` base,
+`9404fd6` flyout+context list, `e82ceb5` gesture, `4677c5f` guard,
+`f77225b` timeline menu+drag, plus the two event-order fixes `33ce4c4`/
+`0c1ae88`). The one standing [CONFIRM] is Phase 4.2's delay/dead-zone
+against real Fusion footage — flagged for todo 30.
 ## Next videos to review
 
 Rebuilt 2026-09-20 for balanced 2D/3D/navigation coverage. All URLs probed
