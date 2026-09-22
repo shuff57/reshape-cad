@@ -440,6 +440,16 @@ interface Props {
    * itself. Absent means the wedge renders disabled.
    */
   onStartSketch?: () => void;
+  /**
+   * Phase 5.3's live-preview tint (todo 25): while a manipulator drag is
+   * in flight the rebuilt meshes are drawn TRANSLUCENT in the op's colour
+   * -- blue for an additive operation, red for a cut -- instead of the
+   * committed opaque orange. `active` is the caller's own previewDoc
+   * signal (a pending param fold exists); `tint` is the selected
+   * feature's op colour (manipulator-core's previewTint). Absent or
+   * inactive draws the committed material, exactly as before.
+   */
+  preview?: { active: boolean; tint: 'add' | 'cut' } | null;
 }
 
 /** Module-level, not per-component: two viewports in one session share the
@@ -591,7 +601,7 @@ const FILTER_CHIPS: { key: keyof SelectionFilters; label: string }[] = [
 export default function BrepViewportThree({
   doc, deflection, onStats, onPick, pick, selectedCount, selectionLabel, anchors, onAnchors, onMesh, registerPickAt,
   sketchPlane, panelOcclusionPx, ruleActivityAt, onEngine, badgesInStatusBar = false, filters, onFiltersChange, onBoxSelect,
-  onFeatureDoubleClick, onSelectAll, onDeleteSelected, onUndo, onRedo, onStartSketch,
+  onFeatureDoubleClick, onSelectAll, onDeleteSelected, onUndo, onRedo, onStartSketch, preview,
 }: Props) {
   const [phase, setPhase] = useState<'loading' | 'ready' | 'error'>('loading');
   // Which view-strip preset the camera is sitting on, or null once the
@@ -838,6 +848,11 @@ export default function BrepViewportThree({
   // the doc-rebuild effect, without either one recreating it.
   const anchorsRef = useRef<HandleSpec[]>(anchors ?? []);
   anchorsRef.current = anchors ?? [];
+  // Phase 5.3's live-preview tint (todo 25), read through a ref for the
+  // same stale-closure reasoning as anchorsRef above: drawGeoms() is a
+  // component-level function called from the doc-rebuild effect.
+  const previewRef = useRef(preview ?? null);
+  previewRef.current = preview ?? null;
   // The ONE marking-menu dispatch both entry points share: the rendered
   // menu's onClick (near the bottom of this file) AND todo 19's fast
   // directional gesture (which never renders the menu). Assignment during
@@ -3257,6 +3272,18 @@ export default function BrepViewportThree({
     const material = new THREE.MeshStandardMaterial({
       color: 0xff6600, roughness: 0.6, metalness: 0.1,
     });
+    // Phase 5.3 (todo 25): while a preview is active the rebuilt meshes
+    // are drawn TRANSLUCENT in the op's colour, not the committed orange --
+    // the colour says "not committed yet", the opacity says "computed",
+    // and pointerup folds the committed doc (one undo step) which drops
+    // the tint. Same zero-copy geometry path as the committed draw.
+    const pv = previewRef.current;
+    if (pv?.active) {
+      material.color.setHex(pv.tint === 'cut' ? 0xff5555 : 0x8be9fd);
+      material.transparent = true;
+      material.opacity = 0.55;
+      material.depthWrite = false;
+    }
     const edgeMaterial = new THREE.LineBasicMaterial({ color: 0x1a1a1a });
     // Never drawn (every pick line is invisible -- see below), so one shared
     // material for all of them is fine; three.js does not read material

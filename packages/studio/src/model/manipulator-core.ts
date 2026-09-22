@@ -122,3 +122,18 @@ export function arcPoints(cx: number, cy: number, r: number, fromDeg: number, to
   }
   return pts.join(' ');
 }
+
+/**
+ * The live-preview tint (todo 25) for a feature kind: 'add' renders
+ * blue, 'cut' renders red -- SPEC-mouse-parity.md Phase 5.3's colour
+ * convention verbatim. Fillet rounds a corner (additive, it fills the
+ * corner with material); draft tilts a wall (the wall leans, the
+ * silhouette changes) -- the honest colour for "the shape you see is not
+ * committed yet" is the ADD one for both. Null for kinds with no
+ * preview claim.
+ */
+export function previewTint(kind: Feature['kind']): 'add' | 'cut' | null {
+  if (kind === 'extrude' || kind === 'fillet' || kind === 'draft') return 'add';
+  if (kind === 'pocket') return 'cut';
+  return null;
+}

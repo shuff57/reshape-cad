@@ -48,6 +48,7 @@ import {
 } from './selection-model.js';
 import { outlineOf } from '@shuff57/reshape-sketch/sketch-arc';
 import { handlesFor, featureCenter, type HandleSpec } from '@shuff57/reshape-script/model-handles';
+import { previewTint } from './model/manipulator-core.js';
 import { EMPTY_DOC, type Feature, isSketchOnly, type ModelDoc, nameMap, newSketch, type SketchPlane } from '@shuff57/reshape-script/model-types';
 import { ownerOf } from '@shuff57/reshape-script/model-selection';
 import { partWordFor } from '@shuff57/reshape-script/topo-name';
@@ -1419,6 +1420,12 @@ export default function ReshapeStudio({
                 }}
                 onEngine={() => setEngineReady(true)}
                 badgesInStatusBar={true}
+                // Phase 5.3 (todo 25): while a live drag preview exists
+                // (previewDoc != null) the viewport draws translucent in the
+                // selected feature's op colour; pointerup commits and drops it.
+                preview={showBrep && previewDoc != null && ctxFeature
+                  ? { active: true, tint: previewTint(ctxFeature.kind) ?? 'add' }
+                  : null}
                 filters={selection.filters}
                 onFiltersChange={(next) => setSelection((s) => ({ ...s, filters: next }))}
                 onBoxSelect={showBrep ? (items, shiftKey) => {
