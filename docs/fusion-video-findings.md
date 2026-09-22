@@ -1297,6 +1297,92 @@ Wave 3's five todos are corroborated as shipped (`dc71103` base,
 `f77225b` timeline menu+drag, plus the two event-order fixes `33ce4c4`/
 `0c1ae88`). The one standing [CONFIRM] is Phase 4.2's delay/dead-zone
 against real Fusion footage — flagged for todo 30.
+
+---
+
+## reSHape Studio Phase 5 closeout (self-recorded)
+
+- **Source**: five self-recorded Playwright scenarios against the sandbox
+  app (`node scripts/parity-record.mjs phase5-...`), one per Phase 5
+  todo. Silent screen captures — the model had no transcript available,
+  so visual claims only; nothing here rides on audio.
+- **Model**: script default (`google/gemini-3.8-flash`).
+- **Reviewed**: 2026-09-21.
+
+### Recordings + what the model corroborated
+
+1. **phase5-extrude-manipulator** (todo 22, commit `a8806d3`) —
+   `.omo/evidence/parity-recordings/phase5-extrude-manipulator/`
+   Verified: selecting POCKET 1 summons the on-canvas arrow manipulator
+   plus a floating numeric badge at its tip; typing 12 updates the
+   handle position and the geometry live; entering -5 triggers the
+   plain-English refusal banner ("a pocket of -5 is not a shape — give a
+   positive number"); the right panel shows the SAME parameter
+   ("Pocket 1 deep"), so box, drag, and panel are one parameter.
+
+2. **phase5-taper-handle** (todo 23, commit `13d0288`) —
+   `.omo/evidence/parity-recordings/phase5-taper-handle/`
+   Verified: selecting BODY DRAFT 1 renders the blue circular arc handle
+   with a numeric badge (8) on the drafted axis, attached to a floating
+   context bar; adjusting the angle to 15 regenerates the geometry
+   immediately; switching steps or deselecting removes the handle
+   completely (absent, not disabled).
+
+3. **phase5-move-gizmo** (todo 24, commit `b60f1a3`) —
+   `.omo/evidence/parity-recordings/phase5-move-gizmo/`
+   The model's read is of our tool's Code/Build tabs (it names the
+   difference explicitly). Corroborated: the footer mapping hints, the
+   selected cuboid's highlight, the Move 1 contextual pill with X 15 /
+   Y 0 / Z 0, and the Move 1 x/y/z slider+text pairs in the right panel —
+   the gizmo's parameter family, though the clip shows the panel path
+   rather than an arrow drag.
+
+4. **phase5-live-preview** (todo 25, commit `7fb4494`) —
+   `.omo/evidence/parity-recordings/phase5-live-preview/`
+   Corroborated: the Pocket 1 pill HUD over the geometry, the Depth 8
+   inline field, sub-button hover highlighting, and the committed
+   inspector. NOT visible in this clip: the translucent blue/red tint
+   itself — the drag shown was short and the model read the resting
+   orange, so the colour convention stays an unverified visual claim
+   (the unit suite's structural single-undo pins cover the guarantee
+   instead).
+
+5. **phase5-step-tooltips** (todo 26, commit `1bbba29`) —
+   `.omo/evidence/parity-recordings/phase5-step-tooltips/`
+   The model read this clip as code-driven (no cursor captured, no
+   handles visible) and corroborated the surrounding chrome: the tab
+   filter toggles (Faces/Edges/Vertices/Bodies), the Browser selection,
+   and the timeline step inspection. The tooltip itself did not render in
+   this take — the state-driven prompt strings are covered by
+   step-tooltips.test.mjs (four cases, verbatim strings) rather than
+   claimed as shown here.
+
+### Cross-references (the three prior entries this closes)
+
+- "## Press Pull (\"Press Pull Command - Fusion 360 Part Tutorial\")"
+  — its finding 2 ("drag this Arrow ... or I can type a parameter in
+  this distance field", 01:20–01:31) is the behavioural target of Phase
+  5.1; closed by recording 1 (arrow + typeable badge corroborated). Its
+  5.3 preview relevance ("commit-on-OK") is covered by the structural
+  single-undo pin; the tint colour itself stays unverified (see take 4).
+- "## Extrude (\"Extrude solid bodies\")" — its verified per-extrusion
+  timeline features and symmetric direction remain the behavioural
+  shape of the extrude manipulator; the E hotkey and symmetric-direction
+  parts it flagged are OUT of Scope IN and stay unimplemented — this
+  closeout does not claim them.
+- "## Fillets (\"Fillets\")" — its Phase 5.1 relevance note is closed by
+  take 2's arc handle on the draft's angle parameter (the SPEC's arc
+  requirement is about ANY angle-bearing feature; draft is the confirmed
+  carrier). Fillet's own radius dot remains the todo-22 handle.
+
+### Relevance to `packages/studio`
+
+Wave 4's five todos are corroborated as shipped (`a8806d3` manipulator,
+`13d0288` taper arc, `b60f1a3` gizmo+incremental, `7fb4494` preview,
+`1bbba29` step tooltips). Standing [CONFIRM] carried to todo 30: the
+blue/red tint is a colour convention the recordings corroborate only
+indirectly (the pill HUD and value field, not the tint itself), and
+Phase 4.2's gesture numbers are still pending real footage.
 ## Next videos to review
 
 Rebuilt 2026-09-20 for balanced 2D/3D/navigation coverage. All URLs probed
