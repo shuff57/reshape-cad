@@ -2369,7 +2369,8 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
           if (panButton !== 2) return;
           e.preventDefault();
           const up: PointerSample = { x: e.clientX, y: e.clientY, t: e.timeStamp };
-          const verdict = classifyGesture(rightDownRef.current, up, MARKING_GESTURE);
+          const downSample = rightDownRef.current;
+          const verdict = classifyGesture(downSample, up, MARKING_GESTURE);
           rightDownRef.current = null;
           if (verdict.kind === 'ignore') return;
           const rect = e.currentTarget.getBoundingClientRect();
@@ -2384,7 +2385,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
           // Todo 20's guard: only a click-shaped release opens the menu; a
           // right-drag is pan in the legacy scheme (panButton === 2 here) and
           // the pan gesture owns it.
-          if (rightClickGuard(rightDownRef.current, up, HOLD_CYCLE_DEAD_ZONE_PX) !== 'menu') return;
+          if (rightClickGuard(downSample, up, HOLD_CYCLE_DEAD_ZONE_PX) !== 'menu') return;
           setMarkingMenu({ x: e.clientX - rect.left, y: e.clientY - rect.top });
         }}
         onDoubleClick={() => {
