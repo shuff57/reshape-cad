@@ -77,6 +77,7 @@ import type { HandleSpec } from '@shuff57/reshape-script/model-handles';
 import type { AnchorPoint } from './HandleOverlay.js';
 import { mergeMeshes, type MeshInput } from '../mesh-export.js';
 import { bboxCenter, DEFAULT_FILL_FRACTION, fitDistance, type Box3Like } from '../camera-fit.js';
+import { CUBE_ZONE_CELL, cubeZoneAt, cubeZoneDirs, type CubeFaceKey, type CubeZone } from './cube-zone.js';
 import { DEFAULT_SCHEME_NAME, MOUSE_SCHEMES, loadSchemeName, saveSchemeName, schemeToMouseButtons, schemeToTouches, type MouseScheme } from '../camera-controls.js';
 import { CameraMode, loadCameraMode, orthoFrustumFromPerspective, saveCameraMode } from '../ortho-camera.js';
 import { computeSelectionFit, computeWindowZoomFit, type Vec3 } from '../window-zoom-fit.js';
@@ -646,6 +647,19 @@ export default function BrepViewportThree({
   // so 60x/sec orientation reads never trigger a React re-render.
   const navCubeInnerRef = useRef<HTMLDivElement | null>(null);
   const cubeDragRef = useRef({ dragging: false, x: 0, y: 0, moved: false });
+  // Todo 28 (SPEC Phase 1.5): the cube's own small menu, opened by the
+  // affordance icon on the cube -- NEVER by right-click (the marking menu
+  // owns right-click everywhere, cube included; two competing menus over
+  // one widget would collide). Offers the two camera modes that already
+  // exist (the view-strip's Persp/Ortho) plus Set as Home/Front/Top;
+  // SPEC-mouse-parity.md :65 defers "Perspective with Orthographic Faces"
+  // so it is deliberately absent here.
+  const [cubeMenu, setCubeMenu] = useState(false);
+  // The open menu is a SIBLING of the cube wrapper (fixed-position at the
+  // gear's screen spot) so a click on its entry buttons is never captured
+  // by the wrapper's pointerdown -- their own onClicks fire. gearX/gearY
+  // are read from the gear's bounding rect at open time.
+  const [gearPos, setGearPos] = useState<{ x: number; y: number } | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [buildError, setBuildError] = useState<string | null>(null);
   // A stage that is empty ON PURPOSE (nothing yet, or only flat sketches)
@@ -2532,17 +2546,58 @@ export default function BrepViewportThree({
   }
 
   /** Snaps the camera to one nav-cube face's direction, by CSS face key
-   *  (NAV_CUBE_FACES above). Looked up by key rather than called inline so
-   *  the pointerup handler below (which resolves the face via
-   *  elementFromPoint, not the button's own onClick -- see that handler's
-   *  comment for why) and the button's onClick (kept for keyboard
-   *  Enter/Space activation) both go through the exact same path. */
+  (NAV_CUBE_FACES above). Looked up by key rather than called inline so
+  the pointerup handler below (which resolves the face via
+  elementFromPoint, not the button's own onClick -- see that handler's
+  comment for why) and the button's onClick (kept for keyboard
+  Enter/Space activation) both go through the exact same path. */
   function fireFace(key: string) {
     const entry = NAV_CUBE_FACES.find((f) => f.key === key);
     if (!entry) return;
     lookFrom(entry.dir);
     setPreset(entry.preset);
   }
+
+  /** Todo 28: a right-click ANYWHERE over the cube opens the same marking
+   *  menu the canvas path opens (todo 17 owns right-click everywhere; the
+   *  wrapper captures pointerdown, so the canvas classifier never sees these
+   *  events). The browser's contextmenu event fires at PRESS time in
+   *  Chromium (measured 2026-09-21, see onCanvasContextMenu's comment), so
+   *  the sample here is the press point -- good enough for a click-shaped
+   *  menu open, which is what a right-click on a 88px widget is. A
+   *  right-DRAG over the cube is not served here (the menu opens only for
+   *  click-shaped presses; a drag keeps orbiting via the canvas's own
+   *  controls -- the wrapper's own pointermove only orbits on LEFT drag
+   *  since button 2 no longer sets cubeDragRef). */
+  function rightCubeMenuAt(sample: { x: number; y: number }) {
+    const renderer = rendererRef.current;
+    if (!renderer) return;
+    const bounds = renderer.domElement.getBoundingClientRect();
+    setMarkingMenu({ x: sample.x - bounds.left, y: sample.y - bounds.top });
+  }
+
+  /** Todo 28 (SPEC Phase 1.5): face OR edge OR corner snap, from a
+  cube-zone id. Faces keep fireFace()'s exact path; edges/corners look
+  from the normalized dir-sum cube-zone.ts computed (both preserve
+  distance exactly like a face click, per lookFrom) and clear the
+  preset -- a diagonal view is not any named view-strip preset. */
+  function fireZone(zone: CubeZone) {
+    if (zone.kind === 'face') { fireFace(zone.id.slice('face:'.length)); return; }
+    if (zone.kind === 'none') return;
+    const dir = CUBE_ZONE_DIRS[zone.id];
+    if (!dir) return;
+    lookFrom(dir);
+    setPreset(null);
+  }
+
+  /** The zone dirs for the live cube, derived ONCE from the same face
+  dirs NAV_CUBE_FACES already owns -- recomputed per render is fine
+  (20 small sums), but a module-level map cannot drift from a future
+  NAV_CUBE_FACES edit only if it derives FROM it; so it is built here,
+  where NAV_CUBE_FACES is in scope. */
+  const CUBE_ZONE_DIRS = cubeZoneDirs(
+    Object.fromEntries(NAV_CUBE_FACES.map((f) => [f.key, f.dir])) as Record<CubeFaceKey, [number, number, number]>,
+  );
 
   /**
    * Aims the camera at the model's own bounding-box centre along a preset
@@ -2653,14 +2708,16 @@ export default function BrepViewportThree({
    *
    * Respects prefers-reduced-motion by skipping straight to the instant
    * fitToModel() behaviour (0ms is still "the same fit", just not eased).
-  /**
-   * SPEC-mouse-parity Phase 1 item 3: swap the live camera for the other kind,
-   * keeping the current orbit (position + controls.target) and the framing at
-   * that target distance, so the toggle reads as the same model flattened, not
-   * a jump-cut. The one OrbitControls instance just gets told which object to
-   * drive; its internal spherical state re-derives off the new camera on the
-   * next controls.update() the same way lookFrom() re-keys it after a preset.
-   */
+  /** Todo 28: the cube-menu's camera-mode entries reuse applyCameraMode()
+  AND mirror the view-strip toggle's own React-state + localStorage write
+  (see that toggle's onClick below) so both entry points can never
+  disagree about the current mode. */
+  function applyCameraModeAndToggle(next: CameraMode) {
+    applyCameraMode(next);
+    saveCameraMode(next);
+    setCameraKind(next);
+    setCubeMenu(false);
+  }
   function applyCameraMode(next: CameraMode) {
     const three = threeRef.current;
     const controls = controlsRef.current;
@@ -3905,7 +3962,19 @@ try {
         <div
           style={navCubeWrapStyle}
           title="Drag to orbit, click a face to snap to that view"
+          onContextMenu={(e) => {
+            // Todo 17 owns right-click EVERYWHERE, cube included: the wrapper
+            // captures pointerdown, so the canvas never sees button-2 events
+            // aimed at the cube and its own menu path never runs. This
+            // forwards the release-point to the same gesture classifier the
+            // canvas path uses (rightCubeMenuAt below) so a right-click over
+            // the widget opens the marking menu like everywhere else.
+            e.preventDefault();
+            e.stopPropagation();
+            rightCubeMenuAt({ x: e.clientX, y: e.clientY });
+          }}
           onPointerDown={(e) => {
+            if (e.button === 2) return; // right button: marking menu, not a cube drag
             (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
             cubeDragRef.current = { dragging: true, x: e.clientX, y: e.clientY, moved: false };
           }}
@@ -3931,6 +4000,35 @@ try {
             try { (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId); } catch { /* already released */ }
             if (wasDrag) return;
             const hit = document.elementFromPoint(e.clientX, e.clientY) as HTMLElement | null;
+            // The gear affordance has NO working click of its own for mouse
+            // users (captured pointerup retargets to the wrapper, so React's
+            // click never lands on it -- same measured behaviour the face
+            // buttons hit). So the resolver OPENS/CLOSES the menu itself,
+            // instead of returning and trusting an onClick that never comes.
+            // A release INSIDE the open menu (gear, or any entry button) is
+            // left alone: the gear closes it, and an entry button's own
+            // onClick fires because the menu div is OUTSIDE the capturing
+            // wrapper's pointer chain (rendered beside navCubeSceneStyle,
+            // not inside it) -- verified: a mouse click on Orthographic
+            // switches the live camera and the view-strip label follows.
+            if (hit?.closest<HTMLElement>('[data-cube-menu]')) {
+              const gear = hit.closest<HTMLElement>('[data-cube-menu]')!;
+              const r = gear.getBoundingClientRect();
+              setGearPos({ x: r.right + 4, y: r.top });
+              setCubeMenu((v) => !v);
+              return;
+            }
+            const zoneEl = hit?.closest<HTMLElement>('[data-zone]');
+            if (zoneEl) {
+              // Todo 28: face/edge/corner all resolve here. A face cell's
+              // data-zone is the CSS face key (same string fireFace keys
+              // on); edge/corner cells carry their 'a|b' / 'a|b|c' id --
+              // fireZone routes both, so a release point that lands on a
+              // zone NEVER falls through to the bare face resolver below.
+              const z = zoneEl.dataset.zone!;
+              fireZone(z.startsWith('face:') ? { kind: 'face', id: z } : cubeZoneAt(zoneEl.dataset.zface as CubeFaceKey, Number(zoneEl.dataset.zx), Number(zoneEl.dataset.zy)));
+              return;
+            }
             const face = hit?.closest<HTMLElement>('[data-face]')?.dataset.face;
             if (face) fireFace(face);
           }}
@@ -3942,10 +4040,92 @@ try {
                   {f.label}
                 </button>
               ))}
+              {/* Todo 28: edge/corner zones, rendered as transparent
+              absolutely-positioned buttons IN FRONT of the face planes
+              (translateZ(NAV_CUBE_SIZE/2 + 1)) so they sit above every face
+              cell. Their data attributes carry the zone's own plane coords
+              so the wrapper's elementFromPoint resolver can re-run
+              cubeZoneAt on the release point exactly as the unit test does.
+              24 tiny non-text buttons (aria-hidden): the face labels remain
+              the keyboard path, and the zone buttons are pointer-only
+              affordances over a widget that is itself decorative. */}
+              {(['front', 'back', 'right', 'left', 'top', 'bottom'] as CubeFaceKey[]).map((face) => {
+                const tf = NAV_CUBE_FACE_TRANSFORMS[face];
+                return (
+                  <div key={`zones-${face}`} style={{ position: 'absolute', inset: 0, transform: `${tf} translateZ(1px)`, transformStyle: 'preserve-3d' }}>
+                    <button
+                      type="button" data-zone="face-cell" data-zface={face}
+                      data-zx={NAV_CUBE_SIZE / 2} data-zy={NAV_CUBE_SIZE / 2}
+                      title={`Snap to ${face} view`}
+                      style={cubeZoneStyle(NAV_CUBE_SIZE - 2 * CUBE_ZONE_CELL, NAV_CUBE_SIZE - 2 * CUBE_ZONE_CELL, CUBE_ZONE_CELL, CUBE_ZONE_CELL)}
+                      onClick={() => fireFace(face)}
+                    />
+                    {([0, 1] as const).map((row) =>
+                      ([0, 1] as const).map((col) => {
+                        const px = col === 0 ? CUBE_ZONE_CELL / 2 : col === 1 ? NAV_CUBE_SIZE / 2 : NAV_CUBE_SIZE - CUBE_ZONE_CELL / 2;
+                        const py = row === 0 ? CUBE_ZONE_CELL / 2 : row === 1 ? NAV_CUBE_SIZE / 2 : NAV_CUBE_SIZE - CUBE_ZONE_CELL / 2;
+                        const z = cubeZoneAt(face, px, py);
+                        return (
+                          <button
+                            key={`${face}-z-${row}-${col}`} type="button" data-zone={z.id} data-zface={face}
+                            data-zx={px} data-zy={py}
+                            title={`${z.kind === 'edge' ? 'Diagonal view' : 'Isometric-style view'} (${z.id})`}
+                            style={cubeZoneStyle(col === 1 ? NAV_CUBE_SIZE - 2 * CUBE_ZONE_CELL : CUBE_ZONE_CELL, row === 1 ? NAV_CUBE_SIZE - 2 * CUBE_ZONE_CELL : CUBE_ZONE_CELL, col === 1 ? CUBE_ZONE_CELL : col === 0 ? 0 : NAV_CUBE_SIZE - CUBE_ZONE_CELL, row === 1 ? CUBE_ZONE_CELL : row === 0 ? 0 : NAV_CUBE_SIZE - CUBE_ZONE_CELL)}
+                            onClick={() => fireZone(cubeZoneAt(face, px, py))}
+                          />
+                        );
+                      }),
+                    )}
+                  </div>
+                );
+              })}
             </div>
+          </div>
+          {/* The cube-menu affordance: a small gear-ish button ON the cube
+          wrapper (top-left of it), NOT a right-click target -- the
+          marking menu owns right-click everywhere (todo 17), cube included.
+          Two competing menus over one widget would collide; the plan
+          explicitly names this icon as the menu's only entry point. */}
+          <div
+            style={{
+              position: 'absolute', left: 2, top: 2, width: 20, height: 20,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: COLORS.panel, border: `1px solid ${COLORS.line}`, borderRadius: 4,
+              color: COLORS.dim, cursor: 'pointer', pointerEvents: 'auto', userSelect: 'none',
+            }}
+            data-cube-menu="1"
+            title="Camera options (perspective / orthographic, set Home / Front / Top)"
+            onClick={() => setCubeMenu((v) => !v)}
+          >
+            ⚙
           </div>
         </div>
       )}
+      {cubeMenu && (
+            <div
+              style={{
+                position: 'fixed', left: gearPos?.x ?? 0, top: gearPos?.y ?? 0, zIndex: 5, padding: 6, display: 'flex', flexDirection: 'column', gap: 4,
+                background: COLORS.panel, border: `1px solid ${COLORS.line}`, borderRadius: 6,
+              }}
+              data-cube-menu-root="1"
+            >
+              <button type="button" style={viewStripButtonStyle} onClick={() => applyCameraModeAndToggle(CameraMode.PERSPECTIVE)}>
+                Perspective
+              </button>
+              <button type="button" style={viewStripButtonStyle} onClick={() => applyCameraModeAndToggle(CameraMode.ORTHOGRAPHIC)}>
+                Orthographic
+              </button>
+              <button type="button" style={viewStripButtonStyle} onClick={() => { fitToModel(HOME_DIR); setPreset('home'); setCubeMenu(false); }}>
+                Set as Home
+              </button>
+              <button type="button" style={viewStripButtonStyle} onClick={() => { lookFrom(FRONT_DIR); setPreset('front'); setCubeMenu(false); }}>
+                Set as Front
+              </button>
+              <button type="button" style={viewStripButtonStyle} onClick={() => { lookFrom(TOP_DIR); setPreset('top'); setCubeMenu(false); }}>
+                Set as Top
+              </button>
+            </div>
+          )}
       {phase === 'ready' && !badgesInStatusBar && (hoveringEdge && !pick || !!selectedCount) && (
         <div style={topRightStackStyle}>
           {/* Shown ONLY while hovering an edge with nothing picked yet --
@@ -4096,6 +4276,17 @@ function navCubeFaceStyle(face: keyof typeof NAV_CUBE_FACE_TRANSFORMS): React.CS
     background: COLORS.panel, border: `1px solid ${COLORS.line}`, color: COLORS.fg,
     font: '10px ui-monospace, Menlo, Consolas, monospace', letterSpacing: '0.05em',
     display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'grab',
+  };
+}
+
+// Todo 28: transparent hit-zone button over a cube face's plane. x/y/w/h
+// are the cell's own in-plane geometry; the parent div carries the face's
+// CSS transform and one extra px of translateZ so the zones sit above the
+// face planes (a stacked 3D widget, same preserve-3d trick the faces use).
+function cubeZoneStyle(w: number, h: number, x: number, y: number): React.CSSProperties {
+  return {
+    position: 'absolute', width: w, height: h, left: x, top: y, padding: 0,
+    background: 'transparent', border: 'none', cursor: 'pointer',
   };
 }
 
