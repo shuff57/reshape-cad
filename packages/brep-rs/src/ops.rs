@@ -3515,3 +3515,23 @@ fn through_bore_then_blind_bore_keeps_the_floor() {
     let vol = build::solid_volume(&r.unwrap());
     assert!((vol - want).abs() <= 1e-6 * want, "volume {vol} vs exact {want}");
 }
+
+#[test]
+fn flush_four_corner_bores_exact() {
+    let base = build::box_solid([40.0, 40.0, 20.0], [0.0, 0.0, 0.0], None);
+    let offs: [[f64; 3]; 4] =
+        [[-15.0, -10.0, 0.0], [15.0, -10.0, 0.0], [-15.0, 10.0, 0.0], [15.0, 10.0, 0.0]];
+    let mut shape = base;
+    for off in offs {
+        let tool = build::cylinder_solid([off[0], off[1], 6.0], 3.0, 8.0, [0.0, 0.0, 1.0]);
+        shape = boolean("subtract", &shape, &tool)
+            .unwrap_or_else(|| panic!("flush corner bore refused"));
+    }
+    let vol = build::solid_volume(&shape);
+    let want = 32000.0 - 4.0 * std::f64::consts::PI * 9.0 * 8.0;
+    assert!(
+        (vol - want).abs() <= 1e-6 * want,
+        "the ledger's silent wrong volume case: {vol} vs exact {want}"
+    );
+}
+
