@@ -1594,6 +1594,131 @@ fixed and re-recorded before this closeout.
   (03:05) matches the shipped `TOOL_KEYS` mapping.
 
 ---
+---
+## Revolve solid bodies ("Revolve Solid Bodies" — official Autodesk Learn lesson)
+
+- **Source**: `https://www.autodesk.com/learn/ondemand/tutorial/revolve-solid-bodies`
+  (downloaded 2026-09-22), Gemini pipeline, transcript-corroborated.
+  Queued for Phase 3/5.1.
+
+### Verified
+
+1. **Auto-detection then manual fallback** (00:30–00:35 vs 01:26–01:36):
+   one closed profile + one centerline → Fusion selects both and previews
+   with no viewport clicks; multi-profile needs modifier-add; the Axis
+   Select button turns active/blue, then a viewport click assigns the axis
+   (profile first, then axis — focus order matters).
+2. **In-canvas revolve ANGLE manipulator** (00:31–00:47, 01:41–01:47): a
+   CURVED ARROW at the profile/axis intersection with a floating numeric
+   box ("360.0 deg"); click-drag drives the angle live and the box follows;
+   a dropdown inside the box offers 90/180/360(Full)/Measure presets.
+   This is exactly the Phase 5.1 taper-arc shape — reSHape's draft arc
+   (`13d0288`) is the same genus; a revolve-angle arc on an angle-bearing
+   feature is future work (RevolveFeature has no angle param yet).
+3. Hover highlights profiles blue before selection (01:29–01:35) — matches
+   the shipped hover behaviour.
+
+### Not shown / future work
+- No full 360-vs-partial angle dialog walkthrough beyond the presets; the
+  preset dropdown's `Measure` entry matches the Measure finding already
+  filed (control-part-thickness entry).
+
+---
+## Shell solid bodies ("Shell Solid Bodies" — official Autodesk Learn lesson)
+
+- **Source**: `https://www.autodesk.com/learn/ondemand/tutorial/shell-solid-bodies`
+  (downloaded 2026-09-22), Gemini pipeline. Queued for Phase 3/5.1.
+
+### Verified
+
+1. **State-driven step tooltips** (00:32–00:57): activating Shell anchors an
+   adaptive prompt near the cursor — *"Select faces to remove or Body to
+   shell"* — then after a selection it becomes *"Specify type, direction,
+   thickness, or hold Ctrl to modify selections."* The prompt text CHANGES
+   with command state — exactly the todo-26 step-tooltips shape
+   (`stepTooltip(command, {active, selectionCount})`); reSHape's strings
+   differ (its SPEC-pinned wording) but the mechanism matches.
+2. **Arrow manipulator + inline value box** (00:47–00:57): once a body/face
+   is selected, a directional arrow with a floating `0.00 mm` box appears on
+   the model; committed via OK (01:36) or dropped when selections clear
+   (02:25). Same drag-or-type family as todo 22's box.
+3. **Timeline edit = double-click the feature icon** (02:16–02:19) reopens
+   Edit Feature — matches the shipped double-click edit (todo 8/P3.6).
+4. **Deselection via an inline X on the selection pill** (02:22–02:25) in
+   the dialog; direct canvas face click adds the opening face (02:27).
+
+### Not shown / future work
+- Shell is OUT of Scope IN for the parity plan (kernel refuses it honestly
+  today); the footage confirms the INTERACTION shape only, not kernel
+  capability.
+
+---
+## Create holes in a solid body ("Create Holes in a Solid Body" — official Autodesk Learn lesson)
+
+- **Source**: `https://www.autodesk.com/learn/ondemand/tutorial/create-holes-in-a-solid-body`
+  (downloaded 2026-09-22), Gemini pipeline. Queued for Phase 5.1.
+
+### Verified
+
+1. **Hole placement flow** (00:23–00:33): toolbar click → dialog opens with
+   Placement/Face input focused by default → canvas face click drops the
+   instance → click-drag the CENTER GLYPH onto a reference snap point →
+   dialog fields → OK/Enter commits. The center-glyph drag is a manipulator
+   drag of the kind HandleOverlay already renders for holes' position
+   (todo 22's convergence invariant applies).
+2. **Repeat via marking menu** (01:17–01:43, 02:26): right-click empty
+   canvas → hover the top wedge (Repeat Hole / Repeat Circular Pattern) →
+   left-click executes. Corroborates the marking-menu closeout's default
+   wedge set (Repeat is the top wedge in Fusion's radial — reSHape's
+   PART_VIEWPORT_WEDGES has Repeat first too). reSHape's Repeat is
+   present-but-noop (documented); the footage shows what it is FOR.
+3. **Circular pattern** (01:50–02:25): Objects selector auto-focused;
+   face-click picks the feature; the Axis selector button toggles active;
+   then a cylindrical face click assigns it. Dialog-driven; matches the
+   mixed-selection gating reSHape ships (todo 12-15's axis-assign pattern).
+
+### Not shown
+- No keyboard modifiers at all — selection switching is via direct clicks
+  and the dialog's active-picker toggle (a third pattern besides Ctrl-add
+  and Shift-toggle; noted for completeness).
+
+---
+## Tour the Fusion user interface / Adjust display settings (two official Autodesk Learn lessons)
+
+- **Sources**: `.../tour-the-fusion-user-interface` (403 at download time
+  2026-09-22 — not reviewed), `.../adjust-display-settings` (downloaded),
+  Gemini pipeline. Both were queued for Phase 1/1.3/4.4.
+
+### Verified from adjust-display-settings
+
+1. **Move/Copy triad, the full Fusion gizmo** (03:08–03:31): three
+   orthogonal arrows, PLANAR DRAG SQUARES between axes, CIRCULAR ROTATION
+   RINGS, center pivot. Hover tooltip "Drag to move along the axis";
+   dragging constrains to the axis with a live numeric tag. **Incremental
+   Move verified on footage**: enabled → the handle snaps to discrete
+   values (5 mm shown); disabled → continuous float (03:16 vs 03:26). This
+   is the todo-24 gizmo's exact behavioural target — reSHape ships arrows +
+   Incremental Move (adaptive/fixed/off, `b60f1a3`); the planar squares and
+   rotation rings are named future work (the plan's own re-target note).
+2. **ViewCube camera-mode flyout** (04:04–04:17): a tiny flyout TRIANGLE at
+   the ViewCube's bottom-right corner opens the camera-mode menu, listing
+   *Perspective with Ortho Faces* among the options. reSHape's todo-28 gear
+   affordance matches the interaction shape; the "Perspective with Ortho
+   Faces" entry remains SPEC-deferred (:65) — the footage confirms it
+   EXISTS in Fusion but does not oblige reSHape to build it.
+3. **Ground plane offset** (01:40–01:52): a vertical arrow + inline
+   distance box (`-38.00 mm`) on an amber plane; drag adjusts live — the
+   same arrow+box family as todo 22.
+4. **Visual style shortcuts** (00:26–00:34): Ctrl+4..Ctrl+9; `M` activates
+   Move/Copy (03:08); Shift+1 toggles multiple views. reSHape ships M for
+   move? — no: reSHape has no M hotkey; noted as future work (out of
+   Scope IN; the plan closed).
+
+### Not reviewed
+- tour-the-fusion-user-interface: 403 Forbidden at download; the queue
+  entry stays open with that note.
+
+---
 ## Next videos to review
 
 Rebuilt 2026-09-20 for balanced 2D/3D/navigation coverage. All URLs probed
@@ -1618,10 +1743,18 @@ dimension-sketch-geometry, extrude, press-pull, fillets, FmMNIGVpCng.
 
 ### 3D feature interactions
 
+  - (REVIEWED 2026-09-22: filed as the revolve section above — in-canvas
+  angle manipulator confirmed; revolve-angle arc on reSHape is future work.)
 - `https://www.autodesk.com/learn/ondemand/tutorial/revolve-solid-bodies`
   — profile + axis selection + dialog; Phase 3/5.1.
+  - (REVIEWED 2026-09-22: filed as the shell section above — state-driven
+  prompts and the arrow+box manipulator match the shipped shapes; shell
+  kernel capability stays out of Scope IN.)
 - `https://www.autodesk.com/learn/ondemand/tutorial/shell-solid-bodies`
   — face-removal selection + thickness dialog; Phase 3/5.1.
+  - (REVIEWED 2026-09-22: filed as the holes section above — center-glyph
+  drag + Repeat-via-marking-menu corroborated; Repeat stays a no-op on
+  reSHape, documented.)
 - `https://www.autodesk.com/learn/ondemand/tutorial/create-holes-in-a-solid-body`
   — face pick, position handles, hole dialog; Phase 5.1 (HandleOverlay).
 - `https://www.autodesk.com/learn/ondemand/tutorial/modeling-bodies-and-components`
@@ -1636,8 +1769,13 @@ dimension-sketch-geometry, extrude, press-pull, fillets, FmMNIGVpCng.
   gestures ARE multi-level in Fusion; the 150ms delay stays a reSHape
   default, the gesture-shape claims are footage-verified.)
 - `https://www.autodesk.com/learn/ondemand/tutorial/tour-the-fusion-user-interface`
+  - (NOT REVIEWED: 403 Forbidden at download 2026-09-22; queue entry stays
+  open for a retry.)
 - `https://www.autodesk.com/learn/ondemand/tutorial/tour-the-fusion-user-interface`
   — nav bar, ViewCube, timeline placement; Phase 1/4.4.
+  - (REVIEWED 2026-09-22: filed as the display-settings section above —
+  the full Move/Copy triad + Incremental Move snapping footage-verified;
+  planar squares and rotation rings named future work.)
 - `https://www.autodesk.com/learn/ondemand/tutorial/adjust-display-settings`
   — camera perspective (ortho vs perspective), visual styles; Phase 1.3.
 - `https://www.youtube.com/watch?v=FmMNIGVpCng` (official Autodesk Fusion
