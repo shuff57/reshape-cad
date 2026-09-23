@@ -398,6 +398,35 @@ fn point_in_poly(poly: &[[f64; 2]], p: [f64; 2]) -> bool {
     inside
 }
 
+/// Strictly-inside variant: an on-edge or on-vertex point reads false, so a
+/// bite sharing edges with the face is detectable (the coplanar rescue's
+/// complement path).
+fn point_in_poly_strict(poly: &[[f64; 2]], p: [f64; 2]) -> bool {
+    let n = poly.len();
+    let eps = 1e-9;
+    // On-edge check first: distance from p to each segment.
+    for i in 0..n {
+        let a = poly[i];
+        let b = poly[(i + 1) % n];
+        let ab = [b[0] - a[0], b[1] - a[1]];
+        let ap = [p[0] - a[0], p[1] - a[1]];
+        let denom = ab[0] * ab[0] + ab[1] * ab[1];
+        if denom < 1e-18 {
+            continue;
+        }
+        let t = (ap[0] * ab[0] + ap[1] * ab[1]) / denom;
+        if !(0.0..=1.0).contains(&t) {
+            continue;
+        }
+        let dx = ap[0] - ab[0] * t;
+        let dy = ap[1] - ab[1] * t;
+        if dx * dx + dy * dy <= eps * eps {
+            return false;
+        }
+    }
+    point_in_poly(poly, p)
+}
+
 /// Sutherland-Hodgman clip of `subj` by the half-plane `a*u + b*v + c <= 0`.
 /// A half-plane is convex, so this is exact for a single constraint even when
 /// the subject is non-convex.
@@ -586,7 +615,16 @@ fn region_inside(other: &TSolid, plane: &Plane, offset: Vec3) -> Option<Region> 
                     }
                     let r = cyl_perp_region(cy, plane, offset);
                     if r.empty {
-                        return Some(Region::empty());
+                        // Beyond the wall's own v-band the wall surface does
+                        // not exist on this plane: it constrains nothing --
+                        // the solid's cap planes bound the region instead
+                        // (the same fall-through the torus and cone arms
+                        // use). Returning empty here killed the whole region
+                        // whenever the probe plane sat past a SHORTENED wall
+                        // (the Y2 filleted flange: wall z[-3,0], probe plane
+                        // z=3), declaring "outside the solid" material the
+                        // torus and top disk still bound.
+                        continue;
                     }
                     if let Some((c, rr)) = r.disk {
                         region.intersect_disk(c, rr);
@@ -1443,6 +1481,39 @@ fn keep_polygon(
             Clamped::Mixed(pieces, c, r)
         }
     };
+    // The coplanar-pair rescue (same reasoning as keep_disk's W3 arm): a
+    // face COPLANAR with a face of `other` reads its region EMPTY at the
+    // +PROBE probe (the probe sits PROBE past the partner face), yet for a
+    // keep-outside op the partner still bites its footprint out of this
+    // face -- the Y1 box-join: A's y=30 wall and B's coplanar y=30 wall
+    // both kept whole, the shared band double-counted (+6000 volume).
+    // Re-probe AT the plane: the partner's material is AT the plane, so
+    // its true footprint appears; bite it out (a hole), or if it covers
+    // the whole face, drop the face (interior to the union). Subtract's
+    // keep-inside faces never reach this arm.
+    // Tool faces only: the base's coplanar face is the one that keeps the
+    // shared band (emitted once); the tool must drop it. Either side could
+    // own the band, but both rescuing drops it TWICE-less-than-once -- the
+    // band vanished entirely (60000 vs 66000).
+    let clamped = if !is_a && !keeps_inside(op, is_a) && matches!(clamped, Clamped::Empty) {
+        if let Some(region0) = region_inside(other, plane, [0.0, 0.0, 0.0]) {
+            if !region0.empty {
+                match clamp(&region0, &f) {
+                    // The zero-probe region must be a real bite
+                    // (Poly/Disk/Annulus inside the face) or a Full cover;
+                    // anything else keeps the Empty reading.
+                    Some(c @ (Clamped::Poly(_) | Clamped::Disk(_, _) | Clamped::Annulus(_, _, _, _) | Clamped::Full)) => c,
+                    _ => Clamped::Empty,
+                }
+            } else {
+                Clamped::Empty
+            }
+        } else {
+            Clamped::Empty
+        }
+    } else {
+        clamped
+    };
     let reverse = op == "subtract" && !is_a;
     let kept_plane = if reverse {
         Plane { origin: plane.origin, n: scale(plane.n, -1.0), u: plane.u, v: plane.v }
@@ -1485,8 +1556,25 @@ fn keep_polygon(
             Clamped::Disk(c, r) => out.push(face_with_hole(face, &kept_plane, &Hole::Circle(c, r))),
             Clamped::Poly(poly) => {
                 // The removed region must sit inside the face for a clean hole.
-                if f.iter().any(|p| point_in_poly(&poly, *p)) {
-                    return None;
+                // A bite TOUCHING the face boundary (its corners on the face's
+                // own edges -- the coplanar rescue where the partner footprint
+                // spans the face's full extent) cannot be a hole: emit the
+                // complement pieces instead (f minus bite, disjoint convex
+                // polys). Any face corner inside the bite is still a refusal:
+                // the bite would cover a corner the complement cannot express.
+                let bite_touches = f.iter().any(|p| point_in_poly(&poly, *p))
+                    || poly.iter().any(|q| !point_in_poly_strict(&f, *q));
+                if bite_touches {
+                    let pieces = poly_minus_poly(&f, &poly);
+                    if pieces.is_empty() {
+                        // Bite covers the whole face.
+                        return Some(());
+                    }
+                    for piece in pieces {
+                        let piece = if reverse { let mut rp = piece.clone(); rp.reverse(); rp } else { piece };
+                        out.push(build_poly_face(&kept_plane, &piece));
+                    }
+                    return Some(());
                 }
                 out.push(face_with_hole(face, &kept_plane, &Hole::Poly(poly)));
             }
@@ -1638,8 +1726,43 @@ fn keep_disk(
                         let d = [c[0] - center_uv[0], c[1] - center_uv[1]];
                         let dist = (d[0] * d[0] + d[1] * d[1]).sqrt();
                         if dist + r <= radius - 1e-7 {
+                            // The bite circle is inside the face. But if the
+                            // bite EQUALS the face (same centre, same radius),
+                            // the kept region is empty: drop the face (it is
+                            // interior to the union), do not emit a zero-area
+                            // face-with-hole (the Y2 touch bug: the filleted
+                            // flange's torus band hid the r35 containment from
+                            // the +PROBE probe, the cap read empty, and the
+                            // equal-bite emitted the full cap back).
+                            let same = dist <= 1e-7 && (r - radius).abs() <= 1e-7 * radius.max(1.0);
+                            if same {
+                                return Some(());
+                            }
                             out.push(face_with_hole(face, &plane, &Hole::Circle(c, r)));
                             return Some(());
+                        }
+                        // The region's disk CONTAINS the face (opposite
+                        // containment): every probe of the face sits inside
+                        // the region -> the face is interior -> drop it.
+                        let mut face_covered = true;
+                        {
+                            let mut probe_face = |p: Vec3| {
+                                let uv = plane.project(p);
+                                let d = [(uv[0] - c[0]) as f64, (uv[1] - c[1]) as f64];
+                                if !(d[0] * d[0] + d[1] * d[1] <= r * r + 1e-7
+                                    && region0.hs.iter().all(|h| h[0] * uv[0] + h[1] * uv[1] + h[2] <= 1e-9))
+                                {
+                                    face_covered = false;
+                                }
+                            };
+                            probe_face(center);
+                            for k in 0..32 {
+                                let a = TWO_PI * k as f64 / 32.0;
+                                probe_face(add(center, add(scale(plane.u, radius * a.cos()), scale(plane.v, radius * a.sin()))));
+                            }
+                        }
+                        if face_covered {
+                                                return Some(());
                         }
                     }
                 }
@@ -1663,6 +1786,59 @@ fn keep_disk(
     }
     let _ = kept_plane;
     Some(())
+}
+
+
+/// The pieces of convex polygon `f` outside convex polygon `p` (f minus p),
+/// as disjoint convex polys via half-plane decomposition: for each edge
+/// half-plane of p, one piece clipped inside every earlier half-plane and
+/// OUTSIDE that one. Empty pieces dropped. Used by the coplanar rescue when
+/// the bite touches the face boundary (a hole would be non-manifold).
+fn poly_minus_poly(f: &[[f64; 2]], p: &[[f64; 2]]) -> Vec<Vec<[f64; 2]>> {
+    if p.len() < 3 || f.len() < 3 {
+        return Vec::new();
+    }
+    // p's centroid, to decide each edge's inside side.
+    let mut pc = [0.0f64, 0.0];
+    for q in p {
+        pc[0] += q[0];
+        pc[1] += q[1];
+    }
+    let pc = [pc[0] / p.len() as f64, pc[1] / p.len() as f64];
+    let edge_h = |p1: [f64; 2], p2: [f64; 2]| -> [f64; 3] {
+        let a = p2[1] - p1[1];
+        let b = -(p2[0] - p1[0]);
+        let c = -(a * p1[0] + b * p1[1]);
+        // Keep the side the centroid of p is on (that is "inside p").
+        if a * pc[0] + b * pc[1] + c > 0.0 {
+            [-a, -b, -c]
+        } else {
+            [a, b, c]
+        }
+    };
+    let hs: Vec<[f64; 3]> = (0..p.len())
+        .map(|i| edge_h(p[i], p[(i + 1) % p.len()]))
+        .collect();
+    let mut pieces = Vec::new();
+    for i in 0..hs.len() {
+        // Outside h_i, inside all h_j (j < i).
+        let mut piece = f.to_vec();
+        for j in 0..=i {
+            let h = hs[j];
+            let (a, b, c) = if j == i { (-h[0], -h[1], -h[2]) } else { (h[0], h[1], h[2]) };
+            piece = clip_halfplane(&piece, a, b, c);
+        }
+        if piece.len() >= 3 && poly_area(&piece) > 1e-9 {
+            pieces.push(piece.clone());
+        }
+        if piece.is_empty() {
+            // Fully consumed: the rest would be empty too.
+            if i + 1 == hs.len() {
+                break;
+            }
+        }
+    }
+    pieces
 }
 
 /// A disk-shaped planar face partially overlapped by another disk (W8
@@ -1888,7 +2064,17 @@ fn process_face(
             // flange circle 15mm axially away swallowed the small
             // cylinder's entire wall).
             for cy2 in &parallel_cylinders {
-                for v in [dot(cy2.origin, axis) + cy2.vmin, dot(cy2.origin, axis) + cy2.vmax] {
+                // The band edges must land in THIS wall's v-frame (relative
+                // to cy.origin), not world height: a wall whose origin sits
+                // elsewhere would otherwise split at a phantom height (the
+                // overlap-cylinder bug: b's wall origin z=1, a's wall band
+                // edge z=3 pushed as v=3 -> a phantom split at z=4 merged
+                // the inside band z[1,3] with the outside band z[3,4] and
+                // dropped both).
+                let a2 = normalize(cy2.axis);
+                for end in [cy2.vmin, cy2.vmax] {
+                    let p_world = add(cy2.origin, scale(a2, end));
+                    let v = dot(sub(p_world, cy.origin), axis);
                     if v > cy.vmin + 1e-9 && v < cy.vmax - 1e-9 {
                         breaks.push(v);
                     }
@@ -2765,8 +2951,6 @@ pub fn boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
     if let Some(r) = cylinder_open_hollow(op, a, b) {
         return Some(r);
     }
-    let a_faces_count = a.faces().len();
-    let b_faces_count = b.faces().len();
     let mut faces: Vec<TFace> = Vec::new();
     for f in a.faces() {
         process_face(&f, b, op, true, &mut faces)?;
@@ -2810,19 +2994,6 @@ pub fn boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
                 return None;
             }
         }
-    }
-    // SPEC 4.5's dissolution guard: a general-path result that keeps every
-    // input face (count == sum of both inputs) dissolved nothing -- for an
-    // overlap union that is the interior-faces-not-dissolved wrong solid
-    // (the Y1 box-join: 12 faces in, 12 out, volume double-counted to
-    // 72000 vs exact 66000). Refuse honestly; exactness is W5's.
-    let ab_overlap = {
-        let ba = build::solid_aabb(a);
-        let bb = build::solid_aabb(b);
-        [0, 1, 2].iter().all(|&i| ba.lo[i] <= bb.hi[i] + 1e-9 && bb.lo[i] <= ba.hi[i] + 1e-9)
-    };
-    if op == "union" && ab_overlap && faces.len() >= a_faces_count + b_faces_count {
-        return None;
     }
     Some(Solid {
         shells: vec![Rc::new(RefCell::new(Shell { faces }))],
@@ -3836,17 +4007,62 @@ fn flange_cylinder_union_exact() {
     let r = boolean("union", &a, &b);
     // Either an exact union or an honest refusal — a wrong solid is the
     // one thing SPEC 4.5 forbids.
-    match r {
-        None => {} // refusal is honest and acceptable
-        Some(s) => {
-            let vol = build::solid_volume(&s);
-            let want = 52621.68293125813; // flange ring + cylinder, closed form
-            assert!(
-                (vol - want).abs() <= 1e-6 * want,
-                "a wrong solid with no refusal: volume {vol} vs exact {want}"
-            );
-        }
+    // Touching stacked cylinders (bands share only the z=3 plane): the
+    // general path builds this exactly. Closed form pi*(35^2*6 + 20^2*30).
+    let Some(s) = r else { panic!("the flange/cylinder stack union refused; it should build exactly") };
+    let vol = build::solid_volume(&s);
+    let want = 60789.8178469625;
+    assert!(
+        (vol - want).abs() <= 1e-6 * want,
+        "a wrong solid with no refusal: volume {vol} vs exact {want}"
+    );
+}
+
+/// The Y2 bench bug, second act: a filleted flange (torus band at the BOTTOM
+/// rim) unioned with a stacked cylinder whose bottom cap is COPLANAR with the
+/// flange's top cap. The torus band's hole hid the r35 containment from the
+/// +PROBE probe, the tool cap read "empty", and the W3 re-probe's containment
+/// arm kept the full cap back (-pi*400). Now: the region's disk covering the
+/// face drops it. Closed form pi*(35^2*6 - removed_corner + 20^2*30).
+#[test]
+fn fillet_flange_stack_touch_exact() {
+    // Both rims: the fillet at the BOTTOM rim (torus far from the coplanar
+    // interface) and at the TOP rim (torus adjacent to it — the case that
+    // exposed the region_inside short-circuit).
+    for treated_top in [false, true] {
+        let a = build::round_cylinder_one_rim([0.0, 0.0, 0.0], 35.0, 6.0, [0.0, 0.0, 1.0], 3.0, treated_top);
+        let b = build::cylinder_solid([0.0, 0.0, 18.0], 20.0, 30.0, [0.0, 0.0, 1.0]);
+        let r = boolean("union", &a, &b);
+        let Some(s) = r else { panic!("the filleted flange stack union refused; it should build exactly") };
+        let vol = build::solid_volume(&s);
+        // removed corner at the filleted rim: pi*(585 - 144*pi)... computed:
+        // pi * (192*3 - 64*(9*pi/4) + 9).
+        let inner = 192.0 * 3.0 - 64.0 * (9.0 * std::f64::consts::PI / 4.0) + 9.0;
+        let removed = std::f64::consts::PI * inner;
+        let want = std::f64::consts::PI * (35.0 * 35.0 * 6.0 - removed / std::f64::consts::PI + 20.0 * 20.0 * 30.0);
+        assert!(
+        (vol - want).abs() <= 1e-6 * want,
+        "a wrong solid with no refusal: volume {vol} vs exact {want} (treated_top={treated_top})"
+        );
     }
+}
+
+/// Overlapping stacked cylinders (the small one's bottom cap INSIDE the
+/// flange, bands sharing 2mm): the wall-break frame bug used to merge the
+/// inside band with an outside band and drop both. Exact now:
+/// pi*(35^2*6 + 20^2*30 - 20^2*2).
+#[test]
+fn overlap_stack_exact() {
+    let a = build::cylinder_solid([0.0, 0.0, 0.0], 35.0, 6.0, [0.0, 0.0, 1.0]);
+    let b = build::cylinder_solid([0.0, 0.0, 16.0], 20.0, 30.0, [0.0, 0.0, 1.0]);
+    let r = boolean("union", &a, &b);
+    let Some(s) = r else { panic!("the overlap stack union refused; it should build exactly") };
+    let vol = build::solid_volume(&s);
+    let want = std::f64::consts::PI * (35.0 * 35.0 * 6.0 + 20.0 * 20.0 * 30.0 - 20.0 * 20.0 * 2.0);
+    assert!(
+        (vol - want).abs() <= 1e-6 * want,
+        "a wrong solid with no refusal: volume {vol} vs exact {want}"
+    );
 }
 
 /// The Y1 bench bug (found benching the yardstick): a box-box join whose
@@ -3862,15 +4078,13 @@ fn y1_box_join_exact() {
     let a = build::box_solid([80.0, 60.0, 10.0], [0.0, 0.0, 0.0], None);
     let b = build::box_solid([60.0, 10.0, 40.0], [0.0, 25.0, 10.0], None);
     let r = boolean("union", &a, &b);
-    match r {
-        None => {} // refusal is honest
-        Some(solid) => {
-            let vol = build::solid_volume(&solid);
-            let want = 66000.0; // 48000 + 24000 − 6000 overlap
-            assert!(
-                (vol - want).abs() <= 1e-6 * want,
-                "a wrong solid with no refusal: volume {vol} vs exact {want} (interior faces not dissolved)"
-            );
-        }
-    }
+    // The coplanar rescue builds this exactly: base keeps the shared band,
+    // tool's coplanar wall drops it (emitted once). Pin the exact volume.
+    let Some(solid) = r else { panic!("the Y1 box-join union refused; it should build exactly") };
+    let vol = build::solid_volume(&solid);
+    let want = 66000.0; // 48000 + 24000 − 6000 overlap
+    assert!(
+        (vol - want).abs() <= 1e-6 * want,
+        "a wrong solid with no refusal: volume {vol} vs exact {want} (interior faces not dissolved)"
+    );
 }
