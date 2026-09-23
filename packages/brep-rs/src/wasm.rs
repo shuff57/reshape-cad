@@ -4137,7 +4137,12 @@ fn build_fillet(
             let axis = crate::math::normalize(wall.axis);
             if (axis[2] - 1.0).abs() <= 1e-9 {
                 let height = wall.vmax - wall.vmin;
-                if size <= 0.0 || size >= wall.radius - 1e-9 || size >= height / 2.0 - 1e-9 {
+                // The ONE-RIM round only shortens the wall by `size` on the
+                // treated side: the wall survives while size < height. The
+                // height/2 rule is the BOTH-rims constraint (round_cylinder's
+                // own guard) wrongly applied here — it refused the Y2 flange
+                // fillet (R3 on a 6mm flange), which OCCT builds.
+                if size <= 0.0 || size >= wall.radius - 1e-9 || size >= height - 1e-9 {
                     return Err(FilletErr::TooBig);
                 }
                 let treated_top = crate::math::dot(cap_n, axis) > 0.0;

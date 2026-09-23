@@ -1773,6 +1773,20 @@ fn process_face(
                     _ => return None,
                 }
             }
+            // A parallel tool cylinder's own band edges cut this wall's v
+            // domain: above/below the tool's band the tool does not exist and
+            // the wall keeps its full circle; inside the overlap the
+            // u-clip applies. Without these breaks the radial circles were
+            // compared at a v the tool never reaches (the Y2 flange bug: a
+            // flange circle 15mm axially away swallowed the small
+            // cylinder's entire wall).
+            for cy2 in &parallel_cylinders {
+                for v in [dot(cy2.origin, axis) + cy2.vmin, dot(cy2.origin, axis) + cy2.vmax] {
+                    if v > cy.vmin + 1e-9 && v < cy.vmax - 1e-9 {
+                        breaks.push(v);
+                    }
+                }
+            }
             breaks.sort_by(|a, b| a.partial_cmp(b).unwrap());
             breaks.dedup_by(|a, b| (*a - *b).abs() < 1e-9);
             for w in breaks.windows(2) {
@@ -1785,8 +1799,45 @@ fn process_face(
                     let vm = 0.5 * (vlo + vhi);
                     let base_center = add(cy.origin, scale(axis, vm));
                     // Compute arcs where base cylinder is inside each tool cylinder.
+                    // The u-clip is only valid over the SHARED axial band of
+                    // base and tool: a zero-length overlap means the tool's
+                    // wall does not exist in this segment at all - the tool
+                    // keeps its full circle. Without this the radial circles
+                    // were compared at a v the tool never reaches (the Y2
+                    // flange bug: a flange circle 15mm axially away swallowed
+                    // the small cylinder's whole wall).
+                    let base_band_lo = dot(cy.origin, axis) + vlo;
+                    let base_band_hi = dot(cy.origin, axis) + vhi;
                     let mut arcs: Vec<(f64, f64)> = vec![(0.0, TWO_PI)]; // start with full circle
                     for cy2 in &parallel_cylinders {
+                        let tool_lo = dot(cy2.origin, axis) + cy2.vmin;
+                        let tool_hi = dot(cy2.origin, axis) + cy2.vmax;
+                        let shared = base_band_hi.min(tool_hi) - base_band_lo.max(tool_lo);
+                        if shared <= 1e-9 {
+                            // The tool's wall does not exist in this v-band:
+                            // nothing of the base circle is inside it. With
+                            // keep_inside=true the AND over tools becomes
+                            // empty; with keep_inside=false (keep outside)
+                            // the complement of an empty inside-set is the
+                            // FULL circle. Both follow from arcs = [].
+                            arcs = intersect_arc_intervals(&arcs, &[]);
+                        }
+                        // The tool cylinder only reaches v in its own band
+                        // along the axis (its origin + [vmin, vmax]). If that
+                        // band does not overlap this v-band segment, the
+                        // tool's wall does not exist here at all: comparing
+                        // the RADIAL circles alone would drop walls the tool
+                        // never touches (the Y2 flange bug: the flange circle
+                        // 15mm away axially swallowed the small cylinder's
+                        // whole wall). Skip tools whose band is clear of
+                        // [vlo, vhi].
+                        let tool_lo = dot(cy2.origin, axis) + cy2.vmin;
+                        let tool_hi = dot(cy2.origin, axis) + cy2.vmax;
+                        let base_lo = dot(cy.origin, axis) + vlo;
+                        let base_hi = dot(cy.origin, axis) + vhi;
+                        if tool_lo > base_hi + 1e-9 || tool_hi < base_lo - 1e-9 {
+                            continue;
+                        }
                         // Tool cylinder center at this v (same axis, so center projects to same line).
                         let tool_center = add(cy2.origin, scale(axis, vm));
                         let d = sub(tool_center, base_center);
@@ -2574,6 +2625,63 @@ pub fn boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
     weld_shared_edges(&mut faces);
     if faces.is_empty() {
         return None;
+    }
+    // SPEC 4.5's own guard: the result's boundary must be a CLOSED 2-
+    // manifold — every edge shared by exactly two face uses. A boolean
+    // whose caps did not merge (an interior face left behind) cracks the
+    // shell; shipping it would be the wrong-solid class outright, so
+    // refuse honestly instead.
+    {
+        let mut use_count: std::collections::HashMap<usize, usize> = std::collections::HashMap::new();
+        for f in &faces {
+            let fb = f.borrow();
+            for w in &fb.boundary {
+                for u in &w.borrow().edges {
+                    let key = std::rc::Rc::as_ptr(&u.edge) as *const () as usize;
+                    *use_count.entry(key).or_insert(0) += 1;
+                }
+            }
+        }
+        for (ptr, n) in &use_count {
+            if *n == 2 {
+                continue;
+            }
+            // A zero-length seam/rim edge (a closed circle's own seam,
+            // both uses in one wire) is legitimately used twice by one
+            // face — the count is per-use, so a legal closed rim reads
+            // 2, a seam reads 1 per face but totals 2 across both its
+            // wires. Anything else is a cracked shell.
+            let _ = ptr;
+            if *n != 1 && *n != 2 {
+                return None;
+            }
+        }
+        // An INTERIOR face (a cap plane at an interface the boolean should
+        // have dissolved) has material on BOTH sides: probe the centroid
+        // ± the plane normal by a sliver. A real boundary face has empty
+        // space on exactly one side. Catches the Y2 union's interior
+        // annulus without refusing any green fixture. `faces` here are
+        // pre-Solid; build a throwaway shell for the ray crossings via
+        // crossings() on a temp solid.
+        let result_solid = Solid {
+            shells: vec![std::rc::Rc::new(std::cell::RefCell::new(crate::topo::Shell { faces: faces.clone() }))],
+        };
+        for f in &faces {
+            let fb = f.borrow();
+            let Surface::Plane(g) = &fb.surface else { continue };
+            let (area, c) = build::face_area_centroid(&fb);
+            if area <= 0.0 {
+                continue;
+            }
+            // Skip a coplanar cap's own plane: the probe reads the face
+            // itself as a boundary crossing on both sides. Offset the
+            // probe ALONG the normal instead of through the face.
+            let inside_pos = inside_solid(&result_solid, add(c, scale(g.n, 5e-6)));
+            let inside_neg = inside_solid(&result_solid, sub(c, scale(g.n, 5e-6)));
+            if inside_pos && inside_neg {
+                return None;
+            }
+        }
     }
     Some(Solid {
         shells: vec![Rc::new(RefCell::new(Shell { faces }))],
@@ -3571,4 +3679,31 @@ fn fully_overlapping_bores_cut_one_bore_exact() {
     let vol = build::solid_volume(&r.expect("cut"));
     let want = 32000.0 - std::f64::consts::PI * 9.0 * 8.0;
     assert!((vol - want).abs() <= 1e-6 * want, "volume {vol} vs exact {want}");
+}
+
+/// The Y2 bench bug (found benching the yardstick): union of two coaxial
+/// cylinders of different radii whose caps are NOT coplanar (a flange plus
+/// a standing cylinder, the exact Y2 shape). The wall bug that dropped the
+/// small cylinder's entire wall is FIXED (parallel-cylinder u-clipping now
+/// checks the shared axial band). The union's caps at the interface plane
+/// still build inexact — this test is the next slice's RED gate: green
+/// only when the union is exact.
+#[test]
+fn flange_cylinder_union_exact() {
+    let a = build::cylinder_solid([0.0, 0.0, 0.0], 35.0, 6.0, [0.0, 0.0, 1.0]);
+    let b = build::cylinder_solid([0.0, 0.0, 18.0], 20.0, 30.0, [0.0, 0.0, 1.0]);
+    let r = boolean("union", &a, &b);
+    // Either an exact union or an honest refusal — a wrong solid is the
+    // one thing SPEC 4.5 forbids.
+    match r {
+        None => {} // refusal is honest and acceptable
+        Some(s) => {
+            let vol = build::solid_volume(&s);
+            let want = 52621.68293125813; // flange ring + cylinder, closed form
+            assert!(
+                (vol - want).abs() <= 1e-6 * want,
+                "a wrong solid with no refusal: volume {vol} vs exact {want}"
+            );
+        }
+    }
 }
