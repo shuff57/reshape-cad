@@ -453,6 +453,11 @@ interface Props {
    *  (ModelEditor's own repeat(lastPattern)). Null/absent keeps the wedge
    *  present-but-disabled — visible, greyed, no-op. */
   onRepeat?: () => void;
+  /** The canvas's M hotkey (Fusion footage 03:08: "M" activates Move/Copy
+   *  from the viewport). The viewport owns keydown scope; the caller
+   *  supplies the Move/Copy entry (ModelEditor's moveTool). Fires only on
+   *  a plain 'm' with no modifier and no text field owning the keys. */
+  onMoveHotkey?: () => void;
   /**
    * Phase 5.3's live-preview tint (todo 25): while a manipulator drag is
    * in flight the rebuilt meshes are drawn TRANSLUCENT in the op's colour
@@ -614,7 +619,7 @@ const FILTER_CHIPS: { key: keyof SelectionFilters; label: string }[] = [
 export default function BrepViewportThree({
   doc, deflection, onStats, onPick, pick, selectedCount, selectionLabel, anchors, onAnchors, onMesh, registerPickAt,
   sketchPlane, panelOcclusionPx, ruleActivityAt, onEngine, badgesInStatusBar = false, onNavHint, filters, onFiltersChange, onBoxSelect,
-  onFeatureDoubleClick, onSelectAll, onDeleteSelected, onUndo, onRedo, onStartSketch, onRepeat, preview,
+  onFeatureDoubleClick, onSelectAll, onDeleteSelected, onUndo, onRedo, onStartSketch, onRepeat, onMoveHotkey, preview,
 }: Props) {
   const [phase, setPhase] = useState<'loading' | 'ready' | 'error'>('loading');
   // Which view-strip preset the camera is sitting on, or null once the
@@ -2371,6 +2376,17 @@ export default function BrepViewportThree({
         onSelectAllRef.current?.();
         return;
       }
+      // The M hotkey (Fusion footage 03:08): activate Move/Copy from the
+      // viewport. Plain 'm' only — a modifier means a browser command; a
+      // text field owning the keys means the M was meant for it.
+      if (e.key.toLowerCase() === 'm' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        const tag = document.activeElement?.tagName;
+        if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+        if ((document.activeElement as HTMLElement | null)?.isContentEditable) return;
+        e.preventDefault();
+        onMoveHotkeyRef.current?.();
+        return;
+      }
       if (e.key !== 'Delete' && e.key !== 'Backspace') return;
       const active = document.activeElement;
       if (!shouldHandleViewportDelete(active ? active.tagName : '')) return;
@@ -3749,6 +3765,8 @@ try {
   // toggle after mount has to reach INTO the live instances from outside it --
   // these effects are that seam. Both are no-ops until `phase` flips ready.
   const schemeBindRef = useRef<((scheme: MouseScheme) => void) | null>(null);
+  const onMoveHotkeyRef = useRef(onMoveHotkey);
+  onMoveHotkeyRef.current = onMoveHotkey;
   const onNavHintRef = useRef(onNavHint);
   onNavHintRef.current = onNavHint;
   useEffect(() => {

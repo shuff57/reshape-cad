@@ -1488,6 +1488,7 @@ export default function ReshapeStudio({
                 onUndo={showBrep ? undo : undefined}
                 onRedo={showBrep ? redo : undefined}
                 onRepeat={showBrep ? () => ctxActionsRef.current?.repeatLast() : undefined}
+                onMoveHotkey={showBrep ? () => ctxActionsRef.current?.moveTool(false) : undefined}
                 onStartSketch={showBrep ? () => {
                   // The marking menu's Sketch wedge: the same three steps
                   // ModelEditor's own startSketch() runs (ModelEditor.tsx:

@@ -314,6 +314,11 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
   // Both are rule INDICES -- the identity a rule has in the doc's own list.
   const [hoverRule, setHoverRule] = useState<number | null>(null);
   const [selRule, setSelRule] = useState<number | null>(null);
+  // Show Constraints (the constrain-and-align lesson 02:04-02:09: the
+  // palette checkbox hides every glyph to declutter; clicking an entity
+  // with glyphs hidden shows ONLY its constraints). Default on = glyphs
+  // always shown, today's behaviour.
+  const [showConstraints, setShowConstraints] = useState(true);
 
   // The rows as the doc carries them (soup or migrated from the legacy
   // polygon -- a legacy sketch's points arrive as soup rows the first time
@@ -1942,6 +1947,11 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     // A value rule is drawn by its CHIP below -- the number is its glyph --
     // so only the icon kinds get one here.
     if (!anchor || isDimensionRule(r.k)) return;
+    // Show Constraints off: only a hovered or selected rule keeps its
+    // glyph (the lesson's "clicking an entity ... displays only its
+    // associated constraint glyphs" read; the entity-filter variant is
+    // the same gate by hover/pick).
+    if (!showConstraints && hoverRule !== i && selRule !== i) return;
     const hovered = hoverRule === i;
     const picked = selRule === i;
     // The anchor is the midpoint, and the glyph is drawn a constant SCREEN
@@ -2378,6 +2388,9 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
             <div className="model-tool-icons">
               <label className="sk2d-auto">
                 <input type="checkbox" checked={auto} onChange={(e) => setAuto(e.target.checked)} /> auto
+              </label>
+              <label className="sk2d-auto" title="Show the constraint glyphs on the canvas">
+                <input type="checkbox" checked={showConstraints} onChange={(e) => setShowConstraints(e.target.checked)} /> constraints
               </label>
               <span className={`sk-dof ${dofClass}`}>{dofClass === 'sk-dof-bad' ? '⨯ ' : ''}{dofText}</span>
               {status && <span className="sk2d-status">{status}</span>}
