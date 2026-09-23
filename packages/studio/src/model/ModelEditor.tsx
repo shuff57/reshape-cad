@@ -221,6 +221,10 @@ export interface ContextActions {
   turn: () => void;
   repeat: (mode: PatternMode) => void;
   mirror: (plane: SketchPlane) => void;
+  /** The marking menu's Repeat wedge: re-run the LAST feature op
+   *  (whatever lastPattern holds at the call). Same flow as repeat(mode)
+   *  with the sticky last-used mode. */
+  repeatLast: () => void;
 }
 
 function shapeIcon(kind: ShapeKind) {
@@ -523,6 +527,36 @@ export default function ModelEditor({
   const [lastShape, setLastShape] = useState<ShapeKind>('box');
   const [lastRound, setLastRound] = useState<RoundStyle>('fillet');
   const [lastPattern, setLastPattern] = useState<PatternMode>('linear');
+  const lastPatternRef = useRef<PatternMode>(lastPattern);
+  lastPatternRef.current = lastPattern;
+  // The marking menu's Repeat wedge: the LAST feature-creating op and how
+  // to re-run it on the current selection (the holes lesson 01:17-01:43:
+  // right-click, hover Repeat, click → another hole with the same params).
+  // Recorded as (verb id, pinned target) NOT as a closure: a captured
+  // verb closure would carry the doc snapshot of the render that recorded
+  // it, and re-running it would append onto that STALE doc — the second
+  // hole would overwrite the first instead of adding to it. The verb is
+  // dispatched through the CURRENT render's own verbs object (verbsRef
+  // below), which always reads fresh doc.
+  type RepeatVerb =
+    | { verb: 'drill' | 'hollow' | 'turn' | 'pull' | 'spin'; copy?: undefined; style?: undefined; plane?: undefined; mode?: undefined }
+    | { verb: 'move'; copy: boolean; style?: undefined; plane?: undefined; mode?: undefined }
+    | { verb: 'round'; style: RoundStyle; copy?: undefined; plane?: undefined; mode?: undefined }
+    | { verb: 'mirror'; plane: SketchPlane; copy?: undefined; style?: undefined; mode?: undefined }
+    | { verb: 'repeat'; mode: PatternMode; copy?: undefined; style?: undefined; plane?: undefined };
+  const repeatLastOpRef = useRef<{ verb: RepeatVerb['verb']; target: string; copy?: boolean; style?: RoundStyle; plane?: SketchPlane; mode?: PatternMode } | null>(null);
+  // The CURRENT render's verbs, for repeatLast to dispatch through.
+  const verbsRef = useRef<{
+    drillHole: () => void;
+    hollow: () => void;
+    turn: () => void;
+    pull: () => void;
+    spin: () => void;
+    moveTool: (copy: boolean) => void;
+    round: (style: RoundStyle) => void;
+    mirror: (plane: SketchPlane) => void;
+    repeat: (mode: PatternMode) => void;
+  } | null>(null);
   const [lastMoveCopy, setLastMoveCopy] = useState(false);
   // null until the student has picked a plane once -- see mirror() below.
   // There is no safe default here the way 'fillet' or 'linear' are for the
@@ -704,6 +738,7 @@ export default function ModelEditor({
   }
 
   function round(style: RoundStyle) {
+    repeatLastOpRef.current = { verb: 'round', style, target: chosen[0].id };
     // Item E: two or more Shift-selected edges on the SAME solid as `chosen`
     // round/bevel together from one click. ownerOf() re-checks each one the
     // same staleness-guard reason the single-edge branch below re-checks
@@ -872,6 +907,7 @@ export default function ModelEditor({
   // and three ring handles on every shape from the start would be clutter for
   // the many models that never turn anything.
   function turn() {
+    repeatLastOpRef.current = { verb: 'turn', target: chosen[0].id };
     if (chosen.length !== 1) {
       say('Pick one shape to turn.');
       return;
@@ -901,6 +937,7 @@ export default function ModelEditor({
   }
 
   function pull() {
+    repeatLastOpRef.current = { verb: 'pull', target: chosen[0].id };
     const f = chosen[0];
     if (chosen.length !== 1 || !f || f.kind !== 'sketch') {
       say('Pick a sketch to pull into a solid.');
@@ -920,6 +957,7 @@ export default function ModelEditor({
   }
 
   function spin() {
+    repeatLastOpRef.current = { verb: 'spin', target: chosen[0].id };
     const f = chosen[0];
     if (chosen.length !== 1 || !f || f.kind !== 'sketch') {
       say('Pick a sketch to spin into a solid.');
@@ -939,6 +977,7 @@ export default function ModelEditor({
   }
 
   function mirror(plane: SketchPlane) {
+    repeatLastOpRef.current = { verb: 'mirror', plane, target: chosen[0].id };
     const why = whyCannotSolidOp(chosen, 'mirror');
     if (why) { say(why); return; }
     const f = newMirror(doc, chosen[0].id, plane);
@@ -950,6 +989,7 @@ export default function ModelEditor({
   }
 
   function repeat(mode: PatternMode) {
+    repeatLastOpRef.current = { verb: 'repeat', mode, target: chosen[0].id };
     const why = whyCannotSolidOp(chosen, 'repeat');
     if (why) { say(why); return; }
     const f = newPattern(doc, chosen[0].id, mode);
@@ -970,6 +1010,7 @@ export default function ModelEditor({
     const why = whyCannotSolidOp(chosen, 'drill');
     if (why) { say(why); return; }
     const f = newHole(doc, chosen[0].id);
+    repeatLastOpRef.current = { verb: 'drill', target: chosen[0].id };
     onChange({ ...doc, features: [...doc.features, f] });
     setSelected([f.id]);
     setMenu(null);
@@ -984,6 +1025,7 @@ export default function ModelEditor({
     const why = whyCannotSolidOp(chosen, 'drill');
     if (why) { say(why); return; }
     const f = newHoleCorners(doc, chosen[0].id);
+    repeatLastOpRef.current = { verb: 'drill', target: chosen[0].id };
     onChange({ ...doc, features: [...doc.features, f] });
     setSelected([f.id]);
     setMenu(null);
@@ -1051,6 +1093,7 @@ export default function ModelEditor({
    *  before the student chose a different shape does not silently open
    *  the wrong one. */
   function hollow() {
+    repeatLastOpRef.current = { verb: 'hollow', target: chosen[0].id };
     const why = whyCannotSolidOp(chosen, 'hollow out');
     if (why) { say(why); return; }
     const openFace = pickedFaceUsable ? pickedFace?.face ?? undefined : undefined;
@@ -1089,6 +1132,7 @@ export default function ModelEditor({
     const why = whyCannotSolidOp(chosen, 'move');
     if (why) { say(why); return; }
     const f = newMove(doc, chosen[0].id, copy);
+    repeatLastOpRef.current = { verb: 'move', copy, target: chosen[0].id };
     onChange({ ...doc, features: [...doc.features, f] });
     setSelected([f.id]);
     setLastMoveCopy(copy);
@@ -1341,6 +1385,17 @@ export default function ModelEditor({
   // stale doc closures until its deps changed, which is the exact drift this
   // hand-off exists to prevent.
   useEffect(() => {
+    verbsRef.current = {
+      drillHole: () => drillHole(),
+      hollow: () => hollow(),
+      turn: () => turn(),
+      pull: () => pull(),
+      spin: () => spin(),
+      moveTool: (copy: boolean) => moveTool(copy),
+      round: (style: RoundStyle) => round(style),
+      mirror: (plane: SketchPlane) => mirror(plane),
+      repeat: (mode: PatternMode) => repeat(mode),
+    };
     registerContextActions?.({
       remove: () => remove(),
       moveTool: (copy: boolean) => moveTool(copy),
@@ -1351,6 +1406,39 @@ export default function ModelEditor({
       spin: () => spin(),
       turn: () => turn(),
       repeat: (mode: PatternMode) => repeat(mode),
+      repeatLast: () => {
+        // Dispatch through verbsRef (THIS render's verbs — fresh doc), with
+        // the target re-selected first so the verb's `chosen` reads it. A
+        // captured closure would append onto its own STALE doc snapshot and
+        // the second op would overwrite the first (the silent no-op this
+        // replaces).
+        const last = repeatLastOpRef.current;
+        if (!last) { say('Nothing to repeat yet.'); return; }
+        const verbs = verbsRef.current;
+        if (!verbs) { say('Nothing to repeat yet.'); return; }
+        const runVerb = () => {
+          switch (last.verb) {
+            case 'drill': verbs.drillHole(); return;
+            case 'hollow': verbs.hollow(); return;
+            case 'turn': verbs.turn(); return;
+            case 'pull': verbs.pull(); return;
+            case 'spin': verbs.spin(); return;
+            case 'move': verbs.moveTool(last.copy ?? false); return;
+            case 'round': verbs.round(last.style ?? 'fillet'); return;
+            case 'mirror': verbs.mirror(last.plane ?? 'yz'); return;
+            case 'repeat': verbs.repeat(last.mode ?? 'linear'); return;
+          }
+        };
+        if (chosen[0]?.id === last.target) { runVerb(); return; }
+        if (doc.features.some((f) => f.id === last.target)) {
+          setSelected([last.target]);
+          // Two frames: the re-selection must COMMIT before the verb reads
+          // its derived `chosen` (a setTimeout(0) can fire pre-commit).
+          requestAnimationFrame(() => requestAnimationFrame(runVerb));
+        } else {
+          say('The shape ' + (names[last.target] ?? last.target) + ' to repeat on is gone.');
+        }
+      },
       mirror: (plane: SketchPlane) => mirror(plane),
     });
     return () => registerContextActions?.(null);

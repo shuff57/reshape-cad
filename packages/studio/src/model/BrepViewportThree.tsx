@@ -447,6 +447,12 @@ interface Props {
    * itself. Absent means the wedge renders disabled.
    */
   onStartSketch?: () => void;
+  /** The marking menu's Repeat wedge (Fusion's top wedge, footage-verified
+   *  in the holes lesson: it re-runs the last feature command). The
+   *  viewport only names the wedge; the caller supplies the repeat flow
+   *  (ModelEditor's own repeat(lastPattern)). Null/absent keeps the wedge
+   *  present-but-disabled — visible, greyed, no-op. */
+  onRepeat?: () => void;
   /**
    * Phase 5.3's live-preview tint (todo 25): while a manipulator drag is
    * in flight the rebuilt meshes are drawn TRANSLUCENT in the op's colour
@@ -608,7 +614,7 @@ const FILTER_CHIPS: { key: keyof SelectionFilters; label: string }[] = [
 export default function BrepViewportThree({
   doc, deflection, onStats, onPick, pick, selectedCount, selectionLabel, anchors, onAnchors, onMesh, registerPickAt,
   sketchPlane, panelOcclusionPx, ruleActivityAt, onEngine, badgesInStatusBar = false, onNavHint, filters, onFiltersChange, onBoxSelect,
-  onFeatureDoubleClick, onSelectAll, onDeleteSelected, onUndo, onRedo, onStartSketch, preview,
+  onFeatureDoubleClick, onSelectAll, onDeleteSelected, onUndo, onRedo, onStartSketch, onRepeat, preview,
 }: Props) {
   const [phase, setPhase] = useState<'loading' | 'ready' | 'error'>('loading');
   // Which view-strip preset the camera is sitting on, or null once the
@@ -883,11 +889,11 @@ export default function BrepViewportThree({
     else if (id === 'undo') onUndo?.();
     else if (id === 'redo') onRedo?.();
     else if (id === 'sketch') onStartSketch?.();
-    // repeat / press-pull / move-copy / hole: present-but-noop. Each needs
-    // new plumbing this base-component todo does not build -- a
-    // repeat-last-feature flow, a Press Pull command, a Move/Copy gizmo, a
-    // Hole feature dialog -- see marking-menu-core.ts's own comment on
-    // PART_VIEWPORT_WEDGES.
+    else if (id === 'repeat') onRepeat?.();
+    // press-pull / move-copy / hole: still present-but-noop. Each needs
+    // new plumbing the base-component todo did not build -- a Press Pull
+    // command, a Move/Copy command entry, a Hole feature dialog -- see
+    // marking-menu-core.ts's own comment on PART_VIEWPORT_WEDGES.
   };
   const onAnchorsRef = useRef(onAnchors);
   onAnchorsRef.current = onAnchors;
