@@ -103,9 +103,11 @@ current map, 3D and 2D, is the closeout section at the end of
    intersection. **Still open (W5), narrowed 2026-09-22 (commits `0ae4743`,
    `867f530`)**: torus-band annulus regions + wholesale band keep/drop +
    the axial-band u-clip fix landed (the Y2 wall-drop bug is dead; the
-   union now refuses honestly naming the torus/cylinder pair). What W5
-   still owns: torus/cylinder wall arc intersection, sphere-arm walls,
-   cone arms, and the general trimmed-face membership.
+   union now refuses honestly naming the torus/cylinder pair). The
+   overlap-union dissolution guard (`4e3c713`) also refuses the Y1
+   box-box wrong solid (interior faces kept, volume 72000 vs 66000).
+   What W5 still owns: torus/cylinder wall arc intersection, sphere-arm
+   walls, cone arms, and the general trimmed-face membership.
 8. ~~`mesh.rs` and `step.rs` are still stubs~~ **RESOLVED for `mesh.rs`, and
    `step.rs` now WRITES (W9a, 2026-09-17).** `mesh.rs` is done (1,319 lines, its
    own lead-owned gate at 61/61, adapter wired, and it renders in the studio —
