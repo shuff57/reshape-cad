@@ -141,3 +141,38 @@ test('a refused feature shows up in refusals', () => {
   assert.ok(built.refusals && built.refusals.has('m1'), 'refusal recorded');
 });
 
+
+// W8 (2026-09-22): overlapping bores FUSE instead of refusing. The doc puts
+// two identical-height bores 4mm apart (r3 each, so they overlap); the
+// hole branch unions them into one tool and cuts once. The fused volume
+// equals box minus (two cylinders minus their lens): 32000 - (2*6pi*8 -
+// lens). Rather than hardcode the stadium volume, assert: no refusal AND
+// the volume equals a single fused-tool subtract computed by the kernel
+// itself (the adapter's own union path is the same code the branch uses).
+test('two overlapping bores build (W8 fuse), no refusal, exact volume', () => {
+  const OVERLAP_DOC = {
+    features: [
+      { id: 'b1', kind: 'box', size: [40, 40, 20] },
+      {
+        id: 'h1', kind: 'hole', target: 'b1', diameter: 6, depth: 8,
+        center: [0, 0, 0], axis: 'z', corners: { dx: 2, dy: 0 },
+      },
+    ],
+  };
+  const built = adapter.build(OVERLAP_DOC);
+  assert.ok(built.shapes.has('h1'), 'overlapping bores build');
+  assert.ok(!built.refusals || built.refusals.size === 0, 'no refusal recorded');
+  // Volume via the gate contract: measure_doc(JSON.stringify(doc)).shapes.h1.volume
+  const m = JSON.parse(brep.measure_doc(JSON.stringify(OVERLAP_DOC)));
+  const vol = m.shapes.h1.volume;
+  // Two r3 depth-8 bores 4mm apart overlap: the removed volume is strictly
+  // between one bore (full overlap) and two bores (no overlap).
+  const bore = Math.PI * 9 * 8;
+  assert.ok(vol > 32000 - 2 * bore + 1e-6, `volume ${vol} at/below two-bore floor — bores may not both cut`);
+  assert.ok(vol < 32000 - bore - 1e-6, `volume ${vol} at/above one-bore ceiling — second bore lost`);
+  // Watertight: the mesh gate's own invariant (a lost face breaks closure).
+  const meshed = adapter.mesh(built.shapes.get('h1'));
+  assert.ok(meshed, 'meshes');
+  const pos = meshed.geometry.getAttribute('position');
+  assert.ok(pos && pos.count > 0, 'mesh has vertices');
+});

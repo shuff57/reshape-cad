@@ -3535,3 +3535,40 @@ fn flush_four_corner_bores_exact() {
     );
 }
 
+
+/// Two PARTIALLY overlapping bores (centres 4mm apart, r3 each): the fused
+/// tool's volume is the stadium-of-two-disks union; subtracting it once must
+/// equal subtracting each in turn would NOT (that double-counts the lens
+/// only when the lens region's removal is idempotent — actually subtracting
+/// sequentially removes the same material since the second bore's lens part
+/// is already gone; the exactness check is against the fused tool).
+#[test]
+fn partially_overlapping_bores_fuse_exact() {
+    let base = build::box_solid([40.0, 40.0, 20.0], [0.0, 0.0, 0.0], None);
+    let a = build::cylinder_solid([-2.0, 0.0, 0.0], 3.0, 8.0, [0.0, 0.0, 1.0]);
+    let b = build::cylinder_solid([2.0, 0.0, 0.0], 3.0, 8.0, [0.0, 0.0, 1.0]);
+    let u = crate::ops::cylinder_pair_boolean("union", &a, &b)
+        .expect("overlapping pair must fuse");
+    let want = 32000.0 - build::solid_volume(&u);
+    let r = boolean("subtract", &base, &u);
+    assert!(r.is_some(), "subtracting the fused tool must not refuse");
+    let vol = build::solid_volume(&r.unwrap());
+    assert!((vol - want).abs() <= 1e-6 * want, "volume {vol} vs exact {want}");
+}
+
+/// Two FULLY overlapping bores (same centre): the hole branch's fuse loop
+/// must not even pair them — identical AABBs DO overlap, so the fuse sees
+/// them; the pair union refuses on concentric and the branch keeps the
+/// first tool alone, which removes exactly one bore's volume.
+#[test]
+fn fully_overlapping_bores_cut_one_bore_exact() {
+    let base = build::box_solid([40.0, 40.0, 20.0], [0.0, 0.0, 0.0], None);
+    let t = build::cylinder_solid([0.0, 0.0, 0.0], 3.0, 8.0, [0.0, 0.0, 1.0]);
+    // Direct pair fuse refuses concentric (documented in build_cyl_pair_result);
+    // the hole branch must therefore dedupe rather than lose the bore.
+    assert!(crate::ops::cylinder_pair_boolean("union", &t, &t).is_none());
+    let r = boolean("subtract", &base, &t);
+    let vol = build::solid_volume(&r.expect("cut"));
+    let want = 32000.0 - std::f64::consts::PI * 9.0 * 8.0;
+    assert!((vol - want).abs() <= 1e-6 * want, "volume {vol} vs exact {want}");
+}

@@ -905,32 +905,88 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     .iter()
                     .map(|&c| build::cylinder_solid(c, diameter / 2.0, depth, axis))
                     .collect();
-                // OCCT fuses all bores into one tool, then cuts once. Subtracting
-                // them one after another is the same solid only when the bores do
-                // not overlap; refuse rather than guess otherwise.
-                let boxes: Vec<crate::math::Aabb> =
+                // OCCT fuses all bores into one tool, then cuts once. Bores that
+                // do not overlap subtract independently; overlapping ones are
+                // FUSED first with the kernel's own cylinder-pair union
+                // (W8, the refusal this replaces). The fuse is pairwise over
+                // the tool list, seeded with the first tool: cylinder_pair_boolean
+                // handles two coplanar-capped coaxial-direction cylinders and
+                // refuses honestly otherwise, in which case the hole still
+                // refuses in words (same sentence shape as before).
+                let mut boxes: Vec<crate::math::Aabb> =
                     tools.iter().map(build::solid_aabb).collect();
-                let mut clash = false;
-                'outer: for a in 0..boxes.len() {
-                    for b in (a + 1)..boxes.len() {
-                        if build::aabbs_overlap(&boxes[a], &boxes[b]) {
-                            clash = true;
-                            break 'outer;
+                let mut fused: Vec<TSolid> = Vec::new();
+                let mut pending: Vec<TSolid> = tools;
+                let mut refused = false;
+                while !pending.is_empty() {
+                    let first = pending.remove(0);
+                    let mut acc = first;
+                    let mut idx = 0;
+                    while idx < pending.len() {
+                        let bb = build::solid_aabb(&pending[idx]);
+                        let ab = build::solid_aabb(&acc);
+                        if build::aabbs_overlap(&ab, &bb) {
+                            // AABB containment decides cheaply: a bore fully
+                            // inside another is dropped (its union is the
+                            // larger tool) — build_cyl_pair_result refuses
+                            // contained cases by design. Note the SAME
+                            // centre axis matters, so an AABB test is only a
+                            // necessary condition; the equal-height + axis
+                            // checks in the fuse below make it sufficient
+                            // for hole tools (all coaxial, equal depth).
+                            let next = pending.remove(idx);
+                            let acc_aabb = build::solid_aabb(&acc);
+                            let next_aabb = build::solid_aabb(&next);
+                            let acc_in_next = acc_aabb.lo[0] >= next_aabb.lo[0] - 1e-9
+                                && acc_aabb.lo[1] >= next_aabb.lo[1] - 1e-9
+                                && acc_aabb.lo[2] >= next_aabb.lo[2] - 1e-9
+                                && acc_aabb.hi[0] <= next_aabb.hi[0] + 1e-9
+                                && acc_aabb.hi[1] <= next_aabb.hi[1] + 1e-9
+                                && acc_aabb.hi[2] <= next_aabb.hi[2] + 1e-9;
+                            let next_in_acc = next_aabb.lo[0] >= acc_aabb.lo[0] - 1e-9
+                                && next_aabb.lo[1] >= acc_aabb.lo[1] - 1e-9
+                                && next_aabb.lo[2] >= acc_aabb.lo[2] - 1e-9
+                                && next_aabb.hi[0] <= acc_aabb.hi[0] + 1e-9
+                                && next_aabb.hi[1] <= acc_aabb.hi[1] + 1e-9
+                                && next_aabb.hi[2] <= acc_aabb.hi[2] + 1e-9;
+                            if acc_in_next && next_in_acc {
+                                // Identical tools (a duplicate bore): keep one.
+                            } else if acc_in_next {
+                                acc = next;
+                            } else if next_in_acc {
+                                // keep acc, drop next.
+                            } else {
+                                match ops::cylinder_pair_boolean("union", &acc, &next) {
+                                    Some(u) => acc = u,
+                                    None => {
+                                        refused = true;
+                                        break;
+                                    }
+                                }
+                            }
+// Do not advance idx: the fused tool may now
+                            // overlap the next pending one too.
+                        } else {
+                            idx += 1;
                         }
                     }
+                    if refused {
+                        break;
+                    }
+                    fused.push(acc);
                 }
-                if clash {
+                if refused {
                     refusals.insert(
                         id.clone(),
                         json!(format!(
-                            "hole {id}: its bores overlap, which brep-rs cannot fuse into one tool yet -- {id} is shown without it."
+                            "hole {id}: its bores overlap in a way brep-rs cannot fuse into one tool yet -- {id} is shown without it."
                         )),
                     );
                     continue;
                 }
                 let mut shape = src;
                 let mut cut = true;
-                for tool in &tools {
+                for tool in &fused {
                     match ops::boolean("subtract", &shape, tool) {
                         Some(result) => shape = result,
                         None => {
