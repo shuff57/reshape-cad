@@ -1719,6 +1719,121 @@ fixed and re-recorded before this closeout.
   entry stays open with that note.
 
 ---
+---
+## Trim verified ("Create a Component Within an Assembly" — official Autodesk Learn lesson)
+
+- **Source**: `https://www.autodesk.com/learn/ondemand/tutorial/create-a-component-within-an-assembly`
+  (downloaded 2026-09-22), Gemini pipeline, transcript-corroborated. This is
+  the trim fallback the sketch/kernel closeout named — the last MUST-FILE
+  gate from the plan's coverage notes.
+
+### Verified (trim, 03:06–03:09)
+
+1. **Trim = scissor cursor + red segment highlight + click-to-cut.**
+   *"Next, trim the extended lines to clean up the sketch"* (03:00, transcript);
+   the model observed the scissor badge appended to the cursor at 03:07,
+   hovering a segment highlights the part to be cut in **bright red**, and a
+   single click removes only the red-highlighted segment between
+   intersections. reSHape's trim (`3f1ffa3` lineage + the endpoint-letters
+   fix `fbebb5f`) matches the interaction: hover shows the doomed segment,
+   click cuts at intersections. The scissor-badge cursor is a cursor-shape
+   detail reSHape does not replicate (its per-tool cursors exist but differ);
+   noted as cosmetic, not behavioural.
+
+### Also verified in passing (this same lesson)
+
+- **Construction toggle `X`** (02:47–02:55): selected entity toggles
+  normal/construction (solid vs dashed) — reSHape's offset tool carries the
+  construction flag; an `X` hotkey toggle is not built (named future work).
+- **Slot, center-to-center** (03:47–03:54): 3-click (center 1, center 2,
+  width) — matches the shipped slot drag + click-click creation paths.
+- **Press Pull with red cut preview** (04:02, 04:31): dragging the extrude
+  arrow BACKWARDS through an intersecting body turns the preview RED — the
+  blue-add/red-cut convention, corroborated on real Fusion footage (this is
+  the strongest corroboration yet of todo 25's colour claim, previously an
+  unverified visual claim; the preview-tint itself now has a footage
+  analogue, though reSHape's own recording still shows only resting colour).
+- **Fillet Ctrl-modify** (03:39–03:45): *"Hold Ctrl to modify selection"* —
+  the verbatim prompt reSHape's todo-26 step tooltips ship.
+
+---
+## The Sketch Environment (official Autodesk Learn lesson)
+
+- **Source**: `.../the-sketch-environment` (downloaded 2026-09-22), Gemini
+  pipeline. Queued for Phase 2 preamble.
+
+### Verified
+
+1. **Create Sketch flow** (00:34–01:06): ribbon click → plane hover
+   highlights orange → click → camera animates normal to the plane. A
+   floating prompt ("Select a plane or planar face") rides the cursor — the
+   same command-state prompt family as the shell lesson's tooltips.
+2. **Constraint glyph set** (02:40–02:58) — Fusion's full list: H/V,
+   coincident, tangent, equal, parallel, perpendicular, fix/unfix, midpoint,
+   collinear, concentric, symmetry, curvature. reSHape's sketch-mode menu
+   (Done, Dim, H, V, Coincident, Parallel, Perpendicular, Equal, Tangent,
+   Point on Object, Symmetric, Lock) covers the interaction set minus
+   collinear/midpoint/curvature — a named difference, not a silent one.
+3. **Colour semantics** (03:07, transcript): fully defined = black,
+   undefined = blue, projected/linked = purple — matches the prior closeouts'
+   colour convention.
+4. **Sketch re-entry** (03:53–04:13): right-click the browser/timeline node
+   → Edit Sketch; visibility eye toggles geometry. Matches todo 21's
+   timeline context menu.
+
+---
+## Constrain and Align Sketch Features (official Autodesk Learn lesson)
+
+- **Source**: `.../constrain-and-align-sketch-features` (downloaded
+  2026-09-22), Gemini pipeline. Queued for Phase 2.8/4.1.
+
+### Verified
+
+1. **Midpoint snap requires SHIFT** (00:59–01:05, 01:22–01:24): *"Holding
+   Shift while hovering near the center of a line triggers the Midpoint snap
+   glyph (triangle symbol)"* — reSHape's snap engine offers midpoint on
+   hover WITHOUT a modifier. A behavioural divergence, now footage-named:
+   Fusion gates the midpoint inference behind a held Shift; reSHape
+   infers it directly (its glyph is the same triangle). Worth an owner
+   decision, not a silent change.
+2. **Show Constraints palette toggle** (02:04–02:09): unchecking hides ALL
+   glyphs; clicking an entity with glyphs hidden shows only ITS constraints
+   (02:12–02:20). reSHape renders glyphs always-on; a hide toggle is named
+   future work.
+3. **Click a constraint glyph → it AND its dependent entities highlight**
+   (02:21–02:28) — light blue on the glyph, darker blue on the connected
+   geometry. reSHape's todo 15 (P2.8) ships hover/select on glyphs; the
+   dependency-visualization tint is a richer variant, named future work.
+4. **Slot 3-click + Horizontal/Vertical-to-midpoint + dimension-to-midpoint**
+   flows corroborate the shipped slot and constraint-apply sequences.
+
+---
+## Parametric Modeling: Sketching Intricate Shapes (official Autodesk Learn lesson)
+
+- **Source**: `.../parametric-modeling-sketching-intricate-shapes`
+  (downloaded 2026-09-22), Gemini pipeline. Queued for Phase 2.7 + solver.
+
+### Verified
+
+1. **Spline tool with fit points + tangent handles** (02:15–02:39): green
+   checkmark acceptance handle completes the spline; selecting it reveals
+   round fit points; a fit point exposes TANGENT HANDLES (green segment +
+   dots) whose drag rotates tangency and adjusts tension. Splines are OUT
+   of Scope IN for the parity plan (no spline in reSHape's sketcher); the
+   interaction shape is filed for whenever that slice happens.
+2. **Closed loop auto-fills** (02:19–02:24): completing a loop instantly
+   fills the enclosed region translucent blue — matches reSHape's outline
+   fill behaviour.
+3. **Zoom Window** (00:48–00:52): magnifier cursor + marquee — matches the
+   shipped Win Zoom (viewport) and the 2D zoom.
+4. **Dynamic line input** (01:14–01:38): live length+angle boxes while
+   rubber-banding — matches the shipped line tool's drag-or-type boxes.
+
+### Not shown
+- No trim, no offset in this lesson (consistent with the earlier finding
+  that trim only surfaces in assembly lessons).
+
+---
 ## Next videos to review
 
 Rebuilt 2026-09-20 for balanced 2D/3D/navigation coverage. All URLs probed
@@ -1732,12 +1847,18 @@ dimension-sketch-geometry, extrude, press-pull, fillets, FmMNIGVpCng.
   - (REVIEWED 2026-09-21: filed as `## create-and-modify-sketch-geometry`
   above — offset FOUND; trim NOT in the lesson, reserve video below is the
   fallback.)
+  - (REVIEWED 2026-09-22: filed as the sketch-environment section above.)
 - `https://www.autodesk.com/learn/ondemand/tutorial/the-sketch-environment`
   — sketch UI/palette layout; Phase 2 preamble, palette toggles.
+  - (NOT REVIEWED: 403 Forbidden at download 2026-09-22; entry stays open.)
 - `https://www.autodesk.com/learn/ondemand/tutorial/sketch-2d-rectangles-using-lines-constraints-and-center`
   — rectangle + constraints; Phase 2.2/2.8.
+  - (REVIEWED 2026-09-22: filed as the constrain-and-align section above —
+  the Shift-required midpoint inference is a named divergence.)
 - `https://www.autodesk.com/learn/ondemand/tutorial/constrain-and-align-sketch-features`
   — constraint application workflows; Phase 2.8/4.1.
+  - (REVIEWED 2026-09-22: filed as the splines section above — spline
+  interaction shape filed for the record; splines stay out of Scope IN.)
 - `https://www.autodesk.com/learn/ondemand/tutorial/parametric-modeling-sketching-intricate-shapes`
   — splines, line/dimension editing; Phase 2.7 + solver.
 
@@ -1787,13 +1908,13 @@ dimension-sketch-geometry, extrude, press-pull, fillets, FmMNIGVpCng.
 These interactions have no standalone lesson (slugs 404) — they surface only
 inside the queued videos marked **MUST FILE** above. Per video:
 
-- **Trim + offset** → PARTIALLY RESOLVED: offset verified in
+- **Trim + offset** → RESOLVED: offset verified in
   `## create-and-modify-sketch-geometry` above (04:31–04:54,
   transcript-corroborated, matched against reSHape's offset tool with the
-  construction-flag divergence noted). **Trim NOT in that lesson** (Break was
-  shown instead, 03:48–04:03) — still open; the reserve video
-  `https://www.autodesk.com/learn/ondemand/tutorial/create-a-component-within-an-assembly`
-  (live, verified) remains the named fallback to file trim from.
+  construction-flag divergence noted). Trim verified in
+  `## Trim verified ("Create a Component Within an Assembly")` above
+  (03:06–03:09: scissor cursor, red segment highlight, click cuts between
+  intersections — matched against reSHape's trim).
 - **Measure** → RESOLVED: verified in
   `## control-part-thickness-geometry-and-specific-angles` above (05:47–05:54,
   in-dialog value-field flyout → click geometry → result lands in the field,
