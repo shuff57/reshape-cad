@@ -2756,7 +2756,7 @@ fn build_cyl_pair_result(
 pub fn boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
     if op == "subtract" {
         if let Some(cavity) = subtract_enclosed(a, b) {
-            return Some(cavity);
+                    return Some(cavity);
         }
     }
     if let Some(r) = cylinder_pair_boolean(op, a, b) {
@@ -2765,6 +2765,8 @@ pub fn boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
     if let Some(r) = cylinder_open_hollow(op, a, b) {
         return Some(r);
     }
+    let a_faces_count = a.faces().len();
+    let b_faces_count = b.faces().len();
     let mut faces: Vec<TFace> = Vec::new();
     for f in a.faces() {
         process_face(&f, b, op, true, &mut faces)?;
@@ -2808,32 +2810,19 @@ pub fn boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
                 return None;
             }
         }
-        // An INTERIOR face (a cap plane at an interface the boolean should
-        // have dissolved) has material on BOTH sides: probe the centroid
-        // ± the plane normal by a sliver. A real boundary face has empty
-        // space on exactly one side. Catches the Y2 union's interior
-        // annulus without refusing any green fixture. `faces` here are
-        // pre-Solid; build a throwaway shell for the ray crossings via
-        // crossings() on a temp solid.
-        let result_solid = Solid {
-            shells: vec![std::rc::Rc::new(std::cell::RefCell::new(crate::topo::Shell { faces: faces.clone() }))],
-        };
-        for f in &faces {
-            let fb = f.borrow();
-            let Surface::Plane(g) = &fb.surface else { continue };
-            let (area, c) = build::face_area_centroid(&fb);
-            if area <= 0.0 {
-                continue;
-            }
-            // Skip a coplanar cap's own plane: the probe reads the face
-            // itself as a boundary crossing on both sides. Offset the
-            // probe ALONG the normal instead of through the face.
-            let inside_pos = inside_solid(&result_solid, add(c, scale(g.n, 5e-6)));
-            let inside_neg = inside_solid(&result_solid, sub(c, scale(g.n, 5e-6)));
-            if inside_pos && inside_neg {
-                return None;
-            }
-        }
+    }
+    // SPEC 4.5's dissolution guard: a general-path result that keeps every
+    // input face (count == sum of both inputs) dissolved nothing -- for an
+    // overlap union that is the interior-faces-not-dissolved wrong solid
+    // (the Y1 box-join: 12 faces in, 12 out, volume double-counted to
+    // 72000 vs exact 66000). Refuse honestly; exactness is W5's.
+    let ab_overlap = {
+        let ba = build::solid_aabb(a);
+        let bb = build::solid_aabb(b);
+        [0, 1, 2].iter().all(|&i| ba.lo[i] <= bb.hi[i] + 1e-9 && bb.lo[i] <= ba.hi[i] + 1e-9)
+    };
+    if op == "union" && ab_overlap && faces.len() >= a_faces_count + b_faces_count {
+        return None;
     }
     Some(Solid {
         shells: vec![Rc::new(RefCell::new(Shell { faces }))],
@@ -3855,6 +3844,32 @@ fn flange_cylinder_union_exact() {
             assert!(
                 (vol - want).abs() <= 1e-6 * want,
                 "a wrong solid with no refusal: volume {vol} vs exact {want}"
+            );
+        }
+    }
+}
+
+/// The Y1 bench bug (found benching the yardstick): a box-box join whose
+/// boxes overlap in a VOLUME (not just a face) runs the general path and
+/// keeps BOTH solids' full face sets — the interior faces are not
+/// dissolved and the shared volume double-counts (72000 vs exact 66000).
+/// The interior-face guard misses it because a face spanning both the
+/// overlap and free space probes as boundary at its centroid. This is
+/// W5's trimmed-face membership, stated as the red gate: exact or
+/// refused, never this.
+#[test]
+fn y1_box_join_exact() {
+    let a = build::box_solid([80.0, 60.0, 10.0], [0.0, 0.0, 0.0], None);
+    let b = build::box_solid([60.0, 10.0, 40.0], [0.0, 25.0, 10.0], None);
+    let r = boolean("union", &a, &b);
+    match r {
+        None => {} // refusal is honest
+        Some(solid) => {
+            let vol = build::solid_volume(&solid);
+            let want = 66000.0; // 48000 + 24000 − 6000 overlap
+            assert!(
+                (vol - want).abs() <= 1e-6 * want,
+                "a wrong solid with no refusal: volume {vol} vs exact {want} (interior faces not dissolved)"
             );
         }
     }
