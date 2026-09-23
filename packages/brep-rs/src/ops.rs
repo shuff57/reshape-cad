@@ -329,18 +329,22 @@ fn inside_surface(s: &Surface, p: Vec3) -> bool {
 struct Region {
     hs: Vec<[f64; 3]>,
     disk: Option<([f64; 2], f64)>,
+    /// A subtractive circle: the region is the disk/half-planes MINUS this
+    /// circle. How a torus band cut by a perpendicular plane (an annulus)
+    /// is expressed. At most one.
+    hole: Option<([f64; 2], f64)>,
     empty: bool,
 }
 
 impl Region {
     fn empty() -> Self {
-        Region { hs: Vec::new(), disk: None, empty: true }
+        Region { hs: Vec::new(), disk: None, hole: None, empty: true }
     }
     fn all() -> Self {
-        Region { hs: Vec::new(), disk: None, empty: false }
+        Region { hs: Vec::new(), disk: None, hole: None, empty: false }
     }
     fn with_disk(c: [f64; 2], r: f64) -> Self {
-        Region { hs: Vec::new(), disk: Some((c, r)), empty: false }
+        Region { hs: Vec::new(), disk: Some((c, r)), hole: None, empty: false }
     }
     fn push_hl(&mut self, h: [f64; 3]) {
         self.hs.push(h);
@@ -620,6 +624,36 @@ fn region_inside(other: &TSolid, plane: &Plane, offset: Vec3) -> Option<Region> 
                     return None;
                 }
             }
+            Surface::Torus(t) => {
+                // A torus band cut by a plane PERPENDICULAR to its axis is
+                // an annulus: expressed as disk(outer) MINUS hole(inner).
+                // A plane parallel or oblique cuts it in two circles — not
+                // expressible in one convex region; refuse.
+                let ad = dot(t.axis, plane.n).abs();
+                if (ad - 1.0).abs() < 1e-9 {
+                    let probe = add(plane.origin, offset);
+                    let d = sub(probe, t.center);
+                    let axial = dot(d, t.axis);
+                    // Outside the tube's axial span the torus surface does
+                    // not exist on this plane: it constrains nothing.
+                    if axial.abs() > t.tube + 1e-9 {
+                        continue;
+                    }
+                    // Ring radii at this axial cut: the tube circle of
+                    // radius `tube` centered (ring, axial) gives
+                    // rho = ring ± sqrt(tube^2 - axial^2).
+                    let half = (t.tube * t.tube - axial * axial).sqrt();
+                    let r_out = t.ring + half;
+                    let r_in = (t.ring - half).max(0.0);
+                    let center_uv = plane.project(add(t.center, scale(t.axis, axial)));
+                    region.disk = Some((center_uv, r_out));
+                    if r_in > 1e-9 {
+                        region.hole = Some((center_uv, r_in));
+                    }
+                } else {
+                    return None;
+                }
+            }
             Surface::Cone(c) => {
                 let ad = dot(c.axis, plane.n).abs();
                 if (ad - 1.0).abs() < 1e-9 {
@@ -674,6 +708,9 @@ enum Clamped {
     Empty,
     Full,
     Disk([f64; 2], f64),
+    /// The region's disk with a subtractive hole (a torus band cut by a
+    /// perpendicular plane): the kept face is face_with_hole(Hole::Circle).
+    Annulus([f64; 2], f64, [f64; 2], f64),
     Poly(Vec<[f64; 2]>),
     /// A polygon clipped by a disk that neither contains it nor sits fully
     /// inside it (SPEC pinned math: a box wall cut by a sphere). Pieces plus
@@ -1079,6 +1116,36 @@ fn clamp(region: &Region, f: &[[f64; 2]]) -> Option<Clamped> {
         }
         return Some(Clamped::Disk(c, r));
     }
+    if let Some((hc, hr)) = region.hole {
+        // A hole region (a torus band's annulus): the face must contain the
+        // OUTER disk entirely (same 32-probe check the plain disk uses) and
+        // the hole circle must sit strictly inside the face too. The kept
+        // face is the face minus the hole circle.
+        if let Some((c, r)) = region.disk {
+            if !point_in_poly(f, c) {
+                return None;
+            }
+            for k in 0..32 {
+                let a = TWO_PI * k as f64 / 32.0;
+                let p = [c[0] + r * a.cos(), c[1] + r * a.sin()];
+                if !point_in_poly(f, p) {
+                    return None;
+                }
+            }
+            if !point_in_poly(f, hc) {
+                return None;
+            }
+            for k in 0..32 {
+                let a = TWO_PI * k as f64 / 32.0;
+                let p = [hc[0] + hr * a.cos(), hc[1] + hr * a.sin()];
+                if !point_in_poly(f, p) {
+                    return None;
+                }
+            }
+            return Some(Clamped::Annulus(c, r, hc, hr));
+        }
+        return None;
+    }
     if region.hs.is_empty() {
         return Some(Clamped::Full);
     }
@@ -1398,6 +1465,11 @@ fn keep_polygon(
                     out.push(build_poly_face(&kept_plane, &poly));
                 }
             }
+            Clamped::Annulus(c, r, hc, hr) => {
+                let _ = (hc, hr);
+                let kept = if reverse { flip_planar(face) } else { face.clone() };
+                out.push(face_with_hole(&kept, &kept_plane, &Hole::Circle(c, r)));
+            }
             Clamped::Mixed(pieces, c, r) => {
                 if reverse {
                     out.push(build_mixed_face(&kept_plane, &reverse_pieces(&pieces), c, r));
@@ -1421,6 +1493,7 @@ fn keep_polygon(
             // A mixed-shaped hole (arc-bounded cut into a face) isn't built
             // yet -- no fixture needs it, and a wrong hole is worse than a
             // refusal (SPEC constraint 4).
+            Clamped::Annulus(_, _, _, _) => return None,
             Clamped::Mixed(_, _, _) => return None,
         }
     }
@@ -1469,12 +1542,23 @@ fn keep_disk(
         let uv = plane.project(p);
         let yes = if region.empty {
             false
-        } else if let Some((c, r)) = region.disk {
-            let d = [(uv[0] - c[0]) as f64, (uv[1] - c[1]) as f64];
-            d[0] * d[0] + d[1] * d[1] <= r * r + 1e-7
-                && region.hs.iter().all(|h| h[0] * uv[0] + h[1] * uv[1] + h[2] <= REGION_EPS)
         } else {
-            region.hs.iter().all(|h| h[0] * uv[0] + h[1] * uv[1] + h[2] <= REGION_EPS)
+            let in_hs = region.hs.iter().all(|h| h[0] * uv[0] + h[1] * uv[1] + h[2] <= REGION_EPS);
+            let in_disk = match region.disk {
+                Some((c, r)) => {
+                    let d = [(uv[0] - c[0]) as f64, (uv[1] - c[1]) as f64];
+                    d[0] * d[0] + d[1] * d[1] <= r * r + 1e-7
+                }
+                None => true,
+            };
+            let out_of_hole = match region.hole {
+                Some((c, r)) => {
+                    let d = [(uv[0] - c[0]) as f64, (uv[1] - c[1]) as f64];
+                    d[0] * d[0] + d[1] * d[1] >= r * r - 1e-7
+                }
+                None => true,
+            };
+            in_hs && in_disk && out_of_hole
         };
         *total += 1;
         if yes { *inside_count += 1; }
@@ -1770,6 +1854,29 @@ fn process_face(
                         // Axes are parallel. Store for u-clipping in v-segment loop.
                         parallel_cylinders.push(cy2.clone());
                     }
+                    Surface::Torus(t2) => {
+                        // Cylinder wall vs a TORUS band (a filleted rim): the
+                        // band shares the base axis (a round-primitive rim is
+                        // coaxial with its own cylinder). Its axial reach is
+                        // the tube's span about ITS center. If the wall's
+                        // band does not share axial space with the torus's
+                        // tube span, the torus constrains nothing here —
+                        // skip. A genuine overlap needs torus/cyl arc math
+                        // (W5): refuse.
+                        let a2 = normalize(t2.axis);
+                        let parallel = (dot(axis, a2).abs() - 1.0).abs() < 1e-9;
+                        if !parallel {
+                            return None;
+                        }
+                        let t_lo = dot(t2.center, axis) - t2.tube;
+                        let t_hi = dot(t2.center, axis) + t2.tube;
+                        let w_lo = dot(cy.origin, axis) + cy.vmin;
+                        let w_hi = dot(cy.origin, axis) + cy.vmax;
+                        if (w_hi.min(t_hi) - w_lo.max(t_lo)) <= 1e-9 {
+                            continue;
+                        }
+                        return None;
+                    }
                     _ => return None,
                 }
             }
@@ -1908,7 +2015,52 @@ fn process_face(
             }
             Some(())
         }
-        Surface::Sphere(sp) => {
+                Surface::Torus(t) => {
+            // A round-primitive rim band (a quarter torus, SPEC-brep-round).
+            // Keep/drop it WHOLESALE by probing the band against `other` --
+            // exact whenever the band lies entirely on one side (the Y2
+            // flanged cylinder: the rim is fully outside the standing
+            // cylinder). A band genuinely cut by `other` needs torus/cyl
+            // arc math (W5) and still refuses: four band probes (the tube-
+            // angle ends at mid-turn) must agree with the middle.
+            offset_sign(op, is_a)?;
+            let keep_inside = keeps_inside(op, is_a);
+            let reverse = op == "subtract" && !is_a;
+            let axis = normalize(t.axis);
+            let (e1, e2, _) = crate::geom::frame(axis);
+            // TorusSurf param (geom.rs): p(u, v) = center + (ring +
+            // tube*cos v)*(cos u*e1 + sin u*e2) + tube*sin v*axis; v the
+            // tube angle in t.v_range, u the full turn.
+            let pt_at = |u: f64, v: f64| {
+                let rho = t.ring + t.tube * v.cos();
+                add(
+                    t.center,
+                    add(
+                        scale(axis, t.tube * v.sin()),
+                        add(scale(e1, rho * u.cos()), scale(e2, rho * u.sin())),
+                    ),
+                )
+            };
+            let vmid = 0.5 * (t.v_range[0] + t.v_range[1]);
+            let probes = [
+                pt_at(0.0, vmid),
+                pt_at(std::f64::consts::FRAC_PI_2, vmid),
+                pt_at(std::f64::consts::PI, vmid),
+                pt_at(std::f64::consts::PI + std::f64::consts::FRAC_PI_2, vmid),
+            ];
+            let inside_flags: Vec<bool> = probes.iter().map(|&p| inside_solid(other, p)).collect();
+            let all_same = inside_flags.iter().all(|&b| b == inside_flags[0]);
+            if !all_same {
+                return None;
+            }
+            let in_other = inside_solid(other, probes[0]);
+            let keep = if keep_inside { in_other } else { !in_other };
+            if keep {
+                out.push(if reverse { flip_face(face) } else { face.clone() });
+            }
+            Some(())
+        }
+Surface::Sphere(sp) => {
             // The only sphere-boolean case this kernel builds (SPEC pinned
             // math): a sphere with a centered, symmetric square tube of
             // planes drilled all the way through it along one of the
