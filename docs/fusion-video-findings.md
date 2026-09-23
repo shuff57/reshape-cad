@@ -1792,14 +1792,17 @@ fixed and re-recorded before this closeout.
 1. **Midpoint snap requires SHIFT** (00:59–01:05, 01:22–01:24): *"Holding
    Shift while hovering near the center of a line triggers the Midpoint snap
    glyph (triangle symbol)"* — reSHape's snap engine offers midpoint on
-   hover WITHOUT a modifier. A behavioural divergence, now footage-named:
-   Fusion gates the midpoint inference behind a held Shift; reSHape
-   infers it directly (its glyph is the same triangle). Worth an owner
-   decision, not a silent change.
+   hover WITHOUT a modifier. RESOLVED BY OWNER (2026-09-23): keep
+   hover-inferred — a deliberate divergence from Fusion, easier for
+   students; the divergence is documented here, not silently changed.
 2. **Show Constraints palette toggle** (02:04–02:09): unchecking hides ALL
    glyphs; clicking an entity with glyphs hidden shows only ITS constraints
-   (02:12–02:20). reSHape renders glyphs always-on; a hide toggle is named
-   future work.
+   (02:12–02:20). RESOLVED 2026-09-23: a 'constraints' checkbox now ships in
+   the sketch palette (default ON; OFF hides the icon-glyph layer except a
+   hovered/selected rule's own glyph) — commit `031bfdf`. Fusion's
+   entity-filtered variant (show only the clicked entity's constraints) is
+   the named future work.**
+
 3. **Click a constraint glyph → it AND its dependent entities highlight**
    (02:21–02:28) — light blue on the glyph, darker blue on the connected
    geometry. reSHape's todo 15 (P2.8) ships hover/select on glyphs; the
