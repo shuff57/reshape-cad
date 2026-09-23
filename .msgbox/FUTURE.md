@@ -92,8 +92,12 @@ current map, 3D and 2D, is the closeout section at the end of
    `revolve_profile_partial` that only an asymmetric angle could catch. Still
    open: slanted profile segments, in both `revolve` and `groove`.
 6. `hole`: overlapping bores are refused (OCCT fuses them first). **Still open
-   (W8)** — and W2a added a worse one next to it: four corner bores flush with a
-   face give a WRONG volume with no refusal (31038.672648 vs 31095.221316).
+   (W8)** — but the W2a-added silent wrong volume is RESOLVED (2026-09-22,
+   commit `708bc88`): void surfaces (a prior bore's wall/floor/ceiling) no
+   longer constrain the next tool's region; four flush corner bores and N
+   blind bores are now exact, pinned by `successive_blind_bores_keep_every_floor`,
+   `through_bore_then_blind_bore_keeps_the_floor`, and
+   `flush_four_corner_bores_exact` (220/220). The floor-loss class is dead.
 7. booleans: `ops::boolean` is face-by-face on plane, cylinder and sphere cases
    plus an enclosed-cavity path. There is no general surface-surface
    intersection. **Still open, and now understood as the keystone (W5)**: items
