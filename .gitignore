@@ -10,5 +10,17 @@ dist/
 # opencode agent session state, not project memory
 .omo/run-continuation/
 
+# opencode agent tooling scratch (probes, node_modules) - not project memory
+.opencode/
+
+# playwright-mcp browser probes (screenshots, page snapshots) - not project memory
+.playwright-mcp/
+
+# agent scratch drafts (superseded by .omo/plans or .omo/notepads)
+.omo/drafts/
+
+# agent probe evidence (console logs, page yml/png snapshots)
+.omo/evidence/parity-closure/
+
 # parity-record.mjs recorded scenario videos - never committed
 .omo/evidence/parity-recordings/
