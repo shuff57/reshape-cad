@@ -112,7 +112,17 @@ current map, 3D and 2D, is the closeout section at the end of
    pushed in world coords, compared as v-frame values) fixed. What W5
    still owns: torus/cylinder wall ARC intersection (a torus band
    genuinely CUT by a cylinder wall), sphere-arm walls, cone arms, and
-   the general trimmed-face membership for non-axis-aligned pairs.
+   the general trimmed-face membership for non-axis-aligned pairs. NEW
+   (bench session): the region_inside parallel-face leak -- a wall
+   bounding only PART of the probe plane pushes an unbounded half-plane
+   constant (the Y1 pocket floor killed the leg-bottom rescue's region0;
+   the Y2 doc-path join refuses on holed flanges). The fix is per-face
+   extent discipline on parallel faces (a real 2D region per face, not
+   half-planes), which is also the missing piece for the Y1/Y2 bench
+   finals. Bench spec defect: Y2-flanged.md's stated total 53703.00
+   contradicts its own derivation (53074.68) and its fillet constant
+   omits the perimeter factor (~417, not 18.24); needs the lead's
+   correction before C3.y2 records PASS/FAIL.
 8. ~~`mesh.rs` and `step.rs` are still stubs~~ **RESOLVED for `mesh.rs`, and
    `step.rs` now WRITES (W9a, 2026-09-17).** `mesh.rs` is done (1,319 lines, its
    own lead-owned gate at 61/61, adapter wired, and it renders in the studio —

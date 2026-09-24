@@ -1466,6 +1466,90 @@ fn keep_polygon(
     is_a: bool,
     out: &mut Vec<TFace>,
 ) -> Option<()> {
+    // A disk face that already carries inner wires (a circle-bitten cap:
+    // the Y2 flange's top disk after hole1, meeting bore2) collapses to a
+    // one-point uv ring that outer_uv cannot walk: route it through the
+    // disk logic directly. The region's disk bites a new hole;
+    // face_with_hole clones the existing wires so earlier holes survive.
+    {
+        let fb = face.borrow();
+        if fb.boundary.len() >= 1 {
+            if let Some((center, radius)) = circle_boundary_of_wire(&fb) {
+                if fb.boundary.len() >= 2 {
+                    drop(fb);
+                    let sign = offset_sign(op, is_a)?;
+                    let region = region_inside(other, plane, scale(plane.n, sign * PROBE))?;
+                    let c_uv = plane.project(center);
+                    let keep_outside = !keeps_inside(op, is_a);
+                    let in_region = |p: Vec3| -> bool {
+                        match &region.disk {
+                            Some((c, r)) => {
+                                let uv = plane.project(p);
+                                let d = [(uv[0] - c[0]) as f64, (uv[1] - c[1]) as f64];
+                                d[0] * d[0] + d[1] * d[1] <= r * r + 1e-7
+                                    && region.hs.iter().all(|h| {
+                                        h[0] * uv[0] + h[1] * uv[1] + h[2] <= 1e-9
+                                    })
+                            }
+                            None => false,
+                        }
+                    };
+                    let covered = in_region(center)
+                        && (0..32).all(|k| {
+                            let a = TWO_PI * k as f64 / 32.0;
+                            in_region(add(center, add(
+                                scale(plane.u, radius * a.cos()),
+                                scale(plane.v, radius * a.sin()),
+                            )))
+                        });
+                    let _ = (keep_outside, covered, in_region);
+                    // Nothing of the face is bitten: keep whole. (Checked
+                    // BEFORE the disk unwrap: Region::empty() carries no
+                    // disk, and falling through to the partial-overlap
+                    // refusal would refuse faces the tool never touches.)
+                    // An unsatisfiable (0,0,c) constant is a de-facto empty
+                    // region too: the tool's far cap sits beyond the probe
+                    // plane entirely (the flange's bottom disk vs the
+                    // cylinder whose body starts 6 above the plane).
+                    let de_facto_empty = region.hs.iter().any(|h| {
+                        h[0] * h[0] + h[1] * h[1] < 1e-18 && h[2] > 1e-9
+                    }) || region.empty;
+                    if de_facto_empty {
+                        let reverse = op == "subtract" && !is_a;
+                        let kept_plane = if reverse {
+                            Plane { origin: plane.origin, n: scale(plane.n, -1.0), u: plane.u, v: plane.v }
+                        } else {
+                            plane.clone()
+                        };
+                        out.push(if keeps_inside(op, is_a) && reverse {
+                            flip_planar(face)
+                        } else {
+                            face.clone()
+                        });
+                        return Some(());
+                    }
+                    if let Some((c, r)) = region.disk {
+                        // Containment in the face disk: compare in uv.
+                        let cuv = plane.project(center);
+                        let dist = ((c[0] - cuv[0]) * (c[0] - cuv[0])
+                            + (c[1] - cuv[1]) * (c[1] - cuv[1]))
+                        .sqrt();
+                        if dist + r <= radius - 1e-7 {
+                            if keeps_inside(op, is_a) {
+                                // Interior: drop the face.
+                                return Some(());
+                            }
+                            out.push(face_with_hole(face, &plane, &Hole::Circle(c, r)));
+                            return Some(());
+                        }
+                    }
+                    // Partial overlap of two circles is W8's lens/lune work:
+                    // refuse honestly rather than guess.
+                    return None;
+                }
+            }
+        }
+    }
     let f = outer_uv(&face.borrow(), plane)?;
     let sign = offset_sign(op, is_a)?;
     let region = region_inside(other, plane, scale(plane.n, sign * PROBE))?;
@@ -1570,9 +1654,26 @@ fn keep_polygon(
                         // Bite covers the whole face.
                         return Some(());
                     }
+                    // The original face's INNER wires (existing holes) must
+                    // survive on whichever piece contains them: the holed
+                    // plate + leg join loses the bore voids otherwise (the
+                    // Y1 bench: the L-join refilled one hole's volume).
+                    let inner: Vec<topo::WireRef<Curve3>> = {
+                        let fb = face.borrow();
+                        fb.boundary.iter().skip(1).cloned().collect()
+                    };
                     for piece in pieces {
                         let piece = if reverse { let mut rp = piece.clone(); rp.reverse(); rp } else { piece };
-                        out.push(build_poly_face(&kept_plane, &piece));
+                        let mut face_out = build_poly_face(&kept_plane, &piece);
+                        for w in &inner {
+                            // Every point of the hole wire must sit inside
+                            // this piece for a clean attachment.
+                            let pts = wire_uv_points(w, &kept_plane);
+                            if !pts.is_empty() && pts.iter().all(|q| point_in_poly(&piece, *q)) {
+                                face_out.borrow_mut().boundary.push(w.clone());
+                            }
+                        }
+                        out.push(face_out);
                     }
                     return Some(());
                 }
@@ -1788,6 +1889,17 @@ fn keep_disk(
     Some(())
 }
 
+
+/// The uv points of a wire's edge endpoints in `plane` (walk orientation kept).
+fn wire_uv_points(w: &topo::WireRef<Curve3>, plane: &Plane) -> Vec<[f64; 2]> {
+    let mut pts = Vec::new();
+    for u in &w.borrow().edges {
+        let eb = u.edge.borrow();
+        let p = if u.forward { eb.a.borrow().point } else { eb.b.borrow().point };
+        pts.push(plane.project(p));
+    }
+    pts
+}
 
 /// The pieces of convex polygon `f` outside convex polygon `p` (f minus p),
 /// as disjoint convex polys via half-plane decomposition: for each edge
@@ -2028,6 +2140,25 @@ fn process_face(
                             return None; // non-parallel axes: not yet implemented
                         }
                         // Axes are parallel. Store for u-clipping in v-segment loop.
+                        // A VOID wall (a prior bore's wall, its outward normal
+                        // pointing INTO the void) does not bound material: the
+                        // u-clip treats every parallel cylinder as a material
+                        // constraint, so a second bore beside the first lost
+                        // its whole wall (hole2 at rho 6 vs hole1's void wall
+                        // at rho 18: disjoint circles emptied the arcs and the
+                        // bore's wall dropped everywhere). Same normal test the
+                        // region_inside void-wall skips use: the face's outward
+                        // normal at u=0 is cross(e2, axis) * forward-sign; a
+                        // void wall's points inward. cy2 carries that sign in
+                        // its own frame: flip_face negates e2 with forward kept,
+                        // so cross(cy2.e2, cy2.axis) already encodes the flip.
+                        {
+                            let radial0 = scale(cy2.e1, cy2.radius);
+                            let normal0 = cross(cy2.e2, cy2.axis);
+                            if dot(normal0, radial0) < 0.0 {
+                                continue; // void wall: bounds no material
+                            }
+                        }
                         parallel_cylinders.push(cy2.clone());
                     }
                     Surface::Torus(t2) => {
@@ -2049,6 +2180,26 @@ fn process_face(
                         let w_lo = dot(cy.origin, axis) + cy.vmin;
                         let w_hi = dot(cy.origin, axis) + cy.vmax;
                         if (w_hi.min(t_hi) - w_lo.max(t_lo)) <= 1e-9 {
+                            continue;
+                        }
+                        // Radial clearance: a coaxial torus band occupies
+                        // rho in [ring - tube, ring + tube] about ITS axis.
+                        // If the wall's whole circle lies inside the torus's
+                        // hole (dist + radius <= ring - tube) or entirely
+                        // outside its outer reach (dist - radius >= ring +
+                        // tube), the torus cannot touch this wall: skip.
+                        // (The Y2 bench: Ø5 holes at rho 6/18 under a fillet
+                        // band at rho 32..35 -- axially coincident, radially
+                        // clear; refusing here made every flange hole
+                        // unbuildable.) A genuine radial overlap needs
+                        // torus/cyl arc math (W5): still refuses.
+                        let wall_axis_dist = {
+                            let dc = sub(cy.origin, t2.center);
+                            crate::math::len(sub(dc, scale(a2, dot(dc, a2))))
+                        };
+                        if wall_axis_dist + cy.radius <= t2.ring - t2.tube + 1e-9
+                            || wall_axis_dist - cy.radius >= t2.ring + t2.tube - 1e-9
+                        {
                             continue;
                         }
                         return None;
@@ -2102,19 +2253,29 @@ fn process_face(
                     let base_band_lo = dot(cy.origin, axis) + vlo;
                     let base_band_hi = dot(cy.origin, axis) + vhi;
                     let mut arcs: Vec<(f64, f64)> = vec![(0.0, TWO_PI)]; // start with full circle
+                    // Whether any tool actually constrained this v-band: a
+                    // band-clear tool is skipped below (no constraint), and
+                    // when NO tool constrains the wall keeps its WHOLE
+                    // circle in both keep senses. The vacuous initial
+                    // arcs=[full] is only the intersection identity -- it
+                    // must not decide a keep_outside drop (the overlap-stack
+                    // upper wall was dropped whole when the only tool's band
+                    // ended exactly at the window's lower edge).
+                    let mut any_tool = false;
                     for cy2 in &parallel_cylinders {
                         let tool_lo = dot(cy2.origin, axis) + cy2.vmin;
                         let tool_hi = dot(cy2.origin, axis) + cy2.vmax;
-                        let shared = base_band_hi.min(tool_hi) - base_band_lo.max(tool_lo);
-                        if shared <= 1e-9 {
-                            // The tool's wall does not exist in this v-band:
-                            // nothing of the base circle is inside it. With
-                            // keep_inside=true the AND over tools becomes
-                            // empty; with keep_inside=false (keep outside)
-                            // the complement of an empty inside-set is the
-                            // FULL circle. Both follow from arcs = [].
-                            arcs = intersect_arc_intervals(&arcs, &[]);
-                        }
+                        let _shared = base_band_hi.min(tool_hi) - base_band_lo.max(tool_lo);
+                        // A tool whose band does not overlap this v-band
+                        // constrains NOTHING here: the band-clear skip
+                        // below leaves `arcs` untouched, which is exactly
+                        // "no constraint" for BOTH keep senses. (An earlier
+                        // version intersected with an empty set here, which
+                        // emptied the arcs and, for keep_inside bores, cut
+                        // the wall everywhere the base band outlived the
+                        // tool band -- a Ø5 bore through the Y2 flange lost
+                        // its upper half at the flange wall's z=0 band edge
+                        // and the shell cracked.)
                         // The tool cylinder only reaches v in its own band
                         // along the axis (its origin + [vmin, vmax]). If that
                         // band does not overlap this v-band segment, the
@@ -2128,9 +2289,13 @@ fn process_face(
                         let tool_hi = dot(cy2.origin, axis) + cy2.vmax;
                         let base_lo = dot(cy.origin, axis) + vlo;
                         let base_hi = dot(cy.origin, axis) + vhi;
-                        if tool_lo > base_hi + 1e-9 || tool_hi < base_lo - 1e-9 {
+                        // Touching bands share only a measure-zero plane:
+                        // treat as clear (the tool's wall does not exist in
+                        // this v-band).
+                        if tool_lo >= base_hi - 1e-9 || tool_hi <= base_lo + 1e-9 {
                             continue;
                         }
+                        any_tool = true;
                         // Tool cylinder center at this v (same axis, so center projects to same line).
                         let tool_center = add(cy2.origin, scale(axis, vm));
                         let d = sub(tool_center, base_center);
@@ -2165,7 +2330,10 @@ fn process_face(
                         }
                         None => sorted,
                     };
-                    let final_arcs: Vec<(f64, f64)> = if keep_inside {
+                    let final_arcs: Vec<(f64, f64)> = if !any_tool {
+                        // No tool constrains this band: keep the whole circle.
+                        vec![(0.0, TWO_PI)]
+                    } else if keep_inside {
                         ordered
                     } else {
                         // Complement of arcs in [0, 2π)
@@ -2184,9 +2352,20 @@ fn process_face(
                     };
                     if !final_arcs.is_empty() {
                         for (start, end) in final_arcs {
-                            let arc_range = crate::geom::ArcRange { start, span: end - start };
-                            let wall = partial_wall_arc(cy, vlo, vhi, arc_range);
-                            out.push(if reverse { flip_face(&wall) } else { wall });
+                            let span = end - start;
+                            if start <= 1e-9 && span >= TWO_PI - 1e-9 {
+                                // A full circle: emit the seam-carrying full
+                                // wall (arc None). A 2pi ArcRange face would
+                                // refuse on its own reprocessing (cy.arc.is_
+                                // some() -> None) -- the second bore beside
+                                // the first died exactly there.
+                                let wall = partial_wall(cy, vlo, vhi, reverse);
+                                out.push(wall);
+                            } else {
+                                let arc_range = crate::geom::ArcRange { start, span };
+                                let wall = partial_wall_arc(cy, vlo, vhi, arc_range);
+                                out.push(if reverse { flip_face(&wall) } else { wall });
+                            }
                         }
                     }
                     continue;
@@ -2939,6 +3118,7 @@ fn build_cyl_pair_result(
 
 /// Boolean two solids of the `combine` kind. Returns None when the kernel
 /// cannot build the exact result, so the caller refuses the feature in words.
+
 pub fn boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
     if op == "subtract" {
         if let Some(cavity) = subtract_enclosed(a, b) {

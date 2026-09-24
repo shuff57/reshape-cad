@@ -37,10 +37,10 @@
   },
   {
     "candidate": "C3",
-    "engine": null,
-    "build_sha": null,
-    "date": null,
-    "device": null,
+    "engine": "reshape (brep-rs kernel wasm, sandbox-dev studio)",
+    "build_sha": "main @ 2e42cdd (kernel ops.rs coplanar rescue + region fixes; wasm rebuilt this session)",
+    "date": "2026-09-23",
+    "device": "linux-wsl node22 (bench via node runScript + measure_doc; the studio app path, headless)",
     "transfer_mb_gz": null,
     "cold_load_s": null,
     "cached_load_s": null,
@@ -51,6 +51,6 @@
     "y1": null,
     "y2": null,
     "y3": null,
-    "notes": null
+    "notes": "Y1 L-bracket (target 68151.77): stage volumes exact through the app path -- plate 48000; plate+recess 45000 (48000-3000); +3 bores 44151.77 (closed form 48000-3000-848.23). The final join (plate-with-pocket-and-bores + leg) refuses in BOTH the doc path and the native path: the leg-bottom coplanar rescue's zero-probe region is de-facto emptied by the pocket floor's leaking half-plane constant (a wall bounding only part of the probe plane), the leg bottom survives whole, the shell cracks and the manifold guard refuses. Blocked on W5's per-face extent discipline for parallel faces. y1 stays null until that lands; no wrong solid ships. Y2 (target 53703.00): flange 23090.71; filleted 22674.10; +4 flange holes 22202.86 (exact closed form each stage); the no-hole stacked union builds exactly 60373.209 in-process; the doc-path join with holed flanges refuses (same W5 framing defect). y2 null. Y2 spec defect found while benching: Y2-flanged.md states 53703.00 but its own derivation sums to 53074.68, and its fillet constant 18.24 omits the perimeter factor (true corner removal ~417); honest closed form for the intended geometry is ~52362. The task doc needs the lead's correction before y2 can record PASS/FAIL. Kernel fixes this session (all test-pinned): coplanar union rescue with inner-wire-carrying complement pieces (Y1 box-join exact 66000), region_inside de-facto-empty handling for far caps, wall-break frame bug (band edges in world coords vs v-frame), full-circle arc walls re-emitted as seam walls (second-bore wall drop), torus radial-clearance skip (flange holes under a fillet band), void-wall u-clip skip, disk-with-holes boolean route. cargo 226/226; parity 68/68; mesh 68/68; STEP 60+8 honest refusals; npm test green; bench/record.json schema-checked."
   }
 ]
