@@ -568,13 +568,27 @@ fn region_inside(other: &TSolid, plane: &Plane, offset: Vec3) -> Option<Region> 
                                     }
                                 }
                             }
-                            // In-plane direction away from the face: plane.u.
-                            let beside = add(c3, scale(plane.u, 2.0 * rr + 1.0));
-                            let behind = sub(beside, scale(g.n, 4.0 * PROBE));
-                            if inside_solid(other, behind) {
-                                // Material continues behind this plane away
-                                // from the face: the face is a void surface,
-                                // not a cap. Skip it.
+                            // In-plane directions away from the face: sample
+                            // BOTH signs of BOTH in-plane axes. The earlier
+                            // single +plane.u sample was frame-luck: for the
+                            // Y1 pocket floor probed from the leg-bottom
+                            // plane, plane.u pointed away from the material,
+                            // the sample landed outside the solid, the void
+                            // went undetected and the floor's constant
+                            // ("z <= 5" on the z=10 plane) leaked into the
+                            // leg-bottom rescue's region0 and emptied it.
+                            let mut void_face = false;
+                            for dir in [plane.u, scale(plane.u, -1.0), plane.v, scale(plane.v, -1.0)] {
+                                let beside = add(c3, scale(dir, 2.0 * rr + 1.0));
+                                let behind = sub(beside, scale(g.n, 4.0 * PROBE));
+                                if inside_solid(other, behind) {
+                                    // Material continues behind this plane at
+                                    // a point beside the face's area: void.
+                                    void_face = true;
+                                    break;
+                                }
+                            }
+                            if void_face {
                                 continue;
                             }
                         }
@@ -754,6 +768,13 @@ enum Clamped {
     /// inside it (SPEC pinned math: a box wall cut by a sphere). Pieces plus
     /// the disk's own (center, radius) so the arcs can be rebuilt exactly.
     Mixed(Vec<LoopPiece>, [f64; 2], f64),
+    /// The coplanar rescue's complement: the kept face is f minus the bite,
+    /// as disjoint convex pieces (each emitted with the face's surviving
+    /// inner wires attached).
+    Complement(Vec<Vec<[f64; 2]>>),
+    /// The coplanar rescue's bite polygon strictly inside the face: the
+    /// kept face is face_with_hole(Hole::Poly).
+    Bite(Vec<[f64; 2]>),
 }
 
 /// One boundary piece of a mixed polygon/disk loop, in a plane's own uv.
@@ -1458,6 +1479,88 @@ fn keeps_inside(op: &str, is_a: bool) -> bool {
 }
 
 /// The region of a planar face (given as a polygon) that survives.
+/// The uv wires (outer + holes) of a face of `other` COPLANAR with the
+/// probe plane, if any. Coplanar contacts (the Y1 leg bottom against the
+/// pocketed plate's top face) need the partner's exact footprint: the
+/// half-plane algebra cannot represent a cross-section with recessed voids
+/// (the pocket walls leak constants that empty the region). The coplanar
+/// face's own boundary IS the cross-section, holes included.
+fn coplanar_face_wires(other: &TSolid, plane: &Plane) -> Option<Vec<Vec<[f64; 2]>>> {
+    for f in other.faces() {
+        let fb = f.borrow();
+        if let Surface::Plane(g) = &fb.surface {
+            // Same normal (either sign) and the planes coincide.
+            let parallel = dot(g.n, plane.n).abs() >= 1.0 - 1e-9;
+            let together = dot(sub(g.origin, plane.origin), plane.n).abs() <= 1e-7;
+            if parallel && together {
+                // Skip void faces of `other` (a prior bore's ceiling at this
+                // plane is not the material footprint). A void face has
+                // material behind it beside its own area; a cap does not.
+                let (area, c3) = build::face_area_centroid(&fb);
+                if area <= 0.0 {
+                    continue;
+                }
+                let mut rr = 0.0f64;
+                for w in &fb.boundary {
+                    for u in &w.borrow().edges {
+                        let eb = u.edge.borrow();
+                        for p in [eb.a.borrow().point, eb.b.borrow().point] {
+                            let d = crate::math::len(sub(p, c3));
+                            if d > rr {
+                                rr = d;
+                            }
+                        }
+                    }
+                }
+                let mut void_face = false;
+                for dir in [plane.u, scale(plane.u, -1.0), plane.v, scale(plane.v, -1.0)] {
+                    let beside = add(c3, scale(dir, 2.0 * rr + 1.0));
+                    let behind = sub(beside, scale(g.n, 4.0 * PROBE));
+                    if inside_solid(other, behind) {
+                        void_face = true;
+                        break;
+                    }
+                }
+                if void_face {
+                    continue;
+                }
+                let mut wires = Vec::new();
+                for w in &fb.boundary {
+                    let mut pts = Vec::new();
+                    for u in &w.borrow().edges {
+                        let eb = u.edge.borrow();
+                        let p = if u.forward { eb.a.borrow().point } else { eb.b.borrow().point };
+                        pts.push(plane.project(p));
+                    }
+                    if pts.len() >= 3 {
+                        wires.push(pts);
+                    } else if pts.len() == 1 {
+                        // A collapsed circle wire: reconstruct it from the
+                        // edge curve so containment tests see the ring.
+                        let u0 = &w.borrow().edges[0];
+                        let eb = u0.edge.borrow();
+                        if let Curve::Circle { center, radius, .. } = &eb.curve {
+                            let cuv = plane.project(*center);
+                            let mut ring = Vec::with_capacity(33);
+                            for k in 0..32 {
+                                let a = TWO_PI * k as f64 / 32.0;
+                                ring.push([cuv[0] + radius * a.cos(), cuv[1] + radius * a.sin()]);
+                            }
+                            ring.push(ring[0]);
+                            wires.push(ring);
+                        }
+                    }
+                }
+                if !wires.is_empty() {
+                    return Some(wires);
+                }
+            }
+        }
+    }
+    None
+}
+
+
 fn keep_polygon(
     face: &TFace,
     plane: &Plane,
@@ -1580,7 +1683,48 @@ fn keep_polygon(
     // own the band, but both rescuing drops it TWICE-less-than-once -- the
     // band vanished entirely (60000 vs 66000).
     let clamped = if !is_a && !keeps_inside(op, is_a) && matches!(clamped, Clamped::Empty) {
-        if let Some(region0) = region_inside(other, plane, [0.0, 0.0, 0.0]) {
+        // Preferred source: a face of `other` coplanar with the probe
+        // plane. Its own wires are the partner's exact footprint (the
+        // Y1 leg bottom against the pocketed plate's top face); the
+        // half-plane algebra cannot represent that cross-section's
+        // recessed voids without leaking constants.
+        if let Some(wires) = coplanar_face_wires(other, plane) {
+            let outer = &wires[0];
+            let covered = f.iter().all(|q| {
+                point_in_poly(outer, *q)
+                    && !wires[1..].iter().any(|h| point_in_poly(h, *q))
+            });
+            let poked = f.iter().any(|q| wires[1..].iter().any(|h| point_in_poly(h, *q)));
+            if covered && !poked {
+                // Interior to the union: drop the face.
+                Clamped::Full
+            } else {
+                // Partial overlap: the bite is the partner's outer wire
+                // clipped INTO this face's polygon (both convex for the
+                // fixtures). Touching the face's boundary -> the complement
+                // path; strictly inside -> a hole. The partner's holes are
+                // respected: a face corner inside a partner hole pokes
+                // through a void, which the complement cannot express.
+                let bite = clip_poly_by_poly(outer, &f);
+                if bite.len() < 3 || poly_area(&bite) <= 1e-9 {
+                    // Disjoint or touching at an edge: keep whole.
+                    Clamped::Empty
+                } else {
+                    let bite_touches_c = f.iter().any(|p| point_in_poly(&bite, *p))
+                        || bite.iter().any(|q| !point_in_poly_strict(&f, *q));
+                    if bite_touches_c {
+                        let pieces = poly_minus_poly(&f, &bite);
+                        if pieces.is_empty() {
+                            Clamped::Full
+                        } else {
+                            Clamped::Complement(pieces)
+                        }
+                    } else {
+                        Clamped::Bite(bite)
+                    }
+                }
+            }
+        } else if let Some(region0) = region_inside(other, plane, [0.0, 0.0, 0.0]) {
             if !region0.empty {
                 match clamp(&region0, &f) {
                     // The zero-probe region must be a real bite
@@ -1607,6 +1751,12 @@ fn keep_polygon(
     if keeps_inside(op, is_a) {
         match clamped {
             Clamped::Empty => {}
+            Clamped::Complement(_) | Clamped::Bite(_) => {
+                // Keep-inside ops never receive the coplanar rescue's
+                // variants (it is keep-outside only); a stray one is a
+                // logic error -- refuse rather than guess.
+                return None;
+            }
             Clamped::Full => {
                 out.push(if reverse { flip_planar(face) } else { face.clone() })
             }
@@ -1638,6 +1788,26 @@ fn keep_polygon(
             Clamped::Empty => out.push(face.clone()),
             Clamped::Full => {}
             Clamped::Disk(c, r) => out.push(face_with_hole(face, &kept_plane, &Hole::Circle(c, r))),
+            Clamped::Complement(pieces) => {
+                for piece in pieces {
+                    let piece = if reverse { let mut rp = piece.clone(); rp.reverse(); rp } else { piece };
+                    let mut face_out = build_poly_face(&kept_plane, &piece);
+                    let inner: Vec<topo::WireRef<Curve3>> = {
+                        let fb = face.borrow();
+                        fb.boundary.iter().skip(1).cloned().collect()
+                    };
+                    for w in &inner {
+                        let pts = wire_uv_points(w, &kept_plane);
+                        if !pts.is_empty() && pts.iter().all(|q| point_in_poly(&piece, *q)) {
+                            face_out.borrow_mut().boundary.push(w.clone());
+                        }
+                    }
+                    out.push(face_out);
+                }
+            }
+            Clamped::Bite(bite) => {
+                out.push(face_with_hole(face, &kept_plane, &Hole::Poly(bite)));
+            }
             Clamped::Poly(poly) => {
                 // The removed region must sit inside the face for a clean hole.
                 // A bite TOUCHING the face boundary (its corners on the face's
@@ -1899,6 +2069,34 @@ fn wire_uv_points(w: &topo::WireRef<Curve3>, plane: &Plane) -> Vec<[f64; 2]> {
         pts.push(plane.project(p));
     }
     pts
+}
+
+/// Clip convex polygon `p` by convex polygon `clip`: each of clip's edges
+/// becomes a keep-side half-plane oriented toward clip's centroid.
+fn clip_poly_by_poly(p: &[[f64; 2]], clip: &[[f64; 2]]) -> Vec<[f64; 2]> {
+    if p.len() < 3 || clip.len() < 3 {
+        return Vec::new();
+    }
+    let mut pc = [0.0f64, 0.0];
+    for q in clip {
+        pc[0] += q[0];
+        pc[1] += q[1];
+    }
+    let pc = [pc[0] / clip.len() as f64, pc[1] / clip.len() as f64];
+    let mut out = p.to_vec();
+    for i in 0..clip.len() {
+        let p1 = clip[i];
+        let p2 = clip[(i + 1) % clip.len()];
+        let a = p2[1] - p1[1];
+        let b = -(p2[0] - p1[0]);
+        let c = -(a * p1[0] + b * p1[1]);
+        let (a, b, c) = if a * pc[0] + b * pc[1] + c > 0.0 { (-a, -b, -c) } else { (a, b, c) };
+        out = clip_halfplane(&out, a, b, c);
+        if out.len() < 3 {
+            return Vec::new();
+        }
+    }
+    out
 }
 
 /// The pieces of convex polygon `f` outside convex polygon `p` (f minus p),
@@ -3119,6 +3317,8 @@ fn build_cyl_pair_result(
 /// Boolean two solids of the `combine` kind. Returns None when the kernel
 /// cannot build the exact result, so the caller refuses the feature in words.
 
+
+
 pub fn boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
     if op == "subtract" {
         if let Some(cavity) = subtract_enclosed(a, b) {
@@ -3173,6 +3373,7 @@ pub fn boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
             if *n != 1 && *n != 2 {
                 return None;
             }
+
         }
     }
     Some(Solid {
@@ -4181,6 +4382,51 @@ fn fully_overlapping_bores_cut_one_bore_exact() {
 /// still build inexact — this test is the next slice's RED gate: green
 /// only when the union is exact.
 #[test]
+/// The Y1 bench final: plate + pocket + 3 bores + leg join. The void-scan
+/// fix (4-direction beside-sampling) and the coplanar-face rescue route
+/// (the partner's own wires as the footprint) make the whole sequence
+/// build exactly. Closed form 48000 + 24000 - 3000 - 848.23.
+#[test]
+fn y1_bench_final_exact() {
+    let mut plate = build::box_solid([80.0, 60.0, 10.0], [0.0, 0.0, 5.0], None);
+    let pt = build::box_solid([30.0, 20.0, 5.0], [-20.0, 0.0, 7.5], None);
+    plate = boolean("subtract", &plate, &pt).expect("pocket");
+    for c in [[-25.0f64, -15.0], [25.0, -15.0], [0.0, 15.0]] {
+        let t = build::cylinder_solid([c[0], c[1], 5.0], 3.0, 12.0, [0.0, 0.0, 1.0]);
+        plate = boolean("subtract", &plate, &t).expect("bore");
+    }
+    let leg = build::box_solid([10.0, 60.0, 40.0], [35.0, 0.0, 30.0], None);
+    let r = boolean("union", &plate, &leg);
+    let Some(s) = r else { panic!("the Y1 bench final refused; it should build exactly") };
+    let vol = build::solid_volume(&s);
+    let want = 48000.0 + 24000.0 - 3000.0 - 3.0 * std::f64::consts::PI * 9.0 * 10.0;
+    assert!(
+        (vol - want).abs() <= 1e-6 * want,
+        "a wrong solid with no refusal: volume {vol} vs exact {want}"
+    );
+}
+
+/// The Y2 bench final: holed flanged cylinder unioned with the standing
+/// cylinder (the doc-path join that refused before the coplanar-face
+/// route). Closed form: flange-with-holes + cylinder, touching caps.
+#[test]
+fn y2_bench_final_exact() {
+    let mut fl = build::round_cylinder_one_rim([0.0, 0.0, 0.0], 35.0, 6.0, [0.0, 0.0, 1.0], 3.0, true);
+    for c in [[-18.0f64, 0.0], [-6.0, 0.0], [6.0, 0.0], [18.0, 0.0]] {
+        let b = build::cylinder_solid([c[0], c[1], 0.0], 2.5, 6.0, [0.0, 0.0, 1.0]);
+        fl = boolean("subtract", &fl, &b).expect("hole");
+    }
+    let cyl = build::cylinder_solid([0.0, 0.0, 18.0], 20.0, 30.0, [0.0, 0.0, 1.0]);
+    let r = boolean("union", &fl, &cyl);
+    let Some(s) = r else { panic!("the Y2 bench final refused; it should build exactly") };
+    let vol = build::solid_volume(&s);
+    let want = 22202.858373491622 + std::f64::consts::PI * 20.0 * 20.0 * 30.0;
+    assert!(
+        (vol - want).abs() <= 1e-6 * want,
+        "a wrong solid with no refusal: volume {vol} vs exact {want}"
+    );
+}
+
 fn flange_cylinder_union_exact() {
     let a = build::cylinder_solid([0.0, 0.0, 0.0], 35.0, 6.0, [0.0, 0.0, 1.0]);
     let b = build::cylinder_solid([0.0, 0.0, 18.0], 20.0, 30.0, [0.0, 0.0, 1.0]);
