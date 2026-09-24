@@ -118,13 +118,25 @@ current map, 3D and 2D, is the closeout section at the end of
    partner's own wires as the exact footprint, partial bites via
    clip_poly_by_poly, inner wires carried) plus the 4-direction void
    scan; Y1 and Y2 bench finals build exactly and are pinned
-   (y1_bench_final_exact, y2_bench_final_exact). REMAINING W5: the
-   general (non-coplanar, non-parallel) trimmed-face membership --
-   region_inside is still a convex approximation for oblique cuts; a
-   multi-piece region representation is the real answer there. Bench
-   spec defect stands: Y2-flanged.md's stated total 53703.00 contradicts
-   its own derivation (53074.68) and its fillet constant omits the
-   perimeter factor (~417, not 18.24); needs the lead's correction.
+   (y1_bench_final_exact, y2_bench_final_exact).
+
+   **Still open (W5 remainder), restated 2026-09-23 (commit `544b292`)**:
+   1. **General oblique trimmed-face membership.** region_inside is still
+      a convex approximation (half-planes + one disk); it is exact only
+      for convex others and for coplanar contacts (now routed through the
+      partner face's own wires). An oblique cut whose cross-section is
+      non-convex needs a multi-piece region representation -- a real 2D
+      region list per face, replacing Region's single half-plane set.
+      Every convex-fixture test stays green against that refactor.
+   2. **Torus/cylinder wall ARC intersection** (a torus band genuinely
+      CUT by a cylinder wall), sphere-arm walls, cone arms.
+   3. **Bench spec defect (lead decision needed)**: Y2-flanged.md's
+      stated total 53703.00 contradicts its own derivation (53074.68)
+      and its fillet constant omits the perimeter factor (~417, not
+      18.24). record.json C3 carries the MEASURED volumes (y1 68151.77
+      PASS in band; y2 59901.9703 exact for the intended geometry);
+      after the lead corrects the doc, y2 can record PASS/FAIL against
+      a fixed band.
 8. ~~`mesh.rs` and `step.rs` are still stubs~~ **RESOLVED for `mesh.rs`, and
    `step.rs` now WRITES (W9a, 2026-09-17).** `mesh.rs` is done (1,319 lines, its
    own lead-owned gate at 61/61, adapter wired, and it renders in the studio —
