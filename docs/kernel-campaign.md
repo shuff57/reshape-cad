@@ -89,7 +89,38 @@ before being abandoned, and the result is worth more than the code was:
   faces are not yet supported" upstream in truck too) and is a slice in its own
   right, arguably part of the same coplanar/tangent work W5 needs.
 
-**Consequence for the plan:** Slice A must be the real surgery after all — build
+**Chamfer-first, measured 2026-09-28: the concept WORKS, the boolean does
+not.** A chamfer needs no tangent surface, so its corner tool is a plain
+triangular prism -- two of three sides coplanar with the base's own faces,
+the third (the bevel) transverse. Built and measured:
+
+- ON A BOX it is exact. The prism subtracts from a 40x40x20 box to precisely
+  31680.000000 -- the number `fillet_chamfer_one_edge_volume_and_faces`
+  already pins -- on 7 faces with the extents unchanged, and the prism's own
+  volume is exact (880.0 for the 50-long overshooting tool). So a general
+  chamfer is genuinely reachable by reusing the boolean.
+- ON A BOOLEAN RESULT IT RETURNS A WRONG SOLID, which is why none of it
+  shipped. A 40x30x10 plate unioned with a 20x20x10 block (exact, 16000) then
+  chamfered on the step's top edge loses 453.333 instead of the closed-form
+  160, and `ops::boolean` returns `Some` -- a silent wrong volume, SPEC 4.5's
+  cardinal sin. The prism is provably right (exact volume and bbox), and the
+  union is provably right (16000), so the fault is the boolean's handling of
+  this coplanar-side tool against coplanar base faces. Same family as the
+  coplanar/tangent weakness above, on a new shape.
+
+The implementation that got this far is worth keeping in mind rather than in
+the tree: it resolved the edge's two faces' outward normals from the faces'
+own `forward` flag, derived the edge direction from its two vertices, took the
+into-face direction by averaging the face's boundary points perpendicular to
+the edge (a centroid would be wrong for a concave face), and TESTED convexity
+with `inside_solid` one micron inside the corner -- a dot product cannot tell a
+flat edge from a concave one, both giving n1.n2 > 0. One bug of its own is
+worth recording because it failed silently as a refusal: seeding the
+face-reach scan with `f64::INFINITY` and keeping only `d > best` never updates,
+so every edge looked infinitely far away and every chamfer refused.
+
+**Consequence for the plan:** the boolean is the gate, again -- and now for
+chamfers too, not only rounds. Slice A must be the real surgery after all — build
 the offset faces and the blend band directly and re-trim the neighbours, rather
 than delegating to the boolean. That is more code than the subtraction route and
 is the honest cost. The arithmetic above (offset by r, tangent points, blend
