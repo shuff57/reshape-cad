@@ -10,6 +10,67 @@ Definition of done for the campaign: every refusal reachable from a valid
 OCCT refuses it too; `name_edge` is real; history covers every op;
 STEP export/import exists; all gates green.
 
+
+## W2a — general edge fillet/chamfer (2026-09-28, STARTED)
+
+**Why.** `build_fillet` (wasm.rs) only knows two shapes, and both work the
+same way — REBUILD THE WHOLE PRIMITIVE rather than fillet an edge. `box_extent`
+/`box_local_frame` demand exactly 6 faces, so a box that has already been
+rounded (7 faces) is no longer recognised: two fillet features on a box, e.g.
+both edges of the top face, give the FIRST as exact 31862.654825 and the SECOND
+as `brep-rs can only round an edge of a box yet` (measured; the true two-edge
+closed form is 31725.309649). The edge NAME resolves fine through the first
+fillet's history — the refusal is `FilletErr::NoBox`, not `NoEdge` — so this is
+purely the geometry builder, not naming. The user-visible consequence: a
+student cannot round a boolean result, a prism, a wedge, or a second edge of the
+same box.
+
+**The plan, in dependency order.** A fillet is "offset both adjacent faces
+inward by r, join them with a blend surface"; the blend depends on the pair:
+
+| adjacent faces | blend | status |
+|---|---|---|
+| plane ∩ plane | cylinder along the edge | **Slice A, first** |
+| plane ∩ cylinder | torus | exists, hardcoded for a cylinder rim |
+| cylinder ∩ cylinder | sphere | Slice C, not started |
+| chamfer, any pair | flat bevel quad | do alongside A |
+
+**Slice A scope.** Any straight edge between two PLANAR faces, on any solid:
+boxes, prisms, wedges, and every boolean result of them. It also subsumes the
+two-edges-on-one-face case above, because its own output is still an
+all-planar-faced solid that Slice A can fillet again.
+
+**Slice A algorithm.**
+1. Take the two adjacent planar faces and the shared edge (two vertices).
+2. Their OUTWARD normals (the face's own `forward`, not the plane's) give the
+   edge direction `d = normalize(cross(n1, n2))`.
+3. Refuse a concave or flat edge (`dot(n1,n2) >= 0`): a fillet there is a
+   different operation, and SPEC §4.5 wants a refusal, not a guess.
+4. Offset each face inward by r. The blend cylinder's axis is the line parallel
+   to `d` through the unique point satisfying `dot(A-o1,n1) = -r` and
+   `dot(A-o2,n2) = -r`; its radius is r, tangent to both offset planes. Closed
+   form, no root finding.
+5. Rebuild F1 and F2 with their edge replaced by the tangent segment, and the
+   two edges that met E at each end vertex shortened by r along their own faces.
+6. Build the blend band: a `Surface::Cylinder` patch bounded by the two tangent
+   segments and, at each end, the curve where that end's third face cuts it.
+7. Re-trim the THIRD face at each end vertex. This is where SPEC §4.5's
+   three-face condition bites: refuse when an end vertex touches more than
+   three faces, exactly as truck's own fillet does upstream. A refused edge
+   refuses that ONE feature and leaves the rest of the solid alone.
+
+**Pinning.** Closed forms, never an eyeballed number: one edge on a box
+31862.654825 (already pinned); TWO edges of the top face 31725.309649; the same
+two edges on a boolean L-bracket, whose closed form is the box's minus both
+corner removals. Every slice keeps parity 68/68, mesh 68/68, STEP 60/8 and
+cargo green — the gates are the floor, not the target.
+
+**Out of scope for Slice A**, named so it is not silently forgotten: edges
+between curved faces (Slice C), filleting/chamfering a curved EDGE, and
+non-convex (concave) edges. Those need the general face-offsetting that W3
+(shell) and W5 both bottom out in.
+
+
 ## W0 — boolean seam weld — DONE (2026-09-15)
 
 **Problem (FUTURE.md 2026-09-15).** `build_mixed_face` (wall arcs) and
