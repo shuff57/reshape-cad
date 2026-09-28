@@ -827,7 +827,11 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     Some(result) => {
                         // The cut's faces come from the boolean, not the prism,
                         // so no sweep history is recorded, exactly as OCCT's
-                        // pocket branch does.
+                        // pocket branch does. The base's own faces DO carry
+                        // through the subtract, matched by surface identity.
+                        let face_fates: Vec<Fate> =
+                            base.faces().iter().map(|fc| carry_fate(&result, fc)).collect();
+                        record_op(&mut hist, &id, OpKind::Boolean, vec![into.to_string()], face_fates, Vec::new());
                         hist.insert(&id, result);
                     }
                     None => {
@@ -984,6 +988,7 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     );
                     continue;
                 }
+                let src_faces = src.faces();
                 let mut shape = src;
                 let mut cut = true;
                 for tool in &fused {
@@ -997,7 +1002,11 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 }
                 if cut {
                     // The cut's faces come from the boolean; no sweep history is
-                    // recorded, exactly as OCCT's hole branch does.
+                    // recorded, exactly as OCCT's hole branch does. The
+                    // target's own faces DO carry through, surface-matched.
+                    let face_fates: Vec<Fate> =
+                        src_faces.iter().map(|fc| carry_fate(&shape, fc)).collect();
+                    record_op(&mut hist, &id, OpKind::Boolean, vec![target.to_string()], face_fates, Vec::new());
                     hist.insert(&id, shape);
                 } else {
                     refusals.insert(
@@ -1140,6 +1149,12 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 };
                 match ops::boolean("subtract", &base, &tool) {
                     Some(result) => {
+                        // The base's own faces carry through the subtract,
+                        // surface-matched (no sweep history for the cut,
+                        // exactly as OCCT's groove branch does).
+                        let face_fates: Vec<Fate> =
+                            base.faces().iter().map(|fc| carry_fate(&result, fc)).collect();
+                        record_op(&mut hist, &id, OpKind::Boolean, vec![into.to_string()], face_fates, Vec::new());
                         hist.insert(&id, result);
                     }
                     None => {
@@ -1263,6 +1278,15 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     continue;
                 }
                 let combined = build::combine(&src, &flipped);
+                // The original's faces/edges survive by HANDLE IDENTITY --
+                // combine keeps `src`'s shells first, unchanged, so index i
+                // of `src.faces()`/`edges()` IS index i of the combined
+                // solid's. The reflected copy is new geometry with no cause.
+                let nf = src.faces().len();
+                let ne = src.edges().len();
+                let face_fates = (0..nf).map(|i| Fate::Kept(PartRef::Face(i))).collect();
+                let edge_fates = (0..ne).map(|i| Fate::Kept(PartRef::Edge(i))).collect();
+                record_op(&mut hist, &id, OpKind::Copy, vec![target.to_string()], face_fates, edge_fates);
                 hist.insert(&id, combined);
             }
             "pattern" => {
@@ -1339,10 +1363,19 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     );
                     continue;
                 }
+                // instances[0] IS src (an Rc-shallow clone at i=0 in both
+                // modes), and combine keeps its operand's shells first --
+                // src's face/edge index i survives at index i of every fold,
+                // the same identity Kept the mirror op above records.
+                let nf = src.faces().len();
+                let ne = src.edges().len();
                 let mut shape = instances[0].clone();
                 for inst in instances.iter().skip(1) {
                     shape = build::combine(&shape, inst);
                 }
+                let face_fates = (0..nf).map(|i| Fate::Kept(PartRef::Face(i))).collect();
+                let edge_fates = (0..ne).map(|i| Fate::Kept(PartRef::Edge(i))).collect();
+                record_op(&mut hist, &id, OpKind::Copy, vec![target.to_string()], face_fates, edge_fates);
                 hist.insert(&id, shape);
             }
             "fillet" => {
@@ -1373,7 +1406,12 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     continue;
                 }
                 match build_fillet(&src, &hist, f, size, round) {
-                    Ok(solid) => hist.insert(&id, solid),
+                    Ok(solid) => {
+                        let face_fates: Vec<Fate> =
+                            src.faces().iter().map(|fc| carry_fate(&solid, fc)).collect();
+                        record_op(&mut hist, &id, OpKind::Fillet, vec![target.to_string()], face_fates, Vec::new());
+                        hist.insert(&id, solid);
+                    }
                     Err(e) => {
                         let reason = match e {
                             FilletErr::TooBig => format!(
@@ -1739,6 +1777,9 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 };
                 match ops::boolean("subtract", &src, &inner) {
                     Some(result) => {
+                        let face_fates: Vec<Fate> =
+                            src.faces().iter().map(|fc| carry_fate(&result, fc)).collect();
+                        record_op(&mut hist, &id, OpKind::Shell, vec![target.to_string()], face_fates, Vec::new());
                         hist.insert(&id, result);
                     }
                     None => {
@@ -2131,13 +2172,10 @@ fn carried_name(hist: &History, feature_id: &str, face: &build::TFace) -> Option
         .iter()
         .position(|f| std::rc::Rc::ptr_eq(f, face))?;
     for rec in recs {
-        // Boolean records carry fates from the kernel; Transform (move) records
-        // fill one Kept per part. Fillet and Shell records are not this
-        // reverse lookup's business yet (their fates are not populated the same
-        // way), so a face of those keeps the old heuristic path.
-        if rec.kind != OpKind::Boolean && rec.kind != OpKind::Transform {
-            continue;
-        }
+        // Every OpKind now populates real, index-matching fates: Boolean
+        // (combine, pocket, hole, groove) and Fillet/Shell via carry_fate's
+        // surface match, Transform (move) and Copy (mirror, pattern) via a
+        // per-index Kept identity. Nothing left to skip.
         // face_fates concatenates each input's faces in `inputs` order (the
         // same layout `carried_face` walks).
         let mut offset = 0usize;
@@ -2350,6 +2388,29 @@ fn carry_fate(out: &TSolid, input: &build::TFace) -> Fate {
         }
     }
     Fate::Deleted
+}
+
+/// Push one operation's naming history: the input feature ids it consumed
+/// and the fate of each input face/edge, in `inputs` order -- the same shape
+/// `move` and `combine` build inline. The seven kinds without their own
+/// inline history (pocket, hole, groove, mirror, pattern, fillet, shell)
+/// share this push.
+fn record_op(
+    hist: &mut History,
+    feature: &str,
+    kind: OpKind,
+    inputs: Vec<String>,
+    face_fates: Vec<Fate>,
+    edge_fates: Vec<Fate>,
+) {
+    hist.ops.entry(feature.to_string()).or_default().push(OpRecord {
+        feature: feature.to_string(),
+        kind,
+        inputs,
+        output: feature.to_string(),
+        face_fates,
+        edge_fates,
+    });
 }
 
 /// Resolve a name to a face or edge on the built doc. Only the causes the box
@@ -3093,6 +3154,156 @@ mod tests {
             named += 1;
         }
         assert!(named >= 12, "the box's 12 edges must be nameable on the boolean result, got {named}");
+    }
+
+    /// The 7 op kinds beyond move/combine (pocket, hole, groove, mirror,
+    /// pattern, fillet, shell) now also record real history. A mirror keeps
+    /// the original box's faces by HANDLE IDENTITY (`OpKind::Copy`), so they
+    /// carry-name and resolve; the reflected copy (new geometry) names null.
+    #[test]
+    fn name_face_carried_through_mirror() {
+        let doc = json!({
+            "features": [
+                { "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0], "center": [0.0, 0.0, 0.0] },
+                { "id": "m1", "kind": "mirror", "target": "b1", "plane": "yz" }
+            ]
+        });
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "refusals: {refusals:?}");
+        let solid = hist.shapes.get("m1").expect("mirror must build");
+        let doc_json = doc.to_string();
+        let mut carried = 0;
+        for (i, face) in solid.faces().iter().enumerate() {
+            let text = name_face(&doc_json, "m1", i);
+            if text == "null" {
+                continue;
+            }
+            let parsed: Value = serde_json::from_str(&text).expect("valid name");
+            assert_eq!(parsed["cause"], "carried", "face {i}: {text}");
+            assert_eq!(parsed["of"]["feature"], "b1", "face {i}: {text}");
+            let resolved: Value = serde_json::from_str(&resolve(&doc_json, &text)).expect("resolve");
+            let (want_area, want_c) = history::face_measure(face);
+            let got_area = resolved["area"].as_f64().expect("area");
+            assert!((got_area - want_area).abs() <= 1e-9 * want_area.max(1.0), "face {i} area {got_area} vs {want_area}");
+            let c = resolved["centroid"].as_array().expect("centroid");
+            for k in 0..3 {
+                assert!((c[k].as_f64().unwrap() - want_c[k]).abs() <= 1e-7, "face {i} centroid[{k}]");
+            }
+            carried += 1;
+        }
+        assert_eq!(carried, 6, "the original box's 6 faces carry by identity; the reflected copy is new geometry");
+    }
+
+    /// A fillet's untouched (and trimmed-but-coplanar) box faces carry
+    /// through by surface identity (`OpKind::Fillet`); only the new fillet
+    /// band names null.
+    #[test]
+    fn name_face_carried_through_fillet() {
+        let doc = json!({
+            "features": [
+                { "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0] },
+                {
+                    "id": "r1", "kind": "fillet", "target": "b1", "size": 4.0, "style": "fillet",
+                    "edge": between_edge("+z|+x")
+                }
+            ]
+        });
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "refusals: {refusals:?}");
+        let solid = hist.shapes.get("r1").expect("fillet must build");
+        let doc_json = doc.to_string();
+        let mut carried = 0;
+        for (i, face) in solid.faces().iter().enumerate() {
+            let text = name_face(&doc_json, "r1", i);
+            if text == "null" {
+                continue;
+            }
+            let parsed: Value = serde_json::from_str(&text).expect("valid name");
+            assert_eq!(parsed["cause"], "carried", "face {i}: {text}");
+            assert_eq!(parsed["of"]["feature"], "b1", "face {i}: {text}");
+            let resolved: Value = serde_json::from_str(&resolve(&doc_json, &text)).expect("resolve");
+            let (want_area, want_c) = history::face_measure(face);
+            let got_area = resolved["area"].as_f64().expect("area");
+            assert!((got_area - want_area).abs() <= 1e-9 * want_area.max(1.0), "face {i} area {got_area} vs {want_area}");
+            let c = resolved["centroid"].as_array().expect("centroid");
+            for k in 0..3 {
+                assert!((c[k].as_f64().unwrap() - want_c[k]).abs() <= 1e-7, "face {i} centroid[{k}]");
+            }
+            carried += 1;
+        }
+        assert_eq!(carried, 6, "all six box faces carry through the fillet by surface identity; the band is new");
+    }
+
+    /// A hole's untouched box faces carry through (`OpKind::Boolean`); the
+    /// new wall and floor name null.
+    #[test]
+    fn name_face_carried_through_hole() {
+        let doc = json!({
+            "features": [
+                { "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0] },
+                { "id": "h1", "kind": "hole", "target": "b1", "diameter": 6.0, "depth": 8.0, "center": [0.0, 0.0, -6.0], "axis": "z" }
+            ]
+        });
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "refusals: {refusals:?}");
+        let solid = hist.shapes.get("h1").expect("hole must build");
+        let doc_json = doc.to_string();
+        let mut carried = 0;
+        for (i, face) in solid.faces().iter().enumerate() {
+            let text = name_face(&doc_json, "h1", i);
+            if text == "null" {
+                continue;
+            }
+            let parsed: Value = serde_json::from_str(&text).expect("valid name");
+            assert_eq!(parsed["cause"], "carried", "face {i}: {text}");
+            assert_eq!(parsed["of"]["feature"], "b1", "face {i}: {text}");
+            let resolved: Value = serde_json::from_str(&resolve(&doc_json, &text)).expect("resolve");
+            let (want_area, want_c) = history::face_measure(face);
+            let got_area = resolved["area"].as_f64().expect("area");
+            assert!((got_area - want_area).abs() <= 1e-9 * want_area.max(1.0), "face {i} area {got_area} vs {want_area}");
+            let c = resolved["centroid"].as_array().expect("centroid");
+            for k in 0..3 {
+                assert!((c[k].as_f64().unwrap() - want_c[k]).abs() <= 1e-7, "face {i} centroid[{k}]");
+            }
+            carried += 1;
+        }
+        assert_eq!(carried, 6, "all six box faces carry through the hole; wall+floor are new");
+    }
+
+    /// A shell's 6 outer faces carry through (`OpKind::Shell`); the 6 new
+    /// inner (inset-plane) faces do not surface-match and name null.
+    #[test]
+    fn name_face_carried_through_shell() {
+        let doc = json!({
+            "features": [
+                { "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0] },
+                { "id": "sh1", "kind": "shell", "target": "b1", "thickness": 2.0 }
+            ]
+        });
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "refusals: {refusals:?}");
+        let solid = hist.shapes.get("sh1").expect("shell must build");
+        let doc_json = doc.to_string();
+        let mut carried = 0;
+        for (i, face) in solid.faces().iter().enumerate() {
+            let text = name_face(&doc_json, "sh1", i);
+            if text == "null" {
+                continue;
+            }
+            let parsed: Value = serde_json::from_str(&text).expect("valid name");
+            assert_eq!(parsed["cause"], "carried", "face {i}: {text}");
+            assert_eq!(parsed["of"]["feature"], "b1", "face {i}: {text}");
+            let resolved: Value = serde_json::from_str(&resolve(&doc_json, &text)).expect("resolve");
+            let (want_area, want_c) = history::face_measure(face);
+            let got_area = resolved["area"].as_f64().expect("area");
+            assert!((got_area - want_area).abs() <= 1e-9 * want_area.max(1.0), "face {i} area {got_area} vs {want_area}");
+            let c = resolved["centroid"].as_array().expect("centroid");
+            for k in 0..3 {
+                assert!((c[k].as_f64().unwrap() - want_c[k]).abs() <= 1e-7, "face {i} centroid[{k}]");
+            }
+            carried += 1;
+        }
+        assert_eq!(carried, 6, "the 6 outer faces carry; the 6 inner faces are new, inset planes");
     }
 
     /// SPEC-brep-round.md, extended by the campaign ledger W11: the cylinder

@@ -58,6 +58,11 @@ pub enum OpKind {
     Fillet,
     Shell,
     Transform,
+    /// A rigid duplication that keeps the original AND adds an untouched
+    /// copy elsewhere (mirror, pattern): every input part survives by
+    /// identity, exactly like Transform's per-index Kept, but the op is a
+    /// copy rather than a relocation.
+    Copy,
 }
 
 /// One profile segment an extrude or revolve swept, paired with the outline

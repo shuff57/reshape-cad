@@ -516,13 +516,35 @@ The header states five clauses. Where each one stands, read from source today:
    `between` names, which is why naming regressions have been caught at all.)
    The gate change W1 asked for is still outstanding, and it is a gate change
    rather than a fixture — the one item here the builder cannot do.
-3. **"history covers every op" — NOT met.** Verified by reading every dispatch
-   arm: `OpRecord` is constructed at exactly two sites, `move` (`OpKind::Transform`,
-   wasm.rs:463) and `combine` (`OpKind::Boolean`, wasm.rs:1005), plus
-   `SweepRecord` for `extrude` (:607, :631) and `revolve` (:839).
-   `OpKind::Fillet` and `OpKind::Shell` are declared in history.rs and never
-   constructed. So mirror, pattern, pocket, groove, hole, shell and fillet
-   record no history at all, and a name cannot be carried through any of them.
+3. **"history covers every op" — RESOLVED 2026-09-27.** Was: `OpRecord`
+   constructed at exactly two sites (`move`/`OpKind::Transform`,
+   `combine`/`OpKind::Boolean`), `OpKind::Fillet`/`Shell` declared and never
+   built, mirror/pattern/pocket/groove/hole/shell/fillet recording nothing.
+   Now: all seven push an `OpRecord` via a new `record_op` helper.
+   pocket/hole/groove reuse `OpKind::Boolean` (each already calls
+   `ops::boolean` internally) with `carry_fate`'s surface-match against their
+   single input, same mechanism `combine` already used. fillet/shell
+   construct the long-declared `OpKind::Fillet`/`Shell`, also via
+   `carry_fate`. mirror/pattern get a new `OpKind::Copy`: their surviving
+   faces are the SAME `Rc` handles at the SAME index through
+   `build::combine` (not a new solid to surface-match), so a per-index
+   `Fate::Kept` is the honest fate, not `carry_fate` (which would call an
+   untouched mirrored face `Deleted` since its geometry differs from the
+   original even though the handle survives). `carried_name`'s reverse-lookup
+   guard, previously gating on `OpKind::Boolean`/`Transform` only, is widened
+   to every kind. 4 new native tests pin `carried == 6` for mirror, fillet,
+   hole and shell against existing pinned fixtures (box+mirror, the r=4 box
+   fillet, the flush-bottom hole, the closed-hollow shell), each asserting the
+   resolved area/centroid match. Deliberately scoped OUT: a fillet/shell
+   REFUSAL that keeps the original shape under the feature id (edge not
+   found, thickness<=0, would-collapse) records no op — an op that refused
+   did not run, the shape is unchanged, and the primitive heuristic already
+   names a box target correctly; not a gap. cargo 232/228 (4 new tests, 0
+   regressions), parity 68/68, mesh 68/68, STEP 60/8, kernel JS 36/36 — all
+   unchanged from baseline, confirming this is naming-metadata-only, no
+   geometry changed. Line numbers above (wasm.rs:463/1005/607/631/839) predate
+   this slice and have drifted; grep the sentences, not the numbers (a
+   standing caveat this ledger already carries elsewhere).
 4. **"STEP export/import exists" — BOTH HALVES STARTED, neither complete
    (W9a + W9b, 2026-09-17).** Export is real and verified against OCCT's own
    reader on 55 of 61 fixtures, with cone, sphere and torus refused. Import now

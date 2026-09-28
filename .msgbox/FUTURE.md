@@ -148,10 +148,31 @@ current map, 3D and 2D, is the closeout section at the end of
    surface here and in the loops in STEP, and a boolean-carved sphere trim
    cannot be recovered from loops, so an importer must refuse rather than
    rebuild a face that then measures wrong. See W9a in `docs/kernel-campaign.md`.
-9. There is no naming history for mirror, pattern, pocket, groove, hole, shell or
-   fillet results. **Still open verbatim, re-verified 2026-09-17:** `OpRecord`
-   is constructed at exactly two sites, `move` and `combine`, and
-   `OpKind::Fillet`/`OpKind::Shell` are declared but never built.
+9. ~~There is no naming history for mirror, pattern, pocket, groove, hole,~~
+   ~~shell or fillet results.~~ **RESOLVED 2026-09-27.** All seven now push an
+   `OpRecord` (a new `record_op` helper, mirroring `move`/`combine`'s inline
+   construction): pocket/hole/groove reuse `OpKind::Boolean` (they call
+   `ops::boolean` internally, same as combine) with `carry_fate` matching the
+   single input's faces by surface identity; fillet/shell now actually
+   construct the `OpKind::Fillet`/`Shell` variants that existed unused since
+   W1, also via `carry_fate` against their single input; mirror/pattern get a
+   new `OpKind::Copy` (per-index `Fate::Kept`, since their surviving faces are
+   the SAME handles through `build::combine`, not a surface-match heuristic --
+   `carry_fate` would wrongly call a mirrored face `Deleted`). The
+   `carried_name` reverse-lookup guard (wasm.rs, was gating on
+   `OpKind::Boolean`/`Transform` only) is widened to every kind, since all now
+   populate real index-matching fates. 4 new native tests
+   (`name_face_carried_through_{mirror,fillet,hole,shell}`) pin carried==6 for
+   each against the campaign's existing fixtures (box+mirror, the pinned
+   fillet/shell/flush-hole cases). Deliberately scoped OUT: a fillet/shell
+   REFUSAL that keeps the original shape under the feature id (edge not
+   found, thickness<=0, would-collapse) records no op -- the shape is
+   literally unchanged, an op that refused did not run, and the primitive
+   heuristic already names it correctly for a box target; not a gap, a
+   documented boundary. cargo 232/228 (4 new, 0 regressions), parity 68/68,
+   mesh 68/68, STEP 60/8, kernel JS 36/36 -- all unchanged from baseline,
+   confirming the geometry is byte-for-byte identical and only naming
+   metadata changed.
 
 ~~See also the seam-edge entry below. It blocks item 1 on boolean results.~~
 The seam-edge entry below was **RESOLVED by W0 (2026-09-15)**
