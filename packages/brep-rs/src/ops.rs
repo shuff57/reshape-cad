@@ -4385,6 +4385,45 @@ fn fully_overlapping_bores_cut_one_bore_exact() {
 /// The Y1 bench final: plate + pocket + 3 bores + leg join. The void-scan
 /// fix (4-direction beside-sampling) and the coplanar-face rescue route
 /// (the partner's own wires as the footprint) make the whole sequence
+
+    /// WHY a bore through a rounded box refuses (2026-09-28, the studio visual
+    /// QA pass). `fillet_box` builds 6 planes + 12 cylindrical edge bands + 8
+    /// SPHERICAL corner patches, and `ops::process_face`'s sphere arm
+    /// (ops.rs) accepts a tool made only of PLANES -- the one pinned case is a
+    /// centered square tube along an equatorial axis. A cylindrical drill is
+    /// not a plane, so the arm's `_ => return None` fires on the first corner
+    /// patch and the whole boolean refuses. This test pins BOTH halves of that
+    /// sentence: the face composition that creates the sphere, and the refusal
+    /// itself, so the pair cannot drift apart silently.
+    #[test]
+    fn why_bore_through_rounded_box_refuses() {
+        let rounded = crate::build::fillet_box(30.0, 20.0, 10.0, 5.0, [0.0, 0.0, 0.0]);
+        let (mut n_plane, mut n_cyl, mut n_sphere) = (0, 0, 0);
+        for f in rounded.faces() {
+            match f.borrow().surface {
+                Surface::Plane(_) => n_plane += 1,
+                Surface::Cylinder(_) => n_cyl += 1,
+                Surface::Sphere(_) => n_sphere += 1,
+                _ => {}
+            }
+        }
+        assert_eq!((n_plane, n_cyl, n_sphere), (6, 12, 8), "rounded box composition");
+        assert_eq!(rounded.faces().len(), 26, "6 + 12 + 8");
+
+        let drill = crate::build::cylinder_solid([0.0, 0.0, 0.0], 6.0, 24.0, [0.0, 0.0, 1.0]);
+        assert!(
+            crate::ops::boolean("subtract", &rounded, &drill).is_none(),
+            "a cylindrical tool through a rounded box must refuse, not return a wrong solid"
+        );
+
+        // Control: the SAME drill through a plain box builds, so the sphere
+        // corners are the cause and not the drill size or the through-depth.
+        let plain = crate::build::box_solid([60.0, 40.0, 20.0], [0.0, 0.0, 0.0], None);
+        assert!(
+            crate::ops::boolean("subtract", &plain, &drill).is_some(),
+            "the same drill through a plain box must still build"
+        );
+    }
 /// build exactly. Closed form 48000 + 24000 - 3000 - 848.23.
 #[test]
 fn y1_bench_final_exact() {
