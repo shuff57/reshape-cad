@@ -3526,9 +3526,25 @@ try {
       const activeEngine: EngineAdapter = engine;
       const buildMs = performance.now() - t0;
 
-      const shapes = topLevel(doc)
-        .map((f) => ({ id: f.id, kind: f.kind, shape: built.shapes.get(f.id) }))
+      const pick = (f: Feature) => ({ id: f.id, kind: f.kind, shape: built.shapes.get(f.id) });
+      const isBuilt = (f: Feature) => Boolean(built.shapes.get(f.id));
+      let shapes = topLevel(doc)
+        .map(pick)
         .filter((s): s is { id: string; kind: Feature['kind']; shape: any } => Boolean(s.shape));
+      if (shapes.length === 0) {
+        // A REFUSED top-level feature empties the top of the tree, but the
+        // shape it was cutting still built. "shown without it" means the part
+        // stays on screen with the feature called out -- not an empty scene
+        // and no sentence, which is what a hole through a rounded box did
+        // before this: brep-rs refuses it honestly, and the refusal was
+        // thrown away with the throw below, so the student got a blank
+        // viewport. Fall back to the NEWEST feature that did build, which is
+        // the part exactly as it stood before the refused one ran.
+        const fallback = [...doc.features].reverse().find(isBuilt);
+        if (fallback) {
+          shapes = [pick(fallback)];
+        }
+      }
       if (shapes.length === 0) {
         // AN EMPTY DOCUMENT IS NOT A FAILURE -- same distinction
         // BrepViewport.tsx draws, for the same reason: /sandbox/ opens on
@@ -3592,6 +3608,13 @@ try {
           onMeshRef.current?.(null);
           return;
         }
+        // Nothing built at all. Report the refusals first: they are the
+        // reason, and the catch below would otherwise show only this
+        // generic sentence and drop the kernel's own words on the floor.
+        onStatsRef.current?.({
+          buildMs: round(buildMs), meshMs: 0, drawMs: 0, triangles: 0,
+          refusals: built.refusals,
+        });
         throw new Error('The document built without error, but nothing came out as a top-level shape.');
       }
 
@@ -4186,8 +4209,15 @@ const overlayStyle: React.CSSProperties = {
   background: COLORS.bg, pointerEvents: 'none',
 };
 
+// TOP-left, not the bottom strip. It used to sit at `bottom: 12, left: 12,
+// right: 12` -- full width -- while the Faces/Edges/Vertices/Bodies filter
+// chips live at `bottom: 48` (filterStripStyle), so the chips painted straight
+// over the middle of the sentence and the student read a truncated fragment
+// of the most important message the app can print. The top band is free
+// in-studio (see topRightStackStyle's note); `maxWidth` keeps the box clear
+// of the right-aligned badge stack that ribbon-less hosts still draw there.
 const errorPanelStyle: React.CSSProperties = {
-  position: 'absolute', left: 12, right: 12, bottom: 12, padding: '10px 14px',
+  position: 'absolute', left: 12, top: 12, right: 12, maxWidth: 560, padding: '10px 14px',
   background: COLORS.panel, border: `1px solid ${COLORS.line}`, borderRadius: 6,
   font: '13px ui-monospace, Menlo, Consolas, monospace', pointerEvents: 'none',
 };
