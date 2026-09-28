@@ -73,6 +73,11 @@ fn curve_kind(name: &str) -> String {
     format!("brep-rs cannot import {what} edge from STEP yet")
 }
 
+fn trimmed_circle_not_yet() -> String {
+    "brep-rs can only import a full circular edge from STEP yet, not one trimmed to part of a circle"
+        .to_string()
+}
+
 fn degenerate_pole() -> String {
     "brep-rs cannot import a face bounded by a degenerate pole from STEP yet".to_string()
 }
@@ -350,6 +355,27 @@ fn edge_of(
             a: va.borrow().point,
             b: vb.borrow().point,
         },
+        // A full circular edge (both vertices are the SAME `VERTEX_POINT`,
+        // e.g. a round hole's rim) is exactly representable: `segs_of`
+        // already turns it into a `Seg::Arc` with a==b for
+        // `planar_measure`'s Green's-theorem area, the same path a bore's
+        // own floor wire takes. An edge TRIMMED to part of a circle (two
+        // distinct vertices) needs the curve's own parameter direction to
+        // know which of the two arcs was kept -- this slice does not read
+        // that, so it refuses honestly rather than guessing one.
+        "CIRCLE" if Rc::ptr_eq(&va, &vb) => {
+            let pl_id = as_ref_id(basis.param(1))
+                .ok_or_else(|| malformed("a circle placement", geom))?;
+            let radius = as_num(basis.param(2))
+                .ok_or_else(|| malformed("a circle radius", geom))?;
+            let pl = placement(g, pl_id)?;
+            Curve::Circle {
+                center: pl.origin,
+                radius,
+                normal: pl.axis,
+            }
+        }
+        "CIRCLE" => return Err(trimmed_circle_not_yet()),
         other => return Err(curve_kind(other)),
     };
     let edge = topo::edge(va, vb, true, curve);
@@ -757,11 +783,71 @@ mod tests {
     }
 
     #[test]
-    fn rule5_circular_edge_refuses_for_now() {
-        // An honest not-yet. A circular edge is exactly representable, but
-        // every one in the corpus belongs to a cylindrical face, so it gets
-        // verified in the slice that adds cylinders instead of guessed at here.
-        assert_refuses(&box_step().replacen("LINE(", "CIRCLE(", 1), "circular");
+    fn rule5_full_circular_edge_imports_exactly() {
+        // A full circle (both vertices are the SAME `VERTEX_POINT`, exactly
+        // how the kernel's own bore floors/caps are always written) is
+        // exactly representable: `segs_of` turns it into the same `Seg::Arc`
+        // a bore's own wire already uses for Green's-theorem area.
+        let text = "ISO-10303-21;\nHEADER;\nENDSEC;\nDATA;\n\
+#1 = CARTESIAN_POINT('',(0.0,0.0,0.0));\n\
+#2 = DIRECTION('',(0.0,0.0,1.0));\n\
+#3 = DIRECTION('',(1.0,0.0,0.0));\n\
+#4 = AXIS2_PLACEMENT_3D('',#1,#2,#3);\n\
+#5 = PLANE('',#4);\n\
+#6 = CIRCLE('',#4,5.0);\n\
+#7 = CARTESIAN_POINT('',(5.0,0.0,0.0));\n\
+#8 = VERTEX_POINT('',#7);\n\
+#9 = EDGE_CURVE('',#8,#8,#6,.T.);\n\
+#10 = ORIENTED_EDGE('',*,*,#9,.T.);\n\
+#11 = EDGE_LOOP('',(#10));\n\
+#12 = FACE_OUTER_BOUND('',#11,.T.);\n\
+#13 = ADVANCED_FACE('',(#12),#5,.T.);\n\
+ENDSEC;\nEND-ISO-10303-21;\n";
+        let g = parse_step(text).expect("must parse");
+        let mut verts = HashMap::new();
+        let mut edges = HashMap::new();
+        let mut uses_of = HashMap::new();
+        let face = build_face(&g, 13, &mut verts, &mut edges, &mut uses_of)
+            .expect("a full-circle planar face must import");
+        let (area, centroid) = build::face_area_centroid(&face.borrow());
+        let want = std::f64::consts::PI * 25.0;
+        assert!((area - want).abs() <= 1e-9 * want, "area {area} vs {want}");
+        for i in 0..3 {
+            assert!(centroid[i].abs() <= 1e-9, "centroid[{i}] = {}", centroid[i]);
+        }
+    }
+
+    #[test]
+    fn rule5_trimmed_circular_edge_refuses_for_now() {
+        // Two DIFFERENT vertices on the same circle: which of the two arcs
+        // between them was kept needs the curve's own parameter direction,
+        // which this slice does not read -- refuses rather than guessing.
+        let text = "ISO-10303-21;\nHEADER;\nENDSEC;\nDATA;\n\
+#1 = CARTESIAN_POINT('',(0.0,0.0,0.0));\n\
+#2 = DIRECTION('',(0.0,0.0,1.0));\n\
+#3 = DIRECTION('',(1.0,0.0,0.0));\n\
+#4 = AXIS2_PLACEMENT_3D('',#1,#2,#3);\n\
+#5 = PLANE('',#4);\n\
+#6 = CIRCLE('',#4,5.0);\n\
+#7 = CARTESIAN_POINT('',(5.0,0.0,0.0));\n\
+#8 = VERTEX_POINT('',#7);\n\
+#9 = CARTESIAN_POINT('',(-5.0,0.0,0.0));\n\
+#10 = VERTEX_POINT('',#9);\n\
+#11 = EDGE_CURVE('',#8,#10,#6,.T.);\n\
+#12 = ORIENTED_EDGE('',*,*,#11,.T.);\n\
+#13 = EDGE_LOOP('',(#12));\n\
+#14 = FACE_OUTER_BOUND('',#13,.T.);\n\
+#15 = ADVANCED_FACE('',(#14),#5,.T.);\n\
+ENDSEC;\nEND-ISO-10303-21;\n";
+        let g = parse_step(text).expect("must parse");
+        let mut verts = HashMap::new();
+        let mut edges = HashMap::new();
+        let mut uses_of = HashMap::new();
+        let err = match build_face(&g, 15, &mut verts, &mut edges, &mut uses_of) {
+            Err(e) => e,
+            Ok(_) => panic!("a trimmed circular edge must refuse"),
+        };
+        assert!(err.contains("circular"), "refusal: {err}");
     }
 
     #[test]

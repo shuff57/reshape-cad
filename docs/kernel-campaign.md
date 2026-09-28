@@ -487,6 +487,32 @@ volume instead of subtracting. Assembly placements (3 files).
 exits 1 listing the 21 remaining: that is deliberate, it is an honest progress
 meter and goes green only when import is finished.
 
+**Narrowed 2026-09-28: full circular edges on a PLANAR face now import.**
+`edge_of` (`step_in.rs`) handled only `LINE` before; a STEP `CIRCLE` curve
+whose two edge vertices are the SAME `VERTEX_POINT` (a full circle -- exactly
+how a round hole's rim, or this kernel's own bore floors, are always written)
+now builds a `Curve::Circle` and reuses `segs_of`'s existing `Seg::Arc`
+conversion, the same Green's-theorem area path a bore's floor wire already
+takes. An edge trimmed to PART of a circle (two distinct vertices) still
+refuses by name -- which of the two arcs was kept needs the curve's own
+parameter direction, not read here, so it is a guess rather than a fact and
+stays out. This does NOT touch cylindrical/conical/spherical/toroidal
+SURFACES at all (`build_face` still refuses any non-`PLANE` surface before an
+edge is ever read) -- it only widens what a PLANAR face's boundary can be
+made of. Two native tests hand-construct minimal STEP text (parsed, not
+round-tripped through our own writer, so the two vertices genuinely differ in
+the refusal case) and call `build_face` directly: a full circle radius 5
+measures exactly `pi*25` with centroid at its own center (1e-9), and the
+trimmed case refuses naming "circular". cargo 236/236 (was 235: +2 new, -1
+retired blind-rename test that a real CIRCLE parse now makes obsolete),
+parity 68/68, mesh 68/68, STEP 60/8 -- all unchanged, confirming this is
+additive only. The old `/tmp/opencode/occt-corpus.mjs` +
+`step-import-parity.mjs` scratch harness this section's numbers (23/38, 18/10/3
+files) were measured against no longer exists (ephemeral `/tmp` scratch, never
+committed) -- cross-kernel re-verification of the 18 cylindrical-face files
+against real OCCT-authored STEP needs that harness rebuilt before the
+cylindrical slice itself is attempted.
+
 **Fixture request for the lead:** none. Like W9a this needs a GATE rather than a
 fixture -- promoting `step-import-parity.mjs` alongside `brep-step-gate.mjs`
 once the cylinder slice lands would close both halves of §3 under one roof.
