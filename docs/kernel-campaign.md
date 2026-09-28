@@ -65,6 +65,36 @@ two edges on a boolean L-bracket, whose closed form is the box's minus both
 corner removals. Every slice keeps parity 68/68, mesh 68/68, STEP 60/8 and
 cargo green — the gates are the floor, not the target.
 
+**FALSIFIED 2026-09-28, same day — the cheap route does not exist here.** The
+leading idea above (fillet = subtract the corner prism) was built and measured
+before being abandoned, and the result is worth more than the code was:
+
+- The corner prism itself is EASY and exact. Cross-section perpendicular to the
+  edge, the removed corner is the curvilinear triangle bounded by the two faces'
+  own segments and the blend arc; `extrude_profile` with a `ProfileSeg::Arc`
+  builds it at exactly `(r^2 - pi*r^2/4) * length` (137.3451754256331 for r=4,
+  L=40) with the right bbox. Two traps cost real time and are worth writing
+  down: the arc centre sits at distance r from the FACES, not from their inward
+  offsets ((12,2) is 8 from z=10, not 4 — the correct centre is (16,6)), and the
+  (u, v, sweep) frame must be RIGHT-handed or `ensure_outward` mirrors the solid
+  and you get a plausible wrong answer rather than an error.
+- The BOOLEAN then refuses, and it is not a bug to fix. **A fillet tool is
+  tangent to the very faces it blends** — the arc touches z=10 along exactly one
+  line, so the tool's cross-section there has measure zero, and
+  `cyl_parallel_region` returns empty for tangency by design. Overshooting the
+  tool past the solid to make the caps transverse does not help (measured); the
+  tangency is intrinsic to a fillet, not an accident of the tool's extent.
+- So `fillet = subtract(corner_prism)` cannot work until the boolean itself is
+  tangent-aware — which is SPEC §4.5 DEPARTURE 3's named hard case ("tangent
+  faces are not yet supported" upstream in truck too) and is a slice in its own
+  right, arguably part of the same coplanar/tangent work W5 needs.
+
+**Consequence for the plan:** Slice A must be the real surgery after all — build
+the offset faces and the blend band directly and re-trim the neighbours, rather
+than delegating to the boolean. That is more code than the subtraction route and
+is the honest cost. The arithmetic above (offset by r, tangent points, blend
+centre) is reusable as written; only the ASSEMBLY has to be new.
+
 **Out of scope for Slice A**, named so it is not silently forgotten: edges
 between curved faces (Slice C), filleting/chamfering a curved EDGE, and
 non-convex (concave) edges. Those need the general face-offsetting that W3
