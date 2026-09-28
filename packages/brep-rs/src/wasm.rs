@@ -2997,16 +2997,106 @@ mod tests {
         assert!(ops::check_watertight(&m), "rim chamfer mesh must be watertight");
     }
 
-    /// SPEC-brep-fillet.md refusal: a non-box target refuses rather than
-    /// returning a wrong solid.
+    /// W2 remainder: a ROTATED box's edge now rounds too -- the profile is
+    /// built in the box's own orthonormal frame (`box_local_frame`), so the
+    /// removal is rotation-invariant: 32000 - (16 - 4pi)*40 = 31862.654825,
+    /// 7 faces (5 walls + 2 caps). No bbox assert: the box is turned.
     #[test]
-    fn fillet_non_box_refuses() {
+    fn fillet_rotated_box_volume_and_faces() {
         let doc = json!({
             "features": [
                 { "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0], "rotate": [10.0, 0.0, 30.0] },
                 {
-                    "id": "r1", "kind": "fillet", "target": "b1", "size": 2.0, "style": "fillet",
+                    "id": "r1", "kind": "fillet", "target": "b1", "size": 4.0, "style": "fillet",
                     "edge": between_edge("+z|+x")
+                }
+            ]
+        });
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "refusals: {refusals:?}");
+        let solid = hist.shapes.get("r1").expect("rotated fillet must build");
+        let vol = build::solid_volume(solid);
+        let want = 32000.0 - (16.0 - 4.0 * std::f64::consts::PI) * 40.0;
+        assert!((vol - want).abs() <= 1e-6 * want, "volume {vol} vs {want}");
+        assert_eq!(solid.faces().len(), 7, "5 walls + 2 caps");
+        let m = crate::mesh::mesh_solid(solid, 0.05).expect("rotated fillet meshes");
+        assert!(ops::check_watertight(&m), "rotated fillet mesh must be watertight");
+    }
+
+    /// The same rotated fillet on a box that is also OFF-CENTRE (rotate
+    /// [0,0,30], center [5,-3,2]): the closed form is unchanged, which is
+    /// what catches an origin/axis mixup in the local-frame path.
+    #[test]
+    fn fillet_rotated_box_off_center_volume_and_faces() {
+        let doc = json!({
+            "features": [
+                { "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0], "center": [5.0, -3.0, 2.0], "rotate": [0.0, 0.0, 30.0] },
+                {
+                    "id": "r1", "kind": "fillet", "target": "b1", "size": 4.0, "style": "fillet",
+                    "edge": between_edge("+z|+x")
+                }
+            ]
+        });
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "refusals: {refusals:?}");
+        let solid = hist.shapes.get("r1").expect("off-centre rotated fillet must build");
+        let vol = build::solid_volume(solid);
+        let want = 32000.0 - (16.0 - 4.0 * std::f64::consts::PI) * 40.0;
+        assert!((vol - want).abs() <= 1e-6 * want, "volume {vol} vs {want}");
+        assert_eq!(solid.faces().len(), 7, "5 walls + 2 caps");
+    }
+
+    /// The rotated box, CHAMFER style, on the +z|+y edge (a left-handed
+    /// local frame): 32000 - 8*40 = 31680, 7 faces, matching the unrotated
+    /// `fillet_chamfer_one_edge_volume_and_faces` pin.
+    #[test]
+    fn fillet_rotated_box_chamfer_volume_and_faces() {
+        let doc = json!({
+            "features": [
+                { "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0], "rotate": [10.0, 0.0, 30.0] },
+                {
+                    "id": "r1", "kind": "fillet", "target": "b1", "size": 4.0, "style": "chamfer",
+                    "edge": between_edge("+z|+y")
+                }
+            ]
+        });
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "refusals: {refusals:?}");
+        let solid = hist.shapes.get("r1").expect("rotated chamfer must build");
+        let vol = build::solid_volume(solid);
+        assert!((vol - 31680.0).abs() <= 1e-6 * 31680.0, "volume {vol}");
+        assert_eq!(solid.faces().len(), 7);
+    }
+
+    /// SPEC-brep-fillet.md refusal: a genuinely non-box solid (a box with a
+    /// bore) still refuses rather than returning a wrong solid -- the new
+    /// rotated-box path must not swallow it.
+    #[test]
+    fn fillet_non_box_refuses() {
+        let base = json!({
+            "features": [
+                { "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0], "center": [0.0, 0.0, 0.0] },
+                { "id": "c1", "kind": "cylinder", "radius": 8.0, "height": 40.0, "center": [0.0, 0.0, 0.0] },
+                { "id": "op1", "kind": "combine", "op": "subtract", "targets": ["b1", "c1"] }
+            ]
+        });
+        let (hist, refusals) = build_doc(&base);
+        assert!(refusals.is_empty(), "refusals: {refusals:?}");
+        let solid = hist.shapes.get("op1").expect("boolean must build");
+        let base_vol = build::solid_volume(solid);
+        let base_json = base.to_string();
+        let edge_name = (0..solid.edges().len())
+            .map(|i| name_edge(&base_json, "op1", i))
+            .find(|t| t != "null")
+            .expect("the boolean result has a nameable edge");
+        let doc = json!({
+            "features": [
+                { "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0], "center": [0.0, 0.0, 0.0] },
+                { "id": "c1", "kind": "cylinder", "radius": 8.0, "height": 40.0, "center": [0.0, 0.0, 0.0] },
+                { "id": "op1", "kind": "combine", "op": "subtract", "targets": ["b1", "c1"] },
+                {
+                    "id": "r1", "kind": "fillet", "target": "op1", "size": 2.0, "style": "fillet",
+                    "edge": serde_json::from_str::<Value>(&edge_name).expect("edge name JSON")
                 }
             ]
         });
@@ -3014,7 +3104,7 @@ mod tests {
         let text = refusals.get("r1").and_then(|v| v.as_str()).unwrap_or_default();
         assert!(text.contains("can only round an edge of a box yet"), "refusal: {text}");
         let solid = hist.shapes.get("r1").expect("target kept");
-        assert!((build::solid_volume(solid) - 32000.0).abs() < 1e-6, "unchanged box");
+        assert!((build::solid_volume(solid) - base_vol).abs() < 1e-6, "unchanged boolean result");
     }
 
     /// W1a: `name_edge` names a box edge as `between` its two adjacent
@@ -4170,6 +4260,95 @@ fn box_extent(src: &TSolid) -> Option<crate::math::Aabb> {
     Some(bb)
 }
 
+/// Like `box_extent`, but returns the box's own orthonormal frame instead of
+/// assuming it lines up with world axes -- works for a `rotate`d box too.
+/// (center, half-extent along each local axis, the 3 orthonormal local axis
+/// unit vectors). Only `build_fillet` uses this; `box_extent`/`face_axis`
+/// (world-axis-only) stay exactly as they are for `draft`.
+fn box_local_frame(src: &TSolid) -> Option<(Vec3, [f64; 3], [Vec3; 3])> {
+    let faces = src.faces();
+    if faces.len() != 6 {
+        return None;
+    }
+    // Each face must be planar; collect (origin, unit normal).
+    let mut planes: Vec<(Vec3, Vec3)> = Vec::with_capacity(6);
+    for f in &faces {
+        match f.borrow().surface {
+            Surface::Plane(ref p) => planes.push((p.origin, crate::math::normalize(p.n))),
+            _ => return None,
+        }
+    }
+    // Pair each face with the other whose normal is antiparallel (a box's
+    // opposite faces). Greedy pairing over 6 elements; None if any face has
+    // no antiparallel partner.
+    let mut used = [false; 6];
+    let mut axes: Vec<Vec3> = Vec::with_capacity(3);
+    let mut lo: Vec<f64> = Vec::with_capacity(3);
+    let mut hi: Vec<f64> = Vec::with_capacity(3);
+    for i in 0..6 {
+        if used[i] {
+            continue;
+        }
+        let (oi, ni) = planes[i];
+        let mut partner = None;
+        for j in (i + 1)..6 {
+            if used[j] {
+                continue;
+            }
+            let (_, nj) = planes[j];
+            if (crate::math::dot(ni, nj) + 1.0).abs() < 1e-7 {
+                partner = Some(j);
+                break;
+            }
+        }
+        let Some(j) = partner else { return None };
+        used[i] = true;
+        used[j] = true;
+        let (oj, _) = planes[j];
+        // ni is this pair's "+" axis direction (face i is the "hi" side).
+        let hi_val = crate::math::dot(oi, ni);
+        let lo_val = crate::math::dot(oj, ni);
+        if hi_val - lo_val <= 1e-9 {
+            return None;
+        }
+        axes.push(ni);
+        hi.push(hi_val);
+        lo.push(lo_val);
+    }
+    if axes.len() != 3 {
+        return None;
+    }
+    // The 3 axes must be mutually orthogonal (a true rectangular box, not
+    // some other 6-planar-face hexahedron).
+    for a in 0..3 {
+        for b in (a + 1)..3 {
+            if crate::math::dot(axes[a], axes[b]).abs() > 1e-6 {
+                return None;
+            }
+        }
+    }
+    let half = [
+        (hi[0] - lo[0]) / 2.0,
+        (hi[1] - lo[1]) / 2.0,
+        (hi[2] - lo[2]) / 2.0,
+    ];
+    let center = add(
+        add(
+            scale(axes[0], (hi[0] + lo[0]) / 2.0),
+            scale(axes[1], (hi[1] + lo[1]) / 2.0),
+        ),
+        scale(axes[2], (hi[2] + lo[2]) / 2.0),
+    );
+    // Volume sanity check (catches a non-rectangular 6-planar-face solid
+    // that still happened to pair up and stay orthogonal by coincidence).
+    let vol = build::solid_volume(src);
+    let bv = 8.0 * half[0] * half[1] * half[2];
+    if (vol - bv).abs() > 1e-6 * bv.max(1.0) {
+        return None;
+    }
+    Some((center, half, [axes[0], axes[1], axes[2]]))
+}
+
 /// Which world axis a planar face's normal is along, and whether it points to
 /// the + (1) or - (0) side. None if the face is not an axis-aligned plane.
 fn face_axis(face: &build::TFace) -> Option<(usize, usize)> {
@@ -4184,6 +4363,27 @@ fn face_axis(face: &build::TFace) -> Option<(usize, usize)> {
             && p.n[(i + 2) % 3].abs() < 1e-7
         {
             Some((i, if p.n[i] > 0.0 { 1 } else { 0 }))
+        } else {
+            None
+        }
+    })
+}
+
+/// Which of `axes` a face's planar normal matches (parallel or antiparallel),
+/// and its +(1)/-(0) side -- the `box_local_frame`-relative analog of
+/// `face_axis`.
+fn face_local_axis(face: &build::TFace, axes: &[Vec3; 3]) -> Option<(usize, usize)> {
+    let b = face.borrow();
+    let n = match b.surface {
+        Surface::Plane(ref p) => crate::math::normalize(p.n),
+        _ => return None,
+    };
+    (0..3).find_map(|i| {
+        let d = crate::math::dot(n, axes[i]);
+        if d > 1.0 - 1e-7 {
+            Some((i, 1))
+        } else if d < -1.0 + 1e-7 {
+            Some((i, 0))
         } else {
             None
         }
@@ -4316,6 +4516,82 @@ fn chamfer_box(hx: f64, hy: f64, hz: f64, d: f64, center: Vec3) -> TSolid {
     build::polyhedron_solid(&points, &faces)
 }
 
+/// The box-corner fillet/chamfer profile in local (u,v): `lo_u..hi_u` x
+/// `lo_v..hi_v` is the face rectangle in this (u,v) plane, the corner at
+/// `(s1==1?hi_u:lo_u, s2==1?hi_v:lo_v)` is replaced by the round/chamfer.
+/// Shared by the axis-aligned and rotated-box fillet paths. None when the
+/// named corner is not one of the rectangle's four (a caller's refusal).
+fn fillet_box_profile(
+    lo_u: f64,
+    hi_u: f64,
+    lo_v: f64,
+    hi_v: f64,
+    s1: usize,
+    s2: usize,
+    size: f64,
+    round: bool,
+) -> Option<Vec<build::ProfileSeg>> {
+    // The treated corner is at the extremes the two faces name.
+    let q = [
+        if s1 == 1 { hi_u } else { lo_u },
+        if s2 == 1 { hi_v } else { lo_v },
+    ];
+    let d = [
+        if s1 == 1 { -1.0 } else { 1.0 },
+        if s2 == 1 { -1.0 } else { 1.0 },
+    ];
+    // The loop runs rect[qi-1] -> pin -> pout -> rect[qi+1] in CCW order, so pin
+    // lies toward the corner's previous neighbour and pout toward its next.
+    let pin = [q[0], q[1] + d[1] * size];
+    let pout = [q[0] + d[0] * size, q[1]];
+    // The rectangle's four corners in CCW (u, v) order.
+    let rect = [
+        [lo_u, lo_v],
+        [hi_u, lo_v],
+        [hi_u, hi_v],
+        [lo_u, hi_v],
+    ];
+    let qi = (0..4)
+        .find(|i| (rect[*i][0] - q[0]).abs() < 1e-9 && (rect[*i][1] - q[1]).abs() < 1e-9)?;
+    // Replace the named corner with its two trim points, keeping the loop order.
+    let mut pts: Vec<[f64; 2]> = Vec::with_capacity(5);
+    for (i, p) in rect.iter().enumerate() {
+        if i == qi {
+            pts.push(pin);
+            pts.push(pout);
+        } else {
+            pts.push(*p);
+        }
+    }
+    let mut segs: Vec<build::ProfileSeg> = Vec::with_capacity(pts.len());
+    for i in 0..pts.len() {
+        let a = pts[i];
+        let b = pts[(i + 1) % pts.len()];
+        let treated = (a[0] - pin[0]).abs() < 1e-9
+            && (a[1] - pin[1]).abs() < 1e-9
+            && (b[0] - pout[0]).abs() < 1e-9
+            && (b[1] - pout[1]).abs() < 1e-9;
+        if treated && round {
+            let centre = [q[0] + d[0] * size, q[1] + d[1] * size];
+            let a0 = (pin[1] - centre[1]).atan2(pin[0] - centre[0]);
+            let a1 = (pout[1] - centre[1]).atan2(pout[0] - centre[0]);
+            let mut sw = a1 - a0;
+            while sw > std::f64::consts::PI {
+                sw -= std::f64::consts::TAU;
+            }
+            while sw < -std::f64::consts::PI {
+                sw += std::f64::consts::TAU;
+            }
+            segs.push(build::ProfileSeg::Arc { centre, radius: size, start: a0, sweep: sw });
+        } else {
+            // A chamfer's treated edge is the straight pin->pout bevel; every
+            // other edge is a plain rectangle side.
+            segs.push(build::ProfileSeg::Line { a, b });
+        }
+    }
+    Some(segs)
+}
+
 /// Build the fillet/chamfer: a box edge rounded or chamfered is the extrusion
 /// of the box cross-section perpendicular to that edge, with the corner named
 /// by the two faces replaced by an arc (round) or a straight bevel (chamfer).
@@ -4367,90 +4643,57 @@ fn build_fillet(
             }
         }
     }
-    let bb = box_extent(src).ok_or(FilletErr::NoBox)?;
-    let (ax1, s1) = face_axis(&fa).ok_or(FilletErr::NoBox)?;
-    let (ax2, s2) = face_axis(&fb).ok_or(FilletErr::NoBox)?;
+    // Axis-aligned box: the existing world-axis path, unchanged.
+    if let Some(bb) = box_extent(src) {
+        let (ax1, s1) = face_axis(&fa).ok_or(FilletErr::NoBox)?;
+        let (ax2, s2) = face_axis(&fb).ok_or(FilletErr::NoBox)?;
+        if ax1 == ax2 {
+            return Err(FilletErr::NoBox);
+        }
+        let (uax, vax) = (ax1, ax2);
+        let eax = (0..3).find(|i| *i != uax && *i != vax).ok_or(FilletErr::NoBox)?;
+        let width = |i: usize| bb.hi[i] - bb.lo[i];
+        // Refuse when the size does not fit: the shorter adjacent-face width
+        // measured perpendicular to the edge is the smaller cross-section extent.
+        if size <= 0.0 || size >= width(uax).min(width(vax)) - 1e-12 {
+            return Err(FilletErr::TooBig);
+        }
+        let segs = fillet_box_profile(bb.lo[uax], bb.hi[uax], bb.lo[vax], bb.hi[vax], s1, s2, size, round)
+            .ok_or(FilletErr::NoBox)?;
+        let mut origin = [0.0, 0.0, 0.0];
+        origin[eax] = bb.lo[eax];
+        let mut u_axis = [0.0, 0.0, 0.0];
+        u_axis[uax] = 1.0;
+        let mut v_axis = [0.0, 0.0, 0.0];
+        v_axis[vax] = 1.0;
+        let mut sweep = [0.0, 0.0, 0.0];
+        sweep[eax] = bb.hi[eax] - bb.lo[eax];
+        let solid = match build::extrude_profile(&segs, origin, u_axis, v_axis, sweep) {
+            Ok(s) => s,
+            Err(_) => return Err(FilletErr::NoBox),
+        };
+        return Ok(build::ensure_outward(&solid));
+    }
+    // Rotated box: the same profile in the box's OWN orthonormal frame.
+    let (center, half, axes) = box_local_frame(src).ok_or(FilletErr::NoBox)?;
+    let (ax1, s1) = face_local_axis(&fa, &axes).ok_or(FilletErr::NoBox)?;
+    let (ax2, s2) = face_local_axis(&fb, &axes).ok_or(FilletErr::NoBox)?;
     if ax1 == ax2 {
         return Err(FilletErr::NoBox);
     }
     let (uax, vax) = (ax1, ax2);
     let eax = (0..3).find(|i| *i != uax && *i != vax).ok_or(FilletErr::NoBox)?;
-    let width = |i: usize| bb.hi[i] - bb.lo[i];
-    // Refuse when the size does not fit: the shorter adjacent-face width
-    // measured perpendicular to the edge is the smaller cross-section extent.
-    if size <= 0.0 || size >= width(uax).min(width(vax)) - 1e-12 {
+    if size <= 0.0 || size >= (2.0 * half[uax]).min(2.0 * half[vax]) - 1e-12 {
         return Err(FilletErr::TooBig);
     }
-    // The treated corner is at the extremes the two faces name.
-    let q = [
-        if s1 == 1 { bb.hi[uax] } else { bb.lo[uax] },
-        if s2 == 1 { bb.hi[vax] } else { bb.lo[vax] },
-    ];
-    let d = [
-        if s1 == 1 { -1.0 } else { 1.0 },
-        if s2 == 1 { -1.0 } else { 1.0 },
-    ];
-    // The loop runs rect[qi-1] -> pin -> pout -> rect[qi+1] in CCW order, so pin
-    // lies toward the corner's previous neighbour and pout toward its next.
-    let pin = [q[0], q[1] + d[1] * size];
-    let pout = [q[0] + d[0] * size, q[1]];
-    // The rectangle's four corners in CCW (u, v) order.
-    let (lo_u, hi_u) = (bb.lo[uax], bb.hi[uax]);
-    let (lo_v, hi_v) = (bb.lo[vax], bb.hi[vax]);
-    let rect = [
-        [lo_u, lo_v],
-        [hi_u, lo_v],
-        [hi_u, hi_v],
-        [lo_u, hi_v],
-    ];
-    let qi = (0..4)
-        .find(|i| (rect[*i][0] - q[0]).abs() < 1e-9 && (rect[*i][1] - q[1]).abs() < 1e-9)
+    let segs = fillet_box_profile(-half[uax], half[uax], -half[vax], half[vax], s1, s2, size, round)
         .ok_or(FilletErr::NoBox)?;
-    // Replace the named corner with its two trim points, keeping the loop order.
-    let mut pts: Vec<[f64; 2]> = Vec::with_capacity(5);
-    for (i, p) in rect.iter().enumerate() {
-        if i == qi {
-            pts.push(pin);
-            pts.push(pout);
-        } else {
-            pts.push(*p);
-        }
-    }
-    let mut segs: Vec<build::ProfileSeg> = Vec::with_capacity(pts.len());
-    for i in 0..pts.len() {
-        let a = pts[i];
-        let b = pts[(i + 1) % pts.len()];
-        let treated = (a[0] - pin[0]).abs() < 1e-9
-            && (a[1] - pin[1]).abs() < 1e-9
-            && (b[0] - pout[0]).abs() < 1e-9
-            && (b[1] - pout[1]).abs() < 1e-9;
-        if treated && round {
-            let centre = [q[0] + d[0] * size, q[1] + d[1] * size];
-            let a0 = (pin[1] - centre[1]).atan2(pin[0] - centre[0]);
-            let a1 = (pout[1] - centre[1]).atan2(pout[0] - centre[0]);
-            let mut sw = a1 - a0;
-            while sw > std::f64::consts::PI {
-                sw -= std::f64::consts::TAU;
-            }
-            while sw < -std::f64::consts::PI {
-                sw += std::f64::consts::TAU;
-            }
-            segs.push(build::ProfileSeg::Arc { centre, radius: size, start: a0, sweep: sw });
-        } else {
-            // A chamfer's treated edge is the straight pin->pout bevel; every
-            // other edge is a plain rectangle side.
-            segs.push(build::ProfileSeg::Line { a, b });
-        }
-    }
-    let mut origin = [0.0, 0.0, 0.0];
-    origin[eax] = bb.lo[eax];
-    let mut u_axis = [0.0, 0.0, 0.0];
-    u_axis[uax] = 1.0;
-    let mut v_axis = [0.0, 0.0, 0.0];
-    v_axis[vax] = 1.0;
-    let mut sweep = [0.0, 0.0, 0.0];
-    sweep[eax] = bb.hi[eax] - bb.lo[eax];
-    let solid = match build::extrude_profile(&segs, origin, u_axis, v_axis, sweep) {
+    // origin: the point at local coords (u=0, v=0, e=-half[eax]) -- the "low"
+    // cap's plane, center-relative on this axis, zero-shifted on u/v (their
+    // offset is carried by the profile's own point values instead).
+    let origin = add(center, scale(axes[eax], -half[eax]));
+    let sweep = scale(axes[eax], 2.0 * half[eax]);
+    let solid = match build::extrude_profile(&segs, origin, axes[uax], axes[vax], sweep) {
         Ok(s) => s,
         Err(_) => return Err(FilletErr::NoBox),
     };

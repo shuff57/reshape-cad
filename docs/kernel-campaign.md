@@ -579,9 +579,13 @@ slices bottom out here:
   SUBTRACTED void in `other`. This is the highest-severity item left, because
   SPEC §4.5 forbids the class outright.
 - **W2, fillet width** (wasm.rs:1171, :3164). Box edges and cylinder rims work
-  (round and chamfer, W11); rotated boxes and boolean results refuse. Note that
-  "multiple edges" is NOT a gap: `FilletFeature.edge` is a single `TopoName`,
-  and occt-build.ts fillets one named edge too.
+  (round and chamfer, W11); rotated boxes now work too (2026-09-27,
+  `box_local_frame`: the profile is built in the box's own orthonormal frame,
+  rotation-invariant 31862.654825 round / 31680 chamfer on 7 faces, three new
+  cargo tests; cargo 235/235, parity 68/68, mesh 68/68, STEP 60/8 unchanged).
+  Boolean results still refuse. Note that "multiple edges" is NOT a gap:
+  `FilletFeature.edge` is a single `TopoName`, and occt-build.ts fillets one
+  named edge too.
 - **W3, shell** (wasm.rs:1478, :1491). Axis-aligned boxes only, via an inner-box
   subtract. OCCT uses a general offset (`MakeThickSolidByJoin`), which needs
   real face offsetting.

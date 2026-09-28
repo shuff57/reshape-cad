@@ -72,12 +72,16 @@ Re-checked against source 2026-09-17; four of the nine have moved. The full
 current map, 3D and 2D, is the closeout section at the end of
 `docs/kernel-campaign.md` — this list is kept for the record.
 
-1. **PARTLY RESOLVED (W11, 2026-09-16).** Box round + chamfer and cylinder round
-   + chamfer are built. ~~only one straight edge of an axis-aligned box~~ Still
-   open: no fillet on boolean results or curved edges generally, a rotated box
-   is refused (`wasm.rs:3164`), and there is still no naming history. Note
-   "multiple edges" was never a gap — `FilletFeature.edge` is a single
-   `TopoName` and occt-build.ts fillets one named edge too.
+1. **PARTLY RESOLVED (W11, 2026-09-16; rotated box 2026-09-27).** Box round +
+   chamfer and cylinder round + chamfer are built. ~~only one straight edge of
+   an axis-aligned box~~ A rotated box's edge now rounds and chamfers too
+   (`box_local_frame`, wasm.rs): the profile is built in the box's own
+   orthonormal frame, so the removal is rotation-invariant — 31862.654825
+   (round) / 31680 (chamfer) on 7 faces, pinned by three cargo tests; cargo
+   235/235, parity 68/68, mesh 68/68, STEP 60/8, all unchanged. Still open: no
+   fillet on boolean results or curved edges generally, and there is still no
+   naming history. Note "multiple edges" was never a gap — `FilletFeature.edge`
+   is a single `TopoName` and occt-build.ts fillets one named edge too.
 2. `shell`: only axis-aligned boxes. OCCT uses a general offset
    (`MakeThickSolidByJoin`). **Still open verbatim.**
 3. ~~`draft`: `whole` (Body Draft) is refused.~~ **RESOLVED (W4, 2026-09-15)**
