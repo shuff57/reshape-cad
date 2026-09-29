@@ -4300,7 +4300,100 @@ fn successive_blind_bores_keep_every_floor() {
     }
 }
 
+/// SPIKE fixture 2026-09-28: the coplanar chamfer the boolean gets WRONG, and
+/// the exit criterion for the coplanar work.
+///
+/// A triangular corner prism -- two of its three sides COPLANAR with the base's own
+/// faces, the third (the bevel) transverse -- subtracted from a plain box is exact:
+/// 31680.000000 against the closed form, and with no boolean involved at all,
+/// because the box fillet path re-extrudes the cross-section. The IDENTICAL prism
+/// subtracted from a BOOLEAN RESULT is not: below, the union is exact (16000) and
+/// the prism is exact (880), yet `boolean` returns `Some` and the result measures
+/// 15546.666766666667 against a closed-form 15840 -- a silent wrong volume, which is
+/// SPEC 4.5's cardinal sin rather than a refusal.
+///
+/// Kept as a FAILING test on purpose. It is the measurable definition of done for
+/// this work: until it passes, "chamfer any edge" is true for boxes and cylinder rims
+/// and false everywhere else, and no amount of green elsewhere makes that so.
+#[test]
+fn spike_coplanar_chamfer_on_a_boolean_result_is_exact() {
+    // An L-bracket: a 40x30x10 plate under a 20x20x10 block, touching coplanarly at
+    // z = -5. The union is exact, which is what makes this a boolean-only defect.
+    let plate = build::box_solid([40.0, 30.0, 10.0], [0.0, 0.0, -10.0], None);
+    let block = build::box_solid([20.0, 20.0, 10.0], [0.0, 0.0, 0.0], None);
+    let bracket = boolean("union", &plate, &block).expect("union must build");
+    let base_vol = build::solid_volume(&bracket);
+    assert!((base_vol - 16000.0).abs() <= 1e-6 * 16000.0, "union volume {base_vol}");
+
+    // The chamfer tool for the step's top +x/+z edge (x = 10, z = 5), distance 4:
+    // a triangle in the corner, swept along y and overshot well past both ends so the
+    // caps cannot clip the cut. Two of its three sides are coplanar with the block's
+    // own +x and +z faces.
+    let d = 4.0_f64;
+    let segs = vec![
+        crate::build::ProfileSeg::Line { a: [0.0, 0.0], b: [d, 0.0] },
+        crate::build::ProfileSeg::Line { a: [d, 0.0], b: [0.0, d] },
+        crate::build::ProfileSeg::Line { a: [0.0, d], b: [0.0, 0.0] },
+    ];
+    let over = 45.0_f64;
+    let prism = build::ensure_outward(
+        &build::extrude_profile(
+            &segs,
+            [10.0, -over, 5.0],
+            [-1.0, 0.0, 0.0],
+            [0.0, 0.0, -1.0],
+            [0.0, 2.0 * over + 20.0, 0.0],
+        )
+        .expect("prism builds"),
+    );
+    let tool_vol = build::solid_volume(&prism);
+    let tool_want = 0.5 * d * d * (20.0 + 2.0 * over);
+    assert!(
+        (tool_vol - tool_want).abs() <= 1e-6 * tool_want,
+        "prism volume {tool_vol} vs {tool_want}"
+    );
+
+    let got = boolean("subtract", &bracket, &prism).expect("currently builds -- and wrongly");
+    // Closed form: the bracket less one right-triangle prism of area d^2/2 over
+    // the step's 20mm edge, i.e. 16000 - 8 * 20.
+    let want = 16000.0 - 0.5 * d * d * 20.0;
+    let vol = build::solid_volume(&got);
+    assert!(
+        (vol - want).abs() <= 1e-6 * want,
+        "chamfered volume {vol} vs closed form {want}: removed {} instead of {} (a silent wrong solid, not a refusal)",
+            base_vol - vol,
+            base_vol - want
+    );
+    // A 45-degree face must EXIST in the result. Measured on the failing run:
+    // the boolean emits the bracket's 11 faces with no bevel among them, having
+    // deleted each coplanar face's whole overlap rectangle (the 80mm strip
+    // x 6..10) rather than trimming it by the tool's 8mm triangular section --
+    // so the shell is closed and manifold, which is why the guard in `boolean`
+    // waves it through, while measuring 15546.666766666667. Volume alone
+    // catches it; the face check says WHY.
+    let bevels = got
+        .faces()
+        .iter()
+        .filter(|f| match &f.borrow().surface {
+            Surface::Plane(p) => {
+                let n = crate::math::normalize(p.n);
+                let q = std::f64::consts::FRAC_1_SQRT_2;
+                let comps: Vec<usize> = (0..3).filter(|&i| n[i].abs() > 1e-7).collect();
+                comps.len() == 2
+                    && (n[comps[0]].abs() - q).abs() < 1e-7
+                    && (n[comps[1]].abs() - q).abs() < 1e-7
+            }
+            _ => false,
+        })
+        .count();
+    assert_eq!(bevels, 1, "the chamfer's own 45-degree face must be in the result");
+    // 11 bracket faces, with the two coplanar ones trimmed in place, plus the bevel.
+    assert_eq!(got.faces().len(), 12, "result face count");
+}
+
 /// The through-bore variant (msgbox #329 proof): a THROUGH bore's wall also
+/// poisons the next blind bore's floor -- exactly one floor lost when the
+/// through cut comes first and a blind bore elsewhere second.
 /// poisons the next blind bore's floor -- exactly one floor lost when the
 /// through cut comes first and a blind bore elsewhere second.
 #[test]

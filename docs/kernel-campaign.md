@@ -147,7 +147,87 @@ Three bugs found on the way, all of which had to be found by measuring:
 - **An arc radius taken as its own chord.** The multi-cut profile's round corner used the
   distance between the two trim points, `d*sqrt(2)`, as the radius, and the loop then
   failed to close by `d*(sqrt(2) - 1)` -- a refusal, not a wrong solid, which is the one
-  way that bug could have shown up safely. — build
+  way that bug could have shown up safely.
+
+## W2a spike, 2026-09-28: what the coplanar boolean actually does wrong
+
+Scoped as a spike, so the first act was to make the defect **runnable and located**,
+not to start fixing it. Pinned as a deliberately FAILING test,
+`ops::spike_coplanar_chamfer_on_a_boolean_result_is_exact`: plate 40x30x10 unioned with
+block 20x20x10 (union exact, 16000), minus the identical triangular corner prism
+(exact, 880), expected 15840. It measures 15546.666766666667 -- removing 453.333 where
+the closed form says 160. Reproduced from scratch, matching the earlier number to the
+last digit. cargo is 241 pass / 1 fail, and the 1 is this.
+
+**Localized by dumping both face sets, not by reading and guessing.** The bracket has 11
+faces. The result also has 11 -- and they are the bracket's own:
+
+| face | bracket | result | correct |
+|---|---|---|---|
+| z=5 (block top) | 400 | **320** | 392 |
+| x=10 (block side) | 200 | **120** | 192 |
+| y=+/-10 (block sides) | 200 | 192 | 192 |
+| 45-degree bevel | -- | **absent** | 160 |
+
+So two things, and they are one bug. For each COPLANAR pair the boolean deletes the
+**entire coplanar overlap rectangle** -- x 6..10 by y -10..10, area 80 -- from the
+surviving face, instead of trimming it by the tool's true triangular section, area 8. And
+it drops the tool's transverse (bevel) face altogether, so the result contains no 45-degree
+face at all. The y=+/-10 faces losing 8 each is CORRECT and worth recording: the tool
+overshoots the block in y, so its triangle really does notch those faces.
+
+**The shell is closed and manifold.** That is the part that matters most for the contract.
+`boolean`'s own SPEC-4.5 guard (`ops.rs`, the per-edge two-use check) passes it, because the
+boundary genuinely is a closed 2-manifold -- it is just the wrong manifold. So the guard
+that exists to stop wrong solids does not catch this class, and only a measured volume
+does. Anything that trusts topology invariants instead of a number will ship this.
+
+**The architecture's limit, named.** `Region` (`ops.rs:329`) is (intersection of
+half-planes) intersected with AT MOST ONE disk -- always convex. `intersect_disk`
+(`ops.rs:352`) collapses to `empty = true` on two disks that are not nested, which is a
+silent material loss by construction. Worse, coplanar faces are not resolved as a pair at
+all: `coplanar_face_wires` (`ops.rs:1488`) returns the coplanar footprint as wires, and
+the parallel branch of `region_inside` (`ops.rs:532`) resorts to void-face sampling
+heuristics. The over-deletion measured above comes out of that path.
+
+**Why TANGENT (round fillets) cannot be expressed in this model at all, and is not a
+patch.** `cyl_parallel_region` (`ops.rs:469`) returns `Region::empty()` for a tangent
+cylinder, with the comment "Tangent: the intersection is a line of measure zero". The whole
+boolean decides keep-or-drop per face piece by testing whether a probe point has an
+interior inside the other solid. A measure-zero section has no interior to probe, so there
+is nothing to decide. Representing tangency needs limiting positions or a surface offset --
+a different representation, not a tighter special case. Coplanar is a bug; tangent is an
+architecture.
+
+**Ranked options.**
+
+1. **Make a same-side coplanar tool face contribute nothing to the region** (it bounds no
+   material on the kept side), letting the tool's transverse faces do the trimming, and
+   keep those transverse faces as the new boundary. BOUNDED: a local change to the coplanar
+   branch, and the new fixture is its pass/fail. This is the recommended first slice.
+2. Resolve coplanar pairs properly as a pair (split both faces by the intersection
+   polygon, keep the correct side of each). Correct but wider, and (1) is a strict subset of
+   it -- do (1), then judge.
+3. Replace per-face region intersection with real face-face intersection curves plus face
+   trimming and rebuilding. A REWRITE. The only thing that also reaches tangency.
+4. Per-surface-type strategy dispatch. Orthogonal to 1-3, and premature.
+
+**Exit criterion, falsifier, and cost.** Done for slice 1 when
+`spike_coplanar_chamfer_on_a_boolean_result_is_exact` passes (volume exact, exactly one
+45-degree face, 12 faces) AND the 241 currently-green tests stay green -- especially the
+bore/floor tests, which live on the very `region_inside` path being changed. It is
+falsified if the coplanar branch cannot be made to trim by the true cross-section without
+the probe logic losing its grip on the bore cases, or if the bevel face cannot be kept
+without breaking the manifold guard -- in which case slice 2 is the honest next step, and
+tangency stays out of reach for this representation. Realistic cost: slice 1 is a day, and
+it buys chamfers on boolean results. It does NOT buy general fillets, shell, or
+counterbore. Those need 3, and 3 is weeks with a real chance of regressing what is green.
+
+**Note on method.** No independent architecture review happened: the oracle subagent is
+misconfigured on this box (`anthropic/claude-opus-5` does not resolve; it wants
+`claude-opus-5-5`), so the ranking above is one engineer's judgement over its own reading
+and its own measurements. It has not been argued by anything that was not already in the
+loop, and the parts of it that matter most are the measured table, not the opinion. — build
 the offset faces and the blend band directly and re-trim the neighbours, rather
 than delegating to the boolean. That is more code than the subtraction route and
 is the honest cost. The arithmetic above (offset by r, tangent points, blend

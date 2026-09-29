@@ -373,3 +373,7 @@
 {"ts":"2026-09-29T03:55:56.286Z","kind":"release","from":"opencode","paths":["packages/brep-rs/"]}
 {"ts":"2026-09-29T03:55:56.303Z","kind":"claim","from":"claude","paths":["packages/brep-rs/"]}
 {"ts":"2026-09-29T03:56:51.091Z","kind":"release","from":"claude","paths":["packages/brep-rs/"]}
+{"ts":"2026-09-29T04:17:27.209Z","kind":"claim","from":"claude","paths":["packages/brep-rs/"]}
+{"ts":"2026-09-29T04:17:34.921Z","kind":"release","from":"claude","paths":["packages/brep-rs/"]}
+{"ts":"2026-09-29T12:10:43.756Z","kind":"claim","from":"claude","paths":["packages/brep-rs/"]}
+{"ts":"2026-09-29T12:12:53.904Z","kind":"release","from":"claude","paths":["packages/brep-rs/"]}
