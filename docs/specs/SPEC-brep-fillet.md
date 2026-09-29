@@ -61,6 +61,45 @@ corner rounded or chamfered:
   is left-handed (extrude already had a negative-sweep bug; check with a native test
   that the volume is positive).
 
+## Multi-edge: a second and later edge of the same box (2026-09-28)
+
+The studio fans a multi-edge pick out into N sequential `fillet` features, so the second
+edge arrives as a second feature aimed at the solid the first one produced. That solid is
+no longer a box, and the 6-face test above refused it -- the first multi-edge pick got one
+build and one refusal. The box path still applies here, and for the same reason it worked
+the first time: **no boolean is involved.** A box carrying straight 45-degree chamfer
+bevels is a prism along the axis its bevels share, so the cross-section is still a
+rectangle with corners already cut, and re-extruding it with one more cut is exact.
+
+**Recognising it.** Each world axis's lo/hi comes from the *axis-aligned* faces alone. A
+bevel's normal sits at 45 degrees, so it is never axis-aligned and can never be mistaken
+for a box face -- which is exactly what pairing planes by antiparallel normal (what
+`box_local_frame` does) cannot promise here, since two *opposite* bevels are antiparallel
+and would pair up as a third box axis. A bevel's size is read off its measured area,
+`d * sqrt(2) * edge_length`. The recognised solid's **measured** volume is then checked
+against the closed form `(rectangle area - sum of d^2/2) * shared edge length`; that
+comparison is the safety net, so a shape that is not what we read refuses instead of
+building.
+
+**Refusals, all honest** (SPEC 4.5): a second edge whose existing bevels run along a
+*different* axis, since the solid is then no longer a prism along any one of them and
+re-extruding would silently drop material; a corner that already carries a bevel, because
+two cuts meeting there is a corner blend, a different profile; a new cut that would overlap
+a neighbour's across a shared face; a curved face anywhere in the solid, so a round fillet
+leaves a cylinder and a later edge on that solid refuses rather than guessing. A *round*
+cut is allowed to mix with existing straight bevels (the chamfer-then-round case).
+
+**Known limit.** A *rotated* box that already carries bevels still refuses: the recogniser
+reads world-axis-aligned faces only, and the rotated path refuses outright on any solid
+that is not six faces.
+
+**A wrong solid this found, now fixed and pinned.** The profile's two trim points were
+always emitted pin-then-pout, which closes the loop only at the two *even* corners of the
+cross-section. A single chamfer at `+z/-x` built a self-intersecting bowtie -- and every
+fixture cut `+z/+x`, so nothing caught it. `fillet_one_edge_at_any_corner_is_not_a_bowtie`
+now pins all four corners at the same 31680. The one-edge and multi-edge paths share one
+profile builder (`box_profile_cuts`), so the ordering cannot drift apart again.
+
 ## The fixtures (lead-measured OCCT reference; tol for these two is `approx` = 1e-4)
 
 Base: box 40x40x20 centred at the origin, so x[-20,20] y[-20,20] z[-10,10]. The edge

@@ -120,7 +120,34 @@ face-reach scan with `f64::INFINITY` and keeping only `d > best` never updates,
 so every edge looked infinitely far away and every chamfer refused.
 
 **Consequence for the plan:** the boolean is the gate, again -- and now for
-chamfers too, not only rounds. Slice A must be the real surgery after all — build
+chamfers too, not only rounds. Slice A must be the real surgery after all
+
+**Shipped instead, 2026-09-28: multi-edge fillet/chamfer on a box, still with no
+boolean.** The studio fans a multi-edge pick into N sequential features, and the second
+one was refused purely because `box_extent`/`box_local_frame` insist on six faces. But
+the box path never calls the boolean at all -- it re-extrudes the cross-section -- and a
+box carrying 45-degree chamfer bevels is a *prism along the axis its bevels share*. So
+the second edge re-extrudes that cross-section with the cuts it already carries plus its
+own, and lands exactly: two 4mm chamfers on a 40x40x20 box measure 31360.000000 against
+the closed form (800 - 8 - 8) * 40, on 8 faces, and a chamfer followed by a round on the
+neighbouring edge measures 31040 + 160pi. Measured, not assumed, and it needed no
+boolean work at all -- which is the useful shape of that result: the W2a wall applies to
+the BOOLEAN, not to every route to a solid.
+
+Three bugs found on the way, all of which had to be found by measuring:
+
+- **A wrong solid that was already reachable.** The profile emitted its two trim points
+  pin-then-pout, which closes the loop only at the two even corners, so a single chamfer
+  at `+z/-x` built a self-intersecting bowtie. Every fixture cut `+z/+x`, so 237 green
+  tests never saw it. Now fixed and pinned at all four corners. This is the class-(2)
+  failure mode the gates cannot see, found in the one path everyone assumed was safe.
+- **A recogniser that read the low side as positive.** Storing `dot(origin, n)` for the
+  low face gives `+|lo|` when the normal points outward, so every axis collapsed to zero
+  width and the second edge refused for a reason that had nothing to do with geometry.
+- **An arc radius taken as its own chord.** The multi-cut profile's round corner used the
+  distance between the two trim points, `d*sqrt(2)`, as the radius, and the loop then
+  failed to close by `d*(sqrt(2) - 1)` -- a refusal, not a wrong solid, which is the one
+  way that bug could have shown up safely. — build
 the offset faces and the blend band directly and re-trim the neighbours, rather
 than delegating to the boolean. That is more code than the subtraction route and
 is the honest cost. The arithmetic above (offset by r, tangent points, blend

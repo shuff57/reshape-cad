@@ -366,3 +366,10 @@
 {"ts":"2026-09-28T14:52:54.230Z","kind":"claim","from":"opencode","paths":["packages/brep-rs/"]}
 {"ts":"2026-09-28T14:53:02.453Z","kind":"release","from":"opencode","paths":["packages/brep-rs/"]}
 {"ts":"2026-09-28T15:24:42.965Z","kind":"claim","from":"opencode","paths":["packages/brep-rs/"]}
+{"ts":"2026-09-28T15:56:23.645Z","kind":"release","from":"opencode","paths":["packages/brep-rs/"]}
+{"ts":"2026-09-28T16:01:53.849Z","kind":"claim","from":"opencode","paths":["packages/brep-rs/"]}
+{"ts":"2026-09-28T16:15:55.659Z","kind":"release","from":"opencode","paths":["packages/brep-rs/"]}
+{"ts":"2026-09-29T03:49:44.403Z","kind":"claim","from":"opencode","paths":["packages/brep-rs/"]}
+{"ts":"2026-09-29T03:55:56.286Z","kind":"release","from":"opencode","paths":["packages/brep-rs/"]}
+{"ts":"2026-09-29T03:55:56.303Z","kind":"claim","from":"claude","paths":["packages/brep-rs/"]}
+{"ts":"2026-09-29T03:56:51.091Z","kind":"release","from":"claude","paths":["packages/brep-rs/"]}

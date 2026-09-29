@@ -2783,12 +2783,19 @@ mod tests {
     }
 
     fn between_edge(name_of: &str) -> Value {
+        between_edge_on("b1", name_of)
+    }
+
+    /// The same, naming the faces on `feature` instead of the base box -- which a
+    /// SECOND fillet must do, since the edge it treats belongs to the solid the
+    /// first one produced.
+    fn between_edge_on(feature: &str, name_of: &str) -> Value {
         let (a, b) = name_of.split_once('|').expect("a|b");
         json!({
-            "cause": "between", "feature": "b1", "kind": "edge",
+            "cause": "between", "feature": feature, "kind": "edge",
             "of": [
-                { "cause": "primitive", "feature": "b1", "kind": "face", "part": a },
-                { "cause": "primitive", "feature": "b1", "kind": "face", "part": b },
+                { "cause": "primitive", "feature": feature, "kind": "face", "part": a },
+                { "cause": "primitive", "feature": feature, "kind": "face", "part": b },
             ]
         })
     }
@@ -2837,6 +2844,124 @@ mod tests {
         let vol = build::solid_volume(solid);
         assert!((vol - 31680.0).abs() <= 1e-6 * 31680.0, "volume {vol}");
         assert_eq!(solid.faces().len(), 7);
+    }
+
+    /// Regression, and a WRONG SOLID the one-edge path could already build: the
+    /// profile's two trim points were always emitted pin-then-pout, which closes
+    /// the loop only at the two EVEN corners of the cross-section. A single cut
+    /// at +z/-x produced a self-intersecting bowtie -- and every fixture cut
+    /// +z/+x, so nothing caught it. All four corners are pinned here, and by
+    /// symmetry every one of them must now land on the same 31680.
+    #[test]
+    fn fillet_one_edge_at_any_corner_is_not_a_bowtie() {
+        for edge in ["+z|+x", "+z|-x", "-z|+x", "-z|-x"] {
+            let doc = json!({
+                "features": [
+                    { "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0] },
+                    {
+                        "id": "r1", "kind": "fillet", "target": "b1", "size": 4.0, "style": "chamfer",
+                        "edge": between_edge(edge)
+                    }
+                ]
+            });
+            let (hist, refusals) = build_doc(&doc);
+            assert!(refusals.is_empty(), "{edge}: refusals {refusals:?}");
+            let solid = hist.shapes.get("r1").expect("must build");
+            let vol = build::solid_volume(solid);
+            assert!((vol - 31680.0).abs() <= 1e-6 * 31680.0, "{edge}: volume {vol}");
+            assert_eq!(solid.faces().len(), 7, "{edge}: faces");
+        }
+    }
+
+    /// SPEC-brep-fillet.md multi-edge: a SECOND edge of the same box now builds
+    /// instead of refusing, which is what a multi-edge pick needs. Still no
+    /// boolean -- such a solid is a prism along the axis its bevels share, so the
+    /// box path re-extrudes the cross-section with the cuts it already carries
+    /// plus this edge's own. Two 4mm chamfers on the 40x20 top cross-section of a
+    /// 40x40x20 box, swept 40 along y: (800 - 8 - 8) * 40 = 31360, on 8 faces.
+    #[test]
+    fn fillet_chamfer_two_edges_of_one_box() {
+        let doc = json!({
+            "features": [
+                { "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0] },
+                {
+                    "id": "r1", "kind": "fillet", "target": "b1", "size": 4.0, "style": "chamfer",
+                    "edge": between_edge("+z|+x")
+                },
+                {
+                    "id": "r2", "kind": "fillet", "target": "r1", "size": 4.0, "style": "chamfer",
+                    "edge": between_edge_on("r1", "+z|-x")
+                }
+            ]
+        });
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "refusals: {refusals:?}");
+        let solid = hist.shapes.get("r2").expect("second edge must build");
+        let vol = build::solid_volume(solid);
+        assert!((vol - 31360.0).abs() <= 1e-6 * 31360.0, "volume {vol}");
+        assert_eq!(solid.faces().len(), 8, "6 box faces + 2 bevels");
+    }
+
+    /// A chamfer and then a ROUND on a neighbouring edge of the same box: the
+    /// existing bevel is re-applied as a straight cut while the new corner gets an
+    /// arc. 40 * (800 - 8 - (16 - 4pi)) = 31040 + 160pi = 31542.654825, on 8
+    /// faces (the round's own cylinder replacing that corner).
+    #[test]
+    fn fillet_chamfer_then_round_another_edge_of_one_box() {
+        let doc = json!({
+            "features": [
+                { "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0] },
+                {
+                    "id": "r1", "kind": "fillet", "target": "b1", "size": 4.0, "style": "chamfer",
+                    "edge": between_edge("+z|+x")
+                },
+                {
+                    "id": "r2", "kind": "fillet", "target": "r1", "size": 4.0, "style": "fillet",
+                    "edge": between_edge_on("r1", "+z|-x")
+                }
+            ]
+        });
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "refusals: {refusals:?}");
+        let solid = hist.shapes.get("r2").expect("second edge must build");
+        let vol = build::solid_volume(solid);
+        let want = 31040.0 + 160.0 * std::f64::consts::PI;
+        assert!((want - 31542.654825).abs() < 1e-5, "closed form {want}");
+        assert!((vol - want).abs() <= 1e-6 * want, "volume {vol} vs {want}");
+        assert_eq!(solid.faces().len(), 8, "6 box faces + bevel + cylinder");
+    }
+
+    /// The honest limit, pinned: bevels on edges running along DIFFERENT axes
+    /// leave a solid that is no longer a prism along any one of them, so the
+    /// second edge refuses in words and keeps the first one's solid. A
+    /// re-extruded cross-section here would silently drop material, so refusing
+    /// is the contract (SPEC 4.5).
+    #[test]
+    fn fillet_second_edge_on_a_different_axis_refuses() {
+        let doc = json!({
+            "features": [
+                { "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0] },
+                {
+                    "id": "r1", "kind": "fillet", "target": "b1", "size": 4.0, "style": "chamfer",
+                    "edge": between_edge("+x|+y")
+                },
+                {
+                    "id": "r2", "kind": "fillet", "target": "r1", "size": 4.0, "style": "chamfer",
+                    "edge": between_edge_on("r1", "+z|+x")
+                }
+            ]
+        });
+        let (hist, refusals) = build_doc(&doc);
+        let text = refusals.get("r2").and_then(|v| v.as_str()).unwrap_or_default();
+        assert!(
+            text.contains("can only round an edge of a box yet") && text.contains("without it"),
+            "refusal text: {text}"
+        );
+        let solid = hist.shapes.get("r2").expect("r1's solid kept");
+        let vol = build::solid_volume(solid);
+        // r1 alone: the 40x40 cross-section in (x,y), corner cut, swept 20 in z.
+        let want = (1600.0 - 8.0) * 20.0;
+        assert!((vol - want).abs() <= 1e-6 * want, "volume {vol} vs {want}");
     }
 
     /// SPEC-brep-fillet.md refusal: a size at least the shorter adjacent-face
@@ -4390,6 +4515,132 @@ fn face_local_axis(face: &build::TFace, axes: &[Vec3; 3]) -> Option<(usize, usiz
     })
 }
 
+/// One straight 45-degree chamfer bevel on a box. `axis` is the world axis its
+/// edge runs along; (s1, s2) name the cross-section corner it cuts, on the two
+/// other axes in the canonical order `box_chamfer_frame` fixes below.
+struct BoxBevel {
+    axis: usize,
+    s1: usize,
+    s2: usize,
+    size: f64,
+}
+
+/// Recognise a world-axis-aligned box carrying straight 45-degree chamfer
+/// bevels: its extent per world axis, the one edge axis all its bevels share,
+/// and the bevels themselves. (SPEC-brep-fillet.md, multi-edge.)
+///
+/// Each axis's lo/hi comes from the AXIS-ALIGNED faces alone, and that is the
+/// whole trick. A bevel's normal sits at 45 degrees, so it is never
+/// axis-aligned and can never be mistaken for a box face. Pairing planes by
+/// antiparallel normal instead -- what `box_local_frame` does -- is exactly
+/// what cannot be used here: two OPPOSITE bevels are antiparallel and would pair
+/// up as a third box axis.
+///
+/// None for a curved face (a ROUND fillet leaves a cylinder, so a later edge on
+/// that solid refuses instead of guessing), for a bevel that is not 45 degrees,
+/// for a solid without exactly one face pair per axis, for bevels running along
+/// different axes, and -- the real safety net -- for any solid whose MEASURED
+/// volume disagrees with the closed form below. A wrong solid is worse than a
+/// refusal (SPEC 4.5).
+fn box_chamfer_frame(src: &TSolid) -> Option<([[f64; 2]; 3], usize, Vec<BoxBevel>)> {
+    let mut lo = [f64::INFINITY; 3];
+    let mut hi = [f64::NEG_INFINITY; 3];
+    let mut seen_hi = [false; 3];
+    let mut seen_lo = [false; 3];
+    let mut rest: Vec<build::TFace> = Vec::new();
+    for fc in src.faces() {
+        let b = fc.borrow();
+        let Surface::Plane(p) = &b.surface else {
+            return None;
+        };
+        let n = crate::math::normalize(p.n);
+        let comps: Vec<usize> = (0..3).filter(|&i| n[i].abs() > 1e-7).collect();
+        if comps.len() != 1 {
+            rest.push(fc.clone());
+            continue;
+        }
+        let i = comps[0];
+        let off = crate::math::dot(p.origin, n);
+        if n[i] > 0.0 {
+            if seen_hi[i] {
+                return None;
+            }
+            seen_hi[i] = true;
+            hi[i] = off;
+        } else {
+            if seen_lo[i] {
+                return None;
+            }
+            seen_lo[i] = true;
+            // n points OUT of the solid, so on the low side the plane offset is
+            // the negated value: dot(origin, -e_i) is +|lo|, not lo.
+            lo[i] = -off;
+        }
+    }
+    let mut lo_hi = [[0.0; 2]; 3];
+    for i in 0..3 {
+        if !seen_hi[i] || !seen_lo[i] || hi[i] - lo[i] <= 1e-9 {
+            return None;
+        }
+        lo_hi[i] = [lo[i], hi[i]];
+    }
+    // Second pass, now that every axis's length is known: a bevel's size is read
+    // off its measured area, d * sqrt(2) * edge_length.
+    let mut bevels: Vec<BoxBevel> = Vec::new();
+    for fc in &rest {
+        let b = fc.borrow();
+        let Surface::Plane(p) = &b.surface else {
+            return None;
+        };
+        let n = crate::math::normalize(p.n);
+        let comps: Vec<usize> = (0..3).filter(|&i| n[i].abs() > 1e-7).collect();
+        if comps.len() != 2 {
+            return None;
+        }
+        let (a, c) = (comps[0], comps[1]);
+        let q = std::f64::consts::FRAC_1_SQRT_2;
+        if (n[a].abs() - q).abs() > 1e-7 || (n[c].abs() - q).abs() > 1e-7 {
+            return None;
+        }
+        let axis = 3 - a - c;
+        // Canonical corner order: the two axes this bevel cuts, derived from the
+        // edge axis, so it matches the volume check below and the caller's.
+        let (u, v) = ((axis + 1) % 3, (axis + 2) % 3);
+        let (area, _) = build::face_area_centroid(&b);
+        bevels.push(BoxBevel {
+            axis,
+            s1: if n[u] > 0.0 { 1 } else { 0 },
+            s2: if n[v] > 0.0 { 1 } else { 0 },
+            size: area / (std::f64::consts::SQRT_2 * (lo_hi[axis][1] - lo_hi[axis][0])),
+        });
+    }
+    if bevels.is_empty() {
+        return None;
+    }
+    // Bevels on different edges run along different axes, and then the solid is
+    // no longer a prism along any one of them -- re-extruding a single
+    // cross-section would drop material. Refuse rather than approximate.
+    let eaxis = bevels[0].axis;
+    if bevels.iter().any(|c| c.axis != eaxis) {
+        return None;
+    }
+    // Closed form, exact for a prism: rectangle area minus one right triangle per
+    // bevel, times the shared edge length. Checked against the MEASURED volume,
+    // this is what makes recognition safe -- a shape that is not what we read
+    // (cuts meeting, a face mislabelled) fails here and refuses.
+    let (u, v) = ((eaxis + 1) % 3, (eaxis + 2) % 3);
+    let mut area = (lo_hi[u][1] - lo_hi[u][0]) * (lo_hi[v][1] - lo_hi[v][0]);
+    for c in &bevels {
+        area -= 0.5 * c.size * c.size;
+    }
+    let want = area * (lo_hi[eaxis][1] - lo_hi[eaxis][0]);
+    let got = build::solid_volume(src);
+    if (got - want).abs() > 1e-6 * want.abs().max(1.0) {
+        return None;
+    }
+    Some((lo_hi, eaxis, bevels))
+}
+
 enum FilletErr {
     NoBox,
     NoEdge,
@@ -4516,77 +4767,92 @@ fn chamfer_box(hx: f64, hy: f64, hz: f64, d: f64, center: Vec3) -> TSolid {
     build::polyhedron_solid(&points, &faces)
 }
 
-/// The box-corner fillet/chamfer profile in local (u,v): `lo_u..hi_u` x
-/// `lo_v..hi_v` is the face rectangle in this (u,v) plane, the corner at
-/// `(s1==1?hi_u:lo_u, s2==1?hi_v:lo_v)` is replaced by the round/chamfer.
-/// Shared by the axis-aligned and rotated-box fillet paths. None when the
-/// named corner is not one of the rectangle's four (a caller's refusal).
-fn fillet_box_profile(
+/// The cross-section of a box carrying `cuts`: the rectangle in (u, v) with each
+/// listed corner (s1, s2) replaced by a round arc of that radius or a straight
+/// 45-degree bevel of that size. Every box path goes through this one function --
+/// the one-edge path with a single cut, the multi-edge path with the cuts the
+/// solid already has plus its own. None when a corner is listed twice (two cuts
+/// meeting at one corner is a corner blend, a different profile) or a cut is not
+/// a real size.
+fn box_profile_cuts(
     lo_u: f64,
     hi_u: f64,
     lo_v: f64,
     hi_v: f64,
-    s1: usize,
-    s2: usize,
-    size: f64,
-    round: bool,
+    cuts: &[(usize, usize, f64, bool)],
 ) -> Option<Vec<build::ProfileSeg>> {
-    // The treated corner is at the extremes the two faces name.
-    let q = [
-        if s1 == 1 { hi_u } else { lo_u },
-        if s2 == 1 { hi_v } else { lo_v },
+    // The rectangle's four corners in CCW (u, v) order, each with the sign pair
+    // that names it.
+    let corners = [
+        ((0usize, 0usize), [lo_u, lo_v]),
+        ((1, 0), [hi_u, lo_v]),
+        ((1, 1), [hi_u, hi_v]),
+        ((0, 1), [lo_u, hi_v]),
     ];
-    let d = [
-        if s1 == 1 { -1.0 } else { 1.0 },
-        if s2 == 1 { -1.0 } else { 1.0 },
-    ];
-    // The loop runs rect[qi-1] -> pin -> pout -> rect[qi+1] in CCW order, so pin
-    // lies toward the corner's previous neighbour and pout toward its next.
-    let pin = [q[0], q[1] + d[1] * size];
-    let pout = [q[0] + d[0] * size, q[1]];
-    // The rectangle's four corners in CCW (u, v) order.
-    let rect = [
-        [lo_u, lo_v],
-        [hi_u, lo_v],
-        [hi_u, hi_v],
-        [lo_u, hi_v],
-    ];
-    let qi = (0..4)
-        .find(|i| (rect[*i][0] - q[0]).abs() < 1e-9 && (rect[*i][1] - q[1]).abs() < 1e-9)?;
-    // Replace the named corner with its two trim points, keeping the loop order.
-    let mut pts: Vec<[f64; 2]> = Vec::with_capacity(5);
-    for (i, p) in rect.iter().enumerate() {
-        if i == qi {
-            pts.push(pin);
-            pts.push(pout);
-        } else {
-            pts.push(*p);
+    let mut pts: Vec<[f64; 2]> = Vec::with_capacity(8);
+    // Per emitted point, the centre of the round cut whose treated edge ENDS
+    // there, so the arc/line choice needs no re-derivation from coordinates.
+    // Only a corner's second trim point can carry one, and that is never the
+    // loop's first point, so the wrap-around segment is always a plain side.
+    let mut round_at: Vec<Option<[f64; 2]>> = Vec::with_capacity(8);
+    for ((s1, s2), q) in corners {
+        if cuts.iter().filter(|c| c.0 == s1 && c.1 == s2).count() > 1 {
+            return None;
         }
-    }
-    let mut segs: Vec<build::ProfileSeg> = Vec::with_capacity(pts.len());
-    for i in 0..pts.len() {
-        let a = pts[i];
-        let b = pts[(i + 1) % pts.len()];
-        let treated = (a[0] - pin[0]).abs() < 1e-9
-            && (a[1] - pin[1]).abs() < 1e-9
-            && (b[0] - pout[0]).abs() < 1e-9
-            && (b[1] - pout[1]).abs() < 1e-9;
-        if treated && round {
-            let centre = [q[0] + d[0] * size, q[1] + d[1] * size];
-            let a0 = (pin[1] - centre[1]).atan2(pin[0] - centre[0]);
-            let a1 = (pout[1] - centre[1]).atan2(pout[0] - centre[0]);
-            let mut sw = a1 - a0;
-            while sw > std::f64::consts::PI {
-                sw -= std::f64::consts::TAU;
-            }
-            while sw < -std::f64::consts::PI {
-                sw += std::f64::consts::TAU;
-            }
-            segs.push(build::ProfileSeg::Arc { centre, radius: size, start: a0, sweep: sw });
+        let Some(&(_, _, size, round)) = cuts.iter().find(|c| c.0 == s1 && c.1 == s2) else {
+            pts.push(q);
+            round_at.push(None);
+            continue;
+        };
+        if !(size > 0.0) {
+            return None;
+        }
+        // Inward from the corner along each axis; the treated edge runs between
+        // the two trim points straight across it. WHICH one comes first depends
+        // on the corner: its previous CCW neighbour shares this corner's v when
+        // the sign pair is odd, and its next neighbour shares u. Always emitting
+        // pin first -- what the one-edge path used to do -- closes the loop only
+        // at the two even corners, and on +z/-x it built a self-intersecting
+        // bowtie that no fixture covered, because every one cut +z/+x.
+        let d = [
+            if s1 == 1 { -1.0 } else { 1.0 },
+            if s2 == 1 { -1.0 } else { 1.0 },
+        ];
+        let pin = [q[0], q[1] + d[1] * size];
+        let pout = [q[0] + d[0] * size, q[1]];
+        let (first, second) = if (s1 + s2) % 2 == 0 { (pin, pout) } else { (pout, pin) };
+        pts.push(first);
+        round_at.push(None);
+        pts.push(second);
+        round_at.push(if round {
+            Some([q[0] + d[0] * size, q[1] + d[1] * size])
         } else {
-            // A chamfer's treated edge is the straight pin->pout bevel; every
-            // other edge is a plain rectangle side.
-            segs.push(build::ProfileSeg::Line { a, b });
+            None
+        });
+    }
+    let n = pts.len();
+    let mut segs: Vec<build::ProfileSeg> = Vec::with_capacity(n);
+    for i in 0..n {
+        let a = pts[i];
+        let b = pts[(i + 1) % n];
+        match round_at[(i + 1) % n] {
+            None => segs.push(build::ProfileSeg::Line { a, b }),
+            Some(centre) => {
+                // Centre to endpoint, NOT the distance between the two trim
+                // points: those are a chord of the arc, and using their distance
+                // made the profile fail to close by d*(sqrt(2) - 1).
+                let radius = crate::math::len([b[0] - centre[0], b[1] - centre[1], 0.0]);
+                let a0 = (a[1] - centre[1]).atan2(a[0] - centre[0]);
+                let a1 = (b[1] - centre[1]).atan2(b[0] - centre[0]);
+                let mut sw = a1 - a0;
+                while sw > std::f64::consts::PI {
+                    sw -= std::f64::consts::TAU;
+                }
+                while sw < -std::f64::consts::PI {
+                    sw += std::f64::consts::TAU;
+                }
+                segs.push(build::ProfileSeg::Arc { centre, radius, start: a0, sweep: sw });
+            }
         }
     }
     Some(segs)
@@ -4658,7 +4924,7 @@ fn build_fillet(
         if size <= 0.0 || size >= width(uax).min(width(vax)) - 1e-12 {
             return Err(FilletErr::TooBig);
         }
-        let segs = fillet_box_profile(bb.lo[uax], bb.hi[uax], bb.lo[vax], bb.hi[vax], s1, s2, size, round)
+        let segs = box_profile_cuts(bb.lo[uax], bb.hi[uax], bb.lo[vax], bb.hi[vax], &[(s1, s2, size, round)])
             .ok_or(FilletErr::NoBox)?;
         let mut origin = [0.0, 0.0, 0.0];
         origin[eax] = bb.lo[eax];
@@ -4674,6 +4940,70 @@ fn build_fillet(
         };
         return Ok(build::ensure_outward(&solid));
     }
+    // A box that already carries chamfer bevels -- the second and later edges of
+    // a multi-edge pick. Still no boolean: such a solid is a prism along the axis
+    // its bevels share, so the box path re-extrudes that cross-section with this
+    // edge's own cut added to the ones already there, which is why the second
+    // edge lands exactly where the first one proved it would. Every guard refuses
+    // rather than guessing, so a shape this does not recognise keeps its old
+    // sentence. Placed before the rotated path, which refuses outright on any
+    // solid that is not six faces.
+    if let Some((lo_hi, eaxis, bevels)) = box_chamfer_frame(src) {
+        let (ax1, s1) = face_axis(&fa).ok_or(FilletErr::NoBox)?;
+        let (ax2, s2) = face_axis(&fb).ok_or(FilletErr::NoBox)?;
+        if ax1 == ax2 || eaxis == ax1 || eaxis == ax2 {
+            return Err(FilletErr::NoBox);
+        }
+        // Canonical (u, v) for this cross-section, and the requested corner in
+        // THAT order -- the `between` name may list the two faces either way
+        // round, so taking s1/s2 as given would compare a z sign against an x
+        // sign against the bevel list below.
+        let (uax, vax) = ((eaxis + 1) % 3, (eaxis + 2) % 3);
+        let (su, sv) = if ax1 == uax { (s1, s2) } else { (s2, s1) };
+        // A corner that already carries a bevel would need two cuts to meet
+        // there, which is a corner blend rather than a bevel.
+        if bevels.iter().any(|c| c.s1 == su && c.s2 == sv) {
+            return Err(FilletErr::NoBox);
+        }
+        // The new cut and an existing one on the neighbouring corner share a
+        // face, so they must not overlap across it.
+        let adj_u = bevels
+            .iter()
+            .find(|c| c.s1 != su && c.s2 == sv)
+            .map_or(0.0, |c| c.size);
+        let adj_v = bevels
+            .iter()
+            .find(|c| c.s1 == su && c.s2 != sv)
+            .map_or(0.0, |c| c.size);
+        let (wu, wv) = (lo_hi[uax][1] - lo_hi[uax][0], lo_hi[vax][1] - lo_hi[vax][0]);
+        if size <= 0.0 || size + adj_u >= wu - 1e-12 || size + adj_v >= wv - 1e-12 {
+            return Err(FilletErr::TooBig);
+        }
+        let mut cuts: Vec<(usize, usize, f64, bool)> =
+            bevels.iter().map(|c| (c.s1, c.s2, c.size, false)).collect();
+        cuts.push((su, sv, size, round));
+        let Some(segs) = box_profile_cuts(
+            lo_hi[uax][0],
+            lo_hi[uax][1],
+            lo_hi[vax][0],
+            lo_hi[vax][1],
+            &cuts,
+        ) else {
+            return Err(FilletErr::NoBox);
+        };
+        let mut origin = [0.0; 3];
+        origin[eaxis] = lo_hi[eaxis][0];
+        let mut u_axis = [0.0; 3];
+        u_axis[uax] = 1.0;
+        let mut v_axis = [0.0; 3];
+        v_axis[vax] = 1.0;
+        let mut sweep = [0.0; 3];
+        sweep[eaxis] = lo_hi[eaxis][1] - lo_hi[eaxis][0];
+        return match build::extrude_profile(&segs, origin, u_axis, v_axis, sweep) {
+            Ok(s) => Ok(build::ensure_outward(&s)),
+            Err(_) => Err(FilletErr::NoBox),
+        };
+    }
     // Rotated box: the same profile in the box's OWN orthonormal frame.
     let (center, half, axes) = box_local_frame(src).ok_or(FilletErr::NoBox)?;
     let (ax1, s1) = face_local_axis(&fa, &axes).ok_or(FilletErr::NoBox)?;
@@ -4686,7 +5016,7 @@ fn build_fillet(
     if size <= 0.0 || size >= (2.0 * half[uax]).min(2.0 * half[vax]) - 1e-12 {
         return Err(FilletErr::TooBig);
     }
-    let segs = fillet_box_profile(-half[uax], half[uax], -half[vax], half[vax], s1, s2, size, round)
+    let segs = box_profile_cuts(-half[uax], half[uax], -half[vax], half[vax], &[(s1, s2, size, round)])
         .ok_or(FilletErr::NoBox)?;
     // origin: the point at local coords (u=0, v=0, e=-half[eax]) -- the "low"
     // cap's plane, center-relative on this axis, zero-shifted on u/v (their
