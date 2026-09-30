@@ -525,6 +525,88 @@ fn revolve_tool(
     Some((solid, face_map, points, basis, u_axis, n))
 }
 
+/// A hole's cutting tool: a plain cylinder, or ONE revolved stepped profile when
+/// the mouth carries a counterbore. A countersink refuses: its wall is a cone,
+/// which `revolve_profile` does not build yet.
+///
+/// A recess is never a boolean of two coaxial cylinders. The two-diameter geometry
+/// lives in the revolved profile, so the boolean is handed a single tool and the
+/// coaxial-tool class of defect cannot arise (SPEC-brep-feature-provenance 5).
+///
+/// The bore spans `depth` centred on `centre`, exactly as `cylinder_solid` does. A
+/// through hole deliberately overshoots the far face, so the tool's own end is not
+/// the mouth: `v_face` is where the target's material stops on the +axis side, and a
+/// recess is measured from there, so a "d12 6 deep" counterbore removes 6mm of
+/// material however far the bore overshoots, which is what the dimension means.
+/// `revolve_profile` revolves about an axis through the world origin, so the
+/// profile's second coordinate is absolute and the finished tool is then moved
+/// across onto the hole's own axis. `None` means the recess is degenerate and
+/// the caller must refuse rather than guess.
+fn hole_tool(centre: Vec3, bore_r: f64, depth: f64, axis: Vec3, v_face: f64, feature: Option<&Value>) -> Option<TSolid> {
+    // `feature` is the whole hole feature, so the two recess keys are found here.
+    // Handing this the inner recess value instead would look for a "counterbore"
+    // key that is not inside it, and every recess would refuse.
+    let feature = feature?;
+    let cb = feature.get("counterbore");
+    let cs = feature.get("countersink");
+    if cb.is_none() && cs.is_none() {
+        return Some(build::cylinder_solid(centre, bore_r, depth, axis));
+    }
+    if cb.is_some() && cs.is_some() {
+        return None; // one mouth, one shape
+    }
+    if !(bore_r > 0.0) || !(depth > 0.0) {
+        return None;
+    }
+    let axis = crate::math::normalize(axis);
+    let half = 0.5 * depth;
+    let mid = crate::math::dot(centre, axis);
+    let v_far = mid - half;
+    // The tool's own end, deliberately PAST the face. A through hole already
+    // overshoots so it breaks through, and the recess must overshoot for the same
+    // reason: a tool whose mouth annulus lies exactly in the target's face is a
+    // coplanar boolean, and the boolean refuses those (SPEC 4.5). The recess DEPTH
+    // is still measured from `v_face`, so "6 deep" stays 6 deep in material.
+    let v_mouth = mid + half;
+    let (r_mouth, v_shoulder) = if let Some(cb) = cb {
+        let d = cb.get("diameter")?.as_f64()?;
+        let cd = cb.get("depth")?.as_f64()?;
+        if !(d > 2.0 * bore_r) || !(cd > 0.0) || !(cd < depth) {
+            return None;
+        }
+        (0.5 * d, v_face - cd)
+    } else {
+        // A countersink is a CONE, and revolve_profile builds no slanted wall
+        // yet (it returns None for one). This stepped profile would cut a
+        // cylinder instead -- a counterbore under a countersink's name -- and
+        // the boolean now cuts stepped tools, so that would be a wrong solid,
+        // not a refusal. Refuse until the cone exists (SPEC 5.2a).
+        return None;
+    };
+    // The recess is measured from the face, so the bore must reach it, and the
+    // shoulder must sit above the bore's own floor.
+    if !(v_shoulder > v_far) || !(v_mouth >= v_face) {
+        return None;
+    }
+    let profile = [
+        [0.0, v_far],
+        [bore_r, v_far],
+        [bore_r, v_shoulder],
+        [r_mouth, v_shoulder],
+        [r_mouth, v_mouth],
+        [0.0, v_mouth],
+    ];
+    // Any vector not parallel to the drill axis; revolve_profile orthogonalises it.
+    let seed = if axis[0].abs() < 0.9 { [1.0, 0.0, 0.0] } else { [0.0, 1.0, 0.0] };
+    let (solid, _) = build::revolve_profile(&profile, axis, seed, 360.0)?;
+    // That axis runs through the world origin: carry the tool across onto the
+    // hole's own. Its v coordinates are absolute already, so only the offset
+    // perpendicular to the axis moves -- without this every counterbore was cut
+    // on the world axis, and four corner tools collapsed into one.
+    let across = crate::math::sub(centre, scale(axis, mid));
+    Some(build::transform_solid(&solid, &crate::math::Transform::translation(across)))
+}
+
 /// Build every feature in the document, in order. Returns the history and the
 /// per-feature refusals. A feature this slice does not implement is refused
 /// with a plain reason rather than silently absent (§4.5's refusal contract).
@@ -890,6 +972,21 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     );
                     continue;
                 }
+                // A recess is wider than the bore, so the mouth, not the bore, is
+                // what has to fit the target's face.
+                let recess = f.get("counterbore").or_else(|| f.get("countersink"));
+                if let Some(r) = recess {
+                    let mouth = r.get("diameter").and_then(|d| d.as_f64()).unwrap_or(diameter);
+                    if mouth > perp[0].min(perp[1]) {
+                        refusals.insert(
+                            id.clone(),
+                            json!(format!(
+                                "The recess on {id} at diameter {mouth} would not fit {target} -- {id} is shown without it."
+                            )),
+                        );
+                        continue;
+                    }
+                }
                 let centers: Vec<Vec3> = match f.get("corners") {
                     Some(c) => {
                         let dx = c.get("dx").and_then(|d| d.as_f64()).unwrap_or(0.0);
@@ -905,12 +1002,36 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     }
                     None => vec![cc],
                 };
-                // One bore per centre, centred on its own axis (cylinder_solid
-                // extends depth/2 each way).
-                let tools: Vec<TSolid> = centers
+                // One tool per centre: a plain cylinder, or with a counterbore or a
+                // countersink a single revolved stepped profile. hole_tool returns
+                // None for a degenerate recess, which refuses rather than guesses.
+                // Where the target's material stops on the +axis side. A recess is
+                // measured from this face, not from the tool's overshooting end, so a
+                // "6 deep" counterbore is 6 deep in material however far the bore runs.
+                let along = match axis_name {
+                    "x" => size[0],
+                    "y" => size[1],
+                    _ => size[2],
+                };
+                // From the target's bbox, not the hole's centre: an axial centre
+                // offset moves the bore, never the face it is measured from.
+                let v_face = crate::math::dot(base, axis) + 0.5 * along;
+                let tools: Vec<TSolid> = match centers
                     .iter()
-                    .map(|&c| build::cylinder_solid(c, diameter / 2.0, depth, axis))
-                    .collect();
+                    .map(|&c| hole_tool(c, diameter / 2.0, depth, axis, v_face, Some(f)))
+                    .collect::<Option<Vec<_>>>()
+                {
+                    Some(t) => t,
+                    None => {
+                        refusals.insert(
+                            id.clone(),
+                            json!(format!(
+                                "hole {id}: its counterbore or countersink is not a shape brep-rs can cut yet -- {id} is shown without it."
+                            )),
+                        );
+                        continue;
+                    }
+                };
                 // OCCT fuses all bores into one tool, then cuts once. Bores that
                 // do not overlap subtract independently; overlapping ones are
                 // FUSED first with the kernel's own cylinder-pair union
@@ -4300,6 +4421,152 @@ mod tests {
         assert_eq!(doc_keys, ["bbox", "edges", "faces", "volume"], "measure_doc entry keys");
         assert_eq!(step_keys, doc_keys, "measure_step success shape == one measure_doc entry");
         assert!(step_shape.get("shapes").is_none(), "no shapes wrapper");
+    }
+    /// A counterbore cuts: the tool is ONE revolved stepped profile, never a boolean
+    /// of two coaxial cylinders, and `ops::boolean` subtracts it (SPEC-brep-feature-
+    /// provenance 5.2b: the tool's shoulder is a step face, not a supporting plane).
+    ///
+    /// Closed form for a d6 through-hole with a d12 x 6 counterbore in a 40x40x20
+    /// box: the bore, plus the recess's ANNULUS -- its core is the bore, already
+    /// counted: 32000 - pi*9*20 - pi*(36-9)*6 = 32000 - 342pi = 30925.575. OCCT,
+    /// measured 2026-09-29 on the same box and tool, gives 30925.575312472283.
+    /// (This spike used to assert 32000 - pi*9*20 - pi*36*6 = 30755.929, which
+    /// counts the core twice -- the coaxial double-subtraction of SPEC 4.3.)
+    ///
+    /// The bore is 22 deep on a 20 thick box, so it overshoots by 1 each way. The
+    /// counterbore is still 6 deep IN MATERIAL, measured from the face, which is what
+    /// the dimension means. Measuring from the tool's end instead would leave 5 of
+    /// material and give 32000 - 315pi = 31010.398, so this also pins that.
+    #[test]
+    fn counterbore_cuts_the_analytic_volume() {
+        let pi = std::f64::consts::PI;
+        let doc = json!({
+            "version": 1,
+            "features": [
+                { "id": "b1", "kind": "box", "size": [40, 40, 20], "center": [0, 0, 0] },
+                { "id": "h1", "kind": "hole", "target": "b1", "diameter": 6, "depth": 22,
+                  "center": [0, 0, 0], "axis": "z",
+                  "counterbore": { "diameter": 12, "depth": 6 } }
+            ],
+            "measure": "h1"
+        });
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "a valid counterbore must not refuse: {refusals:?}");
+        let got = build::solid_volume(hist.shapes.get("h1").expect("h1 built"));
+        let want = 32000.0 - pi * 9.0 * 20.0 - pi * (36.0 - 9.0) * 6.0;
+        assert!(
+            (got - want).abs() <= 1e-6 * want,
+            "counterbore volume {got} vs exact {want}"
+        );
+    }
+
+    /// SPIKE, deliberately failing: a countersink REFUSES, because its wall is a cone
+    /// and `build::revolve_profile` builds no slanted wall yet. The stepped profile a
+    /// counterbore uses would cut a cylinder here, which is a wrong solid, not a
+    /// countersink. This test is the specification of what it must become.
+    ///
+    /// A countersink is a cone, so the extra removal past the bore is a frustum, not
+    /// a cylinder. A 90 degree sink on a d6 bore out to d12 is (6-3)/tan(45) = 3 deep,
+    /// and that frustum is (pi*h/3)(R^2 + R*r + r^2) = 63pi, of which the bore's own
+    /// core (pi*9*3 = 27pi) is already counted. So the closed form is
+    /// 32000 - pi*9*20 - (63pi - 27pi) = 32000 - 216pi = 31321.416; OCCT, measured
+    /// 2026-09-29 with a revolved cone tool, gives 31321.4159868246. (This spike used
+    /// to assert 32000 - pi*9*20 - 63pi = 31236.593, counting the core twice.)
+    #[test]
+    fn spike_countersink_cuts_a_cone_not_a_cylinder() {
+        let pi = std::f64::consts::PI;
+        let doc = json!({
+            "version": 1,
+            "features": [
+                { "id": "b1", "kind": "box", "size": [40, 40, 20], "center": [0, 0, 0] },
+                { "id": "h1", "kind": "hole", "target": "b1", "diameter": 6, "depth": 22,
+                  "center": [0, 0, 0], "axis": "z",
+                  "countersink": { "diameter": 12, "angleDeg": 90 } }
+            ],
+            "measure": "h1"
+        });
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "a valid countersink must not refuse: {refusals:?}");
+        let got = build::solid_volume(hist.shapes.get("h1").expect("h1 built"));
+        let frustum = pi * 3.0 * (36.0 + 18.0 + 9.0) / 3.0;
+        let want = 32000.0 - pi * 9.0 * 20.0 - (frustum - pi * 9.0 * 3.0);
+        assert!(
+            (got - want).abs() <= 1e-6 * want,
+            "countersink volume {got} vs exact {want}"
+        );
+    }
+
+    /// A recess that cannot be cut is refused in a plain sentence, never guessed at:
+    /// a counterbore deeper than the bore it sits on, one no wider than the bore, one
+    /// with no depth at all, and a sound one on a bore that never reaches the face it
+    /// is measured from (this 10-deep bore is buried: z -5..5 in a z -10..10 box).
+    #[test]
+    fn degenerate_recesses_refuse() {
+        let cases = [
+            ("deeper than the bore", json!({ "diameter": 12, "depth": 30 })),
+            ("not wider than the bore", json!({ "diameter": 4, "depth": 6 })),
+            ("zero deep", json!({ "diameter": 12, "depth": 0 })),
+            ("on a bore that never reaches the face", json!({ "diameter": 12, "depth": 6 })),
+        ];
+        for (what, cb) in cases {
+            let doc = json!({
+                "version": 1,
+                "features": [
+                    { "id": "b1", "kind": "box", "size": [40, 40, 20], "center": [0, 0, 0] },
+                    { "id": "h1", "kind": "hole", "target": "b1", "diameter": 6, "depth": 10,
+                      "center": [0, 0, 0], "axis": "z", "counterbore": cb }
+                ],
+                "measure": "h1"
+            });
+            let (_, refusals) = build_doc(&doc);
+            let msg = refusals.get("h1").unwrap_or_else(|| panic!("{what} must refuse"));
+            let text = msg.as_str().unwrap_or_default();
+            assert!(
+                text.contains("counterbore") || text.contains("recess"),
+                "the refusal names the recess: {text}"
+            );
+        }
+    }
+
+    /// The counterbore tool lands where the hole is and is measured from where the
+    /// target's face is. Closed forms count only the recess's annulus (its core is
+    /// the bore); OCCT, measured 2026-09-29 on the same shapes, agrees with each to
+    /// 1e-11 (31123.495649648445, 30360.088634826127, 27702.30124988917).
+    /// - blind, centre offset +4 along z: bore z -3..11, recess from the face z=10
+    ///   down to 4: 32000 - 9pi*13 - 27pi*6. Reading the face off the hole's centre
+    ///   instead of the target's bbox put it at z=14.
+    /// - drilled along x through the 40 side: 32000 - 9pi*40 - 27pi*6.
+    /// - four corners: 32000 - 4*342pi. `revolve_profile` spins about the WORLD
+    ///   axis, so an unmoved tool cut all four there and the fuse kept one -- a
+    ///   silent wrong solid of one recess, not four.
+    #[test]
+    fn counterbore_variants_are_exact() {
+        let pi = std::f64::consts::PI;
+        for (what, hole, want) in [
+            ("blind, offset along the axis", json!({ "depth": 14, "center": [0, 0, 4], "axis": "z" }), 32000.0 - 279.0 * pi),
+            ("along x", json!({ "depth": 42, "center": [0, 0, 0], "axis": "x" }), 32000.0 - 522.0 * pi),
+            (
+                "four corners",
+                json!({ "depth": 22, "center": [0, 0, 0], "axis": "z", "corners": { "dx": 10, "dy": 10 } }),
+                32000.0 - 4.0 * 342.0 * pi,
+            ),
+        ] {
+            let mut h = hole;
+            h["id"] = json!("h1");
+            h["kind"] = json!("hole");
+            h["target"] = json!("b1");
+            h["diameter"] = json!(6);
+            h["counterbore"] = json!({ "diameter": 12, "depth": 6 });
+            let doc = json!({
+                "version": 1,
+                "features": [{ "id": "b1", "kind": "box", "size": [40, 40, 20], "center": [0, 0, 0] }, h],
+                "measure": "h1"
+            });
+            let (hist, refusals) = build_doc(&doc);
+            assert!(refusals.is_empty(), "{what}: a valid counterbore must not refuse: {refusals:?}");
+            let got = build::solid_volume(hist.shapes.get("h1").expect("h1 built"));
+            assert!((got - want).abs() <= 1e-6 * want, "{what}: volume {got} vs exact {want}");
+        }
     }
 }
 
