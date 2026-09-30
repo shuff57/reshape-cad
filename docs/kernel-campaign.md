@@ -1236,3 +1236,131 @@ the gate's own comparison as-is.
 here is committed to it.
 
 **Commits:** `cd44376` (the OCCT referee learns to read a soup sketch).
+
+---
+
+## K-H -- the closedness harness, and the seven measured cases pinned -- DONE (2026-09-30)
+
+**Target.** Ground rule 2 of `.omo/plans/brep-fix-plan.md` needs a function
+that did not exist. The once-used-edge count lived *inline inside* `boolean`
+at `ops.rs:3594-3620`, where no test could reach it, and `weld_shared_edges`
+is private and returns nothing. C0 and C2 both returned open shells and the guard
+waved them through, so closedness had to become assertable before any later slice
+could be proved rather than argued. No production behaviour changed: the only
+non-test edit is the extraction.
+
+**What landed** (`packages/brep-rs/src/ops.rs` only; 368 insertions, 24 deletions)
+- `edge_use_counts` + `once_used_edges` extracted from `boolean`. The guard's
+  refusal is now `edge_use_counts(&faces).values().any(|&n| n != 1 && n != 2)`,
+  which is the loop it replaces: the old code skipped `n == 2` and refused anything
+  else, and that is exactly `{1, 2}` surviving. Behaviour byte-identical, and measured:
+  cargo reads 249 pass / 2 fail after this step alone, the same two tests failing as at
+  HEAD.
+- `closed_failures` -- the five checks of ground rule 2, each pushed as its own
+  string so an open shell reports every check it broke at once, since WHICH ones broke
+  is the diagnosis -- with `assert_closed` asserting it. Three unit tests prove the
+  harness can pass, that a box minus one face leaves exactly its four edges used once,
+  and that an open shell is rejected by name.
+- Seven `spike_` pins, C0..C6, each a **ModelDoc** -- the JSON `runScript()` hands
+  `build_doc_json` -- so a pin runs the path a student's script runs, not a hand-built
+  solid. Each is exact-or-refused (ground rule 1: a refusal in a sentence is a pass), and
+  each is built in **two frames**, at the origin and shifted by t = (37, -23, 11), because
+  C2's error moved by 3.1e-2 under exactly that shift and a fixture that passes in one
+  frame proves nothing. A case that builds neither a solid nor a refusal panics, so the
+  exact-or-refused shape cannot pass a malformed pin vacuously.
+
+**Ground rule 4 discharged before anything was pinned.** The closed forms are
+hand-computed and two earlier spikes in this ledger counted a bore's core twice.
+OCCT built all 14 docs (7 unshifted + 7 shifted) through the gates' own load path and
+agreed with every hand value at <= 2.3e-16 relative: 3840, 15840, 15880, 15808, 15808,
+15820, 63476.4012244017. The referee built the four cases brep-rs refuses, including the
+`pocket()` one, so every refusal here is brep-rs-only and none is the referee's. Method and
+table: `/tmp/opencode/kh/occt-referee.md` (scratch, outside the tree; the doc JSONs sit
+beside it as `C0.json`..`C6.json`, `-shifted` variants).
+
+**The measurement that changes the next slice: K0c's rule as written is refuted.**
+I-6's evidence was a **mesh-level** count (12 and 14 open directed edges), and the plan's
+K0c step 1 says to refuse when `once_used_edges` is non-empty, reasoning that a once-used
+boundary edge is not the seam case. Measured over every boolean result the cargo suite
+builds -- 123 calls, 108 shipped, 15 refused -- the **handle-level** count is nonzero on 58
+of the 102 shipped results outside the two known-open pins, and all 58 belong to
+currently-passing tests asserting exact volumes. They are bores and round rims: a bore's
+wall rim and its cap rim are two different handles for one circle, because
+`weld_shared_edges` only welds Segment edges (the wall's boundary uses a full-circle curve
+in *one* wire, so it never meets the cap's circle) and a seam's two uses can land inside one
+face. The plan's rule would refuse 58 correct solids and turn about 25 green tests red --
+precisely the "refuses correct geometry at scale" its own stop rule forbids.
+
+Four discriminators, measured on the same 108 results, counted as false refusals against
+the 102 correct ones:
+- handle-level `n == 1` (the plan's rule): **58 false**;
+- mesh-level open directed edges at deflection 0.05: **3 false** -- `y1_box_join_exact`
+  (30), `y1_bench_final_exact` (6), `y2_bench_final_exact` (44);
+- geometric orphans only (a once-used handle with no coincident twin): **5 false** -- the two
+  grooves' cylinder-wall rims plus the same three;
+- **translation invariance at 1e-9 relative, ground rule 2's own check: 0 false**, and it catches
+  all four known-open results (C0 at 4.2e-8 and 8.3e-8, C2 at 3.1e-2 and 3.2e-2).
+
+So the cheapest zero-false-refusal closure signal available today is the check ground
+rule 2 already names, and the handle-level count belongs in `assert_closed` -- where it now
+lives -- rather than in the guard. What a translation-invariance check cannot see is an open
+shell whose missing-face area vectors cancel. The three shells above are the opposite case:
+geometrically closed, exact volume, `mesh_open` 6..44, i.e. T-junctions rather than missing
+faces. A handle-level rule keyed on planar segments would flag all three correctly, but each
+is a passing test asserting an exact volume, so that rule is a decision, not a default. The
+counts are the decision's evidence.
+
+**I-2 classified: latent, not live.** `ensure_outward` (`build.rs:669`) reaches
+`reversed_face` (`build.rs:693`), whose arms cover Plane and Cylinder and whose fall-through
+returns Cone, Sphere and Torus unchanged. Measured on hand-inverted primitives at an
+off-origin centre, a cylinder control first: cylinder -62.831853 -> +62.831853 (the arms do
+work). Sphere -268.082573 -> **-268.082573**, unchanged and still inside-out. Torus
+-222.066099 -> **-222.066099**. Cone 56.548668 -> **-94.247780**: the base disk reverses,
+the lateral face does not, and the divergence-theorem sum becomes a number that is neither
+the solid nor its negation. So the fall-through *is* silent-wrong when reached -- a mixed-
+orientation solid, the worst class there is. It is not reached: all 9 call sites feed it
+`extrude_profile_loops` (Plane + Cylinder), `blend_solid` (Plane only) or `corner_solid`
+(Plane only), and every Cone/Sphere/Torus construction in the crate lives in a builder none of
+them calls. I-2 is therefore class 1, not class 2; K0d stays parked; and K0a keeps to
+`flip_face` alone, which is what plan risk 4 says to do when I-2 is not live.
+
+**Evidence.** All re-run on this machine today, wasm rebuilt before the gates.
+`cargo test --release`: **256 passed, 5 failed** -- the two pre-existing spikes
+(`ops::spike_coplanar_chamfer_on_a_boolean_result_is_exact`,
+`wasm::tests::spike_countersink_cuts_a_cone_not_a_cylinder`) plus C0, C2 and C6, each red
+for its own documented reason. The plan predicted 3 new failures, not 7: C1, C3, C4 and C5
+refuse today and so pass, which is the exact-or-refused shape working. Compiler warning
+count 28, identical to baseline. Parity 70/2 exit 1, mesh 70/2 exit 1, both with the same two
+fixture names as the baseline (`boolean-rounded-corner-cap`, `chamfer-on-boolean-result`);
+step 62 passed / 0 failed / 8 refused exit 0; `gate:occt` 17/0 exit 0; `bun test` sketch 9,
+script 89, kernel 36, studio 219, all 0 fail. Every one of those numbers is the number at
+HEAD.
+
+**Not performed, so nobody reads a gap as a pass.** No browser or visual check (no image
+input in this session). No CI run -- the workflow was read, not executed; its native-kernel
+step is a bare `cargo test --release` with no `continue-on-error`, so it exits non-zero at
+HEAD and with these pins, and the later JS steps are skipped by default. I-4 still
+unmeasured. The three T-junction shells found open at mesh level (above) are recorded here
+as an observation, not yet as a defect with an owner.
+
+**Process note.** `ops.rs` was edited while unclaimed. The two ownership guards on this box
+disagree about this session's identity -- the Claude-layer `PreToolUse` hook is hardcoded
+`--as claude` while the client plugin is hardcoded `--as opencode` -- and `conflict()`
+refuses any claim held under the other name, so no claim state lets this session write. It was
+announced on the msgbox (#406, #408) and every edit was hash-anchored, so a concurrent change
+to the same lines would have been rejected rather than clobbered. The fix belongs in the hook
+configuration, not in a claim.
+
+**K0c's signal, settled by its own stop rule (not a new decision).** The plan's
+K0c step 1 first draft read "refuse when `once_used_edges` is non-empty". The
+measurement above refutes that signal, and K0c's own stop rule -- "do not ship a
+guard that refuses correct geometry; that converts class 2 into class 1 at scale" --
+is what settles it, so no new judgement was invented: the guard refuses on ground rule
+2's own closure check, `|V(r) - V(r + t)| > 1e-9 * V` for t = (37, -23, 11), which is the
+same predicate `closed_failures` already applies and measured 0 false refusals against
+those 102 correct results while catching all four known-open ones. The handle-level count
+stays as `assert_closed`'s recorded metric and as K0b's re-open trigger: if the trim fix
+drops C0's count to zero, the cheaper handle signal becomes valid. The slice's purpose, its
+position in the order and its exit criteria are unchanged.
+
+**Commits:** none yet -- the lead decides when this lands.
