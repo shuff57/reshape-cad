@@ -102,6 +102,10 @@ pub struct History {
     pub sweeps: HashMap<String, SweepRecord>,
     /// Feature ids in build order.
     pub order: Vec<String>,
+    /// Cut features (hole/pocket/groove) that name the same body apply
+    /// cumulatively (the PartDesign convention): body id -> id of the latest
+    /// cut on it. Per-feature shapes stay in `shapes`, addressable by id.
+    pub heads: HashMap<String, String>,
 }
 
 impl History {
@@ -112,6 +116,24 @@ impl History {
     pub fn insert(&mut self, id: &str, solid: TSolid) {
         self.shapes.insert(id.to_string(), solid);
         self.order.push(id.to_string());
+    }
+
+    /// The feature whose shape the next cut on `body` must start from: the
+    /// latest cut already made on it, else the body itself.
+    pub fn head_of<'a>(&'a self, body: &'a str) -> &'a str {
+        self.heads.get(body).map(String::as_str).unwrap_or(body)
+    }
+
+    /// Record that cut `id` was made from `body`'s head: `body` and every
+    /// name that resolved to the same head now resolve to `id`.
+    pub fn advance_head(&mut self, body: &str, id: &str) {
+        let from = self.head_of(body).to_string();
+        for v in self.heads.values_mut() {
+            if *v == from {
+                *v = id.to_string();
+            }
+        }
+        self.heads.insert(body.to_string(), id.to_string());
     }
 
     /// The face of `feature` that faces `dir`, chosen by how far its centroid

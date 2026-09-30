@@ -786,7 +786,8 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     refusals.insert(id.clone(), json!(format!("pocket {id} cannot find sketch {target}")));
                     continue;
                 };
-                let Some(base) = hist.shapes.get(into).cloned() else {
+                let from = hist.head_of(into).to_string();
+                let Some(base) = hist.shapes.get(&from).cloned() else {
                     refusals.insert(id.clone(), json!(format!("pocket {id} cannot find solid {into}")));
                     continue;
                 };
@@ -831,7 +832,8 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                         // through the subtract, matched by surface identity.
                         let face_fates: Vec<Fate> =
                             base.faces().iter().map(|fc| carry_fate(&result, fc)).collect();
-                        record_op(&mut hist, &id, OpKind::Boolean, vec![into.to_string()], face_fates, Vec::new());
+                        record_op(&mut hist, &id, OpKind::Boolean, vec![from.clone()], face_fates, Vec::new());
+                        hist.advance_head(into, &id);
                         hist.insert(&id, result);
                     }
                     None => {
@@ -988,8 +990,12 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     );
                     continue;
                 }
-                let src_faces = src.faces();
-                let mut shape = src;
+                // Cumulative: cut from the latest cut already made on this body.
+                // `src` (the body itself) still fixes the frame -- centre offset
+                // and fit test above -- so an earlier cut cannot move this one.
+                let from = hist.head_of(target).to_string();
+                let mut shape = hist.shapes.get(&from).cloned().unwrap_or(src);
+                let src_faces = shape.faces();
                 let mut cut = true;
                 for tool in &fused {
                     match ops::boolean("subtract", &shape, tool) {
@@ -1006,7 +1012,8 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     // target's own faces DO carry through, surface-matched.
                     let face_fates: Vec<Fate> =
                         src_faces.iter().map(|fc| carry_fate(&shape, fc)).collect();
-                    record_op(&mut hist, &id, OpKind::Boolean, vec![target.to_string()], face_fates, Vec::new());
+                    record_op(&mut hist, &id, OpKind::Boolean, vec![from], face_fates, Vec::new());
+                    hist.advance_head(target, &id);
                     hist.insert(&id, shape);
                 } else {
                     refusals.insert(
@@ -1133,7 +1140,8 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     refusals.insert(id.clone(), json!(format!("groove {id} cannot find sketch {target}")));
                     continue;
                 };
-                let Some(base) = hist.shapes.get(into).cloned() else {
+                let from = hist.head_of(into).to_string();
+                let Some(base) = hist.shapes.get(&from).cloned() else {
                     refusals.insert(id.clone(), json!(format!("groove {id} cannot find solid {into}")));
                     continue;
                 };
@@ -1154,7 +1162,8 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                         // exactly as OCCT's groove branch does).
                         let face_fates: Vec<Fate> =
                             base.faces().iter().map(|fc| carry_fate(&result, fc)).collect();
-                        record_op(&mut hist, &id, OpKind::Boolean, vec![into.to_string()], face_fates, Vec::new());
+                        record_op(&mut hist, &id, OpKind::Boolean, vec![from.clone()], face_fates, Vec::new());
+                        hist.advance_head(into, &id);
                         hist.insert(&id, result);
                     }
                     None => {
@@ -2632,6 +2641,29 @@ mod tests {
             assert_eq!(bb.lo, [-20.0, -20.0, -10.0]);
             assert_eq!(bb.hi, [20.0, 20.0, 10.0]);
         }
+    }
+
+    /// Cuts naming one body compose (PartDesign convention): three holes on
+    /// b1 are 48000 - 9*pi*(8+14+20), not h3 alone (47434.5). Each cut's own
+    /// shape stays addressable by id, so naming history is untouched.
+    #[test]
+    fn holes_naming_one_body_apply_cumulatively() {
+        let hole = |id: &str, x: f64, depth: f64| {
+            json!({ "id": id, "kind": "hole", "target": "b1", "diameter": 6.0, "depth": depth, "center": [x, 0.0, 0.0], "axis": "z" })
+        };
+        let doc = json!({ "features": [
+            { "id": "b1", "kind": "box", "size": [40.0, 40.0, 30.0] },
+            hole("h1", -12.0, 8.0), hole("h2", 0.0, 14.0), hole("h3", 12.0, 20.0),
+        ]});
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "refusals {refusals:?}");
+        let pi9 = std::f64::consts::PI * 9.0;
+        for (id, want) in [("h1", 8.0), ("h2", 22.0), ("h3", 42.0)] {
+            let vol = build::solid_volume(hist.shapes.get(id).unwrap());
+            let want = 48000.0 - pi9 * want;
+            assert!((vol - want).abs() <= 1e-6 * want, "{id}: {vol} vs {want}");
+        }
+        assert_eq!(build::solid_volume(hist.shapes.get("b1").unwrap()), 48000.0);
     }
 
     #[test]
