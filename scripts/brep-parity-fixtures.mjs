@@ -253,5 +253,83 @@ export function fixtures() {
       { id: 'sk1', kind: 'sketch', plane: 'xy', offset: 0, points: [[0, 0], [40, 0], [40, 25], [0, 25]] },
       { id: 'e1', kind: 'extrude', target: 'sk1', height: 12 },
     ], { resolve: { cause: 'cap', feature: 'e1', kind: 'face', end: 'top' } }),
+
+    // --- NEW 2026-09-29: the blind spots the gate is STRUCTURALLY unable to see ---
+    // Added after an external-kernel review found the parity bar was measuring the
+    // fixture list rather than the kernel. `hole-blind` drills exactly ONE floor;
+    // `rounded-corner` builds an arc-bounded cap that nothing ever booleans; and the
+    // W2a coplanar defect lives in a red #[test] where a green suite can walk past
+    // it. Each fixture below may come back CORRECT or REFUSED. What they forbid is a
+    // third answer: a wrong-but-closed solid that the manifold guard waves through.
+
+    // (1) The class-2 regression pin, msgbox #329. Three blind floors at three depths,
+    // which is the shape that lost every floor but the first before the void-wall
+    // detection in ops.rs::region_inside. Spacing is generous on purpose: the spike's
+    // own test separates its bores by 30/20mm and still lost them all, because the
+    // region is built from EVERY face of the tool, void walls included.
+    //
+    // !! KNOWN DEFECT -- THIS FIXTURE IS A WITNESS, NOT COVERAGE. Measured 2026-09-29:
+    // it PASSES at 1.5e-16 while measuring 47434.513322, which is 48000 less ONE d6
+    // depth-20 bore -- h1 and h2 are silently discarded. Each hole ALONE is exact
+    // (47773.805 / 47604.159 / 47434.513, all three matching the closed form), so the
+    // loss is in doc dispatch, not in the boolean: a second cut on an already-cut target
+    // does not compose. occt-build.ts shares the defect, which is exactly why the
+    // differential gate cannot see it -- both sides make the same mistake, so they
+    // agree. Expect 46812.5 once composition is fixed; until then a GREEN HERE MEANS
+    // NOTHING. Catching this class needs a closed-form assertion, not a parity fixture.
+    raw('bores-blind-stacked', 'hole', [
+      box('b1', [40, 40, 30]),
+      { id: 'h1', kind: 'hole', target: 'b1', diameter: 6, depth: 8, center: [-12, 0, 0], axis: 'z' },
+      { id: 'h2', kind: 'hole', target: 'b1', diameter: 6, depth: 14, center: [0, 0, 0], axis: 'z' },
+      { id: 'h3', kind: 'hole', target: 'b1', diameter: 6, depth: 20, center: [12, 0, 0], axis: 'z' },
+    ]),
+    // (2) A through bore FIRST, then a blind one beside it -- the W2a 2026-09-16 case,
+    // kept apart from (1) because the ORDER is the bug: the blind tool's region is
+    // clipped by the through bore's own wall, and its floor is dropped on the far side.
+    // Same KNOWN DEFECT as (1): measures 47660.707993, which is 48000 less the depth-40
+    // through bore less HALF the depth-12 blind bore -- the blind bore is what vanishes.
+    raw('bore-through-then-blind', 'hole', [
+      box('b1', [40, 40, 30]),
+      { id: 'h1', kind: 'hole', target: 'b1', diameter: 6, depth: 40, center: [-12, 0, 0], axis: 'z' },
+      { id: 'h2', kind: 'hole', target: 'b1', diameter: 6, depth: 12, center: [0, 0, 0], axis: 'z' },
+    ]),
+    // (3) A planar face bounded by a MIX of line and arc edges, inside a boolean. The
+    // 6mm corner arc at index 1 is the whole point: the cut crosses it, so that cap must
+    // be rebuilt with a true arc in its boundary. ops.rs::outer_uv pushes edge ENDPOINTS
+    // only, so this is the fixture that would catch a rounded cap collapsing to a
+    // CHORD polygon -- a wrong solid that still closes.
+    raw('boolean-rounded-corner-cap', 'combine', [
+      { id: 'sk1', kind: 'sketch', plane: 'xy', offset: 0, points: [[0, 0], [40, 0], [40, 25], [0, 25]], rounds: { 1: 6 } },
+      { id: 'e1', kind: 'extrude', target: 'sk1', height: 12 },
+      box('t', [12, 12, 8], [40, 20, 12]),
+      { id: 'op1', kind: 'combine', op: 'subtract', targets: ['e1', 't'] },
+    ]),
+    // (4) The exit criterion for W2a, promoted from red unit test to gate fixture.
+    // ops.rs:4319 states it at the kernel level: a triangular corner prism whose two
+    // coplanar sides sit ON the block's +x and +z faces, subtracted from a BOOLEAN
+    // result, comes back 15546.67 against a closed form of 15840 -- each coplanar face's
+    // whole 80mm overlap rectangle is deleted instead of being trimmed by the tool's
+    // triangular section, so the shell stays closed and the guard waves it through.
+    // The IDENTICAL prism off a plain box is exact, because the box fillet path
+    // re-extrudes the cross-section -- hence the union underneath, which is what makes
+    // this a boolean-only defect. As a red #[test] it is easy to leave red; as a parity
+    // fixture it fails the GATE, alongside the other 68.
+    raw('chamfer-on-boolean-result', 'combine', [
+      box('plate', [40, 30, 10], [0, 0, -10]),
+      box('blk', [20, 20, 10], [0, 0, 0]),
+      { id: 'u1', kind: 'combine', op: 'union', targets: ['plate', 'blk'] },
+      // The tool: a right triangle in the xz corner at (x=10, z=5), legs 4, swept along
+      // y and overshot well past the 20mm block at both ends so its caps cannot clip
+      // the cut. Two of its three sides are coplanar with the block's own +x and +z
+      // faces, which is the entire mechanism. The offset is 65, not -50: an xz sketch
+      // extrudes along NEGATIVE y from its offset, so 65 down to -45 is what covers
+      // the block's y -10..+10. Measured, not guessed -- at offset -50 the tool parks
+      // at y -160..-50, clear of the part, and this fixture then PASSES VACUOUSLY at
+      // the untouched 16000. At offset 65 brep-rs returns 15546.666766666667 on 11
+      // faces -- no bevel among them -- which is the wrong solid ops.rs:4312 records.
+      { id: 'sk2', kind: 'sketch', plane: 'xz', offset: 65, points: [[10, 5], [6, 5], [10, 1]] },
+      { id: 'e2', kind: 'extrude', target: 'sk2', height: 110 },
+      { id: 'op2', kind: 'combine', op: 'subtract', targets: ['u1', 'e2'] },
+    ]),
   ];
 }
