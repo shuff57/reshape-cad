@@ -3592,30 +3592,17 @@ pub fn boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
     // shell; shipping it would be the wrong-solid class outright, so
     // refuse honestly instead.
     {
-        let mut use_count: std::collections::HashMap<usize, usize> = std::collections::HashMap::new();
-        for f in &faces {
-            let fb = f.borrow();
-            for w in &fb.boundary {
-                for u in &w.borrow().edges {
-                    let key = std::rc::Rc::as_ptr(&u.edge) as *const () as usize;
-                    *use_count.entry(key).or_insert(0) += 1;
-                }
-            }
-        }
-        for (ptr, n) in &use_count {
-            if *n == 2 {
-                continue;
-            }
-            // A zero-length seam/rim edge (a closed circle's own seam,
-            // both uses in one wire) is legitimately used twice by one
-            // face — the count is per-use, so a legal closed rim reads
-            // 2, a seam reads 1 per face but totals 2 across both its
-            // wires. Anything else is a cracked shell.
-            let _ = ptr;
-            if *n != 1 && *n != 2 {
-                return None;
-            }
-
+        // A zero-length seam/rim edge (a closed circle's own seam,
+        // both uses in one wire) is legitimately used twice by one
+        // face — the count is per-use, so a legal closed rim reads
+        // 2, a seam reads 1 per face but totals 2 across both its
+        // wires. Anything else is a cracked shell.
+        //
+        // NOTE: a count of 1 passes here too (the seam case above), so
+        // this guard cannot see an open shell. `once_used_edges` makes
+        // that measurable; closing it is the closure-guard slice's job.
+        if edge_use_counts(&faces).values().any(|&n| n != 1 && n != 2) {
+            return None;
         }
     }
     let result = Solid {
@@ -3628,6 +3615,33 @@ pub fn boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
         return None;
     }
     Some(result)
+}
+
+/// Uses per edge HANDLE across `faces`, keyed by the handle's address. On a
+/// closed 2-manifold every edge reads 2; `boolean` refuses a count outside
+/// {1, 2}.
+fn edge_use_counts(faces: &[TFace]) -> std::collections::HashMap<usize, usize> {
+    let mut use_count: std::collections::HashMap<usize, usize> = std::collections::HashMap::new();
+    for f in faces {
+        let fb = f.borrow();
+        for w in &fb.boundary {
+            for u in &w.borrow().edges {
+                let key = std::rc::Rc::as_ptr(&u.edge) as *const () as usize;
+                *use_count.entry(key).or_insert(0) += 1;
+            }
+        }
+    }
+    use_count
+}
+
+/// Edge handles used exactly once across `faces`: the rim of a shell that is
+/// not closed. Sorted so a failure message is stable. Test-only until the
+/// closure-guard slice makes `boolean` refuse on it.
+#[cfg(test)]
+fn once_used_edges(faces: &[TFace]) -> Vec<usize> {
+    let mut once: Vec<usize> = edge_use_counts(faces).into_iter().filter(|&(_, n)| n == 1).map(|(k, _)| k).collect();
+    once.sort_unstable();
+    once
 }
 
 /// Points that lie ON a face, each with the face's outward normal, for the
@@ -4578,6 +4592,336 @@ pub fn check_watertight(m: &crate::mesh::Mesh) -> bool {
     }
     eprintln!("  open directed edges: {open}");
     open == 0
+}
+
+/// Ground rule 2, made checkable. A produced solid is CLOSED and the right
+/// size only if every check below holds; this returns every one that does not,
+/// because an open shell usually breaks several at once and WHICH ones is the
+/// diagnosis. Empty means closed and exact.
+///   1. volume equals the caller's independently derived closed form;
+///   2. volume is translation invariant, `|V(r) - V(r+t)| <= 1e-9*V` for
+///      t = (37, -23, 11): the divergence-theorem sum is origin-free over a
+///      closed shell and moves by t.(integral of n dA)/3 over an open one;
+///   3. no edge handle is used exactly once (`once_used_edges`): `boolean`'s
+///      {1, 2} guard admits a count of 1, so it cannot see an open rim;
+///   4. the 0.05 tessellation is watertight (`check_watertight`);
+///   5. the bounding box is exactly `want_lo`..`want_hi`.
+#[cfg(test)]
+fn closed_failures(s: &TSolid, want_vol: f64, want_lo: Vec3, want_hi: Vec3) -> Vec<String> {
+    let mut bad: Vec<String> = Vec::new();
+    let v = build::solid_volume(s);
+    if (v - want_vol).abs() > 1e-9 * want_vol.abs().max(1.0) {
+        bad.push(format!("volume {v} != closed form {want_vol}"));
+    }
+    let moved = build::transform_solid(s, &crate::math::Transform::translation([37.0, -23.0, 11.0]));
+    let vm = build::solid_volume(&moved);
+    if (vm - v).abs() > 1e-9 * v.abs().max(1.0) {
+        bad.push(format!("volume is not translation invariant: {v} -> {vm} (the shell is not closed)"));
+    }
+    let open = once_used_edges(&s.faces());
+    if !open.is_empty() {
+        bad.push(format!("{} edge handle(s) used exactly once (an open rim)", open.len()));
+    }
+    match crate::mesh::mesh_solid(s, 0.05) {
+        Some(m) => {
+            if !check_watertight(&m) {
+                bad.push("tessellation is not watertight".to_string());
+            }
+        }
+        None => bad.push("tessellation refused".to_string()),
+    }
+    let bb = build::solid_aabb(s);
+    if (0..3).any(|k| (bb.lo[k] - want_lo[k]).abs() > 1e-9 || (bb.hi[k] - want_hi[k]).abs() > 1e-9) {
+        bad.push(format!("bbox {:?}..{:?} != {:?}..{:?}", bb.lo, bb.hi, want_lo, want_hi));
+    }
+    bad
+}
+
+/// `closed_failures`, asserted: one panic listing every check that failed.
+#[cfg(test)]
+fn assert_closed(what: &str, s: &TSolid, want_vol: f64, want_lo: Vec3, want_hi: Vec3) {
+    let bad = closed_failures(s, want_vol, want_lo, want_hi);
+    assert!(bad.is_empty(), "{what} is not a closed, exact solid:\n  - {}", bad.join("\n  - "));
+}
+
+/// K-H: the harness must be able to fail. A box is closed (every edge handle
+/// used twice); take one face away and exactly its four edges are used once.
+#[test]
+fn closedness_harness_counts_the_rim_of_a_missing_face() {
+    let s = build::box_solid([10.0, 20.0, 30.0], [1.0, 2.0, 3.0], None);
+    assert!(once_used_edges(&s.faces()).is_empty(), "a box is closed");
+    let mut faces = s.faces();
+    faces.pop();
+    assert_eq!(once_used_edges(&faces).len(), 4, "a missing quad leaves its four edges used once");
+}
+
+/// K-H: and it must be able to pass. A box at a non-origin centre against its
+/// closed form and exact bbox.
+#[test]
+fn closedness_harness_accepts_a_closed_box() {
+    let s = build::box_solid([10.0, 20.0, 30.0], [1.0, 2.0, 3.0], None);
+    assert_closed("box", &s, 6000.0, [-4.0, -8.0, -12.0], [6.0, 12.0, 18.0]);
+}
+
+/// K-H: a shell with a face missing is refused, and the message names the rim.
+#[test]
+#[should_panic(expected = "used exactly once")]
+fn closedness_harness_rejects_an_open_shell() {
+    let s = build::box_solid([10.0, 20.0, 30.0], [1.0, 2.0, 3.0], None);
+    let mut faces = s.faces();
+    faces.pop();
+    let open = Solid { shells: vec![Rc::new(RefCell::new(Shell { faces }))] };
+    assert_closed("open box", &open, 6000.0, [-4.0, -8.0, -12.0], [6.0, 12.0, 18.0]);
+}
+
+/// K-H: the seven measured cases of the brep-fix plan (section 0), pinned in the
+/// repo's own convention for a known defect (`spike_`, plain red tests): each
+/// asserts the CORRECT closed form, so it is red for as long as its defect is
+/// live. As of K-H (2026-09-30) C0, C2 and C6 are red; C1, C3, C4 and C5 pass
+/// by refusing.
+///
+/// Every case is a ModelDoc, the JSON `runScript()` hands `build_doc_json`, so a
+/// pin runs the path a student's script runs rather than a hand-built solid.
+/// Every case is EXACT-OR-REFUSED (ground rule 1): a refusal in a sentence is a
+/// pass, because turning a wrong solid into an honest refusal is what a slice
+/// may do; the exact value closes the case properly. Every case is built twice,
+/// at the origin and shifted by t = (37, -23, 11): C2's error moved by 3.1e-2
+/// under exactly that shift, so a fixture that passes in one frame proves
+/// nothing. Closed forms are OCCT-refereed (ground rule 4), never read off
+/// brep-rs.
+#[cfg(test)]
+mod closedness_pins {
+    use super::*;
+    use serde_json::{json, Value};
+
+    const SHIFT: Vec3 = [37.0, -23.0, 11.0];
+    /// The L-bracket's bbox; C1-C5 only remove material inside it.
+    const BRACKET_LO: Vec3 = [-20.0, -15.0, -15.0];
+    const BRACKET_HI: Vec3 = [20.0, 15.0, 5.0];
+
+    struct Pin {
+        name: &'static str,
+        /// What is wrong today; for a case that refuses today, what a failure
+        /// would mean.
+        known: &'static str,
+        doc: fn(Vec3) -> Value,
+        /// The feature whose solid is under test.
+        last: &'static str,
+        vol: f64,
+        lo: Vec3,
+        hi: Vec3,
+    }
+
+    fn doc(features: Vec<Value>) -> Value {
+        json!({ "version": 1, "features": features })
+    }
+
+    fn subtract(id: &str, from: &str, tool: &str) -> Value {
+        json!({ "id": id, "kind": "combine", "op": "subtract", "targets": [from, tool] })
+    }
+
+    /// A 40x30x10 plate under a 20x20x10 block, joined (op1). Volume 16000.
+    fn bracket(t: Vec3) -> Vec<Value> {
+        vec![
+            json!({ "id": "box1", "kind": "box", "size": [40, 30, 10], "center": [t[0], t[1], t[2] - 10.0] }),
+            json!({ "id": "box2", "kind": "box", "size": [20, 20, 10], "center": t }),
+            json!({ "id": "op1", "kind": "combine", "op": "union", "targets": ["box1", "box2"] }),
+        ]
+    }
+
+    /// The oblique triangular prism of C0 and C1 (move1): a sketch on the front
+    /// plane, pulled 110, moved.
+    fn prism(t: Vec3) -> Vec<Value> {
+        vec![
+            json!({ "id": "sk1", "kind": "sketch", "plane": "xz", "offset": 0, "points": [[2, 1], [-2, 1], [2, -3]] }),
+            json!({ "id": "pull1", "kind": "extrude", "target": "sk1", "height": 110 }),
+            json!({ "id": "move1", "kind": "move", "target": "pull1", "offset": [8.0 + t[0], 55.0 + t[1], 4.0 + t[2]], "copy": false }),
+        ]
+    }
+
+    /// The bracket minus a box tool (op2).
+    fn bracket_minus_box(t: Vec3, size: Vec3, at: Vec3) -> Value {
+        let mut f = bracket(t);
+        f.push(json!({ "id": "box3", "kind": "box", "size": size, "center": add(at, t) }));
+        f.push(subtract("op2", "op1", "box3"));
+        doc(f)
+    }
+
+    fn c0(t: Vec3) -> Value {
+        let mut f = vec![json!({ "id": "box1", "kind": "box", "size": [20, 20, 10], "center": t })];
+        f.extend(prism(t));
+        f.push(subtract("op1", "box1", "move1"));
+        doc(f)
+    }
+
+    fn c1(t: Vec3) -> Value {
+        let mut f = bracket(t);
+        f.extend(prism(t));
+        f.push(subtract("op2", "op1", "move1"));
+        doc(f)
+    }
+
+    fn c2(t: Vec3) -> Value {
+        bracket_minus_box(t, [8.0, 40.0, 7.0], [11.0, 0.0, 6.5])
+    }
+
+    fn c3(t: Vec3) -> Value {
+        bracket_minus_box(t, [8.0, 8.0, 8.0], [0.0, 0.0, 6.0])
+    }
+
+    /// C3's pocket authored with `pocket()`: the tool is FLUSH with the block's
+    /// top (z 2..5), a different configuration from C3's at boolean level.
+    fn c4(t: Vec3) -> Value {
+        let mut f = bracket(t);
+        let (x, y) = (t[0], t[1]);
+        f.push(json!({
+            "id": "sk1", "kind": "sketch", "plane": "xy", "offset": 5.0 + t[2],
+            "points": [[-4.0 + x, -4.0 + y], [4.0 + x, -4.0 + y], [4.0 + x, 4.0 + y], [-4.0 + x, 4.0 + y]],
+            "constraints": [
+                { "kind": "horizontal", "edge": 0 }, { "kind": "vertical", "edge": 1 },
+                { "kind": "horizontal", "edge": 2 }, { "kind": "vertical", "edge": 3 },
+            ],
+        }));
+        f.push(json!({ "id": "pocket1", "kind": "pocket", "target": "sk1", "into": "op1", "depth": 3 }));
+        doc(f)
+    }
+
+    fn c5(t: Vec3) -> Value {
+        bracket_minus_box(t, [6.0, 10.0, 8.0], [-15.0, 0.0, -4.0])
+    }
+
+    fn c6(t: Vec3) -> Value {
+        doc(vec![
+            json!({ "id": "box1", "kind": "box", "size": [40, 40, 40], "center": t }),
+            json!({ "id": "ball1", "kind": "sphere", "radius": 5, "center": t }),
+            subtract("op1", "box1", "ball1"),
+        ])
+    }
+
+    /// Build `last`, or return the sentence it was refused with. A case that
+    /// built NEITHER is a malformed pin, and exact-or-refused would pass it
+    /// vacuously, so that panics.
+    fn build_case(doc: &Value, last: &str) -> Result<TSolid, String> {
+        let (hist, refusals) = crate::wasm::build_doc(doc);
+        if let Some(s) = hist.shapes.get(last) {
+            return Ok(s.clone());
+        }
+        match refusals.get(last).and_then(|r| r.as_str()) {
+            Some(sentence) if !sentence.is_empty() => Err(sentence.to_string()),
+            _ => panic!("the case built neither a solid nor a refusal for {last}; refusals: {refusals:?}"),
+        }
+    }
+
+    fn pin(p: &Pin) {
+        let mut bad: Vec<String> = Vec::new();
+        for t in [[0.0, 0.0, 0.0], SHIFT] {
+            match build_case(&(p.doc)(t), p.last) {
+                Err(sentence) => eprintln!("{} at shift {t:?} is refused: {sentence}", p.name),
+                Ok(s) => {
+                    for b in closed_failures(&s, p.vol, add(p.lo, t), add(p.hi, t)) {
+                        bad.push(format!("at shift {t:?}: {b}"));
+                    }
+                }
+            }
+        }
+        assert!(bad.is_empty(), "{} is neither exact nor refused.\nKNOWN: {}\n  - {}", p.name, p.known, bad.join("\n  - "));
+    }
+
+    /// KNOWN WRONG (I-7, measured 2026-09-30): 3840.0001 vs 3840, refusals empty.
+    #[test]
+    fn spike_c0_block_minus_oblique_prism_is_exact_or_refused() {
+        pin(&Pin {
+            name: "C0 block minus oblique triangular prism",
+            known: "I-7: the +-1e-6 probe offset is baked into the oblique trims, so the shell cracks. Measured: volume 3840.0001 vs 3840, 12 mesh-level open directed edges, refusals empty. K0b trims at the true plane.",
+            doc: c0,
+            last: "op1",
+            vol: 3840.0,
+            lo: [-10.0, -10.0, -5.0],
+            hi: [10.0, 10.0, 5.0],
+        });
+    }
+
+    /// Refused today: a class-1 case. Exact closes it; a wrong solid reopens class 2.
+    #[test]
+    fn spike_c1_bracket_minus_chamfer_prism_is_exact_or_refused() {
+        pin(&Pin {
+            name: "C1 bracket minus chamfer prism on the block's top +x edge",
+            known: "refused today (class 1). A failure means a slice turned an honest refusal into a wrong solid.",
+            doc: c1,
+            last: "op2",
+            vol: 15840.0,
+            lo: BRACKET_LO,
+            hi: BRACKET_HI,
+        });
+    }
+
+    /// KNOWN WRONG (I-5, measured 2026-09-30): 15786.6667 vs 15880, refusals empty.
+    /// A refusal closes the class-2 bug; the exact value closes it properly.
+    #[test]
+    fn spike_c2_bracket_minus_top_notch_is_exact_or_refused() {
+        pin(&Pin {
+            name: "C2 bracket minus a box notch over the block's top +x edge",
+            known: "I-5: region_inside builds its region from every non-parallel planar face of `other`, which holds only for a convex `other`, and the L-bracket is not. Measured: 15786.6667 vs 15880, refusals empty, 14 mesh-level open directed edges; I-6's guard admits a once-used edge, so nothing refuses it. K0c refuses the open shell, K1a fixes the region.",
+            doc: c2,
+            last: "op2",
+            vol: 15880.0,
+            lo: BRACKET_LO,
+            hi: BRACKET_HI,
+        });
+    }
+
+    #[test]
+    fn spike_c3_bracket_minus_block_top_pocket_is_exact_or_refused() {
+        pin(&Pin {
+            name: "C3 bracket minus a box pocket straddling the block's top face",
+            known: "refused today (class 1). A failure means a slice turned an honest refusal into a wrong solid.",
+            doc: c3,
+            last: "op2",
+            vol: 15808.0,
+            lo: BRACKET_LO,
+            hi: BRACKET_HI,
+        });
+    }
+
+    #[test]
+    fn spike_c4_pocket_authored_with_pocket_is_exact_or_refused() {
+        pin(&Pin {
+            name: "C4 the C3 pocket authored with pocket() (flush tool)",
+            known: "refused today (class 1). A failure means a slice turned an honest refusal into a wrong solid.",
+            doc: c4,
+            last: "pocket1",
+            vol: 15808.0,
+            lo: BRACKET_LO,
+            hi: BRACKET_HI,
+        });
+    }
+
+    #[test]
+    fn spike_c5_bracket_minus_plate_top_pocket_is_exact_or_refused() {
+        pin(&Pin {
+            name: "C5 bracket minus a box pocket in the plate's exposed top",
+            known: "refused today (class 1). A failure means a slice turned an honest refusal into a wrong solid.",
+            doc: c5,
+            last: "op2",
+            vol: 15820.0,
+            lo: BRACKET_LO,
+            hi: BRACKET_HI,
+        });
+    }
+
+    /// KNOWN WRONG (I-1, measured 2026-09-30): 64523.5988 vs 63476.4012, refusals empty.
+    #[test]
+    fn spike_c6_box_minus_enclosed_sphere_is_exact_or_refused() {
+        pin(&Pin {
+            name: "C6 40^3 box minus an enclosed r5 sphere",
+            known: "I-1: flip_face has Plane and Cylinder arms only, so a sphere's faces are not reversed and the void's volume is ADDED. Measured: 64523.5988 vs 63476.4012, refusals empty, 0 open edges. K0a makes flip_face fail closed.",
+            doc: c6,
+            last: "op1",
+            vol: 64000.0 - 4.0 / 3.0 * std::f64::consts::PI * 125.0,
+            lo: [-20.0, -20.0, -20.0],
+            hi: [20.0, 20.0, 20.0],
+        });
+    }
 }
 
 /// W8: subtract of two overlapping parallel-axis cylinders. Pinned against
