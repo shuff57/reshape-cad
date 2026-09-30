@@ -1421,6 +1421,26 @@ fn partial_wall(cy: &Cylinder, vlo: f64, vhi: f64, reverse: bool) -> TFace {
 // The operation.
 // ---------------------------------------------------------------------------
 
+/// Append one edge use's start point to a uv ring, plus, for a circular arc,
+/// enough interior samples that the ring follows the arc instead of cutting it
+/// with a chord. A chord ring drops the arc's bulge, so a containment test
+/// against it (and a region clamped to it) is wrong by the circular segment.
+/// Segments and whole circles add just the start point, as before.
+fn push_edge_use_uv(u: &topo::EdgeUse<Curve3>, plane: &Plane, pts: &mut Vec<[f64; 2]>) {
+    let eb = u.edge.borrow();
+    let p = if u.forward { eb.a.borrow().point } else { eb.b.borrow().point };
+    pts.push(plane.project(p));
+    if let Curve::Arc { sweep, .. } = &eb.curve {
+        // ~11 degrees per chord: the sagitta is under 0.5% of the radius.
+        let n = (sweep.abs() / (std::f64::consts::PI / 16.0)).ceil().max(2.0) as usize;
+        for k in 1..n {
+            let t = k as f64 / n as f64;
+            let t = if u.forward { t } else { 1.0 - t };
+            pts.push(plane.project(eb.curve.point_at(t)));
+        }
+    }
+}
+
 /// The outer boundary ring of a planar face in `plane`'s uv. A face that
 /// already carries holes (a later boolean's input) has more than one wire; the
 /// outer wire is first by construction (`face_with_hole` appends holes). Only
@@ -1430,9 +1450,7 @@ fn outer_uv(fb: &Face<Curve3, Surface3>, plane: &Plane) -> Option<Vec<[f64; 2]>>
     let w = fb.boundary.first()?;
     let mut pts = Vec::new();
     for u in &w.borrow().edges {
-        let eb = u.edge.borrow();
-        let p = if u.forward { eb.a.borrow().point } else { eb.b.borrow().point };
-        pts.push(plane.project(p));
+        push_edge_use_uv(u, plane, &mut pts);
     }
     if pts.len() < 3 {
         return None;
@@ -1528,9 +1546,7 @@ fn coplanar_face_wires(other: &TSolid, plane: &Plane) -> Option<Vec<Vec<[f64; 2]
                 for w in &fb.boundary {
                     let mut pts = Vec::new();
                     for u in &w.borrow().edges {
-                        let eb = u.edge.borrow();
-                        let p = if u.forward { eb.a.borrow().point } else { eb.b.borrow().point };
-                        pts.push(plane.project(p));
+                        push_edge_use_uv(u, plane, &mut pts);
                     }
                     if pts.len() >= 3 {
                         wires.push(pts);
@@ -4098,7 +4114,7 @@ mod tests {
             (build::solid_aabb(&fixed).lo[2] + 5.0).abs() < 1e-9,
             "the tool must occupy z in [-5, 0]"
         );
-}
+    }
 }
 
 
@@ -4645,4 +4661,28 @@ fn y1_box_join_exact() {
         (vol - want).abs() <= 1e-6 * want,
         "a wrong solid with no refusal: volume {vol} vs exact {want} (interior faces not dissolved)"
     );
+}
+/// The chord bug: `outer_uv` and `coplanar_face_wires` used to push edge
+/// endpoints only, so a quarter-disk cap read as its 50 mm2 triangle instead of
+/// 78.5 mm2. Latent (the boolean refuses arc-bounded planar faces first), so
+/// it is pinned here at the ring level.
+#[test]
+fn arc_bounded_cap_ring_follows_the_arc() {
+    use crate::build::ProfileSeg;
+    let segs = [
+        ProfileSeg::Line { a: [0.0, 0.0], b: [10.0, 0.0] },
+        ProfileSeg::Arc { centre: [0.0, 0.0], radius: 10.0, start: 0.0, sweep: std::f64::consts::FRAC_PI_2 },
+        ProfileSeg::Line { a: [0.0, 10.0], b: [0.0, 0.0] },
+    ];
+    let solid = build::extrude_profile(&segs, [0.0; 3], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 5.0]).unwrap();
+    let cap = solid
+        .faces()
+        .into_iter()
+        .find(|f| matches!(&f.borrow().surface, Surface::Plane(p) if p.n[2].abs() > 0.9 && p.origin[2] > 1.0))
+        .expect("top cap");
+    let Surface::Plane(plane) = cap.borrow().surface.clone() else { unreachable!() };
+    let ring = outer_uv(&cap.borrow(), &plane).unwrap();
+    let want = std::f64::consts::PI * 100.0 / 4.0;
+    let got = poly_area(&ring);
+    assert!((got - want).abs() < 0.01 * want, "cap ring area {got} vs {want} (chord triangle would be 50)");
 }
