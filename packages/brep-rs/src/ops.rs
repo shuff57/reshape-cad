@@ -592,6 +592,20 @@ fn region_inside(other: &TSolid, plane: &Plane, offset: Vec3) -> Option<Region> 
                                 continue;
                             }
                         }
+                        // A STEP face -- a counterbore tool's shoulder, the
+                        // annulus between its two radii -- is parallel but not a
+                        // supporting plane: its constant holds only across its
+                        // own area, which the half-plane algebra cannot say.
+                        // With the probe past it (outer side) while some face of
+                        // `other` crosses the probe plane, `other` has material
+                        // on that plane and "nothing here" is false: leave the
+                        // section to the walls crossing it. A probe past the
+                        // whole solid crosses nothing, so the solid's own end
+                        // caps still end it.
+                        let probe = add(plane.origin, offset);
+                        if dot(sub(probe, g.origin), g.n) > TOL && crosses_probe_plane(other, probe, plane.n) {
+                            continue;
+                        }
                     }
                 }
                 let h = halfplane_of(plane, g, offset);
@@ -753,6 +767,30 @@ fn region_inside(other: &TSolid, plane: &Plane, offset: Vec3) -> Option<Region> 
         }
     }
     Some(region)
+}
+
+/// Does some face of `other` cross the probe plane (through `probe`, normal
+/// `n`), with vertices strictly on both sides of it? Then `other` has material
+/// ON that plane -- a boundary face passing through it has material beside it --
+/// so a parallel face's constant saying "nothing here" is false, whichever face
+/// it came from. Two separate lumps stacked with a gap cross nothing at the gap,
+/// so their caps still empty it. Vertices only: a curved face bulging past its
+/// vertices is under-read, which keeps the constant -- the behaviour before.
+fn crosses_probe_plane(other: &TSolid, probe: Vec3, n: Vec3) -> bool {
+    other.faces().iter().any(|f| {
+        let (mut below, mut above) = (false, false);
+        for w in &f.borrow().boundary {
+            for u in &w.borrow().edges {
+                let eb = u.edge.borrow();
+                for p in [eb.a.borrow().point, eb.b.borrow().point] {
+                    let h = dot(sub(p, probe), n);
+                    below |= h < -TOL;
+                    above |= h > TOL;
+                }
+            }
+        }
+        below && above
+    })
 }
 
 /// A region clamped to the face polygon `f`.
@@ -1752,6 +1790,88 @@ fn keep_polygon(
                             face.clone()
                         });
                         return Some(());
+                    }
+                    // Two exact verdicts, ahead of the lens/lune refusal below.
+                    // WHOLE: the face lies inside `other` -- a counterbore
+                    // tool's shoulder (an annulus) wholly in the target, whose
+                    // region here is the box's half-planes with no disk at all.
+                    // CLEAR: none of it does -- a first counterbore's shoulder
+                    // against a second tool standing clear across the part.
+                    // Exact, not sampled: the outer circle against every
+                    // half-plane (by its radius) and against the region's disk.
+                    // (An empty region and the (0,0,c) constants took the
+                    // branch above.)
+                    let whole = region.hole.is_none()
+                        && region.disk.map_or(true, |(c, r)| {
+                            let d = ((c[0] - c_uv[0]).powi(2) + (c[1] - c_uv[1]).powi(2)).sqrt();
+                            d + radius <= r + 1e-7
+                        })
+                        && region.hs.iter().all(|h| {
+                            h[0] * c_uv[0] + h[1] * c_uv[1] + h[2]
+                                + radius * (h[0] * h[0] + h[1] * h[1]).sqrt()
+                                <= 1e-9
+                        });
+                    let clear = region.disk.map_or(false, |(c, r)| {
+                        ((c[0] - c_uv[0]).powi(2) + (c[1] - c_uv[1]).powi(2)).sqrt() >= r + radius - 1e-7
+                    }) || region.hs.iter().any(|h| {
+                        h[0] * c_uv[0] + h[1] * c_uv[1] + h[2]
+                            - radius * (h[0] * h[0] + h[1] * h[1]).sqrt()
+                            >= -1e-9
+                    });
+                    // But the region is exact only for a convex `other`: a
+                    // base's void walls push half-planes that contradict (a
+                    // prior pocket's x<=4 and x>=8), and CLEAR then read a
+                    // shoulder crossing that pocket as untouched -- MEASURED,
+                    // caught downstream only by where a soundness sample fell.
+                    // So a verdict must also hold point by point, on rings over
+                    // the face outside its holes. A face whose holes are not
+                    // all circles is not sampled, and refuses.
+                    if whole || clear {
+                        let holes: Option<Vec<(Vec3, f64)>> = face
+                            .borrow()
+                            .boundary
+                            .iter()
+                            .skip(1)
+                            .map(|w| {
+                                let mut c = None;
+                                for u in &w.borrow().edges {
+                                    match &u.edge.borrow().curve {
+                                        Curve::Circle { center, radius, .. } => c = Some((*center, *radius)),
+                                        _ => return None,
+                                    }
+                                }
+                                c
+                            })
+                            .collect();
+                        let mut votes: Vec<bool> = Vec::new();
+                        if let Some(holes) = &holes {
+                            for f in [0.95, 0.8, 0.65, 0.5, 0.35, 0.2] {
+                                for k in 0..16 {
+                                    let a = TWO_PI * k as f64 / 16.0;
+                                    let p = add(center, add(
+                                        scale(plane.u, f * radius * a.cos()),
+                                        scale(plane.v, f * radius * a.sin()),
+                                    ));
+                                    if holes.iter().any(|(hc, hr)| crate::math::len(sub(p, *hc)) <= hr + 1e-7) {
+                                        continue;
+                                    }
+                                    votes.push(inside_solid(other, add(p, scale(plane.n, sign * PROBE))));
+                                }
+                            }
+                        }
+                        if whole && !votes.is_empty() && votes.iter().all(|&v| v) {
+                            if keeps_inside(op, is_a) {
+                                let reverse = op == "subtract" && !is_a;
+                                out.push(if reverse { flip_planar(face) } else { face.clone() });
+                            }
+                            return Some(());
+                        }
+                        if clear && !votes.is_empty() && votes.iter().all(|&v| !v) {
+                            if !keeps_inside(op, is_a) {
+                                out.push(face.clone());
+                            }
+                            return Some(());
+                        }
                     }
                     if let Some((c, r)) = region.disk {
                         // Containment in the face disk: compare in uv.
@@ -5080,4 +5200,27 @@ fn arc_bounded_cap_ring_follows_the_arc() {
     let want = std::f64::consts::PI * 100.0 / 4.0;
     let got = poly_area(&ring);
     assert!((got - want).abs() < 0.01 * want, "cap ring area {got} vs {want} (chord triangle would be 50)");
+}
+
+/// A counterbore tool's shoulder that crosses a prior pocket must never be read as
+/// untouched. The region algebra reads that pocketed base as contradictory
+/// half-planes (the pocket's own walls: x <= 4 and x >= 8), which once classified
+/// the whole shoulder CLEAR and dropped it -- caught downstream only by where a
+/// soundness sample happened to fall. Exact or refused, never dropped: OCCT,
+/// measured 2026-09-29, cuts it to 30810.86233585891.
+#[test]
+fn counterbore_shoulder_across_a_pocket_is_never_dropped() {
+    let bx = build::box_solid([40.0, 40.0, 20.0], [0.0, 0.0, 0.0], None);
+    let pocket = build::box_solid([4.0, 4.0, 12.0], [6.0, 0.0, 6.0], None);
+    let prof = [[0.0, -11.0], [3.0, -11.0], [3.0, 4.0], [6.0, 4.0], [6.0, 11.0], [0.0, 11.0]];
+    let tool = build::revolve_profile(&prof, [0.0, 0.0, 1.0], [1.0, 0.0, 0.0], 360.0).unwrap().0;
+    let base = boolean("subtract", &bx, &pocket).expect("pocket");
+    let shoulder = tool.faces().into_iter().find(|f| f.borrow().boundary.len() == 2).expect("the annulus");
+    let mut out = Vec::new();
+    let kept = process_face(&shoulder, &base, "subtract", false, &mut out);
+    assert!(kept.is_none() || !out.is_empty(), "the shoulder was dropped as if the tool never met it");
+    if let Some(r) = boolean("subtract", &base, &tool) {
+        let (got, want) = (build::solid_volume(&r), 30810.86233585891);
+        assert!((got - want).abs() <= 1e-6 * want, "volume {got} vs OCCT {want}");
+    }
 }
