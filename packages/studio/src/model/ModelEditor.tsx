@@ -2268,13 +2268,19 @@ export default function ModelEditor({
           align-self: center; flex: 0 0 1px; width: 1px; height: 34px;
           background: var(--reshape-border); margin: 0 4px;
         }
+
         /* ponytail: font-size:0 blanks the bare text node sitting beside each
            icon, which is what makes the bar icon-only without wrapping twenty
            labels in spans. The words stay in the DOM for screen readers and
            are what the tooltip and the flyout menu show. Anything nested that
            SHOULD read as text sets its own size back (menu, search box) --
-           add that line too if you nest something new in here. */
-        .model-tools button {
+           add that line too if you nest something new in here.
+           :not(.sk2d-tool) because the 2D sketch toolbar docks in this same bar
+           (SketchCanvas2D's ribbonHost) and its buttons ARE their label:
+           blanking the size left thirty empty 28px boxes. SK2D_CSS already
+           styles .sk2d-tool as text buttons, but (0,1,0) loses to (0,1,1) here.
+           Excluding the class beats raising SK2D_CSS's specificity for every rule. */
+        .model-tools button:not(.sk2d-tool) {
           display: inline-flex; align-items: center; justify-content: center;
           width: 28px; height: 28px; padding: 0; gap: 0; font-size: 0;
           background: transparent; color: #d3d5e3;
