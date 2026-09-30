@@ -1289,9 +1289,112 @@ fn hole_wire(plane: &Plane, center_uv: [f64; 2], radius: f64, outer_ccw: bool) -
     }))
 }
 
+/// Is `hole` wholly inside one of the face's existing inner wires?
+///
+/// `geom::planar_measure` sums each wire loop's SIGNED area (Green's theorem,
+/// `geom.rs:336`), so a hole nested inside another hole is subtracted twice:
+/// a d12 wire contributes -36*pi and a concentric d6 wire inside it another -9*pi,
+/// where the void is only -36*pi. That double count is the coaxial-bore 60*pi of
+/// SPEC-brep-feature-provenance §4.3b -- the d6 tool lies wholly inside the d12 hole
+/// already present, removes nothing (`a - b = a` when `b` is inside the void), and
+/// must not be added as a second wire.
+///
+/// Circle-vs-circle is decided analytically, so a duplicate (concentric and equal,
+/// the second of two identical coaxial bores) counts as inside and is skipped too.
+/// A hole that merely CROSSES an existing wire is neither inside nor containing,
+/// so it takes the old path -- the case that still needs arc handling.
+fn hole_wholly_inside_inner(boundary: &[topo::WireRef<Curve3>], plane: &Plane, hole: &Hole) -> bool {
+    // boundary[0] is the outer loop; only inner wires bound void.
+    for w in boundary.iter().skip(1) {
+        let wb = w.borrow();
+        if wb.edges.len() == 1 {
+            if let Curve::Circle { center, radius, .. } = &wb.edges[0].edge.borrow().curve {
+                let ci = plane.project(*center);
+                let Hole::Circle(c, r) = hole else { continue };
+                let d = [c[0] - ci[0], c[1] - ci[1]];
+                let dist = (d[0] * d[0] + d[1] * d[1]).sqrt();
+                if dist + r <= *radius + 1e-9 * r.max(*radius).max(1.0) {
+                    return true;
+                }
+                continue;
+            }
+        }
+        let poly = wire_uv_points(w, plane);
+        if poly.len() < 3 {
+            continue;
+        }
+        let inside = match hole {
+            Hole::Circle(c, r) => {
+                (0..8).all(|k| {
+                    let t = k as f64 * std::f64::consts::FRAC_PI_4;
+                    point_in_poly_strict(&poly, [c[0] + r * t.cos(), c[1] + r * t.sin()])
+                })
+            }
+            Hole::Poly(uv) => {
+                uv.len() >= 3 && uv.iter().all(|p| point_in_poly_strict(&poly, *p))
+            }
+        };
+        if inside {
+            return true;
+        }
+    }
+    false
+}
+
+/// Indices of inner wires that a new hole wholly contains, or `None` when any
+/// wire straddles the new hole's boundary.
+///
+/// A contained wire becomes interior to the new hole, and `planar_measure`
+/// (`geom.rs:336`) sums every wire's signed area without collapsing nesting, so
+/// keeping it double-counts the void. That is the coaxial d6-inside-d12 case.
+///
+/// But a wire that CROSSES the new hole's boundary means the region is not
+/// fully consumed: the straddler's outer sliver still has to bound something, and
+/// removing its neighbours shifts the cap's area by exactly their areas. That is
+/// `y2_bench_final_exact`: an r=20 bite over a cap carrying four r=2.5 wires at
+/// v = -50, -38, -26, -14 swallows the two wholly-inside ones and moves the volume
+/// by `2*pi*2.5^2 = 39.269971931595` -- bit-for-bit that fixture's regression. So
+/// bailing out entirely is the safe answer whenever anything straddles.
+fn wires_consumed_by_hole(
+    boundary: &[topo::WireRef<Curve3>],
+    plane: &Plane,
+    hole: &Hole,
+) -> Option<Vec<usize>> {
+    let Hole::Circle(c, r) = hole else { return Some(Vec::new()) };
+    let mut inside: Vec<usize> = Vec::new();
+    for (i, w) in boundary.iter().enumerate().skip(1) {
+        let wb = w.borrow();
+        if wb.edges.len() != 1 {
+            continue;
+        }
+        let Curve::Circle { center, radius, .. } = &wb.edges[0].edge.borrow().curve else {
+            continue;
+        };
+        let ci = plane.project(*center);
+        let d = [c[0] - ci[0], c[1] - ci[1]];
+        let dist = (d[0] * d[0] + d[1] * d[1]).sqrt();
+        let eps = 1e-9 * r.max(*radius).max(1.0);
+        if dist + *radius <= r + eps {
+            inside.push(i);
+        } else if dist < r + *radius - eps {
+            // Crosses the new hole's boundary: the region is not fully consumed.
+            return None;
+        }
+    }
+    Some(inside)
+}
+
 /// A face that keeps `face`'s outer wire and adds one hole (a disk or a
 /// polygon) in the same plane.
 fn face_with_hole(face: &TFace, plane: &Plane, hole: &Hole) -> TFace {
+    // A hole already inside existing void must not be added: planar_measure
+    // would count the same void twice. See hole_wholly_inside_inner.
+    if hole_wholly_inside_inner(&face.borrow().boundary, plane, hole) {
+        return face.clone();
+    }
+    // Wires this hole wholly contains become interior to it; drop them so the
+    // same void is not counted twice. Empty whenever anything straddles.
+    let swallow = wires_consumed_by_hole(&face.borrow().boundary, plane, hole).unwrap_or_default();
     let outer_ccw = {
         let fb = face.borrow();
         let mut ring = Vec::new();
@@ -1329,7 +1432,10 @@ fn face_with_hole(face: &TFace, plane: &Plane, hole: &Hole) -> TFace {
     let mut wires: Vec<topo::WireRef<Curve3>> = Vec::new();
     {
         let fb = face.borrow();
-        for w in &fb.boundary {
+        for (i, w) in fb.boundary.iter().enumerate() {
+            if swallow.contains(&i) {
+                continue;
+            }
             wires.push(w.clone());
         }
     }
@@ -4287,6 +4393,64 @@ mod shell_flush_tests {
         assert!((vol - want).abs() <= 1e-6 * want, "volume {vol} vs {want}");
         assert_eq!(got.faces().len(), 11, "5 outer + top ring + 5 inner");
     }
+}
+
+/// Coaxial bores of differing diameter. A second, smaller bore's circle lands
+/// wholly inside the first bore's hole, where it removes nothing (`a - b = a`);
+/// `planar_measure` sums every wire's signed area without collapsing nesting, so
+/// appending it re-trimmed the cap as if the tool had bitten real material. That
+/// was a silent wrong solid of exactly 60*pi on a 40x40x20 box.
+///
+/// Pinned by `hole_wholly_inside_inner` (the new hole already inside an existing
+/// wire) and `wires_consumed_by_hole` (an existing wire swallowed by the new one,
+/// which stands down whenever any wire straddles the new hole's boundary).
+///
+/// SPEC-brep-feature-provenance §4.3b, §4.3f.
+#[test]
+fn coaxial_bores_of_differing_diameter_are_exact() {
+    let base = build::box_solid([40.0, 40.0, 20.0], [0.0, 0.0, 0.0], None);
+    let d12 = build::cylinder_solid([0.0, 0.0, 0.0], 6.0, 22.0, [0.0, 0.0, 1.0]);
+    let d6 = build::cylinder_solid([0.0, 0.0, 0.0], 3.0, 22.0, [0.0, 0.0, 1.0]);
+    let d8 = build::cylinder_solid([0.0, 0.0, 0.0], 4.0, 22.0, [0.0, 0.0, 1.0]);
+    // A through bore of radius r leaves 32000 - pi*r^2*20 in a 40x40x20 box.
+    let thru = |r: f64| 32000.0 - std::f64::consts::PI * r * r * 20.0;
+    let vol = |s: &TSolid| build::solid_volume(s);
+    let near = |got: f64, want: f64| (got - want).abs() <= 1e-6 * want;
+
+    // Larger first: the d6 lands inside the d12 hole and is already void.
+    let big_first = boolean("subtract", &base, &d12).expect("d12 through");
+    let big_first = boolean("subtract", &big_first, &d6).expect("d6 inside d12");
+    assert!(
+        near(vol(&big_first), thru(6.0)),
+        "d12 then d6 is the d12 bore exactly; got {}",
+        vol(&big_first)
+    );
+
+    // Smaller first: the d12 swallows the d6 wire it now encloses.
+    let small_first = boolean("subtract", &base, &d6).expect("d6 through");
+    let grown = boolean("subtract", &small_first, &d12).expect("d12 swallows d6");
+    assert!(
+        near(vol(&grown), thru(6.0)),
+        "d6 then d12 is the d12 bore exactly; got {}",
+        vol(&grown)
+    );
+
+    // The same bore twice: a duplicate must not become a second wire.
+    let twice = boolean("subtract", &small_first, &d6).expect("duplicate d6");
+    assert!(
+        near(vol(&twice), thru(3.0)),
+        "two identical coaxial d6 bores are one d6 bore; got {}",
+        vol(&twice)
+    );
+
+    // Growing in steps must land on the same solid as cutting it outright.
+    let stepped = boolean("subtract", &base, &d8).expect("d8 through");
+    let stepped = boolean("subtract", &stepped, &d12).expect("d12 swallows d8");
+    assert!(
+        near(vol(&stepped), thru(6.0)),
+        "d8 then d12 is the d12 bore exactly; got {}",
+        vol(&stepped)
+    );
 }
 
 /// THE CLASS-2 SILENT WRONG SOLID (msgbox #329): region_inside() builds a
