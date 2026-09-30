@@ -3498,9 +3498,186 @@ pub fn boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
 
         }
     }
-    Some(Solid {
+    let result = Solid {
         shells: vec![Rc::new(RefCell::new(Shell { faces }))],
-    })
+    };
+    // The manifold guard above cannot see a result that is closed and WRONG
+    // (the base's own shell with the tool's faces silently dropped is a
+    // perfectly closed shell). Check the result as a SET instead.
+    if !boolean_result_is_sound(op, a, b, &result) {
+        return None;
+    }
+    Some(result)
+}
+
+/// Points that lie ON a face, each with the face's outward normal, for the
+/// set-theoretic soundness check.
+///
+/// PLANAR faces: polygonal (Segment edges only) and single-circle disks, with
+/// or without inner wires; anything with an arc or other curve on a wire
+/// yields no samples, because a chord polygon would put samples off the true
+/// face. Points are the face's vertex centroid and each vertex pulled 30%
+/// toward it, kept only when they lie in the outer wire and outside every
+/// inner wire.
+///
+/// CYLINDRICAL faces matter just as much: a bore's entire volume error lives on
+/// its wall, and when this function was planar-only the soundness check never
+/// looked at one -- two coaxial holes in a box were wrong by exactly 60*pi and
+/// the check still called them sound. Only the narrow, provably-safe case is
+/// sampled: a FULL cylinder (no `arc`) with no inner wires, where every angle
+/// exists at every v, so the mid-v ring is guaranteed to lie on the face no
+/// matter how the boundary wires trim it. Everything else abstains, per the
+/// rule `boolean_result_is_sound` states for itself: an unreliable check must
+/// abstain rather than refuse a correct solid.
+fn planar_face_samples(face: &TFace) -> Vec<(Vec3, Vec3)> {
+    let fb = face.borrow();
+    let plane = match &fb.surface {
+        Surface::Plane(p) => p.clone(),
+        Surface::Cylinder(cy) if cy.arc.is_none() && fb.boundary.len() == 1 => {
+            // The probe offset is 1e-4 (DELTA in boolean_result_is_sound); stay
+            // well clear of both rims so a sample can never land on a trimmed
+            // edge and probe the wrong side of it.
+            if cy.vmax - cy.vmin <= 4.0e-4 {
+                return Vec::new();
+            }
+            let v = 0.5 * (cy.vmin + cy.vmax);
+            return (0..8)
+                .filter_map(|k| {
+                    let u = k as f64 * std::f64::consts::FRAC_PI_4;
+                    let radial = add(scale(cy.e1, u.cos()), scale(cy.e2, u.sin()));
+                    let p = add(add(cy.origin, scale(radial, cy.radius)), scale(cy.axis, v));
+                    // Outward normal = cross(d/du, d/dv). At u=0 that is
+                    // cross(e2, axis) -- the convention the void-wall normal test
+                    // above documents -- and `flip_face` negates e2, so the flip is
+                    // already encoded here. Normalised because the probe is a
+                    // fixed-length step; a degenerate frame abstains rather than
+                    // emit a zero normal, which would probe the face's own point.
+                    let du = add(scale(cy.e1, -u.sin()), scale(cy.e2, u.cos()));
+                    let n = cross(du, cy.axis);
+                    let len = crate::math::len(n);
+                    if len < 1e-12 {
+                        return None;
+                    }
+                    Some((p, scale(n, 1.0 / len)))
+                })
+                .collect();
+        }
+        _ => return Vec::new(),
+    };
+    let n = plane.n;
+    // A wire is either one Circle edge (centre, radius) or all Segments.
+    enum Loop { Circle(Vec3, f64), Poly(Vec<[f64; 2]>) }
+    let read = |w: &topo::WireRef<Curve3>| -> Option<Loop> {
+        let wb = w.borrow();
+        if wb.edges.len() == 1 {
+            if let Curve::Circle { center, radius, .. } = &wb.edges[0].edge.borrow().curve {
+                return Some(Loop::Circle(*center, *radius));
+            }
+        }
+        for u in &wb.edges {
+            if !matches!(&u.edge.borrow().curve, Curve::Segment { .. }) {
+                return None;
+            }
+        }
+        let pts = wire_uv_points(w, &plane);
+        if pts.len() < 3 { None } else { Some(Loop::Poly(pts)) }
+    };
+    let inside_loop = |l: &Loop, p: Vec3| match l {
+        Loop::Circle(c, r) => crate::math::len(sub(p, *c)) < *r,
+        Loop::Poly(poly) => point_in_poly(poly, plane.project(p)),
+    };
+    let Some(outer_wire) = fb.boundary.first() else { return Vec::new() };
+    let Some(outer) = read(outer_wire) else { return Vec::new() };
+    let mut inner: Vec<Loop> = Vec::new();
+    for w in fb.boundary.iter().skip(1) {
+        let Some(l) = read(w) else { return Vec::new() };
+        inner.push(l);
+    }
+    let mut cands: Vec<Vec3> = Vec::new();
+    match &outer {
+        Loop::Circle(c, r) => {
+            cands.push(*c);
+            for (du, dv) in [(1.0, 0.0), (-1.0, 0.0), (0.0, 1.0), (0.0, -1.0)] {
+                cands.push(add(*c, add(scale(plane.u, 0.7 * r * du), scale(plane.v, 0.7 * r * dv))));
+            }
+            // Off-centre points too: a disk with a central bore still has
+            // material at 0.85r.
+            for (du, dv) in [(0.85, 0.0), (-0.85, 0.0), (0.0, 0.85), (0.0, -0.85)] {
+                cands.push(add(*c, add(scale(plane.u, r * du), scale(plane.v, r * dv))));
+            }
+        }
+        Loop::Poly(poly) => {
+            let k = poly.len() as f64;
+            let cu = [poly.iter().map(|q| q[0]).sum::<f64>() / k, poly.iter().map(|q| q[1]).sum::<f64>() / k];
+            cands.push(plane.point(cu));
+            for q in poly.iter().take(12) {
+                for t in [0.7, 0.3] {
+                    cands.push(plane.point([cu[0] + t * (q[0] - cu[0]), cu[1] + t * (q[1] - cu[1])]));
+                }
+            }
+        }
+    }
+    cands
+        .into_iter()
+        .filter(|p| inside_loop(&outer, *p) && !inner.iter().any(|l| inside_loop(l, *p)))
+        .map(|p| (p, n))
+        .collect()
+}
+
+/// Verify a general-path boolean as a SET, independent of how it was built.
+/// A point q is in the result iff the operation's formula says so of its
+/// membership in `a` and `b` -- `inside_solid` is a parity ray test, so it
+/// is right for a non-convex operand where the convex `Region` algebra the
+/// builder relies on is not (that gap is the msgbox #383 wrong-solid class).
+///
+/// Two checks over sample points p on planar faces, probed at p +/- DELTA n:
+///  * every face of `a` and `b`: the result's membership at both probes must
+///    match the formula (a dropped tool wall, or a kept interior face, fails);
+///  * every face of the result: the formula must differ across it (a face
+///    that bounds nothing is an interior or exterior sliver left behind).
+/// A face that fails to yield samples is simply not checked, so this can only
+/// turn a wrong solid into a refusal, never a correct solid into a wrong one.
+fn boolean_result_is_sound(op: &str, a: &TSolid, b: &TSolid, r: &TSolid) -> bool {
+    const DELTA: f64 = 1e-4;
+    // The parity ray test is only trusted on planar and cylindrical operands;
+    // a sphere/cone/torus face makes it (and so this check) unreliable, and an
+    // unreliable check must abstain rather than refuse a correct solid.
+    let plain = |s: &TSolid| {
+        s.faces().iter().all(|f| matches!(&f.borrow().surface, Surface::Plane(_) | Surface::Cylinder(_)))
+    };
+    if !plain(a) || !plain(b) {
+        return true;
+    }
+    let member = |q: Vec3| -> bool {
+        let (ia, ib) = (inside_solid(a, q), inside_solid(b, q));
+        match op {
+            "union" => ia || ib,
+            "subtract" => ia && !ib,
+            _ => ia && ib,
+        }
+    };
+    for (faces, is_result) in [(a.faces(), false), (b.faces(), false), (r.faces(), true)] {
+        for f in &faces {
+            // A result face bounds nothing only if EVERY sample says so: a
+            // sample can sit on a tangent line of the other operand, where
+            // both probes are legitimately inside (tangent-union-cylinder).
+            let mut bounds_nothing = None;
+            for (p, n) in planar_face_samples(f) {
+                let q1 = add(p, scale(n, DELTA));
+                let q2 = sub(p, scale(n, DELTA));
+                let (e1, e2) = (member(q1), member(q2));
+                if is_result {
+                    bounds_nothing = Some(bounds_nothing.unwrap_or(true) && e1 == e2);
+                } else if e1 != inside_solid(r, q1) || e2 != inside_solid(r, q2) {
+                    return false;
+                }
+            }
+            if bounds_nothing == Some(true) {
+                return false;
+            }
+        }
+    }
+    true
 }
 
 /// Remove zero-area output faces. A boolean can emit a planar face that is a
@@ -3781,6 +3958,24 @@ fn subtract_enclosed(a: &TSolid, b: &TSolid) -> Option<TSolid> {
             }
         }
     }
+    // The tool's shell must not touch the base's. `strictly_inside_face` below
+    // reads each face of `a` as a HALF-SPACE, which is only true while `a` is
+    // convex: a base with a cavity or a planar step (an L-bracket) fails it for
+    // a tool that is perfectly enclosed, and that decline used to fall through
+    // to the convex-only general path, which silently dropped the tool's faces
+    // (msgbox #383: (a-t)-u came back as a-t). A face of `a` whose own reach box
+    // is clear of the tool's bbox cannot touch the tool at all, whatever `a`'s
+    // shape; with the tool's shell connected and one point of it inside `a`,
+    // that is a sound proof of enclosure. Curved faces have loose boxes and
+    // simply fall back to the half-space test.
+    let bb_grown = crate::math::Aabb {
+        lo: [bb.lo[0] - 1e-3, bb.lo[1] - 1e-3, bb.lo[2] - 1e-3],
+        hi: [bb.hi[0] + 1e-3, bb.hi[1] + 1e-3, bb.hi[2] + 1e-3],
+    };
+    let a_clear_of_tool = a_faces.iter().all(|g| match face_reach_box(g) {
+        Some(gb) => !aabbs_touch(&gb, &bb_grown),
+        None => true,
+    });
     // Every face of b must lie strictly inside every face's own surface of a.
     for f in &b_faces {
         let (area, c) = build::face_area_centroid(&f.borrow());
@@ -3789,6 +3984,9 @@ fn subtract_enclosed(a: &TSolid, b: &TSolid) -> Option<TSolid> {
         }
         if !inside_solid(a, c) {
             return None;
+        }
+        if a_clear_of_tool {
+            continue;
         }
         for g in &a_faces {
             if !strictly_inside_face(&g.borrow(), c, CAVITY_MARGIN) {
@@ -3824,14 +4022,13 @@ fn subtract_enclosed(a: &TSolid, b: &TSolid) -> Option<TSolid> {
     }
     // Outer shell keeps a's faces; the void shell is b's faces reversed so
     // their normals point into the cavity (away from the material).
-    let outer: Vec<TFace> = a_faces.clone();
+    // The base keeps every shell it already had (a prior cavity stays its own
+    // shell); the tool's faces reversed become one more void shell, normals
+    // pointing into the cavity (away from the material).
     let void: Vec<TFace> = b_faces.iter().map(|f| flip_face(f)).collect();
-    Some(Solid {
-        shells: vec![
-            Rc::new(RefCell::new(Shell { faces: outer })),
-            Rc::new(RefCell::new(Shell { faces: void })),
-        ],
-    })
+    let mut shells = a.shells.clone();
+    shells.push(Rc::new(RefCell::new(Shell { faces: void })));
+    Some(Solid { shells })
 }
 
 /// A copy of any analytic face with its outward normal reversed, so a
@@ -4826,6 +5023,40 @@ fn y1_box_join_exact() {
         "a wrong solid with no refusal: volume {vol} vs exact {want} (interior faces not dissolved)"
     );
 }
+
+/// msgbox #383: a second boolean onto a boolean result used to vanish (the
+/// convex `Region` algebra drops a tool against a base with a void or step
+/// wall) and return a closed, WRONG solid. Closed forms below; every cell is
+/// either exact or refused, and the enclosed-tool cells must be exact.
+#[test]
+fn second_cut_onto_a_boolean_result_is_exact_or_refused() {
+    use std::f64::consts::PI;
+    let bx = |s: [f64; 3], c: [f64; 3]| build::box_solid(s, c, None);
+    let cy = |c: [f64; 3], r: f64, h: f64| build::cylinder_solid(c, r, h, [0.0, 0.0, 1.0]);
+    // Some(true)=exact, Some(false)=WRONG, None=refused
+    let cut = |base: &TSolid, tool: &TSolid, want: f64| {
+        boolean("subtract", base, tool).map(|r| (build::solid_volume(&r) - want).abs() <= 1e-6 * want)
+    };
+    let a = bx([40.0, 40.0, 30.0], [0.0, 0.0, 0.0]);
+    let cav = boolean("subtract", &a, &bx([6.0; 3], [-12.0, 0.0, 10.0])).unwrap();
+    let notch = boolean("subtract", &a, &bx([6.0; 3], [-12.0, 0.0, 13.0])).unwrap();
+    let bore = boolean("subtract", &a, &cy([-12.0, 0.0, 0.0], 3.0, 8.0)).unwrap();
+    let plate = bx([40.0, 30.0, 10.0], [0.0, 0.0, -10.0]);
+    let l = boolean("union", &plate, &bx([20.0, 20.0, 10.0], [0.0, 0.0, 0.0])).unwrap();
+    // (a-t)-u = 47568 and union(plate,block)-t2 = 15784: the two handoff repros.
+    assert_eq!(cut(&cav, &bx([6.0; 3], [12.0, 0.0, 10.0]), 47568.0), Some(true));
+    assert_eq!(cut(&l, &bx([6.0; 3], [15.0, 0.0, -10.0]), 15784.0), Some(true));
+    assert_eq!(cut(&bore, &cy([12.0, 0.0, 0.0], 3.0, 8.0), 48000.0 - 144.0 * PI), Some(true));
+    // Tools that break a face or pass through: exact if built, never wrong.
+    for (base, bv) in [(&cav, 47784.0), (&notch, 47820.0), (&l, 16000.0)] {
+        let x = if std::ptr::eq(base, &l) { 15.0 } else { 12.0 };
+        let z = if std::ptr::eq(base, &l) { -6.0 } else { 13.0 };
+        let dv = if std::ptr::eq(base, &l) { 144.0 } else { 180.0 };
+        assert_ne!(cut(base, &bx([6.0; 3], [x, 0.0, z]), bv - dv), Some(false), "face-break box");
+    }
+}
+
+
 /// The chord bug: `outer_uv` and `coplanar_face_wires` used to push edge
 /// endpoints only, so a quarter-disk cap read as its 50 mm2 triangle instead of
 /// 78.5 mm2. Latent (the boolean refuses arc-bounded planar faces first), so
