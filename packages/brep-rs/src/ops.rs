@@ -457,10 +457,10 @@ fn clip_halfplane(subj: &[[f64; 2]], a: f64, b: f64, c: f64) -> Vec<[f64; 2]> {
 /// The half-plane equation in `plane`'s frame for the other face's plane `g`,
 /// evaluated at `plane.origin + offset` (the probe point).
 fn halfplane_of(plane: &Plane, g: &Plane, offset: Vec3) -> [f64; 3] {
-    let a = dot(g.n, plane.u);
-    let b = dot(g.n, plane.v);
-    let c = dot(sub(add(plane.origin, offset), g.origin), g.n);
-    [a, b, c]
+ let a = dot(g.n, plane.u);
+ let b = dot(g.n, plane.v);
+ let c = dot(sub(add(plane.origin, offset), g.origin), g.n);
+ [a, b, c]
 }
 
 /// The region of `plane` that is inside a cylinder face, when the cylinder axis
@@ -514,8 +514,8 @@ fn cyl_perp_region(cy: &Cylinder, plane: &Plane, offset: Vec3) -> Region {
 }
 
 /// The region of `plane` inside a sphere surface: a disk (or empty/all).
-fn sphere_region(sp: &crate::geom::SphereSurf, plane: &Plane, offset: Vec3) -> Region {
-    let c = add(sp.center, offset);
+fn sphere_region(sp: &crate::geom::SphereSurf, plane: &Plane) -> Region {
+ let c = sp.center;
     let d = dot(sub(c, plane.origin), plane.n);
     let r2 = sp.radius * sp.radius - d * d;
     if r2 <= 1e-12 {
@@ -533,8 +533,8 @@ fn region_inside(other: &TSolid, plane: &Plane, offset: Vec3) -> Option<Region> 
     let mut region = Region::all();
     for f in other.faces() {
         let s = f.borrow().surface.clone();
-        match &s {
-            Surface::Plane(g) => {
+ match &s {
+ Surface::Plane(g) => {
                 // A planar face PARALLEL to the probe plane contributes the
                 // degenerate (0,0,c) half-plane: a CONSTANT over the whole
                 // probe plane. For a MATERIAL cap that is right (the solid
@@ -546,10 +546,10 @@ fn region_inside(other: &TSolid, plane: &Plane, offset: Vec3) -> Option<Region> 
                 // plane (−n step) at a point OUTSIDE the face's own area —
                 // a material cap has nothing behind its plane except within
                 // its own area, a void face has the rest of the solid there.
-                {
-                    let fb = f.borrow();
-                    let (a_, b_) = (dot(g.n, plane.u).abs(), dot(g.n, plane.v).abs());
-                    if a_ < 1e-9 && b_ < 1e-9 {
+ {
+ let fb = f.borrow();
+ let (a_, b_) = (dot(g.n, plane.u).abs(), dot(g.n, plane.v).abs());
+ if a_ < 1e-9 && b_ < 1e-9 {
                         // Parallel. Sample beside the face: face centroid plus
                         // 2x its own bbox half-diagonal, in-plane.
                         let (area, c3) = build::face_area_centroid(&fb);
@@ -608,8 +608,8 @@ fn region_inside(other: &TSolid, plane: &Plane, offset: Vec3) -> Option<Region> 
                         }
                     }
                 }
-                let h = halfplane_of(plane, g, offset);
-                region.push_hl(h);
+ let h = halfplane_of(plane, g, if dot(g.n, plane.u).abs() < 1e-9 && dot(g.n, plane.v).abs() < 1e-9 { offset } else { [0.0; 3] });
+ region.push_hl(h);
             }
             Surface::Cylinder(cy) => {
                 let ad = dot(cy.axis, plane.n).abs();
@@ -730,12 +730,13 @@ fn region_inside(other: &TSolid, plane: &Plane, offset: Vec3) -> Option<Region> 
                     // cap planes constrain the region instead (the same
                     // fall-through the sphere arm uses).
                     let axis = normalize(c.axis);
-                    let probe = add(plane.origin, offset);
-                    let along = dot(sub(probe, c.base), axis);
-                    let band_lo = c.v_range[0] * c.half_angle.cos();
-                    let band_hi = c.v_range[1] * c.half_angle.cos();
-                    if along >= band_lo - TOL && along <= band_hi + TOL {
-                        let r = c.base_radius - along * c.half_angle.tan();
+ let probe = add(plane.origin, offset);
+ let along_probe = dot(sub(probe, c.base), axis);
+ let band_lo = c.v_range[0] * c.half_angle.cos();
+ let band_hi = c.v_range[1] * c.half_angle.cos();
+ if along_probe >= band_lo - TOL && along_probe <= band_hi + TOL {
+ let along = dot(sub(plane.origin, c.base), axis);
+ let r = c.base_radius - along * c.half_angle.tan();
                         if r <= TOL {
                             return Some(Region::empty());
                         }
@@ -751,7 +752,7 @@ fn region_inside(other: &TSolid, plane: &Plane, offset: Vec3) -> Option<Region> 
                 }
             }
             Surface::Sphere(sp) => {
-                let r = sphere_region(sp, plane, offset);
+ let r = sphere_region(sp, plane);
                 if let Some((c, rr)) = r.disk {
                     region.intersect_disk(c, rr);
                 } else if r.empty {
@@ -3608,10 +3609,10 @@ pub fn boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
             return None;
         }
     }
-    let result = Solid {
-        shells: vec![Rc::new(RefCell::new(Shell { faces }))],
-    };
-    // The manifold guard above cannot see a result that is closed and WRONG
+ let result = Solid {
+ shells: vec![Rc::new(RefCell::new(Shell { faces }))],
+ };
+ // The manifold guard above cannot see a result that is closed and WRONG
     // (the base's own shell with the tool's faces silently dropped is a
     // perfectly closed shell). Check the result as a SET instead.
  if !boolean_result_is_sound(op, a, b, &result) {
@@ -3673,9 +3674,9 @@ fn edge_use_counts(faces: &[TFace]) -> std::collections::HashMap<usize, usize> {
 /// closure-guard slice makes `boolean` refuse on it.
 #[cfg(test)]
 fn once_used_edges(faces: &[TFace]) -> Vec<usize> {
-    let mut once: Vec<usize> = edge_use_counts(faces).into_iter().filter(|&(_, n)| n == 1).map(|(k, _)| k).collect();
-    once.sort_unstable();
-    once
+ let mut once: Vec<usize> = edge_use_counts(faces).into_iter().filter(|&(_, n)| n == 1).map(|(k, _)| k).collect();
+ once.sort_unstable();
+ once
 }
 
 /// Points that lie ON a face, each with the face's outward normal, for the
@@ -4892,21 +4893,24 @@ mod closedness_pins {
         assert!(bad.is_empty(), "{} is neither exact nor refused.\nKNOWN: {}\n  - {}", p.name, p.known, bad.join("\n  - "));
     }
 
-/// K0c refuses the known-open result; K0b fixes its I-7 oblique trim defect.
+    /// K0b fixed the I-7 oblique-trim defect, so C0 is now BUILT and EXACT rather
+    /// than refused: 3840 at origin and at SHIFT, zero once-used edges, no closure
+    /// failures. K0c's translation-invariance guard is what made the crack visible
+    /// first; on this case it now has nothing left to catch.
     #[test]
     fn spike_c0_block_minus_oblique_prism_is_exact_or_refused() {
         pin(&Pin {
             name: "C0 block minus oblique triangular prism",
- known: "K0c refuses C0's open I-7 shell by translation invariance. K0b fixes the underlying +-1e-6 probe offset baked into the oblique trims.",
+            known: "I-7: region_inside evaluated non-parallel face constants at the probe offset (~1e-6), so the oblique trims landed off the true plane and the shell cracked. K0b evaluates them at offset 0. Measured 2026-10-01: built, 3840 exact at both positions, zero once-used edges, no closure failures.",
             doc: c0,
             last: "op1",
             vol: 3840.0,
             lo: [-10.0, -10.0, -5.0],
             hi: [10.0, 10.0, 5.0],
         });
-    }
+ }
 
-    /// Refused today: a class-1 case. Exact closes it; a wrong solid reopens class 2.
+ /// Refused today: a class-1 case. Exact closes it; a wrong solid reopens class 2.
     #[test]
     fn spike_c1_bracket_minus_chamfer_prism_is_exact_or_refused() {
         pin(&Pin {
