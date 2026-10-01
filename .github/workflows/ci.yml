@@ -79,8 +79,35 @@ jobs:
       # The kernel's own native tests. They never needed wasm and so were never
       # run here either; the toolchain is present now, so there is no reason
       # for the Rust half of the product to stay unmeasured on push.
+      #
+      # continue-on-error is load-bearing, and the reason is this repo's own
+      # convention: a pinned known defect is a RED test (`spike_*`), not an
+      # ignored one. So `cargo test --release` exits non-zero on a healthy tree,
+      # and without this every later step is SKIPPED -- measured on the 2026-10-01
+      # run of 36794016882: the build was never attempted and `npm test` never
+      # ran, so one deliberate red test cost the whole JS half of the product its
+      # only coverage. main has been red since 4dd1e58 for exactly this reason.
+      #
+      # This step therefore reports without blocking, and the step BELOW re-runs
+      # the same suite with the known-defect tests skipped, so a NEW failure still
+      # blocks. The skip list is the whole contract: a renamed test stops
+      # matching its pattern and therefore starts blocking again (fail-safe), and a
+      # new deliberate red test has to be added here on purpose.
       - name: Test the kernel natively
+        continue-on-error: true
         run: cargo test --release
+        working-directory: packages/brep-rs
+
+      # The blocking half: 256 pass / 0 fail locally at 3b5aa9a. Each --skip is one
+      # pinned known defect -- the two long-standing spikes plus K-H's C0, C2 and C6.
+      - name: Test the kernel natively, new breakage only
+        run: >-
+          cargo test --release --
+          --skip spike_coplanar_chamfer
+          --skip spike_countersink
+          --skip spike_c0_
+          --skip spike_c2_
+          --skip spike_c6_
         working-directory: packages/brep-rs
 
       # `npm run build`, NOT `npm run build --workspaces`. Measured on this
