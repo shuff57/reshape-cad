@@ -2804,7 +2804,7 @@ fn process_face(
                             } else {
                                 let arc_range = crate::geom::ArcRange { start, span };
                                 let wall = partial_wall_arc(cy, vlo, vhi, arc_range);
-                                out.push(if reverse { flip_face(&wall) } else { wall });
+            out.push(if reverse { flip_face(&wall)? } else { wall });
                             }
                         }
                     }
@@ -2861,7 +2861,7 @@ fn process_face(
             let in_other = inside_solid(other, probes[0]);
             let keep = if keep_inside { in_other } else { !in_other };
             if keep {
-                out.push(if reverse { flip_face(face) } else { face.clone() });
+            out.push(if reverse { flip_face(face)? } else { face.clone() });
             }
             Some(())
         }
@@ -3008,6 +3008,9 @@ fn flip_planar(face: &TFace) -> TFace {
             uv_domain: fb.uv_domain,
         }))
     } else {
+        // Unreachable today: all 7 of this fn's call sites pass a Plane,
+        // so the fall-through clone is dead. flip_face is the fail-closed
+        // variant for surfaces without a reversal arm.
         face.clone()
     }
 }
@@ -3340,7 +3343,7 @@ pub fn cylinder_open_hollow(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> 
         &b.faces()
             .into_iter()
             .find(|f| matches!(&f.borrow().surface, Surface::Cylinder(c) if c.arc.is_none() && (c.radius - wb.radius).abs() < 1e-9))?,
-    );
+    )?;
     // The top annulus: outer ring = a's top rim (forward, CCW about +axis
     // as a's own cap used it), hole ring = b's top rim wound the other way.
     let annulus = |outer: &topo::EdgeRef<Curve3>, hole: &topo::EdgeRef<Curve3>, at: Vec3, normal: Vec3| -> TFace {
@@ -3527,7 +3530,7 @@ fn build_cyl_pair_result(
             // b's inside rim.
             let cap_a_lo = two_arc_cap(ca_lo, n_bot, e_a_out_lo.clone(), true, e_b_in_lo.clone(), false);
             let cap_a_hi = two_arc_cap(ca_hi, n_top, e_a_out_hi.clone(), true, e_b_in_hi.clone(), false);
-            vec![wall_a, flip_face(&wall_b), cap_a_lo, cap_a_hi]
+    vec![wall_a, flip_face(&wall_b)?, cap_a_lo, cap_a_hi]
         }
         "union" => {
             // Both walls keep their outside arcs. Each cap is ONE face: the
@@ -3562,16 +3565,16 @@ fn build_cyl_pair_result(
 
 
 pub fn boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
-    if op == "subtract" {
-        if let Some(cavity) = subtract_enclosed(a, b) {
-                    return Some(cavity);
-        }
-    }
-    if let Some(r) = cylinder_pair_boolean(op, a, b) {
-        return Some(r);
-    }
-    if let Some(r) = cylinder_open_hollow(op, a, b) {
-        return Some(r);
+ if op == "subtract" {
+ if let Some(cavity) = subtract_enclosed(a, b) {
+ return volume_is_translation_invariant(&cavity).then_some(cavity);
+ }
+ }
+ if let Some(r) = cylinder_pair_boolean(op, a, b) {
+ return volume_is_translation_invariant(&r).then_some(r);
+ }
+ if let Some(r) = cylinder_open_hollow(op, a, b) {
+ return volume_is_translation_invariant(&r).then_some(r);
     }
     let mut faces: Vec<TFace> = Vec::new();
     for f in a.faces() {
@@ -3611,10 +3614,41 @@ pub fn boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
     // The manifold guard above cannot see a result that is closed and WRONG
     // (the base's own shell with the tool's faces silently dropped is a
     // perfectly closed shell). Check the result as a SET instead.
-    if !boolean_result_is_sound(op, a, b, &result) {
-        return None;
-    }
-    Some(result)
+ if !boolean_result_is_sound(op, a, b, &result) {
+ return None;
+ }
+ if !volume_is_translation_invariant(&result) {
+ return None;
+ }
+ Some(result)
+}
+
+/// A divergence-theorem volume is independent of origin only for a closed
+/// shell. Translation exposes an unmatched area vector without trusting edge
+/// handles, which curved seams can legitimately leave unshared. This mirrors
+/// `solid_volume` face by face without cloning the result topology.
+fn volume_is_translation_invariant(solid: &TSolid) -> bool {
+ let shift = crate::math::Transform::translation([37.0, -23.0, 11.0]);
+ let mut sum = 0.0;
+ let mut moved_sum = 0.0;
+ for face in solid.faces() {
+ let face = face.borrow();
+ match &face.surface {
+ Surface::Plane(plane) => {
+ let (area, centroid) = build::face_area_centroid(&face);
+ sum += area * dot(plane.n, centroid);
+ moved_sum += area * dot(plane.n, add(centroid, shift.t));
+ }
+ surface => {
+ let term = surface.volume_term();
+ sum += term;
+ moved_sum += surface.transform(&shift).volume_term();
+ }
+ }
+ }
+ let volume = (sum / 3.0).abs();
+ let moved_volume = (moved_sum / 3.0).abs();
+ (moved_volume - volume).abs() <= 1e-9 * volume.abs().max(1.0)
 }
 
 /// Uses per edge HANDLE across `faces`, keyed by the handle's address. On a
@@ -4159,7 +4193,7 @@ fn subtract_enclosed(a: &TSolid, b: &TSolid) -> Option<TSolid> {
     // The base keeps every shell it already had (a prior cavity stays its own
     // shell); the tool's faces reversed become one more void shell, normals
     // pointing into the cavity (away from the material).
-    let void: Vec<TFace> = b_faces.iter().map(|f| flip_face(f)).collect();
+    let void: Vec<TFace> = b_faces.iter().map(|f| flip_face(f)).collect::<Option<_>>()?;
     let mut shells = a.shells.clone();
     shells.push(Rc::new(RefCell::new(Shell { faces: void })));
     Some(Solid { shells })
@@ -4169,8 +4203,10 @@ fn subtract_enclosed(a: &TSolid, b: &TSolid) -> Option<TSolid> {
 /// subtracted tool's face becomes a wall of the resulting cavity. Planar and
 /// cylindrical faces (the two a pocket tool can have) have their orientation
 /// carried by their frame; a cylinder reverses by flipping `e2`, exactly as a
-/// subtracted wall does in [`partial_wall`].
-fn flip_face(face: &TFace) -> TFace {
+/// subtracted wall does in [`partial_wall`]. Any other surface returns
+/// `None` -- fail closed (I-1): an unreversed copy would ADD the void's
+/// volume and hand back a closed wrong solid.
+fn flip_face(face: &TFace) -> Option<TFace> {
     let fb = face.borrow();
     match &fb.surface {
         Surface::Plane(p) => {
@@ -4181,12 +4217,12 @@ fn flip_face(face: &TFace) -> TFace {
             // its area and hence the cavity's volume. Only the surface's
             // outward normal is reversed; the wires are geometry, not
             // orientation, and read correctly either way.
-            Rc::new(RefCell::new(Face {
+        Some(Rc::new(RefCell::new(Face {
                 boundary: fb.boundary.clone(),
                 forward: fb.forward,
                 surface: Surface::Plane(flipped),
                 uv_domain: fb.uv_domain,
-            }))
+        })))
         }
         Surface::Cylinder(cy) => {
             let mut uses = Vec::new();
@@ -4215,9 +4251,12 @@ fn flip_face(face: &TFace) -> TFace {
                 vmax: cy.vmax,
                 arc,
             });
-            make_face(surf, fb.uv_domain, uses)
+        Some(make_face(surf, fb.uv_domain, uses))
         }
-        _ => face.clone(),
+        // Fail closed (I-1): a surface with no reversal arm must refuse,
+        // never return an unreversed copy -- the subtracted void's volume
+        // would be ADDED, and the wrong solid is closed, with 0 open edges.
+        _ => None,
     }
 }
 
@@ -4520,7 +4559,33 @@ mod tests {
         let want = 28800.0 - 125.0 * std::f64::consts::PI;
         let vol = build::solid_volume(&result);
         assert!((vol - want).abs() <= 1e-6 * want, "volume {vol} vs {want}");
+}
+
+/// K0a regression pin (I-1): a 40^3 box minus an ENCLOSED r5 sphere.
+/// flip_face has no Sphere arm, so the cavity's faces cannot be reversed:
+/// the case must refuse, or be exact at 63476.4012 (= 64000 - 4/3*pi*5^3).
+/// The pre-fix fall-through returned the sphere UNREVERSED and built
+/// 64523.5988 with refusals empty -- the void's volume ADDED -- a closed
+/// wrong solid with 0 open edges, which every guard waved through.
+#[test]
+fn enclosed_sphere_cavity_refuses_or_is_exact() {
+    let base = build::box_solid([40.0, 40.0, 40.0], [0.0, 0.0, 0.0], None);
+    let tool = build::sphere_solid([0.0, 0.0, 0.0], 5.0, [0.0, 0.0, 1.0]);
+    match boolean("subtract", &base, &tool) {
+        None => {} // refused: honest, the sphere has no reversal arm
+        Some(s) => {
+            let vol = build::solid_volume(&s);
+            assert!(
+                (vol - 64523.5988).abs() > 1.0,
+                "C6 returned the KNOWN WRONG solid {vol} (64523.5988): flip_face handed back an unreversed face and the void's volume was ADDED"
+            );
+            assert!(
+                (vol - 63476.4012).abs() <= 1e-6 * 63476.4012,
+                "C6 built {vol}; the only buildable answer is the exact 63476.4012"
+            );
+        }
     }
+}
 
     /// SPEC-brep-pocket.md: a pocket tool is a prism swept NEGATIVE along the
     /// plane normal, which can turn the prism inside out. Its volume must stay
@@ -4827,12 +4892,12 @@ mod closedness_pins {
         assert!(bad.is_empty(), "{} is neither exact nor refused.\nKNOWN: {}\n  - {}", p.name, p.known, bad.join("\n  - "));
     }
 
-    /// KNOWN WRONG (I-7, measured 2026-09-30): 3840.0001 vs 3840, refusals empty.
+/// K0c refuses the known-open result; K0b fixes its I-7 oblique trim defect.
     #[test]
     fn spike_c0_block_minus_oblique_prism_is_exact_or_refused() {
         pin(&Pin {
             name: "C0 block minus oblique triangular prism",
-            known: "I-7: the +-1e-6 probe offset is baked into the oblique trims, so the shell cracks. Measured: volume 3840.0001 vs 3840, 12 mesh-level open directed edges, refusals empty. K0b trims at the true plane.",
+ known: "K0c refuses C0's open I-7 shell by translation invariance. K0b fixes the underlying +-1e-6 probe offset baked into the oblique trims.",
             doc: c0,
             last: "op1",
             vol: 3840.0,
@@ -4855,13 +4920,12 @@ mod closedness_pins {
         });
     }
 
-    /// KNOWN WRONG (I-5, measured 2026-09-30): 15786.6667 vs 15880, refusals empty.
-    /// A refusal closes the class-2 bug; the exact value closes it properly.
+/// K0c refuses the known-open result; K1a fixes its I-5 region defect.
     #[test]
     fn spike_c2_bracket_minus_top_notch_is_exact_or_refused() {
         pin(&Pin {
             name: "C2 bracket minus a box notch over the block's top +x edge",
-            known: "I-5: region_inside builds its region from every non-parallel planar face of `other`, which holds only for a convex `other`, and the L-bracket is not. Measured: 15786.6667 vs 15880, refusals empty, 14 mesh-level open directed edges; I-6's guard admits a once-used edge, so nothing refuses it. K0c refuses the open shell, K1a fixes the region.",
+ known: "K0c refuses C2's open I-5 shell by translation invariance. K1a fixes the underlying region_inside assumption that the L-bracket is convex.",
             doc: c2,
             last: "op2",
             vol: 15880.0,
