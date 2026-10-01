@@ -10,7 +10,6 @@ commit that added them. Every number below is the plan's own, measured before K-
 two of its premises did not survive contact with the code: K0c's step-1 signal is
 refuted (see that section) and I-2 turned out latent rather than live. This document is
 the plan plus the slices that would follow.
-edited by this plan; it is a document plus the slices that would follow.
 
 ---
 
