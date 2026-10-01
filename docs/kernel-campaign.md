@@ -107,6 +107,15 @@ the third (the bevel) transverse. Built and measured:
   union is provably right (16000), so the fault is the boolean's handling of
   this coplanar-side tool against coplanar base faces. Same family as the
   coplanar/tangent weakness above, on a new shape.
+  **CORRECTION 2026-10-01: no longer a silent wrong volume — it REFUSES.** Measured
+  through the built wasm: the doc-level `combine op2` produces a plain-sentence
+  refusal and yields no shape at all; the union `u1` is exact at 16000 and the tool
+  `e2` exact at 880. `wasm.rs:1323-1334` emits that refusal **only** when
+  `ops::boolean` returns `None`, so the kernel-level claim above ("returns `Some`")
+  is stale, not merely unverified. Neither 15840 nor 15546.667 is produced.
+  Refusing is the honest floor, **not** the fix: `K2b` is still the slice that would
+  make this exact. The parity fixture `chamfer-on-boolean-result` is the gate that
+  holds it (msgbox #425).
 
 The implementation that got this far is worth keeping in mind rather than in
 the tree: it resolved the edge's two faces' outward normals from the faces'
@@ -531,6 +540,21 @@ pair renders (brep-rs vs OCCT, clipped) show the floor present in both. cargo
   (d10 through, d10 blind, offset d6/d6) -> "brep-rs cannot cut this hole yet".
   OCCT: 30429.203673 / 31032.389463 / 30992.925928. W8.
 
+**CORRECTION 2026-10-01 — both entries above are stale; measured, not argued.**
+- *Multiple corner bores, flush*: brep-rs now returns **31095.221315766117** against a
+  closed form of 31095.22131576614 (`32000 - 4*pi*3^2*8`, so the geometry is four d6
+  corner bores 8 deep, BLIND, not through), refusals empty, 18 faces. The 31038.672648
+  wrong value no longer reproduces. This is the `region_inside` SUBTRACTED-void defect,
+  fixed by `bfb211d`. **Still unsampled**: the only shipped corner-bore fixture,
+  `hole-corners`, is a THROUGH bore (depth 22 in a 20-thick box) and so never exercised
+  the blind-floor path that broke.
+- *Counterbores refuse*: stale since `37c6091` — a counterbore cuts now; it is countersink
+  that refuses (its wall is a cone).
+
+Neither correction has a regression pin. The `hole-blind-flush-top` fixture requested
+just below is the one that would hold either; its geometry is now measured and exact, so
+it can be written without guessing. Filed to the lead as msgbox #425.
+
 **Fixture request for the lead:** add `hole-blind-flush-top` (the W2a test doc;
 OCCT 31773.805329, 8 faces) to the `hole` kind. It pins the silent-wrong-volume
 class the gate could not see. The corner-bore and counterbore cases are NOT
@@ -833,6 +857,11 @@ slices bottom out here:
   no refusal. Root cause recorded under W2a: `region_inside` has no notion of a
   SUBTRACTED void in `other`. This is the highest-severity item left, because
   SPEC §4.5 forbids the class outright.
+  **CORRECTION 2026-10-01: no longer open.** Measured today through the built wasm —
+  brep-rs returns 31095.221315766117 against a closed form of 31095.22131576614, refusals
+  empty, 18 faces; 31038.672648 does not reproduce. Fixed by `bfb211d`. See the dated
+  correction under "Multiple corner bores, flush" above (:522) for the geometry and for why
+  no shipped fixture watches it (msgbox #425).
 - **W2, fillet width** (wasm.rs:1171, :3164). Box edges and cylinder rims work
   (round and chamfer, W11); rotated boxes now work too (2026-09-27,
   `box_local_frame`: the profile is built in the box's own orthonormal frame,

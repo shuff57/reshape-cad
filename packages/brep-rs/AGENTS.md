@@ -11,7 +11,7 @@ src/            One crate, layered; each layer depends only on layers above it
 ├── geom.rs     Curves and surfaces; analytic types first-class, NURBS fallback
 ├── topo.rs     Vertex/edge/wire/face/shell/solid, shared-handle model
 ├── build.rs    Primitives, sweep, revolve, mirror, pattern, move
-├── ops.rs      Booleans, fillet/chamfer, shell, draft
+├── ops.rs      Booleans, fillet/chamfer geometry, shell, draft (feature dispatch: wasm.rs `build_fillet`)
 ├── history.rs  Per-operation naming history (Fate, OpRecord, sweeps)
 ├── mesh.rs     Tessellation for three.js; planar faces via earcutr
 ├── step.rs     STEP read/write
