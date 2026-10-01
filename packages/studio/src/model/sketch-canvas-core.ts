@@ -455,9 +455,45 @@ export function readSolved(geoms: CoreGeom[], params: Float64Array | number[]): 
 
 /** A soup geometry row minus its id, distributively over the union so each
  *  kind keeps its own fields (a plain Omit<SoupGeom,'id'> does not). */
-import type { SoupGeom } from '@shuff57/reshape-script/model-types';
+import type { SketchConstraint, SoupGeom, SoupRule } from '@shuff57/reshape-script/model-types';
 type DistOmit<U> = U extends unknown ? Omit<U, 'id'> : never;
 export type SoupGeomNew = DistOmit<SoupGeom>;
+
+// --- legacy points -> soup migration ----------------------------------------
+
+/** The soup rules a migrated points outline owes the kernel: one coincident
+ *  per corner (line i's end meets line i+1's start, wrap included) plus each
+ *  horizontal/vertical edge as a soup row on its line. The soup arm welds
+ *  corners through RULES, not coordinates (wires.rs refuses coordinate-only
+ *  contact as a guess the student never sees), so a loop migrated with empty
+ *  rules arrives as open ends: "edge 1 has a loose end" -- the scaffold Pull
+ *  bug of 2026-10-01. A circle has no corners to weld: []. Length and the
+ *  other legacy kinds stay on `constraints` untranslated (ponytail: only H/V
+ *  ever reach the soup session; add the rest when a legacy doc needs them). */
+export function migratedRules(
+  constraints: SketchConstraint[] | undefined,
+  geoms: SoupGeom[],
+): SoupRule[] {
+  const rules: SoupRule[] = [];
+  const lines = geoms.filter((g) => g.k === 'line');
+  if (lines.length > 1 && lines.length === geoms.length) {
+    for (let i = 0; i < lines.length; i++) {
+      const a = lines[i].id;
+      const b = lines[(i + 1) % lines.length].id;
+      rules.push({ k: 'coincident', a, aEnd: 'b', b, bEnd: 'a' });
+    }
+  }
+  for (const c of constraints ?? []) {
+    if (c.kind === 'horizontal') {
+      const g = lines[c.edge];
+      if (g) rules.push({ k: 'horizontal', a: g.id });
+    } else if (c.kind === 'vertical') {
+      const g = lines[c.edge];
+      if (g) rules.push({ k: 'vertical', a: g.id });
+    }
+  }
+  return rules;
+}
 
 // --- construction toggle (the archived UI's cConstr) -------------------------
 

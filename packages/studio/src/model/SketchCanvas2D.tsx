@@ -77,6 +77,7 @@ import {
   findSnap as findSnapCore,
   inferLineConstraint,
   isDimensionRule,
+  migratedRules,
   namedPointsOf,
   nextGeomId,
   filletPick,
@@ -385,8 +386,8 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
       return;
     }
     wroteMigration.current = true;
-    writeDoc(geoms, []);
-  }, [geoms, sketch.geoms, sketch.geom, writeDoc]);
+    writeDoc(geoms, migratedRules(sketch.constraints, geoms));
+  }, [geoms, sketch.geoms, sketch.geom, sketch.constraints, writeDoc]);
 
 
 

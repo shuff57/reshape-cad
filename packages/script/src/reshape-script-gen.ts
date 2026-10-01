@@ -280,7 +280,7 @@ function ruleRowText(bindings: Map<string, string>, featureId: string, index: nu
   const pt = (side: 'a' | 'b' | 'c', ref: number, end?: SoupPointRef) =>
     ` ${side}:${n(ref)}${end ? `, ${side}End:'${end}'` : ''}`;
   switch (r.k) {
-    case 'coincident': return `{ k:'coincident',${pt('a', r.a, r.aEnd)}${pt('b', r.b, r.bEnd)} }`;
+    case 'coincident': return `{ k:'coincident',${pt('a', r.a, r.aEnd)},${pt('b', r.b, r.bEnd)} }`;
     case 'pointOnObject': return `{ k:'pointOnObject', a:${n(r.a)}${r.aEnd ? `, aEnd:'${r.aEnd}'` : ''}, b:${n(r.b)} }`;
     case 'horizontal': return `{ k:'horizontal', a:${n(r.a)} }`;
     case 'vertical': return `{ k:'vertical', a:${n(r.a)} }`;

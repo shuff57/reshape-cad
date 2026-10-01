@@ -10,6 +10,7 @@ import {
   arcFromClicks,
   arcEnds,
   nextGeomId,
+  migratedRules,
   renumber,
   readSolved,
   namedPointsOf,
@@ -809,4 +810,39 @@ test('45: offsetChainOrder refuses a disconnected selection', () => {
   ];
   assert.equal(offsetChainOrder(geoms, [1, 2]), null);
   assert.equal(offsetChainPick(geoms, [1, 2], { x: 5, y: 5 }), null);
+});
+
+// 46: the points->soup migration owes the kernel corner welds (the soup arm
+// welds through coincident rules only -- empty rules reach it as four open
+// ends: "edge 1 has a loose end", the scaffold Pull bug) plus the scaffold's
+// H/V edges on their matching line ids. A circle has no corners to weld.
+test('46: migratedRules closes the loop and keeps the H/V edges', () => {
+  const points = [[0, 0], [40, 0], [40, 25], [0, 25]];
+  const geoms = points.map((p, i) => ({
+    k: 'line',
+    id: i + 1,
+    a: p,
+    b: points[(i + 1) % points.length],
+  }));
+  const constraints = [
+    { kind: 'horizontal', edge: 0 },
+    { kind: 'vertical', edge: 1 },
+    { kind: 'horizontal', edge: 2 },
+    { kind: 'vertical', edge: 3 },
+  ];
+  assert.deepEqual(migratedRules(constraints, geoms), [
+    { k: 'coincident', a: 1, aEnd: 'b', b: 2, bEnd: 'a' },
+    { k: 'coincident', a: 2, aEnd: 'b', b: 3, bEnd: 'a' },
+    { k: 'coincident', a: 3, aEnd: 'b', b: 4, bEnd: 'a' },
+    { k: 'coincident', a: 4, aEnd: 'b', b: 1, bEnd: 'a' },
+    { k: 'horizontal', a: 1 },
+    { k: 'vertical', a: 2 },
+    { k: 'horizontal', a: 3 },
+    { k: 'vertical', a: 4 },
+  ]);
+  assert.deepEqual(
+    migratedRules([{ kind: 'horizontal', edge: 0 }], [{ k: 'circle', id: 1, c: [0, 0], r: 10 }]),
+    [],
+    'a circle carries no corners to weld and no line edges',
+  );
 });

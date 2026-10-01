@@ -43,6 +43,10 @@ function soupDoc() {
           { k: 'horizontal', a: 1 },
           { k: 'radius', a: 2, value: 5 },
           { k: 'tangent', a: 2, aEnd: 'c', b: 3, bEnd: 'a' },
+          // Appended (not inserted) so radius stays at rule index 1 for test 4's
+          // slot. Emission of this row was invalid JS until the comma fix — test 3's
+          // parse is what turns that regression red.
+          { k: 'coincident', a: 1, aEnd: 'b', b: 3, bEnd: 'a' },
         ],
       },
     ],
@@ -62,7 +66,8 @@ test('1: toScript emits geom([...]) and rules([...]) rows for a soup sketch', ()
   assert.match(text, /sense:\s*'ccw'/, `arc sense lost in:\n${text}`);
   assert.match(text, /k:\s*'radius'/, `radius rule lost in:\n${text}`);
   assert.match(text, /k:\s*'horizontal'/, `horizontal rule lost in:\n${text}`);
-  assert.match(text, /k:\s*'tangent'/, `tangent rule lost in:\n${text}`);
+  assert.match(text, /k:\s*'tangent'/, `tangent rule lost from:\n${text}`);
+  assert.match(text, /k:\s*'coincident'/, `coincident rule lost from:\n${text}`);
 });
 
 test('2: §6.3 — geom() coordinates are emitted at 1e-9 precision, NOT lit()\'s 1e-6', () => {
