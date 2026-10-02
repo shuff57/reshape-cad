@@ -245,13 +245,41 @@ is supported.
 > premise these four attempts all shared was aimed at code that was never wrong.
 > That still holds and is why they all failed.
 >
-> The LIVE question is therefore not "where is 93.33 lost" but: **why does the
-> emitted shell fail the closure guard?** The guard is doing its job -- it is why
-> this is a refusal and not a wrong solid -- but the arrangement is supposed to
-> produce a closed, exact solid here, and does not. Instrument emission to see
-> what the four kept faces become: piece count, piece areas, and whether the
-> loops close. Do not touch `region_inside`, `clamp`, or the trace; all three are
-> now measured correct.
+> **ANSWERED 2026-10-01 — the guard is catching an OPEN shell, not a wrong
+> volume.** With `boolean_result_is_sound` and `volume_is_translation_invariant`
+> temporarily disabled (two lines, reverted), C2 builds and reports **14 open
+> directed edges** — 8 of them listed as:
+>
+> ```
+> 5->18   [-10, 10, -5] / [-10, 10,  3]
+> 4->20   [-10,-10, -5] / [  7,-10, -5]
+> 21->20  [  7,-10, -5] / [  7,-10,  3]
+> 14->19  [  7, 10,  5] / [  7, 10,  3]
+> 15->5   [-10, 10,  5] / [-10, 10, -5]
+> 16->19  [ 10, 10,  3] / [  7, 10,  3]
+> 18->15  [-10, 10,  3] / [-10, 10,  5]
+> 7->4    [ 10,-10, -5] / [  7,-10, -5]
+> ```
+>
+> Read those coordinates: every one is on **x = 7 or x = 10, z between 3 and 5** —
+> the notch box's inner wall and the block's own +x face, across exactly the 2 mm
+> the notch cuts into the block. The emitted geometry is otherwise right; the
+> loops along the cut simply do not share edges.
+>
+> **So the defect is WELDING, not region construction.** The four kept faces are
+> correct, the pieces are correct, and adjacent pieces along a concave cut are
+> not being joined into shared edges — which is precisely what `weld_shared_edges`
+> is for, and why the plan noted it "only welds Segment edges". That is the actual
+> defect, and nothing upstream of it was ever wrong.
+>
+> Complete chain, all measured: `region_inside` exact -> region handed to `clamp`
+> correct -> `clamp` correct -> emission emits correct pieces -> **welding does not
+> join the concave cut** -> closure guard refuses (14 open directed edges).
+>
+> Next step, and it is not a filter: look at why the pieces meeting along the cut
+> are not welded. `weld_shared_edges` welds Segment edges; the cut's rim is a mix,
+> and that mix is the thing to inspect. Nothing upstream of `weld_shared_edges`
+> needs changing.
 > Instrument the region `keep_polygon` actually receives on C2 before touching
 > anything above it -- done, above, and it is correct.
 >
