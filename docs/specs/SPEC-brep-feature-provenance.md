@@ -575,6 +575,19 @@ the bore's core twice. The OCCT-measured values are in §5.2b.
 
 ### 5.2b RESOLVED 2026-09-29 — counterbore cuts; countersink refuses honestly
 
+> **SUPERSEDED IN PART 2026-10-01.** The counterbore half stands. The countersink
+> half does not: `8abd28f` gave `revolve_profile` a bounded `Surface::Cone` frustum,
+> and a countersink now **cuts** — measured at 31321.415986824602, which is the
+> corrected closed form 32000 - 216*pi this section was already holding for it,
+> agreeing to 1.2e-16. `6cee4ba` then gave STEP export a `CONICAL_SURFACE` arm, so a
+> countersunk part exports too; OCCT reads that file back at the same volume with
+> relative delta 0. Both the refusal named below and the two open items it caused are
+> therefore closed. The original finding is kept above unedited, because *why* the
+> countersink was unsafe is the part worth remembering: it was not that a cone is hard,
+> it was that a cone with no soundness backstop would ship silently. That is what
+> `boolean_result_is_sound` and the planar-sampling arm now prevent, and the
+> wrong-half-angle case is pinned.
+
 **Where the refusal was: two sites, and neither was a `return None` the search covered.**
 MEASURED by running each face through `process_face` on its own:
 
@@ -632,6 +645,12 @@ the moment the boolean cut:
 The countersink built the SAME stepped, cylindrical profile, i.e. a counterbore under a
 countersink's name. It now refuses: `revolve_profile` builds no slanted wall, and
 `boolean_result_is_sound` abstains on cones, so a cone tool would ship with no backstop.
+> **Both conditions above were removed on 2026-10-01** (`8abd28f`): `revolve_profile` builds a
+> slanted wall, and `planar_face_samples` gained a mid-v ring so `boolean_result_is_sound`
+> vouches for a cone instead of abstaining. The refusal is gone and the countersink cuts.
+> The backstop this paragraph was worried about is real and is now tested:
+> `cone_soundness_rejects_wrong_half_angle` asserts that a CLOSED shell with the wrong
+> half-angle is rejected. Without the sampling arm it would have been waved through.
 
 **Measured after landing:** cargo 249 pass / 2 fail (the pre-existing chamfer spike, and the
 countersink spike refusing honestly); parity 70/2 and mesh 70/2, the same two
@@ -694,6 +713,13 @@ What remains, in order:
 1. **§5 — counterbore: DONE (§5.2b). Countersink: refuses honestly** until `revolve_profile`
    builds a conical wall and the soundness check can vouch for a cone. Its spike holds the
    corrected closed form (31321.416) for when it can.
+   > **DONE 2026-10-01** (`8abd28f`, exported by `6cee4ba`). The condition above was met:
+   > the conical wall exists, the soundness check vouches for cones, and the spike's
+   > held-for closed form 31321.416 is what it now measures, to 1.2e-16, with refusals
+   > empty. The spike is renamed off its `spike_` prefix and is no longer red.
+   > **What remains open here is the K1a lineage, not the countersink**: a chamfer on a
+   > boolean result (§4.3e) still refuses, because it needs the non-convex region work that
+   > stopped at its stop rule.
 2. **§4.4 — the coaxial gate fixture.** Needs the lead's claim on `scripts/brep-parity-fixtures.mjs`; a builder must not edit it.
 3. Box-only shell (~100 lines, plane math), refusing the general case.
 4. Loft on compatible planar sections, refusing the rest.
