@@ -101,7 +101,7 @@ import {
 import { partWordFor, type TopoName } from '@shuff57/reshape-script/topo-name';
 import { ownerOf } from '@shuff57/reshape-script/model-selection';
 import { edgesOf, featuresOf, ownerScoped, primaryOf, type SelectionItem, type SelectionState } from '../selection-model.js';
-import { withRecess } from './hole-recess.js';
+import { withRecess, whyCannotRecess } from './hole-recess.js';
 import type { RecessKind } from './hole-recess.js';
 
 interface Props {
@@ -759,8 +759,12 @@ export default function ModelEditor({
    *  student asked for, which is the failure this campaign exists to prevent. */
   function recess(kind: RecessKind) {
     const f = chosen[0];
+    // The inline kind test is a TYPE guard, so `f` narrows to HoleFeature below --
+    // that is its only job. The WORDS come from whyCannotRecess, which is pinned
+    // in hole-recess.test.mjs. At e69d3a2 this restated the sentence inline,
+    // leaving a tested function that guarded nothing and two copies of one rule.
     if (!f || f.kind !== 'hole') {
-      say("A recess is cut at a hole's mouth, so pick a hole first.");
+      say(whyCannotRecess(f) ?? 'Pick a hole first.');
       return;
     }
     const had = kind === 'counterbore' ? f.counterbore !== undefined : f.countersink !== undefined;
