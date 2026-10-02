@@ -5059,6 +5059,26 @@ mod closedness_pins {
     const BRACKET_LO: Vec3 = [-20.0, -15.0, -15.0];
     const BRACKET_HI: Vec3 = [20.0, 15.0, 5.0];
 
+    /// What the pin REQUIRES of its case, as distinct from what the case
+    /// happens to do today.
+    ///
+    /// Until this existed, `pin()` reported a case as passing whether it built
+    /// the right solid OR refused -- so a pin whose case had regressed into an
+    /// honest refusal read exactly like a pin whose case was repaired. Two
+    /// consequences, both bad: a slice could claim a fix that was really a new
+    /// refusal, and a suite could be green for the wrong reason. Declaring the
+    /// requirement here means a slice that intends to fix a case must flip its
+    /// pin to `Exact`, and from that moment the pin fails if the case still
+    /// refuses. (msgbox #429.)
+    #[derive(Clone, Copy, PartialEq, Eq, Debug)]
+    enum Want {
+        /// The case must build, and build exactly. A refusal is a FAILURE.
+        Exact,
+        /// The case must build exactly OR refuse with a plain sentence. Honest
+        /// either way. Used only where refusal is the documented current state.
+        ExactOrRefused,
+    }
+
     struct Pin {
         name: &'static str,
         /// What is wrong today; for a case that refuses today, what a failure
@@ -5067,6 +5087,7 @@ mod closedness_pins {
         doc: fn(Vec3) -> Value,
         /// The feature whose solid is under test.
         last: &'static str,
+        want: Want,
         vol: f64,
         lo: Vec3,
         hi: Vec3,
@@ -5176,7 +5197,14 @@ mod closedness_pins {
         let mut bad: Vec<String> = Vec::new();
         for t in [[0.0, 0.0, 0.0], SHIFT] {
             match build_case(&(p.doc)(t), p.last) {
-                Err(sentence) => eprintln!("{} at shift {t:?} is refused: {sentence}", p.name),
+                Err(sentence) => match p.want {
+                    Want::Exact => bad.push(format!(
+                        "at shift {t:?}: REFUSED ({sentence}) but this pin requires an exact build"
+                    )),
+                    Want::ExactOrRefused => {
+                        eprintln!("{} at shift {t:?} is refused: {sentence}", p.name)
+                    }
+                },
                 Ok(s) => {
                     for b in closed_failures(&s, p.vol, add(p.lo, t), add(p.hi, t)) {
                         bad.push(format!("at shift {t:?}: {b}"));
@@ -5194,6 +5222,7 @@ mod closedness_pins {
     #[test]
     fn spike_c0_block_minus_oblique_prism_is_exact_or_refused() {
         pin(&Pin {
+            want: Want::Exact,
             name: "C0 block minus oblique triangular prism",
             known: "I-7: region_inside evaluated non-parallel face constants at the probe offset (~1e-6), so the oblique trims landed off the true plane and the shell cracked. K0b evaluates them at offset 0. Measured 2026-10-01: built, 3840 exact at both positions, zero once-used edges, no closure failures.",
             doc: c0,
@@ -5205,9 +5234,12 @@ mod closedness_pins {
  }
 
  /// Refused today: a class-1 case. Exact closes it; a wrong solid reopens class 2.
+    /// Refuses today (class 1). K2b -- the chamfer on a boolean result -- must flip this to
+    /// `Exact`, and the pin then fails until the case builds.
     #[test]
     fn spike_c1_bracket_minus_chamfer_prism_is_exact_or_refused() {
         pin(&Pin {
+            want: Want::ExactOrRefused,
             name: "C1 bracket minus chamfer prism on the block's top +x edge",
             known: "refused today (class 1). A failure means a slice turned an honest refusal into a wrong solid.",
             doc: c1,
@@ -5219,9 +5251,14 @@ mod closedness_pins {
     }
 
 /// K0c refuses the known-open result; K1a fixes its I-5 region defect.
+    /// Refuses today under K0c's translation-invariance guard, which turned I-5's WRONG SOLID
+    /// into an honest refusal. The case is NOT exact. Option (b) (design committed at
+    /// 31cbaed) must make it exact at 15880 and flip this to `Exact`. K1a tried the
+    /// reach-filter route and stopped at its stop rule; see msgbox #430.
     #[test]
     fn spike_c2_bracket_minus_top_notch_is_exact_or_refused() {
         pin(&Pin {
+            want: Want::ExactOrRefused,
             name: "C2 bracket minus a box notch over the block's top +x edge",
  known: "K0c refuses C2's open I-5 shell by translation invariance. K1a fixes the underlying region_inside assumption that the L-bracket is convex.",
             doc: c2,
@@ -5232,9 +5269,12 @@ mod closedness_pins {
         });
     }
 
+    /// Refuses today (class 1). No slice has claimed it. Whoever fixes it flips this to
+    /// `Exact`.
     #[test]
     fn spike_c3_bracket_minus_block_top_pocket_is_exact_or_refused() {
         pin(&Pin {
+            want: Want::ExactOrRefused,
             name: "C3 bracket minus a box pocket straddling the block's top face",
             known: "refused today (class 1). A failure means a slice turned an honest refusal into a wrong solid.",
             doc: c3,
@@ -5245,9 +5285,11 @@ mod closedness_pins {
         });
     }
 
+    /// Refuses today (class 1), same family as C3. No slice has claimed it.
     #[test]
     fn spike_c4_pocket_authored_with_pocket_is_exact_or_refused() {
         pin(&Pin {
+            want: Want::ExactOrRefused,
             name: "C4 the C3 pocket authored with pocket() (flush tool)",
             known: "refused today (class 1). A failure means a slice turned an honest refusal into a wrong solid.",
             doc: c4,
@@ -5258,9 +5300,11 @@ mod closedness_pins {
         });
     }
 
+    /// Refuses today (class 1), same family as C3. No slice has claimed it.
     #[test]
     fn spike_c5_bracket_minus_plate_top_pocket_is_exact_or_refused() {
         pin(&Pin {
+            want: Want::ExactOrRefused,
             name: "C5 bracket minus a box pocket in the plate's exposed top",
             known: "refused today (class 1). A failure means a slice turned an honest refusal into a wrong solid.",
             doc: c5,
@@ -5272,9 +5316,14 @@ mod closedness_pins {
     }
 
     /// KNOWN WRONG (I-1, measured 2026-09-30): 64523.5988 vs 63476.4012, refusals empty.
+    /// K0a FIXED this defect, and the fix was to refuse rather than return a wrong solid:
+    /// it had measured 64523.5988 against a closed form of 63476.4012, refusals empty and
+    /// 0 open edges. Refusing is the honest floor, not the repair. A future slice that
+    /// reverses a cone's faces properly flips this to `Exact`.
     #[test]
     fn spike_c6_box_minus_enclosed_sphere_is_exact_or_refused() {
         pin(&Pin {
+            want: Want::ExactOrRefused,
             name: "C6 40^3 box minus an enclosed r5 sphere",
             known: "I-1: flip_face has Plane and Cylinder arms only, so a sphere's faces are not reversed and the void's volume is ADDED. Measured: 64523.5988 vs 63476.4012, refusals empty, 0 open edges. K0a makes flip_face fail closed.",
             doc: c6,
