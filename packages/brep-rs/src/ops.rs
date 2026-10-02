@@ -193,6 +193,88 @@ pub(crate) fn parity_classification(solid: &TSolid, p: Vec3) -> ParityClassifica
     }
 }
 
+/// One open cell of the arrangement: the piece of a source face's plane that a
+/// cell decomposition produced, carrying its EXACT loop boundaries.
+///
+/// This type exists to make one specific mistake impossible. Design section 3.2
+/// requires the arrangement to hold "multiple disjoint components, nested loops,
+/// and non-convex unions", and says it "must not be compressed back into `Region`,
+/// whose representation is intentionally convex". `Region` is an intersection of
+/// half-planes, so it cannot express a face carrying a hole AT ALL -- and a hole is
+/// the common case here, since every candidate trace comes from a face of `other`
+/// crossing this face. A `Cell` can. If a later slice routes faces through the
+/// arrangement and reaches for `Region` to hold the pieces, that is the bug this type
+/// was added to catch.
+///
+/// Nothing constructs a `Cell` yet -- step 1b's decomposition does. This is the
+/// representation plus the containment predicate that pairs with
+/// [`parity_classification`]: the arrangement decides WHICH cells exist, this decides
+/// what a point in one means.
+#[derive(Clone, Debug, PartialEq)]
+pub(crate) struct Cell {
+    /// Loops in the source plane's `(u, v)` coordinates. `loops[0]` is the outer
+    /// boundary; every later loop is a hole in it. Windings are assumed consistent
+    /// within a cell -- outer one way, holes the other -- and `cell_contains` does
+    /// not care which, because it counts crossings across ALL loops together. Each
+    /// cell is a separate value, so a disconnected arrangement is several `Cell`s
+    /// rather than one that unions them.
+    pub loops: Vec<Vec<[f64; 2]>>,
+}
+
+/// Crossings of a +u ray from `p` through one loop. Counting them per loop and
+/// summing is what makes a hole subtract: its winding is opposite, so its crossings
+/// land in the opposite parity bucket rather than being special-cased.
+fn loop_crossings(loop_pts: &[[f64; 2]], p: [f64; 2]) -> usize {
+    let mut n = 0usize;
+    for i in 0..loop_pts.len() {
+        let a = loop_pts[i];
+        let b = loop_pts[(i + 1) % loop_pts.len()];
+        // Half-open in y so a ray grazing a vertex is counted exactly once.
+        if (a[1] > p[1]) != (b[1] > p[1]) {
+            let dy = b[1] - a[1];
+            if dy != 0.0 {
+                let x = a[0] + (p[1] - a[1]) / dy * (b[0] - a[0]);
+                if x > p[0] {
+                    n += 1;
+                }
+            }
+        }
+    }
+    n
+}
+
+/// Is `p`, in the source plane's `(u, v)`, inside `cell`?
+///
+/// Even-odd across ALL of the cell's loops, so a hole is genuinely outside and a
+/// non-convex outer boundary needs no decomposition into convex pieces. A point ON a
+/// boundary lands on whichever side the crossing count gives, which is why the
+/// arrangement must sample strictly interior points (design section 3.3).
+pub(crate) fn cell_contains(cell: &Cell, p: [f64; 2]) -> bool {
+    cell.loops
+        .iter()
+        .map(|l| loop_crossings(l, p))
+        .sum::<usize>()
+        % 2
+        == 1
+}
+
+/// Absolute area of a cell: outer boundary plus its holes. A DEGENERATE cell has
+/// zero area and a caller must drop it rather than emit a zero-area face, which is
+/// what design section 3.2 means by "non-zero-area open cells".
+pub(crate) fn cell_area(cell: &Cell) -> f64 {
+    let mut acc = 0.0f64;
+    for l in &cell.loops {
+        let mut a = 0.0f64;
+        for i in 0..l.len() {
+            let p = l[i];
+            let q = l[(i + 1) % l.len()];
+            a += p[0] * q[1] - q[0] * p[1];
+        }
+        acc += a * 0.5;
+    }
+    acc.abs()
+}
+
 /// The number of boundary crossings of a ray from `p` along unit direction `d`,
 /// and whether every face was a supported type. Callers pick `d` so it is not
 /// parallel to a face or grazing an edge.
@@ -6070,5 +6152,103 @@ mod parity_tests {
         let s = build::sphere_solid([0.0, 0.0, 0.0], 10.0, [0.0, 0.0, 1.0]);
         assert!(inside_solid(&s, [0.0, 0.0, 0.0]), "centre of a sphere is inside");
         assert!(!inside_solid(&s, [100.0, 0.0, 0.0]), "far point is outside");
+    }
+}
+
+/// Option (b) step 1b: the cell representation. Nothing constructs a `Cell` yet --
+/// the decomposition does -- so these tests pin what a `Cell` is ALLOWED to be,
+/// before any code has to live up to it.
+#[cfg(test)]
+mod cell_tests {
+    use super::*;
+
+    /// 10x10 square.
+    fn square() -> Vec<Vec<[f64; 2]>> {
+        vec![vec![[0.0, 0.0], [10.0, 0.0], [10.0, 10.0], [0.0, 10.0]]]
+    }
+
+    /// A 10x10 square with a 2x2 hole at (4,4)-(6,6), wound the other way.
+    fn square_with_hole() -> Cell {
+        Cell {
+            loops: vec![
+                vec![[0.0, 0.0], [10.0, 0.0], [10.0, 10.0], [0.0, 10.0]],
+                vec![[4.0, 4.0], [4.0, 6.0], [6.0, 6.0], [6.0, 4.0]],
+            ],
+        }
+    }
+
+    #[test]
+    fn a_plain_cell_contains_its_interior_and_not_the_outside() {
+        let c = Cell { loops: square() };
+        assert!(cell_contains(&c, [5.0, 5.0]), "centre is inside");
+        assert!(!cell_contains(&c, [20.0, 5.0]), "far right is outside");
+        assert!(!cell_contains(&c, [5.0, -1.0]), "below the bottom edge is outside");
+    }
+
+    #[test]
+    fn a_hole_is_genuinely_outside_and_that_is_why_a_cell_is_not_a_region() {
+        // THE test. `Region` is an intersection of half-planes, so it cannot
+        // represent this cell at all -- a hole would need "not inside", which no
+        // conjunction of keep-sides expresses. If this ever starts passing by
+        // accident, the hole logic is wrong.
+        let c = square_with_hole();
+        assert!(cell_contains(&c, [1.0, 1.0]), "solid part of the square is inside");
+        assert!(!cell_contains(&c, [5.0, 5.0]), "the HOLE must be outside");
+        assert!(!cell_contains(&c, [20.0, 20.0]), "outside the square is outside");
+    }
+
+    #[test]
+    fn hole_winding_does_not_matter_to_the_predicate() {
+        // cell_contains counts crossings across all loops together, so it must give
+        // the same answer whichever way the hole is wound. An arrangement bug that
+        // emitted a hole wound like an outer boundary would still produce a correct
+        // verdict, which is why this is pinned rather than assumed.
+        let ccw = square_with_hole();
+        let mut same = ccw.clone();
+        same.loops[1].reverse();
+        assert!(!cell_contains(&same, [5.0, 5.0]), "reversed hole is still a hole");
+        assert_eq!(cell_contains(&ccw, [1.0, 1.0]), cell_contains(&same, [1.0, 1.0]));
+    }
+
+    #[test]
+    fn a_non_convex_cell_needs_no_convex_decomposition() {
+        // An L. Its two arms are inside, the notch between them is outside, and a
+        // single convex piece cannot do that -- which is why poly_minus_poly's
+        // convex-pieces approach is not sufficient and design 3.2 forbids collapsing
+        // to a convex Region.
+        let l = Cell {
+            loops: vec![vec![
+                [0.0, 0.0], [2.0, 0.0], [2.0, 1.0],
+                [1.0, 1.0], [1.0, 2.0], [0.0, 2.0],
+            ]],
+        };
+        assert!(cell_contains(&l, [1.5, 0.5]), "horizontal arm is inside");
+        assert!(cell_contains(&l, [0.5, 1.5]), "vertical arm is inside");
+        assert!(!cell_contains(&l, [1.5, 1.5]), "the notch is OUTSIDE");
+        assert!(!cell_contains(&l, [5.0, 5.0]), "far away is outside");
+    }
+
+    #[test]
+    fn a_disconnected_arrangement_is_several_cells_not_one_union() {
+        let a = Cell { loops: vec![vec![[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0.0, 1.0]]] };
+        let b = Cell { loops: vec![vec![[5.0, 5.0], [6.0, 5.0], [6.0, 6.0], [5.0, 6.0]]] };
+        assert!(cell_contains(&a, [0.5, 0.5]));
+        assert!(cell_contains(&b, [5.5, 5.5]));
+        assert!(!cell_contains(&a, [5.5, 5.5]), "cell A must not contain cell B's interior");
+        assert!(!cell_contains(&b, [0.5, 0.5]));
+    }
+
+    #[test]
+    fn area_is_outer_minus_holes_and_degenerate_cells_are_zero() {
+        assert!((cell_area(&Cell { loops: square() }) - 100.0).abs() < 1e-9, "10x10 is 100");
+        let holed = cell_area(&square_with_hole());
+        assert!(
+            (holed - 96.0).abs() < 1e-9,
+            "100 minus a 2x2 hole is 96, got {holed} -- a hole must SUBTRACT"
+        );
+        // Design 3.2 wants non-zero-area open cells, so a caller can drop these.
+        assert!(cell_area(&Cell { loops: vec![vec![[1.0, 1.0], [2.0, 1.0], [1.0, 2.0]]] }) > 0.0, "a triangle has area");
+        assert_eq!(cell_area(&Cell { loops: vec![vec![]] }), 0.0, "an empty loop is degenerate");
+        assert_eq!(cell_area(&Cell { loops: vec![vec![[1.0, 1.0], [2.0, 2.0]]] }), 0.0, "a single edge is degenerate");
     }
 }
