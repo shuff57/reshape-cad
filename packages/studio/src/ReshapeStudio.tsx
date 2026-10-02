@@ -744,6 +744,33 @@ export default function ReshapeStudio({
       if (del) out.push(del);
       return out;
     }
+    if (ctxFeature.kind === 'hole') {
+      // A hole's own modify verb is its RECESS, not the solid ops the generic
+      // branch below offers. Label tracks state, because the same click removes
+      // it again and a button reading "Counterbore" on a hole that already has
+      // one would misdescribe what the click does.
+      const out: ContextBarAction[] = [dims];
+      if (hasActions) {
+        out.push(
+          {
+            label: ctxFeature.counterbore ? 'Remove Counterbore' : 'Counterbore',
+            title: ctxFeature.counterbore
+              ? 'Take the flat-bottomed recess off this hole'
+              : 'Cut a flat-bottomed recess at this hole\u2019s mouth, so a bolt head sits flush',
+            onRun: () => ctxActionsRef.current?.recess('counterbore'),
+          },
+          {
+            label: ctxFeature.countersink ? 'Remove Countersink' : 'Countersink',
+            title: ctxFeature.countersink
+              ? 'Take the conical recess off this hole'
+              : 'Cut a conical recess at this hole\u2019s mouth, so a screw sits flush',
+            onRun: () => ctxActionsRef.current?.recess('countersink'),
+          },
+        );
+      }
+      if (del) out.push(del);
+      return out;
+    }
     // Every other kind (extrude/pocket/fillet/hole/shell/pattern/move/...):
     // the modify verbs need a plain solid, so the bar offers the safe set.
     const out: ContextBarAction[] = [dims];

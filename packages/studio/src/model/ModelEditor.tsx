@@ -101,6 +101,8 @@ import {
 import { partWordFor, type TopoName } from '@shuff57/reshape-script/topo-name';
 import { ownerOf } from '@shuff57/reshape-script/model-selection';
 import { edgesOf, featuresOf, ownerScoped, primaryOf, type SelectionItem, type SelectionState } from '../selection-model.js';
+import { withRecess } from './hole-recess.js';
+import type { RecessKind } from './hole-recess.js';
 
 interface Props {
   doc: ModelDoc;
@@ -215,6 +217,10 @@ export interface ContextActions {
   moveTool: (copy: boolean) => void;
   round: (style: RoundStyle) => void;
   drillHole: () => void;
+  /** Give the chosen hole a recess, or take it back off. The decision
+   *  itself is pure and lives in ./hole-recess.ts; this is the closure both the
+   *  context bar and repeatLast dispatch through. */
+  recess: (kind: RecessKind) => void;
   hollow: () => void;
   pull: () => void;
   spin: () => void;
@@ -548,6 +554,7 @@ export default function ModelEditor({
   // The CURRENT render's verbs, for repeatLast to dispatch through.
   const verbsRef = useRef<{
     drillHole: () => void;
+    recess: (kind: RecessKind) => void;
     hollow: () => void;
     turn: () => void;
     pull: () => void;
@@ -735,6 +742,36 @@ export default function ModelEditor({
     for (const i of ignored) counts.set(i.kind, (counts.get(i.kind) ?? 0) + 1);
     const parts = [...counts.entries()].map(([kind, n]) => `${n} ${kind}${n > 1 ? 's' : ''}`);
     return `fillet: ignoring ${parts.join(', ')} — edges only`;
+  }
+
+  /** Give the chosen hole a recess -- a counterbore (flat bottom) or a countersink
+   *  (cone) -- or take it back off if it already has one.
+   *
+   *  WHY the decision is not written here: this is a component with no test
+   *  harness (see test/marking-menu.test.mjs:227, which greps ModelEditor's
+   *  source because nothing can drive it), so inline logic could only ever be
+   *  checked by reading it. It lives in ./hole-recess.ts, is tested for real,
+   *  and this calls it.
+   *
+   *  A degenerate recess -- wider or deeper than the bore -- is deliberately NOT
+   *  clamped here. By the split pinned in slice A1 that is a kernel refusal, and
+   *  clamping would silently substitute a buildable shape for the one the
+   *  student asked for, which is the failure this campaign exists to prevent. */
+  function recess(kind: RecessKind) {
+    const f = chosen[0];
+    if (!f || f.kind !== 'hole') {
+      say("A recess is cut at a hole's mouth, so pick a hole first.");
+      return;
+    }
+    const had = kind === 'counterbore' ? f.counterbore !== undefined : f.countersink !== undefined;
+    onChange({
+      ...doc,
+      // `x.kind === 'hole'` narrows the union, so no cast is needed -- and it
+      // re-checks the id rather than trusting the match.
+      features: doc.features.map((x) => (x.id === f.id && x.kind === 'hole' ? withRecess(x, kind) : x)),
+    });
+    setMenu(null);
+    say(had ? `Took the ${kind} off this hole.` : `Gave the hole a ${kind}.`);
   }
 
   function round(style: RoundStyle) {
@@ -1387,6 +1424,7 @@ export default function ModelEditor({
   useEffect(() => {
     verbsRef.current = {
       drillHole: () => drillHole(),
+      recess: (kind: RecessKind) => recess(kind),
       hollow: () => hollow(),
       turn: () => turn(),
       pull: () => pull(),
@@ -1401,6 +1439,7 @@ export default function ModelEditor({
       moveTool: (copy: boolean) => moveTool(copy),
       round: (style: RoundStyle) => round(style),
       drillHole: () => drillHole(),
+      recess: (kind: RecessKind) => recess(kind),
       hollow: () => hollow(),
       pull: () => pull(),
       spin: () => spin(),
