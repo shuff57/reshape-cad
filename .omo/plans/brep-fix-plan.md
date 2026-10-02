@@ -4,12 +4,51 @@ Drafted 2026-09-30 on `main @ 349e07b` (12 commits ahead of origin, unpushed).
 Supersedes `.omo/plans/brep-next-phase.md` (kept on disk, not deleted -- its K2/K3
 slices and Track D are carried forward here unchanged in intent).
 
-**Status: K-H landed 2026-09-30; nothing after it is implemented.** K-H's extraction,
-harness, seven pins and its two measurements are in `docs/kernel-campaign.md` and in the
-commit that added them. Every number below is the plan's own, measured before K-H, and
-two of its premises did not survive contact with the code: K0c's step-1 signal is
-refuted (see that section) and I-2 turned out latent rather than live. This document is
-the plan plus the slices that would follow.
+> **SUPERSEDED BY STATUS BELOW, 2026-10-01.** The line above was true when
+> written and is now 32 commits out of date (349e07b..538272e, 25 of them this
+> session). The plan's own premise note ("every number below is the plan's own,
+> measured before K-H") still holds, and is why several slice sections below
+> understate what has since landed. Read the status block first.
+>
+> ## Status 2026-10-01, `main @ 538272e` — 32 commits landed since this plan was
+> drafted at `349e07b`, 25 of them this session.
+> Every count below was measured on this machine with the wasm rebuilt first.
+>
+> `cargo test --release` **291 passed / 1 failed**; parity **70/2**; mesh **70/2**;
+> STEP **64 passed / 0 failed / 6 refused** (was 62/0/8 — K3b made cones exportable, so
+> two previously-refusing fixtures now pass); `gate:occt` **17/0**; `bun test` **389/0**.
+>
+> **Landed.** K0a and K0c (`a51815b`) — the two silent wrong solids now refuse;
+> K0b (`bfd01c6`) — C0 is EXACT 3840, zero once-used edges; K2a (`f78f396`) — a
+> chamfer works on any convex straight edge (hex prism 5161.5114 = 2980*sqrt3); K3
+> (`8abd28f`) — a countersink cuts a cone, spike green at 31321.415986824602 =
+> 32000-216*pi, matching OCCT to 3.6e-12; K3b (`6cee4ba`) — conical STEP
+> export, re-read through OCCT at relative delta 0. Track A is done: A0 (`5c0cfaf`),
+> A1 (`b16b538`), A2 both halves (`59d054b`, `e69d3a2`) — a counterbore or
+> countersink is now expressible in the language, visible and editable in the
+> Dimensions panel, and creatable from the Build toolbar. Option (b) step 1's three
+> primitives landed: `4bf4939` ParityClassification, `74cd08f` Cell (which can hold a
+> hole, so it is NOT a Region), `e258677` the exact bounded trace of a planar face.
+>
+> **Stopped, deliberately.** **K1a failed its own stop rule** (`brep-fix-plan.md:499`)
+> and was reverted — the reach filter broke three previously-green tests and C2 still
+> refused, which is what the rule exists to catch. See msgbox #430. Its own success
+> criterion is still unmet, and the trace it depends on is now in place, so a later
+> attempt starts from better ground than its first one did.
+>
+> **Blocked on one primitive.** Option (b) step 2 needs a clip that returns ONE contour
+> per CONNECTED PIECE. `clip_halfplane` cannot: on a non-convex subject it returns
+> ONE loop spanning the gap, doubling the area silently — measured, and pinned with a
+> test in `7527e91`. That clip was attempted three times and reverted three times;
+> it failed on the CONVEX case every time, so the defect was the chain walk, not the
+> idea. Nothing unproven is in the tree. The known pitfall: conflating SUBJECT
+> order with LINE order. Steps 2 and 3, and therefore K2b, are all behind it.
+>
+> **Not verified.** A2's visual pass. The sandbox app boots clean with zero console
+> errors (real runtime evidence the ContextActions change did not break the studio),
+> but this model has NO IMAGE INPUT, so nobody has looked at the two new
+> context-bar buttons. The plan's exit for A2 asks for a browser pass with a
+> screenshot and that remains open.
 
 ---
 
