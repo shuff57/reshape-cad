@@ -64,10 +64,15 @@ slices and Track D are carried forward here unchanged in intent).
 > **A sixth attempt was deliberately NOT made.** Five returned 0-for-5, all in boolean
 > face emission, and the diagnosis is specific enough to hand over. Next step: find where
 > face pieces decide their split points when emitted from a clamped region, and make
-> both sides of a shared edge use one split set. One lead left unproven: `clamp`'s
-> region-vs-face path uses a 24x24 sampling grid (`ops.rs:1533`) rather than exact
-> intersection, a plausible source of per-face splits that disagree. Steps 2 and 3, and
-> therefore K2b, are behind it.
+> both sides of a shared edge use one split set. Steps 2 and 3, and therefore K2b, are behind it.
+>
+> **An earlier version of this block kept a lead I have since REFUTED — do not follow
+> it.** It pointed at `clamp`'s region-vs-face path using a 24x24 sampling grid
+> (`ops.rs:1533`) instead of exact intersection. That grid is on the DISK branch,
+> reachable only through `cyl_perp_region` — i.e. only when the tool has a CYLINDRICAL
+> face. C2's tool is a BOX: every face of `other` is planar, so its region is 6
+> half-planes with `disk == None` (measured, `9d5decf`), and the grid is never reached.
+> Dead end for C2. Recorded only so nobody spends a probe on it.
 >
 > **Not verified.** A2's visual pass. The sandbox app boots clean with zero console
 > errors (real runtime evidence the ContextActions change did not break the studio),
