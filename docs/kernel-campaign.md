@@ -1525,3 +1525,30 @@ balance. This session has no vision path at all -- `look_at` hard-fails on image
 multimodal subagent receives no attachment through `task()`, and no OCR is installed -- and no
 pixel-diffing substitute answers "does this look right", since it cannot even locate a bar that
 floats at the selection anchor rather than at a fixed position.
+
+## SPEC-S2 teaching-copy pass — done here, but the reader is in ANOTHER repo
+
+`reshape-docs.ts` now teaches the OFFICIAL geometry names (`f12651c`), which
+SPEC-S2 step 3 deferred as "a later pass" and whose rationale it already
+recorded from msgbox #58: students bind variables through those names, so a
+lesson teaching `box` makes `box` a poor variable name.
+
+**Correction to that commit message, recorded here because it cannot be edited
+in place.** It described `reshape-docs.ts` as "the in-app reference" and its
+titles as "the nav label students read". Neither is verifiable from THIS repo:
+
+- the only consumer of `reshape-docs` in the whole tree is
+  `packages/kernel/test/docs-examples.test.mjs`, added earlier this session
+- `packages/studio` has no docs module, and there is no `public/` directory
+- `script-surface.ts:6` locates the documented surface in
+  `lib/reshape-docs.ts` and `public/reshape/docs/reference.md` — neither path
+  exists here
+
+So the data is authored in this repo and rendered somewhere else (the host
+app). SPEC-S2 and `packages/script/AGENTS.md` both call these "in-app reference
+pages", which is why the phrasing was inherited rather than invented — but the
+honest statement is: **this repo now authors official names; whether a student
+sees them depends on the host repo's copy, which is out of scope here.** If
+`public/reshape/docs/reference.md` in the host is a separate copy rather than a
+build of this module, it still teaches the friendly words and needs the same
+flip. That is the one loose end, and it is not mine to close from here.
