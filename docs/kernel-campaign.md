@@ -1505,6 +1505,7 @@ the prebuilt wasm was current — verified with `git diff -- '*.rs'`):
 | `gate:occt` | 17 passed, 0 failed | unchanged |
 | `cargo test --release` | 291 passed, 1 failed | unchanged (the class-1 K2b chamfer) |
 | `bun test` | 430 passed, 0 failed | 389 -> 430 |
+| `check-record.mjs bench/record.json` | OK 3 rows checked, exit 0 | unchanged |
 
 Every red is an honest refusal of a case OCCT builds, not a wrong solid.
 
