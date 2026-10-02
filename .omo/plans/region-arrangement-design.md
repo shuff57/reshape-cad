@@ -141,6 +141,20 @@ is supported.
 > (`crosses_probe_plane` at 932), which is the precedent for gating on crossing
 > rather than on position.
 >
+> **Signatures verified against the tree 2026-10-01** (post-K3b numbers):
+> `planar_face_trace_on_plane(f: &TFace, p: &Plane) -> Result<Vec<Vec<[f64;2]>>, NoTrace>`
+> at ops.rs:290, and `point_in_poly(poly, p)` at ops.rs:691, both callable from
+> `region_inside` in the same module. `f` -- the source face's uv polygon -- is
+> already in scope at the general call site (bound from `outer_uv` on line 2298).
+>
+> **The one thing that does not exist and must be written:** a segment-vs-domain
+> test. Grepped: there is no `segs_intersect` / `seg_cross` anywhere in the
+> crate. It is a few lines -- either endpoint inside `point_in_poly`, else a
+> proper crossing of each domain edge -- and it is the only new geometry the fix
+> needs. Reusable 2D predicates that DO exist and should not be rewritten:
+> `poly_area` :687, `point_in_poly` :691, `point_in_poly_strict` :711,
+> `clip_halfplane` :759, `clip_poly_by_poly` :2718, `poly_minus_poly` :2749.
+>
 > Known risk, stated before any attempt: a trace that merely GRAZES the domain
 > boundary could be classified as non-crossing and drop a constraint that was
 > load-bearing. Three prior attempts at this shape failed, so measure before
