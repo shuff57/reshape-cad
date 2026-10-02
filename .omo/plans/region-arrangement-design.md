@@ -293,8 +293,37 @@ is supported.
 >
 > So both weld hypotheses are refuted, and what remains is sharper:
 >
-> **The 14 once-used segments are more than 1e-6 apart at their endpoints, even
-> though they print identically at one decimal.** The split points along the cut
+> **AND THAT IS ALSO WRONG — measured 2026-10-01.** For each once-used segment,
+> the nearest OTHER segment by summed endpoint distance is **2.0 to 8.0 mm away** --
+> not microns. So these are not un-welded duplicates of each other at all; no
+> coincident partner exists anywhere in the result, and welding had nothing to
+> match. That also refutes the micron-mismatch reading in the previous paragraph.
+>
+> **What the endpoints actually show** -- one face and its neighbour disagree about
+> where the shared edge is SPLIT:
+>
+> ```
+> (-10,10,-5)..(-10,10,5)    one face:     the shared edge WHOLE
+> (-10,10,-5)..(-10,10,3)    its neighbour: split at z = 3
+> (-10,10,3)..(-10,10,5)                   and again
+> ```
+>
+> z = 3 is the notch floor. One face splits the shared edge where the notch floor
+> meets it; the other keeps it whole. **Welding cannot join an unsplit edge to a
+> split one** -- `same_edge_geometry` requires matching endpoints, and there is no
+> coincident pair to find. So the disagreement is UPSTREAM of welding: adjacent
+> faces are emitted with different split points on their shared edge, and the
+> welder is the first place that can notice, not the place it originates.
+>
+> **Three of my own leads are now refuted by measurement** -- the reach-box premise
+> (region_inside is exact), the mixed Segment/Arc arm (60/60 edges are SEG), and
+> the micron mismatch (nearest neighbour is 2-8 mm). The surviving finding is that
+> two faces sharing an edge disagree about its split points. That is a property of
+> emitting face pieces from a clamped region, which is the stage this document
+> has pointed at since `9d5decf`. Next step: find where a clamped region's pieces
+> decide where to split their boundary, and make both sides of a shared edge use
+> the same set. Nothing in `region_inside`, `clamp`, `same_edge_geometry` or
+> `near3` needs changing. The split points along the cut
 > rim do NOT line up between adjacent pieces -- each piece computed its own
 > intersection with the cut boundary and got a point that differs from its
 > neighbour's by more than a micron. That points back UPSTREAM after all, but not
