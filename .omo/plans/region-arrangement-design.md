@@ -177,12 +177,32 @@ is supported.
 > is FALSE, which also explains why all four attempts failed: they each assumed
 > it.
 >
-> Reverted; the tree is back at 291/1 and nothing unproven is committed. The
-> remaining question is why a face with no crossing trace still bounds this
-> face, which is a statement about the region's SEMANTICS (what "inside other
-> means on this plane) and not about clipping. Someone picking this up should
-> settle that first -- the answer determines the filter, and the filter has now
-> been shown not to be the whole fix.
+> Reverted; the tree is back at 291/1 and nothing unproven is committed.
+>
+> **`region_inside` itself is NOT broken — measured 2026-10-01.** The fourth
+> attempt could have failed either because "the filter is wrong" or because "the
+> region was already broken and the filter hid it". It is the former. For C2's
+> convex box tool, sampled across the probe plane at 0.05 × 0.14 spacing, the
+> region and `inside_solid` disagree on 285 of 60000 samples, and the worst
+> disagreement sits **0.000000 from the tool's boundary**. Every one is a sample
+> landing exactly on a face, where the `h <= 1e-9` half-plane test and ray parity
+> disagree by convention. ZERO interior disagreements.
+>
+> So the half-plane intersection `region_inside` builds is EXACT for a convex
+> `other`: pushing every face's half-plane is correct there, and removing faces —
+> by reach box in attempt one, by exact trace/domain test in attempt four — is
+> precisely what breaks it. Nobody should go looking for a bug here.
+>
+> That also names what any future filter must decide EXPLICITLY: this kernel's
+> predicates disagree AT boundaries by design, so "does this trace cross" must
+> answer for a grazing trace. Attempt four chose "drop", and that choice is at least
+> part of why it broke C0 and the hex prism.
+>
+> The remaining question is unchanged, and it is about the region's SEMANTICS
+> rather than clipping: why does a face of `other` with no crossing trace on this
+> face's domain still bound this face? Settle that before writing a fifth
+> filter — the answer determines the filter, and the filter is now known not to be
+> the whole fix.
 >
 > Known risk, stated before any attempt: a trace that merely GRAZES the domain
 > boundary could be classified as non-crossing and drop a constraint that was
