@@ -232,12 +232,26 @@ is supported.
 > of 14400 sampled).
 >
 > So the whole chain is measured correct up to emission:
-> `region_inside` -> region handed to `clamp` -> `clamp` decision. C2 is still
-> 93.33 short, so the loss is in **EMISSION** -- the step that turns a clamped
-> region into actual face geometry. That is where the next measurement goes, and
-> it is the ONLY place left: everything upstream is now measured correct, which is
-> precisely why four attempts at it all failed. Each changed something upstream of
-> the defect.
+> `region_inside` -> region handed to `clamp` -> `clamp` decision.
+>
+> **CORRECTION 2026-10-01, and it matters.** Two commits ago I wrote that "C2 is
+> still 93.33 short, so the loss is in EMISSION". That treats 15786.67 as a LIVE
+> measurement. It is not. **C2 REFUSES today** -- K0c converted the wrong solid
+> into an honest refusal -- so there is no live 93.33 deficit to trace. Probing
+> emission confirms it: `boolean("subtract", bracket, box)` returns `None`.
+>
+> What survives from these probes, and it is the useful part: `region_inside` and
+> `clamp` are both measured CORRECT, so neither is the defect, and the reach-filter
+> premise these four attempts all shared was aimed at code that was never wrong.
+> That still holds and is why they all failed.
+>
+> The LIVE question is therefore not "where is 93.33 lost" but: **why does the
+> emitted shell fail the closure guard?** The guard is doing its job -- it is why
+> this is a refusal and not a wrong solid -- but the arrangement is supposed to
+> produce a closed, exact solid here, and does not. Instrument emission to see
+> what the four kept faces become: piece count, piece areas, and whether the
+> loops close. Do not touch `region_inside`, `clamp`, or the trace; all three are
+> now measured correct.
 > Instrument the region `keep_polygon` actually receives on C2 before touching
 > anything above it -- done, above, and it is correct.
 >
