@@ -1508,7 +1508,20 @@ the prebuilt wasm was current — verified with `git diff -- '*.rs'`):
 
 Every red is an honest refusal of a case OCCT builds, not a wrong solid.
 
-**Not verified:** A2's *appearance*. The bar's contents and labels are proven by
-DOM measurement and 4 regression tests; how it looks still needs human eyes, and
-this session's tooling has no vision path (`look_at` hard-fails on image input,
-the multimodal subagent receives no attachment, no OCR is installed).
+**Not verified:** A2's *taste*. Driven end-to-end in Chromium after the fix, and
+measured rather than assumed:
+
+- the bar renders for a hole with `[Dimensions | Counterbore | Countersink | Delete]`
+- it sits inside the viewport, overlaps no toolbar / ribbon / timeline / params panel, and
+every button is at least 24x16 px
+- clicking `Counterbore` flips the label to `Remove Counterbore` -- the state-tracking the
+structural tests only ever asserted
+- the model REBUILDS with no refusal before or after, on brep-rs, so the recess is cut and not
+merely written into the doc
+- zero console errors throughout
+
+What still needs human eyes is only the aesthetic layer: colour, contrast, spacing, overall
+balance. This session has no vision path at all -- `look_at` hard-fails on image input, the
+multimodal subagent receives no attachment through `task()`, and no OCR is installed -- and no
+pixel-diffing substitute answers "does this look right", since it cannot even locate a bar that
+floats at the selection anchor rather than at a fixed position.
