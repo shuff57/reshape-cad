@@ -76,6 +76,40 @@ is supported.
 
 ### 3.2 Cells
 
+> **MEASURED 2026-10-01, C2's actual geometry -- this narrows the blocker, and it is
+> an inference from a measurement, NOT a verified implementation.**
+>
+> Probed the L-bracket that C2 (`bracket_minus_box(t, [8,40,7], [11,0,6.5])`)
+> subtracts from, via `outer_uv` per planar face:
+>
+> - **All 11 planar faces are CONVEX 4-point polygons.** No face of C2's base is
+>   non-convex.
+> - Only `face0` carries a second wire (a hole) -- and face0 has **zero** crossing
+>   traces, so it needs no arrangement at all.
+> - Six faces have **four** crossing traces each. NOTE this count is an UPPER
+>   BOUND: `planar_face_trace_on_plane` clips to the tool face's own boundary but
+>   not to the source face's domain, so some traces may fall outside the face.
+>
+> **What this rules out.** The hope that C2 needs only ONE trace per face -- and
+> therefore that the existing `clip_halfplane` already suffices -- is FALSE. Four
+> traces can still cut one convex source into several pieces, and `clip_halfplane`
+> would merge them exactly as `7527e91` measured.
+>
+> **What it suggests instead.** For a CONVEX source every piece is convex, and
+> convex pieces cannot carry holes. So the decomposition is reachable by
+> successive half-plane clipping, which this crate ALREADY has:
+> `poly_minus_poly` (ops.rs) is "the pieces of convex polygon f outside convex
+> polygon p, as disjoint convex polys via half-plane decomposition", already
+> proven in production by the coplanar rescue. The blocking primitive may
+> therefore be **"decompose a convex source into convex pieces"**, not a general
+> multi-contour clip of an arbitrary polygon.
+>
+> **UNVERIFIED.** Nothing above has been implemented or tested. It is measured
+> geometry plus an inference, and it is offered as the narrowest thing worth
+> trying next -- not as a claim that the blocker is gone. A non-convex source
+> face, or one with a hole plus crossing traces, would still need the real
+> multi-contour clip.
+
 Split the source domain at trace intersections, trace endpoints, source
 outer-wire edges, and source inner-wire edges. The result is a set of
 non-zero-area open cells with exact loop boundaries. Original holes are part of
