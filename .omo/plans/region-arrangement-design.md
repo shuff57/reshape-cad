@@ -117,6 +117,35 @@ is supported.
 > therefore be **"decompose a convex source into convex pieces"**, not a general
 > multi-contour clip of an arbitrary polygon.
 >
+> **Exact site, located 2026-10-01 (post-K3b line numbers).**
+>
+> - `fn region_inside(other, plane, offset)` -- ops.rs:**858**
+> - the unconditional push: ops.rs:**937-938**, the last two statements of the
+>   `Surface::Plane(g)` arm:
+>
+>   ```rust
+>   let h = halfplane_of(plane, g, if dot(g.n, plane.u).abs() < 1e-9
+>       && dot(g.n, plane.v).abs() < 1e-9 { offset } else { [0.0; 3] });
+>   region.push_hl(h);
+>   ```
+>
+> - six call sites: 2144 (circulated/bitten disk), **2300** (the general
+>   `keep_polygon` path K1a targets), 2369, 2526, 2528, 2635. Note 2369 and 2635
+>   pass `[0,0,0]` as the offset and go through a different arm.
+>
+> So the fix is: before that push, compute the face's EXACT bounded trace via
+> `planar_face_trace_on_plane` (landed and pinned in e258677) and skip the push
+> when the trace does not meet the source face's uv domain. On a convex source
+> that leaves an intersection of half-planes, which `Region` already is. The
+> parallel arm above already does an analogous domain-adjacent test
+> (`crosses_probe_plane` at 932), which is the precedent for gating on crossing
+> rather than on position.
+>
+> Known risk, stated before any attempt: a trace that merely GRAZES the domain
+> boundary could be classified as non-crossing and drop a constraint that was
+> load-bearing. Three prior attempts at this shape failed, so measure before
+> committing.
+>
 > **UNVERIFIED.** Nothing above has been implemented or tested. It is measured
 > geometry plus an inference, and it is offered as the narrowest thing worth
 > trying next -- not as a claim that the blocker is gone. A non-convex source
