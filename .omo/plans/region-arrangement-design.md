@@ -276,10 +276,25 @@ is supported.
 > correct -> `clamp` correct -> emission emits correct pieces -> **welding does not
 > join the concave cut** -> closure guard refuses (14 open directed edges).
 >
-> Next step, and it is not a filter: look at why the pieces meeting along the cut
-> are not welded. `weld_shared_edges` welds Segment edges; the cut's rim is a mix,
-> and that mix is the thing to inspect. Nothing upstream of `weld_shared_edges`
-> needs changing.
+> **Concrete lead, found by reading `same_edge_geometry` (ops.rs:4373).** It
+> matches **only like-for-like curve variants**: Segment<->Segment,
+> Circle<->Circle, Arc<->Arc. There is NO mixed-variant arm, so a straight edge can
+> never weld to an arc or to a full circle no matter how coincident they are. That
+> is the sharp form of the plan's note that this "only welds Segment edges", and
+> it is exactly the shape a concave cut's rim takes: a mix of straight segments and
+> arcs where two pieces meet.
+>
+> NOT yet proven for C2 specifically -- that needs the rim's actual curve variants
+> read off the built result, which is a probe I have not run. So this is a LEAD,
+> not a finding. Two ways to settle it, cheapest first:
+> 1. print the curve variant of each of C2's 14 once-used edges (the same
+>    guard-disable trick used above, two lines, reverted). If they are mixed
+>    Segment/Arc, the missing arm is the defect.
+> 2. only then add a mixed Segment<->Arc arm, which is a real geometry change and
+>    must not be written before (1) confirms it is what C2 needs -- writing it
+>    blind is the fifth version of the mistake this plan has already made four times.
+>
+> Nothing upstream of `weld_shared_edges` needs changing. That is measured.
 > Instrument the region `keep_polygon` actually receives on C2 before touching
 > anything above it -- done, above, and it is correct.
 >
