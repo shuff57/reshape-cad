@@ -1466,3 +1466,49 @@ with a falsification measurement agreed *before* the attempt.
 transport error twice (`Custom betas are only available for API key users`), so
 the architectural review is outstanding — the decision above is mine, made on
 the measurements in this entry.
+
+## Session closeout (2026-10-02) — gates re-measured after the A2 anchor fix
+
+Two defects found by hand-testing, not by a gate, and both now fixed:
+
+- **The counterbore/countersink buttons could never appear.** `featureCenter()`
+  returned `null` for a hole (documented as "no anchor, no bar, which is the
+  honest state"), and the context bar only renders when it has a point to float
+  over. A2 had put both verbs *inside* that bar, so they were unreachable for
+  the only feature kind they apply to. Measured in Chromium: selecting `Box 1`
+  rendered the bar, selecting `Hole 1` rendered nothing. Fixed by making the
+  hole's representative point its MOUTH — the target's point plus the doc's
+  offset, pushed out to the drilled face via `extentAlong`'s half-extent
+  (`490a674`).
+- **Two shipped docs examples could not build.** `reshape-docs.ts` is described
+  as "every example runnable" and nothing enforced it. The countersink example
+  failed twice over (two recessed holes on one solid is refused; `at:[20,0]` on
+  `box(40,40,20)` is the box's own side face), and `repeatAround` used a count
+  that made its own copies overlap. Both fixed (`3549409`). The kernel was never
+  at fault: a single countersink is exact.
+- **`kernel/test/docs-examples.test.mjs`** now runs every docs example through
+  `runScript` and the real wasm. Its first run found four MORE pages teaching
+  refused scripts — `round()` after a boolean (twice, one on a page titled "The
+  order that always builds"), `keep(box, sphere)`, `blend` of two circles. Those
+  are real kernel gaps, exempted by name with the reason; each exemption asserts
+  the example still refuses, so gaining the capability fails the test and asks
+  for the exemption to be dropped.
+
+**Gates re-measured after all of it** (no kernel source changed this session, so
+the prebuilt wasm was current — verified with `git diff -- '*.rs'`):
+
+| gate | result | vs baseline |
+|---|---|---|
+| `brep-parity-gate.mjs` | 70 passed, 2 failed | unchanged |
+| `brep-mesh-gate.mjs` | 70 passed, 2 failed | unchanged |
+| `brep-step-gate.mjs` | 64 passed, 0 failed, 6 refused | unchanged |
+| `gate:occt` | 17 passed, 0 failed | unchanged |
+| `cargo test --release` | 291 passed, 1 failed | unchanged (the class-1 K2b chamfer) |
+| `bun test` | 430 passed, 0 failed | 389 -> 430 |
+
+Every red is an honest refusal of a case OCCT builds, not a wrong solid.
+
+**Not verified:** A2's *appearance*. The bar's contents and labels are proven by
+DOM measurement and 4 regression tests; how it looks still needs human eyes, and
+this session's tooling has no vision path (`look_at` hard-fails on image input,
+the multimodal subagent receives no attachment, no OCR is installed).
