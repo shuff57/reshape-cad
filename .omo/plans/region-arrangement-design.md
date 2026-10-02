@@ -155,6 +155,35 @@ is supported.
 > `poly_area` :687, `point_in_poly` :691, `point_in_poly_strict` :711,
 > `clip_halfplane` :759, `clip_poly_by_poly` :2718, `poly_minus_poly` :2749.
 >
+> **ATTEMPTED AND MEASURED 2026-10-01 -- the filter alone is NOT enough.**
+> The exact-trace/domain filter was implemented as specified above: a segment-vs-
+> convex-domain test (`path_meets_convex_domain`, using the existing
+> `point_in_poly`), the domain threaded from the general `keep_polygon` call site
+> where `f` is already in scope, and every other call site passed `None`. It
+> compiles and it makes things WORSE: **cargo 291/1 -> 288/4.**
+>
+> It breaks three previously-green tests, including two this session shipped:
+> - `closedness_pins::spike_c0_block_minus_oblique_prism_is_exact_or_refused`
+>   -- C0, which K0b made EXACT at 3840 (`bfd01c6`);
+> - `y1_bench_final_exact`;
+> - `fillet_chamfer_hex_prism_volume_closed_and_origin_plane` -- the K2a case
+>   (`f78f396`).
+>
+> **What that rules out.** "Drop a face of `other` whose trace does not cross the
+> source face's domain" is NOT a sound filter on its own, even with an exact trace
+> and an exact domain test. Some faces whose trace misses this face's domain
+> still contribute a half-plane that IS load-bearing for it. So the premise --
+> that a face constrains a section only where its trace crosses the section --
+> is FALSE, which also explains why all four attempts failed: they each assumed
+> it.
+>
+> Reverted; the tree is back at 291/1 and nothing unproven is committed. The
+> remaining question is why a face with no crossing trace still bounds this
+> face, which is a statement about the region's SEMANTICS (what "inside other
+> means on this plane) and not about clipping. Someone picking this up should
+> settle that first -- the answer determines the filter, and the filter has now
+> been shown not to be the whole fix.
+>
 > Known risk, stated before any attempt: a trace that merely GRAZES the domain
 > boundary could be classified as non-crossing and drop a constraint that was
 > load-bearing. Three prior attempts at this shape failed, so measure before
