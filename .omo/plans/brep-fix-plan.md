@@ -5,13 +5,15 @@ Supersedes `.omo/plans/brep-next-phase.md` (kept on disk, not deleted -- its K2/
 slices and Track D are carried forward here unchanged in intent).
 
 > **SUPERSEDED BY STATUS BELOW, 2026-10-01.** The line above was true when
-> written and is now 32 commits out of date (349e07b..538272e, 25 of them this
+> written and is now 47 commits out of date (349e07b..d53f80f, 40 of them this
 > session). The plan's own premise note ("every number below is the plan's own,
 > measured before K-H") still holds, and is why several slice sections below
 > understate what has since landed. Read the status block first.
 >
-> ## Status 2026-10-01, `main @ 538272e` — 32 commits landed since this plan was
-> drafted at `349e07b`, 25 of them this session.
+> ## Status 2026-10-01, `main @ d53f80f` — 47 commits landed since this plan was
+> drafted at `349e07b`, 40 of them this session.
+> Every count below was measured on this machine with the wasm rebuilt first, and a
+> cold clone of all 40 session commits was built and gated independently.
 > Every count below was measured on this machine with the wasm rebuilt first.
 >
 > `cargo test --release` **291 passed / 1 failed**; parity **70/2**; mesh **70/2**;
@@ -30,19 +32,42 @@ slices and Track D are carried forward here unchanged in intent).
 > primitives landed: `4bf4939` ParityClassification, `74cd08f` Cell (which can hold a
 > hole, so it is NOT a Region), `e258677` the exact bounded trace of a planar face.
 >
-> **Stopped, deliberately.** **K1a failed its own stop rule** (`brep-fix-plan.md:499`)
-> and was reverted — the reach filter broke three previously-green tests and C2 still
-> refused, which is what the rule exists to catch. See msgbox #430. Its own success
-> criterion is still unmet, and the trace it depends on is now in place, so a later
-> attempt starts from better ground than its first one did.
+> **K1a: FIVE attempts, all reverted, and the diagnosis is now MEASURED.** The
+> first three failed on a reach-box filter — it broke three previously-green tests
+> and C2 still refused, which is what the stop rule at `brep-fix-plan.md:499` exists to
+> catch. Attempts four and five were each built from a written diagnosis. See
+> msgbox #430, #454, #455.
 >
-> **Blocked on one primitive.** Option (b) step 2 needs a clip that returns ONE contour
-> per CONNECTED PIECE. `clip_halfplane` cannot: on a non-convex subject it returns
-> ONE loop spanning the gap, doubling the area silently — measured, and pinned with a
-> test in `7527e91`. That clip was attempted three times and reverted three times;
-> it failed on the CONVEX case every time, so the defect was the chain walk, not the
-> idea. Nothing unproven is in the tree. The known pitfall: conflating SUBJECT
-> order with LINE order. Steps 2 and 3, and therefore K2b, are all behind it.
+> **THE DEFECT, measured: adjacent faces disagree about where to split a shared edge.**
+> One face splits that edge where the notch floor meets it (z=3); its neighbour
+> keeps it whole. Welding cannot join an unsplit edge to a split one --
+> `same_edge_geometry` needs matching endpoints and no coincident pair exists -- so the
+> welder is where it is first NOTICED, not where it originates. 14 once-used segments,
+> and the nearest other segment is 2-8 mm away, so they are not un-welded duplicates.
+>
+> **Everything upstream is measured CORRECT:** `region_inside` is exact for a convex
+> `other` (285 of 60000 samples disagree, worst 0.000000 from the boundary, zero in
+> the interior); the region handed to `clamp` is correct (15% on face 6 = 3x20/400 by
+> hand); `clamp` keeps all four crossed faces; emission emits the correct pieces.
+> **Nothing in `region_inside`, `clamp`, `same_edge_geometry` or `near3` needs changing.**
+>
+> **An earlier version of this block named a multi-contour clip as the blocker. That
+> was WRONG and measurement killed it.** Three of my own leads stay refuted in the
+> record, because the refutations are the useful part: the reach-box premise (the region
+> is exact), a mixed Segment/Arc arm (60 of 60 edges are SEG), and a micron
+> endpoint mismatch (nearest is 2-8 mm).
+>
+> **Also stale elsewhere, and worth knowing before reading it: C2 REFUSES today.** The
+> 15786.67 figure in this plan and in `docs/kernel-campaign.md` is PRE-K0c
+> history, not a live deficit.
+>
+> **A sixth attempt was deliberately NOT made.** Five returned 0-for-5, all in boolean
+> face emission, and the diagnosis is specific enough to hand over. Next step: find where
+> face pieces decide their split points when emitted from a clamped region, and make
+> both sides of a shared edge use one split set. One lead left unproven: `clamp`'s
+> region-vs-face path uses a 24x24 sampling grid (`ops.rs:1533`) rather than exact
+> intersection, a plausible source of per-face splits that disagree. Steps 2 and 3, and
+> therefore K2b, are behind it.
 >
 > **Not verified.** A2's visual pass. The sandbox app boots clean with zero console
 > errors (real runtime evidence the ContextActions change did not break the studio),
