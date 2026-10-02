@@ -90,10 +90,23 @@ is supported.
 >   BOUND: `planar_face_trace_on_plane` clips to the tool face's own boundary but
 >   not to the source face's domain, so some traces may fall outside the face.
 >
-> **What this rules out.** The hope that C2 needs only ONE trace per face -- and
-> therefore that the existing `clip_halfplane` already suffices -- is FALSE. Four
-> traces can still cut one convex source into several pieces, and `clip_halfplane`
-> would merge them exactly as `7527e91` measured.
+> **What this rules out. (CORRECTED 2026-10-01 -- my first version of this note
+> was wrong and I am leaving the correction visible.)** I first wrote that four
+> traces "can still cut one convex source into several pieces". That is false.
+> Clipping a convex polygon by half-planes PRESERVES convexity -- an
+> intersection of convex sets is convex -- so no number of traces can disconnect a
+> convex source. `clip_halfplane` returning one loop is therefore CORRECT here,
+> not a merge, and the failure `7527e91` measured only applies to NON-convex
+> subjects.
+>
+> This changes the blocker. Since all 11 of C2's faces are convex, the
+> arrangement step for C2 needs no multi-contour clip at all: `Region` is already
+> an intersection of half-planes, which is exactly right for a convex source. The
+> defect in `region_inside` is NOT the representation -- it is that it pushes a
+> half-plane from EVERY non-parallel planar face of `other`, including faces whose
+> trace never crosses the face being kept. Filter those out by trace/domain
+> intersection and the existing convex `Region` is sufficient. That is the narrow
+> primitive worth trying, and it is far smaller than a multi-contour clip.
 >
 > **What it suggests instead.** For a CONVEX source every piece is convex, and
 > convex pieces cannot carry holes. So the decomposition is reachable by
