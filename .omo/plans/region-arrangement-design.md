@@ -205,10 +205,32 @@ is supported.
 > `region_inside`, then the region handed downstream is already correct and C2's
 > missing 93.33 is NOT lost in region CONSTRUCTION. It has to be lost after —
 > in `clamp`, in the coplanar rescue, or in how `keep_polygon` turns the region
-> into emitted face pieces. I have NOT measured which, and this is stated as a
-> pointer rather than a finding. But it does mean the next person should
-> instrument the region `keep_polygon` actually receives on C2 before touching
-> anything upstream of it.
+> into emitted face pieces.
+
+> **NOW MEASURED, 2026-10-01 -- the inference above was right, and the search is
+> over.** Probed `keep_polygon`'s general call on C2 directly. The bracket builds
+> at 16000.000000 across 11 faces; sampling each face polygon against the region
+> the call actually receives:
+>
+> | face | sampled in face | also in region | share |
+> |---|---|---|---|
+> | 6 | 14400 | 2160 | 15.00% |
+> | 7 | 14400 | 2880 | 20.00% |
+> | 9 | 14400 | 432 | 3.00% |
+> | 10 | 14400 | 432 | 3.00% |
+>
+> Face 6 is the block's top (z=5, x in [-10,10], y in [-10,10], area 400). The
+> notch box covers x in [7,10] by y in [-10,10] = 60, which is **exactly 15%** of
+> 400. The region agrees with the hand calculation, and the seven faces the tool
+> misses report 0.
+>
+> So the region reaching `clamp` is CORRECT, and C2's missing 93.33 -- 16000 - 120
+> = 15880 expected against 15786.67 measured -- is lost strictly AFTER region
+> construction: in `clamp`, in the coplanar rescue, or in assembling the face
+> pieces. Everything upstream is now measured correct, which is precisely why
+> four attempts at it all failed: each changed something upstream of the defect.
+> Instrument the region `keep_polygon` actually receives on C2 before touching
+> anything above it -- done, above, and it is correct.
 >
 > The remaining question is unchanged, and it is about the region's SEMANTICS
 > rather than clipping: why does a face of `other` with no crossing trace on this
