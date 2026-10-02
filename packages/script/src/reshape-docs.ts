@@ -119,9 +119,10 @@ hole(b, { across: 6 })`,
       {
         title: 'hole: a recess at the mouth',
         body: `A counterbore cuts a flat-bottomed recess so a bolt head sits flush instead of proud. A countersink cuts a cone so a screw does. They go inside counterbore: { across, deep } and countersink: { across, angle }, and a hole takes one or the other -- one mouth, one shape. In both, across is the RECESS's width, not the bore's, and the recess is cut from the mouth inward, so deep is measured from the same face as the bore. countersink's angle is the INCLUDED cone angle, so 90 is the widest and usual. A recess that cannot fit -- wider than its bore, or deeper than it -- is refused by the kernel rather than by the script, because that is a question about geometry rather than about what you typed.`,
-        code: `const b = box(40, 40, 20)
+code: `const b = box(40, 40, 20)
 hole(b, { across: 6, counterbore: { across: 12, deep: 6 } })
-hole(b, { across: 6, at: [20, 0], countersink: { across: 12, angle: 90 } })`,
+const c = box(40, 40, 20, { at: [60, 0, 0] })
+hole(c, { across: 6, countersink: { across: 12, angle: 90 } })`,
       },
       {
         title: 'holes: multiple holes',
@@ -181,9 +182,9 @@ repeat(b, { count: 3, step: 60 })`,
       },
       {
         title: 'repeatAround: circular patterns',
-        body: `repeatAround(b, { count: 6, axis: 'z' }) makes 6 copies in a circle around z. Use axis: 'x' or 'y' for other axes.`,
-        code: `const b = box(10, 30, 10, { at: [25, 0, 0] })
-repeatAround(b, { count: 6, axis: 'z' })`,
+body: `repeatAround(b, { count: 4, axis: 'z' }) makes 4 copies in a circle around z. Use axis: 'x' or 'y' for other axes. Spacing has to clear the shape: at count 6 the copies here overlap, and brep-rs refuses an overlapping pattern rather than guessing.`,
+code: `const b = box(10, 30, 10, { at: [25, 0, 0] })
+repeatAround(b, { count: 4, axis: 'z' })`,
       },
     ],
   },
