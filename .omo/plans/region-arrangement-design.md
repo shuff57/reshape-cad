@@ -226,9 +226,18 @@ is supported.
 >
 > So the region reaching `clamp` is CORRECT, and C2's missing 93.33 -- 16000 - 120
 > = 15880 expected against 15786.67 measured -- is lost strictly AFTER region
-> construction: in `clamp`, in the coplanar rescue, or in assembling the face
-> pieces. Everything upstream is now measured correct, which is precisely why
-> four attempts at it all failed: each changed something upstream of the defect.
+> construction. **And `clamp` is now measured correct too** (2026-10-01): for all
+> four faces the tool actually crosses, `clamp(&region, &f)` returns kept, with the
+> region area matching the hand calculation in every case (2160 / 2880 / 432 / 432
+> of 14400 sampled).
+>
+> So the whole chain is measured correct up to emission:
+> `region_inside` -> region handed to `clamp` -> `clamp` decision. C2 is still
+> 93.33 short, so the loss is in **EMISSION** -- the step that turns a clamped
+> region into actual face geometry. That is where the next measurement goes, and
+> it is the ONLY place left: everything upstream is now measured correct, which is
+> precisely why four attempts at it all failed. Each changed something upstream of
+> the defect.
 > Instrument the region `keep_polygon` actually receives on C2 before touching
 > anything above it -- done, above, and it is correct.
 >
