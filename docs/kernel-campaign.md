@@ -1552,3 +1552,34 @@ sees them depends on the host repo's copy, which is out of scope here.** If
 `public/reshape/docs/reference.md` in the host is a separate copy rather than a
 build of this module, it still teaches the friendly words and needs the same
 flip. That is the one loose end, and it is not mine to close from here.
+
+### What the teaching-copy flip did NOT do: free `box` as a variable name
+
+The directive behind SPEC-S2 (msgbox #58) is that students should be able to
+write `const box = ...`, which reads as a natural variable name. Flipping the
+taught surface to official names (`f12651c`) does not fully deliver that, and
+the difference is worth being exact about.
+
+Measured 2026-10-02, `runScript` one line at a time:
+
+| script | result |
+|---|---|
+| `const box = 5` | OK — `with(scope)` shadows it |
+| `let box = 5` | OK |
+| `const box = cuboid(1,1,1)` | OK |
+| `cuboid(1,1,1)` | OK |
+| `box(1,1,1)` | still callable — the alias is intact |
+| `var box = 5` | **REFUSED** — `"box" is already a reSHape tool here` |
+| `box = 5` (bare) | **REFUSED** — same |
+
+So `box` is still an OCCUPIED name, not a free one. The flip changes what
+students are *taught* to type, which removes the reason to reach for `box` as a
+variable — but the refusal for `var` and bare assignment stands, because
+`box` remains in VOCABULARY. Freeing it entirely would mean dropping the
+student aliases from VOCABULARY, which SPEC-S2 explicitly forbids ("Keep
+student words in the array") and which would break every existing lesson,
+script and gate fixture that calls `box()`.
+
+Nothing to fix here — the two behaviours are both deliberate and separately
+tested in `scope-shadowing.test.mjs`. Recorded only so nobody reads "official
+names are taught" as "the friendly names were removed".
