@@ -354,6 +354,43 @@ is supported.
 > filter — the answer determines the filter, and the filter is now known not to be
 > the whole fix.
 >
+> **SUPERSEDED 2026-10-02 -- BOTH LEADS BELOW ARE REFUTED. READ THIS FIRST.**
+>
+> Attempt 6 implemented the "make adjacent faces agree on split points" fix this
+> section points at (`conform_shared_edges`, 221 lines, git stash@{0}). It did NOT
+> make C2 exact. Instrumenting `boolean()` and running the one test gives the
+> decisive measurement:
+>
+> - `process_face` never returns None for any a-face or b-face -- it is NOT a face refusal
+> - the manifold guard PASSES (every edge use count is 1 or 2)
+> - `boolean_result_is_sound` PASSES
+> - the ONLY thing that refuses C2 is `volume_is_translation_invariant`
+> - the result carries exactly 14 ONCE-USED edges
+>
+> **The "one side whole, neighbour split at z=3" reading is WRONG.** On the line
+> x=-10, y=10 the WHOLE edge [-5,5] AND both halves [-5,3] and [3,5] all exist, each
+> used ONCE. On z=3, y=10 the segments [-10,10] and [7,-10] OVERLAP on x in [-10,7].
+> Multiple emitted faces each lay a boundary claim over OVERLAPPING spans of the same
+> line. That is DUPLICATE OVERLAPPING EMISSION, not a missing or mismatched split.
+>
+> This is also *why* attempt 6 was structurally incapable of working, so its failure
+> CONFIRMS the refutation rather than contradicting it: a union of split parameters has
+> no way to decide WHICH face legitimately owns a span. Unioning can only make
+> faces agree about WHERE to cut, never about WHO owns the boundary.
+>
+> Consequently the "print the curve variant / add a mixed Segment<->Arc arm" leads in
+> the paragraph above are moot: the mismatch is not a curve-variant mismatch and not a
+> representation difference. Do not spend attempt 7 on either.
+>
+> The open question is now narrower and better posed: **which emitted face owns each
+> boundary span of a shared line, and where in emission is that decided once?**
+>
+> Strategic note: C2 is CLASS-1 (honest refusal), not class-2 (wrong solid). The
+> correctness contract is satisfied today because the kernel refuses rather than lying,
+> and every class-2 defect is already fixed. Six attempts have now failed. Whether C2
+> is worth a seventh is a judgement call, not a correctness obligation -- recorded here
+> so the next person inherits the evidence instead of the theory.
+>
 > Known risk, stated before any attempt: a trace that merely GRAZES the domain
 > boundary could be classified as non-crossing and drop a constraint that was
 > load-bearing. Three prior attempts at this shape failed, so measure before
