@@ -115,7 +115,26 @@ the third (the bevel) transverse. Built and measured:
   is stale, not merely unverified. Neither 15840 nor 15546.667 is produced.
   Refusing is the honest floor, **not** the fix: `K2b` is still the slice that would
   make this exact. The parity fixture `chamfer-on-boolean-result` is the gate that
-  holds it (msgbox #425).
+holds it (msgbox #425).
+  **CORRECTION 2026-10-01 (K2a): "the concept WORKS, the boolean does not" is now
+  stale for the CONVEX case.** `f78f396` put a general convex-edge chamfer in the
+  tree, and it goes through the boolean exactly as predicted here -- an overswept
+  triangular wedge prism whose two side faces are coplanar with the faces being
+  chamfered. The coplanar worry recorded at :108 is real but was never the blocker:
+  the four `coplanar-*` parity fixtures pass at ~1e-16. Measured: a hex prism -- a
+  shape with no cross-section to re-extrude, which is what the four prism paths in
+  `build_fillet` could never reach -- chamfers to 5161.5114065552525 = 2980*sqrt(3) at
+  1e-6, watertight, plus a second case whose bevel plane passes through the origin.
+  The box pins did not move: 31680, 31360, 31040+160*pi.
+  What still refuses is the BOOLEAN RESULT case, which is K2b and is gated on K1a,
+  which failed its stop rule (msgbox #430: the reach filter broke three green tests
+  and C2 still refused). That one needs option (b).
+  The paragraph immediately below is out of date in one phrase: that implementation is
+  no longer kept "rather than in the tree". K2a rebuilt it, minus the
+  `f64::INFINITY` seeding bug recorded at the end of it -- the reason the first attempt
+  failed as a silent refusal. It landed chamfer-only: a round on a general convex
+  edge is refused with its own sentence, because a ball blend is not a wedge. The
+  tangency argument at :81-87 is untouched and still governs the round case.
 
 The implementation that got this far is worth keeping in mind rather than in
 the tree: it resolved the edge's two faces' outward normals from the faces'
