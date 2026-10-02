@@ -116,6 +116,83 @@ pub(crate) fn inside_solid(solid: &TSolid, p: Vec3) -> bool {
     true
 }
 
+/// Whether a point's membership can be decided by ray parity at all.
+///
+/// This is the distinction `inside_solid` above cannot express: it votes, and on a tie it
+/// falls back to an `inside_surface` half-space test whose own comment says it is "right
+/// whenever the solid is convex". That fallback is the assumption arrangement plus parity
+/// retires, so the arrangement needs the answer WITHOUT it: a point whose membership cannot
+/// be established must be Unavailable, not guessed. See
+/// `.omo/plans/region-arrangement-design.md` section 3.4.
+///
+/// Deliberately additive: `inside_solid` is unchanged and still half-spaces on a tie. Nothing
+/// routes here yet; this exists so section 3.2's cell classification can refuse instead of
+/// inheriting the guess.
+pub(crate) enum ParityClassification {
+    /// Every face is a type where the crossing count is exact (Plane, Cylinder), and the
+    /// majority of generic rays agreed. `inside` is that answer.
+    Consensus { inside: bool },
+    /// Membership is NOT decidable by parity here. Either some face makes the crossing
+    /// count untrustworthy, or the rays did not reach a majority. Callers must refuse or
+    /// fall back to something they can justify -- never to the half-space test.
+    Unavailable,
+}
+
+/// Is ray parity an exact membership test for every face of `solid`?
+///
+/// Only Plane and full Cylinder. A Sphere counts ray roots with NO finite-face containment
+/// check, so a crossing can be double-counted or missed and the count is not a boundary
+/// count; `crossings` still reports it as supported, which is why support cannot be read off
+/// that flag. Cone now has a real arm (K3) but parity over a cone is UNVERIFIED, and
+/// region-arrangement-design.md section 3.4 says so explicitly. Torus and anything else make
+/// ray counting abstain outright. All of them are Unavailable here, which is the honest
+/// answer rather than a claim nobody has measured.
+fn parity_is_exact(solid: &TSolid) -> bool {
+    solid.faces().iter().all(|f| match &f.borrow().surface {
+        Surface::Plane(_) => true,
+        // A partial (arc-bounded) cylinder is not a full one; its crossing count
+        // covers only the trimmed band, so parity does not decide membership.
+        Surface::Cylinder(c) => c.arc.is_none(),
+        _ => false,
+    })
+}
+
+/// Classify `p` against `solid` by ray parity, refusing to guess. See
+/// [`ParityClassification`].
+pub(crate) fn parity_classification(solid: &TSolid, p: Vec3) -> ParityClassification {
+    if !parity_is_exact(solid) {
+        return ParityClassification::Unavailable;
+    }
+    // The same generic directions inside_solid uses. `crossings` cannot return None
+    // for these surface types, and it reports supported, so every vote here is an exact
+    // crossing count.
+    let dirs: [Vec3; 3] = [
+        normalize([0.5773502691896258, 0.5773502691896257, 0.5773502691896255]),
+        normalize([1.0, 0.5, 0.25]),
+        normalize([0.3, 1.0, 0.7]),
+    ];
+    let mut odd = 0usize;
+    let mut even = 0usize;
+    for d in dirs {
+        if let Some((n, _)) = crossings(solid, p, d) {
+            if n % 2 == 1 {
+                odd += 1;
+            } else {
+                even += 1;
+            }
+        }
+    }
+    if odd > even {
+        ParityClassification::Consensus { inside: true }
+    } else if even > odd {
+        ParityClassification::Consensus { inside: false }
+    } else {
+        // Unreachable with three votes and exact crossings, but the answer is NOT a
+        // half-space guess. If it ever becomes reachable it must be Unavailable.
+        ParityClassification::Unavailable
+    }
+}
+
 /// The number of boundary crossings of a ray from `p` along unit direction `d`,
 /// and whether every face was a supported type. Callers pick `d` so it is not
 /// parallel to a face or grazing an edge.
@@ -5851,5 +5928,98 @@ fn counterbore_shoulder_across_a_pocket_is_never_dropped() {
     if let Some(r) = boolean("subtract", &base, &tool) {
         let (got, want) = (build::solid_volume(&r), 30810.86233585891);
         assert!((got - want).abs() <= 1e-6 * want, "volume {got} vs OCCT {want}");
+    }
+}
+
+/// K0a-era parity classification (plan option (b) section 3.4). Nothing routes
+/// here yet; these tests exist so the piece step 2's safety depends on is
+/// measured on its own rather than assumed.
+#[cfg(test)]
+mod parity_tests {
+    use super::*;
+    use crate::build;
+
+    fn box_at(c: Vec3) -> TSolid {
+        build::box_solid([40.0, 40.0, 40.0], c, None)
+    }
+
+    #[test]
+    fn planar_and_full_cylinder_solids_reach_parity_consensus() {
+        let b = box_at([0.0, 0.0, 0.0]);
+        assert!(
+            matches!(parity_classification(&b, [0.0, 0.0, 0.0]), ParityClassification::Consensus { inside: true }),
+            "a point at a box's centre is inside, and every face is planar"
+        );
+        assert!(
+            matches!(parity_classification(&b, [100.0, 0.0, 0.0]), ParityClassification::Consensus { inside: false }),
+            "a point far outside the box is outside"
+        );
+
+        let cyl = build::cylinder_solid([0.0, 0.0, 0.0], 10.0, 30.0, [0.0, 0.0, 1.0]);
+        assert!(
+            matches!(parity_classification(&cyl, [0.0, 0.0, 0.0]), ParityClassification::Consensus { inside: true }),
+            "a cylinder's axis point is inside, and it is a full cylinder plus two caps"
+        );
+    }
+
+    #[test]
+    fn a_sphere_is_unavailable_because_its_crossing_count_has_no_containment_check() {
+        // The reason this type exists. `crossings` counts a sphere's ray ROOTS with
+        // no finite-face containment test, and still reports supported=true, so a
+        // solid carrying a sphere can reach a confident-looking vote. The half-space
+        // fallback inside_solid uses on a tie is "right whenever the solid is
+        // convex" -- the exact assumption this work retires.
+        let s = build::sphere_solid([0.0, 0.0, 0.0], 10.0, [0.0, 0.0, 1.0]);
+        assert!(
+            matches!(parity_classification(&s, [0.0, 0.0, 0.0]), ParityClassification::Unavailable),
+            "a sphere must not report parity consensus; its roots are not a boundary count"
+        );
+    }
+
+    #[test]
+    fn a_cone_is_unavailable_because_parity_over_a_cone_is_unverified() {
+        // K3 gave the boolean a real cone arm, and it is used. That is not a claim
+        // that parity over a cone is exact: region-arrangement-design.md section 3.4
+        // says so explicitly and declines to claim it works.
+        let c = build::cone_solid([0.0, 0.0, 0.0], 10.0, 20.0, [0.0, 0.0, 1.0]);
+        assert!(
+            matches!(parity_classification(&c, [0.0, 0.0, 5.0]), ParityClassification::Unavailable),
+            "cone parity is unverified, so the honest answer is Unavailable"
+        );
+    }
+
+    #[test]
+    fn a_torus_is_unavailable_because_ray_counting_abstains_on_it() {
+        let t = build::torus_solid([0.0, 0.0, 0.0], 14.0, 4.0, [0.0, 0.0, 1.0]);
+        assert!(matches!(parity_classification(&t, [0.0, 0.0, 0.0]), ParityClassification::Unavailable));
+    }
+
+    #[test]
+    fn a_planar_solid_containing_a_curved_face_is_unavailable_not_partly_decided() {
+        // The mixed case that a per-face vote would get wrong: the box's own faces
+        // vote fine, but one sphere face makes the WHOLE crossing count untrustworthy.
+        // Consensus must be all-or-nothing, or a caller reads a partial answer as a
+        // real one.
+        // A box's planar faces unioned with a sphere's, as ONE shell: the mixed
+        // case a per-face vote would get wrong.
+        let mut faces = build::sphere_solid([0.0, 0.0, 0.0], 10.0, [0.0, 0.0, 1.0]).faces();
+        faces.extend(box_at([0.0, 0.0, 0.0]).faces());
+        let s = TSolid {
+            shells: vec![Rc::new(RefCell::new(topo::Shell { faces }))],
+        };
+        assert!(
+            matches!(parity_classification(&s, [0.0, 0.0, 0.0]), ParityClassification::Unavailable),
+            "one curved face must make the whole solid Unavailable, not merely reduce confidence"
+        );
+    }
+
+    #[test]
+    fn inside_solid_is_unchanged_and_still_half_spaces_on_a_tie() {
+        // This slice is additive. If `inside_solid` ever stops answering for a
+        // sphere, the boolean that every gate depends on has changed behaviour and
+        // this test is the one that says so.
+        let s = build::sphere_solid([0.0, 0.0, 0.0], 10.0, [0.0, 0.0, 1.0]);
+        assert!(inside_solid(&s, [0.0, 0.0, 0.0]), "centre of a sphere is inside");
+        assert!(!inside_solid(&s, [100.0, 0.0, 0.0]), "far point is outside");
     }
 }
