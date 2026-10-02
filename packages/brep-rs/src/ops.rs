@@ -258,6 +258,122 @@ pub(crate) fn cell_contains(cell: &Cell, p: [f64; 2]) -> bool {
         == 1
 }
 
+/// Why a candidate face of `other` contributes no TRANSVERSE trace on `P`.
+///
+/// Both variants are refusals rather than approximations. Design section 3.1 is
+/// explicit: "A candidate without an exact trace cannot be silently omitted. It causes a
+/// refusal until the relevant face-pair geometry is supported." Sampling a curve into
+/// facets to fill one of these is the forbidden move.
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+pub(crate) enum NoTrace {
+    /// The face's plane is parallel to `P`: the two planes share no transverse
+    /// interval, so they cannot separate two open cells. A COPLANAR face is a
+    /// different case entirely -- its bounded FOOTPRINT belongs in the arrangement
+    /// (section 3.1) -- but it is not a trace and is not produced here.
+    ParallelPlane,
+    /// Curved. A plane cuts a full cylinder or a cone in an ellipse or conic, which
+    /// must be carried ANALYTICALLY, never sampled (section 3.1).
+    CurvedUnsupported,
+}
+
+/// The exact bounded trace of a PLANAR face of `other` on the probe plane `P`, in
+/// `P`'s own `(u, v)` coordinates. Each returned polyline is one connected piece.
+///
+/// This is section 3.1's "exact bounded trace": the line where the face's plane meets
+/// `P`, clipped to the face's OWN boundary. Nothing is sampled -- a planar face's trace
+/// on another plane is a straight segment by construction.
+///
+/// Planar only, deliberately. C2 -- the case option (b) exists to fix -- has a BOX as
+/// its tool, so every face of `other` is planar and this covers it. Curved faces
+/// refuse rather than approximate, for the same reason [`parity_classification`]
+/// refuses a sphere: an honest refusal beats a guess nobody has measured.
+pub(crate) fn planar_face_trace_on_plane(f: &TFace, p: &Plane) -> Result<Vec<Vec<[f64; 2]>>, NoTrace> {
+    let fb = f.borrow();
+    let Surface::Plane(g) = &fb.surface else {
+        return Err(NoTrace::CurvedUnsupported);
+    };
+    let d = crate::math::cross(g.n, p.n);
+    let dd = crate::math::dot(d, d);
+    if dd <= TOL * TOL {
+        return Err(NoTrace::ParallelPlane);
+    }
+    // The line where the two planes meet. For planes n1.x = c1 and n2.x = c2 the
+    // intersection is the line through `a` along `d`, where
+    //   d = n1 x n2,   a = (c1*(n2 x d) + c2*(d x n1)) / |d|^2.
+    // Both cross products are perpendicular to d, so `a` lies in the span that keeps
+    // the point on BOTH planes, and |d|^2 fixes the scale.
+    let c1 = dot(g.n, g.origin);
+    let c2 = dot(p.n, p.origin);
+    let a = add(scale(cross(p.n, d), c1 / dd), scale(cross(d, g.n), c2 / dd));
+    let dir = normalize(d);
+    // Clip that line to the face's own boundary. Each boundary edge meets it at at
+    // most one parameter; the crossings sort and consecutive PAIRS bound the pieces.
+    // Pairing rather than first-to-last is what makes a CONCAVE face yield two
+    // segments instead of one that runs outside it.
+    let mut ts: Vec<f64> = Vec::new();
+    for w in &fb.boundary {
+        let wb = w.borrow();
+        for u in &wb.edges {
+            let (pa, pb) = {
+                let eb = u.edge.borrow();
+                let (x, y) = (eb.a.borrow().point, eb.b.borrow().point);
+                if u.forward {
+                    (x, y)
+                } else {
+                    (y, x)
+                }
+            };
+            // The edge meets the line where pa + t*v = a + s*dir, i.e. t*v - s*dir =
+            // w0. Crossing both sides with `dir` removes s and leaves t solvable --
+            // but only when the two cross products are PARALLEL, which is exactly the
+            // coplanarity test. So a non-parallel pair means "no intersection", not a
+            // bad solve, and there is no epsilon to tune.
+            let v = sub(pb, pa);
+            let w0 = sub(a, pa);
+            let cvd = crate::math::cross(v, dir);
+            let c0d = crate::math::cross(w0, dir);
+            let par = crate::math::cross(cvd, c0d);
+            let par_len2 = dot(par, par);
+            let den = dot(cvd, cvd);
+            if den.abs() <= 1e-300 || par_len2 > 1e-18 {
+                continue;
+            }
+            let t = dot(c0d, cvd) / den;
+            if (-1e-9..=1.0 + 1e-9).contains(&t) {
+                // `t` is the parameter along THIS EDGE. The arrangement needs a
+                // parameter along the intersection LINE, which is a different
+                // quantity -- using `t` for both is what made every segment
+                // collapse to a point. Project the crossing onto the line first.
+                let at = add(pa, scale(v, t));
+                ts.push(dot(sub(at, a), dir));
+            }
+        }
+    }
+    ts.sort_by(|x, y| x.partial_cmp(y).unwrap_or(std::cmp::Ordering::Equal));
+    // A polygon vertex belongs to two edges, so both report the same crossing and
+    // it lands in `ts` twice -- which paired with itself into a zero-length
+    // segment. Collapsing duplicates also makes the pairing robust to a face whose
+    // boundary grazes the line, which is exactly where a near-tie must not become
+    // a real cut.
+    let span = ts.last().copied().unwrap_or(0.0) - ts.first().copied().unwrap_or(0.0);
+    let dedup = span.abs() * 1e-9;
+    let mut uniq: Vec<f64> = Vec::with_capacity(ts.len());
+    for t in ts {
+        if uniq.last().map_or(true, |l: &f64| (t - *l).abs() > dedup) {
+            uniq.push(t);
+        }
+    }
+    let ts = uniq;
+    let mut out: Vec<Vec<[f64; 2]>> = Vec::new();
+    for pair in ts.chunks_exact(2) {
+        let (t0, t1) = (pair[0], pair[1]);
+        let q0 = p.project(add(a, scale(dir, t0)));
+        let q1 = p.project(add(a, scale(dir, t1)));
+        out.push(vec![[q0[0], q0[1]], [q1[0], q1[1]]]);
+    }
+    Ok(out)
+}
+
 /// Absolute area of a cell: outer boundary plus its holes. A DEGENERATE cell has
 /// zero area and a caller must drop it rather than emit a zero-area face, which is
 /// what design section 3.2 means by "non-zero-area open cells".
@@ -6250,5 +6366,131 @@ mod cell_tests {
         assert!(cell_area(&Cell { loops: vec![vec![[1.0, 1.0], [2.0, 1.0], [1.0, 2.0]]] }) > 0.0, "a triangle has area");
         assert_eq!(cell_area(&Cell { loops: vec![vec![]] }), 0.0, "an empty loop is degenerate");
         assert_eq!(cell_area(&Cell { loops: vec![vec![[1.0, 1.0], [2.0, 2.0]]] }), 0.0, "a single edge is degenerate");
+    }
+}
+
+/// Option (b) step 1c: the exact bounded trace of a planar face on the probe plane.
+/// Nothing routes here yet. The load-bearing property is BOUNDED: the trace is the
+/// face's own extent along the intersection line, not the whole line.
+#[cfg(test)]
+mod trace_tests {
+    use super::*;
+    use crate::build;
+
+    /// The z = 0 plane, with uv = (x, y).
+    fn z0() -> Plane {
+        Plane { origin: [0.0, 0.0, 0.0], n: [0.0, 0.0, 1.0], u: [1.0, 0.0, 0.0], v: [0.0, 1.0, 0.0] }
+    }
+
+    /// The face of `solid` whose outward normal is closest to `want`.
+    fn face_toward(solid: &TSolid, want: Vec3) -> TFace {
+        let mut best: Option<(f64, TFace)> = None;
+        for fc in solid.faces() {
+            let n = {
+                let fb = fc.borrow();
+                match &fb.surface {
+                    Surface::Plane(g) => {
+                        let nn = if fb.forward { g.n } else { scale(g.n, -1.0) };
+                        nn
+                    }
+                    Surface::Cylinder(c) => {
+                        let q = [c.origin[0] - want[0], c.origin[1] - want[1], c.origin[2] - want[2]];
+                        let _ = q;
+                        continue;
+                    }
+                    _ => continue,
+                }
+            };
+            let d = dot(normalize(n), normalize(want));
+            if best.as_ref().map_or(true, |(bd, _)| d > *bd) {
+                best = Some((d, fc.clone()));
+            }
+        }
+        best.expect("no candidate face").1
+    }
+
+    #[test]
+    fn a_planar_face_traces_on_a_transverse_plane_within_its_own_extent() {
+        // THE test. The z=0 plane cuts a 40x40x20 box's +x face along the line
+        // x = 20, and that face only spans y in [-20, 20]. If the trace came back
+        // as the whole intersection LINE rather than the face's extent, a student's
+        // cell would be cut far outside the geometry.
+        let b = build::box_solid([40.0, 40.0, 20.0], [0.0, 0.0, 0.0], None);
+        let face = face_toward(&b, [1.0, 0.0, 0.0]);
+        let segs = planar_face_trace_on_plane(&face, &z0()).expect("a transverse planar face traces");
+        assert_eq!(segs.len(), 1, "one crossing of one rectangle gives one segment: {segs:?}");
+        let pts = &segs[0];
+        for q in pts {
+            assert!((q[0] - 20.0).abs() < 1e-9, "the trace lies in the face's plane x=20, got {q:?}");
+            assert!(q[1].abs() <= 20.0 + 1e-9, "the trace is BOUNDED by the face, got {q:?}");
+        }
+        let lo = pts.iter().map(|q| q[1]).fold(f64::MAX, f64::min);
+        let hi = pts.iter().map(|q| q[1]).fold(f64::MIN, f64::max);
+        assert!((lo + 20.0).abs() < 1e-9 && (hi - 20.0).abs() < 1e-9, "the segment spans the face exactly: {lo} .. {hi}");
+    }
+
+    #[test]
+    fn the_trace_scales_with_the_face_not_with_the_plane() {
+        // A smaller box must give a SHORTER trace on the same plane. Without this,
+        // a bug that returned the unbounded line would pass the first test.
+        let small = build::box_solid([4.0, 4.0, 4.0], [0.0, 0.0, 0.0], None);
+        let face = face_toward(&small, [1.0, 0.0, 0.0]);
+        let segs = planar_face_trace_on_plane(&face, &z0()).expect("traces");
+        let hi = segs[0].iter().map(|q| q[1]).fold(f64::MIN, f64::max);
+        assert!((hi - 2.0).abs() < 1e-9, "a 4mm box's +x face is at x=2 spanning y in [-2,2], got {hi}");
+    }
+
+    #[test]
+    fn a_parallel_plane_refuses_rather_than_producing_a_degenerate_trace() {
+        // The box's +z face is parallel to z=0. There is no transverse interval, so
+        // there is nothing to split a cell on. Section 3.1 forbids silently omitting
+        // it, and a zero-length "trace" would be exactly that omission.
+        let b = build::box_solid([40.0, 40.0, 20.0], [0.0, 0.0, 0.0], None);
+        let face = face_toward(&b, [0.0, 0.0, 1.0]);
+        assert_eq!(
+            planar_face_trace_on_plane(&face, &z0()),
+            Err(NoTrace::ParallelPlane),
+            "a parallel face must refuse, not return a degenerate segment"
+        );
+    }
+
+    #[test]
+    fn a_coplanar_face_refuses_as_parallel_rather_than_claiming_a_footprint() {
+        // Coincident faces are a DIFFERENT arrangement input -- a bounded footprint,
+        // section 3.1 -- and this function is not that function. It must not
+        // pretend to produce one.
+        let coplanar = Plane { origin: [0.0, 0.0, 0.0], n: [0.0, 0.0, 1.0], u: [1.0, 0.0, 0.0], v: [0.0, 1.0, 0.0] };
+        let b = build::box_solid([40.0, 40.0, 20.0], [0.0, 0.0, 10.0], None);
+        let face = face_toward(&b, [0.0, 0.0, 1.0]);
+        assert_eq!(planar_face_trace_on_plane(&face, &coplanar), Err(NoTrace::ParallelPlane));
+    }
+
+    #[test]
+    fn a_curved_face_refuses_and_is_never_sampled() {
+        // A plane cuts a full cylinder in an ellipse. Sampling it into facets is the
+        // move section 3.1 names as forbidden, so the honest answer is Unavailable.
+        let cyl = build::cylinder_solid([0.0, 0.0, 0.0], 10.0, 30.0, [0.0, 0.0, 1.0]);
+        let wall = cyl
+            .faces()
+            .into_iter()
+            .find(|fc| matches!(&fc.borrow().surface, Surface::Cylinder(_)))
+            .expect("a cylinder has a curved wall");
+        assert_eq!(planar_face_trace_on_plane(&wall, &z0()), Err(NoTrace::CurvedUnsupported));
+
+        let sph = build::sphere_solid([0.0, 0.0, 0.0], 10.0, [0.0, 0.0, 1.0]);
+        let cap = sph.faces().into_iter().next().expect("a sphere has a face");
+        assert_eq!(planar_face_trace_on_plane(&cap, &z0()), Err(NoTrace::CurvedUnsupported));
+    }
+
+    #[test]
+    fn a_plane_that_misses_the_face_yields_no_trace_rather_than_a_full_line() {
+        // The z=20 plane is above a 20-tall box centred at the origin, so it crosses
+        // no face at all. An implementation that returned the unbounded line here
+        // would hand the arrangement a cut through empty space.
+        let b = build::box_solid([40.0, 40.0, 20.0], [0.0, 0.0, 0.0], None);
+        let above = Plane { origin: [0.0, 0.0, 20.0], n: [0.0, 0.0, 1.0], u: [1.0, 0.0, 0.0], v: [0.0, 1.0, 0.0] };
+        let face = face_toward(&b, [1.0, 0.0, 0.0]);
+        let segs = planar_face_trace_on_plane(&face, &above).expect("planar, so it answers");
+        assert!(segs.is_empty(), "no face crosses the z=20 plane, so there is no trace: {segs:?}");
     }
 }
