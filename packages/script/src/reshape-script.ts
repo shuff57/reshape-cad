@@ -1500,7 +1500,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
 
   function holes(target: unknown, opts?: unknown): SolidHandle {
     if (!isHandle(target)) throw new Error('holes() needs a shape to drill into: holes(shape, { across: 6, apart: [15, 10] }).');
-    const extra = readOptions('holes', ['across', 'apart', 'at', 'along'], opts);
+const extra = readOptions('holes', ['across', 'apart', 'at', 'along', 'deep'], opts);
     if (extra.across === undefined) throw new Error('holes() needs { across: <number> } for the bit\'s diameter.');
     if (extra.apart === undefined) throw new Error('holes() needs { apart: [across, up] } for the corner-to-corner spacing.');
     const across = positiveNumber('holes', 'across', extra.across);
