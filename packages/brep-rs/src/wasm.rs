@@ -568,34 +568,50 @@ fn hole_tool(centre: Vec3, bore_r: f64, depth: f64, axis: Vec3, v_face: f64, fea
     // coplanar boolean, and the boolean refuses those (SPEC 4.5). The recess DEPTH
     // is still measured from `v_face`, so "6 deep" stays 6 deep in material.
     let v_mouth = mid + half;
-    let (r_mouth, v_shoulder) = if let Some(cb) = cb {
+ let (r_mouth, v_shoulder) = if let Some(cb) = cb {
         let d = cb.get("diameter")?.as_f64()?;
         let cd = cb.get("depth")?.as_f64()?;
         if !(d > 2.0 * bore_r) || !(cd > 0.0) || !(cd < depth) {
             return None;
         }
         (0.5 * d, v_face - cd)
-    } else {
-        // A countersink is a CONE, and revolve_profile builds no slanted wall
-        // yet (it returns None for one). This stepped profile would cut a
-        // cylinder instead -- a counterbore under a countersink's name -- and
-        // the boolean now cuts stepped tools, so that would be a wrong solid,
-        // not a refusal. Refuse until the cone exists (SPEC 5.2a).
-        return None;
-    };
+ } else {
+ let cs = cs?;
+ let d = cs.get("diameter")?.as_f64()?;
+ let angle_deg = cs.get("angleDeg")?.as_f64()?;
+ if !(d > 2.0 * bore_r) || !(angle_deg > 0.0) || !(angle_deg < 180.0) {
+ return None;
+ }
+ let recess_depth = (0.5 * d - bore_r) / (0.5 * angle_deg.to_radians()).tan();
+ if !(recess_depth > 0.0) {
+ return None;
+ }
+ (0.5 * d, v_face - recess_depth)
+ };
     // The recess is measured from the face, so the bore must reach it, and the
     // shoulder must sit above the bore's own floor.
     if !(v_shoulder > v_far) || !(v_mouth >= v_face) {
         return None;
     }
-    let profile = [
-        [0.0, v_far],
-        [bore_r, v_far],
-        [bore_r, v_shoulder],
-        [r_mouth, v_shoulder],
-        [r_mouth, v_mouth],
-        [0.0, v_mouth],
-    ];
+ let profile = if cs.is_some() {
+ [
+ [0.0, v_far],
+ [bore_r, v_far],
+ [bore_r, v_shoulder],
+ [r_mouth, v_face],
+ [r_mouth, v_mouth],
+ [0.0, v_mouth],
+ ]
+ } else {
+ [
+ [0.0, v_far],
+ [bore_r, v_far],
+ [bore_r, v_shoulder],
+ [r_mouth, v_shoulder],
+ [r_mouth, v_mouth],
+ [0.0, v_mouth],
+ ]
+ };
     // Any vector not parallel to the drill axis; revolve_profile orthogonalises it.
     let seed = if axis[0].abs() < 0.9 { [1.0, 0.0, 0.0] } else { [0.0, 1.0, 0.0] };
     let (solid, _) = build::revolve_profile(&profile, axis, seed, 360.0)?;
@@ -4505,25 +4521,28 @@ mod tests {
         );
     }
 
-    /// A recess that cannot be cut is refused in a plain sentence, never guessed at:
-    /// a counterbore deeper than the bore it sits on, one no wider than the bore, one
-    /// with no depth at all, and a sound one on a bore that never reaches the face it
-    /// is measured from (this 10-deep bore is buried: z -5..5 in a z -10..10 box).
+ /// A recess that cannot be cut is refused in a plain sentence, never guessed at:
+ /// a counterbore deeper than the bore it sits on, one no wider than the bore, one
+ /// with no depth at all, a countersink no wider than the bore or with zero angle,
+ /// and a sound one on a bore that never reaches the face it is measured from.
     #[test]
     fn degenerate_recesses_refuse() {
-        let cases = [
-            ("deeper than the bore", json!({ "diameter": 12, "depth": 30 })),
-            ("not wider than the bore", json!({ "diameter": 4, "depth": 6 })),
-            ("zero deep", json!({ "diameter": 12, "depth": 0 })),
-            ("on a bore that never reaches the face", json!({ "diameter": 12, "depth": 6 })),
+ let cases = [
+ ("deeper than the bore", json!({ "diameter": 12, "depth": 30 })),
+ ("not wider than the bore", json!({ "diameter": 4, "depth": 6 })),
+ ("zero deep", json!({ "diameter": 12, "depth": 0 })),
+ ("on a bore that never reaches the face", json!({ "diameter": 12, "depth": 6 })),
+ ("countersink not wider than the bore", json!({ "diameter": 4, "angleDeg": 90 })),
+ ("countersink zero angle", json!({ "diameter": 12, "angleDeg": 0 })),
         ];
-        for (what, cb) in cases {
-            let doc = json!({
+ for (what, recess) in cases {
+ let key = if recess.get("angleDeg").is_some() { "countersink" } else { "counterbore" };
+ let doc = json!({
                 "version": 1,
                 "features": [
                     { "id": "b1", "kind": "box", "size": [40, 40, 20], "center": [0, 0, 0] },
                     { "id": "h1", "kind": "hole", "target": "b1", "diameter": 6, "depth": 10,
-                      "center": [0, 0, 0], "axis": "z", "counterbore": cb }
+ "center": [0, 0, 0], "axis": "z", key: recess }
                 ],
                 "measure": "h1"
             });
@@ -4531,7 +4550,7 @@ mod tests {
             let msg = refusals.get("h1").unwrap_or_else(|| panic!("{what} must refuse"));
             let text = msg.as_str().unwrap_or_default();
             assert!(
-                text.contains("counterbore") || text.contains("recess"),
+ text.contains("counterbore") || text.contains("countersink") || text.contains("recess"),
                 "the refusal names the recess: {text}"
             );
         }
@@ -4549,7 +4568,7 @@ mod tests {
     ///   axis, so an unmoved tool cut all four there and the fuse kept one -- a
     ///   silent wrong solid of one recess, not four.
     #[test]
-    fn counterbore_variants_are_exact() {
+fn counterbore_variants_are_exact() {
         let pi = std::f64::consts::PI;
         for (what, hole, want) in [
             ("blind, offset along the axis", json!({ "depth": 14, "center": [0, 0, 4], "axis": "z" }), 32000.0 - 279.0 * pi),
@@ -4577,6 +4596,50 @@ mod tests {
             assert!((got - want).abs() <= 1e-6 * want, "{what}: volume {got} vs exact {want}");
         }
     }
+}
+
+#[test]
+fn countersink_variants_are_exact() {
+ let pi = std::f64::consts::PI;
+ let frustum_extra = 36.0 * pi;
+ for (what, hole, want) in [
+ ("blind, offset along the axis", json!({ "depth": 14, "center": [0, 0, 4], "axis": "z" }), 32000.0 - 117.0 * pi - frustum_extra),
+ ("along x", json!({ "depth": 42, "center": [0, 0, 0], "axis": "x" }), 32000.0 - 360.0 * pi - frustum_extra),
+ ("four corners", json!({ "depth": 22, "center": [0, 0, 0], "axis": "z", "corners": { "dx": 10, "dy": 10 } }), 32000.0 - 4.0 * 216.0 * pi),
+ ] {
+ let mut h = hole;
+ h["id"] = json!("h1");
+ h["kind"] = json!("hole");
+ h["target"] = json!("b1");
+ h["diameter"] = json!(6);
+ h["countersink"] = json!({ "diameter": 12, "angleDeg": 90 });
+ let doc = json!({
+ "version": 1,
+ "features": [{ "id": "b1", "kind": "box", "size": [40, 40, 20], "center": [0, 0, 0] }, h],
+ "measure": "h1"
+ });
+ let (hist, refusals) = build_doc(&doc);
+ assert!(refusals.is_empty(), "{what}: a valid countersink must not refuse: {refusals:?}");
+ let got = build::solid_volume(hist.shapes.get("h1").expect("h1 built"));
+ assert!((got - want).abs() <= 1e-6 * want, "{what}: volume {got} vs exact {want}");
+ let mesh = crate::mesh::mesh_solid(hist.shapes.get("h1").unwrap(), 0.05).expect("countersink meshes");
+ assert!(ops::check_watertight(&mesh), "{what}: countersink mesh is watertight");
+ }
+}
+
+#[test]
+fn countersink_step_refuses_by_conical_face_name() {
+ let doc = json!({
+ "version": 1,
+ "features": [
+ { "id": "b1", "kind": "box", "size": [40, 40, 20], "center": [0, 0, 0] },
+ { "id": "h1", "kind": "hole", "target": "b1", "diameter": 6, "depth": 22,
+ "center": [0, 0, 0], "axis": "z", "countersink": { "diameter": 12, "angleDeg": 90 } }
+ ]
+ });
+ let out: Value = serde_json::from_str(&export_step(&doc.to_string(), "h1")).expect("export JSON");
+ let error = out.get("error").and_then(|v| v.as_str()).unwrap_or_default();
+ assert!(error.contains("a conical face"), "STEP refusal: {error}");
 }
 
 #[test]
@@ -4620,7 +4683,7 @@ fn fillet_chamfer_hex_prism_volume_closed_and_origin_plane() {
  assert_eq!(bb.lo[2], 0.0, "bbox lo z {bb:?}");
  assert_eq!(bb.hi[2], 20.0, "bbox hi z {bb:?}");
  }
-}
+ }
 
 #[test]
 fn fillet_chamfer_flat_and_round_hex_edges_refuse() {

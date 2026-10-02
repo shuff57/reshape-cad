@@ -2,7 +2,7 @@
 //! act on them (§4.4). Depends on `math`, `geom`, `topo`.
 
 use crate::geom::{self, Cone, Curve, Cylinder, Plane, SphereSurf, Surface, TorusSurf};
-use crate::math::{add, cross, scale, sub, Aabb, Transform, Vec3};
+use crate::math::{add, cross, dot, scale, sub, Aabb, Transform, Vec3};
 use crate::topo::{self, Edge, Face, Shell, Solid, Wire};
 use std::cell::RefCell;
 use std::rc::Rc;
@@ -686,14 +686,10 @@ pub fn ensure_outward(solid: &TSolid) -> TSolid {
     Solid { shells }
 }
 
-/// A face with its surface orientation reversed (outward normal flipped),
-/// the boundary wires kept as-is. Planar and cylindrical faces -- everything a
-/// swept tool can have -- reverse their frame; anything else is returned
-/// unchanged, which a caller should treat as "could not fix".
 fn reversed_face(face: &Face<Curve3, Surface3>) -> TFace {
     let surf = match &face.surface {
         Surface::Plane(p) => Surface::Plane(Plane { origin: p.origin, n: scale(p.n, -1.0), u: p.u, v: p.v }),
-        Surface::Cylinder(c) => Surface::Cylinder(Cylinder {
+ Surface::Cylinder(c) => Surface::Cylinder(Cylinder {
             origin: c.origin,
             axis: c.axis,
             e1: c.e1,
@@ -701,9 +697,19 @@ fn reversed_face(face: &Face<Curve3, Surface3>) -> TFace {
             radius: c.radius,
             vmin: c.vmin,
             vmax: c.vmax,
-            arc: c.arc.clone(),
-        }),
-        other => other.clone(),
+ arc: c.arc.clone(),
+ }),
+ Surface::Cone(c) => Surface::Cone(Cone {
+ base: c.base,
+ axis: c.axis,
+ e1: c.e1,
+ e2: scale(c.e2, -1.0),
+ base_radius: c.base_radius,
+ half_angle: c.half_angle,
+ slant: c.slant,
+ v_range: c.v_range,
+ }),
+ other => other.clone(),
     };
     Rc::new(RefCell::new(Face {
         boundary: face.boundary.clone(),
@@ -2299,11 +2305,8 @@ pub fn blend_solid(lo: &[Vec3], hi: &[Vec3]) -> Option<TSolid> {
 ///
 /// The profile is read with its interior on a consistent side (its own winding
 /// decides the 2D outward normal of each segment), and that normal picks the
-/// direction each generated face points. Only segments PARALLEL or
-/// PERPENDICULAR to the axis are built: they revolve to a cylinder and a planar
-/// annulus, both of which this kernel measures exactly. A slanted segment would
-/// revolve to a cone frustum and returns None rather than a wrong solid -- the
-/// caller refuses that revolve in words instead.
+/// direction each generated face points. Parallel, perpendicular, and slanted
+/// segments revolve to cylinders, planar annuli, and bounded cone frusta.
 ///
 /// Returns the solid and, per profile segment, the output face index it
 /// produced (None for a degenerate segment on the axis), so `swept` history can
@@ -2459,11 +2462,65 @@ pub fn revolve_profile(
             }));
             map.push(Some(faces.len()));
             faces.push(f);
-        } else {
-            // Slanted: a cone frustum. Not built in this slice -- refusing is
-            // the honest answer, never a solid that is not what was asked for.
-            return None;
-        }
+ } else {
+ let (base_h, cap_h, base_r, cap_r) = if r0 > r1 {
+ (h0, h1, r0, r1)
+ } else {
+ (h1, h0, r1, r0)
+ };
+ if base_r <= 1e-9 || cap_r <= 1e-9 {
+ return None;
+ }
+ let sign = (cap_h - base_h).signum();
+ let axis_c = scale(axis, sign);
+ let slant = len;
+ let half_angle = (base_r - cap_r).atan2((cap_h - base_h).abs());
+ let base = scale(axis, base_h);
+ let cap = add(base, scale(axis_c, (cap_h - base_h).abs()));
+ let e2c = if nr * dot(axis_c, axis) >= 0.0 { e2 } else { scale(e2, -1.0) };
+ let base_v = topo::vertex(add(base, scale(e1, base_r)));
+ let cap_v = topo::vertex(add(cap, scale(e1, cap_r)));
+ let rim_base = topo::edge(
+ base_v.clone(),
+ base_v.clone(),
+ true,
+ Curve::Circle { center: base, radius: base_r, normal: axis_c },
+ );
+ let rim_cap = topo::edge(
+ cap_v.clone(),
+ cap_v.clone(),
+ true,
+ Curve::Circle { center: cap, radius: cap_r, normal: axis_c },
+ );
+ let seam = topo::edge(
+ base_v.clone(),
+ cap_v.clone(),
+ true,
+ Curve::Segment { a: base_v.borrow().point, b: cap_v.borrow().point },
+ );
+ let two_pi = 2.0 * std::f64::consts::PI;
+ let f = make_face(
+ Surface::Cone(Cone {
+ base,
+ axis: axis_c,
+ e1,
+ e2: e2c,
+ base_radius: base_r,
+ half_angle,
+ slant,
+ v_range: [0.0, slant],
+ }),
+ [[0.0, two_pi], [0.0, slant]],
+ vec![
+ topo::EdgeUse { edge: rim_base, forward: true, pcurve: topo::Pcurve { start: [0.0, 0.0], end: [two_pi, 0.0], mid: [std::f64::consts::PI, 0.0] } },
+ topo::EdgeUse { edge: seam.clone(), forward: true, pcurve: topo::Pcurve { start: [two_pi, 0.0], end: [two_pi, slant], mid: [two_pi, slant / 2.0] } },
+ topo::EdgeUse { edge: rim_cap, forward: false, pcurve: topo::Pcurve { start: [two_pi, slant], end: [0.0, slant], mid: [std::f64::consts::PI, slant] } },
+ topo::EdgeUse { edge: seam, forward: false, pcurve: topo::Pcurve { start: [0.0, slant], end: [0.0, 0.0], mid: [0.0, slant / 2.0] } },
+ ],
+ );
+ map.push(Some(faces.len()));
+ faces.push(f);
+ }
     }
     Some((
         Solid {
@@ -2878,7 +2935,7 @@ mod tests {
     }
 
     #[test]
-    fn cone_volume_and_bbox() {
+ fn cone_volume_and_bbox() {
         let s = cone_solid([0.0, 0.0, 0.0], 12.0, 30.0, [0.0, 0.0, 1.0]);
         let want = std::f64::consts::PI * 144.0 * 30.0 / 3.0;
         close(solid_volume(&s), want, 1e-12, "cone volume");
@@ -2886,7 +2943,17 @@ mod tests {
         close(b.lo[0], -12.0, 1e-12, "cone lo x");
         close(b.hi[0], 12.0, 1e-12, "cone hi x");
         close(b.hi[2], 15.0, 1e-12, "cone hi z");
-    }
+ }
+
+ #[test]
+ fn revolved_frustum_volume_and_mesh_are_exact() {
+ let profile = [[0.0, -5.0], [3.0, -5.0], [6.0, 0.0], [0.0, 0.0]];
+ let (solid, _) = revolve_profile(&profile, [0.0, 0.0, 1.0], [1.0, 0.0, 0.0], 360.0).expect("frustum builds");
+ let want = std::f64::consts::PI * 5.0 * (36.0 + 18.0 + 9.0) / 3.0;
+ close(solid_volume(&solid), want, 1e-12, "frustum volume");
+ let mesh = crate::mesh::mesh_solid(&solid, 0.05).expect("frustum meshes");
+ assert!(crate::ops::check_watertight(&mesh), "frustum mesh is watertight");
+ }
 
     #[test]
     fn sphere_volume_and_bbox() {

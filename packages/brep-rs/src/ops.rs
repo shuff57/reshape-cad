@@ -22,7 +22,7 @@ use std::cell::RefCell;
 use std::rc::Rc;
 
 use crate::build::{self, Curve3, Surface3, TFace, TSolid};
-use crate::geom::{Curve, Cylinder, Plane, Surface};
+use crate::geom::{Cone, Curve, Cylinder, Plane, Surface};
 use crate::math::{add, cross, dot, normalize, scale, sub, Vec3};
 use crate::topo::{self, Face, Shell, Solid, Wire};
 
@@ -138,7 +138,7 @@ fn crossings(solid: &TSolid, p: Vec3, d: Vec3) -> Option<(usize, bool)> {
                     }
                 }
             }
-            Surface::Cylinder(c) => {
+ Surface::Cylinder(c) => {
                 match ray_cylinder(d, p, c) {
                     None => {}
                     Some(ts) => {
@@ -153,8 +153,17 @@ fn crossings(solid: &TSolid, p: Vec3, d: Vec3) -> Option<(usize, bool)> {
                         }
                     }
                 }
-            }
-            Surface::Sphere(s) => {
+ }
+ Surface::Cone(c) => {
+ if let Some(ts) = ray_cone(d, p, c) {
+ for t in ts {
+ if t > 1e-9 && cone_face_contains(c, add(p, scale(d, t))) {
+ count += 1;
+ }
+ }
+ }
+ }
+ Surface::Sphere(s) => {
                 let w = sub(p, s.center);
                 let a = dot(d, d);
                 let b = 2.0 * dot(w, d);
@@ -268,6 +277,29 @@ fn ray_cylinder(d: Vec3, p: Vec3, c: &Cylinder) -> Option<Vec<f64>> {
     Some(crate::math::solve_quadratic(a, b, cc))
 }
 
+fn cone_face_contains(c: &Cone, q: Vec3) -> bool {
+ let along = dot(sub(q, c.base), c.axis);
+ let v = along / c.half_angle.cos();
+ v >= c.v_range[0] - 1e-7 && v <= c.v_range[1] + 1e-7
+}
+
+fn ray_cone(d: Vec3, p: Vec3, c: &Cone) -> Option<Vec<f64>> {
+ let w = sub(p, c.base);
+ let dw = dot(d, c.axis);
+ let ww = dot(w, c.axis);
+ let dp = sub(d, scale(c.axis, dw));
+ let wp = sub(w, scale(c.axis, ww));
+ let tan = c.half_angle.tan();
+ let radius = c.base_radius - ww * tan;
+ let a = dot(dp, dp) - tan * tan * dw * dw;
+ let b = 2.0 * (dot(wp, dp) + radius * tan * dw);
+ let cc = dot(wp, wp) - radius * radius;
+ if a.abs() < 1e-12 {
+ return if b.abs() < 1e-12 { None } else { Some(vec![-cc / b]) };
+ }
+ Some(crate::math::solve_quadratic(a, b, cc))
+}
+
 fn inside_surface(s: &Surface, p: Vec3) -> bool {
     match s {
         Surface::Plane(pl) => dot(sub(p, pl.origin), pl.n) <= TOL,
@@ -297,18 +329,18 @@ fn inside_surface(s: &Surface, p: Vec3) -> bool {
             true
         }
         Surface::Sphere(s) => crate::math::len(sub(p, s.center)) <= s.radius + TOL,
-        Surface::Cone(c) => {
-            let d = sub(p, c.base);
-            let along = dot(d, c.axis);
-            let slant_top = c.slant * c.half_angle.cos();
-            if along < -TOL || along > slant_top + TOL {
-                return false;
-            }
-            let radial = sub(d, scale(c.axis, along));
-            let r = c.base_radius - along * c.half_angle.tan();
+ Surface::Cone(c) => {
+ let d = sub(p, c.base);
+ let along = dot(d, c.axis);
+ let v = along / c.half_angle.cos();
+ if v < c.v_range[0] - TOL || v > c.v_range[1] + TOL {
+ return false;
+ }
+ let radial = sub(d, scale(c.axis, along));
+ let r = c.base_radius - v * c.half_angle.sin();
             crate::math::len(radial) <= r + TOL
         }
-        Surface::Torus(t) => {
+ Surface::Torus(t) => {
             let d = sub(p, t.center);
             let axial = dot(d, t.axis);
             let radial = sub(d, scale(t.axis, axial));
@@ -611,7 +643,7 @@ fn region_inside(other: &TSolid, plane: &Plane, offset: Vec3) -> Option<Region> 
  let h = halfplane_of(plane, g, if dot(g.n, plane.u).abs() < 1e-9 && dot(g.n, plane.v).abs() < 1e-9 { offset } else { [0.0; 3] });
  region.push_hl(h);
             }
-            Surface::Cylinder(cy) => {
+ Surface::Cylinder(cy) => {
                 let ad = dot(cy.axis, plane.n).abs();
                 if (ad - 1.0).abs() < 1e-9 {
                     // Cylinder axis perpendicular to plane: the intersection is a disk.
@@ -720,16 +752,26 @@ fn region_inside(other: &TSolid, plane: &Plane, offset: Vec3) -> Option<Region> 
                     return None;
                 }
             }
-            Surface::Cone(c) => {
-                let ad = dot(c.axis, plane.n).abs();
-                if (ad - 1.0).abs() < 1e-9 {
+ Surface::Cone(c) => {
+ let ad = dot(c.axis, plane.n).abs();
+ if (ad - 1.0).abs() < 1e-9 {
                     // Plane perpendicular to the axis: the cross-section is a
                     // disk of radius r(along) = base_radius − along·tan,
                     // centered on the axis — expressible. Outside the face's
                     // own v band the face bounds nothing here; the solid's
                     // cap planes constrain the region instead (the same
                     // fall-through the sphere arm uses).
-                    let axis = normalize(c.axis);
+ let axis = normalize(c.axis);
+ let face = f.borrow();
+ let vm = 0.5 * (c.v_range[0] + c.v_range[1]);
+ let r_mid = c.base_radius - vm * c.half_angle.sin();
+ let radial = scale(c.e1, r_mid);
+ let dv = add(scale(c.e1, -c.half_angle.sin()), scale(axis, c.half_angle.cos()));
+ let surface_normal = cross(scale(c.e2, r_mid), dv);
+ let face_normal = if face.forward { surface_normal } else { scale(surface_normal, -1.0) };
+ if dot(face_normal, radial) < 0.0 {
+ continue;
+ }
  let probe = add(plane.origin, offset);
  let along_probe = dot(sub(probe, c.base), axis);
  let band_lo = c.v_range[0] * c.half_angle.cos();
@@ -743,13 +785,23 @@ fn region_inside(other: &TSolid, plane: &Plane, offset: Vec3) -> Option<Region> 
                         let centre3 = add(c.base, scale(axis, along));
                         region.intersect_disk(plane.project(centre3), r);
                     }
-                } else {
-                    // Parallel to the axis the section is a hyperbola; oblique,
-                    // an ellipse or parabola. The convex region algebra
-                    // (half-planes + one disk) cannot express a conic, so the
-                    // caller refuses rather than approximate one.
-                    return None;
-                }
+ } else if ad < 1e-9 {
+ let axis = normalize(c.axis);
+ let probe = add(plane.origin, offset);
+ let along = dot(sub(probe, c.base), axis);
+ let v = along / c.half_angle.cos();
+ if v < c.v_range[0] - TOL || v > c.v_range[1] + TOL {
+ continue;
+ }
+ let radial = sub(sub(probe, c.base), scale(axis, along));
+ let r = c.base_radius - v * c.half_angle.sin();
+ if crate::math::len(radial) > r + TOL {
+ return Some(Region::empty());
+ }
+ return None;
+ } else {
+ return None;
+ }
             }
             Surface::Sphere(sp) => {
  let r = sphere_region(sp, plane);
@@ -1560,6 +1612,59 @@ fn partial_wall(cy: &Cylinder, vlo: f64, vhi: f64, reverse: bool) -> TFace {
         surface: surf,
         uv_domain: [[0.0, TWO_PI], [vlo, vhi]],
     }))
+}
+
+fn partial_cone_wall(c: &Cone, vlo: f64, vhi: f64, reverse: bool, boundary: &[topo::WireRef<Curve3>]) -> TFace {
+ let e2 = if reverse { scale(c.e2, -1.0) } else { c.e2 };
+ let mut cone = c.clone();
+ cone.e2 = e2;
+ cone.v_range = [vlo, vhi];
+ let at = |v: f64| {
+ let radius = c.base_radius - v * c.half_angle.sin();
+ let center = add(c.base, scale(c.axis, v * c.half_angle.cos()));
+ (center, radius)
+ };
+ let (center_lo, radius_lo) = at(vlo);
+ let (center_hi, radius_hi) = at(vhi);
+ if (vlo - c.v_range[0]).abs() < 1e-9 && (vhi - c.v_range[1]).abs() < 1e-9 {
+ return Rc::new(RefCell::new(Face {
+ boundary: boundary.to_vec(),
+ forward: true,
+ surface: Surface::Cone(cone),
+ uv_domain: [[0.0, TWO_PI], [vlo, vhi]],
+ }));
+ }
+ let v_lo = topo::vertex(add(center_lo, scale(c.e1, radius_lo)));
+ let v_hi = topo::vertex(add(center_hi, scale(c.e1, radius_hi)));
+ let seam = topo::edge(
+ v_lo.clone(),
+ v_hi.clone(),
+ true,
+ Curve::Segment { a: v_lo.borrow().point, b: v_hi.borrow().point },
+ );
+ let rim_lo = topo::edge(
+ v_lo.clone(),
+ v_lo.clone(),
+ true,
+ Curve::Circle { center: center_lo, radius: radius_lo, normal: c.axis },
+ );
+ let rim_hi = topo::edge(
+ v_hi.clone(),
+ v_hi.clone(),
+ true,
+ Curve::Circle { center: center_hi, radius: radius_hi, normal: c.axis },
+ );
+ let vm = 0.5 * (vlo + vhi);
+ make_face(
+ Surface::Cone(cone),
+ [[0.0, TWO_PI], [vlo, vhi]],
+ vec![
+ topo::EdgeUse { edge: seam.clone(), forward: true, pcurve: topo::Pcurve { start: [0.0, vlo], end: [0.0, vhi], mid: [0.0, vm] } },
+ topo::EdgeUse { edge: rim_hi, forward: true, pcurve: topo::Pcurve { start: [0.0, vhi], end: [TWO_PI, vhi], mid: [std::f64::consts::PI, vhi] } },
+ topo::EdgeUse { edge: seam, forward: false, pcurve: topo::Pcurve { start: [TWO_PI, vhi], end: [TWO_PI, vlo], mid: [TWO_PI, vm] } },
+ topo::EdgeUse { edge: rim_lo, forward: false, pcurve: topo::Pcurve { start: [TWO_PI, vlo], end: [0.0, vlo], mid: [std::f64::consts::PI, vlo] } },
+ ],
+ )
 }
 
 // ---------------------------------------------------------------------------
@@ -2864,9 +2969,70 @@ fn process_face(
             if keep {
             out.push(if reverse { flip_face(face)? } else { face.clone() });
             }
-            Some(())
-        }
-Surface::Sphere(sp) => {
+ Some(())
+ }
+ Surface::Cone(c) => {
+ let sign = offset_sign(op, is_a)?;
+ let keep_inside = keeps_inside(op, is_a);
+ let reverse = op == "subtract" && !is_a;
+ let axis = normalize(c.axis);
+ let mut breaks = vec![c.v_range[0], c.v_range[1]];
+ let wall_box = fb.surface.aabb();
+ for f in other.faces() {
+ let s = f.borrow().surface.clone();
+ if let Some(fb_box) = face_reach_box(&f) {
+ if !aabbs_touch(&wall_box, &fb_box) {
+ continue;
+ }
+ }
+ match &s {
+ Surface::Plane(g) => {
+ let an = dot(g.n, axis).abs();
+ if (an - 1.0).abs() < 1e-9 {
+ let along = dot(sub(g.origin, c.base), axis);
+ let v = along / c.half_angle.cos();
+ if v > c.v_range[0] + 1e-9 && v < c.v_range[1] - 1e-9 {
+ breaks.push(v);
+ }
+ } else if an < 1e-9 {
+ let dist = dot(sub(g.origin, c.base), g.n).abs();
+ let r = c.base_radius - c.v_range[0] * c.half_angle.sin();
+ if dist < r - 1e-7 {
+ return None;
+ }
+ } else {
+ return None;
+ }
+ }
+ _ => return None,
+ }
+ }
+ breaks.sort_by(|a, b| a.partial_cmp(b).unwrap());
+ breaks.dedup_by(|a, b| (*a - *b).abs() < 1e-9);
+ for pair in breaks.windows(2) {
+ let (vlo, vhi) = (pair[0], pair[1]);
+ if vhi - vlo < 1e-9 {
+ continue;
+ }
+ let vm = 0.5 * (vlo + vhi);
+ let r = c.base_radius - vm * c.half_angle.sin();
+ let rho = c.e1;
+ let p = add(c.base, add(scale(rho, r), scale(axis, vm * c.half_angle.cos())));
+ let dv = add(scale(rho, -c.half_angle.sin()), scale(axis, c.half_angle.cos()));
+ let n = cross(scale(c.e2, r), dv);
+ let len = crate::math::len(n);
+ if len < 1e-12 {
+ return None;
+ }
+ let in_other = inside_solid(other, add(p, scale(n, sign * PROBE / len)));
+ let keep = if keep_inside { in_other } else { !in_other };
+ if keep {
+ out.push(partial_cone_wall(c, vlo, vhi, reverse, &fb.boundary));
+ }
+ }
+ Some(())
+ }
+ Surface::Sphere(sp) => {
             // The only sphere-boolean case this kernel builds (SPEC pinned
             // math): a sphere with a centered, symmetric square tube of
             // planes drilled all the way through it along one of the
@@ -3689,20 +3855,16 @@ fn once_used_edges(faces: &[TFace]) -> Vec<usize> {
 /// toward it, kept only when they lie in the outer wire and outside every
 /// inner wire.
 ///
-/// CYLINDRICAL faces matter just as much: a bore's entire volume error lives on
-/// its wall, and when this function was planar-only the soundness check never
-/// looked at one -- two coaxial holes in a box were wrong by exactly 60*pi and
-/// the check still called them sound. Only the narrow, provably-safe case is
-/// sampled: a FULL cylinder (no `arc`) with no inner wires, where every angle
-/// exists at every v, so the mid-v ring is guaranteed to lie on the face no
-/// matter how the boundary wires trim it. Everything else abstains, per the
-/// rule `boolean_result_is_sound` states for itself: an unreliable check must
-/// abstain rather than refuse a correct solid.
+/// CYLINDRICAL and CONICAL faces matter just as much: a bore or countersink's
+/// entire volume error lives on its wall. Full cylinder and cone walls with one
+/// boundary wire are sampled as a mid-v ring, clear of both rims. Everything
+/// else abstains, per the rule `boolean_result_is_sound` states for itself: an
+/// unreliable check must abstain rather than refuse a correct solid.
 fn planar_face_samples(face: &TFace) -> Vec<(Vec3, Vec3)> {
     let fb = face.borrow();
     let plane = match &fb.surface {
         Surface::Plane(p) => p.clone(),
-        Surface::Cylinder(cy) if cy.arc.is_none() && fb.boundary.len() == 1 => {
+ Surface::Cylinder(cy) if cy.arc.is_none() && fb.boundary.len() == 1 => {
             // The probe offset is 1e-4 (DELTA in boolean_result_is_sound); stay
             // well clear of both rims so a sample can never land on a trimmed
             // edge and probe the wrong side of it.
@@ -3729,9 +3891,28 @@ fn planar_face_samples(face: &TFace) -> Vec<(Vec3, Vec3)> {
                     }
                     Some((p, scale(n, 1.0 / len)))
                 })
-                .collect();
-        }
-        _ => return Vec::new(),
+ .collect();
+ }
+ Surface::Cone(c) if fb.boundary.len() == 1 => {
+ let v = 0.5 * (c.v_range[0] + c.v_range[1]);
+ let r = c.base_radius - v * c.half_angle.sin();
+ if v <= c.v_range[0] + 2.0e-4 || v >= c.v_range[1] - 2.0e-4 || r <= 1e-9 {
+ return Vec::new();
+ }
+ return (0..8)
+ .filter_map(|k| {
+ let u = k as f64 * std::f64::consts::FRAC_PI_4;
+ let rho = add(scale(c.e1, u.cos()), scale(c.e2, u.sin()));
+ let p = add(c.base, add(scale(rho, r), scale(c.axis, v * c.half_angle.cos())));
+ let du = scale(add(scale(c.e1, -u.sin()), scale(c.e2, u.cos())), r);
+ let dv = add(scale(rho, -c.half_angle.sin()), scale(c.axis, c.half_angle.cos()));
+ let n = cross(du, dv);
+ let len = crate::math::len(n);
+ (len >= 1e-12).then_some((p, scale(n, 1.0 / len)))
+ })
+ .collect();
+ }
+ _ => return Vec::new(),
     };
     let n = plane.n;
     // A wire is either one Circle edge (centre, radius) or all Segments.
@@ -3808,24 +3989,24 @@ fn planar_face_samples(face: &TFace) -> Vec<(Vec3, Vec3)> {
 /// turn a wrong solid into a refusal, never a correct solid into a wrong one.
 fn boolean_result_is_sound(op: &str, a: &TSolid, b: &TSolid, r: &TSolid) -> bool {
     const DELTA: f64 = 1e-4;
-    // The parity ray test is only trusted on planar and cylindrical operands;
-    // a sphere/cone/torus face makes it (and so this check) unreliable, and an
-    // unreliable check must abstain rather than refuse a correct solid.
+ // The parity ray test is trusted on planar, cylindrical, and conical
+ // operands; a sphere or torus still makes this check abstain rather than
+ // refuse a correct solid.
     let plain = |s: &TSolid| {
-        s.faces().iter().all(|f| matches!(&f.borrow().surface, Surface::Plane(_) | Surface::Cylinder(_)))
+ s.faces().iter().all(|f| matches!(&f.borrow().surface, Surface::Plane(_) | Surface::Cylinder(_) | Surface::Cone(_)))
     };
     if !plain(a) || !plain(b) {
         return true;
     }
-    let member = |q: Vec3| -> bool {
+ let member = |q: Vec3| -> bool {
         let (ia, ib) = (inside_solid(a, q), inside_solid(b, q));
         match op {
             "union" => ia || ib,
             "subtract" => ia && !ib,
             _ => ia && ib,
-        }
-    };
-    for (faces, is_result) in [(a.faces(), false), (b.faces(), false), (r.faces(), true)] {
+ }
+ };
+ for (faces, is_result) in [(a.faces(), false), (b.faces(), false), (r.faces(), true)] {
         for f in &faces {
             // A result face bounds nothing only if EVERY sample says so: a
             // sample can sit on a tangent line of the other operand, where
@@ -3837,16 +4018,30 @@ fn boolean_result_is_sound(op: &str, a: &TSolid, b: &TSolid, r: &TSolid) -> bool
                 let (e1, e2) = (member(q1), member(q2));
                 if is_result {
                     bounds_nothing = Some(bounds_nothing.unwrap_or(true) && e1 == e2);
-                } else if e1 != inside_solid(r, q1) || e2 != inside_solid(r, q2) {
-                    return false;
+ } else if e1 != inside_solid(r, q1) || e2 != inside_solid(r, q2) {
+ return false;
                 }
             }
-            if bounds_nothing == Some(true) {
-                return false;
+ if bounds_nothing == Some(true) {
+ return false;
             }
         }
     }
     true
+}
+
+#[test]
+fn cone_soundness_rejects_wrong_half_angle() {
+ let correct_profile = [[0.0, -11.0], [3.0, -11.0], [3.0, 7.0], [6.0, 10.0], [6.0, 11.0], [0.0, 11.0]];
+ let wrong_profile = [[0.0, -11.0], [3.0, -11.0], [3.0, 7.0], [5.0, 10.0], [5.0, 11.0], [0.0, 11.0]];
+ let tool = build::revolve_profile(&correct_profile, [0.0, 0.0, 1.0], [1.0, 0.0, 0.0], 360.0).unwrap().0;
+ let wrong_tool = build::revolve_profile(&wrong_profile, [0.0, 0.0, 1.0], [1.0, 0.0, 0.0], 360.0).unwrap().0;
+ let base = build::box_solid([40.0, 40.0, 20.0], [0.0, 0.0, 0.0], None);
+ let wrong_result = boolean("subtract", &base, &wrong_tool).expect("wrong-angle cone cut still builds");
+ let mesh = crate::mesh::mesh_solid(&wrong_result, 0.05).expect("wrong-angle result meshes");
+ assert!(check_watertight(&mesh), "wrong-angle result remains closed");
+ assert!(volume_is_translation_invariant(&wrong_result), "wrong-angle result remains translation invariant");
+ assert!(!boolean_result_is_sound("subtract", &base, &tool, &wrong_result));
 }
 
 /// Remove zero-area output faces. A boolean can emit a planar face that is a
@@ -4252,9 +4447,31 @@ fn flip_face(face: &TFace) -> Option<TFace> {
                 vmax: cy.vmax,
                 arc,
             });
-        Some(make_face(surf, fb.uv_domain, uses))
-        }
-        // Fail closed (I-1): a surface with no reversal arm must refuse,
+ Some(make_face(surf, fb.uv_domain, uses))
+ }
+ Surface::Cone(c) => {
+ let mut uses = Vec::new();
+ for w in &fb.boundary {
+ for u in &w.borrow().edges {
+ uses.push(u.clone());
+ }
+ }
+ Some(make_face(
+ Surface::Cone(Cone {
+ base: c.base,
+ axis: c.axis,
+ e1: c.e1,
+ e2: scale(c.e2, -1.0),
+ base_radius: c.base_radius,
+ half_angle: c.half_angle,
+ slant: c.slant,
+ v_range: c.v_range,
+ }),
+ fb.uv_domain,
+ uses,
+ ))
+ }
+ // Fail closed (I-1): a surface with no reversal arm must refuse,
         // never return an unreversed copy -- the subtracted void's volume
         // would be ADDED, and the wrong solid is closed, with 0 open edges.
         _ => None,
