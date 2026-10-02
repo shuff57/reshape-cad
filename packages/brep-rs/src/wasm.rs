@@ -4628,7 +4628,7 @@ fn countersink_variants_are_exact() {
 }
 
 #[test]
-fn countersink_step_refuses_by_conical_face_name() {
+fn countersink_step_writes_a_conical_face() {
  let doc = json!({
  "version": 1,
  "features": [
@@ -4638,8 +4638,8 @@ fn countersink_step_refuses_by_conical_face_name() {
  ]
  });
  let out: Value = serde_json::from_str(&export_step(&doc.to_string(), "h1")).expect("export JSON");
- let error = out.get("error").and_then(|v| v.as_str()).unwrap_or_default();
- assert!(error.contains("a conical face"), "STEP refusal: {error}");
+ let step = out.get("step").and_then(|v| v.as_str()).expect("countersink STEP");
+ assert!(step.contains("CONICAL_SURFACE"), "STEP has no conical surface: {step}");
 }
 
 #[test]

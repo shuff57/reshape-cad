@@ -23,7 +23,7 @@
 //! reason: above the mesh gate's vertex weld, well below parity's `approx`.
 
 use crate::build::{TFace, TSolid};
-use crate::geom::{Curve, Cylinder, Plane, Surface};
+use crate::geom::{Cone, Curve, Cylinder, Plane, Surface};
 use crate::math::{add, cross, dist, dot, normalize, scale, sub, Vec3};
 
 const WELD: f64 = 1e-6;
@@ -421,6 +421,56 @@ fn cylinder_loop(c: &Cylinder) -> Vec<Seg> {
     ]
 }
 
+/// The boundary of a conical frustum, in the same seam form as a cylinder:
+/// lower rim, seam up, upper rim reversed, seam down. `v` is slant distance,
+/// so both the rim radius and its axial centre change with it.
+fn cone_loop(c: &Cone) -> Vec<Seg> {
+    // `build::reversed_face` flips e2, so the surface frame rather than axis
+    // decides which way increasing angle turns in world space.
+    let spin = normalize(cross(c.e1, c.e2));
+    let radius = |v: f64| c.base_radius - v * c.half_angle.sin();
+    let centre = |v: f64| add(c.base, scale(c.axis, v * c.half_angle.cos()));
+    let at = |theta: f64, v: f64| {
+        add(
+            centre(v),
+            add(
+                scale(c.e1, radius(v) * theta.cos()),
+                scale(c.e2, radius(v) * theta.sin()),
+            ),
+        )
+    };
+    let start = 0.0;
+    let end = 2.0 * std::f64::consts::PI;
+    let half = std::f64::consts::PI;
+    let (lo, hi) = (c.v_range[0], c.v_range[1]);
+    vec![
+        Seg::Arc {
+            center: centre(lo),
+            radius: radius(lo),
+            axis: spin,
+            a: at(start, lo),
+            b: at(end, lo),
+            mid: at(half, lo),
+        },
+        Seg::Line {
+            a: at(end, lo),
+            b: at(end, hi),
+        },
+        Seg::Arc {
+            center: centre(hi),
+            radius: radius(hi),
+            axis: scale(spin, -1.0),
+            a: at(end, hi),
+            b: at(start, hi),
+            mid: at(half, hi),
+        },
+        Seg::Line {
+            a: at(start, hi),
+            b: at(start, lo),
+        },
+    ]
+}
+
 /// Signed area of a planar loop in the STEP frame `(u, n x u)`. Positive means
 /// counterclockwise about the SURFACE's normal. Each arc adds its own circular
 /// segment on top of the chord the shoelace sum already counted, so a bulge
@@ -470,19 +520,16 @@ fn reverse_loop(segs: &[Seg]) -> Vec<Seg> {
     segs.iter().rev().map(|s| s.reversed()).collect()
 }
 
-/// Signed area of a loop in a cylinder's own `(angle, height)`, with the angle
-/// UNWRAPPED along the walk: a rim contributes a full +/-2pi rather than
-/// returning to where it started, which is the only way a seam loop encloses
-/// anything at all in parameter space. The angle runs from `e1` toward
-/// `axis x e1` -- STEP's right-handed second axis, not the surface's own `e2`,
-/// which `build::reversed_face` may have flipped.
-fn cylindrical_signed_area(segs: &[Seg], c: &Cylinder) -> f64 {
-    let e2 = cross(c.axis, c.e1);
+/// Signed area of a surface-of-revolution loop in `(angle, axial height)`,
+/// with angle UNWRAPPED along the walk. A cone's slant coordinate is a positive
+/// multiple of axial height, so the sign is the same in its parameter space.
+fn revolved_signed_area(segs: &[Seg], origin: Vec3, surface_axis: Vec3, e1: Vec3) -> f64 {
+    let e2 = cross(surface_axis, e1);
     let angle = |p: Vec3| {
-        let d = sub(p, c.origin);
-        dot(d, e2).atan2(dot(d, c.e1))
+        let d = sub(p, origin);
+        dot(d, e2).atan2(dot(d, e1))
     };
-    let height = |p: Vec3| dot(sub(p, c.origin), c.axis);
+    let height = |p: Vec3| dot(sub(p, origin), surface_axis);
     let wrap = |mut d: f64| {
         while d > std::f64::consts::PI {
             d -= 2.0 * std::f64::consts::PI;
@@ -502,7 +549,7 @@ fn cylindrical_signed_area(segs: &[Seg], c: &Cylinder) -> f64 {
             // so it spans no angle at all.
             Seg::Line { .. } => 0.0,
             Seg::Arc { axis, .. } => {
-                let forward = dot(*axis, c.axis) >= 0.0;
+                let forward = dot(*axis, surface_axis) >= 0.0;
                 if same_pt(s.start(), s.end()) {
                     if forward {
                         2.0 * std::f64::consts::PI
@@ -536,24 +583,33 @@ fn face_bounds(face: &crate::topo::Face<Curve, Surface>) -> Result<(Vec<Vec<Seg>
     let same_sense = match &face.surface {
         Surface::Plane(_) => face.forward,
         Surface::Cylinder(c) => face.forward == right_handed(c.e1, c.e2, c.axis),
-        Surface::Cone(_) => return Err("a conical face".to_string()),
+        Surface::Cone(c) => face.forward == right_handed(c.e1, c.e2, c.axis),
         Surface::Sphere(_) => return Err("a spherical face".to_string()),
         Surface::Torus(_) => return Err("a toroidal face".to_string()),
     };
 
     let mut bounds: Vec<Vec<Seg>> = Vec::new();
-    if let Surface::Cylinder(c) = &face.surface {
-        if face.boundary.len() > 1 {
-            return Err("a cylindrical face with a hole in it".to_string());
-        }
-        bounds.push(cylinder_loop(c));
-    } else {
-        for w in face.boundary.iter() {
-            let segs = wire_segs(&w.borrow().edges);
-            if !closed_chain(&segs) {
-                return Err("a face whose wire is not a closed chain".to_string());
+    match &face.surface {
+        Surface::Cylinder(c) => {
+            if face.boundary.len() > 1 {
+                return Err("a cylindrical face with a hole in it".to_string());
             }
-            bounds.push(segs);
+            bounds.push(cylinder_loop(c));
+        }
+        Surface::Cone(c) => {
+            if face.boundary.len() > 1 {
+                return Err("a conical face with a hole in it".to_string());
+            }
+            bounds.push(cone_loop(c));
+        }
+        _ => {
+            for w in &face.boundary {
+                let segs = wire_segs(&w.borrow().edges);
+                if !closed_chain(&segs) {
+                    return Err("a face whose wire is not a closed chain".to_string());
+                }
+                bounds.push(segs);
+            }
         }
     }
     if bounds.is_empty() {
@@ -569,7 +625,8 @@ fn face_bounds(face: &crate::topo::Face<Curve, Surface>) -> Result<(Vec<Vec<Seg>
     for (i, b) in bounds.iter_mut().enumerate() {
         let area = match &face.surface {
             Surface::Plane(p) => planar_signed_area(b, p),
-            Surface::Cylinder(c) => cylindrical_signed_area(b, c),
+            Surface::Cylinder(c) => revolved_signed_area(b, c.origin, c.axis, c.e1),
+            Surface::Cone(c) => revolved_signed_area(b, c.base, c.axis, c.e1),
             _ => unreachable!("every other surface was refused above"),
         };
         if (area > 0.0) != (i == 0) {
@@ -687,6 +744,14 @@ pub fn write_solid(solid: &TSolid, product: &str) -> Result<String, String> {
                 let pl = w.axis2(add(c.origin, scale(c.axis, c.vmin)), c.axis, c.e1);
                 w.put(format!("CYLINDRICAL_SURFACE('',#{pl},{})", real(c.radius)))
             }
+            Surface::Cone(c) => {
+                let pl = w.axis2(c.base, scale(c.axis, -1.0), c.e1);
+                w.put(format!(
+                    "CONICAL_SURFACE('',#{pl},{},{})",
+                    real(c.base_radius),
+                    real(c.half_angle)
+                ))
+            }
             _ => unreachable!("face_bounds refuses every other surface"),
         };
         let flag = if same_sense { ".T." } else { ".F." };
@@ -721,9 +786,9 @@ pub fn write_solid(solid: &TSolid, product: &str) -> Result<String, String> {
     for g in &groups {
         let shell_faces: Vec<TFace> = g.iter().map(|i| prepared[*i].3.clone()).collect();
         let piece = TSolid {
-            shells: vec![std::rc::Rc::new(std::cell::RefCell::new(crate::topo::Shell {
-                faces: shell_faces,
-            }))],
+            shells: vec![std::rc::Rc::new(std::cell::RefCell::new(
+                crate::topo::Shell { faces: shell_faces },
+            ))],
         };
         bodies.push((g.clone(), crate::build::signed_volume(&piece)));
     }
@@ -759,10 +824,7 @@ pub fn write_solid(solid: &TSolid, product: &str) -> Result<String, String> {
             void_refs.push(w.put(format!("ORIENTED_CLOSED_SHELL('',*,#{sh},.F.)")));
         }
         let refs: Vec<String> = void_refs.iter().map(|i| format!("#{i}")).collect();
-        breps.push(w.put(format!(
-            "BREP_WITH_VOIDS('',#{outer},({}))",
-            refs.join(",")
-        )));
+        breps.push(w.put(format!("BREP_WITH_VOIDS('',#{outer},({}))", refs.join(","))));
     }
 
     // The product and unit scaffolding every AP214 part file needs: without it
@@ -882,6 +944,65 @@ mod tests {
     }
 
     #[test]
+    fn conical_frustum_writes_two_rims_and_semi_angle() {
+        let radius: f64 = 12.0;
+        let cap_radius: f64 = 9.0;
+        let semi_angle = (radius - cap_radius).atan2(radius - cap_radius);
+        let solid = build::chamfer_cylinder_one_rim(
+            [0.0, 0.0, 0.0],
+            radius,
+            30.0,
+            [0.0, 0.0, 1.0],
+            radius - cap_radius,
+            true,
+        );
+        let text = write_solid(&solid, "chamfer").expect("a conical frustum is writable");
+        let cone = text
+            .lines()
+            .find(|line| line.contains("CONICAL_SURFACE"))
+            .expect("one conical surface");
+        assert!(
+            cone.contains(&format!(",{},{});", real(radius), real(semi_angle))),
+            "cone: {cone}"
+        );
+        assert!(
+            text.lines().any(|line| line.contains("= CIRCLE(")
+                && line.ends_with(&format!(",{});", real(radius)))),
+            "base rim radius {radius} missing"
+        );
+        assert!(
+            text.lines().any(|line| line.contains("= CIRCLE(")
+                && line.ends_with(&format!(",{});", real(cap_radius)))),
+            "cap rim radius {cap_radius} missing"
+        );
+    }
+
+    #[test]
+    fn conical_face_with_hole_refuses_rather_than_writing_something_else() {
+        let solid = build::chamfer_cylinder_one_rim(
+            [0.0, 0.0, 0.0],
+            12.0,
+            30.0,
+            [0.0, 0.0, 1.0],
+            3.0,
+            true,
+        );
+        let cone = solid
+            .faces()
+            .into_iter()
+            .find(|face| matches!(face.borrow().surface, Surface::Cone(_)))
+            .expect("one conical face");
+        let outer = cone.borrow().boundary[0].clone();
+        cone.borrow_mut().boundary.push(outer);
+        let err =
+            write_solid(&solid, "conical hole").expect_err("a conical hole is not writable yet");
+        assert!(
+            err.contains("a conical face with a hole in it"),
+            "reason: {err}"
+        );
+    }
+
+    #[test]
     fn two_touching_boxes_stay_two_bodies_with_their_own_edges() {
         // `mirror` puts two boxes face to face. Welding by geometry across
         // them would merge the four shared edges and leave one non-manifold
@@ -903,6 +1024,13 @@ mod tests {
         let solid = build::sphere_solid([0.0, 0.0, 0.0], 15.0, [0.0, 0.0, 1.0]);
         let err = write_solid(&solid, "sphere").expect_err("a sphere is not writable yet");
         assert!(err.contains("spherical face"), "reason: {err}");
+    }
+
+    #[test]
+    fn a_torus_refuses_rather_than_writing_something_else() {
+        let solid = build::torus_solid([0.0, 0.0, 0.0], 14.0, 4.0, [0.0, 0.0, 1.0]);
+        let err = write_solid(&solid, "torus").expect_err("a torus is not writable yet");
+        assert!(err.contains("toroidal face"), "reason: {err}");
     }
 
     #[test]
