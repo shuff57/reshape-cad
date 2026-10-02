@@ -45,6 +45,28 @@ box: 6 planar faces with axis-aligned normals, and volume equal to bbox volume (
 same test the shell branch uses, so reuse it). The resolved edge must be a straight
 edge between two perpendicular box faces. Anything else gets a plain refusal, for
 example `"brep-rs can only round an edge of a box yet -- <label> is shown without it."`
+> **SCOPE WIDENED 2026-10-01 (`f78f396`); the example sentence above is still live.**
+> The scope is no longer only an axis-aligned box. `build_fillet` now has a general
+> convex-edge **chamfer** path: it removes the corner with a triangular prism whose two side
+> faces lie in the two selected face planes, so any convex straight edge between two
+> planar faces is reachable. Measured: a hex prism -- which no cross-section can be
+> extruded from, so all four earlier paths refused it -- chamfers to
+> 5161.5114065552525 = 2980*sqrt(3) at 1e-6, watertight, with a second case whose bevel plane
+> passes through the origin.
+> What is unchanged, and why the sentence above still appears: a **round** is still
+> refused, because a fillet tool is tangent to the very faces it blends and this path
+> deliberately does not use the boolean for that (`wasm.rs:5510` routes `round` back to
+> `NoBox`). Four refusals were added alongside it, each with its own sentence: a flat
+> edge, a concave edge, an end vertex touching more than three faces, and a round on a
+> general convex edge. Three of the four are pinned
+> (`fillet_chamfer_flat_and_round_hex_edges_refuses`,
+> `fillet_chamfer_concave_edge_refuses`). The fourth -- more than three faces at an end -- is
+> implemented and refuses, but is **not pinned**: a >3-face vertex does not arise
+> naturally (a box corner is three, a hex prism corner is three, and chamfering a corner
+> splits its vertex), so a fixture would have to invent topology no user can build. Left
+> unpinned deliberately, and recorded in the `f78f396` commit message.
+> A chamfer on a **boolean result** still refuses, and that is K2b -- see
+> brep-fix-plan.md, which gates it on the K1a that stopped at its stop rule (msgbox #430).
 
 **Construction (exact, reuses tested code).** A box with one edge rounded is an
 extrusion of the box's cross-section perpendicular to that edge, with the one matching
