@@ -1412,3 +1412,57 @@ drops C0's count to zero, the cheaper handle signal becomes valid. The slice's p
 position in the order and its exit criteria are unchanged.
 
 **Commits:** none yet -- the lead decides when this lands.
+
+## K1a — non-convex tool booleans — STOPPED at an honest refusal (2026-10-02)
+
+**Decision: stop. C2 stays a refusal. This is a deliberate closeout, not a
+timeout.** Six attempts failed; this entry records why a seventh is not owed.
+
+**Why stopping is correct, not a compromise.** C2 is CLASS-1 (honest refusal),
+not class-2 (wrong solid). Per `packages/brep-rs/AGENTS.md`: "A refusal is
+honest; a wrong solid is a defect." The kernel refuses C2 today, so the
+binding contract — never return a wrong solid silently — is **satisfied**. Every
+class-2 defect the campaign set out to kill is already fixed (bore floors
+`bfb211d`, unreversed subtracted faces `ops.rs:4178`, open shells passing the
+manifold guard K0c). Nothing about correctness is owed here. C2 is capability
+work, and capability work is optional.
+
+**The measurement that closes the question.** Instrumenting `boolean()` and
+running only the C2 pin:
+- `process_face` never returns None for any a-face or b-face — it is NOT a face refusal
+- the manifold guard PASSES (every edge use count is 1 or 2)
+- `boolean_result_is_sound` PASSES
+- the only thing that refuses C2 is `volume_is_translation_invariant`
+- the result carries exactly **14 once-used edges**
+
+**And it refutes the standing diagnosis.** The recorded theory was that adjacent
+faces disagree about WHERE a shared edge is split (one side whole, neighbour
+split at the notch floor z=3). Measured: on `x=-10, y=10` the WHOLE edge
+`[-5,5]` **and** both halves `[-5,3]` and `[3,5]` all exist, each used once; on
+`z=3, y=10` the segments `[-10,10]` and `[7,-10]` overlap on `x` in `[-10,7]`.
+Multiple emitted faces each lay a boundary claim over **overlapping** spans of
+the same line. That is duplicate overlapping emission, not a missing split.
+
+**Attempt 6 confirms this rather than contradicting it.** `conform_shared_edges`
+(221 lines, `git stash@{0}`) unioned the split parameters per edge line and
+re-split each face at the union. It could not work, and did not: a union can
+make faces agree about *where to cut*, never about *who owns the boundary*. Its
+failure is the refutation's prediction. Reverted ungated — 221 lines of
+topology surgery across every boolean emission should not sit in a kernel
+unverified by any gate. Preserved in the stash, labelled failed.
+
+Also refuted, so attempt 7 does not re-tread them: the reach-box premise
+(`region_inside` is exact), the mixed Segment/Arc arm, the micron coordinate
+mismatch, and the "print the curve variant / add a mixed Segment<->Arc arm"
+leads. The mismatch is neither curve-variant nor representation.
+
+**What reopening C2 would require.** Not a local patch: a decision, made once
+rather than rediscovered per face, about which emitted face owns each boundary
+span of a shared line, for a subtract against a non-convex tool. That is a
+restructure of emission, and it should be scoped and budgeted as its own slice
+with a falsification measurement agreed *before* the attempt.
+
+**Not verified.** Oracle was consulted for this call and returned the same
+transport error twice (`Custom betas are only available for API key users`), so
+the architectural review is outstanding — the decision above is mine, made on
+the measurements in this entry.
