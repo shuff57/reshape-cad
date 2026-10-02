@@ -1477,9 +1477,66 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     return { axis, center };
   }
 
+  /** SPEC-brep-feature-provenance 5.2b: parse the recess options onto the hole.
+   *
+   *  The split of responsibility is deliberate and is not re-argued per option.
+   *  This validates only what is nonsensical REGARDLESS of geometry: types,
+   *  positivity, an included angle over 90, and the two being mutually exclusive.
+   *  Genuine geometric degeneracy -- a counterbore wider than its bore, or deeper
+   *  than it -- is deliberately NOT checked here. That has to reach the kernel
+   *  and come back as a refusal sentence, because a script error would tell the
+   *  student they typed something malformed, when in fact they asked for
+   *  something impossible. Both answers are correct; they answer different
+   *  questions.
+   *
+   *  The kernel has cut both recesses since 37c6091 and 8abd28f; until this
+   *  existed nothing in the language could ask for them.
+   */
+  function applyRecess(fn: string, base: ReturnType<typeof newHole>, extra: Record<string, unknown>): void {
+    const cb = extra.counterbore;
+    const cs = extra.countersink;
+    if (cb !== undefined && cs !== undefined) {
+      throw new Error(
+        `${fn}(): a hole takes a counterbore OR a countersink, not both -- one mouth, one shape.`,
+      );
+    }
+    if (cb !== undefined) {
+      const o = readOptions('counterbore', ['across', 'deep'], cb);
+      if (o.across === undefined) {
+        throw new Error(`${fn}(): counterbore needs { across: <number> } for the recess's diameter.`);
+      }
+      if (o.deep === undefined) {
+        throw new Error(`${fn}(): counterbore needs { deep: <number> } for how far the recess is cut.`);
+      }
+      base.counterbore = {
+        diameter: num(positiveNumber(fn, 'counterbore across', o.across), base.id, 'diameter'),
+        depth: num(positiveNumber(fn, 'counterbore deep', o.deep), base.id, 'depth'),
+      };
+    }
+    if (cs !== undefined) {
+      const o = readOptions('countersink', ['across', 'angle'], cs);
+      if (o.across === undefined) {
+        throw new Error(`${fn}(): countersink needs { across: <number> } for its width at the mouth.`);
+      }
+      if (o.angle === undefined) {
+        throw new Error(`${fn}(): countersink needs { angle: <number> } for the included cone angle (90 is the usual choice).`);
+      }
+      const angleDeg = num(positiveNumber(fn, 'countersink angle', o.angle), base.id, 'angleDeg');
+      if (angleDeg > 90) {
+        throw new Error(
+          `${fn}(): a countersink's angle is its INCLUDED cone angle, so 90 is the widest -- got ${angleDeg}.`,
+        );
+      }
+      base.countersink = {
+        diameter: num(positiveNumber(fn, 'countersink across', o.across), base.id, 'diameter'),
+        angleDeg,
+      };
+    }
+  }
+
   function hole(target: unknown, opts?: unknown): SolidHandle {
     if (!isHandle(target)) throw new Error('hole() needs a shape to drill into: hole(shape, { across: 6 }).');
-    const extra = readOptions('hole', ['across', 'deep', 'at', 'along'], opts);
+    const extra = readOptions('hole', ['across', 'deep', 'at', 'along', 'counterbore', 'countersink'], opts);
     if (extra.across === undefined) throw new Error('hole() needs { across: <number> } for the bit\'s diameter.');
     const across = positiveNumber('hole', 'across', extra.across);
     const base = newHole(docNow(), target.id);
@@ -1493,6 +1550,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
       base.depth = extent != null ? extent + 2 : 10;
     }
     base.center = center;
+    applyRecess('hole', base, extra);
     pushFeature(base);
     mutateHandle(target, base);
     return target;
@@ -1500,7 +1558,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
 
   function holes(target: unknown, opts?: unknown): SolidHandle {
     if (!isHandle(target)) throw new Error('holes() needs a shape to drill into: holes(shape, { across: 6, apart: [15, 10] }).');
-const extra = readOptions('holes', ['across', 'apart', 'at', 'along', 'deep'], opts);
+const extra = readOptions('holes', ['across', 'apart', 'at', 'along', 'deep', 'counterbore', 'countersink'], opts);
     if (extra.across === undefined) throw new Error('holes() needs { across: <number> } for the bit\'s diameter.');
     if (extra.apart === undefined) throw new Error('holes() needs { apart: [across, up] } for the corner-to-corner spacing.');
     const across = positiveNumber('holes', 'across', extra.across);
@@ -1520,6 +1578,7 @@ const extra = readOptions('holes', ['across', 'apart', 'at', 'along', 'deep'], o
       dx: num(spanX, base.id, 'dx') / 2,
       dy: num(spanY, base.id, 'dy') / 2,
     };
+    applyRecess('holes', base, extra);
     pushFeature(base);
     mutateHandle(target, base);
     return target;

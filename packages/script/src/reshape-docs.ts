@@ -117,6 +117,13 @@ const right = box(30, 30, 20, { at: [50, 0, 10] })`,
 hole(b, { across: 6 })`,
       },
       {
+        title: 'hole: a recess at the mouth',
+        body: `A counterbore cuts a flat-bottomed recess so a bolt head sits flush instead of proud. A countersink cuts a cone so a screw does. They go inside counterbore: { across, deep } and countersink: { across, angle }, and a hole takes one or the other -- one mouth, one shape. In both, across is the RECESS's width, not the bore's, and the recess is cut from the mouth inward, so deep is measured from the same face as the bore. countersink's angle is the INCLUDED cone angle, so 90 is the widest and usual. A recess that cannot fit -- wider than its bore, or deeper than it -- is refused by the kernel rather than by the script, because that is a question about geometry rather than about what you typed.`,
+        code: `const b = box(40, 40, 20)
+hole(b, { across: 6, counterbore: { across: 12, deep: 6 } })
+hole(b, { across: 6, at: [20, 0], countersink: { across: 12, angle: 90 } })`,
+      },
+      {
         title: 'holes: multiple holes',
         body: `holes(b, { across: 6, apart: [15, 10] }) drills four holes spaced 15 mm and 10 mm apart.`,
         code: `const b = box(40, 40, 20)

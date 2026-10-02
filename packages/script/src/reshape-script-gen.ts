@@ -604,6 +604,23 @@ export function toScript(doc: ModelDoc, namedParams?: readonly ScriptParamRef[])
       if (throughDepth == null || !near(f.depth, throughDepth)) {
         opts.push(optText(bindings, f.id, 'depth', 'deep', lit(f.depth)));
       }
+      // Recesses (SPEC-brep-feature-provenance 5.2b). These leaves are NOT parameter
+      // slots: `optText` binds to a generated param on the feature, and a recess's numbers
+      // are nested fields with no slot of their own. So they are emitted as literals and a
+      // student's binding is not preserved for them, exactly as for any other literal in a
+      // regenerated script. The VALUE surviving is the part that matters -- it is what was
+      // silently lost for `deep` in A0, and losing a recess this way would be the same bug
+      // one level deeper: the hole would come back shallower and nothing would say so.
+      if (f.counterbore) {
+        opts.push(
+          `counterbore: { across: ${lit(f.counterbore.diameter)}, deep: ${lit(f.counterbore.depth)} }`,
+        );
+      }
+      if (f.countersink) {
+        opts.push(
+          `countersink: { across: ${lit(f.countersink.diameter)}, angle: ${lit(f.countersink.angleDeg)} }`,
+        );
+      }
       if (f.axis !== 'z') opts.push(`along: '${f.axis}'`);
       const [ca, cb, slotA, slotB] =
         f.axis === 'z' ? [f.center[0], f.center[1], 'x', 'y']
