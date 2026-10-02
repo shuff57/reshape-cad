@@ -143,13 +143,23 @@ misclassified cell surfaces as a parity failure rather than a silent wrong solid
 -- and **this design does not require an exact-predicate crate.** Recorded
 because it is free to have and expensive to discover late:
 
-- `robust` (georust; Shewchuk's adaptive `orient2d` / `orient3d` / `incircle` as a
-  `RobustResult`). Verified on crates.io 2026-10-01: MIT, 25.0M downloads, **zero
+- `robust` (georust; Shewchuk's adaptive predicates). Verified on crates.io 2026-10-01:
+  MIT, 25.0M downloads, **zero non-optional dependencies**, pure Rust, no
+  `build.rs`, no FFI. Its scale of adoption is the opposite of this project's other
+  options.
+- **The API is NOT what a Shewchuk port usually looks like — checked by compiling against
+  robust 1.2.0, 2026-10-01.** `orient2d`, `orient3d` and `incircle` each return a plain
+  `f64` whose SIGN is the answer, with an exact `0.0` for the degenerate case. There is
+  no `RobustResult` and no `Orientation` enum in this version. Also: `Coord` is 2D and
+  `Coord3D` is the separate 3D type; `orient3d` takes FOUR points, not five, and
+  `incircle` takes four. An earlier draft of this note said "as a `Sign`-free
+  `RobustResult`", which is wrong and cost a wasted compile.
+- **wasm32: MEASURED, it compiles.** `cargo check --target wasm32-unknown-unknown` against
+  robust 1.2.0 exits 0, and the resolved wasm32 dependency tree is `robust v1.2.0` with
+  **nothing beneath it** — the zero-dependency claim is now measured, not read off a
+  README. This replaces the "UNVERIFIED, one cargo check would settle it" note.
   non-optional dependencies**, pure Rust, no `build.rs`, no FFI. Its scale of
   adoption is the opposite of this project's other options.
-- **UNVERIFIED: that it compiles for `wasm32-unknown-unknown`.** The dependency
-  graph says it should -- pure Rust, no libc, no rayon, no GPU crates in the
-  default set -- and one `cargo check` would settle it. Do not take that as done.
 - Relevance: section 3.4 must tell *parity consensus* from *unavailable*. Adaptive
   predicates shrink the "unavailable" class rather than growing it, and make the
   cell-boundary tests in section 3.2 decidable rather than tolerance-dependent. That
