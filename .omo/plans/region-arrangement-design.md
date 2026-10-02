@@ -130,6 +130,37 @@ Therefore the arrangement needs an explicit parity-consensus versus
 unavailable result, even if that requires exposing information that the current
 boolean `inside_solid` return value hides. Extensions to partial spheres, cones, tori, or other unsupported faces are **unverified**; this design makes no claim they work.
 
+**A note on what "exact" currently means, added 2026-10-01.** The parity claim
+above is exact in the absence of degeneracy, computed in `f64`. brep-rs has no
+adaptive predicates at all: measured 2026-10-01, there is no `orient2d`,
+`orient3d`, `incircle` or Shewchuk import anywhere in the crate, and `math.rs` is 293
+lines. So every "exact" in this design document means "to floating-point", and a
+cell sample chosen near-degenerately can be classified wrongly rather than
+abstaining.
+
+That is survivable -- the arrangement's own tests are referee-first, so a
+misclassified cell surfaces as a parity failure rather than a silent wrong solid
+-- and **this design does not require an exact-predicate crate.** Recorded
+because it is free to have and expensive to discover late:
+
+- `robust` (georust; Shewchuk's adaptive `orient2d` / `orient3d` / `incircle` as a
+  `RobustResult`). Verified on crates.io 2026-10-01: MIT, 25.0M downloads, **zero
+  non-optional dependencies**, pure Rust, no `build.rs`, no FFI. Its scale of
+  adoption is the opposite of this project's other options.
+- **UNVERIFIED: that it compiles for `wasm32-unknown-unknown`.** The dependency
+  graph says it should -- pure Rust, no libc, no rayon, no GPU crates in the
+  default set -- and one `cargo check` would settle it. Do not take that as done.
+- Relevance: section 3.4 must tell *parity consensus* from *unavailable*. Adaptive
+  predicates shrink the "unavailable" class rather than growing it, and make the
+  cell-boundary tests in section 3.2 decidable rather than tolerance-dependent. That
+  is precisely the risk concentration this design names.
+- Cost: a new dependency, against a crate that today has none outside its own
+  modules, and a wasm size budget tracked in `packages/brep-rs/AGENTS.md`. `robust` is a
+  few hundred lines and the delta should be small, but the delta is UNMEASURED.
+
+If (b) is attempted without it, the arrangement is still implementable and the
+referee-first contract still holds. It is an enabler, not a dependency.
+
 ### 3.5 Reassemble the face pieces
 
 For a keep-inside operation, union the cells labelled inside. For a
