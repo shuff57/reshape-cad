@@ -198,6 +198,18 @@ is supported.
 > answer for a grazing trace. Attempt four chose "drop", and that choice is at least
 > part of why it broke C0 and the hex prism.
 >
+> **Where that points, as an INFERENCE and not a measurement.** Two facts are
+> now measured: `region_inside` is exact for a convex `other`, and every planar
+> face of C2's L-bracket base is a convex 4-point polygon with no hole that
+> carries crossing traces. If both hold at the point `keep_polygon` calls
+> `region_inside`, then the region handed downstream is already correct and C2's
+> missing 93.33 is NOT lost in region CONSTRUCTION. It has to be lost after —
+> in `clamp`, in the coplanar rescue, or in how `keep_polygon` turns the region
+> into emitted face pieces. I have NOT measured which, and this is stated as a
+> pointer rather than a finding. But it does mean the next person should
+> instrument the region `keep_polygon` actually receives on C2 before touching
+> anything upstream of it.
+>
 > The remaining question is unchanged, and it is about the region's SEMANTICS
 > rather than clipping: why does a face of `other` with no crossing trace on this
 > face's domain still bound this face? Settle that before writing a fifth
