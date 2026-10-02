@@ -64,9 +64,20 @@ stays queued and the gate keeps asking for it. Both halves must move.
 
 ## Current state
 
-`node scripts/check-freecad-parity.mjs` → `FreeCAD PartDesign parity:
-30/46 shipped, 5 queued, 11 refused` (exit 1 — queued tools remain; that is
-correct today). Re-measured 2026-09-17.
+> **STALE 2026-10-01: this gate no longer exists, so these numbers cannot be**
+> **re-measured.** `scripts/check-freecad-parity.mjs` was DELETED deliberately in
+> `d600093` ("remove FreeCAD kernel, keep only Rust (brep-rs) as production kernel",
+> 2026-09-17) -- the whole FreeCAD parity checker went with the kernel it compared
+> against. Verified: no file under `scripts/` produces "PartDesign parity", and
+> `git log -- scripts/check-freecad-parity.mjs` shows only its introduction
+> (`199ca91`) and that removal.
+>
+> So `30/46 shipped, 5 queued, 11 refused` is a HISTORICAL RECORD of the FreeCAD
+> era, not a current measurement, and the refusal groups below describe a
+> kernel this project no longer ships. What replaced it: brep-rs is the production
+> kernel and `scripts/brep-parity-gate.mjs` is the gate that measures it against
+> OCCT. Kept rather than deleted, because the reason each word was refused is
+> still the best record of which operations the Rust kernel does not bind.
 
 The 11 refusals, in four groups:
 
@@ -88,10 +99,18 @@ The 5 queued are now one family plus one depth:
 - **The datum family** — Plane, Line, Point, CoordinateSystem. Deferred as a
   group behind sketch-on-plane (`.msgbox/FUTURE.md`, 2026-09-08): a datum is
   only useful once a sketch can be attached to one.
-- **Hole**, carried as `partial` rather than `queued` — `hole()` makes a simple
-  through/depth hole; counterbore, countersink, thread and standard sizes are
-  the remaining depth. The kernel half of that same gap is W8 in
-  `docs/kernel-campaign.md`, where overlapping bores still refuse.
+> **CORRECTED 2026-10-01: counterbore and countersink are no longer missing.** They
+> are now expressible in reSHape Script -- `hole(b, { across: 6, counterbore: {
+> across: 12, deep: 6 } })` and `countersink: { across: 12, angle: 90 }` -- measured
+> clean today, landing in `b16b538` after the kernel grew them in `37c6091` and
+> `8abd28f`. Thread and standard sizes remain genuinely absent, so `partial` is
+> still the right status; the DEPTH LIST was the stale part.
+>
+> The kernel claim also moved: the blind-bore composition defect behind this line
+> was fixed in `bfb211d`, and its two regression tests --
+> `successive_blind_bores_keep_every_floor` and
+> `through_bore_then_blind_bore_keeps_the_floor` -- pass now (measured 2026-10-01).
+> "Overlapping bores still refuse" was true when written and is not now.
 
 **What moved since this file last recorded 22/46.** Pocket, Groove, both Lofts,
 prism/wedge and Body became shipped words; the pipes and helixes moved from
