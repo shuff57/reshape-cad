@@ -9,7 +9,7 @@
 // box grows both ways at once, so its face only keeps up with the pointer if
 // the width changes by twice the drag.
 
-import { isShape, sketchBBoxCentre, type Feature, type ModelDoc, type SketchPlane } from './model-types.js';
+import { isShape, extentAlong, sketchBBoxCentre, type Feature, type ModelDoc, type SketchPlane, type Vec3 } from './model-types.js';
 import { maxFilletRadius } from '@shuff57/reshape-sketch/sketch-arc';
 
 export type HandleKind = 'size' | 'move' | 'turn' | 'point' | 'radius';
@@ -574,5 +574,30 @@ export function featureCenter(f: Feature, doc: ModelDoc): [number, number, numbe
   if (f.kind === 'extrude') return extrudeHandles(f, doc)[0]?.origin ?? null;
   if (f.kind === 'pocket') return pocketHandles(f, doc)[0]?.origin ?? null;
   if (f.kind === 'fillet') return filletHandles(f, doc)[0]?.origin ?? null;
-  return null;
+// A hole's own point is its MOUTH: the target's representative point plus
+// the offset the doc stores (which is relative to that point -- see
+// HoleFeature.center), pushed out to the drilled face. This arm exists
+// because A2 put the counterbore/countersink verbs in the CONTEXT BAR, and
+// the bar needs an anchor to float over: while this returned null a hole
+// had none, so those two buttons could never appear for the only feature
+// kind they apply to. Measured 2026-10-02: selecting Box 1 rendered the bar,
+// selecting Hole 1 rendered nothing at all.
+//
+// `extentAlong` gives the target's full size along the drill axis, so half
+// of it lands the point on the face the bore enters. It returns null for a
+// rotated primitive or a non-primitive root; there the centre alone is
+// still a fair float, so the anchor degrades instead of disappearing.
+if (f.kind === 'hole') {
+const target = doc.features.find((t) => t.id === f.target);
+if (!target) return null;
+const base = featureCenter(target, doc);
+if (!base) return null;
+const p: Vec3 = [base[0] + f.center[0], base[1] + f.center[1], base[2] + f.center[2]];
+const half = (extentAlong(doc, f.target, f.axis) ?? 0) / 2;
+if (f.axis === 'x') p[0] += half;
+else if (f.axis === 'y') p[1] += half;
+else p[2] += half;
+return p;
+}
+return null;
 }

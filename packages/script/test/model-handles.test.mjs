@@ -3,9 +3,10 @@
 // produced by `npm run build --workspaces`, which the self-check runs first).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { handlesFor } from '../dist/model-handles.js';
+import { handlesFor, featureCenter } from '../dist/model-handles.js';
 import { generatedParams, applyParam } from '../dist/model-codegen.js';
 import { topLevel } from '../dist/model-types.js';
+import { runScript } from '../dist/reshape-script.js';
 
 const EPS = 1e-9;
 const close = (a, b, msg) => assert.ok(Math.abs(a - b) < EPS, msg ?? `expected ${a} ~= ${b}`);
@@ -498,4 +499,41 @@ test('pocket #18 topLevel(doc) for fixture #1 does not contain box1, does contai
   const ids = top.map((f) => f.id);
   assert.ok(!ids.includes('box1'), `topLevel should not contain box1, got ${ids}`);
   assert.ok(ids.includes('pk1'), `topLevel should contain pk1, got ${ids}`);
+});
+
+// --- A2: a hole needs an anchor or the context bar cannot appear ----------
+// The counterbore/countersink verbs live in the context bar, and the bar only
+// renders when featureCenter() gives the selected feature a point to float
+// over. That returned null for a hole, so selecting Hole 1 drew NO bar at all
+// and the two buttons were unreachable for the only feature kind they apply
+// to. Measured 2026-10-02 in a real browser: Box 1 rendered its bar, Hole 1
+// rendered nothing. The bar's own buttons, verbatim:
+//   Hole 1 | Dimensions | Counterbore | Countersink | Delete
+const holeDoc = (src) => {
+  const r = runScript(src);
+  assert.deepEqual(r.errors, [], 'fixture should run clean: ' + JSON.stringify(r.errors));
+  return r.doc;
+};
+const holeOf = (doc) => doc.features.find((f) => f.kind === 'hole');
+
+test('A2: a hole has a representative point, so the context bar can anchor', () => {
+  const doc = holeDoc('const b = box(40, 40, 20)\nhole(b, { across: 6 })');
+  const c = featureCenter(holeOf(doc), doc);
+  assert.notEqual(c, null, 'a hole MUST have an anchor or its context bar cannot render');
+});
+
+test('A2: that point is the hole MOUTH -- the target centre, offset, on the drilled face', () => {
+  const doc = holeDoc('const b = box(40, 40, 20)\nhole(b, { across: 6 })');
+  // box(40,40,20) is centred on the origin, so its top face is z = +10.
+  closeVec(featureCenter(holeOf(doc), doc), [0, 0, 10], 'centred hole mouth');
+});
+
+test('A2: the doc offset moves the mouth with it, the face does not', () => {
+  const doc = holeDoc('const b = box(40, 40, 20)\nhole(b, { across: 6, at: [12, 0] })');
+  closeVec(featureCenter(holeOf(doc), doc), [12, 0, 10], 'offset hole mouth');
+});
+
+test('A2: the mouth follows a target that is not at the origin', () => {
+  const doc = holeDoc('const b = box(40, 40, 20, { at: [100, 0, 0] })\nhole(b, { across: 6 })');
+  closeVec(featureCenter(holeOf(doc), doc), [100, 0, 10], 'hole in a moved box');
 });
