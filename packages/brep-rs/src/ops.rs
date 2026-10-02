@@ -735,8 +735,27 @@ fn point_in_poly_strict(poly: &[[f64; 2]], p: [f64; 2]) -> bool {
 }
 
 /// Sutherland-Hodgman clip of `subj` by the half-plane `a*u + b*v + c <= 0`.
-/// A half-plane is convex, so this is exact for a single constraint even when
-/// the subject is non-convex.
+/// Clip `subj` to the half-plane `a*u + b*v + c <= 0`, returning ONE loop.
+///
+/// **THE SUBJECT MUST BE CONVEX.** A half-plane is convex, so clipping a non-convex
+/// subject to one half-plane gives the right REGION -- but that region can need
+/// several contours, and this returns only the first.
+///
+/// Measured 2026-10-01 on a dumbbell -- two 2x2 squares joined by a bridge, a
+/// single genuinely-connected loop -- a clip keeping one side of the bridge returns
+/// ONE eight-point loop covering the full 8x2 span, area **16**. The correct answer
+/// is the two squares, area **8**. The gap between them is filled in and nothing is
+/// reported.
+///
+/// The merge leaves NO topological trace: the result is a SIMPLE polygon, with no
+/// self-intersection and no coincident non-adjacent vertices -- the only sign is
+/// collinear vertices flattened into a straight edge. So a connectivity check on the
+/// output cannot catch it, and a guard written to try will report false confidence.
+/// Catching it needs a real multi-contour clip emitting one loop per piece.
+///
+/// Both live callers (`clip_poly_by_poly`, `poly_minus_poly`) pass CONVEX subjects by
+/// contract, so neither is affected. Recorded for the arrangement, whose `Cell` is
+/// non-convex BY DESIGN: step 2 must not reach for this on a cell.
 fn clip_halfplane(subj: &[[f64; 2]], a: f64, b: f64, c: f64) -> Vec<[f64; 2]> {
     if subj.len() < 3 {
         return Vec::new();
@@ -6492,5 +6511,77 @@ mod trace_tests {
         let face = face_toward(&b, [1.0, 0.0, 0.0]);
         let segs = planar_face_trace_on_plane(&face, &above).expect("planar, so it answers");
         assert!(segs.is_empty(), "no face crosses the z=20 plane, so there is no trace: {segs:?}");
+    }
+}
+
+/// Option (b) step 2 warning, pinned. See clip_halfplane's own doc comment: on a
+/// non-convex subject a half-plane clip returns ONE loop even when the correct
+/// answer is several contours, and the merge leaves no topological trace. This
+/// test exists so that trap is a standing measurement rather than a comment
+/// someone has to trust -- and so the day a real multi-contour clip lands, this
+/// test is the thing that fails and says so.
+#[cfg(test)]
+mod clip_convexity_contract {
+    use super::*;
+
+    /// Two 2x2 squares joined by a 1-wide bridge at y in [4,5]: one loop,
+    /// genuinely connected, and genuinely NON-convex.
+    fn dumbbell() -> Vec<[f64; 2]> {
+        vec![
+            [0.0, 0.0], [8.0, 0.0], [8.0, 2.0], [6.0, 2.0],
+            [6.0, 5.0], [8.0, 5.0], [8.0, 7.0], [0.0, 7.0],
+            [0.0, 5.0], [2.0, 5.0], [2.0, 2.0], [0.0, 2.0],
+        ]
+    }
+
+    fn area(p: &[[f64; 2]]) -> f64 {
+        let mut a = 0.0;
+        for i in 0..p.len() {
+            let q = p[i];
+            let r = p[(i + 1) % p.len()];
+            a += q[0] * r[1] - r[0] * q[1];
+        }
+        (a * 0.5).abs()
+    }
+
+    #[test]
+    fn a_convex_subject_clips_exactly() {
+        // The contract both live callers rely on. If this ever fails, the whole
+        // safe basis for clip_poly_by_poly and poly_minus_poly is gone.
+        let sq = vec![[0.0, 0.0], [4.0, 0.0], [4.0, 4.0], [0.0, 4.0]];
+        let out = clip_halfplane(&sq, 1.0, 0.0, -2.0); // keep u <= 2
+        assert!((area(&out) - 8.0).abs() < 1e-9, "a 4x4 square clipped to u<=2 is area 8, got {}", area(&out));
+    }
+
+    #[test]
+    fn a_NON_convex_subject_is_merged_and_the_area_wrongly_doubles() {
+        // THE trap. The correct answer for the dumbbell below y=2 is the two 2x2
+        // squares, total area 8, as TWO contours. What comes back is ONE simple
+        // polygon spanning the full 8x2, area 16.
+        let out = clip_halfplane(&dumbbell(), 0.0, 1.0, -2.0); // keep y <= 2
+        // One Vec comes back -- the function has no way to express two contours --
+        // so the count that matters is the AREA it encloses.
+        assert!(
+            (area(&out) - 16.0).abs() < 1e-9,
+            "the merged outline covers the gap too: area {} not 16",
+            area(&out)
+        );
+        assert!(
+            (area(&out) - 8.0).abs() > 1e-9,
+            "if this ever equals 8 the trap is gone and step 2 may use a real clip"
+        );
+        // And the reason a guard cannot catch it: the result is a SIMPLE polygon.
+        // No self-intersection, no repeated non-adjacent vertex -- just collinear
+        // points flattened along the top edge.
+        let n = out.len();
+        for i in 0..n {
+            for j in (i + 1)..n {
+                if j == i + 1 || (i == 0 && j == n - 1) {
+                    continue;
+                }
+                let d = (out[i][0] - out[j][0]).abs() + (out[i][1] - out[j][1]).abs();
+                assert!(d > 1e-9, "a guard could spot a repeated vertex at {i},{j} -- the trap would be detectable after all");
+            }
+        }
     }
 }
