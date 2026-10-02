@@ -54,11 +54,11 @@ const KNOWN_REFUSED = new Map([
     'same round()-after-boolean refusal as hollowing/The order that always builds',
   ],
   [
-    'booleans/keep: finding intersections',
+'booleans/intersect: finding intersections',
     'keep(box, sphere): box/sphere is a surface pair the face-by-face boolean cannot intersect yet',
   ],
   [
-    'sketches/blend: transitioning between sketches',
+'sketches/loft: transitioning between sketches',
     'blend of two circles: only matching straight outlines are supported',
   ],
 ]);
