@@ -284,9 +284,30 @@ is supported.
 > it is exactly the shape a concave cut's rim takes: a mix of straight segments and
 > arcs where two pieces meet.
 >
-> NOT yet proven for C2 specifically -- that needs the rim's actual curve variants
-> read off the built result, which is a probe I have not run. So this is a LEAD,
-> not a finding. Two ways to settle it, cheapest first:
+> **REFUTED BY MEASUREMENT 2026-10-01 -- do not add a mixed arm.** With the guards
+> disabled and every edge in C2's unguarded result printed, the variants are
+> **60 SEG, 0 CIR, 0 ARC, 0 OTH**. There is not a single mixed-variant pair in
+> C2, so the missing arm cannot be this defect. And `WELD_TOL` is **1e-6**
+> (ops.rs:4362), which is loose: two segments whose endpoints agree to a
+> micron weld easily. That also kills "the tolerance is too tight".
+>
+> So both weld hypotheses are refuted, and what remains is sharper:
+>
+> **The 14 once-used segments are more than 1e-6 apart at their endpoints, even
+> though they print identically at one decimal.** The split points along the cut
+> rim do NOT line up between adjacent pieces -- each piece computed its own
+> intersection with the cut boundary and got a point that differs from its
+> neighbour's by more than a micron. That points back UPSTREAM after all, but not
+> at `region_inside` or `clamp`, both measured correct: at whatever computes those
+> split points when a clamped region becomes face pieces.
+>
+> This is the honest end of the diagnosis. I have refuted two of my own three
+> leads by measurement, which is the right outcome, and I am stopping rather
+> than guessing a fourth. Next step for whoever continues: print the FULL
+> precision endpoints of those 14 edges and compare the coincident pairs. That
+> single measurement will show whether the mismatch is a real coordinate
+> difference or a representation difference (same point, stored differently) --
+> and the fix is entirely different in each case. Two ways to settle it, cheapest first:
 > 1. print the curve variant of each of C2's 14 once-used edges (the same
 >    guard-disable trick used above, two lines, reverted). If they are mixed
 >    Segment/Arc, the missing arm is the defect.
