@@ -10,7 +10,7 @@ use crate::geom::Surface;
 use crate::ops;
 use crate::history::{self, Fate, History, OpRecord, OpKind, PartRef};
 use crate::topo;
-use crate::math::{add, scale, Vec3};
+use crate::math::{add, cross, dot, len, normalize, scale, sub, Vec3};
 use serde_json::{json, Map, Value};
 use wasm_bindgen::prelude::*;
 
@@ -1544,9 +1544,18 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     }
                     Err(e) => {
                         let reason = match e {
-                            FilletErr::TooBig => format!(
-                                "{verb} {label} at {size} would not fit its edge -- {label} is shown without it."
-                            ),
+ FilletErr::TooBig => format!(
+ "{verb} {label} at {size} would not fit its edge -- {label} is shown without it."
+ ),
+ FilletErr::Concave => format!(
+ "brep-rs can only chamfer a convex edge -- {label} is shown without it."
+ ),
+ FilletErr::Flat => format!(
+ "brep-rs cannot chamfer a flat edge -- {label} is shown without it."
+ ),
+ FilletErr::VertexTooComplex => format!(
+ "brep-rs cannot chamfer an edge whose end touches more than three faces -- {label} is shown without it."
+ ),
                             _ => format!(
                                 "brep-rs can only round an edge of a box yet -- {label} is shown without it."
                             ),
@@ -3350,7 +3359,7 @@ mod tests {
     /// bore) still refuses rather than returning a wrong solid -- the new
     /// rotated-box path must not swallow it.
     #[test]
-    fn fillet_non_box_refuses() {
+ fn fillet_non_box_refuses() {
         let base = json!({
             "features": [
                 { "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0], "center": [0.0, 0.0, 0.0] },
@@ -4570,6 +4579,107 @@ mod tests {
     }
 }
 
+#[test]
+fn fillet_chamfer_hex_prism_volume_closed_and_origin_plane() {
+ let hex = |center: [f64; 2]| {
+ let points = vec![
+ [10.0 + center[0], center[1]],
+ [5.0 + center[0], 8.660254037844386 + center[1]],
+ [-5.0 + center[0], 8.660254037844386 + center[1]],
+ [-10.0 + center[0], center[1]],
+ [-5.0 + center[0], -8.660254037844386 + center[1]],
+ [5.0 + center[0], -8.660254037844386 + center[1]],
+ ];
+ json!({
+ "features": [
+ { "id": "sk1", "kind": "sketch", "plane": "xy", "points": points },
+ { "id": "e1", "kind": "extrude", "target": "sk1", "height": 20.0 },
+ { "id": "r1", "kind": "fillet", "target": "e1", "size": 2.0, "style": "chamfer",
+ "edge": { "cause": "between", "feature": "e1", "kind": "edge", "of": [
+ { "cause": "swept", "feature": "e1", "kind": "face", "from": "sk1", "edge": 0 },
+ { "cause": "swept", "feature": "e1", "kind": "face", "from": "sk1", "edge": 1 }
+ ] } }
+ ]
+ })
+ };
+ let want = 2980.0 * 3.0_f64.sqrt();
+ // The second prism puts the new bevel plane x = 0 through the origin.
+ for center in [[0.0, 0.0], [-3.267949192431123, 0.0]] {
+ let (hist, refusals) = build_doc(&hex(center));
+ assert!(refusals.is_empty(), "refusals: {refusals:?}");
+ let solid = hist.shapes.get("r1").expect("hex chamfer must build");
+ let volume = build::solid_volume(solid);
+ assert!((volume - want).abs() <= 1e-6 * want, "volume {volume} vs {want}");
+ let mesh = crate::mesh::mesh_solid(solid, 0.05).expect("hex chamfer meshes");
+ assert!(ops::check_watertight(&mesh), "hex chamfer mesh must be watertight");
+ let bb = build::solid_aabb(solid);
+ assert!((bb.lo[0] - (-10.0 + center[0])).abs() <= 1e-9, "bbox lo x {bb:?}");
+ assert!((bb.hi[0] - (10.0 + center[0])).abs() <= 1e-9, "bbox hi x {bb:?}");
+ assert!((bb.lo[1] - (-8.660254037844386 + center[1])).abs() <= 1e-9, "bbox lo y {bb:?}");
+ assert!((bb.hi[1] - (8.660254037844386 + center[1])).abs() <= 1e-9, "bbox hi y {bb:?}");
+ assert_eq!(bb.lo[2], 0.0, "bbox lo z {bb:?}");
+ assert_eq!(bb.hi[2], 20.0, "bbox hi z {bb:?}");
+ }
+}
+
+#[test]
+fn fillet_chamfer_flat_and_round_hex_edges_refuse() {
+ let flat = json!({
+ "features": [
+ { "id": "b1", "kind": "box", "size": [20.0, 20.0, 20.0] },
+ { "id": "b2", "kind": "box", "size": [20.0, 20.0, 20.0], "center": [20.0, 0.0, 0.0] },
+ { "id": "u1", "kind": "combine", "op": "union", "targets": ["b1", "b2"] },
+ { "id": "r1", "kind": "fillet", "target": "u1", "size": 2.0, "style": "chamfer",
+ "edge": { "cause": "between", "feature": "u1", "kind": "edge", "of": [
+ { "cause": "carried", "feature": "u1", "kind": "face", "of": { "cause": "primitive", "feature": "b1", "kind": "face", "part": "+z" } },
+ { "cause": "carried", "feature": "u1", "kind": "face", "of": { "cause": "primitive", "feature": "b2", "kind": "face", "part": "+z" } }
+ ] } }
+ ]
+ });
+ let (hist, refusals) = build_doc(&flat);
+ let text = refusals.get("r1").and_then(|v| v.as_str()).unwrap_or_default();
+ assert!(text.contains("flat edge"), "refusal: {text}");
+ let solid = hist.shapes.get("r1").expect("target kept");
+ assert!((build::solid_volume(solid) - 16000.0).abs() < 1e-6, "unchanged union");
+
+ let round = json!({
+ "features": [
+ { "id": "sk1", "kind": "sketch", "plane": "xy", "points": [[10.0, 0.0], [5.0, 8.660254037844386], [-5.0, 8.660254037844386], [-10.0, 0.0], [-5.0, -8.660254037844386], [5.0, -8.660254037844386]] },
+ { "id": "e1", "kind": "extrude", "target": "sk1", "height": 20.0 },
+ { "id": "r1", "kind": "fillet", "target": "e1", "size": 2.0, "style": "fillet",
+ "edge": { "cause": "between", "feature": "e1", "kind": "edge", "of": [
+ { "cause": "swept", "feature": "e1", "kind": "face", "from": "sk1", "edge": 0 },
+ { "cause": "swept", "feature": "e1", "kind": "face", "from": "sk1", "edge": 1 }
+ ] } }
+ ]
+ });
+ let (hist, refusals) = build_doc(&round);
+ let text = refusals.get("r1").and_then(|v| v.as_str()).unwrap_or_default();
+ assert!(text.contains("can only round an edge of a box yet"), "refusal: {text}");
+ let solid = hist.shapes.get("r1").expect("target kept");
+ assert!((build::solid_volume(solid) - 3000.0 * 3.0_f64.sqrt()).abs() < 1e-6, "unchanged hex");
+}
+
+#[test]
+fn fillet_chamfer_concave_edge_refuses() {
+ let doc = json!({
+ "features": [
+ { "id": "sk1", "kind": "sketch", "plane": "xy", "points": [[0.0, 0.0], [10.0, 0.0], [10.0, 4.0], [4.0, 4.0], [4.0, 10.0], [0.0, 10.0]] },
+ { "id": "e1", "kind": "extrude", "target": "sk1", "height": 10.0 },
+ { "id": "r1", "kind": "fillet", "target": "e1", "size": 1.0, "style": "chamfer",
+ "edge": { "cause": "between", "feature": "e1", "kind": "edge", "of": [
+ { "cause": "swept", "feature": "e1", "kind": "face", "from": "sk1", "edge": 2 },
+ { "cause": "swept", "feature": "e1", "kind": "face", "from": "sk1", "edge": 3 }
+ ] } }
+ ]
+ });
+ let (hist, refusals) = build_doc(&doc);
+ let text = refusals.get("r1").and_then(|v| v.as_str()).unwrap_or_default();
+ assert!(text.contains("convex edge"), "refusal: {text}");
+ let solid = hist.shapes.get("r1").expect("target kept");
+ assert!((build::solid_volume(solid) - 640.0).abs() < 1e-6, "unchanged L prism");
+}
+
 /// The inward-offset inner solid a shell hollows with, for an axis-aligned
 /// planar box only (SPEC-brep-shell.md's scope). The box's six faces are all
 /// planes and its volume equals its bbox volume exactly when it is the plain
@@ -4941,9 +5051,12 @@ fn box_chamfer_frame(src: &TSolid) -> Option<([[f64; 2]; 3], usize, Vec<BoxBevel
 }
 
 enum FilletErr {
-    NoBox,
-    NoEdge,
-    TooBig,
+ NoBox,
+ NoEdge,
+ TooBig,
+ Concave,
+ Flat,
+ VertexTooComplex,
 }
 
 /// Dispatch the box `round` primitive field (SPEC-brep-round.md): refuse a
@@ -5303,10 +5416,10 @@ fn build_fillet(
             Err(_) => Err(FilletErr::NoBox),
         };
     }
-    // Rotated box: the same profile in the box's OWN orthonormal frame.
-    let (center, half, axes) = box_local_frame(src).ok_or(FilletErr::NoBox)?;
-    let (ax1, s1) = face_local_axis(&fa, &axes).ok_or(FilletErr::NoBox)?;
-    let (ax2, s2) = face_local_axis(&fb, &axes).ok_or(FilletErr::NoBox)?;
+ // Rotated box: the same profile in the box's OWN orthonormal frame.
+ if let Some((center, half, axes)) = box_local_frame(src) {
+ let (ax1, s1) = face_local_axis(&fa, &axes).ok_or(FilletErr::NoBox)?;
+ let (ax2, s2) = face_local_axis(&fb, &axes).ok_or(FilletErr::NoBox)?;
     if ax1 == ax2 {
         return Err(FilletErr::NoBox);
     }
@@ -5323,10 +5436,117 @@ fn build_fillet(
     let origin = add(center, scale(axes[eax], -half[eax]));
     let sweep = scale(axes[eax], 2.0 * half[eax]);
     let solid = match build::extrude_profile(&segs, origin, axes[uax], axes[vax], sweep) {
-        Ok(s) => s,
-        Err(_) => return Err(FilletErr::NoBox),
-    };
-    Ok(build::ensure_outward(&solid))
+ Ok(s) => s,
+ Err(_) => return Err(FilletErr::NoBox),
+ };
+ return Ok(build::ensure_outward(&solid));
+ }
+ // A general chamfer removes the convex corner with a triangular prism whose
+ // side faces lie in the two selected face planes. Rounds remain unsupported:
+ // their tangent tool needs boolean support this path deliberately does not use.
+ if round {
+ return Err(FilletErr::NoBox);
+ }
+ let edge = hist.edge_between(&fa, &fb).ok_or(FilletErr::NoEdge)?;
+ if !matches!(&edge.borrow().curve, crate::geom::Curve::Segment { .. }) {
+ return Err(FilletErr::NoEdge);
+ }
+ let (a, b) = {
+ let e = edge.borrow();
+ let endpoints = (e.a.borrow().point, e.b.borrow().point);
+ endpoints
+ };
+ let edge_vector = sub(b, a);
+ let edge_length = len(edge_vector);
+ if edge_length <= 1e-9 {
+ return Err(FilletErr::NoEdge);
+ }
+ let edge_direction = scale(edge_vector, 1.0 / edge_length);
+ let midpoint = scale(add(a, b), 0.5);
+ let face_data = |face: &build::TFace| -> Result<(Vec3, Vec3, f64), FilletErr> {
+ let (surface_normal, forward) = {
+ let f = face.borrow();
+ let Surface::Plane(plane) = &f.surface else {
+ return Err(FilletErr::NoBox);
+ };
+ (plane.n, f.forward)
+ };
+ let normal = if forward { normalize(surface_normal) } else { scale(normalize(surface_normal), -1.0) };
+ let mut inward = [0.0; 3];
+ for wire in &face.borrow().boundary {
+ for use_ in &wire.borrow().edges {
+ let e = use_.edge.borrow();
+ for point in [e.a.borrow().point, e.b.borrow().point] {
+ let perpendicular = sub(sub(point, midpoint), scale(edge_direction, dot(sub(point, midpoint), edge_direction)));
+ if len(perpendicular) > 1e-9 {
+ inward = add(inward, perpendicular);
+ }
+ }
+ }
+ }
+ let inward = normalize(inward);
+ if len(inward) <= 1e-9 || dot(inward, normal).abs() > 1e-7 {
+ return Err(FilletErr::NoBox);
+ }
+ let mut reach: f64 = 0.0;
+ for wire in &face.borrow().boundary {
+ for use_ in &wire.borrow().edges {
+ let e = use_.edge.borrow();
+ for point in [e.a.borrow().point, e.b.borrow().point] {
+ reach = reach.max(dot(sub(point, midpoint), inward));
+ }
+ }
+ }
+ if reach <= 1e-9 {
+ return Err(FilletErr::NoBox);
+ }
+ Ok((normal, inward, reach))
+ };
+ let (normal_a, in_a, reach_a) = face_data(&fa)?;
+ let (normal_b, in_b, reach_b) = face_data(&fb)?;
+ if dot(normal_a, normal_b).abs() >= 1.0 - 1e-9 {
+ return Err(FilletErr::Flat);
+ }
+ if size <= 0.0 || size >= reach_a.min(reach_b) - 1e-12 {
+ return Err(FilletErr::TooBig);
+ }
+ let into_corner = add(in_a, in_b);
+ if len(into_corner) <= 1e-9 {
+ return Err(FilletErr::Flat);
+ }
+ if !ops::inside_solid(src, add(midpoint, scale(normalize(into_corner), 1e-6))) {
+ return Err(FilletErr::Concave);
+ }
+ for endpoint in [&edge.borrow().a, &edge.borrow().b] {
+ let count = src.faces().iter().filter(|face| {
+ face.borrow().boundary.iter().any(|wire| wire.borrow().edges.iter().any(|use_| {
+ let e = use_.edge.borrow();
+ std::rc::Rc::ptr_eq(&e.a, endpoint) || std::rc::Rc::ptr_eq(&e.b, endpoint)
+ }))
+ }).count();
+ if count > 3 {
+ return Err(FilletErr::VertexTooComplex);
+ }
+ }
+ let u_axis = in_a;
+ let v_axis = cross(edge_direction, u_axis);
+ let third = [size * dot(in_b, u_axis), size * dot(in_b, v_axis)];
+ let segs = vec![
+ build::ProfileSeg::Line { a: [0.0, 0.0], b: [size, 0.0] },
+ build::ProfileSeg::Line { a: [size, 0.0], b: third },
+ build::ProfileSeg::Line { a: third, b: [0.0, 0.0] },
+ ];
+ let tool = build::extrude_profile(
+ &segs,
+ sub(a, scale(edge_direction, size)),
+ u_axis,
+ v_axis,
+ scale(edge_direction, edge_length + 2.0 * size),
+ )
+ .map_err(|_| FilletErr::NoBox)?;
+ ops::boolean("subtract", src, &build::ensure_outward(&tool))
+ .map(|solid| build::ensure_outward(&solid))
+ .ok_or(FilletErr::NoBox)
 }
 
 // ---------------------------------------------------------------------------
@@ -5534,4 +5754,3 @@ pub fn sketch_close(h: u32) {
         }
     });
 }
-

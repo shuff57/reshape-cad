@@ -78,7 +78,7 @@ fn face_reach_box(face: &TFace) -> Option<crate::math::Aabb> {
 /// many times a generic ray from `p` crosses the closed boundary: odd means
 /// inside. Exact for planar and full-cylinder faces; an unsupported surface
 /// falls back to the half-space test, which is right whenever `other` is convex.
-fn inside_solid(solid: &TSolid, p: Vec3) -> bool {
+pub(crate) fn inside_solid(solid: &TSolid, p: Vec3) -> bool {
     // One fixed diagonal ray can pass exactly through a shared edge or vertex
     // of the boundary, where two faces both register the crossing and parity
     // flips (a real case: a bore probe at a box's top/side corner). Take a
