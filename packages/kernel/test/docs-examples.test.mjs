@@ -123,7 +123,10 @@ const CUT_FACES = {
     hole2: { faces: 9 },
   },
   'drilling/holes: multiple holes': { hole1: { faces: 10 } }, // 6 + 4 bore walls
-  'hollowing/The order that always builds': { hole1: { faces: 14 } },
+  // hole1: a box with an 8 mm bore (6 + wall = 7), rounded after; hole2: shell + through hole.
+  'hollowing/The order that always builds': { hole1: { faces: 7 }, hole2: { faces: 14 } },
+  // sphere through its centre: zone + bore wall; cylinder across: pierced wall + bore wall + two caps; cone down its axis: base annulus + bore wall + cone band.
+  'drilling/hole: round parts': { hole1: { faces: 2 }, hole2: { faces: 4 }, hole3: { faces: 3 } },
   'sketches/pocket: cutting a sketch into a shape': { pocket1: { faces: 11 } }, // 6 + 4 + floor
   'sketches/groove: cutting a spun sketch': { groove1: { faces: 8, edges: 16 } },
   'panel/The timeline and panel': { pocket1: { faces: 11 } },

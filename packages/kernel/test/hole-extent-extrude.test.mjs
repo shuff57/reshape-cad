@@ -129,7 +129,7 @@ test('unknown thickness (intersect of two boxes): deep still builds centred and 
   near(t.s.volume, 800 - 10 * Math.PI); // 8 x 10 x 10 overlap, bore through z
 });
 
-test('negatives keep the plain error: a polar pattern of a cone about another axis, and an intersect', () => {
-  assert.match(runScript("const b = cone(6, 12, { at: [25, 0, 0] }); const p = polarPattern(b, { count: 3, axis: 'y' }); hole(p, { across: 2 })").errors[0].message, /cannot find how thick/);
+test('negatives keep the plain error: a polar pattern of a wedge about another axis, and an intersect', () => {
+  assert.match(runScript("const b = wedge(6, 8, 12, { at: [25, 0, 0] }); const p = polarPattern(b, { count: 3, axis: 'y' }); hole(p, { across: 2 })").errors[0].message, /cannot find how thick/);
   assert.match(runScript('const t = intersect(cuboid(10, 10, 10), cylinder(8, 30)); hole(t, { across: 2 })').errors[0].message, /cannot find how thick/);
 });

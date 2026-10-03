@@ -124,7 +124,7 @@ const right = cuboid(30, 30, 20, { at: [50, 0, 10] })`,
     pages: [
       {
         title: 'hole: drilling through or pockets',
-        body: `hole(b, { across: 6 }) drills a through-hole. hole(b, { across: 6, deep: 10 }) drills a pocket 10 mm deep. Place it with at: [x, y]. Drill from a different face with along: 'x'. A through-hole needs to know how thick the part is, and it does for boxes, cylinders, cones, prisms, spheres, tori and wedges you have not turned, for a box or cylinder you have turned (at any angle), for a polarPattern around the hole's own axis, for a polarPattern of a box, cylinder or sphere around another axis, and for shapes pulled from a flat sketch, joined together, repeated in a line, moved or cut: a 30 x 20 pulled shape 20 mm tall takes hole(t, { across: 6 }) straight through and leaves 12000 - 180 x pi = 11434.51 mm^3. A hole that stops short (deep:) also has to know exactly where the top is, so it works on those but stops with "cannot find where the top of this ... is" on a cut shape or a prism drilled across its corners. A turned cone, prism, torus or wedge, a polarPattern of anything else around another axis, an overlap or a mirror drilled along its own mirror axis still stops with "cannot find how thick" and asks you to give it a depth: (and a deep: you give such a shape drills from its middle, so the kernel refuses one that would leave a sealed cavity). holes() works the same way.`,
+        body: `hole(b, { across: 6 }) drills a through-hole. hole(b, { across: 6, deep: 10 }) drills a pocket 10 mm deep. Place it with at: [x, y]. Drill from a different face with along: 'x'. A through-hole needs to know how thick the part is, and it does for boxes, cylinders, cones, prisms, spheres, tori and wedges you have not turned, for a box, cylinder, cone or torus you have turned (at any angle), for a polarPattern around the hole's own axis, for a polarPattern of a box, cylinder, sphere, cone, torus or prism around another axis, and for shapes pulled from a flat sketch, joined together, repeated in a line, moved or cut: a 30 x 20 pulled shape 20 mm tall takes hole(t, { across: 6 }) straight through and leaves 12000 - 180 x pi = 11434.51 mm^3. A hole that stops short (deep:) also has to know exactly where the top is, so it works on those but stops with "cannot find where the top of this ... is" on a cut shape. A turned wedge, a polarPattern of a wedge or of anything derived around another axis, an overlap or a mirror drilled along its own mirror axis still stops with "cannot find how thick" and asks you to give it a depth: (and a deep: you give such a shape drills from its middle, so the kernel refuses one that would leave a sealed cavity). holes() works the same way.`,
         code: `const b = cuboid(40, 40, 20)
 hole(b, { across: 6 })`,
       },
@@ -143,6 +143,16 @@ hole(c, { across: 6, countersink: { across: 12, angle: 90 } })`,
 hole(b, { size: 'M6' })
 const c = cuboid(40, 40, 20, { at: [60, 0, 0] })
 hole(c, { size: 'm6', counterbore: { across: 11, deep: 6 } })`,
+      },
+      {
+        title: 'hole: round parts',
+        body: `A hole in a round part builds when it meets the part in a circle or in a curve the kernel can carry exactly. Down a cylinder's own axis: always. Down a cone's own axis: yes, and the tip is cut off where the cone narrows to the hole. Straight through a sphere's centre, along x, y or z: yes, through or with a flat floor (deep:), as long as the hole is at most 95% as wide as the sphere and a blind floor stays between the two circles where the hole meets the sphere. Straight across a cylinder's side, through its axis (along: 'x' on an upright cylinder): yes, through or blind, if the hole is at most 95% as wide as the cylinder and stays clear of both ends. Everything else on a round part is refused with a sentence that says what to do: an off-centre hole across a cylinder, a hole across a cone or beside its axis where it reaches the sloping wall, a second cut on a part that already has a hole across its side, and STEP export of a part with a hole across its side or a hole through a sphere (a sphere face has no STEP form yet). Here a 6 mm hole straight through a 40 mm sphere leaves 4/3 x pi x (20^2 - 3^2)^(3/2) = 32385.73 mm^3, a 4 mm hole across a 20 mm x 30 mm cylinder leaves 9174.71 mm^3, and a 4 mm hole down a 20 x 20 cone leaves 1876.58 mm^3.`,
+        code: `const s = sphere(40)
+hole(s, { across: 6 })
+const c = cylinder(20, 30, { at: [60, 0, 0] })
+hole(c, { across: 4, along: 'x' })
+const k = cone(20, 20, { at: [120, 0, 0] })
+hole(k, { across: 4 })`,
       },
       {
         title: 'holes: multiple holes',
@@ -164,9 +174,12 @@ shell(b, { wall: 2 })`,
       },
       {
         title: 'The order that always builds',
-        body: `Round a plain box, or hollow it and then drill it, but do not mix the two on one shape. Today the kernel refuses a cut (a pocket, a hole or cut()) after a round, and a round after a cut or a hollow stops with "brep-rs can only round an edge of a box yet", so a round is the only step on its shape. Here the 3 mm round on one 40 mm edge takes (1 - pi/4) x 3^2 x 40 = 77.26 mm^3 off the 32000 mm^3 block, leaving 31922.74 mm^3. A hollow is its own step: shell(b, { wall: 2 }) on a plain box leaves 40 x 40 x 20 - 36 x 36 x 16 = 11264 mm^3, and drilling it afterwards goes through both 2 mm walls: 11264 - 36 x pi = 11150.90 mm^3 (14 faces). The panel says "Rounding works on a shape, not a hollowed-out one" if you try fillet(b, 3) on the hollow afterwards.`,
+        body: `Three orders build, and they are worth knowing. Round a plain box and then drill it. Drill a plain box and then round an edge the hole stays clear of: the kernel rounds the box first and cuts the hole back in, so a 40 x 40 x 20 block with an 8 mm hole and then a 3 mm round on one 40 mm edge leaves 32000 - 16 x pi x 20 - (1 - pi/4) x 3^2 x 40 = 30917.43 mm^3 (8 faces). Or hollow it and then drill it: shell(b, { wall: 2 }) on a plain box leaves 40 x 40 x 20 - 36 x 36 x 16 = 11264 mm^3, and drilling it afterwards goes through both 2 mm walls: 11264 - 36 x pi = 11150.90 mm^3 (14 faces). These do not build, and each is refused with a sentence that says so. A hole that reaches the rounded edge: "round ... would reach a cut made earlier ... round before you cut, or keep the cut away from that edge". A chamfer after a hole, a second round after a hole, a blind hole after a round, and a round on a hollowed box: "brep-rs can only round an edge of a box yet" or "cannot cut this hole yet". The panel says "Rounding works on a shape, not a hollowed-out one" if you try fillet(b, 3) on the hollow afterwards.`,
         code: `const r = cuboid(40, 40, 20)
 fillet(r.edge('top', 'front'), 3)
+const d = cuboid(40, 40, 20, { at: [120, 0, 0] })
+hole(d, { across: 8 })
+fillet(d.edge('top', 'front'), 3)
 const b = cuboid(40, 40, 20, { at: [60, 0, 0] })
 shell(b, { wall: 2 })
 hole(b, { across: 6 })`,

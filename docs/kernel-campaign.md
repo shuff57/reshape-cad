@@ -1584,3 +1584,9 @@ script and gate fixture that calls `box()`.
 Nothing to fix here — the two behaviours are both deliberate and separately
 tested in `scope-shadowing.test.mjs`. Recorded only so nobody reads "official
 names are taught" as "the friendly names were removed".
+
+## wasm size baseline (2026-10-03, PLAN-next V-4)
+
+`packages/brep-rs/pkg/brep_rs_bg.wasm` = **774,941 bytes** at HEAD `42bac64` (release profile: `opt-level="z"`, `lto=true`, `panic="abort"`), built with
+`cd packages/brep-rs && wasm-pack build --release --target web --out-dir pkg`. Record-only: no CI check (pkg/ is gitignored and `scripts/` is lead-owned;
+see PLAN-next decision N5). Any task that grows it by more than ~5% (about 39 kB) should say why in its commit message.

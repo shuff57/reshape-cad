@@ -1317,13 +1317,47 @@ function axisRotation(axis: Axis3, deg: number): number[][] {
     : [[c, -s, 0], [s, c, 0], [0, 0, 1]];
 }
 
+/** Support function of a torus or prism about its own centre and axes (z is the
+ *  height): the furthest the shape reaches along unit direction d in its OWN frame.
+ *  Closed form, so a turned or spun copy's reach along a world axis is exact:
+ *   - torus: the ring's reach plus the tube;
+ *   - prism: corner k at angle 2 pi k / N from the own x axis, at z = +-H/2.
+ *  Validated against the kernel's own bbox (hole-extent-polar.test.mjs). */
+function ownSupport(t: Feature, d: number[]): number | null {
+  const side = Math.hypot(d[0], d[1]);
+  switch (t.kind) {
+    case 'torus':
+      return t.ringRadius * side + t.tubeRadius;
+    case 'prism': {
+      let best = -Infinity;
+      for (let k = 0; k < t.sides; k++) {
+        const a = (2 * Math.PI * k) / t.sides;
+        best = Math.max(best, Math.cos(a) * d[0] + Math.sin(a) * d[1]);
+      }
+      return Math.abs(d[2]) * t.height / 2 + t.radius * best;
+    }
+    default:
+      return null;
+  }
+}
+
+/** World range along axis index i of a torus or prism whose own axes map to
+ *  world through M (row i = how world axis i is built from the shape's x, y, z)
+ *  and whose centre is at world coordinate c along i. null for any other kind. */
+function hullRange(t: Feature, M: number[][], c: number, i: number): Range | null {
+  const d = M[i];
+  const up = ownSupport(t, d), down = ownSupport(t, d.map(v => -v));
+  if (up === null || down === null) return null;
+  return { lo: snap(c - down), hi: snap(c + up), exact: true };
+}
+
 /** World range of a polar pattern along `axis`. The kernel spins copy k about the
  *  WORLD axis through the origin by k * totalAngle / count (wasm.rs pattern arm;
  *  360 never doubles the seam), so:
  *   - about the SAME axis the range is the target's, unchanged and as exact;
- *   - about another axis it is provable only for a box, cylinder or sphere
- *     straight from the doc, whose rotated copy's reach is closed form. Anything
- *     else (a derived target, a cone, a prism...) is null. */
+ *   - about another axis it is provable only for a box, cylinder, sphere, cone,
+ *     torus or prism straight from the doc, whose rotated copy's reach is closed
+ *     form. Anything else (a derived target, a wedge...) is null. */
 function polarRange(
   doc: ModelDoc, f: PatternFeature, axis: Axis3, rec: (id: string) => Range | null
 ): Range | null {
@@ -1333,17 +1367,26 @@ function polarRange(
   if (!Number.isFinite(total)) return null;
   if (spin === axis || f.count === 1) return rec(f.target);
   const t = doc.features.find(feat => feat.id === f.target);
-  if (!t || (t.kind !== 'box' && t.kind !== 'cylinder' && t.kind !== 'sphere')) return null;
+  if (!t || (t.kind !== 'box' && t.kind !== 'cylinder' && t.kind !== 'sphere'
+    && t.kind !== 'cone' && t.kind !== 'torus' && t.kind !== 'prism')) return null;
   const i = AXIS_INDEX[axis];
   const own = rotationMatrix((t as { rotate?: number[] }).rotate ?? [0, 0, 0]);
   let lo = Infinity, hi = -Infinity;
   for (let k = 0; k < f.count; k++) {
     const R = axisRotation(spin, (total / f.count) * k);
     const c = R[i].reduce((a, r, j) => a + r * t.center[j], 0);
+    if (t.kind === 'torus' || t.kind === 'prism') {
+      const h = hullRange(t, matMul(R, own), c, i);
+      if (!h) return null;
+      lo = Math.min(lo, h.lo); hi = Math.max(hi, h.hi);
+      continue;
+    }
     let half: number;
     if (t.kind === 'sphere') half = t.radius;
     else {
       const M = matMul(R, own);
+      // A cone's box is the kernel's, symmetric about its centre like a cylinder's
+      // (measured: a turned cone's bbox is NOT its tight hull), so it shares the formula.
       half = t.kind === 'box'
         ? M[i].reduce((a, m, j) => a + Math.abs(m) * t.size[j] / 2, 0)
         : t.height / 2 * Math.abs(M[i][2]) + t.radius * Math.sqrt(Math.max(0, 1 - M[i][2] * M[i][2]));
@@ -1372,20 +1415,20 @@ function rangeOf(doc: ModelDoc, featureId: string, axis: Axis3, budget = { n: 64
     }
     case 'cylinder': case 'cone':
       if (!spun) return around(f.center[i], (axis === 'z' ? f.height : f.radius * 2) / 2);
-      // A turned cylinder (not a cone: its box is not centred on its middle):
-      // half the height times the axis' lean, plus the disc's reach sideways.
-      if (f.kind !== 'cylinder') return null;
+      // A turned cylinder or cone: half the height times the axis' lean, plus the disc's
+      // reach sideways. For a cone this is the KERNEL's bbox, symmetric about the centre
+      // (measured: not the tight hull), which is what a centred tool needs.
       {
         const d = rotationMatrix((f as { rotate: number[] }).rotate)[i][2];
         return around(f.center[i], snap(f.height / 2 * Math.abs(d) + f.radius * Math.sqrt(Math.max(0, 1 - d * d))));
       }
     case 'prism':
-      // z is the height; across the corners the extent depends on which way the
-      // polygon points, so 2R only BOUNDS it.
-      return spun ? null : around(f.center[i], (axis === 'z' ? f.height : f.radius * 2) / 2, axis === 'z');
+      // z is the height; corner k sits at angle 2 pi k / N from the own x axis
+      // (build.rs prism_solid), so the reach is the closed-form support function.
+      return hullRange(f, rotationMatrix((f as { rotate?: number[] }).rotate ?? [0, 0, 0]), f.center[i], i);
     case 'sphere': return around(f.center[i], f.radius);
     case 'torus':
-      return spun ? null : around(f.center[i], axis === 'z' ? f.tubeRadius : f.ringRadius + f.tubeRadius);
+      return hullRange(f, rotationMatrix((f as { rotate?: number[] }).rotate ?? [0, 0, 0]), f.center[i], i);
     case 'wedge':
       // MEASURED on the wasm: the bbox is exactly width x depth x height about center.
       return spun ? null : around(f.center[i], (axis === 'x' ? f.width : axis === 'y' ? f.depth : f.height) / 2);

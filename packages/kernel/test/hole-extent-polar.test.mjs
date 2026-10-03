@@ -46,11 +46,40 @@ for (const code of patterns) {
   });
 }
 
-test('not provable stays null: a cone target spun about another axis', () => {
-  const r = runScript("const b = cone(6, 12, { at: [25, 0, 0] }); polarPattern(b, { count: 3, axis: 'y' })");
+test('not provable stays null: a wedge target spun about another axis', () => {
+  const r = runScript("const b = wedge(6, 8, 12, { at: [25, 0, 0] }); polarPattern(b, { count: 3, axis: 'y' })");
   assert.deepEqual(r.errors, []);
   assert.equal(extentBoundAlong(r.doc, r.doc.features.at(-1).id, 'x'), null);
 });
+
+// K-4 (PLAN-next): cone, torus and prism have a closed-form reach, so a turned one and a
+// polar copy of one are exact too (a cone's is the kernel's symmetric box, not its tight hull). The kernel's own
+// bbox is the oracle; the formula never checks itself.
+const hull = [];
+for (const rot of ['[0, 0, 0]', '[30, 0, 0]', '[0, 40, 0]', '[25, 35, 50]', '[90, 0, 0]']) {
+  hull.push(`const b = cone(6, 12, { at: [3, -2, 5] }); turn(b, ${rot})`);
+  hull.push(`const b = torus(14, 4, { at: [3, -2, 5] }); turn(b, ${rot})`);
+}
+// turn() refuses a prism, so a prism is only ever axis-aligned or spun by a pattern
+for (const n of [3, 4, 5, 6, 7, 12]) hull.push(`const b = prism(${n}, 7, 9, { at: [3, -2, 5] })`);
+for (const [shape, at] of [['cone(6, 12', '[25, 0, 0]'], ['torus(14, 4', '[25, 0, 0]'], ['prism(5, 7, 9', '[25, 4, 2]']]) {
+  for (const ax of ['x', 'y', 'z']) hull.push(`const b = ${shape}, { at: ${ax === 'x' ? '[0, 25, 3]' : at} }); polarPattern(b, { count: 3, axis: '${ax}' })`);
+  hull.push(`const b = ${shape}, { at: ${at} }); ${shape.startsWith('prism') ? '' : 'turn(b, [20, 30, 40]); '}polarPattern(b, { count: 4, axis: 'y', angle: 200 })`);
+}
+for (const code of hull) {
+  test(`K-4 extent matches the kernel bbox on x, y, z: ${code}`, () => {
+    const r = runScript(code);
+    assert.deepEqual(r.errors, [], code);
+    const id = r.doc.features.at(-1).id;
+    const m = measure(r.doc, id);
+    assert.ok(m, 'built');
+    AX.forEach((ax, i) => {
+      const e = extentBoundAlong(r.doc, id, ax);
+      assert.ok(e && e.exact, `${ax} not exact for ${code}`);
+      near(e.extent, m.bbox[1][i] - m.bbox[0][i], 1e-6);
+    });
+  });
+}
 
 // The kernel centres a hole's tool on the PATTERN's bbox centre plus `at`, so aim
 // at a copy by subtracting that centre (read from the kernel, not computed).

@@ -74,7 +74,7 @@ test('hole with no deep: goes through a prism, wedge, cone, sphere and torus', (
 test('hole with no deep: on a shape of unknown thickness is an error, not a blind 10 mm', () => {
   assert.match(msg('const t = intersect(cuboid(10, 10, 10), cuboid(10, 10, 10)); hole(t, { across: 2 })'), /cannot find how thick this combine is/);
   assert.match(msg('const t = intersect(cuboid(10, 10, 10), cylinder(8, 30, { at: [5, 0, 0] })); hole(t, { across: 2 })'), /cannot find how thick/);
-  assert.match(msg("const b = cone(6, 12, { at: [25, 0, 0] }); const p = polarPattern(b, { count: 3, axis: 'y' }); hole(p, { across: 2 })"), /cannot find how thick/);
+  assert.match(msg("const b = wedge(6, 8, 12, { at: [25, 0, 0] }); const p = polarPattern(b, { count: 3, axis: 'y' }); hole(p, { across: 2 })"), /cannot find how thick/);
   assert.match(msg('const t = intersect(cuboid(10, 10, 10), cuboid(10, 10, 10)); holes(t, { across: 2, apart: [4, 4] })'), /holes\(\) cannot find how thick/);
 });
 

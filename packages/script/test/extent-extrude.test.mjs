@@ -61,13 +61,17 @@ test('subtract: only a bound (a cut can slice an end off), usable for through, n
   assert.deepEqual(runScript('const a = cuboid(40, 40, 20); const c = cylinder(5, 10, { at: [10, 10, 0] }); const s = cut(a, c); hole(s, { across: 4 })').errors, []);
 });
 
-test('wedge is exact (width x depth x height) but a prism across its corners is only a bound', () => {
+test('wedge is exact (width x depth x height) and so is a prism across its corners (closed-form reach, PLAN-next K-4)', () => {
   assert.equal(ext('wedge(30, 20, 10)', 'y').e.exact, true);
+  // prism(6, 10, 20): circumradius 5, corner 0 on +x, so x reaches 2 * 5 = 10 exactly
   const p = ext('prism(6, 10, 20)', 'x');
-  assert.equal(p.e.exact, false);
+  assert.equal(p.e.exact, true);
+  near(p.e.extent, 10);
   assert.equal(ext('prism(6, 10, 20)', 'z').e.exact, true);
+  // y reaches 2 * 5 * sin(60 degrees)
+  near(ext('prism(6, 10, 20)', 'y').e.extent, 10 * Math.sin(Math.PI / 3));
   const r = runScript('const p = prism(6, 10, 20); hole(p, { across: 2, deep: 5, along: "x" })');
-  assert.match(r.errors[0].message, /cannot find where the top of this prism is/);
+  assert.deepEqual(r.errors, []);
 });
 
 test('linear pattern adds step * (count - 1) along its own direction', () => {
@@ -98,10 +102,10 @@ test('hole through an extrude needs no depth, and deep: sets the offset from the
   assert.deepEqual(d.doc.features.at(-1).center, [0, 0, 6]);
 });
 
-test('not provable stays null: intersect of two boxes, polar pattern of a cone about another axis', () => {
+test('not provable stays null: intersect of two boxes, polar pattern of a wedge about another axis', () => {
   const doc = (c) => runScript(c).doc;
   assert.equal(throughExtentAlong(doc('const t = intersect(cuboid(10, 10, 10), cuboid(10, 10, 10))'), 'combine1', 'z'), null);
-  const p = runScript("const b = cone(6, 12, { at: [25, 0, 0] }); polarPattern(b, { count: 3, axis: 'y' })");
+  const p = runScript("const b = wedge(6, 8, 12, { at: [25, 0, 0] }); polarPattern(b, { count: 3, axis: 'y' })");
   assert.equal(throughExtentAlong(p.doc, p.doc.features.at(-1).id, 'z'), null);
-  assert.match(runScript("const b = cone(6, 12, { at: [25, 0, 0] }); const p = polarPattern(b, { count: 3, axis: 'y' }); hole(p, { across: 2 })").errors[0].message, /cannot find how thick this cone is/);
+  assert.match(runScript("const b = wedge(6, 8, 12, { at: [25, 0, 0] }); const p = polarPattern(b, { count: 3, axis: 'y' }); hole(p, { across: 2 })").errors[0].message, /cannot find how thick this wedge is/);
 });
