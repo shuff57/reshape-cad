@@ -365,3 +365,8 @@ Measured, not asserted. Counts are `bun test` / `cargo test --release` / gates r
 - A differential gate cannot see a defect both kernels share; closed forms and topology pins can.
 - Check `r.errors`, not `r.error`: two scans reported 'silent no-ops' that were really script errors.
 
+### Closing entries (2026-10-02, later)
+- Sealed-cavity guards: hole (`d5b3ae7`), pocket and groove (`21b1044`). The 180-degree disc groove through a face now builds exactly (half-cylinder wall, D-shaped hole, mesh degenerate-triangle fix). Gates are back at baseline: parity 70/2, mesh 70/2, step 64/0/6, occt 17/0; cargo 318 pass / 1 known K2b failure; kernel 331, script 212, studio 233, sketch 9. Eleven lead-owned parity fixtures were moved onto a face with the owner's authorisation (three hole fixtures, eight pocket/groove fixtures); the comparison stays live on OCCT and brep-rs.
+- shCode re-vendored at reshape-cad `848479e` (`1e853831`, `0e9867c7`, `9f0118c6`): `test-reshape-script` 233/233 with five explicit SKIPs (the OCCT referee cannot build `geom()`/`rules()` sketches; brep-rs measures them in `docs-examples.test.mjs`); its hand-written `hole-blind` fixture had the same sealed-cavity defect and was corrected.
+- Not done: browser check of the shCode docs pages (needs the owner's dev-server restart), root `LICENSE` (needs the copyright-holder name), human review of the clean-room notes, and sign-off on SPEC-datum-family.md Stages 2-3.
+
