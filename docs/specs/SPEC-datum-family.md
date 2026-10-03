@@ -1,6 +1,6 @@
 # SPEC datum-family: datum plane / line / point / coordinate system, and sketch-on-plane
 
-Status: DRAFT, NOT BUILDABLE until the lead fills section 6. Decision source: docs/PLAN-scripting-layers.md section 10, Q2 ("full datum family"). Read-only research; no source was touched. Items marked UNVERIFIED could not be checked from this repo.
+Status: SIGNED OFF by the owner on 2026-10-02 for Stages 0-3 (answered in session: 'Stages 2 and 3'); see the filled table in section 6. Stages 0 and 1 are built. Decision source: docs/PLAN-scripting-layers.md section 10, Q2 ("full datum family"). Read-only research; no source was touched. Items marked UNVERIFIED could not be checked from this repo.
 
 ## 1. What exists today (measured by reading)
 
@@ -87,13 +87,13 @@ Each line: lead fills `yes / no`.
 
 | # | Restricted surface | Touched by | Recommendation | Lead |
 |---|---|---|---|---|
-| 1 | `dependsOn()` (model-types.ts:665) | Stage 3 only | NO for Stages 0-2; yes only if Stage 3 is approved, as one `datumRefs` line | ____ |
-| 2 | `Feature` union (model-types.ts:644) | Stage 3 only | NO now | ____ |
-| 3 | `VOCABULARY` + `fns` (reshape-script.ts:183, :1872) | Stage 2 (`plane`) | YES for exactly one word, `plane` | ____ |
-| 4 | `sketch()` argument form (not VOCABULARY, but the DSL contract) | Stage 1 | YES | ____ |
-| 5 | toScript sketch arm (reshape-script-gen.ts:459) | Stage 1 | YES (fixes existing data-loss) | ____ |
-| 6 | wasm.rs `sketch_frame` refusal | Stage 0 | YES (guards silent wrong solid) | ____ |
-| 7 | Studio readers of `f.plane` (3 files above) | Stage 1c | YES | ____ |
-| 8 | Parity ledger + checker (parity/freecad-partdesign.json, scripts/check-freecad-parity.mjs, UNVERIFIED path) and shCode docs gates | Stage 2 | lead flips PartDesign_Plane; Line/Point/CS recorded "refused: no consumer, a JS value does it" | ____ |
-| 9 | Drop datum line, point and coordinate system | Stages 0-3 | YES, drop | ____ |
-| 10 | Gate scripts scripts/brep-*.mjs, check-record.mjs, occt-modeldoc-gate.mjs | none | not touched | ____ |
+| 1 | `dependsOn()` (model-types.ts:665) | Stage 3 only | NO for Stages 0-2; yes only if Stage 3 is approved, as one `datumRefs` line | **yes** (Stage 3 approved; one `datumRefs` line only) |
+| 2 | `Feature` union (model-types.ts:644) | Stage 3 only | NO now | **yes** (one `datum` kind, type 'plane' only) |
+| 3 | `VOCABULARY` + `fns` (reshape-script.ts:183, :1872) | Stage 2 (`plane`) | YES for exactly one word, `plane` | **yes** (exactly one word, `plane`) |
+| 4 | `sketch()` argument form (not VOCABULARY, but the DSL contract) | Stage 1 | YES | **yes** (built) |
+| 5 | toScript sketch arm (reshape-script-gen.ts:459) | Stage 1 | YES (fixes existing data-loss) | **yes** (built) |
+| 6 | wasm.rs `sketch_frame` refusal | Stage 0 | YES (guards silent wrong solid) | **yes** (built, `5e28e76`) |
+| 7 | Studio readers of `f.plane` (3 files above) | Stage 1c | YES | **yes** (not yet routed: Stage 3 agent does it) |
+| 8 | Parity ledger + checker (parity/freecad-partdesign.json, scripts/check-freecad-parity.mjs, UNVERIFIED path) and shCode docs gates | Stage 2 | lead flips PartDesign_Plane; Line/Point/CS recorded "refused: no consumer, a JS value does it" | **n/a here**: the ledger and checker are not in this repo (the FreeCAD checker was deleted in `d600093`); shCode's docs gates are run after the re-vendor |
+| 9 | Drop datum line, point and coordinate system | Stages 0-3 | YES, drop | **yes** (assumed: the owner approved Stages 2 and 3 only, which contain no line/point/CS word) |
+| 10 | Gate scripts scripts/brep-*.mjs, check-record.mjs, occt-modeldoc-gate.mjs | none | not touched | **not touched** |
