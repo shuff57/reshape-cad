@@ -69,7 +69,7 @@ pub struct Refusal {
 }
 
 impl Refusal {
-    fn say(sentence: impl Into<String>) -> Self {
+    pub(crate) fn say(sentence: impl Into<String>) -> Self {
         Refusal {
             sentence: sentence.into(),
         }
@@ -494,6 +494,7 @@ fn read_curves(
     block: &ParamBlock,
     coords: &[f64],
     scale: f64,
+    exclude: &[GeoId],
 ) -> Result<(Vec<Curve>, Vec<Circ>), Refusal> {
     let mut curves = Vec::new();
     let mut circles = Vec::new();
@@ -504,6 +505,11 @@ fn read_curves(
             // refuses anything else), so the first miss is the end of the list.
             Err(_) => break,
         };
+        // Construction geometry guides the solver but is never part of the
+        // outline: it is not a curve, a circle or a loop here.
+        if exclude.contains(&id) {
+            continue;
+        }
         match kind {
             // A free point is not a curve. It can still be welded to one, and
             // the node list below picks it up there.
@@ -607,8 +613,17 @@ impl Plan {
         constraints: &[Constraint],
         solved: &[f64],
     ) -> Result<Plan, Refusal> {
+        Plan::read_excluding(block, constraints, solved, &[])
+    }
+
+    fn read_excluding(
+        block: &ParamBlock,
+        constraints: &[Constraint],
+        solved: &[f64],
+        exclude: &[GeoId],
+    ) -> Result<Plan, Refusal> {
         let scale = block.scale();
-        let (curves, circles) = read_curves(block, solved, scale)?;
+        let (curves, circles) = read_curves(block, solved, scale, exclude)?;
 
         // Endpoint nodes first, and in curve order, so that curve k's ends are
         // nodes 2k and 2k+1 and no lookup is needed to go from one to the
@@ -1506,7 +1521,33 @@ pub fn discover_wires(
     constraints: &[Constraint],
     solved: &[f64],
 ) -> Result<Vec<WireLoop>, Refusal> {
-    let plan = Plan::read(block, constraints, solved)?;
+    discover_wires_excluding(block, constraints, solved, &[])
+}
+
+/// `discover_wires` with construction geometry left out of the outline. The
+/// excluded geometries stay in the block (the solver still sees them and their
+/// rules); only the loop discovery ignores them, along with any rule that names
+/// one, since a weld to a guide line is not a weld of the outline.
+pub fn discover_wires_excluding(
+    block: &ParamBlock,
+    constraints: &[Constraint],
+    solved: &[f64],
+    exclude: &[GeoId],
+) -> Result<Vec<WireLoop>, Refusal> {
+    let kept: Vec<Constraint>;
+    let constraints: &[Constraint] = if exclude.is_empty() {
+        constraints
+    } else {
+        kept = constraints
+            .iter()
+            .filter(|c| {
+                !(0..4).any(|i| matches!(c.arg(i), Ok(a) if exclude.contains(&a.geo)))
+            })
+            .cloned()
+            .collect();
+        &kept
+    };
+    let plan = Plan::read_excluding(block, constraints, solved, exclude)?;
 
     plan.dangling()?;
     plan.near_touch()?;
@@ -1525,7 +1566,7 @@ pub fn discover_wires(
     // Every closed loop the sketch describes, with the area it started from.
     // A circle is a loop of its own, and refusal 10 has already established
     // that it is welded to nothing.
-    let (pre_curves, pre_circles) = read_curves(block, block.values(), plan.scale)?;
+    let (pre_curves, pre_circles) = read_curves(block, block.values(), plan.scale, exclude)?;
     let mut cands: Vec<Cand> = Vec::with_capacity(interior.len() + plan.circles.len());
     for cycle in &interior {
         let mut segs = Vec::with_capacity(cycle.len());

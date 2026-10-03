@@ -1405,6 +1405,20 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     refusals.insert(id.clone(), json!(format!("mirror {id}: {target} has no extent")));
                     continue;
                 }
+                // A reflection reverses handedness. Planar faces survive it (their
+                // frames are rebuilt from the boundary) but a curved face keeps its
+                // old (u, v) frame and comes out inside-out: measured, a mirrored
+                // cylinder/sphere/torus reported volume -V for its copy with
+                // refusals empty. Refuse rather than return that.
+                if src.faces().iter().any(|fc| !matches!(&fc.borrow().surface, Surface::Plane(_))) {
+                    refusals.insert(
+                        id.clone(),
+                        json!(format!(
+                            "mirror {id}: brep-rs cannot reflect a curved face yet ({target} has one) -- {id} is shown without it."
+                        )),
+                    );
+                    continue;
+                }
                 let at = if b.lo[axis].abs() <= b.hi[axis].abs() { b.lo[axis] } else { b.hi[axis] };
                 let mut through = [0.0, 0.0, 0.0];
                 through[axis] = at;
@@ -5391,8 +5405,13 @@ fn build_fillet(
         if ax1 == ax2 {
             return Err(FilletErr::NoBox);
         }
-        let (uax, vax) = (ax1, ax2);
-        let eax = (0..3).find(|i| *i != uax && *i != vax).ok_or(FilletErr::NoBox)?;
+        // Canonical (u, v, edge) = cyclic order, so u x v runs ALONG the sweep
+        // and the profile's CCW assumption holds whichever face the `between`
+        // name lists first (the old (ax1, ax2) order was left-handed for edges
+        // touching a +-y face: wrong volume, refusals empty).
+        let eax = (0..3).find(|i| *i != ax1 && *i != ax2).ok_or(FilletErr::NoBox)?;
+        let (uax, vax) = ((eax + 1) % 3, (eax + 2) % 3);
+        let (s1, s2) = if ax1 == uax { (s1, s2) } else { (s2, s1) };
         let width = |i: usize| bb.hi[i] - bb.lo[i];
         // Refuse when the size does not fit: the shorter adjacent-face width
         // measured perpendicular to the edge is the smaller cross-section extent.
@@ -5486,8 +5505,9 @@ fn build_fillet(
     if ax1 == ax2 {
         return Err(FilletErr::NoBox);
     }
-    let (uax, vax) = (ax1, ax2);
-    let eax = (0..3).find(|i| *i != uax && *i != vax).ok_or(FilletErr::NoBox)?;
+    let eax = (0..3).find(|i| *i != ax1 && *i != ax2).ok_or(FilletErr::NoBox)?;
+    let (uax, vax) = ((eax + 1) % 3, (eax + 2) % 3);
+    let (s1, s2) = if ax1 == uax { (s1, s2) } else { (s2, s1) };
     if size <= 0.0 || size >= (2.0 * half[uax]).min(2.0 * half[vax]) - 1e-12 {
         return Err(FilletErr::TooBig);
     }
@@ -5816,4 +5836,77 @@ pub fn sketch_close(h: u32) {
             list[idx] = None;
         }
     });
+}
+
+#[cfg(test)]
+mod fix_lane_tests {
+    use super::*;
+
+    /// Every one of a box's 12 edges rounds to the closed form
+    /// V - (1 - pi/4) r^2 L, on a NON-cube box so an axis mix-up shows.
+    /// Regression: edges touching a +-y face used a left-handed (u, v, sweep)
+    /// frame and came out wrong with refusals empty.
+    #[test]
+    fn fillet_and_chamfer_exact_on_all_twelve_edges_of_a_non_cube_box() {
+        let size = [30.0, 20.0, 10.0];
+        let r = 2.0;
+        let faces = ["-x", "+x", "-y", "+y", "-z", "+z"];
+        let axis_of = |p: &str| match &p[1..] { "x" => 0, "y" => 1, _ => 2 };
+        let mut n = 0;
+        for a in 0..6 {
+            for b in (a + 1)..6 {
+                let (pa, pb) = (faces[a], faces[b]);
+                if axis_of(pa) == axis_of(pb) { continue; }
+                n += 1;
+                let eax = (0..3).find(|i| *i != axis_of(pa) && *i != axis_of(pb)).unwrap();
+                for (style, k) in [("fillet", 1.0 - std::f64::consts::PI / 4.0), ("chamfer", 0.5)] {
+                    let doc = json!({ "features": [
+                        { "id": "b1", "kind": "box", "size": size },
+                        { "id": "f1", "kind": "fillet", "target": "b1", "size": r, "style": style,
+                          "edge": { "cause": "between", "feature": "b1", "kind": "edge", "of": [
+                            { "cause": "primitive", "feature": "b1", "kind": "face", "part": pa },
+                            { "cause": "primitive", "feature": "b1", "kind": "face", "part": pb } ] } }
+                    ]});
+                    let (hist, refusals) = build_doc(&doc);
+                    assert!(refusals.is_empty(), "{pa}/{pb} {style}: {refusals:?}");
+                    let v = build::solid_volume(hist.shapes.get("f1").expect("built"));
+                    let want = size[0] * size[1] * size[2] - k * r * r * size[eax];
+                    assert!((v - want).abs() <= 1e-9 * want, "{pa}/{pb} {style}: {v} vs {want}");
+                }
+            }
+        }
+        assert_eq!(n, 12);
+    }
+
+    fn wedge_bbox_vol(doc: serde_json::Value, id: &str) -> ([f64; 3], [f64; 3], f64) {
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "{refusals:?}");
+        let s = hist.shapes.get(id).expect("built");
+        let bb = build::solid_aabb(s);
+        (bb.lo, bb.hi, build::solid_volume(s))
+    }
+
+    /// A wedge honours its center: volume unchanged, bbox shifted by it.
+    #[test]
+    fn wedge_honours_center() {
+        let (lo0, hi0, v0) = wedge_bbox_vol(json!({"features":[{"id":"w","kind":"wedge","width":10.0,"depth":20.0,"height":30.0}]}), "w");
+        let (lo, hi, v) = wedge_bbox_vol(json!({"features":[{"id":"w","kind":"wedge","width":10.0,"depth":20.0,"height":30.0,"center":[7.0,-3.0,11.0]}]}), "w");
+        assert!((v0 - 3000.0).abs() < 1e-9 && (v - 3000.0).abs() < 1e-9);
+        for i in 0..3 {
+            let d = [7.0, -3.0, 11.0][i];
+            assert!((lo[i] - lo0[i] - d).abs() < 1e-9 && (hi[i] - hi0[i] - d).abs() < 1e-9, "axis {i}");
+        }
+    }
+
+    /// A wedge at a non-origin center, then moved: bbox shifts by both.
+    #[test]
+    fn wedge_with_center_then_moved() {
+        let (lo, hi, v) = wedge_bbox_vol(json!({"features":[
+            {"id":"w","kind":"wedge","width":10.0,"depth":20.0,"height":30.0,"center":[5.0,0.0,0.0]},
+            {"id":"m","kind":"move","target":"w","offset":[0.0,4.0,0.0]}]}), "m");
+        assert!((v - 3000.0).abs() < 1e-9);
+        assert!((lo[0] - 0.0).abs() < 1e-9 && (hi[0] - 10.0).abs() < 1e-9, "{lo:?} {hi:?}");
+        assert!((lo[1] - (-6.0)).abs() < 1e-9 && (hi[1] - 14.0).abs() < 1e-9);
+        assert!((lo[2] + 15.0).abs() < 1e-9 && (hi[2] - 15.0).abs() < 1e-9);
+    }
 }

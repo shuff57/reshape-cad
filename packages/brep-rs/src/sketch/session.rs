@@ -30,6 +30,9 @@ pub struct SketchSession {
     pub params: Vec<f64>,
     /// The last diagnosis, refreshed by `solve` and `diagnose`.
     pub diagnosis: Option<solve::Diagnosis>,
+    /// Ids of construction geometry: solved and constrained like any other,
+    /// but never part of the extruded outline.
+    pub construction: Vec<i32>,
 }
 
 thread_local! {
@@ -53,6 +56,7 @@ impl SketchSession {
             .ok_or("sketch_open needs a geoms array")?;
         let rules = v.get("rules").and_then(|r| r.as_array()).unwrap_or(&Vec::new()).clone();
         let mut block = ParamBlock::new();
+        let mut construction_ids: Vec<i32> = Vec::new();
         for g in geoms {
             let id = g
                 .get("id")
@@ -98,7 +102,9 @@ impl SketchSession {
             block
                 .add(id, geo)
                 .map_err(|e| e.to_string())?;
-            let _ = construction;
+            if construction {
+                construction_ids.push(id);
+            }
         }
         // Dense-id validation: the parser refuses a row whose id disagrees
         // with its array position (§2.1), exactly like the interpreter.
@@ -119,7 +125,7 @@ impl SketchSession {
             .map(|(i, r)| Constraint::from_row(i, r, &block))
             .collect::<Result<Vec<_>, _>>()?;
         let params = block.values().to_vec();
-        Ok(SketchSession { block, constraints, params, diagnosis: None })
+        Ok(SketchSession { block, constraints, params, diagnosis: None, construction: construction_ids })
     }
 
     /// Solve from the warm start. The optional drag is the pointer's target
@@ -142,7 +148,12 @@ impl SketchSession {
     /// The solved profile: the outline first, then every hole through it
     /// (§8.2), construction geometry dropped.
     pub fn profile(&self) -> Result<Vec<WireLoop>, Refusal> {
-        wires::discover_wires(&self.block, &self.constraints, &self.params)
+        if !self.construction.is_empty() && self.construction.len() == self.block.user_count() {
+            return Err(Refusal::say(
+                "every line in this sketch is construction geometry, so there is no outline to extrude",
+            ));
+        }
+        wires::discover_wires_excluding(&self.block, &self.constraints, &self.params, &self.construction)
     }
 }
 
@@ -168,4 +179,78 @@ fn radius_of(v: &Value) -> Result<f64, String> {
         return Err(format!("a radius must be positive, got {r}"));
     }
     Ok(r)
+}
+
+#[cfg(test)]
+mod construction_tests {
+    use super::*;
+    use serde_json::json;
+
+    fn rect_geoms() -> Vec<Value> {
+        vec![
+            json!({"id":1,"k":"line","a":[0.0,0.0],"b":[40.0,0.0]}),
+            json!({"id":2,"k":"line","a":[40.0,0.0],"b":[40.0,25.0]}),
+            json!({"id":3,"k":"line","a":[40.0,25.0],"b":[0.0,25.0]}),
+            json!({"id":4,"k":"line","a":[0.0,25.0],"b":[0.0,0.0]}),
+        ]
+    }
+    fn rect_rules() -> Vec<Value> {
+        vec![
+            json!({"k":"coincident","a":1,"aEnd":"b","b":2,"bEnd":"a"}),
+            json!({"k":"coincident","a":2,"aEnd":"b","b":3,"bEnd":"a"}),
+            json!({"k":"coincident","a":3,"aEnd":"b","b":4,"bEnd":"a"}),
+            json!({"k":"coincident","a":4,"aEnd":"b","b":1,"bEnd":"a"}),
+        ]
+    }
+    fn open(geoms: Vec<Value>, rules: Vec<Value>) -> SketchSession {
+        SketchSession::open(&json!({"geoms": geoms, "rules": rules}).to_string()).expect("opens")
+    }
+
+    #[test]
+    fn construction_line_is_not_part_of_the_outline() {
+        let mut g = rect_geoms();
+        g.push(json!({"id":5,"k":"line","a":[0.0,0.0],"b":[40.0,25.0],"construction":true}));
+        let s = open(g, rect_rules());
+        let loops = s.profile().expect("construction diagonal must not refuse");
+        assert_eq!(loops.len(), 1, "one outline, no holes");
+    }
+
+    #[test]
+    fn the_same_diagonal_not_marked_construction_still_refuses() {
+        let mut g = rect_geoms();
+        g.push(json!({"id":5,"k":"line","a":[0.0,0.0],"b":[40.0,25.0]}));
+        assert!(open(g, rect_rules()).profile().is_err());
+    }
+
+    #[test]
+    fn construction_circle_is_not_a_hole() {
+        let mut g = rect_geoms();
+        g.push(json!({"id":5,"k":"circle","c":[20.0,12.0],"r":5.0,"construction":true}));
+        let loops = open(g, rect_rules()).profile().expect("builds");
+        assert_eq!(loops.len(), 1, "a construction circle must not become a hole");
+    }
+
+    #[test]
+    fn construction_arc_is_excluded() {
+        let mut g = rect_geoms();
+        g.push(json!({"id":5,"k":"arc","c":[20.0,12.0],"r":5.0,"a":[25.0,12.0],"b":[20.0,17.0],"sense":"ccw","construction":true}));
+        let loops = open(g, rect_rules()).profile().expect("builds");
+        assert_eq!(loops.len(), 1);
+    }
+
+    #[test]
+    fn construction_only_sketch_refuses_plainly() {
+        let g = vec![json!({"id":1,"k":"circle","c":[0.0,0.0],"r":5.0,"construction":true})];
+        let e = open(g, vec![]).profile().err().expect("must refuse");
+        assert!(format!("{e:?}").contains("construction"), "{e:?}");
+    }
+
+    #[test]
+    fn a_rule_to_construction_geometry_does_not_weld_the_outline() {
+        let mut g = rect_geoms();
+        g.push(json!({"id":5,"k":"line","a":[0.0,0.0],"b":[40.0,25.0],"construction":true}));
+        let mut r = rect_rules();
+        r.push(json!({"k":"coincident","a":5,"aEnd":"a","b":1,"bEnd":"a"}));
+        assert_eq!(open(g, r).profile().expect("builds").len(), 1);
+    }
 }

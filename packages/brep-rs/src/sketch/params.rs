@@ -543,7 +543,7 @@ impl ParamBlock {
         self.cols.get(slot).map(|c| c.is_none()).unwrap_or(true)
     }
 
-    fn user_count(&self) -> usize {
+    pub(crate) fn user_count(&self) -> usize {
         self.entries.iter().filter(|e| e.id > 0).count()
     }
 

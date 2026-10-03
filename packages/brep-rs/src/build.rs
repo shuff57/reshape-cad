@@ -1585,9 +1585,15 @@ pub fn wedge_solid(center: Vec3, width: f64, depth: f64, height: f64, axis: Vec3
     let zlo = add(center, scale(z, -height / 2.0));
     let zhi = add(center, scale(z, height / 2.0));
     let local = |u: f64, v: f64, w: f64| {
+        // `center` MUST be applied here: zlo/zhi below were computed and
+        // discarded, so a wedge used to ignore its center and always sit on the
+        // origin (silently wrong placement).
         add(
-            add(scale(e1, u - width / 2.0), scale(e2, v - depth / 2.0)),
-            scale(z, w - height / 2.0),
+            center,
+            add(
+                add(scale(e1, u - width / 2.0), scale(e2, v - depth / 2.0)),
+                scale(z, w - height / 2.0),
+            ),
         )
     };
     let tri = [[0.0, 0.0], [width, 0.0], [0.0, depth]];
