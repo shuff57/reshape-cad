@@ -1306,6 +1306,53 @@ function rotationMatrix(rot: readonly number[]): number[][] {
 /** Snap float residue (a quarter turn leaves 1e-16) so an exact extent stays exact. */
 const snap = (v: number) => Math.round(v * 1e9) / 1e9;
 
+const matMul = (A: number[][], B: number[][]): number[][] =>
+  A.map(row => [0, 1, 2].map(j => row[0] * B[0][j] + row[1] * B[1][j] + row[2] * B[2][j]));
+
+/** Right-handed rotation about a world axis (the kernel's Transform::rotation). */
+function axisRotation(axis: Axis3, deg: number): number[][] {
+  const t = (deg * Math.PI) / 180, c = Math.cos(t), s = Math.sin(t);
+  return axis === 'x' ? [[1, 0, 0], [0, c, -s], [0, s, c]]
+    : axis === 'y' ? [[c, 0, s], [0, 1, 0], [-s, 0, c]]
+    : [[c, -s, 0], [s, c, 0], [0, 0, 1]];
+}
+
+/** World range of a polar pattern along `axis`. The kernel spins copy k about the
+ *  WORLD axis through the origin by k * totalAngle / count (wasm.rs pattern arm;
+ *  360 never doubles the seam), so:
+ *   - about the SAME axis the range is the target's, unchanged and as exact;
+ *   - about another axis it is provable only for a box, cylinder or sphere
+ *     straight from the doc, whose rotated copy's reach is closed form. Anything
+ *     else (a derived target, a cone, a prism...) is null. */
+function polarRange(
+  doc: ModelDoc, f: PatternFeature, axis: Axis3, rec: (id: string) => Range | null
+): Range | null {
+  if (!(f.count >= 1) || !Number.isFinite(f.count)) return null;
+  const spin: Axis3 = f.axis ?? 'z';
+  const total = f.totalAngle ?? 360;
+  if (!Number.isFinite(total)) return null;
+  if (spin === axis || f.count === 1) return rec(f.target);
+  const t = doc.features.find(feat => feat.id === f.target);
+  if (!t || (t.kind !== 'box' && t.kind !== 'cylinder' && t.kind !== 'sphere')) return null;
+  const i = AXIS_INDEX[axis];
+  const own = rotationMatrix((t as { rotate?: number[] }).rotate ?? [0, 0, 0]);
+  let lo = Infinity, hi = -Infinity;
+  for (let k = 0; k < f.count; k++) {
+    const R = axisRotation(spin, (total / f.count) * k);
+    const c = R[i].reduce((a, r, j) => a + r * t.center[j], 0);
+    let half: number;
+    if (t.kind === 'sphere') half = t.radius;
+    else {
+      const M = matMul(R, own);
+      half = t.kind === 'box'
+        ? M[i].reduce((a, m, j) => a + Math.abs(m) * t.size[j] / 2, 0)
+        : t.height / 2 * Math.abs(M[i][2]) + t.radius * Math.sqrt(Math.max(0, 1 - M[i][2] * M[i][2]));
+    }
+    lo = Math.min(lo, c - half); hi = Math.max(hi, c + half);
+  }
+  return { lo: snap(lo), hi: snap(hi), exact: true };
+}
+
 /** World range of a feature along an axis, or null when it cannot be bounded.
  *  Follows targets at most 16 hops deep at each level of nesting (combine,
  *  pattern copies recurse with a shared budget). */
@@ -1383,6 +1430,7 @@ function rangeOf(doc: ModelDoc, featureId: string, axis: Axis3, budget = { n: 64
       return { lo, hi, exact };
     }
     case 'pattern': {
+      if (f.mode === 'circular') return polarRange(doc, f, axis, rec);
       if (f.mode !== 'linear' || !f.step || !(f.count >= 1)) return null;
       const r = rec(f.target);
       if (!r) return null;
@@ -1419,7 +1467,7 @@ export function extentBoundAlong(
  * is enough: the tool is centred on the part, so a hole longer than the part
  * cuts only air. Unlike extentAlong() (a default-picker that ignores patterns
  * and mirrors) this refuses to guess: null for anything it cannot prove -- a
- * rotated primitive, a polar pattern, an intersect, a sketch that is not on a
+ * rotated cone or prism, a polar pattern of a derived shape, an intersect, a sketch that is not on a
  * world-aligned plane -- so hole() can say so instead of drilling a blind hole
  * the student never asked for.
  */
