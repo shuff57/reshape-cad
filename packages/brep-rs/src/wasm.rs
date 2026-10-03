@@ -2173,6 +2173,10 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     Some(result) => {
                         let face_fates: Vec<Fate> =
                             src.faces().iter().map(|fc| carry_fate(&result, fc)).collect();
+                        replay_log.insert(
+                            id.clone(),
+                            ReplayStep::Hollow { parent: target.to_string(), tool: inner.clone(), closed: open_side.is_none() },
+                        );
                         record_op(&mut hist, &id, OpKind::Shell, vec![target.to_string()], face_fates, Vec::new());
                         hist.insert(&id, result);
                     }
@@ -5509,6 +5513,9 @@ fn box_chamfer_frame(src: &TSolid) -> Option<([[f64; 2]; 3], usize, Vec<BoxBevel
 enum ReplayStep {
     /// A hole: the tools subtracted from the shape held under `parent`.
     Cut { parent: String, tools: Vec<TSolid> },
+    /// A hollow of a plain box: the inner box subtracted from `parent`; `closed` when no
+    /// face was left open, so the result legitimately holds one more skin (the cavity).
+    Hollow { parent: String, tool: TSolid, closed: bool },
     /// A round or chamfer built from `parent`, with its own request.
     Round { parent: String, feature: Value, size: f64, round: bool },
 }
@@ -5516,7 +5523,7 @@ enum ReplayStep {
 impl ReplayStep {
     fn parent(&self) -> &str {
         match self {
-            ReplayStep::Cut { parent, .. } | ReplayStep::Round { parent, .. } => parent,
+            ReplayStep::Cut { parent, .. } | ReplayStep::Hollow { parent, .. } | ReplayStep::Round { parent, .. } => parent,
         }
     }
 }
@@ -5557,7 +5564,7 @@ fn replay_round(
         cur = step.parent().to_string();
     }
     chain.reverse(); // oldest first
-    if !chain.iter().any(|s| matches!(s, ReplayStep::Cut { .. })) {
+    if !chain.iter().any(|s| matches!(s, ReplayStep::Cut { .. } | ReplayStep::Hollow { .. })) {
         return None;
     }
     let root = hist.shapes.get(&cur)?;
@@ -5565,10 +5572,15 @@ fn replay_round(
     // the rounds to apply, oldest first, then this one; and every tool
     let mut rounds: Vec<(&Value, f64, bool)> = Vec::new();
     let mut tools: Vec<&TSolid> = Vec::new();
+    let mut cavities = 0usize;
     for step in &chain {
         match step {
             ReplayStep::Round { feature, size, round, .. } => rounds.push((feature, *size, *round)),
             ReplayStep::Cut { tools: t, .. } => tools.extend(t.iter()),
+            ReplayStep::Hollow { tool, closed, .. } => {
+                tools.push(tool);
+                cavities += *closed as usize;
+            }
         }
     }
     rounds.push((f, size, round));
@@ -5594,7 +5606,7 @@ fn replay_round(
             let tb = build::solid_aabb(t);
             if (0..3).all(|i| tb.lo[i] < hi[i] + slack && tb.hi[i] > lo[i] - slack) {
                 return fail(format!(
-                    "{verb} {label} would reach a cut made earlier, and brep-rs can only {verb} a corner the cuts stay clear of; {verb} before you cut, or keep the cut away from that edge"
+                    "{verb} {label} would reach a cut made earlier, and brep-rs can only {verb} a corner the cuts stay clear of; {verb} before you cut or hollow, or keep the cut away from that edge"
                 ));
             }
         }
@@ -5613,11 +5625,11 @@ fn replay_round(
         match ops::boolean("subtract", &shape, t) {
             Some(r) => shape = r,
             None => return fail(format!(
-                "{verb} {label} is fine, but brep-rs cannot cut the earlier holes into the {verb}ed part"
+                "{verb} {label} is fine, but brep-rs cannot cut the earlier holes or hollow into the {verb}ed part"
             )),
         }
     }
-    if skin_pieces(&shape) > pieces {
+    if skin_pieces(&shape) > pieces + cavities {
         return fail(format!("{verb} {label} would leave a loose piece after the earlier cuts"));
     }
     Some(Ok(shape))

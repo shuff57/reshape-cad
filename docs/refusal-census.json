@@ -61,7 +61,7 @@
   },
   "matrix box: hole then chamfer": {
     "refused": {
-      "bevel1": "chamfer bevel1 is fine, but brep-rs cannot cut the earlier holes into the chamfered part -- bevel1 is shown without it."
+      "bevel1": "chamfer bevel1 is fine, but brep-rs cannot cut the earlier holes or hollow into the chamfered part -- bevel1 is shown without it."
     }
   },
   "matrix box: hole then hollow": {
@@ -111,12 +111,12 @@
   },
   "matrix box: hollow then round": {
     "refused": {
-      "round1": "brep-rs can only round an edge of a box yet; round the plain box before you hollow, chamfer or cut it (a hole that stays clear of the edge may come first) -- round1 is shown without it."
+      "round1": "round round1 would reach a cut made earlier, and brep-rs can only round a corner the cuts stay clear of; round before you cut, or keep the cut away from that edge -- round1 is shown without it."
     }
   },
   "matrix box: hollow then chamfer": {
     "refused": {
-      "bevel1": "brep-rs can only chamfer an edge of a box yet; chamfer the plain box before you hollow, round or cut it -- bevel1 is shown without it."
+      "bevel1": "chamfer bevel1 would reach a cut made earlier, and brep-rs can only chamfer a corner the cuts stay clear of; chamfer before you cut, or keep the cut away from that edge -- bevel1 is shown without it."
     }
   },
   "matrix cylinder: hole along axis": {

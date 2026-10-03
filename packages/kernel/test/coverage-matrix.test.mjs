@@ -301,8 +301,8 @@ const REFUSAL_LEDGER = [
   {
     id: 'round after hollow + hole',
     script:
-      `const b = box(40, 40, 40)\nshell(b, { wall: 2 })\nhole(b, { across: 6 })\nround(b.edge('top', 'front'), 1)`,
-    sentence: 'can only round an edge of a box',
+      `const b = box(40, 40, 40)\nshell(b, { wall: 2 })\nhole(b, { across: 6 })\nround(b.edge('top', 'front'), 3)`,
+    sentence: 'would reach a cut made earlier',
   },
 ];
 

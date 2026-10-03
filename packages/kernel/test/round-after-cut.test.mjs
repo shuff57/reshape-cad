@@ -128,9 +128,9 @@ test('a second round after a hole refuses, shown without it', () => {
   near(r.s.volume, 32000 - PI * 16 * 20 - wedge(3, 40)); // the first round is kept
 });
 
-test('hollow then round still refuses (not the replay case: the root is shelled, K-1b)', () => {
+test('hollow then a round that reaches the cavity refuses in the replay sentence (K-1b builds the clear cases: round-after-hollow.test.mjs)', () => {
   const r = build("const b = box(40, 40, 20)\nhollow(b, { wall: 2, open: 'top' })\nround(b.edge('front', 'right'), 3)");
-  assert.match(r.refusals.round1 ?? '', /can only round an edge of a box yet/);
+  assert.match(r.refusals.round1 ?? '', /would reach a cut made earlier/);
 });
 
 test('a refused replay shows the source shape and keeps a refusal entry (never an empty result)', () => {
