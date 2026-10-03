@@ -630,6 +630,17 @@ export default function BrepViewportThree({
   onFeatureDoubleClick, onSelectAll, onDeleteSelected, onUndo, onRedo, onStartSketch, onRepeat, onMoveHotkey, preview,
 }: Props) {
   const [phase, setPhase] = useState<'loading' | 'ready' | 'error'>('loading');
+  // Section view: a display-only clipping plane. The kernel and the model are
+  // untouched, so volume and exports never change. `t` is 0..1 along the part's
+  // own extent on `axis`; `flip` keeps the other side.
+  const [section, setSection] = useState<{ on: boolean; axis: 0 | 1 | 2; t: number; flip: boolean }>(
+    { on: false, axis: 1, t: 0.5, flip: false },
+  );
+  const sectionRef = useRef(section);
+  sectionRef.current = section;
+  useEffect(() => { if (phase === 'ready') applySectionRef.current(); }, [section, phase]);
+  const applySectionRef = useRef<() => void>(() => {});
+  applySectionRef.current = applySection;
   // Which view-strip preset the camera is sitting on, or null once the
   // student has dragged away from it. A blind judge could not tell the
   // Underneath view from Top -- straight up and straight down look alike --
@@ -1541,6 +1552,23 @@ export default function BrepViewportThree({
       return { distPx: bestDistPx, depth: bestDepth };
     }
 
+    // Section view: the plane only hides pixels, so the raycaster still hits
+    // the cut-away wall in front of the inside. Drop hits on the hidden side,
+    // and hits on a back face (the inside of the cut wall), so a click lands
+    // on what is drawn.
+    const clipOut = (p: THREE_NS.Vector3) => {
+      const pl = renderer.clippingPlanes;
+      return !!pl && pl.length > 0 && pl[0].distanceToPoint(p) < 0;
+    };
+    const lineClipped = (line: THREE_NS.Line) => {
+      const pos = line.geometry.getAttribute('position');
+      if (!pos || !sectionRef.current.on) return false;
+      return [0, pos.count >> 1, pos.count - 1].every((i) =>
+        clipOut(new THREE.Vector3(pos.getX(i), pos.getY(i), pos.getZ(i)).applyMatrix4(line.matrixWorld)));
+    };
+    const sectionFilter = (hits: THREE_NS.Intersection[], dir: THREE_NS.Vector3) =>
+      !sectionRef.current.on ? hits : hits.filter((h) =>
+        !clipOut(h.point) && !(h.face && h.face.normal.dot(dir) > 0));
     function hitAt(clientX: number, clientY: number): Hit | null {
       const filters = filtersRef.current;
       const rect = renderer.domElement.getBoundingClientRect();
@@ -1556,7 +1584,7 @@ export default function BrepViewportThree({
       // edge/vertex occlusion checks below -- which kind actually gets
       // RETURNED depends on `filters` and the priority order below (vertex,
       // then edge, then face, then body), not on this test order.
-      const faceHits = raycaster.intersectObjects(solidGroup.children, false);
+      const faceHits = sectionFilter(raycaster.intersectObjects(solidGroup.children, false), raycaster.ray.direction);
       const faceHit = faceHits.find((h) => h.faceIndex != null);
       const camDist = camera.position.distanceTo(controls.target);
       const occlusionMaxDepth = faceHit
@@ -1585,6 +1613,7 @@ export default function BrepViewportThree({
           if (!pos) continue;
           for (let i = 0; i < pos.count; i++) {
             const world = new THREE.Vector3(pos.getX(i), pos.getY(i), pos.getZ(i)).applyMatrix4(mesh.matrixWorld);
+            if (clipOut(world)) continue;
             const depth = camera.position.distanceTo(world);
             const proj = world.clone().project(camera);
             const distPx = Math.hypot(
@@ -1625,6 +1654,7 @@ export default function BrepViewportThree({
       if (filters.edge) {
         const candidates: { distPx: number; depth: number; line: THREE_NS.Line }[] = [];
         for (const line of edgePickLinesRef.current) {
+          if (lineClipped(line)) continue;
           const { distPx, depth } = closestEdgeScreenDist(line, rect.width, rect.height, cursor);
           if (distPx <= EDGE_HIT_BAND_PX) candidates.push({ distPx, depth, line });
         }
@@ -1742,7 +1772,7 @@ export default function BrepViewportThree({
       );
       raycaster.setFromCamera(ndc, camera);
 
-      const faceHits = raycaster.intersectObjects(solidGroup.children, false);
+      const faceHits = sectionFilter(raycaster.intersectObjects(solidGroup.children, false), raycaster.ray.direction);
       const faceHit = faceHits.find((h) => h.faceIndex != null);
       const camDist = camera.position.distanceTo(controls.target);
       const occlusionMaxDepth = faceHit
@@ -1756,6 +1786,7 @@ export default function BrepViewportThree({
           if (!pos) continue;
           for (let i = 0; i < pos.count; i++) {
             const world = new THREE.Vector3(pos.getX(i), pos.getY(i), pos.getZ(i)).applyMatrix4(mesh.matrixWorld);
+            if (clipOut(world)) continue;
             const depth = camera.position.distanceTo(world);
             const proj = world.clone().project(camera);
             const distPx = Math.hypot(
@@ -1776,6 +1807,7 @@ export default function BrepViewportThree({
       if (filters.edge) {
         const edgeCandidates: { distPx: number; depth: number; line: THREE_NS.Line }[] = [];
         for (const line of edgePickLinesRef.current) {
+          if (lineClipped(line)) continue;
           const { distPx, depth } = closestEdgeScreenDist(line, rect.width, rect.height, cursor);
           if (distPx <= EDGE_HIT_BAND_PX) edgeCandidates.push({ distPx, depth, line });
         }
@@ -3339,6 +3371,40 @@ export default function BrepViewportThree({
     }
   }
 
+
+  /** Apply the section state to the renderer and to every drawn solid. Safe to
+   *  call at any time: it does nothing until the scene exists. */
+  function applySection() {
+    const three = threeRef.current;
+    const group = solidGroupRef.current;
+    const renderer = rendererRef.current;
+    const scene = sceneRef.current;
+    const camera = cameraRef.current;
+    if (!three || !group || !renderer || !scene || !camera) return;
+    const { THREE } = three;
+    const sec = sectionRef.current;
+    let on = sec.on;
+    if (on) {
+      const box = new THREE.Box3().setFromObject(group);
+      if (box.isEmpty()) on = false;
+      else {
+        const lo = box.min.getComponent(sec.axis);
+        const hi = box.max.getComponent(sec.axis);
+        const at = lo + sec.t * (hi - lo);
+        const n = new THREE.Vector3();
+        n.setComponent(sec.axis, sec.flip ? 1 : -1);
+        renderer.clippingPlanes = [new THREE.Plane(n, sec.flip ? -at : at)];
+      }
+    }
+    if (!on) renderer.clippingPlanes = [];
+    for (const m of group.children as THREE_NS.Mesh[]) {
+      const mat = m.material as THREE_NS.Material | undefined;
+      if (mat) { mat.side = on ? THREE.DoubleSide : THREE.FrontSide; mat.needsUpdate = true; }
+    }
+    renderer.render(scene, camera);
+  }
+
+
   /** Replace the drawn solids and render exactly one frame. Never called from
    *  inside a loop -- see the render-on-demand note above. Returns the meshes
    *  it created so the caller can re-apply a persisted selection against
@@ -3389,6 +3455,14 @@ export default function BrepViewportThree({
     const material = new THREE.MeshStandardMaterial({
       color: 0xff6600, roughness: 0.6, metalness: 0.1,
     });
+    // Seen only through a section cut: the inside of the outer wall shows as a
+    // flat cap colour, so the cut reads as solid material rather than a hole.
+    material.onBeforeCompile = (shader) => {
+      shader.fragmentShader = shader.fragmentShader.replace(
+        '#include <dithering_fragment>',
+        'if (!gl_FrontFacing) gl_FragColor = vec4(0.36, 0.62, 0.82, 1.0);\n#include <dithering_fragment>',
+      );
+    };
     // Phase 5.3 (todo 25): while a preview is active the rebuilt meshes
     // are drawn TRANSLUCENT in the op's colour, not the committed orange --
     // the colour says "not committed yet", the opacity says "computed",
@@ -3465,6 +3539,7 @@ export default function BrepViewportThree({
     }
 
     renderer.render(scene, camera);
+    applySection();
     return meshes;
   }
 
@@ -4279,6 +4354,49 @@ try {
               </button>
             </div>
           )}
+      {phase === 'ready' && (
+        <div style={sectionPanelStyle} data-section-panel="1">
+          <button
+            type="button"
+            title="Cut the view with a plane to see inside the part (display only: the model is unchanged)"
+            style={section.on ? viewStripActiveStyle : viewStripButtonStyle}
+            aria-pressed={section.on}
+            onClick={() => setSection((s) => ({ ...s, on: !s.on }))}
+          >
+            Section
+          </button>
+          {section.on && (
+            <>
+              {([0, 1, 2] as const).map((a) => (
+                <button
+                  key={a}
+                  type="button"
+                  title={`Cut across ${'xyz'[a]}`}
+                  style={section.axis === a ? viewStripActiveStyle : viewStripButtonStyle}
+                  aria-pressed={section.axis === a}
+                  onClick={() => setSection((s) => ({ ...s, axis: a }))}
+                >
+                  {'XYZ'[a]}
+                </button>
+              ))}
+              <input
+                type="range" min={0} max={1} step={0.005} value={section.t}
+                aria-label="Section position"
+                style={{ width: 120 }}
+                onChange={(e) => { const t = Number(e.target.value); setSection((s) => ({ ...s, t })); }}
+              />
+              <button
+                type="button"
+                title="Keep the other side of the cut"
+                style={viewStripButtonStyle}
+                onClick={() => setSection((s) => ({ ...s, flip: !s.flip }))}
+              >
+                Flip
+              </button>
+            </>
+          )}
+        </div>
+      )}
       {phase === 'ready' && !badgesInStatusBar && (hoveringEdge && !pick || !!selectedCount) && (
         <div style={topRightStackStyle}>
           {/* Shown ONLY while hovering an edge with nothing picked yet --
@@ -4331,6 +4449,10 @@ const errorPanelStyle: React.CSSProperties = {
 // in the model tree (selectedCount > 0) while the student hovers one of its
 // edges before clicking. Stacking avoids the two pills drawing on top of
 // each other in that case; either can also appear alone.
+// Above the view strip (left 12, bottom 12) so the two never overlap.
+const sectionPanelStyle: React.CSSProperties = {
+  position: 'absolute', left: 12, bottom: 104, display: 'flex', gap: 6, alignItems: 'center',
+};
 const topRightStackStyle: React.CSSProperties = {
   position: 'absolute', top: 12, right: 12, display: 'flex', flexDirection: 'column',
   alignItems: 'flex-end', gap: 6, pointerEvents: 'none',
