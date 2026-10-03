@@ -1275,6 +1275,17 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     hist.insert(&id, shape);
                 } else if tools_apart(&before_cut, &fused.iter().collect::<Vec<_>>()) {
                     refusals.insert(id.clone(), json!(miss_refusal(&id)));
+                } else if src_faces.len() == 2
+                    && src_faces.iter().any(|fc| matches!(fc.borrow().surface, Surface::Cone(_)))
+                {
+                    // A plain pointed cone: say what IS supported, so a student
+                    // can drill it another way.
+                    refusals.insert(
+                        id.clone(),
+                        json!(format!(
+                            "hole {id}: a cone can be drilled down its own axis (z), or beside the axis where the bore stays clear of the sloping wall and ends before the tip; this bore meets the wall in a curve brep-rs cannot carry exactly, or would leave the tip floating loose -- {id} is shown without it."
+                        )),
+                    );
                 } else {
                     refusals.insert(
                         id.clone(),

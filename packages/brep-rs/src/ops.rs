@@ -61,6 +61,24 @@ fn face_reach_box(face: &TFace) -> Option<crate::math::Aabb> {
             for p in build::face_ring_points(&fb) {
                 b.expand(p);
             }
+            // A whole-circle edge contributes only its seam vertex above, so a
+            // disk (a cone's base, a cylinder's cap) read as a POINT and was
+            // judged "cannot interact" with a wall that crosses it. Cover the
+            // circle's own extent (a cube around it: conservative, which only
+            // ever means "might interact").
+            for w in &fb.boundary {
+                for u in &w.borrow().edges {
+                    if let Curve::Circle { center, radius, .. } = &u.edge.borrow().curve {
+                        for k in 0..3 {
+                            let (mut lo, mut hi) = (*center, *center);
+                            lo[k] -= radius;
+                            hi[k] += radius;
+                            b.expand(lo);
+                            b.expand(hi);
+                        }
+                    }
+                }
+            }
             b
         }
         s => s.aabb(),
@@ -1082,6 +1100,11 @@ fn region_inside(other: &TSolid, plane: &Plane, offset: Vec3) -> Option<Region> 
  let along_probe = dot(sub(probe, c.base), axis);
  let band_lo = c.v_range[0] * c.half_angle.cos();
  let band_hi = c.v_range[1] * c.half_angle.cos();
+ // Past a cone that runs all the way to its apex there is no material at
+ // all, not "a face that bounds nothing here".
+ if c.base_radius - c.v_range[1] * c.half_angle.sin() <= 1e-9 && along_probe > band_hi + TOL {
+     return Some(Region::empty());
+ }
  if along_probe >= band_lo - TOL && along_probe <= band_hi + TOL {
  let along = dot(sub(plane.origin, c.base), axis);
  let r = c.base_radius - along * c.half_angle.tan();
@@ -2017,6 +2040,80 @@ fn partial_wall(cy: &Cylinder, vlo: f64, vhi: f64, reverse: bool) -> TFace {
         surface: surf,
         uv_domain: [[0.0, TWO_PI], [vlo, vhi]],
     }))
+}
+
+/// The farthest a planar face's outer boundary gets from the line through
+/// `origin` along `axis`. A whole circle counts as its centre's distance plus
+/// its radius; an arc too (conservative). `None` when it cannot be read.
+fn plane_face_radial_reach(face: &Face<Curve3, Surface3>, origin: Vec3, axis: Vec3) -> Option<f64> {
+    let w = face.boundary.first()?;
+    let radial = |p: Vec3| {
+        let d = sub(p, origin);
+        crate::math::len(sub(d, scale(axis, dot(d, axis))))
+    };
+    let mut far = 0.0f64;
+    for u in &w.borrow().edges {
+        let e = u.edge.borrow();
+        match &e.curve {
+            Curve::Circle { center, radius, .. } | Curve::Arc { center, radius, .. } => {
+                far = far.max(radial(*center) + radius);
+            }
+            Curve::Segment { .. } => {
+                far = far.max(radial(e.a.borrow().point)).max(radial(e.b.borrow().point));
+            }
+        }
+    }
+    Some(far)
+}
+
+/// How a whole-turn cylinder meets a cone face.
+enum ConeCyl {
+    /// Same axis: the meeting curve is a circle at slant parameter `v_cross`
+    /// (None when the radii never match within the shared axial band).
+    Coaxial { v_cross: Option<f64> },
+    /// Parallel off-axis cylinder that stays strictly inside or strictly
+    /// outside the cone over the shared band: they never meet.
+    Clear,
+    /// Anything else (tilted axes, an off-axis wall that reaches the cone, an
+    /// arc wall): the meeting curve is not a circle, so the caller refuses.
+    Crosses,
+}
+
+fn cone_cyl_relation(c: &Cone, cy: &Cylinder) -> ConeCyl {
+    if cy.arc.is_some() {
+        return ConeCyl::Crosses;
+    }
+    let ax = normalize(c.axis);
+    let a2 = normalize(cy.axis);
+    let par = dot(ax, a2);
+    if (par.abs() - 1.0).abs() > 1e-9 {
+        return ConeCyl::Crosses;
+    }
+    let (sin, cos, tan) = (c.half_angle.sin(), c.half_angle.cos(), c.half_angle.tan());
+    let d = sub(cy.origin, c.base);
+    let p0 = dot(d, ax);
+    let off = crate::math::len(sub(d, scale(ax, p0)));
+    let (q1, q2) = (p0 + par * cy.vmin, p0 + par * cy.vmax);
+    let lo = q1.min(q2).max(c.v_range[0] * cos);
+    let hi = q1.max(q2).min(c.v_range[1] * cos);
+    if hi - lo <= 1e-9 {
+        return ConeCyl::Clear;
+    }
+    let r2 = cy.radius;
+    let r_at = |along: f64| c.base_radius - along * tan;
+    if off < 1e-9 {
+        if sin <= 1e-12 {
+            return ConeCyl::Crosses;
+        }
+        let v = (c.base_radius - r2) / sin;
+        let along = v * cos;
+        let v_cross = if along >= lo - 1e-9 && along <= hi + 1e-9 { Some(v) } else { None };
+        return ConeCyl::Coaxial { v_cross };
+    }
+    if off + r2 < r_at(hi) - 1e-7 || off - r2 > r_at(lo) + 1e-7 {
+        return ConeCyl::Clear;
+    }
+    ConeCyl::Crosses
 }
 
 fn partial_cone_wall(c: &Cone, vlo: f64, vhi: f64, reverse: bool, boundary: &[topo::WireRef<Curve3>]) -> TFace {
@@ -3053,6 +3150,7 @@ fn process_face(
             let wall_box = fb.surface.aabb();
             // Collect parallel cylinder tools for u-clipping (W8).
             let mut parallel_cylinders: Vec<Cylinder> = Vec::new();
+            let mut saw_cone = false;
             for f in other.faces() {
                 let s = f.borrow().surface.clone();
                 if let Some(fb_box) = face_reach_box(&f) {
@@ -3158,8 +3256,33 @@ fn process_face(
                         }
                         return None;
                     }
+                    Surface::Cone(c2) => {
+                        // This wall against a cone face of `other` (the other
+                        // operand is a cone, or carries a countersink-like
+                        // band): a circle when coaxial, nothing when clear.
+                        match cone_cyl_relation(c2, cy) {
+                            ConeCyl::Coaxial { v_cross } => {
+                                saw_cone = true;
+                                if let Some(v) = v_cross {
+                                    let ax2 = normalize(c2.axis);
+                                    let pt = add(c2.base, scale(ax2, v * c2.half_angle.cos()));
+                                    let t = dot(sub(pt, cy.origin), axis);
+                                    if t > cy.vmin + 1e-9 && t < cy.vmax - 1e-9 {
+                                        breaks.push(t);
+                                    }
+                                }
+                            }
+                            ConeCyl::Clear => saw_cone = true,
+                            ConeCyl::Crosses => return None,
+                        }
+                    }
                     _ => return None,
                 }
+            }
+            // The u-clip arithmetic below is only valid for cylinder tools; a
+            // cone beside it would be skipped by it, so that mix refuses.
+            if saw_cone && !parallel_cylinders.is_empty() {
+                return None;
             }
             // A parallel tool cylinder's own band edges cut this wall's v
             // domain: above/below the tool's band the tool does not exist and
@@ -3414,7 +3537,13 @@ fn process_face(
  if (an - 1.0).abs() < 1e-9 {
  let along = dot(sub(g.origin, c.base), axis);
  let v = along / c.half_angle.cos();
- if v > c.v_range[0] + 1e-9 && v < c.v_range[1] - 1e-9 {
+ // A face lying strictly inside the cone's own cross-section
+ // at this height (a bore's flat end) never meets the wall:
+ // no break, so the wall is not split for nothing.
+ let r_here = c.base_radius - along * c.half_angle.tan();
+ let reach = plane_face_radial_reach(&f.borrow(), c.base, axis);
+ let clear = matches!(reach, Some(rr) if rr < r_here - 1e-7);
+ if !clear && v > c.v_range[0] + 1e-9 && v < c.v_range[1] - 1e-9 {
  breaks.push(v);
  }
  } else if an < 1e-9 {
@@ -3427,6 +3556,21 @@ fn process_face(
  return None;
  }
  }
+ // A whole-turn cylinder against this cone wall (a bore): the
+ // meeting curve is a circle only when the axes coincide; an
+ // off-axis cylinder that never reaches the wall constrains
+ // nothing; anything else is a space curve and refuses.
+ Surface::Cylinder(cy2) => match cone_cyl_relation(c, cy2) {
+ ConeCyl::Coaxial { v_cross } => {
+ if let Some(v) = v_cross {
+ if v > c.v_range[0] + 1e-9 && v < c.v_range[1] - 1e-9 {
+ breaks.push(v);
+ }
+ }
+ }
+ ConeCyl::Clear => {}
+ ConeCyl::Crosses => return None,
+ },
  _ => return None,
  }
  }
@@ -6714,3 +6858,107 @@ mod clip_convexity_contract {
         }
     }
 }
+
+/// Cone bores. A pointed cone (apex up, base at z = -H/2) drilled by a cylinder.
+/// Every expected value is a closed form worked out here, not read off the
+/// kernel: removed volume = integral over height of pi * min(r, R(z))^2 where
+/// R(z) = R (1 - z/H), piecewise (a plain cylinder below zc = H (1 - r/R), where
+/// the cone narrows to the bore, the cone itself above). Each case is built at
+/// the origin and shifted by SHIFT, and must be closed, exact, and watertight.
+#[cfg(test)]
+mod cone_bore_pins {
+    use super::*;
+    use serde_json::json;
+
+    const PI: f64 = std::f64::consts::PI;
+    const SHIFT: Vec3 = [37.0, -23.0, 11.0];
+
+    fn cone_up_to(rb: f64, h: f64, z: f64) -> f64 {
+        PI * rb * rb * h / 3.0 * (1.0 - (1.0 - z / h).powi(3))
+    }
+    /// Cone volume left after a coaxial bore of radius r spanning relative
+    /// heights [a, b] (0 = the base).
+    fn left(rb: f64, h: f64, r: f64, a: f64, b: f64) -> f64 {
+        let (a, b) = (a.max(0.0), b.min(h));
+        let zc = h * (1.0 - r / rb);
+        let cyl = |lo: f64, hi: f64| if hi > lo { PI * r * r * (hi - lo) } else { 0.0 };
+        let cone = |lo: f64, hi: f64| if hi > lo { cone_up_to(rb, h, hi) - cone_up_to(rb, h, lo) } else { 0.0 };
+        PI * rb * rb * h / 3.0 - (cyl(a, b.min(zc)) + cone(a.max(zc), b))
+    }
+
+    fn doc(rb: f64, h: f64, r: f64, off: [f64; 2], lo: f64, hi: f64, t: Vec3) -> serde_json::Value {
+        let mid = -h / 2.0 + 0.5 * (lo + hi);
+        json!({ "features": [
+            { "id": "t", "kind": "cone", "radius": rb, "height": h, "center": t },
+            { "id": "h", "kind": "hole", "target": "t", "diameter": 2.0 * r, "depth": hi - lo,
+              "center": [off[0], off[1], mid], "axis": "z" } ] })
+    }
+
+    /// Some(solid) when it built; the sentence is checked when it refused.
+    fn run(rb: f64, h: f64, r: f64, off: [f64; 2], lo: f64, hi: f64, t: Vec3) -> Option<TSolid> {
+        let (hist, refusals) = crate::wasm::build_doc(&doc(rb, h, r, off, lo, hi, t));
+        match hist.shapes.get("h") {
+            Some(s) => {
+                assert!(refusals.is_empty(), "built with refusals {refusals:?}");
+                Some(s.clone())
+            }
+            None => {
+                assert!(!refusals["h"].as_str().unwrap_or("").is_empty());
+                None
+            }
+        }
+    }
+
+    /// Must build, at origin and shifted, matching `want` and the bbox top.
+    fn exact(name: &str, rb: f64, h: f64, r: f64, off: [f64; 2], lo: f64, hi: f64, want: f64, faces: usize, top: f64) {
+        for t in [[0.0; 3], SHIFT] {
+            let s = run(rb, h, r, off, lo, hi, t).unwrap_or_else(|| panic!("{name}: refused at {t:?}"));
+            assert_eq!(s.faces().len(), faces, "{name}: face count");
+            // Volume, translation invariance, watertight mesh, bbox. The
+            // once-used-edge count is set aside: a circle rim whose seam
+            // vertex differs between the planar face and the wall (every bore
+            // in a box does this too) reads as used once, and the weld does
+            // not merge differently-seamed circles on purpose.
+            let bad: Vec<String> = closed_failures(&s, want,
+                [t[0] - rb, t[1] - rb, t[2] - h / 2.0], [t[0] + rb, t[1] + rb, t[2] - h / 2.0 + top])
+                .into_iter().filter(|m| !m.contains("used exactly once")).collect();
+            assert!(bad.is_empty(), "{name} at {t:?}: {bad:?}");
+        }
+    }
+
+    #[test]
+    fn coaxial_through_bore_is_exact() {
+        // R=10 H=20 r=2, bore overshoots both ends: base annulus, bore wall,
+        // cone band from the base rim to the bore. Top at zc = 16.
+        let v = left(10.0, 20.0, 2.0, -50.0, 80.0);
+        assert!((v - (cone_up_to(10.0, 20.0, 16.0) - PI * 4.0 * 16.0)).abs() < 1e-9);
+        exact("through", 10.0, 20.0, 2.0, [0.0; 2], -50.0, 80.0, v, 3, 16.0);
+    }
+
+    #[test]
+    fn coaxial_blind_bores_are_exact() {
+        // From the base, ending well below the crossing (zc = 16) and just
+        // under it. (A bore that ends BETWEEN the crossing and the apex strands
+        // the tip as a second lump: see what_cannot_be_exact_stays_a_refusal.)
+        exact("blind 6", 10.0, 20.0, 2.0, [0.0; 2], -5.0, 6.0, left(10.0, 20.0, 2.0, -5.0, 6.0), 4, 20.0);
+        exact("blind 15", 10.0, 20.0, 2.0, [0.0; 2], -5.0, 15.0, left(10.0, 20.0, 2.0, -5.0, 15.0), 4, 20.0);
+    }
+
+    #[test]
+    fn off_axis_bore_inside_the_cone_is_exact() {
+        // r=1, 3 mm off axis, base to z=5: 3+1 < R(5)=7.5, so it stays inside.
+        exact("off-axis blind", 10.0, 20.0, 1.0, [3.0, 0.0], -5.0, 5.0,
+            PI * 100.0 * 20.0 / 3.0 - PI * 5.0, 4, 20.0);
+    }
+
+    #[test]
+    fn what_cannot_be_exact_stays_a_refusal() {
+        // An off-axis bore that reaches the cone wall meets it in a space curve.
+        assert!(run(10.0, 20.0, 1.0, [3.0, 0.0], -50.0, 80.0, [0.0; 3]).is_none());
+        assert!(run(10.0, 20.0, 1.0, [8.5, 0.0], -5.0, 5.0, [0.0; 3]).is_none());
+        // Ending above the crossing but short of the apex leaves the tip
+        // floating free of the body: two lumps, which is not one solid.
+        assert!(run(10.0, 20.0, 2.0, [0.0; 2], -5.0, 18.0, [0.0; 3]).is_none());
+    }
+}
+

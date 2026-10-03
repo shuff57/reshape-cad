@@ -84,13 +84,17 @@ test('overshoot and exact tools agree on box, prism, cylinder', () => {
   }
 });
 
-test('cone: overshoot and exact behave identically (both an honest refusal; pointed-cone bore is a kernel gap)', () => {
+test('cone: overshoot and exact tools agree, and both build (the bore on a pointed cone\'s own axis is a circle on the wall)', () => {
   const over = script('const c = cone(15, 20); hole(c, { across: 6 })');
   const exact = script('const c = cone(15, 20); hole(c, { across: 6, deep: 20 })');
-  assert.equal(over.s, undefined);
-  assert.equal(exact.s, undefined);
-  assert.match(over.refusals.hole1, /cannot cut this hole yet/);
-  assert.equal(over.refusals.hole1, exact.refusals.hole1);
+  assert.deepEqual(over.refusals, {});
+  assert.deepEqual(exact.refusals, {});
+  // R = 7.5, H = 20, r = 3: the cone narrows to the bore at zc = 12. Left =
+  // frustum below zc minus the bore there = pi R^2 H/3 (1 - (1 - zc/H)^3) - pi r^2 zc.
+  const want = Math.PI * 7.5 * 7.5 * 20 / 3 * (1 - (1 - 12 / 20) ** 3) - Math.PI * 9 * 12;
+  near(over.s.volume, want, 1e-9);
+  near(over.s.volume, exact.s.volume, 1e-9);
+  assert.equal(over.s.faces, exact.s.faces);
 });
 
 test('a transverse bore through a cylinder side still refuses plainly', () => {
