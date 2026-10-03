@@ -3313,3 +3313,56 @@ mod tests {
         assert!(err.contains("inside the hole"), "the refusal says what is wrong: {err}");
     }
 }
+
+#[cfg(test)]
+mod groove_partial_angle {
+    use super::*;
+
+    fn close(got: f64, want: f64, tol: f64, what: &str) {
+        assert!((got - want).abs() <= tol * want.abs().max(1.0), "{what}: got {got}, want {want}");
+    }
+
+    fn cut(deg: f64, r1: f64, y0: f64, y1: f64) -> Option<TSolid> {
+        let box_ = box_solid([40.0, 40.0, 20.0], [0.0, 0.0, 0.0], None);
+        let prof = [[0.0, y0], [r1, y0], [r1, y1], [0.0, y1]];
+        let (tool, _) = revolve_profile(&prof, [0.0, 1.0, 0.0], [1.0, 0.0, 0.0], deg).unwrap();
+        crate::ops::boolean("subtract", &box_, &tool)
+    }
+
+    #[test]
+    fn half_disc_groove_crossing_a_face_is_exact_and_watertight() {
+        // Tool y 15..22 against a box whose top is y=20: the cut is the half
+        // cylinder pi*64*5/2 = 160*pi.
+        let r = cut(180.0, 8.0, 15.0, 22.0).expect("half-disc groove cuts");
+        let want = 32000.0 - 160.0 * std::f64::consts::PI;
+        close(solid_volume(&r), want, 1e-9, "half-disc groove volume");
+        assert!(signed_volume(&r) > 0.0);
+        // 6 box faces + floor + half-cylinder wall + 2 diametral rectangles.
+        assert_eq!(r.faces().len(), 10);
+        let mesh = crate::mesh::mesh_solid(&r, 0.05).expect("meshes");
+        assert!(crate::ops::check_watertight(&mesh), "half-disc groove mesh is watertight");
+        for t in mesh.indices.chunks(3) {
+            let p = |i: u32| { mesh.positions[i as usize] };
+            let (a, b, c) = (p(t[0]), p(t[1]), p(t[2]));
+            let ar = crate::math::len(cross(sub(b, a), sub(c, a))) * 0.5;
+            assert!(ar >= 1e-12, "degenerate triangle {a:?} {b:?} {c:?}");
+        }
+    }
+
+    #[test]
+    fn half_disc_groove_straddling_the_midplane_is_exact() {
+        // y 16..24 crosses the y=20 top too; a smaller radius, same shape.
+        let r = cut(180.0, 6.0, 16.0, 24.0).expect("half-disc groove cuts");
+        let want = 32000.0 - std::f64::consts::PI * 36.0 * 4.0 / 2.0;
+        close(solid_volume(&r), want, 1e-9, "half-disc groove volume");
+    }
+
+    #[test]
+    fn other_partial_angles_refuse_never_wrong() {
+        // Only the half disc is a disk cut by ONE chord through its centre.
+        // A quarter or three-quarter wedge needs two chords and refuses.
+        for deg in [90.0f64, 270.0] {
+            assert!(cut(deg, 8.0, 15.0, 22.0).is_none(), "{deg}-degree groove must refuse");
+        }
+    }
+}

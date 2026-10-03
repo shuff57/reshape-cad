@@ -105,7 +105,7 @@ export function fixtures() {
     ], { tol: 'approx' }),
 
     // --- sketch cuts into a solid --------------------------------------------
-    ...[[4, 8, 5, 12, 360, 'groove-full'], [4, 8, 5, 12, 180, 'groove-half'], [3, 6, -4, 4, 360, 'groove-straddle']].map(
+    ...[[0, 8, 15, 22, 360, 'groove-full'], [0, 8, 15, 22, 180, 'groove-half'], [0, 6, 16, 24, 360, 'groove-straddle']].map(
       ([r0, r1, v0, v1, deg, id]) => made(id, 'groove', (mt, doc) => {
         const body = mt.newShape(doc, 'box'); body.size = [40, 40, 20]; doc.features.push(body);
         const prof = mt.newRectangleSketch(doc, 'xz', [r0, v0], [r1, v1]); doc.features.push(prof);
@@ -113,10 +113,10 @@ export function fixtures() {
         return gr.id;
       })),
     ...[
-      ['pocket-xy', [40, 40, 20], [0, 0, 0], 'xy', 0, 5],
-      ['pocket-xz', [40, 40, 20], [0, 0, 0], 'xz', 0, 5],
-      ['pocket-G1-xy-slab', [40, 40, 8], [0, 0, 4], 'xy', 6, 5],
-      ['pocket-G3-yz-slab', [8, 40, 40], [4, 0, 0], 'yz', 6, 5],
+      ['pocket-xy', [40, 40, 20], [0, 0, 0], 'xy', 10, 5],
+      ['pocket-xz', [40, 40, 20], [0, 0, 0], 'xz', 15, 5],
+      ['pocket-G1-xy-slab', [40, 40, 8], [0, 0, 4], 'xy', 8, 5],
+      ['pocket-G3-yz-slab', [8, 40, 40], [4, 0, 0], 'yz', 8, 5],
     ].map(([id, size, center, plane, offset, depth]) => made(id, 'pocket', (mt, doc) => {
       const body = mt.newShape(doc, 'box'); body.size = size; body.center = center; doc.features.push(body);
       const prof = mt.newRectangleSketch(doc, plane, [-5, -4], [5, 4]); prof.offset = offset; doc.features.push(prof);
@@ -125,7 +125,7 @@ export function fixtures() {
     })),
     made('pocket-G5-circle', 'pocket', (mt, doc) => {
       const body = mt.newShape(doc, 'box'); body.size = [60, 60, 8]; body.center = [0, 0, 4]; doc.features.push(body);
-      const prof = mt.newCircleSketch(doc, 'xy', [12, -6]); prof.points = [[7, -6], [17, -6]]; prof.offset = 6; doc.features.push(prof);
+      const prof = mt.newCircleSketch(doc, 'xy', [12, -6]); prof.points = [[7, -6], [17, -6]]; prof.offset = 8; doc.features.push(prof);
       const pk = mt.newPocket(doc, prof.id, body.id); pk.depth = 5; doc.features.push(pk);
       return pk.id;
     }),

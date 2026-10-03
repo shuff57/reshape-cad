@@ -83,10 +83,17 @@ pub(crate) fn inside_solid(solid: &TSolid, p: Vec3) -> bool {
     // of the boundary, where two faces both register the crossing and parity
     // flips (a real case: a bore probe at a box's top/side corner). Take a
     // majority over several generic directions instead of trusting one.
-    let dirs: [Vec3; 3] = [
+    // Three simple directions were not enough: a probe at (0,10,0) in a 40x40x20
+    // box has TWO of them (1,.5,.25) and the diagonal run through the x=20,y=20
+    // edge, outvoting the one clean ray and calling a point inside the box
+    // outside it (which let a sealed pocket slip past `subtract_enclosed` as a
+    // one-shell 12-face solid). Two irrational-ish extras make a 3-of-5 majority.
+    let dirs: [Vec3; 5] = [
         normalize([0.5773502691896258, 0.5773502691896257, 0.5773502691896255]),
         normalize([1.0, 0.5, 0.25]),
         normalize([0.3, 1.0, 0.7]),
+        normalize([0.8123, 0.3517, 0.4671]),
+        normalize([0.1913, 0.7321, 0.6529]),
     ];
     let mut odd = 0usize;
     let mut even = 0usize;
@@ -826,8 +833,13 @@ fn cyl_parallel_region(cy: &Cylinder, plane: &Plane, offset: Vec3) -> Region {
 /// The region of `plane` inside a cylinder face whose axis is PERPENDICULAR to
 /// the plane: a disk (or empty when the plane lies beyond a cap).
 fn cyl_perp_region(cy: &Cylinder, plane: &Plane, offset: Vec3) -> Region {
-    if cy.arc.is_some() {
-        return Region::empty();
+    // A HALF-cylinder wall (a 180-degree revolve) is the disk here: the two
+    // coplanar diametral faces of the same solid carry the half-plane that
+    // makes it a half disk. Any other arc stays "constrains nothing".
+    if let Some(arc) = &cy.arc {
+        if (arc.span - std::f64::consts::PI).abs() > 1e-9 {
+            return Region::empty();
+        }
     }
     let ad = dot(cy.axis, plane.n);
     let t = dot(sub(plane.origin, cy.origin), plane.n) / ad;
@@ -1145,6 +1157,8 @@ enum Clamped {
     Empty,
     Full,
     Disk([f64; 2], f64),
+    /// A half disk strictly inside the face: (centre, radius, phi) as `Hole::Half`.
+    Half([f64; 2], f64, f64),
     /// The region's disk with a subtractive hole (a torus band cut by a
     /// perpendicular plane): the kept face is face_with_hole(Hole::Circle).
     Annulus([f64; 2], f64, [f64; 2], f64),
@@ -1513,6 +1527,46 @@ fn clamp(region: &Region, f: &[[f64; 2]]) -> Option<Clamped> {
                 return None;
             }
         }
+        // A half-plane whose line runs through the disk's centre makes the
+        // region a HALF disk. Exactly one distinct such line is built; every
+        // other half-plane must leave the whole disk alone.
+        let mut half_phi: Option<f64> = None;
+        for h in &region.hs {
+            let den = (h[0] * h[0] + h[1] * h[1]).sqrt();
+            if den < 1e-7 {
+                continue;
+            }
+            let at_c = (h[0] * c[0] + h[1] * c[1] + h[2]) / den;
+            if at_c + r <= 1e-7 {
+                continue; // the whole disk satisfies it
+            }
+            if at_c.abs() > 1e-7 {
+                return None; // an off-centre chord: a segment, not built
+            }
+            let phi = h[1].atan2(h[0]);
+            match half_phi {
+                None => half_phi = Some(phi),
+                Some(q) => {
+                    let d = (phi - q).rem_euclid(TWO_PI);
+                    if d > 1e-7 && TWO_PI - d > 1e-7 {
+                        return None; // a wedge or a slab, not a half disk
+                    }
+                }
+            }
+        }
+        if let Some(phi) = half_phi {
+            if !point_in_poly(f, c) {
+                return None;
+            }
+            for k in 0..32 {
+                let a = TWO_PI * k as f64 / 32.0;
+                let p = [c[0] + r * a.cos(), c[1] + r * a.sin()];
+                if !point_in_poly(f, p) {
+                    return None;
+                }
+            }
+            return Some(Clamped::Half(c, r, phi));
+        }
         let a_f = poly_area(f);
         let disk_area = std::f64::consts::PI * r * r;
         if !point_in_poly(f, c) {
@@ -1725,6 +1779,7 @@ fn hole_wholly_inside_inner(boundary: &[topo::WireRef<Curve3>], plane: &Plane, h
             Hole::Poly(uv) => {
                 uv.len() >= 3 && uv.iter().all(|p| point_in_poly_strict(&poly, *p))
             }
+            Hole::Half(..) => false,
         };
         if inside {
             return true;
@@ -1850,6 +1905,50 @@ fn face_with_hole(face: &TFace, plane: &Plane, hole: &Hole) -> TFace {
             }
             wires.push(Rc::new(RefCell::new(Wire { edges: uses })));
         }
+        Hole::Half(c, r, phi) => {
+            // The outer loop's winding is read in uv, as for every other hole;
+            // a half disk wound CCW is its arc (S -> E, a pi sweep) then the
+            // chord back, and CW is the chord then the arc the other way.
+            let orient = if dot(cross(plane.u, plane.v), plane.n) >= 0.0 { 1.0 } else { -1.0 };
+            let ang = |t: f64| [c[0] + r * t.cos(), c[1] + r * t.sin()];
+            let s_uv = ang(phi + std::f64::consts::FRAC_PI_2);
+            let e_uv = ang(phi + 3.0 * std::f64::consts::FRAC_PI_2);
+            let (s, e, center3) = (plane.point(s_uv), plane.point(e_uv), plane.point(*c));
+            let ccw_hole = !outer_ccw;
+            let (arc_from, arc_to, arc_from_uv, arc_to_uv, sweep) = if ccw_hole {
+                (s, e, s_uv, e_uv, orient * std::f64::consts::PI)
+            } else {
+                (e, s, e_uv, s_uv, -orient * std::f64::consts::PI)
+            };
+            let arc_curve = Curve::Arc {
+                center: center3,
+                radius: *r,
+                normal: plane.n,
+                x_axis: normalize(sub(arc_from, center3)),
+                sweep,
+            };
+            let arc_edge = topo::edge(topo::vertex(arc_from), topo::vertex(arc_to), true, arc_curve);
+            let arc_use = topo::EdgeUse {
+                edge: arc_edge,
+                forward: true,
+                pcurve: topo::Pcurve {
+                    start: arc_from_uv,
+                    end: arc_to_uv,
+                    mid: [0.0, 0.0],
+                },
+            };
+            // The chord is split at the centre: the revolved tool's two
+            // diametral faces meet on the axis, so a whole chord would leave a
+            // T-junction against their two edges.
+            let (line_from, line_to) = (arc_to, arc_from);
+            let mid = center3;
+            let line_a = mk_segment_edge(line_from, mid);
+            let line_b = mk_segment_edge(mid, line_to);
+            let use_a = planar_use(plane, &line_a, true, line_from, mid);
+            let use_b = planar_use(plane, &line_b, true, mid, line_to);
+            let uses = if ccw_hole { vec![arc_use, use_a, use_b] } else { vec![use_a, use_b, arc_use] };
+            wires.push(Rc::new(RefCell::new(Wire { edges: uses })));
+        }
     }
     Rc::new(RefCell::new(Face {
         boundary: wires,
@@ -1862,6 +1961,10 @@ fn face_with_hole(face: &TFace, plane: &Plane, hole: &Hole) -> TFace {
 enum Hole {
     Circle([f64; 2], f64),
     Poly(Vec<[f64; 2]>),
+    /// A half disk: the disk (centre, radius) on the side OPPOSITE the uv
+    /// direction at angle `phi`, cut by a chord through its centre. Built only
+    /// from a revolved half-cylinder tool crossing a face (a 180-degree groove).
+    Half([f64; 2], f64, f64),
 }
 
 /// A partial cylindrical wall, `v` running from `vlo` to `vhi` on `cy`.
@@ -2411,6 +2514,7 @@ fn keep_polygon(
                 out.push(if reverse { flip_planar(face) } else { face.clone() })
             }
             Clamped::Disk(c, r) => out.push(build_circle_face(&kept_plane, c, r)),
+            Clamped::Half(..) => return None,
             Clamped::Poly(poly) => {
                 if reverse {
                     let mut rp = poly.clone();
@@ -2438,6 +2542,7 @@ fn keep_polygon(
             Clamped::Empty => out.push(face.clone()),
             Clamped::Full => {}
             Clamped::Disk(c, r) => out.push(face_with_hole(face, &kept_plane, &Hole::Circle(c, r))),
+            Clamped::Half(c, r, phi) => out.push(face_with_hole(face, &kept_plane, &Hole::Half(c, r, phi))),
             Clamped::Complement(pieces) => {
                 for piece in pieces {
                     let piece = if reverse { let mut rp = piece.clone(); rp.reverse(); rp } else { piece };
@@ -2931,9 +3036,10 @@ fn process_face(
         keep_polygon(face, &plane, other, op, is_a, out)
     }
         Surface::Cylinder(cy) => {
-            if cy.arc.is_some() {
-                return None;
-            }
+            // A partial wall (a revolved tool's half-cylinder) is clipped only
+            // along its axis, by planes perpendicular to it; any other tool
+            // face needs u-clipping an arc range does not have yet.
+            let wall_arc = cy.arc.clone();
             let sign = offset_sign(op, is_a)?;
             let keep_inside = keeps_inside(op, is_a);
             let reverse = op == "subtract" && !is_a;
@@ -3079,6 +3185,9 @@ fn process_face(
                     }
                 }
             }
+            if wall_arc.is_some() && !parallel_cylinders.is_empty() {
+                return None;
+            }
             breaks.sort_by(|a, b| a.partial_cmp(b).unwrap());
             breaks.dedup_by(|a, b| (*a - *b).abs() < 1e-9);
             for w in breaks.windows(2) {
@@ -3219,6 +3328,18 @@ fn process_face(
                     continue;
                 }
                 let vm = 0.5 * (vlo + vhi);
+                if let Some(arc) = &wall_arc {
+                    let am = arc.start + 0.5 * arc.span;
+                    let radial = add(scale(cy.e1, am.cos()), scale(cy.e2, am.sin()));
+                    let p = add(add(cy.origin, scale(axis, vm)), scale(radial, cy.radius));
+                    let in_other = inside_solid(other, add(p, scale(radial, sign * PROBE)));
+                    let keep = if keep_inside { in_other } else { !in_other };
+                    if keep {
+                        let wall = partial_wall_arc(cy, vlo, vhi, arc.clone());
+                        out.push(if reverse { flip_face(&wall)? } else { wall });
+                    }
+                    continue;
+                }
                 let p = add(add(cy.origin, scale(axis, vm)), scale(cy.e1, cy.radius));
                 let in_other = inside_solid(other, add(p, scale(cy.e1, sign * PROBE)));
                 let keep = if keep_inside { in_other } else { !in_other };

@@ -967,6 +967,9 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     }
                 }
                 match ops::boolean("subtract", &base, &tool) {
+                    Some(result) if skin_pieces(&result) > skin_pieces(&base) => {
+                        refusals.insert(id.clone(), json!(cavity_refusal("pocket", &id)));
+                    }
                     Some(result) => {
                         // The cut's faces come from the boolean, not the prism,
                         // so no sweep history is recorded, exactly as OCCT's
@@ -1351,6 +1354,9 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     continue;
                 };
                 match ops::boolean("subtract", &base, &tool) {
+                    Some(result) if skin_pieces(&result) > skin_pieces(&base) => {
+                        refusals.insert(id.clone(), json!(cavity_refusal("groove", &id)));
+                    }
                     Some(result) => {
                         // The base's own faces carry through the subtract,
                         // surface-matched (no sweep history for the cut,
@@ -6178,5 +6184,59 @@ mod cavity_guard_tests {
             let (_, r) = build_doc(&doc);
             assert!(!r.get("h1").map_or(false, |m| m.as_str().unwrap_or("").contains("sealed cavity")), "open={open}: {r:?}");
         }
+    }
+
+    fn pk(plane: &str, offset: f64) -> Value {
+        json!({ "features": [
+            { "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0] },
+            { "id": "s1", "kind": "sketch", "plane": plane, "offset": offset, "points": [[-5.0, -4.0], [5.0, -4.0], [5.0, 4.0], [-5.0, 4.0]] },
+            { "id": "p1", "kind": "pocket", "target": "s1", "into": "b1", "depth": 5.0 } ] })
+    }
+    fn gr(plane: &str, r: [f64; 2], v: [f64; 2]) -> Value {
+        json!({ "features": [
+            { "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0] },
+            { "id": "s1", "kind": "sketch", "plane": plane, "offset": 0.0, "points": [[r[0], v[0]], [r[1], v[0]], [r[1], v[1]], [r[0], v[1]]] },
+            { "id": "g1", "kind": "groove", "target": "s1", "into": "b1", "angle": 360.0 } ] })
+    }
+
+    #[test]
+    fn sealed_pocket_refuses_including_offsets_that_once_defeated_the_ray_probe() {
+        // xz offsets 5 and 10 put the tool's bbox face at y=10 / the centroid on
+        // y=10, where two of three probe rays ran through the x=20,y=20 edge and
+        // inside_solid said "outside": the cavity then built as ONE 12-face shell.
+        for (plane, off) in [("xy", 0.0), ("xy", 5.0), ("xz", 0.0), ("xz", 5.0), ("xz", 10.0), ("yz", 0.0)] {
+            let (hist, r) = build_doc(&pk(plane, off));
+            let msg = r.get("p1").and_then(|m| m.as_str()).unwrap_or("");
+            assert!(msg.contains("pocket p1 would leave a sealed cavity"), "{plane} {off}: {r:?}");
+            assert!(!hist.shapes.contains_key("p1"));
+        }
+    }
+
+    #[test]
+    fn open_pocket_builds_with_eleven_faces() {
+        for (plane, off) in [("xy", 10.0), ("xy", -5.0), ("xz", 15.0)] {
+            let (hist, r) = build_doc(&pk(plane, off));
+            assert!(r.is_empty(), "{plane} {off}: {r:?}");
+            let s = hist.shapes.get("p1").unwrap();
+            assert_eq!(s.faces().len(), 11);
+            assert_eq!(s.shells.len(), 1);
+            assert!((build::solid_volume(s) - 31600.0).abs() < 1e-6);
+        }
+    }
+
+    #[test]
+    fn sealed_groove_refuses_and_open_disc_groove_builds() {
+        for (r, v) in [([3.0, 6.0], [2.0, 10.0]), ([4.0, 8.0], [5.0, 12.0]), ([0.0, 6.0], [2.0, 10.0])] {
+            let (hist, refusals) = build_doc(&gr("xz", r, v));
+            let msg = refusals.get("g1").and_then(|m| m.as_str()).unwrap_or("");
+            assert!(msg.contains("groove g1 would leave a sealed cavity"), "{r:?} {v:?}: {refusals:?}");
+            assert!(!hist.shapes.contains_key("g1"));
+        }
+        let (hist, refusals) = build_doc(&gr("xz", [0.0, 8.0], [15.0, 22.0]));
+        assert!(refusals.is_empty(), "{refusals:?}");
+        let s = hist.shapes.get("g1").unwrap();
+        assert_eq!(s.faces().len(), 8);
+        let want = 32000.0 - std::f64::consts::PI * 64.0 * 5.0;
+        assert!((build::solid_volume(s) - want).abs() < 1e-6);
     }
 }
