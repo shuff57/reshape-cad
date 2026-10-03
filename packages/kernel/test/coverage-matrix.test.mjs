@@ -101,11 +101,13 @@ const FILLET_FIXTURES = [
     name: 'bevel 2 on one edge of a 20-cube',
     script: `const b = box(20, 20, 20)\nconst a = bevel(b.edge('top', 'right'), 2)`,
     volume: 8000 - ((2 * 2) / 2) * 20,
+    faces: 7, // 6 + the one chamfer strip
   },
   {
     name: 'round 2 on a top/right edge of a 20-cube',
     script: `const b = box(20, 20, 20)\nconst a = round(b.edge('top', 'right'), 2)`,
     volume: 8000 - (4 - PI) * 20,
+    faces: 7, // 6 + the one rounded strip
   },
 ];
 for (const e of BOX_EDGES) {
@@ -113,11 +115,13 @@ for (const e of BOX_EDGES) {
     name: `round ${FR} on 30x20x10 edge ${e.a}/${e.b} (L=${e.len})`,
     script: `const b = box(30, 20, 10)\nconst a = round(b.edge('${e.a}', '${e.b}'), ${FR})`,
     volume: BOX_V - (1 - PI / 4) * FR * FR * e.len,
+    faces: 7,
   });
   FILLET_FIXTURES.push({
     name: `chamfer ${FR} on 30x20x10 edge ${e.a}/${e.b} (L=${e.len})`,
     script: `const b = box(30, 20, 10)\nconst a = bevel(b.edge('${e.a}', '${e.b}'), ${FR})`,
     volume: BOX_V - ((FR * FR) / 2) * e.len,
+    faces: 7,
   });
 }
 
@@ -150,16 +154,28 @@ const FIXTURES = {
     script: `const s = sketch('top')\ns.rect(20, 10)\nconst a = extrude(s, 30)`,
     volume: 20 * 10 * 30,
   }],
+  // The sketch must reach a face of the block, or the cut is a SEALED ring
+  // cavity inside it (a second shell that is not an error to the kernel). The
+  // ring sits at x 3..6, z 2..10, so it is open on the top face (z = +10 for a
+  // 20 mm block centred on the origin). Faces: 6 box + 1 (the top is split into
+  // an outer face and an island) + outer wall + inner wall + floor = 10. The
+  // sealed twin (z -4..4) ALSO has 10 faces (6 + 4), so faces alone cannot see
+  // it; the edge count can: sealed 18, open 20 (measured). Volume is the same.
   groove: [{
-    name: 'ring groove (x 25..55, 10 tall) cut from 120x20x120 block',
+    name: 'ring groove (radius 3..6, z 2..10) open on the top of a 40x40x20 block',
     script:
-      `const b = box(120, 20, 120)\nconst s = sketch('front', 0)\ns.rect(30, 10, { at: [40, 0] })\nconst a = groove(s, b, 360)`,
-    volume: 120 * 20 * 120 - PI * (55 * 55 - 25 * 25) * 10,
+      `const b = box(40, 40, 20)\nconst s = sketch('front', 0)\ns.rect(3, 8, { at: [4.5, 6] })\nconst a = groove(s, b, 360)`,
+    volume: 40 * 40 * 20 - PI * (36 - 9) * 8,
+    faces: 10,
+    edges: 20,
   }],
   pocket: [{
     name: 'pocket 10x10x5 in 40x40x20',
-    script: `const b = box(40, 40, 20)\nconst s = sketch('top')\ns.rect(10, 10)\nconst a = pocket(s, b, 5)`,
+    // sketch('top', 10): the top face of a 20 mm block centred on the origin.
+    // sketch('top') alone is the MID-PLANE and cuts a sealed cavity (12 faces).
+    script: `const b = box(40, 40, 20)\nconst s = sketch('top', 10)\ns.rect(10, 10)\nconst a = pocket(s, b, 5)`,
     volume: 40 * 40 * 20 - 10 * 10 * 5,
+    faces: 11, // 6 box + 4 walls + floor
   }],
   blend: [{
     name: 'loft 20x20 -> 10x10 over 30 (square frustum)',
@@ -208,17 +224,20 @@ const FIXTURES = {
     name: 'through-hole d6 in a 20-cube',
     script: `const a = hole(box(20, 20, 20), { across: 6 })`,
     volume: 8000 - PI * 9 * 20,
+    faces: 7, // 6 + the bore wall
   }],
   shell: [
     {
       name: 'closed shell, wall 2, 20-cube',
       script: `const a = shell(box(20, 20, 20), { wall: 2 })`,
       volume: 8000 - 16 * 16 * 16,
+      faces: 12, // 6 outer + 6 inner: a closed shell IS a sealed cavity, by design
     },
     {
       name: 'cup: wall 2, top open, 20-cube',
       script: `const a = shell(box(20, 20, 20), { wall: 2, open: 'top' })`,
       volume: 8000 - 16 * 16 * 18,
+      faces: 11, // 5 outer + 5 inner + the rim
     },
   ],
   fillet: FILLET_FIXTURES,
@@ -228,6 +247,7 @@ const FIXTURES = {
     name: 'whole-body draft 5deg about the mid plane of a 20-cube',
     script: `const b = box(20, 20, 20)\nconst a = draft(b, 5, { whole: true, neutral: 0 })`,
     volume: 8000 + (8000 / 3) * tan5 * tan5,
+    faces: 6,
   }],
   move: [{
     name: 'move a cube 5 along x, then join: overlap 5 -> 1500',
@@ -297,6 +317,8 @@ const buildScript = (code) => {
     kinds: new Set(r.doc.features.map((f) => f.kind)),
     refusals: out.refusals ?? {},
     volume: measured.shapes?.[lastId]?.volume,
+    faces: measured.shapes?.[lastId]?.faces,
+    edges: measured.shapes?.[lastId]?.edges,
     lastId,
   };
 };
@@ -318,6 +340,11 @@ for (const kind of KINDS) {
       else if (typeof res.volume !== 'number') problems.push(`no volume measured for ${res.lastId}`);
       else if (Math.abs(res.volume - fx.volume) > 1e-6 * fx.volume)
         problems.push(`volume ${res.volume} != closed form ${fx.volume}`);
+      // Topology next to volume: a sealed cavity or any surprise changes it.
+      if (fx.faces !== undefined && res.faces !== fx.faces)
+        problems.push(`faces ${res.faces} != expected ${fx.faces}`);
+      if (fx.edges !== undefined && res.edges !== fx.edges)
+        problems.push(`edges ${res.edges} != expected ${fx.edges}`);
     }
     return { name: fx.name, problems };
   });
@@ -646,6 +673,13 @@ for (const kind of KINDS) {
       `kind '${kind}' is not proven`,
     );
   });
+
+  if (['hole', 'pocket', 'groove', 'shell', 'draft', 'fillet'].includes(kind)) {
+    test(`A(c) ${kind}: every fixture pins an expected face count`, () => {
+      const missing = FIXTURES[kind].filter((f) => typeof f.faces !== 'number').map((f) => f.name);
+      assert.deepEqual(missing, [], `fixtures of '${kind}' need a derived face count (a sealed cavity shows up there)`);
+    });
+  }
 
   test(`A(d) ${kind}: docs/coverage.json status is consistent`, () => {
     const entry = coverage.kinds?.[kind];

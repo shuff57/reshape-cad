@@ -97,3 +97,71 @@ for (const { key, code } of examples) {
     );
   });
 }
+
+// ---------------------------------------------------------------------------
+// Sealed-cavity guard. A pocket/groove whose sketch is NOT on a face of the
+// shape (sketch('top') alone is the MID-PLANE of a part centred on the origin)
+// builds with refusals {} but is a closed hollow INSIDE the part, not a pocket.
+// The wasm cannot report shell count, so each page that cuts (pocket, groove,
+// hole, holes) pins the EXACT face count of every cutting feature, derived from
+// the geometry (an open rect pocket in a box = 6 box + 4 walls + floor = 11; its
+// sealed twin = 12). A groove ring is the exception: open (10) and sealed (10)
+// share a face count, so its edge count is pinned too (open 20, sealed 18).
+// A page that cuts and is not in the table fails: add its expected counts.
+// Keyed "slug/title" -> { featureId: { faces, edges? } }.
+const CUT_FACES = {
+  // shell 2 then a d6 through-hole: 6 outer + 6 inner + 2 bore walls. The
+  // hollow IS a closed cavity here, by design, and the bore opens it.
+  'overview/A script is the timeline written down': { hole1: { faces: 14 } },
+  'overview/Numbers and units': { hole1: { faces: 14 } },
+  'drilling/hole: drilling through or pockets': { hole1: { faces: 7 } }, // 6 + bore wall
+  'drilling/hole: a recess at the mouth': {
+    hole1: { faces: 9 }, // 6 + cb wall + cb floor + bore wall
+    hole2: { faces: 8 }, // 6 + cone + bore wall
+  },
+  'drilling/hole: standard sizes': {
+    hole1: { faces: 7 },
+    hole2: { faces: 9 },
+  },
+  'drilling/holes: multiple holes': { hole1: { faces: 10 } }, // 6 + 4 bore walls
+  'hollowing/The order that always builds': { hole1: { faces: 14 } },
+  'sketches/pocket: cutting a sketch into a shape': { pocket1: { faces: 11 } }, // 6 + 4 + floor
+  'sketches/groove: cutting a spun sketch': { groove1: { faces: 10, edges: 20 } },
+  'panel/The timeline and panel': { pocket1: { faces: 11 } },
+};
+const CUT_KINDS = new Set(['pocket', 'groove', 'hole']);
+const CUT_WORDS = /\b(pocket|groove|holes?)\s*\(/;
+
+test('every CUT_FACES key still matches a real example', () => {
+  const keys = new Set(examples.map((e) => e.key));
+  assert.deepEqual(
+    Object.keys(CUT_FACES).filter((k) => !keys.has(k)),
+    [],
+    'CUT_FACES points at pages that no longer exist',
+  );
+});
+
+for (const { key, code } of examples) {
+  if (!CUT_WORDS.test(code)) continue;
+  test(`docs example has no sealed cavity: ${key}`, () => {
+    const want = CUT_FACES[key];
+    assert.ok(
+      want,
+      `${key} uses pocket/groove/hole/holes: add its expected face count (per cutting feature, derived from the geometry) to CUT_FACES in docs-examples.test.mjs. A sketch must sit ON the face it cuts from, or the cut is a sealed cavity.`,
+    );
+    const r = runScript(code);
+    const doc = { version: 1, features: r.doc.features };
+    const shapes = JSON.parse(brep.measure_doc(JSON.stringify(doc))).shapes ?? {};
+    const cutters = r.doc.features.filter((f) => CUT_KINDS.has(f.kind)).map((f) => f.id);
+    assert.deepEqual(Object.keys(want).sort(), [...cutters].sort(), `${key}: CUT_FACES must list every cutting feature`);
+    for (const id of cutters) {
+      assert.equal(
+        shapes[id]?.faces,
+        want[id].faces,
+        `${key}: ${id} has ${shapes[id]?.faces} faces, expected ${want[id].faces} (a sealed cavity or a no-op cut changes this)`,
+      );
+      if (want[id].edges !== undefined)
+        assert.equal(shapes[id]?.edges, want[id].edges, `${key}: ${id} edge count`);
+    }
+  });
+}

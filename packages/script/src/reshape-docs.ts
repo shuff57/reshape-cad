@@ -164,12 +164,12 @@ shell(b, { wall: 2 })`,
       },
       {
         title: 'The order that always builds',
-        body: `Round first, then cut. fillet(b, 3) rounds every edge of a plain box, or fillet(b.edge('top', 'front'), 3) rounds one, and the rounded box can then take a pocket: the pocket is a cut, and a cut after a round builds. The other way round does not: a round asked of a shape that has already been cut or hollowed stops with "brep-rs can only round an edge of a box yet", so a round always goes on the plain box before any cut. Here the 3 mm round on one 40 mm edge takes (1 - pi/4) x 3^2 x 40 = 77.26 mm^3 off the 32000 mm^3 block, and the 10 x 10 x 5 pocket takes 500 more, leaving 31422.74 mm^3. A hollow is its own step: shell(b, { wall: 2 }) on a plain box leaves 40 x 40 x 20 - 36 x 36 x 16 = 11264 mm^3, and the panel says "Rounding works on a shape, not a hollowed-out one" if you try fillet(b, 3) on it afterwards.`,
-        code: `const b = cuboid(40, 40, 20)
-fillet(b.edge('top', 'front'), 3)
-const sk = sketch('top')
-sk.rect(10, 10)
-pocket(sk, b, 5)`,
+        body: `Round a plain box, or hollow it and then drill it, but do not mix the two on one shape. Today the kernel refuses a cut (a pocket, a hole or cut()) after a round, and a round after a cut or a hollow stops with "brep-rs can only round an edge of a box yet", so a round is the only step on its shape. Here the 3 mm round on one 40 mm edge takes (1 - pi/4) x 3^2 x 40 = 77.26 mm^3 off the 32000 mm^3 block, leaving 31922.74 mm^3. A hollow is its own step: shell(b, { wall: 2 }) on a plain box leaves 40 x 40 x 20 - 36 x 36 x 16 = 11264 mm^3, and drilling it afterwards goes through both 2 mm walls: 11264 - 36 x pi = 11150.90 mm^3 (14 faces). The panel says "Rounding works on a shape, not a hollowed-out one" if you try fillet(b, 3) on the hollow afterwards.`,
+        code: `const r = cuboid(40, 40, 20)
+fillet(r.edge('top', 'front'), 3)
+const b = cuboid(40, 40, 20, { at: [60, 0, 0] })
+shell(b, { wall: 2 })
+hole(b, { across: 6 })`,
       },
     ],
   },
@@ -405,14 +405,11 @@ const shape = extrude(sk, 40)`,
       },
       {
         title: 'pocket: cutting a sketch into a shape',
-        body: `pocket(sk, shape, depth) is extrude in reverse: it pushes the sketch into a shape and takes that block away instead of adding one. Say the sketch first, then the shape it cuts, then how deep. A 10 x 10 pocket 5 mm deep leaves 40 x 40 x 20 - 10 x 10 x 5 = 31500 mm^3. A second pocket can cut the result of the first: here the 10 x 10 x 8 corner brings it to 31500 - 800 = 30700 mm^3.`,
+        body: `pocket(sk, shape, depth) is extrude in reverse: it pushes the sketch into a shape and takes that block away instead of adding one. Say the sketch first, then the shape it cuts, then how deep. The sketch has to sit ON the face you cut from, because the cut runs from the sketch plane down into the shape. sketch('top') alone is the plane through the middle of a shape centred on the origin, so a pocket there would be a sealed cavity inside the part, not a pocket. The second argument of sketch() is how far the plane is moved from that middle: a 20 mm tall box centred on the origin has its top face at z = +10, so sketch('top', 10) puts the sketch on it. Here a 10 x 10 pocket 5 mm deep opens on the top face and leaves 40 x 40 x 20 - 10 x 10 x 5 = 31500 mm^3 (11 faces: the 6 of the box, 4 pocket walls and a floor). One pocket per shape: a second pocket cut into a shape that already has one is refused today, with "not fully enclosed".`,
         code: `const b = cuboid(40, 40, 20)
-const s1 = sketch('top')
-s1.rect(10, 10, { at: [-10, -10] })
-const p = pocket(s1, b, 5)
-const s2 = sketch('top')
-s2.rect(10, 10, { at: [10, 10] })
-pocket(s2, p, 8)`,
+const sk = sketch('top', 10)
+sk.rect(10, 10)
+pocket(sk, b, 5)`,
       },
       {
         title: 'revolve: revolving sketches',
@@ -423,10 +420,10 @@ const shape = revolve(sk, 360)`,
       },
       {
         title: 'groove: cutting a spun sketch',
-        body: `groove(sk, shape, angle) is revolve in reverse: it spins the sketch around the middle line of its plane and takes the ring it sweeps out of the shape. Say the sketch, the shape, then the turn in degrees. The ring has to sit fully inside the shape. A 3 x 8 profile with its middle 4.5 mm from the axis spans radius 3 to 6, so a full turn removes pi x (6^2 - 3^2) x 8 = 216 x pi mm^3 from the 32000 mm^3 block, leaving 31321.42 mm^3.`,
+        body: `groove(sk, shape, angle) is revolve in reverse: it spins the sketch around the middle line of its plane and takes the ring it sweeps out of the shape. Say the sketch, the shape, then the turn in degrees. The sketch has to reach the surface you cut from, or the ring is a sealed hollow inside the part. Here the 3 x 8 profile has its middle 4.5 mm from the axis and 6 mm above the middle of the block, so it spans radius 3 to 6 and height 2 to 10, and its top edge lies on the top face of the 20 mm block (z = +10). A full turn removes pi x (6^2 - 3^2) x 8 = 216 x pi mm^3 from the 32000 mm^3 block, leaving 31321.42 mm^3, as a ring groove open on the top (10 faces: the top is split into an outer face and a centre island, plus the groove's two walls and its floor).`,
         code: `const b = cuboid(40, 40, 20)
 const sk = sketch('front', 0)
-sk.rect(3, 8, { at: [4.5, 0] })
+sk.rect(3, 8, { at: [4.5, 6] })
 groove(sk, b, 360)`,
       },
       {
@@ -459,12 +456,13 @@ shell(b, { wall })`,
     pages: [
       {
         title: 'The timeline and panel',
-        body: `The timeline shows each step (Box 1, Round 1, Pocket 1). The Dimensions panel shows sliders for every number. Click a timeline chip to highlight its slider. A step the kernel cannot do shows beside the steps that built, with the sentence saying why.`,
+        body: `The timeline shows each step (Box 1, Round 1, Box 2, Pocket 1). The Dimensions panel shows sliders for every number. Click a timeline chip to highlight its slider. A step the kernel cannot do shows beside the steps that built, with the sentence saying why. The pocket's sketch sits on the top face of the second box (sketch('top', 10), the face of a 20 mm box centred on the origin), and its rect is placed in world coordinates, 60 mm along x where that box was moved.`,
         code: `const b = cuboid(40, 40, 20)
 fillet(b.edge('top', 'front'), 3)
-const sk = sketch('top')
-sk.rect(10, 10)
-pocket(sk, b, 5)`,
+const c = cuboid(40, 40, 20, { at: [60, 0, 0] })
+const sk = sketch('top', 10)
+sk.rect(10, 10, { at: [60, 0] })
+pocket(sk, c, 5)`,
       },
     ],
   },
