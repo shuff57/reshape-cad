@@ -804,6 +804,153 @@ fn mesh_revolution_band(
     Some(())
 }
 
+/// Tessellate a sphere face that is a full-turn zone between two latitudes (a bore
+/// through or into the sphere along its axis): its rims are circles of constant
+/// colatitude, or a pole. The rims are sampled at the small bore radius, so a grid
+/// built from their columns would sag far past the deflection at the sphere's own
+/// radius. Instead the interior is a uniform grid fine enough for `defl`, and each
+/// rim is zippered onto its neighbouring row using only the rim's own samples (no
+/// vertex is invented on a shared edge, so the bore wall cannot crack against it).
+fn mesh_sphere_zone(
+    face: &TFace,
+    edges_cache: &HashMap<usize, Vec<Vec3>>,
+    out: &mut MeshBuilder,
+    defl: f64,
+    surface: &crate::geom::Surface,
+) -> Option<()> {
+    let crate::geom::Surface::Sphere(sp) = surface else { return None };
+    let (v0, v1) = (sp.v_range[0], sp.v_range[1]);
+    if (sp.u_range[1] - sp.u_range[0] - TAU).abs() > 1e-9 {
+        return None;
+    }
+    let pole0 = v0 <= 1e-9;
+    let pole1 = v1 >= std::f64::consts::PI - 1e-9;
+    // The constant-colatitude rims, low-v side first.
+    let mut rims: Vec<(f64, Vec<f64>)> = Vec::new(); // (v, sorted u list)
+    for w in &face.borrow().boundary {
+        for u in &w.borrow().edges {
+            let k = std::rc::Rc::as_ptr(&u.edge) as *const () as usize;
+            let poly = match edges_cache.get(&k) {
+                Some(p) => p.clone(),
+                None => edge_polyline(&u.edge, defl),
+            };
+            let mut ring: Vec<[f64; 2]> = Vec::new();
+            for p in &poly {
+                let Some(mut q) = surface_uv(surface, *p) else { continue };
+                q[0] = q[0].rem_euclid(TAU);
+                ring.push(q);
+            }
+            if ring.len() < 3 {
+                continue; // the meridian seam: two points
+            }
+            let vlo = ring.iter().fold(f64::MAX, |a, p| a.min(p[1]));
+            let vhi = ring.iter().fold(f64::MIN, |a, p| a.max(p[1]));
+            if vhi - vlo > 1e-6 {
+                continue;
+            }
+            let mut us: Vec<f64> = ring.iter().map(|p| p[0]).collect();
+            us.sort_by(|a, b| a.partial_cmp(b).unwrap());
+            us.dedup_by(|a, b| (*a - *b).abs() < 1e-9);
+            if us.len() >= 3 && !rims.iter().any(|(v, _)| (v - 0.5 * (vlo + vhi)).abs() < 1e-6) {
+                rims.push((0.5 * (vlo + vhi), us));
+            }
+        }
+    }
+    rims.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+    let want = (!pole0) as usize + (!pole1) as usize;
+    if rims.len() != want {
+        return None;
+    }
+    let lo_rim = if pole0 { None } else { Some(rims[0].clone()) };
+    let hi_rim = if pole1 { None } else { Some(rims.last().unwrap().clone()) };
+
+    let r = sp.radius;
+    let step = angle_step(r, defl * 0.5);
+    let k = ((TAU / step).ceil() as usize).max(8);
+    // Interior rows: uniform in v between the two rim latitudes, with the equator
+    // forced in so the silhouette reaches the exact bbox.
+    let m = (((v1 - v0) / step).ceil() as usize).max(2);
+    let mut vs: Vec<f64> = (1..m).map(|i| v0 + (v1 - v0) * i as f64 / m as f64).collect();
+    let eq = std::f64::consts::FRAC_PI_2;
+    if eq > v0 + 1e-6 && eq < v1 - 1e-6 && vs.iter().all(|v| (v - eq).abs() > 1e-6) {
+        vs.push(eq);
+        vs.sort_by(|a, b| a.partial_cmp(b).unwrap());
+    }
+    let start = out.indices.len();
+    let n_at = |u: f64, v: f64| -> Vec3 {
+        let (du, dv) = surface.dparam(u, v);
+        cross(du, dv)
+    };
+    let cols: Vec<f64> = (0..k).map(|i| TAU * i as f64 / k as f64).collect();
+    let rows: Vec<Vec<u32>> = vs
+        .iter()
+        .map(|&v| cols.iter().map(|&u| out.push(surface.param(u, v))).collect())
+        .collect();
+    // Interior quads.
+    for ri in 0..rows.len() - 1 {
+        let vm = 0.5 * (vs[ri] + vs[ri + 1]);
+        for i in 0..k {
+            let j = (i + 1) % k;
+            let n = n_at(cols[i], vm);
+            out.tri_oriented([rows[ri][i], rows[ri][j], rows[ri + 1][j]], n);
+            out.tri_oriented([rows[ri][i], rows[ri + 1][j], rows[ri + 1][i]], n);
+        }
+    }
+    // Zipper a rim (its own u samples) onto an interior row, or fan a pole.
+    let ang = |a: &[f64], i: usize| a[i % a.len()] + (i / a.len()) as f64 * TAU;
+    let mut zip = |rim: &(f64, Vec<f64>), row: &Vec<u32>, row_v: f64, out: &mut MeshBuilder| {
+        let ids: Vec<u32> = rim.1.iter().map(|&u| out.push(surface.param(u, rim.0))).collect();
+        let (n1, n2) = (ids.len(), row.len());
+        let (mut i, mut j) = (0usize, 0usize);
+        while i < n1 || j < n2 {
+            let take_rim = if i >= n1 {
+                false
+            } else if j >= n2 {
+                true
+            } else {
+                ang(&rim.1, i + 1) <= ang(&cols, j + 1)
+            };
+            let n = n_at(rim.1[i % n1], 0.5 * (rim.0 + row_v));
+            let (a, b) = (ids[i % n1], row[j % n2]);
+            if take_rim {
+                out.tri_oriented([a, b, ids[(i + 1) % n1]], n);
+                i += 1;
+            } else {
+                out.tri_oriented([a, b, row[(j + 1) % n2]], n);
+                j += 1;
+            }
+        }
+    };
+    let first = (&rows[0], vs[0]);
+    let last = (rows.last().unwrap(), *vs.last().unwrap());
+    match &lo_rim {
+        Some(rim) => zip(rim, first.0, first.1, out),
+        None => {
+            let pole = out.push(surface.param(0.0, 0.0));
+            for i in 0..k {
+                let j = (i + 1) % k;
+                out.tri_oriented([pole, first.0[i], first.0[j]], n_at(cols[i], 0.5 * first.1));
+            }
+        }
+    }
+    match &hi_rim {
+        Some(rim) => zip(rim, last.0, last.1, out),
+        None => {
+            let pole = out.push(surface.param(0.0, std::f64::consts::PI));
+            for i in 0..k {
+                let j = (i + 1) % k;
+                out.tri_oriented([pole, last.0[i], last.0[j]], n_at(cols[i], 0.5 * (last.1 + std::f64::consts::PI)));
+            }
+        }
+    }
+    let count = out.indices.len() - start;
+    if count == 0 {
+        return None;
+    }
+    out.faces.push((start, count));
+    Some(())
+}
+
 /// Tessellate one face of the solid.
 // ---------------------------------------------------------------------------
 // Cross-bore faces (docs/specs/SPEC-transverse-bore.md).
@@ -1190,6 +1337,12 @@ fn mesh_face(
     // rectangle: the structured grid would cover the whole parameter square
     // (including the removed caps), so route it to the band tessellator.
     if let crate::geom::Surface::Sphere(sp) = &face.borrow().surface {
+        if sp.trim.is_none() && (sp.v_range[0] > 1e-9 || sp.v_range[1] < std::f64::consts::PI - 1e-9) {
+            let surface = face.borrow().surface.clone();
+            if mesh_sphere_zone(face, edges_cache, out, defl, &surface).is_some() {
+                return Some(());
+            }
+        }
         if sp.trim.is_some() {
             let surface = face.borrow().surface.clone();
             if mesh_curved_band(face, edges_cache, out, defl, &surface).is_some() {

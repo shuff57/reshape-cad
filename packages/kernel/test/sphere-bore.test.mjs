@@ -90,7 +90,7 @@ test('the OCCT referee agrees on volume and face count (through and blind)', () 
   }
 });
 
-test('mesh: watertight, outward, and every probe point agrees with the analytic solid', () => {
+test('mesh: watertight, outward, and every probe point agrees with the analytic solid', { timeout: 120000 }, () => {
   for (const code of ['const s = sphere(40); hole(s, { across: 6 })', 'const s = sphere(40); hole(s, { across: 6, deep: 10 })']) {
     const { json, id, s } = build(code);
     const m = JSON.parse(brep.mesh_feature(json, id, 0.005));

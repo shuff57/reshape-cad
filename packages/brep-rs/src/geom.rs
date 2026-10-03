@@ -1286,6 +1286,43 @@ impl Surface {
                             b.expand(q);
                         }
                     }
+                } else if (s.u_range[1] - s.u_range[0] - 2.0 * std::f64::consts::PI).abs() < 1e-9
+                    && (s.v_range[0] > 1e-9 || s.v_range[1] < std::f64::consts::PI - 1e-9)
+                {
+                    // A full-turn band between two latitudes (a bore through the poles):
+                    // along world axis i the point is R(+-rho_i sin v - a_i cos v), with
+                    // rho_i^2 + a_i^2 = 1, so each extreme is R sin(v - phi) at an
+                    // endpoint or at v = phi + pi/2 when that lies in the band.
+                    let a = normalize(s.axis);
+                    let (e1, e2) = (normalize(s.e1), normalize(s.e2));
+                    let (v0, v1) = (s.v_range[0], s.v_range[1]);
+                    for i in 0..3 {
+                        let rho = (e1[i] * e1[i] + e2[i] * e2[i]).sqrt();
+                        let mut lo = f64::INFINITY;
+                        let mut hi = f64::NEG_INFINITY;
+                        for sg in [1.0, -1.0] {
+                            let g = |v: f64| sg * rho * v.sin() - a[i] * v.cos();
+                            let mut cands = vec![v0, v1];
+                            // g'(v) = sg rho cos v + a sin v = 0
+                            let t = (-sg * rho).atan2(a[i]);
+                            for k in -1..=2 {
+                                cands.push(t + k as f64 * std::f64::consts::PI);
+                            }
+                            for v in cands {
+                                if v >= v0 - 1e-12 && v <= v1 + 1e-12 {
+                                    let x = g(v.clamp(v0, v1));
+                                    lo = lo.min(x);
+                                    hi = hi.max(x);
+                                }
+                            }
+                        }
+                        let mut p = s.center;
+                        p[i] += s.radius * hi;
+                        b.expand(p);
+                        let mut q = s.center;
+                        q[i] += s.radius * lo;
+                        b.expand(q);
+                    }
                 } else {
                     for i in 0..3 {
                         let mut p = s.center;
