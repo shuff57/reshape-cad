@@ -73,12 +73,18 @@ test('hole with no deep: goes through a prism, wedge, cone, sphere and torus', (
 
 test('hole with no deep: on a shape of unknown thickness is an error, not a blind 10 mm', () => {
   assert.match(msg('const t = cuboid(10, 10, 10); turn(t, [0, 90, 0]); hole(t, { across: 2 })'), /cannot find how thick this box is/);
-  assert.match(msg('const t = union(cuboid(10, 10, 10), cylinder(8, 30, { at: [5, 0, 0] })); hole(t, { across: 2 })'), /cannot find how thick/);
-  assert.match(msg("const s = sketch('top'); s.rect(10, 10); const t = extrude(s, 30); hole(t, { across: 2 })"), /cannot find how thick/);
+  assert.match(msg('const t = intersect(cuboid(10, 10, 10), cylinder(8, 30, { at: [5, 0, 0] })); hole(t, { across: 2 })'), /cannot find how thick/);
+  assert.match(msg("const b = cuboid(10, 10, 10, { at: [25, 0, 0] }); const p = polarPattern(b, { count: 3, axis: 'z' }); hole(p, { across: 2 })"), /cannot find how thick/);
   assert.match(msg('const t = cuboid(10, 10, 10); turn(t, [0, 90, 0]); holes(t, { across: 2, apart: [4, 4] })'), /holes\(\) cannot find how thick/);
 });
 
-test('explicit deep: always works, even where thickness is unknown', () => {
-  const r = runScript("const s = sketch('top'); s.rect(10, 10); const t = extrude(s, 30); hole(t, { across: 2, deep: 30 })");
+// Intent kept and strengthened (extent-extrude work): an explicit deep: still
+// BUILDS where the thickness is not provable (centred, offset 0); the kernel's
+// sealed-cavity refusal -- pinned end to end in
+// packages/kernel/test/hole-extent-extrude.test.mjs -- is what stops a wrong
+// solid. A pulled shape is no longer such a case: its thickness is exact.
+test('explicit deep: still builds where thickness is unknown (turned box), centred', () => {
+  const r = runScript('const t = cuboid(10, 10, 10); turn(t, [0, 90, 0]); hole(t, { across: 2, deep: 4 })');
   assert.deepEqual(r.errors, []);
+  assert.deepEqual(r.doc.features.at(-1).center, [0, 0, 0]);
 });

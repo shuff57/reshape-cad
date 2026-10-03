@@ -103,11 +103,11 @@ test('a box with at: [5, 5] and deep: 10', () => {
   assert.equal(s.faces, 8);
 });
 
-test('unknown thickness: no deep errors plainly; deep still works (centred, the pinned contract)', () => {
-  const src = "const sk = sketch('top'); sk.rect(20, 20); const e = extrude(sk, 20); ";
-  const r2 = runScript(src + 'hole(e, { across: 6 })');
-  assert.match(r2.errors[0].message, /cannot find how thick this extrude is/);
-  const r = runScript(src + 'hole(e, { across: 6, deep: 10 })');
+test('unknown thickness (turned box): no deep errors plainly; deep still builds, centred', () => {
+  const src = 'const t = cuboid(10, 10, 10); turn(t, [0, 90, 0]); ';
+  const r2 = runScript(src + 'hole(t, { across: 2 })');
+  assert.match(r2.errors[0].message, /cannot find how thick this box is/);
+  const r = runScript(src + 'hole(t, { across: 2, deep: 4 })');
   assert.deepEqual(r.errors, []);
   assert.deepEqual(r.doc.features.at(-1).center, [0, 0, 0]);
 });

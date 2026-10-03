@@ -78,6 +78,7 @@ import {
   newBlend,
   extentAlong,
   throughExtentAlong,
+  extentBoundAlong,
   holeAxialOffset,
   isRoundable,
   canRotate,
@@ -1713,14 +1714,29 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
 
   /** A blind `deep:` must START AT THE DRILLED FACE: the kernel centres a hole's
    *  tool on the target's bbox centre, so the axial component of center is set
-   *  to (thickness - deep) / 2 (see holeAxialOffset). Where the thickness cannot
-   *  be bounded (an extrude, a rotated primitive ...) the offset stays 0: that is
-   *  the pinned "explicit deep: always works" contract, and throughDepth()'s own
-   *  error tells the student to give a deep: -- erroring here too would leave no
-   *  way to drill such a shape at all. */
-  function blindOffset(target: SolidHandle, axis: Axis3, deep: number, center: Vec3): void {
+   *  to (thickness - deep) / 2 (see holeAxialOffset). That needs the EXACT
+   *  thickness:
+   *   - exact: the offset is set.
+   *   - only an upper bound (a cut result, a prism across its corners): a deep
+   *     that stops short of the bound cannot be placed, so it is a plain error --
+   *     a wrong offset would float a cavity or start the hole short of the face.
+   *   - nothing known (a rotated shape, a polar pattern ...): the offset stays 0
+   *     and the hole is centred. That still builds, and the kernel refuses a
+   *     tool that would leave a sealed cavity inside the part, so the student
+   *     gets a sentence rather than a wrong solid (pinned in
+   *     silent-noop-errors.test.mjs and hole-extent-extrude.test.mjs). */
+  function blindOffset(fn: string, target: SolidHandle, axis: Axis3, deep: number, center: Vec3): void {
     const off = holeAxialOffset(docNow(), target.id, axis, deep);
-    if (off != null) center[axis === 'x' ? 0 : axis === 'y' ? 1 : 2] = off;
+    if (off != null) {
+      center[axis === 'x' ? 0 : axis === 'y' ? 1 : 2] = off;
+      return;
+    }
+    const known = extentBoundAlong(docNow(), target.id, axis);
+    if (known && !known.exact) {
+      throw new Error(
+        `${fn}() cannot find where the top of this ${findFeature(target.rootId).kind} is along ${axis} exactly, so a hole that stops short of the other side cannot start at the top. Make it go all the way through (leave out deep:, or give a deep: at least ${known.extent}), or drill the shape before it is cut.`,
+      );
+    }
   }
 
   // ISO 273 medium-fit clearance diameters (mm), M3..M12. A CLEARANCE table
@@ -1757,7 +1773,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     base.diameter = num(across, base.id, 'diameter');
     if (extra.deep !== undefined) {
       base.depth = num(positiveNumber('hole', 'deep', extra.deep), base.id, 'depth');
-      blindOffset(target, axis, base.depth, center);
+      blindOffset('hole', target, axis, base.depth, center);
     } else {
       base.depth = throughDepth('hole', target, axis);
     }
@@ -1782,7 +1798,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     base.diameter = num(across, base.id, 'diameter');
     if (extra.deep !== undefined) {
       base.depth = num(positiveNumber('holes', 'deep', extra.deep), base.id, 'depth');
-      blindOffset(target, axis, base.depth, center);
+      blindOffset('holes', target, axis, base.depth, center);
     } else {
       base.depth = throughDepth('holes', target, axis);
     }

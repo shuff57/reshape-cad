@@ -32,10 +32,16 @@ test('holes() gets the same offset', () => {
   assert.deepEqual(hole(BOX + 'holes(b, { across: 6, apart: [20, 20], deep: 10 })').f.center, [0, 0, 5]);
 });
 
-test('unknown thickness: deep keeps working (offset stays 0), as the pinned contract says', () => {
-  const r = runScript("const sk = sketch('top'); sk.rect(20, 20); const e = extrude(sk, 20); hole(e, { across: 6, deep: 10 })");
+test('unknown thickness (turned box): deep keeps working (offset stays 0), as the pinned contract says', () => {
+  const r = runScript('const t = cuboid(20, 20, 20); turn(t, [0, 90, 0]); hole(t, { across: 6, deep: 10 })');
   assert.deepEqual(r.errors, []);
   assert.deepEqual(r.doc.features.at(-1).center, [0, 0, 0]);
+});
+
+test('a pulled sketch has an exact thickness, so deep: starts at its top face', () => {
+  const r = runScript("const sk = sketch('top'); sk.rect(20, 20); const e = extrude(sk, 20); hole(e, { across: 6, deep: 10 })");
+  assert.deepEqual(r.errors, []);
+  assert.deepEqual(r.doc.features.at(-1).center, [0, 0, 5]);
 });
 
 test('toScript does not leak the axial offset into at:, and the round trip is a fixpoint', () => {

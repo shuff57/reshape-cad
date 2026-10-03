@@ -9,7 +9,7 @@
 // box grows both ways at once, so its face only keeps up with the pointer if
 // the width changes by twice the drag.
 
-import { isShape, extentAlong, sketchBBoxCentre, sketchFrameOf, type SketchFrame, type Feature, type ModelDoc, type SketchPlane, type Vec3 } from './model-types.js';
+import { isShape, extentAlong, SWEEP_DIR, sketchBBoxCentre, sketchFrameOf, type SketchFrame, type Feature, type ModelDoc, type SketchPlane, type Vec3 } from './model-types.js';
 import { maxFilletRadius } from '@shuff57/reshape-sketch/sketch-arc';
 
 export type HandleKind = 'size' | 'move' | 'turn' | 'point' | 'radius';
@@ -108,7 +108,6 @@ function planeNormal(plane: SketchPlane): [number, number, number] {
  * RECT 12mm on five plane/offset combinations and asserts the world bbox.
  * xz@0 comes out [[0,-12,0],[30,0,5]] -- the cap at y = -12, not +12.
  */
-const SWEEP_DIR: Record<SketchPlane, number> = { xy: 1, xz: -1, yz: 1 };
 
 /**
  * Where a sketch sits and which way Pull carries it, from the ONE resolver
