@@ -1664,7 +1664,14 @@ fn hole_wire(plane: &Plane, center_uv: [f64; 2], radius: f64, outer_ccw: bool) -
         true,
         Curve::Circle { center, radius, normal: plane.n },
     );
-    let forward = !outer_ccw;
+    // A circle runs CCW about `plane.n`. In (u, v) that is CCW only when the
+    // frame is right-handed (u x v = n); a face whose normal was REVERSED
+    // (an inner shell wall) keeps its old u, v, so u x v = -n and the same
+    // circle runs CW in uv. planar_measure sums signed uv loops, so the hole
+    // must oppose the outer IN UV, or its area is ADDED (shell + hole through
+    // both walls measured 10849.31 against the exact 11150.90).
+    let right_handed = dot(cross(plane.u, plane.v), plane.n) > 0.0;
+    let forward = if right_handed { !outer_ccw } else { outer_ccw };
     Rc::new(RefCell::new(Wire {
         edges: vec![topo::EdgeUse {
             edge: e,
@@ -1805,7 +1812,8 @@ fn face_with_hole(face: &TFace, plane: &Plane, hole: &Hole) -> TFace {
             let eb = u0.edge.borrow();
             match &eb.curve {
                 Curve::Circle { normal, .. } => {
-                    let fwd = dot(*normal, plane.n) > 0.0;
+                    let right_handed = dot(cross(plane.u, plane.v), plane.n) > 0.0;
+                    let fwd = (dot(*normal, plane.n) > 0.0) == right_handed;
                     if u0.forward { fwd } else { !fwd }
                 }
                 _ => area > 0.0,

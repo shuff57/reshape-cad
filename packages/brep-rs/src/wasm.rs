@@ -102,6 +102,42 @@ struct SketchFrame {
     dir: f64,
 }
 
+/// Why a sketch's `frame` cannot be trusted, in a plain sentence, or None when it
+/// can (and always None for a named plane, which never reaches this check).
+/// `sketch_frame` normalises u and v, which would quietly turn a skewed frame
+/// into a distorted outline or a rescaled one into a different size; a frame
+/// that is not an orthonormal pair is refused instead. Hand-built docs reach
+/// the kernel without the script's own validation, so the kernel checks too.
+/// Tolerance 1e-6 on unit length and on u.v, matching the script.
+fn frame_refusal(sk: &Value) -> Option<String> {
+    let fr = sk.get("frame")?;
+    for key in ["origin", "u", "v"] {
+        let label = key;
+        let Some(raw) = fr.get(key) else { continue };
+        let Some(p) = v3(raw) else {
+            return Some(format!("that frame's {label} is not three numbers"));
+        };
+        if !p.iter().all(|c| c.is_finite()) {
+            return Some(format!("that frame's {label} is not a finite number"));
+        }
+    }
+    let u = fr.get("u").and_then(v3).unwrap_or([1.0, 0.0, 0.0]);
+    let v = fr.get("v").and_then(v3).unwrap_or([0.0, 1.0, 0.0]);
+    for (label, d) in [("u", u), ("v", v)] {
+        let len = crate::math::dot(d, d).sqrt();
+        if len < 1e-12 {
+            return Some(format!("that frame's {label} has no length, so the sketch has no direction there"));
+        }
+        if (len - 1.0).abs() > 1e-6 {
+            return Some(format!("that frame's {label} is not one unit long (its length is {len}), so the sketch would be rescaled"));
+        }
+    }
+    if crate::math::dot(u, v).abs() > 1e-6 {
+        return Some("that plane's two directions are not at right angles, so the sketch would be skewed".to_string());
+    }
+    None
+}
+
 fn sketch_frame(sk: &Value) -> SketchFrame {
     if let Some(fr) = sk.get("frame") {
         let origin = fr.get("origin").and_then(v3).unwrap_or([0.0, 0.0, 0.0]);
@@ -815,6 +851,10 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     refusals.insert(id.clone(), json!(format!("extrude {id} cannot find sketch {target}")));
                     continue;
                 };
+                if let Some(why) = frame_refusal(sk) {
+                    refusals.insert(id.clone(), json!(format!("extrude {id}: {why} -- {id} is shown without it.")));
+                    continue;
+                }
                 let fr = sketch_frame(sk);
                 let dir = fr.dir;
                 let Some((solid, prism)) = extrude_prism(sk, "", height) else {
@@ -884,6 +924,10 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     refusals.insert(id.clone(), json!(format!("pocket {id} cannot find sketch {target}")));
                     continue;
                 };
+                if let Some(why) = frame_refusal(sk) {
+                    refusals.insert(id.clone(), json!(format!("pocket {id}: {why} -- {id} is shown without it.")));
+                    continue;
+                }
                 let from = hist.head_of(into).to_string();
                 let Some(base) = hist.shapes.get(&from).cloned() else {
                     refusals.insert(id.clone(), json!(format!("pocket {id} cannot find solid {into}")));
@@ -1168,6 +1212,10 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     refusals.insert(id.clone(), json!(format!("revolve {id} cannot find sketch {target}")));
                     continue;
                 };
+                if let Some(why) = frame_refusal(sk) {
+                    refusals.insert(id.clone(), json!(format!("revolve {id}: {why} -- {id} is shown without it.")));
+                    continue;
+                }
                 if sk.get("shape").and_then(|s| s.as_str()) == Some("circle") {
                     refusals.insert(id.clone(), json!(format!("revolve {id}: a circle sketch has no outline to spin")));
                     continue;
@@ -1231,6 +1279,9 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     if !bulges.is_empty() {
                         return None;
                     }
+                    if frame_refusal(sk).is_some() {
+                        return None;
+                    }
                     let fr = sketch_frame(sk);
                     let (u_axis, v_axis) = (fr.u, fr.v);
                     let origin = fr.origin;
@@ -1277,6 +1328,10 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     refusals.insert(id.clone(), json!(format!("groove {id} cannot find sketch {target}")));
                     continue;
                 };
+                if let Some(why) = frame_refusal(sk) {
+                    refusals.insert(id.clone(), json!(format!("groove {id}: {why} -- {id} is shown without it.")));
+                    continue;
+                }
                 let from = hist.head_of(into).to_string();
                 let Some(base) = hist.shapes.get(&from).cloned() else {
                     refusals.insert(id.clone(), json!(format!("groove {id} cannot find solid {into}")));
@@ -5908,5 +5963,130 @@ mod fix_lane_tests {
         assert!((lo[0] - 0.0).abs() < 1e-9 && (hi[0] - 10.0).abs() < 1e-9, "{lo:?} {hi:?}");
         assert!((lo[1] - (-6.0)).abs() < 1e-9 && (hi[1] - 14.0).abs() < 1e-9);
         assert!((lo[2] + 15.0).abs() < 1e-9 && (hi[2] - 15.0).abs() < 1e-9);
+    }
+
+    /// A hole cut through a SHELL RESULT. The inner void's walls are reversed
+    /// faces (n flipped, u/v kept, so u x v = -n); the hole wire a boolean puts
+    /// on such a face used to wind the SAME way as its outer loop IN UV, so
+    /// planar_measure ADDED the hole area. Measured before the fix: through
+    /// d6 on a 40x40x20 wall-2 shell gave 10849.31 against the exact
+    /// 11264 - 2 walls * 2 mm * 9 pi = 11150.90, with refusals empty.
+    fn shell_then(extra: Value, open: Option<&str>) -> (f64, usize, Map<String, Value>) {
+        let mut sh = json!({"id":"sh1","kind":"shell","target":"b1","thickness":2.0});
+        if open.is_some() { sh["open"] = json!({ "cause": "primitive", "feature": "b1", "kind": "face", "part": "+z" }); }
+        let doc = json!({"features":[
+            {"id":"b1","kind":"box","size":[40.0,40.0,20.0]}, sh, extra]});
+        let (hist, refusals) = build_doc(&doc);
+        let s = hist.shapes.get("h1").expect("h1 built");
+        (build::solid_volume(s), s.faces().len(), refusals)
+    }
+
+    fn hole_json(extra: Value) -> Value {
+        let mut h = json!({"id":"h1","kind":"hole","target":"sh1","diameter":6.0,"depth":22.0,"center":[0.0,0.0,0.0],"axis":"z"});
+        for (k, v) in extra.as_object().unwrap() { h[k] = v.clone(); }
+        h
+    }
+
+    #[test]
+    fn hole_through_a_closed_shell_measures_exactly() {
+        let pi = std::f64::consts::PI;
+        let (v, faces, r) = shell_then(hole_json(json!({})), None);
+        assert!(r.is_empty(), "{r:?}");
+        assert_eq!(faces, 14);
+        let want = 11264.0 - 4.0 * 9.0 * pi;
+        assert!((v - want).abs() < 1e-6, "{v} vs {want}");
+        // off-centre bore: same wall removal
+        let (v, _, _) = shell_then(hole_json(json!({"center":[5.0,5.0,0.0]})), None);
+        assert!((v - want).abs() < 1e-6, "{v} vs {want}");
+    }
+
+    #[test]
+    fn four_holes_through_a_closed_shell_measure_exactly() {
+        let pi = std::f64::consts::PI;
+        let (v, _, r) = shell_then(hole_json(json!({"corners":{"dx":10.0,"dy":10.0}})), None);
+        assert!(r.is_empty(), "{r:?}");
+        let want = 11264.0 - 4.0 * 4.0 * 9.0 * pi;
+        assert!((v - want).abs() < 1e-6, "{v} vs {want}");
+    }
+
+    #[test]
+    fn recess_through_a_closed_shell_measures_exactly() {
+        let pi = std::f64::consts::PI;
+        // counterbore d12 x 3 from the top face: the top wall (2 mm) is cut at d12,
+        // the bottom wall at d6.
+        let (v, _, r) = shell_then(hole_json(json!({"counterbore":{"diameter":12.0,"depth":3.0}})), None);
+        assert!(r.is_empty(), "{r:?}");
+        let want = 11264.0 - (36.0 * 2.0 + 9.0 * 2.0) * pi;
+        assert!((v - want).abs() < 1e-6, "cbore {v} vs {want}");
+        // 90 degree countersink d12: frustum r6 -> r4 over the 2 mm wall.
+        let (v, _, r) = shell_then(hole_json(json!({"countersink":{"diameter":12.0,"angleDeg":90.0}})), None);
+        assert!(r.is_empty(), "{r:?}");
+        let want = 11264.0 - (2.0 / 3.0 * (36.0 + 24.0 + 16.0) + 18.0) * pi;
+        assert!((v - want).abs() < 1e-6, "csink {v} vs {want}");
+    }
+
+    #[test]
+    fn blind_hole_from_the_top_through_a_closed_shell_cuts_only_the_top_wall() {
+        let pi = std::f64::consts::PI;
+        // depth 3 centred at z = +8.5 (offset from the bbox centre): z 7..10.
+        let (v, _, r) = shell_then(hole_json(json!({"depth":3.0,"center":[0.0,0.0,8.5]})), None);
+        assert!(r.is_empty(), "{r:?}");
+        let want = 11264.0 - 9.0 * 2.0 * pi;
+        assert!((v - want).abs() < 1e-6, "{v} vs {want}");
+        // a blind hole wholly inside the void (the script's deep: with no
+        // centre offset) removes nothing, and is not refused.
+        let (v, _, _) = shell_then(hole_json(json!({"depth":2.0})), None);
+        assert!((v - 11264.0).abs() < 1e-6, "{v}");
+    }
+
+    #[test]
+    fn hole_through_an_open_top_shell_measures_exactly() {
+        let pi = std::f64::consts::PI;
+        let (v, _, r) = shell_then(hole_json(json!({})), Some("top"));
+        assert!(r.is_empty(), "{r:?}");
+        let want = 8672.0 - 18.0 * pi;
+        assert!((v - want).abs() < 1e-6, "{v} vs {want}");
+    }
+
+    fn framed_extrude(frame: Value) -> (Option<f64>, Map<String, Value>) {
+        let doc = json!({"features":[
+            {"id":"sk1","kind":"sketch","plane":"xy","offset":0.0,"frame":frame,"points":[[0.0,0.0],[40.0,0.0],[40.0,25.0],[0.0,25.0]]},
+            {"id":"e1","kind":"extrude","target":"sk1","height":12.0}]});
+        let (hist, refusals) = build_doc(&doc);
+        (hist.shapes.get("e1").map(build::solid_volume), refusals)
+    }
+
+    #[test]
+    fn a_skewed_frame_refuses_instead_of_building_a_distorted_solid() {
+        let s = std::f64::consts::FRAC_1_SQRT_2;
+        let (v, r) = framed_extrude(json!({"origin":[0,0,0],"u":[1,0,0],"v":[s,s,0]}));
+        let text = r.get("e1").and_then(|t| t.as_str()).expect("must refuse").to_string();
+        assert!(text.contains("not at right angles") && text.ends_with("e1 is shown without it."), "{text}");
+        assert!(v.is_none(), "no solid, never a volume: {v:?}");
+    }
+
+    #[test]
+    fn non_unit_zero_and_non_finite_frames_refuse() {
+        for fr in [
+            json!({"origin":[0,0,0],"u":[2,0,0],"v":[0,1,0]}),
+            json!({"origin":[0,0,0],"u":[1,0,0],"v":[0,0,0]}),
+            json!({"origin":[0,0,0],"u":[0,0,0],"v":[0,1,0]}),
+            json!({"origin":[0,0,0],"u":[1,0,0],"v":[null,1,0]}),
+            json!({"origin":[0,0,0],"u":[1,0,0],"v":[0,1.0000011,0]}),
+        ] {
+            let (v, r) = framed_extrude(fr.clone());
+            assert!(r.contains_key("e1") && v.is_none(), "{fr} must refuse, got {v:?} {r:?}");
+        }
+    }
+
+    #[test]
+    fn a_valid_frame_still_builds_exactly_and_orthogonal_rotations_pass() {
+        let (v, r) = framed_extrude(json!({"origin":[0,0,10],"u":[1,0,0],"v":[0,1,0]}));
+        assert!(r.is_empty(), "{r:?}");
+        assert!((v.unwrap() - 12000.0).abs() < 1e-6);
+        let s = std::f64::consts::FRAC_1_SQRT_2;
+        let (v, r) = framed_extrude(json!({"origin":[0,0,0],"u":[s,s,0],"v":[-s,s,0]}));
+        assert!(r.is_empty(), "{r:?}");
+        assert!((v.unwrap() - 12000.0).abs() < 1e-6);
     }
 }
