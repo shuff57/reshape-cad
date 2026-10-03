@@ -1,6 +1,7 @@
-// A 180-degree disc groove that crosses a face builds exactly (half disc cut by
-// one chord through its centre); every other partial angle refuses plainly, and
-// a partial groove that never reaches a face is still a sealed cavity.
+// A partial-angle or annular disc groove that crosses a face builds exactly (the planar
+// split-and-classify boolean cuts the wedge; each volume is the closed form
+// pi x (r1^2 - r0^2) x 5 x angle/360 with 5 mm of the 7 mm tool inside the box), and a
+// partial groove that never reaches a face is still a sealed cavity.
 // Hand-built docs on the real wasm (companion of pocket-groove-cavity-guard).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -27,7 +28,6 @@ function run(features) {
 }
 const near = (a, b) => assert.ok(Math.abs(a - b) < 1e-6, `${a} vs ${b}`);
 const sealed = /^groove g1 would leave a sealed cavity inside the part instead of opening onto a face -- g1 is shown without it\.$/;
-const cannot = /^groove g1: brep-rs cannot cut this groove yet /;
 
 test('180-degree disc groove r8 over y15..22 crosses the y=+20 face: 32000 - 160*pi', () => {
   const { refusals, s } = run(groove(8, 15, 22, 180));
@@ -42,10 +42,10 @@ test('180-degree disc groove r6 over y16..24 (straddles the face): 32000 - 72*pi
   near(s.volume, 32000 - 72 * Math.PI);
 });
 for (const angle of [90, 270]) {
-  test(`${angle}-degree disc groove across a face refuses plainly, no solid`, () => {
+  test(`${angle}-degree disc groove across a face builds exactly: 32000 - pi*64*5*${angle}/360`, () => {
     const { refusals, s } = run(groove(8, 15, 22, angle));
-    assert.match(refusals.g1, cannot);
-    assert.equal(s, undefined);
+    assert.deepEqual(refusals, {});
+    near(s.volume, 32000 - Math.PI * 64 * 5 * angle / 360);
   });
 }
 test('180-degree disc groove that never reaches a face is a sealed cavity: refuses', () => {
@@ -53,8 +53,8 @@ test('180-degree disc groove that never reaches a face is a sealed cavity: refus
   assert.match(refusals.g1, sealed);
   assert.equal(s, undefined);
 });
-test('180-degree ANNULAR groove across a face refuses plainly, no solid', () => {
+test('180-degree ANNULAR groove across a face builds exactly: 32000 - pi*(64-16)*5/2', () => {
   const { refusals, s } = run(groove(8, 15, 22, 180, 4));
-  assert.match(refusals.g1, cannot);
-  assert.equal(s, undefined);
+  assert.deepEqual(refusals, {});
+  near(s.volume, 32000 - Math.PI * 48 * 5 / 2);
 });

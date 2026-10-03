@@ -60,9 +60,7 @@
     "builds": true
   },
   "matrix box: hole then chamfer": {
-    "refused": {
-      "bevel1": "chamfer bevel1 is fine, but brep-rs cannot cut the earlier holes or hollow into the chamfered part -- bevel1 is shown without it."
-    }
+    "builds": true
   },
   "matrix box: hole then hollow": {
     "refused": {
@@ -89,9 +87,7 @@
     "builds": true
   },
   "matrix box: chamfer then hole": {
-    "refused": {
-      "hole1": "hole hole1: brep-rs cannot cut this hole yet; drilling the part before you round, chamfer or pattern it, or making the hole go right through, usually works -- hole1 is shown without it."
-    }
+    "builds": true
   },
   "matrix box: chamfer then round": {
     "refused": {

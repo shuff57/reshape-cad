@@ -89,14 +89,14 @@ const EXPECT = Object.fromEntries([
   ["lesson 8-1-9-lab-write-it-yourself.solution.js", 'builds'],
   ["matrix box: hole", 'builds'],
   ["matrix box: hole then round", 'builds'],
-  ["matrix box: hole then chamfer", "cannot cut the earlier holes or hollow into the chamfered part"],
+  ["matrix box: hole then chamfer", 'builds'], // planar boolean: 32000 - 16 pi 20 - 180 exact
   ["matrix box: hole then hollow", "can only hollow a box or a straight cylinder yet"],
   ["matrix box: round", 'builds'],
   ["matrix box: round then hole", 'builds'],
   ["matrix box: round then chamfer", "can only chamfer a convex edge"],
   ["matrix box: round then hollow", "can only hollow a box or a straight cylinder yet"],
   ["matrix box: chamfer", 'builds'],
-  ["matrix box: chamfer then hole", "cannot cut this hole yet"],
+  ["matrix box: chamfer then hole", 'builds'], // planar boolean, same closed form
   ["matrix box: chamfer then round", "can only round an edge of a box yet"],
   ["matrix box: chamfer then hollow", "can only hollow a box or a straight cylinder yet"],
   ["matrix box: hollow", 'builds'],

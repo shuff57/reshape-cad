@@ -3358,11 +3358,17 @@ mod groove_partial_angle {
     }
 
     #[test]
-    fn other_partial_angles_refuse_never_wrong() {
-        // Only the half disc is a disk cut by ONE chord through its centre.
-        // A quarter or three-quarter wedge needs two chords and refuses.
+    fn other_partial_angles_are_exact_through_the_planar_boolean() {
+        // A quarter or three-quarter wedge needs two chords, which the older
+        // boolean could not do and refused; the planar split-and-classify path
+        // (ops_planar, S2) builds it, and it must be exact, closed and watertight.
         for deg in [90.0f64, 270.0] {
-            assert!(cut(deg, 8.0, 15.0, 22.0).is_none(), "{deg}-degree groove must refuse");
+            let r = cut(deg, 8.0, 15.0, 22.0).unwrap_or_else(|| panic!("{deg}-degree groove builds"));
+            let want = 32000.0 - std::f64::consts::PI * 64.0 * 5.0 * deg / 360.0;
+            close(solid_volume(&r), want, 1e-9, "wedge groove volume");
+            assert!(signed_volume(&r) > 0.0);
+            let mesh = crate::mesh::mesh_solid(&r, 0.05).expect("meshes");
+            assert!(crate::ops::check_watertight(&mesh), "{deg}-degree groove mesh is watertight");
         }
     }
 }

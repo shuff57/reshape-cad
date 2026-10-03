@@ -73,12 +73,17 @@ test('the OCCT referee agrees on volume and face count', () => {
   assert.equal(r.s.faces, o.faces);
 });
 
-test('a blind hole then a round refuses honestly: the kernel cannot cut a blind hole into a rounded box in either order', () => {
-  const first = build("const b = box(40, 40, 20)\nround(b.edge('top', 'front'), 3)\nhole(b, { across: 8, deep: 6 })");
-  assert.match(first.refusals.hole1 ?? '', /cannot cut this hole yet/); // the order that always existed
-  const r = build("const b = box(40, 40, 20)\nhole(b, { across: 8, deep: 6 })\nround(b.edge('top', 'front'), 3)");
-  assert.ok((r.refusals.round1 ?? '').length > 0, 'must refuse, not return the unrounded box silently');
-  near(r.s.volume, 32000 - PI * 16 * 6); // shown without the round
+test('a blind hole and a round build in either order, exactly (planar split-and-classify boolean)', () => {
+  // 32000 - pi r^2 d - (1 - pi/4) r^2 L with r = 4, d = 6 for the hole and r = 3, L = 40 for the round.
+  const want = 32000 - PI * 16 * 6 - wedge(3, 40);
+  for (const code of [
+    "const b = box(40, 40, 20)\nround(b.edge('top', 'front'), 3)\nhole(b, { across: 8, deep: 6 })",
+    "const b = box(40, 40, 20)\nhole(b, { across: 8, deep: 6 })\nround(b.edge('top', 'front'), 3)",
+  ]) {
+    const r = build(code);
+    assert.deepEqual(r.refusals, {}, code);
+    near(r.s.volume, want);
+  }
 });
 
 test('sweep the hole across the limit: it builds exactly or refuses, never another number', () => {
@@ -114,12 +119,16 @@ test('twenty touching configurations all refuse with the sentence that says what
   assert.ok(n >= 10, `only ${n} configurations`);
 });
 
-test('chamfer after a hole refuses honestly (the kernel cannot cut a hole into a chamfered box)', () => {
-  const r = build("const b = box(40, 40, 20)\nhole(b, { across: 8 })\nchamfer(b.edge('top', 'front'), 3)");
-  const text = r.refusals.bevel1 ?? '';
-  assert.ok(text.length > 0, 'must refuse, not silently drop the chamfer');
-  // the shown shape is the box with its hole, no chamfer
-  near(r.s.volume, 32000 - PI * 16 * 20);
+test('a chamfer and a hole build in either order, exactly: 32000 - pi*16*20 - 1/2 x 3^2 x 40', () => {
+  const want = 32000 - PI * 16 * 20 - 0.5 * 9 * 40;
+  for (const code of [
+    "const b = box(40, 40, 20)\nhole(b, { across: 8 })\nchamfer(b.edge('top', 'front'), 3)",
+    "const b = box(40, 40, 20)\nchamfer(b.edge('top', 'front'), 3)\nhole(b, { across: 8 })",
+  ]) {
+    const r = build(code);
+    assert.deepEqual(r.refusals, {}, code);
+    near(r.s.volume, want);
+  }
 });
 
 test('a second round after a hole refuses, shown without it', () => {

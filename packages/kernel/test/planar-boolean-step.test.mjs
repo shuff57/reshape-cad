@@ -38,6 +38,9 @@ const cases = [
   ['open cup cut in half', CUP + HALF, 4336],
   ['open cup with a wall notch', CUP + 'const c = cuboid(10, 10, 6, { at: [20, 0, 0] })\nsubtract(b, c)', 8552],
   ['hollow then chamfer', HOLLOW + "chamfer(b.edge('top', 'front'), 1.5)", 11219],
+  ['bored box cut in half through the bore', 'const b = cuboid(40, 40, 20)\nhole(b, { across: 12 })\n' + HALF.replace('const c', 'const c'), (32000 - Math.PI * 36 * 20) / 2],
+  ['blind-bored box cut in half', 'const b = cuboid(40, 40, 20)\nhole(b, { across: 12, deep: 8 })\n' + HALF, (32000 - Math.PI * 36 * 8) / 2],
+  ['bored box with the top half removed', 'const b = cuboid(40, 40, 20)\nhole(b, { across: 12 })\nconst c = cuboid(60, 60, 20, { at: [0, 0, 10] })\nsubtract(b, c)', (32000 - Math.PI * 36 * 20) / 2],
 ];
 
 for (const [name, code, volume] of cases) {

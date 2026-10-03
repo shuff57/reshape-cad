@@ -149,22 +149,31 @@ test('a refused feature shows up in refusals', () => {
 // lens). Rather than hardcode the stadium volume, assert: no refusal AND
 // the volume equals a single fused-tool subtract computed by the kernel
 // itself (the adapter's own union path is the same code the branch uses).
-test('two overlapping bores refuse honestly (W8 fuse never opened a face)', () => {
-  // This fixture used to "build" only because the centred depth-8 tool was a
-  // SEALED cavity inside the 20 thick box (9+ faces, no opening). Cavity guard:
-  // that is refused now. A fused stadium tool that does open onto a face (flush
-  // or through) is a separate, pre-existing refusal ("cannot cut this hole yet").
-  // Either way: a refusal and no solid, never a wrong one.
-  for (const center of [[0, 0, 0], [0, 0, 6]]) {
-    const built = adapter.build({
-      features: [
-        { id: 'b1', kind: 'box', size: [40, 40, 20] },
-        { id: 'h1', kind: 'hole', target: 'b1', diameter: 6, depth: 8, center, axis: 'z', corners: { dx: 2, dy: 0 } },
-      ],
-    });
-    assert.ok(built.refusals && built.refusals.has('h1'), `refusal recorded at ${center}`);
-    assert.ok(!built.shapes.has('h1'), 'no solid');
-  }
+test('two overlapping bores: a stadium tool that opens onto the top face builds exactly; one sealed inside the part still refuses', async () => {
+  // Two r=3 discs 4 apart: area 2*pi*9 - lens, lens = 2*9*acos(2/3) - 2*sqrt(20). A depth-8 tool centred at z = 0 is a
+  // SEALED cavity inside the 20 thick box and is refused by the cavity guard; centred at z = 6 it reaches the top face
+  // (z 2..10) and builds through the planar split-and-classify boolean, 32000 - 8 x the stadium area.
+  const area = 2 * Math.PI * 9 - (2 * 9 * Math.acos(2 / 3) - 2 * Math.sqrt(20));
+  const build = (center) => adapter.build({
+    features: [
+      { id: 'b1', kind: 'box', size: [40, 40, 20] },
+      { id: 'h1', kind: 'hole', target: 'b1', diameter: 6, depth: 8, center, axis: 'z', corners: { dx: 2, dy: 0 } },
+    ],
+  });
+  const sealed = build([0, 0, 0]);
+  assert.ok(sealed.refusals && sealed.refusals.has('h1'), 'a sealed cavity is refused');
+  assert.ok(!sealed.shapes.has('h1'), 'no solid');
+  const open = build([0, 0, 6]);
+  assert.ok(!open.refusals || !open.refusals.has('h1'), 'the open stadium builds');
+  const PKG = path.resolve(fileURLToPath(new URL('.', import.meta.url)), '../../brep-rs/pkg');
+  const brep = await import(new URL(`file://${path.join(PKG, 'brep_rs.js')}`).href);
+  brep.initSync({ module: readFileSync(path.join(PKG, 'brep_rs_bg.wasm')) });
+  const doc = JSON.stringify({ version: 1, features: [
+    { id: 'b1', kind: 'box', size: [40, 40, 20] },
+    { id: 'h1', kind: 'hole', target: 'b1', diameter: 6, depth: 8, center: [0, 0, 6], axis: 'z', corners: { dx: 2, dy: 0 } },
+  ], measure: 'h1' });
+  const volume = JSON.parse(brep.measure_doc(doc)).shapes.h1.volume;
+  assert.ok(Math.abs(volume - (32000 - 8 * area)) < 1e-6, `${volume} vs ${32000 - 8 * area}`);
 });
 
 // Shading: normals are computed per face, so a flat face with a hole is exactly flat (it used to pick up the

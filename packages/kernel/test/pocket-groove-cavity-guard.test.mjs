@@ -85,15 +85,10 @@ test('groove disc r6 flush on the z=10 face (xy plane, y2..10 up to the face) bu
   assert.equal(s.edges, 16);
 });
 
-// Known kernel gap, pinned so it stays visible: an ANNULAR (r0 > 0) or partial-angle
-// groove that reaches a face is refused honestly (never a wrong solid). When the
-// kernel grows it, this test fails and asks to be turned into a volume pin.
-for (const [name, doc] of [
-  ['ring r4..8 flush/crossing y15..22', grooveDoc('xz', [4, 15], [8, 22])],
-]) {
-  test(`open groove ${name} is refused with the plain cannot-cut sentence`, () => {
-    const { refusals, s } = run(doc, 'g1');
-    assert.match(refusals.g1, /^groove g1: brep-rs cannot cut this groove yet .* -- g1 is shown without it\.$/);
-    assert.equal(s, undefined);
-  });
-}
+// An ANNULAR (r0 > 0) groove that reaches a face used to be refused; the planar
+// split-and-classify boolean builds it, exactly pi x (8^2 - 4^2) x 5 less than the box.
+test('open groove ring r4..8 flush/crossing y15..22 builds: 32000 - pi*48*5', () => {
+  const { refusals, s } = run(grooveDoc('xz', [4, 15], [8, 22]), 'g1');
+  assert.deepEqual(refusals, {});
+  near(s.volume, 32000 - Math.PI * 48 * 5);
+});

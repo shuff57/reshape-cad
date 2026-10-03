@@ -5767,7 +5767,7 @@ fn subtract_enclosed(a: &TSolid, b: &TSolid) -> Option<TSolid> {
 /// subtracted wall does in [`partial_wall`]. Any other surface returns
 /// `None` -- fail closed (I-1): an unreversed copy would ADD the void's
 /// volume and hand back a closed wrong solid.
-fn flip_face(face: &TFace) -> Option<TFace> {
+pub(crate) fn flip_face(face: &TFace) -> Option<TFace> {
     let fb = face.borrow();
     match &fb.surface {
         Surface::Plane(p) => {
