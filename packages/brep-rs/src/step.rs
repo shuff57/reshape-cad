@@ -23,7 +23,7 @@
 //! reason: above the mesh gate's vertex weld, well below parity's `approx`.
 
 use crate::build::{TFace, TSolid};
-use crate::geom::{Cone, Curve, Cylinder, Plane, Surface};
+use crate::geom::{Cone, Curve, Cylinder, Plane, SphereSurf, Surface};
 use crate::math::{add, cross, dist, dot, normalize, scale, sub, Vec3};
 
 const WELD: f64 = 1e-6;
@@ -424,6 +424,56 @@ fn cylinder_loop(c: &Cylinder) -> Vec<Seg> {
     ]
 }
 
+/// A sphere that is a full-turn zone between two latitudes (a bore through its poles), in the
+/// same seam form as a cylinder: lower rim, meridian seam up, upper rim reversed, seam down.
+/// None for anything else (a whole sphere, a pole, a trimmed one): those still refuse.
+fn sphere_zone_loop(s: &SphereSurf) -> Option<Vec<Seg>> {
+    let tau = 2.0 * std::f64::consts::PI;
+    let (v0, v1) = (s.v_range[0], s.v_range[1]);
+    if s.trim.is_some()
+        || (s.u_range[1] - s.u_range[0] - tau).abs() > 1e-9
+        || v0 <= 1e-9
+        || v1 >= std::f64::consts::PI - 1e-9
+        || v1 - v0 <= 1e-9
+    {
+        return None;
+    }
+    let spin = normalize(cross(s.e1, s.e2));
+    let at = |u: f64, v: f64| {
+        add(
+            s.center,
+            add(
+                scale(add(scale(s.e1, u.cos()), scale(s.e2, u.sin())), s.radius * v.sin()),
+                scale(s.axis, -s.radius * v.cos()),
+            ),
+        )
+    };
+    let rim_centre = |v: f64| add(s.center, scale(s.axis, -s.radius * v.cos()));
+    let (a0, a1) = (at(0.0, v0), at(0.0, v1));
+    let mid = at(0.0, 0.5 * (v0 + v1));
+    let meridian = normalize(cross(sub(a0, s.center), sub(a1, s.center)));
+    Some(vec![
+        Seg::Arc {
+            center: rim_centre(v0),
+            radius: s.radius * v0.sin(),
+            axis: spin,
+            a: a0,
+            b: a0,
+            mid: at(std::f64::consts::PI, v0),
+        },
+        Seg::Arc { center: s.center, radius: s.radius, axis: meridian, a: a0, b: a1, mid },
+        Seg::Arc {
+            center: rim_centre(v1),
+            radius: s.radius * v1.sin(),
+            axis: scale(spin, -1.0),
+            a: a1,
+            b: a1,
+            mid: at(std::f64::consts::PI, v1),
+        },
+        Seg::Arc { center: s.center, radius: s.radius, axis: scale(meridian, -1.0), a: a1, b: a0, mid },
+    ])
+}
+
 /// The boundary of a conical frustum, in the same seam form as a cylinder:
 /// lower rim, seam up, upper rim reversed, seam down. `v` is slant distance,
 /// so both the rim radius and its axial centre change with it.
@@ -551,6 +601,8 @@ fn revolved_signed_area(segs: &[Seg], origin: Vec3, surface_axis: Vec3, e1: Vec3
             // A straight edge on a cylinder is a ruling, parallel to the axis,
             // so it spans no angle at all.
             Seg::Line { .. } => 0.0,
+            // a meridian (its plane contains the axis) stays at one longitude
+            Seg::Arc { axis, .. } if dot(*axis, surface_axis).abs() < 1e-9 => 0.0,
             Seg::Arc { axis, .. } => {
                 let forward = dot(*axis, surface_axis) >= 0.0;
                 if same_pt(s.start(), s.end()) {
@@ -587,7 +639,12 @@ fn face_bounds(face: &crate::topo::Face<Curve, Surface>) -> Result<(Vec<Vec<Seg>
         Surface::Plane(_) => face.forward,
         Surface::Cylinder(c) => face.forward == right_handed(c.e1, c.e2, c.axis),
         Surface::Cone(c) => face.forward == right_handed(c.e1, c.e2, c.axis),
-        Surface::Sphere(_) => return Err("a spherical face".to_string()),
+        Surface::Sphere(sp) => {
+            if sphere_zone_loop(sp).is_none() {
+                return Err("a spherical face".to_string());
+            }
+            face.forward == right_handed(sp.e1, sp.e2, sp.axis)
+        }
         Surface::Torus(_) => return Err("a toroidal face".to_string()),
     };
 
@@ -604,6 +661,9 @@ fn face_bounds(face: &crate::topo::Face<Curve, Surface>) -> Result<(Vec<Vec<Seg>
                 return Err("a conical face with a hole in it".to_string());
             }
             bounds.push(cone_loop(c));
+        }
+        Surface::Sphere(sp) => {
+            bounds.push(sphere_zone_loop(sp).ok_or_else(|| "a spherical face".to_string())?);
         }
         _ => {
             for w in &face.boundary {
@@ -630,6 +690,7 @@ fn face_bounds(face: &crate::topo::Face<Curve, Surface>) -> Result<(Vec<Vec<Seg>
             Surface::Plane(p) => planar_signed_area(b, p),
             Surface::Cylinder(c) => revolved_signed_area(b, c.origin, c.axis, c.e1),
             Surface::Cone(c) => revolved_signed_area(b, c.base, c.axis, c.e1),
+            Surface::Sphere(sp) => revolved_signed_area(b, sp.center, sp.axis, sp.e1),
             _ => unreachable!("every other surface was refused above"),
         };
         if (area > 0.0) != (i == 0) {
@@ -763,6 +824,10 @@ pub fn write_solid(solid: &TSolid, product: &str) -> Result<String, String> {
                     real(c.base_radius),
                     real(c.half_angle)
                 ))
+            }
+            Surface::Sphere(sp) => {
+                let pl = w.axis2(sp.center, sp.axis, sp.e1);
+                w.put(format!("SPHERICAL_SURFACE('',#{pl},{})", real(sp.radius)))
             }
             _ => unreachable!("face_bounds refuses every other surface"),
         };

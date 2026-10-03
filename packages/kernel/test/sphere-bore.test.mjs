@@ -160,8 +160,29 @@ test('near misses refuse in a sentence, never a wrong solid', () => {
   }
 });
 
-test('STEP export of a bored sphere refuses (a sphere face has no STEP writer)', () => {
-  const { json } = build('const s = sphere(40); hole(s, { across: 6 })');
-  const out = brep.export_step ? brep.export_step(json, 'hole1') : null;
-  if (out !== null) assert.ok(String(out).includes('error') || String(out).includes('cannot') || !String(out).includes('ISO-10303'), 'must not write a wrong STEP');
+// STEP: a bore through the poles leaves a spherical zone between two circles, which has an exact STEP form
+// (SPHERICAL_SURFACE, rim circles, meridian seam). OCCT reads the file back; the volume is the napkin-ring
+// closed form, not another kernel's number. A blind bore (a pole inside the face) still refuses.
+test('STEP: the through bore writes exactly and OCCT reads it back; the blind bore refuses in a sentence', async () => {
+  const { pathToFileURL } = await import('node:url');
+  const dir = path.resolve(PKG, '../../../node_modules/replicad-opencascadejs/dist');
+  const glue = await import(pathToFileURL(path.join(dir, 'replicad_single.js')).href);
+  const oc2 = await glue.default({ locateFile: (f) => path.join(dir, f) });
+  const through = build('const s = sphere(40); hole(s, { across: 6 })');
+  const out = JSON.parse(brep.export_step(through.json, through.id));
+  assert.ok(!out.error && (out.step ?? out.text ?? out.data), JSON.stringify(out).slice(0, 200));
+  const text = out.step ?? out.text ?? out.data;
+  oc2.FS.writeFile('/in.step', text);
+  const reader = new oc2.STEPControl_Reader();
+  reader.ReadFile('/in.step');
+  reader.TransferRoots(new oc2.Message_ProgressRange());
+  const shape = reader.OneShape();
+  const g = new oc2.GProp_GProps();
+  oc2.BRepGProp.VolumeProperties(shape, g, 1e-7, false, false);
+  const R = 20, r = 3;
+  const napkin = (4 / 3) * Math.PI * (R * R - r * r) ** 1.5;
+  assert.ok(Math.abs(g.Mass() - napkin) < 1e-7 * napkin, `${g.Mass()} vs ${napkin}`);
+  const blind = build('const s = sphere(40); hole(s, { across: 6, deep: 10 })');
+  const b = JSON.parse(brep.export_step(blind.json, blind.id));
+  assert.match(JSON.stringify(b), /spherical face/);
 });
