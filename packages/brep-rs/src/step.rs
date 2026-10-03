@@ -886,7 +886,11 @@ fn face_bounds(face: &crate::topo::Face<Curve, Surface>) -> Result<(Vec<Vec<Seg>
         Surface::Sphere(sp) => {
             bounds.push(sphere_zone_loop(sp).ok_or_else(|| "a spherical face".to_string())?);
         }
-        _ => {
+        // The plane's boundary is its wires as written. A torus was refused when
+        // the surface sense was computed above; naming it keeps a new surface
+        // kind from silently taking the polygon path.
+        Surface::Torus(_) => return Err("a toroidal face".to_string()),
+        Surface::Plane(_) => {
             for w in &face.boundary {
                 let segs = wire_segs(&w.borrow().edges)?;
                 if !closed_chain(&segs) {

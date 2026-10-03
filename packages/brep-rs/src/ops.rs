@@ -7851,3 +7851,121 @@ mod cross_bore_pins {
         assert!(has_cross_trim(&bored) && !has_cross_trim(&a));
     }
 }
+
+/// G3: every operation x every surface kind either refuses or is exact.
+///
+/// One solid per `Surface` variant, each symmetric about the plane x = 0 that
+/// contains its axis, so a half-space box (x >= 0) halves it and every closed
+/// form is known without trusting the kernel: V/2 for intersect and subtract,
+/// V + Vbox - V/2 for union. A silent wrong volume fails; a refusal is recorded
+/// and allowed. Adding a Surface variant means adding a row here.
+#[cfg(test)]
+mod surface_op_table {
+    use super::*;
+    use std::f64::consts::PI;
+
+    struct Case {
+        name: &'static str,
+        solid: TSolid,
+        volume: f64,
+    }
+
+    fn cases() -> Vec<Case> {
+        let o = [0.0, 0.0, 0.0];
+        let z = [0.0, 0.0, 1.0];
+        vec![
+            Case { name: "plane (box)", solid: build::box_solid([20.0, 20.0, 20.0], o, None), volume: 8000.0 },
+            Case { name: "cylinder", solid: build::cylinder_solid(o, 6.0, 14.0, z), volume: PI * 36.0 * 14.0 },
+            Case { name: "cone", solid: build::cone_solid(o, 6.0, 14.0, z), volume: PI * 36.0 * 14.0 / 3.0 },
+            Case { name: "sphere", solid: build::sphere_solid(o, 7.0, z), volume: 4.0 / 3.0 * PI * 343.0 },
+            Case { name: "torus", solid: build::torus_solid(o, 9.0, 3.0, z), volume: 2.0 * PI * PI * 9.0 * 9.0 },
+        ]
+    }
+
+    fn near(a: f64, b: f64) -> bool {
+        (a - b).abs() <= 1e-6 * b.abs().max(1.0)
+    }
+
+    /// Outcome of one cell: Ok(true) exact, Ok(false) refused, Err(msg) wrong.
+    type Cell = Result<bool, String>;
+
+    fn check_volume(got: Option<TSolid>, want: f64) -> Cell {
+        match got {
+            None => Ok(false),
+            Some(r) => {
+                let v = build::solid_volume(&r);
+                if near(v, want) && build::signed_volume(&r) > 0.0 {
+                    Ok(true)
+                } else {
+                    Err(format!("volume {v} (signed {}) vs closed form {want}", build::signed_volume(&r)))
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn every_operation_on_every_surface_refuses_or_is_exact() {
+        let big = [60.0, 60.0, 60.0];
+        // A half-space tool: x in [0, 30], covering y and z entirely.
+        let half = || build::box_solid(big, [30.0, 0.0, 0.0], None);
+        let vbox = 60.0 * 60.0 * 60.0;
+        let mut wrong: Vec<String> = Vec::new();
+        let mut refused: Vec<String> = Vec::new();
+        // Cells known to be wrong at the PRIMITIVE, each guarded at a higher layer.
+        // `transform_solid` with a reflection leaves a curved face's (u, v) frame
+        // alone, so the copy is inside-out (signed volume -V). `wasm.rs` refuses a
+        // mirror of any curved part before it gets here (kernel review M5). Each
+        // entry must STILL be wrong: when a fix lands the cell turns exact, this
+        // test fails, and the entry (and that wasm refusal) is dropped on purpose.
+        const KNOWN_WRONG: [&str; 4] = ["cylinder / mirror", "cone / mirror", "sphere / mirror", "torus / mirror"];
+        let mut stale: Vec<String> = Vec::new();
+        let mut note = |case: &str, op: &str, cell: Cell| {
+            let key = format!("{case} / {op}");
+            let known = KNOWN_WRONG.contains(&key.as_str());
+            match cell {
+                Ok(true) if known => stale.push(key),
+                Ok(true) => {}
+                Ok(false) => refused.push(key),
+                Err(_) if known => {}
+                Err(m) => wrong.push(format!("{key}: {m}")),
+            }
+        };
+        for c in cases() {
+            let v = c.volume;
+            // Boolean against a half-space, both operand orders where it matters.
+            note(c.name, "intersect half", check_volume(boolean("intersect", &c.solid, &half()), v / 2.0));
+            note(c.name, "subtract half", check_volume(boolean("subtract", &c.solid, &half()), v / 2.0));
+            note(c.name, "union half", check_volume(boolean("union", &c.solid, &half()), v + vbox - v / 2.0));
+            note(c.name, "half minus solid", check_volume(boolean("subtract", &half(), &c.solid), vbox - v / 2.0));
+            // A solid wholly inside a big block: a cavity, which flips every face.
+            let block = build::box_solid(big, [0.0, 0.0, 0.0], None);
+            note(c.name, "cavity (flip_face)", match boolean("subtract", &block, &c.solid) {
+                None => Ok(false),
+                Some(r) => {
+                    let vol = build::solid_volume(&r);
+                    if near(vol, vbox - v) { Ok(true) } else { Err(format!("volume {vol} vs {}", vbox - v)) }
+                }
+            });
+            // Measure and mesh of the bare solid.
+            note(c.name, "measure", if near(build::solid_volume(&c.solid), v) { Ok(true) } else { Err(format!("volume {} vs {v}", build::solid_volume(&c.solid))) });
+            note(c.name, "mesh", match crate::mesh::mesh_solid(&c.solid, 0.05) {
+                None => Ok(false),
+                Some(m) => if check_watertight(&m) { Ok(true) } else { Err("mesh not watertight".into()) },
+            });
+            // A rigid move keeps the volume.
+            let moved = build::transform_solid(&c.solid, &crate::math::Transform::translation([5.0, -3.0, 2.0]));
+            note(c.name, "translate", check_volume(Some(moved), v));
+            // A reflection must come back with its normals still outward.
+            let mirrored = build::transform_solid(&c.solid, &crate::math::Transform::mirror([5.0, 0.0, 0.0], [1.0, 0.0, 0.0]));
+            note(c.name, "mirror", check_volume(Some(mirrored), v));
+            // STEP: a sentence or a document; either way not a panic.
+            note(c.name, "step", match crate::step::write_solid(&c.solid, "t") {
+                Ok(_) => Ok(true),
+                Err(_) => Ok(false),
+            });
+        }
+        eprintln!("surface x op table: refused cells ({}):\n  {}", refused.len(), refused.join("\n  "));
+        assert!(wrong.is_empty(), "silently wrong cells:\n  {}", wrong.join("\n  "));
+        assert!(stale.is_empty(), "known-wrong cells are now exact, drop them from KNOWN_WRONG:\n  {}", stale.join("\n  "));
+    }
+}
