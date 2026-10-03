@@ -1,0 +1,12 @@
+reshape-cad
+Copyright 2026 shuff57
+
+Licensed under the Apache License, Version 2.0 (see LICENSE).
+
+This product bundles or links third-party software under its own licences; see
+THIRD-PARTY.md for the notices that must travel with it.
+
+Design references: reshape-cad's kernel is written independently. Third-party CAD
+kernels that were studied are listed, with the licence class and the clean-room
+process that applied, in docs/clean-room/README.md. No third-party kernel source code is
+included in this repository.
