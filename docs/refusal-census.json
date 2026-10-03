@@ -115,9 +115,7 @@
     }
   },
   "matrix box: hollow then chamfer": {
-    "refused": {
-      "bevel1": "chamfer bevel1 would reach a cut made earlier, and brep-rs can only chamfer a corner the cuts stay clear of; chamfer before you cut or hollow, or keep the cut away from that edge -- bevel1 is shown without it."
-    }
+    "builds": true
   },
   "matrix cylinder: hole along axis": {
     "builds": true

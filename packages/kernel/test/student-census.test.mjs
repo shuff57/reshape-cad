@@ -102,7 +102,7 @@ const EXPECT = Object.fromEntries([
   ["matrix box: hollow", 'builds'],
   ["matrix box: hollow then hole", 'builds'],
   ["matrix box: hollow then round", "would reach a cut made earlier"],
-  ["matrix box: hollow then chamfer", "would reach a cut made earlier"],
+  ["matrix box: hollow then chamfer", 'builds'], // planar boolean (S1): 11264 - 45 = 11219 exact
   ["matrix cylinder: hole along axis", 'builds'],
   ["matrix sphere: hole", 'builds'],
 ]);

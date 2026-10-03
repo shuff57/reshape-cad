@@ -271,7 +271,7 @@ union(base, post)`,
       },
       {
         title: 'subtract: subtracting shapes',
-        body: `subtract(a, b) removes b from a. Order matters: subtract(a, b) is different from subtract(b, a).`,
+        body: `subtract(a, b) removes b from a. Order matters: subtract(a, b) is different from subtract(b, a). It also works on a part that is already hollow, an open-top cup, or a part with a flat-sided pocket: a 60 x 30 x 40 box laid over half of a hollowed 40 x 40 x 20 box (shell(b, { wall: 2 })) takes away exactly half, leaving 11264 / 2 = 5632 mm^3. A part with a round hole cut into it cannot take a second subtract yet, and the panel says so.`,
         code: `const b = cuboid(40, 40, 20, { at: [0, 0, 10] })
 const cutter = cuboid(20, 20, 30, { at: [0, 0, 15] })
 subtract(b, cutter)`,

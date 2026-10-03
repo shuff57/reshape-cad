@@ -33,6 +33,7 @@ pub mod geom;
 pub mod topo;
 pub mod build;
 pub mod ops;
+pub mod ops_planar;
 pub mod history;
 pub mod mesh;
 pub mod step;

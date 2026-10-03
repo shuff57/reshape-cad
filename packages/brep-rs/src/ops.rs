@@ -4806,7 +4806,21 @@ pub fn has_cross_trim(s: &TSolid) -> bool {
 
 
 
+/// The boolean entry point. The face-by-face path runs first, exactly as
+/// before; only when it refuses does the planar split-and-classify path
+/// (`ops_planar`, SPEC-brep-boolean-split-classify S1) get a turn, so nothing
+/// that built before can change. A refusal from the planar path is final.
 pub fn boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
+    if let Some(r) = boolean_legacy(op, a, b) {
+        return Some(r);
+    }
+    match crate::ops_planar::boolean_planar(op, a, b) {
+        crate::ops_planar::Outcome::Built(r) => Some(r),
+        _ => None,
+    }
+}
+
+fn boolean_legacy(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
  if has_cross_trim(a) || has_cross_trim(b) {
  return None;
  }
@@ -4882,7 +4896,7 @@ pub fn boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
 /// shell. Translation exposes an unmatched area vector without trusting edge
 /// handles, which curved seams can legitimately leave unshared. This mirrors
 /// `solid_volume` face by face without cloning the result topology.
-fn volume_is_translation_invariant(solid: &TSolid) -> bool {
+pub(crate) fn volume_is_translation_invariant(solid: &TSolid) -> bool {
  let shift = crate::math::Transform::translation([37.0, -23.0, 11.0]);
  let mut sum = 0.0;
  let mut moved_sum = 0.0;
@@ -4909,7 +4923,7 @@ fn volume_is_translation_invariant(solid: &TSolid) -> bool {
 /// Uses per edge HANDLE across `faces`, keyed by the handle's address. On a
 /// closed 2-manifold every edge reads 2; `boolean` refuses a count outside
 /// {1, 2}.
-fn edge_use_counts(faces: &[TFace]) -> std::collections::HashMap<usize, usize> {
+pub(crate) fn edge_use_counts(faces: &[TFace]) -> std::collections::HashMap<usize, usize> {
     let mut use_count: std::collections::HashMap<usize, usize> = std::collections::HashMap::new();
     for f in faces {
         let fb = f.borrow();
@@ -4928,7 +4942,7 @@ fn edge_use_counts(faces: &[TFace]) -> std::collections::HashMap<usize, usize> {
 /// seam the weld left unmerged, i.e. another once-used handle carries the same
 /// curve between the same end points (or, for a full circle, the same circle,
 /// since its seam vertex may sit elsewhere). Twins are paired one-to-one.
-fn unmatched_once_edges(faces: &[TFace]) -> Vec<topo::EdgeRef<Curve3>> {
+pub(crate) fn unmatched_once_edges(faces: &[TFace]) -> Vec<topo::EdgeRef<Curve3>> {
     let counts = edge_use_counts(faces);
     let mut once: Vec<topo::EdgeRef<Curve3>> = Vec::new();
     for f in faces {
@@ -5338,7 +5352,7 @@ fn planar_face_samples(face: &TFace) -> Vec<(Vec3, Vec3)> {
 ///    that bounds nothing is an interior or exterior sliver left behind).
 /// A face that fails to yield samples is simply not checked, so this can only
 /// turn a wrong solid into a refusal, never a correct solid into a wrong one.
-fn boolean_result_is_sound(op: &str, a: &TSolid, b: &TSolid, r: &TSolid) -> bool {
+pub(crate) fn boolean_result_is_sound(op: &str, a: &TSolid, b: &TSolid, r: &TSolid) -> bool {
     const DELTA: f64 = 1e-4;
  // The parity ray test is trusted on planar, cylindrical, and conical
  // operands; a sphere or torus still makes this check abstain rather than
@@ -5402,7 +5416,7 @@ fn cone_soundness_rejects_wrong_half_angle() {
 /// face has no area, contributes nothing to volume, and cannot be tessellated
 /// (its boundary does not close), so it is not a real face of the result. Faces
 /// with a genuine (if small) area are kept.
-fn drop_degenerate_faces(faces: &mut Vec<TFace>) {
+pub(crate) fn drop_degenerate_faces(faces: &mut Vec<TFace>) {
     faces.retain(|f| {
         let (area, _) = build::face_area_centroid(&f.borrow());
         area > 1e-9
@@ -5494,7 +5508,7 @@ fn same_edge_geometry(a: &topo::Edge<Curve3>, b: &topo::Edge<Curve3>) -> bool {
 /// direction. The pcurve is expressed in the face's own uv at the traversal's
 /// start/end points, so it needs no change. Coincident end vertices are welded
 /// the same way, or a corner name still sees two vertices at one point.
-fn weld_shared_edges(faces: &mut [TFace]) {
+pub(crate) fn weld_shared_edges(faces: &mut [TFace]) {
     // 1. Every distinct edge handle in the result.
     let mut edges: Vec<topo::EdgeRef<Curve3>> = Vec::new();
     for f in faces.iter() {
