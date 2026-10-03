@@ -90,6 +90,7 @@ import {
   offsetChain,
   pointWorld,
   readSolved,
+  solveRows,
   renumber,
   ruleGlyphAnchors,
   sampleArc,
@@ -354,6 +355,25 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
   // solve applies them in order, each warm-starting from the last.
   const pendingDrag = useRef<Array<{ sa: number; sb: number; tx: number; ty: number }> | null>(null);
 
+  const scratchRef = useRef<any>(null);
+  const scratchReady = useRef(false);
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const { SketchSession2D } = await import('@shuff57/reshape-kernel/sketch-session');
+      const s = new SketchSession2D();
+      await s.load();
+      if (cancelled) return;
+      scratchRef.current = s;
+      scratchReady.current = true;
+    })().catch(() => {
+      // no wasm: edits are stored as drawn, exactly as before
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const writeDoc = useCallback(
     (rawGeoms: SoupGeom[], rawRules: SoupRule[]) => {
       // Circle-in-mixed-wire canonicalization (kernel §5.3.10's own advice,
@@ -362,8 +382,15 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
       // walks it like any other curve. Sketches without such a circle pass
       // through untouched.
       const split = splitWeldedCircles(rawGeoms as CoreGeom[], rawRules as unknown as Array<Record<string, any>>);
-      const nextGeoms = split.geoms as SoupGeom[];
       const nextRules = split.rules as unknown as SoupRule[];
+      // Store the SOLVED rows (model-types.ts's contract for `geoms`): a typed
+      // dimension must move the stored coordinates, not only the built solid.
+      // A scratch session, so the live one (mid-drag warm start) is not
+      // reopened; if its wasm has not loaded yet the rows go in as drawn.
+      const scratch = scratchRef.current;
+      const nextGeoms = (scratch && scratchReady.current
+        ? solveRows(scratch, split.geoms as CoreGeom[], nextRules as unknown[])
+        : split.geoms) as SoupGeom[];
       onChange({
         ...doc,
         features: doc.features.map((f) =>

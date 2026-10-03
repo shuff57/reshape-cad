@@ -67,6 +67,23 @@ function valuesClose(expected: unknown, actual: unknown, tol: number): boolean {
   return expected === actual;
 }
 
+/** The extreme points of a sketch's soup rows (lines: both ends; circles: the
+ *  four cardinal points; points; arcs: their ends), construction rows left out. */
+function soupPoints(f: Extract<Feature, { kind: 'sketch' }>): Array<[number, number]> {
+  const rows = f.geoms?.length ? f.geoms : f.geom;
+  if (!Array.isArray(rows)) return [];
+  const out: Array<[number, number]> = [];
+  for (const g of rows) {
+    if (g.construction) continue;
+    if (g.k === 'point') out.push(g.p);
+    else if (g.k === 'line' || g.k === 'arc') out.push(g.a, g.b);
+    else if (g.k === 'circle') {
+      out.push([g.c[0] - g.r, g.c[1]], [g.c[0] + g.r, g.c[1]], [g.c[0], g.c[1] - g.r], [g.c[0], g.c[1] + g.r]);
+    }
+  }
+  return out;
+}
+
 /** A feature's value for `name`, resolving the aliases and derived fields
  *  documented in the file header. `found: false` means the field genuinely
  *  is not there (a straight sketch has no `across`), which a match must
@@ -82,7 +99,14 @@ function resolveField(f: Feature, name: string): { value: unknown; found: boolea
   }
   if (f.kind === 'sketch') {
     if (name === 'width' || name === 'depth') {
-      const pts = f.points;
+      // A sketch drawn on the canvas carries its SOLVED soup rows (`geoms`),
+      // and `points` is only the legacy outline it was migrated from: once the
+      // soup exists it is the truth, so read it first. Construction rows are
+      // guides, not part of the outline. An arc contributes its end points
+      // only (its bulge is not a corner a lesson names); lessons check
+      // rectangles and circles.
+      const soup = soupPoints(f);
+      const pts = soup.length ? soup : f.points;
       if (!Array.isArray(pts) || pts.length === 0) return { value: undefined, found: false };
       const xs = pts.map((p) => p[0]);
       const ys = pts.map((p) => p[1]);
