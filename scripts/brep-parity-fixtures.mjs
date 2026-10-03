@@ -139,7 +139,7 @@ export function fixtures() {
     raw('pattern-linear-3', 'pattern', [box('b1', [40, 40, 20]), { id: 'pat1', kind: 'pattern', target: 'b1', mode: 'linear', count: 3, step: [60, 0, 0] }]),
     raw('pattern-circular-6', 'pattern', [box('b1', [10, 10, 10], [30, 0, 0]), { id: 'pat1', kind: 'pattern', target: 'b1', mode: 'circular', count: 6, axis: 'z', totalAngle: 360 }]),
     raw('hole-through', 'hole', [box('b1', [40, 40, 20]), { id: 'hole1', kind: 'hole', target: 'b1', diameter: 6, depth: 22, center: [0, 0, 0], axis: 'z' }]),
-    raw('hole-blind', 'hole', [box('b1', [40, 40, 20]), { id: 'hole1', kind: 'hole', target: 'b1', diameter: 6, depth: 10, center: [0, 0, 0], axis: 'z' }]),
+    raw('hole-blind', 'hole', [box('b1', [40, 40, 20]), { id: 'hole1', kind: 'hole', target: 'b1', diameter: 6, depth: 10, center: [0, 0, 5], axis: 'z' }]), // blind FROM the top face (z=10): tool centre = 10 - 10/2
     raw('hole-corners', 'hole', [box('b1', [40, 40, 20]), { id: 'hole1', kind: 'hole', target: 'b1', diameter: 6, depth: 22, center: [0, 0, 0], axis: 'z', corners: { dx: 15, dy: 10 } }]),
     raw('hole-x-axis', 'hole', [box('b1', [40, 40, 20]), { id: 'hole1', kind: 'hole', target: 'b1', diameter: 6, depth: 42, center: [0, 0, 0], axis: 'x' }]),
 
@@ -279,9 +279,9 @@ export function fixtures() {
     // NOTHING. Catching this class needs a closed-form assertion, not a parity fixture.
     raw('bores-blind-stacked', 'hole', [
       box('b1', [40, 40, 30]),
-      { id: 'h1', kind: 'hole', target: 'b1', diameter: 6, depth: 8, center: [-12, 0, 0], axis: 'z' },
-      { id: 'h2', kind: 'hole', target: 'b1', diameter: 6, depth: 14, center: [0, 0, 0], axis: 'z' },
-      { id: 'h3', kind: 'hole', target: 'b1', diameter: 6, depth: 20, center: [12, 0, 0], axis: 'z' },
+      { id: 'h1', kind: 'hole', target: 'b1', diameter: 6, depth: 8, center: [-12, 0, 11], axis: 'z' },
+      { id: 'h2', kind: 'hole', target: 'b1', diameter: 6, depth: 14, center: [0, 0, 8], axis: 'z' },
+      { id: 'h3', kind: 'hole', target: 'b1', diameter: 6, depth: 20, center: [12, 0, 5], axis: 'z' },
     ]),
     // (2) A through bore FIRST, then a blind one beside it -- the W2a 2026-09-16 case,
     // kept apart from (1) because the ORDER is the bug: the blind tool's region is
@@ -291,7 +291,7 @@ export function fixtures() {
     raw('bore-through-then-blind', 'hole', [
       box('b1', [40, 40, 30]),
       { id: 'h1', kind: 'hole', target: 'b1', diameter: 6, depth: 40, center: [-12, 0, 0], axis: 'z' },
-      { id: 'h2', kind: 'hole', target: 'b1', diameter: 6, depth: 12, center: [0, 0, 0], axis: 'z' },
+      { id: 'h2', kind: 'hole', target: 'b1', diameter: 6, depth: 12, center: [0, 0, 9], axis: 'z' },
     ]),
     // (3) A planar face bounded by a MIX of line and arc edges, inside a boolean. The
     // 6mm corner arc at index 1 is the whole point: the cut crosses it, so that cap must

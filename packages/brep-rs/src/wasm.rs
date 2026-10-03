@@ -1177,6 +1177,7 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 let from = hist.head_of(target).to_string();
                 let mut shape = hist.shapes.get(&from).cloned().unwrap_or(src);
                 let src_faces = shape.faces();
+                let pieces_before = skin_pieces(&shape);
                 let mut cut = true;
                 for tool in &fused {
                     match ops::boolean("subtract", &shape, tool) {
@@ -1187,7 +1188,9 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                         }
                     }
                 }
-                if cut {
+                if cut && skin_pieces(&shape) > pieces_before {
+                    refusals.insert(id.clone(), json!(cavity_refusal("hole", &id)));
+                } else if cut {
                     // The cut's faces come from the boolean; no sweep history is
                     // recorded, exactly as OCCT's hole branch does. The
                     // target's own faces DO carry through, surface-matched.
@@ -2602,6 +2605,23 @@ fn same_surface(a: &Surface, b: &Surface) -> bool {
     }
 }
 
+/// How many closed skins a solid has. The kernel keeps every closed boundary
+/// as its own `Shell` (a `shell` feature's inner void, a prior cavity), and a
+/// boolean whose tool is wholly enclosed pushes the tool's reversed faces as one
+/// MORE shell (ops.rs, the enclosed-subtract path). So a cut that RAISES this has
+/// sealed a cavity inside the part, which no machining feature may do. A bore
+/// through a `shell` wall keeps the count: the void's shell is merged with the
+/// outer one or stays one shell, never gains another. Face connectivity by edge
+/// handle was tried and rejected: split edges after a boolean make a connected
+/// result look like several pieces (16 false refusals in the suite).
+fn skin_pieces(s: &TSolid) -> usize {
+    s.shells.len()
+}
+
+fn cavity_refusal(kind: &str, id: &str) -> String {
+    format!("{kind} {id} would leave a sealed cavity inside the part instead of opening onto a face -- {id} is shown without it.")
+}
+
 /// The fate of an input face after a boolean: Kept at the output face with the
 /// same surface, or Deleted when no output face carries it.
 fn carry_fate(out: &TSolid, input: &build::TFace) -> Fate {
@@ -2864,7 +2884,9 @@ mod tests {
     #[test]
     fn holes_naming_one_body_apply_cumulatively() {
         let hole = |id: &str, x: f64, depth: f64| {
-            json!({ "id": id, "kind": "hole", "target": "b1", "diameter": 6.0, "depth": depth, "center": [x, 0.0, 0.0], "axis": "z" })
+            // The tool is centred on `center`, so z = 15 - depth/2 starts it at the
+            // top face (z = 15): a blind hole from a face, not a sealed cavity.
+            json!({ "id": id, "kind": "hole", "target": "b1", "diameter": 6.0, "depth": depth, "center": [x, 0.0, 15.0 - depth / 2.0], "axis": "z" })
         };
         let doc = json!({ "features": [
             { "id": "b1", "kind": "box", "size": [40.0, 40.0, 30.0] },
@@ -6088,5 +6110,73 @@ mod fix_lane_tests {
         let (v, r) = framed_extrude(json!({"origin":[0,0,0],"u":[s,s,0],"v":[-s,s,0]}));
         assert!(r.is_empty(), "{r:?}");
         assert!((v.unwrap() - 12000.0).abs() < 1e-6);
+    }
+}
+
+#[cfg(test)]
+mod cavity_guard_tests {
+    use super::*;
+
+    fn boxdoc(h: Value) -> Value {
+        json!({ "features": [
+            { "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0] }, h ] })
+    }
+    fn hole(extra: Value) -> Value {
+        let mut h = json!({ "id": "h1", "kind": "hole", "target": "b1", "diameter": 6.0, "depth": 10.0, "center": [0.0, 0.0, 0.0], "axis": "z" });
+        for (k, v) in extra.as_object().unwrap() {
+            h[k] = v.clone();
+        }
+        h
+    }
+
+    #[test]
+    fn sealed_hole_refuses_in_every_axis() {
+        for axis in ["x", "y", "z"] {
+            let (hist, refusals) = build_doc(&boxdoc(hole(json!({ "axis": axis }))));
+            let msg = refusals.get("h1").and_then(|m| m.as_str()).unwrap_or("");
+            assert!(msg.contains("hole h1 would leave a sealed cavity"), "{axis}: {refusals:?}");
+            assert!(!hist.shapes.contains_key("h1"), "{axis}: no solid for a refused hole");
+        }
+    }
+
+    #[test]
+    fn sealed_counterbore_and_pattern_refuse() {
+        for extra in [
+            json!({ "counterbore": { "diameter": 8.0, "depth": 2.0 } }),
+            json!({ "corners": { "dx": 10.0, "dy": 10.0 } }),
+        ] {
+            let (hist, refusals) = build_doc(&boxdoc(hole(extra)));
+            assert!(refusals.contains_key("h1"), "{refusals:?}");
+            assert!(!hist.shapes.contains_key("h1"));
+        }
+    }
+
+    #[test]
+    fn blind_and_through_holes_still_build() {
+        let (hist, r) = build_doc(&boxdoc(hole(json!({ "center": [0.0, 0.0, 5.0] }))));
+        assert!(r.is_empty(), "{r:?}");
+        let s = hist.shapes.get("h1").unwrap();
+        assert_eq!(s.faces().len(), 8);
+        let want = 32000.0 - std::f64::consts::PI * 90.0;
+        assert!((build::solid_volume(s) - want).abs() < 1e-6, "{}", build::solid_volume(s));
+        let (hist, r) = build_doc(&boxdoc(hole(json!({ "depth": 22.0 }))));
+        assert!(r.is_empty(), "{r:?}");
+        let want = 32000.0 - std::f64::consts::PI * 180.0;
+        assert!((build::solid_volume(hist.shapes.get("h1").unwrap()) - want).abs() < 1e-6);
+    }
+
+    #[test]
+    fn hole_through_a_shell_wall_is_not_a_new_cavity() {
+        for open in [false, true] {
+            let mut sh = json!({ "id": "sh1", "kind": "shell", "target": "b1", "thickness": 2.0 });
+            if open {
+                sh["open"] = json!("top");
+            }
+            let doc = json!({ "features": [
+                { "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0] }, sh,
+                { "id": "h1", "kind": "hole", "target": "sh1", "diameter": 6.0, "depth": 30.0, "center": [0.0, 0.0, 0.0], "axis": "z" } ] });
+            let (_, r) = build_doc(&doc);
+            assert!(!r.get("h1").map_or(false, |m| m.as_str().unwrap_or("").contains("sealed cavity")), "open={open}: {r:?}");
+        }
     }
 }
