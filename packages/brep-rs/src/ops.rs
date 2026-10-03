@@ -4745,10 +4745,14 @@ pub fn boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
         // 2, a seam reads 1 per face but totals 2 across both its
         // wires. Anything else is a cracked shell.
         //
-        // NOTE: a count of 1 passes here too (the seam case above), so
-        // this guard cannot see an open shell. `once_used_edges` makes
-        // that measurable; closing it is the closure-guard slice's job.
+        // A count outside {1, 2} is a cracked or over-shared shell. A count
+        // of 1 is legal only for a closed curve whose geometric twin is also
+        // used once (a seam the weld did not merge): `unmatched_once_edges`
+        // returns whatever has no twin, which is an open rim (G1).
         if edge_use_counts(&faces).values().any(|&n| n != 1 && n != 2) {
+            return None;
+        }
+        if !unmatched_once_edges(&faces).is_empty() {
             return None;
         }
     }
@@ -4810,6 +4814,211 @@ fn edge_use_counts(faces: &[TFace]) -> std::collections::HashMap<usize, usize> {
         }
     }
     use_count
+}
+
+/// Edge handles used once across `faces` that have no geometric twin: the rim
+/// of a shell that is not closed. A once-used handle is legal only when it is a
+/// seam the weld left unmerged, i.e. another once-used handle carries the same
+/// curve between the same end points (or, for a full circle, the same circle,
+/// since its seam vertex may sit elsewhere). Twins are paired one-to-one.
+fn unmatched_once_edges(faces: &[TFace]) -> Vec<topo::EdgeRef<Curve3>> {
+    let counts = edge_use_counts(faces);
+    let mut once: Vec<topo::EdgeRef<Curve3>> = Vec::new();
+    for f in faces {
+        for w in &f.borrow().boundary {
+            for u in &w.borrow().edges {
+                let key = std::rc::Rc::as_ptr(&u.edge) as *const () as usize;
+                if counts.get(&key) == Some(&1) && !once.iter().any(|e| topo::same(e, &u.edge)) {
+                    once.push(u.edge.clone());
+                }
+            }
+        }
+    }
+    let ends = |e: &topo::EdgeRef<Curve3>| {
+        let e = e.borrow();
+        let (a, b) = (e.a.borrow().point, e.b.borrow().point);
+        (a, b)
+    };
+    let mut open: Vec<topo::EdgeRef<Curve3>> = Vec::new();
+    let mut taken = vec![false; once.len()];
+    for i in 0..once.len() {
+        if taken[i] {
+            continue;
+        }
+        taken[i] = true;
+        let (ea, eb) = ends(&once[i]);
+        let closed_curve = near3(ea, eb);
+        let twin = (i + 1..once.len()).find(|&j| {
+            if taken[j] || !same_edge_geometry(&once[i].borrow(), &once[j].borrow()) {
+                return false;
+            }
+            let (ja, jb) = ends(&once[j]);
+            closed_curve || (near3(ea, ja) && near3(eb, jb)) || (near3(ea, jb) && near3(eb, ja))
+        });
+        match twin {
+            Some(j) => taken[j] = true,
+            None => open.push(once[i].clone()),
+        }
+    }
+    // A face of revolution can omit its own rim edge (a cone's wire is just
+    // its seam), leaving the neighbour's circle used once. That is a missing
+    // handle, not a missing face, when the circle lies on a curved face of
+    // this shell.
+    open.retain(|e| {
+        let (a, b) = ends(e);
+        if !near3(a, b) {
+            return true;
+        }
+        // A zero-radius arc is a point (a half-disc tool's pole), not a rim.
+        if let Curve::Arc { radius, .. } | Curve::Circle { radius, .. } = &e.borrow().curve {
+            if *radius <= WELD_TOL {
+                return false;
+            }
+        }
+        let pts = closed_curve_samples(&e.borrow().curve);
+        if pts.is_empty() {
+            return true;
+        }
+        let uses_edge = |f: &TFace| {
+            f.borrow().boundary.iter().any(|w| w.borrow().edges.iter().any(|u| topo::same(&u.edge, e)))
+        };
+        let is_curved = |f: &TFace| !matches!(f.borrow().surface, Surface::Plane(_));
+        // The rim is excused only when a PLANAR face holds it and a curved face
+        // that does not list it lies on the circle. A curved face that lists the
+        // handle itself is the one-sided rim of an open shell.
+        if faces.iter().any(|f| uses_edge(f) && is_curved(f)) {
+            return true;
+        }
+        !faces.iter().any(|f| {
+            is_curved(f) && !uses_edge(f) && pts.iter().all(|&p| point_on_curved_face(&f.borrow().surface, p))
+        })
+    });
+    // Collinear segments may be split differently on the two sides of a seam (a
+    // T-junction): whole on one face, in pieces on the other. The handles do
+    // not pair, but the span is closed when the signed uses along each line
+    // cancel everywhere.
+    // Every segment USE, directed as traversed: a whole edge on one face can
+    // be cancelled by pieces that other faces also use, so the balance counts
+    // all uses on the line, not only the once-used handles.
+    let mut uses: Vec<(Vec3, Vec3)> = Vec::new();
+    for f in faces {
+        for w in &f.borrow().boundary {
+            for u in &w.borrow().edges {
+                if matches!(u.edge.borrow().curve, Curve::Segment { .. }) {
+                    let (a, b) = ends(&u.edge);
+                    uses.push(if u.forward { (a, b) } else { (b, a) });
+                }
+            }
+        }
+    }
+    let mut resolved = vec![false; open.len()];
+    for i in 0..open.len() {
+        if resolved[i] || !matches!(open[i].borrow().curve, Curve::Segment { .. }) {
+            continue;
+        }
+        let (p, q) = ends(&open[i]);
+        let d = sub(q, p);
+        let len = crate::math::len(d);
+        if len < 1e-12 {
+            continue;
+        }
+        let dir = scale(d, 1.0 / len);
+        let on_line = |x: Vec3| {
+            let r = sub(x, p);
+            crate::math::len(sub(r, scale(dir, dot(r, dir)))) <= WELD_TOL
+        };
+        // (start, end) along `dir`: the sign of the traversal is the sign of end - start.
+        let spans: Vec<(f64, f64)> = uses
+            .iter()
+            .filter(|&&(a, b)| on_line(a) && on_line(b))
+            .map(|&(a, b)| (dot(sub(a, p), dir), dot(sub(b, p), dir)))
+            .collect();
+        let mut cuts: Vec<f64> = spans.iter().flat_map(|&(a, b)| [a, b]).collect();
+        cuts.sort_by(|x, y| x.partial_cmp(y).unwrap());
+        let balanced = cuts.windows(2).all(|w| {
+            if w[1] - w[0] <= WELD_TOL {
+                return true;
+            }
+            let mid = 0.5 * (w[0] + w[1]);
+            let net: i32 = spans
+                .iter()
+                .map(|&(a, b)| {
+                    let (lo, hi) = (a.min(b), a.max(b));
+                    if mid > lo && mid < hi {
+                        if b > a { 1 } else { -1 }
+                    } else {
+                        0
+                    }
+                })
+                .sum();
+            net == 0
+        });
+        if balanced {
+            for j in 0..open.len() {
+                let (a, b) = ends(&open[j]);
+                if on_line(a) && on_line(b) {
+                    resolved[j] = true;
+                }
+            }
+        }
+    }
+    open.into_iter().enumerate().filter(|&(i, _)| !resolved[i]).map(|(_, e)| e).collect()
+}
+
+/// Four points on a closed circular edge, empty for any other curve.
+fn closed_curve_samples(curve: &Curve3) -> Vec<Vec3> {
+    match curve {
+        Curve::Circle { center, radius, normal } => {
+            let n = normalize(*normal);
+            let h = if n[0].abs() < 0.9 { [1.0, 0.0, 0.0] } else { [0.0, 1.0, 0.0] };
+            let u = normalize(cross(n, h));
+            let v = cross(n, u);
+            (0..4)
+                .map(|k| {
+                    let t = k as f64 * std::f64::consts::FRAC_PI_2 + 0.3;
+                    add(*center, add(scale(u, radius * t.cos()), scale(v, radius * t.sin())))
+                })
+                .collect()
+        }
+        Curve::Arc { center, radius, normal, x_axis, sweep } if (sweep.abs() - std::f64::consts::TAU).abs() < 1e-9 => {
+            let n = normalize(*normal);
+            let u = normalize(*x_axis);
+            let v = cross(n, u);
+            (0..4)
+                .map(|k| {
+                    let t = k as f64 * std::f64::consts::FRAC_PI_2 + 0.3;
+                    add(*center, add(scale(u, radius * t.cos()), scale(v, radius * t.sin())))
+                })
+                .collect()
+        }
+        _ => Vec::new(),
+    }
+}
+
+/// Does `p` lie on a curved (non-plane) surface, to `WELD_TOL`? The trim is not
+/// consulted: this only asks whether a face of revolution could carry the
+/// circle, which is what a missing rim handle needs.
+fn point_on_curved_face(surface: &Surface3, p: Vec3) -> bool {
+    let radial = |origin: Vec3, axis: Vec3| {
+        let a = normalize(axis);
+        let r = sub(p, origin);
+        let h = dot(r, a);
+        (crate::math::len(sub(r, scale(a, h))), h)
+    };
+    match surface {
+        Surface::Cylinder(c) => (radial(c.origin, c.axis).0 - c.radius).abs() <= WELD_TOL,
+        Surface::Cone(c) => {
+            let (rho, h) = radial(c.base, c.axis);
+            let t = c.half_angle.tan();
+            (rho - (c.base_radius + h * t)).abs() <= WELD_TOL || (rho - (c.base_radius - h * t)).abs() <= WELD_TOL
+        }
+        Surface::Sphere(s) => (crate::math::len(sub(p, s.center)) - s.radius).abs() <= WELD_TOL,
+        Surface::Torus(t) => {
+            let (rho, h) = radial(t.center, t.axis);
+            (((rho - t.ring).powi(2) + h * h).sqrt() - t.tube).abs() <= WELD_TOL
+        }
+        _ => false,
+    }
 }
 
 /// Edge handles used exactly once across `faces`: the rim of a shell that is
@@ -5918,6 +6127,34 @@ fn closedness_harness_counts_the_rim_of_a_missing_face() {
     let mut faces = s.faces();
     faces.pop();
     assert_eq!(once_used_edges(&faces).len(), 4, "a missing quad leaves its four edges used once");
+}
+
+/// G1: the production closure guard sees an open rim. A closed box has none;
+/// a box missing a face leaves its four edges unmatched, and nothing pairs them.
+#[test]
+fn closure_guard_flags_an_open_shell_and_passes_a_closed_one() {
+    let s = build::box_solid([10.0, 20.0, 30.0], [1.0, 2.0, 3.0], None);
+    assert!(unmatched_once_edges(&s.faces()).is_empty(), "a closed box has no open rim");
+    let mut faces = s.faces();
+    faces.pop();
+    assert_eq!(unmatched_once_edges(&faces).len(), 4, "a missing face leaves four open edges");
+}
+
+/// G1: a cylinder with one cap removed is open, and the circle rim left behind
+/// is NOT excused as a missing rim handle: no curved face carries it twice.
+#[test]
+fn closure_guard_flags_a_cylinder_missing_a_cap() {
+    let s = build::cylinder_solid([0.0, 0.0, 0.0], 5.0, 10.0, [0.0, 0.0, 1.0]);
+    assert!(unmatched_once_edges(&s.faces()).is_empty(), "a closed cylinder has no open rim");
+    let mut faces: Vec<TFace> = s.faces();
+    let cap = faces
+        .iter()
+        .position(|f| matches!(f.borrow().surface, Surface::Plane(_)))
+        .expect("a cylinder has a planar cap");
+    faces.remove(cap);
+    // The wall still lies on the removed cap's circle, so the retain rule would
+    // excuse it unless the wall's own rim handle is present: it is, and used once.
+    assert!(!unmatched_once_edges(&faces).is_empty(), "a missing cap must leave an open rim");
 }
 
 /// K-H: and it must be able to pass. A box at a non-origin centre against its
