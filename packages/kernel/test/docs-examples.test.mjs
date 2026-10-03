@@ -72,7 +72,11 @@ for (const s of sections) {
 
 const build = (code) => {
   const r = runScript(code);
-  assert.equal(r.error, undefined, `example does not parse: ${r.error}`);
+  assert.deepEqual(
+    r.errors,
+    [],
+    `example does not parse: ${r.errors?.[0]?.message ?? JSON.stringify(r.errors?.[0])}`,
+  );
   const out = JSON.parse(
     brep.build_doc_json(
       JSON.stringify({ version: 1, features: r.doc.features }),

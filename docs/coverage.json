@@ -1,0 +1,241 @@
+{
+  "version": 1,
+  "comment": "REPORT, not authority. coverage-matrix.test.mjs hardcodes the kind list and the kind->words table and checks this file against them: 'shipped' is valid only if the kind's fixtures build on the real wasm with a closed-form volume; 'refused-honest' only if its fixture still refuses with its sentence; 'queued' makes no claim. sketch2d: same rule; 'shipped' is valid only if the fixture in the test builds (D6 fixpoint + closed-form volume). 'param' on a value rule is valid only if the param() binding survives the round trip and builds.",
+  "kinds": {
+    "box": {
+      "status": "shipped",
+      "words": [
+        "box",
+        "cuboid"
+      ]
+    },
+    "cylinder": {
+      "status": "shipped",
+      "words": [
+        "cylinder"
+      ]
+    },
+    "sphere": {
+      "status": "shipped",
+      "words": [
+        "sphere"
+      ]
+    },
+    "cone": {
+      "status": "shipped",
+      "words": [
+        "cone"
+      ]
+    },
+    "torus": {
+      "status": "shipped",
+      "words": [
+        "ring",
+        "torus"
+      ]
+    },
+    "prism": {
+      "status": "shipped",
+      "words": [
+        "prism"
+      ]
+    },
+    "wedge": {
+      "status": "shipped",
+      "words": [
+        "wedge"
+      ]
+    },
+    "groove": {
+      "status": "shipped",
+      "words": [
+        "groove"
+      ]
+    },
+    "pocket": {
+      "status": "shipped",
+      "words": [
+        "pocket"
+      ]
+    },
+    "sketch": {
+      "status": "shipped",
+      "words": [
+        "sketch"
+      ]
+    },
+    "extrude": {
+      "status": "shipped",
+      "words": [
+        "pull",
+        "extrude"
+      ]
+    },
+    "blend": {
+      "status": "shipped",
+      "words": [
+        "blend",
+        "loft"
+      ]
+    },
+    "combine": {
+      "status": "shipped",
+      "words": [
+        "join",
+        "cut",
+        "keep",
+        "subtract",
+        "union",
+        "intersect"
+      ]
+    },
+    "revolve": {
+      "status": "shipped",
+      "words": [
+        "spin",
+        "revolve"
+      ]
+    },
+    "mirror": {
+      "status": "shipped",
+      "words": [
+        "mirror"
+      ]
+    },
+    "pattern": {
+      "status": "shipped",
+      "words": [
+        "repeat",
+        "repeatAround",
+        "linearPattern",
+        "polarPattern"
+      ]
+    },
+    "hole": {
+      "status": "shipped",
+      "words": [
+        "hole",
+        "holes"
+      ]
+    },
+    "shell": {
+      "status": "shipped",
+      "words": [
+        "hollow",
+        "shell"
+      ]
+    },
+    "fillet": {
+      "status": "shipped",
+      "words": [
+        "round",
+        "bevel",
+        "chamfer",
+        "fillet"
+      ],
+      "note": "round (fillet style) and bevel (chamfer) are both exact on all 12 edges of a 30x20x10 box (closed forms V - (1-pi/4) r^2 L and V - (r^2/2) L); the earlier +-y-face defect was fixed in the kernel (build_fillet axis handedness). Beyond a box (a round on a boolean result, a chamfer on a boolean result) still refuses, see Matrix B."
+    },
+    "draft": {
+      "status": "shipped",
+      "words": [
+        "draft"
+      ]
+    },
+    "move": {
+      "status": "shipped",
+      "words": [
+        "move"
+      ]
+    }
+  },
+  "sketch2d": {
+    "geoms": {
+      "point": {
+        "status": "shipped"
+      },
+      "line": {
+        "status": "shipped"
+      },
+      "circle": {
+        "status": "shipped"
+      },
+      "arc": {
+        "status": "shipped"
+      }
+    },
+    "rules": {
+      "coincident": {
+        "status": "shipped"
+      },
+      "pointOnObject": {
+        "status": "shipped"
+      },
+      "horizontal": {
+        "status": "shipped"
+      },
+      "vertical": {
+        "status": "shipped"
+      },
+      "parallel": {
+        "status": "shipped"
+      },
+      "perpendicular": {
+        "status": "shipped"
+      },
+      "tangent": {
+        "status": "shipped",
+        "note": "proven in its endpoint form (slot); the simple (no-end) form is not given a build fixture"
+      },
+      "equal": {
+        "status": "shipped"
+      },
+      "symmetric": {
+        "status": "shipped"
+      },
+      "distance": {
+        "status": "shipped",
+        "param": true
+      },
+      "distanceX": {
+        "status": "shipped",
+        "param": true
+      },
+      "distanceY": {
+        "status": "shipped",
+        "param": true
+      },
+      "radius": {
+        "status": "shipped",
+        "param": true
+      },
+      "diameter": {
+        "status": "shipped",
+        "param": true
+      },
+      "angle": {
+        "status": "shipped",
+        "param": true
+      },
+      "lock": {
+        "status": "shipped"
+      }
+    },
+    "refusals": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "8",
+      "9",
+      "10",
+      "11",
+      "12"
+    ],
+    "multiLoop": {
+      "washer": "builds",
+      "plugInBore": "refuses"
+    }
+  }
+}
