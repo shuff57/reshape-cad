@@ -1643,7 +1643,7 @@ const extra = readOptions('holes', ['across', 'apart', 'at', 'along', 'deep', 'c
 
   function bevel(arg: unknown, size: unknown): SolidHandle {
     if (isHandle(arg)) {
-      throw new Error('bevel() of a whole shape is not supported yet -- chamfer one edge with bevel(shape.edge(faceA, faceB), size), or round the whole box or cylinder with fillet(shape, size).');
+      throw new Error('bevel() needs one edge: a whole shape is not supported yet -- chamfer one edge with bevel(shape.edge(faceA, faceB), size), or round the whole box or cylinder with fillet(shape, size).');
     }
     if (!isTopoRef(arg) || arg.name.cause !== 'between') {
       throw new Error('bevel() needs one edge -- try bevel(shape.edge(faceA, faceB), size).');
