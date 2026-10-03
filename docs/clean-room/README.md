@@ -38,8 +38,12 @@ breaks the four-crate rule without evidence (Q10).
 | Date | Reader | Source repo @ commit | Topics read | Note produced |
 |---|---|---|---|---|
 | 2026-10-02 | research agents (survey) | HakanSeven12/OpenCADStudio @ 3f54f2f; its opencadkernel @ d22a270; mmiscool/next.BREP.io_RUST_BREP_KERNEL @ eeb9f92; ecto/vcad @ eba7a2e; survey of other Rust crates | licences, structure, capability tables; ran their own tests | none (findings summarised in PLAN-scripting-layers.md §8; **no design notes written yet**) |
+| 2026-10-02 | reader agent R-1 | mmiscool/next.BREP.io_RUST_BREP_KERNEL @ eeb9f92; ecto/vcad @ eba7a2e; monstertruck @ 1fbc7a5 | fillet/chamfer on a boolean result; rolling-ball spine and contact curves; corner ball patches; reconciling adjacent blends; failure detection | docs/clean-room/note-fillet-on-boolean-and-ball-blend.md |
+| 2026-10-02 | reader agent R-2 | OpenCADStudio `opencadkernel` @ d22a270; mmiscool-brep @ eeb9f92; curvo @ 3c5520a | loft of circles, general loft, path sweep, helix, pipe | docs/clean-room/note-loft-sweep-helix.md |
+| 2026-10-02 | reader agent R-3/R-4 | mmiscool-brep @ eeb9f92; vcad @ eba7a2e; OpenCADStudio `opencadkernel` @ d22a270; monstertruck @ 1fbc7a5 (truck @ 88ed005 present, not read) | surface-surface intersection (analytic and marched), tangent contact, imprint and sewing, boolean pipeline stages | docs/clean-room/note-surface-intersection-box-sphere.md; docs/clean-room/note-shared-edge-consistency.md |
 
 ## Open items
 
-- R-1..R-4 design notes (PLAN-scripting-layers.md §8.3) have not been started.
+- R-1..R-4 design notes are WRITTEN (2026-10-02) but NOT YET HUMAN-REVIEWED. No implementer may use them until the owner has reviewed them (process step 3). Review nits: note-loft-sweep-helix.md mentions 'a couple of dozen sample points'; note-fillet-on-boolean-and-ball-blend.md labels a design 'vcad-style' in its body.
+- Third-party clones under the session scratchpad `third-party/` must be deleted before any implementer task starts.
 - L-0 (root `LICENSE` + `THIRD-PARTY.md`) waits only on the exact copyright-holder name string from the owner.

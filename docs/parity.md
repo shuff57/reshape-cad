@@ -62,6 +62,32 @@ If you flip the JSON first, the checker fails (word not in
 `packages/script/src`); if you add the word but never flip the JSON, the tool
 stays queued and the gate keeps asking for it. Both halves must move.
 
+## Re-measured on brep-rs (2026-10-02)
+
+The refusals recorded below were measured under the OCCT/FreeCAD-era kernel. This section re-measures them on brep-rs (real wasm,
+`runScript` then `build_doc_json`). Source: PLAN-scripting-layers.md §2 audit. The completeness number that replaces the deleted
+checker is `packages/kernel/test/coverage-matrix.test.mjs` (hardcoded lists, proven on the real wasm) with its report `docs/coverage.json`.
+Last printed line: `3D: 21/21 kinds proven, 26 words doc-covered, 6 refusals pinned; 2D: 4/4 geoms, 16/16 rules, 11/11 refusals + multi-loop builds`.
+
+| Item | On brep-rs today | Evidence | Verdict |
+|---|---|---|---|
+| Pipe, helix, sweep, thread, datum plane, Clone | No script word, Feature kind or wasm branch | grep of reshape-script.ts, model-types.ts, wasm.rs, build.rs; `pipe is not a tool here.` | Not offered. Pipe/helix would be kernel campaigns (see docs/clean-room/note-loft-sweep-helix.md). |
+| Raw doc kinds `pipe`, `scale`, `helix`, `sweep` fed to `build_doc_json` | Refuse cleanly: `brep-rs does not build 'pipe' yet -- x is shown without it.` | direct build_doc_json calls | Contract holds. |
+| Uniform scale | Not available (MoveFeature has only offset and copy) | no feature, no word | Non-goal (decision Q5). |
+| Non-uniform scale, ellipsoids | Not available | no elliptic surface in the analytic set | Non-goal. |
+| Nested / polar-of-linear patterns | Build exactly (3x1000, 6x1000; 2x2 cylinder grid 4x785.398; polar of linear 8x64). Overlapping copies refuse. | measured | Docs sentence only. |
+| General sweep along a path | No (build.rs has extrude, revolve, transform, fillet helpers only) | pub fn list | Kernel campaign if wanted. |
+| Second body / ShapeBinder / Clone in any lesson | None in shCode or reshape-cad | grep | Non-goal. |
+| Round/chamfer on a boolean result | Still refused (class-1) | spike test + sentences | K2b, gated on K1a (CLOSED). |
+| box intersect sphere | Still refused | `combine ... cannot boolean these two solids (an unsupported surface pair ...)` | Honest refusal. |
+| Loft of two circles | Still refused | `can only blend two matching straight outlines yet` | Honest refusal (decision Q4); coaxial circles would be exact per the loft note. |
+
+Bugs found and fixed while measuring (all class-2, silent wrong results, now fixed or refusing): fillet on a box edge touching a +-y face gave the
+wrong volume with no refusal (build_fillet axis handedness); mirror of a curved solid came back inside-out (now refuses); the sketch
+`construction` flag was ignored; `wedge` ignored its center; a through-hole on a non-box silently cut a 10 mm blind hole; a `param()` circle
+radius lost its declaration on regenerate. The fillet case slipped past every gate because every parity/mesh fixture uses one 40x40x20 box and a
++z/+x edge pair; the new coverage matrix covers all 12 edges of a non-cube box.
+
 ## Current state
 
 > **STALE 2026-10-01: this gate no longer exists, so these numbers cannot be**
