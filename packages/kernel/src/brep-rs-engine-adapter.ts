@@ -137,11 +137,33 @@ export class BrepRsEngineAdapter implements EngineAdapter {
       return null;
     }
     if (!m || typeof m.error === 'string') return null;
-    const positions = new Float32Array(m.positions as number[]);
-    const indices = m.indices as number[];
-    if (!indices || indices.length === 0) return null;
+    const shared = m.positions as number[];
+    const sharedIdx = m.indices as number[];
+    if (!sharedIdx || sharedIdx.length === 0) return null;
+    // The kernel welds vertices ACROSS faces, so normals computed on its indexed mesh average a flat
+    // cap with the bore wall along every shared rim, and the long thin triangles of a face with a hole
+    // weight that unevenly (pale faces with streaks). Give each face its own copy of its vertices
+    // first: a flat face is then exactly flat and a curved one still shades smoothly within itself.
+    // Triangle order is unchanged, so every face range below stays valid.
+    const faceList = m.faces as Array<{ index: number; start: number; count: number }>;
+    const positions: number[] = [];
+    const indices: number[] = [];
+    for (const f of faceList) {
+      const local = new Map<number, number>();
+      for (let k = f.start; k < f.start + f.count; k++) {
+        const old = sharedIdx[k];
+        let id = local.get(old);
+        if (id === undefined) {
+          id = positions.length / 3;
+          positions.push(shared[3 * old], shared[3 * old + 1], shared[3 * old + 2]);
+          local.set(old, id);
+        }
+        indices.push(id);
+      }
+    }
+    if (indices.length !== sharedIdx.length) return null; // faces must tile the index buffer exactly
     const geometry = new this.THREE.BufferGeometry();
-    geometry.setAttribute('position', new this.THREE.Float32BufferAttribute(positions, 3));
+    geometry.setAttribute('position', new this.THREE.Float32BufferAttribute(new Float32Array(positions), 3));
     geometry.setIndex(indices as any);
     geometry.computeVertexNormals();
     const faces: FaceRange[] = [];

@@ -166,3 +166,33 @@ test('two overlapping bores refuse honestly (W8 fuse never opened a face)', () =
     assert.ok(!built.shapes.has('h1'), 'no solid');
   }
 });
+
+// Shading: normals are computed per face, so a flat face with a hole is exactly flat (it used to pick up the
+// bore wall's normals along the rim and shade pale with streaks), and a curved wall still varies smoothly.
+test('a box with a hole: every flat face has one normal; the bore wall keeps varying normals', () => {
+  const doc = { features: [
+    { id: 'b1', kind: 'box', size: [40, 40, 20], center: [0, 0, 0] },
+    { id: 'h1', kind: 'hole', target: 'b1', diameter: 8, depth: 22, center: [0, 0, 0], axis: 'z' },
+  ] };
+  const built = adapter.build(doc);
+  const m = adapter.mesh(built.shapes.get('h1'), { deflection: 0.05 });
+  assert.ok(m, 'meshes');
+  const n = m.geometry.getAttribute('normal');
+  const idx = m.geometry.getIndex();
+  assert.equal(idx.count, m.faces.reduce((a, f) => a + f.count, 0), 'faces tile the index buffer');
+  let flat = 0, curved = 0;
+  for (const f of m.faces) {
+    const seen = new Set();
+    for (let k = f.start; k < f.start + f.count; k++) {
+      const v = idx.getX(k);
+      seen.add([n.getX(v), n.getY(v), n.getZ(v)].map((x) => x.toFixed(4)).join(','));
+    }
+    if (seen.size === 1) {
+      flat++;
+      const [x, y, z] = [...seen][0].split(',').map(Number);
+      assert.ok([Math.abs(x), Math.abs(y), Math.abs(z)].some((c) => Math.abs(c - 1) < 1e-3), `axis-aligned normal ${[...seen][0]}`);
+    } else curved++;
+  }
+  assert.equal(flat, 6, 'top (with the hole), bottom and four sides are each exactly flat');
+  assert.equal(curved, 1, 'the bore wall');
+});
