@@ -647,7 +647,12 @@ pub enum Cross {
     /// the void), and at angle u the face runs along the bore axis from
     /// `lo` to `hi`, each either a constant (`Some(v)`: a flat floor) or the
     /// meeting curve `-+ sqrt(big_r^2 - r^2 cos^2 u)` (`None`).
-    Tool { big_r: f64, lo: Option<f64>, hi: Option<f64> },
+    ///
+    /// `lo_sign` and `hi_sign` say which branch of the meeting curve an end uses when it is not a
+    /// constant: the bore's own wall inside a round part runs from the `-` branch (lo, -1) to the
+    /// `+` branch (hi, +1); the piece of a bore that lies OUTSIDE a round hole in a block runs
+    /// from the `+` branch to a constant, or from a constant to the `-` branch.
+    Tool { big_r: f64, lo: Option<f64>, hi: Option<f64>, lo_sign: f64, hi_sign: f64 },
 }
 
 impl Cross {
@@ -660,9 +665,9 @@ impl Cross {
 
 impl Cylinder {
     /// The tool wall's extent along its axis at angle `u`: (lo, hi).
-    pub fn cross_tool_bounds(big_r: f64, r: f64, lo: Option<f64>, hi: Option<f64>, u: f64) -> (f64, f64) {
+    pub fn cross_tool_bounds(big_r: f64, r: f64, lo: Option<f64>, hi: Option<f64>, lo_sign: f64, hi_sign: f64, u: f64) -> (f64, f64) {
         let f = (big_r * big_r - r * r * u.cos() * u.cos()).max(0.0).sqrt();
-        (lo.unwrap_or(-f), hi.unwrap_or(f))
+        (lo.unwrap_or(lo_sign * f), hi.unwrap_or(hi_sign * f))
     }
 
     /// The signed (e1 x e2 . axis) handedness of the frame, +1 or -1.
@@ -680,9 +685,9 @@ impl Cylinder {
         let o = self.origin;
         let rho = |u: f64| add(scale(self.e1, u.cos()), scale(self.e2, u.sin()));
         match self.cross.as_ref()? {
-            Cross::Tool { big_r, lo, hi } => {
+            Cross::Tool { big_r, lo, hi, lo_sign, hi_sign } => {
                 let panels = Cross::panels(rad / big_r);
-                let ext = |u: f64| Cylinder::cross_tool_bounds(*big_r, rad, *lo, *hi, u);
+                let ext = |u: f64| Cylinder::cross_tool_bounds(*big_r, rad, *lo, *hi, *lo_sign, *hi_sign, u);
                 let area = integrate_composite(0.0, tau, panels, |u| {
                     let (l, h) = ext(u);
                     rad * (h - l)
@@ -1186,11 +1191,11 @@ impl Surface {
                 // The bore wall: every world coordinate is linear in the axial
                 // parameter, so its extremes lie on the two boundary curves
                 // (the meeting curve and/or the flat floor's circle).
-                if let Some(Cross::Tool { big_r, lo, hi }) = &c.cross {
+                if let Some(Cross::Tool { big_r, lo, hi, lo_sign, hi_sign }) = &c.cross {
                     let n = 2048usize;
                     for k in 0..n {
                         let u = 2.0 * std::f64::consts::PI * k as f64 / n as f64;
-                        let (l, h) = Cylinder::cross_tool_bounds(*big_r, c.radius, *lo, *hi, u);
+                        let (l, h) = Cylinder::cross_tool_bounds(*big_r, c.radius, *lo, *hi, *lo_sign, *hi_sign, u);
                         let rho = add(c.origin, scale(add(scale(c.e1, u.cos()), scale(c.e2, u.sin())), c.radius));
                         b.expand(add(rho, scale(c.axis, l)));
                         b.expand(add(rho, scale(c.axis, h)));

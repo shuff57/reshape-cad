@@ -62,3 +62,42 @@ test('a cutter that crosses only part of a bore wall builds exactly (S3a): box s
   assert.deepEqual(refusals, {});
   assert.ok(Math.abs(m.volume - (32000 - PI * 36 * 20 - (4800 - PI * 36 * 3))) < 1e-6, `${m.volume}`);
 });
+
+// ---- S3b: a second round hole crossing the first -------------------------------------------
+// The volume two perpendicular cylinders (R > r, axes meeting) share is 4 integral sqrt(R^2 - y^2) sqrt(r^2 - y^2) dy over
+// [-r, r], Simpson on y = r sin t (the same oracle transverse-bore.test.mjs uses); the side bore removes pi r^2 x 40 less that.
+function steinmetz(R, r) {
+  const n = 200000, h = (Math.PI / 2) / n;
+  const f = (t) => { const y = r * Math.sin(t); return 4 * Math.sqrt(R * R - y * y) * Math.sqrt(Math.max(r * r - y * y, 0)) * r * Math.cos(t); };
+  let sum = f(0) + f(Math.PI / 2);
+  for (let i = 1; i < n; i++) sum += f(i * h) * (i % 2 ? 4 : 2);
+  return 2 * sum * h / 3;
+}
+const P = "const b = cuboid(40, 40, 20)\n";
+// [name, script, first bore radius, side bore radius, first bore length, side bore length through the block]
+for (const [name, code, R, r, depth, toolLen] of [
+  ['through z bore (r4), through x bore (r2)', P + "hole(b, { across: 8 })\nhole(b, { across: 4, along: 'x' })", 4, 2, 20, 40],
+  ['through z bore (r4), through y bore (r3)', P + "hole(b, { across: 8 })\nhole(b, { across: 6, along: 'y' })", 4, 3, 20, 40],
+  ['through x bore (r4), through z bore (r2)', P + "hole(b, { across: 8, along: 'x' })\nhole(b, { across: 4 })", 4, 2, 40, 20],
+  ['through z bore (r5), x bore (r2) 3 mm above mid-height', P + "hole(b, { across: 10 })\nhole(b, { across: 4, along: 'x', at: [0, 3] })", 5, 2, 20, 40],
+  ['blind z bore 14 deep (r4), through x bore (r2)', P + "hole(b, { across: 8, deep: 14 })\nhole(b, { across: 4, along: 'x' })", 4, 2, 14, 40],
+]) {
+  test(`two crossing holes build exactly: ${name}`, () => {
+    const { refusals, m } = build(code);
+    assert.deepEqual(refusals, {});
+    const first = 32000 - PI * R * R * depth;
+    const want = first - (PI * r * r * toolLen - steinmetz(R, r));
+    assert.ok(Math.abs(m.volume - want) < 1e-5, `${m.volume} vs ${want}`);
+  });
+}
+test('two crossing holes that must still refuse say so in a sentence: as wide as the first, wider than it, off its axis', () => {
+  for (const code of [
+    P + "hole(b, { across: 8 })\nhole(b, { across: 8, along: 'x' })",
+    P + "hole(b, { across: 8 })\nhole(b, { across: 12, along: 'x' })",
+    P + "hole(b, { across: 8 })\nhole(b, { across: 4, along: 'x', at: [2, 0] })",
+  ]) {
+    const { refusals, m } = build(code);
+    assert.match(refusals.hole2 ?? '', /cannot cut this hole yet/, code);
+    assert.equal(m, undefined);
+  }
+});

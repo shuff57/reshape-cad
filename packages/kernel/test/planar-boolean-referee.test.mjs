@@ -43,6 +43,11 @@ const scripts = {
   'hole then partial-height cut': 'const b = cuboid(40, 40, 20)\nhole(b, { across: 12 })\nconst c = cuboid(60, 30, 6, { at: [0, 15, 0] })\nsubtract(b, c)',
   'off-centre hole then corner cut': 'const b = cuboid(40, 40, 20)\nhole(b, { across: 10, at: [-6, -4] })\nconst c = cuboid(30, 30, 8, { at: [-3, -2, 2] })\nsubtract(b, c)',
   'blind off-centre hole then partial cut': 'const b = cuboid(40, 40, 20)\nhole(b, { across: 10, deep: 12, at: [5, 3] })\nconst c = cuboid(20, 24, 9, { at: [8, 3, 4] })\nsubtract(b, c)',
+  'z bore then smaller x bore': 'const b = cuboid(40, 40, 20)\nhole(b, { across: 8 })\nhole(b, { across: 4, along: "x" })',
+  'z bore then smaller y bore': 'const b = cuboid(40, 40, 20)\nhole(b, { across: 8 })\nhole(b, { across: 4, along: "y" })',
+  'x bore then smaller z bore': 'const b = cuboid(40, 40, 20)\nhole(b, { across: 8, along: "x" })\nhole(b, { across: 4 })',
+  'z bore then x bore off the mid-height': 'const b = cuboid(40, 40, 20)\nhole(b, { across: 10 })\nhole(b, { across: 4, along: "x", at: [0, 3] })',
+  'deep blind z bore then x bore': 'const b = cuboid(40, 40, 20)\nhole(b, { across: 8, deep: 14 })\nhole(b, { across: 4, along: "x" })',
   'hollow then half cut': 'const b = cuboid(40, 40, 20)\nshell(b, { wall: 2 })\n' + HALF,
 };
 

@@ -1034,6 +1034,28 @@ fn angle_in(p: Vec3, origin: Vec3, x: Vec3, y: Vec3) -> f64 {
     u
 }
 
+/// The polyline in the direction its angle about the axis increases (an edge's own
+/// direction follows its circle's normal, which is the wrong way round for a wall
+/// whose (e1, e2, axis) frame is left-handed, an inward-facing bore wall).
+fn increasing_u(pts: Vec<Vec3>, origin: Vec3, x: Vec3, y: Vec3) -> Vec<Vec3> {
+    if pts.len() < 3 {
+        return pts;
+    }
+    let (a0, a1) = (angle_in(pts[0], origin, x, y), angle_in(pts[1], origin, x, y));
+    let mut step = a1 - a0;
+    if step > std::f64::consts::PI {
+        step -= TAU;
+    }
+    if step < -std::f64::consts::PI {
+        step += TAU;
+    }
+    if step >= 0.0 {
+        pts
+    } else {
+        pts.into_iter().rev().collect()
+    }
+}
+
 /// Close-the-loop u values: from 0, monotone non-decreasing, ending at TAU.
 fn monotone_u(pts: &[Vec3], origin: Vec3, x: Vec3, y: Vec3) -> Vec<f64> {
     let mut us: Vec<f64> = pts.iter().map(|p| angle_in(*p, origin, x, y)).collect();
@@ -1086,14 +1108,14 @@ fn mesh_cross_wall(
     // Outer wire: two rim arcs (and the seam). Rim lo/hi by v.
     let mut rims: Vec<Vec<Vec3>> = Vec::new();
     for u in &fb.boundary.first()?.borrow().edges {
-        if matches!(u.edge.borrow().curve, Curve::Arc { .. }) {
+        if matches!(u.edge.borrow().curve, Curve::Arc { .. } | Curve::Circle { .. }) {
             rims.push(use_polyline(u, edges_cache, defl));
         }
     }
     if rims.len() != 2 {
         return None;
     }
-    let (mut lo, mut hi) = (rims.remove(0), rims.remove(0));
+    let (mut lo, mut hi) = (increasing_u(rims.remove(0), o, e1, e2), increasing_u(rims.remove(0), o, e1, e2));
     if vof(lo[0]) > vof(hi[0]) {
         std::mem::swap(&mut lo, &mut hi);
     }
@@ -1106,9 +1128,11 @@ fn mesh_cross_wall(
     if ulat.iter().zip(&uhi).any(|(a, b)| (a - b).abs() > 1e-7) {
         return None;
     }
+    // The face's normal: radially out for a part's own wall, in for a bore wall.
+    let sense = if crate::math::dot(cross(e1, e2), ax) >= 0.0 { 1.0 } else { -1.0 };
     let n_out = |c: Vec3| {
         let d = sub(c, o);
-        sub(d, crate::math::scale(ax, crate::math::dot(d, ax)))
+        crate::math::scale(sub(d, crate::math::scale(ax, crate::math::dot(d, ax))), sense)
     };
 
     // Holes.
@@ -1276,7 +1300,7 @@ fn mesh_cross_tool(
                         loops.push((*sign, poly));
                     }
                 }
-                Curve::Arc { .. } => {
+                Curve::Arc { .. } | Curve::Circle { .. } => {
                     if floor.is_none() {
                         floor = Some(use_polyline(u, edges_cache, defl));
                     }
@@ -1285,12 +1309,19 @@ fn mesh_cross_tool(
             }
         }
     }
-    let hi_poly = loops.iter().find(|(s, _)| *s > 0.0).map(|(_, p)| p.clone())?;
-    let lo_poly = match (loops.iter().find(|(s, _)| *s < 0.0), floor) {
-        (Some((_, p)), None) => p.clone(),
-        (None, Some(f)) => f,
+    // Two meeting curves (a bore through a round part), or one meeting curve and
+    // a circle (a floor, or the end of a bore piece that lies outside a round hole).
+    let (hi_poly, lo_poly) = match (loops.len(), floor) {
+        (2, None) => {
+            let hi = loops.iter().find(|(s, _)| *s > 0.0).map(|(_, p)| p.clone())?;
+            let lo = loops.iter().find(|(s, _)| *s < 0.0).map(|(_, p)| p.clone())?;
+            (hi, lo)
+        }
+        (1, Some(f)) => (loops[0].1.clone(), f),
         _ => return None,
     };
+    let hi_poly = increasing_u(hi_poly, o, e1, a_dir);
+    let lo_poly = increasing_u(lo_poly, o, e1, a_dir);
     let ua = monotone_u(&hi_poly, o, e1, a_dir);
     let ub = monotone_u(&lo_poly, o, e1, a_dir);
     let mut assign = vec![0usize; lo_poly.len()];

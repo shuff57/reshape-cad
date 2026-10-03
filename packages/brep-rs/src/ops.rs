@@ -4772,7 +4772,7 @@ pub fn cylinder_cross_bore(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
             vmin: lo_b.unwrap_or(-big_r),
             vmax: big_r,
             arc: None,
-            cross: Some(crate::geom::Cross::Tool { big_r, lo: lo_b, hi: hi_b }),
+            cross: Some(crate::geom::Cross::Tool { big_r, lo: lo_b, hi: hi_b, lo_sign: -1.0, hi_sign: 1.0 }),
         }),
     );
     faces.push(wall_face);
@@ -5167,11 +5167,13 @@ fn once_used_edges(faces: &[TFace]) -> Vec<usize> {
 /// boundary wire are sampled as a mid-v ring, clear of both rims. Everything
 /// else abstains, per the rule `boolean_result_is_sound` states for itself: an
 /// unreliable check must abstain rather than refuse a correct solid.
-fn planar_face_samples(face: &TFace) -> Vec<(Vec3, Vec3)> {
+pub(crate) fn planar_face_samples(face: &TFace) -> Vec<(Vec3, Vec3)> {
     let fb = face.borrow();
     let plane = match &fb.surface {
         Surface::Plane(p) => p.clone(),
- Surface::Cylinder(cy) if cy.arc.is_none() && fb.boundary.len() == 1 => {
+ // A trimmed cylinder (`cross`) is not a whole wall: a sample at mid-height
+ // around the full circle would land off the face, so it abstains.
+ Surface::Cylinder(cy) if cy.arc.is_none() && cy.cross.is_none() && fb.boundary.len() == 1 => {
             // The probe offset is 1e-4 (DELTA in boolean_result_is_sound); stay
             // well clear of both rims so a sample can never land on a trimmed
             // edge and probe the wrong side of it.
@@ -5508,6 +5510,16 @@ fn same_edge_geometry(a: &topo::Edge<Curve3>, b: &topo::Edge<Curve3>) -> bool {
 /// direction. The pcurve is expressed in the face's own uv at the traversal's
 /// start/end points, so it needs no change. Coincident end vertices are welded
 /// the same way, or a corner name still sees two vertices at one point.
+/// The vector a WHOLE-turn curve (a circle, or an arc that sweeps a full 2 pi)
+/// runs counter-clockwise about, or `None` for any other curve.
+fn full_turn_normal(c: &Curve) -> Option<Vec3> {
+    match c {
+        Curve::Circle { normal, .. } => Some(*normal),
+        Curve::Arc { normal, sweep, .. } if sweep.abs() >= TWO_PI - 1e-9 => Some(scale(*normal, sweep.signum())),
+        _ => None,
+    }
+}
+
 pub(crate) fn weld_shared_edges(faces: &mut [TFace]) {
     // 1. Every distinct edge handle in the result.
     let mut edges: Vec<topo::EdgeRef<Curve3>> = Vec::new();
@@ -5571,12 +5583,9 @@ pub(crate) fn weld_shared_edges(faces: &mut [TFace]) {
                 // (flipped for a reversed use); keep it against the canonical
                 // handle's own normal, or a hole's winding silently reverses and
                 // its area is added instead of removed.
-                if let (Curve::Circle { normal: n_use, .. }, Curve::Circle { normal: n_canon, .. }) =
-                    (&edges[idx].borrow().curve, &edges[target].borrow().curve)
-                {
-                    let turn = scale(*n_use, if u.forward { 1.0 } else { -1.0 });
-                    let forward = dot(turn, *n_canon) > 0.0;
-                    drop((n_use, n_canon));
+                if let (Some(n_use), Some(n_canon)) = (full_turn_normal(&edges[idx].borrow().curve), full_turn_normal(&edges[target].borrow().curve)) {
+                    let turn = scale(n_use, if u.forward { 1.0 } else { -1.0 });
+                    let forward = dot(turn, n_canon) > 0.0;
                     u.edge = edges[target].clone();
                     u.forward = forward;
                     continue;

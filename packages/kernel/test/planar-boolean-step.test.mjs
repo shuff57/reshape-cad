@@ -42,6 +42,9 @@ const cases = [
   ['blind-bored box cut in half', 'const b = cuboid(40, 40, 20)\nhole(b, { across: 12, deep: 8 })\n' + HALF, (32000 - Math.PI * 36 * 8) / 2],
   ['bored box cut across part of the bore height', 'const b = cuboid(40, 40, 20)\nhole(b, { across: 12 })\nconst c = cuboid(60, 30, 6, { at: [0, 15, 0] })\nsubtract(b, c)', 32000 - Math.PI * 36 * 20 - (4800 - Math.PI * 36 * 3)],
   ['off-centre blind hole, partial cut', 'const b = cuboid(40, 40, 20)\nhole(b, { across: 10, deep: 12, at: [5, 3] })\nconst c = cuboid(20, 24, 9, { at: [8, 3, 4] })\nsubtract(b, c)', null],
+  ['z bore then smaller x bore', 'const b = cuboid(40, 40, 20)\nhole(b, { across: 8 })\nhole(b, { across: 4, along: "x" })', null],
+  ['x bore then smaller z bore', 'const b = cuboid(40, 40, 20)\nhole(b, { across: 8, along: "x" })\nhole(b, { across: 4 })', null],
+  ['deep blind z bore then x bore', 'const b = cuboid(40, 40, 20)\nhole(b, { across: 8, deep: 14 })\nhole(b, { across: 4, along: "x" })', null],
   ['bored box with the top half removed', 'const b = cuboid(40, 40, 20)\nhole(b, { across: 12 })\nconst c = cuboid(60, 60, 20, { at: [0, 0, 10] })\nsubtract(b, c)', (32000 - Math.PI * 36 * 20) / 2],
 ];
 
