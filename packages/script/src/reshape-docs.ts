@@ -124,7 +124,7 @@ const right = cuboid(30, 30, 20, { at: [50, 0, 10] })`,
     pages: [
       {
         title: 'hole: drilling through or pockets',
-        body: `hole(b, { across: 6 }) drills a through-hole. hole(b, { across: 6, deep: 10 }) drills a pocket 10 mm deep. Place it with at: [x, y]. Drill from a different face with along: 'x'.`,
+        body: `hole(b, { across: 6 }) drills a through-hole. hole(b, { across: 6, deep: 10 }) drills a pocket 10 mm deep. Place it with at: [x, y]. Drill from a different face with along: 'x'. A through-hole needs to know how thick the part is. It does for boxes, cylinders, cones, prisms, spheres, tori and wedges you have not turned, but not for a shape pulled from a sketch, a union, or a turned box, where the script stops with "cannot find how thick" and asks you to give it a depth: on a 30 x 20 x 20 pulled shape, hole(t, { across: 6, deep: 20 }) drills right through and leaves 12000 - 180 x pi = 11434.51 mm^3. holes() works the same way.`,
         code: `const b = cuboid(40, 40, 20)
 hole(b, { across: 6 })`,
       },
@@ -135,6 +135,14 @@ code: `const b = cuboid(40, 40, 20)
 hole(b, { across: 6, counterbore: { across: 12, deep: 6 } })
 const c = cuboid(40, 40, 20, { at: [60, 0, 0] })
 hole(c, { across: 6, countersink: { across: 12, angle: 90 } })`,
+      },
+      {
+        title: 'hole: standard sizes',
+        body: `hole(b, { size: 'M6' }) names a bolt instead of a width: the script looks up the clearance hole that bolt passes through, in millimetres (the ISO medium fit): M3 3.4, M4 4.5, M5 5.5, M6 6.6, M8 9, M10 11, M12 13.5. The name is not case-sensitive, so 'm6' works. size is just another way to say across, so give one or the other, never both: asking for both stops the script, and so does a size that is not in the list, with the valid names in the message. It works with a counterbore or a countersink, and holes() takes it too. Reload the script and toScript shows the resolved width, hole(b, { across: 6.6 }), not the name. Here an M6 hole goes through a 40 x 40 x 20 block: 32000 - pi x 3.3^2 x 20 = 32000 - 217.8 x pi = 31315.76 mm^3. The second block adds an 11 mm counterbore 6 mm deep: 32000 - pi x (5.5^2 x 6 + 3.3^2 x 14) = 30950.83 mm^3.`,
+        code: `const b = cuboid(40, 40, 20)
+hole(b, { size: 'M6' })
+const c = cuboid(40, 40, 20, { at: [60, 0, 0] })
+hole(c, { size: 'm6', counterbore: { across: 11, deep: 6 } })`,
       },
       {
         title: 'holes: multiple holes',
@@ -372,6 +380,20 @@ sk.rules([
   { k: 'tangent', a: 4, aEnd: 'b', b: 1, bEnd: 'a' },
   { k: 'equal', a: 1, b: 2 }
 ])
+const shape = extrude(sk, 10)`,
+      },
+      {
+        title: 'slot: a rounded slot in one call',
+        body: `sk.slot([x1, y1], [x2, y2], r) draws a rounded slot: the two points are the CENTRES of the two end caps and r is the cap radius, so the slot is 2r wide. It is shorthand for the rows the geom and rules pages write by hand: the call adds the same two arcs, two lines, and coincident and tangent rules as the arcs page, to the sketch, so you can still add rules of your own after it. Reload the script and toScript shows those geom([...]) and rules([...]) rows, not the word slot. Here the centres are 40 apart and the radius is 5, so the outline is a 40 x 10 rectangle plus two half-discs, area 400 + 25 x pi, and extruded 10 mm it is 4000 + 250 x pi = 4785.40 mm^3, the same part as the arcs page builds row by row.`,
+        code: `const sk = sketch('top')
+sk.slot([-20, 0], [20, 0], 5)
+const shape = extrude(sk, 10)`,
+      },
+      {
+        title: 'sketch on a frame: your own plane',
+        body: `sketch({ origin: [x, y, z], u: [...], v: [...] }) draws on a plane you describe instead of a named one. origin is where the sketch's (0, 0) sits; u is the direction its x runs and v the direction its y runs. u and v must each be exactly unit length and at right angles to each other; the script never rescales or straightens them, and a frame that is not (length 2, zero, skewed, a missing v, a NaN) stops with a plain sentence saying which. The sketch faces u x v, and extrude pushes along that direction. A frame of u = [1, 0, 0], v = [0, 1, 0] at the origin is the same plane as sketch('top'), so that part is a 30 x 20 x 10 = 6000 mm^3 shape spanning z from 0 to 10. The example moves origin to [5, 6, 7], which moves the whole part with it and changes nothing else: still 6000 mm^3, now spanning x from -10 to 20, y from -4 to 16 and z from 7 to 17. Swapping u and v turns u x v round, so the part goes the other way (down, z from -10 to 0, and turned across) rather than being quietly mirrored back; if a part comes out on the wrong side, swap them. Reload the script and toScript writes the frame back, not a named plane.`,
+        code: `const sk = sketch({ origin: [5, 6, 7], u: [1, 0, 0], v: [0, 1, 0] })
+sk.rect(30, 20)
 const shape = extrude(sk, 10)`,
       },
       {
