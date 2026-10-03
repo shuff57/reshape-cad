@@ -732,6 +732,11 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     // the history keeps its shape for name resolution.
                 }
             }
+            "datum" => {
+                // A datum plane is a reference a sketch sits on, not geometry:
+                // a deliberate no-op. It builds nothing, refuses nothing, and
+                // must not fall through to the unimplemented-kind sentence.
+            }
             "sketch" => {
                 // Flat, not a solid -- an extrude consumes it. Kept for the
                 // sweep to read its plane, offset and outline.
@@ -3830,6 +3835,48 @@ mod tests {
     /// (r 10..20, h 0..30, 90 degrees). OCCT lead-measures 7068.583471 on 6
     /// faces, bbox [0,0,0]..[20,20,30]; the closed form is the full annulus
     /// pi*(20^2-10^2)*30 / 4 = the same number. Before W6 the branch refused
+    /// Datum Stage 3: a `datum` feature is a deliberate no-op. A doc with one
+    /// (anywhere) builds exactly as without, and an only-datum doc builds and
+    /// refuses nothing; an unknown kind still refuses.
+    #[test]
+    fn datum_feature_is_a_noop_and_unknown_kind_still_refuses() {
+        let bx = json!({ "id": "b1", "kind": "box", "size": [10.0, 10.0, 10.0] });
+        let sk = json!({ "id": "sk1", "kind": "sketch", "plane": "xy", "offset": 20.0, "points": [[0.0, 0.0], [5.0, 0.0], [5.0, 5.0], [0.0, 5.0]] });
+        let ex = json!({ "id": "e1", "kind": "extrude", "target": "sk1", "height": 4.0 });
+        let dat = json!({ "id": "pl1", "kind": "datum", "type": "plane", "plane": "xy", "offset": 5.0 });
+        let sk_on = {
+            let mut s = sk.clone();
+            s["onDatum"] = json!("pl1");
+            s
+        };
+        let measure_of = |feats: Vec<Value>| {
+            let (hist, refusals) = build_doc(&json!({ "features": feats }));
+            assert!(refusals.is_empty(), "refusals: {refusals:?}");
+            assert!(!hist.shapes.contains_key("pl1"), "a datum is not a shape");
+            let e = hist.shapes.get("e1").expect("extrude builds");
+            (build::solid_volume(e), e.faces().len(), hist.shapes.len())
+        };
+        let base = measure_of(vec![bx.clone(), sk.clone(), ex.clone()]);
+        assert!((base.0 - 100.0).abs() < 1e-9, "closed form 5*5*4, got {}", base.0);
+        for feats in [
+            vec![dat.clone(), bx.clone(), sk.clone(), ex.clone()],
+            vec![bx.clone(), dat.clone(), sk.clone(), ex.clone()],
+            vec![bx.clone(), sk.clone(), dat.clone(), ex.clone()],
+            vec![bx.clone(), sk.clone(), ex.clone(), dat.clone()],
+            vec![dat.clone(), bx.clone(), sk_on.clone(), ex.clone()],
+        ] {
+            assert_eq!(measure_of(feats), base);
+        }
+        let (hist, refusals) = build_doc(&json!({ "features": [dat.clone()] }));
+        assert!(hist.shapes.is_empty() && refusals.is_empty());
+        let (_, refusals) = build_doc(&json!({ "features": [dat, { "id": "z1", "kind": "zzz" }] }));
+        assert_eq!(
+            refusals.get("z1").and_then(|v| v.as_str()),
+            Some("brep-rs does not build 'zzz' yet -- z1 is shown without it.")
+        );
+        assert_eq!(refusals.len(), 1);
+    }
+
     /// "only a 360-degree revolve is supported".
     #[test]
     fn revolve_partial_90deg_volume_faces_bbox() {
