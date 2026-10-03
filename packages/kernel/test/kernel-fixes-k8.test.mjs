@@ -101,5 +101,5 @@ test('a transverse bore through a cylinder side still refuses plainly', () => {
   const doc = { version: 1, features: [{ id: 'c', kind: 'cylinder', radius: 7.5, height: 20 }, { id: 'h', kind: 'hole', target: 'c', diameter: 6, depth: 40, axis: 'x' }] };
   const { refusals, s } = run(doc, 'h');
   assert.equal(s, undefined);
-  assert.match(refusals.h, /^hole h: brep-rs cannot cut this hole yet -- h is shown without it\.$/);
+  assert.match(refusals.h, /^hole h: a bore across the side of a round part meets its wall in a curve brep-rs cannot carry yet; drill along the part's own axis instead -- h is shown without it\.$/);
 });

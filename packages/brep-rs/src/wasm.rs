@@ -1275,6 +1275,18 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     hist.insert(&id, shape);
                 } else if tools_apart(&before_cut, &fused.iter().collect::<Vec<_>>()) {
                     refusals.insert(id.clone(), json!(miss_refusal(&id)));
+                } else if ops::cylinder_parts(&before_cut)
+                    .is_some_and(|(wall, ..)| dot(normalize(wall.axis), axis).abs() < 1.0 - 1e-9)
+                {
+                    // A bore across a plain cylinder: the wall meets it in a space
+                    // curve (see docs/specs/SPEC-transverse-bore.md). Say so, and
+                    // say what does build.
+                    refusals.insert(
+                        id.clone(),
+                        json!(format!(
+                            "hole {id}: a bore across the side of a round part meets its wall in a curve brep-rs cannot carry yet; drill along the part's own axis instead -- {id} is shown without it."
+                        )),
+                    );
                 } else if src_faces.len() == 2
                     && src_faces.iter().any(|fc| matches!(fc.borrow().surface, Surface::Cone(_)))
                 {
@@ -6544,7 +6556,7 @@ mod cavity_guard_tests {
     fn k8_transverse_bore_still_refuses() {
         let cyl = json!({ "id": "t", "kind": "cylinder", "radius": 7.5, "height": 20.0 });
         let (hist, refusals) = build_doc(&k8_hole(cyl, 40.0, [0.0; 3], "x"));
-        assert!(refusals["h"].as_str().unwrap().contains("cannot cut this hole yet"), "{refusals:?}");
+        assert!(refusals["h"].as_str().unwrap().contains("across the side of a round part"), "{refusals:?}");
         assert!(!hist.shapes.contains_key("h"));
     }
 }
