@@ -48,7 +48,7 @@ import {
   verticesOf,
 } from './selection-model.js';
 import { outlineOf } from '@shuff57/reshape-sketch/sketch-arc';
-import { handlesFor, featureCenter, type HandleSpec } from '@shuff57/reshape-script/model-handles';
+import { handlesFor, featureCenter, flatViewPlane, type HandleSpec } from '@shuff57/reshape-script/model-handles';
 import { previewTint } from './model/manipulator-core.js';
 import { EMPTY_DOC, type Feature, isSketchOnly, type ModelDoc, nameMap, newSketch, type SketchPlane } from '@shuff57/reshape-script/model-types';
 import { ownerOf } from '@shuff57/reshape-script/model-selection';
@@ -849,7 +849,7 @@ export default function ReshapeStudio({
   const activeSketchPlane = useMemo<'xy' | 'xz' | 'yz' | null>(() => {
     if (selected.length !== 1) return null;
     const f = doc.features.find((x) => x.id === selected[0]);
-    return f && f.kind === 'sketch' ? (f.plane ?? 'xy') : null;
+    return flatViewPlane(f);
   }, [selected, doc]);
 
   const outlines = useMemo(
@@ -1444,6 +1444,7 @@ export default function ReshapeStudio({
                 selectedCount={showBrep ? selected.length : 0}
                 selectionLabel={showBrep ? selectionLabel : null}
                 sketchPlane={activeSketchPlane}
+                selectedDatumIds={selected.filter((id) => doc.features.some((f) => f.id === id && f.kind === 'datum'))}
                 anchors={specs}
                 onAnchors={setAnchors}
                 onMesh={(m) => {

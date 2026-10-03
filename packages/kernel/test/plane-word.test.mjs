@@ -58,10 +58,10 @@ test('swapped u,v mirrors: the part goes the other way (documented)', () => {
   assert.ok(m.bbox[1][2] <= 1e-9 && Math.abs(m.bbox[0][2] + 12) < 1e-6, `z goes to -12: ${JSON.stringify(m.bbox)}`);
 });
 
-test('round trip through toScript needs no plane word and measures the same', () => {
+test('round trip through toScript emits the plane statement and measures the same', () => {
   const a = measure("const sk = sketch(plane({ origin: [5, 6, 7], u: [1, 0, 0], v: [0, 0, 1] }))\nsk.rect(30, 20)\npull(sk, 10)");
   const t = toScript(a.r.doc);
-  assert.doesNotMatch(t, /plane\(/);
+  assert.match(t, /const pl1 = plane\(\{ origin: \[5, 6, 7\]/);
   const b = measure(t);
   near(b.volume, a.volume, 'volume');
   nearBox(b.bbox, a.bbox, 'bbox');

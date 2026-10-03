@@ -9,7 +9,7 @@
 // box grows both ways at once, so its face only keeps up with the pointer if
 // the width changes by twice the drag.
 
-import { isShape, extentAlong, sketchBBoxCentre, type Feature, type ModelDoc, type SketchPlane, type Vec3 } from './model-types.js';
+import { isShape, extentAlong, sketchBBoxCentre, sketchFrameOf, type SketchFrame, type Feature, type ModelDoc, type SketchPlane, type Vec3 } from './model-types.js';
 import { maxFilletRadius } from '@shuff57/reshape-sketch/sketch-arc';
 
 export type HandleKind = 'size' | 'move' | 'turn' | 'point' | 'radius';
@@ -111,6 +111,28 @@ function planeNormal(plane: SketchPlane): [number, number, number] {
 const SWEEP_DIR: Record<SketchPlane, number> = { xy: 1, xz: -1, yz: 1 };
 
 /**
+ * Where a sketch sits and which way Pull carries it, from the ONE resolver
+ * (sketchFrameOf) -- so a sketch with a `frame` (sketch-on-a-face, or on a
+ * datum plane) is handled on its real plane, not on the placeholder 'xy' its
+ * `plane` field holds. SPEC-datum-family Stage 1c.
+ *
+ * `u`/`v`/`origin` are the frame. `w` is the pull direction: a named plane
+ * keeps its MEASURED sweep (n * SWEEP_DIR, so xz pulls -Y); a literal frame
+ * pulls along u x v, exactly as the kernel's sketch_frame does.
+ */
+export function placementOf(sk: { plane?: SketchPlane; offset?: number; frame?: SketchFrame }): {
+  u: [number, number, number]; v: [number, number, number]; origin: [number, number, number];
+  n: [number, number, number]; w: [number, number, number];
+} {
+  const fr = sketchFrameOf(sk);
+  const dir = sk.frame ? 1 : (SWEEP_DIR[sk.plane ?? 'xy'] ?? 1);
+  return {
+    u: [...fr.u], v: [...fr.v], origin: [...fr.origin], n: [...fr.n],
+    w: [fr.n[0] * dir, fr.n[1] * dir, fr.n[2] * dir],
+  };
+}
+
+/**
  * A single anchor at a sketch plane's own origin -- what a click-to-draw
  * surface needs to exist BEFORE any corner does, so a screen click can be
  * measured relative to something. Same u/v axis convention as a sketch
@@ -118,12 +140,11 @@ const SWEEP_DIR: Record<SketchPlane, number> = { xy: 1, xz: -1, yz: 1 };
  * anchor from.
  */
 export function planeAnchor(plane: SketchPlane, offset: number): HandleSpec {
-  const { u, v } = planeAxes(plane);
-  const n = planeNormal(plane);
+  const { u, v, origin } = placementOf({ plane, offset });
   return {
     kind: 'point',
     param: '__planeOrigin',
-    origin: [n[0] * offset, n[1] * offset, n[2] * offset],
+    origin,
     axis: u,
     axisV: v,
     paramV: '__planeOriginV',
@@ -143,13 +164,11 @@ const RADIUS_HANDLE_MIN = (20 * Math.PI) / 180;
 const RADIUS_HANDLE_MAX = (130 * Math.PI) / 180;
 
 function sketchHandles(f: Extract<Feature, { kind: 'sketch' }>): HandleSpec[] {
-  const { u, v } = planeAxes(f.plane);
-  const n: [number, number, number] =
-    f.plane === 'xy' ? [0, 0, 1] : f.plane === 'xz' ? [0, 1, 0] : [1, 0, 0];
+  const { u, v, origin: o } = placementOf(f);
   const world = (pu: number, pv: number): [number, number, number] => [
-    u[0] * pu + v[0] * pv + n[0] * f.offset,
-    u[1] * pu + v[1] * pv + n[1] * f.offset,
-    u[2] * pu + v[2] * pv + n[2] * f.offset,
+    u[0] * pu + v[0] * pv + o[0],
+    u[1] * pu + v[1] * pv + o[1],
+    u[2] * pu + v[2] * pv + o[2],
   ];
 
   // Emitted from f.points, which is now the DESIGN polygon -- so a rounded
@@ -308,13 +327,9 @@ function extrudeHandles(f: Extract<Feature, { kind: 'extrude' }>, doc?: ModelDoc
   const closed = sk.shape === 'circle' ? sk.points.length === 2 : sk.points.length >= 3;
   if (!closed) return [];
 
-  const plane = sk.plane ?? 'xy';
-  const { u, v } = planeAxes(plane);
-  const n = planeNormal(plane);
-  const dir = SWEEP_DIR[plane] ?? 1;
+  const { u, v, origin: o, w } = placementOf(sk);
   const [cu, cv] = sketchBBoxCentre(sk.points);
-  // offset places the sketch plane; dir * height carries the cap off it.
-  const reach = (sk.offset ?? 0) + dir * f.height;
+  // The plane's origin places the sketch; w * height carries the cap off it.
 
   return [{
     kind: 'size',
@@ -324,11 +339,11 @@ function extrudeHandles(f: Extract<Feature, { kind: 'extrude' }>, doc?: ModelDoc
     // parameter, not two that have to be kept in step.
     param: `${f.id}_height`,
     origin: [
-      u[0] * cu + v[0] * cv + n[0] * reach,
-      u[1] * cu + v[1] * cv + n[1] * reach,
-      u[2] * cu + v[2] * cv + n[2] * reach,
+      u[0] * cu + v[0] * cv + o[0] + w[0] * f.height,
+      u[1] * cu + v[1] * cv + o[1] + w[1] * f.height,
+      u[2] * cu + v[2] * cv + o[2] + w[2] * f.height,
     ],
-    axis: [n[0] * dir, n[1] * dir, n[2] * dir],
+    axis: [w[0], w[1], w[2]],
     // 1, not 2: the cap moves the WHOLE height, unlike a centred box face
     // which moves half its own size. No symmetric-extrude concept exists in
     // ModelDoc or in either engine -- see SPEC-extrude-drag-handle.md §4.
@@ -373,14 +388,11 @@ function pocketHandles(f: Extract<Feature, { kind: 'pocket' }>, doc?: ModelDoc):
   // nothing. extrude has no equivalent check because it has no `into`.
   if (!doc.features.some((x) => x.id === f.into)) return [];
 
-  const plane = sk.plane ?? 'xy';
-  const { u, v } = planeAxes(plane);
-  const n = planeNormal(plane);
-  const cut = -(SWEEP_DIR[plane] ?? 1);
+  const { u, v, origin: o, w } = placementOf(sk);
+  const cut: [number, number, number] = [-w[0], -w[1], -w[2]];
   const [cu, cv] = sketchBBoxCentre(sk.points);
-  // offset places the sketch plane (the mouth); cut * depth carries the floor
-  // off it, into the material.
-  const reach = (sk.offset ?? 0) + cut * f.depth;
+  // The plane's origin is the mouth; cut * depth carries the floor off it,
+  // into the material.
 
   return [{
     kind: 'size',
@@ -388,11 +400,11 @@ function pocketHandles(f: Extract<Feature, { kind: 'pocket' }>, doc?: ModelDoc):
     // pname(id,'depth')) and applyParam() writes back (model-codegen.ts:360).
     param: `${f.id}_depth`,
     origin: [
-      u[0] * cu + v[0] * cv + n[0] * reach,
-      u[1] * cu + v[1] * cv + n[1] * reach,
-      u[2] * cu + v[2] * cv + n[2] * reach,
+      u[0] * cu + v[0] * cv + o[0] + cut[0] * f.depth,
+      u[1] * cu + v[1] * cv + o[1] + cut[1] * f.depth,
+      u[2] * cu + v[2] * cv + o[2] + cut[2] * f.depth,
     ],
-    axis: [n[0] * cut, n[1] * cut, n[2] * cut],
+    axis: [cut[0], cut[1], cut[2]],
     // 1, not 2: the floor moves the WHOLE depth. Same reasoning as
     // extrudeHandles() -- a centred box face moves half its own size, which is
     // why the box rows are 2.
@@ -472,6 +484,13 @@ function draftHandles(f: Extract<Feature, { kind: 'draft' }>, doc?: ModelDoc): H
 export function handlesFor(f: Feature, doc?: ModelDoc): HandleSpec[] {
   // A sketch gets its own two-axis corner handles; see sketchHandles.
   if (f.kind === 'sketch') return sketchHandles(f);
+  // A named datum plane carries one handle: its offset, along its normal. A
+  // literal-frame datum has no slot (frozen numbers), so no handle.
+  if (f.kind === 'datum') {
+    if (f.frame) return [];
+    const { origin, n } = placementOf(f);
+    return [{ kind: 'size', param: `${f.id}_offset`, origin, axis: n, scale: 1, label: 'offset' }];
+  }
   // A fillet is not a shape -- it names an edge of one -- so it has to be
   // caught before the isShape() guard below, which would otherwise send it
   // straight to the empty return.
@@ -562,15 +581,16 @@ export function handlesFor(f: Feature, doc?: ModelDoc): HandleSpec[] {
 export function featureCenter(f: Feature, doc: ModelDoc): [number, number, number] | null {
   if (isShape(f)) return f.center;
   if (f.kind === 'sketch') {
-    const { u, v } = planeAxes(f.plane);
-    const n = planeNormal(f.plane);
+    const { u, v, origin: o } = placementOf(f);
     const [cu, cv] = sketchBBoxCentre(f.points);
     return [
-      u[0] * cu + v[0] * cv + n[0] * (f.offset ?? 0),
-      u[1] * cu + v[1] * cv + n[1] * (f.offset ?? 0),
-      u[2] * cu + v[2] * cv + n[2] * (f.offset ?? 0),
+      u[0] * cu + v[0] * cv + o[0],
+      u[1] * cu + v[1] * cv + o[1],
+      u[2] * cu + v[2] * cv + o[2],
     ];
   }
+  // A datum plane's representative point is its frame origin.
+  if (f.kind === 'datum') return placementOf(f).origin;
   if (f.kind === 'extrude') return extrudeHandles(f, doc)[0]?.origin ?? null;
   if (f.kind === 'pocket') return pocketHandles(f, doc)[0]?.origin ?? null;
   if (f.kind === 'fillet') return filletHandles(f, doc)[0]?.origin ?? null;
@@ -604,4 +624,16 @@ else p[2] += half;
 return p;
 }
 return null;
+}
+
+/**
+ * The named plane to look straight down when this feature is selected, or null.
+ * A sketch with a literal `frame` (sketch-on-a-face, or on a frame datum) has
+ * no named plane -- its `plane` field is a placeholder 'xy' -- so it returns
+ * null rather than looking down the wrong axis (SPEC-datum-family 1c).
+ * A datum is not a sketch: null.
+ */
+export function flatViewPlane(f: Feature | undefined | null): SketchPlane | null {
+  if (!f || f.kind !== 'sketch' || f.frame) return null;
+  return f.plane ?? 'xy';
 }

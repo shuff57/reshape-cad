@@ -67,6 +67,7 @@ import {
   newPattern,
   newSketch,
   newSketchOnFace,
+  newDatum,
   type SketchFrame,
   RECTANGLE_CONSTRAINTS,
   newExtrude,
@@ -461,6 +462,7 @@ function wholeIndex(fn: string, label: string, v: unknown, count: number): numbe
  *  from a hand-written frame; it is never stored in the doc. */
 class PlaneValue {
   constructor(
+    readonly datumId: string,
     readonly plane: SketchPlane | null,
     readonly offset: number | undefined,
     readonly frame: SketchFrame | null,
@@ -913,23 +915,35 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     return { origin, u, v };
   }
 
-  // plane(...): a pure helper, adds NO feature. A named plane returns a tagged
-  // PlaneValue that sketch() unpacks back onto the NAMED path (never a cross
-  // product: xz's u x v is -Y but it sweeps -Y on purpose), so
-  // sketch(plane('top', 10)) is the same doc as sketch('top', 10). A literal
-  // frame is validated by the same readFrame sketch({...}) uses.
+  // plane(...): creates a `datum` feature (SPEC-datum-family Stage 3), which
+  // shows in the timeline and has no geometry. A named plane keeps its NAMED
+  // path (never a cross product: xz's u x v is -Y but it sweeps -Y on
+  // purpose); a literal frame is validated by the same readFrame
+  // sketch({...}) uses. The returned PlaneValue carries the datum id, so
+  // sketch(plane(...)) can both point at the datum (onDatum) and copy its
+  // placement into the sketch's own plane/offset/frame -- every reader and
+  // the kernel keep working from those, and the kernel ignores onDatum.
   function plane(spec: unknown, offset?: unknown): PlaneValue {
     if (isPlainOptions(spec) && !(spec instanceof PlaneValue)) {
       if (offset !== undefined) {
         throw new Error('plane({ origin, u, v }) takes no offset: the origin already says where the plane sits.');
       }
-      return new PlaneValue(null, 0, readFrame(spec, 'plane'));
+      const frame = readFrame(spec, 'plane');
+      const d = newDatum(docNow());
+      d.frame = frame;
+      pushFeature(d);
+      return new PlaneValue(d.id, null, 0, frame);
     }
     if (typeof spec !== 'string' || !(spec in PLANE_WORD)) {
       throw new Error(`plane() needs a plane word: 'top', 'front' or 'side' (or a frame { origin, u, v }). You gave it ${describe(spec)}.`);
     }
-    const off = offset === undefined ? undefined : requiredNumber('plane', 'offset', offset);
-    return new PlaneValue(PLANE_WORD[spec], off, null);
+    const d = newDatum(docNow());
+    d.plane = PLANE_WORD[spec];
+    // Canonical: a named datum always carries its offset (0 when none was
+    // given), so plane('top') and plane('top', 0) are the same doc.
+    d.offset = offset === undefined ? 0 : num(requiredNumber('plane', 'offset', offset), d.id, 'offset');
+    pushFeature(d);
+    return new PlaneValue(d.id, d.plane, d.offset, null);
   }
 
   function sketch(planeWord: unknown, offset?: unknown): SketchHandle {
@@ -937,9 +951,11 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
       if (offset !== undefined) {
         throw new Error('sketch(plane(...)) takes no offset: give the offset to plane(), like plane(\'top\', 10).');
       }
-      if (planeWord.frame) return sketch({ ...planeWord.frame });
-      const f = newSketch(docNow(), planeWord.plane!);
-      if (planeWord.offset !== undefined) f.offset = num(planeWord.offset, f.id, 'offset');
+      const f = planeWord.frame
+        ? newSketchOnFace(docNow(), { origin: [...planeWord.frame.origin], u: [...planeWord.frame.u], v: [...planeWord.frame.v] })
+        : newSketch(docNow(), planeWord.plane!);
+      if (!planeWord.frame) f.offset = planeWord.offset ?? 0;
+      f.onDatum = planeWord.datumId;
       pushFeature(f);
       return makeSketchHandle(f.id);
     }

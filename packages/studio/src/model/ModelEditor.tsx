@@ -65,7 +65,7 @@ import {
   Eraser,
   ArrowLeft,
 } from 'lucide-react';
-import { withoutFeatures, orphanedBy } from '@shuff57/reshape-script/model-deps';
+import { withoutFeatures, orphanedBy, firstOrderViolation } from '@shuff57/reshape-script/model-deps';
 import {
   type Feature,
   type FilletFeature,
@@ -97,6 +97,7 @@ import {
   topLevel,
   whyCannotOrbit,
   whyCannotRound,
+  placementLabel,
 } from '@shuff57/reshape-script/model-types';
 import { partWordFor, type TopoName } from '@shuff57/reshape-script/topo-name';
 import { ownerOf } from '@shuff57/reshape-script/model-selection';
@@ -1286,15 +1287,11 @@ export default function ModelEditor({
     // mirror, pattern, shell, move -- not just combine, so dragging a Hole
     // above the box it drills is caught the same as dragging a Cut above
     // its inputs.
-    const seen = new Set<string>();
-    for (const f of features) {
-      const missing = dependsOn(f).filter((t) => !seen.has(t));
-      if (missing.length) {
-        const what = missing.map((t) => names[t] ?? t).join(', ');
-        say(`That would put ${names[f.id]} before ${what}, which it is built from.`);
-        return;
-      }
-      seen.add(f.id);
+    const bad = firstOrderViolation(features);
+    if (bad) {
+      const what = bad.missing.map((t) => names[t] ?? t).join(', ');
+      say(`That would put ${names[bad.feature]} before ${what}, which it is built from.`);
+      return;
     }
     onChange({ ...doc, features });
     say(null);
@@ -1312,15 +1309,11 @@ export default function ModelEditor({
     const features = [...doc.features];
     const [row] = features.splice(i, 1);
     features.splice(j, 0, row);
-    const seen = new Set<string>();
-    for (const f of features) {
-      const missing = dependsOn(f).filter((t) => !seen.has(t));
-      if (missing.length) {
-        const what = missing.map((t) => names[t] ?? t).join(', ');
-        say(`That would put ${names[f.id]} before ${what}, which it is built from.`);
-        return;
-      }
-      seen.add(f.id);
+    const bad = firstOrderViolation(features);
+    if (bad) {
+      const what = bad.missing.map((t) => names[t] ?? t).join(', ');
+      say(`That would put ${names[bad.feature]} before ${what}, which it is built from.`);
+      return;
     }
     onChange({ ...doc, features });
     say(null);
@@ -2031,8 +2024,13 @@ export default function ModelEditor({
                   )}
                   {f.kind === 'sketch' && (
                     <em className="model-detail">
-                      {' '}{f.points.length} corners, {f.plane}
+                      {' '}{f.points.length} corners, {f.onDatum && names[f.onDatum] ? `on ${names[f.onDatum]}` : placementLabel(f)}
                       {f.constraints?.length ? `, ${f.constraints.length} rules` : ''}
+                    </em>
+                  )}
+                  {f.kind === 'datum' && (
+                    <em className="model-detail">
+                      {' '}{f.frame ? 'custom plane' : `${f.plane ?? 'xy'}${f.offset ? `, offset ${f.offset}` : ''}`}
                     </em>
                   )}
                   {f.kind === 'extrude' && (
@@ -2148,8 +2146,13 @@ export default function ModelEditor({
                   )}
                   {f.kind === 'sketch' && (
                     <em className="model-detail">
-                      {' '}{f.points.length} corners, {f.plane}
+                      {' '}{f.points.length} corners, {f.onDatum && names[f.onDatum] ? `on ${names[f.onDatum]}` : placementLabel(f)}
                       {f.constraints?.length ? `, ${f.constraints.length} rules` : ''}
+                    </em>
+                  )}
+                  {f.kind === 'datum' && (
+                    <em className="model-detail">
+                      {' '}{f.frame ? 'custom plane' : `${f.plane ?? 'xy'}${f.offset ? `, offset ${f.offset}` : ''}`}
                     </em>
                   )}
                   {f.kind === 'extrude' && (

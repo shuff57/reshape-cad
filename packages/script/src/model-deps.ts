@@ -93,6 +93,14 @@ export function whyDeletingCosts(
     ? names[0]
     : names.slice(0, -1).join(', ') + ' and ' + names[names.length - 1];
   const subject = ids.length === 1 ? label(ids[0]) : 'those';
+  // A datum plane is not "built from": a sketch SITS on it. Say 'plane' so the
+  // sentence still reads when the student renamed the row.
+  const asDatum = ids.length === 1 && doc.features.some((f) => f.id === ids[0] && f.kind === 'datum');
+  if (asDatum) {
+    return names.length === 1
+      ? `${list} sits on the plane ${subject}, so it goes too.`
+      : `${list} sit on, or are built from, the plane ${subject}, so they go too.`;
+  }
   return names.length === 1
     ? `${list} is built from ${subject}, so it goes too.`
     : `${list} are built from ${subject}, so they go too.`;
@@ -145,4 +153,21 @@ export function withoutFeatures(doc: ModelDoc, ids: string[]): ModelDoc {
   const doomed = orphanedBy(doc, ids);
   const features: Feature[] = doc.features.filter((f) => !doomed.has(f.id));
   return { ...doc, features };
+}
+
+/**
+ * The first feature in `features` that sits before something it depends on, or
+ * null when the order is buildable. The timeline's reorder guard (move() and
+ * moveTo() in ModelEditor.tsx) is this loop; it lives here so it can be tested
+ * without React. Because dependsOn() includes a sketch's datum plane, a sketch
+ * cannot move above its plane and a plane cannot move below a sketch on it.
+ */
+export function firstOrderViolation(features: Feature[]): { feature: string; missing: string[] } | null {
+  const seen = new Set<string>();
+  for (const f of features) {
+    const missing = dependsOn(f).filter((t) => !seen.has(t));
+    if (missing.length) return { feature: f.id, missing };
+    seen.add(f.id);
+  }
+  return null;
 }

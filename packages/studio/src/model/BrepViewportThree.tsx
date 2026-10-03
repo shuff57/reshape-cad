@@ -69,7 +69,7 @@ import type { LineSegments2 as LineSegments2Type } from 'three/examples/jsm/line
 import type { LineSegmentsGeometry as LineSegmentsGeometryType } from 'three/examples/jsm/lines/LineSegmentsGeometry.js';
 import type { LineMaterial as LineMaterialType } from 'three/examples/jsm/lines/LineMaterial.js';
 import type { Feature, ModelDoc } from '@shuff57/reshape-script/model-types';
-import { topLevel } from '@shuff57/reshape-script/model-types';
+import { topLevel, sketchFrameOf } from '@shuff57/reshape-script/model-types';
 import { rootFeature, type TopoName } from '@shuff57/reshape-script/topo-name';
 import type { EngineAdapter, EngineBuildResult, FaceRange } from '@shuff57/reshape-kernel/engine-adapter';
 import { BrepRsEngineAdapter } from '@shuff57/reshape-kernel/brep-rs-engine-adapter';
@@ -329,6 +329,9 @@ interface Props {
    * plane, is not a new "entering flat view" event).
    */
   sketchPlane?: 'xy' | 'xz' | 'yz' | null;
+  /** Ids of datum planes currently selected (timeline), drawn brighter. A
+   *  datum has no mesh, so the viewport cannot learn this from a pick. */
+  selectedDatumIds?: string[];
   /**
    * How many pixels of docked UI panel currently sit to one side of the
    * canvas -- the Rules panel's own width while a sketch is being viewed
@@ -618,7 +621,7 @@ const FILTER_CHIPS: { key: keyof SelectionFilters; label: string }[] = [
  */
 export default function BrepViewportThree({
   doc, deflection, onStats, onPick, pick, selectedCount, selectionLabel, anchors, onAnchors, onMesh, registerPickAt,
-  sketchPlane, panelOcclusionPx, ruleActivityAt, onEngine, badgesInStatusBar = false, onNavHint, filters, onFiltersChange, onBoxSelect,
+  sketchPlane, selectedDatumIds, panelOcclusionPx, ruleActivityAt, onEngine, badgesInStatusBar = false, onNavHint, filters, onFiltersChange, onBoxSelect,
   onFeatureDoubleClick, onSelectAll, onDeleteSelected, onUndo, onRedo, onStartSketch, onRepeat, onMoveHotkey, preview,
 }: Props) {
   const [phase, setPhase] = useState<'loading' | 'ready' | 'error'>('loading');
@@ -2679,13 +2682,14 @@ export default function BrepViewportThree({
     const box = new THREE.Box3().setFromObject(group);
     for (const f of doc.features) {
       if (f.kind !== 'sketch') continue;
-      const { u, v, n } = SKETCH_PLANE_AXES[f.plane ?? 'xy'] ?? SKETCH_PLANE_AXES.xy;
-      const off = f.offset ?? 0;
+      // Through the one resolver, so a framed sketch (sketch-on-a-face, or on
+      // a datum plane) is fitted where it really is (SPEC-datum-family 1c).
+      const { u, v, origin: o } = sketchFrameOf(f);
       for (const [pu, pv] of f.points) {
         box.expandByPoint(new THREE.Vector3(
-          n[0] * off + u[0] * pu + v[0] * pv,
-          n[1] * off + u[1] * pu + v[1] * pv,
-          n[2] * off + u[2] * pu + v[2] * pv,
+          o[0] + u[0] * pu + v[0] * pv,
+          o[1] + u[1] * pu + v[1] * pv,
+          o[2] + u[2] * pu + v[2] * pv,
         ));
       }
     }
@@ -3551,7 +3555,7 @@ try {
         // EMPTY_DOC, so without this branch the workspace greets a student
         // with an error before they have done anything. Draw the empty stage
         // (grid + axes already sit in the scene) and report zero.
-        const onlySketches = doc.features.length > 0 && doc.features.every((f) => f.kind === 'sketch');
+        const onlySketches = doc.features.length > 0 && doc.features.every((f) => f.kind === 'sketch' || f.kind === 'datum');
         if (doc.features.length === 0 || onlySketches) {
           setStageHint(onlySketches ? 'A sketch is flat. Select it and press Pull to make it solid.' : null);
           // No solid on screen -- rearm the auto-fit whenever the doc is
@@ -3750,6 +3754,65 @@ try {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase, sketchPlane]);
+
+  // ---- datum planes -----------------------------------------------------------
+  // A datum has no geometry, so the kernel builds nothing for it. It is drawn
+  // here as a translucent square (a filled quad plus an outline) lying in its
+  // plane, sized from the model (floor 40 mm half-side). Rebuilt whenever the
+  // doc or the selection changes, and disposed on every pass. Selection is
+  // through the timeline row; a click in the canvas does not pick it.
+  useEffect(() => {
+    if (phase !== 'ready') return;
+    const three = threeRef.current;
+    const scene = sceneRef.current;
+    const camera = cameraRef.current;
+    const renderer = rendererRef.current;
+    if (!three || !scene || !camera || !renderer) return;
+    const datums = doc.features.filter((f) => f.kind === 'datum');
+    if (datums.length === 0) return;
+    const { THREE } = three;
+    const box = computeSceneBox();
+    let half = 40;
+    if (box && !box.isEmpty()) {
+      const s = box.getSize(new THREE.Vector3());
+      half = Math.max(40, Math.max(s.x, s.y, s.z) * 0.75);
+    }
+    const group = new THREE.Group();
+    group.name = 'datum-planes';
+    const selectedSet = new Set(selectedDatumIds ?? []);
+    for (const d of datums) {
+      const { origin: o, u, v } = sketchFrameOf(d);
+      const at = (a: number, b: number) => new THREE.Vector3(
+        o[0] + u[0] * a + v[0] * b, o[1] + u[1] * a + v[1] * b, o[2] + u[2] * a + v[2] * b);
+      const corners = [at(-half, -half), at(half, -half), at(half, half), at(-half, half)];
+      const on = selectedSet.has(d.id);
+      const colour = on ? 0xffb86c : 0x8be9fd;
+      const quad = new THREE.BufferGeometry().setFromPoints([
+        corners[0], corners[1], corners[2], corners[0], corners[2], corners[3]]);
+      const fill = new THREE.Mesh(quad, new THREE.MeshBasicMaterial({
+        color: colour, transparent: true, opacity: on ? 0.22 : 0.1, side: THREE.DoubleSide, depthWrite: false,
+      }));
+      fill.userData.datumId = d.id;
+      const outline = new THREE.LineLoop(
+        new THREE.BufferGeometry().setFromPoints(corners),
+        new THREE.LineBasicMaterial({ color: colour, transparent: true, opacity: on ? 1 : 0.6 }),
+      );
+      group.add(fill, outline);
+    }
+    scene.add(group);
+    renderer.render(scene, camera);
+    return () => {
+      scene.remove(group);
+      group.traverse((o) => {
+        const m = o as THREE_NS.Mesh;
+        m.geometry?.dispose();
+        const mat = m.material as THREE_NS.Material | undefined;
+        mat?.dispose();
+      });
+      try { renderer.render(scene, camera); } catch { /* renderer already disposed */ }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase, doc, selectedDatumIds]);
 
   // ---- keep the edge highlight in sync when ONLY `pick` changes -------------
   // Clearing a selection from the model tree, or picking a different edge

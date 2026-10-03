@@ -195,7 +195,7 @@ const NAMED_PLANE_FRAMES: Record<SketchPlane, { u: Vec3; v: Vec3; n: Vec3 }> = {
  * sketch with `frame` gets its normal as u x v (normalised), so an arbitrary
  * planar face is expressible while the right-handed convention is preserved.
  */
-export function sketchFrameOf(f: Pick<SketchFeature, 'plane' | 'offset' | 'frame'>): ResolvedSketchFrame {
+export function sketchFrameOf(f: { plane?: SketchPlane; offset?: number; frame?: SketchFrame }): ResolvedSketchFrame {
   if (f.frame) {
     const { origin, u, v } = f.frame;
     const n: Vec3 = [
@@ -205,7 +205,7 @@ export function sketchFrameOf(f: Pick<SketchFeature, 'plane' | 'offset' | 'frame
     ];
     return { origin, u, v, n };
   }
-  const a = NAMED_PLANE_FRAMES[f.plane] ?? NAMED_PLANE_FRAMES.xy;
+  const a = NAMED_PLANE_FRAMES[f.plane ?? 'xy'] ?? NAMED_PLANE_FRAMES.xy;
   const offset = f.offset ?? 0;
   return {
     origin: [a.n[0] * offset, a.n[1] * offset, a.n[2] * offset],
@@ -213,6 +213,25 @@ export function sketchFrameOf(f: Pick<SketchFeature, 'plane' | 'offset' | 'frame
     v: a.v,
     n: a.n,
   };
+}
+
+/**
+ * A datum plane (SPEC-datum-family Stage 3): a named place a sketch can sit,
+ * shown in the timeline. It has NO geometry: the kernel builds nothing for it.
+ *
+ * Placement mirrors SketchFeature exactly -- a named `plane` plus `offset`, or
+ * a literal `frame` -- so sketchFrameOf() resolves either one. As on a sketch,
+ * a `frame` wins and `plane`/`offset` are then ignored. A literal frame is
+ * frozen: it does not follow a solid that later changes.
+ */
+export interface DatumFeature {
+  id: string;
+  kind: 'datum';
+  name?: string;
+  type: 'plane';
+  plane?: SketchPlane;
+  offset?: number;
+  frame?: SketchFrame;
 }
 
 /** A closed outline, drawn flat. Not a solid until something extrudes it. */
@@ -230,6 +249,14 @@ export interface SketchFeature {
    * every sketch saved before frames existed. See [`SketchFrame`] and
    * [`sketchFrameOf`]. */
   frame?: SketchFrame;
+  /**
+   * The datum plane (a `datum` feature id) this sketch sits on, when it was
+   * made with sketch(plane(...)). `plane`/`offset`/`frame` above are ALSO
+   * filled from the datum so every reader and the kernel keep working
+   * unchanged; the kernel ignores this field. It exists for dependsOn(), the
+   * emitter and the timeline.
+   */
+  onDatum?: string;
   /**
    * The DESIGN corners, in plane coordinates and in order -- the points the
    * student actually placed, and the only ones any mover may touch. The
@@ -649,7 +676,7 @@ export type Feature =
   | BoxFeature | CylinderFeature | SphereFeature
   | ConeFeature | TorusFeature
   | PrismFeature | WedgeFeature
-  | SketchFeature | ExtrudeFeature | CombineFeature
+  | SketchFeature | DatumFeature | ExtrudeFeature | CombineFeature
   | BlendFeature
   | RevolveFeature | GrooveFeature | PocketFeature | MirrorFeature | PatternFeature
   | HoleFeature | ShellFeature | MoveFeature
@@ -674,9 +701,17 @@ export function dependsOn(f: Feature): string[] {
   // variable references. Deleting the solid used to leave the cut pointing
   // at an undeclared name -- the exact ReferenceError this file exists for.
   const into = 'into' in f && typeof f.into === 'string' ? [f.into] : [];
-  if ('targets' in f) return [...new Set([...f.targets, ...into, ...named])];
-  if ('target' in f) return [...new Set([f.target, ...into, ...named])];
-  return [...new Set([...into, ...named])];
+  const datum = datumRefs(f);
+  if ('targets' in f) return [...new Set([...f.targets, ...into, ...named, ...datum])];
+  if ('target' in f) return [...new Set([f.target, ...into, ...named, ...datum])];
+  return [...new Set([...into, ...named, ...datum])];
+}
+
+/** The datum plane a sketch sits on (SPEC-datum-family Stage 3). A separate
+ *  field from `target` on purpose: reusing `target` would collide with every
+ *  `'target' in f` consumer. */
+export function datumRefs(f: Feature): string[] {
+  return f.kind === 'sketch' && f.onDatum ? [f.onDatum] : [];
 }
 
 /**
@@ -735,7 +770,7 @@ export interface ModelDoc {
  * unblocks.
  */
 export function isSketchOnly(doc: ModelDoc): boolean {
-  return doc.features.length === 0 || doc.features.every((f) => f.kind === 'sketch');
+  return doc.features.length === 0 || doc.features.every((f) => f.kind === 'sketch' || f.kind === 'datum');
 }
 
 export const EMPTY_DOC: ModelDoc = { version: 1, features: [] };
@@ -963,6 +998,19 @@ export function newSketchOnFace(
     points: points.map((p) => [p[0], p[1]] as [number, number]),
     constraints: RECTANGLE_CONSTRAINTS.slice(),
   };
+}
+
+/** The words a timeline row shows for where a sketch or datum sits: the named
+ *  plane, or 'custom plane' for a literal frame (whose `plane` field is only a
+ *  placeholder and would otherwise read 'xy'). */
+export function placementLabel(f: { plane?: SketchPlane; frame?: SketchFrame }): string {
+  return f.frame ? 'custom plane' : (f.plane ?? 'xy');
+}
+
+/** A datum plane with no placement yet; the caller sets `plane`+`offset` or
+ *  `frame`. Ids are pl1, pl2, ... */
+export function newDatum(doc: ModelDoc): DatumFeature {
+  return { id: nextId(doc, 'pl'), kind: 'datum', type: 'plane' };
 }
 
 /** A circle, drawn as the two ends of a diameter -- see SketchFeature.shape.
@@ -1452,6 +1500,7 @@ function labelOf(f: Feature): string {
     return f.op === 'union' ? 'Join' : f.op === 'subtract' ? 'Cut' : 'Overlap';
   }
   return f.kind === 'sketch' ? 'Sketch'
+    : f.kind === 'datum' ? (f.frame ? 'Custom plane' : 'Plane')
     : f.kind === 'extrude' ? 'Pull'
     : f.kind === 'revolve' ? 'Spin'
     : f.kind === 'mirror' ? 'Mirror'
@@ -1579,5 +1628,5 @@ export function topLevel(doc: ModelDoc): Feature[] {
   // handing one to the renderer draws nothing -- the outline is drawn as an
   // overlay instead, so an un-extruded sketch is still visible while being
   // honestly absent from the model.
-  return doc.features.filter((f) => !consumed.has(f.id) && f.kind !== 'sketch');
+  return doc.features.filter((f) => !consumed.has(f.id) && f.kind !== 'sketch' && f.kind !== 'datum');
 }

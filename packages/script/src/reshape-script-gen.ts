@@ -455,8 +455,27 @@ export function toScript(doc: ModelDoc, namedParams?: readonly ScriptParamRef[])
       lines.push(`const ${f.id} = wedge(${w}, ${d}, ${h}${at})`);
       return;
     }
-    if (f.kind === 'sketch') {
+    if (f.kind === 'datum') {
+      // A datum plane, in the plane's own named or literal-frame form. It is
+      // emitted even when no sketch uses it (it is a timeline row). A literal
+      // frame has no param slots (stated limit); a named plane's offset does.
       if (f.frame) {
+        const vec3 = (a: readonly number[]) => `[${a.map((n) => lit(n)).join(', ')}]`;
+        lines.push(`const ${f.id} = plane({ origin: ${vec3(f.frame.origin)}, u: ${vec3(f.frame.u)}, v: ${vec3(f.frame.v)} })`);
+      } else {
+        const word = PLANE_WORD[f.plane ?? 'xy'] ?? 'top';
+        const off = f.offset ?? 0;
+        const bound = bindings.has(pname(f.id, 'offset'));
+        const offsetArg = off !== 0 || bound ? `, ${numText(bindings, f.id, 'offset', lit(off))}` : '';
+        lines.push(`const ${f.id} = plane('${word}'${offsetArg})`);
+      }
+      return;
+    }
+    if (f.kind === 'sketch') {
+      if (f.onDatum && byId.get(f.onDatum)?.kind === 'datum') {
+        // The datum's own statement (above) carries the placement.
+        lines.push(`const ${f.id} = sketch(${f.onDatum})`);
+      } else if (f.frame) {
         // A framed sketch ignores plane/offset (model-types.ts SketchFrame),
         // so the frame IS the whole placement. Normal = u x v.
         const vec3 = (a: readonly number[]) => `[${a.map((n) => lit(n)).join(', ')}]`;

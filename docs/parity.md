@@ -67,7 +67,7 @@ stays queued and the gate keeps asking for it. Both halves must move.
 The refusals recorded below were measured under the OCCT/FreeCAD-era kernel. This section re-measures them on brep-rs (real wasm,
 `runScript` then `build_doc_json`). Source: PLAN-scripting-layers.md §2 audit. The completeness number that replaces the deleted
 checker is `packages/kernel/test/coverage-matrix.test.mjs` (hardcoded lists, proven on the real wasm) with its report `docs/coverage.json`.
-Last printed line: `3D: 21/21 kinds proven, 26 words doc-covered, 6 refusals pinned; 2D: 4/4 geoms, 16/16 rules, 11/11 refusals + multi-loop builds`.
+Last printed line: `3D: 22/22 kinds proven, 28 words doc-covered, 6 refusals pinned; 2D: 4/4 geoms, 16/16 rules, 11/11 refusals + multi-loop builds`.
 
 | Item | On brep-rs today | Evidence | Verdict |
 |---|---|---|---|

@@ -43,7 +43,7 @@ const { sections } = await import('@shuff57/reshape-script/reshape-docs');
 const KINDS = [
   'box', 'cylinder', 'sphere', 'cone', 'torus', 'prism', 'wedge', 'groove',
   'pocket', 'sketch', 'extrude', 'blend', 'combine', 'revolve', 'mirror',
-  'pattern', 'hole', 'shell', 'fillet', 'draft', 'move',
+  'pattern', 'hole', 'shell', 'fillet', 'draft', 'move', 'datum',
 ];
 
 // Kinds are NOT words: which script words stand for each kind.
@@ -69,6 +69,7 @@ const WORDS = {
   fillet: ['round', 'bevel', 'chamfer', 'fillet'],
   draft: ['draft'],
   move: ['move'],
+  datum: ['plane'],
 };
 
 const PI = Math.PI;
@@ -148,6 +149,19 @@ const FIXTURES = {
     name: 'sketch rect 20x10, extruded 30',
     script: `const s = sketch('top')\ns.rect(20, 10)\nconst a = extrude(s, 30)`,
     volume: 20 * 10 * 30,
+  }],
+  // A datum plane has no geometry of its own: the fixture is a framed sketch
+  // on it, pulled. 40 x 25 x 12 = 12000 at z 10..22, a plain 6-face slab.
+  datum: [{
+    name: 'plane at z=10, 40x25 rect pulled 12',
+    script: `const s = sketch(plane({ origin: [0, 0, 10], u: [1, 0, 0], v: [0, 1, 0] }))\ns.rect(40, 25)\nconst a = extrude(s, 12)`,
+    volume: 40 * 25 * 12,
+    faces: 6,
+  }, {
+    name: 'named plane top at 10, 40x25 rect pulled 12',
+    script: `const s = sketch(plane('top', 10))\ns.rect(40, 25)\nconst a = extrude(s, 12)`,
+    volume: 40 * 25 * 12,
+    faces: 6,
   }],
   extrude: [{
     name: 'extrude rect 20x10 by 30',
@@ -646,7 +660,7 @@ test('A: the hardcoded kind list equals the Feature union in model-types.ts', ()
     (x) => x[1][0].toLowerCase() + x[1].slice(1),
   );
   assert.deepEqual([...kinds].sort(), [...KINDS].sort(), 'the Feature union changed: update KINDS, WORDS, FIXTURES here and docs/coverage.json');
-  assert.equal(KINDS.length, 21);
+  assert.equal(KINDS.length, 22);
   assert.deepEqual(Object.keys(WORDS).sort(), [...KINDS].sort());
 });
 
@@ -702,7 +716,7 @@ for (const kind of KINDS) {
   });
 }
 
-test('A(d): docs/coverage.json lists exactly the 21 kinds, nothing else', () => {
+test('A(d): docs/coverage.json lists exactly the 22 kinds, nothing else', () => {
   assert.equal(coverage.version, 1);
   assert.deepEqual(Object.keys(coverage.kinds).sort(), [...KINDS].sort());
 });
