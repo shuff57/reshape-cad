@@ -25,6 +25,7 @@ import {
   isShape,
   maxRound,
   nameMap,
+  withHoleDepth,
 } from './model-types.js';
 import { rootFeature } from './topo-name.js';
 
@@ -218,7 +219,7 @@ export function generatedParams(doc: ModelDoc): GeneratedParam[] {
     } else if (f.kind === 'hole') {
       push('diameter', 'diameter', f.diameter);
       push('depth', 'depth', f.depth);
-      pushCentre(out, f.id, label, f.center);
+      pushCentre(out, f.id, label, f.center, f.axis === 'x' ? 0 : f.axis === 'y' ? 1 : 2);
       // Item P: "corner spacing" (HoleFeature.corners' own stored dx/dy --
       // half the distance BETWEEN two opposite holes, i.e. measured from
       // the CENTRE) reads as "inset from the edge" only when the target's
@@ -320,8 +321,9 @@ function pushTurn(out: GeneratedParam[], id: string, label: string, r?: Vec3) {
   });
 }
 
-function pushCentre(out: GeneratedParam[], id: string, label: string, c: Vec3) {
+function pushCentre(out: GeneratedParam[], id: string, label: string, c: Vec3, skip = -1) {
   (['x', 'y', 'z'] as const).forEach((a, i) => {
+    if (i === skip) return;
     out.push({
       name: pname(id, a),
       caption: `${label} ${a}`,
@@ -537,9 +539,12 @@ export function applyParam(doc: ModelDoc, name: string, value: number): ModelDoc
     }
     if (f.kind === 'hole') {
       if (slot === 'diameter') { changed = true; return { ...f, diameter: value }; }
-      if (slot === 'depth') { changed = true; return { ...f, depth: value }; }
+      if (slot === 'depth') { changed = true; return withHoleDepth(doc, f, value); }
       const holeAx = slot === 'x' ? 0 : slot === 'y' ? 1 : slot === 'z' ? 2 : null;
-      if (holeAx !== null) {
+      // The component along the drill axis is derived from depth (see
+      // withHoleDepth), so a typed value for it is ignored, not stored.
+      const drillAx = f.axis === 'x' ? 0 : f.axis === 'y' ? 1 : 2;
+      if (holeAx !== null && holeAx !== drillAx) {
         const center: Vec3 = [...f.center];
         center[holeAx] = value;
         changed = true;

@@ -77,6 +77,7 @@ import {
   newBlend,
   extentAlong,
   throughExtentAlong,
+  holeAxialOffset,
   isRoundable,
   canRotate,
   whyCannotRound,
@@ -1638,6 +1639,18 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     return extent + 2;
   }
 
+  /** A blind `deep:` must START AT THE DRILLED FACE: the kernel centres a hole's
+   *  tool on the target's bbox centre, so the axial component of center is set
+   *  to (thickness - deep) / 2 (see holeAxialOffset). Where the thickness cannot
+   *  be bounded (an extrude, a rotated primitive ...) the offset stays 0: that is
+   *  the pinned "explicit deep: always works" contract, and throughDepth()'s own
+   *  error tells the student to give a deep: -- erroring here too would leave no
+   *  way to drill such a shape at all. */
+  function blindOffset(target: SolidHandle, axis: Axis3, deep: number, center: Vec3): void {
+    const off = holeAxialOffset(docNow(), target.id, axis, deep);
+    if (off != null) center[axis === 'x' ? 0 : axis === 'y' ? 1 : 2] = off;
+  }
+
   // ISO 273 medium-fit clearance diameters (mm), M3..M12. A CLEARANCE table
   // (the bolt passes through), not a tap drill. `size:` is interpret-time
   // sugar: it resolves to `across` here and the name is never persisted, so
@@ -1672,6 +1685,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     base.diameter = num(across, base.id, 'diameter');
     if (extra.deep !== undefined) {
       base.depth = num(positiveNumber('hole', 'deep', extra.deep), base.id, 'depth');
+      blindOffset(target, axis, base.depth, center);
     } else {
       base.depth = throughDepth('hole', target, axis);
     }
@@ -1696,6 +1710,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     base.diameter = num(across, base.id, 'diameter');
     if (extra.deep !== undefined) {
       base.depth = num(positiveNumber('holes', 'deep', extra.deep), base.id, 'depth');
+      blindOffset(target, axis, base.depth, center);
     } else {
       base.depth = throughDepth('holes', target, axis);
     }
