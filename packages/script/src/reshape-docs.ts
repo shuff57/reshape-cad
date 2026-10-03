@@ -397,6 +397,26 @@ sk.rect(30, 20)
 const shape = extrude(sk, 10)`,
       },
       {
+        title: 'plane: a flat surface to sketch on',
+        body: `plane('top'), plane('front') and plane('side') name a flat surface, and plane('top', 10) slides it 10 mm along its own normal. plane({ origin: [x, y, z], u: [...], v: [...] }) describes one yourself, with the same rules as a frame in sketch(): u and v each exactly unit length and at right angles, or a plain sentence says which is wrong. plane() only gives you the surface; it adds nothing to the part until a sketch uses it, so sketch(plane('top', 10)) is exactly sketch('top', 10) and a script that writes either one reads back as the plain sketch('top', 10). Naming the plane once is handy when two sketches share it. A plane is FROZEN: it is a place in space, not a face of anything, so it does not move when a box height param changes. The example sketches a 40 x 25 rectangle on the plane at z = 10 and pulls it 12, a 40 x 25 x 12 = 12000 mm^3 slab spanning z from 10 to 22.`,
+        code: `const top = plane({ origin: [0, 0, 10], u: [1, 0, 0], v: [0, 1, 0] })
+const sk = sketch(top)
+sk.rect(40, 25)
+const slab = extrude(sk, 12)`,
+      },
+      {
+        title: 'plane: sharing one plane between two sketches',
+        body: `A named plane works the same way: plane('top', 10) is the plane 10 mm above the top plane. Here one plane carries two sketches, a 20 x 10 rectangle pulled 6 and a circle 5 across pulled 6 beside it, and the two parts are joined. Each is its own sketch on the SAME frozen plane, so the pair stays level with each other even if you later change the size of either one. The slab is 20 x 10 x 6 = 1200 mm^3 and the post is pi x 2.5^2 x 6 = 37.5 pi mm^3, so the joined part is 1200 + 37.5 pi = 1317.81 mm^3 and spans z from 10 to 16.`,
+        code: `const level = plane('top', 10)
+const a = sketch(level)
+a.rect(20, 10, { at: [-20, 0] })
+const slab = extrude(a, 6)
+const b = sketch(level)
+b.circle(5, { at: [20, 0] })
+const post = extrude(b, 6)
+join(slab, post)`,
+      },
+      {
         title: 'extrude: extruding sketches',
         body: `extrude(sk, 30) extrudes 30 mm upward perpendicular to the sketch plane.`,
         code: `const sk = sketch('front')
