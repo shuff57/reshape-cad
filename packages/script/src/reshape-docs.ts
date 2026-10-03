@@ -420,10 +420,10 @@ const shape = revolve(sk, 360)`,
       },
       {
         title: 'groove: cutting a spun sketch',
-        body: `groove(sk, shape, angle) is revolve in reverse: it spins the sketch around the middle line of its plane and takes the ring it sweeps out of the shape. Say the sketch, the shape, then the turn in degrees. The sketch has to reach the surface you cut from, or the ring is a sealed hollow inside the part. Here the 3 x 8 profile has its middle 4.5 mm from the axis and 6 mm above the middle of the block, so it spans radius 3 to 6 and height 2 to 10, and its top edge lies on the top face of the 20 mm block (z = +10). A full turn removes pi x (6^2 - 3^2) x 8 = 216 x pi mm^3 from the 32000 mm^3 block, leaving 31321.42 mm^3, as a ring groove open on the top (10 faces: the top is split into an outer face and a centre island, plus the groove's two walls and its floor).`,
+        body: `groove(sk, shape, angle) is revolve in reverse: it spins the sketch around the vertical middle line of its plane (the world y axis, for a 'front' sketch) and takes the solid it sweeps out away from the shape. Say the sketch, the shape, then the turn in degrees. The profile has to reach the part's surface, or the cut stays sealed inside the part instead of opening onto a face. This kernel builds a groove whose profile touches the axis (a solid disc, not a ring) and runs past a face, with a full 360 degree turn; a ring-shaped (annular) groove, and a partial turn, are not supported yet. Here the 6 x 8 profile spans radius 0 to 6 from the axis and height 14 to 22, and the 40 x 40 x 20 block ends at y = +20, so the profile pokes 2 mm out of that face. A full turn removes a cylinder of radius 6 and length 6 (the part inside the block, from y = 14 to 20): pi x 6^2 x 6 = 216 x pi mm^3 from the 32000 mm^3 block, leaving 31321.42 mm^3. The result is a round blind hole in the face, with 8 faces and 16 edges.`,
         code: `const b = cuboid(40, 40, 20)
 const sk = sketch('front', 0)
-sk.rect(3, 8, { at: [4.5, 6] })
+sk.rect(6, 8, { at: [3, 18] })
 groove(sk, b, 360)`,
       },
       {

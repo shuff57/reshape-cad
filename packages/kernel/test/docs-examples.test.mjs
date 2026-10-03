@@ -105,8 +105,7 @@ for (const { key, code } of examples) {
 // The wasm cannot report shell count, so each page that cuts (pocket, groove,
 // hole, holes) pins the EXACT face count of every cutting feature, derived from
 // the geometry (an open rect pocket in a box = 6 box + 4 walls + floor = 11; its
-// sealed twin = 12). A groove ring is the exception: open (10) and sealed (10)
-// share a face count, so its edge count is pinned too (open 20, sealed 18).
+// sealed twin = 12). A groove pins its edge count too (open disc groove: 8 faces, 16 edges).
 // A page that cuts and is not in the table fails: add its expected counts.
 // Keyed "slug/title" -> { featureId: { faces, edges? } }.
 const CUT_FACES = {
@@ -126,7 +125,7 @@ const CUT_FACES = {
   'drilling/holes: multiple holes': { hole1: { faces: 10 } }, // 6 + 4 bore walls
   'hollowing/The order that always builds': { hole1: { faces: 14 } },
   'sketches/pocket: cutting a sketch into a shape': { pocket1: { faces: 11 } }, // 6 + 4 + floor
-  'sketches/groove: cutting a spun sketch': { groove1: { faces: 10, edges: 20 } },
+  'sketches/groove: cutting a spun sketch': { groove1: { faces: 8, edges: 16 } },
   'panel/The timeline and panel': { pocket1: { faces: 11 } },
 };
 const CUT_KINDS = new Set(['pocket', 'groove', 'hole']);

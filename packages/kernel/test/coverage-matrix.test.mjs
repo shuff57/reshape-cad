@@ -154,20 +154,18 @@ const FIXTURES = {
     script: `const s = sketch('top')\ns.rect(20, 10)\nconst a = extrude(s, 30)`,
     volume: 20 * 10 * 30,
   }],
-  // The sketch must reach a face of the block, or the cut is a SEALED ring
-  // cavity inside it (a second shell that is not an error to the kernel). The
-  // ring sits at x 3..6, z 2..10, so it is open on the top face (z = +10 for a
-  // 20 mm block centred on the origin). Faces: 6 box + 1 (the top is split into
-  // an outer face and an island) + outer wall + inner wall + floor = 10. The
-  // sealed twin (z -4..4) ALSO has 10 faces (6 + 4), so faces alone cannot see
-  // it; the edge count can: sealed 18, open 20 (measured). Volume is the same.
+  // The profile must reach a face of the block, or the cut is a SEALED cavity
+  // (the kernel refuses it). The kernel builds only a disc groove (inner radius
+  // 0, 360 degrees) that crosses a face. Axis is world y; the block spans
+  // y -20..20, the profile v 14..22, so the cut is a cylinder r=6 from y=14 to
+  // the top face at y=20 (length 6). Faces 8 and edges 16 (measured).
   groove: [{
-    name: 'ring groove (radius 3..6, z 2..10) open on the top of a 40x40x20 block',
+    name: 'disc groove (radius 0..6, y 14..22) open on the y=+20 face of a 40x40x20 block',
     script:
-      `const b = box(40, 40, 20)\nconst s = sketch('front', 0)\ns.rect(3, 8, { at: [4.5, 6] })\nconst a = groove(s, b, 360)`,
-    volume: 40 * 40 * 20 - PI * (36 - 9) * 8,
-    faces: 10,
-    edges: 20,
+      `const b = box(40, 40, 20)\nconst s = sketch('front', 0)\ns.rect(6, 8, { at: [3, 18] })\nconst a = groove(s, b, 360)`,
+    volume: 40 * 40 * 20 - PI * 36 * 6,
+    faces: 8,
+    edges: 16,
   }],
   pocket: [{
     name: 'pocket 10x10x5 in 40x40x20',
