@@ -440,6 +440,38 @@ pub(crate) fn cell_area(cell: &Cell) -> f64 {
     acc.abs()
 }
 
+/// Does point `q`, already ON the sphere's surface, lie on this face's trimmed
+/// patch? The patch is the (u, v) box `u_range` x `v_range` less the two polar
+/// square caps a centred tube removes (`trim`). A full, untrimmed sphere
+/// contains every point. Without this a ray root on a zone or a tube-drilled
+/// sphere counted whether or not the face existed there.
+fn sphere_face_contains(sp: &crate::geom::SphereSurf, q: Vec3) -> bool {
+    let tol = 1e-7;
+    let w = sub(q, sp.center);
+    let r = crate::math::len(w);
+    if r < 1e-12 {
+        return false;
+    }
+    if let Some(h) = sp.trim {
+        if dot(w, normalize(sp.e1)).abs() < h - tol && dot(w, normalize(sp.e2)).abs() < h - tol {
+            return false;
+        }
+    }
+    let axis = normalize(sp.axis);
+    let v = (dot(w, scale(axis, -1.0)) / r).clamp(-1.0, 1.0).acos();
+    if v < sp.v_range[0] - tol || v > sp.v_range[1] + tol {
+        return false;
+    }
+    if (sp.u_range[1] - sp.u_range[0] - TWO_PI).abs() < 1e-9 {
+        return true;
+    }
+    let mut u = dot(w, normalize(sp.e2)).atan2(dot(w, normalize(sp.e1))) - sp.u_range[0];
+    while u < -tol {
+        u += TWO_PI;
+    }
+    u <= sp.u_range[1] - sp.u_range[0] + tol
+}
+
 /// The number of boundary crossings of a ray from `p` along unit direction `d`,
 /// and whether every face was a supported type. Callers pick `d` so it is not
 /// parallel to a face or grazing an edge.
@@ -493,7 +525,7 @@ fn crossings(solid: &TSolid, p: Vec3, d: Vec3) -> Option<(usize, bool)> {
                 let b = 2.0 * dot(w, d);
                 let cc = dot(w, w) - s.radius * s.radius;
                 for t in crate::math::solve_quadratic(a, b, cc) {
-                    if t > 1e-9 {
+                    if t > 1e-9 && sphere_face_contains(s, add(p, scale(d, t))) {
                         count += 1;
                     }
                 }
@@ -4707,7 +4739,7 @@ pub fn boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
  return volume_is_translation_invariant(&r).then_some(r);
  }
  if let Some(r) = sphere_axial_bore(op, a, b) {
- return volume_is_translation_invariant(&r).then_some(r);
+ return (volume_is_translation_invariant(&r) && boolean_result_is_sound(op, a, b, &r)).then_some(r);
  }
  if op == "subtract" {
  if let Some(cavity) = subtract_enclosed(a, b) {
@@ -5098,6 +5130,42 @@ fn planar_face_samples(face: &TFace) -> Vec<(Vec3, Vec3)> {
  })
  .collect();
  }
+ Surface::Sphere(sp) if fb.boundary.len() <= 2 => {
+            // A grid over the face's own (u, v) patch, kept only where the face
+            // really is (a drilled sphere has holes) and clear of its rims by far
+            // more than the probe step. The outward normal is radial, negated
+            // when the face is reversed relative to the frame's handedness.
+            let outward = if fb.forward == (dot(cross(sp.e1, sp.e2), sp.axis) > 0.0) { 1.0 } else { -1.0 };
+            let (v0, v1) = (sp.v_range[0], sp.v_range[1]);
+            let (u0, u1) = (sp.u_range[0], sp.u_range[1]);
+            let mut out = Vec::new();
+            for i in 1..=5 {
+                for j in 1..=8 {
+                    let v = v0 + (v1 - v0) * i as f64 / 6.0;
+                    let u = u0 + (u1 - u0) * (j as f64 - 0.5) / 8.0;
+                    let p = fb.surface.param(u, v);
+                    let w = sub(p, sp.center);
+                    let len = crate::math::len(w);
+                    if len < 1e-12 || !sphere_face_contains(sp, p) {
+                        continue;
+                    }
+                    // Stay off a trim edge: the point must still be contained
+                    // when moved 2e-3 sideways in any direction we can name.
+                    let n = scale(w, outward / len);
+                    let tangent = normalize(cross(n, if n[2].abs() < 0.9 { [0.0, 0.0, 1.0] } else { [1.0, 0.0, 0.0] }));
+                    let near = |d: Vec3| {
+                        let q = add(p, scale(d, 2.0e-3));
+                        let q = add(sp.center, scale(sub(q, sp.center), sp.radius / crate::math::len(sub(q, sp.center))));
+                        sphere_face_contains(sp, q)
+                    };
+                    let other = cross(n, tangent);
+                    if near(tangent) && near(scale(tangent, -1.0)) && near(other) && near(scale(other, -1.0)) {
+                        out.push((p, n));
+                    }
+                }
+            }
+            return out;
+        }
  _ => return Vec::new(),
     };
     let n = plane.n;
@@ -5179,7 +5247,7 @@ fn boolean_result_is_sound(op: &str, a: &TSolid, b: &TSolid, r: &TSolid) -> bool
  // operands; a sphere or torus still makes this check abstain rather than
  // refuse a correct solid.
     let plain = |s: &TSolid| {
- s.faces().iter().all(|f| matches!(&f.borrow().surface, Surface::Plane(_) | Surface::Cylinder(_) | Surface::Cone(_)))
+ s.faces().iter().all(|f| matches!(&f.borrow().surface, Surface::Plane(_) | Surface::Cylinder(_) | Surface::Cone(_) | Surface::Sphere(_)))
     };
     if !plain(a) || !plain(b) {
         return true;
@@ -7967,5 +8035,76 @@ mod surface_op_table {
         eprintln!("surface x op table: refused cells ({}):\n  {}", refused.len(), refused.join("\n  "));
         assert!(wrong.is_empty(), "silently wrong cells:\n  {}", wrong.join("\n  "));
         assert!(stale.is_empty(), "known-wrong cells are now exact, drop them from KNOWN_WRONG:\n  {}", stale.join("\n  "));
+    }
+}
+
+/// G2: the soundness check no longer abstains on a sphere. Each mutant below is a
+/// closed, translation-invariant, meshable solid -- exactly what the older guards
+/// wave through -- and each must be refused against the tool it was NOT cut by.
+#[cfg(test)]
+mod sphere_soundness {
+    use super::*;
+
+    fn fixture(r: f64, floor: Option<f64>) -> (TSolid, TSolid) {
+        let sphere = build::sphere_solid([0.0, 0.0, 0.0], 10.0, [0.0, 0.0, 1.0]);
+        let (len, centre) = match floor {
+            None => (40.0, 0.0),
+            Some(f) => (30.0 - f, (f + 30.0) / 2.0),
+        };
+        let tool = build::cylinder_solid([0.0, 0.0, centre], r, len, [0.0, 0.0, 1.0]);
+        (sphere, tool)
+    }
+
+    #[test]
+    fn a_correct_through_and_blind_bore_passes() {
+        for floor in [None, Some(2.0)] {
+            let (sphere, tool) = fixture(3.0, floor);
+            let r = boolean("subtract", &sphere, &tool).expect("a sphere bore builds");
+            assert!(boolean_result_is_sound("subtract", &sphere, &tool, &r), "{floor:?}");
+        }
+    }
+
+    #[test]
+    fn a_bore_of_the_wrong_radius_is_refused() {
+        let (sphere, tool) = fixture(3.0, None);
+        let (_, wrong_tool) = fixture(3.4, None);
+        let wrong = boolean("subtract", &sphere, &wrong_tool).expect("the wrong-radius bore still builds");
+        assert!(volume_is_translation_invariant(&wrong), "the mutant is a closed solid");
+        assert!(!boolean_result_is_sound("subtract", &sphere, &tool, &wrong), "wrong radius slipped through");
+    }
+
+    #[test]
+    fn a_blind_bore_with_the_wrong_floor_is_refused() {
+        let (sphere, tool) = fixture(3.0, Some(2.0));
+        let (_, wrong_tool) = fixture(3.0, Some(4.0));
+        let wrong = boolean("subtract", &sphere, &wrong_tool).expect("the wrong-floor bore still builds");
+        assert!(volume_is_translation_invariant(&wrong), "the mutant is a closed solid");
+        assert!(!boolean_result_is_sound("subtract", &sphere, &tool, &wrong), "wrong floor slipped through");
+    }
+
+    #[test]
+    fn a_result_missing_the_bore_wall_is_refused() {
+        let (sphere, tool) = fixture(3.0, None);
+        let r = boolean("subtract", &sphere, &tool).expect("a sphere bore builds");
+        let faces: Vec<TFace> = r
+            .faces()
+            .into_iter()
+            .filter(|f| !matches!(f.borrow().surface, Surface::Cylinder(_)))
+            .collect();
+        let gutted = Solid { shells: vec![Rc::new(RefCell::new(Shell { faces }))] };
+        assert!(!boolean_result_is_sound("subtract", &sphere, &tool, &gutted), "a dropped wall slipped through");
+    }
+
+    #[test]
+    fn a_result_with_the_sphere_zone_dropped_is_refused() {
+        let (sphere, tool) = fixture(3.0, None);
+        let r = boolean("subtract", &sphere, &tool).expect("a sphere bore builds");
+        let faces: Vec<TFace> = r
+            .faces()
+            .into_iter()
+            .filter(|f| !matches!(f.borrow().surface, Surface::Sphere(_)))
+            .collect();
+        let gutted = Solid { shells: vec![Rc::new(RefCell::new(Shell { faces }))] };
+        assert!(!boolean_result_is_sound("subtract", &sphere, &tool, &gutted), "a dropped zone slipped through");
     }
 }
