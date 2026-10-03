@@ -46,6 +46,13 @@ pub(crate) enum Seg {
         b: Vec3,
         mid: Vec3,
     },
+    /// A closed space curve with no STEP primitive (the meeting curve of two cylinders), carried as
+    /// a clamped cubic B-spline FITTED to the exact curve. `ctrl` are its control points, uniform
+    /// knots 0..m. The fit is checked against the exact curve before it is kept (`fit_closed_curve`).
+    Spline {
+        ctrl: Vec<Vec3>,
+        m: usize,
+    },
 }
 
 impl Seg {
@@ -53,6 +60,7 @@ impl Seg {
         match self {
             Seg::Line { a, .. } => *a,
             Seg::Arc { a, .. } => *a,
+            Seg::Spline { ctrl, .. } => ctrl[0],
         }
     }
 
@@ -60,6 +68,7 @@ impl Seg {
         match self {
             Seg::Line { b, .. } => *b,
             Seg::Arc { b, .. } => *b,
+            Seg::Spline { ctrl, .. } => ctrl[ctrl.len() - 1],
         }
     }
 
@@ -84,6 +93,7 @@ impl Seg {
                 b: *a,
                 mid: *mid,
             },
+            Seg::Spline { ctrl, m } => Seg::Spline { ctrl: ctrl.iter().rev().cloned().collect(), m: *m },
         }
     }
 }
@@ -128,6 +138,8 @@ struct EdgeRec {
     b: Vec3,
     mid: Vec3,
     circle: Option<(Vec3, f64, Vec3)>,
+    /// (centroid of the control points, count, second control point) of a spline edge
+    spline: Option<(Vec3, usize, Vec3)>,
     id: usize,
 }
 
@@ -196,6 +208,16 @@ impl Writer {
     /// gets the same id back with `false`, which is exactly what
     /// `ORIENTED_EDGE`'s orientation flag is for.
     fn edge(&mut self, seg: &Seg) -> (usize, bool) {
+        let spline = match seg {
+            Seg::Spline { ctrl, .. } => {
+                let mut c = [0.0; 3];
+                for p in ctrl {
+                    c = add(c, *p);
+                }
+                Some((scale(c, 1.0 / ctrl.len() as f64), ctrl.len(), ctrl[1]))
+            }
+            _ => None,
+        };
         let (a, b, mid, circle) = match seg {
             Seg::Line { a, b } => (*a, *b, scale(add(*a, *b), 0.5), None),
             Seg::Arc {
@@ -206,8 +228,19 @@ impl Writer {
                 b,
                 mid,
             } => (*a, *b, *mid, Some((*center, *radius, *axis))),
+            Seg::Spline { ctrl, .. } => (ctrl[0], ctrl[ctrl.len() - 1], ctrl[ctrl.len() / 2], None),
         };
         for rec in &self.edges {
+            if let (Some((c0, n0, s0)), Some((c1, n1, s1))) = (&rec.spline, &spline) {
+                if n0 == n1 && same_pt(*c0, *c1) {
+                    // the same closed curve walked either way: the second control point says which
+                    return (rec.id, same_pt(*s0, *s1));
+                }
+                continue;
+            }
+            if rec.spline.is_some() || spline.is_some() {
+                continue;
+            }
             let geometry_matches = match (&rec.circle, &circle) {
                 (None, None) => true,
                 (Some((c0, r0, ax0)), Some((c1, r1, ax1))) => {
@@ -247,14 +280,27 @@ impl Writer {
         }
         let va = self.vertex(a);
         let vb = self.vertex(b);
-        let geom = match circle {
-            None => {
+        let geom = match (circle, seg) {
+            (_, Seg::Spline { ctrl, m }) => {
+                let pts: Vec<String> = ctrl.iter().map(|p| format!("#{}", self.point(*p))).collect();
+                let mut mult = vec![1usize; m + 1];
+                mult[0] = 4;
+                mult[*m] = 4;
+                let knots: Vec<String> = (0..=*m).map(|k| real(k as f64)).collect();
+                self.put(format!(
+                    "B_SPLINE_CURVE_WITH_KNOTS('',3,({}),.UNSPECIFIED.,.T.,.F.,({}),({}),.UNSPECIFIED.)",
+                    pts.join(","),
+                    mult.iter().map(|k| k.to_string()).collect::<Vec<_>>().join(","),
+                    knots.join(",")
+                ))
+            }
+            (None, _) => {
                 let o = self.point(a);
                 let d = self.direction(sub(b, a));
                 let v = self.put(format!("VECTOR('',#{d},1.)"));
                 self.put(format!("LINE('',#{o},#{v})"))
             }
-            Some((center, radius, axis)) => {
+            (Some((center, radius, axis)), _) => {
                 let pl = self.axis2(center, axis, sub(a, center));
                 self.put(format!("CIRCLE('',#{pl},{})", real(radius)))
             }
@@ -265,6 +311,7 @@ impl Writer {
             b,
             mid,
             circle,
+            spline,
             id,
         });
         (id, true)
@@ -294,8 +341,156 @@ fn right_handed(u: Vec3, v: Vec3, n: Vec3) -> bool {
     dot(cross(u, v), n) > 0.0
 }
 
+/// Number of spans in the B-spline fitted to a closed space curve. 256 spans of a smooth analytic
+/// curve interpolate to about 1e-9 of its size; `fit_closed_curve` measures it and refuses past 1e-7.
+const SPLINE_SPANS: usize = 256;
+
+/// The four cubic basis functions that are non-zero on knot span `i` at `t` (Piegl & Tiller A2.2).
+fn basis_funs(i: usize, t: f64, knots: &[f64]) -> [f64; 4] {
+    let mut n = [0.0; 4];
+    let mut left = [0.0; 4];
+    let mut right = [0.0; 4];
+    n[0] = 1.0;
+    for j in 1..=3 {
+        left[j] = t - knots[i + 1 - j];
+        right[j] = knots[i + j] - t;
+        let mut saved = 0.0;
+        for r in 0..j {
+            let tmp = n[r] / (right[r + 1] + left[j - r]);
+            n[r] = saved + right[r + 1] * tmp;
+            saved = left[j - r] * tmp;
+        }
+        n[j] = saved;
+    }
+    n
+}
+
+/// A closed curve (`point_at(0) == point_at(1)`) as a clamped cubic B-spline through `SPLINE_SPANS + 1`
+/// equally spaced points, with the exact end tangents. `rev` walks the curve the other way. The result
+/// is checked: its midpoints must lie within 1e-7 of the curve's size from the exact curve, or this
+/// refuses (a STEP file that approximates worse than that would be a wrong solid).
+fn fit_closed_curve(curve: &Curve, rev: bool) -> Result<Seg, String> {
+    let m = SPLINE_SPANS;
+    let ncp = m + 3;
+    let at = |s: f64| curve.point_at(if rev { 1.0 - s / m as f64 } else { s / m as f64 });
+    let sgn = if rev { -1.0 } else { 1.0 };
+    let tan = scale(curve.derivative_at(0.0), sgn / m as f64);
+    let mut knots = vec![0.0; 4];
+    knots.extend((1..m).map(|k| k as f64));
+    knots.extend([m as f64; 4]);
+    let span_of = |t: f64| if t >= m as f64 { m + 2 } else { t.floor() as usize + 3 };
+    let mut a = vec![vec![0.0f64; ncp + 3]; ncp]; // [matrix | 3 right-hand sides]
+    let mut pts: Vec<Vec3> = (0..=m).map(|k| at(k as f64)).collect();
+    pts[m] = pts[0];
+    for k in 0..=m {
+        let t = k as f64;
+        let sp = span_of(t);
+        let nf = basis_funs(sp, t, &knots);
+        for j in 0..4 {
+            a[k][sp - 3 + j] = nf[j];
+        }
+        for c in 0..3 {
+            a[k][ncp + c] = pts[k][c];
+        }
+    }
+    // clamped cubic end derivatives: S'(0) = 3 (c1 - c0), S'(m) = 3 (c[m+2] - c[m+1])
+    a[m + 1][0] = -1.0;
+    a[m + 1][1] = 1.0;
+    a[m + 2][m + 1] = -1.0;
+    a[m + 2][m + 2] = 1.0;
+    for c in 0..3 {
+        a[m + 1][ncp + c] = tan[c] / 3.0;
+        a[m + 2][ncp + c] = tan[c] / 3.0;
+    }
+    for col in 0..ncp {
+        let piv = (col..ncp)
+            .max_by(|&x, &y| a[x][col].abs().partial_cmp(&a[y][col].abs()).unwrap())
+            .unwrap();
+        if a[piv][col].abs() < 1e-12 {
+            return Err("a curve it could not fit".to_string());
+        }
+        a.swap(col, piv);
+        for row in 0..ncp {
+            if row != col {
+                let f = a[row][col] / a[col][col];
+                if f != 0.0 {
+                    for k in col..ncp + 3 {
+                        a[row][k] -= f * a[col][k];
+                    }
+                }
+            }
+        }
+    }
+    let ctrl: Vec<Vec3> = (0..ncp)
+        .map(|i| [a[i][ncp] / a[i][i], a[i][ncp + 1] / a[i][i], a[i][ncp + 2] / a[i][i]])
+        .collect();
+    // Self-check: the fit must sit on the exact curve between its sample points.
+    let size = pts.iter().fold(1.0f64, |acc, p| acc.max(crate::math::len(*p)));
+    for k in 0..m {
+        let t = k as f64 + 0.5;
+        let sp = span_of(t);
+        let nf = basis_funs(sp, t, &knots);
+        let mut p = [0.0; 3];
+        for j in 0..4 {
+            p = add(p, scale(ctrl[sp - 3 + j], nf[j]));
+        }
+        if dist(p, at(t)) > 1e-7 * size {
+            return Err("a curve whose B-spline fit is not exact enough".to_string());
+        }
+    }
+    let mut ctrl = ctrl;
+    ctrl[0] = pts[0];
+    ctrl[ncp - 1] = pts[m];
+    Ok(Seg::Spline { ctrl, m })
+}
+
+/// Net angle a closed piece of boundary turns about `axis` (+-2 pi for a rim or a curve that goes
+/// round the part, about 0 for one that does not).
+fn turns_about(seg: &Seg, origin: Vec3, axis: Vec3, e1: Vec3) -> f64 {
+    let e2 = cross(axis, e1);
+    let angle = |p: Vec3| {
+        let d = sub(p, origin);
+        dot(d, e2).atan2(dot(d, e1))
+    };
+    let wrap = |mut d: f64| {
+        while d > std::f64::consts::PI {
+            d -= 2.0 * std::f64::consts::PI;
+        }
+        while d < -std::f64::consts::PI {
+            d += 2.0 * std::f64::consts::PI;
+        }
+        d
+    };
+    match seg {
+        Seg::Arc { axis: ax, .. } if same_pt(seg.start(), seg.end()) => {
+            if dot(*ax, axis) >= 0.0 { 2.0 * std::f64::consts::PI } else { -2.0 * std::f64::consts::PI }
+        }
+        Seg::Spline { ctrl, .. } => ctrl.windows(2).map(|w| wrap(angle(w[1]) - angle(w[0]))).sum(),
+        _ => 0.0,
+    }
+}
+
+/// A face loop made of two closed pieces joined by a seam (a cylinder wall between two curves) must
+/// turn OPPOSITE ways in the wall's own parameter space, or it winds twice and OCCT reads a different
+/// solid (the same trap `cylinder_loop` documents). The kernel records its edge uses for the 3D shell,
+/// not for this, so turn the second closed piece round when it winds with the first. The piece keeps
+/// its end points, so the chain stays connected.
+fn opposed_windings(mut segs: Vec<Seg>, origin: Vec3, axis: Vec3, e1: Vec3) -> Vec<Seg> {
+    let tau = 2.0 * std::f64::consts::PI;
+    let closed: Vec<usize> = (0..segs.len())
+        .filter(|&i| turns_about(&segs[i], origin, axis, e1).abs() > tau - 1e-6)
+        .collect();
+    if closed.len() == 2 {
+        let (a, b) = (closed[0], closed[1]);
+        if turns_about(&segs[a], origin, axis, e1) * turns_about(&segs[b], origin, axis, e1) > 0.0 {
+            segs[b] = segs[b].reversed();
+        }
+    }
+    segs
+}
+
 /// The boundary pieces of one wire, in the order the wire walks them.
-fn wire_segs(wire: &[crate::topo::EdgeUse<Curve>]) -> Vec<Seg> {
+fn wire_segs(wire: &[crate::topo::EdgeUse<Curve>]) -> Result<Vec<Seg>, String> {
     let mut out = Vec::with_capacity(wire.len());
     for u in wire {
         let e = u.edge.borrow();
@@ -305,10 +500,9 @@ fn wire_segs(wire: &[crate::topo::EdgeUse<Curve>]) -> Vec<Seg> {
             (e.b.borrow().point, e.a.borrow().point)
         };
         out.push(match &e.curve {
-            // `write_solid` refuses any solid holding this curve before it gets
-            // here (no exact STEP counterpart is written yet); the arm only
-            // keeps the match total.
-            Curve::Segment { .. } | Curve::CylCyl { .. } => Seg::Line { a: start, b: end },
+            Curve::Segment { .. } => Seg::Line { a: start, b: end },
+            // No STEP primitive: a clamped cubic B-spline fitted to the exact curve and checked.
+            Curve::CylCyl { .. } => fit_closed_curve(&e.curve, !u.forward)?,
             Curve::Circle {
                 center,
                 radius,
@@ -335,7 +529,13 @@ fn wire_segs(wire: &[crate::topo::EdgeUse<Curve>]) -> Vec<Seg> {
                 // Which end of the stored curve this use starts from decides
                 // the travel direction; the edge's own a/b order does not have
                 // to follow the curve's parameterisation.
-                let with_curve = same_pt(start, e.curve.point_at(0.0));
+                // A closed arc starts and ends at one point, so the endpoints cannot say which
+                // way it is walked: the edge use's own flag does.
+                let with_curve = if same_pt(start, end) {
+                    u.forward
+                } else {
+                    same_pt(start, e.curve.point_at(0.0))
+                };
                 let mut axis = scale(*normal, if *sweep >= 0.0 { 1.0 } else { -1.0 });
                 if !with_curve {
                     axis = scale(axis, -1.0);
@@ -351,7 +551,7 @@ fn wire_segs(wire: &[crate::topo::EdgeUse<Curve>]) -> Vec<Seg> {
             }
         });
     }
-    out
+    Ok(out)
 }
 
 fn closed_chain(segs: &[Seg]) -> bool {
@@ -596,8 +796,18 @@ fn revolved_signed_area(segs: &[Seg], origin: Vec3, surface_axis: Vec3, e1: Vec3
     let mut pts: Vec<[f64; 2]> = Vec::with_capacity(segs.len() + 1);
     let mut u = angle(segs[0].start());
     for s in segs {
+        if let Seg::Spline { ctrl, .. } = s {
+            // The control polygon follows the curve closely (the fit has 256+ spans), so its
+            // unwrapped angle and height give the loop's winding and the area's sign.
+            for w in ctrl.windows(2) {
+                pts.push([u, height(w[0])]);
+                u += wrap(angle(w[1]) - angle(w[0]));
+            }
+            continue;
+        }
         pts.push([u, height(s.start())]);
         u += match s {
+            Seg::Spline { .. } => unreachable!("handled above"),
             // A straight edge on a cylinder is a ruling, parallel to the axis,
             // so it spans no angle at all.
             Seg::Line { .. } => 0.0,
@@ -650,6 +860,17 @@ fn face_bounds(face: &crate::topo::Face<Curve, Surface>) -> Result<(Vec<Vec<Seg>
 
     let mut bounds: Vec<Vec<Seg>> = Vec::new();
     match &face.surface {
+        // a bore across a cylinder's side: both faces are bounded by the meeting curve, so they are
+        // written from their own wires (rims, seam, B-spline curves) instead of the plain seam loop
+        Surface::Cylinder(c) if c.cross.is_some() => {
+            for w in &face.boundary {
+                let segs = opposed_windings(wire_segs(&w.borrow().edges)?, c.origin, c.axis, c.e1);
+                if !closed_chain(&segs) {
+                    return Err("a face whose wire is not a closed chain".to_string());
+                }
+                bounds.push(segs);
+            }
+        }
         Surface::Cylinder(c) => {
             if face.boundary.len() > 1 {
                 return Err("a cylindrical face with a hole in it".to_string());
@@ -667,7 +888,7 @@ fn face_bounds(face: &crate::topo::Face<Curve, Surface>) -> Result<(Vec<Vec<Seg>
         }
         _ => {
             for w in &face.boundary {
-                let segs = wire_segs(&w.borrow().edges);
+                let segs = wire_segs(&w.borrow().edges)?;
                 if !closed_chain(&segs) {
                     return Err("a face whose wire is not a closed chain".to_string());
                 }
@@ -753,16 +974,6 @@ pub fn write_solid(solid: &TSolid, product: &str) -> Result<String, String> {
     if faces.is_empty() {
         return Err("this shape has no faces to write".to_string());
     }
-    // A bore across a cylinder's side meets the wall in a closed space curve
-    // (docs/specs/SPEC-transverse-bore.md). STEP would need an
-    // INTERSECTION_CURVE or a B-spline, and writing a straight line or a
-    // sampled polyline for it would be a wrong solid. Refuse in a sentence.
-    if faces.iter().any(|f| {
-        matches!(&f.borrow().surface, Surface::Cylinder(c) if c.cross.is_some())
-    }) {
-        return Err("brep-rs cannot write a bore across a cylinder's side to STEP yet: the two surfaces meet in a space curve with no exact STEP form written so far -- the part shows in the viewport and measures exactly, but export it before the cross bore".to_string());
-    }
-
     // Build every face's bounds first, then write the CHAINED ones first.
     // A closed circle's seam vertex is arbitrary on its own -- a cap's hole
     // bound is one circle and joins nothing -- but a cylinder wall chains that

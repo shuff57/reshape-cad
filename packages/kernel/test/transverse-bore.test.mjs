@@ -199,8 +199,54 @@ test('a second cut on a bored part refuses plainly instead of reading its trimme
   assert.match(out.refusals.hole2 ?? '', /already has a bore across its side/);
 });
 
-test('STEP export refuses in a sentence (no exact form for the space curve is written yet)', () => {
-  const out = build("const c = cylinder(20, 30); hole(c, { across: 4, along: 'x' })");
-  const r = JSON.parse(brep.export_step(out.json, out.id));
-  assert.match(r.error, /cannot write a bore across a cylinder's side to STEP yet/);
+// STEP: the meeting curve has no STEP primitive, so it is written as a clamped cubic B-spline fitted to the
+// exact curve (256 spans) and checked against it before the file is kept. OCCT reads the file back; the
+// volume must equal the numeric integral to 1e-7, the shape must be valid, one solid, one shell.
+function readStep(text) {
+  oc.FS.writeFile('/in.step', text);
+  const reader = new oc.STEPControl_Reader();
+  reader.ReadFile('/in.step');
+  reader.TransferRoots(new oc.Message_ProgressRange());
+  const shape = reader.OneShape();
+  const g = new oc.GProp_GProps();
+  oc.BRepGProp.VolumeProperties(shape, g, 1e-7, false, false);
+  const an = new oc.BRepCheck_Analyzer(shape, true, false, false);
+  const count = (kind) => { let n = 0; for (const ex = new oc.TopExp_Explorer(shape, oc.TopAbs_ShapeEnum[kind], oc.TopAbs_ShapeEnum.TopAbs_SHAPE); ex.More(); ex.Next()) n++; return n; };
+  return { volume: g.Mass(), valid: an.IsValid_2 ? an.IsValid_2() : an.IsValid(), solids: count('TopAbs_SOLID'), shells: count('TopAbs_SHELL'), faces: count('TopAbs_FACE') };
+}
+
+test('STEP: a through bore writes a B-spline meeting curve and OCCT reads back the numeric-integral volume', () => {
+  for (const ratio of [0.05, 0.2, 0.5, 0.9, 0.95]) {
+    const r = 10 * ratio;
+    const out = build(`const c = cylinder(20, 30); hole(c, { across: ${2 * r}, along: 'x' })`);
+    const f = JSON.parse(brep.export_step(out.json, out.id));
+    assert.ok(f.step, `ratio ${ratio}: ${JSON.stringify(f).slice(0, 200)}`);
+    const back = readStep(f.step);
+    near(back.volume, Math.PI * 100 * 30 - removed(10, r), 1e-7, `ratio ${ratio}`);
+    assert.deepEqual([back.solids, back.shells, back.faces, back.valid], [1, 1, 4, true], `ratio ${ratio}`);
+  }
+});
+
+test('STEP: blind bores (several floors, both sides) and a bore along y read back exactly', () => {
+  const R = 10;
+  for (const [ratio, frac] of [[0.2, -0.9], [0.2, 0], [0.5, 0.9], [0.9, 0]]) {
+    const r = R * ratio, floor = frac * Math.sqrt(R * R - r * r);
+    for (const along of ['x', 'y']) {
+      const out = build(`const c = cylinder(20, 30); hole(c, { across: ${2 * r}, along: '${along}', deep: ${R - floor} })`);
+      assert.deepEqual(out.refusals, {});
+      const f = JSON.parse(brep.export_step(out.json, out.id));
+      assert.ok(f.step, `ratio ${ratio} floor ${floor} ${along}: ${JSON.stringify(f).slice(0, 200)}`);
+      const back = readStep(f.step);
+      near(back.volume, Math.PI * 100 * 30 - removed(R, r, floor), 1e-7, `ratio ${ratio} floor ${floor} ${along}`);
+      assert.deepEqual([back.solids, back.shells, back.faces, back.valid], [1, 1, 5, true], `ratio ${ratio} floor ${floor} ${along}`);
+    }
+  }
+});
+
+test('STEP: a moved bored part writes and reads back the same volume', () => {
+  const out = build("const c = cylinder(20, 30); const h = hole(c, { across: 4, along: 'x' }); move(h, [37, -23, 11])");
+  assert.deepEqual(out.refusals, {});
+  const f = JSON.parse(brep.export_step(out.json, out.id));
+  assert.ok(f.step, JSON.stringify(f).slice(0, 200));
+  near(readStep(f.step).volume, 9174.71354867276, 1e-7);
 });

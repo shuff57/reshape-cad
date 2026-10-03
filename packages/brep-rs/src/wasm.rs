@@ -6860,9 +6860,9 @@ mod cavity_guard_tests {
     }
 
     /// Measure, mesh and STEP at the wasm surface: the bored part measures and
-    /// meshes; STEP export refuses in a sentence rather than writing a wrong curve.
+    /// meshes; STEP export writes the meeting curve as a checked B-spline.
     #[test]
-    fn k8_transverse_bore_measures_meshes_and_refuses_step() {
+    fn k8_transverse_bore_measures_meshes_and_exports_step() {
         let doc = k8_hole(json!({ "id": "t", "kind": "cylinder", "radius": 10.0, "height": 30.0 }), 40.0, [0.0; 3], "x");
         let doc = json!({ "features": [doc["features"][0].clone(), { "id": "h", "kind": "hole", "target": "t", "diameter": 4.0, "depth": 40.0, "center": [0.0, 0.0, 0.0], "axis": "x" }] });
         let text = doc.to_string();
@@ -6874,7 +6874,10 @@ mod cavity_guard_tests {
         assert!(mesh.get("error").is_none(), "{mesh}");
         assert_eq!(mesh["faces"].as_array().unwrap().len(), 4);
         let step: Value = serde_json::from_str(&export_step(&text, "h")).unwrap();
-        assert!(step["error"].as_str().unwrap().contains("bore across a cylinder's side"), "{step}");
+        // The meeting curve has no STEP primitive; it is written as a checked B-spline fit.
+        let file = step["step"].as_str().unwrap_or_else(|| panic!("a STEP file: {step}"));
+        assert!(file.contains("B_SPLINE_CURVE_WITH_KNOTS"), "the space curve is a B-spline");
+        assert!(file.contains("CYLINDRICAL_SURFACE"), "the walls are cylinders");
         // Edge lengths resolve over every edge: the meeting curve's is an elliptic
         // integral, by quadrature, a little over the bore's own circumference 4 pi.
         let mut curve_lengths = 0;

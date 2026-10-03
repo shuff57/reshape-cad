@@ -1590,3 +1590,5 @@ names are taught" as "the friendly names were removed".
 `packages/brep-rs/pkg/brep_rs_bg.wasm` = **774,941 bytes** at HEAD `42bac64` (release profile: `opt-level="z"`, `lto=true`, `panic="abort"`), built with
 `cd packages/brep-rs && wasm-pack build --release --target web --out-dir pkg`. Record-only: no CI check (pkg/ is gitignored and `scripts/` is lead-owned;
 see PLAN-next decision N5). Any task that grows it by more than ~5% (about 39 kB) should say why in its commit message.
+
+Update 2026-10-03: the wasm is now **821,125 bytes** (+5.9% over the baseline). The growth, in order: sphere bore +5.6 kB, round replay and sentences +6 kB, bored-sphere mesher and bbox +18 kB, the STEP spherical-zone writer and the B-spline fit for the cross bore +25 kB. Over the ~5% line, so it is stated here; no code was removed for size.
