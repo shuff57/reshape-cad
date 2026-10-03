@@ -87,6 +87,7 @@ import type { SelectionFilters, SelectionItem } from '../selection-model.js';
 import MarkingMenu from './MarkingMenu.js';
 import { classifyRightClick, classifyGesture, wedgesForMode, type PointerSample, type GestureThresholds } from './marking-menu-core.js';
 import { rightClickGuard } from './marking-menu-guard.js';
+import { pickDatum, type DatumQuad } from './datum-pick.js';
 import { marqueeKind, pointSetSelect, type MarqueeDrag } from '../marquee-select.js';
 
 // Todo 19's [CONFIRM]-sourced gesture thresholds: the delay is the
@@ -332,6 +333,10 @@ interface Props {
   /** Ids of datum planes currently selected (timeline), drawn brighter. A
    *  datum has no mesh, so the viewport cannot learn this from a pick. */
   selectedDatumIds?: string[];
+  /** A click that lands on a datum plane and on no solid face or edge. Datums
+   *  have no mesh, so this is separate from `onPick`; the modifiers say whether
+   *  the click accumulates (Ctrl/Shift/Cmd) or replaces the selection. */
+  onDatumPick?: (datumId: string, mods: { ctrlKey: boolean; shiftKey: boolean; metaKey: boolean }) => void;
   /**
    * How many pixels of docked UI panel currently sit to one side of the
    * canvas -- the Rules panel's own width while a sketch is being viewed
@@ -621,7 +626,7 @@ const FILTER_CHIPS: { key: keyof SelectionFilters; label: string }[] = [
  */
 export default function BrepViewportThree({
   doc, deflection, onStats, onPick, pick, selectedCount, selectionLabel, anchors, onAnchors, onMesh, registerPickAt,
-  sketchPlane, selectedDatumIds, panelOcclusionPx, ruleActivityAt, onEngine, badgesInStatusBar = false, onNavHint, filters, onFiltersChange, onBoxSelect,
+  sketchPlane, selectedDatumIds, onDatumPick, panelOcclusionPx, ruleActivityAt, onEngine, badgesInStatusBar = false, onNavHint, filters, onFiltersChange, onBoxSelect,
   onFeatureDoubleClick, onSelectAll, onDeleteSelected, onUndo, onRedo, onStartSketch, onRepeat, onMoveHotkey, preview,
 }: Props) {
   const [phase, setPhase] = useState<'loading' | 'ready' | 'error'>('loading');
@@ -845,6 +850,11 @@ export default function BrepViewportThree({
   docRef.current = doc;
   const onPickRef = useRef(onPick);
   onPickRef.current = onPick;
+  const onDatumPickRef = useRef(onDatumPick);
+  onDatumPickRef.current = onDatumPick;
+  // The datum squares as last drawn, for the click handler (its closure is made
+  // once, so it reads them through a ref).
+  const datumQuadsRef = useRef<DatumQuad[]>([]);
   const pickRef = useRef(pick);
   pickRef.current = pick;
   // Same stale-closure reasoning as onPickRef above -- filters is read by
@@ -1876,6 +1886,24 @@ export default function BrepViewportThree({
     function pickAt(clientX: number, clientY: number, mods?: { ctrlKey: boolean; shiftKey: boolean; metaKey: boolean }) {
       const hit = hitAt(clientX, clientY);
       if (!hit) {
+        // Nothing solid under the cursor: a datum plane there takes the click.
+        // hitAt() has just aimed the shared raycaster at this pointer.
+        const d = onDatumPickRef.current && datumQuadsRef.current.length > 0
+          ? pickDatum(
+            [raycaster.ray.origin.x, raycaster.ray.origin.y, raycaster.ray.origin.z],
+            [raycaster.ray.direction.x, raycaster.ray.direction.y, raycaster.ray.direction.z],
+            datumQuadsRef.current)
+          : null;
+        if (d) {
+          selectedFaceMesh.visible = false;
+          selectedVertexMesh.visible = false;
+          setSelectedEdgeTube(null);
+          selectedFaceStateRef.current = null;
+          onDatumPickRef.current!(d.id, {
+            ctrlKey: mods?.ctrlKey ?? false, shiftKey: mods?.shiftKey ?? false, metaKey: mods?.metaKey ?? false });
+          renderNow();
+          return;
+        }
         selectedFaceMesh.visible = false;
         selectedVertexMesh.visible = false;
         setSelectedEdgeTube(null);
@@ -3760,7 +3788,8 @@ try {
   // here as a translucent square (a filled quad plus an outline) lying in its
   // plane, sized from the model (floor 40 mm half-side). Rebuilt whenever the
   // doc or the selection changes, and disposed on every pass. Selection is
-  // through the timeline row; a click in the canvas does not pick it.
+  // through the timeline row, or a click in the canvas that lands on no solid
+  // face or edge (see pickAt / datumQuadsRef).
   useEffect(() => {
     if (phase !== 'ready') return;
     const three = threeRef.current;
@@ -3769,6 +3798,7 @@ try {
     const renderer = rendererRef.current;
     if (!three || !scene || !camera || !renderer) return;
     const datums = doc.features.filter((f) => f.kind === 'datum');
+    datumQuadsRef.current = [];
     if (datums.length === 0) return;
     const { THREE } = three;
     const box = computeSceneBox();
@@ -3779,6 +3809,7 @@ try {
     }
     const group = new THREE.Group();
     group.name = 'datum-planes';
+    const quads: DatumQuad[] = [];
     const selectedSet = new Set(selectedDatumIds ?? []);
     for (const d of datums) {
       const { origin: o, u, v } = sketchFrameOf(d);
@@ -3793,15 +3824,18 @@ try {
         color: colour, transparent: true, opacity: on ? 0.22 : 0.1, side: THREE.DoubleSide, depthWrite: false,
       }));
       fill.userData.datumId = d.id;
+      quads.push({ id: d.id, origin: o, u, v, half });
       const outline = new THREE.LineLoop(
         new THREE.BufferGeometry().setFromPoints(corners),
         new THREE.LineBasicMaterial({ color: colour, transparent: true, opacity: on ? 1 : 0.6 }),
       );
       group.add(fill, outline);
     }
+    datumQuadsRef.current = quads;
     scene.add(group);
     renderer.render(scene, camera);
     return () => {
+      datumQuadsRef.current = [];
       scene.remove(group);
       group.traverse((o) => {
         const m = o as THREE_NS.Mesh;

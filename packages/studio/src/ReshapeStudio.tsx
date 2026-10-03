@@ -1445,6 +1445,15 @@ export default function ReshapeStudio({
                 selectionLabel={showBrep ? selectionLabel : null}
                 sketchPlane={activeSketchPlane}
                 selectedDatumIds={selected.filter((id) => doc.features.some((f) => f.id === id && f.kind === 'datum'))}
+                onDatumPick={showBrep ? (id, m) => setSelection((prev) => {
+                  // The same state change a timeline row makes: a plain click
+                  // replaces the selection with this plane, Ctrl/Shift/Cmd
+                  // toggles it in or out of the current feature ids.
+                  const add = m.ctrlKey || m.metaKey || m.shiftKey;
+                  const ids = featuresOf(prev);
+                  const next = add ? (ids.includes(id) ? ids.filter((x) => x !== id) : [...ids, id]) : [id];
+                  return withFeatureIds(add ? prev : clearSelection(prev), next);
+                }) : undefined}
                 anchors={specs}
                 onAnchors={setAnchors}
                 onMesh={(m) => {
