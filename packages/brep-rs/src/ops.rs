@@ -905,9 +905,11 @@ fn cyl_face_contains(c: &Cylinder, q: Vec3) -> bool {
         let r = sub(dv, scale(c.axis, av));
         let e1 = dot(r, c.e1);
         let e2 = dot(r, c.e2);
-        let mut a = e2.atan2(e1) - arc.start;
-        a = a.rem_euclid(TWO_PI);
-        if a > arc.span + 1e-7 {
+        // Wrap into [0, 2pi) from BOTH sides: an arc may start below -pi (the lens
+        // wall of two overlapping cylinders starts at -4.587), so atan2 - start can
+        // exceed a full turn and must not read as "past the span".
+        let a = (e2.atan2(e1) - arc.start).rem_euclid(TWO_PI);
+        if a > arc.span + 1e-7 && a < TWO_PI - 1e-7 {
             return false;
         }
     }
@@ -5158,6 +5160,19 @@ pub(crate) fn solids_identical(a: &TSolid, b: &TSolid) -> bool {
     })
 }
 
+/// The guards a special-case boolean builder's result must clear before it ships:
+/// a translation-invariant volume AND the set-theoretic soundness check against
+/// the operands. These builders used to return on translation invariance alone.
+///
+/// The edge-closure guard is deliberately NOT applied here. These builders emit
+/// partial walls (half-disc grooves, lens walls) whose rims are separate handles
+/// on arcs and full circles that never pair by geometry, so every seam would read
+/// as an open rim on a solid whose mesh is watertight (measured: the half-disc
+/// groove fixtures). The general face-by-face path welds and applies it.
+fn checked_special_result(op: &str, a: &TSolid, b: &TSolid, r: TSolid) -> Option<TSolid> {
+    (volume_is_translation_invariant(&r) && boolean_result_is_sound(op, a, b, &r)).then_some(r)
+}
+
 /// The boolean entry point. The face-by-face path runs first, exactly as
 /// before; only when it refuses does the planar split-and-classify path
 /// (`ops_planar`, SPEC-brep-boolean-split-classify S1) get a turn, so nothing
@@ -5351,14 +5366,14 @@ fn boolean_legacy(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
  }
  if op == "subtract" {
  if let Some(cavity) = subtract_enclosed(a, b) {
- return volume_is_translation_invariant(&cavity).then_some(cavity);
+ return checked_special_result(op, a, b, cavity);
  }
  }
  if let Some(r) = cylinder_pair_boolean(op, a, b) {
- return volume_is_translation_invariant(&r).then_some(r);
+ return checked_special_result(op, a, b, r);
  }
  if let Some(r) = cylinder_open_hollow(op, a, b) {
- return volume_is_translation_invariant(&r).then_some(r);
+ return checked_special_result(op, a, b, r);
     }
     let mut faces: Vec<TFace> = Vec::new();
     for f in a.faces() {
@@ -9488,6 +9503,62 @@ mod residual_tests {
                 let v = build::solid_volume(&r);
                 assert!((v - exact).abs() < 1e-5 * exact, "w={w} off={off}: {v} vs {exact}");
             }
+        }
+    }
+}
+
+/// The special-case builders now clear the soundness check too. The lens of two
+/// overlapping cylinders is the case that exposed `cyl_face_contains` reading an
+/// arc that starts below -pi as "past its span": its c2 wall starts at -4.587.
+#[cfg(test)]
+mod special_result_soundness {
+    use super::*;
+
+    fn pair() -> (TSolid, TSolid) {
+        (
+            build::cylinder_solid([0.0, 0.0, 0.0], 12.0, 30.0, [0.0, 0.0, 1.0]),
+            build::cylinder_solid([10.0, 0.0, 0.0], 8.0, 30.0, [0.0, 0.0, 1.0]),
+        )
+    }
+
+    #[test]
+    fn an_arc_starting_below_minus_pi_still_contains_its_points() {
+        let (c1, c2) = pair();
+        let lens = boolean("intersect", &c1, &c2).expect("the lens builds");
+        let wall = lens
+            .faces()
+            .into_iter()
+            .find_map(|f| match &f.borrow().surface {
+                Surface::Cylinder(c) if c.radius == 8.0 => Some(c.clone()),
+                _ => None,
+            })
+            .expect("the lens has an r=8 wall");
+        let arc = wall.arc.clone().expect("a partial wall");
+        assert!(arc.start < -std::f64::consts::PI, "the fixture must exercise the wrap: start {}", arc.start);
+        // A point at angle 135 degrees about the wall's axis, mid-height, is on the wall.
+        let a = 135.0_f64.to_radians();
+        let q = add(add(wall.origin, scale(wall.axis, 15.0)), add(scale(wall.e1, 8.0 * a.cos()), scale(wall.e2, 8.0 * a.sin())));
+        assert!(cyl_face_contains(&wall, q));
+        // and one at 0 degrees, on the far side of the circle, is not.
+        let q0 = add(add(wall.origin, scale(wall.axis, 15.0)), scale(wall.e1, 8.0));
+        assert!(!cyl_face_contains(&wall, q0));
+    }
+
+    #[test]
+    fn a_lens_of_the_wrong_size_is_refused_against_the_real_tool() {
+        let (c1, c2) = pair();
+        let wrong_tool = build::cylinder_solid([10.0, 0.0, 0.0], 7.0, 30.0, [0.0, 0.0, 1.0]);
+        let wrong = boolean("intersect", &c1, &wrong_tool).expect("the smaller lens still builds");
+        assert!(volume_is_translation_invariant(&wrong), "the mutant is a closed solid");
+        assert!(!boolean_result_is_sound("intersect", &c1, &c2, &wrong), "a wrong lens slipped through");
+    }
+
+    #[test]
+    fn a_correct_lens_and_union_pass() {
+        let (c1, c2) = pair();
+        for op in ["intersect", "union"] {
+            let r = boolean(op, &c1, &c2).expect("builds");
+            assert!(boolean_result_is_sound(op, &c1, &c2, &r), "{op}");
         }
     }
 }
