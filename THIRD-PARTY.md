@@ -50,13 +50,37 @@ ships it, include its `LICENSE-UNICODE`.
 
 ## JavaScript / TypeScript
 
-The npm workspaces (`packages/script`, `packages/sketch`, `packages/kernel`, `packages/studio`,
-`packages/sandbox-dev`) have their own dependencies (React, Three.js, and others) listed in
-their `package.json` files and `bun.lock`. THESE ARE NOT ENUMERATED HERE. Before distributing
-a built bundle, run a licence scan over the production dependency tree and add the notices
-that tool reports. `replicad-opencascadejs` (OpenCascade, LGPL-2.1) is a devDependency used
-only by the on-demand parity and mesh gates (the referee apparatus); it is not part of the
-shipped app.
+## JavaScript runtime dependencies (shipped in the app bundle)
+
+Read from each package's `package.json` in `node_modules` on 2026-10-02. All are permissive. `jszip` offers
+`MIT OR GPL-3.0-or-later`; this project takes it under MIT. `pako` (a transitive dependency of `jszip`) is
+`MIT AND Zlib`, both permissive.
+
+| Package | Version | Licence |
+|---|---|---|
+| react | 19.2.8 | MIT |
+| react-dom | 19.2.8 | MIT |
+| three | 0.185.1 | MIT |
+
+| lucide-react | 1.41.0 | ISC |
+| jszip | 3.10.1 | MIT (of MIT OR GPL-3.0-or-later) |
+| pako (via jszip) | 1.0.11 | MIT AND Zlib |
+| @uiw/react-codemirror | 4.25.11 | MIT |
+| @uiw/codemirror-themes | 4.25.11 | MIT |
+| @codemirror/lang-javascript | 6.2.5 | MIT |
+| @codemirror/view | 6.43.11 | MIT |
+| @codemirror/state | 6.7.4 | MIT |
+| @lezer/highlight | 1.2.3 | MIT |
+
+The in-repo workspaces (`@shuff57/reshape-*`) are this project's own code under the root `LICENSE`.
+Their other transitive dependencies are listed in `bun.lock`; `packages/kernel/test/third-party-notice.test.mjs`
+fails when a direct runtime dependency of any workspace is missing from the table above.
+
+## Build and test only (not shipped)
+
+`replicad-opencascadejs` (OpenCascade, LGPL-2.1-only) is a devDependency used only by the on-demand
+parity and mesh gates (the referee apparatus). It is not part of the shipped app. Other devDependencies
+(`typescript`, `vite`, `@vitejs/plugin-react`, `@types/*`) are build tools.
 
 ## Not included
 
