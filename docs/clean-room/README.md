@@ -45,5 +45,5 @@ breaks the four-crate rule without evidence (Q10).
 ## Open items
 
 - R-1..R-4 design notes are WRITTEN (2026-10-02) but NOT YET HUMAN-REVIEWED. No implementer may use them until the owner has reviewed them (process step 3). Review nits: note-loft-sweep-helix.md mentions 'a couple of dozen sample points'; note-fillet-on-boolean-and-ball-blend.md labels a design 'vcad-style' in its body.
-- Third-party clones under the session scratchpad `third-party/` must be deleted before any implementer task starts.
+- Third-party clones (1.5 GB, session scratchpad `third-party/`) were DELETED on 2026-10-02 after the four notes were written. Any further reading needs a fresh shallow clone by a reader, deleted again afterwards.
 - L-0 (root `LICENSE` + `THIRD-PARTY.md`) waits only on the exact copyright-holder name string from the owner.

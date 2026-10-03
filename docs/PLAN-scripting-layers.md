@@ -324,3 +324,44 @@ Not changed: the critic's point that `docs/coverage.json` is only a report is ad
 | Q10 | No fifth dependency without evidence | R-5 only proceeds with a measured failing case and a wasm-size delta; `robust` and the 2D crates stay off. |
 
 All ten questions are answered. Remaining blocker for L-0: the exact copyright-holder name string.
+
+## 11. Progress log (2026-10-02)
+
+Measured, not asserted. Counts are `bun test` / `cargo test --release` / gates run by the lead after each batch.
+
+| Task | State | Evidence |
+|---|---|---|
+| G-0 baseline | done | sketch 9, script 117, kernel 73, studio 231 (430 total); cargo 291 pass / 1 fail (K2b) |
+| G-1 coverage matrix | done | `packages/kernel/test/coverage-matrix.test.mjs` + `docs/coverage.json`; face counts asserted beside volumes |
+| S-1 sketch refusals | done | `sketch-refusals.test.mjs`: 11 live refusals on both paths + washer builds + plug refuses |
+| S-2 round-trip fixtures | done | `soup-fixtures-roundtrip` and `sketch-fixtures-build` tests; 4/4 geoms, 16/16 rules |
+| §2 audit | done | `docs/parity.md` "Re-measured on brep-rs" |
+| W-1 docs pages | done | prism, wedge, groove, pocket, draft |
+| W-2 round-first rewrites | done | four KNOWN_REFUSED docs examples now build or were rewritten; only the refusals page remains exempt |
+| S-3 geom/rules/arcs pages | done | three sketch pages |
+| W-4 hole `size:` | done | ISO 273 medium clearance M3-M12 (only M6 measured against closed form) |
+| S-4 `sk.slot()` | done | input-only; shared builder in packages/sketch |
+| W-5 step 1 (sketch frame) | done | frame argument, `toScript` round-trip, validation; datum kinds NOT started (needs spec sign-off: `docs/specs/SPEC-datum-family.md`) |
+| Stage 0 frame refusal (kernel) | done | skewed/non-unit/zero frames refuse |
+| R-0 clean-room scaffold, R-1..R-4 notes | written, NOT human-reviewed | `docs/clean-room/`; clones deleted |
+| L-0 root LICENSE | blocked | needs the copyright-holder name string |
+| Q1-Q10 | all answered | see §10 |
+
+### Defects found and fixed while building this plan (all silent wrong results unless noted)
+1. fillet on box edges touching a +-y face: wrong volume, no refusal (build_fillet axis handedness) -- `9440d6f`.
+2. mirror of a curved solid came back inside-out (cylinder 6283 not 18850; sphere/torus 0) -- now refuses.
+3. sketch `construction` flag ignored by outline discovery; `wedge` ignored `center` -- fixed.
+4. `param()` circle/arc radius lost its declaration on regenerate -- fixed.
+5. `toScript` ignored a sketch `frame` (reloaded onto the wrong plane) and dropped box `at` in a stopgap -- fixed.
+6. through-hole on a non-box silently cut a 10 mm blind hole -- `throughExtentAlong`.
+7. `hole(..., { deep })` built a sealed internal cavity (right volume, 9 faces, no opening) -- script now offsets the tool to the drilled face; kernel now refuses a hole that leaves a sealed cavity (`d5b3ae7`).
+8. shell then hole: `measure_doc` reported 10849.31 vs the true 11150.90 (hole winding on reversed faces added its area) -- fixed in the kernel.
+9. docs pages for pocket, groove and two fillet-ordering examples taught sealed cavities (sketch at the mid-plane) -- rewritten; `docs-examples` now pins per-page face counts.
+10. docs-examples checked a field (`r.error`) that never exists -- now asserts `r.errors` is empty.
+11. The parity gate's own blind-bore fixtures were sealed cavities that OCCT builds identically; the differential gate agreed with itself (the failure mode AGENTS.md warns about). Three fixtures corrected with the owner's authorisation; eight pocket/groove fixtures pending the same.
+
+### Lessons worth keeping
+- Volume alone cannot see a cavity or a mirrored part. Pin face counts and bboxes, and read `measure_doc` by feature id (its `shapes` map is sorted alphabetically: two probes misread 'the last key').
+- A differential gate cannot see a defect both kernels share; closed forms and topology pins can.
+- Check `r.errors`, not `r.error`: two scans reported 'silent no-ops' that were really script errors.
+
