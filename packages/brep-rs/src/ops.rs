@@ -472,6 +472,75 @@ fn sphere_face_contains(sp: &crate::geom::SphereSurf, q: Vec3) -> bool {
     u <= sp.u_range[1] - sp.u_range[0] + tol
 }
 
+/// Parameters t > 0 where the ray p + t d (d unit) crosses the FULL torus of
+/// `tor`, found by sign changes of the quartic
+///   (|x|^2 + R^2 - r^2)^2 - 4 R^2 (|x|^2 - (x . a)^2),  x = p + t d - centre.
+/// A torus lies inside a ball of radius R + r, so no root exceeds |w| + R + r.
+/// Roots are bracketed on a fixed grid and bisected; an even-multiplicity (tangent)
+/// root shows no sign change and is missed, which `inside_solid`'s majority over
+/// several generic rays already tolerates.
+fn ray_torus(d: Vec3, p: Vec3, tor: &crate::geom::TorusSurf) -> Vec<f64> {
+    let a = normalize(tor.axis);
+    let w = sub(p, tor.center);
+    let (big_r, r) = (tor.ring, tor.tube);
+    let k = big_r * big_r - r * r;
+    let f = |t: f64| {
+        let x = add(w, scale(d, t));
+        let xx = dot(x, x);
+        let ax = dot(x, a);
+        (xx + k) * (xx + k) - 4.0 * big_r * big_r * (xx - ax * ax)
+    };
+    let t_max = crate::math::len(w) + big_r + r;
+    const STEPS: usize = 512;
+    let mut roots = Vec::new();
+    let mut t0 = 0.0;
+    let mut f0 = f(t0);
+    for i in 1..=STEPS {
+        let t1 = t_max * i as f64 / STEPS as f64;
+        let f1 = f(t1);
+        if f0 == 0.0 {
+            roots.push(t0);
+        } else if f0 * f1 < 0.0 {
+            let (mut lo, mut hi, mut flo) = (t0, t1, f0);
+            for _ in 0..80 {
+                let mid = 0.5 * (lo + hi);
+                let fm = f(mid);
+                if flo * fm <= 0.0 {
+                    hi = mid;
+                } else {
+                    lo = mid;
+                    flo = fm;
+                }
+            }
+            roots.push(0.5 * (lo + hi));
+        }
+        t0 = t1;
+        f0 = f1;
+    }
+    roots
+}
+
+/// Does `q`, already ON the torus, lie on this face's patch? Only the tube angle
+/// v is ever trimmed (`v_range`); the ring angle u is always the full turn.
+fn torus_face_contains(tor: &crate::geom::TorusSurf, q: Vec3) -> bool {
+    let tol = 1e-7;
+    let a = normalize(tor.axis);
+    let w = sub(q, tor.center);
+    let h = dot(w, a);
+    let rho = crate::math::len(sub(w, scale(a, h)));
+    let mut v = h.atan2(rho - tor.ring);
+    if v < 0.0 {
+        v += TWO_PI;
+    }
+    let (lo, hi) = (tor.v_range[0], tor.v_range[1]);
+    if (hi - lo - TWO_PI).abs() < 1e-9 {
+        return true;
+    }
+    // A range may wrap past 2pi; compare modulo a turn.
+    let rel = (v - lo).rem_euclid(TWO_PI);
+    rel <= hi - lo + tol || rel >= TWO_PI - tol
+}
+
 /// The number of boundary crossings of a ray from `p` along unit direction `d`,
 /// and whether every face was a supported type. Callers pick `d` so it is not
 /// parallel to a face or grazing an edge.
@@ -530,7 +599,13 @@ fn crossings(solid: &TSolid, p: Vec3, d: Vec3) -> Option<(usize, bool)> {
                     }
                 }
             }
-            _ => supported = false,
+            Surface::Torus(tor) => {
+                for t in ray_torus(d, p, tor) {
+                    if t > 1e-9 && torus_face_contains(tor, add(p, scale(d, t))) {
+                        count += 1;
+                    }
+                }
+            }
         }
     }
     Some((count, supported))
@@ -5166,6 +5241,28 @@ fn planar_face_samples(face: &TFace) -> Vec<(Vec3, Vec3)> {
             }
             return out;
         }
+ Surface::Torus(tor) if fb.boundary.len() <= 2 => {
+            // A grid over the tube angle strictly inside the face's range (the
+            // ring angle is a full turn). Outward normal is the tube's radial
+            // direction, negated when the face is reversed against its frame.
+            let outward = if fb.forward == (dot(cross(tor.e1, tor.e2), tor.axis) > 0.0) { 1.0 } else { -1.0 };
+            let a = normalize(tor.axis);
+            let mut out = Vec::new();
+            for i in 1..=5 {
+                for j in 0..8 {
+                    let v = tor.v_range[0] + (tor.v_range[1] - tor.v_range[0]) * i as f64 / 6.0;
+                    let u = (j as f64 + 0.37) * std::f64::consts::FRAC_PI_4;
+                    let p = fb.surface.param(u, v);
+                    let radial = normalize(sub(sub(p, tor.center), scale(a, dot(sub(p, tor.center), a))));
+                    let ring_pt = add(tor.center, scale(radial, tor.ring));
+                    let n = scale(normalize(sub(p, ring_pt)), outward);
+                    if torus_face_contains(tor, p) && crate::math::len(n) > 0.5 {
+                        out.push((p, n));
+                    }
+                }
+            }
+            return out;
+        }
  _ => return Vec::new(),
     };
     let n = plane.n;
@@ -5247,7 +5344,7 @@ fn boolean_result_is_sound(op: &str, a: &TSolid, b: &TSolid, r: &TSolid) -> bool
  // operands; a sphere or torus still makes this check abstain rather than
  // refuse a correct solid.
     let plain = |s: &TSolid| {
- s.faces().iter().all(|f| matches!(&f.borrow().surface, Surface::Plane(_) | Surface::Cylinder(_) | Surface::Cone(_) | Surface::Sphere(_)))
+ s.faces().iter().all(|f| matches!(&f.borrow().surface, Surface::Plane(_) | Surface::Cylinder(_) | Surface::Cone(_) | Surface::Sphere(_) | Surface::Torus(_)))
     };
     if !plain(a) || !plain(b) {
         return true;
@@ -7001,12 +7098,14 @@ fn y1_bench_final_exact() {
 }
 
 /// The Y2 bench final: holed flanged cylinder unioned with the standing
-/// cylinder (the doc-path join that refused before the coplanar-face
-/// route). Closed form: flange-with-holes + cylinder, touching caps.
+/// cylinder (the doc-path join that refused before the coplanar-face route).
+/// Holes sit clear of the boss (r = 20) and of the fillet band (rho 29 and out), so the
+/// flange's top face keeps one circle per hole. Closed form: flange-with-holes
+/// + cylinder, touching caps; the flange less four holes was 22202.858373491622.
 #[test]
 fn y2_bench_final_exact() {
     let mut fl = build::round_cylinder_one_rim([0.0, 0.0, 0.0], 35.0, 6.0, [0.0, 0.0, 1.0], 3.0, true);
-    for c in [[-18.0f64, 0.0], [-6.0, 0.0], [6.0, 0.0], [18.0, 0.0]] {
+    for c in [[-24.0f64, 0.0], [24.0, 0.0]] {
         let b = build::cylinder_solid([c[0], c[1], 0.0], 2.5, 6.0, [0.0, 0.0, 1.0]);
         fl = boolean("subtract", &fl, &b).expect("hole");
     }
@@ -7014,11 +7113,35 @@ fn y2_bench_final_exact() {
     let r = boolean("union", &fl, &cyl);
     let Some(s) = r else { panic!("the Y2 bench final refused; it should build exactly") };
     let vol = build::solid_volume(&s);
-    let want = 22202.858373491622 + std::f64::consts::PI * 20.0 * 20.0 * 30.0;
+    let pi = std::f64::consts::PI;
+    let hole = pi * 2.5 * 2.5 * 6.0;
+    let want = 22202.858373491622 + 4.0 * hole - 2.0 * hole + pi * 20.0 * 20.0 * 30.0;
     assert!(
         (vol - want).abs() <= 1e-6 * want,
         "a wrong solid with no refusal: volume {vol} vs exact {want}"
     );
+    assert!(
+        crate::ops::check_watertight(&crate::mesh::mesh_solid(&s, 0.05).expect("meshes")),
+        "the union must also mesh watertight"
+    );
+}
+
+/// The Y2 bench with holes at rho 6 and 18, whose rims straddle the boss's r = 20.
+/// This used to "build exactly": its volume and area vector are right, but the
+/// top face carried the hole circles as overlapping inner wires and the ceiling
+/// over (hole AND boss) was never emitted, so the mesh had 44 open edges. Neither
+/// the closure guard nor translation invariance could see it (the over-subtracted
+/// area cancels the missing ceiling); the torus-aware soundness check does. It
+/// refuses now, which is honest; building it needs the split-and-classify boolean.
+#[test]
+fn y2_bench_holes_straddling_the_boss_refuse() {
+    let mut fl = build::round_cylinder_one_rim([0.0, 0.0, 0.0], 35.0, 6.0, [0.0, 0.0, 1.0], 3.0, true);
+    for c in [[-18.0f64, 0.0], [-6.0, 0.0], [6.0, 0.0], [18.0, 0.0]] {
+        let b = build::cylinder_solid([c[0], c[1], 0.0], 2.5, 6.0, [0.0, 0.0, 1.0]);
+        fl = boolean("subtract", &fl, &b).expect("hole");
+    }
+    let cyl = build::cylinder_solid([0.0, 0.0, 18.0], 20.0, 30.0, [0.0, 0.0, 1.0]);
+    assert!(boolean("union", &fl, &cyl).is_none(), "a union whose mesh is open must refuse");
 }
 
 fn flange_cylinder_union_exact() {
@@ -8106,5 +8229,74 @@ mod sphere_soundness {
             .collect();
         let gutted = Solid { shells: vec![Rc::new(RefCell::new(Shell { faces }))] };
         assert!(!boolean_result_is_sound("subtract", &sphere, &tool, &gutted), "a dropped zone slipped through");
+    }
+}
+
+/// G2, torus half: a rounded rim is a quarter torus, and a bore through the flange
+/// leaves it untouched in the result. Ray parity now counts a torus, so the check no
+/// longer abstains on it; each mutant is closed and meshable but wrong.
+#[cfg(test)]
+mod torus_soundness {
+    use super::*;
+
+    fn flange() -> TSolid {
+        build::round_cylinder_one_rim([0.0, 0.0, 0.0], 35.0, 6.0, [0.0, 0.0, 1.0], 3.0, true)
+    }
+
+    fn bore(r: f64, x: f64) -> TSolid {
+        build::cylinder_solid([x, 0.0, 0.0], r, 6.0, [0.0, 0.0, 1.0])
+    }
+
+    #[test]
+    fn a_ray_counts_the_torus_band_of_a_rounded_rim() {
+        let fl = flange();
+        let up = normalize([0.3, 0.2, 1.0]);
+        // Straight down at rho 34: in through the rounded corner, out through the flat bottom.
+        assert_eq!(crossings(&fl, [34.0, 0.0, 5.0], normalize([0.0, 0.0, -1.0])).map(|c| c.0), Some(2), "torus entry plus bottom exit");
+        // The same line at rho 31 meets the flat cap instead of the torus.
+        assert_eq!(crossings(&fl, [31.0, 0.0, 5.0], normalize([0.0, 0.0, -1.0])).map(|c| c.0), Some(2), "cap entry plus bottom exit");
+        assert_eq!(crossings(&fl, [33.0, 0.0, 2.0], up).map(|c| c.0), Some(1), "from inside the band: one exit");
+        assert!(inside_solid(&fl, [34.9, 0.0, 0.5]) && !inside_solid(&fl, [34.6, 0.0, 2.0]));
+    }
+
+    #[test]
+    fn a_correct_bore_in_a_rounded_flange_passes() {
+        let (fl, tool) = (flange(), bore(2.5, 10.0));
+        let r = boolean("subtract", &fl, &tool).expect("a bore in a rounded flange builds");
+        assert!(boolean_result_is_sound("subtract", &fl, &tool, &r));
+    }
+
+    #[test]
+    fn a_bore_of_the_wrong_radius_is_refused() {
+        let (fl, tool) = (flange(), bore(2.5, 10.0));
+        let wrong = boolean("subtract", &fl, &bore(3.1, 10.0)).expect("the wrong bore still builds");
+        assert!(volume_is_translation_invariant(&wrong), "the mutant is a closed solid");
+        assert!(!boolean_result_is_sound("subtract", &fl, &tool, &wrong), "wrong radius slipped through");
+    }
+
+    #[test]
+    fn a_result_missing_the_torus_band_is_refused() {
+        let (fl, tool) = (flange(), bore(2.5, 10.0));
+        let r = boolean("subtract", &fl, &tool).expect("builds");
+        let faces: Vec<TFace> = r.faces().into_iter().filter(|f| !matches!(f.borrow().surface, Surface::Torus(_))).collect();
+        assert!(faces.len() < r.faces().len(), "the result has a torus face to drop");
+        let gutted = Solid { shells: vec![Rc::new(RefCell::new(Shell { faces }))] };
+        assert!(!boolean_result_is_sound("subtract", &fl, &tool, &gutted), "a dropped band slipped through");
+    }
+
+    #[test]
+    fn a_result_missing_the_bore_wall_is_refused() {
+        let (fl, tool) = (flange(), bore(2.5, 10.0));
+        let r = boolean("subtract", &fl, &tool).expect("builds");
+        let faces: Vec<TFace> = r
+            .faces()
+            .into_iter()
+            .filter(|f| match &f.borrow().surface {
+                Surface::Cylinder(c) => c.radius < 3.0,
+                _ => true,
+            })
+            .collect();
+        let gutted = Solid { shells: vec![Rc::new(RefCell::new(Shell { faces }))] };
+        assert!(!boolean_result_is_sound("subtract", &fl, &tool, &gutted), "a dropped wall slipped through");
     }
 }
