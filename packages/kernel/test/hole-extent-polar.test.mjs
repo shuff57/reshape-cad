@@ -126,11 +126,9 @@ test('through hole along z, pattern about y, into the 6-thick copy at z = 0', ()
   assert.equal(after.faces, 24 + 1);
 });
 
-test('blind hole on a multi-copy pattern: the offset is flush with the measured top, and the kernel refuses rather than float a cavity', () => {
-  // The kernel (not this slice) refuses a blind hole in a body of several
-  // separate copies, linear patterns included. What is checkable on the real
-  // wasm: our start offset puts the tool's top on the kernel-measured top face,
-  // and no wrong solid comes back -- the hole is simply not applied.
+test('blind hole on a multi-copy pattern: the offset is flush with the measured top, and the hole is cut into the copy it lands in (K-3)', () => {
+  // Our start offset puts the tool's top on the kernel-measured top face; the kernel
+  // cuts the one copy the tool lands in (K-3) and the volume is the closed form.
   const base = Y4;
   const pre = runScript(base);
   const patId = pre.doc.features.at(-1).id;
@@ -141,7 +139,8 @@ test('blind hole on a multi-copy pattern: the offset is flush with the measured 
   const h = t.doc.features.at(-1);
   near(h.center[2] + 4 / 2, (bb[1][2] - bb[0][2]) / 2); // tool top - bbox centre = half extent
   const out = JSON.parse(brep.build_doc_json(JSON.stringify(t.doc)));
-  assert.match(out.refusals[h.id], /cannot cut this hole yet/);
+  assert.deepEqual(out.refusals, {});
+  near(measure(t.doc, h.id).volume, 2400 - Math.PI * 4 * 4); // pi r^2 d, r = 2, d = 4
 });
 
 test('blind hole in a one-copy polar pattern about y is cut for real, from the top face', () => {

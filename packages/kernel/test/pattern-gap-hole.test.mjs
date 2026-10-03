@@ -49,10 +49,38 @@ test('a blind hole before the pattern, then copied, builds in every copy (closed
   assert.ok(Math.abs(vol - (3 * 4000 - 3 * Math.PI * 9 * 4)) < 1e-6 * 12000, `${vol}`);
 });
 
-test('a blind hole into the middle copy of three refuses honestly, never a wrong solid', () => {
-  const { refusals, vol } = build(pat(3) + 'hole(b, { across: 6, deep: 4 })');
-  // Today it refuses (the boolean leaves an open shell and the translation guard
-  // catches it). If a later change makes it build, the volume must be the closed form.
-  if (refusals.hole1) assert.match(refusals.hole1, /cannot cut this hole yet/);
-  else assert.ok(Math.abs(vol - (12000 - Math.PI * 9 * 4)) < 1e-6 * 12000, `${vol}`);
+test('a blind hole into any copy of three builds, exact (K-3: the lump is cut alone)', () => {
+  for (const [at, deep] of [['[0, 0]', 4], ['[-30, 0]', 4], ['[30, 0]', 4], ['[0, 0]', 9], ['[0, 5]', 2.5]]) {
+    const { refusals, vol } = build(pat(3) + `hole(b, { across: 6, deep: ${deep}, at: ${at} })`);
+    assert.deepEqual(refusals, {}, `${at} deep ${deep}`);
+    assert.ok(Math.abs(vol - (12000 - Math.PI * 9 * deep)) < 1e-9 * 12000, `${at} deep ${deep}: ${vol}`);
+  }
+});
+
+test('two holes in two copies, one blind and one through, keep every floor (floors == bores)', () => {
+  const { refusals, vol } = build(pat(3) + 'hole(b, { across: 6, deep: 4, at: [-30, 0] })\nhole(b, { across: 4, at: [30, 0] })');
+  assert.deepEqual(refusals, {});
+  assert.ok(Math.abs(vol - (12000 - Math.PI * 9 * 4 - Math.PI * 4 * 10)) < 1e-9 * 12000, `${vol}`);
+});
+
+test('a blind hole whose tool spans the gap between copies still never returns a wrong number', () => {
+  // wide enough (across 40) to reach two lumps from the middle: exact or a refusal
+  const { refusals, vol } = build(pat(3) + 'hole(b, { across: 40, deep: 4 })');
+  if (Object.keys(refusals).length === 0) assert.ok(vol < 12000 && vol > 12000 - Math.PI * 400 * 4 - 1e-6, `${vol}`);
+});
+
+test('OpenCascade agrees on a blind hole into the middle copy of three', async () => {
+  const { buildDoc } = await import('../dist/occt-build.js');
+  const arc = await import('../../sketch/dist/sketch-arc.js');
+  const { pathToFileURL } = await import('node:url');
+  const dir = path.resolve(PKG, '../../../node_modules/replicad-opencascadejs/dist');
+  const glue = await import(pathToFileURL(path.join(dir, 'replicad_single.js')).href);
+  const oc = await glue.default({ locateFile: (f) => path.join(dir, f) });
+  const r = runScript(pat(3) + 'hole(b, { across: 6, deep: 4 })');
+  const id = r.doc.features.at(-1).id;
+  const shape = buildDoc(oc, { version: 1, features: r.doc.features }, arc).shapes.get(id);
+  const g = new oc.GProp_GProps();
+  oc.BRepGProp.VolumeProperties(shape, g, 1e-7, false, false);
+  const mine = JSON.parse(brep.measure_doc(JSON.stringify(r.doc))).shapes[id].volume;
+  assert.ok(Math.abs(g.Mass() - mine) < 1e-7 * mine, `${g.Mass()} vs ${mine}`);
 });

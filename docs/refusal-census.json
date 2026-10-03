@@ -111,12 +111,12 @@
   },
   "matrix box: hollow then round": {
     "refused": {
-      "round1": "round round1 would reach a cut made earlier, and brep-rs can only round a corner the cuts stay clear of; round before you cut, or keep the cut away from that edge -- round1 is shown without it."
+      "round1": "round round1 would reach a cut made earlier, and brep-rs can only round a corner the cuts stay clear of; round before you cut or hollow, or keep the cut away from that edge -- round1 is shown without it."
     }
   },
   "matrix box: hollow then chamfer": {
     "refused": {
-      "bevel1": "chamfer bevel1 would reach a cut made earlier, and brep-rs can only chamfer a corner the cuts stay clear of; chamfer before you cut, or keep the cut away from that edge -- bevel1 is shown without it."
+      "bevel1": "chamfer bevel1 would reach a cut made earlier, and brep-rs can only chamfer a corner the cuts stay clear of; chamfer before you cut or hollow, or keep the cut away from that edge -- bevel1 is shown without it."
     }
   },
   "matrix cylinder: hole along axis": {

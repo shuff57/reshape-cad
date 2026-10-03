@@ -1237,7 +1237,7 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 let before_cut = shape.clone();
                 let mut cut = true;
                 for tool in &fused {
-                    match ops::boolean("subtract", &shape, tool) {
+                    match subtract_in_lump(&shape, tool).or_else(|| ops::boolean("subtract", &shape, tool)) {
                         Some(result) => shape = result,
                         None => {
                             cut = false;
@@ -2875,6 +2875,49 @@ fn cut_missed(before: &TSolid, after: &TSolid, tools: &[&TSolid]) -> bool {
             let b = build::solid_aabb(t);
             !ops::boxed_in(before, [0, 1, 2].map(|i| 0.5 * (b.lo[i] + b.hi[i])))
         })
+}
+
+/// A part made of several separate lumps (the copies of a pattern) takes a cut that lies in ONE
+/// lump by cutting that lump alone and putting the result back beside the others. The general
+/// boolean on the whole multi-lump solid leaves an open shell for a blind bore (K-3); one lump
+/// is the case it handles. Applies only when exactly one lump's bounding box meets the tool's
+/// and the part has no cavity skin (a lump whose box lies inside another's is a void, left to
+/// the general path). None means "not this case", never a refusal.
+fn subtract_in_lump(shape: &TSolid, tool: &TSolid) -> Option<TSolid> {
+    if shape.shells.len() < 2 {
+        return None;
+    }
+    let tb = build::solid_aabb(tool);
+    let boxes: Vec<crate::math::Aabb> = shape
+        .shells
+        .iter()
+        .map(|sh| build::solid_aabb(&TSolid { shells: vec![sh.clone()] }))
+        .collect();
+    let apart = |a: &crate::math::Aabb, b: &crate::math::Aabb| (0..3).any(|i| a.lo[i] >= b.hi[i] - 1e-9 || a.hi[i] <= b.lo[i] + 1e-9);
+    // no lump may sit inside another's box (that is a cavity, not a copy)
+    for i in 0..boxes.len() {
+        for j in 0..boxes.len() {
+            if i != j && (0..3).all(|k| boxes[i].lo[k] >= boxes[j].lo[k] - 1e-9 && boxes[i].hi[k] <= boxes[j].hi[k] + 1e-9) {
+                return None;
+            }
+        }
+    }
+    let hit: Vec<usize> = (0..boxes.len()).filter(|&i| !apart(&boxes[i], &tb)).collect();
+    if hit.len() != 1 {
+        return None;
+    }
+    let i = hit[0];
+    let one = TSolid { shells: vec![shape.shells[i].clone()] };
+    let cut = ops::boolean("subtract", &one, tool)?;
+    let mut shells = Vec::new();
+    for (k, sh) in shape.shells.iter().enumerate() {
+        if k == i {
+            shells.extend(cut.shells.iter().cloned());
+        } else {
+            shells.push(sh.clone());
+        }
+    }
+    Some(TSolid { shells })
 }
 
 fn miss_refusal(id: &str) -> String {
