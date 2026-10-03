@@ -975,6 +975,9 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     Some(result) if skin_pieces(&result) > skin_pieces(&base) => {
                         refusals.insert(id.clone(), json!(cavity_refusal("pocket", &id)));
                     }
+                    Some(result) if cut_missed(&base, &result, &[&tool]) => {
+                        refusals.insert(id.clone(), json!(miss_refusal(&id)));
+                    }
                     Some(result) => {
                         // The cut's faces come from the boolean, not the prism,
                         // so no sweep history is recorded, exactly as OCCT's
@@ -985,6 +988,9 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                         record_op(&mut hist, &id, OpKind::Boolean, vec![from.clone()], face_fates, Vec::new());
                         hist.advance_head(into, &id);
                         hist.insert(&id, result);
+                    }
+                    None if tools_apart(&base, &[&tool]) => {
+                        refusals.insert(id.clone(), json!(miss_refusal(&id)));
                     }
                     None => {
                         refusals.insert(
@@ -1186,6 +1192,7 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 let mut shape = hist.shapes.get(&from).cloned().unwrap_or(src);
                 let src_faces = shape.faces();
                 let pieces_before = skin_pieces(&shape);
+                let before_cut = shape.clone();
                 let mut cut = true;
                 for tool in &fused {
                     match ops::boolean("subtract", &shape, tool) {
@@ -1198,6 +1205,8 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 }
                 if cut && skin_pieces(&shape) > pieces_before {
                     refusals.insert(id.clone(), json!(cavity_refusal("hole", &id)));
+                } else if cut && cut_missed(&before_cut, &shape, &fused.iter().collect::<Vec<_>>()) {
+                    refusals.insert(id.clone(), json!(miss_refusal(&id)));
                 } else if cut {
                     // The cut's faces come from the boolean; no sweep history is
                     // recorded, exactly as OCCT's hole branch does. The
@@ -1207,6 +1216,8 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     record_op(&mut hist, &id, OpKind::Boolean, vec![from], face_fates, Vec::new());
                     hist.advance_head(target, &id);
                     hist.insert(&id, shape);
+                } else if tools_apart(&before_cut, &fused.iter().collect::<Vec<_>>()) {
+                    refusals.insert(id.clone(), json!(miss_refusal(&id)));
                 } else {
                     refusals.insert(
                         id.clone(),
@@ -1362,6 +1373,9 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     Some(result) if skin_pieces(&result) > skin_pieces(&base) => {
                         refusals.insert(id.clone(), json!(cavity_refusal("groove", &id)));
                     }
+                    Some(result) if cut_missed(&base, &result, &[&tool]) => {
+                        refusals.insert(id.clone(), json!(miss_refusal(&id)));
+                    }
                     Some(result) => {
                         // The base's own faces carry through the subtract,
                         // surface-matched (no sweep history for the cut,
@@ -1371,6 +1385,9 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                         record_op(&mut hist, &id, OpKind::Boolean, vec![from.clone()], face_fates, Vec::new());
                         hist.advance_head(into, &id);
                         hist.insert(&id, result);
+                    }
+                    None if tools_apart(&base, &[&tool]) => {
+                        refusals.insert(id.clone(), json!(miss_refusal(&id)));
                     }
                     None => {
                         refusals.insert(
@@ -2627,6 +2644,47 @@ fn same_surface(a: &Surface, b: &Surface) -> bool {
 /// result look like several pieces (16 false refusals in the suite).
 fn skin_pieces(s: &TSolid) -> usize {
     s.shells.len()
+}
+
+/// True when every tool's bounding box lies clear of the part's, or meets it
+/// only at a face (zero volume of overlap): then no tool can remove anything,
+/// whatever the boolean does with it.
+fn tools_apart(before: &TSolid, tools: &[&TSolid]) -> bool {
+    let a = build::solid_aabb(before);
+    tools.iter().all(|t| {
+        let b = build::solid_aabb(t);
+        (0..3).any(|i| b.lo[i] >= a.hi[i] - 1e-9 || b.hi[i] <= a.lo[i] + 1e-9)
+    })
+}
+
+/// True when a cut changed nothing: same volume and same face count as the
+/// target before it, or no tool's bounding box reaches the part. A tool that
+/// never reaches the solid leaves the boolean's result identical to its input,
+/// and any real cut (even a sliver) moves one of the two. It measures the
+/// RESULT, so a tool that only meets a concave part's bounding box, not its
+/// solid, is caught too. One exception, accepted and pinned (shell-hole.test.mjs,
+/// hole_through_a_closed_shell): a tool wholly inside the part's bounding box
+/// that changes nothing may sit in the part's own void (a shell's cavity or open
+/// mouth) and stays unrefused; only a tool reaching outside the box, or clear of
+/// it, counts as a miss then.
+fn cut_missed(before: &TSolid, after: &TSolid, tools: &[&TSolid]) -> bool {
+    if tools_apart(before, tools) {
+        return true;
+    }
+    let a = build::solid_aabb(before);
+    let inside = tools.iter().all(|t| {
+        let b = build::solid_aabb(t);
+        (0..3).all(|i| b.lo[i] >= a.lo[i] - 1e-9 && b.hi[i] <= a.hi[i] + 1e-9)
+    });
+    if inside {
+        return false;
+    }
+    let (v0, v1) = (build::solid_volume(before), build::solid_volume(after));
+    (v0 - v1).abs() <= 1e-9 * v0.abs().max(1.0) && before.faces().len() == after.faces().len()
+}
+
+fn miss_refusal(id: &str) -> String {
+    format!("{id} does not touch the part, so it cuts nothing -- {id} is shown without it.")
 }
 
 fn cavity_refusal(kind: &str, id: &str) -> String {
@@ -6180,6 +6238,36 @@ mod cavity_guard_tests {
             h[k] = v.clone();
         }
         h
+    }
+
+    #[test]
+    fn a_cut_that_never_reaches_the_part_refuses() {
+        let miss = |r: &serde_json::Map<String, Value>, id: &str| {
+            let m = r.get(id).and_then(|m| m.as_str()).unwrap_or("").to_string();
+            assert_eq!(m, format!("{id} does not touch the part, so it cuts nothing -- {id} is shown without it."), "{r:?}");
+        };
+        // hole far outside the box (center is an offset from the bbox centre)
+        let (hist, r) = build_doc(&boxdoc(hole(json!({ "center": [100.0, 0.0, 0.0] }))));
+        miss(&r, "h1");
+        assert!(!hist.shapes.contains_key("h1"));
+        // pocket one step above the top face, and one outward past y=20
+        for (plane, off) in [("xy", 20.0), ("xz", 20.0), ("xz", 25.0)] {
+            let doc = json!({ "features": [
+                { "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0] },
+                { "id": "s1", "kind": "sketch", "plane": plane, "offset": off, "points": [[-5.0, -4.0], [5.0, -4.0], [5.0, 4.0], [-5.0, 4.0]] },
+                { "id": "p1", "kind": "pocket", "target": "s1", "into": "b1", "depth": 5.0 } ] });
+            let (hist, r) = build_doc(&doc);
+            miss(&r, "p1");
+            assert!(!hist.shapes.contains_key("p1"));
+        }
+        // groove ring wholly outside the box
+        let doc = json!({ "features": [
+            { "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0] },
+            { "id": "s1", "kind": "sketch", "plane": "xz", "offset": 0.0, "points": [[3.0, 25.0], [6.0, 25.0], [6.0, 35.0], [3.0, 35.0]] },
+            { "id": "g1", "kind": "groove", "target": "s1", "into": "b1", "angle": 360.0 } ] });
+        let (hist, r) = build_doc(&doc);
+        miss(&r, "g1");
+        assert!(!hist.shapes.contains_key("g1"));
     }
 
     #[test]
