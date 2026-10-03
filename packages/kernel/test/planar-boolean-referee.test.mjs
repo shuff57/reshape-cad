@@ -40,6 +40,9 @@ const scripts = {
   'hole then half cut': 'const b = cuboid(40, 40, 20)\nhole(b, { across: 12 })\n' + HALF,
   'blind hole then half cut': 'const b = cuboid(40, 40, 20)\nhole(b, { across: 12, deep: 8 })\n' + HALF,
   'hole then off-axis cut': 'const b = cuboid(40, 40, 20)\nhole(b, { across: 12 })\nconst c = cuboid(60, 60, 40, { at: [33, 0, 0] })\nsubtract(b, c)',
+  'hole then partial-height cut': 'const b = cuboid(40, 40, 20)\nhole(b, { across: 12 })\nconst c = cuboid(60, 30, 6, { at: [0, 15, 0] })\nsubtract(b, c)',
+  'off-centre hole then corner cut': 'const b = cuboid(40, 40, 20)\nhole(b, { across: 10, at: [-6, -4] })\nconst c = cuboid(30, 30, 8, { at: [-3, -2, 2] })\nsubtract(b, c)',
+  'blind off-centre hole then partial cut': 'const b = cuboid(40, 40, 20)\nhole(b, { across: 10, deep: 12, at: [5, 3] })\nconst c = cuboid(20, 24, 9, { at: [8, 3, 4] })\nsubtract(b, c)',
   'hollow then half cut': 'const b = cuboid(40, 40, 20)\nshell(b, { wall: 2 })\n' + HALF,
 };
 

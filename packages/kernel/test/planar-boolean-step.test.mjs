@@ -40,6 +40,8 @@ const cases = [
   ['hollow then chamfer', HOLLOW + "chamfer(b.edge('top', 'front'), 1.5)", 11219],
   ['bored box cut in half through the bore', 'const b = cuboid(40, 40, 20)\nhole(b, { across: 12 })\n' + HALF.replace('const c', 'const c'), (32000 - Math.PI * 36 * 20) / 2],
   ['blind-bored box cut in half', 'const b = cuboid(40, 40, 20)\nhole(b, { across: 12, deep: 8 })\n' + HALF, (32000 - Math.PI * 36 * 8) / 2],
+  ['bored box cut across part of the bore height', 'const b = cuboid(40, 40, 20)\nhole(b, { across: 12 })\nconst c = cuboid(60, 30, 6, { at: [0, 15, 0] })\nsubtract(b, c)', 32000 - Math.PI * 36 * 20 - (4800 - Math.PI * 36 * 3)],
+  ['off-centre blind hole, partial cut', 'const b = cuboid(40, 40, 20)\nhole(b, { across: 10, deep: 12, at: [5, 3] })\nconst c = cuboid(20, 24, 9, { at: [8, 3, 4] })\nsubtract(b, c)', null],
   ['bored box with the top half removed', 'const b = cuboid(40, 40, 20)\nhole(b, { across: 12 })\nconst c = cuboid(60, 60, 20, { at: [0, 0, 10] })\nsubtract(b, c)', (32000 - Math.PI * 36 * 20) / 2],
 ];
 
@@ -52,7 +54,8 @@ for (const [name, code, volume] of cases) {
     const f = JSON.parse(brep.export_step(json, id));
     assert.ok(f.step, JSON.stringify(f).slice(0, 200));
     const back = readStep(f.step);
-    assert.ok(Math.abs(back.volume - volume) < 1e-6 * volume, `${back.volume} vs ${volume}`);
+    const want = volume ?? JSON.parse(brep.measure_doc(JSON.stringify({ ...r.doc, measure: id }))).shapes[id].volume;
+    assert.ok(Math.abs(back.volume - want) < 1e-6 * want, `${back.volume} vs ${want}`);
     assert.equal(back.solids, 1);
     assert.equal(back.valid, true);
   });

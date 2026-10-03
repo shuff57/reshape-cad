@@ -558,7 +558,7 @@ fn find(c: &mut HashMap<usize, usize>, x: usize) -> usize {
 /// Node the face outline and the cuts into a planar graph and trace the
 /// sub-regions of the face. `Err` when the graph is not what a closed solid
 /// can produce.
-fn split_face(f: &PFace, cuts: &[E2]) -> Result<Vec<Region>, ()> {
+fn split_face(f: &PFace, cuts: &[E2], nodes_at: &[P2]) -> Result<Vec<Region>, ()> {
     let mut es: Vec<E2> = f.edges.clone();
     for c in cuts {
         if c.length() > EPS {
@@ -572,6 +572,25 @@ fn split_face(f: &PFace, cuts: &[E2]) -> Result<Vec<Region>, ()> {
             meet(&es[i], &es[j], &mut a, &mut b);
             splits[i].extend(a);
             splits[j].extend(b);
+        }
+    }
+    // Extra break points (the cylinder grid), wherever they lie on an edge.
+    for p in nodes_at {
+        for (i, e) in es.iter().enumerate() {
+            if dist_to_e2(*p, e) >= EPS {
+                continue;
+            }
+            let t = match *e {
+                E2::Seg(a, b) => {
+                    let d = sub2(b, a);
+                    dot2(sub2(*p, a), d) / dot2(d, d)
+                }
+                E2::Arc { c, r, a0, sw } => match arc_param(a0, sw, r, (p[1] - c[1]).atan2(p[0] - c[0])) {
+                    Some(t) => t,
+                    None => continue,
+                },
+            };
+            splits[i].push(t.clamp(0.0, 1.0));
         }
     }
     let mut nodes: Vec<P2> = Vec::new();
@@ -904,12 +923,21 @@ fn cyl_on_plane(f: &PFace, g: &CFace, plane_box: &Box3) -> Result<Vec<E2>, ()> {
     Ok(out)
 }
 
-/// The angles and heights at which other faces cut a cylinder wall, each one
-/// along the wall's whole length. A cut that stops inside the wall is a
-/// region that is not a rectangle in (angle, height): it refuses.
-fn cuts_on_cyl(f: &CFace, other: &[AFace]) -> Result<(Vec<f64>, Vec<f64>), ()> {
+/// The grid lines along which other faces cut a cylinder wall: angles (`us`,
+/// absolute, with the seam included whenever there is any cut) and heights
+/// (`vs`, strictly inside the wall). Every cut curve is a piece of one of these
+/// lines, so the wall splits into (angle x height) rectangles, none of which a
+/// cut crosses: each is classified whole. A cut that covers only part of the
+/// wall simply ends on a line of the other family.
+struct Grid {
+    us: Vec<f64>,
+    vs: Vec<f64>,
+}
+
+fn wall_grid(f: &CFace, other: &[AFace]) -> Result<Grid, ()> {
     let c = &f.cyl;
     let me = aabb_cyl(c);
+    let tol = EPS / c.radius;
     let (mut us, mut vs) = (Vec::new(), Vec::new());
     for g in other {
         if !boxes_meet(&me, &aabb(g)) {
@@ -933,23 +961,27 @@ fn cuts_on_cyl(f: &CFace, other: &[AFace]) -> Result<(Vec<f64>, Vec<f64>), ()> {
             let (phi, del) = (b.atan2(a), (k / rr).acos());
             for th in [phi + del, phi - del] {
                 let rel = pos_ang(th - f.u0);
-                let tol = EPS / c.radius;
                 if rel > f.span + tol || (f.span < TAU - 1e-9 && (rel < tol || rel > f.span - tol)) {
                     continue;
                 }
-                // Does the face of the other solid hold the whole line?
-                let mut covered = false;
+                // Where the other solid's face holds this line: any overlap with
+                // the wall's height makes it a grid line, and each end that stops
+                // inside the wall is a height line too.
+                let mut touched = false;
                 for (t0, t1) in line_intervals(g, cyl_pt(c, th, 0.0), c.axis)? {
-                    if t1.min(c.vmax) - t0.max(c.vmin) <= EPS {
+                    let (lo, hi) = (t0.max(c.vmin), t1.min(c.vmax));
+                    if hi - lo <= EPS {
                         continue;
                     }
-                    if t0 <= c.vmin + EPS && t1 >= c.vmax - EPS {
-                        covered = true;
-                    } else {
-                        bail!();
+                    touched = true;
+                    if lo > c.vmin + EPS {
+                        vs.push(lo);
+                    }
+                    if hi < c.vmax - EPS {
+                        vs.push(hi);
                     }
                 }
-                if covered {
+                if touched {
                     us.push(rel + f.u0);
                 }
             }
@@ -958,34 +990,76 @@ fn cuts_on_cyl(f: &CFace, other: &[AFace]) -> Result<(Vec<f64>, Vec<f64>), ()> {
             if v0 <= c.vmin + EPS || v0 >= c.vmax - EPS {
                 continue;
             }
-            // The circle at v0 against the face's edges: it must not cross one
-            // within this wall's angles.
+            // The circle at v0 over this wall's angles, broken wherever an edge
+            // of the other face crosses it; any piece inside the face is a cut.
             let centre = add(c.origin, scale(c.axis, v0));
             let circle = E2::Arc { c: g.plane.project(centre), r: c.radius, a0: 0.0, sw: TAU };
+            let mut rels = vec![0.0, f.span];
             for e in &g.edges {
                 let (mut a, mut b) = (Vec::new(), Vec::new());
                 meet(e, &circle, &mut a, &mut b);
                 for t in b {
                     let d = sub(g.plane.point(circle.at(t)), centre);
                     let rel = pos_ang(dot(d, c.e2).atan2(dot(d, c.e1)) - f.u0);
-                    let tol = EPS / c.radius;
-                    if rel < f.span - tol && rel > tol {
-                        bail!();
+                    if rel > tol && rel < f.span - tol {
+                        rels.push(rel);
                     }
                 }
             }
-            if in_edges(g.plane.project(cyl_pt(c, f.u0 + 0.5 * f.span, v0)), &g.edges) {
+            rels.sort_by(|x, y| x.partial_cmp(y).unwrap());
+            let inside = rels.windows(2).any(|w| w[1] - w[0] > tol && in_edges(g.plane.project(cyl_pt(c, f.u0 + 0.5 * (w[0] + w[1]), v0)), &g.edges));
+            if inside {
                 vs.push(v0);
+                us.extend(rels.iter().filter(|&&r| r > tol && r < f.span - tol).map(|&r| r + f.u0));
             }
         } else if boxes_meet(&me, &aabb_plane(&g.curves)) {
             bail!();
         }
     }
     us.sort_by(|a, b| a.partial_cmp(b).unwrap());
-    us.dedup_by(|a, b| (*a - *b).abs() < EPS / c.radius);
+    us.dedup_by(|a, b| (*a - *b).abs() < tol);
     vs.sort_by(|a, b| a.partial_cmp(b).unwrap());
     vs.dedup_by(|a, b| (*a - *b).abs() < EPS);
-    Ok((us, vs))
+    // A circle on a plane face always has a node at the wall's seam, so a cut
+    // whole-turn wall splits there as well: no cell crosses it.
+    if f.span >= TAU - 1e-9 && !us.is_empty() && !us.iter().any(|&x| (x - f.u0).abs() < tol) {
+        us.insert(0, f.u0);
+    }
+    Ok(Grid { us, vs })
+}
+
+/// Points a plane face's outline and cuts must be broken at so they match the
+/// grid of every cylinder wall that meets the plane: the wall's rim circle and
+/// its meeting circle get a node at each grid angle, and its meeting lines get
+/// a node at each grid height. A point off the face's edges is simply unused.
+fn grid_nodes(f: &PFace, walls: &[(&CFace, &Grid)]) -> Vec<P2> {
+    let n = f.plane.n;
+    let mut out = Vec::new();
+    for (w, g) in walls {
+        let c = &w.cyl;
+        let ax = dot(c.axis, n);
+        if ax.abs() > 1.0 - 1e-9 {
+            let v0 = dot(sub(f.plane.origin, c.origin), n) / ax;
+            if v0 >= c.vmin - EPS && v0 <= c.vmax + EPS {
+                for &th in &g.us {
+                    out.push(f.plane.project(cyl_pt(c, th, v0)));
+                }
+            }
+        } else if ax.abs() < 1e-9 {
+            let k = dot(sub(f.plane.origin, c.origin), n);
+            let (a, b) = (dot(c.e1, n), dot(c.e2, n));
+            let rr = c.radius * (a * a + b * b).sqrt();
+            if k.abs() < rr - EPS {
+                let (phi, del) = (b.atan2(a), (k / rr).acos());
+                for th in [phi + del, phi - del] {
+                    for &v in &g.vs {
+                        out.push(f.plane.project(cyl_pt(c, th, v)));
+                    }
+                }
+            }
+        }
+    }
+    out
 }
 
 // ---------------------------------------------------------------------------
@@ -1022,13 +1096,23 @@ enum Kept {
 
 type VertexFn<'a> = &'a mut dyn FnMut(Vec3) -> topo::VertexRef;
 
-fn pieces(faces: &[AFace], other: &[AFace], other_solid: &TSolid, keep: &dyn Fn(Class) -> bool, flip: bool, vertex: VertexFn) -> Result<Vec<Kept>, ()> {
+#[allow(clippy::too_many_arguments)]
+fn pieces(
+    faces: &[AFace],
+    grids: &[Option<Grid>],
+    other: &[AFace],
+    other_solid: &TSolid,
+    keep: &dyn Fn(Class) -> bool,
+    flip: bool,
+    walls: &[(&CFace, &Grid)],
+    vertex: VertexFn,
+) -> Result<Vec<Kept>, ()> {
     let mut out = Vec::new();
-    for face in faces {
+    for (face, grid) in faces.iter().zip(grids) {
         match face {
             AFace::Plane(f) => {
                 let cuts = cuts_on_plane(f, other)?;
-                for region in split_face(f, &cuts)? {
+                for region in split_face(f, &cuts, &grid_nodes(f, walls))? {
                     let s = interior_point(&region).ok_or(())?;
                     if !in_edges(s, &f.edges) {
                         continue;
@@ -1040,32 +1124,26 @@ fn pieces(faces: &[AFace], other: &[AFace], other_solid: &TSolid, keep: &dyn Fn(
                 }
             }
             AFace::Cyl(f) => {
-                let (us, vs) = cuts_on_cyl(f, other)?;
+                let g = grid.as_ref().ok_or(())?;
                 let c = &f.cyl;
                 // Angular intervals [a, b] and height intervals [lo, hi].
                 let mut arcs: Vec<(f64, f64)> = Vec::new();
-                if us.is_empty() {
+                if g.us.is_empty() {
                     arcs.push((f.u0, f.u0 + f.span));
                 } else if f.span >= TAU - 1e-9 {
-                    // A circle on a plane face always has a node at the wall's
-                    // seam, so a cut wall splits there as well: no piece crosses it.
-                    let mut pts = us.clone();
-                    if !pts.iter().any(|&x| (x - f.u0).abs() < EPS / c.radius) {
-                        pts.insert(0, f.u0);
-                    }
-                    for k in 0..pts.len() {
-                        arcs.push((pts[k], if k + 1 < pts.len() { pts[k + 1] } else { f.u0 + TAU }));
+                    for k in 0..g.us.len() {
+                        arcs.push((g.us[k], if k + 1 < g.us.len() { g.us[k + 1] } else { f.u0 + TAU }));
                     }
                 } else {
                     let mut pts = vec![f.u0];
-                    pts.extend(us.iter().copied());
+                    pts.extend(g.us.iter().copied());
                     pts.push(f.u0 + f.span);
                     arcs.extend(pts.windows(2).map(|w| (w[0], w[1])));
                 }
                 let mut hs = vec![c.vmin];
-                hs.extend(vs.iter().copied());
+                hs.extend(g.vs.iter().copied());
                 hs.push(c.vmax);
-                let uncut = us.is_empty() && vs.is_empty();
+                let uncut = g.us.is_empty() && g.vs.is_empty();
                 for &(a, b) in &arcs {
                     for w in hs.windows(2) {
                         let p3 = cyl_pt(c, 0.5 * (a + b), 0.5 * (w[0] + w[1]));
@@ -1220,8 +1298,20 @@ fn core(op: &str, a: &TSolid, b: &TSolid, pa: &[AFace], pb: &[AFace]) -> Result<
         verts.push(v.clone());
         v
     };
-    let mut kept = pieces(pa, pb, b, ka.as_ref(), false, &mut vertex)?;
-    kept.extend(pieces(pb, pa, a, kb.as_ref(), op == "subtract", &mut vertex)?);
+    let grid_of = |faces: &[AFace], other: &[AFace]| -> Result<Vec<Option<Grid>>, ()> {
+        faces.iter().map(|f| if let AFace::Cyl(w) = f { wall_grid(w, other).map(Some) } else { Ok(None) }).collect()
+    };
+    let (ga, gb) = (grid_of(pa, pb)?, grid_of(pb, pa)?);
+    let mut walls: Vec<(&CFace, &Grid)> = Vec::new();
+    for (faces, grids) in [(pa, &ga), (pb, &gb)] {
+        for (f, g) in faces.iter().zip(grids) {
+            if let (AFace::Cyl(w), Some(g)) = (f, g) {
+                walls.push((w, g));
+            }
+        }
+    }
+    let mut kept = pieces(pa, &ga, pb, b, ka.as_ref(), false, &walls, &mut vertex)?;
+    kept.extend(pieces(pb, &gb, pa, a, kb.as_ref(), op == "subtract", &walls, &mut vertex)?);
     let Some(solid) = build_result(kept, &mut vertex) else {
         return Ok(None);
     };
@@ -1439,10 +1529,14 @@ mod tests {
 
     // ---- S2: parts with round holes -------------------------------------------------------
     fn bored(r: f64, floor_z: Option<f64>) -> TSolid {
+        bored_at(r, floor_z, 0.0, 0.0)
+    }
+
+    fn bored_at(r: f64, floor_z: Option<f64>, cx: f64, cy: f64) -> TSolid {
         let base = bx([40.0, 40.0, 20.0], [0.0; 3]);
         let tool = match floor_z {
-            None => build::cylinder_solid([0.0; 3], r, 30.0, [0.0, 0.0, 1.0]),
-            Some(z) => build::cylinder_solid([0.0, 0.0, (z + 10.0) / 2.0 + 0.0], r, 10.0 - z, [0.0, 0.0, 1.0]),
+            None => build::cylinder_solid([cx, cy, 0.0], r, 30.0, [0.0, 0.0, 1.0]),
+            Some(z) => build::cylinder_solid([cx, cy, (z + 10.0) / 2.0 + 0.0], r, 10.0 - z, [0.0, 0.0, 1.0]),
         };
         sub_op(&base, &tool)
     }
@@ -1504,14 +1598,30 @@ mod tests {
     }
 
     #[test]
-    fn a_cut_that_covers_only_part_of_the_wall_refuses() {
+    fn a_cut_that_covers_only_part_of_the_wall_builds_exactly() {
+        let pi = std::f64::consts::PI;
         let part = bored(6.0, None);
-        // A cutter 6 tall in z reaches only part of the bore wall's height.
-        match boolean_planar("subtract", &part, &bx([60.0, 30.0, 6.0], [0.0, 15.0, 0.0])) {
-            Outcome::Refused => {}
-            Outcome::Built(r) => panic!("built a partial wall cut: {}", vol(&r)),
-            Outcome::NotPlanar => panic!("planes and a cylinder are in scope"),
+        let whole = 32000.0 - pi * 36.0 * 20.0;
+        // A cutter 6 tall in z reaches only part of the 20 tall bore wall: it removes the
+        // y > 0 box slab (20 x 40 x 6) less the half bore inside it (pi r^2 / 2 x 6).
+        let mid = built("subtract", &part, &bx([60.0, 30.0, 6.0], [0.0, 15.0, 0.0]));
+        assert!((vol(&mid) - (whole - (20.0 * 40.0 * 6.0 - pi * 36.0 / 2.0 * 6.0))).abs() < 1e-6, "mid {}", vol(&mid));
+        // Reaching the top rim: z in [2, 10] is 8 tall.
+        let top = built("subtract", &part, &bx([60.0, 30.0, 8.0], [0.0, 15.0, 6.0]));
+        assert!((vol(&top) - (whole - (20.0 * 40.0 * 8.0 - pi * 36.0 / 2.0 * 8.0))).abs() < 1e-6, "top {}", vol(&top));
+        for r in [&mid, &top] {
+            let m = crate::mesh::mesh_solid(r, 0.05).expect("meshes");
+            assert!(ops::check_watertight(&m));
         }
+        // A cutter box sunk in the middle of the wall on one side only (x in [0, 30], y in [0, 30], z in [-3, 3]).
+        let corner = built("subtract", &part, &bx([30.0, 30.0, 6.0], [15.0, 15.0, 0.0]));
+        let want = whole - (cyl_free_box(20.0, 20.0, 6.0) - pi * 36.0 / 4.0 * 6.0);
+        assert!((vol(&corner) - want).abs() < 1e-6, "corner {} vs {want}", vol(&corner));
+    }
+
+    /// Volume of the part of a 20-deep box corner quadrant [0,a] x [0,b] x h inside the 40 x 40 plate.
+    fn cyl_free_box(a: f64, b: f64, h: f64) -> f64 {
+        a * b * h
     }
 
     #[test]
@@ -1580,29 +1690,38 @@ mod tests {
     /// A bored box cut by random axis-aligned boxes, against the closed form. With
     /// `tall` the cutter spans the whole part in z, so every wall cut runs the
     /// wall's full length and nothing legitimate should refuse.
-    fn bore_sweep(seed: u64, n: usize, tall: bool) -> (usize, usize) {
+    fn bore_sweep(seed: u64, n: usize, tall: bool, off_centre: bool) -> (usize, usize) {
         let mut r = Lcg(seed);
         let (mut built_n, mut refused_n) = (0, 0);
         for _ in 0..n {
             let rad = 3.0 + 6.0 * r.next();
             let blind = r.next() < 0.5;
             let floor = -10.0 + 4.0 + 12.0 * r.next();
-            let part = bored(rad, if blind { Some(floor) } else { None });
+            let reach = 19.0 - rad;
+            let (cx, cy) = if off_centre { (reach * (2.0 * r.next() - 1.0), reach * (2.0 * r.next() - 1.0)) } else { (0.0, 0.0) };
+            let part = bored_at(rad, if blind { Some(floor) } else { None }, cx, cy);
             let (z0, z1) = if blind { (floor, 10.0) } else { (-10.0, 10.0) };
             let size = [4.0 + 36.0 * r.next(), 4.0 + 36.0 * r.next(), if tall { 40.0 } else { 3.0 + 25.0 * r.next() }];
             let c = [-22.0 + 44.0 * r.next(), -22.0 + 44.0 * r.next(), if tall { 0.0 } else { -12.0 + 24.0 * r.next() }];
             let cutter = bx(size, c);
             let box_vol = overlap([40.0, 40.0, 20.0], [0.0; 3], size, c);
             let bore_all = std::f64::consts::PI * rad * rad * (z1 - z0);
-            let bore_cut = cyl_in_box(0.0, 0.0, rad, z0, z1, size, c);
+            let bore_cut = cyl_in_box(cx, cy, rad, z0, z1, size, c);
             // (box minus bore) minus cutter = box - cutter - (bore - bore_in_cutter) (bore lies inside the box)
             let want = 32000.0 - box_vol - (bore_all - bore_cut);
             match boolean_planar("subtract", &part, &cutter) {
                 Outcome::Built(res) => {
                     built_n += 1;
                     assert!((vol(&res) - want).abs() < 1e-6, "WRONG {} vs {want}: rad={rad} blind={blind} floor={floor} cutter={size:?}@{c:?}", vol(&res));
+                    if built_n % 7 == 0 {
+                        let m = crate::mesh::mesh_solid(&res, 0.05).expect("meshes");
+                        assert!(ops::check_watertight(&m), "not watertight: rad={rad} blind={blind} floor={floor} cutter={size:?}@{c:?}");
+                    }
                 }
-                Outcome::Refused => refused_n += 1,
+                Outcome::Refused => {
+                    refused_n += 1;
+                    eprintln!("SWEEP REFUSED rad={rad} blind={blind} floor={floor} centre=({cx},{cy}) cutter={size:?}@{c:?}");
+                }
                 Outcome::NotPlanar => panic!("planes and a cylinder are in scope"),
             }
         }
@@ -1611,16 +1730,24 @@ mod tests {
 
     #[test]
     fn bored_box_random_cutters_that_span_the_part() {
-        let (b, r) = bore_sweep(21, 300, true);
+        let (b, r) = bore_sweep(21, 300, true, false);
         eprintln!("tall cutters: built {b}, refused {r}");
-        assert!(b > 0);
+        assert_eq!((b, r), (300, 0));
+    }
+
+    #[test]
+    fn off_centre_bores_random_cutters_never_wrong() {
+        let (b, r) = bore_sweep(57, 400, false, true);
+        eprintln!("off-centre bores: built {b}, refused {r}");
+        assert_eq!(b + r, 400);
+        assert!(r * 10 <= b, "too many refusals: {r} of {}", b + r);
     }
 
     #[test]
     fn bored_box_random_cutters_never_wrong() {
-        let (b, r) = bore_sweep(33, 400, false);
+        let (b, r) = bore_sweep(33, 400, false, false);
         eprintln!("random cutters: built {b}, refused {r}");
-        assert!(b > 0);
+        assert_eq!((b, r), (400, 0));
     }
 }
 
