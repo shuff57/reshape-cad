@@ -971,15 +971,7 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
         // could return a wrong solid, so each one refuses in a sentence.
         if matches!(kind, "pocket" | "groove" | "hole" | "combine" | "fillet" | "draft" | "shell" | "mirror" | "blend") {
             let mut names: Vec<&str> = Vec::new();
-            if let Some(obj) = f.as_object() {
-                for v in obj.values() {
-                    match v {
-                        Value::String(n) => names.push(n),
-                        Value::Array(a) => names.extend(a.iter().filter_map(|x| x.as_str())),
-                        _ => {}
-                    }
-                }
-            }
+            collect_strings(f, &mut names);
             let crossed = names.into_iter().find(|n| {
                 hist.shapes.get(*n).is_some_and(ops::has_cross_trim)
                     || hist.shapes.get(hist.head_of(n)).is_some_and(ops::has_cross_trim)
@@ -3235,6 +3227,18 @@ fn sweep_name(hist: &History, feature_id: &str, face: &build::TFace) -> Option<V
 enum Resolved {
     Face(f64, Vec3),
     Edge(f64, Vec3),
+}
+
+/// Every string anywhere inside a feature's JSON, however deeply nested: a fillet's
+/// `edge` is a TopoName OBJECT (`{ "feature": "h", "of": [...] }`), and a scan that
+/// read only top-level strings and arrays of strings never saw the feature it names.
+fn collect_strings<'a>(v: &'a Value, out: &mut Vec<&'a str>) {
+    match v {
+        Value::String(s) => out.push(s),
+        Value::Array(a) => a.iter().for_each(|x| collect_strings(x, out)),
+        Value::Object(o) => o.values().for_each(|x| collect_strings(x, out)),
+        _ => {}
+    }
 }
 
 /// Whether two surfaces are the same geometric surface, to kernel tolerance.
@@ -8843,6 +8847,27 @@ mod cavity_guard_tests {
         let (hist, refusals) = build_doc(&twice);
         assert!(hist.shapes.contains_key("h") && !hist.shapes.contains_key("h2"), "{refusals:?}");
         assert!(refusals["h2"].as_str().unwrap().contains("already has a bore across its side"), "{refusals:?}");
+    }
+
+    /// A feature that reaches a bored part only through a TopoName OBJECT still refuses:
+    /// the cross-trim scan used to read top-level strings and string arrays alone.
+    #[test]
+    fn k8_cross_trim_guard_sees_a_name_inside_an_object() {
+        let cyl = json!({ "id": "t", "kind": "cylinder", "radius": 7.5, "height": 20.0 });
+        // `f1` targets a clean box; the bored part `h` appears ONLY inside the edge object.
+        let doc = json!({ "features": [cyl,
+            { "id": "b", "kind": "box", "size": [10.0, 10.0, 10.0], "center": [50.0, 0.0, 0.0] },
+            { "id": "h", "kind": "hole", "target": "t", "diameter": 6.0, "depth": 40.0, "center": [0.0, 0.0, 0.0], "axis": "x" },
+            { "id": "f1", "kind": "fillet", "target": "b", "radius": 1.0,
+              "edge": { "kind": "edge", "cause": "between", "feature": "h", "of": ["h.wall", "t.cap[top]"] } }] });
+        let (hist, refusals) = build_doc(&doc);
+        assert!(hist.shapes.contains_key("h"), "{refusals:?}");
+        assert!(refusals["f1"].as_str().unwrap().contains("already has a bore across its side"), "{refusals:?}");
+        let nested = json!({ "a": ["x", { "b": "y" }], "c": { "d": [{ "e": "z" }] }, "n": 3 });
+        let mut seen = Vec::new();
+        collect_strings(&nested, &mut seen);
+        seen.sort_unstable();
+        assert_eq!(seen, vec!["x", "y", "z"]);
     }
 
     /// Measure, mesh and STEP at the wasm surface: the bored part measures and
