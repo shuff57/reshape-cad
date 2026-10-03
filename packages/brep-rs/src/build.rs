@@ -360,7 +360,7 @@ pub fn fillet_box(hx: f64, hy: f64, hz: f64, rad: f64, center: Vec3) -> TSolid {
                 cyl_arc_use(long_u0, false, 0.0, 0.0, vmax, vmin),
             ];
             faces.push(make_face(
-                Surface::Cylinder(Cylinder { origin, axis, e1, e2, radius: rad, vmin, vmax, arc: Some(geom::ArcRange { start: 0.0, span: hp }) }),
+                Surface::Cylinder(Cylinder { origin, axis, e1, e2, radius: rad, vmin, vmax, arc: Some(geom::ArcRange { start: 0.0, span: hp }), cross: None }),
                 [[0.0, hp], [vmin, vmax]],
                 uses,
             ));
@@ -390,7 +390,7 @@ pub fn fillet_box(hx: f64, hy: f64, hz: f64, rad: f64, center: Vec3) -> TSolid {
                 cyl_arc_use(long_u0, false, 0.0, 0.0, vmax, vmin),
             ];
             faces.push(make_face(
-                Surface::Cylinder(Cylinder { origin, axis, e1, e2, radius: rad, vmin, vmax, arc: Some(geom::ArcRange { start: 0.0, span: hp }) }),
+                Surface::Cylinder(Cylinder { origin, axis, e1, e2, radius: rad, vmin, vmax, arc: Some(geom::ArcRange { start: 0.0, span: hp }), cross: None }),
                 [[0.0, hp], [vmin, vmax]],
                 uses,
             ));
@@ -420,7 +420,7 @@ pub fn fillet_box(hx: f64, hy: f64, hz: f64, rad: f64, center: Vec3) -> TSolid {
                 cyl_arc_use(long_u0, false, 0.0, 0.0, vmax, vmin),
             ];
             faces.push(make_face(
-                Surface::Cylinder(Cylinder { origin, axis, e1, e2, radius: rad, vmin, vmax, arc: Some(geom::ArcRange { start: 0.0, span: hp }) }),
+                Surface::Cylinder(Cylinder { origin, axis, e1, e2, radius: rad, vmin, vmax, arc: Some(geom::ArcRange { start: 0.0, span: hp }), cross: None }),
                 [[0.0, hp], [vmin, vmax]],
                 uses,
             ));
@@ -697,7 +697,7 @@ fn reversed_face(face: &Face<Curve3, Surface3>) -> TFace {
             radius: c.radius,
             vmin: c.vmin,
             vmax: c.vmax,
- arc: c.arc.clone(),
+ arc: c.arc.clone(), cross: c.cross.clone(),
  }),
  Surface::Cone(c) => Surface::Cone(Cone {
  base: c.base,
@@ -856,7 +856,7 @@ pub fn cylinder_solid(center: Vec3, radius: f64, height: f64, axis: Vec3) -> TSo
             radius,
             vmin: 0.0,
             vmax: height,
-            arc: None,
+            arc: None, cross: None,
         }),
         [[0.0, 0.0], [0.0, height]],
         vec![
@@ -961,7 +961,7 @@ pub fn round_cylinder(center: Vec3, radius: f64, height: f64, axis: Vec3, rad: f
     let pi = std::f64::consts::PI;
 
     let wall = make_face(
-        Surface::Cylinder(Cylinder { origin: zlo_wall, axis: z, e1, e2, radius, vmin: 0.0, vmax: 2.0 * hh, arc: None }),
+        Surface::Cylinder(Cylinder { origin: zlo_wall, axis: z, e1, e2, radius, vmin: 0.0, vmax: 2.0 * hh, arc: None, cross: None }),
         [[0.0, 0.0], [0.0, 2.0 * hh]],
         vec![
             topo::EdgeUse { edge: e_wall_lo.clone(), forward: true, pcurve: topo::Pcurve { start: [0.0, 0.0], end: [0.0, 2.0 * hh], mid: [0.0, hh] } },
@@ -1047,7 +1047,7 @@ pub fn chamfer_cylinder(center: Vec3, radius: f64, height: f64, axis: Vec3, rad:
     let slant = rad * std::f64::consts::SQRT_2;
 
     let wall = make_face(
-        Surface::Cylinder(Cylinder { origin: zlo_wall, axis: z, e1, e2, radius, vmin: 0.0, vmax: 2.0 * hh, arc: None }),
+        Surface::Cylinder(Cylinder { origin: zlo_wall, axis: z, e1, e2, radius, vmin: 0.0, vmax: 2.0 * hh, arc: None, cross: None }),
         [[0.0, 0.0], [0.0, 2.0 * hh]],
         vec![
             topo::EdgeUse { edge: e_wall_lo.clone(), forward: true, pcurve: topo::Pcurve { start: [0.0, 0.0], end: [0.0, 2.0 * hh], mid: [0.0, hh] } },
@@ -1180,7 +1180,7 @@ pub fn round_cylinder_one_rim(center: Vec3, radius: f64, height: f64, axis: Vec3
     let e_v0 = if treated_top { e_untreated.clone() } else { e_wall_treated.clone() };
     let e_v1 = if treated_top { e_wall_treated.clone() } else { e_untreated.clone() };
     let wall = make_face(
-        Surface::Cylinder(Cylinder { origin: z_lo_wall, axis: z, e1, e2, radius, vmin: 0.0, vmax: height - rad, arc: None }),
+        Surface::Cylinder(Cylinder { origin: z_lo_wall, axis: z, e1, e2, radius, vmin: 0.0, vmax: height - rad, arc: None, cross: None }),
         [[0.0, 0.0], [0.0, height - rad]],
         vec![
             topo::EdgeUse { edge: e_v0.clone(), forward: true, pcurve: topo::Pcurve { start: [0.0, 0.0], end: [0.0, height - rad], mid: [0.0, (height - rad) / 2.0] } },
@@ -1285,7 +1285,7 @@ pub fn chamfer_cylinder_one_rim(center: Vec3, radius: f64, height: f64, axis: Ve
     let e_v0 = if treated_top { e_untreated.clone() } else { e_wall_treated.clone() };
     let e_v1 = if treated_top { e_wall_treated.clone() } else { e_untreated.clone() };
     let wall = make_face(
-        Surface::Cylinder(Cylinder { origin: z_lo_wall, axis: z, e1, e2, radius, vmin: 0.0, vmax: height - rad, arc: None }),
+        Surface::Cylinder(Cylinder { origin: z_lo_wall, axis: z, e1, e2, radius, vmin: 0.0, vmax: height - rad, arc: None, cross: None }),
         [[0.0, 0.0], [0.0, height - rad]],
         vec![
             topo::EdgeUse { edge: e_v0.clone(), forward: true, pcurve: topo::Pcurve { start: [0.0, 0.0], end: [0.0, height - rad], mid: [0.0, (height - rad) / 2.0] } },
@@ -2127,7 +2127,7 @@ pub fn extrude_profile_loops(
                         radius: *radius,
                         vmin: 0.0,
                         vmax: height,
-                        arc: Some(geom::ArcRange { start: t0, span: tsw }),
+                        arc: Some(geom::ArcRange { start: t0, span: tsw }), cross: None,
                     });
                     // The base and top arcs ride the cylinder's own (u, v)
                     // space; the two vertical seams sit at constant angle.
@@ -2386,7 +2386,7 @@ pub fn revolve_profile(
                 radius: r,
                 vmin: 0.0,
                 vmax: hh,
-                arc: None,
+                arc: None, cross: None,
             });
             let pa = add(scale(e1c, r), scale(axis, h_lo));
             let pb = add(scale(e1c, r), scale(axis, h_lo + hh));
@@ -2626,7 +2626,7 @@ fn revolve_profile_partial(
                 radius: r,
                 vmin: 0.0,
                 vmax: hh,
-                arc: Some(geom::ArcRange { start: arc_start, span: angle.abs() }),
+                arc: Some(geom::ArcRange { start: arc_start, span: angle.abs() }), cross: None,
             });
             let pa = add(scale(e1c, r), scale(axis, h_lo));
             let pb = add(scale(e1c, r), scale(axis, h_lo + hh));

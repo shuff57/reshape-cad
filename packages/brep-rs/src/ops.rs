@@ -1436,7 +1436,7 @@ fn partial_wall_arc(cy: &Cylinder, vlo: f64, vhi: f64, arc: crate::geom::ArcRang
         radius: cy.radius,
         vmin: vlo,
         vmax: vhi,
-        arc: Some(arc),
+        arc: Some(arc), cross: None,
     });
     Rc::new(RefCell::new(Face {
         boundary: vec![Rc::new(RefCell::new(Wire { edges: uses }))],
@@ -2003,7 +2003,7 @@ fn partial_wall(cy: &Cylinder, vlo: f64, vhi: f64, reverse: bool) -> TFace {
         radius: cy.radius,
         vmin: vlo,
         vmax: vhi,
-        arc: None,
+        arc: None, cross: None,
     });
     let p_lo = add(cy.origin, scale(cy.axis, vlo));
     let p_hi = add(cy.origin, scale(cy.axis, vhi));
@@ -2060,6 +2060,10 @@ fn plane_face_radial_reach(face: &Face<Curve3, Surface3>, origin: Vec3, axis: Ve
             }
             Curve::Segment { .. } => {
                 far = far.max(radial(e.a.borrow().point)).max(radial(e.b.borrow().point));
+            }
+            // Conservative: the curve stays within both radii of its centre.
+            Curve::CylCyl { center, big_r, r, .. } => {
+                far = far.max(radial(*center) + big_r + r);
             }
         }
     }
@@ -3889,7 +3893,7 @@ pub fn cylinder_parts(
         let fb = f.borrow();
         match &fb.surface {
             Surface::Cylinder(cy) => {
-                if cy.arc.is_some() || wall.is_some() {
+                if cy.arc.is_some() || cy.cross.is_some() || wall.is_some() {
                     return None;
                 }
                 wall = Some(cy.clone());
@@ -4060,7 +4064,7 @@ pub fn cylinder_open_hollow(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> 
             radius: wa.radius,
             vmin: vlo,
             vmax: vhi,
-            arc: None,
+            arc: None, cross: None,
         });
         Rc::new(RefCell::new(Face {
             boundary: vec![Rc::new(RefCell::new(Wire { edges: uses }))],
@@ -4216,7 +4220,7 @@ fn build_cyl_pair_result(
             radius: c.radius,
             vmin: vlo,
             vmax: vhi,
-            arc: Some(crate::geom::ArcRange { start, span: sweep }),
+            arc: Some(crate::geom::ArcRange { start, span: sweep }), cross: None,
         });
         Rc::new(RefCell::new(Face {
             boundary: vec![Rc::new(RefCell::new(Wire { edges: uses }))],
@@ -4293,12 +4297,218 @@ fn build_cyl_pair_result(
     Some(Solid { shells: vec![Rc::new(RefCell::new(Shell { faces }))] })
 }
 
+/// Largest tool-to-part radius ratio the cross bore builds. Past this the two
+/// surfaces are nearly tangent, the meeting curve's tips pinch toward the
+/// part's silhouette, and the exact quadrature stops being worth trusting.
+const CROSS_BORE_MAX_RATIO: f64 = 0.95;
+
+/// What a cross bore through a plain cylinder removes, by an INDEPENDENT
+/// route: with y = r sin(th) the removed volume is
+/// `integral of 2 r^2 cos^2(th) * x_extent(th) d th`, `x_extent` being
+/// `2 sqrt(R^2 - y^2)` for a through bore and `sqrt(R^2 - y^2) - floor` for a
+/// blind one (the elliptic integral of SPEC-transverse-bore.md). The result's
+/// own faces are measured by surface integrals; this is the cross-check that
+/// keeps a wrong solid from shipping.
+fn cross_bore_removed_volume(big_r: f64, r: f64, floor: Option<f64>) -> f64 {
+    let half = std::f64::consts::FRAC_PI_2;
+    crate::geom::integrate_composite(-half, half, 96, |th| {
+        let y = r * th.sin();
+        let f = (big_r * big_r - y * y).max(0.0).sqrt();
+        let ext = match floor {
+            None => 2.0 * f,
+            Some(x0) => f - x0,
+        };
+        2.0 * r * r * th.cos() * th.cos() * ext
+    })
+}
+
+/// A bore that runs straight across a plain cylinder and through its axis
+/// (docs/specs/SPEC-transverse-bore.md): a plain cylinder tool, its axis
+/// perpendicular to the part's and meeting it, radius `r` with `r / R` at most
+/// [`CROSS_BORE_MAX_RATIO`]. Either a THROUGH bore (the tool's ends are clear
+/// of the wall on both sides) or a BLIND one (clear on one side, a flat floor
+/// strictly inside the part on the other). The two cylinders meet in the closed
+/// space curve `Curve::CylCyl`; the result is the part's wall pierced by one or
+/// two holes, the bore's own wall (bounded by the curve), the two caps and, for
+/// a blind bore, the floor -- every face an analytic surface, trimmed exactly.
+///
+/// `None` for anything else (off-centre, skew, a bore through a cap or ending
+/// in the wall, a tangent or near-tangent bore, a part that is not a plain
+/// cylinder): the caller refuses in a sentence.
+pub fn cylinder_cross_bore(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
+    if op != "subtract" {
+        return None;
+    }
+    let (wall, _, _, _, _) = cylinder_parts(a)?;
+    let (tool, tb_lo, tb_hi, _, _) = cylinder_parts(b)?;
+    let av = normalize(wall.axis);
+    let dv = normalize(tool.axis);
+    if dot(av, dv).abs() > 1e-9 {
+        return None;
+    }
+    let (big_r, r) = (wall.radius, tool.radius);
+    if !(r > 1e-6 * big_r) || r > big_r * CROSS_BORE_MAX_RATIO {
+        return None;
+    }
+    // The tool's axis must meet the part's: coplanar, and (being perpendicular)
+    // that is enough for them to cross.
+    let delta = sub(tool.origin, wall.origin);
+    let n0 = normalize(cross(av, dv));
+    let scale_len = big_r.max(1.0);
+    if dot(delta, n0).abs() > 1e-9 * scale_len {
+        return None;
+    }
+    let c_v = dot(delta, av);
+    let p0 = add(wall.origin, scale(av, c_v));
+    let xa = dot(sub(tb_lo, p0), dv);
+    let xb = dot(sub(tb_hi, p0), dv);
+    let (xl, xh) = (xa.min(xb), xa.max(xb));
+    let s0 = (big_r * big_r - r * r).sqrt();
+    let m = 1e-6 * big_r;
+    let tol = 1e-9 * scale_len;
+    // Through, or blind entering at +d, or blind entering at -d (then turn the
+    // bore round so it always enters at +d).
+    let (flip, floor): (f64, Option<f64>) = if xh >= big_r - tol && xl <= -big_r + tol {
+        (1.0, None)
+    } else if xh >= big_r - tol && xl > -s0 + m && xl < s0 - m {
+        (1.0, Some(xl))
+    } else if xl <= -big_r + tol && xh < s0 - m && xh > -s0 + m {
+        (-1.0, Some(-xh))
+    } else {
+        return None;
+    };
+    // The bore must stay clear of both caps (it would otherwise break through
+    // them, a different shape).
+    if !(c_v - r > wall.vmin + m && c_v + r < wall.vmax - m) {
+        return None;
+    }
+    let d = scale(dv, flip);
+    let n = normalize(cross(av, d));
+    let through = floor.is_none();
+
+    // --- vertices and edges -------------------------------------------------
+    let seg = |p: Vec3, q: Vec3| Curve::Segment { a: p, b: q };
+    let curve = |sign: f64| Curve::CylCyl { center: p0, d, n, a: av, big_r, r, sign };
+    let tip_p = curve(1.0).point_at(0.0);
+    let v_tp = topo::vertex(tip_p);
+    let loop_p = topo::edge(v_tp.clone(), v_tp.clone(), true, curve(1.0));
+    let tau = 2.0 * std::f64::consts::PI;
+
+    let lo_c = add(wall.origin, scale(av, wall.vmin));
+    let hi_c = add(wall.origin, scale(av, wall.vmax));
+    let rim = |c: Vec3| Curve::Arc { center: c, radius: big_r, normal: av, x_axis: n, sweep: tau };
+    let v_rb = topo::vertex(add(lo_c, scale(n, big_r)));
+    let v_rt = topo::vertex(add(hi_c, scale(n, big_r)));
+    let rim_lo = topo::edge(v_rb.clone(), v_rb.clone(), true, rim(lo_c));
+    let rim_hi = topo::edge(v_rt.clone(), v_rt.clone(), true, rim(hi_c));
+    let seam_w = topo::edge(v_rb.clone(), v_rt.clone(), true, seg(v_rb.borrow().point, v_rt.borrow().point));
+
+    let z = topo::Pcurve { start: [0.0, 0.0], end: [0.0, 0.0], mid: [0.0, 0.0] };
+    let us = |e: &topo::EdgeRef<Curve3>, forward: bool| topo::EdgeUse { edge: e.clone(), forward, pcurve: z };
+    let wire = |uses: Vec<topo::EdgeUse<Curve3>>| Rc::new(RefCell::new(Wire { edges: uses }));
+    let face = |boundary: Vec<topo::WireRef<Curve3>>, surface: Surface| -> TFace {
+        Rc::new(RefCell::new(Face { boundary, forward: true, surface, uv_domain: [[0.0, tau], [0.0, 1.0]] }))
+    };
+
+    // --- caps ---------------------------------------------------------------
+    let top = face(vec![wire(vec![us(&rim_hi, true)])], Surface::Plane(Plane::new(v_rt.borrow().point, av)));
+    let bottom = face(vec![wire(vec![us(&rim_lo, true)])], Surface::Plane(Plane::new(v_rb.borrow().point, scale(av, -1.0))));
+
+    // --- the part's pierced wall -------------------------------------------
+    let mut wall_wires = vec![wire(vec![us(&seam_w, true), us(&rim_hi, true), us(&seam_w, false), us(&rim_lo, false)])];
+    wall_wires.push(wire(vec![us(&loop_p, false)]));
+    let mut faces: Vec<TFace> = vec![top, bottom];
+
+    // --- the bore's own wall (and floor) -----------------------------------
+    let mut tool_uses: Vec<topo::EdgeUse<Curve3>> = Vec::new();
+    let mut extra: Option<TFace> = None;
+    let (lo_b, hi_b);
+    if through {
+        let tip_m = curve(-1.0).point_at(0.0);
+        let v_tm = topo::vertex(tip_m);
+        let loop_m = topo::edge(v_tm.clone(), v_tm.clone(), true, curve(-1.0));
+        let seam_t = topo::edge(v_tm.clone(), v_tp.clone(), true, seg(tip_m, tip_p));
+        wall_wires.push(wire(vec![us(&loop_m, false)]));
+        tool_uses = vec![us(&loop_p, true), us(&seam_t, false), us(&loop_m, false), us(&seam_t, true)];
+        lo_b = None;
+        hi_b = None;
+    } else {
+        let x0 = floor.unwrap();
+        let fc = add(p0, scale(d, x0));
+        let v_f = topo::vertex(add(fc, scale(n, r)));
+        let floor_arc = topo::edge(v_f.clone(), v_f.clone(), true, Curve::Arc { center: fc, radius: r, normal: d, x_axis: n, sweep: tau });
+        let seam_t = topo::edge(v_f.clone(), v_tp.clone(), true, seg(v_f.borrow().point, tip_p));
+        tool_uses = vec![us(&loop_p, true), us(&seam_t, false), us(&floor_arc, true), us(&seam_t, true)];
+        extra = Some(face(vec![wire(vec![us(&floor_arc, true)])], Surface::Plane(Plane::new(v_f.borrow().point, d))));
+        lo_b = Some(x0);
+        hi_b = None;
+    }
+    let wall_face = face(
+        wall_wires,
+        Surface::Cylinder(Cylinder {
+            origin: wall.origin,
+            axis: av,
+            e1: n,
+            e2: scale(d, -1.0),
+            radius: big_r,
+            vmin: wall.vmin,
+            vmax: wall.vmax,
+            arc: None,
+            cross: Some(crate::geom::Cross::Wall { r, c_v, plus: true, minus: through }),
+        }),
+    );
+    let tool_face = face(
+        vec![wire(tool_uses)],
+        Surface::Cylinder(Cylinder {
+            origin: p0,
+            axis: d,
+            e1: n,
+            e2: scale(av, -1.0),
+            radius: r,
+            vmin: lo_b.unwrap_or(-big_r),
+            vmax: big_r,
+            arc: None,
+            cross: Some(crate::geom::Cross::Tool { big_r, lo: lo_b, hi: hi_b }),
+        }),
+    );
+    faces.push(wall_face);
+    faces.push(tool_face);
+    if let Some(f) = extra {
+        faces.push(f);
+    }
+    let result = Solid { shells: vec![Rc::new(RefCell::new(Shell { faces }))] };
+
+    // The safety net. The result's faces are measured by surface integrals; the
+    // removed volume has a closed one-dimensional form. They must agree, or this
+    // is a wrong solid and the bore refuses.
+    let want = cross_bore_removed_volume(big_r, r, floor);
+    let got = build::solid_volume(a) - build::solid_volume(&result);
+    if !got.is_finite() || (got - want).abs() > 1e-10 * build::solid_volume(a).max(1.0) {
+        return None;
+    }
+    Some(result)
+}
+
+/// True when any face of `s` carries a cross-bore trim (`geom::Cross`). Such a
+/// solid is only ever the RESULT of [`cylinder_cross_bore`]: the generic face
+/// machinery would treat its faces as whole cylinders and return a wrong solid,
+/// so every other boolean refuses it.
+pub fn has_cross_trim(s: &TSolid) -> bool {
+    s.faces().iter().any(|f| matches!(&f.borrow().surface, Surface::Cylinder(c) if c.cross.is_some()))
+}
+
 /// Boolean two solids of the `combine` kind. Returns None when the kernel
 /// cannot build the exact result, so the caller refuses the feature in words.
 
 
 
 pub fn boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
+ if has_cross_trim(a) || has_cross_trim(b) {
+ return None;
+ }
+ if let Some(r) = cylinder_cross_bore(op, a, b) {
+ return volume_is_translation_invariant(&r).then_some(r);
+ }
  if op == "subtract" {
  if let Some(cavity) = subtract_enclosed(a, b) {
  return volume_is_translation_invariant(&cavity).then_some(cavity);
@@ -4988,6 +5198,11 @@ fn flip_face(face: &TFace) -> Option<TFace> {
         })))
         }
         Surface::Cylinder(cy) => {
+            // A cross-bore trim (geom::Cross) is not a rectangle in (u, v); a
+            // flip would need its own pcurves. Refuse rather than flip wrongly.
+            if cy.cross.is_some() {
+                return None;
+            }
             let mut uses = Vec::new();
             for w in &fb.boundary {
                 for u in &w.borrow().edges {
@@ -5012,7 +5227,7 @@ fn flip_face(face: &TFace) -> Option<TFace> {
                 radius: cy.radius,
                 vmin: cy.vmin,
                 vmax: cy.vmax,
-                arc,
+                arc, cross: None,
             });
  Some(make_face(surf, fb.uv_domain, uses))
  }
@@ -5131,7 +5346,7 @@ mod tests {
             radius: 8.0,
             vmin: 0.0,
             vmax: 40.0,
-            arc: None,
+            arc: None, cross: None,
         };
         let w = partial_wall(&cy, 10.0, 30.0, false);
         let wa = w.borrow();
@@ -6962,3 +7177,240 @@ mod cone_bore_pins {
     }
 }
 
+
+/// Transverse (cross) bore through a cylinder's side, docs/specs/SPEC-transverse-bore.md.
+#[cfg(test)]
+mod cross_bore_pins {
+    use super::*;
+
+    const SHIFT: Vec3 = [37.0, -23.0, 11.0];
+
+    fn part(big_r: f64, h: f64, at: Vec3) -> TSolid {
+        build::cylinder_solid(at, big_r, h, [0.0, 0.0, 1.0])
+    }
+
+    fn tool(r: f64, x_lo: f64, x_hi: f64, at: Vec3) -> TSolid {
+        let mid = 0.5 * (x_lo + x_hi);
+        build::cylinder_solid(add(at, [mid, 0.0, 0.0]), r, x_hi - x_lo, [1.0, 0.0, 0.0])
+    }
+
+    /// The removed volume by a route that shares nothing with the kernel:
+    /// Simpson's rule, 400000 intervals, on y = r sin(th) (the integrand is
+    /// smooth there). Through: `x_extent = 2 sqrt(R^2 - y^2)`; blind:
+    /// `sqrt(R^2 - y^2) - floor`.
+    fn oracle_removed(big_r: f64, r: f64, floor: Option<f64>) -> f64 {
+        let n = 400_000usize;
+        let (a, b) = (-std::f64::consts::FRAC_PI_2, std::f64::consts::FRAC_PI_2);
+        let h = (b - a) / n as f64;
+        let g = |th: f64| {
+            let y = r * th.sin();
+            let f = (big_r * big_r - y * y).sqrt();
+            let ext = match floor { None => 2.0 * f, Some(x0) => f - x0 };
+            2.0 * r * r * th.cos() * th.cos() * ext
+        };
+        let mut acc = g(a) + g(b);
+        for i in 1..n {
+            acc += g(a + h * i as f64) * if i % 2 == 1 { 4.0 } else { 2.0 };
+        }
+        acc * h / 3.0
+    }
+
+    fn bbox_of_part(big_r: f64, h: f64, at: Vec3) -> (Vec3, Vec3) {
+        ([at[0] - big_r, at[1] - big_r, at[2] - h / 2.0], [at[0] + big_r, at[1] + big_r, at[2] + h / 2.0])
+    }
+
+    /// The removed volume equals the numeric integral at 1e-9, and the result is
+    /// a closed, watertight solid of the right box. Returns the solid.
+    fn check(big_r: f64, h: f64, r: f64, x_lo: f64, x_hi: f64, floor: Option<f64>, at: Vec3, faces: usize) -> TSolid {
+        let a = part(big_r, h, at);
+        let t = tool(r, x_lo, x_hi, at);
+        let res = boolean("subtract", &a, &t).unwrap_or_else(|| panic!("refused R={big_r} r={r} {x_lo}..{x_hi} at {at:?}"));
+        assert_eq!(res.faces().len(), faces, "face count");
+        let want = std::f64::consts::PI * big_r * big_r * h - oracle_removed(big_r, r, floor);
+        let (lo, hi) = bbox_of_part(big_r, h, at);
+        assert_closed(&format!("R={big_r} r={r} floor={floor:?} at {at:?}"), &res, want, lo, hi);
+        let v = build::solid_volume(&res);
+        assert!((v - want).abs() <= 1e-9 * want, "volume {v} vs oracle {want}");
+        res
+    }
+
+    #[test]
+    fn through_bore_matches_the_numeric_integral() {
+        // The spec's pinned numbers.
+        let o = oracle_removed(10.0, 2.0, None);
+        assert!((o - 250.06441209661864).abs() < 1e-8, "{o}");
+        for at in [[0.0; 3], SHIFT] {
+            let res = check(10.0, 30.0, 2.0, -20.0, 20.0, None, at, 4);
+            assert!((build::solid_volume(&res) - 9174.71354867276).abs() < 1e-8 * 9174.7);
+            for ratio in [0.05, 0.2, 0.5, 0.9, 0.95] {
+                check(10.0, 30.0, 10.0 * ratio, -20.0, 20.0, None, at, 4);
+            }
+        }
+    }
+
+    #[test]
+    fn blind_bore_that_stays_inside_matches_the_numeric_integral() {
+        for at in [[0.0; 3], SHIFT] {
+            for ratio in [0.05, 0.2, 0.5, 0.9] {
+                let r: f64 = 10.0 * ratio;
+                let s0 = (100.0 - r * r).sqrt();
+                for frac in [-0.9, 0.0, 0.9] {
+                    let floor = frac * s0;
+                    // Enters at +x, floor inside; and the mirror image, entering at -x.
+                    check(10.0, 30.0, r, floor, 20.0, Some(floor), at, 5);
+                    check(10.0, 30.0, r, -20.0, -floor, Some(floor), at, 5);
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn a_turned_bore_and_a_sideways_part_build_too() {
+        // Tool along y; and a part lying along x with the tool along z.
+        for at in [[0.0; 3], SHIFT] {
+            let a = build::cylinder_solid(at, 10.0, 30.0, [0.0, 0.0, 1.0]);
+            let t = build::cylinder_solid(at, 2.0, 40.0, [0.0, 1.0, 0.0]);
+            let res = boolean("subtract", &a, &t).expect("y tool");
+            let want = std::f64::consts::PI * 100.0 * 30.0 - oracle_removed(10.0, 2.0, None);
+            assert!((build::solid_volume(&res) - want).abs() <= 1e-9 * want);
+            let a = build::cylinder_solid(at, 10.0, 30.0, [1.0, 0.0, 0.0]);
+            let t = build::cylinder_solid(at, 3.0, 40.0, [0.0, 0.0, 1.0]);
+            let res = boolean("subtract", &a, &t).expect("x part, z tool");
+            let want = std::f64::consts::PI * 100.0 * 30.0 - oracle_removed(10.0, 3.0, None);
+            assert!((build::solid_volume(&res) - want).abs() <= 1e-9 * want);
+            assert!(once_used_edges(&res.faces()).is_empty());
+            let m = crate::mesh::mesh_solid(&res, 0.05).expect("mesh");
+            assert!(check_watertight(&m));
+        }
+    }
+
+    /// Every tessellated vertex lies on its own surface, the meeting curve on
+    /// BOTH, the bore wall inside the part and the pierced wall outside the bore.
+    #[test]
+    fn tessellated_vertices_lie_on_the_surfaces() {
+        for (floor, x_lo) in [(None, -20.0), (Some(-3.0), -3.0)] {
+            for at in [[0.0; 3], SHIFT] {
+                let r = 4.0;
+                let res = check(10.0, 30.0, r, x_lo, 20.0, floor, at, if floor.is_some() { 5 } else { 4 });
+                let m = crate::mesh::mesh_solid(&res, 0.05).unwrap();
+                let rho_part = |p: [f64; 3]| ((p[0] - at[0]).powi(2) + (p[1] - at[1]).powi(2)).sqrt();
+                let rho_tool = |p: [f64; 3]| ((p[1] - at[1]).powi(2) + (p[2] - at[2]).powi(2)).sqrt();
+                let faces = res.faces();
+                let mut checked = 0usize;
+                for (fi, f) in faces.iter().enumerate() {
+                    let (start, count) = m.faces[fi];
+                    let cy = match &f.borrow().surface { Surface::Cylinder(c) => c.cross.clone(), _ => None };
+                    let verts: std::collections::BTreeSet<u32> = m.indices[start..start + count].iter().cloned().collect();
+                    for vi in verts {
+                        let p = m.positions[vi as usize];
+                        match cy {
+                            Some(crate::geom::Cross::Wall { .. }) => {
+                                assert!((rho_part(p) - 10.0).abs() < 1e-9, "wall vertex off its cylinder");
+                                assert!(rho_tool(p) >= r - 1e-9, "wall vertex inside the bore");
+                            }
+                            Some(crate::geom::Cross::Tool { .. }) => {
+                                assert!((rho_tool(p) - r).abs() < 1e-9, "bore vertex off its cylinder");
+                                assert!(rho_part(p) <= 10.0 + 1e-9, "bore vertex outside the part");
+                            }
+                            None => {}
+                        }
+                        checked += 1;
+                    }
+                }
+                assert!(checked > 100);
+                // The meeting curve itself lies on BOTH surfaces.
+                for e in res.edges() {
+                    if let Curve::CylCyl { .. } = &e.borrow().curve {
+                        for p in crate::mesh::curve_points(&e.borrow().curve, 0.05) {
+                            assert!((rho_part(p) - 10.0).abs() < 1e-9 && (rho_tool(p) - r).abs() < 1e-9);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /// The mesh volume agrees with the exact one to within the chord tolerance's
+    /// own bound, so the triangulation really covers the surface.
+    #[test]
+    fn mesh_volume_tracks_the_exact_volume() {
+        for floor in [None, Some(0.0)] {
+            let res = check(10.0, 30.0, 4.0, if floor.is_some() { 0.0 } else { -20.0 }, 20.0, floor, [0.0; 3], if floor.is_some() { 5 } else { 4 });
+            let exact = build::solid_volume(&res);
+            for defl in [0.05, 0.01] {
+                let m = crate::mesh::mesh_solid(&res, defl).unwrap();
+                let mut v6 = 0.0;
+                for t in m.indices.chunks(3) {
+                    let (a, b, c) = (m.positions[t[0] as usize], m.positions[t[1] as usize], m.positions[t[2] as usize]);
+                    v6 += dot(a, cross(b, c));
+                }
+                let mesh_v = v6 / 6.0;
+                assert!((mesh_v - exact).abs() < 0.01 * exact, "defl {defl}: mesh {mesh_v} vs exact {exact}");
+                assert!(check_watertight(&m));
+            }
+        }
+    }
+
+    /// Across the whole ratio range, both bore kinds, both deflections: the mesh
+    /// is watertight and its volume tracks the exact one.
+    #[test]
+    fn meshes_are_watertight_across_the_ratio_range() {
+        for ratio in [0.05, 0.2, 0.5, 0.9, 0.95] {
+            let r: f64 = 10.0 * ratio;
+            let s0 = (100.0 - r * r).sqrt();
+            for (x_lo, floor) in [(-20.0, None), (0.5 * s0, Some(0.5 * s0))] {
+                let res = check(10.0, 30.0, r, x_lo, 20.0, floor, [0.0; 3], if floor.is_some() { 5 } else { 4 });
+                let exact = build::solid_volume(&res);
+                for defl in [0.05, 0.01] {
+                    let m = crate::mesh::mesh_solid(&res, defl).expect("mesh");
+                    assert!(check_watertight(&m), "ratio {ratio} defl {defl}");
+                    let mut v6 = 0.0;
+                    for t in m.indices.chunks(3) {
+                        let (a, b, c) = (m.positions[t[0] as usize], m.positions[t[1] as usize], m.positions[t[2] as usize]);
+                        v6 += dot(a, cross(b, c));
+                    }
+                    assert!((v6 / 6.0 - exact).abs() < 0.01 * exact, "ratio {ratio} defl {defl}: {} vs {exact}", v6 / 6.0);
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn every_near_miss_still_refuses() {
+        let a = part(10.0, 30.0, [0.0; 3]);
+        // Tangent (r = R) and near-tangent.
+        assert!(boolean("subtract", &a, &tool(10.0, -20.0, 20.0, [0.0; 3])).is_none());
+        assert!(boolean("subtract", &a, &tool(9.8, -20.0, 20.0, [0.0; 3])).is_none());
+        // Off-centre in the part's cross-section (the axes do not meet), and
+        // off-centre along the part's axis is fine but through a cap is not.
+        let off = build::cylinder_solid([0.0, 1.0, 0.0], 2.0, 40.0, [1.0, 0.0, 0.0]);
+        assert!(boolean("subtract", &a, &off).is_none());
+        let cap = build::cylinder_solid([0.0, 0.0, 14.0], 2.0, 40.0, [1.0, 0.0, 0.0]);
+        assert!(boolean("subtract", &a, &cap).is_none());
+        // Skew: not perpendicular.
+        let skew = build::cylinder_solid([0.0; 3], 2.0, 40.0, [1.0, 0.0, 0.3]);
+        assert!(boolean("subtract", &a, &skew).is_none());
+        // A blind bore whose floor lies in the wall (between sqrt(R^2-r^2) and R),
+        // or that stops short of the axis only on the far side beyond the wall.
+        assert!(boolean("subtract", &a, &tool(2.0, 9.9, 20.0, [0.0; 3])).is_none());
+        // Sealed inside: both ends inside the part (the generic enclosed path
+        // owns this shape, and the hole feature refuses it as a sealed cavity).
+        assert!(cylinder_cross_bore("subtract", &a, &tool(2.0, -3.0, 3.0, [0.0; 3])).is_none());
+        // Union and intersect are not this feature.
+        assert!(cylinder_cross_bore("union", &a, &tool(2.0, -20.0, 20.0, [0.0; 3])).is_none());
+        assert!(cylinder_cross_bore("intersect", &a, &tool(2.0, -20.0, 20.0, [0.0; 3])).is_none());
+    }
+
+    /// Nothing else may touch a pierced solid: the generic face machinery would
+    /// read its walls as whole cylinders.
+    #[test]
+    fn a_pierced_solid_is_not_a_boolean_operand() {
+        let a = part(10.0, 30.0, [0.0; 3]);
+        let bored = boolean("subtract", &a, &tool(2.0, -20.0, 20.0, [0.0; 3])).unwrap();
+        let second = build::cylinder_solid([0.0, 0.0, 8.0], 1.0, 40.0, [0.0, 1.0, 0.0]);
+        assert!(boolean("subtract", &bored, &second).is_none());
+        assert!(boolean("union", &bored, &second).is_none());
+        assert!(boolean("subtract", &second, &bored).is_none());
+        assert!(has_cross_trim(&bored) && !has_cross_trim(&a));
+    }
+}

@@ -686,6 +686,35 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
     for f in features {
         let kind = f.get("kind").and_then(|k| k.as_str()).unwrap_or("");
         let id = f.get("id").and_then(|i| i.as_str()).unwrap_or("").to_string();
+        // A solid with a bore across a cylinder's side (docs/specs/SPEC-transverse-bore.md)
+        // carries curved faces trimmed by a space curve. Moving and copying them is
+        // exact; every other operation would read those faces as whole cylinders and
+        // could return a wrong solid, so each one refuses in a sentence.
+        if matches!(kind, "pocket" | "groove" | "hole" | "combine" | "fillet" | "draft" | "shell" | "mirror" | "blend") {
+            let mut names: Vec<&str> = Vec::new();
+            if let Some(obj) = f.as_object() {
+                for v in obj.values() {
+                    match v {
+                        Value::String(n) => names.push(n),
+                        Value::Array(a) => names.extend(a.iter().filter_map(|x| x.as_str())),
+                        _ => {}
+                    }
+                }
+            }
+            let crossed = names.into_iter().find(|n| {
+                hist.shapes.get(*n).is_some_and(ops::has_cross_trim)
+                    || hist.shapes.get(hist.head_of(n)).is_some_and(ops::has_cross_trim)
+            });
+            if let Some(n) = crossed {
+                refusals.insert(
+                    id.clone(),
+                    json!(format!(
+                        "{kind} {id}: {n} already has a bore across its side, and brep-rs can only move or copy a part like that yet -- {id} is shown without it."
+                    )),
+                );
+                continue;
+            }
+        }
         match kind {
             "box" => {
                 let Some(size) = f.get("size").and_then(v3) else {
@@ -1284,7 +1313,7 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     refusals.insert(
                         id.clone(),
                         json!(format!(
-                            "hole {id}: a bore across the side of a round part meets its wall in a curve brep-rs cannot carry yet; drill along the part's own axis instead -- {id} is shown without it."
+                            "hole {id}: a bore across the side of a round part builds only when it runs at right angles straight through the part's axis, is at most 95% as wide as the part, stays clear of both ends, and either goes right through or stops strictly inside; this one does not (or the part already has other cuts), so drill along the part's own axis instead -- {id} is shown without it."
                         )),
                     );
                 } else if src_faces.len() == 2
@@ -6550,13 +6579,92 @@ mod cavity_guard_tests {
         assert!((v[0] - v[1]).abs() < 1e-9);
     }
 
-    /// A blind hole in a cylinder is untouched by the clamp, and a transverse
-    /// bore (cylinder-cylinder) is still an honest refusal.
+    /// The removed volume of a cross bore, by Simpson's rule on y = r sin(th): an
+    /// oracle that shares nothing with the kernel.
+    fn k8_removed(big_r: f64, r: f64, floor: Option<f64>) -> f64 {
+        let n = 200_000usize;
+        let h = std::f64::consts::PI / n as f64;
+        let g = |th: f64| {
+            let y = r * th.sin();
+            let f = (big_r * big_r - y * y).sqrt();
+            let ext = match floor { None => 2.0 * f, Some(x0) => f - x0 };
+            2.0 * r * r * th.cos() * th.cos() * ext
+        };
+        let a = -std::f64::consts::FRAC_PI_2;
+        let mut acc = g(a) + g(-a);
+        for i in 1..n {
+            acc += g(a + h * i as f64) * if i % 2 == 1 { 4.0 } else { 2.0 };
+        }
+        acc * h / 3.0
+    }
+
+    /// A transverse bore (cylinder-cylinder, perpendicular and through the axis)
+    /// builds exactly, through or blind, and says so in the doc's own terms.
     #[test]
-    fn k8_transverse_bore_still_refuses() {
+    fn k8_transverse_bore_builds_exactly() {
         let cyl = json!({ "id": "t", "kind": "cylinder", "radius": 7.5, "height": 20.0 });
-        let (hist, refusals) = build_doc(&k8_hole(cyl, 40.0, [0.0; 3], "x"));
+        let pi = std::f64::consts::PI;
+        // Through (the 40 mm tool overshoots both sides).
+        let (hist, refusals) = build_doc(&k8_hole(cyl.clone(), 40.0, [0.0; 3], "x"));
+        assert!(refusals.is_empty(), "{refusals:?}");
+        let s = hist.shapes.get("h").expect("builds");
+        let want = pi * 56.25 * 20.0 - k8_removed(7.5, 3.0, None);
+        assert!((build::solid_volume(s) - want).abs() < 1e-9 * want, "{} vs {want}", build::solid_volume(s));
+        assert_eq!(s.faces().len(), 4);
+        // Blind: a 22 mm tool centred 8 mm along x reaches x from -3 to 19, floor at -3.
+        let (hist, refusals) = build_doc(&k8_hole(cyl.clone(), 22.0, [8.0, 0.0, 0.0], "x"));
+        assert!(refusals.is_empty(), "{refusals:?}");
+        let s = hist.shapes.get("h").expect("blind builds");
+        let want = pi * 56.25 * 20.0 - k8_removed(7.5, 3.0, Some(-3.0));
+        assert!((build::solid_volume(s) - want).abs() < 1e-9 * want, "{} vs {want}", build::solid_volume(s));
+        assert_eq!(s.faces().len(), 5);
+        // A near miss still refuses, in a sentence: a bore as wide as the part.
+        let wide = json!({ "features": [cyl.clone(), { "id": "h", "kind": "hole", "target": "t", "diameter": 15.0, "depth": 40.0, "center": [0.0, 0.0, 0.0], "axis": "x" }] });
+        let (hist, refusals) = build_doc(&wide);
         assert!(refusals["h"].as_str().unwrap().contains("across the side of a round part"), "{refusals:?}");
         assert!(!hist.shapes.contains_key("h"));
+        // A second cut on the bored part refuses rather than reading its trimmed walls as whole cylinders.
+        let twice = json!({ "features": [cyl.clone(),
+            { "id": "h", "kind": "hole", "target": "t", "diameter": 6.0, "depth": 40.0, "center": [0.0, 0.0, 0.0], "axis": "x" },
+            { "id": "h2", "kind": "hole", "target": "t", "diameter": 2.0, "depth": 40.0, "center": [0.0, 0.0, 0.0], "axis": "y" }] });
+        let (hist, refusals) = build_doc(&twice);
+        assert!(hist.shapes.contains_key("h") && !hist.shapes.contains_key("h2"), "{refusals:?}");
+        assert!(refusals["h2"].as_str().unwrap().contains("already has a bore across its side"), "{refusals:?}");
+    }
+
+    /// Measure, mesh and STEP at the wasm surface: the bored part measures and
+    /// meshes; STEP export refuses in a sentence rather than writing a wrong curve.
+    #[test]
+    fn k8_transverse_bore_measures_meshes_and_refuses_step() {
+        let doc = k8_hole(json!({ "id": "t", "kind": "cylinder", "radius": 10.0, "height": 30.0 }), 40.0, [0.0; 3], "x");
+        let doc = json!({ "features": [doc["features"][0].clone(), { "id": "h", "kind": "hole", "target": "t", "diameter": 4.0, "depth": 40.0, "center": [0.0, 0.0, 0.0], "axis": "x" }] });
+        let text = doc.to_string();
+        let m: Value = serde_json::from_str(&measure_doc(&text)).unwrap();
+        let v = m["shapes"]["h"]["volume"].as_f64().unwrap();
+        assert!((v - 9174.71354867276).abs() < 1e-8 * 9174.7, "{v}");
+        assert_eq!(m["shapes"]["h"]["faces"], 4);
+        let mesh: Value = serde_json::from_str(&mesh_feature(&text, "h", 0.05)).unwrap();
+        assert!(mesh.get("error").is_none(), "{mesh}");
+        assert_eq!(mesh["faces"].as_array().unwrap().len(), 4);
+        let step: Value = serde_json::from_str(&export_step(&text, "h")).unwrap();
+        assert!(step["error"].as_str().unwrap().contains("bore across a cylinder's side"), "{step}");
+        // Edge lengths resolve over every edge: the meeting curve's is an elliptic
+        // integral, by quadrature, a little over the bore's own circumference 4 pi.
+        let mut curve_lengths = 0;
+        for i in 0..6 {
+            let l: f64 = serde_json::from_str(&edge_length(&text, "h", i)).unwrap();
+            assert!(l > 0.0, "edge {i}");
+            if (l - 4.0 * std::f64::consts::PI).abs() < 5.0 { curve_lengths += 1; }
+        }
+        assert!(curve_lengths >= 2);
+        // Naming every face and edge answers or says null; it never panics.
+        for i in 0..4 { let _ = name_face(&text, "h", i); }
+        for i in 0..6 { let _ = name_edge(&text, "h", i); }
+        // The part is still movable: a rigid move keeps the exact volume.
+        let moved = json!({ "features": [doc["features"][0].clone(), doc["features"][1].clone(),
+            { "id": "m", "kind": "move", "target": "h", "offset": [37.0, -23.0, 11.0] }] });
+        let m: Value = serde_json::from_str(&measure_doc(&moved.to_string())).unwrap();
+        let vm = m["shapes"]["m"]["volume"].as_f64().unwrap();
+        assert!((vm - 9174.71354867276).abs() < 1e-8 * 9174.7, "{vm}");
     }
 }

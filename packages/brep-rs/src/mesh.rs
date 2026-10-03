@@ -40,6 +40,57 @@ fn arc_segments(r: f64, span: f64, defl: f64, minimum: usize) -> usize {
     ((span.abs() / step).ceil() as usize).max(minimum).max(1)
 }
 
+/// Segments (a multiple of 4, so both tips and both extremes of z land on a
+/// sample) for the cross-bore meeting curve at chord tolerance `defl`: enough
+/// that the tool's circle, the part's wall (its angle advances at most `r/R`
+/// per unit of the curve's angle) and the curve's own worst bend all hold.
+fn cyl_cyl_segments(
+    center: Vec3,
+    d: Vec3,
+    n: Vec3,
+    a: Vec3,
+    big_r: f64,
+    r: f64,
+    sign: f64,
+    defl: f64,
+) -> usize {
+    let k = (r / big_r).clamp(0.0, 0.999999);
+    // Tool circle and part wall.
+    let by_tool = TAU / angle_step(r, defl);
+    let by_wall = TAU * k / angle_step(big_r, defl);
+    // The curve's own sag: kappa_max and speed_max from the exact derivative.
+    let probe = Curve::CylCyl { center, d, n, a, big_r, r, sign };
+    let mut kappa = 0.0f64;
+    let mut speed = 0.0f64;
+    let m = 720;
+    let h = 1e-4;
+    for i in 0..m {
+        let t = TAU * i as f64 / m as f64;
+        let pm = probe.point_at((t - h) / TAU);
+        let p0 = probe.point_at(t / TAU);
+        let pp = probe.point_at((t + h) / TAU);
+        let d1 = crate::math::scale(sub(pp, pm), 1.0 / (2.0 * h));
+        let d2 = crate::math::scale(
+            crate::math::add(crate::math::add(pm, pp), crate::math::scale(p0, -2.0)),
+            1.0 / (h * h),
+        );
+        let sp = len(d1);
+        speed = speed.max(sp);
+        if sp > 1e-9 {
+            kappa = kappa.max(len(cross(d1, d2)) / (sp * sp * sp));
+        }
+    }
+    let by_curve = if kappa > 1e-12 {
+        // Uniform in the angle: the longest chord is speed_max * (TAU / N).
+        let seg = (8.0 * defl / kappa).sqrt();
+        TAU * speed / seg
+    } else {
+        0.0
+    };
+    let need = by_tool.max(by_wall).max(by_curve).ceil() as usize;
+    ((need.max(16) + 3) / 4 * 4).min(8192)
+}
+
 /// A polyline sampled from a curve, uniform in angle for arcs/circles so a
 /// shared edge's two face uses and any duplicated seam copy agree pointwise.
 pub fn curve_points(c: &Curve, defl: f64) -> Vec<Vec3> {
@@ -68,6 +119,17 @@ pub fn curve_points(c: &Curve, defl: f64) -> Vec<Vec3> {
                             crate::math::scale(v, radius * ang.sin()),
                         ),
                     )
+                })
+                .collect()
+        }
+        Curve::CylCyl { center, d, n, a, big_r, r, sign } => {
+            let nseg = cyl_cyl_segments(*center, *d, *n, *a, *big_r, *r, *sign, defl);
+            (0..=nseg)
+                .map(|k| {
+                    // Closed: the last sample is EXACTLY the first, so the
+                    // loop's single vertex is shared bit for bit.
+                    let t = if k == nseg { 0.0 } else { k as f64 / nseg as f64 };
+                    c.point_at(t)
                 })
                 .collect()
         }
@@ -743,12 +805,387 @@ fn mesh_revolution_band(
 }
 
 /// Tessellate one face of the solid.
+// ---------------------------------------------------------------------------
+// Cross-bore faces (docs/specs/SPEC-transverse-bore.md).
+//
+// Neither the part's pierced wall nor the bore's own wall is a (u, v)
+// rectangle, so the structured grid does not apply. Both are triangulated as
+// LADDERS between two boundary polylines that already exist as edges of the
+// solid, taking every vertex from those polylines (never a new sample on a
+// shared edge), so the meeting curve is sampled identically from both faces
+// and the shell closes by construction.
+// ---------------------------------------------------------------------------
+
+/// A boundary chain: world points with their angle `u` along the chain.
+struct Chain {
+    p: Vec<Vec3>,
+    u: Vec<f64>,
+}
+
+/// Triangulate between chain `a` and chain `b`. `assign[j]` is the index into
+/// `a` that `b[j]` is joined to (non-decreasing, first 0, last `a.len() - 1`).
+/// `a_first_from` is the `b` index from which each step advances `a` BEFORE
+/// `b` (the side where the chord to the next vertex must lie on the material
+/// side of a steep boundary).
+fn ladder(
+    out: &mut MeshBuilder,
+    a: &[Vec3],
+    b: &[Vec3],
+    assign: &[usize],
+    a_first_from: usize,
+    n_out: &dyn Fn(Vec3) -> Vec3,
+) {
+    let mut tri = |out: &mut MeshBuilder, p: Vec3, q: Vec3, r: Vec3| {
+        if len(cross(sub(q, p), sub(r, p))) < 1e-14 {
+            return;
+        }
+        let c = [(p[0] + q[0] + r[0]) / 3.0, (p[1] + q[1] + r[1]) / 3.0, (p[2] + q[2] + r[2]) / 3.0];
+        let ids = [out.push(p), out.push(q), out.push(r)];
+        out.tri_oriented(ids, n_out(c));
+    };
+    let mut i = assign[0];
+    for j in 0..b.len() - 1 {
+        let i2 = assign[j + 1];
+        if j >= a_first_from {
+            for k in i..i2 {
+                tri(out, a[k], a[k + 1], b[j]);
+            }
+            tri(out, a[i2], b[j], b[j + 1]);
+        } else {
+            tri(out, a[i], b[j], b[j + 1]);
+            for k in i..i2 {
+                tri(out, a[k], a[k + 1], b[j + 1]);
+            }
+        }
+        i = i2;
+    }
+    for k in i..a.len() - 1 {
+        tri(out, a[k], a[k + 1], b[b.len() - 1]);
+    }
+}
+
+/// The edge polyline for the edge a wire use refers to, in the edge's own
+/// stored direction.
+fn use_polyline(
+    u: &crate::topo::EdgeUse<Curve>,
+    edges_cache: &HashMap<usize, Vec<Vec3>>,
+    defl: f64,
+) -> Vec<Vec3> {
+    let k = std::rc::Rc::as_ptr(&u.edge) as *const () as usize;
+    match edges_cache.get(&k) {
+        Some(p) => p.clone(),
+        None => edge_polyline(&u.edge, defl),
+    }
+}
+
+fn angle_in(p: Vec3, origin: Vec3, x: Vec3, y: Vec3) -> f64 {
+    let d = sub(p, origin);
+    let mut u = crate::math::dot(d, y).atan2(crate::math::dot(d, x));
+    if u < 0.0 {
+        u += TAU;
+    }
+    u
+}
+
+/// Close-the-loop u values: from 0, monotone non-decreasing, ending at TAU.
+fn monotone_u(pts: &[Vec3], origin: Vec3, x: Vec3, y: Vec3) -> Vec<f64> {
+    let mut us: Vec<f64> = pts.iter().map(|p| angle_in(*p, origin, x, y)).collect();
+    let n = us.len();
+    if n >= 2 {
+        us[0] = 0.0;
+        us[n - 1] = TAU;
+        for i in 1..n - 1 {
+            if us[i] < us[i - 1] - 1e-9 && us[i] < 1e-6 {
+                us[i] = 0.0;
+            }
+            if us[i] < us[i - 1] {
+                us[i] = us[i - 1];
+            }
+        }
+    }
+    us
+}
+
+fn mesh_cross_face(
+    face: &TFace,
+    edges_cache: &HashMap<usize, Vec<Vec3>>,
+    out: &mut MeshBuilder,
+    defl: f64,
+) -> Option<()> {
+    let fb = face.borrow();
+    let crate::geom::Surface::Cylinder(cy) = &fb.surface else { return None };
+    let start = out.indices.len();
+    match cy.cross.as_ref()? {
+        crate::geom::Cross::Wall { .. } => mesh_cross_wall(&fb, cy, edges_cache, out, defl)?,
+        crate::geom::Cross::Tool { .. } => mesh_cross_tool(&fb, cy, edges_cache, out, defl)?,
+    }
+    let count = out.indices.len() - start;
+    if count == 0 {
+        return None;
+    }
+    out.faces.push((start, count));
+    Some(())
+}
+
+fn mesh_cross_wall(
+    fb: &crate::topo::Face<Curve, crate::geom::Surface>,
+    cy: &crate::geom::Cylinder,
+    edges_cache: &HashMap<usize, Vec<Vec3>>,
+    out: &mut MeshBuilder,
+    defl: f64,
+) -> Option<()> {
+    let (o, ax, e1, e2) = (cy.origin, cy.axis, cy.e1, cy.e2);
+    let vof = |p: Vec3| crate::math::dot(sub(p, o), ax);
+    // Outer wire: two rim arcs (and the seam). Rim lo/hi by v.
+    let mut rims: Vec<Vec<Vec3>> = Vec::new();
+    for u in &fb.boundary.first()?.borrow().edges {
+        if matches!(u.edge.borrow().curve, Curve::Arc { .. }) {
+            rims.push(use_polyline(u, edges_cache, defl));
+        }
+    }
+    if rims.len() != 2 {
+        return None;
+    }
+    let (mut lo, mut hi) = (rims.remove(0), rims.remove(0));
+    if vof(lo[0]) > vof(hi[0]) {
+        std::mem::swap(&mut lo, &mut hi);
+    }
+    if lo.len() != hi.len() || lo.len() < 5 {
+        return None;
+    }
+    let m = lo.len() - 1;
+    let ulat = monotone_u(&lo, o, e1, e2);
+    let uhi = monotone_u(&hi, o, e1, e2);
+    if ulat.iter().zip(&uhi).any(|(a, b)| (a - b).abs() > 1e-7) {
+        return None;
+    }
+    let n_out = |c: Vec3| {
+        let d = sub(c, o);
+        sub(d, crate::math::scale(ax, crate::math::dot(d, ax)))
+    };
+
+    // Holes.
+    struct Hole {
+        ia: usize,
+        ib: usize,
+        lower: Chain,
+        upper: Chain,
+    }
+    let mut holes: Vec<Hole> = Vec::new();
+    for w in fb.boundary.iter().skip(1) {
+        let w = w.borrow();
+        let mut pts: Vec<Vec3> = Vec::new();
+        for u in &w.edges {
+            pts.extend(use_polyline(u, edges_cache, defl));
+        }
+        if pts.len() < 9 {
+            return None;
+        }
+        pts.pop(); // closing duplicate
+        let uv: Vec<(f64, f64)> = pts
+            .iter()
+            .map(|p| (angle_in(*p, o, e1, e2), vof(*p)))
+            .collect();
+        let n = uv.len();
+        let (mut imin, mut imax) = (0usize, 0usize);
+        for i in 0..n {
+            if uv[i].0 < uv[imin].0 {
+                imin = i;
+            }
+            if uv[i].0 > uv[imax].0 {
+                imax = i;
+            }
+        }
+        // Forward chain imin -> imax, backward chain imin -> imax.
+        let mut fwd: Vec<usize> = vec![imin];
+        let mut k = imin;
+        while k != imax {
+            k = (k + 1) % n;
+            fwd.push(k);
+        }
+        let mut bwd: Vec<usize> = vec![imin];
+        let mut k = imin;
+        while k != imax {
+            k = (k + n - 1) % n;
+            bwd.push(k);
+        }
+        let mean_v = |c: &Vec<usize>| c.iter().map(|&i| uv[i].1).sum::<f64>() / c.len() as f64;
+        let mk = |c: &Vec<usize>| Chain {
+            p: c.iter().map(|&i| pts[i]).collect(),
+            u: c.iter().map(|&i| uv[i].0).collect(),
+        };
+        let (lower, upper) = if mean_v(&fwd) < mean_v(&bwd) { (mk(&fwd), mk(&bwd)) } else { (mk(&bwd), mk(&fwd)) };
+        let (ul, ur) = (uv[imin].0, uv[imax].0);
+        let mut ia = None;
+        for i in 0..=m {
+            if ulat[i] < ul - 1e-9 {
+                ia = Some(i);
+            }
+        }
+        let mut ib = None;
+        for i in (0..=m).rev() {
+            if ulat[i] > ur + 1e-9 {
+                ib = Some(i);
+            }
+        }
+        holes.push(Hole { ia: ia?, ib: ib?, lower, upper });
+    }
+    // Windows must be disjoint.
+    let mut windowed = vec![false; m];
+    for h in &holes {
+        for k in h.ia..h.ib {
+            if windowed[k] {
+                return None;
+            }
+            windowed[k] = true;
+        }
+    }
+    // Plain quads between rim columns.
+    for k in 0..m {
+        if windowed[k] {
+            continue;
+        }
+        ladder(out, &[lo[k], lo[k + 1]], &[hi[k], hi[k + 1]], &[0, 1], 0, &n_out);
+    }
+    // Each hole window.
+    for h in &holes {
+        for (chain, rim, is_lower) in [(&h.lower, &lo, true), (&h.upper, &hi, false)] {
+            let a: Vec<Vec3> = rim[h.ia..=h.ib].to_vec();
+            let au: Vec<f64> = ulat[h.ia..=h.ib].to_vec();
+            let nb = chain.p.len();
+            // Index of the chain's deepest (lower) / highest (upper) point.
+            let mut mid = 0usize;
+            for j in 0..nb {
+                let better = if is_lower { vof(chain.p[j]) < vof(chain.p[mid]) } else { vof(chain.p[j]) > vof(chain.p[mid]) };
+                if better {
+                    mid = j;
+                }
+            }
+            let mut assign = vec![0usize; nb];
+            for j in 0..nb {
+                let uj = chain.u[j];
+                let left = j <= mid;
+                let mut idx = 0usize;
+                if left {
+                    for (i, &ui) in au.iter().enumerate() {
+                        if ui <= uj + 1e-12 {
+                            idx = i;
+                        }
+                    }
+                } else {
+                    idx = au.len() - 1;
+                    for (i, &ui) in au.iter().enumerate().rev() {
+                        if ui >= uj - 1e-12 {
+                            idx = i;
+                        }
+                    }
+                }
+                if j > 0 {
+                    idx = idx.max(assign[j - 1]);
+                }
+                assign[j] = idx;
+            }
+            assign[0] = 0;
+            assign[nb - 1] = a.len() - 1;
+            ladder(out, &a, &chain.p, &assign, mid, &n_out);
+        }
+        // The two small triangles left and right of the hole's tips.
+        let tl = h.lower.p[0];
+        let tr = *h.lower.p.last()?;
+        let tri_cap = |out: &mut MeshBuilder, p: Vec3, q: Vec3, r: Vec3| {
+            if len(cross(sub(q, p), sub(r, p))) < 1e-14 {
+                return;
+            }
+            let c = [(p[0] + q[0] + r[0]) / 3.0, (p[1] + q[1] + r[1]) / 3.0, (p[2] + q[2] + r[2]) / 3.0];
+            let ids = [out.push(p), out.push(q), out.push(r)];
+            out.tri_oriented(ids, n_out(c));
+        };
+        tri_cap(out, lo[h.ia], hi[h.ia], tl);
+        tri_cap(out, lo[h.ib], hi[h.ib], tr);
+    }
+    Some(())
+}
+
+fn mesh_cross_tool(
+    fb: &crate::topo::Face<Curve, crate::geom::Surface>,
+    cy: &crate::geom::Cylinder,
+    edges_cache: &HashMap<usize, Vec<Vec3>>,
+    out: &mut MeshBuilder,
+    defl: f64,
+) -> Option<()> {
+    // The face's chains: the CylCyl loop(s) and, for a blind bore, the floor
+    // arc. The `hi` chain is the +axis meeting curve; the other is `lo`.
+    let (o, ax, e1, e2) = (cy.origin, cy.axis, cy.e1, cy.e2);
+    let a_dir = crate::math::scale(e2, -1.0); // the bore's own "a" (e2 = -a)
+    let mut loops: Vec<(f64, Vec<Vec3>)> = Vec::new(); // (sign, polyline)
+    let mut floor: Option<Vec<Vec3>> = None;
+    for w in &fb.boundary {
+        for u in &w.borrow().edges {
+            let e = u.edge.borrow();
+            match &e.curve {
+                Curve::CylCyl { sign, .. } => {
+                    let poly = use_polyline(u, edges_cache, defl);
+                    if !loops.iter().any(|(s, _)| *s == *sign) {
+                        loops.push((*sign, poly));
+                    }
+                }
+                Curve::Arc { .. } => {
+                    if floor.is_none() {
+                        floor = Some(use_polyline(u, edges_cache, defl));
+                    }
+                }
+                _ => {}
+            }
+        }
+    }
+    let hi_poly = loops.iter().find(|(s, _)| *s > 0.0).map(|(_, p)| p.clone())?;
+    let lo_poly = match (loops.iter().find(|(s, _)| *s < 0.0), floor) {
+        (Some((_, p)), None) => p.clone(),
+        (None, Some(f)) => f,
+        _ => return None,
+    };
+    let ua = monotone_u(&hi_poly, o, e1, a_dir);
+    let ub = monotone_u(&lo_poly, o, e1, a_dir);
+    let mut assign = vec![0usize; lo_poly.len()];
+    for j in 0..lo_poly.len() {
+        let mut best = 0usize;
+        let mut bd = f64::INFINITY;
+        for (i, &u) in ua.iter().enumerate() {
+            let dd = (u - ub[j]).abs();
+            if dd < bd - 1e-12 {
+                bd = dd;
+                best = i;
+            }
+        }
+        if j > 0 {
+            best = best.max(assign[j - 1]);
+        }
+        assign[j] = best;
+    }
+    assign[0] = 0;
+    let last = lo_poly.len() - 1;
+    assign[last] = hi_poly.len() - 1;
+    let n_out = |c: Vec3| {
+        let d = sub(c, o);
+        crate::math::scale(sub(d, crate::math::scale(ax, crate::math::dot(d, ax))), -1.0)
+    };
+    ladder(out, &hi_poly, &lo_poly, &assign, usize::MAX, &n_out);
+    Some(())
+}
+
 fn mesh_face(
     face: &TFace,
     edges_cache: &HashMap<usize, Vec<Vec3>>,
     out: &mut MeshBuilder,
     defl: f64,
 ) -> Option<()> {
+    // A cylinder trimmed by a perpendicular bore through its axis (the part's
+    // pierced wall, or the bore's own wall): ladders between boundary chains.
+    if let crate::geom::Surface::Cylinder(c) = &face.borrow().surface {
+        if c.cross.is_some() {
+            return mesh_cross_face(face, edges_cache, out, defl);
+        }
+    }
     // The trimmed sphere's boundary is two polar hole rings, not a constant-u/v
     // rectangle: the structured grid would cover the whole parameter square
     // (including the removed caps), so route it to the band tessellator.

@@ -305,7 +305,10 @@ fn wire_segs(wire: &[crate::topo::EdgeUse<Curve>]) -> Vec<Seg> {
             (e.b.borrow().point, e.a.borrow().point)
         };
         out.push(match &e.curve {
-            Curve::Segment { .. } => Seg::Line { a: start, b: end },
+            // `write_solid` refuses any solid holding this curve before it gets
+            // here (no exact STEP counterpart is written yet); the arm only
+            // keeps the match total.
+            Curve::Segment { .. } | Curve::CylCyl { .. } => Seg::Line { a: start, b: end },
             Curve::Circle {
                 center,
                 radius,
@@ -688,6 +691,15 @@ pub fn write_solid(solid: &TSolid, product: &str) -> Result<String, String> {
     let faces = solid.faces();
     if faces.is_empty() {
         return Err("this shape has no faces to write".to_string());
+    }
+    // A bore across a cylinder's side meets the wall in a closed space curve
+    // (docs/specs/SPEC-transverse-bore.md). STEP would need an
+    // INTERSECTION_CURVE or a B-spline, and writing a straight line or a
+    // sampled polyline for it would be a wrong solid. Refuse in a sentence.
+    if faces.iter().any(|f| {
+        matches!(&f.borrow().surface, Surface::Cylinder(c) if c.cross.is_some())
+    }) {
+        return Err("brep-rs cannot write a bore across a cylinder's side to STEP yet: the two surfaces meet in a space curve with no exact STEP form written so far -- the part shows in the viewport and measures exactly, but export it before the cross bore".to_string());
     }
 
     // Build every face's bounds first, then write the CHAINED ones first.
