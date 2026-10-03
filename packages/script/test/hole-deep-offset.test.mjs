@@ -32,8 +32,8 @@ test('holes() gets the same offset', () => {
   assert.deepEqual(hole(BOX + 'holes(b, { across: 6, apart: [20, 20], deep: 10 })').f.center, [0, 0, 5]);
 });
 
-test('unknown thickness (turned box): deep keeps working (offset stays 0), as the pinned contract says', () => {
-  const r = runScript('const t = cuboid(20, 20, 20); turn(t, [0, 90, 0]); hole(t, { across: 6, deep: 10 })');
+test('unknown thickness (intersect of two boxes): deep keeps working (offset stays 0), as the pinned contract says', () => {
+  const r = runScript('const t = intersect(cuboid(20, 20, 20), cuboid(20, 20, 20)); hole(t, { across: 6, deep: 10 })');
   assert.deepEqual(r.errors, []);
   assert.deepEqual(r.doc.features.at(-1).center, [0, 0, 0]);
 });

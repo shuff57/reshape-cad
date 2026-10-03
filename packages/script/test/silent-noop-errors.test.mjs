@@ -72,10 +72,10 @@ test('hole with no deep: goes through a prism, wedge, cone, sphere and torus', (
 });
 
 test('hole with no deep: on a shape of unknown thickness is an error, not a blind 10 mm', () => {
-  assert.match(msg('const t = cuboid(10, 10, 10); turn(t, [0, 90, 0]); hole(t, { across: 2 })'), /cannot find how thick this box is/);
+  assert.match(msg('const t = intersect(cuboid(10, 10, 10), cuboid(10, 10, 10)); hole(t, { across: 2 })'), /cannot find how thick this combine is/);
   assert.match(msg('const t = intersect(cuboid(10, 10, 10), cylinder(8, 30, { at: [5, 0, 0] })); hole(t, { across: 2 })'), /cannot find how thick/);
   assert.match(msg("const b = cuboid(10, 10, 10, { at: [25, 0, 0] }); const p = polarPattern(b, { count: 3, axis: 'z' }); hole(p, { across: 2 })"), /cannot find how thick/);
-  assert.match(msg('const t = cuboid(10, 10, 10); turn(t, [0, 90, 0]); holes(t, { across: 2, apart: [4, 4] })'), /holes\(\) cannot find how thick/);
+  assert.match(msg('const t = intersect(cuboid(10, 10, 10), cuboid(10, 10, 10)); holes(t, { across: 2, apart: [4, 4] })'), /holes\(\) cannot find how thick/);
 });
 
 // Intent kept and strengthened (extent-extrude work): an explicit deep: still
@@ -83,8 +83,8 @@ test('hole with no deep: on a shape of unknown thickness is an error, not a blin
 // sealed-cavity refusal -- pinned end to end in
 // packages/kernel/test/hole-extent-extrude.test.mjs -- is what stops a wrong
 // solid. A pulled shape is no longer such a case: its thickness is exact.
-test('explicit deep: still builds where thickness is unknown (turned box), centred', () => {
-  const r = runScript('const t = cuboid(10, 10, 10); turn(t, [0, 90, 0]); hole(t, { across: 2, deep: 4 })');
+test('explicit deep: still builds where thickness is unknown (intersect of two boxes), centred', () => {
+  const r = runScript('const t = intersect(cuboid(10, 10, 10), cuboid(10, 10, 10)); hole(t, { across: 2, deep: 4 })');
   assert.deepEqual(r.errors, []);
   assert.deepEqual(r.doc.features.at(-1).center, [0, 0, 0]);
 });

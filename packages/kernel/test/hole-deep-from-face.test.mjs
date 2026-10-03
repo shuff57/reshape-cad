@@ -103,10 +103,10 @@ test('a box with at: [5, 5] and deep: 10', () => {
   assert.equal(s.faces, 8);
 });
 
-test('unknown thickness (turned box): no deep errors plainly; deep still builds, centred', () => {
-  const src = 'const t = cuboid(10, 10, 10); turn(t, [0, 90, 0]); ';
+test('unknown thickness (intersect of two boxes): no deep errors plainly; deep still builds, centred', () => {
+  const src = 'const t = intersect(cuboid(10, 10, 10), cuboid(10, 10, 10)); ';
   const r2 = runScript(src + 'hole(t, { across: 2 })');
-  assert.match(r2.errors[0].message, /cannot find how thick this box is/);
+  assert.match(r2.errors[0].message, /cannot find how thick this combine is/);
   const r = runScript(src + 'hole(t, { across: 2, deep: 4 })');
   assert.deepEqual(r.errors, []);
   assert.deepEqual(r.doc.features.at(-1).center, [0, 0, 0]);

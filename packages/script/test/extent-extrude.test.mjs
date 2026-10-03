@@ -98,9 +98,9 @@ test('hole through an extrude needs no depth, and deep: sets the offset from the
   assert.deepEqual(d.doc.features.at(-1).center, [0, 0, 6]);
 });
 
-test('not provable stays null: turned box, polar pattern, intersect', () => {
+test('not provable stays null: intersect of two boxes, polar pattern, intersect', () => {
   const doc = (c) => runScript(c).doc;
-  assert.equal(throughExtentAlong(doc('const t = cuboid(10, 10, 10); turn(t, [0, 90, 0])'), 'box1', 'z'), null);
+  assert.equal(throughExtentAlong(doc('const t = intersect(cuboid(10, 10, 10), cuboid(10, 10, 10))'), 'combine1', 'z'), null);
   const p = runScript("const b = cuboid(10, 10, 10, { at: [25, 0, 0] }); polarPattern(b, { count: 3, axis: 'z' })");
   assert.equal(throughExtentAlong(p.doc, p.doc.features.at(-1).id, 'z'), null);
   assert.match(runScript("const b = cuboid(10, 10, 10, { at: [25, 0, 0] }); const p = polarPattern(b, { count: 3, axis: 'z' }); hole(p, { across: 2 })").errors[0].message, /cannot find how thick this box is/);

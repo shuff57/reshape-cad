@@ -1290,6 +1290,22 @@ function revolveRange(sk: SketchFeature, angle: number, axis: Axis3): Range | nu
   return { lo: -bounds[1], hi: bounds[1], exact: true };
 }
 
+/** World-axis rotation matrix for the kernel's `rotate`: X, then Y, then Z, in
+ *  degrees, about the shape's own centre (math.rs euler_deg). Row i is how world
+ *  axis i is built from the shape's own x, y, z. */
+function rotationMatrix(rot: readonly number[]): number[][] {
+  const [a, b, c] = rot.map(d => (d * Math.PI) / 180);
+  const [sa, ca, sb, cb, sc, cc] = [Math.sin(a), Math.cos(a), Math.sin(b), Math.cos(b), Math.sin(c), Math.cos(c)];
+  return [
+    [cc * cb, cc * sb * sa - sc * ca, cc * sb * ca + sc * sa],
+    [sc * cb, sc * sb * sa + cc * ca, sc * sb * ca - cc * sa],
+    [-sb, cb * sa, cb * ca],
+  ];
+}
+
+/** Snap float residue (a quarter turn leaves 1e-16) so an exact extent stays exact. */
+const snap = (v: number) => Math.round(v * 1e9) / 1e9;
+
 /** World range of a feature along an axis, or null when it cannot be bounded.
  *  Follows targets at most 16 hops deep at each level of nesting (combine,
  *  pattern copies recurse with a shared budget). */
@@ -1301,9 +1317,21 @@ function rangeOf(doc: ModelDoc, featureId: string, axis: Axis3, budget = { n: 64
   const around = (c: number, half: number, exact = true): Range => ({ lo: c - half, hi: c + half, exact });
   const rec = (id: string) => rangeOf(doc, id, axis, budget);
   switch (f.kind) {
-    case 'box': return spun ? null : around(f.center[i], f.size[i] / 2);
+    case 'box': {
+      if (!spun) return around(f.center[i], f.size[i] / 2);
+      // A turned box reaches sum(|R_ij| * size_j) / 2 along world axis i -- exact.
+      const R = rotationMatrix((f as { rotate: number[] }).rotate);
+      return around(f.center[i], snap(R[i].reduce((t, r, j) => t + Math.abs(r) * f.size[j] / 2, 0)));
+    }
     case 'cylinder': case 'cone':
-      return spun ? null : around(f.center[i], (axis === 'z' ? f.height : f.radius * 2) / 2);
+      if (!spun) return around(f.center[i], (axis === 'z' ? f.height : f.radius * 2) / 2);
+      // A turned cylinder (not a cone: its box is not centred on its middle):
+      // half the height times the axis' lean, plus the disc's reach sideways.
+      if (f.kind !== 'cylinder') return null;
+      {
+        const d = rotationMatrix((f as { rotate: number[] }).rotate)[i][2];
+        return around(f.center[i], snap(f.height / 2 * Math.abs(d) + f.radius * Math.sqrt(Math.max(0, 1 - d * d))));
+      }
     case 'prism':
       // z is the height; across the corners the extent depends on which way the
       // polygon points, so 2R only BOUNDS it.

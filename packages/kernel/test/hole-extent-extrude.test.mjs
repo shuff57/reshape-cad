@@ -118,15 +118,15 @@ test('revolve: the extent is read, and a through hole parallel to the axis now c
   assert.equal(s.faces, 5);
 });
 
-test('unknown thickness (turned box): deep still builds centred and the KERNEL refuses the sealed cavity', () => {
-  const r = runScript('const t = cuboid(10, 10, 10); turn(t, [0, 90, 0]); hole(t, { across: 2, deep: 4 })');
+test('unknown thickness (intersect of two boxes): deep still builds centred and the KERNEL refuses the sealed cavity', () => {
+  const r = runScript('const t = intersect(cuboid(10, 10, 10), cuboid(10, 10, 10, { at: [2, 0, 0] })); hole(t, { across: 2, deep: 4 })');
   assert.deepEqual(r.errors, []);
   const { refusals, s } = measureDoc(r.doc);
   assert.match(Object.values(refusals)[0], /sealed cavity/);
   assert.equal(s, undefined);
   // a deep that reaches the far side is a through hole and works
-  const t = measureDoc(runScript('const t = cuboid(10, 10, 10); turn(t, [0, 90, 0]); hole(t, { across: 2, deep: 14 })').doc);
-  near(t.s.volume, 1000 - 10 * Math.PI);
+  const t = measureDoc(runScript('const t = intersect(cuboid(10, 10, 10), cuboid(10, 10, 10, { at: [2, 0, 0] })); hole(t, { across: 2, deep: 14 })').doc);
+  near(t.s.volume, 800 - 10 * Math.PI); // 8 x 10 x 10 overlap, bore through z
 });
 
 test('negatives keep the plain error: a polar pattern and an intersect', () => {
