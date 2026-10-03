@@ -553,7 +553,17 @@ fn revolve_tool(
     // p[1] is height along a.n, and the spin axis is a.n through the origin.
     let fr = sketch_frame(sk);
     let (u_axis, n) = (fr.u, fr.n);
-    let (mut solid, face_map) = build::revolve_profile(&points, n, u_axis, angle)?;
+    // A profile wholly on the far (negative-u) side of the axis has no wall the
+    // spin can build (radius is read as |u| >= 0). It is the u>0 profile turned
+    // half a turn about the axis, so spin the reflected profile and then rotate
+    // the result by pi: exact for any angle, handedness preserved (a rotation,
+    // not a mirror), and face order is unchanged.
+    let far_side = points.iter().all(|p| p[0] <= 1e-9) && points.iter().any(|p| p[0] < -1e-9);
+    let spun: Vec<[f64; 2]> = if far_side { points.iter().map(|p| [-p[0], p[1]]).collect() } else { points.clone() };
+    let (mut solid, face_map) = build::revolve_profile(&spun, n, u_axis, angle)?;
+    if far_side {
+        solid = build::transform_solid(&solid, &crate::math::Transform::rotation(n, std::f64::consts::PI));
+    }
     if fr.origin != [0.0, 0.0, 0.0] {
         let t = crate::math::Transform::translation(fr.origin);
         solid = build::transform_solid(&solid, &t);
@@ -1200,6 +1210,53 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                         None => {
                             cut = false;
                             break;
+                        }
+                    }
+                }
+                // A THROUGH hole whose tool overshoots both ends of the part is
+                // refused by the boolean when the part is a cylinder or cone (the
+                // overshooting coaxial tool leaves its caps clear of the planar
+                // ends, a case the cylinder/cone pair paths do not take), while a
+                // tool of exactly the part's thickness builds. So when the first
+                // attempt fails, retry with each tool clamped to the part's extent
+                // along the axis -- only for a plain bore (no recess) whose part
+                // has a planar end at BOTH ends perpendicular to the axis. Blind
+                // holes, recesses and any case that already built are untouched; a
+                // transverse bore has no such planar ends and still refuses.
+                if !cut && recess.is_none() {
+                    let a_base = crate::math::dot(base, axis);
+                    let (lo_b, hi_b) = (a_base - 0.5 * along, a_base + 0.5 * along);
+                    let has_end = |at: f64| {
+                        src_faces.iter().any(|fc| match &fc.borrow().surface {
+                            Surface::Plane(pl) => {
+                                crate::math::dot(pl.n, axis).abs() > 1.0 - 1e-9
+                                    && (crate::math::dot(pl.origin, axis) - at).abs() < 1e-7
+                            }
+                            _ => false,
+                        })
+                    };
+                    let through = centers.iter().all(|&c| {
+                        let m = crate::math::dot(c, axis);
+                        m - 0.5 * depth < lo_b - 1e-9 && m + 0.5 * depth > hi_b + 1e-9
+                    });
+                    if through && has_end(lo_b) && has_end(hi_b) {
+                        let mut s2 = before_cut.clone();
+                        let mut ok = true;
+                        for &c in &centers {
+                            let m = crate::math::dot(c, axis);
+                            let c2 = add(c, scale(axis, a_base - m));
+                            let tool = build::cylinder_solid(c2, diameter / 2.0, along, axis);
+                            match ops::boolean("subtract", &s2, &tool) {
+                                Some(r) => s2 = r,
+                                None => {
+                                    ok = false;
+                                    break;
+                                }
+                            }
+                        }
+                        if ok {
+                            shape = s2;
+                            cut = true;
                         }
                     }
                 }
@@ -2056,6 +2113,33 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 );
             }
         }
+    }
+    // Safety net over every kind: a build that came out EMPTY (no faces, or no
+    // volume) is a silent wrong solid -- nothing, shown as if it were the part.
+    // Refuse it in a sentence instead. A datum builds no shape at all, so it is
+    // never in `order`; a feature already refused keeps its own sentence.
+    let empties: Vec<String> = hist
+        .order
+        .iter()
+        .filter(|id| !refusals.contains_key(*id))
+        .filter(|id| match hist.shapes.get(*id) {
+            Some(s) => {
+                let v = build::solid_volume(s);
+                s.faces().is_empty() || !v.is_finite() || v.abs() < 1e-9
+            }
+            None => false,
+        })
+        .cloned()
+        .collect();
+    for id in empties {
+        hist.shapes.remove(&id);
+        hist.sweeps.remove(&id);
+        hist.ops.remove(&id);
+        hist.order.retain(|x| x != &id);
+        refusals.insert(
+            id.clone(),
+            json!(format!("{id} builds an empty solid (nothing is left of it) -- {id} is shown without it.")),
+        );
     }
     (hist, refusals)
 }
@@ -6373,5 +6457,83 @@ mod cavity_guard_tests {
         assert_eq!(s.faces().len(), 8);
         let want = 32000.0 - std::f64::consts::PI * 64.0 * 5.0;
         assert!((build::solid_volume(s) - want).abs() < 1e-6);
+    }
+    // ---- K8 ------------------------------------------------------------
+
+    fn k8_rev(points: Value, angle: f64) -> Vec<Value> {
+        vec![
+            json!({ "id": "s", "kind": "sketch", "plane": "front", "offset": 0.0, "points": points }),
+            json!({ "id": "r", "kind": "revolve", "target": "s", "angle": angle }),
+        ]
+    }
+
+    /// A profile wholly at u<0 is the u>0 profile turned half a turn about the
+    /// axis: it builds exactly, at the closed-form volume, full or partial.
+    #[test]
+    fn k8_negative_u_revolve_builds_exactly() {
+        let pi = std::f64::consts::PI;
+        for (angle, frac) in [(360.0, 1.0), (180.0, 0.5), (90.0, 0.25)] {
+            let want = pi * (15.0_f64.powi(2) - 5.0_f64.powi(2)) * 20.0 * frac;
+            for pts in [json!([[5.0, 0.0], [15.0, 0.0], [15.0, 20.0], [5.0, 20.0]]), json!([[-15.0, 0.0], [-5.0, 0.0], [-5.0, 20.0], [-15.0, 20.0]])] {
+                let (hist, refusals) = build_doc(&json!({ "features": k8_rev(pts.clone(), angle) }));
+                assert!(refusals.is_empty(), "{refusals:?}");
+                let s = hist.shapes.get("r").expect("builds");
+                assert!((build::solid_volume(s) - want).abs() < 1e-6 * want, "angle {angle} {pts}: {}", build::solid_volume(s));
+            }
+            // Same face count as the mirror-image profile.
+            let a = build_doc(&json!({ "features": k8_rev(json!([[5.0, 0.0], [15.0, 0.0], [15.0, 20.0], [5.0, 20.0]]), angle) })).0;
+            let b = build_doc(&json!({ "features": k8_rev(json!([[-15.0, 0.0], [-5.0, 0.0], [-5.0, 20.0], [-15.0, 20.0]]), angle) })).0;
+            assert_eq!(a.shapes["r"].faces().len(), b.shapes["r"].faces().len());
+        }
+    }
+
+    /// The safety net: a build that is empty refuses instead of shipping nothing.
+    #[test]
+    fn k8_empty_build_refuses() {
+        let doc = json!({ "features": [
+            { "id": "s", "kind": "sketch", "plane": "front", "offset": 0.0, "points": [[5.0, 0.0], [15.0, 0.0], [15.0, 20.0], [5.0, 20.0]] },
+            { "id": "e", "kind": "extrude", "target": "s", "height": 0.0 },
+            { "id": "pl", "kind": "datum", "type": "plane", "plane": "xy", "offset": 5.0 },
+        ] });
+        let (hist, refusals) = build_doc(&doc);
+        assert!(!hist.shapes.contains_key("e"));
+        assert!(refusals["e"].as_str().unwrap().contains("empty solid"), "{refusals:?}");
+        assert!(!refusals.contains_key("pl"), "a datum stays a silent no-op");
+    }
+
+    fn k8_hole(target: Value, depth: f64, centre: [f64; 3], axis: &str) -> Value {
+        json!({ "features": [target, { "id": "h", "kind": "hole", "target": "t", "diameter": 6.0, "depth": depth, "center": centre, "axis": axis }] })
+    }
+
+    /// A through hole is the same whether the tool overshoots or is exact.
+    #[test]
+    fn k8_through_hole_overshoot_equals_exact() {
+        let pi = std::f64::consts::PI;
+        let cyl = json!({ "id": "t", "kind": "cylinder", "radius": 7.5, "height": 20.0 });
+        let want = pi * 7.5_f64.powi(2) * 20.0 - pi * 9.0 * 20.0;
+        for centre in [[0.0, 0.0, 0.0], [4.0, 0.0, 0.0]] {
+            let mut seen = Vec::new();
+            for depth in [22.0, 20.0, 60.0] {
+                let (hist, refusals) = build_doc(&k8_hole(cyl.clone(), depth, centre, "z"));
+                assert!(refusals.is_empty(), "depth {depth} {centre:?}: {refusals:?}");
+                let s = hist.shapes.get("h").unwrap();
+                assert!((build::solid_volume(s) - want).abs() < 1e-6, "{}", build::solid_volume(s));
+                seen.push(s.faces().len());
+            }
+            assert!(seen.iter().all(|&n| n == 4), "{seen:?}");
+        }
+        let bx = json!({ "id": "t", "kind": "box", "size": [30.0, 20.0, 10.0] });
+        let v: Vec<f64> = [12.0, 10.0].iter().map(|&d| build::solid_volume(&build_doc(&k8_hole(bx.clone(), d, [0.0; 3], "z")).0.shapes["h"])).collect();
+        assert!((v[0] - v[1]).abs() < 1e-9);
+    }
+
+    /// A blind hole in a cylinder is untouched by the clamp, and a transverse
+    /// bore (cylinder-cylinder) is still an honest refusal.
+    #[test]
+    fn k8_transverse_bore_still_refuses() {
+        let cyl = json!({ "id": "t", "kind": "cylinder", "radius": 7.5, "height": 20.0 });
+        let (hist, refusals) = build_doc(&k8_hole(cyl, 40.0, [0.0; 3], "x"));
+        assert!(refusals["h"].as_str().unwrap().contains("cannot cut this hole yet"), "{refusals:?}");
+        assert!(!hist.shapes.contains_key("h"));
     }
 }

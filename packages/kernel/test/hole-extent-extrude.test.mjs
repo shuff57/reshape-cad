@@ -109,11 +109,13 @@ test('a hole in a cut-shape with deep: is a plain script error, not a floating c
   assert.match(r.errors[0].message, /cannot find where the top of this combine is along z exactly/);
 });
 
-test('revolve: the extent is read, but brep-rs does not cut holes into a spun solid yet (refusal, not a wrong solid)', () => {
+test('revolve: the extent is read, and a through hole parallel to the axis now cuts exactly (K8)', () => {
   const r = runScript("const sk = sketch('front'); sk.rect(10, 20, { at: [15, 5] }); const r = revolve(sk, 360); hole(r, { across: 4, along: 'y', at: [15, 0] })");
   assert.deepEqual(r.errors, []);
-  const { refusals } = measureDoc(r.doc);
-  assert.match(Object.values(refusals)[0], /cannot cut this hole yet/);
+  const { refusals, s } = measureDoc(r.doc);
+  assert.deepEqual(refusals, {});
+  near(s.volume, Math.PI * (400 - 100) * 20 - Math.PI * 4 * 20); // ring minus the bore
+  assert.equal(s.faces, 5);
 });
 
 test('unknown thickness (turned box): deep still builds centred and the KERNEL refuses the sealed cavity', () => {
