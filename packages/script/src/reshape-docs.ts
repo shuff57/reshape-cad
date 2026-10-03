@@ -92,6 +92,18 @@ const post = cylinder(6, 20, { at: [0, 0, 10] })`,
         body: `A ring is a torus. torus(40, 8) is 40 mm across the ring, 8 mm tube diameter. Both are diameters, not radii.`,
         code: `const r = torus(40, 8)`,
       },
+      {
+        title: 'prism: a many-sided post',
+        body: `prism(sides, across, tall) stands a straight post with 3 to 12 equal sides. across is the whole width corner to corner, a diameter like every other width here, so prism(6, 20, 10) is a hexagon 20 mm across its corners and 10 mm tall. Its volume is (sides / 2) x (across / 2)^2 x sin(360 / sides) x tall: the hexagon is 2598.08 mm^3 and the triangle beside it is 1299.04 mm^3. Place one with at: [x, y, z].`,
+        code: `const hex = prism(6, 20, 10)
+const tri = prism(3, 20, 10, { at: [30, 0, 0] })`,
+      },
+      {
+        title: 'wedge: a ramp',
+        body: `wedge(width, depth, tall) is a block cut corner to corner along its height: the end is a right triangle, so it makes a ramp, a stop or a gusset. wedge(10, 20, 30) is exactly half of a 10 x 20 x 30 block, so its volume is 10 x 20 x 30 / 2 = 3000 mm^3. Place it with { at: [x, y, z] } (or slide it later with move(w, [x, y, z])); it is centred on the origin until you do.`,
+        code: `const a = wedge(10, 20, 30)
+const b = wedge(10, 20, 30, { at: [20, 0, 0] })`,
+      },
     ],
   },
   {
@@ -167,6 +179,12 @@ fillet(b, 3)`,
         body: `chamfer(b.edge('top', 'front'), 3) bevels one edge by 3 mm at 45 degrees.`,
         code: `const b = cuboid(40, 40, 20)
 chamfer(b.edge('top', 'front'), 3)`,
+      },
+      {
+        title: 'draft: tilting walls so a part can release',
+        body: `draft(shape, angle, { whole: true }) leans every side wall by angle degrees, the slope a mould or a printed part needs to come away cleanly. The wall at the middle height stays where it was; the top leans in and the bottom flares out. For a 40 x 40 x 20 block drafted 8 degrees the volume is 32000 + (8/3) x 10^3 x tan(8 degrees)^2 = 32052.67 mm^3. A very steep angle collapses a wall, and then the panel tells you so in a sentence.`,
+        code: `const b = cuboid(40, 40, 20)
+draft(b, 8, { whole: true })`,
       },
     ],
   },
@@ -290,11 +308,30 @@ sk.circle(10)
 const shape = extrude(sk, 40)`,
       },
       {
+        title: 'pocket: cutting a sketch into a shape',
+        body: `pocket(sk, shape, depth) is extrude in reverse: it pushes the sketch into a shape and takes that block away instead of adding one. Say the sketch first, then the shape it cuts, then how deep. A 10 x 10 pocket 5 mm deep leaves 40 x 40 x 20 - 10 x 10 x 5 = 31500 mm^3. A second pocket can cut the result of the first: here the 10 x 10 x 8 corner brings it to 31500 - 800 = 30700 mm^3.`,
+        code: `const b = cuboid(40, 40, 20)
+const s1 = sketch('top')
+s1.rect(10, 10, { at: [-10, -10] })
+const p = pocket(s1, b, 5)
+const s2 = sketch('top')
+s2.rect(10, 10, { at: [10, 10] })
+pocket(s2, p, 8)`,
+      },
+      {
         title: 'revolve: revolving sketches',
         body: `revolve(sk, 360) revolves the sketch 360 degrees around an axis.`,
         code: `const sk = sketch('front', 0)
 sk.rect(30, 10, { at: [40, 0] })
 const shape = revolve(sk, 360)`,
+      },
+      {
+        title: 'groove: cutting a spun sketch',
+        body: `groove(sk, shape, angle) is revolve in reverse: it spins the sketch around the middle line of its plane and takes the ring it sweeps out of the shape. Say the sketch, the shape, then the turn in degrees. The ring has to sit fully inside the shape. A 3 x 8 profile with its middle 4.5 mm from the axis spans radius 3 to 6, so a full turn removes pi x (6^2 - 3^2) x 8 = 216 x pi mm^3 from the 32000 mm^3 block, leaving 31321.42 mm^3.`,
+        code: `const b = cuboid(40, 40, 20)
+const sk = sketch('front', 0)
+sk.rect(3, 8, { at: [4.5, 0] })
+groove(sk, b, 360)`,
       },
       {
         title: 'loft: transitioning between sketches',
