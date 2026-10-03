@@ -846,7 +846,19 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
   // groove(sketch, target, angle): the subtractive revolve — spin the profile
   // around the sketch plane's own normal and CUT the ring out of the target
   // solid. Mirror of spin(), with the solid it cuts named.
-  function groove(sk: unknown, target: unknown, angle: unknown): SolidHandle {
+  /** A word that takes no options object: a surplus argument is named, not
+   *  silently dropped. Aliases share the implementation, so the error names
+   *  the base word. */
+  function noExtraArgs(word: string, takes: string, max: number, extra: unknown[], hint = ''): void {
+    if (extra.length === 0) return;
+    const ord = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth'];
+    const n = max + 1;
+    const which = ord[n - 1] ?? `${n}th`;
+    throw new Error(`${word}() takes ${takes}; the ${which} argument (${describe(extra[0])}) was ignored.${hint ? ' ' + hint : ''}`);
+  }
+
+  function groove(sk: unknown, target: unknown, angle: unknown, ...extra: unknown[]): SolidHandle {
+    noExtraArgs('groove', 'a sketch, a shape and an angle', 3, extra);
     if (!isSketchHandle(sk)) throw new Error('groove() needs a sketch: groove(sketch1, shape, angle).');
     if (!isHandle(target)) throw new Error('groove() needs a shape to cut: groove(sketch1, shape, angle).');
     requiredNumber('groove', 'angle', angle);
@@ -860,7 +872,8 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
   // straight into the target solid and CUT the block out. Mirror of pull(),
   // with the solid it cuts named. Same argument order as groove() on purpose:
   // profile first, victim second, number last.
-  function pocket(sk: unknown, target: unknown, depth: unknown): SolidHandle {
+  function pocket(sk: unknown, target: unknown, depth: unknown, ...extra: unknown[]): SolidHandle {
+    noExtraArgs('pocket', 'a sketch, a shape and a depth', 3, extra);
     if (!isSketchHandle(sk)) throw new Error('pocket() needs a sketch: pocket(sketch1, shape, depth).');
     if (!isHandle(target)) throw new Error('pocket() needs a shape to cut: pocket(sketch1, shape, depth).');
     requiredNumber('pocket', 'depth', depth);
@@ -946,7 +959,8 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     return new PlaneValue(d.id, d.plane, d.offset, null);
   }
 
-  function sketch(planeWord: unknown, offset?: unknown): SketchHandle {
+  function sketch(planeWord: unknown, offset?: unknown, ...extra: unknown[]): SketchHandle {
+    noExtraArgs('sketch', 'a plane and an optional offset', 2, extra);
     if (planeWord instanceof PlaneValue) {
       if (offset !== undefined) {
         throw new Error('sketch(plane(...)) takes no offset: give the offset to plane(), like plane(\'top\', 10).');
@@ -1550,7 +1564,8 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     return handle;
   }
 
-  function pull(sk: unknown, height: unknown): SolidHandle {
+  function pull(sk: unknown, height: unknown, ...extra: unknown[]): SolidHandle {
+    noExtraArgs('pull', 'a sketch and a height', 2, extra, 'To move the result, use move(...).');
     if (!isSketchHandle(sk)) throw new Error(`pull() needs a sketch: pull(sketch('top'), height).`);
     requiredNumber('pull', 'height', height);
     const f = newExtrude(docNow(), sk.id);
@@ -1559,7 +1574,8 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     return makeSolidHandle(f);
   }
 
-  function spin(sk: unknown, angle: unknown): SolidHandle {
+  function spin(sk: unknown, angle: unknown, ...extra: unknown[]): SolidHandle {
+    noExtraArgs('spin', 'a sketch and an angle', 2, extra, 'To move the result, use move(...).');
     if (!isSketchHandle(sk)) throw new Error(`spin() needs a sketch: spin(sketch('top'), angle).`);
     requiredNumber('spin', 'angle', angle);
     const f = newRevolve(docNow(), sk.id);
@@ -1574,7 +1590,8 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
   // third argument sets sk2's offset to sk1's offset + gap rather than being
   // stored anywhere new. toScript() reverses this by emitting the CURRENT
   // difference, so the two are exact inverses of each other.
-  function blend(a: unknown, b: unknown, gap: unknown): SolidHandle {
+  function blend(a: unknown, b: unknown, gap: unknown, ...extra: unknown[]): SolidHandle {
+    noExtraArgs('blend', 'two sketches and a gap', 3, extra);
     if (!isSketchHandle(a) || !isSketchHandle(b)) {
       throw new Error('blend() needs two sketches: blend(sketch1, sketch2, gap).');
     }
@@ -1801,7 +1818,8 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
 
   // ---- round / bevel ----------------------------------------------------
 
-  function round(arg: unknown, size: unknown): SolidHandle {
+  function round(arg: unknown, size: unknown, ...extra: unknown[]): SolidHandle {
+    noExtraArgs('round', 'a shape or edge and a size', 2, extra, 'To pick the edge, use shape.edge(faceA, faceB).');
     const s = requiredNumber('round', 'size', size);
     if (isTopoRef(arg)) {
       if (arg.name.cause !== 'between') {
@@ -1894,7 +1912,8 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     'top-bottom': 'xy',
   };
 
-  function mirror(target: unknown, word: unknown): SolidHandle {
+  function mirror(target: unknown, word: unknown, ...extra: unknown[]): SolidHandle {
+    noExtraArgs('mirror', 'a shape and a direction word', 2, extra);
     if (!isHandle(target)) throw new Error('mirror() needs a shape: mirror(shape, "left-right").');
     if (typeof word !== 'string' || !(word in MIRROR_WORD)) {
       throw new Error(`mirror() needs 'left-right', 'front-back' or 'top-bottom'. You gave it ${describe(word)}.`);
@@ -1917,7 +1936,8 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     return target;
   }
 
-  function turn(target: unknown, angles: unknown): SolidHandle {
+  function turn(target: unknown, angles: unknown, ...extra: unknown[]): SolidHandle {
+    noExtraArgs('turn', 'a shape and a list of angles', 2, extra);
     if (!isHandle(target)) throw new Error('turn() needs a shape: turn(shape, [rx, ry, rz]).');
     const f = findFeature(target.id);
     if (!canRotate(f)) {
