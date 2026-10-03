@@ -156,11 +156,12 @@ shell(b, { wall: 2 })`,
       },
       {
         title: 'The order that always builds',
-        body: `Shape, hollow, holes, then single-edge rounds and bevels. hollow comes first because this kernel cannot hollow a shape that already has a hole or a round in it; asked later, the panel says "Hollowing Hollow 1 did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it." A hollowed shape rounds its edges one at a time with fillet(b.edge('top', 'front'), 1). fillet(b, 3) rounds every edge of the shape itself and cannot be combined with a hollow in either order: after the hollow the script stops with "Rounding works on a shape, not a hollowed-out one. A hollow shape rounds its edges one at a time: pick an edge and round that."`,
+        body: `Round first, then cut. fillet(b, 3) rounds every edge of a plain box, or fillet(b.edge('top', 'front'), 3) rounds one, and the rounded box can then take a pocket: the pocket is a cut, and a cut after a round builds. The other way round does not: a round asked of a shape that has already been cut or hollowed stops with "brep-rs can only round an edge of a box yet", so a round always goes on the plain box before any cut. Here the 3 mm round on one 40 mm edge takes (1 - pi/4) x 3^2 x 40 = 77.26 mm^3 off the 32000 mm^3 block, and the 10 x 10 x 5 pocket takes 500 more, leaving 31422.74 mm^3. A hollow is its own step: shell(b, { wall: 2 }) on a plain box leaves 40 x 40 x 20 - 36 x 36 x 16 = 11264 mm^3, and the panel says "Rounding works on a shape, not a hollowed-out one" if you try fillet(b, 3) on it afterwards.`,
         code: `const b = cuboid(40, 40, 20)
-shell(b, { wall: 2 })
-hole(b, { across: 6 })
-fillet(b.edge('top', 'front'), 1)`,
+fillet(b.edge('top', 'front'), 3)
+const sk = sketch('top')
+sk.rect(10, 10)
+pocket(sk, b, 5)`,
       },
     ],
   },
@@ -256,9 +257,9 @@ subtract(b, cutter)`,
       },
       {
         title: 'intersect: finding intersections',
-        body: `intersect(a, b) keeps only where both overlap. intersect(a, b) differs from intersect(b, a).`,
-        code: `const a = cuboid(40, 40, 20, { at: [0, 0, 10] })
-const b = sphere(20, { at: [0, 0, 20] })
+        body: `intersect(a, b) keeps only where both overlap. Two 40 x 40 x 20 blocks, the second shifted 20 mm along x and 20 mm along y, overlap in a 20 x 20 x 20 block, so intersect keeps 8000 mm^3. This kernel intersects boxes with boxes; a box with a sphere is a pair it cannot intersect yet.`,
+        code: `const a = cuboid(40, 40, 20)
+const b = cuboid(40, 40, 20, { at: [20, 20, 0] })
 intersect(a, b)`,
       },
     ],
@@ -301,6 +302,79 @@ sk.symmetric(1, 3, 2)
 const shape = extrude(sk, 12)`,
       },
       {
+        title: 'geom: lines, circles and arcs by their points',
+        body: `sk.geom([...]) draws a sketch from rows instead of one call per shape, the same rows the sketch canvas keeps. Each row says what it is with k: 'point' (p: [x, y]), 'line' (a and b, its two ends), 'circle' (c for the centre, r for the radius) or 'arc' (c, r, a, b and sense: see the arcs page). Every row has an id, a positive whole number, and the rules on the next page name rows by that id. A row marked construction: true is scaffolding: it is there to hang rules on and is left out of the outline. Here four lines make a 40 x 25 rectangle, a circle of radius 5 makes a hole in it, a point marks the circle's centre and a diagonal construction line is drawn but never cut. The extrusion is 40 x 25 x 10 - pi x 5^2 x 10 = 10000 - 250 x pi = 9214.60 mm^3. The corners are welded with coincident rules, which sk.rules([...]) takes (next page); a line's ends are named 'a' and 'b'.`,
+        code: `const sk = sketch('top')
+sk.geom([
+  { k: 'line', id: 1, a: [0, 0], b: [40, 0] },
+  { k: 'line', id: 2, a: [40, 0], b: [40, 25] },
+  { k: 'line', id: 3, a: [40, 25], b: [0, 25] },
+  { k: 'line', id: 4, a: [0, 25], b: [0, 0] },
+  { k: 'circle', id: 5, c: [20, 12.5], r: 5 },
+  { k: 'point', id: 6, p: [20, 12.5] },
+  { k: 'line', id: 7, a: [0, 0], b: [40, 25], construction: true }
+])
+sk.rules([
+  { k: 'coincident', a: 1, aEnd: 'b', b: 2, bEnd: 'a' },
+  { k: 'coincident', a: 2, aEnd: 'b', b: 3, bEnd: 'a' },
+  { k: 'coincident', a: 3, aEnd: 'b', b: 4, bEnd: 'a' },
+  { k: 'coincident', a: 4, aEnd: 'b', b: 1, bEnd: 'a' }
+])
+const shape = extrude(sk, 10)`,
+      },
+      {
+        title: 'rules: tying geometry together',
+        body: `sk.rules([...]) takes rows that tie the geometry rows together; the solver moves the shapes until every rule holds. { k: 'coincident', a: 1, aEnd: 'b', b: 2, bEnd: 'a' } says the end of line 1 meets the start of line 2: aEnd and bEnd are 'a' or 'b', the first or second end of that row, and coincident is the rule that welds corners into an outline. { k: 'horizontal', a: 1 } and { k: 'vertical', a: 2 } hold a line level or upright. { k: 'tangent', ... } makes a line and an arc meet smoothly (the arcs page uses it) and { k: 'equal', a: 5, b: 6 } makes two circles the same size. Value rules carry a number: { k: 'distance', a, aEnd, b, bEnd, value } fixes the gap between two ends, { k: 'radius', a: 5, value } fixes a circle's radius and { k: 'diameter', a: 5, value } its width, and value may be a param() slider. Below, the circles start at radius 3 and 6, but equal and a radius of 4 from the slider bring both to 4, and the two distances give the rectangle its 40 x 25 size. The extrusion is 40 x 25 x 10 - 2 x pi x 4^2 x 10 = 10000 - 320 x pi = 8994.69 mm^3.`,
+        code: `const r = param('r', 4, { min: 1, max: 8, step: 1 })
+const sk = sketch('top')
+sk.geom([
+  { k: 'line', id: 1, a: [0, 0], b: [40, 0] },
+  { k: 'line', id: 2, a: [40, 0], b: [40, 25] },
+  { k: 'line', id: 3, a: [40, 25], b: [0, 25] },
+  { k: 'line', id: 4, a: [0, 25], b: [0, 0] },
+  { k: 'circle', id: 5, c: [10, 12.5], r: 3 },
+  { k: 'circle', id: 6, c: [30, 12.5], r: 6 }
+])
+sk.rules([
+  { k: 'coincident', a: 1, aEnd: 'b', b: 2, bEnd: 'a' },
+  { k: 'coincident', a: 2, aEnd: 'b', b: 3, bEnd: 'a' },
+  { k: 'coincident', a: 3, aEnd: 'b', b: 4, bEnd: 'a' },
+  { k: 'coincident', a: 4, aEnd: 'b', b: 1, bEnd: 'a' },
+  { k: 'horizontal', a: 1 },
+  { k: 'vertical', a: 2 },
+  { k: 'horizontal', a: 3 },
+  { k: 'vertical', a: 4 },
+  { k: 'distance', a: 1, aEnd: 'a', b: 1, bEnd: 'b', value: 40 },
+  { k: 'distance', a: 2, aEnd: 'a', b: 2, bEnd: 'b', value: 25 },
+  { k: 'equal', a: 5, b: 6 },
+  { k: 'radius', a: 5, value: r }
+])
+const shape = extrude(sk, 10)`,
+      },
+      {
+        title: 'arcs: sense and which end is first',
+        body: `An arc row is { k: 'arc', id, c, r, a, b, sense }: a centre, a radius, two ends on the circle and a sense, 'cw' or 'ccw'. The order of the ends is what sets the direction of travel around the outline; the sense alone does not. A 'cw' arc runs from a down in angle to b, so to sweep the outer side of a slot's rounded end the arc must START at its lower point and END at its upper one. Start at the wrong end and the arc sweeps the near side and bites a notch out of the slot instead of rounding it. Switching the sense to 'ccw' to cure that draws the right curve but leaves the arc running against the line it should meet smoothly, and the tangent rule then stops the sketch with "meet in a point rather than running smoothly; reverse one of them". The fix is to reverse the ends, not the sense. The worked example is a slot, eight rows: two arcs of radius 5 centred at (-20, 0) and (20, 0), two lines joining their tops and bottoms, a coincident and a tangent rule at each of the four junctions, and equal on the arcs. Its outline is a 40 x 10 rectangle plus two half-discs, area 400 + 25 x pi, so extruded 10 mm it is 4000 + 250 x pi = 4785.40 mm^3.`,
+        code: `const sk = sketch('top')
+sk.geom([
+  { k: 'arc', id: 1, c: [-20, 0], r: 5, a: [-20, -5], b: [-20, 5], sense: 'cw' },
+  { k: 'arc', id: 2, c: [20, 0], r: 5, a: [20, 5], b: [20, -5], sense: 'cw' },
+  { k: 'line', id: 3, a: [-20, 5], b: [20, 5] },
+  { k: 'line', id: 4, a: [20, -5], b: [-20, -5] }
+])
+sk.rules([
+  { k: 'coincident', a: 3, aEnd: 'a', b: 1, bEnd: 'b' },
+  { k: 'tangent', a: 3, aEnd: 'a', b: 1, bEnd: 'b' },
+  { k: 'coincident', a: 3, aEnd: 'b', b: 2, bEnd: 'a' },
+  { k: 'tangent', a: 3, aEnd: 'b', b: 2, bEnd: 'a' },
+  { k: 'coincident', a: 4, aEnd: 'a', b: 2, bEnd: 'b' },
+  { k: 'tangent', a: 4, aEnd: 'a', b: 2, bEnd: 'b' },
+  { k: 'coincident', a: 4, aEnd: 'b', b: 1, bEnd: 'a' },
+  { k: 'tangent', a: 4, aEnd: 'b', b: 1, bEnd: 'a' },
+  { k: 'equal', a: 1, b: 2 }
+])
+const shape = extrude(sk, 10)`,
+      },
+      {
         title: 'extrude: extruding sketches',
         body: `extrude(sk, 30) extrudes 30 mm upward perpendicular to the sketch plane.`,
         code: `const sk = sketch('front')
@@ -335,11 +409,11 @@ groove(sk, b, 360)`,
       },
       {
         title: 'loft: transitioning between sketches',
-        body: `loft(sk1, sk2, 20) smoothly transitions from one sketch to another over 20 mm.`,
+        body: `loft(sk1, sk2, 30) transitions from one sketch to another over 30 mm. This kernel lofts between two straight-sided outlines with the same number of corners, such as a 40 x 40 square at the bottom and a 20 x 20 square 30 mm above it. That is a frustum, whose volume is h/3 x (A1 + A2 + sqrt(A1 x A2)) = 10 x (1600 + 400 + 800) = 28000 mm^3. Two circles are not matched this way: a loft between circles stops with "only blend two matching straight outlines".`,
         code: `const sk1 = sketch('top')
-sk1.circle(15)
+sk1.rect(40, 40)
 const sk2 = sketch('top', 30)
-sk2.circle(5)
+sk2.rect(20, 20)
 const shape = loft(sk1, sk2, 30)`,
       },
     ],
@@ -363,11 +437,12 @@ shell(b, { wall })`,
     pages: [
       {
         title: 'The timeline and panel',
-        body: `The timeline shows each step (Box 1, Hole 1, Hollow 1). The Dimensions panel shows sliders for every number. Click a timeline chip to highlight its slider.`,
+        body: `The timeline shows each step (Box 1, Round 1, Pocket 1). The Dimensions panel shows sliders for every number. Click a timeline chip to highlight its slider. A step the kernel cannot do shows beside the steps that built, with the sentence saying why.`,
         code: `const b = cuboid(40, 40, 20)
-shell(b, { wall: 2 })
-hole(b, { across: 6 })
-fillet(b.edge('top', 'front'), 3)`,
+fillet(b.edge('top', 'front'), 3)
+const sk = sketch('top')
+sk.rect(10, 10)
+pocket(sk, b, 5)`,
       },
     ],
   },

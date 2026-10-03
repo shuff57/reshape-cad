@@ -45,22 +45,6 @@ const KNOWN_REFUSED = new Map([
     'refusals/Refusals and their meanings',
     'this page teaches refusals; the refusal IS the lesson',
   ],
-  [
-    'hollowing/The order that always builds',
-    'round() on a boolean result is refused (the K2b family) -- the page title promises otherwise',
-  ],
-  [
-    'panel/The timeline and panel',
-    'same round()-after-boolean refusal as hollowing/The order that always builds',
-  ],
-  [
-'booleans/intersect: finding intersections',
-    'keep(box, sphere): box/sphere is a surface pair the face-by-face boolean cannot intersect yet',
-  ],
-  [
-'sketches/loft: transitioning between sketches',
-    'blend of two circles: only matching straight outlines are supported',
-  ],
 ]);
 
 const examples = [];

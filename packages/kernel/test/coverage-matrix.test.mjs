@@ -280,10 +280,6 @@ const REFUSAL_LEDGER = [
 // row is vacuous and the fixture rows above carry the claim.
 const DOCS_REFUSALS = [
   ['refusals/Refusals and their meanings', 'would collapse it'],
-  ['hollowing/The order that always builds', 'can only round an edge of a box'],
-  ['panel/The timeline and panel', 'can only round an edge of a box'],
-  ['booleans/intersect: finding intersections', 'cannot boolean these two solids'],
-  ['sketches/loft: transitioning between sketches', 'only blend two matching straight outlines'],
 ];
 
 // ---------------------------------------------------------------------------
