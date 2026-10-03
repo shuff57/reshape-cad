@@ -678,6 +678,9 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
     // Sketch features are flat, so they are held aside for the sweep that
     // consumes them rather than becoming a shape of their own.
     let mut sketches: std::collections::HashMap<String, Value> = std::collections::HashMap::new();
+    // What a later round or chamfer may REPLAY (docs/specs/SPEC-round-after-cut.md): each
+    // hole's tools and each round's request, keyed by the feature id that holds the result.
+    let mut replay_log: std::collections::HashMap<String, ReplayStep> = std::collections::HashMap::new();
     let empty = Vec::new();
     let features = doc
         .get("features")
@@ -1299,6 +1302,7 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     // target's own faces DO carry through, surface-matched.
                     let face_fates: Vec<Fate> =
                         src_faces.iter().map(|fc| carry_fate(&shape, fc)).collect();
+                    replay_log.insert(id.clone(), ReplayStep::Cut { parent: from.clone(), tools: fused.clone() });
                     record_op(&mut hist, &id, OpKind::Boolean, vec![from], face_fates, Vec::new());
                     hist.advance_head(target, &id);
                     hist.insert(&id, shape);
@@ -1331,7 +1335,7 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     refusals.insert(
                         id.clone(),
                         json!(format!(
-                            "hole {id}: brep-rs cannot cut this hole yet -- {id} is shown without it."
+                            "hole {id}: brep-rs cannot cut this hole yet; drilling the part before you round, chamfer or pattern it, or making the hole go right through, usually works -- {id} is shown without it."
                         )),
                     );
                 }
@@ -1760,12 +1764,35 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     hist.insert(&id, src);
                     continue;
                 }
-                match build_fillet(&src, &hist, f, size, round) {
+                // A round or chamfer asked for AFTER a cut: the solid is no longer a plain box, so
+                // build_fillet cannot take it. Replay it (round the root box first, then re-apply
+                // the cuts) when a proof says the cuts stay clear of the rounded edge.
+                let mut attempt = build_fillet(&src, &hist, f, size, round);
+                let mut replay_refusal: Option<String> = None;
+                if matches!(attempt, Err(FilletErr::NoBox)) {
+                    match replay_round(&hist, &replay_log, target, f, size, round) {
+                        Some(Ok(solid)) => attempt = Ok(solid),
+                        Some(Err(why)) => replay_refusal = Some(why),
+                        None => {}
+                    }
+                }
+                match attempt {
                     Ok(solid) => {
                         let face_fates: Vec<Fate> =
                             src.faces().iter().map(|fc| carry_fate(&solid, fc)).collect();
+                        replay_log.insert(
+                            id.clone(),
+                            ReplayStep::Round { parent: target.to_string(), feature: f.clone(), size, round },
+                        );
                         record_op(&mut hist, &id, OpKind::Fillet, vec![target.to_string()], face_fates, Vec::new());
                         hist.insert(&id, solid);
+                    }
+                    Err(_) if replay_refusal.is_some() => {
+                        refusals.insert(
+                            id.clone(),
+                            json!(format!("{} -- {label} is shown without it.", replay_refusal.unwrap_or_default())),
+                        );
+                        hist.insert(&id, src);
                     }
                     Err(e) => {
                         let reason = match e {
@@ -1781,8 +1808,11 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
  FilletErr::VertexTooComplex => format!(
  "brep-rs cannot chamfer an edge whose end touches more than three faces -- {label} is shown without it."
  ),
+                            _ if round => format!(
+                                "brep-rs can only round an edge of a box yet; round the plain box before you hollow, chamfer or cut it (a hole that stays clear of the edge may come first) -- {label} is shown without it."
+                            ),
                             _ => format!(
-                                "brep-rs can only round an edge of a box yet -- {label} is shown without it."
+                                "brep-rs can only chamfer an edge of a box yet; chamfer the plain box before you hollow, round or cut it -- {label} is shown without it."
                             ),
                         };
                         refusals.insert(id.clone(), json!(reason));
@@ -2132,7 +2162,7 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                             refusals.insert(
                                 id.clone(),
                                 json!(format!(
-                                    "brep-rs can only hollow a box or a straight cylinder yet -- {id} is shown without it."
+                                    "brep-rs can only hollow a box or a straight cylinder yet; hollow the plain shape first, then drill it -- {id} is shown without it."
                                 )),
                             );
                             continue;
@@ -2802,21 +2832,45 @@ fn tools_apart(before: &TSolid, tools: &[&TSolid]) -> bool {
 /// hole_through_a_closed_shell): a tool wholly inside the part's bounding box
 /// that changes nothing may sit in the part's own void (a shell's cavity or open
 /// mouth) and stays unrefused; only a tool reaching outside the box, or clear of
-/// it, counts as a miss then.
+/// it, counts as a miss then. "The box" is a single shell's: a tool in the gap
+/// between a pattern's copies is inside the whole part's box but no lump's.
 fn cut_missed(before: &TSolid, after: &TSolid, tools: &[&TSolid]) -> bool {
     if tools_apart(before, tools) {
         return true;
     }
-    let a = build::solid_aabb(before);
+    // The exception is for a void of ONE lump, so the box that matters is a single
+    // shell's, not the whole part's: a tool wholly inside the box of the whole part
+    // but inside no single shell's box sits in the empty gap between lumps (the
+    // copies of a pattern) and cuts nothing -- a miss, not a cavity.
     let inside = tools.iter().all(|t| {
         let b = build::solid_aabb(t);
-        (0..3).all(|i| b.lo[i] >= a.lo[i] - 1e-9 && b.hi[i] <= a.hi[i] + 1e-9)
+        before.shells.iter().any(|sh| {
+            let one = TSolid { shells: vec![sh.clone()] };
+            let a = build::solid_aabb(&one);
+            (0..3).all(|i| b.lo[i] >= a.lo[i] - 1e-9 && b.hi[i] <= a.hi[i] + 1e-9)
+        })
+            // ...and sit in a void the skin closes in on, not in the open air a convex
+            // part's bounding box also covers (a cone's, beyond its sloping wall)
+            && {
+                let b = build::solid_aabb(t);
+                ops::boxed_in(before, [0, 1, 2].map(|i| 0.5 * (b.lo[i] + b.hi[i])))
+            }
     });
     if inside {
         return false;
     }
     let (v0, v1) = (build::solid_volume(before), build::solid_volume(after));
-    (v0 - v1).abs() <= 1e-9 * v0.abs().max(1.0) && before.faces().len() == after.faces().len()
+    if (v0 - v1).abs() > 1e-9 * v0.abs().max(1.0) {
+        return false;
+    }
+    // Same volume. Same faces too: a miss. Different faces (a boolean may split a
+    // cone's wall at a tool it never enters) is still a miss when every tool sits in
+    // open air, not in a void the skin closes in on.
+    before.faces().len() == after.faces().len()
+        || tools.iter().all(|t| {
+            let b = build::solid_aabb(t);
+            !ops::boxed_in(before, [0, 1, 2].map(|i| 0.5 * (b.lo[i] + b.hi[i])))
+        })
 }
 
 fn miss_refusal(id: &str) -> String {
@@ -3428,7 +3482,7 @@ mod tests {
         let (hist, refusals) = build_doc(&doc);
         let text = refusals.get("r2").and_then(|v| v.as_str()).unwrap_or_default();
         assert!(
-            text.contains("can only round an edge of a box yet") && text.contains("without it"),
+            text.contains("can only chamfer an edge of a box yet") && text.contains("without it"),
             "refusal text: {text}"
         );
         let solid = hist.shapes.get("r2").expect("r1's solid kept");
@@ -5449,6 +5503,124 @@ fn box_chamfer_frame(src: &TSolid) -> Option<([[f64; 2]; 3], usize, Vec<BoxBevel
         return None;
     }
     Some((lo_hi, eaxis, bevels))
+}
+
+/// One step a later round may replay (SPEC-round-after-cut.md).
+enum ReplayStep {
+    /// A hole: the tools subtracted from the shape held under `parent`.
+    Cut { parent: String, tools: Vec<TSolid> },
+    /// A round or chamfer built from `parent`, with its own request.
+    Round { parent: String, feature: Value, size: f64, round: bool },
+}
+
+impl ReplayStep {
+    fn parent(&self) -> &str {
+        match self {
+            ReplayStep::Cut { parent, .. } | ReplayStep::Round { parent, .. } => parent,
+        }
+    }
+}
+
+/// A round or chamfer whose target is a plain box that later HOLES cut into: build it as
+/// "round the box first, then re-apply the cuts", which is the order brep-rs already builds
+/// exactly, but only when every cut provably stays clear of the rounded corner.
+///
+/// Returns None when this does not apply (no cut in the chain, the root is not a plain box,
+/// or a step other than hole/round is in the way), so the caller keeps its old refusal; Some(Err)
+/// is a refusal with its own sentence; Some(Ok) is the finished solid. Safety case:
+///  - the zone a round can change is the corner square of side `size` along the whole edge; a
+///    cut whose tool box meets that zone (with a micron of slack) refuses -- bounding boxes only
+///    ever refuse more, never less, than the true intersection test would;
+///  - every cut goes back through `ops::boolean`, whose own guards still apply, and the result may
+///    not gain a lump.
+fn replay_round(
+    hist: &History,
+    log: &std::collections::HashMap<String, ReplayStep>,
+    target: &str,
+    f: &Value,
+    size: f64,
+    round: bool,
+) -> Option<Result<TSolid, String>> {
+    let label = f
+        .get("label")
+        .or_else(|| f.get("id"))
+        .and_then(|s| s.as_str())
+        .unwrap_or("this edge");
+    let verb = if round { "round" } else { "chamfer" };
+    let mut chain: Vec<&ReplayStep> = Vec::new();
+    let mut cur = target.to_string();
+    while let Some(step) = log.get(&cur) {
+        if chain.len() >= 32 {
+            return None;
+        }
+        chain.push(step);
+        cur = step.parent().to_string();
+    }
+    chain.reverse(); // oldest first
+    if !chain.iter().any(|s| matches!(s, ReplayStep::Cut { .. })) {
+        return None;
+    }
+    let root = hist.shapes.get(&cur)?;
+    box_extent(root)?;
+    // the rounds to apply, oldest first, then this one; and every tool
+    let mut rounds: Vec<(&Value, f64, bool)> = Vec::new();
+    let mut tools: Vec<&TSolid> = Vec::new();
+    for step in &chain {
+        match step {
+            ReplayStep::Round { feature, size, round, .. } => rounds.push((feature, *size, *round)),
+            ReplayStep::Cut { tools: t, .. } => tools.extend(t.iter()),
+        }
+    }
+    rounds.push((f, size, round));
+    let bb = box_extent(root)?;
+    let fail = |why: String| Some(Err(why));
+    for (feat, sz, _) in &rounds {
+        let Some((fa, fb)) = fillet_face_pair(hist, feat) else { return None };
+        let (Some((ax1, s1)), Some((ax2, s2))) = (face_axis(&fa), face_axis(&fb)) else { return None };
+        if ax1 == ax2 {
+            return None;
+        }
+        let mut lo = bb.lo;
+        let mut hi = bb.hi;
+        for (ax, side) in [(ax1, s1), (ax2, s2)] {
+            if side == 1 {
+                lo[ax] = bb.hi[ax] - sz;
+            } else {
+                hi[ax] = bb.lo[ax] + sz;
+            }
+        }
+        let slack = 1e-6;
+        for t in &tools {
+            let tb = build::solid_aabb(t);
+            if (0..3).all(|i| tb.lo[i] < hi[i] + slack && tb.hi[i] > lo[i] - slack) {
+                return fail(format!(
+                    "{verb} {label} would reach a cut made earlier, and brep-rs can only {verb} a corner the cuts stay clear of; {verb} before you cut, or keep the cut away from that edge"
+                ));
+            }
+        }
+    }
+    let mut shape = root.clone();
+    for (feat, sz, rd) in &rounds {
+        match build_fillet(&shape, hist, feat, *sz, *rd) {
+            Ok(s) => shape = s,
+            Err(_) => return fail(format!(
+                "brep-rs cannot {verb} {label} on this part even before the cuts"
+            )),
+        }
+    }
+    let pieces = skin_pieces(&shape);
+    for t in tools {
+        match ops::boolean("subtract", &shape, t) {
+            Some(r) => shape = r,
+            None => return fail(format!(
+                "{verb} {label} is fine, but brep-rs cannot cut the earlier holes into the {verb}ed part"
+            )),
+        }
+    }
+    if skin_pieces(&shape) > pieces {
+        return fail(format!("{verb} {label} would leave a loose piece after the earlier cuts"));
+    }
+    Some(Ok(shape))
 }
 
 enum FilletErr {

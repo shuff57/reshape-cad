@@ -96,6 +96,30 @@ fn face_reach_box(face: &TFace) -> Option<crate::math::Aabb> {
 /// many times a generic ray from `p` crosses the closed boundary: odd means
 /// inside. Exact for planar and full-cylinder faces; an unsupported surface
 /// falls back to the half-space test, which is right whenever `other` is convex.
+/// True when `p` is boxed in by the solid's skin: rays along the six axis
+/// directions (tilted a hair) meet it in at least four. A point in a shell's own
+/// cavity or open mouth is; a point in the open air beside a convex part is not,
+/// whatever the part's bounding box says. Used only to tell a tool sitting in a
+/// void from one sitting in empty space (`cut_missed`), never to classify inside.
+pub(crate) fn boxed_in(solid: &TSolid, p: Vec3) -> bool {
+    // Near-axis rays, each tilted by an irrational sliver so none runs along a face
+    // or through a seam; a cup's cavity is met by five of the six, a point beside a
+    // convex part by at most two.
+    let mut hit = 0usize;
+    for axis in 0..3 {
+        for sgn in [1.0, -1.0] {
+            let mut d = [0.0123456789, 0.0234567891, 0.0345678912];
+            d[axis] = sgn;
+            if let Some((n, _)) = crossings(solid, p, normalize(d)) {
+                if n > 0 {
+                    hit += 1;
+                }
+            }
+        }
+    }
+    hit >= 4
+}
+
 pub(crate) fn inside_solid(solid: &TSolid, p: Vec3) -> bool {
     // One fixed diagonal ray can pass exactly through a shared edge or vertex
     // of the boundary, where two faces both register the crossing and parity
@@ -4105,6 +4129,179 @@ pub fn cylinder_open_hollow(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> 
     })
 }
 
+/// A bore straight down through a sphere's centre (`sphere` minus a plain cylinder
+/// whose axis passes through the sphere's centre). The bore wall meets the sphere in
+/// two CIRCLES (z = +-h, h = sqrt(R^2 - r^2)), so no new curve type is needed: the
+/// sphere keeps the zone between them (a colatitude range [asin(r/R), pi - asin(r/R)])
+/// and the bore wall is a plain cylinder. THROUGH: two faces. BLIND, entered from
+/// one side with its flat floor strictly between the two circles: sphere with one
+/// polar hole, bore wall, floor disk. Everything else (off-centre axis, r/R > 0.95,
+/// a floor in a polar cap, a tool that does not clear the sphere) returns None and
+/// the caller refuses in words. Closed forms (derived, not read off the kernel):
+/// through V = 4/3 pi h^3; blind V = 4/3 pi R^3 - pi r^2 (h - f) - pi c^2 (3R - c) / 3,
+/// c = R - h, f = the floor's height from the centre.
+pub fn sphere_axial_bore(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
+    if op != "subtract" {
+        return None;
+    }
+    let fa = a.faces();
+    if fa.len() != 1 {
+        return None;
+    }
+    let sp = match &fa[0].borrow().surface {
+        Surface::Sphere(sp)
+            if sp.trim.is_none()
+                && (sp.u_range[1] - sp.u_range[0] - TWO_PI).abs() < 1e-9
+                && (sp.v_range[1] - sp.v_range[0] - std::f64::consts::PI).abs() < 1e-9 =>
+        {
+            sp.clone()
+        }
+        _ => return None,
+    };
+    let (wall, c_lo, c_hi, _, _) = cylinder_parts(b)?;
+    let (big_r, r) = (sp.radius, wall.radius);
+    if r <= 1e-9 || r > 0.95 * big_r {
+        return None;
+    }
+    let ax = normalize(wall.axis);
+    // the axis must pass through the centre
+    let off = sub(sp.center, wall.origin);
+    if crate::math::len(sub(off, scale(ax, dot(off, ax)))) > 1e-7 {
+        return None;
+    }
+    let h = (big_r * big_r - r * r).sqrt();
+    let eps = 1e-7;
+    let (t_lo, t_hi) = (dot(sub(c_lo, sp.center), ax), dot(sub(c_hi, sp.center), ax));
+    // Frame with the entry on the +z side. `lo` is the floor height (None = through).
+    let (z, lo): (Vec3, Option<f64>) = if t_lo < -h - eps && t_hi > h + eps {
+        (ax, None)
+    } else if t_hi > h + eps && t_lo > -h + eps && t_lo < h - eps {
+        (ax, Some(t_lo))
+    } else if t_lo < -h - eps && t_hi > -h + eps && t_hi < h - eps {
+        (scale(ax, -1.0), Some(-t_hi))
+    } else {
+        return None;
+    };
+    let (e1, e2, z) = crate::geom::frame(z);
+    let c = sp.center;
+    let theta = (r / big_r).asin();
+    let pi = std::f64::consts::PI;
+    let zero = topo::Pcurve { start: [0.0, 0.0], end: [0.0, 0.0], mid: [0.0, 0.0] };
+    let circle_edge = |height: f64| {
+        let centre = add(c, scale(z, height));
+        let v = topo::vertex(add(centre, scale(e1, r)));
+        topo::edge(v.clone(), v, true, Curve::Circle { center: centre, radius: r, normal: z })
+    };
+    let rim_top = circle_edge(h);
+    let sphere_surface = |v0: f64, v1: f64| {
+        Surface::Sphere(crate::geom::SphereSurf {
+            center: c,
+            radius: big_r,
+            axis: z,
+            e1,
+            e2,
+            u_range: [0.0, TWO_PI],
+            v_range: [v0, v1],
+            trim: None,
+        })
+    };
+    // the sphere's meridian seam at u = 0 (colatitude measured from -z)
+    let point_at = |v: f64| add(c, add(scale(e1, big_r * v.sin()), scale(z, -big_r * v.cos())));
+    let meridian = |v0: f64, v1: f64| {
+        let x_axis = normalize(sub(point_at(v0), c));
+        topo::edge(
+            topo::vertex(point_at(v0)),
+            topo::vertex(point_at(v1)),
+            true,
+            Curve::Arc { center: c, radius: big_r, normal: scale(e2, -1.0), x_axis, sweep: v1 - v0 },
+        )
+    };
+    let two_pi = TWO_PI;
+    let use_of = |edge: &topo::EdgeRef<Curve3>, forward: bool, s: [f64; 2], e: [f64; 2], m: [f64; 2]| topo::EdgeUse {
+        edge: edge.clone(),
+        forward,
+        pcurve: topo::Pcurve { start: s, end: e, mid: m },
+    };
+    // bore wall (void side: e2 negated) between heights [z0, h]; rims supplied
+    let bore_wall = |z0: f64, rim_lo: &topo::EdgeRef<Curve3>| -> TFace {
+        let vlo = topo::vertex(add(add(c, scale(z, z0)), scale(e1, r)));
+        let vhi = topo::vertex(add(add(c, scale(z, h)), scale(e1, r)));
+        let seam = topo::edge(
+            vlo.clone(),
+            vhi.clone(),
+            true,
+            Curve::Segment { a: vlo.borrow().point, b: vhi.borrow().point },
+        );
+        let vm = 0.5 * (z0 + h);
+        let uses = vec![
+            use_of(&seam, true, [0.0, z0], [0.0, h], [0.0, vm]),
+            use_of(&rim_top, true, [0.0, h], [two_pi, h], [pi, h]),
+            use_of(&seam, false, [two_pi, h], [two_pi, z0], [two_pi, vm]),
+            use_of(rim_lo, false, [two_pi, z0], [0.0, z0], [pi, z0]),
+        ];
+        Rc::new(RefCell::new(Face {
+            boundary: vec![Rc::new(RefCell::new(Wire { edges: uses }))],
+            forward: true,
+            surface: Surface::Cylinder(Cylinder {
+                origin: c,
+                axis: z,
+                e1,
+                e2: scale(e2, -1.0),
+                radius: r,
+                vmin: z0,
+                vmax: h,
+                arc: None,
+                cross: None,
+            }),
+            uv_domain: [[0.0, two_pi], [z0, h]],
+        }))
+    };
+    let faces: Vec<TFace> = match lo {
+        None => {
+            let rim_bot = circle_edge(-h);
+            let seam = meridian(theta, pi - theta);
+            let uses = vec![
+                use_of(&seam, true, [0.0, theta], [0.0, pi - theta], [0.0, 0.5 * pi]),
+                use_of(&rim_top, true, [0.0, pi - theta], [two_pi, pi - theta], [pi, pi - theta]),
+                use_of(&seam, false, [two_pi, pi - theta], [two_pi, theta], [two_pi, 0.5 * pi]),
+                use_of(&rim_bot, false, [two_pi, theta], [0.0, theta], [pi, theta]),
+            ];
+            let zone = Rc::new(RefCell::new(Face {
+                boundary: vec![Rc::new(RefCell::new(Wire { edges: uses }))],
+                forward: true,
+                surface: sphere_surface(theta, pi - theta),
+                uv_domain: [[0.0, two_pi], [theta, pi - theta]],
+            }));
+            vec![zone, bore_wall(-h, &rim_bot)]
+        }
+        Some(f) => {
+            let seam = meridian(0.0, pi - theta);
+            let uses = vec![
+                use_of(&seam, true, [0.0, 0.0], [0.0, pi - theta], [0.0, 0.5 * (pi - theta)]),
+                use_of(&rim_top, true, [0.0, pi - theta], [two_pi, pi - theta], [pi, pi - theta]),
+                use_of(&seam, false, [two_pi, pi - theta], [two_pi, 0.0], [two_pi, 0.5 * (pi - theta)]),
+            ];
+            let outer = Rc::new(RefCell::new(Face {
+                boundary: vec![Rc::new(RefCell::new(Wire { edges: uses }))],
+                forward: true,
+                surface: sphere_surface(0.0, pi - theta),
+                uv_domain: [[0.0, two_pi], [0.0, pi - theta]],
+            }));
+            let rim_floor = circle_edge(f);
+            let floor = Rc::new(RefCell::new(Face {
+                boundary: vec![Rc::new(RefCell::new(Wire {
+                    edges: vec![topo::EdgeUse { edge: rim_floor.clone(), forward: true, pcurve: zero }],
+                }))],
+                forward: true,
+                surface: Surface::Plane(Plane::new(add(c, scale(z, f)), z)),
+                uv_domain: [[0.0, 1.0], [0.0, 1.0]],
+            }));
+            vec![outer, bore_wall(f, &rim_floor), floor]
+        }
+    };
+    Some(Solid { shells: vec![Rc::new(RefCell::new(Shell { faces }))] })
+}
+
 #[allow(clippy::too_many_arguments)]
 fn build_cyl_pair_result(
     op: &str,
@@ -4507,6 +4704,9 @@ pub fn boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
  return None;
  }
  if let Some(r) = cylinder_cross_bore(op, a, b) {
+ return volume_is_translation_invariant(&r).then_some(r);
+ }
+ if let Some(r) = sphere_axial_bore(op, a, b) {
  return volume_is_translation_invariant(&r).then_some(r);
  }
  if op == "subtract" {
