@@ -287,9 +287,9 @@ function ruleRowText(bindings: Map<string, string>, featureId: string, index: nu
     case 'parallel': return `{ k:'parallel', a:${n(r.a)}, b:${n(r.b)} }`;
     case 'perpendicular': return `{ k:'perpendicular', a:${n(r.a)}, b:${n(r.b)} }`;
     case 'tangent': {
-      const ends = r.aEnd !== undefined || r.bEnd !== undefined
-        ? `${r.aEnd ? `, aEnd:'${r.aEnd}'` : ''}${r.bEnd ? `, bEnd:'${r.bEnd}'` : ''}`
-        : '';
+      // aEnd goes between a and b; bEnd follows b (it was also emitted here,
+      // so a tangent row came out with bEnd twice -- harmless JS, ugly text).
+      const ends = r.aEnd ? `, aEnd:'${r.aEnd}'` : '';
       const side = r.side !== undefined ? `, side:${n(r.side)}` : '';
       const mode = r.mode ? `, mode:'${r.mode}'` : '';
       return `{ k:'tangent', a:${n(r.a)}${ends}, b:${n(r.b)}${r.bEnd ? `, bEnd:'${r.bEnd}'` : ''}${side}${mode} }`;
