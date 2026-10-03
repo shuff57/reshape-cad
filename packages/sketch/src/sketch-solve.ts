@@ -847,3 +847,83 @@ export function losingEdges(pts: Point[], constraints: Constraint[]): number[] {
   });
   return [...out].sort((a, b) => a - b);
 }
+
+// --- slot rows (shared builder) ---------------------------------------------
+// Lives HERE, not in its own file, only because shCode's read-only gate loader
+// (scripts/_pkg-load.mjs) whitelists sketch modules by name and reshape-script.ts
+// already imports this one. sketch-slot.ts re-exports it as the public subpath;
+// move it back once the loader knows 'sketch-slot'.
+// The slot (obround) as soup rows -- the ONE builder, shared by the studio's
+// slot tool (sketch-canvas-core.ts slotRows) and the script's `sk.slot()`.
+// Pure arithmetic, no imports: this package stays a leaf.
+//
+// Four geometry rows (two arcs, two tangent lines) and eight rule rows (a
+// coincident AND an endpoint tangent at each of the four junctions). The weld
+// is the coincident -- wire discovery walks coincident classes and nothing
+// else -- and the direction is the tangent.
+//
+// WHICH END IS `a` IS THE DIRECTION, and it decides whether a cap bulges away
+// from the axis (an obround) or into it (a notch). A cw arc runs from `a` DOWN
+// in angle to `b`, so cap A starts at -perp and ends at +perp to sweep the far
+// side. Flipping `sense` to ccw is NOT the fix: it draws the right shape and
+// then the kernel refuses ("meet in a point rather than running smoothly"),
+// because the ends' ORDER, not the sense, is the wire walk's travel direction.
+// Reversing both caps' ends builds the obround exactly on the cw sense.
+// (Measured 2026-09-18: the near-way-round version extruded 4858.407346 where
+// an obround of centres 0/40, r=10, h=10 is 11141.592654.)
+//
+// Equal radii are shared by construction (one `r` for both arcs); there is no
+// separate equal row.
+
+export type SlotGeom =
+  | { k: 'arc'; id: number; c: [number, number]; r: number; a: [number, number]; b: [number, number]; sense: 'cw' }
+  | { k: 'line'; id: number; a: [number, number]; b: [number, number] };
+
+export interface SlotRowsResult {
+  geoms: SlotGeom[];
+  rules: Array<Record<string, any>>;
+  ids: { arc1: number; arc2: number; top: number; bottom: number };
+}
+
+/** Rows for a slot with cap centres `cA` and `cB` and cap radius `r` (width
+ *  2r), ids starting at `baseId` (arc1, arc2, top, bottom). Null when `r` or
+ *  the centre distance is degenerate. */
+export function buildSlotRows(
+  cA: readonly [number, number],
+  cB: readonly [number, number],
+  r: number,
+  baseId: number,
+): SlotRowsResult | null {
+  if (!(r > 1e-9)) return null;
+  const dx = cB[0] - cA[0];
+  const dy = cB[1] - cA[1];
+  const len = Math.hypot(dx, dy);
+  if (!(len > 1e-9)) return null;
+  const px = -dy / len;
+  const py = dx / len;
+  const arc1a: [number, number] = [cA[0] + px * r, cA[1] + py * r];
+  const arc1b: [number, number] = [cA[0] - px * r, cA[1] - py * r];
+  const arc2a: [number, number] = [cB[0] - px * r, cB[1] - py * r];
+  const arc2b: [number, number] = [cB[0] + px * r, cB[1] + py * r];
+  const arc1 = baseId;
+  const arc2 = baseId + 1;
+  const top = baseId + 2; // the +perp side line
+  const bottom = baseId + 3; // the -perp side line
+  const geoms: SlotGeom[] = [
+    { k: 'arc', id: arc1, c: [cA[0], cA[1]], r, a: arc1b, b: arc1a, sense: 'cw' },
+    { k: 'arc', id: arc2, c: [cB[0], cB[1]], r, a: arc2b, b: arc2a, sense: 'cw' },
+    { k: 'line', id: top, a: arc1a, b: arc2b },
+    { k: 'line', id: bottom, a: arc2a, b: arc1b },
+  ];
+  const rules: Array<Record<string, any>> = [
+    { k: 'coincident', a: top, aEnd: 'a', b: arc1, bEnd: 'b' },
+    { k: 'tangent', a: top, aEnd: 'a', b: arc1, bEnd: 'b' },
+    { k: 'coincident', a: top, aEnd: 'b', b: arc2, bEnd: 'a' },
+    { k: 'tangent', a: top, aEnd: 'b', b: arc2, bEnd: 'a' },
+    { k: 'coincident', a: bottom, aEnd: 'a', b: arc2, bEnd: 'b' },
+    { k: 'tangent', a: bottom, aEnd: 'a', b: arc2, bEnd: 'b' },
+    { k: 'coincident', a: bottom, aEnd: 'b', b: arc1, bEnd: 'a' },
+    { k: 'tangent', a: bottom, aEnd: 'b', b: arc1, bEnd: 'a' },
+  ];
+  return { geoms, rules, ids: { arc1, arc2, top, bottom } };
+}

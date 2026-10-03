@@ -10,6 +10,7 @@
     "./sketch-solve": "./dist/sketch-solve.js",
     "./sketch-arc": "./dist/sketch-arc.js",
     "./sketch-outline": "./dist/sketch-outline.js",
+    "./sketch-slot": "./dist/sketch-slot.js",
     "./least-squares": "./dist/least-squares.js"
   },
   "typesVersions": {
