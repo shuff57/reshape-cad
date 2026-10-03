@@ -1,0 +1,23 @@
+// DRAFT -- NOT APPLIED. PLAN-next V-2 (2026-10-03). scripts/brep-parity-fixtures.mjs is LEAD-OWNED: only the owner
+// (or a lead with the owner's named authorisation) pastes this into the fixtures() list, next to the other
+// `raw(...)` hole entries. Each feature list below is exactly what `runScript` emits for the script in its comment.
+//
+// Closed forms, derived independently of both kernels (use them to read the gate output, because a differential
+// gate agrees with itself when both kernels share a defect):
+//   sphere-bore-through   R=20, r=3:   V = 4/3 pi (R^2 - r^2)^(3/2)               = 32385.734068175156 (2 faces)
+//   sphere-bore-blind     floor f=10:  V = 4/3 pi R^3 - pi r^2 (h - f) - pi c^2 (3R - c)/3, h = sqrt(R^2-r^2), c = R-h   (3 faces)
+//   cone-bore-through     cone(R=10, H=20), bore r=2:  1876.5780117443037 (3 faces)
+//   cross-bore-through    R=10, r=2, h=30:  9174.71354867276 (numeric integral, Simpson 400000)  (4 faces)
+//   cross-bore-blind      floor inside the part (see SPEC-transverse-bore.md)                    (5 faces)
+//   hole-then-round       32000 - pi 16 20 - (1 - pi/4) 9 40 = 30917.433689674344 (8 faces)
+// Expected gate effect once applied (measured today with export_step, not yet through the gate): parity 70/2 -> 76/2 and
+// mesh 70/2 -> 76/2 if OCCT builds all six; STEP 64/0/6 -> 66/0/10 (cone-bore-through and hole-then-round write a STEP file,
+// the two sphere fixtures and the two cross-bore fixtures REFUSE: no writer for those faces). A fixture that OCCT cannot
+// build, or builds differently, must be reported, not forced green; read the STEP read-back volumes of the two new passes.
+//
+    raw('sphere-bore-through', 'hole', [{"id":"ball1","kind":"sphere","radius":20,"center":[0,0,0]},{"id":"hole1","kind":"hole","target":"ball1","diameter":6,"depth":42,"center":[0,0,0],"axis":"z"}]),
+    raw('sphere-bore-blind', 'hole', [{"id":"ball1","kind":"sphere","radius":20,"center":[0,0,0]},{"id":"hole1","kind":"hole","target":"ball1","diameter":6,"depth":10,"center":[0,0,15],"axis":"z"}]),
+    raw('cone-bore-through', 'hole', [{"id":"cone1","kind":"cone","radius":10,"height":20,"center":[0,0,0]},{"id":"hole1","kind":"hole","target":"cone1","diameter":4,"depth":22,"center":[0,0,0],"axis":"z"}]),
+    raw('cross-bore-through', 'hole', [{"id":"cyl1","kind":"cylinder","radius":10,"height":30,"center":[0,0,0]},{"id":"hole1","kind":"hole","target":"cyl1","diameter":4,"depth":22,"center":[0,0,0],"axis":"x"}]),
+    raw('cross-bore-blind', 'hole', [{"id":"cyl1","kind":"cylinder","radius":10,"height":30,"center":[0,0,0]},{"id":"hole1","kind":"hole","target":"cyl1","diameter":4,"depth":12,"center":[4,0,0],"axis":"x"}]),
+    raw('hole-then-round', 'round', [{"id":"box1","kind":"box","size":[40,40,20],"center":[0,0,0]},{"id":"hole1","kind":"hole","target":"box1","diameter":8,"depth":22,"center":[0,0,0],"axis":"z"},{"id":"round1","kind":"fillet","target":"hole1","edge":{"cause":"between","feature":"box1","kind":"edge","of":[{"cause":"primitive","feature":"box1","kind":"face","part":"+z"},{"cause":"primitive","feature":"box1","kind":"face","part":"-y"}]},"size":3,"style":"fillet"}]),

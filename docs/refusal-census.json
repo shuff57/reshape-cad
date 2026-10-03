@@ -1,0 +1,128 @@
+{
+  "lesson 8-1-10-lab-sketch-and-pull.script.js": {
+    "builds": true
+  },
+  "lesson 8-1-10-lab-sketch-and-pull.solution.js": {
+    "builds": true
+  },
+  "lesson 8-1-11-project-desk-tray.script.js": {
+    "builds": true
+  },
+  "lesson 8-1-11-project-desk-tray.solution.js": {
+    "builds": true
+  },
+  "lesson 8-1-2-lab-your-first-box.script.js": {
+    "builds": true
+  },
+  "lesson 8-1-2-lab-your-first-box.solution.js": {
+    "builds": true
+  },
+  "lesson 8-1-3-lab-change-your-mind.script.js": {
+    "builds": true
+  },
+  "lesson 8-1-3-lab-change-your-mind.solution.js": {
+    "builds": true
+  },
+  "lesson 8-1-4-lab-drill-a-hole.script.js": {
+    "builds": true
+  },
+  "lesson 8-1-4-lab-drill-a-hole.solution.js": {
+    "builds": true
+  },
+  "lesson 8-1-5-lab-round-an-edge.script.js": {
+    "builds": true
+  },
+  "lesson 8-1-5-lab-round-an-edge.solution.js": {
+    "builds": true
+  },
+  "lesson 8-1-6-lab-hollow-it-out.script.js": {
+    "builds": true
+  },
+  "lesson 8-1-6-lab-hollow-it-out.solution.js": {
+    "builds": true
+  },
+  "lesson 8-1-8-lab-read-the-script.script.js": {
+    "builds": true
+  },
+  "lesson 8-1-8-lab-read-the-script.solution.js": {
+    "builds": true
+  },
+  "lesson 8-1-9-lab-write-it-yourself.script.js": {
+    "builds": true
+  },
+  "lesson 8-1-9-lab-write-it-yourself.solution.js": {
+    "builds": true
+  },
+  "matrix box: hole": {
+    "builds": true
+  },
+  "matrix box: hole then round": {
+    "builds": true
+  },
+  "matrix box: hole then chamfer": {
+    "refused": {
+      "bevel1": "chamfer bevel1 is fine, but brep-rs cannot cut the earlier holes into the chamfered part -- bevel1 is shown without it."
+    }
+  },
+  "matrix box: hole then hollow": {
+    "refused": {
+      "shell1": "brep-rs can only hollow a box or a straight cylinder yet; hollow the plain shape first, then drill it -- shell1 is shown without it."
+    }
+  },
+  "matrix box: round": {
+    "builds": true
+  },
+  "matrix box: round then hole": {
+    "builds": true
+  },
+  "matrix box: round then chamfer": {
+    "refused": {
+      "bevel1": "brep-rs can only chamfer a convex edge -- bevel1 is shown without it."
+    }
+  },
+  "matrix box: round then hollow": {
+    "refused": {
+      "shell1": "brep-rs can only hollow a box or a straight cylinder yet; hollow the plain shape first, then drill it -- shell1 is shown without it."
+    }
+  },
+  "matrix box: chamfer": {
+    "builds": true
+  },
+  "matrix box: chamfer then hole": {
+    "refused": {
+      "hole1": "hole hole1: brep-rs cannot cut this hole yet; drilling the part before you round, chamfer or pattern it, or making the hole go right through, usually works -- hole1 is shown without it."
+    }
+  },
+  "matrix box: chamfer then round": {
+    "refused": {
+      "round1": "brep-rs can only round an edge of a box yet; round the plain box before you hollow, chamfer or cut it (a hole that stays clear of the edge may come first) -- round1 is shown without it."
+    }
+  },
+  "matrix box: chamfer then hollow": {
+    "refused": {
+      "shell1": "brep-rs can only hollow a box or a straight cylinder yet; hollow the plain shape first, then drill it -- shell1 is shown without it."
+    }
+  },
+  "matrix box: hollow": {
+    "builds": true
+  },
+  "matrix box: hollow then hole": {
+    "builds": true
+  },
+  "matrix box: hollow then round": {
+    "refused": {
+      "round1": "brep-rs can only round an edge of a box yet; round the plain box before you hollow, chamfer or cut it (a hole that stays clear of the edge may come first) -- round1 is shown without it."
+    }
+  },
+  "matrix box: hollow then chamfer": {
+    "refused": {
+      "bevel1": "brep-rs can only chamfer an edge of a box yet; chamfer the plain box before you hollow, round or cut it -- bevel1 is shown without it."
+    }
+  },
+  "matrix cylinder: hole along axis": {
+    "builds": true
+  },
+  "matrix sphere: hole": {
+    "builds": true
+  }
+}
