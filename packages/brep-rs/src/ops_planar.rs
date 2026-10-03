@@ -1227,33 +1227,7 @@ fn core(op: &str, a: &TSolid, b: &TSolid, pa: &[AFace], pb: &[AFace]) -> Result<
     };
     let mut faces = solid.faces();
     ops::drop_degenerate_faces(&mut faces);
-    // The weld cannot tell which way a face runs round a WHOLE circle (both
-    // ends are one point) and sets every such use to forward. Note each one's
-    // true direction as a vector the traversal turns counter-clockwise about,
-    // and restore it against the welded handle's own normal afterwards.
-    let mut circles: Vec<(usize, usize, usize, Vec3)> = Vec::new();
-    for (fi, f) in faces.iter().enumerate() {
-        for (wi, w) in f.borrow().boundary.iter().enumerate() {
-            for (ui, u) in w.borrow().edges.iter().enumerate() {
-                if let Curve::Circle { normal, .. } = &u.edge.borrow().curve {
-                    circles.push((fi, wi, ui, scale(*normal, if u.forward { 1.0 } else { -1.0 })));
-                }
-            }
-        }
-    }
     ops::weld_shared_edges(&mut faces);
-    for (fi, wi, ui, turn) in circles {
-        let wire_ref = faces[fi].borrow().boundary[wi].clone();
-        let mut wire = wire_ref.borrow_mut();
-        let u = &mut wire.edges[ui];
-        let normal = match &u.edge.borrow().curve {
-            Curve::Circle { normal, .. } => Some(*normal),
-            _ => None,
-        };
-        if let Some(n) = normal {
-            u.forward = dot(turn, n) > 0.0;
-        }
-    }
     if faces.is_empty() {
         return Ok(None);
     }

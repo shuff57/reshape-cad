@@ -5565,6 +5565,22 @@ pub(crate) fn weld_shared_edges(faces: &mut [TFace]) {
                     let (pa, pb) = (e.a.borrow().point, e.b.borrow().point);
                     (pa, pb)
                 };
+                // A WHOLE circle starts and ends at one point, so the endpoint
+                // test below cannot tell which way this use runs round it. The
+                // direction is the normal it turns counter-clockwise about
+                // (flipped for a reversed use); keep it against the canonical
+                // handle's own normal, or a hole's winding silently reverses and
+                // its area is added instead of removed.
+                if let (Curve::Circle { normal: n_use, .. }, Curve::Circle { normal: n_canon, .. }) =
+                    (&edges[idx].borrow().curve, &edges[target].borrow().curve)
+                {
+                    let turn = scale(*n_use, if u.forward { 1.0 } else { -1.0 });
+                    let forward = dot(turn, *n_canon) > 0.0;
+                    drop((n_use, n_canon));
+                    u.edge = edges[target].clone();
+                    u.forward = forward;
+                    continue;
+                }
                 let use_start = if u.forward { ea } else { eb };
                 let use_end = if u.forward { eb } else { ea };
                 if near3(use_start, ca) && near3(use_end, cb) {
