@@ -74,6 +74,7 @@ import {
   newMirror,
   newBlend,
   extentAlong,
+  throughExtentAlong,
   isRoundable,
   canRotate,
   whyCannotRound,
@@ -1534,6 +1535,19 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     }
   }
 
+  /** Depth for a hole with no deep: -- it must go THROUGH. Never a guess: a
+   *  shape whose thickness cannot be bounded is a script error, because the
+   *  old flat 10 mm default silently drilled a blind hole into thicker parts. */
+  function throughDepth(fn: string, target: SolidHandle, axis: Axis3): number {
+    const extent = throughExtentAlong(docNow(), target.id, axis);
+    if (extent == null) {
+      throw new Error(
+        `${fn}() cannot find how thick this ${findFeature(target.rootId).kind} is along ${axis} yet, so it cannot drill all the way through. Give it a depth: ${fn}(shape, { across: 4, deep: 20 }).`,
+      );
+    }
+    return extent + 2;
+  }
+
   function hole(target: unknown, opts?: unknown): SolidHandle {
     if (!isHandle(target)) throw new Error('hole() needs a shape to drill into: hole(shape, { across: 6 }).');
     const extra = readOptions('hole', ['across', 'deep', 'at', 'along', 'counterbore', 'countersink'], opts);
@@ -1546,8 +1560,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     if (extra.deep !== undefined) {
       base.depth = num(positiveNumber('hole', 'deep', extra.deep), base.id, 'depth');
     } else {
-      const extent = extentAlong(docNow(), target.id, axis);
-      base.depth = extent != null ? extent + 2 : 10;
+      base.depth = throughDepth('hole', target, axis);
     }
     base.center = center;
     applyRecess('hole', base, extra);
@@ -1570,8 +1583,7 @@ const extra = readOptions('holes', ['across', 'apart', 'at', 'along', 'deep', 'c
     if (extra.deep !== undefined) {
       base.depth = num(positiveNumber('holes', 'deep', extra.deep), base.id, 'depth');
     } else {
-      const extent = extentAlong(docNow(), target.id, axis);
-      base.depth = extent != null ? extent + 2 : 10;
+      base.depth = throughDepth('holes', target, axis);
     }
     base.center = center;
     base.corners = {
@@ -1630,6 +1642,9 @@ const extra = readOptions('holes', ['across', 'apart', 'at', 'along', 'deep', 'c
   }
 
   function bevel(arg: unknown, size: unknown): SolidHandle {
+    if (isHandle(arg)) {
+      throw new Error('bevel() of a whole shape is not supported yet -- chamfer one edge with bevel(shape.edge(faceA, faceB), size), or round the whole box or cylinder with fillet(shape, size).');
+    }
     if (!isTopoRef(arg) || arg.name.cause !== 'between') {
       throw new Error('bevel() needs one edge -- try bevel(shape.edge(faceA, faceB), size).');
     }

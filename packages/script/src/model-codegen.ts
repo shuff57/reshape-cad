@@ -135,6 +135,20 @@ export function generatedParams(doc: ModelDoc): GeneratedParam[] {
             step: 1,
           });
         });
+        // A circle/arc radius is a numeric slot too (§6.2): the interpreter
+        // records g${id}r when a param() fed it, and the emitter re-binds
+        // through that same key, so the slot must exist here.
+        for (const g of f.geoms) {
+          if (g.k !== 'circle' && g.k !== 'arc') continue;
+          out.push({
+            name: pname(f.id, `g${g.id}r`),
+            caption: `${label} ${g.k} ${g.id} radius`,
+            value: g.r,
+            min: 0,
+            max: Math.max(Math.abs(g.r) * 4, 100),
+            step: 1,
+          });
+        }
         push('offset', 'offset', f.offset, { min: -500, max: 500, step: 1 });
         return out;
       }
@@ -477,6 +491,16 @@ export function applyParam(doc: ModelDoc, name: string, value: number): ModelDoc
       // A soup rule's value slot (D8): rule${i}-value writes back into
       // rules[i].value, the same field the emitter reads. The kernel solves
       // the soup at build time, so the doc write IS the solve request.
+      const gm = /^g(\d+)r$/.exec(slot);
+      if (gm && f.geoms) {
+        const gid = Number(gm[1]);
+        const hit = f.geoms.some((g) => g.id === gid && (g.k === 'circle' || g.k === 'arc'));
+        if (hit) {
+          const geoms = f.geoms.map((g) => (g.id === gid && (g.k === 'circle' || g.k === 'arc') ? { ...g, r: value } : g));
+          changed = true;
+          return { ...f, geoms, geom: geoms };
+        }
+      }
       const rm = /^rule(\d+)-value$/.exec(slot);
       if (rm && f.rules) {
         const i = Number(rm[1]);

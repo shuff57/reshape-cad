@@ -1141,6 +1141,59 @@ export function extentAlong(doc: ModelDoc, featureId: string, axis: Axis3): numb
   return null;
 }
 
+/**
+ * An UPPER BOUND on how far the named feature's solid reaches along one axis,
+ * for a hole that has to go all the way through. A bound is enough: the drill
+ * starts at the top face, so a hole deeper than the part cuts only air. Unlike
+ * extentAlong() (a default-picker that deliberately ignores patterns and
+ * mirrors) this refuses to guess: it returns null for anything it cannot
+ * bound -- a rotated primitive, a pattern/mirror/move-copy, an extrude,
+ * revolve, blend or combine -- so hole() can say so instead of drilling a
+ * blind 10 mm hole the student never asked for.
+ */
+export function throughExtentAlong(doc: ModelDoc, featureId: string, axis: Axis3): number | null {
+  let id: string | undefined = featureId;
+  for (let hop = 0; hop < 16 && id; hop++) {
+    const f: Feature | undefined = doc.features.find(feat => feat.id === id);
+    if (!f) return null;
+    const spun = 'rotate' in f && f.rotate && f.rotate.some(v => v !== 0);
+    switch (f.kind) {
+      case 'box':
+        if (spun) return null;
+        return axis === 'x' ? f.size[0] : axis === 'y' ? f.size[1] : f.size[2];
+      case 'cylinder':
+        if (spun) return null;
+        return axis === 'z' ? f.height : f.radius * 2;
+      case 'cone':
+        if (spun) return null;
+        return axis === 'z' ? f.height : f.radius * 2;
+      case 'prism':
+        if (spun) return null;
+        return axis === 'z' ? f.height : f.radius * 2;
+      case 'sphere':
+        return f.radius * 2;
+      case 'torus':
+        if (spun) return null;
+        return axis === 'z' ? f.tubeRadius * 2 : (f.ringRadius + f.tubeRadius) * 2;
+      case 'wedge':
+        // Which edge runs along which axis is the kernel's business; the
+        // longest edge bounds every axis.
+        if (spun) return null;
+        return Math.max(f.width, f.depth, f.height);
+      case 'hole': case 'shell': case 'fillet': case 'draft':
+        id = f.target;
+        break;
+      case 'move':
+        if (f.copy) return null;
+        id = f.target;
+        break;
+      default:
+        return null;
+    }
+  }
+  return null;
+}
+
 export function newPattern(
   doc: ModelDoc, target: string, mode: 'linear' | 'circular' = 'linear'
 ): PatternFeature {
