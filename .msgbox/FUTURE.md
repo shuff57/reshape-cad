@@ -6,6 +6,53 @@ parked rather than done.
 
 ---
 
+## 2026-10-02 — session checkpoint: hole context bar fixed, SPEC-S2 names taught, K1a closed
+
+**Read this first in a new session instead of trusting `read`.** The full handoff is
+msgbox **#466** (to claude) and **#467** (to opencode), topic `checkpoint`. Fetch it with:
+
+```bash
+node ~/.claude/bin/msg.mjs log --n 20
+```
+
+Use `log`, NOT `read`. `read --as opencode` will answer `(no new messages for
+opencode)` here, because the cursor is device-local and an earlier reader already advanced
+past the checkpoint. An empty `read` is NOT evidence the note is gone — that is exactly
+the failure this entry exists to prevent.
+
+**Shipped and verified** (11 commits `991e71f`..`31bcef5`, tree clean).
+- `490a674` — the counterbore/countersink buttons could never appear: `featureCenter()`
+returned `null` for a hole, so the context bar never rendered. Now returns the hole's
+mouth. Verified in Chromium: bar renders, no clipping/overlap, buttons >= 24x16px,
+click flips the label to `Remove Counterbore`, model rebuilds with no refusal.
+- `3549409` — two shipped docs examples could not build. Countersink was never broken;
+the *example* was (two recessed holes on one solid is refused, and `at:[20,0]` on
+`box(40,40,20)` is the box face).
+- `f12651c` — SPEC-S2's deferred teaching-copy pass: 13 official-name renames in
+`reshape-docs.ts`; official input round-trips through `toScript()`.
+- `docs-examples.test.mjs` — new guard asserting every docs example BUILDS. Its 4
+`KNOWN_REFUSED` exemptions are REAL kernel gaps; do not delete them to go green.
+- Gates, all measured: cargo 291p/1f (class-1 K2b chamfer), bun 430/0, tsc 0,
+parity 70/2, mesh 70/2, step 64/0/6, occt 17/0, check-record OK. Reds are honest
+refusals, never wrong solids.
+
+**K1a is CLOSED, not deferred.** C2 is class-1 (honest refusal), so the correctness
+contract holds and nothing is owed. Six attempts failed; measurement shows the defect is
+DUPLICATE OVERLAPPING emission, not a missing split, so `stash@{0}` (attempt 6) cannot
+work. Do not apply it.
+
+**Open, and both need a person rather than an agent.**
+1. Whether a student actually *sees* the official names. This repo only AUTHORS them —
+`packages/studio` has no docs module, there is no `public/` dir, and
+`script-surface.ts:6` points at `lib/reshape-docs.ts` +
+`public/reshape/docs/reference.md`, neither of which exists here. If the host app keeps
+a separate copy it still teaches the friendly words.
+2. A2's colour / contrast / spacing. Behaviour and layout geometry are proven; only taste
+needs eyes.
+
+Deep reasoning and the gate table: `docs/kernel-campaign.md` (session-closeout and
+SPEC-S2 sections) and `.omo/plans/region-arrangement-design.md`.
+
 ## 2026-09-15 — brep-rs renders in the studio; 3 gaps the visual pass found
 
 **Decided and shipped.** `BrepRsEngineAdapter` + `VITE_RESHAPE_ENGINE=brep-rs`. A visual
