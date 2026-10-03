@@ -331,5 +331,13 @@ export function fixtures() {
       { id: 'e2', kind: 'extrude', target: 'sk2', height: 110 },
       { id: 'op2', kind: 'combine', op: 'subtract', targets: ['u1', 'e2'] },
     ]),
+    // (5) The bores and the round-after-hole that PLAN-next built (owner-authorised 2026-10-03). Closed forms
+    // beside each, derived apart from both kernels: docs/specs/DRAFT-parity-fixtures-new-bores.mjs.txt.
+    raw('sphere-bore-through', 'hole', [{"id":"ball1","kind":"sphere","radius":20,"center":[0,0,0]},{"id":"hole1","kind":"hole","target":"ball1","diameter":6,"depth":42,"center":[0,0,0],"axis":"z"}]),
+    raw('sphere-bore-blind', 'hole', [{"id":"ball1","kind":"sphere","radius":20,"center":[0,0,0]},{"id":"hole1","kind":"hole","target":"ball1","diameter":6,"depth":10,"center":[0,0,15],"axis":"z"}]),
+    raw('cone-bore-through', 'hole', [{"id":"cone1","kind":"cone","radius":10,"height":20,"center":[0,0,0]},{"id":"hole1","kind":"hole","target":"cone1","diameter":4,"depth":22,"center":[0,0,0],"axis":"z"}]),
+    raw('cross-bore-through', 'hole', [{"id":"cyl1","kind":"cylinder","radius":10,"height":30,"center":[0,0,0]},{"id":"hole1","kind":"hole","target":"cyl1","diameter":4,"depth":22,"center":[0,0,0],"axis":"x"}]),
+    raw('cross-bore-blind', 'hole', [{"id":"cyl1","kind":"cylinder","radius":10,"height":30,"center":[0,0,0]},{"id":"hole1","kind":"hole","target":"cyl1","diameter":4,"depth":12,"center":[4,0,0],"axis":"x"}]),
+    raw('hole-then-round', 'round', [{"id":"box1","kind":"box","size":[40,40,20],"center":[0,0,0]},{"id":"hole1","kind":"hole","target":"box1","diameter":8,"depth":22,"center":[0,0,0],"axis":"z"},{"id":"round1","kind":"fillet","target":"hole1","edge":{"cause":"between","feature":"box1","kind":"edge","of":[{"cause":"primitive","feature":"box1","kind":"face","part":"+z"},{"cause":"primitive","feature":"box1","kind":"face","part":"-y"}]},"size":3,"style":"fillet"}]),
   ];
 }
