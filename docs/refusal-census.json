@@ -109,6 +109,60 @@
   "matrix box: hollow then chamfer": {
     "builds": true
   },
+  "matrix cylinder: hole": {
+    "builds": true
+  },
+  "matrix cylinder: hole then round": {
+    "builds": true
+  },
+  "matrix cylinder: hole then chamfer": {
+    "builds": true
+  },
+  "matrix cylinder: hole then hollow": {
+    "builds": true
+  },
+  "matrix cylinder: round": {
+    "builds": true
+  },
+  "matrix cylinder: round then hole": {
+    "builds": true
+  },
+  "matrix cylinder: round then chamfer": {
+    "builds": true
+  },
+  "matrix cylinder: round then hollow": {
+    "refused": {
+      "shell1": "brep-rs cannot hollow this part yet: a rounded rim at the open end: the wall there is not a shape brep-rs can cut yet -- shell1 is shown without it."
+    }
+  },
+  "matrix cylinder: chamfer": {
+    "builds": true
+  },
+  "matrix cylinder: chamfer then hole": {
+    "builds": true
+  },
+  "matrix cylinder: chamfer then round": {
+    "builds": true
+  },
+  "matrix cylinder: chamfer then hollow": {
+    "builds": true
+  },
+  "matrix cylinder: hollow": {
+    "builds": true
+  },
+  "matrix cylinder: hollow then hole": {
+    "builds": true
+  },
+  "matrix cylinder: hollow then round": {
+    "refused": {
+      "round1": "Rounding round1 at 3 would not fit its edge -- round1 is shown without it."
+    }
+  },
+  "matrix cylinder: hollow then chamfer": {
+    "refused": {
+      "bevel1": "Chamfering bevel1 at 3 would not fit its edge -- bevel1 is shown without it."
+    }
+  },
   "matrix cylinder: hole along axis": {
     "builds": true
   },

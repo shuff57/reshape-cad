@@ -9,6 +9,7 @@ use crate::build::{self, TSolid};
 use crate::geom::Surface;
 use crate::ops;
 use crate::ops_planar;
+use crate::turned;
 use crate::history::{self, Fate, History, OpRecord, OpKind, PartRef};
 use crate::topo;
 use crate::math::{add, cross, dot, len, normalize, scale, sub, Vec3};
@@ -1379,6 +1380,21 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                         }
                     }
                 }
+                // S4f: a bore down the axis of a turned part (a round or chamfered cylinder, a
+                // washer) is an edit of its profile, exact where the face-by-face cut refused.
+                if !cut && recess.is_none() && f.get("corners").is_none() && axis_name == "z" && centers.len() == 1 {
+                    if let Some(rd) = turned::read(&before_cut) {
+                        let c = centers[0];
+                        if (c[0] - rd.origin[0]).abs() < 1e-9 && (c[1] - rd.origin[1]).abs() < 1e-9 {
+                            if let Ok(lp) = turned::bore(&rd, diameter / 2.0, c[2] - 0.5 * depth, c[2] + 0.5 * depth) {
+                                if let Some(s) = turned::build_solid(rd.origin, &lp) {
+                                    shape = s;
+                                    cut = true;
+                                }
+                            }
+                        }
+                    }
+                }
                 if cut && skin_pieces(&shape) > pieces_before {
                     refusals.insert(id.clone(), json!(cavity_refusal("hole", &id)));
                 } else if cut && cut_missed(&before_cut, &shape, &fused.iter().collect::<Vec<_>>()) {
@@ -1932,6 +1948,15 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                         None => {}
                     }
                 }
+                // S4f: a turned part (a cylinder with rims already rounded or chamfered, a bore, a
+                // bevelled washer) is the revolution of one profile; the rim edit is exact there.
+                if matches!(attempt, Err(FilletErr::NoBox) | Err(FilletErr::NoEdge)) && replay_refusal.is_none() {
+                    match turned_round(&src, &hist, f, size, round, &label) {
+                        Some(Ok(solid)) => attempt = Ok(solid),
+                        Some(Err(why)) => replay_refusal = Some(why),
+                        None => {}
+                    }
+                }
                 match attempt {
                     Ok(solid) => {
                         let face_fates: Vec<Fate> =
@@ -2325,6 +2350,24 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                                 c
                             }
                             Err(why) => {
+                                // S4f: a turned part (rim rounds or chamfers, a coaxial bore, open at
+                                // either end or closed) hollows to the offset of its own profile.
+                                if matches!(why, HolesHollow::NotThis) {
+                                    match turned_hollow(&src, &hist, f, thickness, open_side.is_some()) {
+                                        Some(Ok(result)) => {
+                                            let face_fates: Vec<Fate> =
+                                                src.faces().iter().map(|fc| carry_fate(&result, fc)).collect();
+                                            record_op(&mut hist, &id, OpKind::Shell, vec![target.to_string()], face_fates, Vec::new());
+                                            hist.insert(&id, result);
+                                            continue;
+                                        }
+                                        Some(Err(sentence)) => {
+                                            refusals.insert(id.clone(), json!(format!("{sentence} -- {id} is shown without it.")));
+                                            continue;
+                                        }
+                                        None => {}
+                                    }
+                                }
                                 let text = match why {
                                     HolesHollow::NotThis => format!(
                                         "brep-rs can only hollow a box or a straight cylinder yet, with or without round holes straight through it; hollow the plain shape first, then drill it -- {id} is shown without it."
@@ -6383,6 +6426,121 @@ fn replay_round(
         return fail(format!("{verb} {label} would leave a loose piece after the earlier cuts"));
     }
     Some(Ok(shape))
+}
+
+/// "The same surface" for a face of a turned part named from an earlier feature. A wall that a rim
+/// chamfer or round shortened keeps its radius and axis but not its origin (the one-rim builders put
+/// the origin at the wall's lower end), and `same_surface` compares origins, so a name resolved
+/// against the part's history would find nothing. Coaxial walls of one radius are one wall.
+fn same_turned_surface(a: &Surface, b: &Surface) -> bool {
+    let close = |x: f64, y: f64| (x - y).abs() <= 1e-7 * y.abs().max(1.0);
+    match (a, b) {
+        (Surface::Cylinder(c), Surface::Cylinder(d)) => {
+            crate::math::dot(c.axis, d.axis).abs() > 1.0 - 1e-6
+                && close(c.radius, d.radius)
+                && close(c.origin[0], d.origin[0])
+                && close(c.origin[1], d.origin[1])
+        }
+        (Surface::Cone(c), Surface::Cone(d)) => {
+            close(c.half_angle, d.half_angle) && close(c.base_radius, d.base_radius)
+        }
+        _ => same_surface(a, b),
+    }
+}
+
+/// S4f: round or chamfer a rim of a turned part (a solid of revolution about z). None when the
+/// part is not one (the caller keeps its own refusal); Some(Err) is a sentence; Some(Ok) the part.
+fn turned_round(
+    src: &TSolid,
+    hist: &History,
+    f: &Value,
+    size: f64,
+    round: bool,
+    label: &str,
+) -> Option<Result<TSolid, String>> {
+    let rd = turned::read(src)?;
+    let (fa, fb) = fillet_face_pair(hist, f)?;
+    // a wall a boolean split into pieces (a blind hole's floor splits the outer wall) is several
+    // faces of one surface: the corner is the one where the named pair actually meets
+    let find = |face: &build::TFace| -> Option<Vec<usize>> {
+        let sf = face.borrow().surface.clone();
+        let hits = turned::face_index_where(src, |s| same_turned_surface(&sf, s));
+        if hits.is_empty() { None } else { Some(hits) }
+    };
+    let (ia, ib) = (find(&fa)?, find(&fb)?);
+    let verb = if round { "round" } else { "chamfer" };
+    let lp = match turned::round_corner(&rd, &ia, &ib, size, round) {
+        Ok(lp) => lp,
+        Err(turned::Why::TooBig) => {
+            return Some(Err(format!(
+                "{} {label} at {size} would not fit its edge",
+                if round { "Rounding" } else { "Chamfering" }
+            )))
+        }
+        Err(turned::Why::Concave) => return Some(Err(format!("brep-rs can only {verb} a convex edge"))),
+        Err(turned::Why::Flat) => return Some(Err(format!("brep-rs cannot {verb} a flat edge"))),
+        Err(turned::Why::NoCorner) => {
+            return Some(Err(format!(
+                "{label}'s edge is not a sharp rim of this turned part any more: it is already rounded or chamfered, or those two faces no longer meet"
+            )))
+        }
+        Err(_) => return None,
+    };
+    let solid = turned::build_solid(rd.origin, &lp)?;
+    // the answer is the profile's own closed form, or it is not given
+    let want = turned::volume(&lp);
+    let got = build::solid_volume(&solid);
+    if (got - want).abs() > 1e-8 * want.abs().max(1.0) {
+        return None;
+    }
+    Some(Ok(solid))
+}
+
+/// S4f: hollow a turned part to `thickness`: the cavity is its profile moved in by the wall. Open
+/// at the named end (flush with it), or closed (a sealed void). None when the part is not a turned
+/// part (the caller keeps its own sentence).
+fn turned_hollow(
+    src: &TSolid,
+    hist: &History,
+    f: &Value,
+    thickness: f64,
+    wants_open: bool,
+) -> Option<Result<TSolid, String>> {
+    let rd = turned::read(src)?;
+    let mut open: Option<usize> = None;
+    if wants_open {
+        let face = resolve_face(hist, f.get("open")?)?;
+        let sf = face.borrow().surface.clone();
+        let hits = turned::face_index_where(src, |s| same_turned_surface(&sf, s));
+        if hits.len() != 1 {
+            return None;
+        }
+        open = Some(hits[0]);
+    }
+    let h = match turned::hollow(&rd, thickness, open) {
+        Ok(h) => h,
+        Err(turned::Why::TooBig) => {
+            return Some(Err(format!(
+                "brep-rs cannot hollow this part to {thickness} thick: the wall would reach a rounded or chamfered rim, or run out of the part. Use a thinner wall, or hollow the plain shape first and round it afterwards"
+            )))
+        }
+        Err(turned::Why::Other(s)) => return Some(Err(format!("brep-rs cannot hollow this part yet: {s}"))),
+        Err(_) => return None,
+    };
+    let want = build::solid_volume(src) - turned::volume(&h.cavity);
+    let result = match &h.open_part {
+        Some(lp) => turned::build_solid(rd.origin, lp)?,
+        None => {
+            // a sealed void: the part's own shell, and the cavity's faces turned inside out
+            let void = turned::build_void_shell(rd.origin, &h.cavity)?;
+            crate::topo::Solid { shells: vec![src.shells[0].clone(), void] }
+        }
+    };
+    let got = build::solid_volume(&result);
+    if (got - want).abs() > 1e-7 * want.abs().max(1.0) {
+        return None;
+    }
+    Some(Ok(result))
 }
 
 enum FilletErr {
