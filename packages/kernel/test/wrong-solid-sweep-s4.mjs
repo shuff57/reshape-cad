@@ -217,6 +217,9 @@ const STEPS = {
       S.node = { t: 'shell', lo: p.lo, hi: p.hi, w: wall, open: open ? (open[1] + 1) * open[2] : 0, bores: p.bores, planes: p.planes ?? [], cyl: !!p.cyl };
     } else unmodel(S);
     S.plain = null; S.edgeOK = false; S.plainBox = false; S.hollowed = true;
+    // a bevel straight after the hollow of a plain box is the shell minus the bevel's half-space wedge (PLAN section 38): the
+    // membership oracle models it, so the bevel-wider-than-the-wall class is judged by the oracle and not by OpenCascade
+    S.edgeOK = !!(S.node && S.node.t === 'shell' && !S.node.cyl && !(S.node.bores && S.node.bores.length) && !(S.node.planes && S.node.planes.length));
   },
   repeat(S, r) {
     const count = 2 + Math.floor(r() * 2);
