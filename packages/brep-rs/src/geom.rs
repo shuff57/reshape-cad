@@ -898,6 +898,17 @@ impl TorusSurf {
     }
 }
 
+/// A reflection turns the right-handed (e1, e2, axis) frame left-handed, which makes the face's
+/// volume term negative. Negating e2 restores it; the point at angle u is then the reflection of
+/// the point at -u, so every u coordinate on the face flips (see `Surface::flip_u`).
+fn flip_e2(t: &Transform, e2: Vec3) -> Vec3 {
+    if t.reverses_handedness() {
+        scale(e2, -1.0)
+    } else {
+        e2
+    }
+}
+
 /// The surfaces the kernel knows.
 #[derive(Clone, Debug)]
 pub enum Surface {
@@ -910,24 +921,34 @@ pub enum Surface {
 
 impl Surface {
     pub fn transform(&self, t: &Transform) -> Surface {
+        let two_pi = 2.0 * std::f64::consts::PI;
         match self {
             Surface::Plane(p) => Surface::Plane(p.transform(t)),
             Surface::Cylinder(c) => Surface::Cylinder(Cylinder {
                 origin: t.apply(c.origin),
                 axis: normalize(t.dir(c.axis)),
                 e1: normalize(t.dir(c.e1)),
-                e2: normalize(t.dir(c.e2)),
+                e2: flip_e2(t, normalize(t.dir(c.e2))),
                 radius: c.radius,
                 vmin: c.vmin,
                 vmax: c.vmax,
-                arc: c.arc.clone(),
+                arc: c.arc.as_ref().map(|a| {
+                    if t.reverses_handedness() {
+                        // The reflected range [-end, -start], kept with a positive span so
+                        // every reader (STEP included) sees an ordinary counterclockwise arc.
+                        let (x, y) = (-a.start, -(a.start + a.span));
+                        ArcRange { start: x.min(y), span: (x - y).abs() }
+                    } else {
+                        a.clone()
+                    }
+                }),
                 cross: c.cross.clone(),
             }),
             Surface::Cone(c) => Surface::Cone(Cone {
                 base: t.apply(c.base),
                 axis: normalize(t.dir(c.axis)),
                 e1: normalize(t.dir(c.e1)),
-                e2: normalize(t.dir(c.e2)),
+                e2: flip_e2(t, normalize(t.dir(c.e2))),
                 base_radius: c.base_radius,
                 half_angle: c.half_angle,
                 slant: c.slant,
@@ -938,8 +959,8 @@ impl Surface {
                 radius: s.radius,
                 axis: normalize(t.dir(s.axis)),
                 e1: normalize(t.dir(s.e1)),
-                e2: normalize(t.dir(s.e2)),
-                u_range: s.u_range,
+                e2: flip_e2(t, normalize(t.dir(s.e2))),
+                u_range: if t.reverses_handedness() { [two_pi - s.u_range[1], two_pi - s.u_range[0]] } else { s.u_range },
                 v_range: s.v_range,
                 trim: s.trim,
             }),
@@ -947,11 +968,20 @@ impl Surface {
                 center: t.apply(s.center),
                 axis: normalize(t.dir(s.axis)),
                 e1: normalize(t.dir(s.e1)),
-                e2: normalize(t.dir(s.e2)),
+                e2: flip_e2(t, normalize(t.dir(s.e2))),
                 ring: s.ring,
                 tube: s.tube,
                 v_range: s.v_range,
             }),
+        }
+    }
+
+    /// Where a u coordinate lands after a reflection (see `flip_e2`). A partial cylinder arc keeps
+    /// its range signed (-u); every full-turn surface stays in [0, 2pi] (2pi - u).
+    pub fn flip_u(&self, u: f64) -> f64 {
+        match self {
+            Surface::Cylinder(c) if c.arc.is_some() => -u,
+            _ => 2.0 * std::f64::consts::PI - u,
         }
     }
 

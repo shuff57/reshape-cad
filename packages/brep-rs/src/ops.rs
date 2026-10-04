@@ -8437,6 +8437,27 @@ mod surface_op_table {
         }
     }
 
+    /// S4a: a reflected curved face must keep its outward normal, so the mirrored solid has the
+    /// same positive volume, a closed mesh and a mirrored bbox, across every plane.
+    #[test]
+    fn mirrored_curved_solids_keep_volume_mesh_and_bbox() {
+        for c in cases() {
+            for axis in 0..3 {
+                let mut n = [0.0; 3];
+                n[axis] = 1.0;
+                let mut through = [0.0; 3];
+                through[axis] = 5.0;
+                let m = build::transform_solid(&c.solid, &crate::math::Transform::mirror(through, n));
+                assert!(near(build::solid_volume(&m), c.volume), "{} axis {axis}: volume {}", c.name, build::solid_volume(&m));
+                assert!(build::signed_volume(&m) > 0.0, "{} axis {axis}: inside-out", c.name);
+                let mesh = crate::mesh::mesh_solid(&m, 0.05).unwrap_or_else(|| panic!("{} axis {axis}: no mesh", c.name));
+                assert!(crate::mesh::mesh_is_closed(&mesh), "{} axis {axis}: open mesh", c.name);
+                let (b0, b1) = (build::solid_aabb(&c.solid), build::solid_aabb(&m));
+                assert!((b1.lo[axis] - (10.0 - b0.hi[axis])).abs() < 1e-6 && (b1.hi[axis] - (10.0 - b0.lo[axis])).abs() < 1e-6, "{} axis {axis}: bbox", c.name);
+            }
+        }
+    }
+
     #[test]
     fn every_operation_on_every_surface_refuses_or_is_exact() {
         let big = [60.0, 60.0, 60.0];
@@ -8445,13 +8466,10 @@ mod surface_op_table {
         let vbox = 60.0 * 60.0 * 60.0;
         let mut wrong: Vec<String> = Vec::new();
         let mut refused: Vec<String> = Vec::new();
-        // Cells known to be wrong at the PRIMITIVE, each guarded at a higher layer.
-        // `transform_solid` with a reflection leaves a curved face's (u, v) frame
-        // alone, so the copy is inside-out (signed volume -V). `wasm.rs` refuses a
-        // mirror of any curved part before it gets here (kernel review M5). Each
-        // entry must STILL be wrong: when a fix lands the cell turns exact, this
-        // test fails, and the entry (and that wasm refusal) is dropped on purpose.
-        const KNOWN_WRONG: [&str; 4] = ["cylinder / mirror", "cone / mirror", "sphere / mirror", "torus / mirror"];
+        // Cells known to be wrong at the PRIMITIVE, each guarded at a higher layer. Empty since
+        // S4a: a reflection now flips a curved surface's e2 and its pcurve u. Kept so a new
+        // wrong cell can be recorded here on purpose; each entry must STILL be wrong.
+        const KNOWN_WRONG: [&str; 0] = [];
         let mut stale: Vec<String> = Vec::new();
         let mut note = |case: &str, op: &str, cell: Cell| {
             let key = format!("{case} / {op}");

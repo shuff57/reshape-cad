@@ -548,7 +548,22 @@ pub fn transform_solid(solid: &TSolid, t: &Transform) -> TSolid {
             Surface3::Plane(p) => Some(p.clone()),
             _ => None,
         };
-        let Some(plane) = plane else { continue };
+        let Some(plane) = plane else {
+            // A reflection negated the curved surface's e2 (Surface::transform), so the
+            // angle u of every pcurve point runs the other way.
+            if t.reverses_handedness() {
+                let f = fc.borrow();
+                let surf = f.surface.clone();
+                for w in &f.boundary {
+                    for u in w.borrow_mut().edges.iter_mut() {
+                        for q in [&mut u.pcurve.start, &mut u.pcurve.end, &mut u.pcurve.mid] {
+                            q[0] = surf.flip_u(q[0]);
+                        }
+                    }
+                }
+            }
+            continue;
+        };
         let pts = {
             let f = fc.borrow();
             face_ring_points(&f)

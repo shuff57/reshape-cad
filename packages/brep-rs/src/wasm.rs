@@ -1684,16 +1684,16 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     refusals.insert(id.clone(), json!(format!("mirror {id}: {target} has no extent")));
                     continue;
                 }
-                // A reflection reverses handedness. Planar faces survive it (their
-                // frames are rebuilt from the boundary) but a curved face keeps its
-                // old (u, v) frame and comes out inside-out: measured, a mirrored
-                // cylinder/sphere/torus reported volume -V for its copy with
-                // refusals empty. Refuse rather than return that.
-                if src.faces().iter().any(|fc| !matches!(&fc.borrow().surface, Surface::Plane(_))) {
+                // A reflection reverses handedness. Planar faces are rebuilt from their
+                // boundary; a curved face has its e2 and pcurve u flipped by
+                // transform_solid, so it stays outward (S4a). The one thing that cannot be
+                // reflected is a cylinder wall/bore carrying a boolean `Cross` trim, whose
+                // hole frame is pinned to the unreflected axes: refuse that, never guess.
+                if src.faces().iter().any(|fc| matches!(&fc.borrow().surface, Surface::Cylinder(c) if c.cross.is_some())) {
                     refusals.insert(
                         id.clone(),
                         json!(format!(
-                            "mirror {id}: brep-rs cannot reflect a curved face yet ({target} has one) -- {id} is shown without it."
+                            "mirror {id}: brep-rs cannot reflect a cylinder cut across by a perpendicular bore yet ({target} has one) -- {id} is shown without it."
                         )),
                     );
                     continue;
