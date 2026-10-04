@@ -666,6 +666,11 @@ pub enum Cross {
     /// `+` branch (hi, +1); the piece of a bore that lies OUTSIDE a round hole in a block runs
     /// from the `+` branch to a constant, or from a constant to the `-` branch.
     Tool { big_r: f64, lo: Option<f64>, hi: Option<f64>, lo_sign: f64, hi_sign: f64 },
+    /// The piece of a part's wall that a perpendicular cylinder cuts OUT: exactly the region
+    /// [`Cross::Wall`] removes, kept as a face of its own (the lens a bicylinder intersection keeps
+    /// on the big cylinder). Same frame as `Wall` (`e1 = n`, `e2 = -d`); `plus` (the hole at `+d`,
+    /// centred at u = 3pi/2) and `minus` (at `-d`, u = pi/2) say which hole this patch is, one of them.
+    Patch { r: f64, c_v: f64, plus: bool, minus: bool },
 }
 
 impl Cross {
@@ -719,7 +724,7 @@ impl Cylinder {
                 }
                 Some((area, vol, sx))
             }
-            Cross::Wall { r, c_v, plus, minus } => {
+            Cross::Wall { r, c_v, plus, minus } | Cross::Patch { r, c_v, plus, minus } => {
                 // Hole area etc. over the region { R^2 sin^2 a + z^2 < r^2 },
                 // with sin a = k sin t, z = r cos t * q (q in [-1,1], integrated
                 // out in closed form), t in [-pi/2, pi/2]: smooth in t.
@@ -1128,7 +1133,7 @@ impl Surface {
         // A bore's own wall is bounded by the meeting curve, not a rectangle:
         // measure it directly (Cross::Tool).
         if let Surface::Cylinder(c) = self {
-            if let Some(Cross::Tool { .. }) = c.cross {
+            if let Some(Cross::Tool { .. } | Cross::Patch { .. }) = c.cross {
                 if let Some((area, _, sx)) = c.cross_region() {
                     return (area, [sx[0] / area, sx[1] / area, sx[2] / area]);
                 }
@@ -1192,7 +1197,7 @@ impl Surface {
             return 0.0;
         }
         if let Surface::Cylinder(c) = self {
-            if let Some(Cross::Tool { .. }) = c.cross {
+            if let Some(Cross::Tool { .. } | Cross::Patch { .. }) = c.cross {
                 if let Some((_, vt, _)) = c.cross_region() {
                     return vt;
                 }
@@ -1230,6 +1235,27 @@ impl Surface {
         let mut b = Aabb::empty();
         match self {
             Surface::Plane(_) => {}
+            Surface::Cylinder(c) if matches!(c.cross, Some(Cross::Patch { .. })) => {
+                // A patch of the wall: its extremes lie on the boundary loop (the hole's rim) or at
+                // the patch's centre, where the wall's normal is the hole's axis.
+                if let Some(Cross::Patch { r, c_v, plus, .. }) = &c.cross {
+                    let uc = if *plus { 1.5 * std::f64::consts::PI } else { 0.5 * std::f64::consts::PI };
+                    let k = r / c.radius;
+                    let at = |u: f64, z: f64| {
+                        let rho = add(scale(c.e1, u.cos()), scale(c.e2, u.sin()));
+                        add(add(c.origin, scale(rho, c.radius)), scale(c.axis, z))
+                    };
+                    b.expand(at(uc, *c_v));
+                    let n = 2048usize;
+                    for i in 0..=n {
+                        let t = -std::f64::consts::FRAC_PI_2 + std::f64::consts::PI * i as f64 / n as f64;
+                        let (al, z) = ((k * t.sin()).asin(), r * t.cos());
+                        for sgn in [-1.0, 1.0] {
+                            b.expand(at(uc + al, c_v + sgn * z));
+                        }
+                    }
+                }
+            }
             Surface::Cylinder(c) if matches!(c.cross, Some(Cross::Tool { .. })) => {
                 // The bore wall: every world coordinate is linear in the axial
                 // parameter, so its extremes lie on the two boundary curves

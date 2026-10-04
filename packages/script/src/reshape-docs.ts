@@ -264,7 +264,7 @@ turn(b, [0, 0, 45])`,
     pages: [
       {
         title: 'union: combining shapes',
-        body: `union(a, b) glues two shapes into one solid. Works with more than two: union(a, b, c).`,
+        body: `union(a, b) glues two shapes into one solid. Works with more than two: union(a, b, c). Two cylinders whose axes cross at a right angle join too, a pipe tee or a boss on a shaft, as long as the second is narrower than the first: cylinder(20, 40) and cylinder(10, 40, { at: [0, 0, 0] }) turned [0, 90, 0] make pi x 10^2 x 40 + pi x 5^2 x 40 - 1520.04 = 14187.92 mm^3 (7 faces), where 1520.04 mm^3 is the part the two share. A second cylinder as wide as the first, one whose axis misses the first's or crosses it at a slant, and a boss that ends between the curve where the two surfaces meet and the wall get a sentence that says so.`,
         code: `const base = cuboid(40, 40, 10, { at: [0, 0, 5] })
 const post = cylinder(6, 20, { at: [0, 0, 10] })
 union(base, post)`,
@@ -278,7 +278,7 @@ subtract(b, cutter)`,
       },
       {
         title: 'intersect: finding intersections',
-        body: `intersect(a, b) keeps only where both overlap. Two 40 x 40 x 20 blocks, the second shifted 20 mm along x and 20 mm along y, overlap in a 20 x 20 x 20 block, so intersect keeps 8000 mm^3. This kernel intersects boxes with boxes; a box with a sphere is a pair it cannot intersect yet.`,
+        body: `intersect(a, b) keeps only where both overlap. Two 40 x 40 x 20 blocks, the second shifted 20 mm along x and 20 mm along y, overlap in a 20 x 20 x 20 block, so intersect keeps 8000 mm^3. This kernel intersects boxes with boxes, and two cylinders whose axes cross at a right angle with the second narrower than the first: cylinder(20, 40) and cylinder(10, 40, { at: [0, 0, 0] }) turned [0, 90, 0] keep the 1520.04 mm^3 they share (3 faces). A box with a sphere is a pair it cannot intersect yet.`,
         code: `const a = cuboid(40, 40, 20)
 const b = cuboid(40, 40, 20, { at: [20, 20, 0] })
 intersect(a, b)`,
