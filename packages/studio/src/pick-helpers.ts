@@ -62,3 +62,43 @@ export function shouldHandleViewportDelete(activeElementTagName: string): boolea
   const tag = activeElementTagName.toUpperCase();
   return tag !== 'INPUT' && tag !== 'TEXTAREA';
 }
+
+/** Minimal structural view of a three.js Object3D, enough for solidBounds. */
+interface BoundsObject {
+  userData: Record<string, unknown>;
+  children: BoundsObject[];
+  geometry?: { boundingBox: unknown; computeBoundingBox(): void };
+  matrixWorld: unknown;
+  updateWorldMatrix(updateParents: boolean, updateChildren: boolean): void;
+}
+interface BoundsBox<B> {
+  isEmpty(): boolean;
+  copy(b: unknown): B;
+  applyMatrix4(m: unknown): B;
+  union(b: B): B;
+}
+
+/** The world-space box of the drawn solid ONLY. three's Box3.setFromObject
+ *  measures every descendant with geometry, visible or not, and each mesh
+ *  carries one invisible hover/selected edge-highlight tube per topological
+ *  edge (radius EDGE_TUBE_RADIUS) -- those stick out half a radius past
+ *  every face, so the status bar read a 40x40x20 box as 41.5x41.5x21.5 (and
+ *  the section plane's range was equally fat). Objects flagged
+ *  `userData.excludeFromBounds` are skipped, along with their subtree.
+ *  `makeBox` builds an empty THREE.Box3. */
+export function solidBounds<B extends BoundsBox<B>>(root: unknown, makeBox: () => B): B {
+  const out = makeBox();
+  const visit = (o: BoundsObject) => {
+    if (o.userData.excludeFromBounds) return;
+    if (o.geometry) {
+      if (o.geometry.boundingBox === null) o.geometry.computeBoundingBox();
+      if (o.geometry.boundingBox) {
+        o.updateWorldMatrix(true, false);
+        out.union(makeBox().copy(o.geometry.boundingBox).applyMatrix4(o.matrixWorld));
+      }
+    }
+    for (const c of o.children) visit(c);
+  };
+  visit(root as BoundsObject);
+  return out;
+}

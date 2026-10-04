@@ -249,3 +249,24 @@ export function bodiesOf(state: SelectionState): SelectionItem[] {
 export function ownerScoped(state: SelectionState, doc: ModelDoc, ownerId: string): SelectionItem[] {
   return state.items.filter((item) => ownerOf(doc, { target: item.target, name: item.name ?? null }) === ownerId);
 }
+
+/** SPEC-mouse-parity.md Phase 3 item 3 (mixed selection): fillet only ever
+ *  consumes edges -- a face/vertex/body riding along in the same selection
+ *  (Ctrl/Shift-picked alongside the edges, same owning solid) is used by
+ *  nothing there, so round() must say so rather than silently drop it.
+ *
+ *  'feature' items are NOT counted: every viewport pick also lists its
+ *  owning solid as a feature item (ReshapeStudio's withFeatureIds), so a
+ *  plain edge click is always [edge, feature]. That item is bookkeeping for
+ *  the timeline highlight, not something the student picked and not
+ *  something a fillet "ignores" -- counting it made a plain single-edge
+ *  Round say "ignoring 1 feature". Returns null when nothing real is left
+ *  over. */
+export function mixedSelectionNote(scoped: SelectionItem[]): string | null {
+  const ignored = scoped.filter((i) => i.kind !== 'edge' && i.kind !== 'feature');
+  if (!ignored.length) return null;
+  const counts = new Map<string, number>();
+  for (const i of ignored) counts.set(i.kind, (counts.get(i.kind) ?? 0) + 1);
+  const parts = [...counts.entries()].map(([kind, n]) => `${n} ${kind}${n > 1 ? 's' : ''}`);
+  return `fillet: ignoring ${parts.join(', ')} \u2014 edges only`;
+}

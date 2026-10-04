@@ -101,7 +101,7 @@ import {
 } from '@shuff57/reshape-script/model-types';
 import { partWordFor, type TopoName } from '@shuff57/reshape-script/topo-name';
 import { ownerOf } from '@shuff57/reshape-script/model-selection';
-import { edgesOf, featuresOf, ownerScoped, primaryOf, type SelectionItem, type SelectionState } from '../selection-model.js';
+import { edgesOf, featuresOf, mixedSelectionNote, ownerScoped, primaryOf, type SelectionItem, type SelectionState } from '../selection-model.js';
 import { withRecess, whyCannotRecess } from './hole-recess.js';
 import type { RecessKind } from './hole-recess.js';
 
@@ -729,20 +729,6 @@ export default function ModelEditor({
     setSelected([f.id]);
     setMenu(null);
     say(null);
-  }
-
-  /** SPEC-mouse-parity.md Phase 3 item 3 (mixed selection): fillet only ever
-   *  consumes edges -- a face/vertex/body riding along in the same selection
-   *  (Ctrl/Shift-picked alongside the edges, same owning solid) is used by
-   *  nothing here, so round() must say so rather than silently drop it, the
-   *  same way every other refusal in this file is a sentence, not a no-op. */
-  function mixedSelectionNote(scoped: SelectionItem[]): string | null {
-    const ignored = scoped.filter((i) => i.kind !== 'edge');
-    if (!ignored.length) return null;
-    const counts = new Map<string, number>();
-    for (const i of ignored) counts.set(i.kind, (counts.get(i.kind) ?? 0) + 1);
-    const parts = [...counts.entries()].map(([kind, n]) => `${n} ${kind}${n > 1 ? 's' : ''}`);
-    return `fillet: ignoring ${parts.join(', ')} — edges only`;
   }
 
   /** Give the chosen hole a recess -- a counterbore (flat bottom) or a countersink
