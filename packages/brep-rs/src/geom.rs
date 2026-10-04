@@ -1370,6 +1370,10 @@ impl Surface {
                     let a = normalize(s.axis);
                     let (e1, e2) = (normalize(s.e1), normalize(s.e2));
                     let (v0, v1) = (s.v_range[0], s.v_range[1]);
+                    // Both corners are built whole: expanding by a point that moves only axis i drags
+                    // the box to the sphere's centre on the other two, which a band that does not
+                    // straddle the centre (a cap) does not contain.
+                    let (mut lo_pt, mut hi_pt) = (s.center, s.center);
                     for i in 0..3 {
                         let rho = (e1[i] * e1[i] + e2[i] * e2[i]).sqrt();
                         let mut lo = f64::INFINITY;
@@ -1390,13 +1394,11 @@ impl Surface {
                                 }
                             }
                         }
-                        let mut p = s.center;
-                        p[i] += s.radius * hi;
-                        b.expand(p);
-                        let mut q = s.center;
-                        q[i] += s.radius * lo;
-                        b.expand(q);
+                        hi_pt[i] = s.center[i] + s.radius * hi;
+                        lo_pt[i] = s.center[i] + s.radius * lo;
                     }
+                    b.expand(lo_pt);
+                    b.expand(hi_pt);
                 } else {
                     for i in 0..3 {
                         let mut p = s.center;

@@ -48,9 +48,17 @@ for (const [name, code, truth, wrong] of CASES) {
 }
 
 test('a tool sealed well inside a sphere is still a cavity, exactly', () => {
-  // cavity pin: a 10 mm cube centred in a 50 mm sphere
-  const r = build('let v = sphere(50); const p1 = box(10,10,10); v = cut(v,p1)');
+  // cavity pin: a 10 mm cube centred in a 50 mm sphere (a script's second shape defaults to x = 45, so say where it is)
+  const r = build('let v = sphere(50, {at:[0,0,0]}); const p1 = box(10,10,10, {at:[0,0,0]}); v = cut(v,p1)');
   if (r.refused) return; // honest: not built for a sphere base
   const want = (4 / 3) * Math.PI * 25 ** 3 - 1000;
   assert.ok(Math.abs(r.volume - want) <= 1e-6 * want, `${r.volume} vs ${want}`);
+});
+
+test('the same cut with the cube left at its default place (x = 45, clear of the sphere) removes nothing', () => {
+  // Used to refuse; the sphere and the box are apart, so the answer is the whole sphere (S4h).
+  const r = build('let v = sphere(50); const p1 = box(10,10,10); v = cut(v,p1)');
+  if (r.refused) return;
+  const whole = (4 / 3) * Math.PI * 25 ** 3;
+  assert.ok(Math.abs(r.volume - whole) <= 1e-6 * whole, `${r.volume} vs ${whole}`);
 });

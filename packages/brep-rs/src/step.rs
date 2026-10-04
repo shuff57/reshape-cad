@@ -626,16 +626,13 @@ fn cylinder_loop(c: &Cylinder) -> Vec<Seg> {
 
 /// A sphere that is a full-turn zone between two latitudes (a bore through its poles), in the
 /// same seam form as a cylinder: lower rim, meridian seam up, upper rim reversed, seam down.
-/// None for anything else (a whole sphere, a pole, a trimmed one): those still refuse.
+/// A polar cap (one pole in the range) is its rim alone. None for a whole sphere or a trimmed one: those still refuse.
 fn sphere_zone_loop(s: &SphereSurf) -> Option<Vec<Seg>> {
     let tau = 2.0 * std::f64::consts::PI;
     let (v0, v1) = (s.v_range[0], s.v_range[1]);
-    if s.trim.is_some()
-        || (s.u_range[1] - s.u_range[0] - tau).abs() > 1e-9
-        || v0 <= 1e-9
-        || v1 >= std::f64::consts::PI - 1e-9
-        || v1 - v0 <= 1e-9
-    {
+    let pole_lo = v0 <= 1e-9;
+    let pole_hi = v1 >= std::f64::consts::PI - 1e-9;
+    if s.trim.is_some() || (s.u_range[1] - s.u_range[0] - tau).abs() > 1e-9 || v1 - v0 <= 1e-9 || (pole_lo && pole_hi) {
         return None;
     }
     let spin = normalize(cross(s.e1, s.e2));
@@ -651,6 +648,18 @@ fn sphere_zone_loop(s: &SphereSurf) -> Option<Vec<Seg>> {
     let rim_centre = |v: f64| add(s.center, scale(s.axis, -s.radius * v.cos()));
     let (a0, a1) = (at(0.0, v0), at(0.0, v1));
     let mid = at(0.0, 0.5 * (v0 + v1));
+    // A polar cap has ONE bound, its rim, walked so that the cap (the pole side) is on the left of
+    // the surface's normal: clockwise about the axis for the cap at the low-v pole, counter-
+    // clockwise for the one at the high-v pole. No seam: the pole is a point of the surface.
+    // The direction is in STEP's own frame (u counter-clockwise about `s.axis`), not this surface's:
+    // a face turned inside out (the wall of a pocket) keeps the same SPHERICAL_SURFACE with `.F.`.
+    let up = normalize(s.axis);
+    if pole_lo {
+        return Some(vec![Seg::Arc { center: rim_centre(v1), radius: s.radius * v1.sin(), axis: scale(up, -1.0), a: a1, b: a1, mid: at(std::f64::consts::PI, v1) }]);
+    }
+    if pole_hi {
+        return Some(vec![Seg::Arc { center: rim_centre(v0), radius: s.radius * v0.sin(), axis: up, a: a0, b: a0, mid: at(std::f64::consts::PI, v0) }]);
+    }
     let meridian = normalize(cross(sub(a0, s.center), sub(a1, s.center)));
     Some(vec![
         Seg::Arc {
@@ -681,7 +690,9 @@ fn cone_loop(c: &Cone) -> Vec<Seg> {
     // `build::reversed_face` flips e2, so the surface frame rather than axis
     // decides which way increasing angle turns in world space.
     let spin = normalize(cross(c.e1, c.e2));
-    let radius = |v: f64| c.base_radius - v * c.half_angle.sin();
+    // At the apex the radius is 0 up to rounding; a CIRCLE with a (tiny) negative radius, which is
+    // what the subtraction gives there, makes OpenCascade drop the whole solid on read-back.
+    let radius = |v: f64| (c.base_radius - v * c.half_angle.sin()).max(0.0);
     let centre = |v: f64| add(c.base, scale(c.axis, v * c.half_angle.cos()));
     let at = |theta: f64, v: f64| {
         add(
@@ -911,6 +922,10 @@ fn face_bounds(face: &crate::topo::Face<Curve, Surface>) -> Result<(Vec<Vec<Seg>
     // (outward cylinder, bore, box face), and turning a bore's loop round in
     // place of setting those flags is what BRepCheck rejected.
     for (i, b) in bounds.iter_mut().enumerate() {
+        // A polar cap's single circle encloses no (angle, height) area; its direction was fixed above.
+        if matches!(face.surface, Surface::Sphere(_)) && b.len() == 1 {
+            continue;
+        }
         let area = match &face.surface {
             Surface::Plane(p) => planar_signed_area(b, p),
             Surface::Cylinder(c) => revolved_signed_area(b, c.origin, c.axis, c.e1),

@@ -171,11 +171,19 @@ test('at least 20 of the scripts build with no refusal', () => {
   assert.ok(n >= 20, `${n} built`);
 });
 
+// S4h made a bore coaxial with the chamfer cone exact: the cone meets it in a circle. Pi (1292 + 224/3).
+test('a bore out to the chamfer cone of a cylinder, on its axis, builds exactly (S4h)', () => {
+  const { r, out } = built(CYL + 'hole(v, { across: 36 })');
+  assert.deepEqual(out.refusals ?? {}, {});
+  const json = JSON.stringify(r.doc);
+  const m = JSON.parse(brep.measure_doc(json)).shapes[r.doc.features.at(-1).id];
+  assert.ok(Math.abs(m.volume - Math.PI * (1292 + 224 / 3)) < 1e-6, String(m.volume));
+});
+
 test('a bore that reaches a round or a chamfer still refuses, in a sentence, and the part is shown undrilled', () => {
   for (const [code, undrilled] of [
     [BOX + 'hole(v, { across: 8, at: [15, 0] })', roundedBox(40, 40, 20, 3)], // 11..19 crosses the round that starts at 17
     [BOX + 'hole(v, { across: 36 })', roundedBox(40, 40, 20, 3)], // wider than the flat top
-    [CYL + 'hole(v, { across: 36 })', chamferedCyl(20, 20, 3)], // out to the chamfer cone
   ]) {
     const { r, out } = built(code);
     const why = Object.values(out.refusals ?? {}).map(String);

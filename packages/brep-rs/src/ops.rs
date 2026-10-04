@@ -6308,6 +6308,24 @@ pub(crate) fn flip_face(face: &TFace) -> Option<TFace> {
  uses,
  ))
  }
+ // A whole-turn sphere zone reverses by flipping `e2`, like the cone: the point at angle u
+ // becomes the point at -u, and the normal du x dv turns inward. A sphere with a partial
+ // turn or a polar-square trim would need its range mirrored too, so it still fails closed.
+ Surface::Sphere(sp)
+ if sp.trim.is_none() && (sp.u_range[1] - sp.u_range[0] - TWO_PI).abs() < 1e-9 && sp.u_range[0].abs() < 1e-9 =>
+ {
+ let mut uses = Vec::new();
+ for w in &fb.boundary {
+ for u in &w.borrow().edges {
+ uses.push(u.clone());
+ }
+ }
+ Some(make_face(
+ Surface::Sphere(crate::geom::SphereSurf { e2: scale(sp.e2, -1.0), ..sp.clone() }),
+ fb.uv_domain,
+ uses,
+ ))
+ }
  // Fail closed (I-1): a surface with no reversal arm must refuse,
         // never return an unreversed copy -- the subtracted void's volume
         // would be ADDED, and the wrong solid is closed, with 0 open edges.
