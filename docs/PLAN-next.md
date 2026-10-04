@@ -404,3 +404,9 @@ Reviewed by the critic (first draft rejected for being ordered by lesson need; t
 5. **Defer.** Cones/spheres/tori in a second operation, a round beyond a box, skew axes, tangent walls, oblique planes, wasm size. Measure cylinder union/intersect before deferring.
 
 Constraints unchanged: lead-owned gates are not edited (a sketch-and-pull gate fixture needs the lead's sign-off); a failed guard refuses, never returns a wrong solid.
+
+## 26. Follow-up 12: wrong-solid findings G1 and G6 fixed (branch fix-g1-g6)
+
+- **G1** (a cut whose tool pokes out of a curved base built as a sealed void, V(A) - V(tool)): `subtract_enclosed` judged "tool inside base" from the tool's bbox face midpoints and face centroids, which a corner or rim can escape. It now also requires every vertex, 96 points per edge and a 12 x 12 grid on every curved face (`tool_boundary_samples`) to be inside the base. A tool that is not provably enclosed falls through to the general path, which builds the real boolean or refuses. Sampling is dense, not a proof: a curve poking out by less than its sagitta between samples (about 0.2% of its radius) would still pass.
+- **G6** (overlapping tori treated as disjoint): the torus arm of `process_face` decided keep/drop from four probes at one tube angle. It now (1) refuses unless the centre circles of the two tori are provably farther apart than the sum of the tube radii (`tori_provably_apart`, a Lipschitz lower bound), and (2) probes a 16 x 6 grid over the band instead of four points. Overlapping or nested tori refuse in a sentence; disjoint tori still union as two shells. Torus against plane, cylinder or cone is still decided by the grid probe alone (not a proof).
+- **Sweep** (smoke sizes, seeds 1 and 2): WRONG in `pair` 3/4 -> 0/0; ringpair 5 agreeing cases now refuse; the remaining WRONG are open meshes with the right volume (csg 2/1, random 2, perm 1), not touched here.

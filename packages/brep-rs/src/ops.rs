@@ -3632,13 +3632,34 @@ fn process_face(
                     ),
                 )
             };
-            let vmid = 0.5 * (t.v_range[0] + t.v_range[1]);
-            let probes = [
-                pt_at(0.0, vmid),
-                pt_at(std::f64::consts::FRAC_PI_2, vmid),
-                pt_at(std::f64::consts::PI, vmid),
-                pt_at(std::f64::consts::PI + std::f64::consts::FRAC_PI_2, vmid),
-            ];
+            // A torus band meeting another torus: the two surfaces can cross only when the
+            // centre circles come closer than the tube radii add up. Prove they cannot, or
+            // refuse; the probes below cannot tell "disjoint" from "overlapping with every probe
+            // outside" (G6: two overlapping rings were built as two disjoint shells, V1 + V2).
+            let band_box = fb.surface.aabb();
+            for f in other.faces() {
+                let g = f.borrow();
+                if let Surface::Torus(t2) = &g.surface {
+                    if let Some(gb) = face_reach_box(&f) {
+                        if !aabbs_touch(&band_box, &gb) {
+                            continue;
+                        }
+                    }
+                    if !tori_provably_apart(t, t2) {
+                        return None;
+                    }
+                }
+            }
+            // The band must lie wholly on one side of `other`: probe a grid over it (every
+            // interior cell centre), not four points at one tube angle.
+            let mut probes: Vec<Vec3> = Vec::with_capacity(96);
+            for i in 0..16 {
+                for j in 0..6 {
+                    let u = TWO_PI * (i as f64 + 0.5) / 16.0;
+                    let v = t.v_range[0] + (t.v_range[1] - t.v_range[0]) * (j as f64 + 0.5) / 6.0;
+                    probes.push(pt_at(u, v));
+                }
+            }
             let inside_flags: Vec<bool> = probes.iter().map(|&p| inside_solid(other, p)).collect();
             let all_same = inside_flags.iter().all(|&b| b == inside_flags[0]);
             if !all_same {
@@ -5740,6 +5761,61 @@ fn strictly_inside_face(f: &Face<Curve3, Surface3>, p: Vec3, margin: f64) -> boo
     }
 }
 
+/// True when the surfaces of two torus bands cannot meet and neither lies inside the other's
+/// tube: the distance between their centre circles exceeds the sum of the tube radii. The
+/// distance is bounded from below by sampling circle A at 256 points, taking each point's exact
+/// distance to circle B, and subtracting the largest gap to the nearest sample (the distance
+/// function is 1-Lipschitz). A nested or overlapping pair fails the test; callers refuse it.
+fn tori_provably_apart(a: &crate::geom::TorusSurf, b: &crate::geom::TorusSurf) -> bool {
+    const N: usize = 256;
+    let (ea1, ea2, _) = crate::geom::frame(normalize(a.axis));
+    let nb = normalize(b.axis);
+    let mut best = f64::INFINITY;
+    for k in 0..N {
+        let ang = TWO_PI * k as f64 / N as f64;
+        let p = add(a.center, add(scale(ea1, a.ring * ang.cos()), scale(ea2, a.ring * ang.sin())));
+        let d = sub(p, b.center);
+        let h = dot(d, nb);
+        let rho = crate::math::len(sub(d, scale(nb, h)));
+        let dist = ((rho - b.ring).powi(2) + h * h).sqrt();
+        best = best.min(dist);
+    }
+    let lower = best - a.ring * std::f64::consts::PI / N as f64;
+    lower > a.tube + b.tube + 1e-6
+}
+
+/// Points covering a solid's boundary densely enough to find where it pokes out of a base:
+/// every vertex, 96 points along every edge (so a rim circle is sampled every 3.75 degrees),
+/// and, on each curved face, a 12 x 12 grid over its parameter domain (points that fall off a
+/// trimmed face can only make the caller refuse, never accept).
+fn tool_boundary_samples(faces: &[TFace]) -> Vec<Vec3> {
+    let mut pts: Vec<Vec3> = Vec::new();
+    for f in faces {
+        let fb = f.borrow();
+        for w in &fb.boundary {
+            for u in &w.borrow().edges {
+                let e = u.edge.borrow();
+                pts.push(e.a.borrow().point);
+                pts.push(e.b.borrow().point);
+                for k in 1..96 {
+                    pts.push(e.curve.point_at(k as f64 / 96.0));
+                }
+            }
+        }
+        if !matches!(fb.surface, Surface::Plane(_)) {
+            let (du, dv) = fb.surface.domain();
+            for i in 0..=12 {
+                for j in 0..=12 {
+                    let u = du[0] + (du[1] - du[0]) * i as f64 / 12.0;
+                    let v = dv[0] + (dv[1] - dv[0]) * j as f64 / 12.0;
+                    pts.push(fb.surface.param(u, v));
+                }
+            }
+        }
+    }
+    pts
+}
+
 /// The fully-enclosed-cavity case of `subtract`: every face of `b` lies
 /// strictly inside `a`, and no face of `a` lies inside `b`, with clearance.
 /// The result is `a`'s own shell plus `b`'s shell reversed as an inner void
@@ -5797,6 +5873,25 @@ fn subtract_enclosed(a: &TSolid, b: &TSolid) -> Option<TSolid> {
         for g in &a_faces {
             if !strictly_inside_face(&g.borrow(), c, CAVITY_MARGIN) {
                 return None;
+            }
+        }
+    }
+    // The checks above look at the tool's bbox face midpoints and its face centroids only. A
+    // tool whose CORNERS (or any rim, or an extremal point of a curved face) poke out of a curved
+    // base passes both, and was built as a sealed void, volume V(a) - V(b) (G1: 40 sweep cases,
+    // 7781.2 against the true 7792.6 for a 1 x 20 x 20 slab through a sphere). Test every point
+    // of the tool's boundary that could be extremal: its vertices, its edges at fine spacing, and
+    // a grid over each curved face. Each must be inside `a` and, when `a`'s faces may touch the
+    // tool, inside every half-space of `a` as well.
+    for p in tool_boundary_samples(&b_faces) {
+        if !inside_solid(a, p) {
+            return None;
+        }
+        if !a_clear_of_tool {
+            for g in &a_faces {
+                if !strictly_inside_face(&g.borrow(), p, CAVITY_MARGIN) {
+                    return None;
+                }
             }
         }
     }
@@ -8389,5 +8484,93 @@ mod torus_soundness {
             .collect();
         let gutted = Solid { shells: vec![Rc::new(RefCell::new(Shell { faces }))] };
         assert!(!boolean_result_is_sound("subtract", &fl, &tool, &gutted), "a dropped wall slipped through");
+    }
+}
+
+/// Findings G1 and G6 of the wrong-solid sweep (docs/PLAN-next.md section 25): a boolean
+/// that built a closed, wrong solid with an empty refusals map.
+#[cfg(test)]
+mod g1_g6_tests {
+    use super::*;
+    use crate::build;
+
+    const PI: f64 = std::f64::consts::PI;
+
+    /// G1: the tool's six face-midpoints and six face centroids are inside the sphere, but its
+    /// eight corners (distance 10.39 from the centre against a radius of 10) are not. The old
+    /// enclosure test looked only at the midpoints and centroids and built a sealed void,
+    /// V(sphere) - V(box) = 2460.6, a wrong solid. It must refuse (or build the true boolean).
+    #[test]
+    fn sphere_minus_box_poking_out_at_the_corners_is_not_a_sealed_void() {
+        let a = build::sphere_solid([0.0, 0.0, 0.0], 10.0, [0.0, 0.0, 1.0]);
+        let b = build::box_solid([12.0, 12.0, 12.0], [0.0, 0.0, 0.0], None);
+        let wrong = 4.0 / 3.0 * PI * 1000.0 - 1728.0;
+        if let Some(r) = boolean("subtract", &a, &b) {
+            let v = build::solid_volume(&r);
+            assert!((v - wrong).abs() > 1.0, "built the sealed-void wrong solid {v}");
+        }
+    }
+
+    /// A cylinder base and a tool whose corner is barely outside: the smallest G1 case.
+    #[test]
+    fn cylinder_minus_box_with_one_corner_barely_outside_is_not_a_sealed_void() {
+        let a = build::cylinder_solid([0.0, 0.0, 0.0], 10.0, 20.0, [0.0, 0.0, 1.0]);
+        // half-diagonal of the 14 x 14 footprint is 9.899; shift it so one corner is at 10.05
+        let b = build::box_solid([14.0, 14.0, 6.0], [0.1, 0.1, 0.0], None);
+        let wrong = PI * 100.0 * 20.0 - 14.0 * 14.0 * 6.0;
+        if let Some(r) = boolean("subtract", &a, &b) {
+            let v = build::solid_volume(&r);
+            // the true result is one shell (the corner opens the "cavity" to the outside) and its
+            // volume exceeds the sealed-void figure by the sliver the corner removes from the wall
+            assert!(r.shells.len() == 1 && v > wrong, "built the sealed-void wrong solid {v}");
+        }
+    }
+
+    /// A tool really inside a curved base is still a sealed void (no regression).
+    #[test]
+    fn box_well_inside_a_cylinder_is_still_a_sealed_void() {
+        let a = build::cylinder_solid([0.0, 0.0, 0.0], 10.0, 20.0, [0.0, 0.0, 1.0]);
+        let b = build::box_solid([8.0, 8.0, 6.0], [0.0, 0.0, 0.0], None);
+        let r = boolean("subtract", &a, &b).expect("a tool well inside the base is a cavity");
+        let v = build::solid_volume(&r);
+        let want = PI * 100.0 * 20.0 - 8.0 * 8.0 * 6.0;
+        assert!((v - want).abs() <= 1e-6 * want, "{v} vs {want}");
+    }
+
+    fn torus_vol(ring: f64, tube: f64) -> f64 {
+        2.0 * PI * PI * ring * tube * tube
+    }
+
+    /// G6: two tori whose tubes overlap (centre circles about 1.4 apart, tube radii 5 and 5.5)
+    /// were treated as disjoint: every probe of each torus is outside the other, so both were
+    /// kept whole and the union was two shells with volume V1 + V2. Must refuse, or be the real
+    /// union.
+    #[test]
+    fn overlapping_tori_union_is_not_two_disjoint_shells() {
+        let a = build::torus_solid([1.0, 1.0, 10.0], 14.5, 5.5, [0.0, 0.0, 1.0]);
+        let b = build::torus_solid([1.0, 0.0, 0.0], 15.0, 5.0, [0.0, 0.0, 1.0]);
+        let sum = torus_vol(14.5, 5.5) + torus_vol(15.0, 5.0);
+        if let Some(r) = boolean("union", &a, &b) {
+            assert!(r.shells.len() == 1 && (build::solid_volume(&r) - sum).abs() > 1.0, "two disjoint shells, volume {}", build::solid_volume(&r));
+        }
+    }
+
+    /// Overlapping tori, subtract: A must not come back whole.
+    #[test]
+    fn overlapping_tori_subtract_is_not_a_whole() {
+        let a = build::torus_solid([0.0, 0.0, 0.0], 15.0, 5.0, [0.0, 0.0, 1.0]);
+        let b = build::torus_solid([2.0, 3.0, 1.0], 15.0, 5.0, [0.0, 0.0, 1.0]);
+        if let Some(r) = boolean("subtract", &a, &b) {
+            assert!((build::solid_volume(&r) - torus_vol(15.0, 5.0)).abs() > 1.0, "A returned whole");
+        }
+    }
+
+    /// Genuinely disjoint tori still union as two shells (stacked far apart).
+    #[test]
+    fn disjoint_tori_union_is_two_shells() {
+        let a = build::torus_solid([0.0, 0.0, 0.0], 15.0, 5.0, [0.0, 0.0, 1.0]);
+        let b = build::torus_solid([0.0, 0.0, 30.0], 15.0, 5.0, [0.0, 0.0, 1.0]);
+        let r = boolean("union", &a, &b).expect("disjoint tori union");
+        assert!((build::solid_volume(&r) - 2.0 * torus_vol(15.0, 5.0)).abs() < 1e-6);
     }
 }
