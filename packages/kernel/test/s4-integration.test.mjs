@@ -2,7 +2,7 @@
 // families (wrong-solid-sweep-s4.mjs) and the standing sweep found in the MERGED build. Each test failed before its fix.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { mine, assertWatertight, assertOcct } from './s4i-harness.mjs';
+import { mine, brep, assertWatertight, assertOcct } from './s4i-harness.mjs';
 
 const PI = Math.PI;
 
@@ -74,6 +74,24 @@ test('overlapping open cups: cut and join are exact or refused', () => {
     else assert.ok(Math.abs(m.volume - want) <= 1e-9 * vA, `${op}: ${m.volume} vs ${want}`);
   }
   assert.ok(Math.abs(vA - shared - 3508.8) < 1e-6, `the open cups share ${shared}`);
+});
+
+// idx 3987 seed 1: the mirrored overlapping pattern of a drilled cylinder meshed open at chords 0.15 to 0.3 (closed at 0.05 and 0.5),
+// so the pattern fold's own check at those two missed it. mesh_solid now retries an open mesh at nine finer chords.
+test('a mirrored overlapping pattern of drilled cylinders meshes closed at every chord', () => {
+  const m = mine("let v = cylinder(18.27, 14.36, { at: [0, 0, 0] })\nhole(v, { across: 3.15, at: [3.61, 1.87], deep: 2.6 })\nrepeat(v, { count: 3, step: [11.15, 1.43, 0] })\nv = mirror(v, 'left-right')");
+  assert.deepEqual(m.refusals, {});
+  // directed edges: every edge must be walked once each way (touching lumps and all)
+  const openEdges = (defl) => {
+    const mesh = JSON.parse(brep.mesh_feature(m.json, m.id, defl)), P = mesh.positions, I = mesh.indices, W = 1e-6, ids = new Map(), canon = [];
+    for (let i = 0; i < P.length / 3; i++) { const k = [0, 1, 2].map((a) => Math.round(P[3 * i + a] / W)).join(','); if (!ids.has(k)) ids.set(k, ids.size); canon[i] = ids.get(k); }
+    const dir = new Map();
+    for (let t = 0; t < I.length; t += 3) { const c = [canon[I[t]], canon[I[t + 1]], canon[I[t + 2]]]; if (new Set(c).size < 3) continue; for (let e = 0; e < 3; e++) { const k = `${c[e]}>${c[(e + 1) % 3]}`; dir.set(k, (dir.get(k) ?? 0) + 1); } }
+    let n = 0; for (const [k, c] of dir) { const [a, b] = k.split('>'); if ((dir.get(`${b}>${a}`) ?? 0) !== c) n++; }
+    return n;
+  };
+  for (const defl of [0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5]) assert.equal(openEdges(defl), 0, `open edges at chord ${defl}`);
+  assertOcct(m, 'mirrored drilled pattern');
 });
 
 // the aligned rows were always exact and must stay built (the guard may not turn a build into a refusal here)

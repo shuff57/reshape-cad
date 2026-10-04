@@ -5083,7 +5083,13 @@ pub fn boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
     // sweep, present before S4). So such a result must also satisfy inclusion-exclusion with its
     // partner operation, V(A+B) + V(A*B) = V(A) + V(B) and V(A-B) + V(A*B) = V(A), to 1e-9; if the
     // partner cannot be built the answer cannot be vouched for and is refused.
-    if (needs_partner(a) || needs_partner(b)) && !PARTNER_RUNNING.with(|p| p.get()) {
+    // Bounded: the partner costs as much as the operation itself, and a polar pattern of heptagonal prisms
+    // (a fold of star-shaped unions, 70 s as it is) must not take twice as long. Past this many faces the
+    // result stands on the older guards alone.
+    if a.faces().len() + b.faces().len() <= PARTNER_FACE_BUDGET
+        && (needs_partner(a) || needs_partner(b))
+        && !PARTNER_RUNNING.with(|p| p.get())
+    {
         PARTNER_RUNNING.with(|p| p.set(true));
         let partner = boolean_unchecked(if op == "intersect" { "union" } else { "intersect" }, a, b);
         PARTNER_RUNNING.with(|p| p.set(false));
@@ -5125,6 +5131,9 @@ fn needs_partner(s: &TSolid) -> bool {
     let scale_len = pts.iter().fold(1.0_f64, |m, p| m.max(crate::math::len(*p)));
     planes.iter().any(|(o, n)| pts.iter().any(|p| dot(sub(*p, *o), *n) > 1e-7 * scale_len))
 }
+
+/// Largest pair of operands (faces in both) whose boolean is checked against its partner operation.
+const PARTNER_FACE_BUDGET: usize = 80;
 
 thread_local! {
     /// Set while `boolean` builds the partner operation of a multi-shell result, so the partner is not itself partnered.

@@ -57,6 +57,14 @@ export function inside2(n, x, y, z, leaf) {
     }
     case 'shell': { // a box (minus through bores) hollowed by `w`; the open side's wall is gone and the cavity runs flush to it
       const p = [x, y, z];
+      if (n.cyl) { // a cylinder about its own z axis, at most one coaxial bore: outer wall w, the bore's tube w, flush to an open end
+        const cx = (n.lo[0] + n.hi[0]) / 2, cy = (n.lo[1] + n.hi[1]) / 2, R = (n.hi[0] - n.lo[0]) / 2, rho = Math.hypot(x - cx, y - cy);
+        if (rho > R || z < n.lo[2] || z > n.hi[2]) return false;
+        const br = n.bores.length ? n.bores[0].r : 0;
+        if (rho < br) return false;
+        const zlo = n.lo[2] + (n.open === -3 ? 0 : n.w), zhi = n.hi[2] - (n.open === 3 ? 0 : n.w);
+        return !(rho < R - n.w && rho > br + (br ? n.w : 0) && z > zlo && z < zhi);
+      }
       for (let k = 0; k < 3; k++) if (p[k] < n.lo[k] || p[k] > n.hi[k]) return false;
       for (const b of n.bores) { const u = [0, 1, 2].filter((k) => k !== b.ax); if ((p[u[0]] - b.c[0]) ** 2 + (p[u[1]] - b.c[1]) ** 2 < b.r * b.r) return false; }
       // chamfer planes: keep a + b >= c (a, b the depths from the two faces); the cavity's copy of a plane moves in by w
@@ -126,7 +134,8 @@ function mkBase(r, kind, c0, v) {
   const u = (lo, hi) => R2(lo + (hi - lo) * r());
   let call, node, ext, plain = null;
   if (kind === 'box') { const s = [u(16, 60), u(16, 60), u(10, 50)]; ext = s; call = `box(${s.join(', ')}, { at: [${c0.join(', ')}] })`; node = { t: 'prim', kind: 'box', c: c0, s }; plain = { lo: [0, 1, 2].map((k) => c0[k] - s[k] / 2), hi: [0, 1, 2].map((k) => c0[k] + s[k] / 2), bores: [] }; }
-  else if (kind === 'cylinder') { const a = u(14, 50), h = u(10, 50); ext = [a, a, h]; call = `cylinder(${a}, ${h}, { at: [${c0.join(', ')}] })`; node = { t: 'prim', kind: 'cylinder', c: c0, r: a / 2, h }; }
+  else if (kind === 'cylinder') { const a = u(14, 50), h = u(10, 50); ext = [a, a, h]; call = `cylinder(${a}, ${h}, { at: [${c0.join(', ')}] })`; node = { t: 'prim', kind: 'cylinder', c: c0, r: a / 2, h };
+    plain = { lo: [c0[0] - a / 2, c0[1] - a / 2, c0[2] - h / 2], hi: [c0[0] + a / 2, c0[1] + a / 2, c0[2] + h / 2], bores: [], cyl: true }; }
   else if (kind === 'sphere') { const a = u(14, 50); ext = [a, a, a]; call = `sphere(${a}, { at: [${c0.join(', ')}] })`; node = { t: 'prim', kind: 'sphere', c: c0, r: a / 2 }; }
   else if (kind === 'cone') { const a = u(14, 50), h = u(10, 50); ext = [a, a, h]; call = `cone(${a}, ${h}, { at: [${c0.join(', ')}] })`; node = { t: 'prim', kind: 'cone', c: c0, r: a / 2, h }; }
   const bb = [[0, 1, 2].map((k) => c0[k] - ext[k] / 2), [0, 1, 2].map((k) => c0[k] + ext[k] / 2)];
@@ -150,6 +159,7 @@ const STEPS = {
     if (S.node) S.node = { t: 'op', op: 'union', a: S.node, b: { t: 'refl', a: S.node, ax, at } };
     // a chamfer plane that involves the mirror axis reflects into a DIFFERENT plane: the doubled part is no longer box + planes
     if (S.plain && (S.plain.planes ?? []).some((q) => q.k1 === ax || q.k2 === ax)) S.plain = null;
+    if (S.plain?.cyl && ax !== 2) S.plain = null; // two round parts side by side are not one cylinder
     if (S.plain) {
       const p = S.plain, lo = [...p.lo], hi = [...p.hi];
       if (atLo) lo[ax] = 2 * at - p.hi[ax]; else hi[ax] = 2 * at - p.lo[ax];
@@ -192,6 +202,8 @@ const STEPS = {
     S.node = { t: 'op', op: 'subtract', a: S.node, b: tool };
     if (cs != null) S.node = { t: 'op', op: 'subtract', a: S.node, b: { t: 'csink', axis, c, rb: across / 2, rm: cs / 2, top } };
     if (cb) S.node = { t: 'op', op: 'subtract', a: S.node, b: { t: 'tool', axis, c, r: cb.a / 2, lo: top - cb.d, hi: top } };
+    // a round part hollows exactly only with ONE bore down its own axis (S4d's shell_cavity_cyl_bore)
+    if (S.plain?.cyl && !(kind === 'T' && axis === 2 && off[0] === 0 && off[1] === 0 && S.plain.bores.length === 0)) S.plain = null;
     if (S.plain && kind === 'T') S.plain = { ...S.plain, bores: [...S.plain.bores, { ax: axis, c: tc, r: across / 2 }] }; else S.plain = null;
     S.plainBox = false; // a hole spoils the whole-round closed form
   },
@@ -200,9 +212,9 @@ const STEPS = {
     const wall = R2((0.04 + 0.1 * r()) * Math.min(...ext));
     const open = r() < 0.4 ? null : OPENS[Math.floor(r() * 6)];
     S.lines.push(`hollow(${S.v}, { wall: ${wall}${open ? `, open: '${open[0]}'` : ''} })`); S.chain.push(`hollow${open ? ':' + open[0] : ''}`);
-    if (S.plain && S.bb) {
+    if (S.plain && S.bb && !(S.plain.cyl && open && open[1] !== 2)) {
       const p = S.plain;
-      S.node = { t: 'shell', lo: p.lo, hi: p.hi, w: wall, open: open ? (open[1] + 1) * open[2] : 0, bores: p.bores, planes: p.planes ?? [] };
+      S.node = { t: 'shell', lo: p.lo, hi: p.hi, w: wall, open: open ? (open[1] + 1) * open[2] : 0, bores: p.bores, planes: p.planes ?? [], cyl: !!p.cyl };
     } else unmodel(S);
     S.plain = null; S.edgeOK = false; S.plainBox = false; S.hollowed = true;
   },
@@ -317,13 +329,15 @@ function genCompound(index, seed) {
   const r = rng(mix(seed, index * 8 + 9 + 31));
   const ib = (lo, hi) => Math.floor(lo + (hi - lo + 1) * r());
   const lines = [];
-  const mkPart = (name, c0) => {
-    const s = [ib(6, 14), ib(6, 14), ib(4, 10)].map((v) => v + (v % 2)); // even sizes: the wall of a hollow stays on the grid
-    const c = c0.map((v) => v + ib(-4, 4));
+  const mkPart = (name, c0, twin = null) => {
+    const big = r() < 0.5; // half the parts are the size of a student's block (thin walls against a large cavity: the probes' worst case)
+    const s = twin ? twin.s : (big ? [ib(30, 60), ib(24, 40), ib(8, 14)] : [ib(6, 14), ib(6, 14), ib(4, 10)]).map((v) => v + (v % 2)); // even sizes: the wall of a hollow stays on the grid
+    const c = twin ? c0 : c0.map((v) => v + ib(-4, 4));
     lines.push(`let ${name} = box(${s.join(', ')}, { at: [${c.join(', ')}] })`);
     let node = { t: 'prim', kind: 'box', s, c };
-    const kind = ib(0, 3);
-    const steps = ib(1, 2);
+    const kind = twin ? twin.kind : ib(0, 3);
+    const steps = twin ? ib(0, 1) : ib(1, 2);
+    mkPart.last = { s, kind };
     const shape = [];
     if (kind <= 1) { // hollow (closed or open on one side)
       const w = 1, open = kind === 0 ? null : OPENS[ib(0, 5)];
@@ -343,7 +357,16 @@ function genCompound(index, seed) {
     return { node, shape };
   };
   const A = mkPart('a', [0, 0, 0]);
-  const B = mkPart('b', [ib(-6, 6), ib(-6, 6), ib(-3, 3)]);
+  let B;
+  if (r() < 0.45) { // a twin of the same size and kind, shifted most of its width along one axis: each one's walls cross the other's cavity
+    const { s, kind } = mkPart.last;
+    // half-grid offsets on the other axes keep the two parts' walls out of each other's planes (general position, which is where the
+    // integer grid's coincident planes would hide a defect); 0.5 is still exact for the voxel oracle
+    const ax = ib(0, 2), off = [ib(-3, 3) * 0.5, ib(-3, 3) * 0.5, ib(-2, 2) * 0.5];
+    off[ax] = Math.round(s[ax] * (0.6 + 0.3 * r())) * (r() < 0.5 ? 1 : -1);
+    const cA = lines[0].match(/at: \[(.*)\]/)[1].split(', ').map(Number); // A's own centre
+    B = mkPart('b', cA.map((v, k) => v + off[k]), { s, kind });
+  } else B = mkPart('b', [ib(-6, 6), ib(-6, 6), ib(-3, 3)]);
   const op = ['join', 'cut', 'keep'][ib(0, 2)];
   lines.push(`let r = ${op}(a, b)`);
   const node = { t: 'op', op: op === 'cut' ? 'subtract' : op === 'join' ? 'union' : 'intersect', a: A.node, b: B.node };
@@ -454,8 +477,8 @@ export async function makeS4Runner() {
   const run = await sweep.makeRunner({ occt: true });
   const { runScript } = await import('@shuff57/reshape-script/reshape-script');
   const jsonOf = (code) => { const r = runScript(code); const features = r.doc.features; return { json: JSON.stringify({ version: 1, features }), id: features.at(-1).id }; };
-  async function runOne(script, { stepRT = false } = {}) {
-    const rec = run.run({ code: script.code, tags: script.tags, oracle: {} }); // (the oracle tree here is not the lib's node language) brep build, measure, mesh (one chord), OCCT
+  async function runOne(script, { stepRT = false, onBrepDone } = {}) {
+    const rec = run.run({ code: script.code, tags: script.tags, oracle: {} }, { onBrepDone }); // (the oracle tree here is not the lib's node language) brep build, measure, mesh (one chord), OCCT
     const refused = rec.refusals && Object.keys(rec.refusals).length > 0;
     const extra = {};
     if (!rec.scriptError && !rec.brepThrow && !refused && rec.brep) {
@@ -528,7 +551,8 @@ async function workerMain() {
     const idx = famOnly == null ? i : i * FAMILIES.length + +famOnly;
     const script = genS4(idx, seed);
     prog({ i, phase: 'brep' });
-    const { rec, extra } = await R.runOne(script, { stepRT: stepEvery > 0 && i % stepEvery === 0 });
+    // "occt" is written once brep-rs has answered, so a stall in OpenCascade is not called a brep-rs hang
+    const { rec, extra } = await R.runOne(script, { stepRT: stepEvery > 0 && i % stepEvery === 0, onBrepDone: () => prog({ i, phase: 'occt' }) });
     const v = await judge(rec, extra);
     appendFileSync(out, JSON.stringify({ i, idx, seed, code: script.code, tags: script.tags, ...v, refusals: rec.refusals, brep: rec.brep, occt: rec.occt, occtThrow: rec.occtThrow, occtRefusals: rec.occtRefusals, hasOracle: !!script.oracle.node, mesh: extra.mesh, step: extra.step, scriptError: rec.scriptError }) + '\n');
     prog({ i, phase: 'done' });
