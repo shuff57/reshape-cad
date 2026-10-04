@@ -48,6 +48,13 @@ const scripts = {
   'x bore then smaller z bore': 'const b = cuboid(40, 40, 20)\nhole(b, { across: 8, along: "x" })\nhole(b, { across: 4 })',
   'z bore then x bore off the mid-height': 'const b = cuboid(40, 40, 20)\nhole(b, { across: 10 })\nhole(b, { across: 4, along: "x", at: [0, 3] })',
   'deep blind z bore then x bore': 'const b = cuboid(40, 40, 20)\nhole(b, { across: 8, deep: 14 })\nhole(b, { across: 4, along: "x" })',
+  'two overlapping through holes': 'const b = cuboid(40, 40, 20)\nhole(b, { across: 10 })\nhole(b, { across: 6, at: [4, 0] })',
+  'two equal holes overlapping': 'const b = cuboid(40, 40, 20)\nhole(b, { across: 8 })\nhole(b, { across: 8, at: [5, 0] })',
+  'second hole on the diagonal': 'const b = cuboid(40, 40, 20)\nhole(b, { across: 10 })\nhole(b, { across: 6, at: [3, 3] })',
+  'blind then overlapping blind hole': 'const b = cuboid(40, 40, 20)\nhole(b, { across: 10, deep: 12 })\nhole(b, { across: 6, deep: 8, at: [4, 0] })',
+  'a wider second hole over the first': 'const b = cuboid(40, 40, 20)\nhole(b, { across: 6 })\nhole(b, { across: 12, at: [2, 0] })',
+  'three overlapping holes (a slot)': 'const b = cuboid(40, 40, 20)\nhole(b, { across: 8 })\nhole(b, { across: 8, at: [6, 0] })\nhole(b, { across: 8, at: [12, 0] })',
+  'a wider second hole tangent inside the first': 'const b = cuboid(40, 40, 20)\nhole(b, { across: 6 })\nhole(b, { across: 12, at: [3, 0] })',
   'hollow then half cut': 'const b = cuboid(40, 40, 20)\nshell(b, { wall: 2 })\n' + HALF,
 };
 

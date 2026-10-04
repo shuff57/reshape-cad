@@ -101,3 +101,26 @@ test('two crossing holes that must still refuse say so in a sentence: as wide as
     assert.equal(m, undefined);
   }
 });
+
+// ---- S3b-1: two holes with parallel axes that overlap -----------------------------------------
+// The area two disks share (centres d apart) is r1^2 acos((d^2 + r1^2 - r2^2) / (2 d r1)) + r2^2 acos((d^2 + r2^2 - r1^2) / (2 d r2))
+// - 1/2 sqrt((-d + r1 + r2)(d + r1 - r2)(d - r1 + r2)(d + r1 + r2)); a second hole removes pi r2^2 x its length less lens x the
+// height the two holes share.
+const lens = (r1, r2, d) => {
+  const a1 = Math.acos((d * d + r1 * r1 - r2 * r2) / (2 * d * r1)), a2 = Math.acos((d * d + r2 * r2 - r1 * r1) / (2 * d * r2));
+  return r1 * r1 * a1 + r2 * r2 * a2 - 0.5 * Math.sqrt((-d + r1 + r2) * (d + r1 - r2) * (d - r1 + r2) * (d + r1 + r2));
+};
+for (const [name, code, want] of [
+  ['through holes r5 and r3, 4 apart', P + "hole(b, { across: 10 })\nhole(b, { across: 6, at: [4, 0] })", 32000 - PI * 25 * 20 - (PI * 9 - lens(5, 3, 4)) * 20],
+  ['two equal holes r4, 5 apart', P + "hole(b, { across: 8 })\nhole(b, { across: 8, at: [5, 0] })", 32000 - PI * 16 * 20 - (PI * 16 - lens(4, 4, 5)) * 20],
+  ['second hole on the diagonal (3, 3)', P + "hole(b, { across: 10 })\nhole(b, { across: 6, at: [3, 3] })", 32000 - PI * 25 * 20 - (PI * 9 - lens(5, 3, Math.sqrt(18))) * 20],
+  ['blind holes: r5 12 deep, then r3 8 deep, 4 apart', P + "hole(b, { across: 10, deep: 12 })\nhole(b, { across: 6, deep: 8, at: [4, 0] })", 32000 - PI * 25 * 12 - (PI * 9 * 8 - lens(5, 3, 4) * 8)],
+  ['a wider second hole over the first (r3 then r6, 2 apart)', P + "hole(b, { across: 6 })\nhole(b, { across: 12, at: [2, 0] })", 32000 - PI * 36 * 20],
+  ['two holes that only touch (r4, 8 apart)', P + "hole(b, { across: 8 })\nhole(b, { across: 8, at: [8, 0] })", 32000 - 2 * PI * 16 * 20],
+]) {
+  test(`two parallel holes build exactly: ${name}`, () => {
+    const { refusals, m } = build(code);
+    assert.deepEqual(refusals, {});
+    assert.ok(Math.abs(m.volume - want) < 1e-5, `${m.volume} vs ${want}`);
+  });
+}

@@ -612,6 +612,9 @@ fn crossings(solid: &TSolid, p: Vec3, d: Vec3) -> Option<(usize, bool)> {
 }
 
 fn plane_face_contains(g: &Plane, f: &Face<Curve3, Surface3>, q: Vec3) -> bool {
+    if let Some(inside) = crate::ops_planar::face_contains_exact(g, f, q) {
+        return inside;
+    }
     // A disk cap is a single circular boundary.
     if f.boundary.len() == 1 {
         let w = f.boundary.first().unwrap();
@@ -683,9 +686,7 @@ fn cyl_face_contains(c: &Cylinder, q: Vec3) -> bool {
         let e1 = dot(r, c.e1);
         let e2 = dot(r, c.e2);
         let mut a = e2.atan2(e1) - arc.start;
-        while a < 0.0 {
-            a += TWO_PI;
-        }
+        a = a.rem_euclid(TWO_PI);
         if a > arc.span + 1e-7 {
             return false;
         }
@@ -750,9 +751,7 @@ fn inside_surface(s: &Surface, p: Vec3) -> bool {
                 let e1 = dot(radial, c.e1);
                 let e2v = dot(radial, c.e2);
                 let mut a = e2v.atan2(e1) - arc.start;
-                while a < 0.0 {
-                    a += TWO_PI;
-                }
+                a = a.rem_euclid(TWO_PI);
                 if a > arc.span + TOL {
                     return false;
                 }
@@ -4812,6 +4811,17 @@ pub fn has_cross_trim(s: &TSolid) -> bool {
 /// that built before can change. A refusal from the planar path is final.
 pub fn boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
     if let Some(r) = boolean_legacy(op, a, b) {
+        // The face-by-face path splits a face along the other solid's edges without splitting
+        // the face next door, leaving a vertex in the middle of a neighbour's edge (a T-junction):
+        // the volume is right but a mesh of it has open seams (measured: 78% of overlapping box
+        // pairs). The planar path keeps both sides consistent, so it wins when it can build it.
+        if crate::ops_planar::has_t_junction(&r) {
+            if let crate::ops_planar::Outcome::Built(p) = crate::ops_planar::boolean_planar(op, a, b) {
+                if !crate::ops_planar::has_t_junction(&p) {
+                    return Some(p);
+                }
+            }
+        }
         return Some(r);
     }
     match crate::ops_planar::boolean_planar(op, a, b) {
@@ -4874,6 +4884,14 @@ fn boolean_legacy(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
             return None;
         }
         if !unmatched_once_edges(&faces).is_empty() {
+            return None;
+        }
+        // A face whose inner wires overlap (two holes, or a hole and a boss rim, that cross)
+        // is not a face at all: its area and area vector can still come out right while the
+        // surface over the overlap is missing, so neither closure nor translation invariance
+        // sees it. This used to be refused only because an arc-sampling error in
+        // `plane_face_contains` happened to trip the soundness probe.
+        if inner_circles_overlap(&faces) {
             return None;
         }
     }
@@ -5418,6 +5436,42 @@ fn cone_soundness_rejects_wrong_half_angle() {
 /// face has no area, contributes nothing to volume, and cannot be tessellated
 /// (its boundary does not close), so it is not a real face of the result. Faces
 /// with a genuine (if small) area are kept.
+/// True when a plane face has two inner circular wires that cross, touch or nest.
+fn inner_circles_overlap(faces: &[TFace]) -> bool {
+    for f in faces {
+        let fb = f.borrow();
+        if !matches!(fb.surface, Surface::Plane(_)) || fb.boundary.len() < 3 {
+            continue;
+        }
+        let circles: Vec<(Vec3, f64)> = fb
+            .boundary
+            .iter()
+            .skip(1)
+            .filter_map(|w| {
+                let uses = &w.borrow().edges;
+                if uses.len() != 1 {
+                    return None;
+                }
+                let e = uses[0].edge.borrow();
+                if let Curve::Circle { center, radius, .. } = &e.curve {
+                    Some((*center, *radius))
+                } else {
+                    None
+                }
+            })
+            .collect();
+        for i in 0..circles.len() {
+            for j in (i + 1)..circles.len() {
+                let d = crate::math::len(sub(circles[i].0, circles[j].0));
+                if d < circles[i].1 + circles[j].1 - 1e-9 {
+                    return true;
+                }
+            }
+        }
+    }
+    false
+}
+
 pub(crate) fn drop_degenerate_faces(faces: &mut Vec<TFace>) {
     faces.retain(|f| {
         let (area, _) = build::face_area_centroid(&f.borrow());
@@ -5659,9 +5713,7 @@ fn strictly_inside_face(f: &Face<Curve3, Surface3>, p: Vec3, margin: f64) -> boo
                 let e1 = dot(radial, c.e1);
                 let e2v = dot(radial, c.e2);
                 let mut ang = e2v.atan2(e1) - arc.start;
-                while ang < 0.0 {
-                    ang += TWO_PI;
-                }
+                ang = ang.rem_euclid(TWO_PI);
                 if ang > arc.span - margin / c.radius.max(1e-9) {
                     return false;
                 }

@@ -538,6 +538,70 @@ fn seg_arc(a: P2, b: P2, c: P2, r: f64, a0: f64, sw: f64, os: &mut Vec<f64>, oa:
     }
 }
 
+/// Whether `q` (on the plane of `f`) lies inside the face, with straight edges AND circular
+/// arcs taken exactly. `None` when the face has an edge this module does not read.
+/// `ops::plane_face_contains` used to sample every arc with 16 chords, which misjudges a
+/// point within about 0.03 mm of a circular edge of a hole 6 mm across.
+pub(crate) fn face_contains_exact(g: &Plane, f: &Face<crate::build::Curve3, crate::build::Surface3>, q: Vec3) -> Option<bool> {
+    let mut edges: Vec<E2> = Vec::new();
+    for w in &f.boundary {
+        for u in &w.borrow().edges {
+            let e = u.edge.borrow();
+            let c3 = match &e.curve {
+                Curve::Segment { a, b } => C3::Seg(*a, *b),
+                Curve::Circle { center, radius, normal } => C3::Arc { center: *center, radius: *radius, normal: *normal, start: e.a.borrow().point, sweep: TAU },
+                Curve::Arc { center, radius, normal, x_axis, sweep } => {
+                    C3::Arc { center: *center, radius: *radius, normal: *normal, start: add(*center, scale(normalize(*x_axis), *radius)), sweep: *sweep }
+                }
+                _ => return None,
+            };
+            edges.push(to_e2(&c3, g)?);
+        }
+    }
+    if edges.is_empty() {
+        return None;
+    }
+    Some(in_edges(g.project(q), &edges))
+}
+
+/// A plane-only solid with a vertex lying in the middle of another face's straight edge (a
+/// T-junction). Its faces share no edge there, so a mesh welded by position has an open seam,
+/// although the B-rep's own edge-use count can still read two.
+pub(crate) fn has_t_junction(solid: &TSolid) -> bool {
+    let faces = solid.faces();
+    let mut verts: Vec<Vec3> = Vec::new();
+    let mut segs: Vec<(Vec3, Vec3)> = Vec::new();
+    for f in &faces {
+        let fb = f.borrow();
+        if !matches!(fb.surface, Surface::Plane(_)) {
+            return false; // curved faces: not judged here
+        }
+        for w in &fb.boundary {
+            for u in &w.borrow().edges {
+                let e = u.edge.borrow();
+                let Curve::Segment { a, b } = e.curve else { return false };
+                verts.push(a);
+                verts.push(b);
+                segs.push((a, b));
+            }
+        }
+    }
+    for &(a, b) in &segs {
+        let d = sub(b, a);
+        let l2 = dot(d, d);
+        if l2 < 1e-18 {
+            continue;
+        }
+        for &p in &verts {
+            let t = dot(sub(p, a), d) / l2;
+            if t > 1e-9 && t < 1.0 - 1e-9 && len(sub(p, add(a, scale(d, t)))) < 1e-7 {
+                return true;
+            }
+        }
+    }
+    false
+}
+
 // ---------------------------------------------------------------------------
 // Cutting a plane face: the arrangement of its outline and the cut curves.
 // ---------------------------------------------------------------------------
@@ -956,8 +1020,12 @@ fn wall_grid(f: &CFace, other: &[AFace], skip: Option<usize>) -> Result<Grid, ()
         if !boxes_meet(&me, &aabb(g)) {
             continue;
         }
-        let AFace::Plane(g) = g else {
-            bail!(); // cylinder against cylinder, other than a crossing pair: not modelled
+        let g = match g {
+            AFace::Plane(p) => p,
+            AFace::Cyl(gc) => {
+                parallel_wall_lines(f, gc, &mut us, &mut vs)?;
+                continue;
+            }
         };
         let n = g.plane.n;
         let ax = dot(c.axis, n);
@@ -1039,6 +1107,134 @@ fn wall_grid(f: &CFace, other: &[AFace], skip: Option<usize>) -> Result<Grid, ()
         us.insert(0, f.u0);
     }
     Ok(Grid { us, vs })
+}
+
+/// Where a second cylinder wall with a PARALLEL axis meets wall `f`: two straight
+/// lines along the axis, over the heights where the two walls overlap. They
+/// become grid lines of `f` (an angle each, and a height wherever the overlap
+/// stops short of the wall). Tangent walls, equal coaxial walls and axes that are
+/// not parallel refuse.
+fn parallel_wall_lines(f: &CFace, g: &CFace, us: &mut Vec<f64>, vs: &mut Vec<f64>) -> Result<(), ()> {
+    let c = &f.cyl;
+    let gc = &g.cyl;
+    let a = normalize(c.axis);
+    if len(cross(a, normalize(gc.axis))) > 1e-9 {
+        bail!(); // slanted or crossing axes: not modelled here
+    }
+    let delta = sub(gc.origin, c.origin);
+    let perp = sub(delta, scale(a, dot(delta, a)));
+    let d = len(perp);
+    let (big, small) = (c.radius, gc.radius);
+    if d < EPS {
+        if (big - small).abs() < EPS {
+            bail!(); // the same wall
+        }
+        return Ok(()); // coaxial and different: they never meet
+    }
+    if d > big + small + EPS || d < (big - small).abs() - EPS {
+        return Ok(()); // apart, or one inside the other
+    }
+    if (d - (big + small)).abs() <= EPS || (d - (big - small).abs()).abs() <= EPS {
+        bail!(); // tangent
+    }
+    // The two circles' meeting points, in the plane square to the axis.
+    let e = scale(perp, 1.0 / d);
+    let h = cross(a, e);
+    let x = (d * d + big * big - small * small) / (2.0 * d);
+    let y = (big * big - x * x).max(0.0).sqrt();
+    // Heights, along f's own axis, where g's wall exists.
+    let ga = dot(gc.axis, a);
+    let g0 = dot(delta, a) + ga * gc.vmin;
+    let g1 = dot(delta, a) + ga * gc.vmax;
+    let (lo, hi) = ((c.vmin).max(g0.min(g1)), (c.vmax).min(g0.max(g1)));
+    if hi - lo <= EPS {
+        return Ok(());
+    }
+    let tol = EPS / c.radius;
+    for sy in [y, -y] {
+        let p = add(scale(e, x), scale(h, sy));
+        let th = dot(p, c.e2).atan2(dot(p, c.e1));
+        let rel = pos_ang(th - f.u0);
+        if rel > f.span + tol || (f.span < TAU - 1e-9 && (rel < tol || rel > f.span - tol)) {
+            continue;
+        }
+        us.push(rel + f.u0);
+        if lo > c.vmin + EPS {
+            vs.push(lo);
+        }
+        if hi < c.vmax - EPS {
+            vs.push(hi);
+        }
+    }
+    Ok(())
+}
+
+/// Two parallel walls of ONE solid that overlap (the sides of two holes that merge) share the
+/// line where they meet, each as the edge of one of its cells. A height that splits a cell
+/// there must split the other cell too, or the shared edge is whole on one side and in pieces
+/// on the other and never pairs up. Repeated until no cell changes (a chain of holes).
+fn share_heights(faces: &[AFace], grids: &mut [Option<Grid>]) {
+    let n = faces.len();
+    // For each ordered pair of cells that really share a line: i, j, and the height offset
+    // and direction taking j's heights into i's.
+    let mut links: Vec<(usize, usize, f64, f64)> = Vec::new();
+    for i in 0..n {
+        for j in 0..n {
+            let (AFace::Cyl(wi), AFace::Cyl(wj)) = (&faces[i], &faces[j]) else { continue };
+            if i == j {
+                continue;
+            }
+            let (ci, cj) = (&wi.cyl, &wj.cyl);
+            let a = normalize(ci.axis);
+            let aj = dot(normalize(cj.axis), a);
+            if aj.abs() < 1.0 - 1e-9 {
+                continue;
+            }
+            let delta = sub(cj.origin, ci.origin);
+            let perp = sub(delta, scale(a, dot(delta, a)));
+            let d = len(perp);
+            let (big, small) = (ci.radius, cj.radius);
+            if d < EPS || d > big + small - EPS || d < (big - small).abs() + EPS {
+                continue; // coaxial, apart, tangent or nested: no shared line
+            }
+            let e = scale(perp, 1.0 / d);
+            let h = cross(a, e);
+            let x = (d * d + big * big - small * small) / (2.0 * d);
+            let y = (big * big - x * x).max(0.0).sqrt();
+            let shares = |sy: f64| {
+                let p = add(scale(e, x), scale(h, sy));
+                let on = |w: &CFace, rel: Vec3| {
+                    let th = dot(rel, w.cyl.e2).atan2(dot(rel, w.cyl.e1));
+                    let r = pos_ang(th - w.u0);
+                    let tol = EPS / w.cyl.radius;
+                    r <= w.span + tol || r >= TAU - tol
+                };
+                on(wi, p) && on(wj, sub(p, perp))
+            };
+            if shares(y) || shares(-y) {
+                links.push((i, j, dot(delta, a), aj));
+            }
+        }
+    }
+    for _ in 0..8 {
+        let mut changed = false;
+        for &(i, j, off, aj) in &links {
+            let (Some(gj), AFace::Cyl(wi)) = (grids[j].as_ref(), &faces[i]) else { continue };
+            let incoming: Vec<f64> = gj.vs.iter().map(|&v| off + aj * v).filter(|&vi| vi > wi.cyl.vmin + EPS && vi < wi.cyl.vmax - EPS).collect();
+            if let Some(gi) = grids[i].as_mut() {
+                for vi in incoming {
+                    if !gi.vs.iter().any(|&w| (w - vi).abs() < EPS) {
+                        gi.vs.push(vi);
+                        changed = true;
+                    }
+                }
+                gi.vs.sort_by(|a, b| a.partial_cmp(b).unwrap());
+            }
+        }
+        if !changed {
+            break;
+        }
+    }
 }
 
 /// Points a plane face's outline and cuts must be broken at so they match the
@@ -1609,7 +1805,9 @@ fn core(op: &str, a: &TSolid, b: &TSolid, pa: &[AFace], pb: &[AFace], crossings:
             })
             .collect()
     };
-    let (ga, gb) = (grid_of(pa, pb, 0)?, grid_of(pb, pa, 1)?);
+    let (mut ga, mut gb) = (grid_of(pa, pb, 0)?, grid_of(pb, pa, 1)?);
+    share_heights(pa, &mut ga);
+    share_heights(pb, &mut gb);
     let mut walls: Vec<(&CFace, &Grid)> = Vec::new();
     for (faces, grids) in [(pa, &ga), (pb, &gb)] {
         for (f, g) in faces.iter().zip(grids) {
@@ -1632,6 +1830,27 @@ fn core(op: &str, a: &TSolid, b: &TSolid, pa: &[AFace], pb: &[AFace], crossings:
     // Every edge is used by exactly two faces (a cylinder seam by the same
     // face twice), no exceptions.
     if ops::edge_use_counts(&faces).values().any(|&n| n != 2) || !ops::unmatched_once_edges(&faces).is_empty() {
+        #[cfg(test)]
+        if std::env::var("PLANAR_DEBUG").is_ok() {
+            let counts = ops::edge_use_counts(&faces);
+            for f in &faces {
+                let fb = f.borrow();
+                let kind = match &fb.surface {
+                    Surface::Plane(p) => format!("plane n={:?} z={:.3}", p.n, p.origin[2]),
+                    Surface::Cylinder(c) => format!("cyl r={} v=[{:.3},{:.3}] arc={:?}", c.radius, c.vmin, c.vmax, c.arc.as_ref().map(|a| (a.start, a.span))),
+                    _ => "?".into(),
+                };
+                for w in &fb.boundary {
+                    for u in &w.borrow().edges {
+                        let key = Rc::as_ptr(&u.edge) as *const () as usize;
+                        if counts[&key] != 2 {
+                            let e = u.edge.borrow();
+                            eprintln!("  [{kind}] edge x{}: a={:?} b={:?} {}", counts[&key], e.a.borrow().point, e.b.borrow().point, match &e.curve { Curve::Segment { .. } => "Seg".to_string(), Curve::Arc { sweep, radius, .. } => format!("Arc sweep={sweep:.4} r={radius}"), Curve::Circle { radius, .. } => format!("Circle r={radius}"), _ => "?".into() });
+                        }
+                    }
+                }
+            }
+        }
         bail!();
     }
     let result = Solid { shells: vec![Rc::new(RefCell::new(Shell { faces }))] };
@@ -2210,6 +2429,202 @@ mod tests {
         let (b, r) = crossing_sweep(91, 300);
         eprintln!("crossing bores: built {b}, refused {r}");
         assert!(b > 200 && r * 20 <= b, "built {b}, refused {r}");
+    }
+
+    // ---- S3b-1: two holes with parallel axes that overlap ------------------------------------
+    /// Area shared by two disks of radii r1, r2 whose centres are d apart.
+    fn lens(r1: f64, r2: f64, d: f64) -> f64 {
+        if d >= r1 + r2 {
+            return 0.0;
+        }
+        if d <= (r1 - r2).abs() {
+            return std::f64::consts::PI * r1.min(r2).powi(2);
+        }
+        let a1 = ((d * d + r1 * r1 - r2 * r2) / (2.0 * d * r1)).clamp(-1.0, 1.0).acos();
+        let a2 = ((d * d + r2 * r2 - r1 * r1) / (2.0 * d * r2)).clamp(-1.0, 1.0).acos();
+        r1 * r1 * a1 + r2 * r2 * a2 - 0.5 * ((-d + r1 + r2) * (d + r1 - r2) * (d - r1 + r2) * (d + r1 + r2)).max(0.0).sqrt()
+    }
+
+    fn z_tool(r: f64, cx: f64, cy: f64, zlo: f64, zhi: f64) -> TSolid {
+        build::cylinder_solid([cx, cy, 0.5 * (zlo + zhi)], r, zhi - zlo, [0.0, 0.0, 1.0])
+    }
+
+    #[test]
+    fn two_overlapping_through_holes_make_a_slot_exactly() {
+        let pi = std::f64::consts::PI;
+        let part = bored(5.0, None);
+        for (r, d) in [(3.0, 4.0), (5.0, 5.0), (2.0, 6.5), (6.0, 3.0), (4.0, 8.0)] {
+            let tool = z_tool(r, d, 0.0, -12.0, 12.0);
+            let Outcome::Built(res) = boolean_planar("subtract", &part, &tool) else { panic!("refused r={r} d={d}") };
+            let want = vol(&part) - (pi * r * r - lens(5.0, r, d)) * 20.0;
+            assert!((vol(&res) - want).abs() < 1e-6, "r={r} d={d}: {} vs {want}", vol(&res));
+            let m = crate::mesh::mesh_solid(&res, 0.05).expect("meshes");
+            assert!(ops::check_watertight(&m), "r={r} d={d}");
+        }
+    }
+
+    #[test]
+    fn a_wider_coaxial_counterbore_is_exact() {
+        let pi = std::f64::consts::PI;
+        let part = bored(4.0, None);
+        // r = 7 from the top, 6 deep (z 4..10): removes the annulus between the bore and the counterbore.
+        let Outcome::Built(res) = boolean_planar("subtract", &part, &z_tool(7.0, 0.0, 0.0, 4.0, 12.0)) else { panic!("refused") };
+        assert!((vol(&res) - (vol(&part) - pi * (49.0 - 16.0) * 6.0)).abs() < 1e-6, "{}", vol(&res));
+    }
+
+    /// Random pairs of parallel holes (through or blind, either one) against the lens oracle.
+    fn parallel_sweep(seed: u64, n: usize) -> (usize, usize) {
+        let pi = std::f64::consts::PI;
+        let mut rng = Lcg(seed);
+        let (mut built_n, mut refused_n) = (0, 0);
+        for _ in 0..n {
+            let big = 3.0 + 4.0 * rng.next();
+            let small = 2.0 + 5.0 * rng.next();
+            let (lo, hi) = ((big - small).abs() + 0.4, big + small - 0.4);
+            if hi <= lo {
+                continue;
+            }
+            let d = lo + (hi - lo) * rng.next();
+            let phi = std::f64::consts::TAU * rng.next();
+            let (cx, cy) = (-3.0 + 6.0 * rng.next(), -3.0 + 6.0 * rng.next());
+            let (tx, ty) = (cx + d * phi.cos(), cy + d * phi.sin());
+            if tx.abs() + small > 19.0 || ty.abs() + small > 19.0 || cx.abs() + big > 19.0 || cy.abs() + big > 19.0 {
+                continue;
+            }
+            let w_blind = rng.next() < 0.5;
+            let wfloor = -9.0 + 17.0 * rng.next();
+            let t_blind = rng.next() < 0.5;
+            let tfloor = -9.0 + 17.0 * rng.next();
+            let part = bored_at(big, if w_blind { Some(wfloor) } else { None }, cx, cy);
+            let (wlo, thlo) = (if w_blind { wfloor } else { -10.0 }, if t_blind { tfloor } else { -12.0 });
+            let tool = z_tool(small, tx, ty, thlo, 12.0);
+            let t_in_box = 10.0 - thlo.max(-10.0);
+            let shared = (10.0 - wlo.max(thlo)).max(0.0);
+            let want = vol(&part) - (pi * small * small * t_in_box - lens(big, small, d) * shared);
+            match boolean_planar("subtract", &part, &tool) {
+                Outcome::Built(res) => {
+                    built_n += 1;
+                    assert!((vol(&res) - want).abs() < 1e-6, "WRONG {} vs {want}: R={big} r={small} d={d} w_blind={w_blind}/{wfloor} t_blind={t_blind}/{tfloor}", vol(&res));
+                    if built_n % 5 == 0 {
+                        let m = crate::mesh::mesh_solid(&res, 0.05).expect("meshes");
+                        assert!(ops::check_watertight(&m), "not watertight: R={big} r={small} d={d} w_blind={w_blind}/{wfloor} t_blind={t_blind}/{tfloor}");
+                    }
+                }
+                Outcome::Refused => {
+                    refused_n += 1;
+                    eprintln!("PARALLEL REFUSED R={big} r={small} d={d} w_blind={w_blind}/{wfloor} t_blind={t_blind}/{tfloor}");
+                }
+                Outcome::NotPlanar => panic!("planes and cylinders are in scope"),
+            }
+        }
+        (built_n, refused_n)
+    }
+
+    #[test]
+    fn random_parallel_holes_match_the_lens_oracle() {
+        let (b, r) = parallel_sweep(123, 400);
+        eprintln!("parallel holes: built {b}, refused {r}");
+        assert!(b > 200 && r * 20 <= b, "built {b}, refused {r}");
+    }
+
+    #[test]
+    /// A flipped wall piece has a NEGATIVE start angle; `inside_solid` used to take the angle
+    /// relative to it without reducing it, and called points inside the piece outside it.
+    fn inside_solid_reads_a_result_whose_wall_pieces_were_flipped() {
+        let part = bored(5.0, None);
+        let Outcome::Built(res) = boolean_planar("subtract", &part, &z_tool(3.0, 4.0, 0.0, 0.0, 12.0)) else { panic!("refused") };
+        let truth = |p: Vec3| {
+            let in_box = p[0].abs() < 20.0 && p[1].abs() < 20.0 && p[2].abs() < 10.0;
+            let in_bore = p[0] * p[0] + p[1] * p[1] < 25.0;
+            let in_tool = (p[0] - 4.0).powi(2) + p[1] * p[1] < 9.0 && p[2] > 0.0 && p[2] < 12.0;
+            in_box && !in_bore && !in_tool
+        };
+        let mut rng = Lcg(5);
+        let mut bad = Vec::new();
+        for _ in 0..4000 {
+            let p = [-9.0 + 18.0 * rng.next(), -9.0 + 18.0 * rng.next(), -10.5 + 21.0 * rng.next()];
+            if ops::inside_solid(&res, p) != truth(p) {
+                bad.push(p);
+            }
+        }
+        assert!(bad.is_empty(), "{} of 4000 points misread, e.g. {:?}", bad.len(), bad.iter().take(3).collect::<Vec<_>>());
+    }
+
+
+    /// Smoke sweep over the WHOLE boolean (older path first): random boxes and vertical
+    /// cylinders under all three operations; any solid it returns must mesh watertight with a
+    /// positive volume. Catches a path that used to refuse only by accident.
+    #[test]
+    fn random_box_and_cylinder_booleans_never_return_an_open_solid() {
+        let mut rng = Lcg(2024);
+        let mut built = 0;
+        for _ in 0..300 {
+            let mut desc = String::new();
+            let mut shape = |rng: &mut Lcg| -> TSolid {
+                let c = [-6.0 + 12.0 * rng.next(), -6.0 + 12.0 * rng.next(), -4.0 + 8.0 * rng.next()];
+                if rng.next() < 0.5 {
+                    let sz = [4.0 + 14.0 * rng.next(), 4.0 + 14.0 * rng.next(), 4.0 + 10.0 * rng.next()];
+                    desc += &format!(" box{sz:?}@{c:?}");
+                    bx(sz, c)
+                } else {
+                    let (r, h) = (2.0 + 6.0 * rng.next(), 4.0 + 12.0 * rng.next());
+                    desc += &format!(" cyl r={r} h={h} @{c:?}");
+                    build::cylinder_solid(c, r, h, [0.0, 0.0, 1.0])
+                }
+            };
+            let (a, b) = (shape(&mut rng), shape(&mut rng));
+            for op in ["union", "subtract", "intersect"] {
+                if let Some(r) = ops::boolean(op, &a, &b) {
+                    built += 1;
+                    assert!(vol(&r) > 0.0, "{op}: non-positive volume");
+                    if let Some(m) = crate::mesh::mesh_solid(&r, 0.05) {
+                        let planar = matches!(boolean_planar(op, &a, &b), Outcome::Built(_));
+                        assert!(ops::check_watertight(&m), "{op}: an open solid was returned (planar path built it: {planar}){desc}");
+                    }
+                }
+            }
+        }
+        eprintln!("legacy smoke: {built} solids returned, all watertight");
+        assert!(built > 300);
+    }
+
+    /// The dispatcher (older path first) on random box pairs: every solid it returns has the closed-form
+    /// volume and a WATERTIGHT mesh. The older path alone left a vertex in the middle of a neighbour's
+    /// edge in about 78% of overlapping pairs, so its mesh had open seams (measured 233 of 300).
+    #[test]
+    fn box_booleans_through_the_dispatcher_have_watertight_meshes() {
+        let mut rng = Lcg(77);
+        for _ in 0..200 {
+            let mut mk = |rng: &mut Lcg| {
+                let (s, c) = ([4.0 + 14.0 * rng.next(), 4.0 + 14.0 * rng.next(), 4.0 + 10.0 * rng.next()], [-6.0 + 12.0 * rng.next(), -6.0 + 12.0 * rng.next(), -4.0 + 8.0 * rng.next()]);
+                (bx(s, c), s, c)
+            };
+            let ((a, sa, ca), (b, sb, cb)) = (mk(&mut rng), mk(&mut rng));
+            let (va, vb) = (sa[0] * sa[1] * sa[2], sb[0] * sb[1] * sb[2]);
+            let vi = overlap(sa, ca, sb, cb);
+            for (op, want) in [("union", va + vb - vi), ("subtract", va - vi), ("intersect", vi)] {
+                let Some(r) = ops::boolean(op, &a, &b) else { continue };
+                assert!((vol(&r) - want).abs() < 1e-7, "{op}: {} vs {want}", vol(&r));
+                let m = crate::mesh::mesh_solid(&r, 0.05).expect("meshes");
+                assert!(ops::check_watertight(&m), "{op}: open mesh, {} faces", r.faces().len());
+            }
+        }
+    }
+
+
+
+
+    #[test]
+    fn a_blind_hole_overlapping_a_slot_builds() {
+        let base = bx([40.0, 40.0, 20.0], [0.0; 3]);
+        let two = sub_op(&sub_op(&base, &z_tool(5.0, 0.0, 0.0, -12.0, 12.0)), &z_tool(3.0, 4.0, 0.0, -12.0, 12.0));
+        // The blind floor cuts the second hole's wall at a height; the cells of the first hole's wall
+        // that share the meeting line must split there too.
+        for tool in [z_tool(3.0, 9.0, 3.0, -2.0, 12.0), z_tool(3.0, -6.0, 2.0, -2.0, 12.0)] {
+            let Outcome::Built(res) = boolean_planar("subtract", &two, &tool) else { panic!("refused") };
+            let m = crate::mesh::mesh_solid(&res, 0.05).expect("meshes");
+            assert!(ops::check_watertight(&m));
+        }
     }
 }
 

@@ -45,6 +45,9 @@ const cases = [
   ['z bore then smaller x bore', 'const b = cuboid(40, 40, 20)\nhole(b, { across: 8 })\nhole(b, { across: 4, along: "x" })', null],
   ['x bore then smaller z bore', 'const b = cuboid(40, 40, 20)\nhole(b, { across: 8, along: "x" })\nhole(b, { across: 4 })', null],
   ['deep blind z bore then x bore', 'const b = cuboid(40, 40, 20)\nhole(b, { across: 8, deep: 14 })\nhole(b, { across: 4, along: "x" })', null],
+  ['two overlapping through holes (a slot)', 'const b = cuboid(40, 40, 20)\nhole(b, { across: 10 })\nhole(b, { across: 6, at: [4, 0] })', null],
+  ['two overlapping blind holes', 'const b = cuboid(40, 40, 20)\nhole(b, { across: 10, deep: 12 })\nhole(b, { across: 6, deep: 8, at: [4, 0] })', null],
+  ['three overlapping holes', 'const b = cuboid(40, 40, 20)\nhole(b, { across: 8 })\nhole(b, { across: 8, at: [6, 0] })\nhole(b, { across: 8, at: [12, 0] })', null],
   ['bored box with the top half removed', 'const b = cuboid(40, 40, 20)\nhole(b, { across: 12 })\nconst c = cuboid(60, 60, 20, { at: [0, 0, 10] })\nsubtract(b, c)', (32000 - Math.PI * 36 * 20) / 2],
 ];
 

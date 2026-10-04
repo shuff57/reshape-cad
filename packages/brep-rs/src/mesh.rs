@@ -1404,7 +1404,53 @@ fn mesh_face(
 }
 
 /// Tessellate a whole solid. All faces must succeed, or the result is `None`.
+/// Whether every directed edge of the mesh has its reverse (a closed surface), vertices
+/// welded to a micron.
+fn mesh_is_closed(m: &Mesh) -> bool {
+    let key = |p: [f64; 3]| [(p[0] / 1e-6).round() as i64, (p[1] / 1e-6).round() as i64, (p[2] / 1e-6).round() as i64];
+    let mut ids: HashMap<[i64; 3], usize> = HashMap::new();
+    let canon: Vec<usize> = m
+        .positions
+        .iter()
+        .map(|p| {
+            let n = ids.len();
+            *ids.entry(key(*p)).or_insert(n)
+        })
+        .collect();
+    let mut dir: HashMap<(usize, usize), i32> = HashMap::new();
+    for t in m.indices.chunks(3) {
+        let v = [canon[t[0] as usize], canon[t[1] as usize], canon[t[2] as usize]];
+        for e in 0..3 {
+            let (a, b) = (v[e], v[(e + 1) % 3]);
+            if a != b {
+                *dir.entry((a, b)).or_insert(0) += 1;
+            }
+        }
+    }
+    dir.iter().all(|(&(a, b), &c)| dir.get(&(b, a)).copied().unwrap_or(0) == c)
+}
+
+/// Tessellate a solid. A planar face is triangulated from its boundary SAMPLED at the chord
+/// tolerance, so a corner lying within that tolerance of a circular arc (an arc 0.05 mm
+/// off a box corner, say) makes the sampled polygon cross itself and the triangulation drops
+/// or overlaps triangles, leaving the mesh open. When the first attempt is not closed it is
+/// retried at a third, then a ninth, of the tolerance; the first attempt stands if none closes.
 pub fn mesh_solid(solid: &TSolid, defl: f64) -> Option<Mesh> {
+    let first = mesh_solid_once(solid, defl)?;
+    if mesh_is_closed(&first) {
+        return Some(first);
+    }
+    for k in 1..=2 {
+        if let Some(finer) = mesh_solid_once(solid, defl / 3f64.powi(k)) {
+            if mesh_is_closed(&finer) {
+                return Some(finer);
+            }
+        }
+    }
+    Some(first)
+}
+
+fn mesh_solid_once(solid: &TSolid, defl: f64) -> Option<Mesh> {
     let mut edges_cache: HashMap<usize, Vec<Vec3>> = HashMap::new();
     for e in solid.edges() {
         let k = std::rc::Rc::as_ptr(&e) as *const () as usize;
