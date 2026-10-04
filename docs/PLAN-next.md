@@ -508,7 +508,7 @@ Three small slices (branch s4i-misc). Sweep (SWEEP_N=1500 per family, pair + per
 - **Defect noted, not changed.** `box(40,40,20)` cut by `cylinder(10, 30, { at: [0, 0, 5] })` turned [0, 90, 0] (a cylinder wholly inside the box, grazing its top face along a line) still builds as an enclosed cavity through the older `subtract_enclosed` path, volume 29643.8 right, but the void touches the surface along a line: a non-manifold skin. It was there before this slice; the planar path refuses the same tunnel when it pokes out. Likewise a cylinder joined to a box face tangent from outside builds through the legacy path (two lumps meeting along a line).
 - **Verified.** cargo test --release 406 (405 + 1); sketch 42, script 262, kernel 932 (802 + 130, 2 skipped), studio 248; gates parity 78/0, mesh 78/0, step 71/0/7, gate:occt 17/0. `docs/refusal-census.json` unchanged (the census test passes as is); `reshape-docs.ts` prose added for the three new capabilities (no example promised to refuse).
 
-## 35. S4g fillet and chamfer on boolean results
+## 35. S4g: fillet and chamfer on boolean results
 
 Branch s4g-fillet-boolean, from main at 5ad82e5. Both parts built; concave (inside) edges are NOT built (see "What remains").
 
