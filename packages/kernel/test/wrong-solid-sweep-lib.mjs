@@ -434,6 +434,20 @@ export async function makeRunner({ occt = true } = {}) {
 
 // ---- classification ------------------------------------------------------------------------------
 export const TOL = { vol: 1e-6, bbox: 1e-6, grid: 0.015 };
+// OpenCascade's `shell` takes a slab off the cavity of a turned part when a chamfer at the CLOSED end is smaller than the wall's own
+// corner already clears (c < w (2 - sqrt2): the chamfer's offset plane then lies outside the cavity and changes nothing). S4f found
+// it against an independent distance-field oracle (cylinder(33.34, 35.75), bevel top 1.09, bevel bottom 3.09, wall 3.47, open
+// bottom: OpenCascade 16143.7, brep-rs 13763.3, the oracle 13701.3 less the open-chamfer sliver), and in every one of 7 random cases the condition names. The referee is
+// blind there, exactly as it is for a counterbore, so the class is AGREE-ANALYTIC-ONLY, never a WRONG for brep-rs.
+export function occtShellBlind(code) {
+  const w = /(?:hollow|shell)\([^)]*wall:\s*([0-9.]+)/.exec(code);
+  if (!w || !/cylinder\(/.test(code)) return false;
+  const open = /open:\s*'(top|bottom)'/.exec(code)?.[1];
+  for (const m of code.matchAll(/(?:bevel|chamfer)\(\w+\.edge\('(top|bottom)',\s*'side'\),\s*([0-9.]+)\)/g))
+    if (m[1] !== open && +m[2] < +w[1] * (2 - Math.SQRT2) - 1e-9) return true;
+  return false;
+}
+
 export function classify(rec) {
   if (rec.scriptError) return { cls: 'SCRIPT-ERROR' };
   if (rec.brepThrow) return { cls: 'BREP-THROW', detail: rec.brepThrow };
@@ -472,7 +486,7 @@ export function classify(rec) {
     return null;
   };
   let occtState, bboxOnly = null, occtWrong = null, nearMiss = null;
-  const recess = /counterbore|countersink/.test(rec.code);
+  const recess = /counterbore|countersink/.test(rec.code) || occtShellBlind(rec.code);
   const occtRefused = rec.occtRefusals && Object.keys(rec.occtRefusals).length > 0;
   if (rec.occt && occtRefused) { occtState = 'occt-refused'; }
   else if (rec.occt && recess) { rec.occtBlind = true; occtState = 'referee-blind'; }

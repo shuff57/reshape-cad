@@ -833,7 +833,7 @@ fn make_face_multi(
 }
 
 /// One face assembled from a surface, a uv domain and a boundary of edge uses.
-fn make_face(
+pub(crate) fn make_face(
     surface: Surface,
     uv_domain: [[f64; 2]; 2],
     uses: Vec<topo::EdgeUse<Curve3>>,

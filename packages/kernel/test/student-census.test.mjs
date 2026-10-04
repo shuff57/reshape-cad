@@ -56,6 +56,19 @@ for (const o of orders) {
     code: `const b = box(40, 40, 20)\n${o.map((n) => op[n]('b')).join('\n')}`,
   });
 }
+// S4f: the same orders on a cylinder (a bushing, a pin): its rims are the 'top' / 'side' and 'bottom' / 'side' edges.
+const cylOp = {
+  hole: (v) => `hole(${v}, { across: 8 })`,
+  round: (v) => `round(${v}.edge('top', 'side'), 3)`,
+  chamfer: (v) => `chamfer(${v}.edge('bottom', 'side'), 3)`,
+  hollow: (v) => `hollow(${v}, { wall: 2.5, open: 'top' })`,
+};
+for (const o of orders) {
+  matrix.push({
+    key: `cylinder: ${o.join(' then ')}`,
+    code: `const c = cylinder(40, 20)\n${o.map((n) => cylOp[n]('c')).join('\n')}`,
+  });
+}
 matrix.push({
   key: 'cylinder: hole along axis',
   code: `const c = cylinder(30, 20)\nhole(c, { across: 6 })`,
@@ -103,6 +116,25 @@ const EXPECT = Object.fromEntries([
   ["matrix box: hollow then hole", 'builds'],
   ["matrix box: hollow then round", "would reach a cut made earlier"],
   ["matrix box: hollow then chamfer", 'builds'], // planar boolean (S1): 11264 - 45 = 11219 exact
+  // S4f: a turned part is a profile turned about its axis, so every order of these four on a cylinder builds exactly
+  // except the ones that cannot: the wall at a ROUNDED open end (its offset has no definite shape, so the round must come
+  // after the hollow), and a round or chamfer wider than the lip a 2.5 wall leaves.
+  ["matrix cylinder: hole", 'builds'],
+  ["matrix cylinder: hole then round", 'builds'],
+  ["matrix cylinder: hole then chamfer", 'builds'],
+  ["matrix cylinder: hole then hollow", 'builds'],
+  ["matrix cylinder: round", 'builds'],
+  ["matrix cylinder: round then hole", 'builds'],
+  ["matrix cylinder: round then chamfer", 'builds'],
+  ["matrix cylinder: round then hollow", "a rounded rim at the open end"],
+  ["matrix cylinder: chamfer", 'builds'],
+  ["matrix cylinder: chamfer then hole", 'builds'],
+  ["matrix cylinder: chamfer then round", 'builds'],
+  ["matrix cylinder: chamfer then hollow", 'builds'],
+  ["matrix cylinder: hollow", 'builds'],
+  ["matrix cylinder: hollow then hole", 'builds'],
+  ["matrix cylinder: hollow then round", "would not fit its edge"],
+  ["matrix cylinder: hollow then chamfer", "would not fit its edge"],
   ["matrix cylinder: hole along axis", 'builds'],
   ["matrix sphere: hole", 'builds'],
 ]);
