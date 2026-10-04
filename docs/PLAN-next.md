@@ -392,3 +392,15 @@ Every script with two crossing holes refused ("cannot cut this hole yet"), the l
   4. A planar face is triangulated from its boundary sampled at the chord tolerance, so a corner within that tolerance of a circular arc makes the sampled polygon cross itself and `earcut` returns the wrong triangles (an open mesh; reproduced, a box corner 0.012 mm inside a cylinder's circle). `mesh_solid` now retries an open result at a third, then a ninth, of the tolerance and keeps the first if none closes.
 - **Gates.** parity 78/0, mesh 78/0, step 71/0/7, occt 17/0 (unchanged); cargo 377 (was 370); kernel 621 (was 598); sketch 9, script 262, studio 243. wasm 953,232 bytes (+6 kB on S3b-2).
 - **Still refused.** A third blind hole nested inside earlier blind holes at different depths, tangent walls, a hole entirely inside an existing bore ("cuts nothing"), and everything listed under S3b-2 and S3.
+
+## 25. Plan (2026-10-03): kernel-driven gap closure, wrong solids first
+
+Reviewed by the critic (first draft rejected for being ordered by lesson need; this is the revised order). reshape-cad is a kernel project: the host app's lessons are not a priority driver.
+
+1. **Wrong-solid sweep.** Extend the census beyond boxes: cylinder and sphere chains, stacked operations, every operation order, random parameters. Oracle: OpenCascade (volume, bbox, face count) plus watertight mesh and 0 open edges; analytic volumes where both kernels could be wrong the same way. A mismatch with an empty refusals map is a bug and is fixed before anything else. Exit: sweep numbers recorded here, every wrong solid fixed or turned into a refusal.
+2. **2D solver audit with tests.** Decide the canonical solver (TS `packages/sketch` or Rust `brep-rs/src/sketch`, which already has DoF in `diagnose.rs`). Oracles: DoF = rank on known sketches (free line 4, dimensioned rectangle 6), redundant vs conflicting buckets, fillet/chamfer at and beyond max radius, arcs, degenerate outlines (self-intersecting, zero-area) each building correctly or refusing in a sentence, pulled fillet meshes closed, area x height closed forms. Add tests (sketch-arc, sketch-outline, sketch-slot have none).
+3. **Fixes from 1 and 2.** Wrong solids first, each as found.
+4. **Refusing chains by generality.** Re-measure the census (it may be stale), then take chains by how many shapes each unlocks. Each slice: OCCT fixture, random sweep with 0 wrong, closed mesh, STEP round trip.
+5. **Defer.** Cones/spheres/tori in a second operation, a round beyond a box, skew axes, tangent walls, oblique planes, wasm size. Measure cylinder union/intersect before deferring.
+
+Constraints unchanged: lead-owned gates are not edited (a sketch-and-pull gate fixture needs the lead's sign-off); a failed guard refuses, never returns a wrong solid.
