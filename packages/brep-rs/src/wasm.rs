@@ -6258,9 +6258,31 @@ fn build_fillet(
  scale(edge_direction, edge_length + 2.0 * size),
  )
  .map_err(|_| FilletErr::NoBox)?;
- ops::boolean("subtract", src, &build::ensure_outward(&tool))
- .map(|solid| build::ensure_outward(&solid))
- .ok_or(FilletErr::NoBox)
+ let tool = build::ensure_outward(&tool);
+ // The tool runs `size` past both ends of the edge, so on a part of several lumps (a mirror, a
+ // pattern) it could reach a neighbouring lump that touches this one and shave it too, which no
+ // chamfer of THIS edge does. It cuts the lump that owns the edge, alone, and puts the lumps back.
+ if src.shells.len() > 1 {
+     let owner = src
+         .shells
+         .iter()
+         .position(|sh| sh.borrow().faces.iter().any(|f| std::rc::Rc::ptr_eq(f, &fa)))
+         .ok_or(FilletErr::NoBox)?;
+     let one = TSolid { shells: vec![src.shells[owner].clone()] };
+     let cut = ops::boolean("subtract", &one, &tool).ok_or(FilletErr::NoBox)?;
+     let mut shells = Vec::new();
+     for (k, sh) in src.shells.iter().enumerate() {
+         if k == owner {
+             shells.extend(cut.shells.iter().cloned());
+         } else {
+             shells.push(sh.clone());
+         }
+     }
+     return Ok(build::ensure_outward(&TSolid { shells }));
+ }
+ ops::boolean("subtract", src, &tool)
+     .map(|solid| build::ensure_outward(&solid))
+     .ok_or(FilletErr::NoBox)
 }
 
 // ---------------------------------------------------------------------------
