@@ -53,7 +53,7 @@ fn aabbs_touch(a: &crate::math::Aabb, b: &crate::math::Aabb) -> bool {
 /// ring (its surface has no finite extent); a curved face uses its surface's
 /// exact box. `None` when the extent cannot be established, which callers must
 /// read as "might interact" rather than "safe to ignore".
-fn face_reach_box(face: &TFace) -> Option<crate::math::Aabb> {
+pub(crate) fn face_reach_box(face: &TFace) -> Option<crate::math::Aabb> {
     let fb = face.borrow();
     let b = match &fb.surface {
         Surface::Plane(_) => {
@@ -120,7 +120,138 @@ pub(crate) fn boxed_in(solid: &TSolid, p: Vec3) -> bool {
     hit >= 4
 }
 
+thread_local! {
+    /// Boxes of faces whose ray-crossing count cannot be trusted (a sphere, torus, cone or trimmed
+    /// wall) that a boolean is carrying through untouched. While non-empty, `inside_solid` votes
+    /// only with rays that miss every box, so those faces cannot be counted at all. If fewer than
+    /// three such rays exist, or they tie, the failure flag is set and the boolean must refuse.
+    pub(crate) static RAY_AVOID: RefCell<Vec<crate::math::Aabb>> = const { RefCell::new(Vec::new()) };
+    pub(crate) static RAY_AVOID_FAILED: std::cell::Cell<bool> = const { std::cell::Cell::new(false) };
+}
+
+/// A face whose ray-crossing count is not exact: anything but a plane and a whole cylinder.
+pub(crate) fn unsafe_surface(f: &TFace) -> bool {
+    match &f.borrow().surface {
+        Surface::Plane(_) => false,
+        Surface::Cylinder(c) => c.arc.is_some() || c.cross.is_some(),
+        _ => true,
+    }
+}
+
+/// Where a face is, as many small boxes: one per triangle of a mesh of it, inflated past the
+/// mesh's chord error. Much tighter than one box for a ring-shaped face (a chamfer's cone, a
+/// rim round), which a single box would make look like a solid block. `None` when it cannot be meshed.
+pub(crate) fn face_cover_boxes(face: &TFace) -> Option<Vec<crate::math::Aabb>> {
+    let reach = face_reach_box(face)?;
+    let diag = crate::math::len(sub(reach.hi, reach.lo));
+    let defl = (0.002 * diag).clamp(0.005, 0.1);
+    let solid = TSolid { shells: vec![Rc::new(RefCell::new(Shell { faces: vec![face.clone()] }))] };
+    let mesh = crate::mesh::mesh_solid(&solid, defl)?;
+    let pad = 3.0 * defl + 1e-6;
+    let mut out = Vec::new();
+    for t in mesh.indices.chunks(3) {
+        let mut b = crate::math::Aabb::empty();
+        for &i in t {
+            b.expand(mesh.positions[i as usize]);
+        }
+        for k in 0..3 {
+            b.lo[k] -= pad;
+            b.hi[k] += pad;
+        }
+        out.push(b);
+    }
+    if out.is_empty() { None } else { Some(out) }
+}
+
+/// The boxes `RAY_AVOID` needs for `solid`: the cover of every face whose ray count is not exact.
+pub(crate) fn unsafe_face_boxes(solid: &TSolid) -> Option<Vec<crate::math::Aabb>> {
+    let mut out = Vec::new();
+    for f in solid.faces() {
+        if unsafe_surface(&f) {
+            out.extend(face_cover_boxes(&f)?);
+        }
+    }
+    Some(out)
+}
+
+/// Does the ray from `p` along `d` (t >= 0) meet the box? Slab test, conservative by a sliver.
+fn ray_meets_box(p: Vec3, d: Vec3, b: &crate::math::Aabb) -> bool {
+    let (mut t0, mut t1) = (0.0f64, f64::INFINITY);
+    for i in 0..3 {
+        let (lo, hi) = (b.lo[i] - 1e-6, b.hi[i] + 1e-6);
+        if d[i].abs() < 1e-15 {
+            if p[i] < lo || p[i] > hi {
+                return false;
+            }
+        } else {
+            let (mut a, mut c) = ((lo - p[i]) / d[i], (hi - p[i]) / d[i]);
+            if a > c {
+                std::mem::swap(&mut a, &mut c);
+            }
+            t0 = t0.max(a);
+            t1 = t1.min(c);
+            if t0 > t1 {
+                return false;
+            }
+        }
+    }
+    true
+}
+
+/// `inside_solid` while `RAY_AVOID` is set: a majority over the generic rays that miss every
+/// avoided box. Counting along such a ray is exact, so the answer is exact; no half-space guess.
+fn inside_solid_avoiding(solid: &TSolid, p: Vec3, avoid: &[crate::math::Aabb]) -> bool {
+    // The ray count is exact for a plane and a whole cylinder. Every other face is left out of
+    // the count; a ray that could meet one of them is skipped below, so leaving it out is exact.
+    let safe = |f: &TFace| match &f.borrow().surface {
+        Surface::Plane(_) => true,
+        Surface::Cylinder(c) => c.arc.is_none() && c.cross.is_none(),
+        _ => false,
+    };
+    let kept: Vec<TFace> = solid.faces().into_iter().filter(|f| safe(f)).collect();
+    let solid = &TSolid { shells: vec![Rc::new(RefCell::new(Shell { faces: kept }))] };
+    let mut dirs: Vec<Vec3> = Vec::new();
+    for axis in 0..3 {
+        for sgn in [1.0, -1.0] {
+            let mut d = [0.0123456789, 0.0234567891, 0.0345678912];
+            d[axis] = sgn;
+            dirs.push(normalize(d));
+            let mut e = [-0.0211, 0.0137, -0.0089];
+            e[axis] = sgn;
+            dirs.push(normalize(e));
+        }
+    }
+    for (a, b, c) in [(1.0, 0.5, 0.25), (0.3, 1.0, 0.7), (0.8123, 0.3517, 0.4671), (-0.62, 0.41, 0.77), (0.55, -0.71, 0.38), (-0.43, -0.52, 0.91)] {
+        dirs.push(normalize([a, b, c]));
+        dirs.push(normalize([-a, -b, -c]));
+    }
+    let (mut odd, mut even, mut used) = (0usize, 0usize, 0usize);
+    for d in dirs {
+        if avoid.iter().any(|b| ray_meets_box(p, d, b)) {
+            continue;
+        }
+        if let Some((n, true)) = crossings(solid, p, d) {
+            used += 1;
+            if n % 2 == 1 {
+                odd += 1;
+            } else {
+                even += 1;
+            }
+        }
+    }
+    // Rays along a face or through an edge can still miscount, so demand a clear majority.
+    if used >= 3 && odd != even && (odd >= 2 * even + 1 || even >= 2 * odd + 1) {
+        return odd > even;
+    }
+    RAY_AVOID_FAILED.with(|f| f.set(true));
+    false
+}
+
 pub(crate) fn inside_solid(solid: &TSolid, p: Vec3) -> bool {
+    let avoid = RAY_AVOID.with(|a| a.borrow().clone());
+    if !avoid.is_empty() {
+        return inside_solid_avoiding(solid, p, &avoid);
+    }
     // One fixed diagonal ray can pass exactly through a shared edge or vertex
     // of the boundary, where two faces both register the crossing and parity
     // flips (a real case: a bore probe at a box's top/side corner). Take a
@@ -5456,8 +5587,15 @@ pub(crate) fn boolean_result_is_sound(op: &str, a: &TSolid, b: &TSolid, r: &TSol
             _ => ia && ib,
  }
  };
- for (faces, is_result) in [(a.faces(), false), (b.faces(), false), (r.faces(), true)] {
+    // While a boolean carries faces the cut never reaches (`RAY_AVOID` set), those faces are
+    // unchanged by construction and cannot be probed from beside them, so they are skipped.
+    let carry_mode = RAY_AVOID.with(|v| !v.borrow().is_empty());
+    let apart = |f: &TFace| carry_mode && unsafe_surface(f);
+    for (faces, is_result) in [(a.faces(), false), (b.faces(), false), (r.faces(), true)] {
         for f in &faces {
+            if apart(f) {
+                continue;
+            }
             // A result face bounds nothing only if EVERY sample says so: a
             // sample can sit on a tangent line of the other operand, where
             // both probes are legitimately inside (tangent-union-cylinder).
@@ -7391,7 +7529,7 @@ fn fully_overlapping_bores_cut_one_bore_exact() {
     /// sentence: the face composition that creates the sphere, and the refusal
     /// itself, so the pair cannot drift apart silently.
     #[test]
-    fn why_bore_through_rounded_box_refuses() {
+    fn bore_through_rounded_box_builds_and_a_wide_one_refuses() {
         let rounded = crate::build::fillet_box(30.0, 20.0, 10.0, 5.0, [0.0, 0.0, 0.0]);
         let (mut n_plane, mut n_cyl, mut n_sphere) = (0, 0, 0);
         for f in rounded.faces() {
@@ -7406,10 +7544,17 @@ fn fully_overlapping_bores_cut_one_bore_exact() {
         assert_eq!(rounded.faces().len(), 26, "6 + 12 + 8");
 
         let drill = crate::build::cylinder_solid([0.0, 0.0, 0.0], 6.0, 24.0, [0.0, 0.0, 1.0]);
-        assert!(
-            crate::ops::boolean("subtract", &rounded, &drill).is_none(),
-            "a cylindrical tool through a rounded box must refuse, not return a wrong solid"
-        );
+        // S4c: it used to refuse. The bore reaches only the flat top and bottom, so every round and
+        // corner sphere is carried through untouched: V = rounded box 60 x 40 x 20 (r 5) - pi 6^2 20.
+        let pi = std::f64::consts::PI;
+        let (x, y, z, r) = (50.0, 30.0, 10.0, 5.0);
+        let rounded_vol = x * y * z + 2.0 * r * (x * y + y * z + x * z) + pi * r * r * (x + y + z) + 4.0 / 3.0 * pi * r * r * r;
+        let want = rounded_vol - pi * 36.0 * 20.0;
+        let cut = crate::ops::boolean("subtract", &rounded, &drill).expect("S4c: a bore clear of the rounds builds");
+        assert!((build::solid_volume(&cut) - want).abs() < 1e-6 * want, "{} vs {want}", build::solid_volume(&cut));
+        // A drill wide enough to reach the rounds still refuses, never returns a wrong solid.
+        let wide = crate::build::cylinder_solid([0.0, 0.0, 0.0], 28.0, 24.0, [0.0, 0.0, 1.0]);
+        assert!(crate::ops::boolean("subtract", &rounded, &wide).is_none(), "a bore across the rounds must refuse");
 
         // Control: the SAME drill through a plain box builds, so the sphere
         // corners are the cause and not the drill size or the through-depth.

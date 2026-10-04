@@ -60,6 +60,20 @@ thread_local! {
     static SKIP_SOUND: std::cell::Cell<bool> = const { std::cell::Cell::new(false) };
 }
 
+thread_local! {
+    static REASON: std::cell::Cell<Option<&'static str>> = const { std::cell::Cell::new(None) };
+}
+
+/// Forget the reason a previous refusal left behind (call before a boolean whose reason will be read).
+pub fn clear_reason() {
+    REASON.with(|r| r.set(None));
+}
+
+/// The plain sentence for the last refusal of `carry_subtract`, if it left one.
+pub fn take_reason() -> Option<&'static str> {
+    REASON.with(|r| r.take())
+}
+
 pub enum Outcome {
     /// An operand has a face or an edge this path does not model.
     NotPlanar,
@@ -2012,6 +2026,12 @@ fn build_result(kept: Vec<Kept>, crossings: &[Crossing], vertex: VertexFn) -> Op
 /// One boolean through the pipeline, then every structural guard. `Ok(None)`
 /// for an empty answer.
 fn core(op: &str, a: &TSolid, b: &TSolid, pa: &[AFace], pb: &[AFace], crossings: &[Crossing]) -> Result<Option<TSolid>, ()> {
+    core_carry(op, a, b, pa, pb, crossings, Vec::new())
+}
+
+/// `core`, with faces of `a` that the cut never reaches (`carry`, copies, adjacent to the faces
+/// in `pa` only through shared edge geometry) added to the result before it is welded and checked.
+fn core_carry(op: &str, a: &TSolid, b: &TSolid, pa: &[AFace], pb: &[AFace], crossings: &[Crossing], carry: Vec<TFace>) -> Result<Option<TSolid>, ()> {
     let (ka, kb): (Box<dyn Fn(Class) -> bool>, Box<dyn Fn(Class) -> bool>) = match op {
         "union" => (Box::new(|c| matches!(c, Class::Outside | Class::OnSame)), Box::new(|c| c == Class::Outside)),
         "subtract" => (Box::new(|c| matches!(c, Class::Outside | Class::OnOpposite)), Box::new(|c| c == Class::Inside)),
@@ -2064,6 +2084,7 @@ fn core(op: &str, a: &TSolid, b: &TSolid, pa: &[AFace], pb: &[AFace], crossings:
         return Ok(None);
     };
     let mut faces = solid.faces();
+    faces.extend(carry);
     ops::drop_degenerate_faces(&mut faces);
     ops::split_t_junctions(&mut faces);
     ops::weld_shared_edges(&mut faces);
@@ -2169,11 +2190,97 @@ fn solid_crossing_boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<Outcome> {
     None
 }
 
+
+/// A subtract from a part that carries faces this module cannot model (a round, a chamfer's cone,
+/// a sphere corner), when the tool never comes near them. The faces the tool's box does not
+/// reach are carried through as copies; the rest must be planes and whole cylinders and go through
+/// `core` as usual. Membership tests on the part count rays only along lines that miss every
+/// face with an untrustworthy count (`ops::RAY_AVOID`), and every guard of the planar path still
+/// applies to the welded whole. `None` means this is not the case (nothing to carry).
+fn carry_subtract(a: &TSolid, b: &TSolid) -> Option<Outcome> {
+    let mut pb = extract(b)?;
+    let tb = build::solid_aabb(b);
+    if tb.is_empty() {
+        return None;
+    }
+    let copy = a.map_geom(&|c| c.clone(), &|s| s.clone());
+    let (mut touched, mut carried): (Vec<TFace>, Vec<TFace>) = (Vec::new(), Vec::new());
+    for f in copy.faces() {
+        let meets = |r: &crate::math::Aabb| (0..3).all(|i| r.lo[i] <= tb.hi[i] + 1e-6 && r.hi[i] >= tb.lo[i] - 1e-6);
+        let apart = if ops::unsafe_surface(&f) {
+            ops::face_cover_boxes(&f).is_some_and(|bs| !bs.iter().any(meets))
+        } else {
+            ops::face_reach_box(&f).is_some_and(|r| !meets(&r))
+        };
+        if apart {
+            carried.push(f);
+        } else {
+            touched.push(f);
+        }
+    }
+    let refuse = |why: &'static str| {
+        REASON.with(|r| r.set(Some(why)));
+        Some(Outcome::Refused)
+    };
+    const CURVED: &str = "the cut reaches a rounded, chamfered or otherwise curved face of the part, which brep-rs cannot cut across yet; drill the part before you round or chamfer it, or keep the hole clear of the curved faces";
+    if carried.is_empty() || touched.is_empty() {
+        return None;
+    }
+    if touched.iter().any(ops::unsafe_surface) {
+        return refuse(CURVED);
+    }
+    let part = TSolid { shells: vec![Rc::new(RefCell::new(Shell { faces: touched }))] };
+    let Some(mut pa) = extract(&part) else {
+        return refuse(CURVED);
+    };
+    let Some(avoid) = ops::unsafe_face_boxes(a) else {
+        return refuse("brep-rs cannot tell where a curved face of the part lies, so it cannot check this cut");
+    };
+    if !find_crossings(&pa, &pb).is_empty() {
+        return refuse("this cut crosses a bore wall of the part, which brep-rs cannot combine with the curved faces elsewhere on the part yet");
+    }
+    if align_circles(&mut pa).is_none() || align_circles(&mut pb).is_none() {
+        return Some(Outcome::Refused);
+    }
+    struct Avoid;
+    impl Drop for Avoid {
+        fn drop(&mut self) {
+            ops::RAY_AVOID.with(|v| v.borrow_mut().clear());
+        }
+    }
+    ops::RAY_AVOID.with(|v| *v.borrow_mut() = avoid);
+    ops::RAY_AVOID_FAILED.with(|f| f.set(false));
+    let _guard = Avoid;
+    let run = || -> Outcome {
+        let Ok(Some(result)) = core_carry("subtract", a, b, &pa, &pb, &[], carried) else {
+            return Outcome::Refused;
+        };
+        let Ok(other) = core("intersect", a, b, &pa, &pb, &[]) else {
+            return Outcome::Refused;
+        };
+        let (va, vm, vo) = (build::solid_volume(a), build::solid_volume(&result), volume_of(&other));
+        if (vm + vo - va).abs() > 1e-9 * va.abs().max(1.0) {
+            return Outcome::Refused;
+        }
+        Outcome::Built(result)
+    };
+    let out = run();
+    if ops::RAY_AVOID_FAILED.with(|f| f.get()) {
+        return refuse("brep-rs cannot tell inside from outside of this part reliably near the cut, so it will not guess");
+    }
+    Some(out)
+}
+
 /// The planar boolean. Besides the structural guards, the answer must agree
 /// with its partner operation by inclusion-exclusion
 /// (V(A+B) + V(A*B) = V(A) + V(B); V(A-B) + V(A*B) = V(A)), which no
 /// face-selection mistake survives unless it is made twice in step.
 pub fn boolean_planar(op: &str, a: &TSolid, b: &TSolid) -> Outcome {
+    if op == "subtract" && extract(a).is_none() {
+        if let Some(out) = carry_subtract(a, b) {
+            return out;
+        }
+    }
     let (Some(mut pa), Some(mut pb)) = (extract(a), extract(b)) else {
         return Outcome::NotPlanar;
     };
@@ -3079,6 +3186,78 @@ mod tests {
         eprintln!("tees anywhere: built {b}, refused {r}");
     }
 
+
+    // ---- S4c: a bore through a part that carries faces this module does not model ----------------
+
+    fn cyl_tool(c: Vec3, r: f64, len: f64) -> TSolid {
+        build::cylinder_solid(c, r, len, [0.0, 0.0, 1.0])
+    }
+
+    /// 40 x 40 x 20 with every edge rounded 3, bored 8 across: 31263.5927 - pi 16 20.
+    #[test]
+    fn s4c_bore_through_a_fully_rounded_box() {
+        let part = build::fillet_box(20.0, 20.0, 10.0, 3.0, [0.0; 3]);
+        let tool = cyl_tool([0.0; 3], 4.0, 30.0);
+        let r = match boolean_planar("subtract", &part, &tool) {
+            Outcome::Built(r) => r,
+            Outcome::Refused => panic!("refused: {:?}", take_reason()),
+            Outcome::NotPlanar => panic!("not planar"),
+        };
+        let want = 31263.592_7 - std::f64::consts::PI * 16.0 * 20.0;
+        assert!((vol(&r) - want).abs() < 1e-3, "{} vs {want}", vol(&r));
+    }
+
+
+    fn chamfered_cylinder() -> TSolid {
+        let profile = [[0.0, 0.0], [20.0, 0.0], [20.0, 17.0], [17.0, 20.0], [0.0, 20.0]];
+        build::revolve_profile(&profile, [0.0, 0.0, 1.0], [1.0, 0.0, 0.0], 360.0).unwrap().0
+    }
+
+    /// Cylinder R 20, h 20, rim chamfer 3 (centre of its box at z = 10), bored 8 down the axis.
+    #[test]
+    fn s4c_bore_through_a_chamfered_cylinder() {
+        let part = chamfered_cylinder();
+        let tool = cyl_tool([0.0, 0.0, 10.0], 4.0, 30.0);
+        let r = match boolean_planar("subtract", &part, &tool) {
+            Outcome::Built(r) => r,
+            _ => panic!("the cone must be carried through"),
+        };
+        let pi = std::f64::consts::PI;
+        let want = pi * 400.0 * 20.0 - 2.0 * pi * (20.0 - 1.0) * 4.5 - pi * 16.0 * 20.0;
+        assert!((vol(&r) - want).abs() < 1e-6 * want, "{} vs {want}", vol(&r));
+        assert!(ops::RAY_AVOID.with(|v| v.borrow().is_empty()), "the ray filter is switched off again");
+    }
+
+    /// A bore that reaches the chamfer cone is refused, never cut wrong, and says why.
+    #[test]
+    fn s4c_a_bore_that_reaches_the_cone_is_refused() {
+        let part = chamfered_cylinder();
+        for (c, r) in [([0.0, 0.0, 10.0], 18.0), ([12.0, 0.0, 10.0], 6.0)] {
+            clear_reason();
+            let out = boolean_planar("subtract", &part, &cyl_tool(c, r, 30.0));
+            assert!(!matches!(out, Outcome::Built(_)), "bore {r} at {c:?} reaches the cone");
+        }
+        let round = build::fillet_box(20.0, 20.0, 10.0, 3.0, [0.0; 3]);
+        clear_reason();
+        assert!(!matches!(boolean_planar("subtract", &round, &cyl_tool([15.0, 0.0, 0.0], 4.0, 30.0)), Outcome::Built(_)));
+        assert!(take_reason().is_some_and(|w| w.contains("curved")), "a sentence is left for the hole to say");
+        assert!(ops::RAY_AVOID.with(|v| v.borrow().is_empty()));
+    }
+
+    /// The membership count must never read a sphere root as a crossing: a point right beside a corner
+    /// sphere of the rounded box is still decided by rays that miss it.
+    #[test]
+    fn s4c_membership_avoids_the_carried_faces() {
+        let part = build::fillet_box(20.0, 20.0, 10.0, 3.0, [0.0; 3]);
+        let avoid = ops::unsafe_face_boxes(&part).expect("covers");
+        assert!(!avoid.is_empty());
+        ops::RAY_AVOID.with(|v| *v.borrow_mut() = avoid);
+        ops::RAY_AVOID_FAILED.with(|f| f.set(false));
+        let inside = ops::inside_solid(&part, [0.0, 0.0, 0.0]);
+        let outside = ops::inside_solid(&part, [0.0, 0.0, 30.0]);
+        let ok = !ops::RAY_AVOID_FAILED.with(|f| f.get());
+        ops::RAY_AVOID.with(|v| v.borrow_mut().clear());
+        assert!(ok && inside && !outside);
+    }
+
 }
-
-

@@ -8,6 +8,7 @@
 use crate::build::{self, TSolid};
 use crate::geom::Surface;
 use crate::ops;
+use crate::ops_planar;
 use crate::history::{self, Fate, History, OpRecord, OpKind, PartRef};
 use crate::topo;
 use crate::math::{add, cross, dot, len, normalize, scale, sub, Vec3};
@@ -1321,6 +1322,7 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 let pieces_before = skin_pieces(&shape);
                 let before_cut = shape.clone();
                 let mut cut = true;
+                ops_planar::clear_reason();
                 for tool in &fused {
                     match subtract_in_lump(&shape, tool).or_else(|| ops::boolean("subtract", &shape, tool)) {
                         Some(result) => shape = result,
@@ -1416,6 +1418,8 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                             "hole {id}: a cone can be drilled down its own axis (z), or beside the axis where the bore stays clear of the sloping wall and ends before the tip; this bore meets the wall in a curve brep-rs cannot carry exactly, or would leave the tip floating loose -- {id} is shown without it."
                         )),
                     );
+                } else if let Some(why) = ops_planar::take_reason() {
+                    refusals.insert(id.clone(), json!(format!("hole {id}: {why} -- {id} is shown without it.")));
                 } else {
                     refusals.insert(
                         id.clone(),
@@ -3025,7 +3029,7 @@ fn cut_missed(before: &TSolid, after: &TSolid, tools: &[&TSolid]) -> bool {
 /// A part made of several separate lumps (the copies of a pattern) takes a cut that lies in ONE
 /// lump by cutting that lump alone and putting the result back beside the others. The general
 /// boolean on the whole multi-lump solid leaves an open shell for a blind bore (K-3); one lump
-/// is the case it handles. Applies only when exactly one lump's bounding box meets the tool's
+/// is the case it handles. Applies when at least one lump's bounding box meets the tool's
 /// and the part has no cavity skin (a lump whose box lies inside another's is a void, left to
 /// the general path). None means "not this case", never a refusal.
 fn subtract_in_lump(shape: &TSolid, tool: &TSolid) -> Option<TSolid> {
@@ -3048,18 +3052,22 @@ fn subtract_in_lump(shape: &TSolid, tool: &TSolid) -> Option<TSolid> {
         }
     }
     let hit: Vec<usize> = (0..boxes.len()).filter(|&i| !apart(&boxes[i], &tb)).collect();
-    if hit.len() != 1 {
+    if hit.is_empty() {
         return None;
     }
-    let i = hit[0];
-    let one = TSolid { shells: vec![shape.shells[i].clone()] };
-    let cut = ops::boolean("subtract", &one, tool)?;
+    // Subtraction distributes over the lumps: (L1 + L2) - T = (L1 - T) + (L2 - T). A tool that
+    // crosses the seam of a mirrored part (two lumps meeting on a plane) is cut out of each lump
+    // in turn, so the coincident seam faces are never asked to weld across lumps.
+    let mut cuts: Vec<Option<TSolid>> = vec![None; shape.shells.len()];
+    for &i in &hit {
+        let one = TSolid { shells: vec![shape.shells[i].clone()] };
+        cuts[i] = Some(ops::boolean("subtract", &one, tool)?);
+    }
     let mut shells = Vec::new();
     for (k, sh) in shape.shells.iter().enumerate() {
-        if k == i {
-            shells.extend(cut.shells.iter().cloned());
-        } else {
-            shells.push(sh.clone());
+        match &cuts[k] {
+            Some(cut) => shells.extend(cut.shells.iter().cloned()),
+            None => shells.push(sh.clone()),
         }
     }
     Some(TSolid { shells })
