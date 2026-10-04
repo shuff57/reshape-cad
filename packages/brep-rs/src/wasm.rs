@@ -2269,6 +2269,7 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 // void runs flush to it (the outer caps become annuli and the
                 // void wall is exposed), closed it is inset at both ends (an
                 // enclosed void shell). Anything else falls to the box path.
+                let mut holes_hollow = false;
                 let inner = ops::cylinder_parts(&src).and_then(|(wall, _c_lo, _c_hi, _, _)| {
                     let axis = crate::math::normalize(wall.axis);
                     // Only a world-z-aligned cylinder takes this arm: the
@@ -2307,18 +2308,46 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     Some(i) => i,
                     None => match shell_inner_box(&src, thickness, open_side) {
                         Some(b) => b,
-                        None => {
-                            refusals.insert(
-                                id.clone(),
-                                json!(format!(
-                                    "brep-rs can only hollow a box or a straight cylinder yet; hollow the plain shape first, then drill it -- {id} is shown without it."
-                                )),
-                            );
-                            continue;
-                        }
+                        // S4d: a box with round holes straight through it hollows too
+                        None => match shell_cavity_holed(&src, thickness, open_side) {
+                            Ok(c) => {
+                                holes_hollow = true;
+                                c
+                            }
+                            Err(why) => {
+                                let text = match why {
+                                    HolesHollow::NotThis => format!(
+                                        "brep-rs can only hollow a box or a straight cylinder yet, with or without round holes straight through it; hollow the plain shape first, then drill it -- {id} is shown without it."
+                                    ),
+                                    HolesHollow::Blind => format!(
+                                        "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- {id} is shown without it."
+                                    ),
+                                    HolesHollow::Crowded => format!(
+                                        "brep-rs cannot hollow {id} at {thickness} thick: the wall that runs round each hole would reach a side of the part or another hole's wall. Use a thinner wall, move the holes apart, or hollow the plain shape first and then drill it -- {id} is shown without it."
+                                    ),
+                                };
+                                refusals.insert(id.clone(), json!(text));
+                                continue;
+                            }
+                        },
                     },
                 };
                 match ops::boolean("subtract", &src, &inner) {
+                    // a hollow of a part with holes is checked against its closed form:
+                    // the part less its cavity, whatever the boolean says
+                    Some(result)
+                        if holes_hollow && {
+                            let want = build::solid_volume(&src) - build::solid_volume(&inner);
+                            (build::solid_volume(&result) - want).abs() > 1e-7 * want.abs().max(1.0)
+                        } =>
+                    {
+                        refusals.insert(
+                            id.clone(),
+                            json!(format!(
+                                "brep-rs cannot hollow {id} yet -- {id} is shown without it."
+                            )),
+                        );
+                    }
                     Some(result) => {
                         let face_fates: Vec<Fate> =
                             src.faces().iter().map(|fc| carry_fate(&result, fc)).collect();
@@ -3380,6 +3409,33 @@ mod tests {
         let bb = build::solid_aabb(solid);
         assert_eq!(bb.lo, [-20.0, -20.0, -10.0], "bbox stays the outer box");
         assert_eq!(bb.hi, [20.0, 20.0, 10.0]);
+    }
+
+    /// S4d: a box with a round bore straight through it hollows. The cavity is the inset box less
+    /// a tube of radius bore + wall, so the wall stays 2 thick round the bore too.
+    /// Closed: 30994.69 less the cavity (36 x 36 x 16 - pi 6^2 16) = 12068.25. The open cases are
+    /// pinned against OpenCascade in packages/kernel/test/hollow-holes.test.mjs.
+    #[test]
+    fn hollow_of_a_drilled_box_runs_a_wall_round_the_bore() {
+        let doc = || {
+            json!({ "features": [
+                { "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0] },
+                { "id": "h1", "kind": "hole", "target": "b1", "diameter": 8.0, "depth": 22.0, "axis": "z" },
+                { "id": "sh1", "kind": "shell", "target": "h1", "thickness": 2.0 },
+            ] })
+        };
+        let pi = std::f64::consts::PI;
+        let (hist, refusals) = build_doc(&doc());
+        assert!(refusals.is_empty(), "closed: {refusals:?}");
+        let want = (32000.0 - 16.0 * pi * 20.0) - (36.0 * 36.0 * 16.0 - 36.0 * pi * 16.0);
+        let vol = build::solid_volume(hist.shapes.get("sh1").unwrap());
+        assert!((vol - want).abs() <= 1e-7 * want, "closed volume {vol} vs {want}");
+        // a bore that stops inside the part still refuses, never a wrong solid
+        let mut blind = doc();
+        blind["features"][1]["depth"] = json!(6.0);
+        blind["features"][1]["center"] = json!([0.0, 0.0, 7.0]);
+        let (_, refusals) = build_doc(&blind);
+        assert!(refusals.get("sh1").and_then(|v| v.as_str()).is_some_and(|t| t.contains("blind hole")), "{refusals:?}");
     }
 
     /// SPEC-brep-shell.md: open-top hollow (open = face b1 +z) is
@@ -5377,6 +5433,12 @@ fn shell_inner_box(src: &TSolid, thickness: f64, skip: Option<(usize, usize)>) -
     if src.faces().len() != 6 {
         return None;
     }
+    inset_box(&bb, thickness, skip)
+}
+
+/// The box `thickness` inside `bb` on every side but `skip`'s, which stays flush
+/// (see `shell_inner_box`). `None` when the wall leaves nothing.
+fn inset_box(bb: &crate::math::Aabb, thickness: f64, skip: Option<(usize, usize)>) -> Option<TSolid> {
     let mut center = bb.center();
     let mut size = bb.size();
     if let Some((axis, sign)) = skip {
@@ -5401,6 +5463,488 @@ fn shell_inner_box(src: &TSolid, thickness: f64, skip: Option<(usize, usize)>) -
         return None;
     }
     Some(build::box_solid(size, center, None))
+}
+
+/// One round bore through an axis-aligned box: runs the whole way along `axis`
+/// (0 = x, 1 = y, 2 = z). `c` is its centre on the other two axes, taken in the
+/// cyclic order (axis+1, axis+2) mod 3.
+#[derive(Clone, Debug)]
+struct ThroughBore {
+    axis: usize,
+    c: [f64; 2],
+    r: f64,
+}
+
+/// Why a part with holes or bevels cannot be hollowed: picks the sentence in the refusal.
+enum HolesHollow {
+    /// Not a box with plain round through bores and flat bevels (a rotated part, a recess, a rim round...).
+    NotThis,
+    /// A hole that stops inside the part: the wall around it is rounded at the floor's rim.
+    Blind,
+    /// The wall will not run clear round the holes or bevels (too near a side, or each other).
+    Crowded,
+}
+
+/// A convex polyhedron as outward-facing polygons (each ring counter-clockwise seen from outside).
+type Rings = Vec<(Vec3, Vec<Vec3>)>;
+
+/// The six faces of an axis-aligned box.
+fn box_rings(lo: Vec3, hi: Vec3) -> Rings {
+    let mut out = Vec::new();
+    for i in 0..3 {
+        let (u, v) = ((i + 1) % 3, (i + 2) % 3);
+        for side in 0..2 {
+            let at = if side == 1 { hi[i] } else { lo[i] };
+            let mut ring: Vec<Vec3> = [(lo, lo), (hi, lo), (hi, hi), (lo, hi)]
+                .iter()
+                .map(|(pu, pv)| {
+                    let mut p = [0.0; 3];
+                    p[i] = at;
+                    p[u] = pu[u];
+                    p[v] = pv[v];
+                    p
+                })
+                .collect();
+            let mut n = [0.0; 3];
+            n[i] = if side == 1 { 1.0 } else { -1.0 };
+            if side == 0 {
+                ring.reverse();
+            }
+            out.push((n, ring));
+        }
+    }
+    out
+}
+
+/// Keep the part of a convex polyhedron with `n . x <= d`: each polygon is clipped, and the cut
+/// is closed with one new face lying in the plane. Returns `None` for a plane that leaves nothing.
+fn clip_rings(rings: &Rings, n: Vec3, d: f64) -> Option<Rings> {
+    let eps = 1e-9;
+    let mut out: Rings = Vec::new();
+    let mut cut: Vec<Vec3> = Vec::new();
+    let mut push_cut = |p: Vec3, cut: &mut Vec<Vec3>| {
+        if !cut.iter().any(|q| crate::math::len(sub(*q, p)) < 1e-7) {
+            cut.push(p);
+        }
+    };
+    for (fn_, ring) in rings {
+        let m = ring.len();
+        let mut kept: Vec<Vec3> = Vec::new();
+        for i in 0..m {
+            let (a, b) = (ring[i], ring[(i + 1) % m]);
+            let (sa, sb) = (dot(n, a) - d, dot(n, b) - d);
+            if sa <= eps {
+                kept.push(a);
+                if sa >= -eps {
+                    push_cut(a, &mut cut);
+                }
+            }
+            if (sa < -eps && sb > eps) || (sa > eps && sb < -eps) {
+                let t = sa / (sa - sb);
+                let p = add(a, scale(sub(b, a), t));
+                kept.push(p);
+                push_cut(p, &mut cut);
+            }
+        }
+        if kept.len() >= 3 {
+            out.push((*fn_, kept));
+        }
+    }
+    if out.is_empty() {
+        return None;
+    }
+    if cut.len() >= 3 {
+        let c = scale(cut.iter().fold([0.0; 3], |acc, p| add(acc, *p)), 1.0 / cut.len() as f64);
+        let e1 = normalize(cross(n, if n[0].abs() < 0.9 { [1.0, 0.0, 0.0] } else { [0.0, 1.0, 0.0] }));
+        let e2 = cross(n, e1);
+        cut.sort_by(|p, q| {
+            let ang = |x: &Vec3| {
+                let r = sub(*x, c);
+                dot(r, e2).atan2(dot(r, e1))
+            };
+            ang(p).partial_cmp(&ang(q)).unwrap()
+        });
+        out.push((n, cut));
+    }
+    Some(out)
+}
+
+/// Volume of a convex polyhedron given as outward rings (divergence theorem over a fan of each).
+fn rings_volume(rings: &Rings) -> f64 {
+    let mut v = 0.0;
+    for (_, ring) in rings {
+        for k in 1..ring.len().saturating_sub(1) {
+            v += dot(ring[0], cross(ring[k], ring[k + 1])) / 6.0;
+        }
+    }
+    v
+}
+
+/// A solid from rings: shared corners are one vertex, and every edge must be used exactly twice.
+fn rings_solid(rings: &Rings) -> Option<TSolid> {
+    let mut pts: Vec<Vec3> = Vec::new();
+    let mut faces: Vec<(Vec3, Vec<usize>)> = Vec::new();
+    for (n, ring) in rings {
+        let mut idx = Vec::new();
+        for p in ring {
+            let i = match pts.iter().position(|q| crate::math::len(sub(*q, *p)) < 1e-7) {
+                Some(i) => i,
+                None => {
+                    pts.push(*p);
+                    pts.len() - 1
+                }
+            };
+            if idx.last() != Some(&i) {
+                idx.push(i);
+            }
+        }
+        if idx.len() > 1 && idx.first() == idx.last() {
+            idx.pop();
+        }
+        if idx.len() >= 3 {
+            faces.push((*n, idx));
+        }
+    }
+    let mut uses: std::collections::HashMap<(usize, usize), usize> = std::collections::HashMap::new();
+    for (_, ring) in &faces {
+        for k in 0..ring.len() {
+            let (a, b) = (ring[k], ring[(k + 1) % ring.len()]);
+            *uses.entry((a.min(b), a.max(b))).or_insert(0) += 1;
+        }
+    }
+    if uses.values().any(|&u| u != 2) || pts.len() + faces.len() != uses.len() + 2 {
+        return None;
+    }
+    Some(build::polyhedron_solid(&pts, &faces))
+}
+
+/// What a hollow reads back from a part: its box, its flat bevels (a chamfer's plane, outward
+/// normal and offset), and its round through bores.
+struct HoledBox {
+    bb: crate::math::Aabb,
+    bores: Vec<ThroughBore>,
+    bevels: Vec<(Vec3, f64)>,
+}
+
+/// Read a box with flat bevels (chamfers) and round THROUGH bores back from its faces: six
+/// axis-aligned outer planes (one per side; a bore's mouth is a hole in one of them), planes at
+/// any other angle (the bevels), and nothing else but whole cylinders that run from one outer
+/// plane to the opposite one. The measured volume must equal the bevelled box less every bore,
+/// the box worked out here from the planes alone, so bores that overlap each other (a cross
+/// bore's shared lump) or a bore a bevel clips are rejected.
+fn read_holed_box(src: &TSolid) -> Result<HoledBox, HolesHollow> {
+    let bb = build::solid_aabb(src);
+    if bb.is_empty() {
+        return Err(HolesHollow::NotThis);
+    }
+    let mut sides = [[0usize; 2]; 3];
+    let mut bores: Vec<ThroughBore> = Vec::new();
+    let mut bevels: Vec<(Vec3, f64)> = Vec::new();
+    let mut blind = false;
+    for f in src.faces() {
+        match &f.borrow().surface {
+            Surface::Plane(p) => {
+                let axis = (0..3).find(|&i| {
+                    p.n[i].abs() > 1.0 - 1e-7
+                        && p.n[(i + 1) % 3].abs() < 1e-7
+                        && p.n[(i + 2) % 3].abs() < 1e-7
+                });
+                let Some(i) = axis else {
+                    // a plane at another angle: a chamfer's face
+                    let n = normalize(p.n);
+                    bevels.push((n, dot(n, p.origin)));
+                    continue;
+                };
+                if (p.origin[i] - bb.hi[i]).abs() <= 1e-6 && p.n[i] > 0.0 {
+                    sides[i][1] += 1;
+                } else if (p.origin[i] - bb.lo[i]).abs() <= 1e-6 && p.n[i] < 0.0 {
+                    sides[i][0] += 1;
+                } else {
+                    // a plane inside the part facing along an axis: a blind hole's floor
+                    // (or a recess shoulder)
+                    blind = true;
+                }
+            }
+            Surface::Cylinder(cy) => {
+                if cy.arc.is_some() || cy.cross.is_some() {
+                    return Err(HolesHollow::NotThis);
+                }
+                let Some(a) = (0..3).find(|&i| cy.axis[i].abs() > 1.0 - 1e-9) else {
+                    return Err(HolesHollow::NotThis);
+                };
+                let ends = [cy.origin[a] + cy.axis[a] * cy.vmin, cy.origin[a] + cy.axis[a] * cy.vmax];
+                let (t0, t1) = (ends[0].min(ends[1]), ends[0].max(ends[1]));
+                if (t0 - bb.lo[a]).abs() > 1e-6 || (t1 - bb.hi[a]).abs() > 1e-6 {
+                    blind = true;
+                    continue;
+                }
+                let b = ThroughBore {
+                    axis: a,
+                    c: [cy.origin[(a + 1) % 3], cy.origin[(a + 2) % 3]],
+                    r: cy.radius,
+                };
+                let dup = bores.iter().any(|o| {
+                    o.axis == b.axis
+                        && (o.c[0] - b.c[0]).abs() < 1e-6
+                        && (o.c[1] - b.c[1]).abs() < 1e-6
+                        && (o.r - b.r).abs() < 1e-6
+                });
+                if !dup {
+                    bores.push(b);
+                }
+            }
+            _ => return Err(HolesHollow::NotThis),
+        }
+    }
+    if blind {
+        return Err(HolesHollow::Blind);
+    }
+    if sides.iter().any(|s| s[0] != 1 || s[1] != 1) || (bores.is_empty() && bevels.is_empty()) {
+        return Err(HolesHollow::NotThis);
+    }
+    // closed-form check: the part is the bevelled box less its bores, nothing overlapping
+    let mut poly = box_rings(bb.lo, bb.hi);
+    for (n, d) in &bevels {
+        poly = clip_rings(&poly, *n, *d).ok_or(HolesHollow::NotThis)?;
+    }
+    let size = bb.size();
+    let mut want = rings_volume(&poly);
+    for b in &bores {
+        want -= std::f64::consts::PI * b.r * b.r * size[b.axis];
+        // the bore must lie wholly inside the box
+        for k in 0..2 {
+            let ax = (b.axis + 1 + k) % 3;
+            if b.c[k] - b.r < bb.lo[ax] + 1e-6 || b.c[k] + b.r > bb.hi[ax] - 1e-6 {
+                return Err(HolesHollow::NotThis);
+            }
+        }
+    }
+    let vol = build::solid_volume(src);
+    if (vol - want).abs() > 1e-7 * want.abs().max(1.0) {
+        return Err(HolesHollow::NotThis);
+    }
+    // every face plane must be a supporting plane of the whole part, or the part is not
+    // convex and "every plane moved in" is not its inward offset
+    for f in src.faces() {
+        for p in build::face_ring_points(&f.borrow()) {
+            if bevels.iter().any(|(n, d)| dot(*n, p) > *d + 1e-6) {
+                return Err(HolesHollow::NotThis);
+            }
+        }
+    }
+    Ok(HoledBox { bb, bores, bevels })
+}
+
+/// The cavity a hollow of a box with flat bevels and round through bores cuts out: the inset box
+/// with each bevel's plane moved in by the wall (the offset of a convex part is the meet of its
+/// planes moved in), less a tube of radius `bore + thickness` round every bore. That is the
+/// part's own surface moved inward by the wall, so the wall stays `thickness` thick everywhere,
+/// round each bore too. Exact only while each tube stays clear of the inset box's sides, the
+/// moved-in bevels and the other tubes (otherwise the cavity is cut through, a different shape),
+/// and the built cavity is checked against its closed-form volume before it is used.
+fn shell_cavity_with_bores(
+    src: &TSolid,
+    thickness: f64,
+    skip: Option<(usize, usize)>,
+) -> Result<TSolid, HolesHollow> {
+    let HoledBox { bb, bores, bevels } = read_holed_box(src)?;
+    let inner_box = inset_box(&bb, thickness, skip).ok_or(HolesHollow::NotThis)?;
+    let ib = build::solid_aabb(&inner_box);
+    let isize = ib.size();
+    let pi = std::f64::consts::PI;
+    let margin = 1e-6;
+    // the inset box, each bevel moved in by the wall
+    let mut poly = box_rings(ib.lo, ib.hi);
+    let mut moved: Vec<(Vec3, f64)> = Vec::new();
+    for (n, d) in &bevels {
+        let dd = d - thickness;
+        let corners = box_rings(ib.lo, ib.hi);
+        let far = corners
+            .iter()
+            .flat_map(|(_, r)| r.iter())
+            .map(|p| dot(*n, *p) - dd)
+            .fold(f64::NEG_INFINITY, f64::max);
+        if far < -margin {
+            continue; // the moved-in bevel misses the cavity altogether
+        }
+        if far.abs() <= margin {
+            return Err(HolesHollow::Crowded); // it just touches a corner: neither a cut nor clear
+        }
+        poly = clip_rings(&poly, *n, dd).ok_or(HolesHollow::Crowded)?;
+        moved.push((*n, dd));
+    }
+    // every tube must sit strictly inside the cavity: the inset box and the moved-in bevels
+    for b in &bores {
+        let big = b.r + thickness;
+        for k in 0..2 {
+            let ax = (b.axis + 1 + k) % 3;
+            if b.c[k] - big < ib.lo[ax] + margin || b.c[k] + big > ib.hi[ax] - margin {
+                return Err(HolesHollow::Crowded);
+            }
+        }
+        let mut axis = [0.0; 3];
+        axis[b.axis] = 1.0;
+        let mut p0 = [0.0; 3];
+        p0[(b.axis + 1) % 3] = b.c[0];
+        p0[(b.axis + 2) % 3] = b.c[1];
+        for (n, dd) in &moved {
+            let side = (1.0 - dot(*n, axis).powi(2)).max(0.0).sqrt();
+            let mut reach = f64::NEG_INFINITY;
+            for end in [ib.lo[b.axis], ib.hi[b.axis]] {
+                let mut p = p0;
+                p[b.axis] = end;
+                reach = reach.max(dot(*n, p) + big * side);
+            }
+            if reach > dd - margin {
+                return Err(HolesHollow::Crowded);
+            }
+        }
+    }
+    // tubes must not touch each other
+    for i in 0..bores.len() {
+        for j in (i + 1)..bores.len() {
+            let (p, q) = (&bores[i], &bores[j]);
+            let reach = p.r + q.r + 2.0 * thickness + margin;
+            let near = if p.axis == q.axis {
+                let (dx, dy) = (p.c[0] - q.c[0], p.c[1] - q.c[1]);
+                (dx * dx + dy * dy).sqrt() < reach
+            } else {
+                // two axis-aligned lines on different axes pass each other at the
+                // distance between their coordinates on the third axis
+                let k = 3 - p.axis - q.axis;
+                let cp = p.c[(k + 3 - p.axis - 1) % 3];
+                let cq = q.c[(k + 3 - q.axis - 1) % 3];
+                (cp - cq).abs() < reach
+            };
+            if near {
+                return Err(HolesHollow::Crowded);
+            }
+        }
+    }
+    let mut cavity = if moved.is_empty() {
+        inner_box.clone()
+    } else {
+        rings_solid(&poly).ok_or(HolesHollow::NotThis)?
+    };
+    let mut want = rings_volume(&poly);
+    if (build::solid_volume(&cavity) - want).abs() > 1e-7 * want.abs().max(1.0) {
+        return Err(HolesHollow::NotThis);
+    }
+    for b in &bores {
+        let big = b.r + thickness;
+        let mut centre = ib.center();
+        centre[(b.axis + 1) % 3] = b.c[0];
+        centre[(b.axis + 2) % 3] = b.c[1];
+        let mut axis = [0.0; 3];
+        axis[b.axis] = 1.0;
+        // overshoot both ends of the cavity so the tube leaves it cleanly
+        let len = isize[b.axis] + 2.0 * thickness;
+        let tube = build::cylinder_solid(centre, big, len, axis);
+        cavity = ops::boolean("subtract", &cavity, &tube).ok_or(HolesHollow::NotThis)?;
+        want -= pi * big * big * isize[b.axis];
+    }
+    let have = build::solid_volume(&cavity);
+    if (have - want).abs() > 1e-7 * want.abs().max(1.0) {
+        return Err(HolesHollow::NotThis);
+    }
+    Ok(cavity)
+}
+
+/// The cavity of a hollow of a straight round part (axis z) with one coaxial
+/// bore straight through it, a tube: the inner cylinder (radius R - wall, the
+/// open side flush) less a coaxial tube of radius r + wall. Exactly the box
+/// case's offset, and checked against its closed form in the same way.
+fn shell_cavity_cyl_bore(
+    src: &TSolid,
+    thickness: f64,
+    skip: Option<(usize, usize)>,
+) -> Result<TSolid, HolesHollow> {
+    let faces = src.faces();
+    if faces.len() != 4 {
+        return Err(HolesHollow::NotThis);
+    }
+    let bb = build::solid_aabb(src);
+    let mut cyls: Vec<crate::geom::Cylinder> = Vec::new();
+    let mut planes = [0usize; 2];
+    for f in &faces {
+        match &f.borrow().surface {
+            Surface::Cylinder(cy) if cy.arc.is_none() && cy.cross.is_none() => cyls.push(cy.clone()),
+            Surface::Plane(p) if p.n[2].abs() > 1.0 - 1e-9 => {
+                if (p.origin[2] - bb.hi[2]).abs() <= 1e-6 && p.n[2] > 0.0 {
+                    planes[1] += 1;
+                } else if (p.origin[2] - bb.lo[2]).abs() <= 1e-6 && p.n[2] < 0.0 {
+                    planes[0] += 1;
+                } else {
+                    return Err(HolesHollow::NotThis);
+                }
+            }
+            _ => return Err(HolesHollow::NotThis),
+        }
+    }
+    if cyls.len() != 2 || planes != [1, 1] {
+        return Err(HolesHollow::NotThis);
+    }
+    let (outer, inner) = if cyls[0].radius > cyls[1].radius { (&cyls[0], &cyls[1]) } else { (&cyls[1], &cyls[0]) };
+    let (big_r, bore_r) = (outer.radius, inner.radius);
+    let same = |a: &crate::geom::Cylinder, b: &crate::geom::Cylinder| {
+        (a.axis[2].abs() > 1.0 - 1e-9)
+            && (a.origin[0] - b.origin[0]).abs() < 1e-6
+            && (a.origin[1] - b.origin[1]).abs() < 1e-6
+            && (a.origin[2] + a.axis[2] * a.vmin - (b.origin[2] + b.axis[2] * b.vmin)).abs() < 1e-6
+            && (a.vmax - a.vmin - (b.vmax - b.vmin)).abs() < 1e-6
+    };
+    if !same(outer, inner) || (big_r - bore_r).abs() < 1e-9 {
+        return Err(HolesHollow::NotThis);
+    }
+    let h = bb.size()[2];
+    let pi = std::f64::consts::PI;
+    let want_part = pi * (big_r * big_r - bore_r * bore_r) * h;
+    if (build::solid_volume(src) - want_part).abs() > 1e-7 * want_part.max(1.0)
+        || (bb.size()[0] - 2.0 * big_r).abs() > 1e-6
+        || (bb.size()[1] - 2.0 * big_r).abs() > 1e-6
+    {
+        return Err(HolesHollow::NotThis);
+    }
+    // the open side of a round part is its +z cap (the only one the plain cylinder hollows)
+    let (vlo, vhi) = match skip {
+        None => (bb.lo[2] + thickness, bb.hi[2] - thickness),
+        Some((2, 1)) => (bb.lo[2] + thickness, bb.hi[2]),
+        _ => return Err(HolesHollow::NotThis),
+    };
+    let (cavity_r, tube_r) = (big_r - thickness, bore_r + thickness);
+    if vhi - vlo <= 1e-9 || cavity_r <= 1e-9 {
+        return Err(HolesHollow::NotThis);
+    }
+    if tube_r >= cavity_r - 1e-6 {
+        return Err(HolesHollow::Crowded);
+    }
+    let centre = [
+        0.5 * (bb.lo[0] + bb.hi[0]),
+        0.5 * (bb.lo[1] + bb.hi[1]),
+        0.5 * (vlo + vhi),
+    ];
+    let z = [0.0, 0.0, 1.0];
+    let inner_cyl = build::cylinder_solid(centre, cavity_r, vhi - vlo, z);
+    let tube = build::cylinder_solid(centre, tube_r, vhi - vlo + 2.0 * thickness, z);
+    let cavity = ops::boolean("subtract", &inner_cyl, &tube).ok_or(HolesHollow::NotThis)?;
+    let want = pi * (cavity_r * cavity_r - tube_r * tube_r) * (vhi - vlo);
+    if (build::solid_volume(&cavity) - want).abs() > 1e-7 * want.max(1.0) {
+        return Err(HolesHollow::NotThis);
+    }
+    Ok(cavity)
+}
+
+/// The cavity for a part with round holes: a box with bores through it, or a
+/// round part with a coaxial bore.
+fn shell_cavity_holed(
+    src: &TSolid,
+    thickness: f64,
+    skip: Option<(usize, usize)>,
+) -> Result<TSolid, HolesHollow> {
+    match shell_cavity_with_bores(src, thickness, skip) {
+        Err(HolesHollow::NotThis) => shell_cavity_cyl_bore(src, thickness, skip),
+        other => other,
+    }
 }
 
 /// Resolve the `between` pair of faces a fillet `edge` name points at, reusing

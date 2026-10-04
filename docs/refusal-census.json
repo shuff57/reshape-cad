@@ -63,9 +63,7 @@
     "builds": true
   },
   "matrix box: hole then hollow": {
-    "refused": {
-      "shell1": "brep-rs can only hollow a box or a straight cylinder yet; hollow the plain shape first, then drill it -- shell1 is shown without it."
-    }
+    "builds": true
   },
   "matrix box: round": {
     "builds": true
@@ -80,7 +78,7 @@
   },
   "matrix box: round then hollow": {
     "refused": {
-      "shell1": "brep-rs can only hollow a box or a straight cylinder yet; hollow the plain shape first, then drill it -- shell1 is shown without it."
+      "shell1": "brep-rs can only hollow a box or a straight cylinder yet, with or without round holes straight through it; hollow the plain shape first, then drill it -- shell1 is shown without it."
     }
   },
   "matrix box: chamfer": {
@@ -95,9 +93,7 @@
     }
   },
   "matrix box: chamfer then hollow": {
-    "refused": {
-      "shell1": "brep-rs can only hollow a box or a straight cylinder yet; hollow the plain shape first, then drill it -- shell1 is shown without it."
-    }
+    "builds": true
   },
   "matrix box: hollow": {
     "builds": true

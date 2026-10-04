@@ -124,7 +124,7 @@ const CUT_FACES = {
   },
   'drilling/holes: multiple holes': { hole1: { faces: 10 } }, // 6 + 4 bore walls
   // hole1: a box with an 8 mm bore (6 + wall = 7), rounded after; hole2: shell + through hole.
-  'hollowing/The order that always builds': { hole1: { faces: 7 }, hole2: { faces: 14 } },
+  'hollowing/The order that always builds': { hole1: { faces: 7 }, hole2: { faces: 14 }, hole3: { faces: 7 } }, // hole3: the drilled box the S4d hollow then runs a wall round
   // sphere through its centre: zone + bore wall; cylinder across: pierced wall + bore wall + two caps; cone down its axis: base annulus + bore wall + cone band.
   'drilling/hole: round parts': { hole1: { faces: 2 }, hole2: { faces: 4 }, hole3: { faces: 3 } },
   'sketches/pocket: cutting a sketch into a shape': { pocket1: { faces: 11 } }, // 6 + 4 + floor
