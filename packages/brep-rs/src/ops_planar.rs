@@ -1014,13 +1014,13 @@ struct Grid {
     vs: Vec<f64>,
 }
 
-fn wall_grid(f: &CFace, other: &[AFace], skip: Option<usize>) -> Result<Grid, ()> {
+fn wall_grid(f: &CFace, other: &[AFace], skip: &dyn Fn(usize) -> bool) -> Result<Grid, ()> {
     let c = &f.cyl;
     let me = aabb_cyl(c);
     let tol = EPS / c.radius;
     let (mut us, mut vs) = (Vec::new(), Vec::new());
     for (gi, g) in other.iter().enumerate() {
-        if skip == Some(gi) {
+        if skip(gi) {
             continue; // the crossing cylinder is handled as a pair
         }
         if !boxes_meet(&me, &aabb(g)) {
@@ -1287,7 +1287,19 @@ const CROSS_MAX_RATIO: f64 = 0.95;
 /// A bore wall `W` (inward-facing wall of a hole in solid A) crossed by a tool
 /// cylinder `T` (solid B) at right angles, T's axis through W's axis, T narrower
 /// than W. Frames are rewritten to `n = a x d`: W `(n, d)`, T `(n, a)`.
+#[derive(Clone, Copy, PartialEq, Debug)]
+enum Mode {
+    /// A tool bore pierces a bore wall of a block (subtract).
+    Bore,
+    /// Two SOLID cylinders at right angles: keep everything outside the other (union).
+    Union,
+    /// Two solid cylinders at right angles: keep what is inside the other (intersect).
+    Intersect,
+}
+
+#[derive(Clone, Debug)]
 struct Crossing {
+    mode: Mode,
     wi: usize,
     ti: usize,
     a: Vec3,
@@ -1357,7 +1369,62 @@ fn find_crossings(pa: &[AFace], pb: &[AFace]) -> Vec<Crossing> {
             if !plus && !minus {
                 continue;
             }
-            out.push(Crossing { wi, ti, a, d, n: normalize(cross(a, d)), big_r, r, p0, c_v, xl, xh, plus, minus });
+            out.push(Crossing { mode: Mode::Bore, wi, ti, a, d, n: normalize(cross(a, d)), big_r, r, p0, c_v, xl, xh, plus, minus });
+        }
+    }
+    out
+}
+
+/// Two SOLID cylinders at right angles whose axes meet, the small one (r <= 0.95 R) laid across the
+/// big one's side clear of its caps (S4e). Each end of the small one either clears the big one
+/// (`>= R`, flush counts) or stops inside it (`|x| <= sqrt(R^2 - r^2)`, short of the nearest the
+/// meeting curve comes); at least one clears it. `plus`/`minus` say which ends clear. The mode is
+/// set by the caller.
+fn find_solid_crossings(pa: &[AFace], pb: &[AFace]) -> Vec<Crossing> {
+    let mut out = Vec::new();
+    for (wi, fw) in pa.iter().enumerate() {
+        let AFace::Cyl(w) = fw else { continue };
+        if cyl_hand(&w.cyl) <= 0.0 || w.span < TAU - 1e-9 || w.cyl.cross.is_some() || w.cyl.arc.is_some() {
+            continue;
+        }
+        for (ti, ft) in pb.iter().enumerate() {
+            let AFace::Cyl(t) = ft else { continue };
+            if cyl_hand(&t.cyl) <= 0.0 || t.span < TAU - 1e-9 || t.cyl.cross.is_some() || t.cyl.arc.is_some() {
+                continue;
+            }
+            let (wc, tc) = (&w.cyl, &t.cyl);
+            let (a, d) = (normalize(wc.axis), normalize(tc.axis));
+            if dot(a, d).abs() > 1e-9 {
+                continue;
+            }
+            let (big_r, r) = (wc.radius, tc.radius);
+            if r < 1e-6 * big_r || r > big_r * CROSS_MAX_RATIO {
+                continue;
+            }
+            let delta = sub(tc.origin, wc.origin);
+            if dot(delta, normalize(cross(a, d))).abs() > 1e-9 * big_r.max(1.0) {
+                continue; // skew axes
+            }
+            let c_v = dot(delta, a);
+            let p0 = add(wc.origin, scale(a, c_v));
+            let m = 1e-6 * big_r;
+            if !(c_v - r > wc.vmin + m && c_v + r < wc.vmax - m) {
+                continue;
+            }
+            // The tool's ends along d from p0, the way d points (tc.axis may be -d).
+            let x0 = dot(sub(tc.origin, p0), d);
+            let sg = dot(tc.axis, d).signum();
+            let (e1, e2) = (x0 + sg * tc.vmin, x0 + sg * tc.vmax);
+            let (xl, xh) = (e1.min(e2), e1.max(e2));
+            let s0 = (big_r * big_r - r * r).sqrt();
+            let tol = 1e-9 * big_r.max(1.0);
+            let plus = xh >= big_r - tol;
+            let minus = xl <= -(big_r - tol);
+            let ok_end = |x: f64, clears: bool| clears || x.abs() <= s0 - m;
+            if !(plus || minus) || !ok_end(xh, plus) || !ok_end(xl, minus) {
+                continue;
+            }
+            out.push(Crossing { mode: Mode::Union, wi, ti, a, d, n: normalize(cross(a, d)), big_r, r, p0, c_v, xl, xh, plus, minus });
         }
     }
     out
@@ -1369,7 +1436,8 @@ fn reframe(pa: &mut [AFace], pb: &mut [AFace], cs: &[Crossing]) {
     for c in cs {
         if let AFace::Cyl(w) = &mut pa[c.wi] {
             w.cyl.e1 = c.n;
-            w.cyl.e2 = c.d;
+            // A bore wall faces the void (left-handed frame); a solid cylinder's own wall faces out.
+            w.cyl.e2 = if c.mode == Mode::Bore { c.d } else { scale(c.d, -1.0) };
             w.u0 = 0.0;
             w.span = TAU;
             w.cyl.arc = None;
@@ -1535,6 +1603,157 @@ fn cross_pair(cr: &Crossing, w: &CFace, t: &CFace, a_solid: &TSolid, b_solid: &T
     Ok(out)
 }
 
+/// The faces two crossing SOLID cylinders make (S4e), all with outward normals.
+///
+/// Union keeps the big wall with a hole where the small one goes through (`Cross::Wall`, frame
+/// `(n, -d)`) and the small wall between the meeting curve and each flat end that clears the big
+/// cylinder (`Cross::Tool`, frame `(n, a)`). Intersect keeps what lies inside the other: for the
+/// big wall one `Cross::Patch` per hole, for the small wall the strips between the meeting curve
+/// and a flat end that stops inside, or between the two curves. Both share the meeting-curve loops
+/// by handle.
+fn cross_pair_solid(cr: &Crossing, w: &CFace, t: &CFace, a_solid: &TSolid, b_solid: &TSolid, tgrid: &Grid, vertex: VertexFn) -> Result<Vec<Kept>, ()> {
+    let (a, d, n, big_r, r, p0) = (cr.a, cr.d, cr.n, cr.big_r, cr.r, cr.p0);
+    let union = cr.mode == Mode::Union;
+    let s0 = (big_r * big_r - r * r).sqrt();
+    let (wc, tc) = (&w.cyl, &t.cyl);
+    let m = 1e-6 * big_r;
+    let tol = 1e-9 * big_r.max(1.0);
+    if !tgrid.us.is_empty() || !tgrid.vs.is_empty() {
+        bail!();
+    }
+    let curve = |sign: f64| Curve::CylCyl { center: p0, d, n, a, big_r, r, sign };
+    let mk = |sign: f64, vertex: &mut dyn FnMut(Vec3) -> topo::VertexRef| -> CurveEdge {
+        let tip = curve(sign).point_at(0.0);
+        let v = vertex(tip);
+        (topo::edge(v.clone(), v.clone(), true, curve(sign)), v, tip)
+    };
+    let loop_p: Option<CurveEdge> = if cr.plus { Some(mk(1.0, vertex)) } else { None };
+    let loop_m: Option<CurveEdge> = if cr.minus { Some(mk(-1.0, vertex)) } else { None };
+    let z = Pcurve { start: [0.0, 0.0], end: [0.0, 0.0], mid: [0.0, 0.0] };
+    let us = |e: &topo::EdgeRef<crate::build::Curve3>, forward: bool| topo::EdgeUse { edge: e.clone(), forward, pcurve: z };
+    let wire = |uses: Vec<topo::EdgeUse<crate::build::Curve3>>| Rc::new(RefCell::new(Wire { edges: uses }));
+    let tau = TAU;
+    let mut out = Vec::new();
+    let wall_surface = |cross: crate::geom::Cross| {
+        Surface::Cylinder(Cylinder { origin: wc.origin, axis: a, e1: n, e2: scale(d, -1.0), radius: big_r, vmin: wc.vmin, vmax: wc.vmax, arc: None, cross: Some(cross) })
+    };
+
+    // --- the big wall ---------------------------------------------------------
+    if union {
+        let ring = |v: f64| add(wc.origin, scale(a, v));
+        let (p_lo, p_hi) = (add(ring(wc.vmin), scale(n, big_r)), add(ring(wc.vmax), scale(n, big_r)));
+        let (v_rb, v_rt) = (vertex(p_lo), vertex(p_hi));
+        let seam_w = topo::edge(v_rb.clone(), v_rt.clone(), true, Curve::Segment { a: p_lo, b: p_hi });
+        let rim = |v: f64, at: &topo::VertexRef| topo::edge(at.clone(), at.clone(), true, Curve::Arc { center: ring(v), radius: big_r, normal: a, x_axis: n, sweep: tau });
+        let (rim_lo, rim_hi) = (rim(wc.vmin, &v_rb), rim(wc.vmax, &v_rt));
+        let mut wires = vec![wire(vec![us(&seam_w, true), us(&rim_hi, true), us(&seam_w, false), us(&rim_lo, false)])];
+        for l in [&loop_p, &loop_m].into_iter().flatten() {
+            wires.push(wire(vec![us(&l.0, false)]));
+        }
+        // A wall point at the seam is outside the small cylinder, so the wall is kept whole less its holes.
+        if ops::inside_solid(b_solid, cyl_pt(wc, 0.0, 0.5 * (wc.vmin + wc.vmax))) {
+            bail!();
+        }
+        out.push(Kept::Wall(Rc::new(RefCell::new(Face {
+            boundary: wires,
+            forward: true,
+            surface: wall_surface(crate::geom::Cross::Wall { r, c_v: cr.c_v, plus: cr.plus, minus: cr.minus }),
+            uv_domain: [[0.0, tau], [0.0, 1.0]],
+        }))));
+    } else {
+        for (l, plus) in [(&loop_p, true), (&loop_m, false)] {
+            let Some(l) = l else { continue };
+            out.push(Kept::Wall(Rc::new(RefCell::new(Face {
+                boundary: vec![wire(vec![us(&l.0, true)])],
+                forward: true,
+                surface: wall_surface(crate::geom::Cross::Patch { r, c_v: cr.c_v, plus, minus: !plus }),
+                uv_domain: [[0.0, tau], [0.0, 1.0]],
+            }))));
+        }
+    }
+
+    // --- the small wall: strips between levels along its axis -----------------
+    let mut levels: Vec<(f64, Lvl)> = Vec::new();
+    for c in [tc.vmin, tc.vmax] {
+        if !(c.abs() >= big_r - tol || c.abs() <= s0 - m) {
+            bail!();
+        }
+        levels.push((c, Lvl::Const(c)));
+    }
+    if cr.plus {
+        levels.push((s0, Lvl::Curve(1.0)));
+    }
+    if cr.minus {
+        levels.push((-s0, Lvl::Curve(-1.0)));
+    }
+    levels.sort_by(|x, y| x.0.partial_cmp(&y.0).unwrap());
+    levels.dedup_by(|x, y| matches!((x.1, y.1), (Lvl::Const(_), Lvl::Const(_))) && (x.0 - y.0).abs() < tol);
+    for pair in levels.windows(2) {
+        let ((k1, l1), (k2, l2)) = (pair[0], pair[1]);
+        if k2 - k1 < tol {
+            continue;
+        }
+        let mid = add(add(p0, scale(d, 0.5 * (k1 + k2))), scale(n, r));
+        let inside = ops::inside_solid(a_solid, mid);
+        if inside == union {
+            // Union keeps what is outside the big cylinder, intersect what is inside it.
+            continue;
+        }
+        let tool_face = |uses: Vec<topo::EdgeUse<crate::build::Curve3>>, lo: Option<f64>, hi: Option<f64>, lo_sign: f64, hi_sign: f64, vmin: f64, vmax: f64| -> Kept {
+            Kept::Wall(Rc::new(RefCell::new(Face {
+                boundary: vec![wire(uses)],
+                forward: true,
+                surface: Surface::Cylinder(Cylinder {
+                    origin: p0,
+                    axis: d,
+                    e1: n,
+                    e2: a,
+                    radius: r,
+                    vmin,
+                    vmax,
+                    arc: None,
+                    cross: Some(crate::geom::Cross::Tool { big_r, lo, hi, lo_sign, hi_sign }),
+                }),
+                uv_domain: [[0.0, tau], [0.0, 1.0]],
+            })))
+        };
+        match (l1, l2) {
+            (Lvl::Const(_), Lvl::Const(_)) => bail!(),
+            (Lvl::Curve(_), Lvl::Curve(_)) => {
+                // Only the part of the small wall between the two meeting curves (intersect, through).
+                let (Some(lp), Some(lm)) = (&loop_p, &loop_m) else { bail!() };
+                let seam_t = topo::edge(lm.1.clone(), lp.1.clone(), true, Curve::Segment { a: lm.2, b: lp.2 });
+                let uses = vec![us(&seam_t, false), us(&lm.0, false), us(&seam_t, true), us(&lp.0, false)];
+                out.push(tool_face(uses, None, None, -1.0, 1.0, -big_r, big_r));
+            }
+            (c_lo, c_hi) => {
+                let (c, sign, const_is_lo) = match (c_lo, c_hi) {
+                    (Lvl::Const(c), Lvl::Curve(s)) => (c, s, true),
+                    (Lvl::Curve(s), Lvl::Const(c)) => (c, s, false),
+                    _ => bail!(),
+                };
+                let (lp, tip_v, tip_p) = match if sign > 0.0 { &loop_p } else { &loop_m } {
+                    Some(l) => (l.0.clone(), l.1.clone(), l.2),
+                    None => bail!(),
+                };
+                let seam_pt = add(add(p0, scale(d, c)), scale(n, r));
+                let v_c = vertex(seam_pt);
+                let circle = topo::edge(v_c.clone(), v_c.clone(), true, Curve::Arc { center: add(p0, scale(d, c)), radius: r, normal: scale(d, -1.0), x_axis: n, sweep: tau });
+                let seam_t = topo::edge(tip_v.clone(), v_c.clone(), true, Curve::Segment { a: tip_p, b: seam_pt });
+                // The loop runs the same way on both faces that share it: forward here for the strip
+                // outside the big cylinder (union), reversed for the one inside it (intersect).
+                let uses = vec![us(&lp, union), us(&seam_t, true), us(&circle, true), us(&seam_t, false)];
+                let (lo, hi, lo_sign, hi_sign) = if const_is_lo { (Some(c), None, -1.0, sign) } else { (None, Some(c), sign, 1.0) };
+                let extent = [c, sign * s0, sign * big_r];
+                let vmin = extent.iter().cloned().fold(f64::MAX, f64::min);
+                let vmax = extent.iter().cloned().fold(f64::MIN, f64::max);
+                out.push(tool_face(uses, lo, hi, lo_sign, hi_sign, vmin, vmax));
+            }
+        }
+    }
+    Ok(out)
+}
+
 // ---------------------------------------------------------------------------
 // Classification and assembly.
 // ---------------------------------------------------------------------------
@@ -1569,6 +1788,13 @@ enum Kept {
 
 type VertexFn<'a> = &'a mut dyn FnMut(Vec3) -> topo::VertexRef;
 
+/// A flat end of the small cylinder of a solid crossing that clears the big one (at or beyond its
+/// wall): outside it, touching it at most along a line when flush, and cut by nothing.
+fn clear_end_disk(c: &Crossing, f: &AFace) -> bool {
+    let AFace::Plane(f) = f else { return false };
+    c.mode != Mode::Bore && len(cross(f.plane.n, c.d)) < 1e-9 && dot(sub(f.plane.origin, c.p0), c.d).abs() >= c.big_r - 1e-9 * c.big_r.max(1.0)
+}
+
 #[allow(clippy::too_many_arguments)]
 fn pieces(
     faces: &[AFace],
@@ -1588,13 +1814,15 @@ fn pieces(
     for (fi, (face, grid)) in faces.iter().zip(grids).enumerate() {
         match face {
             AFace::Plane(f) => {
-                let cuts = cuts_on_plane(f, other)?;
+                let clear = side == 1 && crossings.iter().any(|c| clear_end_disk(c, face));
+                let cuts = if clear { Vec::new() } else { cuts_on_plane(f, other)? };
                 for region in split_face(f, &cuts, &grid_nodes(f, walls))? {
                     let s = interior_point(&region).ok_or(())?;
                     if !in_edges(s, &f.edges) {
                         continue;
                     }
-                    if keep(classify_plane(f, f.plane.point(s), other, other_solid)?) {
+                    let class = if clear { Class::Outside } else { classify_plane(f, f.plane.point(s), other, other_solid)? };
+                    if keep(class) {
                         let plane = if flip { Plane { origin: f.plane.origin, n: scale(f.plane.n, -1.0), u: f.plane.u, v: f.plane.v } } else { f.plane.clone() };
                         out.push(Kept::Plane { plane, region });
                     }
@@ -1612,7 +1840,11 @@ fn pieces(
                         if !g.us.is_empty() || !g.vs.is_empty() {
                             bail!(); // another cut on a pierced wall: not modelled
                         }
-                        out.extend(cross_pair(cr, f, t, own_solid, other_solid, tg, vertex)?);
+                        out.extend(if cr.mode == Mode::Bore {
+                            cross_pair(cr, f, t, own_solid, other_solid, tg, vertex)?
+                        } else {
+                            cross_pair_solid(cr, f, t, own_solid, other_solid, tg, vertex)?
+                        });
                         continue;
                     }
                 }
@@ -1803,8 +2035,12 @@ fn core(op: &str, a: &TSolid, b: &TSolid, pa: &[AFace], pb: &[AFace], crossings:
             .enumerate()
             .map(|(i, f)| {
                 if let AFace::Cyl(w) = f {
-                    let skip = crossings.iter().find(|c| if side == 0 { c.wi == i } else { c.ti == i }).map(|c| if side == 0 { c.ti } else { c.wi });
-                    wall_grid(w, other, skip).map(Some)
+                    let skip = |gi: usize| {
+                        crossings.iter().any(|c| {
+                            if side == 0 { c.wi == i && (c.ti == gi || clear_end_disk(c, &other[gi])) } else { c.ti == i && c.wi == gi }
+                        })
+                    };
+                    wall_grid(w, other, &skip).map(Some)
                 } else {
                     Ok(None)
                 }
@@ -1867,7 +2103,7 @@ fn core(op: &str, a: &TSolid, b: &TSolid, pa: &[AFace], pb: &[AFace], crossings:
     // `inside_solid` cannot read a trimmed cylinder, so a result that carries one is
     // checked against the OPERANDS only: every flat face must have different
     // membership of A - B just inside and just outside it.
-    let sound = if crossings.is_empty() { ops::boolean_result_is_sound(op, a, b, &result) } else { faces_bound_something(a, b, &result) };
+    let sound = if crossings.is_empty() { ops::boolean_result_is_sound(op, a, b, &result) } else { faces_bound_something(op, a, b, &result) };
     if !sound {
         #[cfg(test)]
         if SKIP_SOUND.with(|c| c.get()) {
@@ -1878,9 +2114,13 @@ fn core(op: &str, a: &TSolid, b: &TSolid, pa: &[AFace], pb: &[AFace], crossings:
     Ok(Some(result))
 }
 
-fn faces_bound_something(a: &TSolid, b: &TSolid, r: &TSolid) -> bool {
+fn faces_bound_something(op: &str, a: &TSolid, b: &TSolid, r: &TSolid) -> bool {
     const DELTA: f64 = 1e-4;
-    let member = |q: Vec3| ops::inside_solid(a, q) && !ops::inside_solid(b, q);
+    let member = |q: Vec3| match op {
+        "union" => ops::inside_solid(a, q) || ops::inside_solid(b, q),
+        "intersect" => ops::inside_solid(a, q) && ops::inside_solid(b, q),
+        _ => ops::inside_solid(a, q) && !ops::inside_solid(b, q),
+    };
     for f in r.faces() {
         let samples = ops::planar_face_samples(&f);
         if samples.is_empty() {
@@ -1898,6 +2138,37 @@ fn volume_of(r: &Option<TSolid>) -> f64 {
     r.as_ref().map_or(0.0, build::solid_volume)
 }
 
+/// Union or intersect of two solid cylinders at right angles (S4e), either one the big one. Both
+/// operations are built and must satisfy V(A+B) + V(A*B) = V(A) + V(B) to 1e-9: the partner this
+/// configuration did not have for a bore. `None` when the pair is not such a crossing.
+fn solid_crossing_boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<Outcome> {
+    for swap in [false, true] {
+        let (x, y) = if swap { (b, a) } else { (a, b) };
+        let (mut px, mut py) = (extract(x)?, extract(y)?);
+        let found = find_solid_crossings(&px, &py);
+        if found.is_empty() {
+            continue;
+        }
+        if found.len() != 1 {
+            return Some(Outcome::Refused);
+        }
+        reframe(&mut px, &mut py, &found);
+        if align_circles(&mut px).is_none() || align_circles(&mut py).is_none() {
+            return Some(Outcome::Refused);
+        }
+        let with = |mode: Mode| -> Vec<Crossing> { found.iter().map(|c| Crossing { mode, ..c.clone() }).collect() };
+        let (Ok(Some(u)), Ok(Some(i))) = (core("union", x, y, &px, &py, &with(Mode::Union)), core("intersect", x, y, &px, &py, &with(Mode::Intersect))) else {
+            return Some(Outcome::Refused);
+        };
+        let want = build::solid_volume(a) + build::solid_volume(b);
+        if (build::solid_volume(&u) + build::solid_volume(&i) - want).abs() > 1e-9 * want.abs().max(1.0) {
+            return Some(Outcome::Refused);
+        }
+        return Some(Outcome::Built(if op == "union" { u } else { i }));
+    }
+    None
+}
+
 /// The planar boolean. Besides the structural guards, the answer must agree
 /// with its partner operation by inclusion-exclusion
 /// (V(A+B) + V(A*B) = V(A) + V(B); V(A-B) + V(A*B) = V(A)), which no
@@ -1906,6 +2177,11 @@ pub fn boolean_planar(op: &str, a: &TSolid, b: &TSolid) -> Outcome {
     let (Some(mut pa), Some(mut pb)) = (extract(a), extract(b)) else {
         return Outcome::NotPlanar;
     };
+    if op == "union" || op == "intersect" {
+        if let Some(out) = solid_crossing_boolean(op, a, b) {
+            return out;
+        }
+    }
     // A bore wall crossed by a second bore (subtract only).
     let crossings = if op == "subtract" { find_crossings(&pa, &pb) } else { Vec::new() };
     reframe(&mut pa, &mut pb, &crossings);
@@ -2633,6 +2909,176 @@ mod tests {
             assert!(ops::check_watertight(&m));
         }
     }
+
+    // ---- S4e: two solid cylinders at right angles --------------------------------------------
+    /// Volume the big cylinder (radius R, axis z, tall enough) and a perpendicular one (radius r, axis x,
+    /// axes meeting) share when the small one runs from xl to xh: the integral over y of the section
+    /// 2 sqrt(r^2 - y^2) x the length of [-sqrt(R^2 - y^2), sqrt(R^2 - y^2)] met by [xl, xh], Simpson on y = r sin t.
+    fn cap_volume(big_r: f64, r: f64, xl: f64, xh: f64, n: usize) -> f64 {
+        let h = std::f64::consts::PI / n as f64;
+        let f = |t: f64| {
+            let y = r * t.sin();
+            let x = (big_r * big_r - y * y).sqrt();
+            let z = (r * r - y * y).max(0.0).sqrt();
+            2.0 * z * ((x.min(xh) - (-x).max(xl)).max(0.0)) * r * t.cos()
+        };
+        let a = -std::f64::consts::FRAC_PI_2;
+        let mut sum = f(a) + f(-a);
+        for i in 1..n {
+            sum += f(a + i as f64 * h) * if i % 2 == 1 { 4.0 } else { 2.0 };
+        }
+        sum * h / 3.0
+    }
+
+    fn unit(i: usize, sign: f64) -> Vec3 {
+        let mut v = [0.0; 3];
+        v[i] = sign;
+        v
+    }
+
+    /// The big cylinder (radius R, `h` tall, centred on the origin, axis `ia`) and the small one
+    /// (radius r, from `xl` to `xh` along axis `id`, its axis crossing the big one's at height `c_v`).
+    #[allow(clippy::too_many_arguments)]
+    fn tee(big_r: f64, h: f64, r: f64, xl: f64, xh: f64, c_v: f64, ia: usize, id: usize) -> (TSolid, TSolid) {
+        let big = build::cylinder_solid([0.0; 3], big_r, h, unit(ia, 1.0));
+        let centre = add(scale(unit(ia, 1.0), c_v), scale(unit(id, 1.0), 0.5 * (xl + xh)));
+        (big, build::cylinder_solid(centre, r, xh - xl, unit(id, 1.0)))
+    }
+
+    fn tee_expect(big_r: f64, h: f64, r: f64, xl: f64, xh: f64, n: usize) -> (f64, f64) {
+        let pi = std::f64::consts::PI;
+        let cap = cap_volume(big_r, r, xl, xh, n);
+        (pi * big_r * big_r * h + pi * r * r * (xh - xl) - cap, cap)
+    }
+
+    fn check_tee_mesh(res: &TSolid, what: &str) {
+        let exact = vol(res);
+        for defl in [0.05, 0.5] {
+            let m = crate::mesh::mesh_solid(res, defl).unwrap_or_else(|| panic!("{what}: no mesh at {defl}"));
+            assert!(ops::check_watertight(&m), "{what}: not watertight at {defl}");
+            let mut v = 0.0;
+            for t in m.indices.chunks(3) {
+                let (a, b, c) = (m.positions[t[0] as usize], m.positions[t[1] as usize], m.positions[t[2] as usize]);
+                v += dot(a, cross(b, c)) / 6.0;
+            }
+            let slack = if defl < 0.1 { 0.025 } else { 0.12 };
+            assert!(v > 0.0 && (v - exact).abs() < slack * exact + 10.0 * defl, "{what}: mesh volume {v} vs exact {exact} at {defl}");
+        }
+    }
+
+    #[test]
+    fn perpendicular_cylinders_join_and_keep_exactly() {
+        // (R, height, r, xl, xh): through both sides, flush ends, an end inside (a radial boss on a shaft), a boss ending on the axis.
+        let cases = [
+            (20.0, 30.0, 7.0, -20.0, 20.0),
+            (10.0, 40.0, 5.0, -20.0, 20.0),
+            (10.0, 40.0, 5.0, -15.0, 18.0),
+            (10.0, 40.0, 5.0, 0.0, 25.0),
+            (10.0, 40.0, 5.0, -4.0, 25.0),
+            (10.0, 40.0, 9.0, -30.0, 3.0),
+            (10.0, 40.0, 9.0, -30.0, 4.0),
+            (10.0, 40.0, 2.0, 3.0, 25.0),
+            (10.0, 40.0, 5.0, -3.0, 13.0),
+        ];
+        for (big_r, h, r, xl, xh) in cases {
+            let (a, b) = tee(big_r, h, r, xl, xh, 1.5, 2, 0);
+            let (u, i) = tee_expect(big_r, h, r, xl, xh, 400_000);
+            let ru = ops::boolean("union", &a, &b).unwrap_or_else(|| panic!("union refused {big_r} {r} {xl} {xh}"));
+            let ri = ops::boolean("intersect", &a, &b).unwrap_or_else(|| panic!("intersect refused {big_r} {r} {xl} {xh}"));
+            assert!((vol(&ru) - u).abs() < 1e-6 * u, "union {} vs {u} for {big_r} {r} {xl} {xh}", vol(&ru));
+            assert!((vol(&ri) - i).abs() < 1e-6 * i, "intersect {} vs {i} for {big_r} {r} {xl} {xh}", vol(&ri));
+            check_tee_mesh(&ru, "union");
+            check_tee_mesh(&ri, "intersect");
+        }
+    }
+
+    #[test]
+    fn perpendicular_cylinders_in_either_order_and_axis() {
+        let (big_r, h, r, xl, xh) = (10.0, 40.0, 4.0, -15.0, 15.0);
+        let (u, i) = tee_expect(big_r, h, r, xl, xh, 200_000);
+        for (ia, id) in [(0, 1), (0, 2), (1, 0), (1, 2), (2, 0), (2, 1)] {
+            let (a, b) = tee(big_r, h, r, xl, xh, -2.0, ia, id);
+            for (x, y) in [(&a, &b), (&b, &a)] {
+                let ru = ops::boolean("union", x, y).unwrap_or_else(|| panic!("union refused axes {ia} {id}"));
+                let ri = ops::boolean("intersect", x, y).unwrap_or_else(|| panic!("intersect refused axes {ia} {id}"));
+                assert!((vol(&ru) - u).abs() < 1e-6 * u, "union {} vs {u}", vol(&ru));
+                assert!((vol(&ri) - i).abs() < 1e-6 * i, "intersect {} vs {i}", vol(&ri));
+            }
+        }
+    }
+
+    /// Random tees: the small cylinder's ends clear the big one or stop inside it, either axis, either
+    /// order. Every built result must match the oracle; refusals are counted.
+    fn tee_sweep(seed: u64, n: usize, in_scope: bool) -> (usize, usize) {
+        let mut rng = Lcg(seed);
+        let (mut built_n, mut refused_n) = (0, 0);
+        for k in 0..n {
+            let big_r = 3.0 + 9.0 * rng.next();
+            let r = (0.1 + 0.8 * rng.next()) * big_r;
+            let s0 = (big_r * big_r - r * r).sqrt();
+            let end = |rng: &mut Lcg, sgn: f64| -> f64 {
+                if in_scope {
+                    if rng.next() < 0.6 {
+                        sgn * (big_r + 8.0 * rng.next())
+                    } else {
+                        s0 * 0.95 * (2.0 * rng.next() - 1.0)
+                    }
+                } else {
+                    sgn * (2.0 * big_r) * rng.next()
+                }
+            };
+            let (mut xl, mut xh) = (end(&mut rng, -1.0), end(&mut rng, 1.0));
+            if xl > xh {
+                std::mem::swap(&mut xl, &mut xh);
+            }
+            if in_scope && xl > -big_r && xh < big_r {
+                // both ends inside the big cylinder is no crossing at all: one end must clear it
+                if rng.next() < 0.5 { xh = big_r + 8.0 * rng.next() } else { xl = -big_r - 8.0 * rng.next() }
+            }
+            if xh - xl < 0.5 {
+                continue;
+            }
+            let h = 2.0 * r + 1.0 + 20.0 * rng.next();
+            let c_v = (0.5 * h - r - 0.2) * (2.0 * rng.next() - 1.0);
+            let (ia, id) = [(0, 1), (0, 2), (1, 0), (1, 2), (2, 0), (2, 1)][(rng.next() * 6.0) as usize % 6];
+            let (a, b) = tee(big_r, h, r, xl, xh, c_v, ia, id);
+            let (a, b) = if rng.next() < 0.5 { (a, b) } else { (b, a) };
+            let (u, i) = tee_expect(big_r, h, r, xl, xh, 20_000);
+            for (op, want) in [("union", u), ("intersect", i)] {
+                match ops::boolean(op, &a, &b) {
+                    Some(res) => {
+                        built_n += 1;
+                        assert!((vol(&res) - want).abs() < 2e-6 * want, "WRONG {op}: {} vs {want}: R={big_r} r={r} x=[{xl},{xh}] h={h} c_v={c_v} axes {ia} {id}", vol(&res));
+                        if k % 7 == 0 {
+                            let m = crate::mesh::mesh_solid(&res, 0.05).expect("meshes");
+                            assert!(ops::check_watertight(&m), "{op}: open mesh: R={big_r} r={r} x=[{xl},{xh}] h={h} c_v={c_v} axes {ia} {id}");
+                        }
+                    }
+                    None => {
+                        refused_n += 1;
+                        if in_scope {
+                            eprintln!("TEE REFUSED {op}: R={big_r} r={r} x=[{xl},{xh}] h={h} c_v={c_v} axes {ia} {id}");
+                        }
+                    }
+                }
+            }
+        }
+        (built_n, refused_n)
+    }
+
+    #[test]
+    fn random_perpendicular_cylinders_match_the_numeric_oracle() {
+        let (b, r) = tee_sweep(404, 320, true);
+        eprintln!("tees in scope: built {b}, refused {r}");
+        assert!(b > 500 && r == 0, "built {b}, refused {r}");
+    }
+
+    #[test]
+    fn random_perpendicular_cylinders_anywhere_are_never_wrong() {
+        let (b, r) = tee_sweep(405, 320, false);
+        eprintln!("tees anywhere: built {b}, refused {r}");
+    }
+
 }
 
 

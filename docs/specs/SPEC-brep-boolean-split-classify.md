@@ -1,6 +1,6 @@
 # SPEC — brep-rs: split-and-classify boolean (replaces K1a) (2026-10-03)
 
-Parent: `SPEC-brep-kernel-rs.md` §4.5. Status: S1 and S2 BUILT 2026-10-03 (docs/PLAN-next.md §19, §20); S3 not started.
+Parent: `SPEC-brep-kernel-rs.md` §4.5. Status: S1 and S2 BUILT 2026-10-03 (docs/PLAN-next.md §19, §20); S3a, S3b and S4e (perpendicular cylinder union and intersect) built later, see PLAN-next.
 Supersedes the K1a approach closed in `docs/kernel-campaign.md` ("K1a — non-convex tool booleans").
 
 ## Problem

@@ -8283,7 +8283,7 @@ mod cross_bore_pins {
                                 assert!((rho_tool(p) - r).abs() < 1e-9, "bore vertex off its cylinder");
                                 assert!(rho_part(p) <= 10.0 + 1e-9, "bore vertex outside the part");
                             }
-                            None => {}
+                            None | Some(crate::geom::Cross::Patch { .. }) => {}
                         }
                         checked += 1;
                     }

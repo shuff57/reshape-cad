@@ -981,32 +981,45 @@ fn ladder(
     a_first_from: usize,
     n_out: &dyn Fn(Vec3) -> Vec3,
 ) {
-    let mut tri = |out: &mut MeshBuilder, p: Vec3, q: Vec3, r: Vec3| {
-        if len(cross(sub(q, p), sub(r, p))) < 1e-14 {
+    // Every triangle is written with ONE winding for the whole ladder (a on the bottom, b on top,
+    // counter-clockwise), and the ladder as a whole is turned to face `n_out` by the sign of the
+    // area-weighted agreement. A sliver, which a pinched strip (a meeting curve that touches its
+    // flat end) makes, has no normal of its own to compare with the surface's, so deciding each
+    // triangle by itself would flip some of them at random.
+    let mut tris: Vec<[Vec3; 3]> = Vec::new();
+    let mut score = 0.0;
+    let mut tri = |p: Vec3, q: Vec3, r: Vec3| {
+        let nrm = cross(sub(q, p), sub(r, p));
+        if len(nrm) < 1e-14 {
             return;
         }
         let c = [(p[0] + q[0] + r[0]) / 3.0, (p[1] + q[1] + r[1]) / 3.0, (p[2] + q[2] + r[2]) / 3.0];
-        let ids = [out.push(p), out.push(q), out.push(r)];
-        out.tri_oriented(ids, n_out(c));
+        score += crate::math::dot(nrm, n_out(c));
+        tris.push([p, q, r]);
     };
+    // Two on top (b): (a, b right, b left); two on the bottom (a): (a left, a right, b).
     let mut i = assign[0];
     for j in 0..b.len() - 1 {
         let i2 = assign[j + 1];
         if j >= a_first_from {
             for k in i..i2 {
-                tri(out, a[k], a[k + 1], b[j]);
+                tri(a[k], a[k + 1], b[j]);
             }
-            tri(out, a[i2], b[j], b[j + 1]);
+            tri(a[i2], b[j + 1], b[j]);
         } else {
-            tri(out, a[i], b[j], b[j + 1]);
+            tri(a[i], b[j + 1], b[j]);
             for k in i..i2 {
-                tri(out, a[k], a[k + 1], b[j + 1]);
+                tri(a[k], a[k + 1], b[j + 1]);
             }
         }
         i = i2;
     }
     for k in i..a.len() - 1 {
-        tri(out, a[k], a[k + 1], b[b.len() - 1]);
+        tri(a[k], a[k + 1], b[b.len() - 1]);
+    }
+    for [p, q, r] in tris {
+        let ids = if score >= 0.0 { [out.push(p), out.push(q), out.push(r)] } else { [out.push(p), out.push(r), out.push(q)] };
+        out.tri_oriented(ids, [0.0; 3]);
     }
 }
 
@@ -1086,6 +1099,7 @@ fn mesh_cross_face(
     match cy.cross.as_ref()? {
         crate::geom::Cross::Wall { .. } => mesh_cross_wall(&fb, cy, edges_cache, out, defl)?,
         crate::geom::Cross::Tool { .. } => mesh_cross_tool(&fb, cy, edges_cache, out, defl)?,
+        crate::geom::Cross::Patch { plus, .. } => mesh_cross_patch(&fb, cy, *plus, edges_cache, out, defl)?,
     }
     let count = out.indices.len() - start;
     if count == 0 {
@@ -1276,6 +1290,93 @@ fn mesh_cross_wall(
     Some(())
 }
 
+/// A patch of a cylinder wall bounded by one meeting-curve loop (the lens a perpendicular cylinder
+/// cuts out of it). The loop's polyline is the shared edge's own; the inside is rings, each the loop
+/// scaled toward the patch's centre in (angle, height), every vertex ON the wall.
+fn mesh_cross_patch(
+    fb: &crate::topo::Face<Curve, crate::geom::Surface>,
+    cy: &crate::geom::Cylinder,
+    plus: bool,
+    edges_cache: &HashMap<usize, Vec<Vec3>>,
+    out: &mut MeshBuilder,
+    defl: f64,
+) -> Option<()> {
+    let (o, ax, e1, e2, rad) = (cy.origin, cy.axis, cy.e1, cy.e2, cy.radius);
+    let c_v = match cy.cross.as_ref()? {
+        crate::geom::Cross::Patch { c_v, .. } => *c_v,
+        _ => return None,
+    };
+    let uc = if plus { 1.5 * std::f64::consts::PI } else { 0.5 * std::f64::consts::PI };
+    let mut pts: Vec<Vec3> = Vec::new();
+    for u in &fb.boundary.first()?.borrow().edges {
+        pts.extend(use_polyline(u, edges_cache, defl));
+    }
+    if pts.len() < 9 {
+        return None;
+    }
+    if len(sub(pts[0], pts[pts.len() - 1])) < 1e-9 {
+        pts.pop();
+    }
+    let n = pts.len();
+    let at = |u: f64, v: f64| {
+        let rho = crate::math::add(crate::math::scale(e1, u.cos()), crate::math::scale(e2, u.sin()));
+        crate::math::add(crate::math::add(o, crate::math::scale(rho, rad)), crate::math::scale(ax, v))
+    };
+    // The loop in (du, dv) about the centre.
+    let uv: Vec<(f64, f64)> = pts
+        .iter()
+        .map(|p| {
+            let mut du = angle_in(*p, o, e1, e2) - uc;
+            while du > std::f64::consts::PI {
+                du -= TAU;
+            }
+            while du < -std::f64::consts::PI {
+                du += TAU;
+            }
+            (du, crate::math::dot(sub(*p, o), ax) - c_v)
+        })
+        .collect();
+    let reach = uv.iter().fold(0.0f64, |m, &(du, dv)| m.max((rad * du).abs()).max(dv.abs()));
+    let step = (8.0 * rad * defl.max(1e-6)).sqrt().max(1e-6);
+    let rings = ((reach / step).ceil() as usize).clamp(3, 120);
+    let sense = if crate::math::dot(cross(e1, e2), ax) >= 0.0 { 1.0 } else { -1.0 };
+    let n_out = |c: Vec3| {
+        let d = sub(c, o);
+        crate::math::scale(sub(d, crate::math::scale(ax, crate::math::dot(d, ax))), sense)
+    };
+    let centre = at(uc, c_v);
+    let ring = |k: usize| -> Vec<Vec3> {
+        if k == rings {
+            return pts.clone();
+        }
+        let s = k as f64 / rings as f64;
+        uv.iter().map(|&(du, dv)| at(uc + s * du, c_v + s * dv)).collect()
+    };
+    let mut tri = |out: &mut MeshBuilder, p: Vec3, q: Vec3, r: Vec3| {
+        if len(cross(sub(q, p), sub(r, p))) < 1e-14 {
+            return;
+        }
+        let c = [(p[0] + q[0] + r[0]) / 3.0, (p[1] + q[1] + r[1]) / 3.0, (p[2] + q[2] + r[2]) / 3.0];
+        let ids = [out.push(p), out.push(q), out.push(r)];
+        out.tri_oriented(ids, n_out(c));
+    };
+    let first = ring(1);
+    for i in 0..n {
+        tri(out, centre, first[i], first[(i + 1) % n]);
+    }
+    let mut inner = first;
+    for k in 2..=rings {
+        let outer = ring(k);
+        for i in 0..n {
+            let j = (i + 1) % n;
+            tri(out, inner[i], outer[i], outer[j]);
+            tri(out, inner[i], outer[j], inner[j]);
+        }
+        inner = outer;
+    }
+    Some(())
+}
+
 fn mesh_cross_tool(
     fb: &crate::topo::Face<Curve, crate::geom::Surface>,
     cy: &crate::geom::Cylinder,
@@ -1286,7 +1387,10 @@ fn mesh_cross_tool(
     // The face's chains: the CylCyl loop(s) and, for a blind bore, the floor
     // arc. The `hi` chain is the +axis meeting curve; the other is `lo`.
     let (o, ax, e1, e2) = (cy.origin, cy.axis, cy.e1, cy.e2);
-    let a_dir = crate::math::scale(e2, -1.0); // the bore's own "a" (e2 = -a)
+    // The wall's own sense: a void-facing bore wall has a left-handed frame (e2 = -a, normal
+    // inward), a piece of a solid cylinder's wall a right-handed one (e2 = +a, normal outward).
+    let sense = if crate::math::dot(cross(e1, e2), ax) >= 0.0 { 1.0 } else { -1.0 };
+    let a_dir = crate::math::scale(e2, sense); // the cross cylinder's own "a"
     let mut loops: Vec<(f64, Vec<Vec3>)> = Vec::new(); // (sign, polyline)
     let mut floor: Option<Vec<Vec3>> = None;
     for w in &fb.boundary {
@@ -1344,7 +1448,7 @@ fn mesh_cross_tool(
     assign[last] = hi_poly.len() - 1;
     let n_out = |c: Vec3| {
         let d = sub(c, o);
-        crate::math::scale(sub(d, crate::math::scale(ax, crate::math::dot(d, ax))), -1.0)
+        crate::math::scale(sub(d, crate::math::scale(ax, crate::math::dot(d, ax))), sense)
     };
     ladder(out, &hi_poly, &lo_poly, &assign, usize::MAX, &n_out);
     Some(())
