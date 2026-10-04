@@ -73,7 +73,7 @@
   },
   "matrix box: round then chamfer": {
     "refused": {
-      "bevel1": "brep-rs can only chamfer a convex edge -- bevel1 is shown without it."
+      "bevel1": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain box before you hollow, round or cut it -- bevel1 is shown without it."
     }
   },
   "matrix box: round then hollow": {
@@ -89,7 +89,7 @@
   },
   "matrix box: chamfer then round": {
     "refused": {
-      "round1": "brep-rs can only round an edge of a box yet; round the plain box before you hollow, chamfer or cut it (a hole that stays clear of the edge may come first) -- round1 is shown without it."
+      "round1": "brep-rs can only round a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); round it on the plain box before you hollow, chamfer or cut it -- round1 is shown without it."
     }
   },
   "matrix box: chamfer then hollow": {

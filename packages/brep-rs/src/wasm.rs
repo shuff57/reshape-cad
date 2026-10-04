@@ -1910,12 +1910,37 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     Some(Resolved::Edge(..)) => true,
                     _ => false,
                 };
+                let mut ambiguous: Option<usize> = None;
+                let found = found
+                    || match fillet_faces(&hist, f) {
+                        Ok(_) => true,
+                        Err(PairErr::Ambiguous(n)) => {
+                            ambiguous = Some(n);
+                            false
+                        }
+                        Err(PairErr::NotFound) => false,
+                    };
                 if !found {
+                    let words = f
+                        .get("edge")
+                        .and_then(|e| e.get("of"))
+                        .and_then(|o| o.as_array())
+                        .map(|o| {
+                            o.iter()
+                                .map(|n| part_word(n.get("part").and_then(|p| p.as_str()).unwrap_or("")))
+                                .collect::<Vec<_>>()
+                        })
+                        .unwrap_or_default();
                     refusals.insert(
                         id.clone(),
-                        json!(format!(
-                            "{label}'s edge could not be found -- {label} is shown without it."
-                        )),
+                        json!(match ambiguous {
+                            Some(n) => format!(
+                                "{n} edges of the part lie between a {} face and a {} face, so {label} cannot tell which one you mean -- round or chamfer the edge on the plain box before you join or cut it -- {label} is shown without it.",
+                                words.first().copied().unwrap_or("named"),
+                                words.get(1).copied().unwrap_or("named")
+                            ),
+                            None => format!("{label}'s edge could not be found -- {label} is shown without it."),
+                        }),
                     );
                     hist.insert(&id, src);
                     continue;
@@ -1925,7 +1950,7 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 // the cuts) when a proof says the cuts stay clear of the rounded edge.
                 let mut attempt = build_fillet(&src, &hist, f, size, round);
                 let mut replay_refusal: Option<String> = None;
-                if matches!(attempt, Err(FilletErr::NoBox)) {
+                if matches!(attempt, Err(FilletErr::NoBox) | Err(FilletErr::RoundEnds)) {
                     match replay_round(&hist, &replay_log, target, f, size, round) {
                         Some(Ok(solid)) => attempt = Ok(solid),
                         Some(Err(why)) => replay_refusal = Some(why),
@@ -1956,22 +1981,25 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
  "{verb} {label} at {size} would not fit its edge -- {label} is shown without it."
  ),
  FilletErr::Concave => format!(
- "brep-rs can only chamfer a convex edge -- {label} is shown without it."
+ "brep-rs can only {} a convex edge (an outside corner) -- {label} is shown without it.", if round { "round" } else { "chamfer" }
+ ),
+ FilletErr::RoundEnds => format!(
+ "brep-rs can only {} a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- {label} is shown without it.", if round { "round" } else { "chamfer" }
  ),
  FilletErr::Flat => format!(
- "brep-rs cannot chamfer a flat edge -- {label} is shown without it."
+ "brep-rs cannot {} a flat edge -- {label} is shown without it.", if round { "round" } else { "chamfer" }
  ),
  FilletErr::VertexTooComplex => format!(
- "brep-rs cannot chamfer an edge whose end touches more than three faces -- {label} is shown without it."
+ "brep-rs cannot {} an edge whose end touches more than three faces -- {label} is shown without it.", if round { "round" } else { "chamfer" }
  ),
  FilletErr::SplitEdge => format!(
  "brep-rs cannot chamfer an edge that carries on across the mirror or pattern plane into the next copy yet; chamfer the part before you mirror it -- {label} is shown without it."
  ),
                             _ if round => format!(
-                                "brep-rs can only round an edge of a box yet; round the plain box before you hollow, chamfer or cut it (a hole that stays clear of the edge may come first) -- {label} is shown without it."
+                                "brep-rs can only round a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); round it on the plain box before you hollow, chamfer or cut it -- {label} is shown without it."
                             ),
                             _ => format!(
-                                "brep-rs can only chamfer an edge of a box yet; chamfer the plain box before you hollow, round or cut it -- {label} is shown without it."
+                                "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain box before you hollow, round or cut it -- {label} is shown without it."
                             ),
                         };
                         refusals.insert(id.clone(), json!(reason));
@@ -3748,7 +3776,7 @@ mod tests {
         let (hist, refusals) = build_doc(&doc);
         let text = refusals.get("r2").and_then(|v| v.as_str()).unwrap_or_default();
         assert!(
-            text.contains("can only chamfer an edge of a box yet") && text.contains("without it"),
+            text.contains("can only chamfer a straight edge between two flat faces yet") && text.contains("without it"),
             "refusal text: {text}"
         );
         let solid = hist.shapes.get("r2").expect("r1's solid kept");
@@ -4020,10 +4048,38 @@ mod tests {
             ]
         });
         let (hist, refusals) = build_doc(&doc);
+        // S4g: the first nameable edge is a straight outer edge of the block (the bore stays clear
+        // of it), which now rounds exactly: the part loses (1 - pi/4) r^2 per unit length.
+        assert!(refusals.is_empty(), "refusals: {refusals:?}");
+        let solid = hist.shapes.get("r1").expect("rounded");
+        let removed = base_vol - build::solid_volume(solid);
+        let per_len = 4.0 * (1.0 - std::f64::consts::FRAC_PI_4);
+        assert!(
+            [20.0, 40.0].iter().any(|l| (removed - per_len * l).abs() < 1e-7),
+            "removed {removed}, an edge of 20 or 40 long loses {per_len} per unit length"
+        );
+    }
+
+    /// The rim of a bore is a circle, not a straight edge between two planes: still refused.
+    #[test]
+    fn fillet_bore_rim_refuses() {
+        let doc = json!({
+            "features": [
+                { "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0], "center": [0.0, 0.0, 0.0] },
+                { "id": "c1", "kind": "cylinder", "radius": 8.0, "height": 40.0, "center": [0.0, 0.0, 0.0] },
+                { "id": "op1", "kind": "combine", "op": "subtract", "targets": ["b1", "c1"] },
+                { "id": "r1", "kind": "fillet", "target": "op1", "size": 2.0, "style": "fillet",
+                  "edge": { "cause": "between", "feature": "op1", "kind": "edge", "of": [
+                    { "cause": "carried", "feature": "op1", "kind": "face", "of": { "cause": "primitive", "feature": "b1", "kind": "face", "part": "+z" } },
+                    { "cause": "carried", "feature": "op1", "kind": "face", "of": { "cause": "primitive", "feature": "c1", "kind": "face", "part": "side" } }
+                  ] } }
+            ]
+        });
+        let (hist, refusals) = build_doc(&doc);
         let text = refusals.get("r1").and_then(|v| v.as_str()).unwrap_or_default();
-        assert!(text.contains("can only round an edge of a box yet"), "refusal: {text}");
-        let solid = hist.shapes.get("r1").expect("target kept");
-        assert!((build::solid_volume(solid) - base_vol).abs() < 1e-6, "unchanged boolean result");
+        assert!(!text.is_empty(), "the bore rim must refuse, not build");
+        let before = build::solid_volume(hist.shapes.get("op1").unwrap());
+        assert!((build::solid_volume(hist.shapes.get("r1").unwrap()) - before).abs() < 1e-6, "unchanged boolean result");
     }
 
     /// W1a: `name_edge` names a box edge as `between` its two adjacent
@@ -5363,22 +5419,6 @@ fn fillet_chamfer_flat_and_round_hex_edges_refuse() {
  let solid = hist.shapes.get("r1").expect("target kept");
  assert!((build::solid_volume(solid) - 16000.0).abs() < 1e-6, "unchanged union");
 
- let round = json!({
- "features": [
- { "id": "sk1", "kind": "sketch", "plane": "xy", "points": [[10.0, 0.0], [5.0, 8.660254037844386], [-5.0, 8.660254037844386], [-10.0, 0.0], [-5.0, -8.660254037844386], [5.0, -8.660254037844386]] },
- { "id": "e1", "kind": "extrude", "target": "sk1", "height": 20.0 },
- { "id": "r1", "kind": "fillet", "target": "e1", "size": 2.0, "style": "fillet",
- "edge": { "cause": "between", "feature": "e1", "kind": "edge", "of": [
- { "cause": "swept", "feature": "e1", "kind": "face", "from": "sk1", "edge": 0 },
- { "cause": "swept", "feature": "e1", "kind": "face", "from": "sk1", "edge": 1 }
- ] } }
- ]
- });
- let (hist, refusals) = build_doc(&round);
- let text = refusals.get("r1").and_then(|v| v.as_str()).unwrap_or_default();
- assert!(text.contains("can only round an edge of a box yet"), "refusal: {text}");
- let solid = hist.shapes.get("r1").expect("target kept");
- assert!((build::solid_volume(solid) - 3000.0 * 3.0_f64.sqrt()).abs() < 1e-6, "unchanged hex");
 }
 
 #[test]
@@ -5399,6 +5439,137 @@ fn fillet_chamfer_concave_edge_refuses() {
  assert!(text.contains("convex edge"), "refusal: {text}");
  let solid = hist.shapes.get("r1").expect("target kept");
  assert!((build::solid_volume(solid) - 640.0).abs() < 1e-6, "unchanged L prism");
+}
+
+/// S4g: a round of a straight convex edge between two planes of a boolean result is the
+/// corner prism minus the tangent quarter-cylinder, subtracted; the part loses exactly
+/// (1 - pi/4) r^2 per unit length of edge.
+fn s4g_name(feat: &str, a: (&str, &str), b: (&str, &str)) -> Value {
+    let face = |p: (&str, &str)| json!({ "cause": "carried", "feature": feat, "kind": "face",
+        "of": { "cause": "primitive", "feature": p.0, "kind": "face", "part": p.1 } });
+    json!({ "cause": "between", "feature": feat, "kind": "edge", "of": [face(a), face(b)] })
+}
+
+fn s4g_round(features: Vec<Value>, target: &str, edge: Value, size: f64, style: &str) -> (f64, f64, Option<String>) {
+    let mut fs = features;
+    fs.push(json!({ "id": "r1", "kind": "fillet", "target": target, "size": size, "style": style, "edge": edge }));
+    let doc = json!({ "features": fs });
+    let (hist, refusals) = build_doc(&doc);
+    let before = build::solid_volume(hist.shapes.get(target).expect("base"));
+    let solid = hist.shapes.get("r1").expect("r1 kept");
+    let text = refusals.get("r1").and_then(|v| v.as_str()).map(|t| t.to_string());
+    (before, build::solid_volume(solid), text)
+}
+
+fn s4g_boss() -> Vec<Value> {
+    vec![
+        json!({ "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0], "center": [0.0, 0.0, 0.0] }),
+        json!({ "id": "b2", "kind": "box", "size": [20.0, 20.0, 20.0], "center": [0.0, 0.0, 20.0] }),
+        json!({ "id": "u1", "kind": "combine", "op": "union", "targets": ["b1", "b2"] }),
+    ]
+}
+
+#[test]
+fn round_boss_vertical_edge_of_a_union_removes_the_exact_area() {
+    let (v0, v1, text) = s4g_round(s4g_boss(), "u1", s4g_name("u1", ("b2", "+x"), ("b2", "+y")), 2.0, "fillet");
+    assert!(text.is_none(), "refusal: {text:?}");
+    let want = 4.0 * (1.0 - std::f64::consts::FRAC_PI_4) * 20.0;
+    assert!((v0 - v1 - want).abs() < 1e-7, "removed {} want {want}", v0 - v1);
+}
+
+#[test]
+fn round_boss_top_edge_of_a_union_removes_the_exact_area() {
+    let (v0, v1, text) = s4g_round(s4g_boss(), "u1", s4g_name("u1", ("b2", "+z"), ("b2", "+x")), 3.0, "fillet");
+    assert!(text.is_none(), "refusal: {text:?}");
+    let want = 9.0 * (1.0 - std::f64::consts::FRAC_PI_4) * 20.0;
+    assert!((v0 - v1 - want).abs() < 1e-7, "removed {} want {want}", v0 - v1);
+}
+
+#[test]
+fn round_a_top_edge_of_a_notched_cut_removes_the_exact_area() {
+    let feats = vec![
+        json!({ "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0], "center": [0.0, 0.0, 0.0] }),
+        json!({ "id": "b2", "kind": "box", "size": [10.0, 40.0, 10.0], "center": [-15.0, 0.0, 5.0] }),
+        json!({ "id": "c1", "kind": "combine", "op": "subtract", "targets": ["b1", "b2"] }),
+    ];
+    // the block's +z/+x top edge, 40 long, is untouched by the notch at -x
+    let (v0, v1, text) = s4g_round(feats, "c1", s4g_name("c1", ("b1", "+z"), ("b1", "+x")), 2.0, "fillet");
+    assert!(text.is_none(), "refusal: {text:?}");
+    let want = 4.0 * (1.0 - std::f64::consts::FRAC_PI_4) * 40.0;
+    assert!((v0 - v1 - want).abs() < 1e-7, "removed {} want {want}", v0 - v1);
+}
+
+#[test]
+fn chamfer_boss_vertical_edge_of_a_union_removes_the_exact_area() {
+    // the boss edge ends on the base block's top face: the wedge must stop flush there
+    let (v0, v1, text) = s4g_round(s4g_boss(), "u1", s4g_name("u1", ("b2", "+x"), ("b2", "+y")), 2.0, "chamfer");
+    assert!(text.is_none(), "refusal: {text:?}");
+    assert!((v0 - v1 - 2.0 * 20.0).abs() < 1e-7, "removed {}", v0 - v1);
+}
+
+/// S4g naming: a join's topmost face and frontmost face need not touch. The words then match
+/// every edge between a top-looking and a front-looking face; several refuse as ambiguous
+/// (never picked by luck), where this used to say only that the edge could not be found.
+#[test]
+fn round_edge_by_words_on_a_stepped_union_is_ambiguous_not_missing() {
+    let word = |part: &str| json!({ "cause": "primitive", "feature": "u1", "kind": "face", "part": part });
+    let edge = json!({ "cause": "between", "feature": "u1", "kind": "edge", "of": [word("+z"), word("-y")] });
+    // the boss stands at the back, so the topmost face (the boss top) never meets the front face
+    let feats = vec![
+        json!({ "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0], "center": [0.0, 0.0, 0.0] }),
+        json!({ "id": "b2", "kind": "box", "size": [40.0, 20.0, 10.0], "center": [0.0, 10.0, 15.0] }),
+        json!({ "id": "u1", "kind": "combine", "op": "union", "targets": ["b1", "b2"] }),
+    ];
+    let (v0, v1, text) = s4g_round(feats, "u1", edge, 2.0, "fillet");
+    let text = text.unwrap_or_default();
+    assert!(text.contains("edges of the part lie between a top face and a front face"), "refusal: {text}");
+    assert!(!text.contains("could not be found"), "{text}");
+    assert!((v0 - v1).abs() < 1e-9, "unchanged");
+}
+
+#[test]
+fn round_after_a_through_hole_is_exact_in_the_kernel() {
+    let feats = vec![
+        json!({ "id": "box1", "kind": "box", "size": [40.0, 40.0, 20.0], "center": [0.0, 0.0, 0.0] }),
+        json!({ "id": "hole1", "kind": "hole", "target": "box1", "diameter": 8.0, "depth": 22.0, "center": [0.0, 0.0, 0.0], "axis": "z" }),
+    ];
+    let word = |part: &str| json!({ "cause": "primitive", "feature": "box1", "kind": "face", "part": part });
+    let edge = json!({ "cause": "between", "feature": "box1", "kind": "edge", "of": [word("+z"), word("-y")] });
+    let (v0, v1, text) = s4g_round(feats, "hole1", edge, 3.0, "fillet");
+    assert!(text.is_none(), "refusal: {text:?}");
+    let want = 9.0 * (1.0 - std::f64::consts::FRAC_PI_4) * 40.0;
+    assert!((v0 - v1 - want).abs() < 1e-7, "removed {} want {want}", v0 - v1);
+}
+
+#[test]
+fn round_a_concave_edge_of_a_union_refuses() {
+    let (v0, v1, text) = s4g_round(s4g_boss(), "u1", s4g_name("u1", ("b1", "+z"), ("b2", "+x")), 2.0, "fillet");
+    let text = text.unwrap_or_default();
+    assert!(text.contains("convex edge"), "refusal: {text} v0 {v0} v1 {v1}");
+    assert!((v0 - v1).abs() < 1e-9, "unchanged");
+}
+
+#[test]
+fn round_hex_edge_at_120_degrees_is_exact() {
+    let doc = json!({
+        "features": [
+            { "id": "sk1", "kind": "sketch", "plane": "xy", "points": [[10.0, 0.0], [5.0, 8.660254037844386], [-5.0, 8.660254037844386], [-10.0, 0.0], [-5.0, -8.660254037844386], [5.0, -8.660254037844386]] },
+            { "id": "e1", "kind": "extrude", "target": "sk1", "height": 20.0 },
+            { "id": "r1", "kind": "fillet", "target": "e1", "size": 2.0, "style": "fillet",
+              "edge": { "cause": "between", "feature": "e1", "kind": "edge", "of": [
+                { "cause": "swept", "feature": "e1", "kind": "face", "from": "sk1", "edge": 0 },
+                { "cause": "swept", "feature": "e1", "kind": "face", "from": "sk1", "edge": 1 }
+              ] } }
+        ]
+    });
+    let (hist, refusals) = build_doc(&doc);
+    assert!(refusals.get("r1").is_none(), "refusal: {refusals:?}");
+    let theta = 2.0 * std::f64::consts::PI / 3.0;
+    let d = 2.0 / (theta / 2.0).tan();
+    let area = d * 2.0 - 0.5 * (std::f64::consts::PI - theta) * 4.0;
+    let want = 3000.0 * 3.0_f64.sqrt() - area * 20.0;
+    let got = build::solid_volume(hist.shapes.get("r1").unwrap());
+    assert!((got - want).abs() < 1e-7, "got {got} want {want}");
 }
 
 /// The inward-offset inner solid a shell hollows with, for an axis-aligned
@@ -5957,20 +6128,163 @@ fn shell_cavity_holed(
     }
 }
 
+/// Why a fillet's edge name did not resolve to one pair of faces.
+enum PairErr {
+    NotFound,
+    /// The words match this many different edges of the part.
+    Ambiguous(usize),
+}
+
+/// The word a student sees for a face direction.
+fn part_word(part: &str) -> &'static str {
+    match part {
+        "+z" => "top",
+        "-z" => "bottom",
+        "-y" => "front",
+        "+y" => "back",
+        "-x" => "left",
+        "+x" => "right",
+        _ => "named",
+    }
+}
+
+/// How many distinct edges two faces share.
+fn face_pair_edges(a: &build::TFace, b: &build::TFace) -> usize {
+    let ea: Vec<build::TEdge> = a
+        .borrow()
+        .boundary
+        .iter()
+        .flat_map(|w| w.borrow().edges.iter().map(|u| u.edge.clone()).collect::<Vec<_>>())
+        .collect();
+    let mut seen: Vec<build::TEdge> = Vec::new();
+    for e in ea {
+        let on_b = b.borrow().boundary.iter().any(|w| w.borrow().edges.iter().any(|u| crate::topo::same(&u.edge, &e)));
+        if on_b && !seen.iter().any(|x| crate::topo::same(x, &e)) {
+            seen.push(e);
+        }
+    }
+    seen.len()
+}
+
 /// Resolve the `between` pair of faces a fillet `edge` name points at, reusing
 /// the same `resolve_face` the `resolve` export uses (§4.6).
-fn fillet_face_pair(hist: &History, f: &Value) -> Option<(build::TFace, build::TFace)> {
-    let name = f.get("edge")?;
-    if name.get("cause").and_then(|c| c.as_str())? != "between" {
-        return None;
+///
+/// A name made of two direction words on one part ("top" and "front") first means the part's
+/// EXTREME top face and extreme front face. On a joined or cut part those two need not touch (a boss
+/// stands above the base, so the topmost face is the boss's while the frontmost is the base's), and
+/// the name used to resolve to nothing at all. Then every edge that lies between a face looking
+/// that way and a face looking this way is a candidate: exactly one is the edge meant; several
+/// are refused as ambiguous, never picked by luck.
+fn fillet_faces(hist: &History, f: &Value) -> Result<(build::TFace, build::TFace), PairErr> {
+    let name = f.get("edge").ok_or(PairErr::NotFound)?;
+    if name.get("cause").and_then(|c| c.as_str()) != Some("between") {
+        return Err(PairErr::NotFound);
     }
-    let of = name.get("of")?.as_array()?;
+    let of = name.get("of").and_then(|o| o.as_array()).ok_or(PairErr::NotFound)?;
     if of.len() != 2 {
-        return None;
+        return Err(PairErr::NotFound);
     }
-    let a = resolve_face(hist, &of[0])?;
-    let b = resolve_face(hist, &of[1])?;
-    Some((a, b))
+    if let (Some(a), Some(b)) = (resolve_face(hist, &of[0]), resolve_face(hist, &of[1])) {
+        if hist.edge_between(&a, &b).is_some() {
+            return Ok((a, b));
+        }
+    }
+    // the fallback: two primitive direction words on the same feature
+    let word = |n: &Value| -> Option<(String, String)> {
+        if n.get("cause")?.as_str()? != "primitive" {
+            return None;
+        }
+        Some((n.get("feature")?.as_str()?.to_string(), n.get("part")?.as_str()?.to_string()))
+    };
+    let (Some((fe_a, pa)), Some((fe_b, pb))) = (word(&of[0]), word(&of[1])) else {
+        return Err(PairErr::NotFound);
+    };
+    if fe_a != fe_b || pa == "side" || pb == "side" {
+        return Err(PairErr::NotFound);
+    }
+    let (da, db) = (history::dir_vec(&pa), history::dir_vec(&pb));
+    if da == [0.0; 3] || db == [0.0; 3] || dot(da, db).abs() > 0.5 {
+        return Err(PairErr::NotFound);
+    }
+    let solid0 = hist.shapes.get(&fe_a).ok_or(PairErr::NotFound)?;
+    // the logical faces and edges: coplanar pieces merged, collinear runs joined
+    let unified = if solid0.shells.len() == 1 { build::unify_coplanar(solid0) } else { solid0.clone() };
+    let solid = &unified;
+    // the part's own extreme faces, now that its faces are whole: the topmost face and the
+    // frontmost face (largest on a tie), and the edge they share, if they touch
+    let extreme = |part: &str| -> Option<build::TFace> {
+        let d = history::dir_vec(part);
+        let mut best: Option<build::TFace> = None;
+        let (mut best_score, mut best_area) = (f64::NEG_INFINITY, f64::NEG_INFINITY);
+        for f in solid.faces() {
+            let (area, c) = {
+                let b = f.borrow();
+                build::face_area_centroid(&b)
+            };
+            let score = dot(c, d);
+            if score > best_score + 1e-7 || ((score - best_score).abs() <= 1e-7 && area > best_area) {
+                best = Some(f);
+                best_score = best_score.max(score);
+                best_area = area;
+            }
+        }
+        best
+    };
+    if let (Some(a), Some(b)) = (extreme(&pa), extreme(&pb)) {
+        let shares = face_pair_edges(&a, &b);
+        if shares == 1 {
+            return Ok((a, b));
+        }
+    }
+    let facing = |face: &build::TFace, d: Vec3| -> bool {
+        let fc = face.borrow();
+        match &fc.surface {
+            Surface::Plane(p) => {
+                let n = if fc.forward { normalize(p.n) } else { scale(normalize(p.n), -1.0) };
+                len(sub(n, d)) < 1e-7
+            }
+            _ => false,
+        }
+    };
+    let faces = solid.faces();
+    let mut found: Vec<(build::TFace, build::TFace)> = Vec::new();
+    for fa in faces.iter().filter(|x| facing(x, da)) {
+        for fb in faces.iter().filter(|x| facing(x, db)) {
+            let ea: Vec<build::TEdge> = fa
+                .borrow()
+                .boundary
+                .iter()
+                .flat_map(|w| w.borrow().edges.iter().map(|u| u.edge.clone()).collect::<Vec<_>>())
+                .collect();
+            let mut seen: Vec<build::TEdge> = Vec::new();
+            for e in ea {
+                let on_b = fb
+                    .borrow()
+                    .boundary
+                    .iter()
+                    .any(|w| w.borrow().edges.iter().any(|u| crate::topo::same(&u.edge, &e)));
+                if on_b && !seen.iter().any(|x| crate::topo::same(x, &e)) {
+                    seen.push(e);
+                }
+            }
+            // a pair that touches along several edges counts each, so it is ambiguous too
+            for _ in 0..seen.len() {
+                found.push((fa.clone(), fb.clone()));
+            }
+        }
+    }
+    match found.len() {
+        0 => Err(PairErr::NotFound),
+        1 => {
+            let (a, b) = found.remove(0);
+            Ok((a, b))
+        }
+        n => Err(PairErr::Ambiguous(n)),
+    }
+}
+
+fn fillet_face_pair(hist: &History, f: &Value) -> Option<(build::TFace, build::TFace)> {
+    fillet_faces(hist, f).ok()
 }
 
 /// The axis-aligned planar box extent of `src`, or None for anything else --
@@ -6394,6 +6708,8 @@ enum FilletErr {
  VertexTooComplex,
  /// The edge carries on, collinear, into another lump (a mirror or pattern copy that touches).
  SplitEdge,
+ /// A round whose ends are not plain, or whose cutter reaches other material.
+ RoundEnds,
 }
 
 /// Dispatch the box `round` primitive field (SPEC-brep-round.md): refuse a
@@ -6607,6 +6923,80 @@ fn box_profile_cuts(
     Some(segs)
 }
 
+/// The edge of `src` with the same two end points as `edge`, and the faces of `src` on each side
+/// of it lying in the planes of `fa` and `fb` (in that order). None when `src` has no such edge: it
+/// was covered, split or removed by a later feature.
+fn map_edge_into(
+    src: &TSolid,
+    edge: &build::TEdge,
+    fa: &build::TFace,
+    fb: &build::TFace,
+) -> Option<(build::TEdge, build::TFace, build::TFace)> {
+    let (a, b) = {
+        let e = edge.borrow();
+        let r = (e.a.borrow().point, e.b.borrow().point);
+        r
+    };
+    let near = |p: Vec3, q: Vec3| len(sub(p, q)) < 1e-6;
+    let plane_of = |f: &build::TFace| -> Option<(Vec3, Vec3)> {
+        let fc = f.borrow();
+        match &fc.surface {
+            Surface::Plane(p) => Some((normalize(p.n), p.origin)),
+            _ => None,
+        }
+    };
+    let same_plane = |x: &build::TFace, y: &build::TFace| -> bool {
+        let (Some((n1, o1)), Some((n2, o2))) = (plane_of(x), plane_of(y)) else { return false };
+        dot(n1, n2).abs() > 1.0 - 1e-9 && dot(n1, sub(o1, o2)).abs() < 1e-7
+    };
+    let mut hits: Vec<build::TEdge> = Vec::new();
+    for e in src.edges() {
+        let eb = e.borrow();
+        if !matches!(eb.curve, crate::geom::Curve::Segment { .. }) {
+            continue;
+        }
+        let (p, q) = (eb.a.borrow().point, eb.b.borrow().point);
+        // the named edge lies along this one (a run of collinear pieces is one edge to the student)
+        let span = len(sub(q, p));
+        if span < 1e-9 {
+            continue;
+        }
+        let dir = scale(sub(q, p), 1.0 / span);
+        let on = |x: Vec3| {
+            let t = dot(sub(x, p), dir);
+            len(sub(sub(x, p), scale(dir, t))) < 1e-6 && t > -1e-6 && t < span + 1e-6
+        };
+        if on(a) && on(b) {
+            drop(eb);
+            hits.push(e.clone());
+        }
+    }
+    if hits.len() != 1 {
+        return None;
+    }
+    let found = hits.remove(0);
+    let adj: Vec<build::TFace> = src
+        .faces()
+        .into_iter()
+        .filter(|f| {
+            f.borrow()
+                .boundary
+                .iter()
+                .any(|w| w.borrow().edges.iter().any(|u| crate::topo::same(&u.edge, &found)))
+        })
+        .collect();
+    if adj.len() != 2 {
+        return None;
+    }
+    if same_plane(&adj[0], fa) && same_plane(&adj[1], fb) {
+        Some((found, adj[0].clone(), adj[1].clone()))
+    } else if same_plane(&adj[1], fa) && same_plane(&adj[0], fb) {
+        Some((found, adj[1].clone(), adj[0].clone()))
+    } else {
+        None
+    }
+}
+
 /// Build the fillet/chamfer: a box edge rounded or chamfered is the extrusion
 /// of the box cross-section perpendicular to that edge, with the corner named
 /// by the two faces replaced by an arc (round) or a straight bevel (chamfer).
@@ -6785,15 +7175,42 @@ fn build_fillet(
  return Ok(build::ensure_outward(&solid));
  }
  // A general chamfer removes the convex corner with a triangular prism whose
- // side faces lie in the two selected face planes. Rounds remain unsupported:
- // their tangent tool needs boolean support this path deliberately does not use.
- if round {
- return Err(FilletErr::NoBox);
- }
+ // side faces lie in the two selected face planes. A round of a straight convex
+ // edge between two planes is the same prism with the bevel replaced by the
+ // tangent quarter-cylinder, i.e. the corner minus the blend material (S4g).
  let edge = hist.edge_between(&fa, &fb).ok_or(FilletErr::NoEdge)?;
  if !matches!(&edge.borrow().curve, crate::geom::Curve::Segment { .. }) {
  return Err(FilletErr::NoEdge);
  }
+ // To a student an L-shaped top is ONE face and the run along its side ONE edge, although the
+ // boolean left each in pieces. Work on a copy with coplanar neighbours merged and collinear runs
+ // joined (a part of several lumps keeps its own handles: the mirror path below relies on them).
+ let unified: TSolid;
+ let src: &TSolid = if src.shells.len() == 1 {
+     unified = build::unify_coplanar(src);
+     &unified
+ } else {
+     src
+ };
+ // The name may point at faces of an EARLIER feature (the box a hole or a join was made from),
+ // whose handles are not the target's. Work on the target's own edge and faces: the one with
+ // the same two end points between faces in the same two planes, or none (then this path stops,
+ // and the replay, which rounds the root box first, gets its turn).
+ let parallel = {
+     let n = |f: &build::TFace| match &f.borrow().surface {
+         Surface::Plane(p) => Some(normalize(p.n)),
+         _ => None,
+     };
+     matches!((n(&fa), n(&fb)), (Some(x), Some(y)) if dot(x, y).abs() >= 1.0 - 1e-9)
+ };
+ let own = src.edges().iter().any(|e| crate::topo::same(e, &edge))
+     && src.faces().iter().any(|f| std::rc::Rc::ptr_eq(f, &fa))
+     && src.faces().iter().any(|f| std::rc::Rc::ptr_eq(f, &fb));
+ let (edge, fa, fb) = match if own { Some((edge.clone(), fa.clone(), fb.clone())) } else { map_edge_into(src, &edge, &fa, &fb) } {
+     Some(m) => m,
+     None if parallel => return Err(FilletErr::Flat),
+     None => return Err(FilletErr::NoBox),
+ };
  let (a, b) = {
  let e = edge.borrow();
  let endpoints = (e.a.borrow().point, e.b.borrow().point);
@@ -6806,7 +7223,7 @@ fn build_fillet(
  }
  let edge_direction = scale(edge_vector, 1.0 / edge_length);
  let midpoint = scale(add(a, b), 0.5);
- let face_data = |face: &build::TFace, midpoint: Vec3| -> Result<(Vec3, Vec3, f64), FilletErr> {
+ let face_data = |face: &build::TFace, midpoint: Vec3, which: &build::TEdge| -> Result<(Vec3, Vec3, f64), FilletErr> {
  let (surface_normal, forward) = {
  let f = face.borrow();
  let Surface::Plane(plane) = &f.surface else {
@@ -6815,18 +7232,46 @@ fn build_fillet(
  (plane.n, f.forward)
  };
  let normal = if forward { normalize(surface_normal) } else { scale(normalize(surface_normal), -1.0) };
+ // The in-face direction square to the edge, from the edge's own use in this face's wire: the
+ // face's interior lies to the LEFT of travel (outer wire counter-clockwise from outside, holes
+ // clockwise). Averaging the boundary points instead pointed the wrong way for a face that wraps
+ // round a boss (the base block's top), and a wedge cut in that quadrant removed material from the
+ // wrong place.
  let mut inward = [0.0; 3];
  for wire in &face.borrow().boundary {
  for use_ in &wire.borrow().edges {
+ if !crate::topo::same(&use_.edge, which) {
+ continue;
+ }
  let e = use_.edge.borrow();
- for point in [e.a.borrow().point, e.b.borrow().point] {
- let perpendicular = sub(sub(point, midpoint), scale(edge_direction, dot(sub(point, midpoint), edge_direction)));
- if len(perpendicular) > 1e-9 {
- inward = add(inward, perpendicular);
+ let (pa, pb) = (e.a.borrow().point, e.b.borrow().point);
+ let travel = if use_.forward { sub(pb, pa) } else { sub(pa, pb) };
+ inward = cross(normal, normalize(travel));
  }
  }
- }
- }
+ // A face whose wires were walked the other way round (a mirrored copy keeps its edges' order)
+ // has its interior on the RIGHT: read the outer wire's winding against the normal.
+ let winding = {
+     let fc = face.borrow();
+     let mut acc = [0.0; 3];
+     if let Some(outer) = fc.boundary.first() {
+         let pts: Vec<Vec3> = outer
+             .borrow()
+             .edges
+             .iter()
+             .map(|u| {
+                 let e = u.edge.borrow();
+                 let r = if u.forward { e.a.borrow().point } else { e.b.borrow().point };
+                 r
+             })
+             .collect();
+         for i in 0..pts.len() {
+             acc = add(acc, cross(pts[i], pts[(i + 1) % pts.len()]));
+         }
+     }
+     dot(acc, normal)
+ };
+ let inward = if winding < 0.0 { scale(inward, -1.0) } else { inward };
  let inward = normalize(inward);
  if len(inward) <= 1e-9 || dot(inward, normal).abs() > 1e-7 {
  return Err(FilletErr::NoBox);
@@ -6845,8 +7290,8 @@ fn build_fillet(
  }
  Ok((normal, inward, reach))
  };
- let (normal_a, in_a, reach_a) = face_data(&fa, midpoint)?;
- let (normal_b, in_b, reach_b) = face_data(&fb, midpoint)?;
+ let (normal_a, in_a, reach_a) = face_data(&fa, midpoint, &edge)?;
+ let (normal_b, in_b, reach_b) = face_data(&fb, midpoint, &edge)?;
  if dot(normal_a, normal_b).abs() >= 1.0 - 1e-9 {
  return Err(FilletErr::Flat);
  }
@@ -6873,26 +7318,104 @@ fn build_fillet(
  }
  let u_axis = in_a;
  let v_axis = cross(edge_direction, u_axis);
- let third = [size * dot(in_b, u_axis), size * dot(in_b, v_axis)];
- let wedge_area = 0.5 * size * third[1].abs();
- // The wedge for the stretch of the edge's line that starts `t0` after `a` and is `span` long. It runs `size` past
- // both ends, which is harmless when each lump is cut on its own.
- let make_tool = |t0: f64, span: f64| -> Result<TSolid, FilletErr> {
+ // The interior angle between the two faces, in the cross-section.
+ let theta = dot(in_b, v_axis).abs().atan2(dot(in_b, u_axis));
+ // A round of radius `size` is the chamfer wedge whose legs are the TANGENT length along each face
+ // (`size / tan(theta / 2)`), with its one planar bevel face then re-skinned as the tangent
+ // cylinder; its area is the kite minus the sector, a chamfer's the triangle.
+ let round_d = size / (0.5 * theta).tan();
+ let leg = if round { round_d } else { size };
+ let third = [leg * dot(in_b, u_axis), leg * dot(in_b, v_axis)];
+ let wedge_area = if round {
+     round_d * size - 0.5 * (std::f64::consts::PI - theta) * size * size
+ } else {
+     0.5 * size * third[1].abs()
+ };
+ if round {
+     if !(theta > 1e-3 && theta < std::f64::consts::PI - 1e-3) {
+         return Err(FilletErr::Flat);
+     }
+     if round_d >= reach_a.min(reach_b) - 1e-12 {
+         return Err(FilletErr::TooBig);
+     }
+     if src.shells.len() > 1 {
+         return Err(FilletErr::RoundEnds);
+     }
+     // Both ends of the edge must be clear: the one other face at each end is a plain flat
+     // end face square to the edge, so the cutter's overshoot past the ends is empty air.
+     for endpoint in [&edge.borrow().a, &edge.borrow().b] {
+         for face in src.faces() {
+             if std::rc::Rc::ptr_eq(&face, &fa) || std::rc::Rc::ptr_eq(&face, &fb) {
+                 continue;
+             }
+             let touches = face.borrow().boundary.iter().any(|wire| wire.borrow().edges.iter().any(|use_| {
+                 let e = use_.edge.borrow();
+                 std::rc::Rc::ptr_eq(&e.a, endpoint) || std::rc::Rc::ptr_eq(&e.b, endpoint)
+             }));
+             if !touches {
+                 continue;
+             }
+             let square = match &face.borrow().surface {
+                 Surface::Plane(p) => dot(normalize(p.n), edge_direction).abs() > 1.0 - 1e-9,
+                 _ => false,
+             };
+             if !square {
+                 return Err(FilletErr::RoundEnds);
+             }
+         }
+     }
+ }
+ // How each end of the edge meets the third face there. A plain flat end face square to the edge
+ // is CONVEX when the solid lies behind it (the wedge may run past the end into air) and CONCAVE
+ // when the solid carries on past it (a boss standing on a base: the wedge must stop flush, or it
+ // shaves the base). Anything else is `None`.
+ let end_kind = |endpoint: &crate::topo::VertexRef, toward: Vec3| -> Option<bool> {
+     let mut kind: Option<bool> = None;
+     for face in src.faces() {
+         if std::rc::Rc::ptr_eq(&face, &fa) || std::rc::Rc::ptr_eq(&face, &fb) {
+             continue;
+         }
+         let touches = face.borrow().boundary.iter().any(|wire| wire.borrow().edges.iter().any(|use_| {
+             let e = use_.edge.borrow();
+             std::rc::Rc::ptr_eq(&e.a, endpoint) || std::rc::Rc::ptr_eq(&e.b, endpoint)
+         }));
+         if !touches {
+             continue;
+         }
+         let fb_ = face.borrow();
+         let Surface::Plane(p) = &fb_.surface else { return None };
+         let n = if fb_.forward { normalize(p.n) } else { scale(normalize(p.n), -1.0) };
+         if dot(n, edge_direction).abs() < 1.0 - 1e-9 || kind.is_some() {
+             return None;
+         }
+         kind = Some(dot(n, toward) > 0.0);
+     }
+     kind
+ };
+ let (convex_a, convex_b) = {
+     let e = edge.borrow();
+     (end_kind(&e.a, scale(edge_direction, -1.0)), end_kind(&e.b, edge_direction))
+ };
+ // The wedge for the stretch of the edge's line that starts `t0` after `a` and is `span` long. It runs `leg` past
+ // an end that is not concave (harmless when each lump is cut on its own), and stops flush at one that is.
+ let make_tool = |t0: f64, span: f64, over_a: f64, over_b: f64| -> Result<TSolid, FilletErr> {
      let segs = vec![
-         build::ProfileSeg::Line { a: [0.0, 0.0], b: [size, 0.0] },
-         build::ProfileSeg::Line { a: [size, 0.0], b: third },
+         build::ProfileSeg::Line { a: [0.0, 0.0], b: [leg, 0.0] },
+         build::ProfileSeg::Line { a: [leg, 0.0], b: third },
          build::ProfileSeg::Line { a: third, b: [0.0, 0.0] },
      ];
      let tool = build::extrude_profile(
          &segs,
-         sub(add(a, scale(edge_direction, t0)), scale(edge_direction, size)),
+         sub(add(a, scale(edge_direction, t0)), scale(edge_direction, over_a)),
          u_axis,
          v_axis,
-         scale(edge_direction, span + 2.0 * size),
+         scale(edge_direction, span + over_a + over_b),
      )
      .map_err(|_| FilletErr::NoBox)?;
      Ok(build::ensure_outward(&tool))
  };
+ let over_a = if convex_a == Some(false) { 0.0 } else { leg };
+ let over_b = if convex_b == Some(false) { 0.0 } else { leg };
  // The tool runs `size` past both ends of the edge, so on a part of several lumps (a mirror, a
  // pattern) it could reach a neighbouring lump that touches this one and shave it too, which no
  // chamfer of THIS edge does. Each lump is cut on its own, with the wedge for the stretch of the
@@ -6979,7 +7502,7 @@ fn build_fillet(
          if faces2.len() != 2 {
              return Err(FilletErr::SplitEdge);
          }
-         let (d0, d1) = (face_data(&faces2[0], mid_k)?, face_data(&faces2[1], mid_k)?);
+         let (d0, d1) = (face_data(&faces2[0], mid_k, edge2)?, face_data(&faces2[1], mid_k, edge2)?);
          let alike = |x: &(Vec3, Vec3, f64), n: Vec3, i: Vec3| len(sub(x.0, n)) < 1e-7 && len(sub(x.1, i)) < 1e-7;
          let same_planes = (alike(&d0, normal_a, in_a) && alike(&d1, normal_b, in_b)) || (alike(&d1, normal_a, in_a) && alike(&d0, normal_b, in_b));
          if !same_planes {
@@ -7007,7 +7530,7 @@ fn build_fillet(
      let mut cut_of: Vec<Option<TSolid>> = vec![None; src.shells.len()];
      for (k, t0, t1) in &members {
          let one = TSolid { shells: vec![src.shells[*k].clone()] };
-         let cut = ops::boolean("subtract", &one, &make_tool(*t0, t1 - t0)?).ok_or(FilletErr::NoBox)?;
+         let cut = ops::boolean("subtract", &one, &make_tool(*t0, t1 - t0, leg, leg)?).ok_or(FilletErr::NoBox)?;
          cut_of[*k] = Some(cut);
      }
      let mut shells = Vec::new();
@@ -7028,9 +7551,46 @@ fn build_fillet(
      }
      return Ok(result);
  }
- ops::boolean("subtract", src, &make_tool(0.0, edge_length)?)
+ let cut = ops::boolean("subtract", src, &make_tool(0.0, edge_length, over_a, over_b)?)
      .map(|solid| build::ensure_outward(&solid))
-     .ok_or(FilletErr::NoBox)
+     .ok_or(if round { FilletErr::RoundEnds } else { FilletErr::NoBox })?;
+ if !round {
+     return Ok(cut);
+ }
+ // The wedge's bevel is the one face of the result lying in the plane through the two
+ // tangent lines. Re-skin it as the tangent cylinder.
+ let into = normalize(add(in_a, in_b));
+ let bevel_point = add(midpoint, scale(add(scale(in_a, round_d), scale(in_b, round_d)), 0.5));
+ let bevel_normal = scale(into, -1.0);
+ let mut bevel: Option<build::TFace> = None;
+ for face in cut.faces() {
+     let hit = match &face.borrow().surface {
+         Surface::Plane(p) => {
+             let n = if face.borrow().forward { normalize(p.n) } else { scale(normalize(p.n), -1.0) };
+             len(sub(n, bevel_normal)) < 1e-7 && dot(sub(bevel_point, p.origin), normalize(p.n)).abs() < 1e-7
+         }
+         _ => false,
+     };
+     if hit {
+         if bevel.is_some() {
+             return Err(FilletErr::RoundEnds);
+         }
+         bevel = Some(face.clone());
+     }
+ }
+ let bevel = bevel.ok_or(FilletErr::RoundEnds)?;
+ let axis_point = add(midpoint, scale(into, size / (0.5 * theta).sin()));
+ build::bevel_to_round(&bevel, axis_point, edge_direction, size, theta).ok_or(FilletErr::RoundEnds)?;
+ // Exact: the part loses the cutter's cross-section area times the edge's length and
+ // nothing else. A cutter that reached other material, or a boolean that went wrong,
+ // shows up here as a different volume and is refused rather than shown.
+ let v0 = build::solid_volume(src);
+ let got = v0 - build::solid_volume(&cut);
+ let want = wedge_area * edge_length;
+ if !got.is_finite() || (got - want).abs() > 1e-9 * v0.abs().max(1.0) {
+     return Err(FilletErr::RoundEnds);
+ }
+ Ok(cut)
 }
 
 // ---------------------------------------------------------------------------

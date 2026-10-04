@@ -137,9 +137,20 @@ test('a second round after a hole refuses, shown without it', () => {
   near(r.s.volume, 32000 - PI * 16 * 20 - wedge(3, 40)); // the first round is kept
 });
 
-test('hollow then a round that reaches the cavity refuses in the replay sentence (K-1b builds the clear cases: round-after-hollow.test.mjs)', () => {
+test('hollow then a round bigger than the wall that still keeps clear of the cavity builds exactly (S4g; it used to refuse)', () => {
+  // outer 40 x 40 x 20, wall 2, open top: 8672. The 3 mm round on a vertical edge removes (1 - pi/4) 3^2 x 20 and its
+  // quarter-cylinder surface stays 3 - sqrt(2) = 1.59 mm clear of the cavity corner, so nothing breaks through.
   const r = build("const b = box(40, 40, 20)\nhollow(b, { wall: 2, open: 'top' })\nround(b.edge('front', 'right'), 3)");
-  assert.match(r.refusals.round1 ?? '', /would reach a cut made earlier/);
+  assert.deepEqual(r.refusals, {});
+  near(r.s.volume, 8672 - wedge(3, 20));
+  const o = occt(r.doc, r.id);
+  near(r.s.volume, o.volume, 1e-7);
+});
+
+test('hollow then a round that does break through the cavity still refuses', () => {
+  // a 6 mm round on a 2 mm wall: the blend reaches the cavity, so the kernel will not build it
+  const r = build("const b = box(40, 40, 20)\nhollow(b, { wall: 2, open: 'top' })\nround(b.edge('front', 'right'), 6)");
+  assert.ok((r.refusals.round1 ?? '').length > 0);
 });
 
 test('a refused replay shows the source shape and keeps a refusal entry (never an empty result)', () => {

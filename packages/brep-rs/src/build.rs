@@ -3413,3 +3413,408 @@ mod groove_partial_angle {
         }
     }
 }
+
+/// S4g: re-skin the planar bevel face of a chamfer wedge as the tangent round.
+///
+/// `bevel` is the four-sided planar face left by subtracting the wedge whose legs are the round's
+/// tangent length; its two long edges run along `dir` (the former edge's direction) and are the
+/// tangent lines, its two short edges are chords on the plain end faces. `axis_point` is any point
+/// on the round's axis (the centre of the quarter cylinder) and `radius` its radius; `theta` is
+/// the corner's interior angle, so the arc spans `pi - theta`.
+///
+/// The face handle and the edge handles are KEPT: the face becomes a cylinder wall and the two
+/// chords become arcs, so every neighbour (the two tangent faces, the two end faces) stays welded
+/// to it exactly as the wedge left it. Returns None (and changes nothing) when the face is not the
+/// expected rectangle.
+pub fn bevel_to_round(bevel: &TFace, axis_point: Vec3, dir: Vec3, radius: f64, theta: f64) -> Option<()> {
+    let span = std::f64::consts::PI - theta;
+    if !(span > 1e-6 && span < std::f64::consts::PI) || radius <= 0.0 {
+        return None;
+    }
+    let dir = crate::math::normalize(dir);
+    // The loop as walked, outward-counter-clockwise: (edge, forward, start, end).
+    let loop_uses = {
+        let f = bevel.borrow();
+        if f.boundary.len() != 1 || !matches!(f.surface, Surface::Plane(_)) {
+            return None;
+        }
+        let w = f.boundary[0].borrow();
+        if w.edges.len() != 4 {
+            return None;
+        }
+        let mut v: Vec<(TEdge, bool, Vec3, Vec3)> = Vec::new();
+        for u in &w.edges {
+            let e = u.edge.borrow();
+            let (pa, pb) = (e.a.borrow().point, e.b.borrow().point);
+            if !matches!(e.curve, Curve::Segment { .. }) {
+                return None;
+            }
+            let (s, t) = if u.forward { (pa, pb) } else { (pb, pa) };
+            v.push((u.edge.clone(), u.forward, s, t));
+        }
+        if !f.forward {
+            v.reverse();
+            for o in v.iter_mut() {
+                o.1 = !o.1;
+                std::mem::swap(&mut o.2, &mut o.3);
+            }
+        }
+        v
+    };
+    let along = |a: Vec3, b: Vec3| crate::math::dot(sub(b, a), dir).abs();
+    let is_chord: Vec<bool> = loop_uses
+        .iter()
+        .map(|(_, _, s, t)| {
+            let l = crate::math::len(sub(*t, *s));
+            l > 1e-9 && along(*s, *t) < 1e-7 * l.max(1.0)
+        })
+        .collect();
+    // exactly two chords, opposite each other
+    if is_chord.iter().filter(|c| **c).count() != 2 || is_chord[0] == is_chord[1] {
+        return None;
+    }
+    let first = if is_chord[0] { 0 } else { 1 };
+    let mut seq: Vec<(TEdge, bool, Vec3, Vec3)> = (0..4).map(|k| loop_uses[(first + k) % 4].clone()).collect();
+    // seq: chord0, line, chord1, line. n points from chord0's end towards chord1's.
+    let height = along(seq[0].3, seq[1].3);
+    if height <= 1e-9 {
+        return None;
+    }
+    let towards = crate::math::dot(sub(seq[1].3, seq[1].2), dir);
+    let n = if towards > 0.0 { dir } else { scale(dir, -1.0) };
+    let on_plane_of = |p: Vec3| {
+        let t = crate::math::dot(sub(p, axis_point), n);
+        add(axis_point, scale(n, t))
+    };
+    let c0 = on_plane_of(seq[0].2);
+    let rot_sign = crate::math::dot(cross(sub(seq[0].2, c0), sub(seq[0].3, c0)), n);
+    if rot_sign < 0.0 {
+        // walk the loop the other way so that the first chord turns positively about n
+        let mut rev: Vec<(TEdge, bool, Vec3, Vec3)> = seq
+            .iter()
+            .rev()
+            .map(|(e, fw, s, t)| (e.clone(), !*fw, *t, *s))
+            .collect();
+        // rev is: line, chord1^r, line, chord0^r. Start at chord0^r.
+        rev.rotate_left(3);
+        seq = rev;
+    }
+    // Both chords must really be arcs of the stated radius about the axis.
+    for k in [0usize, 2] {
+        let cc = on_plane_of(seq[k].2);
+        for p in [seq[k].2, seq[k].3] {
+            if (crate::math::len(sub(p, cc)) - radius).abs() > 1e-7 * radius.max(1.0) {
+                return None;
+            }
+        }
+    }
+    let e1 = crate::math::normalize(sub(seq[0].2, c0));
+    let e2 = cross(n, e1);
+    let u_of = |p: Vec3| -> f64 {
+        let r = sub(p, c0);
+        let u = crate::math::dot(r, e2).atan2(crate::math::dot(r, e1));
+        if (u - span).abs() < u.abs() { span } else { 0.0 }
+    };
+    let v_of = |p: Vec3| crate::math::dot(sub(p, c0), n);
+    // New curves for the two chords (the shared handles are mutated).
+    for k in [0usize, 2] {
+        let e = seq[k].0.clone();
+        let (a, b) = {
+            let eb = e.borrow();
+            let r = (eb.a.borrow().point, eb.b.borrow().point);
+            r
+        };
+        let cc = on_plane_of(a);
+        let xa = crate::math::normalize(sub(a, cc));
+        let s = crate::math::dot(cross(sub(a, cc), sub(b, cc)), n);
+        let sw = if s >= 0.0 { span } else { -span };
+        e.borrow_mut().curve = Curve::Arc { center: cc, radius, normal: n, x_axis: xa, sweep: sw };
+    }
+    let uses: Vec<topo::EdgeUse<Curve3>> = seq
+        .iter()
+        .map(|(e, fw, s, t)| cyl_arc_use(e, *fw, u_of(*s), u_of(*t), v_of(*s), v_of(*t)))
+        .collect();
+    let wall = Surface::Cylinder(Cylinder {
+        origin: c0,
+        axis: n,
+        e1,
+        e2,
+        radius,
+        vmin: 0.0,
+        vmax: height,
+        arc: Some(geom::ArcRange { start: 0.0, span }),
+        cross: None,
+    });
+    let mut f = bevel.borrow_mut();
+    f.surface = wall;
+    f.forward = true;
+    f.uv_domain = [[0.0, span], [0.0, height]];
+    f.boundary = vec![Rc::new(RefCell::new(Wire { edges: uses }))];
+    Some(())
+}
+
+// ---------------------------------------------------------------------------
+// S4g: one logical face, one logical edge.
+//
+// The planar split-and-classify boolean leaves a coplanar face in the pieces it cut it into (an L-shaped
+// top is two rectangles) and an edge in the pieces its neighbours split it into. To a student the L is ONE
+// top face and the straight run along its side is ONE edge. `unify_coplanar` returns a deep copy of a
+// single-shell solid with coplanar neighbouring faces merged and collinear edge runs joined, so that a
+// round or chamfer works on the edge the student named, not on one piece of it. The input is not touched.
+// ---------------------------------------------------------------------------
+
+fn plane_n_out(f: &Face<Curve3, Surface>) -> Option<(Vec3, Plane)> {
+    match &f.surface {
+        Surface::Plane(p) => {
+            let n = crate::math::normalize(p.n);
+            Some((if f.forward { n } else { scale(n, -1.0) }, p.clone()))
+        }
+        _ => None,
+    }
+}
+
+fn faces_coplanar(a: &TFace, b: &TFace) -> bool {
+    let (fa, fb) = (a.borrow(), b.borrow());
+    let (Some((na, pa)), Some((nb, pb))) = (plane_n_out(&fa), plane_n_out(&fb)) else { return false };
+    crate::math::dot(na, nb) > 1.0 - 1e-9 && crate::math::dot(na, sub(pa.origin, pb.origin)).abs() < 1e-7
+}
+
+fn unify_face_edges(f: &TFace) -> Vec<TEdge> {
+    f.borrow()
+        .boundary
+        .iter()
+        .flat_map(|w| w.borrow().edges.iter().map(|u| u.edge.clone()).collect::<Vec<_>>())
+        .collect()
+}
+
+/// Merge two coplanar faces that share edges into one, or None when the union is not a single
+/// face with plain loops (a pinch point, two outlines).
+fn merge_two_faces(f: &TFace, g: &TFace) -> Option<TFace> {
+    let shared: Vec<TEdge> = unify_face_edges(f).into_iter().filter(|e| unify_face_edges(g).iter().any(|x| topo::same(x, e))).collect();
+    if shared.is_empty() {
+        return None;
+    }
+    let (n_out, plane, forward, uv) = {
+        let fb = f.borrow();
+        let (n, p) = plane_n_out(&fb)?;
+        (n, p, fb.forward, fb.uv_domain)
+    };
+    // every use that is not on a shared edge: (edge, forward, start, end)
+    let mut segs: Vec<(TEdge, bool, Vec3, Vec3)> = Vec::new();
+    for face in [f, g] {
+        for w in &face.borrow().boundary {
+            for u in &w.borrow().edges {
+                if shared.iter().any(|s| topo::same(s, &u.edge)) {
+                    continue;
+                }
+                let e = u.edge.borrow();
+                let (pa, pb) = (e.a.borrow().point, e.b.borrow().point);
+                let (s, t) = if u.forward { (pa, pb) } else { (pb, pa) };
+                segs.push((u.edge.clone(), u.forward, s, t));
+            }
+        }
+    }
+    let near = |p: Vec3, q: Vec3| crate::math::len(sub(p, q)) < 1e-7;
+    let mut used = vec![false; segs.len()];
+    let mut loops: Vec<Vec<usize>> = Vec::new();
+    for i in 0..segs.len() {
+        if used[i] {
+            continue;
+        }
+        used[i] = true;
+        let mut lp = vec![i];
+        let start = segs[i].2;
+        let mut cur = segs[i].3;
+        let mut guard = 0;
+        while !near(cur, start) {
+            let cands: Vec<usize> = (0..segs.len()).filter(|j| !used[*j] && near(segs[*j].2, cur)).collect();
+            if cands.len() != 1 {
+                return None;
+            }
+            used[cands[0]] = true;
+            lp.push(cands[0]);
+            cur = segs[cands[0]].3;
+            guard += 1;
+            if guard > 10_000 {
+                return None;
+            }
+        }
+        loops.push(lp);
+    }
+    // outer loop counter-clockwise about the outward normal, holes clockwise
+    let area = |lp: &Vec<usize>| -> f64 {
+        let mut acc = [0.0; 3];
+        for &k in lp {
+            acc = add(acc, cross(segs[k].2, segs[k].3));
+        }
+        crate::math::dot(acc, n_out) / 2.0
+    };
+    let mut outer: Option<usize> = None;
+    for (li, lp) in loops.iter().enumerate() {
+        if area(lp) > 1e-9 {
+            if outer.is_some() {
+                return None;
+            }
+            outer = Some(li);
+        }
+    }
+    let outer = outer?;
+    let mut order: Vec<usize> = vec![outer];
+    order.extend((0..loops.len()).filter(|l| *l != outer));
+    let wires: Vec<Vec<topo::EdgeUse<Curve3>>> = order
+        .iter()
+        .map(|&li| {
+            loops[li]
+                .iter()
+                .map(|&k| planar_seg_use(&plane, &segs[k].0, segs[k].1, segs[k].2, segs[k].3))
+                .collect()
+        })
+        .collect();
+    let merged = make_face_multi(Surface::Plane(plane), uv, wires);
+    merged.borrow_mut().forward = forward;
+    Some(merged)
+}
+
+/// Join two collinear straight edges that meet at a vertex nothing else touches into one edge, in
+/// both flat faces they border. Returns whether it changed anything.
+fn merge_collinear_once(faces: &mut Vec<TFace>) -> bool {
+    // incident edges by vertex position
+    let mut all: Vec<TEdge> = Vec::new();
+    for f in faces.iter() {
+        for e in unify_face_edges(f) {
+            if !all.iter().any(|x| topo::same(x, &e)) {
+                all.push(e);
+            }
+        }
+    }
+    let ends = |e: &TEdge| {
+        let eb = e.borrow();
+        let r = (eb.a.borrow().point, eb.b.borrow().point);
+        r
+    };
+    let near = |p: Vec3, q: Vec3| crate::math::len(sub(p, q)) < 1e-7;
+    for (i, e1) in all.iter().enumerate() {
+        if !matches!(e1.borrow().curve, Curve::Segment { .. }) {
+            continue;
+        }
+        let (a1, b1) = ends(e1);
+        for p in [a1, b1] {
+            let incident: Vec<usize> = (0..all.len())
+                .filter(|k| {
+                    let (x, y) = ends(&all[*k]);
+                    near(x, p) || near(y, p)
+                })
+                .collect();
+            if incident.len() != 2 || !incident.contains(&i) {
+                continue;
+            }
+            let k = *incident.iter().find(|k| **k != i).unwrap_or(&i);
+            let e2 = &all[k];
+            if k == i || !matches!(e2.borrow().curve, Curve::Segment { .. }) {
+                continue;
+            }
+            let (a2, b2) = ends(e2);
+            let far1 = if near(a1, p) { b1 } else { a1 };
+            let far2 = if near(a2, p) { b2 } else { a2 };
+            let d1 = crate::math::normalize(sub(far1, p));
+            let d2 = crate::math::normalize(sub(far2, p));
+            if crate::math::dot(d1, d2) > -1.0 + 1e-9 {
+                continue;
+            }
+            // the faces using each must be the same two, both flat
+            let using = |e: &TEdge| -> Vec<usize> {
+                (0..faces.len()).filter(|fi| unify_face_edges(&faces[*fi]).iter().any(|x| topo::same(x, e))).collect()
+            };
+            let (u1, u2) = (using(e1), using(e2));
+            if u1.len() != 2 || u1 != u2 || u1.iter().any(|fi| !matches!(faces[*fi].borrow().surface, Surface::Plane(_))) {
+                continue;
+            }
+            // far end vertex handles
+            let vert = |e: &TEdge, far: Vec3| {
+                let eb = e.borrow();
+                if near(eb.a.borrow().point, far) { eb.a.clone() } else { eb.b.clone() }
+            };
+            let (v1, v2) = (vert(e1, far1), vert(e2, far2));
+            let merged = topo::edge(v1, v2, true, Curve::Segment { a: far1, b: far2 });
+            let mut ok = true;
+            for &fi in &u1 {
+                let face = faces[fi].clone();
+                let plane = match &face.borrow().surface {
+                    Surface::Plane(pl) => pl.clone(),
+                    _ => {
+                        ok = false;
+                        continue;
+                    }
+                };
+                for w in &face.borrow().boundary {
+                    let mut wb = w.borrow_mut();
+                    let n = wb.edges.len();
+                    let pos = (0..n).find(|&j| {
+                        let (ja, jb) = (&wb.edges[j].edge, &wb.edges[(j + 1) % n].edge);
+                        (topo::same(ja, e1) && topo::same(jb, e2)) || (topo::same(ja, e2) && topo::same(jb, e1))
+                    });
+                    let Some(j) = pos else { continue };
+                    let j2 = (j + 1) % n;
+                    let start = {
+                        let u = &wb.edges[j];
+                        let eb = u.edge.borrow();
+                        if u.forward { eb.a.borrow().point } else { eb.b.borrow().point }
+                    };
+                    let fwd = near(start, far1);
+                    let (s, t) = if fwd { (far1, far2) } else { (far2, far1) };
+                    let nu = planar_seg_use(&plane, &merged, fwd, s, t);
+                    if j2 > j {
+                        wb.edges.splice(j..=j2, [nu]);
+                    } else {
+                        // the pair wraps round the end of the wire
+                        wb.edges.remove(j);
+                        wb.edges[0] = nu;
+                    }
+                }
+            }
+            if ok {
+                return true;
+            }
+        }
+    }
+    false
+}
+
+/// A deep copy of `solid` with coplanar neighbouring faces merged and collinear edge runs joined. A
+/// solid of several shells, or one this cannot merge cleanly, comes back as a plain copy.
+pub fn unify_coplanar(solid: &TSolid) -> TSolid {
+    let work = transform_solid(solid, &Transform::identity());
+    if work.shells.len() != 1 {
+        return work;
+    }
+    let shell = work.shells[0].clone();
+    let mut faces: Vec<TFace> = shell.borrow().faces.clone();
+    // faces first
+    let mut guard = 0;
+    'again: loop {
+        guard += 1;
+        if guard > 400 {
+            break;
+        }
+        for i in 0..faces.len() {
+            for j in (i + 1)..faces.len() {
+                if !faces_coplanar(&faces[i], &faces[j]) {
+                    continue;
+                }
+                if let Some(m) = merge_two_faces(&faces[i], &faces[j]) {
+                    faces[i] = m;
+                    faces.remove(j);
+                    continue 'again;
+                }
+            }
+        }
+        break;
+    }
+    // then edges
+    let mut g2 = 0;
+    while g2 < 400 && merge_collinear_once(&mut faces) {
+        g2 += 1;
+    }
+    shell.borrow_mut().faces = faces;
+    work
+}
