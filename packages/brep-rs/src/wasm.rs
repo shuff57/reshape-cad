@@ -745,6 +745,11 @@ fn hole_tool(centre: Vec3, bore_r: f64, depth: f64, axis: Vec3, v_face: f64, fea
     Some(build::transform_solid(&solid, &crate::math::Transform::translation(across)))
 }
 
+/// Work allowed to a pattern's union fold: the sum over its boolean steps of (faces folded so far)
+/// x (faces of the next copy). Measured: 2124 takes about 1 s, 3024 about 3 s, 54756 about 32 s, so
+/// a pattern beyond this refuses instead of freezing the page.
+const PATTERN_FOLD_BUDGET: usize = 4000;
+
 /// Build every feature in the document, in order. Returns the history and the
 /// per-feature refusals. A feature this slice does not implement is refused
 /// with a plain reason rather than silently absent (§4.5's refusal contract).
@@ -1794,12 +1799,69 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     }
                 }
                 if clash {
-                    refusals.insert(
-                        id.clone(),
-                        json!(format!(
-                            "pattern {id}: its copies overlap, which brep-rs cannot combine without a boolean yet"
-                        )),
-                    );
+                    // Overlapping copies are folded with the union boolean, one copy
+                    // at a time (a copy whose box clears everything folded so far is
+                    // still joined with no boolean). Only planar and cylindrical
+                    // targets: a sphere, cone or torus union is not proven here.
+                    let plain = src.faces().iter().all(|fc| {
+                        matches!(&fc.borrow().surface, Surface::Plane(_) | Surface::Cylinder(_))
+                    });
+                    let mut folded: Option<TSolid> = None;
+                    if plain {
+                        let mut acc = instances[0].clone();
+                        let mut acc_box = boxes[0].clone();
+                        let mut ok = true;
+                        let mut cost = 0usize;
+                        for (k, inst) in instances.iter().enumerate().skip(1) {
+                            acc = if build::aabbs_overlap(&acc_box, &boxes[k]) {
+                                cost += acc.faces().len() * inst.faces().len();
+                                if cost > PATTERN_FOLD_BUDGET {
+                                    ok = false;
+                                    break;
+                                }
+                                match ops::boolean("union", &acc, inst) {
+                                    Some(r) => r,
+                                    None => {
+                                        ok = false;
+                                        break;
+                                    }
+                                }
+                            } else {
+                                build::combine(&acc, inst)
+                            };
+                            acc_box = build::solid_aabb(&acc);
+                        }
+                        // The union can neither lose a copy nor exceed the sum of them.
+                        if ok {
+                            let v = build::solid_volume(&acc);
+                            let vs: Vec<f64> = instances.iter().map(build::solid_volume).collect();
+                            let sum: f64 = vs.iter().sum();
+                            let big = vs.iter().cloned().fold(0.0, f64::max);
+                            let tol = 1e-6 * sum.abs().max(1.0);
+                            // A chain of unions can leave a mesh with open seams at a
+                            // tolerance the per-step check does not look at: the student's
+                            // part must mesh closed at a fine and a coarse chord.
+                            let closed = [0.05, 0.5].iter().all(|d| {
+                                crate::mesh::mesh_solid(&acc, *d).map_or(false, |m| crate::mesh::mesh_is_closed(&m))
+                            });
+                            if v.is_finite() && v >= big - tol && v <= sum + tol && closed {
+                                folded = Some(acc);
+                            }
+                        }
+                    }
+                    let Some(shape) = folded else {
+                        refusals.insert(
+                            id.clone(),
+                            json!(format!(
+                                "pattern {id}: its copies overlap, and brep-rs cannot join them into one exact solid -- {id} is shown without it."
+                            )),
+                        );
+                        continue;
+                    };
+                    let face_fates: Vec<Fate> =
+                        src.faces().iter().map(|fc| carry_fate(&shape, fc)).collect();
+                    record_op(&mut hist, &id, OpKind::Copy, vec![target.to_string()], face_fates, Vec::new());
+                    hist.insert(&id, shape);
                     continue;
                 }
                 // instances[0] IS src (an Rc-shallow clone at i=0 in both

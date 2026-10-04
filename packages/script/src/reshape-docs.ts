@@ -222,7 +222,7 @@ linearPattern(b, { count: 3, step: 60 })`,
       },
       {
         title: 'polarPattern: circular patterns',
-body: `polarPattern(b, { count: 4, axis: 'z' }) makes 4 copies in a circle around z. Use axis: 'x' or 'y' for other axes. Spacing has to clear the shape: at count 6 the copies here overlap, and brep-rs refuses an overlapping pattern rather than guessing.`,
+body: `polarPattern(b, { count: 4, axis: 'z' }) makes 4 copies in a circle around z. Use axis: 'x' or 'y' for other axes. Copies that overlap are joined into one solid (at count 6 the copies here overlap and become a single 16760.91 mm^3 part); a pattern whose copies overlap in a way brep-rs cannot join exactly stops with a sentence that says so.`,
 code: `const b = cuboid(10, 30, 10, { at: [25, 0, 0] })
 polarPattern(b, { count: 4, axis: 'z' })`,
       },
