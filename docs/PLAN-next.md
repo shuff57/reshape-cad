@@ -473,7 +473,7 @@ A `hole` on a part that is not a plain box or cylinder used to refuse with "brep
 - **Still refuses, in a sentence.** A bore (or any cut) that reaches a round, a corner sphere, a chamfer cone or a torus: wider than the flat (`across: 36` on the 40 box, 11 to 19 at x = 15), a hole at the edge of a rounded or chamfered face; a cut that crosses a bore wall of a part that also carries curved faces; a join (union) with a rounded part (`brep-rs cannot boolean these two solids`); STEP export of a part with a spherical face (the writer has no sphere yet, so a fully rounded box exports nothing).
 - **Latent defects.** (1) `ops::inside_solid` still votes on sphere roots without a finite-face check; only the carried path avoids it, every other caller that meets a sphere or torus operand still carries the risk. (2) A mirrored part stays two shells touching on a plane, so a cut that crosses the seam leaves two faces coincident across it; volume, mesh and STEP are right, but the result is not one lump. (3) `random#715` and `#721`: OCCT's mirrored prism volume is off by 1e-6 against the closed form, so the sweep's referee cannot confirm to better than that.
 
-## S4d hollow with holes (branch s4d-hollow; renumber on merge)
+## 32. S4d: hollow with holes
 
 `hollow` of a part that already has features used to refuse ("brep-rs can only hollow a box or a straight cylinder yet"). Two families now build, exactly, and everything else refuses in a sentence that says which part is the problem.
 
