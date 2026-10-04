@@ -187,29 +187,47 @@ pub fn diagnose(
     // the rows whose transformed values are the tail -- or when it carries
     // the conflict. `order` names COLUMNS (variables); the row-side tail is
     // what names rules.
+    // Blame is STRUCTURAL: walk the rules oldest to newest, keeping an
+    // orthonormal basis of every Jacobian row seen so far; a rule with a row
+    // that adds nothing to that basis is dependent on the older rules. The
+    // earlier version read the dependency off the transformed residual, which
+    // is exactly zero for a redundant rule that already holds (the same
+    // horizontal said twice), so the usual redundant case blamed nobody.
+    // Reported newest first. Only a redundant or conflicting sketch has blame.
     let mut blame: Vec<usize> = Vec::new();
-    let rows_of: Vec<(usize, usize)> = {
-        let mut out = Vec::with_capacity(m);
+    if matches!(bucket, Bucket::Redundant | Bucket::Conflicting) {
+        let mut basis: Vec<Vec<f64>> = Vec::new();
         let mut row = 0usize;
         for (ci, c) in constraints.iter().enumerate() {
             let k = c.rows();
-            if k > 0 {
-                out.push((ci, row));
+            let mut dependent = false;
+            for i in row..row + k {
+                let mut v = j[i].clone();
+                let n0 = norm(&v);
+                for _pass in 0..2 {
+                    for bvec in &basis {
+                        let d: f64 = bvec.iter().zip(&v).map(|(x, y)| x * y).sum();
+                        for (vv, bb) in v.iter_mut().zip(bvec) {
+                            *vv -= d * bb;
+                        }
+                    }
+                }
+                let n1 = norm(&v);
+                if n0 > 1e-12 && n1 > 1e-8 * n0 {
+                    for vv in v.iter_mut() {
+                        *vv /= n1;
+                    }
+                    basis.push(v);
+                } else {
+                    dependent = true;
+                }
             }
             row += k;
+            if dependent {
+                blame.push(ci);
+            }
         }
-        out
-    };
-    for &(ci, row0) in rows_of.iter().rev() {
-        let rows_here = constraints[ci].rows();
-        let block_norm: f64 = (row0..row0 + rows_here)
-            .filter(|&i| i >= rank)
-            .map(|i| rt[i] * rt[i])
-            .sum::<f64>()
-            .sqrt();
-        if block_norm > 0.0 && (conflict > tol * 1e3 || rows_here + row0 > rank) {
-            blame.push(ci);
-        }
+        blame.reverse();
     }
     Ok(Diagnosis { rank, dof, bucket, blame })
 }

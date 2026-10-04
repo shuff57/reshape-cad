@@ -105,6 +105,7 @@ import {
   describe as describeConstraint,
   buildSlotRows,
 } from '@shuff57/reshape-sketch/sketch-solve';
+import { outlineOf } from '@shuff57/reshape-sketch/sketch-arc';
 import type { TopoName } from './topo-name.js';
 
 // ---------------------------------------------------------------------------
@@ -2197,6 +2198,24 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     ...def,
     slots: slotsByParamName.get(def.name) ?? [],
   }));
+
+  // A round or chamfer bigger than its corner can give is cut down to what the
+  // corner can give. The part is still right for that size, but the script
+  // asked for another one, so say so instead of building it silently.
+  for (const f of finalDoc.features) {
+    if (f.kind !== 'sketch' || (!f.rounds && !f.chamfers)) continue;
+    try {
+      for (const n of outlineOf(f).notes) {
+        const word = f.rounds && f.rounds[n.corner] !== undefined ? 'round' : 'chamfer';
+        const fmt = (v: number) => String(Math.round(v * 100) / 100);
+        ruleWarnings.push(
+          n.got > 0
+            ? `.${word}(${n.corner}, ${fmt(n.want)}) is more than corner ${n.corner} has room for, so it was made ${fmt(n.got)} instead.`
+            : `.${word}(${n.corner}, ${fmt(n.want)}) was left out: corner ${n.corner} cannot take a ${word} (its edges are curved, in a straight line, or have no length).`
+        );
+      }
+    } catch { /* a malformed sketch is reported elsewhere */ }
+  }
 
   return {
     doc: finalDoc, params, namedParams: namedParamsOut, errors,

@@ -129,7 +129,7 @@ refuses(3, 'weld too wide (infeasible side lengths)', TRI,
     { k: 'distance', a: 2, aEnd: 'a', b: 2, bEnd: 'b', value: 100 },
     { k: 'distance', a: 3, aEnd: 'a', b: 3, bEnd: 'b', value: 300 },
   ],
-  'these corners were asked to meet but the solver could only bring them within');
+  'these corners were asked to meet, but your rules pull them apart; the closest they can get is');
 
 // 4. Crossing at a non-vertex: a bowtie.
 refuses(4, 'self-crossing bowtie',
@@ -154,7 +154,7 @@ refuses('6b', 'arc with no sweep',
 
 // 8. No closed loop at all: a lone point has no edges.
 refuses(8, 'no closed loop', [{ k: 'point', id: 1, p: [5, 5] }], [],
-  'no closed loop found');
+  'no closed outline found');
 
 // 9. Collapsed loop: a REAL solve flattens a 100x50 rectangle to 0.5 high
 //    (50 square mm from 5000) -- wider than eps_gap so it is a collapse, not

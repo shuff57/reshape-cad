@@ -55,7 +55,7 @@ test('an empty build refuses plainly; a datum stays a silent no-op', () => {
   const sk = { id: 's', kind: 'sketch', plane: 'front', offset: 0, points: [[5, 0], [15, 0], [15, 20], [5, 20]] };
   const { refusals, s } = run({ version: 1, features: [sk, { id: 'e', kind: 'extrude', target: 's', height: 0 }, { id: 'pl', kind: 'datum', type: 'plane', plane: 'xy', offset: 5 }] }, 'e');
   assert.equal(s, undefined);
-  assert.match(refusals.e, /^e builds an empty solid .* e is shown without it\.$/);
+  assert.match(refusals.e, /^extrude e: the pull height is 0, so there is nothing to pull .* e is shown without it\.$/);
   assert.equal(refusals.pl, undefined);
 });
 

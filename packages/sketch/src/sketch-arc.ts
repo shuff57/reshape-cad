@@ -525,7 +525,9 @@ function trimCorner<T extends SketchLike>(
  * trim distance from the radius and then, on top of the trimmed outline,
  * writes the arc's bulge.
  */
-export function filletCorner<T extends SketchLike>(f: T, corner: number, radius: number): T {
+export function filletCorner<T extends SketchLike>(
+  f: T, corner: number, radius: number, ceilingOverride?: number
+): T {
   const n = f.points.length;
   const prevI = (corner - 1 + n) % n;
   const nextI = (corner + 1) % n;
@@ -554,7 +556,11 @@ export function filletCorner<T extends SketchLike>(f: T, corner: number, radius:
   // in the clampedRadius <= 0 refusal below. Two copies of this formula is
   // exactly how the straight-corner hole opened -- the copy here had no
   // 180-degree case because the copy there did not either.
-  const safeRadius = maxFilletRadius(f.points, corner, f.bulges);
+  // `ceilingOverride` is for outlineOf() alone: it has already decided the
+  // radius on the DESIGN polygon, and asking again of a polygon a neighbour
+  // has eaten into would cut the second corner of a pair to half of what the
+  // first left.
+  const safeRadius = ceilingOverride ?? maxFilletRadius(f.points, corner, f.bulges);
   const clampedRadius = Math.min(Math.max(0, radius), safeRadius);
   if (clampedRadius <= 0) return f;
   const trim = clampedRadius / Math.tan(interior / 2);
@@ -587,8 +593,10 @@ export function filletCorner<T extends SketchLike>(f: T, corner: number, radius:
  * absent" means in `bulges` per this file's top-of-file convention. So the
  * reindexed result with the trimmed `points` is the whole answer.
  */
-export function chamferCorner<T extends SketchLike>(f: T, corner: number, distance: number): T {
-  const safeDistance = maxChamferDistance(f.points, corner, f.bulges);
+export function chamferCorner<T extends SketchLike>(
+  f: T, corner: number, distance: number, ceilingOverride?: number
+): T {
+  const safeDistance = ceilingOverride ?? maxChamferDistance(f.points, corner, f.bulges);
   const clampedDistance = Math.min(Math.max(0, distance), safeDistance);
   if (clampedDistance <= 0) return f;
 
@@ -807,25 +815,65 @@ export function outlineOf(f: SketchLike): Outline {
   let basis = identity.slice();
   const notes: Outline['notes'] = [];
 
+  // Decide every corner's share on the DESIGN polygon first, then cut. Asked
+  // of the working polygon (a neighbour already trimmed), the corner visited
+  // second saw a shortened shared edge and was held to half of what was left:
+  // four equal r=8 rounds on a 30 x 20 rectangle came out as four unequal
+  // ones. A corner's own ceiling is maxFilletRadius()/maxChamferDistance() of
+  // the design (half the shorter edge for a round); where two treated corners
+  // together want more of their shared edge than it has, both give way in
+  // proportion. Nothing here depends on the order the corners are visited.
+  const n = f.points.length;
+  const design: Point[] = f.points.map((p) => [p[0], p[1]]);
+  const decided = new Map<number, { got: number; trim: number }>();
+  for (const ask of asks) {
+    const ceiling = ask.kind === 'round'
+      ? maxFilletRadius(design, ask.corner, f.bulges)
+      : maxChamferDistance(design, ask.corner, f.bulges);
+    const got = Math.min(ask.want, Math.max(0, ceiling));
+    if (!(got > 0)) {
+      notes.push({ corner: ask.corner, want: ask.want, got: 0 });
+      continue;
+    }
+    const k = ask.corner;
+    const c = design[k], p = design[(k - 1 + n) % n], q = design[(k + 1) % n];
+    const lin = Math.hypot(p[0] - c[0], p[1] - c[1]), lout = Math.hypot(q[0] - c[0], q[1] - c[1]);
+    const cosI = ((p[0] - c[0]) * (q[0] - c[0]) + (p[1] - c[1]) * (q[1] - c[1])) / (lin * lout);
+    const interior = Math.acos(Math.max(-1, Math.min(1, cosI)));
+    decided.set(k, { got, trim: ask.kind === 'round' ? got / Math.tan(interior / 2) : got });
+  }
+  const give = new Map<number, number>();
+  for (const k of decided.keys()) give.set(k, 1);
+  for (let k = 0; k < n; k++) {
+    const j = (k + 1) % n;
+    const a = decided.get(k), b = decided.get(j);
+    if (!a || !b || k === j) continue;
+    const len = Math.hypot(design[j][0] - design[k][0], design[j][1] - design[k][1]);
+    const sum = a.trim + b.trim;
+    if (sum > len * (1 + 1e-12)) {
+      const share = len / sum;
+      give.set(k, Math.min(give.get(k)!, share));
+      give.set(j, Math.min(give.get(j)!, share));
+    }
+  }
+  for (const ask of asks) {
+    const d = decided.get(ask.corner);
+    if (!d) continue;
+    const got = d.got * give.get(ask.corner)!;
+    if (got < ask.want - 1e-9) notes.push({ corner: ask.corner, want: ask.want, got });
+  }
+
   for (const ask of asks) {
     const k = ask.corner;
-    const want = ask.want;
-    // Asked of the WORKING points, not the design: a neighbour rounded or
-    // chamfered a moment ago has already eaten part of the shared edge, so the
-    // honest ceiling here is smaller than the design alone would suggest. This
-    // is the number the caller reports, precisely because it is the one that
-    // took the other corners into account.
-    const ceiling = ask.kind === 'round'
-      ? maxFilletRadius(points, k, bulges)
-      : maxChamferDistance(points, k, bulges);
-    const got = Math.min(want, Math.max(0, ceiling));
-    if (got < want - 1e-9) notes.push({ corner: k, want, got });
+    const d = decided.get(k);
+    if (!d) continue;
+    const got = d.got * give.get(k)!;
     if (!(got > 0)) continue;
 
     const before = points.length;
     const next = ask.kind === 'round'
-      ? filletCorner({ points, bulges }, k, got)
-      : chamferCorner({ points, bulges }, k, got);
+      ? filletCorner({ points, bulges }, k, got, Infinity)
+      : chamferCorner({ points, bulges }, k, got, Infinity);
     if (next.points.length === before) continue; // the corner op refused
     points = next.points;
     bulges = next.bulges ?? {};

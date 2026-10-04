@@ -271,6 +271,9 @@ fn extruded_profile(sk: &Value) -> Option<(Vec<Vec<build::ProfileSeg>>, Vec<(Str
     if sk.get("geoms").and_then(|g| g.as_array()).map_or(false, |g| !g.is_empty()) {
         return soup_profile(sk);
     }
+    // The polygon path never reaches the soup arm, so a refusal left behind
+    // by an earlier soup sketch must not be read as this sketch's reason.
+    LAST_PRISM_REFUSAL.with(|lr| *lr.borrow_mut() = None);
     let (points, basis, work_bulges) = profile_corners(sk)?;
 
     // Emit one segment per edge: a straight line, or -- for a bulge/round -- a
@@ -320,6 +323,33 @@ fn extruded_profile(sk: &Value) -> Option<(Vec<Vec<build::ProfileSeg>>, Vec<(Str
             sweep -= std::f64::consts::TAU;
         }
         segs.push(build::ProfileSeg::Arc { centre, radius, start: start_angle, sweep });
+    }
+    // A polygon is only a profile when its edges close one simple loop. The
+    // soup arm checks this in wire discovery; this path had no check, so a
+    // bow-tie or a star drawn with crossing edges extruded to the area of its
+    // signed winding -- a solid that is not what was drawn.
+    let wire: Vec<crate::sketch::wires::WireSeg> = segs
+        .iter()
+        .map(|s| match s {
+            build::ProfileSeg::Line { a, b } => crate::sketch::wires::WireSeg::Line { a: *a, b: *b },
+            build::ProfileSeg::Arc { centre, radius, start, sweep } => crate::sketch::wires::WireSeg::Arc {
+                centre: *centre,
+                radius: *radius,
+                start: *start,
+                sweep: *sweep,
+            },
+        })
+        .collect();
+    if let Some(flaw) = crate::sketch::wires::outline_flaw(&wire) {
+        use crate::sketch::wires::OutlineFlaw as F;
+        let why = match flaw {
+            F::Crossing(..) => "two of its edges cross each other, so it does not enclose one area -- move a corner so no edge crosses another",
+            F::Touching(..) => "two of its edges touch where they should not (a corner lands on another edge), so the outline pinches -- move that corner away",
+            F::DoublesBack(..) => "one edge runs back over the edge before it, leaving a spike with no width -- move the corner that makes the spike",
+            F::NoArea => "it has no area (its corners lie on one line, or on top of each other), so there is nothing to pull",
+        };
+        LAST_PRISM_REFUSAL.with(|lr| *lr.borrow_mut() = Some(format!("this sketch's outline cannot be pulled: {why}.")));
+        return None;
     }
     Some((vec![segs], roles))
 }
@@ -393,9 +423,63 @@ fn profile_corners(
     }
     asks.sort_by(|a, b| b.0.cmp(&a.0));
 
-    for (corner, is_round, want) in asks {
+    // Each corner's trim is decided on the DESIGN polygon, never on a polygon
+    // a neighbour has already eaten into: asked of the working points, the
+    // corner processed second saw a shortened shared edge and was cut to half
+    // of what was left, so four equal rounds on a 30 x 20 rectangle came out
+    // as four unequal ones. A corner's own ceiling is half the shorter design
+    // edge (a chamfer: the shorter edge); where two treated corners together
+    // want more of their shared edge than it has, both give way in proportion.
+    // The result does not depend on the order the corners are visited.
+    let mut trim_of: std::collections::HashMap<usize, f64> = std::collections::HashMap::new();
+    for &(k, is_round, want) in &asks {
+        let prev = (k + n - 1) % n;
+        let next = (k + 1) % n;
+        if bulges.get(&prev).copied().unwrap_or(0.0) != 0.0 || bulges.get(&k).copied().unwrap_or(0.0) != 0.0 {
+            continue;
+        }
+        let (c, p, q) = (pts[k], pts[prev], pts[next]);
+        let len_in = ((p[0] - c[0]).powi(2) + (p[1] - c[1]).powi(2)).sqrt();
+        let len_out = ((q[0] - c[0]).powi(2) + (q[1] - c[1]).powi(2)).sqrt();
+        if len_in == 0.0 || len_out == 0.0 {
+            continue;
+        }
+        let cos_i = ((p[0] - c[0]) * (q[0] - c[0]) + (p[1] - c[1]) * (q[1] - c[1])) / (len_in * len_out);
+        let interior = cos_i.clamp(-1.0, 1.0).acos();
+        if std::f64::consts::PI - interior < 1e-6 {
+            continue;
+        }
+        let t = if is_round {
+            let ceiling = (len_in.min(len_out) / 2.0) * (interior / 2.0).tan();
+            want.min(ceiling.max(0.0)) / (interior / 2.0).tan()
+        } else {
+            want.min(len_in.min(len_out))
+        };
+        if t > 0.0 {
+            trim_of.insert(k, t);
+        }
+    }
+    let mut factor_of: std::collections::HashMap<usize, f64> = trim_of.keys().map(|&k| (k, 1.0)).collect();
+    for k in 0..n {
+        let j = (k + 1) % n;
+        if let (Some(&ta), Some(&tb)) = (trim_of.get(&k), trim_of.get(&j)) {
+            let len = ((pts[j][0] - pts[k][0]).powi(2) + (pts[j][1] - pts[k][1]).powi(2)).sqrt();
+            let sum = ta + tb;
+            if sum > len * (1.0 + 1e-12) {
+                let s = len / sum;
+                for e in [k, j] {
+                    if let Some(f) = factor_of.get_mut(&e) {
+                        *f = f.min(s);
+                    }
+                }
+            }
+        }
+    }
+
+    for (corner, is_round, _want) in asks {
         // Map the design corner to its current index via `basis`.
         let Some(pos) = basis.iter().position(|b| *b == corner) else { continue };
+        let Some(&trim0) = trim_of.get(&corner) else { continue };
         let nn = points.len();
         let prev = (pos + nn - 1) % nn;
         let next = (pos + 1) % nn;
@@ -409,36 +493,21 @@ fn profile_corners(
         if len_in == 0.0 || len_out == 0.0 {
             continue;
         }
-        // A curved neighbour refuses a round or chamfer, per sketch-arc.ts.
-        if work_bulges.get(&prev).copied().unwrap_or(0.0) != 0.0
-            || work_bulges.get(&pos).copied().unwrap_or(0.0) != 0.0
-        {
-            continue;
-        }
         let cos_i = ((p[0] - c[0]) * (q[0] - c[0]) + (p[1] - c[1]) * (q[1] - c[1])) / (len_in * len_out);
         let interior = cos_i.clamp(-1.0, 1.0).acos();
-        if std::f64::consts::PI - interior < 1e-6 {
+        let trim = (trim0 * factor_of.get(&corner).copied().unwrap_or(1.0)).min(len_in).min(len_out);
+        if !(trim > 0.0) {
             continue;
         }
-        let (trim, new_bulge) = if is_round {
-            let ceiling = (len_in.min(len_out) / 2.0) * (interior / 2.0).tan();
-            let got = want.min(ceiling.max(0.0));
-            if got <= 0.0 {
-                continue;
-            }
+        let new_bulge = if is_round {
             // cross of in-edge and out-edge decides the arc's sign.
             let in_edge = [c[0] - p[0], c[1] - p[1]];
             let out_edge = [q[0] - c[0], q[1] - c[1]];
             let cross = in_edge[0] * out_edge[1] - in_edge[1] * out_edge[0];
             let sweep = std::f64::consts::PI - interior;
-            let bulge = if cross >= 0.0 { 1.0 } else { -1.0 } * (sweep / 4.0).tan();
-            (got / (interior / 2.0).tan(), bulge)
+            (if cross >= 0.0 { 1.0 } else { -1.0 }) * (sweep / 4.0).tan()
         } else {
-            let got = want.min(len_in.min(len_out));
-            if got <= 0.0 {
-                continue;
-            }
-            (got, 0.0)
+            0.0
         };
         let pin = [c[0] + vin[0] / len_in * trim, c[1] + vin[1] / len_in * trim];
         let pout = [c[0] + vout[0] / len_out * trim, c[1] + vout[1] / len_out * trim];
@@ -505,7 +574,14 @@ fn extrude_prism(sk: &Value, _plane: &str, height: f64) -> Option<(TSolid, Prism
     let (u_axis, v_axis, n, dir) = (fr.u, fr.v, fr.n, fr.dir);
     let origin = fr.origin;
     if sk.get("shape").and_then(|s| s.as_str()) == Some("circle") {
+        LAST_PRISM_REFUSAL.with(|lr| *lr.borrow_mut() = None);
         let (centre, radius) = circle_of_value(sk)?;
+        if !(radius > 1e-9) || !radius.is_finite() {
+            LAST_PRISM_REFUSAL.with(|lr| {
+                *lr.borrow_mut() = Some("this circle has no size (its diameter is 0), so there is nothing to pull.".to_string())
+            });
+            return None;
+        }
         let centre_w = uv_world(origin, u_axis, v_axis, centre);
         // The sweep runs along `n`; its signed length places the centre, but
         // cylinder_solid's own height must stay positive (a negative height
@@ -904,6 +980,10 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 }
                 let fr = sketch_frame(sk);
                 let dir = fr.dir;
+                if height == 0.0 {
+                    refusals.insert(id.clone(), json!(format!("extrude {id}: the pull height is 0, so there is nothing to pull -- {id} is shown without it.")));
+                    continue;
+                }
                 let Some((solid, prism)) = extrude_prism(sk, "", height) else {
                     // A soup sketch's wire refusal names the real problem
                     // (conflict, unsatisfiable rules); the legacy path's
@@ -6305,7 +6385,8 @@ fn diagnosis_rank(session: &crate::sketch::session::SketchSession) -> usize {
 }
 
 fn diagnosis_blame(session: &crate::sketch::session::SketchSession) -> Vec<serde_json::Value> {
-    crate::sketch::diagnose::diagnose(&session.block, &session.constraints, &session.params)
+    session
+        .diagnose()
         .map(|d| d.blame.iter().map(|b| json!(b)).collect())
         .unwrap_or_default()
 }
@@ -6776,7 +6857,7 @@ mod cavity_guard_tests {
         ] });
         let (hist, refusals) = build_doc(&doc);
         assert!(!hist.shapes.contains_key("e"));
-        assert!(refusals["e"].as_str().unwrap().contains("empty solid"), "{refusals:?}");
+        assert!(refusals["e"].as_str().unwrap().contains("pull height is 0"), "{refusals:?}");
         assert!(!refusals.contains_key("pl"), "a datum stays a silent no-op");
     }
 

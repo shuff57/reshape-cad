@@ -841,7 +841,7 @@ impl Plan {
                 let d = dist2(anchor.pos, other.pos);
                 if d > self.eps_weld {
                     return Err(Refusal::say(format!(
-                        "edge {} and edge {}: these corners were asked to meet but the solver could only bring them within {} mm",
+                        "edge {} and edge {}: these corners were asked to meet, but your rules pull them apart; the closest they can get is {} mm",
                         anchor.geo,
                         other.geo,
                         millimetres(d)
@@ -1089,7 +1089,7 @@ impl Plan {
                 cycle.push(h);
                 let Some(nx) = next(h) else {
                     return Err(Refusal::say(
-                        "the outline could not be traced; an edge leads to a corner that is not there",
+                        "the outline could not be followed all the way round; an edge ends at a corner that is not there",
                     ));
                 };
                 h = nx;
@@ -1101,13 +1101,13 @@ impl Plan {
                     // half-edge other than its own start; treat it as a trace
                     // failure rather than spinning.
                     return Err(Refusal::say(
-                        "the outline could not be traced; two corners disagree about which edge comes next",
+                        "the outline could not be followed all the way round; two corners disagree about which edge comes next",
                     ));
                 }
             }
             if h != start {
                 return Err(Refusal::say(
-                    "the outline could not be traced; the walk did not come back to where it started",
+                    "the outline could not be followed all the way round; it did not come back to where it started",
                 ));
             }
             cycles.push(cycle);
@@ -1168,6 +1168,162 @@ pub fn signed_area(segs: &[WireSeg]) -> f64 {
         }
     }
     area
+}
+
+/// What is wrong with a one-loop outline handed over as an ordered list of
+/// segments (the polygon-with-rounds path, which never goes through wire
+/// discovery). `i` and `j` index the list given.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum OutlineFlaw {
+    /// Two segments cross in their interiors.
+    Crossing(usize, usize),
+    /// Two segments that are not neighbours meet (a corner lands on another
+    /// edge, or two corners coincide): a pinched outline.
+    Touching(usize, usize),
+    /// A segment runs back over the one before it: a zero-width spike.
+    DoublesBack(usize, usize),
+    /// Fewer than three live segments, or no area to speak of.
+    NoArea,
+}
+
+fn seg_curve(s: &WireSeg, id: GeoId) -> Curve {
+    let (a, b) = s.endpoints();
+    match *s {
+        WireSeg::Line { .. } => Curve { id, arc: false, a, b, centre: [0.0, 0.0], radius: 0.0, sweep: 0.0, flaw: None },
+        WireSeg::Arc { centre, radius, sweep, .. } => {
+            Curve { id, arc: true, a, b, centre, radius, sweep, flaw: None }
+        }
+    }
+}
+
+/// Distance from `p` to the curve (the whole segment or arc, ends included).
+fn dist_to_curve(c: &Curve, p: [f64; 2]) -> f64 {
+    if !c.arc {
+        let d = sub2(c.b, c.a);
+        let l2 = dot2(d, d);
+        if l2 <= 0.0 {
+            return dist2(p, c.a);
+        }
+        let t = (dot2(sub2(p, c.a), d) / l2).clamp(0.0, 1.0);
+        return dist2(p, [c.a[0] + t * d[0], c.a[1] + t * d[1]]);
+    }
+    let th = c.angle_of(p);
+    let from = c.angle_of(c.a);
+    let travelled = if c.sweep >= 0.0 { norm_pos(th - from) } else { norm_pos(from - th) };
+    if travelled <= c.sweep.abs() {
+        (dist2(p, c.centre) - c.radius).abs()
+    } else {
+        dist2(p, c.a).min(dist2(p, c.b))
+    }
+}
+
+/// Check one closed outline for the flaws that make it not a profile: a
+/// self-crossing, a pinch, a spike, or no area. Segments of zero length are
+/// ignored (a doubled point in a polygon is harmless). `None` means the outline
+/// is a simple closed curve.
+pub fn outline_flaw(segs: &[WireSeg]) -> Option<OutlineFlaw> {
+    // Indices of the live segments, in order.
+    let mut lo = [f64::INFINITY; 2];
+    let mut hi = [f64::NEG_INFINITY; 2];
+    for s in segs {
+        let (a, b) = s.endpoints();
+        for p in [a, b] {
+            for k in 0..2 {
+                lo[k] = lo[k].min(p[0 + k]);
+                hi[k] = hi[k].max(p[0 + k]);
+            }
+        }
+        if let WireSeg::Arc { centre, radius, .. } = s {
+            for k in 0..2 {
+                lo[k] = lo[k].min(centre[k] - radius);
+                hi[k] = hi[k].max(centre[k] + radius);
+            }
+        }
+    }
+    let scale = ((hi[0] - lo[0]).powi(2) + (hi[1] - lo[1]).powi(2)).sqrt();
+    if !(scale > 0.0) || !scale.is_finite() {
+        return Some(OutlineFlaw::NoArea);
+    }
+    let eps = 1e-6 * scale;
+    let live: Vec<usize> = (0..segs.len())
+        .filter(|&i| {
+            let (a, b) = segs[i].endpoints();
+            match segs[i] {
+                WireSeg::Line { .. } => dist2(a, b) > eps,
+                WireSeg::Arc { radius, sweep, .. } => radius > eps && sweep.abs() * radius > eps,
+            }
+        })
+        .collect();
+    if live.len() < 2 {
+        return Some(OutlineFlaw::NoArea);
+    }
+    let no_area = signed_area(segs).abs() <= 1e-9 * scale * scale;
+    let curves: Vec<Curve> = live.iter().map(|&i| seg_curve(&segs[i], i as GeoId)).collect();
+    let n = curves.len();
+    for p in 0..n {
+        for q in (p + 1)..n {
+            let neighbours = q == p + 1 || (p == 0 && q == n - 1);
+            let (c1, c2) = (&curves[p], &curves[q]);
+            let (i, j) = (live[p], live[q]);
+            if neighbours {
+                // Two lines leaving their shared corner along the same ray.
+                if !c1.arc && !c2.arc {
+                    let (shared_out, shared_in) = if q == p + 1 { (c1, c2) } else { (c2, c1) };
+                    let d1 = sub2(shared_out.b, shared_out.a);
+                    let d2 = sub2(shared_in.b, shared_in.a);
+                    let cr = cross2(d1, d2).abs();
+                    if !no_area && dot2(d1, d2) < 0.0 && cr <= 1e-9 * len2(d1) * len2(d2) {
+                        return Some(OutlineFlaw::DoublesBack(i, j));
+                    }
+                }
+                continue;
+            }
+            if crossing_point(c1, c2).is_some() {
+                return Some(OutlineFlaw::Crossing(i, j));
+            }
+            let touches = [c1.a, c1.b].iter().any(|e| dist_to_curve(c2, *e) <= eps)
+                || [c2.a, c2.b].iter().any(|e| dist_to_curve(c1, *e) <= eps);
+            if touches {
+                return Some(OutlineFlaw::Touching(i, j));
+            }
+        }
+    }
+    // Checked last: a bow-tie's two lobes cancel to zero area, and the crossing
+    // is the sentence that helps.
+    if no_area {
+        return Some(OutlineFlaw::NoArea);
+    }
+    None
+}
+
+#[cfg(test)]
+mod outline_flaw_tests {
+    use super::*;
+    fn poly(pts: &[[f64; 2]]) -> Vec<WireSeg> {
+        (0..pts.len()).map(|i| WireSeg::Line { a: pts[i], b: pts[(i + 1) % pts.len()] }).collect()
+    }
+    #[test]
+    fn simple_square_is_clean() {
+        assert_eq!(outline_flaw(&poly(&[[0.0, 0.0], [4.0, 0.0], [4.0, 4.0], [0.0, 4.0]])), None);
+    }
+    #[test]
+    fn a_doubled_point_is_harmless() {
+        assert_eq!(outline_flaw(&poly(&[[0.0, 0.0], [4.0, 0.0], [4.0, 0.0], [4.0, 4.0], [0.0, 4.0]])), None);
+    }
+    #[test]
+    fn bow_tie_crosses_even_though_its_area_cancels() {
+        let f = outline_flaw(&poly(&[[0.0, 0.0], [10.0, 10.0], [10.0, 0.0], [0.0, 10.0]]));
+        assert!(matches!(f, Some(OutlineFlaw::Crossing(..))), "{f:?}");
+    }
+    #[test]
+    fn collinear_corners_have_no_area() {
+        assert_eq!(outline_flaw(&poly(&[[0.0, 0.0], [5.0, 0.0], [10.0, 0.0]])), Some(OutlineFlaw::NoArea));
+    }
+    #[test]
+    fn a_corner_on_another_edge_pinches() {
+        let f = outline_flaw(&poly(&[[0.0, 0.0], [10.0, 0.0], [10.0, 10.0], [5.0, 0.0], [0.0, 10.0]]));
+        assert!(matches!(f, Some(OutlineFlaw::Touching(..))), "{f:?}");
+    }
 }
 
 /// One point where two curves properly cross, if they do. Tangential touches
@@ -1597,7 +1753,7 @@ pub fn discover_wires_excluding(
 
     // Refusal 8.
     if cands.is_empty() {
-        return Err(Refusal::say("no closed loop found"));
+        return Err(Refusal::say("no closed outline found: these edges do not enclose a shape"));
     }
 
     let markers: Vec<[f64; 2]> = cands.iter().map(|c| loop_marker(&c.segs)).collect();
@@ -2154,7 +2310,7 @@ mod tests {
         assert_says(
             "r3 weld too wide",
             sentence_of(wide.run_with(&drifted)),
-            "these corners were asked to meet but the solver could only bring them within",
+            "these corners were asked to meet, but your rules pull them apart; the closest they can get is",
         );
 
         // 4. A bowtie: four welded edges, two of which cross in mid-air.
@@ -2235,7 +2391,7 @@ mod tests {
 
         // 8. Nothing to close.
         let empty = Fix::new();
-        assert_says("r8 no loop at all", sentence_of(empty.run()), "no closed loop found");
+        assert_says("r8 no loop at all", sentence_of(empty.run()), "no closed outline found: these edges do not enclose a shape");
 
         // 9. A triangle the solve flattened: residual zero, area gone.
         let tall = triangle();
