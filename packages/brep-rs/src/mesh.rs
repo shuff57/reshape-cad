@@ -298,74 +298,73 @@ fn uv_area(a: [f64; 2], b: [f64; 2], c: [f64; 2]) -> f64 {
     (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0])
 }
 
-/// A boundary with three collinear vertices (a half disk's chord, split at its
-/// centre because the neighbouring faces meet there) lets earcut emit a
-/// zero-area triangle (a, m, b) with m on the segment a-b. Its long edge a-b is a
-/// diagonal shared with one neighbour (a, b, x); replace the pair by (a, m, x)
-/// and (m, b, x), which covers the same area and keeps every vertex, so the
-/// welded mesh stays closed. `flat` holds the (u, v) pairs earcut was given.
-fn resolve_collinear_triangles(tris: &mut Vec<usize>, flat: &[f64]) {
+/// Earcut's output may carry a triangle edge with other face vertices strictly inside it
+/// (several collinear boundary vertices of one ring, or of two holes whose edges lie on one
+/// line), including zero-area triangles. Drop zero-area triangles when several boundary vertices (of one ring or of
+/// two rings, e.g. two holes whose edges lie on one line) are collinear, then split every
+/// remaining triangle edge at each face vertex lying strictly inside it, so the neighbours
+/// of the dropped triangle still share every edge with the vertices the adjacent faces use
+/// and the welded mesh stays closed. Covers any number of collinear vertices on an edge,
+/// (the earlier one-middle-vertex repair was replaced by this).
+fn split_collinear_triangles(tris: &mut Vec<usize>, flat: &[f64]) {
     let uv = |i: usize| [flat[2 * i], flat[2 * i + 1]];
-    let mut guard = 0;
-    loop {
+    let nv = flat.len() / 2;
+    let mut work: Vec<[usize; 3]> = tris
+        .chunks(3)
+        .map(|t| [t[0], t[1], t[2]])
+        .filter(|t| uv_area(uv(t[0]), uv(t[1]), uv(t[2])).abs() * 0.5 >= 1e-12)
+        .collect();
+    let mut out: Vec<[usize; 3]> = Vec::new();
+    let mut guard = 0usize;
+    while let Some(t) = work.pop() {
         guard += 1;
-        if guard > 64 {
-            return;
-        }
-        let n = tris.len() / 3;
-        let Some(d) = (0..n).find(|&t| {
-            let (a, b, c) = (uv(tris[3 * t]), uv(tris[3 * t + 1]), uv(tris[3 * t + 2]));
-            uv_area(a, b, c).abs() * 0.5 < 1e-12
-        }) else {
-            return;
-        };
-        let tri = [tris[3 * d], tris[3 * d + 1], tris[3 * d + 2]];
-        // The middle vertex is opposite the longest side.
-        let len2 = |p: usize, q: usize| {
-            let (a, b) = (uv(p), uv(q));
-            (a[0] - b[0]).powi(2) + (a[1] - b[1]).powi(2)
-        };
-        let sides = [len2(tri[1], tri[2]), len2(tri[2], tri[0]), len2(tri[0], tri[1])];
-        let mut mi = 0;
-        for k in 1..3 {
-            if sides[k] > sides[mi] {
-                mi = k;
-            }
-        }
-        let (m, a, b) = (tri[mi], tri[(mi + 1) % 3], tri[(mi + 2) % 3]);
-        if sides[mi] < 1e-24 {
-            // A point triangle: drop it.
-            tris.drain(3 * d..3 * d + 3);
+        if guard > 200_000 {
+            out.push(t);
             continue;
         }
-        // The neighbour across a-b.
-        let mut done = false;
-        for t in 0..n {
-            if t == d {
+        let mut split = false;
+        for k in 0..3 {
+            let (p, q, x) = (t[k], t[(k + 1) % 3], t[(k + 2) % 3]);
+            let (a, b) = (uv(p), uv(q));
+            let d = [b[0] - a[0], b[1] - a[1]];
+            let l2 = d[0] * d[0] + d[1] * d[1];
+            if l2 < 1e-24 {
                 continue;
             }
-            let nt = [tris[3 * t], tris[3 * t + 1], tris[3 * t + 2]];
-            for k in 0..3 {
-                let (p, q, x) = (nt[k], nt[(k + 1) % 3], nt[(k + 2) % 3]);
-                if (p == a && q == b) || (p == b && q == a) {
-                    tris[3 * t] = p;
-                    tris[3 * t + 1] = m;
-                    tris[3 * t + 2] = x;
-                    tris.extend_from_slice(&[m, q, x]);
-                    done = true;
-                    break;
+            let l = l2.sqrt();
+            let mut mids: Vec<(f64, usize)> = Vec::new();
+            for m in 0..nv {
+                if m == p || m == q || m == x {
+                    continue;
+                }
+                let c = uv(m);
+                let tpar = ((c[0] - a[0]) * d[0] + (c[1] - a[1]) * d[1]) / l2;
+                if tpar <= 1e-9 || tpar >= 1.0 - 1e-9 {
+                    continue;
+                }
+                let perp = ((c[0] - a[0]) * d[1] - (c[1] - a[1]) * d[0]).abs() / l;
+                if perp < 1e-9 && !mids.iter().any(|&(_, mm)| uv(mm) == c) {
+                    mids.push((tpar, m));
                 }
             }
-            if done {
-                break;
+            if mids.is_empty() {
+                continue;
             }
+            mids.sort_by(|u, v| u.0.partial_cmp(&v.0).unwrap());
+            let mut prev = p;
+            for &(_, m) in &mids {
+                work.push([prev, m, x]);
+                prev = m;
+            }
+            work.push([prev, q, x]);
+            split = true;
+            break;
         }
-        // Remove the degenerate one (indices may have shifted only at the end).
-        tris.drain(3 * d..3 * d + 3);
-        if !done {
-            return;
+        if !split {
+            out.push(t);
         }
     }
+    *tris = out.into_iter().flatten().collect();
 }
 
 /// Triangulate one planar face with `earcutr` in the plane's (u,v) frame,
@@ -433,7 +432,7 @@ fn mesh_planar_face(
     offs.push(at);
 
     let mut tris: Vec<usize> = earcutr::earcut(&mut flat, &holes, 2).ok()?;
-    resolve_collinear_triangles(&mut tris, &flat);
+    split_collinear_triangles(&mut tris, &flat);
     let start = out.indices.len();
     for t in tris.chunks(3) {
         let mut ids = [0u32; 3];
@@ -1406,7 +1405,7 @@ fn mesh_face(
 /// Tessellate a whole solid. All faces must succeed, or the result is `None`.
 /// Whether every directed edge of the mesh has its reverse (a closed surface), vertices
 /// welded to a micron.
-fn mesh_is_closed(m: &Mesh) -> bool {
+pub(crate) fn mesh_is_closed(m: &Mesh) -> bool {
     let key = |p: [f64; 3]| [(p[0] / 1e-6).round() as i64, (p[1] / 1e-6).round() as i64, (p[2] / 1e-6).round() as i64];
     let mut ids: HashMap<[i64; 3], usize> = HashMap::new();
     let canon: Vec<usize> = m

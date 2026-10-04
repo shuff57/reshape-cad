@@ -564,7 +564,7 @@ pub(crate) fn face_contains_exact(g: &Plane, f: &Face<crate::build::Curve3, crat
     Some(in_edges(g.project(q), &edges))
 }
 
-/// A plane-only solid with a vertex lying in the middle of another face's straight edge (a
+/// A solid with a vertex lying in the middle of another face's straight edge (a
 /// T-junction). Its faces share no edge there, so a mesh welded by position has an open seam,
 /// although the B-rep's own edge-use count can still read two.
 pub(crate) fn has_t_junction(solid: &TSolid) -> bool {
@@ -573,16 +573,22 @@ pub(crate) fn has_t_junction(solid: &TSolid) -> bool {
     let mut segs: Vec<(Vec3, Vec3)> = Vec::new();
     for f in &faces {
         let fb = f.borrow();
-        if !matches!(fb.surface, Surface::Plane(_)) {
-            return false; // curved faces: not judged here
-        }
+        // Curved faces count too: a vertex of a hole's rim lying in the middle of a straight
+        // edge of the next face is the same open seam (G4).
         for w in &fb.boundary {
             for u in &w.borrow().edges {
                 let e = u.edge.borrow();
-                let Curve::Segment { a, b } = e.curve else { return false };
-                verts.push(a);
-                verts.push(b);
-                segs.push((a, b));
+                match e.curve {
+                    Curve::Segment { a, b } => {
+                        verts.push(a);
+                        verts.push(b);
+                        segs.push((a, b));
+                    }
+                    _ => {
+                        verts.push(e.a.borrow().point);
+                        verts.push(e.b.borrow().point);
+                    }
+                }
             }
         }
     }

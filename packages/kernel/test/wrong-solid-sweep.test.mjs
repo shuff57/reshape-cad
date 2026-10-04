@@ -23,7 +23,7 @@ const FULL = process.env.SWEEP === '1';
 // Per family: how many seed-7 scripts the smoke runs, and the number of WRONG / WRONG-BBOX-ONLY results measured at the time of writing.
 const SMOKE = {
   census: { n: 60, known: 0 },
-  grid: { n: 120, known: 1 }, // grid#86 (seed 7): an open mesh after a cut then three joins of integer boxes
+  grid: { n: 120, known: 0 }, // grid#86 (an open mesh after a cut then three joins) fixed by the G4/G5 closure work
   pair: { n: 100, known: 0 },
   hole: { n: 60, known: 0 },
   csg: { n: 80, known: 0 },
