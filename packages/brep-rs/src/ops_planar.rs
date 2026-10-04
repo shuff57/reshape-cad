@@ -1,4 +1,4 @@
-//! Split-and-classify boolean for solids made of planes and cylinder walls
+//! Split-and-classify boolean for solids made of planes, cylinder walls, spheres and cones
 //! (docs/specs/SPEC-brep-boolean-split-classify.md, slices S1 and S2).
 //!
 //! The older boolean in `ops` decides each face's fate with a convex region
@@ -24,6 +24,10 @@
 //! (the caller may try something else), `Refused` (stop, refuse the feature)
 //! and `Built`.
 //!
+//! A sphere or cone face (S4h) is a band between two heights on ONE axis shared by the pair,
+//! cut only at constant heights (a plane square to the axis, a coaxial cylinder, sphere or
+//! cone); see the section "Spheres and cones about ONE axis" below.
+//!
 //! Sampled polygons appear below ONLY to decide orientation and containment;
 //! no result geometry is ever a sampled curve.
 
@@ -33,7 +37,7 @@ use std::f64::consts::TAU;
 use std::rc::Rc;
 
 use crate::build::{self, TFace, TSolid};
-use crate::geom::{ArcRange, Curve, Cylinder, Plane, Surface};
+use crate::geom::{ArcRange, Cone, Curve, Cylinder, Plane, SphereSurf, Surface};
 use crate::math::{add, cross, dot, len, normalize, scale, sub, Vec3};
 use crate::ops;
 use crate::topo::{self, Face, Pcurve, Shell, Solid, Wire};
@@ -209,6 +213,8 @@ struct CFace {
 enum AFace {
     Plane(PFace),
     Cyl(CFace),
+    /// A full-turn sphere zone or cone band about the one axis every such face of the pair shares.
+    Rev(RFace),
 }
 
 fn cyl_pt(c: &Cylinder, th: f64, v: f64) -> Vec3 {
@@ -264,6 +270,19 @@ fn extract(solid: &TSolid) -> Option<Vec<AFace>> {
                     None => (0.0, TAU),
                 };
                 out.push(AFace::Cyl(CFace { cyl: cy.clone(), u0, span }));
+            }
+            Surface::Sphere(sp) => {
+                let full_u = (sp.u_range[1] - sp.u_range[0] - TAU).abs() < 1e-9;
+                if sp.trim.is_some() || !full_u || sp.u_range[0].abs() > 1e-9 || fb.boundary.len() != 1 || !fb.forward || sp.radius <= EPS {
+                    return None;
+                }
+                out.push(AFace::Rev(RFace::unplaced(Surface::Sphere(sp.clone()))));
+            }
+            Surface::Cone(c) => {
+                if fb.boundary.len() != 1 || !fb.forward || c.base_radius <= EPS || c.half_angle <= 1e-6 || c.half_angle >= std::f64::consts::FRAC_PI_2 - 1e-6 || c.v_range[1] - c.v_range[0] <= EPS {
+                    return None;
+                }
+                out.push(AFace::Rev(RFace::unplaced(Surface::Cone(c.clone()))));
             }
             _ => return None,
         }
@@ -341,11 +360,554 @@ fn aabb(f: &AFace) -> Box3 {
     match f {
         AFace::Plane(p) => aabb_plane(&p.curves),
         AFace::Cyl(c) => aabb_cyl(&c.cyl),
+        AFace::Rev(r) => aabb_rev(r),
     }
 }
 
 fn boxes_meet(a: &Box3, b: &Box3) -> bool {
     (0..3).all(|k| a.0[k] <= b.1[k] + EPS && b.0[k] <= a.1[k] + EPS)
+}
+
+// ---------------------------------------------------------------------------
+// Spheres and cones about ONE axis (S4h).
+//
+// Every plane section of a sphere is a circle, but only a plane SQUARE to the sphere's polar axis
+// gives a circle of constant latitude, and the same holds for a cone. So a sphere or cone face is
+// handled only when every cut on it is such a circle: a plane square to the axis, a cylinder
+// about the axis, or another sphere or cone about the axis. Each such face is a band between two
+// heights on the axis (a full turn in angle), cut at constant heights into bands that are each
+// classified whole. Anything else (an oblique or parallel plane that reaches the surface, a
+// cylinder off the axis, a tangent, a coincident surface) refuses.
+// ---------------------------------------------------------------------------
+
+/// The axis shared by every sphere and cone face of a pair, and the direction (`e1`) every
+/// circle starts at, so that the two bands that meet on a circle agree on its seam vertex.
+#[derive(Clone, Copy, Debug)]
+struct Fam {
+    o: Vec3,
+    a: Vec3,
+    e1: Vec3,
+}
+
+#[derive(Clone)]
+struct RFace {
+    surf: Surface,
+    fam: Fam,
+    /// +1 when the face's own axis points along the family axis, -1 against it.
+    sigma: f64,
+    /// Position on the family axis (from `fam.o`) of the sphere's centre or the cone's base.
+    z0: f64,
+    /// Axial extent of the face (family coordinates).
+    zlo: f64,
+    zhi: f64,
+}
+
+/// The radius of a surface of revolution as a function of the position on the axis.
+#[derive(Clone, Copy, Debug)]
+enum Prof {
+    /// A sphere of radius `r` centred at `zc`.
+    Sphere { zc: f64, r: f64 },
+    /// `rho = a + m z`: a cylinder (m = 0) or a cone.
+    Line { a: f64, m: f64 },
+}
+
+impl Prof {
+    fn rho(&self, z: f64) -> f64 {
+        match *self {
+            Prof::Sphere { zc, r } => {
+                let d = (z - zc).abs();
+                if r - d < 1e-9 * r {
+                    0.0
+                } else {
+                    ((r - d) * (r + d)).sqrt()
+                }
+            }
+            Prof::Line { a, m } => a + m * z,
+        }
+    }
+}
+
+/// The axial positions where two surfaces of revolution about one axis meet, each a circle of a
+/// positive radius. Coincident surfaces, tangent surfaces and a meeting at an apex refuse.
+fn meet_profiles(p: Prof, q: Prof) -> Result<Vec<f64>, ()> {
+    match (p, q) {
+        (Prof::Line { a: a1, m: m1 }, Prof::Line { a: a2, m: m2 }) => {
+            if (m1 - m2).abs() < 1e-12 {
+                if (a1 - a2).abs() < EPS {
+                    bail!(); // the same surface
+                }
+                return Ok(Vec::new());
+            }
+            let z = (a2 - a1) / (m1 - m2);
+            let rho = a1 + m1 * z;
+            if rho < -EPS {
+                return Ok(Vec::new()); // the two mirror nappes meet, not the faces
+            }
+            if rho < EPS {
+                bail!(); // meet at an apex
+            }
+            Ok(vec![z])
+        }
+        (Prof::Sphere { zc: z1, r: r1 }, Prof::Sphere { zc: z2, r: r2 }) => {
+            let dz = z2 - z1;
+            if dz.abs() < EPS {
+                if (r1 - r2).abs() < EPS {
+                    bail!(); // the same sphere
+                }
+                return Ok(Vec::new());
+            }
+            let z = (r1 * r1 - r2 * r2 + z2 * z2 - z1 * z1) / (2.0 * dz);
+            let rho2 = r1 * r1 - (z - z1) * (z - z1);
+            if rho2.abs() < 1e-9 * r1.max(r2).powi(2) {
+                bail!(); // tangent
+            }
+            if rho2 < 0.0 {
+                return Ok(Vec::new());
+            }
+            Ok(vec![z])
+        }
+        (Prof::Sphere { zc, r }, Prof::Line { a, m }) | (Prof::Line { a, m }, Prof::Sphere { zc, r }) => {
+            // r^2 - (z - zc)^2 = (a + m z)^2
+            let qa = -(1.0 + m * m);
+            let qb = 2.0 * zc - 2.0 * a * m;
+            let qc = r * r - zc * zc - a * a;
+            let disc = qb * qb - 4.0 * qa * qc;
+            let tol = 1e-9 * (qb * qb + (4.0 * qa * qc).abs() + 1.0);
+            if disc < -tol {
+                return Ok(Vec::new());
+            }
+            if disc.abs() <= tol {
+                bail!(); // tangent
+            }
+            let mut out = Vec::new();
+            for s in [-1.0, 1.0] {
+                let z = (-qb + s * disc.sqrt()) / (2.0 * qa);
+                let rho = a + m * z;
+                if rho < -EPS {
+                    continue; // the mirror nappe of a cone
+                }
+                if rho < EPS {
+                    bail!(); // an apex on the sphere
+                }
+                out.push(z);
+            }
+            Ok(out)
+        }
+    }
+}
+
+impl RFace {
+    fn unplaced(surf: Surface) -> RFace {
+        RFace { surf, fam: Fam { o: [0.0; 3], a: [0.0, 0.0, 1.0], e1: [1.0, 0.0, 0.0] }, sigma: 1.0, z0: 0.0, zlo: 0.0, zhi: 0.0 }
+    }
+    /// The surface's own axis (unit), and a point of it.
+    fn own_axis(&self) -> (Vec3, Vec3) {
+        match &self.surf {
+            Surface::Sphere(s) => (normalize(s.axis), s.center),
+            Surface::Cone(c) => (normalize(c.axis), c.base),
+            _ => unreachable!(),
+        }
+    }
+    fn e1(&self) -> Vec3 {
+        match &self.surf {
+            Surface::Sphere(s) => normalize(s.e1),
+            Surface::Cone(c) => normalize(c.e1),
+            _ => unreachable!(),
+        }
+    }
+    /// +1 for a frame whose (e1, e2, axis) is right-handed (u runs counter-clockwise about the axis).
+    fn hand(&self) -> f64 {
+        let (e1, e2, ax) = match &self.surf {
+            Surface::Sphere(s) => (s.e1, s.e2, s.axis),
+            Surface::Cone(c) => (c.e1, c.e2, c.axis),
+            _ => unreachable!(),
+        };
+        if dot(cross(e1, e2), ax) >= 0.0 {
+            1.0
+        } else {
+            -1.0
+        }
+    }
+    fn v_range(&self) -> [f64; 2] {
+        match &self.surf {
+            Surface::Sphere(s) => s.v_range,
+            Surface::Cone(c) => c.v_range,
+            _ => unreachable!(),
+        }
+    }
+    fn z_of_v(&self, v: f64) -> f64 {
+        match &self.surf {
+            Surface::Sphere(s) => self.z0 + self.sigma * (-s.radius * v.cos()),
+            Surface::Cone(c) => self.z0 + self.sigma * v * c.half_angle.cos(),
+            _ => unreachable!(),
+        }
+    }
+    fn v_of_z(&self, z: f64) -> f64 {
+        match &self.surf {
+            Surface::Sphere(s) => (-self.sigma * (z - self.z0) / s.radius).clamp(-1.0, 1.0).acos(),
+            Surface::Cone(c) => self.sigma * (z - self.z0) / c.half_angle.cos(),
+            _ => unreachable!(),
+        }
+    }
+    fn prof(&self) -> Prof {
+        match &self.surf {
+            Surface::Sphere(s) => Prof::Sphere { zc: self.z0, r: s.radius },
+            Surface::Cone(c) => {
+                let m = -self.sigma * c.half_angle.tan();
+                Prof::Line { a: c.base_radius - m * self.z0, m }
+            }
+            _ => unreachable!(),
+        }
+    }
+    fn rho(&self, z: f64) -> f64 {
+        self.prof().rho(z)
+    }
+    fn centre(&self, z: f64) -> Vec3 {
+        add(self.fam.o, scale(self.fam.a, z))
+    }
+    /// The point of the circle at `z` at angle zero (the seam).
+    fn seam_pt(&self, z: f64) -> Vec3 {
+        add(self.centre(z), scale(self.fam.e1, self.rho(z)))
+    }
+    fn max_rho(&self) -> f64 {
+        let mut m = self.rho(self.zlo).max(self.rho(self.zhi));
+        if let Surface::Sphere(s) = &self.surf {
+            if self.zlo <= self.z0 && self.z0 <= self.zhi {
+                m = s.radius;
+            }
+        }
+        m
+    }
+}
+
+fn aabb_rev(f: &RFace) -> Box3 {
+    let mut b = ([f64::MAX; 3], [f64::MIN; 3]);
+    let pad = f.max_rho();
+    for z in [f.zlo, f.zhi] {
+        let p = f.centre(z);
+        for k in 0..3 {
+            b.0[k] = b.0[k].min(p[k] - pad);
+            b.1[k] = b.1[k].max(p[k] + pad);
+        }
+    }
+    b
+}
+
+/// Is `p` on the line `o + t a`?
+fn on_line(p: Vec3, o: Vec3, a: Vec3) -> bool {
+    len(cross(sub(p, o), a)) < 1e-6
+}
+
+/// Choose the axis of the pair, put every sphere and cone face in it, and compute each face's
+/// place on it. `Ok(None)` when there is no sphere or cone face at all; `Err` when the faces do
+/// not share one axis and one seam direction.
+fn rev_family(pa: &mut [AFace], pb: &mut [AFace], hint: Option<(Vec3, Vec3)>) -> Result<Option<Fam>, ()> {
+    let revs = |pa: &[AFace], pb: &[AFace]| -> Vec<RFace> {
+        pa.iter().chain(pb.iter()).filter_map(|f| if let AFace::Rev(r) = f { Some(r.clone()) } else { None }).collect()
+    };
+    let all = revs(pa, pb);
+    if all.is_empty() {
+        return Ok(None);
+    }
+    // An anchor fixes the frame: a cone, or a sphere that is only a zone.
+    let full_sphere = |r: &RFace| match &r.surf {
+        Surface::Sphere(s) => s.v_range[0].abs() < 1e-9 && (s.v_range[1] - std::f64::consts::PI).abs() < 1e-9,
+        _ => false,
+    };
+    let mut fam: Option<Fam> = None;
+    for r in all.iter().filter(|r| !full_sphere(r)) {
+        let (a, o) = r.own_axis();
+        let cand = Fam { o, a, e1: r.e1() };
+        match fam {
+            None => fam = Some(cand),
+            Some(f) => {
+                if len(cross(f.a, a)) > 1e-9 || !on_line(o, f.o, f.a) || dot(f.e1, cand.e1) < 1.0 - 1e-9 {
+                    bail!();
+                }
+            }
+        }
+    }
+    let fam = match fam {
+        Some(f) => f,
+        None => {
+            // Only whole spheres: any two centres are on one line, so that line is the axis; with a
+            // single centre every line through it is, and `hint` (an axis another face of the pair
+            // has) says which.
+            let centres: Vec<Vec3> = all.iter().map(|r| r.own_axis().1).collect();
+            let c0 = centres[0];
+            if let Some((a, e1)) = hint {
+                if !centres.iter().all(|c| on_line(*c, c0, a)) {
+                    bail!();
+                }
+                return finish_family(pa, pb, Fam { o: c0, a, e1 }, &full_sphere);
+            }
+            let far = centres.iter().copied().find(|c| len(sub(*c, c0)) > EPS);
+            let (a, e1) = match far {
+                Some(c) => {
+                    let a = normalize(sub(c, c0));
+                    (a, crate::geom::frame(a).0)
+                }
+                None => {
+                    let r0 = &all[0];
+                    (r0.own_axis().0, r0.e1())
+                }
+            };
+            if !centres.iter().all(|c| on_line(*c, c0, a)) {
+                bail!();
+            }
+            Fam { o: c0, a, e1 }
+        }
+    };
+    finish_family(pa, pb, fam, &full_sphere)
+}
+
+/// Put every sphere and cone face of the pair in `fam`: a whole sphere takes its frame, and each
+/// face gets its place on the axis.
+fn finish_family(pa: &mut [AFace], pb: &mut [AFace], fam: Fam, full_sphere: &dyn Fn(&RFace) -> bool) -> Result<Option<Fam>, ()> {
+    let z_at = |p: Vec3| dot(sub(p, fam.o), fam.a);
+    for f in pa.iter_mut().chain(pb.iter_mut()) {
+        let AFace::Rev(r) = f else { continue };
+        r.fam = fam;
+        if full_sphere(r) {
+            let Surface::Sphere(s) = &r.surf else { unreachable!() };
+            if !on_line(s.center, fam.o, fam.a) {
+                bail!();
+            }
+            let e2 = scale(cross(fam.a, fam.e1), r.hand());
+            r.surf = Surface::Sphere(SphereSurf { center: s.center, radius: s.radius, axis: fam.a, e1: fam.e1, e2, u_range: [0.0, TAU], v_range: s.v_range, trim: None });
+        }
+        let (ax, o) = r.own_axis();
+        r.sigma = dot(ax, fam.a).signum();
+        r.z0 = z_at(o);
+        let vr = r.v_range();
+        let (za, zb) = (r.z_of_v(vr[0]), r.z_of_v(vr[1]));
+        r.zlo = za.min(zb);
+        r.zhi = za.max(zb);
+        if r.zhi - r.zlo <= EPS {
+            bail!();
+        }
+    }
+    Ok(Some(fam))
+}
+
+/// A whole circle on a plane face that lies on the axis, in a plane square to it: start it at the
+/// family's seam direction, unless a cylinder wall already fixed its start.
+fn align_family_circles(out: &mut [AFace], fam: &Fam) -> Option<()> {
+    for f in out.iter_mut() {
+        if let AFace::Plane(p) = f {
+            if dot(p.plane.n, fam.a).abs() < 1.0 - 1e-9 {
+                continue;
+            }
+            for c in p.curves.iter_mut() {
+                if let C3::Arc { center, radius, start, sweep, .. } = c {
+                    if sweep.abs() < TAU - 1e-9 || !on_line(*center, fam.o, fam.a) {
+                        continue;
+                    }
+                    *start = add(*center, scale(fam.e1, *radius));
+                }
+            }
+            p.edges = p.curves.iter().map(|c| to_e2(c, &p.plane)).collect::<Option<_>>()?;
+        }
+    }
+    Some(())
+}
+
+/// Is every point of `g`'s box farther than `r` from `c`? (A plane face that cannot touch a sphere.)
+fn box_clear_of_ball(b: &Box3, c: Vec3, r: f64) -> bool {
+    let mut d2 = 0.0;
+    for k in 0..3 {
+        let x = c[k].clamp(b.0[k], b.1[k]);
+        d2 += (c[k] - x) * (c[k] - x);
+    }
+    d2.sqrt() > r + 1e-6
+}
+
+/// The circle where a plane square to the axis meets `g`, on `f`: `Ok(None)` when the plane misses
+/// the band (or the face `f` does not hold the circle), `Ok(Some(circle))` when it cuts it. The
+/// circle must lie wholly inside or wholly outside `f`: one that meets an edge of `f` (or lies on
+/// one) refuses. A plane that is not square to the axis must be clear of the surface.
+fn rev_circle_on_plane(f: &PFace, g: &RFace, plane_box: &Box3) -> Result<Option<E2>, ()> {
+    let n = f.plane.n;
+    let ax = dot(g.fam.a, n);
+    if ax.abs() < 1.0 - 1e-9 {
+        let clear = match &g.surf {
+            Surface::Sphere(s) => box_clear_of_ball(plane_box, s.center, s.radius),
+            _ => false,
+        };
+        if clear {
+            return Ok(None);
+        }
+        bail!(); // a plane that is not square to the axis reaches the surface
+    }
+    let z = dot(sub(f.plane.origin, g.fam.o), n) / ax;
+    if z < g.zlo - EPS || z > g.zhi + EPS {
+        return Ok(None);
+    }
+    let rho = g.rho(z);
+    let at_end = (z - g.zlo).abs() <= EPS || (z - g.zhi).abs() <= EPS;
+    if rho <= EPS {
+        // The plane touches the apex or the pole.
+        bail!();
+    }
+    if at_end {
+        return Ok(None); // a rim of the band: the face next to it holds that circle
+    }
+    let c3 = C3::Arc { center: g.centre(z), radius: rho, normal: g.fam.a, start: g.seam_pt(z), sweep: TAU };
+    let circle = to_e2(&c3, &f.plane).ok_or(())?;
+    let E2::Arc { c, r, .. } = circle else { bail!() };
+    for e in &f.edges {
+        if let E2::Arc { c: c2, r: r2, .. } = *e {
+            if dist2(c, c2) < 1e-6 && (r - r2).abs() < 1e-6 {
+                bail!(); // the circle lies on an edge of the face
+            }
+        }
+        let (mut a, mut b) = (Vec::new(), Vec::new());
+        meet(e, &circle, &mut a, &mut b);
+        if !a.is_empty() || !b.is_empty() {
+            bail!(); // the circle meets an edge of the face
+        }
+        // Closest approach without a crossing (a tangent circle) is as bad.
+        if dist_to_e2(c, e) < r + 1e-6 && dist_to_e2(c, e) > r - 1e-6 {
+            bail!();
+        }
+    }
+    if !in_edges(f.plane.project(g.seam_pt(z)), &f.edges) {
+        return Ok(None);
+    }
+    Ok(Some(circle))
+}
+
+/// A cylinder wall about the family axis, with its range of heights on that axis. `Err` when it is
+/// not about the axis, or is partial, trimmed, or starts its circles elsewhere.
+fn coaxial_cyl(c: &CFace, fam: &Fam) -> Result<(f64, f64, f64), ()> {
+    let cy = &c.cyl;
+    if len(cross(normalize(cy.axis), fam.a)) > 1e-9 || !on_line(cy.origin, fam.o, fam.a) || cy.arc.is_some() || cy.cross.is_some() || c.span < TAU - 1e-9 {
+        bail!();
+    }
+    if dot(normalize(cy.e1), fam.e1) < 1.0 - 1e-9 {
+        bail!();
+    }
+    let sg = dot(normalize(cy.axis), fam.a).signum();
+    let z0 = dot(sub(cy.origin, fam.o), fam.a);
+    let (za, zb) = (z0 + sg * cy.vmin, z0 + sg * cy.vmax);
+    Ok((za.min(zb), za.max(zb), cy.radius))
+}
+
+/// The heights (family coordinates) strictly inside `f` where the other solid's faces cut it.
+fn rev_grid(f: &RFace, other: &[AFace]) -> Result<Grid, ()> {
+    let me = aabb_rev(f);
+    let mut zs: Vec<f64> = Vec::new();
+    for g in other {
+        if !boxes_meet(&me, &aabb(g)) {
+            continue;
+        }
+        match g {
+            AFace::Plane(p) => {
+                if let Some(E2::Arc { .. }) = rev_circle_on_plane(p, f, &aabb_plane(&p.curves))? {
+                    let z = dot(sub(p.plane.origin, f.fam.o), p.plane.n) / dot(f.fam.a, p.plane.n);
+                    zs.push(z);
+                }
+            }
+            AFace::Cyl(c) => {
+                let (clo, chi, r) = coaxial_cyl(c, &f.fam)?;
+                for z in meet_profiles(f.prof(), Prof::Line { a: r, m: 0.0 })? {
+                    if z > f.zlo + EPS && z < f.zhi - EPS && z >= clo - EPS && z <= chi + EPS {
+                        zs.push(z);
+                    }
+                }
+            }
+            AFace::Rev(r) => {
+                for z in meet_profiles(f.prof(), r.prof())? {
+                    if z > f.zlo + EPS && z < f.zhi - EPS && z >= r.zlo - EPS && z <= r.zhi + EPS {
+                        zs.push(z);
+                    }
+                }
+            }
+        }
+    }
+    zs.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
+    zs.dedup_by(|a, b| (*a - *b).abs() < EPS);
+    Ok(Grid { us: Vec::new(), vs: zs })
+}
+
+/// The heights where a cylinder wall of the other solid is cut by sphere or cone `r` (in the
+/// cylinder's own v, strictly inside the wall).
+fn cyl_rev_heights(c: &CFace, r: &RFace, vs: &mut Vec<f64>) -> Result<(), ()> {
+    let (clo, chi, rad) = coaxial_cyl(c, &r.fam)?;
+    let sg = dot(normalize(c.cyl.axis), r.fam.a).signum();
+    let z0 = dot(sub(c.cyl.origin, r.fam.o), r.fam.a);
+    for z in meet_profiles(r.prof(), Prof::Line { a: rad, m: 0.0 })? {
+        if z > clo + EPS && z < chi - EPS && z >= r.zlo - EPS && z <= r.zhi + EPS {
+            vs.push(sg * (z - z0));
+        }
+    }
+    Ok(())
+}
+
+/// One band of a sphere or cone face, from height `za` to `zb` (family coordinates), as a finished
+/// face with its own seam at angle zero.
+fn rev_piece(f: &RFace, za: f64, zb: f64, vertex: VertexFn) -> TFace {
+    let (va, vb) = (f.v_of_z(za), f.v_of_z(zb));
+    let (v_lo, v_hi) = (va.min(vb), va.max(vb));
+    let z_lo = f.z_of_v(v_lo);
+    let z_hi = f.z_of_v(v_hi);
+    let (ax, _) = f.own_axis();
+    let e1 = f.e1();
+    let hand = f.hand();
+    let seam_pt = |v: f64| f.surf.param(0.0, v);
+    let (p_lo, p_hi) = (seam_pt(v_lo), seam_pt(v_hi));
+    let (s_lo, s_hi) = (vertex(p_lo), vertex(p_hi));
+    let seam = match &f.surf {
+        Surface::Sphere(s) => {
+            let c = s.center;
+            let x_axis = normalize(sub(p_lo, c));
+            // The meridian runs from v_lo to v_hi counter-clockwise about e1 x axis.
+            topo::edge(s_lo.clone(), s_hi.clone(), true, Curve::Arc { center: c, radius: s.radius, normal: normalize(cross(e1, ax)), x_axis, sweep: v_hi - v_lo })
+        }
+        _ => topo::edge(s_lo.clone(), s_hi.clone(), true, Curve::Segment { a: p_lo, b: p_hi }),
+    };
+    let pc = |u0: f64, v0: f64, u1: f64, v1: f64| Pcurve { start: [u0, v0], end: [u1, v1], mid: [0.5 * (u0 + u1), 0.5 * (v0 + v1)] };
+    let ring = |z: f64, sv: &topo::VertexRef| topo::edge(sv.clone(), sv.clone(), true, Curve::Circle { center: f.centre(z), radius: f.rho(z), normal: ax });
+    // A turn of u runs counter-clockwise about the axis for a right-handed frame, clockwise otherwise.
+    let turn = hand > 0.0;
+    let mut uses = vec![topo::EdgeUse { edge: seam.clone(), forward: true, pcurve: pc(0.0, v_lo, 0.0, v_hi) }];
+    let is_pole = |v: f64| match &f.surf {
+        Surface::Sphere(_) => v < 1e-9 || v > std::f64::consts::PI - 1e-9,
+        Surface::Cone(c) => c.base_radius - v * c.half_angle.sin() < 1e-9,
+        _ => false,
+    };
+    if !is_pole(v_hi) {
+        uses.push(topo::EdgeUse { edge: ring(z_hi, &s_hi), forward: turn, pcurve: pc(0.0, v_hi, TAU, v_hi) });
+    }
+    uses.push(topo::EdgeUse { edge: seam, forward: false, pcurve: pc(TAU, v_hi, TAU, v_lo) });
+    if !is_pole(v_lo) {
+        uses.push(topo::EdgeUse { edge: ring(z_lo, &s_lo), forward: !turn, pcurve: pc(TAU, v_lo, 0.0, v_lo) });
+    }
+    let surface = match &f.surf {
+        Surface::Sphere(s) => Surface::Sphere(SphereSurf { v_range: [v_lo, v_hi], u_range: [0.0, TAU], ..s.clone() }),
+        Surface::Cone(c) => Surface::Cone(Cone { v_range: [v_lo, v_hi], ..c.clone() }),
+        _ => unreachable!(),
+    };
+    Rc::new(RefCell::new(Face { boundary: vec![Rc::new(RefCell::new(Wire { edges: uses }))], forward: true, surface, uv_domain: [[0.0, TAU], [v_lo, v_hi]] }))
+}
+
+/// Inside or outside the other solid, for a whole band: several heights and angles must agree.
+fn rev_class(f: &RFace, za: f64, zb: f64, other_solid: &TSolid) -> Result<Class, ()> {
+    let (va, vb) = (f.v_of_z(za), f.v_of_z(zb));
+    let mut verdict: Option<bool> = None;
+    for t in [0.5, 0.25, 0.75] {
+        let v = va + (vb - va) * t;
+        for k in 0..3 {
+            let u = 0.9 + 2.1 * k as f64;
+            let inside = ops::inside_solid(other_solid, f.surf.param(u, v));
+            match verdict {
+                None => verdict = Some(inside),
+                Some(x) if x != inside => bail!(),
+                _ => {}
+            }
+        }
+    }
+    Ok(if verdict == Some(true) { Class::Inside } else { Class::Outside })
 }
 
 // ---------------------------------------------------------------------------
@@ -955,6 +1517,7 @@ fn cuts_on_plane(f: &PFace, other: &[AFace]) -> Result<Vec<E2>, ()> {
                 }
             }
             AFace::Cyl(g) => out.extend(cyl_on_plane(f, g, &me)?),
+            AFace::Rev(g) => out.extend(rev_circle_on_plane(f, g, &me)?),
         }
     }
     Ok(out)
@@ -1030,6 +1593,10 @@ fn wall_grid(f: &CFace, other: &[AFace], skip: &dyn Fn(usize) -> bool) -> Result
             AFace::Plane(p) => p,
             AFace::Cyl(gc) => {
                 parallel_wall_lines(f, gc, &mut us, &mut vs)?;
+                continue;
+            }
+            AFace::Rev(r) => {
+                cyl_rev_heights(f, r, &mut vs)?;
                 continue;
             }
         };
@@ -1828,6 +2395,20 @@ fn pieces(
                     }
                 }
             }
+            AFace::Rev(f) => {
+                let g = grid.as_ref().ok_or(())?;
+                let mut zs = vec![f.zlo];
+                zs.extend(g.vs.iter().copied());
+                zs.push(f.zhi);
+                for w in zs.windows(2) {
+                    let class = rev_class(f, w[0], w[1], other_solid)?;
+                    if !keep(class) {
+                        continue;
+                    }
+                    let face = rev_piece(f, w[0], w[1], vertex);
+                    out.push(Kept::Wall(if flip { ops::flip_face(&face).ok_or(())? } else { face }));
+                }
+            }
             AFace::Cyl(f) => {
                 if side == 1 && crossings.iter().any(|c| c.ti == fi) {
                     continue; // made with its bore wall, below
@@ -2034,7 +2615,9 @@ fn core(op: &str, a: &TSolid, b: &TSolid, pa: &[AFace], pb: &[AFace], crossings:
             .iter()
             .enumerate()
             .map(|(i, f)| {
-                if let AFace::Cyl(w) = f {
+                if let AFace::Rev(r) = f {
+                    rev_grid(r, other).map(Some)
+                } else if let AFace::Cyl(w) = f {
                     let skip = |gi: usize| {
                         crossings.iter().any(|c| {
                             if side == 0 { c.wi == i && (c.ti == gi || clear_end_disk(c, &other[gi])) } else { c.ti == i && c.wi == gi }
@@ -2169,21 +2752,116 @@ fn solid_crossing_boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<Outcome> {
     None
 }
 
+/// How many separate pieces the faces of `s` make, joined where they share an edge handle (the
+/// weld has made every shared edge ONE handle, so this is exact for a result of this module).
+fn face_components(s: &TSolid) -> usize {
+    let faces = s.faces();
+    let mut owner: HashMap<usize, usize> = HashMap::new();
+    let mut parent: Vec<usize> = (0..faces.len()).collect();
+    fn root(p: &mut Vec<usize>, mut x: usize) -> usize {
+        while p[x] != x {
+            p[x] = p[p[x]];
+            x = p[x];
+        }
+        x
+    }
+    for (i, f) in faces.iter().enumerate() {
+        for w in &f.borrow().boundary {
+            for u in &w.borrow().edges {
+                let k = Rc::as_ptr(&u.edge) as *const () as usize;
+                match owner.get(&k) {
+                    Some(&j) => {
+                        let (a, b) = (root(&mut parent, i), root(&mut parent, j));
+                        parent[a] = b;
+                    }
+                    None => {
+                        owner.insert(k, i);
+                    }
+                }
+            }
+        }
+    }
+    (0..faces.len()).filter(|&i| root(&mut parent, i) == i).count()
+}
+
+/// A result with more pieces than its operands could account for is not one solid: a cut that
+/// strands a tip, or seals a void (a cavity belongs in its own shell, which this module does not
+/// build). Refused, as the older path refuses the same shapes.
+fn too_many_pieces(op: &str, a: &TSolid, b: &TSolid, r: &TSolid) -> bool {
+    let allowed = match op {
+        "union" => a.shells.len() + b.shells.len(),
+        _ => a.shells.len(),
+    };
+    face_components(r) > allowed.max(1)
+}
+
 /// The planar boolean. Besides the structural guards, the answer must agree
 /// with its partner operation by inclusion-exclusion
 /// (V(A+B) + V(A*B) = V(A) + V(B); V(A-B) + V(A*B) = V(A)), which no
 /// face-selection mistake survives unless it is made twice in step.
 pub fn boolean_planar(op: &str, a: &TSolid, b: &TSolid) -> Outcome {
+    let first = boolean_planar_with(op, a, b, None);
+    if !matches!(first, Outcome::Refused) {
+        return first;
+    }
+    // Whole spheres have no axis of their own: when the pair has nothing else to fix one, try the
+    // axes its other faces suggest (a cylinder's, a plate's) before refusing.
+    let (Some(pa), Some(pb)) = (extract(a), extract(b)) else {
+        return first;
+    };
+    let only_balls = pa.iter().chain(pb.iter()).all(|f| match f {
+        AFace::Rev(r) => matches!(&r.surf, Surface::Sphere(s) if s.v_range[0].abs() < 1e-9 && (s.v_range[1] - std::f64::consts::PI).abs() < 1e-9),
+        _ => true,
+    });
+    if !only_balls || !pa.iter().chain(pb.iter()).any(|f| matches!(f, AFace::Rev(_))) {
+        return first;
+    }
+    let mut hints: Vec<(Vec3, Vec3)> = Vec::new();
+    // A cylinder's axis first (its circles start where its own frame says), then a plate's normal.
+    for walls in [true, false] {
+        for f in pa.iter().chain(pb.iter()) {
+            let cand = match f {
+                AFace::Cyl(c) if walls => Some((normalize(c.cyl.axis), normalize(c.cyl.e1))),
+                AFace::Plane(p) if !walls => Some((normalize(p.plane.n), crate::geom::frame(p.plane.n).0)),
+                _ => None,
+            };
+            if let Some((a, e1)) = cand {
+                if !hints.iter().any(|h| len(cross(h.0, a)) < 1e-9) && hints.len() < 8 {
+                    hints.push((a, e1));
+                }
+            }
+        }
+    }
+    for h in hints {
+        if let Outcome::Built(r) = boolean_planar_with(op, a, b, Some(h)) {
+            return Outcome::Built(r);
+        }
+    }
+    first
+}
+
+fn boolean_planar_with(op: &str, a: &TSolid, b: &TSolid, hint: Option<(Vec3, Vec3)>) -> Outcome {
     let (Some(mut pa), Some(mut pb)) = (extract(a), extract(b)) else {
         return Outcome::NotPlanar;
     };
-    if op == "union" || op == "intersect" {
+    let Ok(fam) = rev_family(&mut pa, &mut pb, hint) else {
+        return Outcome::Refused;
+    };
+    if let Some(fam) = &fam {
+        // Spheres and cones are modelled only about one axis, with no crossing bores in the pair.
+        if !find_crossings(&pa, &pb).is_empty() || !find_solid_crossings(&pa, &pb).is_empty() || !find_solid_crossings(&pb, &pa).is_empty() {
+            return Outcome::Refused;
+        }
+        if align_family_circles(&mut pa, fam).is_none() || align_family_circles(&mut pb, fam).is_none() {
+            return Outcome::Refused;
+        }
+    } else if op == "union" || op == "intersect" {
         if let Some(out) = solid_crossing_boolean(op, a, b) {
             return out;
         }
     }
     // A bore wall crossed by a second bore (subtract only).
-    let crossings = if op == "subtract" { find_crossings(&pa, &pb) } else { Vec::new() };
+    let crossings = if op == "subtract" && fam.is_none() { find_crossings(&pa, &pb) } else { Vec::new() };
     reframe(&mut pa, &mut pb, &crossings);
     if align_circles(&mut pa).is_none() || align_circles(&mut pb).is_none() {
         return Outcome::Refused;
@@ -2203,6 +2881,9 @@ pub fn boolean_planar(op: &str, a: &TSolid, b: &TSolid) -> Outcome {
     let Some(result) = main else {
         return Outcome::Refused;
     };
+    if fam.is_some() && too_many_pieces(op, a, b, &result) {
+        return Outcome::Refused;
+    }
     let partner = if op == "union" { "intersect" } else if op == "intersect" { "union" } else { "intersect" };
     let Ok(other) = core(partner, a, b, &pa, &pb, &crossings) else {
         return Outcome::Refused;
@@ -2287,9 +2968,9 @@ mod tests {
         assert!((vol(&r) - 15000.0).abs() < 1e-6, "through half {}", vol(&r));
     }
 
-    struct Lcg(u64);
+    pub(super) struct Lcg(pub(super) u64);
     impl Lcg {
-        fn next(&mut self) -> f64 {
+        pub(super) fn next(&mut self) -> f64 {
             self.0 = self.0.wrapping_mul(6364136223846793005).wrapping_add(1442695040888963407);
             ((self.0 >> 33) as f64) / ((1u64 << 31) as f64)
         }
@@ -3079,6 +3760,687 @@ mod tests {
         eprintln!("tees anywhere: built {b}, refused {r}");
     }
 
+#[cfg(test)]
+mod rev_tests {
+    use super::*;
+    use super::tests::Lcg;
+    use std::f64::consts::PI;
+
+    fn bx(size: Vec3, c: Vec3) -> TSolid {
+        build::box_solid(size, c, None)
+    }
+    fn ball(c: Vec3, r: f64) -> TSolid {
+        build::sphere_solid(c, r, [0.0, 0.0, 1.0])
+    }
+    fn cone(c: Vec3, r: f64, h: f64) -> TSolid {
+        build::cone_solid(c, r, h, [0.0, 0.0, 1.0])
+    }
+    fn cyl(c: Vec3, r: f64, h: f64) -> TSolid {
+        build::cylinder_solid(c, r, h, [0.0, 0.0, 1.0])
+    }
+    fn vol(s: &TSolid) -> f64 {
+        build::solid_volume(s)
+    }
+    /// Volume of the ball of radius `r` between heights `z1 < z2` measured from its centre.
+    fn zone(r: f64, z1: f64, z2: f64) -> f64 {
+        let (z1, z2) = (z1.max(-r), z2.min(r));
+        PI * (r * r * (z2 - z1) - (z2.powi(3) - z1.powi(3)) / 3.0)
+    }
+    fn build_op(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
+        match boolean_planar(op, a, b) {
+            Outcome::Built(r) => Some(r),
+            _ => None,
+        }
+    }
+    fn mesh_volume(res: &TSolid, defl: f64) -> (bool, f64) {
+        let m = crate::mesh::mesh_solid(res, defl).expect("meshes");
+        let mut v = 0.0;
+        for t in m.indices.chunks(3) {
+            let (a, b, c) = (m.positions[t[0] as usize], m.positions[t[1] as usize], m.positions[t[2] as usize]);
+            v += dot(a, cross(b, c)) / 6.0;
+        }
+        (ops::check_watertight(&m), v)
+    }
+    /// The result must build, equal the closed form to 1e-9, and mesh watertight at both chords.
+    fn exact(label: &str, op: &str, a: &TSolid, b: &TSolid, want: f64) -> TSolid {
+        let r = build_op(op, a, b).unwrap_or_else(|| panic!("{label}: {op} refused"));
+        let got = vol(&r);
+        assert!((got - want).abs() <= 1e-9 * want.abs().max(1.0), "{label}: {op} volume {got} vs {want}");
+        for defl in [0.05, 0.5] {
+            let (closed, v) = mesh_volume(&r, defl);
+            let slack = if defl < 0.1 { 0.03 } else { 0.15 };
+            assert!(closed, "{label}: {op} mesh not watertight at {defl}");
+            assert!((v - want).abs() < slack * want.abs() + 10.0 * defl, "{label}: {op} mesh volume {v} vs {want} at {defl}");
+        }
+        r
+    }
+
+    #[test]
+    fn dome_on_a_base_plate() {
+        // box(40, 40, 10) from z = 0 to 10, and a ball of diameter 24 centred in it.
+        let b = bx([40.0, 40.0, 10.0], [0.0, 0.0, 5.0]);
+        let s = ball([0.0, 0.0, 5.0], 12.0);
+        let inside = zone(12.0, -5.0, 5.0);
+        let vb = 40.0 * 40.0 * 10.0;
+        let vs = 4.0 / 3.0 * PI * 12.0f64.powi(3);
+        exact("dome", "union", &b, &s, vb + vs - inside);
+        exact("dome", "intersect", &b, &s, inside);
+        exact("dome", "subtract", &b, &s, vb - inside);
+        // The ball minus the slab is two caps with nothing joining them: not one solid.
+        assert!(build_op("subtract", &s, &b).is_none());
+    }
+    #[test]
+    fn spherical_pocket_in_a_slab() {
+        // box(40, 40, 20) from -10 to 10 and a ball of diameter 24 at the origin: the ball leaves the slab
+        // through its top and bottom.
+        let b = bx([40.0, 40.0, 20.0], [0.0; 3]);
+        let s = ball([0.0; 3], 12.0);
+        let inside = zone(12.0, -10.0, 10.0);
+        let vb = 40.0 * 40.0 * 20.0;
+        let vs = 4.0 / 3.0 * PI * 12.0f64.powi(3);
+        exact("slab", "subtract", &b, &s, vb - inside);
+        exact("slab", "union", &b, &s, vb + vs - inside);
+        exact("slab", "intersect", &b, &s, inside);
+        // A blind pocket: the ball only breaks the top face.
+        let s2 = ball([0.0, 0.0, 8.0], 6.0);
+        let cap = zone(6.0, 2.0, 6.0); // above z = 10
+        let vs2 = 4.0 / 3.0 * PI * 216.0;
+        exact("pocket", "subtract", &b, &s2, vb - (vs2 - cap));
+        exact("pocket", "union", &b, &s2, vb + cap);
+        exact("pocket", "intersect", &b, &s2, vs2 - cap);
+        // Sealed inside: a cavity (or the box whole, or the ball whole).
+        let s3 = ball([0.0, 0.0, 0.0], 5.0);
+        let vs3 = 4.0 / 3.0 * PI * 125.0;
+        exact("sealed", "union", &b, &s3, vb);
+        exact("sealed", "intersect", &b, &s3, vs3);
+    }
+
+    #[test]
+    fn cone_tip_on_a_cylinder() {
+        // cylinder(20, 20) from z = -10 to 10 and a cone of base diameter 20, 14 tall, standing on its top.
+        let c = cyl([0.0; 3], 10.0, 20.0);
+        let k = cone([0.0, 0.0, 17.0], 10.0, 14.0);
+        let (vc, vk) = (PI * 100.0 * 20.0, PI * 100.0 * 14.0 / 3.0);
+        let u = exact("tip", "union", &c, &k, vc + vk);
+        assert_eq!(u.faces().len(), 3, "bottom disk, wall, cone");
+        // Only touching: no overlap to intersect, the subtract leaves the cylinder.
+        // A narrower cone on the same top: the top disk keeps a ring.
+        let k2 = cone([0.0, 0.0, 17.0], 6.0, 14.0);
+        exact("narrow tip", "union", &c, &k2, vc + PI * 36.0 * 14.0 / 3.0);
+        // A wider cone overhangs the cylinder.
+        let k3 = cone([0.0, 0.0, 17.0], 14.0, 14.0);
+        exact("wide tip", "union", &c, &k3, vc + PI * 196.0 * 14.0 / 3.0);
+    }
+
+    #[test]
+    fn sphere_sliced_by_a_box_and_cone_by_a_plane() {
+        // A ball of radius 12 and a slab that keeps the cap above z = 8 (h = 4).
+        let s = ball([0.0; 3], 12.0);
+        let slab = bx([60.0, 60.0, 20.0], [0.0, 0.0, 18.0]);
+        let vs = 4.0 / 3.0 * PI * 1728.0;
+        let cap = PI * 16.0 * (36.0 - 4.0) / 3.0;
+        exact("cap", "intersect", &s, &slab, cap);
+        exact("cap", "subtract", &s, &slab, vs - cap);
+        exact("cap", "union", &s, &slab, 60.0 * 60.0 * 20.0 + vs - cap);
+        // A cone (base radius 10, height 20, z from 0 to 20) sliced at z = 5 by a slab above it.
+        let k = cone([0.0, 0.0, 10.0], 10.0, 20.0);
+        let up = bx([40.0, 40.0, 30.0], [0.0, 0.0, 20.0]);
+        let vk = PI * 100.0 * 20.0 / 3.0;
+        let tip = PI * 7.5 * 7.5 * 15.0 / 3.0;
+        exact("slice", "intersect", &k, &up, tip);
+        exact("slice", "subtract", &k, &up, vk - tip);
+        exact("slice", "union", &k, &up, 40.0 * 40.0 * 30.0 + vk - tip);
+    }
+
+    #[test]
+    fn ball_knob_on_a_post_and_coaxial_pairs() {
+        // A post (r 4, z 0 to 20) with a ball (r 8) centred at z 24: the ball takes the post's top.
+        let post = cyl([0.0, 0.0, 10.0], 4.0, 20.0);
+        let s = ball([0.0, 0.0, 24.0], 8.0);
+        let z1 = 24.0 - (64.0f64 - 16.0).sqrt();
+        let overlap = PI * 16.0 * (20.0 - z1) + PI * (8.0 - 48f64.sqrt()).powi(2) * (24.0 - (8.0 - 48f64.sqrt())) / 3.0;
+        let (vp, vs) = (PI * 16.0 * 20.0, 4.0 / 3.0 * PI * 512.0);
+        exact("knob", "union", &post, &s, vp + vs - overlap);
+        exact("knob", "intersect", &post, &s, overlap);
+        exact("knob", "subtract", &post, &s, vp - overlap);
+        exact("knob", "subtract", &s, &post, vs - overlap);
+        // Two balls on one line: a lens.
+        let a = ball([0.0; 3], 10.0);
+        let b = ball([0.0, 0.0, 12.0], 7.0);
+        // They meet at z where 100 - z^2 = 49 - (z - 12)^2: z = (100 - 49 + 144) / 24.
+        let z = (100.0 - 49.0 + 144.0) / 24.0;
+        let lens = zone(10.0, z, 10.0) + zone(7.0, -7.0, z - 12.0);
+        let (va, vb) = (4.0 / 3.0 * PI * 1000.0, 4.0 / 3.0 * PI * 343.0);
+        exact("lens", "union", &a, &b, va + vb - lens);
+        exact("lens", "intersect", &a, &b, lens);
+        exact("lens", "subtract", &a, &b, va - lens);
+    }
+
+    // ---- an independent oracle: cross-sections of solids about one axis ------------------------
+
+    #[derive(Clone, Copy, Debug)]
+    enum Sd {
+        Ball { c: f64, r: f64 },
+        /// Base at `zb`, apex `h` above (`up`) or below it.
+        Cone { zb: f64, r: f64, h: f64, up: bool },
+        Cyl { z0: f64, z1: f64, r: f64 },
+        /// A 200 x 200 slab: wider than anything about the axis.
+        Slab { z0: f64, z1: f64 },
+    }
+
+    const INF: f64 = f64::INFINITY;
+
+    impl Sd {
+        fn solid(&self) -> TSolid {
+            match *self {
+                Sd::Ball { c, r } => ball([0.0, 0.0, c], r),
+                Sd::Cone { zb, r, h, up } => {
+                    if up {
+                        build::cone_solid([0.0, 0.0, zb + h / 2.0], r, h, [0.0, 0.0, 1.0])
+                    } else {
+                        build::cone_solid([0.0, 0.0, zb - h / 2.0], r, h, [0.0, 0.0, -1.0])
+                    }
+                }
+                Sd::Cyl { z0, z1, r } => cyl([0.0, 0.0, 0.5 * (z0 + z1)], r, z1 - z0),
+                Sd::Slab { z0, z1 } => bx([200.0, 200.0, z1 - z0], [0.0, 0.0, 0.5 * (z0 + z1)]),
+            }
+        }
+        /// The radial intervals (in rho squared) the solid fills at height `z`.
+        fn section(&self, z: f64) -> Vec<(f64, f64)> {
+            match *self {
+                Sd::Ball { c, r } => {
+                    if (z - c).abs() < r {
+                        vec![(0.0, r * r - (z - c) * (z - c))]
+                    } else {
+                        vec![]
+                    }
+                }
+                Sd::Cone { zb, r, h, up } => {
+                    let t = if up { z - zb } else { zb - z };
+                    if t > 0.0 && t < h {
+                        vec![(0.0, (r * (1.0 - t / h)).powi(2))]
+                    } else {
+                        vec![]
+                    }
+                }
+                Sd::Cyl { z0, z1, r } => {
+                    if z > z0 && z < z1 {
+                        vec![(0.0, r * r)]
+                    } else {
+                        vec![]
+                    }
+                }
+                Sd::Slab { z0, z1 } => {
+                    if z > z0 && z < z1 {
+                        vec![(0.0, INF)]
+                    } else {
+                        vec![]
+                    }
+                }
+            }
+        }
+        /// Heights where the section changes shape.
+        fn ends(&self) -> Vec<f64> {
+            match *self {
+                Sd::Ball { c, r } => vec![c - r, c + r],
+                Sd::Cone { zb, h, up, .. } => vec![zb, if up { zb + h } else { zb - h }],
+                Sd::Cyl { z0, z1, .. } | Sd::Slab { z0, z1 } => vec![z0, z1],
+            }
+        }
+        /// rho squared as a quadratic `a z^2 + b z + c` in z.
+        fn quad(&self) -> Option<(f64, f64, f64)> {
+            match *self {
+                Sd::Ball { c, r } => Some((-1.0, 2.0 * c, r * r - c * c)),
+                Sd::Cone { zb, r, h, up } => {
+                    // rho = r (1 - t / h), t = s (z - zb), s = +-1
+                    let s = if up { 1.0 } else { -1.0 };
+                    let (k, k0) = (-r * s / h, r * (1.0 + s * zb / h));
+                    Some((k * k, 2.0 * k * k0, k0 * k0))
+                }
+                Sd::Cyl { r, .. } => Some((0.0, 0.0, r * r)),
+                Sd::Slab { .. } => None,
+            }
+        }
+    }
+
+    impl Sd {
+        fn scaled(&self, k: f64) -> Sd {
+            match *self {
+                Sd::Ball { c, r } => Sd::Ball { c: c * k, r: r * k },
+                Sd::Cone { zb, r, h, up } => Sd::Cone { zb: zb * k, r: r * k, h: h * k, up },
+                Sd::Cyl { z0, z1, r } => Sd::Cyl { z0: z0 * k, z1: z1 * k, r: r * k },
+                Sd::Slab { z0, z1 } => Sd::Slab { z0: z0 * k, z1: z1 * k },
+            }
+        }
+    }
+
+    fn norm(mut v: Vec<(f64, f64)>) -> Vec<(f64, f64)> {
+        v.retain(|p| p.1 - p.0 > 1e-12 || p.1 == INF);
+        v.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+        let mut out: Vec<(f64, f64)> = Vec::new();
+        for p in v {
+            match out.last_mut() {
+                Some(l) if p.0 <= l.1 => l.1 = l.1.max(p.1),
+                _ => out.push(p),
+            }
+        }
+        out
+    }
+    fn set_op(op: &str, a: &[(f64, f64)], b: &[(f64, f64)]) -> Vec<(f64, f64)> {
+        let inter = |x: &[(f64, f64)], y: &[(f64, f64)]| {
+            let mut o = Vec::new();
+            for p in x {
+                for q in y {
+                    let (lo, hi) = (p.0.max(q.0), p.1.min(q.1));
+                    if hi > lo {
+                        o.push((lo, hi));
+                    }
+                }
+            }
+            norm(o)
+        };
+        match op {
+            "union" => norm(a.iter().chain(b.iter()).copied().collect()),
+            "intersect" => inter(a, b),
+            _ => {
+                // a minus b: a meets the complement of b within [0, INF)
+                let mut comp = Vec::new();
+                let mut at = 0.0;
+                for q in b {
+                    if q.0 > at {
+                        comp.push((at, q.0));
+                    }
+                    at = q.1;
+                }
+                if at < INF {
+                    comp.push((at, INF));
+                }
+                inter(a, &comp)
+            }
+        }
+    }
+    fn area_of(v: &[(f64, f64)]) -> f64 {
+        v.iter().map(|&(lo, hi)| if hi == INF { 200.0 * 200.0 - PI * lo } else { PI * (hi - lo) }).sum()
+    }
+    /// The exact volume of `((first op1 s1) op2 s2) ...`: the section area is piecewise quadratic in
+    /// z, so Gauss-Legendre is exact between the heights where the section changes shape.
+    fn oracle(seq: &[(&str, Sd)], first: Sd) -> f64 {
+        let all: Vec<Sd> = std::iter::once(first).chain(seq.iter().map(|s| s.1)).collect();
+        let section = |z: f64| {
+            let mut cur = first.section(z);
+            for (op, s) in seq {
+                cur = set_op(op, &cur, &s.section(z));
+            }
+            area_of(&cur)
+        };
+        let mut zs: Vec<f64> = all.iter().flat_map(|s| s.ends()).collect();
+        // Where two curved surfaces cross.
+        for i in 0..all.len() {
+            for j in 0..i {
+                if let (Some(p), Some(q)) = (all[i].quad(), all[j].quad()) {
+                    let (a, b, c) = (p.0 - q.0, p.1 - q.1, p.2 - q.2);
+                    if a.abs() < 1e-12 {
+                        if b.abs() > 1e-12 {
+                            zs.push(-c / b);
+                        }
+                    } else {
+                        let d = b * b - 4.0 * a * c;
+                        if d >= 0.0 {
+                            zs.push((-b + d.sqrt()) / (2.0 * a));
+                            zs.push((-b - d.sqrt()) / (2.0 * a));
+                        }
+                    }
+                }
+            }
+        }
+        zs.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        zs.dedup_by(|a, b| (*a - *b).abs() < 1e-12);
+        let mut v = 0.0;
+        for w in zs.windows(2) {
+            let (a, b) = (w[0], w[1]);
+            if b - a < 1e-12 {
+                continue;
+            }
+            // Three-point Gauss-Legendre: exact for the quadratic, and every node is strictly inside.
+            let (m, h) = (0.5 * (a + b), 0.5 * (b - a));
+            let d = h * (3.0f64 / 5.0).sqrt();
+            v += h * (5.0 / 9.0 * (section(m - d) + section(m + d)) + 8.0 / 9.0 * section(m));
+        }
+        v
+    }
+
+    /// The pieces of the solid, by flood fill over its (rho, z) half-plane at 0.1 mm: 0 for an empty
+    /// result. An independent reading of "is this one solid", used to explain refusals.
+    fn lumps(seq: &[(&str, Sd)], first: Sd) -> usize {
+        let (nz, nr) = (700usize, 200usize);
+        let (z_lo, dz, dr) = (-30.0, 0.1, 0.1);
+        let section = |z: f64| {
+            let mut cur = first.section(z);
+            for (op, s) in seq {
+                cur = set_op(op, &cur, &s.section(z));
+            }
+            cur
+        };
+        let mut cell = vec![false; nz * nr];
+        for i in 0..nz {
+            let sec = section(z_lo + dz * (i as f64 + 0.5));
+            for j in 0..nr {
+                let r2 = (dr * (j as f64 + 0.5)).powi(2);
+                cell[i * nr + j] = sec.iter().any(|&(lo, hi)| r2 > lo && r2 < hi);
+            }
+        }
+        let mut seen = vec![false; nz * nr];
+        let mut n = 0;
+        for start in 0..nz * nr {
+            if !cell[start] || seen[start] {
+                continue;
+            }
+            n += 1;
+            let mut stack = vec![start];
+            seen[start] = true;
+            while let Some(c) = stack.pop() {
+                let (i, j) = (c / nr, c % nr);
+                for (di, dj) in [(1i64, 0i64), (-1, 0), (0, 1), (0, -1)] {
+                    let (ni, nj) = (i as i64 + di, j as i64 + dj);
+                    if ni < 0 || nj < 0 || ni >= nz as i64 || nj >= nr as i64 {
+                        continue;
+                    }
+                    let k = ni as usize * nr + nj as usize;
+                    if cell[k] && !seen[k] {
+                        seen[k] = true;
+                        stack.push(k);
+                    }
+                }
+            }
+        }
+        n
+    }
+
+    fn random_sd(rng: &mut Lcg, slab_ok: bool) -> Sd {
+        let k = (rng.next() * if slab_ok { 4.0 } else { 3.0 }) as usize;
+        let z = -12.0 + 24.0 * rng.next();
+        match k {
+            0 => Sd::Ball { c: z, r: 4.0 + 10.0 * rng.next() },
+            1 => Sd::Cone { zb: z, r: 3.0 + 10.0 * rng.next(), h: 5.0 + 20.0 * rng.next(), up: rng.next() < 0.5 },
+            2 => Sd::Cyl { z0: z, z1: z + 4.0 + 20.0 * rng.next(), r: 3.0 + 10.0 * rng.next() },
+            _ => Sd::Slab { z0: z, z1: z + 3.0 + 20.0 * rng.next() },
+        }
+    }
+
+    /// Random pairs about the axis against the oracle. Returns (built, refused); a built result that
+    /// differs from the oracle by more than 1e-9 panics.
+    fn pair_sweep(seed: u64, n: usize, mesh_every: usize, dispatcher: bool) -> (usize, usize) {
+        let mut rng = Lcg(seed);
+        let (mut built, mut refused, mut unexplained) = (0, 0, 0);
+        for i in 0..n {
+            let (a, b) = (random_sd(&mut rng, true), random_sd(&mut rng, true));
+            if matches!((a, b), (Sd::Slab { .. }, Sd::Slab { .. })) {
+                continue;
+            }
+            for op in ["union", "intersect", "subtract"] {
+                let want = oracle(&[(op, b)], a);
+                let res = if dispatcher { ops::boolean(op, &a.solid(), &b.solid()) } else { build_op(op, &a.solid(), &b.solid()) };
+                match res {
+                    Some(r) => {
+                        built += 1;
+                        let got = vol(&r);
+                        assert!((got - want).abs() <= 1e-9 * want.abs().max(1.0), "pair {i} {op}: {a:?} {b:?}: volume {got} vs oracle {want}");
+                        if mesh_every > 0 && built % mesh_every == 0 {
+                            for (defl, slack) in [(0.05, 0.03), (0.5, 0.35)] {
+                                let (closed, v) = mesh_volume(&r, defl);
+                                assert!(closed, "pair {i} {op}: {a:?} {b:?}: mesh not watertight at {defl}");
+                                assert!((v - want).abs() < slack * want.abs() + 1.0, "pair {i} {op}: mesh volume {v} vs {want} at {defl}");
+                            }
+                        }
+                    }
+                    None => {
+                        refused += 1;
+                        // A refusal is right when the answer is empty or is not one solid.
+                        let n = lumps(&[(op, b)], a);
+                        if n == 1 && !dispatcher {
+                            unexplained += 1;
+                            eprintln!("UNEXPLAINED REFUSAL {op}: {a:?} | {b:?}");
+                        }
+                    }
+                }
+            }
+        }
+        eprintln!("seed {seed}: built {built}, refused {refused}, of which one solid (unexplained) {unexplained}");
+        (built, refused)
+    }
+
+    /// The same pairs at other sizes: 0.2x (parts a millimetre across) and 5x. Every threshold in the
+    /// module is an absolute 1e-7 mm, so size is a real axis.
+    #[test]
+    fn random_coaxial_pairs_at_other_scales_match_the_oracle() {
+        let mut rng = Lcg(7101);
+        let (mut built, mut refused) = (0, 0);
+        for k in [0.2, 5.0] {
+            for i in 0..80 {
+                let (a, b) = (random_sd(&mut rng, true).scaled(k), random_sd(&mut rng, true).scaled(k));
+                if matches!((a, b), (Sd::Slab { .. }, Sd::Slab { .. })) {
+                    continue;
+                }
+                for op in ["union", "intersect", "subtract"] {
+                    let want = oracle(&[(op, b)], a);
+                    match build_op(op, &a.solid(), &b.solid()) {
+                        Some(r) => {
+                            built += 1;
+                            let got = vol(&r);
+                            assert!((got - want).abs() <= 1e-9 * want.abs().max(1.0), "scale {k} pair {i} {op}: {a:?} {b:?}: volume {got} vs oracle {want}");
+                        }
+                        None => refused += 1,
+                    }
+                }
+            }
+        }
+        eprintln!("scaled pairs: built {built}, refused {refused}");
+        assert!(built > 200);
+    }
+
+    #[test]
+    fn random_coaxial_pairs_through_the_dispatcher_match_the_oracle() {
+        // The same pairs through `ops::boolean`, which tries the older face-by-face path first: nothing
+        // it builds may differ from the oracle either.
+        let (b1, r1) = pair_sweep(7003, 100, 0, true);
+        eprintln!("dispatcher: built {b1}, refused {r1}");
+    }
+
+    #[test]
+    fn oracle_agrees_with_the_hand_cases() {
+        // A ball in a slab: slab + ball - the part of the ball inside the slab.
+        let b = Sd::Slab { z0: 0.0, z1: 10.0 };
+        let s = Sd::Ball { c: 5.0, r: 12.0 };
+        let want = 200.0 * 200.0 * 10.0 + 4.0 / 3.0 * PI * 1728.0 - zone(12.0, -5.0, 5.0);
+        assert!((oracle(&[("union", s)], b) - want).abs() < 1e-6);
+        // A cone and a one-thick coin of tiny radius: the cone, to within the coin.
+        let k = Sd::Cone { zb: 0.0, r: 10.0, h: 20.0, up: true };
+        assert!((oracle(&[("union", Sd::Cyl { z0: 0.0, z1: 1.0, r: 1.0 })], k) - PI * 100.0 * 20.0 / 3.0).abs() < 0.2);
+    }
+
+    #[test]
+    fn random_coaxial_pairs_match_the_oracle() {
+        let (b1, r1) = pair_sweep(7001, 130, 7, false);
+        let (b2, r2) = pair_sweep(7002, 130, 7, false);
+        // Every result of a larger run meshes closed at both chords (a few seconds).
+        let n = std::env::var("REV_MESH_N").ok().and_then(|v| v.parse().ok()).unwrap_or(40);
+        pair_sweep(7004, n, 1, false);
+        eprintln!("coaxial pairs: built {}, refused {}", b1 + b2, r1 + r2);
+        assert!(b1 + b2 >= 300, "only {} built", b1 + b2);
+    }
+    /// Three solids about the axis, folded left to right: the second operation reads the first one's
+    /// RESULT, whose sphere and cone faces may already be flipped (a bowl) or banded.
+    fn chain_sweep(seed: u64, n: usize, dispatcher: bool) -> (usize, usize) {
+        let mut rng = Lcg(seed);
+        let (mut built, mut stopped) = (0, 0);
+        let ops = ["union", "intersect", "subtract"];
+        for i in 0..n {
+            let s0 = random_sd(&mut rng, true);
+            let (s1, s2) = (random_sd(&mut rng, true), random_sd(&mut rng, true));
+            let (op1, op2) = (ops[(rng.next() * 3.0) as usize], ops[(rng.next() * 3.0) as usize]);
+            let step = |op: &str, a: &TSolid, b: &TSolid| if dispatcher { ops::boolean(op, a, b) } else { build_op(op, a, b) };
+            let Some(r1) = step(op1, &s0.solid(), &s1.solid()) else {
+                stopped += 1;
+                continue;
+            };
+            let want1 = oracle(&[(op1, s1)], s0);
+            assert!((vol(&r1) - want1).abs() <= 1e-9 * want1.abs().max(1.0), "chain {i}: first step {op1} {s0:?} {s1:?}: {} vs {want1}", vol(&r1));
+            let Some(r2) = step(op2, &r1, &s2.solid()) else {
+                stopped += 1;
+                continue;
+            };
+            built += 1;
+            let want = oracle(&[(op1, s1), (op2, s2)], s0);
+            assert!((vol(&r2) - want).abs() <= 1e-9 * want.abs().max(1.0), "chain {i}: {op1} then {op2}: {s0:?} {s1:?} {s2:?}: volume {} vs oracle {want}", vol(&r2));
+            if built % 6 == 0 {
+                let (closed, v) = mesh_volume(&r2, 0.05);
+                assert!(closed, "chain {i}: {s0:?} {op1} {s1:?} {op2} {s2:?}: mesh not watertight");
+                assert!((v - want).abs() < 0.03 * want.abs() + 1.0, "chain {i}: mesh volume {v} vs {want}");
+            }
+        }
+        eprintln!("chains (dispatcher {dispatcher}) seed {seed}: built {built}, stopped {stopped}");
+        (built, stopped)
+    }
+
+    #[test]
+    fn chained_booleans_on_flipped_and_banded_faces_match_the_oracle() {
+        let (b, _) = chain_sweep(8101, 220, false);
+        assert!(b >= 80, "only {b} chains built");
+        chain_sweep(8102, 120, true);
+    }
+    /// The same pairs after one rigid motion of both operands: the axis points anywhere, the whole
+    /// sphere frame is re-laid on it, and every circle's seam must still agree between faces.
+    #[test]
+    fn random_coaxial_pairs_on_a_turned_axis_match_the_oracle() {
+        let mut rng = Lcg(9101);
+        let (mut built, mut refused) = (0, 0);
+        for i in 0..110 {
+            let (a, b) = (random_sd(&mut rng, true), random_sd(&mut rng, true));
+            if matches!((a, b), (Sd::Slab { .. }, Sd::Slab { .. })) {
+                continue;
+            }
+            let axis = normalize([rng.next() - 0.5, rng.next() - 0.5, rng.next() - 0.5]);
+            let t = crate::math::Transform::translation([30.0 * rng.next(), 30.0 * rng.next(), 30.0 * rng.next()]).then(&crate::math::Transform::rotation(axis, 6.0 * rng.next()));
+            let (sa, sb) = (build::transform_solid(&a.solid(), &t), build::transform_solid(&b.solid(), &t));
+            for op in ["union", "intersect", "subtract"] {
+                let want = oracle(&[(op, b)], a);
+                match build_op(op, &sa, &sb) {
+                    Some(r) => {
+                        built += 1;
+                        assert!((vol(&r) - want).abs() <= 1e-9 * want.abs().max(1.0), "turned pair {i} {op}: {a:?} {b:?}: {} vs {want}", vol(&r));
+                    }
+                    None => refused += 1,
+                }
+            }
+        }
+        eprintln!("turned pairs: built {built}, refused {refused}");
+        assert!(built >= 150, "only {built} built");
+    }
+
+    #[test]
+    fn what_is_not_provably_exact_refuses() {
+        let slab = Sd::Slab { z0: -10.0, z1: 10.0 }.solid();
+        // The ball pokes through the side of a narrow box: the cut is not a circle square to the axis.
+        let narrow = bx([20.0, 20.0, 20.0], [0.0; 3]);
+        let s = ball([0.0; 3], 12.0);
+        for op in ["union", "intersect", "subtract"] {
+            assert!(build_op(op, &narrow, &s).is_none(), "{op}: a ball through the side of a box");
+            assert!(build_op(op, &s, &narrow).is_none(), "{op}: a box through the side of a ball");
+        }
+        // A box that stops short of the ball's equator: still the side faces reach the ball.
+        let corner = bx([40.0, 40.0, 40.0], [20.0, 20.0, 20.0]);
+        assert!(build_op("subtract", &s, &corner).is_none());
+        // An off-axis cylinder through a ball, and an off-axis ball in a cylinder.
+        let off = cyl([5.0, 0.0, 0.0], 4.0, 40.0);
+        assert!(build_op("subtract", &s, &off).is_none());
+        let k = cone([0.0, 0.0, 0.0], 8.0, 20.0);
+        assert!(build_op("union", &k, &off).is_none());
+        // Equal spheres, the same cone, and a plane tangent to the ball.
+        assert!(build_op("union", &s, &ball([0.0; 3], 12.0)).is_none());
+        assert!(build_op("union", &k, &cone([0.0; 3], 8.0, 20.0)).is_none());
+        let tangent = bx([40.0, 40.0, 10.0], [0.0, 0.0, 17.0]);
+        assert!(build_op("union", &s, &tangent).is_none(), "a plate resting on the ball's pole");
+        // A plane through a cone's apex.
+        let at_apex = bx([40.0, 40.0, 10.0], [0.0, 0.0, 15.0]);
+        assert!(build_op("union", &k, &at_apex).is_none(), "a plate touching the apex");
+        // Two balls and a box: sides clear, so this one is fine.
+        let two = build_op("union", &s, &ball([0.0, 0.0, 15.0], 6.0)).expect("two balls");
+        let r = build_op("subtract", &slab, &s).expect("slab minus ball");
+        assert!(vol(&r) > 0.0 && vol(&two) > 0.0);
+    }
+    /// Near-tangent and near-coincident pairs: whatever the kernel builds is exact, and what it cannot
+    /// prove it refuses. (Every threshold in the module is an absolute 1e-7; this walks across them.)
+    #[test]
+    fn near_tangent_pairs_are_exact_or_refused() {
+        let deltas = [1e-1, 1e-2, 1e-3, 1e-4, 1e-5, 1e-6, 3e-7, 1e-7, 5e-8, 1e-8, 0.0, -1e-8, -1e-7, -1e-6, -1e-3];
+        let mut pairs: Vec<(Sd, Sd, String, f64)> = Vec::new();
+        for &d in &deltas {
+            // a plate whose bottom face is d below the ball's pole, and one d above the cone's apex
+            pairs.push((Sd::Ball { c: 0.0, r: 12.0 }, Sd::Slab { z0: 12.0 - d, z1: 30.0 }, format!("plate {d} into the pole"), d));
+            pairs.push((Sd::Cone { zb: 0.0, r: 10.0, h: 20.0, up: true }, Sd::Slab { z0: 20.0 - d, z1: 30.0 }, format!("plate {d} into the apex"), d));
+            // a cylinder whose radius is d short of the ball's, and one d wider
+            pairs.push((Sd::Ball { c: 0.0, r: 12.0 }, Sd::Cyl { z0: -20.0, z1: 20.0, r: 12.0 - d }, format!("cylinder {d} inside the ball"), d));
+            // two balls d apart from touching
+            pairs.push((Sd::Ball { c: 0.0, r: 8.0 }, Sd::Ball { c: 14.0 - d, r: 6.0 }, format!("balls {d} past touching"), d));
+            // a cylinder end d inside the ball's equator plane, a cone base d inside a plate face
+            pairs.push((Sd::Cyl { z0: -5.0, z1: 12.0 - d, r: 3.0 }, Sd::Ball { c: 0.0, r: 12.0 }, format!("post end {d} short of the pole"), d));
+            pairs.push((Sd::Cyl { z0: -10.0, z1: 0.0, r: 6.0 }, Sd::Cone { zb: -d, r: 6.0, h: 10.0, up: true }, format!("cone base {d} into the cylinder top"), d));
+            // a cone whose slope meets a ball nearly tangentially
+            pairs.push((Sd::Ball { c: 0.0, r: 6.0 }, Sd::Cone { zb: -9.0 + d, r: 3.0, h: 20.0, up: true }, format!("ball and cone {d}"), d));
+        }
+        let (mut built, mut refused) = (0, 0);
+        for (a, b, label, d) in &pairs {
+            // Within the module's 1e-7 mm a face is "the same place" as its neighbour: the slice that
+            // thin (at most 1e-7 x the largest section, about 450 mm^2) is not seen, by design.
+            let snap = if d.abs() <= 3e-7 { 5e-5 } else { 0.0 };
+            for op in ["union", "intersect", "subtract"] {
+                let want = oracle(&[(op, *b)], *a);
+                match build_op(op, &a.solid(), &b.solid()) {
+                    Some(r) => {
+                        built += 1;
+                        let got = vol(&r);
+                        assert!((got - want).abs() <= 1e-9 * want.abs().max(1.0) + snap, "{label}: {op}: volume {got} vs oracle {want}");
+                        let (closed, _) = mesh_volume(&r, 0.05);
+                        assert!(closed, "{label}: {op}: mesh not watertight");
+                    }
+                    None => refused += 1,
+                }
+            }
+        }
+        eprintln!("near-tangent pairs: built {built}, refused {refused}");
+        assert!(built > 60, "built only {built}");
+    }
+    /// A cap or an off-centre band of a sphere has the box of THAT band, not one dragged to the
+    /// sphere's centre: the cap above z = 8 of a ball of radius 12 spans z from 8 to 12.
+    #[test]
+    fn a_sphere_cap_has_a_tight_bounding_box() {
+        let r = build_op("intersect", &ball([0.0; 3], 12.0), &bx([60.0, 60.0, 20.0], [0.0, 0.0, 18.0])).unwrap();
+        let bb = build::solid_aabb(&r);
+        let rho = (144.0f64 - 64.0).sqrt();
+        for (got, want) in [(bb.lo[0], -rho), (bb.lo[1], -rho), (bb.lo[2], 8.0), (bb.hi[0], rho), (bb.hi[1], rho), (bb.hi[2], 12.0)] {
+            assert!((got - want).abs() < 1e-9, "bbox {bb:?}");
+        }
+        // The same ball off the origin, and a band between two heights that does not cross its centre.
+        let r = build_op("subtract", &bx([60.0, 60.0, 40.0], [5.0, 0.0, 10.0]), &ball([5.0, 0.0, 24.0], 12.0)).unwrap();
+        let bb = build::solid_aabb(&r);
+        assert!((bb.lo[2] + 10.0).abs() < 1e-9 && (bb.hi[2] - 30.0).abs() < 1e-9, "bbox {bb:?}");
+    }
+
+    /// STEP: a cone's apex circle has radius zero, never a rounding-error negative one (OpenCascade
+    /// dropped the whole solid on read-back), and a polar cap is written as its one rim.
+    #[test]
+    fn step_writes_the_apex_and_the_polar_cap() {
+        let tip = build_op("union", &cyl([0.0; 3], 10.0, 20.0), &cone([0.0, 0.0, 17.0], 10.0, 14.0)).unwrap();
+        let text = crate::step::write_solid(&tip, "tip").expect("a cone on a cylinder writes");
+        for l in text.lines().filter(|l| l.contains("= CIRCLE(")) {
+            let radius = l.trim_end_matches(");").rsplit(',').next().unwrap();
+            assert!(!radius.starts_with('-'), "a circle with a negative radius: {l}");
+        }
+        let dome = build_op("union", &bx([40.0, 40.0, 10.0], [0.0, 0.0, 5.0]), &ball([0.0, 0.0, 10.0], 8.0)).unwrap();
+        let text = crate::step::write_solid(&dome, "dome").expect("a dome on a plate writes (a cap with the pole in it)");
+        assert!(text.contains("SPHERICAL_SURFACE"));
+    }
+}
 }
 
 

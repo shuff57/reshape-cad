@@ -720,6 +720,27 @@ fn mesh_revolution_band(
             }
         }
     }
+    // A cone band that reaches the apex and has ONE rim that is not the cone's base (the tip left
+    // above a cut): the generic grid would sample its u-columns at the BASE radius, which is not
+    // the rim's own sample count, so the rim would crack against the face next to it. Fan the apex
+    // to the rim's own samples instead; no vertex is invented on the shared edge.
+    if let crate::geom::Surface::Cone(c) = surface {
+        let apex_at_hi = c.base_radius - v1 * c.half_angle.sin() < 1e-9;
+        if apex_at_hi && v0 > 1e-9 && lo.len() >= 3 && hi.is_empty() {
+            lo.sort_by(|a, b| a[0].partial_cmp(&b[0]).unwrap());
+            let n1 = lo.len();
+            let start = out.indices.len();
+            let apex = out.push(surface.param(0.0, v1));
+            let ids: Vec<u32> = lo.iter().map(|p| out.push(surface.param(p[0], p[1]))).collect();
+            for i in 0..n1 {
+                let j = (i + 1) % n1;
+                let (du, dv) = surface.dparam(lo[i][0], 0.5 * (v0 + v1));
+                out.tri_oriented([ids[i], ids[j], apex], cross(du, dv));
+            }
+            out.faces.push((start, out.indices.len() - start));
+            return Some(());
+        }
+    }
     if lo.len() < 3 || hi.len() < 3 {
         return None;
     }

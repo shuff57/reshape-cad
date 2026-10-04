@@ -162,8 +162,9 @@ test('near misses refuse in a sentence, never a wrong solid', () => {
 
 // STEP: a bore through the poles leaves a spherical zone between two circles, which has an exact STEP form
 // (SPHERICAL_SURFACE, rim circles, meridian seam). OCCT reads the file back; the volume is the napkin-ring
-// closed form, not another kernel's number. A blind bore (a pole inside the face) still refuses.
-test('STEP: the through bore writes exactly and OCCT reads it back; the blind bore refuses in a sentence', async () => {
+// closed form, not another kernel's number. A blind bore leaves the sphere with a pole inside the face: a polar cap, whose
+// one bound is its rim (S4h writes it; it used to refuse "a spherical face").
+test('STEP: the through bore and the blind bore write exactly and OCCT reads them back', async () => {
   const { pathToFileURL } = await import('node:url');
   const dir = path.resolve(PKG, '../../../node_modules/replicad-opencascadejs/dist');
   const glue = await import(pathToFileURL(path.join(dir, 'replicad_single.js')).href);
@@ -184,5 +185,15 @@ test('STEP: the through bore writes exactly and OCCT reads it back; the blind bo
   assert.ok(Math.abs(g.Mass() - napkin) < 1e-7 * napkin, `${g.Mass()} vs ${napkin}`);
   const blind = build('const s = sphere(40); hole(s, { across: 6, deep: 10 })');
   const b = JSON.parse(brep.export_step(blind.json, blind.id));
-  assert.match(JSON.stringify(b), /spherical face/);
+  assert.ok(!b.error && b.step, JSON.stringify(b).slice(0, 200));
+  oc2.FS.writeFile('/in2.step', b.step);
+  const reader2 = new oc2.STEPControl_Reader();
+  reader2.ReadFile('/in2.step');
+  reader2.TransferRoots(new oc2.Message_ProgressRange());
+  const g2 = new oc2.GProp_GProps();
+  oc2.BRepGProp.VolumeProperties(reader2.OneShape(), g2, 1e-7, false, false);
+  // a ball less the bore (floor 10 below the top, so 9.774 of it is inside the ball's circle) and the polar cap above the circle
+  const h = Math.sqrt(R * R - r * r), c = R - h;
+  const want = (4 / 3) * Math.PI * R ** 3 - Math.PI * r * r * (h - 10) - (Math.PI * c * c * (3 * R - c)) / 3;
+  assert.ok(Math.abs(g2.Mass() - want) < 1e-7 * want, `${g2.Mass()} vs ${want}`);
 });
