@@ -7639,6 +7639,40 @@ fn build_fillet(
  // pattern) it could reach a neighbouring lump that touches this one and shave it too, which no
  // chamfer of THIS edge does. Each lump is cut on its own, with the wedge for the stretch of the
  // edge it owns, and the lumps are put back.
+ //
+ // A sealed void (the cavity of a hollow part, an inner shell wound inward) is not a lump to put back unless the
+ // wedge cannot reach it: a bevel wider than the wall cuts through the cavity wall and opens the cavity to the
+ // outside, so the cavity's own shell must be cut as well. Putting it back untouched left the cavity poking
+ // through the bevel face and lost the whole wedge instead of the part of it that was material (census family of
+ // the wrong-solid sweep). That case is cut as one body, by the boolean, whose result is checked against its
+ // partner operation because the operand has an inner shell.
+ let void_reached = src.shells.len() > 1 && {
+     // The bevel's plane runs through the wedge's two outer corners; the wedge lies wholly on the edge's side of it.
+     let p1 = add(a, scale(u_axis, leg));
+     let p2 = add(a, add(scale(u_axis, third[0]), scale(v_axis, third[1])));
+     let mut n = normalize(cross(edge_direction, sub(p2, p1)));
+     if dot(n, sub(a, p1)) > 0.0 {
+         n = scale(n, -1.0);
+     }
+     src.shells.iter().any(|sh| {
+         let one = TSolid { shells: vec![sh.clone()] };
+         if build::signed_volume(&one) >= 0.0 {
+             return false; // an outward lump, cut on its own below
+         }
+         // A void entirely on the far side of the bevel plane, every face flat, is clear of the wedge.
+         let flat = one.faces().iter().all(|f| matches!(f.borrow().surface, Surface::Plane(_)));
+         let clear = flat && one.vertices().iter().all(|v| dot(n, sub(v.borrow().point, p1)) > 1e-7);
+         !clear
+     })
+ };
+ if void_reached {
+     if round {
+         return Err(FilletErr::RoundEnds);
+     }
+     return ops::boolean("subtract", src, &make_tool(0.0, edge_length, over_a, over_b)?)
+         .map(|solid| build::ensure_outward(&solid))
+         .ok_or(FilletErr::NoBox);
+ }
  if src.shells.len() > 1 {
      let owner = src
          .shells

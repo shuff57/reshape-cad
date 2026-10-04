@@ -106,6 +106,26 @@ let PERMS = null;
  *   'pair'    : two primitives from {box, cylinder, sphere, cone} + one of join/cut/keep, categories cycled (exact oracle)
  *   'hole'    : one primitive + a hole (through/blind/counterbore), exact oracle when the closed form exists
  */
+// Closed form of a box hollowed, then one edge bevelled, the bevel wider than the wall or not. The part is the shell
+// minus the half-space wedge, so the part of the wedge that was already cavity removes nothing:
+//   V = V(shell) - (wedge section x length of the edge - the wedge's section inside the cavity x the cavity's length).
+// Checked against a 3-million point membership test of that definition (docs/PLAN-next.md section 38): brep-rs, and
+// this formula, agree with it to 0.1 mm^3; OpenCascade and brep-rs before the fix of section 38 both removed the
+// whole wedge and left the cavity's own shell standing through the bevel face (a closed hollow only).
+export function hollowBevelVolume(L, hollow, edge) {
+  const AXIS = { top: 2, bottom: 2, front: 1, back: 1, left: 0, right: 0 };
+  const w = hollow.wall, c = edge.size, open = hollow.open;
+  let cav = 1;
+  for (let k = 0; k < 3; k++) { const nOpen = open && AXIS[open] === k ? 1 : 0; cav *= L[k] - w * (2 - nOpen); }
+  const Vh = L[0] * L[1] * L[2] - cav;
+  const a = 3 - AXIS[edge.first] - AXIS[edge.second]; // the edge's own axis
+  const wA = open === edge.first ? 0 : w, wB = open === edge.second ? 0 : w;
+  const nOpenA = open && AXIS[open] === a ? 1 : 0;
+  const Lc = L[a] - w * (2 - nOpenA);
+  const leg = Math.max(0, c - wA - wB);
+  return Vh - ((c * c) / 2 * L[a] - (leg * leg) / 2 * Lc);
+}
+
 export function genScript(family, index, seed = 1) {
   const r = rng(mix(seed, index * 8 + family.length));
   const lines = [];
@@ -187,7 +207,7 @@ export function genScript(family, index, seed = 1) {
   abs = node(base, c0);
   bb = base.noMember ? null : [[c0[0] - ext[0] / 2, c0[1] - ext[1] / 2, c0[2] - ext[2] / 2], [c0[0] + ext[0] / 2, c0[1] + ext[1] / 2, c0[2] + ext[2] / 2]];
   if (baseKind === 'prism' || baseKind === 'wedge') bb = null;
-  let partnerSeq = 0, lastHollow = null, lastEdge = null;
+  let partnerSeq = 0, lastHollow = null, lastEdge = null, prefix = null, lastRepeat = null;
   const trail = [];
 
   for (const op of chain) {
@@ -232,6 +252,7 @@ export function genScript(family, index, seed = 1) {
           const first = ['top', 'bottom'][Math.floor(r() * 2)];
           lines.push(`${op === 'round' ? 'round' : 'bevel'}(${v}.edge('${first}', '${second}'), ${size})`);
           lastEdge = { first, second, size, op };
+          if (op === 'chamfer' && baseKind === 'box' && trail.length === 2 && trail[0] === 'hollow' && lastHollow) prefix = { lines: lines.length, volume: hollowBevelVolume(ext, lastHollow, lastEdge) };
         }
         abs = null; bb = null; break;
       }
@@ -265,6 +286,7 @@ export function genScript(family, index, seed = 1) {
         const count = 2 + Math.floor(r() * 2);
         const step = [R2((0.5 + r()) * ext[0]), r() < 0.5 ? 0 : R2((r() - 0.5) * ext[1]), 0];
         lines.push(`repeat(${v}, { count: ${count}, step: [${step.join(', ')}] })`);
+        lastRepeat = { count, step };
         abs = null; bb = null; break;
       }
       case 'around': {
@@ -294,19 +316,18 @@ export function genScript(family, index, seed = 1) {
   if (tags.pair) oracle.pair = tags.pair;
   // closed form for a box hollowed, then one edge chamfered (the chamfer may be thicker than the wall)
   if (baseKind === 'box' && trail.length === 2 && trail[0] === 'hollow' && trail[1] === 'chamfer' && lastHollow && lastEdge) {
-    const w = lastHollow.wall, c = lastEdge.size, open = lastHollow.open;
-    const axisOf = { top: 2, bottom: 2, front: 1, back: 1, left: 0, right: 0 };
-    const L = ext;
-    let cav = 1;
-    for (let k = 0; k < 3; k++) { const nOpen = open && axisOf[open] === k ? 1 : 0; cav *= L[k] - w * (2 - nOpen); }
-    const Vh = L[0] * L[1] * L[2] - cav;
-    const a = 3 - axisOf[lastEdge.first] - axisOf[lastEdge.second]; // the edge's own axis
-    const wA = open === lastEdge.first ? 0 : w, wB = open === lastEdge.second ? 0 : w;
-    const nOpenA = open && axisOf[open] === a ? 1 : 0;
-    const Lc = L[a] - w * (2 - nOpenA);
-    const leg = Math.max(0, c - wA - wB);
-    oracle.exactVolume = Vh - ((c * c) / 2 * L[a] - (leg * leg) / 2 * Lc);
+    oracle.exactVolume = hollowBevelVolume(ext, lastHollow, lastEdge);
   }
+  // a hollow box repeated into disjoint copies along x, then one end edge bevelled: the bevel lands on the outermost copy
+  // (the rightmost for 'right', the first for 'left'), the other copies stay as hollowed
+  if (baseKind === 'box' && trail.length === 3 && trail[0] === 'hollow' && trail[1] === 'repeat' && trail[2] === 'chamfer' && lastHollow && lastEdge && lastRepeat
+      && lastRepeat.step[0] >= ext[0] + 1e-6 && ['left', 'right'].includes(lastEdge.second) && ['top', 'bottom'].includes(lastEdge.first)) {
+    const plain = hollowBevelVolume(ext, lastHollow, { ...lastEdge, size: 0 });
+    oracle.exactVolume = lastRepeat.count * plain - (plain - hollowBevelVolume(ext, lastHollow, lastEdge));
+  }
+  // the same closed form settles the part after a closed hollow and its bevel even when more steps follow: the run
+  // builds the prefix on its own so the later disagreement with the referee can be attributed (see `classify`)
+  if (prefix && trail.length > 2) oracle.prefix = prefix;
   if (family === 'hole' && !tags.pair && trail.length === 1) { /* numeric oracle only */ }
   return { code, tags, oracle };
 }
@@ -426,6 +447,20 @@ export async function makeRunner({ occt = true } = {}) {
       } catch (e) { rec.occtThrow = String(e?.message ?? e).slice(0, 200); }
       rec.occtMs = Math.round(performance.now() - t);
       delete rec.occtPending;
+      // A script that starts with a closed form (hollow, bevel) and carries on: when the final volumes differ, build the
+      // settled prefix by itself on both kernels, so the disagreement can be attributed (`classify`).
+      const pre = script.oracle?.prefix;
+      if (pre && rec.brep && rec.occt && Math.abs(rec.brep.volume - rec.occt.volume) > TOL.vol * Math.max(1, Math.abs(rec.occt.volume))) {
+        try {
+          const code = script.code.split('\n').slice(0, pre.lines).join('\n');
+          const pr = runScript(code);
+          const pid = pr.doc.features.at(-1).id, pj = JSON.stringify({ version: 1, features: pr.doc.features });
+          const pout = JSON.parse(brep.build_doc_json(pj));
+          const pm = JSON.parse(brep.measure_doc(pj)).shapes?.[pid];
+          const po = buildDoc(oc, { version: 1, features: pr.doc.features }, arc).shapes.get(pid);
+          rec.prefix = { exact: pre.volume, brep: Object.keys(pout.refusals ?? {}).length ? null : pm?.volume ?? null, occt: po ? occtMeasure(po).volume : null };
+        } catch (e) { rec.prefix = { exact: pre.volume, error: String(e?.message ?? e).slice(0, 120) }; }
+      }
     }
     return rec;
   }
@@ -485,7 +520,7 @@ export function classify(rec) {
     }
     return null;
   };
-  let occtState, bboxOnly = null, occtWrong = null, nearMiss = null;
+  let occtState, bboxOnly = null, occtWrong = null, nearMiss = null, refereeOffPrefix = null;
   const recess = /counterbore|countersink/.test(rec.code) || occtShellBlind(rec.code);
   const occtRefused = rec.occtRefusals && Object.keys(rec.occtRefusals).length > 0;
   if (rec.occt && occtRefused) { occtState = 'occt-refused'; }
@@ -503,6 +538,11 @@ export function classify(rec) {
       if (exactOk) occtWrong = `brep ${rec.brep.volume} matches the closed form ${a.volume}; OCCT ${rec.occt.volume} does not (rel ${(Math.abs(rec.occt.volume - a.volume) / a.volume).toExponential(2)})`;
       else if (gridSide) occtWrong = `brep ${rec.brep.volume} is within ${(TOL.grid * 100).toFixed(1)}% of the grid oracle ${a.volume.toFixed(2)}; OCCT ${rec.occt.volume} is not (negative or >5% off)`;
       else if (rec.occt.volume <= 0 && rec.brep.volume > 0) occtWrong = `OCCT reports volume ${rec.occt.volume} (negative or zero) for a solid brep-rs measures at ${rec.brep.volume}`;
+      else if (rec.prefix?.brep != null && rec.prefix.occt != null && Math.abs(rec.prefix.brep - rec.prefix.exact) <= 1e-6 * rec.prefix.exact && Math.abs(rec.prefix.occt - rec.prefix.exact) > 1e-6 * rec.prefix.exact) {
+        // the hollow and its bevel are settled by the closed form (docs section 38): brep-rs is on it, OpenCascade is off it, so the two
+        // kernels carry on from different parts and the later steps cannot be compared; no referee, not a wrong solid
+        refereeOffPrefix = `the part after its hollow and bevel is ${rec.prefix.exact.toFixed(3)} by the closed form: brep-rs ${rec.prefix.brep.toFixed(3)}, OpenCascade ${rec.prefix.occt.toFixed(3)}`;
+      }
       else if (rv <= 1e-4) nearMiss = `brep ${rec.brep.volume} vs OCCT ${rec.occt.volume} (rel ${rv.toExponential(2)})`;
       else wrong.push(`WRONG-VOLUME:brep ${rec.brep.volume} vs OCCT ${rec.occt.volume} (rel ${rv.toExponential(2)})`);
     }
@@ -511,7 +551,7 @@ export function classify(rec) {
       if (bm) bboxOnly = `${bboxDiff}; arbitrated by the mesh: brep ${bm}${om ? `; OCCT ${om}` : ''}`;
       else rec.occtBboxLoose = `${bboxDiff}; brep matches the mesh, OCCT ${om ?? 'matches too'}`;
     }
-    occtState = wrong.some((w) => w.startsWith('WRONG-VOLUME')) || occtWrong || nearMiss ? 'differ' : 'agree';
+    occtState = wrong.some((w) => w.startsWith('WRONG-VOLUME')) || occtWrong || nearMiss ? 'differ' : refereeOffPrefix ? 'referee-blind' : 'agree';
   } else if (rec.occtThrow || occtRefused || 'occtMs' in rec) occtState = 'occt-refused';
   else occtState = 'no-occt';
   if (!bboxOnly && !rec.occt) { const bm = bboxVsMesh(rec.brep.bbox); if (bm) bboxOnly = `no OCCT shape; ${bm}`; }

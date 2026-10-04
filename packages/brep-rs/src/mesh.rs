@@ -278,6 +278,20 @@ impl MeshBuilder {
     /// Emit a triangle oriented so its world normal agrees with `n_out` (the
     /// face's stored outward normal). Frame-handedness independent, so a
     /// mirrored plane whose (u,v) frame is left-handed still comes out right.
+    /// Emit a triangle wound by its (u, v) parameters: counter-clockwise in (u, v) is the direction of
+    /// `dS/du x dS/dv`, the stored outward normal. Unlike `tri_oriented` this does not read the triangle's
+    /// own geometric normal, which for a band thinner than the chord's sagitta (a zone a few microns wide
+    /// and millimetres long) points anywhere and winds neighbouring triangles against each other.
+    fn tri_by_uv(&mut self, mut ids: [u32; 3], uv: [[f64; 2]; 3]) {
+        if ids[0] == ids[1] || ids[1] == ids[2] || ids[0] == ids[2] {
+            return;
+        }
+        if uv_area_wrapped(uv) < 0.0 {
+            ids.swap(1, 2);
+        }
+        self.indices.extend_from_slice(&ids);
+    }
+
     fn tri_oriented(&mut self, mut ids: [u32; 3], n_out: Vec3) {
         if ids[0] == ids[1] || ids[1] == ids[2] || ids[0] == ids[2] {
             return;
@@ -291,6 +305,23 @@ impl MeshBuilder {
         }
         self.indices.extend_from_slice(&ids);
     }
+}
+
+/// Twice the signed area of the (u, v) triangle `uv`, the u differences taken the short way round the
+/// turn (a triangle that straddles the seam must not read as a whole-turn-wide one).
+fn uv_area_wrapped(uv: [[f64; 2]; 3]) -> f64 {
+    let du = |a: f64, b: f64| {
+        let mut d = b - a;
+        while d > std::f64::consts::PI {
+            d -= TAU;
+        }
+        while d < -std::f64::consts::PI {
+            d += TAU;
+        }
+        d
+    };
+    let (e1, e2) = ([du(uv[0][0], uv[1][0]), uv[1][1] - uv[0][1]], [du(uv[0][0], uv[2][0]), uv[2][1] - uv[0][1]]);
+    e1[0] * e2[1] - e1[1] * e2[0]
 }
 
 #[allow(dead_code)]
@@ -911,9 +942,10 @@ fn mesh_sphere_zone(
         let vm = 0.5 * (vs[ri] + vs[ri + 1]);
         for i in 0..k {
             let j = (i + 1) % k;
-            let n = n_at(cols[i], vm);
-            out.tri_oriented([rows[ri][i], rows[ri][j], rows[ri + 1][j]], n);
-            out.tri_oriented([rows[ri][i], rows[ri + 1][j], rows[ri + 1][i]], n);
+            let _ = vm;
+            let (u0, u1) = (cols[i], cols[i] + TAU / k as f64);
+            out.tri_by_uv([rows[ri][i], rows[ri][j], rows[ri + 1][j]], [[u0, vs[ri]], [u1, vs[ri]], [u1, vs[ri + 1]]]);
+            out.tri_by_uv([rows[ri][i], rows[ri + 1][j], rows[ri + 1][i]], [[u0, vs[ri]], [u1, vs[ri + 1]], [u0, vs[ri + 1]]]);
         }
     }
     // Zipper a rim (its own u samples) onto an interior row, or fan a pole.
@@ -930,13 +962,13 @@ fn mesh_sphere_zone(
             } else {
                 ang(&rim.1, i + 1) <= ang(&cols, j + 1)
             };
-            let n = n_at(rim.1[i % n1], 0.5 * (rim.0 + row_v));
             let (a, b) = (ids[i % n1], row[j % n2]);
+            let (ua, ub) = ([rim.1[i % n1], rim.0], [cols[j % n2], row_v]);
             if take_rim {
-                out.tri_oriented([a, b, ids[(i + 1) % n1]], n);
+                out.tri_by_uv([a, b, ids[(i + 1) % n1]], [ua, ub, [rim.1[(i + 1) % n1], rim.0]]);
                 i += 1;
             } else {
-                out.tri_oriented([a, b, row[(j + 1) % n2]], n);
+                out.tri_by_uv([a, b, row[(j + 1) % n2]], [ua, ub, [cols[(j + 1) % n2], row_v]]);
                 j += 1;
             }
         }
@@ -1638,17 +1670,303 @@ fn split_straight_edges_at_touching_points(solid: &TSolid, cache: &mut HashMap<u
     }
 }
 
+/// A vertex that lies just inside a circular edge, closer than the chord's sagitta, falls OUTSIDE the sampled
+/// polyline of that edge: the polygon the neighbouring planar face triangulates then crosses itself, and the
+/// mesh is open at every chord coarser than the gap (a prism vertex 5 microns inside a cylinder wall: 12 open
+/// edges at chord 0.2 to 0.5, closed only at 0.05). Every circular edge takes, as an extra sample, the point
+/// of its circle at the angle of each such vertex, so the vertex is never on the wrong side of the polyline.
+/// The edge is still sampled once, by its own handle, for both faces. A wall is meshed from the samples of its
+/// two rims, so the sample is carried to the coaxial rims of the cylinder walls the edge bounds (and on, wall
+/// to wall); when anything else (a cone, a sphere, a torus) touches the edge the sample is not added.
+fn add_samples_near_vertices(solid: &TSolid, cache: &mut HashMap<usize, Vec<Vec3>>, defl: f64) {
+    let ptr = |e: &crate::topo::EdgeRef<Curve>| std::rc::Rc::as_ptr(e) as *const () as usize;
+    let edges = solid.edges();
+    let mut verts: Vec<Vec3> = Vec::new();
+    for e in &edges {
+        let eb = e.borrow();
+        verts.push(eb.a.borrow().point);
+        verts.push(eb.b.borrow().point);
+    }
+    verts.sort_by(|p, q| p.partial_cmp(q).unwrap_or(std::cmp::Ordering::Equal));
+    verts.dedup_by(|p, q| dist(*p, *q) < 1e-9);
+    let circles: Vec<&crate::topo::EdgeRef<Curve>> = edges.iter().filter(|e| matches!(e.borrow().curve, Curve::Arc { .. } | Curve::Circle { .. })).collect();
+    if circles.is_empty() || (circles.len() as u64) * (verts.len() as u64) > 4_000_000 {
+        return;
+    }
+    // The faces each circular edge bounds.
+    let mut faces_of: HashMap<usize, Vec<TFace>> = HashMap::new();
+    for f in solid.faces() {
+        for w in &f.borrow().boundary {
+            for u in &w.borrow().edges {
+                if matches!(u.edge.borrow().curve, Curve::Arc { .. } | Curve::Circle { .. }) {
+                    faces_of.entry(ptr(&u.edge)).or_default().push(f.clone());
+                }
+            }
+        }
+    }
+    let geom = |e: &crate::topo::EdgeRef<Curve>| -> Option<(Vec3, f64, Vec3)> {
+        match &e.borrow().curve {
+            Curve::Arc { center, radius, normal, .. } | Curve::Circle { center, radius, normal } => Some((*center, *radius, crate::math::normalize(*normal))),
+            _ => None,
+        }
+    };
+    // Angle of `p` about the edge's circle, along the direction its polyline walks it, from the polyline's first sample.
+    let angle_in = |poly: &[Vec3], center: Vec3, n: Vec3, p: Vec3| -> f64 {
+        let turn = dot(cross(sub(poly[0], center), sub(poly[1], center)), n);
+        let dir = if turn >= 0.0 { 1.0 } else { -1.0 };
+        let (a0, a1) = (sub(poly[0], center), sub(p, center));
+        (dir * dot(cross(a0, a1), n)).atan2(dot(a0, a1)).rem_euclid(TAU)
+    };
+    let mut inserts: HashMap<usize, Vec<Vec3>> = HashMap::new();
+    for e in &circles {
+        let Some((center, radius, n)) = geom(e) else { continue };
+        let k = ptr(e);
+        let Some(poly) = cache.get(&k).cloned() else { continue };
+        if poly.len() < 3 {
+            continue;
+        }
+        let mut angs: Vec<f64> = poly.iter().map(|&p| angle_in(&poly, center, n, p)).collect();
+        // The last sample of a closed circle is the first again: a whole turn.
+        if dist(poly[poly.len() - 1], poly[0]) < 1e-9 {
+            *angs.last_mut().unwrap() = TAU;
+        }
+        // Nothing farther than the sagitta bound from the circle can be on the wrong side of a chord of it.
+        let band = defl.max(1e-6) + 1e-6;
+        for &v in &verts {
+            let w = sub(v, center);
+            if dot(w, n).abs() > 1e-6 {
+                continue;
+            }
+            let inplane = sub(w, scale(n, dot(w, n)));
+            let rho = len(inplane);
+            // Strictly inside the circle, off it by more than the weld tolerance (a vertex ON the circle is a point
+            // of the curve; the seam vertex of a turned cone sits anywhere on its base circle), within the band.
+            if rho < 1e-9 || rho > radius - 1e-6 || radius - rho > band {
+                continue;
+            }
+            let q = add(center, scale(inplane, radius / rho));
+            let t = angle_in(&poly, center, n, q);
+            // Only a vertex that is not strictly inside the chord polygon of the sampled circle can cross it: the
+            // chord that spans this angle lies at `r cos(step/2) / cos(angle - mid)` from the centre.
+            if let Some(i) = angs.windows(2).position(|w| t >= w[0] && t <= w[1]) {
+                let (a0, a1) = (angs[i], angs[i + 1]);
+                let chord_rho = radius * (0.5 * (a1 - a0)).cos() / (t - 0.5 * (a0 + a1)).cos().max(1e-9);
+                if rho < chord_rho - 1e-6 {
+                    continue;
+                }
+            }
+            // Inside the edge's own angular range, away from every existing sample.
+            let last = *angs.last().unwrap();
+            if t <= 1e-9 || t >= last - 1e-9 || angs.iter().any(|&a| (a - t).abs() < 1e-7) || poly.iter().any(|&p| dist(p, q) < 1e-7) {
+                continue;
+            }
+            // The sample, carried through every cylinder wall to the coaxial rims it shares a sample set with.
+            let mut group: Vec<(usize, Vec3)> = vec![(k, q)];
+            let mut ok = true;
+            let mut at = 0;
+            while at < group.len() && ok {
+                let (ek, eq) = group[at];
+                at += 1;
+                let Some(fs) = faces_of.get(&ek) else { continue };
+                let Some(&e0) = circles.iter().find(|c| ptr(c) == ek) else { continue };
+                let (c0, r0, n0) = geom(e0).unwrap();
+                for f in fs {
+                    match &f.borrow().surface {
+                        crate::geom::Surface::Plane(_) => {}
+                        crate::geom::Surface::Cylinder(_) => {
+                            for w in &f.borrow().boundary {
+                                for u in &w.borrow().edges {
+                                    let o = ptr(&u.edge);
+                                    if o == ek || group.iter().any(|g| g.0 == o) {
+                                        continue;
+                                    }
+                                    let Some((c1, r1, n1)) = geom(&u.edge) else { continue };
+                                    if (r1 - r0).abs() > 1e-9 || len(cross(n0, n1)) > 1e-9 {
+                                        continue;
+                                    }
+                                    let shift = sub(c1, c0);
+                                    if len(cross(shift, n0)) > 1e-6 {
+                                        continue; // not on the same axis
+                                    }
+                                    group.push((o, add(eq, shift)));
+                                }
+                            }
+                        }
+                        _ => ok = false,
+                    }
+                }
+            }
+            if ok {
+                for (ek, eq) in group {
+                    inserts.entry(ek).or_default().push(eq);
+                }
+            }
+        }
+    }
+    for (k, pts) in inserts {
+        let Some(poly) = cache.get(&k).cloned() else { continue };
+        let Some(&e0) = circles.iter().find(|c| ptr(c) == k) else { continue };
+        let (center, _, n) = geom(e0).unwrap();
+        if poly.len() < 3 {
+            continue;
+        }
+        let mut merged: Vec<(f64, Vec3)> = poly.iter().map(|&p| (angle_in(&poly, center, n, p), p)).collect();
+        if dist(poly[poly.len() - 1], poly[0]) < 1e-9 {
+            merged.last_mut().unwrap().0 = TAU;
+        }
+        let last = merged.last().unwrap().0;
+        for q in pts {
+            let t = angle_in(&poly, center, n, q);
+            if t <= 1e-9 || t >= last - 1e-9 || merged.iter().any(|m| dist(m.1, q) < 1e-7) {
+                continue;
+            }
+            merged.push((t, q));
+        }
+        merged.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap_or(std::cmp::Ordering::Equal));
+        cache.insert(k, merged.into_iter().map(|(_, p)| p).collect());
+    }
+}
+
+/// Two circles in one plane that come within a few chords of touching without meeting (a hole whose rim is
+/// 5 microns inside another circle: a cylinder's top disk nested in the face of a wider one) must be sampled
+/// finely enough that their two polylines cannot cross: each polyline lies inside its circle by up to the
+/// sagitta, so both take a tolerance of a third of the gap. Concentric circles are left alone: their samples
+/// share one angular lattice, so their polylines nest. Returns (centre, radius, normal, tolerance) for every
+/// such circle, found by position (the two faces of one circle may hold two edge handles), and for every
+/// circle of the faces they bound (a wall is meshed from one lattice shared by both its rims).
+type TightCircle = (Vec3, f64, Vec3, f64);
+
+fn tight_lookup(list: &[TightCircle], center: Vec3, radius: f64, normal: Vec3) -> Option<f64> {
+    let n = crate::math::normalize(normal);
+    list.iter()
+        .filter(|(c, r, m, _)| dist(*c, center) < 1e-6 && (r - radius).abs() < 1e-6 && len(cross(*m, n)) < 1e-9)
+        .map(|t| t.3)
+        .reduce(f64::min)
+}
+
+fn near_tangent_circles(solid: &TSolid, defl: f64) -> Vec<TightCircle> {
+    let mut out: Vec<TightCircle> = Vec::new();
+    let mut circles: Vec<(Vec3, f64, Vec3)> = Vec::new();
+    for e in solid.edges() {
+        if let Curve::Arc { center, radius, normal, .. } | Curve::Circle { center, radius, normal } = &e.borrow().curve {
+            let n = crate::math::normalize(*normal);
+            if !circles.iter().any(|(c, r, m)| dist(*c, *center) < 1e-6 && (r - radius).abs() < 1e-6 && len(cross(*m, n)) < 1e-9) {
+                circles.push((*center, *radius, n));
+            }
+        }
+    }
+    if circles.len() < 2 || circles.len() > 600 {
+        return out;
+    }
+    let mut add_tight = |out: &mut Vec<TightCircle>, c: Vec3, r: f64, n: Vec3, d: f64| -> bool {
+        if let Some(t) = out.iter_mut().find(|(c0, r0, n0, _)| dist(*c0, c) < 1e-6 && (r0 - r).abs() < 1e-6 && len(cross(*n0, n)) < 1e-9) {
+            if t.3 > d {
+                t.3 = d;
+                return true;
+            }
+            return false;
+        }
+        out.push((c, r, n, d));
+        true
+    };
+    for i in 0..circles.len() {
+        for j in (i + 1)..circles.len() {
+            let (ci, ri, ni) = circles[i];
+            let (cj, rj, nj) = circles[j];
+            if len(cross(ni, nj)) > 1e-9 || dot(sub(cj, ci), ni).abs() > 1e-6 {
+                continue;
+            }
+            let dc = len(sub(cj, ci));
+            if dc < 1e-6 {
+                continue;
+            }
+            let gap = f64::max(dc - (ri + rj), (ri - rj).abs() - dc);
+            if gap < 1e-6 || gap > 2.0 * defl {
+                continue;
+            }
+            let d = (gap / 3.0).max(5e-7);
+            add_tight(&mut out, ci, ri, ni, d);
+            add_tight(&mut out, cj, rj, nj, d);
+        }
+    }
+    // A curved face between two circles (a cylinder's wall) is meshed from one column list shared by both rims,
+    // so a rim sampled finely drags the circles of every face it bounds to the same tolerance.
+    if !out.is_empty() {
+        for _ in 0..8 {
+            let mut changed = false;
+            for f in solid.faces() {
+                let fb = f.borrow();
+                let rims: Vec<(Vec3, f64, Vec3)> = fb
+                    .boundary
+                    .iter()
+                    .flat_map(|w| w.borrow().edges.iter().map(|u| u.edge.clone()).collect::<Vec<_>>())
+                    .filter_map(|e| match &e.borrow().curve {
+                        Curve::Arc { center, radius, normal, .. } | Curve::Circle { center, radius, normal } => Some((*center, *radius, crate::math::normalize(*normal))),
+                        _ => None,
+                    })
+                    .collect();
+                let Some(m) = rims.iter().filter_map(|(c, r, n)| tight_lookup(&out, *c, *r, *n)).reduce(f64::min) else { continue };
+                for (c, r, n) in rims {
+                    if add_tight(&mut out, c, r, n, m) {
+                        changed = true;
+                    }
+                }
+            }
+            if !changed {
+                break;
+            }
+        }
+    }
+    out
+}
+
 fn mesh_solid_once(solid: &TSolid, defl: f64) -> Option<Mesh> {
     let mut edges_cache: HashMap<usize, Vec<Vec3>> = HashMap::new();
+    let tight = near_tangent_circles(solid, defl);
     for e in solid.edges() {
         let k = std::rc::Rc::as_ptr(&e) as *const () as usize;
-        edges_cache.insert(k, edge_polyline(&e, defl));
+        let d = match &e.borrow().curve {
+            Curve::Arc { center, radius, normal, .. } | Curve::Circle { center, radius, normal } if !tight.is_empty() => tight_lookup(&tight, *center, *radius, *normal),
+            _ => None,
+        };
+        edges_cache.insert(k, edge_polyline(&e, d.unwrap_or(defl)));
     }
     split_straight_edges_at_touching_points(solid, &mut edges_cache);
+    add_samples_near_vertices(solid, &mut edges_cache, defl);
 
     let mut out = MeshBuilder::new();
     for f in solid.faces() {
-        mesh_face(&f, &edges_cache, &mut out, defl)?;
+        // A face bounded by circles sampled finer than the rest (`near_tangent_circles`) is built at that
+        // tolerance, so a wall's own column lattice is the lattice of its rims.
+        let fd = if tight.is_empty() {
+            defl
+        } else {
+            let from_edges = f
+                .borrow()
+                .boundary
+                .iter()
+                .flat_map(|w| w.borrow().edges.iter().map(|u| u.edge.clone()).collect::<Vec<_>>())
+                .filter_map(|e| match &e.borrow().curve {
+                    Curve::Arc { center, radius, normal, .. } | Curve::Circle { center, radius, normal } => tight_lookup(&tight, *center, *radius, *normal),
+                    _ => None,
+                })
+                .fold(defl, f64::min);
+            // A cone's wall carries no circle edge of its own (only its seam): its rims are the circles of
+            // the faces next door, found by position.
+            match &f.borrow().surface {
+                crate::geom::Surface::Cone(c) => c
+                    .v_range
+                    .iter()
+                    .filter_map(|&v| {
+                        let centre = add(c.base, scale(c.axis, v * c.half_angle.cos()));
+                        let radius = c.base_radius - v * c.half_angle.sin();
+                        tight_lookup(&tight, centre, radius, c.axis)
+                    })
+                    .fold(from_edges, f64::min),
+                _ => from_edges,
+            }
+        };
+        mesh_face(&f, &edges_cache, &mut out, fd)?;
     }
     if out.faces.len() != solid.faces().len() {
         return None;

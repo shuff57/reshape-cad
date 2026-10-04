@@ -678,8 +678,18 @@ fn torus_face_contains(tor: &crate::geom::TorusSurf, q: Vec3) -> bool {
 fn crossings(solid: &TSolid, p: Vec3, d: Vec3) -> Option<(usize, bool)> {
     let mut count = 0usize;
     let mut supported = true;
-    for f in solid.faces() {
-        let f = f.borrow();
+    let boxes: Option<Rc<Vec<Option<crate::math::Aabb>>>> = FACE_BOXES.with(|m| {
+        let m = m.borrow();
+        let key = solid.shells.first().map_or(0, |s| Rc::as_ptr(s) as *const () as usize);
+        m.as_ref().and_then(|v| v.iter().find(|(k, _)| *k == key).map(|(_, b)| b.clone()))
+    });
+    let mut idx = 0usize;
+    for sh in &solid.shells {
+    let shb = sh.borrow();
+    for fr in &shb.faces {
+        let fi = idx;
+        idx += 1;
+        let f = fr.borrow();
         match &f.surface {
             Surface::Plane(g) => {
                 let den = dot(d, g.n);
@@ -689,6 +699,13 @@ fn crossings(solid: &TSolid, p: Vec3, d: Vec3) -> Option<(usize, bool)> {
                 let t = dot(sub(g.origin, p), g.n) / den;
                 if t > 1e-9 {
                     let q = add(p, scale(d, t));
+                    // A hit point clear of the face's own bounding box is not on the face: skip the
+                    // exact containment test (a pure culling, see `with_face_boxes`).
+                    if let Some(Some(b)) = boxes.as_ref().and_then(|m| m.get(fi)) {
+                        if (0..3).any(|k| q[k] < b.lo[k] || q[k] > b.hi[k]) {
+                            continue;
+                        }
+                    }
                     if plane_face_contains(g, &f, q) {
                         count += 1;
                     }
@@ -739,7 +756,79 @@ fn crossings(solid: &TSolid, p: Vec3, d: Vec3) -> Option<(usize, bool)> {
             }
         }
     }
+    }
     Some((count, supported))
+}
+
+thread_local! {
+    /// Padded bounding boxes of the planar faces of the solids a soundness check is reading, by face
+    /// handle, while `with_face_boxes` is active. `crossings` skips a plane whose hit point is outside
+    /// the face's box.
+    static FACE_BOXES: std::cell::RefCell<Option<Vec<(usize, Rc<Vec<Option<crate::math::Aabb>>>)>>> = const { std::cell::RefCell::new(None) };
+}
+
+/// Padded bounding box of a planar face whose edges are segments, arcs and circles (an arc or circle
+/// is covered by the cube round its centre). None for anything else: such a face is never culled.
+fn planar_face_box(f: &TFace) -> Option<crate::math::Aabb> {
+    let fb = f.borrow();
+    if !matches!(fb.surface, Surface::Plane(_)) {
+        return None;
+    }
+    let mut b = crate::math::Aabb::empty();
+    for w in &fb.boundary {
+        for u in &w.borrow().edges {
+            let e = u.edge.borrow();
+            match &e.curve {
+                Curve::Segment { .. } => {
+                    b.expand(e.a.borrow().point);
+                    b.expand(e.b.borrow().point);
+                }
+                Curve::Circle { center, radius, .. } | Curve::Arc { center, radius, .. } => {
+                    for k in 0..3 {
+                        let (mut lo, mut hi) = (*center, *center);
+                        lo[k] -= radius;
+                        hi[k] += radius;
+                        b.expand(lo);
+                        b.expand(hi);
+                    }
+                    b.expand(e.a.borrow().point);
+                    b.expand(e.b.borrow().point);
+                }
+                _ => return None,
+            }
+        }
+    }
+    if b.is_empty() {
+        return None;
+    }
+    let extent = (0..3).fold(1.0_f64, |m, k| m.max(b.lo[k].abs()).max(b.hi[k].abs()));
+    let pad = 1e-5 * extent.max(1.0);
+    for k in 0..3 {
+        b.lo[k] -= pad;
+        b.hi[k] += pad;
+    }
+    Some(b)
+}
+
+/// Run `body` with a bounding box cached for every planar face of `solids`, which must not change
+/// while it runs. Parity ray tests inside it (`inside_solid`) then reject most planes cheaply: an
+/// answer is identical with and without, a plane the ray misses is only found out sooner.
+pub(crate) fn with_face_boxes<R>(solids: &[&TSolid], body: impl FnOnce() -> R) -> R {
+    let mut m = Vec::new();
+    for s in solids {
+        let Some(first) = s.shells.first() else { continue };
+        let mut v = Vec::new();
+        for sh in &s.shells {
+            for f in &sh.borrow().faces {
+                v.push(planar_face_box(f));
+            }
+        }
+        m.push((Rc::as_ptr(first) as *const () as usize, Rc::new(v)));
+    }
+    let prev = FACE_BOXES.with(|c| c.replace(Some(m)));
+    let r = body();
+    FACE_BOXES.with(|c| *c.borrow_mut() = prev);
+    r
 }
 
 fn plane_face_contains(g: &Plane, f: &Face<Curve3, Surface3>, q: Vec3) -> bool {
@@ -5149,7 +5238,8 @@ fn boolean_unchecked(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
             _ => None,
         };
     }
-    if let Some(r) = boolean_legacy(op, a, b) {
+    let legacy = with_face_boxes(&[a, b], || boolean_legacy(op, a, b));
+    if let Some(r) = legacy {
         // The face-by-face path splits a face along the other solid's edges without splitting
         // the face next door, leaving a vertex in the middle of a neighbour's edge (a T-junction):
         // the volume is right but a mesh of it has open seams (measured: 78% of overlapping box
@@ -5756,6 +5846,10 @@ pub(crate) fn planar_face_samples(face: &TFace) -> Vec<(Vec3, Vec3)> {
 /// A face that fails to yield samples is simply not checked, so this can only
 /// turn a wrong solid into a refusal, never a correct solid into a wrong one.
 pub(crate) fn boolean_result_is_sound(op: &str, a: &TSolid, b: &TSolid, r: &TSolid) -> bool {
+    with_face_boxes(&[a, b, r], || boolean_result_is_sound_inner(op, a, b, r))
+}
+
+fn boolean_result_is_sound_inner(op: &str, a: &TSolid, b: &TSolid, r: &TSolid) -> bool {
     const DELTA: f64 = 1e-4;
  // The parity ray test is trusted on planar, cylindrical, and conical
  // operands; a sphere or torus still makes this check abstain rather than
@@ -5817,6 +5911,41 @@ fn cone_soundness_rejects_wrong_half_angle() {
  assert!(check_watertight(&mesh), "wrong-angle result remains closed");
  assert!(volume_is_translation_invariant(&wrong_result), "wrong-angle result remains translation invariant");
  assert!(!boolean_result_is_sound("subtract", &base, &tool, &wrong_result));
+}
+
+/// The bounding-box culling of `with_face_boxes` is exact: a parity ray test answers the same with it and
+/// without it, over a lattice of points through a hollow block, the same block drilled through and an L.
+#[test]
+fn face_box_culling_never_changes_a_membership_answer() {
+    let hollow = boolean("subtract", &build::box_solid([40.0, 40.0, 20.0], [0.0; 3], None), &build::box_solid([36.0, 36.0, 16.0], [0.0; 3], None)).expect("hollow box");
+    let drilled = boolean("subtract", &hollow, &build::cylinder_solid([5.0, 3.0, 0.0], 6.0, 40.0, [0.0, 0.0, 1.0])).expect("drilled hollow box");
+    let l = boolean("union", &build::box_solid([30.0, 10.0, 10.0], [0.0; 3], None), &build::box_solid([10.0, 30.0, 10.0], [-10.0, 10.0, 0.0], None)).expect("an L");
+    for solid in [&hollow, &drilled, &l] {
+        let mut diff = 0;
+        let mut n = 0;
+        let step = 2.3;
+        let mut x = -26.0;
+        while x < 26.0 {
+            let mut y = -26.0;
+            while y < 26.0 {
+                let mut z = -14.0;
+                while z < 14.0 {
+                    let p = [x + 0.0137, y - 0.0291, z + 0.0053];
+                    let plain = inside_solid(solid, p);
+                    let culled = with_face_boxes(&[solid], || inside_solid(solid, p));
+                    n += 1;
+                    if plain != culled {
+                        diff += 1;
+                    }
+                    z += step;
+                }
+                y += step;
+            }
+            x += step;
+        }
+        assert!(n > 1000);
+        assert_eq!(diff, 0, "{diff} of {n} membership answers changed with the face boxes on");
+    }
 }
 
 /// Remove zero-area output faces. A boolean can emit a planar face that is a

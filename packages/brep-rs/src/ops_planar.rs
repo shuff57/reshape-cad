@@ -2793,7 +2793,7 @@ fn core_carry(op: &str, a: &TSolid, b: &TSolid, pa: &[AFace], pb: &[AFace], cros
     // `inside_solid` cannot read a trimmed cylinder, so a result that carries one is
     // checked against the OPERANDS only: every flat face must have different
     // membership of A - B just inside and just outside it.
-    let sound = if crossings.is_empty() { ops::boolean_result_is_sound(op, a, b, &result) } else { faces_bound_something(op, a, b, &result) };
+    let sound = if crossings.is_empty() { ops::boolean_result_is_sound(op, a, b, &result) } else { ops::with_face_boxes(&[a, b, &result], || faces_bound_something(op, a, b, &result)) };
     if !sound {
         #[cfg(test)]
         if SKIP_SOUND.with(|c| c.get()) {
