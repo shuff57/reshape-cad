@@ -14,7 +14,7 @@
 //! return the wrong solid silently" (SPEC-brep-kernel-rs §4.5) applies
 //! double when the profile came from a solver.
 
-use super::params::ParamBlock;
+use super::params::{ParamBlock, PointRef};
 use super::diagnose::diagnose;
 use super::solve::{self, DragPull, LmStatus};
 use super::wires::{self, Refusal, WireLoop};
@@ -33,6 +33,9 @@ pub struct SketchSession {
     /// Ids of construction geometry: solved and constrained like any other,
     /// but never part of the extruded outline.
     pub construction: Vec<i32>,
+    /// How many leading entries of `constraints` are the session's own
+    /// (implicit) rows rather than the student's rules. See `open`.
+    pub n_internal: usize,
 }
 
 thread_local! {
@@ -119,13 +122,47 @@ impl SketchSession {
                 ));
             }
         }
-        let constraints: Vec<Constraint> = rules
+        let user: Vec<Constraint> = rules
             .iter()
             .enumerate()
             .map(|(i, r)| Constraint::from_row(i, r, &block))
             .collect::<Result<Vec<_>, _>>()?;
+        // A `lock` rule is column removal, not a row (params.rs `lock`): the
+        // session never applied it, so a locked point stayed free -- the DoF
+        // badge never reached 0 on a pinned sketch and a drag moved the pin.
+        for c in &user {
+            if c.kind == ConstraintKind::Lock {
+                let a = c.arg(0)?;
+                let at = a.at.unwrap_or(match a.kind {
+                    super::params::GeoKind::Circle | super::params::GeoKind::Arc => PointRef::C,
+                    _ => PointRef::A,
+                });
+                block.lock(a.geo, at).map_err(|e| e.to_string())?;
+            }
+        }
+        // An arc is a circle plus two endpoints that LIE ON that circle. The
+        // block stores the endpoints as free slots (O1: lengths only, no
+        // angle), so without these rows an arc's ends were free of its own
+        // circle: a dimension could drag an endpoint off the circle and leave
+        // a profile whose arc no longer met its neighbour, and the DoF badge
+        // overstated every arc by two (a slot read 10 where it has 6). The
+        // rows come FIRST, so the rule the student adds last still takes the
+        // blame, and `diagnose` below hides them from the blame list.
+        let mut constraints: Vec<Constraint> = Vec::new();
+        for (i, g) in geoms.iter().enumerate() {
+            if g.get("k").and_then(|x| x.as_str()) == Some("arc") {
+                let id = (i + 1) as i32;
+                for end in [PointRef::A, PointRef::B] {
+                    let on = block.arg(id, Some(end)).map_err(|e| e.to_string())?;
+                    let circle = block.arg(id, None).map_err(|e| e.to_string())?;
+                    constraints.push(Constraint::binary(ConstraintKind::PointOnObject, on, circle));
+                }
+            }
+        }
+        let n_internal = constraints.len();
+        constraints.extend(user);
         let params = block.values().to_vec();
-        Ok(SketchSession { block, constraints, params, diagnosis: None, construction: construction_ids })
+        Ok(SketchSession { block, constraints, params, diagnosis: None, construction: construction_ids, n_internal })
     }
 
     /// Solve from the warm start. The optional drag is the pointer's target
@@ -141,8 +178,13 @@ impl SketchSession {
         Ok((p, status))
     }
 
+    /// The diagnosis at the current point. `blame` indexes the student's own
+    /// rules (the implicit arc rows are never named).
     pub fn diagnose(&self) -> Result<solve::Diagnosis, String> {
-        diagnose(&self.block, &self.constraints, &self.params)
+        let mut d = diagnose(&self.block, &self.constraints, &self.params)?;
+        let k = self.n_internal;
+        d.blame = d.blame.iter().filter(|&&b| b >= k).map(|&b| b - k).collect();
+        Ok(d)
     }
 
     /// The solved profile: the outline first, then every hole through it
@@ -252,5 +294,45 @@ mod construction_tests {
         let mut r = rect_rules();
         r.push(json!({"k":"coincident","a":5,"aEnd":"a","b":1,"bEnd":"a"}));
         assert_eq!(open(g, r).profile().expect("builds").len(), 1);
+    }
+
+    // ---- arc endpoints stay on their own circle (2D audit) ------------------
+
+    fn half_disc(len: f64) -> SketchSession {
+        let g = vec![
+            json!({"id":1,"k":"arc","c":[0.0,0.0],"r":5.0,"a":[3.0,4.0],"b":[-3.0,4.0],"sense":"ccw"}),
+            json!({"id":2,"k":"line","a":[-3.0,4.0],"b":[3.0,4.0]}),
+        ];
+        let r = vec![
+            json!({"k":"coincident","a":1,"aEnd":"b","b":2,"bEnd":"a"}),
+            json!({"k":"coincident","a":2,"aEnd":"b","b":1,"bEnd":"a"}),
+            json!({"k":"distance","a":2,"aEnd":"a","b":2,"bEnd":"b","value":len}),
+        ];
+        open(g, r)
+    }
+
+    #[test]
+    fn a_lone_arc_has_five_degrees_of_freedom_not_seven() {
+        let g = vec![json!({"id":1,"k":"arc","c":[0.0,0.0],"r":5.0,"a":[5.0,0.0],"b":[0.0,5.0],"sense":"ccw"})];
+        let mut s = open(g, vec![]);
+        s.solve(&[], None).unwrap();
+        let d = s.diagnose().unwrap();
+        // centre (2) + radius (1) + two end angles (2): the ends are on the circle.
+        assert_eq!(d.dof, 5, "{d:?}");
+        assert_eq!(d.rank, 2, "{d:?}");
+    }
+
+    #[test]
+    fn a_dimension_cannot_pull_an_arc_end_off_its_circle() {
+        let mut s = half_disc(8.0);
+        let (_p, st) = s.solve(&[], None).unwrap();
+        let p = &s.params;
+        // arc slots follow the 10 built-ins: cx cy r ax ay bx by
+        let (cx, cy, r) = (p[10], p[11], p[12]);
+        for (x, y) in [(p[13], p[14]), (p[15], p[16])] {
+            let d = ((x - cx).powi(2) + (y - cy).powi(2)).sqrt();
+            assert!((d - r).abs() < 1e-6, "an arc end sits {} from its centre but the radius is {}", d, r);
+        }
+        assert!(st.converged, "{st:?}");
     }
 }
