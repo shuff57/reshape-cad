@@ -198,7 +198,7 @@ fillet(b, 3)`,
       },
       {
         title: 'chamfer: cutting at an angle',
-        body: `chamfer(b.edge('top', 'front'), 3) bevels one edge by 3 mm at 45 degrees.`,
+        body: `chamfer(b.edge('top', 'front'), 3) bevels one edge by 3 mm at 45 degrees. On a mirrored part, or on copies that touch, an edge that runs on across the mirror plane is still one edge and is chamfered all the way along: an 8 x 30 x 10 block mirrored left-right and then chamfered by 2 mm on its bottom front edge leaves 4800 - 2 x 2 x 16 = 4768 mm^3. An edge that only lies on the same line as the other copy's different edge gets a sentence that says so.`,
         code: `const b = cuboid(40, 40, 20)
 chamfer(b.edge('top', 'front'), 3)`,
       },
@@ -264,14 +264,14 @@ turn(b, [0, 0, 45])`,
     pages: [
       {
         title: 'union: combining shapes',
-        body: `union(a, b) glues two shapes into one solid. Works with more than two: union(a, b, c). Two cylinders whose axes cross at a right angle join too, a pipe tee or a boss on a shaft, as long as the second is narrower than the first: cylinder(20, 40) and cylinder(10, 40, { at: [0, 0, 0] }) turned [0, 90, 0] make pi x 10^2 x 40 + pi x 5^2 x 40 - 1520.04 = 14187.92 mm^3 (7 faces), where 1520.04 mm^3 is the part the two share. A second cylinder as wide as the first, one whose axis misses the first's or crosses it at a slant, and a boss that ends between the curve where the two surfaces meet and the wall get a sentence that says so.`,
+        body: `union(a, b) glues two shapes into one solid. Works with more than two: union(a, b, c). Two cylinders whose axes cross at a right angle join too, a pipe tee or a boss on a shaft, as long as the second is narrower than the first: cylinder(20, 40) and cylinder(10, 40, { at: [0, 0, 0] }) turned [0, 90, 0] make pi x 10^2 x 40 + pi x 5^2 x 40 - 1520.04 = 14187.92 mm^3 (7 faces), where 1520.04 mm^3 is the part the two share. A second cylinder as wide as the first, one whose axis misses the first's or crosses it at a slant, and a boss that ends between the curve where the two surfaces meet and the wall get a sentence that says so. A shape joined with an identical copy of itself in the same place is just that shape. A peg as wide as the hole it sits in joins into the part: a 40 x 40 x 20 block with a 10 mm hole 12 mm deep (hole(b, { across: 10, deep: 12 })) and a cylinder(10, 12, { at: [0, 0, 4] }) standing in it make 32000 mm^3 again.`,
         code: `const base = cuboid(40, 40, 10, { at: [0, 0, 5] })
 const post = cylinder(6, 20, { at: [0, 0, 10] })
 union(base, post)`,
       },
       {
         title: 'subtract: subtracting shapes',
-        body: `subtract(a, b) removes b from a. Order matters: subtract(a, b) is different from subtract(b, a). It also works on a part that is already hollow, an open-top cup, or a part with a flat-sided pocket: a 60 x 30 x 40 box laid over half of a hollowed 40 x 40 x 20 box (shell(b, { wall: 2 })) takes away exactly half, leaving 11264 / 2 = 5632 mm^3. It also takes a part with a round hole cut into it, as long as the cutter crosses the hole's wall along its whole length: the same box with a 12 mm hole through it and the same cutter leaves (32000 - 36 x pi x 20) / 2 = 14869.03 mm^3. A cutter that covers only part of the hole's height works too: a 60 x 30 x 6 cutter across the middle of the same 12 mm hole removes 20 x 40 x 6 less the half hole, 20 x 40 x 6 - 36 x pi x 3 = 4460.71 mm^3, and leaves 25277.35 mm^3. A slanted cutter face gets a sentence that says so.`,
+        body: `subtract(a, b) removes b from a. Order matters: subtract(a, b) is different from subtract(b, a). It also works on a part that is already hollow, an open-top cup, or a part with a flat-sided pocket: a 60 x 30 x 40 box laid over half of a hollowed 40 x 40 x 20 box (shell(b, { wall: 2 })) takes away exactly half, leaving 11264 / 2 = 5632 mm^3. It also takes a part with a round hole cut into it, as long as the cutter crosses the hole's wall along its whole length: the same box with a 12 mm hole through it and the same cutter leaves (32000 - 36 x pi x 20) / 2 = 14869.03 mm^3. A cutter that covers only part of the hole's height works too: a 60 x 30 x 6 cutter across the middle of the same 12 mm hole removes 20 x 40 x 6 less the half hole, 20 x 40 x 6 - 36 x pi x 3 = 4460.71 mm^3, and leaves 25277.35 mm^3. A cutter whose face just touches a cylinder along a line works too: cylinder(20, 30) with a 20 x 20 x 40 cutter laid over its upper half (at: [0, 10, 0]) leaves half of pi x 10^2 x 30, 4712.39 mm^3. A shape cut from an identical copy of itself leaves nothing, and gets a sentence that says so. A slanted cutter face gets a sentence that says so.`,
         code: `const b = cuboid(40, 40, 20, { at: [0, 0, 10] })
 const cutter = cuboid(20, 20, 30, { at: [0, 0, 15] })
 subtract(b, cutter)`,

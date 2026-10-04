@@ -60,6 +60,11 @@ thread_local! {
     static SKIP_SOUND: std::cell::Cell<bool> = const { std::cell::Cell::new(false) };
 }
 
+thread_local! {
+    /// The operation `core` is building (0 union, 1 subtract, 2 intersect), read by [`tangent_allowed`].
+    static CUR_OP: std::cell::Cell<u8> = const { std::cell::Cell::new(0) };
+}
+
 pub enum Outcome {
     /// An operand has a face or an edge this path does not model.
     NotPlanar,
@@ -924,11 +929,32 @@ fn line_intervals(g: &PFace, p0: Vec3, dir: Vec3) -> Result<Vec<(f64, f64)>, ()>
     Ok(hits.chunks(2).filter(|p| p[1] - p[0] > EPS).map(|p| (p[0], p[1])).collect())
 }
 
+/// A plane parallel to a cylinder wall's axis and tangent to it touches the wall along one straight line.
+/// `k` is the signed distance from the axis to the plane along the plane's OUTWARD normal, so k > 0 means the
+/// cylinder lies on the material side of the plane's solid. Only a solid cylinder's outward wall is handled, and
+/// only the contacts whose result is a manifold by construction (the tangent line is an ordinary edge or nothing):
+///   * k > 0, the cylinder inside the plane's solid (a box face flush with a cylinder in a cut, join or keep): fine
+///     for every operation EXCEPT cutting the cylinder out of the plane's solid, which would leave a tunnel that
+///     touches the surface along a line;
+///   * k < 0, the two solids touching from outside along a line: fine for a cut or a keep (nothing happens there),
+///     but a join would be one solid holding a line contact, which a 2-manifold cannot represent.
+/// Anything else (a bore wall) refuses, as before. `wall_is_a`: the cylinder belongs to the first operand.
+fn tangent_allowed(wall: &Cylinder, k: f64, wall_is_a: bool) -> bool {
+    if cyl_hand(wall) < 0.0 {
+        return false;
+    }
+    match (k > 0.0, CUR_OP.with(|c| c.get())) {
+        (false, 0) => false,
+        (true, 1) => wall_is_a,
+        _ => true,
+    }
+}
+
 fn coplanar(f: &PFace, g: &PFace) -> bool {
     len(cross(f.plane.n, g.plane.n)) < 1e-9 && f.plane.distance(g.plane.origin).abs() < EPS
 }
 
-fn cuts_on_plane(f: &PFace, other: &[AFace]) -> Result<Vec<E2>, ()> {
+fn cuts_on_plane(f: &PFace, other: &[AFace], plane_is_a: bool) -> Result<Vec<E2>, ()> {
     let me = aabb_plane(&f.curves);
     let mut out = Vec::new();
     for g in other {
@@ -954,7 +980,7 @@ fn cuts_on_plane(f: &PFace, other: &[AFace]) -> Result<Vec<E2>, ()> {
                     out.push(E2::Seg(f.plane.project(add(p0, scale(dir, t0))), f.plane.project(add(p0, scale(dir, t1)))));
                 }
             }
-            AFace::Cyl(g) => out.extend(cyl_on_plane(f, g, &me)?),
+            AFace::Cyl(g) => out.extend(cyl_on_plane(f, g, &me, plane_is_a)?),
         }
     }
     Ok(out)
@@ -962,7 +988,7 @@ fn cuts_on_plane(f: &PFace, other: &[AFace]) -> Result<Vec<E2>, ()> {
 
 /// The curves where cylinder wall `g` meets the plane of `f`: two lines when
 /// the plane is parallel to the axis, a circle when it is square to it.
-fn cyl_on_plane(f: &PFace, g: &CFace, plane_box: &Box3) -> Result<Vec<E2>, ()> {
+fn cyl_on_plane(f: &PFace, g: &CFace, plane_box: &Box3, plane_is_a: bool) -> Result<Vec<E2>, ()> {
     let c = &g.cyl;
     let n = f.plane.n;
     let ax = dot(c.axis, n);
@@ -974,12 +1000,16 @@ fn cyl_on_plane(f: &PFace, g: &CFace, plane_box: &Box3) -> Result<Vec<E2>, ()> {
         if k.abs() > rr + EPS {
             return Ok(out);
         }
-        if k.abs() > rr - EPS {
-            bail!(); // tangent plane
+        let tangent = k.abs() > rr - EPS;
+        if tangent && !tangent_allowed(c, k, !plane_is_a) {
+            bail!();
         }
-        let (phi, del) = (b.atan2(a), (k / rr).acos());
-        for th in [phi + del, phi - del] {
+        let (phi, del) = (b.atan2(a), if tangent { if k > 0.0 { 0.0 } else { std::f64::consts::PI } } else { (k / rr).acos() });
+        for (i, th) in [phi + del, phi - del].into_iter().enumerate() {
             let rel = pos_ang(th - g.u0);
+            if tangent && i == 1 {
+                continue; // one line of contact, not two
+            }
             if rel <= g.span + EPS / c.radius {
                 out.push(E2::Seg(f.plane.project(cyl_pt(c, th, c.vmin)), f.plane.project(cyl_pt(c, th, c.vmax))));
             }
@@ -1014,7 +1044,7 @@ struct Grid {
     vs: Vec<f64>,
 }
 
-fn wall_grid(f: &CFace, other: &[AFace], skip: &dyn Fn(usize) -> bool) -> Result<Grid, ()> {
+fn wall_grid(f: &CFace, other: &[AFace], skip: &dyn Fn(usize) -> bool, wall_is_a: bool) -> Result<Grid, ()> {
     let c = &f.cyl;
     let me = aabb_cyl(c);
     let tol = EPS / c.radius;
@@ -1042,10 +1072,11 @@ fn wall_grid(f: &CFace, other: &[AFace], skip: &dyn Fn(usize) -> bool) -> Result
             if k.abs() > rr + EPS {
                 continue;
             }
-            if k.abs() > rr - EPS {
+            let tangent = k.abs() > rr - EPS;
+            if tangent && !tangent_allowed(c, k, wall_is_a) {
                 bail!();
             }
-            let (phi, del) = (b.atan2(a), (k / rr).acos());
+            let (phi, del) = (b.atan2(a), if tangent { if k > 0.0 { 0.0 } else { std::f64::consts::PI } } else { (k / rr).acos() });
             for th in [phi + del, phi - del] {
                 let rel = pos_ang(th - f.u0);
                 if rel > f.span + tol || (f.span < TAU - 1e-9 && (rel < tol || rel > f.span - tol)) {
@@ -1133,7 +1164,25 @@ fn parallel_wall_lines(f: &CFace, g: &CFace, us: &mut Vec<f64>, vs: &mut Vec<f64
     let (big, small) = (c.radius, gc.radius);
     if d < EPS {
         if (big - small).abs() < EPS {
-            bail!(); // the same wall
+            // The same surface (a peg in its own hole, or two equal bores): the cells that lie on both are
+            // classed OnSame or OnOpposite by `coincident_wall`. Whole-turn walls only, so no angular line
+            // is needed: the overlap is a band of heights.
+            if f.span < TAU - 1e-9 || g.span < TAU - 1e-9 {
+                bail!();
+            }
+            let ga = dot(gc.axis, a);
+            let g0 = dot(delta, a) + ga * gc.vmin;
+            let g1 = dot(delta, a) + ga * gc.vmax;
+            let (lo, hi) = ((c.vmin).max(g0.min(g1)), (c.vmax).min(g0.max(g1)));
+            if hi - lo > EPS {
+                if lo > c.vmin + EPS {
+                    vs.push(lo);
+                }
+                if hi < c.vmax - EPS {
+                    vs.push(hi);
+                }
+            }
+            return Ok(());
         }
         return Ok(()); // coaxial and different: they never meet
     }
@@ -1780,6 +1829,31 @@ fn classify_plane(f: &PFace, p3: Vec3, other: &[AFace], other_solid: &TSolid) ->
     Ok(if ops::inside_solid(other_solid, p3) { Class::Inside } else { Class::Outside })
 }
 
+/// A cell of cylinder wall `f` at height `v` that lies ON a whole-turn wall of the other solid with the same axis
+/// line and radius is OnSame (both normals alike: two bores, two pegs) or OnOpposite (a peg in its own hole). The
+/// other wall must be a whole turn, which `parallel_wall_lines` has already required.
+fn coincident_wall(f: &CFace, other: &[AFace], v: f64) -> Option<Class> {
+    let c = &f.cyl;
+    let a = normalize(c.axis);
+    for g in other {
+        let AFace::Cyl(g) = g else { continue };
+        let gc = &g.cyl;
+        if len(cross(a, normalize(gc.axis))) > 1e-9 || (gc.radius - c.radius).abs() >= EPS || g.span < TAU - 1e-9 {
+            continue;
+        }
+        let delta = sub(gc.origin, c.origin);
+        if len(sub(delta, scale(a, dot(delta, a)))) >= EPS {
+            continue;
+        }
+        let ga = dot(gc.axis, a);
+        let (g0, g1) = (dot(delta, a) + ga * gc.vmin, dot(delta, a) + ga * gc.vmax);
+        if v > g0.min(g1) + EPS && v < g0.max(g1) - EPS {
+            return Some(if cyl_hand(c) * cyl_hand(gc) > 0.0 { Class::OnSame } else { Class::OnOpposite });
+        }
+    }
+    None
+}
+
 enum Kept {
     Plane { plane: Plane, region: Region },
     /// A finished cylinder-wall face, already flipped when it must be.
@@ -1815,7 +1889,7 @@ fn pieces(
         match face {
             AFace::Plane(f) => {
                 let clear = side == 1 && crossings.iter().any(|c| clear_end_disk(c, face));
-                let cuts = if clear { Vec::new() } else { cuts_on_plane(f, other)? };
+                let cuts = if clear { Vec::new() } else { cuts_on_plane(f, other, side == 0)? };
                 for region in split_face(f, &cuts, &grid_nodes(f, walls))? {
                     let s = interior_point(&region).ok_or(())?;
                     if !in_edges(s, &f.edges) {
@@ -1870,7 +1944,11 @@ fn pieces(
                 for &(a, b) in &arcs {
                     for w in hs.windows(2) {
                         let p3 = cyl_pt(c, 0.5 * (a + b), 0.5 * (w[0] + w[1]));
-                        let class = if ops::inside_solid(other_solid, p3) { Class::Inside } else { Class::Outside };
+                        let class = match coincident_wall(f, other, 0.5 * (w[0] + w[1])) {
+                            Some(c) => c,
+                            None if ops::inside_solid(other_solid, p3) => Class::Inside,
+                            None => Class::Outside,
+                        };
                         if !keep(class) {
                             continue;
                         }
@@ -2012,6 +2090,7 @@ fn build_result(kept: Vec<Kept>, crossings: &[Crossing], vertex: VertexFn) -> Op
 /// One boolean through the pipeline, then every structural guard. `Ok(None)`
 /// for an empty answer.
 fn core(op: &str, a: &TSolid, b: &TSolid, pa: &[AFace], pb: &[AFace], crossings: &[Crossing]) -> Result<Option<TSolid>, ()> {
+    CUR_OP.with(|c| c.set(match op { "union" => 0, "subtract" => 1, _ => 2 }));
     let (ka, kb): (Box<dyn Fn(Class) -> bool>, Box<dyn Fn(Class) -> bool>) = match op {
         "union" => (Box::new(|c| matches!(c, Class::Outside | Class::OnSame)), Box::new(|c| c == Class::Outside)),
         "subtract" => (Box::new(|c| matches!(c, Class::Outside | Class::OnOpposite)), Box::new(|c| c == Class::Inside)),
@@ -2040,7 +2119,7 @@ fn core(op: &str, a: &TSolid, b: &TSolid, pa: &[AFace], pb: &[AFace], crossings:
                             if side == 0 { c.wi == i && (c.ti == gi || clear_end_disk(c, &other[gi])) } else { c.ti == i && c.wi == gi }
                         })
                     };
-                    wall_grid(w, other, &skip).map(Some)
+                    wall_grid(w, other, &skip, side == 0).map(Some)
                 } else {
                     Ok(None)
                 }
