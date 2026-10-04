@@ -13,7 +13,7 @@ use std::collections::HashMap;
 
 use crate::build::{TFace, TSolid};
 use crate::geom::Curve;
-use crate::math::{cross, dist, len, sub, Vec3};
+use crate::math::{add, cross, dist, dot, len, scale, sub, Vec3};
 
 const TAU: f64 = std::f64::consts::TAU;
 
@@ -1449,12 +1449,72 @@ pub fn mesh_solid(solid: &TSolid, defl: f64) -> Option<Mesh> {
     Some(first)
 }
 
+/// A circle or arc that is tangent to a straight edge (a hole whose rim just touches the part's
+/// side, or a cut face) puts a polyline point ON that edge. The face that owns the curve has the
+/// point, the straight edge's own polyline does not, and a mesh welded by position has an open
+/// seam between the two (open at some chord tolerances and not at others). Every straight edge
+/// takes the points of the other edges that lie strictly inside it, so both neighbours use the
+/// same split.
+fn split_straight_edges_at_touching_points(solid: &TSolid, cache: &mut HashMap<usize, Vec<Vec3>>) {
+    let mut straight: Vec<usize> = Vec::new();
+    let mut pts: Vec<Vec3> = Vec::new();
+    for e in solid.edges() {
+        let k = std::rc::Rc::as_ptr(&e) as *const () as usize;
+        let is_line = matches!(e.borrow().curve, Curve::Segment { .. });
+        if is_line {
+            straight.push(k);
+        }
+        if let Some(poly) = cache.get(&k) {
+            pts.extend(poly.iter().copied());
+        }
+    }
+    if straight.is_empty() || (straight.len() as u64) * (pts.len() as u64) > 40_000_000 {
+        return;
+    }
+    for k in straight {
+        let Some(poly) = cache.get(&k) else { continue };
+        if poly.len() != 2 {
+            continue;
+        }
+        let (a, b) = (poly[0], poly[1]);
+        let d = sub(b, a);
+        let l2 = dot(d, d);
+        if l2 < 1e-18 {
+            continue;
+        }
+        let l = l2.sqrt();
+        let mut on: Vec<(f64, Vec3)> = Vec::new();
+        for &p in &pts {
+            let t = dot(sub(p, a), d) / l2;
+            if t <= 0.0 || t >= 1.0 {
+                continue;
+            }
+            if dist(p, a) < 1e-7 || dist(p, b) < 1e-7 {
+                continue;
+            }
+            if len(sub(p, add(a, scale(d, t)))) < 1e-7 * l.max(1.0) {
+                on.push((t, p));
+            }
+        }
+        if on.is_empty() {
+            continue;
+        }
+        on.sort_by(|x, y| x.0.partial_cmp(&y.0).unwrap_or(std::cmp::Ordering::Equal));
+        on.dedup_by(|x, y| (x.0 - y.0).abs() * l < 1e-7);
+        let mut out = vec![a];
+        out.extend(on.into_iter().map(|(_, p)| p));
+        out.push(b);
+        cache.insert(k, out);
+    }
+}
+
 fn mesh_solid_once(solid: &TSolid, defl: f64) -> Option<Mesh> {
     let mut edges_cache: HashMap<usize, Vec<Vec3>> = HashMap::new();
     for e in solid.edges() {
         let k = std::rc::Rc::as_ptr(&e) as *const () as usize;
         edges_cache.insert(k, edge_polyline(&e, defl));
     }
+    split_straight_edges_at_touching_points(solid, &mut edges_cache);
 
     let mut out = MeshBuilder::new();
     for f in solid.faces() {

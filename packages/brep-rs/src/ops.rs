@@ -4901,6 +4901,7 @@ fn boolean_legacy(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
     }
     dedupe(&mut faces);
     drop_degenerate_faces(&mut faces);
+    split_t_junctions(&mut faces);
     weld_shared_edges(&mut faces);
     if faces.is_empty() {
         return None;
@@ -5636,6 +5637,119 @@ fn full_turn_normal(c: &Curve) -> Option<Vec3> {
         Curve::Arc { normal, sweep, .. } if sweep.abs() >= TWO_PI - 1e-9 => Some(scale(*normal, sweep.signum())),
         _ => None,
     }
+}
+
+/// Split every straight edge at the vertices of OTHER faces that lie strictly inside it (a
+/// T-junction), so that the neighbour that has the vertex and the face that does not end up
+/// with the same edge pieces. The geometry does not change by a hair: an edge becomes two or
+/// more collinear edges. Returns whether anything was split. Run `weld_shared_edges` after it.
+pub(crate) fn split_t_junctions(faces: &mut [TFace]) -> bool {
+    // Distinct vertex positions, one handle each, from every edge end of every face.
+    let mut verts: Vec<topo::VertexRef> = Vec::new();
+    let mut handle_at = |v: &topo::VertexRef, verts: &mut Vec<topo::VertexRef>| -> topo::VertexRef {
+        let p = v.borrow().point;
+        for w in verts.iter() {
+            if crate::math::len(sub(w.borrow().point, p)) < 1e-9 {
+                return w.clone();
+            }
+        }
+        verts.push(v.clone());
+        v.clone()
+    };
+    let mut edges: Vec<topo::EdgeRef<Curve3>> = Vec::new();
+    for f in faces.iter() {
+        for w in &f.borrow().boundary {
+            for u in &w.borrow().edges {
+                if !edges.iter().any(|e| topo::same(e, &u.edge)) {
+                    edges.push(u.edge.clone());
+                }
+                let (a, b) = (u.edge.borrow().a.clone(), u.edge.borrow().b.clone());
+                handle_at(&a, &mut verts);
+                handle_at(&b, &mut verts);
+            }
+        }
+    }
+    // Per segment edge: the replacement chain, edge a to edge b.
+    let mut chains: Vec<Option<Vec<topo::EdgeRef<Curve3>>>> = vec![None; edges.len()];
+    let mut any = false;
+    for (i, e) in edges.iter().enumerate() {
+        let (ea, eb, fwd, is_seg) = {
+            let eb_ = e.borrow();
+            (eb_.a.clone(), eb_.b.clone(), eb_.forward, matches!(eb_.curve, Curve::Segment { .. }))
+        };
+        if !is_seg {
+            continue;
+        }
+        let (pa, pb) = (ea.borrow().point, eb.borrow().point);
+        let d = sub(pb, pa);
+        let l2 = dot(d, d);
+        if l2 < 1e-18 {
+            continue;
+        }
+        let mut on: Vec<(f64, topo::VertexRef)> = Vec::new();
+        for v in &verts {
+            let p = v.borrow().point;
+            let t = dot(sub(p, pa), d) / l2;
+            if t > 1e-9
+                && t < 1.0 - 1e-9
+                && crate::math::len(sub(p, add(pa, scale(d, t)))) < 1e-7
+                && crate::math::len(sub(p, pa)) > 1e-7
+                && crate::math::len(sub(p, pb)) > 1e-7
+            {
+                on.push((t, v.clone()));
+            }
+        }
+        if on.is_empty() {
+            continue;
+        }
+        on.sort_by(|x, y| x.0.partial_cmp(&y.0).unwrap_or(std::cmp::Ordering::Equal));
+        let mut chain = Vec::new();
+        let mut prev = ea.clone();
+        for v in on.iter().map(|(_, v)| v.clone()).chain(std::iter::once(eb.clone())) {
+            let (p, q) = (prev.borrow().point, v.borrow().point);
+            chain.push(topo::edge(prev.clone(), v.clone(), fwd, Curve::Segment { a: p, b: q }));
+            prev = v;
+        }
+        chains[i] = Some(chain);
+        any = true;
+    }
+    if !any {
+        return false;
+    }
+    for f in faces.iter() {
+        for w in &f.borrow().boundary {
+            let old = w.borrow().edges.clone();
+            let mut out: Vec<topo::EdgeUse<Curve3>> = Vec::with_capacity(old.len());
+            for u in old {
+                let Some(idx) = edges.iter().position(|e| topo::same(e, &u.edge)) else {
+                    out.push(u);
+                    continue;
+                };
+                let Some(chain) = &chains[idx] else {
+                    out.push(u);
+                    continue;
+                };
+                // The use runs start -> end in its own uv; each piece takes the share of that run
+                // its length is of the whole edge (the pcurve of a straight edge is linear).
+                let total: f64 = chain.iter().map(|c| crate::math::len(sub(c.borrow().b.borrow().point, c.borrow().a.borrow().point))).sum();
+                let seq: Vec<&topo::EdgeRef<Curve3>> = if u.forward { chain.iter().collect() } else { chain.iter().rev().collect() };
+                let mut acc = 0.0;
+                for c in seq {
+                    let l = crate::math::len(sub(c.borrow().b.borrow().point, c.borrow().a.borrow().point));
+                    let (t0, t1) = (acc / total, (acc + l) / total);
+                    acc += l;
+                    let lerp = |t: f64| [u.pcurve.start[0] + (u.pcurve.end[0] - u.pcurve.start[0]) * t, u.pcurve.start[1] + (u.pcurve.end[1] - u.pcurve.start[1]) * t];
+                    out.push(topo::EdgeUse {
+                        edge: c.clone(),
+                        forward: u.forward,
+                        pcurve: topo::Pcurve { start: lerp(t0), end: lerp(t1), mid: lerp((t0 + t1) / 2.0) },
+                    });
+                }
+            }
+            w.borrow_mut().edges = out;
+        }
+    }
+    true
 }
 
 pub(crate) fn weld_shared_edges(faces: &mut [TFace]) {
@@ -8668,5 +8782,113 @@ mod g1_g6_tests {
         let b = build::torus_solid([0.0, 0.0, 30.0], 15.0, 5.0, [0.0, 0.0, 1.0]);
         let r = boolean("union", &a, &b).expect("disjoint tori union");
         assert!((build::solid_volume(&r) - 2.0 * torus_vol(15.0, 5.0)).abs() < 1e-6);
+    }
+}
+
+
+/// Residuals of the wrong-solid sweep (docs/PLAN-next.md section 27).
+#[cfg(test)]
+mod residual_tests {
+    use super::*;
+
+    fn bx(s: [f64; 3], c: [f64; 3]) -> TSolid {
+        build::box_solid(s, c, None)
+    }
+
+    fn closed(s: &TSolid) -> bool {
+        mesh_is_closed_coarse(s)
+    }
+
+    /// Two chains from the grid family whose every step is a box boolean. The planar result had
+    /// a vertex on its top and bottom faces (the corner of a notch the intersection removed)
+    /// that the +y face, built from the other operand, did not: a T-junction, an open mesh,
+    /// and the closure guard refused a correct 3 x 3.5 x 6 box. The edge is now split where its
+    /// neighbour has the vertex.
+    #[test]
+    fn box_chains_ending_in_keep_build_closed() {
+        let v = bx([8.0, 10.0, 6.0], [-1.0, 4.0, 2.0]);
+        let v = boolean("union", &v, &bx([7.0, 3.0, 10.0], [1.0, 4.0, 0.0])).expect("join");
+        let v = boolean("intersect", &v, &bx([3.0, 4.0, 6.0], [-2.0, 1.0, 2.0])).expect("keep 1");
+        let r = boolean("intersect", &v, &bx([10.0, 9.0, 8.0], [-3.0, -2.0, 3.0])).expect("keep 2 builds");
+        assert!((build::solid_volume(&r) - 63.0).abs() < 1e-9);
+        assert!(closed(&r) && !crate::ops_planar::has_t_junction(&r), "open mesh");
+
+        let v = bx([4.0, 6.0, 3.0], [3.0, 0.0, -1.0]);
+        let v = boolean("union", &v, &bx([10.0, 3.0, 2.0], [0.0, 1.0, 0.0])).expect("join");
+        let v = boolean("subtract", &v, &bx([10.0, 7.0, 8.0], [-2.0, 0.0, -1.0])).expect("cut");
+        let r = boolean("intersect", &v, &bx([8.0, 5.0, 9.0], [3.0, -3.0, 0.0])).expect("keep builds");
+        assert!((build::solid_volume(&r) - 15.0).abs() < 1e-9);
+        assert!(closed(&r) && !crate::ops_planar::has_t_junction(&r), "open mesh");
+    }
+
+    /// A hole (or counterbore) whose rim is tangent to the part's side wall touches an edge of
+    /// the top face at one point. The rim's polyline had that point and the straight edge did
+    /// not, so the mesh had an open seam at some chord tolerances and not at others.
+    #[test]
+    fn counterbore_tangent_to_the_side_wall_meshes_closed_at_every_tolerance() {
+        let a = bx([31.0, 31.0, 28.0], [0.0, 0.0, 0.0]);
+        let cb = build::cylinder_solid([-8.0, 2.0, 13.0], 7.5, 4.0, [0.0, 0.0, 1.0]);
+        let r = boolean("subtract", &a, &cb).expect("counterbore builds");
+        for defl in [0.2, 0.1, 0.07, 0.05, 0.02] {
+            let m = crate::mesh::mesh_solid(&r, defl).expect("meshes");
+            assert!(crate::mesh::mesh_is_closed(&m), "open mesh at chord tolerance {defl}");
+        }
+    }
+
+    /// A flat face whose outline carries arcs (here: a tool that only touches the part's bottom
+    /// face with a disc, splitting that face along the disc's circle) must survive a mirror. The
+    /// reflected arc kept its old normal, so it ran the other way round the circle, its endpoints
+    /// no longer matched and the mesh was empty although the volume was right (perm#11509 seed 2).
+    #[test]
+    fn mirrored_face_with_arc_edges_meshes_closed_with_the_same_volume() {
+        let a = build::prism_solid([-3.48, 2.17, -3.35], 6, 24.21, 31.97, [0.0, 0.0, 1.0]);
+        let t = build::cylinder_solid([-12.93, 6.44, -27.05], 18.865, 15.43, [0.0, 0.0, 1.0]);
+        let r = boolean("subtract", &a, &t).expect("touching cut builds");
+        assert!(r.faces().iter().any(|f| f.borrow().boundary.iter().any(|w| w.borrow().edges.iter().any(|u| matches!(u.edge.borrow().curve, Curve::Arc { .. })))), "the fixture must carry an arc");
+        let bb = build::solid_aabb(&r);
+        let m = crate::math::Transform::mirror([0.0, bb.hi[1], 0.0], [0.0, 1.0, 0.0]);
+        let fl = build::transform_solid(&r, &m);
+        let mesh = crate::mesh::mesh_solid(&fl, 0.1).expect("the mirrored copy meshes");
+        assert!(crate::mesh::mesh_is_closed(&mesh), "open mesh");
+        assert!((build::solid_volume(&fl) - build::solid_volume(&r)).abs() < 1e-6);
+    }
+
+    /// A straight edge with another face's vertex in its middle becomes two edges; nothing else moves.
+    #[test]
+    fn split_t_junctions_splits_only_where_a_neighbour_has_the_vertex() {
+        let b = bx([4.0, 4.0, 4.0], [0.0, 0.0, 0.0]);
+        let mut faces = b.faces();
+        let n = edge_use_counts(&faces).len();
+        assert!(!split_t_junctions(&mut faces), "a plain box has no T-junction");
+        assert_eq!(edge_use_counts(&faces).len(), n);
+    }
+
+    /// Area of the rectangle centred `c` with half-sizes `half`, inside the disk of radius `r`.
+    fn overlap_area(half: [f64; 2], c: [f64; 2], r: f64) -> f64 {
+        let (a, b) = (c[0] - half[0], c[0] + half[0]);
+        let n = 400_000;
+        let mut s = 0.0;
+        for i in 0..n {
+            let x = a + (i as f64 + 0.5) * (b - a) / n as f64;
+            let h = (r * r - x * x).max(0.0).sqrt();
+            s += ((c[1] + half[1]).min(h) - (c[1] - half[1]).max(-h)).max(0.0);
+        }
+        s * (b - a) / n as f64
+    }
+
+    /// G1 note: a tool whose corner or edge is barely outside a cylinder must build the true cut
+    /// (closed form: V(cylinder) - height x area of the footprint inside the disk) or refuse.
+    #[test]
+    fn cylinder_minus_box_barely_poking_out_matches_the_closed_form() {
+        let pi = std::f64::consts::PI;
+        for (w, off) in [(14.0, 0.1), (14.0, 0.5), (14.1422, 0.0), (14.1434, 0.0), (14.15, 0.0), (9.0, 5.49), (9.0, 5.51), (4.0, 7.9), (4.0, 8.05)] {
+            let a = build::cylinder_solid([0.0, 0.0, 0.0], 10.0, 20.0, [0.0, 0.0, 1.0]);
+            let b = bx([w, w, 6.0], [off, off, 0.0]);
+            let exact = pi * 100.0 * 20.0 - 6.0 * overlap_area([w / 2.0, w / 2.0], [off, off], 10.0);
+            if let Some(r) = boolean("subtract", &a, &b) {
+                let v = build::solid_volume(&r);
+                assert!((v - exact).abs() < 1e-5 * exact, "w={w} off={off}: {v} vs {exact}");
+            }
+        }
     }
 }

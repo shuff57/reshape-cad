@@ -155,6 +155,15 @@ impl Transform {
         self.rot(v)
     }
 
+    /// True for a reflection (a negative determinant): it reverses handedness, so the cross product
+    /// of two transformed vectors is the NEGATIVE of the transformed cross product.
+    pub fn reverses_handedness(&self) -> bool {
+        let m = &self.m;
+        let det = m[0][0] * (m[1][1] * m[2][2] - m[1][2] * m[2][1]) - m[0][1] * (m[1][0] * m[2][2] - m[1][2] * m[2][0])
+            + m[0][2] * (m[1][0] * m[2][1] - m[1][1] * m[2][0]);
+        det < 0.0
+    }
+
     fn mul(a: &Transform, b: &Transform) -> Transform {
         let mut m = [[0.0; 3]; 3];
         for i in 0..3 {

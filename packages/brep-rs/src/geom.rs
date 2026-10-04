@@ -318,6 +318,9 @@ impl Curve {
                 a: t.apply(*a),
                 b: t.apply(*b),
             },
+            // A reflection turns a counter-clockwise circle clockwise about the reflected normal, so
+            // the normal that keeps the same traversal is its opposite (an arc's point at angle a is
+            // c + r (cos a x + sin a (n x x)), and M(n x x) = -(Mn x Mx) when M reflects).
             Curve::Circle {
                 center,
                 radius,
@@ -325,7 +328,7 @@ impl Curve {
             } => Curve::Circle {
                 center: t.apply(*center),
                 radius: *radius,
-                normal: normalize(t.dir(*normal)),
+                normal: handed(t, normalize(t.dir(*normal))),
             },
             Curve::Arc {
                 center,
@@ -336,7 +339,7 @@ impl Curve {
             } => Curve::Arc {
                 center: t.apply(*center),
                 radius: *radius,
-                normal: normalize(t.dir(*normal)),
+                normal: handed(t, normalize(t.dir(*normal))),
                 x_axis: normalize(t.dir(*x_axis)),
                 sweep: *sweep,
             },
@@ -350,6 +353,16 @@ impl Curve {
                 sign: *sign,
             },
         }
+    }
+}
+
+/// The normal an arc or circle needs after `t` so that it is traversed the way it was before:
+/// the transformed normal, or its opposite when `t` is a reflection.
+fn handed(t: &Transform, n: Vec3) -> Vec3 {
+    if t.reverses_handedness() {
+        scale(n, -1.0)
+    } else {
+        n
     }
 }
 

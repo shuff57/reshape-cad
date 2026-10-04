@@ -1829,6 +1829,7 @@ fn core(op: &str, a: &TSolid, b: &TSolid, pa: &[AFace], pb: &[AFace], crossings:
     };
     let mut faces = solid.faces();
     ops::drop_degenerate_faces(&mut faces);
+    ops::split_t_junctions(&mut faces);
     ops::weld_shared_edges(&mut faces);
     if faces.is_empty() {
         return Ok(None);
