@@ -4814,20 +4814,40 @@ pub fn boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
         // The face-by-face path splits a face along the other solid's edges without splitting
         // the face next door, leaving a vertex in the middle of a neighbour's edge (a T-junction):
         // the volume is right but a mesh of it has open seams (measured: 78% of overlapping box
-        // pairs). The planar path keeps both sides consistent, so it wins when it can build it.
-        if crate::ops_planar::has_t_junction(&r) {
+        // pairs). The planar path keeps both sides consistent, so it wins when it can build it;
+        // when it cannot, the open result is refused.
+        let open = crate::ops_planar::has_t_junction(&r) || !mesh_is_closed_coarse(&r);
+        if open {
             if let crate::ops_planar::Outcome::Built(p) = crate::ops_planar::boolean_planar(op, a, b) {
-                if !crate::ops_planar::has_t_junction(&p) {
+                if !crate::ops_planar::has_t_junction(&p) && mesh_is_closed_coarse(&p) {
                     return Some(p);
                 }
+            }
+            // Right volume, but a mesh of it may have open seams (an STL would break) and the
+            // planar path cannot build a seam-free one: measure the mesh, and refuse rather than
+            // hand back an open solid.
+            if !mesh_is_closed_coarse(&r) {
+                return None;
             }
         }
         return Some(r);
     }
     match crate::ops_planar::boolean_planar(op, a, b) {
-        crate::ops_planar::Outcome::Built(r) => Some(r),
+        crate::ops_planar::Outcome::Built(r) => mesh_is_closed_coarse(&r).then_some(r),
         _ => None,
     }
+}
+
+/// Whether a mesh of the solid is closed at any of a few chord tolerances (0.3, 0.1 and 0.03
+/// percent of its size). An open mesh at every one of them is a real open seam, not a
+/// tolerance artefact, and an STL of it would break.
+fn mesh_is_closed_coarse(s: &TSolid) -> bool {
+    let bb = build::solid_aabb(s);
+    let diag = crate::math::len(sub(bb.hi, bb.lo));
+    [0.003, 0.001, 0.0003].iter().any(|k| match crate::mesh::mesh_solid(s, (k * diag).max(0.005)) {
+        Some(m) => crate::mesh::mesh_is_closed(&m),
+        None => false,
+    })
 }
 
 fn boolean_legacy(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
@@ -5352,9 +5372,32 @@ pub(crate) fn planar_face_samples(face: &TFace) -> Vec<(Vec3, Vec3)> {
             }
         }
     }
+    // A sample must be clear of every boundary of its own face: on an L-shaped face a 0.7/0.3 point
+    // can land exactly on an edge, where the probe at +/- DELTA n straddles the other solid's own
+    // edge line and reads the same on both sides, which would refuse a correct solid (G5).
+    const CLEAR: f64 = 1.0e-3;
+    let boundary_dist = |l: &Loop, p: Vec3| -> f64 {
+        match l {
+            Loop::Circle(c, r) => (crate::math::len(sub(p, *c)) - *r).abs(),
+            Loop::Poly(poly) => {
+                let q = plane.project(p);
+                let mut best = f64::INFINITY;
+                for i in 0..poly.len() {
+                    let (a, b) = (poly[i], poly[(i + 1) % poly.len()]);
+                    let d = [b[0] - a[0], b[1] - a[1]];
+                    let l2 = d[0] * d[0] + d[1] * d[1];
+                    let t = if l2 < 1e-24 { 0.0 } else { (((q[0] - a[0]) * d[0] + (q[1] - a[1]) * d[1]) / l2).clamp(0.0, 1.0) };
+                    let (dx, dy) = (q[0] - (a[0] + t * d[0]), q[1] - (a[1] + t * d[1]));
+                    best = best.min((dx * dx + dy * dy).sqrt());
+                }
+                best
+            }
+        }
+    };
     cands
         .into_iter()
         .filter(|p| inside_loop(&outer, *p) && !inner.iter().any(|l| inside_loop(l, *p)))
+        .filter(|p| boundary_dist(&outer, *p) > CLEAR && inner.iter().all(|l| boundary_dist(l, *p) > CLEAR))
         .map(|p| (p, n))
         .collect()
 }
@@ -8389,5 +8432,58 @@ mod torus_soundness {
             .collect();
         let gutted = Solid { shells: vec![Rc::new(RefCell::new(Shell { faces }))] };
         assert!(!boolean_result_is_sound("subtract", &fl, &tool, &gutted), "a dropped wall slipped through");
+    }
+
+    // G4/G5 (mesh closure after a boolean): the planar and legacy paths can each leave a T-junction.
+    fn mesh_closed(s: &TSolid) -> bool {
+        let m = crate::mesh::mesh_solid(s, 0.1).expect("meshes");
+        crate::mesh::mesh_is_closed(&m)
+    }
+
+    #[test]
+    fn g5_two_integer_boxes_join_has_a_closed_mesh() {
+        let a = build::box_solid([9.0, 10.0, 9.0], [0.0, 0.0, 0.0], None);
+        let b = build::box_solid([8.0, 1.0, 9.0], [1.0, 0.0, -1.0], None);
+        match boolean("union", &a, &b) {
+            None => println!("g5: REFUSED"),
+            Some(r) => {
+                println!("g5: faces={} vol={} closed={}", r.faces().len(), build::solid_volume(&r), mesh_closed(&r));
+                assert!((build::solid_volume(&r) - 822.0).abs() < 1e-6);
+                assert!(mesh_closed(&r), "open mesh");
+            }
+        }
+    }
+
+    #[test]
+    fn g4_holed_box_then_join_or_cut_has_a_closed_mesh() {
+        let a = build::box_solid([40.0, 40.0, 20.0], [0.0, 0.0, 0.0], None);
+        let hole = build::cylinder_solid([0.0, 0.0, 0.0], 4.0, 30.0, [0.0, 0.0, 1.0]);
+        let a = boolean("subtract", &a, &hole).expect("hole");
+        let b = build::box_solid([10.0, 10.0, 10.0], [15.0, 0.0, 8.0], None);
+        let c = build::box_solid([50.0, 10.0, 4.0], [0.0, -20.0, 0.0], None);
+        for (op, t, vol) in [("union", &b, 31294.69), ("subtract", &c, 30194.69)] {
+            match boolean(op, &a, t) {
+                None => println!("g4 {op}: REFUSED"),
+                Some(r) => {
+                    println!("g4 {op}: faces={} vol={} closed={}", r.faces().len(), build::solid_volume(&r), mesh_closed(&r));
+                    assert!((build::solid_volume(&r) - vol).abs() < 0.01, "{op} volume");
+                    assert!(mesh_closed(&r), "{op}: open mesh");
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn g5_two_stubs_on_one_face_with_collinear_hole_edges_mesh_closed() {
+        // Two stubs whose footprints on the big box's face have left edges on one line: the
+        // face's two holes are collinear there, earcut emits a zero-area triangle and the
+        // mesh used to lose the edge.
+        let a = build::box_solid([2.0, 8.0, 3.0], [-1.0, 4.0, 3.0], None);
+        let b = build::box_solid([10.0, 6.0, 10.0], [-1.0, 2.0, 0.0], None);
+        let v = boolean("union", &a, &b).expect("v1");
+        let p2 = build::box_solid([4.0, 8.0, 3.0], [0.0, 4.0, -3.0], None);
+        let r = boolean("union", &v, &p2).expect("builds");
+        assert!((build::solid_volume(&r) - 654.0).abs() < 1e-6);
+        assert!(mesh_closed(&r), "open mesh");
     }
 }
