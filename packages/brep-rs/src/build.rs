@@ -733,11 +733,22 @@ pub fn solid_aabb(solid: &TSolid) -> Aabb {
                     // line between its vertices. For a segment-only face
                     // this is identical to the old vertex-ring box.
                     Surface3::Plane(_) => face_edges(&f),
+                    // A cone's coordinates are linear in the slant parameter v
+                    // and the only interior stationary points lie along a
+                    // generator that also reaches the boundary, so every
+                    // extreme of a (trimmed) cone face is on its boundary
+                    // curves: their exact box is the exact box of the face.
+                    // The untrimmed surface box is far looser after a cut.
+                    Surface3::Cone(_) => face_edges(&f),
                     _ => Vec::new(),
                 },
             )
         };
-        if matches!(surface, Surface3::Plane(_)) {
+        if matches!(surface, Surface3::Cone(_)) && !edges.is_empty() {
+            for e in edges {
+                b.union(&e.curve.aabb());
+            }
+        } else if matches!(surface, Surface3::Plane(_)) {
             for e in edges {
                 b.union(&e.curve.aabb());
             }
@@ -2868,6 +2879,21 @@ mod tests {
         assert_eq!(s.faces().len(), 6);
         assert_eq!(s.edges().len(), 12);
         assert_eq!(s.vertices().len(), 8);
+    }
+
+    /// G3: a cone cut by a box keeps only its tip; the box of that cone face
+    /// must come from its boundary curves, not from the untrimmed surface
+    /// (which reached the original base at z = -5.965).
+    #[test]
+    fn cone_face_box_is_tight_after_a_boolean() {
+        let cone = cone_solid([0.0, 0.0, 0.0], 11.08, 11.93, [0.0, 0.0, 1.0]);
+        let tool = box_solid([22.16, 22.16, 7.37], [0.0, 0.0, -2.28], None);
+        let r = crate::ops::boolean("subtract", &cone, &tool).expect("cone minus box builds");
+        let b = solid_aabb(&r);
+        assert!((b.lo[2] - 1.405).abs() < 1e-9, "z-min {}", b.lo[2]);
+        assert!((b.hi[2] - 5.965).abs() < 1e-9, "z-max {}", b.hi[2]);
+        let rr = 11.08 * (5.965 - 1.405) / 11.93;
+        assert!((b.hi[0] - rr).abs() < 0.02 && (b.lo[0] + rr).abs() < 0.02, "x extent {:?}", (b.lo[0], b.hi[0]));
     }
 
     #[test]
