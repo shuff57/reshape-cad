@@ -28,3 +28,23 @@ bevel(v.edge("top", "left"), 6.9)`;
   const after = vol(ids.at(-1));
   assert.ok(Math.abs(before - after - (6.9 * 6.9 / 2) * 50.39) < 1e-3, `removed ${before - after}`);
 });
+
+// An edge that runs on across the mirror plane is ONE edge to the student (OCCT chamfers it whole) but two
+// collinear edges to brep-rs, one per lump. Chamfering only the owner's half is a wrong solid (599.5 where
+// OCCT, and the whole edge, give 599): it must refuse in a sentence, or cut both halves exactly.
+test('chamfer of an edge continuing across a mirror plane is refused or exact, never half-cut', () => {
+  const code = `let v = box(1, 30, 10, { at: [1, 1, 1] })
+v = mirror(v, 'left-right')
+bevel(v.edge('bottom', 'front'), 1)`;
+  const r = runScript(code);
+  assert.deepEqual(r.errors, []);
+  const out = JSON.parse(brep.build_doc_json(JSON.stringify(r.doc)));
+  const ids = r.doc.features.map((f) => f.id);
+  const last = ids.at(-1);
+  if (out.refusals?.[last]) {
+    assert.match(String(out.refusals[last]), /chamfer/);
+    return;
+  }
+  const vol = JSON.parse(brep.measure_doc(JSON.stringify({ ...r.doc, measure: last }))).shapes[last].volume;
+  assert.ok(Math.abs(vol - 599) < 1e-6, `volume ${vol}`);
+});

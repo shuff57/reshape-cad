@@ -1888,6 +1888,9 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
  FilletErr::VertexTooComplex => format!(
  "brep-rs cannot chamfer an edge whose end touches more than three faces -- {label} is shown without it."
  ),
+ FilletErr::SplitEdge => format!(
+ "brep-rs cannot chamfer an edge that carries on across the mirror or pattern plane into the next copy yet; chamfer the part before you mirror it -- {label} is shown without it."
+ ),
                             _ if round => format!(
                                 "brep-rs can only round an edge of a box yet; round the plain box before you hollow, chamfer or cut it (a hole that stays clear of the edge may come first) -- {label} is shown without it."
                             ),
@@ -5765,6 +5768,8 @@ enum FilletErr {
  Concave,
  Flat,
  VertexTooComplex,
+ /// The edge carries on, collinear, into another lump (a mirror or pattern copy that touches).
+ SplitEdge,
 }
 
 /// Dispatch the box `round` primitive field (SPEC-brep-round.md): refuse a
@@ -6268,6 +6273,31 @@ fn build_fillet(
          .iter()
          .position(|sh| sh.borrow().faces.iter().any(|f| std::rc::Rc::ptr_eq(f, &fa)))
          .ok_or(FilletErr::NoBox)?;
+     // A neighbouring lump with a straight edge that starts where this one ends and runs the same
+     // way makes this ONE edge to the student: cutting only the owner's half would be a wrong solid.
+     for (k, sh) in src.shells.iter().enumerate() {
+         if k == owner {
+             continue;
+         }
+         for f in &sh.borrow().faces {
+             for w in &f.borrow().boundary {
+                 for u in &w.borrow().edges {
+                     let e = u.edge.borrow();
+                     if !matches!(&e.curve, crate::geom::Curve::Segment { .. }) {
+                         continue;
+                     }
+                     let (p, q) = (e.a.borrow().point, e.b.borrow().point);
+                     let d = sub(q, p);
+                     if len(d) <= 1e-9 || cross(normalize(d), edge_direction).iter().map(|c| c * c).sum::<f64>().sqrt() > 1e-6 {
+                         continue;
+                     }
+                     if [a, b].iter().any(|end| len(sub(*end, p)) < 1e-6 || len(sub(*end, q)) < 1e-6) {
+                         return Err(FilletErr::SplitEdge);
+                     }
+                 }
+             }
+         }
+     }
      let one = TSolid { shells: vec![src.shells[owner].clone()] };
      let cut = ops::boolean("subtract", &one, &tool).ok_or(FilletErr::NoBox)?;
      let mut shells = Vec::new();
