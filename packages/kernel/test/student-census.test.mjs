@@ -90,7 +90,7 @@ const EXPECT = Object.fromEntries([
   ["matrix box: hole", 'builds'],
   ["matrix box: hole then round", 'builds'],
   ["matrix box: hole then chamfer", 'builds'], // planar boolean: 32000 - 16 pi 20 - 180 exact
-  ["matrix box: hole then hollow", "can only hollow a box or a straight cylinder yet"],
+  ["matrix box: hole then hollow", 'builds'], // S4d: 40x40x20, 8 bore, wall 2.5 open top = 11880.005 (OCCT agrees)
   ["matrix box: round", 'builds'],
   ["matrix box: round then hole", 'builds'],
   ["matrix box: round then chamfer", "can only chamfer a convex edge"],
@@ -98,7 +98,7 @@ const EXPECT = Object.fromEntries([
   ["matrix box: chamfer", 'builds'],
   ["matrix box: chamfer then hole", 'builds'], // planar boolean, same closed form
   ["matrix box: chamfer then round", "can only round an edge of a box yet"],
-  ["matrix box: chamfer then hollow", "can only hollow a box or a straight cylinder yet"],
+  ["matrix box: chamfer then hollow", 'builds'], // S4d: offset polyhedron, 3 chamfer + 2.5 wall open top = 10667.497 (OCCT agrees)
   ["matrix box: hollow", 'builds'],
   ["matrix box: hollow then hole", 'builds'],
   ["matrix box: hollow then round", "would reach a cut made earlier"],
