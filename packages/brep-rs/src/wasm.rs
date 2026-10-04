@@ -3665,6 +3665,67 @@ mod tests {
         })
     }
 
+    /// Integration sweep of S4 (seed 3, idx 6263; present before S4): two closed hollow boxes (a box with
+    /// a sealed cavity: two shells) that overlap. The boolean came back as one operand unchanged, with
+    /// no refusal -- cut(A, B) = V(A) (10.2% high), the union of three in a row 3.3% high -- because the
+    /// soundness probes sample a few points of the planar faces and all of them missed the thin
+    /// overlap of the two walls. An operand with an inner shell now needs inclusion-exclusion with
+    /// its partner operation.
+    #[test]
+    fn overlapping_hollow_boxes_are_exact_or_refused() {
+        let hollow = |center: [f64; 3]| {
+            let outer = build::box_solid([54.0, 37.0, 11.0], center, None);
+            let inner = build::box_solid([52.0, 35.0, 9.0], center, None);
+            ops::boolean("subtract", &outer, &inner).expect("a sealed cavity builds")
+        };
+        // Truth (OpenCascade agrees to 1e-12): each 5598, the two share 516.4, three in a row 15761.2.
+        let (a, b) = (hollow([0.0, 0.0, 0.0]), hollow([47.0, -1.4, 0.0]));
+        assert!((build::solid_volume(&a) - 5598.0).abs() < 1e-6);
+        let exact = |r: Option<TSolid>, want: f64, what: &str| {
+            if let Some(s) = r {
+                let v = build::solid_volume(&s);
+                assert!((v - want).abs() < 1e-6, "{what}: {v}, the truth is {want}");
+            }
+        };
+        exact(ops::boolean("subtract", &a, &b), 5598.0 - 516.4, "cut");
+        exact(ops::boolean("intersect", &a, &b), 516.4, "keep");
+        exact(ops::boolean("union", &a, &b), 2.0 * 5598.0 - 516.4, "join");
+        if let Some(ab) = ops::boolean("union", &a, &b) {
+            exact(ops::boolean("union", &ab, &hollow([94.0, -2.8, 0.0])), 15761.2, "three in a row");
+        }
+    }
+
+    /// Integration sweep of S4 (perm#4862): a ball wholly inside a cylinder whose bottom edge is
+    /// rounded (a torus band) used to build as the rounded cylinder with no void and an empty
+    /// refusals map, because `inside_solid` gave the wrong answer for any point of a part that
+    /// carries a torus face, so the ball's wall was classified outside the part and dropped.
+    #[test]
+    fn ball_inside_a_rounded_cylinder_is_a_void_or_a_refusal() {
+        let doc = json!({
+            "features": [
+                { "id": "cyl1", "kind": "cylinder", "radius": 19.0, "height": 40.0, "center": [0.0, 0.0, 0.0] },
+                { "id": "round1", "kind": "fillet", "target": "cyl1", "size": 3.0, "style": "fillet",
+                  "edge": between_edge_on("cyl1", "-z|side") },
+                { "id": "ball1", "kind": "sphere", "radius": 4.0, "center": [0.0, 0.0, 0.0] },
+                { "id": "op1", "kind": "combine", "op": "subtract", "targets": ["round1", "ball1"] }
+            ]
+        });
+        let (hist, refusals) = build_doc(&doc);
+        let rounded = build::solid_volume(hist.shapes.get("round1").expect("the rounded cylinder builds"));
+        assert!(
+            crate::ops::inside_solid(hist.shapes.get("round1").unwrap(), [0.0, 0.0, 0.0]),
+            "the middle of a rounded cylinder is inside it"
+        );
+        match hist.shapes.get("op1") {
+            Some(s) if refusals.is_empty() => {
+                let ball = 4.0 / 3.0 * std::f64::consts::PI * 64.0;
+                let v = build::solid_volume(s);
+                assert!((v - (rounded - ball)).abs() <= 1e-6 * rounded, "void volume {v} vs {}", rounded - ball);
+            }
+            _ => assert!(refusals.contains_key("op1"), "neither built nor refused: {refusals:?}"),
+        }
+    }
+
     /// SPEC-brep-fillet.md: round the +z/+x edge of a 40x40x20 box at r=4.
     /// 32000 - (16 - 4pi)*40 = 31862.654825, on 7 faces (5 walls + 2 caps).
     #[test]

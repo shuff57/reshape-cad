@@ -1564,8 +1564,13 @@ pub fn mesh_solid(solid: &TSolid, defl: f64) -> Option<Mesh> {
     if mesh_is_closed(&first) {
         return Some(first);
     }
-    for k in 1..=2 {
-        if let Some(finer) = mesh_solid_once(solid, defl / 3f64.powi(k)) {
+    // Closure is chord-sensitive: a part can mesh closed at 0.05 and 0.5 and open at 0.2 and 0.3 (a
+    // mirrored overlapping pattern of cylinders with blind holes, found by the S4 integration sweep),
+    // because the sampled rims of two neighbouring faces agree only when the chord happens to fall
+    // right (the segment count of a rim steps at exact chords). A third and a ninth were not enough; a
+    // finer chord always keeps the requested bound, and this only runs on a mesh that is open.
+    for k in [0.9, 0.8, 0.7, 0.65, 0.6, 0.5, 0.45, 0.4, 0.35, 1.0 / 3.0, 0.3, 0.25, 0.2, 0.15, 1.0 / 9.0, 0.1] {
+        if let Some(finer) = mesh_solid_once(solid, defl * k) {
             if mesh_is_closed(&finer) {
                 return Some(finer);
             }

@@ -5074,6 +5074,73 @@ pub(crate) fn solids_identical(a: &TSolid, b: &TSolid) -> bool {
 /// (`ops_planar`, SPEC-brep-boolean-split-classify S1) get a turn, so nothing
 /// that built before can change. A refusal from the planar path is final.
 pub fn boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
+    let r = boolean_unchecked(op, a, b)?;
+    // An operand with an inner shell (a hollow part, a sealed cavity) is the one case the per-face
+    // probes of `boolean_result_is_sound` cannot vouch for: a handful of samples on the planar faces
+    // can all miss the thin overlap of two walls, and the result then comes back as one operand
+    // unchanged (cut of one hollow box by another overlapping it: V(A) instead of V(A) - V(A*B),
+    // 10.2% off; the union of three hollow boxes in a row: 3.3% off; both found by the S4 integration
+    // sweep, present before S4). So such a result must also satisfy inclusion-exclusion with its
+    // partner operation, V(A+B) + V(A*B) = V(A) + V(B) and V(A-B) + V(A*B) = V(A), to 1e-9; if the
+    // partner cannot be built the answer cannot be vouched for and is refused.
+    // Bounded: the partner costs as much as the operation itself, and a polar pattern of heptagonal prisms
+    // (a fold of star-shaped unions, 70 s as it is) must not take twice as long. Past this many faces the
+    // result stands on the older guards alone.
+    if a.faces().len() + b.faces().len() <= PARTNER_FACE_BUDGET
+        && (needs_partner(a) || needs_partner(b))
+        && !PARTNER_RUNNING.with(|p| p.get())
+    {
+        PARTNER_RUNNING.with(|p| p.set(true));
+        let partner = boolean_unchecked(if op == "intersect" { "union" } else { "intersect" }, a, b);
+        PARTNER_RUNNING.with(|p| p.set(false));
+        // No partner is not a verdict: an empty intersection (a tool wholly inside a cavity) comes back as None too.
+        if let Some(p) = partner {
+            let (va, vb, vr, vp) = (build::solid_volume(a), build::solid_volume(b), build::solid_volume(&r), build::solid_volume(&p));
+            let want = if op == "subtract" { va } else { va + vb };
+            if (vr + vp - want).abs() > 1e-9 * want.abs().max(1.0) {
+                return None;
+            }
+        }
+    }
+    Some(r)
+}
+
+/// Whether a boolean on `s` needs its partner operation as a check: it has an inner shell, or it is a
+/// polyhedron that is not convex (an open cup, a pocketed block, an L). The face-by-face path reads
+/// the other operand as an intersection of half-spaces, which is only true while it is convex, and the
+/// per-face probes of `boolean_result_is_sound` can miss a thin overlap (an open hollow box cut by
+/// another: V(A) returned, 7.7% high). Parts with a curved face are left to the older guards.
+fn needs_partner(s: &TSolid) -> bool {
+    if s.shells.len() > 1 {
+        return true;
+    }
+    let faces = s.faces();
+    let mut planes: Vec<(Vec3, Vec3)> = Vec::new();
+    let mut pts: Vec<Vec3> = Vec::new();
+    for f in &faces {
+        let fb = f.borrow();
+        let Surface::Plane(p) = &fb.surface else { return false };
+        let n = if fb.forward { normalize(p.n) } else { scale(normalize(p.n), -1.0) };
+        planes.push((p.origin, n));
+        for w in &fb.boundary {
+            for u in &w.borrow().edges {
+                pts.push(u.edge.borrow().a.borrow().point);
+            }
+        }
+    }
+    let scale_len = pts.iter().fold(1.0_f64, |m, p| m.max(crate::math::len(*p)));
+    planes.iter().any(|(o, n)| pts.iter().any(|p| dot(sub(*p, *o), *n) > 1e-7 * scale_len))
+}
+
+/// Largest pair of operands (faces in both) whose boolean is checked against its partner operation.
+const PARTNER_FACE_BUDGET: usize = 80;
+
+thread_local! {
+    /// Set while `boolean` builds the partner operation of a multi-shell result, so the partner is not itself partnered.
+    static PARTNER_RUNNING: std::cell::Cell<bool> = const { std::cell::Cell::new(false) };
+}
+
+fn boolean_unchecked(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
     // The same solid twice: union and intersection are that solid, proven by geometry (never by
     // volume); the difference is empty, which is no solid at all.
     if solids_identical(a, b) {

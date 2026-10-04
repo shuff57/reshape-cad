@@ -2744,6 +2744,16 @@ fn core_carry(op: &str, a: &TSolid, b: &TSolid, pa: &[AFace], pb: &[AFace], cros
     };
     let mut faces = solid.faces();
     faces.extend(carry);
+    // A planar sliver of no area is a legitimate leftover and is dropped. A CURVED face of no area is
+    // never a sliver: it is a band built without its heights (perm#4862), and dropping it would delete
+    // a whole closed ball or cone from the result without opening the shell, so no guard downstream
+    // could see it.
+    if faces.iter().any(|f| {
+        let fb = f.borrow();
+        !matches!(fb.surface, Surface::Plane(_)) && build::face_area_centroid(&fb).0 <= 1e-9
+    }) {
+        bail!();
+    }
     ops::drop_degenerate_faces(&mut faces);
     ops::split_t_junctions(&mut faces);
     ops::weld_shared_edges(&mut faces);
@@ -2858,6 +2868,14 @@ fn solid_crossing_boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<Outcome> {
 /// applies to the welded whole. `None` means this is not the case (nothing to carry).
 fn carry_subtract(a: &TSolid, b: &TSolid) -> Option<Outcome> {
     let mut pb = extract(b)?;
+    // A sphere or cone TOOL is a revolved face (`AFace::Rev`) that only `boolean_planar_with` frames
+    // (`rev_family` gives it its axis and its heights). Carried through here it keeps zlo = zhi = 0, so
+    // the one band it builds has no height, an area of 0, and `drop_degenerate_faces` throws it away: a
+    // ball sealed inside a rounded cylinder came back as the rounded cylinder with no void and an empty
+    // refusals map (integration sweep of S4, perm#4862). This module cannot judge such a tool: no answer.
+    if pb.iter().any(|f| matches!(f, AFace::Rev(_))) {
+        return None;
+    }
     let tb = build::solid_aabb(b);
     if tb.is_empty() {
         return None;
