@@ -1698,7 +1698,8 @@ fn mesh_curved_face(
     // point shares (a T-vertex crack at the seam). Let the boundary's own rim
     // samples define the cycle; `stations` wraps it. v is never cyclic here, so
     // it keeps its endpoints.
-    let seed_u = !matches!(&surface, crate::geom::Surface::Cylinder(c) if c.arc.is_none());
+    let seed_u = !(matches!(&surface, crate::geom::Surface::Cylinder(c) if c.arc.is_none())
+        || (matches!(&surface, crate::geom::Surface::Cone(_)) && (u1 - u0 - TAU).abs() < 1e-9));
     let mut us: Vec<f64> = if seed_u { vec![u0, u1] } else { Vec::new() };
     let mut vs: Vec<f64> = vec![v0, v1];
 
@@ -1738,10 +1739,11 @@ fn mesh_curved_face(
                 // from its own curve), so adding it as a column is a T-vertex
                 // crack at the seam. The rim circles already define the u
                 // cycle; take u from them alone.
-                let seam_seg = matches!(
+                // The same holds for a full-turn cone's apex-to-rim seam.
+                let seam_seg = (matches!(
                     &surface,
                     crate::geom::Surface::Cylinder(c) if c.arc.is_none()
-                ) && matches!(edge_curve_kind(&u.edge), CurveKind::Seg);
+                ) || matches!(&surface, crate::geom::Surface::Cone(_)) && (u1 - u0 - TAU).abs() < 1e-9) && matches!(edge_curve_kind(&u.edge), CurveKind::Seg);
                 if !seam_seg && uu >= u0 - 1e-7 && uu <= u1 + 1e-7 {
                     add_station(&mut us, uu, u0, u1);
                 }
@@ -1811,6 +1813,32 @@ fn mesh_curved_face(
             }
         }
         cyl_lattice = true;
+    }
+    // A full-turn CONE wall: the same rule as a full cylinder. Its own (e1,e2)
+    // lattice starts at the cone frame's u0, which a turned cone rotates away
+    // from the `frame(axis)` lattice its base disk is sampled on; the two then
+    // disagree on every rim vertex (an open mesh at every deflection that
+    // splits the rim into more than the minimum segments). Inject the
+    // `frame(axis)` lattice instead and switch the own-frame lattice off.
+    if let crate::geom::Surface::Cone(c) = &surface {
+        if (u1 - u0 - TAU).abs() < 1e-9 {
+            let n = arc_segments(ru, u1 - u0, defl, 8).max(1);
+            let (c1, c2, _) = crate::geom::frame(c.axis);
+            for k in 0..n {
+                let th = TAU * k as f64 / n as f64;
+                let dir = crate::math::add(
+                    crate::math::scale(c1, th.cos()),
+                    crate::math::scale(c2, th.sin()),
+                );
+                let mut uu = crate::math::dot(dir, c.e2).atan2(crate::math::dot(dir, c.e1));
+                while uu < u0 - 1e-9 { uu += TAU; }
+                while uu > u1 + 1e-9 { uu -= TAU; }
+                if uu >= u0 - 1e-7 && uu <= u1 + 1e-7 {
+                    add_station(&mut us, uu, u0, u1);
+                }
+            }
+            cyl_lattice = true;
+        }
     }
     let su = angle_step(ru, defl);
     let sv = angle_step(rv, defl);
@@ -2005,6 +2033,23 @@ mod tests {
             let m = mesh_solid(solid, 0.05).unwrap_or_else(|| panic!("{id} did not mesh"));
             let covered: usize = m.faces.iter().map(|(_, c)| c).sum();
             assert_eq!(covered, m.indices.len(), "{id}: face ranges do not cover the index buffer");
+        }
+    }
+
+    /// G2: a TURNED cone's base disk and wall used to disagree on every rim
+    /// vertex (the wall's own lattice starts at the cone frame's rotated u0),
+    /// an open mesh at every deflection that splits the rim past the minimum.
+    #[test]
+    fn turned_cone_watertight_at_every_deflection() {
+        use crate::math::Transform;
+        let base = crate::build::cone_solid([0.0, 0.0, 0.0], 10.0, 20.0, [0.0, 0.0, 1.0]);
+        for (rx, ry, rz) in [(0.0, 0.0, 45.0), (0.0, 90.0, 0.0), (30.0, 0.0, 0.0), (17.0, 33.0, 71.0), (0.0, 0.0, 0.0), (0.0, 0.0, 200.0)] {
+            let t = Transform::euler_deg(rx, ry, rz).about([0.0, 0.0, 0.0]);
+            let s = crate::build::transform_solid(&base, &t);
+            for defl in [0.01_f64, 0.05, 0.1, 0.3, 1.0] {
+                let m = mesh_solid(&s, defl).unwrap_or_else(|| panic!("turned cone did not mesh at d={defl}"));
+                assert!(watertight(&m), "turned cone ({rx},{ry},{rz}) not watertight at d={defl}");
+            }
         }
     }
 
