@@ -434,7 +434,7 @@ Sweep re-run on the merged build (SWEEP=1, SWEEP_N=6000 per family, 66000 script
 - **Verified**: cargo test --release 401 (was 400, +1); sketch 42, script 262, kernel 720 + 2 skipped (was 691, +29: 26 + 1 + 2 counted in the suite), studio 248; gates parity 78/0, mesh 78/0, step 71/0/7, gate:occt 17/0. Scouted 52 of 54 cases exact before the build; the two bare-ring cases were mesh-chordal, not wrong.
 - Docs prose (`reshape-docs.ts`) and `docs/refusal-census.json` list no mirror-of-curved refusal, so neither changed.
 
-## S4b overlapping pattern copies (branch s4b-pattern; section number assigned on merge)
+## 29. S4b: overlapping pattern copies
 
 - A linear or polar pattern whose copies overlap used to refuse ("its copies overlap, which brep-rs cannot combine without a boolean yet"). The pattern handler (`wasm.rs`, `"pattern"`) now folds `ops::boolean("union", ...)` over the copies; a copy whose box clears everything folded so far is still joined with no boolean, and a pattern with no overlap keeps the disjoint-shell fast path untouched.
 - Scope: copies made only of plane and cylinder faces (box, cylinder, prism, wedge and their cuts). A sphere, cone or torus (and a ring) keeps refusing. Guards on the folded result, any of which refuses with "pattern X: its copies overlap, and brep-rs cannot join them into one exact solid": a union step returns None; the volume is outside [largest copy, sum of copies]; the mesh is not closed at both chord 0.05 and 0.5; or the fold's work (sum over steps of faces so far x faces of the next copy) exceeds 4000.
@@ -444,7 +444,7 @@ Sweep re-run on the merged build (SWEEP=1, SWEEP_N=6000 per family, 66000 script
 - Sweep (perm + random, SWEEP_N=1500, seeds 1 and 2, OCCT on): WRONG 3 and 2 before, 3 and 2 after (all chamfers, the known ones, none from patterns); AGREE 516 -> 613 and 535 -> 635; REFUSED 4066 -> 3953 and 4051 -> 3934; "copies overlap" as the sole refusal 304 -> 193 and 309 -> 192. Gates: parity 78/0, mesh 78/0, STEP 71/0/7, gate:occt 17/0; cargo 400; node suites 42/262/726+2skipped/248.
 - Still refusing: three bars crossing at 120 degrees at one point (a union step the boolean cannot build), crescent copies (cut cylinders) whose union meshes open, patterns of patterns that exceed the work budget, and every sphere, cone, torus or ring pattern. The docs prose (`reshape-docs.ts`, polarPattern) now says overlapping copies are joined; `docs/refusal-census.json` is unchanged (the census holds no overlapping pattern).
 
-## S4e perpendicular cylinder union and intersect (branch s4e-cyl-cross)
+## 30. S4e: perpendicular cylinder union and intersect
 
 Join and keep of two SOLID cylinders whose axes are perpendicular and meet (a pipe tee, a radial boss on a shaft) used to refuse. Built for r <= 0.95 R, the small axis crossing the big one clear of its caps, each end of the small one either clearing the wall (`x >= R`, flush counts) or stopping inside (`|x| <= sqrt(R^2 - r^2)`), at least one clearing it; either operand may be the big one.
 
