@@ -258,8 +258,8 @@ test('what is not a clean coaxial pair refuses in a sentence and builds nothing'
     ["const a = sphere(24, { at: [0, 0, 0] })\nconst b = box(40, 40, 40, { at: [20, 20, 20] })\nsubtract(a, b)", 'a ball against a box corner'],
     ["const a = sphere(24, { at: [0, 0, 0] })\nconst b = cylinder(8, 40, { at: [5, 0, 0] })\nsubtract(a, b)", 'a cylinder off the ball\'s centre'],
     ["const a = sphere(24, { at: [0, 0, 0] })\nconst b = cylinder(8, 60, { at: [0, 0, 0] })\nturn(b, [0, 90, 0])\nsubtract(a, b)", 'a cylinder through the centre, on another axis than the plates (the sphere re-frames: builds)'],
-    ["const a = sphere(24, { at: [0, 0, 0] })\nconst b = sphere(24, { at: [0, 0, 0] })\nunion(a, b)", 'the same ball twice'],
-    ["const a = cone(20, 20, { at: [0, 0, 0] })\nconst b = cone(20, 20, { at: [0, 0, 0] })\nunion(a, b)", 'the same cone twice'],
+    ["const a = sphere(24, { at: [0, 0, 0] })\nconst b = sphere(24, { at: [0, 0, 0] })\nunion(a, b)", 'the same ball twice (S4i: identical operands join into the copy: builds)'],
+    ["const a = cone(20, 20, { at: [0, 0, 0] })\nconst b = cone(20, 20, { at: [0, 0, 0] })\nunion(a, b)", 'the same cone twice (S4i: builds)'],
     ["const a = sphere(24, { at: [0, 0, 0] })\nconst b = box(40, 40, 10, { at: [0, 0, 17] })\nunion(a, b)", 'a plate resting on the ball (tangent at the pole)'],
   ];
   let refused = 0;
@@ -267,13 +267,14 @@ test('what is not a clean coaxial pair refuses in a sentence and builds nothing'
     const { refusals, m } = build(code);
     if (why.includes('builds')) {
       assert.ok(m, why);
+      if (why.startsWith('the same ball')) assert.ok(Math.abs(m.volume - (4 / 3) * Math.PI * 12 ** 3) < 1e-6, String(m.volume));
       continue;
     }
     assert.equal(m, undefined, `${why}: built a solid`);
     assert.match(refusals.op1 ?? '', /cannot boolean these two solids/, why);
     refused++;
   }
-  assert.equal(refused, cases.length - 1, 'every case but the one that builds refuses');
+  assert.equal(refused, cases.length - 3, 'every case but the three that build refuses');
 });
 
 test('a result in two pieces is refused, not handed back as one solid: the ball cut by a slab through its middle', () => {

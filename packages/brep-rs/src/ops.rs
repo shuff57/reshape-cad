@@ -4957,11 +4957,131 @@ pub fn has_cross_trim(s: &TSolid) -> bool {
 
 
 
+/// Debug text split into its skeleton (names, punctuation, enum variants) and the numbers in it.
+/// Two values are "the same to `tol`" when the skeletons are equal and every number agrees.
+fn debug_numbers(s: &str) -> (String, Vec<f64>) {
+    let b = s.as_bytes();
+    let (mut skel, mut nums) = (String::new(), Vec::new());
+    let mut i = 0;
+    while i < b.len() {
+        let starts = b[i].is_ascii_digit() || (b[i] == b'-' && i + 1 < b.len() && b[i + 1].is_ascii_digit());
+        // a digit that belongs to an identifier (e1, e2) is part of the skeleton, not a number
+        let in_ident = i > 0 && (b[i - 1].is_ascii_alphabetic() || b[i - 1] == b'_') && b[i].is_ascii_digit();
+        if starts && !in_ident {
+            let st = i;
+            if b[i] == b'-' {
+                i += 1;
+            }
+            while i < b.len() && (b[i].is_ascii_digit() || b[i] == b'.') {
+                i += 1;
+            }
+            if i < b.len() && (b[i] == b'e' || b[i] == b'E') {
+                let mut j = i + 1;
+                if j < b.len() && (b[j] == b'-' || b[j] == b'+') {
+                    j += 1;
+                }
+                if j < b.len() && b[j].is_ascii_digit() {
+                    while j < b.len() && b[j].is_ascii_digit() {
+                        j += 1;
+                    }
+                    i = j;
+                }
+            }
+            nums.push(s[st..i].parse::<f64>().unwrap_or(f64::NAN));
+            skel.push('#');
+        } else {
+            skel.push(b[i] as char);
+            i += 1;
+        }
+    }
+    (skel, nums)
+}
+
+fn debug_same<T: std::fmt::Debug>(a: &T, b: &T, tol: f64) -> bool {
+    let (sa, na) = debug_numbers(&format!("{a:?}"));
+    let (sb, nb) = debug_numbers(&format!("{b:?}"));
+    sa == sb
+        && na.len() == nb.len()
+        && na.iter().zip(&nb).all(|(x, y)| x.is_finite() && y.is_finite() && (x - y).abs() <= tol * x.abs().max(y.abs()).max(1.0))
+}
+
+/// True only when `a` and `b` are PROVABLY the same solid: the same surfaces (kind, parameters, trims,
+/// orientation), the same boundary edges (curve and endpoints) on every face, every number equal to
+/// 1e-9. Volume is never consulted. A match is a bijection of faces, so the check is conservative: any
+/// difference at all, or any doubt, says false.
+pub(crate) fn solids_identical(a: &TSolid, b: &TSolid) -> bool {
+    const TOL: f64 = 1e-9;
+    let (fa, fb) = (a.faces(), b.faces());
+    if fa.is_empty() || fa.len() != fb.len() || a.shells.len() != b.shells.len() {
+        return false;
+    }
+    let (ba, bb) = (build::solid_aabb(a), build::solid_aabb(b));
+    if !(0..3).all(|i| (ba.lo[i] - bb.lo[i]).abs() <= 1e-6 && (ba.hi[i] - bb.hi[i]).abs() <= 1e-6) {
+        return false;
+    }
+    let edge_same = |x: &topo::EdgeUse<Curve3>, y: &topo::EdgeUse<Curve3>| {
+        let (ex, ey) = (x.edge.borrow(), y.edge.borrow());
+        x.forward == y.forward
+            && ex.forward == ey.forward
+            && debug_same(&ex.curve, &ey.curve, TOL)
+            && debug_same(&ex.a.borrow().point, &ey.a.borrow().point, TOL)
+            && debug_same(&ex.b.borrow().point, &ey.b.borrow().point, TOL)
+    };
+    let wire_same = |x: &topo::WireRef<Curve3>, y: &topo::WireRef<Curve3>| {
+        let (wx, wy) = (x.borrow(), y.borrow());
+        if wx.edges.len() != wy.edges.len() {
+            return false;
+        }
+        let mut used = vec![false; wy.edges.len()];
+        wx.edges.iter().all(|ux| match (0..wy.edges.len()).find(|&k| !used[k] && edge_same(ux, &wy.edges[k])) {
+            Some(k) => {
+                used[k] = true;
+                true
+            }
+            None => false,
+        })
+    };
+    let face_same = |x: &TFace, y: &TFace| {
+        let (px, py) = (x.borrow(), y.borrow());
+        if px.forward != py.forward
+            || px.boundary.len() != py.boundary.len()
+            || !debug_same(&px.surface, &py.surface, TOL)
+            || !debug_same(&px.uv_domain, &py.uv_domain, TOL)
+        {
+            return false;
+        }
+        let mut used = vec![false; py.boundary.len()];
+        px.boundary.iter().all(|wx| match (0..py.boundary.len()).find(|&k| !used[k] && wire_same(wx, &py.boundary[k])) {
+            Some(k) => {
+                used[k] = true;
+                true
+            }
+            None => false,
+        })
+    };
+    let mut used = vec![false; fb.len()];
+    fa.iter().all(|x| match (0..fb.len()).find(|&k| !used[k] && face_same(x, &fb[k])) {
+        Some(k) => {
+            used[k] = true;
+            true
+        }
+        None => false,
+    })
+}
+
 /// The boolean entry point. The face-by-face path runs first, exactly as
 /// before; only when it refuses does the planar split-and-classify path
 /// (`ops_planar`, SPEC-brep-boolean-split-classify S1) get a turn, so nothing
 /// that built before can change. A refusal from the planar path is final.
 pub fn boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
+    // The same solid twice: union and intersection are that solid, proven by geometry (never by
+    // volume); the difference is empty, which is no solid at all.
+    if solids_identical(a, b) {
+        return match op {
+            "union" | "intersect" => Some(build::transform_solid(a, &crate::math::Transform::identity())),
+            _ => None,
+        };
+    }
     if let Some(r) = boolean_legacy(op, a, b) {
         // The face-by-face path splits a face along the other solid's edges without splitting
         // the face next door, leaving a vertex in the middle of a neighbour's edge (a T-junction):
@@ -6633,6 +6753,41 @@ mod tests {
         let vol = build::solid_volume(&result);
         assert!((vol - want).abs() <= 1e-6 * want, "volume {vol} vs {want}");
 }
+
+    /// S4i (1): the same solid twice. Identity is proven by geometry; union and intersection are a
+    /// copy of it, the difference is empty (a refusal), and a different solid of EQUAL volume is
+    /// not mistaken for it.
+    #[test]
+    fn coincident_operands_union_and_intersect_are_a_copy_and_subtract_is_empty() {
+        let pi = std::f64::consts::PI;
+        let cases: Vec<(&str, TSolid, TSolid, f64)> = vec![
+            ("box", build::box_solid([20.0, 30.0, 40.0], [1.0, 2.0, 3.0], None), build::box_solid([20.0, 30.0, 40.0], [1.0, 2.0, 3.0], None), 24000.0),
+            ("cylinder", build::cylinder_solid([0.0; 3], 10.0, 30.0, [0.0, 0.0, 1.0]), build::cylinder_solid([0.0; 3], 10.0, 30.0, [0.0, 0.0, 1.0]), pi * 100.0 * 30.0),
+            ("sphere", build::sphere_solid([0.0; 3], 10.0, [0.0, 0.0, 1.0]), build::sphere_solid([0.0; 3], 10.0, [0.0, 0.0, 1.0]), 4.0 / 3.0 * pi * 1000.0),
+            ("cone", build::cone_solid([0.0; 3], 10.0, 30.0, [0.0, 0.0, 1.0]), build::cone_solid([0.0; 3], 10.0, 30.0, [0.0, 0.0, 1.0]), pi * 100.0 * 10.0),
+        ];
+        for (name, a, b, v) in &cases {
+            assert!(solids_identical(a, b), "{name} identical to its twin");
+            for op in ["union", "intersect"] {
+                let r = boolean(op, a, b).unwrap_or_else(|| panic!("{name} {op} of coincident operands must build"));
+                assert_eq!(r.faces().len(), a.faces().len(), "{name} {op}: face count");
+                let vol = build::solid_volume(&r);
+                assert!((vol - v).abs() <= 1e-9 * v, "{name} {op}: {vol} vs {v}");
+            }
+            assert!(boolean("subtract", a, b).is_none(), "{name}: cutting a solid from itself is empty, a refusal");
+        }
+        // equal volume, different shape: never identical
+        let p = build::box_solid([20.0, 30.0, 40.0], [0.0; 3], None);
+        let q = build::box_solid([30.0, 20.0, 40.0], [0.0; 3], None);
+        assert!(!solids_identical(&p, &q));
+        // a cylinder off by 1e-6 in radius is not identical either
+        let c1 = build::cylinder_solid([0.0; 3], 10.0, 30.0, [0.0, 0.0, 1.0]);
+        let c2 = build::cylinder_solid([0.0; 3], 10.000001, 30.0, [0.0, 0.0, 1.0]);
+        assert!(!solids_identical(&c1, &c2));
+        // a shifted copy is not identical
+        let c3 = build::cylinder_solid([1e-6, 0.0, 0.0], 10.0, 30.0, [0.0, 0.0, 1.0]);
+        assert!(!solids_identical(&c1, &c3));
+    }
 
 /// K0a regression pin (I-1): a 40^3 box minus an ENCLOSED r5 sphere.
 /// flip_face has no Sphere arm, so the cavity's faces cannot be reversed:

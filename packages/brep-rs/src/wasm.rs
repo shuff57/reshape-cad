@@ -1624,6 +1624,16 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     };
                     match shape.take() {
                         None => shape = Some(s),
+                        Some(cur) if op == "subtract" && ops::solids_identical(&cur, &s) => {
+                            refusals.insert(
+                                id.clone(),
+                                json!(format!(
+                                    "combine {id}: the two solids are the same shape in the same place, so cutting one from the other leaves nothing (an empty solid) -- {id} is shown without it."
+                                )),
+                            );
+                            refused = true;
+                            break;
+                        }
                         Some(cur) => match ops::boolean(op, &cur, &s) {
                             Some(r) => shape = Some(r),
                             None => {
@@ -6796,7 +6806,7 @@ fn build_fillet(
  }
  let edge_direction = scale(edge_vector, 1.0 / edge_length);
  let midpoint = scale(add(a, b), 0.5);
- let face_data = |face: &build::TFace| -> Result<(Vec3, Vec3, f64), FilletErr> {
+ let face_data = |face: &build::TFace, midpoint: Vec3| -> Result<(Vec3, Vec3, f64), FilletErr> {
  let (surface_normal, forward) = {
  let f = face.borrow();
  let Surface::Plane(plane) = &f.surface else {
@@ -6835,8 +6845,8 @@ fn build_fillet(
  }
  Ok((normal, inward, reach))
  };
- let (normal_a, in_a, reach_a) = face_data(&fa)?;
- let (normal_b, in_b, reach_b) = face_data(&fb)?;
+ let (normal_a, in_a, reach_a) = face_data(&fa, midpoint)?;
+ let (normal_b, in_b, reach_b) = face_data(&fb, midpoint)?;
  if dot(normal_a, normal_b).abs() >= 1.0 - 1e-9 {
  return Err(FilletErr::Flat);
  }
@@ -6864,31 +6874,38 @@ fn build_fillet(
  let u_axis = in_a;
  let v_axis = cross(edge_direction, u_axis);
  let third = [size * dot(in_b, u_axis), size * dot(in_b, v_axis)];
- let segs = vec![
- build::ProfileSeg::Line { a: [0.0, 0.0], b: [size, 0.0] },
- build::ProfileSeg::Line { a: [size, 0.0], b: third },
- build::ProfileSeg::Line { a: third, b: [0.0, 0.0] },
- ];
- let tool = build::extrude_profile(
- &segs,
- sub(a, scale(edge_direction, size)),
- u_axis,
- v_axis,
- scale(edge_direction, edge_length + 2.0 * size),
- )
- .map_err(|_| FilletErr::NoBox)?;
- let tool = build::ensure_outward(&tool);
+ let wedge_area = 0.5 * size * third[1].abs();
+ // The wedge for the stretch of the edge's line that starts `t0` after `a` and is `span` long. It runs `size` past
+ // both ends, which is harmless when each lump is cut on its own.
+ let make_tool = |t0: f64, span: f64| -> Result<TSolid, FilletErr> {
+     let segs = vec![
+         build::ProfileSeg::Line { a: [0.0, 0.0], b: [size, 0.0] },
+         build::ProfileSeg::Line { a: [size, 0.0], b: third },
+         build::ProfileSeg::Line { a: third, b: [0.0, 0.0] },
+     ];
+     let tool = build::extrude_profile(
+         &segs,
+         sub(add(a, scale(edge_direction, t0)), scale(edge_direction, size)),
+         u_axis,
+         v_axis,
+         scale(edge_direction, span + 2.0 * size),
+     )
+     .map_err(|_| FilletErr::NoBox)?;
+     Ok(build::ensure_outward(&tool))
+ };
  // The tool runs `size` past both ends of the edge, so on a part of several lumps (a mirror, a
  // pattern) it could reach a neighbouring lump that touches this one and shave it too, which no
- // chamfer of THIS edge does. It cuts the lump that owns the edge, alone, and puts the lumps back.
+ // chamfer of THIS edge does. Each lump is cut on its own, with the wedge for the stretch of the
+ // edge it owns, and the lumps are put back.
  if src.shells.len() > 1 {
      let owner = src
          .shells
          .iter()
          .position(|sh| sh.borrow().faces.iter().any(|f| std::rc::Rc::ptr_eq(f, &fa)))
          .ok_or(FilletErr::NoBox)?;
-     // A neighbouring lump with a straight edge that starts where this one ends and runs the same
-     // way makes this ONE edge to the student: cutting only the owner's half would be a wrong solid.
+     // Straight edges of the OTHER lumps that lie on this edge's line: (lump, edge, t0, t1) with t measured from `a`.
+     let on_line = |p: Vec3| len(cross(sub(p, a), edge_direction)) < 1e-6;
+     let mut cand: Vec<(usize, build::TEdge, f64, f64)> = Vec::new();
      for (k, sh) in src.shells.iter().enumerate() {
          if k == owner {
              continue;
@@ -6901,30 +6918,117 @@ fn build_fillet(
                          continue;
                      }
                      let (p, q) = (e.a.borrow().point, e.b.borrow().point);
-                     let d = sub(q, p);
-                     if len(d) <= 1e-9 || cross(normalize(d), edge_direction).iter().map(|c| c * c).sum::<f64>().sqrt() > 1e-6 {
+                     if !on_line(p) || !on_line(q) {
                          continue;
                      }
-                     if [a, b].iter().any(|end| len(sub(*end, p)) < 1e-6 || len(sub(*end, q)) < 1e-6) {
-                         return Err(FilletErr::SplitEdge);
+                     let (tp, tq) = (dot(sub(p, a), edge_direction), dot(sub(q, a), edge_direction));
+                     let (t0, t1) = (tp.min(tq), tp.max(tq));
+                     if t1 - t0 > 1e-9 && !cand.iter().any(|c| crate::topo::same(&c.1, &u.edge)) {
+                         cand.push((k, u.edge.clone(), t0, t1));
                      }
                  }
              }
          }
      }
-     let one = TSolid { shells: vec![src.shells[owner].clone()] };
-     let cut = ops::boolean("subtract", &one, &tool).ok_or(FilletErr::NoBox)?;
-     let mut shells = Vec::new();
-     for (k, sh) in src.shells.iter().enumerate() {
-         if k == owner {
-             shells.extend(cut.shells.iter().cloned());
-         } else {
-             shells.push(sh.clone());
+     // The run of collinear edges, each starting where the last one ends and not overlapping it: ONE edge to the
+     // student, held by one lump per piece.
+     let (mut lo, mut hi) = (0.0_f64, edge_length);
+     let mut chain: Vec<(usize, build::TEdge, f64, f64)> = Vec::new();
+     loop {
+         let mut grew = false;
+         for c in &cand {
+             if chain.iter().any(|m| crate::topo::same(&m.1, &c.1)) || chain.iter().any(|m| m.0 == c.0) || c.0 == owner {
+                 continue;
+             }
+             if (c.2 - hi).abs() < 1e-6 {
+                 hi = c.3;
+             } else if (c.3 - lo).abs() < 1e-6 {
+                 lo = c.2;
+             } else {
+                 continue;
+             }
+             chain.push(c.clone());
+             grew = true;
+         }
+         if !grew {
+             break;
          }
      }
-     return Ok(build::ensure_outward(&TSolid { shells }));
+     // Anything else on the line that overlaps the run or shares one of its ends is not a clean continuation.
+     for c in &cand {
+         if chain.iter().any(|m| crate::topo::same(&m.1, &c.1)) {
+             continue;
+         }
+         let overlaps = c.3.min(hi) - c.2.max(lo) > 1e-6;
+         let shares = [c.2, c.3].iter().any(|t| (t - lo).abs() < 1e-6 || (t - hi).abs() < 1e-6);
+         if overlaps || shares {
+             return Err(FilletErr::SplitEdge);
+         }
+     }
+     // Every piece must really be the same edge: its two faces are the same two planes, the corner is convex, the
+     // size fits its faces, and its ends touch no more than three faces.
+     let mut members: Vec<(usize, f64, f64)> = vec![(owner, 0.0, edge_length)];
+     for (k, edge2, t0, t1) in &chain {
+         let mid_k = add(a, scale(edge_direction, 0.5 * (t0 + t1)));
+         let lump = TSolid { shells: vec![src.shells[*k].clone()] };
+         let faces2: Vec<build::TFace> = lump
+             .faces()
+             .into_iter()
+             .filter(|f| f.borrow().boundary.iter().any(|w| w.borrow().edges.iter().any(|u| crate::topo::same(&u.edge, edge2))))
+             .collect();
+         if faces2.len() != 2 {
+             return Err(FilletErr::SplitEdge);
+         }
+         let (d0, d1) = (face_data(&faces2[0], mid_k)?, face_data(&faces2[1], mid_k)?);
+         let alike = |x: &(Vec3, Vec3, f64), n: Vec3, i: Vec3| len(sub(x.0, n)) < 1e-7 && len(sub(x.1, i)) < 1e-7;
+         let same_planes = (alike(&d0, normal_a, in_a) && alike(&d1, normal_b, in_b)) || (alike(&d1, normal_a, in_a) && alike(&d0, normal_b, in_b));
+         if !same_planes {
+             return Err(FilletErr::SplitEdge);
+         }
+         if size >= d0.2.min(d1.2) - 1e-12 {
+             return Err(FilletErr::TooBig);
+         }
+         if !ops::inside_solid(&lump, add(mid_k, scale(normalize(add(in_a, in_b)), 1e-6))) {
+             return Err(FilletErr::Concave);
+         }
+         for endpoint in [&edge2.borrow().a, &edge2.borrow().b] {
+             let count = lump.faces().iter().filter(|face| {
+                 face.borrow().boundary.iter().any(|wire| wire.borrow().edges.iter().any(|use_| {
+                     let e = use_.edge.borrow();
+                     std::rc::Rc::ptr_eq(&e.a, endpoint) || std::rc::Rc::ptr_eq(&e.b, endpoint)
+                 }))
+             }).count();
+             if count > 3 {
+                 return Err(FilletErr::VertexTooComplex);
+             }
+         }
+         members.push((*k, *t0, *t1));
+     }
+     let mut cut_of: Vec<Option<TSolid>> = vec![None; src.shells.len()];
+     for (k, t0, t1) in &members {
+         let one = TSolid { shells: vec![src.shells[*k].clone()] };
+         let cut = ops::boolean("subtract", &one, &make_tool(*t0, t1 - t0)?).ok_or(FilletErr::NoBox)?;
+         cut_of[*k] = Some(cut);
+     }
+     let mut shells = Vec::new();
+     for (k, sh) in src.shells.iter().enumerate() {
+         match &cut_of[k] {
+             Some(cut) => shells.extend(cut.shells.iter().cloned()),
+             None => shells.push(sh.clone()),
+         }
+     }
+     let result = build::ensure_outward(&TSolid { shells });
+     if members.len() > 1 {
+         // Exact: the part loses the wedge's area times the edge's length, and nothing else.
+         let want: f64 = members.iter().map(|(_, t0, t1)| wedge_area * (t1 - t0)).sum();
+         let got = build::solid_volume(src) - build::solid_volume(&result);
+         if !got.is_finite() || (got - want).abs() > 1e-9 * build::solid_volume(src).abs().max(1.0) {
+             return Err(FilletErr::SplitEdge);
+         }
+     }
+     return Ok(result);
  }
- ops::boolean("subtract", src, &tool)
+ ops::boolean("subtract", src, &make_tool(0.0, edge_length)?)
      .map(|solid| build::ensure_outward(&solid))
      .ok_or(FilletErr::NoBox)
 }
