@@ -1217,6 +1217,48 @@ fn dist_to_curve(c: &Curve, p: [f64; 2]) -> f64 {
     }
 }
 
+/// Two curves that touch at a point inside both without crossing: two arcs on circles that are
+/// tangent (outside each other, or one inside the other), or a line tangent to an arc, where
+/// the point of contact lies on both pieces. Contact at an end is the corner test's business;
+/// this finds the touch no end gives away, which pinches the outline just the same.
+fn tangent_touch(c1: &Curve, c2: &Curve, eps: f64) -> bool {
+    let on_both = |p: [f64; 2]| dist_to_curve(c1, p) <= eps && dist_to_curve(c2, p) <= eps;
+    match (c1.arc, c2.arc) {
+        (true, true) => {
+            let delta = sub2(c2.centre, c1.centre);
+            let d = len2(delta);
+            if d <= eps {
+                return false;
+            }
+            let u = [delta[0] / d, delta[1] / d];
+            let (r1, r2) = (c1.radius, c2.radius);
+            if (d - (r1 + r2)).abs() <= eps {
+                return on_both([c1.centre[0] + u[0] * r1, c1.centre[1] + u[1] * r1]);
+            }
+            if (d - (r1 - r2).abs()).abs() <= eps {
+                let sgn = if r1 > r2 { 1.0 } else { -1.0 };
+                return on_both([c1.centre[0] + sgn * u[0] * r1, c1.centre[1] + sgn * u[1] * r1]);
+            }
+            false
+        }
+        (false, true) | (true, false) => {
+            let (line, arc) = if c1.arc { (c2, c1) } else { (c1, c2) };
+            let d = sub2(line.b, line.a);
+            let l2 = dot2(d, d);
+            if l2 <= 0.0 {
+                return false;
+            }
+            let t = dot2(sub2(arc.centre, line.a), d) / l2;
+            let foot = [line.a[0] + t * d[0], line.a[1] + t * d[1]];
+            if (dist2(foot, arc.centre) - arc.radius).abs() > eps {
+                return false;
+            }
+            on_both(foot)
+        }
+        (false, false) => false,
+    }
+}
+
 /// Check one closed outline for the flaws that make it not a profile: a
 /// self-crossing, a pinch, a spike, or no area. Segments of zero length are
 /// ignored (a doubled point in a polygon is harmless). `None` means the outline
@@ -1282,7 +1324,8 @@ pub fn outline_flaw(segs: &[WireSeg]) -> Option<OutlineFlaw> {
                 return Some(OutlineFlaw::Crossing(i, j));
             }
             let touches = [c1.a, c1.b].iter().any(|e| dist_to_curve(c2, *e) <= eps)
-                || [c2.a, c2.b].iter().any(|e| dist_to_curve(c1, *e) <= eps);
+                || [c2.a, c2.b].iter().any(|e| dist_to_curve(c1, *e) <= eps)
+                || tangent_touch(c1, c2, eps);
             if touches {
                 return Some(OutlineFlaw::Touching(i, j));
             }
@@ -1323,6 +1366,63 @@ mod outline_flaw_tests {
     fn a_corner_on_another_edge_pinches() {
         let f = outline_flaw(&poly(&[[0.0, 0.0], [10.0, 0.0], [10.0, 10.0], [5.0, 0.0], [0.0, 10.0]]));
         assert!(matches!(f, Some(OutlineFlaw::Touching(..))), "{f:?}");
+    }
+
+    fn arc(c: [f64; 2], r: f64, a0_deg: f64, sw_deg: f64) -> WireSeg {
+        WireSeg::Arc { centre: c, radius: r, start: a0_deg.to_radians(), sweep: sw_deg.to_radians() }
+    }
+    fn at(c: [f64; 2], r: f64, deg: f64) -> [f64; 2] {
+        [c[0] + r * deg.to_radians().cos(), c[1] + r * deg.to_radians().sin()]
+    }
+
+    #[test]
+    fn two_arcs_touching_from_outside_pinch_the_outline() {
+        // Circles of radius 5 at (-5, 0) and (5, 0) kiss at the origin, which is inside both arcs.
+        let (c1, c2) = ([-5.0, 0.0], [5.0, 0.0]);
+        let segs = vec![
+            arc(c1, 5.0, -90.0, 180.0),
+            WireSeg::Line { a: at(c1, 5.0, 90.0), b: at(c2, 5.0, 90.0) },
+            arc(c2, 5.0, 90.0, 180.0),
+            WireSeg::Line { a: at(c2, 5.0, 270.0), b: at(c1, 5.0, -90.0) },
+        ];
+        let f = outline_flaw(&segs);
+        assert!(matches!(f, Some(OutlineFlaw::Touching(..))), "{f:?}");
+    }
+
+    #[test]
+    fn an_arc_touching_another_from_inside_pinches_the_outline() {
+        // A radius-5 circle at (5, 0) sits inside a radius-10 circle at the origin and touches it at (10, 0).
+        let (big, small) = ([0.0, 0.0], [5.0, 0.0]);
+        let segs = vec![
+            arc(big, 10.0, -30.0, 60.0),
+            WireSeg::Line { a: at(big, 10.0, 30.0), b: at(small, 5.0, 90.0) },
+            arc(small, 5.0, 90.0, -180.0),
+            WireSeg::Line { a: at(small, 5.0, -90.0), b: at(big, 10.0, -30.0) },
+        ];
+        let f = outline_flaw(&segs);
+        assert!(matches!(f, Some(OutlineFlaw::Touching(..))), "{f:?}");
+    }
+
+    #[test]
+    fn tangent_circles_whose_arcs_miss_the_contact_point_are_clean() {
+        // The same two circles as the first test, but each arc is the half AWAY from the other: no touch.
+        let (c1, c2) = ([-5.0, 0.0], [5.0, 0.0]);
+        let segs = vec![
+            arc(c1, 5.0, 90.0, 180.0),
+            WireSeg::Line { a: at(c1, 5.0, 270.0), b: at(c2, 5.0, 270.0) },
+            arc(c2, 5.0, 270.0, 180.0),
+            WireSeg::Line { a: at(c2, 5.0, 90.0), b: at(c1, 5.0, 90.0) },
+        ];
+        assert_eq!(outline_flaw(&segs), None);
+    }
+
+    #[test]
+    fn a_stadium_and_a_rounded_rectangle_are_clean() {
+        // Four quarter arcs of radius 10 on a 20 x 20 square: neighbours meet at the ends, none touch elsewhere.
+        let r = 10.0;
+        let cs = [[10.0, 10.0], [-10.0, 10.0], [-10.0, -10.0], [10.0, -10.0]];
+        let segs: Vec<WireSeg> = (0..4).map(|k| arc(cs[k], r, 90.0 * k as f64, 90.0)).collect();
+        assert_eq!(outline_flaw(&segs), None);
     }
 }
 

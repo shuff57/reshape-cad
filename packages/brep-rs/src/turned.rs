@@ -79,7 +79,7 @@ impl Seg {
             Kind::Arc { r, sw, .. } => r * sw.abs(),
         }
     }
-    fn is_axis(&self) -> bool {
+    pub fn is_axis(&self) -> bool {
         matches!(&self.k, Kind::Line { a, b } if a[0].abs() < EPS && b[0].abs() < EPS)
     }
     /// Unit tangent at the start and at the end.

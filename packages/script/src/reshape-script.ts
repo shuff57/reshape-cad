@@ -460,6 +460,19 @@ function wholeIndex(fn: string, label: string, v: unknown, count: number): numbe
   return val - 1;
 }
 
+/** A corner number as the script writes it: 1 is the first corner, the same count the Rules panel and
+ *  .pin() use. Returns the 0-based index the document stores. `count` is the sketch's corner count
+ *  (0 when it has none yet, in which case any whole number from 1 is let through). */
+function cornerIndex(fn: string, v: unknown, count: number): number {
+  const val = unwrap(requiredNumber(fn, 'corner', v));
+  if (!Number.isInteger(val) || val < 1 || (count > 0 && val > count)) {
+    throw new Error(
+      `${fn}'s corner has to be a whole number from 1${count > 0 ? ` to ${count}` : ''} (corner 1 is the first corner) -- you gave it ${val}.`
+    );
+  }
+  return val - 1;
+}
+
 /** What plane() returns. Plain data in a class only so sketch() can tell it
  *  from a hand-written frame; it is never stored in the doc. */
 class PlaneValue {
@@ -1288,17 +1301,17 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
         return handle;
       },
       round(corner, radius) {
-        const k = requiredNumber('.round()', 'corner', corner) as number;
-        const r = requiredNumber('.round()', 'radius', radius);
         const cur = findFeature(id) as SketchFeature;
+        const k = cornerIndex('.round()', corner, cur.points?.length ?? 0);
+        const r = requiredNumber('.round()', 'radius', radius);
         const rounds = { ...(cur.rounds ?? {}), [k]: num(r, id, `r${k}`) };
         replaceFeature(id, { ...cur, rounds });
         return handle;
       },
       chamfer(corner, distance) {
-        const k = requiredNumber('.chamfer()', 'corner', corner) as number;
-        const dist = requiredNumber('.chamfer()', 'distance', distance) as number;
         const cur = findFeature(id) as SketchFeature;
+        const k = cornerIndex('.chamfer()', corner, cur.points?.length ?? 0);
+        const dist = requiredNumber('.chamfer()', 'distance', distance) as number;
         const chamfers = { ...(cur.chamfers ?? {}), [k]: dist };
         replaceFeature(id, { ...cur, chamfers });
         return handle;
@@ -2210,8 +2223,8 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
         const fmt = (v: number) => String(Math.round(v * 100) / 100);
         ruleWarnings.push(
           n.got > 0
-            ? `.${word}(${n.corner}, ${fmt(n.want)}) is more than corner ${n.corner} has room for, so it was made ${fmt(n.got)} instead.`
-            : `.${word}(${n.corner}, ${fmt(n.want)}) was left out: corner ${n.corner} cannot take a ${word} (its edges are curved, in a straight line, or have no length).`
+            ? `.${word}(${n.corner + 1}, ${fmt(n.want)}) is more than corner ${n.corner + 1} has room for, so it was made ${fmt(n.got)} instead.`
+            : `.${word}(${n.corner + 1}, ${fmt(n.want)}) was left out: corner ${n.corner + 1} cannot take a ${word} (its edges are curved, in a straight line, or have no length).`
         );
       }
     } catch { /* a malformed sketch is reported elsewhere */ }

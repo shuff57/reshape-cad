@@ -1011,16 +1011,29 @@ function revolveProfileFace(oc: Occt, arc: any, f: any, marks?: Mark[]): any {
     a.u[1] * p[0] + a.n[1] * p[1],
     a.u[2] * p[0] + a.n[2] * p[1],
   );
+  const bulges: Record<number, number> = outline.bulges ?? {};
   const w = new oc.BRepBuilderAPI_MakeWire();
   for (let i = 0; i < n; i++) {
     const b = pts[(i + 1) % n];
-    w.Add(new oc.BRepBuilderAPI_MakeEdge(at(pts[i]), at(b)).Edge());
-    marks?.push({ ...roles[i], at: at([(pts[i][0] + b[0]) / 2, (pts[i][1] + b[1]) / 2]) });
+    const g = bulges[i];
+    if (!g) {
+      w.Add(new oc.BRepBuilderAPI_MakeEdge(at(pts[i]), at(b)).Edge());
+      marks?.push({ ...roles[i], at: at([(pts[i][0] + b[0]) / 2, (pts[i][1] + b[1]) / 2]) });
+      continue;
+    }
+    // A bowed edge (a bulge, or a round) is a real circular arc, as in sketchWire: this used to
+    // spin the chord, so a rounded profile came out as a chamfered one and the referee agreed
+    // with a kernel that did the same.
+    const { center, radius, startAngle, endAngle } = arc.arcFromBulge(pts[i], b, g);
+    let sweep = endAngle - startAngle;
+    if (g > 0 && sweep < 0) sweep += Math.PI * 2;
+    if (g < 0 && sweep > 0) sweep -= Math.PI * 2;
+    const mid = startAngle + sweep / 2;
+    const through = [center[0] + radius * Math.cos(mid), center[1] + radius * Math.sin(mid)];
+    const made = new oc.GC_MakeArcOfCircle(at(pts[i]), at(through), at(b));
+    w.Add(new oc.BRepBuilderAPI_MakeEdge(made.Value()).Edge());
+    marks?.push({ ...roles[i], at: at(through) });
   }
-  // Straight segments only: this profile ignores `bulges`, so a bowed sketch
-  // spins as a polygon. That is a pre-existing gap in Spin rather than one the
-  // naming work introduces, and it is why the marks here are chord midpoints
-  // where sketchWire uses arc midpoints.
   return new oc.BRepBuilderAPI_MakeFace(w.Wire(), false).Face();
 }
 
