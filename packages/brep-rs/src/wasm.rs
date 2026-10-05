@@ -1884,6 +1884,14 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                                 refused = true;
                                 break;
                             }
+                            None if op == "intersect" && ops::solids_provably_disjoint(&cur, &s) => {
+                                refusals.insert(
+                                    id.clone(),
+                                    json!(format!("combine {id}: {} -- {id} is shown without it.", ops::DISJOINT_SENTENCE)),
+                                );
+                                refused = true;
+                                break;
+                            }
                             None => {
                                 refusals.insert(
                                     id.clone(),

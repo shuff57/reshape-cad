@@ -49,6 +49,27 @@ fn aabbs_touch(a: &crate::math::Aabb, b: &crate::math::Aabb) -> bool {
     (0..3).all(|i| a.lo[i] <= b.hi[i] + TOL && b.lo[i] <= a.hi[i] + TOL)
 }
 
+/// The sentence for an intersect of two solids that share no volume.
+pub const DISJOINT_SENTENCE: &str = "the two shapes do not overlap, so keeping their overlap leaves nothing";
+
+/// True only when the two solids' exact reach boxes are separated, or merely touch, on some axis:
+/// their overlap is then provably empty. Any face whose extent is unknown reads as "might overlap".
+pub(crate) fn solids_provably_disjoint(a: &TSolid, b: &TSolid) -> bool {
+    let reach = |s: &TSolid| -> Option<crate::math::Aabb> {
+        let mut bx = crate::math::Aabb::empty();
+        for f in s.faces() {
+            let r = face_reach_box(&f)?;
+            bx.expand(r.lo);
+            bx.expand(r.hi);
+        }
+        Some(bx)
+    };
+    match (reach(a), reach(b)) {
+        (Some(x), Some(y)) if !x.is_empty() && !y.is_empty() => !build::aabbs_overlap(&x, &y),
+        _ => false,
+    }
+}
+
 /// A face's own extent as a box. A planar face is measured from its boundary
 /// ring (its surface has no finite extent); a curved face uses its surface's
 /// exact box. `None` when the extent cannot be established, which callers must
@@ -10579,5 +10600,16 @@ mod sphere_offset_bore_tests {
                 }
             }
         }
+    }
+
+    #[test]
+    fn w1_disjoint_and_touching_boxes_are_provably_disjoint() {
+        let a = build::box_solid([10.0; 3], [0.0; 3], None);
+        let far = build::box_solid([10.0; 3], [30.0, 0.0, 0.0], None);
+        let touch = build::box_solid([10.0; 3], [10.0, 0.0, 0.0], None);
+        let over = build::box_solid([10.0; 3], [5.0, 0.0, 0.0], None);
+        assert!(solids_provably_disjoint(&a, &far));
+        assert!(solids_provably_disjoint(&a, &touch));
+        assert!(!solids_provably_disjoint(&a, &over));
     }
 }
