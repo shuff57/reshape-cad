@@ -941,10 +941,11 @@ pub enum SphTrim {
     /// centred square tube aligned with (`e1`, `e2`) (SPEC pinned math, combine-sphere).
     Square(f64),
     /// A cylindrical bore of radius `r` parallel to `axis`, its axis offset `e` from the
-    /// centre along `e1`, with `0 < e` and `e + r < radius`, running through: both ends
-    /// are open and each removes a hole bounded by the meeting curve
-    /// (SPEC-brep-sphere-offset-bore.md, slice S1; blind bores add a field later).
-    Bore { r: f64, e: f64 },
+    /// centre along `e1`, with `0 < e` and `e + r < radius`. `through` bores open both
+    /// ends of the sphere, each removing a hole bounded by the meeting curve; a blind bore
+    /// (`through: false`) is entered from the `+axis` end only, so only that end is holed
+    /// (SPEC-brep-sphere-offset-bore.md, slices S1 and S2).
+    Bore { r: f64, e: f64, through: bool },
 }
 
 impl SphTrim {
@@ -1366,8 +1367,8 @@ impl Surface {
                         }
                     }
                 }
-                SphTrim::Bore { r, e } => {
-                    for pole in [1.0, -1.0] {
+                SphTrim::Bore { r, e, through } => {
+                    for pole in if through { vec![1.0, -1.0] } else { vec![1.0] } {
                         let (ca, _, csx) = sp.bore_cap_measure(pole, r, e);
                         area -= ca;
                         for i in 0..3 {
@@ -1429,8 +1430,8 @@ impl Surface {
                         vt -= cv;
                     }
                 }
-                SphTrim::Bore { r, e } => {
-                    for pole in [1.0, -1.0] {
+                SphTrim::Bore { r, e, through } => {
+                    for pole in if through { vec![1.0, -1.0] } else { vec![1.0] } {
                         let (_, cv, _) = sp.bore_cap_measure(pole, r, e);
                         vt -= cv;
                     }

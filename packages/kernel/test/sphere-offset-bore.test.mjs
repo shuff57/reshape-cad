@@ -1,8 +1,10 @@
 // A bore through a sphere that does NOT pass through its centre (SPEC-brep-sphere-offset-bore.md, slice S1).
 // The wall meets the sphere in two closed space curves (Curve::SphCyl), so the sphere keeps one face with two holes
-// and the wall is a cylinder trimmed between the curves. Closed form, derived here and checked against OpenCascade
+// and the wall is a cylinder trimmed between the curves. A BLIND bore (slice S2) has one hole, the wall running from a flat floor
+// up to the curve, and the floor disc. Closed form, derived here and checked against OpenCascade
 // before any builder existed (worst relative difference 1.2e-10 over 20 seeded cases):
 //   through   V = 4/3 pi R^3 - 2 I,   I = integral over D = {(x - e)^2 + y^2 < r^2} of sqrt(R^2 - x^2 - y^2)
+//   blind     V = 4/3 pi R^3 - (I - f0 pi r^2),  f0 = floor height from the centre, |f0| < sqrt(R^2 - (e + r)^2)
 // The inner x-integral is closed form and the outer one is taken in theta with y = r sin(theta), which removes the
 // square-root singularity at y = +-r (a plain Simpson rule in y gave 3.7e-7, above the bar).
 // OpenCascade is the referee for volume and face count; the mesh is checked with the JS ray-cast oracle.
@@ -40,6 +42,7 @@ function integralI(R, r, e) {
   return (acc * h) / 3;
 }
 const through = (R, r, e) => (4 / 3) * PI * R ** 3 - 2 * integralI(R, r, e);
+const blind = (R, r, e, f0) => (4 / 3) * PI * R ** 3 - (integralI(R, r, e) - f0 * PI * r * r);
 const near = (a, b, tol = 1e-9) => assert.ok(Math.abs(a - b) <= tol * Math.max(1, Math.abs(b)), `${a} vs ${b}`);
 
 function build(code) {
@@ -86,6 +89,30 @@ test('the OpenCascade referee agrees on volume (1e-7) and face count', () => {
   }
 });
 
+// [R, r, x, y, deep]: sphere(2R), the floor is at R - deep from the centre (`deep` is measured from the top).
+const BLIND = [[20, 3, 8, 0, 10], [20, 3, 8, 0, 25], [20, 3, 8, 0, 20], [20, 6, 11, 0, 20], [20, 2, 16.5, 0, 14], [10, 1.5, 4, 0, 6], [20, 3, 5.7, 5.7, 30]];
+
+for (const [R, r, x, y, deep] of BLIND) {
+  const e = Math.hypot(x, y);
+  test(`blind bore R=${R} r=${r} e=${e.toFixed(2)} deep ${deep}: the closed form, 3 faces`, () => {
+    const { refusals, s } = build(`const s = sphere(${2 * R}); hole(s, { across: ${2 * r}, at: [${x}, ${y}], deep: ${deep} })`);
+    assert.deepEqual(refusals, {});
+    near(s.volume, blind(R, r, e, R - deep));
+    assert.equal(s.faces, 3);
+  });
+}
+
+test('the OpenCascade referee agrees on the blind bores (volume 1e-7, 3 faces)', () => {
+  for (const [R, r, x, y, deep] of BLIND) {
+    const code = `const s = sphere(${2 * R}); hole(s, { across: ${2 * r}, at: [${x}, ${y}], deep: ${deep} })`;
+    const { doc, id, s } = build(code);
+    const o = occtVolume(doc, id);
+    near(s.volume, o.volume, 1e-7);
+    assert.equal(o.faces, 3, code);
+    assert.equal(s.faces, 3, code);
+  }
+});
+
 for (const along of ['x', 'y', 'z']) {
   test(`through bore along ${along}, moved by (37,-23,11) and turned: same volume`, () => {
     const at = along === 'z' ? '[8, 0]' : along === 'x' ? '[8, 0]' : '[0, 8]';
@@ -96,9 +123,10 @@ for (const along of ['x', 'y', 'z']) {
 }
 
 test('mesh: watertight, outward, volume, and every probe point agrees with the analytic solid', { timeout: 120000 }, () => {
-  for (const [R, r, x, y] of [[20, 3, 8, 0], [20, 6, 11, 0], [20, 2, 16.5, 0], [20, 3, 5.7, 5.7]]) {
+  for (const [R, r, x, y, deep] of [[20, 3, 8, 0], [20, 6, 11, 0], [20, 2, 16.5, 0], [20, 3, 5.7, 5.7], [20, 3, 8, 0, 25], [20, 6, 11, 0, 20], [20, 3, 8, 0, 10]]) {
     const e = Math.hypot(x, y);
-    const { json, id, s } = build(`const s = sphere(${2 * R}); hole(s, { across: ${2 * r}, at: [${x}, ${y}] })`);
+    const f0 = deep === undefined ? -Infinity : R - deep;
+    const { json, id, s } = build(`const s = sphere(${2 * R}); hole(s, { across: ${2 * r}, at: [${x}, ${y}]${deep === undefined ? '' : `, deep: ${deep}`} })`);
     for (const defl of [0.05, 0.5]) {
       const m = JSON.parse(brep.mesh_feature(json, id, defl));
       assert.ok(!m.error, m.error);
@@ -142,11 +170,11 @@ test('mesh: watertight, outward, volume, and every probe point agrees with the a
         if (rr >= R) return false;
         // distance to the bore axis: the line through (e cos a, e sin a, *) along z
         const rho = Math.hypot(px - e * Math.cos(ang), py - e * Math.sin(ang));
-        return rho >= r;
+        return !(rho < r && pz > f0);
       };
-      const dist = ([px, py, pz]) => Math.min(Math.abs(Math.hypot(px, py, pz) - R), Math.abs(Math.hypot(px - e * Math.cos(ang), py - e * Math.sin(ang)) - r));
+      const dist = ([px, py, pz]) => Math.min(Math.abs(Math.hypot(px, py, pz) - R), Math.abs(Math.hypot(px - e * Math.cos(ang), py - e * Math.sin(ang)) - r), deep === undefined ? 9 : Math.abs(pz - f0));
       let seed = 99; const rnd = () => ((seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296);
-      const pts = [[0, 0, 0], [0, 0, 15], [e * Math.cos(ang), e * Math.sin(ang), 0], [e * Math.cos(ang), e * Math.sin(ang), 14]];
+      const pts = [[0, 0, 0], [0, 0, 15], [e * Math.cos(ang), e * Math.sin(ang), 0], [e * Math.cos(ang), e * Math.sin(ang), 14], [e * Math.cos(ang), e * Math.sin(ang), Number.isFinite(f0) ? f0 + 1 : 3], [e * Math.cos(ang), e * Math.sin(ang), Number.isFinite(f0) ? f0 - 1 : -3]];
       for (let i = 0; i < 1200; i++) pts.push([0, 1, 2].map(() => -(R + 1) + 2 * (R + 1) * rnd()));
       let tested = 0;
       for (const p of pts) { if (dist(p) < 0.1) continue; tested++; assert.equal(inside(p), pred(p), `R=${R} r=${r} e=${e}: point ${p.map((v) => v.toFixed(2))}`); }
@@ -157,7 +185,8 @@ test('mesh: watertight, outward, volume, and every probe point agrees with the a
 
 test('what this slice does not build still refuses in a sentence, never a wrong solid', () => {
   for (const [code, why] of [
-    ['const s = sphere(40); hole(s, { across: 6, at: [8, 0], deep: 25 })', 'blind'],
+    ['const s = sphere(40); hole(s, { across: 6, at: [8, 0], deep: 2 })', 'blind, the floor in the polar band the curve spans (it would meet the sphere\'s own face)'],
+    ['const s = sphere(40); hole(s, { across: 6, at: [8, 0], deep: 38 })', 'blind, the floor below -s0 (it would leave the sphere)'],
     ['const s = sphere(40); hole(s, { across: 6, at: [1, 0] })', 'the bore straddles the pole (e < r)'],
     ['const s = sphere(40); hole(s, { across: 8, at: [3.9, 0] })', 'e just above r: margin'],
     ['const s = sphere(40); hole(s, { across: 6, at: [17.5, 0] })', 'e + r > 0.95 R'],
@@ -171,8 +200,8 @@ test('what this slice does not build still refuses in a sentence, never a wrong 
       assert.ok(s.volume < (4 / 3) * PI * 8000 - 1, why);
     }
   }
-  // the blind bore and the e<r bore specifically refuse today
-  assert.ok(Object.keys(build('const s = sphere(40); hole(s, { across: 6, at: [8, 0], deep: 25 })').refusals).length > 0);
+  // the polar-band floor and the e<r bore specifically refuse today
+  assert.ok(Object.keys(build('const s = sphere(40); hole(s, { across: 6, at: [8, 0], deep: 2 })').refusals).length > 0);
   assert.ok(Object.keys(build('const s = sphere(40); hole(s, { across: 6, at: [1, 0] })').refusals).length > 0);
 });
 
