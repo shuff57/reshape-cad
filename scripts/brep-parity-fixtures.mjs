@@ -166,7 +166,9 @@ export function fixtures() {
     raw('coplanar-subtract-flush-top', 'combine', [box('a', [40, 40, 20]), box('b', [10, 10, 10], [0, 0, 5]), { id: 'op1', kind: 'combine', op: 'subtract', targets: ['a', 'b'] }]),
     raw('coplanar-subtract-caps', 'combine', [box('a', [40, 40, 20]), cyl('c', 8, 20), { id: 'op1', kind: 'combine', op: 'subtract', targets: ['a', 'c'] }]),
     raw('coplanar-intersect-offset', 'combine', [box('a', [20, 20, 20]), box('b', [20, 20, 20], [0, 0, 10]), { id: 'op1', kind: 'combine', op: 'intersect', targets: ['a', 'b'] }]),
-    raw('tangent-union-cylinder', 'combine', [box('a', [40, 40, 20]), cyl('c', 10, 20, [30, 0, 0]), { id: 'op1', kind: 'combine', op: 'union', targets: ['a', 'c'] }]),
+    // 2026-10-05 (owner-approved): the cylinder was at x = 30, tangent to the box face along a line, and the union is not
+    // one manifold solid (W4 pinch contacts refuse it). It now sits at x = 29 and overlaps the box by 1 mm.
+    raw('tangent-union-cylinder', 'combine', [box('a', [40, 40, 20]), cyl('c', 10, 20, [29, 0, 0]), { id: 'op1', kind: 'combine', op: 'union', targets: ['a', 'c'] }]),
     raw('tangent-subtract-touching', 'combine', [box('a', [40, 40, 20]), cyl('c', 10, 40, [30, 0, 0]), { id: 'op1', kind: 'combine', op: 'subtract', targets: ['a', 'c'] }]),
 
     // --- NEW 2026-09-15: booleans a Z-slab special case cannot pass ----------

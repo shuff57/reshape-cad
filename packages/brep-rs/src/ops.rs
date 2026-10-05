@@ -5191,8 +5191,44 @@ pub fn boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
             }
         }
     }
-    Some(r)
+    Some(merge_coplanar_result(r))
 }
+
+/// W4: the boolean's answer with every flat region the student sees as ONE face made one face. The
+/// split-and-classify path leaves a coplanar face in the pieces it cut it into (a 10 mm corner notch in a
+/// block: 12 faces, 9 to the eye), which breaks a name that resolves to one piece, `carry_fate`, and the face
+/// count. `build::unify_coplanar` does the merge on a deep copy; the copy replaces `r` ONLY when it is
+/// provably the same solid: fewer faces, every edge used exactly twice, the volume and the bounding box of
+/// `r` to 1e-9, the volume still independent of the origin, and a closed mesh. Anything else returns `r`
+/// untouched. Runs after every guard above, so it can only change how a sound result is cut into faces.
+fn merge_coplanar_result(r: TSolid) -> TSolid {
+    if r.shells.len() != 1 || r.faces().len() > MERGE_FACE_BUDGET {
+        return r;
+    }
+    let m = build::unify_coplanar(&r);
+    if m.shells.len() != 1 || m.faces().len() >= r.faces().len() {
+        return r;
+    }
+    if edge_use_counts(&m.faces()).values().any(|n| *n != 2) {
+        return r;
+    }
+    let (v0, v1) = (build::solid_volume(&r), build::solid_volume(&m));
+    if (v0 - v1).abs() > 1e-9 * v0.abs().max(1.0) {
+        return r;
+    }
+    let (b0, b1) = (build::solid_aabb(&r), build::solid_aabb(&m));
+    let tol = 1e-9 * crate::math::len(sub(b0.hi, b0.lo)).max(1.0);
+    if (0..3).any(|k| (b0.lo[k] - b1.lo[k]).abs() > tol || (b0.hi[k] - b1.hi[k]).abs() > tol) {
+        return r;
+    }
+    if !volume_is_translation_invariant(&m) || !mesh_is_closed_coarse(&m) {
+        return r;
+    }
+    m
+}
+
+/// Results with more faces than this keep the faces the boolean cut (the merge is quadratic in faces).
+const MERGE_FACE_BUDGET: usize = 400;
 
 /// Whether a boolean on `s` needs its partner operation as a check: it has an inner shell, or it is a
 /// polyhedron that is not convex (an open cup, a pocketed block, an L). The face-by-face path reads
@@ -9404,7 +9440,9 @@ mod residual_tests {
     fn mirrored_face_with_arc_edges_meshes_closed_with_the_same_volume() {
         let a = build::prism_solid([-3.48, 2.17, -3.35], 6, 24.21, 31.97, [0.0, 0.0, 1.0]);
         let t = build::cylinder_solid([-12.93, 6.44, -27.05], 18.865, 15.43, [0.0, 0.0, 1.0]);
-        let r = boolean("subtract", &a, &t).expect("touching cut builds");
+        // the merged result has no arc left (the disc's circle splits a face into two coplanar pieces that the
+        // boolean now joins), so the unmerged cut is what carries the arc outline this test mirrors
+        let r = boolean_unchecked("subtract", &a, &t).expect("touching cut builds");
         assert!(r.faces().iter().any(|f| f.borrow().boundary.iter().any(|w| w.borrow().edges.iter().any(|u| matches!(u.edge.borrow().curve, Curve::Arc { .. })))), "the fixture must carry an arc");
         let bb = build::solid_aabb(&r);
         let m = crate::math::Transform::mirror([0.0, bb.hi[1], 0.0], [0.0, 1.0, 0.0]);

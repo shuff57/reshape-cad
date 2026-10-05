@@ -470,6 +470,10 @@ export default function ReshapeStudio({
   // `value` immediately writes a (re-serialized, possibly reformatted)
   // copy of that same text right back over it on every single page load.
   const skipNextRegenRef = useRef(false);
+  // A Run the student pressed is waiting for its doc / the last scriptDoc came from such a Run. Only that doc may replace the
+  // Build doc when they switch Code -> Build (see chooseSide); the hydration and shadow-runner docs may not.
+  const runRequestedRef = useRef(false);
+  const scriptFromRunRef = useRef(false);
 
   const docRef = useRef(doc);
   useEffect(() => { docRef.current = doc; }, [doc]);
@@ -926,6 +930,7 @@ export default function ReshapeStudio({
       } else if (d?.source === 'reshape-doc') {
         const arrived = d.doc ?? null;
         setScriptDoc(arrived);
+        if (runRequestedRef.current) { runRequestedRef.current = false; scriptFromRunRef.current = arrived != null; }
         setScriptNamedParams(Array.isArray(d.namedParams) ? d.namedParams : []);
         setStale(null);
         setScriptErrorMessage(null);
@@ -941,6 +946,7 @@ export default function ReshapeStudio({
           setHydrated(true);
         }
       } else if (d?.source === 'preview-error') {
+        runRequestedRef.current = false;
         setStale('error');
         if (!hydrated) setHydrated(true);
         if (!build) {
@@ -1021,15 +1027,20 @@ export default function ReshapeStudio({
   }, [doc, scriptNamedParams, build]);
 
   function chooseSide(next: 'build' | 'code') {
-    if (next === 'build' && scriptDoc && !build) {
-      // Code -> Build: adopt whatever the last Run built, same as the
-      // sandbox's own chooseBuild() always has.
+    if (next === 'build' && scriptDoc && !build && scriptFromRunRef.current) {
+      // Code -> Build: adopt what the last Run built, same as the sandbox's own chooseBuild() always has -- but ONLY a Run the
+      // student pressed since they left Build. `scriptDoc` is also set by the mount hydration and by the hidden shadow runner,
+      // and a Build edit made after that leaves it stale: adopting it threw the edit away and (the regeneration effect then
+      // writing the old model back through onChange) overwrote the saved script with the old numbers. Measured 2026-10-04:
+      // reload, change a box width on Build, look at Code and come back -> the width is the old one, and so is what was saved.
       loadDoc(scriptDoc);
     }
+    if (next === 'build') scriptFromRunRef.current = false;
     setBuild(next === 'build');
   }
 
   const run = useCallback(() => {
+    runRequestedRef.current = true;
     setCode(value);
     setRunKey((k) => k + 1);
   }, [value]);

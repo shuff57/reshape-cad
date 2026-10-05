@@ -7488,6 +7488,11 @@ fn build_fillet(
     round: bool,
 ) -> Result<TSolid, FilletErr> {
     let (fa, fb) = fillet_face_pair(hist, f).ok_or(FilletErr::NoEdge)?;
+    // W4: two names that resolve to ONE face (the boolean now merges coplanar faces: the +z of two joined
+    // cubes) name no edge at all, the edge between them is a flat one.
+    if std::rc::Rc::ptr_eq(&fa, &fb) {
+        return Err(FilletErr::Flat);
+    }
     // W2 (SPEC-brep-fillet.md): a plain cylinder's rim — the edge between a
     // cap and its curved wall — rounds or chamfers with the same band the
     // `round` primitive pins at both rims. Detected from the solid's actual

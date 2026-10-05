@@ -81,10 +81,11 @@ test('union of two stacked boxes: through 8000 - 80 pi, blind 8000 - 32 pi', () 
   const u = 'const a = cuboid(20, 20, 10); const b = cuboid(20, 20, 10, { at: [0, 0, 10] }); const u = union(a, b); ';
   const t = measure(u + 'hole(u, { across: 4 })');
   near(t.volume, 8000 - 80 * Math.PI);
-  assert.equal(t.faces, 11);
+  // W4: the stacked cubes' side faces are merged (4 sides, not 8): 4 + top + bottom + bore wall = 7; blind adds the floor = 8
+  assert.equal(t.faces, 7);
   const d = measure(u + 'hole(u, { across: 4, deep: 8 })');
   near(d.volume, 8000 - 32 * Math.PI);
-  assert.equal(d.faces, 12);
+  assert.equal(d.faces, 8);
 });
 
 test('subtract result: through works with the first operand as a bound', () => {

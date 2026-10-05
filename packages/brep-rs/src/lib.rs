@@ -42,3 +42,5 @@ pub mod step;
 pub mod step_read;
 pub mod step_in;
 pub mod wasm;
+#[cfg(test)]
+mod coplanar_merge_tests;
