@@ -27,7 +27,7 @@ test('circle sketch uses the real diameter; a rounded corner keeps the outline e
   near(ext("const sk = sketch('top'); sk.circle(10); extrude(sk, 5)", 'x').e.extent, 10);
   // a rounded corner on the extreme corner shrinks the box nowhere (the other
   // corners still reach the edge), so the extent stays the full 30 x 20
-  near(ext("const sk = sketch('top'); sk.rect(30, 20); sk.round(0, 3); extrude(sk, 5)", 'x').e.extent, 30);
+  near(ext("const sk = sketch('top'); sk.rect(30, 20); sk.round(1, 3); extrude(sk, 5)", 'x').e.extent, 30);
 });
 
 test('bulged edge: semicircle on the right edge of a 10 x 10 square reaches x = 15 (or 5 inward)', () => {

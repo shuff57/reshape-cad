@@ -12,7 +12,7 @@ import { makeRunner, classify, genSketch } from './sketch-audit-lib.mjs';
 const FULL = process.env.SWEEP === '1';
 const N = FULL ? Number(process.env.SWEEP_N ?? 400) : 40;
 const SEED = Number(process.env.SWEEP_SEED ?? 11);
-const FAMILIES = ['rect', 'poly', 'circle', 'slot', 'arc'];
+const FAMILIES = ['rect', 'poly', 'circle', 'slot', 'arc', 'pullarc', 'revolve', 'revarc'];
 
 test('2D sweep: sketch + pull agrees with area x height and OCCT, mesh closed', { timeout: 3600 * 1000 }, async () => {
   const run = await makeRunner({ occt: true });

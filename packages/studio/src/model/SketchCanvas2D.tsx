@@ -104,6 +104,7 @@ import {
   mirrorSelection,
   copySelection,
   densifyIds,
+  dofBadge,
   type AutoDimension,
   type CoreGeom,
   type DimKind,
@@ -1945,20 +1946,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     ? marqueeKind({ startX: marquee.from.x, startY: marquee.from.y, endX: marquee.to.x, endY: marquee.to.y })
     : null;
 
-  const dofClass = diagnosis
-    ? diagnosis.bucket === 'conflicting'
-      ? 'sk-dof-bad'
-      : diagnosis.dof === 0
-        ? 'sk-dof-ok'
-        : 'sk-dof-warn'
-    : '';
-  const dofText = diagnosis
-    ? diagnosis.bucket === 'conflicting'
-      ? 'Over-constrained'
-      : diagnosis.dof === 0
-        ? 'Fully constrained ✓'
-        : `${diagnosis.dof} free to move`
-    : '';
+  const { cls: dofClass, text: dofText } = dofBadge(diagnosis);
 
   // --- the constraint layer (P2.8) + the dimension chips (P2.7) ------------
   // One anchor per rule, index-aligned with `rules`, fanned out where several

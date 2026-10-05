@@ -318,6 +318,15 @@ sk.polygon([[0, 0], [40, 0], [40, 15], [15, 15], [15, 30], [0, 30]])
 const shape = extrude(sk, 12)`,
       },
       {
+        title: 'round and chamfer: soften a corner',
+        body: `sk.round(corner, radius) turns a corner into a circular arc and sk.chamfer(corner, distance) cuts it off with a straight bevel. Corners are numbered from 1, the same numbers the Rules panel and sk.pin() use: corner 1 is the first point of the outline (for a rectangle, the one at the lower left), and a round or chamfer on corner 1 is written sk.round(1, 4). The number is a whole number from 1 to the corner count; 0 or a number past the last corner stops the script with a sentence that says so. A round or chamfer bigger than its corner has room for is cut down to what the corner can give, and the script says so in its notes: ".round(2, 99) is more than corner 2 has room for, so it was made 10 instead". A round and a chamfer on one corner leave the round. Here a 30 x 20 rectangle has corner 1 rounded by 4 and corner 3 chamfered by 3, and is extruded 12: its area is 600 - (1 - pi/4) x 4^2 - 3^2/2 = 592.07 mm^2, so the volume is 7104.80 mm^3.`,
+        code: `const sk = sketch('top')
+sk.rect(30, 20)
+sk.round(1, 4)
+sk.chamfer(3, 3)
+const shape = extrude(sk, 12)`,
+      },
+      {
         title: 'rules: holding a sketch in shape',
         body: `A sketch can hold rules on its edges and corners, the same rules the Rules panel offers on Build: sk.across(edge) holds an edge horizontal (the panel calls this column Level), sk.up(edge) holds an edge vertical (Upright), sk.length(edge, mm) fixes an edge's length, sk.equal(a, b) holds two edges the same length, sk.parallel(a, b) holds two edges parallel, sk.perpendicular(a, b) holds two edges at a right angle, and sk.pin(corner) locks a corner in place. A rule set in a script is the exact same rule the panel shows on Build, and a rule you set with the mouse is still there after Code -> Run. If a new rule conflicts with an older one, the older rule is quietly dropped with a note in the panel -- the script itself never stops for it.`,
         code: `const sk = sketch('top')
@@ -460,9 +469,17 @@ pocket(sk, b, 5)`,
       },
       {
         title: 'revolve: revolving sketches',
-        body: `revolve(sk, 360) revolves the sketch 360 degrees around an axis.`,
+        body: `revolve(sk, 360) revolves the sketch 360 degrees around an axis: the line through the origin that stands square to the sketch plane, so the sketch's across direction is the distance from the axis and its up direction runs along it. This 30 x 10 rectangle sits 25 to 55 mm out from the axis, so it spins into a ring whose volume is 2 x pi x 40 x 300 = 75398.22 mm^3 (the distance of the rectangle's middle from the axis, times its area, times 2 pi). A sketch gets the same checks as a pull: edges that cross, a corner landing on an edge, a spike, or no area at all stop with a sentence that says what to move. A spin also stops when the outline crosses the axis, because the two sides would overlap; draw the whole outline on one side. A shape touching the axis is fine.`,
         code: `const sk = sketch('front', 0)
 sk.rect(30, 10, { at: [40, 0] })
+const shape = revolve(sk, 360)`,
+      },
+      {
+        title: 'revolve: rounds and arcs in the outline',
+        body: `A round on the outline spins into a true curved surface, not a bevel: with corner 1 of the ring above rounded by 4 (sk.round(1, 4)), the part is 74839.59 mm^3, which is the plain ring less the corner, 2 x pi x 25.89 x (1 - pi/4) x 4^2, where 25.89 is how far out the middle of that corner piece sits. A chamfer there would take off a different amount (74074.57 mm^3), so the two are not interchangeable. An outline drawn with arcs spins the same way when it sits clear of the axis. Rounds and arcs spin a full turn (360) only; a part turn of a curved outline, an arc whose centre is on the axis (a ball: use sphere()), and a groove with a curved outline each stop with a sentence.`,
+        code: `const sk = sketch('front', 0)
+sk.rect(30, 10, { at: [40, 0] })
+sk.round(1, 4)
 const shape = revolve(sk, 360)`,
       },
       {

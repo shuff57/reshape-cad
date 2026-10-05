@@ -635,3 +635,59 @@ cargo test --release 448 (447 + the face-box culling test); sketch 42, script 26
 | S4 stress, 2500, seed 1 and 2 | 3 (`idx 2388` the sphere recess of section 33, `idx 656` OpenCascade's bevel, `idx 883` the open mesh) and (not run) | 1 and 1 (`idx 2388`, and `idx 2386` seed 2: hollow, hole, mirror, bevel 3.19 on a 1 mm wall; brep-rs 8809.1128 against OpenCascade 8794.7465, the difference 14.37 is exactly the wedge's cavity credit 0.5 x 1.19^2 x 20.29) |
 
 The mesh regression scan over everything the sweeps generate that builds (timing corpus 2707 scripts, and census, csg, holes, pair, hole, grid, ringpair at 700 per seed and 2 seeds, 9519): open meshes at chord 0.05, 0.2 or 0.5: old wasm 1 (`idx 883`) in the first corpus and 0 in the second, new wasm 0 and 0; refusals that were builds: 2 (`s4#466s2`, `s4#676s1`, both hollow, mirror, bevel wider than two walls, the lump poke-through, honest refusals now); builds that were refusals: 0.
+
+
+## 39. W3 sketch leftovers (branch w3-sketch)
+
+Closes the leftovers of the 2D audit (section 25 step 2, commit `f89d5ef`). Two of the six were wrong solids, found by measuring rather than by reading.
+
+### 1. Revolve took none of the checks a pull takes, and spun a round as a chamfer
+
+`revolve` and `groove` read the outline through the old unchecked polygon path, which ignores bulges. Measured on the old wasm (`sketch('front')`, a 30 x 10 rectangle centred 40 out, `revolve(s, 360)`):
+
+| script | old result | now |
+|---|---|---|
+| `s.round(1, 4)` | 74074.566, **identical to the chamfer**; OpenCascade 74074.566 (its reference path also read the chord, so the referee agreed with the wrong solid) | 74839.595 = Pappus, a torus; OpenCascade 74839.595 (real arcs now) |
+| outline `[-10,0],[20,0],[20,10],[-10,10]` (across the axis) | 12566.37, the union of the two spins | a sentence (see below) |
+| a corner landing on an edge (pinch) | 18849.56, a solid | a sentence |
+| bow-tie, zero area | "supports only profiles parallel or perpendicular to the axis" (a wrong reason) | the pull's own sentence, "cannot be spun" |
+
+- **Fix** (`wasm.rs`): `spin_profile` takes the outline from `extruded_profile`, the same function a pull uses, so every refusal of a pull is a refusal of a spin: a rule conflict, a loose end, crossing edges, a pinch, a spike, no area. Added: an outline with a hole ("draw the outline without the hole"), and an outline across the axis ("the two sides would overlap -- draw the whole outline on one side"), the arc's own bulge counted. A straddling profile used to build the union of its two sides; `kernel-fixes-k8.test.mjs` pinned the symmetric case (a cylinder) as "unchanged" and now pins the sentence instead. A profile wholly on the far side and one that touches the axis still build.
+- **Arcs.** An outline with an arc (a round, a bulge, a soup arc) spins a full turn through `turned::build_solid`, which already builds tori and checks its faces against the profile integral. Arcs are cut at their horizontal diameter so each piece is a torus patch; the winding is fixed; a far-side outline is reflected and turned. Sentences, not solids: a part turn of an arc ("only a full turn (360) yet"), an arc whose centre is on or past the axis, which would be a sphere patch ("use sphere() for a ball"), a groove with an arc, a curve `build_solid` cannot make exactly.
+- **OpenCascade referee** (`occt-build.ts`, `revolveProfileFace`) now builds a bulge as a real arc, like `sketchWire`. It cannot spin soup rows (it says so), so soup spins are held to Pappus alone.
+- **Two kernel defects found on the way**, both exposed only by a torus patch that is spun, neither visible before:
+  - *Mesh open (99 open edges at chord 0.5 and finer)* for a rim round whose arc lies in the lower inside quadrant (v = pi). `mesh_revolution_band` took the rim for the other end of the band because the tube angle came back from `atan2` as -pi instead of +pi, by the last bit of its coordinates. It now brings the angle to the copy nearest the band.
+  - *Loose bbox*: `Surface::aabb` for a torus ignored `v_range`, so a quarter-torus round reported the whole tube (-10 where the mesh stops at -7.07). It now takes the exact extremes of the patch.
+- **Tests** (`packages/kernel/test/sketch-revolve.test.mjs`, 26): Pappus from textbook centroids (rectangle, triangle, corner pieces of a round `(1 - pi/4) r^2` at `r (10 - 3 pi) / (3 (4 - pi))` from each leg and of a chamfer, circular segment `4 r sin^3(th/2) / (3 (th - sin th))`) and, for rounded polygons, by integrating pi x^2 dy round the outline with a Gauss quadrature that reads no kernel; each against brep-rs, OpenCascade, a closed mesh; all four corners, below, at and past the maximum, on three planes, off-plane, far side, part turns, and every refusal above.
+
+### 2. An arc touching an arc at a point inside both was not a pinch
+
+`outline_flaw` only tested whether an end of one segment lands on another. Two arcs on tangent circles (outside or inside each other) whose contact is inside both have no end there. `tangent_touch` finds the contact point (and a line tangent to an arc) and refuses with the pinch sentence, "or two curves just touch". The soup path now runs `outline_flaw` on each discovered loop too (its wire discovery splits at crossings but cannot see a touch that joins no ends), so a pull and a spin both say it. 4 Rust tests (2 fail with the check off: outside and inside tangency; 2 guards: arcs that face away, and four quarter arcs of a rounded square).
+
+### 3. Corner numbers: from 1 everywhere
+
+The Rules panel (`corner N`), `.pin()`, `.distX()`, the docs ("numbered starting at 1") and the handle labels count from 1; `.round(k)`, `.chamfer(k)` and the trim note counted from 0, so `.round(1, 5)` rounded the second corner while `.pin(1)` pinned the first. **Decision: 1-based, because four surfaces already say it and one does not.** `.round` and `.chamfer` now take 1..corner count (a number outside it, or not whole, stops with "corner has to be a whole number from 1 to 4 (corner 1 is the first corner) -- you gave it 0"; it used to be ignored silently); the document still stores 0-based keys; the emitter writes `+ 1`; the trim note names the number the call used. Docs: a new page, "round and chamfer: soften a corner". **Breaking for old scripts**: `s.round(0, r)` now stops with a sentence, but `s.round(1, r)` silently means the first corner instead of the second. The `formatName` text (`sk1.edge0`, `.corner0`) is a stable identifier that lessons match as a string, not a count, and is unchanged.
+
+### 4. The diameter half disc: LM parked on a saddle and called a feasible sketch conflicting
+
+Repro (Rust `session.rs`): an arc of radius 5 about a locked centre, its ends at (5,0) and (-5,0), the closing line along the diameter, line length 9.5 (also 9.999, 9.9). The ends can only slide at right angles to the line's pull, so the least-squares gradient vanishes on the diameter: LM stops at residual 0.167 (0.0003 for 9.999) and the diagnosis read `conflicting`. **Fix** (`solve.rs`): `solve_lm` runs once; if that does not converge and nothing is being dragged, it retries from up to six deterministic nudges of the free parameters (1e-3, 1e-2, 5e-2 of the sketch scale) and returns the first that converges; if none does it returns the plain run untouched, so a sketch that has no solution keeps its diagnosis (12 on a circle of 10 still conflicts). The drag path is not retried, which would re-run every frame.
+
+### 5. Seeded sweep
+
+`sketch-audit-lib.mjs` families added: `revolve` (rectangle with rounds and chamfers on any corners; convex polygon with a fillet; Pappus from centroids or by integration), `revarc` (a soup circular segment, minor and major, spun), `pullarc` (a rectangle with a semicircular end, pulled). Seeds 11 and 12, N = 400 per family (8 families, 6400 scripts): every pulled and spun script AGREE with the closed form to 1e-9, mesh closed, OpenCascade equal where it can build (rect, poly, circle, arc, pullarc, revolve: 0 disagreements); `slot` and `revarc` are soup spins and slots OpenCascade's reference path cannot build (OCCT-REFUSED), held to the closed form alone; **0 wrong**.
+
+### 6. DoF badge
+
+The canvas reads `session.diagnose()` (Rust `diagnose.rs`), so counts were already right: free line 4, free arc 5, slot 6, dimensioned rectangle 2, pinned 0 (`sketch-dof-badge.test.mjs`, 6). One mismatch found: the kernel names the unsolvable case `globallyInfeasible` and the TS type said `globally-infeasible`; the canvas coloured only `conflicting`, so a sketch whose rules cannot all hold (a length longer than the circle it sits in) read "N free to move", or "Fully constrained" when N was 0. `dofBadge()` (pure, in `sketch-canvas-core.ts`) makes it red, "These rules cannot all hold"; the TS type is fixed.
+
+### Verified
+
+cargo test --release 454 (448 + 4 `outline_flaw` + 2 half disc); sketch 42, script 267 (+5 `sketch-corner-numbers`), kernel 1226 tests (1224 pass, 2 skipped; +26 `sketch-revolve`, one test rewritten), studio 254 (+6 `sketch-dof-badge`); gates parity 78/0, mesh 78/0, step 72/0/6, gate:occt 17/0, all unchanged.
+
+### Gaps left
+
+- A spun arc centred on the axis (a half disc turned into a ball) is a sentence, not a build: it needs a sphere patch in `turned::build_solid`.
+- A part turn of an arc outline, and a groove with an arc, are sentences.
+- STEP export of a spun round writes a torus, which `brep-rs` cannot write yet (the step gate's 6 refusals are the same class).
+- OpenCascade cannot spin soup sketches, so those spins are held to Pappus and the quadrature only.
+- `formatName` still numbers edges and corners from 0 inside its identifier text.

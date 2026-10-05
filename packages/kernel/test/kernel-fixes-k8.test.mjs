@@ -46,9 +46,17 @@ test('negative-u revolve: partial angles are the exact fraction, swept on the fa
   }
 });
 
-test('straddling and u>=0 profiles are unchanged', () => {
-  near(script("const sk = sketch('front'); sk.rect(10, 20, { at: [0, 10] }); spin(sk, 360)").s.volume, PI * 25 * 20);
+test('u>=0 profiles are unchanged; a profile STRADDLING the axis now says so (W3: it used to build the union of its two sides)', () => {
   near(script("const sk = sketch('front'); sk.rect(10, 20, { at: [10, 10] }); spin(sk, 360)").s.volume, ring);
+  // The symmetric straddle used to build the cylinder pi 5^2 20, which is right only because the two sides coincide; an
+  // asymmetric one (-10..20) built the union of the two spins. Both are refused now: draw the half outline instead.
+  for (const at of ['[0, 10]', '[3, 10]']) {
+    const r = script(`const sk = sketch('front'); sk.rect(10, 20, { at: ${at} }); spin(sk, 360)`);
+    assert.equal(r.s, undefined);
+    assert.match(Object.values(r.refusals).join(' '), /crosses the axis it spins about, so the two sides would overlap/);
+  }
+  // half of it, from the axis out, is the same cylinder
+  near(script("const sk = sketch('front'); sk.rect(5, 20, { at: [2.5, 10] }); spin(sk, 360)").s.volume, PI * 25 * 20);
 });
 
 test('an empty build refuses plainly; a datum stays a silent no-op', () => {

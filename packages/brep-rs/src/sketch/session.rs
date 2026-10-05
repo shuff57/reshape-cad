@@ -335,4 +335,53 @@ mod construction_tests {
         }
         assert!(st.converged, "{st:?}");
     }
+
+    /// A half disc drawn the way a student draws one: the arc's two ends on the horizontal through its
+    /// centre, the closing line lying along that diameter. `len` is the dimension put on the line.
+    fn diameter_half_disc(len: f64) -> SketchSession {
+        let g = vec![
+            json!({"id":1,"k":"arc","c":[0.0,0.0],"r":5.0,"a":[5.0,0.0],"b":[-5.0,0.0],"sense":"ccw"}),
+            json!({"id":2,"k":"line","a":[-5.0,0.0],"b":[5.0,0.0]}),
+        ];
+        let r = vec![
+            json!({"k":"coincident","a":1,"aEnd":"b","b":2,"bEnd":"a"}),
+            json!({"k":"coincident","a":2,"aEnd":"b","b":1,"bEnd":"a"}),
+            json!({"k":"distance","a":2,"aEnd":"a","b":2,"bEnd":"b","value":len}),
+            json!({"k":"radius","a":1,"value":5.0}),
+            json!({"k":"lock","a":1}),
+        ];
+        open(g, r)
+    }
+
+    #[test]
+    fn a_half_disc_with_its_line_on_the_diameter_solves_instead_of_stalling() {
+        // Centre locked, radius 5, ends on the horizontal through the centre, and a closing-line length
+        // a little under the diameter. LM used to park on the saddle where the ends can only slide at
+        // right angles to the line's pull and report conflicting; the answer is the ends swung up the circle.
+        for len in [9.999, 9.9, 9.5, 8.0, 6.0] {
+            let mut s = diameter_half_disc(len);
+            let (_p, st) = s.solve(&[], None).unwrap();
+            let d = s.diagnose().unwrap();
+            assert!(st.converged, "len {len}: {st:?}");
+            assert_eq!(d.bucket, solve::Bucket::Consistent, "len {len}: {d:?}");
+            let p = &s.params;
+            let (cx, cy, r) = (p[10], p[11], p[12]);
+            let (ax, ay, bx, by) = (p[13], p[14], p[15], p[16]);
+            for (x, y) in [(ax, ay), (bx, by)] {
+                assert!((((x - cx).powi(2) + (y - cy).powi(2)).sqrt() - r).abs() < 1e-6, "len {len}: an end left its circle");
+            }
+            assert!((((ax - bx).powi(2) + (ay - by).powi(2)).sqrt() - len).abs() < 1e-6, "len {len}: the line is not that long");
+        }
+    }
+
+    #[test]
+    fn a_half_disc_asked_for_more_than_its_diameter_still_conflicts() {
+        // The retry must not turn a real conflict into a solution: a chord of 12 cannot fit a circle of 10.
+        let mut s = diameter_half_disc(12.0);
+        let (_p, st) = s.solve(&[], None).unwrap();
+        let d = s.diagnose().unwrap();
+        assert!(!st.converged, "{st:?}");
+        assert_ne!(d.bucket, solve::Bucket::Consistent, "{d:?}");
+    }
 }
+

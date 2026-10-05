@@ -728,6 +728,18 @@ fn mesh_revolution_band(
                 while q[0] >= TAU {
                     q[0] -= TAU;
                 }
+                // A torus's tube angle comes back from atan2 in (-pi, pi], so a rim sitting exactly at
+                // v = pi reads as +pi or -pi by the last bit of its coordinates. Bring it to the copy
+                // nearest the band, or the rim is taken for the OTHER one and the band never closes.
+                if matches!(surface, crate::geom::Surface::Torus(_)) {
+                    let vm = 0.5 * (v0 + v1);
+                    while q[1] - vm > std::f64::consts::PI {
+                        q[1] -= TAU;
+                    }
+                    while q[1] - vm < -std::f64::consts::PI {
+                        q[1] += TAU;
+                    }
+                }
                 ring.push(q);
             }
             if ring.len() < 2 {

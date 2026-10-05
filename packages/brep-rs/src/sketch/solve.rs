@@ -209,9 +209,57 @@ pub fn assemble(
     Ok((r, j))
 }
 
+/// Solve from a warm start, and when Levenberg-Marquardt stops short of zero residual with no
+/// drag in play, try again from a few nudged copies of the start before giving up.
+///
+/// LM walks downhill, so it can park on a stationary point that is not a solution: the least-squares
+/// surface has saddles where the pull of one rule is exactly cancelled by another's. A half disc
+/// drawn with its two ends on the horizontal through the centre, the centre locked, the radius fixed
+/// and the closing line given a length a little under the diameter is one: the line's pull along its
+/// own length is cancelled by the ends' own circles, which only let them slide at right angles. The
+/// answer exists (swing the ends up the circle) but the walk stops with a small residual, and the
+/// diagnosis then read `conflicting` or `globally infeasible` for a sketch that was fine.
+///
+/// A nudge that breaks the symmetry is enough to step off the saddle. The nudges are a fixed
+/// pseudo-random sequence, so the same sketch always solves the same way. The first nudged run that
+/// converges is returned; if none does the result of the plain run is returned untouched, so a sketch
+/// that really has no solution keeps the diagnosis it always had.
+pub fn solve_lm(
+    block: &ParamBlock,
+    constraints: &[Constraint],
+    p0: &[f64],
+    drag: Option<&DragPull>,
+) -> Result<(Vec<f64>, LmStatus), String> {
+    let first = solve_lm_once(block, constraints, p0, drag)?;
+    if first.1.converged || drag.is_some() || block.n_free() == 0 {
+        return Ok(first);
+    }
+    let scale = block.scale().max(1.0);
+    let slots = block.free_slots().to_vec();
+    let mut state: u64 = 0x9e37_79b9_7f4a_7c15;
+    let mut next = || {
+        state ^= state << 13;
+        state ^= state >> 7;
+        state ^= state << 17;
+        (state >> 11) as f64 / (1u64 << 53) as f64 * 2.0 - 1.0
+    };
+    for amp in [1e-3, 1e-3, 1e-2, 1e-2, 5e-2, 5e-2] {
+        let mut start = first.0.clone();
+        for &slot in &slots {
+            start[slot] += amp * scale * next();
+        }
+        if let Ok((p, st)) = solve_lm_once(block, constraints, &start, None) {
+            if st.converged {
+                return Ok((p, st));
+            }
+        }
+    }
+    Ok(first)
+}
+
 /// One Levenberg-Marquardt solve, More's formulation, from a warm start.
 /// Returns the solved full parameter vector and the status.
-pub fn solve_lm(
+fn solve_lm_once(
     block: &ParamBlock,
     constraints: &[Constraint],
     p0: &[f64],

@@ -231,6 +231,15 @@ fn soup_profile(sk: &Value) -> Option<(Vec<Vec<build::ProfileSeg>>, Vec<(String,
                         },
                     })
                     .collect();
+                // The session's wire discovery splits edges where they cross, but a touch that
+                // joins no ends (two arcs just kissing) is invisible to it: check each loop as
+                // the polygon path does.
+                if let Some(flaw) = crate::sketch::wires::outline_flaw(&lp.segs) {
+                    if !matches!(flaw, crate::sketch::wires::OutlineFlaw::NoArea) {
+                        LAST_PRISM_REFUSAL.with(|lr| *lr.borrow_mut() = Some(format!("this sketch's outline cannot be pulled: {}.", flaw_why(flaw))));
+                        return None;
+                    }
+                }
                 if lp.role == crate::sketch::wires::LoopRole::Hole {
                     segs = segs
                         .iter()
@@ -343,17 +352,21 @@ fn extruded_profile(sk: &Value) -> Option<(Vec<Vec<build::ProfileSeg>>, Vec<(Str
         })
         .collect();
     if let Some(flaw) = crate::sketch::wires::outline_flaw(&wire) {
-        use crate::sketch::wires::OutlineFlaw as F;
-        let why = match flaw {
-            F::Crossing(..) => "two of its edges cross each other, so it does not enclose one area -- move a corner so no edge crosses another",
-            F::Touching(..) => "two of its edges touch where they should not (a corner lands on another edge), so the outline pinches -- move that corner away",
-            F::DoublesBack(..) => "one edge runs back over the edge before it, leaving a spike with no width -- move the corner that makes the spike",
-            F::NoArea => "it has no area (its corners lie on one line, or on top of each other), so there is nothing to pull",
-        };
-        LAST_PRISM_REFUSAL.with(|lr| *lr.borrow_mut() = Some(format!("this sketch's outline cannot be pulled: {why}.")));
+        LAST_PRISM_REFUSAL.with(|lr| *lr.borrow_mut() = Some(format!("this sketch's outline cannot be pulled: {}.", flaw_why(flaw))));
         return None;
     }
     Some((vec![segs], roles))
+}
+
+/// Why an outline with this flaw is not a profile, in a student's words.
+fn flaw_why(flaw: crate::sketch::wires::OutlineFlaw) -> &'static str {
+    use crate::sketch::wires::OutlineFlaw as F;
+    match flaw {
+        F::Crossing(..) => "two of its edges cross each other, so it does not enclose one area -- move a corner so no edge crosses another",
+        F::Touching(..) => "two of its edges touch where they should not (a corner lands on another edge, or two curves just touch), so the outline pinches -- move it so they stay apart",
+        F::DoublesBack(..) => "one edge runs back over the edge before it, leaving a spike with no width -- move the corner that makes the spike",
+        F::NoArea => "it has no area (its corners lie on one line, or on top of each other), so there is nothing to pull",
+    }
 }
 
 /// The design role of outline segment `i`, from the parallel `basis` array --
@@ -615,38 +628,217 @@ fn extrude_prism(sk: &Value, _plane: &str, height: f64) -> Option<(TSolid, Prism
 }
 
 
+/// The u extent (distance along the sketch's U direction, signed) of one outline
+/// segment, an arc's bulge past its ends included.
+fn seg_u_extent(s: &build::ProfileSeg) -> (f64, f64) {
+    match s {
+        build::ProfileSeg::Line { a, b } => (a[0].min(b[0]), a[0].max(b[0])),
+        build::ProfileSeg::Arc { centre, radius, start, sweep } => {
+            let pi = std::f64::consts::PI;
+            let (lo, hi) = if *sweep >= 0.0 { (*start, start + sweep) } else { (start + sweep, *start) };
+            let p = |t: f64| centre[0] + radius * t.cos();
+            let (mut mn, mut mx) = (p(lo).min(p(hi)), p(lo).max(p(hi)));
+            // the circle's own extremes: largest u at angle 0, smallest at pi
+            let mut k = (lo / pi).ceil();
+            while k * pi <= hi {
+                let u = p(k * pi);
+                mn = mn.min(u);
+                mx = mx.max(u);
+                k += 1.0;
+            }
+            (mn, mx)
+        }
+    }
+}
+
+/// An arc cut at every horizontal diameter (angle 0 and pi), so each piece lies wholly above or
+/// wholly below its centre -- the only arcs a torus patch of `turned::build_solid` can be.
+fn split_at_diameter(c: [f64; 2], r: f64, a0: f64, sw: f64) -> Vec<turned::Seg> {
+    let pi = std::f64::consts::PI;
+    let (lo, hi) = if sw >= 0.0 { (a0, a0 + sw) } else { (a0 + sw, a0) };
+    let mut cuts = vec![lo];
+    let mut k = (lo / pi).floor() + 1.0;
+    while k * pi < hi - 1e-12 {
+        if k * pi > lo + 1e-12 {
+            cuts.push(k * pi);
+        }
+        k += 1.0;
+    }
+    cuts.push(hi);
+    let mut out: Vec<turned::Seg> = cuts
+        .windows(2)
+        .map(|w| turned::Seg { k: turned::Kind::Arc { c, r, a0: w[0], sw: w[1] - w[0] }, face: None, origin_z: None })
+        .collect();
+    if sw < 0.0 {
+        out = out.iter().rev().map(|s| s.reversed()).collect();
+    }
+    out
+}
+
+/// The outline a revolve or groove spins, as the same one-loop profile a pull would take, or the
+/// plain sentence for why it cannot be spun: whatever refuses a pull (a rule conflict, a loose end,
+/// edges that cross, a pinch, a spike, no area) refuses a spin the same way, and so does an outline
+/// that crosses the axis it spins about or has a hole in it.
+fn spin_profile(sk: &Value) -> Result<(Vec<build::ProfileSeg>, Vec<(String, usize)>), String> {
+    let Some((mut loops, roles)) = extruded_profile(sk) else {
+        let why = LAST_PRISM_REFUSAL
+            .with(|lr| lr.borrow_mut().take())
+            .unwrap_or_else(|| "this sketch has no usable outline to spin".to_string());
+        // The same sentence a pull gives, about spinning instead; no full stop, the caller adds the rest.
+        return Err(why
+            .replace("cannot be pulled", "cannot be spun")
+            .replace("nothing to pull", "nothing to spin")
+            .trim_end_matches('.')
+            .to_string());
+    };
+    if loops.len() != 1 {
+        return Err("this sketch's outline has a hole in it, and a spin builds only a solid outline -- draw the outline without the hole".to_string());
+    }
+    let segs = loops.remove(0);
+    let (mut lo, mut hi) = (f64::INFINITY, f64::NEG_INFINITY);
+    let mut reach = 0.0f64;
+    for s in &segs {
+        let (a, b) = seg_u_extent(s);
+        lo = lo.min(a);
+        hi = hi.max(b);
+        reach = reach.max(a.abs()).max(b.abs());
+    }
+    let tol = 1e-9 * reach.max(1.0);
+    if lo < -tol && hi > tol {
+        return Err("this sketch's outline crosses the axis it spins about, so the two sides would overlap -- draw the whole outline on one side of that line".to_string());
+    }
+    Ok((segs, roles))
+}
+
 /// Build the tool solid a revolve or groove spins from `sk`: the profile
 /// outline, spun `angle` degrees right-handed about the plane normal through
 /// the world origin, then translated by `offset * n`. Shared by both kinds so
 /// their tool-building cannot drift apart. Returns the tool, the per-segment
-/// output face map, the profile points and basis, and the (u, n) frame.
+/// output face map and the per-segment design roles, or the sentence for why not.
+///
+/// Straight outlines spin to planes, cylinders and cones (a full turn or part of one). An outline
+/// with an arc (a bulge, a round) spins a full turn into tori by `turned::build_solid`, whose own
+/// volume check against the profile integral guards it. A part turn of an arc, an arc centred on
+/// the axis (a ball) and a groove of an arc give a sentence instead.
 fn revolve_tool(
     sk: &Value,
     angle: f64,
-) -> Option<(TSolid, Vec<Option<usize>>, Vec<[f64; 2]>, Vec<usize>, Vec3, Vec3)> {
-    let (points, basis, _bulges) = profile_corners(sk)?;
+    allow_arcs: bool,
+) -> Result<(TSolid, Vec<Option<usize>>, Vec<(String, usize)>), String> {
+    let (segs, roles) = spin_profile(sk)?;
     // The profile is laid in the plane spanned by the sketch's U direction and
     // the plane NORMAL -- a plane CONTAINING the axis, not the sketch plane
     // (revolveProfileFace in occt-build.ts). So p[0] is radius along a.u and
     // p[1] is height along a.n, and the spin axis is a.n through the origin.
     let fr = sketch_frame(sk);
     let (u_axis, n) = (fr.u, fr.n);
+    let has_arc = segs.iter().any(|s| matches!(s, build::ProfileSeg::Arc { .. }));
     // A profile wholly on the far (negative-u) side of the axis has no wall the
     // spin can build (radius is read as |u| >= 0). It is the u>0 profile turned
     // half a turn about the axis, so spin the reflected profile and then rotate
     // the result by pi: exact for any angle, handedness preserved (a rotation,
     // not a mirror), and face order is unchanged.
-    let far_side = points.iter().all(|p| p[0] <= 1e-9) && points.iter().any(|p| p[0] < -1e-9);
-    let spun: Vec<[f64; 2]> = if far_side { points.iter().map(|p| [-p[0], p[1]]).collect() } else { points.clone() };
-    let (mut solid, face_map) = build::revolve_profile(&spun, n, u_axis, angle)?;
-    if far_side {
-        solid = build::transform_solid(&solid, &crate::math::Transform::rotation(n, std::f64::consts::PI));
-    }
+    let far_side = segs.iter().all(|s| seg_u_extent(s).1 <= 1e-9) && segs.iter().any(|s| seg_u_extent(s).0 < -1e-9);
+    let (mut solid, face_map) = if !has_arc {
+        let points: Vec<[f64; 2]> = segs
+            .iter()
+            .filter_map(|s| match s {
+                build::ProfileSeg::Line { a, .. } => Some(*a),
+                build::ProfileSeg::Arc { .. } => None,
+            })
+            .collect();
+        let spun: Vec<[f64; 2]> = if far_side { points.iter().map(|p| [-p[0], p[1]]).collect() } else { points };
+        let (mut solid, map) = build::revolve_profile(&spun, n, u_axis, angle)
+            .ok_or_else(|| "brep-rs supports only profiles parallel or perpendicular to the axis yet".to_string())?;
+        if far_side {
+            solid = build::transform_solid(&solid, &crate::math::Transform::rotation(n, std::f64::consts::PI));
+        }
+        (solid, map)
+    } else {
+        if !allow_arcs {
+            return Err("a groove with a curved outline (an arc or a round) is not built yet -- cut it with a straight outline".to_string());
+        }
+        if (angle.abs() - 360.0).abs() > 1e-9 {
+            return Err("an outline with an arc or a round can only be spun a full turn (360) yet".to_string());
+        }
+        let sgn = if far_side { -1.0 } else { 1.0 };
+        // Reflect a far-side outline to u >= 0; the reflection reverses its winding, which the
+        // orientation fix below turns back to counter-clockwise.
+        let refl: Vec<build::ProfileSeg> = segs
+            .iter()
+            .map(|s| match s {
+                build::ProfileSeg::Line { a, b } => build::ProfileSeg::Line { a: [sgn * a[0], a[1]], b: [sgn * b[0], b[1]] },
+                build::ProfileSeg::Arc { centre, radius, start, sweep } if far_side => build::ProfileSeg::Arc {
+                    centre: [-centre[0], centre[1]],
+                    radius: *radius,
+                    start: std::f64::consts::PI - start,
+                    sweep: -sweep,
+                },
+                build::ProfileSeg::Arc { .. } => s.clone(),
+            })
+            .collect();
+        for s in &refl {
+            if let build::ProfileSeg::Arc { centre, .. } = s {
+                if centre[0] <= 1e-9 {
+                    return Err("an arc centred on the axis or past it spins into part of a ball, which a spin does not build yet -- use sphere() for a ball".to_string());
+                }
+            }
+        }
+        // The turned profile, one piece per wall (an arc over a diameter is two), and which original
+        // segment each piece came from. A zero-length segment makes no wall.
+        let mut flat: Vec<turned::Seg> = Vec::new();
+        let mut owner: Vec<usize> = Vec::new();
+        for (i, s) in refl.iter().enumerate() {
+            let pieces = match s {
+                build::ProfileSeg::Line { a, b } => {
+                    if ((b[0] - a[0]).powi(2) + (b[1] - a[1]).powi(2)).sqrt() > 1e-9 {
+                        vec![turned::Seg::line(*a, *b)]
+                    } else {
+                        vec![]
+                    }
+                }
+                build::ProfileSeg::Arc { centre, radius, start, sweep } => split_at_diameter(*centre, *radius, *start, *sweep),
+            };
+            owner.extend(std::iter::repeat(i).take(pieces.len()));
+            flat.extend(pieces);
+        }
+        if turned::area(&flat) < 0.0 {
+            flat = flat.iter().rev().map(|s| s.reversed()).collect();
+            owner.reverse();
+        }
+        let solid = turned::build_solid([0.0, 0.0], &flat).ok_or_else(|| {
+            "this curved outline cannot be spun into an exact solid yet -- keep each arc clear of the axis and the outline simple".to_string()
+        })?;
+        // One face per piece that is not on the axis, in order; an original segment keeps the first
+        // face made from it.
+        let mut map: Vec<Option<usize>> = vec![None; segs.len()];
+        let mut face = 0usize;
+        for (j, s) in flat.iter().enumerate() {
+            if s.is_axis() {
+                continue;
+            }
+            if map[owner[j]].is_none() {
+                map[owner[j]] = Some(face);
+            }
+            face += 1;
+        }
+        // x -> u, y -> n x u, z -> n; a far-side outline is turned half a turn about n (x -> -u, y -> -(n x u)).
+        let w = crate::math::cross(n, u_axis);
+        let t = crate::math::Transform {
+            m: [
+                [sgn * u_axis[0], sgn * w[0], n[0]],
+                [sgn * u_axis[1], sgn * w[1], n[1]],
+                [sgn * u_axis[2], sgn * w[2], n[2]],
+            ],
+            t: [0.0, 0.0, 0.0],
+        };
+        (build::transform_solid(&solid, &t), map)
+    };
     if fr.origin != [0.0, 0.0, 0.0] {
         let t = crate::math::Transform::translation(fr.origin);
         solid = build::transform_solid(&solid, &t);
     }
-    Some((solid, face_map, points, basis, u_axis, n))
+    Ok((solid, face_map, roles))
 }
 
 /// A hole's cutting tool: a plain cylinder, or ONE revolved stepped profile when
@@ -1466,20 +1658,23 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 // this branch supplies the naming history each needs, and the
                 // caps' own face indices for a partial.
                 let closed = (angle.abs() - 360.0).abs() <= 1e-9;
-                let Some((solid, face_map, points, basis, _u_axis, _n)) = revolve_tool(sk, angle) else {
-                    refusals.insert(id.clone(), json!(format!("revolve {id}: brep-rs supports only profiles parallel or perpendicular to the axis yet")));
-                    continue;
+                let (solid, face_map, roles) = match revolve_tool(sk, angle, true) {
+                    Ok(t) => t,
+                    Err(why) => {
+                        refusals.insert(id.clone(), json!(format!("revolve {id}: {why} -- {id} is shown without it.")));
+                        continue;
+                    }
                 };
                 // Face indices for the naming history: the walls come back in
                 // `face_map` (one entry per profile segment, in segment order);
                 // the partial path appends its two caps AFTER them, in the
                 // order it built them (t=0, then t=angle).
                 let n_walls = solid.faces().len() - if closed { 0 } else { 2 };
-                let m = points.len();
-                let segments: Vec<history::SweepSeg> = (0..m)
-                    .filter_map(|i| {
-                        let (role, index) = role_of(&basis, i, m);
-                        face_map[i].map(|face| history::SweepSeg { role, index, face })
+                let segments: Vec<history::SweepSeg> = roles
+                    .iter()
+                    .enumerate()
+                    .filter_map(|(i, (role, index))| {
+                        face_map[i].map(|face| history::SweepSeg { role: role.clone(), index: *index, face })
                     })
                     .collect();
                 let (cap_bottom, cap_top) = if closed {
@@ -1583,9 +1778,12 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 }
                 // A groove is a subtractive revolve: same tool as `revolve`,
                 // then cut. No sweep history is recorded.
-                let Some((tool, _face_map, _points, _basis, _u_axis, _n)) = revolve_tool(sk, angle) else {
-                    refusals.insert(id.clone(), json!(format!("groove {id}: brep-rs supports only profiles parallel or perpendicular to the axis yet")));
-                    continue;
+                let tool = match revolve_tool(sk, angle, false) {
+                    Ok((tool, _face_map, _roles)) => tool,
+                    Err(why) => {
+                        refusals.insert(id.clone(), json!(format!("groove {id}: {why} -- {id} is shown without it.")));
+                        continue;
+                    }
                 };
                 match ops::boolean("subtract", &base, &tool) {
                     Some(result) if skin_pieces(&result) > skin_pieces(&base) => {

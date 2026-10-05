@@ -178,30 +178,30 @@ test('a clockwise soup arc builds the same segment', () => {
 const RECT = (corners) => `const s = sketch('top')\ns.rect(30, 20)\n${corners}\npull(s, 5)`;
 test('one round on a 30 x 20 rectangle: below, at and beyond the maximum (10)', () => {
   for (const r of [0.5, 9.99, 10]) {
-    pulled(RECT(`s.round(0, ${r})`), (600 - (1 - Math.PI / 4) * r * r) * 5);
-    assert.deepEqual(warnings(RECT(`s.round(0, ${r})`)), []);
+    pulled(RECT(`s.round(1, ${r})`), (600 - (1 - Math.PI / 4) * r * r) * 5);
+    assert.deepEqual(warnings(RECT(`s.round(1, ${r})`)), []);
   }
   for (const r of [10.01, 12, 100]) {
-    pulled(RECT(`s.round(0, ${r})`), (600 - (1 - Math.PI / 4) * 100) * 5);
-    const w = warnings(RECT(`s.round(0, ${r})`));
+    pulled(RECT(`s.round(1, ${r})`), (600 - (1 - Math.PI / 4) * 100) * 5);
+    const w = warnings(RECT(`s.round(1, ${r})`));
     assert.equal(w.length, 1, `a round cut down says so: ${JSON.stringify(w)}`);
-    assert.match(w[0], /more than corner 0 has room for, so it was made 10 instead/);
+    assert.match(w[0], /more than corner 1 has room for, so it was made 10 instead/);
   }
 });
 test('four equal rounds: w*h - (4 - pi) r^2 (was wrong: the second corner was held to half of what was left)', () => {
   for (const r of [1, 5, 8, 9.9, 10]) {
-    pulled(RECT([0, 1, 2, 3].map((k) => `s.round(${k}, ${r})`).join('\n')), roundedRect(30, 20, r) * 5);
-    assert.deepEqual(warnings(RECT([0, 1, 2, 3].map((k) => `s.round(${k}, ${r})`).join('\n'))), []);
+    pulled(RECT([1, 2, 3, 4].map((k) => `s.round(${k}, ${r})`).join('\n')), roundedRect(30, 20, r) * 5);
+    assert.deepEqual(warnings(RECT([1, 2, 3, 4].map((k) => `s.round(${k}, ${r})`).join('\n'))), []);
   }
 });
 test('four rounds of 10 on 30 x 20 is a stadium: it equals the slot formula and a slot sketch', () => {
-  const v = pulled(RECT([0, 1, 2, 3].map((k) => `s.round(${k}, 10)`).join('\n')), slotArea(10, 10) * 5).brep.volume;
+  const v = pulled(RECT([1, 2, 3, 4].map((k) => `s.round(${k}, 10)`).join('\n')), slotArea(10, 10) * 5).brep.volume;
   const sl = pulled("const s = sketch('top').slot([-5, 0], [5, 0], 10)\npull(s, 5)", slotArea(10, 10) * 5).brep.volume;
   assert.ok(Math.abs(v - sl) < 1e-9 * v);
 });
 test('four rounds beyond the maximum are all cut to it, evenly, whatever order they are listed in', () => {
-  const asks = [0, 1, 2, 3];
-  for (const order of [asks, [...asks].reverse(), [2, 0, 3, 1]]) {
+  const asks = [1, 2, 3, 4];
+  for (const order of [asks, [...asks].reverse(), [3, 1, 4, 2]]) {
     const code = RECT(order.map((k) => `s.round(${k}, 15)`).join('\n'));
     pulled(code, roundedRect(30, 20, 10) * 5);
     assert.equal(warnings(code).length, 4);
@@ -209,39 +209,39 @@ test('four rounds beyond the maximum are all cut to it, evenly, whatever order t
 });
 test('two rounds that together want more than their shared edge share it in proportion, not first-come', () => {
   // 30 x 20, corners 0 and 3 share the 20-edge; asking 15 and 5 gives trims 15+5 > 20 once capped (cap 10): 10+5 fits.
-  pulled(RECT('s.round(0, 15)\ns.round(3, 5)'), (600 - (1 - Math.PI / 4) * (100 + 25)) * 5);
+  pulled(RECT('s.round(1, 15)\ns.round(4, 5)'), (600 - (1 - Math.PI / 4) * (100 + 25)) * 5);
   // chamfers are capped by the shorter edge (20), two of 15 on one 20-edge want 30 and each gets 20/30 of its ask: 10 each
-  pulled(RECT('s.chamfer(0, 15)\ns.chamfer(3, 15)'), (600 - 2 * 100 / 2) * 5);
+  pulled(RECT('s.chamfer(1, 15)\ns.chamfer(4, 15)'), (600 - 2 * 100 / 2) * 5);
 });
 test('chamfer: below, at and beyond the shorter edge (20)', () => {
-  for (const d of [1, 19.99, 20]) pulled(RECT(`s.chamfer(0, ${d})`), (600 - d * d / 2) * 5);
+  for (const d of [1, 19.99, 20]) pulled(RECT(`s.chamfer(1, ${d})`), (600 - d * d / 2) * 5);
   for (const d of [20.01, 50]) {
-    pulled(RECT(`s.chamfer(0, ${d})`), (600 - 200) * 5);
-    assert.match(warnings(RECT(`s.chamfer(0, ${d})`))[0], /more than corner 0 has room for, so it was made 20 instead/);
+    pulled(RECT(`s.chamfer(1, ${d})`), (600 - 200) * 5);
+    assert.match(warnings(RECT(`s.chamfer(1, ${d})`))[0], /more than corner 1 has room for, so it was made 20 instead/);
   }
 });
 test('a round and a chamfer on one corner: the round wins, the chamfer is not built', () =>
-  pulled(RECT('s.round(0, 5)\ns.chamfer(0, 8)'), (600 - (1 - Math.PI / 4) * 25) * 5));
+  pulled(RECT('s.round(1, 5)\ns.chamfer(1, 8)'), (600 - (1 - Math.PI / 4) * 25) * 5));
 test('fillet of an acute and an obtuse corner of a triangle, at its maximum and below it', () => {
   const pts = [[0, 0], [40, 0], [0, 30]];
   const alpha = Math.atan2(30, 40); // interior angle at (40, 0)
   const rmax = (40 / 2 > 25 ? 25 : 20) * Math.tan(alpha / 2); // shorter edge there is 40, so half = 20
   for (const f of [0.3, 1]) {
     const r = rmax * f;
-    pulled(`const s = sketch('top')\ns.polygon(${JSON.stringify(pts)})\ns.round(1, ${r})\npull(s, 4)`, (600 - filletCut(alpha, r)) * 4);
+    pulled(`const s = sketch('top')\ns.polygon(${JSON.stringify(pts)})\ns.round(2, ${r})\npull(s, 4)`, (600 - filletCut(alpha, r)) * 4);
   }
-  const code = `const s = sketch('top')\ns.polygon(${JSON.stringify(pts)})\ns.round(1, 100)\npull(s, 4)`;
+  const code = `const s = sketch('top')\ns.polygon(${JSON.stringify(pts)})\ns.round(2, 100)\npull(s, 4)`;
   pulled(code, (600 - filletCut(alpha, rmax)) * 4);
   assert.equal(warnings(code).length, 1);
 });
 test('a round on a straight corner or beside a curve is left out and the script says so', () => {
   const pts = [[0, 0], [10, 0], [20, 0], [20, 10], [0, 10]];
-  const code = `const s = sketch('top')\ns.polygon(${JSON.stringify(pts)})\ns.round(1, 3)\npull(s, 2)`;
+  const code = `const s = sketch('top')\ns.polygon(${JSON.stringify(pts)})\ns.round(2, 3)\npull(s, 2)`;
   pulled(code, 200 * 2);
   assert.match(warnings(code)[0], /was left out/);
 });
 test('a round whose size is 0 or negative changes nothing', () => {
-  pulled(RECT('s.round(0, 0)'), 3000);
+  pulled(RECT('s.round(1, 0)'), 3000);
 });
 
 // ---------------------------------------------------------------- degenerate outlines: build right or say why
@@ -299,9 +299,9 @@ test('soup: an arc end that does not lie on its circle is pulled onto it, never 
 // ---------------------------------------------------------------- the same shapes through OCCT, one fixed script set
 test('referee: OCCT builds the same volume for sketch + pull scripts of every polygon kind', () => {
   const scripts = [
-    RECT('s.round(0, 4)\ns.chamfer(2, 6)'),
-    RECT([0, 1, 2, 3].map((k) => `s.round(${k}, 8)`).join('\n')),
-    "const s = sketch('top')\ns.polygon([[0,0],[40,0],[30,25],[5,30]])\ns.round(2, 3)\npull(s, 6)",
+    RECT('s.round(1, 4)\ns.chamfer(3, 6)'),
+    RECT([1, 2, 3, 4].map((k) => `s.round(${k}, 8)`).join('\n')),
+    "const s = sketch('top')\ns.polygon([[0,0],[40,0],[30,25],[5,30]])\ns.round(3, 3)\npull(s, 6)",
     "const s = sketch('top')\ns.circle(18)\npull(s, 9)",
   ];
   for (const code of scripts) {

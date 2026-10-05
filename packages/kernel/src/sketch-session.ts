@@ -33,7 +33,7 @@ export type SessionRule = Record<string, unknown> & { k: string };
 export interface Diagnosis {
   rank: number;
   dof: number;
-  bucket: 'consistent' | 'globally-infeasible' | 'redundant' | 'conflicting';
+  bucket: 'consistent' | 'globallyInfeasible' | 'redundant' | 'conflicting' | 'error';
   blame: number[];
 }
 
