@@ -106,6 +106,20 @@ wrong-solid sweep; the refusal sentences pinned; flip the existing refusal pin a
 3. Stop rule: if S1 leaves an unexplained mismatch against OpenCascade or the numeric oracle, stop and record it in
    `kernel-campaign.md` instead of widening scope.
 
+## Pre-check results (2026-10-05, before any builder)
+
+1. **Closed forms vs OpenCascade: PASS.** 20 seeded (R, r, e, floor) cases, half through and half blind, e + r up to 0.95 R:
+   worst relative difference 1.2e-10 (every case under 2e-10), for V = 4/3 pi R^3 - 2I (through) and
+   V = 4/3 pi R^3 - (I - f0 pi r^2) (blind). `I` MUST be integrated in theta with y = r sin(theta); a plain Simpson rule in y
+   has a square-root singularity at y = +-r and gave 3.7e-7, which is above the 1e-7 bar. The kernel quadrature (the
+   `bore_region` and removed-volume net) must use the substitution, or Gauss-Legendre in theta.
+2. **y-frame mesher, topology: PASS.** A standalone JS prototype of the pole fan plus rim zipper (two halves about the
+   pole d x n, hole arcs on the rim, straight wall rungs) was built for e/r in {0.5, 0.99, 1.01, 2} x (e+r)/R in {0.5, 0.95}
+   at two densities (32 configurations). Every one had zero open or mismatched directed edges and no degenerate triangles,
+   including e < r. Volume error is chord sag only: 2.3-2.7% at 24 columns/6 rows, 0.52-0.57% at 64/12 (the design's "within
+   1%" is a statement about the production tolerance, which sets the density). Not yet shown: triangle quality at the window
+   ends, and the production mesher's own sampling and seam handling; the prototype lives outside the repo.
+
 ## Risks
 
 A bored sphere read as a whole sphere through a guard the enum change misses (the 49 other `Surface::Sphere` sites never
