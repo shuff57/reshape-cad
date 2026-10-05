@@ -237,6 +237,57 @@ fn a_rounded_open_end_and_a_step_refuse() {
     assert!(hollow(&rd, 2.0, Some(cap)).is_err(), "the wall at a rounded open end has no definite shape");
 }
 
+/// W3: a round on the OUTER rim of the end that is then left open. The cavity wall runs flush to the open
+/// plane and the lip keeps a flat of width (wall - round) between the two, so the part is the plain
+/// cylinder less the corner square-minus-disc less the cavity (R - w) x (H - w), and no more.
+#[test]
+fn a_rounded_open_rim_narrower_than_the_wall_is_exact() {
+    let w = 2.0;
+    for (up, r) in [(true, 1.0), (true, 1.5), (false, 1.9), (true, 0.25)] {
+        let rimmed = edit(&plain(), up, R, r, true);
+        let (h, s) = open_hollow(&rimmed, up, w);
+        let cav = PI * (R - w).powi(2) * (H - w);
+        assert!(close(volume(&h.cavity), cav), "cavity {} vs {cav}", volume(&h.cavity));
+        let want = cyl() - round_removed(R, r, -1.0) - cav;
+        assert!(close(build::solid_volume(&s), want), "up {up} r {r}: {} vs {want}", build::solid_volume(&s));
+        assert!(build::signed_volume(&s) > 0.0);
+        let mesh = crate::mesh::mesh_solid(&s, 0.05).expect("meshes");
+        assert!(crate::ops::check_watertight(&mesh), "up {up} r {r}: mesh closed");
+    }
+    // a bushing (bore 4) with the OUTER rim rounded 1, open at that end: the cavity is the annulus
+    let rd = read(&plain()).unwrap();
+    let bored = build_solid(rd.origin, &bore(&rd, 4.0, -5.0, 25.0).unwrap()).unwrap();
+    let rimmed = edit(&bored, true, R, 1.0, true);
+    let (_, s) = open_hollow(&rimmed, true, w);
+    let cav = PI * ((R - w).powi(2) - (4.0 + w).powi(2)) * (H - w);
+    let want = build::solid_volume(&bored) - round_removed(R, 1.0, -1.0) - cav;
+    assert!(close(build::solid_volume(&s), want), "{} vs {want}", build::solid_volume(&s));
+}
+
+/// The same lip, edge by edge: the round of the BORE mouth of a bushing hollowed open at that end.
+#[test]
+fn a_rounded_bore_mouth_at_the_open_end_is_exact() {
+    let w = 2.0;
+    let rd = read(&plain()).unwrap();
+    let bored = build_solid(rd.origin, &bore(&rd, 4.0, -5.0, 25.0).unwrap()).unwrap();
+    let mouth = edit(&bored, true, 4.0, 1.0, true);
+    let (_, s) = open_hollow(&mouth, true, w);
+    let cav = PI * ((R - w).powi(2) - (4.0 + w).powi(2)) * (H - w);
+    // the bore wall at rho = 4 meets the top: the corner square lies OUTWARD of the bore wall
+    let want = build::solid_volume(&bored) - round_removed(4.0, 1.0, 1.0) - cav;
+    assert!(close(build::solid_volume(&s), want), "{} vs {want}", build::solid_volume(&s));
+}
+
+#[test]
+fn a_rounded_open_rim_as_wide_as_the_wall_or_wider_refuses() {
+    for r in [2.0, 3.0] {
+        let top = edit(&plain(), true, R, r, true);
+        let rd = read(&top).unwrap();
+        let (cap, _) = rim(&top, true, R);
+        assert!(hollow(&rd, 2.0, Some(cap)).is_err(), "round {r} against wall 2");
+    }
+}
+
 #[test]
 fn only_a_solid_of_revolution_about_z_reads_back() {
     // a box, a ball, a cylinder lying on its side, a cone with an apex: none is a profile this edits
