@@ -128,6 +128,15 @@ a primitive (539: after a hole, fillet, combine or mirror), "Repeat Around spins
 "hole() cannot find how thick this combine is" (340). A rotation of a derived solid is an exact kernel transform, so the first is a
 policy choice; ask before changing the language.
 
+**W8. Tangent walls: a box whose width equals a coaxial cylinder's diameter (12 of the 15 box x cylinder pair gaps).** Found while
+checking W1. The box's four side faces touch the cylinder wall along a line each; join (8, box stacked on the cylinder) and cut (4, box
+overlapping its end) are refused as "unsupported surface pair". Checked by volume against OpenCascade (first script: 25,014 + 13,997 =
+39,011 vs OCCT 39,014), so the first argument of `cylinder()` is the diameter. A student can type this by hand (a square block that
+exactly fits a round post), so it is likelier in real use than its 0.8 % of the sweep suggests. Not the same as the three "touch along
+a line" box x cylinder refusals, which are two separate lumps in OpenCascade too and are correctly refused. Open: whether the plane-
+cylinder intersection treats a tangent plane as a line (a degenerate conic) or as no intersection; that decides if this is a
+classification fix or a new curve case. Pre-check before building: run the 12 and see which guard refuses.
+
 **Not worth doing from this census:** "recess wider than the part" (435) and bevel/round of a sphere or other nonsensical edges
 (302): the generator draws sizes and edges no student would, and the refusals are correct.
 
