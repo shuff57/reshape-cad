@@ -519,7 +519,7 @@ pub fn fillet_box(hx: f64, hy: f64, hz: f64, rad: f64, center: Vec3) -> TSolid {
                     cyl_arc_use(slot2, dir(slot2, slot2_from), hp, hp, hp, 0.0),
                 ];
                 faces.push(make_face(
-                    Surface::Sphere(SphereSurf { center: centre, radius: rad, axis, e1, e2, u_range: [0.0, hp], v_range: [0.0, hp], trim: None }),
+                    Surface::Sphere(SphereSurf { center: centre, radius: rad, axis, e1, e2, u_range: [0.0, hp], v_range: [0.0, hp], trim: crate::geom::SphTrim::None }),
                     [[0.0, hp], [0.0, hp]],
                     uses,
                 ));

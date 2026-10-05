@@ -583,9 +583,19 @@ fn sphere_face_contains(sp: &crate::geom::SphereSurf, q: Vec3) -> bool {
     if r < 1e-12 {
         return false;
     }
-    if let Some(h) = sp.trim {
-        if dot(w, normalize(sp.e1)).abs() < h - tol && dot(w, normalize(sp.e2)).abs() < h - tol {
-            return false;
+    match sp.trim {
+        crate::geom::SphTrim::None => {}
+        crate::geom::SphTrim::Square(h) => {
+            if dot(w, normalize(sp.e1)).abs() < h - tol && dot(w, normalize(sp.e2)).abs() < h - tol {
+                return false;
+            }
+        }
+        // Inside the bore cylinder (either end) the sphere face does not exist.
+        crate::geom::SphTrim::Bore { r, e } => {
+            let (x, y) = (dot(w, normalize(sp.e1)), dot(w, normalize(sp.e2)));
+            if (x - e) * (x - e) + y * y < (r - tol) * (r - tol) {
+                return false;
+            }
         }
     }
     let axis = normalize(sp.axis);
@@ -4040,7 +4050,7 @@ fn process_face(
                 return None;
             }
             let mut trimmed = sp.clone();
-            trimmed.trim = Some(h);
+            trimmed.trim = crate::geom::SphTrim::Square(h);
             let seam_v = topo::vertex(add(sp.center, scale(sp.e1, sp.radius)));
             let seam = topo::edge(
                 seam_v.clone(),
@@ -4551,7 +4561,7 @@ pub fn sphere_axial_bore(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
             e2,
             u_range: [0.0, TWO_PI],
             v_range: [v0, v1],
-            trim: None,
+            trim: crate::geom::SphTrim::None,
         })
     };
     // the sphere's meridian seam at u = 0 (colatitude measured from -z)
@@ -9559,6 +9569,70 @@ mod special_result_soundness {
         for op in ["intersect", "union"] {
             let r = boolean(op, &c1, &c2).expect("builds");
             assert!(boolean_result_is_sound(op, &c1, &c2, &r), "{op}");
+        }
+    }
+}
+
+/// SPEC-brep-sphere-offset-bore.md: the cap a bore removes from a sphere is measured in closed form
+/// in theta; here it is held against a spherical-cap formula (e = 0) and against a brute-force grid
+/// that shares none of its algebra.
+#[cfg(test)]
+mod sphere_bore_cap_measure {
+    use crate::geom::SphereSurf;
+    use crate::math::{add, dot, scale, Vec3};
+
+    fn sphere(radius: f64) -> SphereSurf {
+        SphereSurf::full([0.0; 3], radius, [0.0, 0.0, 1.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0])
+    }
+
+    #[test]
+    fn centred_bore_cap_is_the_spherical_cap() {
+        let (big, r) = (20.0, 7.0);
+        let s = sphere(big);
+        let h = (big * big - r * r).sqrt();
+        let (area, vol, sx) = s.bore_cap_measure(1.0, r, 0.0);
+        let want = 2.0 * std::f64::consts::PI * big * (big - h);
+        assert!((area - want).abs() <= 1e-12 * want, "{area} vs {want}");
+        // centre at the origin: the volume term is R * area; the centroid numerator is R * Avec = R pi r^2 on the axis
+        assert!((vol - big * want).abs() <= 1e-10 * vol.abs());
+        assert!(sx[0].abs() < 1e-9 && sx[1].abs() < 1e-9);
+        assert!((sx[2] - big * std::f64::consts::PI * r * r).abs() <= 1e-10 * sx[2].abs());
+    }
+
+    /// Brute force: midpoint rule over the disc in polar coordinates, integrating the sphere's own area element.
+    fn grid(big: f64, r: f64, e: f64, pole: f64) -> (f64, Vec3) {
+        let n = 1200usize;
+        let (mut area, mut sx) = (0.0, [0.0; 3]);
+        for i in 0..n {
+            let rho = r * (i as f64 + 0.5) / n as f64;
+            for j in 0..n {
+                let th = 2.0 * std::f64::consts::PI * (j as f64 + 0.5) / n as f64;
+                let (x, y) = (e + rho * th.cos(), rho * th.sin());
+                let z = (big * big - x * x - y * y).sqrt();
+                // sphere z = +-sqrt(R^2 - x^2 - y^2): dA = R / z dx dy, dx dy = rho drho dtheta
+                let da = big / z * rho * (r / n as f64) * (2.0 * std::f64::consts::PI / n as f64);
+                area += da;
+                sx = add(sx, scale([x, y, pole * z], da));
+            }
+        }
+        (area, sx)
+    }
+
+    #[test]
+    fn offset_bore_cap_matches_a_brute_force_grid() {
+        for (big, r, e) in [(20.0, 3.0, 8.0), (20.0, 6.0, 5.0), (12.0, 2.0, 9.4), (31.0, 9.96, 4.76), (9.0, 4.58, 2.13)] {
+            let s = sphere(big);
+            for pole in [1.0, -1.0] {
+                let (area, vol, sx) = s.bore_cap_measure(pole, r, e);
+                let (garea, gsx) = grid(big, r, e, pole);
+                assert!((area - garea).abs() <= 2e-6 * garea, "R={big} r={r} e={e}: area {area} vs grid {garea}");
+                for k in 0..3 {
+                    assert!((sx[k] - gsx[k]).abs() <= 2e-6 * garea * big, "R={big} r={r} e={e} pole {pole}: sx[{k}] {} vs grid {}", sx[k], gsx[k]);
+                }
+                // volume term: int p.n dA with n = p / R on a sphere about the origin is R * area
+                assert!((vol - big * area).abs() <= 1e-10 * vol.abs(), "R={big}: vol {vol} vs R A {}", big * area);
+                let _ = dot([0.0; 3], [0.0; 3]);
+            }
         }
     }
 }

@@ -695,7 +695,7 @@ fn finish_family(pa: &mut [AFace], pb: &mut [AFace], fam: Fam, full_sphere: &dyn
                 bail!();
             }
             let e2 = scale(cross(fam.a, fam.e1), r.hand());
-            r.surf = Surface::Sphere(SphereSurf { center: s.center, radius: s.radius, axis: fam.a, e1: fam.e1, e2, u_range: [0.0, TAU], v_range: s.v_range, trim: None });
+            r.surf = Surface::Sphere(SphereSurf { center: s.center, radius: s.radius, axis: fam.a, e1: fam.e1, e2, u_range: [0.0, TAU], v_range: s.v_range, trim: crate::geom::SphTrim::None });
         }
         let (ax, o) = r.own_axis();
         r.sigma = dot(ax, fam.a).signum();

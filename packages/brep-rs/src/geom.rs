@@ -803,7 +803,38 @@ pub struct SphereSurf {
     /// removed, cut by a centered square tube aligned with (`e1`, `e2`).
     /// `None` is a full, untrimmed sphere -- every primitive `sphere`
     /// leaves this `None`, so nothing changes for the DONE `sphere` kind.
-    pub trim: Option<f64>,
+    pub trim: SphTrim,
+}
+
+/// How a sphere face has been carved. Deliberately NOT an `Option<f64>`: a bored
+/// sphere keeps its full `u_range` and `v_range`, so it would pass every
+/// "is this a whole sphere" guard that only looks at the ranges; an enum makes
+/// each place that reads the trim decide what a bore means.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub enum SphTrim {
+    /// A whole sphere (every primitive `sphere`).
+    None,
+    /// Both poles (along `axis`) have a square cap of half-width `h` removed, cut by a
+    /// centred square tube aligned with (`e1`, `e2`) (SPEC pinned math, combine-sphere).
+    Square(f64),
+    /// A cylindrical bore of radius `r` parallel to `axis`, its axis offset `e` from the
+    /// centre along `e1`, with `0 < e` and `e + r < radius`, running through: both ends
+    /// are open and each removes a hole bounded by the meeting curve
+    /// (SPEC-brep-sphere-offset-bore.md, slice S1; blind bores add a field later).
+    Bore { r: f64, e: f64 },
+}
+
+impl SphTrim {
+    /// True for a whole sphere. Guards that only handle a whole sphere use this, so a
+    /// bored or squared sphere refuses.
+    pub fn is_none(&self) -> bool {
+        matches!(self, SphTrim::None)
+    }
+    /// True for any carved sphere. Equivalent to `!is_none()`; kept for the guards that read
+    /// "is this sphere trimmed at all", which refuse a bore as they refuse a square trim.
+    pub fn is_some(&self) -> bool {
+        !self.is_none()
+    }
 }
 
 impl SphereSurf {
@@ -816,7 +847,7 @@ impl SphereSurf {
             e2,
             u_range: [0.0, 2.0 * std::f64::consts::PI],
             v_range: [0.0, std::f64::consts::PI],
-            trim: None,
+            trim: SphTrim::None,
         }
     }
 
@@ -878,6 +909,49 @@ impl SphereSurf {
                 pt[i] * crate::math::len(cross(dp, dq)) * dims
             });
         }
+        (area, vol, sx)
+    }
+
+    /// Area, divergence-theorem volume term and area-weighted centroid numerator of the cap a
+    /// bore of radius `r`, its axis offset `e` along `e1`, removes at the `pole_sign` end. The cap
+    /// projects onto the disc D = {(x - e)^2 + y^2 < r^2} in the (e1, e2) plane, where the sphere
+    /// is z = +-f, f = sqrt(R^2 - x^2 - y^2), dA = R dx dy / f. With c^2 = R^2 - y^2 and the inner
+    /// x-integrals done in closed form,
+    ///   A      = R J,            J = int [asin(x_hi/c) - asin(x_lo/c)] dy
+    ///   Avec   = (X, 0, +-pi r^2),   X = int [sqrt(c^2 - x_lo^2) - sqrt(c^2 - x_hi^2)] dy
+    ///   int p.n dA = centre . Avec + R A,   int p dA = A centre + R Avec,
+    /// with x_lo, x_hi = e -+ w, w = sqrt(r^2 - y^2). The outer integral is taken in theta with
+    /// y = r sin(theta): a plain Gauss rule in y has a square-root singularity at y = +-r (a plain
+    /// Simpson rule in y measured 3.7e-7 against OpenCascade, the substitution 1e-10).
+    pub fn bore_cap_measure(&self, pole_sign: f64, r: f64, e: f64) -> (f64, f64, Vec3) {
+        let big = self.radius;
+        let (mut j, mut x) = (0.0, 0.0);
+        // Four panels of the 16-point rule over theta in [-pi/2, pi/2].
+        let panels = 4;
+        let panel = std::f64::consts::PI / panels as f64;
+        for k in 0..panels {
+            let lo = -0.5 * std::f64::consts::PI + panel * k as f64;
+            for i in 0..16 {
+                let th = lo + 0.5 * panel * (GL16_X[i] + 1.0);
+                let wgt = GL16_W[i] * 0.5 * panel;
+                let (y, w) = (r * th.sin(), r * th.cos());
+                let c2 = big * big - y * y;
+                let c = c2.sqrt();
+                let (xl, xh) = (e - w, e + w);
+                let asin = |t: f64| (t / c).clamp(-1.0, 1.0).asin();
+                let rt = |t: f64| (c2 - t * t).max(0.0).sqrt();
+                let dy = r * th.cos();
+                j += wgt * dy * (asin(xh) - asin(xl));
+                x += wgt * dy * (rt(xl) - rt(xh));
+            }
+        }
+        let area = big * j;
+        let avec = add(
+            scale(self.e1, x),
+            scale(self.axis, pole_sign * std::f64::consts::PI * r * r),
+        );
+        let vol = dot(self.center, avec) + big * area;
+        let sx = add(scale(self.center, area), scale(avec, big));
         (area, vol, sx)
     }
 }
@@ -1158,12 +1232,24 @@ impl Surface {
             sx[i] = comp;
         }
         if let Surface::Sphere(sp) = self {
-            if let Some(h) = sp.trim {
-                for pole in [1.0, -1.0] {
-                    let (ca, _, csx) = sp.cap_measure(pole, h);
-                    area -= ca;
-                    for i in 0..3 {
-                        sx[i] -= csx[i];
+            match sp.trim {
+                SphTrim::None => {}
+                SphTrim::Square(h) => {
+                    for pole in [1.0, -1.0] {
+                        let (ca, _, csx) = sp.cap_measure(pole, h);
+                        area -= ca;
+                        for i in 0..3 {
+                            sx[i] -= csx[i];
+                        }
+                    }
+                }
+                SphTrim::Bore { r, e } => {
+                    for pole in [1.0, -1.0] {
+                        let (ca, _, csx) = sp.bore_cap_measure(pole, r, e);
+                        area -= ca;
+                        for i in 0..3 {
+                            sx[i] -= csx[i];
+                        }
                     }
                 }
             }
@@ -1212,10 +1298,19 @@ impl Surface {
             dot(s.param(u, v), cross(du, dv)) * (u1 - u0) * (v1 - v0)
         });
         if let Surface::Sphere(sp) = self {
-            if let Some(h) = sp.trim {
-                for pole in [1.0, -1.0] {
-                    let (_, cv, _) = sp.cap_measure(pole, h);
-                    vt -= cv;
+            match sp.trim {
+                SphTrim::None => {}
+                SphTrim::Square(h) => {
+                    for pole in [1.0, -1.0] {
+                        let (_, cv, _) = sp.cap_measure(pole, h);
+                        vt -= cv;
+                    }
+                }
+                SphTrim::Bore { r, e } => {
+                    for pole in [1.0, -1.0] {
+                        let (_, cv, _) = sp.bore_cap_measure(pole, r, e);
+                        vt -= cv;
+                    }
                 }
             }
         }
@@ -1347,7 +1442,7 @@ impl Surface {
                 // radius since the polar caps never reach the equator.
                 // Tight only when (e1, e2, axis) are themselves world-axis
                 // aligned, true for every fixture this trim is built for.
-                if let Some(h) = s.trim {
+                if let SphTrim::Square(h) = s.trim {
                     let axis_r = (s.radius * s.radius - h * h).max(0.0).sqrt();
                     for (dir, r) in [(s.e1, s.radius), (s.e2, s.radius), (s.axis, axis_r)] {
                         let dir = normalize(dir);
