@@ -47,6 +47,50 @@ pub enum Curve {
         r: f64,
         sign: f64,
     },
+    /// The curve where a cylinder of radius `r`, its axis parallel to `d` and offset `e` from the
+    /// centre of a sphere of radius `big_r` along `n`, meets the sphere
+    /// (docs/specs/SPEC-brep-sphere-offset-bore.md). With `a = d x n` (any orthonormal frame
+    /// (n, a, d) works), at angle `phi` (`t = phi / 2pi`):
+    ///
+    ///   p(phi) = center + (e + r cos(phi)) n + r sin(phi) a + sign f(phi) d,
+    ///   f(phi) = sqrt(big_r^2 - e^2 - r^2 - 2 e r cos(phi))
+    ///
+    /// It lies on both surfaces exactly, and `f > 0` whenever `e + r < big_r`, so each `sign`
+    /// branch is one closed curve and the two never meet. Length is an elliptic-type integral,
+    /// evaluated by quadrature.
+    SphCyl {
+        center: Vec3,
+        d: Vec3,
+        n: Vec3,
+        a: Vec3,
+        big_r: f64,
+        r: f64,
+        e: f64,
+        sign: f64,
+    },
+}
+
+/// 3D point of a [`Curve::SphCyl`] at angle `phi`, and its derivative d/dphi.
+fn sph_cyl_eval(
+    center: Vec3,
+    d: Vec3,
+    n: Vec3,
+    a: Vec3,
+    big_r: f64,
+    r: f64,
+    e: f64,
+    sign: f64,
+    phi: f64,
+) -> (Vec3, Vec3) {
+    let (s, c) = phi.sin_cos();
+    let f = (big_r * big_r - e * e - r * r - 2.0 * e * r * c).max(0.0).sqrt();
+    let p = add(
+        center,
+        add(add(scale(n, e + r * c), scale(a, r * s)), scale(d, sign * f)),
+    );
+    let df = if f > 1e-300 { e * r * s / f } else { 0.0 };
+    let dp = add(add(scale(n, -r * s), scale(a, r * c)), scale(d, sign * df));
+    (p, dp)
 }
 
 /// 3D point of a [`Curve::CylCyl`] at angle `phi`, and its derivative d/dphi.
@@ -89,6 +133,41 @@ pub fn integrate_composite<F: Fn(f64) -> f64>(a: f64, b: f64, panels: usize, f: 
     acc
 }
 
+/// Grow `b` to the box of a closed curve whose world coordinates are smooth periodic functions of
+/// `phi` in [0, 2pi): sample densely, then refine each extremum by golden-section search so the box
+/// is tight to ~1e-12 (it only ever has to not exceed the true box; no consumer needs it larger).
+fn expand_periodic(b: &mut Aabb, eval: &dyn Fn(f64) -> Vec3) {
+    let tau = 2.0 * std::f64::consts::PI;
+    let steps = 720usize;
+    for i in 0..3 {
+        for want_max in [true, false] {
+            let sgn = if want_max { 1.0 } else { -1.0 };
+            let mut best = 0usize;
+            let mut bv = f64::NEG_INFINITY;
+            for k in 0..steps {
+                let v = sgn * eval(tau * k as f64 / steps as f64)[i];
+                if v > bv {
+                    bv = v;
+                    best = k;
+                }
+            }
+            let h = tau / steps as f64;
+            let (mut lo, mut hi) = (tau * best as f64 / steps as f64 - h, tau * best as f64 / steps as f64 + h);
+            let gr = 0.618033988749895;
+            for _ in 0..80 {
+                let m1 = hi - gr * (hi - lo);
+                let m2 = lo + gr * (hi - lo);
+                if sgn * eval(m1)[i] > sgn * eval(m2)[i] {
+                    hi = m2;
+                } else {
+                    lo = m1;
+                }
+            }
+            b.expand(eval(0.5 * (lo + hi)));
+        }
+    }
+}
+
 impl Curve {
     pub fn length(&self) -> f64 {
         match self {
@@ -99,6 +178,12 @@ impl Curve {
                 let tau = 2.0 * std::f64::consts::PI;
                 integrate_composite(0.0, tau, 64, |phi| {
                     crate::math::len(cyl_cyl_eval(*center, *d, *n, *a, *big_r, *r, *sign, phi).1)
+                })
+            }
+            Curve::SphCyl { center, d, n, a, big_r, r, e, sign } => {
+                let tau = 2.0 * std::f64::consts::PI;
+                integrate_composite(0.0, tau, 64, |phi| {
+                    crate::math::len(sph_cyl_eval(*center, *d, *n, *a, *big_r, *r, *e, *sign, phi).1)
                 })
             }
         }
@@ -129,6 +214,9 @@ impl Curve {
             } => arc_point(*center, *radius, *normal, *x_axis, *sweep, t),
             Curve::CylCyl { center, d, n, a, big_r, r, sign } => {
                 cyl_cyl_eval(*center, *d, *n, *a, *big_r, *r, *sign, t * 2.0 * std::f64::consts::PI).0
+            }
+            Curve::SphCyl { center, d, n, a, big_r, r, e, sign } => {
+                sph_cyl_eval(*center, *d, *n, *a, *big_r, *r, *e, *sign, t * 2.0 * std::f64::consts::PI).0
             }
         }
     }
@@ -170,6 +258,13 @@ impl Curve {
                     w,
                 )
             }
+            Curve::SphCyl { center, d, n, a, big_r, r, e, sign } => {
+                let w = 2.0 * std::f64::consts::PI;
+                scale(
+                    sph_cyl_eval(*center, *d, *n, *a, *big_r, *r, *e, *sign, t * w).1,
+                    w,
+                )
+            }
         }
     }
 
@@ -207,6 +302,18 @@ impl Curve {
                 for i in 0..3 {
                     acc[i] = integrate_composite(0.0, tau, 64, |phi| {
                         let (p, dp) = cyl_cyl_eval(*center, *d, *n, *a, *big_r, *r, *sign, phi);
+                        p[i] * crate::math::len(dp)
+                    });
+                }
+                scale(acc, 1.0 / len)
+            }
+            Curve::SphCyl { center, d, n, a, big_r, r, e, sign } => {
+                let tau = 2.0 * std::f64::consts::PI;
+                let len = self.length();
+                let mut acc = [0.0; 3];
+                for i in 0..3 {
+                    acc[i] = integrate_composite(0.0, tau, 64, |phi| {
+                        let (p, dp) = sph_cyl_eval(*center, *d, *n, *a, *big_r, *r, *e, *sign, phi);
                         p[i] * crate::math::len(dp)
                     });
                 }
@@ -271,42 +378,10 @@ impl Curve {
                 }
             }
             Curve::CylCyl { center, d, n, a, big_r, r, sign } => {
-                // Every world coordinate is a smooth periodic function of phi:
-                // sample densely, then refine each extremum by golden-section
-                // search so the box is tight to ~1e-12 (it only ever has to
-                // not exceed the true box; no consumer needs it larger).
-                let tau = 2.0 * std::f64::consts::PI;
-                let eval = |phi: f64, i: usize| cyl_cyl_eval(*center, *d, *n, *a, *big_r, *r, *sign, phi).0[i];
-                let steps = 720usize;
-                for i in 0..3 {
-                    for want_max in [true, false] {
-                        let sgn = if want_max { 1.0 } else { -1.0 };
-                        let mut best = 0usize;
-                        let mut bv = f64::NEG_INFINITY;
-                        for k in 0..steps {
-                            let v = sgn * eval(tau * k as f64 / steps as f64, i);
-                            if v > bv {
-                                bv = v;
-                                best = k;
-                            }
-                        }
-                        let h = tau / steps as f64;
-                        let (mut lo, mut hi) = (tau * best as f64 / steps as f64 - h, tau * best as f64 / steps as f64 + h);
-                        let gr = 0.618033988749895;
-                        for _ in 0..80 {
-                            let m1 = hi - gr * (hi - lo);
-                            let m2 = lo + gr * (hi - lo);
-                            if sgn * eval(m1, i) > sgn * eval(m2, i) {
-                                hi = m2;
-                            } else {
-                                lo = m1;
-                            }
-                        }
-                        let phi = 0.5 * (lo + hi);
-                        let p = cyl_cyl_eval(*center, *d, *n, *a, *big_r, *r, *sign, phi).0;
-                        b.expand(p);
-                    }
-                }
+                expand_periodic(&mut b, &|phi: f64| cyl_cyl_eval(*center, *d, *n, *a, *big_r, *r, *sign, phi).0);
+            }
+            Curve::SphCyl { center, d, n, a, big_r, r, e, sign } => {
+                expand_periodic(&mut b, &|phi: f64| sph_cyl_eval(*center, *d, *n, *a, *big_r, *r, *e, *sign, phi).0);
             }
         }
         b
@@ -350,6 +425,16 @@ impl Curve {
                 a: normalize(t.dir(*a)),
                 big_r: *big_r,
                 r: *r,
+                sign: *sign,
+            },
+            Curve::SphCyl { center, d, n, a, big_r, r, e, sign } => Curve::SphCyl {
+                center: t.apply(*center),
+                d: normalize(t.dir(*d)),
+                n: normalize(t.dir(*n)),
+                a: normalize(t.dir(*a)),
+                big_r: *big_r,
+                r: *r,
+                e: *e,
                 sign: *sign,
             },
         }

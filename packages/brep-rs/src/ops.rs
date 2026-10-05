@@ -2427,6 +2427,9 @@ fn plane_face_radial_reach(face: &Face<Curve3, Surface3>, origin: Vec3, axis: Ve
             Curve::CylCyl { center, big_r, r, .. } => {
                 far = far.max(radial(*center) + big_r + r);
             }
+            Curve::SphCyl { center, big_r, r, e, .. } => {
+                far = far.max(radial(*center) + big_r + r + e);
+            }
         }
     }
     Some(far)
@@ -9633,6 +9636,108 @@ mod sphere_bore_cap_measure {
                 assert!((vol - big * area).abs() <= 1e-10 * vol.abs(), "R={big}: vol {vol} vs R A {}", big * area);
                 let _ = dot([0.0; 3], [0.0; 3]);
             }
+        }
+    }
+}
+
+/// `Curve::SphCyl`: the meeting curve of a sphere and an offset parallel cylinder.
+#[cfg(test)]
+mod sph_cyl_curve {
+    use crate::geom::Curve;
+    use crate::math::{add, cross, dot, len, normalize, scale, sub, Transform, Vec3};
+
+    fn curve(big_r: f64, r: f64, e: f64, sign: f64, center: Vec3, d: Vec3, n: Vec3) -> Curve {
+        let a = cross(d, n);
+        Curve::SphCyl { center, d, n, a, big_r, r, e, sign }
+    }
+
+    fn cases() -> Vec<Curve> {
+        let mut v = Vec::new();
+        for (big_r, r, e) in [(20.0, 3.0, 8.0), (20.0, 6.0, 5.0), (12.0, 2.0, 9.4), (9.0, 4.58, 2.13)] {
+            for sign in [1.0, -1.0] {
+                // a tilted frame, off the origin, so no component hides in an axis-aligned shortcut
+                let d = normalize([0.3, -0.5, 0.8]);
+                let n = normalize(cross(d, [1.0, 0.2, 0.1]));
+                v.push(curve(big_r, r, e, sign, [4.0, -7.0, 2.5], d, n));
+            }
+        }
+        v
+    }
+
+    #[test]
+    fn every_point_lies_on_the_sphere_and_on_the_cylinder() {
+        for c in cases() {
+            let Curve::SphCyl { center, d, n, big_r, r, e, .. } = c else { unreachable!() };
+            for i in 0..64 {
+                let p = c.point_at(i as f64 / 64.0);
+                let w = sub(p, center);
+                assert!((len(w) - big_r).abs() < 1e-12 * big_r, "off the sphere by {}", len(w) - big_r);
+                // distance to the cylinder's axis (through center + e n, direction d) is r
+                let q = sub(w, scale(n, e));
+                let radial = len(sub(q, scale(d, dot(q, d))));
+                assert!((radial - r).abs() < 1e-12 * big_r, "off the cylinder by {}", radial - r);
+            }
+        }
+    }
+
+    #[test]
+    fn the_derivative_matches_a_finite_difference() {
+        for c in cases() {
+            for i in 0..16 {
+                let t = (i as f64 + 0.3) / 16.0;
+                let h = 1e-6;
+                let fd = scale(sub(c.point_at(t + h), c.point_at(t - h)), 1.0 / (2.0 * h));
+                let an = c.derivative_at(t);
+                assert!(len(sub(fd, an)) < 1e-6 * (1.0 + len(an)), "t={t}: {fd:?} vs {an:?}");
+            }
+        }
+    }
+
+    #[test]
+    fn length_is_the_arc_length_of_a_fine_polyline() {
+        for c in cases() {
+            let n = 20000;
+            let mut acc = 0.0;
+            let mut prev = c.point_at(0.0);
+            for i in 1..=n {
+                let p = c.point_at(i as f64 / n as f64);
+                acc += len(sub(p, prev));
+                prev = p;
+            }
+            assert!((c.length() - acc).abs() < 1e-6 * acc, "{} vs {acc}", c.length());
+        }
+    }
+
+    #[test]
+    fn the_box_contains_every_point_and_is_tight() {
+        for c in cases() {
+            let b = c.aabb();
+            let (mut lo, mut hi) = ([f64::INFINITY; 3], [f64::NEG_INFINITY; 3]);
+            for i in 0..4000 {
+                let p = c.point_at(i as f64 / 4000.0);
+                for k in 0..3 {
+                    assert!(p[k] >= b.lo[k] - 1e-9 && p[k] <= b.hi[k] + 1e-9, "point outside the box");
+                    lo[k] = lo[k].min(p[k]);
+                    hi[k] = hi[k].max(p[k]);
+                }
+            }
+            for k in 0..3 {
+                assert!((b.lo[k] - lo[k]).abs() < 1e-3 && (b.hi[k] - hi[k]).abs() < 1e-3, "axis {k}: box {}..{} vs sampled {}..{}", b.lo[k], b.hi[k], lo[k], hi[k]);
+            }
+        }
+    }
+
+    #[test]
+    fn a_rigid_transform_moves_the_curve_with_it() {
+        let t = Transform::translation([5.0, 1.0, -3.0]);
+        for c in cases() {
+            let moved = c.transform(&t);
+            for i in 0..8 {
+                let u = i as f64 / 8.0;
+                let want = t.apply(c.point_at(u));
+                assert!(len(sub(moved.point_at(u), want)) < 1e-12);
+            }
+            let _ = add([0.0; 3], [0.0; 3]);
         }
     }
 }

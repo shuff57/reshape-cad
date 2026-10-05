@@ -58,8 +58,14 @@ fn cyl_cyl_segments(
     // Tool circle and part wall.
     let by_tool = TAU / angle_step(r, defl);
     let by_wall = TAU * k / angle_step(big_r, defl);
-    // The curve's own sag: kappa_max and speed_max from the exact derivative.
     let probe = Curve::CylCyl { center, d, n, a, big_r, r, sign };
+    segments_for_curve(&probe, by_tool, by_wall, defl)
+}
+
+/// Segments for a closed space curve sampled uniformly in its angle: the larger of the counts the two
+/// surfaces it lies on need (`by_tool`, `by_wall`) and the count its own sag needs, from the exact
+/// curvature and speed maxima.
+fn segments_for_curve(probe: &Curve, by_tool: f64, by_wall: f64, defl: f64) -> usize {
     let mut kappa = 0.0f64;
     let mut speed = 0.0f64;
     let m = 720;
@@ -119,6 +125,20 @@ pub fn curve_points(c: &Curve, defl: f64) -> Vec<Vec3> {
                             crate::math::scale(v, radius * ang.sin()),
                         ),
                     )
+                })
+                .collect()
+        }
+        Curve::SphCyl { r, big_r, .. } => {
+            // The curve lies on the tool cylinder (radius r) and on the sphere (radius big_r), whose
+            // great-circle sag over a stretch of this curve is bounded by the sphere's own angle step.
+            let by_tool = TAU / angle_step(*r, defl);
+            let by_wall = c.length() / (big_r * angle_step(*big_r, defl));
+            let nseg = segments_for_curve(c, by_tool, by_wall, defl);
+            (0..=nseg)
+                .map(|k| {
+                    // Closed: the last sample is EXACTLY the first, so the loop's vertex is shared bit for bit.
+                    let t = if k == nseg { 0.0 } else { k as f64 / nseg as f64 };
+                    c.point_at(t)
                 })
                 .collect()
         }

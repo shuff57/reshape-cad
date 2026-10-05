@@ -516,6 +516,9 @@ fn wire_segs(wire: &[crate::topo::EdgeUse<Curve>]) -> Result<Vec<Seg>, String> {
             Curve::Segment { .. } => Seg::Line { a: start, b: end },
             // No STEP primitive: a clamped cubic B-spline fitted to the exact curve and checked.
             Curve::CylCyl { .. } => fit_closed_curve(&e.curve, !u.forward)?,
+            // SPEC-brep-sphere-offset-bore.md S1: a bore across a sphere is not written yet (the
+            // sphere face has only inner loops, so the writer has no outer bound for it).
+            Curve::SphCyl { .. } => return Err("a bore across a sphere".to_string()),
             Curve::Circle {
                 center,
                 radius,
