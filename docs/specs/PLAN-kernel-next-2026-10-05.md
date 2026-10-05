@@ -137,6 +137,15 @@ a line" box x cylinder refusals, which are two separate lumps in OpenCascade too
 cylinder intersection treats a tangent plane as a line (a degenerate conic) or as no intersection; that decides if this is a
 classification fix or a new curve case. Pre-check before building: run the 12 and see which guard refuses.
 
+**W8 scope widened by the W2 pre-check:** the same generator habit (box width = the round shape's diameter) hits spheres. 35 of the 81
+box x sphere gaps are a ball tangent to the box's side walls at single points, and 10 of the 15 box x cylinder gaps are the tangent
+cylinder case: 45 scripts in all. The 73 cylinder x sphere gaps have no equal-diameter cases. So W8 is bigger than W2 (b)'s non-tangent
+remainder (46 box x sphere).
+
+**W2 pre-check result:** of the 46 non-tangent box x sphere gaps, only 3 are cut by a single box plane (slice (a)); 2 are cut by none;
+the other 41 cross 2 to 6 planes (8 two, 9 three, 14 four, 2 five, 8 six). So slice (a) alone moves about 3 sweep scripts: it is a
+building block for (b), not a result. Plan (a) and (b) as one piece of work, with (a) as its first test.
+
 **Not worth doing from this census:** "recess wider than the part" (435) and bevel/round of a sphere or other nonsensical edges
 (302): the generator draws sizes and edges no student would, and the refusals are correct.
 
