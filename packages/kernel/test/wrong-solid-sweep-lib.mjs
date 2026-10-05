@@ -480,6 +480,12 @@ export function occtShellBlind(code) {
   const open = /open:\s*'(top|bottom)'/.exec(code)?.[1];
   for (const m of code.matchAll(/(?:bevel|chamfer)\(\w+\.edge\('(top|bottom)',\s*'side'\),\s*([0-9.]+)\)/g))
     if (m[1] !== open && +m[2] < +w[1] * (2 - Math.SQRT2) - 1e-9) return true;
+  // W3: a ROUND of the OPEN end's outer rim made before the hollow. OpenCascade's shell of the rounded closed solid returns a
+  // part with the wrong cavity (a 12 deep cavity where the wall says 18); brep-rs is on Pappus and on an independent (rho, z)
+  // distance field to 1e-9 / 1e-3 (turned-open-rim.test.mjs), and the same part built hollow-first agrees with OpenCascade.
+  const hollowAt = code.search(/(?:hollow|shell)\(/);
+  for (const m of code.matchAll(/round\(\w+\.edge\('(top|bottom)',\s*'side'\),\s*[0-9.]+\)/g))
+    if (m[1] === open && m.index < hollowAt) return true;
   return false;
 }
 
