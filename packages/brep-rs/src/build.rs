@@ -3426,7 +3426,7 @@ mod groove_partial_angle {
 /// chords become arcs, so every neighbour (the two tangent faces, the two end faces) stays welded
 /// to it exactly as the wedge left it. Returns None (and changes nothing) when the face is not the
 /// expected rectangle.
-pub fn bevel_to_round(bevel: &TFace, axis_point: Vec3, dir: Vec3, radius: f64, theta: f64) -> Option<()> {
+pub fn bevel_to_round(bevel: &TFace, axis_point: Vec3, dir: Vec3, radius: f64, theta: f64, concave: bool) -> Option<()> {
     let span = std::f64::consts::PI - theta;
     if !(span > 1e-6 && span < std::f64::consts::PI) || radius <= 0.0 {
         return None;
@@ -3487,7 +3487,11 @@ pub fn bevel_to_round(bevel: &TFace, axis_point: Vec3, dir: Vec3, radius: f64, t
         add(axis_point, scale(n, t))
     };
     let c0 = on_plane_of(seq[0].2);
-    let rot_sign = crate::math::dot(cross(sub(seq[0].2, c0), sub(seq[0].3, c0)), n);
+    // The sense the arc turns about. A concave round (the filler of an inside corner) has its axis on the
+    // AIR side, so the face looks toward the axis: the same arc walked the other way about `n`, which
+    // gives the cylinder a left-handed (e1, e2) frame and a surface normal pointing inward.
+    let nr = if concave { scale(n, -1.0) } else { n };
+    let rot_sign = crate::math::dot(cross(sub(seq[0].2, c0), sub(seq[0].3, c0)), nr);
     if rot_sign < 0.0 {
         // walk the loop the other way so that the first chord turns positively about n
         let mut rev: Vec<(TEdge, bool, Vec3, Vec3)> = seq
@@ -3509,7 +3513,7 @@ pub fn bevel_to_round(bevel: &TFace, axis_point: Vec3, dir: Vec3, radius: f64, t
         }
     }
     let e1 = crate::math::normalize(sub(seq[0].2, c0));
-    let e2 = cross(n, e1);
+    let e2 = cross(nr, e1);
     let u_of = |p: Vec3| -> f64 {
         let r = sub(p, c0);
         let u = crate::math::dot(r, e2).atan2(crate::math::dot(r, e1));
@@ -3526,9 +3530,9 @@ pub fn bevel_to_round(bevel: &TFace, axis_point: Vec3, dir: Vec3, radius: f64, t
         };
         let cc = on_plane_of(a);
         let xa = crate::math::normalize(sub(a, cc));
-        let s = crate::math::dot(cross(sub(a, cc), sub(b, cc)), n);
+        let s = crate::math::dot(cross(sub(a, cc), sub(b, cc)), nr);
         let sw = if s >= 0.0 { span } else { -span };
-        e.borrow_mut().curve = Curve::Arc { center: cc, radius, normal: n, x_axis: xa, sweep: sw };
+        e.borrow_mut().curve = Curve::Arc { center: cc, radius, normal: nr, x_axis: xa, sweep: sw };
     }
     let uses: Vec<topo::EdgeUse<Curve3>> = seq
         .iter()
