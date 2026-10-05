@@ -936,8 +936,12 @@ fn rev_class(f: &RFace, za: f64, zb: f64, other_solid: &TSolid) -> Result<Class,
 fn crossings_x(e: &E2, y: f64, out: &mut Vec<f64>) {
     match *e {
         E2::Seg(a, b) => {
-            if (a[1] > y) != (b[1] > y) {
-                out.push(a[0] + (y - a[1]) / (b[1] - a[1]) * (b[0] - a[0]));
+            // A vertex within noise of the scan line IS on it (W4): two edges meeting at a T vertex whose
+            // y differs by 1e-15 from the ray's would both count, or neither, and flip the parity.
+            let snap = |v: f64| if (v - y).abs() < 1e-9 { y } else { v };
+            let (ay, by) = (snap(a[1]), snap(b[1]));
+            if (ay > y) != (by > y) {
+                out.push(a[0] + (y - ay) / (by - ay) * (b[0] - a[0]));
             }
         }
         E2::Arc { c, r, a0, sw } => {

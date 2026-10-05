@@ -3591,6 +3591,109 @@ fn unify_face_edges(f: &TFace) -> Vec<TEdge> {
         .collect()
 }
 
+/// The circle an edge lies on and whether a point of that circle is on the edge's own extent.
+fn circle_extent(c: &Curve) -> Option<(Vec3, f64)> {
+    match c {
+        Curve::Circle { center, radius, .. } | Curve::Arc { center, radius, .. } => Some((*center, *radius)),
+        _ => None,
+    }
+}
+
+fn on_extent(c: &Curve, p: Vec3) -> bool {
+    match c {
+        Curve::Circle { .. } => true,
+        Curve::Arc { center, normal, x_axis, sweep, .. } => {
+            let x = crate::math::normalize(*x_axis);
+            let y = crate::math::normalize(cross(*normal, *x_axis));
+            let v = sub(p, *center);
+            let ang = dot(v, y).atan2(dot(v, x));
+            let tau = std::f64::consts::TAU;
+            let rel = if *sweep >= 0.0 { ang.rem_euclid(tau) } else { (-ang).rem_euclid(tau) };
+            rel <= sweep.abs() + 1e-7 || rel >= tau - 1e-7
+        }
+        Curve::Segment { a, b } => {
+            let d = sub(*b, *a);
+            let t = dot(sub(p, *a), d) / dot(d, d).max(1e-300);
+            (-1e-9..=1.0 + 1e-9).contains(&t)
+        }
+        _ => false,
+    }
+}
+
+/// W4: whether the outline of `f` touches ITSELF away from a vertex both touching edges share: two arcs
+/// tangent to each other, or a line tangent to an arc, at a point inside both. Such a loop (four discs of
+/// one pattern, the first two tangent, the neck between them covered by a third) is a pinched wire: STEP
+/// readers reject it, and a boolean must not be handed one. The pieces it was merged from are fine, so the
+/// merge declines. Smoothly joined arcs (a slot's outline) meet at a vertex they share and are fine.
+pub(crate) fn outline_pinches(f: &TFace) -> bool {
+    let edges = unify_face_edges(f);
+    let shares_vertex_at = |e1: &TEdge, e2: &TEdge, p: Vec3| {
+        let (b1, b2) = (e1.borrow(), e2.borrow());
+        [(&b1.a, &b2.a), (&b1.a, &b2.b), (&b1.b, &b2.a), (&b1.b, &b2.b)]
+            .iter()
+            .any(|(u, v)| Rc::ptr_eq(u, v) && crate::math::len(sub(u.borrow().point, p)) < 1e-6)
+    };
+    for i in 0..edges.len() {
+        for j in (i + 1)..edges.len() {
+            let (c1, c2) = (edges[i].borrow().curve.clone(), edges[j].borrow().curve.clone());
+            let mut contacts: Vec<Vec3> = Vec::new();
+            match (circle_extent(&c1), circle_extent(&c2)) {
+                (Some((o1, r1)), Some((o2, r2))) => {
+                    let d = crate::math::len(sub(o2, o1));
+                    if d < 1e-9 {
+                        // The same circle twice (a disc less a lens: two arcs of one circle) is fine while the
+                        // arcs do not overlap: an end of one inside the other, away from a shared vertex, is contact.
+                        if (r1 - r2).abs() < 1e-7 {
+                            for (e, other) in [(&edges[i], &c2), (&edges[j], &c1)] {
+                                let eb = e.borrow();
+                                for p in [eb.a.borrow().point, eb.b.borrow().point] {
+                                    if on_extent(other, p) && !shares_vertex_at(&edges[i], &edges[j], p) {
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                        continue;
+                    }
+                    let dir = scale(sub(o2, o1), 1.0 / d);
+                    if (d - (r1 + r2)).abs() < 1e-7 {
+                        contacts.push(add(o1, scale(dir, r1)));
+                    } else if (d - (r1 - r2).abs()).abs() < 1e-7 {
+                        contacts.push(add(o1, scale(dir, if r1 >= r2 { r1 } else { -r1 })));
+                    }
+                }
+                (Some((o, r)), None) | (None, Some((o, r))) => {
+                    let seg = if matches!(c1, Curve::Segment { .. }) { &c1 } else { &c2 };
+                    if let Curve::Segment { a, b } = seg {
+                        let d = sub(*b, *a);
+                        let t = dot(sub(o, *a), d) / dot(d, d).max(1e-300);
+                        let foot = add(*a, scale(d, t));
+                        if (crate::math::len(sub(foot, o)) - r).abs() < 1e-7 {
+                            contacts.push(foot);
+                        }
+                    }
+                }
+                _ => {}
+            }
+            for p in contacts {
+                if on_extent(&c1, p) && on_extent(&c2, p) && !shares_vertex_at(&edges[i], &edges[j], p) {
+                    return true;
+                }
+            }
+        }
+    }
+    false
+}
+
+/// A use of `e` in `plane` with the pcurve's midpoint ON the edge (an arc's own midpoint, not the chord's): a
+/// merged face keeps the round edges of the faces it was made from, and STEP reads the midpoint.
+fn planar_edge_use(plane: &Plane, e: &TEdge, forward: bool, sa: Vec3, sb: Vec3) -> topo::EdgeUse<Curve3> {
+    let mut u = planar_seg_use(plane, e, forward, sa, sb);
+    let mid = e.borrow().curve.point_at(0.5);
+    u.pcurve.mid = plane.project(mid);
+    u
+}
+
 /// Merge two coplanar faces that share edges into one, or None when the union is not a single
 /// face with plain loops (a pinch point, two outlines).
 fn merge_two_faces(f: &TFace, g: &TFace) -> Option<TFace> {
@@ -3670,12 +3773,15 @@ fn merge_two_faces(f: &TFace, g: &TFace) -> Option<TFace> {
         .map(|&li| {
             loops[li]
                 .iter()
-                .map(|&k| planar_seg_use(&plane, &segs[k].0, segs[k].1, segs[k].2, segs[k].3))
+                .map(|&k| planar_edge_use(&plane, &segs[k].0, segs[k].1, segs[k].2, segs[k].3))
                 .collect()
         })
         .collect();
     let merged = make_face_multi(Surface::Plane(plane), uv, wires);
     merged.borrow_mut().forward = forward;
+    if outline_pinches(&merged) {
+        return None;
+    }
     Some(merged)
 }
 
