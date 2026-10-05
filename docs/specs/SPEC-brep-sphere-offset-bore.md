@@ -1,6 +1,6 @@
 # SPEC — brep-rs: an off-centre bore through a sphere (2026-10-05)
 
-Status: DRAFT for owner review. No code changes in this document. Parent: `SPEC-brep-kernel-rs.md`.
+Status: S1 IMPLEMENTED and merged (2026-10-05); S2-S5 open. See "S1 result" below. Parent: `SPEC-brep-kernel-rs.md`.
 Precedents: `SPEC-transverse-bore.md` (cylinder across a cylinder), `SPEC-sphere-bore.md` (axial), PLAN-next §22-24, §33.
 
 ## Why
@@ -119,6 +119,32 @@ wrong-solid sweep; the refusal sentences pinned; flip the existing refusal pin a
    including e < r. Volume error is chord sag only: 2.3-2.7% at 24 columns/6 rows, 0.52-0.57% at 64/12 (the design's "within
    1%" is a statement about the production tolerance, which sets the density). Not yet shown: triangle quality at the window
    ends, and the production mesher's own sampling and seam handling; the prototype lives outside the repo.
+
+## S1 result (2026-10-05)
+
+Built as designed: `SphTrim { None, Square, Bore }` (about 17 reader sites, compile-driven; `is_none`/`is_some` keep the
+whole-sphere guards refusing), `Curve::SphCyl`, `Cross::SphTool` (shares the `Tool` quadrature through `Cross::tool_bounds`),
+`SphereSurf::bore_cap_measure`, `sphere_offset_bore` with a closed-form volume net that shares no algebra with the face
+measures, the pole-fan sphere mesher (rim vertices taken from the same polylines the wall uses), `has_cross_trim` covering a
+bored sphere, STEP refusing with "a bore across a sphere".
+
+Measured on the merged build (not predicted):
+- A through bore R=20, r=3, e=8 measures 32481.4215 (the independent pre-check value), to 1e-9 of the closed form.
+- OpenCascade referee: nine (R, r, e, direction) cases agree on volume to 1e-7 and on face count (2); three bore axes,
+  moved and turned, keep the volume.
+- Mesh: closed and outward across e/r in {1.2, 2, 3} x (e+r)/R in {0.3, 0.5, 0.95} at chord 0.05 and 0.5; every wall vertex
+  on its cylinder and every sphere vertex on the sphere to 1e-6; a ray-cast oracle agrees on 1,200 random points per case.
+  The first mesher sampled at the bare chord step and was a steady 2.3x the plain sphere's volume shortfall (right at the mesh
+  gate's deflection x area bound at fine tolerance); sampling at 0.7 of the step brings it to the plain sphere's.
+- Sweep (15,000 scripts, seed 1, all families, against OpenCascade): 0 wrong before and after; 23 scripts moved from
+  refused to agreeing with OpenCascade, none moved any other way.
+- Gates unchanged: parity 78/0, mesh 78/0, STEP 77/0/1, occt 17/0. cargo 485; kernel +17 tests.
+- One pin changed on purpose: `coaxial-sphere-cone.test.mjs` pinned "a cylinder off the ball's centre" as a refusal; it
+  builds now and is held to its closed form.
+
+What the 463 refusals turned out to be (single-step scripts only; 294 more are multi-step, mostly a second cut on an already
+bored sphere, which refuses by design): 45 blind bores (S2), 32 with e <= r (S3), 50 counterbore or countersink recesses, 3 past
+the 0.95 R limit. So S1 covered the plain through bore with e > r and the larger share waits on S2 and S3.
 
 ## Risks
 
