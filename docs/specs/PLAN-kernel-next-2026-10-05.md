@@ -90,6 +90,10 @@ not overlap, so keeping their overlap leaves nothing". A pre-check: how many of 
 rest need an exact test). This is a refusal-wording fix, not a capability, and it changes what students are told. Do it first: a day,
 and it makes every later census cleaner (the "real gap" numbers stop being diluted).
 
+**W1 result (1930aea):** the exact-reach-box test rewords 196 of the 249 refused empties in the pair family (seed 1, 1500 scripts). 53 `keep`
+refusals are still empty by OpenCascade but have overlapping boxes (e.g. sphere x far cylinder); they need a per-surface-pair exact test, so
+they stay as "unsupported" and fold into W2/W3. The real gaps left in the pair family: 166 join, 151 cut, 107 keep.
+
 **W2. General sphere booleans: sphere x box, cylinder, sphere (about 160 pair scripts, 935 sphere booleans in all families).**
 Plane x sphere is a circle and sphere x sphere is a circle, so the curves exist; what is missing is a sphere face trimmed by several
 arcs and a mesher for it. The new `sphere_hull.rs` triangulates a sphere with any number of holes given their loops and an inside
