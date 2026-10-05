@@ -707,12 +707,21 @@ pub fn hollow(r: &Read, w: f64, open: Option<usize>) -> Result<Hollowed, Why> {
     }
     // Rounds no bigger than the wall dissolve into the meet of their neighbours' offsets.
     let mut kept: Vec<Seg> = Vec::new();
+    // The round at the open end that dissolved, as an index into `real`: the lip beside it is thinner than the
+    // wall by construction (that is what a round is), so the offset check below does not measure against it.
+    let mut open_rounds: Vec<usize> = Vec::new();
     for (idx, s) in items.iter().enumerate() {
         if let Kind::Arc { r: rr, .. } = &s.k {
             if *rr <= w + 1e-9 {
-                // An open end may not be rounded: the cavity beyond the round has no definite shape.
+                // At the open end the cavity wall runs flush up to the open plane (the neighbour extended, as for
+                // a chamfered rim), and the round stays on the OUTSIDE of the lip. That is one definite shape
+                // exactly while a flat lip is left between the round and the cavity wall, i.e. while the round is
+                // narrower than the wall; a round as wide as the wall would leave an edge with no lip (W3).
+                if cap.is_some() && (idx == 0 || idx + 1 == items.len()) && *rr > w - 1e-6 * w.max(1.0) {
+                    return other("a rounded rim at the open end that is as wide as the wall: the round would eat the whole lip, so make the round smaller than the wall");
+                }
                 if cap.is_some() && (idx == 0 || idx + 1 == items.len()) {
-                    return other("a rounded rim at the open end: the wall there is not a shape brep-rs can cut yet");
+                    open_rounds.push(real[(start + idx) % m_all]);
                 }
                 continue;
             }
@@ -722,7 +731,7 @@ pub fn hollow(r: &Read, w: f64, open: Option<usize>) -> Result<Hollowed, Why> {
     if cap.is_some() {
         for s in [kept.first(), kept.last()].into_iter().flatten() {
             if matches!(s.k, Kind::Arc { .. }) {
-                return other("a rounded rim at the open end: the wall there is not a shape brep-rs can cut yet");
+                return other("a rounded rim at the open end that is wider than the wall: the wall there is not one shape brep-rs can cut yet (round the rim after you hollow)");
             }
         }
     }
@@ -874,7 +883,7 @@ pub fn hollow(r: &Read, w: f64, open: Option<usize>) -> Result<Hollowed, Why> {
     // The offset must be exactly the wall's distance from the rest of the part, everywhere it is
     // a true offset (not where the open end extends a side up to its plane).
     {
-        let orig: Vec<&Seg> = (0..m_all).filter(|t| Some(*t) != cap).map(|t| &lp[real[t]]).collect();
+        let orig: Vec<&Seg> = (0..m_all).filter(|t| Some(*t) != cap && !open_rounds.contains(&real[*t])).map(|t| &lp[real[t]]).collect();
         for (it, of) in items.iter().zip(off.iter()) {
             for k in 0..=40 {
                 let s = k as f64 / 40.0;

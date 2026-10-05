@@ -2204,7 +2204,7 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
  "{verb} {label} at {size} would not fit its edge -- {label} is shown without it."
  ),
  FilletErr::Concave => format!(
- "brep-rs can only {} a convex edge (an outside corner) -- {label} is shown without it.", if round { "round" } else { "chamfer" }
+ "brep-rs can only {} an inside corner (a concave edge) when it is a straight edge between two flat faces that ends on a plain flat face at each end, with nothing else within reach of the blend -- {label} is shown without it.", if round { "round" } else { "chamfer" }
  ),
  FilletErr::RoundEnds => format!(
  "brep-rs can only {} a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- {label} is shown without it.", if round { "round" } else { "chamfer" }
@@ -5724,7 +5724,7 @@ fn fillet_chamfer_flat_and_round_hex_edges_refuse() {
 }
 
 #[test]
-fn fillet_chamfer_concave_edge_refuses() {
+fn fillet_chamfer_concave_edge_of_an_l_prism_adds_the_triangle() {
  let doc = json!({
  "features": [
  { "id": "sk1", "kind": "sketch", "plane": "xy", "points": [[0.0, 0.0], [10.0, 0.0], [10.0, 4.0], [4.0, 4.0], [4.0, 10.0], [0.0, 10.0]] },
@@ -5738,9 +5738,10 @@ fn fillet_chamfer_concave_edge_refuses() {
  });
  let (hist, refusals) = build_doc(&doc);
  let text = refusals.get("r1").and_then(|v| v.as_str()).unwrap_or_default();
- assert!(text.contains("convex edge"), "refusal: {text}");
- let solid = hist.shapes.get("r1").expect("target kept");
- assert!((build::solid_volume(solid) - 640.0).abs() < 1e-6, "unchanged L prism");
+ assert!(text.is_empty(), "refusal: {text}");
+ let solid = hist.shapes.get("r1").expect("chamfered");
+ // the L prism is 640; a 1 mm chamfer of its inside corner adds a right triangle of legs 1 over 10
+ assert!((build::solid_volume(solid) - 645.0).abs() < 1e-6, "L prism with its inside corner chamfered");
 }
 
 /// S4g: a round of a straight convex edge between two planes of a boolean result is the
@@ -5843,11 +5844,58 @@ fn round_after_a_through_hole_is_exact_in_the_kernel() {
     assert!((v0 - v1 - want).abs() < 1e-7, "removed {} want {want}", v0 - v1);
 }
 
+/// W3: an inside (concave) edge ADDS material. The fillet is the corner prism minus the tangent
+/// quarter-cylinder, joined to the part: the part GAINS exactly (1 - pi/4) r^2 per unit length.
+fn w3_l_bracket() -> Vec<Value> {
+    // a plate 40 x 20 x 10 with a wall 10 x 20 x 30 standing on its -x end: the inside corner is the
+    // 20 mm edge at x = -10, z = 5
+    vec![
+        json!({ "id": "b1", "kind": "box", "size": [40.0, 20.0, 10.0], "center": [0.0, 0.0, 0.0] }),
+        json!({ "id": "b2", "kind": "box", "size": [10.0, 20.0, 30.0], "center": [-15.0, 0.0, 10.0] }),
+        json!({ "id": "u1", "kind": "combine", "op": "union", "targets": ["b1", "b2"] }),
+    ]
+}
+
 #[test]
-fn round_a_concave_edge_of_a_union_refuses() {
+fn round_a_concave_edge_of_a_boss_base_adds_the_exact_area() {
+    // the base of a square boss on a plate: the 20 mm edge where the plate's top meets the boss's +x wall
     let (v0, v1, text) = s4g_round(s4g_boss(), "u1", s4g_name("u1", ("b1", "+z"), ("b2", "+x")), 2.0, "fillet");
+    assert!(text.is_none(), "refusal: {text:?}");
+    let want = 4.0 * (1.0 - std::f64::consts::FRAC_PI_4) * 20.0;
+    assert!((v1 - v0 - want).abs() < 1e-9, "added {} want {want}", v1 - v0);
+}
+
+#[test]
+fn chamfer_a_concave_edge_of_a_boss_base_adds_the_exact_area() {
+    let (v0, v1, text) = s4g_round(s4g_boss(), "u1", s4g_name("u1", ("b1", "+z"), ("b2", "+x")), 2.0, "chamfer");
+    assert!(text.is_none(), "refusal: {text:?}");
+    assert!((v1 - v0 - 2.0 * 20.0).abs() < 1e-9, "added {}", v1 - v0);
+}
+
+#[test]
+fn round_and_chamfer_the_inside_corner_of_an_l_bracket() {
+    let edge = || s4g_name("u1", ("b1", "+z"), ("b2", "+x"));
+    let (v0, v1, text) = s4g_round(w3_l_bracket(), "u1", edge(), 2.0, "fillet");
+    assert!(text.is_none(), "refusal: {text:?}");
+    assert!((v1 - v0 - 4.0 * (1.0 - std::f64::consts::FRAC_PI_4) * 20.0).abs() < 1e-9, "added {}", v1 - v0);
+    let (v0, v1, text) = s4g_round(w3_l_bracket(), "u1", edge(), 2.0, "chamfer");
+    assert!(text.is_none(), "refusal: {text:?}");
+    assert!((v1 - v0 - 40.0).abs() < 1e-9, "added {}", v1 - v0);
+}
+
+#[test]
+fn round_a_concave_edge_that_ends_on_more_material_refuses() {
+    // a tray corner: the inside edge of the left wall ends on the back wall, whose material carries on
+    // beyond it, so the blend would need a corner patch there, which this does not build
+    let feats = vec![
+        json!({ "id": "b1", "kind": "box", "size": [40.0, 20.0, 10.0], "center": [0.0, 0.0, 0.0] }),
+        json!({ "id": "b2", "kind": "box", "size": [10.0, 20.0, 30.0], "center": [-15.0, 0.0, 10.0] }),
+        json!({ "id": "b3", "kind": "box", "size": [40.0, 10.0, 30.0], "center": [0.0, 15.0, 10.0] }),
+        json!({ "id": "u1", "kind": "combine", "op": "union", "targets": ["b1", "b2", "b3"] }),
+    ];
+    let (v0, v1, text) = s4g_round(feats, "u1", s4g_name("u1", ("b1", "+z"), ("b2", "+x")), 2.0, "fillet");
     let text = text.unwrap_or_default();
-    assert!(text.contains("convex edge"), "refusal: {text} v0 {v0} v1 {v1}");
+    assert!(text.contains("inside corner"), "refusal: {text} v0 {v0} v1 {v1}");
     assert!((v0 - v1).abs() < 1e-9, "unchanged");
 }
 
@@ -7719,8 +7767,11 @@ fn build_fillet(
  if len(into_corner) <= 1e-9 {
  return Err(FilletErr::Flat);
  }
- if !ops::inside_solid(src, add(midpoint, scale(normalize(into_corner), 1e-6))) {
- return Err(FilletErr::Concave);
+ // The wedge between the two faces is air at an INSIDE corner (a boss's base, an L bracket's bend):
+ // the blend then ADDS material (W3, below) instead of cutting a corner off.
+ let concave = !ops::inside_solid(src, add(midpoint, scale(normalize(into_corner), 1e-6)));
+ if concave && src.shells.len() > 1 {
+     return Err(FilletErr::Concave);
  }
  for endpoint in [&edge.borrow().a, &edge.borrow().b] {
  let count = src.faces().iter().filter(|face| {
@@ -7831,6 +7882,59 @@ fn build_fillet(
      .map_err(|_| FilletErr::NoBox)?;
      Ok(build::ensure_outward(&tool))
  };
+ if concave {
+     // W3: an inside corner. The blend is the part JOINED with the corner prism whose cross-section is the
+     // wedge's triangle (legs `leg` along each face), the one planar face it leaves facing the air re-skinned
+     // as the tangent cylinder (axis on the air side, so the face looks inward). The tool must stop FLUSH at
+     // both ends, so both ends must be a plain flat face square to the edge with the solid behind it: an end
+     // where the part carries on would need a corner blend, which this does not do.
+     if convex_a != Some(true) || convex_b != Some(true) {
+         return Err(FilletErr::Concave);
+     }
+     let tool = make_tool(0.0, edge_length, 0.0, 0.0)?;
+     let joined = ops::boolean("union", src, &tool)
+         .map(|solid| build::ensure_outward(&solid))
+         .ok_or(FilletErr::Concave)?;
+     // Exact: the part gains the blend's cross-section times the edge's length and nothing else. The tool
+     // reached other material, or the join went wrong, if the volume says otherwise.
+     let v0 = build::solid_volume(src);
+     let area = if round { round_d * size - 0.5 * (std::f64::consts::PI - theta) * size * size } else { wedge_area };
+     let triangle = 0.5 * leg * third[1].abs();
+     let gain = build::solid_volume(&joined) - v0;
+     if !gain.is_finite() || (gain - triangle * edge_length).abs() > 1e-9 * v0.abs().max(1.0) {
+         return Err(FilletErr::Concave);
+     }
+     if !round {
+         return Ok(joined);
+     }
+     // the chord face: the one planar face of the result facing the air along the bisector, through the tangent points
+     let into = normalize(add(in_a, in_b));
+     let chord_point = add(midpoint, scale(add(scale(in_a, round_d), scale(in_b, round_d)), 0.5));
+     let mut bevel: Option<build::TFace> = None;
+     for face in joined.faces() {
+         let hit = match &face.borrow().surface {
+             Surface::Plane(p) => {
+                 let n = if face.borrow().forward { normalize(p.n) } else { scale(normalize(p.n), -1.0) };
+                 len(sub(n, into)) < 1e-7 && dot(sub(chord_point, p.origin), normalize(p.n)).abs() < 1e-7
+             }
+             _ => false,
+         };
+         if hit {
+             if bevel.is_some() {
+                 return Err(FilletErr::Concave);
+             }
+             bevel = Some(face.clone());
+         }
+     }
+     let bevel = bevel.ok_or(FilletErr::Concave)?;
+     let axis_point = add(midpoint, scale(into, size / (0.5 * theta).sin()));
+     build::bevel_to_round(&bevel, axis_point, edge_direction, size, theta, true).ok_or(FilletErr::Concave)?;
+     let gain = build::solid_volume(&joined) - v0;
+     if !gain.is_finite() || (gain - area * edge_length).abs() > 1e-9 * v0.abs().max(1.0) {
+         return Err(FilletErr::Concave);
+     }
+     return Ok(joined);
+ }
  let over_a = if convex_a == Some(false) { 0.0 } else { leg };
  let over_b = if convex_b == Some(false) { 0.0 } else { leg };
  // The tool runs `size` past both ends of the edge, so on a part of several lumps (a mirror, a
@@ -8031,7 +8135,7 @@ fn build_fillet(
  }
  let bevel = bevel.ok_or(FilletErr::RoundEnds)?;
  let axis_point = add(midpoint, scale(into, size / (0.5 * theta).sin()));
- build::bevel_to_round(&bevel, axis_point, edge_direction, size, theta).ok_or(FilletErr::RoundEnds)?;
+ build::bevel_to_round(&bevel, axis_point, edge_direction, size, theta, false).ok_or(FilletErr::RoundEnds)?;
  // Exact: the part loses the cutter's cross-section area times the edge's length and
  // nothing else. A cutter that reached other material, or a boolean that went wrong,
  // shows up here as a different volume and is refused rather than shown.

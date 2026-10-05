@@ -132,7 +132,7 @@
   },
   "matrix cylinder: round then hollow": {
     "refused": {
-      "shell1": "brep-rs cannot hollow this part yet: a rounded rim at the open end: the wall there is not a shape brep-rs can cut yet -- shell1 is shown without it."
+      "shell1": "brep-rs cannot hollow this part yet: a rounded rim at the open end that is wider than the wall: the wall there is not one shape brep-rs can cut yet (round the rim after you hollow) -- shell1 is shown without it."
     }
   },
   "matrix cylinder: chamfer": {
