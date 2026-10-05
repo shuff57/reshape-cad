@@ -756,13 +756,50 @@ pub enum Cross {
     /// on the big cylinder). Same frame as `Wall` (`e1 = n`, `e2 = -d`); `plus` (the hole at `+d`,
     /// centred at u = 3pi/2) and `minus` (at `-d`, u = pi/2) say which hole this patch is, one of them.
     Patch { r: f64, c_v: f64, plus: bool, minus: bool },
+    /// The BORE's own wall inside a SPHERE (docs/specs/SPEC-brep-sphere-offset-bore.md): the surface
+    /// is the tool cylinder (origin on the bore axis at the sphere centre's foot, `e1` = the offset
+    /// direction `n` so u = 0 points away from the centre, `e2` chosen so the face looks into the
+    /// void), and at angle u it runs along the bore axis from `lo` to `hi`, each a constant
+    /// (`Some(z)`: a flat floor) or the meeting curve `sign * f(u)`,
+    /// `f(u) = sqrt(big_r^2 - e^2 - r^2 - 2 e r cos u)` (`None`). `e` is the offset of the bore axis
+    /// from the sphere's centre.
+    SphTool { big_r: f64, e: f64, lo: Option<f64>, hi: Option<f64>, lo_sign: f64, hi_sign: f64 },
 }
 
 impl Cross {
+    /// The axial extent (lo, hi) of a bore wall at angle `u` for the two bore-wall kinds, else None.
+    /// `rad` is the tool cylinder's radius.
+    pub fn tool_bounds(&self, rad: f64, u: f64) -> Option<(f64, f64)> {
+        match self {
+            Cross::Tool { big_r, lo, hi, lo_sign, hi_sign } => {
+                Some(Cylinder::cross_tool_bounds(*big_r, rad, *lo, *hi, *lo_sign, *hi_sign, u))
+            }
+            Cross::SphTool { big_r, e, lo, hi, lo_sign, hi_sign } => {
+                let f = (big_r * big_r - e * e - rad * rad - 2.0 * e * rad * u.cos()).max(0.0).sqrt();
+                Some((lo.unwrap_or(lo_sign * f), hi.unwrap_or(hi_sign * f)))
+            }
+            _ => None,
+        }
+    }
+
+    /// Quadrature panels for a bore wall: more as the integrands sharpen near the sphere or cylinder's limit.
+    fn tool_panels(&self, rad: f64) -> usize {
+        match self {
+            Cross::Tool { big_r, .. } => Cross::panels(rad / big_r),
+            Cross::SphTool { big_r, e, .. } => Cross::panels((e + rad) / big_r),
+            _ => 48,
+        }
+    }
+
     /// Panels for the composite quadrature: more as the bore nears the part's
     /// own radius, where the integrands sharpen.
     fn panels(k: f64) -> usize {
         ((8.0 / (1.0 - k).max(1e-3)) as usize).clamp(48, 800)
+    }
+
+    /// `panels` for callers outside this module (a closed-form check that must sharpen with the geometry as the face measure does).
+    pub fn panels_for(k: f64) -> usize {
+        Cross::panels(k)
     }
 }
 
@@ -788,9 +825,10 @@ impl Cylinder {
         let o = self.origin;
         let rho = |u: f64| add(scale(self.e1, u.cos()), scale(self.e2, u.sin()));
         match self.cross.as_ref()? {
-            Cross::Tool { big_r, lo, hi, lo_sign, hi_sign } => {
-                let panels = Cross::panels(rad / big_r);
-                let ext = |u: f64| Cylinder::cross_tool_bounds(*big_r, rad, *lo, *hi, *lo_sign, *hi_sign, u);
+            Cross::Tool { .. } | Cross::SphTool { .. } => {
+                let cross = self.cross.as_ref()?;
+                let panels = cross.tool_panels(rad);
+                let ext = |u: f64| cross.tool_bounds(rad, u).unwrap_or((0.0, 0.0));
                 let area = integrate_composite(0.0, tau, panels, |u| {
                     let (l, h) = ext(u);
                     rad * (h - l)
@@ -1292,7 +1330,7 @@ impl Surface {
         // A bore's own wall is bounded by the meeting curve, not a rectangle:
         // measure it directly (Cross::Tool).
         if let Surface::Cylinder(c) = self {
-            if let Some(Cross::Tool { .. } | Cross::Patch { .. }) = c.cross {
+            if let Some(Cross::Tool { .. } | Cross::Patch { .. } | Cross::SphTool { .. }) = c.cross {
                 if let Some((area, _, sx)) = c.cross_region() {
                     return (area, [sx[0] / area, sx[1] / area, sx[2] / area]);
                 }
@@ -1368,7 +1406,7 @@ impl Surface {
             return 0.0;
         }
         if let Surface::Cylinder(c) = self {
-            if let Some(Cross::Tool { .. } | Cross::Patch { .. }) = c.cross {
+            if let Some(Cross::Tool { .. } | Cross::Patch { .. } | Cross::SphTool { .. }) = c.cross {
                 if let Some((_, vt, _)) = c.cross_region() {
                     return vt;
                 }
@@ -1436,15 +1474,15 @@ impl Surface {
                     }
                 }
             }
-            Surface::Cylinder(c) if matches!(c.cross, Some(Cross::Tool { .. })) => {
+            Surface::Cylinder(c) if matches!(c.cross, Some(Cross::Tool { .. } | Cross::SphTool { .. })) => {
                 // The bore wall: every world coordinate is linear in the axial
                 // parameter, so its extremes lie on the two boundary curves
                 // (the meeting curve and/or the flat floor's circle).
-                if let Some(Cross::Tool { big_r, lo, hi, lo_sign, hi_sign }) = &c.cross {
+                if let Some(cross) = &c.cross {
                     let n = 2048usize;
                     for k in 0..n {
                         let u = 2.0 * std::f64::consts::PI * k as f64 / n as f64;
-                        let (l, h) = Cylinder::cross_tool_bounds(*big_r, c.radius, *lo, *hi, *lo_sign, *hi_sign, u);
+                        let (l, h) = cross.tool_bounds(c.radius, u).unwrap_or((c.vmin, c.vmax));
                         let rho = add(c.origin, scale(add(scale(c.e1, u.cos()), scale(c.e2, u.sin())), c.radius));
                         b.expand(add(rho, scale(c.axis, l)));
                         b.expand(add(rho, scale(c.axis, h)));

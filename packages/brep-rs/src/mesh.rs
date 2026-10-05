@@ -1183,7 +1183,7 @@ fn mesh_cross_face(
     let start = out.indices.len();
     match cy.cross.as_ref()? {
         crate::geom::Cross::Wall { .. } => mesh_cross_wall(&fb, cy, edges_cache, out, defl)?,
-        crate::geom::Cross::Tool { .. } => mesh_cross_tool(&fb, cy, edges_cache, out, defl)?,
+        crate::geom::Cross::Tool { .. } | crate::geom::Cross::SphTool { .. } => mesh_cross_tool(&fb, cy, edges_cache, out, defl)?,
         crate::geom::Cross::Patch { plus, .. } => mesh_cross_patch(&fb, cy, *plus, edges_cache, out, defl)?,
     }
     let count = out.indices.len() - start;
@@ -1482,7 +1482,7 @@ fn mesh_cross_tool(
         for u in &w.borrow().edges {
             let e = u.edge.borrow();
             match &e.curve {
-                Curve::CylCyl { sign, .. } => {
+                Curve::CylCyl { sign, .. } | Curve::SphCyl { sign, .. } => {
                     let poly = use_polyline(u, edges_cache, defl);
                     if !loops.iter().any(|(s, _)| *s == *sign) {
                         loops.push((*sign, poly));
@@ -1539,6 +1539,152 @@ fn mesh_cross_tool(
     Some(())
 }
 
+/// A sphere with a bore through it (SPEC-brep-sphere-offset-bore.md): one closed hole per end, each
+/// bounded by a `Curve::SphCyl`. A ladder would sag on a doubly curved face, so the sphere is meshed
+/// about the pole `d x n` (in local coordinates x along `n`, z along the bore axis `d`). Every hole is
+/// a lens symmetric about that pole's equator with its two tips ON the equator, so the pole is never
+/// inside a hole. Each half (y > 0, y < 0) is a fan about its pole: a rim of equator columns plus the
+/// hole's own arc where a hole's window interrupts the equator, rows scaled in (azimuth, colatitude)
+/// between the pole and that rim. The rim vertices are taken exactly from the hole polylines the bore
+/// wall also uses, so the shared curve is vertex for vertex the same.
+fn mesh_sphere_bore(
+    face: &TFace,
+    edges_cache: &HashMap<usize, Vec<Vec3>>,
+    out: &mut MeshBuilder,
+    defl: f64,
+    surface: &crate::geom::Surface,
+) -> Option<()> {
+    use crate::math::{add, dot, normalize, scale};
+    let crate::geom::Surface::Sphere(sp) = surface else { return None };
+    if !matches!(sp.trim, crate::geom::SphTrim::Bore { .. }) {
+        return None;
+    }
+    let (c, big) = (sp.center, sp.radius);
+    let n = normalize(sp.e1);
+    let d = normalize(sp.axis);
+    let yh = cross(d, n);
+    let loc = |p: Vec3| {
+        let w = sub(p, c);
+        [dot(w, n), dot(w, yh), dot(w, d)]
+    };
+    let world = |q: [f64; 3]| add(c, add(add(scale(n, q[0]), scale(yh, q[1])), scale(d, q[2])));
+    let ytol = 1e-9 * big;
+
+    // One (psi-sorted) arc per half per hole, tips included in both.
+    struct Hole {
+        upper: Vec<(f64, Vec3)>,
+        lower: Vec<(f64, Vec3)>,
+        lo: f64,
+        hi: f64,
+    }
+    let mut holes: Vec<Hole> = Vec::new();
+    let fb = face.borrow();
+    for w in &fb.boundary {
+        for u in &w.borrow().edges {
+            if !matches!(u.edge.borrow().curve, Curve::SphCyl { .. }) {
+                continue;
+            }
+            let mut pts = use_polyline(u, edges_cache, defl);
+            if pts.len() < 9 {
+                return None;
+            }
+            pts.pop(); // the closing duplicate
+            let (mut upper, mut lower): (Vec<(f64, Vec3)>, Vec<(f64, Vec3)>) = (Vec::new(), Vec::new());
+            let mut tips = 0;
+            for p in pts {
+                let q = loc(p);
+                let psi = q[2].atan2(q[0]);
+                if q[1].abs() <= ytol {
+                    tips += 1;
+                    upper.push((psi, p));
+                    lower.push((psi, p));
+                } else if q[1] > 0.0 {
+                    upper.push((psi, p));
+                } else {
+                    lower.push((psi, p));
+                }
+            }
+            if tips != 2 {
+                return None; // the loop must cross the pole's equator exactly twice
+            }
+            upper.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+            lower.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+            let (lo, hi) = (upper.first()?.0, upper.last()?.0);
+            // A window must lie inside (-pi, pi) without straddling the seam.
+            if !(hi - lo > 1e-9) || hi - lo >= std::f64::consts::PI {
+                return None;
+            }
+            holes.push(Hole { upper, lower, lo, hi });
+        }
+    }
+    if holes.is_empty() {
+        return None;
+    }
+
+    // 0.7 of the chord's own angle step: the fan's diagonals sag more than a structured grid's cells, and the
+    // mesh gate holds the volume error to a fraction of deflection x area (a polar fan measured twice the plain
+    // sphere's shortfall at the bare step).
+    let step = 0.7 * angle_step(big, defl);
+    let q_cols = ((TAU / step).ceil() as usize).max(16).min(8192);
+    let rows = (((std::f64::consts::FRAC_PI_2 / step).ceil()) as usize).max(4).min(4096);
+    let h = TAU / q_cols as f64;
+    let start = out.indices.len();
+    for ysgn in [1.0f64, -1.0] {
+        let mut rim: Vec<(f64, Vec3)> = Vec::new();
+        for qi in 0..q_cols {
+            let psi = -std::f64::consts::PI + h * (qi as f64 + 0.5);
+            if holes.iter().any(|ho| psi > ho.lo - 0.2 * h && psi < ho.hi + 0.2 * h) {
+                continue;
+            }
+            rim.push((psi, world([big * psi.cos(), 0.0, big * psi.sin()])));
+        }
+        for ho in &holes {
+            rim.extend(if ysgn > 0.0 { ho.upper.iter() } else { ho.lower.iter() }.cloned());
+        }
+        rim.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+        let k = rim.len();
+        if k < 8 {
+            return None;
+        }
+        let vof = |p: Vec3| (ysgn * loc(p)[1] / big).clamp(-1.0, 1.0).acos();
+        let at = |psi: f64, v: f64| world([big * v.sin() * psi.cos(), ysgn * big * v.cos(), big * v.sin() * psi.sin()]);
+        let ring: Vec<Vec<Vec3>> = (1..=rows)
+            .map(|r| rim.iter().map(|(psi, p)| if r == rows { *p } else { at(*psi, vof(*p) * r as f64 / rows as f64) }).collect())
+            .collect();
+        let pole = world([0.0, ysgn * big, 0.0]);
+        // Every triangle is built in one winding (clockwise in (azimuth, colatitude)); the half is turned to
+        // face outward by the sign of the area-weighted agreement with the radial direction.
+        let mut tris: Vec<[Vec3; 3]> = Vec::new();
+        for j in 0..k {
+            let j2 = (j + 1) % k;
+            tris.push([pole, ring[0][j], ring[0][j2]]);
+            for r in 0..rows - 1 {
+                tris.push([ring[r][j], ring[r + 1][j], ring[r + 1][j2]]);
+                tris.push([ring[r][j], ring[r + 1][j2], ring[r][j2]]);
+            }
+        }
+        let mut score = 0.0;
+        for t in &tris {
+            let nrm = cross(sub(t[1], t[0]), sub(t[2], t[0]));
+            let cen = [(t[0][0] + t[1][0] + t[2][0]) / 3.0, (t[0][1] + t[1][1] + t[2][1]) / 3.0, (t[0][2] + t[1][2] + t[2][2]) / 3.0];
+            score += dot(nrm, sub(cen, c));
+        }
+        for t in tris {
+            let ids = if score >= 0.0 { [out.push(t[0]), out.push(t[1]), out.push(t[2])] } else { [out.push(t[0]), out.push(t[2]), out.push(t[1])] };
+            if ids[0] == ids[1] || ids[1] == ids[2] || ids[0] == ids[2] {
+                continue;
+            }
+            out.indices.extend_from_slice(&ids);
+        }
+    }
+    let count = out.indices.len() - start;
+    if count == 0 {
+        return None;
+    }
+    out.faces.push((start, count));
+    Some(())
+}
+
 fn mesh_face(
     face: &TFace,
     edges_cache: &HashMap<usize, Vec<Vec3>>,
@@ -1556,6 +1702,11 @@ fn mesh_face(
     // rectangle: the structured grid would cover the whole parameter square
     // (including the removed caps), so route it to the band tessellator.
     if let crate::geom::Surface::Sphere(sp) = &face.borrow().surface {
+        // A bored sphere: its boundary is the bores' meeting curves, one closed hole per end.
+        if matches!(sp.trim, crate::geom::SphTrim::Bore { .. }) {
+            let surface = face.borrow().surface.clone();
+            return mesh_sphere_bore(face, edges_cache, out, defl, &surface);
+        }
         if sp.trim.is_none() && (sp.v_range[0] > 1e-9 || sp.v_range[1] < std::f64::consts::PI - 1e-9) {
             let surface = face.borrow().surface.clone();
             if mesh_sphere_zone(face, edges_cache, out, defl, &surface).is_some() {
