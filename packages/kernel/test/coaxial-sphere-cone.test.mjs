@@ -256,7 +256,7 @@ test('what is not a clean coaxial pair refuses in a sentence and builds nothing'
     ["const a = box(20, 20, 20)\nconst b = sphere(24, { at: [0, 0, 0] })\nunion(a, b)", 'a ball through the sides of a small box'],
     ["const a = box(20, 20, 20)\nconst b = sphere(24, { at: [0, 0, 0] })\nsubtract(a, b)", 'a box inside a ball whose sides do not clear it'],
     ["const a = sphere(24, { at: [0, 0, 0] })\nconst b = box(40, 40, 40, { at: [20, 20, 20] })\nsubtract(a, b)", 'a ball against a box corner'],
-    ["const a = sphere(24, { at: [0, 0, 0] })\nconst b = cylinder(8, 40, { at: [5, 0, 0] })\nsubtract(a, b)", 'a cylinder off the ball\'s centre'],
+    ["const a = sphere(24, { at: [0, 0, 0] })\nconst b = cylinder(8, 40, { at: [5, 0, 0] })\nsubtract(a, b)", 'a cylinder off the ball\'s centre (S1 of SPEC-brep-sphere-offset-bore: it builds, e = 5 > r = 4, e + r <= 0.95 R)'],
     ["const a = sphere(24, { at: [0, 0, 0] })\nconst b = cylinder(8, 60, { at: [0, 0, 0] })\nturn(b, [0, 90, 0])\nsubtract(a, b)", 'a cylinder through the centre, on another axis than the plates (the sphere re-frames: builds)'],
     ["const a = sphere(24, { at: [0, 0, 0] })\nconst b = sphere(24, { at: [0, 0, 0] })\nunion(a, b)", 'the same ball twice (S4i: identical operands join into the copy: builds)'],
     ["const a = cone(20, 20, { at: [0, 0, 0] })\nconst b = cone(20, 20, { at: [0, 0, 0] })\nunion(a, b)", 'the same cone twice (S4i: builds)'],
@@ -268,13 +268,25 @@ test('what is not a clean coaxial pair refuses in a sentence and builds nothing'
     if (why.includes('builds')) {
       assert.ok(m, why);
       if (why.startsWith('the same ball')) assert.ok(Math.abs(m.volume - (4 / 3) * Math.PI * 12 ** 3) < 1e-6, String(m.volume));
+      if (why.startsWith('a cylinder off the ball')) {
+        // V = 4/3 pi R^3 - 2 I, I = integral over the disc (x-e)^2 + y^2 < r^2 of sqrt(R^2 - x^2 - y^2), taken in theta
+        // with y = r sin(theta) (the substitution removes the endpoint singularity); R = 12, r = 4, e = 5.
+        const R = 12, r = 4, e = 5, N = 4000;
+        const g = (th) => { const y = r * Math.sin(th), w = r * Math.cos(th), c2 = R * R - y * y, c = Math.sqrt(c2);
+          const F = (x) => 0.5 * (x * Math.sqrt(Math.max(0, c2 - x * x)) + c2 * Math.asin(Math.max(-1, Math.min(1, x / c))));
+          return (F(e + w) - F(e - w)) * r * Math.cos(th); };
+        let acc = 0; const h = Math.PI / N;
+        for (let i = 0; i <= N; i++) acc += g(-Math.PI / 2 + i * h) * (i === 0 || i === N ? 1 : i % 2 ? 4 : 2);
+        const want = (4 / 3) * Math.PI * R ** 3 - 2 * ((acc * h) / 3);
+        assert.ok(Math.abs(m.volume - want) <= 1e-9 * want, `${m.volume} vs ${want}`);
+      }
       continue;
     }
     assert.equal(m, undefined, `${why}: built a solid`);
     assert.match(refusals.op1 ?? '', /cannot boolean these two solids|only touch along a line or at a point/, why);
     refused++;
   }
-  assert.equal(refused, cases.length - 3, 'every case but the three that build refuses');
+  assert.equal(refused, cases.length - 4, 'every case but the four that build refuses');
 });
 
 test('a result in two pieces is refused, not handed back as one solid: the ball cut by a slab through its middle', () => {
