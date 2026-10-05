@@ -1,6 +1,6 @@
 # SPEC — brep-rs: an off-centre bore through a sphere (2026-10-05)
 
-Status: S1 and S2 IMPLEMENTED and merged (2026-10-05); S3-S5 open. See "S1 result" and "S2 result" below. Parent: `SPEC-brep-kernel-rs.md`.
+Status: S1, S2 and S3 IMPLEMENTED (2026-10-05); S4-S5 open. See "S1 result", "S2 result" and "S3 result" below. Parent: `SPEC-brep-kernel-rs.md`.
 Precedents: `SPEC-transverse-bore.md` (cylinder across a cylinder), `SPEC-sphere-bore.md` (axial), PLAN-next §22-24, §33.
 
 ## Why
@@ -158,6 +158,34 @@ Measured: seven blind cases agree with the closed form (1e-9) and OpenCascade (1
 ends agree in cargo; the mesh is closed and outward at chord 0.05 and 0.5 across the grid with floors at -0.6, 0 and +0.6 s0, and
 the ray-cast oracle agrees with floors; the sweep (15,000 scripts, seed 1) has 0 wrong and 21 further scripts moved from refused to
 agreeing with OpenCascade, none moved any other way. Gates unchanged (parity 78/0, mesh 78/0, STEP 77/0/1, occt 17/0); cargo 488.
+
+## S3 result (2026-10-05)
+
+`sphere_offset_bore` now builds when the bore swallows the sphere's own pole along its axis (`e <= r`, including `e = r` exactly), through
+or blind. The topology is unchanged (a sphere face with one hole per end, the wall, and a floor when blind), and the pole-fan mesher and
+the cap measures needed no change: the measure formulas are signed in x, and the meeting curve's polar angle about the mesher's pole
+`d x n` is monotone for every e (d(psi)/d(phi) has the sign of R^2 - r^2 - e r cos(phi), positive while e + r < R). Three real changes:
+
+1. The guard `e - r >= 1e-3 R` is gone.
+2. **The tool-end guard was wrong for `e < r`, and it was a latent wrong solid.** A tool end must clear the highest sphere point over the
+   bore disc: fmax off the pole (e > r), but R itself once the disc holds the pole. The S2 guard used fmax, so a tool ending between fmax and R
+   would have left the cap above it uncut, and the closed-form net could not see it because the builder ignores the tool ends. The reach is now
+   R - margin for `e <= r` (a blind `deep:` from the top face ends exactly at R and cuts the same solid) and fmax + margin otherwise. Pinned
+   by `a_tool_end_below_the_pole_refuses_when_the_pole_is_swallowed`, which fails with the old guard.
+3. The bored sphere's box was the whole +-R on every axis. Along a world axis the extreme is R unless the bore swallows that point of the
+   sphere, and then it is the highest point of the meeting curve (dense sample plus golden refinement), so a through bore through the pole now
+   has +-fmax along its axis, tilted bores included. `a_bored_spheres_box_is_exact_when_the_pole_is_swallowed` compares against a brute-force
+   world-coordinate oracle on three axes (z, x, tilted 45 degrees) and fails without the change ([-20, 20] against [-19.77, 19.77]).
+
+Measured: closed-form volume to 1e-9 across e/r in {0.05, 0.3, 0.5, 0.9, 0.99, 1.0} x (e+r)/R in {0.2, 0.5, 0.95}; the mesh closed, outward and on
+its surfaces at chord 0.05 and 0.5 (e/r in {0.1, 0.5, 0.9, 1.0}); the OpenCascade referee at 1e-7 on eleven further through and blind cases
+(`[20,3,2,0]`, `[20,3,3,0]`, `[20,3,0.5,0]`, `[20,6,5,0]`, `[20,8,3,4]`, `[20,9,8.9,0]`, `[20,5,0.01,0]` through; four blind) and the ray-cast
+oracle on five of them. Sweep (15,000 scripts, seed 1): 0 wrong; refused 8022 to 7977, agreeing with OpenCascade 4747 to 4788, and four more
+changed class to OCCT-HANG only because OpenCascade hung under load while the gates ran beside the sweep (brep-rs still refuses those four). Gates
+unchanged (parity 78/0, mesh 78/0, STEP 77/0/1, occt 17/0); cargo 492. The two pins that expected `at: [1, 0]` and `at: [3.9, 0]` to refuse
+were moved to cases that still refuse.
+
+Still open: STEP for the sphere face (S4), counterbore and countersink recesses, a second cut on a bored sphere, and e + r > 0.95 R.
 
 ## Risks
 

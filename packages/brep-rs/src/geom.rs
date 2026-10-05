@@ -1618,6 +1618,62 @@ impl Surface {
                     }
                     b.expand(lo_pt);
                     b.expand(hi_pt);
+                } else if let SphTrim::Bore { r, e, through } = s.trim {
+                    // The extreme along world axis i is the sphere's own R*e_i unless the bore swallows it
+                    // (its projection on the bore's plane falls inside the hole disc, on a holed end); then
+                    // it sits on the meeting curve, found by sampling and golden refinement.
+                    let (n, yh, d) = (normalize(s.e1), normalize(s.e2), normalize(s.axis));
+                    let big = s.radius;
+                    let rim = |phi: f64, sg: f64| -> Vec3 {
+                        let f = (big * big - e * e - r * r - 2.0 * e * r * phi.cos()).max(0.0).sqrt();
+                        add(
+                            s.center,
+                            add(add(scale(n, e + r * phi.cos()), scale(yh, r * phi.sin())), scale(d, sg * f)),
+                        )
+                    };
+                    for i in 0..3 {
+                        for dir in [1.0, -1.0] {
+                            let mut axis = [0.0; 3];
+                            axis[i] = dir;
+                            let (x, y, z) = (dot(axis, n) * big, dot(axis, yh) * big, dot(axis, d));
+                            let swallowed = (x - e) * (x - e) + y * y < r * r && (through || z > 0.0);
+                            if !swallowed {
+                                let mut p = s.center;
+                                p[i] += dir * big;
+                                b.expand(p);
+                                continue;
+                            }
+                            let ends: &[f64] = if through { &[1.0, -1.0] } else { &[1.0] };
+                            let mut best = (f64::NEG_INFINITY, s.center);
+                            for &sg in ends {
+                                let h = |phi: f64| dir * rim(phi, sg)[i];
+                                let m = 720usize;
+                                let (mut kb, mut vb) = (0usize, f64::NEG_INFINITY);
+                                for k in 0..m {
+                                    let v = h((2.0 * std::f64::consts::PI) * k as f64 / m as f64);
+                                    if v > vb {
+                                        vb = v;
+                                        kb = k;
+                                    }
+                                }
+                                let step = (2.0 * std::f64::consts::PI) / m as f64;
+                                let (mut lo, mut hi) = ((2.0 * std::f64::consts::PI) * kb as f64 / m as f64 - step, (2.0 * std::f64::consts::PI) * kb as f64 / m as f64 + step);
+                                for _ in 0..100 {
+                                    let (m1, m2) = (lo + (hi - lo) / 3.0, hi - (hi - lo) / 3.0);
+                                    if h(m1) < h(m2) {
+                                        lo = m1;
+                                    } else {
+                                        hi = m2;
+                                    }
+                                }
+                                let phi = 0.5 * (lo + hi);
+                                if h(phi) > best.0 {
+                                    best = (h(phi), rim(phi, sg));
+                                }
+                            }
+                            b.expand(best.1);
+                        }
+                    }
                 } else {
                     for i in 0..3 {
                         let mut p = s.center;

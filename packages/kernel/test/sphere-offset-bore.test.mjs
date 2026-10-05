@@ -66,6 +66,8 @@ function occtVolume(doc, id) {
 const CASES = [
   [20, 3, 8, 0], [20, 3, 0, 8], [20, 3, 5.7, 5.7], [20, 6, 11, 0], [20, 2, 16.5, 0], // e + r = 0.925 R
   [10, 1.5, 4, 0], [30, 9.96, 14.76, 0], [8, 0.5, 6, 3], [12, 2, 9.2, 0],
+  // S3: the bore swallows the sphere's own pole along its axis (e < r, e = r, and a hair above the axis)
+  [20, 3, 2, 0], [20, 3, 3, 0], [20, 3, 0.5, 0], [20, 6, 5, 0], [20, 8, 3, 4], [20, 9, 8.9, 0], [20, 5, 0.01, 0],
 ];
 
 for (const [R, r, x, y] of CASES) {
@@ -90,7 +92,9 @@ test('the OpenCascade referee agrees on volume (1e-7) and face count', () => {
 });
 
 // [R, r, x, y, deep]: sphere(2R), the floor is at R - deep from the centre (`deep` is measured from the top).
-const BLIND = [[20, 3, 8, 0, 10], [20, 3, 8, 0, 25], [20, 3, 8, 0, 20], [20, 6, 11, 0, 20], [20, 2, 16.5, 0, 14], [10, 1.5, 4, 0, 6], [20, 3, 5.7, 5.7, 30]];
+const BLIND = [[20, 3, 8, 0, 10], [20, 3, 8, 0, 25], [20, 3, 8, 0, 20], [20, 6, 11, 0, 20], [20, 2, 16.5, 0, 14], [10, 1.5, 4, 0, 6], [20, 3, 5.7, 5.7, 30],
+  // S3: blind, the pole swallowed (floor between -s0 and s0 = sqrt(R^2 - (e + r)^2))
+  [20, 3, 2, 0, 20], [20, 3, 3, 0, 14], [20, 6, 5, 0, 25], [20, 8, 3, 4, 20]];
 
 for (const [R, r, x, y, deep] of BLIND) {
   const e = Math.hypot(x, y);
@@ -123,7 +127,7 @@ for (const along of ['x', 'y', 'z']) {
 }
 
 test('mesh: watertight, outward, volume, and every probe point agrees with the analytic solid', { timeout: 120000 }, () => {
-  for (const [R, r, x, y, deep] of [[20, 3, 8, 0], [20, 6, 11, 0], [20, 2, 16.5, 0], [20, 3, 5.7, 5.7], [20, 3, 8, 0, 25], [20, 6, 11, 0, 20], [20, 3, 8, 0, 10]]) {
+  for (const [R, r, x, y, deep] of [[20, 3, 8, 0], [20, 6, 11, 0], [20, 2, 16.5, 0], [20, 3, 5.7, 5.7], [20, 3, 8, 0, 25], [20, 6, 11, 0, 20], [20, 3, 8, 0, 10], [20, 3, 2, 0], [20, 3, 3, 0], [20, 8, 3, 4], [20, 3, 2, 0, 20], [20, 6, 5, 0, 25]]) {
     const e = Math.hypot(x, y);
     const f0 = deep === undefined ? -Infinity : R - deep;
     const { json, id, s } = build(`const s = sphere(${2 * R}); hole(s, { across: ${2 * r}, at: [${x}, ${y}]${deep === undefined ? '' : `, deep: ${deep}`} })`);
@@ -187,8 +191,6 @@ test('what this slice does not build still refuses in a sentence, never a wrong 
   for (const [code, why] of [
     ['const s = sphere(40); hole(s, { across: 6, at: [8, 0], deep: 2 })', 'blind, the floor in the polar band the curve spans (it would meet the sphere\'s own face)'],
     ['const s = sphere(40); hole(s, { across: 6, at: [8, 0], deep: 38 })', 'blind, the floor below -s0 (it would leave the sphere)'],
-    ['const s = sphere(40); hole(s, { across: 6, at: [1, 0] })', 'the bore straddles the pole (e < r)'],
-    ['const s = sphere(40); hole(s, { across: 8, at: [3.9, 0] })', 'e just above r: margin'],
     ['const s = sphere(40); hole(s, { across: 6, at: [17.5, 0] })', 'e + r > 0.95 R'],
     ['const s = sphere(40); hole(s, { across: 6, at: [8, 0] }); hole(s, { across: 4, at: [-8, 0] })', 'a second bore on a bored sphere'],
   ]) {
@@ -200,9 +202,8 @@ test('what this slice does not build still refuses in a sentence, never a wrong 
       assert.ok(s.volume < (4 / 3) * PI * 8000 - 1, why);
     }
   }
-  // the polar-band floor and the e<r bore specifically refuse today
+  // the polar-band floor specifically refuses today
   assert.ok(Object.keys(build('const s = sphere(40); hole(s, { across: 6, at: [8, 0], deep: 2 })').refusals).length > 0);
-  assert.ok(Object.keys(build('const s = sphere(40); hole(s, { across: 6, at: [1, 0] })').refusals).length > 0);
 });
 
 test('a bored sphere cannot be joined, cut again or kept: the combine refuses', () => {

@@ -146,7 +146,7 @@ test('mesh: watertight, outward, and every probe point agrees with the analytic 
 
 test('near misses refuse in a sentence, never a wrong solid', () => {
   for (const code of [
-    "const s = sphere(40); hole(s, { across: 6, at: [1, 0] })", // off-centre and straddling the pole (e < r); a clear off-centre bore builds, see sphere-offset-bore.test.mjs
+    "const s = sphere(40); hole(s, { across: 6, at: [17.5, 0] })", // off-centre, e + r > 0.95 R; the offset bores that fit build, see sphere-offset-bore.test.mjs
     'const s = sphere(40); hole(s, { across: 39 })', // r/R > 0.95
     'const s = sphere(40); hole(s, { across: 6, deep: 0.1 })', // floor in the polar cap
   ]) {

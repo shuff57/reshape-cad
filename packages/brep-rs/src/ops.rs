@@ -4695,11 +4695,10 @@ fn sphere_bore_integral(big_r: f64, r: f64, e: f64) -> f64 {
 
 /// A bore through a sphere whose axis does NOT pass through the centre: `sphere` minus a plain cylinder
 /// parallel to nothing in particular (a sphere is isotropic) at perpendicular distance `e` from the
-/// centre, `r < e` and `e + r <= 0.95 R`, running clear through (SPEC-brep-sphere-offset-bore.md, slice S1).
+/// centre, `e + r <= 0.95 R`, running clear through (SPEC-brep-sphere-offset-bore.md, slice S1).
 /// The bore wall meets the sphere in two closed curves `Curve::SphCyl` (one per end), so the sphere keeps
 /// one face with two holes (`SphTrim::Bore`) and the wall is a cylinder trimmed to the space between them
-/// (`Cross::SphTool`). Refuses (`None`) a blind bore, a bore that reaches or straddles the sphere's pole
-/// along its own axis (`e <= r`), a tool end inside the sphere's reach, `r/R` too wide, and anything that is
+/// (`Cross::SphTool`). Refuses (`None`) a tool end or floor inside the sphere's reach, `r/R` too wide, and anything that is
 /// not one plain sphere less one plain cylinder. The result is held to a closed form that shares no algebra
 /// with the face measures: it must lose exactly `2 I` of volume, or this returns `None`.
 pub fn sphere_offset_bore(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
@@ -4730,9 +4729,10 @@ pub fn sphere_offset_bore(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
     let to_axis = sub(wall.origin, c);
     let m = sub(to_axis, scale(d, dot(to_axis, d)));
     let e = crate::math::len(m);
-    // On the axis is `sphere_axial_bore`'s; here the axis is off the centre, clear of the pole (e > r)
-    // and well inside the sphere (e + r <= 0.95 R, the same policy as the cylinder cross bore).
-    if e <= 1e-7 * big_r || e + r > CROSS_BORE_MAX_RATIO * big_r || e - r < 1e-3 * big_r {
+    // On the axis is `sphere_axial_bore`'s; here the axis is off the centre (the bore may swallow the sphere's
+    // pole along its own axis, e <= r) and well inside the sphere (e + r <= 0.95 R, the same policy as the
+    // cylinder cross bore).
+    if e <= 1e-7 * big_r || e + r > CROSS_BORE_MAX_RATIO * big_r {
         return None;
     }
     let (t0, t1) = (dot(sub(c_lo, c), d), dot(sub(c_hi, c), d));
@@ -4743,11 +4743,16 @@ pub fn sphere_offset_bore(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
     let s0 = (big_r * big_r - (e + r) * (e + r)).sqrt();
     let margin = 1e-6 * big_r;
     // Entry on the +d side; `floor` is the flat floor's height from the centre (None: clear through).
-    let (d, floor): (Vec3, Option<f64>) = if tl < -fmax - margin && th > fmax + margin {
+    // How far a tool end must reach to clear the sphere inside the bore disc: the highest sphere point over the
+    // disc. Off the pole (e > r) that is the near tip at fmax; once the disc holds the pole (e <= r) it is R
+    // itself, and a tool that starts AT the drilled face (a blind `deep:` from the top) ends exactly there, touching
+    // the sphere at one point inside the disc, which cuts exactly the same solid, so it is allowed.
+    let reach = if e <= r + 1e-9 * big_r { big_r - margin } else { fmax + margin };
+    let (d, floor): (Vec3, Option<f64>) = if tl < -reach && th > reach {
         (d, None)
-    } else if th > fmax + margin && tl > -s0 + margin && tl < s0 - margin {
+    } else if th > reach && tl > -s0 + margin && tl < s0 - margin {
         (d, Some(tl))
-    } else if tl < -fmax - margin && th > -s0 + margin && th < s0 - margin {
+    } else if tl < -reach && th > -s0 + margin && th < s0 - margin {
         (scale(d, -1.0), Some(-th))
     } else {
         return None; // a tool end between s0 and fmax would meet the sphere's own surface: not built
@@ -10079,6 +10084,140 @@ mod sphere_offset_bore_tests {
                             let p = m.positions[vi as usize];
                             match &f.borrow().surface {
                                 Surface::Sphere(_) => assert!((crate::math::len(p) - big_r).abs() < 1e-6, "sphere vertex off the sphere by {}", crate::math::len(p) - big_r),
+                                Surface::Cylinder(_) => {
+                                    let rho = ((p[0] - e).powi(2) + p[1].powi(2)).sqrt();
+                                    assert!((rho - r).abs() < 1e-6, "wall vertex off the cylinder by {}", rho - r);
+                                }
+                                _ => {}
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /// S3: with the pole inside the bore disc, a tool end between fmax and R would leave the cap above it uncut,
+    /// so it must refuse; one at R (a blind bore started at the drilled face) or beyond builds.
+    #[test]
+    fn a_tool_end_below_the_pole_refuses_when_the_pole_is_swallowed() {
+        let (big_r, r, e) = (20.0_f64, 5.0_f64, 2.0_f64);
+        let fmax = (big_r * big_r - (e - r) * (e - r)).sqrt();
+        let s0 = (big_r * big_r - (e + r) * (e + r)).sqrt();
+        let f0 = 0.3 * s0;
+        let sphere = build::sphere_solid([0.0; 3], big_r, [0.0, 0.0, 1.0]);
+        for top in [fmax + 1e-3, 0.5 * (fmax + big_r), big_r - 1e-3] {
+            let tool = build::cylinder_solid([e, 0.0, 0.5 * (f0 + top)], r, top - f0, [0.0, 0.0, 1.0]);
+            assert!(boolean("subtract", &sphere, &tool).is_none(), "tool end at {top} (fmax {fmax}, R {big_r}) must refuse");
+        }
+        for top in [big_r, big_r + 1.0, 3.0 * big_r] {
+            let tool = build::cylinder_solid([e, 0.0, 0.5 * (f0 + top)], r, top - f0, [0.0, 0.0, 1.0]);
+            let res = boolean("subtract", &sphere, &tool).unwrap_or_else(|| panic!("tool end at {top} must build"));
+            let want = 4.0 / 3.0 * PI * big_r.powi(3) - sphere_blind_bore_removed_volume(big_r, r, e, f0);
+            assert!((build::solid_volume(&res) - want).abs() <= 1e-9 * want);
+        }
+    }
+
+    /// S3: the bore swallows the sphere's own pole along its axis (e <= r). Closed-form volume, two faces,
+    /// translation invariant, across e/r from a hair above the axis to 1.0 exactly and (e + r)/R up to 0.95.
+    #[test]
+    fn a_bore_that_swallows_the_pole_builds_with_the_closed_form_volume() {
+        let big_r = 20.0_f64;
+        for e_over_r in [0.05_f64, 0.3, 0.5, 0.9, 0.99, 1.0] {
+            for frac in [0.2_f64, 0.5, 0.95] {
+                let r = frac * big_r / (1.0 + e_over_r);
+                let e = e_over_r * r;
+                let (sphere, tool) = bore(big_r, r, e);
+                let res = boolean("subtract", &sphere, &tool).unwrap_or_else(|| panic!("e/r={e_over_r} (e+r)/R={frac} refused"));
+                assert_eq!(res.faces().len(), 2, "e/r={e_over_r}");
+                let want = 4.0 / 3.0 * PI * big_r.powi(3) - sphere_bore_removed_volume(big_r, r, e);
+                let v = build::solid_volume(&res);
+                assert!((v - want).abs() <= 1e-9 * want, "e/r={e_over_r} (e+r)/R={frac}: {v} vs {want}");
+                assert!(volume_is_translation_invariant(&res), "e/r={e_over_r} (e+r)/R={frac}");
+            }
+        }
+    }
+
+    /// The box of a bored sphere against a brute-force oracle built in world coordinates: along each world
+    /// axis the extreme is the sphere's own R*e_i when the bore leaves it alone, else the highest point of the
+    /// meeting curve (a dense sample). The bore may be tilted, so the swallowed test is distance-to-line.
+    fn oracle_box(big_r: f64, r: f64, e: f64, a: Vec3, m: Vec3, through: bool) -> ([f64; 3], [f64; 3]) {
+        use crate::math::{add, cross, dot, len, scale, sub};
+        let b = cross(a, m);
+        let (mut lo, mut hi) = ([f64::INFINITY; 3], [f64::NEG_INFINITY; 3]);
+        for i in 0..3 {
+            for dir in [1.0, -1.0] {
+                let mut q = [0.0; 3];
+                q[i] = dir * big_r;
+                let qa = dot(q, a);
+                let perp = sub(q, scale(a, qa));
+                let swallowed = len(sub(perp, scale(m, e))) < r && (through || qa > 0.0);
+                let mut best = if swallowed { f64::NEG_INFINITY } else { dir * q[i] };
+                if swallowed {
+                    for sg in if through { vec![1.0, -1.0] } else { vec![1.0] } {
+                        for k in 0..200_000 {
+                            let phi = 2.0 * PI * k as f64 / 200_000.0;
+                            let f = (big_r * big_r - e * e - r * r - 2.0 * e * r * phi.cos()).sqrt();
+                            let p = add(add(scale(m, e + r * phi.cos()), scale(b, r * phi.sin())), scale(a, sg * f));
+                            best = best.max(dir * p[i]);
+                        }
+                    }
+                }
+                if dir > 0.0 { hi[i] = best } else { lo[i] = -best }
+            }
+        }
+        (lo, hi)
+    }
+
+    #[test]
+    fn a_bored_spheres_box_is_exact_when_the_pole_is_swallowed() {
+        let big_r = 20.0_f64;
+        let s2 = 0.5_f64.sqrt();
+        // (axis, perpendicular offset direction): along z, along x, and tilted 45 degrees about z
+        let frames: [(Vec3, Vec3); 3] = [([0.0, 0.0, 1.0], [1.0, 0.0, 0.0]), ([1.0, 0.0, 0.0], [0.0, 1.0, 0.0]), ([s2, s2, 0.0], [0.0, 0.0, 1.0])];
+        for (a, m) in frames {
+            for (e, r) in [(2.0, 5.0), (4.0, 4.0), (8.0, 3.0), (3.0, 9.0)] {
+                let sphere = build::sphere_solid([0.0; 3], big_r, [0.0, 0.0, 1.0]);
+                let o = crate::math::scale(m, e);
+                let tool = build::cylinder_solid(o, r, 4.0 * big_r, a);
+                let res = boolean("subtract", &sphere, &tool).unwrap_or_else(|| panic!("a={a:?} e={e} r={r} refused"));
+                let bx = build::solid_aabb(&res);
+                let (lo, hi) = oracle_box(big_r, r, e, a, m, true);
+                for i in 0..3 {
+                    assert!((bx.lo[i] - lo[i]).abs() < 1e-6 && (bx.hi[i] - hi[i]).abs() < 1e-6, "a={a:?} e={e} r={r} axis {i}: [{},{}] vs [{},{}]", bx.lo[i], bx.hi[i], lo[i], hi[i]);
+                }
+            }
+        }
+    }
+
+    /// S3 meshes: closed and outward across e/r straddling 1, on both surfaces.
+    #[test]
+    fn a_pole_swallowing_bore_meshes_closed_and_outward() {
+        let big_r = 20.0_f64;
+        for e_over_r in [0.1_f64, 0.5, 0.9, 1.0] {
+            for frac in [0.3_f64, 0.95] {
+                let r = frac * big_r / (1.0 + e_over_r);
+                let e = e_over_r * r;
+                let (sphere, tool) = bore(big_r, r, e);
+                let res = boolean("subtract", &sphere, &tool).unwrap_or_else(|| panic!("e/r={e_over_r} (e+r)/R={frac} refused"));
+                let exact = 4.0 / 3.0 * PI * big_r.powi(3) - sphere_bore_removed_volume(big_r, r, e);
+                for defl in [0.05, 0.5] {
+                    let m = crate::mesh::mesh_solid(&res, defl).unwrap_or_else(|| panic!("e/r={e_over_r} (e+r)/R={frac} defl {defl}: no mesh"));
+                    assert!(check_watertight(&m), "e/r={e_over_r} (e+r)/R={frac} defl {defl}: mesh is open");
+                    let mut vol = 0.0;
+                    for t in m.indices.chunks(3) {
+                        let p = |i: u32| m.positions[i as usize];
+                        vol += dot(p(t[0]), cross(p(t[1]), p(t[2]))) / 6.0;
+                    }
+                    let tol = if defl >= 0.5 { 0.1 } else { 0.01 };
+                    assert!(vol > 0.0 && (vol - exact).abs() / exact < tol, "e/r={e_over_r} (e+r)/R={frac} defl {defl}: mesh {vol} vs {exact}");
+                    for (fi, f) in res.faces().iter().enumerate() {
+                        let (start, count) = m.faces[fi];
+                        let verts: std::collections::BTreeSet<u32> = m.indices[start..start + count].iter().cloned().collect();
+                        for vi in verts {
+                            let p = m.positions[vi as usize];
+                            match &f.borrow().surface {
+                                Surface::Sphere(_) => assert!((crate::math::len(p) - big_r).abs() < 1e-6, "sphere vertex off the sphere"),
                                 Surface::Cylinder(_) => {
                                     let rho = ((p[0] - e).powi(2) + p[1].powi(2)).sqrt();
                                     assert!((rho - r).abs() < 1e-6, "wall vertex off the cylinder by {}", rho - r);
