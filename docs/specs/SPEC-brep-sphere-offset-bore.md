@@ -1,6 +1,6 @@
 # SPEC — brep-rs: an off-centre bore through a sphere (2026-10-05)
 
-Status: S1 IMPLEMENTED and merged (2026-10-05); S2-S5 open. See "S1 result" below. Parent: `SPEC-brep-kernel-rs.md`.
+Status: S1 and S2 IMPLEMENTED and merged (2026-10-05); S3-S5 open. See "S1 result" and "S2 result" below. Parent: `SPEC-brep-kernel-rs.md`.
 Precedents: `SPEC-transverse-bore.md` (cylinder across a cylinder), `SPEC-sphere-bore.md` (axial), PLAN-next §22-24, §33.
 
 ## Why
@@ -145,6 +145,19 @@ Measured on the merged build (not predicted):
 What the 463 refusals turned out to be (single-step scripts only; 294 more are multi-step, mostly a second cut on an already
 bored sphere, which refuses by design): 45 blind bores (S2), 32 with e <= r (S3), 50 counterbore or countersink recesses, 3 past
 the 0.95 R limit. So S1 covered the plain through bore with e > r and the larger share waits on S2 and S3.
+
+## S2 result (2026-10-05)
+
+A blind bore builds: `SphTrim::Bore` gained `through` (a blind bore holes only the entry end), the builder accepts a floor
+strictly between -s0 and s0 (s0 = sqrt(R^2 - (e + r)^2), the meeting curve's lowest point, so the whole floor disc lies inside
+the sphere), entered from either end, and adds the floor disc. `Cross::SphTool` already carried a constant lower end, so the wall
+needed no new type. The closed-form net is V = I - f0 pi r^2. A floor or tool end in the polar band the curve spans
+(between s0 and fmax), or below -s0, still refuses.
+
+Measured: seven blind cases agree with the closed form (1e-9) and OpenCascade (1e-7, 3 faces); five floor heights x both entry
+ends agree in cargo; the mesh is closed and outward at chord 0.05 and 0.5 across the grid with floors at -0.6, 0 and +0.6 s0, and
+the ray-cast oracle agrees with floors; the sweep (15,000 scripts, seed 1) has 0 wrong and 21 further scripts moved from refused to
+agreeing with OpenCascade, none moved any other way. Gates unchanged (parity 78/0, mesh 78/0, STEP 77/0/1, occt 17/0); cargo 488.
 
 ## Risks
 
