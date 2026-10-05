@@ -271,7 +271,7 @@ test('what is not a clean coaxial pair refuses in a sentence and builds nothing'
       continue;
     }
     assert.equal(m, undefined, `${why}: built a solid`);
-    assert.match(refusals.op1 ?? '', /cannot boolean these two solids/, why);
+    assert.match(refusals.op1 ?? '', /cannot boolean these two solids|only touch along a line or at a point/, why);
     refused++;
   }
   assert.equal(refused, cases.length - 3, 'every case but the three that build refuses');

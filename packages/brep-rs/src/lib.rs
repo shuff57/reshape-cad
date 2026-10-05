@@ -34,6 +34,7 @@ pub mod topo;
 pub mod build;
 pub mod ops;
 pub mod ops_planar;
+pub mod ops_touch;
 pub mod turned;
 pub mod history;
 pub mod mesh;

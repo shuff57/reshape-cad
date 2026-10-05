@@ -75,6 +75,11 @@ pub fn clear_reason() {
     REASON.with(|r| r.set(None));
 }
 
+/// Leave a plain sentence for the caller of a boolean that refused.
+pub fn set_reason(why: &'static str) {
+    REASON.with(|r| r.set(Some(why)));
+}
+
 /// The plain sentence for the last refusal of `carry_subtract`, if it left one.
 pub fn take_reason() -> Option<&'static str> {
     REASON.with(|r| r.take())

@@ -831,7 +831,7 @@ pub(crate) fn with_face_boxes<R>(solids: &[&TSolid], body: impl FnOnce() -> R) -
     r
 }
 
-fn plane_face_contains(g: &Plane, f: &Face<Curve3, Surface3>, q: Vec3) -> bool {
+pub(crate) fn plane_face_contains(g: &Plane, f: &Face<Curve3, Surface3>, q: Vec3) -> bool {
     if let Some(inside) = crate::ops_planar::face_contains_exact(g, f, q) {
         return inside;
     }
@@ -5238,6 +5238,28 @@ fn boolean_unchecked(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
             _ => None,
         };
     }
+    // W4: a tool inside the base that touches its skin along a line or at a point (and over no area)
+    // leaves a skin that touches itself, and two solids joined where they only touch are two lumps
+    // on a line, not one solid. Neither is a manifold; both refuse in a sentence.
+    if op == "subtract" && crate::ops_touch::cut_pinches(a, b) {
+        return None;
+    }
+    let join_pinch = op == "union" && crate::ops_touch::join_pinches(a, b);
+    let built = boolean_built(op, a, b);
+    if join_pinch {
+        let overlapped = built.as_ref().is_some_and(|r| {
+            let (va, vb) = (build::solid_volume(a), build::solid_volume(b));
+            build::solid_volume(r) < (va + vb) * (1.0 - 1e-9)
+        });
+        if !overlapped {
+            crate::ops_touch::flag_join();
+            return None;
+        }
+    }
+    built
+}
+
+pub(crate) fn boolean_built(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
     let legacy = with_face_boxes(&[a, b], || boolean_legacy(op, a, b));
     if let Some(r) = legacy {
         // The face-by-face path splits a face along the other solid's edges without splitting
@@ -5262,7 +5284,9 @@ fn boolean_unchecked(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
         return Some(r);
     }
     match crate::ops_planar::boolean_planar(op, a, b) {
-        crate::ops_planar::Outcome::Built(r) => mesh_is_closed_coarse(&r).then_some(r),
+        crate::ops_planar::Outcome::Built(r) => {
+            (mesh_is_closed_coarse(&r) && !crate::ops_touch::has_pinch_vertex(&r.faces())).then_some(r)
+        }
         _ => None,
     }
 }
@@ -5334,6 +5358,11 @@ fn boolean_legacy(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
             return None;
         }
         if !unmatched_once_edges(&faces).is_empty() {
+            return None;
+        }
+        // Every edge is used twice, but a VERTEX can still be a pinch: two lumps meeting at a corner or
+        // along an edge have a neighbourhood of two cones. That is not a manifold either.
+        if crate::ops_touch::has_pinch_vertex(&faces) {
             return None;
         }
         // A face whose inner wires overlap (two holes, or a hole and a boss rim, that cross)
@@ -6432,7 +6461,7 @@ fn tool_boundary_samples(faces: &[TFace]) -> Vec<Vec3> {
 /// The result is `a`'s own shell plus `b`'s shell reversed as an inner void
 /// (SPEC-brep-pocket.md). Returns None for any other configuration, leaving the
 /// general face-by-face path to handle or refuse it.
-fn subtract_enclosed(a: &TSolid, b: &TSolid) -> Option<TSolid> {
+pub(crate) fn subtract_enclosed(a: &TSolid, b: &TSolid) -> Option<TSolid> {
     let a_faces = a.faces();
     let b_faces = b.faces();
     if a_faces.is_empty() || b_faces.is_empty() {

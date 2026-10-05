@@ -9,6 +9,7 @@ use crate::build::{self, TSolid};
 use crate::geom::Surface;
 use crate::ops;
 use crate::ops_planar;
+use crate::ops_touch;
 use crate::turned;
 use crate::history::{self, Fate, History, OpRecord, OpKind, PartRef};
 use crate::topo;
@@ -1292,6 +1293,7 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                         continue;
                     }
                 }
+                ops_planar::clear_reason();
                 match ops::boolean("subtract", &base, &tool) {
                     Some(result) if skin_pieces(&result) > skin_pieces(&base) => {
                         refusals.insert(id.clone(), json!(cavity_refusal("pocket", &id)));
@@ -1312,6 +1314,9 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     }
                     None if tools_apart(&base, &[&tool]) => {
                         refusals.insert(id.clone(), json!(miss_refusal(&id)));
+                    }
+                    None if ops_planar::take_reason() == Some(ops_touch::CUT_SENTENCE) => {
+                        refusals.insert(id.clone(), json!(format!("pocket {id}: {} -- {id} is shown without it.", ops_touch::CUT_SENTENCE)));
                     }
                     None => {
                         refusals.insert(
@@ -1785,6 +1790,7 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                         continue;
                     }
                 };
+                ops_planar::clear_reason();
                 match ops::boolean("subtract", &base, &tool) {
                     Some(result) if skin_pieces(&result) > skin_pieces(&base) => {
                         refusals.insert(id.clone(), json!(cavity_refusal("groove", &id)));
@@ -1804,6 +1810,9 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     }
                     None if tools_apart(&base, &[&tool]) => {
                         refusals.insert(id.clone(), json!(miss_refusal(&id)));
+                    }
+                    None if ops_planar::take_reason() == Some(ops_touch::CUT_SENTENCE) => {
+                        refusals.insert(id.clone(), json!(format!("groove {id}: {} -- {id} is shown without it.", ops_touch::CUT_SENTENCE)));
                     }
                     None => {
                         refusals.insert(
@@ -1848,8 +1857,14 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                             refused = true;
                             break;
                         }
-                        Some(cur) => match ops::boolean(op, &cur, &s) {
+                        Some(cur) => match { ops_planar::clear_reason(); ops::boolean(op, &cur, &s) } {
                             Some(r) => shape = Some(r),
+                            None if matches!(ops_planar::take_reason(), Some(w) if w == ops_touch::CUT_SENTENCE || w == ops_touch::JOIN_SENTENCE) => {
+                                let why = if op == "union" { ops_touch::JOIN_SENTENCE } else { ops_touch::CUT_SENTENCE };
+                                refusals.insert(id.clone(), json!(format!("combine {id}: {why} -- {id} is shown without it.")));
+                                refused = true;
+                                break;
+                            }
                             None => {
                                 refusals.insert(
                                     id.clone(),

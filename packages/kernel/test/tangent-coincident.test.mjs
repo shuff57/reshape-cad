@@ -64,14 +64,16 @@ test('a box touching a cylinder from OUTSIDE along a line: cut changes nothing, 
   const cut = mine('const a = cylinder(20, 30, { at: [0, 0, 0] })\nconst b = box(20, 20, 40, { at: [20, 0, 0] })\ncut(a, b)');
   assert.deepEqual(cut.refusals, {});
   assert.ok(Math.abs(cut.volume - VC) < 1e-9 * VC);
-  // The join of a cylinder with a cylinder-and-hole-free box meeting along a line is a pre-existing legacy result;
-  // a cylinder that carries a hole goes through the planar path, which must not build a line contact.
+  // W4: the join of a plain cylinder with a box meeting it along a line used to be a legacy two-lump build; it now
+  // refuses in a sentence, as a cylinder that carries a hole always did (the planar path must not build a line contact).
+  const plain = mine('const a = cylinder(20, 30, { at: [0, 0, 0] })\nconst b = box(20, 20, 40, { at: [20, 0, 0] })\njoin(a, b)');
+  assert.match(plain.refusals[plain.id] ?? '', /only touch along a line or at a point/);
   const j = mine('const a = cylinder(20, 30, { at: [0, 0, 0] })\nhole(a, { across: 4, deep: 10 })\nconst b = box(20, 20, 40, { at: [20, 0, 0] })\njoin(a, b)');
   if (Object.keys(j.refusals).length === 0) {
     const want = VC - PI * 4 * 10 + 20 * 20 * 40;
     assert.ok(Math.abs(j.volume - want) < 1e-6 * want, `${j.volume} vs ${want}`);
     assertWatertight(j);
-  } else assert.match(j.refusals[j.id], /brep-rs cannot/);
+  } else assert.match(j.refusals[j.id], /only touch along a line or at a point|brep-rs cannot/);
 });
 
 test('a cylinder cut out of a box it grazes from inside along a line (a tunnel) refuses', () => {
