@@ -203,27 +203,30 @@ test('OpenCascade cannot be the referee for a closed hollow of a chamfered cylin
   assert.ok(mine.volume < 0.5 * ref.volume);
 });
 
-// The STEP writer has no torus yet (pre-existing: "cannot write a toroidal face to STEP yet"); the parts with chamfers are planes,
-// cylinders and cones, and read back in OCCT with the closed-form volume.
-const stepCases = cases.filter(([name]) => /chamfer/.test(name) && !/round/.test(name) && !/blind/.test(name));
-test('STEP export of chamfered turned parts reads back in OCCT with the same volume (at least 6)', () => {
-  let n = 0;
+// STEP: every turned part with a closed-form volume exports (planes, cylinders, cones, and since W3 tori) and reads back in OCCT
+// at that volume. The hollowed ones are covered by step-curved.test.mjs; here the parts whose want is exact.
+const stepCases = cases.filter(([name]) => !/blind/.test(name));
+test('STEP export of turned parts, rounded or chamfered, reads back in OCCT with the same volume (at least 12)', () => {
+  let n = 0, refused = [];
   for (const [name, code, want] of stepCases) {
     const { json, id } = built(code);
     const f = JSON.parse(brep.export_step(json, id));
-    assert.ok(f.step, `${name}: ${JSON.stringify(f).slice(0, 200)}`);
+    if (!f.step) { refused.push(`${name}: ${JSON.stringify(f).slice(0, 120)}`); continue; }
     const back = readStep(f.step);
     assert.ok(Math.abs(back.volume - want) <= 1e-6 * want, `${name}: STEP ${back.volume} vs ${want}`);
     assert.equal(back.valid, true, name);
     n++;
   }
-  assert.ok(n >= 6, `${n} round trips`);
+  assert.ok(n >= 12, `${n} round trips; refused: ${refused.join(' | ')}`);
 });
 
-test('a part with a round still says so when STEP cannot write it (unchanged, honest)', () => {
+test('a part with a round now exports: tori read back at the closed-form volume', () => {
   const { json, id } = built(C0 + rnd('top', 3) + rnd('bottom', 3));
   const f = JSON.parse(brep.export_step(json, id));
-  assert.ok(!f.step && /toroidal/.test(JSON.stringify(f)), JSON.stringify(f).slice(0, 200));
+  assert.ok(f.step && /TOROIDAL_SURFACE/.test(f.step), JSON.stringify(f).slice(0, 200));
+  const back = readStep(f.step);
+  const want = CYL - ringBoth;
+  assert.ok(Math.abs(back.volume - want) <= 1e-6 * want, `${back.volume} vs ${want}`);
 });
 
 // Names survive: the part built by the profile keeps its faces nameable, so a second feature finds the rim it names. The top

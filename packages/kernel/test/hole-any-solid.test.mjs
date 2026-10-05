@@ -149,7 +149,7 @@ for (const [name, code, want] of mirrored) {
   });
 }
 
-// The STEP writer has no spherical face yet (a fully rounded box cannot be written, pre-existing), so the round trip is on
+// The round trip here is on
 // chamfered cylinders, whose faces are planes, cylinders and a cone.
 test('STEP export of a bored chamfered cylinder reads back in OCCT with the same volume (4 parts)', () => {
   let n = 0;

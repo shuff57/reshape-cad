@@ -23,7 +23,7 @@
 //! reason: above the mesh gate's vertex weld, well below parity's `approx`.
 
 use crate::build::{TFace, TSolid};
-use crate::geom::{Cone, Curve, Cylinder, Plane, SphereSurf, Surface};
+use crate::geom::{Cone, Curve, Cylinder, Plane, SphereSurf, Surface, TorusSurf};
 use crate::math::{add, cross, dist, dot, normalize, scale, sub, Vec3};
 
 const WELD: f64 = 1e-6;
@@ -301,7 +301,13 @@ impl Writer {
                 self.put(format!("LINE('',#{o},#{v})"))
             }
             (Some((center, radius, axis)), _) => {
-                let pl = self.axis2(center, axis, sub(a, center));
+                // A degenerate circle (the apex of a cone, a pole of a sphere) has no point off its
+                // centre to give a reference direction; any perpendicular to the axis will do.
+                let mut r = sub(a, center);
+                if dist(a, center) < 1e-9 {
+                    r = perpendicular(axis);
+                }
+                let pl = self.axis2(center, axis, r);
                 self.put(format!("CIRCLE('',#{pl},{})", real(radius)))
             }
         };
@@ -339,6 +345,13 @@ impl Writer {
 /// `same_sense` has to absorb it.
 fn right_handed(u: Vec3, v: Vec3, n: Vec3) -> bool {
     dot(cross(u, v), n) > 0.0
+}
+
+/// Any unit vector square to `n`.
+fn perpendicular(n: Vec3) -> Vec3 {
+    let n = normalize(n);
+    let helper = if n[0].abs() < 0.9 { [1.0, 0.0, 0.0] } else { [0.0, 1.0, 0.0] };
+    normalize(cross(n, helper))
 }
 
 /// Number of spans in the B-spline fitted to a closed space curve. 256 spans of a smooth analytic
@@ -633,7 +646,7 @@ fn sphere_zone_loop(s: &SphereSurf) -> Option<Vec<Seg>> {
     let pole_lo = v0 <= 1e-9;
     let pole_hi = v1 >= std::f64::consts::PI - 1e-9;
     if s.trim.is_some() || (s.u_range[1] - s.u_range[0] - tau).abs() > 1e-9 || v1 - v0 <= 1e-9 || (pole_lo && pole_hi) {
-        return None;
+        return None; // the whole sphere: `sphere_patch_loop`
     }
     let spin = normalize(cross(s.e1, s.e2));
     let at = |u: f64, v: f64| {
@@ -683,6 +696,151 @@ fn sphere_zone_loop(s: &SphereSurf) -> Option<Vec<Seg>> {
     ])
 }
 
+/// A spherical face that is not a full-turn zone: the WHOLE sphere (both poles, a full turn) or a patch
+/// that spans only part of a turn (the octant a rounded box corner leaves). Built from the surface's own
+/// ranges like every other loop here, counterclockwise in the surface's (u, colatitude) rectangle; a
+/// pole side is degenerate (a point), so a patch drops it and the whole sphere writes it as a circle of
+/// radius 0, the way a cone's apex is written. Already oriented: the caller must not re-orient it.
+fn sphere_patch_loop(s: &SphereSurf) -> Option<Vec<Seg>> {
+    let tau = 2.0 * std::f64::consts::PI;
+    let (u0, u1) = (s.u_range[0], s.u_range[1]);
+    let (v0, v1) = (s.v_range[0], s.v_range[1]);
+    if s.trim.is_some() || u1 - u0 <= 1e-9 || v1 - v0 <= 1e-9 || u1 - u0 > tau + 1e-9 {
+        return None;
+    }
+    let full_u = (u1 - u0 - tau).abs() <= 1e-9;
+    let pole_lo = v0 <= 1e-9;
+    let pole_hi = v1 >= std::f64::consts::PI - 1e-9;
+    if full_u && !(pole_lo && pole_hi) {
+        return None; // a zone or a cap: `sphere_zone_loop`
+    }
+    let spin = normalize(cross(s.e1, s.e2));
+    let at = |u: f64, v: f64| {
+        add(
+            s.center,
+            add(
+                scale(add(scale(s.e1, u.cos()), scale(s.e2, u.sin())), s.radius * v.sin()),
+                scale(s.axis, -s.radius * v.cos()),
+            ),
+        )
+    };
+    let rim_centre = |v: f64| add(s.center, scale(s.axis, -s.radius * v.cos()));
+    // a parallel from longitude `from` to `to`, turning about +spin when `dir` is 1
+    let parallel = |v: f64, from: f64, to: f64, dir: f64| {
+        let pole = v.sin().abs() < 1e-12;
+        Seg::Arc {
+            center: rim_centre(v),
+            radius: if pole { 0.0 } else { s.radius * v.sin() },
+            axis: scale(spin, dir),
+            a: at(from, v),
+            b: at(to, v),
+            mid: if full_u { at(from + std::f64::consts::PI, v) } else { at(0.5 * (from + to), v) },
+        }
+    };
+    let meridian = |u: f64, from: f64, to: f64| {
+        let (a, b, mid) = (at(u, from), at(u, to), at(u, 0.5 * (from + to)));
+        let n = normalize(cross(sub(a, s.center), sub(mid, s.center)));
+        Seg::Arc { center: s.center, radius: s.radius, axis: n, a, b, mid }
+    };
+    let mut loop_ = Vec::new();
+    if !pole_lo || full_u {
+        loop_.push(parallel(v0, u0, u1, 1.0));
+    }
+    loop_.push(meridian(u1, v0, v1));
+    if !pole_hi || full_u {
+        loop_.push(parallel(v1, u1, u0, -1.0));
+    }
+    loop_.push(meridian(u0, v1, v0));
+    // STEP's own u runs counterclockwise about `axis`; a left-handed frame (a mirrored part) runs it the other way.
+    if !right_handed(s.e1, s.e2, s.axis) {
+        loop_ = reverse_loop(&loop_);
+    }
+    Some(loop_)
+}
+
+/// A torus face is a band between two tube angles, a full turn about the axis: bottom circle, meridian
+/// seam up, top circle reversed, seam down (the same four-piece form as a cylinder wall). A whole torus
+/// is the same loop with both circles the one circle and the seam a whole circle, which is how OCCT
+/// writes it. Already oriented. None for a band whose circles would have no radius.
+fn torus_loop(t: &TorusSurf) -> Option<Vec<Seg>> {
+    let tau = 2.0 * std::f64::consts::PI;
+    let (v0, v1) = (t.v_range[0], t.v_range[1]);
+    let span = v1 - v0;
+    if span <= 1e-9 || span > tau + 1e-9 || t.tube <= 1e-9 {
+        return None;
+    }
+    // every circle of the band must have a real radius (a band that crosses the axis is not a torus)
+    for k in 0..=64 {
+        let v = v0 + span * k as f64 / 64.0;
+        if t.ring + t.tube * v.cos() <= 1e-6 {
+            return None;
+        }
+    }
+    let spin = normalize(cross(t.e1, t.e2));
+    let at = |u: f64, v: f64| {
+        add(
+            t.center,
+            add(
+                scale(add(scale(t.e1, u.cos()), scale(t.e2, u.sin())), t.ring + t.tube * v.cos()),
+                scale(t.axis, t.tube * v.sin()),
+            ),
+        )
+    };
+    let rim = |v: f64, dir: f64| Seg::Arc {
+        center: add(t.center, scale(t.axis, t.tube * v.sin())),
+        radius: t.ring + t.tube * v.cos(),
+        axis: scale(spin, dir),
+        a: at(0.0, v),
+        b: at(0.0, v),
+        mid: at(std::f64::consts::PI, v),
+    };
+    // the seam: the tube circle at longitude 0; v increasing turns e1 toward axis, i.e. about e1 x axis
+    let seam = Seg::Arc {
+        center: add(t.center, scale(t.e1, t.ring)),
+        radius: t.tube,
+        axis: normalize(cross(t.e1, t.axis)),
+        a: at(0.0, v0),
+        b: at(0.0, v1),
+        mid: at(0.0, v0 + 0.5 * span),
+    };
+    let mut loop_ = vec![rim(v0, 1.0), seam.clone(), rim(v1, -1.0), seam.reversed()];
+    if !right_handed(t.e1, t.e2, t.axis) {
+        loop_ = reverse_loop(&loop_);
+    }
+    Some(loop_)
+}
+
+/// Whether every vertex of a toroidal face's own wires sits on one of the band's two circles. A face the
+/// kernel trimmed by something else (a pocket through a rounded rim) has vertices elsewhere, and writing
+/// the whole band for it would be a wrong solid.
+fn torus_trim_is_the_band(face: &crate::topo::Face<Curve, Surface>, t: &TorusSurf) -> bool {
+    let tau = 2.0 * std::f64::consts::PI;
+    let on = |p: Vec3| {
+        let d = sub(p, t.center);
+        let h = dot(d, t.axis);
+        let radial = sub(d, scale(t.axis, h));
+        let rho = dot(radial, radial).sqrt();
+        let v = h.atan2(rho - t.ring);
+        t.v_range.iter().any(|b| {
+            let mut diff = (v - b) % tau;
+            if diff > tau / 2.0 {
+                diff -= tau;
+            }
+            if diff < -tau / 2.0 {
+                diff += tau;
+            }
+            diff.abs() < 1e-6
+        })
+    };
+    face.boundary.iter().all(|w| {
+        w.borrow().edges.iter().all(|u| {
+            let e = u.edge.borrow();
+            let (a, b) = (e.a.borrow().point, e.b.borrow().point);
+            on(a) && on(b)
+        })
+    })
+}
+
 /// The boundary of a conical frustum, in the same seam form as a cylinder:
 /// lower rim, seam up, upper rim reversed, seam down. `v` is slant distance,
 /// so both the rim radius and its axial centre change with it.
@@ -692,7 +850,10 @@ fn cone_loop(c: &Cone) -> Vec<Seg> {
     let spin = normalize(cross(c.e1, c.e2));
     // At the apex the radius is 0 up to rounding; a CIRCLE with a (tiny) negative radius, which is
     // what the subtraction gives there, makes OpenCascade drop the whole solid on read-back.
-    let radius = |v: f64| (c.base_radius - v * c.half_angle.sin()).max(0.0);
+    let radius = |v: f64| {
+        let r = c.base_radius - v * c.half_angle.sin();
+        if r < 1e-9 * c.base_radius.max(1.0) { 0.0 } else { r }
+    };
     let centre = |v: f64| add(c.base, scale(c.axis, v * c.half_angle.cos()));
     let at = |theta: f64, v: f64| {
         add(
@@ -861,12 +1022,23 @@ fn face_bounds(face: &crate::topo::Face<Curve, Surface>) -> Result<(Vec<Vec<Seg>
         Surface::Cylinder(c) => face.forward == right_handed(c.e1, c.e2, c.axis),
         Surface::Cone(c) => face.forward == right_handed(c.e1, c.e2, c.axis),
         Surface::Sphere(sp) => {
-            if sphere_zone_loop(sp).is_none() {
+            if sphere_zone_loop(sp).is_none() && sphere_patch_loop(sp).is_none() {
                 return Err("a spherical face".to_string());
             }
             face.forward == right_handed(sp.e1, sp.e2, sp.axis)
         }
-        Surface::Torus(_) => return Err("a toroidal face".to_string()),
+        Surface::Torus(t) => {
+            if torus_loop(t).is_none() {
+                return Err("a toroidal face whose tube reaches its own axis".to_string());
+            }
+            if !torus_trim_is_the_band(face, t) {
+                return Err("a toroidal face trimmed by a cut".to_string());
+            }
+            if face.boundary.len() > 1 {
+                return Err("a toroidal face with a hole in it".to_string());
+            }
+            face.forward == right_handed(t.e1, t.e2, t.axis)
+        }
     };
 
     let mut bounds: Vec<Vec<Seg>> = Vec::new();
@@ -895,12 +1067,15 @@ fn face_bounds(face: &crate::topo::Face<Curve, Surface>) -> Result<(Vec<Vec<Seg>
             bounds.push(cone_loop(c));
         }
         Surface::Sphere(sp) => {
-            bounds.push(sphere_zone_loop(sp).ok_or_else(|| "a spherical face".to_string())?);
+            let l = match sphere_zone_loop(sp) {
+                Some(l) => l,
+                None => sphere_patch_loop(sp).ok_or_else(|| "a spherical face".to_string())?,
+            };
+            bounds.push(l);
         }
-        // The plane's boundary is its wires as written. A torus was refused when
-        // the surface sense was computed above; naming it keeps a new surface
-        // kind from silently taking the polygon path.
-        Surface::Torus(_) => return Err("a toroidal face".to_string()),
+        Surface::Torus(t) => {
+            bounds.push(torus_loop(t).ok_or_else(|| "a toroidal face".to_string())?);
+        }
         Surface::Plane(_) => {
             for w in &face.boundary {
                 let segs = wire_segs(&w.borrow().edges)?;
@@ -923,15 +1098,18 @@ fn face_bounds(face: &crate::topo::Face<Curve, Surface>) -> Result<(Vec<Vec<Seg>
     // place of setting those flags is what BRepCheck rejected.
     for (i, b) in bounds.iter_mut().enumerate() {
         // A polar cap's single circle encloses no (angle, height) area; its direction was fixed above.
-        if matches!(face.surface, Surface::Sphere(_)) && b.len() == 1 {
-            continue;
+        // A whole sphere, a partial patch and a torus band were built counterclockwise already.
+        match &face.surface {
+            Surface::Sphere(sp) if b.len() == 1 || sphere_zone_loop(sp).is_none() => continue,
+            Surface::Torus(_) => continue,
+            _ => {}
         }
         let area = match &face.surface {
             Surface::Plane(p) => planar_signed_area(b, p),
             Surface::Cylinder(c) => revolved_signed_area(b, c.origin, c.axis, c.e1),
             Surface::Cone(c) => revolved_signed_area(b, c.base, c.axis, c.e1),
             Surface::Sphere(sp) => revolved_signed_area(b, sp.center, sp.axis, sp.e1),
-            _ => unreachable!("every other surface was refused above"),
+            _ => unreachable!("handled above"),
         };
         if (area > 0.0) != (i == 0) {
             *b = reverse_loop(b);
@@ -1059,7 +1237,10 @@ pub fn write_solid(solid: &TSolid, product: &str) -> Result<String, String> {
                 let pl = w.axis2(sp.center, sp.axis, sp.e1);
                 w.put(format!("SPHERICAL_SURFACE('',#{pl},{})", real(sp.radius)))
             }
-            _ => unreachable!("face_bounds refuses every other surface"),
+            Surface::Torus(t) => {
+                let pl = w.axis2(t.center, t.axis, t.e1);
+                w.put(format!("TOROIDAL_SURFACE('',#{pl},{},{})", real(t.ring), real(t.tube)))
+            }
         };
         let flag = if same_sense { ".T." } else { ".F." };
         let mut bound_ids = Vec::with_capacity(bounds.len());
@@ -1327,16 +1508,35 @@ mod tests {
     }
 
     #[test]
-    fn a_sphere_refuses_rather_than_writing_something_else() {
+    fn a_whole_sphere_writes_one_face_with_pole_circles_and_a_seam() {
         let solid = build::sphere_solid([0.0, 0.0, 0.0], 15.0, [0.0, 0.0, 1.0]);
-        let err = write_solid(&solid, "sphere").expect_err("a sphere is not writable yet");
-        assert!(err.contains("spherical face"), "reason: {err}");
+        let text = write_solid(&solid, "sphere").expect("a whole sphere is writable");
+        assert_eq!(count(&text, "ADVANCED_FACE"), 1);
+        assert_eq!(count(&text, "SPHERICAL_SURFACE"), 1);
+        // one seam half circle (used up and down) and the two degenerate pole circles
+        assert_eq!(count(&text, "EDGE_CURVE"), 3);
+        assert_eq!(count(&text, "ORIENTED_EDGE"), 4);
+        assert_eq!(count(&text, "MANIFOLD_SOLID_BREP"), 1);
     }
 
     #[test]
-    fn a_torus_refuses_rather_than_writing_something_else() {
+    fn a_torus_writes_one_toroidal_face_with_a_seam_in_each_direction() {
         let solid = build::torus_solid([0.0, 0.0, 0.0], 14.0, 4.0, [0.0, 0.0, 1.0]);
-        let err = write_solid(&solid, "torus").expect_err("a torus is not writable yet");
+        let text = write_solid(&solid, "torus").expect("a torus is writable");
+        assert_eq!(count(&text, "ADVANCED_FACE"), 1);
+        let t = text.lines().find(|l| l.contains("TOROIDAL_SURFACE")).expect("one toroidal surface");
+        assert!(t.ends_with(&format!(",{},{});", real(14.0), real(4.0))), "torus: {t}");
+        // the parallel and the meridian, each a whole circle used twice (once reversed)
+        assert_eq!(count(&text, "EDGE_CURVE"), 2);
+        assert_eq!(count(&text, "ORIENTED_EDGE"), 4);
+    }
+
+    #[test]
+    fn a_spindle_band_with_no_radius_refuses() {
+        // ring < tube and the band reaches the axis: not a torus any more
+        let mut solid = build::torus_solid([0.0, 0.0, 0.0], 3.0, 4.0, [0.0, 0.0, 1.0]);
+        let _ = &mut solid;
+        let err = write_solid(&solid, "spindle").expect_err("a spindle torus has circles of no radius");
         assert!(err.contains("toroidal face"), "reason: {err}");
     }
 

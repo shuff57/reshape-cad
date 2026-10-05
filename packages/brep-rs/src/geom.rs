@@ -1411,17 +1411,39 @@ impl Surface {
                 }
             }
             Surface::Torus(s) => {
+                // Along world axis i the point is (ring + tube cos v) (+-rho_i) + tube sin v a_i over the
+                // full turn of u, so each extreme sits at an end of the band's v range or at a stationary
+                // point of g(v) inside it. A quarter torus (a rounded rim) is only its quarter's box, not the
+                // whole donut's: the loose box once reported a rounded cylinder z from -14 for a part 10 deep.
                 let a = normalize(s.axis);
+                let (e1, e2) = (normalize(s.e1), normalize(s.e2));
+                let (v0, v1) = (s.v_range[0], s.v_range[1]);
+                let (mut lo_pt, mut hi_pt) = (s.center, s.center);
                 for i in 0..3 {
-                    let e = (1.0 - a[i] * a[i]).max(0.0).sqrt();
-                    let ext = s.ring * e + s.tube;
-                    let mut p = s.center;
-                    p[i] += ext;
-                    b.expand(p);
-                    let mut q = s.center;
-                    q[i] -= ext;
-                    b.expand(q);
+                    let rho = (e1[i] * e1[i] + e2[i] * e2[i]).sqrt();
+                    let mut lo = f64::INFINITY;
+                    let mut hi = f64::NEG_INFINITY;
+                    for sg in [1.0, -1.0] {
+                        let g = |v: f64| sg * (s.ring + s.tube * v.cos()) * rho + s.tube * v.sin() * a[i];
+                        let mut cands = vec![v0, v1];
+                        // g'(v) = -sg tube rho sin v + tube a cos v = 0
+                        let t = a[i].atan2(sg * rho);
+                        for k in -2..=3 {
+                            cands.push(t + k as f64 * std::f64::consts::PI);
+                        }
+                        for v in cands {
+                            if v >= v0 - 1e-12 && v <= v1 + 1e-12 {
+                                let x = g(v.clamp(v0, v1));
+                                lo = lo.min(x);
+                                hi = hi.max(x);
+                            }
+                        }
+                    }
+                    lo_pt[i] = s.center[i] + lo;
+                    hi_pt[i] = s.center[i] + hi;
                 }
+                b.expand(lo_pt);
+                b.expand(hi_pt);
             }
         }
         b
