@@ -1,6 +1,6 @@
 # SPEC — brep-rs: an off-centre bore through a sphere (2026-10-05)
 
-Status: S1, S2 and S3 IMPLEMENTED (2026-10-05); S4-S5 open. See "S1 result", "S2 result" and "S3 result" below. Parent: `SPEC-brep-kernel-rs.md`.
+Status: S1 to S4 IMPLEMENTED (2026-10-05); S5 open. See "S1 result" to "S4 result" below. Parent: `SPEC-brep-kernel-rs.md`.
 Precedents: `SPEC-transverse-bore.md` (cylinder across a cylinder), `SPEC-sphere-bore.md` (axial), PLAN-next §22-24, §33.
 
 ## Why
@@ -126,7 +126,7 @@ Built as designed: `SphTrim { None, Square, Bore }` (about 17 reader sites, comp
 whole-sphere guards refusing), `Curve::SphCyl`, `Cross::SphTool` (shares the `Tool` quadrature through `Cross::tool_bounds`),
 `SphereSurf::bore_cap_measure`, `sphere_offset_bore` with a closed-form volume net that shares no algebra with the face
 measures, the pole-fan sphere mesher (rim vertices taken from the same polylines the wall uses), `has_cross_trim` covering a
-bored sphere, STEP refusing with "a bore across a sphere".
+bored sphere, STEP refusing with "a bore across a sphere" (S4 later wrote it).
 
 Measured on the merged build (not predicted):
 - A through bore R=20, r=3, e=8 measures 32481.4215 (the independent pre-check value), to 1e-9 of the closed form.
@@ -186,6 +186,24 @@ unchanged (parity 78/0, mesh 78/0, STEP 77/0/1, occt 17/0); cargo 492. The two p
 were moved to cases that still refuse.
 
 Still open: STEP for the sphere face (S4), counterbore and countersink recesses, a second cut on a bored sphere, and e + r > 0.95 R.
+
+## S4 result (2026-10-05)
+
+A bored sphere now exports to STEP, through or blind, any axis, moved parts included. The sphere face is written from its own wires: each
+hole is the `SphCyl` meeting curve as the same checked B-spline fit `CylCyl` uses (a fit that misses the exact curve by 1e-7 of its size refuses),
+the first loop is the face's outer bound by position only, and every loop is wound with the face on its left seen from outside (clockwise
+about the hole it rings, decided from the sign of the loop's turning about its mean direction). The bore wall and the floor needed no new
+code: their wires reach the same curve through `wire_segs`.
+
+One real finding: **the surface must be written about the axis `d x n`, not the bore axis `d`.** At `e = r` the meeting curve runs
+exactly through the bore axis's own pole, where `SPHERICAL_SURFACE` is singular, and OpenCascade's loop parametrisation collapsed (it read
+back 1111 for a 32399 solid, a wrong solid on the OpenCascade side, caught by the read-back). About `d x n` the poles lie in the face for
+every e, never on a curve (the same pole the mesher uses).
+
+Measured: eight fixed cases (through and blind, e > r, e < r, e = r, a diagonal offset, a moved part) read back by OpenCascade agree with the
+closed form to 1e-6 with a valid shape and the right face count; 60 random cases (any of three axes, through or blind, e from 0.01 up to the
+0.94 R limit) all write, read back valid, and agree with the kernel's own volume to 3.3e-10 worst. STEP gate unchanged (77/0/1), cargo 492.
+Not exercised: the left-handed (mirrored) branch of the loop winding, because a mirror of a bored sphere refuses earlier at the cross-trim guard.
 
 ## Risks
 

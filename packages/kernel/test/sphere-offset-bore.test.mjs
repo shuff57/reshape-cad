@@ -213,9 +213,37 @@ test('a bored sphere cannot be joined, cut again or kept: the combine refuses', 
   }
 });
 
-test('STEP export of a bored sphere refuses in a sentence (the writer has no outer bound for it yet)', () => {
-  const { json, id } = build('const s = sphere(40); hole(s, { across: 6, at: [8, 0] })');
+// S4: the bored sphere's own wires write it (each hole a fitted B-spline, checked against the exact curve to 1e-7), read back by OpenCascade.
+function stepReadBack(code) {
+  const { json, id, s } = build(code);
   const out = JSON.parse(brep.export_step(json, id));
-  assert.ok(out.error, 'it must say so, not write a wrong file');
-  assert.match(String(out.error), /sphere|bore|cannot|yet/i);
-});
+  assert.ok(!out.error && out.step, `${code}: ${JSON.stringify(out).slice(0, 200)}`);
+  const f = `/s4-${Math.random().toString(36).slice(2)}.step`;
+  oc.FS.writeFile(f, out.step);
+  const reader = new oc.STEPControl_Reader();
+  assert.equal(reader.ReadFile(f), oc.IFSelect_ReturnStatus.IFSelect_RetDone, code);
+  reader.TransferRoots(new oc.Message_ProgressRange());
+  const shape = reader.OneShape();
+  const g = new oc.GProp_GProps();
+  oc.BRepGProp.VolumeProperties(shape, g, 1e-7, false, false);
+  return { vol: g.Mass(), faces: facesOf(oc, shape).length, valid: new oc.BRepCheck_Analyzer(shape, true, false).IsValid(), s };
+}
+
+for (const [code, R, r, e, deep] of [
+  ['const s = sphere(40); hole(s, { across: 6, at: [8, 0] })', 20, 3, 8],
+  ['const s = sphere(40); hole(s, { across: 12, at: [11, 0] })', 20, 6, 11],
+  ['const s = sphere(40); hole(s, { across: 6, at: [2, 0] })', 20, 3, 2],
+  ['const s = sphere(40); hole(s, { across: 6, at: [3, 0] })', 20, 3, 3],
+  ['const s = sphere(40); hole(s, { across: 16, at: [3, 4] })', 20, 8, 5],
+  ['const s = sphere(40); hole(s, { across: 6, at: [8, 0], deep: 25 })', 20, 3, 8, 25],
+  ['const s = sphere(40); hole(s, { across: 6, at: [3, 0], deep: 14 })', 20, 3, 3, 14],
+  ["const s = sphere(40); hole(s, { across: 6, along: 'y', at: [8, 0] }); move(s, [37, -23, 11])", 20, 3, 8],
+]) {
+  test(`STEP: ${code.slice(20, 80)}... writes and OpenCascade reads it back (volume, validity, faces)`, () => {
+    const o = stepReadBack(code);
+    const want = deep === undefined ? through(R, r, e) : blind(R, r, e, R - deep);
+    assert.ok(Math.abs(o.vol - want) <= 1e-6 * want, `STEP volume ${o.vol} vs closed form ${want} (${((o.vol - want) / want).toExponential(2)})`);
+    assert.equal(o.faces, deep === undefined ? 2 : 3);
+    assert.ok(o.valid, 'OpenCascade finds the read-back shape invalid');
+  });
+}

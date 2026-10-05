@@ -516,9 +516,8 @@ fn wire_segs(wire: &[crate::topo::EdgeUse<Curve>]) -> Result<Vec<Seg>, String> {
             Curve::Segment { .. } => Seg::Line { a: start, b: end },
             // No STEP primitive: a clamped cubic B-spline fitted to the exact curve and checked.
             Curve::CylCyl { .. } => fit_closed_curve(&e.curve, !u.forward)?,
-            // SPEC-brep-sphere-offset-bore.md S1: a bore across a sphere is not written yet (the
-            // sphere face has only inner loops, so the writer has no outer bound for it).
-            Curve::SphCyl { .. } => return Err("a bore across a sphere".to_string()),
+            // No STEP primitive either (the meeting curve of a bore and a sphere): the same fitted spline.
+            Curve::SphCyl { .. } => fit_closed_curve(&e.curve, !u.forward)?,
             Curve::Circle {
                 center,
                 radius,
@@ -1025,7 +1024,8 @@ fn face_bounds(face: &crate::topo::Face<Curve, Surface>) -> Result<(Vec<Vec<Seg>
         Surface::Cylinder(c) => face.forward == right_handed(c.e1, c.e2, c.axis),
         Surface::Cone(c) => face.forward == right_handed(c.e1, c.e2, c.axis),
         Surface::Sphere(sp) => {
-            if sphere_zone_loop(sp).is_none() && sphere_patch_loop(sp).is_none() {
+            // A bored sphere is written from its own wires below; the zone and patch loops are not its shape.
+            if !matches!(sp.trim, crate::geom::SphTrim::Bore { .. }) && sphere_zone_loop(sp).is_none() && sphere_patch_loop(sp).is_none() {
                 return Err("a spherical face".to_string());
             }
             face.forward == right_handed(sp.e1, sp.e2, sp.axis)
@@ -1069,6 +1069,42 @@ fn face_bounds(face: &crate::topo::Face<Curve, Surface>) -> Result<(Vec<Vec<Seg>
             }
             bounds.push(cone_loop(c));
         }
+        // A sphere with a bore through it (or into it): one closed hole per end, each bounded by its meeting
+        // curve, so the face has no natural outer bound. Every loop is written with the face on its left seen
+        // from outside, i.e. clockwise about the hole it rings; the first is the "outer" bound by position only.
+        Surface::Sphere(sp) if matches!(sp.trim, crate::geom::SphTrim::Bore { .. }) => {
+            for w in &face.boundary {
+                let mut segs = wire_segs(&w.borrow().edges)?;
+                if !closed_chain(&segs) {
+                    return Err("a face whose wire is not a closed chain".to_string());
+                }
+                let mut pts: Vec<Vec3> = Vec::new();
+                for sg in &segs {
+                    match sg {
+                        Seg::Spline { ctrl, .. } => pts.extend(ctrl.iter().copied()),
+                        other => {
+                            pts.push(other.start());
+                            pts.push(other.end());
+                        }
+                    }
+                }
+                let mean = pts.iter().fold([0.0; 3], |a, p| add(a, sub(*p, sp.center)));
+                let g = normalize(mean);
+                let mut turn = 0.0;
+                for i in 0..pts.len() {
+                    let (p, q) = (sub(pts[i], sp.center), sub(pts[(i + 1) % pts.len()], sp.center));
+                    turn += dot(cross(p, q), g);
+                }
+                if turn > 0.0 {
+                    segs = reverse_loop(&segs);
+                }
+                // STEP's own u runs counterclockwise about `axis`; a left-handed frame (a mirrored part) runs it the other way.
+                if !right_handed(sp.e1, sp.e2, sp.axis) {
+                    segs = reverse_loop(&segs);
+                }
+                bounds.push(segs);
+            }
+        }
         Surface::Sphere(sp) => {
             let l = match sphere_zone_loop(sp) {
                 Some(l) => l,
@@ -1103,6 +1139,7 @@ fn face_bounds(face: &crate::topo::Face<Curve, Surface>) -> Result<(Vec<Vec<Seg>
         // A polar cap's single circle encloses no (angle, height) area; its direction was fixed above.
         // A whole sphere, a partial patch and a torus band were built counterclockwise already.
         match &face.surface {
+            Surface::Sphere(sp) if matches!(sp.trim, crate::geom::SphTrim::Bore { .. }) => continue,
             Surface::Sphere(sp) if b.len() == 1 || sphere_zone_loop(sp).is_none() => continue,
             Surface::Torus(_) => continue,
             _ => {}
@@ -1237,7 +1274,15 @@ pub fn write_solid(solid: &TSolid, product: &str) -> Result<String, String> {
                 ))
             }
             Surface::Sphere(sp) => {
-                let pl = w.axis2(sp.center, sp.axis, sp.e1);
+                // A bored sphere is written about the axis d x n instead of the bore axis d: its poles then lie in
+                // the face, never on a meeting curve (at e = r the curve runs through the bore axis's own pole, where
+                // the surface is singular and OpenCascade's parametrisation of the loop collapses).
+                let pl = if matches!(sp.trim, crate::geom::SphTrim::Bore { .. }) {
+                    let n = normalize(sp.e1);
+                    w.axis2(sp.center, cross(normalize(sp.axis), n), n)
+                } else {
+                    w.axis2(sp.center, sp.axis, sp.e1)
+                };
                 w.put(format!("SPHERICAL_SURFACE('',#{pl},{})", real(sp.radius)))
             }
             Surface::Torus(t) => {
