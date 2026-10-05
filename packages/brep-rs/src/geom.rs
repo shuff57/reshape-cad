@@ -946,6 +946,33 @@ pub enum SphTrim {
     /// (`through: false`) is entered from the `+axis` end only, so only that end is holed
     /// (SPEC-brep-sphere-offset-bore.md, slices S1 and S2).
     Bore { r: f64, e: f64, through: bool },
+    /// Several disjoint bores parallel to `axis`, each with its own offset `(x, y)` in the plane of `e1` and
+    /// `e2 = axis x e1` (SPEC-brep-sphere-multi-bore.md). `n` of the `MAX_BORES` entries are in use.
+    Bores { n: u8, h: [BoreHole; MAX_BORES] },
+}
+
+/// At most this many bores on one sphere (the trim is `Copy`, so the list is a fixed array).
+pub const MAX_BORES: usize = 4;
+
+/// One bore of a [`SphTrim::Bores`]: radius `r`, its axis offset `(x, y)` from the centre in the plane of
+/// `e1` and `axis x e1`, and which ends of the sphere it holes (`0` both, `1` the `+axis` end, `-1` the `-axis` end).
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct BoreHole {
+    pub r: f64,
+    pub x: f64,
+    pub y: f64,
+    pub ends: i8,
+}
+
+impl BoreHole {
+    pub const NONE: BoreHole = BoreHole { r: 0.0, x: 0.0, y: 0.0, ends: 0 };
+    pub fn e(&self) -> f64 {
+        self.x.hypot(self.y)
+    }
+    /// Whether this bore holes the end of the sphere on `sign` (+1 the `+axis` end, -1 the other).
+    pub fn at_end(&self, sign: f64) -> bool {
+        self.ends == 0 || (self.ends as f64) == sign
+    }
 }
 
 impl SphTrim {
@@ -958,6 +985,10 @@ impl SphTrim {
     /// "is this sphere trimmed at all", which refuse a bore as they refuse a square trim.
     pub fn is_some(&self) -> bool {
         !self.is_none()
+    }
+    /// True for a sphere carrying one bore or several.
+    pub fn is_bored(&self) -> bool {
+        matches!(self, SphTrim::Bore { .. } | SphTrim::Bores { .. })
     }
 }
 
@@ -1048,6 +1079,13 @@ impl SphereSurf {
     /// y = r sin(theta): a plain Gauss rule in y has a square-root singularity at y = +-r (a plain
     /// Simpson rule in y measured 3.7e-7 against OpenCascade, the substitution 1e-10).
     pub fn bore_cap_measure(&self, pole_sign: f64, r: f64, e: f64) -> (f64, f64, Vec3) {
+        self.bore_cap_measure_toward(pole_sign, r, e, self.e1)
+    }
+
+    /// The same with the bore's offset along the unit vector `u` (in the plane of `e1` and `e2`) instead of `e1`:
+    /// the area and volume term do not care which way the offset points, only the centroid numerator's
+    /// in-plane component does.
+    pub fn bore_cap_measure_toward(&self, pole_sign: f64, r: f64, e: f64, u: Vec3) -> (f64, f64, Vec3) {
         let big = self.radius;
         let (mut j, mut x) = (0.0, 0.0);
         // Four panels of the 16-point rule over theta in [-pi/2, pi/2].
@@ -1071,12 +1109,47 @@ impl SphereSurf {
         }
         let area = big * j;
         let avec = add(
-            scale(self.e1, x),
+            scale(u, x),
             scale(self.axis, pole_sign * std::f64::consts::PI * r * r),
         );
         let vol = dot(self.center, avec) + big * area;
         let sx = add(scale(self.center, area), scale(avec, big));
         (area, vol, sx)
+    }
+
+    /// The bores this sphere carries, whichever trim variant holds them (none for any other trim).
+    pub fn bore_holes(&self) -> Vec<BoreHole> {
+        match self.trim {
+            SphTrim::Bore { r, e, through } => vec![BoreHole { r, x: e, y: 0.0, ends: if through { 0 } else { 1 } }],
+            SphTrim::Bores { n, h } => h[..n as usize].to_vec(),
+            _ => Vec::new(),
+        }
+    }
+
+    /// Unit vector of a bore's offset, in the world.
+    pub fn hole_dir(&self, h: &BoreHole) -> Vec3 {
+        let e1 = normalize(self.e1);
+        let e2 = cross(normalize(self.axis), e1);
+        normalize(add(scale(e1, h.x), scale(e2, h.y)))
+    }
+
+    /// The point of a bore's meeting curve at cylinder angle `phi` on the `sg` end (+1 or -1 along `axis`).
+    pub fn hole_rim(&self, h: &BoreHole, phi: f64, sg: f64) -> Vec3 {
+        let (big, r, e) = (self.radius, h.r, h.e());
+        let d = normalize(self.axis);
+        let n = self.hole_dir(h);
+        let yh = cross(d, n);
+        let f = (big * big - e * e - r * r - 2.0 * e * r * phi.cos()).max(0.0).sqrt();
+        add(self.center, add(add(scale(n, e + r * phi.cos()), scale(yh, r * phi.sin())), scale(d, sg * f)))
+    }
+
+    /// Whether the sphere point at `q` (an offset from the centre, on the sphere) lies inside one of the bores' holes.
+    pub fn in_bore_hole(&self, q: Vec3) -> bool {
+        let e1 = normalize(self.e1);
+        let e2 = cross(normalize(self.axis), e1);
+        let z = dot(q, normalize(self.axis));
+        let (x, y) = (dot(q, e1), dot(q, e2));
+        self.bore_holes().iter().any(|h| (x - h.x) * (x - h.x) + (y - h.y) * (y - h.y) < h.r * h.r && (h.ends == 0 || (h.ends as f64) * z > 0.0))
     }
 }
 
@@ -1367,12 +1440,18 @@ impl Surface {
                         }
                     }
                 }
-                SphTrim::Bore { r, e, through } => {
-                    for pole in if through { vec![1.0, -1.0] } else { vec![1.0] } {
-                        let (ca, _, csx) = sp.bore_cap_measure(pole, r, e);
-                        area -= ca;
-                        for i in 0..3 {
-                            sx[i] -= csx[i];
+                SphTrim::Bore { .. } | SphTrim::Bores { .. } => {
+                    for h in sp.bore_holes() {
+                        let u = sp.hole_dir(&h);
+                        for pole in [1.0, -1.0] {
+                            if !h.at_end(pole) {
+                                continue;
+                            }
+                            let (ca, _, csx) = sp.bore_cap_measure_toward(pole, h.r, h.e(), u);
+                            area -= ca;
+                            for i in 0..3 {
+                                sx[i] -= csx[i];
+                            }
                         }
                     }
                 }
@@ -1430,10 +1509,15 @@ impl Surface {
                         vt -= cv;
                     }
                 }
-                SphTrim::Bore { r, e, through } => {
-                    for pole in if through { vec![1.0, -1.0] } else { vec![1.0] } {
-                        let (_, cv, _) = sp.bore_cap_measure(pole, r, e);
-                        vt -= cv;
+                SphTrim::Bore { .. } | SphTrim::Bores { .. } => {
+                    for h in sp.bore_holes() {
+                        let u = sp.hole_dir(&h);
+                        for pole in [1.0, -1.0] {
+                            if h.at_end(pole) {
+                                let (_, cv, _) = sp.bore_cap_measure_toward(pole, h.r, h.e(), u);
+                                vt -= cv;
+                            }
+                        }
                     }
                 }
             }
@@ -1618,57 +1702,57 @@ impl Surface {
                     }
                     b.expand(lo_pt);
                     b.expand(hi_pt);
-                } else if let SphTrim::Bore { r, e, through } = s.trim {
-                    // The extreme along world axis i is the sphere's own R*e_i unless the bore swallows it
-                    // (its projection on the bore's plane falls inside the hole disc, on a holed end); then
-                    // it sits on the meeting curve, found by sampling and golden refinement.
-                    let (n, yh, d) = (normalize(s.e1), normalize(s.e2), normalize(s.axis));
+                } else if s.trim.is_bored() {
+                    // The extreme along world axis i is the sphere's own R*e_i unless a bore swallows it (its
+                    // projection on the bores' plane falls inside a hole disc, on a holed end); then it sits on a
+                    // meeting curve, found by sampling and golden refinement over every bore's curves.
+                    let holes = s.bore_holes();
+                    let (e1, d) = (normalize(s.e1), normalize(s.axis));
+                    let e2 = cross(d, e1);
                     let big = s.radius;
-                    let rim = |phi: f64, sg: f64| -> Vec3 {
-                        let f = (big * big - e * e - r * r - 2.0 * e * r * phi.cos()).max(0.0).sqrt();
-                        add(
-                            s.center,
-                            add(add(scale(n, e + r * phi.cos()), scale(yh, r * phi.sin())), scale(d, sg * f)),
-                        )
-                    };
                     for i in 0..3 {
                         for dir in [1.0, -1.0] {
                             let mut axis = [0.0; 3];
                             axis[i] = dir;
-                            let (x, y, z) = (dot(axis, n) * big, dot(axis, yh) * big, dot(axis, d));
-                            let swallowed = (x - e) * (x - e) + y * y < r * r && (through || z > 0.0);
+                            let z = dot(axis, d);
+                            let (qx, qy) = (dot(axis, e1) * big, dot(axis, e2) * big);
+                            let swallowed = holes.iter().any(|h| (qx - h.x) * (qx - h.x) + (qy - h.y) * (qy - h.y) < h.r * h.r && (h.ends == 0 || (h.ends as f64) * z > 0.0));
                             if !swallowed {
                                 let mut p = s.center;
                                 p[i] += dir * big;
                                 b.expand(p);
                                 continue;
                             }
-                            let ends: &[f64] = if through { &[1.0, -1.0] } else { &[1.0] };
                             let mut best = (f64::NEG_INFINITY, s.center);
-                            for &sg in ends {
-                                let h = |phi: f64| dir * rim(phi, sg)[i];
-                                let m = 720usize;
-                                let (mut kb, mut vb) = (0usize, f64::NEG_INFINITY);
-                                for k in 0..m {
-                                    let v = h((2.0 * std::f64::consts::PI) * k as f64 / m as f64);
-                                    if v > vb {
-                                        vb = v;
-                                        kb = k;
+                            for h in &holes {
+                                for sg in [1.0, -1.0] {
+                                    if !h.at_end(sg) {
+                                        continue;
                                     }
-                                }
-                                let step = (2.0 * std::f64::consts::PI) / m as f64;
-                                let (mut lo, mut hi) = ((2.0 * std::f64::consts::PI) * kb as f64 / m as f64 - step, (2.0 * std::f64::consts::PI) * kb as f64 / m as f64 + step);
-                                for _ in 0..100 {
-                                    let (m1, m2) = (lo + (hi - lo) / 3.0, hi - (hi - lo) / 3.0);
-                                    if h(m1) < h(m2) {
-                                        lo = m1;
-                                    } else {
-                                        hi = m2;
+                                    let f = |phi: f64| dir * s.hole_rim(h, phi, sg)[i];
+                                    let m = 720usize;
+                                    let step = 2.0 * std::f64::consts::PI / m as f64;
+                                    let (mut kb, mut vb) = (0usize, f64::NEG_INFINITY);
+                                    for k in 0..m {
+                                        let v = f(step * k as f64);
+                                        if v > vb {
+                                            vb = v;
+                                            kb = k;
+                                        }
                                     }
-                                }
-                                let phi = 0.5 * (lo + hi);
-                                if h(phi) > best.0 {
-                                    best = (h(phi), rim(phi, sg));
+                                    let (mut lo, mut hi) = (step * kb as f64 - step, step * kb as f64 + step);
+                                    for _ in 0..100 {
+                                        let (m1, m2) = (lo + (hi - lo) / 3.0, hi - (hi - lo) / 3.0);
+                                        if f(m1) < f(m2) {
+                                            lo = m1;
+                                        } else {
+                                            hi = m2;
+                                        }
+                                    }
+                                    let phi = 0.5 * (lo + hi);
+                                    if f(phi) > best.0 {
+                                        best = (f(phi), s.hole_rim(h, phi, sg));
+                                    }
                                 }
                             }
                             b.expand(best.1);

@@ -1025,7 +1025,7 @@ fn face_bounds(face: &crate::topo::Face<Curve, Surface>) -> Result<(Vec<Vec<Seg>
         Surface::Cone(c) => face.forward == right_handed(c.e1, c.e2, c.axis),
         Surface::Sphere(sp) => {
             // A bored sphere is written from its own wires below; the zone and patch loops are not its shape.
-            if !matches!(sp.trim, crate::geom::SphTrim::Bore { .. }) && sphere_zone_loop(sp).is_none() && sphere_patch_loop(sp).is_none() {
+            if !sp.trim.is_bored() && sphere_zone_loop(sp).is_none() && sphere_patch_loop(sp).is_none() {
                 return Err("a spherical face".to_string());
             }
             face.forward == right_handed(sp.e1, sp.e2, sp.axis)
@@ -1072,7 +1072,7 @@ fn face_bounds(face: &crate::topo::Face<Curve, Surface>) -> Result<(Vec<Vec<Seg>
         // A sphere with a bore through it (or into it): one closed hole per end, each bounded by its meeting
         // curve, so the face has no natural outer bound. Every loop is written with the face on its left seen
         // from outside, i.e. clockwise about the hole it rings; the first is the "outer" bound by position only.
-        Surface::Sphere(sp) if matches!(sp.trim, crate::geom::SphTrim::Bore { .. }) => {
+        Surface::Sphere(sp) if sp.trim.is_bored() => {
             for w in &face.boundary {
                 let mut segs = wire_segs(&w.borrow().edges)?;
                 if !closed_chain(&segs) {
@@ -1139,7 +1139,7 @@ fn face_bounds(face: &crate::topo::Face<Curve, Surface>) -> Result<(Vec<Vec<Seg>
         // A polar cap's single circle encloses no (angle, height) area; its direction was fixed above.
         // A whole sphere, a partial patch and a torus band were built counterclockwise already.
         match &face.surface {
-            Surface::Sphere(sp) if matches!(sp.trim, crate::geom::SphTrim::Bore { .. }) => continue,
+            Surface::Sphere(sp) if sp.trim.is_bored() => continue,
             Surface::Sphere(sp) if b.len() == 1 || sphere_zone_loop(sp).is_none() => continue,
             Surface::Torus(_) => continue,
             _ => {}
@@ -1277,7 +1277,7 @@ pub fn write_solid(solid: &TSolid, product: &str) -> Result<String, String> {
                 // A bored sphere is written about the axis d x n instead of the bore axis d: its poles then lie in
                 // the face, never on a meeting curve (at e = r the curve runs through the bore axis's own pole, where
                 // the surface is singular and OpenCascade's parametrisation of the loop collapses).
-                let pl = if matches!(sp.trim, crate::geom::SphTrim::Bore { .. }) {
+                let pl = if sp.trim.is_bored() {
                     let n = normalize(sp.e1);
                     w.axis2(sp.center, cross(normalize(sp.axis), n), n)
                 } else {

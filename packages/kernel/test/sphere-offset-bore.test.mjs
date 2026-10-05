@@ -247,3 +247,111 @@ for (const [code, R, r, e, deep] of [
     assert.ok(o.valid, 'OpenCascade finds the read-back shape invalid');
   });
 }
+
+// ---- several bores on one sphere (SPEC-brep-sphere-multi-bore.md) ---------------------------------------------------
+// [R, [[r, x, y, deep?], ...]]: sphere(2R), each bore parallel to z, disjoint from the others. `deep` is measured from the top,
+// so the floor is at R - deep from the centre. The volume is the ball less each bore's closed-form removed volume.
+const MULTI = [
+  [20, [[3, 8, 0], [2.5, -6, 5]]],
+  [20, [[3, 8, 0], [3, -8, 0], [2, 0, 9]]],
+  [20, [[3, 2, 0], [3, -9, 0]]], // the first swallows the pole along its axis
+  [20, [[2, 7, 3, 14], [3, -5, -4, 24], [1.5, 0, 10]]], // two blind bores and a through bore
+  [20, [[4, 5, 5], [4, -5, -5], [1, -6, 6, 20]]],
+  [20, [[1.5, 8, 0], [1.5, -8, 0], [1.5, 0, 8], [1.5, 0, -8, 12]]], // four bores, the most one sphere takes
+  [20, [[3, 2, 0, 14], [2.5, -9, 0, 16]]], // a blind bore that swallows the pole (it shrinks the box), then a blind hole: placed against the ball
+];
+const multiCode = (R, bores) => `const s = sphere(${2 * R}); ${bores.map(([r, x, y, deep]) => `hole(s, { across: ${2 * r}, at: [${x}, ${y}]${deep === undefined ? '' : `, deep: ${deep}`} })`).join('; ')}`;
+const multiVolume = (R, bores) => {
+  const v0 = (4 / 3) * PI * R ** 3;
+  return v0 - bores.reduce((acc, [r, x, y, deep]) => { const e = Math.hypot(x, y); return acc + (v0 - (deep === undefined ? through(R, r, e) : blind(R, r, e, R - deep))); }, 0);
+};
+
+for (const [R, bores] of MULTI) {
+  test(`${bores.length} bores ${JSON.stringify(bores)}: the closed form, ${1 + bores.length + bores.filter((b) => b[3] !== undefined).length} faces, order does not matter`, () => {
+    const { refusals, s } = build(multiCode(R, bores));
+    assert.deepEqual(refusals, {});
+    near(s.volume, multiVolume(R, bores));
+    assert.equal(s.faces, 1 + bores.length + bores.filter((b) => b[3] !== undefined).length);
+    const back = build(multiCode(R, [...bores].reverse()));
+    assert.deepEqual(back.refusals, {});
+    near(back.s.volume, s.volume);
+  });
+}
+
+test('the OpenCascade referee agrees on several bores (volume 1e-7, the same faces)', () => {
+  for (const [R, bores] of MULTI) {
+    // OpenCascade centres a later blind hole on ITS box of the bored part, which a blind bore that swallows the pole has
+    // shrunk, so it cuts that hole at the wrong height (occt-build.ts, the referee contract; not ours to edit). Cut such a
+    // bore last and it agrees; brep-rs gives the same volume in either order (asserted above) and the closed form.
+    const swallowsFirst = bores[0][3] !== undefined && Math.hypot(bores[0][1], bores[0][2]) < bores[0][0];
+    const code = multiCode(R, swallowsFirst ? [...bores].reverse() : bores);
+    const { doc, id, s } = build(code);
+    const o = occtVolume(doc, id);
+    near(s.volume, o.volume, 1e-7);
+    const faces = 1 + bores.length + bores.filter((b) => b[3] !== undefined).length;
+    assert.equal(o.faces, faces, code);
+    assert.equal(s.faces, faces, code);
+  }
+});
+
+test('several bores: a part moved after its first bore still takes another, and so does one built off the origin', () => {
+  for (const code of [
+    "const s = sphere(40); hole(s, { across: 6, at: [8, 0] }); move(s, [37, -23, 11]); hole(s, { across: 5, at: [-6, 5] })",
+    "const s = sphere(40, { at: [37, -23, 11] }); hole(s, { across: 6, at: [8, 0] }); hole(s, { across: 5, at: [-6, 5] })",
+  ]) {
+    const { refusals, s } = build(code);
+    assert.deepEqual(refusals, {}, code);
+    near(s.volume, multiVolume(20, [[3, 8, 0], [2.5, -6, 5]]));
+  }
+});
+
+test('several bores: a second bore that overlaps the first, or runs across it, refuses in a sentence and keeps the first', () => {
+  const one = build('const s = sphere(40); hole(s, { across: 6, at: [8, 0] })').s.volume;
+  for (const [code, why] of [
+    ['const s = sphere(40); hole(s, { across: 6, at: [8, 0] }); hole(s, { across: 6, at: [10, 0] })', 'overlapping footprints'],
+    ['const s = sphere(40); hole(s, { across: 6, at: [8, 0] }); hole(s, { across: 4, at: [8, 0], deep: 12 })', 'a blind bore inside a through bore'],
+    ["const s = sphere(40); hole(s, { across: 6, at: [8, 0] }); hole(s, { across: 4, along: 'x', at: [0, 9] })", 'a bore across the first'],
+    ['const s = sphere(40); hole(s, { across: 6, at: [8, 0] }); hole(s, { across: 2, at: [-7, 0] }); hole(s, { across: 2, at: [0, 7] }); hole(s, { across: 2, at: [0, -7] }); hole(s, { across: 2, at: [-12, 9] })', 'a fifth bore'],
+  ]) {
+    const { refusals, doc, json } = build(code);
+    assert.ok(Object.keys(refusals).length > 0, `${why} must refuse`);
+    assert.match(Object.values(refusals).join(' '), /hole|bore|cannot/i, why);
+    // the first hole built and stays as it was: a refused feature is shown without itself
+    const first = JSON.parse(brep.measure_doc(json)).shapes[doc.features[1].id];
+    near(first.volume, one);
+  }
+});
+
+test('STEP: several bores write exactly and OpenCascade reads them back (volume, valid, faces)', () => {
+  for (const [R, bores] of MULTI.slice(0, 5)) {
+    const code = multiCode(R, bores);
+    const o = stepReadBack(code);
+    const want = multiVolume(R, bores);
+    assert.ok(Math.abs(o.vol - want) <= 1e-6 * want, `${code}: STEP volume ${o.vol} vs ${want} (${((o.vol - want) / want).toExponential(2)})`);
+    assert.equal(o.faces, 1 + bores.length + bores.filter((b) => b[3] !== undefined).length, code);
+    assert.ok(o.valid, `${code}: OpenCascade finds the read-back shape invalid`);
+  }
+});
+
+test('several bores: the mesh is closed and outward, and its volume is the closed form (chord 0.05 and 0.5)', { timeout: 120000 }, () => {
+  for (const [R, bores] of MULTI) {
+    const { json, id } = build(multiCode(R, bores));
+    const exact = multiVolume(R, bores);
+    for (const defl of [0.05, 0.5]) {
+      const m = JSON.parse(brep.mesh_feature(json, id, defl));
+      assert.ok(!m.error, m.error);
+      let vol = 0;
+      const edges = new Map();
+      for (let t = 0; t < m.indices.length / 3; t++) {
+        const idx = [0, 1, 2].map((k) => m.indices[3 * t + k]);
+        const p = idx.map((i) => [m.positions[3 * i], m.positions[3 * i + 1], m.positions[3 * i + 2]]);
+        vol += (p[0][0] * (p[1][1] * p[2][2] - p[1][2] * p[2][1]) - p[0][1] * (p[1][0] * p[2][2] - p[1][2] * p[2][0]) + p[0][2] * (p[1][0] * p[2][1] - p[1][1] * p[2][0])) / 6;
+        for (let k = 0; k < 3; k++) { const a = idx[k], b = idx[(k + 1) % 3]; edges.set(`${a}>${b}`, (edges.get(`${a}>${b}`) ?? 0) + 1); }
+      }
+      let open = 0;
+      for (const [k, n] of edges) { const [a, b] = k.split('>'); if (n !== 1 || edges.get(`${b}>${a}`) !== 1) open++; }
+      assert.equal(open, 0, `${JSON.stringify(bores)} defl ${defl}: ${open} open or non-manifold edges`);
+      assert.ok(vol > 0 && Math.abs(vol - exact) / exact < (defl >= 0.5 ? 0.1 : 0.02), `${JSON.stringify(bores)} defl ${defl}: mesh volume ${vol} vs ${exact}`);
+    }
+  }
+});

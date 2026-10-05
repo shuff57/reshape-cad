@@ -591,11 +591,14 @@ fn sphere_face_contains(sp: &crate::geom::SphereSurf, q: Vec3) -> bool {
             }
         }
         // Inside the bore cylinder (either end) the sphere face does not exist.
-        crate::geom::SphTrim::Bore { r, e, through } => {
-            let (x, y) = (dot(w, normalize(sp.e1)), dot(w, normalize(sp.e2)));
-            // A blind bore holes only the +axis end; the far side of the sphere is whole there.
-            if (x - e) * (x - e) + y * y < (r - tol) * (r - tol) && (through || dot(w, normalize(sp.axis)) > 0.0) {
-                return false;
+        crate::geom::SphTrim::Bore { .. } | crate::geom::SphTrim::Bores { .. } => {
+            let e1 = normalize(sp.e1);
+            let (x, y, z) = (dot(w, e1), dot(w, cross(normalize(sp.axis), e1)), dot(w, normalize(sp.axis)));
+            // A bore holes the ends it is entered from (`ends`); the far side of the sphere is whole there.
+            for h in sp.bore_holes() {
+                if (x - h.x) * (x - h.x) + (y - h.y) * (y - h.y) < (h.r - tol) * (h.r - tol) && (h.ends == 0 || (h.ends as f64) * z > 0.0) {
+                    return false;
+                }
             }
         }
     }
@@ -4693,39 +4696,225 @@ fn sphere_bore_integral(big_r: f64, r: f64, e: f64) -> f64 {
     })
 }
 
-/// A bore through a sphere whose axis does NOT pass through the centre: `sphere` minus a plain cylinder
-/// parallel to nothing in particular (a sphere is isotropic) at perpendicular distance `e` from the
-/// centre, `e + r <= 0.95 R`, running clear through (SPEC-brep-sphere-offset-bore.md, slice S1).
-/// The bore wall meets the sphere in two closed curves `Curve::SphCyl` (one per end), so the sphere keeps
-/// one face with two holes (`SphTrim::Bore`) and the wall is a cylinder trimmed to the space between them
-/// (`Cross::SphTool`). Refuses (`None`) a tool end or floor inside the sphere's reach, `r/R` too wide, and anything that is
-/// not one plain sphere less one plain cylinder. The result is held to a closed form that shares no algebra
-/// with the face measures: it must lose exactly `2 I` of volume, or this returns `None`.
+/// One bore of a sphere, as the builder holds it: its offset `(x, y)` from the centre in the plane of the sphere's `e1` and
+/// `axis x e1`, its radius, the ends it holes (`0` both, `1` the `+axis` end, `-1` the `-axis` end) and, for a blind bore,
+/// the floor height `f0` measured from the centre along the direction it is entered from.
+#[derive(Clone, Copy, Debug)]
+struct BoreSpec {
+    r: f64,
+    x: f64,
+    y: f64,
+    ends: i8,
+    f0: Option<f64>,
+}
+
+/// The volume a bore removes from a ball, by the closed forms of SPEC-brep-sphere-offset-bore.md (they share no
+/// algebra with the face measures).
+fn bore_spec_removed_volume(big_r: f64, s: &BoreSpec) -> f64 {
+    let e = s.x.hypot(s.y);
+    match s.f0 {
+        None => sphere_bore_removed_volume(big_r, s.r, e),
+        Some(f0) => sphere_blind_bore_removed_volume(big_r, s.r, e, f0),
+    }
+}
+
+/// A sphere with one or more disjoint bores parallel to `axis0`, built from scratch from its specs: the sphere face with one
+/// hole per holed end, a wall per bore and a floor per blind bore. `e1` is the frame's reference direction; the sphere's
+/// own frame is (`e1`, `axis0 x e1`, `axis0`). Every face is new, so extending an existing bored sphere rebuilds it whole.
+fn assemble_bored_sphere(c: Vec3, big_r: f64, axis0: Vec3, e1: Vec3, specs: &[BoreSpec]) -> Option<TSolid> {
+    if specs.is_empty() || specs.len() > crate::geom::MAX_BORES {
+        return None;
+    }
+    let e2 = cross(axis0, e1);
+    let tau = TWO_PI;
+    let z = topo::Pcurve { start: [0.0, 0.0], end: [0.0, 0.0], mid: [0.0, 0.0] };
+    let us = |edge: &topo::EdgeRef<Curve3>, forward: bool| topo::EdgeUse { edge: edge.clone(), forward, pcurve: z };
+    let wire = |uses: Vec<topo::EdgeUse<Curve3>>| Rc::new(RefCell::new(Wire { edges: uses }));
+    let face = |boundary: Vec<topo::WireRef<Curve3>>, surface: Surface| -> TFace {
+        Rc::new(RefCell::new(Face { boundary, forward: true, surface, uv_domain: [[0.0, tau], [0.0, 1.0]] }))
+    };
+    let mut sphere_wires: Vec<topo::WireRef<Curve3>> = Vec::new();
+    let mut others: Vec<TFace> = Vec::new();
+    for s in specs {
+        let e = s.x.hypot(s.y);
+        let n = normalize(add(scale(e1, s.x), scale(e2, s.y)));
+        let d = if s.ends == -1 { scale(axis0, -1.0) } else { axis0 };
+        let yh = cross(d, n); // (n, yh, d) is right-handed
+        let curve = |sign: f64| Curve::SphCyl { center: c, d, n, a: yh, big_r, r: s.r, e, sign };
+        let tip_p = curve(1.0).point_at(0.0);
+        let v_p = topo::vertex(tip_p);
+        let loop_p = topo::edge(v_p.clone(), v_p.clone(), true, curve(1.0));
+        sphere_wires.push(wire(vec![us(&loop_p, false)]));
+        let wall_uses: Vec<topo::EdgeUse<Curve3>>;
+        if s.f0.is_none() {
+            let tip_m = curve(-1.0).point_at(0.0);
+            let v_m = topo::vertex(tip_m);
+            let loop_m = topo::edge(v_m.clone(), v_m.clone(), true, curve(-1.0));
+            let seam_t = topo::edge(v_m.clone(), v_p.clone(), true, Curve::Segment { a: tip_m, b: tip_p });
+            sphere_wires.push(wire(vec![us(&loop_m, false)]));
+            wall_uses = vec![us(&loop_p, true), us(&seam_t, false), us(&loop_m, false), us(&seam_t, true)];
+        } else {
+            // The floor: a disc on the bore axis at height f0, its normal toward the entry (out of the material).
+            let f0 = s.f0.unwrap_or(0.0);
+            let fc = add(c, add(scale(n, e), scale(d, f0)));
+            let v_f = topo::vertex(add(fc, scale(n, s.r)));
+            let floor_arc = topo::edge(v_f.clone(), v_f.clone(), true, Curve::Arc { center: fc, radius: s.r, normal: d, x_axis: n, sweep: tau });
+            let seam_f = topo::edge(v_f.clone(), v_p.clone(), true, Curve::Segment { a: v_f.borrow().point, b: tip_p });
+            wall_uses = vec![us(&loop_p, true), us(&seam_f, false), us(&floor_arc, true), us(&seam_f, true)];
+            others.push(face(vec![wire(vec![us(&floor_arc, true)])], Surface::Plane(Plane::new(fc, d))));
+        }
+        others.push(face(
+            vec![wire(wall_uses)],
+            Surface::Cylinder(Cylinder {
+                origin: add(c, scale(n, e)),
+                axis: d,
+                e1: n,
+                e2: scale(yh, -1.0), // the face looks into the void: a left-handed frame
+                radius: s.r,
+                vmin: s.f0.unwrap_or(-big_r),
+                vmax: big_r,
+                arc: None,
+                cross: Some(crate::geom::Cross::SphTool { big_r, e, lo: s.f0, hi: None, lo_sign: -1.0, hi_sign: 1.0 }),
+            }),
+        ));
+    }
+    let trim = if specs.len() == 1 {
+        // One bore: the original variant, which is always entered from (or through) the +axis end.
+        if specs[0].ends == -1 {
+            return None;
+        }
+        crate::geom::SphTrim::Bore { r: specs[0].r, e: specs[0].x.hypot(specs[0].y), through: specs[0].f0.is_none() }
+    } else {
+        let mut h = [crate::geom::BoreHole::NONE; crate::geom::MAX_BORES];
+        for (i, s) in specs.iter().enumerate() {
+            h[i] = crate::geom::BoreHole { r: s.r, x: s.x, y: s.y, ends: s.ends };
+        }
+        crate::geom::SphTrim::Bores { n: specs.len() as u8, h }
+    };
+    // With one bore the frame's e1 points along its offset (y = 0), the form the single-bore trim and mesher expect.
+    let sphere_face = face(
+        sphere_wires,
+        Surface::Sphere(crate::geom::SphereSurf {
+            center: c,
+            radius: big_r,
+            axis: axis0,
+            e1,
+            e2,
+            u_range: [0.0, TWO_PI],
+            v_range: [0.0, std::f64::consts::PI],
+            trim,
+        }),
+    );
+    let mut faces = vec![sphere_face];
+    faces.extend(others);
+    Some(Solid { shells: vec![Rc::new(RefCell::new(Shell { faces }))] })
+}
+
+/// The sphere and the bores of a solid that is a bored sphere built by [`assemble_bored_sphere`], read back from its wall
+/// faces and checked against the sphere's own trim; `None` for anything else (so a stray solid is never read as one).
+fn bored_sphere_parts(a: &TSolid) -> Option<(crate::geom::SphereSurf, Vec<BoreSpec>)> {
+    let faces = a.faces();
+    let mut sphere: Option<crate::geom::SphereSurf> = None;
+    let mut walls: Vec<Cylinder> = Vec::new();
+    let mut floors = 0usize;
+    for f in &faces {
+        match &f.borrow().surface {
+            Surface::Sphere(sp) if sp.trim.is_bored() => {
+                if sphere.is_some() {
+                    return None;
+                }
+                sphere = Some(sp.clone());
+            }
+            Surface::Cylinder(cy) if matches!(cy.cross, Some(crate::geom::Cross::SphTool { .. })) => walls.push(cy.clone()),
+            Surface::Plane(_) => floors += 1,
+            _ => return None,
+        }
+    }
+    let sp = sphere?;
+    let holes = sp.bore_holes();
+    if walls.len() != holes.len() || floors != walls.iter().filter(|w| matches!(w.cross, Some(crate::geom::Cross::SphTool { lo: Some(_), .. }))).count() {
+        return None;
+    }
+    let (axis0, e1) = (normalize(sp.axis), normalize(sp.e1));
+    let e2 = cross(axis0, e1);
+    let mut specs = Vec::new();
+    for w in &walls {
+        let Some(crate::geom::Cross::SphTool { lo, .. }) = w.cross else { return None };
+        let m = sub(w.origin, sp.center);
+        let along = dot(normalize(w.axis), axis0);
+        if along.abs() < 1.0 - 1e-9 {
+            return None;
+        }
+        let m = sub(m, scale(axis0, dot(m, axis0)));
+        let ends = match lo {
+            None => 0,
+            Some(_) if along > 0.0 => 1,
+            Some(_) => -1,
+        };
+        specs.push(BoreSpec { r: w.radius, x: dot(m, e1), y: dot(m, e2), ends, f0: lo });
+    }
+    // The walls and the sphere's own trim must describe the same bores.
+    let tol = 1e-7 * sp.radius;
+    for h in &holes {
+        if !specs.iter().any(|s| (s.r - h.r).abs() < tol && (s.x - h.x).abs() < tol && (s.y - h.y).abs() < tol && s.ends == h.ends) {
+            return None;
+        }
+    }
+    Some((sp, specs))
+}
+
+/// Whether `s` is a bored sphere in the sense of [`bored_sphere_parts`].
+pub fn is_bored_sphere(s: &TSolid) -> bool {
+    bored_sphere_parts(s).is_some()
+}
+
+/// A bore into a sphere that does NOT pass through its centre: `sphere` minus a plain cylinder parallel to nothing in
+/// particular (a sphere is isotropic) at perpendicular distance `e` from the centre, `e + r <= 0.95 R`. It runs clear through
+/// or stops at a flat floor (SPEC-brep-sphere-offset-bore.md, slices S1 to S3), and the bore may swallow the sphere's pole
+/// along its own axis (`e <= r`). Run on a sphere that is already bored by an earlier bore parallel to this one, it adds the
+/// bore when the two are disjoint (SPEC-brep-sphere-multi-bore.md): up to `MAX_BORES` in all, each footprint a clear gap
+/// from the others', everything rebuilt from the specs.
+///
+/// The bore wall meets the sphere in closed curves `Curve::SphCyl` (one per holed end), so the sphere keeps one face with a
+/// hole per curve and each wall is a cylinder trimmed to the space between them (`Cross::SphTool`). Refuses (`None`) a tool
+/// end or floor inside the sphere's reach, `r/R` too wide, a bore that overlaps another, a bore not parallel to the others,
+/// and anything that is not one sphere (plain or bored by this function) less one plain cylinder. The result is held to a
+/// closed form that shares no algebra with the face measures: its volume must be the ball less the bores' removed volumes.
 pub fn sphere_offset_bore(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
     if op != "subtract" {
         return None;
     }
-    let fa = a.faces();
-    if fa.len() != 1 {
-        return None;
-    }
-    let sp = match &fa[0].borrow().surface {
-        Surface::Sphere(sp)
-            if sp.trim.is_none()
-                && (sp.u_range[1] - sp.u_range[0] - TWO_PI).abs() < 1e-9
-                && (sp.v_range[1] - sp.v_range[0] - std::f64::consts::PI).abs() < 1e-9 =>
-        {
-            sp.clone()
+    // The target: a plain whole sphere, or a bored one this function built.
+    let (c, big_r, axis0, e1, existing, plain): (Vec3, f64, Vec3, Vec3, Vec<BoreSpec>, bool) = {
+        let fa = a.faces();
+        if fa.len() == 1 {
+            match &fa[0].borrow().surface {
+                Surface::Sphere(sp)
+                    if sp.trim.is_none()
+                        && (sp.u_range[1] - sp.u_range[0] - TWO_PI).abs() < 1e-9
+                        && (sp.v_range[1] - sp.v_range[0] - std::f64::consts::PI).abs() < 1e-9 =>
+                {
+                    (sp.center, sp.radius, Vec3::default(), Vec3::default(), Vec::new(), true)
+                }
+                _ => return None,
+            }
+        } else {
+            let (sp, specs) = bored_sphere_parts(a)?;
+            // the target must be exactly what its trim says, or it is not ours to extend
+            let v0 = 4.0 / 3.0 * std::f64::consts::PI * sp.radius.powi(3);
+            let want = v0 - specs.iter().map(|s| bore_spec_removed_volume(sp.radius, s)).sum::<f64>();
+            if !((build::solid_volume(a) - want).abs() <= 1e-9 * v0) {
+                return None;
+            }
+            (sp.center, sp.radius, normalize(sp.axis), normalize(sp.e1), specs, false)
         }
-        _ => return None,
     };
     let (wall, c_lo, c_hi, _, _) = cylinder_parts(b)?;
-    let (big_r, r) = (sp.radius, wall.radius);
+    let r = wall.radius;
     if !(r > 1e-6 * big_r) {
         return None;
     }
     let d = normalize(wall.axis);
-    let c = sp.center;
     let to_axis = sub(wall.origin, c);
     let m = sub(to_axis, scale(d, dot(to_axis, d)));
     let e = crate::math::len(m);
@@ -4735,105 +4924,65 @@ pub fn sphere_offset_bore(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
     if e <= 1e-7 * big_r || e + r > CROSS_BORE_MAX_RATIO * big_r {
         return None;
     }
-    let (t0, t1) = (dot(sub(c_lo, c), d), dot(sub(c_hi, c), d));
+    // A plain sphere takes its frame from this bore; a bored one keeps its own, and the new bore must run parallel.
+    let (axis0, e1) = if plain {
+        (d, scale(m, 1.0 / e))
+    } else {
+        if dot(d, axis0).abs() < 1.0 - 1e-9 {
+            return None;
+        }
+        (axis0, e1)
+    };
+    let e2 = cross(axis0, e1);
+    let (t0, t1) = (dot(sub(c_lo, c), axis0), dot(sub(c_hi, c), axis0));
     let (tl, th) = (t0.min(t1), t0.max(t1));
     let fmax = (big_r * big_r - (e - r) * (e - r)).sqrt();
     // The lowest the meeting curve gets is s0 (at the near tip); a floor strictly between -s0 and s0 lies inside
     // the sphere over its whole disc, so it never meets the sphere's own surface.
     let s0 = (big_r * big_r - (e + r) * (e + r)).sqrt();
     let margin = 1e-6 * big_r;
-    // Entry on the +d side; `floor` is the flat floor's height from the centre (None: clear through).
     // How far a tool end must reach to clear the sphere inside the bore disc: the highest sphere point over the
     // disc. Off the pole (e > r) that is the near tip at fmax; once the disc holds the pole (e <= r) it is R
     // itself, and a tool that starts AT the drilled face (a blind `deep:` from the top) ends exactly there, touching
     // the sphere at one point inside the disc, which cuts exactly the same solid, so it is allowed.
     let reach = if e <= r + 1e-9 * big_r { big_r - margin } else { fmax + margin };
-    let (d, floor): (Vec3, Option<f64>) = if tl < -reach && th > reach {
-        (d, None)
+    let (ends, f0): (i8, Option<f64>) = if tl < -reach && th > reach {
+        (0, None)
     } else if th > reach && tl > -s0 + margin && tl < s0 - margin {
-        (d, Some(tl))
+        (1, Some(tl))
     } else if tl < -reach && th > -s0 + margin && th < s0 - margin {
-        (scale(d, -1.0), Some(-th))
+        (-1, Some(-th))
     } else {
         return None; // a tool end between s0 and fmax would meet the sphere's own surface: not built
     };
-    let through = floor.is_none();
-    let n = scale(m, 1.0 / e);
-    let yh = cross(d, n); // (n, yh, d) is right-handed: the sphere's own frame
-    let tau = TWO_PI;
-
-    let curve = |sign: f64| Curve::SphCyl { center: c, d, n, a: yh, big_r, r, e, sign };
-    let tip_p = curve(1.0).point_at(0.0);
-    let v_p = topo::vertex(tip_p);
-    let loop_p = topo::edge(v_p.clone(), v_p.clone(), true, curve(1.0));
-
-    let z = topo::Pcurve { start: [0.0, 0.0], end: [0.0, 0.0], mid: [0.0, 0.0] };
-    let us = |edge: &topo::EdgeRef<Curve3>, forward: bool| topo::EdgeUse { edge: edge.clone(), forward, pcurve: z };
-    let wire = |uses: Vec<topo::EdgeUse<Curve3>>| Rc::new(RefCell::new(Wire { edges: uses }));
-    let face = |boundary: Vec<topo::WireRef<Curve3>>, surface: Surface| -> TFace {
-        Rc::new(RefCell::new(Face { boundary, forward: true, surface, uv_domain: [[0.0, tau], [0.0, 1.0]] }))
-    };
-
-    let mut sphere_wires = vec![wire(vec![us(&loop_p, false)])];
-    let wall_uses: Vec<topo::EdgeUse<Curve3>>;
-    let mut floor_face: Option<TFace> = None;
-    if through {
-        let tip_m = curve(-1.0).point_at(0.0);
-        let v_m = topo::vertex(tip_m);
-        let loop_m = topo::edge(v_m.clone(), v_m.clone(), true, curve(-1.0));
-        let seam_t = topo::edge(v_m.clone(), v_p.clone(), true, Curve::Segment { a: tip_m, b: tip_p });
-        sphere_wires.push(wire(vec![us(&loop_m, false)]));
-        wall_uses = vec![us(&loop_p, true), us(&seam_t, false), us(&loop_m, false), us(&seam_t, true)];
-    } else {
-        // The floor: a disc on the bore axis at height f0, its normal toward the entry (out of the material).
-        let f0 = floor.unwrap_or(0.0);
-        let fc = add(c, add(scale(n, e), scale(d, f0)));
-        let v_f = topo::vertex(add(fc, scale(n, r)));
-        let floor_arc = topo::edge(v_f.clone(), v_f.clone(), true, Curve::Arc { center: fc, radius: r, normal: d, x_axis: n, sweep: tau });
-        let seam_f = topo::edge(v_f.clone(), v_p.clone(), true, Curve::Segment { a: v_f.borrow().point, b: tip_p });
-        wall_uses = vec![us(&loop_p, true), us(&seam_f, false), us(&floor_arc, true), us(&seam_f, true)];
-        floor_face = Some(face(vec![wire(vec![us(&floor_arc, true)])], Surface::Plane(Plane::new(fc, d))));
+    let new = BoreSpec { r, x: dot(m, e1), y: dot(m, e2), ends, f0 };
+    // Disjoint from every bore already there: the footprints (radius r_i about (x_i, y_i)) clear each other, so the
+    // cylinders never meet and the removed volumes just add.
+    for s in &existing {
+        if (new.x - s.x).hypot(new.y - s.y) < new.r + s.r + 1e-6 * big_r {
+            return None;
+        }
     }
-
-    let sphere_face = face(
-        sphere_wires,
-        Surface::Sphere(crate::geom::SphereSurf {
-            center: c,
-            radius: big_r,
-            axis: d,
-            e1: n,
-            e2: yh,
-            u_range: [0.0, TWO_PI],
-            v_range: [0.0, std::f64::consts::PI],
-            trim: crate::geom::SphTrim::Bore { r, e, through },
-        }),
-    );
-    let bore_wall = face(
-        vec![wire(wall_uses)],
-        Surface::Cylinder(Cylinder {
-            origin: add(c, scale(n, e)),
-            axis: d,
-            e1: n,
-            e2: scale(yh, -1.0), // the face looks into the void: a left-handed frame
-            radius: r,
-            vmin: floor.unwrap_or(-big_r),
-            vmax: big_r,
-            arc: None,
-            cross: Some(crate::geom::Cross::SphTool { big_r, e, lo: floor, hi: None, lo_sign: -1.0, hi_sign: 1.0 }),
-        }),
-    );
-    let mut faces = vec![sphere_face, bore_wall];
-    faces.extend(floor_face);
-    let result = Solid { shells: vec![Rc::new(RefCell::new(Shell { faces }))] };
+    let mut specs = existing.clone();
+    specs.push(new);
+    // One bore entered from the -axis end is written with the frame turned over so that the single-bore trim always
+    // enters from +axis.
+    let (axis0, e1, specs) = if specs.len() == 1 && specs[0].ends == -1 {
+        let flipped = [BoreSpec { ends: 1, f0: specs[0].f0, ..specs[0] }];
+        // x, y are in the old frame (e1, axis0 x e1); the new axis is -axis0 with the same e1, so y changes sign
+        let s = BoreSpec { y: -flipped[0].y, ..flipped[0] };
+        (scale(axis0, -1.0), e1, vec![s])
+    } else {
+        (axis0, e1, specs)
+    };
+    let result = assemble_bored_sphere(c, big_r, axis0, e1, &specs)?;
 
     // The safety net: the faces are measured by surface integrals; the volume removed has a closed form that
     // shares none of their algebra. They must agree, or this is a wrong solid and the bore refuses.
-    let want = match floor {
-        None => sphere_bore_removed_volume(big_r, r, e),
-        Some(f0) => sphere_blind_bore_removed_volume(big_r, r, e, f0),
-    };
-    let got = build::solid_volume(a) - build::solid_volume(&result);
-    if !got.is_finite() || (got - want).abs() > 1e-9 * build::solid_volume(a).max(1.0) {
+    let v0 = 4.0 / 3.0 * std::f64::consts::PI * big_r.powi(3);
+    let want = v0 - specs.iter().map(|s| bore_spec_removed_volume(big_r, s)).sum::<f64>();
+    let got = build::solid_volume(&result);
+    if !got.is_finite() || (got - want).abs() > 1e-9 * v0.max(1.0) {
         return None;
     }
     Some(result)
@@ -5231,7 +5380,7 @@ pub fn has_cross_trim(s: &TSolid) -> bool {
     s.faces().iter().any(|f| match &f.borrow().surface {
         Surface::Cylinder(c) => c.cross.is_some(),
         // A sphere with a bore through it: its faces are trimmed by a space curve too.
-        Surface::Sphere(sp) => matches!(sp.trim, crate::geom::SphTrim::Bore { .. }),
+        Surface::Sphere(sp) => sp.trim.is_bored(),
         _ => false,
     })
 }
@@ -5548,6 +5697,10 @@ fn mesh_is_closed_coarse(s: &TSolid) -> bool {
 }
 
 fn boolean_legacy(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
+ if is_bored_sphere(a) {
+ // A sphere bored by `sphere_offset_bore` takes one more bore or nothing; every other boolean refuses it.
+ return sphere_offset_bore(op, a, b).filter(volume_is_translation_invariant);
+ }
  if has_cross_trim(a) || has_cross_trim(b) {
  return None;
  }
@@ -10224,6 +10377,203 @@ mod sphere_offset_bore_tests {
                                 }
                                 _ => {}
                             }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // ---- several bores on one sphere (SPEC-brep-sphere-multi-bore.md) -------------------------------------------------
+
+    /// A tool parallel to z at (x, y), spanning z in [lo, hi].
+    fn tool(x: f64, y: f64, r: f64, lo: f64, hi: f64) -> TSolid {
+        build::cylinder_solid([x, y, 0.5 * (lo + hi)], r, hi - lo, [0.0, 0.0, 1.0])
+    }
+
+    /// (x, y, r, floor): `None` runs through; `Some(f)` is blind from the top with its floor at height f;
+    /// `Some(f)` with `from_bottom` is blind from the bottom with its floor at height f (the tool spans [-reach, f]).
+    #[derive(Clone, Copy)]
+    struct Drill {
+        x: f64,
+        y: f64,
+        r: f64,
+        floor: Option<f64>,
+        from_bottom: bool,
+    }
+
+    fn drill_tool(big_r: f64, d: &Drill) -> TSolid {
+        let reach = 3.0 * big_r;
+        match (d.floor, d.from_bottom) {
+            (None, _) => tool(d.x, d.y, d.r, -reach, reach),
+            (Some(f), false) => tool(d.x, d.y, d.r, f, reach),
+            (Some(f), true) => tool(d.x, d.y, d.r, -reach, f),
+        }
+    }
+
+    /// The exact volume removed by one drill from a ball: the closed forms, in the drill's own entry direction.
+    fn drill_removed(big_r: f64, d: &Drill) -> f64 {
+        let e = d.x.hypot(d.y);
+        match d.floor {
+            None => sphere_bore_removed_volume(big_r, d.r, e),
+            Some(f) => sphere_blind_bore_removed_volume(big_r, d.r, e, if d.from_bottom { -f } else { f }),
+        }
+    }
+
+    fn drill_all(big_r: f64, drills: &[Drill]) -> Option<TSolid> {
+        let mut s = build::sphere_solid([0.0; 3], big_r, [0.0, 0.0, 1.0]);
+        for d in drills {
+            s = boolean("subtract", &s, &drill_tool(big_r, d))?;
+        }
+        Some(s)
+    }
+
+    fn drills_volume(big_r: f64, drills: &[Drill]) -> f64 {
+        4.0 / 3.0 * PI * big_r.powi(3) - drills.iter().map(|d| drill_removed(big_r, d)).sum::<f64>()
+    }
+
+    fn dr(x: f64, y: f64, r: f64, floor: Option<f64>, from_bottom: bool) -> Drill {
+        Drill { x, y, r, floor, from_bottom }
+    }
+
+    fn multi_cases() -> Vec<Vec<Drill>> {
+        vec![
+            vec![dr(8.0, 0.0, 3.0, None, false), dr(-6.0, 5.0, 2.5, None, false)],
+            vec![dr(8.0, 0.0, 3.0, None, false), dr(-8.0, 0.0, 3.0, None, false), dr(0.0, 9.0, 2.0, None, false)],
+            // the first swallows the pole along its axis (e < r)
+            vec![dr(2.0, 0.0, 3.0, None, false), dr(-9.0, 0.0, 3.0, None, false)],
+            // blind from the top, blind from the top, and a through bore
+            vec![dr(7.0, 3.0, 2.0, Some(6.0), false), dr(-5.0, -4.0, 3.0, Some(-4.0), false), dr(0.0, 10.0, 1.5, None, false)],
+            // blind from the bottom on the same side of the plane as a top bore, and all four bores at once
+            vec![dr(8.0, 0.0, 3.0, Some(-5.0), true), dr(-8.0, 0.0, 3.0, Some(5.0), false), dr(0.0, 9.0, 2.0, None, false), dr(0.0, -9.0, 2.0, Some(2.0), false)],
+            // bores of unequal size at all sorts of angles
+            vec![dr(5.0, 5.0, 4.0, None, false), dr(-5.0, -5.0, 4.0, None, false), dr(-6.0, 6.0, 1.0, Some(0.0), false)],
+        ]
+    }
+
+    #[test]
+    fn several_disjoint_parallel_bores_build_with_the_closed_form_volume() {
+        let big_r = 20.0;
+        for drills in multi_cases() {
+            let res = drill_all(big_r, &drills).unwrap_or_else(|| panic!("{} bores refused", drills.len()));
+            let blind = drills.iter().filter(|d| d.floor.is_some()).count();
+            assert_eq!(res.faces().len(), 1 + drills.len() + blind, "sphere, a wall per bore, a floor per blind bore");
+            let want = drills_volume(big_r, &drills);
+            let v = build::solid_volume(&res);
+            assert!((v - want).abs() <= 1e-9 * want, "{} bores: {v} vs {want}", drills.len());
+            assert!(volume_is_translation_invariant(&res));
+            assert!(has_cross_trim(&res) && is_bored_sphere(&res));
+        }
+    }
+
+    #[test]
+    fn the_order_the_bores_are_cut_in_does_not_change_the_solid() {
+        let big_r = 20.0;
+        for drills in multi_cases() {
+            let fwd = drill_all(big_r, &drills).expect("forward");
+            let mut rev = drills.clone();
+            rev.reverse();
+            let back = drill_all(big_r, &rev).expect("reversed");
+            let (a, b) = (build::solid_volume(&fwd), build::solid_volume(&back));
+            assert!((a - b).abs() <= 1e-9 * a, "{a} vs {b}");
+            assert_eq!(fwd.faces().len(), back.faces().len());
+        }
+    }
+
+    #[test]
+    fn bores_that_overlap_cross_or_exceed_the_limit_refuse() {
+        let big_r = 20.0;
+        let first = dr(8.0, 0.0, 3.0, None, false);
+        let base = drill_all(big_r, &[first]).expect("one bore");
+        // footprints that overlap, touch, or sit a hair apart
+        for (x, y, r) in [(8.0, 0.0, 3.0), (10.0, 0.0, 3.0), (11.0, 0.0, 3.0), (11.0000001, 0.0, 3.0)] {
+            assert!(boolean("subtract", &base, &tool(x, y, r, -60.0, 60.0)).is_none(), "overlap at ({x}, {y}) r {r} must refuse");
+        }
+        // a bore along x, not parallel
+        let across = build::cylinder_solid([0.0, -9.0, 0.0], 2.0, 60.0, [1.0, 0.0, 0.0]);
+        assert!(boolean("subtract", &base, &across).is_none(), "a bore across the others must refuse");
+        // union and intersect and a box
+        let cube = build::box_solid([60.0, 60.0, 60.0], [0.0; 3], None);
+        for op in ["union", "intersect"] {
+            assert!(boolean(op, &base, &cube).is_none(), "{op} on a bored sphere must refuse");
+        }
+        // a fifth bore
+        let four = vec![dr(8.0, 0.0, 1.5, None, false), dr(-8.0, 0.0, 1.5, None, false), dr(0.0, 8.0, 1.5, None, false), dr(0.0, -8.0, 1.5, None, false)];
+        let full = drill_all(big_r, &four).expect("four bores");
+        assert!(boolean("subtract", &full, &tool(12.0, 4.0, 1.0, -60.0, 60.0)).is_none(), "a fifth bore must refuse");
+    }
+
+    /// The box of a multi-bored sphere against a brute-force oracle: along each world axis the sphere's own R*e_i
+    /// unless some bore swallows it, then the highest point over every bore's meeting curve.
+    #[test]
+    fn a_multi_bored_spheres_box_is_exact() {
+        let big_r = 20.0_f64;
+        for drills in multi_cases() {
+            let res = drill_all(big_r, &drills).expect("builds");
+            let bx = build::solid_aabb(&res);
+            for i in 0..3 {
+                for dir in [1.0, -1.0] {
+                    let q = {
+                        let mut v = [0.0; 3];
+                        v[i] = dir * big_r;
+                        v
+                    };
+                    let swallowed = drills.iter().any(|d| {
+                        (q[0] - d.x).powi(2) + (q[1] - d.y).powi(2) < d.r * d.r
+                            && (d.floor.is_none() || (if d.from_bottom { q[2] < 0.0 } else { q[2] > 0.0 }))
+                    });
+                    let mut best = if swallowed { f64::NEG_INFINITY } else { big_r };
+                    if swallowed {
+                        for d in &drills {
+                            let e = d.x.hypot(d.y);
+                            let (n, a) = ([d.x / e, d.y / e, 0.0], [-d.y / e, d.x / e, 0.0]);
+                            for sg in [1.0, -1.0] {
+                                if d.floor.is_some() && (sg > 0.0) == d.from_bottom {
+                                    continue;
+                                }
+                                for k in 0..200_000 {
+                                    let phi = 2.0 * PI * k as f64 / 200_000.0;
+                                    let f = (big_r * big_r - e * e - d.r * d.r - 2.0 * e * d.r * phi.cos()).sqrt();
+                                    let p = [
+                                        (e + d.r * phi.cos()) * n[0] + d.r * phi.sin() * a[0],
+                                        (e + d.r * phi.cos()) * n[1] + d.r * phi.sin() * a[1],
+                                        sg * f,
+                                    ];
+                                    best = best.max(dir * p[i]);
+                                }
+                            }
+                        }
+                    }
+                    let got = if dir > 0.0 { bx.hi[i] } else { -bx.lo[i] };
+                    assert!((got - best).abs() < 1e-6, "{} bores, axis {i} dir {dir}: {got} vs {best}", drills.len());
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn several_bores_mesh_closed_outward_and_on_their_surfaces() {
+        let big_r = 20.0_f64;
+        for drills in multi_cases() {
+            let res = drill_all(big_r, &drills).expect("builds");
+            let exact = drills_volume(big_r, &drills);
+            for defl in [0.05, 0.5] {
+                let m = crate::mesh::mesh_solid(&res, defl).unwrap_or_else(|| panic!("{} bores defl {defl}: no mesh", drills.len()));
+                assert!(check_watertight(&m), "{} bores defl {defl}: mesh is open", drills.len());
+                let mut vol = 0.0;
+                for t in m.indices.chunks(3) {
+                    let p = |i: u32| m.positions[i as usize];
+                    vol += dot(p(t[0]), cross(p(t[1]), p(t[2]))) / 6.0;
+                }
+                let tol = if defl >= 0.5 { 0.1 } else { 0.02 };
+                assert!(vol > 0.0 && (vol - exact).abs() / exact < tol, "{} bores defl {defl}: mesh {vol} vs {exact}", drills.len());
+                for (fi, f) in res.faces().iter().enumerate() {
+                    let (start, count) = m.faces[fi];
+                    let verts: std::collections::BTreeSet<u32> = m.indices[start..start + count].iter().cloned().collect();
+                    for vi in verts {
+                        let p = m.positions[vi as usize];
+                        if let Surface::Sphere(_) = &f.borrow().surface {
+                            assert!((crate::math::len(p) - big_r).abs() < 1e-6, "sphere vertex off the sphere by {}", crate::math::len(p) - big_r);
                         }
                     }
                 }

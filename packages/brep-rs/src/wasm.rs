@@ -158,6 +158,26 @@ fn sketch_frame(sk: &Value) -> SketchFrame {
     SketchFrame { origin, u, v, n, dir }
 }
 
+/// The box a hole is placed against: the target's own box, except a sphere bored by earlier holes, whose whole ball it is.
+fn hole_reference_box(src: &TSolid) -> crate::math::Aabb {
+    for f in src.faces() {
+        if let crate::geom::Surface::Sphere(sp) = &f.borrow().surface {
+            if sp.trim.is_bored() {
+                let mut b = crate::math::Aabb::empty();
+                for i in 0..3 {
+                    let (mut lo, mut hi) = (sp.center, sp.center);
+                    lo[i] -= sp.radius;
+                    hi[i] += sp.radius;
+                    b.expand(lo);
+                    b.expand(hi);
+                }
+                return b;
+            }
+        }
+    }
+    build::solid_aabb(src)
+}
+
 /// The profile outline in plane (u, v) coordinates after rounds/chamfers are
 /// applied -- the JS outlineOf()/tessellate() semantics. A bulge on an edge
 /// becomes a genuine circular arc, kept exact as centre/radius/start/sweep, so
@@ -972,9 +992,14 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
         if matches!(kind, "pocket" | "groove" | "hole" | "combine" | "fillet" | "draft" | "shell" | "mirror" | "blend") {
             let mut names: Vec<&str> = Vec::new();
             collect_strings(f, &mut names);
+            // A hole in a sphere bored by an earlier hole is the one cut such a part takes (more bores parallel to the
+            // first, SPEC-brep-sphere-multi-bore.md); the builder refuses what it cannot cut, in the hole's own sentence.
+            let takes_it = |n: &str| kind == "hole" && hist.shapes.get(n).is_some_and(ops::is_bored_sphere);
             let crossed = names.into_iter().find(|n| {
-                hist.shapes.get(*n).is_some_and(ops::has_cross_trim)
-                    || hist.shapes.get(hist.head_of(n)).is_some_and(ops::has_cross_trim)
+                (hist.shapes.get(*n).is_some_and(ops::has_cross_trim)
+                    || hist.shapes.get(hist.head_of(n)).is_some_and(ops::has_cross_trim))
+                    && !takes_it(n)
+                    && !takes_it(hist.head_of(n))
             });
             if let Some(n) = crossed {
                 refusals.insert(
@@ -1345,7 +1370,9 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 };
                 // f.center is an OFFSET from the target's bbox centre, never a
                 // world position (a documented app contract, occt-build.ts).
-                let bb = build::solid_aabb(&src);
+                // A bored sphere is placed against its whole ball: the script layer reads a hole's extent as its target's,
+                // and a bore that swallows the pole would otherwise move this box (and with it a later blind hole's start).
+                let bb = hole_reference_box(&src);
                 let base = bb.center();
                 let off = f.get("center").and_then(v3).unwrap_or([0.0, 0.0, 0.0]);
                 let cc = add(base, off);

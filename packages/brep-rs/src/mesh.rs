@@ -1556,8 +1556,12 @@ fn mesh_sphere_bore(
 ) -> Option<()> {
     use crate::math::{add, dot, normalize, scale};
     let crate::geom::Surface::Sphere(sp) = surface else { return None };
-    if !matches!(sp.trim, crate::geom::SphTrim::Bore { .. }) {
+    if !sp.trim.is_bored() {
         return None;
+    }
+    // Several bores have no common pole (their offsets point every which way): a spherical Delaunay triangulation.
+    if matches!(sp.trim, crate::geom::SphTrim::Bores { .. }) {
+        return mesh_sphere_bores(face, edges_cache, out, defl, sp);
     }
     let (c, big) = (sp.center, sp.radius);
     let n = normalize(sp.e1);
@@ -1685,6 +1689,49 @@ fn mesh_sphere_bore(
     Some(())
 }
 
+/// A sphere with several bores (SPEC-brep-sphere-multi-bore.md): the holes' loops are the same polylines the
+/// bore walls use, and `sphere_hull::sphere_with_holes` triangulates everything between them.
+fn mesh_sphere_bores(
+    face: &TFace,
+    edges_cache: &HashMap<usize, Vec<Vec3>>,
+    out: &mut MeshBuilder,
+    defl: f64,
+    sp: &crate::geom::SphereSurf,
+) -> Option<()> {
+    use crate::math::sub;
+    let mut loops: Vec<Vec<Vec3>> = Vec::new();
+    for w in &face.borrow().boundary {
+        for u in &w.borrow().edges {
+            if !matches!(u.edge.borrow().curve, Curve::SphCyl { .. }) {
+                continue;
+            }
+            let mut pts = use_polyline(u, edges_cache, defl);
+            if pts.len() < 9 {
+                return None;
+            }
+            pts.pop(); // the closing duplicate
+            loops.push(pts);
+        }
+    }
+    let (c, big) = (sp.center, sp.radius);
+    let inside = |q: Vec3| sp.in_bore_hole(sub(q, c));
+    let tris = crate::sphere_hull::sphere_with_holes(c, big, &loops, &inside, 0.7 * big * angle_step(big, defl))?;
+    let start = out.indices.len();
+    for t in tris {
+        let ids = [out.push(t[0]), out.push(t[1]), out.push(t[2])];
+        if ids[0] == ids[1] || ids[1] == ids[2] || ids[0] == ids[2] {
+            continue;
+        }
+        out.indices.extend_from_slice(&ids);
+    }
+    let count = out.indices.len() - start;
+    if count == 0 {
+        return None;
+    }
+    out.faces.push((start, count));
+    Some(())
+}
+
 fn mesh_face(
     face: &TFace,
     edges_cache: &HashMap<usize, Vec<Vec3>>,
@@ -1703,7 +1750,7 @@ fn mesh_face(
     // (including the removed caps), so route it to the band tessellator.
     if let crate::geom::Surface::Sphere(sp) = &face.borrow().surface {
         // A bored sphere: its boundary is the bores' meeting curves, one closed hole per end.
-        if matches!(sp.trim, crate::geom::SphTrim::Bore { .. }) {
+        if sp.trim.is_bored() {
             let surface = face.borrow().surface.clone();
             return mesh_sphere_bore(face, edges_cache, out, defl, &surface);
         }
