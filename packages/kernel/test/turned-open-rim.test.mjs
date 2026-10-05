@@ -134,8 +134,8 @@ test('the open end rounded and the other end rounded too: both rims, one cavity'
   assertWatertight(m);
 });
 
-test('a torus is not written to STEP yet: the sentence is the same one the round primitive gives', () => {
-  const m = mine(cyl(40, 20) + rnd('top', 1) + hollowS(2, 'top'));
-  const f = JSON.parse(brep.export_step(m.json, m.id));
-  assert.ok(!f.step && /toroidal/.test(JSON.stringify(f)), JSON.stringify(f).slice(0, 200));
+test('a rounded open-end rim writes to STEP and reads back in OpenCascade at the exact volume (W3 STEP)', async () => {
+  const { stepRoundTrip, okRead } = await import('./step-readback-lib.mjs');
+  const r = stepRoundTrip(cyl(40, 20) + rnd('top', 1) + hollowS(2, 'top'));
+  assert.ok(!r.refused && !r.buildRefused && okRead(r), JSON.stringify({ ...r, step: undefined }).slice(0, 300));
 });
