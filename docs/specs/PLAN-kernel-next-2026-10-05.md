@@ -163,6 +163,17 @@ exact volume and that a funnel which does reach the bore still refuses. **It mov
 is stopped by a different guard (counterbore beside a side bore, countersink beside a counterbore, a bore through two side faces), and the
 random generator rarely produces the clear-funnel case the fix covers. Not a bucket to chase; fold whatever remains into the skew-crossing work.
 
+**W5 sizing (2026-10-06, the 218 pairs that reduce to a failing pair).** 170 are perpendicular crossings and 48 parallel. Of the perpendicular
+ones: 63 are plain bore on plain bore, 85 have one recess (counterbore or countersink), 22 have two. By geometry, the smaller bore fits
+inside the larger one's silhouette (the meeting curve is closed loops, a graph over the small bore's angle) in 87, and sticks out of it in
+81 (a curve that runs onto the larger bore's wall edge at tangent points); 2 axes are too far apart to meet. Bore ends are mostly BLIND
+(about two thirds of the pairs have at least one blind end), and in 59 the axes' crossing point lies outside one bore's length. So no one
+regime dominates, and a first slice (plain on plain, closed loops, both ends past the crossing) would reach about 20 to 30 pairs, roughly
+2% of the hole-only scripts, for a build the size of ball x box. The meshing is not the risk (each face is a ladder of columns over one
+angle, as the cone x box P0 showed); the risk is the number of cases: faces, trims and the `Cross` machinery for each of through, blind,
+pierced and sticking-out. **Recommendation: do not start W5 before the owner has said whether cross-drilling is a priority**; the same
+effort on W7's language choices (11% of scripts) is worth more, if the owner agrees to them.
+
 **W6. Hollow beyond box and cylinder (275 scripts).** Sphere (34) is a concentric cavity (`subtract_enclosed` exists), a ring is a
 concentric torus, and a prism or wedge is a planar inward offset. A cone is an offset cone.
 
