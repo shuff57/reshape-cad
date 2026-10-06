@@ -147,7 +147,16 @@ box's bottom face splits at the four tangent points into four arcs, but the cyli
 matched (every earlier guard was innocent; the refusal came from the edge-count check). Fix: `split_full_circle` in `split_t_junctions`
 cuts a whole circle into arcs only when every piece is one a neighbouring face already has. A wider rule (any vertex on the circle, or any
 partial arc of the circle) broke 20 tests and the mesh and STEP gates; the "every piece already exists" rule breaks none. Pair sweep: 734 to
-743 agree, 0 wrong. **W8 result, sphere half:** a box exactly as wide as a ball builds when the ball touches its walls at the equator or a floor at a pole,
+743 agree, 0 wrong. **W8 correction, found by the full census (not by the pair sweeps):** the first version of the rim split built ONE wrong solid, perm
+script 282 (a counterbored box, `repeatAround` 4, `mirror`): volume 0.6 % off OpenCascade and 240 open mesh edges, refused before W8. The
+split fired on vertices where the pattern copies' edges CROSS the rim. Two guesses at a local test (every piece already exists; no
+transverse edge at the vertex) both still passed it. What fixed it is evidence from the operands, not the result: `tangent_contacts(a, b)`
+lists where a straight edge of one operand touches a circle of the other without crossing, and a rim is cut only there. Lesson for the
+next slice: a pair-family sweep cannot see a bug that the perm family finds; run the whole census before calling a boolean change done.
+Full census after the fix: 0 WRONG; agree 5,293 (was 5,253), refused 7,938 (was 7,977), script errors 1,654 (unchanged); gates 78/78/77+1/17.
+No regression test pins script 282's shape yet (the case is only covered by the census and the W8 unit test).
+
+**W8 result, sphere half:** a box exactly as wide as a ball builds when the ball touches its walls at the equator or a floor at a pole,
 from inside (the ball on the solid side of the touching plane). Two causes, neither the circle-matching of the cylinder half: (1) the
 planar path refused any plane that was not square to the axis unless clear of the ball, and a tangent plane is not clear but cuts nothing;
 (2) the face classifier sampled the wall's centre, which is the tangent point itself, and read the boundary as "inside" (a wall that should

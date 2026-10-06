@@ -2788,7 +2788,9 @@ fn core_carry(op: &str, a: &TSolid, b: &TSolid, pa: &[AFace], pb: &[AFace], cros
         bail!();
     }
     ops::drop_degenerate_faces(&mut faces);
+    ops::TANGENT_CONTACTS.with(|t| *t.borrow_mut() = ops::tangent_contacts(a, b));
     ops::split_t_junctions(&mut faces);
+    ops::TANGENT_CONTACTS.with(|t| t.borrow_mut().clear());
     ops::weld_shared_edges(&mut faces);
     if faces.is_empty() {
         return Ok(None);

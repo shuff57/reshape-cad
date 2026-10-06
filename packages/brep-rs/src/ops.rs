@@ -6545,6 +6545,56 @@ fn full_turn_normal(c: &Curve) -> Option<Vec3> {
     }
 }
 
+thread_local! {
+    /// Where a straight edge of one operand touches a circle of the other without crossing it, for the
+    /// boolean being built; read by `split_full_circle`.
+    pub(crate) static TANGENT_CONTACTS: std::cell::RefCell<Vec<Vec3>> = const { std::cell::RefCell::new(Vec::new()) };
+}
+
+/// The points where a straight edge of `a` or `b` is tangent to a circle of the other (a box wall
+/// meeting a cylinder rim along a line, seen end-on).
+pub(crate) fn tangent_contacts(a: &TSolid, b: &TSolid) -> Vec<Vec3> {
+    let edges_of = |s: &TSolid| -> Vec<Curve3> {
+        let mut out = Vec::new();
+        for f in s.faces() {
+            for w in &f.borrow().boundary {
+                for u in &w.borrow().edges {
+                    out.push(u.edge.borrow().curve.clone());
+                }
+            }
+        }
+        out
+    };
+    let (ea, eb) = (edges_of(a), edges_of(b));
+    let mut out = Vec::new();
+    for (circles, segs) in [(&ea, &eb), (&eb, &ea)] {
+        for c in circles {
+            let (center, radius, normal) = match c {
+                Curve::Circle { center, radius, normal } => (*center, *radius, normalize(*normal)),
+                Curve::Arc { center, radius, normal, .. } => (*center, *radius, normalize(*normal)),
+                _ => continue,
+            };
+            for sg in segs {
+                let Curve::Segment { a: p, b: q } = sg else { continue };
+                if dot(sub(*p, center), normal).abs() > 1e-7 || dot(sub(*q, center), normal).abs() > 1e-7 {
+                    continue;
+                }
+                let d = sub(*q, *p);
+                let l2 = dot(d, d);
+                if l2 < 1e-18 {
+                    continue;
+                }
+                let t = dot(sub(center, *p), d) / l2;
+                let foot = add(*p, scale(d, t));
+                if t > -1e-9 && t < 1.0 + 1e-9 && (crate::math::len(sub(foot, center)) - radius).abs() < 1e-7 {
+                    out.push(foot);
+                }
+            }
+        }
+    }
+    out
+}
+
 /// The arcs a whole circle breaks into at the other faces' vertices that lie on it. `None` when
 /// no such vertex exists, or the edge is not a whole circle starting and ending at one point.
 fn split_full_circle(e: &topo::Edge<Curve3>, verts: &[topo::VertexRef], edges: &[topo::EdgeRef<Curve3>]) -> Option<Vec<topo::EdgeRef<Curve3>>> {
@@ -6584,6 +6634,13 @@ fn split_full_circle(e: &topo::Edge<Curve3>, verts: &[topo::VertexRef], edges: &
             continue;
         }
         let ang = dot(d, y0).atan2(dot(d, x0)).rem_euclid(TWO_PI);
+        // Only a contact the operands themselves make: a straight edge of one touching a circle of the
+        // other without crossing it. A vertex where edges CROSS the circle is an ordinary intersection,
+        // which the face-by-face split already handles (splitting there built wrong solids).
+        let tangent_here = TANGENT_CONTACTS.with(|t| t.borrow().iter().any(|q| near3(*q, p)));
+        if !tangent_here {
+            return None;
+        }
         if ang > 1e-9 && ang < TWO_PI - 1e-9 && !on.iter().any(|(a, _)| (a - ang).abs() < 1e-9) {
             on.push((ang, v.clone()));
         }
