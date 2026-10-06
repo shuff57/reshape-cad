@@ -266,7 +266,7 @@ move(b, [40, 0, 0])`,
       },
       {
         title: 'turn: rotating in place',
-        body: `turn(b, [0, 0, 45]) rotates 45 degrees around z-axis. Angles are degrees. Rotates around the shape's own middle.`,
+        body: `turn(b, [0, 0, 45]) rotates 45 degrees around z-axis. Angles are degrees. Rotates around the shape's own middle. It turns a shape you have drilled, rounded, joined, cut or mirrored too, about the middle of its bounding box: turn(v, [0, 90, 0]) after a hole stands the whole part on its side. A ball looks the same however it is turned, so turning one changes nothing.`,
         code: `const b = cuboid(30, 20, 10, { at: [0, 0, 5] })
 turn(b, [0, 0, 45])`,
       },
