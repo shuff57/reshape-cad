@@ -173,10 +173,11 @@ for (const [name, setup, op, want] of HAND) {
   });
 }
 
-test('face counts the docs print: a cone on a cylinder is 3 faces, a dome on a plate 8, the hemispherical pocket 7', () => {
+test('face counts: a cone on a cylinder is 3 faces, a dome on a plate 7, the hemispherical pocket 7', () => {
   const f = (code) => build(code).m.faces;
   assert.equal(f(HAND[5][1] + '\nunion(a, b)'), 3, 'bottom disk, wall, cone');
-  assert.equal(f(HAND[0][1] + '\nunion(a, b)'), 8, 'four sides, the top and bottom rings, a cap above and a cap below');
+  // the ball's two caps (above the plate and below it) are ONE sphere face with two loops since the ball x box work, not two faces
+  assert.equal(f(HAND[0][1] + '\nunion(a, b)'), 7, 'four sides, the top and bottom rings, and the one sphere face holding the cap above and the cap below');
   assert.equal(f(HAND[2][1] + '\nsubtract(a, b)'), 7, 'five faces of the slab, the pocket top... and the bowl');
 });
 
@@ -253,9 +254,9 @@ for (const [name, code] of [
 // ---- what is not provably exact refuses in a sentence --------------------------------------------
 test('what is not a clean coaxial pair refuses in a sentence and builds nothing', () => {
   const cases = [
-    ["const a = box(20, 20, 20)\nconst b = sphere(24, { at: [0, 0, 0] })\nunion(a, b)", 'a ball through the sides of a small box'],
-    ["const a = box(20, 20, 20)\nconst b = sphere(24, { at: [0, 0, 0] })\nsubtract(a, b)", 'a box inside a ball whose sides do not clear it'],
-    ["const a = sphere(24, { at: [0, 0, 0] })\nconst b = box(40, 40, 40, { at: [20, 20, 20] })\nsubtract(a, b)", 'a ball against a box corner'],
+    ["const a = box(20, 20, 20)\nconst b = sphere(24, { at: [0, 0, 0] })\nunion(a, b)", 'a ball through the sides of a small box (builds: the ball less six caps, joined to the cube)'],
+    ["const a = box(20, 20, 20)\nconst b = sphere(24, { at: [0, 0, 0] })\nsubtract(a, b)", 'a box inside a ball whose sides do not clear it (builds: the cube less the ball)'],
+    ["const a = sphere(24, { at: [0, 0, 0] })\nconst b = box(40, 40, 40, { at: [20, 20, 20] })\nsubtract(a, b)", 'a ball against a box corner (builds: seven eighths of the ball)'],
     ["const a = sphere(24, { at: [0, 0, 0] })\nconst b = cylinder(8, 40, { at: [5, 0, 0] })\nsubtract(a, b)", 'a cylinder off the ball\'s centre (S1 of SPEC-brep-sphere-offset-bore: it builds, e = 5 > r = 4, e + r <= 0.95 R)'],
     ["const a = sphere(24, { at: [0, 0, 0] })\nconst b = cylinder(8, 60, { at: [0, 0, 0] })\nturn(b, [0, 90, 0])\nsubtract(a, b)", 'a cylinder through the centre, on another axis than the plates (the sphere re-frames: builds)'],
     ["const a = sphere(24, { at: [0, 0, 0] })\nconst b = sphere(24, { at: [0, 0, 0] })\nunion(a, b)", 'the same ball twice (S4i: identical operands join into the copy: builds)'],
@@ -267,6 +268,11 @@ test('what is not a clean coaxial pair refuses in a sentence and builds nothing'
     const { refusals, m } = build(code);
     if (why.includes('builds')) {
       assert.ok(m, why);
+      // closed forms: a 20-cube (half side 10) and a ball of radius 12 about the same centre share the ball less six caps of height 2,
+      // 2304 pi - 6 x (pi 2^2 (36 - 2) / 3) = 2032 pi; and a ball against the corner of a 40-cube takes seven eighths of the ball
+      if (why.startsWith('a ball through the sides')) assert.ok(Math.abs(m.volume - (8000 + 272 * Math.PI)) < 1e-6 * m.volume, `${m.volume} vs ${8000 + 272 * Math.PI}`);
+      if (why.startsWith('a box inside a ball')) assert.ok(Math.abs(m.volume - (8000 - 2032 * Math.PI)) < 1e-6 * m.volume, `${m.volume} vs ${8000 - 2032 * Math.PI}`);
+      if (why.startsWith('a ball against a box corner')) assert.ok(Math.abs(m.volume - 2016 * Math.PI) < 1e-6 * m.volume, `${m.volume} vs ${2016 * Math.PI}`);
       if (why.startsWith('the same ball')) assert.ok(Math.abs(m.volume - (4 / 3) * Math.PI * 12 ** 3) < 1e-6, String(m.volume));
       if (why.startsWith('a cylinder off the ball')) {
         // V = 4/3 pi R^3 - 2 I, I = integral over the disc (x-e)^2 + y^2 < r^2 of sqrt(R^2 - x^2 - y^2), taken in theta
@@ -286,7 +292,7 @@ test('what is not a clean coaxial pair refuses in a sentence and builds nothing'
     assert.match(refusals.op1 ?? '', /cannot boolean these two solids|only touch along a line or at a point/, why);
     refused++;
   }
-  assert.equal(refused, cases.length - 4, 'every case but the four that build refuses');
+  assert.equal(refused, cases.length - 7, 'every case but the seven that build refuses');
 });
 
 test('a result in two pieces is refused, not handed back as one solid: the ball cut by a slab through its middle', () => {
@@ -423,7 +429,7 @@ test('300 seeded random coaxial pairs, all three operations: 0 wrong against the
       const { refusals, m, r, id, doc } = build(`${scriptOf(a, 'a')}\n${scriptOf(b, 'b')}\n${op}(a, b)`);
       if (m === undefined) {
         refused++;
-        assert.match(refusals.op1 ?? '', /cannot/);
+        assert.match(refusals.op1 ?? '', /cannot|do not overlap/);
         continue;
       }
       built++;

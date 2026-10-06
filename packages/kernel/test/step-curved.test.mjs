@@ -4,7 +4,7 @@
 // A shape the writer cannot express exactly must still REFUSE, in a sentence; it must never write a wrong solid.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { stepRoundTrip, okRead, brep } from './step-readback-lib.mjs';
+import { stepRoundTrip, okRead, bboxOk, volumeOk, brep } from './step-readback-lib.mjs';
 import { genScript } from './wrong-solid-sweep-lib.mjs';
 import { genS4 } from './wrong-solid-sweep-s4.mjs';
 
@@ -97,7 +97,7 @@ test('seeded sweep slice: no built result with a torus, sphere or cone face read
       if (r.refused) { assert.match(r.refused, /^brep-rs cannot (write|yet write)/, r.refused); continue; }
       if (/TOROIDAL_SURFACE|SPHERICAL_SURFACE|CONICAL_SURFACE/.test(r.step)) curved++;
       // volume, bbox and validity are the oracle; the count of SOLIDs OCCT reports for a multi-body result is not (see PLAN-next W3)
-      if (r.got && !r.bad && r.dv <= 1e-6 && r.db <= 1e-5 && r.got.valid === true) ok++;
+      if (r.got && !r.bad && volumeOk(r) && bboxOk(r) && r.got.valid === true) ok++;
       else wrong.push(`${family}#${i}: ${JSON.stringify({ got: r.got?.volume, want: r.want.volume, bad: r.bad })}`);
     }
   }

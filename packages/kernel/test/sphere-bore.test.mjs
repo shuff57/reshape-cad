@@ -155,7 +155,8 @@ test('near misses refuse in a sentence, never a wrong solid', () => {
       assert.match(Object.values(refusals)[0], /hole|fit|cannot|builds only/i, code);
     } else {
       // if it ever builds, the volume must still be the closed form of SOME bore, not the whole sphere
-      assert.ok(s.volume < (4 / 3) * PI * 8000 - 1, code);
+      // (a 0.1 deep bore in the polar cap removes about 0.63 mm^3, so the bound is 'less than the whole ball', not 'by a whole mm^3')
+      assert.ok(s.volume < (4 / 3) * PI * 8000 - 0.1, code);
     }
   }
 });

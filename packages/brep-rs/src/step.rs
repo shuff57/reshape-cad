@@ -1014,21 +1014,195 @@ fn revolved_signed_area(segs: &[Seg], origin: Vec3, surface_axis: Vec3, e1: Vec3
     acc / 2.0
 }
 
+/// A few points along every part of a loop, for placing a sphere's poles and seam clear of it. An arc runs from `a` to `b` through `mid`,
+/// counterclockwise about its `axis`, so its half sweep is the angle of `mid` and a whole circle (`a` = `b`) has half sweep pi.
+fn loop_points(segs: &[Seg], per_arc: usize) -> Vec<Vec3> {
+    let mut out = Vec::new();
+    for sg in segs {
+        match sg {
+            Seg::Line { a, b } => {
+                out.push(*a);
+                out.push(*b);
+            }
+            Seg::Spline { ctrl, .. } => out.extend(ctrl.iter().copied()),
+            Seg::Arc { center, axis, a, mid, .. } => {
+                let u0 = sub(*a, *center);
+                let w = cross(normalize(*axis), u0);
+                let m = sub(*mid, *center);
+                let half = dot(m, w).atan2(dot(m, u0));
+                for k in 0..=per_arc {
+                    let phi = 2.0 * half * k as f64 / per_arc as f64;
+                    out.push(add(*center, add(scale(u0, phi.cos()), scale(w, phi.sin()))));
+                }
+            }
+        }
+    }
+    out
+}
+
+/// The frame (axis, direction of longitude 0) a hull-trimmed sphere is written in. OpenCascade reads a loop on a sphere through the
+/// sphere's own (longitude, colatitude) parameters, where a pole is a point and the seam is a line, and it takes the wrong region when a
+/// loop comes near a pole or the seam. So the frame is chosen from the loops: both poles on the same side of the face (so no loop
+/// separates them), and the best of two clearances: how far the nearest loop point stays from a pole, and how wide a gap of longitude the
+/// seam meridian has between loop points (it runs down the middle of the widest). Measured against OpenCascade's reader on random tilted
+/// boxes, a gap under about 0.5 radian is where it starts reading the wrong region. `None` when no frame does better than that.
+fn hull_frame(sp: &SphereSurf, h: &crate::geom::HullTrim, bounds: &[Vec<Seg>]) -> Option<(Vec3, Vec3)> {
+    let pts: Vec<Vec3> = bounds.iter().flat_map(|b| loop_points(b, 24)).map(|p| normalize(sub(p, sp.center))).collect();
+    if pts.is_empty() {
+        return None;
+    }
+    let tau = 2.0 * std::f64::consts::PI;
+    let n = 600usize;
+    let golden = std::f64::consts::PI * (3.0 - 5.0f64.sqrt());
+    // (score, axis, seam longitude, e1, e2)
+    let mut best: Option<(f64, Vec3, Vec3, Vec3, f64)> = None;
+    for k in 0..n {
+        let z = 1.0 - 2.0 * (k as f64 + 0.5) / n as f64;
+        let r = (1.0 - z * z).sqrt();
+        let a = [r * (golden * k as f64).cos(), r * (golden * k as f64).sin(), z];
+        if h.contains(scale(a, sp.radius)) != h.contains(scale(a, -sp.radius)) {
+            continue;
+        }
+        // the angle from a pole to the nearest loop point
+        let worst = pts.iter().map(|p| dot(*p, a).abs()).fold(0.0, f64::max);
+        let clearance = (1.0 - worst * worst).max(0.0).sqrt().asin().min(0.7);
+        let e1 = perpendicular(a);
+        let e2 = cross(a, e1);
+        let mut phis: Vec<f64> = pts.iter().map(|p| dot(*p, e2).atan2(dot(*p, e1))).collect();
+        phis.sort_by(|x, y| x.partial_cmp(y).unwrap());
+        let wrap = phis[0] + tau - phis[phis.len() - 1];
+        let (mut gap, mut mid) = (wrap, phis[phis.len() - 1] + 0.5 * wrap);
+        for w in phis.windows(2) {
+            if w[1] - w[0] > gap {
+                gap = w[1] - w[0];
+                mid = 0.5 * (w[0] + w[1]);
+            }
+        }
+        let score = clearance.min(gap.min(1.2) * 0.6);
+        if best.as_ref().is_none_or(|b| score > b.0) {
+            best = Some((score, a, e1, e2, mid));
+        }
+    }
+    let (score, axis, e1, e2, mid) = best?;
+    // score is the smaller of the pole clearance (radians) and 0.6 of the seam gap: 0.3 asks for a gap of 0.5 radian
+    if score < 0.3 {
+        return None;
+    }
+    Some((axis, add(scale(e1, mid.cos()), scale(e2, mid.sin()))))
+}
+
+/// A hull-trimmed sphere whose planes are all square to the sphere's own axis is made of latitude zones or polar caps, which the writer
+/// already knows how to write exactly (the zone loop, with its seam): the same sphere with its parameter range narrowed to a band. One
+/// band for the part inside the planes (or outside a single plane); the part outside TWO planes is two separate caps, so two. `None` for a
+/// tilted plane that reaches the sphere, or when the caps would overlap.
+fn hull_zones(sp: &SphereSurf, h: &crate::geom::HullTrim) -> Option<Vec<SphereSurf>> {
+    let axis = normalize(sp.axis);
+    let r = sp.radius;
+    // a box brings all six planes; one that does not reach the sphere (its distance is the radius or more) cuts nothing from it
+    let halves: Vec<_> = h.halves().into_iter().filter(|half| half.d.abs() < r - 1e-9 * r).collect();
+    if halves.is_empty() || halves.len() > 2 {
+        return None;
+    }
+    // each plane as (z, which side it keeps): n.q <= d keeps z <= d (n = +axis) or z >= -d (n = -axis)
+    let mut planes: Vec<(f64, bool)> = Vec::new();
+    for half in &halves {
+        let c = dot(half.n, axis);
+        if (c.abs() - 1.0).abs() > 1e-9 {
+            return None;
+        }
+        planes.push(if c > 0.0 { (half.d, true) } else { (-half.d, false) });
+    }
+    // v is the colatitude from the north pole, which is -axis: z = -r cos v
+    let v = |z: f64| (-z / r).clamp(-1.0, 1.0).acos();
+    let band = |zlo: f64, zhi: f64| -> Option<SphereSurf> {
+        if zhi - zlo < 1e-9 * r {
+            return None;
+        }
+        let mut zone = sp.clone();
+        zone.trim = crate::geom::SphTrim::None;
+        zone.u_range = [0.0, 2.0 * std::f64::consts::PI];
+        zone.v_range = [v(zlo), v(zhi)];
+        Some(zone)
+    };
+    if h.inside {
+        // inside every plane: the band between the highest lower bound and the lowest upper bound
+        let (mut zlo, mut zhi) = (-r, r);
+        for (z, below) in &planes {
+            if *below { zhi = zhi.min(*z) } else { zlo = zlo.max(*z) }
+        }
+        return band(zlo, zhi).map(|z| vec![z]);
+    }
+    // outside some plane: the cap beyond each (a plane that keeps z <= d has its cap at z > d, and the other way round)
+    let caps: Vec<(f64, f64)> = planes.iter().map(|(z, below)| if *below { (*z, r) } else { (-r, *z) }).collect();
+    if caps.len() == 2 && caps[0].0 < caps[1].1 && caps[1].0 < caps[0].1 {
+        return None; // the caps overlap: one face, not two
+    }
+    caps.iter().map(|(lo, hi)| band(*lo, *hi)).collect()
+}
+
+/// The STEP faces one kernel face becomes: itself, or one per polar cap when it is a ball with the part outside a band cut away (two
+/// separate caps, which a single connected STEP face cannot hold).
+#[allow(clippy::type_complexity)]
+fn face_pieces(face: &crate::topo::Face<Curve, Surface>) -> Result<Vec<(Vec<Vec<Seg>>, bool, Option<(Vec3, Vec3)>, Surface)>, String> {
+    if let Surface::Sphere(sp) = &face.surface {
+        if let crate::geom::SphTrim::Hull(h) = &sp.trim {
+            if let Some(zones) = hull_zones(sp, h) {
+                if zones.len() > 1 {
+                    let mut out = Vec::new();
+                    for zone in zones {
+                        let mut cap = face.clone();
+                        cap.surface = Surface::Sphere(zone);
+                        cap.forward = face.forward != h.reversed;
+                        let (b, ss, fr) = face_bounds(&cap)?;
+                        out.push((b, ss, fr, cap.surface.clone()));
+                    }
+                    return Ok(out);
+                }
+            }
+        }
+    }
+    let (b, ss, fr) = face_bounds(face)?;
+    Ok(vec![(b, ss, fr, face.surface.clone())])
+}
+
 /// Every bound of one face, outer first, each already wound the way STEP wants
 /// it: the outer bound counterclockwise about the FACE's normal and the holes
 /// clockwise. `same_sense` comes back with them because writing the surface and
 /// deciding which way the face looks are the same decision.
-fn face_bounds(face: &crate::topo::Face<Curve, Surface>) -> Result<(Vec<Vec<Seg>>, bool), String> {
+fn face_bounds(face: &crate::topo::Face<Curve, Surface>) -> Result<(Vec<Vec<Seg>>, bool, Option<(Vec3, Vec3)>), String> {
+    // a ball cut by planes square to its axis is a zone or a cap: write it as the zone it is (one face; `face_pieces` handles two caps)
+    if let Surface::Sphere(sp) = &face.surface {
+        if let crate::geom::SphTrim::Hull(h) = &sp.trim {
+            if let Some(mut zones) = hull_zones(sp, h) {
+                if zones.len() == 1 {
+                    let mut as_zone = face.clone();
+                    as_zone.surface = Surface::Sphere(zones.remove(0));
+                    // the zone's own writer reads `forward` as the face's direction; the hull carries it in `reversed`
+                    as_zone.forward = face.forward != h.reversed;
+                    return face_bounds(&as_zone);
+                }
+                return Err("two caps in one face".to_string()); // `face_pieces` splits these before it gets here
+            }
+        }
+    }
     let same_sense = match &face.surface {
         Surface::Plane(_) => face.forward,
         Surface::Cylinder(c) => face.forward == right_handed(c.e1, c.e2, c.axis),
         Surface::Cone(c) => face.forward == right_handed(c.e1, c.e2, c.axis),
         Surface::Sphere(sp) => {
-            // A bored sphere is written from its own wires below; the zone and patch loops are not its shape.
-            if !sp.trim.is_bored() && sphere_zone_loop(sp).is_none() && sphere_patch_loop(sp).is_none() {
+            // A bored sphere and a hull-trimmed one (the part of a ball inside or outside a box) are written from their own wires
+            // below; the zone and patch loops are not their shape.
+            let own_wires = sp.trim.is_bored() || sp.trim.is_hull();
+            if !own_wires && sphere_zone_loop(sp).is_none() && sphere_patch_loop(sp).is_none() {
                 return Err("a spherical face".to_string());
             }
-            face.forward == right_handed(sp.e1, sp.e2, sp.axis)
+            // A hull face's wires run with its material on the left of ITS normal, which points into the sphere when `reversed` (the
+            // wall of a cavity a ball leaves in a box): the face is then the surface turned inside out.
+            let outward = match &sp.trim {
+                crate::geom::SphTrim::Hull(h) => face.forward != h.reversed,
+                _ => face.forward,
+            };
+            outward == right_handed(sp.e1, sp.e2, sp.axis)
         }
         Surface::Torus(t) => {
             if torus_loop(t).is_none() {
@@ -1045,6 +1219,8 @@ fn face_bounds(face: &crate::topo::Face<Curve, Surface>) -> Result<(Vec<Vec<Seg>
     };
 
     let mut bounds: Vec<Vec<Seg>> = Vec::new();
+    // set for a hull-trimmed sphere: the frame it is written in (see `hull_frame`)
+    let mut frame: Option<(Vec3, Vec3)> = None;
     match &face.surface {
         // a bore across a cylinder's side: both faces are bounded by the meeting curve, so they are
         // written from their own wires (rims, seam, B-spline curves) instead of the plain seam loop
@@ -1105,6 +1281,31 @@ fn face_bounds(face: &crate::topo::Face<Curve, Surface>) -> Result<(Vec<Vec<Seg>
                 bounds.push(segs);
             }
         }
+        // A ball cut by a box: every loop is one of the face's own wires (arcs of the circles where the box's planes meet the
+        // sphere). The wires run with the face's material on the left of the FACE's normal. STEP wants every loop turned the way the
+        // SURFACE faces (the region on its left seen from outside the sphere) and lets `same_sense` carry the flip of the face, so
+        // the wall of a cavity (normal into the sphere) has its loops turned round.
+        Surface::Sphere(sp) if sp.trim.is_hull() => {
+            let reversed = matches!(&sp.trim, crate::geom::SphTrim::Hull(h) if h.reversed);
+            for w in &face.boundary {
+                let segs = wire_segs(&w.borrow().edges)?;
+                if !closed_chain(&segs) {
+                    return Err("a face whose wire is not a closed chain".to_string());
+                }
+                bounds.push(if reversed { reverse_loop(&segs) } else { segs });
+            }
+            if let crate::geom::SphTrim::Hull(h) = &sp.trim {
+                let (axis, e1) = hull_frame(sp, h, &bounds).ok_or_else(|| "a ball cut by a box whose edges reach all round it".to_string())?;
+                frame = Some((axis, e1));
+                // One loop a whole circle and another made of arcs: the one combination, of every kind a hull face has, that
+                // OpenCascade was seen to read as the other region of the sphere (reversed), in a random sweep against its own reader
+                // (see kernel/test/step-ball-box.test.mjs). It refuses rather than risk writing another solid.
+                let whole_circles = bounds.iter().filter(|b| b.len() == 1).count();
+                if whole_circles > 0 && whole_circles < bounds.len() {
+                    return Err("a ball cut by a box at a whole circle and at corners together".to_string());
+                }
+            }
+        }
         Surface::Sphere(sp) => {
             let l = match sphere_zone_loop(sp) {
                 Some(l) => l,
@@ -1155,7 +1356,7 @@ fn face_bounds(face: &crate::topo::Face<Curve, Surface>) -> Result<(Vec<Vec<Seg>
             *b = reverse_loop(b);
         }
     }
-    Ok((bounds, same_sense))
+    Ok((bounds, same_sense, frame))
 }
 
 /// Faces grouped so that any two sharing an `EDGE_CURVE` land together, in
@@ -1233,24 +1434,24 @@ pub fn write_solid(solid: &TSolid, product: &str) -> Result<String, String> {
     // take apart again (13 faces for 12, three shells for two). The kernel's
     // own shell list is the authority on which faces form a body, so each one
     // gets its own edges even where they sit on top of each other.
-    let mut prepared: Vec<(Vec<Vec<Seg>>, bool, Surface, TFace)> = Vec::with_capacity(faces.len());
+    let mut prepared: Vec<(Vec<Vec<Seg>>, bool, Surface, TFace, Option<(Vec3, Vec3)>)> = Vec::with_capacity(faces.len());
     let mut shell_ends: Vec<usize> = Vec::with_capacity(solid.shells.len());
     for sh in &solid.shells {
         let start = prepared.len();
         for fc in &sh.borrow().faces {
             let f = fc.borrow();
-            let (bounds, same_sense) = face_bounds(&f)
-                .map_err(|what| format!("brep-rs cannot write {what} to STEP yet"))?;
-            prepared.push((bounds, same_sense, f.surface.clone(), fc.clone()));
+            for (bounds, same_sense, frame, surface) in face_pieces(&f).map_err(|what| format!("brep-rs cannot write {what} to STEP yet"))? {
+                prepared.push((bounds, same_sense, surface, fc.clone(), frame));
+            }
         }
-        prepared[start..].sort_by_key(|(bounds, _, _, _)| !chained(bounds));
+        prepared[start..].sort_by_key(|(bounds, _, _, _, _)| !chained(bounds));
         shell_ends.push(prepared.len());
     }
 
     let mut w = Writer::new();
     let mut face_ids: Vec<usize> = Vec::with_capacity(faces.len());
     let mut face_edges: Vec<Vec<usize>> = Vec::with_capacity(faces.len());
-    for (i, (bounds, same_sense, surf, _)) in prepared.iter().enumerate() {
+    for (i, (bounds, same_sense, surf, _, frame)) in prepared.iter().enumerate() {
         if shell_ends.contains(&i) {
             w.verts.clear();
             w.edges.clear();
@@ -1277,7 +1478,9 @@ pub fn write_solid(solid: &TSolid, product: &str) -> Result<String, String> {
                 // A bored sphere is written about the axis d x n instead of the bore axis d: its poles then lie in
                 // the face, never on a meeting curve (at e = r the curve runs through the bore axis's own pole, where
                 // the surface is singular and OpenCascade's parametrisation of the loop collapses).
-                let pl = if sp.trim.is_bored() {
+                let pl = if let Some((axis, e1)) = frame {
+                    w.axis2(sp.center, *axis, *e1)
+                } else if sp.trim.is_bored() {
                     let n = normalize(sp.e1);
                     w.axis2(sp.center, cross(normalize(sp.axis), n), n)
                 } else {

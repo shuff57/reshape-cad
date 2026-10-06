@@ -194,13 +194,25 @@ newly reachable scripts that refuse for their other steps); no WRONG record for 
 OpenCascade (volume to about 1e-16), 627 refuse honestly for other reasons. The two countersink cases that read "analytic only" differ from
 OpenCascade by 0.3 to 0.7 % with or without the turn: a standing difference in OpenCascade's countersink, not the turn.
 
-**Found on the way (not W7): the kernel suite had 12 real failures before this work, all about balls.** Under `bun test` the default 5 s
-timeout also fails ten slow tests that pass given time (`--timeout 600000`); the suite was written for `node --test`. The real ones:
-the ball x box work (W2) routes EVERY ball-and-box boolean through `ball_box`, which makes a `SphTrim::Hull` face that the STEP writer
-refuses ("brep-rs cannot write a spherical face to STEP yet"), so a ball sliced by one plane no longer exports to STEP (it did before: eight
-STEP read-back tests); tests that pin refusals that now build (a ball through the sides of a small box; a near-miss hole in a sphere); one
-face count a docs page prints (a dome on a plate is 7 faces, the docs say 8); and wording tests that expect "cannot" where W1 now says
-"do not overlap". The matrix entry for box-sphere intersect was fixed in this commit (a closed-form ball less six caps, 2032 pi).
+**Found on the way, and fixed (2026-10-06): STEP export of a ball cut by a box.** The kernel suite had 12 real failures before the W7 work, all
+about balls (and ten more that only fail under `bun test`'s default 5 s timeout, the suite having been written for `node --test`; give it
+`--timeout`). The W2 ball x box work routes every ball-and-box boolean through `ball_box`, whose `SphTrim::Hull` sphere face the STEP writer
+refused, so a ball sliced by one plane stopped exporting. Fixed in `step.rs`: (1) a hull face whose planes are all square to the sphere's axis
+is written as the latitude zone or polar cap it is, through the existing zone writer (the part outside two planes is two caps, so two STEP
+faces, `face_pieces`); (2) any other hull face is written from its own wires, turned the way the SURFACE faces when the face is reversed (the
+wall of a cavity), in a frame chosen from the loops (`hull_frame`): both poles on the same side of the face, the best of pole clearance and the
+seam's gap in longitude, refusing when neither is at least about 0.5 radian; (3) a face with one whole-circle loop AND one made of arcs
+refuses, the one combination seen to read back wrong. **How it was found:** a randomized read-back (`step-ball-box.test.mjs`: tilted boxes
+against a ball, four operations, every STEP read back by OpenCascade) showed OpenCascade reading several faces as the OTHER region of the
+sphere, so some files described a different solid (a `join` reading back as 3,010 instead of 5,894). Hole width did not predict it (the wrong ones
+were 21 to 55 degrees wide; correct ones reached 152); the seam gap and pole clearance did, and one mixed-loop combination remained. **Result:**
+of 554 random cases, 488 write and read back, 66 refuse in a sentence, none reads back as another solid (410 of them a fresh sample the rules
+were never tuned on). The STEP gate went from 77 passed + 1 refused to 78 passed. The read-back oracle gained a second opinion for these faces
+(OpenCascade's own volume integral wanders by about 1e-5 and its 'optimal' box can reach past a face that is not a parameter rectangle, so the
+meshed shape's extrapolated volume and box are accepted too, with the exact box still required to contain ours). Stale tests were corrected:
+the box-sphere intersect entry (a closed form 2032 pi), the three ball-and-box cases that build (8000 + 272 pi, 8000 - 2032 pi, 2016 pi), a dome
+on a plate is 7 faces (one sphere face holds both caps), a 0.1 deep bore in a sphere builds, and wording tests that now accept "do not overlap".
+Kernel suite: 1,432 pass, 2 skipped, 0 fail.
 
 **W8. Tangent walls: a box whose width equals a coaxial cylinder's diameter (12 of the 15 box x cylinder pair gaps).** Found while
 checking W1. The box's four side faces touch the cylinder wall along a line each; join (8, box stacked on the cylinder) and cut (4, box
