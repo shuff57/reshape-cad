@@ -128,6 +128,18 @@ plus a cylinder face cut by a perpendicular cylinder. `Curve::CylCyl`, the cylin
 cylinder x cylinder; the planar-with-bored-cylinder case is the gap. This is also the crossing-bores case (a cross-drilled ball)
 the sphere track could not reach.
 
+**W5 pre-check result (2026-10-06, census seed 1, the 220 hole-only box scripts that build each hole alone and refuse together).** 218 reduce
+to a failing PAIR of holes (2 need four together). Measured with OpenCascade (overlap = V(box) + V(both) - V(hole 1) - V(hole 2)):
+**191 pairs genuinely MEET** and 27 do not overlap at all yet still refuse. Of the 191: perpendicular crossings 154 (a z bore with an x bore
+53, with a y bore 82, an x bore with a y bore 19), parallel overlapping bores 37 (z+z 33, y+y 3, x+x 1). The hole forms are everywhere
+(plain, counterbore, countersink, through, blind), so no one combination dominates. What builds today (probed): a through bore crossing a
+through bore with INTERSECTING axes (centred); two overlapping parallel z bores. What refuses: the same crossing with the axes OFFSET (skew;
+generic sentence) and a BLIND crossing bore ("this cut crosses a bore wall of the part", specific sentence). The sweep places holes at random
+offsets, so almost every script is skew or blind. `Curve::CylCyl` has no axis offset (`center, d, n, a, big_r, r, sign` only), so skew needs
+a new curve exactly as the sphere track's `SphCyl` did, with a `Cross`-style wall for each face; the sphere offset bore took slices S1 to S4h.
+A cross-drilled hole is a routine student operation, which makes this the most realistic gap the census has shown. The 27 non-overlapping
+refusals are a different, probably cheaper, problem (a counterbore or countersink beside a side bore) and are not yet looked at.
+
 **W6. Hollow beyond box and cylinder (275 scripts).** Sphere (34) is a concentric cavity (`subtract_enclosed` exists), a ring is a
 concentric torus, and a prism or wedge is a planar inward offset. A cone is an offset cone.
 
