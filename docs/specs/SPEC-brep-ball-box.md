@@ -82,6 +82,16 @@ sphere, a circle through a corner, two circles tangent to each other.
   sphere, the hole side had no points, the loop circles are flat, and the hull's far facets lay across the patch and were kept as duplicates
   (86 of 232 failed). `sphere_with_holes_scattered` adds a coarse scatter inside holes, two margins from every loop vertex (conformity
   untouched); `sphere_with_holes` (bores) is unchanged. Corners were never the problem.
+* **S1 RESULT (done):** `ball_box::keep` builds ball AND box at any orientation: planar pieces (rectangle intersect disk, from the
+  region's arcs and the rectangle's clipped edges), one `SphTrim::Hull` sphere face, welded, then checked against the independent
+  numerical overlap volume (1e-7 of the ball), edge-use counts, translation invariance and a closed mesh. Exact face areas assemble the
+  oracle volume to 1e-13 of the ball over 145 random boxes; through the public `boolean`, 77 of 77 clean crossings build. Pair family:
+  764 to 773 agree, 0 wrong. Three things beyond the plan were needed: (1) the hull mesher needs every boundary arc sampled UNIFORMLY with
+  one step length (an arc of a smaller circle sampled at the same angle step, or with the extreme-angle samples `curve_points` injects,
+  puts a short edge beside a long one at a corner and the long edge leaves the hull); (2) the sphere's axis points that belong to the face
+  must be mesh vertices or the mesh bounding box falls short of the exact one (caught as a `WRONG-BBOX-ONLY` census record), added when
+  outside every loop edge's diametral cap; (3) `mesh_solid` now retries at finer chords when the first attempt gives nothing, as it
+  already did for an open mesh. `sphere_hull::sphere_with_holes_scattered` (a coarse scatter in the holes) was P0's one change.
 * **S1, `keep` (ball and box):** `SphTrim::Hull`, faces, mesh, STEP refusal as for other sphere trims. One connected region.
 * **S2, `cut` (A - B):** the sphere outside X; a prism through gives two holes.
 * **S3, `join`, and `cut` (B - A):** the rectangle-minus-disk faces: the part that can be several pieces.

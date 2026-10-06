@@ -612,6 +612,11 @@ fn sphere_face_contains(sp: &crate::geom::SphereSurf, q: Vec3) -> bool {
             }
         }
         // Inside the bore cylinder (either end) the sphere face does not exist.
+        crate::geom::SphTrim::Hull(h) => {
+            if !h.contains(w) {
+                return false;
+            }
+        }
         crate::geom::SphTrim::Bore { .. } | crate::geom::SphTrim::Bores { .. } => {
             let e1 = normalize(sp.e1);
             let (x, y, z) = (dot(w, e1), dot(w, cross(normalize(sp.axis), e1)), dot(w, normalize(sp.axis)));
@@ -5708,7 +5713,7 @@ pub(crate) fn boolean_built(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> 
 /// Whether a mesh of the solid is closed at any of a few chord tolerances (0.3, 0.1 and 0.03
 /// percent of its size). An open mesh at every one of them is a real open seam, not a
 /// tolerance artefact, and an STL of it would break.
-fn mesh_is_closed_coarse(s: &TSolid) -> bool {
+pub(crate) fn mesh_is_closed_coarse(s: &TSolid) -> bool {
     let bb = build::solid_aabb(s);
     let diag = crate::math::len(sub(bb.hi, bb.lo));
     [0.003, 0.001, 0.0003].iter().any(|k| match crate::mesh::mesh_solid(s, (k * diag).max(0.005)) {
@@ -5724,6 +5729,9 @@ fn boolean_legacy(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
  }
  if has_cross_trim(a) || has_cross_trim(b) {
  return None;
+ }
+ if let Some(r) = crate::ball_box::ball_box_boolean(op, a, b) {
+ return Some(r);
  }
  if let Some(r) = cylinder_cross_bore(op, a, b) {
  return volume_is_translation_invariant(&r).then_some(r);

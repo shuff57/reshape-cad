@@ -217,6 +217,40 @@ impl Region {
         v
     }
 
+    /// Points of the closed face whose bounding box is the face's: every arc's end points, the point of each arc that is extreme along a
+    /// coordinate axis (if it lies on the arc), and the sphere's six axis points that belong to the face (`inside`: the region, else its
+    /// complement). Exact; a sampled bound could fall short of the true extreme.
+    pub fn extent_points(&self, inside: bool) -> Vec<Vec3> {
+        let mut out = Vec::new();
+        for l in self.all_loops() {
+            for a in &l {
+                let ci = self.circles[a.plane].as_ref().unwrap();
+                out.push(ci.at(a.from));
+                out.push(ci.at(a.to));
+                for i in 0..3 {
+                    let t0 = ci.e2[i].atan2(ci.e1[i]); // the maximum along axis i; +PI is the minimum
+                    for t in [t0, t0 + PI] {
+                        // t on the arc [to, from] modulo a turn
+                        let rel = (a.from - t).rem_euclid(TAU);
+                        if rel <= a.from - a.to {
+                            out.push(ci.at(t));
+                        }
+                    }
+                }
+            }
+        }
+        for i in 0..3 {
+            for sg in [1.0, -1.0] {
+                let mut p = [0.0; 3];
+                p[i] = sg * self.r;
+                if inside_all(&self.halves, p) == inside {
+                    out.push(p);
+                }
+            }
+        }
+        out
+    }
+
     /// `int n dA` over the region (the vector area, `n` the outward normal), by Stokes: half the sum over the boundary of `r x dr`.
     /// Exact: each arc integrates in closed form.
     pub fn vector_area(&self) -> Vec3 {
@@ -370,6 +404,319 @@ pub fn overlap_volume(r: f64, centre: Vec3, axes: [Vec3; 3], half: [f64; 3]) -> 
     acc
 }
 
+
+// ---------------------------------------------------------------------------
+// The builder: a ball and a box as B-rep (S1, `keep`).
+// ---------------------------------------------------------------------------
+
+use crate::build::{TFace, TSolid};
+use crate::geom::{Curve, HullTrim, Plane, SphTrim, SphereSurf, Surface};
+use crate::topo::{self, Pcurve, Shell, Solid, Wire};
+use std::cell::RefCell;
+use std::rc::Rc;
+
+/// A whole ball: one sphere face, untrimmed.
+#[derive(Clone, Copy, Debug)]
+pub struct BallSpec {
+    pub c: Vec3,
+    pub r: f64,
+}
+
+/// A box of any orientation: orthonormal right-handed axes, centre, half sizes.
+#[derive(Clone, Copy, Debug)]
+pub struct BoxSpec {
+    pub c: Vec3,
+    pub axes: [Vec3; 3],
+    pub half: [f64; 3],
+}
+
+pub fn as_ball(s: &TSolid) -> Option<BallSpec> {
+    let faces = s.faces();
+    if faces.len() != 1 {
+        return None;
+    }
+    let f = faces[0].borrow();
+    let Surface::Sphere(sp) = &f.surface else { return None };
+    if !sp.trim.is_none() || (sp.u_range[1] - sp.u_range[0] - TAU).abs() > 1e-9 || sp.v_range[0].abs() > 1e-9 || (sp.v_range[1] - PI).abs() > 1e-9 {
+        return None;
+    }
+    Some(BallSpec { c: sp.center, r: sp.radius })
+}
+
+pub fn as_box(s: &TSolid) -> Option<BoxSpec> {
+    let faces = s.faces();
+    if faces.len() != 6 || s.shells.len() != 1 {
+        return None;
+    }
+    let mut normals: Vec<Vec3> = Vec::new();
+    for f in &faces {
+        let fb = f.borrow();
+        let Surface::Plane(p) = &fb.surface else { return None };
+        let n = p.n;
+        if !normals.iter().any(|m| len(cross(*m, n)) < 1e-9) {
+            normals.push(normalize(n));
+        }
+    }
+    if normals.len() != 3 {
+        return None;
+    }
+    let mut axes = [normals[0], normals[1], normals[2]];
+    for i in 0..3 {
+        for j in (i + 1)..3 {
+            if dot(axes[i], axes[j]).abs() > 1e-9 {
+                return None;
+            }
+        }
+    }
+    if dot(cross(axes[0], axes[1]), axes[2]) < 0.0 {
+        axes[2] = scale(axes[2], -1.0);
+    }
+    let verts = s.vertices();
+    if verts.len() != 8 {
+        return None;
+    }
+    let (mut centre, mut half) = ([0.0; 3], [0.0; 3]);
+    for k in 0..3 {
+        let proj: Vec<f64> = verts.iter().map(|v| dot(axes[k], v.borrow().point)).collect();
+        let (lo, hi) = (proj.iter().cloned().fold(f64::INFINITY, f64::min), proj.iter().cloned().fold(f64::NEG_INFINITY, f64::max));
+        half[k] = 0.5 * (hi - lo);
+        centre = add(centre, scale(axes[k], 0.5 * (hi + lo)));
+    }
+    if half.iter().any(|h| *h < 1e-9) {
+        return None;
+    }
+    // exactly a cuboid: the volume of the solid is the volume of its box
+    let v = crate::build::solid_volume(s);
+    if (v - 8.0 * half[0] * half[1] * half[2]).abs() > 1e-9 * v {
+        return None;
+    }
+    Some(BoxSpec { c: centre, axes, half })
+}
+
+/// One piece of a planar face's boundary, in the ball's frame.
+enum Item {
+    Seg(Vec3, Vec3),
+    /// An arc of the plane's circle, counter-clockwise about the plane's outward normal, from one point to another.
+    Arc(Vec3, Vec3, f64),
+    /// The whole circle, from its start point.
+    Circle(Vec3),
+}
+
+/// The boundary of the part of box face `i` inside the ball (the rectangle intersected with the disk), counter-clockwise about the
+/// face's outward normal. `Ok(None)`: no area. `Err`: a degenerate contact (an edge tangent to the circle, a corner on the sphere).
+fn face_piece(r: f64, halves: &[Half], bx: &BoxSpec, i: usize) -> Result<Option<Vec<Item>>, &'static str> {
+    let Some(ci) = circle_of(&halves[i], r) else { return Ok(None) };
+    let (k, sgn) = (i / 2, if i % 2 == 0 { 1.0 } else { -1.0 });
+    let (m, n) = ((k + 1) % 3, (k + 2) % 3);
+    let rc = add(bx.c, scale(bx.axes[k], sgn * bx.half[k]));
+    let signs: [(f64, f64); 4] = if sgn > 0.0 { [(-1.0, -1.0), (1.0, -1.0), (1.0, 1.0), (-1.0, 1.0)] } else { [(-1.0, -1.0), (-1.0, 1.0), (1.0, 1.0), (1.0, -1.0)] };
+    let corners: Vec<Vec3> = signs.iter().map(|&(a, b)| add(rc, add(scale(bx.axes[m], a * bx.half[m]), scale(bx.axes[n], b * bx.half[n])))).collect();
+    let tol = 1e-9 * r;
+    let mut segs: Vec<(Vec3, Vec3)> = Vec::new();
+    for j in 0..4 {
+        let (p, q) = (corners[j], corners[(j + 1) % 4]);
+        let d = sub(q, p);
+        let w = sub(p, ci.c);
+        let (a, b, c) = (dot(d, d), 2.0 * dot(d, w), dot(w, w) - ci.rho * ci.rho);
+        let disc = b * b - 4.0 * a * c;
+        if disc.abs() < 1e-12 * b * b.max(1.0) && c.abs() < 1e-3 * r * r {
+            return Err("a box edge is tangent to the ball's circle");
+        }
+        if disc <= 0.0 {
+            continue;
+        }
+        let sq = disc.sqrt();
+        let (u0, u1) = ((-b - sq) / (2.0 * a), (-b + sq) / (2.0 * a));
+        let (lo, hi) = (u0.max(0.0), u1.min(1.0));
+        if hi - lo <= 1e-12 {
+            continue;
+        }
+        // a corner exactly on the circle is a degenerate contact
+        for u in [u0, u1] {
+            if u.abs() < 1e-9 || (u - 1.0).abs() < 1e-9 {
+                return Err("a box corner lies on the sphere");
+            }
+        }
+        segs.push((add(p, scale(d, lo)), add(p, scale(d, hi))));
+    }
+    if segs.is_empty() {
+        // the circle inside the rectangle, or the disk clear of it
+        let off = sub(ci.c, rc);
+        let (dm, dn) = (dot(bx.axes[m], off).abs(), dot(bx.axes[n], off).abs());
+        if dm + ci.rho < bx.half[m] && dn + ci.rho < bx.half[n] {
+            return Ok(Some(vec![Item::Circle(ci.at(0.0))]));
+        }
+        return Ok(None);
+    }
+    let angle = |p: Vec3| dot(sub(p, ci.c), ci.e2).atan2(dot(sub(p, ci.c), ci.e1));
+    let mut items = Vec::new();
+    for j in 0..segs.len() {
+        let (a, b) = segs[j];
+        items.push(Item::Seg(a, b));
+        let next = segs[(j + 1) % segs.len()].0;
+        if len(sub(b, next)) > tol {
+            let sweep = (angle(next) - angle(b)).rem_euclid(TAU);
+            if sweep < 1e-9 {
+                return Err("an arc of no length");
+            }
+            items.push(Item::Arc(b, next, sweep));
+        }
+    }
+    Ok(Some(items))
+}
+
+struct Verts(Vec<topo::VertexRef>, f64);
+impl Verts {
+    fn at(&mut self, p: Vec3) -> topo::VertexRef {
+        for v in &self.0 {
+            if len(sub(v.borrow().point, p)) < self.1 {
+                return v.clone();
+            }
+        }
+        let v = topo::vertex(p);
+        self.0.push(v.clone());
+        v
+    }
+}
+
+fn pc(plane: &Plane, a: Vec3, b: Vec3, mid: Vec3) -> Pcurve {
+    Pcurve { start: plane.project(a), end: plane.project(b), mid: plane.project(mid) }
+}
+
+/// The planar face for box face `i`: its boundary items, in world coordinates (`o` is the ball's centre).
+fn planar_face(r: f64, halves: &[Half], i: usize, items: &[Item], o: Vec3) -> Option<TFace> {
+    let ci = circle_of(&halves[i], r)?;
+    let w = |p: Vec3| add(p, o);
+    let plane = Plane::new(w(ci.c), halves[i].n);
+    let mut verts = Verts(Vec::new(), 1e-9 * r);
+    let mut uses = Vec::new();
+    for it in items {
+        match it {
+            Item::Seg(a, b) => {
+                let (va, vb) = (verts.at(w(*a)), verts.at(w(*b)));
+                let curve = Curve::Segment { a: w(*a), b: w(*b) };
+                let mid = curve.point_at(0.5);
+                uses.push(topo::EdgeUse { edge: topo::edge(va, vb, true, curve), forward: true, pcurve: pc(&plane, w(*a), w(*b), mid) });
+            }
+            Item::Arc(a, b, sweep) => {
+                let (va, vb) = (verts.at(w(*a)), verts.at(w(*b)));
+                let curve = Curve::Arc { center: w(ci.c), radius: ci.rho, normal: ci.n, x_axis: normalize(sub(*a, ci.c)), sweep: *sweep };
+                let mid = curve.point_at(0.5);
+                uses.push(topo::EdgeUse { edge: topo::edge(va, vb, true, curve), forward: true, pcurve: pc(&plane, w(*a), w(*b), mid) });
+            }
+            Item::Circle(a) => {
+                let va = verts.at(w(*a));
+                let curve = Curve::Arc { center: w(ci.c), radius: ci.rho, normal: ci.n, x_axis: normalize(sub(*a, ci.c)), sweep: TAU };
+                let mid = curve.point_at(0.5);
+                uses.push(topo::EdgeUse { edge: topo::edge(va.clone(), va, true, curve), forward: true, pcurve: pc(&plane, w(*a), w(*a), mid) });
+            }
+        }
+    }
+    let (mut lo, mut hi) = ([f64::INFINITY; 2], [f64::NEG_INFINITY; 2]);
+    for u in &uses {
+        for q in [u.pcurve.start, u.pcurve.end, u.pcurve.mid] {
+            for k in 0..2 {
+                lo[k] = lo[k].min(q[k]);
+                hi[k] = hi[k].max(q[k]);
+            }
+        }
+    }
+    Some(crate::build::make_face(Surface::Plane(plane), [[lo[0], hi[0]], [lo[1], hi[1]]], uses))
+}
+
+/// The sphere face: one wire per loop of the region, its arcs traversed with the face's material on the left.
+fn sphere_face(rg: &Region, halves: &[Half], o: Vec3, inside: bool) -> Option<TFace> {
+    let r = rg.r;
+    let w = |p: Vec3| add(p, o);
+    let mut wires = Vec::new();
+    let mut all: Vec<Vec<ArcRef>> = rg.whole.iter().map(|&i| vec![ArcRef { plane: i, from: TAU, to: 0.0 }]).collect();
+    all.extend(rg.loops.iter().cloned());
+    for l in &all {
+        let mut verts = Verts(Vec::new(), 1e-9 * r);
+        let mut uses = Vec::new();
+        for a in l {
+            let ci = rg.circles[a.plane].as_ref()?;
+            let (pa, pb) = (ci.at(a.from), ci.at(a.to));
+            let (va, vb) = (verts.at(w(pa)), verts.at(w(pb)));
+            // decreasing angle about n is counter-clockwise about -n
+            let curve = Curve::Arc { center: w(ci.c), radius: ci.rho, normal: scale(ci.n, -1.0), x_axis: normalize(sub(pa, ci.c)), sweep: a.from - a.to };
+            let mid = curve.point_at(0.5);
+            let _ = mid;
+            uses.push(topo::EdgeUse { edge: topo::edge(va, vb, true, curve), forward: true, pcurve: Pcurve { start: [0.0; 2], end: [0.0; 2], mid: [0.0; 2] } });
+        }
+        wires.push(Rc::new(RefCell::new(Wire { edges: uses })));
+    }
+    let mut planes = [[0.0; 4]; 6];
+    for (k, h) in halves.iter().enumerate().take(6) {
+        planes[k] = [h.n[0], h.n[1], h.n[2], h.d];
+    }
+    let e1 = normalize(cross([0.0, 0.0, 1.0], [1.0, 0.0, 0.0]));
+    let sp = SphereSurf {
+        center: o,
+        radius: r,
+        axis: [0.0, 0.0, 1.0],
+        e1,
+        e2: cross([0.0, 0.0, 1.0], e1),
+        u_range: [0.0, TAU],
+        v_range: [0.0, PI],
+        trim: SphTrim::Hull(HullTrim { n: halves.len().min(6) as u8, planes, inside }),
+    };
+    Some(Rc::new(RefCell::new(topo::Face { boundary: wires, forward: true, surface: Surface::Sphere(sp), uv_domain: [[0.0, TAU], [0.0, PI]] })))
+}
+
+/// `ball AND box` as a solid (S1). `None` when the pair is not a clean crossing: no boundary (one inside the other, or apart),
+/// a degenerate contact, or a result the checks below cannot vouch for.
+pub fn keep(ball: &BallSpec, bx: &BoxSpec) -> Option<TSolid> {
+    let r = ball.r;
+    let c = sub(bx.c, ball.c);
+    let halves = box_halves(c, bx.axes, bx.half);
+    let rg = region(r, &halves).ok()?;
+    if rg.is_boundaryless() {
+        return None;
+    }
+    let bxl = BoxSpec { c, axes: bx.axes, half: bx.half };
+    let mut faces: Vec<TFace> = Vec::new();
+    for i in 0..6 {
+        let items = face_piece(r, &halves, &bxl, i).ok()?;
+        if let Some(items) = items {
+            faces.push(planar_face(r, &halves, i, &items, ball.c)?);
+        }
+    }
+    faces.push(sphere_face(&rg, &halves, ball.c, true)?);
+    crate::ops::drop_degenerate_faces(&mut faces);
+    crate::ops::split_t_junctions(&mut faces);
+    crate::ops::weld_shared_edges(&mut faces);
+    if crate::ops::edge_use_counts(&faces).values().any(|&n| n != 2) || !crate::ops::unmatched_once_edges(&faces).is_empty() {
+        return None;
+    }
+    let solid = Solid { shells: vec![Rc::new(RefCell::new(Shell { faces }))] };
+    let want = overlap_volume(r, c, bx.axes, bx.half);
+    let got = crate::build::solid_volume(&solid);
+    let vball = 4.0 / 3.0 * PI * r * r * r;
+    if !(got.is_finite()) || (got - want).abs() > 1e-7 * vball {
+        return None;
+    }
+    if !crate::ops::volume_is_translation_invariant(&solid) || !crate::ops::mesh_is_closed_coarse(&solid) {
+        return None;
+    }
+    Some(solid)
+}
+
+/// The boolean entry: a whole ball against a cuboid, in either order. Only `intersect` so far.
+pub fn ball_box_boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
+    let (ball, bx) = match (as_ball(a), as_box(b)) {
+        (Some(x), Some(y)) => (x, y),
+        _ => match (as_box(a), as_ball(b)) {
+            (Some(y), Some(x)) => (x, y),
+            _ => return None,
+        },
+    };
+    match op {
+        "intersect" => keep(&ball, &bx),
+        _ => None,
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -442,7 +789,7 @@ mod tests {
                 let in_hole = |q: Vec3| inside_all(&halves, q) != keep_inside;
                 let want = if keep_inside { want_in } else { 4.0 * PI * r * r - want_in };
                 // the loops are traversed with the box's inside on the left, so for the outside part the same polylines bound it
-                match sphere_with_holes_scattered([0.0; 3], r, &loops, &in_hole, 1.2, true) {
+                match sphere_with_holes_scattered([0.0; 3], r, &loops, &in_hole, 1.2, true, &[]) {
                     Some(tris) => {
                         meshed += 1;
                         let area: f64 = tris.iter().map(tri_area).sum();
@@ -518,5 +865,72 @@ mod tests {
         assert!((disk_rect_area(2.0, -0.5, 0.5, -0.5, 0.5) - 1.0).abs() < 1e-12, "rectangle inside the disk");
         assert!((disk_rect_area(3.0, 0.0, 9.0, -9.0, 9.0) - pi * 4.5).abs() < 1e-12, "a half disk");
         assert!((disk_rect_area(3.0, 0.0, 9.0, 0.0, 9.0) - pi * 9.0 / 4.0).abs() < 1e-12, "a quarter");
+    }
+
+    /// A rotated, moved box as a kernel solid.
+    fn box_solid_at(c: Vec3, axes: [Vec3; 3], half: [f64; 3]) -> TSolid {
+        let b = crate::build::box_solid([2.0 * half[0], 2.0 * half[1], 2.0 * half[2]], [0.0; 3], None);
+        let m = [[axes[0][0], axes[1][0], axes[2][0]], [axes[0][1], axes[1][1], axes[2][1]], [axes[0][2], axes[1][2], axes[2][2]]];
+        crate::build::transform_solid(&b, &crate::math::Transform { m, t: c })
+    }
+
+    /// S1 end to end through the public boolean: a ball and a box at random orientations. Every build equals the numerical overlap volume
+    /// (the solid's own volume comes from the exact faces), is a closed mesh, and the pair is refused only when the contact is degenerate.
+    #[test]
+    fn s1_keep_ball_and_box_builds_the_exact_overlap() {
+        let r = 10.0;
+        let mut rng = Rng(23);
+        let (mut with_boundary, mut built, mut worst) = (0, 0, 0.0f64);
+        let mut misses: Vec<String> = Vec::new();
+        for _ in 0..80 {
+            let axes = random_axes(&mut rng);
+            let half = [rng.range(0.15, 1.1) * r, rng.range(0.15, 1.1) * r, rng.range(0.15, 1.1) * r];
+            let ball_c = [rng.range(-5.0, 5.0), rng.range(-5.0, 5.0), rng.range(-5.0, 5.0)];
+            let rel = [rng.range(-1.1, 1.1) * r, rng.range(-1.1, 1.1) * r, rng.range(-1.1, 1.1) * r];
+            let bc = add(ball_c, rel);
+            let halves = box_halves(rel, axes, half);
+            let Ok(rg) = region(r, &halves) else { continue };
+            if rg.is_boundaryless() {
+                continue;
+            }
+            with_boundary += 1;
+            let ball = crate::build::sphere_solid(ball_c, r, [0.0, 0.0, 1.0]);
+            let bx = box_solid_at(bc, axes, half);
+            match crate::ops::boolean("intersect", &ball, &bx) {
+                Some(res) => {
+                    built += 1;
+                    let want = overlap_volume(r, rel, axes, half);
+                    let got = crate::build::solid_volume(&res);
+                    let vball = 4.0 / 3.0 * PI * r * r * r;
+                    worst = worst.max((got - want).abs() / vball);
+                    assert!((got - want).abs() < 1e-6 * vball, "volume {got} vs {want} for box c={rel:?} half={half:?}");
+                    assert!(crate::ops::mesh_is_closed_coarse(&res), "the mesh is closed");
+                    // the mesh reaches the analytic bounding box (the sphere's own extreme points are in it)
+                    let bbm = crate::build::solid_aabb(&res);
+                    let diag = len(sub(bbm.hi, bbm.lo));
+                    let m = match crate::mesh::mesh_solid(&res, 0.003 * diag) {
+                        Some(m) => m,
+                        None => {
+                            let tried: Vec<bool> = [0.003, 0.002, 0.001, 0.0005, 0.0003].iter().map(|k| crate::mesh::mesh_solid(&res, k * diag).is_some()).collect();
+                            panic!("does not mesh at 0.003 diag ({diag}); at 0.003/0.002/0.001/0.0005/0.0003: {tried:?}; box c={rel:?} half={half:?}")
+                        }
+                    };
+                    for k in 0..3 {
+                        let (lo, hi) = m.positions.iter().fold((f64::INFINITY, f64::NEG_INFINITY), |(l, h), p| (l.min(p[k]), h.max(p[k])));
+                        let slack = 2.0 * 0.003 * diag; // the mesh is chordal: it may fall short of an extreme that sits close to a loop
+                        assert!(lo <= bbm.lo[k] + slack && hi >= bbm.hi[k] - slack, "axis {k}: mesh [{lo}, {hi}] vs box [{}, {}]", bbm.lo[k], bbm.hi[k]);
+                    }
+                    let bb = crate::build::solid_aabb(&res);
+                    assert!((0..3).all(|k| bb.lo[k] >= ball_c[k] - r - 1e-6 && bb.hi[k] <= ball_c[k] + r + 1e-6), "inside the ball's box");
+                }
+                None => misses.push(format!("c={rel:?} half={half:?} planes crossing={}", rg.circles.iter().flatten().count())),
+            }
+        }
+        eprintln!("S1 keep: {with_boundary} with a boundary, {built} built, worst volume error {worst:.2e}");
+        for m in misses.iter().take(6) {
+            eprintln!("  miss {m}");
+        }
+        assert!(with_boundary >= 30);
+        assert!(built * 100 >= with_boundary * 95, "at least 95% of clean crossings build");
     }
 }

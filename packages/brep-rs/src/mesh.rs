@@ -1732,6 +1732,68 @@ fn mesh_sphere_bores(
     Some(())
 }
 
+/// A sphere carved by a box (SPEC-brep-ball-box.md): its loops are chains of arc edges, joined at corners. The hull mesher
+/// triangulates the sphere between them, with a coarse scatter inside the holes (the part kept can be a small patch).
+fn mesh_sphere_hull(
+    face: &TFace,
+    edges_cache: &HashMap<usize, Vec<Vec3>>,
+    out: &mut MeshBuilder,
+    defl: f64,
+    sp: &crate::geom::SphereSurf,
+    h: &crate::geom::HullTrim,
+) -> Option<()> {
+    use crate::math::sub;
+    let mut loops: Vec<Vec<Vec3>> = Vec::new();
+    for w in &face.borrow().boundary {
+        let mut pts: Vec<Vec3> = Vec::new();
+        for u in &w.borrow().edges {
+            let mut p = use_polyline(u, edges_cache, defl);
+            if !u.forward {
+                p.reverse();
+            }
+            p.pop(); // the end is the next edge's start
+            pts.extend(p);
+        }
+        if pts.len() < 3 {
+            return None;
+        }
+        loops.push(pts);
+    }
+    let (c, big) = (sp.center, sp.radius);
+    let in_hole = |q: Vec3| !h.contains(sub(q, c));
+    // the sphere's axis points that belong to the face: the face's bounding box reaches them
+    let mut poles: Vec<Vec3> = Vec::new();
+    for i in 0..3 {
+        for sg in [1.0, -1.0] {
+            let mut q = c;
+            q[i] += sg * big;
+            if !in_hole(q) {
+                poles.push(q);
+            }
+        }
+    }
+    // Whether a loop edge stays a hull edge depends on where the interior lattice happens to fall; another spacing is another lattice.
+    let base = 0.7 * big * angle_step(big, defl);
+    let tris = [1.0, 0.87, 1.15, 0.76, 1.32, 0.67, 1.5, 0.6, 1.7]
+        .iter()
+        .find_map(|k| crate::sphere_hull::sphere_with_holes_scattered(c, big, &loops, &in_hole, base * k, true, &poles))?;
+    let flip = !face.borrow().forward;
+    let start = out.indices.len();
+    for t in tris {
+        let ids = if flip { [out.push(t[0]), out.push(t[2]), out.push(t[1])] } else { [out.push(t[0]), out.push(t[1]), out.push(t[2])] };
+        if ids[0] == ids[1] || ids[1] == ids[2] || ids[0] == ids[2] {
+            continue;
+        }
+        out.indices.extend_from_slice(&ids);
+    }
+    let count = out.indices.len() - start;
+    if count == 0 {
+        return None;
+    }
+    out.faces.push((start, count));
+    Some(())
+}
+
 fn mesh_face(
     face: &TFace,
     edges_cache: &HashMap<usize, Vec<Vec3>>,
@@ -1749,6 +1811,10 @@ fn mesh_face(
     // rectangle: the structured grid would cover the whole parameter square
     // (including the removed caps), so route it to the band tessellator.
     if let crate::geom::Surface::Sphere(sp) = &face.borrow().surface {
+        if let crate::geom::SphTrim::Hull(h) = sp.trim {
+            let (sp, h) = (sp.clone(), h);
+            return mesh_sphere_hull(face, edges_cache, out, defl, &sp, &h);
+        }
         // A bored sphere: its boundary is the bores' meeting curves, one closed hole per end.
         if sp.trim.is_bored() {
             let surface = face.borrow().surface.clone();
@@ -1822,7 +1888,15 @@ pub(crate) fn mesh_is_closed(m: &Mesh) -> bool {
 /// or overlaps triangles, leaving the mesh open. When the first attempt is not closed it is
 /// retried at a third, then a ninth, of the tolerance; the first attempt stands if none closes.
 pub fn mesh_solid(solid: &TSolid, defl: f64) -> Option<Mesh> {
-    let first = mesh_solid_once(solid, defl)?;
+    let Some(first) = mesh_solid_once(solid, defl) else {
+        // A face the mesher cannot hold at this chord (a box-carved sphere's loops, say) may be fine at a finer one.
+        for k in [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1] {
+            if let Some(m) = mesh_solid_once(solid, defl * k) {
+                return Some(m);
+            }
+        }
+        return None;
+    };
     if mesh_is_closed(&first) {
         return Some(first);
     }
@@ -2150,11 +2224,59 @@ fn near_tangent_circles(solid: &TSolid, defl: f64) -> Vec<TightCircle> {
     out
 }
 
+/// The arcs that bound a box-carved sphere (SPEC-brep-ball-box.md) meet at corners, and the hull mesher holds a loop edge only while
+/// no other loop vertex sits in its diametral cap. Two things break that at a corner: arcs of different radii sampled at one ANGLE
+/// step have different LENGTHS, and the extra samples `curve_points` injects at coordinate extremes put a short edge beside a long one.
+/// So every such arc is sampled uniformly, with the same step LENGTH: the smallest any of them needs for the tolerance.
+/// `(edge key, step length)`.
+fn hull_arc_steps(solid: &TSolid, defl: f64) -> HashMap<usize, f64> {
+    let mut arcs: Vec<(usize, f64)> = Vec::new();
+    for f in solid.faces() {
+        let fb = f.borrow();
+        let crate::geom::Surface::Sphere(sp) = &fb.surface else { continue };
+        if !sp.trim.is_hull() {
+            continue;
+        }
+        for w in &fb.boundary {
+            for u in &w.borrow().edges {
+                if let Curve::Arc { radius, .. } = &u.edge.borrow().curve {
+                    arcs.push((std::rc::Rc::as_ptr(&u.edge) as *const () as usize, *radius));
+                }
+            }
+        }
+    }
+    let step = arcs.iter().map(|&(_, r)| r * angle_step(r, defl)).fold(f64::INFINITY, f64::min);
+    if step.is_finite() {
+        arcs.into_iter().map(|(k, _)| (k, step)).collect()
+    } else {
+        HashMap::new()
+    }
+}
+
+/// An arc sampled at equal angles with no more than `step` of length between samples, and nothing else.
+fn uniform_arc_polyline(c: &Curve, step: f64) -> Option<Vec<Vec3>> {
+    let Curve::Arc { center, radius, normal, x_axis, sweep } = c else { return None };
+    let n = ((radius * sweep.abs() / step).ceil() as usize).max(2);
+    let x = crate::math::normalize(*x_axis);
+    let y = crate::math::normalize(cross(*normal, x));
+    Some((0..=n).map(|i| {
+        let a = *sweep * i as f64 / n as f64;
+        crate::math::add(*center, crate::math::add(crate::math::scale(x, radius * a.cos()), crate::math::scale(y, radius * a.sin())))
+    }).collect())
+}
+
 fn mesh_solid_once(solid: &TSolid, defl: f64) -> Option<Mesh> {
     let mut edges_cache: HashMap<usize, Vec<Vec3>> = HashMap::new();
     let tight = near_tangent_circles(solid, defl);
+    let hull_steps = hull_arc_steps(solid, defl);
     for e in solid.edges() {
         let k = std::rc::Rc::as_ptr(&e) as *const () as usize;
+        if let Some(step) = hull_steps.get(&k) {
+            if let Some(poly) = uniform_arc_polyline(&e.borrow().curve, *step) {
+                edges_cache.insert(k, poly);
+                continue;
+            }
+        }
         let d = match &e.borrow().curve {
             Curve::Arc { center, radius, normal, .. } | Curve::Circle { center, radius, normal } if !tight.is_empty() => tight_lookup(&tight, *center, *radius, *normal),
             _ => None,

@@ -142,9 +142,11 @@ pub fn sphere_with_holes(
     in_hole: &dyn Fn(Vec3) -> bool,
     spacing: f64,
 ) -> Option<Vec<[Vec3; 3]>> {
-    sphere_with_holes_scattered(c, big, loops, in_hole, spacing, false)
+    sphere_with_holes_scattered(c, big, loops, in_hole, spacing, false, &[])
 }
 
+/// `must_have` are points that belong in the mesh (a face's sphere poles, so its bounding box is reached); each is used when it is in
+/// the face and clear of every loop vertex.
 /// `sphere_with_holes`, optionally with a coarse scatter of points inside the holes too. A hole that is most of the sphere
 /// (the part kept is a small patch) needs them: its loops are flat circles, and with no point on the hole side the hull's
 /// far facets lie flat across the patch and are kept as duplicates of it. The scatter is far from every loop vertex, so each
@@ -156,6 +158,7 @@ pub fn sphere_with_holes_scattered(
     in_hole: &dyn Fn(Vec3) -> bool,
     spacing: f64,
     scatter_holes: bool,
+    must_have: &[Vec3],
 ) -> Option<Vec<[Vec3; 3]>> {
     if loops.is_empty() || loops.iter().any(|l| l.len() < 3) {
         return None;
@@ -180,6 +183,26 @@ pub fn sphere_with_holes_scattered(
     let all_loop: Vec<Vec3> = loops.iter().flat_map(|l| l.iter().copied()).collect();
     let mut pts: Vec<Vec3> = all_loop.clone();
     let margin2 = margin * margin;
+    let mut all_loop = all_loop;
+    for q in must_have {
+        let d2 = |a: Vec3, b: Vec3| {
+            let d = sub(a, b);
+            dot(d, d)
+        };
+        // outside the diametral cap of every loop edge (centre the edge's midpoint, radius half its length), with a hair to spare:
+        // that is exactly what keeps each loop edge a hull edge
+        let in_a_cap = loops.iter().any(|l| {
+            (0..l.len()).any(|i| {
+                let (a, b) = (l[i], l[(i + 1) % l.len()]);
+                let m = scale(add(a, b), 0.5);
+                d2(m, *q) < 1.1 * 0.25 * d2(a, b)
+            })
+        });
+        if !in_hole(*q) && !in_a_cap {
+            pts.push(*q);
+            all_loop.push(*q);
+        }
+    }
     for k in 0..target {
         let z = 1.0 - 2.0 * (k as f64 + 0.5) / target as f64;
         let rho = (1.0 - z * z).max(0.0).sqrt();

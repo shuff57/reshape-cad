@@ -949,6 +949,39 @@ pub enum SphTrim {
     /// Several disjoint bores parallel to `axis`, each with its own offset `(x, y)` in the plane of `e1` and
     /// `e2 = axis x e1` (SPEC-brep-sphere-multi-bore.md). `n` of the `MAX_BORES` entries are in use.
     Bores { n: u8, h: [BoreHole; MAX_BORES] },
+    /// The part of the sphere inside (or, `inside: false`, outside) a convex polyhedron of up to six half-spaces `n . q <= d`,
+    /// `q` taken from the sphere's centre (SPEC-brep-ball-box.md). The boundary wires of the face are the arcs where the planes
+    /// meet the sphere.
+    Hull(HullTrim),
+}
+
+/// Up to six half-spaces `[nx, ny, nz, d]`, `n` a unit outward normal, `q` an offset from the sphere's centre.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct HullTrim {
+    pub n: u8,
+    pub planes: [[f64; 4]; 6],
+    pub inside: bool,
+}
+
+impl HullTrim {
+    pub fn halves(&self) -> Vec<crate::ball_box::Half> {
+        self.planes[..self.n as usize].iter().map(|p| crate::ball_box::Half { n: [p[0], p[1], p[2]], d: p[3] }).collect()
+    }
+    /// Whether the sphere point at offset `q` from the centre belongs to the face.
+    pub fn contains(&self, q: Vec3) -> bool {
+        crate::ball_box::inside_all(&self.halves(), q) == self.inside
+    }
+    /// The same trim after a transform of space (rotation, reflection, uniform scale).
+    pub fn transformed(&self, t: &crate::math::Transform) -> HullTrim {
+        let mut out = *self;
+        for k in 0..self.n as usize {
+            let p = self.planes[k];
+            let v = t.dir([p[0], p[1], p[2]]);
+            let l = crate::math::len(v);
+            out.planes[k] = [v[0] / l, v[1] / l, v[2] / l, p[3] * l];
+        }
+        out
+    }
 }
 
 /// At most this many bores on one sphere (the trim is `Copy`, so the list is a fixed array).
@@ -989,6 +1022,10 @@ impl SphTrim {
     /// True for a sphere carrying one bore or several.
     pub fn is_bored(&self) -> bool {
         matches!(self, SphTrim::Bore { .. } | SphTrim::Bores { .. })
+    }
+    /// True for a sphere carved by a convex polyhedron (a box).
+    pub fn is_hull(&self) -> bool {
+        matches!(self, SphTrim::Hull(_))
     }
 }
 
@@ -1143,6 +1180,21 @@ impl SphereSurf {
         add(self.center, add(add(scale(n, e + r * phi.cos()), scale(yh, r * phi.sin())), scale(d, sg * f)))
     }
 
+    /// Area and vector area (`int n dA`) of a hull-trimmed face, exactly; `None` when the trim is not a hull or its geometry degenerates.
+    pub fn hull_measure(&self) -> Option<(f64, Vec3)> {
+        let SphTrim::Hull(h) = self.trim else { return None };
+        let rg = crate::ball_box::region(self.radius, &h.halves()).ok()?;
+        if rg.is_boundaryless() {
+            return None;
+        }
+        let (a, v) = (rg.area(), rg.vector_area());
+        if !a.is_finite() {
+            return None;
+        }
+        let total = 4.0 * std::f64::consts::PI * self.radius * self.radius;
+        Some(if h.inside { (a, v) } else { (total - a, scale(v, -1.0)) })
+    }
+
     /// Whether the sphere point at `q` (an offset from the centre, on the sphere) lies inside one of the bores' holes.
     pub fn in_bore_hole(&self, q: Vec3) -> bool {
         let e1 = normalize(self.e1);
@@ -1238,7 +1290,10 @@ impl Surface {
                 e2: flip_e2(t, normalize(t.dir(s.e2))),
                 u_range: if t.reverses_handedness() { [two_pi - s.u_range[1], two_pi - s.u_range[0]] } else { s.u_range },
                 v_range: s.v_range,
-                trim: s.trim,
+                trim: match s.trim {
+                    SphTrim::Hull(h) => SphTrim::Hull(h.transformed(t)),
+                    other => other,
+                },
             }),
             Surface::Torus(s) => Surface::Torus(TorusSurf {
                 center: t.apply(s.center),
@@ -1410,6 +1465,14 @@ impl Surface {
                 }
             }
         }
+        if let Surface::Sphere(sp) = self {
+            if sp.trim.is_hull() {
+                return match sp.hull_measure() {
+                    Some((a, v)) => (a, scale(add(scale(sp.center, a), scale(v, sp.radius)), 1.0 / a)),
+                    None => (0.0, sp.center),
+                };
+            }
+        }
         let ([u0, u1], [v0, v1]) = self.domain();
         let s = self;
         let mut area = integrate11(|a, b| {
@@ -1430,7 +1493,7 @@ impl Surface {
         }
         if let Surface::Sphere(sp) = self {
             match sp.trim {
-                SphTrim::None => {}
+                SphTrim::None | SphTrim::Hull(_) => {} // a hull returned above
                 SphTrim::Square(h) => {
                     for pole in [1.0, -1.0] {
                         let (ca, _, csx) = sp.cap_measure(pole, h);
@@ -1492,6 +1555,15 @@ impl Surface {
                 }
             }
         }
+        if let Surface::Sphere(sp) = self {
+            if sp.trim.is_hull() {
+                // int p . n dA with p = c + R n: c . (vector area) + R * area
+                return match sp.hull_measure() {
+                    Some((a, v)) => dot(sp.center, v) + sp.radius * a,
+                    None => 0.0,
+                };
+            }
+        }
         let ([u0, u1], [v0, v1]) = self.domain();
         let s = self;
         let mut vt = integrate11(|a, b| {
@@ -1502,7 +1574,7 @@ impl Surface {
         });
         if let Surface::Sphere(sp) = self {
             match sp.trim {
-                SphTrim::None => {}
+                SphTrim::None | SphTrim::Hull(_) => {} // a hull returned above
                 SphTrim::Square(h) => {
                     for pole in [1.0, -1.0] {
                         let (_, cv, _) = sp.cap_measure(pole, h);
@@ -1756,6 +1828,24 @@ impl Surface {
                                 }
                             }
                             b.expand(best.1);
+                        }
+                    }
+                } else if let SphTrim::Hull(h) = s.trim {
+                    match crate::ball_box::region(s.radius, &h.halves()) {
+                        Ok(rg) if !rg.is_boundaryless() => {
+                            for q in rg.extent_points(h.inside) {
+                                b.expand(add(s.center, q));
+                            }
+                        }
+                        _ => {
+                            for i in 0..3 {
+                                let mut p = s.center;
+                                p[i] += s.radius;
+                                b.expand(p);
+                                let mut q = s.center;
+                                q[i] -= s.radius;
+                                b.expand(q);
+                            }
                         }
                     }
                 } else {
