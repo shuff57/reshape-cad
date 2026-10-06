@@ -1,6 +1,6 @@
 # SPEC: cone booleans (W3 of PLAN-kernel-next-2026-10-05.md)
 
-Status: S0 built 2026-10-06; S1 onward not started. Parent: `SPEC-brep-kernel-rs.md` section 4.5. Precedent: `SPEC-brep-ball-box.md`
+Status: S0 built 2026-10-06; S1 P0 (the mesh prototype) passed 2026-10-06; the kernel edits of S1 not started. Parent: `SPEC-brep-kernel-rs.md` section 4.5. Precedent: `SPEC-brep-ball-box.md`
 (the sphere track: its pre-check found that a third of the "gaps" needed no curve at all).
 
 ## Pre-check (2026-10-06, pair family seed 1, 1,500 scripts, after the sphere work; 669 refused)
@@ -89,3 +89,29 @@ parabolas) refused with their present sentence.
 Same guards as every boolean: edge-use counts, translation invariance, closed mesh, inclusion-exclusion with the partner operation,
 and an independent volume. S0 adds none of its own because it builds nothing new: it copies an operand. Its risk is a false "apart" or
 "inside", which is why both are proved with closed forms and fuzzed against sampled points.
+
+### P0 RESULT (done 2026-10-06, `cone_box.rs`, no kernel edits)
+
+The stop rule passes. For a cone and a box with a face square to its axis, the slanted face of `cone AND box` is a **ladder of columns**
+(a lower and an upper point per angle theta; the cone's generators are straight, so no interior points are needed) and every plane face is the
+**convex hull of the vertices on its plane** (the result is convex). On 2,066 random cone and box pairs (full-turn cases 336, boxes
+holding the apex 265, boxes cutting the base 739) every mesh is closed and consistently wound, with a volume within 7e-6 of the cone's
+volume of an independent integral (`disk_rect_area` over z), and doubling the lattice shrinks the error.
+
+Three things the prototype taught that the sketch above did not have:
+
+1. **Event angles must be computed, not found by bisection.** Where the binding bound on the generator changes, or the interval opens or
+   closes, is where two bounds on `w` are equal: `x/cos = W`, `y/sin = W`, `X/cos = Y/sin`, plus the angles where a plane through the axis
+   changes sides. Bisecting between lattice samples missed a second event inside one cell (a top plane meeting a hyperbola, then a pinch
+   a hair later) and left a gap. With the analytic list, each cell between consecutive stations is wholly empty or wholly non-empty, so
+   one test at its middle decides it.
+2. **One degeneracy rule for every face.** The ladder dropped triangles under an area tolerance while the hull dropped collinear points
+   under a different one; three points on a circle arc 2e-4 apart were a triangle in one and a line in the other, an open triangle. Drop
+   only what is exactly degenerate, the same way on both sides.
+3. **A result may have no slanted face at all** (a box wholly inside the cone's side, cut only by the base): that is a clipped box, not a
+   refusal.
+
+Not tested here, and still the work of S1 proper: exact curves (the prototype samples the hyperbola at lattice angles and joins faces by
+position, where the kernel needs a `Curve` variant whose edges are shared by handle), the `Cone` trim carried on the face, the
+outside operations (cone minus box, box minus cone, join: the plane faces are no longer convex, a face can be several pieces, and the
+result can be several lumps), STEP export, and the sentences for refusals.
