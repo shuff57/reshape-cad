@@ -6545,6 +6545,67 @@ fn full_turn_normal(c: &Curve) -> Option<Vec3> {
     }
 }
 
+/// The arcs a whole circle breaks into at the other faces' vertices that lie on it. `None` when
+/// no such vertex exists, or the edge is not a whole circle starting and ending at one point.
+fn split_full_circle(e: &topo::Edge<Curve3>, verts: &[topo::VertexRef], edges: &[topo::EdgeRef<Curve3>]) -> Option<Vec<topo::EdgeRef<Curve3>>> {
+    let (center, radius, normal, turn) = match &e.curve {
+        Curve::Circle { center, radius, normal } => (*center, *radius, *normal, *normal),
+        Curve::Arc { center, radius, normal, sweep, .. } if sweep.abs() >= TWO_PI - 1e-9 => (*center, *radius, *normal, scale(*normal, sweep.signum())),
+        _ => return None,
+    };
+    if !near3(e.a.borrow().point, e.b.borrow().point) {
+        return None;
+    }
+    // Only where a partial arc of this very circle already borders another face: that is the
+    // mismatch. A vertex that merely lies on the circle is no reason to cut it.
+    let n = normalize(normal);
+    let mut ends: Vec<topo::VertexRef> = Vec::new();
+    for o in edges {
+        let ob = o.borrow();
+        if let Curve::Arc { center: c2, radius: r2, normal: n2, sweep, .. } = &ob.curve {
+            if sweep.abs() < TWO_PI - 1e-9 && near3(*c2, center) && (r2 - radius).abs() < 1e-7 && crate::math::len(cross(normalize(*n2), n)) < 1e-9 {
+                ends.push(ob.a.clone());
+                ends.push(ob.b.clone());
+            }
+        }
+    }
+    if ends.is_empty() {
+        return None;
+    }
+    let start = e.a.borrow().point;
+    let x0 = normalize(sub(start, center));
+    let y0 = cross(normalize(turn), x0);
+    let mut on: Vec<(f64, topo::VertexRef)> = Vec::new();
+    let _ = verts;
+    for v in &ends {
+        let p = v.borrow().point;
+        let d = sub(p, center);
+        if dot(d, n).abs() > 1e-7 || (crate::math::len(d) - radius).abs() > 1e-7 || crate::math::len(sub(p, start)) < 1e-7 {
+            continue;
+        }
+        let ang = dot(d, y0).atan2(dot(d, x0)).rem_euclid(TWO_PI);
+        if ang > 1e-9 && ang < TWO_PI - 1e-9 && !on.iter().any(|(a, _)| (a - ang).abs() < 1e-9) {
+            on.push((ang, v.clone()));
+        }
+    }
+    if on.is_empty() {
+        return None;
+    }
+    on.sort_by(|x, y| x.0.partial_cmp(&y.0).unwrap_or(std::cmp::Ordering::Equal));
+    let mut chain = Vec::new();
+    let (mut prev, mut prev_ang) = (e.a.clone(), 0.0);
+    for (ang, v) in on.into_iter().chain(std::iter::once((TWO_PI, e.b.clone()))) {
+        let x_axis = normalize(sub(prev.borrow().point, center));
+        chain.push(topo::edge(prev.clone(), v.clone(), e.forward, Curve::Arc { center, radius, normal: normalize(turn), x_axis, sweep: ang - prev_ang }));
+        prev = v;
+        prev_ang = ang;
+    }
+    // Cut it only if that makes every piece one that a neighbour already has; a cut that leaves
+    // an odd piece out is a different mismatch, and not this one to repair.
+    let matched = chain.iter().all(|c| edges.iter().any(|o| !topo::same(o, c) && matches!(o.borrow().curve, Curve::Arc { .. }) && same_edge_geometry(&o.borrow(), &c.borrow())));
+    matched.then_some(chain)
+}
+
 /// Split every straight edge at the vertices of OTHER faces that lie strictly inside it (a
 /// T-junction), so that the neighbour that has the vertex and the face that does not end up
 /// with the same edge pieces. The geometry does not change by a hair: an edge becomes two or
@@ -6577,6 +6638,7 @@ pub(crate) fn split_t_junctions(faces: &mut [TFace]) -> bool {
     }
     // Per segment edge: the replacement chain, edge a to edge b.
     let mut chains: Vec<Option<Vec<topo::EdgeRef<Curve3>>>> = vec![None; edges.len()];
+    let mut circ = vec![false; edges.len()];
     let mut any = false;
     for (i, e) in edges.iter().enumerate() {
         let (ea, eb, fwd, is_seg) = {
@@ -6584,6 +6646,14 @@ pub(crate) fn split_t_junctions(faces: &mut [TFace]) -> bool {
             (eb_.a.clone(), eb_.b.clone(), eb_.forward, matches!(eb_.curve, Curve::Segment { .. }))
         };
         if !is_seg {
+            // A whole circle whose rim is touched, at points, by other faces' vertices (a tangent
+            // contact: a box wall meeting a cylinder rim along a line) becomes arcs between them,
+            // so the face that was split there and the face that was not share the same pieces.
+            if let Some(chain) = split_full_circle(&e.borrow(), &verts, &edges) {
+                chains[i] = Some(chain);
+                circ[i] = true;
+                any = true;
+            }
             continue;
         }
         let (pa, pb) = (ea.borrow().point, eb.borrow().point);
@@ -6637,6 +6707,32 @@ pub(crate) fn split_t_junctions(faces: &mut [TFace]) -> bool {
                 };
                 // The use runs start -> end in its own uv; each piece takes the share of that run
                 // its length is of the whole edge (the pcurve of a straight edge is linear).
+                if circ[idx] {
+                    let seq: Vec<&topo::EdgeRef<Curve3>> = if u.forward { chain.iter().collect() } else { chain.iter().rev().collect() };
+                    let surface = f.borrow().surface.clone();
+                    let sweeps: Vec<f64> = chain.iter().map(|c| if let Curve::Arc { sweep, .. } = &c.borrow().curve { sweep.abs() } else { 0.0 }).collect();
+                    let whole: f64 = sweeps.iter().sum();
+                    let mut acc = 0.0;
+                    for c in seq {
+                        let k = chain.iter().position(|x| topo::same(x, c)).unwrap_or(0);
+                        let (t0, t1) = (acc / whole, (acc + sweeps[k]) / whole);
+                        acc += sweeps[k];
+                        let lerp = |t: f64| [u.pcurve.start[0] + (u.pcurve.end[0] - u.pcurve.start[0]) * t, u.pcurve.start[1] + (u.pcurve.end[1] - u.pcurve.start[1]) * t];
+                        let pc = match &surface {
+                            // u is the angle round the axis, linear along a rim.
+                            Surface::Cylinder(_) => topo::Pcurve { start: lerp(t0), end: lerp(t1), mid: lerp((t0 + t1) / 2.0) },
+                            Surface::Plane(g) => {
+                                let ce = c.borrow();
+                                let (p0, p1) = if u.forward { (ce.a.borrow().point, ce.b.borrow().point) } else { (ce.b.borrow().point, ce.a.borrow().point) };
+                                let mid = ce.curve.point_at(0.5);
+                                topo::Pcurve { start: g.project(p0), end: g.project(p1), mid: g.project(mid) }
+                            }
+                            _ => topo::Pcurve { start: lerp(t0), end: lerp(t1), mid: lerp((t0 + t1) / 2.0) },
+                        };
+                        out.push(topo::EdgeUse { edge: c.clone(), forward: u.forward, pcurve: pc });
+                    }
+                    continue;
+                }
                 let total: f64 = chain.iter().map(|c| crate::math::len(sub(c.borrow().b.borrow().point, c.borrow().a.borrow().point))).sum();
                 let seq: Vec<&topo::EdgeRef<Curve3>> = if u.forward { chain.iter().collect() } else { chain.iter().rev().collect() };
                 let mut acc = 0.0;
@@ -10611,5 +10707,24 @@ mod sphere_offset_bore_tests {
         assert!(solids_provably_disjoint(&a, &far));
         assert!(solids_provably_disjoint(&a, &touch));
         assert!(!solids_provably_disjoint(&a, &over));
+    }
+
+    /// W8: a box whose width equals a coaxial cylinder's diameter touches the cylinder's rim at four
+    /// points. Stacked on the cylinder it joins (the volumes add), cut from it leaves the cylinder, and
+    /// both meshes close. The closed forms are the oracle, not the kernel's own algebra.
+    #[test]
+    fn w8_box_tangent_to_a_cylinder_rim_joins_and_cuts_exactly() {
+        let pi = std::f64::consts::PI;
+        let cyl = build::cylinder_solid([0.0, 0.0, 0.0], 10.0, 20.0, [0.0, 0.0, 1.0]);
+        let vcyl = pi * 100.0 * 20.0;
+        for (zc, h) in [(15.0, 10.0), (12.0, 4.0)] {
+            let bx = build::box_solid([20.0, 20.0, h], [0.0, 0.0, zc], None);
+            let u = boolean("union", &cyl, &bx).expect("the tangent stack joins");
+            assert!((build::solid_volume(&u) - (vcyl + 20.0 * 20.0 * h)).abs() < 1e-9 * vcyl, "join volume");
+            assert!(mesh_is_closed_coarse(&u), "join mesh closes");
+            let c = boolean("subtract", &cyl, &bx).expect("the tangent stack cuts");
+            assert!((build::solid_volume(&c) - vcyl).abs() < 1e-9 * vcyl, "cut volume");
+            assert!(mesh_is_closed_coarse(&c), "cut mesh closes");
+        }
     }
 }

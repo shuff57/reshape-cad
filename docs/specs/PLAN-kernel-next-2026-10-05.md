@@ -142,6 +142,14 @@ box x sphere gaps are a ball tangent to the box's side walls at single points, a
 cylinder case: 45 scripts in all. The 73 cylinder x sphere gaps have no equal-diameter cases. So W8 is bigger than W2 (b)'s non-tangent
 remainder (46 box x sphere).
 
+**W8 result, cylinder half (this commit):** a box stacked on a coaxial cylinder of the same width now joins and cuts exactly. Cause: the
+box's bottom face splits at the four tangent points into four arcs, but the cylinder wall's rim stayed one whole circle, so the edges never
+matched (every earlier guard was innocent; the refusal came from the edge-count check). Fix: `split_full_circle` in `split_t_junctions`
+cuts a whole circle into arcs only when every piece is one a neighbouring face already has. A wider rule (any vertex on the circle, or any
+partial arc of the circle) broke 20 tests and the mesh and STEP gates; the "every piece already exists" rule breaks none. Pair sweep: 734 to
+743 agree, 0 wrong. The sphere half (35 box x sphere) is not done: a ball touches the walls at points, not along lines, so it is a different
+contact and needs its own look.
+
 **W2 pre-check result:** of the 46 non-tangent box x sphere gaps, only 3 are cut by a single box plane (slice (a)); 2 are cut by none;
 the other 41 cross 2 to 6 planes (8 two, 9 three, 14 four, 2 five, 8 six). So slice (a) alone moves about 3 sweep scripts: it is a
 building block for (b), not a result. Plan (a) and (b) as one piece of work, with (a) as its first test.
