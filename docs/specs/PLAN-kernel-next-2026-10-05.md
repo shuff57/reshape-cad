@@ -104,6 +104,12 @@ covers (`SPEC-brep-boolean-split-classify.md` status line) and read how the 322+
 Derived, not verified: that the arcs-with-corners boundary can use the hull mesher unchanged (the conformity argument assumes a smooth
 densely sampled boundary; corners need the corner vertex on the loop, which it is).
 
+**W2 status (2026-10-05): slices (a) and (b) DONE, see SPEC-brep-ball-box.md.** A ball against a box at any orientation builds for
+intersect, union and both subtractions; pair family 734 to 789 agree (with W1 and W8 included), full census 0 wrong. Open: (c) cylinder x ball
+and (d) ball x ball, which need the cylinder-sphere quartic (a new spec). Method note that mattered: P0, the stop-rule prototype, found
+the mesher's one real problem (a small patch with a huge hole) before any kernel edit; the full census then caught a bounding-box
+mismatch that unit tests missed.
+
 **W3. Cone booleans (about 270 pair scripts, 506 in other families) and holes in a cone (505).** Cone x plane is a conic (ellipse,
 parabola or hyperbola), cone x cylinder and cone x sphere are quartics. This needs new curve types and is the largest item; the
 sphere track's pattern (a `Curve` variant, a `Cross`-style wall, an exact box, a mesher, STEP by a fitted spline, a closed-form net)

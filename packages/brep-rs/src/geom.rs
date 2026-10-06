@@ -961,6 +961,8 @@ pub struct HullTrim {
     pub n: u8,
     pub planes: [[f64; 4]; 6],
     pub inside: bool,
+    /// The face's normal points INTO the sphere (the wall of a cavity the sphere leaves in a box).
+    pub reversed: bool,
 }
 
 impl HullTrim {
@@ -1558,8 +1560,9 @@ impl Surface {
         if let Surface::Sphere(sp) = self {
             if sp.trim.is_hull() {
                 // int p . n dA with p = c + R n: c . (vector area) + R * area
+                let SphTrim::Hull(h) = sp.trim else { return 0.0 };
                 return match sp.hull_measure() {
-                    Some((a, v)) => dot(sp.center, v) + sp.radius * a,
+                    Some((a, v)) => (if h.reversed { -1.0 } else { 1.0 }) * (dot(sp.center, v) + sp.radius * a),
                     None => 0.0,
                 };
             }

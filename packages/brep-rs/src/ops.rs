@@ -9861,9 +9861,15 @@ mod g1_g6_tests {
         let a = build::sphere_solid([0.0, 0.0, 0.0], 10.0, [0.0, 0.0, 1.0]);
         let b = build::box_solid([12.0, 12.0, 12.0], [0.0, 0.0, 0.0], None);
         let wrong = 4.0 / 3.0 * PI * 1000.0 - 1728.0;
+        // The true boolean differs from the sealed-void figure by the eight corner slivers of the box that lie outside the ball (under 1
+        // in all), so it is told apart by the independent numerical overlap, not by a margin from the wrong figure.
+        let axes = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]];
+        let truth = 4.0 / 3.0 * PI * 1000.0 - crate::ball_box::overlap_volume(10.0, [0.0; 3], axes, [6.0, 6.0, 6.0]);
+        assert!((truth - wrong).abs() < 1.0 && truth > wrong, "the true result is a hair above the sealed-void figure");
         if let Some(r) = boolean("subtract", &a, &b) {
             let v = build::solid_volume(&r);
-            assert!((v - wrong).abs() > 1.0, "built the sealed-void wrong solid {v}");
+            assert!((v - truth).abs() < 1e-6 * truth, "built {v}, the truth is {truth} (the sealed-void wrong solid is {wrong})");
+            assert_eq!(r.shells.len(), 1, "one shell: the corners open the cavity");
         }
     }
 

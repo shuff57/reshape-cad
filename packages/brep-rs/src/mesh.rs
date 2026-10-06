@@ -1777,7 +1777,7 @@ fn mesh_sphere_hull(
     let tris = [1.0, 0.87, 1.15, 0.76, 1.32, 0.67, 1.5, 0.6, 1.7]
         .iter()
         .find_map(|k| crate::sphere_hull::sphere_with_holes_scattered(c, big, &loops, &in_hole, base * k, true, &poles))?;
-    let flip = !face.borrow().forward;
+    let flip = !face.borrow().forward != h.reversed;
     let start = out.indices.len();
     for t in tris {
         let ids = if flip { [out.push(t[0]), out.push(t[2]), out.push(t[1])] } else { [out.push(t[0]), out.push(t[1]), out.push(t[2])] };

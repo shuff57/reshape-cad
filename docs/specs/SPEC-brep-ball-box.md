@@ -1,6 +1,6 @@
 # SPEC: a ball against a box, any orientation (W2 of PLAN-kernel-next-2026-10-05.md)
 
-Status: DRAFT 2026-10-05, nothing built. Parent: `SPEC-brep-kernel-rs.md` section 4.5, `SPEC-brep-combine-sphere.md`
+Status: S1 to S3 built 2026-10-05; S4 not started. Parent: `SPEC-brep-kernel-rs.md` section 4.5, `SPEC-brep-combine-sphere.md`
 (the one case that exists: a square prism through a ball), `SPEC-brep-sphere-multi-bore.md` (`sphere_hull.rs`).
 
 ## What refuses today (measured 2026-10-05, probe `w2_probe_ball_box`, ball r = 10)
@@ -92,6 +92,18 @@ sphere, a circle through a corner, two circles tangent to each other.
   must be mesh vertices or the mesh bounding box falls short of the exact one (caught as a `WRONG-BBOX-ONLY` census record), added when
   outside every loop edge's diametral cap; (3) `mesh_solid` now retries at finer chords when the first attempt gives nothing, as it
   already did for an open mesh. `sphere_hull::sphere_with_holes_scattered` (a coarse scatter in the holes) was P0's one change.
+* **S2 + S3 RESULT (done):** `ball_box::assemble` builds all four operations (`keep`, ball minus box, `join`, box minus ball) in either
+  operand order. New pieces: rectangle-minus-disk faces (the rectangle's outside stretches joined by the plane's region arcs traversed the
+  other way, a whole circle inside the rectangle as a hole wire), `HullTrim::reversed` for the cavity wall of box minus ball, and a
+  lump count that treats the sphere face as one piece per loop when Gauss-Bonnet says it is several (`Region::sphere_components`: chi
+  from area, boundary geodesic curvature and exterior angles, pieces = (chi + loops) / 2). A slab through the ball (ball minus box:
+  two caps) and a rod through it (box minus ball: two stubs) refuse; their connected twins build. 90 random boxes x 4 operations: 87 of 87
+  build for each, worst volume error 1.8e-13 of the larger volume. Pair family: 773 to 789 agree, 0 wrong. Full census: 0 wrong, agree
+  5,324 (was 5,253 at the start of the session), refused 7,908 (was 7,977); gates 78/78/77+1/17.
+  One existing test, `sphere_minus_box_poking_out_at_the_corners_is_not_a_sealed_void`, asserted only a margin from the wrong figure;
+  the true answer is 0.4 above it, so it now compares against the independent overlap volume and a single shell.
+* **S4 NOT DONE:** the cylinder against the ball and ball against ball (the plan's (c) and (d), 80 of the sweep's gaps). A cylinder wall meets a
+  sphere in a quartic, a curve the kernel has only for the coaxial and bore cases; it needs its own spec, not an extension of this one.
 * **S1, `keep` (ball and box):** `SphTrim::Hull`, faces, mesh, STEP refusal as for other sphere trims. One connected region.
 * **S2, `cut` (A - B):** the sphere outside X; a prism through gives two holes.
 * **S3, `join`, and `cut` (B - A):** the rectangle-minus-disk faces: the part that can be several pieces.
