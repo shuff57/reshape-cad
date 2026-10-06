@@ -76,6 +76,12 @@ sphere, a circle through a corner, two circles tangent to each other.
 * **P0, prototype (no kernel edits):** the topology (vertices, loops, which box faces are cut) and the volume, as a standalone cargo
   test against the numerical oracle, over a grid of box placements; plus `sphere_with_holes` on a corner loop, checked watertight.
   Stop rule: if the hull mesher cannot close a loop with corners, W2 changes (see Risks) before anything else is built.
+* **P0 RESULT (done, `ball_box.rs`):** the stop rule passes. `region_loops` finds the boundary of the sphere region inside a box (arcs joined at
+  corners); on 120 random boxes at random orientations all 232 meshes (the region and its complement) close, conform to their loops, and
+  match a Fibonacci-lattice area oracle within 3 %. One change was needed: when the part kept is a small patch and the hole is the rest of the
+  sphere, the hole side had no points, the loop circles are flat, and the hull's far facets lay across the patch and were kept as duplicates
+  (86 of 232 failed). `sphere_with_holes_scattered` adds a coarse scatter inside holes, two margins from every loop vertex (conformity
+  untouched); `sphere_with_holes` (bores) is unchanged. Corners were never the problem.
 * **S1, `keep` (ball and box):** `SphTrim::Hull`, faces, mesh, STEP refusal as for other sphere trims. One connected region.
 * **S2, `cut` (A - B):** the sphere outside X; a prism through gives two holes.
 * **S3, `join`, and `cut` (B - A):** the rectangle-minus-disk faces: the part that can be several pieces.

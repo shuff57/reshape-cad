@@ -142,6 +142,21 @@ pub fn sphere_with_holes(
     in_hole: &dyn Fn(Vec3) -> bool,
     spacing: f64,
 ) -> Option<Vec<[Vec3; 3]>> {
+    sphere_with_holes_scattered(c, big, loops, in_hole, spacing, false)
+}
+
+/// `sphere_with_holes`, optionally with a coarse scatter of points inside the holes too. A hole that is most of the sphere
+/// (the part kept is a small patch) needs them: its loops are flat circles, and with no point on the hole side the hull's
+/// far facets lie flat across the patch and are kept as duplicates of it. The scatter is far from every loop vertex, so each
+/// loop edge's empty diametral cap, and with it the conformity argument, is untouched; triangles in the hole are dropped as before.
+pub fn sphere_with_holes_scattered(
+    c: Vec3,
+    big: f64,
+    loops: &[Vec<Vec3>],
+    in_hole: &dyn Fn(Vec3) -> bool,
+    spacing: f64,
+    scatter_holes: bool,
+) -> Option<Vec<[Vec3; 3]>> {
     if loops.is_empty() || loops.iter().any(|l| l.len() < 3) {
         return None;
     }
@@ -181,6 +196,32 @@ pub fn sphere_with_holes(
             continue;
         }
         pts.push(q);
+    }
+    if scatter_holes {
+        // Roughly a third as dense as the interior lattice, and at least twice the margin from every loop vertex.
+        let coarse = 3.0 * h;
+        let target_h = ((4.0 * std::f64::consts::PI * big * big) / (0.866 * coarse * coarse)).ceil() as usize;
+        let far2 = (2.0 * margin) * (2.0 * margin);
+        for k in 0..target_h {
+            let z = 1.0 - 2.0 * (k as f64 + 0.5) / target_h as f64;
+            let rho = (1.0 - z * z).max(0.0).sqrt();
+            let phi = golden * k as f64;
+            let q = add(c, scale(rot([rho * phi.cos(), rho * phi.sin(), z]), big));
+            if !in_hole(q) {
+                continue;
+            }
+            let d2 = |a: Vec3, b: Vec3| {
+                let d = sub(a, b);
+                dot(d, d)
+            };
+            if all_loop.iter().any(|l| d2(*l, q) < far2) {
+                continue;
+            }
+            pts.push(q);
+        }
+        if pts.len() > MAX_POINTS {
+            return None;
+        }
     }
     let tris = sphere_hull(&pts, c)?;
     let mut kept: Vec<[u32; 3]> = Vec::with_capacity(tris.len());
