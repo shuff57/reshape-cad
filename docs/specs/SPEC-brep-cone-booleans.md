@@ -53,8 +53,36 @@ cone is a quartic. The order that follows the pre-check, cheapest first:
    holds; re-bucket first, because the sphere track's quartic (ball x cylinder) shrank from 73 to 38 once near-misses were removed,
    and the survivors were mostly cases a real student would not draw.
 
-Before S1, repeat the pre-check on the genuine 63: how many are a box face that cuts the cone square to its axis (a circle, which the
-kernel already carries), and how many cross the lateral surface at an angle (a real conic).
+## Cone x box pre-check (2026-10-06, pair family after S0: 68 refused with a real result)
+
+Every box in the sweep is axis-aligned and every cone stands on z, so every box plane is either SQUARE to the cone's axis (a circle on
+the cone, which the kernel already carries) or PARALLEL to it (a hyperbola, or two straight generators when the plane passes through the
+axis). There is never an ellipse or a parabola: those need a plane tilted to the axis, which the generator does not make.
+
+| Planes of the box that cut the cone's slanted face | Scripts |
+|---|---|
+| none sideways, only z-faces (circles only) | 14 (intersect 7, cut 1, join 6) |
+| one or more vertical planes (a hyperbola each) | 52 |
+| no overlap in height | 2 |
+
+So the dominant case is a NEW curve, but a simple one with a closed form: in the plane at distance d from the axis the cone meets it
+where `y^2 = w(z)^2 - d^2`, `w(z) = (R / H)(H - z)`, i.e. `w = d cosh s`, `y = d sinh s`. S1 is therefore bounded to a **box that has
+a face square to the cone's axis** (the box need not be at any other angle), which covers all 68, and leaves tilted boxes (ellipses,
+parabolas) refused with their present sentence.
+
+### S1 sketch (not started)
+
+* `Curve` variant for a hyperbola arc on a vertical plane (point, derivative, length, bbox, transform, STEP by fitted spline), plus the
+  circle that already exists for the z-faces.
+* A cone face trimmed by up to six half-spaces (the `HullTrim` idea for a cone). A cone unrolls to a flat sector, so its mesher can work
+  in the unrolled plane from the boundary polylines: no spherical-hull mesher is needed.
+* Planar pieces: z-faces are rectangle (intersect or minus) a disk of radius `w(z)` about the axis, built by the `ball_box.rs`
+  region/rectangle machinery with a different circle; vertical faces are rectangle (intersect or minus) the region under a hyperbola.
+* Lump check: Gauss-Bonnet as in ball x box does not apply as is (a cone is flat); count lumps from the loops, and refuse a result in
+  more than one lump (a box through the cone's middle can split it).
+* Oracle: an independent numerical volume (integrate the cone's cross-section clipped by the box over z) that shares no algebra.
+* Risk to measure first, as P0 did for the hull mesher: that the unrolled-sector mesh of a region bounded by hyperbola arcs closes
+  against the planar faces' meshes along the shared arcs (edges sampled once, shared by handle).
 
 ## Never a wrong solid
 
