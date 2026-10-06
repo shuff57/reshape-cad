@@ -115,6 +115,8 @@ parabola or hyperbola), cone x cylinder and cone x sphere are quartics. This nee
 sphere track's pattern (a `Curve` variant, a `Cross`-style wall, an exact box, a mesher, STEP by a fitted spline, a closed-form net)
 is the template. Do after W2 so the arcs-with-corners mesher exists.
 
+**W3 status (2026-10-06): S0 DONE, see SPEC-brep-cone-booleans.md.** Of 268 real cone gaps in the pair family, 99 needed no curve (a cone clear of, inside, or holding a ball, cylinder, box or cone); an exact convex-body test (GJK direction, proved by support functions; containment by closed forms) builds them: pair family 830 to 921 agree. 169 genuinely need conics or quartics (box 63, cylinder 49, sphere 45, cone 12); cone x box is next because it is conics only.
+
 **W4. Holes in a torus (the "ring" shape): 560 of the 1,539 generic hole refusals.** Derived, not verified: a bore parallel to
 the torus's axis meets it in a curve that is a graph over the bore's own angle (on the cylinder `rho(phi)` is known, so
 `z = +-sqrt(a^2 - (rho - R)^2)`), the same shape as `Curve::SphCyl`, so the sphere pattern applies. A torus face is not a sphere,
