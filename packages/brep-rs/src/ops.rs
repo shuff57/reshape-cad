@@ -55,6 +55,9 @@ pub const DISJOINT_SENTENCE: &str = "the two shapes do not overlap, so keeping t
 /// True only when the two solids' exact reach boxes are separated, or merely touch, on some axis:
 /// their overlap is then provably empty. Any face whose extent is unknown reads as "might overlap".
 pub(crate) fn solids_provably_disjoint(a: &TSolid, b: &TSolid) -> bool {
+    if crate::ball_box::provably_apart(a, b) {
+        return true;
+    }
     let reach = |s: &TSolid| -> Option<crate::math::Aabb> {
         let mut bx = crate::math::Aabb::empty();
         for f in s.faces() {
@@ -5656,6 +5659,16 @@ fn boolean_unchecked(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
             "union" | "intersect" => Some(build::transform_solid(a, &crate::math::Transform::identity())),
             _ => None,
         };
+    }
+    // A ball that stays clear of a ball, a cylinder or a box (S4b pre-step): nothing meets, so a cut leaves the part as it was and a
+    // join is the two bodies side by side. Their bounding boxes can overlap, which the face-by-face path cannot see past.
+    if (op == "subtract" || op == "union") && crate::ball_box::provably_apart(a, b) {
+        let copy = |s: &TSolid| build::transform_solid(s, &crate::math::Transform::identity());
+        if op == "subtract" {
+            return Some(copy(a));
+        }
+        let (ca, cb) = (copy(a), copy(b));
+        return Some(TSolid { shells: ca.shells.into_iter().chain(cb.shells).collect() });
     }
     // W4: a tool inside the base that touches its skin along a line or at a point (and over no area)
     // leaves a skin that touches itself, and two solids joined where they only touch are two lumps

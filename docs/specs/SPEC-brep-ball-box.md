@@ -1,6 +1,6 @@
 # SPEC: a ball against a box, any orientation (W2 of PLAN-kernel-next-2026-10-05.md)
 
-Status: S1 to S3 built 2026-10-05; S4 not started. Parent: `SPEC-brep-kernel-rs.md` section 4.5, `SPEC-brep-combine-sphere.md`
+Status: S1 to S3 built 2026-10-05; S4a (ball x ball) built 2026-10-06; S4b (ball x cylinder, the quartic) not started. Parent: `SPEC-brep-kernel-rs.md` section 4.5, `SPEC-brep-combine-sphere.md`
 (the one case that exists: a square prism through a ball), `SPEC-brep-sphere-multi-bore.md` (`sphere_hull.rs`).
 
 ## What refuses today (measured 2026-10-05, probe `w2_probe_ball_box`, ball r = 10)
@@ -104,6 +104,34 @@ sphere, a circle through a corner, two circles tangent to each other.
   the true answer is 0.4 above it, so it now compares against the independent overlap volume and a single shell.
 * **S4 NOT DONE:** the cylinder against the ball and ball against ball (the plan's (c) and (d), 80 of the sweep's gaps). A cylinder wall meets a
   sphere in a quartic, a curve the kernel has only for the coaxial and bore cases; it needs its own spec, not an extension of this one.
+* **S4 PRE-CHECK (2026-10-06, pair family seed 1, 1,500 scripts, 710 refused, OCCT volume > 1e-6 = real gap):** the "80 gaps" are two
+  different problems and the spec above lumped them wrongly. **Ball x ball is NOT a quartic**: two spheres meet in a circle in the radical
+  plane, so each ball's kept part is a `Hull` of ONE half-space; no new curve. It is only 7 scripts (4 crossing, 3 nested, 1 of them a
+  disjoint `join` that is an honest two-lump refusal). **CORRECTION, same day:** `sphere(x)` in a script is a DIAMETER; the counts in this
+  paragraph used it as a radius. Re-measured from the parsed docs: every CROSSING ball pair in the sweep now builds (see S4a); what is
+  left is 5 `join`s of balls that do not touch (honest two-lump refusals), 14 empty `keep`s, 24 same-ball `cut`s (honest empties), and one
+  nested `keep` (the smaller ball; not built). The ball x cylinder count of 73 stands (it was measured from the docs: axis offset > 0).
+  **Ball x cylinder is the quartic, and it is the bigger bucket: 73 scripts** (join 42, cut 23, the rest keep), every one with the
+  cylinder axis OFFSET from the ball centre (69 by more than 1 unit; 4 by under 1); none is coaxial (coaxial is already built). The
+  cylinder is always z-aligned in these scripts. Not yet measured: how many of the 73 are single-lump, and how many are tangent or graze.
+  Method: `docs/specs/prototypes/census/run-sweep.sh` pair family + `pair-empties.mjs`, then bucket by operand kinds and axis offset.
+* **S4a RESULT (done 2026-10-06, `ball_box::ball_ball`):** two crossing balls build for intersect, union and both subtractions. The two
+  spheres meet in one circle in the radical plane, so each ball's face is a `Hull` of ONE half-space (the side of that plane); no new
+  curve, no new trim. Both faces use one seam direction (square to the centre line) so the circle is one welded edge. Checked against
+  the closed-form lens volume, edge-use counts, translation invariance and a closed mesh; test `two_crossing_balls_build_all_operations`
+  (60 random pairs x 4 operations, all build, volume error < 1e-9). Nested, apart, tangent and concentric balls return `None` (no
+  crossing circle), keeping their existing sentences. Pair family: 789 to 790 agree, 0 wrong (a small gain: crossing balls were rare).
+  cargo test 509, gates 78/78/77+1/17.
+* **S4b PRE-STEP RESULT (done 2026-10-06, `ball_box::provably_apart`):** the 73 ball x cylinder "gaps" were not all the quartic. The pair
+  generator places a ball 0.1 to 0.3 clear of a cylinder, so the bounding boxes overlap while the solids do not; the face-by-face path
+  cannot see past that and refused. `provably_apart` is exact (the centre's distance to the other ball, cylinder or cuboid against the
+  radius, with a 1e-7 margin), is used by `solids_provably_disjoint` (so an empty `intersect` now says "do not overlap"), and
+  short-circuits `subtract` (the part unchanged) and `union` (two shells side by side, as boxes already did) in `boolean_unchecked`.
+  Test `a_ball_leaning_into_a_cylinders_box_without_touching_it` uses the sweep's own numbers and also checks a ball 0.02 inside
+  contact is NOT claimed apart. Pair family 790 to 830 agree, 0 wrong. Full census (15,000 scripts): no WRONG record for brep-rs,
+  agree 5,390 (was 5,324), refused 7,842 (was 7,908). cargo test 510, gates 78/78/77+1/17.
+  **What the quartic really covers is therefore smaller than 73**: re-bucket the remaining refused ball x cylinder pairs by whether
+  the footprints overlap before sizing S4b.
 * **S1, `keep` (ball and box):** `SphTrim::Hull`, faces, mesh, STEP refusal as for other sphere trims. One connected region.
 * **S2, `cut` (A - B):** the sphere outside X; a prism through gives two holes.
 * **S3, `join`, and `cut` (B - A):** the rectangle-minus-disk faces: the part that can be several pieces.

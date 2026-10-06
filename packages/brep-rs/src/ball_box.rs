@@ -1008,8 +1008,111 @@ pub fn keep(ball: &BallSpec, bx: &BoxSpec) -> Option<TSolid> {
     assemble(ball, bx, Mode::Keep)
 }
 
-/// The boolean entry: a whole ball against a cuboid, in either order.
+/// Two balls that cross, as one solid by `mode` (`Keep`, `CutBall` = a minus b, `Join`, `CutBox` = b minus a). Two spheres meet in ONE
+/// circle, in their radical plane, so each ball's face is a hull of one half-space (the side of that plane) and the two faces share
+/// the circle. `None` for nested, apart, tangent or concentric balls (no crossing circle), or when a check below fails.
+pub fn ball_ball(a: &BallSpec, b: &BallSpec, mode: Mode) -> Option<TSolid> {
+    let off = sub(b.c, a.c);
+    let d = len(off);
+    if d < 1e-9 * a.r.max(b.r) {
+        return None;
+    }
+    let u = scale(off, 1.0 / d);
+    // the radical plane, as a distance from each centre toward the other
+    let (ta, tb) = ((d * d + a.r * a.r - b.r * b.r) / (2.0 * d), (d * d + b.r * b.r - a.r * a.r) / (2.0 * d));
+    // a's part inside b: dot(u, q) >= ta, i.e. dot(-u, q) <= -ta; b's part inside a, toward -u from b's centre
+    let (ha, hb) = (Half { n: scale(u, -1.0), d: -ta }, Half { n: u, d: -tb });
+    let (mut ra, mut rb) = (region(a.r, &[ha]).ok()?, region(b.r, &[hb]).ok()?);
+    if ra.whole != [0] || rb.whole != [0] {
+        return None;
+    }
+    // one seam for both faces, so the circle's edge is one edge: any direction square to u
+    let e1 = normalize(if u[0].abs() < 0.9 { cross(u, [1.0, 0.0, 0.0]) } else { cross(u, [0.0, 1.0, 0.0]) });
+    for rg in [&mut ra, &mut rb] {
+        let ci = rg.circles[0].as_mut()?;
+        ci.e1 = e1;
+        ci.e2 = cross(ci.n, e1);
+    }
+    // (a's side, a's normal reversed, b's side, b's normal reversed): `true` = the part inside the other ball
+    let (a_in, a_rev, b_in, b_rev) = match mode {
+        Mode::Keep => (true, false, true, false),
+        Mode::CutBall => (false, false, true, true),
+        Mode::Join => (false, false, false, false),
+        Mode::CutBox => (true, true, false, false),
+    };
+    let faces = vec![sphere_face(&ra, &[ha], a.c, a_in, a_rev)?, sphere_face(&rb, &[hb], b.c, b_in, b_rev)?];
+    let mut faces = faces;
+    crate::ops::weld_shared_edges(&mut faces);
+    if crate::ops::edge_use_counts(&faces).values().any(|&n| n != 2) || !crate::ops::unmatched_once_edges(&faces).is_empty() {
+        return None;
+    }
+    let solid = Solid { shells: vec![Rc::new(RefCell::new(Shell { faces }))] };
+    let (va, vb) = (4.0 / 3.0 * PI * a.r.powi(3), 4.0 / 3.0 * PI * b.r.powi(3));
+    let v_in = lens_volume(a.r, b.r, d);
+    let want = match mode {
+        Mode::Keep => v_in,
+        Mode::CutBall => va - v_in,
+        Mode::Join => va + vb - v_in,
+        Mode::CutBox => vb - v_in,
+    };
+    let got = crate::build::solid_volume(&solid);
+    if !got.is_finite() || (got - want).abs() > 1e-7 * va.max(vb) {
+        return None;
+    }
+    if !crate::ops::volume_is_translation_invariant(&solid) || !crate::ops::mesh_is_closed_coarse(&solid) {
+        return None;
+    }
+    Some(solid)
+}
+
+/// Whether one of the two is a whole ball and the other a ball, a plain cylinder or a cuboid that stays clear of it by more than a
+/// hair: exact, from the centre's distance to the other solid (their bounding boxes may still overlap, a ball beside a cylinder
+/// leans into its corner). `false` when unsure.
+pub fn provably_apart(a: &TSolid, b: &TSolid) -> bool {
+    let one = |ball: &TSolid, other: &TSolid| -> bool {
+        let Some(bl) = as_ball(ball) else { return false };
+        let gap = |dist: f64| dist > bl.r + 1e-7 * bl.r.max(1.0);
+        if let Some(o) = as_ball(other) {
+            return gap(len(sub(o.c, bl.c)) - o.r);
+        }
+        if let Some((wall, p, q, _, _)) = crate::ops::cylinder_parts(other) {
+            let (axis, h) = (sub(q, p), len(sub(q, p)));
+            if h < 1e-12 {
+                return false;
+            }
+            let u = scale(axis, 1.0 / h);
+            let v = sub(bl.c, p);
+            let t = dot(v, u);
+            let radial = len(sub(v, scale(u, t)));
+            return gap(((radial - wall.radius).max(0.0)).hypot((-t).max(t - h).max(0.0)));
+        }
+        if let Some(bx) = as_box(other) {
+            let v = sub(bl.c, bx.c);
+            let ex: f64 = (0..3).map(|k| (dot(v, bx.axes[k]).abs() - bx.half[k]).max(0.0).powi(2)).sum();
+            return gap(ex.sqrt());
+        }
+        false
+    };
+    one(a, b) || one(b, a)
+}
+
+/// The volume two balls of radii `r1`, `r2` share when their centres are `d` apart and their surfaces cross (closed form).
+pub fn lens_volume(r1: f64, r2: f64, d: f64) -> f64 {
+    let s = r1 + r2 - d;
+    PI * s * s * (d * d + 2.0 * d * r2 - 3.0 * r2 * r2 + 2.0 * d * r1 + 6.0 * r1 * r2 - 3.0 * r1 * r1) / (12.0 * d)
+}
+
+/// The boolean entry: a whole ball against a cuboid, in either order (or against another ball).
 pub fn ball_box_boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
+    if let (Some(x), Some(y)) = (as_ball(a), as_ball(b)) {
+        let mode = match op {
+            "intersect" => Mode::Keep,
+            "union" => Mode::Join,
+            "subtract" => Mode::CutBall,
+            _ => return None,
+        };
+        return ball_ball(&x, &y, mode);
+    }
     let (ball, bx, ball_first) = match (as_ball(a), as_box(b)) {
         (Some(x), Some(y)) => (x, y, true),
         _ => match (as_box(a), as_ball(b)) {
@@ -1309,5 +1412,52 @@ mod tests {
         let drilled = crate::ops::boolean("subtract", &ball, &rod).expect("a ball with a square hole is one lump");
         let vi2 = overlap_volume(r, [0.0; 3], [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]], [2.0, 2.0, 20.0]);
         assert!((crate::build::solid_volume(&drilled) - (vb - vi2)).abs() < 1e-6 * vb);
+    }
+
+    /// Two balls that cross, all three operations in both orders, against the closed-form lens volume: they meet in one circle, so
+    /// each result is one lump of two sphere faces.
+    #[test]
+    fn two_crossing_balls_build_all_operations() {
+        let mut rng = Rng(5);
+        let (mut tried, mut built) = (0, 0);
+        let mut worst = 0.0f64;
+        for _ in 0..60 {
+            let (r1, r2) = (rng.range(4.0, 14.0), rng.range(4.0, 14.0));
+            let c1 = [rng.range(-5.0, 5.0), rng.range(-5.0, 5.0), rng.range(-5.0, 5.0)];
+            let dir = normalize([rng.range(-1.0, 1.0), rng.range(-1.0, 1.0), rng.range(-1.0, 1.0)]);
+            let d = rng.range((r1 - r2).abs() * 1.05 + 0.3, (r1 + r2) * 0.97);
+            let c2 = add(c1, scale(dir, d));
+            let (a, b) = (crate::build::sphere_solid(c1, r1, [0.0, 0.0, 1.0]), crate::build::sphere_solid(c2, r2, [0.0, 0.0, 1.0]));
+            let (va, vb, vi) = (4.0 / 3.0 * PI * r1.powi(3), 4.0 / 3.0 * PI * r2.powi(3), lens_volume(r1, r2, d));
+            for (op, x, y, want) in [("intersect", &a, &b, vi), ("union", &a, &b, va + vb - vi), ("subtract", &a, &b, va - vi), ("subtract", &b, &a, vb - vi)] {
+                tried += 1;
+                let Some(s) = crate::ops::boolean(op, x, y) else { continue };
+                built += 1;
+                let got = crate::build::solid_volume(&s);
+                worst = worst.max((got - want).abs() / va.max(vb));
+                assert!(crate::ops::mesh_is_closed_coarse(&s), "{op} mesh is open");
+            }
+        }
+        assert!(built == tried, "{built} of {tried} built");
+        assert!(worst < 1e-9, "worst volume error {worst}");
+    }
+
+    /// A ball that leans into the corner of a cylinder's bounding box without touching the cylinder (the sweep's pair family places
+    /// them 0.1 apart): bounding boxes overlap, the solids do not. Cut leaves the cylinder, join is the two side by side.
+    #[test]
+    fn a_ball_leaning_into_a_cylinders_box_without_touching_it() {
+        let cyl = crate::build::cylinder_solid([0.0; 3], 6.375, 48.17, [0.0, 0.0, 1.0]);
+        let (cv, bv) = (PI * 6.375f64.powi(2) * 48.17, 4.0 / 3.0 * PI * 18.26f64.powi(3));
+        let ball = crate::build::sphere_solid([-24.63, -2.24, 7.77], 18.26, [0.0, 0.0, 1.0]);
+        assert!(provably_apart(&cyl, &ball) && provably_apart(&ball, &cyl));
+        let cut = crate::ops::boolean("subtract", &cyl, &ball).expect("a cut that misses leaves the part");
+        assert!((crate::build::solid_volume(&cut) - cv).abs() < 1e-9 * cv);
+        let join = crate::ops::boolean("union", &cyl, &ball).expect("two bodies side by side");
+        assert!((crate::build::solid_volume(&join) - cv - bv).abs() < 1e-9 * (cv + bv));
+        assert!(crate::ops::boolean("intersect", &cyl, &ball).is_none());
+        assert!(crate::ops::solids_provably_disjoint(&cyl, &ball));
+        // 0.01 closer than touching: no longer apart, so the clean-separation shortcut must NOT claim it
+        let near = crate::build::sphere_solid([-24.63 + 0.12, -2.24, 7.77], 18.26, [0.0, 0.0, 1.0]);
+        assert!(!provably_apart(&cyl, &near));
     }
 }
