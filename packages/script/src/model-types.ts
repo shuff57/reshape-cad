@@ -915,7 +915,7 @@ export function whyCannotOrbit(f: Feature, axis: 'x' | 'y' | 'z'): string | null
     : axis === 'y' ? Math.hypot(x, z)
     : Math.hypot(x, y);
   if (offAxis > 0.01) return null;
-  return 'Repeat Around spins copies about the middle of the world, so a shape sitting in the middle has nothing to spin around — every copy would land on top of the first. Move it away from the middle first.';
+  return 'Repeat Around spins copies about the middle of the world, so a shape sitting in the middle has nothing to spin around — every copy would land on top of the first. Move it away from the middle first (in a script, move(shape, [30, 0, 0])).';
 }
 
 /** A sphere looks identical however it is turned, so offering the control

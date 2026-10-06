@@ -1970,6 +1970,12 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     noExtraArgs('turn', 'a shape and a list of angles', 2, extra);
     if (!isHandle(target)) throw new Error('turn() needs a shape: turn(shape, [rx, ry, rz]).');
     const f = findFeature(target.id);
+    // A ball looks the same however it is turned, so turning one is not an error: it stays as it is. (The editor still hides the
+    // control, which would only teach that some buttons do nothing.)
+    if (f.kind === 'sphere') {
+      readVec3('turn', 'angles', angles);
+      return target;
+    }
     if (!canRotate(f)) {
       throw new Error(
         `turn() only works on a shape you built directly with a tool like Box or Cylinder -- ` +
