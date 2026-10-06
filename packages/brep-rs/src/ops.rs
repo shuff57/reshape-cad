@@ -2636,6 +2636,53 @@ fn circle_boundary(fb: &Face<Curve3, Surface3>) -> Option<(Vec3, f64)> {
     found
 }
 
+/// How near and how far, as a distance from the line through `o` along the unit `u`, the points of a solid built only of round
+/// parts about an axis PARALLEL to `u` (cylinder walls, cone faces, circular caps) can lie: `(nearest, farthest)`. `None` when any
+/// face is anything else, or tilted to `u`. Exact for those faces, which is what lets a stepped hole tool be placed against a torus.
+pub(crate) fn radial_range_about(s: &TSolid, o: Vec3, u: Vec3) -> Option<(f64, f64)> {
+    let off = |p: Vec3| {
+        let d = sub(p, o);
+        crate::math::len(sub(d, scale(u, dot(d, u))))
+    };
+    let (mut lo, mut hi) = (f64::INFINITY, 0.0f64);
+    for f in s.faces() {
+        let fb = f.borrow();
+        let (a, b) = match &fb.surface {
+            Surface::Cylinder(cy) => {
+                if cy.arc.is_some() || cy.cross.is_some() || (dot(normalize(cy.axis), u).abs() - 1.0).abs() > 1e-9 {
+                    return None;
+                }
+                let d = off(cy.origin);
+                ((d - cy.radius).abs(), d + cy.radius)
+            }
+            Surface::Cone(c) => {
+                if (dot(normalize(c.axis), u).abs() - 1.0).abs() > 1e-9 {
+                    return None;
+                }
+                let d = off(c.base);
+                let r_at = |v: f64| c.base_radius - v * c.half_angle.sin();
+                let (r0, r1) = (r_at(c.v_range[0]), r_at(c.v_range[1]));
+                let (rl, rh) = (r0.min(r1), r0.max(r1));
+                // the surface sweeps every radius between its two ends
+                let near = if d < rl { rl - d } else if d > rh { d - rh } else { 0.0 };
+                (near, d + rh)
+            }
+            Surface::Plane(p) => {
+                if (dot(normalize(p.n), u).abs() - 1.0).abs() > 1e-9 {
+                    return None;
+                }
+                let (c, r) = circle_boundary(&fb)?;
+                let d = off(c);
+                ((d - r).max(0.0), d + r)
+            }
+            _ => return None,
+        };
+        lo = lo.min(a);
+        hi = hi.max(b);
+    }
+    (lo.is_finite() && hi > 0.0).then_some((lo, hi))
+}
+
 /// Does the solid lie inside `other`? `sign` is -1 to probe toward the face's
 /// material (interior) and +1 to probe away from it (exterior). The boolean's
 /// keep/remove decision follows from which side is where (SPEC §4.5).

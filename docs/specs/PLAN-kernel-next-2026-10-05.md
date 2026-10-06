@@ -123,6 +123,20 @@ the torus's axis meets it in a curve that is a graph over the bore's own angle (
 so the hull mesher does not: use a (u, v) triangulation with holes (`earcutr` is already a dependency). Holes across the tube
 (`along: 'x'`) are a different, harder curve.
 
+**W4 pre-check result (2026-10-06, census seed 1, hole and holes families, 342 refused scripts on a ring, 610 holes that refuse alone).**
+The premise above (a bore parallel to the ring's axis, a graph over the bore's angle) matches almost nothing the generator produces. By the
+HARDEST hole in each script: **across the tube (x or y bore) 150**, **straddling one edge of the tube footprint 93**, **engulfing the
+whole footprint 29**, **only missing the ring 68**, **wholly within the tube footprint (the clean case the design was derived for) 2**.
+A hole's footprint here is its widest part about the ring's axis, a counterbore or countersink mouth included. So most z-bores are wider
+than the tube, and a student drilling a ring would drill across the tube or down into it, which are the two hardest classes. **Do not
+build W4 as planned**; the sphere track's pattern covers 2 scripts. What was cheap: the 68 are honest empties (a bore standing in the
+ring's empty middle or beyond its outer edge takes no material) that said "cannot cut this hole yet". `tools_apart` was a bounding-box
+test, and a ring fills its box far less than a block does; it now also asks `ops::radial_range_about` for the tool's exact nearest and
+farthest distance from the ring's axis (cylinders, cones and circular caps about a parallel axis) and compares it with the torus's inner
+and outer radii. 79 ring scripts now say "does not touch the part, so it cuts nothing" (0 before); class counts unchanged, cargo 515, gates
+78/78/77+1/17. Test: `a_bore_clear_of_a_ring_says_it_cuts_nothing`, which also pins that a counterbore mouth reaching the tube, a bore in
+the tube and a bore across it are not called misses.
+
 **W5. Successive bores that meet (237 hole-only scripts).** A second bore through the first inside a box or cylinder: planar faces
 plus a cylinder face cut by a perpendicular cylinder. `Curve::CylCyl`, the cylinder cross bore and `cylinder_pair_boolean` exist for
 cylinder x cylinder; the planar-with-bored-cylinder case is the gap. This is also the crossing-bores case (a cross-drilled ball)

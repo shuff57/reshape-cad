@@ -3332,9 +3332,23 @@ fn skin_pieces(s: &TSolid) -> usize {
 /// whatever the boolean does with it.
 fn tools_apart(before: &TSolid, tools: &[&TSolid]) -> bool {
     let a = build::solid_aabb(before);
+    // A ring (a whole torus) fills its bounding box far less than a block does: a tool standing in its empty middle, or beyond its
+    // outer edge, shares the box and no material. The tool's round parts, about an axis parallel to the ring's, say exactly.
+    let torus = match before.faces().as_slice() {
+        [f] => match &f.borrow().surface {
+            Surface::Torus(t) if t.v_range[1] - t.v_range[0] >= 2.0 * std::f64::consts::PI - 1e-9 => Some(t.clone()),
+            _ => None,
+        },
+        _ => None,
+    };
     tools.iter().all(|t| {
         let b = build::solid_aabb(t);
-        (0..3).any(|i| b.lo[i] >= a.hi[i] - 1e-9 || b.hi[i] <= a.lo[i] + 1e-9)
+        if (0..3).any(|i| b.lo[i] >= a.hi[i] - 1e-9 || b.hi[i] <= a.lo[i] + 1e-9) {
+            return true;
+        }
+        torus.as_ref().is_some_and(|ts| {
+            ops::radial_range_about(t, ts.center, normalize(ts.axis)).is_some_and(|(near, far)| far < ts.ring - ts.tube - 1e-9 || near > ts.ring + ts.tube + 1e-9)
+        })
     })
 }
 
@@ -5697,6 +5711,29 @@ fn a_countersink_beside_a_bore_it_does_not_reach_builds_exactly() {
     // rims 0.23 inside each other: the funnel reaches the bore, which is the curve the kernel does not carry
     let (_, refusals) = build_doc(&doc([-7.0, 4.0]));
     assert!(!refusals.is_empty(), "a funnel reaching the bore's wall must still refuse");
+}
+
+/// A bore in the empty middle of a ring (or beyond its outer edge) takes no material, and says so; one that reaches the tube does not
+/// say that, whatever else it does. The ring spans radius 12 to 20 about its axis here.
+#[test]
+fn a_bore_clear_of_a_ring_says_it_cuts_nothing() {
+    let miss = |hole: serde_json::Value| -> Option<String> {
+        let mut h = hole;
+        h["id"] = json!("h1");
+        h["kind"] = json!("hole");
+        h["target"] = json!("r1");
+        let doc = json!({ "version": 1, "features": [{ "id": "r1", "kind": "torus", "ringRadius": 16, "tubeRadius": 4, "center": [0, 0, 0] }, h] });
+        let (_, refusals) = build_doc(&doc);
+        refusals.get("h1").map(|v| v.as_str().unwrap_or_default().to_string())
+    };
+    let says_miss = |r: &Option<String>| r.as_deref().is_some_and(|t| t.contains("does not touch the part"));
+    assert!(says_miss(&miss(json!({ "diameter": 10, "depth": 4, "center": [0, 0, 2], "axis": "z" }))), "a bore in the ring's hole");
+    assert!(says_miss(&miss(json!({ "diameter": 6, "depth": 4, "center": [30, 0, 2], "axis": "z" }))), "a bore beyond the ring");
+    // the counterbore's mouth, radius 13, reaches the tube (it starts at 12): not a miss
+    assert!(!says_miss(&miss(json!({ "diameter": 10, "depth": 4, "center": [0, 0, 2], "axis": "z", "counterbore": { "diameter": 26, "deep": 1 } }))), "a mouth that reaches the tube");
+    // a bore inside the tube's footprint, and one across the tube: not a miss
+    assert!(!says_miss(&miss(json!({ "diameter": 4, "depth": 4, "center": [16, 0, 2], "axis": "z" }))), "a bore in the tube");
+    assert!(!says_miss(&miss(json!({ "diameter": 4, "depth": 4, "center": [16, 0, 0], "axis": "x" }))), "a bore across the tube");
 }
 
 #[test]
