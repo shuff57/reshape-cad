@@ -130,8 +130,13 @@ sphere, a circle through a corner, two circles tangent to each other.
   Test `a_ball_leaning_into_a_cylinders_box_without_touching_it` uses the sweep's own numbers and also checks a ball 0.02 inside
   contact is NOT claimed apart. Pair family 790 to 830 agree, 0 wrong. Full census (15,000 scripts): no WRONG record for brep-rs,
   agree 5,390 (was 5,324), refused 7,842 (was 7,908). cargo test 510, gates 78/78/77+1/17.
-  **What the quartic really covers is therefore smaller than 73**: re-bucket the remaining refused ball x cylinder pairs by whether
-  the footprints overlap before sizing S4b.
+  **S4b RE-BUCKET (same day, pair family after the pre-step, 669 refused):** ball x cylinder refusals that are real gaps (OCCT volume
+  > 0) are **38, not 73**. Footprints overlapping the ball's silhouette: 28 where the cylinder wall STRADDLES it (union 14, cut 8, keep 6;
+  the hard case, the existing `SphCyl` only covers a wall wholly inside the silhouette) and 10 where the wall is inside it but an end
+  is inside the ball (a stub: union 7, keep 2, cut 1). A further 35 are honest empty `intersect`s that now carry the "do not overlap"
+  sentence. 38 of 1,500 is 2.5% of a synthetic family whose sizes the plan already calls unrealistic. **Recommendation: do not build
+  the straddling quartic now**; it needs the quartic trimmed by both end planes plus the silhouette, for a few scripts. The 10 stubs
+  are the only cheap part, and they too need the quartic cut at the end plane. Revisit only if a real student part needs it.
 * **S1, `keep` (ball and box):** `SphTrim::Hull`, faces, mesh, STEP refusal as for other sphere trims. One connected region.
 * **S2, `cut` (A - B):** the sphere outside X; a prism through gives two holes.
 * **S3, `join`, and `cut` (B - A):** the rectangle-minus-disk faces: the part that can be several pieces.
