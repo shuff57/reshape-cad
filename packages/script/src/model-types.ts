@@ -672,6 +672,19 @@ export interface MoveFeature {
   copy: boolean;
 }
 
+/**
+ * Turn an earlier BUILT-UP feature (the result of a hole, fillet, join or cut, mirror and so on) in place, about the centre of its
+ * bounding box. A plain Box, Cylinder, Cone or Ring turns by carrying `rotate` itself and never becomes one of these. The angles are
+ * degrees about x, then y, then z, the same as `rotate`. The target is consumed: only the turned shape is shown.
+ */
+export interface RotateFeature {
+  id: string;
+  kind: 'rotate';
+  name?: string;
+  target: string;
+  angles: Vec3;
+}
+
 export type Feature =
   | BoxFeature | CylinderFeature | SphereFeature
   | ConeFeature | TorusFeature
@@ -679,7 +692,7 @@ export type Feature =
   | SketchFeature | DatumFeature | ExtrudeFeature | CombineFeature
   | BlendFeature
   | RevolveFeature | GrooveFeature | PocketFeature | MirrorFeature | PatternFeature
-  | HoleFeature | ShellFeature | MoveFeature
+  | HoleFeature | ShellFeature | MoveFeature | RotateFeature
   | FilletFeature
   | DraftFeature;
 
@@ -740,11 +753,11 @@ export function topoRefs(f: Feature): string[] {
 export function isDerived(
   f: Feature
 ): f is CombineFeature | ExtrudeFeature | RevolveFeature | MirrorFeature
-  | PatternFeature | HoleFeature | ShellFeature | MoveFeature {
+  | PatternFeature | HoleFeature | ShellFeature | MoveFeature | RotateFeature {
   return (
     f.kind === 'combine' || f.kind === 'extrude' || f.kind === 'revolve' ||
     f.kind === 'mirror' || f.kind === 'pattern' || f.kind === 'hole' ||
-    f.kind === 'shell' || f.kind === 'move'
+    f.kind === 'shell' || f.kind === 'move' || f.kind === 'rotate'
   );
 }
 
@@ -1690,6 +1703,10 @@ export function shellInsertion(
   return { target: pickedId, insertAt: doc.features.length, rewireId: null };
 }
 
+export function newRotate(doc: ModelDoc, target: string, angles: Vec3): RotateFeature {
+  return { id: nextId(doc, 'turn'), kind: 'rotate', target, angles };
+}
+
 export function newMove(doc: ModelDoc, target: string, copy = false): MoveFeature {
   return { id: nextId(doc, 'move'), kind: 'move', target, offset: [20, 0, 0], copy };
 }
@@ -1801,6 +1818,7 @@ function labelOf(f: Feature): string {
     // this used to always say "Move", so a Copy step showed up in the
     // timeline as "Move 2" with nothing marking it as a copy.
     : f.kind === 'move' ? (f.copy ? 'Copy' : 'Move')
+    : f.kind === 'rotate' ? 'Turn'
     : f.kind === 'box' ? 'Box'
     : f.kind === 'cylinder' ? 'Cylinder'
     : f.kind === 'cone' ? 'Cone'
@@ -1900,6 +1918,7 @@ export function topLevel(doc: ModelDoc): Feature[] {
     if (f.kind === 'hole') consumed.add(f.target);
     if (f.kind === 'shell') consumed.add(f.target);
     if (f.kind === 'move' && !f.copy) consumed.add(f.target);
+    if (f.kind === 'rotate') consumed.add(f.target);
     // A rounded body REPLACES the one it was made from. Leaving both top level
     // would draw the sharp-edged original inside the rounded one, which reads
     // as the round having done nothing.

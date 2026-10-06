@@ -64,6 +64,7 @@ import {
   newHoleCorners,
   newShell,
   newMove,
+  newRotate,
   newPattern,
   newSketch,
   newSketchOnFace,
@@ -1976,13 +1977,19 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
       readVec3('turn', 'angles', angles);
       return target;
     }
-    if (!canRotate(f)) {
-      throw new Error(
-        `turn() only works on a shape you built directly with a tool like Box or Cylinder -- ` +
-          `not on the result of ${f.kind}.`
-      );
-    }
     const [rx, ry, rz] = readVec3('turn', 'angles', angles);
+    if (f.kind === 'sketch' || f.kind === 'datum') {
+      throw new Error(`turn() needs a solid shape, and a ${f.kind} is flat. Pull or spin it into a shape first, then turn that.`);
+    }
+    if (!canRotate(f)) {
+      // A shape built up from others (a hole, a round, a join or cut, a mirror, a pull) turns in place about the centre of its
+      // bounding box, as its own step, the way move() shifts one.
+      const step = newRotate(docNow(), target.id, [0, 0, 0]);
+      step.angles = [num(rx, step.id, 'rx'), num(ry, step.id, 'ry'), num(rz, step.id, 'rz')];
+      pushFeature(step);
+      mutateHandle(target, step);
+      return target;
+    }
     const next = { ...f, rotate: [num(rx, target.id, 'rx'), num(ry, target.id, 'ry'), num(rz, target.id, 'rz')] as Vec3 };
     replaceFeature(target.id, next);
     return target;

@@ -152,6 +152,13 @@
       "words": [
         "move"
       ]
+    },
+    "rotate": {
+      "status": "shipped",
+      "words": [
+        "turn"
+      ],
+      "note": "turn on a built-up shape (after a hole, round, join or cut, mirror) is its own step, about the centre of its bounding box; a plain box, cylinder, cone or ring still turns itself."
     }
   },
   "sketch2d": {

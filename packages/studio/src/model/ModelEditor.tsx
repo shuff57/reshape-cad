@@ -2051,6 +2051,11 @@ export default function ModelEditor({
                       {' '}{names[f.target] ?? f.target}{f.copy ? ' (copy)' : ''}
                     </em>
                   )}
+                  {f.kind === 'rotate' && (
+                    <em className="model-detail">
+                      {' '}{names[f.target] ?? f.target}, {f.angles.join(', ')}
+                    </em>
+                  )}
                   {f.kind === 'combine' && (
                     <em className="model-detail">
                       {' '}
@@ -2171,6 +2176,11 @@ export default function ModelEditor({
                   {f.kind === 'move' && (
                     <em className="model-detail">
                       {' '}{names[f.target] ?? f.target}{f.copy ? ' (copy)' : ''}
+                    </em>
+                  )}
+                  {f.kind === 'rotate' && (
+                    <em className="model-detail">
+                      {' '}{names[f.target] ?? f.target}, {f.angles.join(', ')}
                     </em>
                   )}
                   {f.kind === 'combine' && (

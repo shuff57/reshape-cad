@@ -182,6 +182,26 @@ a primitive (539: after a hole, fillet, combine or mirror), "Repeat Around spins
 "hole() cannot find how thick this combine is" (340). A rotation of a derived solid is an exact kernel transform, so the first is a
 policy choice; ask before changing the language.
 
+**W7 decisions and result (2026-10-06, owner answers).** (1) `turn()` is allowed on a built-up shape (the result of a hole, round, join or cut,
+mirror, pull): a new feature kind `rotate { target, angles }`, in place about the centre of the target's bounding box (X then Y then Z, as
+a primitive's own `rotate`), consuming its target like a move; the script writes it back as `turn(v, [rx, ry, rz])`. Built in the script
+package (model-types, interpreter, emitter, parameter sliders), brep-rs (`"rotate"` beside `"move"`, with an OpRecord so names carry through),
+the OpenCascade referee (one composed transform about `AddOptimal`'s box centre) and the studio's timeline line; the coverage matrix gained
+the kind. A hole drilled AFTER such a turn still says "cannot find how thick" (the range function answers null for the new kind), by design.
+(2) `turn()` on a ball is accepted and changes nothing. (3) `repeatAround`'s "nothing to spin around" now names the fix,
+`move(shape, [30, 0, 0])`. **Census: script errors 1,654 to 997; agree 5,035 to 5,217 and analytic-only 465 to 494; refused 7,731 to 8,171 (the
+newly reachable scripts that refuse for their other steps); no WRONG record for brep-rs.** 1,022 scripts call turn(): 285 agree with
+OpenCascade (volume to about 1e-16), 627 refuse honestly for other reasons. The two countersink cases that read "analytic only" differ from
+OpenCascade by 0.3 to 0.7 % with or without the turn: a standing difference in OpenCascade's countersink, not the turn.
+
+**Found on the way (not W7): the kernel suite had 12 real failures before this work, all about balls.** Under `bun test` the default 5 s
+timeout also fails ten slow tests that pass given time (`--timeout 600000`); the suite was written for `node --test`. The real ones:
+the ball x box work (W2) routes EVERY ball-and-box boolean through `ball_box`, which makes a `SphTrim::Hull` face that the STEP writer
+refuses ("brep-rs cannot write a spherical face to STEP yet"), so a ball sliced by one plane no longer exports to STEP (it did before: eight
+STEP read-back tests); tests that pin refusals that now build (a ball through the sides of a small box; a near-miss hole in a sphere); one
+face count a docs page prints (a dome on a plate is 7 faces, the docs say 8); and wording tests that expect "cannot" where W1 now says
+"do not overlap". The matrix entry for box-sphere intersect was fixed in this commit (a closed-form ball less six caps, 2032 pi).
+
 **W8. Tangent walls: a box whose width equals a coaxial cylinder's diameter (12 of the 15 box x cylinder pair gaps).** Found while
 checking W1. The box's four side faces touch the cylinder wall along a line each; join (8, box stacked on the cylinder) and cut (4, box
 overlapping its end) are refused as "unsupported surface pair". Checked by volume against OpenCascade (first script: 25,014 + 13,997 =

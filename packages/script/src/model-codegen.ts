@@ -277,6 +277,8 @@ export function generatedParams(doc: ModelDoc): GeneratedParam[] {
       push('thickness', 'wall', f.thickness, { min: 0.5, max: 40, step: 0.5 });
     } else if (f.kind === 'move') {
       pushCentre(out, f.id, label, f.offset);
+    } else if (f.kind === 'rotate') {
+      pushTurn(out, f.id, label, f.angles);
     } else if (f.kind === 'fillet') {
       // The ceiling is the same one maxRound() gives the box/cylinder's own
       // round slider -- borrowed from the root primitive the named edge
@@ -365,6 +367,12 @@ export function applyParam(doc: ModelDoc, name: string, value: number): ModelDoc
     const turn = slot === 'rx' ? 0 : slot === 'ry' ? 1 : slot === 'rz' ? 2 : null;
     // A sphere has no rotate field, which is the type system saying the same
     // thing canRotate() does: turning it would change nothing to look at.
+    if (turn !== null && f.kind === 'rotate') {
+      const angles: Vec3 = [f.angles[0], f.angles[1], f.angles[2]];
+      angles[turn] = value;
+      changed = true;
+      return { ...f, angles };
+    }
     if (turn !== null && canRotate(f) && f.rotate) {
       const rotate: Vec3 = [f.rotate[0], f.rotate[1], f.rotate[2]];
       rotate[turn] = value;

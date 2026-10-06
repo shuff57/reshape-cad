@@ -168,7 +168,7 @@ function chainVars(doc: ModelDoc): Map<string, string> {
   for (const f of doc.features) {
     const inherits =
       f.kind === 'hole' || f.kind === 'shell' || f.kind === 'fillet' || f.kind === 'draft' ||
-      f.kind === 'pattern' || (f.kind === 'move' && !f.copy);
+      f.kind === 'pattern' || f.kind === 'rotate' || (f.kind === 'move' && !f.copy);
     if (inherits && 'target' in f) {
       varOf.set(f.id, varOf.get(f.target) ?? f.target);
     } else {
@@ -629,6 +629,13 @@ export function toScript(doc: ModelDoc, namedParams?: readonly ScriptParamRef[])
       } else {
         lines.push(`move(${args})`);
       }
+      return;
+    }
+    if (f.kind === 'rotate') {
+      const rx = numText(bindings, f.id, 'rx', lit(f.angles[0]));
+      const ry = numText(bindings, f.id, 'ry', lit(f.angles[1]));
+      const rz = numText(bindings, f.id, 'rz', lit(f.angles[2]));
+      lines.push(`turn(${v(f.target)}, [${rx}, ${ry}, ${rz}])`);
       return;
     }
     if (f.kind === 'pattern') {

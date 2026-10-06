@@ -1067,6 +1067,33 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     // the history keeps its shape for name resolution.
                 }
             }
+            "rotate" => {
+                // A built-up shape turned in place about the centre of its bounding box (docs/specs/PLAN-kernel-next-2026-10-05.md, W7:
+                // the owner's decision). The angles are degrees about x, then y, then z, as a primitive's own `rotate`.
+                let target = f.get("target").and_then(|t| t.as_str()).unwrap_or("");
+                let angles = f.get("angles").and_then(v3).unwrap_or([0.0, 0.0, 0.0]);
+                let Some(src) = hist.shapes.get(target).cloned() else {
+                    refusals.insert(id.clone(), json!(format!("turn {id} cannot find {target}")));
+                    continue;
+                };
+                let bb = build::solid_aabb(&src);
+                let centre = scale(add(bb.lo, bb.hi), 0.5);
+                let t = crate::math::Transform::euler_deg(angles[0], angles[1], angles[2]).about(centre);
+                let turned = build::transform_solid(&src, &t);
+                // A rigid motion keeps every face and edge, as `move` does, so a name written before the turn still resolves.
+                let nf = src.faces().len();
+                let ne = src.edges().len();
+                let rec = OpRecord {
+                    feature: id.clone(),
+                    kind: OpKind::Transform,
+                    inputs: vec![target.to_string()],
+                    output: id.clone(),
+                    face_fates: (0..nf).map(|i| Fate::Kept(PartRef::Face(i))).collect(),
+                    edge_fates: (0..ne).map(|i| Fate::Kept(PartRef::Edge(i))).collect(),
+                };
+                hist.ops.entry(id.clone()).or_default().push(rec);
+                hist.insert(&id, turned);
+            }
             "datum" => {
                 // A datum plane is a reference a sketch sits on, not geometry:
                 // a deliberate no-op. It builds nothing, refuses nothing, and
@@ -5734,6 +5761,78 @@ fn a_bore_clear_of_a_ring_says_it_cuts_nothing() {
     // a bore inside the tube's footprint, and one across the tube: not a miss
     assert!(!says_miss(&miss(json!({ "diameter": 4, "depth": 4, "center": [16, 0, 2], "axis": "z" }))), "a bore in the tube");
     assert!(!says_miss(&miss(json!({ "diameter": 4, "depth": 4, "center": [16, 0, 0], "axis": "x" }))), "a bore across the tube");
+}
+
+/// A built-up shape turned in place about its bounding box keeps its volume exactly and still meshes closed, whatever kinds of face and
+/// trim it carries (a bore wall, a countersink cone, a sphere's hull trim, a sphere's bore trim, a joined pair).
+#[test]
+fn turning_a_built_up_shape_keeps_its_volume_and_closes() {
+    let cases: Vec<(&str, Vec<serde_json::Value>)> = vec![
+        ("a drilled box", vec![
+            json!({ "id": "b1", "kind": "box", "size": [40, 30, 20], "center": [3, -2, 5] }),
+            json!({ "id": "h1", "kind": "hole", "target": "b1", "diameter": 6, "depth": 24, "center": [3, -2, 5], "axis": "z" }),
+        ]),
+        ("a countersunk, blind-bored box", vec![
+            json!({ "id": "b1", "kind": "box", "size": [40, 26, 20], "center": [0, 0, 0] }),
+            json!({ "id": "h1", "kind": "hole", "target": "b1", "diameter": 9, "depth": 14, "center": [3, 0, 3], "axis": "z" }),
+            json!({ "id": "h2", "kind": "hole", "target": "h1", "diameter": 7, "depth": 22, "center": [-8, 4, 0], "axis": "z", "countersink": { "diameter": 13, "angleDeg": 90 } }),
+        ]),
+        ("a box and a cylinder joined", vec![
+            json!({ "id": "b1", "kind": "box", "size": [20, 20, 20], "center": [0, 0, 0] }),
+            json!({ "id": "c1", "kind": "cylinder", "radius": 5, "height": 30, "center": [0, 0, 15] }),
+            json!({ "id": "u1", "kind": "combine", "op": "union", "targets": ["b1", "c1"] }),
+        ]),
+        ("a ball cut by a tilted box (a hull trim)", vec![
+            json!({ "id": "s1", "kind": "sphere", "radius": 10, "center": [0, 0, 0] }),
+            json!({ "id": "b1", "kind": "box", "size": [12, 14, 9], "center": [4, 3, 2], "rotate": [20, 30, 40] }),
+            json!({ "id": "k1", "kind": "combine", "op": "intersect", "targets": ["s1", "b1"] }),
+        ]),
+        ("a ball with a bore through it", vec![
+            json!({ "id": "s1", "kind": "sphere", "radius": 10, "center": [0, 0, 0] }),
+            json!({ "id": "h1", "kind": "hole", "target": "s1", "diameter": 6, "depth": 30, "center": [3, 0, 0], "axis": "z" }),
+        ]),
+    ];
+    for (what, feats) in cases {
+        let last = feats.last().unwrap()["id"].as_str().unwrap().to_string();
+        let plain = json!({ "version": 1, "features": feats.clone() });
+        let (hist, refusals) = build_doc(&plain);
+        assert!(refusals.is_empty(), "{what}: {refusals:?}");
+        let want = build::solid_volume(hist.shapes.get(&last).unwrap());
+        for angles in [[0.0, 90.0, 0.0], [30.0, 0.0, 0.0], [20.0, 30.0, 40.0]] {
+            let mut f2 = feats.clone();
+            f2.push(json!({ "id": "t1", "kind": "rotate", "target": last, "angles": angles }));
+            let (hist, refusals) = build_doc(&json!({ "version": 1, "features": f2 }));
+            assert!(refusals.is_empty(), "{what} turned {angles:?}: {refusals:?}");
+            let turned = hist.shapes.get("t1").expect("the turned shape");
+            let got = build::solid_volume(turned);
+            assert!((got - want).abs() <= 1e-9 * want.abs(), "{what} turned {angles:?}: volume {got} vs {want}");
+            assert!(ops::volume_is_translation_invariant(turned), "{what} turned {angles:?}: not translation invariant");
+            let mesh = crate::mesh::mesh_solid(turned, 0.05).unwrap_or_else(|| panic!("{what} turned {angles:?}: no mesh"));
+            assert!(ops::check_watertight(&mesh), "{what} turned {angles:?}: mesh is not watertight");
+        }
+    }
+}
+
+/// A turn is about the centre of the bounding box: a block 40 x 30 x 20 turned 90 degrees about y becomes 20 x 30 x 40 about the same
+/// centre.
+#[test]
+fn a_turn_is_about_the_bounding_box_centre() {
+    let doc = json!({ "version": 1, "features": [
+        { "id": "b1", "kind": "box", "size": [40, 30, 20], "center": [10, 0, 0] },
+        { "id": "h1", "kind": "hole", "target": "b1", "diameter": 6, "depth": 24, "center": [10, 0, 0], "axis": "z" },
+        { "id": "t1", "kind": "rotate", "target": "h1", "angles": [0, 90, 0] }
+    ] });
+    let (hist, refusals) = build_doc(&doc);
+    assert!(refusals.is_empty(), "{refusals:?}");
+    let bb = build::solid_aabb(hist.shapes.get("t1").unwrap());
+    let size = [bb.hi[0] - bb.lo[0], bb.hi[1] - bb.lo[1], bb.hi[2] - bb.lo[2]];
+    let centre = [(bb.hi[0] + bb.lo[0]) / 2.0, (bb.hi[1] + bb.lo[1]) / 2.0, (bb.hi[2] + bb.lo[2]) / 2.0];
+    for (got, want) in size.iter().zip([20.0, 30.0, 40.0]) {
+        assert!((got - want).abs() < 1e-9, "size {size:?}");
+    }
+    for (got, want) in centre.iter().zip([10.0, 0.0, 0.0]) {
+        assert!((got - want).abs() < 1e-9, "centre {centre:?}");
+    }
 }
 
 #[test]

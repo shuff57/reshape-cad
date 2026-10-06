@@ -1524,6 +1524,32 @@ export function buildDoc(oc: Occt, doc: ModelDoc, arc?: any): BuildResult {
         ops.set(f.id, list);
         shape = op.Shape();
       }
+    } else if (f.kind === 'rotate') {
+      // A built-up shape turned in place about the centre of its bounding box (the owner's W7 decision). One composed transform, X then
+      // Y then Z as a primitive's own `rotate`, recorded like `move` so a name written before the turn still resolves after it.
+      const src = built.get(f.target);
+      if (src) {
+        const box = new oc.Bnd_Box();
+        oc.BRepBndLib.AddOptimal(src, box, false, false);
+        const lo = box.CornerMin();
+        const hi = box.CornerMax();
+        const about: Vec3 = [(lo.X() + hi.X()) / 2, (lo.Y() + hi.Y()) / 2, (lo.Z() + hi.Z()) / 2];
+        const axes: Array<[number, Vec3]> = [[f.angles[0], [1, 0, 0]], [f.angles[1], [0, 1, 0]], [f.angles[2], [0, 0, 1]]];
+        let total = new oc.gp_Trsf();
+        for (const [deg, dir] of axes) {
+          if (!deg) continue;
+          const t = new oc.gp_Trsf();
+          t.SetRotation(new oc.gp_Ax1(new oc.gp_Pnt(about[0], about[1], about[2]), new oc.gp_Dir(dir[0], dir[1], dir[2])), deg * DEG);
+          // later turns apply after the earlier ones: total = t * total
+          t.Multiply(total);
+          total = t;
+        }
+        const op = new oc.BRepBuilderAPI_Transform(src, total, false);
+        const list = ops.get(f.id) ?? [];
+        list.push({ op, inputs: [f.target] });
+        ops.set(f.id, list);
+        shape = op.Shape();
+      }
     } else if (f.kind === 'mirror') {
       const src = built.get(f.target);
       if (src) {

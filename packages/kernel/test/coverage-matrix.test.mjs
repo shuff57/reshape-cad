@@ -43,7 +43,7 @@ const { sections } = await import('@shuff57/reshape-script/reshape-docs');
 const KINDS = [
   'box', 'cylinder', 'sphere', 'cone', 'torus', 'prism', 'wedge', 'groove',
   'pocket', 'sketch', 'extrude', 'blend', 'combine', 'revolve', 'mirror',
-  'pattern', 'hole', 'shell', 'fillet', 'draft', 'move', 'datum',
+  'pattern', 'hole', 'shell', 'fillet', 'draft', 'move', 'rotate', 'datum',
 ];
 
 // Kinds are NOT words: which script words stand for each kind.
@@ -69,6 +69,7 @@ const WORDS = {
   fillet: ['round', 'bevel', 'chamfer', 'fillet'],
   draft: ['draft'],
   move: ['move'],
+  rotate: ['turn'],
   datum: ['plane'],
 };
 
@@ -203,6 +204,14 @@ const FIXTURES = {
       volume: 1500,
     },
     {
+      // A ball (radius 12) kept inside a cube (half side 10): the cube's six faces each cut a cap of height 2 off the ball, and the caps
+      // do not meet (the cube's edges lie outside the ball), so V = 4/3 pi 12^3 - 6 x (pi h^2 (3R - h) / 3) = 2304 pi - 272 pi = 2032 pi.
+      name: 'keep: a ball of radius 12 inside a 20-cube is the ball less six caps',
+      script: `const a = box(20, 20, 20)\nconst b = sphere(24, { at: [0, 0, 0] })\nconst k = keep(a, b)`,
+      volume: 2032 * Math.PI,
+      faces: 7,
+    },
+    {
       name: 'cut: the same overlap removed',
       script:
         `const a0 = box(10, 10, 10, { at: [0, 0, 0] })\nconst b0 = box(10, 10, 10, { at: [5, 0, 0] })\nconst a = cut(a0, b0)`,
@@ -267,6 +276,13 @@ const FIXTURES = {
       `const a0 = box(10, 10, 10, { at: [0, 0, 0] })\nconst c0 = box(10, 10, 10, { at: [0, 0, 0] })\nmove(c0, [5, 0, 0])\nconst a = join(a0, c0)`,
     volume: 1500,
   }],
+  // A built-up shape turned in place: the volume is the drilled box's, 24000 - 180 pi, however it is stood up.
+  rotate: [{
+    name: 'turn a drilled 40 x 30 x 20 box 90 degrees about y: the same volume, still 7 faces',
+    script: `const a = box(40, 30, 20)\nhole(a, { across: 6 })\nturn(a, [0, 90, 0])`,
+    volume: 24000 - 180 * Math.PI,
+    faces: 7,
+  }],
 };
 
 // kind -> {script, sentence}: a kind may be declared refused-honest in
@@ -275,11 +291,6 @@ const REFUSED_HONEST = {};
 
 // Matrix B. Two-sided: each must still refuse and name `sentence`.
 const REFUSAL_LEDGER = [
-  {
-    id: 'box-sphere intersect (unsupported surface pair)',
-    script: `const a = box(20, 20, 20)\nconst b = sphere(24, { at: [0, 0, 0] })\nconst k = keep(a, b)`,
-    sentence: 'cannot boolean these two solids',
-  },
   {
     id: 'loft of two circles (only matching straight outlines)',
     script:
@@ -642,7 +653,7 @@ test('A: the hardcoded kind list equals the Feature union in model-types.ts', ()
     (x) => x[1][0].toLowerCase() + x[1].slice(1),
   );
   assert.deepEqual([...kinds].sort(), [...KINDS].sort(), 'the Feature union changed: update KINDS, WORDS, FIXTURES here and docs/coverage.json');
-  assert.equal(KINDS.length, 22);
+  assert.equal(KINDS.length, 23);
   assert.deepEqual(Object.keys(WORDS).sort(), [...KINDS].sort());
 });
 
@@ -698,7 +709,7 @@ for (const kind of KINDS) {
   });
 }
 
-test('A(d): docs/coverage.json lists exactly the 22 kinds, nothing else', () => {
+test('A(d): docs/coverage.json lists exactly the 23 kinds, nothing else', () => {
   assert.equal(coverage.version, 1);
   assert.deepEqual(Object.keys(coverage.kinds).sort(), [...KINDS].sort());
 });
