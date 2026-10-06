@@ -803,3 +803,11 @@ The owner approved merging coplanar faces INSIDE the boolean (the S4g "What rema
 **Cylinders are not merged.** The one case S4f noted (a blind hole splits the outer wall into two faces of one surface) is a cylinder band split at a height; merging needs the two seams chained into one edge, a new angular range and the circle between them dropped, in three places that hold a cylinder's seam and trim (`CFace`, `wall_piece`, the STEP writer). It is not "trivially exact", so it was left; `read` in turned.rs takes the split wall already.
 
 **Verified:** cargo test --release 467 (461 + 6); sketch 42, script 267, kernel 1348 (1296 + 2 skipped + 43 + 7), studio 254; gates parity 78/0, mesh 78/0, step 77/0/1, gate:occt 17/0 (output identical to main apart from the wasm size and one 1e-15 delta: the gates compare face counts only as a bound of 2x + 4, so none moved).
+
+## 45. Owner decisions, recorded (2026-10-05)
+
+- **Second counterbore/countersink on a cone or sphere** measures from the part's CURRENT top (what the kernel does). OpenCascade measures from the original primitive's top and so differs. Written into the hole page of `packages/script/src/reshape-docs.ts`.
+- **Coplanar faces merge after booleans**, plane faces only (section 42; cylinder faces stay split). Written into the union page of `reshape-docs.ts`.
+- **Sketch corner numbers are 1-based** (`.round(k)`, `.chamfer(k)`, rules). Stored docs stay 0-based; the emitter writes +1. Corner 0 stops with a sentence; an old "3" now means the third corner (a test pins it). Already in the polygon/round pages of `reshape-docs.ts`.
+- **Lesson 8.1.11 step-3 wording:** ignore for now (owner's call).
+- **Still to do:** mirror the two new sentences into shCode `public/reshape/docs/reference.md` by hand at the next re-vendor.
