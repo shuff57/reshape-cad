@@ -752,7 +752,9 @@ fn rev_circle_on_plane(f: &PFace, g: &RFace, plane_box: &Box3) -> Result<Option<
     let ax = dot(g.fam.a, n);
     if ax.abs() < 1.0 - 1e-9 {
         let clear = match &g.surf {
-            Surface::Sphere(s) => box_clear_of_ball(plane_box, s.center, s.radius),
+            // A plane that only touches the ball (tangent, at one point) cuts nothing either, provided the ball
+            // sits on the solid side of it: from outside it would join two lumps at a point.
+            Surface::Sphere(s) => box_clear_of_ball(plane_box, s.center, s.radius) || (dot(sub(f.plane.origin, s.center), n).abs() >= s.radius - 1e-6 && dot(sub(s.center, f.plane.origin), n) < 0.0),
             _ => false,
         };
         if clear {
@@ -767,7 +769,10 @@ fn rev_circle_on_plane(f: &PFace, g: &RFace, plane_box: &Box3) -> Result<Option<
     let rho = g.rho(z);
     let at_end = (z - g.zlo).abs() <= EPS || (z - g.zhi).abs() <= EPS;
     if rho <= EPS {
-        // The plane touches the apex or the pole.
+        // The plane touches the apex or the pole. A ball's pole is one point of contact and cuts nothing.
+        if matches!(&g.surf, Surface::Sphere(sp) if dot(sub(sp.center, f.plane.origin), n) < 0.0) {
+            return Ok(None);
+        }
         bail!();
     }
     if at_end {
@@ -2412,6 +2417,25 @@ fn classify_plane(f: &PFace, p3: Vec3, other: &[AFace], other_solid: &TSolid) ->
                 }
             }
         }
+    }
+    // A sample that lands exactly where a ball's surface touches this face (a wall tangent to the
+    // ball) is on the boundary, and says nothing about the rest of the region. Read the region from
+    // points a little to each side of it instead; they must agree.
+    let touches_ball = other_solid.faces().iter().any(|fc| matches!(&fc.borrow().surface, Surface::Sphere(sp) if (len(sub(p3, sp.center)) - sp.radius).abs() < 1e-6));
+    if touches_ball {
+        let step = 1e-3;
+        let verdicts: Vec<bool> = [(1.0, 0.0), (-1.0, 0.0), (0.0, 1.0), (0.0, -1.0)]
+            .iter()
+            .map(|&(a, b)| add(p3, add(scale(f.plane.u, a * step), scale(f.plane.v, b * step))))
+            .filter(|q| in_edges(f.plane.project(*q), &f.edges))
+            .map(|q| ops::inside_solid(other_solid, q))
+            .collect();
+        if let Some(&first) = verdicts.first() {
+            if verdicts.iter().all(|&v| v == first) {
+                return Ok(if first { Class::Inside } else { Class::Outside });
+            }
+        }
+        bail!();
     }
     Ok(if ops::inside_solid(other_solid, p3) { Class::Inside } else { Class::Outside })
 }

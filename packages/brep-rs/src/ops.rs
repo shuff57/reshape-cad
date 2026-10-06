@@ -10727,4 +10727,28 @@ mod sphere_offset_bore_tests {
             assert!(mesh_is_closed_coarse(&c), "cut mesh closes");
         }
     }
+
+    /// W8: a box exactly as wide as a ball touches it at single points (the four walls at the equator,
+    /// a floor at a pole). Those contacts cut nothing, so the builds are the plain closed forms.
+    #[test]
+    fn w8_box_tangent_to_a_ball_builds_with_the_closed_form_volume() {
+        let pi = std::f64::consts::PI;
+        let ball = build::sphere_solid([0.0; 3], 10.0, [0.0, 0.0, 1.0]);
+        let vball = 4.0 / 3.0 * pi * 1000.0;
+        let cap = |h: f64| pi * h * h * (30.0 - h) / 3.0;
+        // (box height, centre z, op, want)
+        let slab = vball - 2.0 * cap(7.0);
+        let cases = [
+            (6.0, 0.0, "union", vball + 20.0 * 20.0 * 6.0 - slab),
+            (6.0, 0.0, "intersect", slab),
+            (15.0, -2.5, "subtract", cap(5.0)),
+            (15.0, -2.5, "intersect", vball - cap(5.0)),
+        ];
+        for (h, zc, op, want) in cases {
+            let bx = build::box_solid([20.0, 20.0, h], [0.0, 0.0, zc], None);
+            let r = boolean(op, &ball, &bx).unwrap_or_else(|| panic!("{op} h={h} builds"));
+            assert!((build::solid_volume(&r) - want).abs() < 1e-6 * vball, "{op} h={h}: {} vs {want}", build::solid_volume(&r));
+            assert!(mesh_is_closed_coarse(&r), "{op} h={h} mesh closes");
+        }
+    }
 }

@@ -147,8 +147,15 @@ box's bottom face splits at the four tangent points into four arcs, but the cyli
 matched (every earlier guard was innocent; the refusal came from the edge-count check). Fix: `split_full_circle` in `split_t_junctions`
 cuts a whole circle into arcs only when every piece is one a neighbouring face already has. A wider rule (any vertex on the circle, or any
 partial arc of the circle) broke 20 tests and the mesh and STEP gates; the "every piece already exists" rule breaks none. Pair sweep: 734 to
-743 agree, 0 wrong. The sphere half (35 box x sphere) is not done: a ball touches the walls at points, not along lines, so it is a different
-contact and needs its own look.
+743 agree, 0 wrong. **W8 result, sphere half:** a box exactly as wide as a ball builds when the ball touches its walls at the equator or a floor at a pole,
+from inside (the ball on the solid side of the touching plane). Two causes, neither the circle-matching of the cylinder half: (1) the
+planar path refused any plane that was not square to the axis unless clear of the ball, and a tangent plane is not clear but cuts nothing;
+(2) the face classifier sampled the wall's centre, which is the tangent point itself, and read the boundary as "inside" (a wall that should
+vanish was kept). Fix: a tangent plane or pole on the solid side cuts nothing; a sample on a ball's surface is re-read from four points a
+millimetre away, which must agree. From outside, a tangent plate or pole still refuses (a union there is two lumps at a point; an existing
+test pins it). Pair sweep: 743 to 764 agree, 0 wrong, and one new OCCT-WRONG (OpenCascade 12,057 vs the closed form 4,305.24 that brep-rs
+matches to 12 digits). Still refused: a cut that leaves two lumps (the slab through a ball's middle) and a plane through the equator of a
+ball that fits the box exactly (a circle through the face's edge midpoints, the cylinder case's cousin for a plane).
 
 **W2 pre-check result:** of the 46 non-tangent box x sphere gaps, only 3 are cut by a single box plane (slice (a)); 2 are cut by none;
 the other 41 cross 2 to 6 planes (8 two, 9 three, 14 four, 2 five, 8 six). So slice (a) alone moves about 3 sweep scripts: it is a
