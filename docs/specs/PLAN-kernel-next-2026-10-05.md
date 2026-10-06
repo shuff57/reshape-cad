@@ -140,6 +140,15 @@ a new curve exactly as the sphere track's `SphCyl` did, with a `Cross`-style wal
 A cross-drilled hole is a routine student operation, which makes this the most realistic gap the census has shown. The 27 non-overlapping
 refusals are a different, probably cheaper, problem (a counterbore or countersink beside a side bore) and are not yet looked at.
 
+**W5 follow-up on the 27 non-overlapping refusals (2026-10-06): they are NOT one cheap problem.** OpenCascade confirms all 27 have exactly
+zero volume overlap (|overlap| under 1e-10). One mechanism was found and fixed: a stepped tool (shaft cylinder plus countersink cone) beside
+an earlier bore refused with "the u-clip arithmetic is only valid for cylinder tools" (`ops.rs`, the cylinder arm of `process_face`) even
+when the cone could not touch that bore's wall, because `ConeCyl::Clear` set `saw_cone`. A new `ConeCyl::Apart` (no shared axial band, or the
+wall outside the cone's widest circle) no longer sets it; a test (`a_countersink_beside_a_bore_it_does_not_reach_builds_exactly`) pins the
+exact volume and that a funnel which does reach the bore still refuses. **It moved 0 of the 27 and the census by 1 script**: each of the 27
+is stopped by a different guard (counterbore beside a side bore, countersink beside a counterbore, a bore through two side faces), and the
+random generator rarely produces the clear-funnel case the fix covers. Not a bucket to chase; fold whatever remains into the skew-crossing work.
+
 **W6. Hollow beyond box and cylinder (275 scripts).** Sphere (34) is a concentric cavity (`subtract_enclosed` exists), a ring is a
 concentric torus, and a prism or wedge is a planar inward offset. A cone is an offset cone.
 

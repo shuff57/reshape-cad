@@ -5668,6 +5668,37 @@ fn counterbore_variants_are_exact() {
     }
 }
 
+/// A blind bore beside a countersunk hole whose funnel does NOT reach it (their rims are 0.7 apart): the stepped tool (shaft
+/// cylinder plus cone) sits beside the first bore's wall, and the cone cannot touch that wall, so it must not make the mix refuse.
+/// The same pair with the funnel reaching the bore still refuses (the cone meets the bore's wall in a space curve).
+#[test]
+fn a_countersink_beside_a_bore_it_does_not_reach_builds_exactly() {
+    let pi = std::f64::consts::PI;
+    let doc = |second_at: [f64; 2]| {
+        json!({
+            "version": 1,
+            "features": [
+                { "id": "b1", "kind": "box", "size": [40, 26, 20], "center": [0, 0, 0] },
+                { "id": "h1", "kind": "hole", "target": "b1", "diameter": 9, "depth": 14, "center": [3, 0, 3], "axis": "z" },
+                { "id": "h2", "kind": "hole", "target": "h1", "diameter": 7, "depth": 22, "center": [second_at[0], second_at[1], 0], "axis": "z",
+                  "countersink": { "diameter": 13, "angleDeg": 90 } }
+            ],
+            "measure": "h2"
+        })
+    };
+    // rims 0.7 apart: shaft pi 3.5^2 x 20, funnel extra pi (3/3 (6.5^2 + 6.5 3.5 + 3.5^2) - 3.5^2 x 3), bore pi 4.5^2 x 14
+    let (hist, refusals) = build_doc(&doc([-8.0, 4.0]));
+    assert!(refusals.is_empty(), "a funnel clear of the bore must not refuse: {refusals:?}");
+    let want = 40.0 * 26.0 * 20.0 - pi * (283.5 + 245.0 + 40.5);
+    let got = build::solid_volume(hist.shapes.get("h2").expect("h2 built"));
+    assert!((got - want).abs() <= 1e-6 * want, "volume {got} vs exact {want}");
+    let mesh = crate::mesh::mesh_solid(hist.shapes.get("h2").unwrap(), 0.05).expect("meshes");
+    assert!(ops::check_watertight(&mesh), "mesh is watertight");
+    // rims 0.23 inside each other: the funnel reaches the bore, which is the curve the kernel does not carry
+    let (_, refusals) = build_doc(&doc([-7.0, 4.0]));
+    assert!(!refusals.is_empty(), "a funnel reaching the bore's wall must still refuse");
+}
+
 #[test]
 fn countersink_variants_are_exact() {
  let pi = std::f64::consts::PI;

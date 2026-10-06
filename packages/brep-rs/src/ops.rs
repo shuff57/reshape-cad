@@ -2476,6 +2476,10 @@ enum ConeCyl {
     /// Parallel off-axis cylinder that stays strictly inside or strictly
     /// outside the cone over the shared band: they never meet.
     Clear,
+    /// The cone cannot touch the wall AND does not contain any of it: they share no axial band, or the wall's circle lies
+    /// outside the cone's widest circle over the band. The cone then constrains nothing about this wall, which is what lets a
+    /// cylinder tool and a countersink cone in one stepped tool sit beside a bore that only the cylinder could reach.
+    Apart,
     /// Anything else (tilted axes, an off-axis wall that reaches the cone, an
     /// arc wall): the meeting curve is not a circle, so the caller refuses.
     Crosses,
@@ -2499,7 +2503,7 @@ fn cone_cyl_relation(c: &Cone, cy: &Cylinder) -> ConeCyl {
     let lo = q1.min(q2).max(c.v_range[0] * cos);
     let hi = q1.max(q2).min(c.v_range[1] * cos);
     if hi - lo <= 1e-9 {
-        return ConeCyl::Clear;
+        return ConeCyl::Apart;
     }
     let r2 = cy.radius;
     let r_at = |along: f64| c.base_radius - along * tan;
@@ -2512,7 +2516,10 @@ fn cone_cyl_relation(c: &Cone, cy: &Cylinder) -> ConeCyl {
         let v_cross = if along >= lo - 1e-9 && along <= hi + 1e-9 { Some(v) } else { None };
         return ConeCyl::Coaxial { v_cross };
     }
-    if off + r2 < r_at(hi) - 1e-7 || off - r2 > r_at(lo) + 1e-7 {
+    if off - r2 > r_at(lo) + 1e-7 {
+        return ConeCyl::Apart;
+    }
+    if off + r2 < r_at(hi) - 1e-7 {
         return ConeCyl::Clear;
     }
     ConeCyl::Crosses
@@ -3675,6 +3682,7 @@ fn process_face(
                                 }
                             }
                             ConeCyl::Clear => saw_cone = true,
+                            ConeCyl::Apart => {}
                             ConeCyl::Crosses => return None,
                         }
                     }
@@ -3991,7 +3999,7 @@ fn process_face(
  }
  }
  }
- ConeCyl::Clear => {}
+ ConeCyl::Clear | ConeCyl::Apart => {}
  ConeCyl::Crosses => return None,
  },
  _ => return None,
