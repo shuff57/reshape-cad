@@ -1,6 +1,6 @@
 # SPEC: cone booleans (W3 of PLAN-kernel-next-2026-10-05.md)
 
-Status: S0 built 2026-10-06; S1a (`keep(cone, box)`, exact) built 2026-10-07; STEP export of it, and join / cut of a cone with a box, not started. Parent: `SPEC-brep-kernel-rs.md` section 4.5. Precedent: `SPEC-brep-ball-box.md`
+Status: S0 built 2026-10-06; S1a (`keep(cone, box)`, exact) and its STEP export built 2026-10-07; join / cut of a cone with a box not started. Parent: `SPEC-brep-kernel-rs.md` section 4.5. Precedent: `SPEC-brep-ball-box.md`
 (the sphere track: its pre-check found that a third of the "gaps" needed no curve at all).
 
 ## Pre-check (2026-10-06, pair family seed 1, 1,500 scripts, after the sphere work; 669 refused)
@@ -125,8 +125,12 @@ Built for a box with a face square to the cone's axis (every script box against 
 * **Measures from the wires** (`build::bounded_cone_measure`): a cone develops onto a flat sector, so area `= (1/sin a) (1/2) loop (x dy - y dx)`, the centroid and the volume term (`apex . vector area`, because `p . n = apex . n` along a generator) are closed forms. The box of a face holding the apex in its middle needs the apex added (`bounded_cone_holds_apex`): a fuzz against the mesh found that.
 * **Mesh**: every rim edge of a bounded cone is sampled at one lattice of angles about the axis (`cone_lattice_polylines`), and the face is zipped between its two rim chains (fanned from the apex where it is in the face). Sampling each rim at its own spacing made fans that lay flat on the box plane next door and doubled its triangles.
 * **Checks**: every edge used twice, one lump, the divergence volume against an independent cross-section integral (2e-6 of the cone), origin-free volume, a closed mesh, and the volume unchanged on moving into place. A pair outside what the construction handles (tilted box, a corner on the cone, a plane nearly tangent) refuses; a box exactly as wide as the base, which touches the base circle at points, builds.
-* **After it**: move and turn work; every other operation on the part refuses (`ops::has_cut_cone`, and a sentence in `wasm.rs`); STEP refuses ("a cone cut by a box"). The builder is tried LAST in `boolean_legacy`, so the coaxial path (planes square to the axis only), which writes STEP, keeps what it already built.
+* **After it**: move and turn work; every other operation on the part refuses (`ops::has_cut_cone`, and a sentence in `wasm.rs`); STEP is written (below). The builder is tried LAST in `boolean_legacy`, so the coaxial path (planes square to the axis only), which writes STEP, keeps what it already built.
 
 Tests: cargo 522 (random 783 crossings, 774 built, 0 wrong, the other 9 a box holding the whole cone; 2,197 boxes snapped to awkward values, 1,461 built, 0 wrong; whole pairs moved and turned through the public boolean); `packages/kernel/test/cone-box-keep.test.mjs` (66 of 90 random scripts built, volume against OpenCascade to 1e-9 relative, 24 empty; bounding box; watertight meshes at two tolerances). Pair family: 921 to 953 agree (the pre-check predicted 32), 0 wrong; gates 78/78/78/17.
 
-Next: STEP export (an open-arc spline fit, read back by OpenCascade, as the sphere track did), then join and cut of a cone with a box (non-convex faces, several lumps; 23 + 13 pair scripts).
+Next: join and cut of a cone with a box (non-convex faces, several lumps; 23 + 13 pair scripts).
+
+### STEP export (built 2026-10-07)
+
+A hyperbola arc has no STEP primitive, so it is written as the clamped cubic B-spline `fit_closed_curve` already fits for the bore curves, generalised to an OPEN arc (`fit_curve`: each end keeps its own exact tangent; the fit is checked against the exact curve to 1e-7 of the part's size or the file is refused). The cone face is written from its own wires, as the cross-bored cylinder is; the loops are wound by the existing area rule. OpenCascade reads every kind back correctly, which the sphere track's faces did not (they needed a chosen frame and a refusal class): 904 random scripts read back as the same valid solid (volume and box), 0 wrong, 0 refused; and the awkward classes, each moved and turned too (a frustum cut sideways, the apex on the boundary, a half through the axis, a thin slab through the axis giving two strips, the apex inside the box, a box exactly as wide as the base, a box turned about the axis): `packages/kernel/test/step-cone-box.test.mjs`.

@@ -10,7 +10,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { stepRoundTrip } from './step-readback-lib.mjs';
+import { stepRoundTrip, okRead } from './step-readback-lib.mjs';
 
 const HERE = path.resolve(fileURLToPath(new URL('.', import.meta.url)));
 const REPO = path.resolve(HERE, '../../..');
@@ -185,7 +185,7 @@ test('a box turned about the cone axis is still a clean crossing, and the result
   assert.ok(built >= 12, `only ${built} built`);
 });
 
-test('what can be done to a kept cone: move and turn it, and every other operation refuses in a sentence', () => {
+test('what can be done to a kept cone: move, turn and save it, and every other operation refuses in a sentence', () => {
   const base = "let v = cone(20, 20, { at: [0, 0, 0] })\nlet p = box(8, 40, 30, { at: [4, 0, 10] })\nv = keep(v, p)\n";
   const plain = build(base);
   assert.deepEqual(plain.refusals, {});
@@ -200,7 +200,7 @@ test('what can be done to a kept cone: move and turn it, and every other operati
     assert.ok(Object.keys(t.refusals).length > 0, `${extra} is refused`);
     assert.match(Object.values(t.refusals).join(' '), /cut out of a cone by a box|cannot|do not/i);
   }
-  // STEP: not written yet, and it says so
+  // STEP: written, and OpenCascade reads it back as the same solid (the sweep is in step-cone-box.test.mjs)
   const s = stepRoundTrip(base);
-  assert.ok(s.refused && /^brep-rs cannot write /.test(s.refused), `STEP said: ${JSON.stringify(s.refused ?? s)}`);
+  assert.ok(okRead(s), `STEP read-back: ${JSON.stringify(s.refused ?? { dv: s.dv, db: s.db, valid: s.got?.valid })}`);
 });

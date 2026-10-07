@@ -383,18 +383,26 @@ fn basis_funs(i: usize, t: f64, knots: &[f64]) -> [f64; 4] {
 /// is checked: its midpoints must lie within 1e-7 of the curve's size from the exact curve, or this
 /// refuses (a STEP file that approximates worse than that would be a wrong solid).
 fn fit_closed_curve(curve: &Curve, rev: bool) -> Result<Seg, String> {
+    fit_curve(curve, rev, false)
+}
+
+/// `fit_closed_curve`, or for an OPEN arc (`open`) the same clamped cubic with each end's own exact tangent.
+fn fit_curve(curve: &Curve, rev: bool, open: bool) -> Result<Seg, String> {
     let m = SPLINE_SPANS;
     let ncp = m + 3;
     let at = |s: f64| curve.point_at(if rev { 1.0 - s / m as f64 } else { s / m as f64 });
     let sgn = if rev { -1.0 } else { 1.0 };
-    let tan = scale(curve.derivative_at(0.0), sgn / m as f64);
+    let tan = scale(curve.derivative_at(if rev { 1.0 } else { 0.0 }), sgn / m as f64);
+    let tan_end = if open { scale(curve.derivative_at(if rev { 0.0 } else { 1.0 }), sgn / m as f64) } else { tan };
     let mut knots = vec![0.0; 4];
     knots.extend((1..m).map(|k| k as f64));
     knots.extend([m as f64; 4]);
     let span_of = |t: f64| if t >= m as f64 { m + 2 } else { t.floor() as usize + 3 };
     let mut a = vec![vec![0.0f64; ncp + 3]; ncp]; // [matrix | 3 right-hand sides]
     let mut pts: Vec<Vec3> = (0..=m).map(|k| at(k as f64)).collect();
-    pts[m] = pts[0];
+    if !open {
+        pts[m] = pts[0];
+    }
     for k in 0..=m {
         let t = k as f64;
         let sp = span_of(t);
@@ -413,7 +421,7 @@ fn fit_closed_curve(curve: &Curve, rev: bool) -> Result<Seg, String> {
     a[m + 2][m + 2] = 1.0;
     for c in 0..3 {
         a[m + 1][ncp + c] = tan[c] / 3.0;
-        a[m + 2][ncp + c] = tan[c] / 3.0;
+        a[m + 2][ncp + c] = tan_end[c] / 3.0;
     }
     for col in 0..ncp {
         let piv = (col..ncp)
@@ -519,7 +527,7 @@ fn wire_segs(wire: &[crate::topo::EdgeUse<Curve>]) -> Result<Vec<Seg>, String> {
             // No STEP primitive either (the meeting curve of a bore and a sphere): the same fitted spline.
             Curve::SphCyl { .. } => fit_closed_curve(&e.curve, !u.forward)?,
             // An open arc of a conic, which the closed-curve fit above cannot carry.
-            Curve::Hyperbola { .. } => return Err("a cone cut by a plane that runs along its axis".to_string()),
+            Curve::Hyperbola { .. } => fit_curve(&e.curve, !u.forward, true)?,
             Curve::Circle {
                 center,
                 radius,
@@ -1243,7 +1251,15 @@ fn face_bounds(face: &crate::topo::Face<Curve, Surface>) -> Result<(Vec<Vec<Seg>
         }
         // A cone a box has cut: its wires are the boundary, but the STEP reader's reading of a trimmed cone through
         // its angle and slant range has not been checked against OpenCascade for these, so it is not written.
-        Surface::Cone(c) if c.bounded => return Err("a cone cut by a box".to_string()),
+        Surface::Cone(c) if c.bounded => {
+            for w in &face.boundary {
+                let segs = wire_segs(&w.borrow().edges)?;
+                if !closed_chain(&segs) {
+                    return Err("a face whose wire is not a closed chain".to_string());
+                }
+                bounds.push(segs);
+            }
+        }
         Surface::Cone(c) => {
             if face.boundary.len() > 1 {
                 return Err("a conical face with a hole in it".to_string());
