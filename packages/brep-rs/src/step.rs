@@ -1259,6 +1259,136 @@ fn face_bounds(face: &crate::topo::Face<Curve, Surface>) -> Result<(Vec<Vec<Seg>
                 }
                 bounds.push(segs);
             }
+            // A cone face is periodic. A wire that goes once round the axis is an open line in the cone's (angle, slant) space, so when
+            // the face also has a notch (a hole that does not go round) OpenCascade cannot tell the notch is a hole, and reads two faces.
+            // It needs the seam written out, as a whole cone's is: from the outer wire up to the apex and back down.
+            let axis = normalize(c.axis);
+            // every wire of the face as a flat polygon seen from above (the cone projects one to one onto the plane square to its axis)
+            let xy = |p: Vec3| {
+                let d = sub(p, c.base);
+                (dot(d, c.e1), dot(d, c.e2))
+            };
+            let mut polys: Vec<Vec<(f64, f64)>> = Vec::new();
+            for w in &face.boundary {
+                let mut poly = Vec::new();
+                for u in &w.borrow().edges {
+                    let mut pts = crate::mesh::curve_points(&u.edge.borrow().curve, 1e-3 * c.slant);
+                    if !u.forward {
+                        pts.reverse();
+                    }
+                    poly.extend(pts.iter().map(|p| xy(*p)));
+                }
+                polys.push(poly);
+            }
+            // a wire is round when its angle about the axis adds up to a whole turn (a point on the axis has no angle: skipped)
+            let round: Vec<bool> = polys
+                .iter()
+                .map(|poly| {
+                    let (mut total, mut prev): (f64, Option<f64>) = (0.0, None);
+                    for p in poly.iter().chain(poly.first()) {
+                        if p.0.hypot(p.1) < 1e-9 * c.slant {
+                            continue;
+                        }
+                        let a = p.1.atan2(p.0);
+                        if let Some(q) = prev {
+                            let mut d: f64 = a - q;
+                            while d > std::f64::consts::PI {
+                                d -= 2.0 * std::f64::consts::PI;
+                            }
+                            while d < -std::f64::consts::PI {
+                                d += 2.0 * std::f64::consts::PI;
+                            }
+                            total += d;
+                        }
+                        prev = Some(a);
+                    }
+                    total.abs() > std::f64::consts::PI
+                })
+                .collect();
+            let rounds = round.iter().filter(|r| **r).count();
+            if rounds >= 1 {
+                let apex_inside = crate::build::bounded_cone_holds_apex(c, face);
+                if rounds != 1 || !apex_inside {
+                    // two wires round the axis (a band) is the shape OpenCascade closes by itself, until a notch is added to it
+                    if round.iter().any(|r| !*r) {
+                        return Err("a cone cut by a box in a band and a notch".to_string());
+                    }
+                } else {
+                    // The face has one wire round the axis and holds the apex: OpenCascade needs the seam written out, as a whole cone's is,
+                    // from the wire up to the apex and back down, along a generator that no other part of the boundary crosses.
+                    let apex = add(c.base, scale(axis, c.slant * c.half_angle.cos()));
+                    let tol = 1e-7 * c.slant;
+                    // whether the generator from the flat point `v` in to the axis crosses any wire, other than at `v` itself
+                    let clear = |v: (f64, f64)| -> bool {
+                        let o = (0.0, 0.0);
+                        let cr = |a: (f64, f64), b: (f64, f64)| a.0 * b.1 - a.1 * b.0;
+                        for poly in &polys {
+                            let n = poly.len();
+                            for k in 0..n {
+                                let (p, q) = (poly[k], poly[(k + 1) % n]);
+                                let near = |a: (f64, f64)| (a.0 - v.0).hypot(a.1 - v.1) < tol;
+                                if near(p) || near(q) {
+                                    continue;
+                                }
+                                let (d1, d2) = (cr((o.0 - v.0, o.1 - v.1), (p.0 - v.0, p.1 - v.1)), cr((o.0 - v.0, o.1 - v.1), (q.0 - v.0, q.1 - v.1)));
+                                let (d3, d4) = (cr((q.0 - p.0, q.1 - p.1), (v.0 - p.0, v.1 - p.1)), cr((q.0 - p.0, q.1 - p.1), (o.0 - p.0, o.1 - p.1)));
+                                if d1 * d2 < 0.0 && d3 * d4 < 0.0 {
+                                    return false;
+                                }
+                            }
+                        }
+                        true
+                    };
+                    let outer_ix = round.iter().position(|r| *r).unwrap();
+                    let outer = bounds[outer_ix].clone();
+                    let pick = (0..outer.len()).find(|&k| {
+                        let v = outer[k].start();
+                        crate::math::len(sub(v, apex)) > 1e-9 * c.slant && clear(xy(v))
+                    });
+                    let (v, mut rotated): (Vec3, Vec<Seg>) = if let Some(k) = pick {
+                        (outer[k].start(), outer[k..].iter().chain(outer[..k].iter()).cloned().collect())
+                    } else if let [Seg::Arc { center, radius, axis: ax, .. }] = outer.as_slice() {
+                        // a whole circle can start anywhere: the middle of the longest run of angles whose generator is clear
+                        let n = 720usize;
+                        let free: Vec<bool> = (0..n)
+                            .map(|k| {
+                                let a = 2.0 * std::f64::consts::PI * k as f64 / n as f64;
+                                clear(xy(add(*center, add(scale(c.e1, radius * a.cos()), scale(c.e2, radius * a.sin())))))
+                            })
+                            .collect();
+                        let mut best: Option<(usize, usize)> = None;
+                        for k0 in 0..n {
+                            if !free[k0] || free[(k0 + n - 1) % n] {
+                                continue;
+                            }
+                            let mut l = 0;
+                            while l < n && free[(k0 + l) % n] {
+                                l += 1;
+                            }
+                            if best.map_or(true, |(_, bl)| l > bl) {
+                                best = Some((k0, l));
+                            }
+                        }
+                        let Some((k0, l)) = best else { return Err("a cone cut by a box whose edges reach all round it".to_string()) };
+                        let a = 2.0 * std::f64::consts::PI * (k0 as f64 + 0.5 * (l as f64 - 1.0)) / n as f64;
+                        let dir = normalize(add(scale(c.e1, a.cos()), scale(c.e2, a.sin())));
+                        let p = add(*center, scale(dir, *radius));
+                        let opposite = add(*center, scale(dir, -radius));
+                        (p, vec![Seg::Arc { center: *center, radius: *radius, axis: *ax, a: p, b: p, mid: opposite }])
+                    } else {
+                        return Err("a cone cut by a box whose edges reach all round it".to_string());
+                    };
+                    let spin = normalize(cross(c.e1, c.e2));
+                    rotated.push(Seg::Line { a: v, b: apex });
+                    rotated.push(Seg::Arc { center: apex, radius: 0.0, axis: scale(spin, -1.0), a: apex, b: apex, mid: apex });
+                    rotated.push(Seg::Line { a: apex, b: v });
+                    bounds[outer_ix] = rotated;
+                    let dv = sub(v, c.base);
+                    let radial = sub(dv, scale(axis, dot(dv, axis)));
+                    frame = Some((scale(axis, -1.0), normalize(radial)));
+                    bounds.swap(0, outer_ix);
+                }
+            }
         }
         Surface::Cone(c) => {
             if face.boundary.len() > 1 {
@@ -1364,6 +1494,9 @@ fn face_bounds(face: &crate::topo::Face<Curve, Surface>) -> Result<(Vec<Vec<Seg>
             Surface::Sphere(sp) if sp.trim.is_bored() => continue,
             Surface::Sphere(sp) if b.len() == 1 || sphere_zone_loop(sp).is_none() => continue,
             Surface::Torus(_) => continue,
+            // a cone a box has cut: its wires already run the way STEP wants (the outer one counter-clockwise about the face's own normal,
+            // each hole the other way), because they were made from the faces next to it
+            Surface::Cone(c) if c.bounded => continue,
             _ => {}
         }
         let area = match &face.surface {
@@ -1488,7 +1621,8 @@ pub fn write_solid(solid: &TSolid, product: &str) -> Result<String, String> {
                 w.put(format!("CYLINDRICAL_SURFACE('',#{pl},{})", real(c.radius)))
             }
             Surface::Cone(c) => {
-                let pl = w.axis2(c.base, scale(c.axis, -1.0), c.e1);
+                let (ax, e1) = frame.unwrap_or((scale(c.axis, -1.0), c.e1));
+                let pl = w.axis2(c.base, ax, e1);
                 w.put(format!(
                     "CONICAL_SURFACE('',#{pl},{},{})",
                     real(c.base_radius),

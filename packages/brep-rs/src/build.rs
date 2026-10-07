@@ -736,45 +736,45 @@ fn reversed_face(face: &Face<Curve3, Surface3>) -> TFace {
     }))
 }
 
-/// Whether the apex is inside a bounded cone face rather than on its boundary or outside it: the face has one wire, that wire goes once
-/// round the axis, and it does not pass through the apex.
+/// Whether the apex is inside a bounded cone face rather than on its boundary or outside it: seen from above (the cone projects one to
+/// one onto the plane square to its axis) the apex is the axis point, and it is in the face when an odd number of its wires go round it.
 pub fn bounded_cone_holds_apex(c: &geom::Cone, face: &Face<Curve3, Surface3>) -> bool {
-    if face.boundary.len() != 1 {
-        return false;
-    }
     let axis = crate::math::normalize(c.axis);
     let apex = add(c.base, scale(axis, c.slant * c.half_angle.cos()));
     let tol = 1e-9 * c.slant;
-    let (mut total, mut prev): (f64, Option<f64>) = (0.0, None);
-    for u in &face.boundary[0].borrow().edges {
-        let e = u.edge.borrow();
-        let mut pts = crate::mesh::curve_points(&e.curve, 1e-3 * c.slant);
-        if !u.forward {
-            pts.reverse();
+    let mut inside = 0;
+    for w in &face.boundary {
+        let mut poly: Vec<(f64, f64)> = Vec::new();
+        for u in &w.borrow().edges {
+            let e = u.edge.borrow();
+            let mut pts = crate::mesh::curve_points(&e.curve, 1e-3 * c.slant);
+            if !u.forward {
+                pts.reverse();
+            }
+            for p in pts {
+                if crate::math::len(crate::math::sub(p, apex)) < tol {
+                    return false;
+                }
+                let d = crate::math::sub(p, c.base);
+                poly.push((crate::math::dot(d, c.e1), crate::math::dot(d, c.e2)));
+            }
         }
-        for p in pts {
-            if crate::math::len(crate::math::sub(p, apex)) < tol {
-                return false;
+        // the axis point (0, 0) against the polygon, even-odd
+        let n = poly.len();
+        let mut hit = false;
+        let mut j = n.wrapping_sub(1);
+        for i in 0..n {
+            let (a, b) = (poly[i], poly[j]);
+            if (a.1 > 0.0) != (b.1 > 0.0) && 0.0 < (b.0 - a.0) * (0.0 - a.1) / (b.1 - a.1) + a.0 {
+                hit = !hit;
             }
-            let d = crate::math::sub(p, c.base);
-            if crate::math::len(crate::math::sub(d, scale(axis, crate::math::dot(d, axis)))) < tol {
-                continue;
-            }
-            let a = crate::math::dot(d, c.e2).atan2(crate::math::dot(d, c.e1));
-            if let Some(q) = prev {
-                let mut step = a - q;
-                while step > std::f64::consts::PI {
-                    step -= 2.0 * std::f64::consts::PI;
-                }
-                while step < -std::f64::consts::PI {
-                    step += 2.0 * std::f64::consts::PI;
-                }
-                total += step;
-            }
-            prev = Some(a);
+            j = i;
+        }
+        if hit {
+            inside += 1;
         }
     }
-    total.abs() > std::f64::consts::PI
+    inside % 2 == 1
 }
 
 pub fn solid_aabb(solid: &TSolid) -> Aabb {

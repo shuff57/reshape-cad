@@ -5807,7 +5807,7 @@ pub(crate) fn mesh_is_closed_coarse(s: &TSolid) -> bool {
 fn boolean_legacy(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
  // The paths below build what they can (a cone cut by planes square to its axis writes to STEP); a cone kept by a box
  // that none of them builds is the last resort.
- boolean_legacy_paths(op, a, b).or_else(|| crate::cone_keep::cone_box_boolean(op, a, b))
+ boolean_legacy_paths(op, a, b).or_else(|| crate::cone_keep::cone_box_boolean(op, a, b)).or_else(|| crate::cone_csg::cone_box_csg(op, a, b))
 }
 
 fn boolean_legacy_paths(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {

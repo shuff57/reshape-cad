@@ -1836,6 +1836,7 @@ fn mesh_bounded_cone_body(face: &TFace, edges_cache: &HashMap<usize, Vec<Vec3>>,
     let (sa, ca) = (c.half_angle.sin(), c.half_angle.cos());
     let apex = crate::math::add(c.base, crate::math::scale(axis, c.slant * ca));
     let tol = 1e-9 * c.slant;
+    let sense = if crate::math::dot(cross(c.e1, c.e2), axis) >= 0.0 { 1.0 } else { -1.0 };
     let mut rings: Vec<Vec<Vec3>> = Vec::new();
     for w in &fb.boundary {
         let mut r = wire_ring(&w.borrow(), edges_cache, defl)?;
@@ -1846,170 +1847,200 @@ fn mesh_bounded_cone_body(face: &TFace, edges_cache: &HashMap<usize, Vec<Vec3>>,
         rings.push(r);
     }
     let at_apex = |p: Vec3| len(sub(p, apex)) < tol;
-    let u_of = |p: Vec3| {
+    let xy = |p: Vec3| {
         let d = sub(p, c.base);
-        crate::math::dot(d, c.e2).atan2(crate::math::dot(d, c.e1))
+        (crate::math::dot(d, c.e1), crate::math::dot(d, c.e2))
     };
-    // the angle along a closed or open chain, continuous (an apex point keeps the angle before it)
-    let unwrap = |pts: &[Vec3]| -> Vec<f64> {
-        let mut us: Vec<f64> = Vec::with_capacity(pts.len());
-        let mut prev = 0.0;
-        for (i, p) in pts.iter().enumerate() {
-            if at_apex(*p) && i > 0 {
-                us.push(prev);
+    let polys: Vec<Vec<(f64, f64)>> = rings.iter().map(|r| r.iter().map(|p| xy(*p)).collect()).collect();
+    // is the flat point (x, y) in the face: even-odd over its rings seen from above
+    let in_face = |x: f64, y: f64| -> bool {
+        let mut hits = 0;
+        for poly in &polys {
+            let mut inside = false;
+            let n = poly.len();
+            let mut j = n - 1;
+            for i in 0..n {
+                let (a, b) = (poly[i], poly[j]);
+                if (a.1 > y) != (b.1 > y) && x < (b.0 - a.0) * (y - a.1) / (b.1 - a.1) + a.0 {
+                    inside = !inside;
+                }
+                j = i;
+            }
+            if inside {
+                hits += 1;
+            }
+        }
+        hits % 2 == 1
+    };
+    let ang = |p: Vec3| {
+        let (x, y) = xy(p);
+        y.atan2(x)
+    };
+    // the stations: every angle some ring point has (the lattice and every corner are among them)
+    let mut stations: Vec<f64> = rings.iter().flat_map(|r| r.iter().filter(|p| !at_apex(**p)).map(|p| ang(*p))).collect();
+    stations.sort_by(|a, b| a.partial_cmp(b).unwrap());
+    stations.dedup_by(|a, b| (*a - *b).abs() < 1e-9);
+    // the same angle at the far end of the turn (pi and -pi)
+    if stations.len() > 1 && (stations[stations.len() - 1] - stations[0] - TAU).abs() < 1e-9 {
+        stations.pop();
+    }
+    let m = stations.len();
+    if m < 2 {
+        return None;
+    }
+    let station_of = |a: f64| -> Option<usize> {
+        let mut best = None;
+        for (i, s) in stations.iter().enumerate() {
+            let mut d = (a - s).abs();
+            if d > std::f64::consts::PI {
+                d = TAU - d;
+            }
+            if d < 1e-7 {
+                best = Some(i);
+            }
+        }
+        best
+    };
+    // each ring segment that spans one cell, by the cell it spans (cell i runs from station i to station i + 1, round the turn)
+    let mut cells: Vec<Vec<(Vec3, Vec3)>> = vec![Vec::new(); m];
+    for ring in &rings {
+        for k in 0..ring.len() {
+            let (p, q) = (ring[k], ring[(k + 1) % ring.len()]);
+            if at_apex(p) || at_apex(q) {
                 continue;
             }
-            let mut a = u_of(*p);
-            if i > 0 {
-                while a - prev > std::f64::consts::PI {
-                    a -= TAU;
-                }
-                while a - prev < -std::f64::consts::PI {
-                    a += TAU;
+            let (ip, iq) = (station_of(ang(p))?, station_of(ang(q))?);
+            if ip == iq {
+                continue; // along a generator
+            }
+            // oriented so `lo` is the end at the station the cell starts from
+            if (ip + 1) % m == iq {
+                cells[ip].push((p, q));
+            } else if (iq + 1) % m == ip {
+                cells[iq].push((q, p));
+            } else {
+                return None; // a segment that skips a station: some edge lacks a sample the others have
+            }
+        }
+    }
+    // every point on each station's generator, nearest the axis first: the apex, and each ring point at that angle (a corner of the
+    // face, or where a chain crosses), so the cells either side of a station cut that generator at the same points
+    let rho_pt = |p: Vec3| {
+        let (x, y) = xy(p);
+        x.hypot(y)
+    };
+    let mut gen_pts: Vec<Vec<(f64, Vec3)>> = vec![vec![(0.0, apex)]; m];
+    for ring in &rings {
+        for p in ring {
+            if at_apex(*p) {
+                continue;
+            }
+            if let Some(si) = station_of(ang(*p)) {
+                let rho = rho_pt(*p);
+                if !gen_pts[si].iter().any(|(q, _)| (q - rho).abs() < 1e-9 * c.slant) {
+                    gen_pts[si].push((rho, *p));
                 }
             }
-            us.push(a);
-            prev = a;
         }
-        us
-    };
-    let n_out = |p: Vec3| {
-        let d = sub(p, c.base);
-        let perp = sub(d, crate::math::scale(axis, crate::math::dot(d, axis)));
-        let l = len(perp);
-        let rad = if l > 1e-12 { crate::math::scale(perp, 1.0 / l) } else { [0.0; 3] };
-        crate::math::add(crate::math::scale(rad, ca), crate::math::scale(axis, sa))
-    };
+    }
+    for g in gen_pts.iter_mut() {
+        g.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+    }
+    // The cone projects one to one onto the plane square to its axis, so a triangle is wound by its flat signed area in (e1, e2): positive is
+    // counter-clockwise about the face's own outward normal (a left-handed frame, the wall of a cavity, runs it the other way round).
     let tiny_area = 1e-14 * c.slant * c.slant;
+    let _ = (sense, sa, ca);
     let mut emit = |out: &mut MeshBuilder, p: Vec3, q: Vec3, r: Vec3| {
-        if len(cross(sub(q, p), sub(r, p))) < tiny_area {
+        let (a, b, d) = (xy(p), xy(q), xy(r));
+        let area = (b.0 - a.0) * (d.1 - a.1) - (b.1 - a.1) * (d.0 - a.0);
+        if area.abs() < tiny_area {
             return;
         }
-        let m = [(p[0] + q[0] + r[0]) / 3.0, (p[1] + q[1] + r[1]) / 3.0, (p[2] + q[2] + r[2]) / 3.0];
-        let ids = [out.push(p), out.push(q), out.push(r)];
-        out.tri_oriented(ids, n_out(m));
-    };
-    // fan from the apex over an open chain
-    let fan = |out: &mut MeshBuilder, emit: &mut dyn FnMut(&mut MeshBuilder, Vec3, Vec3, Vec3), chain: &[Vec3]| {
-        for k in 0..chain.len() - 1 {
-            emit(out, apex, chain[k], chain[k + 1]);
+        let mut ids = [out.push(p), out.push(q), out.push(r)];
+        if ids[0] == ids[1] || ids[1] == ids[2] || ids[0] == ids[2] {
+            return;
         }
-    };
-    // zip two chains whose angles both increase from a common start
-    let zip = |out: &mut MeshBuilder, emit: &mut dyn FnMut(&mut MeshBuilder, Vec3, Vec3, Vec3), a: &[Vec3], ua: &[f64], b: &[Vec3], ub: &[f64]| {
-        let (mut i, mut j) = (0usize, 0usize);
-        while i + 1 < a.len() || j + 1 < b.len() {
-            let step_a = j + 1 >= b.len() || (i + 1 < a.len() && ua[i + 1] <= ub[j + 1]);
-            if step_a {
-                emit(out, a[i], a[i + 1], b[j]);
-                i += 1;
-            } else {
-                emit(out, a[i], b[j + 1], b[j]);
-                j += 1;
-            }
+        if area < 0.0 {
+            ids.swap(1, 2);
         }
+        out.indices.extend_from_slice(&ids);
     };
-    let winding = |ring: &[Vec3]| -> Option<f64> {
-        if ring.iter().any(|p| at_apex(*p)) {
-            return None;
-        }
-        let mut closed = ring.to_vec();
-        closed.push(ring[0]);
-        let us = unwrap(&closed);
-        Some(us[us.len() - 1] - us[0])
+    let rho_of = |p: Vec3| {
+        let (x, y) = xy(p);
+        x.hypot(y)
     };
-    match rings.len() {
-        1 => {
-            let ring = &rings[0];
-            match winding(ring) {
-                // once round the axis: the apex is inside, fan to the whole ring
-                Some(w) if w.abs() > std::f64::consts::PI => {
-                    let mut closed = ring.clone();
-                    closed.push(ring[0]);
-                    fan(out, &mut emit, &closed);
-                    Some(())
-                }
-                // the apex on the boundary: fan to the rest of the ring
-                None => {
-                    let k = ring.iter().position(|p| at_apex(*p))?;
-                    let chain: Vec<Vec3> = (1..ring.len()).map(|d| ring[(k + d) % ring.len()]).collect();
-                    fan(out, &mut emit, &chain);
-                    Some(())
-                }
-                // a patch that sweeps part of the way round: split at the least and greatest angle
-                Some(_) => {
-                    let us = unwrap(ring);
-                    let m = ring.len();
-                    let imin = (0..m).fold(0, |b, i| if us[i] < us[b] { i } else { b });
-                    let imax = (0..m).fold(0, |b, i| if us[i] >= us[b] { i } else { b });
-                    let walk = |from: usize, to: usize| -> (Vec<Vec3>, Vec<f64>) {
-                        let (mut pts, mut uu) = (Vec::new(), Vec::new());
-                        let mut k = from;
-                        loop {
-                            pts.push(ring[k]);
-                            uu.push(us[k]);
-                            if k == to {
-                                break;
-                            }
-                            k = (k + 1) % m;
-                        }
-                        (pts, uu)
-                    };
-                    let (a, ua) = walk(imin, imax);
-                    let (mut b, mut ub) = walk(imax, imin);
-                    b.reverse();
-                    ub.reverse();
-                    zip(out, &mut emit, &a, &ua, &b, &ub);
-                    Some(())
+    for i in 0..m {
+        let mut chains = cells[i].clone();
+        let (ua, ub) = (stations[i], stations[(i + 1) % m] + if i + 1 == m { TAU } else { 0.0 });
+        let umid = 0.5 * (ua + ub);
+        let dir = (umid.cos(), umid.sin());
+        // where a chain crosses the ray at the cell's middle angle (the apex is at 0)
+        let at_mid = |ch: &Option<(Vec3, Vec3)>| -> f64 {
+            match ch {
+                None => 0.0,
+                Some((p, q)) => {
+                    let (a, b) = (xy(*p), xy(*q));
+                    let cr = |u: (f64, f64), v: (f64, f64)| u.0 * v.1 - u.1 * v.0;
+                    let e = (b.0 - a.0, b.1 - a.1);
+                    let den = cr(e, dir);
+                    let lam = if den.abs() > 1e-300 { (-cr(a, dir) / den).clamp(0.0, 1.0) } else { 0.5 };
+                    let s = (a.0 + lam * e.0, a.1 + lam * e.1);
+                    s.0 * dir.0 + s.1 * dir.1
                 }
             }
-        }
-        2 => {
-            // a band between two rings that both go round the axis
-            let mut chains: Vec<(Vec<Vec3>, Vec<f64>)> = Vec::new();
-            for ring in &rings {
-                let w = winding(ring)?;
-                if w.abs() <= std::f64::consts::PI {
+        };
+        // the chains in order away from the axis along that ray
+        chains.sort_by(|a, b| at_mid(&Some(*a)).partial_cmp(&at_mid(&Some(*b))).unwrap());
+        // the axis is the first "chain": a point
+        let mut prev: Option<(Vec3, Vec3)> = None;
+        for cur in chains.iter() {
+            let r_mid = 0.5 * (at_mid(&prev) + at_mid(&Some(*cur)));
+            if in_face(r_mid * dir.0, r_mid * dir.1) {
+                // the generator points between the two chains, on each side of the cell, zipped into a strip
+                let (la, lb, ra, rb) = match prev {
+                    None => (0.0, rho_pt(cur.0), 0.0, rho_pt(cur.1)),
+                    Some((p0, p1)) => (rho_pt(p0), rho_pt(cur.0), rho_pt(p1), rho_pt(cur.1)),
+                };
+                let tol = 1e-9 * c.slant;
+                let left: Vec<(f64, Vec3)> = gen_pts[i].iter().filter(|(r, _)| *r >= la - tol && *r <= lb + tol).cloned().collect();
+                let right: Vec<(f64, Vec3)> = gen_pts[(i + 1) % m].iter().filter(|(r, _)| *r >= ra - tol && *r <= rb + tol).cloned().collect();
+                if left.is_empty() || right.is_empty() {
                     return None;
                 }
-                let mut pts = ring.clone();
-                if w < 0.0 {
-                    pts.reverse();
+                let frac = |list: &[(f64, Vec3)], k: usize, a: f64, b: f64| if b > a + 1e-12 { (list[k].0 - a) / (b - a) } else { 0.0 };
+                let flat = |p: Vec3, q: Vec3, r: Vec3| {
+                    let (u, v, w) = (xy(p), xy(q), xy(r));
+                    ((v.0 - u.0) * (w.1 - u.1) - (v.1 - u.1) * (w.0 - u.0)).abs() < tiny_area
+                };
+                let (mut a, mut b) = (0usize, 0usize);
+                while a + 1 < left.len() || b + 1 < right.len() {
+                    let can_left = a + 1 < left.len();
+                    let can_right = b + 1 < right.len();
+                    let mut step_left = !can_right || (can_left && frac(&left, a + 1, la, lb) <= frac(&right, b + 1, ra, rb));
+                    // a triangle whose three points lie on one generator has no area: take the other step, which does, so the points
+                    // between stay vertices of the strip (the cell next door cuts that generator at them too)
+                    if can_left && can_right {
+                        let tl = flat(left[a].1, left[a + 1].1, right[b].1);
+                        let tr = flat(left[a].1, right[b + 1].1, right[b].1);
+                        if step_left && tl && !tr {
+                            step_left = false;
+                        } else if !step_left && tr && !tl {
+                            step_left = true;
+                        }
+                    }
+                    if step_left {
+                        emit(out, left[a].1, left[a + 1].1, right[b].1);
+                        a += 1;
+                    } else {
+                        emit(out, left[a].1, right[b + 1].1, right[b].1);
+                        b += 1;
+                    }
                 }
-                chains.push((pts, Vec::new()));
             }
-            // start the second ring at the point nearest the first one's start in angle
-            let u0 = u_of(chains[0].0[0]);
-            let near = |p: Vec3| {
-                let mut d = u_of(p) - u0;
-                while d > std::f64::consts::PI {
-                    d -= TAU;
-                }
-                while d < -std::f64::consts::PI {
-                    d += TAU;
-                }
-                d.abs()
-            };
-            let k = (0..chains[1].0.len()).fold(0, |b, i| if near(chains[1].0[i]) < near(chains[1].0[b]) { i } else { b });
-            chains[1].0.rotate_left(k);
-            let mut prepared: Vec<(Vec<Vec3>, Vec<f64>)> = Vec::new();
-            for (pts, _) in chains {
-                let mut closed = pts.clone();
-                closed.push(pts[0]);
-                let mut us = unwrap(&closed);
-                let base = us[0];
-                for u in us.iter_mut() {
-                    *u -= base;
-                }
-                prepared.push((closed, us));
-            }
-            let (a, ua) = (&prepared[0].0, &prepared[0].1);
-            let (b, ub) = (&prepared[1].0, &prepared[1].1);
-            zip(out, &mut emit, a, ua, b, ub);
-            Some(())
+            prev = Some(*cur);
         }
-        _ => None,
     }
+    Some(())
 }
 
 fn mesh_face(
@@ -2499,6 +2530,21 @@ fn cone_lattice_polylines(solid: &TSolid, defl: f64, cache: &mut HashMap<usize, 
         }
         let n = ((TAU / angle_step(c.base_radius, defl)).ceil() as usize).clamp(16, 20000);
         let delta = TAU / n as f64;
+        // every corner of this face is a station too, so each rim chain has a sample at every other chain's corners
+        let apex_p = crate::math::add(c.base, crate::math::scale(crate::math::normalize(c.axis), c.slant * c.half_angle.cos()));
+        let mut corner_angles: Vec<f64> = Vec::new();
+        for w in &fb.boundary {
+            for u in &w.borrow().edges {
+                let e = u.edge.borrow();
+                for v in [&e.a, &e.b] {
+                    let p = v.borrow().point;
+                    if len(sub(p, apex_p)) > 1e-9 * c.slant {
+                        let d = sub(p, c.base);
+                        corner_angles.push(crate::math::dot(d, c.e2).atan2(crate::math::dot(d, c.e1)));
+                    }
+                }
+            }
+        }
         let u_at = |p: Vec3| {
             let d = sub(p, c.base);
             crate::math::dot(d, c.e2).atan2(crate::math::dot(d, c.e1))
@@ -2541,6 +2587,20 @@ fn cone_lattice_polylines(solid: &TSolid, defl: f64, cache: &mut HashMap<usize, 
                     }
                     k += 1;
                 }
+                for ca in &corner_angles {
+                    let mut m = ((lo - ca) / TAU).floor() as i64;
+                    loop {
+                        let a = ca + m as f64 * TAU;
+                        if a >= hi - 1e-9 * delta {
+                            break;
+                        }
+                        if a > lo + 1e-9 * delta && !marks.iter().any(|x| (x - a).abs() < 1e-9 * delta) {
+                            marks.push(a);
+                        }
+                        m += 1;
+                    }
+                }
+                marks.sort_by(|a, b| a.partial_cmp(b).unwrap());
                 if !up {
                     marks.reverse();
                 }
@@ -2562,6 +2622,72 @@ fn cone_lattice_polylines(solid: &TSolid, defl: f64, cache: &mut HashMap<usize, 
                     pts.push(e.curve.point_at(0.5 * (ta + tb)));
                 }
                 pts.push(e.curve.point_at(1.0));
+                let key = std::rc::Rc::as_ptr(&u.edge) as *const () as usize;
+                cache.insert(key, pts);
+            }
+        }
+        // a straight rim edge along a generator takes every sample the other rim edges have on that generator, so the plane face on its other
+        // side and the cone face cut it at the same points
+        let mut all: Vec<Vec3> = Vec::new();
+        for w in &fb.boundary {
+            for u in &w.borrow().edges {
+                let key = std::rc::Rc::as_ptr(&u.edge) as *const () as usize;
+                match cache.get(&key) {
+                    Some(p) if !matches!(u.edge.borrow().curve, Curve::Segment { .. }) => all.extend(p.iter().copied()),
+                    _ => {
+                        let e = u.edge.borrow();
+                        all.push(e.a.borrow().point);
+                        all.push(e.b.borrow().point);
+                    }
+                }
+            }
+        }
+        for w in &fb.boundary {
+            for u in &w.borrow().edges {
+                let e = u.edge.borrow();
+                let Curve::Segment { a, b } = e.curve else { continue };
+                let (ua, ub) = (len(sub(a, apex_p)) < 1e-9 * c.slant, len(sub(b, apex_p)) < 1e-9 * c.slant);
+                let ang_of = |p: Vec3| {
+                    let d = sub(p, c.base);
+                    crate::math::dot(d, c.e2).atan2(crate::math::dot(d, c.e1))
+                };
+                let gen_angle = if ua && !ub {
+                    ang_of(b)
+                } else if ub && !ua {
+                    ang_of(a)
+                } else if !ua && !ub {
+                    let (x, y) = (ang_of(a), ang_of(b));
+                    if wrap(x - y).abs() > 1e-9 {
+                        continue; // not along a generator
+                    }
+                    x
+                } else {
+                    continue;
+                };
+                let ab = sub(b, a);
+                let l2 = crate::math::dot(ab, ab);
+                if l2 < 1e-24 {
+                    continue;
+                }
+                let mut mids: Vec<(f64, Vec3)> = Vec::new();
+                for p in &all {
+                    if len(sub(*p, apex_p)) < 1e-9 * c.slant || wrap(ang_of(*p) - gen_angle).abs() > 1e-9 {
+                        continue;
+                    }
+                    let lam = crate::math::dot(sub(*p, a), ab) / l2;
+                    if lam > 1e-9 && lam < 1.0 - 1e-9 && len(sub(*p, crate::math::add(a, crate::math::scale(ab, lam)))) < 1e-9 * c.slant {
+                        if !mids.iter().any(|(l, _)| (l - lam).abs() < 1e-9) {
+                            mids.push((lam, *p));
+                        }
+                    }
+                }
+                if mids.is_empty() {
+                    continue;
+                }
+                mids.sort_by(|x, y| x.0.partial_cmp(&y.0).unwrap());
+                let mut pts = vec![a];
+                pts.extend(mids.into_iter().map(|m| m.1));
+                pts.push(b);
                 let key = std::rc::Rc::as_ptr(&u.edge) as *const () as usize;
                 cache.insert(key, pts);
             }

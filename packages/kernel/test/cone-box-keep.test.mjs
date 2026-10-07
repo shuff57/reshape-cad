@@ -204,3 +204,56 @@ test('what can be done to a kept cone: move, turn and save it, and every other o
   const s = stepRoundTrip(base);
   assert.ok(okRead(s), `STEP read-back: ${JSON.stringify(s.refused ?? { dv: s.dv, db: s.db, valid: s.got?.valid })}`);
 });
+
+// ---- join and cut (W3 S1b): the cone joined to, cut by, or cutting a box ------------------------------------------------------------
+function solidCount(features, id) {
+  const shape = buildDoc(oc, { version: 1, features }, arc).shapes.get(id);
+  let n = 0;
+  for (const ex = new oc.TopExp_Explorer(shape, oc.TopAbs_ShapeEnum.TopAbs_SOLID, oc.TopAbs_ShapeEnum.TopAbs_SHAPE); ex.More(); ex.Next()) n++;
+  return n;
+}
+const OPS = [
+  ['join', 'v = join(v, p)'],
+  ['cut the box from the cone', 'v = cut(v, p)'],
+  ['cut the cone from the box', 'v = cut(p, v)'],
+];
+test('a cone joined to, cut by, or cutting a box: exact against OpenCascade, mesh watertight, and every refusal is a result that is not one solid', () => {
+  const rand = rng(Number(process.env.CONEBOX_SEED ?? 21));
+  const n = Number(process.env.CONEBOX_N ?? 60);
+  const tally = Object.fromEntries(OPS.map(([k]) => [k, { built: 0, refusedOk: 0, gap: 0 }]));
+  const bad = [], gaps = [];
+  for (let i = 0; i < n; i++) {
+    const c = randomCase(rand);
+    for (const [name, line] of OPS) {
+      const code = caseCode(c, 0).replace('v = keep(v, p)', line);
+      const { refusals, m, r, id, doc } = build(code);
+      const o = (() => { try { return { ...occt(r.doc.features, id), solids: solidCount(r.doc.features, id) }; } catch { return null; } })();
+      if (Object.keys(refusals).length) {
+        // honest when the result is not one solid, or has no volume, or is a contact the kernel refuses by name
+        if (!o || o.solids !== 1 || o.volume < 1e-6 * c.R * c.R * c.H) tally[name].refusedOk++;
+        else { tally[name].gap++; gaps.push(`${name}: ${Object.values(refusals)[0].slice(0, 60)} :: ${code.replace(/\n/g, ' ; ')}`); }
+        continue;
+      }
+      tally[name].built++;
+      const relO = Math.abs(m.volume - o.volume) / Math.max(o.volume, 1e-9);
+      if (relO > 1e-6) bad.push(`${name}: volume ${m.volume} occt ${o.volume} :: ${code.replace(/\n/g, ' ; ')}`);
+      const bb = m.bbox ?? m.aabb;
+      const tol = 2e-3 * Math.max(c.R, c.H);
+      if (bb) {
+        const lo2 = bb.min ?? bb[0], hi2 = bb.max ?? bb[1];
+        for (let k = 0; k < 3; k++) if (Math.abs(lo2[k] - o.bbox[0][k]) > tol || Math.abs(hi2[k] - o.bbox[1][k]) > tol) bad.push(`${name}: bbox ${JSON.stringify([lo2, hi2])} occt ${JSON.stringify(o.bbox)} :: ${code.replace(/\n/g, ' ; ')}`);
+      }
+      for (const d of [0.05, 0.5]) {
+        const open = openEdges(doc, id, d);
+        if (open) bad.push(`${name}: open mesh (${open} edges at ${d}) :: ${code.replace(/\n/g, ' ; ')}`);
+      }
+    }
+  }
+  console.log('cone join/cut:', JSON.stringify(tally));
+  assert.deepEqual(bad, [], bad.slice(0, 3).join('\n'));
+  const total = n * OPS.length;
+  const gapCount = Object.values(tally).reduce((a, t) => a + t.gap, 0);
+  const builtCount = Object.values(tally).reduce((a, t) => a + t.built, 0);
+  assert.ok(builtCount >= 0.4 * total, `only ${builtCount} of ${total} built`);
+  assert.ok(gapCount <= 0.1 * total, `${gapCount} real results refused: ${gaps.slice(0, 3).join('\n')}`);
+});

@@ -117,7 +117,9 @@ is the template. Do after W2 so the arcs-with-corners mesher exists.
 
 **W3 status (2026-10-06): S0 DONE, see SPEC-brep-cone-booleans.md.** Of 268 real cone gaps in the pair family, 99 needed no curve (a cone clear of, inside, or holding a ball, cylinder, box or cone); an exact convex-body test (GJK direction, proved by support functions; containment by closed forms) builds them: pair family 830 to 921 agree. 169 genuinely need conics or quartics (box 63, cylinder 49, sphere 45, cone 12); cone x box is next because it is conics only.
 
-**W3 S1a DONE (2026-10-07): `keep(cone, box)` is exact** (`cone_keep.rs`, a hyperbola `Curve`, a bounded cone face measured from its wires): pair family 921 to 953 agree, 0 wrong, gates 78/78/78/17. It writes to STEP (904 of 904 read back as the same valid solid in OpenCascade). Not built: join / cut of a cone with a box. See SPEC-brep-cone-booleans.md.
+**W3 S1a DONE (2026-10-07): `keep(cone, box)` is exact** (`cone_keep.rs`, a hyperbola `Curve`, a bounded cone face measured from its wires): pair family 921 to 953 agree, 0 wrong, gates 78/78/78/17. It writes to STEP (904 of 904 read back as the same valid solid in OpenCascade).
+
+**W3 S1b DONE (2026-10-07): join and both cuts of a cone with a box are exact** (`cone_csg.rs`, a 2D region boolean `cone_region.rs`, a cone mesher that takes any number of loops): pair family 953 to 978 agree, 0 wrong, gates 78/78/78/17, STEP read-back of 1,800 scripts 0 wrong. Cone x box is finished. The quartics (cone x cylinder 49, cone x sphere 45, cone x cone 12 pair scripts) are the rest of W3 and are not started. See SPEC-brep-cone-booleans.md.
 
 **W4. Holes in a torus (the "ring" shape): 560 of the 1,539 generic hole refusals.** Derived, not verified: a bore parallel to
 the torus's axis meets it in a curve that is a graph over the bore's own angle (on the cylinder `rho(phi)` is known, so
