@@ -172,11 +172,21 @@ fn rim_circles(fb: &Face<Curve, Surface>) -> Option<Vec<(f64, f64, [f64; 2])>> {
 
 /// Read `src` as a solid of revolution about the world z axis, or None.
 pub fn read(src: &TSolid) -> Option<Read> {
+    read_with(src, false)
+}
+
+/// `read`, also taking a whole cone (a sloping side that ends in a tip on the axis). Only the hollow uses it: a round or a chamfer on a
+/// cone has not been checked against this profile.
+pub fn read_with_tips(src: &TSolid) -> Option<Read> {
+    read_with(src, true)
+}
+
+fn read_with(src: &TSolid, tips: bool) -> Option<Read> {
     if src.shells.len() != 1 {
         return None;
     }
     let faces = src.faces();
-    if faces.len() < 3 {
+    if faces.len() < if tips { 2 } else { 3 } {
         return None;
     }
     let origin_cell: std::cell::Cell<Option<[f64; 2]>> = std::cell::Cell::new(None);
@@ -268,10 +278,23 @@ pub fn read(src: &TSolid) -> Option<Read> {
                         ends.push([r.1, r.0]);
                     }
                 }
+                // a whole cone's lateral face is bounded by its seam alone (the base rim belongs to the base disk): its two ends are the
+                // base circle and the tip on the axis
+                if tips && ends.is_empty() && c.v_range[0].abs() < 1e-9 && (c.v_range[1] - c.slant).abs() < 1e-9 * c.slant {
+                    let s = unit_z(c.axis)?;
+                    ends.push([c.base_radius, c.base[2]]);
+                    ends.push([0.0, c.base[2] + s * c.slant * c.half_angle.cos()]);
+                }
+                // or one rim circle and a tip
+                if tips && ends.len() == 1 {
+                    let s = unit_z(c.axis)?;
+                    ends.push([0.0, c.base[2] + s * c.slant * c.half_angle.cos()]);
+                }
                 if ends.len() != 2 {
                     return None;
                 }
-                if ends[0][0] < EPS || ends[1][0] < EPS || (ends[0][0] - ends[1][0]).abs() < EPS || (ends[0][1] - ends[1][1]).abs() < EPS {
+                let tip = ends.iter().filter(|e| e[0] < EPS).count();
+                if tip > usize::from(tips) || ends.iter().any(|e| e[0] < 0.0) || (ends[0][0] - ends[1][0]).abs() < EPS || (ends[0][1] - ends[1][1]).abs() < EPS {
                     return None;
                 }
                 segs.push(mk(Kind::Line { a: ends[0], b: ends[1] }, None));
@@ -741,7 +764,8 @@ pub fn hollow(r: &Read, w: f64, open: Option<usize>) -> Result<Hollowed, Why> {
     // not part of the cavity: drop it and meet its neighbours, until every side holds.
     let (items, m, off, start_kind, end_kind, plane_z) = 'retry: loop {
     let m = items.len();
-    if m < 2 {
+    // a cone left open at its base is one sloping side, which is enough; every other part needs two
+    if m < 1 || (m < 2 && closed) {
         return Err(Why::TooBig);
     }
     // Offset data per item.
@@ -758,12 +782,17 @@ pub fn hollow(r: &Read, w: f64, open: Option<usize>) -> Result<Hollowed, Why> {
             // axis gap: both end on the axis, offset along the cap's inward normal
             let (Some((xa, xd, xn)), Some((ya, yd, yn))) = (line_dir(x), line_dir(y)) else { return Err(Why::Curved) };
             let _ = (xa, ya);
-            if xd[1].abs() > 1e-9 || yd[1].abs() > 1e-9 {
-                return other("a sloping end meets the axis, which a hollow cannot follow");
-            }
             let xe = x.end();
             let ys = y.start();
-            return Ok(([0.0, xe[1] + xn[1] * w], [0.0, ys[1] + yn[1] * w]));
+            // an end that is flat meets the axis at its offset height; a sloping one (a cone's side) where its offset line crosses the axis
+            let hit = |s: &Seg, flat: bool, edge: P2, nrm: P2| -> Result<P2, Why> {
+                if flat {
+                    return Ok([0.0, edge[1] + nrm[1] * w]);
+                }
+                let (p, d) = off_line(s).ok_or(Why::Curved)?;
+                meet(p, d, [0.0, 0.0], [0.0, 1.0]).ok_or_else(|| Why::Other("a sloping end runs along the axis".into()))
+            };
+            return Ok((hit(x, xd[1].abs() <= 1e-9, xe, xn)?, hit(y, yd[1].abs() <= 1e-9, ys, yn)?));
         }
         match (&x.k, &y.k) {
             (Kind::Line { .. }, Kind::Line { .. }) => {
@@ -819,10 +848,15 @@ pub fn hollow(r: &Read, w: f64, open: Option<usize>) -> Result<Hollowed, Why> {
         // start of the chain
         if first.start()[0] < EPS {
             let (_, _, nl) = line_dir(first).ok_or(Why::Curved)?;
-            if first.is_axis() || nl[0].abs() > 1e-9 {
+            if first.is_axis() {
                 return other("a sloping end meets the axis, which a hollow cannot follow");
             }
-            starts[0] = [0.0, first.start()[1] + nl[1] * w];
+            starts[0] = if nl[0].abs() > 1e-9 {
+                let (p, d) = off_line(first).ok_or(Why::Curved)?;
+                meet(p, d, [0.0, 0.0], [0.0, 1.0]).ok_or_else(|| Why::Other("a sloping end runs along the axis".into()))?
+            } else {
+                [0.0, first.start()[1] + nl[1] * w]
+            };
             start_kind = End::Axis;
         } else {
             let (p, d) = off_line(first).ok_or(Why::Curved)?;
@@ -831,10 +865,12 @@ pub fn hollow(r: &Read, w: f64, open: Option<usize>) -> Result<Hollowed, Why> {
         }
         if last.end()[0] < EPS {
             let (_, _, nl) = line_dir(last).ok_or(Why::Curved)?;
-            if nl[0].abs() > 1e-9 {
-                return other("a sloping end meets the axis, which a hollow cannot follow");
-            }
-            ends[m - 1] = [0.0, last.end()[1] + nl[1] * w];
+            ends[m - 1] = if nl[0].abs() > 1e-9 {
+                let (p, d) = off_line(last).ok_or(Why::Curved)?;
+                meet(p, d, [0.0, 0.0], [0.0, 1.0]).ok_or_else(|| Why::Other("a sloping end runs along the axis".into()))?
+            } else {
+                [0.0, last.end()[1] + nl[1] * w]
+            };
             end_kind = End::Axis;
         } else {
             let (p, d) = off_line(last).ok_or(Why::Curved)?;
@@ -1080,16 +1116,27 @@ fn build_faces(origin: [f64; 2], lp: &[Seg], inv: bool) -> Option<Vec<TFace>> {
                     faces.push(mk_face_multi(surf, [[0.0, 0.0], [vmin, vmax]], vec![uses]));
                 } else {
                     // cone
-                    let ((base, cap), (e_base, e_cap)) = if p[0] > q[0] { ((p, q), (es?, ee?)) } else { ((q, p), (ee?, es?)) };
+                    let tip = p[0].min(q[0]) < EPS;
+                    let ((base, cap), (e_base, e_cap)) = if p[0] > q[0] {
+                        ((p, q), (es?, if tip { None } else { Some(ee?) }))
+                    } else {
+                        ((q, p), (ee?, if tip { None } else { Some(es?) }))
+                    };
+                    let e_cap: Option<(TEdge, topo::VertexRef)> = e_cap;
                     let sign = (cap[1] - base[1]).signum();
                     let axis_c = [0.0, 0.0, sign];
                     let half_angle = (base[0] - cap[0]).atan2((cap[1] - base[1]).abs());
                     let e2c = if (nr * sign >= 0.0) != inv { e2 } else { neg(e2) };
+                    // the end that is a tip has a vertex on the axis and no circle
+                    let cap_vertex = match &e_cap {
+                        Some((_, v)) => v.clone(),
+                        None => topo::vertex([origin[0], origin[1], cap[1]]),
+                    };
                     let seam = topo::edge(
                         e_base.1.clone(),
-                        e_cap.1.clone(),
+                        cap_vertex.clone(),
                         true,
-                        Curve::Segment { a: e_base.1.borrow().point, b: e_cap.1.borrow().point },
+                        Curve::Segment { a: e_base.1.borrow().point, b: cap_vertex.borrow().point },
                     );
                     let surf = Surface::Cone(Cone {
                         base: at(base[1]),
@@ -1102,12 +1149,14 @@ fn build_faces(origin: [f64; 2], lp: &[Seg], inv: bool) -> Option<Vec<TFace>> {
                         v_range: [0.0, len],
                         bounded: false,
                     });
-                    let uses = vec![
+                    let mut uses = vec![
                         topo::EdgeUse { edge: e_base.0.clone(), forward: true, pcurve: topo::Pcurve { start: [0.0, 0.0], end: [TAU, 0.0], mid: [PI, 0.0] } },
                         topo::EdgeUse { edge: seam.clone(), forward: true, pcurve: topo::Pcurve { start: [TAU, 0.0], end: [TAU, len], mid: [TAU, len / 2.0] } },
-                        topo::EdgeUse { edge: e_cap.0.clone(), forward: false, pcurve: topo::Pcurve { start: [TAU, len], end: [0.0, len], mid: [PI, len] } },
-                        topo::EdgeUse { edge: seam, forward: false, pcurve: topo::Pcurve { start: [0.0, len], end: [0.0, 0.0], mid: [0.0, len / 2.0] } },
                     ];
+                    if let Some((ce, _)) = &e_cap {
+                        uses.push(topo::EdgeUse { edge: ce.clone(), forward: false, pcurve: topo::Pcurve { start: [TAU, len], end: [0.0, len], mid: [PI, len] } });
+                    }
+                    uses.push(topo::EdgeUse { edge: seam, forward: false, pcurve: topo::Pcurve { start: [0.0, len], end: [0.0, 0.0], mid: [0.0, len / 2.0] } });
                     faces.push(mk_face_multi(surf, [[0.0, TAU], [0.0, len]], vec![uses]));
                 }
             }

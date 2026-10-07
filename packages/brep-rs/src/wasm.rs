@@ -2570,6 +2570,7 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 // fall back to "shown without it": the refusal keeps a result,
                 // the CLOSED hollow (occt-build.ts's shell branch).
                 let mut open_side: Option<(usize, usize)> = None;
+                let mut open_plane: Option<(Vec3, f64)> = None;
                 if let Some(o) = f.get("open") {
                     match resolve_face(&hist, o) {
                         Some(face) => {
@@ -2587,7 +2588,13 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                                     None
                                 }
                             });
-                            if open_side.is_none() {
+                            if let Surface::Plane(p) = &face.borrow().surface {
+                                let n = normalize(p.n);
+                                open_plane = Some((n, dot(n, p.origin)));
+                            }
+                            // a flat face that is not on a bounding-box extreme (a slanted side of a prism, a turned box's wall) can still
+                            // be left open on a convex part with flat faces, which works from the face's own plane
+                            if open_side.is_none() && open_plane.is_none() {
                                 refusals.insert(
                                     id.clone(),
                                     json!(format!(
@@ -2646,15 +2653,42 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                         axis,
                     ))
                 });
-                let inner = match inner {
-                    Some(i) => i,
-                    None => match shell_inner_box(&src, thickness, open_side) {
+                // a flat face off the bounding-box extremes (see above) can only be left open on a convex part with flat faces
+                let planar_first = if open_side.is_none() && open_plane.is_some() {
+                    let c = convex_planar_cavity(&src, thickness, None, open_plane);
+                    if c.is_none() {
+                        refusals.insert(
+                            id.clone(),
+                            json!(format!("{id} could not find the face to leave open -- {id} is shown closed.")),
+                        );
+                    }
+                    c
+                } else {
+                    None
+                };
+                let inner = match (planar_first, inner) {
+                    (Some(c), _) => {
+                        holes_hollow = true;
+                        c
+                    }
+                    (None, Some(i)) => i,
+                    (None, None) => match shell_inner_box(&src, thickness, open_side) {
                         Some(b) => b,
                         // S4d: a box with round holes straight through it hollows too
                         None => match shell_cavity_holed(&src, thickness, open_side) {
                             Ok(c) => {
                                 holes_hollow = true;
                                 c
+                            }
+                            Err(HolesHollow::NotThis) if convex_planar_cavity(&src, thickness, open_side, None).is_some() && rounded_prism_cavity(&src, thickness, open_side).is_none() => {
+                                // any convex part with flat faces: its planes moved in by the wall
+                                holes_hollow = true;
+                                convex_planar_cavity(&src, thickness, open_side, None).unwrap()
+                            }
+                            Err(HolesHollow::NotThis) if rounded_prism_cavity(&src, thickness, open_side).is_some() => {
+                                // a box with rounded or chamfered edges along one axis: the cavity is the same prism moved in by the wall
+                                holes_hollow = true;
+                                rounded_prism_cavity(&src, thickness, open_side).unwrap()
                             }
                             Err(why) => {
                                 // S4f: a turned part (rim rounds or chamfers, a coaxial bore, open at
@@ -6229,6 +6263,154 @@ fn inset_box(bb: &crate::math::Aabb, thickness: f64, skip: Option<(usize, usize)
     Some(build::box_solid(size, center, None))
 }
 
+/// A box whose edges along ONE axis are rounded or chamfered (its cross-section is a rectangle with cut corners, which is how
+/// `build_fillet` makes it), read back from its faces: the axis, and each cut as (corner on u, corner on v, size, round). `None` for
+/// anything else, which includes a part whose faces the rebuilt prism does not reproduce (checked by volume and face count).
+fn read_prism_cuts(src: &TSolid, bb: &crate::math::Aabb) -> Option<(usize, Vec<(usize, usize, f64, bool)>)> {
+    'axis: for a in 0..3usize {
+        let (u, v) = ((a + 1) % 3, (a + 2) % 3);
+        let mid = |i: usize| 0.5 * (bb.lo[i] + bb.hi[i]);
+        let corner = |i: usize, s: usize| if s == 1 { bb.hi[i] } else { bb.lo[i] };
+        let mut cuts: Vec<(usize, usize, f64, bool)> = Vec::new();
+        let mut planes = 0usize;
+        for f in src.faces() {
+            match &f.borrow().surface {
+                Surface::Plane(p) => {
+                    let n = p.n;
+                    if (0..3).any(|i| n[i].abs() > 1.0 - 1e-7) {
+                        planes += 1;
+                        continue;
+                    }
+                    // a chamfer: a plane square to the profile, 45 degrees to both of its sides
+                    if n[a].abs() > 1e-7 || (n[u].abs() - n[v].abs()).abs() > 1e-7 || n[u].abs() < 0.5 {
+                        continue 'axis;
+                    }
+                    let (s1, s2) = ((n[u] > 0.0) as usize, (n[v] > 0.0) as usize);
+                    let c0 = dot(n, p.origin);
+                    let u0 = (c0 - n[v] * corner(v, s2)) / n[u];
+                    cuts.push((s1, s2, (u0 - corner(u, s1)).abs(), false));
+                }
+                Surface::Cylinder(cy) => {
+                    if cy.arc.is_none() || cy.cross.is_some() || cy.axis[a].abs() < 1.0 - 1e-9 {
+                        continue 'axis;
+                    }
+                    let (cu, cv) = (cy.origin[u], cy.origin[v]);
+                    let (s1, s2) = ((cu > mid(u)) as usize, (cv > mid(v)) as usize);
+                    let r = cy.radius;
+                    let (eu, ev) = (cu + if s1 == 1 { r } else { -r }, cv + if s2 == 1 { r } else { -r });
+                    if (eu - corner(u, s1)).abs() > 1e-6 || (ev - corner(v, s2)).abs() > 1e-6 {
+                        continue 'axis;
+                    }
+                    cuts.push((s1, s2, r, true));
+                }
+                _ => continue 'axis,
+            }
+        }
+        if cuts.is_empty() || planes != 6 {
+            continue;
+        }
+        // the prism those cuts make must be the part
+        let Some(segs) = box_profile_cuts(bb.lo[u], bb.hi[u], bb.lo[v], bb.hi[v], &cuts) else { continue };
+        let (mut o, mut ua, mut va, mut sw) = ([0.0; 3], [0.0; 3], [0.0; 3], [0.0; 3]);
+        o[a] = bb.lo[a];
+        ua[u] = 1.0;
+        va[v] = 1.0;
+        sw[a] = bb.hi[a] - bb.lo[a];
+        let Ok(rebuilt) = build::extrude_profile(&segs, o, ua, va, sw) else { continue };
+        let rebuilt = build::ensure_outward(&rebuilt);
+        let (vs, vr) = (build::solid_volume(src), build::solid_volume(&rebuilt));
+        if (vs - vr).abs() > 1e-9 * vs.max(1.0) || rebuilt.faces().len() != src.faces().len() {
+            continue;
+        }
+        return Some((a, cuts));
+    }
+    None
+}
+
+/// The cavity a hollow of a box with rounded or chamfered edges along one axis cuts out: the same prism, every side moved in by the
+/// wall (the open side stays flush), each round's radius reduced by the wall about the same centre (a round the wall is as thick as
+/// leaves a sharp corner inside), each chamfer's leg reduced by `wall (2 - sqrt 2)`. A corner on the open side has no cavity corner.
+fn rounded_prism_cavity(src: &TSolid, w: f64, open: Option<(usize, usize)>) -> Option<TSolid> {
+    let bb = build::solid_aabb(src);
+    let (a, cuts) = read_prism_cuts(src, &bb)?;
+    let (u, v) = ((a + 1) % 3, (a + 2) % 3);
+    let inset = |i: usize, s: usize| if open == Some((i, s)) { 0.0 } else { w };
+    let (lo, hi): ([f64; 3], [f64; 3]) = (
+        [bb.lo[0] + inset(0, 0), bb.lo[1] + inset(1, 0), bb.lo[2] + inset(2, 0)],
+        [bb.hi[0] - inset(0, 1), bb.hi[1] - inset(1, 1), bb.hi[2] - inset(2, 1)],
+    );
+    if (0..3).any(|i| hi[i] - lo[i] <= 1e-9) {
+        return None;
+    }
+    let mut inner_cuts: Vec<(usize, usize, f64, bool)> = Vec::new();
+    for (s1, s2, size, round) in &cuts {
+        if open == Some((u, *s1)) || open == Some((v, *s2)) {
+            continue;
+        }
+        let shrunk = if *round { size - w } else { size - w * (2.0 - std::f64::consts::SQRT_2) };
+        if shrunk > 1e-9 {
+            inner_cuts.push((*s1, *s2, shrunk, *round));
+        }
+    }
+    let segs = box_profile_cuts(lo[u], hi[u], lo[v], hi[v], &inner_cuts)?;
+    let (mut o, mut ua, mut va, mut sw) = ([0.0; 3], [0.0; 3], [0.0; 3], [0.0; 3]);
+    o[a] = lo[a];
+    ua[u] = 1.0;
+    va[v] = 1.0;
+    sw[a] = hi[a] - lo[a];
+    let inner = build::extrude_profile(&segs, o, ua, va, sw).ok()?;
+    Some(build::ensure_outward(&inner))
+}
+
+/// The cavity a hollow of ANY convex part with flat faces cuts out (a wedge, a prism, a turned box): the part's face planes, each moved
+/// in by the wall (the open face's stays where it is, flush), met. Exact because the inward offset of a convex polyhedron is the meet of
+/// its planes moved in. `None` when a face is curved, the part is not convex (a plane of one face cuts another), the planes do not make
+/// the part back (volume), or the wall leaves nothing.
+fn convex_planar_cavity(src: &TSolid, w: f64, open: Option<(usize, usize)>, open_plane: Option<(Vec3, f64)>) -> Option<TSolid> {
+    let bb = build::solid_aabb(src);
+    if bb.is_empty() {
+        return None;
+    }
+    let mut planes: Vec<(Vec3, f64)> = Vec::new();
+    let mut pts: Vec<Vec3> = Vec::new();
+    for f in src.faces() {
+        let fb = f.borrow();
+        let Surface::Plane(p) = &fb.surface else { return None };
+        let n = normalize(p.n);
+        let d = dot(n, p.origin);
+        if !planes.iter().any(|(m, e)| crate::math::len(sub(*m, n)) < 1e-9 && (e - d).abs() < 1e-7) {
+            planes.push((n, d));
+        }
+        pts.extend(build::face_ring_points(&fb));
+    }
+    // convex: every plane supports the whole part
+    if planes.iter().any(|(n, d)| pts.iter().any(|p| dot(*n, *p) > d + 1e-6)) {
+        return None;
+    }
+    // the planes alone must make the part back
+    // a box that holds the part with room to spare, to be cut down by the planes
+    let lo = [bb.lo[0] - 1.0, bb.lo[1] - 1.0, bb.lo[2] - 1.0];
+    let hi = [bb.hi[0] + 1.0, bb.hi[1] + 1.0, bb.hi[2] + 1.0];
+    let mut whole = box_rings(lo, hi);
+    for (n, d) in &planes {
+        whole = clip_rings(&whole, *n, *d)?;
+    }
+    let vs = build::solid_volume(src);
+    if (rings_volume(&whole) - vs).abs() > 1e-7 * vs.max(1.0) {
+        return None;
+    }
+    let mut cavity = box_rings(lo, hi);
+    for (n, d) in &planes {
+        let flush = open.is_some_and(|(axis, sign)| {
+            let mut e = [0.0; 3];
+            e[axis] = if sign == 1 { 1.0 } else { -1.0 };
+            crate::math::len(sub(*n, e)) < 1e-9 && (d - if sign == 1 { bb.hi[axis] } else { -bb.lo[axis] }).abs() < 1e-6
+        }) || open_plane.is_some_and(|(m, e)| crate::math::len(sub(*n, m)) < 1e-9 && (d - e).abs() < 1e-6);
+        cavity = clip_rings(&cavity, *n, if flush { *d } else { d - w })?;
+    }
+    rings_solid(&cavity)
+}
+
 /// One round bore through an axis-aligned box: runs the whole way along `axis`
 /// (0 = x, 1 = y, 2 = z). `c` is its centre on the other two axes, taken in the
 /// cyclic order (axis+1, axis+2) mod 3.
@@ -7360,7 +7542,7 @@ fn turned_hollow(
     thickness: f64,
     wants_open: bool,
 ) -> Option<Result<TSolid, String>> {
-    let rd = turned::read(src)?;
+    let rd = turned::read_with_tips(src)?;
     let mut open: Option<usize> = None;
     if wants_open {
         let face = resolve_face(hist, f.get("open")?)?;

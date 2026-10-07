@@ -181,6 +181,8 @@ effort on W7's language choices (11% of scripts) is worth more, if the owner agr
 **W6. Hollow beyond box and cylinder (275 scripts).** Sphere (34) is a concentric cavity (`subtract_enclosed` exists), a ring is a
 concentric torus, and a prism or wedge is a planar inward offset. A cone is an offset cone.
 
+**W6 status (2026-10-07, partly done).** Built: a box with rounded or chamfered edges along one axis (`rounded_prism_cavity`: the same prism moved in, each round smaller by the wall, tested against a closed form and OpenCascade); any convex part with flat faces, wedge, prism or turned box, with the open face named by its own plane (`convex_planar_cavity`: 60 of 60 against OpenCascade); a cone (the turned-part profile now takes a sloping side that ends in a tip on the axis: 40 of 40 against the closed form, OpenCascade returns a cone unhollowed). The rounded-box hollow refuses where a round as wide as the wall sits on the open face's own rim. Not built: sphere (a concentric cavity that `subtract` already builds, but `hollow` does not route to it), ring, and a part with an off-axis or blind hole. Tests: `packages/kernel/test/hollow-flat-parts.test.mjs`.
+
 **W7. Script-level errors (1,654 scripts, 11 %), an owner decision, not kernel work.** `turn()` refuses a shape that is not directly
 a primitive (539: after a hole, fillet, combine or mirror), "Repeat Around spins copies about the middle of the world" (224), and
 "hole() cannot find how thick this combine is" (340). A rotation of a derived solid is an exact kernel transform, so the first is a

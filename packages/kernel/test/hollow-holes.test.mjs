@@ -264,7 +264,8 @@ const refuses = [
   ['a counterbored hole', B + 'hole(b, { across: 6, counterbore: { across: 12, deep: 3 } })\nhollow(b, { wall: 2 })', 'blind hole'],
   ['a bore too near the side for the wall to run round it', B + 'hole(b, { across: 8, at: [14, 0] })\nhollow(b, { wall: 2 })', 'thinner wall'],
   ['two bores close enough that their walls meet', B + 'hole(b, { across: 8, at: [-6, 0] })\nhole(b, { across: 8, at: [6, 0] })\nhollow(b, { wall: 2 })', 'thinner wall'],
-  ['a rounded edge', B + "round(b.edge('top', 'front'), 3)\nhollow(b, { wall: 2.5, open: 'top' })", 'can only hollow a box or a straight cylinder yet'],
+  // the round is wider than the wall on the open face's own rim: it would eat the whole lip (a round the wall clears now builds, see hollow-flat-parts.test.mjs)
+  ['a rounded edge on the open rim, wider than the wall', B + "round(b.edge('top', 'front'), 3)\nhollow(b, { wall: 2.5, open: 'top' })", 'cannot hollow'],
 ];
 for (const [name, code, word] of refuses) {
   test(`hollow with holes still refuses: ${name}`, () => {

@@ -107,7 +107,8 @@ const EXPECT = Object.fromEntries([
   ["matrix box: round", 'builds'],
   ["matrix box: round then hole", 'builds'],
   ["matrix box: round then chamfer", "can only chamfer a straight edge between two flat faces yet"],
-  ["matrix box: round then hollow", "can only hollow a box or a straight cylinder yet"],
+  // the matrix round (3) is wider than its wall (2.5) on the open top's own rim: it would eat the lip. A round the wall clears builds (hollow-flat-parts.test.mjs)
+  ["matrix box: round then hollow", "cannot hollow"],
   ["matrix box: chamfer", 'builds'],
   ["matrix box: chamfer then hole", 'builds'], // planar boolean, same closed form
   ["matrix box: chamfer then round", "can only round a straight edge between two flat faces yet"],
