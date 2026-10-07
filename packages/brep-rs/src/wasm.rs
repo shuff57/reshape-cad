@@ -995,7 +995,7 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
             // A hole in a sphere bored by an earlier hole is the one cut such a part takes (more bores parallel to the
             // first, SPEC-brep-sphere-multi-bore.md); the builder refuses what it cannot cut, in the hole's own sentence.
             let takes_it = |n: &str| kind == "hole" && hist.shapes.get(n).is_some_and(ops::is_bored_sphere);
-            let crossed = names.into_iter().find(|n| {
+            let crossed = names.iter().copied().find(|n| {
                 (hist.shapes.get(*n).is_some_and(ops::has_cross_trim)
                     || hist.shapes.get(hist.head_of(n)).is_some_and(ops::has_cross_trim))
                     && !takes_it(n)
@@ -1006,6 +1006,18 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     id.clone(),
                     json!(format!(
                         "{kind} {id}: {n} already has a bore across its side, and brep-rs can only move or copy a part like that yet -- {id} is shown without it."
+                    )),
+                );
+                continue;
+            }
+            let cut = names.iter().copied().find(|n| {
+                hist.shapes.get(*n).is_some_and(ops::has_cut_cone) || hist.shapes.get(hist.head_of(n)).is_some_and(ops::has_cut_cone)
+            });
+            if let Some(n) = cut {
+                refusals.insert(
+                    id.clone(),
+                    json!(format!(
+                        "{kind} {id}: {n} was cut out of a cone by a box, and brep-rs can only move or copy a part like that yet -- {id} is shown without it."
                     )),
                 );
                 continue;

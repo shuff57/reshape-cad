@@ -68,6 +68,16 @@ pub enum Curve {
         e: f64,
         sign: f64,
     },
+    /// An arc of the hyperbola where a plane parallel to a cone's axis cuts the cone
+    /// (docs/specs/SPEC-brep-cone-booleans.md). With `s` running from `s0` to `s1` at fraction `t`:
+    ///
+    ///   p(s) = c + cosh(s) p + sinh(s) q
+    ///
+    /// For a cone of radius `r` and height `h` standing on z, cut by the plane x = d, `c = (d, 0, h)`,
+    /// `p = (0, 0, -h d / r)` and `q = (0, d, 0)`: then `y = d sinh s`, the cone's radius there is
+    /// `d cosh s`, and the height `h (1 - d cosh s / r)`, so the point lies on both. `p` and `q` are
+    /// NOT unit vectors, and `s0 < s1` or `s0 > s1` both run (the curve is traversed from `s0`).
+    Hyperbola { c: Vec3, p: Vec3, q: Vec3, s0: f64, s1: f64 },
 }
 
 /// 3D point of a [`Curve::SphCyl`] at angle `phi`, and its derivative d/dphi.
@@ -91,6 +101,15 @@ fn sph_cyl_eval(
     let df = if f > 1e-300 { e * r * s / f } else { 0.0 };
     let dp = add(add(scale(n, -r * s), scale(a, r * c)), scale(d, sign * df));
     (p, dp)
+}
+
+/// 3D point of a [`Curve::Hyperbola`] at fraction `t`, and its derivative d/dt.
+fn hyperbola_eval(c: Vec3, p: Vec3, q: Vec3, s0: f64, s1: f64, t: f64) -> (Vec3, Vec3) {
+    let s = s0 + (s1 - s0) * t;
+    let (sh, ch) = (s.sinh(), s.cosh());
+    let pt = add(c, add(scale(p, ch), scale(q, sh)));
+    let dp = scale(add(scale(p, sh), scale(q, ch)), s1 - s0);
+    (pt, dp)
 }
 
 /// 3D point of a [`Curve::CylCyl`] at angle `phi`, and its derivative d/dphi.
@@ -180,6 +199,9 @@ impl Curve {
                     crate::math::len(cyl_cyl_eval(*center, *d, *n, *a, *big_r, *r, *sign, phi).1)
                 })
             }
+            Curve::Hyperbola { c, p, q, s0, s1 } => {
+                integrate_composite(0.0, 1.0, 16, |t| crate::math::len(hyperbola_eval(*c, *p, *q, *s0, *s1, t).1))
+            }
             Curve::SphCyl { center, d, n, a, big_r, r, e, sign } => {
                 let tau = 2.0 * std::f64::consts::PI;
                 integrate_composite(0.0, tau, 64, |phi| {
@@ -215,6 +237,7 @@ impl Curve {
             Curve::CylCyl { center, d, n, a, big_r, r, sign } => {
                 cyl_cyl_eval(*center, *d, *n, *a, *big_r, *r, *sign, t * 2.0 * std::f64::consts::PI).0
             }
+            Curve::Hyperbola { c, p, q, s0, s1 } => hyperbola_eval(*c, *p, *q, *s0, *s1, t).0,
             Curve::SphCyl { center, d, n, a, big_r, r, e, sign } => {
                 sph_cyl_eval(*center, *d, *n, *a, *big_r, *r, *e, *sign, t * 2.0 * std::f64::consts::PI).0
             }
@@ -258,6 +281,7 @@ impl Curve {
                     w,
                 )
             }
+            Curve::Hyperbola { c, p, q, s0, s1 } => hyperbola_eval(*c, *p, *q, *s0, *s1, t).1,
             Curve::SphCyl { center, d, n, a, big_r, r, e, sign } => {
                 let w = 2.0 * std::f64::consts::PI;
                 scale(
@@ -303,6 +327,17 @@ impl Curve {
                     acc[i] = integrate_composite(0.0, tau, 64, |phi| {
                         let (p, dp) = cyl_cyl_eval(*center, *d, *n, *a, *big_r, *r, *sign, phi);
                         p[i] * crate::math::len(dp)
+                    });
+                }
+                scale(acc, 1.0 / len)
+            }
+            Curve::Hyperbola { c, p, q, s0, s1 } => {
+                let len = self.length();
+                let mut acc = [0.0; 3];
+                for i in 0..3 {
+                    acc[i] = integrate_composite(0.0, 1.0, 16, |t| {
+                        let (pt, dp) = hyperbola_eval(*c, *p, *q, *s0, *s1, t);
+                        pt[i] * crate::math::len(dp)
                     });
                 }
                 scale(acc, 1.0 / len)
@@ -380,6 +415,21 @@ impl Curve {
             Curve::CylCyl { center, d, n, a, big_r, r, sign } => {
                 expand_periodic(&mut b, &|phi: f64| cyl_cyl_eval(*center, *d, *n, *a, *big_r, *r, *sign, phi).0);
             }
+            Curve::Hyperbola { c, p, q, s0, s1 } => {
+                b.expand(self.point_at(0.0));
+                b.expand(self.point_at(1.0));
+                // component i: c_i + p_i cosh s + q_i sinh s, stationary where tanh s = -q_i / p_i
+                for i in 0..3 {
+                    if p[i].abs() > q[i].abs() {
+                        let s = (-q[i] / p[i]).atanh();
+                        let t = (s - s0) / (s1 - s0);
+                        if (0.0..=1.0).contains(&t) {
+                            b.expand(self.point_at(t));
+                        }
+                    }
+                }
+                let _ = c;
+            }
             Curve::SphCyl { center, d, n, a, big_r, r, e, sign } => {
                 expand_periodic(&mut b, &|phi: f64| sph_cyl_eval(*center, *d, *n, *a, *big_r, *r, *e, *sign, phi).0);
             }
@@ -427,6 +477,7 @@ impl Curve {
                 r: *r,
                 sign: *sign,
             },
+            Curve::Hyperbola { c, p, q, s0, s1 } => Curve::Hyperbola { c: t.apply(*c), p: t.dir(*p), q: t.dir(*q), s0: *s0, s1: *s1 },
             Curve::SphCyl { center, d, n, a, big_r, r, e, sign } => Curve::SphCyl {
                 center: t.apply(*center),
                 d: normalize(t.dir(*d)),
@@ -907,6 +958,10 @@ pub struct Cone {
     /// shortened wall (v=0) and the shrunken cap (v=slant), same shape of
     /// trim the round-primitive torus rim uses. u is always the full turn.
     pub v_range: [f64; 2],
+    /// `true` when the face is only the part of the cone its boundary wires enclose (a box has cut it: `cone_box.rs`),
+    /// not the whole band `v_range` and a full turn describe. Everything measured about such a face (its volume term,
+    /// its box, its mesh) is read from its wires; `u_range`/`v_range` then say nothing about its extent.
+    pub bounded: bool,
 }
 
 #[derive(Clone, Debug)]
@@ -1283,6 +1338,7 @@ impl Surface {
                 half_angle: c.half_angle,
                 slant: c.slant,
                 v_range: c.v_range,
+                bounded: c.bounded,
             }),
             Surface::Sphere(s) => Surface::Sphere(SphereSurf {
                 center: t.apply(s.center),

@@ -671,6 +671,7 @@ pub fn signed_volume(solid: &TSolid) -> f64 {
                 let (area, c) = geom::planar_measure(&p, &edges);
                 acc += area * crate::math::dot(p.n, c);
             }
+            (Surface3::Cone(c), _) if c.bounded => acc += bounded_cone_measure(c, &face_edges(&fc.borrow())).2,
             _ => acc += surface.volume_term(),
         }
     }
@@ -723,6 +724,7 @@ fn reversed_face(face: &Face<Curve3, Surface3>) -> TFace {
  half_angle: c.half_angle,
  slant: c.slant,
  v_range: c.v_range,
+ bounded: c.bounded,
  }),
  other => other.clone(),
     };
@@ -732,6 +734,47 @@ fn reversed_face(face: &Face<Curve3, Surface3>) -> TFace {
         surface: surf,
         uv_domain: face.uv_domain,
     }))
+}
+
+/// Whether the apex is inside a bounded cone face rather than on its boundary or outside it: the face has one wire, that wire goes once
+/// round the axis, and it does not pass through the apex.
+pub fn bounded_cone_holds_apex(c: &geom::Cone, face: &Face<Curve3, Surface3>) -> bool {
+    if face.boundary.len() != 1 {
+        return false;
+    }
+    let axis = crate::math::normalize(c.axis);
+    let apex = add(c.base, scale(axis, c.slant * c.half_angle.cos()));
+    let tol = 1e-9 * c.slant;
+    let (mut total, mut prev): (f64, Option<f64>) = (0.0, None);
+    for u in &face.boundary[0].borrow().edges {
+        let e = u.edge.borrow();
+        let mut pts = crate::mesh::curve_points(&e.curve, 1e-3 * c.slant);
+        if !u.forward {
+            pts.reverse();
+        }
+        for p in pts {
+            if crate::math::len(crate::math::sub(p, apex)) < tol {
+                return false;
+            }
+            let d = crate::math::sub(p, c.base);
+            if crate::math::len(crate::math::sub(d, scale(axis, crate::math::dot(d, axis)))) < tol {
+                continue;
+            }
+            let a = crate::math::dot(d, c.e2).atan2(crate::math::dot(d, c.e1));
+            if let Some(q) = prev {
+                let mut step = a - q;
+                while step > std::f64::consts::PI {
+                    step -= 2.0 * std::f64::consts::PI;
+                }
+                while step < -std::f64::consts::PI {
+                    step += 2.0 * std::f64::consts::PI;
+                }
+                total += step;
+            }
+            prev = Some(a);
+        }
+    }
+    total.abs() > std::f64::consts::PI
 }
 
 pub fn solid_aabb(solid: &TSolid) -> Aabb {
@@ -763,6 +806,12 @@ pub fn solid_aabb(solid: &TSolid) -> Aabb {
             for e in edges {
                 b.union(&e.curve.aabb());
             }
+            // a cone a box has cut can hold its apex in the middle of the face, where no edge reaches
+            if let Surface3::Cone(c) = &surface {
+                if c.bounded && bounded_cone_holds_apex(c, &fc.borrow()) {
+                    b.expand(add(c.base, scale(crate::math::normalize(c.axis), c.slant * c.half_angle.cos())));
+                }
+            }
         } else if matches!(surface, Surface3::Plane(_)) {
             for e in edges {
                 b.union(&e.curve.aabb());
@@ -774,6 +823,53 @@ pub fn solid_aabb(solid: &TSolid) -> Aabb {
     b
 }
 
+/// What the wires of a BOUNDED cone face (`Cone::bounded`) say about it: its area, its centroid, its divergence-theorem volume term
+/// and its vector area. The wires run with the material on the left of the outward normal.
+///
+/// The cone develops onto a flat sector without stretching: a point at radius `rho` from the axis is at distance `t = rho / sin a`
+/// from the apex, and the angle about the axis `u` becomes the sector's angle `u sin a`. So with `(x, y)` the point's coordinates
+/// square to the axis, the area is `(1 / sin a) * (1/2) loop (x dy - y dx)`, and, the generator being `g = sin a rho_hat - cos a axis`,
+/// `loop p dA = apex A + J / (3 sin^2 a)` with `J = loop rho g (x dy - y dx)`. The volume term needs no more: `p . n = apex . n` all
+/// along a generator, so it is `apex . (the vector area, 1/2 loop p x dp)`. All are exact for a loop of exact curves.
+pub fn bounded_cone_measure(c: &geom::Cone, edges: &[geom::EdgeOnFace]) -> (f64, Vec3, f64, Vec3) {
+    let axis = crate::math::normalize(c.axis);
+    let (sa, ca) = (c.half_angle.sin(), c.half_angle.cos());
+    let apex = add(c.base, scale(axis, c.slant * ca));
+    let (mut proj, mut avec, mut jv) = (0.0, [0.0; 3], [0.0; 3]);
+    for e in edges {
+        let dir = if e.forward { 1.0 } else { -1.0 };
+        let xy = |t: f64| {
+            let p = e.curve.point_at(t);
+            let dp = e.curve.derivative_at(t);
+            let d = crate::math::sub(p, c.base);
+            (p, dp, crate::math::dot(d, c.e1), crate::math::dot(d, c.e2), crate::math::dot(dp, c.e1), crate::math::dot(dp, c.e2))
+        };
+        proj += dir * geom::integrate_composite(0.0, 1.0, 16, |t| {
+            let (_, _, x, y, dx, dy) = xy(t);
+            x * dy - y * dx
+        });
+        for k in 0..3 {
+            avec[k] += dir * 0.5 * geom::integrate_composite(0.0, 1.0, 16, |t| {
+                let (p, dp, ..) = xy(t);
+                crate::math::cross(p, dp)[k]
+            });
+            jv[k] += dir * geom::integrate_composite(0.0, 1.0, 16, |t| {
+                let (_, _, x, y, dx, dy) = xy(t);
+                let rho = x.hypot(y);
+                let w = x * dy - y * dx;
+                // rho g = sin a (x e1 + y e2) - cos a rho axis
+                (sa * (x * c.e1[k] + y * c.e2[k]) - ca * rho * axis[k]) * w
+            });
+        }
+    }
+    let area = 0.5 * proj / sa;
+    if area.abs() < 1e-15 {
+        return (0.0, apex, 0.0, avec);
+    }
+    let int_p = add(scale(apex, area), scale(jv, 0.5 / (3.0 * sa * sa)));
+    (area.abs(), scale(int_p, 1.0 / area), crate::math::dot(apex, avec), avec)
+}
+
 /// The area and centroid of a face. A planar face is measured from its
 /// boundary; an analytic curved face integrates over its parameter domain.
 pub fn face_area_centroid(face: &Face<Curve3, Surface3>) -> (f64, Vec3) {
@@ -782,11 +878,19 @@ pub fn face_area_centroid(face: &Face<Curve3, Surface3>) -> (f64, Vec3) {
             let edges = face_edges(face);
             geom::planar_measure(p, &edges)
         }
+        Surface3::Cone(c) if c.bounded => {
+            let m = bounded_cone_measure(c, &face_edges(face));
+            (m.0, m.1)
+        }
         surface => surface.area_centroid(),
     }
 }
 
 /// The (curve, use-orientation) of every edge of a face's outer wire.
+pub fn face_edges_of(face: &Face<Curve3, Surface3>) -> Vec<geom::EdgeOnFace> {
+    face_edges(face)
+}
+
 fn face_edges(face: &Face<Curve3, Surface3>) -> Vec<geom::EdgeOnFace> {
     let mut out = Vec::new();
     for w in &face.boundary {
@@ -1115,6 +1219,7 @@ pub fn chamfer_cylinder(center: Vec3, radius: f64, height: f64, axis: Vec3, rad:
             half_angle,
             slant,
             v_range: [0.0, slant],
+            bounded: false,
         }),
         [[0.0, two_pi], [0.0, slant]],
         band_wire(e_wall_hi, e_cap_hi, seam_top),
@@ -1133,6 +1238,7 @@ pub fn chamfer_cylinder(center: Vec3, radius: f64, height: f64, axis: Vec3, rad:
             half_angle,
             slant,
             v_range: [0.0, slant],
+            bounded: false,
         }),
         [[0.0, two_pi], [0.0, slant]],
         band_wire(e_wall_lo, e_cap_lo, seam_bot),
@@ -1348,7 +1454,7 @@ pub fn chamfer_cylinder_one_rim(center: Vec3, radius: f64, height: f64, axis: Ve
     let band = if treated_top {
         let seam = meridian(&v_treated_wall, &v_cap_treated);
         make_face(
-            Surface::Cone(Cone { base: z_treated_wall, axis: z, e1, e2, base_radius: radius, half_angle, slant, v_range: [0.0, slant] }),
+            Surface::Cone(Cone { base: z_treated_wall, axis: z, e1, e2, base_radius: radius, half_angle, slant, v_range: [0.0, slant], bounded: false }),
             [[0.0, two_pi], [0.0, slant]],
             band_wire(e_wall_treated, e_cap_treated, seam),
         )
@@ -1358,7 +1464,7 @@ pub fn chamfer_cylinder_one_rim(center: Vec3, radius: f64, height: f64, axis: Ve
         // band's own axis for its volume term's sign -- the same parity
         // chamfer_cylinder records for its bottom band.
         make_face(
-            Surface::Cone(Cone { base: z_treated_wall, axis: scale(z, -1.0), e1, e2: scale(e2, -1.0), base_radius: radius, half_angle, slant, v_range: [0.0, slant] }),
+            Surface::Cone(Cone { base: z_treated_wall, axis: scale(z, -1.0), e1, e2: scale(e2, -1.0), base_radius: radius, half_angle, slant, v_range: [0.0, slant], bounded: false }),
             [[0.0, two_pi], [0.0, slant]],
             band_wire(e_wall_treated, e_cap_treated, seam),
         )
@@ -1404,6 +1510,7 @@ pub fn cone_solid(center: Vec3, radius: f64, height: f64, axis: Vec3) -> TSolid 
             half_angle,
             slant,
             v_range: [0.0, slant],
+            bounded: false,
         }),
         [[0.0, 0.0], [0.0, slant]],
         vec![
@@ -2541,6 +2648,7 @@ pub fn revolve_profile(
  half_angle,
  slant,
  v_range: [0.0, slant],
+ bounded: false,
  }),
  [[0.0, two_pi], [0.0, slant]],
  vec![

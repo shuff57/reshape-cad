@@ -518,6 +518,8 @@ fn wire_segs(wire: &[crate::topo::EdgeUse<Curve>]) -> Result<Vec<Seg>, String> {
             Curve::CylCyl { .. } => fit_closed_curve(&e.curve, !u.forward)?,
             // No STEP primitive either (the meeting curve of a bore and a sphere): the same fitted spline.
             Curve::SphCyl { .. } => fit_closed_curve(&e.curve, !u.forward)?,
+            // An open arc of a conic, which the closed-curve fit above cannot carry.
+            Curve::Hyperbola { .. } => return Err("a cone cut by a plane that runs along its axis".to_string()),
             Curve::Circle {
                 center,
                 radius,
@@ -1239,6 +1241,9 @@ fn face_bounds(face: &crate::topo::Face<Curve, Surface>) -> Result<(Vec<Vec<Seg>
             }
             bounds.push(cylinder_loop(c));
         }
+        // A cone a box has cut: its wires are the boundary, but the STEP reader's reading of a trimmed cone through
+        // its angle and slant range has not been checked against OpenCascade for these, so it is not written.
+        Surface::Cone(c) if c.bounded => return Err("a cone cut by a box".to_string()),
         Surface::Cone(c) => {
             if face.boundary.len() > 1 {
                 return Err("a conical face with a hole in it".to_string());

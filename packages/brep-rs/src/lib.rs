@@ -42,6 +42,7 @@ pub mod sphere_hull;
 pub mod ball_box;
 pub mod convex_pair;
 pub mod cone_box;
+pub mod cone_keep;
 pub mod step;
 pub mod step_read;
 pub mod step_in;

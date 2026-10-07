@@ -536,7 +536,7 @@ pub fn as_box(s: &TSolid) -> Option<BoxSpec> {
 }
 
 /// One piece of a planar face's boundary, in the ball's frame, in the order the face traverses it.
-enum Item {
+pub(crate) enum Item {
     Seg(Vec3, Vec3),
     /// An arc of the plane's circle from one point to another; `ccw` says it turns counter-clockwise about the plane's outward normal.
     Arc { from: Vec3, to: Vec3, sweep: f64, ccw: bool },
@@ -597,7 +597,7 @@ fn circle_inside_rect(ci: &Circle, bx: &BoxSpec, i: usize, rc: Vec3) -> bool {
 
 /// The boundary of the part of box face `i` INSIDE the ball (the rectangle intersected with the disk): one loop, counter-clockwise about
 /// the face's outward normal. `Ok(None)`: no area.
-fn inside_piece(r: f64, halves: &[Half], bx: &BoxSpec, i: usize) -> Result<Option<Vec<Item>>, &'static str> {
+pub(crate) fn inside_piece(r: f64, halves: &[Half], bx: &BoxSpec, i: usize) -> Result<Option<Vec<Item>>, &'static str> {
     let Some((ci, corners, rc)) = rect_of(r, halves, bx, i) else { return Ok(None) };
     let tol = 1e-9 * r;
     let ivs = rect_edges(&ci, &corners, r)?;
@@ -629,9 +629,9 @@ fn inside_piece(r: f64, halves: &[Half], bx: &BoxSpec, i: usize) -> Result<Optio
 }
 
 /// One face's worth of boundary: an outer loop and at most one hole.
-struct Piece {
-    outer: Vec<Item>,
-    hole: Option<Item>,
+pub(crate) struct Piece {
+    pub(crate) outer: Vec<Item>,
+    pub(crate) hole: Option<Item>,
 }
 
 /// The parts of box face `i` OUTSIDE the ball (the rectangle minus the disk): each connected part's boundary is the rectangle's edge
@@ -759,7 +759,7 @@ fn wire_of(r: f64, ci: &Circle, plane: &Plane, items: &[Item], o: Vec3, verts: &
 
 /// The planar face of box face `i` from one piece. `flip`: the face's normal is the box's INWARD one (the wall of a cut), in which
 /// case the piece's items must already be traversed counter-clockwise about that inward normal.
-fn planar_face(r: f64, halves: &[Half], i: usize, piece: &Piece, o: Vec3, flip: bool) -> Option<TFace> {
+pub(crate) fn planar_face(r: f64, halves: &[Half], i: usize, piece: &Piece, o: Vec3, flip: bool) -> Option<TFace> {
     let ci = circle_of(&halves[i], r)?;
     let normal = if flip { scale(halves[i].n, -1.0) } else { halves[i].n };
     let plane = Plane::new(add(ci.c, o), normal);
@@ -847,7 +847,7 @@ fn sphere_face(rg: &Region, halves: &[Half], o: Vec3, region_side: bool, reverse
 
 /// How many separate lumps the faces make (faces joined through shared edge handles). `split_sphere`: the hull sphere face is several
 /// pieces, one per boundary wire, so each wire is a node of its own.
-fn lump_count(faces: &[TFace], split_sphere: bool) -> usize {
+pub(crate) fn lump_count(faces: &[TFace], split_sphere: bool) -> usize {
     // node ids: one per face, and for a split sphere face one per wire
     let mut node_of: Vec<Vec<usize>> = Vec::new();
     let mut next = 0usize;

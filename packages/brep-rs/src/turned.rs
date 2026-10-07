@@ -1100,6 +1100,7 @@ fn build_faces(origin: [f64; 2], lp: &[Seg], inv: bool) -> Option<Vec<TFace>> {
                         half_angle,
                         slant: len,
                         v_range: [0.0, len],
+                        bounded: false,
                     });
                     let uses = vec![
                         topo::EdgeUse { edge: e_base.0.clone(), forward: true, pcurve: topo::Pcurve { start: [0.0, 0.0], end: [TAU, 0.0], mid: [PI, 0.0] } },

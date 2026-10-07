@@ -2463,6 +2463,10 @@ fn plane_face_radial_reach(face: &Face<Curve3, Surface3>, origin: Vec3, axis: Ve
             Curve::SphCyl { center, big_r, r, e, .. } => {
                 far = far.max(radial(*center) + big_r + r + e);
             }
+            // An open arc: no farther than its farther end plus its own length.
+            Curve::Hyperbola { .. } => {
+                far = far.max(radial(e.a.borrow().point).max(radial(e.b.borrow().point)) + e.curve.length());
+            }
         }
     }
     Some(far)
@@ -5469,6 +5473,12 @@ pub fn has_cross_trim(s: &TSolid) -> bool {
     })
 }
 
+/// Whether a box has cut a cone to make this solid (`cone_keep.rs`): the cone's face then runs only as far as its wires say, which
+/// the whole-cone machinery would not read, so every further boolean refuses it.
+pub fn has_cut_cone(s: &TSolid) -> bool {
+    s.faces().iter().any(|f| matches!(&f.borrow().surface, Surface::Cone(c) if c.bounded))
+}
+
 /// Boolean two solids of the `combine` kind. Returns None when the kernel
 /// cannot build the exact result, so the caller refuses the feature in words.
 
@@ -5795,11 +5805,17 @@ pub(crate) fn mesh_is_closed_coarse(s: &TSolid) -> bool {
 }
 
 fn boolean_legacy(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
+ // The paths below build what they can (a cone cut by planes square to its axis writes to STEP); a cone kept by a box
+ // that none of them builds is the last resort.
+ boolean_legacy_paths(op, a, b).or_else(|| crate::cone_keep::cone_box_boolean(op, a, b))
+}
+
+fn boolean_legacy_paths(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
  if is_bored_sphere(a) {
  // A sphere bored by `sphere_offset_bore` takes one more bore or nothing; every other boolean refuses it.
  return sphere_offset_bore(op, a, b).filter(volume_is_translation_invariant);
  }
- if has_cross_trim(a) || has_cross_trim(b) {
+ if has_cross_trim(a) || has_cross_trim(b) || has_cut_cone(a) || has_cut_cone(b) {
  return None;
  }
  if let Some(r) = crate::ball_box::ball_box_boolean(op, a, b) {
@@ -5907,6 +5923,12 @@ pub(crate) fn volume_is_translation_invariant(solid: &TSolid) -> bool {
  let (area, centroid) = build::face_area_centroid(&face);
  sum += area * dot(plane.n, centroid);
  moved_sum += area * dot(plane.n, add(centroid, shift.t));
+ }
+ Surface::Cone(c) if c.bounded => {
+ // read from its wires: the area vector does not move, the apex does
+ let (_, _, term, avec) = build::bounded_cone_measure(c, &build::face_edges_of(&face));
+ sum += term;
+ moved_sum += term + dot(shift.t, avec);
  }
  surface => {
  let term = surface.volume_term();
@@ -7304,6 +7326,7 @@ pub(crate) fn flip_face(face: &TFace) -> Option<TFace> {
  half_angle: c.half_angle,
  slant: c.slant,
  v_range: c.v_range,
+ bounded: c.bounded,
  }),
  fb.uv_domain,
  uses,
