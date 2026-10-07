@@ -6399,6 +6399,13 @@ fn convex_planar_cavity(src: &TSolid, w: f64, open: Option<(usize, usize)>, open
     if (rings_volume(&whole) - vs).abs() > 1e-7 * vs.max(1.0) {
         return None;
     }
+    // the open face must be one of the part's own planes: a name resolved to a face the part no longer has (it was moved or turned since)
+    // would match nothing, and the cavity would silently be the sealed one
+    if let Some((m, e)) = open_plane {
+        if !planes.iter().any(|(n, d)| crate::math::len(sub(*n, m)) < 1e-9 && (d - e).abs() < 1e-6) {
+            return None;
+        }
+    }
     let mut cavity = box_rings(lo, hi);
     for (n, d) in &planes {
         let flush = open.is_some_and(|(axis, sign)| {

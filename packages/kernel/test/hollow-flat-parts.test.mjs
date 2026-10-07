@@ -193,3 +193,20 @@ test('a cone hollows to the closed form, open at its base or sealed, upright or 
   assert.deepEqual(bad, [], bad.slice(0, 3).join('\n'));
   assert.ok(built >= 20, `only ${built} built`);
 });
+
+// The open face is named from the part as it was made: after a move or a turn, the face it names may be a plane the part no longer has.
+// That must refuse (the part is then shown closed, with the sentence), never quietly build the sealed hollow as if the face had been found.
+test('an open face that the part no longer has is refused, never a sealed hollow built in its place', () => {
+  const sealed = (dims, w) => dims[0] * dims[1] * dims[2] - (dims[0] - 2 * w) * (dims[1] - 2 * w) * (dims[2] - 2 * w);
+  for (const [name, code, dims] of [
+    ['a part moved in y, open front', "let v = box(53.19, 59.56, 17.89, { at: [0, 0, 0] })\nmove(v, [0, 1.39, 0])\nhollow(v, { wall: 1.14, open: 'front' })", [53.19, 59.56, 17.89]],
+    ['a prism moved and turned, open top', "let v = prism(6, 38.69, 20.47, { at: [0, 0, 0] })\nmove(v, [3.39, -8.66, -5.64])\nhollow(v, { wall: 1.47, open: 'top' })\nturn(v, [30, 0, 90])", null],
+    ['a wedge turned, open front', "let v = wedge(17.86, 28.45, 13.46, { at: [0, 0, 0] })\nturn(v, [30, 0, 0])\nhollow(v, { wall: 1.6, open: 'front' })", null],
+  ]) {
+    const { refusals, m } = build(code);
+    const refused = Object.values(refusals).some((s) => /could not find the face to leave open/.test(s));
+    // either it found the face and built the OPEN hollow (checked against OpenCascade elsewhere), or it said it could not; the sealed volume is the wrong answer
+    if (!refused && dims) assert.ok(Math.abs(m.volume - sealed(dims, 1.14)) > 1, `${name}: built the sealed hollow ${m.volume}`);
+    assert.ok(refused || m, name);
+  }
+});
