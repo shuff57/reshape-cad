@@ -210,3 +210,37 @@ test('an open face that the part no longer has is refused, never a sealed hollow
     assert.ok(refused || m, name);
   }
 });
+
+// ---- moved and turned parts ---------------------------------------------------------------------------------------------------------------
+// A face named for the part as first built is followed through a move or a turn to where it is now, so a hollow with a face left open builds
+// on a part that was moved or turned first. Against OpenCascade where it hollows (it hands some parts back unhollowed, which is no referee).
+test('a moved or turned flat-faced part hollows with a face left open: builds, and agrees with OpenCascade where it can', () => {
+  const rand = rng(Number(process.env.HOLLOWFLAT_SEED ?? 77));
+  let built = 0, tried = 0, checked = 0;
+  const bad = [];
+  for (let i = 0; i < Number(process.env.HOLLOWFLAT_N ?? 90); i++) {
+    const shape = [
+      () => `box(${r2(20 + rand() * 30)}, ${r2(20 + rand() * 30)}, ${r2(15 + rand() * 20)}, { at: [0, 0, 0] })`,
+      () => `wedge(${r2(20 + rand() * 20)}, ${r2(20 + rand() * 20)}, ${r2(15 + rand() * 15)}, { at: [0, 0, 0] })`,
+      () => `prism(${3 + Math.floor(rand() * 7)}, ${r2(20 + rand() * 20)}, ${r2(15 + rand() * 15)}, { at: [0, 0, 0] })`,
+    ][i % 3]();
+    const mv = rand() < 0.75 ? `move(v, [${r2((rand() - 0.5) * 30)}, ${r2((rand() - 0.5) * 30)}, ${r2((rand() - 0.5) * 30)}])\n` : '';
+    const tn = rand() < 0.4 ? `turn(v, [${r2(rand() * 90)}, ${r2(rand() * 90)}, ${r2(rand() * 90)}])\n` : '';
+    const code = `let v = ${shape}\n${mv}${tn}hollow(v, { wall: ${r2(0.8 + rand() * 2.5)}, open: '${FACES[Math.floor(rand() * 6)]}' })`;
+    tried++;
+    const { refusals, m, r, id } = build(code);
+    if (Object.keys(refusals).length) continue;
+    built++;
+    const o = occtVolume(r.doc.features, id);
+    // OpenCascade's own unhollowed answer is the outer part: the volume of the part before the hollow
+    const before = (() => { const first = build(code.replace(/\nhollow\(.*\)$/, '')); return first.m?.volume ?? null; })();
+    if (o !== null && before !== null && o < before * 0.999) {
+      checked++;
+      if (Math.abs(m.volume - o) > 1e-6 * o) bad.push(`volume ${m.volume} occt ${o} :: ${code.replace(/\n/g, ' ; ')}`);
+    }
+  }
+  console.log(`hollow of a moved or turned flat part: built ${built} of ${tried}, checked against OpenCascade ${checked}`);
+  assert.deepEqual(bad, [], bad.slice(0, 3).join('\n'));
+  assert.ok(built >= 0.9 * tried, `only ${built} of ${tried} built`);
+  assert.ok(checked >= 0.5 * built, `OpenCascade checked only ${checked} of ${built}`);
+});

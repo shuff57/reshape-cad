@@ -2572,7 +2572,15 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 let mut open_side: Option<(usize, usize)> = None;
                 let mut open_plane: Option<(Vec3, f64)> = None;
                 if let Some(o) = f.get("open") {
-                    match resolve_face(&hist, o) {
+                    // the name is of the part as first built; follow the face through any move or turn since
+                    let named = resolve_face(&hist, o).map(|fc| {
+                        let from = o.get("feature").and_then(|x| x.as_str()).unwrap_or("");
+                        if from == target || from.is_empty() {
+                            return fc;
+                        }
+                        follow_face(&hist, from, &fc, target, 0).unwrap_or(fc)
+                    });
+                    match named {
                         Some(face) => {
                             let (_, c) = build::face_area_centroid(&face.borrow());
                             // The face's own side: whichever bbox extreme its
@@ -3625,6 +3633,29 @@ fn resolve_name(hist: &History, name: &Value) -> Option<Resolved> {
         // here, not a guess.
         _ => None,
     }
+}
+
+/// The face `face` of feature `feature`, followed through the operations (a move, a turn, a copy) down to `target`: the face of `target`
+/// that it became, or `None` when it does not survive. A name is made from the part as it was first built, so a part that was moved or
+/// turned since needs its named face followed to where it is now.
+fn follow_face(hist: &History, feature: &str, face: &build::TFace, target: &str, depth: usize) -> Option<build::TFace> {
+    if feature == target {
+        return Some(face.clone());
+    }
+    if depth > 32 {
+        return None;
+    }
+    let recs = hist.ops.get(target)?;
+    for rec in recs {
+        for input in &rec.inputs {
+            if let Some(mapped) = follow_face(hist, feature, face, input, depth + 1) {
+                if let Some(out) = hist.carried_face(target, input, &mapped) {
+                    return Some(out);
+                }
+            }
+        }
+    }
+    None
 }
 
 fn resolve_face(hist: &History, name: &Value) -> Option<build::TFace> {
