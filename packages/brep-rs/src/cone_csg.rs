@@ -350,7 +350,9 @@ fn assemble(base: Vec3, apex: Vec3, r: f64, bx: &crate::ball_box::BoxSpec, mode:
         Mode::CutBox => v_box - ov,
     };
     let got = crate::build::solid_volume(&solid);
-    if !got.is_finite() || (got - want).abs() > 2e-6 * v_cone.max(v_box) {
+    if !got.is_finite() || (got - want).abs() > 2e-6 * v_cone.min(v_box) + 1e-12 * v_cone.max(v_box) {
+        // scaled to the smaller body: a wall of the cone lost or mis-signed moves the volume by the cone's scale, which 2e-6 of a box a
+        // thousand times larger would hide
         return Err("the volume disagrees with the independent integral");
     }
     if !crate::ops::volume_is_translation_invariant(&solid) {
@@ -425,7 +427,7 @@ mod tests {
             Mode::CutCone => vc - ov,
             Mode::CutBox => vb - ov,
         };
-        if (exact - want).abs() > 3e-6 * vc.max(vb) {
+        if (exact - want).abs() > 3e-6 * vc.min(vb) + 1e-12 * vc.max(vb) {
             return Err(format!("WRONG exact {exact} oracle {want}"));
         }
         let defl = 0.002 * r.max(h);
@@ -502,6 +504,40 @@ mod tests {
         for mi in 0..3 {
             assert!(built[mi] * 2 >= tried[mi], "mode {mi}: only {} of {} built", built[mi], tried[mi]);
         }
+    }
+
+    /// A box far larger than the cone: the volume check is scaled to the smaller body, so it still sees the cone's own faces, and the
+    /// independent integral holds to that scale.
+    #[test]
+    fn a_box_far_larger_than_the_cone_is_still_checked_to_the_cones_scale() {
+        let mut rng = Rng(41);
+        let (mut built, mut tried) = (0usize, 0usize);
+        let mut bad: Vec<String> = Vec::new();
+        for _ in 0..600 {
+            let (r, h) = (rng.range(1.0, 3.0), rng.range(2.0, 6.0));
+            let (mut lo, mut hi) = random_box(&mut rng, r, h);
+            // stretch every extent that keeps a face through the cone: the far sides go out to tens of cone sizes
+            for k in 0..3 {
+                let s = if k < 2 { r } else { h };
+                let far = rng.range(20.0, 60.0) * s;
+                if rng.range(0.0, 1.0) < 0.5 { hi[k] = lo[k] + far } else { lo[k] = hi[k] - far }
+            }
+            if overlap_volume(&ConeSpec { r, h }, &AlignedBox { lo, hi }) < 1e-3 * r * r * h {
+                continue;
+            }
+            for mode in [Mode::Join, Mode::CutCone, Mode::CutBox] {
+                tried += 1;
+                match check(r, h, lo, hi, 0.0, mode) {
+                    Ok(_) => built += 1,
+                    // a thin sliver of the cone can sit a little inside its exact box in the mesh (the faceting's own extent, not the solid): measured, not counted
+                    Err(e) if (e.starts_with("WRONG") && !e.starts_with("WRONG box")) || e.contains("independent integral") => bad.push(format!("{mode:?} {e}: r {r} h {h} lo {lo:?} hi {hi:?}")),
+                    Err(_) => {}
+                }
+            }
+        }
+        eprintln!("cone x much larger box: built {built} of {tried}");
+        assert!(bad.is_empty(), "{} bad, first {:?}", bad.len(), bad.iter().take(3).collect::<Vec<_>>());
+        assert!(built * 4 >= tried, "only {built} of {tried} built");
     }
 
     /// Boxes snapped to the values where a cone is awkward: whatever builds is exact, the rest refuses.

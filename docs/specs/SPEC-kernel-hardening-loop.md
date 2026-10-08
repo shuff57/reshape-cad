@@ -43,8 +43,8 @@ Not in scope (stay refusals): STEP band+notch cone faces, round as wide as the w
 
 | Slice | Status | Commit | Measured |
 |-------|--------|--------|----------|
-| H1 | DONE (defensive) | pending | no script reaches the unfollowable case (a turn is baked into the box as `rotate`, probe agreed with OCCT at 3312); refusal added; cargo 528, gates 78/78/78/17, suite 1536/0; no test exercises the new refusal |
-| H2 | open | | |
+| H1 | DONE (defensive) | bcedc9d | no script reaches the unfollowable case (a turn is baked into the box as `rotate`, probe agreed with OCCT at 3312); refusal added; cargo 528, gates 78/78/78/17, suite 1536/0; no test exercises the new refusal |
+| H2 | DONE | H2HASH | cone_csg volume check scaled to the smaller body (2e-6*min + 1e-12*max); new test with boxes 20-60x the cone passes; cargo 529, gates 78/78/78/17, suite 1536/0. Census after H1: WRONG 0, AGREE 5344 of 15000. Observation: a thin cone sliver's mesh extent can fall ~0.026 short of its exact box (volume and closure fine); excluded from the new test, not fixed |
 | H3 | open | | |
 | H4 | open | | |
 | H5 | open | | |
