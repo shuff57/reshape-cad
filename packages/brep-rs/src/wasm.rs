@@ -1915,15 +1915,20 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                             refused = true;
                             break;
                         }
-                        Some(cur) => match { ops_planar::clear_reason(); ops::boolean(op, &cur, &s) } {
-                            Some(r) => shape = Some(r),
-                            None if matches!(ops_planar::take_reason(), Some(w) if w == ops_touch::CUT_SENTENCE || w == ops_touch::JOIN_SENTENCE) => {
+                        Some(cur) => match { ops_planar::clear_reason(); let res = ops::boolean(op, &cur, &s); (res, ops_planar::take_reason()) } {
+                            (Some(r), _) => shape = Some(r),
+                            (None, Some(w)) if w == ops_touch::CUT_SENTENCE || w == ops_touch::JOIN_SENTENCE => {
                                 let why = if op == "union" { ops_touch::JOIN_SENTENCE } else { ops_touch::CUT_SENTENCE };
                                 refusals.insert(id.clone(), json!(format!("combine {id}: {why} -- {id} is shown without it.")));
                                 refused = true;
                                 break;
                             }
-                            None if op == "intersect" && ops::solids_provably_disjoint(&cur, &s) => {
+                            (None, Some(w)) if w == crate::cone_csg::TWO_LUMPS_SENTENCE => {
+                                refusals.insert(id.clone(), json!(format!("combine {id}: {} -- {id} is shown without it.", crate::cone_csg::TWO_LUMPS_SENTENCE)));
+                                refused = true;
+                                break;
+                            }
+                            (None, _) if op == "intersect" && ops::solids_provably_disjoint(&cur, &s) => {
                                 refusals.insert(
                                     id.clone(),
                                     json!(format!("combine {id}: {} -- {id} is shown without it.", ops::DISJOINT_SENTENCE)),
@@ -1931,7 +1936,7 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                                 refused = true;
                                 break;
                             }
-                            None => {
+                            (None, _) => {
                                 refusals.insert(
                                     id.clone(),
                                     json!(format!(

@@ -374,6 +374,9 @@ pub fn csg_why(base: Vec3, apex: Vec3, r: f64, bx: &crate::ball_box::BoxSpec, mo
     assemble(base, apex, r, bx, mode, true)
 }
 
+/// The sentence for a cut that would leave two separate pieces, which brep-rs does not hold as one result yet.
+pub const TWO_LUMPS_SENTENCE: &str = "this leaves two separate pieces, which brep-rs cannot hold as one result yet; cut it so one piece is left, or make the cut in two steps";
+
 /// The boolean entry: a whole cone against a cuboid, in either order. `intersect` is `cone_keep`'s.
 pub fn cone_box_csg(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
     let pick = |c: &TSolid, bx: &TSolid, cone_first: bool| -> Option<TSolid> {
@@ -385,7 +388,14 @@ pub fn cone_box_csg(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
             ("subtract", false) => Mode::CutBox,
             _ => return None,
         };
-        csg_why(base, apex, r, &bs, mode).ok()
+        match csg_why(base, apex, r, &bs, mode) {
+            Ok(w) => Some(w),
+            Err("more than one lump") => {
+                crate::ops_planar::set_reason(TWO_LUMPS_SENTENCE);
+                None
+            }
+            Err(_) => None,
+        }
     };
     pick(a, b, true).or_else(|| pick(b, a, false))
 }
@@ -617,5 +627,21 @@ mod tests {
         }
         eprintln!("public boolean join/cut: {built} built over {tried} moved pairs");
         assert!(built >= 2 * tried, "built {built} over {tried} pairs");
+    }
+}
+
+#[cfg(test)]
+mod two_lumps {
+    use super::*;
+
+    /// A slab through the cone's axis leaves two pieces: the boolean refuses, and leaves the sentence that says why.
+    #[test]
+    fn a_slab_through_the_axis_refuses_with_the_two_pieces_sentence() {
+        use crate::build::{box_solid, cone_solid};
+        let cone = cone_solid([0.0, 0.0, 10.0], 10.0, 20.0, [0.0, 0.0, 1.0]);
+        let bx = box_solid([40.0, 3.0, 60.0], [0.0, 0.0, 10.0], None);
+        crate::ops_planar::clear_reason();
+        assert!(crate::ops::boolean("subtract", &cone, &bx).is_none());
+        assert_eq!(crate::ops_planar::take_reason(), Some(TWO_LUMPS_SENTENCE));
     }
 }

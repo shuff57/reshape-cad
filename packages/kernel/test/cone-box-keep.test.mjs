@@ -257,3 +257,11 @@ test('a cone joined to, cut by, or cutting a box: exact against OpenCascade, mes
   assert.ok(builtCount >= 0.4 * total, `only ${builtCount} of ${total} built`);
   assert.ok(gapCount <= 0.1 * total, `${gapCount} real results refused: ${gaps.slice(0, 3).join('\n')}`);
 });
+
+// A cut that leaves two separate pieces is not built (one result cannot hold two lumps yet): it refuses, and the sentence says why.
+test('a slab cut through a cone, leaving two pieces, is refused with a sentence that says so', () => {
+  const code = `let v = cone(20, 20, { at: [0, 0, 0] })\nlet p = box(40, 3, 60, { at: [0, 0, 0] })\nv = cut(v, p)`;
+  const { refusals } = build(code);
+  const text = Object.values(refusals).join(' ');
+  assert.match(text, /two separate pieces/, text || 'it built');
+});
