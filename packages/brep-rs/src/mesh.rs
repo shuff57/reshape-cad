@@ -128,6 +128,13 @@ pub fn curve_points(c: &Curve, defl: f64) -> Vec<Vec3> {
                 })
                 .collect()
         }
+        Curve::ConeCyl { r, big_r, .. } => {
+            // Closed, on the bore cylinder (radius r) and on the cone: sampled evenly in its own angle, the first sample exactly the last
+            let by_tool = TAU / angle_step(*r, defl);
+            let by_wall = c.length() / (big_r * angle_step(*big_r, defl));
+            let nseg = segments_for_curve(c, by_tool, by_wall, defl);
+            (0..=nseg).map(|k| c.point_at(if k == nseg { 0.0 } else { k as f64 / nseg as f64 })).collect()
+        }
         Curve::SphCyl { r, big_r, .. } => {
             // The curve lies on the tool cylinder (radius r) and on the sphere (radius big_r), whose
             // great-circle sag over a stretch of this curve is bounded by the sphere's own angle step.

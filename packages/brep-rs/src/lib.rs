@@ -45,6 +45,7 @@ pub mod cone_box;
 pub mod cone_keep;
 pub mod cone_region;
 pub mod cone_csg;
+pub mod cone_bore;
 pub mod step;
 pub mod step_read;
 pub mod step_in;

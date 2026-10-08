@@ -2463,6 +2463,9 @@ fn plane_face_radial_reach(face: &Face<Curve3, Surface3>, origin: Vec3, axis: Ve
             Curve::SphCyl { center, big_r, r, e, .. } => {
                 far = far.max(radial(*center) + big_r + r + e);
             }
+            Curve::ConeCyl { base, r, e, big_r, .. } => {
+                far = far.max(radial(*base) + e + r + big_r);
+            }
             // An open arc: no farther than its farther end plus its own length.
             Curve::Hyperbola { .. } => {
                 far = far.max(radial(e.a.borrow().point).max(radial(e.b.borrow().point)) + e.curve.length());

@@ -78,6 +78,27 @@ pub enum Curve {
     /// `d cosh s`, and the height `h (1 - d cosh s / r)`, so the point lies on both. `p` and `q` are
     /// NOT unit vectors, and `s0 < s1` or `s0 > s1` both run (the curve is traversed from `s0`).
     Hyperbola { c: Vec3, p: Vec3, q: Vec3, s0: f64, s1: f64 },
+    /// The closed curve where a cylinder parallel to a cone's axis, off it, meets the cone
+    /// (docs/specs/SPEC-cone-axis-parallel-bores-loop.md). The cone stands with its base centre at `base`,
+    /// radius `big_r`, height `h`, apex along the unit `d`; the cylinder has radius `r` and its axis at distance `e`
+    /// from the cone's along the unit `n`, with `a = d x n`. At angle `phi` round the cylinder
+    ///
+    ///   p(phi) = base + (e + r cos phi) n + (r sin phi) a + h (1 - D / big_r) d,   D = sqrt(e^2 + r^2 + 2 e r cos phi)
+    ///
+    /// D is the point's distance from the cone's axis, so the point lies on both surfaces. It is a loop round the
+    /// axis when `e < r` (the bore holds the axis) and not when `e > r`; `e == r` runs through the apex and is not carried.
+    ConeCyl { base: Vec3, d: Vec3, n: Vec3, a: Vec3, h: f64, big_r: f64, r: f64, e: f64 },
+}
+
+/// 3D point of a [`Curve::ConeCyl`] at angle `phi`, and its derivative d/dphi.
+fn cone_cyl_eval(base: Vec3, d: Vec3, n: Vec3, a: Vec3, h: f64, big_r: f64, r: f64, e: f64, phi: f64) -> (Vec3, Vec3) {
+    let (s, c) = phi.sin_cos();
+    let dd = (e * e + r * r + 2.0 * e * r * c).max(0.0).sqrt();
+    let z = h * (1.0 - dd / big_r);
+    let p = add(base, add(add(scale(n, e + r * c), scale(a, r * s)), scale(d, z)));
+    let dz = if dd > 1e-300 { -(h / big_r) * (-e * r * s / dd) } else { 0.0 };
+    let dp = add(add(scale(n, -r * s), scale(a, r * c)), scale(d, dz));
+    (p, dp)
 }
 
 /// 3D point of a [`Curve::SphCyl`] at angle `phi`, and its derivative d/dphi.
@@ -208,6 +229,10 @@ impl Curve {
                     crate::math::len(sph_cyl_eval(*center, *d, *n, *a, *big_r, *r, *e, *sign, phi).1)
                 })
             }
+            Curve::ConeCyl { base, d, n, a, h, big_r, r, e } => {
+                let tau = 2.0 * std::f64::consts::PI;
+                integrate_composite(0.0, tau, 128, |phi| crate::math::len(cone_cyl_eval(*base, *d, *n, *a, *h, *big_r, *r, *e, phi).1))
+            }
         }
     }
 
@@ -241,6 +266,7 @@ impl Curve {
             Curve::SphCyl { center, d, n, a, big_r, r, e, sign } => {
                 sph_cyl_eval(*center, *d, *n, *a, *big_r, *r, *e, *sign, t * 2.0 * std::f64::consts::PI).0
             }
+            Curve::ConeCyl { base, d, n, a, h, big_r, r, e } => cone_cyl_eval(*base, *d, *n, *a, *h, *big_r, *r, *e, t * 2.0 * std::f64::consts::PI).0,
         }
     }
 
@@ -288,6 +314,10 @@ impl Curve {
                     sph_cyl_eval(*center, *d, *n, *a, *big_r, *r, *e, *sign, t * w).1,
                     w,
                 )
+            }
+            Curve::ConeCyl { base, d, n, a, h, big_r, r, e } => {
+                let w = 2.0 * std::f64::consts::PI;
+                scale(cone_cyl_eval(*base, *d, *n, *a, *h, *big_r, *r, *e, t * w).1, w)
             }
         }
     }
@@ -349,6 +379,18 @@ impl Curve {
                 for i in 0..3 {
                     acc[i] = integrate_composite(0.0, tau, 64, |phi| {
                         let (p, dp) = sph_cyl_eval(*center, *d, *n, *a, *big_r, *r, *e, *sign, phi);
+                        p[i] * crate::math::len(dp)
+                    });
+                }
+                scale(acc, 1.0 / len)
+            }
+            Curve::ConeCyl { base, d, n, a, h, big_r, r, e } => {
+                let tau = 2.0 * std::f64::consts::PI;
+                let len = self.length();
+                let mut acc = [0.0; 3];
+                for i in 0..3 {
+                    acc[i] = integrate_composite(0.0, tau, 128, |phi| {
+                        let (p, dp) = cone_cyl_eval(*base, *d, *n, *a, *h, *big_r, *r, *e, phi);
                         p[i] * crate::math::len(dp)
                     });
                 }
@@ -433,6 +475,9 @@ impl Curve {
             Curve::SphCyl { center, d, n, a, big_r, r, e, sign } => {
                 expand_periodic(&mut b, &|phi: f64| sph_cyl_eval(*center, *d, *n, *a, *big_r, *r, *e, *sign, phi).0);
             }
+            Curve::ConeCyl { base, d, n, a, h, big_r, r, e } => {
+                expand_periodic(&mut b, &|phi: f64| cone_cyl_eval(*base, *d, *n, *a, *h, *big_r, *r, *e, phi).0);
+            }
         }
         b
     }
@@ -487,6 +532,16 @@ impl Curve {
                 r: *r,
                 e: *e,
                 sign: *sign,
+            },
+            Curve::ConeCyl { base, d, n, a, h, big_r, r, e } => Curve::ConeCyl {
+                base: t.apply(*base),
+                d: normalize(t.dir(*d)),
+                n: normalize(t.dir(*n)),
+                a: normalize(t.dir(*a)),
+                h: *h,
+                big_r: *big_r,
+                r: *r,
+                e: *e,
             },
         }
     }

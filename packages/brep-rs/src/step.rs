@@ -525,7 +525,7 @@ fn wire_segs(wire: &[crate::topo::EdgeUse<Curve>]) -> Result<Vec<Seg>, String> {
             // No STEP primitive: a clamped cubic B-spline fitted to the exact curve and checked.
             Curve::CylCyl { .. } => fit_closed_curve(&e.curve, !u.forward)?,
             // No STEP primitive either (the meeting curve of a bore and a sphere): the same fitted spline.
-            Curve::SphCyl { .. } => fit_closed_curve(&e.curve, !u.forward)?,
+            Curve::SphCyl { .. } | Curve::ConeCyl { .. } => fit_closed_curve(&e.curve, !u.forward)?,
             // An open arc of a conic, which the closed-curve fit above cannot carry.
             Curve::Hyperbola { .. } => fit_curve(&e.curve, !u.forward, true)?,
             Curve::Circle {
