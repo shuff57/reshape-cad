@@ -43,7 +43,7 @@ Not in scope (stay refusals): STEP band+notch cone faces, round as wide as the w
 
 | Slice | Status | Commit | Measured |
 |-------|--------|--------|----------|
-| H1 | open | | |
+| H1 | DONE (defensive) | pending | no script reaches the unfollowable case (a turn is baked into the box as `rotate`, probe agreed with OCCT at 3312); refusal added; cargo 528, gates 78/78/78/17, suite 1536/0; no test exercises the new refusal |
 | H2 | open | | |
 | H3 | open | | |
 | H4 | open | | |

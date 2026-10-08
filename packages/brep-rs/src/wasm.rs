@@ -2573,12 +2573,13 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 let mut open_plane: Option<(Vec3, f64)> = None;
                 if let Some(o) = f.get("open") {
                     // the name is of the part as first built; follow the face through any move or turn since
-                    let named = resolve_face(&hist, o).map(|fc| {
+                    let named = resolve_face(&hist, o).and_then(|fc| {
                         let from = o.get("feature").and_then(|x| x.as_str()).unwrap_or("");
                         if from == target || from.is_empty() {
-                            return fc;
+                            return Some(fc);
                         }
-                        follow_face(&hist, from, &fc, target, 0).unwrap_or(fc)
+                        // a face that cannot be followed is refused: the stale plane may coincide with another face of the part as it is now
+                        follow_face(&hist, from, &fc, target, 0)
                     });
                     match named {
                         Some(face) => {
