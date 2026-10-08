@@ -5810,7 +5810,7 @@ pub(crate) fn mesh_is_closed_coarse(s: &TSolid) -> bool {
 fn boolean_legacy(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
  // The paths below build what they can (a cone cut by planes square to its axis writes to STEP); a cone kept by a box
  // that none of them builds is the last resort.
- boolean_legacy_paths(op, a, b).or_else(|| crate::cone_keep::cone_box_boolean(op, a, b)).or_else(|| crate::cone_csg::cone_box_csg(op, a, b))
+ boolean_legacy_paths(op, a, b).or_else(|| crate::cone_keep::cone_box_boolean(op, a, b)).or_else(|| crate::cone_csg::cone_box_csg(op, a, b)).or_else(|| crate::cone_bore::cone_cylinder_bore(op, a, b))
 }
 
 fn boolean_legacy_paths(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
@@ -9364,8 +9364,13 @@ mod cone_bore_pins {
 
     #[test]
     fn what_cannot_be_exact_stays_a_refusal() {
-        // An off-axis bore that reaches the cone wall meets it in a space curve.
-        assert!(run(10.0, 20.0, 1.0, [3.0, 0.0], -50.0, 80.0, [0.0; 3]).is_none());
+        // An off-axis bore that goes clear through and out of the cone wall meets it in a space curve, `Curve::ConeCyl`: it builds now
+        // (docs/specs/SPEC-cone-axis-parallel-bores-loop.md), against the independent polar integral of the cone's height over the bore.
+        let through = run(10.0, 20.0, 1.0, [3.0, 0.0], -50.0, 80.0, [0.0; 3]).expect("a through bore off the axis builds");
+        let want = PI * 100.0 * 20.0 / 3.0 - crate::cone_bore::removed_volume(10.0, 20.0, 1.0, 3.0);
+        assert!((build::solid_volume(&through) - want).abs() < 2e-6 * PI * 100.0 * 20.0 / 3.0);
+        // the same bore stopping short of the wall (a blind bore reaching the wall) is not built yet
+        assert!(run(10.0, 20.0, 1.0, [3.0, 0.0], -5.0, 14.0, [0.0; 3]).is_none());
         assert!(run(10.0, 20.0, 1.0, [8.5, 0.0], -5.0, 5.0, [0.0; 3]).is_none());
         // Ending above the crossing but short of the apex leaves the tip
         // floating free of the body: two lumps, which is not one solid.

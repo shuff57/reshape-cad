@@ -157,6 +157,35 @@ pub fn bore_through_why(base: Vec3, apex: Vec3, r: f64, on_axis: Vec3, rho: f64,
     Ok(world)
 }
 
+/// `cone` minus a cylinder parallel to its axis that goes clear through the base and out past the slanted face: a through bore.
+/// `None` for anything else (a tool that stops inside the cone, one that touches the base plane, one on the axis, a bore that reaches
+/// the rim or the tip), so every other case keeps the paths it had.
+pub fn cone_cylinder_bore(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
+    if op != "subtract" {
+        return None;
+    }
+    let crate::convex_pair::Body::Cone { base, apex, r } = crate::convex_pair::as_cone(a)? else { return None };
+    let (wall, p, q, _, _) = crate::ops::cylinder_parts(b)?;
+    let h = len(sub(apex, base));
+    let z = scale(sub(apex, base), 1.0 / h);
+    let axis = normalize(sub(q, p));
+    if dot(axis, z).abs() < 1.0 - 1e-9 {
+        return None;
+    }
+    let scale_len = r.max(h);
+    let (zp, zq) = (dot(sub(p, base), z), dot(sub(q, base), z));
+    let (lo, hi) = (zp.min(zq), zp.max(zq));
+    let rho = wall.radius;
+    let off = sub(sub(p, base), scale(z, zp));
+    let e = len(off);
+    // the highest point of the cone over the bore's footprint: the apex when the bore holds the axis
+    let top = if e <= rho { h } else { h * (1.0 - (e - rho) / r) };
+    if lo > -1e-7 * scale_len || hi < top + 1e-7 * scale_len {
+        return None;
+    }
+    bore_through_why(base, apex, r, p, rho, true).ok()
+}
+
 #[cfg(test)]
 mod tests {
     use crate::geom::Curve;

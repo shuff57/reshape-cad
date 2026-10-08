@@ -1014,11 +1014,13 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 hist.shapes.get(*n).is_some_and(ops::has_cut_cone) || hist.shapes.get(hist.head_of(n)).is_some_and(ops::has_cut_cone)
             });
             if let Some(n) = cut {
+                let bored = hist.shapes.get(n).or_else(|| hist.shapes.get(hist.head_of(n))).is_some_and(|s| {
+                    s.faces().iter().any(|f| matches!(&f.borrow().surface, Surface::Cylinder(c) if matches!(c.cross, Some(crate::geom::Cross::ConeTool { .. }))))
+                });
+                let how = if bored { "was bored through a cone" } else { "was cut out of a cone by a box" };
                 refusals.insert(
                     id.clone(),
-                    json!(format!(
-                        "{kind} {id}: {n} was cut out of a cone by a box, and brep-rs can only move or copy a part like that yet -- {id} is shown without it."
-                    )),
+                    json!(format!("{kind} {id}: {n} {how}, and brep-rs can only move or copy a part like that yet -- {id} is shown without it.")),
                 );
                 continue;
             }
