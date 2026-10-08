@@ -295,4 +295,62 @@ mod tests {
         assert!(wrong.is_empty(), "{} wrong, first {:?}", wrong.len(), wrong.iter().take(3).collect::<Vec<_>>());
         assert!(built * 2 >= tried, "only {built} of {tried} built");
     }
+
+    /// The mesh of a bored cone at two tolerances: closed, its volume within the faceting's own error of the exact one, and its extent
+    /// inside the exact box and no more than three tolerances short of it, in any placement.
+    #[test]
+    fn bored_cones_mesh_closed_exact_in_volume_and_extent() {
+        let mut rng = Rng(51);
+        let (mut checked, mut bad) = (0usize, Vec::<String>::new());
+        for _ in 0..120 {
+            let (big_r, h) = (rng.range(4.0, 25.0), rng.range(4.0, 30.0));
+            let rho = rng.range(0.03, 0.5) * big_r;
+            let e = rng.range(0.05, 0.9) * big_r;
+            let z = normalize([rng.range(-1.0, 1.0), rng.range(-1.0, 1.0), rng.range(-1.0, 1.0)]);
+            let t0 = normalize(cross(z, [0.3, 0.5, 0.8]));
+            let dir = normalize(add(scale(t0, rng.range(-1.0, 1.0)), scale(cross(z, t0), rng.range(-1.0, 1.0))));
+            let base = [rng.range(-9.0, 9.0), rng.range(-9.0, 9.0), rng.range(-9.0, 9.0)];
+            let apex = add(base, scale(z, h));
+            let Ok(solid) = super::bore_through_why(base, apex, big_r, add(base, scale(dir, e)), rho, false) else { continue };
+            let exact = crate::build::solid_volume(&solid);
+            let bb = crate::build::solid_aabb(&solid);
+            for k in [0.004, 0.0015] {
+                let defl = k * big_r.max(h);
+                let Some(mesh) = crate::mesh::mesh_solid(&solid, defl) else {
+                    bad.push(format!("no mesh at {defl}: R {big_r} h {h} rho {rho} e {e}"));
+                    continue;
+                };
+                checked += 1;
+                if !crate::mesh::mesh_is_closed(&mesh) {
+                    bad.push(format!("open mesh at {defl}: R {big_r} h {h} rho {rho} e {e}"));
+                    continue;
+                }
+                let (mut mv, mut area) = (0.0, 0.0);
+                for t in mesh.indices.chunks(3) {
+                    let p = |i: u32| mesh.positions[i as usize];
+                    mv += dot(p(t[0]), cross(p(t[1]), p(t[2]))) / 6.0;
+                    area += 0.5 * len(cross(sub(p(t[1]), p(t[0])), sub(p(t[2]), p(t[0]))));
+                }
+                if (mv - exact).abs() > defl * area + 1e-6 * exact {
+                    bad.push(format!("mesh volume {mv} vs exact {exact} at {defl}: R {big_r} h {h} rho {rho} e {e}"));
+                }
+                let (mut mlo, mut mhi) = ([f64::INFINITY; 3], [f64::NEG_INFINITY; 3]);
+                for p in &mesh.positions {
+                    for a in 0..3 {
+                        mlo[a] = mlo[a].min(p[a]);
+                        mhi[a] = mhi[a].max(p[a]);
+                    }
+                }
+                for a in 0..3 {
+                    if mlo[a] < bb.lo[a] - 1e-7 || mhi[a] > bb.hi[a] + 1e-7 || mlo[a] - bb.lo[a] > 3.0 * defl + 1e-7 || bb.hi[a] - mhi[a] > 3.0 * defl + 1e-7 {
+                        bad.push(format!("extent {bb:?} vs mesh {mlo:?} {mhi:?} at {defl}: R {big_r} h {h} rho {rho} e {e}"));
+                        break;
+                    }
+                }
+            }
+        }
+        eprintln!("bored cone meshes checked: {checked}");
+        assert!(bad.is_empty(), "{} bad, first {:?}", bad.len(), bad.iter().take(3).collect::<Vec<_>>());
+        assert!(checked >= 100, "only {checked} meshes checked");
+    }
 }
