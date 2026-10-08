@@ -27,9 +27,9 @@ The sphere-bore track is finished and at diminishing returns (see section 3). Th
 | class | scripts |
 |---|---|
 | brep-rs wrong solid | **0** |
-| REFUSED (honest sentence) | 7,977 (53 %) |
-| SCRIPT-ERROR (the language, not the kernel) | 1,654 (11 %) |
-| AGREE with OpenCascade / closed form | 5,253 |
+| REFUSED (honest sentence) | 7,967 (53 %) |
+| SCRIPT-ERROR (the language, not the kernel) | 997 by `cls` in the latest run (the 1,654 above counted differently; re-count before relying on it) |
+| AGREE with OpenCascade / closed form | 5,350 (+497 agree on analytic checks only), census of 2026-10-07 after the hardening loop H4 |
 | OpenCascade-side: refused 90, wrong 13, hung 10, suspect grid 3 | 116 |
 
 Refusals by capability (`census/buckets.py`, one bucket per script by its first sentence):
@@ -181,7 +181,7 @@ effort on W7's language choices (11% of scripts) is worth more, if the owner agr
 **W6. Hollow beyond box and cylinder (275 scripts).** Sphere (34) is a concentric cavity (`subtract_enclosed` exists), a ring is a
 concentric torus, and a prism or wedge is a planar inward offset. A cone is an offset cone.
 
-**W6 status (2026-10-07, partly done).** Built: a box with rounded or chamfered edges along one axis (`rounded_prism_cavity`: the same prism moved in, each round smaller by the wall, tested against a closed form and OpenCascade); any convex part with flat faces, wedge, prism or turned box, with the open face named by its own plane (`convex_planar_cavity`: 60 of 60 against OpenCascade); a cone (the turned-part profile now takes a sloping side that ends in a tip on the axis: 40 of 40 against the closed form, OpenCascade returns a cone unhollowed). The rounded-box hollow refuses where a round as wide as the wall sits on the open face's own rim. Not built: sphere (a concentric cavity that `subtract` already builds, but `hollow` does not route to it), ring, and a part with an off-axis or blind hole. Tests: `packages/kernel/test/hollow-flat-parts.test.mjs`.
+**W6 status (2026-10-07, partly done).** Built: a box with rounded or chamfered edges along one axis (`rounded_prism_cavity`: the same prism moved in, each round smaller by the wall, tested against a closed form and OpenCascade); any convex part with flat faces, wedge, prism or turned box, with the open face named by its own plane (`convex_planar_cavity`: 60 of 60 against OpenCascade); a cone (the turned-part profile now takes a sloping side that ends in a tip on the axis: 40 of 40 against the closed form, OpenCascade returns a cone unhollowed). The rounded-box hollow refuses where a round as wide as the wall sits on the open face's own rim. A whole sphere now hollows to a sealed void (hardening loop H4: closed form to 1e-9, OpenCascade agrees on 21 of 24 where it hollows, mesh and STEP checked). Not built: ring, an open sphere, and a part with an off-axis or blind hole. Tests: `packages/kernel/test/hollow-flat-parts.test.mjs`.
 
 **W7. Script-level errors (1,654 scripts, 11 %), an owner decision, not kernel work.** `turn()` refuses a shape that is not directly
 a primitive (539: after a hole, fillet, combine or mirror), "Repeat Around spins copies about the middle of the world" (224), and
@@ -277,7 +277,7 @@ standalone cargo test first). Then W5 or W4 depending on whether the owner would
   --release --target web --out-dir pkg`. The repo's `node` is a Bun shim: use `bun test`, `bun scripts/...`; `node --test` fails.
   Two coaxial sphere-cone tests (and about five others) time out at Bun's default 5 s on `main` too: not a regression.
 - **Gates (lead-owned, never edit):** `node scripts/brep-parity-gate.mjs` (78/0), `brep-mesh-gate.mjs` (78/0), `brep-step-gate.mjs`
-  (77/0/1), `npm run gate:occt` (17/0). Cargo is 499. Run the sweep alone (the machine idle): OpenCascade hangs under load.
+  (77/0/1), `npm run gate:occt` (17/0). Cargo is 531. Run the sweep alone (the machine idle): OpenCascade hangs under load.
 - **Method that worked:** spec first (with the closed form or the oracle that does NOT share the kernel's algebra), then a pre-check
   prototype, then the builder with a closed-form safety net (`|got - want| <= 1e-9 V`), then tests that include a mutation check
   (break the thing the test claims to pin and watch it fail), then the sweep, then gates, then a spec "result" section. Two real

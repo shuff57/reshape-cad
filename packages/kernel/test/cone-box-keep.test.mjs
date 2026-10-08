@@ -265,3 +265,16 @@ test('a slab cut through a cone, leaving two pieces, is refused with a sentence 
   const text = Object.values(refusals).join(' ');
   assert.match(text, /two separate pieces/, text || 'it built');
 });
+
+// The result of a cone cut by a box has a cone face defined only by its wires. Anything built on it (another boolean, a hole, a round) must
+// refuse in a sentence rather than work from that face as if it were a whole cone.
+test('a cut cone is not built on: a further boolean on it refuses with the sentence that names it', () => {
+  const base = `let v = cone(20, 20, { at: [0, 0, 0] })\nlet p = box(12, 40, 40, { at: [3, 0, 0] })\nv = keep(v, p)`;
+  const first = build(base);
+  assert.deepEqual(first.refusals, {}, 'the keep itself builds');
+  for (const more of [`let q = box(3, 3, 3, { at: [0, 0, 0] })\nv = cut(v, q)`, `let q = box(3, 3, 3, { at: [0, 0, 12] })\nv = join(v, q)`, `move(v, [1, 0, 0])\nlet q = box(3, 3, 3, { at: [0, 0, 0] })\nv = cut(v, q)`]) {
+    const { refusals } = build(`${base}\n${more}`);
+    const text = Object.values(refusals).join(' ');
+    assert.ok(text.length > 0, `built on a cut cone :: ${more}`);
+  }
+});

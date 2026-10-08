@@ -476,4 +476,27 @@ mod tests {
         // a rectangle corner on the circle
         assert!(combine(&Region::rect(3.0, 9.0, 4.0, 8.0), Some(&disk), Op::Meet, 10.0).is_err());
     }
+
+    /// A tangent or a corner contact is refused, never combined: the rectangle's edge just touching the disk, its corner on the circle, and
+    /// the same a hair inside and outside (a sliver under the tolerance counts as the contact, a clear gap does not).
+    #[test]
+    fn tangents_and_corner_contacts_are_refused() {
+        let disk = Region::disk((0.0, 0.0), 5.0, 0.37);
+        // the edge x = 5 touches the circle at one point
+        let tangent = Region::rect(5.0, 9.0, -2.0, 2.0);
+        for op in [Op::Meet, Op::Minus] {
+            assert!(combine(&tangent, Some(&disk), op, 10.0).is_err(), "an edge tangent to the circle must refuse ({op:?})");
+        }
+        // a corner exactly on the circle: (3, 4) is at distance 5
+        let corner = Region::rect(3.0, 9.0, 4.0, 9.0);
+        for op in [Op::Meet, Op::Minus] {
+            assert!(combine(&corner, Some(&disk), op, 10.0).is_err(), "a corner on the circle must refuse ({op:?})");
+        }
+        // clearly apart: nothing to meet, the rectangle is whole
+        let apart = Region::rect(6.0, 9.0, -2.0, 2.0);
+        assert!(combine(&apart, Some(&disk), Op::Meet, 10.0).unwrap().is_empty());
+        let whole = combine(&apart, Some(&disk), Op::Minus, 10.0).unwrap();
+        assert_eq!(whole.len(), 1);
+        assert!((face_area(&whole[0]) - 12.0).abs() < 1e-12);
+    }
 }
