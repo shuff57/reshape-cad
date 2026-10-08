@@ -28,7 +28,7 @@ The sphere-bore track is finished and at diminishing returns (see section 3). Th
 |---|---|
 | brep-rs wrong solid | **0** |
 | REFUSED (honest sentence) | 7,967 (53 %) |
-| SCRIPT-ERROR (the language, not the kernel) | 997 by `cls` in the latest run (the 1,654 above counted differently; re-count before relying on it) |
+| SCRIPT-ERROR (the language, not the kernel) | 997 (was 1,654 before W7 changed the language, see W7) |
 | AGREE with OpenCascade / closed form | 5,350 (+497 agree on analytic checks only), census of 2026-10-07 after the hardening loop H4 |
 | OpenCascade-side: refused 90, wrong 13, hung 10, suspect grid 3 | 116 |
 
