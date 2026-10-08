@@ -54,7 +54,7 @@ Bores across the axis (x or y), several bores meeting each other inside the cone
 
 | Slice | Status | Commit | Measured |
 |-------|--------|--------|----------|
-| B0 | open | | |
+| B0 | DONE | B0HASH | `docs/specs/prototypes/census/cone-bore-precheck.py SWEEPDIR` over the 525 cone-hole refusals of the census after the mesh fix. The earlier "304 parallel" figure was a loose regex; measured: **across the axis 206**, parallel to the axis 232 + 39 with a turn/other op before the hole + 39 on the axis (a different refusal) + 9. Of the parallel off-axis ones: **exact through 57 (33 alone, 24 followed by more ops), exact blind 17 (8 alone, 9 followed), counterbore/countersink candidates 81 (32 alone)**; refused by geometry: blind floor pokes through the wall 63, bore leaves the base footprint 25, tip touched 0. 74 exact through/blind clears the 40 threshold. Only the "alone" ones are certain census gains (41 plain + 32 B6); the rest also need the later ops to build. `at` is relative to the part's centre, holes drill from the apex end down, `deep` is measured from the apex. New observation: a blind floor that pokes through the wall (63) has a plane-square-to-the-axis floor, so its cut with the cone is a circle arc, not a quartic: a candidate slice B5b after B5 |
 | B1 | open | | |
 | B2 | open | | |
 | B3 | open | | |
