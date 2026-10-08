@@ -870,6 +870,13 @@ pub enum Cross {
     /// `f(u) = sqrt(big_r^2 - e^2 - r^2 - 2 e r cos u)` (`None`). `e` is the offset of the bore axis
     /// from the sphere's centre.
     SphTool { big_r: f64, e: f64, lo: Option<f64>, hi: Option<f64>, lo_sign: f64, hi_sign: f64 },
+    /// The BORE's own wall inside a CONE (docs/specs/SPEC-cone-axis-parallel-bores-loop.md): the surface is the tool
+    /// cylinder (origin on the bore axis in the cone's base plane, `e1` = the offset direction `n` so u = 0 points away
+    /// from the cone's axis, `e2` chosen so the face looks into the void), and at angle u it runs along the bore axis from
+    /// `lo` to `hi`, each a constant (`Some(z)`: the base plane or a flat floor) or the meeting curve
+    /// `h (1 - D(u) / big_r)`, `D(u) = sqrt(e^2 + r^2 + 2 e r cos u)` (`None`). `e` is the offset of the bore axis from
+    /// the cone's, `h` the cone's height.
+    ConeTool { big_r: f64, h: f64, e: f64, lo: Option<f64>, hi: Option<f64> },
 }
 
 impl Cross {
@@ -884,6 +891,11 @@ impl Cross {
                 let f = (big_r * big_r - e * e - rad * rad - 2.0 * e * rad * u.cos()).max(0.0).sqrt();
                 Some((lo.unwrap_or(lo_sign * f), hi.unwrap_or(hi_sign * f)))
             }
+            Cross::ConeTool { big_r, h, e, lo, hi } => {
+                let d = (e * e + rad * rad + 2.0 * e * rad * u.cos()).max(0.0).sqrt();
+                let f = h * (1.0 - d / big_r);
+                Some((lo.unwrap_or(f), hi.unwrap_or(f)))
+            }
             _ => None,
         }
     }
@@ -893,6 +905,7 @@ impl Cross {
         match self {
             Cross::Tool { big_r, .. } => Cross::panels(rad / big_r),
             Cross::SphTool { big_r, e, .. } => Cross::panels((e + rad) / big_r),
+            Cross::ConeTool { big_r, e, .. } => Cross::panels((e + rad) / big_r),
             _ => 48,
         }
     }
@@ -931,7 +944,7 @@ impl Cylinder {
         let o = self.origin;
         let rho = |u: f64| add(scale(self.e1, u.cos()), scale(self.e2, u.sin()));
         match self.cross.as_ref()? {
-            Cross::Tool { .. } | Cross::SphTool { .. } => {
+            Cross::Tool { .. } | Cross::SphTool { .. } | Cross::ConeTool { .. } => {
                 let cross = self.cross.as_ref()?;
                 let panels = cross.tool_panels(rad);
                 let ext = |u: f64| cross.tool_bounds(rad, u).unwrap_or((0.0, 0.0));
@@ -1572,7 +1585,7 @@ impl Surface {
         // A bore's own wall is bounded by the meeting curve, not a rectangle:
         // measure it directly (Cross::Tool).
         if let Surface::Cylinder(c) = self {
-            if let Some(Cross::Tool { .. } | Cross::Patch { .. } | Cross::SphTool { .. }) = c.cross {
+            if let Some(Cross::Tool { .. } | Cross::Patch { .. } | Cross::SphTool { .. } | Cross::ConeTool { .. }) = c.cross {
                 if let Some((area, _, sx)) = c.cross_region() {
                     return (area, [sx[0] / area, sx[1] / area, sx[2] / area]);
                 }
@@ -1662,7 +1675,7 @@ impl Surface {
             return 0.0;
         }
         if let Surface::Cylinder(c) = self {
-            if let Some(Cross::Tool { .. } | Cross::Patch { .. } | Cross::SphTool { .. }) = c.cross {
+            if let Some(Cross::Tool { .. } | Cross::Patch { .. } | Cross::SphTool { .. } | Cross::ConeTool { .. }) = c.cross {
                 if let Some((_, vt, _)) = c.cross_region() {
                     return vt;
                 }
@@ -1745,7 +1758,7 @@ impl Surface {
                     }
                 }
             }
-            Surface::Cylinder(c) if matches!(c.cross, Some(Cross::Tool { .. } | Cross::SphTool { .. })) => {
+            Surface::Cylinder(c) if matches!(c.cross, Some(Cross::Tool { .. } | Cross::SphTool { .. } | Cross::ConeTool { .. })) => {
                 // The bore wall: every world coordinate is linear in the axial
                 // parameter, so its extremes lie on the two boundary curves
                 // (the meeting curve and/or the flat floor's circle).

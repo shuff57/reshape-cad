@@ -9509,6 +9509,7 @@ mod cross_bore_pins {
                                 assert!(rho_part(p) <= 10.0 + 1e-9, "bore vertex outside the part");
                             }
                             Some(crate::geom::Cross::SphTool { .. }) => unreachable!("no sphere bore in the transverse-bore fixtures"),
+                            Some(crate::geom::Cross::ConeTool { .. }) => unreachable!("no cone bore in the transverse-bore fixtures"),
                             None | Some(crate::geom::Cross::Patch { .. }) => {}
                         }
                         checked += 1;

@@ -1213,7 +1213,7 @@ fn mesh_cross_face(
     let start = out.indices.len();
     match cy.cross.as_ref()? {
         crate::geom::Cross::Wall { .. } => mesh_cross_wall(&fb, cy, edges_cache, out, defl)?,
-        crate::geom::Cross::Tool { .. } | crate::geom::Cross::SphTool { .. } => mesh_cross_tool(&fb, cy, edges_cache, out, defl)?,
+        crate::geom::Cross::Tool { .. } | crate::geom::Cross::SphTool { .. } | crate::geom::Cross::ConeTool { .. } => mesh_cross_tool(&fb, cy, edges_cache, out, defl)?,
         crate::geom::Cross::Patch { plus, .. } => mesh_cross_patch(&fb, cy, *plus, edges_cache, out, defl)?,
     }
     let count = out.indices.len() - start;
@@ -1516,6 +1516,13 @@ fn mesh_cross_tool(
                     let poly = use_polyline(u, edges_cache, defl);
                     if !loops.iter().any(|(s, _)| *s == *sign) {
                         loops.push((*sign, poly));
+                    }
+                }
+                // a cone's bore wall has one meeting curve, the upper end
+                Curve::ConeCyl { .. } => {
+                    let poly = use_polyline(u, edges_cache, defl);
+                    if !loops.iter().any(|(s, _)| *s == 1.0) {
+                        loops.push((1.0, poly));
                     }
                 }
                 Curve::Arc { .. } | Curve::Circle { .. } => {
@@ -2535,53 +2542,7 @@ fn cone_lattice_polylines(solid: &TSolid, defl: f64, cache: &mut HashMap<usize, 
         if !c.bounded {
             continue;
         }
-        let mut n = ((TAU / angle_step(c.base_radius, defl)).ceil() as usize).clamp(16, 20000);
-        // the stations are an angle lattice, so a cut edge that bends harder than the rim (a hyperbola on a tall thin cone, where one
-        // step of angle is a long step along the curve) would sag past the tolerance between two stations: refine the lattice until
-        // the worst chord of any curved edge is within it
-        {
-            let step = TAU / n as f64;
-            let mut worst = 0.0f64;
-            for w in &fb.boundary {
-                for u in &w.borrow().edges {
-                    let e = u.edge.borrow();
-                    if matches!(e.curve, Curve::Segment { .. }) {
-                        continue;
-                    }
-                    let m = 256usize;
-                    let pts: Vec<Vec3> = (0..=m).map(|i| e.curve.point_at(i as f64 / m as f64)).collect();
-                    let ang = |p: Vec3| {
-                        let d = sub(p, c.base);
-                        crate::math::dot(d, c.e2).atan2(crate::math::dot(d, c.e1))
-                    };
-                    for i in 1..m {
-                        let (a, b) = (sub(pts[i], pts[i - 1]), sub(pts[i + 1], pts[i]));
-                        let (la, lb) = (len(a), len(b));
-                        if la < 1e-12 || lb < 1e-12 {
-                            continue;
-                        }
-                        let turn = (crate::math::dot(a, b) / (la * lb)).clamp(-1.0, 1.0).acos();
-                        let kappa = turn / (0.5 * (la + lb));
-                        let mut du = ang(pts[i + 1]) - ang(pts[i - 1]);
-                        while du > std::f64::consts::PI {
-                            du -= TAU;
-                        }
-                        while du < -std::f64::consts::PI {
-                            du += TAU;
-                        }
-                        if du.abs() < 1e-9 {
-                            continue;
-                        }
-                        // the length along the curve that one lattice step covers here
-                        let long = (la + lb) * step / du.abs();
-                        worst = worst.max(long * long * kappa / 8.0);
-                    }
-                }
-            }
-            if worst > defl {
-                n = ((n as f64 * (worst / defl).sqrt()).ceil() as usize).clamp(n, 20000);
-            }
-        }
+        let n = ((TAU / angle_step(c.base_radius, defl)).ceil() as usize).clamp(16, 20000);
         let delta = TAU / n as f64;
         // every corner of this face is a station too, so each rim chain has a sample at every other chain's corners
         let apex_p = crate::math::add(c.base, crate::math::scale(crate::math::normalize(c.axis), c.slant * c.half_angle.cos()));
@@ -2611,69 +2572,115 @@ fn cone_lattice_polylines(solid: &TSolid, defl: f64, cache: &mut HashMap<usize, 
             }
             d
         };
+        // The samples of a curved edge: its ends and every crossing of a station angle (the lattice and the corners). The edge need not be
+        // monotone in the angle (a closed hole that does not go round the axis rises and falls), so every crossing counts.
+        let found_for = |curve: &Curve, corners: &[f64]| -> Option<Vec<(f64, Vec3)>> {
+            let grid = 512usize;
+            let mut us = vec![u_at(curve.point_at(0.0))];
+            for i in 1..=grid {
+                let a = u_at(curve.point_at(i as f64 / grid as f64));
+                let prev = us[i - 1];
+                us.push(prev + wrap(a - prev));
+            }
+            let (umin, umax) = (us.iter().cloned().fold(f64::INFINITY, f64::min), us.iter().cloned().fold(f64::NEG_INFINITY, f64::max));
+            if umax - umin < 1e-9 {
+                return None;
+            }
+            let mut found: Vec<(f64, Vec3)> = Vec::new();
+            for cell in 0..grid {
+                let (ua, ub) = (us[cell], us[cell + 1]);
+                let (lo, hi) = (ua.min(ub), ua.max(ub));
+                if hi - lo < 1e-12 {
+                    continue;
+                }
+                let mut targets: Vec<f64> = Vec::new();
+                let mut k = (lo / delta).ceil() as i64;
+                while (k as f64) * delta <= hi {
+                    targets.push(k as f64 * delta);
+                    k += 1;
+                }
+                for ca in corners {
+                    let mut m = ((lo - ca) / TAU).floor() as i64;
+                    loop {
+                        let t = ca + m as f64 * TAU;
+                        if t > hi {
+                            break;
+                        }
+                        if t >= lo && !targets.iter().any(|x| (x - t).abs() < 1e-9 * delta) {
+                            targets.push(t);
+                        }
+                        m += 1;
+                    }
+                }
+                for target in targets {
+                    let (mut ta, mut tb) = (cell as f64 / grid as f64, (cell + 1) as f64 / grid as f64);
+                    let rises = ub > ua;
+                    for _ in 0..80 {
+                        let tm = 0.5 * (ta + tb);
+                        let um = ua + wrap(u_at(curve.point_at(tm)) - ua);
+                        if (um < target) == rises {
+                            ta = tm;
+                        } else {
+                            tb = tm;
+                        }
+                    }
+                    let t = 0.5 * (ta + tb);
+                    if t > 1e-12 && t < 1.0 - 1e-12 && !found.iter().any(|(q, _)| (q - t).abs() < 1e-12) {
+                        found.push((t, curve.point_at(t)));
+                    }
+                }
+            }
+            found.sort_by(|x, y| x.0.partial_cmp(&y.0).unwrap());
+            Some(found)
+        };
+        // A cut edge can bend harder than the rim (a hyperbola on a tall thin cone, or the meeting curve of a bore, where one step of angle
+        // is a long stretch of curve): where the samples above leave a chord that sags past the tolerance, add stations at the angles of
+        // points between them, as a corner is, so every ring has a sample there. Where the lattice is fine enough nothing is added.
+        {
+            let mut extra: Vec<f64> = Vec::new();
+            for w in &fb.boundary {
+                for u in &w.borrow().edges {
+                    let e = u.edge.borrow();
+                    if matches!(e.curve, Curve::Segment { .. }) {
+                        continue;
+                    }
+                    let Some(found) = found_for(&e.curve, &corner_angles) else { continue };
+                    let mut ts = vec![0.0];
+                    ts.extend(found.iter().map(|(t, _)| *t));
+                    ts.push(1.0);
+                    for pair in ts.windows(2) {
+                        let (t0, t1) = (pair[0], pair[1]);
+                        let (a, b) = (e.curve.point_at(t0), e.curve.point_at(t1));
+                        let ab = sub(b, a);
+                        let l2 = crate::math::dot(ab, ab).max(1e-300);
+                        let mut worst = 0.0f64;
+                        for j in 1..8 {
+                            let q = e.curve.point_at(t0 + (t1 - t0) * j as f64 / 8.0);
+                            let t = (crate::math::dot(sub(q, a), ab) / l2).clamp(0.0, 1.0);
+                            worst = worst.max(len(sub(q, crate::math::add(a, crate::math::scale(ab, t)))));
+                        }
+                        if worst > defl {
+                            // sag goes as the square of the span: split it into enough pieces
+                            let pieces = ((worst / defl).sqrt().ceil() as usize).clamp(2, 64);
+                            for j in 1..pieces {
+                                let q = e.curve.point_at(t0 + (t1 - t0) * j as f64 / pieces as f64);
+                                extra.push(u_at(q));
+                            }
+                        }
+                    }
+                }
+            }
+            corner_angles.extend(extra);
+        }
         for w in &fb.boundary {
             for u in &w.borrow().edges {
                 let e = u.edge.borrow();
                 if matches!(e.curve, Curve::Segment { .. }) {
                     continue;
                 }
-                // the angle along the edge, continuous, on a grid fine enough that no step is half a turn
-                let grid = 128usize;
-                let mut us = vec![u_at(e.curve.point_at(0.0))];
-                for i in 1..=grid {
-                    let a = u_at(e.curve.point_at(i as f64 / grid as f64));
-                    let prev = us[i - 1];
-                    us.push(prev + wrap(a - prev));
-                }
-                let (u0, u1) = (us[0], us[grid]);
-                if (u1 - u0).abs() < 1e-9 {
-                    continue;
-                }
-                let up = u1 > u0;
-                let (lo, hi) = (u0.min(u1), u0.max(u1));
+                let Some(found) = found_for(&e.curve, &corner_angles) else { continue };
                 let mut pts = vec![e.curve.point_at(0.0)];
-                let mut k = (lo / delta).floor() as i64 + 1;
-                let mut marks: Vec<f64> = Vec::new();
-                while (k as f64) * delta < hi - 1e-9 * delta {
-                    if (k as f64) * delta > lo + 1e-9 * delta {
-                        marks.push(k as f64 * delta);
-                    }
-                    k += 1;
-                }
-                for ca in &corner_angles {
-                    let mut m = ((lo - ca) / TAU).floor() as i64;
-                    loop {
-                        let a = ca + m as f64 * TAU;
-                        if a >= hi - 1e-9 * delta {
-                            break;
-                        }
-                        if a > lo + 1e-9 * delta && !marks.iter().any(|x| (x - a).abs() < 1e-9 * delta) {
-                            marks.push(a);
-                        }
-                        m += 1;
-                    }
-                }
-                marks.sort_by(|a, b| a.partial_cmp(b).unwrap());
-                if !up {
-                    marks.reverse();
-                }
-                for target in marks {
-                    // the grid cell holding the target, then bisection on the curve itself
-                    let cell = (0..grid).find(|&i| (us[i] - target) * (us[i + 1] - target) <= 0.0).unwrap_or(0);
-                    let (mut ta, mut tb) = (cell as f64 / grid as f64, (cell + 1) as f64 / grid as f64);
-                    let ua = us[cell];
-                    for _ in 0..80 {
-                        let tm = 0.5 * (ta + tb);
-                        let um = ua + wrap(u_at(e.curve.point_at(tm)) - ua);
-                        if (um - target) * (us[cell + 1] - target) > 0.0 {
-                            // same side as the far end of the cell
-                            tb = tm;
-                        } else {
-                            ta = tm;
-                        }
-                    }
-                    pts.push(e.curve.point_at(0.5 * (ta + tb)));
-                }
+                pts.extend(found.into_iter().map(|(_, p)| p));
                 pts.push(e.curve.point_at(1.0));
                 let key = std::rc::Rc::as_ptr(&u.edge) as *const () as usize;
                 cache.insert(key, pts);
