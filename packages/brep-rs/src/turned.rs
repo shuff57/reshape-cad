@@ -323,6 +323,16 @@ fn read_with(src: &TSolid, tips: bool) -> Option<Read> {
         }
     }
     let origin = origin_cell.get()?;
+    // a round on a part that comes to a tip has not been checked against this profile: refused, as `read` does
+    if tips
+        && segs.iter().any(|s| matches!(s.k, Kind::Arc { .. }))
+        && segs.iter().any(|s| match s.k {
+            Kind::Line { a, b } => (a[0] < EPS) != (b[0] < EPS) && (a[1] - b[1]).abs() > EPS,
+            _ => false,
+        })
+    {
+        return None;
+    }
     let n = segs.len();
     // Chain the segments end to end.
     let tol = 1e-6;
