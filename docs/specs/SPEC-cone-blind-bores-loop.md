@@ -57,7 +57,7 @@ Counterbores and countersinks (a following spec), bores on the axis, bores acros
 
 | Slice | Status | Commit | Measured |
 |-------|--------|--------|----------|
-| D0 | open | | |
+| D0 | DONE | D0HASH | The 5 missing passes were MY mistake, not the hook: for B7a I wrote `packages/kernel/test/cone-bore.test.mjs` with `cat >` without checking that the file already existed, and overwrote the earlier file (5 tests: through bore down the axis, two blind bores from the tip end, the refusal of an across-axis or off-axis-blind bore, the countersink on a box). The A/B run proves the hook is innocent: with and without it the suite registers the identical 1538 test names (junit multiset diff empty). Fixed: the old file restored from `5a7d813` (5 pass, still true: a blind off-axis bore reaching the wall refuses), my tests moved to `cone-bore-axis-parallel.test.mjs`. Rule from now on: `ls`/`git ls-files` a test path before writing it |
 | D1 | open | | |
 | D2 | open | | |
 | D3 | open | | |
