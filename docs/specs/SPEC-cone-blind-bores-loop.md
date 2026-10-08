@@ -1,0 +1,67 @@
+# SPEC: cone bores that stop inside the part (loop spec, 2026-10-08)
+
+Continues `SPEC-cone-axis-parallel-bores-loop.md` (B0 to B7a, done: a through-bore parallel to a cone's axis, off it, builds exactly, `Curve::ConeCyl`, `Cross::ConeTool`, `cone_bore.rs`, the mesher for a hole that does not go round the axis, `cone_cylinder_bore` in the boolean chain).
+
+Goal: a bore parallel to a cone's axis, off it, that STOPS at a flat floor (a blind bore) builds exactly. Holes drill from the apex end downward; `deep` is measured from the apex; `at` is measured from the part's centre. Measured on the census of 2026-10-08 (`docs/specs/prototypes/census/cone-bore-precheck.py`), cone-hole refusals that are parallel to the axis and off it:
+
+| group | scripts | note |
+|---|---|---|
+| blind, floor wholly inside the cone | 17 (8 the last operation, 9 followed by more) | floor at height z_f with z_f <= h(1 - (e + rho)/R): the bore wall meets the slanted face in the closed curve, the floor is a whole disk |
+| blind, floor pokes through the wall | 63 | z_f above that: part of the floor circle lies outside the cone; the floor is a lens (the bore disk against the circle of radius R(1 - z_f/h)), and the slanted face's hole is a curve arc plus a circle arc about the axis. Not a quartic: the floor plane is square to the axis |
+| blind, on the axis | 39 | a different refusal, out of scope |
+| counterbore / countersink | 81 candidates | a later slice, on top of this one |
+
+Notation: cone base centre the origin, axis +z, base radius R, height h; bore radius rho at offset e from the axis; floor at height z_f above the base. The wall height at angle t round the bore is z(t) = h (1 - D(t)/R), D(t) = sqrt(e^2 + rho^2 + 2 e rho cos t); its lowest point is z_min = h (1 - (e + rho)/R).
+
+Closed form for the volume the bore removes, independent of the kernel's surface integrals: the integral over the bore's disk of max(0, h (1 - |p|/R) - z_f). In polar coordinates about the bore's centre the integrand has a kink where |p| = R_f = R (1 - z_f/h); for each angle theta that crossing is at s = -e cos(theta) +- sqrt(R_f^2 - e^2 sin^2(theta)), so split the radial integral there and use Gauss-Legendre on the smooth pieces. Never the kernel's own quadrature.
+
+Standing method (unchanged): measure first, build only what is exact and provably correct, refuse in a sentence otherwise, commit with explicit paths, leave the two untracked PNGs alone. The machine is shared with another project: check `uptime` before any timing or census, run a census only with the load average under 4, and rerun any single failing slow test alone before judging it.
+
+## Slices
+
+| # | Slice | Done when |
+|---|-------|-----------|
+| D0 | Explain the 5 missing passes of the kernel suite (1536 pass + 2 skip against an expected 1541). Run `bun test --reporter=junit --reporter-outfile=...` on the current tree and on a worktree at commit `5a7d813` (the sliver fix, 1539 pass), diff the test names | the difference is named (a data-driven loop that registers fewer tests, a renamed test, a removed file) or a real missing test is found and fixed; written into the status table |
+| D1 | Blind bore, floor wholly inside the cone: builder `bore_blind_why(.., z_f)` in `cone_bore.rs`: the cone face with the closed curve as a hole, the wall from the floor circle up to the curve (`ConeTool { lo: Some(z_f), hi: None }`, already supported), the floor disk facing up, the base kept whole | volume against the closed form to 2e-6 of the cone; closed shell, one lump, outward winding, origin-free volume, mesh closed; refuses a floor at or below the base (use the through-bore), a floor above z_min (D3), a bore on the axis, a bore touching the tip or the rim |
+| D2 | Hook it in: `cone_cylinder_bore` accepts a tool whose bottom is strictly above the base plane and strictly below z_min and whose top is past the cone's highest point over the bore; the older paths still go first | the 17 exact scripts build; script test: random blind bores against OpenCascade (1e-6), the integral (2e-6), mesh watertight at two tolerances, STEP valid or refused in a sentence and never wrong; a further hole or boolean on the result refuses; census WRONG 0, AGREE not below its previous value, cone-hole refusals fall by about 17 (+- 3) |
+| D3 | A circle-arc-and-curve-arc loop: give `Curve::ConeCyl` an angle range (`phi0`, `phi1`, a full loop being (0, 2 pi)) so a part of the meeting curve can be an edge, with every place that matches on it (point, tangent, length, centroid, box, transform, mesh sampling, reach, STEP fit as an open arc) | the tests of B1 hold for ranges: on both surfaces to 1e-12, tangent by finite difference, arcs that join end to end make the closed loop, a rigid move; the full loop is unchanged |
+| D4 | Blind bore, floor pokes through the wall: the floor is a lens (the bore's circle arc where it is inside the cone, the circle arc of radius R_f about the cone axis where it is not), the slanted face's hole is the curve arc where z(t) > z_f plus that same R_f arc, the wall runs from the floor arc to the curve arc between two seam segments at the points where z(t) = z_f; `Cross::ConeTool` bounds clamp to `hi >= lo` so the integrals give a zero-height wall where the curve is below the floor | volume against the closed form (split at the crossing) to 2e-6; closed shell, one lump, outward winding; mesh: the wall mesher takes the curve-arc and floor-arc chains, the floor lens and the cone face with a hole made of two arcs; refuses a tangency (the floor just touching the curve, `z_f` within 1e-6 of `z_min` or of the wall's top) |
+| D5 | Hook D4 in and test from scripts, same oracles as D2 | the 63 scripts build to the extent they are exact (the pre-check counts those whose bore leaves the footprint or whose floor misses the cone entirely as refused); census WRONG 0, AGREE up, cone-hole refusals down by about 63 minus those |
+| D6 | STEP for D1 to D5 | the closed-loop case already writes (15 of 19 in B7a); read back in OpenCascade as the same valid solid, relative volume delta under 1e-6, on a 500-script sweep; where the seam cannot be placed, a refusal sentence, never a wrong solid |
+| D7 | Docs: the plan's W-table, the refusal sentence for the cone hole (say what builds now: a bore parallel to the axis, through or stopping at a floor), `reshape-docs.ts` page if it mentions cone holes, this spec's status | the sentence a student sees names what works; numbers match the last census |
+
+## One iteration
+
+1. Pick the first slice not DONE or REJECTED in the status table. Stop if none.
+2. Write the failing test or probe first and show it fails (D0 and the pre-check scripts are probes).
+3. Build the smallest change. Refuse in a sentence rather than guess.
+4. Verify in order, stopping at the first red: `cargo test --release` (packages/brep-rs); `wasm-pack build --release --target web --out-dir pkg`; the new and touched JS tests; the four gates (`scripts/brep-parity-gate.mjs`, `brep-mesh-gate.mjs`, `brep-step-gate.mjs`, `npm run gate:occt`, expect 78/78/78/17); the full kernel suite `bun test --timeout 900000 test/*.test.mjs` (keep the whole output: pass, skip and fail counts and the file count, not only a grep).
+5. Census gate after D2, D5, D6 and D7: `docs/specs/prototypes/census/run-sweep.sh OUTDIR`, with the load average under 4 and nothing else of mine running. WRONG must be 0 and AGREE must not drop below its last value (5,388 at the start of this spec). OCCT-HANG above its quiet baseline of 6 is noise under shared load, not a finding; say so when it happens.
+6. Commit with explicit paths, message states the measured result, trailer `Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>`. Fill the status table with the hash and the numbers.
+7. Report one line: slice, result, next slice. Do not rebuild the wasm while a census is running.
+
+## Stop rules
+
+- A gate or suite goes red and the cause is not found in one pass: revert the slice, mark it BLOCKED with the evidence, move to the next independent slice. A single slow test failing only under load is rerun alone first.
+- Census WRONG above 0: stop the whole loop and report.
+- Two BLOCKED or REJECTED slices in a row: stop and ask.
+- A slice that needs more than one iteration of effort (D3, D4, D6): stop and ask before starting it, with what the first look found.
+- D1 finds fewer than 10 exact scripts by geometry: stop and ask.
+- Never edit lead-owned gate scripts.
+
+## Out of scope
+
+Counterbores and countersinks (a following spec), bores on the axis, bores across the axis, several bores meeting each other inside the cone, a bore that reaches the tip or the rim, a bored cone that is also cut by a box (`has_cut_cone` parts stay refused), and a further operation on a bored cone (it refuses today and keeps refusing).
+
+## Status
+
+| Slice | Status | Commit | Measured |
+|-------|--------|--------|----------|
+| D0 | open | | |
+| D1 | open | | |
+| D2 | open | | |
+| D3 | open | | |
+| D4 | open | | |
+| D5 | open | | |
+| D6 | open | | |
+| D7 | open | | |
