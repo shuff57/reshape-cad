@@ -244,3 +244,30 @@ test('a moved or turned flat-faced part hollows with a face left open: builds, a
   assert.ok(built >= 0.9 * tried, `only ${built} of ${tried} built`);
   assert.ok(checked >= 0.5 * built, `OpenCascade checked only ${checked} of ${built}`);
 });
+
+// A whole sphere hollows to a sealed void (a concentric ball smaller by the wall): the closed form, OpenCascade, a watertight mesh over
+// both shells, and STEP read back. An open face cannot be named on a sphere, and a wall as thick as the radius leaves nothing.
+test('a sphere hollows to a sealed void: closed form, OpenCascade, watertight mesh, STEP reads back', () => {
+  const rand = rng(Number(process.env.HOLLOWSPHERE_SEED ?? 5));
+  const bad = [];
+  let built = 0, refused = 0, occtChecked = 0;
+  for (let i = 0; i < 24; i++) {
+    const R = r2(4 + rand() * 30);
+    const wall = i < 20 ? r2(0.3 + rand() * 0.9 * R) : R * (1 + i - 20) * 0.3; // the last few at and past the radius
+    const code = `let v = sphere(${r2(2 * R)}, { at: [0, 0, 0] })\nhollow(v, { wall: ${wall} })`;
+    const { refusals, m, doc, id, r } = build(code);
+    const solid = wall < R - 1e-9;
+    if (Object.keys(refusals).length) { refused++; if (solid && wall < 0.95 * R) bad.push(`refused :: ${code.replace(/\n/g, ' ; ')}`); continue; }
+    built++;
+    if (!solid) { bad.push(`built where nothing is left :: ${code.replace(/\n/g, ' ; ')}`); continue; }
+    const want = (4 / 3) * Math.PI * (R ** 3 - (R - wall) ** 3);
+    if (Math.abs(m.volume - want) > 1e-9 * want) bad.push(`volume ${m.volume} closed form ${want} :: ${code.replace(/\n/g, ' ; ')}`);
+    const o = occtVolume(r.doc.features, id);
+    if (o !== null && o < (4 / 3) * Math.PI * R ** 3 * 0.999) { occtChecked++; if (Math.abs(m.volume - o) > 1e-6 * o) bad.push(`volume ${m.volume} occt ${o} :: ${code.replace(/\n/g, ' ; ')}`); }
+    for (const d of [0.05, 0.5]) { const e = openEdges(doc, id, d); if (e) bad.push(`open mesh (${e} edges at ${d}) :: ${code.replace(/\n/g, ' ; ')}`); }
+    if (i % 3 === 0) { const s = stepRoundTrip(code); if (!s.refused && !s.buildRefused && !okRead(s)) bad.push(`STEP read back wrong ${JSON.stringify({ dv: s.dv, db: s.db, valid: s.got?.valid })} :: ${code.replace(/\n/g, ' ; ')}`); }
+  }
+  console.log(`sphere hollow: built ${built}, refused ${refused}, against OpenCascade ${occtChecked}`);
+  assert.deepEqual(bad, [], bad.slice(0, 3).join('\n'));
+  assert.ok(built >= 15, `only ${built} built`);
+});

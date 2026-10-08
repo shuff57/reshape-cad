@@ -2689,6 +2689,11 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                                 holes_hollow = true;
                                 c
                             }
+                            Err(HolesHollow::NotThis) if f.get("open").is_none() && sphere_cavity(&src, thickness).is_some() => {
+                                // a whole ball: a concentric ball smaller by the wall, a sealed void (the part less the cavity is checked below)
+                                holes_hollow = true;
+                                sphere_cavity(&src, thickness).unwrap()
+                            }
                             Err(HolesHollow::NotThis) if convex_planar_cavity(&src, thickness, open_side, None).is_some() && rounded_prism_cavity(&src, thickness, open_side).is_none() => {
                                 // any convex part with flat faces: its planes moved in by the wall
                                 holes_hollow = true;
@@ -3636,6 +3641,29 @@ fn resolve_name(hist: &History, name: &Value) -> Option<Resolved> {
     }
 }
 
+/// The cavity of a whole ball hollowed to `wall`: a concentric ball `wall` smaller, or None for anything but a primitive whole sphere
+/// (one face, untrimmed, full ranges) or a wall that would reach the centre.
+fn sphere_cavity(src: &TSolid, wall: f64) -> Option<TSolid> {
+    if src.shells.len() != 1 {
+        return None;
+    }
+    let faces = src.faces();
+    if faces.len() != 1 {
+        return None;
+    }
+    let fb = faces[0].borrow();
+    match &fb.surface {
+        Surface::Sphere(sp) if sp.trim == crate::geom::SphTrim::None && sp.radius - wall > 1e-9 * sp.radius && wall > 0.0 => {
+            let tau = std::f64::consts::TAU;
+            if (sp.u_range[1] - sp.u_range[0] - tau).abs() > 1e-9 || (sp.v_range[1] - sp.v_range[0] - std::f64::consts::PI).abs() > 1e-9 {
+                return None;
+            }
+            Some(build::sphere_solid(sp.center, sp.radius - wall, sp.axis))
+        }
+        _ => None,
+    }
+}
+
 /// The face `face` of feature `feature`, followed through the operations (a move, a turn, a copy) down to `target`: the face of `target`
 /// that it became, or `None` when it does not survive. A name is made from the part as it was first built, so a part that was moved or
 /// turned since needs its named face followed to where it is now.
@@ -4002,7 +4030,7 @@ mod tests {
         assert!((vol - want).abs() <= 1e-6 * want, "closed cylinder hollow volume {vol} vs {want}");
         assert_eq!(solid.faces().len(), 6, "outer wall + 2 annuli + void wall + 2 void caps");
 
-        // A sphere still refuses (no hollow path for it yet).
+        // A whole sphere hollows to a sealed void: 4/3 pi (r^3 - (r-t)^3), two shells.
         let doc = json!({
             "features": [
                 { "id": "s1", "kind": "sphere", "radius": 10.0 },
@@ -4011,11 +4039,23 @@ mod tests {
         });
         let (hist, refusals) = build_doc(&doc);
         let text = refusals.get("sh1").and_then(|v| v.as_str()).unwrap_or_default();
-        assert!(
-            text.contains("can only hollow"),
-            "refusal text: {text}"
-        );
-        assert!(hist.shapes.get("sh1").is_none(), "no wrong solid");
+        assert!(text.is_empty(), "sphere hollow must build, refused: {text}");
+        let solid = hist.shapes.get("sh1").expect("sphere hollow builds");
+        let want = 4.0 / 3.0 * std::f64::consts::PI * (1000.0 - 512.0);
+        let vol = build::solid_volume(solid);
+        assert!((vol - want).abs() <= 1e-9 * want, "sphere hollow volume {vol} vs {want}");
+        assert_eq!(solid.shells.len(), 2, "outer ball and the void");
+        // a wall that reaches the centre still refuses
+        let doc = json!({
+            "features": [
+                { "id": "s1", "kind": "sphere", "radius": 10.0 },
+                { "id": "sh1", "kind": "shell", "target": "s1", "thickness": 10.0 }
+            ]
+        });
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.contains_key("sh1"), "a wall as thick as the radius refuses");
+        // the refusal keeps the unhollowed ball, not a hollow
+        assert!((build::solid_volume(hist.shapes.get("sh1").unwrap()) - 4.0 / 3.0 * std::f64::consts::PI * 1000.0).abs() < 1e-6, "no wrong solid");
     }
 
     fn between_edge(name_of: &str) -> Value {

@@ -45,8 +45,8 @@ Not in scope (stay refusals): STEP band+notch cone faces, round as wide as the w
 |-------|--------|--------|----------|
 | H1 | DONE (defensive) | bcedc9d | no script reaches the unfollowable case (a turn is baked into the box as `rotate`, probe agreed with OCCT at 3312); refusal added; cargo 528, gates 78/78/78/17, suite 1536/0; no test exercises the new refusal |
 | H2 | DONE | c85a201 | cone_csg volume check scaled to the smaller body (2e-6*min + 1e-12*max); new test with boxes 20-60x the cone passes; cargo 529, gates 78/78/78/17, suite 1536/0. Census after H1: WRONG 0, AGREE 5344 of 15000. Observation: a thin cone sliver's mesh extent can fall ~0.026 short of its exact box (volume and closure fine); excluded from the new test, not fixed |
-| H3 | DONE (defensive) | H3HASH | turned reader in tips mode refuses a profile with both an arc and a cone tip. Not reachable from a script (round/bevel of a cone refuse, revolve of a sloped profile refuses, cylinder+cone union refuses); no test exercises it. cargo 529, gates 78/78/78/17, suite 1536/0 |
-| H4 | open | | |
+| H3 | DONE (defensive) | 7ad17d6 | turned reader in tips mode refuses a profile with both an arc and a cone tip. Not reachable from a script (round/bevel of a cone refuse, revolve of a sloped profile refuses, cylinder+cone union refuses); no test exercises it. cargo 529, gates 78/78/78/17, suite 1536/0 |
+| H4 | DONE | H4HASH | a whole sphere hollows to a sealed void (concentric ball); 24 random sphere/wall combinations: 23 built, 1 refused (wall = radius); volume matches 4/3 pi (r^3-(r-t)^3) to 1e-9, OpenCascade agrees on 21 where it hollows, mesh watertight, STEP reads back. cargo 529, gates 78/78/78/17, suite 1537/0 |
 | H5 | open | | |
 | H6 | open | | |
 | H7 | open | | |
