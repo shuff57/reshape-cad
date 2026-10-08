@@ -2528,7 +2528,53 @@ fn cone_lattice_polylines(solid: &TSolid, defl: f64, cache: &mut HashMap<usize, 
         if !c.bounded {
             continue;
         }
-        let n = ((TAU / angle_step(c.base_radius, defl)).ceil() as usize).clamp(16, 20000);
+        let mut n = ((TAU / angle_step(c.base_radius, defl)).ceil() as usize).clamp(16, 20000);
+        // the stations are an angle lattice, so a cut edge that bends harder than the rim (a hyperbola on a tall thin cone, where one
+        // step of angle is a long step along the curve) would sag past the tolerance between two stations: refine the lattice until
+        // the worst chord of any curved edge is within it
+        {
+            let step = TAU / n as f64;
+            let mut worst = 0.0f64;
+            for w in &fb.boundary {
+                for u in &w.borrow().edges {
+                    let e = u.edge.borrow();
+                    if matches!(e.curve, Curve::Segment { .. }) {
+                        continue;
+                    }
+                    let m = 256usize;
+                    let pts: Vec<Vec3> = (0..=m).map(|i| e.curve.point_at(i as f64 / m as f64)).collect();
+                    let ang = |p: Vec3| {
+                        let d = sub(p, c.base);
+                        crate::math::dot(d, c.e2).atan2(crate::math::dot(d, c.e1))
+                    };
+                    for i in 1..m {
+                        let (a, b) = (sub(pts[i], pts[i - 1]), sub(pts[i + 1], pts[i]));
+                        let (la, lb) = (len(a), len(b));
+                        if la < 1e-12 || lb < 1e-12 {
+                            continue;
+                        }
+                        let turn = (crate::math::dot(a, b) / (la * lb)).clamp(-1.0, 1.0).acos();
+                        let kappa = turn / (0.5 * (la + lb));
+                        let mut du = ang(pts[i + 1]) - ang(pts[i - 1]);
+                        while du > std::f64::consts::PI {
+                            du -= TAU;
+                        }
+                        while du < -std::f64::consts::PI {
+                            du += TAU;
+                        }
+                        if du.abs() < 1e-9 {
+                            continue;
+                        }
+                        // the length along the curve that one lattice step covers here
+                        let long = (la + lb) * step / du.abs();
+                        worst = worst.max(long * long * kappa / 8.0);
+                    }
+                }
+            }
+            if worst > defl {
+                n = ((n as f64 * (worst / defl).sqrt()).ceil() as usize).clamp(n, 20000);
+            }
+        }
         let delta = TAU / n as f64;
         // every corner of this face is a station too, so each rim chain has a sample at every other chain's corners
         let apex_p = crate::math::add(c.base, crate::math::scale(crate::math::normalize(c.axis), c.slant * c.half_angle.cos()));

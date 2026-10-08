@@ -539,8 +539,7 @@ mod tests {
                 tried += 1;
                 match check(r, h, lo, hi, 0.0, mode) {
                     Ok(_) => built += 1,
-                    // a thin sliver of the cone can sit a little inside its exact box in the mesh (the faceting's own extent, not the solid): measured, not counted
-                    Err(e) if (e.starts_with("WRONG") && !e.starts_with("WRONG box")) || e.contains("independent integral") => bad.push(format!("{mode:?} {e}: r {r} h {h} lo {lo:?} hi {hi:?}")),
+                    Err(e) if e.starts_with("WRONG") || e.contains("independent integral") => bad.push(format!("{mode:?} {e}: r {r} h {h} lo {lo:?} hi {hi:?}")),
                     Err(_) => {}
                 }
             }
@@ -645,3 +644,4 @@ mod two_lumps {
         assert_eq!(crate::ops_planar::take_reason(), Some(TWO_LUMPS_SENTENCE));
     }
 }
+
