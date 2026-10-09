@@ -1688,7 +1688,7 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     refusals.insert(
                         id.clone(),
                         json!(format!(
-                            "hole {id}: a cone can be drilled down its own axis (z), or beside the axis where the bore stays clear of the sloping wall and ends before the tip; this bore meets the wall in a curve brep-rs cannot carry exactly, or would leave the tip floating loose -- {id} is shown without it."
+                            "hole {id}: a cone can be drilled down its own axis (z), or parallel to it beside the axis, through the base or stopping at a flat floor, as long as the bore stays inside the base circle and clear of the tip; this bore is across the axis, reaches the base rim, or would leave the tip floating loose -- {id} is shown without it."
                         )),
                     );
                 } else if let Some(why) = ops_planar::take_reason() {
