@@ -85,7 +85,7 @@ fn build_local(big_r: f64, h: f64, rho: f64, e: f64, floor: Option<f64>) -> Resu
     // the bore's lower circle: in the base plane for a through bore, at the floor for a blind one
     let v_bot = topo::vertex([e + rho, 0.0, z0]);
     let bot = topo::edge(v_bot.clone(), v_bot.clone(), true, Curve::Arc { center: [e, 0.0, z0], radius: rho, normal: d, x_axis: n, sweep: TAU });
-    let meet = Curve::ConeCyl { base: [0.0; 3], d, n, a, h, big_r, r: rho, e };
+    let meet = Curve::ConeCyl { base: [0.0; 3], d, n, a, h, big_r, r: rho, e, phi0: 0.0, phi1: TAU };
     let top_p = meet.point_at(0.0);
     let v_top = topo::vertex(top_p);
     let top = topo::edge(v_top.clone(), v_top.clone(), true, meet);
@@ -237,7 +237,7 @@ mod tests {
     }
 
     fn curve(base: Vec3, d: Vec3, n: Vec3, h: f64, big_r: f64, r: f64, e: f64) -> Curve {
-        Curve::ConeCyl { base, d, n, a: cross(d, n), h, big_r, r, e }
+        Curve::ConeCyl { base, d, n, a: cross(d, n), h, big_r, r, e, phi0: 0.0, phi1: TAU }
     }
 
     /// Distance of `p` from the cone's axis, and its height along the axis, relative to the cone's base centre.
@@ -457,5 +457,113 @@ mod tests {
         eprintln!("cone blind bores: built {built} of {tried}; refused: {why:#?}");
         assert!(wrong.is_empty(), "{} wrong, first {:?}", wrong.len(), wrong.iter().take(3).collect::<Vec<_>>());
         assert!(built * 3 >= tried, "only {built} of {tried} built");
+    }
+
+    /// An arc of the meeting curve (`phi0`..`phi1`): on both surfaces to 1e-12, the tangent is the derivative, arcs that join end to end
+    /// make the whole loop (the lengths add, the boxes meet in the loop's), a reversed arc runs the other way, and a rigid move carries it.
+    #[test]
+    fn arcs_of_the_meeting_curve_join_into_the_loop() {
+        let mut rng = Rng(5);
+        for _ in 0..120 {
+            let (big_r, h) = (rng.range(3.0, 30.0), rng.range(3.0, 40.0));
+            let r = rng.range(0.05, 0.4) * big_r;
+            let e = rng.range(0.05, 0.95) * (big_r - r);
+            if (e - r).abs() < 1e-3 * big_r {
+                continue;
+            }
+            let d = normalize([rng.range(-1.0, 1.0), rng.range(-1.0, 1.0), rng.range(-1.0, 1.0)]);
+            let t0 = normalize(cross(d, [0.3, 0.5, 0.8]));
+            let n = normalize(add(scale(t0, rng.range(-1.0, 1.0)), scale(cross(d, t0), rng.range(0.1, 1.0))));
+            let n = normalize(sub(n, scale(d, dot(n, d))));
+            let base = [rng.range(-9.0, 9.0), rng.range(-9.0, 9.0), rng.range(-9.0, 9.0)];
+            let a = cross(d, n);
+            let mk = |p0: f64, p1: f64| Curve::ConeCyl { base, d, n, a, h, big_r, r, e, phi0: p0, phi1: p1 };
+            let cut = rng.range(0.3, 5.9);
+            let (c1, c2) = (mk(0.0, cut), mk(cut, TAU));
+            let whole = mk(0.0, TAU);
+            // on both surfaces
+            for c in [&c1, &c2] {
+                for k in 0..=32 {
+                    let p = c.point_at(k as f64 / 32.0);
+                    let (rad, z) = cone_coords(p, base, d);
+                    assert!((rad - big_r * (1.0 - z / h)).abs() < 1e-12 * big_r.max(1.0));
+                    let rel = sub(p, base);
+                    let radial = sub(rel, scale(d, dot(rel, d)));
+                    assert!((len(sub(radial, scale(n, e))) - r).abs() < 1e-12 * big_r.max(1.0));
+                }
+            }
+            // they join end to end, and add up
+            assert!(dist(c1.point_at(1.0), c2.point_at(0.0)) < 1e-12);
+            assert!(dist(c2.point_at(1.0), c1.point_at(0.0)) < 1e-12);
+            assert!((c1.length() + c2.length() - whole.length()).abs() < 1e-7 * whole.length(), "{} + {} vs {}", c1.length(), c2.length(), whole.length());
+            // the tangent is the derivative
+            for c in [&c1, &c2] {
+                for k in 0..10 {
+                    let t = (k as f64 + 0.41) / 10.0;
+                    let fd = scale(sub(c.point_at(t + 1e-6), c.point_at(t - 1e-6)), 1.0 / 2e-6);
+                    assert!(dist(fd, c.derivative_at(t)) < 1e-5 * len(c.derivative_at(t)).max(1.0));
+                }
+            }
+            // the boxes: each arc inside the loop's, and together they reach all of it
+            let (bw, b1, b2) = (whole.aabb(), c1.aabb(), c2.aabb());
+            for i in 0..3 {
+                let slack = 1e-7 * big_r;
+                assert!(b1.lo[i] >= bw.lo[i] - slack && b1.hi[i] <= bw.hi[i] + slack && b2.lo[i] >= bw.lo[i] - slack && b2.hi[i] <= bw.hi[i] + slack, "box {i}: {b1:?} {b2:?} vs {bw:?}");
+                assert!((b1.lo[i].min(b2.lo[i]) - bw.lo[i]).abs() < 1e-7 * big_r && (b1.hi[i].max(b2.hi[i]) - bw.hi[i]).abs() < 1e-7 * big_r);
+            }
+            // reversed: the same points the other way, the same length, the opposite tangent
+            let rev = mk(cut, 0.0);
+            assert!(dist(rev.point_at(0.25), c1.point_at(0.75)) < 1e-12);
+            assert!((rev.length() - c1.length()).abs() < 1e-9 * c1.length());
+            assert!(dist(rev.derivative_at(0.3), scale(c1.derivative_at(0.7), -1.0)) < 1e-9 * len(c1.derivative_at(0.7)).max(1.0));
+            // a rigid move
+            let t = Transform::translation([1.0, -2.0, 3.0]).then(&Transform::rotation(normalize([1.0, 2.0, 3.0]), 0.7));
+            let moved = c1.transform(&t);
+            assert!(dist(moved.point_at(0.6), t.apply(c1.point_at(0.6))) < 1e-12);
+        }
+    }
+}
+
+#[cfg(test)]
+mod box_tests {
+    use super::*;
+    use crate::math::*;
+
+    /// The box of the whole meeting curve holds every point of it and touches the extremes: against 200,000 dense samples. (An earlier
+    /// golden-section box missed a sharp peak by up to 1.6e-5.)
+    #[test]
+    fn the_curves_box_is_tight_against_dense_sampling() {
+        let mut seed = 5u64;
+        let mut rnd = || {
+            seed = seed.wrapping_mul(6364136223846793005).wrapping_add(1442695040888963407);
+            ((seed >> 11) as f64) / (1u64 << 53) as f64
+        };
+        let mut worst = 0.0f64;
+        for _ in 0..300 {
+            let big_r = 3.0 + 27.0 * rnd();
+            let h = 3.0 + 37.0 * rnd();
+            let r = (0.05 + 0.35 * rnd()) * big_r;
+            let e = (0.05 + 0.9 * rnd()) * (big_r - r);
+            if (e - r).abs() < 1e-3 * big_r {
+                continue;
+            }
+            let d = normalize([rnd() - 0.5, rnd() - 0.5, rnd() - 0.5]);
+            let t0 = normalize(cross(d, [0.3, 0.5, 0.8]));
+            let n = normalize(sub(t0, scale(d, dot(t0, d))));
+            let c = Curve::ConeCyl { base: [0.0; 3], d, n, a: cross(d, n), h, big_r, r, e, phi0: 0.0, phi1: std::f64::consts::TAU };
+            let bb = c.aabb();
+            for i in 0..3 {
+                let (mut lo, mut hi) = (f64::INFINITY, f64::NEG_INFINITY);
+                for k in 0..200000 {
+                    let p = c.point_at(k as f64 / 200000.0);
+                    lo = lo.min(p[i]);
+                    hi = hi.max(p[i]);
+                }
+                // the box holds every sample, and reaches within a hair of the extremes
+                assert!(bb.lo[i] <= lo + 1e-12 * big_r && bb.hi[i] >= hi - 1e-12 * big_r, "box misses a sample");
+                worst = worst.max(((lo - bb.lo[i]).abs()).max((bb.hi[i] - hi).abs()));
+            }
+        }
+        assert!(worst < 1e-6, "the box is loose by {worst}");
     }
 }

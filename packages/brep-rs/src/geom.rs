@@ -87,7 +87,10 @@ pub enum Curve {
     ///
     /// D is the point's distance from the cone's axis, so the point lies on both surfaces. It is a loop round the
     /// axis when `e < r` (the bore holds the axis) and not when `e > r`; `e == r` runs through the apex and is not carried.
-    ConeCyl { base: Vec3, d: Vec3, n: Vec3, a: Vec3, h: f64, big_r: f64, r: f64, e: f64 },
+    ///
+    /// `phi0`..`phi1` is the stretch of the angle the curve covers: `0` to `2 pi` is the whole loop, a smaller stretch an arc of it (a blind bore
+    /// whose floor cuts the loop). The curve runs from `phi0` to `phi1` as its fraction goes 0 to 1; either order runs.
+    ConeCyl { base: Vec3, d: Vec3, n: Vec3, a: Vec3, h: f64, big_r: f64, r: f64, e: f64, phi0: f64, phi1: f64 },
 }
 
 /// 3D point of a [`Curve::ConeCyl`] at angle `phi`, and its derivative d/dphi.
@@ -177,33 +180,41 @@ pub fn integrate_composite<F: Fn(f64) -> f64>(a: f64, b: f64, panels: usize, f: 
 /// `phi` in [0, 2pi): sample densely, then refine each extremum by golden-section search so the box
 /// is tight to ~1e-12 (it only ever has to not exceed the true box; no consumer needs it larger).
 fn expand_periodic(b: &mut Aabb, eval: &dyn Fn(f64) -> Vec3) {
-    let tau = 2.0 * std::f64::consts::PI;
-    let steps = 720usize;
+    expand_over(b, eval, 0.0, 2.0 * std::f64::consts::PI);
+}
+
+/// Grow `b` by the extreme points of `eval` over the angle range `[a0, a1]`: the two ends and each coordinate's maximum and minimum
+/// (sampled, then golden-section on the best sample's neighbourhood, kept inside the range).
+fn expand_over(b: &mut Aabb, eval: &dyn Fn(f64) -> Vec3, a0: f64, a1: f64) {
+    let span = a1 - a0;
+    let steps = ((720.0 * span / (2.0 * std::f64::consts::PI)).ceil() as usize).max(16);
+    b.expand(eval(a0));
+    b.expand(eval(a1));
+    // Every coordinate's extremes are where its derivative changes sign: scan the central difference for sign changes and bisect each.
+    // (Taking only the best sample's neighbourhood misses a sharp peak that falls between two samples.)
+    let eps = span * 1e-7;
+    let g = |phi: f64, i: usize| eval((phi + eps).min(a1))[i] - eval((phi - eps).max(a0))[i];
     for i in 0..3 {
-        for want_max in [true, false] {
-            let sgn = if want_max { 1.0 } else { -1.0 };
-            let mut best = 0usize;
-            let mut bv = f64::NEG_INFINITY;
-            for k in 0..steps {
-                let v = sgn * eval(tau * k as f64 / steps as f64)[i];
-                if v > bv {
-                    bv = v;
-                    best = k;
+        let mut prev_phi = a0;
+        let mut prev = g(a0, i);
+        for k in 1..=steps {
+            let phi = a0 + span * k as f64 / steps as f64;
+            let cur = g(phi, i);
+            if (prev < 0.0) != (cur < 0.0) {
+                let (mut lo, mut hi) = (prev_phi, phi);
+                let lo_neg = prev < 0.0;
+                for _ in 0..70 {
+                    let mid = 0.5 * (lo + hi);
+                    if (g(mid, i) < 0.0) == lo_neg {
+                        lo = mid;
+                    } else {
+                        hi = mid;
+                    }
                 }
+                b.expand(eval(0.5 * (lo + hi)));
             }
-            let h = tau / steps as f64;
-            let (mut lo, mut hi) = (tau * best as f64 / steps as f64 - h, tau * best as f64 / steps as f64 + h);
-            let gr = 0.618033988749895;
-            for _ in 0..80 {
-                let m1 = hi - gr * (hi - lo);
-                let m2 = lo + gr * (hi - lo);
-                if sgn * eval(m1)[i] > sgn * eval(m2)[i] {
-                    hi = m2;
-                } else {
-                    lo = m1;
-                }
-            }
-            b.expand(eval(0.5 * (lo + hi)));
+            prev_phi = phi;
+            prev = cur;
         }
     }
 }
@@ -229,9 +240,9 @@ impl Curve {
                     crate::math::len(sph_cyl_eval(*center, *d, *n, *a, *big_r, *r, *e, *sign, phi).1)
                 })
             }
-            Curve::ConeCyl { base, d, n, a, h, big_r, r, e } => {
-                let tau = 2.0 * std::f64::consts::PI;
-                integrate_composite(0.0, tau, 128, |phi| crate::math::len(cone_cyl_eval(*base, *d, *n, *a, *h, *big_r, *r, *e, phi).1))
+            Curve::ConeCyl { base, d, n, a, h, big_r, r, e, phi0, phi1 } => {
+                let panels = (512.0 * (phi1 - phi0).abs() / (2.0 * std::f64::consts::PI)).ceil().max(16.0) as usize;
+                integrate_composite(*phi0, *phi1, panels, |phi| crate::math::len(cone_cyl_eval(*base, *d, *n, *a, *h, *big_r, *r, *e, phi).1)).abs()
             }
         }
     }
@@ -266,7 +277,7 @@ impl Curve {
             Curve::SphCyl { center, d, n, a, big_r, r, e, sign } => {
                 sph_cyl_eval(*center, *d, *n, *a, *big_r, *r, *e, *sign, t * 2.0 * std::f64::consts::PI).0
             }
-            Curve::ConeCyl { base, d, n, a, h, big_r, r, e } => cone_cyl_eval(*base, *d, *n, *a, *h, *big_r, *r, *e, t * 2.0 * std::f64::consts::PI).0,
+            Curve::ConeCyl { base, d, n, a, h, big_r, r, e, phi0, phi1 } => cone_cyl_eval(*base, *d, *n, *a, *h, *big_r, *r, *e, phi0 + t * (phi1 - phi0)).0,
         }
     }
 
@@ -315,9 +326,9 @@ impl Curve {
                     w,
                 )
             }
-            Curve::ConeCyl { base, d, n, a, h, big_r, r, e } => {
-                let w = 2.0 * std::f64::consts::PI;
-                scale(cone_cyl_eval(*base, *d, *n, *a, *h, *big_r, *r, *e, t * w).1, w)
+            Curve::ConeCyl { base, d, n, a, h, big_r, r, e, phi0, phi1 } => {
+                let w = phi1 - phi0;
+                scale(cone_cyl_eval(*base, *d, *n, *a, *h, *big_r, *r, *e, phi0 + t * w).1, w)
             }
         }
     }
@@ -384,12 +395,13 @@ impl Curve {
                 }
                 scale(acc, 1.0 / len)
             }
-            Curve::ConeCyl { base, d, n, a, h, big_r, r, e } => {
-                let tau = 2.0 * std::f64::consts::PI;
+            Curve::ConeCyl { base, d, n, a, h, big_r, r, e, phi0, phi1 } => {
                 let len = self.length();
+                let panels = (512.0 * (phi1 - phi0).abs() / (2.0 * std::f64::consts::PI)).ceil().max(16.0) as usize;
+                let sgn = if phi1 >= phi0 { 1.0 } else { -1.0 };
                 let mut acc = [0.0; 3];
                 for i in 0..3 {
-                    acc[i] = integrate_composite(0.0, tau, 128, |phi| {
+                    acc[i] = sgn * integrate_composite(*phi0, *phi1, panels, |phi| {
                         let (p, dp) = cone_cyl_eval(*base, *d, *n, *a, *h, *big_r, *r, *e, phi);
                         p[i] * crate::math::len(dp)
                     });
@@ -475,8 +487,8 @@ impl Curve {
             Curve::SphCyl { center, d, n, a, big_r, r, e, sign } => {
                 expand_periodic(&mut b, &|phi: f64| sph_cyl_eval(*center, *d, *n, *a, *big_r, *r, *e, *sign, phi).0);
             }
-            Curve::ConeCyl { base, d, n, a, h, big_r, r, e } => {
-                expand_periodic(&mut b, &|phi: f64| cone_cyl_eval(*base, *d, *n, *a, *h, *big_r, *r, *e, phi).0);
+            Curve::ConeCyl { base, d, n, a, h, big_r, r, e, phi0, phi1 } => {
+                expand_over(&mut b, &|phi: f64| cone_cyl_eval(*base, *d, *n, *a, *h, *big_r, *r, *e, phi).0, phi0.min(*phi1), phi0.max(*phi1));
             }
         }
         b
@@ -533,7 +545,7 @@ impl Curve {
                 e: *e,
                 sign: *sign,
             },
-            Curve::ConeCyl { base, d, n, a, h, big_r, r, e } => Curve::ConeCyl {
+            Curve::ConeCyl { base, d, n, a, h, big_r, r, e, phi0, phi1 } => Curve::ConeCyl {
                 base: t.apply(*base),
                 d: normalize(t.dir(*d)),
                 n: normalize(t.dir(*n)),
@@ -542,6 +554,8 @@ impl Curve {
                 big_r: *big_r,
                 r: *r,
                 e: *e,
+                phi0: *phi0,
+                phi1: *phi1,
             },
         }
     }
