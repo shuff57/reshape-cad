@@ -9,7 +9,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { stepRoundTrip, okRead } from './step-readback-lib.mjs';
+import { stepRoundTrip, okRead, oc as ocRead } from './step-readback-lib.mjs';
 
 const HERE = path.resolve(fileURLToPath(new URL('.', import.meta.url)));
 const REPO = path.resolve(HERE, '../../..');
@@ -73,6 +73,26 @@ function boredVolume(R, h, rho, e) {
   }
   removed *= ((2 * Math.PI) / nt) * (rho / ns);
   return (Math.PI * R * R * h) / 3 - removed;
+}
+
+
+/** OpenCascade's volume of a STEP text by its FIXED-ORDER integrator. Its adaptive integrator (what the shared read-back uses) is biased by up to ~7e-5 on
+ *  a cone face whose hole is a fitted spline with a sharp peak near the apex and no pcurves; the fixed-order one and OpenCascade's own meshing agree with the
+ *  kernel's volume (which is the independent integral). A read-back is accepted on this referee only when the shared one is the lone dissenter. */
+function fixedOrderVolume(stepText) {
+  ocRead.FS.writeFile('/rb3.step', stepText);
+  const reader = new ocRead.STEPControl_Reader();
+  reader.ReadFile('/rb3.step');
+  reader.TransferRoots(new ocRead.Message_ProgressRange());
+  const g = new ocRead.GProp_GProps();
+  ocRead.BRepGProp.VolumeProperties(reader.OneShape(), g, false, false, false);
+  return g.Mass();
+}
+function stepAccepted(st) {
+  if (okRead(st)) return true;
+  // valid solid, exact box, and the fixed-order integrator and the meshed volume both agree with ours
+  if (!st.got || st.bad || st.got.valid !== true || !(st.db <= 1e-5)) return false;
+  return Math.abs(fixedOrderVolume(st.step) - st.want.volume) <= 5e-6 * Math.max(1, st.want.volume) && st.dvMesh <= 5e-5;
 }
 
 test('a cone bored parallel to its axis, off it: exact against OpenCascade and the integral, mesh watertight, STEP never wrong', () => {
@@ -152,7 +172,7 @@ test('a cone bored blind, off the axis, floor inside the cone: exact against Ope
     if (i % 3 === 0) {
       const st = stepRoundTrip(code);
       if (st.refused) stepRefused++;
-      else if (okRead(st)) stepOk++;
+      else if (stepAccepted(st)) stepOk++;
       else bad.push(`STEP wrote a wrong solid ${JSON.stringify({ dv: st.dv, db: st.db, valid: st.got?.valid })} :: ${code.replace(/\n/g, ' ; ')}`);
     }
   }
@@ -216,11 +236,43 @@ test('a cone bored blind with the floor through the wall: exact against OpenCasc
     if (i % 3 === 0) {
       const st = stepRoundTrip(code);
       if (st.refused) stepRefused++;
-      else if (okRead(st)) stepOk++;
+      else if (stepAccepted(st)) stepOk++;
       else bad.push(`STEP wrote a wrong solid ${JSON.stringify({ dv: st.dv, db: st.db, valid: st.got?.valid })} :: ${code.replace(/\n/g, ' ; ')}`);
     }
   }
   console.log(`cone lens bores: built ${built} of ${tried}, against OpenCascade ${checkedOcct}, STEP read back ${stepOk}, STEP refused ${stepRefused}`);
   assert.deepEqual(bad, [], bad.slice(0, 3).join('\n'));
   assert.ok(built >= 0.8 * tried, `only ${built} of ${tried} expected-exact lens bores built`);
+});
+
+// STEP for every kind of bore (through, blind with the floor inside, blind with the floor through the wall), the cone placed, moved and
+// turned: each script writes and reads back in OpenCascade as the same valid solid, or refuses in a sentence. Never a wrong solid.
+test('every cone bore writes to STEP and reads back as the same solid, or refuses in a sentence', () => {
+  const rand = rng(Number(process.env.CONESTEP_SEED ?? 57));
+  const N = Number(process.env.CONESTEP_N ?? 150);
+  let tried = 0, ok = 0;
+  const refused = new Map(), bad = [];
+  for (let i = 0; i < N; i++) {
+    const R = r2(6 + rand() * 20), h = r2(10 + rand() * 25);
+    const rho = r2(0.5 + rand() * 0.3 * R), e0 = (0.08 + rand() * 0.75) * R, ang = rand() * 2 * Math.PI;
+    const at = [r2(e0 * Math.cos(ang)), r2(e0 * Math.sin(ang))];
+    const e = Math.hypot(...at);
+    if (e + rho > R * 0.95 || e < 0.04 * R) continue;
+    const kind = rand();
+    const ztop = h * (1 - Math.abs(e - rho) / R);
+    const deep = kind < 0.3 ? '' : `, deep: ${r2(h - (0.05 + rand() * 0.9) * ztop)}`;
+    const place = rand() < 0.5 ? `\nmove(v, [${r2((rand() - 0.5) * 30)}, ${r2((rand() - 0.5) * 30)}, ${r2((rand() - 0.5) * 30)}])` : '';
+    const code = `let v = cone(${r2(2 * R)}, ${h}, { at: [0, 0, 0] })${place}\nhole(v, { across: ${r2(2 * rho)}, at: [${at[0]}, ${at[1]}]${deep} })`;
+    const { refusals } = build(code);
+    if (Object.keys(refusals).length) continue;
+    tried++;
+    const st = stepRoundTrip(code);
+    if (st.refused) { const k = st.refused.replace(/[\d.]+/g, '#').slice(0, 120); refused.set(k, (refused.get(k) ?? 0) + 1); }
+    else if (stepAccepted(st)) ok++;
+    else bad.push(`STEP wrote a wrong solid ${JSON.stringify({ dv: st.dv, db: st.db, valid: st.got?.valid })} :: ${code.replace(/\n/g, ' ; ')}`);
+  }
+  console.log(`cone bore STEP: ${tried} built, ${ok} read back, refused ${JSON.stringify([...refused])}`);
+  assert.deepEqual(bad, [], bad.slice(0, 3).join('\n'));
+  const nref = [...refused.values()].reduce((a, b) => a + b, 0);
+  assert.ok(ok >= 0.9 * tried, `only ${ok} of ${tried} read back (${nref} refused)`);
 });

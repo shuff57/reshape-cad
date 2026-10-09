@@ -388,7 +388,18 @@ fn fit_closed_curve(curve: &Curve, rev: bool) -> Result<Seg, String> {
 
 /// `fit_closed_curve`, or for an OPEN arc (`open`) the same clamped cubic with each end's own exact tangent.
 fn fit_curve(curve: &Curve, rev: bool, open: bool) -> Result<Seg, String> {
-    let m = SPLINE_SPANS;
+    // a curve with a sharp bend (the meeting curve of a bore whose wall passes close to a cone's tip) needs more spans than the usual
+    let mut last = Err("a curve it could not fit".to_string());
+    for m in [SPLINE_SPANS, 3 * SPLINE_SPANS, 8 * SPLINE_SPANS] {
+        last = fit_curve_spans(curve, rev, open, m);
+        if last.is_ok() {
+            break;
+        }
+    }
+    last
+}
+
+fn fit_curve_spans(curve: &Curve, rev: bool, open: bool, m: usize) -> Result<Seg, String> {
     let ncp = m + 3;
     let at = |s: f64| curve.point_at(if rev { 1.0 - s / m as f64 } else { s / m as f64 });
     let sgn = if rev { -1.0 } else { 1.0 };
@@ -447,16 +458,20 @@ fn fit_curve(curve: &Curve, rev: bool, open: bool) -> Result<Seg, String> {
         .collect();
     // Self-check: the fit must sit on the exact curve between its sample points.
     let size = pts.iter().fold(1.0f64, |acc, p| acc.max(crate::math::len(*p)));
+    // between every pair of sample points, at several places: a sharp peak (a bore whose wall passes close to a cone's tip) can hide between
+    // the midpoints the fit was pinned at
     for k in 0..m {
-        let t = k as f64 + 0.5;
-        let sp = span_of(t);
-        let nf = basis_funs(sp, t, &knots);
-        let mut p = [0.0; 3];
-        for j in 0..4 {
-            p = add(p, scale(ctrl[sp - 3 + j], nf[j]));
-        }
-        if dist(p, at(t)) > 1e-7 * size {
-            return Err("a curve whose B-spline fit is not exact enough".to_string());
+        for q in [0.125f64, 0.25, 0.5, 0.75, 0.875] {
+            let t = k as f64 + q;
+            let sp = span_of(t);
+            let nf = basis_funs(sp, t, &knots);
+            let mut p = [0.0; 3];
+            for j in 0..4 {
+                p = add(p, scale(ctrl[sp - 3 + j], nf[j]));
+            }
+            if dist(p, at(t)) > 1e-7 * size {
+                return Err("a curve whose B-spline fit is not exact enough".to_string());
+            }
         }
     }
     let mut ctrl = ctrl;
@@ -1282,6 +1297,18 @@ fn face_bounds(face: &crate::topo::Face<Curve, Surface>) -> Result<(Vec<Vec<Seg>
                 }
                 polys.push(poly);
             }
+            // A bore whose wall passes within a few percent of the cone's tip: the meeting curve runs close beside the cone's apex, where the cone's
+            // (angle, slant) parameters are nearly singular. OpenCascade's volume integrals of the written face disagree among themselves there
+            // (the adaptive one by ~7e-5 of the volume, the fixed-order one and its meshing by less, none within 1e-6 of ours), so it is not
+            // written: a refusal the student can read, never a solid no referee can confirm.
+            for (wi, w) in face.boundary.iter().enumerate() {
+                if w.borrow().edges.iter().any(|u| matches!(u.edge.borrow().curve, Curve::ConeCyl { .. })) {
+                    let nearest = polys[wi].iter().map(|p| p.0.hypot(p.1)).fold(f64::INFINITY, f64::min);
+                    if nearest < 0.04 * c.base_radius {
+                        return Err("a bore whose wall passes within a few percent of a cone's tip".to_string());
+                    }
+                }
+            }
             // a wire is round when its angle about the axis adds up to a whole turn (a point on the axis has no angle: skipped)
             let round: Vec<bool> = polys
                 .iter()
@@ -1335,7 +1362,13 @@ fn face_bounds(face: &crate::topo::Face<Curve, Surface>) -> Result<(Vec<Vec<Seg>
                                 let (d1, d2) = (cr((o.0 - v.0, o.1 - v.1), (p.0 - v.0, p.1 - v.1)), cr((o.0 - v.0, o.1 - v.1), (q.0 - v.0, q.1 - v.1)));
                                 let (d3, d4) = (cr((q.0 - p.0, q.1 - p.1), (v.0 - p.0, v.1 - p.1)), cr((q.0 - p.0, q.1 - p.1), (o.0 - p.0, o.1 - p.1)));
                                 if d1 * d2 < 0.0 && d3 * d4 < 0.0 {
-                                    return false;
+                                    // `v` is a point of the exact circle and the wire is a polygon of it, whose chords lie a sag inside it: a
+                                    // crossing within a sag of `v` is that chord, not another part of the boundary
+                                    let s = d3 / (d3 - d4);
+                                    let dist = s * (v.0.hypot(v.1));
+                                    if dist > 4e-3 * c.slant {
+                                        return false;
+                                    }
                                 }
                             }
                         }
