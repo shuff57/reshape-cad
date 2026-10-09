@@ -1677,6 +1677,9 @@ pub fn prism_solid(center: Vec3, sides: usize, radius: f64, height: f64, axis: V
     faces.push(top);
     faces.push(bottom);
     std::mem::drop(sides_uses);
+    // every face above made its own edge objects over the shared vertices: weld them so an edge belongs to the two faces that meet at it (a
+    // box does; without this `edge_between` finds nothing on a prism and every named edge of one reads as "could not be found")
+    crate::ops::weld_shared_edges(&mut faces);
 
     let shell = Rc::new(RefCell::new(Shell { faces }));
     Solid { shells: vec![shell] }
@@ -1780,6 +1783,7 @@ pub fn wedge_solid(center: Vec3, width: f64, depth: f64, height: f64, axis: Vec3
     faces.push(triangle_cap_face(&hi, z));
     faces.push(triangle_cap_face(&lo, scale(z, -1.0)));
     let _ = top_plane;
+    crate::ops::weld_shared_edges(&mut faces); // as for the prism: edges shared between the faces that meet at them
 
     let shell = Rc::new(RefCell::new(Shell { faces }));
     Solid { shells: vec![shell] }
