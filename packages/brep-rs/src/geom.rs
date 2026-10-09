@@ -908,7 +908,9 @@ impl Cross {
             Cross::ConeTool { big_r, h, e, lo, hi } => {
                 let d = (e * e + rad * rad + 2.0 * e * rad * u.cos()).max(0.0).sqrt();
                 let f = h * (1.0 - d / big_r);
-                Some((lo.unwrap_or(f), hi.unwrap_or(f)))
+                // a floor above the curve leaves no wall there: zero height, never negative
+                let l = lo.unwrap_or(f);
+                Some((l, hi.unwrap_or(f).max(l)))
             }
             _ => None,
         }
@@ -962,17 +964,30 @@ impl Cylinder {
                 let cross = self.cross.as_ref()?;
                 let panels = cross.tool_panels(rad);
                 let ext = |u: f64| cross.tool_bounds(rad, u).unwrap_or((0.0, 0.0));
-                let area = integrate_composite(0.0, tau, panels, |u| {
+                // a bore whose floor cuts through the cone's wall has zero height outside a stretch of angle and a kink where it starts:
+                // integrate each smooth piece on its own
+                let breaks: Vec<f64> = match cross {
+                    Cross::ConeTool { big_r, h, e, lo: Some(z0), .. } => {
+                        let rf = big_r * (1.0 - z0 / h);
+                        let c = (rf * rf - e * e - rad * rad) / (2.0 * e * rad);
+                        if c.abs() < 1.0 { let t = c.acos(); vec![0.0, t, tau - t, tau] } else { vec![0.0, tau] }
+                    }
+                    _ => vec![0.0, tau],
+                };
+                let integ = |f: &dyn Fn(f64) -> f64| -> f64 {
+                    breaks.windows(2).map(|w| integrate_composite(w[0], w[1], ((panels as f64) * (w[1] - w[0]) / tau).ceil().max(16.0) as usize, |u| f(u))).sum()
+                };
+                let area = integ(&|u: f64| {
                     let (l, h) = ext(u);
                     rad * (h - l)
                 });
-                let vol = integrate_composite(0.0, tau, panels, |u| {
+                let vol = integ(&|u: f64| {
                     let (l, h) = ext(u);
                     s * rad * (rad + dot(o, rho(u))) * (h - l)
                 });
                 let mut sx = [0.0; 3];
                 for i in 0..3 {
-                    sx[i] = integrate_composite(0.0, tau, panels, |u| {
+                    sx[i] = integ(&|u: f64| {
                         let (l, h) = ext(u);
                         let p = add(o, scale(rho(u), rad));
                         rad * (p[i] * (h - l) + self.axis[i] * 0.5 * (h * h - l * l))
@@ -1781,6 +1796,10 @@ impl Surface {
                     for k in 0..n {
                         let u = 2.0 * std::f64::consts::PI * k as f64 / n as f64;
                         let (l, h) = cross.tool_bounds(c.radius, u).unwrap_or((c.vmin, c.vmax));
+                        // a bore whose floor is above the meeting curve has no wall at this angle: its floor circle there is not part of the solid
+                        if matches!(cross, Cross::ConeTool { .. }) && h - l <= 1e-12 * (1.0 + h.abs()) {
+                            continue;
+                        }
                         let rho = add(c.origin, scale(add(scale(c.e1, u.cos()), scale(c.e2, u.sin())), c.radius));
                         b.expand(add(rho, scale(c.axis, l)));
                         b.expand(add(rho, scale(c.axis, h)));

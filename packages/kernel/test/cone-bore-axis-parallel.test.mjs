@@ -160,3 +160,67 @@ test('a cone bored blind, off the axis, floor inside the cone: exact against Ope
   assert.deepEqual(bad, [], bad.slice(0, 3).join('\n'));
   assert.ok(built >= 0.9 * expectedBuild, `only ${built} of ${expectedBuild} expected-exact blind bores built`);
 });
+
+/** The volume of the cone above the height zf inside a bore of radius rho at offset e: the integral over the bore's disk of max(0, H (1 - |p| / R) - zf), split at the kink. */
+function removedAboveFloor(R, H, rho, e, zf) {
+  const Rf = R * (1 - zf / H);
+  const nt = 3000, pieces = 200;
+  let total = 0;
+  const f = (s, c) => Math.max(0, H * (1 - Math.sqrt(e * e + s * s + 2 * e * s * c) / R) - zf) * s;
+  for (let k = 0; k < nt; k++) {
+    const t = (2 * Math.PI * (k + 0.5)) / nt, c = Math.cos(t), sn = Math.sin(t);
+    const cuts = [0, rho];
+    const disc = Rf * Rf - e * e * sn * sn;
+    if (disc >= 0) for (const sg of [-1, 1]) { const s0 = -e * c + sg * Math.sqrt(disc); if (s0 > 0 && s0 < rho) cuts.push(s0); }
+    cuts.sort((a, b) => a - b);
+    for (let i = 0; i + 1 < cuts.length; i++) {
+      const a = cuts[i], b = cuts[i + 1], h = (b - a) / pieces;
+      let acc = f(a, c) + f(b, c);
+      for (let j = 1; j < pieces; j++) acc += f(a + j * h, c) * (j % 2 ? 4 : 2);
+      total += (acc * h) / 3;
+    }
+  }
+  return (total * 2 * Math.PI) / nt;
+}
+
+// A blind bore whose floor cuts through the cone's wall: the floor is a lens, the cone's hole is a curve arc and a circle arc, the wall
+// runs between two points where the meeting curve comes down to the floor.
+test('a cone bored blind with the floor through the wall: exact against OpenCascade and the integral, mesh watertight, STEP never wrong', () => {
+  const rand = rng(Number(process.env.CONELENS_SEED ?? 43));
+  const N = Number(process.env.CONELENS_N ?? 80);
+  let tried = 0, built = 0, checkedOcct = 0, stepOk = 0, stepRefused = 0;
+  const bad = [];
+  for (let i = 0; i < N; i++) {
+    const R = r2(6 + rand() * 20), h = r2(10 + rand() * 25);
+    const rho = r2(0.5 + rand() * 0.3 * R), e0 = (0.1 + rand() * 0.7) * R;
+    const ang = rand() * 2 * Math.PI;
+    const at = [r2(e0 * Math.cos(ang)), r2(e0 * Math.sin(ang))];
+    const e = Math.hypot(at[0], at[1]);
+    if (e + rho > R * 0.95 || e < 0.05 * R) continue;
+    const zmin = h * (1 - (e + rho) / R), ztop = h * (1 - Math.abs(e - rho) / R);
+    if (ztop - zmin < 0.1 * h) continue;
+    const zf = r2(zmin + (0.1 + rand() * 0.8) * (ztop - zmin));
+    const deep = r2(h - zf), zfx = h - deep;
+    if (zfx <= zmin + 0.02 * h || zfx >= ztop - 0.02 * h || zfx < 0.03 * h) continue;
+    const move = rand() < 0.4 ? `\nmove(v, [${r2((rand() - 0.5) * 30)}, ${r2((rand() - 0.5) * 30)}, ${r2((rand() - 0.5) * 30)}])` : '';
+    const code = `let v = cone(${r2(2 * R)}, ${h}, { at: [0, 0, 0] })${move}\nhole(v, { across: ${r2(2 * rho)}, at: [${at[0]}, ${at[1]}], deep: ${deep} })`;
+    tried++;
+    const { refusals, m, r, id, doc } = build(code);
+    if (Object.keys(refusals).length) { if (process.env.CONELENS_WHY) console.log('REFUSED', Object.values(refusals)[0].slice(0, 200), '::', code.replace(/\n/g, ' ; ')); continue; }
+    built++;
+    const want = (Math.PI * R * R * h) / 3 - removedAboveFloor(R, h, rho, e, zfx);
+    if (Math.abs(m.volume - want) > 2e-6 * ((Math.PI * R * R * h) / 3)) bad.push(`volume ${m.volume} integral ${want} :: ${code.replace(/\n/g, ' ; ')}`);
+    const o = occtMeasure(r.doc.features, id);
+    if (o !== null) { checkedOcct++; if (Math.abs(m.volume - o) > 1e-6 * o) bad.push(`volume ${m.volume} occt ${o} :: ${code.replace(/\n/g, ' ; ')}`); }
+    for (const d of [0.05, 0.5]) { const e3 = openEdges(doc, id, d); if (e3) bad.push(`open mesh (${e3} edges at ${d}) :: ${code.replace(/\n/g, ' ; ')}`); }
+    if (i % 3 === 0) {
+      const st = stepRoundTrip(code);
+      if (st.refused) stepRefused++;
+      else if (okRead(st)) stepOk++;
+      else bad.push(`STEP wrote a wrong solid ${JSON.stringify({ dv: st.dv, db: st.db, valid: st.got?.valid })} :: ${code.replace(/\n/g, ' ; ')}`);
+    }
+  }
+  console.log(`cone lens bores: built ${built} of ${tried}, against OpenCascade ${checkedOcct}, STEP read back ${stepOk}, STEP refused ${stepRefused}`);
+  assert.deepEqual(bad, [], bad.slice(0, 3).join('\n'));
+  assert.ok(built >= 0.8 * tried, `only ${built} of ${tried} expected-exact lens bores built`);
+});

@@ -57,10 +57,10 @@ for (const [deep, faces] of [[6, 4], [18, 4]]) {
   });
 }
 
-test('a bore across a cone, or one that meets the sloping wall off-axis, refuses and says how to drill it', () => {
+test('a bore across a cone, or one that leaves its footprint, refuses and says how to drill it', () => {
   for (const code of [
     "const c = cone(20, 20); hole(c, { across: 2, along: 'x' })",
-    'const c = cone(20, 20); hole(c, { across: 2, at: [3, 0], deep: 6 })',
+    'const c = cone(20, 20); hole(c, { across: 4, at: [9, 0] })', // reaches past the base rim: the bore leaves the cone's footprint
   ]) {
     const { refusals, s } = build(code);
     assert.match(refusals.hole1, /down its own axis/, code);

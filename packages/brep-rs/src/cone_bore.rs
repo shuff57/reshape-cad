@@ -39,12 +39,98 @@ pub fn removed_volume(big_r: f64, h: f64, rho: f64, e: f64) -> f64 {
     total * TAU / n_t as f64
 }
 
+/// The volume of the cone above the height `zf` that lies inside a bore of radius `rho` at offset `e`: the integral over the bore's disk
+/// of `max(0, h (1 - |p| / R) - zf)`. In polar coordinates about the bore's centre the integrand kinks where `|p| = R_f = R (1 - zf / h)`,
+/// which for each angle is at `s = -e cos(t) +- sqrt(R_f^2 - e^2 sin^2(t))`: the radial integral is split there and each smooth piece done
+/// by Gauss-Legendre. Shares no algebra with the face measures.
+pub fn removed_above_floor(big_r: f64, h: f64, rho: f64, e: f64, zf: f64) -> f64 {
+    let rf = big_r * (1.0 - zf / h);
+    let n_t = 2400usize;
+    let mut total = 0.0;
+    for k in 0..n_t {
+        let t = TAU * (k as f64 + 0.5) / n_t as f64;
+        let (c, sn) = (t.cos(), t.sin());
+        let mut cuts = vec![0.0, rho];
+        let disc = rf * rf - e * e * sn * sn;
+        if disc >= 0.0 {
+            for sg in [-1.0, 1.0] {
+                let s0 = -e * c + sg * disc.sqrt();
+                if s0 > 0.0 && s0 < rho {
+                    cuts.push(s0);
+                }
+            }
+        }
+        cuts.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        for w in cuts.windows(2) {
+            total += crate::geom::integrate_composite(w[0], w[1], 12, |s: f64| {
+                let d = (e * e + s * s + 2.0 * e * s * c).max(0.0).sqrt();
+                (h * (1.0 - d / big_r) - zf).max(0.0) * s
+            });
+        }
+    }
+    total * TAU / n_t as f64
+}
+
 struct Parts {
     faces: Vec<TFace>,
 }
 
 fn pc() -> Pcurve {
     Pcurve { start: [0.0; 2], end: [0.0; 2], mid: [0.0; 2] }
+}
+
+/// A blind bore whose floor cuts through the cone's wall (the floor is a lens), in the cone's own frame. With `R_f = R (1 - zf / h)`, the wall
+/// exists where the meeting curve is above the floor: for the bore's angle `t` in `(t*, 2 pi - t*)`, `cos t* = (R_f^2 - e^2 - rho^2) / (2 e rho)`.
+/// The three edges, each used twice: the arc `A` of the meeting curve over that stretch, the bore's own circle at the floor over the same
+/// stretch `B`, and the arc `C` of the circle of radius `R_f` about the cone's axis that the floor plane cuts from the cone, from `P2` to `P1`.
+fn build_lens_local(big_r: f64, h: f64, rho: f64, e: f64, zf: f64) -> Result<Parts, &'static str> {
+    let scale_len = big_r.max(h);
+    let rf = big_r * (1.0 - zf / h);
+    // the floor must meet the bore's circle in two clear points, and the cone's circle at the floor must cross the bore's
+    if rf <= (e - rho).abs() + 1e-6 * scale_len {
+        return Err("the floor misses the bore's disk or swallows the cone's tip");
+    }
+    let c = (rf * rf - e * e - rho * rho) / (2.0 * e * rho);
+    if c.abs() >= 1.0 - 1e-6 {
+        return Err("the bore's floor touches the cone's wall along a line");
+    }
+    let tstar = c.acos();
+    let (n, d) = ([1.0, 0.0, 0.0], [0.0, 0.0, 1.0]);
+    let a = cross(d, n);
+    let slant = big_r.hypot(h);
+    let tilt: f64 = 0.5772;
+    let rim_x = [tilt.cos(), tilt.sin(), 0.0];
+    let v_rim = topo::vertex(scale(rim_x, big_r));
+    let rim = topo::edge(v_rim.clone(), v_rim.clone(), true, Curve::Arc { center: [0.0; 3], radius: big_r, normal: d, x_axis: rim_x, sweep: TAU });
+    // the two points where the meeting curve comes down to the floor
+    let p1 = [e + rho * tstar.cos(), rho * tstar.sin(), zf];
+    let p2 = [e + rho * tstar.cos(), -rho * tstar.sin(), zf];
+    let (v1, v2) = (topo::vertex(p1), topo::vertex(p2));
+    let curve_a = Curve::ConeCyl { base: [0.0; 3], d, n, a, h, big_r, r: rho, e, phi0: tstar, phi1: TAU - tstar };
+    let arc_a = topo::edge(v1.clone(), v2.clone(), true, curve_a);
+    let arc_b = topo::edge(v1.clone(), v2.clone(), true, Curve::Arc { center: [e, 0.0, zf], radius: rho, normal: d, x_axis: [tstar.cos(), tstar.sin(), 0.0], sweep: TAU - 2.0 * tstar });
+    let psi = p1[1].atan2(p1[0]);
+    let arc_c = topo::edge(v2.clone(), v1.clone(), true, Curve::Arc { center: [0.0, 0.0, zf], radius: rf, normal: d, x_axis: [psi.cos(), -psi.sin(), 0.0], sweep: 2.0 * psi });
+    let us = |edge: &topo::EdgeRef<Curve>, forward: bool| EdgeUse { edge: edge.clone(), forward, pcurve: pc() };
+    let wire = |uses: Vec<EdgeUse<Curve>>| Rc::new(RefCell::new(Wire { edges: uses }));
+    let mk = |boundary: Vec<topo::WireRef<Curve>>, surface: Surface, uv: [[f64; 2]; 2]| -> TFace { Rc::new(RefCell::new(Face { boundary, forward: true, surface, uv_domain: uv })) };
+    // the base is whole
+    let base_face = mk(vec![wire(vec![us(&rim, false)])], Surface::Plane(Plane::new([0.0; 3], [0.0, 0.0, -1.0])), [[0.0, TAU], [0.0, 1.0]]);
+    // the slanted face: the hole is the removed region's boundary run clockwise from above: C then A, both reversed
+    let cone_face = mk(
+        vec![wire(vec![us(&rim, true)]), wire(vec![us(&arc_c, false), us(&arc_a, false)])],
+        Surface::Cone(Cone { base: [0.0; 3], axis: d, e1: [1.0, 0.0, 0.0], e2: [0.0, 1.0, 0.0], base_radius: big_r, half_angle: big_r.atan2(h), slant, v_range: [0.0, slant], bounded: true }),
+        [[0.0, TAU], [0.0, slant]],
+    );
+    // the bore's wall: the meeting curve from P1 to P2, the bore's circle at the floor back
+    let wall = mk(
+        vec![wire(vec![us(&arc_a, true), us(&arc_b, false)])],
+        Surface::Cylinder(Cylinder { origin: [e, 0.0, 0.0], axis: d, e1: n, e2: scale(a, -1.0), radius: rho, vmin: zf, vmax: h, arc: None, cross: Some(Cross::ConeTool { big_r, h, e, lo: Some(zf), hi: None }) }),
+        [[0.0, TAU], [0.0, 1.0]],
+    );
+    // the floor lens, looking up: the bore's circle from P1 to P2, then the cone's circle from P2 back to P1
+    let floor = mk(vec![wire(vec![us(&arc_b, true), us(&arc_c, true)])], Surface::Plane(Plane::new([e, 0.0, zf], d)), [[0.0, TAU], [0.0, 1.0]]);
+    Ok(Parts { faces: vec![base_face, cone_face, wall, floor] })
 }
 
 /// The through bore of radius `rho` whose axis is parallel to the cone's, at offset `e` from it, in a cone of base radius `big_r`
@@ -69,7 +155,7 @@ fn build_local(big_r: f64, h: f64, rho: f64, e: f64, floor: Option<f64>) -> Resu
             return Err("the floor is at or below the cone's base: that is a through bore");
         }
         if zf >= h * (1.0 - (e + rho) / big_r) - 1e-6 * scale_len {
-            return Err("the bore's floor reaches the cone's sloping wall");
+            return build_lens_local(big_r, h, rho, e, zf);
         }
     }
     let z0 = floor.unwrap_or(0.0);
@@ -158,7 +244,7 @@ pub fn bore_why(base: Vec3, apex: Vec3, r: f64, on_axis: Vec3, rho: f64, floor: 
     let solid = Solid { shells: vec![Rc::new(RefCell::new(Shell { faces }))] };
     let v_cone = PI * r * r * h / 3.0;
     // a floor takes the part of the through bore below it back: a cylinder of the bore's radius and the floor's height
-    let want = v_cone - removed_volume(r, h, rho, e) + floor.map_or(0.0, |zf| PI * rho * rho * zf);
+    let want = v_cone - floor.map_or_else(|| removed_volume(r, h, rho, e), |zf| removed_above_floor(r, h, rho, e, zf));
     let got = crate::build::solid_volume(&solid);
     if !got.is_finite() || (got - want).abs() > 2e-6 * v_cone {
         return Err("the volume disagrees with the independent integral");
@@ -373,9 +459,9 @@ mod tests {
             let dir = normalize(add(scale(t0, rng.range(-1.0, 1.0)), scale(cross(z, t0), rng.range(-1.0, 1.0))));
             let base = [rng.range(-9.0, 9.0), rng.range(-9.0, 9.0), rng.range(-9.0, 9.0)];
             let apex = add(base, scale(z, h));
-            // half of them stop at a floor below the lowest point of the meeting curve
-            let zmin = h * (1.0 - (e + rho) / big_r);
-            let floor = if rng.range(0.0, 1.0) < 0.5 && zmin > 0.1 * h { Some(rng.range(0.05, 0.9) * zmin) } else { None };
+            // half of them stop at a floor anywhere below the highest point of the meeting curve (a lens when it is above the lowest)
+            let ztop = h * (1.0 - (e - rho).abs() / big_r);
+            let floor = if rng.range(0.0, 1.0) < 0.5 { Some(rng.range(0.03, 0.97) * ztop) } else { None };
             let Ok(solid) = super::bore_why(base, apex, big_r, add(base, scale(dir, e)), rho, floor, false) else { continue };
             let exact = crate::build::solid_volume(&solid);
             let bb = crate::build::solid_aabb(&solid);
@@ -434,7 +520,7 @@ mod tests {
             let rho = rng.range(0.03, 0.5) * big_r;
             let e = rng.range(0.05, 0.95) * big_r;
             let zmin = h * (1.0 - (e + rho) / big_r);
-            // floors from just above the base to just above the lowest point of the meeting curve (those refuse)
+            // floors from just above the base to just above the lowest point of the meeting curve (those above it are lenses, D4)
             let zf = rng.range(0.0, 1.15) * zmin.max(0.01);
             let z = normalize([rng.range(-1.0, 1.0), rng.range(-1.0, 1.0), rng.range(-1.0, 1.0)]);
             let t0 = normalize(cross(z, [0.3, 0.5, 0.8]));
@@ -446,8 +532,9 @@ mod tests {
                 Ok(s) => {
                     built += 1;
                     let v = crate::build::solid_volume(&s);
-                    let want = std::f64::consts::PI * big_r * big_r * h / 3.0 - super::removed_volume(big_r, h, rho, e) + std::f64::consts::PI * rho * rho * zf;
-                    if (v - want).abs() > 2e-6 * std::f64::consts::PI * big_r * big_r * h / 3.0 || zf >= zmin {
+                    // a floor above the lowest point of the meeting curve is a lens (D4): the integral is split at its kink
+                    let want = std::f64::consts::PI * big_r * big_r * h / 3.0 - super::removed_above_floor(big_r, h, rho, e, zf);
+                    if (v - want).abs() > 2e-6 * std::f64::consts::PI * big_r * big_r * h / 3.0 {
                         wrong.push(format!("volume {v} vs {want}: R {big_r} h {h} rho {rho} e {e} zf {zf} zmin {zmin}"));
                     }
                 }
@@ -565,5 +652,65 @@ mod box_tests {
             }
         }
         assert!(worst < 1e-6, "the box is loose by {worst}");
+    }
+}
+
+#[cfg(test)]
+mod lens_tests {
+    use super::*;
+    use crate::math::*;
+
+    struct Rng(u64);
+    impl Rng {
+        fn next(&mut self) -> f64 {
+            self.0 = self.0.wrapping_mul(6364136223846793005).wrapping_add(1442695040888963407);
+            ((self.0 >> 11) as f64) / (1u64 << 53) as f64
+        }
+        fn range(&mut self, a: f64, b: f64) -> f64 {
+            a + (b - a) * self.next()
+        }
+    }
+
+    /// A blind bore whose floor cuts through the cone's wall: whatever builds is exact (volume against the polar integral split at the kink,
+    /// closed shell, one lump, winding, origin-free volume, a closed mesh) in any placement; what refuses says why.
+    #[test]
+    fn random_lens_bores_never_build_a_wrong_solid() {
+        use std::collections::BTreeMap;
+        let mut rng = Rng(101);
+        let (mut built, mut tried) = (0usize, 0usize);
+        let mut why: BTreeMap<&'static str, usize> = BTreeMap::new();
+        let mut wrong: Vec<String> = Vec::new();
+        for _ in 0..400 {
+            let (big_r, h) = (rng.range(4.0, 25.0), rng.range(4.0, 30.0));
+            let rho = rng.range(0.05, 0.5) * big_r;
+            let e = rng.range(0.05, 0.9) * big_r;
+            let zmin = h * (1.0 - (e + rho) / big_r);
+            let ztop = h * (1.0 - (e - rho).abs() / big_r);
+            // floors between the lowest and the highest point of the meeting curve
+            let zf = zmin + rng.range(0.02, 0.98) * (ztop - zmin).max(0.0);
+            if zf <= 0.0 {
+                continue;
+            }
+            let z = normalize([rng.range(-1.0, 1.0), rng.range(-1.0, 1.0), rng.range(-1.0, 1.0)]);
+            let t0 = normalize(cross(z, [0.3, 0.5, 0.8]));
+            let dir = normalize(add(scale(t0, rng.range(-1.0, 1.0)), scale(cross(z, t0), rng.range(-1.0, 1.0))));
+            let base = [rng.range(-9.0, 9.0), rng.range(-9.0, 9.0), rng.range(-9.0, 9.0)];
+            let apex = add(base, scale(z, h));
+            tried += 1;
+            match bore_why(base, apex, big_r, add(base, scale(dir, e)), rho, Some(zf), true) {
+                Ok(s) => {
+                    built += 1;
+                    let v = crate::build::solid_volume(&s);
+                    let want = std::f64::consts::PI * big_r * big_r * h / 3.0 - removed_above_floor(big_r, h, rho, e, zf);
+                    if (v - want).abs() > 2e-6 * std::f64::consts::PI * big_r * big_r * h / 3.0 {
+                        wrong.push(format!("volume {v} vs {want}: R {big_r} h {h} rho {rho} e {e} zf {zf}"));
+                    }
+                }
+                Err(w) => *why.entry(w).or_insert(0) += 1,
+            }
+        }
+        eprintln!("cone lens bores: built {built} of {tried}; refused: {why:#?}");
+        assert!(wrong.is_empty(), "{} wrong, first {:?}", wrong.len(), wrong.iter().take(3).collect::<Vec<_>>());
+        assert!(built * 4 >= tried, "only {built} of {tried} built");
     }
 }
