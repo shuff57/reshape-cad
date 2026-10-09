@@ -49,7 +49,7 @@ fn pc() -> Pcurve {
 
 /// The through bore of radius `rho` whose axis is parallel to the cone's, at offset `e` from it, in a cone of base radius `big_r`
 /// and height `h`, in the cone's own frame. `Err` says why not.
-fn build_local(big_r: f64, h: f64, rho: f64, e: f64) -> Result<Parts, &'static str> {
+fn build_local(big_r: f64, h: f64, rho: f64, e: f64, floor: Option<f64>) -> Result<Parts, &'static str> {
     let scale_len = big_r.max(h);
     if big_r < 1e-9 || h < 1e-9 || rho < 1e-9 * scale_len {
         return Err("degenerate cone or bore");
@@ -63,6 +63,16 @@ fn build_local(big_r: f64, h: f64, rho: f64, e: f64) -> Result<Parts, &'static s
     if e + rho > big_r * (1.0 - 1e-6) {
         return Err("the bore reaches the cone's base rim");
     }
+    // a blind bore's floor is a whole disk only while it lies below the lowest point of the meeting curve
+    if let Some(zf) = floor {
+        if zf <= 1e-7 * scale_len {
+            return Err("the floor is at or below the cone's base: that is a through bore");
+        }
+        if zf >= h * (1.0 - (e + rho) / big_r) - 1e-6 * scale_len {
+            return Err("the bore's floor reaches the cone's sloping wall");
+        }
+    }
+    let z0 = floor.unwrap_or(0.0);
     let (n, d) = ([1.0, 0.0, 0.0], [0.0, 0.0, 1.0]);
     let a = cross(d, n); // (n, a, d) is right-handed
     let slant = big_r.hypot(h);
@@ -72,18 +82,20 @@ fn build_local(big_r: f64, h: f64, rho: f64, e: f64) -> Result<Parts, &'static s
     let v_rim = topo::vertex(scale(rim_x, big_r));
     let rim = topo::edge(v_rim.clone(), v_rim.clone(), true, Curve::Arc { center: [0.0; 3], radius: big_r, normal: d, x_axis: rim_x, sweep: TAU });
     let bore_c = [e, 0.0, 0.0];
-    let v_bot = topo::vertex([e + rho, 0.0, 0.0]);
-    let bot = topo::edge(v_bot.clone(), v_bot.clone(), true, Curve::Arc { center: bore_c, radius: rho, normal: d, x_axis: n, sweep: TAU });
+    // the bore's lower circle: in the base plane for a through bore, at the floor for a blind one
+    let v_bot = topo::vertex([e + rho, 0.0, z0]);
+    let bot = topo::edge(v_bot.clone(), v_bot.clone(), true, Curve::Arc { center: [e, 0.0, z0], radius: rho, normal: d, x_axis: n, sweep: TAU });
     let meet = Curve::ConeCyl { base: [0.0; 3], d, n, a, h, big_r, r: rho, e };
     let top_p = meet.point_at(0.0);
     let v_top = topo::vertex(top_p);
     let top = topo::edge(v_top.clone(), v_top.clone(), true, meet);
-    let seam = topo::edge(v_bot.clone(), v_top.clone(), true, Curve::Segment { a: [e + rho, 0.0, 0.0], b: top_p });
+    let seam = topo::edge(v_bot.clone(), v_top.clone(), true, Curve::Segment { a: [e + rho, 0.0, z0], b: top_p });
     let us = |edge: &topo::EdgeRef<Curve>, forward: bool| EdgeUse { edge: edge.clone(), forward, pcurve: pc() };
     let wire = |uses: Vec<EdgeUse<Curve>>| Rc::new(RefCell::new(Wire { edges: uses }));
     let mk = |boundary: Vec<topo::WireRef<Curve>>, surface: Surface, uv: [[f64; 2]; 2]| -> TFace { Rc::new(RefCell::new(Face { boundary, forward: true, surface, uv_domain: uv })) };
     // the base: outward normal -z, so the rim runs clockwise from above and the hole's circle counter-clockwise
-    let base_face = mk(vec![wire(vec![us(&rim, false)]), wire(vec![us(&bot, true)])], Surface::Plane(Plane::new([0.0; 3], [0.0, 0.0, -1.0])), [[0.0, TAU], [0.0, 1.0]]);
+    let base_wires = if floor.is_none() { vec![wire(vec![us(&rim, false)]), wire(vec![us(&bot, true)])] } else { vec![wire(vec![us(&rim, false)])] };
+    let base_face = mk(base_wires, Surface::Plane(Plane::new([0.0; 3], [0.0, 0.0, -1.0])), [[0.0, TAU], [0.0, 1.0]]);
     // the slanted face: the rim the other way round, the meeting curve as a hole running clockwise from above
     let cone_face = mk(
         vec![wire(vec![us(&rim, true)]), wire(vec![us(&top, false)])],
@@ -99,19 +111,29 @@ fn build_local(big_r: f64, h: f64, rho: f64, e: f64) -> Result<Parts, &'static s
             e1: n,
             e2: scale(a, -1.0), // the face looks into the void: a left-handed frame
             radius: rho,
-            vmin: 0.0,
+            vmin: z0,
             vmax: h,
             arc: None,
-            cross: Some(Cross::ConeTool { big_r, h, e, lo: Some(0.0), hi: None }),
+            cross: Some(Cross::ConeTool { big_r, h, e, lo: Some(z0), hi: None }),
         }),
         [[0.0, TAU], [0.0, 1.0]],
     );
-    Ok(Parts { faces: vec![base_face, cone_face, wall] })
+    let mut faces = vec![base_face, cone_face, wall];
+    if floor.is_some() {
+        // the floor looks up into the void: outward normal +z, its circle counter-clockwise from above
+        faces.push(mk(vec![wire(vec![us(&bot, true)])], Surface::Plane(Plane::new([e, 0.0, z0], d)), [[0.0, TAU], [0.0, 1.0]]));
+    }
+    Ok(Parts { faces })
 }
 
 /// A cone (`base` centre, `apex`, base radius `r`) with a bore of radius `rho` parallel to its axis, through its base and out
 /// of its slanted face, whose axis passes through the point `on_axis`. `verify_mesh` also checks that the mesh closes.
 pub fn bore_through_why(base: Vec3, apex: Vec3, r: f64, on_axis: Vec3, rho: f64, verify_mesh: bool) -> Result<TSolid, &'static str> {
+    bore_why(base, apex, r, on_axis, rho, None, verify_mesh)
+}
+
+/// The same, stopping at a flat floor `floor` above the base plane (a blind bore) when it is `Some`.
+pub fn bore_why(base: Vec3, apex: Vec3, r: f64, on_axis: Vec3, rho: f64, floor: Option<f64>, verify_mesh: bool) -> Result<TSolid, &'static str> {
     let h = len(sub(apex, base));
     if h < 1e-9 {
         return Err("degenerate cone");
@@ -125,7 +147,7 @@ pub fn bore_through_why(base: Vec3, apex: Vec3, r: f64, on_axis: Vec3, rho: f64,
     }
     let x = scale(perp, 1.0 / e);
     let y = cross(z, x);
-    let parts = build_local(r, h, rho, e)?;
+    let parts = build_local(r, h, rho, e, floor)?;
     let faces = parts.faces;
     if crate::ops::edge_use_counts(&faces).values().any(|&n| n != 2) {
         return Err("the shell is not closed");
@@ -135,7 +157,8 @@ pub fn bore_through_why(base: Vec3, apex: Vec3, r: f64, on_axis: Vec3, rho: f64,
     }
     let solid = Solid { shells: vec![Rc::new(RefCell::new(Shell { faces }))] };
     let v_cone = PI * r * r * h / 3.0;
-    let want = v_cone - removed_volume(r, h, rho, e);
+    // a floor takes the part of the through bore below it back: a cylinder of the bore's radius and the floor's height
+    let want = v_cone - removed_volume(r, h, rho, e) + floor.map_or(0.0, |zf| PI * rho * rho * zf);
     let got = crate::build::solid_volume(&solid);
     if !got.is_finite() || (got - want).abs() > 2e-6 * v_cone {
         return Err("the volume disagrees with the independent integral");
@@ -180,10 +203,20 @@ pub fn cone_cylinder_bore(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
     let e = len(off);
     // the highest point of the cone over the bore's footprint: the apex when the bore holds the axis
     let top = if e <= rho { h } else { h * (1.0 - (e - rho) / r) };
-    if lo > -1e-7 * scale_len || hi < top + 1e-7 * scale_len {
+    // past the highest point of the cone over the bore; a bore that holds the axis may stop exactly at the apex plane, where the
+    // tool's cap meets the cone in the apex alone and the apex is inside the column (the hole's tool does stop there)
+    let reach = if e <= rho { top - 1e-7 * scale_len } else { top + 1e-7 * scale_len };
+    if hi < reach {
         return None;
     }
-    bore_through_why(base, apex, r, p, rho, true).ok()
+    if lo < -1e-7 * scale_len {
+        return bore_through_why(base, apex, r, p, rho, true).ok();
+    }
+    // a blind bore: its bottom cap is the floor, strictly above the base plane
+    if lo > 1e-7 * scale_len {
+        return bore_why(base, apex, r, p, rho, Some(lo), true).ok();
+    }
+    None
 }
 
 #[cfg(test)]
@@ -340,7 +373,10 @@ mod tests {
             let dir = normalize(add(scale(t0, rng.range(-1.0, 1.0)), scale(cross(z, t0), rng.range(-1.0, 1.0))));
             let base = [rng.range(-9.0, 9.0), rng.range(-9.0, 9.0), rng.range(-9.0, 9.0)];
             let apex = add(base, scale(z, h));
-            let Ok(solid) = super::bore_through_why(base, apex, big_r, add(base, scale(dir, e)), rho, false) else { continue };
+            // half of them stop at a floor below the lowest point of the meeting curve
+            let zmin = h * (1.0 - (e + rho) / big_r);
+            let floor = if rng.range(0.0, 1.0) < 0.5 && zmin > 0.1 * h { Some(rng.range(0.05, 0.9) * zmin) } else { None };
+            let Ok(solid) = super::bore_why(base, apex, big_r, add(base, scale(dir, e)), rho, floor, false) else { continue };
             let exact = crate::build::solid_volume(&solid);
             let bb = crate::build::solid_aabb(&solid);
             for k in [0.004, 0.0015] {
@@ -381,5 +417,45 @@ mod tests {
         eprintln!("bored cone meshes checked: {checked}");
         assert!(bad.is_empty(), "{} bad, first {:?}", bad.len(), bad.iter().take(3).collect::<Vec<_>>());
         assert!(checked >= 100, "only {checked} meshes checked");
+    }
+
+    /// A blind bore whose floor is wholly inside the cone: whatever builds is exact (volume against the polar integral less the cylinder
+    /// the floor gives back, closed shell, one lump, closed mesh), in any placement; what refuses says why.
+    #[test]
+    fn random_blind_bores_never_build_a_wrong_solid() {
+        use super::super::cone_bore::bore_why;
+        use std::collections::BTreeMap;
+        let mut rng = Rng(77);
+        let (mut built, mut tried) = (0usize, 0usize);
+        let mut why: BTreeMap<&'static str, usize> = BTreeMap::new();
+        let mut wrong: Vec<String> = Vec::new();
+        for _ in 0..400 {
+            let (big_r, h) = (rng.range(4.0, 25.0), rng.range(4.0, 30.0));
+            let rho = rng.range(0.03, 0.5) * big_r;
+            let e = rng.range(0.05, 0.95) * big_r;
+            let zmin = h * (1.0 - (e + rho) / big_r);
+            // floors from just above the base to just above the lowest point of the meeting curve (those refuse)
+            let zf = rng.range(0.0, 1.15) * zmin.max(0.01);
+            let z = normalize([rng.range(-1.0, 1.0), rng.range(-1.0, 1.0), rng.range(-1.0, 1.0)]);
+            let t0 = normalize(cross(z, [0.3, 0.5, 0.8]));
+            let dir = normalize(add(scale(t0, rng.range(-1.0, 1.0)), scale(cross(z, t0), rng.range(-1.0, 1.0))));
+            let base = [rng.range(-9.0, 9.0), rng.range(-9.0, 9.0), rng.range(-9.0, 9.0)];
+            let apex = add(base, scale(z, h));
+            tried += 1;
+            match bore_why(base, apex, big_r, add(base, scale(dir, e)), rho, Some(zf), true) {
+                Ok(s) => {
+                    built += 1;
+                    let v = crate::build::solid_volume(&s);
+                    let want = std::f64::consts::PI * big_r * big_r * h / 3.0 - super::removed_volume(big_r, h, rho, e) + std::f64::consts::PI * rho * rho * zf;
+                    if (v - want).abs() > 2e-6 * std::f64::consts::PI * big_r * big_r * h / 3.0 || zf >= zmin {
+                        wrong.push(format!("volume {v} vs {want}: R {big_r} h {h} rho {rho} e {e} zf {zf} zmin {zmin}"));
+                    }
+                }
+                Err(w) => *why.entry(w).or_insert(0) += 1,
+            }
+        }
+        eprintln!("cone blind bores: built {built} of {tried}; refused: {why:#?}");
+        assert!(wrong.is_empty(), "{} wrong, first {:?}", wrong.len(), wrong.iter().take(3).collect::<Vec<_>>());
+        assert!(built * 3 >= tried, "only {built} of {tried} built");
     }
 }

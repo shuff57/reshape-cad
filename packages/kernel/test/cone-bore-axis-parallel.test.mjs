@@ -118,3 +118,45 @@ test('a bored cone is not built on: a further hole or boolean refuses rather tha
     if (!Object.keys(refusals).length) assert.fail(`built on a bored cone: ${more}`);
   }
 });
+
+// A blind bore: it stops at a flat floor `deep` below the apex end, wholly inside the cone (the floor under the lowest point of the meeting
+// curve). Volume = the through bore's less the cylinder the floor gives back.
+test('a cone bored blind, off the axis, floor inside the cone: exact against OpenCascade and the integral, mesh watertight, STEP never wrong', () => {
+  const rand = rng(Number(process.env.CONEBLIND_SEED ?? 31));
+  const N = Number(process.env.CONEBLIND_N ?? 60);
+  let tried = 0, expectedBuild = 0, built = 0, checkedOcct = 0, stepOk = 0, stepRefused = 0;
+  const bad = [];
+  for (let i = 0; i < N; i++) {
+    const R = r2(6 + rand() * 20), h = r2(10 + rand() * 25);
+    const rho = r2(0.5 + rand() * 0.25 * R), e = r2((0.1 + rand() * 0.6) * R);
+    const zmin = h * (1 - (e + rho) / R);
+    if (e + rho > R * 0.97 || Math.abs(e - rho) < 0.05 * R || zmin < 0.25 * h) continue;
+    const zf = r2(0.05 * h + rand() * (zmin - 0.1 * h));
+    if (zf <= 0.03 * h || zf >= zmin - 0.03 * h) continue;
+    const ang = rand() * 2 * Math.PI;
+    const at = [r2(e * Math.cos(ang)), r2(e * Math.sin(ang))];
+    const e2 = Math.hypot(at[0], at[1]);
+    const move = rand() < 0.4 ? `\nmove(v, [${r2((rand() - 0.5) * 30)}, ${r2((rand() - 0.5) * 30)}, ${r2((rand() - 0.5) * 30)}])` : '';
+    const code = `let v = cone(${r2(2 * R)}, ${h}, { at: [0, 0, 0] })${move}\nhole(v, { across: ${r2(2 * rho)}, at: [${at[0]}, ${at[1]}], deep: ${r2(h - zf)} })`;
+    tried++;
+    expectedBuild++;
+    const { refusals, m, r, id, doc } = build(code);
+    if (Object.keys(refusals).length) { if (process.env.CONEBLIND_WHY) console.log('REFUSED', Object.values(refusals)[0].slice(0, 160), '::', code.replace(/\n/g, ' ; ')); continue; }
+    built++;
+    const zfExact = h - r2(h - zf);
+    const want = boredVolume(R, h, rho, e2) + Math.PI * rho * rho * zfExact;
+    if (Math.abs(m.volume - want) > 2e-6 * ((Math.PI * R * R * h) / 3)) bad.push(`volume ${m.volume} integral ${want} :: ${code.replace(/\n/g, ' ; ')}`);
+    const o = occtMeasure(r.doc.features, id);
+    if (o !== null) { checkedOcct++; if (Math.abs(m.volume - o) > 1e-6 * o) bad.push(`volume ${m.volume} occt ${o} :: ${code.replace(/\n/g, ' ; ')}`); }
+    for (const d of [0.05, 0.5]) { const e3 = openEdges(doc, id, d); if (e3) bad.push(`open mesh (${e3} edges at ${d}) :: ${code.replace(/\n/g, ' ; ')}`); }
+    if (i % 3 === 0) {
+      const st = stepRoundTrip(code);
+      if (st.refused) stepRefused++;
+      else if (okRead(st)) stepOk++;
+      else bad.push(`STEP wrote a wrong solid ${JSON.stringify({ dv: st.dv, db: st.db, valid: st.got?.valid })} :: ${code.replace(/\n/g, ' ; ')}`);
+    }
+  }
+  console.log(`cone blind bores: built ${built} of ${tried}, against OpenCascade ${checkedOcct}, STEP read back ${stepOk}, STEP refused ${stepRefused}`);
+  assert.deepEqual(bad, [], bad.slice(0, 3).join('\n'));
+  assert.ok(built >= 0.9 * expectedBuild, `only ${built} of ${expectedBuild} expected-exact blind bores built`);
+});

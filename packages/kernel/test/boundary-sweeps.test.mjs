@@ -79,6 +79,30 @@ test('coaxial cone bore: depth stepped across the point where the bore wall meet
   }
   assert.ok(zc === 16);
 });
+
+/** The volume of a cone (base radius R, height H, apex up) above the height zf, inside a bore of radius rho at offset e from the axis:
+ *  the integral over the bore's disk of max(0, H (1 - |p| / R) - zf), split at the circle |p| = R (1 - zf / H) where the integrand kinks. */
+function removedAboveFloor(R, H, rho, e, zf) {
+  const Rf = R * (1 - zf / H);
+  const nt = 3000, pieces = 200;
+  let total = 0;
+  const f = (s, c) => Math.max(0, H * (1 - Math.sqrt(e * e + s * s + 2 * e * s * c) / R) - zf) * s;
+  for (let k = 0; k < nt; k++) {
+    const t = (2 * Math.PI * (k + 0.5)) / nt, c = Math.cos(t), sn = Math.sin(t);
+    const cuts = [0, rho];
+    const disc = Rf * Rf - e * e * sn * sn;
+    if (disc >= 0) for (const sg of [-1, 1]) { const s0 = -e * c + sg * Math.sqrt(disc); if (s0 > 0 && s0 < rho) cuts.push(s0); }
+    cuts.sort((a, b) => a - b);
+    for (let i = 0; i + 1 < cuts.length; i++) {
+      const a = cuts[i], b = cuts[i + 1], h = (b - a) / pieces;
+      let acc = f(a, c) + f(b, c);
+      for (let j = 1; j < pieces; j++) acc += f(a + j * h, c) * (j % 2 ? 4 : 2);
+      total += (acc * h) / 3;
+    }
+  }
+  return (total * 2 * Math.PI) / nt;
+}
+
 test('off-axis cone bore: every offset and depth either refuses (cone shown whole) or equals the closed form', () => {
   const whole = coneTo(H);
   for (const e of [0.5, 2, 3, 3.9, 3.999, 4, 4.001, 5])
@@ -87,8 +111,13 @@ test('off-axis cone bore: every offset and depth either refuses (cone shown whol
       if (Object.keys(out.refusals).length) {
         assert.ok(rel(out.s.volume, whole) < 1e-9, `refused but not whole: e ${e} d ${d}`);
       } else {
-        // built: the bore must lie wholly inside the cone, so the loss is exactly pi r^2 d
-        assert.ok(rel(out.s.volume, whole - Math.PI * d) < 1e-9, `e ${e} d ${d}: ${out.s.volume}`);
+        // built: either the bore lies wholly inside the cone (the loss is exactly pi r^2 d), or it meets the sloping wall and builds as
+        // a bore with a floor (the cone-bore loop): the loss is then the integral over the bore's disk of the cone's height above the floor
+        const exact = rel(out.s.volume, whole - Math.PI * d) < 1e-9;
+        if (!exact) {
+          const loss = removedAboveFloor(R, H, 1, e, H - d);
+          assert.ok(Math.abs(out.s.volume - (whole - loss)) < 2e-6 * whole, `e ${e} d ${d}: ${out.s.volume} vs ${whole - loss}`);
+        }
       }
     }
 });
