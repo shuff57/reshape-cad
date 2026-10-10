@@ -32,6 +32,7 @@ pub mod sketch;
 pub mod geom;
 pub mod topo;
 pub mod build;
+pub mod profile;
 pub mod ops;
 pub mod ops_planar;
 pub mod ops_touch;
