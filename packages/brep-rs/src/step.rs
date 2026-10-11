@@ -544,7 +544,7 @@ fn wire_segs(wire: &[crate::topo::EdgeUse<Curve>]) -> Result<Vec<Seg>, String> {
             // a whole loop closes on itself; an arc of it is an open curve with its own end tangents
             Curve::ConeCyl { phi0, phi1, .. } => fit_curve(&e.curve, !u.forward, ((phi1 - phi0).abs() - std::f64::consts::TAU).abs() > 1e-9)?,
             // An open arc of a conic, which the closed-curve fit above cannot carry.
-            Curve::Hyperbola { .. } => fit_curve(&e.curve, !u.forward, true)?,
+            Curve::Hyperbola { .. } | Curve::Ellipse { .. } => fit_curve(&e.curve, !u.forward, true)?,
             Curve::Circle {
                 center,
                 radius,

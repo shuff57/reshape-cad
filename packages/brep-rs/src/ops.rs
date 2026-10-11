@@ -2470,6 +2470,10 @@ fn plane_face_radial_reach(face: &Face<Curve3, Surface3>, origin: Vec3, axis: Ve
             Curve::Hyperbola { .. } => {
                 far = far.max(radial(e.a.borrow().point).max(radial(e.b.borrow().point)) + e.curve.length());
             }
+            // Conservative: within both semi-diameters of its centre.
+            Curve::Ellipse { center, x_axis, y_axis, .. } => {
+                far = far.max(radial(*center) + crate::math::len(*x_axis) + crate::math::len(*y_axis));
+            }
         }
     }
     Some(far)
@@ -5484,6 +5488,27 @@ pub fn cylinder_cross_bore(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
         return None;
     }
     Some(result)
+}
+
+/// True when every cross trim on `s` is a mitred round (`Cross::Slant`, the rim of a pocket's opening rounded at
+/// its corners) and there is at least one: the one trimmed part a further round or chamfer of the same pick may
+/// take, by rebuilding the whole pick from the part it started on (wasm.rs `rim_corner_build`).
+pub fn has_only_slant_trim(s: &TSolid) -> bool {
+    let mut any = false;
+    for f in s.faces() {
+        if let Surface::Cylinder(c) = &f.borrow().surface {
+            match &c.cross {
+                None => {}
+                Some(crate::geom::Cross::Slant { .. }) => any = true,
+                Some(_) => return false,
+            }
+        } else if let Surface::Sphere(sp) = &f.borrow().surface {
+            if sp.trim.is_bored() {
+                return false;
+            }
+        }
+    }
+    any
 }
 
 /// True when any face of `s` carries a cross-bore trim (`geom::Cross`). Such a
@@ -9552,6 +9577,7 @@ mod cross_bore_pins {
                             }
                             Some(crate::geom::Cross::SphTool { .. }) => unreachable!("no sphere bore in the transverse-bore fixtures"),
                             Some(crate::geom::Cross::ConeTool { .. }) => unreachable!("no cone bore in the transverse-bore fixtures"),
+                            Some(crate::geom::Cross::Slant { .. }) => unreachable!("no mitred round in the transverse-bore fixtures"),
                             None | Some(crate::geom::Cross::Patch { .. }) => {}
                         }
                         checked += 1;

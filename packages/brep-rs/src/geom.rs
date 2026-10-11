@@ -91,6 +91,23 @@ pub enum Curve {
     /// `phi0`..`phi1` is the stretch of the angle the curve covers: `0` to `2 pi` is the whole loop, a smaller stretch an arc of it (a blind bore
     /// whose floor cuts the loop). The curve runs from `phi0` to `phi1` as its fraction goes 0 to 1; either order runs.
     ConeCyl { base: Vec3, d: Vec3, n: Vec3, a: Vec3, h: f64, big_r: f64, r: f64, e: f64, phi0: f64, phi1: f64 },
+    /// An arc of the ellipse where a plane cuts a cylinder obliquely (the mitre where two equal rounds
+    /// meet at the inside corner of a pocket's opening). `x_axis` and `y_axis` are conjugate
+    /// semi-diameters, not necessarily perpendicular nor equal: at angle `phi` (the cylinder's own
+    /// angle, so a point on the cylinder at angle u is the ellipse's point at phi = u)
+    ///
+    ///   p(phi) = center + cos(phi) x_axis + sin(phi) y_axis
+    ///
+    /// The arc runs from `phi0` to `phi1` as its fraction goes 0 to 1; either order runs.
+    Ellipse { center: Vec3, x_axis: Vec3, y_axis: Vec3, phi0: f64, phi1: f64 },
+}
+
+/// 3D point of a [`Curve::Ellipse`] at angle `phi`, and its derivative d/dphi.
+fn ellipse_eval(center: Vec3, x_axis: Vec3, y_axis: Vec3, phi: f64) -> (Vec3, Vec3) {
+    let (s, c) = phi.sin_cos();
+    let p = add(center, add(scale(x_axis, c), scale(y_axis, s)));
+    let dp = add(scale(x_axis, -s), scale(y_axis, c));
+    (p, dp)
 }
 
 /// 3D point of a [`Curve::ConeCyl`] at angle `phi`, and its derivative d/dphi.
@@ -244,6 +261,10 @@ impl Curve {
                 let panels = (512.0 * (phi1 - phi0).abs() / (2.0 * std::f64::consts::PI)).ceil().max(16.0) as usize;
                 integrate_composite(*phi0, *phi1, panels, |phi| crate::math::len(cone_cyl_eval(*base, *d, *n, *a, *h, *big_r, *r, *e, phi).1)).abs()
             }
+            Curve::Ellipse { center, x_axis, y_axis, phi0, phi1 } => {
+                let panels = (128.0 * (phi1 - phi0).abs() / (2.0 * std::f64::consts::PI)).ceil().max(16.0) as usize;
+                integrate_composite(*phi0, *phi1, panels, |phi| crate::math::len(ellipse_eval(*center, *x_axis, *y_axis, phi).1)).abs()
+            }
         }
     }
 
@@ -278,6 +299,7 @@ impl Curve {
                 sph_cyl_eval(*center, *d, *n, *a, *big_r, *r, *e, *sign, t * 2.0 * std::f64::consts::PI).0
             }
             Curve::ConeCyl { base, d, n, a, h, big_r, r, e, phi0, phi1 } => cone_cyl_eval(*base, *d, *n, *a, *h, *big_r, *r, *e, phi0 + t * (phi1 - phi0)).0,
+            Curve::Ellipse { center, x_axis, y_axis, phi0, phi1 } => ellipse_eval(*center, *x_axis, *y_axis, phi0 + t * (phi1 - phi0)).0,
         }
     }
 
@@ -329,6 +351,10 @@ impl Curve {
             Curve::ConeCyl { base, d, n, a, h, big_r, r, e, phi0, phi1 } => {
                 let w = phi1 - phi0;
                 scale(cone_cyl_eval(*base, *d, *n, *a, *h, *big_r, *r, *e, phi0 + t * w).1, w)
+            }
+            Curve::Ellipse { center, x_axis, y_axis, phi0, phi1 } => {
+                let w = phi1 - phi0;
+                scale(ellipse_eval(*center, *x_axis, *y_axis, phi0 + t * w).1, w)
             }
         }
     }
@@ -403,6 +429,22 @@ impl Curve {
                 for i in 0..3 {
                     acc[i] = sgn * integrate_composite(*phi0, *phi1, panels, |phi| {
                         let (p, dp) = cone_cyl_eval(*base, *d, *n, *a, *h, *big_r, *r, *e, phi);
+                        p[i] * crate::math::len(dp)
+                    });
+                }
+                scale(acc, 1.0 / len)
+            }
+            Curve::Ellipse { center, x_axis, y_axis, phi0, phi1 } => {
+                let len = self.length();
+                if len <= 1e-300 {
+                    return *center;
+                }
+                let panels = (128.0 * (phi1 - phi0).abs() / (2.0 * std::f64::consts::PI)).ceil().max(16.0) as usize;
+                let sgn = if phi1 >= phi0 { 1.0 } else { -1.0 };
+                let mut acc = [0.0; 3];
+                for i in 0..3 {
+                    acc[i] = sgn * integrate_composite(*phi0, *phi1, panels, |phi| {
+                        let (p, dp) = ellipse_eval(*center, *x_axis, *y_axis, phi);
                         p[i] * crate::math::len(dp)
                     });
                 }
@@ -490,6 +532,24 @@ impl Curve {
             Curve::ConeCyl { base, d, n, a, h, big_r, r, e, phi0, phi1 } => {
                 expand_over(&mut b, &|phi: f64| cone_cyl_eval(*base, *d, *n, *a, *h, *big_r, *r, *e, phi).0, phi0.min(*phi1), phi0.max(*phi1));
             }
+            Curve::Ellipse { center, x_axis, y_axis, phi0, phi1 } => {
+                b.expand(self.point_at(0.0));
+                b.expand(self.point_at(1.0));
+                // component i: c_i + x_i cos phi + y_i sin phi, stationary where tan phi = y_i / x_i
+                let (lo, hi) = (phi0.min(*phi1), phi0.max(*phi1));
+                for i in 0..3 {
+                    if x_axis[i].abs() < 1e-12 && y_axis[i].abs() < 1e-12 {
+                        continue;
+                    }
+                    let theta = y_axis[i].atan2(x_axis[i]);
+                    for k in -3..=3 {
+                        let cand = theta + (k as f64) * std::f64::consts::PI;
+                        if cand >= lo && cand <= hi {
+                            b.expand(ellipse_eval(*center, *x_axis, *y_axis, cand).0);
+                        }
+                    }
+                }
+            }
         }
         b
     }
@@ -554,6 +614,14 @@ impl Curve {
                 big_r: *big_r,
                 r: *r,
                 e: *e,
+                phi0: *phi0,
+                phi1: *phi1,
+            },
+            // The semi-diameters are vectors, so a reflection carries the same traversal (no handedness to keep).
+            Curve::Ellipse { center, x_axis, y_axis, phi0, phi1 } => Curve::Ellipse {
+                center: t.apply(*center),
+                x_axis: t.dir(*x_axis),
+                y_axis: t.dir(*y_axis),
                 phi0: *phi0,
                 phi1: *phi1,
             },
@@ -891,6 +959,11 @@ pub enum Cross {
     /// `h (1 - D(u) / big_r)`, `D(u) = sqrt(e^2 + r^2 + 2 e r cos u)` (`None`). `e` is the offset of the bore axis from
     /// the cone's, `h` the cone's height.
     ConeTool { big_r: f64, h: f64, e: f64, lo: Option<f64>, hi: Option<f64> },
+    /// A partial wall (a round's quarter cylinder, `arc` set) whose two ends are cut by PLANES that need not be
+    /// square to the axis: the mitre where two equal rounds meet at the inside corner of a pocket's opening. At
+    /// angle u the face runs along the axis from `lo(u)` to `hi(u)`, each `[c, a, b]` meaning
+    /// `c + a cos u + b sin u` (a plane square to the axis has `a = b = 0`). The two never cross over the arc.
+    Slant { lo: [f64; 3], hi: [f64; 3] },
 }
 
 impl Cross {
@@ -912,6 +985,10 @@ impl Cross {
                 let l = lo.unwrap_or(f);
                 Some((l, hi.unwrap_or(f).max(l)))
             }
+            Cross::Slant { lo, hi } => {
+                let (s, c) = u.sin_cos();
+                Some((lo[0] + lo[1] * c + lo[2] * s, hi[0] + hi[1] * c + hi[2] * s))
+            }
             _ => None,
         }
     }
@@ -923,6 +1000,17 @@ impl Cross {
             Cross::SphTool { big_r, e, .. } => Cross::panels((e + rad) / big_r),
             Cross::ConeTool { big_r, e, .. } => Cross::panels((e + rad) / big_r),
             _ => 48,
+        }
+    }
+
+    /// The axial extent (lo, hi) of a slant-ended wall at angle `u`, else None.
+    pub fn slant_bounds(&self, u: f64) -> Option<(f64, f64)> {
+        match self {
+            Cross::Slant { lo, hi } => {
+                let (s, c) = u.sin_cos();
+                Some((lo[0] + lo[1] * c + lo[2] * s, hi[0] + hi[1] * c + hi[2] * s))
+            }
+            _ => None,
         }
     }
 
@@ -960,6 +1048,32 @@ impl Cylinder {
         let o = self.origin;
         let rho = |u: f64| add(scale(self.e1, u.cos()), scale(self.e2, u.sin()));
         match self.cross.as_ref()? {
+            // A slant-ended partial wall: the integrands are trigonometric polynomials of low degree over the
+            // arc's own range, which the composite 16-point rule integrates to machine precision.
+            Cross::Slant { .. } => {
+                let cross = self.cross.as_ref()?;
+                let arc = self.arc.as_ref()?;
+                let (u0, u1) = (arc.start.min(arc.start + arc.span), arc.start.max(arc.start + arc.span));
+                let panels = ((64.0 * (u1 - u0) / tau).ceil() as usize).max(8);
+                let ext = |u: f64| cross.slant_bounds(u).unwrap_or((0.0, 0.0));
+                let area = integrate_composite(u0, u1, panels, |u| {
+                    let (l, h) = ext(u);
+                    rad * (h - l)
+                });
+                let vol = integrate_composite(u0, u1, panels, |u| {
+                    let (l, h) = ext(u);
+                    s * rad * (rad + dot(o, rho(u))) * (h - l)
+                });
+                let mut sx = [0.0; 3];
+                for i in 0..3 {
+                    sx[i] = integrate_composite(u0, u1, panels, |u| {
+                        let (l, h) = ext(u);
+                        let p = add(o, scale(rho(u), rad));
+                        rad * (p[i] * (h - l) + self.axis[i] * 0.5 * (h * h - l * l))
+                    });
+                }
+                Some((area, vol, sx))
+            }
             Cross::Tool { .. } | Cross::SphTool { .. } | Cross::ConeTool { .. } => {
                 let cross = self.cross.as_ref()?;
                 let panels = cross.tool_panels(rad);
@@ -1614,7 +1728,7 @@ impl Surface {
         // A bore's own wall is bounded by the meeting curve, not a rectangle:
         // measure it directly (Cross::Tool).
         if let Surface::Cylinder(c) = self {
-            if let Some(Cross::Tool { .. } | Cross::Patch { .. } | Cross::SphTool { .. } | Cross::ConeTool { .. }) = c.cross {
+            if let Some(Cross::Tool { .. } | Cross::Patch { .. } | Cross::SphTool { .. } | Cross::ConeTool { .. } | Cross::Slant { .. }) = c.cross {
                 if let Some((area, _, sx)) = c.cross_region() {
                     return (area, [sx[0] / area, sx[1] / area, sx[2] / area]);
                 }
@@ -1704,7 +1818,7 @@ impl Surface {
             return 0.0;
         }
         if let Surface::Cylinder(c) = self {
-            if let Some(Cross::Tool { .. } | Cross::Patch { .. } | Cross::SphTool { .. } | Cross::ConeTool { .. }) = c.cross {
+            if let Some(Cross::Tool { .. } | Cross::Patch { .. } | Cross::SphTool { .. } | Cross::ConeTool { .. } | Cross::Slant { .. }) = c.cross {
                 if let Some((_, vt, _)) = c.cross_region() {
                     return vt;
                 }
@@ -1784,6 +1898,21 @@ impl Surface {
                         for sgn in [-1.0, 1.0] {
                             b.expand(at(uc + al, c_v + sgn * z));
                         }
+                    }
+                }
+            }
+            Surface::Cylinder(c) if matches!(c.cross, Some(Cross::Slant { .. })) => {
+                // A slant-ended partial wall: linear in the axial parameter, so its extremes lie on its two end
+                // curves over the arc's own range (the ends included).
+                if let (Some(cross), Some(arc)) = (&c.cross, &c.arc) {
+                    let (u0, u1) = (arc.start.min(arc.start + arc.span), arc.start.max(arc.start + arc.span));
+                    let n = 2048usize;
+                    for k in 0..=n {
+                        let u = u0 + (u1 - u0) * k as f64 / n as f64;
+                        let (l, h) = cross.slant_bounds(u).unwrap_or((c.vmin, c.vmax));
+                        let rho = add(c.origin, scale(add(scale(c.e1, u.cos()), scale(c.e2, u.sin())), c.radius));
+                        b.expand(add(rho, scale(c.axis, l)));
+                        b.expand(add(rho, scale(c.axis, h)));
                     }
                 }
             }

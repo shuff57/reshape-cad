@@ -111,26 +111,18 @@ function build(doc) {
 }
 
 for (const [t, p, d, r] of [[10, 10, 4, 1], [14, 10, 4, 1], [10, 6, 3, 0.5]]) {
-  test(`kernel: rim of a ${p}x${p} pocket, plate ${t}, r ${r}: every name resolves, the rim is refused whole in a plain sentence, the shown solid is the pocketed plate`, { skip: !haveWasm }, () => {
+  test(`kernel: rim of a ${p}x${p} pocket, plate ${t}, r ${r}: every name resolves and the whole rim is rounded, its corners mitred`, { skip: !haveWasm }, () => {
     const res = runScript(script(t, p, d, r));
     assert.deepEqual(res.errors, []);
     const { refusals, volume } = build(res.doc);
-    // no name is left unresolved: a refusal may only be the kernel's sentence about the rounding itself
-    for (const why of Object.values(refusals)) {
-      assert.doesNotMatch(why, /could not be found/);
-      assert.match(why, /^brep-rs cannot round these neighbouring edges together yet: /);
-      assert.match(why, /is shown without it\.$/);
-    }
-    // all or nothing: the four edges meet at corners the kernel does not blend, so a rim is never shown rounded on only
-    // some of its edges (FreeCAD's rounded rim is 11591.03244517401, 15 faces, for the first case)
-    const fil = res.doc.features.filter((f) => f.kind === 'fillet');
-    assert.equal(Object.keys(refusals).length, fil.length, 'every round of the rim is refused, none half applied');
-    const applied = fil.filter((f) => !(f.id in refusals));
-    const sk = res.doc.features.find((f) => f.id === 'sk2');
-    const len = (f) => { const w = f.edge.of.find((n) => n.cause === 'swept'); const a = sk.points[w.edge], b = sk.points[(w.edge + 1) % sk.points.length]; return Math.hypot(b[0] - a[0], b[1] - a[1]); };
+    assert.deepEqual(refusals, {}, 'no name unresolved, no corner refused');
+    // The four rounds together: (1 - pi/4) r^2 per unit length of rim, and at each of the four corners the mitre
+    // removes the material above BOTH quarter cylinders, (5/3 - pi/2) r^3 (FreeCAD: 11591.03244517401 for the first
+    // case, 15 faces -- see packages/brep-adapter/test/fillet-rim-corner.test.mjs for the referee comparison).
     const pocketed = 40 * 30 * t - p * p * d;
-    const want = pocketed - applied.reduce((s, f) => s + (1 - Math.PI / 4) * f.size * f.size * len(f), 0);
-    assert.ok(Math.abs(volume - want) <= 1e-6 * want, `shown ${volume} want ${want}`);
+    const want = pocketed - (1 - Math.PI / 4) * r * r * 4 * p - 4 * (5 / 3 - Math.PI / 2) * r * r * r;
+    assert.ok(Math.abs(volume - want) <= 1e-9 * want, `shown ${volume} want ${want}`);
+    if (t === 10 && p === 10 && r === 1) assert.ok(Math.abs(volume - 11591.03244517401) <= 1e-9 * volume, `${volume} vs FreeCAD`);
   });
 }
 

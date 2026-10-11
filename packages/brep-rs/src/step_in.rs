@@ -395,7 +395,7 @@ fn segs_of(uses: &[EdgeUse<Curve>]) -> Vec<Seg> {
             (e.b.borrow().point, e.a.borrow().point)
         };
         out.push(match &e.curve {
-            Curve::Segment { .. } | Curve::CylCyl { .. } | Curve::SphCyl { .. } | Curve::ConeCyl { .. } | Curve::Hyperbola { .. } => Seg::Line { a, b },
+            Curve::Segment { .. } | Curve::CylCyl { .. } | Curve::SphCyl { .. } | Curve::ConeCyl { .. } | Curve::Hyperbola { .. } | Curve::Ellipse { .. } => Seg::Line { a, b },
             Curve::Circle {
                 center,
                 radius,

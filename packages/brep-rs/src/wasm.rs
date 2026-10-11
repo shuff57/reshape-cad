@@ -1368,6 +1368,8 @@ struct RimMember {
     /// The two end points of the edge, on the part the run started from.
     ends: Option<(Vec3, Vec3)>,
     built: bool,
+    /// The feature as written, so the run can be rebuilt from `pre` with every member's corner blended.
+    feature: Value,
 }
 
 fn rim_shares_vertex(a: &(Vec3, Vec3), b: &(Vec3, Vec3)) -> bool {
@@ -1444,17 +1446,27 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
             // A hole in a sphere bored by an earlier hole is the one cut such a part takes (more bores parallel to the
             // first, SPEC-brep-sphere-multi-bore.md); the builder refuses what it cannot cut, in the hole's own sentence.
             let takes_it = |n: &str| kind == "hole" && hist.shapes.get(n).is_some_and(ops::is_bored_sphere);
+            // A further round or chamfer of a rim whose corners are mitred (S4h) is taken by the fillet branch,
+            // which rebuilds the whole pick from the part it started on and refuses anything else in words.
+            let mitred = |n: &str| kind == "fillet" && hist.shapes.get(n).is_some_and(ops::has_only_slant_trim);
             let crossed = names.iter().copied().find(|n| {
                 (hist.shapes.get(*n).is_some_and(ops::has_cross_trim)
                     || hist.shapes.get(hist.head_of(n)).is_some_and(ops::has_cross_trim))
                     && !takes_it(n)
                     && !takes_it(hist.head_of(n))
+                    && !mitred(n)
+                    && !mitred(hist.head_of(n))
             });
             if let Some(n) = crossed {
+                let what = if hist.shapes.get(n).or_else(|| hist.shapes.get(hist.head_of(n))).is_some_and(ops::has_only_slant_trim) {
+                    "rounds mitred at the corners of a pocket's rim"
+                } else {
+                    "a bore across its side"
+                };
                 refusals.insert(
                     id.clone(),
                     json!(format!(
-                        "{kind} {id}: {n} already has a bore across its side, and brep-rs can only move or copy a part like that yet -- {id} is shown without it."
+                        "{kind} {id}: {n} already has {what}, and brep-rs can only move or copy a part like that yet -- {id} is shown without it."
                     )),
                 );
                 continue;
@@ -2898,14 +2910,32 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                         let ends = (e.a.borrow().point, e.b.borrow().point);
                         ends
                     });
-                let mut rim_run = match rim_runs.remove(target) {
+                let continued = rim_runs.remove(target);
+                // S4h: a part whose pocket rim is mitred at its corners is only rounded or chamfered further
+                // within the SAME pick (same size and style). An edge of the pick that meets the run at a pocket
+                // corner rebuilds the run from the part it started on (rim_corner_build); one clear of the corners
+                // (the plate's outer front edge) is cut by the planar boolean, which carries the mitred faces
+                // through untouched, and is held to that path's own volume check. A different size or style is not
+                // taken yet: nothing here has proved such a cut stays clear of the mitred rounds, or blends into
+                // them where it meets them, so it is refused rather than trusted.
+                if ops::has_only_slant_trim(&src) && !continued.as_ref().is_some_and(|r| r.round == round && (r.size - size).abs() <= 1e-12) {
+                    refusals.insert(
+                        id.clone(),
+                        json!(format!(
+                            "{target} already has rounds mitred at the corners of a pocket's rim, and brep-rs can only round or chamfer more of its edges in the same pick (the same size and style) yet -- {label} is shown without it."
+                        )),
+                    );
+                    hist.insert(&id, src);
+                    continue;
+                }
+                let mut rim_run = match continued {
                     Some(r) if r.round == round && (r.size - size).abs() <= 1e-12 => r,
                     _ => RimRun { pre: src.clone(), size, round, members: Vec::new(), dead: false },
                 };
                 if rim_run.dead {
                     refusals.insert(id.clone(), json!(rim_corner_sentence(&label, round)));
                     hist.insert(&id, rim_run.pre.clone());
-                    rim_run.members.push(RimMember { id: id.clone(), label: label.clone(), ends: own_ends, built: false });
+                    rim_run.members.push(RimMember { id: id.clone(), label: label.clone(), ends: own_ends, built: false, feature: f.clone() });
                     rim_runs.insert(id.clone(), rim_run);
                     continue;
                 }
@@ -2968,6 +2998,10 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
  FilletErr::SplitEdge => format!(
  "brep-rs cannot chamfer an edge that carries on across the mirror or pattern plane into the next copy yet; chamfer the part before you mirror it -- {label} is shown without it."
  ),
+                            FilletErr::EndCorner => format!(
+                                "brep-rs cannot {} this edge yet: it ends at an inside corner where it meets another round, chamfer or slanted face, and the two would have to be blended into each other there (neighbouring edges of a pocket's rim are only built together in one pick, at the same size and style) -- {label} is shown without it.",
+                                if round { "round" } else { "chamfer" }
+                            ),
                             _ if round => format!(
                                 "brep-rs can only round a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); round it on the plain box before you hollow, chamfer or cut it -- {label} is shown without it."
                             ),
@@ -2993,14 +3027,38 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                             })
                         })
                     });
-                    rim_run.members.push(RimMember { id: id.clone(), label: label.clone(), ends: own_ends, built });
+                    rim_run.members.push(RimMember { id: id.clone(), label: label.clone(), ends: own_ends, built, feature: f.clone() });
                     if conflict {
-                        rim_run.dead = true;
-                        for m in &rim_run.members {
-                            hist.ops.remove(&m.id);
-                            replay_log.remove(&m.id);
-                            hist.shapes.insert(m.id.clone(), rim_run.pre.clone());
-                            refusals.insert(m.id.clone(), json!(rim_corner_sentence(&m.label, round)));
+                        // S4h: the run is built TOGETHER from the part it started on, every inside corner mitred
+                        // (rim_corner_build). This member's shape is that whole run; the earlier members keep
+                        // theirs (each the run as far as it had got). Anything the corner builder cannot take
+                        // is refused whole, as before.
+                        let feats: Vec<Value> = rim_run.members.iter().map(|m| m.feature.clone()).collect();
+                        match rim_corner_build(&rim_run.pre, &hist, &feats, size, round) {
+                            Ok(solid) => {
+                                refusals.remove(&id);
+                                hist.ops.remove(&id);
+                                let prev = hist.shapes.get(target).cloned().unwrap_or_else(|| rim_run.pre.clone());
+                                let face_fates: Vec<Fate> = prev.faces().iter().map(|fc| carry_fate(&solid, fc)).collect();
+                                replay_log.insert(
+                                    id.clone(),
+                                    ReplayStep::Round { parent: target.to_string(), feature: f.clone(), size, round },
+                                );
+                                record_op(&mut hist, &id, OpKind::Fillet, vec![target.to_string()], face_fates, Vec::new());
+                                hist.insert(&id, solid);
+                                if let Some(m) = rim_run.members.last_mut() {
+                                    m.built = true;
+                                }
+                            }
+                            Err(_) => {
+                                rim_run.dead = true;
+                                for m in &rim_run.members {
+                                    hist.ops.remove(&m.id);
+                                    replay_log.remove(&m.id);
+                                    hist.shapes.insert(m.id.clone(), rim_run.pre.clone());
+                                    refusals.insert(m.id.clone(), json!(rim_corner_sentence(&m.label, round)));
+                                }
+                            }
                         }
                     }
                     rim_runs.insert(id.clone(), rim_run);
@@ -8857,6 +8915,9 @@ enum FilletErr {
  SplitEdge,
  /// A round whose ends are not plain, or whose cutter reaches other material.
  RoundEnds,
+ /// An end of the edge meets another round, chamfer or slanted face at an inside corner (`fillet_vertex_is_convex`):
+ /// the cut would have to be blended into it there rather than run on past the end.
+ EndCorner,
 }
 
 /// Dispatch the box `round` primitive field (SPEC-brep-round.md): refuse a
@@ -9142,6 +9203,419 @@ fn map_edge_into(
     } else {
         None
     }
+}
+
+/// What a planar face contributes to a straight edge's blend: its outward normal, its in-face direction
+/// square to the edge pointing into the face, and how far the face reaches that way from the edge's
+/// midpoint. The same reading `build_fillet` makes for one edge, for a run of edges blended together.
+fn fillet_face_data(face: &build::TFace, midpoint: Vec3, which: &build::TEdge) -> Result<(Vec3, Vec3, f64), FilletErr> {
+    let (surface_normal, forward) = {
+        let f = face.borrow();
+        let Surface::Plane(plane) = &f.surface else {
+            return Err(FilletErr::NoBox);
+        };
+        (plane.n, f.forward)
+    };
+    let normal = if forward { normalize(surface_normal) } else { scale(normalize(surface_normal), -1.0) };
+    let mut inward = [0.0; 3];
+    for wire in &face.borrow().boundary {
+        for use_ in &wire.borrow().edges {
+            if !crate::topo::same(&use_.edge, which) {
+                continue;
+            }
+            let e = use_.edge.borrow();
+            let (pa, pb) = (e.a.borrow().point, e.b.borrow().point);
+            let travel = if use_.forward { sub(pb, pa) } else { sub(pa, pb) };
+            inward = cross(normal, normalize(travel));
+        }
+    }
+    let winding = {
+        let fc = face.borrow();
+        let mut acc = [0.0; 3];
+        if let Some(outer) = fc.boundary.first() {
+            let pts: Vec<Vec3> = outer
+                .borrow()
+                .edges
+                .iter()
+                .map(|u| {
+                    let e = u.edge.borrow();
+                    let r = if u.forward { e.a.borrow().point } else { e.b.borrow().point };
+                    r
+                })
+                .collect();
+            for i in 0..pts.len() {
+                acc = add(acc, cross(pts[i], pts[(i + 1) % pts.len()]));
+            }
+        }
+        dot(acc, normal)
+    };
+    let inward = if winding < 0.0 { scale(inward, -1.0) } else { inward };
+    let inward = normalize(inward);
+    if len(inward) <= 1e-9 || dot(inward, normal).abs() > 1e-7 {
+        return Err(FilletErr::NoBox);
+    }
+    let mut reach: f64 = 0.0;
+    for wire in &face.borrow().boundary {
+        for use_ in &wire.borrow().edges {
+            let e = use_.edge.borrow();
+            for point in [e.a.borrow().point, e.b.borrow().point] {
+                reach = reach.max(dot(sub(point, midpoint), inward));
+            }
+        }
+    }
+    if reach <= 1e-9 {
+        return Err(FilletErr::NoBox);
+    }
+    Ok((normal, inward, reach))
+}
+
+/// How one end of a straight edge between `fa` and `fb` meets the third face there: `Some(true)` when that face
+/// is a plain flat face square to the edge with the solid behind it (the blend may run past the end into air),
+/// `Some(false)` when the solid carries on past it (the blend must stop flush), `None` for anything else.
+fn fillet_end_kind(
+    src: &TSolid,
+    fa: &build::TFace,
+    fb: &build::TFace,
+    endpoint: &crate::topo::VertexRef,
+    toward: Vec3,
+    edge_direction: Vec3,
+) -> Option<bool> {
+    let mut kind: Option<bool> = None;
+    for face in src.faces() {
+        if std::rc::Rc::ptr_eq(&face, fa) || std::rc::Rc::ptr_eq(&face, fb) {
+            continue;
+        }
+        let touches = face.borrow().boundary.iter().any(|wire| {
+            wire.borrow().edges.iter().any(|use_| {
+                let e = use_.edge.borrow();
+                std::rc::Rc::ptr_eq(&e.a, endpoint) || std::rc::Rc::ptr_eq(&e.b, endpoint)
+            })
+        });
+        if !touches {
+            continue;
+        }
+        let fb_ = face.borrow();
+        let Surface::Plane(p) = &fb_.surface else { return None };
+        let n = if fb_.forward { normalize(p.n) } else { scale(normalize(p.n), -1.0) };
+        if dot(n, edge_direction).abs() < 1.0 - 1e-9 || kind.is_some() {
+            return None;
+        }
+        kind = Some(dot(n, toward) > 0.0);
+    }
+    kind
+}
+
+/// Whether the part is CONVEX at `endpoint`: every edge leaving the vertex lies behind the plane of every flat face
+/// that meets there (a curved face's own edges lie in it, so its plane adds nothing those faces do not). That is
+/// what lets a chamfer's wedge run on past an end whose third face is not square to the edge (a bevel, a round's
+/// cylinder): past a convex corner it only reaches what the edge's own cut takes where it meets that face. At an
+/// inside corner -- the corner of a pocket's rim, where a neighbouring edge already carries a round or chamfer of
+/// another size -- the part carries on past the end, and the wedge would gouge it.
+fn fillet_vertex_is_convex(src: &TSolid, endpoint: &crate::topo::VertexRef) -> bool {
+    let p = endpoint.borrow().point;
+    let touches = |face: &build::TFace| {
+        face.borrow().boundary.iter().any(|wire| {
+            wire.borrow().edges.iter().any(|use_| {
+                let e = use_.edge.borrow();
+                std::rc::Rc::ptr_eq(&e.a, endpoint) || std::rc::Rc::ptr_eq(&e.b, endpoint)
+            })
+        })
+    };
+    let normals: Vec<Vec3> = src
+        .faces()
+        .iter()
+        .filter(|f| touches(f))
+        .filter_map(|f| {
+            let fb = f.borrow();
+            let Surface::Plane(pl) = &fb.surface else { return None };
+            Some(if fb.forward { normalize(pl.n) } else { scale(normalize(pl.n), -1.0) })
+        })
+        .collect();
+    // Each edge's direction away from the vertex: its tangent there, from whichever end of its curve lies at `p`.
+    let mut leaving: Vec<Vec3> = Vec::new();
+    for e in src.edges() {
+        let eb = e.borrow();
+        if !std::rc::Rc::ptr_eq(&eb.a, endpoint) && !std::rc::Rc::ptr_eq(&eb.b, endpoint) {
+            continue;
+        }
+        let (c0, c1) = (eb.curve.point_at(0.0), eb.curve.point_at(1.0));
+        let (d0, d1) = (len(sub(c0, p)), len(sub(c1, p)));
+        let tol = 1e-6 * (1.0 + len(p));
+        if d0 <= tol || d0 <= d1 {
+            leaving.push(normalize(eb.curve.derivative_at(0.0)));
+        }
+        if d1 <= tol || d1 < d0 {
+            leaving.push(scale(normalize(eb.curve.derivative_at(1.0)), -1.0));
+        }
+    }
+    leaving.iter().all(|d| d.iter().all(|x| x.is_finite()) && normals.iter().all(|n| dot(*n, *d) <= 1e-7))
+}
+
+/// One edge of a rim run, read on the part the run started from.
+struct RimEdge {
+    edge: build::TEdge,
+    fa: build::TFace,
+    fb: build::TFace,
+    a: Vec3,
+    b: Vec3,
+    dir: Vec3,
+    length: f64,
+    in_a: Vec3,
+    in_b: Vec3,
+    /// How each end (a, b) is cut: the wedge runs `leg` past a convex end, stops flush at a concave plain end,
+    /// and is mitred against the neighbouring member at the inside corner of a pocket's opening.
+    ends: [RimEnd; 2],
+}
+
+#[derive(Clone, Copy)]
+enum RimEnd {
+    Convex,
+    Flush,
+    /// The mitre plane: through the shared vertex `v`, unit normal `m` with THIS member's wedge on the positive side.
+    Mitre { v: Vec3, m: Vec3 },
+}
+
+/// S4h: a run of equal rounds (or chamfers) whose edges meet at the inside corners of a pocket's opening, built
+/// TOGETHER from the part the run started from. Two such edges meet at a vertex whose third edge is concave
+/// (the pocket's vertical corner): each blend is extended by its own tangent length into the corner and cut
+/// by the mitre plane through the vertex, the plane of symmetry that swaps the two edges, so the two cuts
+/// remove the INTERSECTION of the two blends there, which is what OCCT (FreeCAD) builds. For rounds the two
+/// quarter cylinders then meet along the arc of the ellipse where the mitre plane cuts them.
+///
+/// This slice takes square geometry only: every edge straight, between two flat faces at a right angle, two
+/// members meeting at a corner perpendicular to each other with the same face between them, and every other
+/// end a plain flat face square to the edge. The removed volume is checked against its closed form -- per edge
+/// the blend's cross-section times its length, per corner `leg^3 / 3` for a chamfer and `(5/3 - pi/2) r^3`
+/// for a round -- and the part gains exactly one face per member, or the run is refused.
+fn rim_corner_build(pre: &TSolid, hist: &History, features: &[Value], size: f64, round: bool) -> Result<TSolid, FilletErr> {
+    if pre.shells.len() != 1 || features.len() < 2 {
+        return Err(FilletErr::NoBox);
+    }
+    let src = build::unify_coplanar(pre);
+    let near = |p: Vec3, q: Vec3| len(sub(p, q)) <= 1e-6 * (1.0 + len(p).max(len(q)));
+    let mut members: Vec<RimEdge> = Vec::new();
+    for f in features {
+        let (fa0, fb0) = fillet_face_pair(hist, f).ok_or(FilletErr::NoEdge)?;
+        let edge0 = hist.edge_between(&fa0, &fb0).ok_or(FilletErr::NoEdge)?;
+        if !matches!(&edge0.borrow().curve, crate::geom::Curve::Segment { .. }) {
+            return Err(FilletErr::NoEdge);
+        }
+        let own = src.edges().iter().any(|e| crate::topo::same(e, &edge0))
+            && src.faces().iter().any(|f| std::rc::Rc::ptr_eq(f, &fa0))
+            && src.faces().iter().any(|f| std::rc::Rc::ptr_eq(f, &fb0));
+        let (edge, fa, fb) = if own { (edge0, fa0, fb0) } else { map_edge_into(&src, &edge0, &fa0, &fb0).ok_or(FilletErr::NoBox)? };
+        let (a, b) = {
+            let e = edge.borrow();
+            let r = (e.a.borrow().point, e.b.borrow().point);
+            r
+        };
+        let length = len(sub(b, a));
+        if length <= 1e-9 {
+            return Err(FilletErr::NoEdge);
+        }
+        let dir = scale(sub(b, a), 1.0 / length);
+        let midpoint = scale(add(a, b), 0.5);
+        let (normal_a, in_a, reach_a) = fillet_face_data(&fa, midpoint, &edge)?;
+        let (normal_b, in_b, reach_b) = fillet_face_data(&fb, midpoint, &edge)?;
+        // square corners only: the closed forms below are for a right angle
+        if dot(normal_a, normal_b).abs() > 1e-9 || dot(in_a, in_b).abs() > 1e-9 {
+            return Err(FilletErr::NoBox);
+        }
+        if size <= 0.0 || size >= reach_a.min(reach_b) - 1e-12 {
+            return Err(FilletErr::TooBig);
+        }
+        let into_corner = normalize(add(in_a, in_b));
+        if !ops::inside_solid(&src, add(midpoint, scale(into_corner, 1e-6))) {
+            return Err(FilletErr::Concave);
+        }
+        for endpoint in [&edge.borrow().a, &edge.borrow().b] {
+            let count = src
+                .faces()
+                .iter()
+                .filter(|face| {
+                    face.borrow().boundary.iter().any(|wire| {
+                        wire.borrow().edges.iter().any(|use_| {
+                            let e = use_.edge.borrow();
+                            std::rc::Rc::ptr_eq(&e.a, endpoint) || std::rc::Rc::ptr_eq(&e.b, endpoint)
+                        })
+                    })
+                })
+                .count();
+            if count > 3 {
+                return Err(FilletErr::VertexTooComplex);
+            }
+        }
+        members.push(RimEdge { edge, fa, fb, a, b, dir, length, in_a, in_b, ends: [RimEnd::Flush; 2] });
+    }
+    // Each member must be its own edge.
+    for i in 0..members.len() {
+        for j in 0..i {
+            if crate::topo::same(&members[i].edge, &members[j].edge) {
+                return Err(FilletErr::NoEdge);
+            }
+        }
+    }
+    // A right angle: the round's tangent length is its radius, a chamfer's leg its size.
+    let leg = size;
+    let mut mitre_ends = 0usize;
+    for i in 0..members.len() {
+        for end in 0..2 {
+            let p = if end == 0 { members[i].a } else { members[i].b };
+            let shared: Vec<usize> = (0..members.len()).filter(|j| *j != i && (near(members[*j].a, p) || near(members[*j].b, p))).collect();
+            let kind = match shared.len() {
+                0 => {
+                    let m = &members[i];
+                    let toward = if end == 0 { scale(m.dir, -1.0) } else { m.dir };
+                    let endpoint = if end == 0 { m.edge.borrow().a.clone() } else { m.edge.borrow().b.clone() };
+                    match fillet_end_kind(&src, &m.fa, &m.fb, &endpoint, toward, m.dir) {
+                        Some(true) => RimEnd::Convex,
+                        Some(false) => RimEnd::Flush,
+                        None => return Err(FilletErr::RoundEnds),
+                    }
+                }
+                1 => {
+                    let j = shared[0];
+                    let (mi, mj) = (&members[i], &members[j]);
+                    // the two edges, away from the shared vertex
+                    let ti = if end == 0 { mi.dir } else { scale(mi.dir, -1.0) };
+                    let tj = if near(mj.a, p) { mj.dir } else { scale(mj.dir, -1.0) };
+                    if dot(ti, tj).abs() > 1e-9 {
+                        return Err(FilletErr::NoBox);
+                    }
+                    // one face in common (the top of the plate), the wedges' shared quadrant is material (an inside corner)
+                    let common = [&mi.fa, &mi.fb].iter().filter(|x| std::rc::Rc::ptr_eq(x, &mj.fa) || std::rc::Rc::ptr_eq(x, &mj.fb)).count();
+                    if common != 1 || !rim_corner_is_concave(&src, &(mi.a, mi.b), &(mj.a, mj.b)) {
+                        return Err(FilletErr::NoBox);
+                    }
+                    // the neighbour runs along this member's in-face direction of the common face, away from the pocket
+                    let in_common = if std::rc::Rc::ptr_eq(&mi.fa, &mj.fa) || std::rc::Rc::ptr_eq(&mi.fa, &mj.fb) { mi.in_a } else { mi.in_b };
+                    if dot(in_common, tj) > -(1.0 - 1e-9) {
+                        return Err(FilletErr::NoBox);
+                    }
+                    mitre_ends += 1;
+                    RimEnd::Mitre { v: p, m: normalize(sub(ti, tj)) }
+                }
+                _ => return Err(FilletErr::VertexTooComplex),
+            };
+            members[i].ends[end] = kind;
+        }
+    }
+    if mitre_ends == 0 || mitre_ends % 2 != 0 {
+        return Err(FilletErr::NoBox);
+    }
+    let corners = mitre_ends / 2;
+    // The wedge of each member: a triangular prism (apex on the edge, one leg along each face) that runs `leg` past
+    // a convex end, stops flush at a concave plain one, and at a mitred end is cut by the mitre plane: its apex
+    // stays at the vertex, its leg along the common face reaches `leg` back along the edge (onto the plane), its
+    // other leg stays square. Five flat faces, every one planar.
+    let tools: Vec<TSolid> = members
+        .iter()
+        .map(|m| {
+            let tri = |end: usize| -> [Vec3; 3] {
+                let (p, away) = if end == 0 { (m.a, scale(m.dir, -1.0)) } else { (m.b, m.dir) };
+                match m.ends[end] {
+                    RimEnd::Convex => {
+                        let apex = add(p, scale(away, leg));
+                        [apex, add(apex, scale(m.in_a, leg)), add(apex, scale(m.in_b, leg))]
+                    }
+                    RimEnd::Flush => [p, add(p, scale(m.in_a, leg)), add(p, scale(m.in_b, leg))],
+                    RimEnd::Mitre { v, m: mn } => {
+                        // the leg that lies in the common face slides back along the edge onto the mitre plane
+                        let top = add(v, scale(m.in_a, leg));
+                        let bot = add(v, scale(m.in_b, leg));
+                        let slide = |q: Vec3| {
+                            let d = dot(sub(q, v), mn);
+                            let da = dot(away, mn);
+                            if da.abs() < 1e-12 { q } else { add(q, scale(away, -d / da)) }
+                        };
+                        [v, slide(top), slide(bot)]
+                    }
+                }
+            };
+            let (ta, tb) = (tri(0), tri(1));
+            let points: Vec<Vec3> = vec![ta[0], ta[1], ta[2], tb[0], tb[1], tb[2]];
+            let centroid = scale(points.iter().fold([0.0; 3], |acc, p| add(acc, *p)), 1.0 / 6.0);
+            let ring = |idx: Vec<usize>| -> (Vec3, Vec<usize>) {
+                let pts: Vec<Vec3> = idx.iter().map(|i| points[*i]).collect();
+                let mut n = [0.0; 3];
+                for k in 0..pts.len() {
+                    n = add(n, cross(sub(pts[k], pts[0]), sub(pts[(k + 1) % pts.len()], pts[0])));
+                }
+                let n = normalize(n);
+                if dot(n, sub(pts[0], centroid)) >= 0.0 {
+                    (n, idx)
+                } else {
+                    let mut r = idx.clone();
+                    r.reverse();
+                    (scale(n, -1.0), r)
+                }
+            };
+            let faces = vec![ring(vec![0, 1, 2]), ring(vec![3, 4, 5]), ring(vec![0, 3, 4, 1]), ring(vec![0, 2, 5, 3]), ring(vec![1, 4, 5, 2])];
+            build::ensure_outward(&build::polyhedron_solid(&points, &faces))
+        })
+        .collect();
+    let v0 = build::solid_volume(&src);
+    // Agreement with a closed form, both against the part (1e-9 of its volume) and against what is REMOVED (1e-6 of
+    // it): at a small size the part's allowance alone dwarfs a whole corner term (r = 0.01 on a 11600 plate: 1.2e-5
+    // against 9.6e-8 per round corner), so a missing or doubled corner would pass on it.
+    let agrees = |got: f64, want: f64| {
+        got.is_finite() && (got - want).abs() <= 1e-9 * v0.abs().max(1.0) && (got - want).abs() <= 1e-6 * want.abs()
+    };
+    let mut cur = src.clone();
+    for tool in &tools {
+        cur = ops::boolean("subtract", &cur, tool).map(|s| build::ensure_outward(&s)).ok_or(FilletErr::RoundEnds)?;
+    }
+    // Exact, as cut flat: the triangle times each edge's length, plus a square pyramid of side `leg` per corner.
+    let total_len: f64 = members.iter().map(|m| m.length).sum();
+    let flat_want = 0.5 * leg * leg * total_len + corners as f64 * leg * leg * leg / 3.0;
+    let got = v0 - build::solid_volume(&cur);
+    if !agrees(got, flat_want) {
+        return Err(FilletErr::RoundEnds);
+    }
+    if cur.faces().len() != src.faces().len() + members.len() {
+        return Err(FilletErr::RoundEnds);
+    }
+    if !round {
+        return Ok(cur);
+    }
+    // Re-skin each bevel as its tangent quarter cylinder; a mitred chord becomes the ellipse where the mitre plane
+    // cuts it, shared with the neighbour's cylinder.
+    let theta = std::f64::consts::FRAC_PI_2;
+    for m in &members {
+        let into = normalize(add(m.in_a, m.in_b));
+        let midpoint = scale(add(m.a, m.b), 0.5);
+        let bevel_point = add(midpoint, scale(add(scale(m.in_a, leg), scale(m.in_b, leg)), 0.5));
+        let bevel_normal = scale(into, -1.0);
+        let mut bevel: Option<build::TFace> = None;
+        for face in cur.faces() {
+            let hit = match &face.borrow().surface {
+                Surface::Plane(p) => {
+                    let n = if face.borrow().forward { normalize(p.n) } else { scale(normalize(p.n), -1.0) };
+                    len(sub(n, bevel_normal)) < 1e-7 && dot(sub(bevel_point, p.origin), normalize(p.n)).abs() < 1e-7
+                }
+                _ => false,
+            };
+            if hit {
+                if bevel.is_some() {
+                    return Err(FilletErr::RoundEnds);
+                }
+                bevel = Some(face.clone());
+            }
+        }
+        let bevel = bevel.ok_or(FilletErr::RoundEnds)?;
+        let mitres: Vec<(Vec3, Vec3)> = m.ends.iter().filter_map(|e| match e { RimEnd::Mitre { v, m } => Some((*v, *m)), _ => None }).collect();
+        let axis_point = add(midpoint, scale(into, size / (0.5 * theta).sin()));
+        build::bevel_to_round_mitred(&bevel, axis_point, m.dir, size, theta, false, &mitres).ok_or(FilletErr::RoundEnds)?;
+    }
+    // Exact, rounded: (1 - pi/4) r^2 per unit length, and (5/3 - pi/2) r^3 per corner -- the corner square's
+    // material above both quarter cylinders, 2 int_0^1 (1 - u)(1 - sqrt(1 - u^2)) du.
+    let pi = std::f64::consts::PI;
+    let want = (1.0 - pi / 4.0) * size * size * total_len + corners as f64 * (5.0 / 3.0 - pi / 2.0) * size * size * size;
+    let got = v0 - build::solid_volume(&cur);
+    if !agrees(got, want) {
+        return Err(FilletErr::RoundEnds);
+    }
+    Ok(cur)
 }
 
 /// Build the fillet/chamfer: a box edge rounded or chamfered is the extrusion
@@ -9621,6 +10095,18 @@ fn build_fillet(
          return Err(FilletErr::Concave);
      }
      return Ok(joined);
+ }
+ // An end whose third face is not square to the edge (a bevel, a round) lets the wedge run on past it only at a
+ // CONVEX corner. At an inside corner -- a pocket's rim where the neighbouring edge already carries a round or
+ // chamfer of another size -- the part carries on past the end and the wedge would gouge it; that corner is one
+ // blend of the two edges (S4h), built only for a run picked together at one size and style.
+ {
+     let e = edge.borrow();
+     for (kind, endpoint) in [(convex_a, &e.a), (convex_b, &e.b)] {
+         if kind.is_none() && !fillet_vertex_is_convex(src, endpoint) {
+             return Err(FilletErr::EndCorner);
+         }
+     }
  }
  let over_a = if convex_a == Some(false) { 0.0 } else { leg };
  let over_b = if convex_b == Some(false) { 0.0 } else { leg };
@@ -10682,5 +11168,302 @@ mod cavity_guard_tests {
         let m: Value = serde_json::from_str(&measure_doc(&moved.to_string())).unwrap();
         let vm = m["shapes"]["m"]["volume"].as_f64().unwrap();
         assert!((vm - 9174.71354867276).abs() < 1e-8 * 9174.7, "{vm}");
+    }
+}
+
+/// S4h: rounds and chamfers on the rim of a pocket's opening whose edges meet at the pocket's corners, built
+/// together with the corners mitred (rim_corner_build). Oracles: the closed forms derived there, and FreeCAD
+/// 26.3rc1 on the same parts (docs/replica/freecad/gauntlet/baseline/ref-fillet-after-pocket.json and the
+/// numbers recorded in packages/brep-adapter/test/fillet-rim-corner.test.mjs).
+#[cfg(test)]
+mod rim_corner_tests {
+    use super::*;
+    use serde_json::json;
+
+    const PI: f64 = std::f64::consts::PI;
+
+    /// A plate `w x d x t` with a `pw x pd` pocket of depth `pdp` centred on it, and the rim edges `sides` (sketch
+    /// side numbers 0..3, in that order) rounded or chamfered by `size`, each on the result of the one before,
+    /// exactly as the script writes `round(part.rim(sk2), size)`.
+    fn rim_doc(style: &str, sides: &[usize], size: f64, plate: (f64, f64, f64), (pw, pd, pdp): (f64, f64, f64)) -> Value {
+        let (cx, cy) = (plate.0 / 2.0, plate.1 / 2.0);
+        let (x0, x1, y0, y1) = (cx - pw / 2.0, cx + pw / 2.0, cy - pd / 2.0, cy + pd / 2.0);
+        let picks: Vec<(&str, usize, f64)> = sides.iter().map(|s| (style, *s, size)).collect();
+        rim_doc_picks(&picks, plate, [[x0, y0], [x1, y0], [x1, y1], [x0, y1]], pdp)
+    }
+
+    /// As `rim_doc`, with each rim feature's own style and size (`picks`: style, sketch side, size), on a pocket
+    /// whose sketch corners are `pts` (taken as written: the kernel reads points, not constraints) and depth `pdp`.
+    fn rim_doc_picks(picks: &[(&str, usize, f64)], (w, d, t): (f64, f64, f64), pts: [[f64; 2]; 4], pdp: f64) -> Value {
+        let cons = json!([{ "kind": "horizontal", "edge": 0 }, { "kind": "vertical", "edge": 1 }, { "kind": "horizontal", "edge": 2 }, { "kind": "vertical", "edge": 3 }]);
+        let mut features = vec![
+            json!({ "id": "sk1", "kind": "sketch", "plane": "xy", "offset": 0, "points": [[0, 0], [w, 0], [w, d], [0, d]], "constraints": cons }),
+            json!({ "id": "pull1", "kind": "extrude", "target": "sk1", "height": t }),
+            json!({ "id": "sk2", "kind": "sketch", "plane": "xy", "offset": t, "points": pts, "constraints": cons }),
+            json!({ "id": "pull2", "kind": "extrude", "target": "sk2", "height": -pdp }),
+            json!({ "id": "pocket1", "kind": "combine", "op": "subtract", "targets": ["pull1", "pull2"] }),
+        ];
+        let mut target = "pocket1".to_string();
+        for (k, (style, side, size)) in picks.iter().enumerate() {
+            let id = format!("round{}", k + 1);
+            features.push(json!({ "id": id, "kind": "fillet", "target": target, "size": size, "style": style,
+                "edge": { "cause": "between", "feature": "pocket1", "kind": "edge", "of": [
+                    { "cause": "carried", "feature": "pocket1", "kind": "face", "of": { "cause": "primitive", "feature": "pull1", "kind": "face", "part": "+z" } },
+                    { "cause": "swept", "feature": "pull2", "kind": "face", "from": "sk2", "edge": side } ] } }));
+            target = id;
+        }
+        json!({ "version": 1, "features": features })
+    }
+
+    /// (volume, faces) of the last feature, with no refusal anywhere, a closed mesh, and a STEP file.
+    fn measure(doc: &Value) -> (f64, usize) {
+        let text = doc.to_string();
+        let last = doc["features"].as_array().unwrap().last().unwrap()["id"].as_str().unwrap().to_string();
+        let built: Value = serde_json::from_str(&build_doc_json(&text)).unwrap();
+        assert_eq!(built["refusals"], json!({}), "no refusal: {}", built["refusals"]);
+        let m: Value = serde_json::from_str(&measure_doc(&text)).unwrap();
+        let v = m["shapes"][&last]["volume"].as_f64().unwrap();
+        let faces = m["shapes"][&last]["faces"].as_u64().unwrap() as usize;
+        let (hist, _) = build_doc(doc);
+        let solid = hist.shapes.get(&last).unwrap();
+        let mesh = crate::mesh::mesh_solid(solid, 0.05).expect("the rimmed part meshes");
+        assert!(ops::check_watertight(&mesh), "the rimmed part's mesh is watertight");
+        assert!(crate::mesh::mesh_is_closed(&mesh), "the rimmed part's mesh is closed");
+        let step: Value = serde_json::from_str(&export_step(&text, &last)).unwrap();
+        assert!(step["step"].as_str().is_some(), "a STEP file: {step}");
+        (v, faces)
+    }
+
+    const PLATE: (f64, f64, f64) = (40.0, 30.0, 10.0);
+    const POCKET: (f64, f64, f64) = (10.0, 10.0, 4.0);
+    const POCKETED: f64 = 40.0 * 30.0 * 10.0 - 10.0 * 10.0 * 4.0;
+    /// A convex straight edge rounded by r loses (1 - pi/4) r^2 per unit length.
+    fn wedge(r: f64, l: f64) -> f64 {
+        (1.0 - PI / 4.0) * r * r * l
+    }
+    /// Two equal rounds meeting at the inside corner of a pocket's opening: their mitre removes, in the corner's
+    /// r x r square, the material above BOTH quarter cylinders, 2 r^3 int_0^1 (1 - u)(1 - sqrt(1 - u^2)) du.
+    fn round_corner(r: f64) -> f64 {
+        (5.0 / 3.0 - PI / 2.0) * r * r * r
+    }
+
+    #[test]
+    fn four_rim_rounds_are_freecads_rounded_rectangle() {
+        let (v, faces) = measure(&rim_doc("fillet", &[0, 1, 2, 3], 1.0, PLATE, POCKET));
+        let want = POCKETED - 4.0 * wedge(1.0, 10.0) - 4.0 * round_corner(1.0);
+        assert!((v - want).abs() <= 1e-9 * want, "{v} vs closed form {want}");
+        // FreeCAD 26.3rc1: 11591.03244517401, 15 faces (the four walls and the top keep their faces, one cylinder per edge)
+        assert!((v - 11591.03244517401).abs() <= 1e-9 * v, "{v} vs FreeCAD 11591.03244517401");
+        assert_eq!(faces, 15);
+    }
+
+    #[test]
+    fn two_neighbouring_and_three_rim_rounds_match_freecad() {
+        let (v2, f2) = measure(&rim_doc("fillet", &[0, 1], 1.0, PLATE, POCKET));
+        let want2 = POCKETED - 2.0 * wedge(1.0, 10.0) - round_corner(1.0);
+        assert!((v2 - want2).abs() <= 1e-9 * want2, "{v2} vs {want2}");
+        assert!((v2 - 11595.612092927622).abs() <= 1e-9 * v2, "{v2} vs FreeCAD 11595.612092927622");
+        assert_eq!(f2, 13);
+        let (v3, f3) = measure(&rim_doc("fillet", &[0, 1, 2], 1.0, PLATE, POCKET));
+        let want3 = POCKETED - 3.0 * wedge(1.0, 10.0) - 2.0 * round_corner(1.0);
+        assert!((v3 - want3).abs() <= 1e-9 * want3, "{v3} vs {want3}");
+        assert!((v3 - 11593.370204220879).abs() <= 1e-9 * v3, "{v3} vs FreeCAD 11593.370204220879");
+        assert_eq!(f3, 14);
+        // the last side first, then its neighbour across the corner at the origin side: the same corner
+        let (v2b, f2b) = measure(&rim_doc("fillet", &[3, 0], 1.0, PLATE, POCKET));
+        assert!((v2b - want2).abs() <= 1e-9 * want2, "{v2b} vs {want2}");
+        assert_eq!(f2b, 13);
+    }
+
+    #[test]
+    fn rim_chamfers_are_the_mitre_not_the_union() {
+        // FreeCAD: four 11578.666666666666 (15 faces), two neighbouring 11589.666666666668 (13 faces): a square
+        // pyramid of side s per corner, s^3 / 3, where cutting the edges one after the other removed the union.
+        let (v4, f4) = measure(&rim_doc("chamfer", &[0, 1, 2, 3], 1.0, PLATE, POCKET));
+        let want4 = POCKETED - 4.0 * 0.5 * 10.0 - 4.0 / 3.0;
+        assert!((v4 - want4).abs() <= 1e-9 * want4, "{v4} vs {want4}");
+        assert!((v4 - 11578.666666666666).abs() <= 1e-9 * v4);
+        assert_eq!(f4, 15);
+        let (v2, f2) = measure(&rim_doc("chamfer", &[0, 1], 1.0, PLATE, POCKET));
+        let want2 = POCKETED - 2.0 * 0.5 * 10.0 - 1.0 / 3.0;
+        assert!((v2 - want2).abs() <= 1e-9 * want2, "{v2} vs {want2}");
+        assert!((v2 - 11589.666666666668).abs() <= 1e-9 * v2);
+        assert_eq!(f2, 13);
+    }
+
+    #[test]
+    fn another_plate_pocket_and_radius_follow_the_closed_form() {
+        let plate = (50.0, 40.0, 12.0);
+        let pocket = (16.0, 12.0, 5.0);
+        let v0 = 50.0 * 40.0 * 12.0 - 16.0 * 12.0 * 5.0;
+        let (v, faces) = measure(&rim_doc("fillet", &[0, 1, 2, 3], 2.0, plate, pocket));
+        let want = v0 - wedge(2.0, 2.0 * (16.0 + 12.0)) - 4.0 * round_corner(2.0);
+        assert!((v - want).abs() <= 1e-9 * want, "{v} vs {want}");
+        assert_eq!(faces, 15);
+        let (vc, fc) = measure(&rim_doc("chamfer", &[0, 1, 2, 3], 1.5, plate, pocket));
+        let wantc = v0 - 0.5 * 1.5 * 1.5 * 2.0 * (16.0 + 12.0) - 4.0 * 1.5 * 1.5 * 1.5 / 3.0;
+        assert!((vc - wantc).abs() <= 1e-9 * wantc, "{vc} vs {wantc}");
+        assert_eq!(fc, 15);
+    }
+
+    #[test]
+    fn the_mitre_is_an_ellipse_arc_the_two_cylinders_share() {
+        // FreeCAD: each corner edge is an Ellipse of semi-axes sqrt(2) and 1 from (14, 9, 10) to (15, 10, 9), length 1.9101.
+        let doc = rim_doc("fillet", &[0, 1, 2, 3], 1.0, PLATE, POCKET);
+        let (hist, _) = build_doc(&doc);
+        let solid = hist.shapes.get("round4").unwrap();
+        let mut ellipses = 0;
+        for e in solid.edges() {
+            let eb = e.borrow();
+            if let crate::geom::Curve::Ellipse { .. } = &eb.curve {
+                ellipses += 1;
+                let l = eb.curve.length();
+                assert!((l - 1.9101).abs() < 1e-4, "ellipse arc length {l}");
+                let (a, b) = (eb.a.borrow().point, eb.b.borrow().point);
+                // one end on the top (z = 10), the other at the wall's new top (z = 9)
+                let zs = [a[2], b[2]];
+                assert!(zs.contains(&10.0) && zs.iter().any(|z| (z - 9.0).abs() < 1e-9), "{a:?} {b:?}");
+                // every point of the arc lies on both cylinders it joins: distance 1 from both axes
+                for k in 0..=16 {
+                    let p = eb.curve.point_at(k as f64 / 16.0);
+                    let dz = p[2] - 9.0;
+                    let dx = (p[0] - 20.0).abs() - 6.0; // the cylinders along y sit at x = 14 and 26
+                    let dy = (p[1] - 15.0).abs() - 6.0; // the ones along x at y = 9 and 21
+                    assert!(((dx * dx + dz * dz).sqrt() - 1.0).abs() < 1e-9 && ((dy * dy + dz * dz).sqrt() - 1.0).abs() < 1e-9, "{p:?}");
+                }
+            }
+        }
+        assert_eq!(ellipses, 4);
+        // the four cylinders: area of each is the quarter cylinder of length 12 less the two mitred corners, 6 pi - 2
+        let mut cyls = 0;
+        for f in solid.faces() {
+            if let Surface::Cylinder(_) = &f.borrow().surface {
+                cyls += 1;
+                let (area, _) = f.borrow().surface.area_centroid();
+                assert!((area - (6.0 * PI - 2.0)).abs() < 1e-9, "cylinder area {area}");
+            }
+        }
+        assert_eq!(cyls, 4);
+        let text = doc.to_string();
+        let step: Value = serde_json::from_str(&export_step(&text, "round4")).unwrap();
+        let file = step["step"].as_str().unwrap_or_else(|| panic!("a STEP file: {step}"));
+        assert!(file.contains("B_SPLINE_CURVE_WITH_KNOTS"), "the ellipse arcs are written as checked B-splines");
+    }
+
+    #[test]
+    fn a_corner_the_builder_cannot_take_is_still_refused_whole() {
+        // A round too big for its faces is refused with the fit sentence on its own, and takes no neighbour with it
+        // that was never built: the pocketed plate is shown.
+        let doc = rim_doc("fillet", &[0, 1], 6.0, PLATE, POCKET);
+        let built: Value = serde_json::from_str(&build_doc_json(&doc.to_string())).unwrap();
+        assert_eq!(built["refusals"].as_object().unwrap().len(), 2, "{}", built["refusals"]);
+        let m: Value = serde_json::from_str(&measure_doc(&doc.to_string())).unwrap();
+        let v = m["shapes"]["round2"]["volume"].as_f64().unwrap();
+        assert!((v - POCKETED).abs() <= 1e-9 * POCKETED, "{v}");
+    }
+
+    const CENTRED: [[f64; 2]; 4] = [[15.0, 10.0], [25.0, 10.0], [25.0, 20.0], [15.0, 20.0]];
+
+    /// (refusals, every shape's measure) of a document, asserting nothing.
+    fn built(doc: &Value) -> (serde_json::Map<String, Value>, Value) {
+        let text = doc.to_string();
+        let b: Value = serde_json::from_str(&build_doc_json(&text)).unwrap();
+        let m: Value = serde_json::from_str(&measure_doc(&text)).unwrap();
+        (b["refusals"].as_object().cloned().unwrap_or_default(), m["shapes"].clone())
+    }
+
+    #[test]
+    fn neighbouring_chamfers_of_different_sizes_are_refused_not_gouged() {
+        // A chamfer of 1 then one of 1.5 on neighbouring rim edges was built at 11580.9375 (15 faces), refusals empty:
+        // a different size is not one pick, so the corner was never mitred, and the second chamfer's end -- against
+        // the first one's slanted face -- read as open air, so its wedge ran 12.5 mm along the 10 mm edge, 2.5 mm on
+        // into the plate past the pocket's corner. That end is an inside corner now, refused in a sentence, and the
+        // part is shown exactly as the feature before it left it.
+        for (picks, refused, want) in [
+            (vec![("chamfer", 0, 1.0), ("chamfer", 1, 1.5)], "round2", POCKETED - 0.5 * 10.0),
+            (vec![("chamfer", 0, 1.5), ("chamfer", 1, 1.0)], "round2", POCKETED - 0.5 * 1.5 * 1.5 * 10.0),
+            // a different size picked between two of one size: the last meets BOTH earlier chamfers (11576.5, 18 faces)
+            (vec![("chamfer", 0, 1.0), ("chamfer", 2, 1.5), ("chamfer", 1, 1.0)], "round3", POCKETED - 0.5 * 10.0 - 0.5 * 1.5 * 1.5 * 10.0),
+            // a chamfer beside a round (refused before as well, now in the corner's own words)
+            (vec![("fillet", 0, 1.0), ("chamfer", 1, 1.5)], "round2", POCKETED - wedge(1.0, 10.0)),
+        ] {
+            let doc = rim_doc_picks(&picks, PLATE, CENTRED, 4.0);
+            let (refusals, shapes) = built(&doc);
+            assert_eq!(refusals.keys().map(|k| k.as_str()).collect::<Vec<_>>(), vec![refused], "{picks:?}: {refusals:?}");
+            let why = refusals[refused].as_str().unwrap();
+            assert!(
+                why.starts_with("brep-rs cannot chamfer this edge yet: it ends at an inside corner where it meets another round, chamfer or slanted face")
+                    && why.ends_with(&format!("-- {refused} is shown without it.")),
+                "{why}"
+            );
+            let v = shapes[refused]["volume"].as_f64().unwrap();
+            assert!((v - want).abs() <= 1e-9 * want, "{picks:?}: {v} vs {want}");
+            let before = format!("round{}", picks.len() - 1);
+            assert_eq!(shapes[refused]["volume"], shapes[&before]["volume"], "{picks:?}: the part as the feature before left it");
+            assert_eq!(shapes[refused]["faces"], shapes[&before]["faces"], "{picks:?}");
+        }
+    }
+
+    #[test]
+    fn one_size_picked_around_an_opposite_edge_is_still_the_mitred_pick() {
+        // The edge between two earlier ones of the SAME pick meets both at inside corners and is refused on its own, but
+        // the run rebuilds all three from the pocketed plate with both corners mitred: the narrower refusal above
+        // never stands in a pick's way.
+        let (v, faces) = measure(&rim_doc("chamfer", &[0, 2, 1], 1.0, PLATE, POCKET));
+        let want = POCKETED - 3.0 * 0.5 * 10.0 - 2.0 / 3.0;
+        assert!((v - want).abs() <= 1e-9 * want, "{v} vs {want}");
+        assert_eq!(faces, 14);
+        let (v, faces) = measure(&rim_doc("fillet", &[0, 2, 1], 1.0, PLATE, POCKET));
+        let want = POCKETED - wedge(1.0, 30.0) - 2.0 * round_corner(1.0);
+        assert!((v - want).abs() <= 1e-9 * want, "{v} vs {want}");
+        assert_eq!(faces, 14);
+    }
+
+    #[test]
+    fn a_corner_the_corner_builder_cannot_take_refuses_the_whole_pick_from_inside_it() {
+        // Unlike r = 6 in a 4 mm pocket (neither edge builds on its own, so the corner is never tried), each of these has
+        // a member that builds alone, so the corner IS tried, and rim_corner_build refuses it: every member gets the
+        // pick's sentence and the pocketed plate is shown unmodified.
+        let thin = [[15.0, 0.5], [25.0, 0.5], [25.0, 10.5], [15.0, 10.5]]; // a 0.5 mm wall outside side 0: r = 1 cannot fit
+        let skew = [[15.0, 10.0], [25.0, 10.0], [25.0 + 1e-7, 20.0], [15.0, 20.0]]; // side 1 is 1e-8 rad off square to side 0
+        for (pts, picks, round) in [
+            (thin, vec![("fillet", 0, 1.0), ("fillet", 1, 1.0)], true),
+            (thin, vec![("fillet", 1, 1.0), ("fillet", 0, 1.0)], true),
+            (skew, vec![("fillet", 0, 1.0), ("fillet", 1, 1.0)], true),
+            (skew, vec![("chamfer", 0, 1.0), ("chamfer", 1, 1.0)], false),
+        ] {
+            let doc = rim_doc_picks(&picks, PLATE, pts, 4.0);
+            // the corner builder itself refuses this pair, from the pocketed plate
+            let (hist, _) = build_doc(&doc);
+            let feats: Vec<Value> = doc["features"].as_array().unwrap()[5..].to_vec();
+            let pre = hist.shapes.get("pocket1").unwrap().clone();
+            assert!(rim_corner_build(&pre, &hist, &feats, 1.0, round).is_err(), "{picks:?}");
+            let (refusals, shapes) = built(&doc);
+            assert_eq!(refusals.len(), 2, "{picks:?}: {refusals:?}");
+            for id in ["round1", "round2"] {
+                let why = refusals[id].as_str().unwrap();
+                assert_eq!(why, rim_corner_sentence(id, round), "{picks:?}");
+                assert_eq!(shapes[id]["volume"], shapes["pocket1"]["volume"], "{picks:?}: {id} is the pocketed plate");
+                assert_eq!(shapes[id]["faces"], shapes["pocket1"]["faces"], "{picks:?}");
+            }
+        }
+    }
+
+    #[test]
+    fn a_small_rim_round_and_chamfer_hold_to_the_removed_volume() {
+        // r = 0.01: a round corner's term (9.6e-8) is far below the part's own 1e-9 allowance (1.16e-5), so the corner
+        // builder also holds the result to 1e-6 of what it removes (8.6e-10 here). Both build well inside that.
+        let r = 0.01;
+        let (v, faces) = measure(&rim_doc("fillet", &[0, 1, 2, 3], r, PLATE, POCKET));
+        let removed = wedge(r, 40.0) + 4.0 * round_corner(r);
+        assert!(((POCKETED - v) - removed).abs() <= 1e-6 * removed, "{} vs {removed}", POCKETED - v);
+        assert_eq!(faces, 15);
+        // a missing corner term is caught by the new allowance, where the old one let it through
+        let corners = 4.0 * round_corner(r);
+        assert!(corners > 1e-6 * removed && corners < 1e-9 * POCKETED);
+        let (v, faces) = measure(&rim_doc("chamfer", &[0, 1, 2, 3], r, PLATE, POCKET));
+        let removed = 0.5 * r * r * 40.0 + 4.0 * r * r * r / 3.0;
+        assert!(((POCKETED - v) - removed).abs() <= 1e-6 * removed, "{} vs {removed}", POCKETED - v);
+        assert_eq!(faces, 15);
     }
 }

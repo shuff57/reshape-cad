@@ -3617,6 +3617,24 @@ mod groove_partial_angle {
 /// to it exactly as the wedge left it. Returns None (and changes nothing) when the face is not the
 /// expected rectangle.
 pub fn bevel_to_round(bevel: &TFace, axis_point: Vec3, dir: Vec3, radius: f64, theta: f64, concave: bool) -> Option<()> {
+    bevel_to_round_mitred(bevel, axis_point, dir, radius, theta, concave, &[])
+}
+
+/// [`bevel_to_round`] for a bevel whose end chords may be OBLIQUE: the mitre where two equal rounds meet at
+/// the inside corner of a pocket's opening. `mitres` lists the planes (a point, a unit normal) such a chord
+/// may lie in; a chord square to `dir` becomes a circular arc as ever, a chord lying in one of the mitre
+/// planes becomes the arc of the ellipse where that plane cuts the round, and the wall is trimmed to the
+/// two end planes (`Cross::Slant`). A chord the neighbouring round already re-skinned (the shared handle is
+/// an ellipse) is kept. None, and nothing changed, for any other chord.
+pub fn bevel_to_round_mitred(
+    bevel: &TFace,
+    axis_point: Vec3,
+    dir: Vec3,
+    radius: f64,
+    theta: f64,
+    concave: bool,
+    mitres: &[(Vec3, Vec3)],
+) -> Option<()> {
     let span = std::f64::consts::PI - theta;
     if !(span > 1e-6 && span < std::f64::consts::PI) || radius <= 0.0 {
         return None;
@@ -3636,7 +3654,7 @@ pub fn bevel_to_round(bevel: &TFace, axis_point: Vec3, dir: Vec3, radius: f64, t
         for u in &w.edges {
             let e = u.edge.borrow();
             let (pa, pb) = (e.a.borrow().point, e.b.borrow().point);
-            if !matches!(e.curve, Curve::Segment { .. }) {
+            if !matches!(e.curve, Curve::Segment { .. } | Curve::Ellipse { .. }) {
                 return None;
             }
             let (s, t) = if u.forward { (pa, pb) } else { (pb, pa) };
@@ -3652,11 +3670,13 @@ pub fn bevel_to_round(bevel: &TFace, axis_point: Vec3, dir: Vec3, radius: f64, t
         v
     };
     let along = |a: Vec3, b: Vec3| crate::math::dot(sub(b, a), dir).abs();
+    // A side runs along the axis (a tangent line); anything else is a chord, square to the axis or oblique.
     let is_chord: Vec<bool> = loop_uses
         .iter()
-        .map(|(_, _, s, t)| {
+        .map(|(e, _, s, t)| {
             let l = crate::math::len(sub(*t, *s));
-            l > 1e-9 && along(*s, *t) < 1e-7 * l.max(1.0)
+            let straight = matches!(e.borrow().curve, Curve::Segment { .. });
+            l > 1e-9 && !(straight && crate::math::len(cross(sub(*t, *s), dir)) < 1e-7 * l.max(1.0))
         })
         .collect();
     // exactly two chords, opposite each other
@@ -3693,10 +3713,11 @@ pub fn bevel_to_round(bevel: &TFace, axis_point: Vec3, dir: Vec3, radius: f64, t
         rev.rotate_left(3);
         seq = rev;
     }
-    // Both chords must really be arcs of the stated radius about the axis.
+    // Both chords' ends must really lie on the round: at the stated radius from the axis (each end's own
+    // foot on it, for a mitred chord's ends sit at different heights).
     for k in [0usize, 2] {
-        let cc = on_plane_of(seq[k].2);
         for p in [seq[k].2, seq[k].3] {
+            let cc = on_plane_of(p);
             if (crate::math::len(sub(p, cc)) - radius).abs() > 1e-7 * radius.max(1.0) {
                 return None;
             }
@@ -3710,39 +3731,107 @@ pub fn bevel_to_round(bevel: &TFace, axis_point: Vec3, dir: Vec3, radius: f64, t
         if (u - span).abs() < u.abs() { span } else { 0.0 }
     };
     let v_of = |p: Vec3| crate::math::dot(sub(p, c0), n);
+    // Where a point anywhere on the wall sits in (u, v): the angle within the arc, the height along the axis.
+    let uv_of = |p: Vec3| -> [f64; 2] {
+        let r = sub(p, c0);
+        let mut u = crate::math::dot(r, e2).atan2(crate::math::dot(r, e1));
+        // the arc starts at angle 0: a point there read as -epsilon is 0, anything further back is round the far side
+        if u < -1e-6 {
+            u += std::f64::consts::TAU;
+        }
+        [u.clamp(0.0, span), v_of(p)]
+    };
+    // The end plane each chord lies in, as the height `c + a cos u + b sin u` the wall reaches there at angle
+    // u: constant for a square chord, a sinusoid for an oblique one (the mitre plane that holds it).
+    let mut ends: [[f64; 3]; 2] = [[0.0; 3]; 2];
+    let mut oblique = false;
+    for (slot, k) in [0usize, 2].into_iter().enumerate() {
+        let (s, t) = (seq[k].2, seq[k].3);
+        let chord = sub(t, s);
+        if along(s, t) < 1e-7 * crate::math::len(chord).max(1.0) {
+            ends[slot] = [v_of(s), 0.0, 0.0];
+            continue;
+        }
+        // (q, m): the plane through the chord's two ends among the mitre planes offered
+        let Some((q, m)) = mitres.iter().copied().find(|(q, m)| {
+            crate::math::dot(sub(s, *q), *m).abs() < 1e-7 && crate::math::dot(sub(t, *q), *m).abs() < 1e-7
+        }) else {
+            return None;
+        };
+        let nm = crate::math::dot(n, m);
+        if nm.abs() < 1e-9 {
+            return None;
+        }
+        ends[slot] = [crate::math::dot(sub(q, c0), m) / nm, -radius * crate::math::dot(e1, m) / nm, -radius * crate::math::dot(e2, m) / nm];
+        oblique = true;
+    }
     // New curves for the two chords (the shared handles are mutated).
-    for k in [0usize, 2] {
+    for (slot, k) in [0usize, 2].into_iter().enumerate() {
         let e = seq[k].0.clone();
         let (a, b) = {
             let eb = e.borrow();
             let r = (eb.a.borrow().point, eb.b.borrow().point);
             r
         };
-        let cc = on_plane_of(a);
-        let xa = crate::math::normalize(sub(a, cc));
-        let s = crate::math::dot(cross(sub(a, cc), sub(b, cc)), nr);
-        let sw = if s >= 0.0 { span } else { -span };
-        e.borrow_mut().curve = Curve::Arc { center: cc, radius, normal: nr, x_axis: xa, sweep: sw };
+        let square = ends[slot][1].abs() < 1e-300 && ends[slot][2].abs() < 1e-300;
+        if square {
+            if !matches!(e.borrow().curve, Curve::Segment { .. }) {
+                return None;
+            }
+            let cc = on_plane_of(a);
+            let xa = crate::math::normalize(sub(a, cc));
+            let s = crate::math::dot(cross(sub(a, cc), sub(b, cc)), nr);
+            let sw = if s >= 0.0 { span } else { -span };
+            e.borrow_mut().curve = Curve::Arc { center: cc, radius, normal: nr, x_axis: xa, sweep: sw };
+            continue;
+        }
+        // the neighbouring round already made this shared chord its ellipse: the same curve, kept
+        if matches!(e.borrow().curve, Curve::Ellipse { .. }) {
+            continue;
+        }
+        let [vc, ca, cb] = ends[slot];
+        e.borrow_mut().curve = Curve::Ellipse {
+            center: add(c0, scale(n, vc)),
+            x_axis: add(scale(e1, radius), scale(n, ca)),
+            y_axis: add(scale(e2, radius), scale(n, cb)),
+            phi0: u_of(a),
+            phi1: u_of(b),
+        };
     }
     let uses: Vec<topo::EdgeUse<Curve3>> = seq
         .iter()
-        .map(|(e, fw, s, t)| cyl_arc_use(e, *fw, u_of(*s), u_of(*t), v_of(*s), v_of(*t)))
+        .map(|(e, fw, s, t)| {
+            let mid = uv_of(e.borrow().curve.point_at(0.5));
+            topo::EdgeUse { edge: e.clone(), forward: *fw, pcurve: topo::Pcurve { start: uv_of(*s), end: uv_of(*t), mid } }
+        })
         .collect();
+    // the lower and upper end at mid-arc (the ends never cross), and the wall's whole axial extent
+    let at = |c: [f64; 3], u: f64| c[0] + c[1] * u.cos() + c[2] * u.sin();
+    let (lo, hi) = if at(ends[0], 0.5 * span) <= at(ends[1], 0.5 * span) { (ends[0], ends[1]) } else { (ends[1], ends[0]) };
+    let (mut vmin, mut vmax) = (f64::INFINITY, f64::NEG_INFINITY);
+    for k in 0..=64 {
+        let u = span * k as f64 / 64.0;
+        vmin = vmin.min(at(lo, u));
+        vmax = vmax.max(at(hi, u));
+    }
+    if !oblique {
+        (vmin, vmax) = (0.0, height);
+    }
     let wall = Surface::Cylinder(Cylinder {
         origin: c0,
         axis: n,
         e1,
         e2,
         radius,
-        vmin: 0.0,
-        vmax: height,
+        vmin,
+        vmax,
         arc: Some(geom::ArcRange { start: 0.0, span }),
-        cross: None,
+        cross: if oblique { Some(geom::Cross::Slant { lo, hi }) } else { None },
     });
     let mut f = bevel.borrow_mut();
     f.surface = wall;
     f.forward = true;
-    f.uv_domain = [[0.0, span], [0.0, height]];
+    f.uv_domain = [[0.0, span], [vmin, vmax]];
     f.boundary = vec![Rc::new(RefCell::new(Wire { edges: uses }))];
     Some(())
 }

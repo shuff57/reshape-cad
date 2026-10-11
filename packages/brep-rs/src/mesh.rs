@@ -151,6 +151,13 @@ pub fn curve_points(c: &Curve, defl: f64) -> Vec<Vec3> {
                 })
                 .collect()
         }
+        Curve::Ellipse { x_axis, y_axis, phi0, phi1, .. } => {
+            // An open arc of a conic: sampled evenly in the cylinder's own angle, so the two faces that share it (a
+            // round and its mitred neighbour) take the same points; the chord step is the longer semi-diameter's.
+            let big = len(*x_axis).max(len(*y_axis));
+            let nseg = arc_segments(big, phi1 - phi0, defl, 4);
+            (0..=nseg).map(|k| c.point_at(k as f64 / nseg as f64)).collect()
+        }
         Curve::Hyperbola { .. } => {
             // An open arc: segments from its tightest bend, sampled evenly in its own parameter, ends exact.
             let (mut kappa, m) = (0.0f64, 256usize);
@@ -1217,12 +1224,99 @@ fn mesh_cross_face(
         crate::geom::Cross::Wall { .. } => mesh_cross_wall(&fb, cy, edges_cache, out, defl)?,
         crate::geom::Cross::Tool { .. } | crate::geom::Cross::SphTool { .. } | crate::geom::Cross::ConeTool { .. } => mesh_cross_tool(&fb, cy, edges_cache, out, defl)?,
         crate::geom::Cross::Patch { plus, .. } => mesh_cross_patch(&fb, cy, *plus, edges_cache, out, defl)?,
+        crate::geom::Cross::Slant { .. } => mesh_slant(&fb, cy, edges_cache, out, defl)?,
     }
     let count = out.indices.len() - start;
     if count == 0 {
         return None;
     }
     out.faces.push((start, count));
+    Some(())
+}
+
+/// A partial wall whose two ends are plane cuts, square or oblique (a round of a pocket's rim with a mitred
+/// corner): a ladder between its two end chains, the ones that are not straight lines along the axis. Each
+/// chain is walked in the direction its angle about the axis increases, and the rungs join points at the same
+/// angle, so every triangle lies on the ruled surface. The two straight sides are the first and last rungs.
+fn mesh_slant(
+    fb: &crate::topo::Face<Curve, crate::geom::Surface>,
+    cy: &crate::geom::Cylinder,
+    edges_cache: &HashMap<usize, Vec<Vec3>>,
+    out: &mut MeshBuilder,
+    defl: f64,
+) -> Option<()> {
+    let (o, ax, e1, e2) = (cy.origin, cy.axis, cy.e1, cy.e2);
+    let sense = if crate::math::dot(cross(e1, e2), ax) >= 0.0 { 1.0 } else { -1.0 };
+    let a_dir = crate::math::scale(e2, sense);
+    let span = cy.arc.as_ref()?.span.abs();
+    let mut chains: Vec<(f64, Vec<Vec3>)> = Vec::new(); // (mean v, polyline)
+    if fb.boundary.len() != 1 {
+        return None;
+    }
+    for u in &fb.boundary[0].borrow().edges {
+        let e = u.edge.borrow();
+        let (pa, pb) = (e.a.borrow().point, e.b.borrow().point);
+        let along = crate::math::dot(sub(pb, pa), ax).abs();
+        let is_side = matches!(e.curve, Curve::Segment { .. }) && (len(sub(pb, pa)) - along).abs() <= 1e-9 * len(sub(pb, pa)).max(1.0);
+        if is_side {
+            continue;
+        }
+        let poly = use_polyline(u, edges_cache, defl);
+        let v: f64 = poly.iter().map(|p| crate::math::dot(sub(*p, o), ax)).sum::<f64>() / poly.len().max(1) as f64;
+        chains.push((v, poly));
+    }
+    if chains.len() != 2 {
+        return None;
+    }
+    chains.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+    let lo_poly = increasing_u(chains[0].1.clone(), o, e1, a_dir);
+    let hi_poly = increasing_u(chains[1].1.clone(), o, e1, a_dir);
+    // angles from the arc's start, both chains ending exactly at the span (their ends are the sides' vertices)
+    let angles = |pts: &[Vec3]| -> Vec<f64> {
+        let n = pts.len();
+        let mut us: Vec<f64> = pts.iter().map(|p| angle_in(*p, o, e1, a_dir)).collect();
+        if n >= 2 {
+            let start = us[0];
+            for u in us.iter_mut() {
+                *u -= start;
+                if *u < -1e-9 {
+                    *u += TAU;
+                }
+            }
+            us[0] = 0.0;
+            us[n - 1] = span;
+            for i in 1..n - 1 {
+                us[i] = us[i].clamp(us[i - 1], span);
+            }
+        }
+        us
+    };
+    let ua = angles(&hi_poly);
+    let ub = angles(&lo_poly);
+    let mut assign = vec![0usize; lo_poly.len()];
+    for j in 0..lo_poly.len() {
+        let mut best = 0usize;
+        let mut bd = f64::INFINITY;
+        for (i, &u) in ua.iter().enumerate() {
+            let dd = (u - ub[j]).abs();
+            if dd < bd - 1e-12 {
+                bd = dd;
+                best = i;
+            }
+        }
+        if j > 0 {
+            best = best.max(assign[j - 1]);
+        }
+        assign[j] = best;
+    }
+    assign[0] = 0;
+    let last = lo_poly.len() - 1;
+    assign[last] = hi_poly.len() - 1;
+    let n_out = |c: Vec3| {
+        let d = sub(c, o);
+        crate::math::scale(sub(d, crate::math::scale(ax, crate::math::dot(d, ax))), sense)
+    };
+    ladder(out, &hi_poly, &lo_poly, &assign, usize::MAX, &n_out);
     Some(())
 }
 
