@@ -1982,6 +1982,28 @@ mod tests {
     }
 
     #[test]
+    fn a_partial_revolve_writes_every_face_as_one_closed_chain() {
+        // An annulus (radius 10..20, height 0..30) spun part of a turn: two cylinder sectors, two planar
+        // annulus sectors and two caps. Each annulus sector is bounded by an outer arc from angle 0, a radial
+        // line, an inner arc back from the far end, and a radial line home. The inner arc's end vertex used to
+        // be placed by turning its start about e2 instead of axis x start, which lands home only when the
+        // start IS e1 (or at half a turn): 30, 90, 120, 270 and 300 refused with "a face whose wire is not a
+        // closed chain" while 180 wrote. Every angle writes now, welded like a box: 8 corners, 12 edges.
+        let profile = [[10.0, 0.0], [20.0, 0.0], [20.0, 30.0], [10.0, 30.0]];
+        for angle in [30.0, 37.3, 90.0, 120.0, 180.0, 270.0, 300.0, 359.0] {
+            let (solid, _) = build::revolve_profile(&profile, [0.0, 0.0, 1.0], [1.0, 0.0, 0.0], angle)
+                .expect("a partial annulus revolve builds");
+            let text = write_solid(&solid, "partial revolve").unwrap_or_else(|why| panic!("{angle}: {why}"));
+            assert_eq!(count(&text, "ADVANCED_FACE"), 6, "{angle}");
+            assert_eq!(count(&text, "CYLINDRICAL_SURFACE"), 2, "{angle}");
+            assert_eq!(count(&text, "VERTEX_POINT"), 8, "{angle}");
+            assert_eq!(count(&text, "EDGE_CURVE"), 12, "{angle}");
+            assert_eq!(count(&text, "ORIENTED_EDGE"), 24, "{angle}");
+            assert_eq!(count(&text, "MANIFOLD_SOLID_BREP"), 1, "{angle}");
+        }
+    }
+
+    #[test]
     fn every_real_is_a_legal_step_real() {
         // The property, not one spelling: a STEP real carries a decimal point,
         // and an exponent is introduced by `E` after one. Rust's own shortest
