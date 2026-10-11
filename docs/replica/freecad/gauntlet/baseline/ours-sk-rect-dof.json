@@ -1,0 +1,237 @@
+{
+  "id": "sk-rect-dof",
+  "outcome": "built",
+  "script": "docs/replica/freecad/gauntlet/baseline/ours-sk-rect-dof.mjs",
+  "notes": "Sketch piece: no solid. Soup rows via SketchSession2D (sketch_open/solve/diagnose/profile). Corner fix is a point geometry coincident with line1.a plus lock on the point (the soup lock takes a geometry, not an endpoint).",
+  "scriptProbe": {
+    "polygonWithRules": {
+      "constraints": null
+    },
+    "rect": "ok"
+  },
+  "variants": [
+    {
+      "name": "full: coincident+H/V+40+30+origin point locked & coincident",
+      "solved": true,
+      "lastError": null,
+      "diag": {
+        "blame": [],
+        "bucket": "consistent",
+        "dof": 0,
+        "rank": 16
+      },
+      "profile": {
+        "loops": [
+          {
+            "role": "outer",
+            "segs": [
+              {
+                "a": [
+                  0,
+                  0
+                ],
+                "b": [
+                  40,
+                  0
+                ],
+                "k": "line"
+              },
+              {
+                "a": [
+                  40,
+                  0
+                ],
+                "b": [
+                  40,
+                  30
+                ],
+                "k": "line"
+              },
+              {
+                "a": [
+                  40,
+                  30
+                ],
+                "b": [
+                  0,
+                  30
+                ],
+                "k": "line"
+              },
+              {
+                "a": [
+                  0,
+                  30
+                ],
+                "b": [
+                  0,
+                  0
+                ],
+                "k": "line"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "without origin fix",
+      "solved": true,
+      "lastError": null,
+      "diag": {
+        "blame": [],
+        "bucket": "consistent",
+        "dof": 4,
+        "rank": 14
+      },
+      "profile": {
+        "loops": [
+          {
+            "role": "outer",
+            "segs": [
+              {
+                "a": [
+                  0,
+                  0
+                ],
+                "b": [
+                  40,
+                  0
+                ],
+                "k": "line"
+              },
+              {
+                "a": [
+                  40,
+                  0
+                ],
+                "b": [
+                  40,
+                  30
+                ],
+                "k": "line"
+              },
+              {
+                "a": [
+                  40,
+                  30
+                ],
+                "b": [
+                  0,
+                  30
+                ],
+                "k": "line"
+              },
+              {
+                "a": [
+                  0,
+                  30
+                ],
+                "b": [
+                  0,
+                  0
+                ],
+                "k": "line"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "fix via distanceX/Y of corner to origin point? (point locked, dx=0,dy=0 omitted) lock on line1 only",
+      "solved": true,
+      "lastError": null,
+      "diag": {
+        "blame": [],
+        "bucket": "consistent",
+        "dof": 2,
+        "rank": 14
+      },
+      "profile": {
+        "loops": [
+          {
+            "role": "outer",
+            "segs": [
+              {
+                "a": [
+                  0,
+                  0
+                ],
+                "b": [
+                  40,
+                  0
+                ],
+                "k": "line"
+              },
+              {
+                "a": [
+                  40,
+                  0
+                ],
+                "b": [
+                  40,
+                  30
+                ],
+                "k": "line"
+              },
+              {
+                "a": [
+                  40,
+                  30
+                ],
+                "b": [
+                  0,
+                  30
+                ],
+                "k": "line"
+              },
+              {
+                "a": [
+                  0,
+                  30
+                ],
+                "b": [
+                  0,
+                  0
+                ],
+                "k": "line"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "dof": 0,
+  "rank": 16,
+  "bucket": "consistent",
+  "blame": [],
+  "std": {
+    "kind": "sketch",
+    "outcome": "built",
+    "bboxAxes": [
+      0,
+      1
+    ],
+    "bbox": [
+      0,
+      0,
+      0,
+      40,
+      30,
+      0
+    ],
+    "cases": {
+      "main": {
+        "dof": 0,
+        "bucket": "consistent",
+        "nativeBlame": [],
+        "conflicting": [],
+        "conflictingNative": [],
+        "redundant": [],
+        "indexBase": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,1393 @@
+{
+  "generatedAt": "2026-10-11T01:36:28.529Z",
+  "reference": "FreeCAD 26.3.0 RC1 (headless), baseline/ref-<id>.json",
+  "ours": "reSHape Script -> ModelDoc -> brep-rs wasm, baseline/ours-<id>.mjs re-run",
+  "tolerances": {
+    "volumeRelative": 0.000001,
+    "bboxAbsolute": 0.000001,
+    "faces": "exact",
+    "dof": "exact",
+    "constraintLists": "equal as 0-based sets"
+  },
+  "frameMapping": "ours json frame:'y-up' => (x,y,z) -> (x,-z,y) before bbox compare; otherwise already FreeCAD axes",
+  "summary": {
+    "total": 19,
+    "MATCH": 17,
+    "NOT-BUILT": 2
+  },
+  "pieces": [
+    {
+      "id": "chamfer-edge",
+      "kind": "solid",
+      "status": "MATCH",
+      "oursOutcome": "built",
+      "frame": "FreeCAD axes",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 11940,
+          "ours": 11940,
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces",
+          "ref": 7,
+          "ours": 7,
+          "pass": true
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            0,
+            40,
+            0,
+            30,
+            0,
+            10
+          ],
+          "ours": [
+            0,
+            40,
+            0,
+            30,
+            0,
+            10
+          ],
+          "pass": true,
+          "delta": 0
+        }
+      ],
+      "notes": [],
+      "differences": [],
+      "ref": {
+        "volume": 11940,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 7,
+        "cases": null
+      },
+      "ours": {
+        "volume": 11940,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 7,
+        "cases": null
+      },
+      "rerun": true
+    },
+    {
+      "id": "fillet-after-pocket",
+      "kind": "solid",
+      "status": "NOT-BUILT",
+      "oursOutcome": "refused",
+      "frame": "FreeCAD axes",
+      "checks": [],
+      "notes": [
+        "ours outcome is 'refused', so no measurement is compared; the reference built it."
+      ],
+      "differences": [],
+      "refusal": "brep-rs cannot round these neighbouring edges together yet: they meet at a corner where the rounds would have to be blended into each other, and that corner is not built, so none of the rounds picked with round1 is applied -- round1 is shown without it. | brep-rs cannot round these neighbouring edges together yet: they meet at a corner where the rounds would have to be blended into each other, and that corner is not built, so none of the rounds picked with round2 is applied -- round2 is shown without it. | brep-rs cannot round these neighbouring edges together yet: they meet at a corner where the rounds would have to be blended into each other, and that corner is not built, so none of the rounds picked with round3 is applied -- round3 is shown without it. | brep-rs cannot round these neighbouring edges together yet: they meet at a corner where the rounds would have to be blended into each other, and that corner is not built, so none of the rounds picked with round4 is applied -- round4 is shown without it.",
+      "ref": {
+        "volume": 11591.03244517401,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 15
+      },
+      "rerun": true
+    },
+    {
+      "id": "fillet-edge",
+      "kind": "solid",
+      "status": "MATCH",
+      "oursOutcome": "built",
+      "frame": "FreeCAD axes",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 11980.685834705771,
+          "ours": 11980.68583470577,
+          "pass": true,
+          "delta": 1.5182681764983683e-16
+        },
+        {
+          "name": "faces",
+          "ref": 7,
+          "ours": 7,
+          "pass": true
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            0,
+            40,
+            0,
+            30,
+            0,
+            10
+          ],
+          "ours": [
+            0,
+            40,
+            0,
+            30,
+            0,
+            10
+          ],
+          "pass": true,
+          "delta": 0
+        }
+      ],
+      "notes": [],
+      "differences": [],
+      "ref": {
+        "volume": 11980.685834705771,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 7,
+        "cases": null
+      },
+      "ours": {
+        "volume": 11980.68583470577,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 7,
+        "cases": null
+      },
+      "rerun": true
+    },
+    {
+      "id": "groove",
+      "kind": "solid",
+      "status": "NOT-BUILT",
+      "oursOutcome": "refused",
+      "frame": "FreeCAD axes",
+      "checks": [],
+      "notes": [
+        "ours outcome is 'refused', so no measurement is compared; the reference built it."
+      ],
+      "differences": [],
+      "refusal": "groove groove1: brep-rs cannot cut this groove yet (the tool is not fully enclosed by pull1, or its surface pair is unsupported) -- groove1 is shown without it.",
+      "ref": {
+        "volume": 36505.30663471339,
+        "bbox": [
+          -20,
+          -20,
+          0,
+          20,
+          20.000000000000004,
+          30
+        ],
+        "faces": 7
+      },
+      "rerun": true
+    },
+    {
+      "id": "hole-counterbore",
+      "kind": "solid",
+      "status": "MATCH",
+      "oursOutcome": "built",
+      "frame": "FreeCAD axes",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 11566.460213804608,
+          "ours": 11566.460213804608,
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces",
+          "ref": 9,
+          "ours": 9,
+          "pass": true
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            0,
+            40,
+            0,
+            30,
+            0,
+            10
+          ],
+          "ours": [
+            0,
+            40,
+            0,
+            30,
+            0,
+            10
+          ],
+          "pass": true,
+          "delta": 0
+        }
+      ],
+      "notes": [],
+      "differences": [],
+      "ref": {
+        "volume": 11566.460213804608,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 9,
+        "cases": null
+      },
+      "ours": {
+        "volume": 11566.460213804608,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 9,
+        "cases": null
+      },
+      "rerun": true
+    },
+    {
+      "id": "hole-countersink",
+      "kind": "solid",
+      "status": "MATCH",
+      "oursOutcome": "built",
+      "frame": "FreeCAD axes",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 11604.159325647686,
+          "ours": 11604.159325647684,
+          "pass": true,
+          "delta": 1.567532255029883e-16
+        },
+        {
+          "name": "faces",
+          "ref": 8,
+          "ours": 8,
+          "pass": true
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            0,
+            40,
+            0,
+            30,
+            0,
+            10
+          ],
+          "ours": [
+            0,
+            40,
+            0,
+            30,
+            0,
+            10
+          ],
+          "pass": true,
+          "delta": 0
+        }
+      ],
+      "notes": [],
+      "differences": [],
+      "ref": {
+        "volume": 11604.159325647686,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 8,
+        "cases": null
+      },
+      "ours": {
+        "volume": 11604.159325647684,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 8,
+        "cases": null
+      },
+      "rerun": true
+    },
+    {
+      "id": "hole-simple",
+      "kind": "solid",
+      "status": "MATCH",
+      "oursOutcome": "built",
+      "frame": "FreeCAD axes",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 11717.256661176918,
+          "ours": 11717.256661176916,
+          "pass": true,
+          "delta": 1.5524021160795769e-16
+        },
+        {
+          "name": "faces",
+          "ref": 7,
+          "ours": 7,
+          "pass": true
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            0,
+            40,
+            0,
+            30,
+            0,
+            10
+          ],
+          "ours": [
+            0,
+            40,
+            0,
+            30,
+            0,
+            10
+          ],
+          "pass": true,
+          "delta": 0
+        }
+      ],
+      "notes": [],
+      "differences": [],
+      "ref": {
+        "volume": 11717.256661176918,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 7,
+        "cases": null
+      },
+      "ours": {
+        "volume": 11717.256661176916,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 7,
+        "cases": null
+      },
+      "rerun": true
+    },
+    {
+      "id": "linear-pattern",
+      "kind": "solid",
+      "status": "MATCH",
+      "oursOutcome": "built",
+      "frame": "FreeCAD axes",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 11151.769983530756,
+          "ours": 11151.769983530756,
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces",
+          "ref": 9,
+          "ours": 9,
+          "pass": true
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            0,
+            60,
+            0,
+            20,
+            0,
+            10
+          ],
+          "ours": [
+            0,
+            60,
+            0,
+            20,
+            0,
+            10
+          ],
+          "pass": true,
+          "delta": 0
+        }
+      ],
+      "notes": [],
+      "differences": [],
+      "ref": {
+        "volume": 11151.769983530756,
+        "bbox": [
+          0,
+          0,
+          0,
+          60,
+          20,
+          10
+        ],
+        "faces": 9,
+        "cases": null
+      },
+      "ours": {
+        "volume": 11151.769983530756,
+        "bbox": [
+          0,
+          0,
+          0,
+          60,
+          20,
+          10
+        ],
+        "faces": 9,
+        "cases": null
+      },
+      "rerun": true
+    },
+    {
+      "id": "mirrored",
+      "kind": "solid",
+      "status": "MATCH",
+      "oursOutcome": "built",
+      "frame": "FreeCAD axes",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 11434.513322353838,
+          "ours": 11434.513322353836,
+          "pass": true,
+          "delta": 1.5907886520975348e-16
+        },
+        {
+          "name": "faces",
+          "ref": 8,
+          "ours": 8,
+          "pass": true
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            0,
+            40,
+            0,
+            30,
+            0,
+            10
+          ],
+          "ours": [
+            0,
+            40,
+            0,
+            30,
+            0,
+            10
+          ],
+          "pass": true,
+          "delta": 0
+        }
+      ],
+      "notes": [],
+      "differences": [],
+      "ref": {
+        "volume": 11434.513322353838,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 8,
+        "cases": null
+      },
+      "ours": {
+        "volume": 11434.513322353836,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 8,
+        "cases": null
+      },
+      "rerun": true
+    },
+    {
+      "id": "pad-basic",
+      "kind": "solid",
+      "status": "MATCH",
+      "oursOutcome": "built",
+      "frame": "FreeCAD axes",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 12000,
+          "ours": 12000,
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces",
+          "ref": 6,
+          "ours": 6,
+          "pass": true
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            0,
+            40,
+            0,
+            30,
+            0,
+            10
+          ],
+          "ours": [
+            0,
+            40,
+            0,
+            30,
+            0,
+            10
+          ],
+          "pass": true,
+          "delta": 0
+        }
+      ],
+      "notes": [],
+      "differences": [],
+      "ref": {
+        "volume": 12000,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 6,
+        "cases": null
+      },
+      "ours": {
+        "volume": 12000,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 6,
+        "cases": null
+      },
+      "rerun": true
+    },
+    {
+      "id": "pad-symmetric",
+      "kind": "solid",
+      "status": "MATCH",
+      "oursOutcome": "built",
+      "frame": "FreeCAD axes",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 12000,
+          "ours": 12000,
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces",
+          "ref": 6,
+          "ours": 6,
+          "pass": true
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            0,
+            40,
+            0,
+            30,
+            -5,
+            5
+          ],
+          "ours": [
+            0,
+            40,
+            0,
+            30,
+            -5,
+            5
+          ],
+          "pass": true,
+          "delta": 0
+        }
+      ],
+      "notes": [],
+      "differences": [],
+      "ref": {
+        "volume": 12000,
+        "bbox": [
+          0,
+          0,
+          -5,
+          40,
+          30,
+          5
+        ],
+        "faces": 6,
+        "cases": null
+      },
+      "ours": {
+        "volume": 12000,
+        "bbox": [
+          0,
+          0,
+          -5,
+          40,
+          30,
+          5
+        ],
+        "faces": 6,
+        "cases": null
+      },
+      "rerun": true
+    },
+    {
+      "id": "pocket-blind",
+      "kind": "solid",
+      "status": "MATCH",
+      "oursOutcome": "built",
+      "frame": "FreeCAD axes",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 11600.000000000004,
+          "ours": 11600,
+          "pass": true,
+          "delta": 3.1361886268031996e-16
+        },
+        {
+          "name": "faces",
+          "ref": 11,
+          "ours": 11,
+          "pass": true
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            0,
+            40,
+            0,
+            30,
+            0,
+            10
+          ],
+          "ours": [
+            0,
+            40,
+            0,
+            30,
+            0,
+            10
+          ],
+          "pass": true,
+          "delta": 0
+        }
+      ],
+      "notes": [],
+      "differences": [],
+      "ref": {
+        "volume": 11600.000000000004,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 11,
+        "cases": null
+      },
+      "ours": {
+        "volume": 11600,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 11,
+        "cases": null
+      },
+      "rerun": true
+    },
+    {
+      "id": "pocket-through",
+      "kind": "solid",
+      "status": "MATCH",
+      "oursOutcome": "built",
+      "frame": "FreeCAD axes",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 11214.601836602551,
+          "ours": 11214.601836602553,
+          "pass": true,
+          "delta": 1.6219830450056505e-16
+        },
+        {
+          "name": "faces",
+          "ref": 7,
+          "ours": 7,
+          "pass": true
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            0,
+            40,
+            0,
+            30,
+            0,
+            10
+          ],
+          "ours": [
+            0,
+            40,
+            0,
+            30,
+            0,
+            10
+          ],
+          "pass": true,
+          "delta": 0
+        }
+      ],
+      "notes": [],
+      "differences": [],
+      "ref": {
+        "volume": 11214.601836602551,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 7,
+        "cases": null
+      },
+      "ours": {
+        "volume": 11214.601836602553,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 7,
+        "cases": null
+      },
+      "rerun": true
+    },
+    {
+      "id": "polar-pattern",
+      "kind": "solid",
+      "status": "MATCH",
+      "oursOutcome": "built",
+      "frame": "FreeCAD axes",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 27143.360527015804,
+          "ours": 27143.3605270158,
+          "pass": true,
+          "delta": 1.3402831250282478e-16
+        },
+        {
+          "name": "faces",
+          "ref": 7,
+          "ours": 7,
+          "pass": true
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            -30,
+            30,
+            -30,
+            30,
+            -2.7184123146105152e-15,
+            10.000000000000005
+          ],
+          "ours": [
+            -30,
+            30,
+            -30,
+            30,
+            0,
+            10
+          ],
+          "pass": true,
+          "delta": 5.329070518200751e-15
+        }
+      ],
+      "notes": [],
+      "differences": [],
+      "ref": {
+        "volume": 27143.360527015804,
+        "bbox": [
+          -30,
+          -30,
+          -2.7184123146105152e-15,
+          30,
+          30,
+          10.000000000000005
+        ],
+        "faces": 7,
+        "cases": null
+      },
+      "ours": {
+        "volume": 27143.3605270158,
+        "bbox": [
+          -30,
+          -30,
+          0,
+          30,
+          30,
+          10
+        ],
+        "faces": 7,
+        "cases": null
+      },
+      "rerun": true
+    },
+    {
+      "id": "revolution",
+      "kind": "solid",
+      "status": "MATCH",
+      "oursOutcome": "built",
+      "frame": "y-up (mapped)",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 28274.333882308143,
+          "ours": 28274.33388230814,
+          "pass": true,
+          "delta": 1.2866718000271173e-16
+        },
+        {
+          "name": "faces",
+          "ref": 4,
+          "ours": 4,
+          "pass": true
+        },
+        {
+          "name": "bbox (abs 1e-6, after Y-up->Z-up)",
+          "ref": [
+            -20,
+            20,
+            -20,
+            20.000000000000007,
+            -4.440892098500628e-15,
+            30.000000000000004
+          ],
+          "ours": [
+            -20,
+            20,
+            -20,
+            20,
+            0,
+            30
+          ],
+          "pass": true,
+          "delta": 7.105427357601002e-15
+        }
+      ],
+      "notes": [],
+      "differences": [],
+      "ref": {
+        "volume": 28274.333882308143,
+        "bbox": [
+          -20,
+          -20,
+          -4.440892098500628e-15,
+          20,
+          20.000000000000007,
+          30.000000000000004
+        ],
+        "faces": 4,
+        "cases": null
+      },
+      "ours": {
+        "volume": 28274.33388230814,
+        "bbox": [
+          -20,
+          0,
+          -20,
+          20,
+          30,
+          20
+        ],
+        "faces": 4,
+        "cases": null
+      },
+      "rerun": true
+    },
+    {
+      "id": "sk-circle-arc-tangent",
+      "kind": "sketch",
+      "status": "MATCH",
+      "oursOutcome": "built",
+      "frame": "FreeCAD axes",
+      "checks": [
+        {
+          "name": "bbox (abs 1e-6, in-plane axes)",
+          "ref": [
+            -10,
+            50,
+            0,
+            20
+          ],
+          "ours": [
+            -10,
+            50,
+            0,
+            20
+          ],
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "degrees of freedom",
+          "ref": 0,
+          "ours": 0,
+          "pass": true
+        },
+        {
+          "name": "conflicting constraints (0-based)",
+          "ref": [],
+          "ours": [],
+          "pass": true
+        },
+        {
+          "name": "redundant constraints (0-based)",
+          "ref": [],
+          "ours": [],
+          "pass": true
+        }
+      ],
+      "notes": [],
+      "differences": [],
+      "ref": {
+        "volume": null,
+        "bbox": [
+          -10,
+          0,
+          0,
+          50,
+          20,
+          0
+        ],
+        "faces": null,
+        "cases": {
+          "main": {
+            "dof": 0,
+            "conflicting": [],
+            "redundant": []
+          }
+        }
+      },
+      "ours": {
+        "volume": 11141.592653589794,
+        "bbox": [
+          -10,
+          0,
+          0,
+          50,
+          20,
+          10
+        ],
+        "faces": 6,
+        "cases": {
+          "main": {
+            "dof": 0,
+            "bucket": "consistent",
+            "nativeBlame": [],
+            "conflicting": [],
+            "conflictingNative": [],
+            "redundant": [],
+            "indexBase": 0
+          }
+        }
+      },
+      "rerun": true
+    },
+    {
+      "id": "sk-conflict",
+      "kind": "sketch",
+      "status": "MATCH",
+      "oursOutcome": "built",
+      "frame": "FreeCAD axes",
+      "checks": [
+        {
+          "name": "[baseline] conflicting constraints (0-based)",
+          "ref": [],
+          "ours": [],
+          "pass": true
+        },
+        {
+          "name": "[baseline] redundant constraints (0-based)",
+          "ref": [],
+          "ours": [],
+          "pass": true
+        },
+        {
+          "name": "[conflict] conflicting constraints (0-based)",
+          "ref": [
+            9,
+            11
+          ],
+          "ours": [
+            9,
+            11
+          ],
+          "pass": true
+        },
+        {
+          "name": "[conflict] redundant constraints (0-based)",
+          "ref": [],
+          "ours": [],
+          "pass": true
+        },
+        {
+          "name": "[redundant] conflicting constraints (0-based)",
+          "ref": [],
+          "ours": [],
+          "pass": true
+        },
+        {
+          "name": "[redundant] redundant constraints (0-based)",
+          "ref": [
+            11
+          ],
+          "ours": [
+            11
+          ],
+          "pass": true
+        }
+      ],
+      "notes": [
+        "ours refuses to build a solid on the conflicting sketch, with a sentence (FreeCAD marks the sketch Invalid)."
+      ],
+      "differences": [
+        {
+          "case": "conflict",
+          "what": "conflicting list",
+          "freecad": [
+            9,
+            11
+          ],
+          "oursNativeBlame": [
+            11
+          ],
+          "oursLeaveOneOutSet": [
+            9,
+            11
+          ],
+          "reason": "brep-rs diagnose().blame names ONE rule: the row whose presence breaks consistency (here the later, contradicting distanceX). FreeCAD ConflictingConstraints names the whole contradicting set (both distanceX rows). Both come from their own solver and neither is wrong; the compared list is the leave-one-out set from the same brep-rs solver (rule i is in it iff dropping rule i clears the conflicting bucket), which is the like-for-like quantity. The native blame is a strict subset of it."
+        }
+      ],
+      "ref": {
+        "volume": null,
+        "bbox": null,
+        "faces": null,
+        "cases": {
+          "baseline": {
+            "conflicting": [],
+            "redundant": [],
+            "dof": null
+          },
+          "conflict": {
+            "conflicting": [
+              9,
+              11
+            ],
+            "redundant": [],
+            "dof": null
+          },
+          "redundant": {
+            "conflicting": [],
+            "redundant": [
+              11
+            ],
+            "dof": null
+          }
+        }
+      },
+      "ours": {
+        "volume": null,
+        "bbox": null,
+        "faces": null,
+        "cases": {
+          "baseline": {
+            "dof": 0,
+            "bucket": "consistent",
+            "nativeBlame": [],
+            "conflicting": [],
+            "conflictingNative": [],
+            "redundant": [],
+            "indexBase": 0
+          },
+          "conflict": {
+            "dof": 0,
+            "bucket": "conflicting",
+            "nativeBlame": [
+              11
+            ],
+            "conflicting": [
+              9,
+              11
+            ],
+            "conflictingNative": [
+              11
+            ],
+            "redundant": [],
+            "indexBase": 0
+          },
+          "redundant": {
+            "dof": 0,
+            "bucket": "redundant",
+            "nativeBlame": [
+              11
+            ],
+            "conflicting": [],
+            "conflictingNative": [],
+            "redundant": [
+              11
+            ],
+            "indexBase": 0
+          }
+        }
+      },
+      "rerun": true
+    },
+    {
+      "id": "sk-rect-dof",
+      "kind": "sketch",
+      "status": "MATCH",
+      "oursOutcome": "built",
+      "frame": "FreeCAD axes",
+      "checks": [
+        {
+          "name": "bbox (abs 1e-6, in-plane axes)",
+          "ref": [
+            0,
+            40,
+            0,
+            30
+          ],
+          "ours": [
+            0,
+            40,
+            0,
+            30
+          ],
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "degrees of freedom",
+          "ref": 0,
+          "ours": 0,
+          "pass": true
+        },
+        {
+          "name": "conflicting constraints (0-based)",
+          "ref": [],
+          "ours": [],
+          "pass": true
+        },
+        {
+          "name": "redundant constraints (0-based)",
+          "ref": [],
+          "ours": [],
+          "pass": true
+        }
+      ],
+      "notes": [],
+      "differences": [],
+      "ref": {
+        "volume": null,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          0
+        ],
+        "faces": null,
+        "cases": {
+          "main": {
+            "dof": 0,
+            "conflicting": [],
+            "redundant": []
+          }
+        }
+      },
+      "ours": {
+        "volume": null,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          0
+        ],
+        "faces": null,
+        "cases": {
+          "main": {
+            "dof": 0,
+            "bucket": "consistent",
+            "nativeBlame": [],
+            "conflicting": [],
+            "conflictingNative": [],
+            "redundant": [],
+            "indexBase": 0
+          }
+        }
+      },
+      "rerun": true
+    },
+    {
+      "id": "sk-rect-underconstrained",
+      "kind": "sketch",
+      "status": "MATCH",
+      "oursOutcome": "built",
+      "frame": "FreeCAD axes",
+      "checks": [
+        {
+          "name": "degrees of freedom",
+          "ref": 4,
+          "ours": 4,
+          "pass": true
+        },
+        {
+          "name": "conflicting constraints (0-based)",
+          "ref": [],
+          "ours": [],
+          "pass": true
+        },
+        {
+          "name": "redundant constraints (0-based)",
+          "ref": [],
+          "ours": [],
+          "pass": true
+        }
+      ],
+      "notes": [],
+      "differences": [],
+      "ref": {
+        "volume": null,
+        "bbox": null,
+        "faces": null,
+        "cases": {
+          "main": {
+            "dof": 4,
+            "conflicting": [],
+            "redundant": []
+          }
+        }
+      },
+      "ours": {
+        "volume": null,
+        "bbox": null,
+        "faces": 6,
+        "cases": {
+          "main": {
+            "dof": 4,
+            "bucket": "consistent",
+            "nativeBlame": [],
+            "conflicting": [],
+            "conflictingNative": [],
+            "redundant": [],
+            "indexBase": 0
+          }
+        }
+      },
+      "rerun": true
+    }
+  ]
+}

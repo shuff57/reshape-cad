@@ -1,0 +1,23 @@
+{
+ "id": "sk-rect-underconstrained__triangle-joined",
+ "kind": "sketch",
+ "solve": 0,
+ "dof": 6,
+ "conflicting": [],
+ "redundant": [],
+ "malformed": [],
+ "partially_redundant": [],
+ "state": [
+  "Up-to-date"
+ ],
+ "ncons": 3,
+ "bbox": [
+  -1.7763568394002505e-15,
+  -3.552713678800501e-15,
+  0.0,
+  30.0,
+  20.000000000000004,
+  0.0
+ ],
+ "ok": true
+}

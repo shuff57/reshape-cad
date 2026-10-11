@@ -1,0 +1,23 @@
+{
+  "id": "chamfer-edge",
+  "outcome": "built",
+  "script": "/home/shuff57/Documents/GitHub/reshape-cad/docs/replica/freecad/gauntlet/baseline/ours-chamfer-edge.mjs",
+  "notes": "built via adapter (rect at is the CENTRE, so at:[20,15] puts the corner at the origin); volume/bbox/faces from measure_doc on the same doc",
+  "scriptSource": "const sk = sketch('top'); sk.rect(40, 30, { at: [20, 15] }); const pad = extrude(sk, 10); chamfer(pad.edge('top', 'right'), 2);",
+  "featureKinds": [
+    "sketch",
+    "extrude",
+    "fillet"
+  ],
+  "volume": 11940,
+  "faces": 7,
+  "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+  ],
+  "meshTriangles": 16
+}

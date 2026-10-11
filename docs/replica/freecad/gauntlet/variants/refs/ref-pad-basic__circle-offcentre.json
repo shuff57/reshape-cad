@@ -1,0 +1,22 @@
+{
+ "id": "pad-basic__circle-offcentre",
+ "ok": true,
+ "volume": 6361.725123519331,
+ "bbox": [
+  1.0,
+  -29.0,
+  0.0,
+  19.0,
+  -11.0,
+  25.0
+ ],
+ "faces": 3,
+ "com": [
+  10.0,
+  -20.0,
+  12.5
+ ],
+ "valid": true,
+ "solids": 1,
+ "bad": {}
+}

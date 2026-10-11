@@ -1,0 +1,67 @@
+{
+ "id": "hole-counterbore",
+ "outcome": "built",
+ "src": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]);\nconst plate = extrude(s1, 10);\nhole(plate, { across: 6, at: [0, 0], counterbore: { across: 10, deep: 3 } });",
+ "refusals": {},
+ "lastFeature": "hole1",
+ "builtIds": [
+  "pull1",
+  "hole1"
+ ],
+ "shapeBuilt": true,
+ "volume": 11566.460213804608,
+ "bbox": [
+  0,
+  0,
+  0,
+  40,
+  30,
+  10
+ ],
+ "faces": 9,
+ "meshTris": 180,
+ "variants": {
+  "atCorner": {
+   "src": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]);\nconst plate = extrude(s1, 10);\nhole(plate, { across: 6, at: [20, 15], counterbore: { across: 10, deep: 3 } });",
+   "refusals": {},
+   "lastFeature": "hole1",
+   "builtIds": [
+    "pull1",
+    "hole1"
+   ],
+   "shapeBuilt": true,
+   "volume": 11891.615053451153,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 9,
+   "meshTris": 60
+  },
+  "atCentred": {
+   "src": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]);\nconst plate = extrude(s1, 10);\nhole(plate, { across: 6, at: [0, 0], counterbore: { across: 10, deep: 3 } });",
+   "refusals": {},
+   "lastFeature": "hole1",
+   "builtIds": [
+    "pull1",
+    "hole1"
+   ],
+   "shapeBuilt": true,
+   "volume": 11566.460213804608,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 9,
+   "meshTris": 180
+  }
+ }
+}

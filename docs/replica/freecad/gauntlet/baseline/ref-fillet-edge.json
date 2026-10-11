@@ -1,0 +1,32 @@
+{
+ "piece": "fillet-edge",
+ "edge": 5,
+ "sketchDoF": 0,
+ "padVolume": 12000.0,
+ "padFaces": 6,
+ "volume": 11980.685834705771,
+ "bbox": [
+  0.0,
+  0.0,
+  0.0,
+  40.0,
+  30.0,
+  10.0
+ ],
+ "faces": 7,
+ "valid": true,
+ "states": [
+  [
+   "Up-to-date"
+  ],
+  [
+   "Up-to-date"
+  ],
+  [
+   "Up-to-date"
+  ],
+  [
+   "Up-to-date"
+  ]
+ ]
+}

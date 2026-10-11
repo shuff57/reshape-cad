@@ -1,0 +1,23 @@
+{
+  "id": "revolution",
+  "frame": "y-up",
+  "outcome": "built",
+  "script": "/home/shuff57/Documents/GitHub/reshape-cad/docs/replica/freecad/gauntlet/baseline/ours-revolution.mjs",
+  "notes": "built via adapter; script is Y-up so sketch('front') rect revolved 360 gives a tube whose axis is world Y (FreeCAD Z maps to our Y, FreeCAD Y to our -Z or Z); volume = pi*(20^2-10^2)*30 = 28274.33 exact; 4 faces; mesh non-empty",
+  "scriptSource": "const sk = sketch('front'); sk.rect(10, 30, { at: [15, 15] }); revolve(sk, 360);",
+  "featureKinds": [
+    "sketch",
+    "revolve"
+  ],
+  "volume": 28274.33388230814,
+  "faces": 4,
+  "bbox": [
+    -20,
+    0,
+    -20,
+    20,
+    30,
+    20
+  ],
+  "meshTriangles": 308
+}

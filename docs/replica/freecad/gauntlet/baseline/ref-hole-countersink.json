@@ -1,0 +1,72 @@
+{
+ "id": "hole-countersink",
+ "ok": true,
+ "script": "/home/shuff57/Documents/GitHub/reshape-cad/docs/replica/freecad/gauntlet/baseline/ref-hole-countersink.py",
+ "volume": 11604.159325647686,
+ "bbox": [
+  0.0,
+  0.0,
+  0.0,
+  40.0,
+  30.0,
+  10.0
+ ],
+ "faces": 8,
+ "valid": true,
+ "nsolids": 1,
+ "expected_volume": 11604.159325647684,
+ "sketchSolve": 0,
+ "cutType": "Countersink",
+ "csAngle": 90.0,
+ "states": {
+  "Body": [
+   "Up-to-date"
+  ],
+  "Origin": [
+   "Up-to-date"
+  ],
+  "X_Axis": [
+   "Up-to-date"
+  ],
+  "Y_Axis": [
+   "Up-to-date"
+  ],
+  "Z_Axis": [
+   "Up-to-date"
+  ],
+  "XY_Plane": [
+   "Up-to-date"
+  ],
+  "XZ_Plane": [
+   "Up-to-date"
+  ],
+  "YZ_Plane": [
+   "Up-to-date"
+  ],
+  "Origin001": [
+   "Up-to-date"
+  ],
+  "Sketch": [
+   "Up-to-date"
+  ],
+  "Pad": [
+   "Up-to-date"
+  ],
+  "Sketch001": [
+   "Touched"
+  ],
+  "Hole": [
+   "Up-to-date"
+  ]
+ },
+ "stepVolume": 11604.159325647544,
+ "stepFaces": 8,
+ "stepBbox": [
+  0.0,
+  0.0,
+  0.0,
+  40.0,
+  30.0,
+  10.0
+ ]
+}

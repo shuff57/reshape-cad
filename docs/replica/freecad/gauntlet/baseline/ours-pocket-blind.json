@@ -1,0 +1,33 @@
+{
+  "id": "pocket-blind",
+  "script": "\nconst sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });\npocket(sk2, plate, 4);\n",
+  "outcome": "built",
+  "notes": "",
+  "refusals": {},
+  "kinds": [
+    "sketch",
+    "extrude",
+    "sketch",
+    "pocket"
+  ],
+  "volume": 11600,
+  "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+  ],
+  "faces": 11,
+  "expected": {
+    "volume": 11600
+  },
+  "meshKeys": [
+    "edges",
+    "faces",
+    "indices",
+    "positions"
+  ],
+  "meshTriangles": 28
+}

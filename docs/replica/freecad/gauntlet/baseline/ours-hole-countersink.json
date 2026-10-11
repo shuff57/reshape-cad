@@ -1,0 +1,48 @@
+{
+ "id": "hole-countersink",
+ "outcome": "built",
+ "closedFormVolume": 11604.159325647686,
+ "src": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]);\nconst plate = extrude(s1, 10);\nhole(plate, { across: 6, countersink: { across: 12, angle: 90 } });",
+ "refusals": {},
+ "lastFeature": "hole1",
+ "volume": 11604.159325647684,
+ "bbox": [
+  0,
+  0,
+  0,
+  40,
+  30,
+  10
+ ],
+ "faces": 8,
+ "shapeBuilt": true,
+ "meshTris": 188,
+ "variants": {
+  "centred": {
+   "src": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]);\nconst plate = extrude(s1, 10);\nhole(plate, { across: 6, countersink: { across: 12, angle: 90 } });",
+   "refusals": {},
+   "lastFeature": "hole1",
+   "volume": 11604.159325647684,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 8,
+   "shapeBuilt": true,
+   "meshTris": 188
+  },
+  "at2015": {
+   "src": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]);\nconst plate = extrude(s1, 10);\nhole(plate, { across: 6, at: [20, 15], countersink: { across: 12, angle: 90 } });",
+   "refusals": {
+    "hole1": "hole hole1: brep-rs cannot cut this hole yet; drilling the part before you round, chamfer or pattern it, or making the hole go right through, usually works -- hole1 is shown without it."
+   },
+   "lastFeature": "hole1",
+   "shapeBuilt": false,
+   "meshTris": 0
+  }
+ }
+}

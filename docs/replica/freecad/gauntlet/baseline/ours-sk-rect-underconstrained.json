@@ -1,0 +1,115 @@
+{
+  "id": "sk-rect-underconstrained",
+  "script": "docs/replica/freecad/gauntlet/baseline/ours-sk-rect-underconstrained.mjs",
+  "source": "const sk1 = sketch('top')\nsk1.geom([\n  { k:'line', id:1, a:[0,0], b:[40,0] },\n  { k:'line', id:2, a:[40,0], b:[40,30] },\n  { k:'line', id:3, a:[40,30], b:[0,30] },\n  { k:'line', id:4, a:[0,30], b:[0,0] },\n])\nsk1.rules([\n  { k:'coincident', a:1, aEnd:'b', b:2, bEnd:'a' },\n  { k:'coincident', a:2, aEnd:'b', b:3, bEnd:'a' },\n  { k:'coincident', a:3, aEnd:'b', b:4, bEnd:'a' },\n  { k:'coincident', a:4, aEnd:'b', b:1, bEnd:'a' },\n  { k:'horizontal', a:1 },\n  { k:'vertical', a:2 },\n  { k:'horizontal', a:3 },\n  { k:'vertical', a:4 },\n])",
+  "sketchKeys": [
+    "id",
+    "kind",
+    "plane",
+    "offset",
+    "points",
+    "constraints",
+    "geoms",
+    "geom",
+    "rules"
+  ],
+  "solveOk": true,
+  "solveError": null,
+  "diagnosis": {
+    "blame": [],
+    "bucket": "consistent",
+    "dof": 4,
+    "rank": 12
+  },
+  "profile": {
+    "loops": [
+      {
+        "role": "outer",
+        "segs": [
+          {
+            "a": [
+              0,
+              0
+            ],
+            "b": [
+              40,
+              0
+            ],
+            "k": "line"
+          },
+          {
+            "a": [
+              40,
+              0
+            ],
+            "b": [
+              40,
+              30
+            ],
+            "k": "line"
+          },
+          {
+            "a": [
+              40,
+              30
+            ],
+            "b": [
+              0,
+              30
+            ],
+            "k": "line"
+          },
+          {
+            "a": [
+              0,
+              30
+            ],
+            "b": [
+              0,
+              0
+            ],
+            "k": "line"
+          }
+        ]
+      }
+    ]
+  },
+  "refusals": {},
+  "measure": {
+    "bbox": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        40,
+        30,
+        10
+      ]
+    ],
+    "edges": 12,
+    "faces": 6,
+    "volume": 12000
+  },
+  "faces": 6,
+  "meshVerts": 24,
+  "adapterRefusals": {},
+  "outcome": "built",
+  "notes": "Ours DoF=4 rank=12 bucket=consistent blame=[]",
+  "std": {
+    "kind": "sketch",
+    "outcome": "built",
+    "cases": {
+      "main": {
+        "dof": 4,
+        "bucket": "consistent",
+        "nativeBlame": [],
+        "conflicting": [],
+        "conflictingNative": [],
+        "redundant": [],
+        "indexBase": 0
+      }
+    }
+  }
+}

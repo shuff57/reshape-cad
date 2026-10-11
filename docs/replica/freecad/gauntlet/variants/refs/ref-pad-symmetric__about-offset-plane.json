@@ -1,0 +1,22 @@
+{
+ "id": "pad-symmetric__about-offset-plane",
+ "ok": true,
+ "volume": 4800.0,
+ "bbox": [
+  0.0,
+  0.0,
+  8.0,
+  30.0,
+  20.0,
+  16.0
+ ],
+ "faces": 6,
+ "com": [
+  15.0,
+  10.0,
+  12.0
+ ],
+ "valid": true,
+ "solids": 1,
+ "bad": {}
+}

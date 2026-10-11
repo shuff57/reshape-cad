@@ -1,0 +1,23 @@
+{
+ "id": "sk-rect-underconstrained__pinned-corner-only",
+ "kind": "sketch",
+ "solve": 0,
+ "dof": 2,
+ "conflicting": [],
+ "redundant": [],
+ "malformed": [],
+ "partially_redundant": [],
+ "state": [
+  "Up-to-date"
+ ],
+ "ncons": 10,
+ "bbox": [
+  2.0,
+  3.0,
+  0.0,
+  32.0,
+  18.0,
+  0.0
+ ],
+ "ok": true
+}

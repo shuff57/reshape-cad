@@ -1,0 +1,70 @@
+{
+ "id": "fillet-after-pocket",
+ "ok": true,
+ "script": "/home/shuff57/Documents/GitHub/reshape-cad/docs/replica/freecad/gauntlet/baseline/ref-fillet-after-pocket.py",
+ "edges": [
+  13,
+  14,
+  15,
+  16
+ ],
+ "pocketVolume": 11600.000000000004,
+ "pocketFaces": 11,
+ "volume": 11591.03244517401,
+ "bbox": [
+  0.0,
+  0.0,
+  0.0,
+  40.0,
+  30.0,
+  10.0
+ ],
+ "faces": 15,
+ "valid": true,
+ "states": {
+  "Body": [
+   "Up-to-date"
+  ],
+  "Origin": [
+   "Up-to-date"
+  ],
+  "X_Axis": [
+   "Up-to-date"
+  ],
+  "Y_Axis": [
+   "Up-to-date"
+  ],
+  "Z_Axis": [
+   "Up-to-date"
+  ],
+  "XY_Plane": [
+   "Up-to-date"
+  ],
+  "XZ_Plane": [
+   "Up-to-date"
+  ],
+  "YZ_Plane": [
+   "Up-to-date"
+  ],
+  "Origin001": [
+   "Up-to-date"
+  ],
+  "Sketch": [
+   "Up-to-date"
+  ],
+  "Pad": [
+   "Up-to-date"
+  ],
+  "Sketch001": [
+   "Up-to-date"
+  ],
+  "Pocket": [
+   "Up-to-date"
+  ],
+  "Fillet": [
+   "Up-to-date"
+  ]
+ },
+ "stepVolume": 11591.032445456287,
+ "stepFaces": 15
+}

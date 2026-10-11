@@ -1,0 +1,21 @@
+{
+ "id": "sk-conflict__equal-vs-two-radii",
+ "kind": "sketch",
+ "solve": -4,
+ "dof": -1,
+ "conflicting": [
+  4,
+  5,
+  6
+ ],
+ "redundant": [],
+ "malformed": [],
+ "partially_redundant": [],
+ "state": [
+  "Touched",
+  "Invalid"
+ ],
+ "ncons": 6,
+ "bbox": null,
+ "ok": true
+}

@@ -1,0 +1,23 @@
+{
+ "id": "sk-rect-dof__parallelogram",
+ "kind": "sketch",
+ "solve": 0,
+ "dof": 0,
+ "conflicting": [],
+ "redundant": [],
+ "malformed": [],
+ "partially_redundant": [],
+ "state": [
+  "Up-to-date"
+ ],
+ "ncons": 11,
+ "bbox": [
+  0.0,
+  0.0,
+  0.0,
+  40.0,
+  15.0,
+  0.0
+ ],
+ "ok": true
+}

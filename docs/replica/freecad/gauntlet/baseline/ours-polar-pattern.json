@@ -1,0 +1,88 @@
+{
+  "id": "polar-pattern",
+  "script": "/home/shuff57/Documents/GitHub/reshape-cad/docs/replica/freecad/gauntlet/baseline/ours-polar-pattern.mjs",
+  "expected": {
+    "volume": 27143.36052701581,
+    "faces": 7
+  },
+  "variantA_polarPatternWord": {
+    "scriptSource": "\nconst sk1 = sketch('top'); sk1.circle(60);\nconst disc = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.circle(6, { at: [20, 0] });\nconst holed = pocket(sk2, disc, 10);\npolarPattern(holed, { count: 4, axis: 'z', angle: 360 });\n",
+    "featureKinds": [
+      "sketch",
+      "extrude",
+      "sketch",
+      "pocket",
+      "sketch",
+      "pocket",
+      "sketch",
+      "pocket",
+      "sketch",
+      "pocket"
+    ],
+    "refusals": {},
+    "outcome": "built",
+    "volume": 27143.3605270158,
+    "bbox": [
+      -30,
+      -30,
+      0,
+      30,
+      30,
+      10
+    ],
+    "faces": 7
+  },
+  "variantB_explicitFourPockets": {
+    "scriptSource": "\nconst sk1 = sketch('top'); sk1.circle(60);\nconst disc = extrude(sk1, 10);\nconst a = sketch('top', 10); a.circle(6, { at: [20, 0] }); pocket(a, disc, 10);\nconst b = sketch('top', 10); b.circle(6, { at: [0, 20] }); pocket(b, disc, 10);\nconst c = sketch('top', 10); c.circle(6, { at: [-20, 0] }); pocket(c, disc, 10);\nconst d = sketch('top', 10); d.circle(6, { at: [0, -20] }); pocket(d, disc, 10);\n",
+    "featureKinds": [
+      "sketch",
+      "extrude",
+      "sketch",
+      "pocket",
+      "sketch",
+      "pocket",
+      "sketch",
+      "pocket",
+      "sketch",
+      "pocket"
+    ],
+    "refusals": {},
+    "outcome": "built",
+    "volume": 27143.3605270158,
+    "bbox": [
+      -30,
+      -30,
+      0,
+      30,
+      30,
+      10
+    ],
+    "faces": 7
+  },
+  "scriptSource": "\nconst sk1 = sketch('top'); sk1.circle(60);\nconst disc = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.circle(6, { at: [20, 0] });\nconst holed = pocket(sk2, disc, 10);\npolarPattern(holed, { count: 4, axis: 'z', angle: 360 });\n",
+  "featureKinds": [
+    "sketch",
+    "extrude",
+    "sketch",
+    "pocket",
+    "sketch",
+    "pocket",
+    "sketch",
+    "pocket",
+    "sketch",
+    "pocket"
+  ],
+  "refusals": {},
+  "outcome": "built",
+  "volume": 27143.3605270158,
+  "bbox": [
+    -30,
+    -30,
+    0,
+    30,
+    30,
+    10
+  ],
+  "faces": 7,
+  "notes": " | variantA = polarPattern word; variantB (explicit 4 pockets) in variantB_explicitFourPockets"
+}

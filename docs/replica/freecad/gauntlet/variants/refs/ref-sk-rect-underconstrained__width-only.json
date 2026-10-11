@@ -1,0 +1,23 @@
+{
+ "id": "sk-rect-underconstrained__width-only",
+ "kind": "sketch",
+ "solve": 0,
+ "dof": 3,
+ "conflicting": [],
+ "redundant": [],
+ "malformed": [],
+ "partially_redundant": [],
+ "state": [
+  "Up-to-date"
+ ],
+ "ncons": 9,
+ "bbox": [
+  0.0,
+  0.0,
+  0.0,
+  30.0,
+  15.0,
+  0.0
+ ],
+ "ok": true
+}

@@ -1,0 +1,23 @@
+{
+  "id": "fillet-edge",
+  "outcome": "built",
+  "script": "/home/shuff57/Documents/GitHub/reshape-cad/docs/replica/freecad/gauntlet/baseline/ours-fillet-edge.mjs",
+  "notes": "built via adapter (rect at is the CENTRE, so at:[20,15] puts the corner at the origin); volume/bbox/faces from measure_doc on the same doc",
+  "scriptSource": "const sk = sketch('top'); sk.rect(40, 30, { at: [20, 15] }); const pad = extrude(sk, 10); fillet(pad.edge('front', 'right'), 3);",
+  "featureKinds": [
+    "sketch",
+    "extrude",
+    "fillet"
+  ],
+  "volume": 11980.68583470577,
+  "faces": 7,
+  "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+  ],
+  "meshTriangles": 32
+}

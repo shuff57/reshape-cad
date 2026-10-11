@@ -1,0 +1,39 @@
+{
+ "volume": 11434.513322353838,
+ "bbox": [
+  0.0,
+  0.0,
+  0.0,
+  40.0,
+  30.0,
+  10.0
+ ],
+ "faces": 8,
+ "states": {
+  "Sketch": [
+   "Up-to-date"
+  ],
+  "Pad": [
+   "Up-to-date"
+  ],
+  "Sketch001": [
+   "Up-to-date"
+  ],
+  "Pocket": [
+   "Up-to-date"
+  ],
+  "DatumPlane": [
+   "Up-to-date"
+  ],
+  "Mirrored": [
+   "Up-to-date"
+  ],
+  "Body": [
+   "Up-to-date"
+  ]
+ },
+ "valid": true,
+ "nsolids": 1,
+ "datum_placement": "Placement [Pos=(20,0,0), Yaw-Pitch-Roll=(90,0,90)]",
+ "expected_volume": 11434.513322353838
+}

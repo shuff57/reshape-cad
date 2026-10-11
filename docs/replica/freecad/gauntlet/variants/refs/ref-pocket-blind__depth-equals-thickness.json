@@ -1,0 +1,22 @@
+{
+ "id": "pocket-blind__depth-equals-thickness",
+ "ok": true,
+ "volume": 11497.345175425633,
+ "bbox": [
+  0.0,
+  0.0,
+  0.0,
+  40.0,
+  30.0,
+  10.0
+ ],
+ "faces": 7,
+ "com": [
+  20.000000000000004,
+  15.0,
+  4.999999999999999
+ ],
+ "valid": true,
+ "solids": 1,
+ "bad": {}
+}

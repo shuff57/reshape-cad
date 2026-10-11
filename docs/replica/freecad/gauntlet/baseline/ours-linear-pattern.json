@@ -1,0 +1,106 @@
+{
+ "id": "linear-pattern",
+ "outcome": "built",
+ "expectedVolume": 11151.769983530756,
+ "src": "const s1 = sketch('top'); s1.polygon([[0,0],[60,0],[60,20],[0,20]]);\nconst plate = extrude(s1, 10);\nconst p1 = sketch('top', 10); p1.circle(6, { at: [10, 10] });\npocket(p1, plate, 12);\nconst p2 = sketch('top', 10); p2.circle(6, { at: [30, 10] });\npocket(p2, plate, 12);\nconst p3 = sketch('top', 10); p3.circle(6, { at: [50, 10] });\npocket(p3, plate, 12);\n",
+ "refusals": {},
+ "lastFeature": "pocket3",
+ "kinds": [
+  "sketch",
+  "extrude",
+  "sketch",
+  "pocket",
+  "sketch",
+  "pocket",
+  "sketch",
+  "pocket"
+ ],
+ "shapeBuilt": true,
+ "volume": 11151.769983530756,
+ "bbox": [
+  0,
+  0,
+  0,
+  60,
+  20,
+  10
+ ],
+ "faces": 9,
+ "meshTris": 240,
+ "variants": {
+  "A_three_pockets": {
+   "src": "const s1 = sketch('top'); s1.polygon([[0,0],[60,0],[60,20],[0,20]]);\nconst plate = extrude(s1, 10);\nconst p1 = sketch('top', 10); p1.circle(6, { at: [10, 10] });\npocket(p1, plate, 12);\nconst p2 = sketch('top', 10); p2.circle(6, { at: [30, 10] });\npocket(p2, plate, 12);\nconst p3 = sketch('top', 10); p3.circle(6, { at: [50, 10] });\npocket(p3, plate, 12);\n",
+   "refusals": {},
+   "lastFeature": "pocket3",
+   "kinds": [
+    "sketch",
+    "extrude",
+    "sketch",
+    "pocket",
+    "sketch",
+    "pocket",
+    "sketch",
+    "pocket"
+   ],
+   "shapeBuilt": true,
+   "volume": 11151.769983530756,
+   "bbox": [
+    0,
+    0,
+    0,
+    60,
+    20,
+    10
+   ],
+   "faces": 9,
+   "meshTris": 240
+  },
+  "B_single_pocket_then_wholesolid_linearPattern": {
+   "src": "const s1 = sketch('top'); s1.polygon([[0,0],[60,0],[60,20],[0,20]]);\nconst plate = extrude(s1, 10);\nconst p1 = sketch('top', 10); p1.circle(6, { at: [10, 10] });\npocket(p1, plate, 12);\nlinearPattern(plate, { count: 3, step: 20 });\n",
+   "refusals": {},
+   "lastFeature": "pat1",
+   "kinds": [
+    "sketch",
+    "extrude",
+    "sketch",
+    "pocket",
+    "pattern"
+   ],
+   "shapeBuilt": true,
+   "volume": 19717.256661176918,
+   "bbox": [
+    0,
+    0,
+    0,
+    100,
+    20,
+    10
+   ],
+   "faces": 7,
+   "meshTris": 88
+  },
+  "C_single_pocket_only": {
+   "src": "const s1 = sketch('top'); s1.polygon([[0,0],[60,0],[60,20],[0,20]]);\nconst plate = extrude(s1, 10);\nconst p1 = sketch('top', 10); p1.circle(6, { at: [10, 10] });\npocket(p1, plate, 12);\n",
+   "refusals": {},
+   "lastFeature": "pocket1",
+   "kinds": [
+    "sketch",
+    "extrude",
+    "sketch",
+    "pocket"
+   ],
+   "shapeBuilt": true,
+   "volume": 11717.256661176916,
+   "bbox": [
+    0,
+    0,
+    0,
+    60,
+    20,
+    10
+   ],
+   "faces": 7,
+   "meshTris": 88
+  }
+ }
+}

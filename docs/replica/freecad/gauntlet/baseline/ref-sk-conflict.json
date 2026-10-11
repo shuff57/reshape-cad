@@ -1,0 +1,5 @@
+{"id":"sk-conflict","ok":true,"script":"/home/shuff57/Documents/GitHub/reshape-cad/docs/replica/freecad/gauntlet/baseline/ref-sk-conflict.py",
+"baseline":{"solve":0,"conflicting":[],"redundant":[],"malformed":[],"state":"Up-to-date"},
+"conflict":{"solve":-4,"conflicting_1based":[10,12],"conflicting_0based":[9,11],"state":["Touched","Invalid"],"message":"Over-constrained sketch"},
+"redundant":{"solve":-2,"redundant_1based":[12],"redundant_0based":[11],"state":["Touched","Invalid"],"message":"Sketch with redundant constraints"},
+"api":"Sketch.solve() status; Sketch.ConflictingConstraints/RedundantConstraints/MalformedConstraints/PartiallyRedundantConstraints (1-based indices)"}

@@ -24,3 +24,7 @@ dist/
 
 # parity-record.mjs recorded scenario videos - never committed
 .omo/evidence/parity-recordings/
+
+# Python bytecode from the FreeCAD reference scripts
+__pycache__/
+*.pyc

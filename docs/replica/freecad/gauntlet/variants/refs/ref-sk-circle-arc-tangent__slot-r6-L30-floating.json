@@ -1,0 +1,23 @@
+{
+ "id": "sk-circle-arc-tangent__slot-r6-L30-floating",
+ "kind": "sketch",
+ "solve": 0,
+ "dof": 2,
+ "conflicting": [],
+ "redundant": [],
+ "malformed": [],
+ "partially_redundant": [],
+ "state": [
+  "Up-to-date"
+ ],
+ "ncons": 8,
+ "bbox": [
+  -6.000000001230625,
+  0.0,
+  0.0,
+  35.999999998769376,
+  12.0,
+  0.0
+ ],
+ "ok": true
+}

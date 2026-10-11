@@ -1,0 +1,17 @@
+{
+ "id": "sk-conflict__horizontal-and-vertical",
+ "kind": "sketch",
+ "solve": -1,
+ "dof": 2,
+ "conflicting": [],
+ "redundant": [],
+ "malformed": [],
+ "partially_redundant": [],
+ "state": [
+  "Touched",
+  "Invalid"
+ ],
+ "ncons": 2,
+ "bbox": null,
+ "ok": true
+}

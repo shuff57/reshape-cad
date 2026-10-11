@@ -1,0 +1,22 @@
+{
+ "id": "pad-symmetric__long-slab",
+ "ok": true,
+ "volume": 6000.0,
+ "bbox": [
+  0.0,
+  0.0,
+  -30.0,
+  2.0,
+  50.0,
+  30.0
+ ],
+ "faces": 6,
+ "com": [
+  1.0,
+  25.0,
+  0.0
+ ],
+ "valid": true,
+ "solids": 1,
+ "bad": {}
+}

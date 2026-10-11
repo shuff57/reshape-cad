@@ -1,0 +1,20 @@
+{
+ "id": "sk-conflict__width-30-vs-35",
+ "kind": "sketch",
+ "solve": -4,
+ "dof": -1,
+ "conflicting": [
+  10,
+  12
+ ],
+ "redundant": [],
+ "malformed": [],
+ "partially_redundant": [],
+ "state": [
+  "Touched",
+  "Invalid"
+ ],
+ "ncons": 12,
+ "bbox": null,
+ "ok": true
+}

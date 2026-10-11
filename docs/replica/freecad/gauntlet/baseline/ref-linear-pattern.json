@@ -1,0 +1,39 @@
+{
+ "id": "linear-pattern",
+ "ok": true,
+ "script": "/home/shuff57/Documents/GitHub/reshape-cad/docs/replica/freecad/gauntlet/baseline/ref-linear-pattern.py",
+ "volume": 11151.769983530756,
+ "bbox": [
+  0.0,
+  0.0,
+  0.0,
+  60.0,
+  20.0,
+  10.0
+ ],
+ "faces": 9,
+ "states": {
+  "Sketch": [
+   "Up-to-date"
+  ],
+  "Pad": [
+   "Up-to-date"
+  ],
+  "Sketch001": [
+   "Up-to-date"
+  ],
+  "Pocket": [
+   "Up-to-date"
+  ],
+  "LinearPattern": [
+   "Up-to-date"
+  ],
+  "Body": [
+   "Up-to-date"
+  ]
+ },
+ "valid": true,
+ "nsolids": 1,
+ "volume_after_single_pocket": 11717.25666117692,
+ "expected_3_holes": 11151.769983530756
+}

@@ -1,0 +1,39 @@
+{
+ "volume": 27143.360527015804,
+ "bbox": [
+  -30.0,
+  -30.0,
+  -2.7184123146105152e-15,
+  30.0,
+  30.0,
+  10.000000000000005
+ ],
+ "faces": 7,
+ "states": {
+  "Sketch": [
+   "Up-to-date"
+  ],
+  "Pad": [
+   "Up-to-date"
+  ],
+  "Sketch001": [
+   "Up-to-date"
+  ],
+  "Pocket": [
+   "Up-to-date"
+  ],
+  "PolarPattern": [
+   "Up-to-date"
+  ],
+  "Body": [
+   "Up-to-date"
+  ]
+ },
+ "valid": true,
+ "nsolids": 1,
+ "after_single_pocket": {
+  "volume": 27991.590543485054,
+  "faces": 4
+ },
+ "expected_volume_if_4_holes": 27143.36052701581
+}

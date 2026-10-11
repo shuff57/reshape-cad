@@ -1,0 +1,22 @@
+{
+ "id": "pad-basic__sketch-offset-top",
+ "ok": true,
+ "volume": 2250.0,
+ "bbox": [
+  0.0,
+  0.0,
+  7.0,
+  25.0,
+  15.0,
+  13.0
+ ],
+ "faces": 6,
+ "com": [
+  12.5,
+  7.5,
+  10.0
+ ],
+ "valid": true,
+ "solids": 1,
+ "bad": {}
+}

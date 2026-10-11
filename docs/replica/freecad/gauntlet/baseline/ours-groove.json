@@ -1,0 +1,57 @@
+{
+  "id": "groove",
+  "script": "/home/shuff57/Documents/GitHub/reshape-cad/docs/replica/freecad/gauntlet/baseline/ours-groove.mjs",
+  "scriptSource": "\nconst sk1 = sketch('top'); sk1.circle(40);\nconst cyl = extrude(sk1, 30);\nconst sk2 = sketch('front'); sk2.rect(2, 5, { at: [19, 12.5] });\ngroove(sk2, cyl, 360);\n",
+  "outcome": "refused",
+  "notes": "",
+  "featureKinds": [
+    "sketch",
+    "extrude",
+    "sketch",
+    "groove"
+  ],
+  "sketches": [
+    {
+      "id": "sk1",
+      "plane": "xy",
+      "offset": 0,
+      "points": [
+        [
+          -20,
+          0
+        ],
+        [
+          20,
+          0
+        ]
+      ]
+    },
+    {
+      "id": "sk2",
+      "plane": "xz",
+      "offset": 0,
+      "points": [
+        [
+          18,
+          10
+        ],
+        [
+          20,
+          10
+        ],
+        [
+          20,
+          15
+        ],
+        [
+          18,
+          15
+        ]
+      ]
+    }
+  ],
+  "refusals": {
+    "groove1": "groove groove1: brep-rs cannot cut this groove yet (the tool is not fully enclosed by pull1, or its surface pair is unsupported) -- groove1 is shown without it."
+  },
+  "refusal": "groove groove1: brep-rs cannot cut this groove yet (the tool is not fully enclosed by pull1, or its surface pair is unsupported) -- groove1 is shown without it."
+}

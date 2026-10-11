@@ -1,0 +1,302 @@
+{
+  "piece": "sk-conflict",
+  "id": "sk-conflict",
+  "outcome": "built",
+  "std": {
+    "kind": "sketch",
+    "outcome": "built",
+    "cases": {
+      "baseline": {
+        "dof": 0,
+        "bucket": "consistent",
+        "nativeBlame": [],
+        "conflicting": [],
+        "conflictingNative": [],
+        "redundant": [],
+        "indexBase": 0
+      },
+      "conflict": {
+        "dof": 0,
+        "bucket": "conflicting",
+        "nativeBlame": [
+          11
+        ],
+        "conflicting": [
+          9,
+          11
+        ],
+        "conflictingNative": [
+          11
+        ],
+        "redundant": [],
+        "indexBase": 0
+      },
+      "redundant": {
+        "dof": 0,
+        "bucket": "redundant",
+        "nativeBlame": [
+          11
+        ],
+        "conflicting": [],
+        "conflictingNative": [],
+        "redundant": [
+          11
+        ],
+        "indexBase": 0
+      }
+    },
+    "conflictBuildRefused": true
+  },
+  "cases": {
+    "baseline_fully_constrained": {
+      "scriptErrors": [],
+      "ruleCount": 11,
+      "openRefusal": null,
+      "solveOk": true,
+      "solveLastError": null,
+      "diagnosis": {
+        "blame": [],
+        "bucket": "consistent",
+        "dof": 0,
+        "rank": 14
+      },
+      "profile": {
+        "loops": 1
+      },
+      "solvedLines": [
+        {
+          "id": 1,
+          "a": [
+            0,
+            0
+          ],
+          "b": [
+            40,
+            0
+          ]
+        },
+        {
+          "id": 2,
+          "a": [
+            40,
+            0
+          ],
+          "b": [
+            40,
+            20
+          ]
+        },
+        {
+          "id": 3,
+          "a": [
+            40,
+            20
+          ],
+          "b": [
+            0,
+            20
+          ]
+        },
+        {
+          "id": 4,
+          "a": [
+            0,
+            20
+          ],
+          "b": [
+            0,
+            0
+          ]
+        }
+      ],
+      "measure": {
+        "refusals": {},
+        "e1": {
+          "bbox": [
+            [
+              0,
+              0,
+              0
+            ],
+            [
+              40,
+              20,
+              10
+            ]
+          ],
+          "edges": 12,
+          "faces": 6,
+          "volume": 7999.999999999999
+        }
+      },
+      "adapter": {
+        "refusals": {},
+        "hasShape": true
+      }
+    },
+    "contradictory_width_50": {
+      "scriptErrors": [],
+      "ruleCount": 12,
+      "openRefusal": null,
+      "solveOk": true,
+      "solveLastError": null,
+      "diagnosis": {
+        "blame": [
+          11
+        ],
+        "bucket": "conflicting",
+        "dof": 0,
+        "rank": 14
+      },
+      "profile": {
+        "refusal": "the sketch's rules conflict, so no profile can be trusted; resolve the conflict first"
+      },
+      "solvedLines": [
+        {
+          "id": 1,
+          "a": [
+            0,
+            0
+          ],
+          "b": [
+            44.99999998682705,
+            6.99032419652203e-18
+          ]
+        },
+        {
+          "id": 2,
+          "a": [
+            44.99999996445204,
+            1.398134830298812e-17
+          ],
+          "b": [
+            44.99999994906869,
+            20
+          ]
+        },
+        {
+          "id": 3,
+          "a": [
+            44.999999943598766,
+            20
+          ],
+          "b": [
+            -2.4994145284702004e-15,
+            20
+          ]
+        },
+        {
+          "id": 4,
+          "a": [
+            -2.6642026011340413e-15,
+            20
+          ],
+          "b": [
+            -2.6646236485948135e-15,
+            -5.5490076594305117e-17
+          ]
+        }
+      ],
+      "measure": {
+        "refusals": {
+          "e1": "extrude e1: the sketch's rules conflict, so no profile can be trusted; resolve the conflict first"
+        },
+        "e1": null
+      },
+      "adapter": {
+        "refusals": {
+          "e1": "extrude e1: the sketch's rules conflict, so no profile can be trusted; resolve the conflict first"
+        },
+        "hasShape": false
+      }
+    },
+    "redundant_width_40": {
+      "scriptErrors": [],
+      "ruleCount": 12,
+      "openRefusal": null,
+      "solveOk": true,
+      "solveLastError": null,
+      "diagnosis": {
+        "blame": [
+          11
+        ],
+        "bucket": "redundant",
+        "dof": 0,
+        "rank": 14
+      },
+      "profile": {
+        "loops": 1
+      },
+      "solvedLines": [
+        {
+          "id": 1,
+          "a": [
+            0,
+            0
+          ],
+          "b": [
+            40,
+            0
+          ]
+        },
+        {
+          "id": 2,
+          "a": [
+            40,
+            0
+          ],
+          "b": [
+            40,
+            20
+          ]
+        },
+        {
+          "id": 3,
+          "a": [
+            40,
+            20
+          ],
+          "b": [
+            0,
+            20
+          ]
+        },
+        {
+          "id": 4,
+          "a": [
+            0,
+            20
+          ],
+          "b": [
+            0,
+            0
+          ]
+        }
+      ],
+      "measure": {
+        "refusals": {},
+        "e1": {
+          "bbox": [
+            [
+              0,
+              0,
+              0
+            ],
+            [
+              40,
+              20,
+              10
+            ]
+          ],
+          "edges": 12,
+          "faces": 6,
+          "volume": 7999.999999999999
+        }
+      },
+      "adapter": {
+        "refusals": {},
+        "hasShape": true
+      }
+    }
+  }
+}

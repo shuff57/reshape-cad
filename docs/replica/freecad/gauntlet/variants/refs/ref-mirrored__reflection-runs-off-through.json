@@ -1,0 +1,22 @@
+{
+ "id": "mirrored__reflection-runs-off-through",
+ "ok": true,
+ "volume": 11199.999999999998,
+ "bbox": [
+  0.0,
+  0.0,
+  0.0,
+  40.0,
+  30.0,
+  10.0
+ ],
+ "faces": 10,
+ "com": [
+  18.92857142857143,
+  15.000000000000002,
+  5.0
+ ],
+ "valid": true,
+ "solids": 1,
+ "bad": {}
+}

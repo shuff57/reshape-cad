@@ -1,0 +1,20 @@
+{
+ "id": "sk-conflict__radius-vs-diameter",
+ "kind": "sketch",
+ "solve": -4,
+ "dof": -1,
+ "conflicting": [
+  2,
+  3
+ ],
+ "redundant": [],
+ "malformed": [],
+ "partially_redundant": [],
+ "state": [
+  "Touched",
+  "Invalid"
+ ],
+ "ncons": 3,
+ "bbox": null,
+ "ok": true
+}

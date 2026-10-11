@@ -1,0 +1,22 @@
+{
+ "id": "linear-pattern__blind-pockets-x2",
+ "ok": true,
+ "volume": 19880.0,
+ "bbox": [
+  0.0,
+  0.0,
+  0.0,
+  70.0,
+  30.0,
+  10.0
+ ],
+ "faces": 16,
+ "com": [
+  35.70422535211268,
+  15.0,
+  4.830985915492959
+ ],
+ "valid": true,
+ "solids": 1,
+ "bad": {}
+}

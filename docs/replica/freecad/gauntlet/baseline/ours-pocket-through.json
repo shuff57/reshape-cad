@@ -1,0 +1,87 @@
+{
+ "id": "pocket-through",
+ "src": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]);\nconst plate = extrude(s1, 10);\nconst s2 = sketch('top', 10); s2.circle(10, { at: [20, 15] });\npocket(s2, plate, 10);",
+ "refusals": {},
+ "lastFeature": "pocket1",
+ "volume": 11214.601836602553,
+ "bbox": [
+  0,
+  0,
+  0,
+  40,
+  30,
+  10
+ ],
+ "faces": 7,
+ "measureKeys": [
+  "bbox",
+  "edges",
+  "faces",
+  "volume"
+ ],
+ "builtIds": [
+  "pull1",
+  "pocket1"
+ ],
+ "shapeBuilt": true,
+ "meshTris": 108,
+ "meshFaces": 7,
+ "variants": {
+  "depth10": {
+   "src": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]);\nconst plate = extrude(s1, 10);\nconst s2 = sketch('top', 10); s2.circle(10, { at: [20, 15] });\npocket(s2, plate, 10);",
+   "refusals": {},
+   "lastFeature": "pocket1",
+   "volume": 11214.601836602553,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 7,
+   "measureKeys": [
+    "bbox",
+    "edges",
+    "faces",
+    "volume"
+   ],
+   "builtIds": [
+    "pull1",
+    "pocket1"
+   ],
+   "shapeBuilt": true,
+   "meshTris": 108,
+   "meshFaces": 7
+  },
+  "depth12": {
+   "src": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]);\nconst plate = extrude(s1, 10);\nconst s2 = sketch('top', 10); s2.circle(10, { at: [20, 15] });\npocket(s2, plate, 12);",
+   "refusals": {},
+   "lastFeature": "pocket1",
+   "volume": 11214.601836602553,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 7,
+   "measureKeys": [
+    "bbox",
+    "edges",
+    "faces",
+    "volume"
+   ],
+   "builtIds": [
+    "pull1",
+    "pocket1"
+   ],
+   "shapeBuilt": true,
+   "meshTris": 108,
+   "meshFaces": 7
+  }
+ }
+}

@@ -1,0 +1,33 @@
+{
+ "piece": "revolution",
+ "volume": 28274.333882308143,
+ "bbox": [
+  -20.0,
+  -20.0,
+  -4.440892098500628e-15,
+  20.0,
+  20.000000000000007,
+  30.000000000000004
+ ],
+ "faces": 4,
+ "sketch_solve": 0,
+ "sketch_dof_attr": 0,
+ "conflicting": [],
+ "redundant": [],
+ "malformed": [],
+ "states": {
+  "sketch": [
+   "Up-to-date"
+  ],
+  "rev": [
+   "Up-to-date"
+  ],
+  "body": [
+   "Up-to-date"
+  ]
+ },
+ "valid": true,
+ "solids": 1,
+ "sketch_placement": "Placement [Pos=(0,0,0), Yaw-Pitch-Roll=(0,0,90)]",
+ "expected_volume": 28274.333882308136
+}

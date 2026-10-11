@@ -1,0 +1,23 @@
+{
+ "id": "sk-rect-underconstrained__circle-radius-only",
+ "kind": "sketch",
+ "solve": 0,
+ "dof": 2,
+ "conflicting": [],
+ "redundant": [],
+ "malformed": [],
+ "partially_redundant": [],
+ "state": [
+  "Up-to-date"
+ ],
+ "ncons": 1,
+ "bbox": [
+  1.0,
+  1.0,
+  0.0,
+  9.0,
+  9.0,
+  0.0
+ ],
+ "ok": true
+}

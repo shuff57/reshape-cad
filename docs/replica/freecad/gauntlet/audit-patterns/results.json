@@ -1,0 +1,97 @@
+[
+ {
+  "id": "hole-line-leaves-plate",
+  "verdict": "REFUSED",
+  "note": "repeat() of a hole drills a copy of the hole at each place, and copy 4 of the hole reaches the edge of the par"
+ },
+ {
+  "id": "hole-overlap-step4",
+  "verdict": "REFUSED",
+  "note": "repeat() of a hole drills a copy of the hole at each place, and copy 1 and copy 2 of the hole overlap each oth"
+ },
+ {
+  "id": "hole-far-outside-step100",
+  "verdict": "REFUSED",
+  "note": "repeat() of a hole drills a copy of the hole at each place, and copy 2 of the hole reaches the edge of the par"
+ },
+ {
+  "id": "hole-single-copy-step30-count3",
+  "verdict": "REFUSED",
+  "note": "repeat() of a hole drills a copy of the hole at each place, and copy 2 of the hole reaches the edge of the par"
+ },
+ {
+  "id": "hole-rim",
+  "verdict": "REFUSED",
+  "note": "repeat() of a hole drills a copy of the hole at each place, and copy 1 of the hole reaches the edge of the par"
+ },
+ {
+  "id": "hole-polar-leaves",
+  "verdict": "REFUSED",
+  "note": "repeatAround() of a hole drills a copy of the hole at each place, and copy 2 of the hole reaches the edge of t"
+ },
+ {
+  "id": "hole-repeat-y-rim",
+  "verdict": "REFUSED",
+  "note": "repeat() of a hole drills a copy of the hole at each place, and copy 3 of the hole reaches the edge of the par"
+ },
+ {
+  "id": "hole-mirror-off-plate",
+  "verdict": "REFUSED",
+  "note": "mirror() of a hole drills a copy of the hole at each place, and copy 2 of the hole reaches the edge of the par"
+ },
+ {
+  "id": "hole-fits-count4-step8",
+  "verdict": "MATCH",
+  "note": "vol 7497.3452 vs FC 7497.3452; bbox maxdiff 0.00e+0"
+ },
+ {
+  "id": "pocket-leaves-plate",
+  "verdict": "REFUSED",
+  "note": "repeat() of a pocket cuts a copy of the pocket at each place, and copy 4 of the cut reaches the edge of the pa"
+ },
+ {
+  "id": "pocket-overlap",
+  "verdict": "REFUSED",
+  "note": "repeat() of a pocket cuts a copy of the pocket at each place, and copy 1 and copy 2 of the cut overlap each ot"
+ },
+ {
+  "id": "pocket-far-outside",
+  "verdict": "REFUSED",
+  "note": "repeat() of a pocket cuts a copy of the pocket at each place, and copy 2 of the cut reaches the edge of the pa"
+ },
+ {
+  "id": "pocket-fits",
+  "verdict": "MATCH",
+  "note": "vol 7849.2036 vs FC 7849.2036; bbox maxdiff 0.00e+0"
+ },
+ {
+  "id": "pad-leaves-plate",
+  "verdict": "REFUSED",
+  "note": "repeat() of a pad adds a copy of the pad at each place, and copy 4 of the cut reaches the edge of the part or "
+ },
+ {
+  "id": "pad-overlap",
+  "verdict": "REFUSED",
+  "note": "repeat() of a pad adds a copy of the pad at each place, and copy 1 and copy 2 of the cut overlap each other, s"
+ },
+ {
+  "id": "pad-far-outside",
+  "verdict": "REFUSED",
+  "note": "repeat() of a pad adds a copy of the pad at each place, and copy 2 of the cut reaches the edge of the part or "
+ },
+ {
+  "id": "pad-fits",
+  "verdict": "MATCH",
+  "note": "vol 8432.0000 vs FC 8432.0000; bbox maxdiff 0.00e+0"
+ },
+ {
+  "id": "pocket-mirror-off",
+  "verdict": "REFUSED",
+  "note": "mirror() of a pocket cuts a copy of the pocket at each place, and copy 2 of the cut reaches the edge of the pa"
+ },
+ {
+  "id": "pocket-polar-leaves",
+  "verdict": "REFUSED",
+  "note": "repeatAround() of a pocket cuts a copy of the pocket at each place, and copy 2 of the cut reaches the edge of "
+ }
+]

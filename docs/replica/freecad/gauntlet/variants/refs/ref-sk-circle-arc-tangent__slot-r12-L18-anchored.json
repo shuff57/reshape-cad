@@ -1,0 +1,23 @@
+{
+ "id": "sk-circle-arc-tangent__slot-r12-L18-anchored",
+ "kind": "sketch",
+ "solve": 0,
+ "dof": 0,
+ "conflicting": [],
+ "redundant": [],
+ "malformed": [],
+ "partially_redundant": [],
+ "state": [
+  "Up-to-date"
+ ],
+ "ncons": 9,
+ "bbox": [
+  -12.0,
+  0.0,
+  0.0,
+  30.0,
+  24.0,
+  0.0
+ ],
+ "ok": true
+}

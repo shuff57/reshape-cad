@@ -1,0 +1,122 @@
+feature,area,priority,original,clone,brep_rs,notes
+Sketch: line / polyline,sketcher,must,yes,no,today,SoupGeom line; COV sketch2d.geoms shipped
+Sketch: circle and arc (center / 3-point),sketcher,must,yes,no,today,SoupGeom circle/arc; 3-point is a UI construction over the same geometry
+Sketch: point,sketcher,must,yes,no,today,SoupGeom point
+Sketch: rectangle / centered rectangle / rounded rectangle / polygon / slot tools,sketcher,must,yes,no,today,UI macros over lines+arcs+constraints (Sketcher_CompCreateRectangles etc.); no kernel work
+Sketch: ellipse and elliptical arc,sketcher,should,yes,no,needs-kernel,not a SoupGeom kind; solver + profile + extrude all need conic support
+Sketch: B-spline (poles / interpolated / periodic),sketcher,could,yes,no,needs-kernel,B-splines exist only inside brep-rs STEP reader/writer
+Sketch: hyperbola / parabola arcs,sketcher,could,yes,skip,needs-kernel,rarely used in the student loop; defer
+Sketch: construction geometry toggle,sketcher,must,yes,no,today,MT construction flag; parity says the ignored-flag bug is fixed
+Sketch: external geometry (project body edges/faces into sketch),sketcher,must,yes,no,needs-kernel,not found in repo; needs kernel edge projection onto sketch plane + topo-name reference
+Sketch: carbon copy / external intersection,sketcher,could,yes,no,needs-kernel,depends on external geometry
+Constraint: coincident,constraints,must,yes,no,today,kernel solver
+Constraint: horizontal / vertical,constraints,must,yes,no,today,kernel solver
+Constraint: parallel / perpendicular,constraints,must,yes,no,today,kernel solver
+Constraint: tangent (endpoint and edge-edge),constraints,must,yes,no,partial,endpoint (slot) form proven; edge-edge tangency has no build fixture
+Constraint: equal,constraints,must,yes,no,today,kernel solver
+Constraint: symmetric,constraints,must,yes,no,today,kernel solver
+Constraint: distance / horizontal distance / vertical distance,constraints,must,yes,no,today,param() bindable
+Constraint: radius / diameter,constraints,must,yes,no,today,param() bindable
+Constraint: angle,constraints,must,yes,no,today,param() bindable
+Constraint: lock / block,constraints,must,yes,no,today,lock shipped; block is lock-of-whole-element (UI)
+Constraint: point-on-object,constraints,must,yes,no,today,kernel solver
+Constraint: refraction (Snell's law),constraints,could,yes,skip,needs-kernel,niche optics constraint
+Constraint: driving vs reference (non-driving) dimensions,constraints,should,yes,no,partial,script can measure; no reference-dimension concept in SoupRule (guess)
+Constraint: toggle active/inactive constraint,constraints,could,yes,no,needs-app,UI + solver flag; small
+Sketch DoF readout (Under-constrained: N DoF),sketcher,must,yes,no,today,wasm sketch_diagnose returns rank/dof
+Over/conflicting/redundant constraint detection with blame,sketcher,must,yes,no,today,sketch_diagnose buckets consistent/redundant/conflicting/globallyInfeasible + blame
+Select under-constrained elements / select conflicting constraints,sketcher,should,yes,no,today,diagnose returns blame; UI wiring only
+Sketch tools: trim / extend / split,sketcher,should,yes,no,needs-app,2D curve intersection in sketch layer; not kernel B-rep
+Sketch tools: sketch fillet / chamfer of corner,sketcher,should,yes,no,partial,basis-corner fillet exists in HandleOverlay projectOutline; chamfer corner unknown
+Sketch tools: move / rotate / scale / offset / mirror / rectangular array,sketcher,could,yes,no,needs-app,offset needs curve offset; others are UI transforms
+Sketch attach to plane / face (map modes),sketcher,must,yes,no,partial,datum plane + frozen face frame; frame does not follow later param changes; FreeCAD has ~55 MapModes
+Validate sketch / repair,sketcher,could,yes,no,needs-app,
+Multi-loop profile (holes inside a pad profile),sketcher,must,yes,no,partial,washer builds; plug-in-bore refuses
+Pad: one side by length,partdesign,must,yes,no,today,ExtrudeFeature height
+Pad: symmetric / two sides / reversed,partdesign,must,yes,no,needs-kernel,no fields in ExtrudeFeature; mostly script layer (offset profile then extrude) but needs kernel check for two-length
+Pad: up to face / up to first / up to last / up to shape,partdesign,should,yes,no,needs-kernel,needs ray-face query + topo reference
+Pad: taper angle,partdesign,could,yes,no,needs-kernel,draft extrusion produces ruled non-planar faces for arcs
+Pad: custom direction vector,partdesign,could,yes,no,needs-kernel,
+Pocket: blind by length,partdesign,must,yes,no,partial,435 census refusals: recess wider than part; annular tool refuses
+Pocket: through all,partdesign,must,yes,no,needs-kernel,PocketFeature has depth only; through-all is an infinite tool subtract
+Pocket: up to face / symmetric / two lengths,partdesign,should,yes,no,needs-kernel,
+Revolution: about sketch axis / datum axis / edge,partdesign,must,yes,no,partial,"world Z only; arc on or past axis refused (""use sphere()"")"
+Revolution: angle / symmetric / two angles / up to face,partdesign,should,yes,no,partial,angle supported (guess on partial angles); up-to-face needs kernel
+Groove,partdesign,must,yes,no,partial,curved outline refused (W:780); tool not inside part refused (W:1881)
+Fillet: constant radius on straight box edges,partdesign,must,yes,no,today,exact V-(1-pi/4)r^2L on all 12 edges
+Fillet: general edges (curved / after booleans / chains),partdesign,must,yes,no,partial,one straight edge between flat faces; round after hollow refuses; ball blend absent
+Fillet: use all edges,partdesign,should,yes,no,partial,box only
+Fillet: variable radius,partdesign,could,no,skip,needs-kernel,PartDesign Fillet has a single Radius property too (introspected) so skip for parity
+Chamfer: equal distance,partdesign,must,yes,no,today,f78f396 wedge subtract on any convex straight edge
+Chamfer: two distances / distance and angle,partdesign,should,yes,no,needs-kernel,ChamferType enum has 3 modes; MT has a single size
+Chamfer on a boolean result,partdesign,must,yes,no,refused,K2b gated on K1a which failed its stop rule
+Hole: simple diameter + depth or through all,partdesign,must,yes,no,partial,box / cylinder / cone-along-axis / sphere OK; holes in rings and skew crossing bores refuse
+Hole: counterbore / countersink / counterdrill,partdesign,must,yes,no,partial,37c6091 and 8abd28f exact; 81 cone cases still refuse; counterdrill untested
+Hole: drill point angled / flat,partdesign,should,yes,no,needs-kernel,cone tip on a blind hole
+Hole: standard sizes table (ISO metric / UNC / UNF / NPT ...),partdesign,should,yes,no,needs-app,data table only; ThreadType enum has 11 standards
+Hole: modeled thread (helical),partdesign,could,yes,skip,needs-kernel,needs helix sweep; FreeCAD itself marks ModelThread experimental
+Hole: cosmetic thread annotation,partdesign,should,yes,no,needs-app,metadata + STEP export only; no geometry
+Hole: tapered,partdesign,could,yes,no,needs-kernel,cone bore
+Linear pattern (one or two directions; extent or spacing),partdesign,must,yes,no,partial,world axes only; overlapping copies refuse (269)
+Polar pattern,partdesign,must,yes,no,partial,world axes only
+Mirrored (origin plane / datum plane / face),partdesign,must,yes,no,partial,three base planes only
+MultiTransform,partdesign,could,yes,skip,refused,by design: patterns compose in script; nesting builds exactly
+Pattern: transform whole shape vs features,partdesign,should,yes,no,partial,TransformMode enum Features / Whole shape
+Pattern: suppress individual occurrences,partdesign,could,yes,no,needs-app,SuppressedIndices property; script-level filter
+Path pattern / point pattern,partdesign,could,yes,no,needs-kernel,new in 26.x command list
+Thickness (shell),partdesign,should,yes,no,partial,box / cylinder / cone / sphere / convex flat; ring and recessed holes refuse (275)
+Draft (face taper),partdesign,could,yes,no,partial,one face or axis-aligned box only
+Additive / subtractive loft,partdesign,should,yes,no,partial,two matching straight outlines same plane; circle-to-circle refused
+Additive / subtractive pipe (sweep),partdesign,could,yes,no,refused,brep-rs does not build 'pipe' yet
+Additive / subtractive helix,partdesign,could,yes,no,refused,no sweep machinery
+Additive / subtractive primitives (box cylinder sphere cone torus wedge prism ellipsoid),partdesign,should,yes,no,partial,box/cylinder/sphere/cone/torus exist in script; ellipsoid is a non-goal; booleans against sphere/cone/torus are the biggest refusal buckets
+Boolean between bodies (fuse / cut / common),partdesign,should,yes,no,partial,plane x cylinder near complete; cone x curved and sphere x curved refuse
+Datum plane,datums,must,yes,no,today,kernel no-op; script resolves
+Datum line / point / local coordinate system,datums,should,yes,no,refused,by design: JS frames; arbitrary-axis hole or pattern is kernel work
+Shape binder / sub-shape binder / clone,datums,could,yes,skip,refused,multi-body is a non-goal
+Body: single-solid container with Origin and Tip,tree,must,yes,no,today,"script doc == one body; Tip is ""last feature"" by default"
+Set Tip (roll back / insert feature mid-history),tree,must,yes,no,needs-app,timeline exists; insert-before-tip semantics are a studio/script concern
+Move feature in tree / reorder,tree,should,yes,no,needs-app,studio concern; re-solve whole doc
+Suppress feature,tree,should,yes,no,needs-app,Suppressed property seen in FCStd
+Recompute: touched / invalid / up-to-date states per feature,tree,must,yes,no,today,per-feature refusals + cached_build; FreeCAD keeps last-good shape downstream of an invalid sketch (observed)
+Recompute on change toggle / manual recompute,tree,should,yes,no,today,studio rebuilds on edit
+Dependency graph viewer,tree,could,yes,no,needs-app,FreeCAD renders via graphviz (Std_DependencyGraph); clone could draw from doc JSON
+Error marks in tree + report view message,tree,must,yes,no,today,refusal sentence beside what built is the clone's version
+Topological naming stability (element maps),tree,must,yes,no,today,"history.rs paths + ""between"" edge names; FreeCAD 1.0+ uses element maps (seen in .Shape.Map.txt)"
+Property editor (Data / View tabs),document,must,yes,no,partial,params panel + script; no generic property grid
+Expressions on any property (fx),document,must,yes,no,today,JS expressions + param(); FreeCAD uses its own unit-aware grammar
+Unit-aware quantities (10mm + 1in),document,should,yes,no,needs-app,observed: unit mismatch is an error; script layer only
+Spreadsheet with aliases driving parameters,document,must,yes,no,partial,param sliders; no cell grid / alias
+VarSet (named variable set),document,should,yes,no,partial,param() is the equivalent
+Expression functions (trig / min / max / mod / sum over range / conditionals / vector),document,should,yes,no,today,JS covers it
+Cycle detection in expressions,document,must,yes,no,needs-app,observed: cyclic cells mark sheet Invalid; script layer
+Undo / redo with named transactions,document,must,yes,no,today,Ctrl+Z / Ctrl+Shift+Z in studio
+Save / open native document,document,must,yes,no,partial,clone stores script text; FCStd is zip of Document.xml + per-feature .brp + element maps
+Open .FCStd from FreeCAD,document,could,yes,skip,needs-kernel,would need OCCT BREP reader + full PartDesign semantics; out of reach
+STEP export,export,must,yes,no,partial,kernel export_step TODAY (gate 78/78); studio has no STEP button yet
+STEP import (as dumb solid),export,should,yes,no,partial,step_in.rs measures parts; no import into a model or UI
+STL export,export,must,yes,no,today,studio writeSTL; also OBJ and 3MF
+STL export tessellation settings (deviation / angle),export,could,yes,no,needs-app,
+IGES / BREP / DXF / SVG / glTF export,export,could,yes,skip,needs-kernel,FreeCAD getExportType lists 40+ formats; out of slice
+3D view: orbit / pan / zoom / navigation cube / standard views,view,must,yes,no,today,BrepViewportThree
+3D view: draw styles (shaded / wireframe / hidden line),view,should,yes,no,needs-app,UI
+Selection: face / edge / vertex pick with preselection highlight,view,must,yes,no,partial,FaceRange index ranges survive re-mesh; edge pick exists for fillet
+Selection filter (faces only / edges only),view,could,yes,no,needs-app,UI
+Measure (distance / angle / volume / area),view,should,yes,no,partial,measure_doc volume/bbox; face_size / edge_length
+Task panel per feature with live preview + OK/Cancel,ui,must,yes,no,partial,clone edits script/inspector; no modal task panel pattern (S04-S07)
+Workbench switcher,ui,could,yes,skip,n/a,clone has one modelling surface; workbench concept is FreeCAD-specific
+Python console / macro recorder,ui,could,yes,skip,n/a,clone's script language is JavaScript in a sandbox; reSHape Script replaces macros
+Start page + first-run wizard (language / units / navigation / theme),ui,could,yes,no,n/a,S01
+Preferences dialog,ui,could,yes,no,n/a,not captured (modal; blocked headless run)
+Involute gear / sprocket / shaft wizard,partdesign,could,yes,skip,refused,generators; need involute curves and sweep
+Defeaturing,partdesign,could,yes,skip,needs-kernel,
+FEM workbench,deferred,could,yes,skip,n/a,out of slice by request
+CAM / Path workbench,deferred,could,yes,skip,n/a,out of slice by request
+BIM / Arch workbench,deferred,could,yes,skip,n/a,out of slice by request
+TechDraw workbench (2D drawings),deferred,could,yes,skip,n/a,out of slice by request
+Assembly workbench,deferred,could,yes,skip,n/a,out of slice by request
+Draft workbench,deferred,could,yes,skip,n/a,out of slice by request
+Mesh / Points / Reverse Engineering / Inspection workbenches,deferred,could,yes,skip,n/a,out of slice by request
+Part workbench (CSG primitives + booleans + fillets outside a body),deferred,could,yes,skip,n/a,overlaps PartDesign primitives; out of slice
+Surface / OpenSCAD / Robot / Material workbenches,deferred,could,yes,skip,n/a,out of slice
+Addon Manager ecosystem,deferred,could,yes,skip,n/a,third-party network; not part of the product

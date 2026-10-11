@@ -1,0 +1,22 @@
+{
+ "id": "pad-basic__top-offset-negative-reversed",
+ "ok": true,
+ "volume": 1385.4423602330992,
+ "bbox": [
+  -2.0,
+  -2.0,
+  -13.0,
+  12.0,
+  12.0,
+  -4.0
+ ],
+ "faces": 3,
+ "com": [
+  5.000000000000001,
+  5.000000000000001,
+  -8.5
+ ],
+ "valid": true,
+ "solids": 1,
+ "bad": {}
+}

@@ -1,0 +1,115 @@
+{
+ "id": "hole-simple",
+ "src": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]);\nconst plate = extrude(s1, 10);\nhole(plate, { across: 6 });",
+ "refusals": {},
+ "lastFeature": "hole1",
+ "volume": 11717.256661176916,
+ "bbox": [
+  0,
+  0,
+  0,
+  40,
+  30,
+  10
+ ],
+ "faces": 7,
+ "measureKeys": [
+  "bbox",
+  "edges",
+  "faces",
+  "volume"
+ ],
+ "builtIds": [
+  "pull1",
+  "hole1"
+ ],
+ "shapeBuilt": true,
+ "meshTris": 88,
+ "meshFaces": 7,
+ "variants": {
+  "noAt": {
+   "src": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]);\nconst plate = extrude(s1, 10);\nhole(plate, { across: 6 });",
+   "refusals": {},
+   "lastFeature": "hole1",
+   "volume": 11717.256661176916,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 7,
+   "measureKeys": [
+    "bbox",
+    "edges",
+    "faces",
+    "volume"
+   ],
+   "builtIds": [
+    "pull1",
+    "hole1"
+   ],
+   "shapeBuilt": true,
+   "meshTris": 88,
+   "meshFaces": 7
+  },
+  "atZero": {
+   "src": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]);\nconst plate = extrude(s1, 10);\nhole(plate, { across: 6, at: [0, 0] });",
+   "refusals": {},
+   "lastFeature": "hole1",
+   "volume": 11717.256661176916,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 7,
+   "measureKeys": [
+    "bbox",
+    "edges",
+    "faces",
+    "volume"
+   ],
+   "builtIds": [
+    "pull1",
+    "hole1"
+   ],
+   "shapeBuilt": true,
+   "meshTris": 88,
+   "meshFaces": 7
+  },
+  "atAbs": {
+   "src": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]);\nconst plate = extrude(s1, 10);\nhole(plate, { across: 6, at: [20, 15] });",
+   "refusals": {},
+   "lastFeature": "hole1",
+   "volume": 11929.314165294229,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 7,
+   "measureKeys": [
+    "bbox",
+    "edges",
+    "faces",
+    "volume"
+   ],
+   "builtIds": [
+    "pull1",
+    "hole1"
+   ],
+   "shapeBuilt": true,
+   "meshTris": 32,
+   "meshFaces": 7
+  }
+ }
+}

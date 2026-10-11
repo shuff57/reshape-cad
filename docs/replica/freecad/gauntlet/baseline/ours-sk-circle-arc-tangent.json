@@ -1,0 +1,263 @@
+{
+  "id": "sk-circle-arc-tangent",
+  "variants": {
+    "floating": {
+      "openRefusal": null,
+      "solved": true,
+      "diagnosis": {
+        "blame": [],
+        "bucket": "consistent",
+        "dof": 2,
+        "rank": 20
+      },
+      "profile": {
+        "loops": [
+          {
+            "role": "outer",
+            "segs": [
+              {
+                "centre": [
+                  0,
+                  10
+                ],
+                "k": "arc",
+                "radius": 10,
+                "start": 1.5707963267948966,
+                "sweep": 3.141592653589793
+              },
+              {
+                "a": [
+                  0,
+                  0
+                ],
+                "b": [
+                  40,
+                  0
+                ],
+                "k": "line"
+              },
+              {
+                "centre": [
+                  40,
+                  10
+                ],
+                "k": "arc",
+                "radius": 10,
+                "start": -1.5707963267948966,
+                "sweep": 3.141592653589793
+              },
+              {
+                "a": [
+                  40,
+                  20
+                ],
+                "b": [
+                  0,
+                  20
+                ],
+                "k": "line"
+              }
+            ]
+          }
+        ]
+      },
+      "lastError": null
+    },
+    "anchored": {
+      "openRefusal": null,
+      "solved": true,
+      "diagnosis": {
+        "blame": [],
+        "bucket": "consistent",
+        "dof": 0,
+        "rank": 20
+      },
+      "profile": {
+        "loops": [
+          {
+            "role": "outer",
+            "segs": [
+              {
+                "centre": [
+                  0,
+                  10
+                ],
+                "k": "arc",
+                "radius": 10,
+                "start": 1.5707963267948966,
+                "sweep": 3.141592653589793
+              },
+              {
+                "a": [
+                  0,
+                  0
+                ],
+                "b": [
+                  40,
+                  0
+                ],
+                "k": "line"
+              },
+              {
+                "centre": [
+                  40,
+                  10
+                ],
+                "k": "arc",
+                "radius": 10,
+                "start": -1.5707963267948966,
+                "sweep": 3.141592653589793
+              },
+              {
+                "a": [
+                  40,
+                  20
+                ],
+                "b": [
+                  0,
+                  20
+                ],
+                "k": "line"
+              }
+            ]
+          }
+        ]
+      },
+      "lastError": null
+    },
+    "redundantProbe": {
+      "openRefusal": null,
+      "solved": true,
+      "diagnosis": {
+        "blame": [
+          13
+        ],
+        "bucket": "redundant",
+        "dof": 0,
+        "rank": 20
+      },
+      "profile": {
+        "loops": [
+          {
+            "role": "outer",
+            "segs": [
+              {
+                "centre": [
+                  0,
+                  10
+                ],
+                "k": "arc",
+                "radius": 10,
+                "start": 1.5707963267948966,
+                "sweep": 3.141592653589793
+              },
+              {
+                "a": [
+                  0,
+                  0
+                ],
+                "b": [
+                  40,
+                  0
+                ],
+                "k": "line"
+              },
+              {
+                "centre": [
+                  40,
+                  10
+                ],
+                "k": "arc",
+                "radius": 10,
+                "start": -1.5707963267948966,
+                "sweep": 3.141592653589793
+              },
+              {
+                "a": [
+                  40,
+                  20
+                ],
+                "b": [
+                  0,
+                  20
+                ],
+                "k": "line"
+              }
+            ]
+          }
+        ]
+      },
+      "lastError": null
+    }
+  },
+  "notes": "",
+  "outcome": "built",
+  "volume": 11141.592653589794,
+  "measure": {
+    "bbox": [
+      [
+        -10,
+        0,
+        0
+      ],
+      [
+        50,
+        20,
+        10
+      ]
+    ],
+    "edges": 12,
+    "faces": 6,
+    "volume": 11141.592653589794
+  },
+  "bbox": [
+    -10,
+    0,
+    0,
+    50,
+    20,
+    10
+  ],
+  "faces": 6,
+  "meshVerts": 144,
+  "refusals": {},
+  "std": {
+    "kind": "sketch",
+    "outcome": "built",
+    "bboxAxes": [
+      0,
+      1
+    ],
+    "bbox": [
+      -10,
+      0,
+      0,
+      50,
+      20,
+      10
+    ],
+    "cases": {
+      "main": {
+        "dof": 0,
+        "bucket": "consistent",
+        "nativeBlame": [],
+        "conflicting": [],
+        "conflictingNative": [],
+        "redundant": [],
+        "indexBase": 0
+      }
+    }
+  },
+  "expected": {
+    "volume": 11141.592653589794,
+    "bbox": [
+      -10,
+      0,
+      0,
+      50,
+      20,
+      10
+    ],
+    "facesExpected": "lines 2 + cylinders 2 + caps 2 = 6"
+  }
+}

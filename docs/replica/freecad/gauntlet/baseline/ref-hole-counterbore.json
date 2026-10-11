@@ -1,0 +1,35 @@
+{
+ "volume": 11566.460213804608,
+ "bbox": [
+  0.0,
+  0.0,
+  0.0,
+  40.0,
+  30.0,
+  10.0
+ ],
+ "faces": 9,
+ "states": {
+  "Sketch": [
+   "Up-to-date"
+  ],
+  "Pad": [
+   "Up-to-date"
+  ],
+  "Sketch001": [
+   "Up-to-date"
+  ],
+  "Hole": [
+   "Up-to-date"
+  ],
+  "Body": [
+   "Up-to-date"
+  ]
+ },
+ "holeCut": "Counterbore",
+ "depthType": "ThroughAll",
+ "sk2_solve": 0,
+ "valid": true,
+ "nsolids": 1,
+ "expected_volume": 11566.460213804608
+}

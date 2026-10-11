@@ -1,0 +1,19 @@
+{
+  "id": "pad-symmetric",
+  "script": "docs/replica/freecad/gauntlet/baseline/ours-pad-symmetric.mjs",
+  "source": "const sk = sketch('top', -5); sk.rect(40, 30, { at: [20, 15] }); const pad = extrude(sk, 10);",
+  "volume": 12000,
+  "faces": 6,
+  "bbox": [
+    0,
+    0,
+    -5,
+    40,
+    30,
+    5
+  ],
+  "meshTriangles": 12,
+  "outcome": "built",
+  "solveStatus": "n/a (rect sketch, solid piece)",
+  "notes": "No Midplane option on extrude()/ExtrudeFeature; expressed as sketch offset -5 + pull 10 (script layer). rect() is centre-based, corner-at-origin via at:[20,15]."
+}

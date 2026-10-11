@@ -1,0 +1,35 @@
+{
+ "volume": 11214.601836602551,
+ "bbox": [
+  0.0,
+  0.0,
+  0.0,
+  40.0,
+  30.0,
+  10.0
+ ],
+ "faces": 7,
+ "states": {
+  "Sketch": [
+   "Up-to-date"
+  ],
+  "Pad": [
+   "Up-to-date"
+  ],
+  "Sketch001": [
+   "Up-to-date"
+  ],
+  "Pocket": [
+   "Up-to-date"
+  ],
+  "Body": [
+   "Up-to-date"
+  ]
+ },
+ "pocketType": "ThroughAll",
+ "sk2_solve": 0,
+ "sk2_placement": "Placement [Pos=(0,0,10), Yaw-Pitch-Roll=(0,0,0)]",
+ "valid": true,
+ "nsolids": 1,
+ "pocket_volume_removed": 785.3981633974482
+}

@@ -1,0 +1,29 @@
+{
+ "id": "hole-simple",
+ "volume": 11717.256661176918,
+ "bbox": [
+  0.0,
+  0.0,
+  0.0,
+  40.0,
+  30.0,
+  10.0
+ ],
+ "faces": 7,
+ "state": [
+  [
+   "Up-to-date"
+  ],
+  [
+   "Up-to-date"
+  ],
+  [
+   "Up-to-date"
+  ],
+  [
+   "Up-to-date"
+  ]
+ ],
+ "valid": true,
+ "expected_volume": 11717.256661176918
+}

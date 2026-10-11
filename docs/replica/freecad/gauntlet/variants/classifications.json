@@ -1,0 +1,176 @@
+{
+  "pad-basic__front-offset": {
+    "class": "spec-mismatch",
+    "evidence": "sketch('front', 5): the script puts the plane at y=+5 and pulls toward -Y, so the pad fills y in [-5, 5]; FreeCAD's XZ_Plane offsets 5 along ITS normal (-Y), plane at y=-5, pad y in [-15, -5]. Volume 12000 and 6 faces agree, the position does not (centre of mass y 0 vs -10). The script's convention is written down and pinned: packages/script/src/model-types.ts NAMED_PLANE_FRAMES has xz n=[0,1,0] (offset direction) while SWEEP_DIR has xz=-1 ('MEASURED, not derived (xz pulls -Y)'), kept so no existing document moves. Same-geometry variants with offset 0 on the front plane (pad-basic__front-plane, pad-symmetric__front-plane with the +len/2 idiom) all MATCH."
+  },
+  "pocket-blind__from-front-face": {
+    "class": "real-kernel-gap",
+    "severity": 5,
+    "title": "A pocket whose circle runs across both faces comes back with one cylinder wall in two pieces (11 faces, FreeCAD 10)",
+    "evidence": "volume, bbox and centre of mass equal FreeCAD's (they are checked); only the face count differs: the kernel's mesh has the right-hand cylindrical wall as two faces (areas 47.262 at z 2.28 and 47.262 at z 7.72, normals mirrored about z=5) where the left-hand wall is one face (94.523). A periodic surface cut at its seam. Topology only, no wrong geometry."
+  },
+  "polar-pattern__blind-x4": {
+    "class": "real-kernel-gap",
+    "severity": 5,
+    "title": "A polar pattern of blind pockets splits the disc's outer wall in two faces (12 faces, FreeCAD 11)",
+    "evidence": "volume, bbox and centre of mass equal FreeCAD's. The kernel's mesh has the 80 mm disc's outer wall as two faces (areas 1507.840 and 1005.226, which add to pi x 80 x 10 = 2513.07). The same disc with through holes (polar-pattern__holes-x6-disc) matches at the right face count."
+  },
+  "pad-basic__ring-with-hole": {
+    "class": "real-kernel-gap",
+    "severity": 5,
+    "title": "A circle written as a geom row extrudes to two half-cylinder faces (a ring has 6 faces, FreeCAD 4)",
+    "evidence": "volume 14137.166941154 equals FreeCAD's, bbox and centre of mass too. The kernel's mesh has both walls as two half-cylinders each (areas 942.323 x2 for the outer wall, 471.089 x2 for the inner). A circle drawn with sk.circle() (pad-basic__circle-offcentre) is one face and matches."
+  },
+  "pad-basic__rect-with-round-hole-geom": {
+    "class": "real-kernel-gap",
+    "severity": 5,
+    "title": "A circular hole in a geom profile comes back as two half-cylinder faces (8 faces, FreeCAD 7)",
+    "evidence": "volume, bbox and centre of mass equal FreeCAD's. The hole wall is two faces of area 188.375 each (centroids y 11.82 and 18.18) in the kernel's mesh; FreeCAD has one cylinder face. Same cause as pad-basic__ring-with-hole."
+  },
+  "hole-countersink__angle-120": {
+    "class": "spec-mismatch",
+    "evidence": "countersink: { across: 14, angle: 120 } is refused by the SCRIPT: 'a countersink's angle is its INCLUDED cone angle, so 90 is the widest'. That is a recorded decision (packages/script/test/holes-recess.test.mjs 'the countersink angle is an INCLUDED cone angle, so 90 is the widest'; the slider is capped at max 90 in packages/script/src/model-codegen.ts) and the test pins it, so it was NOT changed here. Measured on the other side of it: with the angle patched into the ModelDoc the kernel builds 60/90/100/120/150/170 degrees without a refusal, and 120 gives 11656.732710647668 mm^3, 8 faces, where FreeCAD gives 11656.732710647666, 8 faces. The 90 limit is therefore not a kernel limit; an owner call whether standard 100/120 degree countersinks should be reachable."
+  },
+  "mirrored__top-bottom-pocket": {
+    "class": "spec-mismatch",
+    "evidence": "mirror(pocket, 'top-bottom', { at: 5 }) is refused by the script on purpose: 'reflects it through a plane parallel to the face it sits on, which would turn it to the other side of the part instead of copying it across' (packages/script/src/reshape-script.ts mirrorCut parallel()). FreeCAD's Mirrored does it (volume 11830.354, 10 faces: a pocket on the top face and one on the bottom). The refusal is documented in the mirror docs page and is a sentence, so nothing wrong is built."
+  },
+  "pad-basic__two-circle-calls-one-sketch": {
+    "class": "script-layer-bug",
+    "fixed": true,
+    "evidence": "Before the fix sk.circle(40); sk.circle(20) on one sketch built ONLY the 20 mm disc: volume 4712.38898, bbox +-10, 3 faces (the second circle() call replaced the first with no message), against FreeCAD's ring 14137.16694, bbox +-20. The same happened for rect + circle (only the circle, 1178.097 = pi x 5^2 x 15), two circles side by side (only the second) and rect + rect (only the inner 10 x 10, 1500). Probe in scratch: ring_40_20 / rect_in_rect. Fix: packages/script/src/reshape-script.ts makeSketchHandle claimOutline(): a second rect/circle/polygon call on a sketch throws a sentence naming sk.geom([...]) and a second sketch(). Pinned by packages/script/test/sweep-fixes.test.mjs."
+  },
+  "pad-basic__rect-and-rect-one-sketch": {
+    "class": "script-layer-bug",
+    "fixed": true,
+    "evidence": "Same defect as pad-basic__two-circle-calls-one-sketch: before the fix sk.rect(40, 30); sk.rect(10, 10) built a 10 x 10 x 15 block (1500 mm^3) and dropped the 40 x 30 rectangle with no message. The second call is now refused in a sentence. FreeCAD, given the two loops, makes a frame (16500 mm^3, 10 faces); the way to say that in the script is sk.geom([...]) rows."
+  },
+  "pocket-blind__ring-island": {
+    "class": "real-kernel-gap",
+    "severity": 3,
+    "title": "A pocket whose profile has an island (annular tool) is refused",
+    "evidence": "sk.geom with two concentric circles (r10 outer, r4 inner) pocketed 4 deep: 'pocket pocket1: sketch sk2 has a hole through its outline, and brep-rs cannot cut a pocket with an annular tool yet'. FreeCAD cuts the ring (10944.4248 mm^3, 10 faces). The same profile EXTRUDED works (pad-basic__ring-with-hole: volume equal)."
+  },
+  "revolution__top-neg-90": {
+    "class": "script-layer-bug",
+    "fixed": true,
+    "evidence": "Before the fix revolve(sk, -90) reached the kernel and came back as 7068.583 mm^3 (a quarter, the right volume) with bbox y in [-20, 20] and centre of mass (9.899, 4.9495, 15): neither the quarter FreeCAD builds for the reversed 90 (bbox y in [-20, 0], centre of mass (9.903, -9.903, 15)) nor anything else a quarter ring can be. No refusal sentence, so a silent wrong solid. The script layer now refuses an angle outside (0, 360] in a sentence (spin()/groove() sweepAngle in packages/script/src/reshape-script.ts, pinned in packages/script/test/sweep-fixes.test.mjs). The kernel itself still builds the wrong solid when handed such a ModelDoc, which is the entry in KERNEL-WORKLIST.md.",
+    "kernel": {
+      "class": "real-kernel-bug",
+      "severity": 1,
+      "title": "revolve with a NEGATIVE angle returns a solid of the right volume in the wrong place, silently",
+      "baseScript": "const sk = sketch('top'); sk.rect(10, 30, { at: [15, 15] }); revolve(sk, 90);",
+      "patch": {
+        "kind": "revolve",
+        "set": {
+          "angle": -90
+        }
+      },
+      "evidence": "A revolve feature with angle -90 builds with no refusal: volume 7068.583470577037 (a quarter of the full 28274.33), faces 6, mesh volume 7065.37 (consistent, so the mesh is a closed surface) -- but bbox y in [-20, 20] and centre of mass (9.899, 4.9495, 15), where a quarter turn the other way is y in [-20, 0] and centre of mass (9.903, -9.903, 15). Angles -45, -180 and -270 behave the same way (bbox spanning both sides of the axis plane, centre of mass that no one-sided sweep has); -360 happens to give the full ring correctly. The kernel must refuse an angle outside (0, 360] in a sentence (never a wrong solid silently, AGENTS.md); the script layer now refuses it before the kernel is reached."
+    }
+  },
+  "revolution__top-neg-180": {
+    "class": "script-layer-bug",
+    "fixed": true,
+    "evidence": "Same defect as revolution__top-neg-90: before the fix the kernel returned 14137.1669 mm^3 (a half) with the bbox of a full ring ([-20,-20,0,20,20,30]) and centre of mass (0, 4.9495, 15); FreeCAD's reversed half turn has bbox y in [-20, 0] and centre of mass (0, -9.903, 15). Now refused in a sentence at the script layer.",
+    "kernel": {
+      "class": "real-kernel-bug",
+      "severity": 1,
+      "title": "revolve with angle -180 returns a half-volume solid with a full ring's bounding box, silently",
+      "baseScript": "const sk = sketch('top'); sk.rect(10, 30, { at: [15, 15] }); revolve(sk, 180);",
+      "patch": {
+        "kind": "revolve",
+        "set": {
+          "angle": -180
+        }
+      },
+      "evidence": "volume 14137.16694 (half of the full turn) but bbox [-20,-20,0,20,20,30] (the full ring) and centre of mass (0, 4.9495, 15); a half ring cannot have both. No refusal sentence."
+    }
+  },
+  "revolution__front-neg-90": {
+    "class": "script-layer-bug",
+    "fixed": true,
+    "evidence": "Same defect on the front plane: before the fix revolve(sk, -90) gave a quarter-volume solid (7068.583 mm^3) with bbox z in [-20, 20] and centre of mass (9.899, 15, -4.9495), where FreeCAD's reversed quarter has bbox z in [0, 20] and centre of mass (9.903, 15, 9.903). Now refused in a sentence at the script layer.",
+    "kernel": {
+      "class": "real-kernel-bug",
+      "severity": 1,
+      "title": "revolve with a negative angle on the front plane: same wrong solid",
+      "baseScript": "const sk = sketch('front'); sk.rect(10, 30, { at: [15, 15] }); revolve(sk, 90);",
+      "patch": {
+        "kind": "revolve",
+        "set": {
+          "angle": -90
+        }
+      },
+      "evidence": "A quarter of the volume with bbox z in [-20, 20] and centre of mass z -4.9495; FreeCAD's reversed quarter has bbox z in [0, 20] and centre of mass z 9.903 (one-sided)."
+    }
+  },
+  "revolution__top-400": {
+    "class": "script-layer-bug",
+    "fixed": true,
+    "evidence": "Before the fix revolve(sk, 400) built 31415.9265 mm^3: 400/360 of the full ring (28274.3339), i.e. a self-overlapping solid with MORE volume than a complete turn, no refusal. Now refused in a sentence at the script layer.",
+    "kernel": {
+      "class": "real-kernel-bug",
+      "severity": 1,
+      "title": "revolve with an angle past 360 returns a solid with more volume than a full turn, silently",
+      "baseScript": "const sk = sketch('top'); sk.rect(10, 30, { at: [15, 15] }); revolve(sk, 360);",
+      "patch": {
+        "kind": "revolve",
+        "set": {
+          "angle": 400
+        }
+      },
+      "evidence": "volume 31415.926535897957 = 400/360 x 28274.33388 (the ring cannot hold more than the full turn), faces 6, mesh volume 31406.08, centre of mass (1.43, 0.52, 15) where a full turn has (0, 0, 15). FreeCAD clamps to 360 (28274.3339, 4 faces)."
+    }
+  },
+  "hole-countersink__cone-deeper-than-plate": {
+    "class": "real-kernel-gap",
+    "severity": 4,
+    "title": "A countersink whose cone is deeper than the plate (30 / 90 over a 5 hole in 10 mm) is refused",
+    "evidence": "Refusal sentence: 'its counterbore or countersink is not a shape brep-rs can cut yet'. The part exists: FreeCAD builds 8596.607958611059 mm^3, 8 faces (the cone leaves the plate as a 10 mm wide frustum opening). The 14 mm / 90 countersink over the same hole (hole-countersink__thick-block, other variants) builds and matches."
+  },
+  "hole-countersink__in-cylinder": {
+    "class": "real-kernel-gap",
+    "severity": 3,
+    "title": "A countersunk hole down a cylinder's own axis is refused (the same hole with a counterbore builds)",
+    "evidence": "Refusal sentence: 'brep-rs cannot cut this hole yet; drilling the part before you round, chamfer or pattern it, or making the hole go right through, usually works' -- for a hole that IS a through hole, down the axis of cylinder(30, 20). FreeCAD builds 13458.582927978676 mm^3, 5 faces. hole-counterbore__in-cylinder (counterbore 12 x 4, same cylinder; FreeCAD 13232.3883, 6 faces) MATCHES, and the hole docs page says a hole 'down a cylinder's own axis: always'."
+  },
+  "linear-pattern__copies-run-off-the-part": {
+    "class": "real-kernel-gap",
+    "severity": 4,
+    "title": "A pattern copy that falls wholly outside the part is refused, where FreeCAD drops it",
+    "evidence": "Four 6 mm holes, step 20 from x=10, in a 60 mm plate: the 4th is centred at x=70, 7 mm clear of the plate. The script refuses ('copy 4 of the cut reaches the edge of the part, so brep-rs cannot yet cut through an edge...') although the copy never touches the part; FreeCAD's LinearPattern leaves it out and gives the three-hole plate (11151.769983530756 mm^3, 9 faces), which the kernel itself builds for three holes (linear-pattern__holes-x3). The sentence also names the wrong cause (it says the copy 'reaches the edge')."
+  },
+  "linear-pattern__overlapping-holes-slot": {
+    "class": "real-kernel-gap",
+    "severity": 3,
+    "title": "A pattern of pockets whose copies overlap is refused (the slot FreeCAD cuts)",
+    "evidence": "Four 6 mm holes at step 4 overlap into a slot: 'copy 1 and copy 2 of the cut overlap each other, so brep-rs cannot yet join overlapping cuts'. FreeCAD builds 11054.87556951438 mm^3, 12 faces. Plain overlapping hole() calls are documented to work (a 10 and a 6 mm hole 4 apart), so the same slot is reachable without the pattern word."
+  },
+  "polar-pattern__overlapping-x6-blind": {
+    "class": "real-kernel-gap",
+    "severity": 3,
+    "title": "A polar pattern of blind pockets whose copies overlap is refused",
+    "evidence": "Six blind pockets 24 across on a ring of radius 20 overlap their neighbours into a ring-shaped recess: refused with the overlapping-cuts sentence. FreeCAD builds 40272.436924265035 mm^3, 17 faces."
+  },
+  "mirrored__hole-on-its-own-plane": {
+    "class": "real-kernel-gap",
+    "severity": 5,
+    "title": "Mirroring a cut that sits on its own mirror plane is refused (its reflection is itself)",
+    "evidence": "A 6 mm pocket centred at x=20 mirrored across x=20: 'copy 1 and copy 2 of the cut overlap each other'. FreeCAD gives the single-hole plate (11717.256661176918 mm^3, 7 faces), which is what the reflection of a symmetric cut is. Degenerate input, sentence refusal, nothing wrong built."
+  },
+  "sk-circle-arc-tangent__slot-arc-first-order": {
+    "class": "real-kernel-gap",
+    "severity": 4,
+    "title": "A tangent row written arc-then-line fails with a message that blames the wrong thing",
+    "evidence": "The slot rows are accepted by sketch_open and then solve() fails with \"geometry 3 is a line and has no 'c' point\" when a tangent row names the arc before the line. The same rows with the line first solve to DoF 0 (sk-circle-arc-tangent__slot-r6-L30-anchored MATCHES FreeCAD). FreeCAD's Tangent accepts either order. The sentence should say the line has to come first, or the solver should accept both."
+  },
+  "sk-circle-arc-tangent__circle-circle-no-mode": {
+    "class": "spec-mismatch",
+    "evidence": "A circle-circle tangent row without mode is refused: 'a circle-circle tangency must record external or internal'. That is the design (the mode is part of the row; abs() was rejected for its kink, brep-rs/src/sketch/mod.rs TangentMode). FreeCAD infers it from where the circles sit. With mode: 'external' / 'internal' the variants (circle-circle-external, circle-circle-internal) MATCH on DoF 0 and the solved bbox."
+  },
+  "pocket-blind__depth-negative": {
+    "class": "reference-wrong",
+    "evidence": "pocket depth -3: FreeCAD 26.3 accepts Length=-3 and recomputes with every object Up-to-date, but cuts nothing -- volume 12000.0, 6 faces, the uncut plate (refs/ref-pocket-blind__depth-negative.json). A pocket of negative depth has no meaning (the direction is fixed, into the material: packages/script/src/model-types.ts PocketFeature.depth 'Always positive'), so the plate FreeCAD returns is a silent no-op, not the answer. The script now refuses it in a sentence that names the depth; before the fix the same script came back from the kernel as 'pocket1 does not touch the part', which blamed the wrong cause (pinned in packages/script/test/sweep-fixes.test.mjs)."
+  }
+}

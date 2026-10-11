@@ -1,0 +1,82 @@
+{
+ "id": "mirrored",
+ "src": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]);\nconst plate = extrude(s1, 10);\nconst s2 = sketch('top', 10); s2.circle(6, { at: [10, 15] });\nconst p = pocket(s2, plate, 10);\nmirror(p, 'left-right', { at: 20 });",
+ "refusals": {},
+ "kinds": [
+  "sketch",
+  "extrude",
+  "sketch",
+  "pocket",
+  "sketch",
+  "pocket"
+ ],
+ "lastFeature": "pocket2",
+ "shapeBuilt": true,
+ "volume": 11434.513322353836,
+ "bbox": [
+  0,
+  0,
+  0,
+  40,
+  30,
+  10
+ ],
+ "faces": 8,
+ "meshTris": 164,
+ "outcome": "built",
+ "notes": "main = mirror(p, \"left-right\", { at: 20 }) lowered to a reflected pocket. variants.laterFeature keeps a pocket built after the mirrored one; variants.base is the unmirrored plate.",
+ "variants": {
+  "laterFeature": {
+   "src": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]);\nconst plate = extrude(s1, 10);\nconst s2 = sketch('top', 10); s2.circle(6, { at: [10, 15] });\nconst p = pocket(s2, plate, 10);\nconst s3 = sketch('top', 10); s3.circle(4, { at: [20, 6] });\nconst q = pocket(s3, p, 10);\nmirror(p, 'left-right', { at: 20 });",
+   "refusals": {},
+   "kinds": [
+    "sketch",
+    "extrude",
+    "sketch",
+    "pocket",
+    "sketch",
+    "pocket",
+    "sketch",
+    "pocket"
+   ],
+   "lastFeature": "pocket3",
+   "shapeBuilt": true,
+   "volume": 11308.849616210246,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 9,
+   "meshTris": 228,
+   "outcome": "built"
+  },
+  "base": {
+   "src": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]);\nconst plate = extrude(s1, 10);\nconst s2 = sketch('top', 10); s2.circle(6, { at: [10, 15] });\nconst p = pocket(s2, plate, 10);",
+   "refusals": {},
+   "kinds": [
+    "sketch",
+    "extrude",
+    "sketch",
+    "pocket"
+   ],
+   "lastFeature": "pocket1",
+   "shapeBuilt": true,
+   "volume": 11717.256661176916,
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    10
+   ],
+   "faces": 7,
+   "meshTris": 88,
+   "outcome": "built"
+  }
+ }
+}

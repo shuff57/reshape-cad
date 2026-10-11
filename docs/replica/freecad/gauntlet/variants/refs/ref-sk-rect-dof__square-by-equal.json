@@ -1,0 +1,23 @@
+{
+ "id": "sk-rect-dof__square-by-equal",
+ "kind": "sketch",
+ "solve": 0,
+ "dof": 0,
+ "conflicting": [],
+ "redundant": [],
+ "malformed": [],
+ "partially_redundant": [],
+ "state": [
+  "Up-to-date"
+ ],
+ "ncons": 12,
+ "bbox": [
+  7.0,
+  -3.0,
+  0.0,
+  29.0,
+  19.0,
+  0.0
+ ],
+ "ok": true
+}

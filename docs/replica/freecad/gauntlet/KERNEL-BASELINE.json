@@ -1,0 +1,26 @@
+{
+  "recorded": "2026-10-09",
+  "note": "Baseline before any kernel edit; no source edited. Wasm rebuilt, npm run build ok.",
+  "cargo": { "pass": 540, "fail": 0 },
+  "npm": {
+    "sketch": { "tests": 42, "pass": 42, "fail": 0, "skipped": 0 },
+    "script": { "tests": 337, "pass": 337, "fail": 0, "skipped": 0 },
+    "studio": { "tests": 254, "pass": 254, "fail": 0, "skipped": 0 },
+    "kernel": { "tests": 1547, "pass": 1545, "fail": 0, "skipped": 2 }
+  },
+  "gates": {
+    "brep-parity-gate": { "pass": 78, "fail": 0, "failures": [] },
+    "brep-mesh-gate": { "pass": 78, "fail": 0, "failures": [] },
+    "brep-step-gate": { "pass": 78, "fail": 0, "refused": 0, "failures": [] },
+    "gate:occt": { "pass": 17, "fail": 0, "failures": [] }
+  },
+  "compare": {
+    "pieces": 19, "MATCH": 17, "NOT_BUILT": 2,
+    "not_built": ["fillet-after-pocket", "groove"]
+  },
+  "variants": {
+    "total": 159, "MATCH": 133, "MISMATCH": 5, "REFUSED": 21,
+    "by_class": { "spec-mismatch": 4, "real-kernel-gap": 13, "script-layer-bug": 6, "agrees-both-refuse": 2, "reference-wrong": 1 },
+    "mismatch": ["pad-basic__front-offset", "pocket-blind__from-front-face", "polar-pattern__blind-x4", "pad-basic__ring-with-hole", "pad-basic__rect-with-round-hole-geom"]
+  }
+}
