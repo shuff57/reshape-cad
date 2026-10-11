@@ -4,7 +4,7 @@
 // with a circle inside it extrudes to a washer -- with NO independent oracle.
 // occt-build.ts read only `points`, so scripts/brep-parity-gate.mjs could not
 // build a soup sketch on OCCT at all and the washer's 11057.522204 was brep-rs
-// marking its own homework. packages/kernel/AGENTS.md calls this file "the only
+// marking its own homework. packages/brep-adapter/AGENTS.md calls this file "the only
 // independent oracle over a kernel whose signature failure is the wrong answer
 // rather than the missing one"; a kernel feature outside it has no referee.
 //

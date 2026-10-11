@@ -50,8 +50,8 @@ if (!existsSync(path.join(OCCT_DIR, 'replicad_single.wasm'))) {
 const glue = await import(pathToFileURL(path.join(OCCT_DIR, 'replicad_single.js')).href);
 const oc = await glue.default({ locateFile: (f) => path.join(OCCT_DIR, f) });
 const load = (p) => import(pathToFileURL(path.join(REPO, p)).href);
-const { buildDoc } = await load('packages/kernel/dist/occt-build.js');
-const { resolveName, facesOf } = await load('packages/kernel/dist/topo-resolve.js');
+const { buildDoc } = await load('packages/brep-adapter/dist/occt-build.js');
+const { resolveName, facesOf } = await load('packages/brep-adapter/dist/topo-resolve.js');
 const arc = await load('packages/sketch/dist/sketch-arc.js');
 const mt = await load('packages/script/dist/model-types.js');
 

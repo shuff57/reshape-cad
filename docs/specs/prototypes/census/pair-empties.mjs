@@ -1,6 +1,6 @@
 // For every REFUSED pair-family script, ask OpenCascade for the result's volume: ~0 means the shapes do not overlap (an honest empty
 // result whose refusal SENTENCE is misleading), a real volume is a true capability gap.
-//   cp pair-empties.mjs <repo>/packages/kernel/test/zz-pair.mjs && (cd <repo>/packages/kernel/test && bun zz-pair.mjs SWEEPDIR out.json); rm zz-pair.mjs
+//   cp pair-empties.mjs <repo>/packages/brep-adapter/test/zz-pair.mjs && (cd <repo>/packages/brep-adapter/test && bun zz-pair.mjs SWEEPDIR out.json); rm zz-pair.mjs
 // then summarise out.json by (kinds, op, ov < 1e-6).
 import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';

@@ -1,5 +1,5 @@
 // Random differential fuzz for several bores on one sphere: 2-4 bores, parallel (along z) or not, through or blind, random sizes
-// and offsets, built by brep-rs and by OpenCascade, volumes compared. Run from packages/kernel/test (module resolution):
+// and offsets, built by brep-rs and by OpenCascade, volumes compared. Run from packages/brep-adapter/test (module resolution):
 //   cp ../../../docs/specs/prototypes/sphere-multi-bore-fuzz.mjs ./zz-fuzz.mjs && bun zz-fuzz.mjs [count] [seed]; rm zz-fuzz.mjs
 // Prints every disagreement, how many scripts built, refused, and the worst relative volume difference. brep-rs refusing is fine;
 // building a different volume from OpenCascade is the defect this exists to catch.

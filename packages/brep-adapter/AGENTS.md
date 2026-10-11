@@ -1,4 +1,4 @@
-# packages/kernel
+# packages/brep-adapter
 
 ## OVERVIEW
 The `EngineAdapter` seam and its one implementation (brep-rs). Also holds three OCCT files that are NOT app code -- see REFEREE APPARATUS below before deleting anything that looks orphaned here.
@@ -20,7 +20,7 @@ Naming types (`TopoName`, `whyNameLost`) and op-history helpers (`faceFate`, `sh
 - **Constructor injection for tests**: the adapter takes `THREE` as a constructor arg; `BrepRsEngineAdapter.loadFromBytes()` is a test-only seam (node has no fetch for the wasm), not part of the contract.
 - **Kernel wasm is never vendored**: `packages/brep-rs/pkg` is gitignored and served by the host app; always read the URL from `getKernelBaseUrl()`.
 - **`refusals` and pass-through are one behaviour**: a refused feature keeps its unmodified source shape in `shapes` AND a reason in `refusals`. Any caller reading a build result must surface the refusals map; pass-through alone recreates the "feature reports success but is not what its row says" defect. With no second engine to retry on, this map is the whole story the student gets.
-- **No engine mode**: `config.ts` exports the base URL and nothing else. `packages/kernel/test/config.test.mjs` asserts `getEngineMode`/`setEngineMode` do not exist, so a second engine cannot creep back in unnoticed.
+- **No engine mode**: `config.ts` exports the base URL and nothing else. `packages/brep-adapter/test/config.test.mjs` asserts `getEngineMode`/`setEngineMode` do not exist, so a second engine cannot creep back in unnoticed.
 
 ## ANTI-PATTERNS
 - **Do not delete the referee apparatus** (see above) because it has no importer. That is what it looks like when it is working.

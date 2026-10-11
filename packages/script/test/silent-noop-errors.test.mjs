@@ -81,7 +81,7 @@ test('hole with no deep: on a shape of unknown thickness is an error, not a blin
 // Intent kept and strengthened (extent-extrude work): an explicit deep: still
 // BUILDS where the thickness is not provable (centred, offset 0); the kernel's
 // sealed-cavity refusal -- pinned end to end in
-// packages/kernel/test/hole-extent-extrude.test.mjs -- is what stops a wrong
+// packages/brep-adapter/test/hole-extent-extrude.test.mjs -- is what stops a wrong
 // solid. A pulled shape is no longer such a case: its thickness is exact.
 test('explicit deep: still builds where thickness is unknown (intersect of two boxes), centred', () => {
   const r = runScript('const t = intersect(cuboid(10, 10, 10), cuboid(10, 10, 10)); hole(t, { across: 2, deep: 4 })');

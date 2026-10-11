@@ -73,7 +73,7 @@ Read from each package's `package.json` in `node_modules` on 2026-10-02. All are
 | @lezer/highlight | 1.2.3 | MIT |
 
 The in-repo workspaces (`@shuff57/reshape-*`) are this project's own code under the root `LICENSE`.
-Their other transitive dependencies are listed in `bun.lock`; `packages/kernel/test/third-party-notice.test.mjs`
+Their other transitive dependencies are listed in `bun.lock`; `packages/brep-adapter/test/third-party-notice.test.mjs`
 fails when a direct runtime dependency of any workspace is missing from the table above.
 
 ## Build and test only (not shipped)

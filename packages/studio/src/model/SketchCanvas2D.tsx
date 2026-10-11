@@ -116,7 +116,7 @@ import {
   type SnapHit,
   type SoupGeomNew,
 } from './sketch-canvas-core.js';
-import { pointSlots } from '@shuff57/reshape-kernel/sketch-session';
+import { pointSlots } from '@shuff57/reshape-brep-adapter/sketch-session';
 import {
   applyWheelZoom,
   fitView,
@@ -361,7 +361,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      const { SketchSession2D } = await import('@shuff57/reshape-kernel/sketch-session');
+      const { SketchSession2D } = await import('@shuff57/reshape-brep-adapter/sketch-session');
       const s = new SketchSession2D();
       await s.load();
       if (cancelled) return;
@@ -428,7 +428,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
       // calling open() on an un-initialised module (the race the dogfood run
       // caught). load() resolves immediately once this.wasm is set.
       if (!sessionRef.current) {
-        const { SketchSession2D } = await import('@shuff57/reshape-kernel/sketch-session');
+        const { SketchSession2D } = await import('@shuff57/reshape-brep-adapter/sketch-session');
         const s = new SketchSession2D();
         sessionRef.current = s;
         await s.load();

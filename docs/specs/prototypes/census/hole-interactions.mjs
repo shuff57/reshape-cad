@@ -1,7 +1,7 @@
 // For hole-only scripts with 2+ holes that refuse with the generic hole sentence (no sphere, no cone): run each hole ALONE. Either
 // some hole refuses by itself (an intrinsic gap: a torus, a wedge, a recess shape) or each builds alone and only the combination
 // refuses (bores that meet: the successive-bores class).
-//   cp hole-interactions.mjs <repo>/packages/kernel/test/zz-holes.mjs && (cd <repo>/packages/kernel/test && bun zz-holes.mjs SWEEPDIR); rm zz-holes.mjs
+//   cp hole-interactions.mjs <repo>/packages/brep-adapter/test/zz-holes.mjs && (cd <repo>/packages/brep-adapter/test && bun zz-holes.mjs SWEEPDIR); rm zz-holes.mjs
 import { readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';

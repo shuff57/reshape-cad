@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@shuff57/reshape-studio": "file:../studio",
-    "@shuff57/reshape-kernel": "file:../kernel",
+    "@shuff57/reshape-brep-adapter": "file:../brep-adapter",
     "@shuff57/reshape-script": "file:../script",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

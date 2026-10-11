@@ -1,7 +1,7 @@
 // W4 save round trip, script layer (docs/PLAN-next.md "W4 save round trip"). What a student saves is the script text the
 // studio regenerates with toScript(doc) (ReshapeStudio.tsx, the debounced onChange); what they reopen is runScript(text).
 // So "my work saves" means: runScript(toScript(doc)) gives back the SAME doc. Checked here, with no kernel, over
-//   1. every code block in reshape-docs.ts and every lesson fixture in kernel/test/fixtures/student,
+//   1. every code block in reshape-docs.ts and every lesson fixture in brep-adapter/test/fixtures/student,
 //   2. a hand-written corpus that covers each sketch word, rule word, soup row and primitive the language has,
 //   3. edits a student makes in the studio (a dimension, a delete, a reorder, a rename), then the same trip,
 //   4. the doc as JSON (stringify/parse),
@@ -9,7 +9,7 @@
 //      .round(0, r) stops with a sentence instead of building a different part.
 // The emitter writes dimensions to 1e-6 and sketch-row coordinates to 1e-9, so the first trip may move a number that
 // far (QUANT); a SECOND trip must move nothing. The kernel half (volumes before == after, thousands of generated
-// scripts) is packages/kernel/test/save-roundtrip.test.mjs.
+// scripts) is packages/brep-adapter/test/save-roundtrip.test.mjs.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
@@ -66,7 +66,7 @@ export function tripProblems(code) {
 // ---- corpus 1: docs + lesson fixtures ------------------------------------------------------------------------------
 const docs = [];
 for (const s of sections) for (const p of s.pages ?? []) if (p.code) docs.push([`docs ${s.slug}/${p.title}`, p.code]);
-const FIX = path.resolve(HERE, '../../kernel/test/fixtures/student');
+const FIX = path.resolve(HERE, '../../brep-adapter/test/fixtures/student');
 const fixtures = readdirSync(FIX).filter((f) => f.endsWith('.js')).sort().map((f) => [`lesson ${f}`, readFileSync(path.join(FIX, f), 'utf8')]);
 
 // ---- corpus 2: hand-written ----------------------------------------------------------------------------------------

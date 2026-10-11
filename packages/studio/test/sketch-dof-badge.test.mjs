@@ -11,7 +11,7 @@ import { fileURLToPath } from 'node:url';
 const PKG = path.resolve(fileURLToPath(new URL('.', import.meta.url)), '../../brep-rs/pkg');
 const brep = await import(new URL(`file://${path.join(PKG, 'brep_rs.js')}`).href);
 brep.initSync({ module: readFileSync(path.join(PKG, 'brep_rs_bg.wasm')) });
-const { SketchSession2D } = await import('@shuff57/reshape-kernel/sketch-session');
+const { SketchSession2D } = await import('@shuff57/reshape-brep-adapter/sketch-session');
 const { buildSlotRows } = await import('@shuff57/reshape-sketch/sketch-slot');
 const { dofBadge } = await import('../dist/model/sketch-canvas-core.js');
 

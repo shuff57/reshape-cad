@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // The FIRST executable gate for the ModelDoc / OCCT surface. Lead-owned.
 //
-// WHY THIS DID NOT EXIST. packages/kernel/src/occt-build.ts turns a ModelDoc
+// WHY THIS DID NOT EXIST. packages/brep-adapter/src/occt-build.ts turns a ModelDoc
 // into a B-rep solid on replicad's OpenCascade build. That wasm is 23 MB,
 // gitignored in both this repo and shCode, and fetched at RUNTIME from
 // getKernelBaseUrl() by packages/studio's BrepViewportThree -- so nothing in
@@ -107,7 +107,7 @@ const load = (p) => import(pathToFileURL(path.join(REPO, p)).href);
 const glue = await import(pathToFileURL(path.join(KERNEL_DIR, 'replicad_single.js')).href);
 const oc = await glue.default({ locateFile: (f) => path.join(KERNEL_DIR, f) });
 
-const { buildDoc } = await load('packages/kernel/dist/occt-build.js');
+const { buildDoc } = await load('packages/brep-adapter/dist/occt-build.js');
 const arc = await load('packages/sketch/dist/sketch-arc.js');
 const mt = await load('packages/script/dist/model-types.js');
 const { runScript } = await load('packages/script/dist/reshape-script.js');

@@ -28,7 +28,7 @@
     "test": "node --test \"test/*.test.mjs\""
   },
   "dependencies": {
-    "@shuff57/reshape-kernel": "file:../kernel",
+    "@shuff57/reshape-brep-adapter": "file:../brep-adapter",
     "@shuff57/reshape-script": "file:../script",
     "@shuff57/reshape-sketch": "file:../sketch",
     "jszip": "^3.10.1"

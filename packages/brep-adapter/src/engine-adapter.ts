@@ -1,12 +1,12 @@
-// packages/kernel/src/engine-adapter.ts
+// packages/brep-adapter/src/engine-adapter.ts
 //
-// The common seam both kernels answer to. packages/kernel and
+// The common seam both kernels answer to. packages/brep-adapter and
 // packages/engine deliberately do not depend on each other (see
 // docs/specs/SPEC-engine-port.md §2.1 -- the FreeCAD bridge knows nothing
 // about ModelDoc, and this package's OCCT code knows nothing about FreeCAD
 // sessions), so this interface lives wherever BOTH the consumer
 // (BrepViewportThree.tsx) and both implementations already import from --
-// packages/kernel, since BrepViewportThree.tsx already depends on it for
+// packages/brep-adapter, since BrepViewportThree.tsx already depends on it for
 // occt-build/occt-three/topo-resolve.
 //
 // Pinned by grepping BrepViewportThree.tsx (as it stood before this port)

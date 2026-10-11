@@ -343,7 +343,7 @@ export async function makeRunner({ occt = true } = {}) {
     const OCCT_DIR = path.join(REPO, 'node_modules', 'replicad-opencascadejs', 'dist');
     const glue = await import(pathToFileURL(path.join(OCCT_DIR, 'replicad_single.js')).href);
     oc = await glue.default({ locateFile: (f) => path.join(OCCT_DIR, f) });
-    ({ buildDoc } = await import(pathToFileURL(path.join(REPO, 'packages/kernel/dist/occt-build.js')).href));
+    ({ buildDoc } = await import(pathToFileURL(path.join(REPO, 'packages/brep-adapter/dist/occt-build.js')).href));
     arc = await import(pathToFileURL(path.join(REPO, 'packages/sketch/dist/sketch-arc.js')).href);
   }
   const occtMeasure = (shape) => {

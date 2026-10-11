@@ -71,8 +71,8 @@ import type { LineMaterial as LineMaterialType } from 'three/examples/jsm/lines/
 import type { Feature, ModelDoc } from '@shuff57/reshape-script/model-types';
 import { topLevel, sketchFrameOf } from '@shuff57/reshape-script/model-types';
 import { rootFeature, type TopoName } from '@shuff57/reshape-script/topo-name';
-import type { EngineAdapter, EngineBuildResult, FaceRange } from '@shuff57/reshape-kernel/engine-adapter';
-import { BrepRsEngineAdapter } from '@shuff57/reshape-kernel/brep-rs-engine-adapter';
+import type { EngineAdapter, EngineBuildResult, FaceRange } from '@shuff57/reshape-brep-adapter/engine-adapter';
+import { BrepRsEngineAdapter } from '@shuff57/reshape-brep-adapter/brep-rs-engine-adapter';
 import type { HandleSpec } from '@shuff57/reshape-script/model-handles';
 import type { AnchorPoint } from './HandleOverlay.js';
 import { mergeMeshes, type MeshInput } from '../mesh-export.js';

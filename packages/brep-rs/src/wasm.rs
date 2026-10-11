@@ -76,7 +76,7 @@ fn bbox_json(solid: &TSolid) -> Value {
 }
 
 /// The sketch plane's world axes and sweep direction, read off PLANE_AXES in
-/// packages/kernel/src/occt-build.ts. `dir` is +1 or -1: on xz the sweep runs
+/// packages/brep-adapter/src/occt-build.ts. `dir` is +1 or -1: on xz the sweep runs
 /// toward -Y and on yz the sketch's u lands on +Z, transposed from the name.
 /// `n` is the unit world direction the sweep runs along, `dir` its sign.
 fn plane_frame(plane: &str) -> (Vec3, Vec3, Vec3, f64) {
@@ -3901,7 +3901,7 @@ mod tests {
     /// S4d: a box with a round bore straight through it hollows. The cavity is the inset box less
     /// a tube of radius bore + wall, so the wall stays 2 thick round the bore too.
     /// Closed: 30994.69 less the cavity (36 x 36 x 16 - pi 6^2 16) = 12068.25. The open cases are
-    /// pinned against OpenCascade in packages/kernel/test/hollow-holes.test.mjs.
+    /// pinned against OpenCascade in packages/brep-adapter/test/hollow-holes.test.mjs.
     #[test]
     fn hollow_of_a_drilled_box_runs_a_wall_round_the_bore() {
         let doc = || {

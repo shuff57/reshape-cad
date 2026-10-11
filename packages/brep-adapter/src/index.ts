@@ -1,5 +1,5 @@
 // Nothing imports this package through its bare `.` entry point -- every
-// consumer uses a subpath, e.g. '@shuff57/reshape-kernel/engine-adapter' --
+// consumer uses a subpath, e.g. '@shuff57/reshape-brep-adapter/engine-adapter' --
 // so this barrel exists for completeness.
 //
 // occt-build.ts, occt-mesh.ts and topo-resolve.ts are deliberately absent.

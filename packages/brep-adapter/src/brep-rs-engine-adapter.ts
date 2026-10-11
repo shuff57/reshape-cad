@@ -1,4 +1,4 @@
-// packages/kernel/src/brep-rs-engine-adapter.ts
+// packages/brep-adapter/src/brep-rs-engine-adapter.ts
 //
 // A third EngineAdapter, backed by the brep-rs wasm kernel (SPEC-brep-kernel-rs).
 // A thin forward to the wasm exports -- no OCCT/topo-resolve logic is copied
@@ -91,7 +91,7 @@ export class BrepRsEngineAdapter implements EngineAdapter {
     return this.loadPromise;
   }
 
-  /** Test-only seam: packages/kernel/test/brep-rs-engine-adapter.test.mjs
+  /** Test-only seam: packages/brep-adapter/test/brep-rs-engine-adapter.test.mjs
    *  loads packages/brep-rs/pkg via `initSync` in node (no fetch there), then
    *  hands the already-initialised module in. Not part of EngineAdapter. */
   loadFromBytes(wasmMod: any): void {

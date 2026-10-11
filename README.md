@@ -7,7 +7,7 @@ refused per feature, in a sentence, alongside everything that did build.
 
 ## Layout
 - `packages/brep-rs`     the kernel: Rust B-rep, wasm-bindgen; `pkg/` is build output
-- `packages/kernel`      the `EngineAdapter` seam and the brep-rs implementation of it
+- `packages/brep-adapter`      the `EngineAdapter` seam and the brep-rs implementation of it
 - `packages/script`      reSHape Script: interpreter, ModelDoc, round-trip emitter
 - `packages/sketch`      2D sketch solver (constraints, arcs, outlines)
 - `packages/studio`      React UI (editor, viewport, timeline) -- a library, not an app
