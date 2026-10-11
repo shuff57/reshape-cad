@@ -235,7 +235,7 @@ test('one size picked around an opposite edge is still the mitred pick, equal to
 
 test('a pick whose corner the builder tries and cannot take: a 0.5 mm wall outside one rim edge', () => {
   // r = 1 does not fit the thin wall's edge, but its neighbour builds on its own, so the corner IS tried, and refused
-  // there: the pick's sentence on both, the pocketed plate shown unmodified.
+  // there and fails on the SIZE: the size's own sentence on both (not the corner's), the pocketed plate shown unmodified.
   const m = mine(`
 const s1 = sketch('top'); s1.rect(40, 30, { at: [20, 15] });
 const plate = extrude(s1, 10);
@@ -243,9 +243,28 @@ const s2 = sketch('top', 10); s2.rect(10, 10, { at: [20, 5.5] });
 const part = pocket(s2, plate, 4);
 ${wall(1)}${wall(2)}`);
   assert.deepEqual(Object.keys(m.refusals).sort(), ['round1', 'round2']);
-  for (const id of ['round1', 'round2']) assert.match(m.refusals[id], /cannot round these neighbouring edges together yet/);
+  for (const id of ['round1', 'round2']) {
+    assert.match(m.refusals[id], /^A round of 1 would not fit where the edges picked with /);
+    assert.doesNotMatch(m.refusals[id], /corner is not built/);
+  }
   close(m.volume, POCKETED, 1e-12, 'the pocketed plate');
   assert.equal(m.faces, 11);
+});
+
+test('a size the kernel cannot hold says it is the size, not the corner', () => {
+  // r = 0.001 is below what the part's own volume tolerance can check; r = 3.9999999999 in a 4 mm pocket leaves a
+  // sliver of the wall. Both were refused as "that corner is not built".
+  for (const [r, kind] of [[0.001, /is so small next to this part/], [3.9999999999, /leaves almost nothing of the face/]]) {
+    for (const call of ['round', 'bevel']) {
+      const m = mine(script(`${call}(part.rim(s2), ${r});`));
+      assert.ok(Object.keys(m.refusals).length >= 1, `${call} ${r}`);
+      for (const why of Object.values(m.refusals)) {
+        assert.match(why, kind, `${call} ${r}`);
+        assert.doesNotMatch(why, /corner is not built/, `${call} ${r}`);
+      }
+      close(m.volume, POCKETED, 1e-12, `${call} ${r}: the pocketed plate`);
+    }
+  }
 });
 
 test('a small rim (r = 0.01): held to its removed volume, equal to OCCT', () => {

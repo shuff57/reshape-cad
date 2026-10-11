@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-11T22:54:19.060Z",
+  "generatedAt": "2026-10-11T23:18:26.337Z",
   "reference": "FreeCAD 26.3.0 RC1 headless (variants/fc/<id>.py -> variants/refs/ref-<id>.json)",
   "ours": "reSHape Script -> ModelDoc -> brep-rs wasm (solids) / SketchSession2D (sketches)",
   "tolerances": {
@@ -15819,10 +15819,10 @@
         "solve": 0,
         "bucket": "consistent",
         "bbox": [
-          -6,
+          -6.000000001230619,
           0,
           0,
-          36,
+          35.99999999876938,
           12,
           0
         ]
@@ -15889,7 +15889,7 @@
           -12,
           0,
           0,
-          30,
+          30.000000000000004,
           24,
           0
         ]

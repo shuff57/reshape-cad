@@ -58,3 +58,25 @@ const s2 = sketch('top', 8); s2.rect(20, 12, { at: [0, 0] }); const part = pocke
   assert.deepEqual(slanted.refusals, {});
   assert.ok(near(slanted.volume, plain.volume), 'an angled cut of the same depth removes the same volume');
 });
+
+test('a pocket taper has FreeCAD\'s sign and size: positive widens the cut, negative narrows it', () => {
+  // FreeCAD 26.3rc1 headless, Pocket TaperAngle on a 60 x 40 x 8 plate with a 20 x 12 sketch on the top, depth 3
+  // (the script is docs/replica/freecad/gauntlet/baseline/ref-pocket-taper.py):
+  //   0 deg 18480 (19200 - 720), 15 deg 18400.245948869757, -15 deg 18554.58468371008, 11 faces each, bbox unchanged.
+  // Closed form: the cut is a frustum, h/6 (A0 + 4 Am + A1) over its two outlines, each side growing by h tan(angle).
+  const PLATE = (o) => `const s1 = sketch('top'); s1.rect(60, 40, { at: [0, 0] }); const plate = extrude(s1, 8);
+const s2 = sketch('top', 8); s2.rect(20, 12, { at: [0, 0] }); const part = pocket(s2, plate, 3, ${o});`;
+  const frustum = (deg) => {
+    const a = 3 * Math.tan((deg * Math.PI) / 180);
+    const area = (g) => (20 + 2 * g) * (12 + 2 * g);
+    return (3 / 6) * (area(0) + 4 * area(a / 2) + area(a));
+  };
+  for (const [deg, freecad] of [[15, 18400.245948869757], [-15, 18554.58468371008], [0, 18480]]) {
+    const m = mine(PLATE(deg === 0 ? '{}' : `{ taper: ${deg} }`));
+    assert.deepEqual(m.refusals, {}, String(deg));
+    assert.ok(near(m.volume, 19200 - frustum(deg), 1e-9), `${deg}: ${m.volume} vs closed form ${19200 - frustum(deg)}`);
+    assert.ok(near(m.volume, freecad, 1e-9), `${deg}: ${m.volume} vs FreeCAD ${freecad}`);
+    assert.deepEqual(m.bbox, [[-30, -20, 0], [30, 20, 8]], String(deg));
+    assertWatertight(m);
+  }
+});

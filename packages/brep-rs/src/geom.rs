@@ -985,10 +985,7 @@ impl Cross {
                 let l = lo.unwrap_or(f);
                 Some((l, hi.unwrap_or(f).max(l)))
             }
-            Cross::Slant { lo, hi } => {
-                let (s, c) = u.sin_cos();
-                Some((lo[0] + lo[1] * c + lo[2] * s, hi[0] + hi[1] * c + hi[2] * s))
-            }
+            Cross::Slant { .. } => self.slant_bounds(u),
             _ => None,
         }
     }
@@ -1947,9 +1944,28 @@ impl Surface {
                 // curves over the arc's own range (the ends included).
                 if let (Some(cross), Some(arc)) = (&c.cross, &c.arc) {
                     let (u0, u1) = (arc.start.min(arc.start + arc.span), arc.start.max(arc.start + arc.span));
-                    let n = 2048usize;
-                    for k in 0..=n {
-                        let u = u0 + (u1 - u0) * k as f64 / n as f64;
+                    // Each world coordinate of an end curve is K + A cos u + B sin u, so it peaks where tan u = B / A,
+                    // at u* or u* + pi: the candidates are the arc's two ends and those angles inside it. Exact,
+                    // where a fixed sampling missed the peak between two samples.
+                    let mut us = vec![u0, u1];
+                    if let Cross::Slant { lo, hi } = cross {
+                        for ends in [lo, hi] {
+                            for i in 0..3 {
+                                let a = c.radius * c.e1[i] + c.axis[i] * ends[1];
+                                let bb = c.radius * c.e2[i] + c.axis[i] * ends[2];
+                                if a.abs() + bb.abs() <= 1e-300 {
+                                    continue;
+                                }
+                                let star = bb.atan2(a);
+                                let k0 = ((u0 - star) / std::f64::consts::PI).ceil() as i64;
+                                let k1 = ((u1 - star) / std::f64::consts::PI).floor() as i64;
+                                for k in k0..=k1.min(k0 + 4) {
+                                    us.push(star + k as f64 * std::f64::consts::PI);
+                                }
+                            }
+                        }
+                    }
+                    for u in us {
                         let (l, h) = cross.slant_bounds(u).unwrap_or((c.vmin, c.vmax));
                         let rho = add(c.origin, scale(add(scale(c.e1, u.cos()), scale(c.e2, u.sin())), c.radius));
                         b.expand(add(rho, scale(c.axis, l)));

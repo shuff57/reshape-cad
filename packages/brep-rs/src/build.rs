@@ -3808,12 +3808,20 @@ pub fn bevel_to_round_mitred(
     // the lower and upper end at mid-arc (the ends never cross), and the wall's whole axial extent
     let at = |c: [f64; 3], u: f64| c[0] + c[1] * u.cos() + c[2] * u.sin();
     let (lo, hi) = if at(ends[0], 0.5 * span) <= at(ends[1], 0.5 * span) { (ends[0], ends[1]) } else { (ends[1], ends[0]) };
-    let (mut vmin, mut vmax) = (f64::INFINITY, f64::NEG_INFINITY);
-    for k in 0..=64 {
-        let u = span * k as f64 / 64.0;
-        vmin = vmin.min(at(lo, u));
-        vmax = vmax.max(at(hi, u));
-    }
+    // c + a cos u + b sin u over [0, span] peaks at its two ends or where tan u = b / a: exact, not sampled.
+    let range = |c: [f64; 3]| -> (f64, f64) {
+        let pi = std::f64::consts::PI;
+        let star = c[2].atan2(c[1]);
+        let mut us = vec![0.0, span];
+        let k0 = ((0.0 - star) / pi).ceil() as i64;
+        let k1 = ((span - star) / pi).floor() as i64;
+        for k in k0..=k1.min(k0 + 4) {
+            us.push(star + k as f64 * pi);
+        }
+        us.iter().fold((f64::INFINITY, f64::NEG_INFINITY), |(mn, mx), u| (mn.min(at(c, *u)), mx.max(at(c, *u))))
+    };
+    let mut vmin = range(lo).0;
+    let mut vmax = range(hi).1;
     if !oblique {
         (vmin, vmax) = (0.0, height);
     }

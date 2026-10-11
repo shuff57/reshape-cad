@@ -154,7 +154,11 @@ pub fn curve_points(c: &Curve, defl: f64) -> Vec<Vec3> {
         Curve::Ellipse { x_axis, y_axis, phi0, phi1, .. } => {
             // An open arc of a conic: sampled evenly in the cylinder's own angle, so the two faces that share it (a
             // round and its mitred neighbour) take the same points; the chord step is the longer semi-diameter's.
-            let big = len(*x_axis).max(len(*y_axis));
+            // x_axis and y_axis are CONJUGATE semi-diameters, so the longer of the two is not the semi-major axis
+            // when they are not perpendicular: the semi-major is sqrt of the larger root of
+            // t^2 - (|x|^2 + |y|^2) t + (|x|^2 |y|^2 - (x.y)^2), and bounds the second derivative the chord sag needs.
+            let (xx, yy, xy) = (dot(*x_axis, *x_axis), dot(*y_axis, *y_axis), dot(*x_axis, *y_axis));
+            let big = (0.5 * (xx + yy) + (0.25 * (xx - yy) * (xx - yy) + xy * xy).sqrt()).max(0.0).sqrt();
             let nseg = arc_segments(big, phi1 - phi0, defl, 4);
             (0..=nseg).map(|k| c.point_at(k as f64 / nseg as f64)).collect()
         }

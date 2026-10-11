@@ -1431,6 +1431,22 @@ struct RimRun {
     members: Vec<RimMember>,
     /// A corner could not be blended: every later member of the run is refused without being tried.
     dead: bool,
+    /// Why the run is dead, which the sentence of every member says.
+    fail: RimFail,
+}
+
+/// Why a rim run could not be built together. A size that does not fit the part is not a corner problem, and
+/// the sentence says which it is.
+#[derive(Clone, Copy, PartialEq)]
+enum RimFail {
+    /// The corners could not be blended (the shape is not one the corner builder takes).
+    Corner,
+    /// The size is wider than a face it runs along.
+    TooBig,
+    /// The size is too small next to the part to be built and checked exactly.
+    Tiny,
+    /// The size is almost exactly the width of a face it runs along.
+    Near,
 }
 
 struct RimMember {
@@ -1475,6 +1491,22 @@ fn rim_corner_is_concave(pre: &TSolid, a: &(Vec3, Vec3), b: &(Vec3, Vec3)) -> bo
         }
     }
     false
+}
+
+fn rim_fail_sentence(label: &str, round: bool, size: f64, fail: RimFail) -> String {
+    let (verb, noun, what) = if round { ("round", "round", "rounds") } else { ("chamfer", "chamfer", "chamfers") };
+    match fail {
+        RimFail::Corner => rim_corner_sentence(label, round),
+        RimFail::TooBig => format!(
+            "A {noun} of {size} would not fit where the edges picked with {label} run: a face along them is narrower than that, so none of the {what} picked with {label} is applied -- {label} is shown without it."
+        ),
+        RimFail::Tiny => format!(
+            "A {noun} of {size} is so small next to this part that brep-rs cannot {verb} these neighbouring edges together exactly and check the result, so none of the {what} picked with {label} is applied -- {label} is shown without it."
+        ),
+        RimFail::Near => format!(
+            "A {noun} of {size} leaves almost nothing of the face the edges picked with {label} run along (it is within a millionth of that face's width), a sliver brep-rs cannot {verb} exactly, so none of the {what} picked with {label} is applied -- {label} is shown without it."
+        ),
+    }
 }
 
 fn rim_corner_sentence(label: &str, round: bool) -> String {
@@ -3039,10 +3071,10 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 }
                 let mut rim_run = match continued {
                     Some(r) if r.round == round && (r.size - size).abs() <= 1e-12 => r,
-                    _ => RimRun { pre: src.clone(), size, round, members: Vec::new(), dead: false },
+                    _ => RimRun { pre: src.clone(), size, round, members: Vec::new(), dead: false, fail: RimFail::Corner },
                 };
                 if rim_run.dead {
-                    refusals.insert(id.clone(), json!(rim_corner_sentence(&label, round)));
+                    refusals.insert(id.clone(), json!(rim_fail_sentence(&label, round, size, rim_run.fail)));
                     hist.insert(&id, rim_run.pre.clone());
                     rim_run.members.push(RimMember { id: id.clone(), label: label.clone(), ends: own_ends, built: false, feature: f.clone() });
                     rim_runs.insert(id.clone(), rim_run);
@@ -3146,6 +3178,16 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                         match rim_corner_build(&rim_run.pre, &hist, &feats, size, round) {
                             Ok(solid) => {
                                 refusals.remove(&id);
+                                // The rebuild took EVERY member from the part the run started on, so a member refused
+                                // earlier on its own (it could not be built before its neighbour was picked) is
+                                // rounded in this solid, and its stale 'shown without it' goes with it. Its own shape
+                                // was the part before it; it is the run's result now, as the current member's is.
+                                for m in rim_run.members.iter_mut() {
+                                    if m.id != id && refusals.remove(&m.id).is_some() {
+                                        hist.insert(&m.id, solid.clone());
+                                        m.built = true;
+                                    }
+                                }
                                 hist.ops.remove(&id);
                                 let prev = hist.shapes.get(target).cloned().unwrap_or_else(|| rim_run.pre.clone());
                                 let face_fates: Vec<Fate> = prev.faces().iter().map(|fc| carry_fate(&solid, fc)).collect();
@@ -3159,13 +3201,19 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                                     m.built = true;
                                 }
                             }
-                            Err(_) => {
+                            Err(e) => {
                                 rim_run.dead = true;
+                                rim_run.fail = match e {
+                                    FilletErr::TooBig => RimFail::TooBig,
+                                    FilletErr::SizeTiny => RimFail::Tiny,
+                                    FilletErr::SizeNear => RimFail::Near,
+                                    _ => RimFail::Corner,
+                                };
                                 for m in &rim_run.members {
                                     hist.ops.remove(&m.id);
                                     replay_log.remove(&m.id);
                                     hist.shapes.insert(m.id.clone(), rim_run.pre.clone());
-                                    refusals.insert(m.id.clone(), json!(rim_corner_sentence(&m.label, round)));
+                                    refusals.insert(m.id.clone(), json!(rim_fail_sentence(&m.label, round, size, rim_run.fail)));
                                 }
                             }
                         }
@@ -9027,6 +9075,12 @@ enum FilletErr {
  /// An end of the edge meets another round, chamfer or slanted face at an inside corner (`fillet_vertex_is_convex`):
  /// the cut would have to be blended into it there rather than run on past the end.
  EndCorner,
+ /// A rim run's size is so small next to the part that the cut's volume cannot be told from the part's own
+ /// rounding error (rim_corner_build): refused, never built on a number it cannot check.
+ SizeTiny,
+ /// A rim run's size is within a millionth of the width of a face it runs along, which leaves a sliver the
+ /// boolean cannot hold exactly.
+ SizeNear,
 }
 
 /// Dispatch the box `round` primitive field (SPEC-brep-round.md): refuse a
@@ -9503,6 +9557,9 @@ fn rim_corner_build(pre: &TSolid, hist: &History, features: &[Value], size: f64,
     let src = build::unify_coplanar(pre);
     let near = |p: Vec3, q: Vec3| len(sub(p, q)) <= 1e-6 * (1.0 + len(p).max(len(q)));
     let mut members: Vec<RimEdge> = Vec::new();
+    // The narrowest face the run's edges run along; a failure past the shape checks is a size one when the size
+    // is tiny against it or all but equal to it.
+    let mut narrowest = f64::INFINITY;
     for f in features {
         let (fa0, fb0) = fillet_face_pair(hist, f).ok_or(FilletErr::NoEdge)?;
         let edge0 = hist.edge_between(&fa0, &fb0).ok_or(FilletErr::NoEdge)?;
@@ -9533,6 +9590,7 @@ fn rim_corner_build(pre: &TSolid, hist: &History, features: &[Value], size: f64,
         if size <= 0.0 || size >= reach_a.min(reach_b) - 1e-12 {
             return Err(FilletErr::TooBig);
         }
+        narrowest = narrowest.min(reach_a.min(reach_b));
         let into_corner = normalize(add(in_a, in_b));
         if !ops::inside_solid(&src, add(midpoint, scale(into_corner, 1e-6))) {
             return Err(FilletErr::Concave);
@@ -9663,6 +9721,17 @@ fn rim_corner_build(pre: &TSolid, hist: &History, features: &[Value], size: f64,
             build::ensure_outward(&build::polyhedron_solid(&points, &faces))
         })
         .collect();
+    // What a failure from here on is: the shape was square and every end plain, so what the boolean or the closed
+    // form cannot hold is the size (tiny against the part, or all but the whole face), unless it is neither.
+    let size_fail = || {
+        if size < 1e-3 * narrowest {
+            FilletErr::SizeTiny
+        } else if size > narrowest * (1.0 - 1e-6) {
+            FilletErr::SizeNear
+        } else {
+            FilletErr::RoundEnds
+        }
+    };
     let v0 = build::solid_volume(&src);
     // Agreement with a closed form, both against the part (1e-9 of its volume) and against what is REMOVED (1e-6 of
     // it): at a small size the part's allowance alone dwarfs a whole corner term (r = 0.01 on a 11600 plate: 1.2e-5
@@ -9672,17 +9741,17 @@ fn rim_corner_build(pre: &TSolid, hist: &History, features: &[Value], size: f64,
     };
     let mut cur = src.clone();
     for tool in &tools {
-        cur = ops::boolean("subtract", &cur, tool).map(|s| build::ensure_outward(&s)).ok_or(FilletErr::RoundEnds)?;
+        cur = ops::boolean("subtract", &cur, tool).map(|s| build::ensure_outward(&s)).ok_or_else(size_fail)?;
     }
     // Exact, as cut flat: the triangle times each edge's length, plus a square pyramid of side `leg` per corner.
     let total_len: f64 = members.iter().map(|m| m.length).sum();
     let flat_want = 0.5 * leg * leg * total_len + corners as f64 * leg * leg * leg / 3.0;
     let got = v0 - build::solid_volume(&cur);
     if !agrees(got, flat_want) {
-        return Err(FilletErr::RoundEnds);
+        return Err(size_fail());
     }
     if cur.faces().len() != src.faces().len() + members.len() {
-        return Err(FilletErr::RoundEnds);
+        return Err(size_fail());
     }
     if !round {
         return Ok(cur);
@@ -9706,15 +9775,15 @@ fn rim_corner_build(pre: &TSolid, hist: &History, features: &[Value], size: f64,
             };
             if hit {
                 if bevel.is_some() {
-                    return Err(FilletErr::RoundEnds);
+                    return Err(size_fail());
                 }
                 bevel = Some(face.clone());
             }
         }
-        let bevel = bevel.ok_or(FilletErr::RoundEnds)?;
+        let bevel = bevel.ok_or_else(size_fail)?;
         let mitres: Vec<(Vec3, Vec3)> = m.ends.iter().filter_map(|e| match e { RimEnd::Mitre { v, m } => Some((*v, *m)), _ => None }).collect();
         let axis_point = add(midpoint, scale(into, size / (0.5 * theta).sin()));
-        build::bevel_to_round_mitred(&bevel, axis_point, m.dir, size, theta, false, &mitres).ok_or(FilletErr::RoundEnds)?;
+        build::bevel_to_round_mitred(&bevel, axis_point, m.dir, size, theta, false, &mitres).ok_or_else(size_fail)?;
     }
     // Exact, rounded: (1 - pi/4) r^2 per unit length, and (5/3 - pi/2) r^3 per corner -- the corner square's
     // material above both quarter cylinders, 2 int_0^1 (1 - u)(1 - sqrt(1 - u^2)) du.
@@ -9722,7 +9791,7 @@ fn rim_corner_build(pre: &TSolid, hist: &History, features: &[Value], size: f64,
     let want = (1.0 - pi / 4.0) * size * size * total_len + corners as f64 * (5.0 / 3.0 - pi / 2.0) * size * size * size;
     let got = v0 - build::solid_volume(&cur);
     if !agrees(got, want) {
-        return Err(FilletErr::RoundEnds);
+        return Err(size_fail());
     }
     Ok(cur)
 }
@@ -9958,75 +10027,8 @@ fn build_fillet(
  }
  let edge_direction = scale(edge_vector, 1.0 / edge_length);
  let midpoint = scale(add(a, b), 0.5);
- let face_data = |face: &build::TFace, midpoint: Vec3, which: &build::TEdge| -> Result<(Vec3, Vec3, f64), FilletErr> {
- let (surface_normal, forward) = {
- let f = face.borrow();
- let Surface::Plane(plane) = &f.surface else {
- return Err(FilletErr::NoBox);
- };
- (plane.n, f.forward)
- };
- let normal = if forward { normalize(surface_normal) } else { scale(normalize(surface_normal), -1.0) };
- // The in-face direction square to the edge, from the edge's own use in this face's wire: the
- // face's interior lies to the LEFT of travel (outer wire counter-clockwise from outside, holes
- // clockwise). Averaging the boundary points instead pointed the wrong way for a face that wraps
- // round a boss (the base block's top), and a wedge cut in that quadrant removed material from the
- // wrong place.
- let mut inward = [0.0; 3];
- for wire in &face.borrow().boundary {
- for use_ in &wire.borrow().edges {
- if !crate::topo::same(&use_.edge, which) {
- continue;
- }
- let e = use_.edge.borrow();
- let (pa, pb) = (e.a.borrow().point, e.b.borrow().point);
- let travel = if use_.forward { sub(pb, pa) } else { sub(pa, pb) };
- inward = cross(normal, normalize(travel));
- }
- }
- // A face whose wires were walked the other way round (a mirrored copy keeps its edges' order)
- // has its interior on the RIGHT: read the outer wire's winding against the normal.
- let winding = {
-     let fc = face.borrow();
-     let mut acc = [0.0; 3];
-     if let Some(outer) = fc.boundary.first() {
-         let pts: Vec<Vec3> = outer
-             .borrow()
-             .edges
-             .iter()
-             .map(|u| {
-                 let e = u.edge.borrow();
-                 let r = if u.forward { e.a.borrow().point } else { e.b.borrow().point };
-                 r
-             })
-             .collect();
-         for i in 0..pts.len() {
-             acc = add(acc, cross(pts[i], pts[(i + 1) % pts.len()]));
-         }
-     }
-     dot(acc, normal)
- };
- let inward = if winding < 0.0 { scale(inward, -1.0) } else { inward };
- let inward = normalize(inward);
- if len(inward) <= 1e-9 || dot(inward, normal).abs() > 1e-7 {
- return Err(FilletErr::NoBox);
- }
- let mut reach: f64 = 0.0;
- for wire in &face.borrow().boundary {
- for use_ in &wire.borrow().edges {
- let e = use_.edge.borrow();
- for point in [e.a.borrow().point, e.b.borrow().point] {
- reach = reach.max(dot(sub(point, midpoint), inward));
- }
- }
- }
- if reach <= 1e-9 {
- return Err(FilletErr::NoBox);
- }
- Ok((normal, inward, reach))
- };
- let (normal_a, in_a, reach_a) = face_data(&fa, midpoint, &edge)?;
- let (normal_b, in_b, reach_b) = face_data(&fb, midpoint, &edge)?;
+ let (normal_a, in_a, reach_a) = fillet_face_data(&fa, midpoint, &edge)?;
+ let (normal_b, in_b, reach_b) = fillet_face_data(&fb, midpoint, &edge)?;
  if dot(normal_a, normal_b).abs() >= 1.0 - 1e-9 {
  return Err(FilletErr::Flat);
  }
@@ -10107,29 +10109,7 @@ fn build_fillet(
  // is CONVEX when the solid lies behind it (the wedge may run past the end into air) and CONCAVE
  // when the solid carries on past it (a boss standing on a base: the wedge must stop flush, or it
  // shaves the base). Anything else is `None`.
- let end_kind = |endpoint: &crate::topo::VertexRef, toward: Vec3| -> Option<bool> {
-     let mut kind: Option<bool> = None;
-     for face in src.faces() {
-         if std::rc::Rc::ptr_eq(&face, &fa) || std::rc::Rc::ptr_eq(&face, &fb) {
-             continue;
-         }
-         let touches = face.borrow().boundary.iter().any(|wire| wire.borrow().edges.iter().any(|use_| {
-             let e = use_.edge.borrow();
-             std::rc::Rc::ptr_eq(&e.a, endpoint) || std::rc::Rc::ptr_eq(&e.b, endpoint)
-         }));
-         if !touches {
-             continue;
-         }
-         let fb_ = face.borrow();
-         let Surface::Plane(p) = &fb_.surface else { return None };
-         let n = if fb_.forward { normalize(p.n) } else { scale(normalize(p.n), -1.0) };
-         if dot(n, edge_direction).abs() < 1.0 - 1e-9 || kind.is_some() {
-             return None;
-         }
-         kind = Some(dot(n, toward) > 0.0);
-     }
-     kind
- };
+ let end_kind = |endpoint: &crate::topo::VertexRef, toward: Vec3| fillet_end_kind(src, &fa, &fb, endpoint, toward, edge_direction);
  let (convex_a, convex_b) = {
      let e = edge.borrow();
      (end_kind(&e.a, scale(edge_direction, -1.0)), end_kind(&e.b, edge_direction))
@@ -10339,7 +10319,7 @@ fn build_fillet(
          if faces2.len() != 2 {
              return Err(FilletErr::SplitEdge);
          }
-         let (d0, d1) = (face_data(&faces2[0], mid_k, edge2)?, face_data(&faces2[1], mid_k, edge2)?);
+         let (d0, d1) = (fillet_face_data(&faces2[0], mid_k, edge2)?, fillet_face_data(&faces2[1], mid_k, edge2)?);
          let alike = |x: &(Vec3, Vec3, f64), n: Vec3, i: Vec3| len(sub(x.0, n)) < 1e-7 && len(sub(x.1, i)) < 1e-7;
          let same_planes = (alike(&d0, normal_a, in_a) && alike(&d1, normal_b, in_b)) || (alike(&d1, normal_a, in_a) && alike(&d0, normal_b, in_b));
          if !same_planes {
@@ -11535,11 +11515,12 @@ mod rim_corner_tests {
         // pick's sentence and the pocketed plate is shown unmodified.
         let thin = [[15.0, 0.5], [25.0, 0.5], [25.0, 10.5], [15.0, 10.5]]; // a 0.5 mm wall outside side 0: r = 1 cannot fit
         let skew = [[15.0, 10.0], [25.0, 10.0], [25.0 + 1e-7, 20.0], [15.0, 20.0]]; // side 1 is 1e-8 rad off square to side 0
-        for (pts, picks, round) in [
-            (thin, vec![("fillet", 0, 1.0), ("fillet", 1, 1.0)], true),
-            (thin, vec![("fillet", 1, 1.0), ("fillet", 0, 1.0)], true),
-            (skew, vec![("fillet", 0, 1.0), ("fillet", 1, 1.0)], true),
-            (skew, vec![("chamfer", 0, 1.0), ("chamfer", 1, 1.0)], false),
+        for (pts, picks, round, fail) in [
+            // a face along the pick is narrower than the size: the size sentence, not the corner's
+            (thin, vec![("fillet", 0, 1.0), ("fillet", 1, 1.0)], true, RimFail::TooBig),
+            (thin, vec![("fillet", 1, 1.0), ("fillet", 0, 1.0)], true, RimFail::TooBig),
+            (skew, vec![("fillet", 0, 1.0), ("fillet", 1, 1.0)], true, RimFail::Corner),
+            (skew, vec![("chamfer", 0, 1.0), ("chamfer", 1, 1.0)], false, RimFail::Corner),
         ] {
             let doc = rim_doc_picks(&picks, PLATE, pts, 4.0);
             // the corner builder itself refuses this pair, from the pocketed plate
@@ -11551,7 +11532,8 @@ mod rim_corner_tests {
             assert_eq!(refusals.len(), 2, "{picks:?}: {refusals:?}");
             for id in ["round1", "round2"] {
                 let why = refusals[id].as_str().unwrap();
-                assert_eq!(why, rim_corner_sentence(id, round), "{picks:?}");
+                assert_eq!(why, rim_fail_sentence(id, round, 1.0, fail), "{picks:?}");
+                assert_eq!(why.contains("that corner is not built"), fail == RimFail::Corner, "{picks:?}: {why}");
                 assert_eq!(shapes[id]["volume"], shapes["pocket1"]["volume"], "{picks:?}: {id} is the pocketed plate");
                 assert_eq!(shapes[id]["faces"], shapes["pocket1"]["faces"], "{picks:?}");
             }
@@ -11574,5 +11556,99 @@ mod rim_corner_tests {
         let removed = 0.5 * r * r * 40.0 + 4.0 * r * r * r / 3.0;
         assert!(((POCKETED - v) - removed).abs() <= 1e-6 * removed, "{} vs {removed}", POCKETED - v);
         assert_eq!(faces, 15);
+    }
+
+    /// Every ordered pick of 2..=4 sides at one size and style: whenever the corner builder takes the whole pick
+    /// from the pocketed plate and the part shown is that solid, no member may still say it is shown without its
+    /// edge rounded. (A member refused on its own before a later pick joined it must have its refusal cleared
+    /// with the rebuild that rounds it.)
+    #[test]
+    fn a_member_the_rebuild_rounds_keeps_no_refusal() {
+        fn perms(pool: &mut Vec<usize>, cur: &mut Vec<usize>, out: &mut Vec<Vec<usize>>, want: usize) {
+            if cur.len() == want {
+                out.push(cur.clone());
+                return;
+            }
+            for i in 0..pool.len() {
+                let x = pool.remove(i);
+                cur.push(x);
+                perms(pool, cur, out, want);
+                cur.pop();
+                pool.insert(i, x);
+            }
+        }
+        let mut rebuilt = 0;
+        for style in ["fillet", "chamfer"] {
+            for want in 2..=4 {
+                let mut all = Vec::new();
+                perms(&mut vec![0, 1, 2, 3], &mut Vec::new(), &mut all, want);
+                for sides in all {
+                    let doc = rim_doc(style, &sides, 1.0, PLATE, POCKET);
+                    let (hist, refusals) = build_doc(&doc);
+                    let last = format!("round{}", sides.len());
+                    let feats: Vec<Value> = doc["features"].as_array().unwrap()[5..].to_vec();
+                    let pre = hist.shapes.get("pocket1").unwrap().clone();
+                    let Ok(whole) = rim_corner_build(&pre, &hist, &feats, 1.0, style == "fillet") else { continue };
+                    let shown = hist.shapes.get(&last).unwrap();
+                    let (vw, vs) = (build::solid_volume(&whole), build::solid_volume(shown));
+                    if (vw - vs).abs() > 1e-9 * vw {
+                        continue;
+                    }
+                    rebuilt += 1;
+                    assert!(refusals.is_empty(), "{style} {sides:?}: the whole pick is shown, yet {refusals:?}");
+                    // and every member's own shape is a part, not the bare pocketed plate
+                    for k in 1..=sides.len() {
+                        let v = build::solid_volume(hist.shapes.get(&format!("round{k}")).unwrap());
+                        assert!(v < build::solid_volume(&pre) - 1e-9, "{style} {sides:?}: round{k} was not applied");
+                    }
+                }
+            }
+        }
+        assert!(rebuilt > 0);
+    }
+
+    #[test]
+    fn a_size_the_kernel_cannot_hold_is_said_to_be_one() {
+        // r = 0.001 (a millionth of the corner terms the part's own rounding hides) and r = 3.9999999999 in a 4 mm
+        // pocket (a face all but used up) were refused with "that corner is not built", which they are not about.
+        for (r, fail) in [(0.001, RimFail::Tiny), (0.0001, RimFail::Tiny), (3.9999999999, RimFail::Near)] {
+            for (style, round) in [("fillet", true), ("chamfer", false)] {
+                let doc = rim_doc(style, &[0, 1], r, PLATE, POCKET);
+                let (refusals, shapes) = built(&doc);
+                assert_eq!(refusals.len(), 2, "{style} {r}: {refusals:?}");
+                for id in ["round1", "round2"] {
+                    let why = refusals[id].as_str().unwrap();
+                    assert_eq!(why, rim_fail_sentence(id, round, r, fail), "{style} {r}");
+                    assert!(!why.contains("corner is not built") && why.contains(&format!("{r}")), "{why}");
+                    // refused whole: the pocketed plate is what is shown
+                    assert_eq!(shapes[id]["volume"], shapes["pocket1"]["volume"], "{style} {r}");
+                }
+            }
+        }
+        // a size that does build is untouched by any of it
+        let (v, _) = measure(&rim_doc("fillet", &[0, 1], 0.01, PLATE, POCKET));
+        assert!(v < POCKETED);
+    }
+
+    #[test]
+    fn a_later_run_on_an_earlier_member_starts_from_that_member() {
+        // A chamfer picked on the part as round1 left it (round2, the rest of the rim run, is not its parent) is its
+        // own run on that part: it must not inherit round2's members, nor reset them.
+        let mut doc = rim_doc("fillet", &[0, 1], 1.0, PLATE, POCKET);
+        let feats = doc["features"].as_array_mut().unwrap();
+        feats.push(json!({ "id": "round3", "kind": "fillet", "target": "round1", "size": 1.0, "style": "chamfer",
+            "edge": { "cause": "between", "feature": "pocket1", "kind": "edge", "of": [
+                { "cause": "carried", "feature": "pocket1", "kind": "face", "of": { "cause": "primitive", "feature": "pull1", "kind": "face", "part": "+z" } },
+                { "cause": "swept", "feature": "pull2", "kind": "face", "from": "sk2", "edge": 2 } ] } }));
+        let (refusals, shapes) = built(&doc);
+        // the run before it is untouched: both rounds built, the corner mitred
+        let want2 = POCKETED - 2.0 * wedge(1.0, 10.0) - round_corner(1.0);
+        let v2 = shapes["round2"]["volume"].as_f64().unwrap();
+        assert!((v2 - want2).abs() <= 1e-9 * want2, "{v2} vs {want2}");
+        assert!(!refusals.contains_key("round1") && !refusals.contains_key("round2"), "{refusals:?}");
+        // round1 alone is the plate with side 0 rounded; side 2 is the far side, a clean convex chamfer
+        let v3 = shapes["round3"]["volume"].as_f64().unwrap();
+        let want3 = POCKETED - wedge(1.0, 10.0) - 0.5 * 10.0;
+        assert!(refusals.is_empty() && (v3 - want3).abs() <= 1e-9 * want3, "{v3} vs {want3}: {refusals:?}");
     }
 }
