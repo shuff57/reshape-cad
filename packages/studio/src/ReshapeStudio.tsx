@@ -23,17 +23,26 @@ import { Maximize2, Minimize2, PanelRightClose, PanelRightOpen } from 'lucide-re
 import ReshapeParamsPanel, { type ParamDef, type ParamValues } from './ReshapeParamsPanel.js';
 import { noteColor, type StudioNote } from './notes.js';
 import ModelEditor from './model/ModelEditor.js';
+import {
+  emptyAfterBuild, humanizeIds, pruneSuppressed, pruneVisibility, sketchDrawnByDefault, withoutSuppressed,
+} from './model/model-tree-core.js';
 import BrepViewport, { type BrepViewportStats, type ViewportPick } from './model/BrepViewportThree.js';
 import HandleOverlay, { type AnchorPoint, type SketchOutline } from './model/HandleOverlay.js';
 import { loadSchemeName, navHint, type MouseScheme } from './camera-controls.js';
 import SketchCanvas2D from './model/SketchCanvas2D.js';
 import ContextBar, { type ContextBarAction } from './model/ContextBar.js';
+import PadTaskPanel, { NO_PAD_PREVIEW, type PadTaskPreview } from './model/PadTaskPanel.js';
+import {
+  captionOf, draftCheckDoc, draftCheckOf, draftCheckRun, isPadFeature, lengthSlot, padDisplayDoc, refusalsAfterBuild,
+  type DraftCheckRun,
+} from './model/pad-task-core.js';
 import type { ContextActions } from './model/ModelEditor.js';
 import { writeSTL, writeOBJ, write3MF, type MeshInput } from './mesh-export.js';
 import {
   add as addSelection,
   bodiesOf,
   clear as clearSelection,
+  dropStalePicks,
   edgesOf,
   emptySelection,
   facesOf,
@@ -50,7 +59,9 @@ import {
 import { outlineOf } from '@shuff57/reshape-sketch/sketch-arc';
 import { handlesFor, featureCenter, flatViewPlane, type HandleSpec } from '@shuff57/reshape-script/model-handles';
 import { previewTint } from './model/manipulator-core.js';
-import { EMPTY_DOC, type Feature, isSketchOnly, type ModelDoc, nameMap, newSketch, type SketchPlane } from '@shuff57/reshape-script/model-types';
+import { treeLabels as nameMap } from './model/model-tree-core.js';
+import { nameMap as scriptNameMap } from '@shuff57/reshape-script/model-types';
+import { EMPTY_DOC, type Feature, isSketchOnly, type ModelDoc, newSketch, type SketchPlane } from '@shuff57/reshape-script/model-types';
 import { ownerOf } from '@shuff57/reshape-script/model-selection';
 import { partWordFor } from '@shuff57/reshape-script/topo-name';
 import {
@@ -209,13 +220,6 @@ function capitalize(name: string): string {
   return name.length ? name[0].toUpperCase() + name.slice(1) : name;
 }
 
-function sketchIsUnconsumed(doc: ModelDoc, sketchId: string): boolean {
-  return !doc.features.some((f) =>
-    ((f.kind === 'extrude' || f.kind === 'revolve') && f.target === sketchId)
-    || (f.kind === 'blend' && f.targets.includes(sketchId))
-  );
-}
-
 function foldParams(base: ModelDoc, pending: ParamValues): ModelDoc {
   const numeric: Record<string, number> = {};
   for (const [k, v] of Object.entries(pending)) {
@@ -304,6 +308,24 @@ export default function ReshapeStudio({
   const [refusals, setRefusals] = useState<Map<string, string> | undefined>(undefined);
 
   const [doc, setDoc] = useState<ModelDoc>(EMPTY_DOC);
+  // The same refusals with the document's internal ids swapped for the names
+  // the tree shows, for every place a student reads one.
+  const shownRefusals = useMemo(() => {
+    if (!refusals || refusals.size === 0) return refusals;
+    const names = nameMap(doc);
+    // The Pad / Pocket panel previews a draft through a block of its own
+    // (`<id>__tool`). That id is the panel's, not the student's: the sentence
+    // and its key are filed under the feature the student is editing.
+    const ids = doc.features.map((f) => f.id);
+    const own = (text: string): string => ids.reduce((t, id) => t.split(`${id}__tool`).join(id), text);
+    const out = new Map<string, string>();
+    for (const [k, v] of refusals) {
+      const base = k.endsWith('__tool') && ids.includes(k.slice(0, -6)) ? k.slice(0, -6) : k;
+      if (base !== k && out.has(base)) continue;
+      out.set(base, humanizeIds(own(v), names));
+    }
+    return out;
+  }, [refusals, doc]);
   // ONE selection state for the whole shell (SPEC-mouse-parity.md Phase 3
   // item 7). It replaces six useStates that had to be kept in step by hand:
   // `selected` (the feature ids, set both by ModelEditor's pick() and by a
@@ -327,7 +349,15 @@ export default function ReshapeStudio({
   // prune ids the doc no longer has -- withFeatureIds hands back the same
   // state object when there is nothing to prune, so this stays a no-op.
   useEffect(() => {
-    setSelection((s) => withFeatureIds(s, featuresOf(s).filter((id) => doc.features.some((f) => f.id === id))));
+    setSelection((s) => {
+      const has = (id: string) => doc.features.some((f) => f.id === id);
+      // A face/edge/vertex pick whose owning feature is gone (a script re-run
+      // renamed or dropped it) is stale: leaving it would keep the status bar
+      // on that old face and suppress the tree selection's tint. A pick whose
+      // feature survived but whose NAME no longer resolves is dropped after
+      // the new build lands (the viewport's onStats, nameLost).
+      return dropStalePicks(withFeatureIds(s, featuresOf(s).filter(has)), has);
+    });
   }, [doc]);
   // Item N: when a handle was last actually touched (a drag/commit) -- 
   // BrepViewportThree.tsx uses this to hold its own "A sketch is flat..."
@@ -336,6 +366,12 @@ export default function ReshapeStudio({
   const [ruleActivityAt, setRuleActivityAt] = useState<number | null>(null);
   const touchRuleActivity = () => setRuleActivityAt(Date.now());
   const [rollbackIndex, setRollbackIndex] = useState<number | null>(null);
+  // The model tree's two view states, same family as rollbackIndex: neither
+  // touches the doc or the script text. `suppressed` switches features (and
+  // everything built from them) off for the kernel; `visibility` is the eye
+  // overrides, id -> shown/hidden, for solids and sketch outlines.
+  const [suppressed, setSuppressed] = useState<ReadonlySet<string>>(() => new Set());
+  const [visibility, setVisibility] = useState<ReadonlyMap<string, boolean>>(() => new Map());
   // Which plane a new sketch starts on -- set by clicking a plane in the
   // ribbon's left Planes tree (model/ModelEditor.tsx).
   const [activePlane, setActivePlane] = useState<SketchPlane>('xy');
@@ -433,12 +469,22 @@ export default function ReshapeStudio({
   // every other kind (same flash-and-scroll the Dimensions button already
   // triggers). Not a second way to open either panel, just a second way
   // to reach the first one.
-  const editFeature = useCallback((id: string) => {
+  // A Pad or a Pocket opens its TASK PANEL instead (padTask below): the same
+  // double-click, a different place to land. `isNew` is passed by the Pull and
+  // Pocket tools, whose feature is not in `doc` yet when this closure runs.
+  const padOpenRef = useRef<(id: string, isNew: boolean) => void>(() => undefined);
+  const editFeature = useCallback((id: string, isNew?: boolean) => {
     selectFeatures([id]);
     const f = doc.features.find((x) => x.id === id);
     if (f?.kind === 'sketch') setSketchEditId(id);
+    else if (isNew === true || isPadFeature(f)) padOpenRef.current(id, isNew === true);
     else focusParams();
   }, [doc, selectFeatures, focusParams]);
+  const [padTask, setPadTask] = useState<{ id: string; isNew: boolean; namedAtOpen: ScriptParamRef[] | null } | null>(null);
+  const [padPreview, setPadPreview] = useState<PadTaskPreview>(NO_PAD_PREVIEW);
+  // The last finished check of the panel's draft (the draft built in place of
+  // its feature, for its refusal): what OK waits for. See padCheck below.
+  const [padCheckRun, setPadCheckRun] = useState<DraftCheckRun | null>(null);
   const meshRef = useRef<MeshInput | null>(null);
   const [hasMesh, setHasMesh] = useState(false);
   const [engineReady, setEngineReady] = useState(false);
@@ -479,9 +525,28 @@ export default function ReshapeStudio({
   useEffect(() => { docRef.current = doc; }, [doc]);
 
   const effectiveDoc = useMemo(
-    () => (rollbackIndex == null ? doc : { ...doc, features: doc.features.slice(0, rollbackIndex) }),
-    [doc, rollbackIndex]
+    () => withoutSuppressed(
+      rollbackIndex == null ? doc : { ...doc, features: doc.features.slice(0, rollbackIndex) },
+      suppressed,
+    ),
+    [doc, rollbackIndex, suppressed]
   );
+  const toggleSuppressed = useCallback((id: string) => {
+    setSuppressed((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  }, []);
+  const setVisible = useCallback((ids: string[], value: boolean | null) => {
+    setVisibility((prev) => {
+      const next = new Map(prev);
+      for (const id of ids) {
+        if (value === null) next.delete(id); else next.set(id, value);
+      }
+      return next;
+    });
+  }, []);
 
   const loadDoc = useCallback((raw: ModelDoc) => {
     const next = solveDoc(raw);
@@ -493,6 +558,12 @@ export default function ReshapeStudio({
     setRebuildMs(null);
     setStale(null);
     setRollbackIndex(null);
+    // Suppress and the eyes are view states of the features, not of one
+    // version of the doc: every edit, undo, redo and panel OK comes through
+    // here, so resetting them brought a suppressed part back on any unrelated
+    // edit. Only the ids the new doc no longer has are dropped.
+    setSuppressed((s) => pruneSuppressed(s, next));
+    setVisibility((v) => pruneVisibility(v, next));
   }, []);
 
   const remember = useCallback((prev: ModelDoc) => {
@@ -533,6 +604,91 @@ export default function ReshapeStudio({
     loadDoc(next);
     setHistoryGen((g) => g + 1);
   }, [loadDoc]);
+
+  // ---- the Pad / Pocket task panel's handlers ------------------------------
+  const namedParamsRef = useRef<ScriptParamRef[] | null>(null);
+  namedParamsRef.current = scriptNamedParams;
+  const openPadTask = useCallback((id: string, isNew: boolean) => {
+    setPadPreview(NO_PAD_PREVIEW);
+    setPadCheckRun(null);
+    setPadTask({ id, isNew, namedAtOpen: namedParamsRef.current });
+  }, []);
+  padOpenRef.current = openPadTask;
+  const closePadTask = useCallback(() => {
+    setPadTask(null);
+    setPadPreview(NO_PAD_PREVIEW);
+    setPadCheckRun(null);
+  }, []);
+  const padFeature = useMemo(() => {
+    const f = padTask ? doc.features.find((x) => x.id === padTask.id) : undefined;
+    return isPadFeature(f) ? f : null;
+  }, [padTask, doc]);
+  // A task whose feature vanished (undo, delete, a script re-run) closes itself.
+  useEffect(() => {
+    if (padTask && !padFeature) {
+      const t = setTimeout(() => setPadTask((cur) => (cur && !docRef.current.features.some((x) => x.id === cur.id) ? null : cur)), 0);
+      return () => clearTimeout(t);
+    }
+  }, [padTask, padFeature]);
+  const padOk = useCallback((next: Feature) => {
+    const cur = docRef.current;
+    const merged: ModelDoc = { ...cur, features: cur.features.map((x) => (x.id === next.id ? next : x)) };
+    // A brand-new pad was already put on the history stack by the tool that
+    // made it; OK folds the draft into that same step rather than a second one.
+    if (padTask?.isNew && past.current.length > 0) {
+      const prev = past.current[past.current.length - 1];
+      if (!prev.features.some((x) => x.id === next.id)) {
+        past.current = past.current.slice(0, -1);
+        setDepth({ back: past.current.length, forward: future.current.length });
+        remember(prev);
+      }
+    }
+    loadDoc(merged);
+    closePadTask();
+  }, [padTask, loadDoc, remember, closePadTask]);
+  const padCancel = useCallback(() => {
+    if (padTask) {
+      const cur = docRef.current;
+      if (padTask.isNew && cur.features.some((x) => x.id === padTask.id)) {
+        // Take the brand-new feature back out, and its history step with it.
+        const prev = past.current[past.current.length - 1];
+        if (prev && !prev.features.some((x) => x.id === padTask.id)) {
+          past.current = past.current.slice(0, -1);
+          setDepth({ back: past.current.length, forward: future.current.length });
+          loadDoc(prev);
+        } else {
+          loadDoc({ ...cur, features: cur.features.filter((x) => x.id !== padTask.id) });
+        }
+      }
+      // A parameter bound while the panel was open goes back to how it was.
+      setScriptNamedParams(padTask.namedAtOpen);
+    }
+    closePadTask();
+  }, [padTask, loadDoc, closePadTask]);
+  const padBind = useCallback((slot: string, name: string | null, value: number): { value: number } | { why: string } => {
+    const list = (namedParamsRef.current ?? []).map((p) => ({ ...p, slots: p.slots.filter((x) => x !== slot) }));
+    if (name === null) {
+      setScriptNamedParams(list.filter((p) => p.slots.length > 0 || (namedParamsRef.current ?? []).some((q) => q.name === p.name && q.slots.length === 0)));
+      return { value };
+    }
+    const existing = list.find((p) => p.name === name);
+    if (existing) {
+      existing.slots = [...existing.slots, slot];
+      // The slot takes the parameter's own value; a typed value on a field that
+      // already follows this parameter moves the parameter instead.
+      const was = (namedParamsRef.current ?? []).find((p) => p.name === name);
+      const follows = !!was && was.slots.includes(slot);
+      if (follows) existing.value = value;
+      setScriptNamedParams(list);
+      return { value: follows ? value : existing.value };
+    }
+    const made: ScriptParamRef = {
+      name, caption: captionOf(name), value,
+      min: Math.min(1, value), max: Math.max(100, Math.ceil(value * 4)), step: 1, slots: [slot],
+    };
+    setScriptNamedParams([...list, made]);
+    return { value };
+  }, []);
 
   const uncommitted = useRef<ParamValues>({});
   const previewDocRef = useRef<ModelDoc | null>(null);
@@ -605,7 +761,7 @@ export default function ReshapeStudio({
     const picked = doc.features.filter((f) => selected.includes(f.id)).flatMap((f) => handlesFor(f, doc));
     const otherSketches = doc.features
       .filter((f): f is Feature & { kind: 'sketch' } =>
-        f.kind === 'sketch' && !selected.includes(f.id) && sketchIsUnconsumed(doc, f.id))
+        f.kind === 'sketch' && !selected.includes(f.id) && sketchDrawnByDefault(doc, f.id))
       .flatMap((f) => handlesFor(f, doc));
     // Piece B: one synthetic spec at the single selected feature's own
     // centre, so the context bar has an anchor even when the feature has
@@ -640,12 +796,36 @@ export default function ReshapeStudio({
         for (const slot of p.slots) bindings.set(slot, p);
       }
     }
+    // The script layer captions a slot with its own feature wording ("Pull 1
+    // height", "Bevel 1 cut"); the tree names the same feature Pad / Chamfer.
+    // One name per feature everywhere: swap the prefix, and say the slot in the
+    // property pane's words (Length, Size, ...).
+    const scriptNames = scriptNameMap(doc);
+    const treeNames = nameMap(doc);
+    const kindOf = new Map(doc.features.map((f) => [f.id, f.kind]));
+    const SLOT_WORDS: Record<string, Record<string, string>> = {
+      extrude: { height: 'Length' },
+      pocket: { deep: 'Length' },
+      fillet: { cut: 'Size', radius: 'Radius' },
+      revolve: { angle: 'Angle' },
+      groove: { angle: 'Angle' },
+    };
+    const treeCaption = (name: string, caption: string): string => {
+      const id = name.slice(0, name.lastIndexOf('_'));
+      const from = scriptNames[id];
+      const to = treeNames[id];
+      if (!from || !to || !caption.startsWith(`${from} `)) return caption;
+      const rest = caption.slice(from.length + 1);
+      const kind = kindOf.get(id);
+      const word = kind ? SLOT_WORDS[kind]?.[rest] : undefined;
+      return `${to} ${word ?? rest}`;
+    };
     return generatedParams(doc)
       .filter((p) => selected.some((id) => p.name.startsWith(`${id}_`)))
       .map((p): ParamDef => {
         const named = bindings.get(p.name);
         if (!named) {
-          return { name: p.name, caption: p.caption, initial: p.value, min: p.min, max: p.max, step: p.step };
+          return { name: p.name, caption: treeCaption(p.name, p.caption), initial: p.value, min: p.min, max: p.max, step: p.step };
         }
         const caption = named.caption !== named.name ? named.caption : capitalize(named.name);
         return { name: p.name, caption, initial: p.value, min: named.min, max: named.max, step: named.step };
@@ -676,7 +856,7 @@ export default function ReshapeStudio({
     const fallback = anchors.find((a) => a.param.startsWith(`${id}_`));
     return fallback ? { x: fallback.x, y: fallback.y } : null;
   }, [anchors, selected]);
-  const ctxRefusal = selected.length === 1 ? refusals?.get(selected[0]) ?? null : null;
+  const ctxRefusal = selected.length === 1 ? shownRefusals?.get(selected[0]) ?? null : null;
   // Up to three mono readouts off the SAME defs the Dimensions panel shows
   // (brepParamDefs already filters to the selection), mapped to short
   // student words -- the chip says "Depth 12" (or "⌀6"), not
@@ -690,11 +870,17 @@ export default function ReshapeStudio({
     };
     return brepParamDefs.slice(0, 3).map((p) => {
       const slot = p.name.slice(p.name.lastIndexOf('_') + 1);
-      const label = short[slot] ?? capitalize(slot);
+      // Pad / Pocket / Chamfer chips take the Dimensions panel's own word
+      // (Length, Size), so the bar and the panel never name one slot twice.
+      const own = nameMap(doc)[ctxFeature.id];
+      const cap = p.caption ?? '';
+      const panelWord = own && cap.startsWith(`${own} `) && ['extrude', 'pocket', 'fillet'].includes(ctxFeature.kind)
+        ? cap.slice(own.length + 1) : null;
+      const label = panelWord ?? short[slot] ?? capitalize(slot);
       const value = paramValues[p.name];
       return { label, value: typeof value === 'number' ? String(value) : String(p.initial) };
     });
-  }, [ctxFeature, brepParamDefs, paramValues]);
+  }, [ctxFeature, brepParamDefs, paramValues, doc]);
   // The action list is per feature kind, built inline in the mount below --
   // it reads ctxActions (state from ModelEditor) and focusParams, both of
   // which already gate themselves. Every registered verb is optional-chained:
@@ -702,7 +888,7 @@ export default function ReshapeStudio({
   // The one mount condition, shared with the Escape tier above via a ref:
   // Build side, one selected feature the rollback has not suppressed, the
   // bar not dismissed, and a screen anchor to float over.
-  const ctxBarVisible = build && !!ctxFeature && !ctxDismissed && !!ctxAnchor;
+  const ctxBarVisible = build && !!ctxFeature && !ctxDismissed && !!ctxAnchor && !padTask;
   ctxBarVisibleRef.current = ctxBarVisible;
   const ctxActionsList: ContextBarAction[] = useMemo(() => {
     if (!ctxFeature) return [];
@@ -723,6 +909,7 @@ export default function ReshapeStudio({
       if (hasActions) {
         out.push(
           { label: 'Pull', title: 'Pull the sketch straight up into a solid', onRun: () => ctxActionsRef.current?.pull() },
+          { label: 'Pocket', title: 'Cut the sketch down into the solid', onRun: () => ctxActionsRef.current?.pocket() },
           { label: 'Spin', title: 'Spin the sketch around to make a solid', onRun: () => ctxActionsRef.current?.spin() },
         );
       }
@@ -859,7 +1046,8 @@ export default function ReshapeStudio({
   const outlines = useMemo(
     () => {
       return doc.features
-        .filter((f): f is Feature & { kind: 'sketch' } => f.kind === 'sketch' && sketchIsUnconsumed(doc, f.id))
+        .filter((f): f is Feature & { kind: 'sketch' } =>
+          f.kind === 'sketch' && (visibility.get(f.id) ?? sketchDrawnByDefault(doc, f.id)))
         .map((f): SketchOutline => {
           const o = outlineOf(f);
           return {
@@ -872,7 +1060,7 @@ export default function ReshapeStudio({
           };
         });
     },
-    [doc]
+    [doc, visibility]
   );
 
   useEffect(() => {
@@ -1139,7 +1327,32 @@ export default function ReshapeStudio({
   // that state keeps ReshapePreview's own "write a script and click Run"
   // placeholder instead, in the branch below.
   const showBrepOnCode = !build && scriptDoc != null;
-  const shownDoc = showBrep ? (previewDoc ?? effectiveDoc) : (scriptDoc ?? EMPTY_DOC);
+  // The Pad / Pocket task panel's live preview: the same document with the
+  // feature swapped for the draft, handed to the kernel like any other.
+  // FreeCAD's two preview modes: the final result (the draft built into the
+  // model) and the overlay (the model as it stood, with the draft's own block
+  // drawn translucent over it). The overlay is only the block, so the part
+  // itself stays opaque; the features after the draft are held back while the
+  // panel is open, as the tip of a FreeCAD body is (pad-task-core's
+  // padDisplayDoc).
+  // Whatever is drawn, the draft is also CHECKED: built in place of its
+  // feature for the kernel's sentence (draftCheckDoc). The overlay's block is a
+  // free-standing pad, so a doc of the overlay alone never refuses the draft --
+  // which is how a pocket that misses the part used to pass OK.
+  const padCheckDoc = useMemo<ModelDoc | null>(
+    () => (build && padTask && padPreview.check ? draftCheckDoc(effectiveDoc, padTask.id, padPreview.check) : null),
+    [build, padTask, padPreview.check, effectiveDoc],
+  );
+  const padDraft = useMemo<{ doc: ModelDoc; toolId: string | null } | null>(
+    () => (build && padTask ? padDisplayDoc(effectiveDoc, padTask.id, padPreview, padCheckDoc) : null),
+    [build, padTask, padPreview, effectiveDoc, padCheckDoc],
+  );
+  const padCheck = useMemo(
+    () => (padTask ? draftCheckOf(padPreview.check, padCheckDoc, padCheckRun) : null),
+    [padTask, padPreview.check, padCheckDoc, padCheckRun],
+  );
+  const padDraftDoc = padDraft?.doc ?? null;
+  const shownDoc = showBrep ? (previewDoc ?? padDraftDoc ?? effectiveDoc) : (scriptDoc ?? EMPTY_DOC);
   // reSHape Script's format is round-trippable -- toScript()'s output can be
   // re-run to recover `doc` from text, which is what makes the shadow iframe
   // below work at all. Needed whenever the VISIBLE pane is a BrepViewport
@@ -1168,17 +1381,17 @@ export default function ReshapeStudio({
       if (scriptErrorMessage) {
         return { severity: 'conflict', text: scriptErrorMessage, source: 'script' };
       }
-      const first = refusals instanceof Map && refusals.size > 0
-        ? refusals.entries().next().value
+      const first = shownRefusals instanceof Map && shownRefusals.size > 0
+        ? shownRefusals.entries().next().value
         : undefined;
       return first
-        ? { severity: 'conflict', text: first[1], source: first[0] }
+        ? { severity: 'conflict', text: first[1], source: nameMap(doc)[first[0]] ?? first[0] }
         : { severity: 'conflict', text: 'Build failed -- the last version that worked is on screen.' };
     }
-    if (refusals instanceof Map && refusals.size > 0) {
-      const entry = refusals.entries().next().value;
+    if (shownRefusals instanceof Map && shownRefusals.size > 0) {
+      const entry = shownRefusals.entries().next().value;
       return entry
-        ? { severity: 'conflict', text: entry[1], source: entry[0] }
+        ? { severity: 'conflict', text: entry[1], source: nameMap(doc)[entry[0]] ?? entry[0] }
         : null;
     }
     if (scriptErrorMessage) {
@@ -1196,7 +1409,7 @@ export default function ReshapeStudio({
       return { severity: 'status', text: `rebuilt in ${rebuildMs} ms` };
     }
     return null;
-  }, [stale, refusals, scriptErrorMessage, rebuildMs, build]);
+  }, [stale, shownRefusals, doc, scriptErrorMessage, rebuildMs, build]);
 
   return (
           <div
@@ -1251,7 +1464,7 @@ export default function ReshapeStudio({
         {build && (
           <div className="reshape-studio-left">
             <div className="reshape-studio-tools">
-              <div className="reshape-studio-tools-kicker">Browser</div>
+              <div className="reshape-studio-tools-kicker">Model</div>
               <ModelEditor
               doc={doc}
               onChange={applyDoc}
@@ -1260,6 +1473,10 @@ export default function ReshapeStudio({
               onSelectionChange={setSelection}
               rollbackIndex={rollbackIndex}
               onRollback={setRollbackIndex}
+              suppressed={suppressed}
+              onToggleSuppressed={toggleSuppressed}
+              visibility={visibility}
+              onSetVisible={setVisible}
               registerContextActions={(a) => { const had = ctxActionsRef.current != null; const has = a != null; ctxActionsRef.current = a; if (had !== has) setCtxActions(has); }}
               onUndo={undo}
               onRedo={redo}
@@ -1268,7 +1485,7 @@ export default function ReshapeStudio({
               historyGen={historyGen}
               collapsible
               onCollapsed={setToolsHidden}
-              refusals={refusals}
+              refusals={shownRefusals}
               hasMesh={hasMesh}
               onExportSTL={exportSTL}
               onExportOBJ={exportOBJ}
@@ -1281,6 +1498,12 @@ export default function ReshapeStudio({
               onOpenSketch2D={setSketchEditId}
               onExitSketch2D={() => setSketchEditId(null)}
               onEditFeature={editFeature}
+              propertyBinding={{
+                boundTo: (slot) => scriptNamedParams?.find((p) => p.slots.includes(slot))?.name,
+                known: (scriptNamedParams ?? []).map((p) => p.name),
+                onBind: padBind,
+                locked: !!padTask,
+              }}
             />
             </div>
           </div>
@@ -1357,6 +1580,7 @@ export default function ReshapeStudio({
             {!sketchEditId && (showBrep || showBrepOnCode) ? (
               <BrepViewport
                 doc={shownDoc}
+                visibility={visibility}
                 ruleActivityAt={ruleActivityAt}
                 onStats={(st: BrepViewportStats) => {
                   const total = st.buildMs + st.meshMs + st.drawMs;
@@ -1365,8 +1589,22 @@ export default function ReshapeStudio({
                     setPreviewDoc(null);
                   }
                   setRebuildMs(Math.round(total));
-                  setStale(st.triangles > 0 || isSketchOnly(shownDoc) ? null : 'empty');
-                  if (!refusalsUnchanged(refusals, st.refusals)) setRefusals(st.refusals);
+                  // 'empty' unless something was drawn, the doc is only
+                  // sketches, or the eyes hid every shape that DID build: an
+                  // eye toggled somewhere else no longer hides an empty build.
+                  setStale(emptyAfterBuild(st, isSketchOnly(shownDoc)));
+                  // A build of the Pad / Pocket panel's preview is not the
+                  // model: its refusals stay out of the studio's (the panel
+                  // gets its draft's own sentence from the check, onCheck).
+                  const kept = refusalsAfterBuild(refusals, st.refusals, padDraftDoc != null && shownDoc === padDraftDoc);
+                  if (!refusalsUnchanged(refusals, kept)) setRefusals(kept);
+                  // A face/edge pick whose name resolved on the last build and
+                  // not on this one is gone, though a re-run kept its feature's
+                  // id. Only on a build of the model itself, not a preview.
+                  const lost = st.nameLost;
+                  if (lost && showBrep && shownDoc === effectiveDoc) {
+                    setSelection((s) => dropStalePicks(s, () => true, (i) => lost(i.target, i.kind as 'face' | 'edge', i.name)));
+                  }
                   // The same measurement Home/fit already computes, lifted so
                   // the status bar can show the model's own mm extents.
                   setBboxMm(st.dimsMm ?? null);
@@ -1455,6 +1693,7 @@ export default function ReshapeStudio({
                 selectedCount={showBrep ? selected.length : 0}
                 selectionLabel={showBrep ? selectionLabel : null}
                 sketchPlane={activeSketchPlane}
+                selectedFeatureIds={showBrep && !primaryPick ? selected : []}
                 selectedDatumIds={selected.filter((id) => doc.features.some((f) => f.id === id && f.kind === 'datum'))}
                 onDatumPick={showBrep ? (id, m) => setSelection((prev) => {
                   // The same state change a timeline row makes: a plain click
@@ -1479,7 +1718,19 @@ export default function ReshapeStudio({
                 // selected feature's op colour; pointerup commits and drops it.
                 preview={showBrep && previewDoc != null && ctxFeature
                   ? { active: true, tint: previewTint(ctxFeature.kind) ?? 'add' }
-                  : null}
+                  : showBrep && padDraft?.toolId && padFeature
+                    ? { active: true, tint: padFeature.kind === 'pocket' ? 'cut' : 'add', featureIds: [padDraft.toolId] }
+                    : null}
+                previewArrow={showBrep && padTask && padFeature ? padPreview.arrow : null}
+                draftPreview={!!(padTask && padFeature)}
+                checkDoc={padCheckDoc}
+                onCheck={(r) => {
+                  if (!padTask) return;
+                  const run = draftCheckRun(r.doc, padTask.id, r.refusals, r.error);
+                  // The sentence is filed under the feature the student is
+                  // editing; its ids read as the tree's names, as every other.
+                  setPadCheckRun(run && { ...run, refusal: run.refusal && humanizeIds(run.refusal, nameMap(docRef.current)) });
+                }}
                 filters={selection.filters}
                 onFiltersChange={(next) => setSelection((s) => ({ ...s, filters: next }))}
                 onBoxSelect={showBrep ? (items, shiftKey) => {
@@ -1605,7 +1856,7 @@ export default function ReshapeStudio({
                 onTap={(x, y) => pickAtRef.current?.(x, y)}
                 outlineAnchors={anchors}
                 bottomInset={0}
-                manipulator={build && ctxFeature && selected.length === 1
+                manipulator={build && ctxFeature && selected.length === 1 && !padTask
                   ? {
                       feature: ctxFeature,
                       doc: effectiveDoc,
@@ -1648,7 +1899,35 @@ export default function ReshapeStudio({
             )}
           </div>
           {(runKey > 0 || build) && (
-            <aside className="reshape-pane-params" ref={flashParamsRef}>
+            <aside className={'reshape-pane-params' + ((padTask && padFeature && build) || sketchEditId ? ' is-task' : '')} ref={flashParamsRef}>
+              {/* The sketch task panel docks here: SketchCanvas2D portals its
+                  solver message, Constraints and Elements lists into this
+                  host while a sketch is open. */}
+              {sketchEditId && <div id="reshapeSketchTask" className="reshape-sketch-task-host" />}
+              {padTask && padFeature && build ? (
+                <PadTaskPanel
+                  key={padTask.id}
+                  feature={padFeature}
+                  isNew={padTask.isNew}
+                  doc={doc}
+                  title={nameMap(doc)[padFeature.id] ?? padFeature.id}
+                  check={padCheck}
+                  face={primaryPick && primaryPick.kind === 'face' && primaryPick.name
+                    ? {
+                        target: primaryPick.target,
+                        name: primaryPick.name,
+                        label: `${nameMap(doc)[ownerOf(doc, { target: primaryPick.target, name: primaryPick.name ?? null }) ?? primaryPick.target] ?? primaryPick.target} \u00b7 ${partWordFor(primaryPick.name) ?? (primaryPick.name.cause === 'cap' ? `${primaryPick.name.end} face` : 'face')}`,
+                      }
+                    : null}
+                  boundTo={(slot) => scriptNamedParams?.find((p) => p.slots.includes(slot))?.name}
+                  knownParams={(scriptNamedParams ?? []).map((p) => p.name)}
+                  stepIds={doc.features.map((x) => x.id)}
+                  onBind={padBind}
+                  onPreview={setPadPreview}
+                  onOk={padOk}
+                  onCancel={padCancel}
+                />
+              ) : sketchEditId ? null : (
               <ReshapeParamsPanel
                 defs={brepParamDefs}
                 emptyMessage={build
@@ -1659,7 +1938,7 @@ export default function ReshapeStudio({
                 notice={
                   !build && scriptErrorMessage
                     ? scriptErrorMessage
-                    : selected.length === 1 ? refusals?.get(selected[0]) ?? null : null
+                    : selected.length === 1 ? shownRefusals?.get(selected[0]) ?? null : null
                 }
                 values={paramValues}
                 onChange={sendParams}
@@ -1667,6 +1946,7 @@ export default function ReshapeStudio({
                 lastMs={rebuildMs}
                 stale={stale}
               />
+              )}
             </aside>
           )}
         </div>
@@ -1921,7 +2201,12 @@ export default function ReshapeStudio({
           flex: 1 1 auto;
           min-height: 0;
           overflow-y: auto;
+          /* The editor takes what is left under the kicker; at height: 100% it
+             ran a kicker's height past the panel and clipped its last row. */
+          display: flex;
+          flex-direction: column;
         }
+        .reshape-studio-tools > .model-editor { flex: 1 1 0; height: auto; min-height: 0; }
         .reshape-studio-tools-kicker {
           flex: 0 0 auto;
           padding: 6px 10px;
@@ -2019,6 +2304,9 @@ export default function ReshapeStudio({
            border flash saying "the numbers are HERE". Added and removed by
            focusParams() in this file; a transition, not an animation, so it
            fades in on add and out on remove with no keyframes needed. */
+        .reshape-pane-params.is-task { flex-basis: 300px; }
+        .reshape-sketch-task-host { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+        .reshape-sketch-task-host:empty { display: none; }
         .reshape-pane-params.reshape-params-flash {
           border-left: 2px solid var(--reshape-accent);
           transition: border-color 150ms ease-in;

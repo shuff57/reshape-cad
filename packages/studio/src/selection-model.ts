@@ -60,6 +60,7 @@
 import type { ModelDoc } from '@shuff57/reshape-script/model-types';
 import { ownerOf } from '@shuff57/reshape-script/model-selection';
 import type { TopoName } from '@shuff57/reshape-script/topo-name';
+import type { EngineAdapter, EngineBuildResult } from '@shuff57/reshape-brep-adapter/engine-adapter';
 
 /** Which of a shape's parts -- or which higher-level thing -- a selection
  *  entry names. Only 'feature' (ModelEditor's chip/timeline picks) and
@@ -238,6 +239,66 @@ export function verticesOf(state: SelectionState): SelectionItem[] {
 /** Every body-kind item, in item order. */
 export function bodiesOf(state: SelectionState): SelectionItem[] {
   return state.items.filter((item) => item.kind === 'body');
+}
+
+/** The selection with every viewport pick (face, edge, vertex, body) that no
+ *  longer points at anything taken out, items and `primary` alike: one whose
+ *  owning feature `has` says is gone, and -- given `lost` -- a NAMED face or edge
+ *  pick `lost` says no longer resolves on the new build. The second matters
+ *  because a script re-run reuses feature ids: the owning feature can still be
+ *  there while the face it named is not. Feature items are the caller's (the
+ *  studio's withFeatureIds keeps their order), so they are left alone. Returns
+ *  the SAME state object when nothing is dropped, so a prune effect stays a
+ *  no-op. */
+export function dropStalePicks(
+  state: SelectionState,
+  has: (featureId: string) => boolean,
+  lost?: (item: SelectionItem & { name: TopoName }) => boolean,
+): SelectionState {
+  // `lost` asks the kernel, so each item is asked once (`primary` is usually one of `items`)
+  const asked = new Map<SelectionItem, boolean>();
+  const stale = (i: SelectionItem | null): boolean => {
+    if (!i || i.kind === 'feature') return false;
+    if (!has(i.target)) return true;
+    if (!lost || (i.kind !== 'face' && i.kind !== 'edge') || i.name == null) return false;
+    if (!asked.has(i)) asked.set(i, lost(i as SelectionItem & { name: TopoName }));
+    return asked.get(i)!;
+  };
+  if (!state.items.some(stale) && !stale(state.primary)) return state;
+  return {
+    ...state,
+    items: state.items.filter((i) => !stale(i)),
+    primary: stale(state.primary) ? null : state.primary,
+  };
+}
+
+/**
+ * The kernel's half of dropStalePicks' `lost`, between the build a pick was
+ * held across (`before`) and the new one (`after`): a face/edge name is lost
+ * when it resolved on `before` and does not on `after`, its owning shape built
+ * both times. "Does not resolve now" alone is not enough -- the kernel hands
+ * out names it cannot resolve back yet (on a shell, for one), and those picks
+ * must not vanish at the next edit -- and a shape switched off (suppressed,
+ * past the rollback bar) says nothing about its faces. A resolver that throws
+ * cannot tell, which never drops anything.
+ */
+export function nameLostBetween(
+  engine: Pick<EngineAdapter, 'resolveFace' | 'resolveEdge'>,
+  before: EngineBuildResult | null,
+  after: EngineBuildResult,
+): (target: string, kind: 'face' | 'edge', name: TopoName) => boolean {
+  return (target, kind, name) => {
+    if (!before || before === after) return false;
+    if (!after.shapes.get(target) || !before.shapes.get(target)) return false;
+    const resolves = (b: EngineBuildResult): boolean | null => {
+      try {
+        return (kind === 'face' ? engine.resolveFace(name, b) : engine.resolveEdge(name, b)) != null;
+      } catch {
+        return null;
+      }
+    };
+    return resolves(after) === false && resolves(before) === true;
+  };
 }
 
 /** Every item that belongs to `ownerId`, via the real ownerOf() -- replaces

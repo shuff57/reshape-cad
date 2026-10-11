@@ -483,6 +483,293 @@ export function dofBadge(
   return { cls: 'sk-dof-warn', text: `${d.dof} free to move` };
 }
 
+/** The slice of SketchSession2D the freedom probe needs. */
+export interface ProbeSolver extends SoupSolver {
+  diagnose(): { dof: number; bucket: string; blame: number[] } | null;
+}
+
+/** The task panel's solver message, split into a headline and a detail so the
+ *  panel can colour one and link the other. `ids` are 1-BASED constraint
+ *  numbers (the number each row wears in the Constraints list), taken from the
+ *  kernel's blame, which indexes the rule array. */
+export interface SolverMessage {
+  tone: 'ok' | 'warn' | 'bad' | 'info';
+  state: 'empty' | 'under' | 'full' | 'over' | 'redundant' | 'infeasible';
+  label: string;
+  detail: string;
+  ids: number[];
+}
+
+export function solverMessage(
+  d: { dof: number; bucket: string; blame?: number[] } | null | undefined,
+  geomCount: number,
+): SolverMessage {
+  if (!geomCount) return { tone: 'info', state: 'empty', label: 'Empty sketch', detail: 'draw something to begin', ids: [] };
+  if (!d) return { tone: 'info', state: 'empty', label: 'Solving', detail: '', ids: [] };
+  const ids = (d.blame ?? []).map((i) => i + 1).sort((a, b) => a - b);
+  if (d.bucket === 'conflicting') return { tone: 'bad', state: 'over', label: 'Over-constrained', detail: '', ids };
+  if (d.bucket === 'globallyInfeasible' || d.bucket === 'error') {
+    return { tone: 'bad', state: 'infeasible', label: 'Cannot be solved', detail: '', ids };
+  }
+  if (d.bucket === 'redundant') {
+    const left = d.dof === 0 ? 'still fixed' : `${d.dof} DoF left`;
+    return { tone: 'warn', state: 'redundant', label: 'Redundant constraints', detail: left, ids };
+  }
+  if (d.dof === 0) return { tone: 'ok', state: 'full', label: 'Fully constrained', detail: 'nothing can move', ids: [] };
+  return {
+    tone: 'warn',
+    state: 'under',
+    label: 'Under-constrained',
+    detail: `${d.dof} degree${d.dof === 1 ? '' : 's'} of freedom`,
+    ids: [],
+  };
+}
+
+/** Command names, the way the sketcher's own toolbar calls them. */
+export function ruleName(k: string): string {
+  switch (k) {
+    case 'coincident': return 'Coincident';
+    case 'pointOnObject': return 'Point on object';
+    case 'horizontal': return 'Horizontal';
+    case 'vertical': return 'Vertical';
+    case 'parallel': return 'Parallel';
+    case 'perpendicular': return 'Perpendicular';
+    case 'tangent': return 'Tangent';
+    case 'equal': return 'Equal';
+    case 'symmetric': return 'Symmetric';
+    case 'distance': return 'Distance';
+    case 'distanceX': return 'Horizontal distance';
+    case 'distanceY': return 'Vertical distance';
+    case 'radius': return 'Radius';
+    case 'diameter': return 'Diameter';
+    case 'angle': return 'Angle';
+    case 'lock': return 'Lock';
+    default: return k;
+  }
+}
+
+export function geomName(k: string): string {
+  return k === 'line' ? 'Line' : k === 'circle' ? 'Circle' : k === 'arc' ? 'Arc' : k === 'point' ? 'Point' : k;
+}
+
+/** Which geometry rows are FULLY constrained: nothing about them can still
+ *  move. Measured, not guessed: pin every named point of a row (and a circle's
+ *  radius) with extra lock rules and ask the kernel again. A row that was
+ *  already determined makes those rules redundant and the freedom count does
+ *  not drop; a row with any free number loses at least one degree. Nothing is
+ *  coloured when the sketch has no consistent solution to measure against. */
+export function fullyConstrainedIds(
+  session: ProbeSolver,
+  geoms: CoreGeom[],
+  rules: unknown[],
+  base: { dof: number; bucket: string } | null,
+): Set<number> {
+  const out = new Set<number>();
+  if (!base || base.bucket === 'conflicting' || base.bucket === 'globallyInfeasible' || base.bucket === 'error') return out;
+  if (base.dof === 0) {
+    for (const g of geoms) out.add(g.id);
+    return out;
+  }
+  for (const g of geoms) {
+    const pins: Array<Record<string, unknown>> = [];
+    const lock = (at: 'a' | 'b' | 'c') => pins.push({ k: 'lock', a: g.id, aEnd: at });
+    if (g.k === 'point') lock('a');
+    else if (g.k === 'line') { lock('a'); lock('b'); }
+    else if (g.k === 'circle') { lock('c'); pins.push({ k: 'radius', a: g.id, value: g.r }); }
+    else if (g.k === 'arc') { lock('a'); lock('b'); lock('c'); }
+    else continue;
+    try {
+      if (session.open(geoms as any[], [...(rules as any[]), ...pins])) continue;
+      if (!session.solve()) continue;
+      const d = session.diagnose();
+      if (d && d.dof >= base.dof) out.add(g.id);
+    } catch {
+      // a probe that cannot run leaves the row uncoloured, never wrongly green
+    }
+  }
+  return out;
+}
+
+/** The drawn parts of one dimension: the lines (extension + dimension line),
+ *  the arrowheads (tip and the unit direction the head points), and where its
+ *  number sits. World units, y up -- the caller applies the file-wide flip.
+ *
+ *  `label` is where the user dropped the number (null = never placed) and
+ *  `off` the default distance of the dimension line from the geometry, in
+ *  world units. A placed label wins: the line is drawn THROUGH it, so moving
+ *  the number moves the line, as in every CAD sketcher. */
+export interface DimensionArt {
+  lines: Array<[Pt, Pt]>;
+  arrows: Array<{ tip: Pt; dir: Pt }>;
+  label: Pt;
+}
+
+/** The origin as a row, for rules that name the built-in id -1. */
+const ORIGIN_POINT = { k: 'point', id: -1, p: [0, 0] } as unknown as CoreGeom;
+
+export function dimensionArt(
+  geoms: CoreGeom[],
+  r: Record<string, any>,
+  label: Pt | null,
+  off: number,
+  centroid: Pt,
+): DimensionArt | null {
+  // The kernel's built-in -1 is the origin: a Lock's X/Y pair measures from it.
+  const find = (id: unknown) =>
+    typeof id === 'number' ? (id === -1 ? ORIGIN_POINT : geoms.find((g) => g.id === id)) : undefined;
+  const dot = (p: Pt, q: Pt) => p.x * q.x + p.y * q.y;
+  if (r.k === 'distance' || r.k === 'distanceX' || r.k === 'distanceY') {
+    const ga = find(r.a);
+    const gb = find(r.b) ?? ga;
+    if (!ga || !gb) return null;
+    const p = r.aEnd ? pointWorld(ga, r.aEnd) : geomMidpoint(ga);
+    const q = r.bEnd ? pointWorld(gb, r.bEnd) : geomMidpoint(gb);
+    if (!p || !q) return null;
+    let u: Pt;
+    let n: Pt;
+    if (r.k === 'distanceX') { u = { x: 1, y: 0 }; n = { x: 0, y: 1 }; }
+    else if (r.k === 'distanceY') { u = { x: 0, y: 1 }; n = { x: -1, y: 0 }; }
+    else {
+      const len = Math.hypot(q.x - p.x, q.y - p.y);
+      if (!(len > 1e-9)) return null;
+      u = { x: (q.x - p.x) / len, y: (q.y - p.y) / len };
+      n = { x: -u.y, y: u.x };
+    }
+    const mid = { x: (p.x + q.x) / 2, y: (p.y + q.y) / 2 };
+    let level: number; // coordinate of the dimension line along n
+    if (label) level = dot(label, n);
+    else {
+      const away = dot({ x: mid.x - centroid.x, y: mid.y - centroid.y }, n);
+      const sgn = away < 0 ? -1 : 1;
+      const edge = sgn > 0 ? Math.max(dot(p, n), dot(q, n)) : Math.min(dot(p, n), dot(q, n));
+      level = edge + sgn * off;
+    }
+    const P = { x: p.x + n.x * (level - dot(p, n)), y: p.y + n.y * (level - dot(p, n)) };
+    const Q = { x: q.x + n.x * (level - dot(q, n)), y: q.y + n.y * (level - dot(q, n)) };
+    const sp = dot(p, u);
+    const sq = dot(q, u);
+    const lo = sp <= sq ? P : Q;
+    const hi = sp <= sq ? Q : P;
+    const dirHi = { x: u.x, y: u.y };
+    const dirLo = { x: -u.x, y: -u.y };
+    const lines: Array<[Pt, Pt]> = [];
+    // Extension lines run a little PAST the dimension line, towards it.
+    const past = Math.min(off * 0.25, 4);
+    for (const [pt, P2] of [[p, P], [q, Q]] as Array<[Pt, Pt]>) {
+      const d2 = Math.hypot(P2.x - pt.x, P2.y - pt.y);
+      if (d2 > 1e-9) {
+        const e = { x: (P2.x - pt.x) / d2, y: (P2.y - pt.y) / d2 };
+        lines.push([pt, { x: P2.x + e.x * past, y: P2.y + e.y * past }]);
+      }
+    }
+    const along = label ? dot(label, u) : (sp + sq) / 2;
+    const lab = { x: u.x * along + n.x * level, y: u.y * along + n.y * level };
+    // A zero-length measurement (a point level with the origin) has no
+    // dimension line to draw: the extension line and the number remain, so
+    // the 0 sits beside the point instead of floating at a midpoint.
+    if (Math.hypot(hi.x - lo.x, hi.y - lo.y) < 1e-9) return { lines, arrows: [], label: lab };
+    lines.push([lo, hi]);
+    return { lines, arrows: [{ tip: lo, dir: dirLo }, { tip: hi, dir: dirHi }], label: lab };
+  }
+  if (r.k === 'radius' || r.k === 'diameter') {
+    const g = find(r.a);
+    if (!g || (g.k !== 'circle' && g.k !== 'arc')) return null;
+    const c = { x: g.c[0], y: g.c[1] };
+    let th = Math.PI / 4;
+    if (label) {
+      const dx = label.x - c.x;
+      const dy = label.y - c.y;
+      if (Math.hypot(dx, dy) > 1e-9) th = Math.atan2(dy, dx);
+    }
+    const dir = { x: Math.cos(th), y: Math.sin(th) };
+    const E = { x: c.x + g.r * dir.x, y: c.y + g.r * dir.y };
+    if (r.k === 'radius') {
+      const lab = label ?? { x: c.x + (g.r + off) * dir.x, y: c.y + (g.r + off) * dir.y };
+      const far = Math.max(g.r, Math.hypot(lab.x - c.x, lab.y - c.y));
+      return {
+        lines: [[c, { x: c.x + far * dir.x, y: c.y + far * dir.y }]],
+        arrows: [{ tip: E, dir }],
+        label: lab,
+      };
+    }
+    const E2 = { x: c.x - g.r * dir.x, y: c.y - g.r * dir.y };
+    const lab = label ?? { x: c.x + (g.r + off) * dir.x, y: c.y + (g.r + off) * dir.y };
+    const far = Math.max(g.r, Math.hypot(lab.x - c.x, lab.y - c.y));
+    return {
+      lines: [[E2, { x: c.x + far * dir.x, y: c.y + far * dir.y }]],
+      arrows: [{ tip: E, dir }, { tip: E2, dir: { x: -dir.x, y: -dir.y } }],
+      label: lab,
+    };
+  }
+  if (r.k === 'angle') {
+    // Two lines meeting (or extending to meet) at a vertex: an arc between
+    // them, an arrowhead at each end, the number beside the arc's middle.
+    const la = find(r.a);
+    const lb = find(r.b);
+    if (!la || !lb || la.k !== 'line' || lb.k !== 'line' || la.id === lb.id) return null;
+    const pa = { x: la.a[0], y: la.a[1] };
+    const da = { x: la.b[0] - la.a[0], y: la.b[1] - la.a[1] };
+    const pb = { x: lb.a[0], y: lb.a[1] };
+    const db = { x: lb.b[0] - lb.a[0], y: lb.b[1] - lb.a[1] };
+    const den = da.x * db.y - da.y * db.x;
+    if (Math.abs(den) < 1e-12) return null; // parallel: no vertex to hang an arc on
+    const t = ((pb.x - pa.x) * db.y - (pb.y - pa.y) * db.x) / den;
+    const v = { x: pa.x + da.x * t, y: pa.y + da.y * t };
+    // Four sectors meet at the vertex. Pick the one whose size is closest to
+    // the rule's own value, so the arc spans what the number says.
+    const want = (Number(r.value) * Math.PI) / 180;
+    const ang = (d: Pt) => Math.atan2(d.y, d.x);
+    const base = [ang(da), ang(da) + Math.PI];
+    const other = [ang(db), ang(db) + Math.PI];
+    let best: { a0: number; sweep: number; err: number } | null = null;
+    for (const a0 of base) {
+      for (const a1 of other) {
+        let sw = a1 - a0;
+        sw = ((sw % (2 * Math.PI)) + 3 * Math.PI) % (2 * Math.PI) - Math.PI; // (-pi, pi]
+        const err = Math.abs(Math.abs(sw) - (Number.isFinite(want) ? want : Math.PI / 2));
+        if (!best || err < best.err - 1e-9) best = { a0, sweep: sw, err };
+      }
+    }
+    if (!best || Math.abs(best.sweep) < 1e-6) return null;
+    const lenA = Math.hypot(da.x, da.y);
+    const lenB = Math.hypot(db.x, db.y);
+    const mid = best.a0 + best.sweep / 2;
+    let rad = Math.max(off * 2.5, Math.min(lenA, lenB) * 0.3);
+    if (label) {
+      const d = Math.hypot(label.x - v.x, label.y - v.y);
+      if (d > 1e-9) rad = d;
+    }
+    const at = (th: number, rr: number): Pt => ({ x: v.x + rr * Math.cos(th), y: v.y + rr * Math.sin(th) });
+    const steps = Math.max(6, Math.ceil((Math.abs(best.sweep) * 180) / Math.PI / 6));
+    const lines: Array<[Pt, Pt]> = [];
+    for (let k = 0; k < steps; k += 1) {
+      lines.push([at(best.a0 + (best.sweep * k) / steps, rad), at(best.a0 + (best.sweep * (k + 1)) / steps, rad)]);
+    }
+    // The arrowheads sit on the arc's ends and point along the arc, outward.
+    const s0 = Math.sign(best.sweep) || 1;
+    const tan = (th: number, sgn: number): Pt => ({ x: -Math.sin(th) * sgn, y: Math.cos(th) * sgn });
+    const th1 = best.a0 + best.sweep;
+    // Extension lines: from the vertex out past the arc, along each side.
+    const reach = rad + Math.min(off * 0.5, 4);
+    const sides: Array<[number, CoreGeom]> = [[best.a0, la], [th1, lb]];
+    for (const [th, g] of sides) {
+      const u = { x: Math.cos(th), y: Math.sin(th) };
+      let tmax = 0;
+      for (const e of [g.a, g.b] as number[][]) tmax = Math.max(tmax, (e[0] - v.x) * u.x + (e[1] - v.y) * u.y);
+      if (tmax < reach - 1e-9) lines.push([at(th, tmax), at(th, reach)]);
+    }
+    return {
+      lines,
+      arrows: [
+        { tip: at(best.a0, rad), dir: tan(best.a0, -s0) },
+        { tip: at(th1, rad), dir: tan(th1, s0) },
+      ],
+      label: label ?? at(mid, rad + off),
+    };
+  }
+  return null;
+}
+
 /** The rows the doc should STORE: the rule-satisfying (solved) state.
  *
  *  model-types.ts says a sketch's `geoms` are the SOLVED coordinates, but a
@@ -1383,7 +1670,7 @@ function ruleAnchor(geoms: CoreGeom[], r: Record<string, any>): Pt | null {
   for (const [idField, endField] of RULE_REF_FIELDS) {
     const id = r[idField];
     if (typeof id !== 'number') continue;
-    const g = geoms.find((x) => x.id === id);
+    const g = id === -1 ? ORIGIN_POINT : geoms.find((x) => x.id === id);
     if (!g) return null;
     const at = r[endField];
     const p = at === 'a' || at === 'b' || at === 'c' ? pointWorld(g, at) : geomMidpoint(g);

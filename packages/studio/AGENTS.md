@@ -8,6 +8,7 @@ React UI library extracted from shCode's SandboxWorkspace: Build tools + kernel 
 |------|------|-------|
 | Top-level shell / Build+Code contract | src/ReshapeStudio.tsx | `value`/`onChange` IS `script.js`'s text; on mount it re-runs `value` through the sandboxed runner once to rebuild `doc` |
 | Build-side editor | src/model/ModelEditor.tsx | Ribbon, feature tree, rules panel; the feature list IS the timeline (horizontal strip, `TIMELINE_HEIGHT_PX`) |
+| Model tree (left panel) | src/model/ModelTree.tsx, src/model/model-tree-core.ts | Core is pure (labels, nesting, tip/suppressed/invalid states, `withoutSuppressed`); suppress and the eyes are view state in ReshapeStudio like `rollbackIndex`, never written to the doc |
 | Viewport + kernel loading | src/model/BrepViewportThree.tsx | ~2700 lines; loads three.js AND the `EngineAdapter` via dynamic `import()`. There is one kernel and it is never swapped mid-session |
 | 2D overlay / drag handles | src/model/HandleOverlay.tsx | `projectOutline()`; fillet points project through the basis corner's anchor |
 | Constraint writers | src/model/SketchConstraints.tsx | `setPointRule`, `setSymmetric`, `setAngle`, `removeRule`; the four kinds the solver honours |

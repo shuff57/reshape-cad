@@ -48,6 +48,9 @@ export default function ValueBox({
   // Autofocus selects the current text, so the first keystroke replaces it --
   // "type over it is the edit", the behaviour both callers relied on.
   useEffect(() => {
+    // A chip that appears because the student arrowed through the model tree
+    // must not take the keyboard off the tree.
+    if (document.activeElement?.closest('[role="tree"]')) return;
     ref.current?.focus();
     ref.current?.select();
   }, []);

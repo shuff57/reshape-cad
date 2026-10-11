@@ -104,7 +104,11 @@ import {
   mirrorSelection,
   copySelection,
   densifyIds,
-  dofBadge,
+  solverMessage,
+  ruleName,
+  geomName,
+  fullyConstrainedIds,
+  dimensionArt,
   type AutoDimension,
   type CoreGeom,
   type DimKind,
@@ -179,6 +183,8 @@ const RULE_GLYPH_STEP_PX = 15;
  *  glyph loop for why a mark sitting exactly on its own geometry is not a
  *  mark at all. */
 const GLYPH_NUDGE_PX = 9;
+/** Default distance of a dimension line from what it measures. */
+const DIM_OFFSET_PX = 42;
 /** Grid: the smallest 1-2-5 step whose spacing is at least this many screen
  *  pixels, and a ceiling on how many lines one frame may draw. */
 const GRID_MIN_PX = 9;
@@ -233,6 +239,11 @@ const TOOL_CURSOR: Record<Tool, string> = {
  *  in front of a user who asked for 40. */
 function formatDim(v: number): string {
   return String(Math.round(v * 1e4) / 1e4);
+}
+
+/** The unit a dimension label carries beside its number. */
+function dimUnit(kind: string): string {
+  return kind === 'angle' ? '\u00b0' : ' mm';
 }
 
 interface Props {
@@ -322,6 +333,42 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
   // with glyphs hidden shows ONLY its constraints). Default on = glyphs
   // always shown, today's behaviour.
   const [showConstraints, setShowConstraints] = useState(true);
+  // Task panel list state: which constraint / element rows are hidden from the
+  // canvas (the per-row checkbox), the constraints filter, and a counter the
+  // Refresh button bumps to force a fresh solve of the same rows.
+  const [hiddenRules, setHiddenRules] = useState<Set<number>>(() => new Set());
+  const [hiddenGeoms, setHiddenGeoms] = useState<Set<number>>(() => new Set());
+  const [ruleFilter, setRuleFilter] = useState<'all' | 'dimensional' | 'geometric' | 'problems'>('all');
+  const [solveTick, setSolveTick] = useState(0);
+  // The solver settings menu (FreeCAD's gear beside the solver message).
+  // Auto update off = edits are written but the sketch is only solved again
+  // on Refresh; auto remove redundants drops the newest constraint the
+  // solver names redundant; show coincident draws the weld marks at corners.
+  const [autoUpdate, setAutoUpdate] = useState(true);
+  const [autoRemoveRedundant, setAutoRemoveRedundant] = useState(false);
+  const [showCoincident, setShowCoincident] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  // Reference (driven) dimensions: measured, drawn, never solved. View state
+  // like labelAt -- a reference is a readout, so it has no row in the doc.
+  const [refMode, setRefMode] = useState(false);
+  const [refDims, setRefDims] = useState<Array<Record<string, any>>>([]);
+  // Escape closes the solver menu even while one of its checkboxes holds focus
+  // (the sketch's own key handler stands down inside form fields).
+  useEffect(() => {
+    if (!settingsOpen) return;
+    const onEsc = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return;
+      e.stopPropagation();
+      setSettingsOpen(false);
+    };
+    document.addEventListener('keydown', onEsc, true);
+    return () => document.removeEventListener('keydown', onEsc, true);
+  }, [settingsOpen]);
+  const [stale, setStale] = useState(false);
+  const [autoNote, setAutoNote] = useState<{ text: string; len: number } | null>(null);
+  const autoRemoveRef = useRef(false);
+  autoRemoveRef.current = autoRemoveRedundant;
+  const tickSeenRef = useRef(0);
 
   // The rows as the doc carries them (soup or migrated from the legacy
   // polygon -- a legacy sketch's points arrive as soup rows the first time
@@ -350,6 +397,22 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
   const sessionRef = useRef<any>(null);
   const [solved, setSolved] = useState<CoreGeom[]>([]);
   const [diagnosis, setDiagnosis] = useState<{ dof: number; bucket: string; blame: number[] } | null>(null);
+  /** Geometry rows nothing can still move (measured by the freedom probe). */
+  const [fullIds, setFullIds] = useState<Set<number>>(() => new Set());
+  const probeRef = useRef<any>(null);
+  const [taskHost, setTaskHost] = useState<HTMLElement | null>(null);
+  useEffect(() => {
+    const el = typeof document !== 'undefined' ? document.getElementById('reshapeSketchTask') : null;
+    if (el !== taskHost) setTaskHost(el);
+  });
+  // The document as the sketcher found it: Cancel puts exactly this back.
+  const openedDocRef = useRef(doc);
+  const docRef = useRef(doc);
+  docRef.current = doc;
+  const cancelSketch = useCallback(() => {
+    if (docRef.current !== openedDocRef.current) onChange(openedDocRef.current);
+    onExit?.();
+  }, [onChange, onExit]);
   const rafRef = useRef<number | null>(null);
   // A LIST of point pulls, not one: a point drag queues a single pair of
   // slots, a whole-entity drag queues one per named point of the row and the
@@ -419,8 +482,22 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
 
 
 
+  const rowsSeenRef = useRef<{ g: unknown; r: unknown }>({ g: geoms, r: rules });
   // Open + solve whenever the rows change; the session is a function of them.
   useEffect(() => {
+    // Manual update: a changed row set waits for Refresh (a bumped tick).
+    const forced = solveTick !== tickSeenRef.current;
+    tickSeenRef.current = solveTick;
+    const changed = rowsSeenRef.current.g !== geoms || rowsSeenRef.current.r !== rules;
+    rowsSeenRef.current = { g: geoms, r: rules };
+    if (!autoUpdate && !forced) {
+      if (changed) {
+        setStale(true);
+        setSolved(geoms as unknown as typeof solved);
+      }
+      return;
+    }
+    setStale(false);
     let cancelled = false;
     (async () => {
       // One session, one load: StrictMode double-invokes effects, and the
@@ -448,13 +525,46 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
       } else {
         setStatus('');
       }
-      setDiagnosis(s.diagnose());
-      setSolved(readSolved(geoms as CoreGeom[], s.params));
+      const diag = s.diagnose();
+      if (autoRemoveRef.current && diag && diag.bucket === 'redundant' && diag.blame.length > 0) {
+        // The newest named row is the one just added; the next solve
+        // re-checks, so a chain of redundancies unwinds one row at a time.
+        const drop = Math.max(...diag.blame);
+        if (drop >= 0 && drop < rules.length) {
+          setAutoNote({ text: `Removed redundant constraint ${drop + 1} (${ruleName(String((rules[drop] as any).k))})`, len: rules.length - 1 });
+          writeDoc(geoms, rules.filter((_, j) => j !== drop));
+          return;
+        }
+      }
+      const solvedNow = readSolved(geoms as CoreGeom[], s.params);
+      setDiagnosis(diag);
+      setSolved(solvedNow);
+      // Which rows are fully constrained: a second, throwaway session so the
+      // live one (warm start for drags) is left exactly as the solve left it.
+      try {
+        if (!probeRef.current) {
+          const { SketchSession2D } = await import('@shuff57/reshape-brep-adapter/sketch-session');
+          const p = new SketchSession2D();
+          probeRef.current = p;
+          await p.load();
+        } else {
+          await probeRef.current.load();
+        }
+        if (cancelled) return;
+        setFullIds(fullyConstrainedIds(probeRef.current, solvedNow, rules as unknown[], diag));
+      } catch {
+        setFullIds(new Set());
+      }
     })();
     return () => {
       cancelled = true;
     };
-  }, [geoms, rules]);
+  }, [geoms, rules, solveTick, autoUpdate]);
+
+  // Hidden-row sets are index based: a changed constraint count invalidates them.
+  useEffect(() => {
+    setHiddenRules((h) => (h.size ? new Set() : h));
+  }, [rules.length]);
 
   // --- view state + coordinate mapping -----------------------------------------
   // The viewBox is DERIVED from {cx, cy, pxPerMm} and the measured element
@@ -1097,6 +1207,46 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     [pushRule],
   );
 
+  /** Lock, as FreeCAD does it: not one opaque pin but a horizontal and a
+   *  vertical distance from the origin, each carrying the coordinate the point
+   *  has now, so both can be retyped afterwards. One writeDoc, one undo. */
+  const lockPoint = useCallback(() => {
+    if (selPoints.length !== 1) return;
+    const [p] = selPoints as [Sel];
+    const g = solved.find((x) => x.id === p.id);
+    const w = g ? pointWorld(g as CoreGeom, p.at!) : null;
+    if (!w) return;
+    const tidy = (n: number) => Math.round(n * 1e6) / 1e6;
+    writeDoc(geoms, [
+      ...rules,
+      { k: 'distanceX', a: -1, aEnd: 'a', b: p.id, bEnd: p.at!, value: tidy(w.x) },
+      { k: 'distanceY', a: -1, aEnd: 'a', b: p.id, bEnd: p.at!, value: tidy(w.y) },
+    ] as SoupRule[]);
+    setSel([]);
+  }, [geoms, rules, selPoints, solved, writeDoc]);
+
+  /** Block: pin the picked edges where they are, with no dimension to type --
+   *  both ends of a line, the centre and radius of a circle, all three points
+   *  of an arc. */
+  const canBlock =
+    selShapes.length > 0 &&
+    selShapes.every((s) => ['line', 'circle', 'arc'].includes(String(geomKind(s.id, solved))));
+  const blockSelection = useCallback(() => {
+    if (!canBlock) return;
+    const add: SoupRule[] = [];
+    for (const s of selShapes) {
+      const g = solved.find((x) => x.id === s.id);
+      if (!g) continue;
+      if (g.k === 'line') add.push({ k: 'lock', a: g.id, aEnd: 'a' }, { k: 'lock', a: g.id, aEnd: 'b' });
+      else if (g.k === 'circle') add.push({ k: 'lock', a: g.id, aEnd: 'c' }, { k: 'radius', a: g.id, value: g.r as number });
+      else if (g.k === 'arc')
+        add.push({ k: 'lock', a: g.id, aEnd: 'a' }, { k: 'lock', a: g.id, aEnd: 'b' }, { k: 'lock', a: g.id, aEnd: 'c' });
+    }
+    if (add.length === 0) return;
+    writeDoc(geoms, [...rules, ...add]);
+    setSel([]);
+  }, [canBlock, geoms, rules, selShapes, solved, writeDoc]);
+
   const canHoriz = selShapes.length === 1 && geomKind(selShapes[0].id, solved) === 'line';
   const canVert = canHoriz;
   const canCoin = selPoints.length === 2;
@@ -1228,8 +1378,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
       }
       case 'lock': {
         if (!canLock) return;
-        const [p] = selPoints as [Sel];
-        applyRule({ k: 'lock', a: p.id, aEnd: p.at! });
+        lockPoint();
         return;
       }
     }
@@ -1301,6 +1450,16 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
   const commitPlacedDim = useCallback(() => {
     const d = place?.dim;
     if (!place || !d) return;
+    if (refMode) {
+      const ref: Record<string, any> =
+        d.kind === 'radius'
+          ? { k: 'radius', a: d.a.id }
+          : { k: 'distance', a: d.a.id, aEnd: d.a.at ?? 'a', b: (d.b ?? d.a).id, bEnd: d.b?.at ?? 'b' };
+      setRefDims((r) => [...r, { ...ref, label: place.at ?? null }]);
+      setPlace(null);
+      setStatus('');
+      return;
+    }
     const err = dimensionValueError(d.kind, place.value);
     if (err) {
       setStatus(err);
@@ -1324,7 +1483,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     setPlace(null);
     setSelRule(null);
     setStatus('');
-  }, [geoms, place, rules, writeDoc]);
+  }, [geoms, place, refMode, rules, writeDoc]);
 
   /** Re-type an ALREADY placed dimension: same one-writeDoc discipline, and
    *  the same refusal that writes nothing. */
@@ -1332,8 +1491,10 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     (i: number) => {
       const r = rules[i] as unknown as Record<string, any> | undefined;
       if (!r || !isDimensionRule(String(r.k))) return;
-      const text = draft[i];
-      if (text === undefined) return;
+      const raw = draft[i];
+      if (raw === undefined) return;
+      // The label shows its unit; typing around it must not make it an error.
+      const text = raw.replace(/\s*(mm|\u00b0|deg)\s*$/i, '');
       const err = dimensionValueError(r.k as DimKind, text);
       if (err) {
         setStatus(err);
@@ -1355,6 +1516,21 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
    *  rows effect re-opens and re-solves the session because `rules` changed.
    *  Label positions above the hole shift down with it -- they are keyed by
    *  index, and a stale key would move someone else's label. */
+  /** Toggle reference/driving. With a placed dimension picked it becomes a
+   *  reference: its row leaves the solve and is drawn as a measurement. With
+   *  nothing picked it flips the mode the NEXT dimension is made in. */
+  const toggleReference = () => {
+    const i = selRule;
+    const r = i !== null ? (rules[i] as unknown as Record<string, any> | undefined) : undefined;
+    if (i !== null && r && isDimensionRule(String(r.k)) && ['distance', 'distanceX', 'distanceY', 'radius'].includes(String(r.k))) {
+      const { value: _v, ...rest } = r;
+      setRefDims((d) => [...d, { ...rest, label: labelAt[i] ?? null }]);
+      removeRuleAt(i);
+      return;
+    }
+    setRefMode((m) => !m);
+  };
+
   const removeRuleAt = useCallback(
     (i: number) => {
       if (i < 0 || i >= rules.length) return;
@@ -1809,12 +1985,31 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
   const selKey = (id: number, at: 'a' | 'b' | 'c' | null) => `${id}:${at ?? ''}`;
   const isSel = (id: number, at: 'a' | 'b' | 'c' | null) => sel.some((s) => s.id === id && s.at === at);
 
+  // Colour coding by solver state: rows named by a conflicting or redundant
+  // constraint, then rows nothing can move (fully constrained), else plain.
+  const blamed = new Map<number, 'conflict' | 'redundant'>();
+  if (diagnosis && (diagnosis.bucket === 'conflicting' || diagnosis.bucket === 'redundant')) {
+    for (const ri of diagnosis.blame) {
+      const r = rules[ri] as unknown as Record<string, any> | undefined;
+      if (!r) continue;
+      for (const f of ['a', 'b', 'c']) {
+        if (typeof r[f] === 'number') blamed.set(r[f], diagnosis.bucket === 'conflicting' ? 'conflict' : 'redundant');
+      }
+    }
+  }
+  const stateCls = (id: number) =>
+    blamed.has(id) ? ` sk-${blamed.get(id)}` : fullIds.has(id) ? ' sk-full' : '';
+  const ruleStateCls = (i: number) =>
+    diagnosis && diagnosis.blame.includes(i)
+      ? diagnosis.bucket === 'conflicting' ? ' sk-rule-conflict' : diagnosis.bucket === 'redundant' ? ' sk-rule-redundant' : ''
+      : '';
+
   const vertex = (id: number, at: 'a' | 'b' | 'c', w: Pt, key: string) => {
     const selected = isSel(id, at);
     return (
       <circle
         key={key}
-        className={`sk-vertex${selected ? ' sk-vertex-sel' : ''}`}
+        className={`sk-vertex${selected ? ' sk-vertex-sel' : ''}${stateCls(id)}`}
         cx={w.x}
         cy={-w.y}
         r={VERTEX_R_PX * mmPerPx}
@@ -1825,8 +2020,9 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
 
   const shapes: React.ReactNode[] = [];
   for (const g of solved) {
+    if (hiddenGeoms.has(g.id)) continue;
     const shapeSel = isSel(g.id, null);
-    const cls = `sk-shape${shapeSel ? ' sk-shape-sel' : ''}${g.construction ? ' sk-constr' : ''}`;
+    const cls = `sk-shape${shapeSel ? ' sk-shape-sel' : ''}${g.construction ? ' sk-constr' : ''}${stateCls(g.id)}`;
     if (g.k === 'line') {
       shapes.push(
         <line
@@ -1946,7 +2142,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     ? marqueeKind({ startX: marquee.from.x, startY: marquee.from.y, endX: marquee.to.x, endY: marquee.to.y })
     : null;
 
-  const { cls: dofClass, text: dofText } = dofBadge(diagnosis);
+  const solverMsg = solverMessage(diagnosis, solved.length);
 
   // --- the constraint layer (P2.8) + the dimension chips (P2.7) ------------
   // One anchor per rule, index-aligned with `rules`, fanned out where several
@@ -1962,7 +2158,10 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     const anchor = ruleAnchors[i];
     // A value rule is drawn by its CHIP below -- the number is its glyph --
     // so only the icon kinds get one here.
-    if (!anchor || isDimensionRule(r.k)) return;
+    if (!anchor || isDimensionRule(r.k) || hiddenRules.has(i)) return;
+    // A weld at a shared corner is already drawn by the corner itself;
+    // its mark appears only when the row is hovered or picked.
+    if (r.k === 'coincident' && !showCoincident && hoverRule !== i && selRule !== i) return;
     // Show Constraints off: only a hovered or selected rule keeps its
     // glyph (the lesson's "clicking an entity ... displays only its
     // associated constraint glyphs" read; the entity-filter variant is
@@ -1981,7 +2180,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     ruleNodes.push(
       <g
         key={`r${i}`}
-        className={`sk-rule-glyph${hovered ? ' sk-rule-hover' : ''}${picked ? ' sk-rule-sel' : ''}`}
+        className={`sk-rule-glyph${hovered ? ' sk-rule-hover' : ''}${picked ? ' sk-rule-sel' : ''}${ruleStateCls(i)}`}
         data-rule={i}
         data-rule-kind={r.k}
         data-rule-hover={hovered ? 'true' : undefined}
@@ -2014,36 +2213,171 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
    *  (which still holds the previous viewBox until React commits). */
   const chipAt = (p: Pt) => worldToScreen(view, p, size);
 
+  // The dimension lines themselves: extension lines, a dimension line with
+  // arrowheads, drawn under the number. One entry per dimension rule.
+  const dimArt = useMemo(() => {
+    const pts: Pt[] = [];
+    for (const g of solved as CoreGeom[]) {
+      if (g.k === 'line') pts.push({ x: g.a[0], y: g.a[1] }, { x: g.b[0], y: g.b[1] });
+      else if (g.k === 'circle' || g.k === 'arc') pts.push({ x: g.c[0], y: g.c[1] });
+      else if (g.k === 'point') pts.push({ x: g.p[0], y: g.p[1] });
+    }
+    const centroid = pts.length
+      ? { x: pts.reduce((a, p) => a + p.x, 0) / pts.length, y: pts.reduce((a, p) => a + p.y, 0) / pts.length }
+      : { x: 0, y: 0 };
+    return rules.map((r, i) =>
+      isDimensionRule(r.k)
+        ? dimensionArt(solved as CoreGeom[], r as unknown as Record<string, any>, labelAt[i] ?? null, DIM_OFFSET_PX * mmPerPx, centroid)
+        : null,
+    );
+  }, [solved, rules, labelAt, mmPerPx]);
+  const arrowW = 3.4 * mmPerPx;
+  const arrowL = 10 * mmPerPx;
+  const dimArtNodes: React.ReactNode[] = [];
+  dimArt.forEach((art, i) => {
+    if (!art || hiddenRules.has(i)) return;
+    const cls = `sk-dimart${hoverRule === i ? ' sk-rule-hover' : ''}${selRule === i ? ' sk-rule-sel' : ''}${ruleStateCls(i)}`;
+    dimArtNodes.push(
+      <g key={`da${i}`} className={cls} data-dim-art={i}>
+        {art.lines.map(([p, q], j) => (
+          <line key={j} x1={p.x} y1={-p.y} x2={q.x} y2={-q.y} />
+        ))}
+        {art.arrows.map((a, j) => {
+          const bx = a.tip.x - a.dir.x * arrowL;
+          const by = a.tip.y - a.dir.y * arrowL;
+          const nx = -a.dir.y * arrowW;
+          const ny = a.dir.x * arrowW;
+          return (
+            <polygon
+              key={`h${j}`}
+              className="sk-dimart-head"
+              points={`${a.tip.x},${-a.tip.y} ${bx + nx},${-(by + ny)} ${bx - nx},${-(by - ny)}`}
+            />
+          );
+        })}
+      </g>,
+    );
+  });
+
+  // Reference dimensions: the same drawing, in the driven colour, and a
+  // read-only number in brackets that follows the geometry.
+  const refCentroid = useMemo(() => {
+    const pts: Pt[] = [];
+    for (const g of solved as CoreGeom[]) {
+      if (g.k === 'line') pts.push({ x: g.a[0], y: g.a[1] }, { x: g.b[0], y: g.b[1] });
+      else if (g.k === 'circle' || g.k === 'arc') pts.push({ x: g.c[0], y: g.c[1] });
+      else if (g.k === 'point') pts.push({ x: g.p[0], y: g.p[1] });
+    }
+    return pts.length
+      ? { x: pts.reduce((a, p) => a + p.x, 0) / pts.length, y: pts.reduce((a, p) => a + p.y, 0) / pts.length }
+      : { x: 0, y: 0 };
+  }, [solved]);
+  const refArts = refDims.map((r) =>
+    dimensionArt(solved as CoreGeom[], r, (r.label as Pt | null) ?? null, DIM_OFFSET_PX * mmPerPx, refCentroid),
+  );
+  const refNodes: React.ReactNode[] = [];
+  refArts.forEach((art, i) => {
+    if (!art) return;
+    refNodes.push(
+      <g key={`rf${i}`} className="sk-dimart sk-dimart-ref" data-ref-art={i}>
+        {art.lines.map(([p, q], j) => (
+          <line key={j} x1={p.x} y1={-p.y} x2={q.x} y2={-q.y} />
+        ))}
+        {art.arrows.map((a, j) => {
+          const bx = a.tip.x - a.dir.x * arrowL;
+          const by = a.tip.y - a.dir.y * arrowL;
+          const nx = -a.dir.y * arrowW;
+          const ny = a.dir.x * arrowW;
+          return (
+            <polygon
+              key={`h${j}`}
+              className="sk-dimart-head"
+              points={`${a.tip.x},${-a.tip.y} ${bx + nx},${-(by + ny)} ${bx - nx},${-(by - ny)}`}
+            />
+          );
+        })}
+      </g>,
+    );
+  });
+
+  /** The mouse-up that ends the click which focused a value box would drop
+   *  the caret in and un-select the text, so typing appended to the old
+   *  number (25 became 2530). Eat that one mouse-up. */
+  const keepSelection = (e: React.MouseEvent<HTMLInputElement>) => {
+    if (e.currentTarget.dataset.fresh) {
+      delete e.currentTarget.dataset.fresh;
+      e.preventDefault();
+    }
+  };
   const dimChips: React.ReactNode[] = [];
   if (size.width > 0) {
+    // Screen boxes already taken: every constraint mark that is drawn, then
+    // each chip as it is placed. A label that would land on one steps aside
+    // (up, down, then sideways) rather than hide it.
+    const taken: Array<{ x: number; y: number; hw: number; hh: number }> = [];
+    const markR = RULE_GLYPH_PX * 0.75 + 1;
     rules.forEach((r, i) => {
-      if (!isDimensionRule(r.k)) return;
-      const placed = labelAt[i];
+      const anchor = ruleAnchors[i];
+      if (!anchor || isDimensionRule(r.k) || hiddenRules.has(i)) return;
+      if (r.k === 'coincident' && !showCoincident && hoverRule !== i && selRule !== i) return;
+      if (!showConstraints && hoverRule !== i && selRule !== i) return;
+      const g = chipAt(anchor);
+      taken.push({ x: g.x + GLYPH_NUDGE_PX, y: g.y - GLYPH_NUDGE_PX, hw: markR, hh: markR });
+    });
+    const hit = (x: number, y: number, hw: number, hh: number) =>
+      taken.some((t) => Math.abs(t.x - x) < t.hw + hw && Math.abs(t.y - y) < t.hh + hh);
+    rules.forEach((r, i) => {
+      if (!isDimensionRule(r.k) || hiddenRules.has(i)) return;
+      const art = dimArt[i];
+      const placed = art ? art.label : labelAt[i];
       const anchor = placed ?? ruleAnchors[i];
       if (!anchor) return;
       // A label the user dropped goes exactly where they dropped it; one that
       // has never been placed takes the same nudge the icons do, for the same
-      // reason -- a number centred on its own line is unreadable.
+      // reason -- a number centred on its own line is unreadable. A dimension
+      // with drawn art rests ON its dimension line instead.
       const s = chipAt(anchor);
       if (!placed) {
         s.x += GLYPH_NUDGE_PX;
         s.y -= GLYPH_NUDGE_PX;
       }
       const committed = formatDim(Number((r as unknown as Record<string, any>).value ?? 0));
+      const unit = dimUnit(String(r.k));
+      const shown = draft[i] ?? committed + unit;
       const hovered = hoverRule === i;
       const picked = selRule === i;
+      const chw = (Math.max(3, shown.length + 1) * 8 + 12) / 2;
+      const chh = 10;
+      if (hit(s.x, s.y, chw, chh)) {
+        const step = chh * 2 + 4;
+        const tries: Array<[number, number]> = [
+          [0, -step], [0, step], [chw + markR + 2, 0], [-(chw + markR + 2), 0], [0, -2 * step], [0, 2 * step],
+        ];
+        for (const [dx, dy] of tries) {
+          if (!hit(s.x + dx, s.y + dy, chw, chh)) {
+            s.x += dx;
+            s.y += dy;
+            break;
+          }
+        }
+      }
+      taken.push({ x: s.x, y: s.y, hw: chw, hh: chh });
       dimChips.push(
         <input
           key={`dc${i}`}
-          className={`sk2d-dim-chip${hovered ? ' sk-rule-hover' : ''}${picked ? ' sk-rule-sel' : ''}`}
+          className={`sk2d-dim-chip${hovered ? ' sk-rule-hover' : ''}${picked ? ' sk-rule-sel' : ''}${ruleStateCls(i)}`}
           data-rule={i}
           data-rule-kind={r.k}
           data-rule-hover={hovered ? 'true' : undefined}
           data-rule-selected={picked ? 'true' : undefined}
           data-editing={editingRule === i ? 'true' : undefined}
-          style={{ left: `${s.x}px`, top: `${s.y}px` }}
-          size={Math.max(3, committed.length + 1)}
-          value={draft[i] ?? committed}
+          // The box is sized in px from the same figure the collision test
+          // above uses (`chw`), border-box so padding is inside it: a chip
+          // whose real width ran wider than its estimate is what let a wide
+          // label sit on top of a constraint mark.
+          style={{ left: `${s.x}px`, top: `${s.y}px`, width: `${chw * 2}px`, boxSizing: 'border-box' }}
+          size={Math.max(3, shown.length + 1)}
+          value={shown}
           // Every chip is a real focusable input, ALWAYS mounted: that is what
           // makes Tab walk from one dimension to the next for free.
           onChange={(e) => setDraft((d) => ({ ...d, [i]: e.target.value }))}
@@ -2051,7 +2385,9 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
             setEditingRule(i);
             setSelRule(i);
             e.currentTarget.select();
+            e.currentTarget.dataset.fresh = '1';
           }}
+          onMouseUp={keepSelection}
           onBlur={() => {
             // A blur without Enter REVERTS: half a number is not an edit.
             setEditingRule((v) => (v === i ? null : v));
@@ -2086,6 +2422,42 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
         />,
       );
     });
+    refDims.forEach((r, i) => {
+      const art = refArts[i];
+      if (!art) return;
+      const origin = { k: 'point', id: -1, p: [0, 0] } as unknown as CoreGeom;
+      const pick = (id: number) => (id === -1 ? origin : (solved as CoreGeom[]).find((g) => g.id === id));
+      const ga = pick(r.a);
+      const gb = pick(r.b ?? r.a);
+      let v: number | null = null;
+      if (r.k === 'radius' && ga && 'r' in ga) v = (ga as any).r as number;
+      else if (ga && gb) {
+        const p = pointWorld(ga, r.aEnd ?? 'a');
+        const q = pointWorld(gb, r.bEnd ?? 'b');
+        if (p && q) {
+          v = r.k === 'distanceX' ? Math.abs(q.x - p.x) : r.k === 'distanceY' ? Math.abs(q.y - p.y) : Math.hypot(q.x - p.x, q.y - p.y);
+        }
+      }
+      if (v === null) return;
+      const s = chipAt(art.label);
+      dimChips.push(
+        <span
+          key={`rc${i}`}
+          className="sk2d-dim-chip sk-ref-chip"
+          data-ref-dim={i}
+          title="Reference dimension: measured, not driving. Double-click to remove."
+          style={{ left: `${s.x}px`, top: `${s.y}px` }}
+          onPointerDown={(e) => e.stopPropagation()}
+          onClick={(e) => e.stopPropagation()}
+          onDoubleClick={(e) => {
+            e.stopPropagation();
+            setRefDims((d) => d.filter((_, j) => j !== i));
+          }}
+        >
+          ({formatDim(v)} mm)
+        </span>,
+      );
+    });
     // The dimension being placed right now has no rule row yet, so it carries
     // its own chip until Enter turns it into one.
     if (place?.dim && place.at) {
@@ -2097,12 +2469,13 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
           data-dim-pending="true"
           data-rule-kind={place.dim.kind}
           data-editing="true"
-          autoFocus
+          ref={focusAndSelect}
           style={{ left: `${s.x}px`, top: `${s.y}px` }}
           size={Math.max(3, place.value.length + 1)}
           value={place.value}
           onChange={(e) => setPlace((p) => (p ? { ...p, value: e.target.value } : p))}
-          onFocus={(e) => e.currentTarget.select()}
+          onFocus={(e) => { e.currentTarget.select(); e.currentTarget.dataset.fresh = '1'; }}
+          onMouseUp={keepSelection}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
               e.preventDefault();
@@ -2128,12 +2501,13 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
           className="sk2d-dim-chip"
           data-fillet-pending="true"
           data-editing="true"
-          autoFocus
+          ref={focusAndSelect}
           style={{ left: `${s.x}px`, top: `${s.y}px` }}
           size={Math.max(3, filletPend.value.length + 1)}
           value={filletPend.value}
           onChange={(e) => setFilletPend((p) => (p ? { ...p, value: e.target.value } : p))}
-          onFocus={(e) => e.currentTarget.select()}
+          onFocus={(e) => { e.currentTarget.select(); e.currentTarget.dataset.fresh = '1'; }}
+          onMouseUp={keepSelection}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
               e.preventDefault();
@@ -2160,12 +2534,13 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
           className="sk2d-dim-chip"
           data-offset-pending="true"
           data-editing="true"
-          autoFocus
+          ref={focusAndSelect}
           style={{ left: `${s.x}px`, top: `${s.y}px` }}
           size={Math.max(3, offsetPend.value.length + 1)}
           value={offsetPend.value}
           onChange={(e) => setOffsetPend((p) => (p ? { ...p, value: e.target.value } : p))}
-          onFocus={(e) => e.currentTarget.select()}
+          onFocus={(e) => { e.currentTarget.select(); e.currentTarget.dataset.fresh = '1'; }}
+          onMouseUp={keepSelection}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
               e.preventDefault();
@@ -2191,35 +2566,36 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     <div className="sk2d-host">
       <style>{SK2D_CSS}</style>
       {ribbonHost && createPortal(
-        <div className="model-tools">
+        <div className="model-tools sk-ribbon">
           <div className="model-tool-group">
             <div className="model-tool-icons">
               {(
                 [
-                  ['select', 'Select'],
-                  ['line', 'Line'],
-                  ['rect', 'Rect'],
-                  ['circle', 'Circle'],
-                  ['arc', 'Arc'],
-                  ['slot', 'Slot'],
-                  ['trim', 'Trim'],
-                  ['fillet', 'Fillet'],
-                  ['offset', 'Offset'],
+                  ['select', 'Select', 'select'],
+                  ['line', 'Line', 'line'],
+                  ['rect', 'Rect', 'rect'],
+                  ['circle', 'Circle', 'circle'],
+                  ['arc', 'Arc', 'arc'],
+                  ['slot', 'Slot', 'slot'],
+                  ['trim', 'Trim', 'trim'],
+                  ['fillet', 'Fillet', 'fillet'],
+                  ['offset', 'Offset', 'offset'],
                   // The ON-CANVAS dimension tool (P2.7). The Dimension group's
                   // own Dim / R / diameter buttons are a different thing and
                   // are left exactly as they were: they open the ribbon box on
                   // the current selection. This one arms a tool.
-                  ['dim', 'Dim'],
-                ] as Array<[Tool, string]>
-              ).map(([t, label]) => (
+                  ['dim', 'Dim', 'dim'],
+                ] as Array<[Tool, string, string]>
+              ).map(([t, label, icon]) => (
                 <button
                   key={t}
                   className="sk2d-tool"
                   aria-pressed={tool === t}
-                  title={t === 'dim' ? 'Dimension (D): click an entity, place the label, type the value' : undefined}
+                  title={t === 'dim' ? 'Dimension (D): click an entity, place the label, type the value' : TOOL_TITLE[t] ?? label}
                   onClick={() => setTool(t)}
                 >
-                  {label}
+                  <SkIcon n={icon} />
+                  <span className="sk-sr">{label}</span>
                 </button>
               ))}
             </div>
@@ -2229,10 +2605,10 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
           <div className="model-tool-group">
             <div className="model-tool-icons">
               <button className="sk2d-tool" disabled={!canHoriz} title="Horizontal" onClick={() => applyRule({ k: 'horizontal', a: selShapes[0].id })}>
-                ⟷
+                <SkIcon n="horizontal" /><span className="sk-sr">Horizontal</span>
               </button>
               <button className="sk2d-tool" disabled={!canVert} title="Vertical" onClick={() => applyRule({ k: 'vertical', a: selShapes[0].id })}>
-                ↕
+                <SkIcon n="vertical" /><span className="sk-sr">Vertical</span>
               </button>
               <button
                 className="sk2d-tool"
@@ -2243,7 +2619,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
                   applyRule({ k: 'coincident', a: a.id, aEnd: a.at!, b: b.id, bEnd: b.at! });
                 }}
               >
-                Coincident
+                <SkIcon n="coincident" /><span className="sk-sr">Coincident</span>
               </button>
               <button
                 className="sk2d-tool"
@@ -2254,7 +2630,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
                   applyRule({ k: 'parallel', a: a.id, b: b.id });
                 }}
               >
-                ∥
+                <SkIcon n="parallel" /><span className="sk-sr">Parallel</span>
               </button>
               <button
                 className="sk2d-tool"
@@ -2265,7 +2641,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
                   applyRule({ k: 'equal', a: a.id, b: b.id });
                 }}
               >
-                =
+                <SkIcon n="equal" /><span className="sk-sr">Equal</span>
               </button>
               <button
                 className="sk2d-tool"
@@ -2276,7 +2652,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
                   applyRule({ k: 'perpendicular', a: a.id, b: b.id });
                 }}
               >
-                ⟂
+                <SkIcon n="perpendicular" /><span className="sk-sr">Perpendicular</span>
               </button>
               <button
                 className="sk2d-tool"
@@ -2287,7 +2663,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
                   applyRule({ k: 'tangent', a: a.id, b: b.id });
                 }}
               >
-                Tangent
+                <SkIcon n="tangent" /><span className="sk-sr">Tangent</span>
               </button>
               <button
                 className="sk2d-tool"
@@ -2299,7 +2675,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
                   applyRule({ k: 'pointOnObject', a: p.id, aEnd: p.at!, b: s.id });
                 }}
               >
-                On Object
+                <SkIcon n="pointOnObject" /><span className="sk-sr">On Object</span>
               </button>
               <button
                 className="sk2d-tool"
@@ -2310,18 +2686,24 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
                   applyRule({ k: 'symmetric', a: a.id, aEnd: a.at!, b: b.id, bEnd: b.at!, c: c.id, cEnd: c.at! });
                 }}
               >
-                Symmetric
+                <SkIcon n="symmetric" /><span className="sk-sr">Symmetric</span>
               </button>
               <button
                 className="sk2d-tool"
                 disabled={!canLock}
-                title="Lock this point where it is"
-                onClick={() => {
-                  const [p] = selPoints as [Sel];
-                  applyRule({ k: 'lock', a: p.id, aEnd: p.at! });
-                }}
+                title="Lock this point: horizontal and vertical distance from the origin"
+                onClick={lockPoint}
               >
-                Lock
+                <SkIcon n="lock" /><span className="sk-sr">Lock</span>
+              </button>
+              <button
+                className="sk2d-tool"
+                data-testid="sketch-block"
+                disabled={!canBlock}
+                title="Block: pin the selected edges where they are"
+                onClick={blockSelection}
+              >
+                <SkIcon n="block" /><span className="sk-sr">Block</span>
               </button>
             </div>
             <span className="model-tool-group-label">Constrain</span>
@@ -2329,19 +2711,28 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
           <div className="model-tool-divider" />
           <div className="model-tool-group">
             <div className="model-tool-icons">
-              <button className="sk2d-tool" disabled={!canDimLine} onClick={() => openDim('distance')}>
-                Dim
+              <button className="sk2d-tool" disabled={!canDimLine} title="Distance of the selected line" onClick={() => openDim('distance')}>
+                <SkIcon n="dim" /><span className="sk-sr">Dim</span>
               </button>
-              <button className="sk2d-tool" disabled={!canDimRadius} onClick={() => openDim('radius')}>
-                R
+              <button className="sk2d-tool" disabled={!canDimRadius} title="Radius" onClick={() => openDim('radius')}>
+                <SkIcon n="radius" /><span className="sk-sr">R</span>
               </button>
               <button className="sk2d-tool" disabled={!canDimDiameter} title="Diameter" onClick={() => openDim('diameter')}>
-                ⌀
+                <SkIcon n="diameter" /><span className="sk-sr">Diameter</span>
+              </button>
+              <button
+                className="sk2d-tool"
+                data-testid="sketch-reference"
+                aria-pressed={refMode}
+                title="Reference dimension: pick a placed dimension to stop it driving, or switch the next one to a measurement"
+                onClick={toggleReference}
+              >
+                <SkIcon n="reference" /><span className="sk-sr">Reference</span>
               </button>
               {dim && (
                 <span className="sk2d-dim">
                   <input
-                    autoFocus
+                    ref={focusAndSelect}
                     value={dim.value}
                     onChange={(e) => setDim({ ...dim, value: e.target.value })}
                     onKeyDown={(e) => {
@@ -2360,8 +2751,8 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
           <div className="model-tool-divider" />
           <div className="model-tool-group">
             <div className="model-tool-icons">
-              <button className="sk2d-tool" disabled={sel.length === 0} onClick={onDeleteClick}>
-                Delete
+              <button className="sk2d-tool" disabled={sel.length === 0} title="Delete the selection" onClick={onDeleteClick}>
+                <SkIcon n="trash" /><span className="sk-sr">Delete</span>
               </button>
               <button
                 className="sk2d-tool"
@@ -2369,7 +2760,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
                 title="Toggle construction geometry (dashed; solved but never profiled)"
                 onClick={onConstrClick}
               >
-                Constr
+                <SkIcon n="construction" /><span className="sk-sr">Constr</span>
               </button>
               <button
                 className="sk2d-tool"
@@ -2377,7 +2768,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
                 title="Mirror the selected rows about the Y axis (x -> -x)"
                 onClick={() => onMirror('y')}
               >
-                Mirror
+                <SkIcon n="mirror" /><span className="sk-sr">Mirror</span>
               </button>
               <button
                 className="sk2d-tool"
@@ -2385,36 +2776,299 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
                 title="Copy the selected rows, shifted 10mm right"
                 onClick={() => onCopy(10, 0)}
               >
-                Copy
+                <SkIcon n="copy" /><span className="sk-sr">Copy</span>
+              </button>
+              <button className="sk2d-tool" title="Fit the sketch in the view (Shift+F)" onClick={fit}>
+                <SkIcon n="fit" /><span className="sk-sr">Fit</span>
               </button>
             </div>
             <span className="model-tool-group-label">Modify</span>
           </div>
-          <div className="model-tool-divider" />
-          <div className="model-tool-group">
-            <div className="model-tool-icons">
-              <button className="sk2d-tool" title="Fit the sketch in the view (Shift+F)" onClick={fit}>
-                Fit
-              </button>
-            </div>
-            <span className="model-tool-group-label">View</span>
-          </div>
-          <div className="model-tool-divider" />
-          <div className="model-tool-group">
-            <div className="model-tool-icons">
-              <label className="sk2d-auto">
-                <input type="checkbox" checked={auto} onChange={(e) => setAuto(e.target.checked)} /> auto
-              </label>
-              <label className="sk2d-auto" title="Show the constraint glyphs on the canvas">
-                <input type="checkbox" checked={showConstraints} onChange={(e) => setShowConstraints(e.target.checked)} /> constraints
-              </label>
-              <span className={`sk-dof ${dofClass}`}>{dofClass === 'sk-dof-bad' ? '⨯ ' : ''}{dofText}</span>
-              {status && <span className="sk2d-status">{status}</span>}
-            </div>
-            <span className="model-tool-group-label">Status</span>
-          </div>
         </div>,
         ribbonHost
+      )}
+      {taskHost && createPortal(
+        <section className="sk-task" data-sketch-task="true">
+          <header className="sk-task-head">
+            <SkIcon n="sketch" />
+            <span>Sketch edit</span>
+          </header>
+          <div className={`sk-task-status sk-st-${solverMsg.tone}`} data-solver-state={solverMsg.state}>
+            <span className="sk-task-state">{solverMsg.label}</span>
+            {solverMsg.detail ? <span className="sk-task-detail">{solverMsg.state === 'under' ? ': ' : ' - '}{solverMsg.detail}</span> : null}
+            {solverMsg.ids.length > 0 && (
+              <span className="sk-task-ids">
+                {'('}
+                {solverMsg.ids.map((n, j) => (
+                  <span key={n}>
+                    <button type="button" className="sk-task-id" onClick={() => setSelRule(n - 1)}>{n}</button>
+                    {j < solverMsg.ids.length - 1 ? ', ' : ''}
+                  </span>
+                ))}
+                {')'}
+              </span>
+            )}
+            {status && <div className="sk-task-note">{status}</div>}
+            {stale && !autoUpdate && (
+              <div className="sk-task-note" data-testid="sketch-task-stale">Auto update is off: press Refresh to solve again</div>
+            )}
+            {autoNote && autoNote.len === rules.length && <div className="sk-task-note" data-testid="sketch-task-autonote">{autoNote.text}</div>}
+          </div>
+          <div className="sk-task-body">
+          <div className="sk-task-opts">
+            <label title="Draw the constraint marks on the canvas">
+              <input type="checkbox" checked={showConstraints} onChange={(e) => setShowConstraints(e.target.checked)} /> Show marks
+            </label>
+            <label title="Add a horizontal or vertical constraint as a line is drawn near an axis">
+              <input type="checkbox" checked={auto} onChange={(e) => setAuto(e.target.checked)} /> Auto
+            </label>
+            <button
+              type="button"
+              className="sk-task-refresh"
+              data-testid="sketch-task-refresh"
+              title="Solve the sketch again from its current rows"
+              onClick={() => {
+                setAutoNote(null);
+                setSolveTick((t) => t + 1);
+              }}
+            >
+              Refresh
+            </button>
+            <button
+              type="button"
+              className="sk-task-gear"
+              data-testid="sketch-task-settings"
+              aria-haspopup="menu"
+              aria-expanded={settingsOpen}
+              title="Solver settings"
+              onClick={() => setSettingsOpen((o) => !o)}
+            >
+              <svg className="sk-ico" viewBox="0 0 20 20" width="14" height="14" aria-hidden="true">
+                <circle cx="10" cy="10" r="3" />
+                <path d="M10 2.5v2.2M10 15.3v2.2M2.5 10h2.2M15.3 10h2.2M4.7 4.7l1.6 1.6M13.7 13.7l1.6 1.6M4.7 15.3l1.6-1.6M13.7 6.3l1.6-1.6" />
+              </svg>
+              <span className="sk-sr">Solver settings</span>
+            </button>
+          </div>
+          {settingsOpen && (
+            <div className="sk-task-menu" role="menu" data-testid="sketch-task-settings-menu">
+              <label role="menuitemcheckbox" aria-checked={autoUpdate} title="Solve after every edit; off keeps edits pending until Refresh">
+                <input type="checkbox" checked={autoUpdate} onChange={(e) => setAutoUpdate(e.target.checked)} /> Auto update
+              </label>
+              <label role="menuitemcheckbox" aria-checked={autoRemoveRedundant} title="Drop the newest constraint the solver calls redundant">
+                <input type="checkbox" checked={autoRemoveRedundant} onChange={(e) => setAutoRemoveRedundant(e.target.checked)} /> Auto remove redundants
+              </label>
+              <label role="menuitemcheckbox" aria-checked={showCoincident} title="Draw a mark at every welded point, not only on hover">
+                <input type="checkbox" checked={showCoincident} onChange={(e) => setShowCoincident(e.target.checked)} /> Show coincident marks
+              </label>
+            </div>
+          )}
+          <div className="sk-task-sec" data-sec="constraints">
+          <div className="sk-task-sect">
+            <span>Constraints</span>
+            <button
+              type="button"
+              className="sk-task-eye"
+              data-testid="sketch-task-toggle-constraints"
+              disabled={rules.length === 0}
+              aria-pressed={hiddenRules.size === 0}
+              title={hiddenRules.size === 0 ? 'Hide every constraint on the sketch' : 'Show every constraint on the sketch'}
+              onClick={() => setHiddenRules(hiddenRules.size === 0 ? new Set(rules.map((_, j) => j)) : new Set())}
+            >
+              <EyeIcon off={hiddenRules.size > 0} />
+              <span className="sk-sr">{hiddenRules.size === 0 ? 'Hide all constraints' : 'Show all constraints'}</span>
+            </button>
+            <span className="sk-task-count">{rules.length}</span>
+          </div>
+          <div className="sk-task-filter">
+            <label>
+              <span>Filter</span>
+              <select
+                data-testid="sketch-task-filter"
+                value={ruleFilter}
+                onChange={(e) => setRuleFilter(e.target.value as typeof ruleFilter)}
+              >
+                <option value="all">All</option>
+                <option value="dimensional">Dimensional</option>
+                <option value="geometric">Geometric</option>
+                <option value="problems">Conflicts and redundant</option>
+              </select>
+            </label>
+          </div>
+          <ul className="sk-task-list" data-list="constraints">
+            {rules.length === 0 && <li className="sk-task-empty">No constraints yet</li>}
+            {rules.map((r, i) => {
+              const rr = r as unknown as Record<string, any>;
+              const dimmed = isDimensionRule(r.k);
+              const stateC = ruleStateCls(i).trim();
+              if (ruleFilter === 'dimensional' && !dimmed) return null;
+              if (ruleFilter === 'geometric' && dimmed) return null;
+              if (ruleFilter === 'problems' && !stateC) return null;
+              return (
+                <li
+                  key={i}
+                  data-rule-row={i}
+                  className={`sk-task-row${selRule === i ? ' is-sel' : ''}${hoverRule === i ? ' is-hover' : ''}${stateC ? ' ' + stateC : ''}`}
+                  onPointerEnter={() => setHoverRule(i)}
+                  onPointerLeave={() => setHoverRule((h) => (h === i ? null : h))}
+                  onClick={() => {
+                    setSelRule(i);
+                    setSel([]);
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    className="sk-task-vis"
+                    title="Show this constraint on the sketch"
+                    aria-label={`Show constraint ${i + 1}`}
+                    checked={!hiddenRules.has(i)}
+                    onClick={(e) => e.stopPropagation()}
+                    onChange={(e) =>
+                      setHiddenRules((h) => {
+                        const n = new Set(h);
+                        if (e.target.checked) n.delete(i);
+                        else n.add(i);
+                        return n;
+                      })
+                    }
+                  />
+                  <svg className="sk-task-ico" viewBox="0 0 20 20" aria-hidden="true">
+                    {dimmed ? <SkIconBody n={r.k === 'radius' ? 'radius' : r.k === 'diameter' ? 'diameter' : 'dim'} /> : <SkIconBody n={r.k} />}
+                  </svg>
+                  <span className="sk-task-name">{i + 1} {ruleName(r.k)}</span>
+                  {dimmed && <span className="sk-task-val">{formatDim(Number(rr.value ?? 0))}{dimUnit(String(r.k))}</span>}
+                  <button
+                    type="button"
+                    className="sk-task-del"
+                    title="Remove this constraint"
+                    aria-label={`Remove constraint ${i + 1}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removeRuleAt(i);
+                    }}
+                  >
+                    ×
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+          </div>
+          <div className="sk-task-sec" data-sec="elements">
+          <div className="sk-task-sect">
+            <span>Elements</span>
+            <button
+              type="button"
+              className="sk-task-eye"
+              data-testid="sketch-task-toggle-elements"
+              disabled={solved.length === 0}
+              aria-pressed={hiddenGeoms.size === 0}
+              title={hiddenGeoms.size === 0 ? 'Hide every element' : 'Show every element'}
+              onClick={() => setHiddenGeoms(hiddenGeoms.size === 0 ? new Set(solved.map((g) => g.id)) : new Set())}
+            >
+              <EyeIcon off={hiddenGeoms.size > 0} />
+              <span className="sk-sr">{hiddenGeoms.size === 0 ? 'Hide all elements' : 'Show all elements'}</span>
+            </button>
+            <span className="sk-task-count">{solved.length}</span>
+          </div>
+          <ul className="sk-task-list" data-list="elements">
+            {solved.length === 0 && <li className="sk-task-empty">Nothing drawn yet</li>}
+            {solved.map((g) => {
+              const picked = isSel(g.id, null);
+              const st = blamed.get(g.id) ?? (fullIds.has(g.id) ? 'full' : 'free');
+              return (
+                <li
+                  key={g.id}
+                  data-geom-row={g.id}
+                  className={`sk-task-row${picked ? ' is-sel' : ''} sk-el-${st}`}
+                  onClick={() => {
+                    setSelRule(null);
+                    setSel([{ id: g.id, at: null } as Sel]);
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    className="sk-task-vis"
+                    title="Show this element on the sketch"
+                    aria-label={`Show element ${g.id}`}
+                    checked={!hiddenGeoms.has(g.id)}
+                    onClick={(e) => e.stopPropagation()}
+                    onChange={(e) =>
+                      setHiddenGeoms((h) => {
+                        const n = new Set(h);
+                        if (e.target.checked) n.delete(g.id);
+                        else n.add(g.id);
+                        return n;
+                      })
+                    }
+                  />
+                  <svg className="sk-task-ico" viewBox="0 0 20 20" aria-hidden="true">
+                    <SkIconBody n={g.k === 'point' ? 'point' : g.k} />
+                  </svg>
+                  <span className="sk-task-name">{g.id} {geomName(g.k)}{g.construction ? ' (construction)' : ''}</span>
+                  <span className="sk-task-modes" role="group" aria-label={`Select part of element ${g.id}`}>
+                    {g.k !== 'point' && (
+                      <button
+                        type="button"
+                        className={`sk-task-mode${isSel(g.id, null) ? ' is-on' : ''}`}
+                        data-mode="edge"
+                        title={g.k === 'line' ? 'Select the whole line' : 'Select the whole curve'}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelRule(null);
+                          setSel([{ id: g.id, at: null } as Sel]);
+                        }}
+                      >
+                        <ModeIcon n="edge" />
+                      </button>
+                    )}
+                    {namedPointsOf(g as CoreGeom).map(({ at }) => {
+                      const mode = g.k === 'point' ? 'point' : at === 'c' ? 'center' : at === 'a' ? 'start' : 'end';
+                      return (
+                        <button
+                          key={at}
+                          type="button"
+                          className={`sk-task-mode${isSel(g.id, at) ? ' is-on' : ''}`}
+                          data-mode={mode}
+                          title={
+                            mode === 'point' ? 'Select this point'
+                              : mode === 'center' ? 'Select the centre point'
+                                : mode === 'start' ? 'Select the start point' : 'Select the end point'
+                          }
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelRule(null);
+                            setSel([{ id: g.id, at } as Sel]);
+                          }}
+                        >
+                          <ModeIcon n={mode} />
+                        </button>
+                      );
+                    })}
+                  </span>
+                  <span className="sk-task-flag" title={st === 'full' ? 'Fully constrained' : st === 'free' ? 'Can still move' : 'In conflict'}>
+                    {st === 'full' ? 'fixed' : st === 'free' ? 'free' : st}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+          </div>
+          </div>
+          <footer className="sk-task-foot">
+            <button type="button" className="sk-task-btn is-primary" data-testid="sketch-task-ok" onClick={() => onExit?.()}>OK</button>
+            <button
+              type="button"
+              className="sk-task-btn"
+              data-testid="sketch-task-cancel"
+              title="Leave the sketcher and drop every change made since it opened"
+              onClick={cancelSketch}
+            >
+              Cancel
+            </button>
+          </footer>
+        </section>,
+        taskHost
       )}
       <svg
         ref={svgRef}
@@ -2473,6 +3127,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
         }}
       >
         <g className="sk2d-grid">{gridNodes(view, size)}</g>
+        <g className="sk2d-dimart">{dimArtNodes}{refNodes}</g>
         <g className="sk2d-geom">{shapes}</g>
         <g className="sk2d-preview">{preview}</g>
         {marquee && marqueeNow && (
@@ -2513,6 +3168,263 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
 }
 
 // --- module helpers --------------------------------------------------------------------
+
+// --- toolbar and list icons ----------------------------------------------------------
+// Own drawings on a 20x20 grid, stroke only, painted through currentColor so
+// the button (or list row) decides the colour. Nothing here is borrowed from
+// another CAD program's icon set.
+
+const TOOL_TITLE: Partial<Record<Tool, string>> = {
+  select: 'Select (S): pick, box-select and drag geometry',
+  line: 'Line (L): click points to chain segments, double-click to finish',
+  rect: 'Rectangle (R): two corners, welded and held horizontal and vertical',
+  circle: 'Circle (C): centre, then a point on the rim',
+  arc: 'Arc (A): two end points, then a point on the arc',
+  slot: 'Slot: two cap centres, then the width',
+  trim: 'Trim: click the piece of a line to cut away',
+  fillet: 'Fillet: click a corner, type the radius',
+  offset: 'Offset: pick a chain, type the distance',
+};
+
+/** Stable ref callback for a value box that opens ready to be typed over:
+ *  focus it and select the whole value on mount (a stable identity, so React
+ *  calls it once, not on every render). */
+function focusAndSelect(el: HTMLInputElement | null): void {
+  if (!el) return;
+  el.focus();
+  el.select();
+  el.dataset.fresh = '1';
+}
+
+function SkIconBody({ n }: { n: string }): React.ReactElement | null {
+  switch (n) {
+    case 'select':
+      return <path d="M5 3 V15 L8.4 12 L10.8 17 L13 16 L10.7 11.2 H15.2 Z" />;
+    case 'line':
+      return (
+        <>
+          <path d="M4 15 L10 5 L16 11" />
+          <circle className="sk-ico-dot" cx="4" cy="15" r="1.4" />
+          <circle className="sk-ico-dot" cx="10" cy="5" r="1.4" />
+          <circle className="sk-ico-dot" cx="16" cy="11" r="1.4" />
+        </>
+      );
+    case 'rect':
+      return (
+        <>
+          <rect x="4" y="5.5" width="12" height="9" />
+          <circle className="sk-ico-dot" cx="4" cy="5.5" r="1.3" />
+          <circle className="sk-ico-dot" cx="16" cy="14.5" r="1.3" />
+        </>
+      );
+    case 'circle':
+      return (
+        <>
+          <circle cx="10" cy="10" r="6" />
+          <circle className="sk-ico-dot" cx="10" cy="10" r="1.3" />
+        </>
+      );
+    case 'arc':
+      return (
+        <>
+          <path d="M4 14 A7.5 7.5 0 0 1 16 14" />
+          <circle className="sk-ico-dot" cx="4" cy="14" r="1.3" />
+          <circle className="sk-ico-dot" cx="16" cy="14" r="1.3" />
+        </>
+      );
+    case 'slot':
+      return <path d="M7 5.5 H13 A4.5 4.5 0 0 1 13 14.5 H7 A4.5 4.5 0 0 1 7 5.5 Z" />;
+    case 'trim':
+      return (
+        <>
+          <path d="M3 14 H17" />
+          <path d="M10 3 V9" />
+          <path d="M7 7 L13 13 M13 7 L7 13" className="sk-ico-thin" />
+        </>
+      );
+    case 'fillet':
+      return (
+        <>
+          <path d="M5 16 V9 Q5 5 9 5 H16" />
+          <path d="M5 16 V14 M12 5 H16" className="sk-ico-thin" />
+        </>
+      );
+    case 'offset':
+      return (
+        <>
+          <path d="M4 16 V4 H16" />
+          <path d="M8.5 16 V8.5 H16" />
+        </>
+      );
+    case 'dim':
+    case 'distance':
+    case 'distanceX':
+    case 'distanceY':
+      return (
+        <>
+          <path d="M4 4 V16 M16 4 V16 M4 10 H16" />
+          <path d="M4 10 L7.2 8.2 M4 10 L7.2 11.8 M16 10 L12.8 8.2 M16 10 L12.8 11.8" />
+        </>
+      );
+    case 'radius':
+      return (
+        <>
+          <circle cx="9" cy="11" r="6" />
+          <path d="M9 11 L14.2 7.2 M14.2 7.2 L11.6 7.6 M14.2 7.2 L13.8 9.8" />
+        </>
+      );
+    case 'diameter':
+      return (
+        <>
+          <circle cx="10" cy="10" r="6.5" />
+          <path d="M5.4 14.6 L14.6 5.4 M5.4 14.6 L6.2 12 M5.4 14.6 L8 13.8 M14.6 5.4 L12 6.2 M14.6 5.4 L13.8 8" />
+        </>
+      );
+    case 'angle':
+      return <path d="M4 16 H16 M4 16 L13 6 M9 16 A5 5 0 0 0 7.6 12.4" />;
+    case 'horizontal':
+      return <path d="M3.5 10 H16.5 M3.5 7 V13 M16.5 7 V13" />;
+    case 'vertical':
+      return <path d="M10 3.5 V16.5 M7 3.5 H13 M7 16.5 H13" />;
+    case 'coincident':
+      return (
+        <>
+          <circle cx="10" cy="10" r="6" />
+          <circle className="sk-ico-dot" cx="10" cy="10" r="2.2" />
+        </>
+      );
+    case 'pointOnObject':
+      return (
+        <>
+          <path d="M3.5 14.5 H16.5" />
+          <circle className="sk-ico-dot" cx="10" cy="9" r="2.4" />
+          <path d="M10 11.5 V14.5" />
+        </>
+      );
+    case 'parallel':
+      return <path d="M7 16 L11.5 4 M12 16 L16.5 4" />;
+    case 'perpendicular':
+      return <path d="M5 4 V15 H16" />;
+    case 'tangent':
+      return (
+        <>
+          <circle cx="10" cy="8" r="4.5" />
+          <path d="M3 15 H17" />
+        </>
+      );
+    case 'equal':
+      return <path d="M4 7.5 H16 M4 12.5 H16" />;
+    case 'symmetric':
+      return (
+        <>
+          <path d="M10 3 V17" className="sk-ico-dash" />
+          <path className="sk-ico-fill" d="M3.5 10 L8 6.5 V13.5 Z M16.5 10 L12 6.5 V13.5 Z" />
+        </>
+      );
+    case 'lock':
+      return (
+        <>
+          <rect x="5" y="9" width="10" height="7.5" rx="1" />
+          <path d="M7.5 9 V6.8 A2.5 2.5 0 0 1 12.5 6.8 V9" />
+        </>
+      );
+    case 'block':
+      // An edge pinned at both ends by two filled squares.
+      return (
+        <>
+          <path d="M5 15 L15 5" />
+          <rect x="3" y="13" width="4" height="4" className="sk-ico-fill" />
+          <rect x="13" y="3" width="4" height="4" className="sk-ico-fill" />
+        </>
+      );
+    case 'reference':
+      // A dimension line drawn in brackets: measured, not driving.
+      return (
+        <>
+          <path d="M3 5 V15 M17 5 V15 M3 10 H17 M6 7.5 L3 10 L6 12.5 M14 7.5 L17 10 L14 12.5" className="sk-ico-dash" />
+        </>
+      );
+    case 'trash':
+      return <path d="M4.5 6 H15.5 M8 6 V4 H12 V6 M6 6 L6.8 16.5 H13.2 L14 6 M9 9 V14 M11 9 V14" />;
+    case 'construction':
+      return <path d="M3 16 L17 4" className="sk-ico-dash" />;
+    case 'mirror':
+      return (
+        <>
+          <path d="M10 3 V17" className="sk-ico-dash" />
+          <path d="M8 6 L3.5 15 H8 Z M12 6 L16.5 15 H12 Z" />
+        </>
+      );
+    case 'copy':
+      return (
+        <>
+          <rect x="3.5" y="7.5" width="9" height="9" />
+          <path d="M7.5 7.5 V3.5 H16.5 V12.5 H12.5" />
+        </>
+      );
+    case 'fit':
+      return <path d="M3.5 7 V3.5 H7 M13 3.5 H16.5 V7 M16.5 13 V16.5 H13 M7 16.5 H3.5 V13" />;
+    case 'point':
+      return <circle className="sk-ico-dot" cx="10" cy="10" r="2.4" />;
+    case 'sketch':
+      return (
+        <>
+          <path d="M3.5 16.5 L4.2 13 L13.5 3.7 L16.3 6.5 L7 15.8 Z" />
+          <path d="M11.8 5.4 L14.6 8.2" />
+        </>
+      );
+    default:
+      return <circle cx="10" cy="10" r="4" />;
+  }
+}
+
+function SkIcon({ n }: { n: string }): React.ReactElement {
+  return (
+    <svg className="sk-ico" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
+      <SkIconBody n={n} />
+    </svg>
+  );
+}
+
+/** The show/hide-all eye of a list header: open when everything in the list
+ *  is drawn, struck through when something is hidden. */
+function EyeIcon({ off }: { off: boolean }): React.ReactElement {
+  return (
+    <svg className="sk-ico" viewBox="0 0 20 20" width="14" height="14" aria-hidden="true">
+      <path d="M2 10c2-3.5 5-5.5 8-5.5s6 2 8 5.5c-2 3.5-5 5.5-8 5.5S4 13.5 2 10z" />
+      <circle cx="10" cy="10" r="2.4" />
+      {off && <path d="M3.5 16.5L16.5 3.5" />}
+    </svg>
+  );
+}
+
+/** One element row's part picker: the whole edge, or one of its points. */
+function ModeIcon({ n }: { n: 'edge' | 'start' | 'end' | 'center' | 'point' }): React.ReactElement {
+  return (
+    <svg className="sk-ico" viewBox="0 0 20 20" width="14" height="14" aria-hidden="true">
+      {n === 'edge' && <path d="M3.5 16.5L16.5 3.5" />}
+      {n === 'start' && (
+        <>
+          <path className="sk-ico-thin" d="M3.5 16.5L16.5 3.5" />
+          <circle className="sk-ico-dot" cx="3.5" cy="16.5" r="2.6" />
+        </>
+      )}
+      {n === 'end' && (
+        <>
+          <path className="sk-ico-thin" d="M3.5 16.5L16.5 3.5" />
+          <circle className="sk-ico-dot" cx="16.5" cy="3.5" r="2.6" />
+        </>
+      )}
+      {n === 'center' && (
+        <>
+          <circle className="sk-ico-thin" cx="10" cy="10" r="7" />
+          <circle className="sk-ico-dot" cx="10" cy="10" r="2.4" />
+        </>
+      )}
+      {n === 'point' && <circle className="sk-ico-dot" cx="10" cy="10" r="3" />}
+    </svg>
+  );
+}
 
 const svgRef: { current: SVGSVGElement | null } = { current: null };
 
@@ -2836,4 +3748,176 @@ const SK2D_CSS = `
 .sk2d-dim-chip.sk-rule-sel { border-color: var(--reshape-pink, #ff79c6); color: var(--reshape-pink, #ff79c6); }
 .sk2d-dim-chip[data-editing="true"], .sk2d-dim-chip:focus { outline: none;
   background: var(--reshape-surface, #1e1f29); border-color: var(--reshape-accent, #8be9fd); color: var(--reshape-text, #f8f8f2); }
+
+/* Toolbar: icon buttons, the word kept for screen readers and tooltips. */
+.sk-ribbon .model-tool-icons { gap: 1px; }
+.sk-ribbon .sk2d-tool { width: 24px; padding: 0; display: inline-flex; align-items: center; justify-content: center; }
+.sk-ico, .sk-task-ico { fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.sk-ico .sk-ico-dot, .sk-task-ico .sk-ico-dot, .sk-ico .sk-ico-fill, .sk-task-ico .sk-ico-fill { fill: currentColor; stroke: none; }
+.sk-ico .sk-ico-thin, .sk-task-ico .sk-ico-thin { stroke-width: 1; opacity: 0.7; }
+.sk-ico .sk-ico-dash, .sk-task-ico .sk-ico-dash { stroke-dasharray: 2.5 2; }
+.sk-sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+/* Solver-state colours. Under-constrained geometry keeps the plain stroke;
+   a row nothing can move turns green; rows named by a contradiction or a
+   redundancy take the warm colours, and so do their constraint marks. */
+.sk-shape.sk-full { stroke: #5ad07a; }
+.sk-vertex.sk-full { fill: #5ad07a; }
+.sk-shape.sk-conflict { stroke: #ff8a2a; }
+.sk-vertex.sk-conflict { fill: #ff8a2a; }
+.sk-shape.sk-redundant { stroke: #e6c229; }
+.sk-vertex.sk-redundant { fill: #e6c229; }
+.sk-shape.sk-constr { stroke: #5aa9ff; opacity: 0.9; }
+.sk-shape-sel.sk-full, .sk-shape-sel.sk-conflict, .sk-shape-sel.sk-redundant { stroke: var(--reshape-pink, #ff79c6) !important; }
+/* Constraint marks and dimension lines are red, like every sketcher's. */
+.sk-rule-icon > * { stroke: #ee5b4f; }
+.sk-rule-icon > .sk-rule-dot { fill: #ee5b4f; }
+.sk-rule-glyph.sk-rule-conflict .sk-rule-icon > * { stroke: #ff8a2a; }
+.sk-rule-glyph.sk-rule-conflict .sk-rule-icon > .sk-rule-dot { fill: #ff8a2a; }
+.sk-rule-glyph.sk-rule-redundant .sk-rule-icon > * { stroke: #e6c229; }
+.sk-rule-glyph.sk-rule-redundant .sk-rule-icon > .sk-rule-dot { fill: #e6c229; }
+.sk-dimart { pointer-events: none; }
+.sk-dimart line { stroke: #ee5b4f; stroke-width: 1.1; vector-effect: non-scaling-stroke; }
+.sk-dimart-head { fill: #ee5b4f; stroke: none; }
+.sk-dimart.sk-rule-conflict line { stroke: #ff8a2a; }
+.sk-dimart.sk-rule-conflict .sk-dimart-head { fill: #ff8a2a; }
+.sk-dimart.sk-rule-redundant line { stroke: #e6c229; }
+.sk-dimart.sk-rule-redundant .sk-dimart-head { fill: #e6c229; }
+.sk-dimart.sk-rule-sel line { stroke: var(--reshape-pink, #ff79c6); }
+.sk-dimart.sk-rule-sel .sk-dimart-head { fill: var(--reshape-pink, #ff79c6); }
+.sk2d-dim-chip { color: #ff6a5c; }
+.sk-dimart-ref line { stroke: #4aa3ff; }
+.sk-dimart-ref .sk-dimart-head { fill: #4aa3ff; }
+.sk2d-dim-chip.sk-ref-chip { color: #4aa3ff; }
+.sk2d-tool[aria-pressed="true"] { border-color: var(--reshape-accent, #8be9fd); }
+.sk-ico-fill { fill: currentColor; }
+.sk2d-dim-chip.sk-rule-conflict { color: #ff8a2a; }
+.sk2d-dim-chip.sk-rule-redundant { color: #e6c229; }
+.sk2d-dim-chip.sk-rule-sel { color: var(--reshape-pink, #ff79c6); }
+/* The task panel docked in the right column. */
+.sk-task { display: flex; flex-direction: column; font-family: var(--reshape-font-ui); font-size: 12px;
+  color: var(--reshape-text, #f8f8f2); min-height: 0; flex: 1 1 auto; }
+.sk-task-body { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+.sk-task-sec { flex: 0 1 auto; min-height: 96px; display: flex; flex-direction: column; border-top: 1px solid var(--reshape-border, #44475a); }
+.sk-task-sec .sk-task-list { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+.sk-task-opts { flex: 0 0 auto; }
+.sk-task-foot { flex: 0 0 auto; display: flex; gap: 8px; justify-content: flex-end; padding: 8px 10px;
+  border-top: 1px solid var(--reshape-border, #44475a); }
+.sk-task-btn { min-width: 64px; padding: 4px 12px; border-radius: 3px; cursor: pointer; font: inherit;
+  background: var(--reshape-surface, #1e1f29); color: var(--reshape-text, #f8f8f2);
+  border: 1px solid var(--reshape-border, #44475a); }
+.sk-task-btn.is-primary { border-color: var(--reshape-accent, #8be9fd); color: var(--reshape-accent, #8be9fd); }
+.sk-task-btn:hover { filter: brightness(1.15); }
+.sk-task-head { display: flex; align-items: center; gap: 8px; padding: 8px 10px; font-weight: 600;
+  border-bottom: 1px solid var(--reshape-border, #44475a); }
+.sk-task-head .sk-ico { color: #ee5b4f; }
+.sk-task-status { padding: 8px 10px; line-height: 1.45; border-bottom: 1px solid var(--reshape-border, #44475a); }
+.sk-task-state { font-weight: 600; }
+.sk-st-ok .sk-task-state { color: #5ad07a; }
+.sk-st-warn .sk-task-state { color: #ffb86c; }
+.sk-st-bad .sk-task-state { color: #ff6a5c; }
+.sk-st-info .sk-task-state { color: var(--reshape-text-muted, #6272a4); }
+.sk-task-detail { color: var(--reshape-text-muted, #a4a9c4); }
+.sk-task-ids { margin-left: 6px; }
+.sk-task-id { background: none; border: 0; padding: 0 1px; color: var(--reshape-accent, #8be9fd);
+  text-decoration: underline; cursor: pointer; font: inherit; }
+.sk-task-note { color: var(--reshape-warn, #ffb86c); margin-top: 4px; }
+.sk-task-opts { display: flex; flex-wrap: wrap; gap: 4px 14px; padding: 6px 10px;
+  color: var(--reshape-text-muted, #a4a9c4); border-bottom: 1px solid var(--reshape-border, #44475a); }
+.sk-task-refresh { margin-left: auto; font: inherit; cursor: pointer; padding: 1px 8px; border-radius: 3px;
+  background: var(--reshape-surface, #1e1f29); color: var(--reshape-text, #f8f8f2); border: 1px solid var(--reshape-border, #44475a); }
+.sk-task-filter { padding: 0 10px 4px; color: var(--reshape-text-muted, #a4a9c4); }
+.sk-task-filter label { display: flex; align-items: center; gap: 8px; }
+.sk-task-filter select { flex: 1 1 auto; min-width: 0; font: inherit; background: var(--reshape-surface, #1e1f29);
+  color: var(--reshape-text, #f8f8f2); border: 1px solid var(--reshape-border, #44475a); border-radius: 3px; padding: 1px 4px; }
+.sk-task-vis { margin: 0; flex: 0 0 auto; }
+.sk-task-gear, .sk-task-eye, .sk-task-mode { display: inline-flex; align-items: center; justify-content: center;
+  background: none; border: 1px solid transparent; border-radius: 3px; padding: 1px 3px; cursor: pointer;
+  color: var(--reshape-text-muted, #a4a9c4); font: inherit; }
+.sk-task-mode { color: var(--reshape-text, #f8f8f2); }
+.sk-task-mode .sk-ico { stroke-width: 1.8; }
+.sk-task-gear:hover, .sk-task-eye:hover:not(:disabled), .sk-task-mode:hover { color: var(--reshape-text, #f8f8f2);
+  border-color: var(--reshape-border, #44475a); }
+.sk-task-gear[aria-expanded="true"] { color: var(--reshape-accent, #8be9fd); border-color: var(--reshape-accent, #8be9fd); }
+.sk-task-eye { margin-left: auto; margin-right: 10px; padding: 0 3px; }
+.sk-task-eye:disabled { opacity: 0.4; cursor: default; }
+.sk-task-menu { display: flex; flex-direction: column; gap: 4px; padding: 6px 10px; margin: 0 6px 4px;
+  border: 1px solid var(--reshape-border, #44475a); border-radius: 4px; background: var(--reshape-surface, #1e1f29);
+  color: var(--reshape-text-muted, #a4a9c4); }
+.sk-task-menu label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+.sk-task-modes { display: inline-flex; gap: 1px; flex: 0 0 auto; }
+.sk-task-mode { padding: 1px 2px; }
+.sk-task-mode.is-on { color: var(--reshape-pink, #ff79c6); border-color: var(--reshape-pink, #ff79c6); }
+.sk-task-detail, .sk-task-state { white-space: nowrap; }
+.sk-task-status { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sk-task-note { white-space: normal; }
+.sk-task-sect { display: flex; justify-content: space-between; padding: 6px 10px 4px; font-weight: 600;
+  letter-spacing: 0.04em; text-transform: uppercase; font-size: 11px; color: var(--reshape-text-muted, #a4a9c4); }
+.sk-task-count { font-weight: 400; }
+.sk-task-list { list-style: none; margin: 0; padding: 0 4px 6px; }
+.sk-task-empty { padding: 4px 8px; color: var(--reshape-text-muted, #6272a4); }
+.sk-task-row { display: flex; align-items: center; gap: 7px; padding: 3px 6px; border-radius: 3px; cursor: default; }
+.sk-task-row:hover, .sk-task-row.is-hover { background: rgba(255, 255, 255, 0.06); }
+.sk-task-row.is-sel { background: rgba(255, 121, 198, 0.2); }
+.sk-task-ico { width: 16px; height: 16px; flex: 0 0 auto; color: #ee5b4f; }
+.sk-el-full .sk-task-ico { color: #5ad07a; }
+.sk-el-free .sk-task-ico { color: var(--reshape-text, #f8f8f2); }
+.sk-el-conflict .sk-task-ico, .sk-task-row.sk-rule-conflict .sk-task-ico { color: #ff8a2a; }
+.sk-el-redundant .sk-task-ico, .sk-task-row.sk-rule-redundant .sk-task-ico { color: #e6c229; }
+.sk-task-row.sk-rule-conflict .sk-task-name { color: #ff8a2a; }
+.sk-task-row.sk-rule-redundant .sk-task-name { color: #e6c229; }
+.sk-task-name { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sk-task-val { font-family: var(--reshape-font-mono, monospace); color: #ff6a5c; }
+.sk-task-flag { font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--reshape-text-muted, #6272a4); }
+.sk-el-full .sk-task-flag { color: #5ad07a; }
+.sk-task-del { visibility: hidden; background: none; border: 0; color: var(--reshape-text-muted, #a4a9c4);
+  cursor: pointer; font-size: 14px; line-height: 1; padding: 0 2px; }
+.sk-task-row:hover .sk-task-del, .sk-task-row.is-sel .sk-task-del { visibility: visible; }
+.sk-task-del:hover { color: #ff6a5c; }
+
+/* The sketch canvas is a light drawing sheet, the same paper the 3D viewport
+   uses, so a part moves between the two without the ground changing under it. */
+.sk2d-host { background: #f5f6f8; }
+.sk2d-host .sk-grid { stroke: #7d8397; opacity: 0.26; }
+.sk2d-host .sk-shape { stroke: #232634; stroke-width: 1.8; }
+.sk2d-host .sk-vertex { fill: #232634; }
+.sk2d-host .sk-shape.sk-full { stroke: #1c9c45; }
+.sk2d-host .sk-vertex.sk-full { fill: #1c9c45; }
+.sk2d-host .sk-shape.sk-conflict { stroke: #e8710a; }
+.sk2d-host .sk-vertex.sk-conflict { fill: #e8710a; }
+.sk2d-host .sk-shape.sk-redundant { stroke: #b58f00; }
+.sk2d-host .sk-vertex.sk-redundant { fill: #b58f00; }
+.sk2d-host .sk-shape.sk-constr { stroke: #2f7be0; }
+.sk2d-host .sk-shape-sel { stroke: #d6249f !important; }
+.sk2d-host .sk-vertex-sel { fill: #d6249f; }
+.sk2d-host .sk-origin { fill: #1b7fc4; }
+.sk2d-host .sk-rubber, .sk2d-host .sk-preview { stroke: #1b7fc4; }
+.sk2d-host .sk-snap-glyph, .sk2d-host .sk-snap-glyph > * { stroke: #1b7fc4; }
+.sk2d-host .sk-snap-glyph[data-snap="grid"] { fill: #1b7fc4; }
+.sk2d-host .sk-rule-icon > * { stroke: #d93a2f; }
+.sk2d-host .sk-rule-icon > .sk-rule-dot { fill: #d93a2f; }
+.sk2d-host .sk-rule-glyph.sk-rule-conflict .sk-rule-icon > * { stroke: #e8710a; }
+.sk2d-host .sk-rule-glyph.sk-rule-conflict .sk-rule-icon > .sk-rule-dot { fill: #e8710a; }
+.sk2d-host .sk-rule-glyph.sk-rule-redundant .sk-rule-icon > * { stroke: #b58f00; }
+.sk2d-host .sk-rule-glyph.sk-rule-redundant .sk-rule-icon > .sk-rule-dot { fill: #b58f00; }
+.sk2d-host .sk-rule-glyph.sk-rule-sel .sk-rule-icon > * { stroke: #d6249f; }
+.sk2d-host .sk-rule-glyph.sk-rule-sel .sk-rule-icon > .sk-rule-dot { fill: #d6249f; }
+.sk2d-host .sk-dimart line { stroke: #d93a2f; }
+.sk2d-host .sk-dimart-head { fill: #d93a2f; }
+.sk2d-host .sk-dimart.sk-rule-conflict line { stroke: #e8710a; }
+.sk2d-host .sk-dimart.sk-rule-conflict .sk-dimart-head { fill: #e8710a; }
+.sk2d-host .sk-dimart.sk-rule-redundant line { stroke: #b58f00; }
+.sk2d-host .sk-dimart.sk-rule-redundant .sk-dimart-head { fill: #b58f00; }
+.sk2d-host .sk-dimart.sk-rule-sel line { stroke: #d6249f; }
+.sk2d-host .sk-dimart.sk-rule-sel .sk-dimart-head { fill: #d6249f; }
+.sk2d-host .sk2d-dim-chip { background: #f5f6f8; color: #d93a2f; }
+.sk2d-host .sk-dimart-ref line { stroke: #1b6fd1; }
+.sk2d-host .sk-dimart-ref .sk-dimart-head { fill: #1b6fd1; }
+.sk2d-host .sk2d-dim-chip.sk-ref-chip { color: #1b6fd1; }
+.sk2d-host .sk2d-dim-chip.sk-rule-conflict { color: #e8710a; }
+.sk2d-host .sk2d-dim-chip.sk-rule-redundant { color: #b58f00; }
+.sk2d-host .sk2d-dim-chip.sk-rule-sel { color: #d6249f; border-color: #d6249f; }
+.sk2d-host .sk2d-dim-chip[data-editing="true"], .sk2d-host .sk2d-dim-chip:focus { background: #fff; color: #111; border-color: #1b7fc4; }
+.sk2d-host .sk-dim-ghost { fill: #d93a2f; }
+.sk2d-host .sk-axis-hint { fill: #1b7fc4; }
 `;

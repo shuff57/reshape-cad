@@ -21,7 +21,7 @@
 // row at the end for fixing mistakes" is one easy-to-teach unit, and there is
 // no reach-distance problem here worth optimizing away from that.
 
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { ReactNode } from 'react';
 import {
@@ -34,6 +34,7 @@ import {
   Scissors,
   SquareDashedBottom,
   PenLine,
+  MoveDown,
   MoveUp,
   PanelLeftClose,
   RotateCw,
@@ -78,8 +79,8 @@ import {
   extentAlong,
   isRoundable,
   maxRound,
-  nameMap,
   newExtrude,
+  newPocket,
   newHole,
   newHoleCorners,
   newBlend,
@@ -103,6 +104,9 @@ import { partWordFor, type TopoName } from '@shuff57/reshape-script/topo-name';
 import { ownerOf } from '@shuff57/reshape-script/model-selection';
 import { edgesOf, featuresOf, mixedSelectionNote, ownerScoped, primaryOf, type SelectionItem, type SelectionState } from '../selection-model.js';
 import { withRecess, whyCannotRecess } from './hole-recess.js';
+import ModelTree, { type PropertyBinding } from './ModelTree.js';
+import { treeLabels as nameMap } from './model-tree-core.js';
+import { withoutSuppressed } from './model-tree-core.js';
 import type { RecessKind } from './hole-recess.js';
 
 interface Props {
@@ -200,8 +204,22 @@ interface Props {
    *  "open this" action (Edit 2D for a sketch, Dimensions otherwise), the
    *  same one the context bar's own buttons already call, not a second
    *  entry point. A single click's own `pick()` below is unaffected. */
-  onEditFeature?: (id: string) => void;
+  onEditFeature?: (id: string, isNew?: boolean) => void;
+  /** Named-parameter access for the property view's fx chips (Pad / Pocket). */
+  propertyBinding?: PropertyBinding;
+  /** Features the student switched off (a view state, like the rollback bar:
+   *  the doc is untouched, the kernel is handed a doc without them). */
+  suppressed?: ReadonlySet<string>;
+  onToggleSuppressed?: (id: string) => void;
+  /** The tree's eye overrides: id -> shown (true) / hidden (false). Absent
+   *  means "the default for that kind of row". */
+  visibility?: ReadonlyMap<string, boolean>;
+  /** Set (value true/false) or clear (null) the eye override of these ids. */
+  onSetVisible?: (ids: string[], value: boolean | null) => void;
 }
+
+const EMPTY_ID_SET: ReadonlySet<string> = new Set();
+const EMPTY_VISIBILITY: ReadonlyMap<string, boolean> = new Map();
 
 type BoolOp = 'union' | 'subtract' | 'intersect';
 type PatternMode = 'linear' | 'circular';
@@ -224,6 +242,7 @@ export interface ContextActions {
   recess: (kind: RecessKind) => void;
   hollow: () => void;
   pull: () => void;
+  pocket: () => void;
   spin: () => void;
   turn: () => void;
   repeat: (mode: PatternMode) => void;
@@ -456,7 +475,8 @@ export default function ModelEditor({
   registerContextActions, historyGen,
   hasMesh, onExportSTL, onExportOBJ, onExport3MF,
   canClearModel, onClearModel, activePlane, onActivePlaneChange,
-  sketchMode, onOpenSketch2D, onExitSketch2D, onEditFeature,
+  sketchMode, onOpenSketch2D, onExitSketch2D, onEditFeature, propertyBinding,
+  suppressed, onToggleSuppressed, visibility, onSetVisible,
 }: Props) {
   const [note, setNote] = useState<string | null>(null);
   // Which single rule the student most recently set or changed in the Rules
@@ -675,6 +695,13 @@ export default function ModelEditor({
   const names = nameMap(doc);
   const parts = topLevel(doc);
   const shownIds = new Set(parts.map((f) => f.id));
+  // What is really on screen: the rollback slice minus anything suppressed.
+  // The tree's eyes read this, not `shownIds` (which keeps the timeline's
+  // own dimming rule untouched).
+  const treeTop = useMemo(() => {
+    const sliced = rollbackIndex == null ? doc : { ...doc, features: doc.features.slice(0, rollbackIndex) };
+    return new Set(topLevel(withoutSuppressed(sliced, suppressed ?? EMPTY_ID_SET)).map((f) => f.id));
+  }, [doc, rollbackIndex, suppressed]);
 
   function matches(text: string): boolean {
     const q = search.trim().toLowerCase();
@@ -982,6 +1009,36 @@ export default function ModelEditor({
     onChange({ ...doc, features: [...doc.features, e] });
     setSelected([e.id]);
     say(null);
+    // A new pad opens its task panel: length, direction and the rest are
+    // chosen there, and Cancel takes the pad back out.
+    onEditFeature?.(e.id, true);
+  }
+
+  function pocket() {
+    const f = chosen[0];
+    if (chosen.length !== 1 || !f || f.kind !== 'sketch') {
+      say('Pick a sketch to cut into a solid.');
+      return;
+    }
+    const claim = sketchClaimedBy(doc, f.id);
+    if (claim || doc.features.some((x) => x.kind === 'pocket' && x.target === f.id)) {
+      say('That sketch has already been used to make a shape. Pocket needs a sketch that is still free.');
+      return;
+    }
+    // The solid to cut: the last one built before this sketch, as FreeCAD cuts
+    // into the body's tip. A sketch drawn first has nothing to cut yet.
+    const at = doc.features.findIndex((x) => x.id === f.id);
+    const into = [...topLevel({ ...doc, features: doc.features.slice(0, at < 0 ? doc.features.length : at) })]
+      .reverse().find((x) => x.kind !== 'sketch' && x.kind !== 'datum');
+    if (!into) {
+      say('Pocket needs a solid to cut into. Make a shape first, then sketch on it.');
+      return;
+    }
+    const c = newPocket(doc, f.id, into.id);
+    onChange({ ...doc, features: [...doc.features, c] });
+    setSelected([c.id]);
+    say(null);
+    onEditFeature?.(c.id, true);
   }
 
   function spin() {
@@ -1305,12 +1362,25 @@ export default function ModelEditor({
     say(null);
   }
 
+  /** A plain click on a tree/timeline row REPLACES the whole selection, as
+   *  FreeCAD's tree does: the feature goes in and every viewport pick (face,
+   *  edge, vertex, body) goes out. A pick names geometry of the shape as it
+   *  was when clicked; after a script re-run it is stale, would keep the
+   *  status bar on the old face and stop the row's own tint. */
+  function selectOnly(ids: string[]) {
+    onSelectionChange((s) => ({
+      ...s,
+      items: ids.map((id): SelectionItem => ({ kind: 'feature', target: id })),
+      primary: null,
+    }));
+  }
+
   function pick(id: string, additive: boolean) {
-    setSelected(
-      additive
-        ? selected.includes(id) ? selected.filter((x) => x !== id) : [...selected, id]
-        : [id]
-    );
+    if (additive) {
+      setSelected(selected.includes(id) ? selected.filter((x) => x !== id) : [...selected, id]);
+    } else {
+      selectOnly([id]);
+    }
     say(null);
   }
 
@@ -1377,7 +1447,7 @@ export default function ModelEditor({
   // Group visibility for the search filter: a group's divider and wrapper
   // only render when at least one of its tools' names still matches.
   const sketchVisible = matches('Sketch');
-  const createVisible = [...SHAPE_KINDS.map(shapeLabel), 'Pull', 'Spin'].some(matches);
+  const createVisible = [...SHAPE_KINDS.map(shapeLabel), 'Pull', 'Pocket', 'Spin'].some(matches);
   // 'Bevel' is the button's own current name; 'Fillet'/'Chamfer' are its
   // real CAD terms; 'Angled Corner' is the retired name kept searchable
   // (see FlyoutVariant.alias) -- this group-level gate is separate from
@@ -1425,6 +1495,7 @@ export default function ModelEditor({
       recess: (kind: RecessKind) => recess(kind),
       hollow: () => hollow(),
       pull: () => pull(),
+      pocket: () => pocket(),
       spin: () => spin(),
       turn: () => turn(),
       repeat: (mode: PatternMode) => repeat(mode),
@@ -1498,35 +1569,26 @@ export default function ModelEditor({
           even though the model layer already accepted any plane. */}
       {!(collapsible && collapsed) && (
         <div className="model-browser">
-          <div className="model-browser-section">
-            <div className="model-browser-heading">Parts</div>
-            {parts.length === 0 ? (
-              <p className="model-browser-empty">Nothing built yet.</p>
-            ) : parts.map((f) => (
-              <button
-                key={f.id}
-                type="button"
-                className={'model-browser-row' + (selected.includes(f.id) ? ' is-on' : '')}
-                onClick={(e) => pick(f.id, e.ctrlKey || e.metaKey || e.shiftKey)}
-              >
-                {names[f.id]}
-              </button>
-            ))}
-          </div>
-          <div className="model-browser-section">
-            <div className="model-browser-heading">Planes</div>
-            {(['xy', 'xz', 'yz'] as const).map((pl) => (
-              <button
-                key={pl}
-                type="button"
-                className={'model-browser-row' + (activePlane === pl ? ' is-on' : '')}
-                onClick={() => onActivePlaneChange(pl)}
-                title={`Use the ${pl.toUpperCase()} plane for the next new sketch`}
-              >
-                {pl.toUpperCase()} Plane
-              </button>
-            ))}
-          </div>
+          <ModelTree
+            doc={doc}
+            selected={selected}
+            refusals={refusals}
+            rollbackIndex={rollbackIndex}
+            suppressed={suppressed ?? EMPTY_ID_SET}
+            visibility={visibility ?? EMPTY_VISIBILITY}
+            topLevelIds={treeTop}
+            activePlane={activePlane}
+            onPick={pick}
+            onSelectMany={(ids) => { selectOnly(ids); say(null); }}
+            onPlane={onActivePlaneChange}
+            onSetVisible={(ids, value) => onSetVisible?.(ids, value)}
+            onEdit={(id) => onEditFeature?.(id)}
+            onMenu={(id, x, y) => setTlMenu({ id, x, y })}
+            onDelete={deleteById}
+            onChangeFeature={(next) => onChange({ ...doc, features: doc.features.map((x) => (x.id === next.id ? next : x)) })}
+            onToggleSuppressed={onToggleSuppressed}
+            propertyBinding={propertyBinding}
+          />
         </div>
       )}
       {ribbonHost ? createPortal(
@@ -1641,6 +1703,15 @@ export default function ModelEditor({
                     title="Pull the selected sketch straight up into a solid"
                   >
                     <MoveUp size={14} /> Pull
+                  </button>
+                )}
+                {matches('Pocket') && (
+                  <button
+                    onClick={pocket}
+                    disabled={chosen.length !== 1 || chosen[0]?.kind !== 'sketch'}
+                    title="Cut the selected sketch down into the solid"
+                  >
+                    <MoveDown size={14} /> Pocket
                   </button>
                 )}
                 {matches('Spin') && (
@@ -1955,7 +2026,7 @@ export default function ModelEditor({
                 </button>
                 <li
                   className={
-                    'model-row' + (on ? ' is-on' : '') + (shownIds.has(f.id) ? '' : ' is-consumed') + (rolledBack ? ' is-rolled-back' : '') + (refusedWhy ? ' is-refused' : '')
+                    'model-row' + (on ? ' is-on' : '') + (shownIds.has(f.id) ? '' : ' is-consumed') + (rolledBack ? ' is-rolled-back' : '') + (refusedWhy ? ' is-refused' : '') + (suppressed?.has(f.id) ? ' is-suppressed' : '')
                   }
                   onClick={(e) => pick(f.id, e.ctrlKey || e.metaKey || e.shiftKey)}
                   onDoubleClick={() => onEditFeature?.(f.id)}
@@ -2270,8 +2341,22 @@ export default function ModelEditor({
                 onRollback?.(rollbackIndex === i + 1 ? null : i + 1);
               }}
             >
-              Rollback to here
+              Set tip here
             </button>
+            {onToggleSuppressed && (
+              <button
+                type="button"
+                role="menuitem"
+                className="tl-menu-row"
+                onClick={() => {
+                  const id = tlMenu.id;
+                  setTlMenu(null);
+                  onToggleSuppressed(id);
+                }}
+              >
+                {suppressed?.has(tlMenu.id) ? 'Unsuppress' : 'Suppress'}
+              </button>
+            )}
           </div>
         </>
       )}
@@ -2461,6 +2546,7 @@ export default function ModelEditor({
         /* Suppressed by the rollback bar: features at or past the boundary are
            hidden from the rebuilt model. More suppressed than is-consumed so
            the two read as distinct states (a feature can be both). */
+        .model-timeline .model-row.is-suppressed .model-name { text-decoration: line-through; opacity: 0.6; }
         .model-timeline .model-row.is-rolled-back { opacity: 0.35; filter: grayscale(0.6); }
         /* The rollback tick between chips: a hairline divider, click-to-set
            (the timeline's ROWS drag-reorder now, Phase 4.4; this tick stays

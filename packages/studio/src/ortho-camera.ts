@@ -18,6 +18,18 @@ export function loadCameraMode(): CameraMode {
   return CameraMode.PERSPECTIVE;
 }
 
+/** The mode a fresh viewport opens in: whatever the student last chose, and
+ *  ORTHOGRAPHIC when nothing is stored -- a drafting part is read with parallel
+ *  edges (as FreeCAD opens it), not with perspective foreshortening.
+ *  loadCameraMode() keeps its own historical perspective fallback. */
+export function initialCameraMode(): CameraMode {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored === 'perspective' || stored === 'orthographic') return stored as CameraMode;
+  } catch { /* ignore */ }
+  return CameraMode.ORTHOGRAPHIC;
+}
+
 export function saveCameraMode(mode: CameraMode): void {
   try { localStorage.setItem(STORAGE_KEY, mode); } catch { /* ignore */ }
 }

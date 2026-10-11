@@ -69,17 +69,19 @@ import type { LineSegments2 as LineSegments2Type } from 'three/examples/jsm/line
 import type { LineSegmentsGeometry as LineSegmentsGeometryType } from 'three/examples/jsm/lines/LineSegmentsGeometry.js';
 import type { LineMaterial as LineMaterialType } from 'three/examples/jsm/lines/LineMaterial.js';
 import type { Feature, ModelDoc } from '@shuff57/reshape-script/model-types';
-import { topLevel, sketchFrameOf } from '@shuff57/reshape-script/model-types';
+import { sketchFrameOf } from '@shuff57/reshape-script/model-types';
 import { rootFeature, type TopoName } from '@shuff57/reshape-script/topo-name';
-import type { EngineAdapter, EngineBuildResult, FaceRange } from '@shuff57/reshape-brep-adapter/engine-adapter';
+import { nameLostBetween } from '../selection-model.js';
+import type { EngineAdapter, EngineBuildResult, EngineMesh, FaceRange } from '@shuff57/reshape-brep-adapter/engine-adapter';
 import { BrepRsEngineAdapter } from '@shuff57/reshape-brep-adapter/brep-rs-engine-adapter';
 import type { HandleSpec } from '@shuff57/reshape-script/model-handles';
 import type { AnchorPoint } from './HandleOverlay.js';
+import { highlightedShapeIds, shapesToDraw } from './model-tree-core.js';
 import { mergeMeshes, type MeshInput } from '../mesh-export.js';
 import { bboxCenter, DEFAULT_FILL_FRACTION, fitDistance, type Box3Like } from '../camera-fit.js';
 import { CUBE_ZONE_CELL, cubeZoneAt, cubeZoneDirs, type CubeFaceKey, type CubeZone } from './cube-zone.js';
 import { DEFAULT_SCHEME_NAME, MOUSE_SCHEMES, loadSchemeName, navHint, saveSchemeName, schemeToMouseButtons, schemeToTouches, type MouseScheme } from '../camera-controls.js';
-import { CameraMode, loadCameraMode, orthoFrustumFromPerspective, saveCameraMode } from '../ortho-camera.js';
+import { CameraMode, initialCameraMode, orthoFrustumFromPerspective, saveCameraMode } from '../ortho-camera.js';
 import { computeSelectionFit, computeWindowZoomFit, type Vec3 } from '../window-zoom-fit.js';
 import { nearestVisible, nextCycleIndex, shouldHandleViewportDelete, solidBounds } from '../pick-helpers.js';
 import { HOLD_CYCLE_DELAY_MS, HOLD_CYCLE_DEAD_ZONE_PX } from '../input-threshold.js';
@@ -99,15 +101,36 @@ const MARKING_GESTURE: GestureThresholds = { delayMs: 150, deadZonePx: HOLD_CYCL
 /** The Dracula palette this app already uses everywhere else -- see
  *  app/globals.css and BrepViewport.tsx. */
 const COLORS = {
-  bg: '#282a36',
-  panel: '#21222c',
-  line: '#44475a',
-  fg: '#f8f8f2',
-  dim: '#6272a4',
-  ok: '#50fa7b',
-  bad: '#ff5555',
-  accent: '#bd93f9',
+  // Light, flat, FreeCAD-like stage (measured: its 3D view clears to one
+  // flat #f7f7f7, no gradient). The overlay chips sit on it as white pills.
+  bg: '#f7f7f7',
+  panel: '#ffffff',
+  line: '#c3c8cf',
+  fg: '#1f2933',
+  dim: '#5b6573',
+  ok: '#1a7f37',
+  bad: '#c62828',
+  accent: '#6d4fd6',
 };
+
+/** Pick colours. Selection is green and pre-selection (hover) is yellow, the
+ *  convention a FreeCAD user already reads without thinking. Both are plain
+ *  display colours here -- no code or asset of FreeCAD's is involved. */
+const PICK_COLORS = { hover: 0xe1e114, selected: 0x1cad1c } as const;
+
+/** One flat shaded-part colour (a cool grey) and plain black edges, the two
+ *  facts that make a part read as an engineering drawing rather than a toy. */
+const BODY_COLOR = 0x9da3a8;
+const EDGE_COLOR = 0x000000;
+const EDGE_LINE_WIDTH_PX = 1.6;
+
+/** Where the single camera-attached light sits, in VIEW space (x right, y up,
+ *  z toward the viewer), as an unnormalised vector: mostly a headlight, leaning
+ *  up and to the left. Measured from the reference part's three visible faces
+ *  (top : front : side brightness 1 : 0.87 : 0.38) so the same part reads with
+ *  the same face-to-face contrast. It moves WITH the camera, so no face ever
+ *  turns black when the student orbits underneath. */
+const HEADLIGHT_VIEW: [number, number, number] = [-0.354, 0.306, 1.3];
 
 // View-strip preset directions, as [x, y, z] to normalise at click time.
 // Z-UP, not Y-up -- this scene sets `camera.up.set(0, 0, 1)` (see the scene
@@ -126,15 +149,15 @@ const COLORS = {
 // up facing you"), and +Y is the axis Home's own camera position leans on
 // hardest (160, the largest of the three coordinates) -- the axis already
 // facing the viewer in the starting view.
-const HOME_DIR: [number, number, number] = [140, 160, 130];
+const HOME_DIR: [number, number, number] = [1, -1, 1];
 const TOP_DIR: [number, number, number] = [0.001, 0.001, 1];
-const FRONT_DIR: [number, number, number] = [0, 1, 0];
+const FRONT_DIR: [number, number, number] = [0, -1, 0];
 const UNDERNEATH_DIR: [number, number, number] = [0.001, 0.001, -1];
 // Nav cube's other three faces -- same Z-up/Y-front convention as above, no
 // epsilon needed since none of these sit on the up axis.
 const RIGHT_DIR: [number, number, number] = [1, 0, 0];
 const LEFT_DIR: [number, number, number] = [-1, 0, 0];
-const BACK_DIR: [number, number, number] = [0, -1, 0];
+const BACK_DIR: [number, number, number] = [0, 1, 0];
 
 // A sketch's own (u, v) axes and normal, per plane -- fitToModel()'s only use
 // (see that function's own comment for why). Matches lib/model-handles.ts's
@@ -164,6 +187,17 @@ export interface BrepViewportStats {
    *  computes. Absent when the scene is not ready or nothing is drawn, so a
    *  caller's readout can hide rather than show zeros. */
   dimsMm?: { x: number; y: number; z: number };
+  /** True when shapes DID build but the model tree's eyes hid every one of
+   *  them: nothing is drawn, and that is the student's choice, not an empty
+   *  build. Absent otherwise. */
+  hiddenByEye?: boolean;
+  /** Does a face/edge pick's NAME no longer resolve on this build? True only
+   *  when it resolved on the build before this one and does not on this one,
+   *  with its owning shape built both times -- a name the kernel never could
+   *  resolve (some names it hands out it cannot resolve back yet) is not
+   *  "lost", and neither is one whose shape is switched off. Asks the kernel,
+   *  so call it only for the picks actually held. */
+  nameLost?: (target: string, kind: 'face' | 'edge', name: TopoName) => boolean;
 }
 
 /**
@@ -212,6 +246,10 @@ export type ViewportPick =
 
 interface Props {
   doc: ModelDoc;
+  /** The model tree's eye overrides, id -> shown/hidden. A solid set to false
+   *  is not drawn; a feature the model consumed (a Pad under a Chamfer) set to
+   *  true is drawn beside the result. Absent means every top-level solid. */
+  visibility?: ReadonlyMap<string, boolean>;
   /** Chord tolerance in mm, passed straight to the adapter's mesh(). Left
    *  undefined to take the kernel's own default. */
   deflection?: number;
@@ -333,6 +371,11 @@ interface Props {
   /** Ids of datum planes currently selected (timeline), drawn brighter. A
    *  datum has no mesh, so the viewport cannot learn this from a pick. */
   selectedDatumIds?: string[];
+  /** Feature ids selected in the model tree. Their solids are tinted green
+   *  in the viewport (the selected-object colour), so a tree click and a
+   *  viewport click read as one selection. Empty while a face/edge pick is
+   *  the selection, which has its own highlight. */
+  selectedFeatureIds?: string[];
   /** A click that lands on a datum plane and on no solid face or edge. Datums
    *  have no mesh, so this is separate from `onPick`; the modifiers say whether
    *  the click accumulates (Ctrl/Shift/Cmd) or replaces the selection. */
@@ -475,7 +518,28 @@ interface Props {
    * feature's op colour (manipulator-core's previewTint). Absent or
    * inactive draws the committed material, exactly as before.
    */
-  preview?: { active: boolean; tint: 'add' | 'cut' } | null;
+  preview?: { active: boolean; tint: 'add' | 'cut'; featureIds?: string[] } | null;
+  /**
+   * The Pad / Pocket task panel's direction arrow: an arrow standing on the
+   * profile and pointing the way the pad grows or the pocket cuts, drawn over
+   * the model like FreeCAD's. Absent draws none.
+   */
+  previewArrow?: { origin: [number, number, number]; dir: [number, number, number] } | null;
+  /** A task panel is previewing a draft: if the kernel refuses it and nothing
+   *  else is built, show an empty stage and report the refusal (the panel says
+   *  it) instead of the whole-model "Could not build" banner. */
+  draftPreview?: boolean;
+  /**
+   * A second document built only for its refusals, never drawn: the Pad /
+   * Pocket panel's draft in place of its feature, checked while only the
+   * draft's overlay block is on screen (a block that builds on its own says
+   * nothing about the draft cut into the part). Each build is reported through
+   * `onCheck` with the document it built, so a caller can tell a late answer
+   * from the one it is waiting for. When it is the document drawn, that one
+   * build answers both.
+   */
+  checkDoc?: ModelDoc | null;
+  onCheck?: (r: { doc: ModelDoc; refusals?: Map<string, string>; error: string | null }) => void;
 }
 
 /** Module-level, not per-component: two viewports in one session share the
@@ -625,9 +689,10 @@ const FILTER_CHIPS: { key: keyof SelectionFilters; label: string }[] = [
  * every feature from scratch through the adapter's build().
  */
 export default function BrepViewportThree({
-  doc, deflection, onStats, onPick, pick, selectedCount, selectionLabel, anchors, onAnchors, onMesh, registerPickAt,
-  sketchPlane, selectedDatumIds, onDatumPick, panelOcclusionPx, ruleActivityAt, onEngine, badgesInStatusBar = false, onNavHint, filters, onFiltersChange, onBoxSelect,
-  onFeatureDoubleClick, onSelectAll, onDeleteSelected, onUndo, onRedo, onStartSketch, onRepeat, onMoveHotkey, preview,
+  doc, visibility, deflection, onStats, onPick, pick, selectedCount, selectionLabel, anchors, onAnchors, onMesh, registerPickAt,
+  sketchPlane, selectedDatumIds, selectedFeatureIds, onDatumPick, panelOcclusionPx, ruleActivityAt, onEngine, badgesInStatusBar = false, onNavHint, filters, onFiltersChange, onBoxSelect,
+  onFeatureDoubleClick, onSelectAll, onDeleteSelected, onUndo, onRedo, onStartSketch, onRepeat, onMoveHotkey, preview, previewArrow, draftPreview,
+  checkDoc, onCheck,
 }: Props) {
   const [phase, setPhase] = useState<'loading' | 'ready' | 'error'>('loading');
   // Section view: a display-only clipping plane. The kernel and the model are
@@ -653,7 +718,7 @@ export default function BrepViewportThree({
   const [mouseScheme, setMouseScheme] = useState<MouseScheme>(() => loadSchemeName());
   const mouseSchemeRef = useRef<MouseScheme>(mouseScheme);
   mouseSchemeRef.current = mouseScheme;
-  const [cameraKind, setCameraKind] = useState<CameraMode>(() => loadCameraMode());
+  const [cameraKind, setCameraKind] = useState<CameraMode>(() => initialCameraMode());
   // Same stale-closure reasoning as docRef below: the scene-setup effect's
   // applyCameraMode() was created once and reads this ref, never the state.
   const cameraKindRef = useRef<CameraMode>(cameraKind);
@@ -683,6 +748,13 @@ export default function BrepViewportThree({
   // so 60x/sec orientation reads never trigger a React re-render.
   const navCubeInnerRef = useRef<HTMLDivElement | null>(null);
   const cubeDragRef = useRef({ dragging: false, x: 0, y: 0, moved: false });
+  // The on-canvas tool chips (view strip, pick filters, Section) stay out of
+  // the picture until the pointer or keyboard focus is in the viewport: the
+  // stage itself is just the part, the cube and the axis triad.
+  const [uiHot, setUiHot] = useState(false);
+  // The small orientation triad in the corner: three line + label pairs the
+  // rAF poll below rewrites in place (a ref, not state, same reason as the cube).
+  const triadRef = useRef<SVGSVGElement | null>(null);
   // Todo 28 (SPEC Phase 1.5): the cube's own small menu, opened by the
   // affordance icon on the cube -- NEVER by right-click (the marking menu
   // owns right-click everywhere, cube included; two competing menus over
@@ -743,6 +815,27 @@ export default function BrepViewportThree({
         const azimDeg = -theta * (180 / Math.PI);
         el.style.transform = `rotateX(${elevDeg}deg) rotateY(${azimDeg}deg)`;
       }
+      const tri = triadRef.current;
+      if (camera && tri) {
+        // Screen position of each world axis = its dot with the camera's own
+        // right and up vectors (columns 0 and 1 of the camera's world matrix).
+        camera.updateMatrixWorld();
+        const m = camera.matrixWorld.elements;
+        const half = TRIAD_SIZE / 2;
+        const len = half - 9;
+        const ends = [[1, 0, 0], [0, 1, 0], [0, 0, 1]].map((a) => [
+          half + (a[0] * m[0] + a[1] * m[1] + a[2] * m[2]) * len,
+          half - (a[0] * m[4] + a[1] * m[5] + a[2] * m[6]) * len,
+        ]);
+        tri.querySelectorAll('line').forEach((ln, i) => {
+          ln.setAttribute('x2', String(ends[i][0])); ln.setAttribute('y2', String(ends[i][1]));
+        });
+        tri.querySelectorAll('text').forEach((tx, i) => {
+          const dx = ends[i][0] - half; const dy = ends[i][1] - half;
+          const l = Math.hypot(dx, dy) || 1;
+          tx.setAttribute('x', String(ends[i][0] + (dx / l) * 6)); tx.setAttribute('y', String(ends[i][1] + (dy / l) * 6 + 3));
+        });
+      }
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
@@ -759,6 +852,10 @@ export default function BrepViewportThree({
   const [loadingNote, setLoadingNote] = useState('loading the modelling kernel + three.js');
 
   const containerRef = useRef<HTMLDivElement | null>(null);
+  /** The empty-stage grid and axes (see the scene setup), hidden while a part is drawn. */
+  const sceneGuidesRef = useRef<THREE_NS.Object3D[]>([]);
+  /** The shared material of the drawn edge lines; its resolution follows the canvas. */
+  const edgeLineMaterialRef = useRef<LineMaterialType | null>(null);
   const engineRef = useRef<EngineAdapter | null>(null);
   const threeRef = useRef<Awaited<ReturnType<typeof loadThree>> | null>(null);
 
@@ -980,7 +1077,21 @@ export default function BrepViewportThree({
    *  clicking the viewport) can re-run restorePicks() without repeating the
    *  actual kernel rebuild -- see the effect below that watches `pick`. */
   const lastBuiltRef = useRef<EngineBuildResult | null>(null);
+  /** The kernel build of the document drawn, kept with the document it came
+   *  from. An eye click changes only which built shapes are drawn, so the build
+   *  effect below re-filters this build instead of rebuilding the same doc; a
+   *  new doc (a new object) builds afresh. The draft check reuses it when it
+   *  asks for the very document drawn. */
+  const buildCacheRef = useRef<{
+    doc: ModelDoc; engine: EngineAdapter; built: EngineBuildResult; buildMs: number;
+    /** Each drawn shape's kernel mesh at `meshDeflection`, so an eye click does not re-mesh either. The scene
+     *  draws a clone: drawGeoms() disposes what it drew last time, and this copy must outlive that. */
+    meshes: Map<string, EngineMesh | null>; meshDeflection: number | undefined;
+  } | null>(null);
   const lastMeshesRef = useRef<THREE_NS.Mesh[]>([]);
+  const selectedFeatureIdsRef = useRef<string[]>([]);
+  selectedFeatureIdsRef.current = selectedFeatureIds ?? [];
+  const tintMaterialsRef = useRef<THREE_NS.Material[]>([]);
 
   // ---- load the engine + three.js once --------------------------------------
   //
@@ -1036,7 +1147,7 @@ export default function BrepViewportThree({
     const aspect0 = container.clientWidth / Math.max(1, container.clientHeight);
     const perspCamera = new THREE.PerspectiveCamera(45, aspect0, 0.1, 5000);
     perspCamera.up.set(0, 0, 1);
-    perspCamera.position.set(140, 160, 130);
+    perspCamera.position.set(HOME_DIR[0] * 144, HOME_DIR[1] * 144, HOME_DIR[2] * 144);
     perspCamera.lookAt(0, 0, 0);
     const orthoDist0 = perspCamera.position.length();
     const orthoFrame0 = orthoFrustumFromPerspective(
@@ -1048,7 +1159,7 @@ export default function BrepViewportThree({
       orthoFrame0.near, orthoFrame0.far,
     );
     orthoCamera.up.set(0, 0, 1);
-    orthoCamera.position.set(140, 160, 130);
+    orthoCamera.position.copy(perspCamera.position);
     orthoCamera.lookAt(0, 0, 0);
     const camera = initialKind === CameraMode.ORTHOGRAPHIC ? orthoCamera : perspCamera;
     inactiveCameraRef.current = initialKind === CameraMode.ORTHOGRAPHIC ? perspCamera : orthoCamera;
@@ -1074,42 +1185,34 @@ export default function BrepViewportThree({
     renderer.domElement.tabIndex = 0;
     renderer.domElement.style.outline = 'none';
 
-    const ambient = new THREE.AmbientLight(0xffffff, 0.6);
-    const key = new THREE.DirectionalLight(0xffffff, 1.4);
-    key.position.set(100, 200, 150);
-    const fill = new THREE.DirectionalLight(0xffffff, 0.4);
-    fill.position.set(-120, -80, 60);
-    // Every light above sits at a POSITIVE z -- fine for the top-down Home
-    // view, but it leaves every face whose normal points the other way (the
-    // underside of a box, the far wall of a through hole) lit by ambient
-    // alone. `under` mirrors `fill`'s x/y lean with a NEGATIVE z so the
-    // "Underneath" view strip preset (see lookFrom() above; this scene is
-    // Z-up) actually shows something instead of a near-black silhouette --
-    // it's the light this component was missing, not a from-below CAMERA
-    // preset also having to add its own light. 1.0 (roughly `key`'s order,
-    // not `fill`'s -- 0.5 measured too dim: the bottom face landed at only
-    // ~1.86x the background's brightness, short of the 2x floor a hole's
-    // exit needs to read as a hole and not a shadow) but confined to the
-    // -z hemisphere, so it adds NOTHING to any face the Home view can see --
-    // measured at an exact 0 pixel diff over the model region, before vs.
-    // after this light existed at all.
-    const under = new THREE.DirectionalLight(0xffffff, 1.0);
-    under.position.set(-100, -80, -150);
-    // A default box's top face and its brighter of the two visible side
-    // faces measured only 2.9% apart in luminance from Home (a blind judge
-    // credited Chili3D "better face shading" over exactly this) -- `key`
-    // and `fill` both lean into x/y, so neither one separates a horizontal
-    // top from a near-vertical side by much. `overhead` points straight
-    // down the +z axis (dot product with the two side faces' normals is
-    // exactly 0 -- it cannot touch them, by construction, not by tuning),
-    // adding light to the top face alone. Measured with a default
-    // 40x40x20 box, Home view (WebGL readPixels, not a screenshot):
-    // top/right/left luminance (0-255) was 95.1 / 91.1 / 75.4 (top-right
-    // gap 2.9%) and is now 110.3 / 91.1 / 75.4 -- pairwise gaps 17.4%,
-    // 31.6%, 17.2%, all past the 12% floor. See verify-shading.py.
-    const overhead = new THREE.DirectionalLight(0xffffff, 0.45);
-    overhead.position.set(0, 0, 300);
-    scene.add(ambient, key, fill, under, overhead);
+    // ONE camera-attached light plus a whisper of ambient. The light's vector
+    // is fixed in VIEW space (HEADLIGHT_VIEW) and re-expressed in world space
+    // just before every render, so whatever the camera does the lit side of a
+    // part stays toward the viewer and top : front : side keep one contrast.
+    // (Replaces a fixed rig of five world-space lights tuned for a different
+    // look; those left the undersides to a special extra light.)
+    // MeshLambertMaterial output is colour * intensity * n.l / PI, so the
+    // intensity carries a PI to read as a plain 0..1 brightness.
+    const ambient = new THREE.AmbientLight(0xffffff, Math.PI * 0.02);
+    const headlightLen = Math.hypot(...HEADLIGHT_VIEW);
+    const headlight = new THREE.DirectionalLight(0xffffff, Math.PI * headlightLen);
+    scene.add(ambient, headlight, headlight.target);
+    scene.onBeforeRender = (_r, _s, cam) => {
+      cam.updateMatrixWorld();
+      const e = cam.matrixWorld.elements;
+      const [vx, vy, vz] = HEADLIGHT_VIEW;
+      headlight.position.set(
+        (e[0] * vx + e[4] * vy + e[8] * vz) * 100,
+        (e[1] * vx + e[5] * vy + e[9] * vz) * 100,
+        (e[2] * vx + e[6] * vy + e[10] * vz) * 100,
+      );
+      headlight.target.position.set(0, 0, 0);
+      // This hook runs AFTER the renderer's own scene-matrix update, so the
+      // light's world matrices would otherwise lag the camera by one frame
+      // (a face going black for a render after every orbit step).
+      headlight.updateMatrixWorld(true);
+      headlight.target.updateMatrixWorld(true);
+    };
 
     // Default GridHelper lies in the XZ (y=0) plane -- a Y-up convention.
     // Rotated onto the XY (z=0) plane to match the Z-up scene.
@@ -1149,7 +1252,7 @@ export default function BrepViewportThree({
     // report. Halved to 80/40 (same 5-unit cell size, 16 divisions instead
     // of 24) so they terminate inside frame at Home's own default fit
     // instead of only at some larger, incidental zoom-out.
-    const rawGrid = new THREE.GridHelper(80, 16, 0x6272a4, 0x44475a);
+    const rawGrid = new THREE.GridHelper(80, 16, 0x8a929c, 0xc9ced5);
     const gridGeometry = new LineSegmentsGeometry();
     gridGeometry.setPositions(Array.from(rawGrid.geometry.attributes.position.array as ArrayLike<number>));
     gridGeometry.setColors(Array.from(rawGrid.geometry.attributes.color.array as ArrayLike<number>));
@@ -1157,7 +1260,7 @@ export default function BrepViewportThree({
     const gridMaterial = new LineMaterial({
       vertexColors: true,
       transparent: true,
-      opacity: 0.35,
+      opacity: 0.8,
       linewidth: 1,
       worldUnits: false,
       depthTest: true,
@@ -1199,6 +1302,13 @@ export default function BrepViewportThree({
     axesMaterial.resolution.set(container.clientWidth, container.clientHeight);
     const axes = new LineSegments2(axesGeometry, axesMaterial);
     scene.add(axes);
+
+    // The ground grid and the world axes are an EMPTY-stage aid ("here is the
+    // ground you will build on"). Once a part exists they only clutter it --
+    // an axis line pierced straight through the solid -- so drawGeoms()
+    // hides both while anything is drawn (a drafting view is the part alone,
+    // with the orientation triad in the corner telling which way is which).
+    sceneGuidesRef.current = [grid, axes];
 
     const solidGroup = new THREE.Group();
     scene.add(solidGroup);
@@ -1337,6 +1447,7 @@ export default function BrepViewportThree({
       // screen, not merely mis-scaled.
       gridMaterial.resolution.set(w, h);
       axesMaterial.resolution.set(w, h);
+      edgeLineMaterialRef.current?.resolution.set(w, h);
       renderNow();
       // A resize can happen with no orbit gesture in progress at all (the
       // student never touched the camera), so this cannot wait for
@@ -1374,7 +1485,7 @@ export default function BrepViewportThree({
     const hoverFaceMesh = new THREE.Mesh(
       new THREE.BufferGeometry(),
       new THREE.MeshBasicMaterial({
-        color: 0x8be9fd, transparent: true, opacity: 0.35,
+        color: PICK_COLORS.hover, transparent: true, opacity: 0.7,
         polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -4,
       }),
     );
@@ -1385,7 +1496,7 @@ export default function BrepViewportThree({
     const selectedFaceMesh = new THREE.Mesh(
       new THREE.BufferGeometry(),
       new THREE.MeshBasicMaterial({
-        color: 0xff79c6, transparent: true, opacity: 0.5,
+        color: PICK_COLORS.selected, transparent: true, opacity: 0.85,
         polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -4,
       }),
     );
@@ -1403,7 +1514,7 @@ export default function BrepViewportThree({
     // comment) -- a click only ever moves it and flips `.visible`.
     const hoverVertexMesh = new THREE.Mesh(
       new THREE.SphereGeometry(VERTEX_MARKER_RADIUS, 12, 8),
-      new THREE.MeshBasicMaterial({ color: 0x8be9fd }),
+      new THREE.MeshBasicMaterial({ color: PICK_COLORS.hover }),
     );
     hoverVertexMesh.visible = false;
     hoverVertexMesh.renderOrder = 2;
@@ -1411,7 +1522,7 @@ export default function BrepViewportThree({
 
     const selectedVertexMesh = new THREE.Mesh(
       new THREE.SphereGeometry(VERTEX_MARKER_RADIUS, 12, 8),
-      new THREE.MeshBasicMaterial({ color: 0xff79c6 }),
+      new THREE.MeshBasicMaterial({ color: PICK_COLORS.selected }),
     );
     selectedVertexMesh.visible = false;
     selectedVertexMesh.renderOrder = 2;
@@ -1464,10 +1575,10 @@ export default function BrepViewportThree({
     // re-derived from the comment alone) with no flicker at any distance
     // tried.
     const hoverEdgeMaterial = new THREE.MeshBasicMaterial({
-      color: 0x8be9fd, polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -4,
+      color: PICK_COLORS.hover, polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -4,
     });
     const selectedEdgeMaterial = new THREE.MeshBasicMaterial({
-      color: 0xff79c6, polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -4,
+      color: PICK_COLORS.selected, polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -4,
     });
     hoverEdgeMaterialRef.current = hoverEdgeMaterial;
     selectedEdgeMaterialRef.current = selectedEdgeMaterial;
@@ -2649,6 +2760,14 @@ export default function BrepViewportThree({
     setPreset(entry.preset);
   }
 
+  /** The arrows around the cube: a fixed 45 degree step about the part, or
+   *  Home. Routed from the wrapper's pointerup like the faces are. */
+  function fireOrbit(id: string) {
+    if (id === 'home') { fitToModel(HOME_DIR); setPreset('home'); return; }
+    const arrow = CUBE_ARROWS.find((a) => a.id === id);
+    if (arrow) orbitByDelta(arrow.d[0], arrow.d[1]);
+  }
+
   /** Todo 28: a right-click ANYWHERE over the cube opens the same marking
    *  menu the canvas path opens (todo 17 owns right-click everywhere; the
    *  wrapper captures pointerdown, so the canvas classifier never sees these
@@ -2756,6 +2875,37 @@ export default function BrepViewportThree({
     return box;
   }
 
+  /**
+   * How far back the camera sits, and (orthographic only) what zoom, so the
+   * model's BOUNDING SPHERE just fits with a small margin -- the way a drafting
+   * package frames a part ("view fit"), instead of fitting the longest side to
+   * 45% of the frame, which left an isometric part a small island in the
+   * middle. The sphere is the part's own bbox diagonal: it does not depend on
+   * which way the camera looks, so every standard view lands at one scale.
+   * `zoom` is 1 for a perspective camera (distance alone sets its scale).
+   */
+  function sphereFit(bbox: Box3Like, w: number, h: number, fov: number): { distance: number; zoom: number } {
+    const c = bboxCenter(bbox);
+    const diam = Math.hypot(bbox.max[0] - bbox.min[0], bbox.max[1] - bbox.min[1], bbox.max[2] - bbox.min[2]);
+    const half = diam / 2;
+    const cube: Box3Like = {
+      min: [c[0] - half, c[1] - half, c[2] - half],
+      max: [c[0] + half, c[1] + half, c[2] + half],
+    };
+    // A cube of side `diam` has longest dimension `diam`; fill 1 puts the
+    // sphere's diameter on the shorter side of the frame, the scale a
+    // drafting package's "view fit" lands at (measured on the reference part:
+    // visible height = 0.99 x bounding-sphere diameter).
+    const distance = fitDistance(cube, w, h, fov, 1);
+    let zoom = 1;
+    const cam = cameraRef.current as THREE_NS.OrthographicCamera | null;
+    if (cam && (cam as THREE_NS.OrthographicCamera).isOrthographicCamera) {
+      const visibleHalf = Math.tan((fov * Math.PI) / 360) * distance;
+      zoom = cam.top / Math.max(1e-6, visibleHalf);
+    }
+    return { distance, zoom };
+  }
+
   function fitToModel(dir: [number, number, number]) {
     const three = threeRef.current;
     const camera = cameraRef.current;
@@ -2774,11 +2924,15 @@ export default function BrepViewportThree({
     };
     const center = bboxCenter(bbox);
     const perspCamera = camera as THREE_NS.PerspectiveCamera;
-    const distance = fitDistance(bbox, container.clientWidth, container.clientHeight, perspCamera.fov ?? 45);
+    const { distance, zoom } = sphereFit(bbox, container.clientWidth, container.clientHeight, perspCamera.fov ?? 45);
 
     const direction = new THREE.Vector3(dir[0], dir[1], dir[2]).normalize();
     controls.target.set(center[0], center[1], center[2]);
     camera.position.copy(controls.target).addScaledVector(direction, distance);
+    if ((camera as THREE_NS.OrthographicCamera).isOrthographicCamera) {
+      (camera as THREE_NS.OrthographicCamera).zoom = zoom;
+      (camera as THREE_NS.OrthographicCamera).updateProjectionMatrix();
+    }
     controls.update();
     renderer.render(scene, camera);
     // Same reasoning as lookFrom()'s own final line: this sets camera state
@@ -2933,7 +3087,7 @@ export default function BrepViewportThree({
       camera.position.y - controls.target.y,
       camera.position.z - controls.target.z,
     );
-    if (direction.lengthSq() < 1e-12) direction.set(140, 160, 130);
+    if (direction.lengthSq() < 1e-12) direction.set(HOME_DIR[0], HOME_DIR[1], HOME_DIR[2]);
     direction.normalize();
     controls.target.copy(toTarget);
     camera.position.copy(toTarget).addScaledVector(direction, distance);
@@ -2983,7 +3137,7 @@ export default function BrepViewportThree({
       camera.position.y - controls.target.y,
       camera.position.z - controls.target.z,
     );
-    if (direction.lengthSq() < 1e-12) direction.set(140, 160, 130);
+    if (direction.lengthSq() < 1e-12) direction.set(HOME_DIR[0], HOME_DIR[1], HOME_DIR[2]);
     direction.normalize();
     controls.target.set(fit.target[0], fit.target[1], fit.target[2]);
     camera.position.copy(controls.target).addScaledVector(direction, fit.distance);
@@ -3012,8 +3166,9 @@ export default function BrepViewportThree({
     };
     const center = bboxCenter(bbox);
     const perspCamera = camera as THREE_NS.PerspectiveCamera;
-    const distance = fitDistance(bbox, container.clientWidth, container.clientHeight, perspCamera.fov ?? 45);
+    const { distance, zoom: toZoom } = sphereFit(bbox, container.clientWidth, container.clientHeight, perspCamera.fov ?? 45);
     const direction = new THREE.Vector3(dir[0], dir[1], dir[2]).normalize();
+    const orthoCam = (camera as THREE_NS.OrthographicCamera).isOrthographicCamera ? (camera as THREE_NS.OrthographicCamera) : null;
 
     const toTarget = new THREE.Vector3(center[0], center[1], center[2]);
     const toPosition = toTarget.clone().addScaledVector(direction, distance);
@@ -3028,12 +3183,14 @@ export default function BrepViewportThree({
     if (reducedMotion || durationMs <= 0) {
       controls.target.copy(toTarget);
       camera.position.copy(toPosition);
+      if (orthoCam) { orthoCam.zoom = toZoom; orthoCam.updateProjectionMatrix(); }
       controls.update();
       renderer.render(scene, camera);
       projectAnchors();
       return;
     }
 
+    const fromZoom = orthoCam ? orthoCam.zoom : 1;
     const fromTarget = controls.target.clone();
     const fromPosition = camera.position.clone();
     const start = performance.now();
@@ -3050,6 +3207,7 @@ export default function BrepViewportThree({
       const eased = t * t * (3 - 2 * t);
       ctrl.target.lerpVectors(fromTarget, toTarget, eased);
       cam.position.lerpVectors(fromPosition, toPosition, eased);
+      if (orthoCam) { orthoCam.zoom = fromZoom + (toZoom - fromZoom) * eased; orthoCam.updateProjectionMatrix(); }
       ctrl.update();
       rend.render(scn, cam);
       projectAnchors();
@@ -3427,7 +3585,7 @@ export default function BrepViewportThree({
       || !hoverFaceMesh || !selectedFaceMesh || !hoverVertexMesh || !selectedVertexMesh) {
       throw new Error('the three.js scene has not been created yet');
     }
-    const { THREE } = three;
+    const { THREE, LineSegments2, LineSegmentsGeometry, LineMaterial } = three;
 
     // Both face highlights are hidden BEFORE the meshes they might be
     // borrowing attributes from are disposed below -- a highlight left
@@ -3452,8 +3610,14 @@ export default function BrepViewportThree({
     // against geometry belonging to a shape that no longer exists.
     edgePickLinesRef.current = [];
 
-    const material = new THREE.MeshStandardMaterial({
-      color: 0xff6600, roughness: 0.6, metalness: 0.1,
+    // Flat grey Lambert, lit by the one camera-attached light (see the
+    // scene setup): the part reads as a drawing, face against face, with no
+    // specular glints. The small polygon offset pushes the faces back so the
+    // black edge lines laid exactly on them win the depth test everywhere
+    // instead of breaking into dashes (z-fighting).
+    const material = new THREE.MeshLambertMaterial({
+      color: BODY_COLOR,
+      polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1,
     });
     // Seen only through a section cut: the inside of the outer wall shows as a
     // flat cap colour, so the cut reads as solid material rather than a hole.
@@ -3468,22 +3632,60 @@ export default function BrepViewportThree({
     // the colour says "not committed yet", the opacity says "computed",
     // and pointerup folds the committed doc (one undo step) which drops
     // the tint. Same zero-copy geometry path as the committed draw.
+    // With `featureIds` only those solids -- the draft's own block -- are
+    // drawn as the translucent overlay and the rest of the part stays opaque.
     const pv = previewRef.current;
+    let previewMaterial: THREE_NS.MeshLambertMaterial | null = null;
     if (pv?.active) {
-      material.color.setHex(pv.tint === 'cut' ? 0xff5555 : 0x8be9fd);
-      material.transparent = true;
-      material.opacity = 0.55;
-      material.depthWrite = false;
+      const ghost = pv.featureIds && pv.featureIds.length > 0 ? material.clone() : material;
+      ghost.onBeforeCompile = material.onBeforeCompile;
+      ghost.color.setHex(pv.tint === 'cut' ? 0xff5555 : 0x4fd08a);
+      ghost.transparent = true;
+      ghost.opacity = pv.featureIds && pv.featureIds.length > 0 ? 0.5 : 0.55;
+      ghost.depthWrite = false;
+      // The draft's own block is drawn over the part, not hidden inside it, the
+      // way FreeCAD's preview shows a cut's block through the material.
+      if (ghost !== material) { ghost.depthTest = false; ghost.side = THREE.FrontSide; previewMaterial = ghost; }
     }
-    const edgeMaterial = new THREE.LineBasicMaterial({ color: 0x1a1a1a });
+    const ghostIds = new Set(pv?.active ? pv.featureIds ?? [] : []);
+    // Edges are screen-space lines (LineSegments2), not GL_LINES: a plain GL
+    // line is always 1 device pixel -- hairline on a high-DPI screen -- where a
+    // drawing's edges want a steady ~1.6 CSS px black stroke.
+    const edgeMaterial = new LineMaterial({
+      color: EDGE_COLOR, linewidth: EDGE_LINE_WIDTH_PX, worldUnits: false,
+    });
+    edgeMaterial.resolution.set(renderer.domElement.clientWidth, renderer.domElement.clientHeight);
+    edgeLineMaterialRef.current = edgeMaterial;
+    let ghostEdgeMaterial: InstanceType<typeof LineMaterial> | null = null;
+    if (previewMaterial) {
+      ghostEdgeMaterial = new LineMaterial({
+        color: pv?.tint === 'cut' ? 0xb42318 : 0x127a43, linewidth: EDGE_LINE_WIDTH_PX, worldUnits: false,
+        depthTest: false, transparent: true,
+      });
+      ghostEdgeMaterial.resolution.set(renderer.domElement.clientWidth, renderer.domElement.clientHeight);
+    }
     // Never drawn (every pick line is invisible -- see below), so one shared
     // material for all of them is fine; three.js does not read material
     // state during a raycast.
     const pickLineMaterial = new THREE.LineBasicMaterial();
     const meshes: THREE_NS.Mesh[] = [];
 
+    // A highlighted edge is a few pixels wide however large the part is, so
+    // its tube radius follows the part's own size (a fixed 0.75 mm tube
+    // swamped a 50 mm part's edge into a thick bar).
+    let tubeRadius = EDGE_TUBE_RADIUS;
+    {
+      const all = new THREE.Box3();
+      for (const m of meshed) {
+        m.geometry.computeBoundingBox();
+        if (m.geometry.boundingBox) all.union(m.geometry.boundingBox);
+      }
+      if (!all.isEmpty()) tubeRadius = Math.max(0.05, all.getSize(new THREE.Vector3()).length() * 0.0035);
+    }
+
     for (const { id, kind, shape, geometry, faces } of meshed) {
-      const mesh = new THREE.Mesh(geometry, material);
+      const mesh = new THREE.Mesh(geometry, previewMaterial && ghostIds.has(id) ? previewMaterial : material);
+      if (previewMaterial && ghostIds.has(id)) mesh.renderOrder = 1;
       // Threaded through so a raycast hit's triangle resolves back to a
       // TopoDS_Face -- see faceRangeFor() above and lib/occt-three.ts's
       // FaceRange.
@@ -3495,7 +3697,11 @@ export default function BrepViewportThree({
       meshes.push(mesh);
 
       const edgesGeom = new THREE.EdgesGeometry(geometry, EDGE_THRESHOLD_DEGREES);
-      const edges = new THREE.LineSegments(edgesGeom, edgeMaterial);
+      const edgeLines = new LineSegmentsGeometry().fromEdgesGeometry(edgesGeom);
+      edgesGeom.dispose();
+      const isGhost = !!previewMaterial && ghostIds.has(id);
+      const edges = new LineSegments2(edgeLines, isGhost && ghostEdgeMaterial ? ghostEdgeMaterial : edgeMaterial);
+      if (isGhost) edges.renderOrder = 2;
       mesh.add(edges);
 
       // The PICKABLE edges -- real topology, not the display silhouette
@@ -3528,7 +3734,7 @@ export default function BrepViewportThree({
         // (phase only reaches 'ready' after the scene-setup effect that
         // creates them).
         const tube = new THREE.Mesh(
-          pos ? edgeTubeGeometry(THREE, pos.array, EDGE_TUBE_RADIUS) : new THREE.BufferGeometry(),
+          pos ? edgeTubeGeometry(THREE, pos.array, tubeRadius) : new THREE.BufferGeometry(),
           hoverEdgeMaterialRef.current!,
         );
         tube.visible = false;
@@ -3540,6 +3746,7 @@ export default function BrepViewportThree({
       }
     }
 
+    for (const guide of sceneGuidesRef.current) guide.visible = meshes.length === 0;
     renderer.render(scene, camera);
     applySection();
     return meshes;
@@ -3554,7 +3761,32 @@ export default function BrepViewportThree({
    * Also called on its own, without a rebuild, when only the `pick` PROP
    * changes -- see the effect below that watches it.
    */
+  /** Tint the solids the tree selection stands for. Each draw gives every
+   *  mesh the one shared body material, so a selected mesh gets a green copy
+   *  of it (same shading, same section-cap hook) and the copy is disposed the
+   *  next time this runs. */
+  function applyBodyTint(meshes: THREE_NS.Mesh[]) {
+    const three = threeRef.current;
+    if (!three) return;
+    for (const m of tintMaterialsRef.current) m.dispose();
+    tintMaterialsRef.current = [];
+    const ids = selectedFeatureIdsRef.current;
+    if (!ids.length || meshes.length === 0) return;
+    const lit = highlightedShapeIds(docRef.current, ids, meshes.map((m) => m.userData.featureId as string));
+    if (lit.size === 0) return;
+    for (const m of meshes) {
+      if (!lit.has(m.userData.featureId as string)) continue;
+      const base = m.material as THREE_NS.MeshLambertMaterial;
+      const tinted = base.clone();
+      tinted.onBeforeCompile = base.onBeforeCompile;
+      tinted.color.setHex(0x4fbf5a);
+      m.material = tinted;
+      tintMaterialsRef.current.push(tinted);
+    }
+  }
+
   function restorePicks(meshes: THREE_NS.Mesh[], built: EngineBuildResult) {
+    applyBodyTint(meshes);
     const three = threeRef.current;
     const engine = engineRef.current;
     const selectedFaceMesh = selectedFaceMeshRef.current;
@@ -3581,7 +3813,12 @@ export default function BrepViewportThree({
     const line = edge
       ? edgePickLinesRef.current.find((l) => {
           const kernelEdge = l.userData.kernelEdge;
-          return kernelEdge && typeof kernelEdge.IsSame === 'function' && kernelEdge.IsSame(edge);
+          if (!kernelEdge) return false;
+          if (typeof kernelEdge.IsSame === 'function') return kernelEdge.IsSame(edge);
+          // brep-rs hands out plain {feature, index} handles, no IsSame():
+          // the same topological edge is the same feature's same index.
+          const want = edge as { feature?: unknown; index?: unknown };
+          return want.feature !== undefined && kernelEdge.feature === want.feature && kernelEdge.index === want.index;
         })
       : undefined;
     setSelectedEdgeTube((line?.userData.tubeMesh as THREE_NS.Mesh | undefined) ?? null);
@@ -3626,33 +3863,59 @@ export default function BrepViewportThree({
     let cancelled = false;
 
 try {
-      const t0 = performance.now();
       // The kernel refuses per-feature as DATA (build_doc_json's refusals
       // map), never by throwing, and there is no second engine to retry on:
       // a refusal reaches the student as its own sentence, via
       // BrepViewportStats.refusals, alongside whatever DID build.
-      const built: EngineBuildResult = engine.build(doc);
+      // Built once per document: an eye click re-runs this effect with the
+      // same doc, and only the drawing below depends on the eyes, so the
+      // cached build is filtered again rather than the kernel run again (and
+      // no kernel time is reported for it).
+      const prevBuilt = lastBuiltRef.current;
+      const cached = buildCacheRef.current;
+      let built: EngineBuildResult;
+      let buildMs = 0;
+      if (cached && cached.doc === doc && cached.engine === engine) {
+        built = cached.built;
+      } else {
+        const t0 = performance.now();
+        built = engine.build(doc);
+        buildMs = performance.now() - t0;
+        buildCacheRef.current = { doc, engine, built, buildMs, meshes: new Map(), meshDeflection: deflection };
+      }
       const activeEngine: EngineAdapter = engine;
-      const buildMs = performance.now() - t0;
+      // See BrepViewportStats.nameLost. Lazy: the kernel is asked only for
+      // the picks the caller holds, and only when the name fails now.
+      const nameLost = nameLostBetween(activeEngine, prevBuilt, built);
 
-      const pick = (f: Feature) => ({ id: f.id, kind: f.kind, shape: built.shapes.get(f.id) });
-      const isBuilt = (f: Feature) => Boolean(built.shapes.get(f.id));
-      let shapes = topLevel(doc)
-        .map(pick)
-        .filter((s): s is { id: string; kind: Feature['kind']; shape: any } => Boolean(s.shape));
-      if (shapes.length === 0) {
-        // A REFUSED top-level feature empties the top of the tree, but the
-        // shape it was cutting still built. "shown without it" means the part
-        // stays on screen with the feature called out -- not an empty scene
-        // and no sentence, which is what a hole through a rounded box did
-        // before this: brep-rs refuses it honestly, and the refusal was
-        // thrown away with the throw below, so the student got a blank
-        // viewport. Fall back to the NEWEST feature that did build, which is
-        // the part exactly as it stood before the refused one ran.
-        const fallback = [...doc.features].reverse().find(isBuilt);
-        if (fallback) {
-          shapes = [pick(fallback)];
-        }
+      // Which built shapes are drawn: the top-level ones -- or, when a
+      // REFUSED top-level feature empties the top of the tree, the NEWEST
+      // feature that did build ("shown without it": the part stays on screen
+      // with the feature called out, not a blank viewport) -- then the tree's
+      // eyes, applied after that fallback so a hidden part is hidden, not
+      // replaced by "the newest thing that built". See model-tree-core's
+      // shapesToDraw; its hiddenByEye is what the status reads.
+      const drawn = shapesToDraw(doc, (id) => Boolean(built.shapes.get(id)), visibility);
+      const byId = new Map(doc.features.map((f) => [f.id, f]));
+      let shapes = drawn.ids.map((id) => ({ id, kind: byId.get(id)!.kind, shape: built.shapes.get(id) as any }));
+      const hiddenByEye = drawn.hiddenByEye;
+      if (hiddenByEye) {
+        // Everything on screen was switched off: an empty stage, with the
+        // build's refusals still reported, not an error.
+        const t = performance.now();
+        const meshes = drawGeoms([]);
+        lastBuiltRef.current = built;
+        lastMeshesRef.current = meshes;
+        restorePicks(meshes, built);
+        if (cancelled) return;
+        setBuildError(null);
+        setStageHint(null);
+        onStatsRef.current?.({
+          buildMs: round(buildMs), meshMs: 0, drawMs: round(performance.now() - t), triangles: 0,
+          refusals: built.refusals, nameLost, hiddenByEye: true,
+        });
+        onMeshRef.current?.(null);
+        return;
       }
       if (shapes.length === 0) {
         // AN EMPTY DOCUMENT IS NOT A FAILURE -- same distinction
@@ -3702,7 +3965,7 @@ try {
           const sketched = computeSceneBox();
           onStatsRef.current?.({
             buildMs: round(buildMs), meshMs: 0, drawMs: round(performance.now() - t), triangles: 0,
-            refusals: built.refusals,
+            refusals: built.refusals, nameLost,
             // A sketch-only stage still has an extent worth reporting (the
             // sketch's own corner points -- see computeSceneBox's doc); the
             // truly empty stage has none, so dims stay absent there.
@@ -3722,16 +3985,35 @@ try {
         // generic sentence and drop the kernel's own words on the floor.
         onStatsRef.current?.({
           buildMs: round(buildMs), meshMs: 0, drawMs: 0, triangles: 0,
-          refusals: built.refusals,
+          refusals: built.refusals, nameLost,
         });
+        if (draftPreviewRef.current && built.refusals && (built.refusals as Map<string, string>).size > 0) {
+          // The task panel's draft was refused and there is no part behind it:
+          // clear the stage (no stale preview) and let the panel's sentence say why.
+          const meshes = drawGeoms([]);
+          lastBuiltRef.current = built;
+          lastMeshesRef.current = meshes;
+          restorePicks(meshes, built);
+          if (cancelled) return;
+          setBuildError(null);
+          setStageHint(null);
+          onMeshRef.current?.(null);
+          return;
+        }
         throw new Error('The document built without error, but nothing came out as a top-level shape.');
       }
 
       const t1 = performance.now();
+      const cache = buildCacheRef.current;
+      if (cache && cache.meshDeflection !== deflection) { cache.meshes = new Map(); cache.meshDeflection = deflection; }
       const meshed = shapes
         .map((s) => {
-          const m = activeEngine.mesh(s.shape, { deflection });
-          return m ? { id: s.id, kind: s.kind, shape: s.shape, geometry: m.geometry, faces: m.faces } : null;
+          let m = cache?.built === built ? cache.meshes.get(s.id) : undefined;
+          if (m === undefined) {
+            m = activeEngine.mesh(s.shape, { deflection });
+            if (cache?.built === built) cache.meshes.set(s.id, m);
+          }
+          return m ? { id: s.id, kind: s.kind, shape: s.shape, geometry: m.geometry.clone(), faces: m.faces } : null;
         })
         .filter((m): m is NonNullable<typeof m> => m !== null);
       const meshMs = performance.now() - t1;
@@ -3771,7 +4053,7 @@ try {
       const solidBox = computeSceneBox();
       onStatsRef.current?.({
         buildMs: round(buildMs), meshMs: round(meshMs), drawMs: round(drawMs), triangles,
-        refusals: built.refusals,
+        refusals: built.refusals, nameLost,
         ...(solidBox && !solidBox.isEmpty()
           ? { dimsMm: {
               x: round(solidBox.max.x - solidBox.min.x),
@@ -3795,7 +4077,30 @@ try {
 
     return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phase, doc, deflection]);
+  }, [phase, doc, deflection, visibility]);
+
+  // ---- the draft check: `checkDoc` built for its refusals, never drawn -----
+  // Declared after the build effect so that, in one commit, the drawn
+  // document is built (and cached) first: a check of that same document is
+  // then answered from the cache instead of a second kernel run.
+  const onCheckRef = useRef(onCheck);
+  onCheckRef.current = onCheck;
+  useEffect(() => {
+    if (phase !== 'ready' || !checkDoc) return;
+    const engine = engineRef.current;
+    if (!engine) return;
+    const cached = buildCacheRef.current;
+    let refusals: Map<string, string> | undefined;
+    let error: string | null = null;
+    try {
+      const built = cached && cached.doc === checkDoc && cached.engine === engine ? cached.built : engine.build(checkDoc);
+      refusals = built.refusals;
+    } catch (e: any) {
+      error = String(e?.message ?? e);
+    }
+    onCheckRef.current?.({ doc: checkDoc, refusals, error });
+  }, [phase, checkDoc]);
+
 
   // ---- entering/leaving a flat sketch view -----------------------------
   //
@@ -3876,7 +4181,11 @@ try {
     if (!three || !scene || !camera || !renderer) return;
     const datums = doc.features.filter((f) => f.kind === 'datum');
     datumQuadsRef.current = [];
-    if (datums.length === 0) return;
+    // The origin's own axes / planes / point, drawn only for the rows the
+    // tree's eyes turned on (visibility keys `origin:*`, default off).
+    const originOn = [...(visibility?.entries() ?? [])]
+      .filter(([k, v]) => v === true && k.startsWith('origin:')).map(([k]) => k.slice(7));
+    if (datums.length === 0 && originOn.length === 0) return;
     const { THREE } = three;
     const box = computeSceneBox();
     let half = 40;
@@ -3894,11 +4203,11 @@ try {
         o[0] + u[0] * a + v[0] * b, o[1] + u[1] * a + v[1] * b, o[2] + u[2] * a + v[2] * b);
       const corners = [at(-half, -half), at(half, -half), at(half, half), at(-half, half)];
       const on = selectedSet.has(d.id);
-      const colour = on ? 0xffb86c : 0x8be9fd;
+      const colour = on ? 0xe08a00 : 0x3b82c4;
       const quad = new THREE.BufferGeometry().setFromPoints([
         corners[0], corners[1], corners[2], corners[0], corners[2], corners[3]]);
       const fill = new THREE.Mesh(quad, new THREE.MeshBasicMaterial({
-        color: colour, transparent: true, opacity: on ? 0.22 : 0.1, side: THREE.DoubleSide, depthWrite: false,
+        color: colour, transparent: true, opacity: on ? 0.22 : 0.14, side: THREE.DoubleSide, depthWrite: false,
       }));
       fill.userData.datumId = d.id;
       quads.push({ id: d.id, origin: o, u, v, half });
@@ -3909,6 +4218,40 @@ try {
       group.add(fill, outline);
     }
     datumQuadsRef.current = quads;
+    const AXIS_COLOUR: Record<string, number> = { x: 0xd24a4a, y: 0x4aa84a, z: 0x4a78d2 };
+    const AXIS_PLANE: Record<string, 'xy' | 'xz' | 'yz'> = { x: 'yz', y: 'xz', z: 'xy' };
+    for (const key of originOn) {
+      if (key === 'xy' || key === 'xz' || key === 'yz') {
+        const { u, v } = sketchFrameOf({ plane: key });
+        const at = (a: number, b: number) => new THREE.Vector3(
+          u[0] * a + v[0] * b, u[1] * a + v[1] * b, u[2] * a + v[2] * b);
+        const c = [at(-half, -half), at(half, -half), at(half, half), at(-half, half)];
+        const fill = new THREE.Mesh(
+          new THREE.BufferGeometry().setFromPoints([c[0], c[1], c[2], c[0], c[2], c[3]]),
+          new THREE.MeshBasicMaterial({ color: 0x8a8f98, transparent: true, opacity: 0.1, side: THREE.DoubleSide, depthWrite: false }),
+        );
+        const rim = new THREE.LineLoop(
+          new THREE.BufferGeometry().setFromPoints(c),
+          new THREE.LineBasicMaterial({ color: 0x8a8f98, transparent: true, opacity: 0.55 }),
+        );
+        group.add(fill, rim);
+      } else if (AXIS_COLOUR[key] !== undefined) {
+        const n = sketchFrameOf({ plane: AXIS_PLANE[key] }).n;
+        const line = new THREE.Line(
+          new THREE.BufferGeometry().setFromPoints([
+            new THREE.Vector3(-n[0] * half, -n[1] * half, -n[2] * half),
+            new THREE.Vector3(n[0] * half, n[1] * half, n[2] * half)]),
+          new THREE.LineBasicMaterial({ color: AXIS_COLOUR[key] }),
+        );
+        group.add(line);
+      } else if (key === 'o') {
+        const dot = new THREE.Mesh(
+          new THREE.SphereGeometry(Math.max(0.6, half * 0.02), 12, 8),
+          new THREE.MeshBasicMaterial({ color: 0x2b2f36 }),
+        );
+        group.add(dot);
+      }
+    }
     scene.add(group);
     renderer.render(scene, camera);
     return () => {
@@ -3923,7 +4266,52 @@ try {
       try { renderer.render(scene, camera); } catch { /* renderer already disposed */ }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phase, doc, selectedDatumIds]);
+  }, [phase, doc, selectedDatumIds, visibility]);
+
+  // ---- the Pad / Pocket direction arrow -------------------------------------
+  const draftPreviewRef = useRef(false);
+  draftPreviewRef.current = !!draftPreview;
+  const arrowKey = previewArrow ? previewArrow.origin.concat(previewArrow.dir).map((c) => c.toFixed(4)).join(',') : '';
+  useEffect(() => {
+    if (phase !== 'ready' || !previewArrow) return;
+    const three = threeRef.current;
+    const scene = sceneRef.current;
+    const renderer = rendererRef.current;
+    const camera = cameraRef.current;
+    const solids = solidGroupRef.current;
+    if (!three || !scene || !renderer || !camera) return;
+    const { THREE } = three;
+    const box = solids ? solidBounds(solids, () => new THREE.Box3()) : null;
+    const diag = box && !box.isEmpty() ? box.getSize(new THREE.Vector3()).length() : 40;
+    const len = Math.max(4, diag * 0.28);
+    const head = len * 0.3;
+    const rad = Math.max(0.15, len * 0.025);
+    const group = new THREE.Group();
+    const mat = new THREE.MeshBasicMaterial({ color: 0xe02020, depthTest: false, transparent: true });
+    const shaft = new THREE.Mesh(new THREE.CylinderGeometry(rad, rad, len - head, 10), mat);
+    shaft.position.y = (len - head) / 2;
+    const tip = new THREE.Mesh(new THREE.ConeGeometry(rad * 3.2, head, 14), mat);
+    tip.position.y = len - head / 2;
+    group.add(shaft, tip);
+    group.renderOrder = 10;
+    shaft.renderOrder = 10;
+    tip.renderOrder = 10;
+    const d = new THREE.Vector3(...previewArrow.dir).normalize();
+    group.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), d);
+    group.position.set(...previewArrow.origin);
+    group.userData.excludeFromBounds = true;
+    group.userData.padArrow = true;
+    scene.add(group);
+    renderer.render(scene, camera);
+    return () => {
+      scene.remove(group);
+      shaft.geometry.dispose();
+      tip.geometry.dispose();
+      mat.dispose();
+      try { renderer.render(scene, camera); } catch { /* renderer already disposed */ }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase, arrowKey, doc]);
 
   // ---- keep the edge highlight in sync when ONLY `pick` changes -------------
   // Clearing a selection from the model tree, or picking a different edge
@@ -3940,7 +4328,7 @@ try {
     const camera = cameraRef.current;
     if (renderer && scene && camera) renderer.render(scene, camera);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phase, pick]);
+  }, [phase, pick, (selectedFeatureIds ?? []).join('|')]);
 
   // ---- re-project handles whenever the SPECS change, independent of the
   // camera ------------------------------------------------------------------
@@ -3985,7 +4373,13 @@ try {
 
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: 320, background: COLORS.bg }}>
+    <div
+      style={{ position: 'relative', width: '100%', height: '100%', minHeight: 320, background: COLORS.bg }}
+      onPointerEnter={() => setUiHot(true)}
+      onPointerLeave={() => setUiHot(false)}
+      onFocus={() => setUiHot(true)}
+      onBlur={() => setUiHot(false)}
+    >
       <div
         ref={containerRef}
         style={{ width: '100%', height: '100%', touchAction: 'none', cursor: phase === 'ready' ? (windowZoom !== null ? 'crosshair' : 'grab') : 'default' }}
@@ -4081,7 +4475,7 @@ try {
         // Home stays a button because fitToModel() re-centres AND re-fits
         // distance, a different job than a face-look, with no cube-face
         // equivalent.
-        <div style={viewStripStyle}>
+        <div style={{ ...viewStripStyle, ...(uiHot ? chromeShown : chromeHidden) }}>
           <button type="button" title="Back to the starting view" style={preset === 'home' ? viewStripActiveStyle : viewStripButtonStyle} aria-pressed={preset === 'home'} onClick={() => { fitToModel(HOME_DIR); setPreset('home'); }}>
             Home
           </button>
@@ -4143,7 +4537,7 @@ try {
         // caller that has not wired the prop yet already gets when picking.
         const liveFilters = filters ?? DEFAULT_FILTERS;
         return (
-          <div style={filterStripStyle}>
+          <div style={{ ...filterStripStyle, ...(uiHot ? chromeShown : chromeHidden) }}>
             {FILTER_CHIPS.map(({ key, label }) => {
               const active = liveFilters[key];
               return (
@@ -4248,6 +4642,8 @@ try {
               setCubeMenu((v) => !v);
               return;
             }
+            const orbitId = hit?.closest<HTMLElement>('[data-orbit]')?.dataset.orbit;
+            if (orbitId) { fireOrbit(orbitId); return; }
             const zoneEl = hit?.closest<HTMLElement>('[data-zone]');
             if (zoneEl) {
               // Todo 28: face/edge/corner all resolve here. A face cell's
@@ -4311,6 +4707,29 @@ try {
               })}
             </div>
           </div>
+          {/* Orbit arrows and Home around the cube (the standard drafting
+          view-cube furniture). Pointer-resolved by the wrapper like faces. */}
+          <style>{CUBE_CSS}</style>
+          {CUBE_ARROWS.map((a) => (
+            <button
+              key={a.id} type="button" className="rs-cube-btn" data-orbit={a.id} title={a.title}
+              style={{ ...cubeArrowStyle, ...a.pos }}
+              onClick={() => fireOrbit(a.id)}
+            >
+              <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+                <polygon points={a.shape} fill="currentColor" />
+              </svg>
+            </button>
+          ))}
+          <button
+            type="button" className="rs-cube-btn" data-orbit="home" title="Back to the starting view"
+            style={{ ...cubeArrowStyle, left: 2, top: 2 }}
+            onClick={() => fireOrbit('home')}
+          >
+            <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+              <path d="M1.5 7 7 2l5.5 5M3.5 6.2V12h2.8V8.6h1.4V12h2.8V6.2" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" strokeLinecap="round" />
+            </svg>
+          </button>
           {/* The cube-menu affordance: a small gear-ish button ON the cube
           wrapper (top-left of it), NOT a right-click target -- the
           marking menu owns right-click everywhere (todo 17), cube included.
@@ -4318,7 +4737,7 @@ try {
           explicitly names this icon as the menu's only entry point. */}
           <div
             style={{
-              position: 'absolute', left: 2, top: 2, width: 20, height: 20,
+              position: 'absolute', right: 2, bottom: 2, width: 20, height: 20,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               background: COLORS.panel, border: `1px solid ${COLORS.line}`, borderRadius: 4,
               color: COLORS.dim, cursor: 'pointer', pointerEvents: 'auto', userSelect: 'none',
@@ -4330,6 +4749,21 @@ try {
             ⚙
           </div>
         </div>
+      )}
+      {phase === 'ready' && (
+        <svg
+          ref={triadRef} width={TRIAD_SIZE} height={TRIAD_SIZE} data-axis-triad="1" aria-label="Axis orientation"
+          style={{ position: 'absolute', right: 10, bottom: 10, pointerEvents: 'none', overflow: 'visible' }}
+        >
+          {([['X', '#d32f2f'], ['Y', '#2e9b2e'], ['Z', '#1f5fd6']] as const).map(([name, colour]) => (
+            <g key={name}>
+              <line x1={TRIAD_SIZE / 2} y1={TRIAD_SIZE / 2} x2={TRIAD_SIZE / 2} y2={TRIAD_SIZE / 2} stroke={colour} strokeWidth={2} strokeLinecap="round" />
+            </g>
+          ))}
+          {(['X', 'Y', 'Z'] as const).map((name) => (
+            <text key={name} x={TRIAD_SIZE / 2} y={TRIAD_SIZE / 2} fontSize="10" fontWeight="700" textAnchor="middle" fill="#1f2933" fontFamily="system-ui, sans-serif">{name}</text>
+          ))}
+        </svg>
       )}
       {cubeMenu && (
             <div
@@ -4357,7 +4791,7 @@ try {
             </div>
           )}
       {phase === 'ready' && (
-        <div style={sectionPanelStyle} data-section-panel="1">
+        <div style={{ ...sectionPanelStyle, ...(section.on || uiHot ? chromeShown : chromeHidden) }} data-section-panel="1">
           <button
             type="button"
             title="Cut the view with a plane to see inside the part (display only: the model is unchanged)"
@@ -4511,14 +4945,24 @@ const viewStripActiveStyle: React.CSSProperties = {
 // (the containing canvas already claims its own pointer gestures the same
 // way for orbiting).
 const NAV_CUBE_SIZE = 64;
+const TRIAD_SIZE = 56;
+/** Hidden/shown looks for the on-canvas chips. Opacity only: a hidden chip is
+ *  still where it was, so keyboard focus and tests behave the same. */
+const chromeShown: React.CSSProperties = { opacity: 1, transition: 'opacity 120ms ease' };
+const chromeHidden: React.CSSProperties = { opacity: 0, transition: 'opacity 120ms ease' };
+const NAV_CUBE_WRAP = NAV_CUBE_SIZE + 84;
+// Top-right, the corner a drafting package keeps its view cube in.
 const navCubeWrapStyle: React.CSSProperties = {
-  position: 'absolute', right: 12, bottom: 12, width: NAV_CUBE_SIZE + 24, height: NAV_CUBE_SIZE + 24,
+  position: 'absolute', right: 8, top: 8, width: NAV_CUBE_WRAP, height: NAV_CUBE_WRAP,
   display: 'flex', alignItems: 'center', justifyContent: 'center',
   cursor: 'grab', touchAction: 'none', userSelect: 'none',
 };
 
 const navCubeSceneStyle: React.CSSProperties = {
-  width: NAV_CUBE_SIZE, height: NAV_CUBE_SIZE, perspective: 400,
+  width: NAV_CUBE_SIZE, height: NAV_CUBE_SIZE, perspective: 1000,
+  // The cube is a little larger on screen than its 64px hit-zone grid (the
+  // zones carry their own unscaled coordinates, so picking is unaffected).
+  transform: 'scale(1.2)',
 };
 
 const navCubeInnerStyle: React.CSSProperties = {
@@ -4547,8 +4991,10 @@ const NAV_CUBE_FACES: {
 }[] = [
   { key: 'front', label: 'RIGHT', dir: RIGHT_DIR, preset: null },
   { key: 'back', label: 'LEFT', dir: LEFT_DIR, preset: null },
-  { key: 'right', label: 'FRONT', dir: FRONT_DIR, preset: 'front' },
-  { key: 'left', label: 'BACK', dir: BACK_DIR, preset: null },
+  // The CSS 'right' face sits at +Y and 'left' at -Y; FRONT is -Y (the side a
+  // drafting view looks from), so the labels follow the geometry.
+  { key: 'right', label: 'BACK', dir: BACK_DIR, preset: null },
+  { key: 'left', label: 'FRONT', dir: FRONT_DIR, preset: 'front' },
   { key: 'top', label: 'TOP', dir: TOP_DIR, preset: 'top' },
   { key: 'bottom', label: 'BOTTOM', dir: UNDERNEATH_DIR, preset: 'underneath' },
 ];
@@ -4557,11 +5003,39 @@ function navCubeFaceStyle(face: keyof typeof NAV_CUBE_FACE_TRANSFORMS): React.CS
   return {
     position: 'absolute', inset: 0, width: '100%', height: '100%',
     transform: NAV_CUBE_FACE_TRANSFORMS[face],
-    background: COLORS.panel, border: `1px solid ${COLORS.line}`, color: COLORS.fg,
-    font: '10px ui-monospace, Menlo, Consolas, monospace', letterSpacing: '0.05em',
-    display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'grab',
+    // A pale centre inside a darker 16px band: the band is the edge/corner
+    // hit zone (CUBE_ZONE_CELL), drawn so the cube reads as a bevelled block.
+    background: 'rgba(245, 246, 248, 0.97)', color: '#5b6573',
+    border: `${CUBE_ZONE_CELL}px solid rgba(205, 210, 217, 0.97)`,
+    outline: '1px solid #7d848d', outlineOffset: -1,
+    font: '600 9px system-ui, -apple-system, Segoe UI, sans-serif', letterSpacing: '0.04em',
+    display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'grab', padding: 0,
+    boxSizing: 'border-box',
   };
 }
+
+// Orbit arrows around the cube. 'd' is [azimuth degrees, elevation degrees]
+// of one press (see orbitByDelta); 'shape' is the triangle in a 12px box.
+const CUBE_ARROWS: {
+  id: string; title: string; d: [number, number]; shape: string; pos: React.CSSProperties;
+}[] = [
+  { id: 'up', title: 'Tilt the view up', d: [0, 45], shape: '6,1 11,10 1,10', pos: { left: NAV_CUBE_WRAP / 2 - 11, top: 2 } },
+  { id: 'down', title: 'Tilt the view down', d: [0, -45], shape: '1,2 11,2 6,11', pos: { left: NAV_CUBE_WRAP / 2 - 11, bottom: 2 } },
+  { id: 'left', title: 'Turn the view left', d: [45, 0], shape: '1,6 10,1 10,11', pos: { left: 2, top: NAV_CUBE_WRAP / 2 - 11 } },
+  { id: 'right', title: 'Turn the view right', d: [-45, 0], shape: '11,6 2,1 2,11', pos: { right: 2, top: NAV_CUBE_WRAP / 2 - 11 } },
+];
+
+const cubeArrowStyle: React.CSSProperties = {
+  position: 'absolute', width: 22, height: 22, padding: 0, display: 'flex', alignItems: 'center',
+  justifyContent: 'center', background: 'transparent', border: 'none', color: '#6b727c', cursor: 'pointer',
+};
+
+// :hover cannot be written inline; pick-yellow marks the zone under the
+// cursor, the same preselect colour the part itself uses.
+const CUBE_CSS = `
+.rs-cube-btn:hover { color: #1f2933 !important; }
+[data-zone]:hover { background: rgba(225, 225, 20, 0.65) !important; }
+`;
 
 // Todo 28: transparent hit-zone button over a cube face's plane. x/y/w/h
 // are the cell's own in-plane geometry; the parent div carries the face's
