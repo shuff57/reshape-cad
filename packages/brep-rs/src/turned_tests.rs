@@ -604,3 +604,66 @@ fn a_part_turn_whose_round_ends_just_past_its_bottom_meshes_closed_at_every_defl
     }
     assert_eq!(n, 5 * 11 * 40);
 }
+
+// ---- the rim of a circular pocket or bore in a flat-topped plate (round_pocket_rim) ------------------
+// Closed form: the ring a round or chamfer takes off is `round_removed` / `chamfer_removed` (Pappus, derived
+// above from the textbook centroids), and the FreeCAD 26.3 numbers below are the live reference for the same
+// plate (makeFillet / makeChamfer on the circle of Part.makeBox(40,30,10).cut(cylinder)).
+
+fn pocket_rim_doc(radius: f64, depth: Option<f64>, size: f64, style: &str, at: [f64; 2]) -> (serde_json::Value, f64) {
+    // the plate 40 x 30 x 10, a cylinder tool whose top is flush with the plate's top (a pocket), or through it
+    let (h, zc) = match depth {
+        Some(d) => (d, 10.0 - d / 2.0),
+        None => (12.0, 4.0),
+    };
+    let doc = serde_json::json!({"features":[
+      {"id":"b1","kind":"box","size":[40.0,30.0,10.0],"center":[20.0,15.0,5.0]},
+      {"id":"c1","kind":"cylinder","radius":radius,"height":h,"center":[at[0],at[1],zc]},
+      {"id":"op1","kind":"combine","op":"subtract","targets":["b1","c1"]},
+      {"id":"r1","kind":"fillet","target":"op1","size":size,"style":style,
+       "edge":{"cause":"between","feature":"op1","kind":"edge","of":[
+         {"cause":"carried","feature":"op1","kind":"face","of":{"cause":"primitive","feature":"b1","kind":"face","part":"+z"}},
+         {"cause":"carried","feature":"op1","kind":"face","of":{"cause":"primitive","feature":"c1","kind":"face","part":"side"}}]}}]});
+    let base = 40.0 * 30.0 * 10.0 - PI * radius * radius * depth.unwrap_or(10.0);
+    (doc, base)
+}
+
+#[test]
+fn circular_pocket_rim_rounds_and_chamfers_are_exact() {
+    // (radius, depth, size, style, FreeCAD volume, FreeCAD faces)
+    for (rad, depth, size, style, fc, faces) in [
+        (2.5, Some(4.0), 1.0, "fillet", 11917.78804033823, 9),
+        (2.5, Some(4.0), 1.0, "chamfer", 11912.559004475084, 9),
+        (2.5, None, 1.0, "fillet", 11799.978315828612, 8),
+        (2.5, None, 1.0, "chamfer", 11794.749279965465, 8),
+        (6.0, Some(6.0), 2.0, "fillet", 11286.645307821858, 9),
+        (6.0, Some(6.0), 2.5, "chamfer", 11187.24380057754, 9),
+    ] {
+        let (doc, base) = pocket_rim_doc(rad, depth, size, style, [20.0, 15.0]);
+        let (hist, refusals) = crate::wasm::build_doc(&doc);
+        assert!(refusals.is_empty(), "{rad} {size} {style}: {refusals:?}");
+        let s = hist.shapes.get("r1").expect("built");
+        let got = build::solid_volume(s);
+        let removed = if style == "fillet" { round_removed(rad, size, 1.0) } else { chamfer_removed(rad, size, 1.0) };
+        assert!(close(got, base - removed), "{rad} {size} {style}: {got} vs closed form {}", base - removed);
+        assert!((got - fc).abs() <= 1e-9 * fc, "{rad} {size} {style}: {got} vs FreeCAD {fc}");
+        assert_eq!(s.faces().len(), faces, "{rad} {size} {style}");
+        // a closed mesh: no open edge
+        let m = crate::mesh::mesh_solid(s, 0.05).expect("meshes");
+        assert!(ops::check_watertight(&m), "watertight mesh {rad} {size} {style}");
+    }
+}
+
+#[test]
+fn circular_pocket_rim_that_does_not_fit_is_refused_not_wrong() {
+    // the round is as deep as the pocket (it would eat the whole wall)
+    let (doc, base) = pocket_rim_doc(2.5, Some(4.0), 4.0, "fillet", [20.0, 15.0]);
+    let (hist, refusals) = crate::wasm::build_doc(&doc);
+    assert!(refusals.contains_key("r1"), "{refusals:?}");
+    assert!(close(build::solid_volume(hist.shapes.get("r1").unwrap()), base), "shown without it");
+    // the blend would run out of the plate's side (axis 3 from the left face, radius 2.5 and round 1 reach 3.5)
+    let (doc, base) = pocket_rim_doc(2.5, Some(4.0), 1.0, "fillet", [3.0, 15.0]);
+    let (hist, refusals) = crate::wasm::build_doc(&doc);
+    assert!(refusals.contains_key("r1"), "{refusals:?}");
+    assert!(close(build::solid_volume(hist.shapes.get("r1").unwrap()), base));
+}

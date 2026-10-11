@@ -1656,6 +1656,252 @@ fn mk_face_multi(surface: Surface, uv: [[f64; 2]; 2], wires: Vec<Vec<topo::EdgeU
     Rc::new(RefCell::new(Face { boundary, forward: true, surface, uv_domain: uv }))
 }
 
+/// A round (`round`) or chamfer of `size` on the rim of a circular pocket or bore that opens through a flat top face of
+/// a part which is otherwise any planar-sided prism: the edge between the top plane `fa`/`fb` (either order) and the
+/// pocket's cylindrical wall. Not a turned part (the plate is not a revolution), and not a boolean (the kernel's boolean
+/// holds no torus), so the part is ASSEMBLED: every face of `src` stays, except the top face (given the larger circle
+/// where the blend meets it), the wall (shortened), and the floor of a blind pocket (kept as a new face on the turned
+/// profile's circle); the new rim face (a quarter torus, or a cone for a chamfer) comes from the revolved profile
+/// of the pocket alone, whose circles are shared edges. `None` when the shape is not exactly this one (the caller keeps
+/// its own sentence); `Some(Err(TooBig))` when the blend does not fit between the wall's depth and the plate's sides.
+/// The answer is checked against the closed form (Pappus: the volume of the ring the blend takes off) and every edge of the
+/// part's own faces that it keeps must be used by exactly two faces (the direction of a use is not compared: a prism's own
+/// walls do not keep one), or it is `None`.
+pub fn round_pocket_rim(src: &TSolid, fa: &TFace, fb: &TFace, size: f64, round: bool) -> Option<Result<TSolid, Why>> {
+    if src.shells.len() != 1 || !(size > 0.0) {
+        return None;
+    }
+    let is_plane = |f: &TFace| matches!(&f.borrow().surface, Surface::Plane(_));
+    let (top, wall) = if is_plane(fa) { (fa, fb) } else { (fb, fa) };
+    let plane: Plane = match &top.borrow().surface {
+        Surface::Plane(p) => p.clone(),
+        _ => return None,
+    };
+    let cyl: Cylinder = match &wall.borrow().surface {
+        Surface::Cylinder(c) if c.arc.is_none() && c.cross.is_none() => c.clone(),
+        _ => return None,
+    };
+    let up = |f: &TFace| -> Option<f64> {
+        let fc = f.borrow();
+        match &fc.surface {
+            Surface::Plane(p) => {
+                let n = if fc.forward { p.n } else { [-p.n[0], -p.n[1], -p.n[2]] };
+                if n[0].abs() < 1e-9 && n[1].abs() < 1e-9 && (n[2].abs() - 1.0).abs() < 1e-9 { Some(n[2].signum()) } else { None }
+            }
+            _ => None,
+        }
+    };
+    if up(top)? <= 0.0 || cyl.axis[0].abs() > 1e-9 || cyl.axis[1].abs() > 1e-9 || (cyl.axis[2].abs() - 1.0).abs() > 1e-9 {
+        return None;
+    }
+    let (cx, cy, rho) = (cyl.origin[0], cyl.origin[1], cyl.radius);
+    let (za, zb) = (cyl.origin[2] + cyl.vmin * cyl.axis[2], cyl.origin[2] + cyl.vmax * cyl.axis[2]);
+    let (zlo, zhi) = (za.min(zb), za.max(zb));
+    let tol = 1e-7 * (1.0 + rho + size + zhi.abs());
+    if (plane.origin[2] - zhi).abs() > tol || !(rho > tol) {
+        return None;
+    }
+    // the top face: one outer wire of straight edges, one hole, the pocket's circle
+    let wires = top.borrow().boundary.clone();
+    if wires.len() != 2 {
+        return None;
+    }
+    let on_circle = |w: &topo::WireRef<Curve>, z: f64| -> bool {
+        let wb = w.borrow();
+        if wb.edges.len() != 1 {
+            return false;
+        }
+        let eb = wb.edges[0].edge.borrow();
+        let ok = match &eb.curve {
+            Curve::Circle { center, radius, .. } => {
+                (radius - rho).abs() <= tol && (center[0] - cx).abs() <= tol && (center[1] - cy).abs() <= tol && (center[2] - z).abs() <= tol
+            }
+            _ => false,
+        };
+        ok
+    };
+    if !on_circle(&wires[1], zhi) {
+        return None;
+    }
+    // nothing else of this face within reach of the blend: every outer edge a straight one, clear of the circle by the blend
+    let reach = rho + size;
+    for u in &wires[0].borrow().edges {
+        let Curve::Segment { a, b } = &u.edge.borrow().curve else { return None };
+        let (dx, dy) = (b[0] - a[0], b[1] - a[1]);
+        let l2 = dx * dx + dy * dy;
+        if l2 < 1e-18 {
+            return None;
+        }
+        let t = (((cx - a[0]) * dx + (cy - a[1]) * dy) / l2).clamp(0.0, 1.0);
+        let d = ((a[0] + t * dx - cx).powi(2) + (a[1] + t * dy - cy).powi(2)).sqrt();
+        if d <= reach + tol {
+            return Some(Err(Why::TooBig));
+        }
+    }
+    // the faces under the pocket: a floor (one circle) or the part's bottom face (the circle a hole in it)
+    let is_wall_like = |f: &TFace| match &f.borrow().surface {
+        Surface::Cylinder(c) => (c.radius - rho).abs() <= tol && (c.origin[0] - cx).abs() <= tol && (c.origin[1] - cy).abs() <= tol,
+        _ => false,
+    };
+    let mut under: Vec<(TFace, bool)> = Vec::new(); // (face, blind)
+    for f in src.faces() {
+        if std::rc::Rc::ptr_eq(&f, top) || std::rc::Rc::ptr_eq(&f, wall) {
+            continue;
+        }
+        if is_wall_like(&f) {
+            return None;
+        }
+        let fb_ = f.borrow();
+        let Surface::Plane(p) = &fb_.surface else { continue };
+        if (p.origin[2] - zlo).abs() > tol {
+            continue;
+        }
+        let n = if fb_.forward { p.n } else { [-p.n[0], -p.n[1], -p.n[2]] };
+        if n[0].abs() > 1e-9 || n[1].abs() > 1e-9 {
+            continue;
+        }
+        drop(fb_);
+        let ws = f.borrow().boundary.clone();
+        let blind = n[2] > 0.0 && ws.len() == 1 && on_circle(&ws[0], zlo);
+        let through = n[2] < 0.0 && ws.len() == 2 && on_circle(&ws[1], zlo);
+        if blind || through {
+            under.push((f.clone(), blind));
+        }
+    }
+    if under.len() != 1 {
+        return None;
+    }
+    let (under_face, blind) = under.remove(0);
+    let depth = zhi - zlo;
+    if size >= depth - tol {
+        return Some(Err(Why::TooBig));
+    }
+    // the revolved profile of the pocket alone, circle by circle the same as the part's
+    let big = rho + size + 1.0;
+    let zbot = if blind { zlo - 1.0 } else { zlo };
+    let ztop = zhi;
+    let mut lp: Vec<Seg> = Vec::new();
+    let wall_seg = |a: P2, b: P2| Seg { k: Kind::Line { a, b }, face: None, origin_z: Some(cyl.origin[2]) };
+    if !blind {
+        lp.push(Seg::line([rho, zbot], [big, zbot]));
+    } else {
+        lp.push(Seg::line([0.0, zbot], [big, zbot]));
+    }
+    lp.push(Seg::line([big, zbot], [big, ztop]));
+    lp.push(Seg::line([big, ztop], [rho + size, ztop]));
+    if round {
+        lp.push(Seg { k: Kind::Arc { c: [rho + size, ztop - size], r: size, a0: PI / 2.0, sw: PI / 2.0 }, face: None, origin_z: None });
+    } else {
+        lp.push(Seg::line([rho + size, ztop], [rho, ztop - size]));
+    }
+    if blind {
+        lp.push(wall_seg([rho, ztop - size], [rho, zlo]));
+        lp.push(Seg::line([rho, zlo], [0.0, zlo]));
+        lp.push(Seg::line([0.0, zlo], [0.0, zbot]));
+    } else {
+        lp.push(wall_seg([rho, ztop - size], [rho, zlo]));
+    }
+    let t_faces = build_faces([cx, cy], &lp, false)?;
+    // pick the new faces out of it by what they are
+    let mut rim_f: Option<TFace> = None;
+    let mut wall_f: Option<TFace> = None;
+    let mut annulus_top: Option<TFace> = None;
+    let mut floor_f: Option<TFace> = None; // blind: the disc; through: the bottom annulus
+    for f in &t_faces {
+        let fcb = f.borrow();
+        match &fcb.surface {
+            Surface::Torus(_) | Surface::Cone(_) => rim_f = Some(f.clone()),
+            Surface::Cylinder(c) if (c.radius - rho).abs() <= tol => wall_f = Some(f.clone()),
+            Surface::Plane(p) => {
+                let n = if fcb.forward { p.n } else { [-p.n[0], -p.n[1], -p.n[2]] };
+                if (p.origin[2] - ztop).abs() <= tol && n[2] > 0.0 {
+                    annulus_top = Some(f.clone());
+                } else if (p.origin[2] - zlo).abs() <= tol && ((blind && n[2] > 0.0 && fcb.boundary.len() == 1) || (!blind && n[2] < 0.0 && fcb.boundary.len() == 2)) {
+                    floor_f = Some(f.clone());
+                }
+            }
+            _ => {}
+        }
+    }
+    let (rim_f, wall_f, annulus_top, floor_f) = (rim_f?, wall_f?, annulus_top?, floor_f?);
+    // the top face again, its hole now the circle where the blend meets it
+    let new_top = {
+        let tb = top.borrow();
+        let hole = annulus_top.borrow().boundary.get(1)?.clone();
+        Rc::new(RefCell::new(Face {
+            boundary: vec![tb.boundary[0].clone(), hole],
+            forward: tb.forward,
+            surface: tb.surface.clone(),
+            uv_domain: tb.uv_domain,
+        }))
+    };
+    let under_new = if blind {
+        floor_f
+    } else {
+        let ub = under_face.borrow();
+        let hole = floor_f.borrow().boundary.get(1)?.clone();
+        Rc::new(RefCell::new(Face {
+            boundary: vec![ub.boundary[0].clone(), hole],
+            forward: ub.forward,
+            surface: ub.surface.clone(),
+            uv_domain: ub.uv_domain,
+        }))
+    };
+    let mut faces: Vec<TFace> = Vec::new();
+    for f in src.faces() {
+        if Rc::ptr_eq(&f, top) {
+            faces.push(new_top.clone());
+        } else if Rc::ptr_eq(&f, wall) {
+            faces.push(wall_f.clone());
+        } else if Rc::ptr_eq(&f, &under_face) {
+            faces.push(under_new.clone());
+        } else {
+            faces.push(f);
+        }
+    }
+    faces.push(rim_f);
+    let solid = Solid { shells: vec![Rc::new(RefCell::new(Shell { faces }))] };
+    // every edge used by exactly two faces, once each way
+    let mut uses: Vec<(usize, i32, i32)> = Vec::new();
+    for f in solid.faces() {
+        for w in &f.borrow().boundary {
+            for u in &w.borrow().edges {
+                let k = Rc::as_ptr(&u.edge) as usize;
+                let d = if u.forward { 1 } else { -1 };
+                match uses.iter_mut().find(|x| x.0 == k) {
+                    Some(x) => {
+                        x.1 += 1;
+                        x.2 += d;
+                    }
+                    None => uses.push((k, 1, d)),
+                }
+            }
+        }
+    }
+    // (the edges of the revolved faces are the turned builder's own, which it checks against Pappus itself)
+    let turned_edges: Vec<usize> = t_faces
+        .iter()
+        .flat_map(|f| f.borrow().boundary.iter().flat_map(|w| w.borrow().edges.iter().map(|u| Rc::as_ptr(&u.edge) as usize).collect::<Vec<_>>()).collect::<Vec<_>>())
+        .collect();
+    if uses.iter().any(|x| !turned_edges.contains(&x.0) && x.1 != 2) {
+        return None;
+    }
+    // the closed form: the ring the blend takes off, by Pappus
+    let removed = if round {
+        let sq = rho + size / 2.0;
+        let disc = rho + (size - 4.0 * size / (3.0 * PI));
+        2.0 * PI * (size * size * sq - PI * size * size / 4.0 * disc)
+    } else {
+        2.0 * PI * (rho + size / 3.0) * size * size / 2.0
+    };
+    let want = build::solid_volume(src) - removed;
+    let got = build::solid_volume(&solid);
+    if (got - want).abs() > 1e-9 * want.abs().max(1.0) {
+        return None;
+    }
+    Some(Ok(solid))
+}
+
 /// Face indices of `src` whose surface `same` accepts.
 pub fn face_index_where<F: Fn(&Surface) -> bool>(src: &TSolid, same: F) -> Vec<usize> {
     src.faces()

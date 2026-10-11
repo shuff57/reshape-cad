@@ -3085,6 +3085,16 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 // the cuts) when a proof says the cuts stay clear of the rounded edge.
                 let mut attempt = build_fillet(&src, &hist, f, size, round);
                 let mut replay_refusal: Option<String> = None;
+                // The rim of a circular pocket in a flat-topped plate (no boolean holds a torus, so it is assembled).
+                if attempt.is_err() {
+                    if let Some((fa, fb)) = fillet_face_pair(&hist, f) {
+                        match turned::round_pocket_rim(&src, &fa, &fb, size, round) {
+                            Some(Ok(solid)) => attempt = Ok(solid),
+                            Some(Err(_)) => attempt = Err(FilletErr::TooBig),
+                            None => {}
+                        }
+                    }
+                }
                 if matches!(attempt, Err(FilletErr::NoBox) | Err(FilletErr::RoundEnds)) {
                     match replay_round(&hist, &replay_log, target, f, size, round) {
                         Some(Ok(solid)) => attempt = Ok(solid),
@@ -5485,26 +5495,34 @@ mod tests {
         );
     }
 
-    /// The rim of a bore is a circle, not a straight edge between two planes: still refused.
+    /// The rim of a bore is a circle, not a straight edge between two planes. It is no longer refused: a round or chamfer
+    /// of a circular rim in a flat-topped plate is assembled exactly (turned::round_pocket_rim). The ring it takes off is
+    /// the textbook one (Pappus): 2 pi (r_sq x r^2 - r_disc x pi r^2 / 4) for a round, 2 pi (R + c/3) c^2 / 2 for a chamfer.
     #[test]
-    fn fillet_bore_rim_refuses() {
-        let doc = json!({
-            "features": [
-                { "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0], "center": [0.0, 0.0, 0.0] },
-                { "id": "c1", "kind": "cylinder", "radius": 8.0, "height": 40.0, "center": [0.0, 0.0, 0.0] },
-                { "id": "op1", "kind": "combine", "op": "subtract", "targets": ["b1", "c1"] },
-                { "id": "r1", "kind": "fillet", "target": "op1", "size": 2.0, "style": "fillet",
-                  "edge": { "cause": "between", "feature": "op1", "kind": "edge", "of": [
-                    { "cause": "carried", "feature": "op1", "kind": "face", "of": { "cause": "primitive", "feature": "b1", "kind": "face", "part": "+z" } },
-                    { "cause": "carried", "feature": "op1", "kind": "face", "of": { "cause": "primitive", "feature": "c1", "kind": "face", "part": "side" } }
-                  ] } }
-            ]
-        });
-        let (hist, refusals) = build_doc(&doc);
-        let text = refusals.get("r1").and_then(|v| v.as_str()).unwrap_or_default();
-        assert!(!text.is_empty(), "the bore rim must refuse, not build");
-        let before = build::solid_volume(hist.shapes.get("op1").unwrap());
-        assert!((build::solid_volume(hist.shapes.get("r1").unwrap()) - before).abs() < 1e-6, "unchanged boolean result");
+    fn fillet_bore_rim_builds_exactly() {
+        let (rad, size) = (8.0_f64, 2.0_f64);
+        for (style, removed) in [
+            ("fillet", 2.0 * std::f64::consts::PI * (size * size * (rad + size / 2.0) - std::f64::consts::PI * size * size / 4.0 * (rad + size - 4.0 * size / (3.0 * std::f64::consts::PI)))),
+            ("chamfer", 2.0 * std::f64::consts::PI * (rad + size / 3.0) * size * size / 2.0),
+        ] {
+            let doc = json!({
+                "features": [
+                    { "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0], "center": [0.0, 0.0, 0.0] },
+                    { "id": "c1", "kind": "cylinder", "radius": rad, "height": 40.0, "center": [0.0, 0.0, 0.0] },
+                    { "id": "op1", "kind": "combine", "op": "subtract", "targets": ["b1", "c1"] },
+                    { "id": "r1", "kind": "fillet", "target": "op1", "size": size, "style": style,
+                      "edge": { "cause": "between", "feature": "op1", "kind": "edge", "of": [
+                        { "cause": "carried", "feature": "op1", "kind": "face", "of": { "cause": "primitive", "feature": "b1", "kind": "face", "part": "+z" } },
+                        { "cause": "carried", "feature": "op1", "kind": "face", "of": { "cause": "primitive", "feature": "c1", "kind": "face", "part": "side" } }
+                      ] } }
+                ]
+            });
+            let (hist, refusals) = build_doc(&doc);
+            assert!(refusals.is_empty(), "{style}: {refusals:?}");
+            let before = build::solid_volume(hist.shapes.get("op1").unwrap());
+            let after = build::solid_volume(hist.shapes.get("r1").unwrap());
+            assert!((before - after - removed).abs() < 1e-8 * before, "{style}: removed {} want {removed}", before - after);
+        }
     }
 
     /// W1a: `name_edge` names a box edge as `between` its two adjacent
@@ -8435,6 +8453,25 @@ fn fillet_faces(hist: &History, f: &Value) -> Result<(build::TFace, build::TFace
         if hist.edge_between(&a, &b).is_some() {
             return Ok((a, b));
         }
+        // A pocket's wall named by the pocket that cut it (`swept`, from the tool's own solid): the face of the part
+        // it became, followed through the cut. A circular pocket's rim is not one edge shared by the two faces by
+        // handle (the boolean cuts the circle afresh in the top face), so the pair is also taken when a plane square
+        // to a cylinder's axis holds the circle where that cylinder's wall ends.
+        if let Some(target) = f.get("target").and_then(|t| t.as_str()) {
+            let follow = |n: &Value, face: &build::TFace| -> build::TFace {
+                n.get("feature")
+                    .and_then(|x| x.as_str())
+                    .and_then(|feat| follow_face(hist, feat, face, target, 0))
+                    .unwrap_or_else(|| face.clone())
+            };
+            let (a, b) = (follow(&of[0], &a), follow(&of[1], &b));
+            if hist.edge_between(&a, &b).is_some() {
+                return Ok((a, b));
+            }
+            if circular_rim_pair(&a, &b) {
+                return Ok((a, b));
+            }
+        }
     }
     // the fallback: two primitive direction words on the same feature
     let word = |n: &Value| -> Option<(String, String)> {
@@ -8528,6 +8565,26 @@ fn fillet_faces(hist: &History, f: &Value) -> Result<(build::TFace, build::TFace
         }
         n => Err(PairErr::Ambiguous(n)),
     }
+}
+
+/// Whether `a` and `b` are a plane and a whole cylinder square to it, the cylinder's wall ending (or starting) in that
+/// plane: the two faces of a circular rim, however the circle's edge is held.
+fn circular_rim_pair(a: &build::TFace, b: &build::TFace) -> bool {
+    let (pl, cy) = match (&a.borrow().surface, &b.borrow().surface) {
+        (Surface::Plane(p), Surface::Cylinder(c)) => (p.clone(), c.clone()),
+        (Surface::Cylinder(c), Surface::Plane(p)) => (p.clone(), c.clone()),
+        _ => return false,
+    };
+    if cy.arc.is_some() || cy.cross.is_some() {
+        return false;
+    }
+    let tol = 1e-7 * (1.0 + cy.radius + pl.origin[2].abs());
+    let ends = [cy.origin[2] + cy.vmin * cy.axis[2], cy.origin[2] + cy.vmax * cy.axis[2]];
+    cy.axis[0].abs() < 1e-9
+        && cy.axis[1].abs() < 1e-9
+        && pl.n[0].abs() < 1e-9
+        && pl.n[1].abs() < 1e-9
+        && ends.iter().any(|z| (z - pl.origin[2]).abs() <= tol)
 }
 
 fn fillet_face_pair(hist: &History, f: &Value) -> Option<(build::TFace, build::TFace)> {

@@ -141,3 +141,79 @@ round(part.edge('top', part.wall(sk2, 1)), 1);`);
     assert.ok(Math.abs(volume - want) <= 1e-6 * want, `t=${t}: ${volume} vs ${want}`);
   }
 });
+
+// ---- a circular pocket: its rim is ONE closed edge, and the kernel builds it (turned::round_pocket_rim) ----
+// FreeCAD 26.3rc1 headless, the same plate (Part.makeBox(40,30,10).cut(cylinder d5 x 4), makeFillet / makeChamfer on the
+// circle at z = 10): fillet 1 -> 11917.78804033823 (9 faces), chamfer 1 -> 11912.559004475084 (9 faces).
+const circle = (op, c, across = 5, depth = 4) => `
+const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });
+const plate = extrude(sk1, 10);
+const sk2 = sketch('top', 10); sk2.circle(${across}, { at: [20, 15] });
+const part = pocket(sk2, plate, ${depth});
+${op}(part.rim(sk2), ${c});`;
+
+test('rim of a circular pocket names its one edge, as part.wall(sk, 1) does, and the names match', () => {
+  const r = runScript(circle('round', 1));
+  assert.deepEqual(r.errors, []);
+  const fil = r.doc.features.filter((f) => f.kind === 'fillet');
+  assert.equal(fil.length, 1);
+  const one = runScript(circle('round', 1).replace('round(part.rim(sk2), 1)', "round(part.edge('top', part.wall(sk2, 1)), 1)"));
+  assert.deepEqual(one.errors, []);
+  assert.deepEqual(one.doc.features.find((f) => f.kind === 'fillet').edge, fil[0].edge);
+  assert.equal(fil[0].edge.of.find((n) => n.cause === 'swept').edge, 0);
+});
+
+test('a round or bevel of a circular rim and of a rectangular rim round-trips: runScript(toScript(doc)) is stable', () => {
+  const rect = `
+const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });
+const plate = extrude(sk1, 10);
+const sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });
+const part = pocket(sk2, plate, 4);
+bevel(part.rim(sk2), 1);`;
+  for (const src of [circle('round', 1), circle('bevel', 0.5), rect]) {
+    const r = runScript(src);
+    assert.deepEqual(r.errors, []);
+    const text = toScript(r.doc);
+    const back = runScript(text);
+    assert.deepEqual(back.errors, []);
+    // a re-run renames the cut's feature id (pocket1 -> op1) and nothing else; a second round of it is a fixed point
+    assert.equal(toScript(back.doc), text.replaceAll('pocket1', 'op1'));
+    const again = runScript(toScript(back.doc));
+    assert.deepEqual(again.errors, []);
+    assert.equal(toScript(again.doc), toScript(back.doc));
+    assert.deepEqual(back.doc.features.map((f) => f.kind), r.doc.features.map((f) => f.kind));
+  }
+});
+
+test('kernel: the rim of a circular pocket builds exactly, round and bevel, and equals the FreeCAD numbers', { skip: !haveWasm }, () => {
+  for (const [op, c, want, fcFaces] of [['round', 1, 11917.78804033823, 9], ['bevel', 1, 11912.559004475084, 9]]) {
+    const res = runScript(circle(op, c));
+    assert.deepEqual(res.errors, []);
+    const { refusals, volume } = build(res.doc);
+    assert.deepEqual(refusals, {});
+    // closed form (Pappus): the ring off the circular edge of radius R = 2.5
+    const R = 2.5;
+    const ring = op === 'round'
+      ? 2 * Math.PI * (c * c * (R + c / 2) - (Math.PI * c * c / 4) * (R + c - 4 * c / (3 * Math.PI)))
+      : 2 * Math.PI * (R + c / 3) * c * c / 2;
+    const closed = 40 * 30 * 10 - Math.PI * R * R * 4 - ring;
+    assert.ok(Math.abs(volume - closed) <= 1e-9 * closed, `${volume} vs closed form ${closed}`);
+    assert.ok(Math.abs(volume - want) <= 1e-9 * want, `${volume} vs FreeCAD ${want}`);
+    const j = JSON.stringify(res.doc);
+    assert.equal(JSON.parse(brep.measure_doc(j)).shapes[res.doc.features.at(-1).id].faces, fcFaces);
+  }
+});
+
+test('kernel: a circular rim that does not fit is a sentence, and the part is shown without it', { skip: !haveWasm }, () => {
+  // round as deep as the pocket
+  let r = runScript(circle('round', 4));
+  assert.deepEqual(r.errors, []);
+  let b = build(r.doc);
+  assert.match(b.refusals.round1 ?? '', /would not fit/);
+  assert.ok(Math.abs(b.volume - (12000 - Math.PI * 6.25 * 4)) <= 1e-9 * 12000);
+  // a rounded rim cannot be bevelled afterwards
+  r = runScript(circle('round', 1) + '\nbevel(part.rim(sk2), 0.5);');
+  assert.deepEqual(r.errors, []);
+  b = build(r.doc);
+  assert.ok(b.refusals.bevel1, 'the second pick is refused in a sentence');
+});
