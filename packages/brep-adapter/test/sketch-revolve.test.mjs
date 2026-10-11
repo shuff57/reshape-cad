@@ -165,11 +165,12 @@ test('an arc whose centre is on the axis (a ball) says so instead of building a 
   const [g, ru] = segmentRows(0, 10, PI);
   refused(SOUP(g, ru), /spins into part of a ball.*sphere\(\)/);
 });
-test('an outline with an arc or a round spins a full turn only, and a groove with one is not built yet', () => {
-  refused(FRONT('s.round(1, 4)', 90), /full turn \(360\)/);
+test('an outline with an arc or a round spins part of a turn too (partial-revolve-arc.test.mjs); a groove with one is not built yet', () => {
+  spun(FRONT('s.round(1, 4)', 90), rectSpin(40, 30, 10, { 1: ['R', 4] }) / 4, { needOcct: true, tol: 1e-9 });
   const [g, ru] = segmentRows(30, 10, PI);
-  refused(SOUP(g, ru, 180), /full turn \(360\)/);
+  spun(SOUP(g, ru, 180), segmentSpin(30, 10, PI) / 2, { tol: 1e-9 });
   refused(`const c = cylinder(120, 40)\nconst s = sketch('front', 0)\ns.rect(30, 10, { at: [40, 0] })\ns.round(1, 4)\nconst g = groove(s, c, 360)`, /groove.*curved outline/);
+  refused(`const c = cylinder(120, 40)\nconst s = sketch('front', 0)\ns.rect(30, 10, { at: [40, 0] })\ns.round(1, 4)\nconst g = groove(s, c, 90)`, /groove.*curved outline/);
 });
 test('an outline with a hole in it is refused for spinning, in a sentence', () => {
   const g = [LINE(1, [20, 0], [60, 0]), LINE(2, [60, 0], [60, 30]), LINE(3, [60, 30], [20, 30]), LINE(4, [20, 30], [20, 0]),

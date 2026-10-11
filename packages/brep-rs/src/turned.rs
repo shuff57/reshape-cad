@@ -1209,7 +1209,7 @@ fn build_faces(origin: [f64; 2], lp: &[Seg], inv: bool) -> Option<Vec<TFace>> {
                         half_angle,
                         slant: len,
                         v_range: [0.0, len],
-                        bounded: false,
+                        bounded: false, u_range: [0.0, std::f64::consts::TAU],
                     });
                     let mut uses = vec![
                         topo::EdgeUse { edge: e_base.0.clone(), forward: true, pcurve: topo::Pcurve { start: [0.0, 0.0], end: [TAU, 0.0], mid: [PI, 0.0] } },
@@ -1266,7 +1266,7 @@ fn build_faces(origin: [f64; 2], lp: &[Seg], inv: bool) -> Option<Vec<TFace>> {
                 );
                 let dv = v_hi - v_lo;
                 let e2t = if inv { neg(e2t) } else { e2t };
-                let surf = Surface::Torus(TorusSurf { center: at(zc), axis, e1, e2: e2t, ring, tube, v_range: [v_lo, v_hi] });
+                let surf = Surface::Torus(TorusSurf { center: at(zc), axis, e1, e2: e2t, ring, tube, v_range: [v_lo, v_hi], u_range: [0.0, TAU] });
                 let uses = vec![
                     topo::EdgeUse { edge: lo_c.0.clone(), forward: true, pcurve: topo::Pcurve { start: [0.0, v_lo], end: [TAU, v_lo], mid: [PI, v_lo] } },
                     topo::EdgeUse { edge: seam.clone(), forward: true, pcurve: topo::Pcurve { start: [TAU, v_lo], end: [TAU, v_hi], mid: [TAU, v_lo + dv / 2.0] } },
@@ -1286,6 +1286,369 @@ fn build_faces(origin: [f64; 2], lp: &[Seg], inv: bool) -> Option<Vec<TFace>> {
         return None;
     }
     Some(faces)
+}
+
+/// A PART of a turn: the counter-clockwise profile `lp` revolved from angle 0 to `ang` radians (right-handed
+/// about the z axis, from e1 toward e2), closed by a planar cap at each end. The walls are the whole-turn
+/// builder's own (a plane sector, a cylinder, a cone, a torus patch), each restricted to [0, ang] of its angle,
+/// and every junction and seam is ONE edge shared by the two faces that meet there, so a `between` name still
+/// resolves. The finished faces must account for Pappus' volume `ang/(2 pi) * volume(lp)`, and every edge must be
+/// used by exactly two faces; otherwise None, never a guess.
+/// Whether the two end caps of `build_solid_partial(lp, ang)` are ONE face: a half turn of a profile with exactly one
+/// side on the axis (the caps are then coplanar and share that side).
+/// The smallest radius, off the axis, that a turned outline's rims or arc walls reach: how far round the axis the thinnest
+/// ring of the part lies. A part turn's width there is this radius times the angle.
+pub fn min_offaxis_radius(lp: &[Seg]) -> f64 {
+    let mut m = f64::INFINITY;
+    for s in lp {
+        let e = s.end();
+        if e[0] > EPS {
+            m = m.min(e[0]);
+        }
+        if let Kind::Arc { c, r, a0, sw } = &s.k {
+            let mut lo = pt_arc(*c, *r, *a0)[0].min(pt_arc(*c, *r, a0 + sw)[0]);
+            let (t0, t1) = (a0.min(a0 + sw), a0.max(a0 + sw));
+            for k in -3..=3 {
+                let t = PI + k as f64 * TAU;
+                if t > t0 && t < t1 {
+                    lo = lo.min(c[0] - r);
+                }
+            }
+            if lo > EPS {
+                m = m.min(lo);
+            }
+        }
+    }
+    m
+}
+
+pub fn partial_caps_merge(lp: &[Seg], ang: f64) -> bool {
+    (ang - PI).abs() < 1e-9 && lp.iter().filter(|s| s.is_axis()).count() == 1
+}
+
+pub fn build_solid_partial(lp: &[Seg], ang: f64) -> Option<TSolid> {
+    if !(ang > 1e-9 && ang < TAU - 1e-9) {
+        return None;
+    }
+    let n = lp.len();
+    if n < 2 || area(lp) <= 0.0 {
+        return None;
+    }
+    for i in 0..n {
+        if !close2(lp[i].end(), lp[(i + 1) % n].start(), 1e-7) {
+            return None;
+        }
+    }
+    // no part of the profile may reach past the axis
+    for s in lp {
+        match &s.k {
+            Kind::Line { a, b } => {
+                if a[0] < -EPS || b[0] < -EPS {
+                    return None;
+                }
+            }
+            Kind::Arc { c, r, a0, sw } => {
+                let mut lo = pt_arc(*c, *r, *a0)[0].min(pt_arc(*c, *r, a0 + sw)[0]);
+                // the leftmost point of the circle is at angle pi
+                let (t0, t1) = (a0.min(a0 + sw), a0.max(a0 + sw));
+                for k in -3..=3 {
+                    let t = PI + k as f64 * TAU;
+                    if t > t0 && t < t1 {
+                        lo = lo.min(c[0] - r);
+                    }
+                }
+                if lo < -EPS {
+                    return None;
+                }
+                // a tube that touches or crosses the axis is a horn torus (or a spindle one): nothing can draw it or write
+                // it out, and a wall that thin to the axis is no part of a turn this builder can close
+                if lo <= 1e-6 {
+                    return None;
+                }
+            }
+        }
+    }
+    let (e1, e2, z) = geom::frame([0.0, 0.0, 1.0]);
+    let neg = |v: Vec3| [-v[0], -v[1], -v[2]];
+    let dirv = |th: f64| -> Vec3 { [e1[0] * th.cos() + e2[0] * th.sin(), e1[1] * th.cos() + e2[1] * th.sin(), e1[2] * th.cos() + e2[2] * th.sin()] };
+    let pt = |rho: f64, h: f64, th: f64| -> Vec3 {
+        let d = dirv(th);
+        [d[0] * rho + z[0] * h, d[1] * rho + z[1] * h, d[2] * rho + z[2] * h]
+    };
+    // an edge with the 3D point halfway along it, which a pcurve's middle is read from
+    struct E {
+        edge: TEdge,
+        a: Vec3,
+        b: Vec3,
+        mid: Vec3,
+    }
+    let make = |va: &topo::VertexRef, vb: &topo::VertexRef, curve: Curve, mid: Vec3| -> E {
+        let (a, b) = (va.borrow().point, vb.borrow().point);
+        E { edge: topo::edge(va.clone(), vb.clone(), true, curve), a, b, mid }
+    };
+    // junction j is the end of segment j (the start of segment j + 1): its two vertices, and the rim arc between them
+    let mut v0: Vec<topo::VertexRef> = Vec::with_capacity(n);
+    let mut v1: Vec<topo::VertexRef> = Vec::with_capacity(n);
+    let mut rim: Vec<Option<E>> = Vec::with_capacity(n);
+    for j in 0..n {
+        let e = lp[j].end();
+        if e[0] > EPS {
+            let a = topo::vertex(pt(e[0], e[1], 0.0));
+            let b = topo::vertex(pt(e[0], e[1], ang));
+            let curve = Curve::Arc { center: pt(0.0, e[1], 0.0), radius: e[0], normal: z, x_axis: e1, sweep: ang };
+            rim.push(Some(make(&a, &b, curve, pt(e[0], e[1], 0.5 * ang))));
+            v0.push(a);
+            v1.push(b);
+        } else {
+            let v = topo::vertex(pt(0.0, e[1], 0.0));
+            v0.push(v.clone());
+            v1.push(v);
+            rim.push(None);
+        }
+    }
+    // the seam of segment i at angle th, between the junctions' vertices at that angle
+    let seam = |i: usize, th: f64, from: &topo::VertexRef, to: &topo::VertexRef| -> E {
+        match &lp[i].k {
+            Kind::Line { a, b } => {
+                let curve = Curve::Segment { a: pt(a[0], a[1], th), b: pt(b[0], b[1], th) };
+                make(from, to, curve, pt(0.5 * (a[0] + b[0]), 0.5 * (a[1] + b[1]), th))
+            }
+            Kind::Arc { c, r, a0, sw } => {
+                let d = dirv(th);
+                // the meridian plane's normal d x z, with the profile's own angle measured from d toward z
+                let normal = crate::math::cross(d, z);
+                let x_axis = [d[0] * a0.cos() + z[0] * a0.sin(), d[1] * a0.cos() + z[1] * a0.sin(), d[2] * a0.cos() + z[2] * a0.sin()];
+                let curve = Curve::Arc { center: pt(c[0], c[1], th), radius: *r, normal, x_axis, sweep: *sw };
+                let m = pt_arc(*c, *r, a0 + 0.5 * sw);
+                make(from, to, curve, pt(m[0], m[1], th))
+            }
+        }
+    };
+    let mut s0: Vec<Option<E>> = Vec::with_capacity(n);
+    let mut s1: Vec<Option<E>> = Vec::with_capacity(n);
+    for i in 0..n {
+        let prev = (i + n - 1) % n;
+        if lp[i].is_axis() {
+            // one edge on the axis, shared by both caps
+            let e = seam(i, 0.0, &v0[prev], &v0[i]);
+            s0.push(Some(E { edge: e.edge.clone(), a: e.a, b: e.b, mid: e.mid }));
+            s1.push(Some(e));
+        } else {
+            s0.push(Some(seam(i, 0.0, &v0[prev], &v0[i])));
+            s1.push(Some(seam(i, ang, &v1[prev], &v1[i])));
+        }
+    }
+    // parameter-space helpers: shift a value by whole turns to sit at or above `lo` (closed form, so any magnitude is one step)
+    let above = |x: f64, lo: f64| -> f64 {
+        if !x.is_finite() || !lo.is_finite() {
+            return x;
+        }
+        x - TAU * ((x - (lo - 1e-7)) / TAU).floor()
+    };
+    // a pcurve from one edge use on a surface whose (u, v) of a world point is `uv`. `periodic` says which of u, v are
+    // angles: only those are brought onto the turn of the ends; a plane's coordinates and a cone's slant are lengths.
+    let pcurve = |e: &E, forward: bool, uv: &dyn Fn(Vec3) -> [f64; 2], periodic: [bool; 2]| -> topo::Pcurve {
+        let (p, q) = if forward { (e.a, e.b) } else { (e.b, e.a) };
+        let (ps, pe) = (uv(p), uv(q));
+        let mut pm = uv(e.mid);
+        for k in 0..2 {
+            if !periodic[k] {
+                continue;
+            }
+            let (lo, hi) = (ps[k].min(pe[k]), ps[k].max(pe[k]));
+            let mid_x = 0.5 * (lo + hi);
+            if pm[k].is_finite() && mid_x.is_finite() {
+                pm[k] -= TAU * ((pm[k] - mid_x) / TAU).round();
+            }
+        }
+        topo::Pcurve { start: ps, end: pe, mid: pm }
+    };
+    let mut faces: Vec<TFace> = Vec::new();
+    for i in 0..n {
+        if lp[i].is_axis() {
+            continue;
+        }
+        let s = &lp[i];
+        let prev = (i + n - 1) % n;
+        let (p, q) = (s.start(), s.end());
+        // the loop, counter-clockwise about the outward normal: start rim forward, seam at `ang` forward,
+        // end rim reversed, seam at 0 reversed
+        let mut chain: Vec<(&E, bool)> = Vec::new();
+        if let Some(r) = &rim[prev] {
+            chain.push((r, true));
+        }
+        chain.push((s1[i].as_ref()?, true));
+        if let Some(r) = &rim[i] {
+            chain.push((r, false));
+        }
+        chain.push((s0[i].as_ref()?, false));
+        let mk = |surface: Surface, uv_dom: [[f64; 2]; 2], uvf: &dyn Fn(Vec3) -> [f64; 2], per: [bool; 2]| -> TFace {
+            let uses: Vec<topo::EdgeUse<Curve>> = chain
+                .iter()
+                .map(|(e, fwd)| topo::EdgeUse { edge: e.edge.clone(), forward: *fwd, pcurve: pcurve(e, *fwd, uvf, per) })
+                .collect();
+            mk_face_multi(surface, uv_dom, vec![uses])
+        };
+        match &s.k {
+            Kind::Line { .. } => {
+                let (dr, dz) = (q[0] - p[0], q[1] - p[1]);
+                let len = (dr * dr + dz * dz).sqrt();
+                let (nr, nh) = (dz / len, -dr / len);
+                if dz.abs() < EPS {
+                    // a plane sector square to the axis
+                    let nrm = if nh > 0.0 { z } else { neg(z) };
+                    let plane = Plane::new([0.0, 0.0, p[1]], nrm);
+                    let pl = plane.clone();
+                    faces.push(mk(Surface::Plane(plane), [[0.0, 1.0], [0.0, 1.0]], &move |x| pl.project(x), [false, false]));
+                } else if dr.abs() < EPS {
+                    // a cylinder wall
+                    let r = p[0];
+                    let (zlo, zhi) = if p[1] < q[1] { (p[1], q[1]) } else { (q[1], p[1]) };
+                    let outward = nr > 0.0;
+                    let (c1, start) = if outward { (e1, 0.0) } else { (neg(e1), PI - ang) };
+                    let cyl = Cylinder {
+                        origin: [0.0, 0.0, zlo],
+                        axis: z,
+                        e1: c1,
+                        e2,
+                        radius: r,
+                        vmin: 0.0,
+                        vmax: zhi - zlo,
+                        arc: Some(geom::ArcRange { start, span: ang }),
+                        cross: None,
+                    };
+                    let (ce1, ce2) = (c1, e2);
+                    let uvf = move |x: Vec3| -> [f64; 2] {
+                        let u = x[0] * ce1[0] + x[1] * ce1[1] + x[2] * ce1[2];
+                        let w = x[0] * ce2[0] + x[1] * ce2[1] + x[2] * ce2[2];
+                        [above(w.atan2(u), start), x[2] - zlo]
+                    };
+                    faces.push(mk(Surface::Cylinder(cyl), [[start, start + ang], [0.0, zhi - zlo]], &uvf, [true, false]));
+                } else {
+                    // a cone frustum or a cone to its tip
+                    let (base, cap) = if p[0] > q[0] { (p, q) } else { (q, p) };
+                    let sign = (cap[1] - base[1]).signum();
+                    let axis_c = [0.0, 0.0, sign];
+                    let half_angle = (base[0] - cap[0]).atan2((cap[1] - base[1]).abs());
+                    let plain = nr * sign >= 0.0;
+                    let e2c = if plain { e2 } else { neg(e2) };
+                    let (ua, ub) = if plain { (0.0, ang) } else { (-ang, 0.0) };
+                    let cone = Cone {
+                        base: [0.0, 0.0, base[1]],
+                        axis: axis_c,
+                        e1,
+                        e2: e2c,
+                        base_radius: base[0],
+                        half_angle,
+                        slant: len,
+                        v_range: [0.0, len],
+                        bounded: false,
+                        u_range: [ua, ub],
+                    };
+                    let (bz, ca) = (base[1], half_angle.cos());
+                    let uvf = move |x: Vec3| -> [f64; 2] {
+                        let u = x[0] * e1[0] + x[1] * e1[1] + x[2] * e1[2];
+                        let w = x[0] * e2c[0] + x[1] * e2c[1] + x[2] * e2c[2];
+                        [above(w.atan2(u), ua), (x[2] - bz) * sign / ca]
+                    };
+                    faces.push(mk(Surface::Cone(cone), [[ua, ub], [0.0, len]], &uvf, [true, false]));
+                }
+            }
+            Kind::Arc { c, r, a0, sw } => {
+                if *sw == 0.0 || c[0] < EPS {
+                    return None;
+                }
+                // the rims must be real circles, never the axis
+                if rim[prev].is_none() || rim[i].is_none() {
+                    return None;
+                }
+                let concave = *sw < 0.0;
+                let (a0, sw) = if concave { (a0 + sw, -sw) } else { (*a0, *sw) };
+                let mut am = a0 + sw / 2.0;
+                while am > PI {
+                    am -= TAU;
+                }
+                while am <= -PI {
+                    am += TAU;
+                }
+                let a0 = am - sw / 2.0;
+                let a1 = am + sw / 2.0;
+                let (ring, zc, tube) = (c[0], c[1], *r);
+                let upper = a0 >= -1e-9 && a1 <= PI + 1e-9;
+                let lower = a1 <= 1e-9 && a0 >= -PI - 1e-9;
+                // An arc across the horizontal diameter is still ONE torus patch (a tube-angle range that takes in 0),
+                // which is how FreeCAD counts it: one face per outline edge. It is the whole-turn builder that cuts it.
+                let (axis, e2t, v_lo, v_hi) = if upper || !lower { (z, e2, a0, a1) } else { (neg(z), neg(e2), -a1, -a0) };
+                let e2t = if concave { neg(e2t) } else { e2t };
+                let plain = e2t[0] * e2[0] + e2t[1] * e2[1] + e2t[2] * e2[2] > 0.0;
+                let (ua, ub) = if plain { (0.0, ang) } else { (-ang, 0.0) };
+                let torus = TorusSurf { center: [0.0, 0.0, zc], axis, e1, e2: e2t, ring, tube, v_range: [v_lo, v_hi], u_range: [ua, ub] };
+                let vm = 0.5 * (v_lo + v_hi);
+                let uvf = move |x: Vec3| -> [f64; 2] {
+                    let d = [x[0], x[1], x[2] - zc];
+                    let dax = d[0] * axis[0] + d[1] * axis[1] + d[2] * axis[2];
+                    let perp = [d[0] - dax * axis[0], d[1] - dax * axis[1], d[2] - dax * axis[2]];
+                    let rl = (perp[0] * perp[0] + perp[1] * perp[1] + perp[2] * perp[2]).sqrt();
+                    let mut v = dax.atan2(rl - ring);
+                    if v.is_finite() {
+                        v -= TAU * ((v - vm) / TAU).round();
+                    }
+                    let u = perp[0] * e1[0] + perp[1] * e1[1] + perp[2] * e1[2];
+                    let w = perp[0] * e2t[0] + perp[1] * e2t[1] + perp[2] * e2t[2];
+                    [above(w.atan2(u), ua), v]
+                };
+                faces.push(mk(Surface::Torus(torus), [[ua, ub], [v_lo, v_hi]], &uvf, [true, true]));
+            }
+        }
+    }
+    // the two planar end caps: at angle 0 facing -e2, at `ang` facing the direction of travel
+    let cap = |th: f64, outward: Vec3, edges: &[&E], fwd: bool| -> TFace {
+        let plane = Plane::new([0.0, 0.0, 0.0], outward);
+        let pl = plane.clone();
+        let uvf = move |x: Vec3| pl.project(x);
+        let uses: Vec<topo::EdgeUse<Curve>> =
+            edges.iter().map(|e| topo::EdgeUse { edge: e.edge.clone(), forward: fwd, pcurve: pcurve(e, fwd, &uvf, [false, false]) }).collect();
+        let _ = th;
+        mk_face_multi(Surface::Plane(plane), [[0.0, 1.0], [0.0, 1.0]], vec![uses])
+    };
+    if partial_caps_merge(lp, ang) {
+        // A half turn of a profile that has a side ON the axis: the two caps lie in one plane and meet along that side,
+        // so they are one face (FreeCAD refines them into one too). Its boundary is the profile at angle 0 from where the
+        // axis side ends round to where it starts, then the profile at angle pi back again.
+        let a = (0..n).find(|&i| lp[i].is_axis())?;
+        let mut uses: Vec<topo::EdgeUse<Curve>> = Vec::new();
+        let plane = Plane::new([0.0, 0.0, 0.0], neg(e2));
+        let pl = plane.clone();
+        let uvf = move |x: Vec3| pl.project(x);
+        for k in 1..n {
+            let i = (a + k) % n;
+            let e = s0[i].as_ref()?;
+            uses.push(topo::EdgeUse { edge: e.edge.clone(), forward: true, pcurve: pcurve(e, true, &uvf, [false, false]) });
+        }
+        for k in (1..n).rev() {
+            let i = (a + k) % n;
+            let e = s1[i].as_ref()?;
+            uses.push(topo::EdgeUse { edge: e.edge.clone(), forward: false, pcurve: pcurve(e, false, &uvf, [false, false]) });
+        }
+        faces.push(mk_face_multi(Surface::Plane(plane), [[0.0, 1.0], [0.0, 1.0]], vec![uses]));
+    } else {
+        let order0: Vec<&E> = (0..n).filter_map(|i| s0[i].as_ref()).collect();
+        let order1: Vec<&E> = (0..n).rev().filter_map(|i| s1[i].as_ref()).collect();
+        faces.push(cap(0.0, neg(e2), &order0, true));
+        let t_end = [-ang.sin() * e1[0] + ang.cos() * e2[0], -ang.sin() * e1[1] + ang.cos() * e2[1], -ang.sin() * e1[2] + ang.cos() * e2[2]];
+        faces.push(cap(ang, t_end, &order1, false));
+    }
+
+    let solid = Solid { shells: vec![Rc::new(RefCell::new(Shell { faces: faces.clone() }))] };
+    if crate::ops::edge_use_counts(&faces).values().any(|&c| c != 2) {
+        return None;
+    }
+    let sv = build::signed_volume(&solid);
+    let want = volume(lp) * ang / TAU;
+    if !(want > 0.0) || (sv - want).abs() > 1e-8 * want.abs().max(1.0) {
+        return None;
+    }
+    Some(solid)
 }
 
 fn mk_face_multi(surface: Surface, uv: [[f64; 2]; 2], wires: Vec<Vec<topo::EdgeUse<Curve>>>) -> TFace {

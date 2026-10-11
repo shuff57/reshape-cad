@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-11T20:03:53.322Z",
+  "generatedAt": "2026-10-11T22:54:19.060Z",
   "reference": "FreeCAD 26.3.0 RC1 headless (variants/fc/<id>.py -> variants/refs/ref-<id>.json)",
   "ours": "reSHape Script -> ModelDoc -> brep-rs wasm (solids) / SketchSession2D (sketches)",
   "tolerances": {
@@ -10,8 +10,8 @@
     "meshVolumeRelative": 0.005
   },
   "summary": {
-    "total": 164,
-    "MATCH": 149,
+    "total": 180,
+    "MATCH": 165,
     "MISMATCH": 1,
     "REFUSED": 14,
     "byClass": {
@@ -53,8 +53,8 @@
       "MATCH": 8
     },
     "revolution": {
-      "total": 18,
-      "MATCH": 14
+      "total": 34,
+      "MATCH": 30
     },
     "chamfer-edge": {
       "total": 8,
@@ -12829,6 +12829,1638 @@
       }
     },
     {
+      "id": "revolution__arc-top-round-90",
+      "piece": "revolution",
+      "desc": "a ring r10..20, 30 tall with its top-outer corner rounded 3, a quarter turn",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('top'); sk.polygon([[10,0],[20,0],[20,30],[10,30]]); sk.round(3, 3); revolve(sk, 90);",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 7009.939233,
+          "ours": 7009.939233,
+          "pass": true,
+          "delta": 1.297435928481895e-16
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            6.123233996e-16,
+            0,
+            -4.440892099e-15,
+            20,
+            20,
+            30
+          ],
+          "ours": [
+            -6.123233996e-16,
+            0,
+            0,
+            20,
+            20,
+            30
+          ],
+          "pass": true,
+          "delta": 7.105427357601002e-15
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 7,
+          "ours": 7,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            9.882785375,
+            9.882785375,
+            14.88019852
+          ],
+          "ours": [
+            9.878543194,
+            9.878543143,
+            14.87850382
+          ],
+          "pass": true,
+          "delta": 0.004242232298462767
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 7009.939233,
+          "ours": 7005.905988,
+          "pass": true,
+          "delta": 0.0005753608985721675
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 7009.939233277673,
+        "bbox": [
+          6.123233995736766e-16,
+          0,
+          -4.440892098500627e-15,
+          20,
+          20.000000000000007,
+          30
+        ],
+        "faces": 7,
+        "com": [
+          9.882785375218301,
+          9.882785375218305,
+          14.880198522204834
+        ]
+      },
+      "ours": {
+        "volume": 7009.939233277672,
+        "bbox": [
+          -6.123233995736766e-16,
+          0,
+          0,
+          20,
+          20,
+          30
+        ],
+        "faces": 7,
+        "com": [
+          9.878543193838565,
+          9.878543142919842,
+          14.878503823679829
+        ],
+        "meshVolume": 7005.9059883414775
+      }
+    },
+    {
+      "id": "revolution__arc-top-round-30",
+      "piece": "revolution",
+      "desc": "the same rounded ring, 30 degrees",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('top'); sk.polygon([[10,0],[20,0],[20,30],[10,30]]); sk.round(3, 3); revolve(sk, 30);",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 2336.646411,
+          "ours": 2336.646411,
+          "pass": true,
+          "delta": 5.83846167816853e-16
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            8.660254038,
+            0,
+            -2.664535259e-15,
+            20,
+            10,
+            30
+          ],
+          "ours": [
+            8.660254038,
+            0,
+            0,
+            20,
+            10,
+            30
+          ],
+          "pass": true,
+          "delta": 7.105427357601002e-15
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 7,
+          "ours": 7,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            14.82417806,
+            3.97212654,
+            14.88019852
+          ],
+          "ours": [
+            14.81834412,
+            3.970563296,
+            14.87850703
+          ],
+          "pass": true,
+          "delta": 0.005833943709221856
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 2336.646411,
+          "ours": 2335.594824,
+          "pass": true,
+          "delta": 0.0004500413440698274
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 2336.646411092557,
+        "bbox": [
+          8.660254037844386,
+          0,
+          -2.6645352591003757e-15,
+          20,
+          10.000000000000005,
+          30
+        ],
+        "faces": 7,
+        "com": [
+          14.82417806282745,
+          3.9721265403897825,
+          14.88019852220484
+        ]
+      },
+      "ours": {
+        "volume": 2336.6464110925585,
+        "bbox": [
+          8.660254037844387,
+          0,
+          0,
+          20,
+          9.999999999999998,
+          30
+        ],
+        "faces": 7,
+        "com": [
+          14.818344119118228,
+          3.970563295664586,
+          14.87850703403923
+        ],
+        "meshVolume": 2335.5948236010945
+      }
+    },
+    {
+      "id": "revolution__arc-top-round-270",
+      "piece": "revolution",
+      "desc": "the same rounded ring, three quarters of a turn",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('top'); sk.polygon([[10,0],[20,0],[20,30],[10,30]]); sk.round(3, 3); revolve(sk, 270);",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 21029.8177,
+          "ours": 21029.8177,
+          "pass": true,
+          "delta": 3.4598291426183876e-16
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            -20,
+            -20,
+            -4.440892099e-15,
+            20,
+            20,
+            30
+          ],
+          "ours": [
+            -20,
+            -20,
+            0,
+            20,
+            20,
+            30
+          ],
+          "pass": true,
+          "delta": 7.105427357601002e-15
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 7,
+          "ours": 7,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            -3.294261792,
+            3.294261792,
+            14.88019852
+          ],
+          "ours": [
+            -3.292810244,
+            3.292810261,
+            14.87850444
+          ],
+          "pass": true,
+          "delta": 0.0016940782455545644
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 21029.8177,
+          "ours": 21017.82527,
+          "pass": true,
+          "delta": 0.0005702584669280859
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 21029.817699833016,
+        "bbox": [
+          -20,
+          -20,
+          -4.440892098500627e-15,
+          20,
+          20.000000000000007,
+          30.000000000000004
+        ],
+        "faces": 7,
+        "com": [
+          -3.2942617917394346,
+          3.2942617917394394,
+          14.880198522204838
+        ]
+      },
+      "ours": {
+        "volume": 21029.81769983301,
+        "bbox": [
+          -20,
+          -20,
+          0,
+          20,
+          20,
+          30
+        ],
+        "faces": 7,
+        "com": [
+          -3.2928102437805418,
+          3.292810260753366,
+          14.878504443959283
+        ],
+        "meshVolume": 21017.825268231725
+      }
+    },
+    {
+      "id": "revolution__arc-top-round-120",
+      "piece": "revolution",
+      "desc": "the same rounded ring, 120 degrees",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('top'); sk.polygon([[10,0],[20,0],[20,30],[10,30]]); sk.round(3, 3); revolve(sk, 120);",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 9346.585644,
+          "ours": 9346.585644,
+          "pass": true,
+          "delta": 5.838461678168531e-16
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            -10,
+            0,
+            -7.105427358e-15,
+            20,
+            20,
+            30
+          ],
+          "ours": [
+            -10,
+            0,
+            0,
+            20,
+            20,
+            30
+          ],
+          "pass": true,
+          "delta": 7.105427357601002e-15
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 7,
+          "ours": 7,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            6.419057396,
+            11.11813355,
+            14.88019852
+          ],
+          "ours": [
+            6.416244794,
+            11.11363359,
+            14.87850528
+          ],
+          "pass": true,
+          "delta": 0.004499955011496581
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 9346.585644,
+          "ours": 9341.700965,
+          "pass": true,
+          "delta": 0.0005226164601617096
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 9346.585644370227,
+        "bbox": [
+          -9.999999999999996,
+          0,
+          -7.105427357601002e-15,
+          20,
+          20.000000000000007,
+          30
+        ],
+        "faces": 7,
+        "com": [
+          6.419057396316283,
+          11.118133547120593,
+          14.880198522204836
+        ]
+      },
+      "ours": {
+        "volume": 9346.585644370232,
+        "bbox": [
+          -9.999999999999996,
+          0,
+          0,
+          20,
+          20,
+          30
+        ],
+        "faces": 7,
+        "com": [
+          6.416244794384533,
+          11.113633592109096,
+          14.878505277707948
+        ],
+        "meshVolume": 9341.700964866173
+      }
+    },
+    {
+      "id": "revolution__arc-top-round-359",
+      "piece": "revolution",
+      "desc": "the same rounded ring, one degree short of a full turn",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('top'); sk.polygon([[10,0],[20,0],[20,30],[10,30]]); sk.round(3, 3); revolve(sk, 359);",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 27961.86872,
+          "ours": 27961.86872,
+          "pass": true,
+          "delta": 1.3010499561378338e-16
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            -20,
+            -20,
+            -4.440892099e-15,
+            20,
+            20,
+            30
+          ],
+          "ours": [
+            -20,
+            -20,
+            0,
+            20,
+            20,
+            30
+          ],
+          "pass": true,
+          "delta": 7.105427357601002e-15
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 7,
+          "ours": 7,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            -0.04323970707,
+            0.0003773472069,
+            14.88019852
+          ],
+          "ours": [
+            -0.04323994136,
+            0.0003380670802,
+            14.87850403
+          ],
+          "pass": true,
+          "delta": 0.0016944920047361478
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 27961.86872,
+          "ours": 27946.11376,
+          "pass": true,
+          "delta": 0.0005634445911006671
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 27961.8687194076,
+        "bbox": [
+          -20,
+          -20,
+          -4.440892098500627e-15,
+          20,
+          20.000000000000007,
+          30.000000000000004
+        ],
+        "faces": 7,
+        "com": [
+          -0.043239707072612585,
+          0.00037734720693616747,
+          14.880198522204834
+        ]
+      },
+      "ours": {
+        "volume": 27961.868719407605,
+        "bbox": [
+          -20,
+          -20,
+          0,
+          20,
+          20,
+          30
+        ],
+        "faces": 7,
+        "com": [
+          -0.04323994136052103,
+          0.0003380670801909929,
+          14.878504030200098
+        ],
+        "meshVolume": 27946.113755720588
+      }
+    },
+    {
+      "id": "revolution__arc-top-round-neg-90",
+      "piece": "revolution",
+      "desc": "the rounded ring a quarter turn the OTHER way (-90); FreeCAD: 90 reversed",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('top'); sk.polygon([[10,0],[20,0],[20,30],[10,30]]); sk.round(3, 3); revolve(sk, 90);",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 7009.939233,
+          "ours": 7009.939233,
+          "pass": true,
+          "delta": 1.297435928481895e-16
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            6.123233996e-16,
+            -20.0000001,
+            0,
+            20,
+            6.661338148e-15,
+            30
+          ],
+          "ours": [
+            6.123233996e-16,
+            -20,
+            0,
+            20,
+            1.224646799e-15,
+            30
+          ],
+          "pass": true,
+          "delta": 9.999999406318238e-8
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 7,
+          "ours": 7,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            9.882785375,
+            -9.882785375,
+            14.88019852
+          ],
+          "ours": [
+            9.878543143,
+            -9.878543194,
+            14.87850382
+          ],
+          "pass": true,
+          "delta": 0.0042422322984556615
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 7009.939233,
+          "ours": 7005.905988,
+          "pass": true,
+          "delta": 0.0005753608985721675
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 7009.939233277673,
+        "bbox": [
+          6.123233995736766e-16,
+          -20.000000099999994,
+          0,
+          20,
+          6.661338147750941e-15,
+          30.000000000000004
+        ],
+        "faces": 7,
+        "com": [
+          9.8827853752183,
+          -9.882785375218296,
+          14.880198522204838
+        ]
+      },
+      "ours": {
+        "volume": 7009.939233277672,
+        "bbox": [
+          6.123233995736766e-16,
+          -20,
+          0,
+          20,
+          1.2246467991473533e-15,
+          30
+        ],
+        "faces": 7,
+        "com": [
+          9.878543142919844,
+          -9.878543193838569,
+          14.878503823679837
+        ],
+        "meshVolume": 7005.9059883414775
+      }
+    },
+    {
+      "id": "revolution__arc-top-round-neg-250",
+      "piece": "revolution",
+      "desc": "the rounded ring 250 degrees the other way",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('top'); sk.polygon([[10,0],[20,0],[20,30],[10,30]]); sk.round(3, 3); revolve(sk, 250);",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 19472.05343,
+          "ours": 19472.05343,
+          "pass": true,
+          "delta": 3.736615474027858e-16
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            -20.0000001,
+            -20,
+            -7.105427358e-15,
+            20.0000001,
+            18.79385242,
+            30
+          ],
+          "ours": [
+            -20,
+            -20,
+            0,
+            20,
+            18.79385242,
+            30
+          ],
+          "pass": true,
+          "delta": 9.999999761589606e-8
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 7,
+          "ours": 7,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            -3.343240976,
+            -4.774642936,
+            14.88019852
+          ],
+          "ours": [
+            -3.341880033,
+            -4.772582213,
+            14.87850457
+          ],
+          "pass": true,
+          "delta": 0.0020607236665197703
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 19472.05343,
+          "ours": 19461.00768,
+          "pass": true,
+          "delta": 0.0005672613274395821
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 19472.053425771315,
+        "bbox": [
+          -20.0000001,
+          -20,
+          -7.105427357601002e-15,
+          20.0000001,
+          18.793852415718177,
+          30.000000000000004
+        ],
+        "faces": 7,
+        "com": [
+          -3.34324097636527,
+          -4.774642936454616,
+          14.880198522204834
+        ]
+      },
+      "ours": {
+        "volume": 19472.053425771308,
+        "bbox": [
+          -20.000000000000004,
+          -20.000000000000004,
+          0,
+          20.000000000000004,
+          18.793852415718174,
+          30
+        ],
+        "faces": 7,
+        "com": [
+          -3.341880033350702,
+          -4.772582212788096,
+          14.878504574380742
+        ],
+        "meshVolume": 19461.00768289703
+      }
+    },
+    {
+      "id": "revolution__arc-top-two-rounds",
+      "piece": "revolution",
+      "desc": "both outer corners rounded (4 and 2.5), 200 degrees",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('top'); sk.polygon([[10,0],[20,0],[20,30],[10,30]]); sk.round(2, 4); sk.round(3, 2.5); revolve(sk, 200);",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 15387.93628,
+          "ours": 15387.93628,
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            -20.0000001,
+            -6.840402867,
+            -3.552713679e-15,
+            20,
+            20.0000001,
+            30
+          ],
+          "ours": [
+            -20,
+            -6.840402867,
+            0,
+            20,
+            20,
+            30
+          ],
+          "pass": true,
+          "delta": 1.0000000116860974e-7
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 8,
+          "ours": 8,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            -1.516677839,
+            8.601507453,
+            15.12429001
+          ],
+          "ours": [
+            -1.516183275,
+            8.59758371,
+            15.12481265
+          ],
+          "pass": true,
+          "delta": 0.003923742507238259
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 15387.93628,
+          "ours": 15377.53764,
+          "pass": true,
+          "delta": 0.000675765700693182
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 15387.936277615212,
+        "bbox": [
+          -20.0000001,
+          -6.840402866513372,
+          -3.552713678800502e-15,
+          20,
+          20.0000001,
+          30
+        ],
+        "faces": 8,
+        "com": [
+          -1.516677838651281,
+          8.6015074525601,
+          15.124290009032945
+        ]
+      },
+      "ours": {
+        "volume": 15387.936277615212,
+        "bbox": [
+          -20,
+          -6.840402866513373,
+          0,
+          20,
+          20,
+          30
+        ],
+        "faces": 8,
+        "com": [
+          -1.5161832753566116,
+          8.597583710052861,
+          15.124812647619601
+        ],
+        "meshVolume": 15377.537638074347
+      }
+    },
+    {
+      "id": "revolution__arc-top-four-rounds",
+      "piece": "revolution",
+      "desc": "all four corners rounded (1, 2, 3, 1.5), 100 degrees",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('top'); sk.polygon([[10,0],[20,0],[20,30],[10,30]]); sk.round(1, 1); sk.round(2, 2); sk.round(3, 3); sk.round(4, 1.5); revolve(sk, 100);",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 7746.987675,
+          "ours": 7746.987675,
+          "pass": true,
+          "delta": 4.695991473780552e-16
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            -3.472963553,
+            0,
+            -3.996802889e-15,
+            20,
+            20,
+            30
+          ],
+          "ours": [
+            -3.472963553,
+            0,
+            0,
+            20,
+            20,
+            30
+          ],
+          "pass": true,
+          "delta": 7.105427357601002e-15
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 10,
+          "ours": 10,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            8.755530539,
+            10.43443497,
+            14.92538014
+          ],
+          "ours": [
+            8.751656374,
+            10.43011515,
+            14.92469726
+          ],
+          "pass": true,
+          "delta": 0.004319820399629748
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 7746.987675,
+          "ours": 7741.617739,
+          "pass": true,
+          "delta": 0.000693164383435974
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 7746.98767534798,
+        "bbox": [
+          -3.472963553338607,
+          0,
+          -3.996802888650564e-15,
+          20,
+          20.000000000000007,
+          30
+        ],
+        "faces": 10,
+        "com": [
+          8.755530538940977,
+          10.43443497485123,
+          14.92538014421601
+        ]
+      },
+      "ours": {
+        "volume": 7746.987675347984,
+        "bbox": [
+          -3.472963553338606,
+          0,
+          0,
+          20,
+          20,
+          30
+        ],
+        "faces": 10,
+        "com": [
+          8.751656373529222,
+          10.4301151544516,
+          14.924697264478878
+        ],
+        "meshVolume": 7741.617739412515
+      }
+    },
+    {
+      "id": "revolution__arc-front-round-90",
+      "piece": "revolution",
+      "desc": "front plane (axis Y): the rounded ring, a quarter turn",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('front'); sk.polygon([[10,0],[20,0],[20,30],[10,30]]); sk.round(3, 3); revolve(sk, 90);",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 7009.939233,
+          "ours": 7009.939233,
+          "pass": true,
+          "delta": 1.297435928481895e-16
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            6.123233996e-16,
+            0,
+            -20,
+            20,
+            30,
+            0
+          ],
+          "ours": [
+            -6.123233996e-16,
+            0,
+            -20,
+            20,
+            30,
+            0
+          ],
+          "pass": true,
+          "delta": 1.2246467991473533e-15
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 7,
+          "ours": 7,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            9.882785375,
+            14.88019852,
+            -9.882785375
+          ],
+          "ours": [
+            9.878543194,
+            14.87850382,
+            -9.878543143
+          ],
+          "pass": true,
+          "delta": 0.004242232298459214
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 7009.939233,
+          "ours": 7005.905988,
+          "pass": true,
+          "delta": 0.0005753608985721675
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 7009.939233277673,
+        "bbox": [
+          6.123233995736766e-16,
+          0,
+          -20,
+          20,
+          30,
+          0
+        ],
+        "faces": 7,
+        "com": [
+          9.882785375218301,
+          14.880198522204836,
+          -9.882785375218301
+        ]
+      },
+      "ours": {
+        "volume": 7009.939233277672,
+        "bbox": [
+          -6.123233995736766e-16,
+          0,
+          -20,
+          20,
+          30,
+          0
+        ],
+        "faces": 7,
+        "com": [
+          9.878543193838569,
+          14.878503823679834,
+          -9.878543142919842
+        ],
+        "meshVolume": 7005.9059883414775
+      }
+    },
+    {
+      "id": "revolution__arc-front-round-neg-135",
+      "piece": "revolution",
+      "desc": "front plane, the rounded ring 135 degrees the other way",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('front'); sk.polygon([[10,0],[20,0],[20,30],[10,30]]); sk.round(2, 3); sk.round(3, 3); revolve(sk, 135);",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 10426.94249,
+          "ours": 10426.94249,
+          "pass": true,
+          "delta": 1.2211562336886067e-15
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            -14.14213562,
+            0,
+            0,
+            20.0000001,
+            30,
+            20.0000001
+          ],
+          "ours": [
+            -14.14213562,
+            0,
+            -2.220446049e-15,
+            20,
+            30,
+            20
+          ],
+          "pass": true,
+          "delta": 1.0000000116860974e-7
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 8,
+          "ours": 8,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            4.649112002,
+            15,
+            11.22394925
+          ],
+          "ours": [
+            4.646941762,
+            15,
+            11.21901413
+          ],
+          "pass": true,
+          "delta": 0.0049351129537740235
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 10426.94249,
+          "ours": 10420.05558,
+          "pass": true,
+          "delta": 0.0006604926104521188
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 10426.942493967463,
+        "bbox": [
+          -14.14213562373095,
+          0,
+          0,
+          20.0000001,
+          30,
+          20.0000001
+        ],
+        "faces": 8,
+        "com": [
+          4.649112001869828,
+          15.000000000000002,
+          11.223949247905669
+        ]
+      },
+      "ours": {
+        "volume": 10426.942493967475,
+        "bbox": [
+          -14.142135623730951,
+          0,
+          -2.220446049250313e-15,
+          20,
+          30,
+          20
+        ],
+        "faces": 8,
+        "com": [
+          4.646941761640311,
+          15.000000002157547,
+          11.219014134951895
+        ],
+        "meshVolume": 10420.0555755006
+      }
+    },
+    {
+      "id": "revolution__arc-top-rod-round-180",
+      "piece": "revolution",
+      "desc": "a solid rod (touches the axis) with its top corner rounded 5, a half turn",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('top'); sk.polygon([[0,0],[12,0],[12,30],[0,30]]); sk.round(3, 5); revolve(sk, 180);",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 6602.406763,
+          "ours": 6602.406763,
+          "pass": true,
+          "delta": 8.26511968520377e-16
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            -12,
+            0,
+            -2.664535259e-15,
+            12,
+            12,
+            30
+          ],
+          "ours": [
+            -12,
+            0,
+            0,
+            12,
+            12,
+            30
+          ],
+          "pass": true,
+          "delta": 5.329070518200751e-15
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 5,
+          "ours": 5,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            -7.181185943e-17,
+            5.040535008,
+            14.61560691
+          ],
+          "ours": [
+            2.059099883e-8,
+            5.037583908,
+            14.61251662
+          ],
+          "pass": true,
+          "delta": 0.0030902900187346205
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 6602.406763,
+          "ours": 6593.879994,
+          "pass": true,
+          "delta": 0.0012914636989805003
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 6602.406762973611,
+        "bbox": [
+          -12,
+          0,
+          -2.6645352591003765e-15,
+          12,
+          12.000000000000005,
+          30
+        ],
+        "faces": 5,
+        "com": [
+          -7.181185942789312e-17,
+          5.040535008084975,
+          14.615606909173435
+        ]
+      },
+      "ours": {
+        "volume": 6602.406762973616,
+        "bbox": [
+          -12,
+          0,
+          0,
+          12,
+          12,
+          30
+        ],
+        "faces": 5,
+        "com": [
+          2.059099882899037e-8,
+          5.03758390818828,
+          14.6125166191547
+        ],
+        "meshVolume": 6593.879994313333
+      }
+    },
+    {
+      "id": "revolution__arc-top-rod-round-45",
+      "piece": "revolution",
+      "desc": "the rounded rod, 45 degrees",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('top'); sk.polygon([[0,0],[12,0],[12,30],[0,30]]); sk.round(3, 5); revolve(sk, 45);",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 1650.601691,
+          "ours": 1650.601691,
+          "pass": true,
+          "delta": 8.265119685203771e-16
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            0,
+            0,
+            -1.88411095e-15,
+            12,
+            8.485281374,
+            30
+          ],
+          "ours": [
+            0,
+            0,
+            0,
+            12,
+            8.485281374,
+            30
+          ],
+          "pass": true,
+          "delta": 5.329070518200751e-15
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 6,
+          "ours": 6,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            7.12839297,
+            2.952677046,
+            14.61560691
+          ],
+          "ours": [
+            7.124208802,
+            2.950943872,
+            14.61251684
+          ],
+          "pass": true,
+          "delta": 0.004184168151981638
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 1650.601691,
+          "ours": 1648.523779,
+          "pass": true,
+          "delta": 0.0012588814971693475
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 1650.6016907434025,
+        "bbox": [
+          0,
+          0,
+          -1.8841109504205303e-15,
+          12,
+          8.485281374238575,
+          30
+        ],
+        "faces": 6,
+        "com": [
+          7.128392970050142,
+          2.9526770461198,
+          14.615606909173437
+        ]
+      },
+      "ours": {
+        "volume": 1650.6016907434039,
+        "bbox": [
+          0,
+          0,
+          0,
+          12,
+          8.48528137423857,
+          30
+        ],
+        "faces": 6,
+        "com": [
+          7.124208801898161,
+          2.950943872044437,
+          14.61251684484036
+        ],
+        "meshVolume": 1648.5237788157306
+      }
+    },
+    {
+      "id": "revolution__arc-top-cone-round-150",
+      "piece": "revolution",
+      "desc": "a frustum ring (slanted outer side) with its wide top corner rounded 3: a cone and a torus, 150 degrees",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('top'); sk.polygon([[10,0],[22,0],[16,30],[10,30]]); sk.round(3, 3); revolve(sk, 150);",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 10318.42512,
+          "ours": 10318.42512,
+          "pass": true,
+          "delta": 1.7628556507773809e-16
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            -19.05255888,
+            0,
+            -4.884981308e-15,
+            22,
+            22,
+            30
+          ],
+          "ours": [
+            -19.05255888,
+            0,
+            0,
+            22,
+            22,
+            30
+          ],
+          "pass": true,
+          "delta": 7.105427357601002e-15
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 7,
+          "ours": 7,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            2.907869762,
+            10.85231769,
+            12.76223589
+          ],
+          "ours": [
+            2.906833666,
+            10.84835027,
+            12.76064872
+          ],
+          "pass": true,
+          "delta": 0.003967421051042308
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 10318.42512,
+          "ours": 10314.28795,
+          "pass": true,
+          "delta": 0.0004009500910548065
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 10318.425123144494,
+        "bbox": [
+          -19.052558883257657,
+          0,
+          -4.8849813083506896e-15,
+          22,
+          22,
+          30.000000000000007
+        ],
+        "faces": 7,
+        "com": [
+          2.9078697621722096,
+          10.852317694219918,
+          12.762235886996125
+        ]
+      },
+      "ours": {
+        "volume": 10318.425123144496,
+        "bbox": [
+          -19.052558883257653,
+          0,
+          0,
+          22,
+          22,
+          30
+        ],
+        "faces": 7,
+        "com": [
+          2.906833666068063,
+          10.848350273168876,
+          12.760648723706936
+        ],
+        "meshVolume": 10314.287949651829
+      }
+    },
+    {
+      "id": "revolution__arc-top-cone-round-neg-60",
+      "piece": "revolution",
+      "desc": "the same frustum ring 60 degrees the other way",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('top'); sk.polygon([[10,0],[22,0],[16,30],[10,30]]); sk.round(2, 4); sk.round(3, 3); revolve(sk, 60);",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 4011.188621,
+          "ours": 4011.188621,
+          "pass": true,
+          "delta": 1.133697250108173e-16
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            5,
+            -18.29113583,
+            -8.881784197e-16,
+            21.12078439,
+            6.661338148e-15,
+            30
+          ],
+          "ours": [
+            5,
+            -18.29113583,
+            0,
+            21.12078439,
+            8.881784197e-16,
+            30
+          ],
+          "pass": true,
+          "delta": 5.7731597280508156e-15
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 8,
+          "ours": 8,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            12.46058009,
+            -7.194119267,
+            13.09948639
+          ],
+          "ours": [
+            12.45501875,
+            -7.190934603,
+            13.10085123
+          ],
+          "pass": true,
+          "delta": 0.005561332509451233
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 4011.188621,
+          "ours": 4008.705229,
+          "pass": true,
+          "delta": 0.0006191161335047424
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 4011.1886206222507,
+        "bbox": [
+          5,
+          -18.291135828836715,
+          -8.881784197001252e-16,
+          21.120784389125774,
+          6.661338147750941e-15,
+          30.000000000000004
+        ],
+        "faces": 8,
+        "com": [
+          12.460580086244288,
+          -7.194119267052025,
+          13.099486388107955
+        ]
+      },
+      "ours": {
+        "volume": 4011.1886206222503,
+        "bbox": [
+          5.000000000000001,
+          -18.291135828836715,
+          0,
+          21.120784389125774,
+          8.881784197001252e-16,
+          30
+        ],
+        "faces": 8,
+        "com": [
+          12.455018753734837,
+          -7.1909346031233765,
+          13.100851232064208
+        ],
+        "meshVolume": 4008.7052290326924
+      }
+    },
+    {
+      "id": "revolution__arc-top-cone-tip-round-90",
+      "piece": "revolution",
+      "desc": "a cone to a point on the axis (triangle) with the base corner rounded 4, a quarter turn",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('top'); sk.polygon([[0,0],[20,0],[0,30]]); sk.round(2, 4); revolve(sk, 90);",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 2802.222531,
+          "ours": 2802.222531,
+          "pass": true,
+          "delta": 1.6228095587373442e-16
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            0,
+            0,
+            -1.000000027e-7,
+            16.52593163,
+            16.52593163,
+            30
+          ],
+          "ours": [
+            0,
+            0,
+            0,
+            16.52593163,
+            16.52593163,
+            30
+          ],
+          "pass": true,
+          "delta": 1.0000000266453525e-7
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 5,
+          "ours": 5,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            5.811272231,
+            5.811272231,
+            8.220809714
+          ],
+          "ours": [
+            5.807278959,
+            5.807278855,
+            8.223271027
+          ],
+          "pass": true,
+          "delta": 0.003993376316084429
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 2802.222531,
+          "ours": 2798.837386,
+          "pass": true,
+          "delta": 0.0012080213713039829
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 2802.222530906759,
+        "bbox": [
+          0,
+          0,
+          -1.0000000266453525e-7,
+          16.52593163271468,
+          16.52593163271468,
+          30
+        ],
+        "faces": 5,
+        "com": [
+          5.811272231321163,
+          5.811272231321164,
+          8.220809714167528
+        ]
+      },
+      "ours": {
+        "volume": 2802.2225309067594,
+        "bbox": [
+          0,
+          0,
+          0,
+          16.52593163271468,
+          16.52593163271468,
+          30
+        ],
+        "faces": 5,
+        "com": [
+          5.807278958887537,
+          5.807278855005079,
+          8.223271026811865
+        ],
+        "meshVolume": 2798.8373862022745
+      }
+    },
+    {
       "id": "sk-rect-dof__corner-origin-25x60",
       "piece": "sk-rect-dof",
       "desc": "a 25 x 60 rectangle, corner on the origin: fully constrained",
@@ -14136,7 +15768,7 @@
         "solve": 0,
         "bucket": "consistent",
         "bbox": [
-          -6.000000000000001,
+          -6,
           0,
           0,
           36,

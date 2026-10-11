@@ -1076,6 +1076,12 @@ fn spin_profile(sk: &Value) -> Result<(Vec<build::ProfileSeg>, Vec<(String, usiz
     if lo < -tol && hi > tol {
         return Err("this sketch's outline crosses the axis it spins about, so the two sides would overlap -- draw the whole outline on one side of that line".to_string());
     }
+    // An outline a hair off the axis (not on it, not clearly away from it) leaves a sliver ring no wider than the
+    // sampling can resolve, so nothing can draw it and the mesh would open or refuse: say so, rather than build it.
+    let gap = if lo > tol { lo } else if hi < -tol { -hi } else { 0.0 };
+    if gap > tol && gap < 1e-5 * reach {
+        return Err("this sketch's outline lies a hair's width from the axis it spins about, which leaves a sliver too thin to draw -- put its edge on the axis, or move it clearly away".to_string());
+    }
     Ok((segs, roles))
 }
 
@@ -1086,9 +1092,10 @@ fn spin_profile(sk: &Value) -> Result<(Vec<build::ProfileSeg>, Vec<(String, usiz
 /// output face map and the per-segment design roles, or the sentence for why not.
 ///
 /// Straight outlines spin to planes, cylinders and cones (a full turn or part of one). An outline
-/// with an arc (a bulge, a round) spins a full turn into tori by `turned::build_solid`, whose own
-/// volume check against the profile integral guards it. A part turn of an arc, an arc centred on
-/// the axis (a ball) and a groove of an arc give a sentence instead.
+/// with an arc (a bulge, a round) spins a full turn into tori by `turned::build_solid`, and part of a
+/// turn by `turned::build_solid_partial` (planar caps, torus/cone sectors); each checks its own volume
+/// against the profile integral. An arc centred on the axis (a ball) and a groove of an arc give a
+/// sentence instead.
 /// Whether the part is a bare round post (two flat ends and one cylinder wall) that the groove's spin axis (the normal
 /// of its sketch) does not run along: the ring then crosses the post's wall at a slant, which is the whole reason.
 fn groove_axis_misses_round_wall(base: &TSolid, sk: &Value) -> bool {
@@ -1105,8 +1112,24 @@ fn revolve_tool(
     angle: f64,
     allow_arcs: bool,
 ) -> Result<(TSolid, Vec<Option<usize>>, Vec<(String, usize)>), String> {
+    revolve_tool_caps(sk, angle, allow_arcs).map(|(s, m, r, _)| (s, m, r))
+}
+
+/// `revolve_tool`, and how many planar cap faces follow the walls of a part turn (2, or 1 where a half turn of a
+/// profile with a side on the axis has its two caps in one plane: `turned::partial_caps_merge`).
+fn revolve_tool_caps(
+    sk: &Value,
+    angle: f64,
+    allow_arcs: bool,
+) -> Result<(TSolid, Vec<Option<usize>>, Vec<(String, usize)>, usize), String> {
     if !angle.is_finite() || angle.abs() < 1e-9 {
         return Err("a spin needs an angle other than 0".to_string());
+    }
+    // A turn a hundredth of a degree short of nothing, or short of a whole turn, is a sliver wedge (or a ring with a hairline
+    // gap) that the mesh cannot close; it is neither a part turn worth drawing nor the whole one, so it says so.
+    let mag = angle.abs();
+    if mag < 0.01 || (mag > 360.0 - 0.01 && mag < 360.0 - 1e-9) {
+        return Err("a spin this close to no turn, or to a whole turn, leaves a sliver too thin to draw -- use a turn of at least 0.01 degrees, or a whole 360".to_string());
     }
     // FreeCAD clamps an angle past a full turn to a full turn, and a negative angle sweeps the
     // other way round the axis: spin |angle| and turn the result back by -|angle|.
@@ -1126,7 +1149,12 @@ fn revolve_tool(
     // the result by pi: exact for any angle, handedness preserved (a rotation,
     // not a mirror), and face order is unchanged.
     let far_side = segs.iter().all(|s| seg_u_extent(s).1 <= 1e-9) && segs.iter().any(|s| seg_u_extent(s).0 < -1e-9);
-    let (mut solid, face_map) = if !has_arc {
+    // A straight outline is spun by `revolve_profile` (planes, cylinders and, for a whole turn, cones). A PART of a turn
+    // of an outline with a slanted side is not a case that builder has, so a spin (never a groove: its tool would reach a
+    // boolean as a cone sector) takes the turned-profile builder below, which makes the same walls cut to the angle.
+    let straight = if has_arc {
+        None
+    } else {
         let points: Vec<[f64; 2]> = segs
             .iter()
             .filter_map(|s| match s {
@@ -1135,18 +1163,23 @@ fn revolve_tool(
             })
             .collect();
         let spun: Vec<[f64; 2]> = if far_side { points.iter().map(|p| [-p[0], p[1]]).collect() } else { points };
-        let (mut solid, map) = build::revolve_profile(&spun, n, u_axis, angle)
-            .ok_or_else(|| "brep-rs supports only profiles parallel or perpendicular to the axis yet".to_string())?;
-        if far_side {
-            solid = build::transform_solid(&solid, &crate::math::Transform::rotation(n, std::f64::consts::PI));
+        match build::revolve_profile(&spun, n, u_axis, angle) {
+            Some((mut solid, map)) => {
+                if far_side {
+                    solid = build::transform_solid(&solid, &crate::math::Transform::rotation(n, std::f64::consts::PI));
+                }
+                Some((solid, map))
+            }
+            None if allow_arcs && (angle.abs() - 360.0).abs() > 1e-9 => None,
+            None => return Err("brep-rs supports only profiles parallel or perpendicular to the axis yet".to_string()),
         }
-        (solid, map)
+    };
+    let mut n_caps = 2usize;
+    let (mut solid, face_map) = if let Some(done) = straight {
+        done
     } else {
-        if !allow_arcs {
+        if has_arc && !allow_arcs {
             return Err("a groove with a curved outline (an arc or a round) is not built yet -- cut it with a straight outline".to_string());
-        }
-        if (angle.abs() - 360.0).abs() > 1e-9 {
-            return Err("an outline with an arc or a round can only be spun a full turn (360) yet".to_string());
         }
         let sgn = if far_side { -1.0 } else { 1.0 };
         // Reflect a far-side outline to u >= 0; the reflection reverses its winding, which the
@@ -1184,6 +1217,11 @@ fn revolve_tool(
                         vec![]
                     }
                 }
+                // part of a turn keeps an arc across the diameter whole (one torus sector, as FreeCAD counts it); a whole
+                // turn cuts it there, each piece wholly above or below its centre
+                build::ProfileSeg::Arc { centre, radius, start, sweep } if (angle.abs() - 360.0).abs() > 1e-9 => {
+                    vec![turned::Seg { k: turned::Kind::Arc { c: *centre, r: *radius, a0: *start, sw: *sweep }, face: None, origin_z: None }]
+                }
                 build::ProfileSeg::Arc { centre, radius, start, sweep } => split_at_diameter(*centre, *radius, *start, *sweep),
             };
             owner.extend(std::iter::repeat(i).take(pieces.len()));
@@ -1193,8 +1231,30 @@ fn revolve_tool(
             flat = flat.iter().rev().map(|s| s.reversed()).collect();
             owner.reverse();
         }
-        let solid = turned::build_solid([0.0, 0.0], &flat).ok_or_else(|| {
-            "this curved outline cannot be spun into an exact solid yet -- keep each arc clear of the axis and the outline simple".to_string()
+        // A whole turn is one closed wall per piece; part of a turn is the same walls cut to the angle and closed by
+        // a planar cap at each end (`turned::build_solid_partial`, which checks Pappus' volume and that every edge is
+        // shared by exactly two faces).
+        let part = (angle.abs() - 360.0).abs() > 1e-9;
+        if part && turned::partial_caps_merge(&flat, angle.to_radians()) {
+            n_caps = 1;
+        }
+        // The thinnest ring of the part, turned through the angle, is a sliver of this width; below what the mesh can
+        // close (and STEP read back) it is neither drawn nor exact, so it says so instead of building it.
+        if part {
+            let width = turned::min_offaxis_radius(&flat) * angle.abs().to_radians();
+            if width < 1e-3 {
+                return Err("a part turn this narrow leaves a sliver too thin to draw -- turn it further, or keep the outline further from the axis".to_string());
+            }
+        }
+        let built = if part { turned::build_solid_partial(&flat, angle.to_radians()) } else { turned::build_solid([0.0, 0.0], &flat) };
+        let solid = built.ok_or_else(|| {
+            if part && !has_arc {
+                "this outline cannot be spun part of a turn into an exact solid yet -- keep it simple and clear of the axis".to_string()
+            } else if part {
+                "this curved outline cannot be spun part of a turn into an exact solid yet -- keep each arc clear of the axis and the outline simple".to_string()
+            } else {
+                "this curved outline cannot be spun into an exact solid yet -- keep each arc clear of the axis and the outline simple".to_string()
+            }
         })?;
         // One face per piece that is not on the axis, in order; an original segment keeps the first
         // face made from it.
@@ -1228,7 +1288,7 @@ fn revolve_tool(
         let t = crate::math::Transform::translation(fr.origin);
         solid = build::transform_solid(&solid, &t);
     }
-    Ok((solid, face_map, roles))
+    Ok((solid, face_map, roles, n_caps))
 }
 
 /// A hole's cutting tool: a plain cylinder, or ONE revolved stepped profile when
@@ -1451,6 +1511,25 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
         // carries curved faces trimmed by a space curve. Moving and copying them is
         // exact; every other operation would read those faces as whole cylinders and
         // could return a wrong solid, so each one refuses in a sentence.
+        // A part spun only part of a turn from an outline with an arc or a slant (`turned::build_solid_partial`) is
+        // exact to move, copy and mirror. A cut, join, round or hollow would read its torus and cone sectors as whole
+        // rings and could return a wrong solid, so each says so instead.
+        if matches!(kind, "pocket" | "groove" | "hole" | "combine" | "fillet" | "draft" | "shell" | "blend" | "extrude") {
+            let mut names: Vec<&str> = Vec::new();
+            collect_strings(f, &mut names);
+            let sector = names.iter().copied().find(|n| {
+                hist.shapes.get(*n).is_some_and(ops::has_partial_turn) || hist.shapes.get(hist.head_of(n)).is_some_and(ops::has_partial_turn)
+            });
+            if let Some(n) = sector {
+                refusals.insert(
+                    id.clone(),
+                    json!(format!(
+                        "{kind} {id}: {n} was spun only part of a turn from an outline with a curve or a slant in it, and brep-rs can only move, copy or mirror a part like that yet -- {id} is shown without it."
+                    )),
+                );
+                continue;
+            }
+        }
         if matches!(kind, "pocket" | "groove" | "hole" | "combine" | "fillet" | "draft" | "shell" | "mirror" | "blend") {
             let mut names: Vec<&str> = Vec::new();
             collect_strings(f, &mut names);
@@ -2381,7 +2460,7 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 // this branch supplies the naming history each needs, and the
                 // caps' own face indices for a partial.
                 let closed = angle.abs() >= 360.0 - 1e-9;
-                let (solid, face_map, roles) = match revolve_tool(sk, angle, true) {
+                let (solid, face_map, roles, n_caps) = match revolve_tool_caps(sk, angle, true) {
                     Ok(t) => t,
                     Err(why) => {
                         refusals.insert(id.clone(), json!(format!("revolve {id}: {why} -- {id} is shown without it.")));
@@ -2392,7 +2471,7 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 // `face_map` (one entry per profile segment, in segment order);
                 // the partial path appends its two caps AFTER them, in the
                 // order it built them (t=0, then t=angle).
-                let n_walls = solid.faces().len() - if closed { 0 } else { 2 };
+                let n_walls = solid.faces().len() - if closed { 0 } else { n_caps };
                 let segments: Vec<history::SweepSeg> = roles
                     .iter()
                     .enumerate()
@@ -2407,6 +2486,9 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 // t=|angle| cap onto the sketch plane, so the two indices swap.
                 let (cap_bottom, cap_top) = if closed {
                     (None, None)
+                } else if n_caps == 1 {
+                    // one planar face holds both ends of the spin
+                    (Some(n_walls), Some(n_walls))
                 } else if angle < 0.0 {
                     (Some(n_walls + 1), Some(n_walls))
                 } else {

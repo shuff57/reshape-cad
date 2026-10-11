@@ -5,11 +5,12 @@
 // about axis x start (build.rs revolve_profile_partial). That lands home only for an arc that starts at e1, or at half
 // a turn, which is why 180, 360, 400 and their negatives wrote and 30, 90, 120, 270 did not.
 // The oracle is OpenCascade's own STEP reader: the file must read back valid, as one solid, at brep-rs's exact volume
-// (1e-6 relative) and bounding box, and at the closed-form volume of the sector. A spin the kernel does not build (an
-// outline with an arc, part of a turn) must refuse in a sentence and write no file.
+// (1e-6 relative) and bounding box, and at the closed-form volume of the sector. An outline with an arc, part of a
+// turn, used to refuse here; it builds and writes now (the end of this file, and partial-revolve-arc.test.mjs).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { stepRoundTrip, okRead, brep } from './step-readback-lib.mjs';
+import { rectSpin } from './sketch-audit-lib.mjs';
 
 const { runScript } = await import('@shuff57/reshape-script/reshape-script');
 const PI = Math.PI;
@@ -67,20 +68,26 @@ for (const a of [90, -90]) readsBack('a profile on the far side of the axis', FA
 const GROOVE = "const b = box(40, 40, 20); const s = sketch('front', 0); s.rect(8, 7, { at: [4, 18.5] }); groove(s, b, 90);";
 for (const a of [90, -90, 270, -270]) readsBack('a partial groove across a face', GROOVE, a, (f) => 32000 - PI * 64 * 5 * f);
 
-// ---- an outline with an arc: a full turn writes; part of a turn is not built, so it refuses in a sentence and writes no file
+// ---- an outline with an arc: a full turn writes, and so does part of a turn (it refused until turned.rs build_solid_partial;
+// partial-revolve-arc.test.mjs pins the full set of angles, outlines and closed forms)
 const ROUNDED = "const sk = sketch('top'); sk.rect(10, 30, { at: [15, 15] }); sk.round(2, 3); revolve(sk, 360);";
-test('STEP reads back in OpenCascade: an outline with a round, a full turn (control for the refusals below)', () => {
+test('STEP reads back in OpenCascade: an outline with a round, a full turn (control for the part turns below)', () => {
   const r = stepRoundTrip(docAt(ROUNDED, 360));
   assert.equal(r.refused, undefined, `STEP refused: ${r.refused}`);
   assert.ok(okRead(r), JSON.stringify({ got: r.got, want: r.want, dv: r.dv }));
   assert.ok(r.dv <= 1e-6);
 });
 for (const a of [30, 90, -90, 270]) {
-  test(`an outline with a round spun ${a} degrees refuses in a sentence and writes no STEP`, () => {
-    const doc = docAt(ROUNDED, a);
-    const id = doc.features.at(-1).id;
-    const out = JSON.parse(brep.export_step(JSON.stringify(doc), id));
-    assert.equal(out.step, undefined, 'no file');
-    assert.match(out.error, /can only be spun a full turn \(360\) yet -- rev1 is shown without it\.$/);
+  test(`STEP reads back in OpenCascade: an outline with a round spun ${a} degrees`, () => {
+    const r = stepRoundTrip(docAt(ROUNDED, a));
+    assert.equal(r.buildRefused, undefined, JSON.stringify(r.buildRefused));
+    assert.equal(r.refused, undefined, `STEP refused: ${r.refused}`);
+    assert.equal(r.got.valid, true);
+    assert.equal(r.got.solids, 1);
+    assert.ok(okRead(r), JSON.stringify({ got: r.got, want: r.want, dv: r.dv, db: r.db }));
+    // the closed form: the whole ring's Pappus volume less the corner piece (textbook centroids), times the part of a turn
+    const want = rectSpin(15, 10, 30, { 2: ['R', 3] }) * Math.abs(a) / 360;
+    assert.ok(Math.abs(r.got.volume - want) <= 1e-6 * want, `read-back ${r.got.volume} vs closed form ${want}`);
+    assert.ok(Math.abs(r.want.volume - want) <= 1e-9 * want, `brep-rs ${r.want.volume} vs closed form ${want}`);
   });
 }

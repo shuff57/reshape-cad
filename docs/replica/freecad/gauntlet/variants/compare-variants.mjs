@@ -21,7 +21,7 @@ import { spawnSync } from 'node:child_process';
 import { existsSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { HERE, load, measureScript } from './lib.mjs';
+import { HERE, load, measureScript, measurePatched } from './lib.mjs';
 import { VARIANTS } from './defs.mjs';
 import { generateFc } from './gen-fc.mjs';
 import { writeWorklist } from './worklist.mjs';
@@ -158,7 +158,7 @@ for (const v of list) {
   const ref = readRef(v.id);
   let rec;
   try {
-    rec = v.kind === 'sketch' ? compareSketch(v, ref, await oursSketch(v)) : compareSolid(v, ref, await measureScript(v.ours));
+    rec = v.kind === 'sketch' ? compareSketch(v, ref, await oursSketch(v)) : compareSolid(v, ref, v.patch ? await measurePatched(v.ours, v.patch.kind, v.patch.set) : await measureScript(v.ours));
   } catch (e) { rec = { id: v.id, piece: v.piece, desc: v.desc, status: 'ERROR', note: String(e && e.stack || e).split('\n').slice(0, 3).join(' | ') }; }
   const c = classes[v.id];
   if (rec.status !== 'MATCH') {

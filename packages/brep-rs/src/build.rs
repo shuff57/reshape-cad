@@ -724,7 +724,7 @@ fn reversed_face(face: &Face<Curve3, Surface3>) -> TFace {
  half_angle: c.half_angle,
  slant: c.slant,
  v_range: c.v_range,
- bounded: c.bounded,
+ bounded: c.bounded, u_range: c.u_range,
  }),
  other => other.clone(),
     };
@@ -1130,7 +1130,7 @@ pub fn round_cylinder(center: Vec3, radius: f64, height: f64, axis: Vec3, rad: f
 
     let seam_top = meridian(add(zhi_wall, scale(e1, cap_r)), &v_wall_hi, &v_cap_hi, scale(e2, -1.0));
     let top_torus = make_face(
-        Surface::Torus(TorusSurf { center: zhi_wall, axis: z, e1, e2, ring: cap_r, tube: rad, v_range: [0.0, hp] }),
+        Surface::Torus(TorusSurf { center: zhi_wall, axis: z, e1, e2, ring: cap_r, tube: rad, v_range: [0.0, hp], u_range: [0.0, std::f64::consts::TAU] }),
         [[0.0, two_pi], [0.0, hp]],
         torus_wire(e_wall_hi, e_cap_hi, seam_top),
     );
@@ -1143,7 +1143,7 @@ pub fn round_cylinder(center: Vec3, radius: f64, height: f64, axis: Vec3, rad: f
     // meridian curve above is untouched -- it is defined in world space by
     // (e1, e2) directly, not through this struct.
     let bottom_torus = make_face(
-        Surface::Torus(TorusSurf { center: zlo_wall, axis: scale(z, -1.0), e1, e2: scale(e2, -1.0), ring: cap_r, tube: rad, v_range: [0.0, hp] }),
+        Surface::Torus(TorusSurf { center: zlo_wall, axis: scale(z, -1.0), e1, e2: scale(e2, -1.0), ring: cap_r, tube: rad, v_range: [0.0, hp], u_range: [0.0, std::f64::consts::TAU] }),
         [[0.0, two_pi], [0.0, hp]],
         torus_wire(e_wall_lo, e_cap_lo, seam_bot),
     );
@@ -1228,7 +1228,7 @@ pub fn chamfer_cylinder(center: Vec3, radius: f64, height: f64, axis: Vec3, rad:
             half_angle,
             slant,
             v_range: [0.0, slant],
-            bounded: false,
+            bounded: false, u_range: [0.0, std::f64::consts::TAU],
         }),
         [[0.0, two_pi], [0.0, slant]],
         band_wire(e_wall_hi, e_cap_hi, seam_top),
@@ -1247,7 +1247,7 @@ pub fn chamfer_cylinder(center: Vec3, radius: f64, height: f64, axis: Vec3, rad:
             half_angle,
             slant,
             v_range: [0.0, slant],
-            bounded: false,
+            bounded: false, u_range: [0.0, std::f64::consts::TAU],
         }),
         [[0.0, two_pi], [0.0, slant]],
         band_wire(e_wall_lo, e_cap_lo, seam_bot),
@@ -1355,14 +1355,14 @@ pub fn round_cylinder_one_rim(center: Vec3, radius: f64, height: f64, axis: Vec3
     let band = if treated_top {
         let seam = meridian(&v_treated_wall, &v_cap_treated, scale(e2, -1.0));
         make_face(
-            Surface::Torus(TorusSurf { center: z_treated_wall, axis: z, e1, e2, ring: cap_r, tube: rad, v_range: [0.0, hp] }),
+            Surface::Torus(TorusSurf { center: z_treated_wall, axis: z, e1, e2, ring: cap_r, tube: rad, v_range: [0.0, hp], u_range: [0.0, std::f64::consts::TAU] }),
             [[0.0, two_pi], [0.0, hp]],
             band_wire(e_wall_treated, e_cap_treated, seam),
         )
     } else {
         let seam = meridian(&v_treated_wall, &v_cap_treated, e2);
         make_face(
-            Surface::Torus(TorusSurf { center: z_treated_wall, axis: scale(z, -1.0), e1, e2: scale(e2, -1.0), ring: cap_r, tube: rad, v_range: [0.0, hp] }),
+            Surface::Torus(TorusSurf { center: z_treated_wall, axis: scale(z, -1.0), e1, e2: scale(e2, -1.0), ring: cap_r, tube: rad, v_range: [0.0, hp], u_range: [0.0, std::f64::consts::TAU] }),
             [[0.0, two_pi], [0.0, hp]],
             band_wire(e_wall_treated, e_cap_treated, seam),
         )
@@ -1463,7 +1463,7 @@ pub fn chamfer_cylinder_one_rim(center: Vec3, radius: f64, height: f64, axis: Ve
     let band = if treated_top {
         let seam = meridian(&v_treated_wall, &v_cap_treated);
         make_face(
-            Surface::Cone(Cone { base: z_treated_wall, axis: z, e1, e2, base_radius: radius, half_angle, slant, v_range: [0.0, slant], bounded: false }),
+            Surface::Cone(Cone { base: z_treated_wall, axis: z, e1, e2, base_radius: radius, half_angle, slant, v_range: [0.0, slant], bounded: false, u_range: [0.0, std::f64::consts::TAU] }),
             [[0.0, two_pi], [0.0, slant]],
             band_wire(e_wall_treated, e_cap_treated, seam),
         )
@@ -1473,7 +1473,7 @@ pub fn chamfer_cylinder_one_rim(center: Vec3, radius: f64, height: f64, axis: Ve
         // band's own axis for its volume term's sign -- the same parity
         // chamfer_cylinder records for its bottom band.
         make_face(
-            Surface::Cone(Cone { base: z_treated_wall, axis: scale(z, -1.0), e1, e2: scale(e2, -1.0), base_radius: radius, half_angle, slant, v_range: [0.0, slant], bounded: false }),
+            Surface::Cone(Cone { base: z_treated_wall, axis: scale(z, -1.0), e1, e2: scale(e2, -1.0), base_radius: radius, half_angle, slant, v_range: [0.0, slant], bounded: false, u_range: [0.0, std::f64::consts::TAU] }),
             [[0.0, two_pi], [0.0, slant]],
             band_wire(e_wall_treated, e_cap_treated, seam),
         )
@@ -1519,7 +1519,7 @@ pub fn cone_solid(center: Vec3, radius: f64, height: f64, axis: Vec3) -> TSolid 
             half_angle,
             slant,
             v_range: [0.0, slant],
-            bounded: false,
+            bounded: false, u_range: [0.0, std::f64::consts::TAU],
         }),
         [[0.0, 0.0], [0.0, slant]],
         vec![
@@ -2728,7 +2728,7 @@ pub fn revolve_profile(
  half_angle,
  slant,
  v_range: [0.0, slant],
- bounded: false,
+ bounded: false, u_range: [0.0, std::f64::consts::TAU],
  }),
  [[0.0, two_pi], [0.0, slant]],
  vec![

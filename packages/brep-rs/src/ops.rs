@@ -5550,6 +5550,17 @@ pub fn has_cut_cone(s: &TSolid) -> bool {
     s.faces().iter().any(|f| matches!(&f.borrow().surface, Surface::Cone(c) if c.bounded))
 }
 
+/// Whether part of a turn of a curved outline made this solid (`turned::build_solid_partial`): a torus or a cone that
+/// runs only a sector of its ring. Moving, copying and mirroring such a part is exact; every cut, join, round or hollow
+/// of it would read those faces as whole rings, so each one refuses instead.
+pub fn has_partial_turn(s: &TSolid) -> bool {
+    s.faces().iter().any(|f| match &f.borrow().surface {
+        Surface::Torus(t) => crate::geom::is_partial_u(t.u_range),
+        Surface::Cone(c) => crate::geom::is_partial_u(c.u_range),
+        _ => false,
+    })
+}
+
 /// Boolean two solids of the `combine` kind. Returns None when the kernel
 /// cannot build the exact result, so the caller refuses the feature in words.
 
@@ -7461,7 +7472,7 @@ pub(crate) fn flip_face(face: &TFace) -> Option<TFace> {
  half_angle: c.half_angle,
  slant: c.slant,
  v_range: c.v_range,
- bounded: c.bounded,
+ bounded: c.bounded, u_range: c.u_range,
  }),
  fb.uv_domain,
  uses,

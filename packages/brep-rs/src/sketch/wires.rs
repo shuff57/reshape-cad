@@ -1318,6 +1318,12 @@ pub fn outline_flaw(segs: &[WireSeg]) -> Option<OutlineFlaw> {
                         return Some(OutlineFlaw::DoublesBack(i, j));
                     }
                 }
+                // A line and an arc (or two arcs) meet at their shared corner and can meet again further along: an arc
+                // that leaves its corner on one side of the line and crosses it a little way on makes a tiny loop, and the
+                // outline is then not one simple loop. Any meeting that is not at an end of either curve is a crossing.
+                if (c1.arc || c2.arc) && interior_meeting(c1, c2, eps) {
+                    return Some(OutlineFlaw::Crossing(i, j));
+                }
                 continue;
             }
             if crossing_point(c1, c2).is_some() {
@@ -1390,6 +1396,42 @@ mod outline_flaw_tests {
     }
 
     #[test]
+    fn an_arc_that_leaves_its_corner_across_the_line_and_crosses_it_again_is_a_crossing() {
+        // the triangle from a soup sketch: line, line, then a clockwise arc back to the first corner whose first
+        // samples lie on the far side of the first line, so arc and line cross a second time near the corner
+        let c: [f64; 2] = [14.06746036548752, -15.359527179461962];
+        let r = 7.6053645190213865_f64;
+        let p0: [f64; 2] = [16.27387982120707, -22.63780188248133];
+        let p1: [f64; 2] = [29.93431909295401, -16.376168179020823];
+        let p2: [f64; 2] = [19.458312735990113, -9.99480163320743];
+        let a0 = (p2[1] - c[1]).atan2(p2[0] - c[0]);
+        let a1 = (p0[1] - c[1]).atan2(p0[0] - c[0]);
+        let mut sw = a1 - a0;
+        while sw > 0.0 {
+            sw -= 2.0 * PI;
+        }
+        let segs = vec![
+            WireSeg::Line { a: p0, b: p1 },
+            WireSeg::Line { a: p1, b: p2 },
+            WireSeg::Arc { centre: c, radius: r, start: a0, sweep: sw },
+        ];
+        let f = outline_flaw(&segs);
+        assert!(matches!(f, Some(OutlineFlaw::Crossing(..))), "{f:?}");
+    }
+    #[test]
+    fn a_tangent_arc_corner_and_a_lens_are_clean() {
+        // a slot end: a line then a semicircle that leaves it tangentially; and a lens of two arcs
+        let segs = vec![
+            WireSeg::Line { a: [0.0, 0.0], b: [10.0, 0.0] },
+            arc([10.0, 3.0], 3.0, -90.0, 180.0),
+            WireSeg::Line { a: [10.0, 6.0], b: [0.0, 6.0] },
+            arc([0.0, 3.0], 3.0, 90.0, 180.0),
+        ];
+        assert_eq!(outline_flaw(&segs), None);
+        let lens = vec![arc([0.0, -3.0], 5.0, 36.8698976, 106.2602048), arc([0.0, 3.0], 5.0, 216.8698976, 106.2602048)];
+        assert_eq!(outline_flaw(&lens), None);
+    }
+    #[test]
     fn an_arc_touching_another_from_inside_pinches_the_outline() {
         // A radius-5 circle at (5, 0) sits inside a radius-10 circle at the origin and touches it at (10, 0).
         let (big, small) = ([0.0, 0.0], [5.0, 0.0]);
@@ -1424,6 +1466,53 @@ mod outline_flaw_tests {
         let segs: Vec<WireSeg> = (0..4).map(|k| arc(cs[k], r, 90.0 * k as f64, 90.0)).collect();
         assert_eq!(outline_flaw(&segs), None);
     }
+}
+
+/// Whether a line and an arc, or two arcs, meet at a point that is clear (by more than `eps`) of every end of both:
+/// the second meeting of two neighbours that already share a corner (so a smooth corner, a tangent arc, does not count:
+/// its double root sits at the corner).
+fn interior_meeting(c1: &Curve, c2: &Curve, eps: f64) -> bool {
+    let clear = |p: [f64; 2]| [c1.a, c1.b, c2.a, c2.b].iter().all(|e| dist2(*e, p) > eps);
+    let mut cands: Vec<[f64; 2]> = Vec::new();
+    match (c1.arc, c2.arc) {
+        (false, true) | (true, false) => {
+            let (line, arc) = if c1.arc { (c2, c1) } else { (c1, c2) };
+            let d = sub2(line.b, line.a);
+            let f = sub2(line.a, arc.centre);
+            let qa = dot2(d, d);
+            if qa > 0.0 {
+                let qb = 2.0 * dot2(f, d);
+                let qc = dot2(f, f) - arc.radius * arc.radius;
+                let disc = qb * qb - 4.0 * qa * qc;
+                if disc > 0.0 {
+                    let root = disc.sqrt();
+                    for t in [(-qb - root) / (2.0 * qa), (-qb + root) / (2.0 * qa)] {
+                        if t > 0.0 && t < 1.0 {
+                            cands.push([line.a[0] + t * d[0], line.a[1] + t * d[1]]);
+                        }
+                    }
+                }
+            }
+        }
+        (true, true) => {
+            let delta = sub2(c2.centre, c1.centre);
+            let d = len2(delta);
+            if d > 0.0 && d < c1.radius + c2.radius && d > (c1.radius - c2.radius).abs() {
+                let along = (d * d + c1.radius * c1.radius - c2.radius * c2.radius) / (2.0 * d);
+                let h2 = c1.radius * c1.radius - along * along;
+                if h2 > 0.0 {
+                    let h = h2.sqrt();
+                    let (ux, uy) = (delta[0] / d, delta[1] / d);
+                    let base = [c1.centre[0] + along * ux, c1.centre[1] + along * uy];
+                    for sign in [1.0, -1.0] {
+                        cands.push([base[0] - sign * h * uy, base[1] + sign * h * ux]);
+                    }
+                }
+            }
+        }
+        (false, false) => {}
+    }
+    cands.into_iter().any(|p| clear(p) && (!c1.arc || c1.contains_angle(p)) && (!c2.arc || c2.contains_angle(p)))
 }
 
 /// One point where two curves properly cross, if they do. Tangential touches

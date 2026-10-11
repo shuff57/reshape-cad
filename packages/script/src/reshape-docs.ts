@@ -482,7 +482,7 @@ const shape = revolve(sk, 360)`,
       },
       {
         title: 'revolve: rounds and arcs in the outline',
-        body: `A round on the outline spins into a true curved surface, not a bevel: with corner 1 of the ring above rounded by 4 (sk.round(1, 4)), the part is 74839.59 mm^3, which is the plain ring less the corner, 2 x pi x 25.89 x (1 - pi/4) x 4^2, where 25.89 is how far out the middle of that corner piece sits. A chamfer there would take off a different amount (74074.57 mm^3), so the two are not interchangeable. An outline drawn with arcs spins the same way when it sits clear of the axis. Rounds and arcs spin a full turn (360) only; a part turn of a curved outline, an arc whose centre is on the axis (a ball: use sphere()), and a groove with a curved outline each stop with a sentence.`,
+        body: `A round on the outline spins into a true curved surface, not a bevel: with corner 1 of the ring above rounded by 4 (sk.round(1, 4)), the part is 74839.59 mm^3, which is the plain ring less the corner, 2 x pi x 25.89 x (1 - pi/4) x 4^2, where 25.89 is how far out the middle of that corner piece sits. A chamfer there would take off a different amount (74074.57 mm^3), so the two are not interchangeable. An outline drawn with arcs spins the same way when it sits clear of the axis. Rounds and arcs spin part of a turn too (any angle up to 360); an arc whose centre is on the axis (a ball: use sphere()), a groove with a curved outline, and cutting, joining or rounding a part spun part of a turn from a curved outline each stop with a sentence.`,
         code: `const sk = sketch('front', 0)
 sk.rect(30, 10, { at: [40, 0] })
 sk.round(1, 4)

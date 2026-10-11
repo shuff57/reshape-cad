@@ -15,12 +15,16 @@ const pyPts = (pts) => '[' + pts.map((p) => `(${num(p[0])},${num(p[1])})`).join(
 const R = (x0, y0, x1, y1) => ({ t: 'rect', x0, y0, x1, y1 });
 const C = (cx, cy, d) => ({ t: 'circle', cx, cy, d });
 const P = (pts) => ({ t: 'poly', pts });
+// a counter-clockwise polygon with some corners (0-based index -> radius) rounded: a revolve of it spins arcs (tori)
+const RP = (pts, rounds) => ({ t: 'rpoly', pts, rounds });
 const oursProf = (sk, p) =>
-  p.t === 'rect' ? `${sk}.rect(${num(p.x1 - p.x0)}, ${num(p.y1 - p.y0)}, { at: [${num((p.x0 + p.x1) / 2)}, ${num((p.y0 + p.y1) / 2)}] });`
+  p.t === 'rpoly' ? `${sk}.polygon(${pts2(p.pts)}); ${Object.entries(p.rounds).map(([k, r]) => `${sk}.round(${+k + 1}, ${num(r)});`).join(' ')}`
+    : p.t === 'rect' ? `${sk}.rect(${num(p.x1 - p.x0)}, ${num(p.y1 - p.y0)}, { at: [${num((p.x0 + p.x1) / 2)}, ${num((p.y0 + p.y1) / 2)}] });`
     : p.t === 'circle' ? `${sk}.circle(${num(p.d)}, { at: [${num(p.cx)}, ${num(p.cy)}] });`
       : `${sk}.polygon(${pts2(p.pts)});`;
 const fcProf = (sk, p) =>
-  p.t === 'rect' ? `rect(${sk}, ${num(p.x0)}, ${num(p.y0)}, ${num(p.x1)}, ${num(p.y1)})`
+  p.t === 'rpoly' ? `rpoly(${sk}, ${pyPts(p.pts)}, ${JSON.stringify(p.rounds)})`.replace(/"(\d+)":/g, '$1:')
+    : p.t === 'rect' ? `rect(${sk}, ${num(p.x0)}, ${num(p.y0)}, ${num(p.x1)}, ${num(p.y1)})`
     : p.t === 'circle' ? `circle(${sk}, ${num(p.cx)}, ${num(p.cy)}, ${num(p.d / 2)})`
       : `poly(${sk}, ${pyPts(p.pts)})`;
 const offArg = (off) => (off ? `, ${num(off)}` : '');
@@ -400,6 +404,39 @@ padV('pad-basic', 'top-offset-negative-reversed', 'top sketch offset -4, reverse
 
 cutV('pocket-blind', 'depth-zero', 'a pocket of depth 0 (nothing to cut): the reference and the script should both refuse', { prof: C(20, 15, 8), depth: 0 });
 cutV('pocket-blind', 'depth-negative', 'a pocket of depth -3: the reference and the script should both refuse', { prof: C(20, 15, 8), depth: -3 });
+
+// ---- revolution of an outline with an ARC: part of a turn (a torus patch where the round is), either way round ----------------------------------------
+// ours: sk.polygon + sk.round (the sketch's own round), FreeCAD: the same outline written as lines and tangent arcs. A turn the other way is
+// angle -a ours, a reversed Revolution of a FreeCAD.
+function revArc(slug, desc, { plane = 'top', prof, angle }) {
+  const r = REV[plane];
+  const neg = angle < 0;
+  // The script layer refuses a negative angle in a sentence (spin(): more than 0 and at most 360), so a turn the other way
+  // reaches the kernel as the same script at |angle| with the revolve feature's angle patched (`patch`, applied by compare-variants).
+  add({
+    id: `revolution__${slug}`, piece: 'revolution', desc,
+    ours: `const sk = sketch('${plane}'); ${oursProf('sk', prof)} revolve(sk, ${Math.abs(angle)});`,
+    ...(neg ? { patch: { kind: 'revolve', set: { angle } } } : {}),
+    fc: `doc, body = setup()\nsk = sketch(body, '${r.fcPlane}')\n${fcProf('sk', prof)}\nrevolve(body, sk, ${Math.abs(angle)}, '${r.fcAxis}', ${neg ? 'True' : 'False'})`,
+  });
+}
+const RING = [[10, 0], [20, 0], [20, 30], [10, 30]];
+revArc('arc-top-round-90', 'a ring r10..20, 30 tall with its top-outer corner rounded 3, a quarter turn', { prof: RP(RING, { 2: 3 }), angle: 90 });
+revArc('arc-top-round-30', 'the same rounded ring, 30 degrees', { prof: RP(RING, { 2: 3 }), angle: 30 });
+revArc('arc-top-round-270', 'the same rounded ring, three quarters of a turn', { prof: RP(RING, { 2: 3 }), angle: 270 });
+revArc('arc-top-round-120', 'the same rounded ring, 120 degrees', { prof: RP(RING, { 2: 3 }), angle: 120 });
+revArc('arc-top-round-359', 'the same rounded ring, one degree short of a full turn', { prof: RP(RING, { 2: 3 }), angle: 359 });
+revArc('arc-top-round-neg-90', 'the rounded ring a quarter turn the OTHER way (-90); FreeCAD: 90 reversed', { prof: RP(RING, { 2: 3 }), angle: -90 });
+revArc('arc-top-round-neg-250', 'the rounded ring 250 degrees the other way', { prof: RP(RING, { 2: 3 }), angle: -250 });
+revArc('arc-top-two-rounds', 'both outer corners rounded (4 and 2.5), 200 degrees', { prof: RP(RING, { 1: 4, 2: 2.5 }), angle: 200 });
+revArc('arc-top-four-rounds', 'all four corners rounded (1, 2, 3, 1.5), 100 degrees', { prof: RP(RING, { 0: 1, 1: 2, 2: 3, 3: 1.5 }), angle: 100 });
+revArc('arc-front-round-90', 'front plane (axis Y): the rounded ring, a quarter turn', { plane: 'front', prof: RP(RING, { 2: 3 }), angle: 90 });
+revArc('arc-front-round-neg-135', 'front plane, the rounded ring 135 degrees the other way', { plane: 'front', prof: RP(RING, { 1: 3, 2: 3 }), angle: -135 });
+revArc('arc-top-rod-round-180', 'a solid rod (touches the axis) with its top corner rounded 5, a half turn', { prof: RP([[0, 0], [12, 0], [12, 30], [0, 30]], { 2: 5 }), angle: 180 });
+revArc('arc-top-rod-round-45', 'the rounded rod, 45 degrees', { prof: RP([[0, 0], [12, 0], [12, 30], [0, 30]], { 2: 5 }), angle: 45 });
+revArc('arc-top-cone-round-150', 'a frustum ring (slanted outer side) with its wide top corner rounded 3: a cone and a torus, 150 degrees', { prof: RP([[10, 0], [22, 0], [16, 30], [10, 30]], { 2: 3 }), angle: 150 });
+revArc('arc-top-cone-round-neg-60', 'the same frustum ring 60 degrees the other way', { prof: RP([[10, 0], [22, 0], [16, 30], [10, 30]], { 1: 4, 2: 3 }), angle: -60 });
+revArc('arc-top-cone-tip-round-90', 'a cone to a point on the axis (triangle) with the base corner rounded 4, a quarter turn', { prof: RP([[0, 0], [20, 0], [0, 30]], { 1: 4 }), angle: 90 });
 
 for (const v of SKETCH_VARIANTS) add(v);
 export const VARIANTS = out;

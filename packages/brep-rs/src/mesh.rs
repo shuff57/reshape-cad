@@ -457,6 +457,135 @@ fn split_collinear_triangles(tris: &mut Vec<usize>, flat: &[f64]) {
     *tris = out.into_iter().flatten().collect();
 }
 
+/// Twice the signed shoelace area of one ring of `flat` (x, y pairs) starting at vertex `at` and `n` long.
+fn ring_area2(flat: &[f64], at: usize, n: usize) -> f64 {
+    let mut a = 0.0;
+    for k in 0..n {
+        let (p, q) = (at + k, at + (k + 1) % n);
+        a += flat[2 * p] * flat[2 * q + 1] - flat[2 * q] * flat[2 * p + 1];
+    }
+    a
+}
+
+/// Do `tris` (indices into `flat`) cover exactly the region the rings bound: every triangle wound the way the
+/// outer ring is (none inverted) and their areas add up to the outer ring less the holes. A triangulator that drops or
+/// doubles a triangle on a nearly degenerate ring (arc samples that are almost collinear with a chord) fails this, and
+/// a cap with a missing triangle is an open mesh with no refusal.
+fn triangulation_covers(tris: &[usize], flat: &[f64], lens: &[usize]) -> bool {
+    if tris.is_empty() || tris.len() % 3 != 0 {
+        return false;
+    }
+    let outer = ring_area2(flat, 0, lens[0]);
+    let mut want = outer.abs();
+    let mut at = lens[0];
+    for &l in &lens[1..] {
+        want -= ring_area2(flat, at, l).abs();
+        at += l;
+    }
+    let uv = |i: usize| [flat[2 * i], flat[2 * i + 1]];
+    // earcut winds its triangles the other way from the ring, so the sense is the sum's own: every triangle must agree
+    // with it (none inverted) and together they must make the region's area
+    let areas: Vec<f64> = tris.chunks(3).map(|t| uv_area(uv(t[0]), uv(t[1]), uv(t[2]))).collect();
+    let sum: f64 = areas.iter().sum();
+    let sign = if sum >= 0.0 { 1.0 } else { -1.0 };
+    let worst = areas.iter().fold(0.0f64, |w, a| w.min(sign * a));
+    let scale = outer.abs().max(1e-12);
+    (sum.abs() - want).abs() <= 1e-9 * scale && worst >= -1e-9 * scale
+}
+
+/// Ear clipping of one simple ring (no holes), the fallback when earcut's answer does not cover the ring. It takes
+/// only a strictly convex vertex whose triangle holds no other vertex of the ring (on its edge included), so the
+/// result is a plain partition with every ring vertex used. `None` past a few thousand vertices (it is cubic).
+fn ear_clip(flat: &[f64], n: usize) -> Option<Vec<usize>> {
+    if n < 3 || n > 3000 {
+        return None;
+    }
+    let uv = |i: usize| [flat[2 * i], flat[2 * i + 1]];
+    let sign = if ring_area2(flat, 0, n) >= 0.0 { 1.0 } else { -1.0 };
+    let mut idx: Vec<usize> = (0..n).collect();
+    let mut tris: Vec<usize> = Vec::with_capacity(3 * (n - 2));
+    let inside = |p: [f64; 2], a: [f64; 2], b: [f64; 2], c: [f64; 2]| {
+        sign * uv_area(a, b, p) >= -1e-12 && sign * uv_area(b, c, p) >= -1e-12 && sign * uv_area(c, a, p) >= -1e-12
+    };
+    while idx.len() > 3 {
+        let m = idx.len();
+        let mut clipped = false;
+        for k in 0..m {
+            let (ia, ib, ic) = (idx[(k + m - 1) % m], idx[k], idx[(k + 1) % m]);
+            let (a, b, c) = (uv(ia), uv(ib), uv(ic));
+            if sign * uv_area(a, b, c) <= 1e-12 {
+                continue;
+            }
+            let blocked = idx.iter().any(|&j| {
+                if j == ia || j == ib || j == ic {
+                    return false;
+                }
+                let p = uv(j);
+                // a duplicate of a triangle corner does not block
+                if p == a || p == b || p == c {
+                    return false;
+                }
+                inside(p, a, b, c)
+            });
+            if blocked {
+                continue;
+            }
+            tris.extend_from_slice(&[ia, ib, ic]);
+            idx.remove(k);
+            clipped = true;
+            break;
+        }
+        if !clipped {
+            return None;
+        }
+    }
+    let (a, b, c) = (idx[0], idx[1], idx[2]);
+    if sign * uv_area(uv(a), uv(b), uv(c)) > 1e-12 {
+        tris.extend_from_slice(&[a, b, c]);
+    }
+    Some(tris)
+}
+
+/// Earcut, checked: a triangulation that covers the rings, or the one that does (the ring restarted elsewhere, then
+/// a plain ear clip for a ring with no holes), or earcut's own when none covers.
+fn triangulate_checked(flat: &mut Vec<f64>, holes: &[usize], lens: &[usize]) -> Option<Vec<usize>> {
+    let first = earcutr::earcut(&mut flat.clone(), holes, 2).ok()?;
+    if triangulation_covers(&first, flat, lens) {
+        return Some(first);
+    }
+    // the outer ring started at another vertex (the indices are mapped back to the caller's)
+    let n0 = lens[0];
+    for shift in [n0 / 2, n0 / 3, n0 / 5, 1, 2, 7] {
+        if shift == 0 || shift >= n0 {
+            continue;
+        }
+        let mut f2: Vec<f64> = Vec::with_capacity(flat.len());
+        for k in 0..n0 {
+            let j = (k + shift) % n0;
+            f2.push(flat[2 * j]);
+            f2.push(flat[2 * j + 1]);
+        }
+        f2.extend_from_slice(&flat[2 * n0..]);
+        if let Ok(t) = earcutr::earcut(&mut f2.clone(), holes, 2) {
+            let mapped: Vec<usize> = t.iter().map(|&i| if i < n0 { (i + shift) % n0 } else { i }).collect();
+            if triangulation_covers(&mapped, flat, lens) {
+                return Some(mapped);
+            }
+        }
+    }
+    if holes.is_empty() {
+        if let Some(t) = ear_clip(flat, n0) {
+            if triangulation_covers(&t, flat, lens) {
+                return Some(t);
+            }
+        }
+    }
+    // none covers the ring exactly (a ring that is not simple at this sampling): earcut's own answer stands, as it always
+    // did, and `mesh_solid` retries the whole solid at a finer chord when the mesh does not close
+    Some(first)
+}
+
+
 /// Triangulate one planar face with `earcutr` in the plane's (u,v) frame,
 /// winding triangles CCW in uv (outward normal `plane.n`).
 fn mesh_planar_face(
@@ -521,7 +650,7 @@ fn mesh_planar_face(
     }
     offs.push(at);
 
-    let mut tris: Vec<usize> = earcutr::earcut(&mut flat, &holes, 2).ok()?;
+    let mut tris: Vec<usize> = triangulate_checked(&mut flat, &holes, &lens)?;
     split_collinear_triangles(&mut tris, &flat);
     let start = out.indices.len();
     for t in tris.chunks(3) {
@@ -916,6 +1045,264 @@ fn mesh_revolution_band(
             let c = hi_ids[(j + 1) % n2];
             out.tri_oriented([a, b, c], n_out);
             j += 1;
+        }
+    }
+    let count = out.indices.len() - start;
+    if count == 0 {
+        return None;
+    }
+    out.faces.push((start, count));
+    Some(())
+}
+
+/// Tessellate a SECTOR of a torus or a cone: a band between two rim arcs (v0 and v1 sides) that runs
+/// only part of a turn, closed by a meridian seam at each end of the angle range. A partial spin of an
+/// outline with a round or a slant builds these. Every boundary vertex is a sample of an edge the
+/// neighbouring face also samples (the two rims, and the seams the end caps share), so nothing
+/// is invented on a shared edge:
+///   * rows run along the seam's own samples (the same ones its cap uses), columns along the rim with
+///     MORE samples (the finer one, so the sag stays inside `defl`);
+///   * the last band zippers the finer rim's last row onto the other rim's own samples;
+///   * a cone's tip (a rim of radius 0) is a fan.
+/// `None` when the face is not that shape (the caller then refuses to mesh, never guesses).
+fn mesh_sector_band(
+    face: &TFace,
+    edges_cache: &HashMap<usize, Vec<Vec3>>,
+    out: &mut MeshBuilder,
+    defl: f64,
+    surface: &crate::geom::Surface,
+) -> Option<()> {
+    let ([u0, u1], [v0, v1]) = surface.domain();
+    if u1 <= u0 + 1e-9 || v1 <= v0 + 1e-12 {
+        return None;
+    }
+    let is_torus = matches!(surface, crate::geom::Surface::Torus(_));
+    // (mean v, [(u, point)] sorted by u) per rim; (mean u, [(v, point)] sorted by v) per seam.
+    let mut rims: Vec<(f64, Vec<(f64, Vec3)>)> = Vec::new();
+    let mut seams: Vec<(f64, Vec<(f64, Vec3)>)> = Vec::new();
+    let mut tips: Vec<Vec3> = Vec::new();
+    for w in &face.borrow().boundary {
+        for u in &w.borrow().edges {
+            let k = std::rc::Rc::as_ptr(&u.edge) as *const () as usize;
+            let poly = match edges_cache.get(&k) {
+                Some(p) => p.clone(),
+                None => edge_polyline(&u.edge, defl),
+            };
+            if poly.len() < 2 {
+                continue;
+            }
+            // a rim of radius 0 (a cone's tip): every sample is one point
+            if poly.iter().all(|p| crate::math::dist(*p, poly[0]) < 1e-9) {
+                tips.push(poly[0]);
+                continue;
+            }
+            let mut uvs: Vec<[f64; 2]> = Vec::with_capacity(poly.len());
+            for p in &poly {
+                let mut q = surface_uv(surface, *p)?;
+                while q[0] < u0 - 1e-7 {
+                    q[0] += TAU;
+                }
+                while q[0] > u0 + TAU - 1e-7 {
+                    q[0] -= TAU;
+                }
+                if is_torus {
+                    let vm = 0.5 * (v0 + v1);
+                    while q[1] - vm > std::f64::consts::PI {
+                        q[1] -= TAU;
+                    }
+                    while q[1] - vm < -std::f64::consts::PI {
+                        q[1] += TAU;
+                    }
+                }
+                uvs.push(q);
+            }
+            // a cone's apex is on its axis, where the angle is undefined (atan2 of nothing): it takes no part in the
+            // angle range of the seam that ends there
+            let on_axis = |p: Vec3| -> bool {
+                match surface {
+                    crate::geom::Surface::Cone(c) => {
+                        let d = sub(p, c.base);
+                        let along = crate::math::dot(d, c.axis);
+                        crate::math::len(sub(d, crate::math::scale(c.axis, along))) < 1e-9
+                    }
+                    _ => false,
+                }
+            };
+            let (ulo, uhi) = uvs
+                .iter()
+                .zip(poly.iter())
+                .filter(|(_, p)| !on_axis(**p))
+                .fold((f64::MAX, f64::MIN), |a, (q, _)| (a.0.min(q[0]), a.1.max(q[0])));
+            if ulo > uhi {
+                return None;
+            }
+            let (vlo, vhi) = uvs.iter().fold((f64::MAX, f64::MIN), |a, q| (a.0.min(q[1]), a.1.max(q[1])));
+            let pts_u: Vec<(f64, Vec3)> = uvs.iter().zip(poly.iter()).map(|(q, p)| (q[0], *p)).collect();
+            let pts_v: Vec<(f64, Vec3)> = uvs.iter().zip(poly.iter()).map(|(q, p)| (q[1], *p)).collect();
+            if vhi - vlo <= 1e-6 {
+                let mut r = pts_u;
+                r.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+                rims.push((0.5 * (vlo + vhi), r));
+            } else if uhi - ulo <= 1e-6 {
+                let mut r = pts_v;
+                r.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+                seams.push((0.5 * (ulo + uhi), r));
+            } else {
+                return None; // an edge that is neither a rim nor a seam
+            }
+        }
+    }
+    if seams.len() != 2 || rims.is_empty() || rims.len() > 2 || tips.len() > 1 {
+        return None;
+    }
+    seams.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+    if (seams[0].0 - u0).abs() > 1e-6 || (seams[1].0 - u1).abs() > 1e-6 {
+        return None;
+    }
+    let (sa, sb) = (&seams[0].1, &seams[1].1);
+    if sa.len() < 2 || sb.len() < 2 {
+        return None;
+    }
+    // The two seams are the same meridian, but each is its own edge and is sampled on its own: a spin that was then
+    // rotated off the axes can put the stations of one at other parameters than the other's (an arc is cut on its own
+    // circle's phase), and the seams may even have a different count. Rows are therefore matched by position along
+    // the seam, the left column taking seam a's own samples and the right column seam b's own (so each cap, which
+    // samples the same edges, still meets the band on shared vertices); a seam with fewer samples repeats one.
+    let m_all = sa.len().max(sb.len()) - 1; // row intervals along v
+    let pick = |len: usize, r: usize, reversed: bool| -> usize {
+        let i = if len - 1 == m_all { r } else { ((r as f64) * (len - 1) as f64 / m_all as f64).round() as usize };
+        if reversed {
+            len - 1 - i
+        } else {
+            i
+        }
+    };
+    // Which rim is the base (more samples), and which end of v it sits at.
+    rims.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+    let (base, base_at_lo, other): (&(f64, Vec<(f64, Vec3)>), bool, Option<&(f64, Vec<(f64, Vec3)>)>) = if rims.len() == 2 {
+        if rims[0].1.len() >= rims[1].1.len() {
+            (&rims[0], true, Some(&rims[1]))
+        } else {
+            (&rims[1], false, Some(&rims[0]))
+        }
+    } else {
+        // one rim and a tip (a cone to its apex has no edge there, the two seams just end at one point): the rim is at
+        // whichever end of v the tip is not
+        let r = &rims[0];
+        let at_lo = crate::math::dist(sa[0].1, r.1[0].1).min(crate::math::dist(sa[0].1, r.1.last().unwrap().1)) < 1e-6;
+        let (end_a, end_b) = if at_lo { (sa.last().unwrap().1, sb.last().unwrap().1) } else { (sa[0].1, sb[0].1) };
+        if crate::math::dist(end_a, end_b) > 1e-6 {
+            return None;
+        }
+        if tips.is_empty() {
+            tips.push(end_a);
+        }
+        (r, at_lo, None)
+    };
+    let nb = base.1.len();
+    if nb < 2 {
+        return None;
+    }
+    // the seam sample each row (from the base outward) uses on the left and on the right
+    let rev = !base_at_lo;
+    let row_k: Vec<(usize, usize)> = (0..=m_all).map(|r| (pick(sa.len(), r, rev), pick(sb.len(), r, rev))).collect();
+    let mut ids_a: HashMap<usize, u32> = HashMap::new();
+    let mut ids_b: HashMap<usize, u32> = HashMap::new();
+    // rows from the base outward
+    let mut rows: Vec<Vec<u32>> = Vec::new();
+    let mut row_v: Vec<f64> = Vec::new();
+    let mut row_ab: Vec<(f64, f64)> = Vec::new();
+    let start = out.indices.len();
+    for (r, &(ka, kb)) in row_k.iter().enumerate() {
+        if r == m_all {
+            break; // the far rim is the zipper's
+        }
+        let (va, vb) = (sa[ka].0, sb[kb].0);
+        let mut row = Vec::with_capacity(nb);
+        for c in 0..nb {
+            let id = if r == 0 && c != 0 && c != nb - 1 {
+                out.push(base.1[c].1)
+            } else if c == 0 {
+                *ids_a.entry(ka).or_insert_with(|| out.push(if r == 0 { base.1[0].1 } else { sa[ka].1 }))
+            } else if c == nb - 1 {
+                *ids_b.entry(kb).or_insert_with(|| out.push(if r == 0 { base.1[nb - 1].1 } else { sb[kb].1 }))
+            } else {
+                let v = va + (vb - va) * c as f64 / (nb - 1) as f64;
+                out.push(surface.param(base.1[c].0, v))
+            };
+            row.push(id);
+        }
+        rows.push(row);
+        row_v.push(0.5 * (va + vb));
+        row_ab.push((va, vb));
+    }
+    // Every triangle of the band is wound by its (u, v) parameters, not by its own geometric normal: where the last row
+    // sits within a chord's sagitta of the far rim (a seam station a fraction of a degree short of the rim) the zipper
+    // is a sliver that folds in 3D, and winding each triangle by its own normal turned neighbours against each other
+    // (an open mesh, no refusal). Winding by (u, v) keeps every shared edge used once each way.
+    let col_v = |r: usize, c: usize| -> f64 {
+        let (va, vb) = row_ab[r];
+        va + (vb - va) * c as f64 / (nb - 1) as f64
+    };
+    let n_at = |u: f64, v: f64| {
+        let (du, dv) = surface.dparam(u, v);
+        cross(du, dv)
+    };
+    for r in 0..rows.len().saturating_sub(1) {
+        let (va, vb) = (row_v[r], row_v[r + 1]);
+        for c in 0..nb - 1 {
+            let (a, b, cc, d) = (rows[r][c], rows[r][c + 1], rows[r + 1][c + 1], rows[r + 1][c]);
+            let _ = (va, vb);
+            let (u0c, u1c) = (base.1[c].0, base.1[c + 1].0);
+            let uv = [[u0c, col_v(r, c)], [u1c, col_v(r, c + 1)], [u1c, col_v(r + 1, c + 1)], [u0c, col_v(r + 1, c)]];
+            out.tri_by_uv([a, b, cc], [uv[0], uv[1], uv[2]]);
+            out.tri_by_uv([a, cc, d], [uv[0], uv[2], uv[3]]);
+        }
+    }
+    let last = rows.last()?.clone();
+    let v_last = *row_v.last()?;
+    let v_far = {
+        let (ka, kb) = row_k[m_all];
+        0.5 * (sa[ka].0 + sb[kb].0)
+    };
+    let vmid = 0.5 * (v_last + v_far);
+    let (last_a, last_b) = *row_ab.last()?;
+    let last_v = |c: usize| last_a + (last_b - last_a) * c as f64 / (nb - 1) as f64;
+    let _ = vmid;
+    match other {
+        Some(o) => {
+            let no = o.1.len();
+            if no < 2 {
+                return None;
+            }
+            let ids: Vec<u32> = o.1.iter().map(|p| out.push(p.1)).collect();
+            let (mut i, mut j) = (0usize, 0usize);
+            while i < nb - 1 || j < no - 1 {
+                let take_i = if i >= nb - 1 {
+                    false
+                } else if j >= no - 1 {
+                    true
+                } else {
+                    base.1[i + 1].0 <= o.1[j + 1].0
+                };
+                let (a, b) = (last[i], ids[j]);
+                let (ua, ub) = ([base.1[i].0, last_v(i)], [o.1[j].0, v_far]);
+                if take_i {
+                    out.tri_by_uv([a, b, last[i + 1]], [ua, ub, [base.1[i + 1].0, last_v(i + 1)]]);
+                    i += 1;
+                } else {
+                    out.tri_by_uv([a, b, ids[j + 1]], [ua, ub, [o.1[j + 1].0, v_far]]);
+                    j += 1;
+                }
+            }
+        }
+        None => {
+            // a fan to the tip
+            let tip = out.push(tips[0]);
+            for c in 0..nb - 1 {
+                let n = n_at(0.5 * (base.1[c].0 + base.1[c + 1].0), vmid);
+                out.tri_oriented([last[c], last[c + 1], tip], n);
+            }
         }
     }
     let count = out.indices.len() - start;
@@ -2200,6 +2587,17 @@ fn mesh_face(
     // different radii, so the structured (u,v) grid's single shared u-column
     // list cannot match both at once (see `mesh_revolution_band`'s own doc
     // comment).
+    // A sector of a torus or a cone (part of a turn): its own tessellator, or nothing -- the full-turn
+    // grid below would wrap it into a whole ring.
+    let sector = match &face.borrow().surface {
+        crate::geom::Surface::Torus(t) => crate::geom::is_partial_u(t.u_range),
+        crate::geom::Surface::Cone(c) => crate::geom::is_partial_u(c.u_range),
+        _ => false,
+    };
+    if sector {
+        let surface = face.borrow().surface.clone();
+        return mesh_sector_band(face, edges_cache, out, defl, &surface);
+    }
     let bounded_band = match &face.borrow().surface {
         crate::geom::Surface::Torus(t) => (t.v_range[1] - t.v_range[0] - TAU).abs() >= 1e-9,
         crate::geom::Surface::Cone(c) => (c.v_range[1] - c.v_range[0] - TAU).abs() >= 1e-9,
@@ -2851,7 +3249,7 @@ fn cone_lattice_polylines(solid: &TSolid, defl: f64, cache: &mut HashMap<usize, 
     }
 }
 
-fn mesh_solid_once(solid: &TSolid, defl: f64) -> Option<Mesh> {
+pub(crate) fn mesh_solid_once(solid: &TSolid, defl: f64) -> Option<Mesh> {
     let mut edges_cache: HashMap<usize, Vec<Vec3>> = HashMap::new();
     let tight = near_tangent_circles(solid, defl);
     let hull_steps = hull_arc_steps(solid, defl);

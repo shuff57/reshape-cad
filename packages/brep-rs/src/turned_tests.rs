@@ -344,3 +344,263 @@ fn a_ring_groove_coincident_with_the_wall_is_exact_and_closed() {
         assert!(ops::mesh_is_closed_coarse(&cut), "mesh closed");
     }
 }
+
+// ---------------------------------------------------------------------------------------------
+// Part of a turn: `build_solid_partial`. Every closed form is the textbook centroid (Pappus), not `volume()`.
+// ---------------------------------------------------------------------------------------------
+
+/// The ring rho 10..20, z 0..30 with its outer top corner rounded by `r` (a quarter torus), counter-clockwise.
+fn rounded_ring(r: f64) -> Vec<Seg> {
+    // bottom, outer wall up to the round, the round, top inward, inner wall down
+    vec![
+        Seg::line([10.0, 0.0], [20.0, 0.0]),
+        Seg::line([20.0, 0.0], [20.0, 30.0 - r]),
+        Seg { k: Kind::Arc { c: [20.0 - r, 30.0 - r], r, a0: 0.0, sw: PI / 2.0 }, face: None, origin_z: None },
+        Seg::line([20.0 - r, 30.0], [10.0, 30.0]),
+        Seg::line([10.0, 30.0], [10.0, 0.0]),
+    ]
+}
+/// 2 pi x centroid x area of the ring less the round's corner piece, from the textbook centroids.
+fn rounded_ring_full(r: f64) -> f64 {
+    let rect = 2.0 * PI * 15.0 * 10.0 * 30.0;
+    rect - round_removed(20.0, r, -1.0)
+}
+
+#[test]
+fn a_part_turn_of_a_rounded_ring_is_that_part_of_pappus_and_closed() {
+    for r in [2.0, 4.0] {
+        for deg in [10.0_f64, 45.0, 90.0, 135.0, 180.0, 270.0, 359.0] {
+            let lp = rounded_ring(r);
+            let s = build_solid_partial(&lp, deg.to_radians()).unwrap_or_else(|| panic!("builds {r} {deg}"));
+            let want = rounded_ring_full(r) * deg / 360.0;
+            assert!(close(build::solid_volume(&s), want), "r{r} {deg}: {} vs {want}", build::solid_volume(&s));
+            // 4 walls + the round + 2 caps
+            assert_eq!(s.faces().len(), 7, "faces");
+            assert!(ops::mesh_is_closed_coarse(&s), "mesh closed at {deg}");
+            // every edge is shared by exactly two faces
+            assert!(ops::edge_use_counts(&s.faces()).values().all(|&n| n == 2));
+        }
+    }
+}
+
+/// A circular segment whose arc only touches the axis (centre 10, radius 10): a horn torus, which nothing can draw.
+#[test]
+fn a_part_turn_of_an_arc_tangent_to_the_axis_is_refused_not_built_undrawable() {
+    let (c, r) = (10.0_f64, 10.0_f64);
+    let th = 1.0_f64;
+    let (ya, yb) = (-r * th.sin(), r * th.sin());
+    let x = c - r * th.cos();
+    // from the upper chord end ccw through the leftmost point (the axis) to the lower, then the chord back up
+    let a0 = PI - th;
+    let lp = vec![
+        Seg { k: Kind::Arc { c: [c, 0.0], r, a0, sw: 2.0 * th }, face: None, origin_z: None },
+        Seg::line([x, ya], [x, yb]),
+    ];
+    for deg in [30.0_f64, 90.0, 180.0, 300.0] {
+        assert!(build_solid_partial(&lp, deg.to_radians()).is_none(), "tangent arc at {deg}");
+    }
+}
+
+/// The pcurve closure brings only ANGLES onto a common turn: a plane's coordinates are lengths, so a part turn at a
+/// coordinate scale of 1e15 costs the same as at 1 (it used to loop coordinate / 2pi times).
+#[test]
+fn a_part_turn_at_huge_coordinates_builds_at_once() {
+    for k in [1.0_f64, 1e9, 1e15] {
+        let r = 3.0 * k;
+        let lp = vec![
+            Seg::line([10.0 * k, 0.0], [20.0 * k, 0.0]),
+            Seg::line([20.0 * k, 0.0], [20.0 * k, 30.0 * k - r]),
+            Seg { k: Kind::Arc { c: [20.0 * k - r, 30.0 * k - r], r, a0: 0.0, sw: PI / 2.0 }, face: None, origin_z: None },
+            Seg::line([20.0 * k - r, 30.0 * k], [10.0 * k, 30.0 * k]),
+            Seg::line([10.0 * k, 30.0 * k], [10.0 * k, 0.0]),
+        ];
+        let t = std::time::Instant::now();
+        let s = build_solid_partial(&lp, 90.0_f64.to_radians());
+        assert!(t.elapsed().as_millis() < 500, "k {k}: {:?}", t.elapsed());
+        let s = s.unwrap_or_else(|| panic!("builds at scale {k}"));
+        assert!(ops::edge_use_counts(&s.faces()).values().all(|&n| n == 2));
+    }
+}
+
+#[test]
+fn a_part_turn_box_is_the_exact_extent_of_the_sector() {
+    let s = build_solid_partial(&rounded_ring(3.0), 90.0_f64.to_radians()).expect("builds");
+    let b = build::solid_aabb(&s);
+    // a quarter turn from +x to +y of a ring out to rho 20: x 0..20, y 0..20, z 0..30
+    for (k, (lo, hi)) in [(0.0, 20.0), (0.0, 20.0), (0.0, 30.0)].into_iter().enumerate() {
+        assert!((b.lo[k] - lo).abs() < 1e-9 && (b.hi[k] - hi).abs() < 1e-9, "axis {k}: {:?} {:?}", b.lo, b.hi);
+    }
+    // 200 degrees reaches back past the -x axis and down the -y side
+    let s = build_solid_partial(&rounded_ring(3.0), 200.0_f64.to_radians()).expect("builds");
+    let b = build::solid_aabb(&s);
+    assert!((b.lo[0] + 20.0).abs() < 1e-9 && (b.hi[0] - 20.0).abs() < 1e-9, "{:?} {:?}", b.lo, b.hi);
+    assert!((b.hi[1] - 20.0).abs() < 1e-9 && (b.lo[1] + 20.0 * 20.0_f64.to_radians().sin()).abs() < 1e-9, "{:?} {:?}", b.lo, b.hi);
+}
+
+#[test]
+fn a_part_turn_with_a_cone_and_a_tip_is_pappus() {
+    // a right triangle touching the axis (a cone to a point), its base corner rounded: base rho 0..20 at z 0, apex (0, 30)
+    // is a cone whose rounded rim is a torus sector; checked against the whole-turn builder at the same angle fraction
+    let r = 4.0;
+    let tri: [[f64; 2]; 3] = [[0.0, 0.0], [20.0, 0.0], [0.0, 30.0]];
+    // the corner at (20, 0): its tangent points sit r / tan(alpha / 2) along each side; the whole-turn builder is the referee
+    let (u, w): ([f64; 2], [f64; 2]) = ([-20.0, 0.0], [-20.0, 30.0]);
+    let (lu, lw) = ((u[0] * u[0] + u[1] * u[1]).sqrt(), (w[0] * w[0] + w[1] * w[1]).sqrt());
+    let al = ((u[0] * w[0] + u[1] * w[1]) / (lu * lw)).acos();
+    let t = r / (al / 2.0).tan();
+    let pin = [tri[1][0] + u[0] / lu * t, tri[1][1] + u[1] / lu * t];
+    let pout = [tri[1][0] + w[0] / lw * t, tri[1][1] + w[1] / lw * t];
+    let b = [u[0] / lu + w[0] / lw, u[1] / lu + w[1] / lw];
+    let lb = (b[0] * b[0] + b[1] * b[1]).sqrt();
+    let d = r / (al / 2.0).sin();
+    let centre = [tri[1][0] + b[0] / lb * d, tri[1][1] + b[1] / lb * d];
+    let a0 = (pin[1] - centre[1]).atan2(pin[0] - centre[0]);
+    let mut sw = (pout[1] - centre[1]).atan2(pout[0] - centre[0]) - a0;
+    while sw < 0.0 {
+        sw += 2.0 * PI;
+    }
+    // a torus patch lies wholly above or wholly below its centre, so the round is cut at the horizontal diameter
+    assert!(a0 < 0.0 && a0 + sw > 0.0);
+    let lp = vec![
+        Seg::line([0.0, 0.0], pin),
+        Seg { k: Kind::Arc { c: centre, r, a0, sw: -a0 }, face: None, origin_z: None },
+        Seg { k: Kind::Arc { c: centre, r, a0: 0.0, sw: a0 + sw }, face: None, origin_z: None },
+        Seg::line(pout, [0.0, 30.0]),
+        Seg::line([0.0, 30.0], [0.0, 0.0]),
+    ];
+    let whole = build::solid_volume(&build_solid([0.0, 0.0], &lp).expect("whole turn builds"));
+    // independent of `volume()`: Pappus from the outline sampled finely (inscribed polygon, 1e-9 off), V = 2 pi x
+    // (first moment of the area about the axis) = 2 pi x (1/6) sum (x0 + x1)(x0 y1 - x1 y0)
+    let mut ring: Vec<[f64; 2]> = Vec::new();
+    for sg in &lp {
+        match &sg.k {
+            Kind::Line { a, .. } => ring.push(*a),
+            Kind::Arc { c, r, a0, sw } => {
+                for k in 0..20000 {
+                    let t = a0 + sw * k as f64 / 20000.0;
+                    ring.push([c[0] + r * t.cos(), c[1] + r * t.sin()]);
+                }
+            }
+        }
+    }
+    let mut m = 0.0;
+    for k in 0..ring.len() {
+        let (p, q) = (ring[k], ring[(k + 1) % ring.len()]);
+        m += (p[0] + q[0]) * (p[0] * q[1] - q[0] * p[1]) / 6.0;
+    }
+    let want = 2.0 * PI * m;
+    assert!((whole - want).abs() < 1e-7 * want, "whole {whole} vs sampled Pappus {want}");
+    for deg in [30.0_f64, 120.0, 250.0] {
+        let s = build_solid_partial(&lp, deg.to_radians()).unwrap_or_else(|| panic!("builds {deg}"));
+        assert!(close(build::solid_volume(&s), whole * deg / 360.0), "{deg}");
+        assert!(ops::mesh_is_closed_coarse(&s), "closed at {deg}");
+        // flat bottom sector, two torus sectors, a cone sector, 2 caps: the axis side is an edge, not a face
+        assert_eq!(s.faces().len(), 6, "faces");
+    }
+}
+
+#[test]
+fn a_part_turn_is_never_a_whole_or_a_nothing() {
+    assert!(build_solid_partial(&rounded_ring(2.0), 0.0).is_none());
+    assert!(build_solid_partial(&rounded_ring(2.0), TAU).is_none());
+    assert!(build_solid_partial(&rounded_ring(2.0), -1.0).is_none());
+}
+
+#[test]
+fn a_reflected_part_turn_keeps_its_sector_and_its_volume() {
+    let s = build_solid_partial(&rounded_ring(3.0), 100.0_f64.to_radians()).expect("builds");
+    let t = crate::math::Transform::mirror([0.0, 0.0, 0.0], [1.0, 0.0, 0.0]);
+    let m = build::transform_solid(&s, &t);
+    assert!(close(build::solid_volume(&m), build::solid_volume(&s)));
+    assert!(ops::mesh_is_closed_coarse(&m));
+    let (a, b) = (build::solid_aabb(&s), build::solid_aabb(&m));
+    assert!((a.lo[0] + b.hi[0]).abs() < 1e-9 && (a.hi[0] + b.lo[0]).abs() < 1e-9, "{:?} {:?} | {:?} {:?}", a.lo, a.hi, b.lo, b.hi);
+    assert!(ops::has_partial_turn(&m) && !ops::has_partial_turn(&plain()));
+}
+
+#[test]
+fn a_two_piece_outline_an_arc_and_its_chord_spins_part_of_a_turn() {
+    // a half disc of radius 10 about (30, 0): one arc across the horizontal diameter and the chord that closes it, spun
+    // 100 degrees; Pappus: the half disc's centroid is 4r/3pi out from the chord
+    let lp = vec![
+        Seg { k: Kind::Arc { c: [30.0, 0.0], r: 10.0, a0: -PI / 2.0, sw: PI }, face: None, origin_z: None },
+        Seg::line([30.0, 10.0], [30.0, -10.0]),
+    ];
+    let deg = 100.0_f64;
+    let s = build_solid_partial(&lp, deg.to_radians()).expect("builds");
+    let want = 2.0 * PI * (30.0 + 4.0 * 10.0 / (3.0 * PI)) * (PI * 100.0 / 2.0) * deg / 360.0;
+    assert!(close(build::solid_volume(&s), want), "{} vs {want}", build::solid_volume(&s));
+    // one torus sector, one cylinder sector, two caps
+    assert_eq!(s.faces().len(), 4);
+    assert!(ops::mesh_is_closed_coarse(&s));
+}
+
+#[test]
+fn a_part_turn_rotated_off_the_axes_still_meshes_closed() {
+    // a rotation puts the two seam arcs' stations on different phases of their circles (and may give them a different
+    // count); the band must still mesh on the shared samples and close
+    let rot = |axis: [f64; 3], deg: f64| crate::math::Transform::rotation(axis, deg.to_radians());
+    let mut n = 0;
+    for r in [2.0, 4.0] {
+        for deg in [10.0_f64, 45.0, 120.0, 200.0, 330.0] {
+            let s = build_solid_partial(&rounded_ring(r), deg.to_radians()).expect("builds");
+            let v = build::solid_volume(&s);
+            for (axis, tilt) in [([0.0, 0.0, 1.0], 45.0), ([0.0, 0.0, 1.0], 5.0), ([0.0, 0.0, 1.0], 30.0), ([1.0, 0.0, 0.0], 30.0), ([0.3, 0.2, 1.0], 37.0), ([1.0, 1.0, 1.0], 61.0)] {
+                let m = build::transform_solid(&s, &rot(axis, tilt));
+                assert!(close(build::solid_volume(&m), v), "volume r{r} {deg} {axis:?} {tilt}");
+                for defl in [0.01, 0.05, 0.5] {
+                    let mesh = crate::mesh::mesh_solid(&m, defl).unwrap_or_else(|| panic!("meshes r{r} {deg} {axis:?} {tilt} defl {defl}"));
+                    assert!(ops::check_watertight(&mesh), "closed r{r} {deg} {axis:?} {tilt} defl {defl}");
+                    n += 1;
+                }
+            }
+        }
+    }
+    assert_eq!(n, 180);
+}
+
+/// A major arc about (cx, 0) from `a0` counter-clockwise to the point `end_deg` (just past the bottom of its circle, say),
+/// then a slanted line down to `tip` and back to the arc's start: the outline of a ball-ended rod, a round meeting a cone
+/// at a junction circle a fraction of a degree from the circle's bottom.
+fn arc_and_slant(cx: f64, r: f64, a0: f64, end_deg: f64, tip: [f64; 2]) -> Vec<Seg> {
+    let end = end_deg.to_radians();
+    let mut sw = end - a0;
+    while sw < 0.0 {
+        sw += 2.0 * PI;
+    }
+    let arc = Seg { k: Kind::Arc { c: [cx, 0.0], r, a0, sw }, face: None, origin_z: None };
+    let (s, e) = (arc.start(), arc.end());
+    vec![arc, Seg::line(e, tip), Seg::line(tip, s)]
+}
+
+/// Open mesh with no refusal (found by the critic): the junction circle of a torus and a cone that sits a fraction of a
+/// degree past the torus's bottom left the torus band's last row within the rim chord's sagitta of the rim, so the
+/// zipper folded in 3D and the triangles, each wound by its own normal, turned against their neighbours. Every deflection
+/// and every turn must close, and the volume must still be the whole turn scaled.
+#[test]
+fn a_part_turn_whose_round_ends_just_past_its_bottom_meshes_closed_at_every_deflection() {
+    let cases = [
+        (38.0, 6.0, 15.97_f64.to_radians(), -89.7, [36.5, -14.0]),
+        (38.0, 6.0, 15.97_f64.to_radians(), -90.3, [36.5, -14.0]),
+        (38.0, 6.0, 15.97_f64.to_radians(), -89.99, [36.5, -14.0]),
+        (60.0, 15.0, 20.0_f64.to_radians(), -89.7, [56.0, -40.0]),
+        (60.0, 15.0, 5.0_f64.to_radians(), -89.9, [58.0, -40.0]),
+    ];
+    let mut n = 0;
+    for (cx, r, a0, end_deg, tip) in cases {
+        let lp = arc_and_slant(cx, r, a0, end_deg, tip);
+        let whole = volume(&lp);
+        for deg in [1.0_f64, 10.0, 45.0, 90.0, 180.0, 200.0, 250.0, 300.0, 340.0, 350.0, 359.5] {
+            let s = build_solid_partial(&lp, deg.to_radians()).unwrap_or_else(|| panic!("builds {cx} {end_deg} {deg}"));
+            let want = whole * deg / 360.0;
+            assert!((build::solid_volume(&s) - want).abs() < 1e-9 * want.abs(), "volume {cx} {end_deg} {deg}");
+            for k in 1..=40 {
+                let defl = 0.0125 * k as f64;
+                let m = crate::mesh::mesh_solid_once(&s, defl).unwrap_or_else(|| panic!("meshes {cx} {end_deg} {deg} defl {defl}"));
+                assert!(crate::mesh::mesh_is_closed(&m), "open mesh: centre {cx} end {end_deg} turn {deg} defl {defl}");
+                n += 1;
+            }
+        }
+    }
+    assert_eq!(n, 5 * 11 * 40);
+}

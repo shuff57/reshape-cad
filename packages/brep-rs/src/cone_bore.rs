@@ -119,7 +119,7 @@ fn build_lens_local(big_r: f64, h: f64, rho: f64, e: f64, zf: f64) -> Result<Par
     // the slanted face: the hole is the removed region's boundary run clockwise from above: C then A, both reversed
     let cone_face = mk(
         vec![wire(vec![us(&rim, true)]), wire(vec![us(&arc_c, false), us(&arc_a, false)])],
-        Surface::Cone(Cone { base: [0.0; 3], axis: d, e1: [1.0, 0.0, 0.0], e2: [0.0, 1.0, 0.0], base_radius: big_r, half_angle: big_r.atan2(h), slant, v_range: [0.0, slant], bounded: true }),
+        Surface::Cone(Cone { base: [0.0; 3], axis: d, e1: [1.0, 0.0, 0.0], e2: [0.0, 1.0, 0.0], base_radius: big_r, half_angle: big_r.atan2(h), slant, v_range: [0.0, slant], bounded: true, u_range: [0.0, std::f64::consts::TAU] }),
         [[0.0, TAU], [0.0, slant]],
     );
     // the bore's wall: the meeting curve from P1 to P2, the bore's circle at the floor back
@@ -185,7 +185,7 @@ fn build_local(big_r: f64, h: f64, rho: f64, e: f64, floor: Option<f64>) -> Resu
     // the slanted face: the rim the other way round, the meeting curve as a hole running clockwise from above
     let cone_face = mk(
         vec![wire(vec![us(&rim, true)]), wire(vec![us(&top, false)])],
-        Surface::Cone(Cone { base: [0.0; 3], axis: d, e1: [1.0, 0.0, 0.0], e2: [0.0, 1.0, 0.0], base_radius: big_r, half_angle: big_r.atan2(h), slant, v_range: [0.0, slant], bounded: true }),
+        Surface::Cone(Cone { base: [0.0; 3], axis: d, e1: [1.0, 0.0, 0.0], e2: [0.0, 1.0, 0.0], base_radius: big_r, half_angle: big_r.atan2(h), slant, v_range: [0.0, slant], bounded: true, u_range: [0.0, std::f64::consts::TAU] }),
         [[0.0, TAU], [0.0, slant]],
     );
     // the bore's wall: the curve the other way from the slanted face, the base circle the other way from the base

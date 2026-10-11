@@ -815,24 +815,36 @@ fn torus_loop(t: &TorusSurf) -> Option<Vec<Seg>> {
             ),
         )
     };
-    let rim = |v: f64, dir: f64| Seg::Arc {
-        center: add(t.center, scale(t.axis, t.tube * v.sin())),
-        radius: t.ring + t.tube * v.cos(),
-        axis: scale(spin, dir),
-        a: at(0.0, v),
-        b: at(0.0, v),
-        mid: at(std::f64::consts::PI, v),
+    // A whole ring runs from u = 0 round to itself; a sector (part of a turn) runs from its own start to its end.
+    let partial = crate::geom::is_partial_u(t.u_range);
+    let (ua, ub) = if partial { (t.u_range[0], t.u_range[1]) } else { (0.0, 0.0) };
+    let um = if partial { 0.5 * (ua + ub) } else { std::f64::consts::PI };
+    let rim = |v: f64, dir: f64| {
+        let (from, to) = if dir > 0.0 { (ua, ub) } else { (ub, ua) };
+        Seg::Arc {
+            center: add(t.center, scale(t.axis, t.tube * v.sin())),
+            radius: t.ring + t.tube * v.cos(),
+            axis: scale(spin, dir),
+            a: at(from, v),
+            b: at(to, v),
+            mid: at(um, v),
+        }
     };
-    // the seam: the tube circle at longitude 0; v increasing turns e1 toward axis, i.e. about e1 x axis
-    let seam = Seg::Arc {
-        center: add(t.center, scale(t.e1, t.ring)),
-        radius: t.tube,
-        axis: normalize(cross(t.e1, t.axis)),
-        a: at(0.0, v0),
-        b: at(0.0, v1),
-        mid: at(0.0, v0 + 0.5 * span),
+    // the seam: the tube circle at longitude u; v increasing turns the radial direction toward axis, i.e. about radial x axis
+    let seam_at = |u: f64| {
+        let radial = add(scale(t.e1, u.cos()), scale(t.e2, u.sin()));
+        Seg::Arc {
+            center: add(t.center, scale(radial, t.ring)),
+            radius: t.tube,
+            axis: normalize(cross(radial, t.axis)),
+            a: at(u, v0),
+            b: at(u, v1),
+            mid: at(u, v0 + 0.5 * span),
+        }
     };
-    let mut loop_ = vec![rim(v0, 1.0), seam.clone(), rim(v1, -1.0), seam.reversed()];
+    let seam = seam_at(ub);
+    let seam_start = if partial { seam_at(ua) } else { seam.clone() };
+    let mut loop_ = vec![rim(v0, 1.0), seam.clone(), rim(v1, -1.0), seam_start.reversed()];
     if !right_handed(t.e1, t.e2, t.axis) {
         loop_ = reverse_loop(&loop_);
     }
@@ -893,9 +905,8 @@ fn cone_loop(c: &Cone) -> Vec<Seg> {
             ),
         )
     };
-    let start = 0.0;
-    let end = 2.0 * std::f64::consts::PI;
-    let half = std::f64::consts::PI;
+    let (start, end) = (c.u_range[0], c.u_range[1]);
+    let half = 0.5 * (start + end);
     let (lo, hi) = (c.v_range[0], c.v_range[1]);
     vec![
         Seg::Arc {

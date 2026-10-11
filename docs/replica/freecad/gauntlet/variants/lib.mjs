@@ -58,6 +58,16 @@ export async function measureDoc(doc) {
   return o;
 }
 
+/** A script built, its first `kind` feature patched, then measured: a kernel input the script layer refuses (a turn the other way). */
+export async function measurePatched(src, kind, set) {
+  const { runScript } = await load();
+  try {
+    const run = runScript(src);
+    if (run.errors?.length) return { src, outcome: 'script-error', refusal: run.errors.map((e) => e.message ?? String(e)).join(' | ') };
+    return { src, ...(await measureDoc(patchDoc(run.doc, kind, set))) };
+  } catch (e) { return { src, outcome: 'error', refusal: String(e && e.stack || e).split('\n').slice(0, 3).join(' | ') }; }
+}
+
 /** The first feature of `kind` in a ModelDoc gets `set` assigned over it: how a kernel input the script layer now refuses is still reached. */
 export function patchDoc(doc, kind, set) {
   const d = JSON.parse(JSON.stringify(doc));

@@ -42,6 +42,48 @@ def rect(sk, x0, y0, x1, y1):
     poly(sk, [(x0, y0), (x1, y0), (x1, y1), (x0, y1)])
 
 
+def rpoly(sk, pts, rounds):
+    """A counter-clockwise polygon with some corners (0-based, as {k: radius}) rounded by a tangent arc: lines and arcs, welded."""
+    n = len(pts)
+    items = []  # ('l', p, q) or ('a', centre, r, a0, a1)
+    corner = []
+    for k in range(n):
+        c, p, q = pts[k], pts[(k - 1) % n], pts[(k + 1) % n]
+        r = rounds.get(k)
+        if not r:
+            corner.append((c, c, None))
+            continue
+        u = (p[0] - c[0], p[1] - c[1]); w = (q[0] - c[0], q[1] - c[1])
+        lu, lw = math.hypot(*u), math.hypot(*w)
+        al = math.acos((u[0] * w[0] + u[1] * w[1]) / (lu * lw))
+        t = r / math.tan(al / 2)
+        pin = (c[0] + u[0] / lu * t, c[1] + u[1] / lu * t)
+        pout = (c[0] + w[0] / lw * t, c[1] + w[1] / lw * t)
+        b = (u[0] / lu + w[0] / lw, u[1] / lu + w[1] / lw); lb = math.hypot(*b)
+        d = r / math.sin(al / 2)
+        ctr = (c[0] + b[0] / lb * d, c[1] + b[1] / lb * d)
+        a0 = math.atan2(pin[1] - ctr[1], pin[0] - ctr[0])
+        sw = math.atan2(pout[1] - ctr[1], pout[0] - ctr[0]) - a0
+        while sw < 0:
+            sw += 2 * math.pi
+        corner.append((pin, pout, (ctr, r, a0, a0 + sw)))
+    for k in range(n):
+        pin, pout, arc = corner[k]
+        if arc:
+            items.append(('a',) + arc)
+        nxt_in = corner[(k + 1) % n][0]
+        items.append(('l', pout, nxt_in))
+    first = sk.GeometryCount
+    for it in items:
+        if it[0] == 'l':
+            sk.addGeometry(Part.LineSegment(V(it[1][0], it[1][1], 0), V(it[2][0], it[2][1], 0)), False)
+        else:
+            sk.addGeometry(Part.ArcOfCircle(Part.Circle(V(it[1][0], it[1][1], 0), V(0, 0, 1), it[2]), it[3], it[4]), False)
+    m = len(items)
+    for i in range(m):
+        sk.addConstraint(Sketcher.Constraint('Coincident', first + i, 2, first + (i + 1) % m, 1))
+
+
 def circle(sk, cx, cy, r):
     sk.addGeometry(Part.Circle(V(cx, cy, 0), V(0, 0, 1), r), False)
 

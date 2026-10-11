@@ -1169,6 +1169,9 @@ pub struct Cone {
     /// shortened wall (v=0) and the shrunken cap (v=slant), same shape of
     /// trim the round-primitive torus rim uses. u is always the full turn.
     pub v_range: [f64; 2],
+    /// The angle (u) domain, [0, 2pi] for a whole cone. Part of a turn (a partial spin of an outline,
+    /// `turned::build_solid_partial`) is a sector of it. `u` is the angle from `e1` toward `e2`.
+    pub u_range: [f64; 2],
     /// `true` when the face is only the part of the cone its boundary wires enclose (a box has cut it: `cone_box.rs`),
     /// not the whole band `v_range` and a full turn describe. Everything measured about such a face (its volume term,
     /// its box, its mesh) is read from its wires; `u_range`/`v_range` then say nothing about its extent.
@@ -1486,11 +1489,14 @@ pub struct TorusSurf {
     /// between the wall (v=0) and the shrunken cap (v=pi/2). u (the ring
     /// angle) is always the full turn.
     pub v_range: [f64; 2],
+    /// The ring-angle (u) domain, [0, 2pi] for a whole ring. Part of a turn (a partial spin of an
+    /// outline with an arc, `turned::build_solid_partial`) is a sector of the ring.
+    pub u_range: [f64; 2],
 }
 
 impl TorusSurf {
     pub fn full(center: Vec3, axis: Vec3, e1: Vec3, e2: Vec3, ring: f64, tube: f64) -> Self {
-        TorusSurf { center, axis, e1, e2, ring, tube, v_range: [0.0, 2.0 * std::f64::consts::PI] }
+        TorusSurf { center, axis, e1, e2, ring, tube, v_range: [0.0, 2.0 * std::f64::consts::PI], u_range: [0.0, 2.0 * std::f64::consts::PI] }
     }
 }
 
@@ -1502,6 +1508,37 @@ fn flip_e2(t: &Transform, e2: Vec3) -> Vec3 {
         scale(e2, -1.0)
     } else {
         e2
+    }
+}
+
+/// Is `u_range` part of a turn (a sector), rather than the whole ring.
+pub fn is_partial_u(u_range: [f64; 2]) -> bool {
+    (u_range[1] - u_range[0] - 2.0 * std::f64::consts::PI).abs() > 1e-9
+}
+
+/// The least and greatest of e1_i cos u + e2_i sin u over u in `r` (the extent along one world axis of a
+/// unit radial direction swept over a sector).
+fn radial_range(e1: f64, e2: f64, r: [f64; 2]) -> (f64, f64) {
+    let f = |u: f64| e1 * u.cos() + e2 * u.sin();
+    let (mut lo, mut hi) = (f(r[0]).min(f(r[1])), f(r[0]).max(f(r[1])));
+    let theta = e2.atan2(e1);
+    for k in -6..=6 {
+        let cand = theta + k as f64 * std::f64::consts::PI;
+        if cand > r[0] && cand < r[1] {
+            lo = lo.min(f(cand));
+            hi = hi.max(f(cand));
+        }
+    }
+    (lo, hi)
+}
+
+/// Where a reflection leaves a ring-angle range. A whole turn stays [0, 2pi]; a sector [a, b] becomes
+/// [-b, -a] (the point at u is the reflection of the point at -u, see `flip_e2`).
+fn reflect_u_range(t: &Transform, r: [f64; 2]) -> [f64; 2] {
+    if t.reverses_handedness() && is_partial_u(r) {
+        [-r[1], -r[0]]
+    } else {
+        r
     }
 }
 
@@ -1550,6 +1587,7 @@ impl Surface {
                 slant: c.slant,
                 v_range: c.v_range,
                 bounded: c.bounded,
+                u_range: reflect_u_range(t, c.u_range),
             }),
             Surface::Sphere(s) => Surface::Sphere(SphereSurf {
                 center: t.apply(s.center),
@@ -1572,6 +1610,7 @@ impl Surface {
                 ring: s.ring,
                 tube: s.tube,
                 v_range: s.v_range,
+                u_range: reflect_u_range(t, s.u_range),
             }),
         }
     }
@@ -1581,6 +1620,8 @@ impl Surface {
     pub fn flip_u(&self, u: f64) -> f64 {
         match self {
             Surface::Cylinder(c) if c.arc.is_some() => -u,
+            Surface::Cone(c) if is_partial_u(c.u_range) => -u,
+            Surface::Torus(c) if is_partial_u(c.u_range) => -u,
             _ => 2.0 * std::f64::consts::PI - u,
         }
     }
@@ -1613,9 +1654,9 @@ impl Surface {
                 };
                 (ur, [c.vmin, c.vmax])
             }
-            Surface::Cone(c) => ([0.0, two_pi], c.v_range),
+            Surface::Cone(c) => (c.u_range, c.v_range),
             Surface::Sphere(s) => (s.u_range, s.v_range),
-            Surface::Torus(s) => ([0.0, two_pi], s.v_range),
+            Surface::Torus(s) => (s.u_range, s.v_range),
         }
     }
 
@@ -1977,6 +2018,29 @@ impl Surface {
                 b.expand(lo);
                 b.expand(hi);
             }
+            Surface::Cone(c) if is_partial_u(c.u_range) => {
+                // A sector of a cone: along world axis i the point is r(v) * radial_i(u) + v cos(alpha) a_i, with
+                // radial_i(u) = e1_i cos u + e2_i sin u. For a fixed radial value it is linear in v, so each extreme sits
+                // at an end of the v range with the radial value at one end of its range over [u0, u1].
+                let a = normalize(c.axis);
+                let (v0, v1) = (c.v_range[0], c.v_range[1]);
+                let (mut lo_pt, mut hi_pt) = (c.base, c.base);
+                for i in 0..3 {
+                    let (cmin, cmax) = radial_range(c.e1[i], c.e2[i], c.u_range);
+                    let (mut lo, mut hi) = (f64::INFINITY, f64::NEG_INFINITY);
+                    for cr in [cmin, cmax] {
+                        for v in [v0, v1] {
+                            let x = (c.base_radius - v * c.half_angle.sin()) * cr + v * c.half_angle.cos() * a[i];
+                            lo = lo.min(x);
+                            hi = hi.max(x);
+                        }
+                    }
+                    lo_pt[i] = c.base[i] + lo;
+                    hi_pt[i] = c.base[i] + hi;
+                }
+                b.expand(lo_pt);
+                b.expand(hi_pt);
+            }
             Surface::Cone(c) => {
                 let a = normalize(c.axis);
                 // A cone is a disk of radius r(v) swept along the axis: the
@@ -2147,6 +2211,37 @@ impl Surface {
                         b.expand(q);
                     }
                 }
+            }
+            Surface::Torus(s) if is_partial_u(s.u_range) => {
+                // A sector of the ring: along world axis i the point is (ring + tube cos v) radial_i(u) + tube sin v a_i.
+                // For a fixed radial value c it is g(v) = c (ring + tube cos v) + tube sin v a_i, so each extreme sits at
+                // one end of the radial range and, in v, at an end of the range or where g'(v) = 0.
+                let a = normalize(s.axis);
+                let (v0, v1) = (s.v_range[0], s.v_range[1]);
+                let (mut lo_pt, mut hi_pt) = (s.center, s.center);
+                for i in 0..3 {
+                    let (cmin, cmax) = radial_range(s.e1[i], s.e2[i], s.u_range);
+                    let (mut lo, mut hi) = (f64::INFINITY, f64::NEG_INFINITY);
+                    for cr in [cmin, cmax] {
+                        let g = |v: f64| cr * (s.ring + s.tube * v.cos()) + a[i] * s.tube * v.sin();
+                        let t = a[i].atan2(cr);
+                        let mut cands = vec![v0, v1];
+                        for k in -4..=4 {
+                            cands.push(t + k as f64 * std::f64::consts::PI);
+                        }
+                        for v in cands {
+                            if v >= v0 - 1e-12 && v <= v1 + 1e-12 {
+                                let x = g(v.clamp(v0, v1));
+                                lo = lo.min(x);
+                                hi = hi.max(x);
+                            }
+                        }
+                    }
+                    lo_pt[i] = s.center[i] + lo;
+                    hi_pt[i] = s.center[i] + hi;
+                }
+                b.expand(lo_pt);
+                b.expand(hi_pt);
             }
             Surface::Torus(s) if (s.v_range[1] - s.v_range[0] - 2.0 * std::f64::consts::PI).abs() > 1e-9 => {
                 // A patch of the tube (a round on a spun outline, a rim round): the point is

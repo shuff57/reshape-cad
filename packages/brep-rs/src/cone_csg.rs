@@ -324,7 +324,7 @@ fn assemble(base: Vec3, apex: Vec3, r: f64, bx: &crate::ball_box::BoxSpec, mode:
     }
     let slant = (r * r + h * h).sqrt();
     let e2 = if mode == Mode::CutBox { [0.0, -1.0, 0.0] } else { [0.0, 1.0, 0.0] };
-    let surface = Surface::Cone(Cone { base: [0.0; 3], axis: [0.0, 0.0, 1.0], e1: [1.0, 0.0, 0.0], e2, base_radius: r, half_angle: r.atan2(h), slant, v_range: [0.0, slant], bounded: true });
+    let surface = Surface::Cone(Cone { base: [0.0; 3], axis: [0.0, 0.0, 1.0], e1: [1.0, 0.0, 0.0], e2, base_radius: r, half_angle: r.atan2(h), slant, v_range: [0.0, slant], bounded: true, u_range: [0.0, std::f64::consts::TAU] });
     for (outer, holes) in &groups {
         let wires: Vec<_> = std::iter::once(outer)
             .chain(holes.iter())
