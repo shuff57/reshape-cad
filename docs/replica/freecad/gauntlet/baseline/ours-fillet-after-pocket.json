@@ -1,7 +1,7 @@
 {
   "id": "fillet-after-pocket",
-  "outcome": "refused",
-  "notes": "part.rim(sk2) names the four pocket-opening edges (a pocket wall is named by the sketch side that swept it, and survives edits of the plate). Naming a wall writes the pocket as pull(sk2, -4) subtracted from the plate so the kernel can find the walls. The kernel rounds the edges it can and refuses the neighbouring ones in a sentence; the shown solid is the part without the refused rounds, so it is not the FreeCAD solid. See attempts[].",
+  "outcome": "built",
+  "notes": "part.rim(sk2) names the four pocket-opening edges (a pocket wall is named by the sketch side that swept it, and survives edits of the plate). Naming a wall writes the pocket as pull(sk2, -4) subtracted from the plate so the kernel can find the walls. The kernel builds the four rounds together with the corners mitred (each round extended by its radius into the corner and cut by the plane of symmetry, the two quarter cylinders meeting along an ellipse arc), which is the solid FreeCAD builds. See attempts[].",
   "attempts": [
     {
       "script": "\nconst sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });\nconst part = pocket(sk2, plate, 4);\nround(part.rim(sk2), 1);",
@@ -16,14 +16,8 @@
         "fillet",
         "fillet"
       ],
-      "refusals": {
-        "round1": "brep-rs cannot round these neighbouring edges together yet: they meet at a corner where the rounds would have to be blended into each other, and that corner is not built, so none of the rounds picked with round1 is applied -- round1 is shown without it.",
-        "round2": "brep-rs cannot round these neighbouring edges together yet: they meet at a corner where the rounds would have to be blended into each other, and that corner is not built, so none of the rounds picked with round2 is applied -- round2 is shown without it.",
-        "round3": "brep-rs cannot round these neighbouring edges together yet: they meet at a corner where the rounds would have to be blended into each other, and that corner is not built, so none of the rounds picked with round3 is applied -- round3 is shown without it.",
-        "round4": "brep-rs cannot round these neighbouring edges together yet: they meet at a corner where the rounds would have to be blended into each other, and that corner is not built, so none of the rounds picked with round4 is applied -- round4 is shown without it."
-      },
-      "refusal": "brep-rs cannot round these neighbouring edges together yet: they meet at a corner where the rounds would have to be blended into each other, and that corner is not built, so none of the rounds picked with round1 is applied -- round1 is shown without it. | brep-rs cannot round these neighbouring edges together yet: they meet at a corner where the rounds would have to be blended into each other, and that corner is not built, so none of the rounds picked with round2 is applied -- round2 is shown without it. | brep-rs cannot round these neighbouring edges together yet: they meet at a corner where the rounds would have to be blended into each other, and that corner is not built, so none of the rounds picked with round3 is applied -- round3 is shown without it. | brep-rs cannot round these neighbouring edges together yet: they meet at a corner where the rounds would have to be blended into each other, and that corner is not built, so none of the rounds picked with round4 is applied -- round4 is shown without it.",
-      "volume": 11600,
+      "refusals": {},
+      "volume": 11591.03244517641,
       "bbox": [
         0,
         0,
@@ -32,9 +26,9 @@
         30,
         10
       ],
-      "faces": 11,
-      "meshTriangles": 28,
-      "outcome": "refused",
+      "faces": 15,
+      "meshTriangles": 60,
+      "outcome": "built",
       "label": "part.rim(sk2): the four pocket-opening edges, named by the pocket walls"
     },
     {
@@ -94,7 +88,8 @@
   ],
   "expressible": true,
   "script": "\nconst sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst plate = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });\nconst part = pocket(sk2, plate, 4);\nround(part.rim(sk2), 1);",
-  "volume": 11600,
+  "classification": "match",
+  "volume": 11591.03244517641,
   "bbox": [
     0,
     0,
@@ -103,13 +98,8 @@
     30,
     10
   ],
-  "faces": 11,
-  "refusals": {
-    "round1": "brep-rs cannot round these neighbouring edges together yet: they meet at a corner where the rounds would have to be blended into each other, and that corner is not built, so none of the rounds picked with round1 is applied -- round1 is shown without it.",
-    "round2": "brep-rs cannot round these neighbouring edges together yet: they meet at a corner where the rounds would have to be blended into each other, and that corner is not built, so none of the rounds picked with round2 is applied -- round2 is shown without it.",
-    "round3": "brep-rs cannot round these neighbouring edges together yet: they meet at a corner where the rounds would have to be blended into each other, and that corner is not built, so none of the rounds picked with round3 is applied -- round3 is shown without it.",
-    "round4": "brep-rs cannot round these neighbouring edges together yet: they meet at a corner where the rounds would have to be blended into each other, and that corner is not built, so none of the rounds picked with round4 is applied -- round4 is shown without it."
-  },
+  "faces": 15,
+  "refusals": {},
   "kinds": [
     "sketch",
     "extrude",
@@ -123,5 +113,5 @@
   ],
   "refVolume": 11591.03244517401,
   "refFaces": 15,
-  "relDelta": 0.0007736631631743014
+  "relDelta": 2.069916579584698e-13
 }

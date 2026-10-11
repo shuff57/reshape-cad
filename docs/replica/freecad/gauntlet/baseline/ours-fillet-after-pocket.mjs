@@ -51,9 +51,12 @@ try {
   out.expressible = rim.outcome === 'built' || (rim.outcome === 'refused' && !unresolved);
   out.script = rim.script;
   const rel = rim.volume === undefined ? null : Math.abs(rim.volume - REF.volume) / REF.volume;
-  out.outcome = rim.outcome === 'built' && rel < 1e-6 && rim.faces === REF.faces ? 'match' : rim.outcome === 'refused' ? 'refused' : rim.outcome === 'built' ? 'built-mismatch' : 'not-expressible';
+  // compare.mjs does the comparing (it only compares a piece whose outcome is 'built'); the classification here is the
+  // script's own record, kept beside it.
+  out.outcome = rim.outcome === 'built' ? 'built' : rim.outcome === 'refused' ? 'refused' : 'not-expressible';
+  out.classification = rim.outcome === 'built' && rel < 1e-6 && rim.faces === REF.faces ? 'match' : rim.outcome === 'refused' ? 'refused' : rim.outcome === 'built' ? 'built-mismatch' : 'not-expressible';
   Object.assign(out, { volume: rim.volume, bbox: rim.bbox, faces: rim.faces, refusals: rim.refusals, kinds: rim.kinds, refVolume: REF.volume, refFaces: REF.faces, relDelta: rel });
-  out.notes = 'part.rim(sk2) names the four pocket-opening edges (a pocket wall is named by the sketch side that swept it, and survives edits of the plate). Naming a wall writes the pocket as pull(sk2, -4) subtracted from the plate so the kernel can find the walls. The kernel rounds the edges it can and refuses the neighbouring ones in a sentence; the shown solid is the part without the refused rounds, so it is not the FreeCAD solid. See attempts[].';
+  out.notes = 'part.rim(sk2) names the four pocket-opening edges (a pocket wall is named by the sketch side that swept it, and survives edits of the plate). Naming a wall writes the pocket as pull(sk2, -4) subtracted from the plate so the kernel can find the walls. The kernel builds the four rounds together with the corners mitred (each round extended by its radius into the corner and cut by the plane of symmetry, the two quarter cylinders meeting along an ellipse arc), which is the solid FreeCAD builds. See attempts[].';
 } catch (e) { out.outcome = 'error'; out.notes = String(e && e.stack || e); }
 console.log(JSON.stringify(out, null, 2));
 writeFileSync(path.join(HERE, 'ours-fillet-after-pocket.json'), JSON.stringify(out, null, 2));

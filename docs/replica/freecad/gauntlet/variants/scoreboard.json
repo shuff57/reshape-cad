@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-11T01:36:20.805Z",
+  "generatedAt": "2026-10-11T16:39:33.866Z",
   "reference": "FreeCAD 26.3.0 RC1 headless (variants/fc/<id>.py -> variants/refs/ref-<id>.json)",
   "ours": "reSHape Script -> ModelDoc -> brep-rs wasm (solids) / SketchSession2D (sketches)",
   "tolerances": {
@@ -14115,7 +14115,7 @@
           "name": "solved geometry bbox in plane (abs 1e-6)",
           "ref": [
             -6,
-            -2.249639674e-31,
+            0,
             36,
             12
           ],
@@ -14137,7 +14137,7 @@
         "bucket": "consistent",
         "bbox": [
           -6,
-          -2.2496396738008425e-31,
+          0,
           0,
           36,
           12,
@@ -14187,10 +14187,10 @@
         "solve": 0,
         "bucket": "consistent",
         "bbox": [
-          -6.000000001230625,
+          -6.000000001230622,
           0,
           0,
-          35.999999998769376,
+          35.99999999876938,
           12,
           0
         ]
@@ -14257,7 +14257,7 @@
           -12,
           0,
           0,
-          30,
+          30.000000000000004,
           24,
           0
         ]

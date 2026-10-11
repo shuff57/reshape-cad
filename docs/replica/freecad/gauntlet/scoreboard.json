@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-11T01:36:28.529Z",
+  "generatedAt": "2026-10-11T16:39:24.101Z",
   "reference": "FreeCAD 26.3.0 RC1 (headless), baseline/ref-<id>.json",
   "ours": "reSHape Script -> ModelDoc -> brep-rs wasm, baseline/ours-<id>.mjs re-run",
   "tolerances": {
@@ -12,8 +12,8 @@
   "frameMapping": "ours json frame:'y-up' => (x,y,z) -> (x,-z,y) before bbox compare; otherwise already FreeCAD axes",
   "summary": {
     "total": 19,
-    "MATCH": 17,
-    "NOT-BUILT": 2
+    "MATCH": 18,
+    "NOT-BUILT": 1
   },
   "pieces": [
     {
@@ -91,15 +91,47 @@
     {
       "id": "fillet-after-pocket",
       "kind": "solid",
-      "status": "NOT-BUILT",
-      "oursOutcome": "refused",
+      "status": "MATCH",
+      "oursOutcome": "built",
       "frame": "FreeCAD axes",
-      "checks": [],
-      "notes": [
-        "ours outcome is 'refused', so no measurement is compared; the reference built it."
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 11591.03244517401,
+          "ours": 11591.03244517641,
+          "pass": true,
+          "delta": 2.069916579584698e-13
+        },
+        {
+          "name": "faces",
+          "ref": 15,
+          "ours": 15,
+          "pass": true
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            0,
+            40,
+            0,
+            30,
+            0,
+            10
+          ],
+          "ours": [
+            0,
+            40,
+            0,
+            30,
+            0,
+            10
+          ],
+          "pass": true,
+          "delta": 0
+        }
       ],
+      "notes": [],
       "differences": [],
-      "refusal": "brep-rs cannot round these neighbouring edges together yet: they meet at a corner where the rounds would have to be blended into each other, and that corner is not built, so none of the rounds picked with round1 is applied -- round1 is shown without it. | brep-rs cannot round these neighbouring edges together yet: they meet at a corner where the rounds would have to be blended into each other, and that corner is not built, so none of the rounds picked with round2 is applied -- round2 is shown without it. | brep-rs cannot round these neighbouring edges together yet: they meet at a corner where the rounds would have to be blended into each other, and that corner is not built, so none of the rounds picked with round3 is applied -- round3 is shown without it. | brep-rs cannot round these neighbouring edges together yet: they meet at a corner where the rounds would have to be blended into each other, and that corner is not built, so none of the rounds picked with round4 is applied -- round4 is shown without it.",
       "ref": {
         "volume": 11591.03244517401,
         "bbox": [
@@ -110,7 +142,21 @@
           30,
           10
         ],
-        "faces": 15
+        "faces": 15,
+        "cases": null
+      },
+      "ours": {
+        "volume": 11591.03244517641,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 15,
+        "cases": null
       },
       "rerun": true
     },
