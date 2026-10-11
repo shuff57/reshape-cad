@@ -52,6 +52,9 @@ import {
   type WedgeFeature,
   type GrooveFeature,
   type PocketFeature,
+  type CombineFeature,
+  type ExtrudeFeature,
+  type HoleFeature,
   type SphereFeature,
   type SketchFeature,
   type SketchConstraint,
@@ -59,6 +62,7 @@ import {
   type DraftFeature,
   type ShellFeature,
   nextId,
+  sketchFrameOf,
   newShape,
   newHole,
   newHoleCorners,
@@ -80,6 +84,7 @@ import {
   extentAlong,
   throughExtentAlong,
   extentBoundAlong,
+  featureRangeAlong,
   holeAxialOffset,
   isRoundable,
   canRotate,
@@ -88,7 +93,7 @@ import {
   type SoupGeom,
   type SoupRule,
 } from './model-types.js';
-import { generatedParams, applyParam, pname } from './model-codegen.js';
+import { generatedParams, applyParam, pname, solveDoc } from './model-codegen.js';
 // addConstraintSettling is the SAME beginner-friendly settle a click on the
 // Rules panel runs through (components/model/SketchConstraints.tsx's own
 // settle()) -- reused rather than re-derived, so a script call and a click
@@ -106,7 +111,7 @@ import {
   describe as describeConstraint,
   buildSlotRows,
 } from '@shuff57/reshape-sketch/sketch-solve';
-import { outlineOf } from '@shuff57/reshape-sketch/sketch-arc';
+import { outlineOf, circleOf, tessellate } from '@shuff57/reshape-sketch/sketch-arc';
 import type { TopoName } from './topo-name.js';
 
 // ---------------------------------------------------------------------------
@@ -421,6 +426,28 @@ function optionalNumber(fn: string, label: string, v: unknown): number | undefin
  * number at all", and the two should never read as the same sentence
  * reworded.
  */
+/**
+ * The turn of a spin()/groove(): more than 0 and at most 360 degrees. The kernel has no meaning for anything else and, measured
+ * against FreeCAD (docs/replica/freecad/gauntlet/variants), it does not refuse it either: a negative angle comes back as a solid of
+ * the right volume in the wrong place (bounding box and centre of mass of a full ring), and an angle past 360 comes back as a
+ * self-overlapping solid with MORE volume than the full turn (400 degrees gives 111%). Refused here, in a sentence, so neither
+ * shows up as a part.
+ */
+function sweepAngle(fn: string, v: unknown): void {
+  const val = unwrap(v as number);
+  if (!(val > 0 && val <= 360)) {
+    throw new Error(`${fn}(): the angle is how far the sketch turns, more than 0 and at most 360 degrees -- got ${val}. A negative angle or one past a full turn is not a turn this kernel builds.`);
+  }
+}
+
+/** The depth of a pocket(): a positive number of mm. The direction is fixed (into the material), so a zero or negative depth cannot mean anything, and the kernel's own sentence for it ("does not touch the part") names the wrong cause. */
+function cutDepth(fn: string, v: unknown): void {
+  const val = unwrap(v as number);
+  if (!(val > 0)) {
+    throw new Error(`${fn}(): the depth is how far the cut goes into the material, so it has to be a positive number -- got ${val}.`);
+  }
+}
+
 function positiveNumber(fn: string, label: string, v: unknown): number {
   const n = requiredNumber(fn, label, v);
   const val = unwrap(n);
@@ -588,7 +615,12 @@ export interface SolidHandle {
   readonly rootKind: 'box' | 'cylinder' | 'other';
   kind: Feature['kind'];
   face(word: FaceWord): TopoRef;
-  edge(a: FaceWord, b: FaceWord): TopoRef;
+  /** The edge between two faces: each is a face word, or a pocket wall from `wall()`. */
+  edge(a: FaceWord | TopoRef, b: FaceWord | TopoRef): TopoRef;
+  /** The wall a pocket cut where side `n` (1-based) of its sketch ran: a face, for use in `edge('top', part.wall(sk, 1))`. */
+  wall(sk: SketchHandle, n: number): TopoRef;
+  /** The edges where a pocket opens through the top face, one per side of its sketch: `round(part.rim(sk), 1)`. */
+  rim(sk: SketchHandle): TopoRef[];
 }
 
 /** A .face()/.edge() result. Carries the owning handle alongside the name so
@@ -701,6 +733,39 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     return f;
   }
 
+  /** The subtract that cut `toolId` out of a part (a pocket after pocketCutOf() has opened it into a pull and a subtract). */
+  function cutOfTool(toolId: string): CombineFeature {
+    const c = features.find((x): x is CombineFeature => x.kind === 'combine' && x.op === 'subtract' && x.targets.length === 2 && x.targets[1] === toolId);
+    if (!c) throw new Error('.edge() with a wall needs a wall of a pocket.');
+    return c;
+  }
+
+  /** The tool and the subtract of the pocket cut from sketch `skId`, or null when there is none.
+   *
+   *  The kernel can only find a pocket wall by the pull that swept it: a pocket feature leaves no record of its walls, so a name
+   *  written against one never resolves ("edge could not be found"). So the first time a script names a wall, the pocket is
+   *  written out as what it is, a downward pull of the same sketch subtracted from the part. Same id, same shape (the kernel
+   *  runs the same cut), and the walls now belong to a pull the kernel knows. A cut written that way by hand is found as it is. */
+  function pocketCutOf(skId: string): { toolId: string; cutId: string } | null {
+    const p = features.find((x): x is PocketFeature => x.kind === 'pocket' && x.target === skId);
+    if (p) {
+      if (slotOverrides.has(pname(p.id, 'depth'))) {
+        throw new Error('A pocket whose depth is a param() cannot have its walls named yet -- give pocket() a plain number for the depth, or cut it as subtract(shape, pull(sketch, -depth)).');
+      }
+      if (p.midplane || p.length2 !== undefined || p.reversed || p.through || p.taper || p.direction) {
+        throw new Error('A pocket with a direction option (through, reversed, midplane, length2, taper, direction) cannot have its walls named yet -- name the walls of a plain one-sided pocket.');
+      }
+      const tool: ExtrudeFeature = { ...newExtrude(docNow(), skId), height: -p.depth };
+      const cutF: CombineFeature = { id: p.id, kind: 'combine', op: 'subtract', targets: [p.into, tool.id] };
+      if (p.name !== undefined) cutF.name = p.name;
+      features = features.flatMap((x) => (x.id === p.id ? [tool, cutF] : [x]));
+      return { toolId: tool.id, cutId: cutF.id };
+    }
+    const tool = features.find((x): x is ExtrudeFeature => x.kind === 'extrude' && x.target === skId && x.height < 0);
+    const c = tool && features.find((x): x is CombineFeature => x.kind === 'combine' && x.op === 'subtract' && x.targets.length === 2 && x.targets[1] === tool.id);
+    return tool && c ? { toolId: tool.id, cutId: c.id } : null;
+  }
+
   function makeSolidHandle(f: Feature, rootId = f.id): SolidHandle {
     const handle: SolidHandle = {
       __reshapeHandle: true,
@@ -717,8 +782,34 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
           name: { cause: 'primitive', feature: handle.rootId, kind: 'face', part },
         };
       },
-      edge(a: FaceWord, b: FaceWord): TopoRef {
+      edge(a: FaceWord | TopoRef, b: FaceWord | TopoRef): TopoRef {
         const allowSide = handle.rootKind === 'cylinder';
+        // A face of this edge is a face word, or a pocket wall named by wall(). A pocket wall is a face the pocket made, so
+        // the word beside it names the face of the plate it cuts into (carried through the pocket), not a primitive of the pocket.
+        const wallA = isTopoRef(a) && a.name.cause === 'swept';
+        const wallB = isTopoRef(b) && b.name.cause === 'swept';
+        if ((isTopoRef(a) && !wallA) || (isTopoRef(b) && !wallB)) {
+          throw new Error('.edge() takes a face word (top, front, ...) or a pocket wall from .wall(sketch, n).');
+        }
+        if (wallA && wallB) {
+          const [na, nb] = [a as TopoRef, b as TopoRef].map((r) => r.name as Extract<TopoName, { cause: 'swept' }>);
+          if (na.feature === nb.feature && na.from === nb.from && na.edge === nb.edge) {
+            throw new Error('.edge() needs two DIFFERENT faces to name the edge between them.');
+          }
+          return { __reshapeTopoRef: true, owner: handle, name: { cause: 'between', feature: cutOfTool(na.feature).id, kind: 'edge', of: [na, nb] } };
+        }
+        if (wallA || wallB) {
+          const w = (wallA ? a : b) as TopoRef;
+          const word = wallA ? b : a;
+          const wn = w.name as Extract<TopoName, { cause: 'swept' }>;
+          const cutF = cutOfTool(wn.feature);
+          const part = facePart('.edge()', word, false);
+          const plateFace: TopoName = {
+            cause: 'carried', feature: cutF.id, kind: 'face',
+            of: { cause: 'primitive', feature: cutF.targets[0], kind: 'face', part },
+          };
+          return { __reshapeTopoRef: true, owner: handle, name: { cause: 'between', feature: cutF.id, kind: 'edge', of: [plateFace, wn] } };
+        }
         const pa = facePart('.edge()', a, allowSide);
         const pb = facePart('.edge()', b, allowSide);
         if (pa === pb) throw new Error('.edge() needs two DIFFERENT faces to name the edge between them.');
@@ -735,6 +826,36 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
             ],
           },
         };
+      },
+      wall(sk: SketchHandle, n: number): TopoRef {
+        if (!isSketchHandle(sk)) throw new Error('.wall() needs the sketch the pocket was cut from: part.wall(sketch2, 1).');
+        const skF = features.find((x) => x.id === sk.id);
+        const cutIds = skF && skF.kind === 'sketch' ? pocketCutOf(sk.id) : null;
+        if (!cutIds || !skF || skF.kind !== 'sketch') {
+          throw new Error('.wall() names a face a pocket cut, and no pocket(...) was cut from that sketch.');
+        }
+        const sides = skF.shape === 'circle' ? 1 : skF.points.length;
+        const k = unwrap(n as number);
+        if (!Number.isInteger(k) || k < 1 || k > sides) {
+          throw new Error(`.wall() needs a side number from 1 to ${sides} (the sketch has ${sides}), and you gave it ${describe(n)}.`);
+        }
+        return {
+          __reshapeTopoRef: true,
+          owner: handle,
+          name: { cause: 'swept', feature: cutIds.toolId, kind: 'face', from: sk.id, edge: k - 1 },
+        };
+      },
+      rim(sk: SketchHandle): TopoRef[] {
+        if (!isSketchHandle(sk)) throw new Error('.rim() needs the sketch the pocket was cut from: part.rim(sketch2).');
+        const skF = features.find((x) => x.id === sk.id);
+        if (!skF || skF.kind !== 'sketch') throw new Error('.rim() needs the sketch the pocket was cut from.');
+        if (skF.plane !== 'xy' || skF.frame) {
+          throw new Error('.rim() finds the opening of a pocket cut down from a top-plane sketch; for another pocket name its edges one at a time with .edge(face, part.wall(sketch, n)).');
+        }
+        const sides = skF.shape === 'circle' ? 1 : skF.points.length;
+        const out: TopoRef[] = [];
+        for (let i = 1; i <= sides; i++) out.push(handle.edge('top', handle.wall(sk, i)));
+        return out;
       },
     };
     return handle;
@@ -878,6 +999,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     if (!isSketchHandle(sk)) throw new Error('groove() needs a sketch: groove(sketch1, shape, angle).');
     if (!isHandle(target)) throw new Error('groove() needs a shape to cut: groove(sketch1, shape, angle).');
     requiredNumber('groove', 'angle', angle);
+    sweepAngle('groove', angle);
     const f = newGroove(docNow(), sk.id, target.id);
     f.angle = num(angle, f.id, 'angle');
     pushFeature(f);
@@ -888,13 +1010,18 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
   // straight into the target solid and CUT the block out. Mirror of pull(),
   // with the solid it cuts named. Same argument order as groove() on purpose:
   // profile first, victim second, number last.
-  function pocket(sk: unknown, target: unknown, depth: unknown, ...extra: unknown[]): SolidHandle {
-    noExtraArgs('pocket', 'a sketch, a shape and a depth', 3, extra);
+  function pocket(sk: unknown, target: unknown, depth: unknown, opts?: unknown, ...extra: unknown[]): SolidHandle {
+    const known = opts !== undefined && isPlainOptions(opts) && Object.keys(opts).every((k) => ['through', 'reversed', 'midplane', 'length2', 'taper', 'direction', 'alongNormal'].includes(k));
+    if (known) noExtraArgs('pocket', 'a sketch, a shape and a depth', 4, extra);
+    else noExtraArgs('pocket', 'a sketch, a shape and a depth', 3, opts === undefined ? extra : [opts, ...extra]);
     if (!isSketchHandle(sk)) throw new Error('pocket() needs a sketch: pocket(sketch1, shape, depth).');
     if (!isHandle(target)) throw new Error('pocket() needs a shape to cut: pocket(sketch1, shape, depth).');
     requiredNumber('pocket', 'depth', depth);
+    cutDepth('pocket', depth);
+    const dir = readDirection('pocket', opts, true);
     const f = newPocket(docNow(), sk.id, target.id);
     f.depth = num(depth, f.id, 'depth');
+    Object.assign(f, dir);
     pushFeature(f);
     return makeSolidHandle(f);
   }
@@ -1230,10 +1357,25 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
   }
 
   function makeSketchHandle(id: string): SketchHandle {
+    // A simple sketch holds ONE outline: rect(), circle() and polygon() each REPLACE it. Drawn twice, the first used to vanish
+    // without a word (measured against FreeCAD: a 40 circle with a 20 circle inside it extruded as only the 20 disc, two circles
+    // side by side as only the second), a silent wrong part. The second call now says so. sk.geom([...]) is the form that holds
+    // several loops, and a second sketch() holds a second shape.
+    let outline: string | null = null;
+    const claimOutline = (call: string): void => {
+      if (outline !== null) {
+        throw new Error(
+          `${call} would replace the ${outline} already drawn on this sketch: a sketch holds one outline. ` +
+          `For a hole or several loops in one profile use sk.geom([...]) with a row for each, or draw the second shape on its own sketch().`,
+        );
+      }
+      outline = call.replace(/\(\)$/, '').replace(/^\./, '');
+    };
     const handle: SketchHandle = {
       __reshapeSketch: true,
       id,
       rect(w, h, opts) {
+        claimOutline('.rect()');
         requiredNumber('.rect()', 'width', w);
         requiredNumber('.rect()', 'height', h);
         const extra = readOptions('.rect()', ['at'], opts);
@@ -1259,6 +1401,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
         return handle;
       },
       circle(d, opts) {
+        claimOutline('.circle()');
         requiredNumber('.circle()', 'across', d);
         const extra = readOptions('.circle()', ['at'], opts);
         const [ax, ay] = extra.at !== undefined ? readVec2('.circle()', 'at', extra.at) : [0, 0];
@@ -1281,6 +1424,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
         return handle;
       },
       polygon(pointsArg) {
+        claimOutline('.polygon()');
         if (!Array.isArray(pointsArg) || pointsArg.length < 3) {
           throw new Error(`.polygon() needs a list of at least three [x, y] points. You gave it ${describe(pointsArg)}.`);
         }
@@ -1580,12 +1724,67 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     return handle;
   }
 
-  function pull(sk: unknown, height: unknown, ...extra: unknown[]): SolidHandle {
-    noExtraArgs('pull', 'a sketch and a height', 2, extra, 'To move the result, use move(...).');
+  /** The direction extras of pull()/pocket(): `{ reversed, midplane, length2 }` (and `through` for a pocket), read off the end of
+   *  the call. Plain true/false and a positive number only -- a param() here would need a slot of its own. */
+  function readDirection(fn: string, opts: unknown, allowThrough: boolean): {
+    reversed?: boolean; midplane?: boolean; length2?: number; through?: boolean;
+    taper?: number; direction?: [number, number, number]; alongNormal?: boolean;
+  } {
+    const allowed = allowThrough
+      ? ['reversed', 'midplane', 'length2', 'through', 'taper', 'direction', 'alongNormal']
+      : ['reversed', 'midplane', 'length2', 'taper', 'direction', 'alongNormal'];
+    const o = readOptions(fn, allowed, opts);
+    const out: {
+      reversed?: boolean; midplane?: boolean; length2?: number; through?: boolean;
+      taper?: number; direction?: [number, number, number]; alongNormal?: boolean;
+    } = {};
+    for (const k of ['reversed', 'midplane', 'through'] as const) {
+      if (o[k] === undefined) continue;
+      if (typeof o[k] !== 'boolean') throw new Error(`${fn}'s ${k} is true or false, like ${fn}(..., { ${k}: true }). You gave it ${describe(o[k])}.`);
+      if (o[k]) out[k] = true;
+    }
+    if (o.length2 !== undefined) {
+      const n = unwrap(o.length2 as number);
+      if (typeof n !== 'number' || !(n > 0) || !Number.isFinite(n)) throw new Error(`${fn}'s length2 is the second length, a positive number. You gave it ${describe(o.length2)}.`);
+      out.length2 = n;
+    }
+    if (o.taper !== undefined) {
+      const n = unwrap(o.taper as number);
+      if (typeof n !== 'number' || !Number.isFinite(n) || Math.abs(n) >= 90) throw new Error(`${fn}'s taper is an angle in degrees between -90 and 90, like ${fn}(..., { taper: 5 }). You gave it ${describe(o.taper)}.`);
+      if (n !== 0) out.taper = n;
+    }
+    if (o.direction !== undefined) {
+      const d = Array.isArray(o.direction) ? (o.direction as unknown[]).map((c) => unwrap(c as number)) : o.direction;
+      if (!Array.isArray(d) || d.length !== 3 || d.some((c) => typeof c !== 'number' || !Number.isFinite(c))) {
+        throw new Error(`${fn}'s direction is three numbers [x, y, z], like ${fn}(..., { direction: [1, 0, 1] }). You gave it ${describe(d)}.`);
+      }
+      if (d.every((c) => c === 0)) throw new Error(`${fn}'s direction [0, 0, 0] points nowhere. Give it at least one non-zero number.`);
+      out.direction = [d[0], d[1], d[2]] as [number, number, number];
+    }
+    if (o.alongNormal !== undefined) {
+      if (typeof o.alongNormal !== 'boolean') throw new Error(`${fn}'s alongNormal is true or false. You gave it ${describe(o.alongNormal)}.`);
+      if (o.alongNormal === false) out.alongNormal = false;
+    }
+    if (out.alongNormal === false && !out.direction) {
+      throw new Error(`${fn}'s alongNormal only matters with a direction: add direction: [x, y, z], or drop alongNormal.`);
+    }
+    if (out.midplane && out.length2 !== undefined) {
+      throw new Error(`${fn}() takes midplane (the same length either side) or length2 (a second length the other way), not both.`);
+    }
+    return out;
+  }
+
+  function pull(sk: unknown, height: unknown, opts?: unknown, ...extra: unknown[]): SolidHandle {
+    // The trailing { } object is the direction options; anything else there is a stray argument and is named as one.
+    const known = opts !== undefined && isPlainOptions(opts) && Object.keys(opts).every((k) => ['reversed', 'midplane', 'length2', 'taper', 'direction', 'alongNormal'].includes(k));
+    if (known) noExtraArgs('pull', 'a sketch and a height', 3, extra, 'To move the result, use move(...).');
+    else noExtraArgs('pull', 'a sketch and a height', 2, opts === undefined ? extra : [opts, ...extra], 'To move the result, use move(...).');
     if (!isSketchHandle(sk)) throw new Error(`pull() needs a sketch: pull(sketch('top'), height).`);
     requiredNumber('pull', 'height', height);
+    const dir = readDirection('pull', opts, false);
     const f = newExtrude(docNow(), sk.id);
     f.height = num(height, f.id, 'height');
+    Object.assign(f, dir);
     pushFeature(f);
     return makeSolidHandle(f);
   }
@@ -1594,6 +1793,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     noExtraArgs('spin', 'a sketch and an angle', 2, extra, 'To move the result, use move(...).');
     if (!isSketchHandle(sk)) throw new Error(`spin() needs a sketch: spin(sketch('top'), angle).`);
     requiredNumber('spin', 'angle', angle);
+    sweepAngle('spin', angle);
     const f = newRevolve(docNow(), sk.id);
     f.angle = num(angle, f.id, 'angle');
     pushFeature(f);
@@ -1852,6 +2052,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
   function round(arg: unknown, size: unknown, ...extra: unknown[]): SolidHandle {
     noExtraArgs('round', 'a shape or edge and a size', 2, extra, 'To pick the edge, use shape.edge(faceA, faceB).');
     const s = requiredNumber('round', 'size', size);
+    if (Array.isArray(arg)) return eachEdge('round', arg, (e) => round(e, size));
     if (isTopoRef(arg)) {
       if (arg.name.cause !== 'between') {
         throw new Error('round() on a single reference needs an edge -- try round(shape.edge(faceA, faceB), size).');
@@ -1874,7 +2075,18 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     return arg;
   }
 
+  /** round() / bevel() of a list of edges (part.rim(sk)): one feature per edge, in order. */
+  function eachEdge(fn: string, edges: unknown[], one: (e: TopoRef) => SolidHandle): SolidHandle {
+    if (edges.length === 0 || !edges.every((e) => isTopoRef(e) && e.name.cause === 'between')) {
+      throw new Error(`${fn}() on a list needs a list of edges, like ${fn}(part.rim(sketch2), 1).`);
+    }
+    let last!: SolidHandle;
+    for (const e of edges as TopoRef[]) last = one(e);
+    return last;
+  }
+
   function bevel(arg: unknown, size: unknown): SolidHandle {
+    if (Array.isArray(arg)) { requiredNumber('bevel', 'size', size); return eachEdge('bevel', arg, (e) => bevel(e, size)); }
     if (isHandle(arg)) {
       throw new Error('bevel() needs one edge: a whole shape is not supported yet -- chamfer one edge with bevel(shape.edge(faceA, faceB), size), or round the whole box or cylinder with fillet(shape, size).');
     }
@@ -1892,12 +2104,546 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
 
   // ---- repeat / repeatAround -------------------------------------------
 
+  // ---- pattern of a cut: N transformed copies of the CUT, never of the solid ----
+  //
+  // The kernel's pattern feature copies the whole target solid and unions the copies. For a pocket that is wrong twice over:
+  // the copies overlap each other, and the union refills every hole. So a pattern whose target is a pocket is lowered here
+  // into count - 1 more sketches (the first one rigidly moved) and pockets, each cutting into the one before. The original
+  // pocket stays as copy 0. The kernel then sees only pockets, which it either cuts exactly or refuses in a sentence.
+  type Frame3 = { origin: Vec3; u: Vec3; v: Vec3; n: Vec3 };
+  const dot3 = (a: Vec3, b: Vec3) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+  const sub3 = (a: Vec3, b: Vec3): Vec3 => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
+  /** A pad is `join(base, pull(sketch, h))`: a union of exactly two shapes whose second is a plain pull of a sketch. */
+  const isPadFeature = (f: Feature): f is CombineFeature =>
+    f.kind === 'combine' && f.op === 'union' && f.targets.length === 2 && findFeature(f.targets[1]).kind === 'extrude';
+  const isPocketTarget = (t: SolidHandle) => { const f = findFeature(t.id); return f.kind === 'pocket' || isPadFeature(f); };
+  const isHoleTarget = (t: SolidHandle) => { const f = findFeature(t.id); return f.kind === 'hole'; };
+
+
+  // ---- later features: a pattern or mirror of a handle that has been cut or padded since ----
+  // pocket(), hole() and join() hand back a NEW handle and leave the old one pointing at the old feature. A mirror or pattern
+  // built from the old handle would branch off there and leave the later features on a dead branch, out of the final shape. So
+  // the new feature is chained onto the END of the line of features that were built on the target.
+  const bodyInputOf = (f: Feature): string | null => {
+    switch (f.kind) {
+      case 'pocket': case 'groove': return f.into;
+      case 'combine': return f.targets[0] ?? null;
+      case 'hole': case 'shell': case 'fillet': case 'draft': case 'rotate': case 'mirror': case 'pattern': return f.target;
+      case 'move': return f.copy ? null : f.target;
+      default: return null;
+    }
+  };
+  /** The last feature built on `from` (or `from` itself). `allowed` says which kinds the line may run through; any other
+   *  feature built on it, or a fork, is refused in a sentence by `refuse`. */
+  function tipOf(from: Feature, allowed: (f: Feature) => boolean, refuse: (why: string) => never): Feature {
+    let cur = from;
+    for (let guard = 0; guard < 256; guard++) {
+      const next = docNow().features.filter((f) => f.id !== cur.id && bodyInputOf(f) === cur.id);
+      if (next.length === 0) return cur;
+      if (next.length > 1) return refuse('more than one later feature was built on this shape, so there is no single part to add to');
+      if (!allowed(next[0])) return refuse(`a later ${next[0].kind} was built on this shape, and a copy added after it could not stay in step with it`);
+      cur = next[0];
+    }
+    return cur;
+  }
+  const tipAny = (from: Feature): Feature => tipOf(from, () => true, (why) => { throw new Error(`This shape cannot be copied yet: ${why}. Copy it before building on it.`); });
+
+  function rotateAbout(axis: 'x' | 'y' | 'z', deg: number): (p: Vec3) => Vec3 {
+    const c = Math.cos((deg * Math.PI) / 180);
+    const s = Math.sin((deg * Math.PI) / 180);
+    return (p) => {
+      const [x, y, z] = p;
+      if (axis === 'x') return [x, c * y - s * z, s * y + c * z];
+      if (axis === 'y') return [c * x + s * z, y, -s * x + c * z];
+      return [c * x - s * y, s * x + c * y, z];
+    };
+  }
+
+  // ---- do the copies of the cut stay clear of each other and of the rim? ----
+  // The kernel cuts the pockets one after another. Where two cuts overlap, or a cut breaks out through the rim of the part, it
+  // keeps the faces split where the reference modeller (FreeCAD) merges them, so the solid has the right volume but a different
+  // face count. Rather than hand back a part that disagrees with the reference, such a pattern is refused in a sentence.
+  type Flat = { c: [number, number]; r: number } | { poly: Array<[number, number]> };
+  /** The sketch as the part is built from it. A sketch with rules (a .length(), an .equal(), ...) keeps its points as drawn here;
+   *  they are solved when the document is adopted (model-codegen's solveDoc). Anything that reads or copies the OUTLINE has to
+   *  read the solved one, through that same function, or it measures (or copies) a shape the part never has. */
+  const solvedSketch = (sk: SketchFeature): SketchFeature => {
+    if (!sk.constraints || sk.constraints.length === 0) return sk;
+    return solveDoc({ version: 1, features: [sk] }).features[0] as SketchFeature;
+  };
+  const flatOf = (sk: SketchFeature, map: (a: number, b: number) => [number, number]): Flat => {
+    const circ = circleOf(sk);
+    if (circ) return { c: map(circ.center[0], circ.center[1]), r: circ.radius };
+    return { poly: tessellate(sk).map(([a, b]) => map(a, b)) };
+  };
+  const polyOfFlat = (f: Flat): Array<[number, number]> => {
+    if ('poly' in f) return f.poly;
+    const N = 96, R = f.r / Math.cos(Math.PI / N); // circumscribed: never smaller than the circle
+    return Array.from({ length: N }, (_, i) => [f.c[0] + R * Math.cos((2 * Math.PI * i) / N), f.c[1] + R * Math.sin((2 * Math.PI * i) / N)] as [number, number]);
+  };
+  const inPoly = (pt: [number, number], poly: Array<[number, number]>): boolean => {
+    let inside = false;
+    for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+      const [xi, yi] = poly[i], [xj, yj] = poly[j];
+      if ((yi > pt[1]) !== (yj > pt[1]) && pt[0] < ((xj - xi) * (pt[1] - yi)) / (yj - yi) + xi) inside = !inside;
+    }
+    return inside;
+  };
+  const segsCross = (a: [number, number], b: [number, number], c: [number, number], d: [number, number]): boolean => {
+    const o = (p: [number, number], q: [number, number], r: [number, number]) => (q[0] - p[0]) * (r[1] - p[1]) - (q[1] - p[1]) * (r[0] - p[0]);
+    const [o1, o2, o3, o4] = [o(a, b, c), o(a, b, d), o(c, d, a), o(c, d, b)];
+    // two segments on one line only meet if their spans overlap (the edges of two squares side by side share a line)
+    if (o1 === 0 && o2 === 0 && o3 === 0 && o4 === 0) {
+      const ax = Math.abs(b[0] - a[0]) >= Math.abs(b[1] - a[1]) ? 0 : 1;
+      return Math.max(Math.min(a[ax], b[ax]), Math.min(c[ax], d[ax])) <= Math.min(Math.max(a[ax], b[ax]), Math.max(c[ax], d[ax]));
+    }
+    return o1 * o2 <= 0 && o3 * o4 <= 0;
+  };
+  const polysTouch = (A: Array<[number, number]>, B: Array<[number, number]>): boolean => {
+    for (let i = 0; i < A.length; i++) for (let j = 0; j < B.length; j++) {
+      if (segsCross(A[i], A[(i + 1) % A.length], B[j], B[(j + 1) % B.length])) return true;
+    }
+    return inPoly(A[0], B) || inPoly(B[0], A);
+  };
+  /** [x0, y0, x1, y1] when the flat is an axis-aligned rectangle, else null */
+  const rectOfFlat = (f: Flat): [number, number, number, number] | null => {
+    if (!('poly' in f)) return null;
+    const pts = f.poly.filter((q, i, all) => i === 0 || Math.hypot(q[0] - all[i - 1][0], q[1] - all[i - 1][1]) > 1e-12);
+    if (pts.length === 5 && Math.hypot(pts[0][0] - pts[4][0], pts[0][1] - pts[4][1]) < 1e-12) pts.pop();
+    if (pts.length !== 4) return null;
+    const xs = pts.map((q) => q[0]), ys = pts.map((q) => q[1]);
+    const [x0, x1, y0, y1] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
+    if (!(x1 - x0 > 1e-9 && y1 - y0 > 1e-9)) return null;
+    const onSide = (q: [number, number]) => (Math.abs(q[0] - x0) < 1e-9 || Math.abs(q[0] - x1) < 1e-9) && (Math.abs(q[1] - y0) < 1e-9 || Math.abs(q[1] - y1) < 1e-9);
+    return pts.every(onSide) && new Set(pts.map((q) => q.join(','))).size === 4 ? [x0, y0, x1, y1] : null;
+  };
+  const flatsTouch = (a: Flat, b: Flat): boolean => {
+    if ('c' in a && 'c' in b) return Math.hypot(a.c[0] - b.c[0], a.c[1] - b.c[1]) <= a.r + b.r + 1e-6;
+    return polysTouch(polyOfFlat(a), polyOfFlat(b));
+  };
+  /** true when `cut` lies strictly inside `host` */
+  const flatInside = (cut: Flat, host: Flat): boolean => {
+    if ('c' in cut && 'c' in host) return Math.hypot(cut.c[0] - host.c[0], cut.c[1] - host.c[1]) + cut.r < host.r - 1e-6;
+    const hp = polyOfFlat(host);
+    const cp = polyOfFlat(cut);
+    return cp.every((q) => inPoly(q, hp)) && !hp.some((q, i) => cp.some((_, j) => segsCross(q, hp[(i + 1) % hp.length], cp[j], cp[(j + 1) % cp.length])));
+  };
+
+  /** Lower a pattern of a pocket into copies of the cut. `place(k)` maps a world point of copy 0 to copy k (a rigid move).
+   *  A sketch on a named plane keeps its plane, so `planeKept(n)` says whether the move leaves a plane with normal n in place
+   *  (a slide along it, or a spin about its normal); a sketch with its own frame just has the frame moved. */
+  function patternOfCut(
+    fn: string, target: SolidHandle, count: number,
+    place: (k: number) => (p: Vec3) => Vec3, planeKept: (n: Vec3) => boolean,
+    improper = false,
+    slides = false,
+    turns = false,
+  ): SolidHandle {
+    const tf = findFeature(target.id);
+    const isPad = isPadFeature(tf);
+    const pk = (isPad ? findFeature((tf as CombineFeature).targets[1]) : tf) as PocketFeature | ExtrudeFeature;
+    const sk = findFeature(pk.target) as SketchFeature;
+    const refuse = (why: string): never => {
+      throw new Error(isPad
+        ? `${fn}() of a pad adds a copy of the pad at each place, and ${why}. Add the extra pads yourself, one sketch and join(shape, pull(...)) each.`
+        : `${fn}() of a pocket cuts a copy of the pocket at each place, and ${why}. Cut the extra pockets yourself, one sketch and pocket(...) each.`);
+    };
+    if (sk.kind !== 'sketch') refuse('this pocket does not come from a flat sketch');
+    if ((sk.geoms && sk.geoms.length) || (sk.geom && sk.geom.length)) refuse('its sketch is built from free-standing geometry and rules, which cannot be moved as a whole');
+    const fr = sketchFrameOf(sk) as Frame3;
+    const at = (a: number, b: number): Vec3 => [
+      fr.origin[0] + a * fr.u[0] + b * fr.v[0], fr.origin[1] + a * fr.u[1] + b * fr.v[1], fr.origin[2] + a * fr.u[2] + b * fr.v[2],
+    ];
+    // plane coordinates (along the sketch's own u, v) of every copy of the cut, 0 = the original
+    const worldOf = (k: number) => {
+      const mv = k === 0 ? (p: Vec3) => p : place(k);
+      return (a: number, b: number): [number, number] => {
+        const w = mv(at(a, b));
+        return [dot3(sub3(w, fr.origin), fr.u), dot3(sub3(w, fr.origin), fr.v)];
+      };
+    };
+    // the outline the part is cut with: a sketch with rules is measured, and copied, as its rules solve it
+    const skS = solvedSketch(sk);
+    const flats: Flat[] = [];
+    for (let k = 0; k < count; k++) flats.push(flatOf(skS, worldOf(k)));
+    // Round copies slid along a line and cut one after another leave the same faces FreeCAD does (each surviving stretch of a
+    // hole wall is one face, even across the wall's seam), so overlapping round copies of a slide are built, not refused. Any
+    // other overlap (a reflection, a pad, a polygon) is still refused: its faces do not match FreeCAD's yet. Round copies
+    // turned about an axis (repeatAround) are built the same way: measured against FreeCAD, volume, box and face count.
+    const circlesOverlapCleanly = (slides || turns) && !isPad && flats.every((fl) => 'c' in fl);
+    // A rectangular pocket reflected across a plane square to the part: both copies are rectangles that span the same stretch
+    // across the mirror, so wherever they overlap their union is one rectangle, and the kernel cutting the two one after the
+    // other leaves the very faces FreeCAD gives for that rectangle (measured on the mirror sweep, volume, box and face count).
+    const rectsMirrored = improper && !isPad && flats.length === 2;
+    const rA = rectsMirrored ? rectOfFlat(flats[0]) : null, rB = rectsMirrored ? rectOfFlat(flats[1]) : null;
+    const sameSpan = (lo0: number, hi0: number, lo1: number, hi1: number) => Math.abs(lo0 - lo1) < 1e-9 && Math.abs(hi0 - hi1) < 1e-9;
+    const mirrorRects = rA && rB && (sameSpan(rA[0], rA[2], rB[0], rB[2]) || sameSpan(rA[1], rA[3], rB[1], rB[3]));
+    // A reflection that maps the cut onto itself (a round or polygonal cut centred or symmetric ON the mirror plane, the plane
+    // standing square to the sketch) is the original cut again: FreeCAD's mirrored cut is that single cut, so the copy is
+    // left out rather than refused as an overlap. It must be the same region in the same plane, pushed the same way.
+    const dropped = new Set<number>();
+    const sameFlat = (a: Flat, b: Flat): boolean => {
+      const E = 1e-9;
+      if ('c' in a && 'c' in b) return Math.hypot(a.c[0] - b.c[0], a.c[1] - b.c[1]) < E && Math.abs(a.r - b.r) < E;
+      if ('poly' in a && 'poly' in b) {
+        const key = (q: [number, number]) => `${Math.round(q[0] / 1e-7)},${Math.round(q[1] / 1e-7)}`;
+        const A = new Set(a.poly.map(key));
+        const B = new Set(b.poly.map(key));
+        return A.size === B.size && [...A].every((k) => B.has(k));
+      }
+      return false;
+    };
+    if (improper && !isPad) {
+      for (let k = 1; k < count; k++) {
+        const mv = place(k);
+        const o2 = mv(fr.origin), n2 = sub3(mv([fr.origin[0] + fr.n[0], fr.origin[1] + fr.n[1], fr.origin[2] + fr.n[2]]), o2);
+        const inPlane = Math.abs(dot3(sub3(o2, fr.origin), fr.n)) < 1e-9;
+        const sameWay = Math.abs(dot3(n2, fr.n) - 1) < 1e-9;
+        if (inPlane && sameWay && sameFlat(flats[0], flats[k])) dropped.add(k);
+      }
+    }
+    for (let i = 0; i < flats.length; i++) for (let j = i + 1; j < flats.length; j++) {
+      if (mirrorRects) continue;
+      if (dropped.has(i) || dropped.has(j)) continue;
+      // circles that only just touch (or nearly) leave a pinched, zero-width web the kernel cannot close: a clean overlap needs
+      // the centres strictly inside r1+r2 by a real margin
+      const a = flats[i], b = flats[j];
+      const pinched = 'c' in a && 'c' in b
+        && Math.hypot(a.c[0] - b.c[0], a.c[1] - b.c[1]) >= (a.r + b.r) * (1 - 1e-3);
+      if (flatsTouch(a, b) && (!circlesOverlapCleanly || pinched)) {
+        refuse(`copy ${i + 1} and copy ${j + 1} of the cut overlap each other, so brep-rs cannot yet join overlapping cuts into the same single part FreeCAD gives`);
+      }
+    }
+    // ---- does each copy land on the part? ----
+    // The part being cut is followed back through its earlier pockets and holes to the shapes it was built from, and a join is
+    // followed into EVERY shape it joins: a copy that misses the first shape can still land on a later pad. Each such member
+    // gives its cross-section in the plane of the cut when it is a plain box, an upright cylinder cut square to its axis, or a
+    // straight pull of a plain sketch (its outline, solved); any other shape gives only its bounding box, which bounds where the
+    // shape can be but is never its outline.
+    type Member = { kind: Feature['kind']; flat: Flat | null; box: Flat | null };
+    const toPlane = (w: Vec3): [number, number] => [dot3(sub3(w, fr.origin), fr.u), dot3(sub3(w, fr.origin), fr.v)];
+    const worldAxis = (v: Vec3): 0 | 1 | 2 | null => {
+      const i = [0, 1, 2].find((a) => Math.abs(Math.abs(v[a]) - 1) < 1e-9);
+      return i === undefined ? null : (i as 0 | 1 | 2);
+    };
+    const boxOf = (id: string): Flat | null => {
+      const iu = worldAxis(fr.u), iv = worldAxis(fr.v);
+      if (iu === null || iv === null) return null;
+      const AX = ['x', 'y', 'z'] as const;
+      const ru = featureRangeAlong(docNow(), id, AX[iu]), rv = featureRangeAlong(docNow(), id, AX[iv]);
+      if (!ru || !rv) return null;
+      const w = (x: number, y: number): [number, number] => {
+        const p: Vec3 = [fr.origin[0], fr.origin[1], fr.origin[2]];
+        p[iu] = x; p[iv] = y;
+        return toPlane(p);
+      };
+      return { poly: [w(ru.lo, rv.lo), w(ru.hi, rv.lo), w(ru.hi, rv.hi), w(ru.lo, rv.hi)] };
+    };
+    const memberOf = (h: Feature): Member => {
+      const box = boxOf(h.id);
+      if (h.kind === 'box' && !(h.rotate && h.rotate.some((d) => d)) && !h.round) {
+        // a plain box: its cross-section in the plane of the cut, when that plane stands square to one of the box's axes
+        const m = worldAxis(fr.n);
+        if (m !== null) {
+          const [i, j] = [0, 1, 2].filter((a) => a !== m);
+          const corner = (si: number, sj: number): [number, number] => {
+            const w: Vec3 = [0, 0, 0];
+            w[m] = fr.origin[m]; w[i] = h.center[i] + si * h.size[i] / 2; w[j] = h.center[j] + sj * h.size[j] / 2;
+            return toPlane(w);
+          };
+          return { kind: h.kind, flat: { poly: [corner(-1, -1), corner(1, -1), corner(1, 1), corner(-1, 1)] }, box };
+        }
+      }
+      if (h.kind === 'cylinder' && !(h.rotate && h.rotate.some((d) => d)) && !h.round && worldAxis(fr.n) === 2) {
+        // an upright cylinder cut square to its axis (z): its cross-section is a disc, at any height
+        return { kind: h.kind, flat: { c: toPlane([h.center[0], h.center[1], fr.origin[2]]), r: h.radius }, box };
+      }
+      if (h.kind === 'extrude' && !h.taper && !h.direction) {
+        // a straight pull (a taper or a slant carries its walls off the sketch outline, so that outline would be wrong here)
+        const hs = findFeature(h.target);
+        if (hs.kind === 'sketch' && !(hs.geoms && hs.geoms.length) && !(hs.geom && hs.geom.length)) {
+          const hf = sketchFrameOf(hs) as Frame3;
+          if (Math.abs(Math.abs(dot3(hf.n, fr.n)) - 1) < 1e-9) {
+            const flat = flatOf(solvedSketch(hs), (a, b) => toPlane([
+              hf.origin[0] + a * hf.u[0] + b * hf.v[0], hf.origin[1] + a * hf.u[1] + b * hf.v[1], hf.origin[2] + a * hf.u[2] + b * hf.v[2],
+            ]));
+            return { kind: h.kind, flat, box };
+          }
+        }
+      }
+      return { kind: h.kind, flat: null, box };
+    };
+    const members: Member[] = [];
+    const visit = (id: string, depth: number): void => {
+      let h = findFeature(id);
+      for (let guard = 0; guard < 64; guard++) {
+        if (h.kind === 'pocket') { h = findFeature(h.into); continue; }
+        if (h.kind === 'hole') { h = findFeature(h.target); continue; }
+        break;
+      }
+      if (h.kind === 'combine' && h.op === 'union' && h.targets.length > 0 && depth < 16) {
+        for (const t of h.targets) visit(t, depth + 1);
+        return;
+      }
+      members.push(memberOf(h));
+    };
+    visit(isPad ? (tf as CombineFeature).targets[0] : (pk as PocketFeature).into, 0);
+    const known = members.filter((m): m is Member & { flat: Flat } => m.flat !== null);
+    const unknown = members.filter((m) => m.flat === null);
+    // a slanted or tapered cut (or pad) runs out past its own sketch outline as it goes, so its outline in the plane says
+    // nothing about what it misses
+    const straight = !(pk.taper || pk.direction);
+    // Copies of a slide (linearPattern / repeat) that lie wholly clear of a part made only of straight pulls cut nothing:
+    // FreeCAD leaves them out (measured), so they are dropped here. Only when the outline of EVERY shape joined into the part
+    // is known, and never for a pad (it adds material off the part), a turn, a reflection, a box or a cylinder (not measured),
+    // or a slanted or tapered cut. A copy off the part that is not dropped is refused in a sentence, never left out silently.
+    const mayDrop = slides && !improper && !isPad && straight && known.length > 0 && unknown.length === 0
+      && members.every((m) => m.kind === 'extrude');
+    const what = isPad ? 'pad' : 'cut';
+    const reach = (n: number) => members.length > 1
+      ? `copy ${n} of the ${what} runs across where two shapes of the part are joined, or reaches the part's edge, so brep-rs cannot yet match the faces FreeCAD gives there`
+      : isPad
+        ? `copy ${n} of the pad reaches the edge of the part, so brep-rs cannot yet join it over an edge and match the face count FreeCAD gives`
+        : `copy ${n} of the cut reaches the edge of the part, so brep-rs cannot yet cut through an edge and match the face count FreeCAD gives`;
+    const off = (n: number) => isPad
+      ? `copy ${n} of the pad lies wholly off the part, so it would stand apart from it`
+      : `copy ${n} of the cut lies wholly off the part, so it would cut nothing`;
+    const single = members.length === 1 ? known[0] : undefined;
+    flats.forEach((fl, i2) => {
+      const n = i2 + 1;
+      if (known.some((m) => flatInside(fl, m.flat))) return;
+      // a mirrored rectangle that runs out through ONE straight side of a rectangular part (and stays clear of the other
+      // sides) is one pocket open at that side, which is how the kernel and FreeCAD both cut it
+      const hr = single && mirrorRects ? rectOfFlat(single.flat) : null, cr = rectOfFlat(fl);
+      if (hr && cr && rA && rB) {
+        const e = 1e-9;
+        const out = [cr[0] < hr[0] - e, cr[1] < hr[1] - e, cr[2] > hr[2] + e, cr[3] > hr[3] + e];
+        const ok = [cr[0] > hr[0] + e, cr[1] > hr[1] + e, cr[2] < hr[2] - e, cr[3] < hr[3] - e];
+        const sides = out.filter(Boolean).length;
+        if (sides === 1 && out.every((o, k) => o || ok[k]) && cr[0] < hr[2] - e && cr[2] > hr[0] + e && cr[1] < hr[3] - e && cr[3] > hr[1] + e) return;
+      }
+      if (known.some((m) => flatsTouch(fl, m.flat))) refuse(reach(n));
+      if (unknown.length === 0) {
+        if (mayDrop && i2 > 0) { dropped.add(i2); return; }
+        refuse(off(n));
+      }
+      // a shape whose outline is not known: a straight copy clear of its bounding box misses it for certain (refused, so the
+      // copies after it are never left pointing at a cut the kernel refused); one inside the box may or may not cut it, which
+      // only the kernel can tell -- it cuts it, or says in a sentence that it misses
+      if (straight && unknown.every((m) => m.box && !flatsTouch(fl, m.box))) refuse(off(n));
+    });
+    // chain the copies onto the end of whatever was built on this feature since (a later pocket, hole or pad stays in the part)
+    let last: Feature = tipOf(tf, (f) => f.kind === 'pocket' || f.kind === 'hole' || isPadFeature(f), refuse);
+    for (let k = 1; k < count; k++) {
+      if (dropped.has(k)) continue;
+      const mv = place(k);
+      // a copy of the SOLVED sketch, without its rules: rules are solved later, on the copy's own (moved) points, and a
+      // rule such as horizontal() does not survive a turn; the solved outline moved is exactly the cut being copied
+      const copy: SketchFeature = JSON.parse(JSON.stringify(skS));
+      copy.id = nextId(docNow(), 'sk');
+      delete copy.name;
+      delete copy.constraints;
+      delete copy.onDatum;
+      if (sk.frame) {
+        const o2 = mv(fr.origin);
+        const u2 = sub3(mv(at(1, 0)), o2), v2 = sub3(mv(at(0, 1)), o2);
+        if (improper) {
+          // A reflection reverses handedness, so the moved axes u2, v2 would turn u x v (the way the cut is pushed) round. The
+          // copy's frame takes them swapped (u = v2, v = u2), which keeps the push the reflected one; every point then has to
+          // swap its two coordinates with them, so that (b, a) on the swapped frame is o2 + a u2 + b v2, the reflected point.
+          // Swapping the coordinates mirrors the outline in its own plane, so it runs the other way round, and a bulge (which
+          // bends to the left of the way its edge runs) changes sign to keep each arc on the same side.
+          copy.frame = { origin: o2, u: v2, v: u2 };
+          copy.points = copy.points.map(([a, b]) => [b, a] as [number, number]);
+          if (copy.bulges) {
+            copy.bulges = Object.fromEntries(Object.entries(copy.bulges).map(([k, b]) => [k, -b]));
+          }
+        } else {
+          copy.frame = { origin: o2, u: u2, v: v2 };
+        }
+      } else {
+        if (!planeKept(fr.n)) refuse('the move would tilt or lift the sketch off its plane');
+        copy.points = skS.points.map(([a, b]) => {
+          const d = sub3(mv(at(a, b)), fr.origin);
+          return [dot3(d, fr.u), dot3(d, fr.v)] as [number, number];
+        });
+        copy.offset = (sk.offset ?? 0) + dot3(sub3(mv(fr.origin), fr.origin), fr.n);
+      }
+      pushFeature(copy);
+      // a slanted pull or cut runs along a world direction, which the move turns (or reflects) with the copy: only a slide
+      // leaves it as it is. Copied unchanged, every copy round a circle (or across a mirror) slanted the original's way.
+      const turned = (d: Vec3): Vec3 => {
+        const o = mv(fr.origin);
+        return sub3(mv([fr.origin[0] + d[0], fr.origin[1] + d[1], fr.origin[2] + d[2]]), o);
+      };
+      if (isPad) {
+        const ex = newExtrude(docNow(), copy.id);
+        const src = pk as ExtrudeFeature;
+        ex.height = src.height;
+        if (src.reversed) ex.reversed = true;
+        if (src.midplane) ex.midplane = true;
+        if (src.length2 !== undefined) ex.length2 = src.length2;
+        if (src.taper) ex.taper = src.taper;
+        if (src.direction) ex.direction = turned(src.direction);
+        if (src.alongNormal === false) ex.alongNormal = false;
+        pushFeature(ex);
+        const join: CombineFeature = { id: nextId(docNow(), 'op'), kind: 'combine', op: 'union', targets: [last.id, ex.id] };
+        pushFeature(join);
+        last = join;
+      } else {
+        const cut = newPocket(docNow(), copy.id, last.id);
+        const src = pk as PocketFeature;
+        cut.depth = src.depth;
+        if (src.reversed) cut.reversed = true;
+        if (src.midplane) cut.midplane = true;
+        if (src.length2 !== undefined) cut.length2 = src.length2;
+        if (src.through) cut.through = true;
+        if (src.taper) cut.taper = src.taper;
+        if (src.direction) cut.direction = turned(src.direction);
+        if (src.alongNormal === false) cut.alongNormal = false;
+        pushFeature(cut);
+        last = cut;
+      }
+    }
+    mutateHandle(target, last);
+    return target;
+  }
+
+  /** Lower a pattern of a hole into copies of the hole, each drilled into the one before. A hole's centre is an offset from the
+   *  bounding-box centre of the part it drills, so the part has to be one whose box this can find (a pull of a flat sketch,
+   *  with any holes or pockets already in it), and the drill has to stay along the pattern's own direction. `shift(c2, o2, k)`
+   *  gives copy k's offset from the part centre `c2`, given copy 0's offset `o2` (both in the plane of the hole). */
+  function patternOfHole(
+    fn: string, target: SolidHandle, count: number,
+    shift: (axis: Axis3, c2: [number, number], o2: [number, number], k: number) => [number, number],
+    needsAxis?: 'x' | 'y' | 'z',
+    fallback: 'none' | 'linear' | 'any' = 'none',
+  ): SolidHandle | null {
+    const hf = findFeature(target.id) as HoleFeature;
+    const refuse = (why: string): never => {
+      throw new Error(`${fn}() of a hole drills a copy of the hole at each place, and ${why}. Drill the extra holes yourself, one hole(...) each.`);
+    };
+    if (hf.corners) refuse('a hole made by holes() already drills four at once, which cannot be repeated as a unit');
+    const ax = hf.axis;
+    if (needsAxis && needsAxis !== ax) refuse(`the hole is drilled along ${ax} but the spin is about ${needsAxis}, which would tilt the drill`);
+    const ix: [number, number] = ax === 'z' ? [0, 1] : ax === 'y' ? [0, 2] : [1, 2];
+    const axv: Vec3 = ax === 'x' ? [1, 0, 0] : ax === 'y' ? [0, 1, 0] : [0, 0, 1];
+    const to2 = (p: Vec3): [number, number] => [p[ix[0]], p[ix[1]]];
+    // follow the hole back to the pull of a flat sketch it drills
+    let hostSk: SketchFeature | null = null;
+    let hostBox: BoxFeature | null = null;
+    let hostCyl: CylinderFeature | null = null;
+    let cur: Feature = findFeature(hf.target);
+    for (let guard = 0; guard < 64; guard++) {
+      if (cur.kind === 'hole') { if (cur.corners) break; cur = findFeature(cur.target); continue; }
+      if (cur.kind === 'pocket') { cur = findFeature(cur.into); continue; }
+      if (cur.kind === 'box') {
+        if (!(cur.rotate && cur.rotate.some((d) => d)) && !cur.round) hostBox = cur;
+        break;
+      }
+      if (cur.kind === 'cylinder') {
+        // a plain upright cylinder drilled along its own axis: its face is a disc
+        if (!(cur.rotate && cur.rotate.some((d) => d)) && !cur.round && ax === 'z') hostCyl = cur;
+        break;
+      }
+      if (cur.kind === 'extrude') {
+        // The kernel places a hole from the middle of the part's bounding box. A taper or a slanted pull carries the walls off
+        // the sketch outline, so the middle of the outline is not the middle of the part (a slant shifts it by half the slide),
+        // and the outline does not bound where the walls are: a copy placed from it would land in the wrong place.
+        if (cur.taper || cur.direction) {
+          refuse(`the part it drills was pulled ${cur.taper && cur.direction ? 'with a taper and along a slant' : cur.taper ? 'with a taper' : 'along a slant'}, so brep-rs cannot yet tell where the middle of the part is, and a hole is placed from the middle`);
+        }
+        const hs = findFeature(cur.target);
+        if (hs.kind === 'sketch' && !(hs.geoms && hs.geoms.length) && !(hs.geom && hs.geom.length)) {
+          const hfr = sketchFrameOf(hs) as Frame3;
+          // the outline as the part is built from it: a sketch with rules is read as its rules solve it
+          if (Math.abs(Math.abs(dot3(hfr.n, axv)) - 1) < 1e-9) hostSk = solvedSketch(hs);
+        }
+      }
+      break;
+    }
+    // a host this lowering cannot measure (a cylinder, a revolve, ...): hand back to the whole-shape pattern, which built these before
+    if (!hostSk && !hostBox && !hostCyl) return refuse('brep-rs cannot yet find where the middle of the part is, and a hole is placed from the middle');
+    let hostFlat: Flat;
+    if (hostCyl) {
+      hostFlat = { c: [hostCyl.center[ix[0]], hostCyl.center[ix[1]]], r: hostCyl.radius };
+    } else if (hostBox) {
+      // a box host: its face in the plane of the hole. A copy that overlaps another or leaves it is refused below; a hole
+      // pattern is never handed to the whole-solid pattern here, which copies the plate itself and grows its bounding box.
+      const hx = hostBox.size[ix[0]] / 2, hy = hostBox.size[ix[1]] / 2, bx = hostBox.center[ix[0]], by = hostBox.center[ix[1]];
+      hostFlat = { poly: [[bx - hx, by - hy], [bx + hx, by - hy], [bx + hx, by + hy], [bx - hx, by + hy]] };
+    } else {
+      const hfr = sketchFrameOf(hostSk as SketchFeature) as Frame3;
+      const hostW = (a: number, b: number): [number, number] => to2([
+        hfr.origin[0] + a * hfr.u[0] + b * hfr.v[0], hfr.origin[1] + a * hfr.u[1] + b * hfr.v[1], hfr.origin[2] + a * hfr.u[2] + b * hfr.v[2],
+      ]);
+      hostFlat = flatOf(hostSk as SketchFeature, hostW);
+    }
+    let c2: [number, number];
+    if ('c' in hostFlat) c2 = hostFlat.c;
+    else {
+      const xs = hostFlat.poly.map((q) => q[0]), ys = hostFlat.poly.map((q) => q[1]);
+      c2 = [(Math.min(...xs) + Math.max(...xs)) / 2, (Math.min(...ys) + Math.max(...ys)) / 2];
+    }
+    const o0: [number, number] = [hf.center[ix[0]], hf.center[ix[1]]];
+    const r = Math.max(hf.diameter, hf.counterbore?.diameter ?? 0, hf.countersink?.diameter ?? 0) / 2;
+    const places: Array<[number, number]> = [];
+    for (let k = 0; k < count; k++) places.push(k === 0 ? o0 : shift(ax, c2, o0, k));
+    const flats: Flat[] = places.map((o) => ({ c: [c2[0] + o[0], c2[1] + o[1]] as [number, number], r }));
+    for (let i = 0; i < flats.length; i++) for (let j = i + 1; j < flats.length; j++) {
+      if (flatsTouch(flats[i], flats[j])) refuse(`copy ${i + 1} and copy ${j + 1} of the hole overlap each other, so brep-rs cannot yet join overlapping holes into the same single part FreeCAD gives`);
+    }
+    flats.forEach((fl, i) => {
+      if (!flatInside(fl, hostFlat)) refuse(`copy ${i + 1} of the hole reaches the edge of the part, so brep-rs cannot yet cut through an edge and match the face count FreeCAD gives`);
+    });
+    // a hole is placed from the middle of the part it drills, so only later cuts (which leave the middle where it was) may sit
+    // between this hole and its copies; a later pad could move the middle
+    let last: Feature = tipOf(hf, (f) => f.kind === 'pocket' || f.kind === 'hole', refuse);
+    for (let k = 1; k < count; k++) {
+      const copy: HoleFeature = JSON.parse(JSON.stringify(hf));
+      copy.id = nextId(docNow(), 'hole');
+      delete copy.name;
+      copy.target = last.id;
+      copy.center[ix[0]] = places[k][0];
+      copy.center[ix[1]] = places[k][1];
+      pushFeature(copy);
+      last = copy;
+    }
+    mutateHandle(target, last);
+    return target;
+  }
+
   function repeat(target: unknown, opts?: unknown): SolidHandle {
     if (!isHandle(target)) throw new Error('repeat() needs a shape: repeat(shape, { count: 3, step: 60 }).');
     const extra = readOptions('repeat', ['count', 'step'], opts);
     if (extra.count === undefined) throw new Error('repeat() needs { count: <number> }.');
     const count = wholeNumberAtLeastOne('repeat', 'count', extra.count);
-    const base = newPattern(docNow(), target.id, 'linear');
+    if (isPocketTarget(target)) {
+      let st: Vec3 = [0, 0, 0];
+      if (extra.step !== undefined) {
+        st = typeof extra.step === 'number' || extra.step instanceof Number
+          ? [unwrap(extra.step), 0, 0]
+          : (readVec3('repeat', 'step', extra.step).map((n) => unwrap(n as number)) as Vec3);
+      }
+      return patternOfCut('repeat', target, count, (k) => (p) => [p[0] + st[0] * k, p[1] + st[1] * k, p[2] + st[2] * k], () => true, false, true);
+    }
+    if (isHoleTarget(target)) {
+      let st: Vec3 = [0, 0, 0];
+      if (extra.step !== undefined) {
+        st = typeof extra.step === 'number' || extra.step instanceof Number
+          ? [unwrap(extra.step), 0, 0]
+          : (readVec3('repeat', 'step', extra.step).map((n) => unwrap(n as number)) as Vec3);
+      }
+      const hax = (findFeature(target.id) as HoleFeature).axis;
+      if (Math.abs(st[hax === 'x' ? 0 : hax === 'y' ? 1 : 2]) > 1e-9) {
+        throw new Error(`repeat() of a hole drills a copy of the hole at each place, and the step moves the hole along its own drill direction (${hax}), which would lift it off the face. Step across the face instead.`);
+      }
+      const si = hax === 'z' ? [0, 1] : hax === 'y' ? [0, 2] : [1, 2];
+      const lowered = patternOfHole('repeat', target, count, (_a, _c, o, k) => [o[0] + st[si[0]] * k, o[1] + st[si[1]] * k], undefined, 'linear');
+      if (lowered) return lowered;
+    }
+    const tip = tipAny(findFeature(target.id));
+    const base = newPattern(docNow(), tip.id, 'linear');
     base.count = num(count, base.id, 'count');
     if (extra.step !== undefined) {
       if (typeof extra.step === 'number' || extra.step instanceof Number) {
@@ -1916,7 +2662,40 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     const extra = readOptions('repeatAround', ['count', 'axis', 'angle'], opts);
     if (extra.count === undefined) throw new Error('repeatAround() needs { count: <number> }.');
     const count = wholeNumberAtLeastOne('repeatAround', 'count', extra.count);
-    const base = newPattern(docNow(), target.id, 'circular');
+    if (isPocketTarget(target)) {
+      const ax = extra.axis === undefined ? 'z' : extra.axis;
+      if (ax !== 'x' && ax !== 'y' && ax !== 'z') {
+        throw new Error(`repeatAround()'s "axis" has to be 'x', 'y' or 'z'. You gave it ${describe(extra.axis)}.`);
+      }
+      const total = extra.angle === undefined ? 360 : unwrap(requiredNumber('repeatAround', 'angle', extra.angle));
+      const axv: Vec3 = ax === 'x' ? [1, 0, 0] : ax === 'y' ? [0, 1, 0] : [0, 0, 1];
+      return patternOfCut(
+        'repeatAround', target, count,
+        // a full turn spaces copies by angle / count (the last would land on the first); anything less spaces them by
+        // angle / (count - 1) so the last copy sits AT the end angle -- the way FreeCAD's PolarPattern does it
+        (k) => rotateAbout(ax, (Math.abs(total) >= 360 - 1e-9 ? total / count : total / (count - 1)) * k),
+        (n) => Math.abs(Math.abs(dot3(n, axv)) - 1) < 1e-9,
+        false, false, true,
+      );
+    }
+    if (isHoleTarget(target)) {
+      const ax = extra.axis === undefined ? 'z' : extra.axis;
+      if (ax !== 'x' && ax !== 'y' && ax !== 'z') {
+        throw new Error(`repeatAround()'s "axis" has to be 'x', 'y' or 'z'. You gave it ${describe(extra.axis)}.`);
+      }
+      const total = extra.angle === undefined ? 360 : unwrap(requiredNumber('repeatAround', 'angle', extra.angle));
+      const step = Math.abs(total) >= 360 - 1e-9 ? total / count : total / (count - 1);
+      const lowered = patternOfHole('repeatAround', target, count, (hax, c2, o, k) => {
+        const ixx = hax === 'z' ? [0, 1] : hax === 'y' ? [0, 2] : [1, 2];
+        const p: Vec3 = [0, 0, 0];
+        p[ixx[0]] = c2[0] + o[0]; p[ixx[1]] = c2[1] + o[1];
+        const q = rotateAbout(ax, step * k)(p);
+        return [q[ixx[0]] - c2[0], q[ixx[1]] - c2[1]];
+      }, ax, 'any');
+      if (lowered) return lowered;
+    }
+    const tip = tipAny(findFeature(target.id));
+    const base = newPattern(docNow(), tip.id, 'circular');
     base.count = num(count, base.id, 'count');
     if (extra.axis !== undefined) {
       if (extra.axis !== 'x' && extra.axis !== 'y' && extra.axis !== 'z') {
@@ -1927,7 +2706,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     if (extra.angle !== undefined) {
       base.totalAngle = num(requiredNumber('repeatAround', 'angle', extra.angle), base.id, 'totalangle');
     }
-    const f = findFeature(target.id);
+    const f = tip;
     const why = whyCannotOrbit(f, base.axis ?? 'z');
     if (why) throw new Error(why);
     pushFeature(base);
@@ -1943,15 +2722,65 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     'top-bottom': 'xy',
   };
 
-  function mirror(target: unknown, word: unknown, ...extra: unknown[]): SolidHandle {
+  function mirror(target: unknown, word: unknown, opts?: unknown, ...extra: unknown[]): SolidHandle {
+    if (opts !== undefined && !isPlainOptions(opts)) {
+      noExtraArgs('mirror', 'a shape and a direction word', 2, [opts, ...extra]);
+    }
     noExtraArgs('mirror', 'a shape and a direction word', 2, extra);
     if (!isHandle(target)) throw new Error('mirror() needs a shape: mirror(shape, "left-right").');
     if (typeof word !== 'string' || !(word in MIRROR_WORD)) {
       throw new Error(`mirror() needs 'left-right', 'front-back' or 'top-bottom'. You gave it ${describe(word)}.`);
     }
-    const f = newMirror(docNow(), target.id, MIRROR_WORD[word]);
+    const given = readOptions('mirror', ['at'], opts);
+    if (given.at !== undefined) return mirrorCut(target, word, given.at);
+    const f = newMirror(docNow(), tipAny(findFeature(target.id)).id, MIRROR_WORD[word]);
     pushFeature(f);
     return makeSolidHandle(f, target.rootId);
+  }
+
+  /** mirror(cut, word, { at }): reflect a pocket, hole or pad across the plane at coordinate `at` along the mirror axis, and
+   *  add the reflected CUT (or pad) to the same part. The kernel's mirror reflects a whole solid through the part's own face,
+   *  so it cannot do this; the reflection is lowered here into one more sketch and pocket (or hole, or pad) instead. */
+  function mirrorCut(target: SolidHandle, word: string, atRaw: unknown): SolidHandle {
+    const at = unwrap(requiredNumber('mirror', 'at', atRaw));
+    if (!Number.isFinite(at)) throw new Error(`mirror()'s "at" has to be a finite number. You gave it ${describe(atRaw)}.`);
+    if (!isPocketTarget(target) && !isHoleTarget(target)) {
+      throw new Error(
+        'mirror() with { at } reflects a pocket, a hole or a pad across a plane at that distance, and this shape is none of those. ' +
+        'Leave out { at } to mirror the whole shape across the plane through the origin.'
+      );
+    }
+    const m = MIRROR_WORD[word] === 'yz' ? 0 : MIRROR_WORD[word] === 'xz' ? 1 : 2;
+    const what = isHoleTarget(target) ? 'hole' : (findFeature(target.id).kind === 'pocket' ? 'pocket' : 'pad');
+    const parallel = () => {
+      throw new Error(
+        `mirror() of a ${what} across '${word}' reflects it through a plane parallel to the face it sits on, which would turn it ` +
+        `to the other side of the part instead of copying it across. Mirror it across a plane that stands square to that face.`
+      );
+    };
+    if (isHoleTarget(target)) {
+      const hf = findFeature(target.id) as HoleFeature;
+      if (hf.axis === (['x', 'y', 'z'] as const)[m]) parallel();
+      return patternOfHole('mirror', target, 2, (hax, c2, o) => {
+        const ixx = hax === 'z' ? [0, 1] : hax === 'y' ? [0, 2] : [1, 2];
+        const j = ixx.indexOf(m);
+        const out: [number, number] = [o[0], o[1]];
+        out[j] = 2 * at - 2 * c2[j] - o[j];
+        return out;
+      }) as SolidHandle;
+    }
+    const tf = findFeature(target.id);
+    const pk = (isPadFeature(tf) ? findFeature((tf as CombineFeature).targets[1]) : tf) as PocketFeature | ExtrudeFeature;
+    const sk = findFeature(pk.target) as SketchFeature;
+    if (sk.kind === 'sketch') {
+      const fr = sketchFrameOf(sk) as Frame3;
+      if (Math.abs(fr.n[m]) > 1e-9) parallel();
+    }
+    return patternOfCut(
+      'mirror', target, 2,
+      () => (p) => { const q: Vec3 = [p[0], p[1], p[2]]; q[m] = 2 * at - q[m]; return q; },
+      () => true, true,
+    );
   }
 
   function move(target: unknown, offset: unknown, opts?: unknown): SolidHandle {

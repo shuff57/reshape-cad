@@ -3625,6 +3625,16 @@ fn process_face(
                     Surface::Plane(g) => {
                         let an = dot(g.n, axis).abs();
                         if (an - 1.0).abs() < 1e-9 {
+                            // A planar face that lies wholly inside the wall's
+                            // radius never meets the wall, so its plane must not
+                            // split it (a blind pocket's floor, well inside a
+                            // disc, left the disc's outer wall in two faces where
+                            // FreeCAD keeps one).
+                            if let Some(far) = plane_face_radial_reach(&f.borrow(), cy.origin, axis) {
+                                if far < cy.radius - 1e-7 {
+                                    continue;
+                                }
+                            }
                             let t = dot(sub(g.origin, cy.origin), g.n) / dot(axis, g.n);
                             if t > cy.vmin + 1e-9 && t < cy.vmax - 1e-9 {
                                 breaks.push(t);
@@ -3672,6 +3682,19 @@ fn process_face(
                             let normal0 = cross(cy2.e2, cy2.axis);
                             if dot(normal0, radial0) < 0.0 {
                                 continue; // void wall: bounds no material
+                            }
+                        }
+                        // A tool cylinder that lies strictly inside this wall's
+                        // radius never meets the wall: no point of the wall is
+                        // inside it, so it clips no arc and its band edges must
+                        // not split the wall (a blind round pocket well inside a
+                        // disc left the disc's outer wall in two faces where
+                        // FreeCAD keeps one).
+                        {
+                            let d = sub(cy2.origin, cy.origin);
+                            let off = crate::math::len(sub(d, scale(axis, dot(d, axis))));
+                            if off + cy2.radius < cy.radius - 1e-7 {
+                                continue;
                             }
                         }
                         parallel_cylinders.push(cy2.clone());
@@ -5655,7 +5678,7 @@ pub fn boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
 /// provably the same solid: fewer faces, every edge used exactly twice, the volume and the bounding box of
 /// `r` to 1e-9, the volume still independent of the origin, and a closed mesh. Anything else returns `r`
 /// untouched. Runs after every guard above, so it can only change how a sound result is cut into faces.
-fn merge_coplanar_result(r: TSolid) -> TSolid {
+pub(crate) fn merge_coplanar_result(r: TSolid) -> TSolid {
     if r.shells.len() != 1 || r.faces().len() > MERGE_FACE_BUDGET {
         return r;
     }
@@ -8418,6 +8441,20 @@ fn successive_blind_bores_keep_every_floor() {
             "bore at {off:?}: volume {vol} vs exact {want} (a lost floor is a silent wrong solid)"
         );
     }
+}
+
+/// A blind round pocket that stays well inside a disc leaves the disc's outer wall ONE face, not two. The pocket
+/// floor's plane and the tool wall's band edge used to break the wall at the floor height though neither reaches it
+/// (FreeCAD keeps one wall: 5 faces; the kernel gave 6). Exact volume and the face count are both checked.
+#[test]
+fn blind_round_pocket_inside_a_disc_keeps_one_outer_wall() {
+    let disc = build::cylinder_solid([0.0, 0.0, 5.0], 40.0, 10.0, [0.0, 0.0, 1.0]);
+    let tool = build::cylinder_solid([28.0, 0.0, 8.0], 8.0, 4.0, [0.0, 0.0, 1.0]);
+    let r = boolean("subtract", &disc, &tool).expect("a pocket inside a disc builds");
+    let want = std::f64::consts::PI * (1600.0 * 10.0 - 64.0 * 4.0);
+    let vol = build::solid_volume(&r);
+    assert!((vol - want).abs() <= 1e-9 * want, "volume {vol} vs {want}");
+    assert_eq!(r.faces().len(), 5, "top, bottom, one outer wall, floor, pocket wall");
 }
 
 /// SPIKE fixture 2026-09-28: the coplanar chamfer the boolean gets WRONG, and

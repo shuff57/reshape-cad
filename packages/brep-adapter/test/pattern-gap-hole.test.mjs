@@ -43,10 +43,10 @@ test('a through hole into the middle copy of three builds, exact', () => {
   assert.ok(Math.abs(vol - (3 * 4000 - Math.PI * 9 * 10)) < 1e-6 * 12000, `${vol}`);
 });
 
-test('a blind hole before the pattern, then copied, builds in every copy (closed form)', () => {
-  const { refusals, vol } = build('const b = box(20, 20, 10)\nhole(b, { across: 6, deep: 4 })\nlinearPattern(b, { count: 3, step: 30 })');
-  assert.deepEqual(refusals, {});
-  assert.ok(Math.abs(vol - (3 * 4000 - 3 * Math.PI * 9 * 4)) < 1e-6 * 12000, `${vol}`);
+test('a blind hole before the pattern, then copied, is refused in a sentence (a hole pattern is never the whole-solid pattern)', () => {
+  const r = runScript('const b = box(20, 20, 10)\nhole(b, { across: 6, deep: 4 })\nlinearPattern(b, { count: 3, step: 30 })');
+  assert.equal(r.errors.length, 1);
+  assert.match(r.errors[0].message, /of a hole/);
 });
 
 test('a blind hole into any copy of three builds, exact (K-3: the lump is cut alone)', () => {

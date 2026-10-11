@@ -138,10 +138,11 @@ test('S1b OCCT and brep-rs agree on the soup washer', () => {
   assert.equal(mine.refusal ?? null, null, `brep-rs refused: ${mine.refusal}`);
   const ref = volumeOf(buildDoc(oc, WASHER, arc).shapes.get('e1'));
   close(mine.volume, ref, 'brep-rs vs OCCT on the washer');
-  // Face counts DIFFER legitimately (brep-rs splits the bore into two half
-  // cylinders, 8; OCCT keeps one, 7) and the gate's rule is a BOUND, not
-  // equality -- brep-parity-gate.mjs:181, `mine.faces > 2 * occtFaces + 4`.
-  assert.equal(mine.faces, 8, 'brep-rs splits the bore wall');
+  // The bore is ONE wall (a whole cylinder closing on its seam), as it is on
+  // OCCT and FreeCAD: 4 walls + 1 bore + 2 caps. It used to be two half
+  // cylinders (8); the gate's rule stays a BOUND, not equality --
+  // brep-parity-gate.mjs:181, `mine.faces > 2 * occtFaces + 4`.
+  assert.equal(mine.faces, 7, 'brep-rs keeps the bore wall as one face, as OCCT does');
   assert.ok(mine.faces <= 2 * 7 + 4, 'and stays inside the gate face bound');
 });
 

@@ -351,6 +351,12 @@ export function toScript(doc: ModelDoc, namedParams?: readonly ScriptParamRef[])
   const varOf = chainVars(doc);
   const byId = new Map(doc.features.map((f) => [f.id, f]));
   const v = (id: string) => varOf.get(id) ?? id;
+  /** Does a later feature name this one as its body (`target`, `into` or one of `targets`, the set the interpreter's
+   *  bodyInputOf reads)? A step emitted without a `const` has to answer no, or the saved text names a variable it never made. */
+  const namedLater = (id: string): boolean => doc.features.some((g) =>
+    ('target' in g && g.target === id)
+    || ('into' in g && g.into === id)
+    || ('targets' in g && Array.isArray(g.targets) && g.targets.includes(id)));
   const bindings = paramBindings(namedParams);
   // The authoritative "which slots exist in THIS doc, right now, and what
   // are they currently set to" -- generatedParams() (the same function the
@@ -585,7 +591,16 @@ export function toScript(doc: ModelDoc, namedParams?: readonly ScriptParamRef[])
       return;
     }
     if (f.kind === 'extrude') {
-      lines.push(`const ${f.id} = extrude(${v(f.target)}, ${numText(bindings, f.id, 'height', lit(f.height))})`);
+      // Direction options ride in a trailing { } object, written only when set so a plain pad keeps its text.
+      const o: string[] = [];
+      if (f.reversed) o.push('reversed: true');
+      if (f.midplane) o.push('midplane: true');
+      else if (f.length2 !== undefined && f.length2 > 0) o.push(`length2: ${lit(f.length2)}`);
+      if (f.taper) o.push(`taper: ${lit(f.taper)}`);
+      if (f.direction) o.push(`direction: [${f.direction.map((c) => lit(c)).join(', ')}]`);
+      if (f.direction && f.alongNormal === false) o.push('alongNormal: false');
+      const opts = o.length ? `, { ${o.join(', ')} }` : '';
+      lines.push(`const ${f.id} = extrude(${v(f.target)}, ${numText(bindings, f.id, 'height', lit(f.height))}${opts})`);
       return;
     }
     if (f.kind === 'revolve') {
@@ -593,11 +608,27 @@ export function toScript(doc: ModelDoc, namedParams?: readonly ScriptParamRef[])
       return;
     }
     if (f.kind === 'groove') {
-      lines.push(`groove(${v(f.target)}, ${v(f.into)}, ${numText(bindings, f.id, 'angle', lit(f.angle))})`);
+      // Named on the same rule as a pocket below: a groove is a cut too, and a later pocket, hole, round or join of the
+      // grooved part names it, so leaving it undeclared saved a script that named a variable it never made.
+      lines.push(`${namedLater(f.id) ? `const ${f.id} = ` : ''}groove(${v(f.target)}, ${v(f.into)}, ${numText(bindings, f.id, 'angle', lit(f.angle))})`);
       return;
     }
     if (f.kind === 'pocket') {
-      lines.push(`pocket(${v(f.target)}, ${v(f.into)}, ${numText(bindings, f.id, 'depth', lit(f.depth))})`);
+      // Named only when a later step works on the pocketed part (a round of its rim, another pocket cut into it, a join), so a
+      // script that never does keeps its text. Every way a later feature can name its body counts -- `into`, `targets` and
+      // `target`, the same set the interpreter's bodyInputOf reads -- or a pattern or mirror of a pocket, which chains each
+      // copy's pocket `into` the one before, is saved naming an undeclared pocket and cannot be reopened.
+      const used = namedLater(f.id);
+      const o: string[] = [];
+      if (f.through) o.push('through: true');
+      if (f.reversed) o.push('reversed: true');
+      if (f.midplane) o.push('midplane: true');
+      else if (f.length2 !== undefined && f.length2 > 0) o.push(`length2: ${lit(f.length2)}`);
+      if (f.taper) o.push(`taper: ${lit(f.taper)}`);
+      if (f.direction) o.push(`direction: [${f.direction.map((c) => lit(c)).join(', ')}]`);
+      if (f.direction && f.alongNormal === false) o.push('alongNormal: false');
+      const opts = o.length ? `, { ${o.join(', ')} }` : '';
+      lines.push(`${used ? `const ${f.id} = ` : ''}pocket(${v(f.target)}, ${v(f.into)}, ${numText(bindings, f.id, 'depth', lit(f.depth))}${opts})`);
       return;
     }
     if (f.kind === 'blend') {
@@ -719,7 +750,12 @@ export function toScript(doc: ModelDoc, namedParams?: readonly ScriptParamRef[])
       const edge = f.edge as Extract<TopoName, { cause: 'between' }>;
       const [a, b] = edge.of;
       const wordOf = (n: TopoName) => (n.cause === 'primitive' ? faceWord(n.part) : 'top');
-      const ref = `${v(f.target)}.edge('${wordOf(a)}', '${wordOf(b)}')`;
+      // A pocket wall (the face the pocket swept from side n of its sketch) is written back as .wall(sketch, n), and the plate
+      // face beside it, carried through the pocket, as its word.
+      const wallOf = (n: TopoName) => (n.cause === 'swept' ? `${v(f.target)}.wall(${v(n.from)}, ${n.edge + 1})` : null);
+      const plateWord = (n: TopoName) => (n.cause === 'carried' && n.of.cause === 'primitive' ? faceWord(n.of.part) : wordOf(n));
+      const face = (n: TopoName) => wallOf(n) ?? `'${plateWord(n)}'`;
+      const ref = `${v(f.target)}.edge(${face(a)}, ${face(b)})`;
       const fn = f.style === 'chamfer' ? 'chamfer' : 'fillet';
       lines.push(`const ${f.id} = ${fn}(${ref}, ${numText(bindings, f.id, 'size', lit(f.size))})`);
       return;

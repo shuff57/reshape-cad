@@ -321,3 +321,26 @@ fn a_profile_that_would_not_close_or_add_up_is_not_built() {
     ];
     assert!(build_solid([0.0, 0.0], &cw).is_none());
 }
+
+// Close groove: a full-turn ring whose outer face is coincident with the cylinder wall.
+fn ring(r0: f64, r1: f64, z0: f64, z1: f64) -> TSolid {
+    build::revolve_profile(&[[r0, z0], [r1, z0], [r1, z1], [r0, z1]], [0.0, 0.0, 1.0], [1.0, 0.0, 0.0], 360.0)
+        .expect("ring tool builds")
+        .0
+}
+
+#[test]
+fn a_ring_groove_coincident_with_the_wall_is_exact_and_closed() {
+    let base = build::cylinder_solid([0.0, 0.0, 15.0], 20.0, 30.0, [0.0, 0.0, 1.0]);
+    // (ring r0, r1, z0, z1, faces): middle groove, groove to the top rim, ring wider than the wall
+    let cases = [(18.0, 20.0, 10.0, 15.0, 7), (17.0, 20.0, 25.0, 30.0, 5), (18.0, 22.0, 10.0, 16.0, 7), (5.0, 20.0, 12.0, 14.0, 7)];
+    for (r0, r1, z0, z1, faces) in cases {
+        let tool = ring(r0, r1, z0, z1);
+        let cut = ops::boolean("subtract", &base, &tool).unwrap_or_else(|| panic!("groove {r0} {r1} {z0} {z1} cuts"));
+        let want = PI * 400.0 * 30.0 - PI * (400.0 - r0 * r0) * (z1 - z0);
+        let got = build::solid_volume(&cut);
+        assert!((got - want).abs() < 1e-9 * want, "volume {got} vs {want}");
+        assert_eq!(cut.faces().len(), faces);
+        assert!(ops::mesh_is_closed_coarse(&cut), "mesh closed");
+    }
+}

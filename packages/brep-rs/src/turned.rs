@@ -519,6 +519,22 @@ pub fn round_corner(r: &Read, fa: &[usize], fb: &[usize], size: f64, round: bool
 /// it may overshoot the part). The bore may run through or stop inside, from either end, and may
 /// not reach a rounded or chamfered rim.
 pub fn bore(r: &Read, b: f64, lo: f64, hi: f64) -> Result<Vec<Seg>, Why> {
+    bore_recessed(r, b, lo, hi, None)
+}
+
+/// A recess at the mouth of a bore, measured from the part's own top face: a counterbore (flat
+/// shoulder) or a countersink (a cone narrowing from the mouth radius to the bore).
+#[derive(Clone, Copy, Debug)]
+pub struct Recess {
+    pub r_mouth: f64,
+    pub depth: f64,
+    pub cone: bool,
+}
+
+/// `bore`, with an optional counterbore or countersink at the top end. The profile is edited
+/// exactly (the recess is the extra step or cone of the same revolved curve); anything it cannot
+/// place cleanly is an Err and the caller keeps its own refusal.
+pub fn bore_recessed(r: &Read, b: f64, lo: f64, hi: f64, recess: Option<Recess>) -> Result<Vec<Seg>, Why> {
     let n = r.lp.len();
     let k = r.lp.iter().position(|s| s.is_axis() && s.face.is_none());
     let Some(k) = k else {
@@ -556,6 +572,21 @@ pub fn bore(r: &Read, b: f64, lo: f64, hi: f64) -> Result<Vec<Seg>, Why> {
     };
     let need_top = !matches!(mode, Mode::Bottom(_));
     let need_bot = !matches!(mode, Mode::Top(_));
+    if let Some(rc) = &recess {
+        if !need_top {
+            return other("the recess would not start in an end the hole opens through");
+        }
+        let floor = match mode {
+            Mode::Top(f) => f,
+            _ => ze,
+        };
+        if !(rc.r_mouth > b + 1e-9) || !(rc.depth > 1e-9) || !(zs - rc.depth > floor + 1e-7) {
+            return other("the recess is not wider than the hole, or is deeper than the hole");
+        }
+        if rc.r_mouth > r_top - 1e-6 {
+            return other("the recess is wider than the flat of the end it starts in");
+        }
+    }
     if (need_top && b > r_top - 1e-6) || (need_bot && b > r_bot - 1e-6) {
         return other("the hole is wider than the flat of the end it starts in, so it would reach a rounded or chamfered rim");
     }
@@ -579,18 +610,35 @@ pub fn bore(r: &Read, b: f64, lo: f64, hi: f64) -> Result<Vec<Seg>, Why> {
         if rho_min < b + 1e-6 && z_hi > zlo + 1e-9 && z_lo < zhi - 1e-9 {
             return other("the part has something else in the way of the hole");
         }
+        if let Some(rc) = &recess {
+            if rho_min < rc.r_mouth + 1e-6 && z_hi > zs - rc.depth - 1e-9 && z_lo < zs - 1e-9 {
+                return other("the part has something else in the way of the recess");
+            }
+        }
     }
     let mut out: Vec<Seg> = Vec::new();
     for (i, s) in r.lp.iter().enumerate() {
         if i == pi {
             if need_top {
                 let mut t = s.clone();
-                t.k = Kind::Line { a: *pa, b: [b, zs] };
+                let mouth = recess.map_or(b, |rc| rc.r_mouth);
+                t.k = Kind::Line { a: *pa, b: [mouth, zs] };
                 out.push(t);
+                let mut from = [b, zs];
+                if let Some(rc) = &recess {
+                    let zr = zs - rc.depth;
+                    if rc.cone {
+                        out.push(Seg::line([mouth, zs], [b, zr]));
+                    } else {
+                        out.push(Seg::line([mouth, zs], [mouth, zr]));
+                        out.push(Seg::line([mouth, zr], [b, zr]));
+                    }
+                    from = [b, zr];
+                }
                 match mode {
-                    Mode::Through => out.push(Seg::line([b, zs], [b, ze])),
+                    Mode::Through => out.push(Seg::line(from, [b, ze])),
                     Mode::Top(f) => {
-                        out.push(Seg::line([b, zs], [b, f]));
+                        out.push(Seg::line(from, [b, f]));
                         out.push(Seg::line([b, f], [0.0, f]));
                         out.push(Seg::line([0.0, f], [0.0, ze]));
                     }
@@ -618,7 +666,11 @@ pub fn bore(r: &Read, b: f64, lo: f64, hi: f64) -> Result<Vec<Seg>, Why> {
             out.push(s.clone());
         }
     }
-    let want = volume(&r.lp) - PI * b * b * (zhi - zlo);
+    let mut want = volume(&r.lp) - PI * b * b * (zhi - zlo);
+    if let Some(rc) = &recess {
+        let (rm, d) = (rc.r_mouth, rc.depth);
+        want -= if rc.cone { PI * d / 3.0 * (rm * rm + rm * b + b * b) - PI * b * b * d } else { PI * (rm * rm - b * b) * d };
+    }
     if (volume(&out) - want).abs() > 1e-8 * want.abs().max(1.0) {
         return other("the bored profile did not add up");
     }

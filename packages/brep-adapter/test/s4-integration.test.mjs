@@ -2,6 +2,7 @@
 // families (wrong-solid-sweep-s4.mjs) and the standing sweep found in the MERGED build. Each test failed before its fix.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { runScript } from '@shuff57/reshape-script/reshape-script';
 import { mine, brep, assertWatertight, assertOcct } from './s4i-harness.mjs';
 
 const PI = Math.PI;
@@ -78,8 +79,11 @@ test('overlapping open cups: cut and join are exact or refused', () => {
 
 // idx 3987 seed 1: the mirrored overlapping pattern of a drilled cylinder meshed open at chords 0.15 to 0.3 (closed at 0.05 and 0.5),
 // so the pattern fold's own check at those two missed it. mesh_solid now retries an open mesh at nine finer chords.
-test('a mirrored overlapping pattern of drilled cylinders meshes closed at every chord', () => {
-  const m = mine("let v = cylinder(18.27, 14.36, { at: [0, 0, 0] })\nhole(v, { across: 3.15, at: [3.61, 1.87], deep: 2.6 })\nrepeat(v, { count: 3, step: [11.15, 1.43, 0] })\nv = mirror(v, 'left-right')");
+test('a mirrored drilled cylinder meshes closed at every chord (its overlapping repeat is now refused: a hole pattern is never the whole-solid pattern)', () => {
+  const refused = runScript("let v = cylinder(18.27, 14.36, { at: [0, 0, 0] })\nhole(v, { across: 3.15, at: [3.61, 1.87], deep: 2.6 })\nrepeat(v, { count: 3, step: [11.15, 1.43, 0] })");
+  assert.equal(refused.errors.length, 1);
+  assert.match(refused.errors[0].message, /of a hole/);
+  const m = mine("let v = cylinder(18.27, 14.36, { at: [0, 0, 0] })\nhole(v, { across: 3.15, at: [3.61, 1.87], deep: 2.6 })\nv = mirror(v, 'left-right')");
   assert.deepEqual(m.refusals, {});
   // directed edges: every edge must be walked once each way (touching lumps and all)
   const openEdges = (defl) => {

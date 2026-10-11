@@ -946,12 +946,22 @@ pub(crate) fn make_face(
 }
 
 
-/// A cylinder centred on `center`, axis +Z, radius `radius`, height `height`.
-pub fn cylinder_solid(center: Vec3, radius: f64, height: f64, axis: Vec3) -> TSolid {
-    let axis = crate::math::normalize(axis);
+/// The parts of a whole cylinder's wall: the lateral face (its one seam closing
+/// on itself) and the two rim circles it shares with whatever caps sit on it.
+pub(crate) struct CylinderParts {
+    pub lateral: TFace,
+    pub seam_lo: TEdge,
+    pub seam_hi: TEdge,
+    pub v_seam_lo: topo::VertexRef,
+    pub v_seam_hi: topo::VertexRef,
+}
+
+/// One whole cylinder wall of `radius` and `height`, its low rim centred on
+/// `zlo`, axis `axis`. Shared by `cylinder_solid` and by an extruded profile
+/// that holds a whole circle, so both give the same one-face wall.
+pub(crate) fn cylinder_parts(zlo: Vec3, axis: Vec3, radius: f64, height: f64) -> CylinderParts {
     let (e1, e2, z) = geom::frame(axis);
-    let zlo = add(center, scale(z, -height / 2.0));
-    let zhi = add(center, scale(z, height / 2.0));
+    let zhi = add(zlo, scale(z, height));
 
     // One vertical seam vertex on each rim, at angle 0 (the e1 direction).
     let v_seam_lo = topo::vertex(add(zlo, scale(e1, radius)));
@@ -962,18 +972,8 @@ pub fn cylinder_solid(center: Vec3, radius: f64, height: f64, axis: Vec3) -> TSo
         radius,
         normal: z,
     };
-    let seam_lo = topo::edge(
-        v_seam_lo.clone(),
-        v_seam_lo.clone(),
-        true,
-        rim(zlo),
-    );
-    let seam_hi = topo::edge(
-        v_seam_hi.clone(),
-        v_seam_hi.clone(),
-        true,
-        rim(zhi),
-    );
+    let seam_lo = topo::edge(v_seam_lo.clone(), v_seam_lo.clone(), true, rim(zlo));
+    let seam_hi = topo::edge(v_seam_hi.clone(), v_seam_hi.clone(), true, rim(zhi));
 
     // Lateral face: seam edge up, then the top rim backwards. u = angle
     // (0 at e1, increasing toward e2), v = height from zlo to zhi.
@@ -1007,6 +1007,15 @@ pub fn cylinder_solid(center: Vec3, radius: f64, height: f64, axis: Vec3) -> TSo
             },
         ],
     );
+    CylinderParts { lateral, seam_lo, seam_hi, v_seam_lo, v_seam_hi }
+}
+
+/// A cylinder centred on `center`, axis +Z, radius `radius`, height `height`.
+pub fn cylinder_solid(center: Vec3, radius: f64, height: f64, axis: Vec3) -> TSolid {
+    let axis = crate::math::normalize(axis);
+    let (_, _, z) = geom::frame(axis);
+    let zlo = add(center, scale(z, -height / 2.0));
+    let CylinderParts { lateral, seam_lo, seam_hi, v_seam_lo, v_seam_hi } = cylinder_parts(zlo, axis, radius, height);
 
     // The rim circles are SHARED handles: the wall's seam edges ARE the
     // caps' boundary circles, so a `between` name (cap meets wall) resolves
@@ -1974,6 +1983,39 @@ pub fn extrude_profile_loops(
     v_axis: Vec3,
     sweep: Vec3,
 ) -> Result<TSolid, String> {
+    extrude_profile_loops_with(loops, origin, u_axis, v_axis, sweep, false)
+}
+
+/// The centre and radius of a ring that is one whole circle written as two arcs
+/// of one centre and radius turning the same way (a circle row's two halves).
+pub fn whole_circle_ring(ring: &[ProfileSeg]) -> Option<([f64; 2], f64)> {
+    let [ProfileSeg::Arc { centre: c0, radius: r0, sweep: s0, .. }, ProfileSeg::Arc { centre: c1, radius: r1, sweep: s1, .. }] = ring else {
+        return None;
+    };
+    let tol = 1e-9 * r0.max(1.0);
+    let same = (c0[0] - c1[0]).abs() <= tol && (c0[1] - c1[1]).abs() <= tol && (r0 - r1).abs() <= tol;
+    let turn = s0.abs() + s1.abs();
+    if same && s0 * s1 > 0.0 && (turn - 2.0 * std::f64::consts::PI).abs() <= 1e-9 && *r0 > 0.0 {
+        Some((*c0, *r0))
+    } else {
+        None
+    }
+}
+
+/// `extrude_profile_loops`, optionally giving a ring that is a whole circle ONE
+/// wall face with its seam closing on itself (the way a circle sketch's
+/// cylinder is built) instead of two half-cylinder faces. With `merge_circles`
+/// the walls are one per segment of every ring EXCEPT that a whole-circle ring
+/// contributes one, so a caller indexing walls must count with
+/// `extruded_wall_count`.
+pub fn extrude_profile_loops_with(
+    loops: &[Vec<ProfileSeg>],
+    origin: Vec3,
+    u_axis: Vec3,
+    v_axis: Vec3,
+    sweep: Vec3,
+    merge_circles: bool,
+) -> Result<TSolid, String> {
     let no_outline = || "an outline needs at least one closed loop".to_string();
     // A scale for the emit gate: the sketch's own extent in the plane, floored
     // at 1.0 so a unit sketch never reads as degenerate. ONE scale for all the
@@ -2154,7 +2196,35 @@ pub fn extrude_profile_loops(
     let mut base_wires: Vec<Vec<topo::EdgeUse<Curve3>>> = Vec::with_capacity(rings.len());
     let mut top_wires: Vec<Vec<topo::EdgeUse<Curve3>>> = Vec::with_capacity(rings.len());
 
-    for ring in &rings {
+    for (ri, ring) in rings.iter().enumerate() {
+        if merge_circles {
+            if let Some((c, r)) = whole_circle_ring(ring) {
+                // One cylinder wall closing on its own seam, rims shared with
+                // the caps. A hole's wall is the same face turned to face the
+                // axis, and its rim runs against the outline's on both caps.
+                let outer = ri == 0;
+                let up = dot(sweep, frame_normal) >= 0.0;
+                let c_w = at(c);
+                let zlo = if up { c_w } else { add(c_w, sweep) };
+                let parts = cylinder_parts(zlo, frame_normal, r, height);
+                let wall = if outer {
+                    parts.lateral.clone()
+                } else {
+                    crate::ops::flip_face(&parts.lateral)
+                        .ok_or_else(|| "a round hole's wall could not be turned to face its axis".to_string())?
+                };
+                faces.push(wall);
+                let (e_b, e_t) = if up {
+                    (parts.seam_lo.clone(), parts.seam_hi.clone())
+                } else {
+                    (parts.seam_hi.clone(), parts.seam_lo.clone())
+                };
+                let zero = topo::Pcurve { start: [0.0, 0.0], end: [0.0, 0.0], mid: [0.0, 0.0] };
+                base_wires.push(vec![topo::EdgeUse { edge: e_b, forward: outer, pcurve: zero.clone() }]);
+                top_wires.push(vec![topo::EdgeUse { edge: e_t, forward: outer, pcurve: zero }]);
+                continue;
+            }
+        }
         let n = ring.len();
         // One 3D curve per base and top segment. These stay in world terms and
         // are shared with the caps, so nothing here knows about hole frames.
@@ -2302,6 +2372,12 @@ pub fn extrude_profile_loops(
 
     let shell = Rc::new(RefCell::new(Shell { faces }));
     Ok(Solid { shells: vec![shell] })
+}
+
+/// The walls `extrude_profile_loops_with(.., true)` pushes ahead of the two
+/// caps: one per segment, a whole-circle ring counting as one.
+pub fn extruded_wall_count(loops: &[Vec<ProfileSeg>]) -> usize {
+    loops.iter().map(|l| if whole_circle_ring(l).is_some() { 1 } else { l.len() }).sum()
 }
 
 /// Extrude one closed loop of straight and circular segments, given in the
@@ -2812,7 +2888,9 @@ fn revolve_profile_partial(
                     topo::vertex(add(center, scale(x_axis, radius))),
                     topo::vertex(add(
                         center,
-                        scale(add(scale(x_axis, sweep.cos()), scale(e2, sweep.sin())), radius),
+                        // `x_axis` turned by `sweep` about `axis` (right-handed): its perpendicular is axis x x_axis,
+                        // which is e2 only for an arc that starts at e1.
+                        scale(add(scale(x_axis, sweep.cos()), scale(cross(axis, x_axis), sweep.sin())), radius),
                     )),
                     true,
                     // The arc's own frame is fixed to (e1, e2) about `axis` --
@@ -3863,8 +3941,19 @@ fn merge_two_faces(f: &TFace, g: &TFace) -> Option<TFace> {
     // outer loop counter-clockwise about the outward normal, holes clockwise
     let area = |lp: &Vec<usize>| -> f64 {
         let mut acc = [0.0; 3];
+        // A loop of arcs (two arcs closing a lens) has no area from its chords, so each edge is
+        // walked along its own curve, in the direction the loop uses it.
         for &k in lp {
-            acc = add(acc, cross(segs[k].2, segs[k].3));
+            let c = segs[k].0.borrow().curve.clone();
+            let n = if matches!(c, Curve::Segment { .. }) { 1 } else { 8 };
+            let at = |i: usize| {
+                let t = i as f64 / n as f64;
+                let t = if segs[k].1 { t } else { 1.0 - t };
+                if i == 0 { segs[k].2 } else if i == n { segs[k].3 } else { c.point_at(t) }
+            };
+            for i in 0..n {
+                acc = add(acc, cross(at(i), at(i + 1)));
+            }
         }
         crate::math::dot(acc, n_out) / 2.0
     };

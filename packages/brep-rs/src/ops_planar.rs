@@ -1278,6 +1278,19 @@ fn split_face(f: &PFace, cuts: &[E2], nodes_at: &[P2]) -> Result<Vec<Region>, ()
         let mut ts = splits[i].clone();
         ts.sort_by(|x, y| x.partial_cmp(y).unwrap());
         let l = e.length();
+        // A whole circle starts at an arbitrary point (a wall's seam). When nothing else is noded there, that start is not
+        // a vertex: the circle is cut only at the real nodes, and the piece that runs across the start stays one edge.
+        if e.is_full() {
+            let tol = EPS / l.max(EPS);
+            let real = |t: f64| t > tol && t < 1.0 - tol;
+            let inner: Vec<f64> = ts.iter().copied().filter(|&t| real(t)).collect();
+            let start_is_node = splits[i].iter().skip(2).any(|&t| !real(t));
+            if !inner.is_empty() && !start_is_node {
+                ts = inner;
+                let first = ts[0];
+                ts.push(first + 1.0);
+            }
+        }
         let mut prev = ts[0];
         let last = ts.len() - 1;
         for (k, &t) in ts.iter().enumerate().skip(1) {
@@ -1730,11 +1743,9 @@ fn wall_grid(f: &CFace, other: &[AFace], skip: &dyn Fn(usize) -> bool, wall_is_a
     us.dedup_by(|a, b| (*a - *b).abs() < tol);
     vs.sort_by(|a, b| a.partial_cmp(b).unwrap());
     vs.dedup_by(|a, b| (*a - *b).abs() < EPS);
-    // A circle on a plane face always has a node at the wall's seam, so a cut
-    // whole-turn wall splits there as well: no cell crosses it.
-    if f.span >= TAU - 1e-9 && !us.is_empty() && !us.iter().any(|&x| (x - f.u0).abs() < tol) {
-        us.insert(0, f.u0);
-    }
+    // A cut whole-turn wall has NO node at its seam unless a cut lies there: the cell that runs across the seam is one
+    // cell (the last, which ends where the first begins one turn on), so a stretch of the wall that survives across the
+    // seam stays one face. A single cut line leaves one cell, the whole turn, seamed at that line.
     Ok(Grid { us, vs })
 }
 
@@ -2554,7 +2565,7 @@ fn pieces(
                     arcs.push((f.u0, f.u0 + f.span));
                 } else if f.span >= TAU - 1e-9 {
                     for k in 0..g.us.len() {
-                        arcs.push((g.us[k], if k + 1 < g.us.len() { g.us[k + 1] } else { f.u0 + TAU }));
+                        arcs.push((g.us[k], if k + 1 < g.us.len() { g.us[k + 1] } else { g.us[0] + TAU }));
                     }
                 } else {
                     let mut pts = vec![f.u0];
@@ -4134,6 +4145,29 @@ mod rev_tests {
             assert!((v - want).abs() < slack * want.abs() + 10.0 * defl, "{label}: {op} mesh volume {v} vs {want} at {defl}");
         }
         r
+    }
+
+    /// A row of overlapping through holes (the slot a linear pattern of pockets gives): each hole is cut after the
+    /// one before. The surviving stretch of a hole wall that runs across the wall's seam is ONE face, so n holes
+    /// leave 6 + 2 (n - 1) faces: the plate's six, the two end arcs and two arcs between each pair of neighbours.
+    #[test]
+    fn row_of_overlapping_holes_is_a_slot() {
+        let (r, d, h) = (3.0f64, 4.0f64, 10.0f64);
+        let lens = 2.0 * r * r * (d / (2.0 * r)).acos() - 0.5 * d * (4.0 * r * r - d * d).sqrt();
+        let mut part = bx([60.0, 20.0, h], [30.0, 10.0, h / 2.0]);
+        for n in 1..=4usize {
+            let tool = cyl([30.0 + d * (n as f64 - 1.0), 10.0, h / 2.0], r, h + 2.0);
+            part = build_op("subtract", &part, &tool).unwrap_or_else(|| panic!("hole {n} refused"));
+            let area = n as f64 * PI * r * r - (n as f64 - 1.0) * lens;
+            let want = 60.0 * 20.0 * h - area * h;
+            assert!((vol(&part) - want).abs() <= 1e-9 * want, "hole {n}: volume {} vs {want}", vol(&part));
+            assert_eq!(part.faces().len(), 6 + 2 * (n - 1) + usize::from(n == 1), "hole {n}: face count");
+            for defl in [0.05, 0.5] {
+                let (closed, v) = mesh_volume(&part, defl);
+                assert!(closed, "hole {n}: mesh not watertight at {defl}");
+                assert!((v - want).abs() < 0.03 * want, "hole {n}: mesh volume {v} vs {want}");
+            }
+        }
     }
 
     #[test]

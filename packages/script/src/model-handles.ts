@@ -326,9 +326,14 @@ function extrudeHandles(f: Extract<Feature, { kind: 'extrude' }>, doc?: ModelDoc
   const closed = sk.shape === 'circle' ? sk.points.length === 2 : sk.points.length >= 3;
   if (!closed) return [];
 
-  const { u, v, origin: o, w } = placementOf(sk);
+  const { u, v, origin: o, w: w0 } = placementOf(sk);
   const [cu, cv] = sketchBBoxCentre(sk.points);
   // The plane's origin places the sketch; w * height carries the cap off it.
+  // Reversed pulls the other way; a symmetric pad's cap sits half the length
+  // out and moves two for every one the pointer does.
+  const sgn = f.reversed ? -1 : 1;
+  const w: [number, number, number] = [w0[0] * sgn, w0[1] * sgn, w0[2] * sgn];
+  const reach = f.midplane ? f.height / 2 : f.height;
 
   return [{
     kind: 'size',
@@ -338,15 +343,15 @@ function extrudeHandles(f: Extract<Feature, { kind: 'extrude' }>, doc?: ModelDoc
     // parameter, not two that have to be kept in step.
     param: `${f.id}_height`,
     origin: [
-      u[0] * cu + v[0] * cv + o[0] + w[0] * f.height,
-      u[1] * cu + v[1] * cv + o[1] + w[1] * f.height,
-      u[2] * cu + v[2] * cv + o[2] + w[2] * f.height,
+      u[0] * cu + v[0] * cv + o[0] + w[0] * reach,
+      u[1] * cu + v[1] * cv + o[1] + w[1] * reach,
+      u[2] * cu + v[2] * cv + o[2] + w[2] * reach,
     ],
     axis: [w[0], w[1], w[2]],
     // 1, not 2: the cap moves the WHOLE height, unlike a centred box face
-    // which moves half its own size. No symmetric-extrude concept exists in
-    // ModelDoc or in either engine -- see SPEC-extrude-drag-handle.md §4.
-    scale: 1,
+    // which moves half its own size. A symmetric pad IS centred on its
+    // sketch plane, so its cap moves half the length per unit of height.
+    scale: f.midplane ? 2 : 1,
     label: 'height',
   }];
 }
@@ -387,11 +392,15 @@ function pocketHandles(f: Extract<Feature, { kind: 'pocket' }>, doc?: ModelDoc):
   // nothing. extrude has no equivalent check because it has no `into`.
   if (!doc.features.some((x) => x.id === f.into)) return [];
 
+  // Through all has no depth to drag: the cut already clears the part.
+  if (f.through) return [];
   const { u, v, origin: o, w } = placementOf(sk);
-  const cut: [number, number, number] = [-w[0], -w[1], -w[2]];
+  const sgn = f.reversed ? -1 : 1;
+  const cut: [number, number, number] = [-w[0] * sgn, -w[1] * sgn, -w[2] * sgn];
   const [cu, cv] = sketchBBoxCentre(sk.points);
   // The plane's origin is the mouth; cut * depth carries the floor off it,
-  // into the material.
+  // into the material (half the depth for a symmetric pocket).
+  const reach = f.midplane ? f.depth / 2 : f.depth;
 
   return [{
     kind: 'size',
@@ -399,20 +408,18 @@ function pocketHandles(f: Extract<Feature, { kind: 'pocket' }>, doc?: ModelDoc):
     // pname(id,'depth')) and applyParam() writes back (model-codegen.ts:360).
     param: `${f.id}_depth`,
     origin: [
-      u[0] * cu + v[0] * cv + o[0] + cut[0] * f.depth,
-      u[1] * cu + v[1] * cv + o[1] + cut[1] * f.depth,
-      u[2] * cu + v[2] * cv + o[2] + cut[2] * f.depth,
+      u[0] * cu + v[0] * cv + o[0] + cut[0] * reach,
+      u[1] * cu + v[1] * cv + o[1] + cut[1] * reach,
+      u[2] * cu + v[2] * cv + o[2] + cut[2] * reach,
     ],
     axis: [cut[0], cut[1], cut[2]],
-    // 1, not 2: the floor moves the WHOLE depth. Same reasoning as
-    // extrudeHandles() -- a centred box face moves half its own size, which is
-    // why the box rows are 2.
-    scale: 1,
+    // 1, not 2: the floor moves the WHOLE depth; a symmetric pocket's floor
+    // moves half of it per unit of depth.
+    scale: f.midplane ? 2 : 1,
     // 'deep', not 'depth' -- generatedParams' caption for this slot is
     // `${label} deep` (model-codegen.ts:114), and a handle and a slider driving
-    // the SAME parameter must not use two different words. This codebase has
-    // already paid for that (the "Angled Corner"/"bevel"/"Bevel" split,
-    // model-types.ts:1174-1179). Note the SLOT is still 'depth'.
+    // the SAME parameter must not use two different words. Note the SLOT is
+    // still 'depth'.
     label: 'deep',
   }];
 }

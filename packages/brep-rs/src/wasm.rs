@@ -114,6 +114,12 @@ struct SketchFrame {
 /// Tolerance 1e-6 on unit length and on u.v, matching the script.
 fn frame_refusal(sk: &Value) -> Option<String> {
     let fr = sk.get("frame")?;
+    // A frame that is a number, a string, a list or true/false is not a plane at
+    // all: reading it would fall back to the world origin and axes, which is a
+    // guess, and moving it (sketch_shifted) has no origin to move.
+    if !fr.is_object() {
+        return Some("that sketch's frame is not a plane (an origin with two directions, u and v), so there is nowhere to lay the sketch".to_string());
+    }
     for key in ["origin", "u", "v"] {
         let label = key;
         let Some(raw) = fr.get(key) else { continue };
@@ -586,6 +592,33 @@ fn circle_of_value(sk: &Value) -> Option<([f64; 2], f64)> {
     Some((centre, radius))
 }
 
+/// The centre and radius of a loop that is one whole circle: a single arc of
+/// a full turn, or two arcs of one centre and radius whose sweeps total a turn.
+fn whole_circle(lp: &[build::ProfileSeg]) -> Option<([f64; 2], f64)> {
+    let tau = std::f64::consts::TAU;
+    let mut found: Option<([f64; 2], f64)> = None;
+    let mut turn = 0.0;
+    if lp.is_empty() || lp.len() > 2 {
+        return None;
+    }
+    for seg in lp {
+        let build::ProfileSeg::Arc { centre, radius, sweep, .. } = seg else {
+            return None;
+        };
+        match found {
+            None => found = Some((*centre, *radius)),
+            Some((c, r)) => {
+                let tol = 1e-9 * r.max(1.0);
+                if (c[0] - centre[0]).abs() > tol || (c[1] - centre[1]).abs() > tol || (r - radius).abs() > tol {
+                    return None;
+                }
+            }
+        }
+        turn += sweep.abs();
+    }
+    if (turn - tau).abs() <= 1e-9 { found } else { None }
+}
+
 /// What an `extrude_prism` produced, so `extrude` can still write its sweep
 /// history, and so `pocket` can see whether its tool is annular.
 enum PrismKind {
@@ -598,6 +631,107 @@ enum PrismKind {
         nloops: usize,
         roles: Vec<(String, usize)>,
     },
+    /// A solid whose faces carry no sweep history (a tapered round pad).
+    Plain,
+}
+
+/// A copy of the sketch moved `by` millimetres along its sweep axis (the `n * dir`
+/// direction extrude_prism sweeps along). A named plane moves its offset, a literal
+/// frame its origin. This is how a pad or pocket that starts BEHIND the sketch plane
+/// (symmetric, two sided) is built from the one forward sweep: the profile is
+/// re-seated and swept further, so no new kernel path is involved. `None` when the
+/// sketch or its frame is not an object (frame_refusal refuses that first), so a
+/// malformed frame is never moved by guessing and never panics the module.
+fn sketch_shifted(sk: &Value, by: f64) -> Option<Value> {
+    let mut out = sk.clone();
+    if by == 0.0 {
+        return Some(out);
+    }
+    let obj = out.as_object_mut()?;
+    if let Some(fr) = obj.get_mut("frame") {
+        let fr = fr.as_object_mut()?;
+        let u = fr.get("u").and_then(v3).unwrap_or([1.0, 0.0, 0.0]);
+        let v = fr.get("v").and_then(v3).unwrap_or([0.0, 1.0, 0.0]);
+        let n = crate::math::normalize(crate::math::cross(crate::math::normalize(u), crate::math::normalize(v)));
+        let o = fr.get("origin").and_then(v3).unwrap_or([0.0, 0.0, 0.0]);
+        let moved = add(o, scale(n, by));
+        fr.insert("origin".to_string(), json!([moved[0], moved[1], moved[2]]));
+    } else {
+        let plane = obj.get("plane").and_then(|p| p.as_str()).unwrap_or("xy").to_string();
+        let (_, _, _, dir) = plane_frame(&plane);
+        let off = obj.get("offset").and_then(|o| o.as_f64()).unwrap_or(0.0);
+        obj.insert("offset".to_string(), json!(off + dir * by));
+    }
+    Some(out)
+}
+
+/// The steepest taper a pad or pocket builds, in degrees either way. At 90 the
+/// walls lie flat in the sketch plane and tan() runs off to infinity (a 20 x 12
+/// outline 10 long came out ~1e17 wide); past 90 tan() wraps round, so 180 read
+/// as no taper at all and built a plain prism. Short of 90 by a tenth of a
+/// degree the wall still rises 1 in 573, which is as flat as a part gets.
+const TAPER_LIMIT_DEG: f64 = 89.9;
+
+/// A pad's or pocket's taper (degrees, positive grows outward), custom direction
+/// (world space) and whether its length is measured along the sketch normal, or
+/// the sentence for why they cannot be used. A taper must be a number within
+/// TAPER_LIMIT_DEG of 0; a direction must be three numbers, not all zero (the
+/// script's own contract: "[0, 0, 0] points nowhere"). An option that is present
+/// but unusable is refused, never read as absent, so it cannot build a plain
+/// prism in its place. A JSON null is read as absent.
+fn slant_options(f: &Value) -> Result<(f64, Option<Vec3>, bool), String> {
+    let taper = match f.get("taper") {
+        None | Some(Value::Null) => 0.0,
+        Some(t) => match t.as_f64() {
+            Some(d) if d.is_finite() && d.abs() <= TAPER_LIMIT_DEG => d,
+            Some(d) if d.is_finite() => {
+                return Err(format!(
+                    "a taper of {d} degrees cannot be built: a taper leans the walls by at most {TAPER_LIMIT_DEG} degrees either way (at 90 they would lie flat in the sketch plane)"
+                ))
+            }
+            _ => return Err("the taper is not a number of degrees".to_string()),
+        },
+    };
+    let dirv = match f.get("direction") {
+        None | Some(Value::Null) => None,
+        Some(d) => match v3(d) {
+            Some(d) if d.iter().all(|c| c.is_finite()) => {
+                if len(d) <= 1e-12 {
+                    return Err("the pull direction [0, 0, 0] points nowhere: give it at least one number that is not 0".to_string());
+                }
+                Some(d)
+            }
+            _ => return Err("the pull direction is not three numbers [x, y, z]".to_string()),
+        },
+    };
+    let along = f.get("alongNormal").and_then(|b| b.as_bool()).unwrap_or(true);
+    Ok((taper, dirv, along))
+}
+
+/// A custom direction that runs along the sweep axis `f` is no slant at all: it
+/// is the plain prism, swept the other way when it points against `f`. Returns
+/// the direction still to slant by (None when it is parallel) and whether the
+/// sweep flips. Same tolerance slanted_prism uses to call a direction slanted.
+fn split_parallel_direction(dirv: Option<Vec3>, f: Vec3) -> (Option<Vec3>, bool) {
+    match dirv {
+        Some(d) if len(d) > 1e-12 => {
+            let dd = scale(d, 1.0 / len(d));
+            if len(cross(dd, f)) > 1e-9 {
+                (Some(d), false)
+            } else {
+                (None, dot(dd, f) < 0.0)
+            }
+        }
+        other => (other, false),
+    }
+}
+
+/// The direction options a pad or pocket carries: (reversed, midplane, second length).
+fn direction_options(f: &Value) -> (bool, bool, f64) {
+    let flag = |k: &str| f.get(k).and_then(|b| b.as_bool()).unwrap_or(false);
+    let l2 = f.get("length2").and_then(|d| d.as_f64()).unwrap_or(0.0);
+    let mid = flag("midplane");
+    (flag("reversed"), mid, if mid || !(l2 > 0.0) { 0.0 } else { l2 })
 }
 
 /// The prism of a sketch swept along the plane normal by `height * dir` -- the
@@ -633,8 +767,25 @@ fn extrude_prism(sk: &Value, _plane: &str, height: f64) -> Option<(TSolid, Prism
     let (loops, roles) = extruded_profile(sk)?;
     // One wall per segment of EVERY loop, then the two caps -- the order
     // extrude_profile_loops pushes them in (build.rs:2009 walls, :2152 caps).
-    let nseg: usize = loops.iter().map(|l| l.len()).sum();
-    let solid = match build::extrude_profile_loops(&loops, origin, u_axis, v_axis, scale(n, height * dir)) {
+    // A loop that is one whole circle (a circle row's two half arcs) is built
+    // as one wall, the way a circle sketch is, so it counts once and keeps
+    // only its first segment's role.
+    let nseg: usize = build::extruded_wall_count(&loops);
+    let roles: Vec<(String, usize)> = {
+        let mut kept = Vec::with_capacity(nseg);
+        let mut at = 0usize;
+        for lp in &loops {
+            let take = if build::whole_circle_ring(lp).is_some() { 1 } else { lp.len() };
+            if let Some(r) = roles.get(at) {
+                for k in 0..take {
+                    kept.push(roles.get(at + k).cloned().unwrap_or_else(|| r.clone()));
+                }
+            }
+            at += lp.len();
+        }
+        kept
+    };
+    let solid = match build::extrude_profile_loops_with(&loops, origin, u_axis, v_axis, scale(n, height * dir), true) {
         Ok(s) => s,
         Err(e) => {
             // The build layer's §8.2 backstop says what is wrong with the
@@ -648,6 +799,203 @@ fn extrude_prism(sk: &Value, _plane: &str, height: f64) -> Option<(TSolid, Prism
     Some((solid, PrismKind::Outline { nseg, nloops: loops.len(), roles }))
 }
 
+
+/// The mitre offset of a closed straight-sided outline by `d` (positive grows it
+/// outward, negative shrinks it), or the plain reason it cannot be offset that far.
+fn offset_outline(pts: &[[f64; 2]], d: f64) -> Result<Vec<[f64; 2]>, String> {
+    let n = pts.len();
+    let area2: f64 = (0..n).map(|i| {
+        let (p, q) = (pts[i], pts[(i + 1) % n]);
+        p[0] * q[1] - q[0] * p[1]
+    }).sum();
+    if area2.abs() < 1e-12 {
+        return Err("the outline has no area".to_string());
+    }
+    let ccw = area2 > 0.0;
+    // Outward unit normal of each edge.
+    let mut nrm: Vec<[f64; 2]> = Vec::with_capacity(n);
+    for i in 0..n {
+        let (p, q) = (pts[i], pts[(i + 1) % n]);
+        let (dx, dy) = (q[0] - p[0], q[1] - p[1]);
+        let l = (dx * dx + dy * dy).sqrt();
+        if !(l > 1e-12) {
+            return Err("the outline has an edge of length 0".to_string());
+        }
+        nrm.push(if ccw { [dy / l, -dx / l] } else { [-dy / l, dx / l] });
+    }
+    let too_steep = || "the taper is too steep: the outline would fold over itself or close up before the length ends.".to_string();
+    let mut out = Vec::with_capacity(n);
+    for i in 0..n {
+        let a = nrm[(i + n - 1) % n];
+        let b = nrm[i];
+        let k = 1.0 + a[0] * b[0] + a[1] * b[1];
+        if k < 1e-6 {
+            return Err(too_steep());
+        }
+        out.push([pts[i][0] + d * (a[0] + b[0]) / k, pts[i][1] + d * (a[1] + b[1]) / k]);
+    }
+    // Same turning, edges still pointing the way they did, and no edge crossing another.
+    let area2_new: f64 = (0..n).map(|i| {
+        let (p, q) = (out[i], out[(i + 1) % n]);
+        p[0] * q[1] - q[0] * p[1]
+    }).sum();
+    if area2_new * area2 <= 0.0 {
+        return Err(too_steep());
+    }
+    for i in 0..n {
+        let j = (i + 1) % n;
+        let old = [pts[j][0] - pts[i][0], pts[j][1] - pts[i][1]];
+        let new = [out[j][0] - out[i][0], out[j][1] - out[i][1]];
+        if old[0] * new[0] + old[1] * new[1] <= 0.0 {
+            return Err(too_steep());
+        }
+    }
+    let cross2 = |o: [f64; 2], a: [f64; 2], b: [f64; 2]| (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
+    for i in 0..n {
+        for j in (i + 1)..n {
+            if j == i + 1 || (i == 0 && j == n - 1) {
+                continue;
+            }
+            let (a, b, c, e) = (out[i], out[(i + 1) % n], out[j], out[(j + 1) % n]);
+            if cross2(a, b, c) * cross2(a, b, e) < 0.0 && cross2(c, e, a) * cross2(c, e, b) < 0.0 {
+                return Err(too_steep());
+            }
+        }
+    }
+    Ok(out)
+}
+
+/// A pad / pocket tool that is not the plain right prism: tapered (every wall
+/// leans by `taper_deg`, positive growing outward as the length goes on, as
+/// FreeCAD's Pad does) or pulled along a custom `dirv` (the sides are
+/// parallelograms). `t` is the signed sweep along `n * dir` exactly as
+/// `extrude_prism` takes it; `back` is how far behind the sketch plane the
+/// profile starts (Symmetric / Two sides). Only a straight-sided outline, or a
+/// whole circle with a taper alone, can be built; everything else is refused in a
+/// sentence rather than built approximately.
+fn slanted_prism(
+    sk: &Value,
+    t: f64,
+    back: f64,
+    taper_deg: f64,
+    dirv: Option<Vec3>,
+    along_normal: bool,
+) -> Option<(TSolid, PrismKind)> {
+    let refuse = |why: &str| -> Option<(TSolid, PrismKind)> {
+        LAST_PRISM_REFUSAL.with(|lr| *lr.borrow_mut() = Some(why.to_string()));
+        None
+    };
+    LAST_PRISM_REFUSAL.with(|lr| *lr.borrow_mut() = None);
+    // slant_options refuses these first; tan() below must never see one.
+    if !(taper_deg.abs() <= TAPER_LIMIT_DEG) {
+        return refuse("a taper of 90 degrees or more cannot be built: the walls would lie flat in the sketch plane.");
+    }
+    let fr = sketch_frame(sk);
+    let f = scale(fr.n, fr.dir);
+    // Which way the pull really goes.
+    let mut sweep = scale(f, t);
+    let mut slanted_dir = false;
+    if let Some(d) = dirv {
+        let l = len(d);
+        if l > 1e-12 {
+            let dd = scale(d, 1.0 / l);
+            let c = dot(dd, f);
+            if len(cross(dd, f)) > 1e-9 {
+                if c.abs() < 1e-6 {
+                    return refuse("the pull direction lies in the sketch plane, so it never leaves the profile. Pick a direction that points out of the plane.");
+                }
+                let mag = t.abs() / if along_normal { c.abs() } else { 1.0 };
+                sweep = scale(dd, mag * if t < 0.0 { -1.0 } else { 1.0 });
+                slanted_dir = true;
+            } else if c < 0.0 {
+                // Along the normal but pointing the other way: same line, other sense.
+                sweep = scale(f, -t);
+            }
+        }
+    }
+    let tapered = taper_deg.abs() > 1e-12;
+    if tapered && (slanted_dir || back > 1e-12) {
+        return refuse(if slanted_dir {
+            "a taper and a custom direction together are not built yet: use one or the other."
+        } else {
+            "a taper is built for a one sided pad only yet: choose One sided, or set the taper to 0."
+        });
+    }
+    let span = len(sweep);
+    if !(span > 1e-12) {
+        return refuse("the length is 0, so there is nothing to pull.");
+    }
+    // The profile starts `back` behind the sketch plane, along the pull itself.
+    let start = sub(fr.origin, scale(sweep, back / t.abs().max(1e-300)));
+
+    // The outline: a whole circle, or one loop of straight edges.
+    enum Outline { Circle([f64; 2], f64), Poly(Vec<[f64; 2]>, Vec<(String, usize)>) }
+    let outline = if sk.get("shape").and_then(|s| s.as_str()) == Some("circle") {
+        let Some((c, r)) = circle_of_value(sk) else { return refuse("this circle has no usable size.") };
+        Outline::Circle(c, r)
+    } else {
+        let Some((loops, roles)) = extruded_profile(sk) else { return None };
+        if loops.len() != 1 {
+            return refuse("a taper or a custom direction is built for a profile without holes yet: draw the outline without the hole.");
+        }
+        if let Some((c, r)) = build::whole_circle_ring(&loops[0]) {
+            Outline::Circle(c, r)
+        } else {
+            let mut pts = Vec::with_capacity(loops[0].len());
+            for seg in &loops[0] {
+                match seg {
+                    build::ProfileSeg::Line { a, .. } => pts.push(*a),
+                    _ => return refuse("a taper or a custom direction is built for a straight-sided outline yet: this outline has an arc in it."),
+                }
+            }
+            if pts.len() < 3 {
+                return refuse("the outline has fewer than three corners.");
+            }
+            Outline::Poly(pts, roles)
+        }
+    };
+
+    match outline {
+        Outline::Circle(c, r) => {
+            if slanted_dir {
+                return refuse("a custom direction is built for a straight-sided outline yet: a circle pulled at an angle is a slanted cylinder, which brep-rs does not build.");
+            }
+            if !(r > 1e-9) {
+                return refuse("this circle has no size (its diameter is 0), so there is nothing to pull.");
+            }
+            let r2 = r + span * taper_deg.to_radians().tan();
+            if !(r2 > 1e-6 * r) || !r2.is_finite() {
+                return refuse("the taper is too steep: the circle would close up before the length ends.");
+            }
+            let centre_w = uv_world(start, fr.u, fr.v, c);
+            let unit = scale(sweep, 1.0 / span);
+            let profile = [[0.0, 0.0], [r, 0.0], [r2, span], [0.0, span]];
+            let e1 = if dot(unit, fr.u).abs() < 0.9 { fr.u } else { fr.v };
+            let Some((solid, _)) = build::revolve_profile(&profile, unit, e1, 360.0) else {
+                return refuse("brep-rs could not build this tapered round pad.");
+            };
+            let solid = build::transform_solid(&solid, &crate::math::Transform::translation(centre_w));
+            Some((build::ensure_outward(&solid), PrismKind::Plain))
+        }
+        Outline::Poly(pts, roles) => {
+            let top = if tapered {
+                match offset_outline(&pts, span * taper_deg.to_radians().tan()) {
+                    Ok(p) => p,
+                    Err(why) => return refuse(&why),
+                }
+            } else {
+                pts.clone()
+            };
+            let lo: Vec<Vec3> = pts.iter().map(|p| uv_world(start, fr.u, fr.v, *p)).collect();
+            let hi: Vec<Vec3> = top.iter().map(|p| add(uv_world(start, fr.u, fr.v, *p), sweep)).collect();
+            let n = pts.len();
+            let Some(solid) = build::blend_solid(&lo, &hi) else {
+                return refuse("brep-rs could not build this slanted pull from the outline.");
+            };
+            Some((build::ensure_outward(&solid), PrismKind::Outline { nseg: n, nloops: 1, roles }))
+        }
+    }
+}
 
 /// The u extent (distance along the sketch's U direction, signed) of one outline
 /// segment, an arc's bulge past its ends included.
@@ -746,6 +1094,13 @@ fn revolve_tool(
     angle: f64,
     allow_arcs: bool,
 ) -> Result<(TSolid, Vec<Option<usize>>, Vec<(String, usize)>), String> {
+    if !angle.is_finite() || angle.abs() < 1e-9 {
+        return Err("a spin needs an angle other than 0".to_string());
+    }
+    // FreeCAD clamps an angle past a full turn to a full turn, and a negative angle sweeps the
+    // other way round the axis: spin |angle| and turn the result back by -|angle|.
+    let reverse = angle < 0.0;
+    let angle = angle.abs().min(360.0);
     let (segs, roles) = spin_profile(sk)?;
     // The profile is laid in the plane spanned by the sketch's U direction and
     // the plane NORMAL -- a plane CONTAINING the axis, not the sketch plane
@@ -855,6 +1210,9 @@ fn revolve_tool(
         };
         (build::transform_solid(&solid, &t), map)
     };
+    if reverse && angle < 360.0 - 1e-9 {
+        solid = build::transform_solid(&solid, &crate::math::Transform::rotation(n, -angle.to_radians()));
+    }
     if fr.origin != [0.0, 0.0, 0.0] {
         let t = crate::math::Transform::translation(fr.origin);
         solid = build::transform_solid(&solid, &t);
@@ -879,7 +1237,7 @@ fn revolve_tool(
 /// profile's second coordinate is absolute and the finished tool is then moved
 /// across onto the hole's own axis. `None` means the recess is degenerate and
 /// the caller must refuse rather than guess.
-fn hole_tool(centre: Vec3, bore_r: f64, depth: f64, axis: Vec3, v_face: f64, feature: Option<&Value>) -> Option<TSolid> {
+fn hole_tool(centre: Vec3, bore_r: f64, depth: f64, axis: Vec3, v_face: f64, v_back: f64, feature: Option<&Value>) -> Option<TSolid> {
     // `feature` is the whole hole feature, so the two recess keys are found here.
     // Handing this the inner recess value instead would look for a "counterbore"
     // key that is not inside it, and every recess would refuse.
@@ -927,7 +1285,29 @@ fn hole_tool(centre: Vec3, bore_r: f64, depth: f64, axis: Vec3, v_face: f64, fea
  };
     // The recess is measured from the face, so the bore must reach it, and the
     // shoulder must sit above the bore's own floor.
-    if !(v_shoulder > v_far) || !(v_mouth >= v_face) {
+    if !(v_mouth >= v_face) {
+        return None;
+    }
+    // A countersink whose cone is still widening where the bore's own end is (it would reach the bore
+    // only below the tool) is a plain frustum, but only for a hole that goes right through: the cone
+    // then leaves the part on the far side, and nothing of the bore remains. A hole that stops inside
+    // the part has a floor that FreeCAD and this kernel could read differently, so it refuses.
+    if cs.is_some() && !(v_shoulder > v_far) {
+        if !(v_far < v_back - 1e-9) {
+            return None;
+        }
+        let half_angle = 0.5 * cs?.get("angleDeg")?.as_f64()?.to_radians();
+        let r_far = r_mouth - (v_face - v_far) * half_angle.tan();
+        if !(r_far > bore_r) {
+            return None;
+        }
+        let profile = [[0.0, v_far], [r_far, v_far], [r_mouth, v_face], [r_mouth, v_mouth], [0.0, v_mouth]];
+        let seed = if axis[0].abs() < 0.9 { [1.0, 0.0, 0.0] } else { [0.0, 1.0, 0.0] };
+        let (solid, _) = build::revolve_profile(&profile, axis, seed, 360.0)?;
+        let across = crate::math::sub(centre, scale(axis, mid));
+        return Some(build::transform_solid(&solid, &crate::math::Transform::translation(across)));
+    }
+    if !(v_shoulder > v_far) {
         return None;
     }
  let profile = if cs.is_some() {
@@ -965,6 +1345,72 @@ fn hole_tool(centre: Vec3, bore_r: f64, depth: f64, axis: Vec3, v_face: f64, fea
 /// a pattern beyond this refuses instead of freezing the page.
 const PATTERN_FOLD_BUDGET: usize = 4000;
 
+/// One run of rounds of the same radius, each on the result of the one before (a picked rim).
+///
+/// Two rounds (or chamfers) whose edges meet at a vertex whose third edge is concave need a corner blend where
+/// the two cuts run into each other, and brep-rs does not build one. Taking the edges one at a time instead
+/// rounds some of them and refuses the neighbours, which shows a part rounded on only some of the edges the
+/// student picked (or, for chamfers, builds the union of the cuts where a mitre is meant). So when one of two
+/// such edges is applied, none of the run is.
+struct RimRun {
+    /// The part as it stood before the run's first round.
+    pre: TSolid,
+    size: f64,
+    round: bool,
+    members: Vec<RimMember>,
+    /// A corner could not be blended: every later member of the run is refused without being tried.
+    dead: bool,
+}
+
+struct RimMember {
+    id: String,
+    label: String,
+    /// The two end points of the edge, on the part the run started from.
+    ends: Option<(Vec3, Vec3)>,
+    built: bool,
+}
+
+fn rim_shares_vertex(a: &(Vec3, Vec3), b: &(Vec3, Vec3)) -> bool {
+    let near = |p: Vec3, q: Vec3| len(sub(p, q)) <= 1e-6 * (1.0 + len(p).max(len(q)));
+    [a.0, a.1].iter().any(|p| [b.0, b.1].iter().any(|q| near(*p, *q)))
+}
+
+/// Two picked edges meet at a vertex whose third edge is a concave one: the part's material fills the quadrant
+/// the two cuts share (the inside corner of a pocket's opening), so the true corner is the INTERSECTION of the two
+/// blends (a mitre), where taking the edges one after the other removes their union. A convex vertex (the corner of
+/// a block) has air in that quadrant, where one after the other IS the corner.
+fn rim_corner_is_concave(pre: &TSolid, a: &(Vec3, Vec3), b: &(Vec3, Vec3)) -> bool {
+    let near = |p: Vec3, q: Vec3| len(sub(p, q)) <= 1e-6 * (1.0 + len(p).max(len(q)));
+    for (pa, qa) in [(a.0, a.1), (a.1, a.0)] {
+        for (pb, qb) in [(b.0, b.1), (b.1, b.0)] {
+            if !near(pa, pb) {
+                continue;
+            }
+            let (la, lb) = (len(sub(qa, pa)), len(sub(qb, pb)));
+            if la <= 1e-9 || lb <= 1e-9 {
+                return false;
+            }
+            let (ta, tb) = (scale(sub(qa, pa), 1.0 / la), scale(sub(qb, pb), 1.0 / lb));
+            let n = cross(ta, tb);
+            if len(n) <= 1e-6 {
+                return false; // one straight line: no corner
+            }
+            let n = normalize(n);
+            let d = 1e-4 * la.min(lb).min(1.0);
+            let away = scale(add(ta, tb), -d);
+            return [1.0, -1.0].iter().any(|s| ops::inside_solid(pre, add(add(pa, away), scale(n, *s * d))));
+        }
+    }
+    false
+}
+
+fn rim_corner_sentence(label: &str, round: bool) -> String {
+    let (verb, what) = if round { ("round", "rounds") } else { ("chamfer", "chamfers") };
+    format!(
+        "brep-rs cannot {verb} these neighbouring edges together yet: they meet at a corner where the {what} would have to be blended into each other, and that corner is not built, so none of the {what} picked with {label} is applied -- {label} is shown without it."
+    )
+}
+
 /// Build every feature in the document, in order. Returns the history and the
 /// per-feature refusals. A feature this slice does not implement is refused
 /// with a plain reason rather than silently absent (§4.5's refusal contract).
@@ -977,6 +1423,9 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
     // What a later round or chamfer may REPLAY (docs/specs/SPEC-round-after-cut.md): each
     // hole's tools and each round's request, keyed by the feature id that holds the result.
     let mut replay_log: std::collections::HashMap<String, ReplayStep> = std::collections::HashMap::new();
+    // Runs of rounds, one feature after another on the same part at the same radius (a picked rim): each run is
+    // all or nothing where its edges meet at a corner, keyed by the id of the run's latest feature.
+    let mut rim_runs: std::collections::HashMap<String, RimRun> = std::collections::HashMap::new();
     let empty = Vec::new();
     let features = doc
         .get("features")
@@ -1242,7 +1691,35 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     refusals.insert(id.clone(), json!(format!("extrude {id}: the pull height is 0, so there is nothing to pull -- {id} is shown without it.")));
                     continue;
                 }
-                let Some((solid, prism)) = extrude_prism(sk, "", height) else {
+                // Direction options (Reversed, Symmetric to plane, Two sides): the
+                // profile is re-seated behind the sketch plane and swept the whole
+                // span, so the one forward sweep below builds all three.
+                let (reversed, midplane, length2) = direction_options(f);
+                let (taper, dirv, along) = match slant_options(f) {
+                    Ok(o) => o,
+                    Err(why) => {
+                        refusals.insert(id.clone(), json!(format!("extrude {id}: {why} -- {id} is shown without it.")));
+                        continue;
+                    }
+                };
+                // A direction along the sketch normal is the plain prism (which
+                // takes arcs and holes), flipped like Reversed when it points back.
+                let (dirv, flip) = split_parallel_direction(dirv, scale(fr.n, dir));
+                let reversed = reversed != flip;
+                let sgn = if reversed { -1.0 } else { 1.0 };
+                let len = height.abs();
+                let (span, back) = if midplane { (len, len / 2.0) } else { (len + length2, length2) };
+                let sgn_h = sgn * if height < 0.0 { -1.0 } else { 1.0 };
+                let Some(seated) = sketch_shifted(sk, -sgn_h * back) else {
+                    refusals.insert(id.clone(), json!(format!("extrude {id}: sketch {target}'s frame is not a plane, so it cannot be moved behind itself -- {id} is shown without it.")));
+                    continue;
+                };
+                let built = if taper != 0.0 || dirv.is_some() {
+                    slanted_prism(sk, sgn_h * span, back, taper, dirv, along)
+                } else {
+                    extrude_prism(&seated, "", sgn_h * span)
+                };
+                let Some((solid, prism)) = built else {
                     // A soup sketch's wire refusal names the real problem
                     // (conflict, unsatisfiable rules); the legacy path's
                     // fixed sentence stands when no soup ran.
@@ -1252,6 +1729,7 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     continue;
                 };
                 match prism {
+                    PrismKind::Plain => {}
                     PrismKind::Circle => {
                         hist.sweeps.insert(
                             id.clone(),
@@ -1274,7 +1752,7 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                         // (nseg + 1); a washer's caps are the same two faces,
                         // each carrying one wire per loop. `dir` decides which
                         // end is the top: the sweep runs toward `n`.
-                        let (cap_bottom, cap_top) = if dir >= 0.0 {
+                        let (cap_bottom, cap_top) = if (dir >= 0.0) != reversed {
                             (Some(nseg), Some(nseg + 1))
                         } else {
                             (Some(nseg + 1), Some(nseg))
@@ -1305,11 +1783,11 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 let target = f.get("target").and_then(|t| t.as_str()).unwrap_or("");
                 let into = f.get("into").and_then(|t| t.as_str()).unwrap_or("");
                 let depth = f.get("depth").and_then(|d| d.as_f64()).unwrap_or(0.0);
-                let Some(sk) = sketches.get(target) else {
+                let Some(sk_plain) = sketches.get(target) else {
                     refusals.insert(id.clone(), json!(format!("pocket {id} cannot find sketch {target}")));
                     continue;
                 };
-                if let Some(why) = frame_refusal(sk) {
+                if let Some(why) = frame_refusal(sk_plain) {
                     refusals.insert(id.clone(), json!(format!("pocket {id}: {why} -- {id} is shown without it.")));
                     continue;
                 }
@@ -1318,37 +1796,130 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     refusals.insert(id.clone(), json!(format!("pocket {id} cannot find solid {into}")));
                     continue;
                 };
+                // Direction options. `depth` below is signed along the cut (positive
+                // = into the material); Reversed flips it, Through all replaces it by
+                // a length that clears the whole part, and Symmetric / Two sides
+                // re-seat the profile behind the plane and cut the whole span.
+                let (reversed, midplane, length2) = direction_options(f);
+                let through = f.get("through").and_then(|b| b.as_bool()).unwrap_or(false);
+                let (taper, dirv, along) = match slant_options(f) {
+                    Ok(o) => o,
+                    Err(why) => {
+                        refusals.insert(id.clone(), json!(format!("pocket {id}: {why} -- {id} is shown without it.")));
+                        continue;
+                    }
+                };
+                // The vector names the way the cut travels; the tool is the pad's
+                // prism swept the other way, so its sense is negated. One along the
+                // sketch normal is the plain tool, flipped like Reversed when it
+                // points out of the material.
+                let fr_plain = sketch_frame(sk_plain);
+                let (dirv, flip) = split_parallel_direction(dirv.map(|d| scale(d, -1.0)), scale(fr_plain.n, fr_plain.dir));
+                // The sign of `depth` is a direction too, as it is for a pad's
+                // height and in the OCCT referee (`h = -f.depth * a.dir`): a
+                // negative depth cuts out of the face, not into it.
+                let sgn = (if reversed != flip { -1.0 } else { 1.0 }) * (if depth < 0.0 { -1.0 } else { 1.0 });
+                let mut len = depth.abs();
+                if through {
+                    let bb = build::solid_aabb(&base);
+                    let o = sketch_frame(sk_plain).origin;
+                    let mut far = 0.0f64;
+                    for cx in [bb.lo[0], bb.hi[0]] {
+                        for cy in [bb.lo[1], bb.hi[1]] {
+                            for cz in [bb.lo[2], bb.hi[2]] {
+                                let d = [cx - o[0], cy - o[1], cz - o[2]];
+                                far = far.max((d[0] * d[0] + d[1] * d[1] + d[2] * d[2]).sqrt());
+                            }
+                        }
+                    }
+                    len = far + 1.0;
+                }
+                let (span, back) = if midplane { (len, len / 2.0) } else if through { (len, 0.0) } else { (len + length2, length2) };
+                let Some(sk_seated) = sketch_shifted(sk_plain, sgn * back) else {
+                    refusals.insert(id.clone(), json!(format!("pocket {id}: sketch {target}'s frame is not a plane, so it cannot be moved behind itself -- {id} is shown without it.")));
+                    continue;
+                };
+                let sk = &sk_seated;
+                let depth = sgn * span;
                 // A pocket is the extrude prism with the sweep NEGATED: pad up,
                 // pocket down (occt-build.ts's `h = -f.depth * a.dir`). The tool
                 // is oriented outward by extrude_prism, then cut from the base.
-                let Some((tool, kind)) = extrude_prism(sk, "", -depth) else {
+                let built_tool = if taper != 0.0 || dirv.is_some() {
+                    slanted_prism(sk_plain, -depth, back, taper, dirv, along)
+                } else {
+                    extrude_prism(sk, "", -depth)
+                };
+                let Some((tool, kind)) = built_tool else {
                     let sentence = LAST_PRISM_REFUSAL.with(|lr| lr.borrow().clone())
                         .unwrap_or_else(|| format!("sketch {target} has no usable outline"));
                     refusals.insert(id.clone(), json!(format!("pocket {id}: {sentence}")));
                     continue;
                 };
-                // §8.2 extrudes an annular profile, and `ops::boolean` then
-                // cannot cut the result: MEASURED, a 20x20 pocket with a r3
-                // bore into a 40x40x20 box comes back None from subtract,
-                // where the same pocket without the bore cuts exactly
-                // (30000.000000 mm3, 11 faces). The generic sentence below
-                // would blame enclosure or a surface pair for it, which is
-                // not what is wrong.
+                // An annular profile (an outline with islands) cannot be
+                // cut as one ring-shaped tool (MEASURED: ops::boolean returns
+                // None for it). It is cut as what it is: the outline's
+                // pocket, then each island's material put back, which is the
+                // base intersected with the island's prism. The put-back is
+                // volume-checked below; anything that fails to close refuses.
+                let mut tool = tool;
+                let mut islands: Vec<TSolid> = Vec::new();
                 if let PrismKind::Outline { nloops, .. } = kind {
                     if nloops > 1 {
-                        let holes = nloops - 1;
-                        let what = if holes == 1 {
-                            "a hole".to_string()
-                        } else {
-                            format!("{holes} holes")
+                        let fr = sketch_frame(sk);
+                        // One loop as a solid. A loop that is a whole circle
+                        // (one arc, or two half arcs of one centre and radius)
+                        // is one cylinder, the way `sk.circle` builds, so its
+                        // wall is one face rather than two seam halves.
+                        let loop_solid = |lp: &[build::ProfileSeg], depth: f64| -> Option<TSolid> {
+                            if let Some((c, r)) = whole_circle(lp) {
+                                let cw = uv_world(fr.origin, fr.u, fr.v, c);
+                                return Some(build::cylinder_solid(
+                                    add(cw, scale(fr.n, -depth * fr.dir / 2.0)),
+                                    r,
+                                    depth.abs(),
+                                    fr.n,
+                                ));
+                            }
+                            let one = vec![lp.to_vec()];
+                            let sweep = scale(fr.n, -depth * fr.dir);
+                            let s = build::extrude_profile_loops(&one, fr.origin, fr.u, fr.v, sweep).ok()?;
+                            Some(build::ensure_outward(&s))
                         };
-                        refusals.insert(
-                            id.clone(),
-                            json!(format!(
-                                "pocket {id}: sketch {target} has {what} through its outline, and brep-rs cannot cut a pocket with an annular tool yet -- {id} is shown without it."
-                            )),
-                        );
-                        continue;
+                        let built = extruded_profile(sk).and_then(|(loops, _)| {
+                            let outer = loop_solid(&loops[0], depth)?;
+                            let mut isl = Vec::new();
+                            for hole in &loops[1..] {
+                                let one = loop_solid(hole, depth)?;
+                                // An island stands on the floor only when the
+                                // part has material under it. Probe with the
+                                // same island pulled twice as deep: if the
+                                // part holds nothing more of it, the pocket
+                                // goes through and the island would float.
+                                let probe = loop_solid(hole, 2.0 * depth)?;
+                                let kept = build::solid_volume(&ops::boolean("intersect", &base, &one)?);
+                                let more = build::solid_volume(&ops::boolean("intersect", &base, &probe)?);
+                                if !(more - kept > 1e-9 * kept.abs().max(1e-12)) {
+                                    return None;
+                                }
+                                isl.push(one);
+                            }
+                            Some((outer, isl))
+                        });
+                        match built {
+                            Some((outer, isl)) => {
+                                tool = outer;
+                                islands = isl;
+                            }
+                            None => {
+                                refusals.insert(
+                                    id.clone(),
+                                    json!(format!(
+                                        "pocket {id}: sketch {target} has an island inside its outline that this pocket cannot leave standing (it goes all the way through {into}, so the island would be a separate piece, or the profile cannot be taken apart) -- {id} is shown without it."
+                                    )),
+                                );
+                                continue;
+                            }
+                        }
                     }
                 }
                 ops_planar::clear_reason();
@@ -1360,6 +1931,43 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                         refusals.insert(id.clone(), json!(miss_refusal(&id)));
                     }
                     Some(result) => {
+                        // Two overlapping round cuts leave their common floor in
+                        // coplanar pieces; one flat floor is ONE face (FreeCAD
+                        // gives 9 faces, not 11). The merge only replaces the
+                        // result when it is provably the same solid.
+                        let mut result = result;
+                        let mut put_back_failed = false;
+                        for isl in &islands {
+                            // The island's material that was inside the base.
+                            let kept = ops::boolean("intersect", &base, isl);
+                            let joined = kept.as_ref().and_then(|k| {
+                                let v = build::solid_volume(&result) + build::solid_volume(k);
+                                let j = ops::boolean("union", &result, k)?;
+                                let vj = build::solid_volume(&j);
+                                if (vj - v).abs() <= 1e-9 * v.abs().max(1.0) && skin_pieces(&j) <= skin_pieces(&base) {
+                                    Some(j)
+                                } else {
+                                    None
+                                }
+                            });
+                            match joined {
+                                Some(j) => result = j,
+                                None => {
+                                    put_back_failed = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if put_back_failed {
+                            refusals.insert(
+                                id.clone(),
+                                json!(format!(
+                                    "pocket {id}: sketch {target} has an island inside its outline, and brep-rs could not put the island's material back exactly -- {id} is shown without it."
+                                )),
+                            );
+                            continue;
+                        }
+                        let result = ops::merge_coplanar_result(result);
                         // The cut's faces come from the boolean, not the prism,
                         // so no sweep history is recorded, exactly as OCCT's
                         // pocket branch does. The base's own faces DO carry
@@ -1478,7 +2086,7 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 let v_face = crate::math::dot(base, axis) + 0.5 * along;
                 let tools: Vec<TSolid> = match centers
                     .iter()
-                    .map(|&c| hole_tool(c, diameter / 2.0, depth, axis, v_face, Some(f)))
+                    .map(|&c| hole_tool(c, diameter / 2.0, depth, axis, v_face, v_face - along, Some(f)))
                     .collect::<Option<Vec<_>>>()
                 {
                     Some(t) => t,
@@ -1639,11 +2247,28 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 }
                 // S4f: a bore down the axis of a turned part (a round or chamfered cylinder, a
                 // washer) is an edit of its profile, exact where the face-by-face cut refused.
-                if !cut && recess.is_none() && f.get("corners").is_none() && axis_name == "z" && centers.len() == 1 {
-                    if let Some(rd) = turned::read(&before_cut) {
+                // A counterbore or countersink at the mouth is the same edit of the profile
+                // (one more step or cone), measured from the part's own top face.
+                if !cut && f.get("corners").is_none() && axis_name == "z" && centers.len() == 1 {
+                    let turned_recess: Option<Option<turned::Recess>> = match (f.get("counterbore"), f.get("countersink")) {
+                        (None, None) => Some(None),
+                        (Some(cb), None) => cb
+                            .get("diameter")
+                            .and_then(|d| d.as_f64())
+                            .zip(cb.get("depth").and_then(|d| d.as_f64()))
+                            .map(|(d, cd)| Some(turned::Recess { r_mouth: 0.5 * d, depth: cd, cone: false })),
+                        (None, Some(cs)) => cs
+                            .get("diameter")
+                            .and_then(|d| d.as_f64())
+                            .zip(cs.get("angleDeg").and_then(|d| d.as_f64()))
+                            .filter(|&(d, a)| a > 0.0 && a < 180.0 && d > diameter)
+                            .map(|(d, a)| Some(turned::Recess { r_mouth: 0.5 * d, depth: (0.5 * d - 0.5 * diameter) / (0.5 * a.to_radians()).tan(), cone: true })),
+                        _ => None,
+                    };
+                    if let (Some(rc), Some(rd)) = (turned_recess, turned::read(&before_cut)) {
                         let c = centers[0];
                         if (c[0] - rd.origin[0]).abs() < 1e-9 && (c[1] - rd.origin[1]).abs() < 1e-9 {
-                            if let Ok(lp) = turned::bore(&rd, diameter / 2.0, c[2] - 0.5 * depth, c[2] + 0.5 * depth) {
+                            if let Ok(lp) = turned::bore_recessed(&rd, diameter / 2.0, c[2] - 0.5 * depth, c[2] + 0.5 * depth, rc) {
                                 if let Some(s) = turned::build_solid(rd.origin, &lp) {
                                     shape = s;
                                     cut = true;
@@ -1693,6 +2318,16 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     );
                 } else if let Some(why) = ops_planar::take_reason() {
                     refusals.insert(id.clone(), json!(format!("hole {id}: {why} -- {id} is shown without it.")));
+                } else if recess
+                    .and_then(|r| r.get("diameter").and_then(|d| d.as_f64()))
+                    .is_some_and(|mouth| mouth >= perp[0].min(perp[1]) - 1e-9)
+                {
+                    refusals.insert(
+                        id.clone(),
+                        json!(format!(
+                            "hole {id}: its counterbore or countersink is as wide as {target}, so its rim would touch the part's edge at a single point, a tangent contact brep-rs cannot cut yet; make the recess a little narrower -- {id} is shown without it."
+                        )),
+                    );
                 } else {
                     refusals.insert(
                         id.clone(),
@@ -1722,7 +2357,7 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 // builds both paths (groove has used the partial one all along);
                 // this branch supplies the naming history each needs, and the
                 // caps' own face indices for a partial.
-                let closed = (angle.abs() - 360.0).abs() <= 1e-9;
+                let closed = angle.abs() >= 360.0 - 1e-9;
                 let (solid, face_map, roles) = match revolve_tool(sk, angle, true) {
                     Ok(t) => t,
                     Err(why) => {
@@ -1742,8 +2377,15 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                         face_map[i].map(|face| history::SweepSeg { role: role.clone(), index: *index, face })
                     })
                     .collect();
+                // `bottom` is the profile where the spin starts (the sketch plane,
+                // OCCT's FirstShape) and `top` where it ends (LastShape). A
+                // negative angle is spun as |angle| and turned back by -|angle|
+                // (revolve_tool), which carries the t=0 cap to the far end and the
+                // t=|angle| cap onto the sketch plane, so the two indices swap.
                 let (cap_bottom, cap_top) = if closed {
                     (None, None)
+                } else if angle < 0.0 {
+                    (Some(n_walls + 1), Some(n_walls))
                 } else {
                     (Some(n_walls), Some(n_walls + 1))
                 };
@@ -2247,6 +2889,26 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     hist.insert(&id, src);
                     continue;
                 }
+                // The run of rounds this one belongs to (see RimRun): a round of the same radius on the result of
+                // the previous round. Once a corner could not be blended the rest of the run is refused unbuilt.
+                let own_ends: Option<(Vec3, Vec3)> = fillet_face_pair(&hist, f)
+                    .and_then(|(fa, fb)| hist.edge_between(&fa, &fb))
+                    .map(|e| {
+                        let e = e.borrow();
+                        let ends = (e.a.borrow().point, e.b.borrow().point);
+                        ends
+                    });
+                let mut rim_run = match rim_runs.remove(target) {
+                    Some(r) if r.round == round && (r.size - size).abs() <= 1e-12 => r,
+                    _ => RimRun { pre: src.clone(), size, round, members: Vec::new(), dead: false },
+                };
+                if rim_run.dead {
+                    refusals.insert(id.clone(), json!(rim_corner_sentence(&label, round)));
+                    hist.insert(&id, rim_run.pre.clone());
+                    rim_run.members.push(RimMember { id: id.clone(), label: label.clone(), ends: own_ends, built: false });
+                    rim_runs.insert(id.clone(), rim_run);
+                    continue;
+                }
                 // A round or chamfer asked for AFTER a cut: the solid is no longer a plain box, so
                 // build_fillet cannot take it. Replay it (round the root box first, then re-apply
                 // the cuts) when a proof says the cuts stay clear of the rounded edge.
@@ -2316,6 +2978,32 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                         refusals.insert(id.clone(), json!(reason));
                         hist.insert(&id, src);
                     }
+                }
+                {
+                    // Two edges that share a vertex whose third edge is concave (the inside corner of a pocket's
+                    // opening) are ONE blend there, which brep-rs does not build: one after the other would leave a
+                    // half-rounded corner (one refused) or the union of the two cuts in place of their mitre (both
+                    // built). Undo the run, so that the part is never shown rounded on only some of the edges picked
+                    // together. At a convex corner (a block's) the second edge is its own operation, as ever.
+                    let built = !refusals.contains_key(&id);
+                    let conflict = own_ends.as_ref().is_some_and(|e| {
+                        rim_run.members.iter().any(|m| {
+                            m.ends.as_ref().is_some_and(|x| {
+                                (m.built || built) && rim_shares_vertex(x, e) && rim_corner_is_concave(&rim_run.pre, x, e)
+                            })
+                        })
+                    });
+                    rim_run.members.push(RimMember { id: id.clone(), label: label.clone(), ends: own_ends, built });
+                    if conflict {
+                        rim_run.dead = true;
+                        for m in &rim_run.members {
+                            hist.ops.remove(&m.id);
+                            replay_log.remove(&m.id);
+                            hist.shapes.insert(m.id.clone(), rim_run.pre.clone());
+                            refusals.insert(m.id.clone(), json!(rim_corner_sentence(&m.label, round)));
+                        }
+                    }
+                    rim_runs.insert(id.clone(), rim_run);
                 }
             }
             "draft" => {
@@ -5092,6 +5780,386 @@ mod tests {
         assert!(name != "null", "the kept box is still nameable: {name}");
     }
 
+    /// Pad and pocket direction options, measured on the solid itself (bbox and
+    /// volume), never against a number typed in from elsewhere.
+    fn dir_bbox(extra: Value, kind: &str) -> ([f64; 3], [f64; 3], f64) {
+        let mut pad = json!({ "id": "e1", "kind": "extrude", "target": "sk1", "height": 10.0 });
+        let mut features = vec![json!({
+            "id": "sk1", "kind": "sketch", "plane": "xy", "offset": 0.0,
+            "points": [[0.0, 0.0], [20.0, 0.0], [20.0, 12.0], [0.0, 12.0]]
+        })];
+        if kind == "extrude" {
+            for (k, v) in extra.as_object().unwrap() { pad[k] = v.clone(); }
+            features.push(pad);
+        } else {
+            features.push(json!({ "id": "e0", "kind": "extrude", "target": "sk0", "height": 8.0 }));
+            features.insert(0, json!({
+                "id": "sk0", "kind": "sketch", "plane": "xy", "offset": 0.0,
+                "points": [[-20.0, -20.0], [40.0, -20.0], [40.0, 30.0], [-20.0, 30.0]]
+            }));
+            features[1]["offset"] = json!(8.0);
+            let mut cut = json!({ "id": "p1", "kind": "pocket", "target": "sk1", "into": "e0", "depth": 3.0 });
+            for (k, v) in extra.as_object().unwrap() { cut[k] = v.clone(); }
+            features.push(cut);
+        }
+        let doc = json!({ "features": features });
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "refusals: {refusals:?}");
+        let last = if kind == "extrude" { "e1" } else { "p1" };
+        let solid = hist.shapes.get(last).expect("built");
+        let bb = build::solid_aabb(solid);
+        (bb.lo, bb.hi, build::solid_volume(solid))
+    }
+
+    /// A taper grows the profile outward by length * tan(angle) on every side
+    /// (FreeCAD's sign), and the volume is the frustum of the two outlines.
+    #[test]
+    fn pad_taper_is_a_frustum_of_two_outlines() {
+        let a = 10.0f64.to_radians().tan() * 10.0;
+        let (lo, hi, v) = dir_bbox(json!({ "taper": 10.0 }), "extrude");
+        assert!((lo[0] + a).abs() < 1e-9 && (hi[0] - (20.0 + a)).abs() < 1e-9, "x {lo:?} {hi:?}");
+        assert!((lo[1] + a).abs() < 1e-9 && (hi[1] - (12.0 + a)).abs() < 1e-9, "y {lo:?} {hi:?}");
+        let (a1, a2) = (20.0 * 12.0, (20.0 + 2.0 * a) * (12.0 + 2.0 * a));
+        // Prismatoid rule: exact for a ruled solid between two parallel outlines.
+        let am = (20.0 + a) * (12.0 + a);
+        let want = 10.0 / 6.0 * (a1 + 4.0 * am + a2);
+        assert!((v - want).abs() < 1e-6 * want, "{v} vs {want}");
+        // A negative taper shrinks it.
+        let (lo, hi, _) = dir_bbox(json!({ "taper": -10.0 }), "extrude");
+        assert!((lo[0] - 0.0).abs() < 1e-9 && (hi[0] - 20.0).abs() < 1e-9, "base stays {lo:?} {hi:?}");
+    }
+
+    #[test]
+    fn pad_custom_direction_shears_the_prism() {
+        // Along the normal: the height stays 10, the top slides 10 along x.
+        let s = std::f64::consts::FRAC_1_SQRT_2;
+        let (lo, hi, v) = dir_bbox(json!({ "direction": [s, 0.0, s] }), "extrude");
+        assert!((v - 2400.0).abs() < 1e-6, "volume {v}");
+        assert!((hi[0] - 30.0).abs() < 1e-9 && (hi[2] - 10.0).abs() < 1e-9 && lo[2].abs() < 1e-9, "{lo:?} {hi:?}");
+        // Not along the normal: the length runs along the vector itself.
+        let (_, hi, v) = dir_bbox(json!({ "direction": [s, 0.0, s], "alongNormal": false }), "extrude");
+        assert!((hi[2] - 10.0 * s).abs() < 1e-9, "{hi:?}");
+        assert!((v - 240.0 * 10.0 * s).abs() < 1e-6, "volume {v}");
+        // Symmetric: half the span each side of the plane, sliding with the vector.
+        let (lo, hi, _) = dir_bbox(json!({ "direction": [s, 0.0, s], "midplane": true }), "extrude");
+        assert!((lo[2] + 5.0).abs() < 1e-9 && (hi[2] - 5.0).abs() < 1e-9, "{lo:?} {hi:?}");
+        assert!((lo[0] + 5.0).abs() < 1e-9 && (hi[0] - 25.0).abs() < 1e-9, "{lo:?} {hi:?}");
+    }
+
+    #[test]
+    fn pad_taper_refusals_are_sentences() {
+        let doc = json!({ "features": [
+            { "id": "sk1", "kind": "sketch", "plane": "xy", "offset": 0.0, "points": [[0.0, 0.0], [20.0, 0.0], [20.0, 12.0], [0.0, 12.0]] },
+            { "id": "e1", "kind": "extrude", "target": "sk1", "height": 10.0, "taper": -45.0 }
+        ]});
+        let (hist, refusals) = build_doc(&doc);
+        assert!(hist.shapes.get("e1").is_none(), "a folded taper must not build");
+        assert!(refusals.get("e1").and_then(|r| r.as_str()).map_or(false, |r| r.contains("too steep")), "{refusals:?}");
+    }
+
+    #[test]
+    fn round_pad_taper_is_a_cone_frustum() {
+        let doc = json!({ "features": [
+            { "id": "sk1", "kind": "sketch", "plane": "xy", "offset": 0.0, "shape": "circle", "points": [[-5.0, 0.0], [5.0, 0.0]] },
+            { "id": "e1", "kind": "extrude", "target": "sk1", "height": 10.0, "taper": 10.0 }
+        ]});
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "{refusals:?}");
+        let r2 = 5.0 + 10.0 * 10.0f64.to_radians().tan();
+        let want = std::f64::consts::PI * 10.0 / 3.0 * (25.0 + 5.0 * r2 + r2 * r2);
+        let v = build::solid_volume(hist.shapes.get("e1").unwrap());
+        assert!((v - want).abs() < 1e-6 * want, "{v} vs {want}");
+    }
+
+    #[test]
+    fn pocket_taper_and_direction_cut_the_slanted_tool() {
+        let (_, _, plain) = dir_bbox(json!({}), "pocket");
+        let (_, _, tapered) = dir_bbox(json!({ "taper": -10.0 }), "pocket");
+        assert!(tapered > plain, "a shrinking cut removes less: {tapered} vs {plain}");
+        let s = std::f64::consts::FRAC_1_SQRT_2;
+        let (_, _, slant) = dir_bbox(json!({ "direction": [s, 0.0, -s] }), "pocket");
+        assert!((slant - plain).abs() < 1e-6, "an angled cut of the same depth removes the same volume: {slant} vs {plain}");
+    }
+
+    #[test]
+    fn pad_direction_options_place_the_span() {
+        let (lo, hi, v) = dir_bbox(json!({}), "extrude");
+        assert!((lo[2] - 0.0).abs() < 1e-9 && (hi[2] - 10.0).abs() < 1e-9 && (v - 2400.0).abs() < 1e-6);
+        let (lo, hi, v) = dir_bbox(json!({ "midplane": true }), "extrude");
+        assert!((lo[2] + 5.0).abs() < 1e-9 && (hi[2] - 5.0).abs() < 1e-9 && (v - 2400.0).abs() < 1e-6, "{lo:?} {hi:?} {v}");
+        let (lo, hi, v) = dir_bbox(json!({ "reversed": true }), "extrude");
+        assert!((lo[2] + 10.0).abs() < 1e-9 && hi[2].abs() < 1e-9 && (v - 2400.0).abs() < 1e-6, "{lo:?} {hi:?}");
+        let (lo, hi, v) = dir_bbox(json!({ "length2": 4.0 }), "extrude");
+        assert!((lo[2] + 4.0).abs() < 1e-9 && (hi[2] - 10.0).abs() < 1e-9 && (v - 12.0 * 20.0 * 14.0).abs() < 1e-6, "{lo:?} {hi:?}");
+    }
+
+    #[test]
+    fn pocket_direction_options_cut_the_span() {
+        // Plate is z 0..8; the pocket sketch sits on its top face (z = 8).
+        let plate = 60.0 * 50.0 * 8.0;
+        let hole = 20.0 * 12.0;
+        let (_, _, v) = dir_bbox(json!({}), "pocket");
+        assert!((v - (plate - hole * 3.0)).abs() < 1e-6, "one sided: {v}");
+        let (_, _, v) = dir_bbox(json!({ "midplane": true }), "pocket");
+        assert!((v - (plate - hole * 1.5)).abs() < 1e-6, "midplane: {v}");
+        let (_, _, v) = dir_bbox(json!({ "length2": 2.0 }), "pocket");
+        assert!((v - (plate - hole * 3.0)).abs() < 1e-6, "two sides, the far side is air: {v}");
+        let (_, _, v) = dir_bbox(json!({ "through": true }), "pocket");
+        assert!((v - (plate - hole * 8.0)).abs() < 1e-6, "through: {v}");
+    }
+
+    /// The plate of dir_bbox's pocket case (60 x 50, z 0..8) with the 20 x 12
+    /// pocket sketch at height `z`, built with `extra` on the pocket.
+    fn plate_pocket_doc(z: f64, extra: Value) -> Value {
+        let mut cut = json!({ "id": "p1", "kind": "pocket", "target": "sk1", "into": "e0", "depth": 3.0 });
+        for (k, v) in extra.as_object().unwrap() {
+            cut[k] = v.clone();
+        }
+        json!({ "features": [
+            { "id": "sk0", "kind": "sketch", "plane": "xy", "offset": 0.0,
+              "points": [[-20.0, -20.0], [40.0, -20.0], [40.0, 30.0], [-20.0, 30.0]] },
+            { "id": "sk1", "kind": "sketch", "plane": "xy", "offset": z,
+              "points": [[0.0, 0.0], [20.0, 0.0], [20.0, 12.0], [0.0, 12.0]] },
+            { "id": "e0", "kind": "extrude", "target": "sk0", "height": 8.0 },
+            cut
+        ]})
+    }
+
+    /// A sketch `frame` that is not an object (a number, a string, a list, true,
+    /// null) is refused in a sentence by every branch that reads a frame, with no
+    /// solid, and never reaches sketch_shifted's frame edit, which used to
+    /// index-assign into it and panic (abort, in the wasm build) on the
+    /// two-sided, symmetric and pocket paths.
+    #[test]
+    fn non_object_sketch_frame_refuses_without_panicking() {
+        let pts = json!([[0.0, 0.0], [20.0, 0.0], [20.0, 12.0], [0.0, 12.0]]);
+        for frame in [json!(5), json!("xy"), json!([1, 2, 3]), json!(true), Value::Null] {
+            for (kind, extra) in [
+                ("extrude", json!({ "midplane": true })),
+                ("extrude", json!({ "length2": 4.0 })),
+                ("extrude", json!({})),
+                ("pocket", json!({ "midplane": true })),
+                ("pocket", json!({ "length2": 2.0 })),
+                ("revolve", json!({})),
+            ] {
+                let mut feat = match kind {
+                    "extrude" => json!({ "id": "f1", "kind": "extrude", "target": "sk1", "height": 10.0 }),
+                    "pocket" => json!({ "id": "f1", "kind": "pocket", "target": "sk1", "into": "b0", "depth": 3.0 }),
+                    _ => json!({ "id": "f1", "kind": "revolve", "target": "sk1", "angle": 90.0 }),
+                };
+                for (k, v) in extra.as_object().unwrap() {
+                    feat[k] = v.clone();
+                }
+                let doc = json!({ "features": [
+                    { "id": "b0", "kind": "box", "size": [60, 50, 8], "center": [10, 5, 4] },
+                    { "id": "sk1", "kind": "sketch", "plane": "xy", "offset": 8.0, "frame": frame, "points": pts },
+                    feat
+                ]});
+                let (hist, refusals) = build_doc(&doc);
+                let msg = refusals.get("f1").and_then(|r| r.as_str()).unwrap_or("");
+                assert!(msg.contains("frame is not a plane"), "{kind} {extra} frame {frame}: {refusals:?}");
+                assert!(!hist.shapes.contains_key("f1"), "{kind} {extra} frame {frame}: no solid");
+            }
+        }
+        // The wasm entry point too (the path the panic killed the module on).
+        let doc = json!({ "features": [
+            { "id": "sk1", "kind": "sketch", "plane": "xy", "offset": 0.0, "frame": 5, "points": pts },
+            { "id": "e1", "kind": "extrude", "target": "sk1", "height": 10.0, "midplane": true }
+        ]});
+        let out: Value = serde_json::from_str(&build_doc_json(&doc.to_string())).expect("json out");
+        assert!(out.to_string().contains("frame is not a plane"), "{out}");
+        // sketch_shifted itself never panics on a malformed frame.
+        let bad = json!({ "plane": "xy", "frame": 5 });
+        assert!(sketch_shifted(&bad, 2.0).is_none());
+        assert!(sketch_shifted(&json!(7), 2.0).is_none());
+    }
+
+    /// A taper is an angle short of 90 degrees either way. tan() wraps past 90,
+    /// so 180 used to read as no taper (a plain 2400 prism, no refusal), and 90
+    /// and 270 built solids ~1e17 wide. Every one of those is refused in a
+    /// sentence with no solid, on the pad and the pocket; the largest allowed
+    /// taper still builds, measured against the prismatoid closed form.
+    #[test]
+    fn taper_beyond_the_limit_refuses_on_pad_and_pocket() {
+        let pad = |taper: Value| {
+            json!({ "features": [
+                { "id": "sk1", "kind": "sketch", "plane": "xy", "offset": 0.0, "points": [[0.0, 0.0], [20.0, 0.0], [20.0, 12.0], [0.0, 12.0]] },
+                { "id": "e1", "kind": "extrude", "target": "sk1", "height": 10.0, "taper": taper }
+            ]})
+        };
+        for t in [90.0, -90.0, 135.0, 180.0, 270.0, -180.0, 360.0, 89.95, 1e6] {
+            let (hist, refusals) = build_doc(&pad(json!(t)));
+            assert!(!hist.shapes.contains_key("e1"), "taper {t}: no solid");
+            let msg = refusals.get("e1").and_then(|r| r.as_str()).unwrap_or("");
+            assert!(msg.contains("taper") && msg.contains("cannot be built"), "taper {t}: {msg}");
+            let (hist, refusals) = build_doc(&plate_pocket_doc(8.0, json!({ "taper": t })));
+            assert!(!hist.shapes.contains_key("p1"), "pocket taper {t}: no solid");
+            let msg = refusals.get("p1").and_then(|r| r.as_str()).unwrap_or("");
+            assert!(msg.contains("taper") && msg.contains("cannot be built"), "pocket taper {t}: {msg}");
+        }
+        // A taper that is not a number refuses too, rather than reading as none.
+        let (hist, refusals) = build_doc(&pad(json!("10")));
+        assert!(!hist.shapes.contains_key("e1") && refusals["e1"].as_str().unwrap().contains("not a number"), "{refusals:?}");
+        // The limit itself builds, exactly: a frustum of two outlines, the top
+        // grown by 10 tan(89.9) on every side.
+        let a = 10.0 * TAPER_LIMIT_DEG.to_radians().tan();
+        let (hist, refusals) = build_doc(&pad(json!(TAPER_LIMIT_DEG)));
+        assert!(refusals.is_empty(), "{refusals:?}");
+        let v = build::solid_volume(hist.shapes.get("e1").unwrap());
+        let (a1, am, a2) = (240.0, (20.0 + a) * (12.0 + a), (20.0 + 2.0 * a) * (12.0 + 2.0 * a));
+        let want = 10.0 / 6.0 * (a1 + 4.0 * am + a2);
+        assert!((v - want).abs() < 1e-6 * want, "{v} vs {want}");
+        // And a round pad past the limit refuses on the circle path as well.
+        let doc = json!({ "features": [
+            { "id": "sk1", "kind": "sketch", "plane": "xy", "offset": 0.0, "shape": "circle", "points": [[-5.0, 0.0], [5.0, 0.0]] },
+            { "id": "e1", "kind": "extrude", "target": "sk1", "height": 10.0, "taper": 180.0 }
+        ]});
+        let (hist, refusals) = build_doc(&doc);
+        assert!(!hist.shapes.contains_key("e1") && refusals.contains_key("e1"), "{refusals:?}");
+    }
+
+    /// The sign of a pocket's depth is a direction, as in the OCCT referee
+    /// (`h = -f.depth * a.dir`) and as a pad's height sign is: a negative depth
+    /// cuts OUT of the sketch's face. On the z 0..8 plate, a sketch on the top
+    /// face cut -3 goes up into air (the cut misses: refused, no solid), and a
+    /// sketch on the bottom face cut -3 cuts z 0..3 -- the reverse of what the
+    /// depth.abs() reading did. Reversed flips a negative depth back again.
+    #[test]
+    fn pocket_negative_depth_cuts_the_other_way() {
+        let plate = 60.0 * 50.0 * 8.0;
+        let cut = 20.0 * 12.0 * 3.0;
+        // Top face, depth -3: up into air.
+        let (hist, refusals) = build_doc(&plate_pocket_doc(8.0, json!({ "depth": -3.0 })));
+        assert!(!hist.shapes.contains_key("p1"), "a cut into air leaves no solid");
+        assert!(refusals.contains_key("p1"), "{refusals:?}");
+        // Bottom face, depth -3: up into the plate, z 0..3.
+        let (hist, refusals) = build_doc(&plate_pocket_doc(0.0, json!({ "depth": -3.0 })));
+        assert!(refusals.is_empty(), "{refusals:?}");
+        let s = hist.shapes.get("p1").expect("cuts");
+        let v = build::solid_volume(s);
+        assert!((v - (plate - cut)).abs() < 1e-6, "volume {v}");
+        // The pocket's floor is at z = 3: the probe point above it is solid, below it is void.
+        assert!(ops::inside_solid(s, [10.0, 6.0, 3.5]) && !ops::inside_solid(s, [10.0, 6.0, 2.5]));
+        // Reversed undoes the negative sign: top face, depth -3, reversed = into the plate.
+        let (hist, refusals) = build_doc(&plate_pocket_doc(8.0, json!({ "depth": -3.0, "reversed": true })));
+        assert!(refusals.is_empty(), "{refusals:?}");
+        let s = hist.shapes.get("p1").expect("cuts");
+        assert!((build::solid_volume(s) - (plate - cut)).abs() < 1e-6);
+        assert!(ops::inside_solid(s, [10.0, 6.0, 4.5]) && !ops::inside_solid(s, [10.0, 6.0, 5.5]));
+        // Positive depth stays as it was: into the material from the top face.
+        let (hist, refusals) = build_doc(&plate_pocket_doc(8.0, json!({})));
+        assert!(refusals.is_empty(), "{refusals:?}");
+        assert!((build::solid_volume(hist.shapes.get("p1").unwrap()) - (plate - cut)).abs() < 1e-6);
+    }
+
+    /// A custom direction along the sketch normal is no slant: it builds the
+    /// plain prism, which takes arcs and holes (slanted_prism refuses both), so a
+    /// rounded or holed outline pulled along [0, 0, 1] builds exactly what the
+    /// plain pull does, and [0, 0, -1] builds the reversed pull. A zero vector
+    /// refuses in a sentence, as the script's own pull() does.
+    #[test]
+    fn direction_along_the_normal_is_the_plain_prism() {
+        let washer = |extra: Value| {
+            let mut e = json!({ "id": "e1", "kind": "extrude", "target": "sk1", "height": 12.0 });
+            for (k, v) in extra.as_object().unwrap() {
+                e[k] = v.clone();
+            }
+            json!({ "features": [
+                { "id": "sk1", "kind": "sketch", "plane": "xy", "offset": 0.0,
+                  "geoms": [
+                      { "k": "line", "id": 1, "a": [0.0, 0.0], "b": [40.0, 0.0] },
+                      { "k": "line", "id": 2, "a": [40.0, 0.0], "b": [40.0, 25.0] },
+                      { "k": "line", "id": 3, "a": [40.0, 25.0], "b": [0.0, 25.0] },
+                      { "k": "line", "id": 4, "a": [0.0, 25.0], "b": [0.0, 0.0] },
+                      { "k": "circle", "id": 5, "c": [20.0, 12.5], "r": 5.0 }
+                  ],
+                  "rules": [
+                      { "k": "coincident", "a": 1, "aEnd": "b", "b": 2, "bEnd": "a" },
+                      { "k": "coincident", "a": 2, "aEnd": "b", "b": 3, "bEnd": "a" },
+                      { "k": "coincident", "a": 3, "aEnd": "b", "b": 4, "bEnd": "a" },
+                      { "k": "coincident", "a": 4, "aEnd": "b", "b": 1, "bEnd": "a" },
+                      { "k": "horizontal", "a": 1 },
+                      { "k": "vertical", "a": 2 }
+                  ] },
+                e
+            ]})
+        };
+        let measure = |extra: Value| {
+            let (hist, refusals) = build_doc(&washer(extra.clone()));
+            assert!(refusals.is_empty(), "{extra}: {refusals:?}");
+            let s = hist.shapes.get("e1").unwrap();
+            (build::solid_volume(s), build::solid_aabb(s), s.faces().len(), hist.sweeps.get("e1").map(|r| (r.cap_bottom, r.cap_top)))
+        };
+        let (v0, bb0, f0, caps0) = measure(json!({}));
+        let want = (1000.0 - 25.0 * std::f64::consts::PI) * 12.0;
+        assert!((v0 - want).abs() < 1e-6 * want, "{v0} vs {want}");
+        // Along +z (any length of vector): the plain pull, caps named the same way.
+        for d in [json!([0.0, 0.0, 1.0]), json!([0.0, 0.0, 3.5])] {
+            let (v, bb, f, caps) = measure(json!({ "direction": d }));
+            assert!((v - v0).abs() < 1e-9 * v0 && bb.lo == bb0.lo && bb.hi == bb0.hi && f == f0 && caps == caps0, "{d}");
+        }
+        // Along -z: the reversed pull, exactly.
+        let (vr, bbr, fr_, capsr) = measure(json!({ "reversed": true }));
+        let (v, bb, f, caps) = measure(json!({ "direction": [0.0, 0.0, -2.0] }));
+        assert!((v - vr).abs() < 1e-9 * vr && bb.lo == bbr.lo && bb.hi == bbr.hi && f == fr_ && caps == capsr, "{bb:?} vs {bbr:?}");
+        assert!((bb.lo[2] + 12.0).abs() < 1e-9 && bb.hi[2].abs() < 1e-9, "{bb:?}");
+        // A zero vector points nowhere: refused, no solid.
+        let (hist, refusals) = build_doc(&washer(json!({ "direction": [0.0, 0.0, 0.0] })));
+        assert!(!hist.shapes.contains_key("e1"));
+        assert!(refusals["e1"].as_str().unwrap().contains("points nowhere"), "{refusals:?}");
+        // A rounded outline (arcs, which slanted_prism refuses) pulled along +z.
+        let rounded_pad = |extra: Value| {
+            let mut e = json!({ "id": "e1", "kind": "extrude", "target": "sk1", "height": 10.0 });
+            for (k, v) in extra.as_object().unwrap() {
+                e[k] = v.clone();
+            }
+            json!({ "features": [
+                { "id": "sk1", "kind": "sketch", "plane": "xy", "offset": 0.0,
+                  "points": [[0.0, 0.0], [20.0, 0.0], [20.0, 12.0], [0.0, 12.0]],
+                  "rounds": { "0": 2.0, "1": 2.0, "2": 2.0, "3": 2.0 } },
+                e
+            ]})
+        };
+        // 20 x 12 with four r2 rounds: 240 - 4 (4 - pi), pulled 10.
+        let want = 10.0 * (240.0 - 4.0 * (4.0 - std::f64::consts::PI));
+        for extra in [json!({}), json!({ "direction": [0.0, 0.0, 1.0] })] {
+            let (hist, refusals) = build_doc(&rounded_pad(extra.clone()));
+            assert!(refusals.is_empty(), "{extra}: {refusals:?}");
+            let v = build::solid_volume(hist.shapes.get("e1").unwrap());
+            assert!((v - want).abs() < 1e-6 * want, "{extra}: {v} vs {want}");
+        }
+        // A pocket whose direction runs into the material is the plain pocket; one
+        // pointing out of it is the reversed pocket. Here with the washer's island,
+        // which slanted_prism would refuse: a 60 x 50 x 20 block, the washer
+        // outline on its top face (z = 10), cut 5 deep.
+        let holed = |extra: Value| {
+            let mut doc = washer(json!({}));
+            let mut sk = doc["features"][0].clone();
+            sk["offset"] = json!(10.0);
+            let mut p = json!({ "id": "p1", "kind": "pocket", "target": "sk1", "into": "b1", "depth": 5.0 });
+            for (k, v) in extra.as_object().unwrap() {
+                p[k] = v.clone();
+            }
+            doc["features"] = json!([{ "id": "b1", "kind": "box", "size": [60.0, 50.0, 20.0], "center": [20.0, 12.5, 0.0] }, sk, p]);
+            doc
+        };
+        let want = 60.0 * 50.0 * 20.0 - (1000.0 - 25.0 * std::f64::consts::PI) * 5.0;
+        for extra in [json!({}), json!({ "direction": [0.0, 0.0, -1.0] })] {
+            let (hist, refusals) = build_doc(&holed(extra.clone()));
+            assert!(refusals.is_empty(), "{extra}: {refusals:?}");
+            let v = build::solid_volume(hist.shapes.get("p1").unwrap());
+            assert!((v - want).abs() < 1e-6 * want, "{extra}: {v} vs {want}");
+        }
+        // Out of the top face, [0, 0, 1], cuts air: exactly what reversed does.
+        let (h1, r1) = build_doc(&holed(json!({ "direction": [0.0, 0.0, 1.0] })));
+        let (h2, r2) = build_doc(&holed(json!({ "reversed": true })));
+        assert_eq!(h1.shapes.contains_key("p1"), h2.shapes.contains_key("p1"));
+        assert_eq!(r1.get("p1"), r2.get("p1"));
+        assert!(r1.contains_key("p1") && !h1.shapes.contains_key("p1"), "a cut into air refuses: {r1:?}");
+        let (hist, refusals) = build_doc(&holed(json!({ "direction": [0.0, 0.0, 0.0] })));
+        assert!(!hist.shapes.contains_key("p1") && refusals["p1"].as_str().unwrap().contains("points nowhere"), "{refusals:?}");
+    }
+
     /// S1: a sketch carrying an explicit `frame` extrudes flat on that frame.
     /// A 40x25 rectangle swept 12 along the frame normal is the same prism
     /// volume as the named-plane fixture (12000), with the same 6 faces -- but
@@ -5198,8 +6266,9 @@ mod tests {
 
     /// SPEC-sketcher2 §8.2, end to end: a soup washer -- a 40x25 plate with a
     /// 10 mm bore -- builds through build_doc_json. (1000 - 25*pi) * 12 =
-    /// 11057.522204 mm^3 on 4 plate walls + 2 bore walls + 2 caps, each cap
-    /// carrying both wires.
+    /// 11057.522204 mm^3 on 4 plate walls + 1 bore wall + 2 caps, each cap
+    /// carrying both wires. The bore is ONE wall (a whole cylinder closing on
+    /// its seam, as a circle sketch's cylinder is), not two half cylinders.
     #[test]
     fn soup_washer_extrudes() {
         let doc = json!({
@@ -5231,22 +6300,22 @@ mod tests {
         let want = (1000.0 - 25.0 * std::f64::consts::PI) * 12.0;
         let vol = build::solid_volume(solid);
         assert!((vol - want).abs() <= 1e-6 * want, "volume {vol} vs {want}");
-        assert_eq!(solid.faces().len(), 8, "4 plate walls + 2 bore walls + 2 caps");
+        assert_eq!(solid.faces().len(), 7, "4 plate walls + 1 bore wall + 2 caps");
         let bb = build::solid_aabb(solid);
         assert_eq!(bb.lo, [0.0, 0.0, 0.0], "the bore takes nothing off the box");
         assert_eq!(bb.hi, [40.0, 25.0, 12.0]);
         // The sweep record's caps must still land on the multi-wire caps: the
-        // walls are summed over BOTH loops, so they are faces 6 and 7.
+        // walls are summed over BOTH loops, so they are faces 5 and 6.
         let sweep = hist.sweeps.get("e1").expect("the extrude records a sweep");
-        assert_eq!(sweep.segments.len(), 6, "one wall per segment of both loops");
-        assert_eq!(sweep.cap_bottom, Some(6), "the base cap sits after every wall");
-        assert_eq!(sweep.cap_top, Some(7));
+        assert_eq!(sweep.segments.len(), 5, "one wall per segment of the outline, one for the bore");
+        assert_eq!(sweep.cap_bottom, Some(5), "the base cap sits after every wall");
+        assert_eq!(sweep.cap_top, Some(6));
         // And MEASURED, not just counted: a cap holds 1000 - 25*pi mm^2, which
         // no wall of this prism does (the widest is 40 x 12 = 480), so an
         // index that had slipped onto a wall would fail here.
         let faces = solid.faces();
         let cap_area = 1000.0 - 25.0 * std::f64::consts::PI;
-        for i in [6usize, 7] {
+        for i in [5usize, 6] {
             let face = faces.get(i).expect("the cap exists");
             let (area, _) = history::face_measure(face);
             assert!(
@@ -5255,16 +6324,15 @@ mod tests {
             );
         }
         // The whole face layout, which is what the SweepRecord's role indices
-        // mean: the outline's four walls, then the bore's two, then the caps.
-        // The bore's walls are half cylinders, 5*pi*12 = 188.495559 each.
-        let bore_wall = 5.0 * std::f64::consts::PI * 12.0;
+        // mean: the outline's four walls, then the bore's one, then the caps.
+        // The bore's wall is a whole cylinder, 2*pi*5*12 = 376.99 mm^2.
+        let bore_wall = 10.0 * std::f64::consts::PI * 12.0;
         for (i, want) in [
             (0usize, 480.0),
             (1, 300.0),
             (2, 480.0),
             (3, 300.0),
             (4, bore_wall),
-            (5, bore_wall),
         ] {
             let face = faces.get(i).expect("the wall exists");
             let (area, _) = history::face_measure(face);
@@ -5276,13 +6344,13 @@ mod tests {
     }
 
     /// The other side of §8.2: an annular profile EXTRUDES, and the same
-    /// profile used as a pocket TOOL does not cut. Measured against the
-    /// control -- the identical pocket without the bore cuts exactly, 30000
-    /// mm^3 on 11 faces -- so the annulus is the part `ops::boolean` cannot
-    /// do, and the refusal says that rather than blaming enclosure.
+    /// profile used as a pocket TOOL cannot be cut as one ring (ops::boolean
+    /// returns None for it). The pocket is cut as the outline's pocket with
+    /// each island's material put back; volume, faces and the through case
+    /// are measured against FreeCAD in docs/replica/freecad/gauntlet.
     #[test]
-    fn soup_annular_pocket_refuses_by_name() {
-        let soup = |bore: bool| {
+    fn soup_annular_pocket_cuts_with_its_island() {
+        let soup = |bore: bool, depth: f64| {
             let mut geoms = vec![
                 json!({ "k": "line", "id": 1, "a": [-10.0, -10.0], "b": [10.0, -10.0] }),
                 json!({ "k": "line", "id": 2, "a": [10.0, -10.0], "b": [10.0, 10.0] }),
@@ -5307,30 +6375,33 @@ mod tests {
                             { "k": "vertical", "a": 2 }
                         ]
                     },
-                    { "id": "pk1", "kind": "pocket", "target": "sk1", "into": "b1", "depth": 5.0 }
+                    { "id": "pk1", "kind": "pocket", "target": "sk1", "into": "b1", "depth": depth }
                 ]
             })
         };
 
-        // The control first, so the refusal below cannot be read as "soup
-        // pockets do not work".
-        let (hist, refusals) = build_doc(&soup(false));
+        // The control first: the same pocket without the island.
+        let (hist, refusals) = build_doc(&soup(false, 5.0));
         assert!(refusals.is_empty(), "a plain soup pocket cuts: {refusals:?}");
-        let cut = hist.shapes.get("pk1").expect("the control must build");
-        let vol = build::solid_volume(cut);
+        let vol = build::solid_volume(hist.shapes.get("pk1").expect("the control must build"));
         assert!((vol - 30000.0).abs() <= 1e-6 * 30000.0, "volume {vol} vs 30000");
 
-        let (hist, refusals) = build_doc(&soup(true));
+        // With the island: the box minus the pocket's ring, 13 faces (the
+        // box's 6, four walls, the floor, the island's wall and its top).
+        let (hist, refusals) = build_doc(&soup(true, 5.0));
+        assert!(refusals.is_empty(), "an island pocket cuts: {refusals:?}");
+        let cut = hist.shapes.get("pk1").expect("the island pocket must build");
+        let want = 30000.0 + 45.0 * std::f64::consts::PI;
+        let vol = build::solid_volume(cut);
+        assert!((vol - want).abs() <= 1e-9 * want, "volume {vol} vs {want}");
+        assert_eq!(cut.faces().len(), 13, "faces");
+
+        // As deep as the part (20): the island would stand alone, which is
+        // refused in a sentence, with no solid.
+        let (hist, refusals) = build_doc(&soup(true, 20.0));
         let msg = refusals.get("pk1").and_then(|v| v.as_str()).unwrap_or("");
-        assert!(
-            msg.contains("has a hole through its outline")
-                && msg.contains("cannot cut a pocket with an annular tool yet"),
-            "the refusal names the bore, not enclosure: {msg}"
-        );
-        assert!(
-            hist.shapes.get("pk1").is_none(),
-            "and no solid is left behind pretending the cut happened"
-        );
+        assert!(msg.contains("separate piece"), "{msg}");
+        assert!(hist.shapes.get("pk1").is_none());
     }
 
     /// Adversarial hunt for 82ec736: the washer's caps are the first MULTI-WIRE
@@ -5369,7 +6440,7 @@ mod tests {
         let hist = build_doc(&doc);
         let solid = hist.0.shapes.get("e1").expect("the washer must build");
         let m = crate::mesh::mesh_solid(solid, 0.05).expect("the washer meshes");
-        assert_eq!(m.faces.len(), 8, "one range per B-rep face");
+        assert_eq!(m.faces.len(), 7, "one range per B-rep face");
         // Watertight: every directed welded edge has an equal-count opposite.
         use std::collections::HashMap;
         let key = |p: [f64; 3]| {
@@ -5403,8 +6474,8 @@ mod tests {
         // A cap's range must be more than the 2 triangles a hole-blind
         // triangulator would produce for an annulus (earcut needs >= 8 for a
         // 4-sided outer ring around one hole).
-        let (cap_start, cap_count) = m.faces[6];
-        assert!(cap_count >= 8 * 3, "cap 6 (annulus) undertriangulated: {cap_count} indices");
+        let (cap_start, cap_count) = m.faces[5];
+        assert!(cap_count >= 8 * 3, "cap 5 (annulus) undertriangulated: {cap_count} indices");
         let _ = cap_start;
 
         // --- STEP: exports (or refuses by name -- this kernel refuses conical/
@@ -5417,16 +6488,16 @@ mod tests {
         // The plate's two caps must each carry TWO bounds (outer + bore) --
         // exactly the multi-wire-face defect class W9a's own report warned about.
         let advanced_faces = text.matches("ADVANCED_FACE").count();
-        assert!(advanced_faces >= 8, "8 faces must appear as ADVANCED_FACEs: {advanced_faces}");
+        assert!(advanced_faces >= 7, "7 faces must appear as ADVANCED_FACEs: {advanced_faces}");
 
         // --- naming: name_face on a bore wall and a cap resolve; name_edge
         // between a cap and a bore wall resolves (the multi-wire face's OWN
         // wire boundary, not just its outer one) ---
-        let cap_name = name_face_of(&hist.0, "e1", &solid.faces()[6]);
+        let cap_name = name_face_of(&hist.0, "e1", &solid.faces()[5]);
         assert!(cap_name.is_some(), "a cap of a multi-wire face must still name (sweep record)");
         let bore_wall_name = name_face_of(&hist.0, "e1", &solid.faces()[4]);
         assert!(bore_wall_name.is_some(), "a bore wall must still name (sweep record)");
-        // Find an edge shared by the cap (face 6) and a bore wall (face 4 or 5):
+        // Find an edge shared by the cap (face 5) and the bore wall (face 4):
         // the bore's rim circle. If exactly 2 faces use it, name_edge resolves.
         let edges = solid.edges();
         let bore_rim = edges.iter().position(|e| {
@@ -5438,7 +6509,7 @@ mod tests {
                 if used { n += 1; }
             }
             n == 2
-                && solid.faces()[6].borrow().boundary.iter().any(|w| {
+                && solid.faces()[5].borrow().boundary.iter().any(|w| {
                     w.borrow().edges.iter().any(|u| topo::same(&u.edge, e))
                 })
         });
@@ -5446,6 +6517,40 @@ mod tests {
         let idx = bore_rim.unwrap();
         let a = name_edge(&doc_json, "e1", idx);
         assert_ne!(a, "null", "name_edge on the bore rim (cap<->bore-wall) must resolve, got: {a}");
+    }
+
+    /// Two circle rows, one inside the other, extrude to a ring of FOUR faces
+    /// (outer wall, bore wall, two caps): each circle is one wall closing on
+    /// its seam, never two half cylinders. FreeCAD gives 4 faces, volume
+    /// pi * (20^2 - 10^2) * 15, and so does a circle sketch's own extrusion.
+    #[test]
+    fn soup_nested_circles_extrude_to_a_four_face_ring() {
+        for h in [15.0, -15.0] {
+            let doc = json!({
+                "features": [
+                    {
+                        "id": "sk1", "kind": "sketch", "plane": "xy", "offset": 0.0,
+                        "geoms": [
+                            { "k": "circle", "id": 1, "c": [0.0, 0.0], "r": 20.0 },
+                            { "k": "circle", "id": 2, "c": [0.0, 0.0], "r": 10.0 }
+                        ],
+                        "rules": []
+                    },
+                    { "id": "e1", "kind": "extrude", "target": "sk1", "height": h }
+                ]
+            });
+            let (hist, refusals) = build_doc(&doc);
+            assert!(refusals.is_empty(), "refusals: {refusals:?}");
+            let solid = hist.shapes.get("e1").expect("the ring must build");
+            let want = std::f64::consts::PI * (400.0 - 100.0) * 15.0;
+            let vol = build::solid_volume(solid);
+            assert!((vol - want).abs() <= 1e-6 * want, "volume {vol} vs {want} at height {h}");
+            assert_eq!(solid.faces().len(), 4, "outer wall + bore wall + 2 caps at height {h}");
+            let m = crate::mesh::mesh_solid(solid, 0.05).expect("the ring meshes");
+            assert_eq!(m.faces.len(), 4);
+            let text = crate::step::write_solid(solid, "e1").expect("a ring is planes and cylinders");
+            assert!(text.matches("ADVANCED_FACE").count() >= 4);
+        }
     }
 
     #[test]
@@ -5987,6 +7092,82 @@ fn countersink_variants_are_exact() {
  let mesh = crate::mesh::mesh_solid(hist.shapes.get("h1").unwrap(), 0.05).expect("countersink meshes");
  assert!(ops::check_watertight(&mesh), "{what}: countersink mesh is watertight");
  }
+}
+
+/// A recess down a cylinder's own axis is an edit of its turned profile: exact, five faces for a
+/// countersink (six for a counterbore), watertight, writable to STEP; a cone deeper than the hole
+/// refuses with no solid rather than guessing.
+#[test]
+fn recess_down_a_cylinders_axis_is_exact() {
+    let pi = std::f64::consts::PI;
+    let hole = |recess: Value, diameter: f64| {
+        let mut h = json!({ "id": "h1", "kind": "hole", "target": "c1", "diameter": diameter, "depth": 22, "center": [0, 0, 0], "axis": "z" });
+        for (k, v) in recess.as_object().unwrap() {
+            h[k] = v.clone();
+        }
+        json!({ "version": 1, "features": [{ "id": "c1", "kind": "cylinder", "radius": 15.0, "height": 20.0, "center": [0, 0, 10] }, h], "measure": "h1" })
+    };
+    let full = pi * 225.0 * 20.0;
+    for (what, recess, d, extra, faces) in [
+        // frustum r6 -> r3 over 3 mm (90 degrees), minus the bore already counted
+        ("countersink 90", json!({ "countersink": { "diameter": 12, "angleDeg": 90 } }), 6.0, pi * 3.0 / 3.0 * (36.0 + 18.0 + 9.0) - pi * 9.0 * 3.0, 5usize),
+        ("countersink 60", json!({ "countersink": { "diameter": 12, "angleDeg": 60 } }), 6.0, {
+            let dp = 3.0 / (30.0_f64.to_radians()).tan();
+            pi * dp / 3.0 * (36.0 + 18.0 + 9.0) - pi * 9.0 * dp
+        }, 5),
+        ("counterbore", json!({ "counterbore": { "diameter": 12, "depth": 4 } }), 6.0, pi * (36.0 - 9.0) * 4.0, 6),
+    ] {
+        let (hist, refusals) = build_doc(&hole(recess, d));
+        assert!(refusals.is_empty(), "{what}: {refusals:?}");
+        let sol = hist.shapes.get("h1").expect("h1 built");
+        let want = full - pi * 9.0 * 20.0 - extra;
+        let got = build::solid_volume(sol);
+        assert!((got - want).abs() <= 1e-9 * want, "{what}: volume {got} vs exact {want}");
+        assert_eq!(sol.faces().len(), faces, "{what}: faces");
+        let mesh = crate::mesh::mesh_solid(sol, 0.05).expect("meshes");
+        assert!(ops::check_watertight(&mesh), "{what}: watertight");
+        let out: Value = serde_json::from_str(&export_step(&hole(json!({ "countersink": { "diameter": 12, "angleDeg": 90 } }), 6.0).to_string(), "h1")).unwrap();
+        assert!(out.get("error").is_none(), "{what}: {out}");
+    }
+    // The cone (diameter 12, 10 degrees: ~34 mm deep) is deeper than the 20 mm part: refuse, build nothing.
+    let (hist, refusals) = build_doc(&hole(json!({ "countersink": { "diameter": 12, "angleDeg": 10 } }), 6.0));
+    assert!(!hist.shapes.contains_key("h1") || refusals.contains_key("h1"), "no solid for a cone deeper than the part");
+}
+
+/// A countersink whose cone is deeper than the plate it goes through leaves the plate as a plain frustum
+/// opening (nothing of the bore remains): exact volume, seven faces, watertight, writable to STEP.
+/// The same cone as wide as the plate touches its edges at a point, which refuses with no solid.
+#[test]
+fn countersink_cone_deeper_than_the_plate_is_exact_or_refused() {
+    let pi = std::f64::consts::PI;
+    let plate = |w: f64, d: f64, angle: f64| {
+        json!({ "version": 1, "features": [
+            { "id": "b1", "kind": "box", "size": [w, 40, 10], "center": [0, 0, 5] },
+            { "id": "h1", "kind": "hole", "target": "b1", "diameter": 5, "depth": 12, "center": [0, 0, 0], "axis": "z",
+              "countersink": { "diameter": d, "angleDeg": angle } }], "measure": "h1" })
+    };
+    for (what, d, angle) in [("90", 30.0, 90.0), ("60", 30.0, 60.0), ("45", 28.0, 45.0)] {
+        let doc = plate(40.0, d, angle);
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "{what}: {refusals:?}");
+        let sol = hist.shapes.get("h1").expect("h1 built");
+        let (r0, t) = (0.5 * d, (0.5 * angle.to_radians()).tan());
+        let r1 = r0 - 10.0 * t;
+        assert!(r1 > 2.5, "{what}: the cone must outrun the bore inside the plate");
+        let want = 40.0 * 40.0 * 10.0 - pi * 10.0 / 3.0 * (r0 * r0 + r0 * r1 + r1 * r1);
+        let got = build::solid_volume(sol);
+        assert!((got - want).abs() <= 1e-9 * want, "{what}: volume {got} vs exact {want}");
+        assert_eq!(sol.faces().len(), 7, "{what}: faces");
+        let mesh = crate::mesh::mesh_solid(sol, 0.05).expect("meshes");
+        assert!(ops::check_watertight(&mesh), "{what}: watertight");
+        let out: Value = serde_json::from_str(&export_step(&doc.to_string(), "h1")).unwrap();
+        assert!(out.get("error").is_none(), "{what}: {out}");
+    }
+    // As wide as the plate: the rim touches the plate's edges at a point.
+    let (hist, refusals) = build_doc(&plate(30.0, 30.0, 90.0));
+    let sentence = refusals.get("h1").and_then(|v| v.as_str()).expect("a refusal sentence");
+    assert!(sentence.contains("touch"), "{sentence}");
+    assert!(!hist.shapes.contains_key("h1") || refusals.contains_key("h1"));
 }
 
 #[test]
@@ -9235,6 +10416,118 @@ mod cavity_guard_tests {
             let a = build_doc(&json!({ "features": k8_rev(json!([[5.0, 0.0], [15.0, 0.0], [15.0, 20.0], [5.0, 20.0]]), angle) })).0;
             let b = build_doc(&json!({ "features": k8_rev(json!([[-15.0, 0.0], [-5.0, 0.0], [-5.0, 20.0], [-15.0, 20.0]]), angle) })).0;
             assert_eq!(a.shapes["r"].faces().len(), b.shapes["r"].faces().len());
+        }
+    }
+
+    /// A negative angle sweeps the other way round the axis (the reverse of the positive sweep, not
+    /// a solid of the same volume somewhere else), and an angle past a full turn is a full turn.
+    #[test]
+    fn revolve_negative_and_oversize_angles() {
+        let pi = std::f64::consts::PI;
+        let pts = json!([[5.0, 0.0], [15.0, 0.0], [15.0, 20.0], [5.0, 20.0]]);
+        let full = pi * (15.0_f64.powi(2) - 5.0_f64.powi(2)) * 20.0;
+        for (angle, frac) in [(-90.0, 0.25), (-180.0, 0.5), (-45.0, 0.125), (-360.0, 1.0), (400.0, 1.0), (720.0, 1.0)] {
+            let (hist, refusals) = build_doc(&json!({ "features": k8_rev(pts.clone(), angle) }));
+            assert!(refusals.is_empty(), "{angle}: {refusals:?}");
+            let v = build::solid_volume(hist.shapes.get("r").unwrap());
+            assert!((v - full * frac).abs() < 1e-6 * full, "angle {angle}: {v}");
+        }
+        let (hist, refusals) = build_doc(&json!({ "features": k8_rev(pts.clone(), 0.0) }));
+        assert!(!hist.shapes.contains_key("r") && refusals["r"].as_str().unwrap().contains("angle other than 0"), "{refusals:?}");
+    }
+
+    /// A partial revolve's planar annulus sector is bounded by two arcs whose end vertices lie ON their circles at the sweep
+    /// (the inner arc starts at the swept end, so its end is that direction turned back by the angle, not the base plane's e2):
+    /// the wire chains, so the STEP writer takes the quarter turns it used to refuse.
+    #[test]
+    fn partial_revolve_writes_step() {
+        let pts = json!([[5.0, 0.0], [15.0, 0.0], [15.0, 20.0], [5.0, 20.0]]);
+        for angle in [90.0, -90.0, 270.0, -270.0, 45.0, 180.0, -180.0] {
+            let doc = json!({ "features": k8_rev(pts.clone(), angle) });
+            let out: Value = serde_json::from_str(&export_step(&doc.to_string(), "r")).unwrap();
+            assert!(out.get("error").is_none(), "{angle}: {out}");
+            assert!(out["step"].as_str().unwrap().contains("MANIFOLD_SOLID_BREP"), "{angle}");
+        }
+    }
+
+    /// A partial revolve's `bottom` cap is the profile where the spin starts
+    /// (the sketch plane, OCCT's FirstShape) and `top` where it ends, for a
+    /// negative angle as for a positive one. The -90 solid is the +90 one
+    /// mirrored through the sketch plane, so its top cap is the mirror of +90's:
+    /// it used to resolve to the cap ON the sketch plane instead, and a hole put
+    /// on `top` landed on the wrong end with no refusal. Here a hole is placed
+    /// against each resolved cap (3 mm in from it along the cap's inward normal,
+    /// through the part along the spin axis -- a blind bore into the cap face
+    /// itself is a cut brep-rs refuses yet) and must cut exactly pi r^2 h at
+    /// that end, leaving the other end's material untouched.
+    #[test]
+    fn negative_revolve_caps_name_the_right_ends() {
+        let pi = std::f64::consts::PI;
+        let pts = json!([[5.0, 0.0], [15.0, 0.0], [15.0, 20.0], [5.0, 20.0]]);
+        let rev = |angle: f64| {
+            vec![
+                json!({ "id": "s", "kind": "sketch", "plane": "xy", "offset": 0.0, "points": pts.clone() }),
+                json!({ "id": "r", "kind": "revolve", "target": "s", "angle": angle }),
+            ]
+        };
+        let cap = |angle: f64, end: &str| -> (Vec3, Vec3, f64) {
+            let doc = json!({ "features": rev(angle) });
+            let name = json!({ "cause": "cap", "feature": "r", "kind": "face", "end": end });
+            let got: Value = serde_json::from_str(&resolve(&doc.to_string(), &name.to_string())).unwrap();
+            let c = got["centroid"].as_array().unwrap_or_else(|| panic!("{angle} {end}: {got}"));
+            let c = [c[0].as_f64().unwrap(), c[1].as_f64().unwrap(), c[2].as_f64().unwrap()];
+            let fi = got["faceIndex"].as_u64().expect("faceIndex") as usize;
+            let (hist, _) = build_doc(&doc);
+            let face = hist.shapes["r"].faces()[fi].clone();
+            let n = match &face.borrow().surface {
+                crate::geom::Surface::Plane(p) => p.n,
+                _ => panic!("{angle} {end}: a cap is planar"),
+            };
+            (c, n, got["area"].as_f64().unwrap())
+        };
+        let cap_area = 10.0 * 20.0;
+        let (b_pos, _, ab_pos) = cap(90.0, "bottom");
+        let (b_neg, _, ab_neg) = cap(-90.0, "bottom");
+        let (t_pos, n_pos, at_pos) = cap(90.0, "top");
+        let (t_neg, n_neg, at_neg) = cap(-90.0, "top");
+        for a in [ab_pos, ab_neg, at_pos, at_neg] {
+            assert!((a - cap_area).abs() < 1e-9, "a cap is the 10 x 20 profile: {a}");
+        }
+        // Both bottoms are the profile on the sketch's own half plane: u = x from 5 to 15, y = 0.
+        for b in [b_pos, b_neg] {
+            assert!((b[0] - 10.0).abs() < 1e-9 && b[1].abs() < 1e-9 && (b[2] - 10.0).abs() < 1e-9, "bottom {b:?}");
+        }
+        // Each top is a quarter turn away, on opposite sides: mirror images through y = 0.
+        assert!(t_pos[0].abs() < 1e-9 && (t_pos[1].abs() - 10.0).abs() < 1e-9 && (t_pos[2] - 10.0).abs() < 1e-9, "top +90 {t_pos:?}");
+        assert!(t_neg[0].abs() < 1e-9 && (t_neg[1] + t_pos[1]).abs() < 1e-9 && (t_neg[2] - 10.0).abs() < 1e-9, "top -90 {t_neg:?}");
+        // The -90 solid sits on the far side of the sketch plane from the +90 one.
+        let bb = |angle: f64| build::solid_aabb(&build_doc(&json!({ "features": rev(angle) })).0.shapes["r"]);
+        let (pos, neg) = (bb(90.0), bb(-90.0));
+        assert!(pos.lo[1] * neg.hi[1] <= 1e-18 && (pos.lo[1] + neg.hi[1]).abs() < 1e-9 && (pos.hi[1] + neg.lo[1]).abs() < 1e-9, "{pos:?} {neg:?}");
+        // A hole placed against each `top`: 3 mm in from the cap along its inward
+        // normal, at the cap's resolved centre, bored through along the spin axis.
+        let (_, nb_pos, _) = cap(90.0, "bottom");
+        let (_, nb_neg, _) = cap(-90.0, "bottom");
+        for (angle, c, n, b, nb) in [(90.0, t_pos, n_pos, b_pos, nb_pos), (-90.0, t_neg, n_neg, b_neg, nb_neg)] {
+            assert!(n[1].abs() < 1e-9 && n[2].abs() < 1e-9 && (n[0].abs() - 1.0).abs() < 1e-9, "the top cap faces along x: {n:?}");
+            let r = build::solid_volume(&build_doc(&json!({ "features": rev(angle) })).0.shapes["r"]);
+            let quarter = pi * (15.0_f64.powi(2) - 5.0_f64.powi(2)) * 20.0 / 4.0;
+            assert!((r - quarter).abs() < 1e-9 * quarter, "{angle}: {r}");
+            let at = sub(c, scale(n, 3.0));
+            let centre = bb(angle).center();
+            let mut feats = rev(angle);
+            feats.push(json!({ "id": "h1", "kind": "hole", "target": "r", "diameter": 4.0, "depth": 30.0, "axis": "z",
+                               "center": [at[0] - centre[0], at[1] - centre[1], 0.0] }));
+            let (hist, refusals) = build_doc(&json!({ "features": feats }));
+            assert!(refusals.is_empty(), "{angle}: {refusals:?}");
+            let s = &hist.shapes["h1"];
+            let got = build::solid_volume(s);
+            let want = r - pi * 4.0 * 20.0;
+            assert!((got - want).abs() < 1e-9 * want, "{angle}: the bore removes pi r^2 h: {got} vs {want}");
+            // The bore is at the top end, and the bottom end's material is untouched.
+            assert!(!ops::inside_solid(s, [at[0], at[1], 10.0]), "{angle}: the bore is by the top cap");
+            let by_bottom = sub(b, scale(nb, 3.0));
+            assert!(ops::inside_solid(s, [by_bottom[0], by_bottom[1], 10.0]), "{angle}: the bottom end is still solid");
         }
     }
 

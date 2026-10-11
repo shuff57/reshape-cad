@@ -146,6 +146,24 @@ export interface PocketFeature {
    *  fixed (into the material, opposite the way extrude pulls) so a student
    *  cannot type a sign that silently cuts air. */
   depth: number;
+  /** "Symmetric to plane": the cut spans depth/2 either side of the sketch
+   *  plane. Absent means one sided, into the material. */
+  midplane?: boolean;
+  /** "Two sides": a second depth cut the OPPOSITE way (out of the mouth). */
+  length2?: number;
+  /** Cut the other way from the sketch plane (away from the material the
+   *  pocket normally goes into). */
+  reversed?: boolean;
+  /** Taper angle in degrees; positive grows the cut outward as it deepens. */
+  taper?: number;
+  /** Custom cut direction (world x, y, z). Absent: along the sketch normal. */
+  direction?: [number, number, number];
+  /** With a custom direction: is `depth` measured along the sketch normal
+   *  (the default, true) or along the direction itself (false)? */
+  alongNormal?: boolean;
+  /** "Through all": the cut goes the whole way through the solid; `depth`
+   *  stays stored (it is what the field shows when the type changes back). */
+  through?: boolean;
 }
 
 /** Which flat plane a sketch is drawn on. Extrusion runs perpendicular to it. */
@@ -426,6 +444,24 @@ export interface ExtrudeFeature {
   /** The sketch this pulls into a solid. */
   target: string;
   height: number;
+  /** Pad "Symmetric to plane": the solid spans height/2 either side of the
+   *  sketch plane instead of growing from it. Absent means one sided. */
+  midplane?: boolean;
+  /** Pad "Two sides": a second length grown the OPPOSITE way from the
+   *  sketch plane, so the solid spans length2 behind it and height ahead.
+   *  Positive; mutually exclusive with midplane (midplane wins). */
+  length2?: number;
+  /** Grow the other way from the sketch plane. Kept apart from the sign of
+   *  `height` so a named param feeding height never flips the direction. */
+  reversed?: boolean;
+  /** Taper angle in degrees; positive grows the profile outward as the pad
+   *  lengthens (FreeCAD's sign), negative narrows it. */
+  taper?: number;
+  /** Custom pull direction (world x, y, z). Absent: along the sketch normal. */
+  direction?: [number, number, number];
+  /** With a custom direction: is `height` measured along the sketch normal
+   *  (the default, true) or along the direction itself (false)? */
+  alongNormal?: boolean;
 }
 
 /**
@@ -1271,7 +1307,10 @@ const unitAxisOf = (v: Vec3): { i: 0 | 1 | 2; sign: number } | null => {
 /** Where an extruded sketch sits along one world axis: its outline's extent for
  *  an in-plane axis, the pull depth for the sweep axis. null unless the frame's
  *  u, v and normal are all world axes. */
-function extrudeRange(sk: SketchFeature, height: number, axis: Axis3): Range | null {
+function extrudeRange(
+  sk: SketchFeature, height: number, axis: Axis3,
+  opt: { midplane?: boolean; length2?: number; reversed?: boolean } = {},
+): Range | null {
   const bounds = sketchBounds2D(sk);
   if (!bounds || !(height > 0)) return null;
   const fr = sketchFrameOf(sk);
@@ -1281,8 +1320,11 @@ function extrudeRange(sk: SketchFeature, height: number, axis: Axis3): Range | n
   const o = fr.origin[i];
   if (ni.i === i) {
     const dir = sk.frame ? 1 : (SWEEP_DIR[sk.plane ?? 'xy'] ?? 1);
-    const far = o + ni.sign * dir * height;
-    return { lo: Math.min(o, far), hi: Math.max(o, far), exact: true };
+    const s = ni.sign * dir * (opt.reversed ? -1 : 1);
+    const back = opt.midplane ? height / 2 : (opt.length2 ?? 0);
+    const fwd = opt.midplane ? height / 2 : height;
+    const a = o - s * back, b = o + s * fwd;
+    return { lo: Math.min(a, b), hi: Math.max(a, b), exact: true };
   }
   const [lo, hi, w] = ui.i === i ? [bounds[0], bounds[1], ui.sign] : [bounds[2], bounds[3], vi.sign];
   const a = o + w * lo, b = o + w * hi;
@@ -1462,7 +1504,18 @@ function rangeOf(doc: ModelDoc, featureId: string, axis: Axis3, budget = { n: 64
     }
     case 'extrude': {
       const sk = doc.features.find(feat => feat.id === f.target);
-      return sk && sk.kind === 'sketch' ? extrudeRange(sk, f.height, axis) : null;
+      const r = sk && sk.kind === 'sketch'
+        ? extrudeRange(sk, f.height, axis, { midplane: f.midplane, length2: f.length2, reversed: f.reversed })
+        : null;
+      if (!r || !(f.taper || f.direction)) return r;
+      // A taper widens (or narrows) the walls and a custom direction slides the far
+      // end sideways. Along the sweep the range still CONTAINS the solid (a bound,
+      // not its exact extent). Across it, the sketch outline is neither: an outward
+      // taper or a slide carries the solid past it, so a "through" length or a hole
+      // offset read from it would stop short. Unknown, then, not a bound.
+      const sk2 = sk as SketchFeature;
+      const ni = unitAxisOf(sketchFrameOf(sk2).n);
+      return ni && ni.i === AXIS_INDEX[axis] ? { ...r, exact: false } : null;
     }
     case 'revolve': {
       const sk = doc.features.find(feat => feat.id === f.target);
@@ -1511,6 +1564,16 @@ function rangeOf(doc: ModelDoc, featureId: string, axis: Axis3, budget = { n: 64
     default:
       return null;
   }
+}
+
+/** Where the named feature's solid starts and ends along one world axis
+ *  (`exact` says whether that is its true extent or only a bound). null when
+ *  nothing can be proved. The Pad / Pocket task panel uses it to turn a picked
+ *  face into a length ("Up to face"). */
+export function featureRangeAlong(
+  doc: ModelDoc, featureId: string, axis: Axis3
+): { lo: number; hi: number; exact: boolean } | null {
+  return rangeOf(doc, featureId, axis);
 }
 
 /** How far the named feature's solid reaches along an axis, and whether that is
