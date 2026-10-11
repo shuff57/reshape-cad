@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-11T16:39:24.101Z",
+  "generatedAt": "2026-10-11T20:03:33.874Z",
   "reference": "FreeCAD 26.3.0 RC1 (headless), baseline/ref-<id>.json",
   "ours": "reSHape Script -> ModelDoc -> brep-rs wasm, baseline/ours-<id>.mjs re-run",
   "tolerances": {
@@ -243,7 +243,7 @@
         "ours outcome is 'refused', so no measurement is compared; the reference built it."
       ],
       "differences": [],
-      "refusal": "groove groove1: brep-rs cannot cut this groove yet (the tool is not fully enclosed by pull1, or its surface pair is unsupported) -- groove1 is shown without it.",
+      "refusal": "groove groove1: the ring is spun about the normal of its sketch, which crosses the axis of pull1's round wall -- sketch the ring on a plane square to that axis (the top plane for an upright post) -- groove1 is shown without it.",
       "ref": {
         "volume": 36505.30663471339,
         "bbox": [

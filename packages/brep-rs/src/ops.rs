@@ -2270,7 +2270,27 @@ fn face_with_hole(face: &TFace, plane: &Plane, hole: &Hole) -> TFace {
                 ring.push(plane.project(p));
             }
         }
-        let area = signed_area2(&ring);
+        // The vertex ring alone misreads a wire with curved edges: an outer wire of an arc that bulges past its chord
+        // and a concave arc back (a groove's remaining cap) has a vertex polygon wound the OTHER way from the
+        // region. So when any edge is curved the winding is read from points sampled along the real edges.
+        let curved = fb.boundary.first().is_some_and(|w| w.borrow().edges.iter().any(|u| !matches!(u.edge.borrow().curve, Curve::Segment { .. })));
+        let area = if curved && ring.len() > 1 {
+            let mut dense: Vec<[f64; 2]> = Vec::new();
+            if let Some(w) = fb.boundary.first() {
+                for u in &w.borrow().edges {
+                    let eb = u.edge.borrow();
+                    let k = 48;
+                    let mut pts: Vec<[f64; 2]> = (0..k).map(|i| plane.project(eb.curve.point_at(i as f64 / k as f64))).collect();
+                    if !u.forward {
+                        pts = (0..k).map(|i| plane.project(eb.curve.point_at(1.0 - i as f64 / k as f64))).collect();
+                    }
+                    dense.extend(pts);
+                }
+            }
+            signed_area2(&dense)
+        } else {
+            signed_area2(&ring)
+        };
         if ring.len() == 1 {
             // A single full-circle outer wire: its vertex ring collapses to
             // ONE point (start == end) and the shoelace sum is 0, which would
@@ -5666,6 +5686,12 @@ fn checked_special_result(op: &str, a: &TSolid, b: &TSolid, r: TSolid) -> Option
 /// that built before can change. A refusal from the planar path is final.
 pub fn boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
     let r = boolean_unchecked(op, a, b)?;
+    // A planar face whose hole is wound the same way as its outer wire has its hole's area ADDED by the divergence
+    // sum: a closed, sound-looking solid with the wrong volume. Nothing downstream sees it (the mesh reads holes by
+    // containment, the translation check moves both signs together), so it is refused here.
+    if !planar_windings_ok(&r) {
+        return None;
+    }
     // An operand with an inner shell (a hollow part, a sealed cavity) is the one case the per-face
     // probes of `boolean_result_is_sound` cannot vouch for: a handful of samples on the planar faces
     // can all miss the thin overlap of two walls, and the result then comes back as one operand
@@ -5694,6 +5720,64 @@ pub fn boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
         }
     }
     Some(merge_coplanar_result(r))
+}
+
+/// Signed area (twice) of a wire in a plane's (u, v) frame, read from points along the real edges.
+fn wire_area2_in(plane: &Plane, w: &topo::WireRef<Curve3>) -> (f64, Vec<[f64; 2]>) {
+    let mut pts: Vec<[f64; 2]> = Vec::new();
+    for u in &w.borrow().edges {
+        let eb = u.edge.borrow();
+        let k = 48;
+        let seq: Vec<[f64; 2]> = (0..k)
+            .map(|i| {
+                let t = i as f64 / k as f64;
+                plane.project(eb.curve.point_at(if u.forward { t } else { 1.0 - t }))
+            })
+            .collect();
+        pts.extend(seq);
+    }
+    if pts.len() < 3 {
+        return (0.0, pts);
+    }
+    (signed_area2(&pts), pts)
+}
+
+/// Whether every planar face of `s` winds its holes against its outer wire (the invariant `topo::Face` documents).
+pub(crate) fn planar_windings_ok(s: &TSolid) -> bool {
+    for fc in s.faces() {
+        let fb = fc.borrow();
+        let Surface::Plane(p) = &fb.surface else { continue };
+        if fb.boundary.len() < 2 {
+            continue;
+        }
+        let ws: Vec<(f64, Vec<[f64; 2]>)> = fb.boundary.iter().map(|w| wire_area2_in(p, w)).collect();
+        let Some(big) = (0..ws.len()).max_by(|&i, &j| ws[i].0.abs().partial_cmp(&ws[j].0.abs()).unwrap()) else { continue };
+        if ws[big].0.abs() < 1e-12 {
+            continue;
+        }
+        for i in 0..ws.len() {
+            // A single-point or zero-area wire (a degenerate seam) says nothing about winding.
+            if i == big || ws[i].0.abs() < 1e-12 {
+                continue;
+            }
+            let Some(&q) = ws[i].1.first() else { continue };
+            let inside = {
+                let poly = &ws[big].1;
+                let mut c = false;
+                for k in 0..poly.len() {
+                    let (a, b) = (poly[k], poly[(k + 1) % poly.len()]);
+                    if (a[1] > q[1]) != (b[1] > q[1]) && a[0] + (q[1] - a[1]) / (b[1] - a[1]) * (b[0] - a[0]) > q[0] {
+                        c = !c;
+                    }
+                }
+                c
+            };
+            if inside && ws[i].0.signum() == ws[big].0.signum() {
+                return false;
+            }
+        }
+    }
+    true
 }
 
 /// W4: the boolean's answer with every flat region the student sees as ONE face made one face. The

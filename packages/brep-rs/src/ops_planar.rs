@@ -80,10 +80,24 @@ pub fn set_reason(why: &'static str) {
     REASON.with(|r| r.set(Some(why)));
 }
 
+/// Whether the last refusal left exactly this sentence, without consuming it.
+pub fn reason_is(why: &str) -> bool {
+    REASON.with(|r| r.get() == Some(why))
+}
+
 /// The plain sentence for the last refusal of `carry_subtract`, if it left one.
 pub fn take_reason() -> Option<&'static str> {
     REASON.with(|r| r.take())
 }
+
+/// Two coaxial walls closer than this (and not equal to `EPS`) are a sliver, not a gap.
+const SLIVER: f64 = 1e-4;
+
+/// The sentence a cut leaves when its wall lies a sliver inside or outside a wall of the part.
+pub const SLIVER_WALL_SENTENCE: &str = "the cut would leave a skin of the part's round wall thinner than a ten-thousandth of a millimetre, which brep-rs cannot keep as a closed solid; make the ring exactly flush with that wall or clearly clear of it";
+
+/// The sentence a ring lying on a round wall over part of a turn leaves when it would notch that wall.
+pub const NOTCHED_WALL_SENTENCE: &str = "the ring lies on the part's own round wall over only part of a turn and would leave that wall as one face with a notch in it, which brep-rs does not hold yet; spin the ring a full turn, or let it take the wall's whole height";
 
 pub enum Outcome {
     /// An operand has a face or an edge this path does not model.
@@ -967,7 +981,11 @@ fn crossings_x(e: &E2, y: f64, out: &mut Vec<f64>) {
             cuts.sort_by(|x, z| x.partial_cmp(z).unwrap());
             for w in cuts.windows(2) {
                 let (p, q) = (ang_pt(c, r, w[0]), ang_pt(c, r, w[1]));
-                if (p[1] > y) != (q[1] > y) {
+                // Same as a segment's: an arc's end within noise of the scan line IS on it. A ring's seam
+                // that sits at 1.8e-16 above the line while its neighbour ends 2.8e-15 below it would
+                // otherwise be counted by neither, and flip the parity of a point plainly inside.
+                let snap = |v: f64| if (v - y).abs() < 1e-9 { y } else { v };
+                if (snap(p[1]) > y) != (snap(q[1]) > y) {
                     let dy = y - c[1];
                     if dy.abs() <= r {
                         let sign = if (0.5 * (w[0] + w[1])).cos() >= 0.0 { 1.0 } else { -1.0 };
@@ -1234,6 +1252,15 @@ fn split_face(f: &PFace, cuts: &[E2], nodes_at: &[P2]) -> Result<Vec<Region>, ()
     let mut es: Vec<E2> = f.edges.clone();
     for c in cuts {
         if c.length() > EPS {
+            // A whole circle that is the face's own boundary circle (a wall's rim that the face ends on) cuts nothing; kept
+            // as a second edge it would start at the WALL's seam, not the face's, and the two copies never pair up.
+            if let E2::Arc { c: cc, r: cr, sw, .. } = *c {
+                if (sw.abs() - TAU).abs() < 1e-9
+                    && f.edges.iter().any(|e| matches!(*e, E2::Arc { c: ec, r: er, sw: es_, .. } if (es_.abs() - TAU).abs() < 1e-9 && dist2(ec, cc) < EPS && (er - cr).abs() < EPS))
+                {
+                    continue;
+                }
+            }
             es.push(*c);
         }
     }
@@ -1770,8 +1797,23 @@ fn parallel_wall_lines(f: &CFace, g: &CFace, us: &mut Vec<f64>, vs: &mut Vec<f64
             // The same surface (a peg in its own hole, or two equal bores): the cells that lie on both are
             // classed OnSame or OnOpposite by `coincident_wall`. Whole-turn walls only, so no angular line
             // is needed: the overlap is a band of heights.
-            if f.span < TAU - 1e-9 || g.span < TAU - 1e-9 {
-                bail!();
+            // A partial wall shared with a whole turn (a groove's ring over its host's wall) or with another partial
+            // one: the other wall's end angles are grid lines of this wall, so each cell lies wholly on both or on
+            // only one, and `coincident_wall` classes the cells on both. Two partial walls need the two ranges to be
+            // either nested or disjoint at every end: an end that falls strictly inside the other's range is a line.
+            if g.span < TAU - 1e-9 {
+                let tolu = EPS / c.radius;
+                for end in [g.u0, g.u0 + g.span] {
+                    let p = cyl_pt(gc, end, 0.0);
+                    let rel_p = sub(p, c.origin);
+                    let th = dot(rel_p, c.e2).atan2(dot(rel_p, c.e1));
+                    let rel = pos_ang(th - f.u0);
+                    if f.span >= TAU - 1e-9 {
+                        us.push(rel + f.u0);
+                    } else if rel > tolu && rel < f.span - tolu {
+                        us.push(rel + f.u0);
+                    }
+                }
             }
             let ga = dot(gc.axis, a);
             let g0 = dot(delta, a) + ga * gc.vmin;
@@ -1787,7 +1829,20 @@ fn parallel_wall_lines(f: &CFace, g: &CFace, us: &mut Vec<f64>, vs: &mut Vec<f64
             }
             return Ok(());
         }
-        return Ok(()); // coaxial and different: they never meet
+        // Coaxial and different: they never meet. Unless they differ by a sliver: two walls within a ten-thousandth of
+        // a millimetre of each other leave a skin no mesh can keep closed (the chord of one crosses the other), and
+        // are indistinguishable from a coincident pair to anyone who typed the number. Over a shared band of heights
+        // that refuses in a sentence; a wall that never shares a height with the other is no problem.
+        if (big - small).abs() < SLIVER {
+            let ga = dot(gc.axis, a);
+            let g0 = dot(delta, a) + ga * gc.vmin;
+            let g1 = dot(delta, a) + ga * gc.vmax;
+            if c.vmax.min(g0.max(g1)) - c.vmin.max(g0.min(g1)) > EPS {
+                set_reason(SLIVER_WALL_SENTENCE);
+                bail!();
+            }
+        }
+        return Ok(());
     }
     if d > big + small + EPS || d < (big - small).abs() - EPS {
         return Ok(()); // apart, or one inside the other
@@ -2453,15 +2508,23 @@ fn classify_plane(f: &PFace, p3: Vec3, other: &[AFace], other_solid: &TSolid) ->
 
 /// A cell of cylinder wall `f` at height `v` that lies ON a whole-turn wall of the other solid with the same axis
 /// line and radius is OnSame (both normals alike: two bores, two pegs) or OnOpposite (a peg in its own hole). The
-/// other wall must be a whole turn, which `parallel_wall_lines` has already required.
-fn coincident_wall(f: &CFace, other: &[AFace], v: f64) -> Option<Class> {
+/// other wall must cover the cell's middle angle, a partial one being cut into cells at its ends by `parallel_wall_lines`.
+fn coincident_wall(f: &CFace, other: &[AFace], u: f64, v: f64) -> Option<(Class, bool)> {
     let c = &f.cyl;
     let a = normalize(c.axis);
     for g in other {
         let AFace::Cyl(g) = g else { continue };
         let gc = &g.cyl;
-        if len(cross(a, normalize(gc.axis))) > 1e-9 || (gc.radius - c.radius).abs() >= EPS || g.span < TAU - 1e-9 {
+        if len(cross(a, normalize(gc.axis))) > 1e-9 || (gc.radius - c.radius).abs() >= EPS {
             continue;
+        }
+        // A partial wall holds the cell only where the cell's middle angle lies in its range.
+        if g.span < TAU - 1e-9 {
+            let rel_p = sub(cyl_pt(c, u, 0.0), gc.origin);
+            let th = dot(rel_p, gc.e2).atan2(dot(rel_p, gc.e1));
+            if pos_ang(th - g.u0) > g.span {
+                continue;
+            }
         }
         let delta = sub(gc.origin, c.origin);
         if len(sub(delta, scale(a, dot(delta, a)))) >= EPS {
@@ -2470,7 +2533,7 @@ fn coincident_wall(f: &CFace, other: &[AFace], v: f64) -> Option<Class> {
         let ga = dot(gc.axis, a);
         let (g0, g1) = (dot(delta, a) + ga * gc.vmin, dot(delta, a) + ga * gc.vmax);
         if v > g0.min(g1) + EPS && v < g0.max(g1) - EPS {
-            return Some(if cyl_hand(c) * cyl_hand(gc) > 0.0 { Class::OnSame } else { Class::OnOpposite });
+            return Some((if cyl_hand(c) * cyl_hand(gc) > 0.0 { Class::OnSame } else { Class::OnOpposite }, g.span < TAU - 1e-9));
         }
     }
     None
@@ -2577,19 +2640,68 @@ fn pieces(
                 hs.extend(g.vs.iter().copied());
                 hs.push(c.vmax);
                 let uncut = g.us.is_empty() && g.vs.is_empty();
-                for &(a, b) in &arcs {
-                    for w in hs.windows(2) {
+                // Cells kept (by column, row) and whether any cell was dropped for lying ON a partial wall.
+                let mut kept_cells: Vec<(usize, usize)> = Vec::new();
+                let mut partial_drop = false;
+                for (ci, &(a, b)) in arcs.iter().enumerate() {
+                    for (ri, w) in hs.windows(2).enumerate() {
                         let p3 = cyl_pt(c, 0.5 * (a + b), 0.5 * (w[0] + w[1]));
-                        let class = match coincident_wall(f, other, 0.5 * (w[0] + w[1])) {
-                            Some(c) => c,
+                        let class = match coincident_wall(f, other, 0.5 * (a + b), 0.5 * (w[0] + w[1])) {
+                            Some((c, partial)) => {
+                                partial_drop |= partial;
+                                c
+                            }
                             None if ops::inside_solid(other_solid, p3) => Class::Inside,
                             None => Class::Outside,
                         };
                         if !keep(class) {
                             continue;
                         }
+                        kept_cells.push((ci, ri));
                         let face = wall_piece(c, f, a, b, w[0], w[1], uncut, vertex);
                         out.push(Kept::Wall(if flip { ops::flip_face(&face).ok_or(())? } else { face }));
+                    }
+                }
+                // A wall that a part turn of a ring lies on must be left as ONE rectangle (or separate ones). Where the
+                // ring's footprint is a bite out of the wall's side or middle the rest is a single face with a notch in
+                // it, which this kernel holds only as patches along the ring's edges: a different face count from what
+                // a CAD user expects, and the faces cannot be told apart from a wall cut in several places. Refuse.
+                if partial_drop && !kept_cells.is_empty() {
+                    let whole = f.span >= TAU - 1e-9;
+                    let nc = arcs.len();
+                    let mut seen = vec![false; kept_cells.len()];
+                    for s0 in 0..kept_cells.len() {
+                        if seen[s0] {
+                            continue;
+                        }
+                        let mut comp = vec![s0];
+                        seen[s0] = true;
+                        let mut k = 0;
+                        while k < comp.len() {
+                            let (ci, ri) = kept_cells[comp[k]];
+                            k += 1;
+                            for (j, &(cj, rj)) in kept_cells.iter().enumerate() {
+                                if seen[j] {
+                                    continue;
+                                }
+                                let du = if ci > cj { ci - cj } else { cj - ci };
+                                let side = rj == ri && (du == 1 || (whole && du == nc - 1));
+                                if side || (cj == ci && (rj + 1 == ri || ri + 1 == rj)) {
+                                    seen[j] = true;
+                                    comp.push(j);
+                                }
+                            }
+                        }
+                        let mut cols: Vec<usize> = comp.iter().map(|&j| kept_cells[j].0).collect();
+                        let mut rows: Vec<usize> = comp.iter().map(|&j| kept_cells[j].1).collect();
+                        cols.sort_unstable();
+                        cols.dedup();
+                        rows.sort_unstable();
+                        rows.dedup();
+                        if comp.len() != cols.len() * rows.len() {
+                            set_reason(NOTCHED_WALL_SENTENCE);
+                            bail!();
+                        }
                     }
                 }
             }
@@ -4796,4 +4908,140 @@ mod rev_tests {
         assert!(text.contains("SPHERICAL_SURFACE"));
     }
 }
+}
+
+/// A groove ring whose wall lies ON a wall of its host: the tool's cylinder is the host's own cylinder over a band of
+/// heights (and, for a partial turn, a range of angles). The shared cells are OnSame or OnOpposite, so neither wall
+/// is kept there and the ring's other faces close the cut; measured against the closed forms.
+#[cfg(test)]
+mod coincident_wall_tests {
+    use super::*;
+    use crate::build;
+    const PI: f64 = std::f64::consts::PI;
+
+    fn vol(s: &TSolid) -> f64 {
+        build::solid_volume(s)
+    }
+    fn post(r: f64) -> TSolid {
+        build::cylinder_solid([0.0, 0.0, 15.0], r, 30.0, [0.0, 0.0, 1.0])
+    }
+    fn ring(r0: f64, r1: f64, z0: f64, z1: f64, deg: f64) -> TSolid {
+        build::revolve_profile(&[[r0, z0], [r1, z0], [r1, z1], [r0, z1]], [0.0, 0.0, 1.0], [1.0, 0.0, 0.0], deg).expect("ring").0
+    }
+    fn cut(host: &TSolid, tool: &TSolid) -> Option<TSolid> {
+        match boolean_planar("subtract", host, tool) {
+            Outcome::Built(r) => Some(r),
+            _ => None,
+        }
+    }
+    fn closed(r: &TSolid) {
+        assert!(ops::edge_use_counts(&r.faces()).values().all(|&n| n == 2), "every edge used twice");
+        for d in [0.5, 0.05] {
+            let m = crate::mesh::mesh_solid(r, d).expect("meshes");
+            assert!(ops::check_watertight(&m), "mesh closed at {d}");
+        }
+    }
+
+    #[test]
+    fn ring_on_the_outer_wall_whole_turn_builds_part_turn_refuses_in_a_sentence() {
+        let host = post(20.0);
+        let want = PI * 400.0 * 30.0 - PI * (400.0 - 324.0) * 5.0;
+        let r = cut(&host, &ring(18.0, 20.0, 10.0, 15.0, 360.0)).expect("whole turn refused");
+        assert!((vol(&r) - want).abs() <= 1e-9 * want);
+        closed(&r);
+        for deg in [30.0, 90.0, 180.0, 270.0, 330.0] {
+            clear_reason();
+            assert!(cut(&host, &ring(18.0, 20.0, 10.0, 15.0, deg)).is_none(), "{deg} must refuse: a notched wall");
+            assert_eq!(take_reason(), Some(NOTCHED_WALL_SENTENCE));
+        }
+    }
+
+    #[test]
+    fn ring_taking_the_whole_height_leaves_one_patch_and_builds() {
+        let host = post(20.0);
+        for deg in [90.0, 180.0, 270.0] {
+            let r = cut(&host, &ring(15.0, 20.0, 0.0, 30.0, deg)).unwrap_or_else(|| panic!("{deg} refused"));
+            let want = PI * (400.0 - 225.0) * 30.0 * deg / 360.0;
+            assert!((vol(&r) - (PI * 400.0 * 30.0 - want)).abs() <= 1e-9 * PI * 400.0 * 30.0);
+            closed(&r);
+        }
+        // a ring flush with an end face still bites the wall's side: a notch
+        for (z0, z1) in [(0.0, 8.0), (22.0, 30.0)] {
+            clear_reason();
+            assert!(cut(&host, &ring(15.0, 20.0, z0, z1, 180.0)).is_none());
+            assert_eq!(take_reason(), Some(NOTCHED_WALL_SENTENCE));
+        }
+    }
+
+    #[test]
+    fn ring_on_a_bore_wall_partial_turn_refuses() {
+        let host = sub_bore(20.0, 10.0);
+        for deg in [90.0, 180.0, 270.0] {
+            clear_reason();
+            assert!(cut(&host, &ring(10.0, 14.0, 10.0, 15.0, deg)).is_none(), "{deg}");
+            assert_eq!(take_reason(), Some(NOTCHED_WALL_SENTENCE));
+        }
+    }
+
+    fn sub_bore(r: f64, bore: f64) -> TSolid {
+        ops::boolean("subtract", &post(r), &build::cylinder_solid([0.0, 0.0, 15.0], bore, 40.0, [0.0, 0.0, 1.0])).expect("tube")
+    }
+
+    /// Groove 1 leaves a top and bottom face whose outer wire is an arc that bulges past its chord and a concave arc
+    /// back; a bore through it must wind its rim AGAINST that wire, or the divergence sum adds the bore's area
+    /// (a bore of 25 pi x 30 gave +2/3 of it too much: 32790.37 for 31219.58, closed and mesh-sound).
+    #[test]
+    fn bore_through_a_groove_cap_winds_its_hole_against_the_arc_bounded_outer_wire() {
+        let host = post(20.0);
+        for deg in [90.0, 180.0, 270.0] {
+            let g = cut(&host, &ring(15.0, 20.0, 0.0, 30.0, deg)).expect("groove");
+            for (c, r) in [([0.0, 0.0, 15.0], 5.0), ([-4.0, 3.0, 15.0], 3.0)] {
+                let bore = build::cylinder_solid(c, r, 30.0, [0.0, 0.0, 1.0]);
+                let want = vol(&g) - PI * r * r * 30.0;
+                let b = ops::boolean("subtract", &g, &bore).unwrap_or_else(|| panic!("{deg} {c:?} refused"));
+                assert!((vol(&b) - want).abs() <= 1e-9 * want, "{deg} {c:?}: {} vs {want}", vol(&b));
+                assert!(ops::planar_windings_ok(&b));
+                // (a bore's rim circle is one edge handle per side on the legacy path, so only the mesh is read)
+                for d in [0.5, 0.05] {
+                    assert!(ops::check_watertight(&crate::mesh::mesh_solid(&b, d).expect("meshes")), "mesh closed at {d}");
+                }
+            }
+        }
+    }
+
+    /// A second ring over the first (a1 = 90 then a2 = 270 from the same start) overlaps it on [0, 90]. The tool's
+    /// bottom piece over the host's face has its scan line along the host's 0-degree edge, at y = 0 to within noise
+    /// (1.8e-16 above for the seam, 2.8e-15 below for the next arc), so the point-in-face test of that piece failed
+    /// and the piece came out as a second, flipped bottom face: volume right (a z = 0 face adds nothing), mesh open.
+    #[test]
+    fn overlapping_grooves_leave_one_bottom_and_a_closed_mesh() {
+        let host = post(20.0);
+        for (a1, a2) in [(90.0, 270.0), (90.0, 180.0), (180.0, 270.0), (270.0, 90.0), (30.0, 330.0)] {
+            let g = cut(&host, &ring(15.0, 20.0, 0.0, 30.0, a1)).expect("g1");
+            let Some(r) = cut(&g, &ring(15.0, 20.0, 0.0, 30.0, a2)) else {
+                continue; // an honest refusal is allowed; a wrong or open solid is not
+            };
+            let swept = a1.max(a2);
+            let want = PI * 400.0 * 30.0 - PI * 175.0 * 30.0 * swept / 360.0;
+            assert!((vol(&r) - want).abs() <= 1e-9 * want, "{a1},{a2}: {} vs {want}", vol(&r));
+            let flat = |nz: f64| {
+                r.faces()
+                    .iter()
+                    .filter(|f| matches!(&f.borrow().surface, Surface::Plane(p) if (p.n[2] - nz).abs() < 1e-9 && p.origin[2].abs() < 1e-9 || (p.n[2] - nz).abs() < 1e-9 && nz > 0.0 && (p.origin[2] - 30.0).abs() < 1e-9))
+                    .count()
+            };
+            assert_eq!(flat(-1.0), 1, "{a1},{a2}: one bottom");
+            assert_eq!(flat(1.0), 1, "{a1},{a2}: one top");
+            closed(&r);
+        }
+    }
+
+    #[test]
+    fn full_turn_ring_on_a_bore_wall() {
+        let host = sub_bore(20.0, 10.0);
+        let r = cut(&host, &ring(10.0, 14.0, 10.0, 15.0, 360.0)).expect("refused");
+        let want = PI * 300.0 * 30.0 - PI * (196.0 - 100.0) * 5.0;
+        assert!((vol(&r) - want).abs() <= 1e-9 * want, "{} vs {want}", vol(&r));
+        closed(&r);
+    }
 }

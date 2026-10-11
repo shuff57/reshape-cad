@@ -1089,6 +1089,17 @@ fn spin_profile(sk: &Value) -> Result<(Vec<build::ProfileSeg>, Vec<(String, usiz
 /// with an arc (a bulge, a round) spins a full turn into tori by `turned::build_solid`, whose own
 /// volume check against the profile integral guards it. A part turn of an arc, an arc centred on
 /// the axis (a ball) and a groove of an arc give a sentence instead.
+/// Whether the part is a bare round post (two flat ends and one cylinder wall) that the groove's spin axis (the normal
+/// of its sketch) does not run along: the ring then crosses the post's wall at a slant, which is the whole reason.
+fn groove_axis_misses_round_wall(base: &TSolid, sk: &Value) -> bool {
+    let n = sketch_frame(sk).n;
+    let faces = base.faces();
+    if faces.len() != 3 {
+        return false;
+    }
+    faces.iter().any(|f| matches!(&f.borrow().surface, Surface::Cylinder(c) if crate::math::len(cross(normalize(c.axis), n)) >= 1e-6))
+}
+
 fn revolve_tool(
     sk: &Value,
     angle: f64,
@@ -2525,8 +2536,24 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     None if tools_apart(&base, &[&tool]) => {
                         refusals.insert(id.clone(), json!(miss_refusal(&id)));
                     }
+                    None if ops_planar::reason_is(ops_planar::NOTCHED_WALL_SENTENCE) => {
+                        refusals.insert(id.clone(), json!(format!("groove {id}: {} -- {id} is shown without it.", ops_planar::NOTCHED_WALL_SENTENCE)));
+                    }
+                    None if ops_planar::reason_is(ops_planar::SLIVER_WALL_SENTENCE) => {
+                        refusals.insert(id.clone(), json!(format!("groove {id}: {} -- {id} is shown without it.", ops_planar::SLIVER_WALL_SENTENCE)));
+                    }
                     None if ops_planar::take_reason() == Some(ops_touch::CUT_SENTENCE) => {
                         refusals.insert(id.clone(), json!(format!("groove {id}: {} -- {id} is shown without it.", ops_touch::CUT_SENTENCE)));
+                    }
+                    None if groove_axis_misses_round_wall(&base, sk) => {
+                        // A ring is spun about its sketch's normal. A part whose round walls all run along another axis
+                        // (the gauntlet's front-plane ring on an upright post) is cut by a ring that crosses them.
+                        refusals.insert(
+                            id.clone(),
+                            json!(format!(
+                                "groove {id}: the ring is spun about the normal of its sketch, which crosses the axis of {into}'s round wall -- sketch the ring on a plane square to that axis (the top plane for an upright post) -- {id} is shown without it."
+                            )),
+                        );
                     }
                     None => {
                         refusals.insert(
