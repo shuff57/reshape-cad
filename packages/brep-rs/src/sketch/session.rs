@@ -1052,9 +1052,23 @@ mod ellipse_tests {
     }
 
     #[test]
-    fn a7_an_elliptic_arc_refuses_as_a_profile_unless_it_is_construction() {
-        let e = open(vec![arc_e()], vec![]).profile().err().expect("refuses");
-        assert!(format!("{e:?}").contains("arc of an ellipse"), "{e:?}");
+    fn a7_a_lone_elliptic_arc_is_not_a_closed_outline() {
+        // S3: an elliptic arc takes part in a wire like any other arc, so alone it is just an open curve.
+        let e = open(vec![arc_e()], vec![]).profile().err().expect("an open arc is not a profile");
+        assert!(format!("{e:?}").contains("loose end"), "{e:?}");
+        // Closed by its chord it is: the half of the ellipse above the x axis.
+        let g = vec![
+            json!({"id":1,"k":"ellipseArc","c":[0.0,0.0],"major":10.0,"minor":5.0,"angle":0.0,"a":[10.0,0.0],"b":[-10.0,0.0]}),
+            json!({"id":2,"k":"line","a":[-10.0,0.0],"b":[10.0,0.0]}),
+        ];
+        let r = vec![
+            json!({"k":"coincident","a":1,"aEnd":"b","b":2,"bEnd":"a"}),
+            json!({"k":"coincident","a":2,"aEnd":"b","b":1,"bEnd":"a"}),
+        ];
+        let loops = open(g, r).profile().expect("a half ellipse closed by its chord is a profile");
+        assert_eq!(loops.len(), 1);
+        let area = crate::sketch::wires::signed_area(&loops[0].segs);
+        assert!((area - std::f64::consts::PI * 10.0 * 5.0 / 2.0).abs() < 1e-9, "{area}");
     }
 
     #[test]

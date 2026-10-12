@@ -12024,5 +12024,166 @@ mod rim_corner_tests {
         assert!(!hist.shapes.contains_key("p1"), "a floor below the part must not build");
         assert!(refusals.contains_key("p1"), "{refusals:?}");
     }
+
+    // ---- elliptic arcs in a profile (S3) -----------------------------------------------------------------
+
+    fn arc_pad(geoms: Value, rules: Value, h: f64) -> Value {
+        json!({ "features": [
+            { "id": "sk1", "kind": "sketch", "plane": "xy", "offset": 0.0, "geoms": geoms, "rules": rules },
+            { "id": "e1", "kind": "extrude", "target": "sk1", "height": h }
+        ]})
+    }
+
+    fn weld(a: i64, ae: &str, b: i64, be: &str) -> Value {
+        json!({ "k": "coincident", "a": a, "aEnd": ae, "b": b, "bEnd": be })
+    }
+
+    /// FreeCAD: a half ellipse closed by its chord, padded 4, is pi a b h / 2 = 314.159 in 4 faces.
+    #[test]
+    fn s3_a_half_ellipse_closed_by_its_chord_pads_in_four_faces() {
+        let doc = arc_pad(
+            json!([
+                { "k": "ellipseArc", "id": 1, "c": [0.0, 0.0], "major": 10.0, "minor": 5.0, "angle": 0.0,
+                  "a": [10.0, 0.0], "b": [-10.0, 0.0] },
+                { "k": "line", "id": 2, "a": [-10.0, 0.0], "b": [10.0, 0.0] }
+            ]),
+            json!([weld(1, "b", 2, "a"), weld(2, "b", 1, "a")]),
+            4.0,
+        );
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "{refusals:?}");
+        let s = hist.shapes.get("e1").expect("builds");
+        let want = std::f64::consts::PI * 10.0 * 5.0 * 4.0 / 2.0;
+        let v = build::solid_volume(s);
+        assert!((v - want).abs() < 1e-9 * want, "{v} vs {want}");
+        assert_eq!(s.faces().len(), 4, "FreeCAD: the elliptic wall, the chord's wall and two caps");
+        let bb = build::solid_aabb(s);
+        for (got, want) in [(bb.lo, [-10.0, 0.0, 0.0]), (bb.hi, [10.0, 5.0, 4.0])] {
+            for k in 0..3 {
+                assert!((got[k] - want[k]).abs() < 1e-9, "{bb:?}");
+            }
+        }
+        let m = crate::mesh::mesh_solid(s, 0.01).expect("meshes");
+        assert!(crate::mesh::mesh_is_closed(&m) && mesh_volume(&m) > 0.0);
+    }
+
+    /// The same half ellipse written the other way round (clockwise from a to b: the lower half).
+    #[test]
+    fn s3_the_clockwise_half_is_the_other_half() {
+        let doc = arc_pad(
+            json!([
+                { "k": "ellipseArc", "id": 1, "c": [0.0, 0.0], "major": 10.0, "minor": 5.0, "angle": 0.0,
+                  "a": [10.0, 0.0], "b": [-10.0, 0.0], "sense": "cw" },
+                { "k": "line", "id": 2, "a": [-10.0, 0.0], "b": [10.0, 0.0] }
+            ]),
+            json!([weld(1, "b", 2, "a"), weld(2, "b", 1, "a")]),
+            4.0,
+        );
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "{refusals:?}");
+        let s = hist.shapes.get("e1").expect("builds");
+        let bb = build::solid_aabb(s);
+        assert!(bb.lo[1] < -4.999 && bb.hi[1].abs() < 1e-9, "the lower half: {bb:?}");
+        assert!((build::solid_volume(s) - std::f64::consts::PI * 10.0 * 5.0 * 2.0).abs() < 1e-7);
+    }
+
+    /// A 40 x 25 plate with one corner rounded by a quarter ellipse (8 x 5): 1000 - 40 + 10 pi, pulled 6.
+    #[test]
+    fn s3_a_corner_rounded_by_a_quarter_ellipse() {
+        let doc = arc_pad(
+            json!([
+                { "k": "line", "id": 1, "a": [0.0, 0.0], "b": [40.0, 0.0] },
+                { "k": "line", "id": 2, "a": [40.0, 0.0], "b": [40.0, 20.0] },
+                { "k": "ellipseArc", "id": 3, "c": [32.0, 20.0], "major": 8.0, "minor": 5.0, "angle": 0.0,
+                  "a": [40.0, 20.0], "b": [32.0, 25.0] },
+                { "k": "line", "id": 4, "a": [32.0, 25.0], "b": [0.0, 25.0] },
+                { "k": "line", "id": 5, "a": [0.0, 25.0], "b": [0.0, 0.0] }
+            ]),
+            json!([weld(1, "b", 2, "a"), weld(2, "b", 3, "a"), weld(3, "b", 4, "a"), weld(4, "b", 5, "a"), weld(5, "b", 1, "a")]),
+            6.0,
+        );
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "{refusals:?}");
+        let s = hist.shapes.get("e1").expect("builds");
+        let want = (1000.0 - 8.0 * 5.0 + std::f64::consts::PI * 8.0 * 5.0 / 4.0) * 6.0;
+        let v = build::solid_volume(s);
+        assert!((v - want).abs() < 1e-9 * want, "{v} vs {want}");
+        assert_eq!(s.faces().len(), 7, "four flat walls, the elliptic corner, two caps");
+        let m = crate::mesh::mesh_solid(s, 0.01).expect("meshes");
+        assert!(crate::mesh::mesh_is_closed(&m));
+    }
+
+    /// The same corner bitten out instead: the elliptic wall faces the bite (concave).
+    #[test]
+    fn s3_a_corner_bitten_out_by_a_quarter_ellipse() {
+        let doc = arc_pad(
+            json!([
+                { "k": "line", "id": 1, "a": [0.0, 0.0], "b": [40.0, 0.0] },
+                { "k": "line", "id": 2, "a": [40.0, 0.0], "b": [40.0, 20.0] },
+                { "k": "ellipseArc", "id": 3, "c": [40.0, 25.0], "major": 8.0, "minor": 5.0, "angle": 0.0,
+                  "a": [32.0, 25.0], "b": [40.0, 20.0] },
+                { "k": "line", "id": 4, "a": [32.0, 25.0], "b": [0.0, 25.0] },
+                { "k": "line", "id": 5, "a": [0.0, 25.0], "b": [0.0, 0.0] }
+            ]),
+            json!([weld(1, "b", 2, "a"), weld(2, "b", 3, "b"), weld(3, "a", 4, "a"), weld(4, "b", 5, "a"), weld(5, "b", 1, "a")]),
+            6.0,
+        );
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "{refusals:?}");
+        let s = hist.shapes.get("e1").expect("builds");
+        let want = (1000.0 - std::f64::consts::PI * 8.0 * 5.0 / 4.0) * 6.0;
+        let v = build::solid_volume(s);
+        assert!((v - want).abs() < 1e-9 * want, "{v} vs {want}");
+        let m = crate::mesh::mesh_solid(s, 0.01).expect("meshes");
+        assert!(crate::mesh::mesh_is_closed(&m) && mesh_volume(&m) > 0.0);
+    }
+
+    #[test]
+    fn s3_an_elliptic_arc_that_crosses_an_edge_refuses_in_a_sentence() {
+        // A 40 x 25 rectangle and an arc from (0,0) to (40,0) bulging to y = 30: it crosses the top edge.
+        let doc = arc_pad(
+            json!([
+                { "k": "line", "id": 1, "a": [0.0, 0.0], "b": [40.0, 0.0] },
+                { "k": "line", "id": 2, "a": [40.0, 0.0], "b": [40.0, 25.0] },
+                { "k": "line", "id": 3, "a": [40.0, 25.0], "b": [0.0, 25.0] },
+                { "k": "line", "id": 4, "a": [0.0, 25.0], "b": [0.0, 0.0] },
+                { "k": "ellipseArc", "id": 5, "c": [20.0, 0.0], "major": 20.0, "minor": 30.0, "angle": 0.0,
+                  "a": [40.0, 0.0], "b": [0.0, 0.0] }
+            ]),
+            json!([weld(1, "b", 2, "a"), weld(2, "b", 3, "a"), weld(3, "b", 4, "a"), weld(4, "b", 1, "a"),
+                   weld(5, "a", 1, "b"), weld(5, "b", 1, "a")]),
+            4.0,
+        );
+        let (hist, refusals) = build_doc(&doc);
+        assert!(!hist.shapes.contains_key("e1"), "a self-crossing outline must not build");
+        let why = refusals.get("e1").and_then(|r| r.as_str()).unwrap_or("");
+        assert!(why.contains("cross"), "{refusals:?}");
+    }
+
+    #[test]
+    fn s3_a_half_ellipse_pocket_cuts_to_pi_a_b_h_over_two() {
+        let doc = json!({ "features": [
+            { "id": "sk1", "kind": "sketch", "plane": "xy", "offset": 0.0,
+              "points": [[0.0, 0.0], [40.0, 0.0], [40.0, 30.0], [0.0, 30.0]] },
+            { "id": "e0", "kind": "extrude", "target": "sk1", "height": 10.0 },
+            { "id": "sk2", "kind": "sketch", "plane": "xy", "offset": 10.0,
+              "geoms": [
+                  { "k": "ellipseArc", "id": 1, "c": [20.0, 15.0], "major": 10.0, "minor": 5.0, "angle": 0.0,
+                    "a": [30.0, 15.0], "b": [10.0, 15.0] },
+                  { "k": "line", "id": 2, "a": [10.0, 15.0], "b": [30.0, 15.0] }
+              ],
+              "rules": [ weld(1, "b", 2, "a"), weld(2, "b", 1, "a") ] },
+            { "id": "p1", "kind": "pocket", "target": "sk2", "into": "e0", "depth": 4.0 }
+        ]});
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "{refusals:?}");
+        let s = hist.shapes.get("p1").expect("builds");
+        let want = 12000.0 - std::f64::consts::PI * 10.0 * 5.0 / 2.0 * 4.0;
+        let v = build::solid_volume(s);
+        assert!((v - want).abs() < 1e-9 * want, "{v} vs {want}");
+        assert_eq!(s.faces().len(), 9, "six block faces, the elliptic wall, the chord's wall and the floor");
+        let m = crate::mesh::mesh_solid(s, 0.01).expect("meshes");
+        assert!(crate::mesh::mesh_is_closed(&m));
+    }
 }
 
