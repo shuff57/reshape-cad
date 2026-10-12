@@ -1,0 +1,18 @@
+{
+ "id": "pad-basic__two-disjoint-circles-one-sketch",
+ "ok": true,
+ "volume": 6031.857894892402,
+ "bbox": [
+  -28.0,
+  -8.0,
+  0.0,
+  28.0,
+  8.0,
+  15.0
+ ],
+ "faces": 6,
+ "com": null,
+ "valid": true,
+ "solids": 2,
+ "bad": {}
+}

@@ -1,0 +1,18 @@
+{
+ "id": "pad-basic__rect-and-circle-apart-one-sketch",
+ "ok": true,
+ "volume": 6010.619298297468,
+ "bbox": [
+  -30.0,
+  -10.0,
+  0.0,
+  28.0,
+  10.0,
+  10.0
+ ],
+ "faces": 9,
+ "com": null,
+ "valid": true,
+ "solids": 2,
+ "bad": {}
+}

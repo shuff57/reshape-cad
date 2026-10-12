@@ -1,0 +1,18 @@
+{
+ "id": "revolution__two-rects-one-sketch",
+ "ok": true,
+ "volume": 20106.19298297466,
+ "bbox": [
+  -32.0,
+  -32.0,
+  -7.105427357601003e-15,
+  32.0,
+  32.00000000000001,
+  20.000000000000007
+ ],
+ "faces": 8,
+ "com": null,
+ "valid": true,
+ "solids": 2,
+ "bad": {}
+}

@@ -1,0 +1,18 @@
+{
+ "id": "pad-basic__holed-plate-and-far-rect-one-sketch",
+ "ok": true,
+ "volume": 18321.90275490383,
+ "bbox": [
+  -20.0,
+  -15.0,
+  0.0,
+  45.0,
+  15.0,
+  15.0
+ ],
+ "faces": 13,
+ "com": null,
+ "valid": true,
+ "solids": 2,
+ "bad": {}
+}

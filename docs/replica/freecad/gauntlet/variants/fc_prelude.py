@@ -233,6 +233,15 @@ def emit(vid, body, extra=None):
     return r
 
 
+def emit_multi(vid, body, extra=None):
+    """emit() for a profile that makes several separate pieces: FreeCAD gives a valid compound of N solids, which is a good
+    reference (emit() calls anything but one solid not-ok)."""
+    r = emit(vid, body, extra)
+    r['ok'] = (not r['bad']) and bool(r['valid']) and r['solids'] >= 1
+    RESULT[vid] = r
+    return r
+
+
 def sk_emit(vid, sk):
     doc = sk.Document
     solve = sk.solve()

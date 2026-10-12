@@ -197,6 +197,17 @@ impl SketchSession {
         }
         wires::discover_wires_excluding(&self.block, &self.constraints, &self.params, &self.construction)
     }
+
+    /// The solved profile as separate pieces: each region is one outline with the loops cut out of it, by
+    /// even-odd nesting. A sketch with one outline gives one region, identical to `profile()`.
+    pub fn profile_regions(&self) -> Result<Vec<Vec<WireLoop>>, Refusal> {
+        if !self.construction.is_empty() && self.construction.len() == self.block.user_count() {
+            return Err(Refusal::say(
+                "every line in this sketch is construction geometry, so there is no outline to extrude",
+            ));
+        }
+        wires::discover_regions_excluding(&self.block, &self.constraints, &self.params, &self.construction)
+    }
 }
 
 fn point_of(v: &Value, key: &str) -> Result<[f64; 2], String> {

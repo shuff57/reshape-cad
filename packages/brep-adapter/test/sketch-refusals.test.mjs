@@ -206,7 +206,10 @@ test('refusal 7 retired (82ec736): a washer BUILDS with the closed-form volume',
   assert.ok(Math.abs(got - want) <= 1e-6 * want, `washer volume ${got}, want ${want}`);
 });
 
-test('refusal 7 retired: a plug sitting inside a bore still refuses', () => {
+test('refusal 7 retired: a plug sitting inside a bore is its own piece of the pad', () => {
+  // Even-odd nesting (what FreeCAD does): the plate with its r8 bore, and an r3 disc standing in the bore. The profile
+  // reader (sketch_profile) still gives ONE outline and refuses the arrangement in its own sentence; the pad builds it
+  // as two regions.
   const geoms = [
     ...SQ,
     { k: 'circle', id: 5, c: [20, 15], r: 8 },
@@ -214,21 +217,27 @@ test('refusal 7 retired: a plug sitting inside a bore still refuses', () => {
   ];
   const sentence = 'sits inside the hole near (20.0, 15.0) mm; an island inside a hole is not a shape this builds';
   const prof = viaSession(geoms, SQ_RULES);
-  assert.ok('refusal' in prof, `a plug in a bore must refuse: ${JSON.stringify(prof)}`);
+  assert.ok('refusal' in prof, `the single-outline reader must still say so: ${JSON.stringify(prof)}`);
   assert.ok(prof.refusal.includes(sentence), prof.refusal);
   const { id, built, measured } = viaBuild(geoms, SQ_RULES);
-  assert.ok(built.refusals[id]?.includes(sentence), `build refusal: ${built.refusals[id]}`);
-  assert.equal(measured.shapes?.[id], undefined, 'no solid');
+  assert.deepEqual(built.refusals, {}, 'the pad builds it');
+  assert.ok(built.built.includes(id));
+  const want = (40 * 30 - Math.PI * 64 + Math.PI * 9) * HEIGHT;
+  const got = measured.shapes[id].volume;
+  assert.ok(Math.abs(got - want) <= 1e-9 * want, `plate + plug volume ${got}, want ${want}`);
 });
 
-test('side-by-side outlines still refuse (the surviving half of 7)', () => {
+test('side-by-side outlines are separate pieces of one pad (the single-outline reader still says two outlines)', () => {
   const two = [...SQ, ...polyRows([[100, 0], [140, 0], [140, 30], [100, 30]]).map((l) => ({ ...l, id: l.id + 4 }))];
   const rules = [...SQ_RULES, ...weldRows(4).map((c) => ({ ...c, a: c.a + 4, b: c.b + 4 }))];
   const prof = viaSession(two, rules);
   assert.ok('refusal' in prof, JSON.stringify(prof));
   assert.ok(prof.refusal.includes('this sketch has 2 separate outlines'), prof.refusal);
-  const { id, built } = viaBuild(two, rules);
-  assert.ok(built.refusals[id], 'the build refuses too');
+  const { id, built, measured } = viaBuild(two, rules);
+  assert.deepEqual(built.refusals, {}, 'the pad builds both');
+  const want = 2 * 40 * 30 * HEIGHT;
+  const got = measured.shapes[id].volume;
+  assert.ok(Math.abs(got - want) <= 1e-9 * want, `two plates volume ${got}, want ${want}`);
 });
 
 // --- the arc-convention trap (sketch-canvas-core.ts slotRows, ~:818-880) -----

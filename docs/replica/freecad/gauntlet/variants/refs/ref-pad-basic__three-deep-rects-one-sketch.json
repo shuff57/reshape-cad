@@ -1,0 +1,18 @@
+{
+ "id": "pad-basic__three-deep-rects-one-sketch",
+ "ok": true,
+ "volume": 36000.0,
+ "bbox": [
+  -30.0,
+  -30.0,
+  0.0,
+  30.0,
+  30.0,
+  15.0
+ ],
+ "faces": 16,
+ "com": null,
+ "valid": true,
+ "solids": 2,
+ "bad": {}
+}

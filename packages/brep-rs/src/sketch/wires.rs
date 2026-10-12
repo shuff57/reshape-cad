@@ -1869,29 +1869,14 @@ pub fn discover_wires(
     discover_wires_excluding(block, constraints, solved, &[])
 }
 
-/// `discover_wires` with construction geometry left out of the outline. The
-/// excluded geometries stay in the block (the solver still sees them and their
-/// rules); only the loop discovery ignores them, along with any rule that names
-/// one, since a weld to a guide line is not a weld of the outline.
-pub fn discover_wires_excluding(
+/// The discovery prefix shared by the single-outline reader and the region reader: every refusal that
+/// does not depend on how the loops nest, then every closed loop with the area it started from.
+fn read_candidates(
     block: &ParamBlock,
     constraints: &[Constraint],
     solved: &[f64],
     exclude: &[GeoId],
-) -> Result<Vec<WireLoop>, Refusal> {
-    let kept: Vec<Constraint>;
-    let constraints: &[Constraint] = if exclude.is_empty() {
-        constraints
-    } else {
-        kept = constraints
-            .iter()
-            .filter(|c| {
-                !(0..4).any(|i| matches!(c.arg(i), Ok(a) if exclude.contains(&a.geo)))
-            })
-            .cloned()
-            .collect();
-        &kept
-    };
+) -> Result<(Plan, Vec<Cand>), Refusal> {
     let plan = Plan::read_excluding(block, constraints, solved, exclude)?;
 
     plan.dangling()?;
@@ -1944,6 +1929,33 @@ pub fn discover_wires_excluding(
     if cands.is_empty() {
         return Err(Refusal::say("no closed outline found: these edges do not enclose a shape"));
     }
+    Ok((plan, cands))
+}
+
+/// `discover_wires` with construction geometry left out of the outline. The
+/// excluded geometries stay in the block (the solver still sees them and their
+/// rules); only the loop discovery ignores them, along with any rule that names
+/// one, since a weld to a guide line is not a weld of the outline.
+pub fn discover_wires_excluding(
+    block: &ParamBlock,
+    constraints: &[Constraint],
+    solved: &[f64],
+    exclude: &[GeoId],
+) -> Result<Vec<WireLoop>, Refusal> {
+    let kept: Vec<Constraint>;
+    let constraints: &[Constraint] = if exclude.is_empty() {
+        constraints
+    } else {
+        kept = constraints
+            .iter()
+            .filter(|c| {
+                !(0..4).any(|i| matches!(c.arg(i), Ok(a) if exclude.contains(&a.geo)))
+            })
+            .cloned()
+            .collect();
+        &kept
+    };
+    let (plan, cands) = read_candidates(block, constraints, solved, exclude)?;
 
     let markers: Vec<[f64; 2]> = cands.iter().map(|c| loop_marker(&c.segs)).collect();
     let at = |i: usize| -> String {
@@ -2075,6 +2087,277 @@ pub fn discover_wires_excluding(
     Ok(out)
 }
 
+// ---- several shapes in one sketch: regions ------------------------------------------------------------------------------------------
+
+fn pt_dist(p: [f64; 2], q: [f64; 2]) -> f64 {
+    ((p[0] - q[0]).powi(2) + (p[1] - q[1]).powi(2)).sqrt()
+}
+
+fn pt_seg_dist(p: [f64; 2], a: [f64; 2], b: [f64; 2]) -> f64 {
+    let (dx, dy) = (b[0] - a[0], b[1] - a[1]);
+    let l2 = dx * dx + dy * dy;
+    if l2 <= 0.0 {
+        return pt_dist(p, a);
+    }
+    let t = (((p[0] - a[0]) * dx + (p[1] - a[1]) * dy) / l2).clamp(0.0, 1.0);
+    pt_dist(p, [a[0] + t * dx, a[1] + t * dy])
+}
+
+/// Whether the direction from `centre` to `p` lies inside the arc's angular span (ends included).
+fn in_arc_span(centre: [f64; 2], start: f64, sweep: f64, p: [f64; 2]) -> bool {
+    if pt_dist(p, centre) <= 0.0 {
+        return true;
+    }
+    let ang = (p[1] - centre[1]).atan2(p[0] - centre[0]);
+    let t = if sweep >= 0.0 { (ang - start).rem_euclid(TAU) } else { (start - ang).rem_euclid(TAU) };
+    t <= sweep.abs() + 1e-12
+}
+
+fn pt_arc_dist(p: [f64; 2], seg: &WireSeg) -> f64 {
+    let WireSeg::Arc { centre, radius, start, sweep } = seg else {
+        return f64::MAX;
+    };
+    if in_arc_span(*centre, *start, *sweep, p) {
+        return (pt_dist(p, *centre) - radius).abs();
+    }
+    let (q0, q1) = seg.endpoints();
+    pt_dist(p, q0).min(pt_dist(p, q1))
+}
+
+fn proper_cross(a: [f64; 2], b: [f64; 2], c: [f64; 2], d: [f64; 2]) -> bool {
+    let o = |p: [f64; 2], q: [f64; 2], r: [f64; 2]| (q[0] - p[0]) * (r[1] - p[1]) - (q[1] - p[1]) * (r[0] - p[0]);
+    let (d1, d2, d3, d4) = (o(a, b, c), o(a, b, d), o(c, d, a), o(c, d, b));
+    ((d1 > 0.0 && d2 < 0.0) || (d1 < 0.0 && d2 > 0.0)) && ((d3 > 0.0 && d4 < 0.0) || (d3 < 0.0 && d4 > 0.0))
+}
+
+/// Exact smallest distance between two wire segments (0 when they meet or cross). Every candidate below is a real
+/// distance between a point of each segment, and the true minimum is always among them: a minimum is either at an end
+/// of one segment, or where the connecting line is normal to both (through the centre of a curve).
+fn seg_gap(s: &WireSeg, t: &WireSeg) -> f64 {
+    match (s, t) {
+        (WireSeg::Line { a, b }, WireSeg::Line { a: c, b: d }) => {
+            if proper_cross(*a, *b, *c, *d) {
+                return 0.0;
+            }
+            pt_seg_dist(*a, *c, *d)
+                .min(pt_seg_dist(*b, *c, *d))
+                .min(pt_seg_dist(*c, *a, *b))
+                .min(pt_seg_dist(*d, *a, *b))
+        }
+        (WireSeg::Line { a, b }, WireSeg::Arc { centre, .. }) | (WireSeg::Arc { centre, .. }, WireSeg::Line { a, b }) => {
+            let arc = if matches!(s, WireSeg::Arc { .. }) { s } else { t };
+            let (q0, q1) = arc.endpoints();
+            let mut best = pt_arc_dist(*a, arc).min(pt_arc_dist(*b, arc)).min(pt_seg_dist(q0, *a, *b)).min(pt_seg_dist(q1, *a, *b));
+            // The foot of the perpendicular from the centre, when it lands on the segment.
+            let (dx, dy) = (b[0] - a[0], b[1] - a[1]);
+            let l2 = dx * dx + dy * dy;
+            if l2 > 0.0 {
+                let u = ((centre[0] - a[0]) * dx + (centre[1] - a[1]) * dy) / l2;
+                if u > 0.0 && u < 1.0 {
+                    best = best.min(pt_arc_dist([a[0] + u * dx, a[1] + u * dy], arc));
+                }
+            }
+            // A crossing: the line meets the circle inside both spans.
+            if let WireSeg::Arc { centre, radius, start, sweep } = arc {
+                let (fx, fy) = (a[0] - centre[0], a[1] - centre[1]);
+                let qa = l2;
+                let qb = 2.0 * (fx * dx + fy * dy);
+                let qc = fx * fx + fy * fy - radius * radius;
+                let disc = qb * qb - 4.0 * qa * qc;
+                if qa > 0.0 && disc >= 0.0 {
+                    let r = disc.sqrt();
+                    for u in [(-qb - r) / (2.0 * qa), (-qb + r) / (2.0 * qa)] {
+                        if (0.0..=1.0).contains(&u) && in_arc_span(*centre, *start, *sweep, [a[0] + u * dx, a[1] + u * dy]) {
+                            return 0.0;
+                        }
+                    }
+                }
+            }
+            best
+        }
+        (WireSeg::Arc { centre: c1, radius: r1, start: s1, sweep: w1 }, WireSeg::Arc { centre: c2, radius: r2, start: s2, sweep: w2 }) => {
+            let (p0, p1) = s.endpoints();
+            let (q0, q1) = t.endpoints();
+            let mut best = pt_arc_dist(p0, t).min(pt_arc_dist(p1, t)).min(pt_arc_dist(q0, s)).min(pt_arc_dist(q1, s));
+            let d = pt_dist(*c1, *c2);
+            if d > 0.0 {
+                let ux = [(c2[0] - c1[0]) / d, (c2[1] - c1[1]) / d];
+                for sg in [1.0, -1.0] {
+                    let on1 = [c1[0] + sg * r1 * ux[0], c1[1] + sg * r1 * ux[1]];
+                    if in_arc_span(*c1, *s1, *w1, on1) {
+                        best = best.min(pt_arc_dist(on1, t));
+                    }
+                    let on2 = [c2[0] + sg * r2 * ux[0], c2[1] + sg * r2 * ux[1]];
+                    if in_arc_span(*c2, *s2, *w2, on2) {
+                        best = best.min(pt_arc_dist(on2, s));
+                    }
+                }
+                // The two circles cross inside both spans.
+                if d <= r1 + r2 && d >= (r1 - r2).abs() {
+                    let a = (r1 * r1 - r2 * r2 + d * d) / (2.0 * d);
+                    let h2 = r1 * r1 - a * a;
+                    if h2 >= 0.0 {
+                        let h = h2.sqrt();
+                        let m = [c1[0] + a * ux[0], c1[1] + a * ux[1]];
+                        for sg in [1.0, -1.0] {
+                            let x = [m[0] - sg * h * ux[1], m[1] + sg * h * ux[0]];
+                            if in_arc_span(*c1, *s1, *w1, x) && in_arc_span(*c2, *s2, *w2, x) {
+                                return 0.0;
+                            }
+                        }
+                    }
+                }
+            }
+            best
+        }
+    }
+}
+
+/// The smallest gap between two loops.
+fn loop_gap(a: &[WireSeg], b: &[WireSeg]) -> f64 {
+    let mut best = f64::MAX;
+    for s in a {
+        for t in b {
+            best = best.min(seg_gap(s, t));
+        }
+    }
+    best
+}
+
+/// Discover the closed loops a solved sketch describes when it may hold SEVERAL shapes: each returned region is one
+/// filled outline with the loops cut out of it, by even-odd nesting (a loop inside a loop is a hole, a loop inside
+/// that hole is a new filled outline of its own, and so on). Regions are separate pieces of the same profile.
+///
+/// A single region comes back exactly as `discover_wires_excluding` returns it. What is refused, in a sentence:
+/// loops that cross each other, and separate regions that touch (at a point or along an edge), because the piece
+/// they would make is not one solid brep-rs can state.
+pub fn discover_regions_excluding(
+    block: &ParamBlock,
+    constraints: &[Constraint],
+    solved: &[f64],
+    exclude: &[GeoId],
+) -> Result<Vec<Vec<WireLoop>>, Refusal> {
+    let kept: Vec<Constraint>;
+    let constraints: &[Constraint] = if exclude.is_empty() {
+        constraints
+    } else {
+        kept = constraints
+            .iter()
+            .filter(|c| !(0..4).any(|i| matches!(c.arg(i), Ok(a) if exclude.contains(&a.geo))))
+            .cloned()
+            .collect();
+        &kept
+    };
+    let (plan, cands) = read_candidates(block, constraints, solved, exclude)?;
+    let n = cands.len();
+    let markers: Vec<[f64; 2]> = cands.iter().map(|c| loop_marker(&c.segs)).collect();
+    let at = |i: usize| -> String {
+        markers.get(i).map(|m| format!("({:.1}, {:.1}) mm", m[0], m[1])).unwrap_or_else(|| "the sketch".to_string())
+    };
+
+    // inside[i][j]: loop i lies wholly inside loop j.
+    let mut inside = vec![vec![false; n]; n];
+    for i in 0..n {
+        for j in 0..n {
+            if i == j {
+                continue;
+            }
+            let (Some(a), Some(b)) = (cands.get(i), cands.get(j)) else { continue };
+            match nesting(&a.segs, &b.segs) {
+                Nesting::Inside => inside[i][j] = true,
+                Nesting::Beside => {}
+                Nesting::Crossing => {
+                    return Err(Refusal::say(format!(
+                        "the shapes near {} and {} cross or touch each other; draw each shape either wholly inside another (a hole) or clear of the others",
+                        at(i),
+                        at(j)
+                    )))
+                }
+            }
+        }
+    }
+    let depth: Vec<usize> = (0..n).map(|i| (0..n).filter(|&j| inside[i][j]).count()).collect();
+    // The loop that directly contains i: the containing loop with the greatest depth.
+    let parent = |i: usize| -> Option<usize> { (0..n).filter(|&j| inside[i][j]).max_by_key(|&j| depth[j]) };
+
+    // region id of every loop: an even-depth loop starts a region, an odd-depth loop belongs to its parent's.
+    let mut region_of = vec![usize::MAX; n];
+    let mut starters: Vec<usize> = Vec::new();
+    for i in 0..n {
+        if depth[i] % 2 == 0 {
+            region_of[i] = starters.len();
+            starters.push(i);
+        }
+    }
+    for i in 0..n {
+        if depth[i] % 2 == 1 {
+            let Some(p) = parent(i) else { continue };
+            region_of[i] = region_of[p];
+        }
+    }
+
+    // Holes of one region may not run into each other (as in the single-outline reader).
+    for i in 0..n {
+        for j in (i + 1)..n {
+            if depth[i] % 2 == 1 && depth[j] % 2 == 1 && region_of[i] == region_of[j] {
+                let (Some(a), Some(b)) = (cands.get(i), cands.get(j)) else { continue };
+                if nesting(&a.segs, &b.segs) != Nesting::Beside || nesting(&b.segs, &a.segs) != Nesting::Beside {
+                    return Err(Refusal::say(format!(
+                        "the holes near {} and {} overlap; merge them into one hole",
+                        at(i),
+                        at(j)
+                    )));
+                }
+            }
+        }
+    }
+
+    // Separate pieces must stand clear of each other.
+    let clear = 1e-6 * plan.scale;
+    for i in 0..n {
+        for j in (i + 1)..n {
+            if region_of[i] == region_of[j] {
+                continue;
+            }
+            let (Some(a), Some(b)) = (cands.get(i), cands.get(j)) else { continue };
+            if loop_gap(&a.segs, &b.segs) <= clear {
+                return Err(Refusal::say(format!(
+                    "the shapes near {} and {} touch; a profile with several pieces needs them clear of each other, so move one away or draw them as one shape",
+                    at(i),
+                    at(j)
+                )));
+            }
+        }
+    }
+
+    // Refusal 9 on every loop (see discover_wires_excluding).
+    let floor = EPS_AREA_REL * plan.scale * plan.scale;
+    for (i, c) in cands.iter().enumerate() {
+        if c.area.abs() >= floor && c.area.abs() >= COLLAPSE_RATIO * c.pre_area.abs() {
+            continue;
+        }
+        let which = if depth[i] % 2 == 0 { format!("the shape near {}", at(i)) } else { format!("the hole near {}", at(i)) };
+        return Err(Refusal::say(format!(
+            "{which} collapsed while solving: {} square mm of area became {}",
+            millimetres(c.pre_area.abs()),
+            millimetres(c.area.abs())
+        )));
+    }
+    plan.cusps()?;
+
+    let mut out: Vec<Vec<WireLoop>> = Vec::with_capacity(starters.len());
+    for (r, &s) in starters.iter().enumerate() {
+        let mut region = vec![WireLoop { role: LoopRole::Outer, segs: cands[s].segs.clone() }];
+        for i in 0..n {
+            if depth[i] % 2 == 1 && region_of[i] == r {
+                region.push(WireLoop { role: LoopRole::Hole, segs: cands[i].segs.clone() });
+            }
+        }
+        out.push(region);
+    }
+    Ok(out)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -2157,6 +2440,11 @@ mod tests {
             discover_wires(&self.block, &self.cons, &self.coords())
         }
 
+        /// The pieces of a sketch of several shapes: one region per filled outline, its holes after it.
+        fn run_regions(&self) -> Result<Vec<Vec<WireLoop>>, Refusal> {
+            discover_regions_excluding(&self.block, &self.cons, &self.coords(), &[])
+        }
+
         /// The OUTLINE alone. Most fixtures below are one loop, and reading
         /// `[0].segs` in each of them would say nothing the name does not.
         fn run(&self) -> Result<Vec<WireSeg>, Refusal> {
@@ -2190,6 +2478,13 @@ mod tests {
                     .collect();
                 format!("<accepted, {}, no refusal>", parts.join(" + "))
             }
+            Err(e) => e.sentence,
+        }
+    }
+
+    fn loops_sentence_regions(r: Result<Vec<Vec<WireLoop>>, Refusal>) -> String {
+        match r {
+            Ok(regions) => format!("<accepted, {} regions, no refusal>", regions.len()),
             Err(e) => e.sentence,
         }
     }
@@ -2809,6 +3104,130 @@ mod tests {
             loops_sentence(f.run_loops()),
             "an island inside a hole is not a shape this builds",
         );
+    }
+
+    fn region_shape(r: &[WireLoop]) -> (usize, usize) {
+        let outers = r.iter().filter(|l| l.role == LoopRole::Outer).count();
+        (outers, r.len() - outers)
+    }
+
+    #[test]
+    fn regions_one_outline_is_what_the_single_reader_gives() {
+        // A plate with two bores: one region, the outline first, the same loops in the same order.
+        let mut f = Fix::new();
+        rect(&mut f, [0.0, 0.0], [60.0, 40.0]);
+        f.circle([15.0, 20.0], 6.0);
+        f.circle([45.0, 20.0], 6.0);
+        let one = f.run_loops().expect("a plate with two bores builds");
+        let regions = f.run_regions().expect("the same sketch as regions");
+        assert_eq!(regions.len(), 1, "one outline is one region");
+        assert_eq!(regions[0], one, "and it is exactly what discover_wires returns");
+    }
+
+    #[test]
+    fn regions_side_by_side_are_two_pieces() {
+        let mut f = Fix::new();
+        rect(&mut f, [0.0, 0.0], [40.0, 25.0]);
+        rect(&mut f, [60.0, 0.0], [100.0, 25.0]);
+        let regions = f.run_regions().expect("two shapes clear of each other are two pieces");
+        assert_eq!(regions.len(), 2);
+        for r in &regions {
+            assert_eq!(region_shape(r), (1, 0));
+        }
+    }
+
+    #[test]
+    fn regions_island_in_a_hole_is_its_own_piece() {
+        // 60 / 40 / 20 across, concentric: a ring (outline + hole) and a disc standing in its hole.
+        let mut f = Fix::new();
+        f.circle([0.0, 0.0], 30.0);
+        f.circle([0.0, 0.0], 20.0);
+        f.circle([0.0, 0.0], 10.0);
+        let regions = f.run_regions().expect("even-odd nesting");
+        assert_eq!(regions.len(), 2, "a ring and a disc");
+        let mut shapes: Vec<(usize, usize)> = regions.iter().map(|r| region_shape(r)).collect();
+        shapes.sort();
+        assert_eq!(shapes, vec![(1, 0), (1, 1)], "one plain disc, one ring with a hole");
+        // the ring is the one holding the 30 and 20 circles, the disc is the 10
+        let disc = regions.iter().find(|r| r.len() == 1).expect("the disc");
+        let (p, _) = disc[0].segs[0].endpoints();
+        assert!((p[0].hypot(p[1]) - 10.0).abs() < 1e-9, "the lone disc is the radius 10 circle, got {p:?}");
+    }
+
+    #[test]
+    fn regions_four_deep_is_two_rings() {
+        let mut f = Fix::new();
+        for r in [40.0, 30.0, 20.0, 10.0] {
+            f.circle([0.0, 0.0], r);
+        }
+        let regions = f.run_regions().expect("even-odd");
+        assert_eq!(regions.len(), 2);
+        assert!(regions.iter().all(|r| region_shape(r) == (1, 1)), "two rings, each a circle with a hole");
+    }
+
+    #[test]
+    fn regions_refuse_crossing_and_touching_shapes() {
+        // Two circles that overlap.
+        let mut f = Fix::new();
+        f.circle([-5.0, 0.0], 10.0);
+        f.circle([5.0, 0.0], 10.0);
+        assert_says("overlapping circles", loops_sentence_regions(f.run_regions()), "cross or touch each other");
+
+        // Two circles that kiss at one point, side by side.
+        let mut f = Fix::new();
+        f.circle([-10.0, 0.0], 10.0);
+        f.circle([10.0, 0.0], 10.0);
+        assert_says("externally tangent circles", loops_sentence_regions(f.run_regions()), "cross or touch each other");
+
+        // A disc that sits in a hole and touches its wall (internally tangent): no wall thickness at the touch.
+        let mut f = Fix::new();
+        f.circle([0.0, 0.0], 30.0);
+        f.circle([0.0, 0.0], 20.0);
+        f.circle([10.0, 0.0], 10.0);
+        assert!(f.run_regions().is_err(), "a disc touching the wall of the hole it stands in refuses");
+
+        // Side by side but with a gap too small to draw: a 1e-9 mm gap is a touch.
+        let mut f = Fix::new();
+        rect(&mut f, [0.0, 0.0], [40.0, 25.0]);
+        rect(&mut f, [40.0 + 1e-9, 0.0], [80.0, 25.0]);
+        assert!(f.run_regions().is_err(), "a hair's gap is not clear of each other");
+    }
+
+    #[test]
+    fn regions_clear_by_a_millimetre_build() {
+        let mut f = Fix::new();
+        f.circle([-10.0, 0.0], 10.0);
+        f.circle([10.0 + 1.0, 0.0], 10.0);
+        let regions = f.run_regions().expect("a 1 mm gap is clear");
+        assert_eq!(regions.len(), 2);
+    }
+
+    #[test]
+    fn loop_gap_is_exact_for_lines_and_arcs() {
+        let line = |a: [f64; 2], b: [f64; 2]| WireSeg::Line { a, b };
+        let arc = |c: [f64; 2], r: f64, start: f64, sweep: f64| WireSeg::Arc { centre: c, radius: r, start, sweep };
+        // parallel lines 3 apart
+        assert!((seg_gap(&line([0.0, 0.0], [10.0, 0.0]), &line([0.0, 3.0], [10.0, 3.0])) - 3.0).abs() < 1e-12);
+        // crossing lines
+        assert_eq!(seg_gap(&line([0.0, 0.0], [10.0, 10.0]), &line([0.0, 10.0], [10.0, 0.0])), 0.0);
+        // a line 2 beyond a radius-5 circle's top
+        let half = arc([0.0, 0.0], 5.0, 0.0, PI);
+        assert!((seg_gap(&line([-3.0, 7.0], [3.0, 7.0]), &half) - 2.0).abs() < 1e-12);
+        // the same line against the lower half circle: the nearest arc point is an end, (5, 0), seen from (3, 7)
+        let lower = arc([0.0, 0.0], 5.0, PI, PI);
+        let got = seg_gap(&line([-3.0, 7.0], [3.0, 7.0]), &lower);
+        assert!((got - (2.0f64.powi(2) + 7.0f64.powi(2)).sqrt()).abs() < 1e-12, "got {got}");
+        // two circles 1 apart (radii 10 and 10, centres 21 apart)
+        let c1 = arc([0.0, 0.0], 10.0, 0.0, PI);
+        let c2 = arc([21.0, 0.0], 10.0, 0.0, PI);
+        assert!((seg_gap(&c1, &c2) - 1.0).abs() < 1e-12);
+        // concentric circles 10 apart
+        let big = arc([0.0, 0.0], 20.0, 0.0, PI);
+        assert!((seg_gap(&c1, &big) - 10.0).abs() < 1e-12);
+        // crossing arcs
+        let d1 = arc([0.0, 0.0], 10.0, 0.0, PI);
+        let d2 = arc([10.0, 0.0], 10.0, 0.0, PI);
+        assert_eq!(seg_gap(&d1, &d2), 0.0);
     }
 
     #[test]

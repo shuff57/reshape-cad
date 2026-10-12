@@ -11,17 +11,23 @@ import { runScript } from '../dist/reshape-script.js';
 const errs = (src) => runScript(src).errors.map((e) => e.message ?? String(e));
 const PLATE = "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); const s2 = sketch('top', 10); s2.circle(8, { at: [20, 15] });";
 
-test('a second shape call on one sketch is refused instead of replacing the first', () => {
-  for (const src of [
-    "const sk = sketch('top'); sk.circle(40); sk.circle(20); extrude(sk, 15);",
-    "const sk = sketch('top'); sk.rect(40, 30); sk.circle(10); extrude(sk, 15);",
-    "const sk = sketch('top'); sk.polygon([[0,0],[10,0],[0,10]]); sk.rect(4, 4); extrude(sk, 15);",
-    "const sk = sketch('top'); sk.rect(40, 30); sk.rect(10, 10); extrude(sk, 15);",
+test('a second shape call on one sketch is kept as its own loop instead of replacing the first', () => {
+  // It used to replace the first shape without a word, then was a refusal; now every shape stays, as rows, one loop each.
+  // The kernel's even-odd nesting does the rest (measured against FreeCAD in packages/brep-adapter/test/multi-loop-sketch.test.mjs).
+  for (const [src, loops] of [
+    ["const sk = sketch('top'); sk.circle(40); sk.circle(20); extrude(sk, 15);", 2],
+    ["const sk = sketch('top'); sk.rect(40, 30); sk.circle(10); extrude(sk, 15);", 2],
+    ["const sk = sketch('top'); sk.polygon([[0,0],[10,0],[0,10]]); sk.rect(4, 4); extrude(sk, 15);", 2],
+    ["const sk = sketch('top'); sk.rect(40, 30); sk.rect(10, 10); extrude(sk, 15);", 2],
   ]) {
-    const e = errs(src);
-    assert.equal(e.length, 1, src);
-    assert.match(e[0], /would replace the \w+ already drawn on this sketch: a sketch holds one outline/);
-    assert.match(e[0], /sk\.geom\(\[\.\.\.\]\)/, 'the sentence names the way to get several loops');
+    const r = runScript(src);
+    assert.deepEqual(r.errors, [], src);
+    const sk = r.doc.features.find((f) => f.kind === 'sketch');
+    assert.ok(Array.isArray(sk.geoms) && sk.geoms.length > 0, `${src} is written as rows`);
+    const lines = sk.geoms.filter((g) => g.k === 'line').length;
+    const circles = sk.geoms.filter((g) => g.k === 'circle').length;
+    const rects = lines / 4;
+    assert.equal(circles + (src.includes('polygon') ? 1 + (lines - 3) / 4 : rects), loops, src);
   }
 });
 

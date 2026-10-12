@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-12T03:48:05.691Z",
+  "generatedAt": "2026-10-12T04:30:13.017Z",
   "reference": "FreeCAD 26.3.0 RC1 headless (variants/fc/<id>.py -> variants/refs/ref-<id>.json)",
   "ours": "reSHape Script -> ModelDoc -> brep-rs wasm (solids) / SketchSession2D (sketches)",
   "tolerances": {
@@ -10,15 +10,14 @@
     "meshVolumeRelative": 0.005
   },
   "summary": {
-    "total": 180,
-    "MATCH": 169,
+    "total": 208,
+    "MATCH": 191,
     "MISMATCH": 1,
-    "REFUSED": 10,
+    "REFUSED": 16,
     "byClass": {
-      "spec-mismatch": 4,
-      "script-layer-bug": 2,
-      "agrees-both-refuse": 2,
-      "real-kernel-gap": 2,
+      "spec-mismatch": 8,
+      "agrees-both-refuse": 3,
+      "real-kernel-gap": 5,
       "reference-wrong": 1
     },
     "unclassified": 0,
@@ -26,23 +25,23 @@
   },
   "perPiece": {
     "pad-basic": {
-      "total": 15,
-      "MATCH": 12
+      "total": 33,
+      "MATCH": 27
     },
     "pad-symmetric": {
       "total": 6,
       "MATCH": 6
     },
     "pocket-blind": {
-      "total": 14,
-      "MATCH": 12
+      "total": 19,
+      "MATCH": 17
     },
     "pocket-through": {
-      "total": 8,
-      "MATCH": 8
+      "total": 10,
+      "MATCH": 10
     },
     "revolution": {
-      "total": 34,
+      "total": 37,
       "MATCH": 34
     },
     "chamfer-edge": {
@@ -8433,9 +8432,66 @@
       "desc": "the same ring written as sk.circle(40); sk.circle(20) on one sketch (the second call used to replace the first silently)",
       "kind": "solid",
       "oursSource": "const sk = sketch('top'); sk.circle(40); sk.circle(20); extrude(sk, 15);",
-      "status": "REFUSED",
-      "checks": [],
-      "oursOutcome": "script-error",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 14137.16694,
+          "ours": 14137.16694,
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            -20,
+            -20,
+            0,
+            20,
+            20,
+            15
+          ],
+          "ours": [
+            -20,
+            -20,
+            0,
+            20,
+            20,
+            15
+          ],
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 4,
+          "ours": 4,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            1.54400616e-15,
+            1.146737026e-16,
+            7.5
+          ],
+          "ours": [
+            1.950346159e-16,
+            9.565339735e-16,
+            7.5
+          ],
+          "pass": true,
+          "delta": 5.3290705182007514e-14
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 14137.16694,
+          "ours": 14130.91529,
+          "pass": true,
+          "delta": 0.0004422139311700993
+        }
+      ],
+      "oursOutcome": "built",
       "ref": {
         "volume": 14137.166941154072,
         "bbox": [
@@ -8453,12 +8509,23 @@
           7.499999999999999
         ]
       },
-      "layer": "script",
-      "sentence": ".circle() would replace the circle already drawn on this sketch: a sketch holds one outline. For a hole or several loops in one profile use sk.geom([...]) with a row for each, or draw the second shape on its own sketch().",
-      "classification": {
-        "class": "script-layer-bug",
-        "fixed": true,
-        "evidence": "Before the fix sk.circle(40); sk.circle(20) on one sketch built ONLY the 20 mm disc: volume 4712.38898, bbox +-10, 3 faces (the second circle() call replaced the first with no message), against FreeCAD's ring 14137.16694, bbox +-20. The same happened for rect + circle (only the circle, 1178.097 = pi x 5^2 x 15), two circles side by side (only the second) and rect + rect (only the inner 10 x 10, 1500). Probe in scratch: ring_40_20 / rect_in_rect. Fix: packages/script/src/reshape-script.ts makeSketchHandle claimOutline(): a second rect/circle/polygon call on a sketch throws a sentence naming sk.geom([...]) and a second sketch(). Pinned by packages/script/test/sweep-fixes.test.mjs."
+      "ours": {
+        "volume": 14137.166941154072,
+        "bbox": [
+          -20,
+          -20,
+          0,
+          20,
+          20,
+          15
+        ],
+        "faces": 4,
+        "com": [
+          1.9503461594435527e-16,
+          9.565339734930637e-16,
+          7.500000000000052
+        ],
+        "meshVolume": 14130.915288985416
       }
     },
     {
@@ -8467,9 +8534,66 @@
       "desc": "a rectangle then a second rectangle called on the same sketch: FreeCAD, given both loops, makes a frame",
       "kind": "solid",
       "oursSource": "const sk = sketch('top'); sk.rect(40, 30); sk.rect(10, 10); extrude(sk, 15);",
-      "status": "REFUSED",
-      "checks": [],
-      "oursOutcome": "script-error",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 16500,
+          "ours": 16500,
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            -20,
+            -15,
+            0,
+            20,
+            15,
+            15
+          ],
+          "ours": [
+            -20,
+            -15,
+            0,
+            20,
+            15,
+            15
+          ],
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 10,
+          "ours": 10,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            -6.890111377e-18,
+            -6.10605842e-17,
+            7.5
+          ],
+          "ours": [
+            0,
+            0,
+            7.5
+          ],
+          "pass": true,
+          "delta": 6.10605841982857e-17
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 16500,
+          "ours": 16500,
+          "pass": true,
+          "delta": 0
+        }
+      ],
+      "oursOutcome": "built",
       "ref": {
         "volume": 16500,
         "bbox": [
@@ -8487,12 +8611,23 @@
           7.5
         ]
       },
-      "layer": "script",
-      "sentence": ".rect() would replace the rect already drawn on this sketch: a sketch holds one outline. For a hole or several loops in one profile use sk.geom([...]) with a row for each, or draw the second shape on its own sketch().",
-      "classification": {
-        "class": "script-layer-bug",
-        "fixed": true,
-        "evidence": "Same defect as pad-basic__two-circle-calls-one-sketch: before the fix sk.rect(40, 30); sk.rect(10, 10) built a 10 x 10 x 15 block (1500 mm^3) and dropped the 40 x 30 rectangle with no message. The second call is now refused in a sentence. FreeCAD, given the two loops, makes a frame (16500 mm^3, 10 faces); the way to say that in the script is sk.geom([...]) rows."
+      "ours": {
+        "volume": 16500,
+        "bbox": [
+          -20,
+          -15,
+          0,
+          20,
+          15,
+          15
+        ],
+        "faces": 10,
+        "com": [
+          0,
+          0,
+          7.5
+        ],
+        "meshVolume": 16500
       }
     },
     {
@@ -14610,6 +14745,2118 @@
       }
     },
     {
+      "id": "pad-basic__circle-in-rect-one-sketch",
+      "piece": "pad-basic",
+      "desc": "sk.rect(40, 30); sk.circle(10): a plate with a round hole, both called on one sketch",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('top'); sk.rect(40, 30); sk.circle(10); extrude(sk, 15);",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 16821.90275,
+          "ours": 16821.90275,
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            -20,
+            -15,
+            0,
+            20,
+            15,
+            15
+          ],
+          "ours": [
+            -20,
+            -15,
+            0,
+            20,
+            15,
+            15
+          ],
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 7,
+          "ours": 7,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            3.919792359e-16,
+            -8.68126741e-17,
+            7.5
+          ],
+          "ours": [
+            -2.609898284e-16,
+            2.745038648e-16,
+            7.5
+          ],
+          "pass": true,
+          "delta": 6.529690642796101e-16
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 16821.90275,
+          "ours": 16825.00094,
+          "pass": true,
+          "delta": 0.000184175385861792
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 16821.90275490383,
+        "bbox": [
+          -20,
+          -15,
+          0,
+          20,
+          15,
+          15
+        ],
+        "faces": 7,
+        "com": [
+          3.9197923587636545e-16,
+          -8.681267409550413e-17,
+          7.499999999999999
+        ]
+      },
+      "ours": {
+        "volume": 16821.90275490383,
+        "bbox": [
+          -20,
+          -15,
+          0,
+          20,
+          15,
+          15
+        ],
+        "faces": 7,
+        "com": [
+          -2.6098982840324466e-16,
+          2.7450386482541913e-16,
+          7.499999999999999
+        ],
+        "meshVolume": 16825.000935334643
+      }
+    },
+    {
+      "id": "pad-basic__rect-in-circle-one-sketch",
+      "piece": "pad-basic",
+      "desc": "sk.circle(40); sk.rect(10, 10): a disc with a square hole",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('top'); sk.circle(40); sk.rect(10, 10); extrude(sk, 15);",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 17349.55592,
+          "ours": 17349.55592,
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            -20,
+            -20,
+            0,
+            20,
+            20,
+            15
+          ],
+          "ours": [
+            -20,
+            -20,
+            0,
+            20,
+            20,
+            15
+          ],
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 7,
+          "ours": 7,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            5.242178566e-17,
+            -1.427357289e-16,
+            7.5
+          ],
+          "ours": [
+            -5.562015582e-16,
+            1.52800212e-15,
+            7.5
+          ],
+          "pass": true,
+          "delta": 3.2862601528904634e-14
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 17349.55592,
+          "ours": 17337.15586,
+          "pass": true,
+          "delta": 0.0007147193162039263
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 17349.555921538762,
+        "bbox": [
+          -20,
+          -20,
+          0,
+          20,
+          20,
+          15
+        ],
+        "faces": 7,
+        "com": [
+          5.2421785657569936e-17,
+          -1.427357289150342e-16,
+          7.499999999999999
+        ]
+      },
+      "ours": {
+        "volume": 17349.555921538762,
+        "bbox": [
+          -20,
+          -20,
+          0,
+          20,
+          20,
+          15
+        ],
+        "faces": 7,
+        "com": [
+          -5.562015581577055e-16,
+          1.5280021199099484e-15,
+          7.499999999999966
+        ],
+        "meshVolume": 17337.155858794078
+      }
+    },
+    {
+      "id": "pad-basic__two-holes-one-sketch",
+      "piece": "pad-basic",
+      "desc": "a plate with two round holes, three calls on one sketch",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('top'); sk.rect(60, 40); sk.circle(12, { at: [-15, 0] }); sk.circle(12, { at: [15, 0] }); extrude(sk, 15);",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 32607.07993,
+          "ours": 32607.07993,
+          "pass": true,
+          "delta": 1.1157021157495921e-16
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            -30,
+            -20,
+            0,
+            30,
+            20,
+            15
+          ],
+          "ours": [
+            -30,
+            -20,
+            0,
+            30,
+            20,
+            15
+          ],
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 8,
+          "ours": 8,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            9.762393513e-16,
+            2.542045056e-16,
+            7.5
+          ],
+          "ours": [
+            8.871311843e-16,
+            3.485780685e-18,
+            7.5
+          ],
+          "pass": true,
+          "delta": 7.993605777301127e-15
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 32607.07993,
+          "ours": 32614.45513,
+          "pass": true,
+          "delta": 0.00022618376569885724
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 32607.079934123023,
+        "bbox": [
+          -30,
+          -20,
+          0,
+          30,
+          20,
+          15
+        ],
+        "faces": 8,
+        "com": [
+          9.762393512808932e-16,
+          2.542045056481272e-16,
+          7.5
+        ]
+      },
+      "ours": {
+        "volume": 32607.079934123027,
+        "bbox": [
+          -30,
+          -20,
+          0,
+          30,
+          20,
+          15
+        ],
+        "faces": 8,
+        "com": [
+          8.871311842601726e-16,
+          3.485780684715806e-18,
+          7.499999999999992
+        ],
+        "meshVolume": 32614.45512625097
+      }
+    },
+    {
+      "id": "pad-basic__polygon-with-rect-hole-one-sketch",
+      "piece": "pad-basic",
+      "desc": "a triangle with a square hole, polygon() then rect() on one sketch",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('top'); sk.polygon([[-20, -20], [20, -20], [0, 20]]); sk.rect(4, 4, { at: [0, -8] }); extrude(sk, 15);",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 11760,
+          "ours": 11760,
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            -20,
+            -20,
+            0,
+            20,
+            20,
+            15
+          ],
+          "ours": [
+            -20,
+            -20,
+            0,
+            20,
+            20,
+            15
+          ],
+          "pass": true,
+          "delta": 7.105427357601002e-15
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 9,
+          "ours": 9,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            -1.546759697e-15,
+            -6.639455782,
+            7.5
+          ],
+          "ours": [
+            0,
+            -6.639455782,
+            7.5
+          ],
+          "pass": true,
+          "delta": 2.6645352591003757e-15
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 11760,
+          "ours": 11760,
+          "pass": true,
+          "delta": 1.5467596968927347e-16
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 11760.000000000002,
+        "bbox": [
+          -20.000000000000004,
+          -20.000000000000007,
+          0,
+          20,
+          20.000000000000007,
+          15
+        ],
+        "faces": 9,
+        "com": [
+          -1.5467596968927348e-15,
+          -6.639455782312923,
+          7.5
+        ]
+      },
+      "ours": {
+        "volume": 11760.000000000002,
+        "bbox": [
+          -20,
+          -20,
+          0,
+          20,
+          20,
+          15
+        ],
+        "faces": 9,
+        "com": [
+          0,
+          -6.639455782312925,
+          7.5
+        ],
+        "meshVolume": 11760
+      }
+    },
+    {
+      "id": "pad-basic__rect-off-centre-hole-one-sketch",
+      "piece": "pad-basic",
+      "desc": "a plate with an off-centre round hole near a corner",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('top'); sk.rect(50, 30, { at: [25, 15] }); sk.circle(8, { at: [10, 10] }); extrude(sk, 12);",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 17396.81421,
+          "ours": 17396.81421,
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            0,
+            0,
+            0,
+            50,
+            30,
+            12
+          ],
+          "ours": [
+            0,
+            0,
+            0,
+            50,
+            30,
+            12
+          ],
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 7,
+          "ours": 7,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            25.52008297,
+            15.17336099,
+            6
+          ],
+          "ours": [
+            25.5183364,
+            15.1727788,
+            6
+          ],
+          "pass": true,
+          "delta": 0.0017465726183019115
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 17396.81421,
+          "ours": 17398.7722,
+          "pass": true,
+          "delta": 0.00011254895971562528
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 17396.814210510758,
+        "bbox": [
+          0,
+          0,
+          0,
+          50,
+          30,
+          12
+        ],
+        "faces": 7,
+        "com": [
+          25.520082972253174,
+          15.173360990751059,
+          6
+        ]
+      },
+      "ours": {
+        "volume": 17396.814210510758,
+        "bbox": [
+          0,
+          0,
+          0,
+          50,
+          30,
+          12
+        ],
+        "faces": 7,
+        "com": [
+          25.518336399634872,
+          15.17277879987829,
+          5.999999999999996
+        ],
+        "meshVolume": 17398.772203852517
+      }
+    },
+    {
+      "id": "pad-basic__two-disjoint-rects-one-sketch",
+      "piece": "pad-basic",
+      "desc": "two squares side by side on one sketch: two pieces of one pad",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('top'); sk.rect(20, 20, { at: [-20, 0] }); sk.rect(20, 20, { at: [20, 0] }); extrude(sk, 15);",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 12000,
+          "ours": 12000,
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            -30,
+            -10,
+            0,
+            30,
+            10,
+            15
+          ],
+          "ours": [
+            -30,
+            -10,
+            0,
+            30,
+            10,
+            15
+          ],
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 12,
+          "ours": 12,
+          "pass": true
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 12000,
+          "ours": 12000,
+          "pass": true,
+          "delta": 0
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 12000,
+        "bbox": [
+          -30,
+          -10,
+          0,
+          30,
+          10,
+          15
+        ],
+        "faces": 12,
+        "com": null
+      },
+      "ours": {
+        "volume": 12000,
+        "bbox": [
+          -30,
+          -10,
+          0,
+          30,
+          10,
+          15
+        ],
+        "faces": 12,
+        "com": [
+          0,
+          0,
+          7.5
+        ],
+        "meshVolume": 12000
+      }
+    },
+    {
+      "id": "pad-basic__two-disjoint-circles-one-sketch",
+      "piece": "pad-basic",
+      "desc": "two discs side by side on one sketch",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('top'); sk.circle(16, { at: [-20, 0] }); sk.circle(16, { at: [20, 0] }); extrude(sk, 15);",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 6031.857895,
+          "ours": 6031.857895,
+          "pass": true,
+          "delta": 3.015637031313557e-16
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            -28,
+            -8,
+            0,
+            28,
+            8,
+            15
+          ],
+          "ours": [
+            -28,
+            -8,
+            0,
+            28,
+            8,
+            15
+          ],
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 6,
+          "ours": 6,
+          "pass": true
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 6031.857895,
+          "ours": 6021.863362,
+          "pass": true,
+          "delta": 0.001656957599394605
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 6031.857894892402,
+        "bbox": [
+          -28,
+          -8,
+          0,
+          28,
+          8,
+          15
+        ],
+        "faces": 6,
+        "com": null
+      },
+      "ours": {
+        "volume": 6031.857894892404,
+        "bbox": [
+          -28,
+          -8,
+          0,
+          28,
+          8,
+          15
+        ],
+        "faces": 6,
+        "com": [
+          2.9644475445691663e-15,
+          9.33093843189544e-16,
+          7.499999999999997
+        ],
+        "meshVolume": 6021.863362114994
+      }
+    },
+    {
+      "id": "pad-basic__rect-and-circle-apart-one-sketch",
+      "piece": "pad-basic",
+      "desc": "a square and a disc side by side",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('top'); sk.rect(20, 20, { at: [-20, 0] }); sk.circle(16, { at: [20, 0] }); extrude(sk, 10);",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 6010.619298,
+          "ours": 6010.619298,
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            -30,
+            -10,
+            0,
+            28,
+            10,
+            10
+          ],
+          "ours": [
+            -30,
+            -10,
+            0,
+            28,
+            10,
+            10
+          ],
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 9,
+          "ours": 9,
+          "pass": true
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 6010.619298,
+          "ours": 6007.287787,
+          "pass": true,
+          "delta": 0.0005542708264294455
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 6010.619298297468,
+        "bbox": [
+          -30,
+          -10,
+          0,
+          28,
+          10,
+          10
+        ],
+        "faces": 9,
+        "com": null
+      },
+      "ours": {
+        "volume": 6010.619298297468,
+        "bbox": [
+          -30,
+          -10,
+          0,
+          28,
+          10,
+          10
+        ],
+        "faces": 9,
+        "com": [
+          -6.634315794949467,
+          1.8424901279522702e-16,
+          5.000000000000021
+        ],
+        "meshVolume": 6007.287787371648
+      }
+    },
+    {
+      "id": "pad-basic__three-deep-circles-one-sketch",
+      "piece": "pad-basic",
+      "desc": "circles of 60, 40 and 20 across, concentric: a ring and a disc inside its hole (two solids)",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('top'); sk.circle(60); sk.circle(40); sk.circle(20); extrude(sk, 15);",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 28274.33388,
+          "ours": 28274.33388,
+          "pass": true,
+          "delta": 3.860015400081353e-16
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            -30,
+            -30,
+            0,
+            30,
+            30,
+            15
+          ],
+          "ours": [
+            -30,
+            -30,
+            0,
+            30,
+            30,
+            15
+          ],
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 7,
+          "ours": 7,
+          "pass": true
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 28274.33388,
+          "ours": 28261.83926,
+          "pass": true,
+          "delta": 0.0004419067117743337
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 28274.333882308136,
+        "bbox": [
+          -30,
+          -30,
+          0,
+          30,
+          30,
+          15
+        ],
+        "faces": 7,
+        "com": null
+      },
+      "ours": {
+        "volume": 28274.333882308147,
+        "bbox": [
+          -30,
+          -30,
+          0,
+          30,
+          30,
+          15
+        ],
+        "faces": 7,
+        "com": [
+          -1.8005969845292284e-16,
+          -1.6702927430463752e-15,
+          7.5000000000001155
+        ],
+        "meshVolume": 28261.839264394606
+      }
+    },
+    {
+      "id": "pad-basic__three-deep-rects-one-sketch",
+      "piece": "pad-basic",
+      "desc": "squares of 60, 40 and 20 nested: a frame and a block inside its hole (two solids)",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('top'); sk.rect(60, 60); sk.rect(40, 40); sk.rect(20, 20); extrude(sk, 15);",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 36000,
+          "ours": 36000,
+          "pass": true,
+          "delta": 2.021099337273174e-16
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            -30,
+            -30,
+            0,
+            30,
+            30,
+            15
+          ],
+          "ours": [
+            -30,
+            -30,
+            0,
+            30,
+            30,
+            15
+          ],
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 16,
+          "ours": 16,
+          "pass": true
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 36000,
+          "ours": 36000,
+          "pass": true,
+          "delta": 2.0210993372731742e-16
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 36000,
+        "bbox": [
+          -30,
+          -30,
+          0,
+          30,
+          30,
+          15
+        ],
+        "faces": 16,
+        "com": null
+      },
+      "ours": {
+        "volume": 35999.99999999999,
+        "bbox": [
+          -30,
+          -30,
+          0,
+          30,
+          30,
+          15
+        ],
+        "faces": 16,
+        "com": [
+          0,
+          0,
+          7.5
+        ],
+        "meshVolume": 36000
+      }
+    },
+    {
+      "id": "pad-basic__four-deep-circles-one-sketch",
+      "piece": "pad-basic",
+      "desc": "four concentric circles: two rings (even-odd), two solids",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('top'); sk.circle(80); sk.circle(60); sk.circle(40); sk.circle(20); extrude(sk, 10);",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 31415.92654,
+          "ours": 31415.92654,
+          "pass": true,
+          "delta": 2.895011550061015e-15
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            -40,
+            -40,
+            0,
+            40,
+            40,
+            10
+          ],
+          "ours": [
+            -40,
+            -40,
+            0,
+            40,
+            40,
+            10
+          ],
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 8,
+          "ours": 8,
+          "pass": true
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 31415.92654,
+          "ours": 31407.62227,
+          "pass": true,
+          "delta": 0.0002643330026660006
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 31415.926535897925,
+        "bbox": [
+          -40,
+          -40,
+          0,
+          40,
+          40,
+          10
+        ],
+        "faces": 8,
+        "com": null
+      },
+      "ours": {
+        "volume": 31415.926535898016,
+        "bbox": [
+          -40,
+          -40,
+          0,
+          40,
+          40,
+          10
+        ],
+        "faces": 8,
+        "com": [
+          -2.3151793669069734e-15,
+          -8.006733496767633e-16,
+          5.000000000000076
+        ],
+        "meshVolume": 31407.622269705247
+      }
+    },
+    {
+      "id": "pad-basic__island-and-far-disc-one-sketch",
+      "piece": "pad-basic",
+      "desc": "a ring with a disc in its hole, and a third disc far away (three solids)",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('top'); sk.circle(60); sk.circle(40); sk.circle(20); sk.circle(10, { at: [60, 0] }); extrude(sk, 15);",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 29452.43113,
+          "ours": 29452.43113,
+          "pass": true,
+          "delta": 2.470409856052066e-16
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            -30,
+            -30,
+            0,
+            65,
+            30,
+            15
+          ],
+          "ours": [
+            -30,
+            -30,
+            0,
+            65,
+            30,
+            15
+          ],
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 10,
+          "ours": 10,
+          "pass": true
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 29452.43113,
+          "ours": 29436.83833,
+          "pass": true,
+          "delta": 0.0005294231324028888
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 29452.43112740431,
+        "bbox": [
+          -30,
+          -30,
+          0,
+          65,
+          30,
+          15
+        ],
+        "faces": 10,
+        "com": null
+      },
+      "ours": {
+        "volume": 29452.431127404318,
+        "bbox": [
+          -30,
+          -30,
+          0,
+          65,
+          30,
+          15
+        ],
+        "faces": 10,
+        "com": [
+          2.394956383964777,
+          -1.7123288590905562e-15,
+          7.500000000000101
+        ],
+        "meshVolume": 29436.838329059967
+      }
+    },
+    {
+      "id": "pad-basic__holed-plate-and-far-rect-one-sketch",
+      "piece": "pad-basic",
+      "desc": "a plate with a hole and a separate square beside it",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('top'); sk.rect(40, 30); sk.circle(10); sk.rect(10, 10, { at: [40, 0] }); extrude(sk, 15);",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 18321.90275,
+          "ours": 18321.90275,
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            -20,
+            -15,
+            0,
+            45,
+            15,
+            15
+          ],
+          "ours": [
+            -20,
+            -15,
+            0,
+            45,
+            15,
+            15
+          ],
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 13,
+          "ours": 13,
+          "pass": true
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 18321.90275,
+          "ours": 18325.00094,
+          "pass": true,
+          "delta": 0.00016909708954681202
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 18321.90275490383,
+        "bbox": [
+          -20,
+          -15,
+          0,
+          45,
+          15,
+          15
+        ],
+        "faces": 13,
+        "com": null
+      },
+      "ours": {
+        "volume": 18321.90275490383,
+        "bbox": [
+          -20,
+          -15,
+          0,
+          45,
+          15,
+          15
+        ],
+        "faces": 13,
+        "com": [
+          3.274215385403161,
+          2.4815679545729844e-16,
+          7.5
+        ],
+        "meshVolume": 18325.000935334643
+      }
+    },
+    {
+      "id": "pad-basic__crossing-rects-one-sketch",
+      "piece": "pad-basic",
+      "desc": "two overlapping rectangles on one sketch (FreeCAD pads their union; ours refuses a crossing in a sentence)",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('top'); sk.rect(30, 20, { at: [-5, 0] }); sk.rect(30, 20, { at: [5, -10] }); extrude(sk, 15);",
+      "status": "REFUSED",
+      "checks": [],
+      "oursOutcome": "refused",
+      "ref": {
+        "volume": 15000,
+        "bbox": [
+          -20,
+          -20,
+          0,
+          20,
+          10,
+          15
+        ],
+        "faces": 10,
+        "com": [
+          2.4253192047278088e-16,
+          -5,
+          7.5
+        ]
+      },
+      "layer": "kernel",
+      "sentence": "extrude pull1: edge 1 crosses edge 8. An outline cannot cross itself.",
+      "classification": {
+        "class": "spec-mismatch",
+        "evidence": "Two rectangles that overlap on one sketch: FreeCAD pads their UNION (15000 mm^3, 10 faces: 600 + 600 - 200 overlap, times 15). brep-rs refuses in a sentence ('edge 1 crosses edge 8. An outline cannot cross itself.') and builds nothing. Deliberate: a sketch of several shapes is read by the even-odd rule (inside is a hole, beside is a piece), and two shapes that cross have no such reading; the way to get the union is to draw one outline. Pinned by packages/brep-adapter/test/multi-loop-sketch.test.mjs."
+      }
+    },
+    {
+      "id": "pad-basic__crossing-circles-one-sketch",
+      "piece": "pad-basic",
+      "desc": "two overlapping circles on one sketch",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('top'); sk.circle(20, { at: [-5, 0] }); sk.circle(20, { at: [5, 0] }); extrude(sk, 15);",
+      "status": "REFUSED",
+      "checks": [],
+      "oursOutcome": "refused",
+      "ref": {
+        "volume": 7582.223412856245,
+        "bbox": [
+          -15,
+          -10,
+          0,
+          15,
+          10,
+          15
+        ],
+        "faces": 4,
+        "com": [
+          2.1111362564260838e-14,
+          2.2010276252867895e-16,
+          7.499999999999978
+        ]
+      },
+      "layer": "kernel",
+      "sentence": "extrude pull1: the hole near (5.0, 0.0) mm is not fully inside the outline; move it in, or make the outline bigger",
+      "classification": {
+        "class": "spec-mismatch",
+        "evidence": "Two overlapping circles on one sketch: FreeCAD pads their union (7582.2234 mm^3, 4 faces). brep-rs refuses in a sentence ('the hole near (5.0, 0.0) mm is not fully inside the outline; move it in, or make the outline bigger'), which is the nesting reader's wording for a circle that straddles another. Deliberate, same reason as pad-basic__crossing-rects-one-sketch."
+      }
+    },
+    {
+      "id": "pad-basic__tangent-inside-circles-one-sketch",
+      "piece": "pad-basic",
+      "desc": "a circle inside another touching it at one point",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('top'); sk.circle(40); sk.circle(20, { at: [10, 0] }); extrude(sk, 15);",
+      "status": "REFUSED",
+      "checks": [],
+      "oursOutcome": "refused",
+      "ref": {
+        "volume": 14137.166941154072,
+        "bbox": [
+          -20,
+          -20,
+          0,
+          20,
+          20,
+          15
+        ],
+        "faces": 4,
+        "com": [
+          -3.3333333333333353,
+          1.4679615547821556e-18,
+          7.499999999999999
+        ]
+      },
+      "layer": "kernel",
+      "sentence": "extrude pull1: the hole near (10.0, 0.0) mm is not fully inside the outline; move it in, or make the outline bigger",
+      "classification": {
+        "class": "spec-mismatch",
+        "evidence": "A circle inside another and touching it at one point: FreeCAD builds the ring pinched at the touch (14137.1669 mm^3, 4 faces). brep-rs refuses in a sentence (the inner circle is 'not fully inside the outline'), because a loop that touches another loop leaves a wall with zero thickness at one point and no manifold solid states that. Deliberate: the task owner's rule is that tangent loops refuse."
+      }
+    },
+    {
+      "id": "pad-basic__tangent-outside-circles-one-sketch",
+      "piece": "pad-basic",
+      "desc": "two circles touching at one point, side by side",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('top'); sk.circle(20, { at: [-10, 0] }); sk.circle(20, { at: [10, 0] }); extrude(sk, 15);",
+      "status": "REFUSED",
+      "checks": [],
+      "oursOutcome": "refused",
+      "ref": {
+        "volume": 9424.77796076938,
+        "bbox": [
+          -20,
+          -10.0000001,
+          -1e-7,
+          20.0000001,
+          10.0000001,
+          15.0000001
+        ],
+        "faces": 6,
+        "com": null
+      },
+      "layer": "kernel",
+      "sentence": "extrude pull1: the shapes near (-10.0, 0.0) mm and (10.0, 0.0) mm cross or touch each other; draw each shape either wholly inside another (a hole) or clear of the others",
+      "classification": {
+        "class": "spec-mismatch",
+        "evidence": "Two circles side by side that touch at one point: FreeCAD gives two solids (9424.7780 mm^3, 6 faces) that meet at a point. brep-rs refuses in a sentence ('the shapes near (-10.0, 0.0) mm and (10.0, 0.0) mm cross or touch each other ...'), because two pieces that touch are not two pieces and not one solid. Move one away and it builds (pad-basic__two-disjoint-circles-one-sketch MATCHES)."
+      }
+    },
+    {
+      "id": "pad-basic__shared-edge-rects-one-sketch",
+      "piece": "pad-basic",
+      "desc": "two rectangles sharing one side",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('top'); sk.rect(20, 20, { at: [-10, 0] }); sk.rect(20, 20, { at: [10, 0] }); extrude(sk, 15);",
+      "status": "REFUSED",
+      "checks": [],
+      "oursOutcome": "refused",
+      "bothRefuse": true,
+      "layer": "kernel",
+      "sentence": "extrude pull1: edge 1 and edge 5 nearly touch but nothing says they meet. Add a coincident rule.",
+      "note": "FreeCAD does not build it either: FreeCAD recompute left {}, valid=false, solids=1"
+    },
+    {
+      "id": "pocket-blind__two-holes-one-sketch",
+      "piece": "pocket-blind",
+      "desc": "two round pockets drawn on one sketch, 4 deep",
+      "kind": "solid",
+      "oursSource": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); const s2 = sketch('top', 10); s2.circle(8, { at: [10, 15] }); s2.circle(8, { at: [30, 15] }); pocket(s2, plate, 4);",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 11597.87614,
+          "ours": 11597.87614,
+          "pass": true,
+          "delta": 4.705144411446834e-16
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            0,
+            0,
+            0,
+            40,
+            30,
+            10
+          ],
+          "ours": [
+            0,
+            0,
+            0,
+            40,
+            30,
+            10
+          ],
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 10,
+          "ours": 10,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            20,
+            15,
+            4.895983406
+          ],
+          "ours": [
+            20,
+            15,
+            4.89633272
+          ],
+          "pass": true,
+          "delta": 0.0003493145236550532
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 11597.87614,
+          "ours": 11599.18147,
+          "pass": true,
+          "delta": 0.00011254895971363865
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 11597.876140340502,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 10,
+        "com": [
+          20.000000000000004,
+          15.000000000000004,
+          4.8959834055493685
+        ]
+      },
+      "ours": {
+        "volume": 11597.876140340508,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 10,
+        "com": [
+          20.000000000000018,
+          15.000000000000018,
+          4.896332720073024
+        ],
+        "meshVolume": 11599.18146923499
+      }
+    },
+    {
+      "id": "pocket-blind__rect-and-circle-one-sketch",
+      "piece": "pocket-blind",
+      "desc": "a square pocket and a round pocket on one sketch, 3 deep",
+      "kind": "solid",
+      "oursSource": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); const s2 = sketch('top', 10); s2.rect(8, 8, { at: [10, 15] }); s2.circle(8, { at: [30, 15] }); pocket(s2, plate, 3);",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 11657.20355,
+          "ours": 11657.20355,
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            0,
+            0,
+            0,
+            40,
+            30,
+            10
+          ],
+          "ours": [
+            0,
+            0,
+            0,
+            40,
+            30,
+            10
+          ],
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 13,
+          "ours": 13,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            20.035346,
+            15,
+            4.897077583
+          ],
+          "ours": [
+            20.03576441,
+            15,
+            4.897228867
+          ],
+          "pass": true,
+          "delta": 0.00041840881595334167
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 11657.20355,
+          "ours": 11657.69305,
+          "pass": true,
+          "delta": 0.00004199106013780392
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 11657.203552627689,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 13,
+        "com": [
+          20.035346000815448,
+          14.999999999999998,
+          4.897077582939468
+        ]
+      },
+      "ours": {
+        "volume": 11657.203552627689,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 13,
+        "com": [
+          20.0357644096314,
+          15.000000000000025,
+          4.8972288671187885
+        ],
+        "meshVolume": 11657.693050963106
+      }
+    },
+    {
+      "id": "pocket-blind__ring-island-one-sketch",
+      "piece": "pocket-blind",
+      "desc": "a ring-shaped pocket written as two circle() calls on one sketch, 4 deep",
+      "kind": "solid",
+      "oursSource": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); const s2 = sketch('top', 10); s2.circle(20, { at: [20, 15] }); s2.circle(8, { at: [20, 15] }); pocket(s2, plate, 4);",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 10944.42487,
+          "ours": 10944.42487,
+          "pass": true,
+          "delta": 3.32404749526652e-16
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            0,
+            0,
+            0,
+            40,
+            30,
+            10
+          ],
+          "ours": [
+            0,
+            0,
+            0,
+            40,
+            30,
+            10
+          ],
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 10,
+          "ours": 10,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            20,
+            15,
+            4.710654015
+          ],
+          "ours": [
+            20,
+            15,
+            4.710950604
+          ],
+          "pass": true,
+          "delta": 0.00029658948648680905
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 10944.42487,
+          "ours": 10945.41178,
+          "pass": true,
+          "delta": 0.00009017483497075175
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 10944.424868393831,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 10,
+        "com": [
+          19.999999999999996,
+          14.999999999999996,
+          4.710654014907293
+        ]
+      },
+      "ours": {
+        "volume": 10944.424868393828,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 10,
+        "com": [
+          20.000000000000068,
+          15.000000000000066,
+          4.71095060439378
+        ],
+        "meshVolume": 10945.411780100185
+      }
+    },
+    {
+      "id": "pocket-blind__three-deep-one-sketch",
+      "piece": "pocket-blind",
+      "desc": "concentric circles 24, 16 and 8 across as one pocket sketch: a ring cut, a standing ring, a round pocket in the middle",
+      "kind": "solid",
+      "oursSource": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); const s2 = sketch('top', 10); s2.circle(24, { at: [20, 15] }); s2.circle(16, { at: [20, 15] }); s2.circle(8, { at: [20, 15] }); pocket(s2, plate, 4);",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 10793.62842,
+          "ours": 10793.62842,
+          "pass": true,
+          "delta": 1.685243675799714e-16
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            0,
+            0,
+            0,
+            40,
+            30,
+            10
+          ],
+          "ours": [
+            0,
+            0,
+            0,
+            40,
+            30,
+            10
+          ],
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 12,
+          "ours": 12,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            20,
+            15,
+            4.664698969
+          ],
+          "ours": [
+            20,
+            15,
+            4.665109142
+          ],
+          "pass": true,
+          "delta": 0.00041017313291735746
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 10793.62842,
+          "ours": 10794.95598,
+          "pass": true,
+          "delta": 0.00012299446981176924
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 10793.628421021518,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 12,
+        "com": [
+          20,
+          14.999999999999998,
+          4.664698969080045
+        ]
+      },
+      "ours": {
+        "volume": 10793.62842102152,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 12,
+        "com": [
+          19.999999999999996,
+          14.999999999999998,
+          4.6651091422129625
+        ],
+        "meshVolume": 10794.955977626509
+      }
+    },
+    {
+      "id": "pocket-through__two-holes-one-sketch",
+      "piece": "pocket-through",
+      "desc": "two round through pockets on one sketch",
+      "kind": "solid",
+      "oursSource": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); const s2 = sketch('top', 10); s2.circle(8, { at: [10, 15] }); s2.circle(8, { at: [30, 15] }); pocket(s2, plate, 10, { through: true });",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 10994.69035,
+          "ours": 10994.69035,
+          "pass": true,
+          "delta": 1.654425313947128e-16
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            0,
+            0,
+            0,
+            40,
+            30,
+            10
+          ],
+          "ours": [
+            0,
+            0,
+            0,
+            40,
+            30,
+            10
+          ],
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 8,
+          "ours": 8,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            20,
+            15,
+            5
+          ],
+          "ours": [
+            20,
+            15,
+            5
+          ],
+          "pass": true,
+          "delta": 5.329070518200751e-15
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 10994.69035,
+          "ours": 10997.95367,
+          "pass": true,
+          "delta": 0.0002968089261385423
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 10994.690350851266,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 8,
+        "com": [
+          20,
+          14.999999999999998,
+          5.000000000000001
+        ]
+      },
+      "ours": {
+        "volume": 10994.690350851264,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 8,
+        "com": [
+          20.000000000000004,
+          14.999999999999993,
+          5.0000000000000036
+        ],
+        "meshVolume": 10997.953673087526
+      }
+    },
+    {
+      "id": "pocket-blind__ring-and-far-rect-one-sketch",
+      "piece": "pocket-blind",
+      "desc": "a ring-shaped pocket and a separate square pocket on one sketch, 4 deep",
+      "kind": "solid",
+      "oursSource": "const s1 = sketch('top'); s1.polygon([[0,0],[60,0],[60,30],[0,30]]); const plate = extrude(s1, 10); const s2 = sketch('top', 10); s2.circle(24, { at: [15, 15] }); s2.circle(16, { at: [15, 15] }); s2.rect(8, 8, { at: [45, 15] }); pocket(s2, plate, 4);",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 16738.69035,
+          "ours": 16738.69035,
+          "pass": true,
+          "delta": 4.3467902575863094e-16
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            0,
+            0,
+            0,
+            60,
+            30,
+            10
+          ],
+          "ours": [
+            0,
+            0,
+            0,
+            60,
+            30,
+            10
+          ],
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 15,
+          "ours": 15,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            30.67147695,
+            15,
+            4.773941159
+          ],
+          "ours": [
+            30.67084511,
+            15,
+            4.774071226
+          ],
+          "pass": true,
+          "delta": 0.0006318373928699828
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 16738.69035,
+          "ours": 16739.36524,
+          "pass": true,
+          "delta": 0.00004031929282352075
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 16738.69035085127,
+        "bbox": [
+          0,
+          0,
+          0,
+          60,
+          30,
+          10
+        ],
+        "faces": 15,
+        "com": [
+          30.671476949608508,
+          14.999999999999996,
+          4.773941158589281
+        ]
+      },
+      "ours": {
+        "volume": 16738.690350851262,
+        "bbox": [
+          0,
+          0,
+          0,
+          60,
+          30,
+          10
+        ],
+        "faces": 15,
+        "com": [
+          30.670845112215638,
+          15.000000000000005,
+          4.77407122575613
+        ],
+        "meshVolume": 16739.365243009
+      }
+    },
+    {
+      "id": "pocket-through__ring-and-far-rect-one-sketch",
+      "piece": "pocket-through",
+      "desc": "a ring-shaped through pocket (leaves a disc standing apart, two solids) and a separate square one on one sketch",
+      "kind": "solid",
+      "oursSource": "const s1 = sketch('top'); s1.polygon([[0,0],[60,0],[60,30],[0,30]]); const plate = extrude(s1, 10); const s2 = sketch('top', 10); s2.circle(24, { at: [15, 15] }); s2.circle(16, { at: [15, 15] }); s2.rect(8, 8, { at: [45, 15] }); pocket(s2, plate, 10, { through: true });",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 14846.72588,
+          "ours": 14846.72588,
+          "pass": true,
+          "delta": 1.2251788162587854e-16
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            0,
+            0,
+            0,
+            60,
+            30,
+            10
+          ],
+          "ours": [
+            0,
+            0,
+            0,
+            60,
+            30,
+            10
+          ],
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 14,
+          "ours": 14,
+          "pass": true
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 14846.72588,
+          "ours": 14848.41311,
+          "pass": true,
+          "delta": 0.00011364326439659408
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 14846.725877128165,
+        "bbox": [
+          0,
+          0,
+          0,
+          60,
+          30,
+          10
+        ],
+        "faces": 14,
+        "com": null
+      },
+      "ours": {
+        "volume": 14846.725877128163,
+        "bbox": [
+          0,
+          0,
+          0,
+          60,
+          30,
+          10
+        ],
+        "faces": 14,
+        "com": [
+          31.89069385286304,
+          15.000000000000053,
+          4.999999999999993
+        ],
+        "meshVolume": 14848.413107522441
+      }
+    },
+    {
+      "id": "revolution__rect-with-hole-one-sketch",
+      "piece": "revolution",
+      "desc": "a 10 x 30 profile at radius 10..20 with a 4 across hole in it, a full turn: a torus-shaped void inside the ring",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('top'); sk.rect(10, 30, { at: [15, 15] }); sk.circle(4, { at: [15, 15] }); revolve(sk, 360);",
+      "status": "REFUSED",
+      "checks": [],
+      "oursOutcome": "refused",
+      "ref": {
+        "volume": 27089.98135417742,
+        "bbox": [
+          -20,
+          -20,
+          -4.440892098500628e-15,
+          20,
+          20.000000000000007,
+          30.000000000000004
+        ],
+        "faces": 5,
+        "com": [
+          -1.0071930540099977e-15,
+          3.492074017684458e-15,
+          15.000000000000004
+        ]
+      },
+      "layer": "kernel",
+      "sentence": "revolve rev1: this sketch's outline has a hole in it, and a spin builds only a solid outline -- draw the outline without the hole -- rev1 is shown without it.",
+      "classification": {
+        "class": "real-kernel-gap",
+        "severity": 3,
+        "title": "A revolve of a profile with a hole in it (a toroidal void inside the ring) is refused",
+        "evidence": "Pre-existing: spin_profile (packages/brep-rs/src/wasm.rs) takes one loop. A 10 x 30 profile at radius 10..20 with a 4 across hole in it, a full turn, is refused in one sentence ('this sketch's outline has a hole in it, and a spin builds only a solid outline -- draw the outline without the hole'). FreeCAD builds the ring with a torus-shaped cavity: 27089.98135 mm^3, 5 faces. The same script written as two separate sketch() calls is not the cause: the refusal is about the hole, not about how it was drawn. The sketch layer (several loops on one sketch) is already right: pad and pocket of the same loops MATCH."
+      }
+    },
+    {
+      "id": "revolution__two-rects-one-sketch",
+      "piece": "revolution",
+      "desc": "two profiles at different radii on one sketch, a full turn: two rings",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('top'); sk.rect(4, 20, { at: [10, 10] }); sk.rect(4, 20, { at: [30, 10] }); revolve(sk, 360);",
+      "status": "REFUSED",
+      "checks": [],
+      "oursOutcome": "refused",
+      "ref": {
+        "volume": 20106.19298297466,
+        "bbox": [
+          -32,
+          -32,
+          -7.105427357601003e-15,
+          32,
+          32.00000000000001,
+          20.000000000000007
+        ],
+        "faces": 8,
+        "com": null
+      },
+      "layer": "kernel",
+      "sentence": "revolve rev1: this sketch has 2 separate outlines, near (10.0, 10.0) mm and (30.0, 10.0) mm; a spin takes one outline, with no other shape beside it -- rev1 is shown without it.",
+      "classification": {
+        "class": "real-kernel-gap",
+        "severity": 4,
+        "title": "A revolve of two separate profiles on one sketch (two rings) is refused",
+        "evidence": "The pad and the pocket of side-by-side shapes build (each region is its own prism, joined as separate pieces), but spin_profile (packages/brep-rs/src/wasm.rs) still takes one outline: two rectangles at radius 8..12 and 28..32 on one sketch are refused in a sentence ('this sketch has 2 separate outlines ... a spin takes one outline'). FreeCAD builds two rings (20106.19298 mm^3, 8 faces, 2 solids). Two sketch() calls and a join build it."
+      }
+    },
+    {
+      "id": "revolution__rect-with-hole-quarter-one-sketch",
+      "piece": "revolution",
+      "desc": "the same profile with a hole, a quarter turn",
+      "kind": "solid",
+      "oursSource": "const sk = sketch('top'); sk.rect(10, 30, { at: [15, 15] }); sk.circle(4, { at: [15, 15] }); revolve(sk, 90);",
+      "status": "REFUSED",
+      "checks": [],
+      "oursOutcome": "refused",
+      "ref": {
+        "volume": 6772.495338544355,
+        "bbox": [
+          6.123233995736766e-16,
+          0,
+          -4.440892098500627e-15,
+          20,
+          20.000000000000007,
+          30
+        ],
+        "faces": 7,
+        "com": [
+          9.91658124279933,
+          9.916581242799332,
+          14.999999999999998
+        ]
+      },
+      "layer": "kernel",
+      "sentence": "revolve rev1: this sketch's outline has a hole in it, and a spin builds only a solid outline -- draw the outline without the hole -- rev1 is shown without it.",
+      "classification": {
+        "class": "real-kernel-gap",
+        "severity": 3,
+        "title": "A quarter-turn revolve of a profile with a hole in it is refused",
+        "evidence": "Same refusal as revolution__rect-with-hole-one-sketch for 90 degrees. FreeCAD: 6772.49534 mm^3, 7 faces (the hole's torus patch plus the two caps with a hole)."
+      }
+    },
+    {
       "id": "sk-rect-dof__corner-origin-25x60",
       "piece": "sk-rect-dof",
       "desc": "a 25 x 60 rectangle, corner on the origin: fully constrained",
@@ -15968,10 +18215,10 @@
         "solve": 0,
         "bucket": "consistent",
         "bbox": [
-          -6,
+          -6.000000001230621,
           0,
           0,
-          36,
+          35.99999999876938,
           12,
           0
         ]

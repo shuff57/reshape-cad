@@ -1,0 +1,22 @@
+{
+ "id": "pad-basic__rect-off-centre-hole-one-sketch",
+ "ok": true,
+ "volume": 17396.814210510758,
+ "bbox": [
+  0.0,
+  0.0,
+  0.0,
+  50.0,
+  30.0,
+  12.0
+ ],
+ "faces": 7,
+ "com": [
+  25.520082972253174,
+  15.173360990751059,
+  6.0
+ ],
+ "valid": true,
+ "solids": 1,
+ "bad": {}
+}

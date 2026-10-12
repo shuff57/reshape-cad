@@ -1,0 +1,18 @@
+{
+ "id": "pad-basic__tangent-outside-circles-one-sketch",
+ "ok": true,
+ "volume": 9424.77796076938,
+ "bbox": [
+  -20.0,
+  -10.0000001,
+  -1e-07,
+  20.0000001,
+  10.0000001,
+  15.0000001
+ ],
+ "faces": 6,
+ "com": null,
+ "valid": true,
+ "solids": 2,
+ "bad": {}
+}

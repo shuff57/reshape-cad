@@ -1,0 +1,18 @@
+{
+ "id": "pad-basic__three-deep-circles-one-sketch",
+ "ok": true,
+ "volume": 28274.333882308136,
+ "bbox": [
+  -30.0,
+  -30.0,
+  0.0,
+  30.0,
+  30.0,
+  15.0
+ ],
+ "faces": 7,
+ "com": null,
+ "valid": true,
+ "solids": 2,
+ "bad": {}
+}

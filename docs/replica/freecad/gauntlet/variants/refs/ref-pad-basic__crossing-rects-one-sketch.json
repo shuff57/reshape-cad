@@ -1,0 +1,22 @@
+{
+ "id": "pad-basic__crossing-rects-one-sketch",
+ "ok": true,
+ "volume": 15000.0,
+ "bbox": [
+  -20.0,
+  -20.0,
+  0.0,
+  20.0,
+  10.0,
+  15.0
+ ],
+ "faces": 10,
+ "com": [
+  2.4253192047278088e-16,
+  -5.0,
+  7.5
+ ],
+ "valid": true,
+ "solids": 1,
+ "bad": {}
+}

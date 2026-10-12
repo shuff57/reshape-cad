@@ -254,11 +254,27 @@ test('S8b the arrangements brep-rs refuses, this reference refuses too', () => {
   const cases = [
     ['overlapping holes', soup(hole(5, 17, 12.5, 5), hole(6, 23, 12.5, 5))],
     ['a hole poking outside', soup(hole(5, 39, 12.5, 5))],
-    ['an island inside a hole', soup(hole(5, 20, 12.5, 8), hole(6, 20, 12.5, 3))],
-    ['a second outline beside the first', soup(hole(5, 80, 12.5, 5))],
   ];
   for (const [what, d] of cases) {
     assert.ok(brepMeasure(d, 'e1').refusal, `brep-rs should refuse ${what}`);
+    const built = buildDoc(oc, d, arc);
+    assert.equal(built.shapes.get('sk1') ?? null, null, `the reference built ${what}`);
+    assert.ok(built.refusals?.get('sk1'), `the reference must say why it will not: ${what}`);
+  }
+});
+
+test('S8b2 several pieces: brep-rs builds each as its own region (even-odd), this reference still declines them', () => {
+  // The reference reads ONE outline and its holes (ShapeFix_Face drops a loop it cannot place), so it refuses these in
+  // a sentence rather than answer a question the sketch does not ask. brep-rs builds them as the pieces they are; the
+  // volumes are closed forms (areas x 12), not read from either kernel.
+  const cases = [
+    ['an island inside a hole', soup(hole(5, 20, 12.5, 8), hole(6, 20, 12.5, 3)), (1000 - Math.PI * 64 + Math.PI * 9) * 12],
+    ['a second outline beside the first', soup(hole(5, 80, 12.5, 5)), (1000 + Math.PI * 25) * 12],
+  ];
+  for (const [what, d, volume] of cases) {
+    const mine = brepMeasure(d, 'e1');
+    assert.equal(mine.refusal, undefined, `brep-rs should build ${what}: ${mine.refusal}`);
+    close(mine.volume, volume, `closed form for ${what}`);
     const built = buildDoc(oc, d, arc);
     assert.equal(built.shapes.get('sk1') ?? null, null, `the reference built ${what}`);
     assert.ok(built.refusals?.get('sk1'), `the reference must say why it will not: ${what}`);
@@ -286,7 +302,7 @@ test('S8c a silently dropped loop is caught by counting wires', () => {
 // against the KERNEL ("a refusal from brep-rs where OCCT built the feature is a
 // FAIL" -- brep-parity-gate.mjs's own header).
 
-test('S9a two outlines whose areas fit the checksum are still caught', () => {
+test('S9a two outlines whose areas fit the checksum are still caught by the reference', () => {
   // The nastiest of them. A 40x25 outline (1000) beside a 25x20 one (500):
   // OCCT drops the big one, keeps the small one, and 2*1000 - 1500 is EXACTLY
   // 500 -- so the area checksum matched a face that was not the sketch, and
@@ -307,7 +323,11 @@ test('S9a two outlines whose areas fit the checksum are still caught', () => {
     { k: 'coincident', a: 8, aEnd: 'b', b: 5, bEnd: 'a' },
   ];
   const d = doc(two, weld2);
-  assert.ok(brepMeasure(d, 'e1').refusal, 'brep-rs refuses two separate outlines');
+  // brep-rs now builds both outlines as separate pieces (1000 + 500) x 12; it is the REFERENCE that must not take the
+  // one face OCCT kept for the sketch.
+  const mine = brepMeasure(d, 'e1');
+  assert.equal(mine.refusal, undefined, `brep-rs builds two separate outlines: ${mine.refusal}`);
+  close(mine.volume, (1000 + 500) * 12, 'both outlines, not the one OCCT kept');
   const built = buildDoc(oc, d, arc);
   assert.equal(built.shapes.get('sk1') ?? null, null, 'and so must the reference');
   assert.match(built.refusals?.get('sk1') ?? '', /draws 2 loops but OpenCascade kept 1/);

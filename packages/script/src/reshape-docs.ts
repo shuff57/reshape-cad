@@ -324,6 +324,14 @@ sk.polygon([[0, 0], [40, 0], [40, 15], [15, 15], [15, 30], [0, 30]])
 const shape = extrude(sk, 12)`,
       },
       {
+        title: 'several shapes on one sketch: holes and pieces',
+        body: `Call rect(), circle() or polygon() more than once on a sketch and every shape stays. They are read the way a drawing is: a shape inside another is a hole, a shape inside that hole stands on its own again, and shapes side by side are separate pieces of the same part. Here a 40 x 30 rectangle with a 10 across circle drawn inside it is a plate with a round hole: (40 x 30 - pi x 5^2) x 15 = 16821.90 mm^3. Two squares drawn apart are two blocks from one extrude, and three circles of 60, 40 and 20 across make a ring and a disc standing in its hole. Shapes that cross each other or touch (even at a single point) are refused in a sentence and nothing is built: move one clear, or draw them as one outline. A sketch of several shapes keeps its sizes as plain numbers (a param() cannot drive one of them) and has no corner numbers for round(), chamfer() or the rules, because its shapes are written as rows; say those with sk.geom([...]) and sk.rules([...]). A pocket takes the same sketch: shapes inside one another are cut as rings with the island left standing.`,
+        code: `const sk = sketch('top')
+sk.rect(40, 30)
+sk.circle(10)
+const plate = extrude(sk, 15)`,
+      },
+      {
         title: 'round and chamfer: soften a corner',
         body: `sk.round(corner, radius) turns a corner into a circular arc and sk.chamfer(corner, distance) cuts it off with a straight bevel. Corners are numbered from 1, the same numbers the Rules panel and sk.pin() use: corner 1 is the first point of the outline (for a rectangle, the one at the lower left), and a round or chamfer on corner 1 is written sk.round(1, 4). The number is a whole number from 1 to the corner count; 0 or a number past the last corner stops the script with a sentence that says so. A round or chamfer bigger than its corner has room for is cut down to what the corner can give, and the script says so in its notes: ".round(2, 99) is more than corner 2 has room for, so it was made 10 instead". A round and a chamfer on one corner leave the round. Here a 30 x 20 rectangle has corner 1 rounded by 4 and corner 3 chamfered by 3, and is extruded 12: its area is 600 - (1 - pi/4) x 4^2 - 3^2/2 = 592.07 mm^2, so the volume is 7104.80 mm^3.`,
         code: `const sk = sketch('top')

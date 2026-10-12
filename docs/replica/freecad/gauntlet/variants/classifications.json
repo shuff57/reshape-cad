@@ -11,16 +11,6 @@
     "class": "spec-mismatch",
     "evidence": "mirror(pocket, 'top-bottom', { at: 5 }) is refused by the script on purpose: 'reflects it through a plane parallel to the face it sits on, which would turn it to the other side of the part instead of copying it across' (packages/script/src/reshape-script.ts mirrorCut parallel()). FreeCAD's Mirrored does it (volume 11830.354, 10 faces: a pocket on the top face and one on the bottom). The refusal is documented in the mirror docs page and is a sentence, so nothing wrong is built."
   },
-  "pad-basic__two-circle-calls-one-sketch": {
-    "class": "script-layer-bug",
-    "fixed": true,
-    "evidence": "Before the fix sk.circle(40); sk.circle(20) on one sketch built ONLY the 20 mm disc: volume 4712.38898, bbox +-10, 3 faces (the second circle() call replaced the first with no message), against FreeCAD's ring 14137.16694, bbox +-20. The same happened for rect + circle (only the circle, 1178.097 = pi x 5^2 x 15), two circles side by side (only the second) and rect + rect (only the inner 10 x 10, 1500). Probe in scratch: ring_40_20 / rect_in_rect. Fix: packages/script/src/reshape-script.ts makeSketchHandle claimOutline(): a second rect/circle/polygon call on a sketch throws a sentence naming sk.geom([...]) and a second sketch(). Pinned by packages/script/test/sweep-fixes.test.mjs."
-  },
-  "pad-basic__rect-and-rect-one-sketch": {
-    "class": "script-layer-bug",
-    "fixed": true,
-    "evidence": "Same defect as pad-basic__two-circle-calls-one-sketch: before the fix sk.rect(40, 30); sk.rect(10, 10) built a 10 x 10 x 15 block (1500 mm^3) and dropped the 40 x 30 rectangle with no message. The second call is now refused in a sentence. FreeCAD, given the two loops, makes a frame (16500 mm^3, 10 faces); the way to say that in the script is sk.geom([...]) rows."
-  },
   "hole-countersink__cone-deeper-than-plate": {
     "class": "real-kernel-gap",
     "severity": 4,
@@ -40,5 +30,39 @@
   "pocket-blind__depth-negative": {
     "class": "reference-wrong",
     "evidence": "pocket depth -3: FreeCAD 26.3 accepts Length=-3 and recomputes with every object Up-to-date, but cuts nothing -- volume 12000.0, 6 faces, the uncut plate (refs/ref-pocket-blind__depth-negative.json). A pocket of negative depth has no meaning (the direction is fixed, into the material: packages/script/src/model-types.ts PocketFeature.depth 'Always positive'), so the plate FreeCAD returns is a silent no-op, not the answer. The script now refuses it in a sentence that names the depth; before the fix the same script came back from the kernel as 'pocket1 does not touch the part', which blamed the wrong cause (pinned in packages/script/test/sweep-fixes.test.mjs)."
+  },
+  "pad-basic__crossing-rects-one-sketch": {
+    "class": "spec-mismatch",
+    "evidence": "Two rectangles that overlap on one sketch: FreeCAD pads their UNION (15000 mm^3, 10 faces: 600 + 600 - 200 overlap, times 15). brep-rs refuses in a sentence ('edge 1 crosses edge 8. An outline cannot cross itself.') and builds nothing. Deliberate: a sketch of several shapes is read by the even-odd rule (inside is a hole, beside is a piece), and two shapes that cross have no such reading; the way to get the union is to draw one outline. Pinned by packages/brep-adapter/test/multi-loop-sketch.test.mjs."
+  },
+  "pad-basic__crossing-circles-one-sketch": {
+    "class": "spec-mismatch",
+    "evidence": "Two overlapping circles on one sketch: FreeCAD pads their union (7582.2234 mm^3, 4 faces). brep-rs refuses in a sentence ('the hole near (5.0, 0.0) mm is not fully inside the outline; move it in, or make the outline bigger'), which is the nesting reader's wording for a circle that straddles another. Deliberate, same reason as pad-basic__crossing-rects-one-sketch."
+  },
+  "pad-basic__tangent-inside-circles-one-sketch": {
+    "class": "spec-mismatch",
+    "evidence": "A circle inside another and touching it at one point: FreeCAD builds the ring pinched at the touch (14137.1669 mm^3, 4 faces). brep-rs refuses in a sentence (the inner circle is 'not fully inside the outline'), because a loop that touches another loop leaves a wall with zero thickness at one point and no manifold solid states that. Deliberate: the task owner's rule is that tangent loops refuse."
+  },
+  "pad-basic__tangent-outside-circles-one-sketch": {
+    "class": "spec-mismatch",
+    "evidence": "Two circles side by side that touch at one point: FreeCAD gives two solids (9424.7780 mm^3, 6 faces) that meet at a point. brep-rs refuses in a sentence ('the shapes near (-10.0, 0.0) mm and (10.0, 0.0) mm cross or touch each other ...'), because two pieces that touch are not two pieces and not one solid. Move one away and it builds (pad-basic__two-disjoint-circles-one-sketch MATCHES)."
+  },
+  "revolution__rect-with-hole-one-sketch": {
+    "class": "real-kernel-gap",
+    "severity": 3,
+    "title": "A revolve of a profile with a hole in it (a toroidal void inside the ring) is refused",
+    "evidence": "Pre-existing: spin_profile (packages/brep-rs/src/wasm.rs) takes one loop. A 10 x 30 profile at radius 10..20 with a 4 across hole in it, a full turn, is refused in one sentence ('this sketch's outline has a hole in it, and a spin builds only a solid outline -- draw the outline without the hole'). FreeCAD builds the ring with a torus-shaped cavity: 27089.98135 mm^3, 5 faces. The same script written as two separate sketch() calls is not the cause: the refusal is about the hole, not about how it was drawn. The sketch layer (several loops on one sketch) is already right: pad and pocket of the same loops MATCH."
+  },
+  "revolution__rect-with-hole-quarter-one-sketch": {
+    "class": "real-kernel-gap",
+    "severity": 3,
+    "title": "A quarter-turn revolve of a profile with a hole in it is refused",
+    "evidence": "Same refusal as revolution__rect-with-hole-one-sketch for 90 degrees. FreeCAD: 6772.49534 mm^3, 7 faces (the hole's torus patch plus the two caps with a hole)."
+  },
+  "revolution__two-rects-one-sketch": {
+    "class": "real-kernel-gap",
+    "severity": 4,
+    "title": "A revolve of two separate profiles on one sketch (two rings) is refused",
+    "evidence": "The pad and the pocket of side-by-side shapes build (each region is its own prism, joined as separate pieces), but spin_profile (packages/brep-rs/src/wasm.rs) still takes one outline: two rectangles at radius 8..12 and 28..32 on one sketch are refused in a sentence ('this sketch has 2 separate outlines ... a spin takes one outline'). FreeCAD builds two rings (20106.19298 mm^3, 8 faces, 2 solids). Two sketch() calls and a join build it."
   }
 }

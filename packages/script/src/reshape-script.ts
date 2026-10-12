@@ -1374,29 +1374,119 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
   }
 
   function makeSketchHandle(id: string): SketchHandle {
-    // A simple sketch holds ONE outline: rect(), circle() and polygon() each REPLACE it. Drawn twice, the first used to vanish
-    // without a word (measured against FreeCAD: a 40 circle with a 20 circle inside it extruded as only the 20 disc, two circles
-    // side by side as only the second), a silent wrong part. The second call now says so. sk.geom([...]) is the form that holds
-    // several loops, and a second sketch() holds a second shape.
+    // A sketch may hold SEVERAL closed shapes. The first rect()/circle()/polygon() is the plain outline the Rectangle and
+    // Circle tools make; a second one (or one after sk.geom()/sk.slot()) turns the sketch into rows -- one loop per shape --
+    // exactly the rows sk.geom([...]) writes, so the kernel nests them by the even-odd rule FreeCAD uses: a closed shape
+    // inside another is a hole, a shape inside that hole stands on its own, shapes side by side are separate pieces, and
+    // shapes that cross or touch are refused by the kernel in a sentence. Measured against FreeCAD (variants
+    // pad-basic__*-one-sketch and the multi-loop variants).
     let outline: string | null = null;
-    const claimOutline = (call: string): void => {
-      if (outline !== null) {
+    const starter = (findFeature(id) as SketchFeature).points.map((p): [number, number] => [p[0], p[1]]);
+    const hasRows = (): boolean => {
+      const c = findFeature(id) as SketchFeature;
+      return Array.isArray(c.geoms) && c.geoms.length > 0;
+    };
+    const boundSlot = (): boolean => {
+      for (const k of slotOverrides.keys()) if (k.startsWith(`${id}_`)) return true;
+      return false;
+    };
+    const RULED = 'a sketch of several shapes keeps its sizes as plain numbers, so a param() cannot drive one of them. Give the number itself, or draw this shape on its own sketch().';
+    const noParam = (call: string, ...vals: unknown[]): void => {
+      if (vals.some((v) => v instanceof ParamNumber)) {
+        throw new Error(`${call} is not the only shape on this sketch, and ${RULED}`);
+      }
+    };
+    const rectRows = (base: number, x0: number, y0: number, x1: number, y1: number): { geoms: SoupGeom[]; rules: SoupRule[] } => {
+      const p: Array<[number, number]> = [[x0, y0], [x1, y0], [x1, y1], [x0, y1]];
+      const geoms: SoupGeom[] = p.map((a, i) => ({ k: 'line', id: base + i, a, b: p[(i + 1) % 4] }));
+      const rules: SoupRule[] = [0, 1, 2, 3].map((i) => ({ k: 'coincident', a: base + i, aEnd: 'b', b: base + ((i + 1) % 4), bEnd: 'a' }));
+      // the Rectangle tool's own rules: top and bottom run across, the sides run up
+      rules.push({ k: 'horizontal', a: base }, { k: 'vertical', a: base + 1 }, { k: 'horizontal', a: base + 2 }, { k: 'vertical', a: base + 3 });
+      return { geoms, rules };
+    };
+    const polyRows = (base: number, p: Array<[number, number]>): { geoms: SoupGeom[]; rules: SoupRule[] } => {
+      const n = p.length;
+      const geoms: SoupGeom[] = p.map((a, i) => ({ k: 'line', id: base + i, a, b: p[(i + 1) % n] }));
+      const rules: SoupRule[] = p.map((_, i) => ({ k: 'coincident', a: base + i, aEnd: 'b', b: base + ((i + 1) % n), bEnd: 'a' }));
+      return { geoms, rules };
+    };
+    /** The rows the sketch holds so far, to put one more shape beside. Null while this is the sketch's first shape. */
+    const priorRows = (call: string): { geoms: SoupGeom[]; rules: SoupRule[] } | null => {
+      const cur = findFeature(id) as SketchFeature;
+      if (hasRows()) {
+        outline = outline ?? 'rows';
+        return { geoms: (cur.geoms as SoupGeom[]).slice(), rules: ((cur.rules ?? []) as SoupRule[]).slice() };
+      }
+      if (outline === null) return null;
+      // A plain outline is already there: put it into rows unchanged, then the new shape goes beside it.
+      if (boundSlot()) {
+        throw new Error(`${call} would be the second shape on this sketch, and the first one is driven by a param(), which ${RULED}`);
+      }
+      if (cur.rounds && Object.keys(cur.rounds).length || cur.chamfers && Object.keys(cur.chamfers).length || cur.bulges && Object.keys(cur.bulges).length) {
         throw new Error(
-          `${call} would replace the ${outline} already drawn on this sketch: a sketch holds one outline. ` +
-          `For a hole or several loops in one profile use sk.geom([...]) with a row for each, or draw the second shape on its own sketch().`,
+          `${call} would be the second shape on this sketch, and the first has rounded or chamfered corners, which a sketch of several shapes cannot carry. ` +
+          `Draw each shape on its own sketch(), or write the rounded shape as sk.geom([...]) rows.`,
         );
       }
+      const hand = (cur.constraints ?? []).length > 0 && JSON.stringify(cur.constraints) !== JSON.stringify(RECTANGLE_CONSTRAINTS);
+      if (hand) {
+        throw new Error(
+          `${call} would be the second shape on this sketch, and the first carries rules of its own (across, up, length and the like), which a sketch of several shapes cannot keep. ` +
+          `Draw each shape on its own sketch(), or write the rules as sk.rules([...]) rows.`,
+        );
+      }
+      if (cur.shape === 'circle' && cur.points.length === 2) {
+        const [a, b] = cur.points;
+        return {
+          geoms: [{ k: 'circle', id: 1, c: [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], r: Math.hypot(b[0] - a[0], b[1] - a[1]) / 2 }],
+          rules: [],
+        };
+      }
+      const pts = cur.points.map((p): [number, number] => [p[0], p[1]]);
+      const isRect = JSON.stringify(cur.constraints ?? []) === JSON.stringify(RECTANGLE_CONSTRAINTS) && pts.length === 4;
+      if (isRect) return rectRows(1, pts[0][0], pts[0][1], pts[2][0], pts[2][1]);
+      return polyRows(1, pts);
+    };
+    /** Writes the sketch as rows: what it held, then `added` (ids continue the dense 1-based run). */
+    const putRows = (prior: { geoms: SoupGeom[]; rules: SoupRule[] }, added: { geoms: SoupGeom[]; rules: SoupRule[] }, call: string): void => {
+      const cur = findFeature(id) as SketchFeature;
+      const geoms = [...prior.geoms, ...added.geoms];
+      replaceFeature(id, {
+        ...cur,
+        points: starter.map((p): [number, number] => [p[0], p[1]]),
+        // what sketch() hands sk.geom() as well, so the document is the one sk.geom([...]) would have written
+        shape: undefined, rounds: undefined, chamfers: undefined, bulges: undefined, constraints: RECTANGLE_CONSTRAINTS.slice(),
+        geoms, geom: geoms, rules: [...prior.rules, ...added.rules],
+      });
       outline = call.replace(/\(\)$/, '').replace(/^\./, '');
+    };
+    /** A corner or an edge is a number on a plain outline; rows have no such numbers. */
+    const needOutline = (call: string): void => {
+      if (hasRows()) {
+        throw new Error(
+          `${call} names a corner or an edge by number, and this sketch is drawn as rows (sk.geom, a slot, or several shapes). ` +
+          `Say it with sk.rules([...]) rows instead.`,
+        );
+      }
     };
     const handle: SketchHandle = {
       __reshapeSketch: true,
       id,
       rect(w, h, opts) {
-        claimOutline('.rect()');
         requiredNumber('.rect()', 'width', w);
         requiredNumber('.rect()', 'height', h);
         const extra = readOptions('.rect()', ['at'], opts);
         const [ax, ay] = extra.at !== undefined ? readVec2('.rect()', 'at', extra.at) : [0, 0];
+        const prior = priorRows('.rect()');
+        if (prior) {
+          noParam('.rect()', w, h);
+          const ww = unwrap(w), hh = unwrap(h);
+          if (!(ww > 0) || !(hh > 0)) throw new Error(`.rect() needs a width and a height above 0. You gave ${ww} by ${hh}.`);
+          const base = prior.geoms.length + 1;
+          putRows(prior, rectRows(base, ax - ww / 2, ay - hh / 2, ax + ww / 2, ay + hh / 2), '.rect()');
+          return handle;
+        }
+        outline = 'rect';
         const ww = num(w, id, 'width');
         const hh = num(h, id, 'height');
         const points: Array<[number, number]> = [
@@ -1418,10 +1508,19 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
         return handle;
       },
       circle(d, opts) {
-        claimOutline('.circle()');
         requiredNumber('.circle()', 'across', d);
         const extra = readOptions('.circle()', ['at'], opts);
         const [ax, ay] = extra.at !== undefined ? readVec2('.circle()', 'at', extra.at) : [0, 0];
+        const prior = priorRows('.circle()');
+        if (prior) {
+          noParam('.circle()', d);
+          const across = unwrap(d);
+          if (!(across > 0)) throw new Error(`.circle() needs an across above 0. You gave ${across}.`);
+          const base = prior.geoms.length + 1;
+          putRows(prior, { geoms: [{ k: 'circle', id: base, c: [ax, ay], r: across / 2 }], rules: [] }, '.circle()');
+          return handle;
+        }
+        outline = 'circle';
         const r = num(d, id, 'across') / 2;
         const cur = findFeature(id) as SketchFeature;
         replaceFeature(id, {
@@ -1441,7 +1540,6 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
         return handle;
       },
       polygon(pointsArg) {
-        claimOutline('.polygon()');
         if (!Array.isArray(pointsArg) || pointsArg.length < 3) {
           throw new Error(`.polygon() needs a list of at least three [x, y] points. You gave it ${describe(pointsArg)}.`);
         }
@@ -1451,6 +1549,14 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
           }
           return [requiredNumber('.polygon()', `point ${i + 1} x`, p[0]) as number, requiredNumber('.polygon()', `point ${i + 1} y`, p[1]) as number];
         });
+        const prior = priorRows('.polygon()');
+        if (prior) {
+          noParam('.polygon()', ...pointsArg.flat());
+          const plain = points.map((p): [number, number] => [unwrap(p[0]), unwrap(p[1])]);
+          putRows(prior, polyRows(prior.geoms.length + 1, plain), '.polygon()');
+          return handle;
+        }
+        outline = 'polygon';
         const cur = findFeature(id) as SketchFeature;
         // newPolygonSketch() never carries a rule either, and the rectangle
         // set specifically indexes edges 0-3 -- meaningless, and dangerous
@@ -1463,6 +1569,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
         return handle;
       },
       round(corner, radius) {
+        needOutline('.round()');
         const cur = findFeature(id) as SketchFeature;
         const k = cornerIndex('.round()', corner, cur.points?.length ?? 0);
         const r = requiredNumber('.round()', 'radius', radius);
@@ -1471,6 +1578,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
         return handle;
       },
       chamfer(corner, distance) {
+        needOutline('.chamfer()');
         const cur = findFeature(id) as SketchFeature;
         const k = cornerIndex('.chamfer()', corner, cur.points?.length ?? 0);
         const dist = requiredNumber('.chamfer()', 'distance', distance) as number;
@@ -1479,18 +1587,21 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
         return handle;
       },
       across(edge) {
+        needOutline('.across()');
         const cur = findFeature(id) as SketchFeature;
         const e = wholeIndex('.across()', 'edge', edge, cur.points.length);
         applyConstraint(id, { kind: 'horizontal', edge: e });
         return handle;
       },
       up(edge) {
+        needOutline('.up()');
         const cur = findFeature(id) as SketchFeature;
         const e = wholeIndex('.up()', 'edge', edge, cur.points.length);
         applyConstraint(id, { kind: 'vertical', edge: e });
         return handle;
       },
       length(edge, value) {
+        needOutline('.length()');
         const cur = findFeature(id) as SketchFeature;
         const e = wholeIndex('.length()', 'edge', edge, cur.points.length);
         const v = positiveNumber('.length()', 'value', value);
@@ -1498,6 +1609,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
         return handle;
       },
       equal(edge, other) {
+        needOutline('.equal()');
         const cur = findFeature(id) as SketchFeature;
         const count = cur.points.length;
         const a = wholeIndex('.equal()', 'edge', edge, count);
@@ -1507,6 +1619,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
         return handle;
       },
       parallel(edge, other) {
+        needOutline('.parallel()');
         const cur = findFeature(id) as SketchFeature;
         const count = cur.points.length;
         const a = wholeIndex('.parallel()', 'edge', edge, count);
@@ -1516,6 +1629,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
         return handle;
       },
       perpendicular(edge, other) {
+        needOutline('.perpendicular()');
         const cur = findFeature(id) as SketchFeature;
         const count = cur.points.length;
         const a = wholeIndex('.perpendicular()', 'edge', edge, count);
@@ -1525,12 +1639,14 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
         return handle;
       },
       pin(corner) {
+        needOutline('.pin()');
         const cur = findFeature(id) as SketchFeature;
         const c = wholeIndex('.pin()', 'corner', corner, cur.points.length);
         applyConstraint(id, { kind: 'lock', corner: c });
         return handle;
       },
       distX(a, b, value) {
+        needOutline('.distX()');
         const cur = findFeature(id) as SketchFeature;
         const count = cur.points.length;
         const i = wholeIndex('.distX()', 'corner', a, count);
@@ -1544,6 +1660,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
         return handle;
       },
       distY(a, b, value) {
+        needOutline('.distY()');
         const cur = findFeature(id) as SketchFeature;
         const count = cur.points.length;
         const i = wholeIndex('.distY()', 'corner', a, count);
@@ -1557,6 +1674,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
         return handle;
       },
       symmetric(a, b, center) {
+        needOutline('.symmetric()');
         const cur = findFeature(id) as SketchFeature;
         const count = cur.points.length;
         const i = wholeIndex('.symmetric()', 'corner', a, count);
@@ -1577,6 +1695,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
         return handle;
       },
       angle(edge, other, degrees) {
+        needOutline('.angle()');
         const cur = findFeature(id) as SketchFeature;
         const count = cur.points.length;
         const i = wholeIndex('.angle()', 'edge', edge, count);
@@ -1595,6 +1714,12 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
         // constraints reference geometry by id, so a round trip that
         // renumbers dangles every constraint (§2.1).
         if (!Array.isArray(rows)) throw new Error('.geom() needs an array of geometry rows.');
+        if (outline !== null && !hasRows()) {
+          throw new Error(
+            `.geom() would replace the ${outline} already drawn on this sketch. ` +
+            `Put every shape in the .geom([...]) rows, or draw a second shape with .rect() / .circle() / .polygon(), which adds it beside the first.`,
+          );
+        }
         const cur = findFeature(id) as SketchFeature;
         const out: SoupGeom[] = [];
         rows.forEach((row: unknown, i: number) => {
@@ -1714,7 +1839,8 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
           throw new Error(`.slot() needs two different end centres -- a and b are both [${cA[0]}, ${cA[1]}], which holds no slot.`);
         }
         const cur = findFeature(id) as SketchFeature;
-        const geoms = (cur.geoms ?? cur.geom ?? []) as SoupGeom[];
+        const had = priorRows('.slot()');
+        const geoms = (had ? had.geoms : (cur.geoms ?? cur.geom ?? [])) as SoupGeom[];
         // Continue the sketch's dense 1-based ids (SPEC-sketcher2 §2.1).
         const base = geoms.reduce((m, g) => Math.max(m, g.id), 0) + 1;
         const built = buildSlotRows(cA, cB, rv, base);
@@ -1729,10 +1855,11 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
             g.r = rv;
           }
         }
-        const rules = (cur.rules ?? []) as SoupRule[];
+        const rules = (had ? had.rules : (cur.rules ?? [])) as SoupRule[];
         const outGeoms = [...geoms, ...(built.geoms as unknown as SoupGeom[])];
         replaceFeature(id, {
           ...cur, geoms: outGeoms, geom: outGeoms,
+          ...(had && !hasRows() ? { points: starter.map((p): [number, number] => [p[0], p[1]]), shape: undefined, rounds: undefined, chamfers: undefined, bulges: undefined, constraints: RECTANGLE_CONSTRAINTS.slice() } : {}),
           rules: [...rules, ...(built.rules as unknown as SoupRule[])],
         });
         return handle;

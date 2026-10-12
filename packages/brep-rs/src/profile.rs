@@ -25,6 +25,43 @@ thread_local! {
 /// trusted (conflicting rules, wire discovery refusal); the legacy `points`
 /// path never touches this thread_local.
 pub(crate) fn soup_profile(sk: &Value) -> Option<(Vec<Vec<build::ProfileSeg>>, Vec<(String, usize)>)> {
+    let session = solved_session(sk)?;
+    match session.profile() {
+        Ok(loops) => {
+            let out = profile_loops(&loops)?;
+            let nseg: usize = out.iter().map(|l| l.len()).sum();
+            let roles = (0..nseg).map(|i| ("edge".to_string(), i)).collect();
+            Some((out, roles))
+        }
+        Err(r) => {
+            LAST_PRISM_REFUSAL.with(|lr| *lr.borrow_mut() = Some(r.sentence));
+            None
+        }
+    }
+}
+
+/// A sketch with several shapes, as separate pieces: each region is its outline first, then the loops cut out of
+/// it. One region is exactly what `soup_profile` gives. None (with a sentence in LAST_PRISM_REFUSAL) when the
+/// sketch cannot be trusted.
+pub(crate) fn soup_regions(sk: &Value) -> Option<Vec<Vec<Vec<build::ProfileSeg>>>> {
+    let session = solved_session(sk)?;
+    match session.profile_regions() {
+        Ok(regions) => {
+            let mut out = Vec::with_capacity(regions.len());
+            for r in &regions {
+                out.push(profile_loops(r)?);
+            }
+            Some(out)
+        }
+        Err(r) => {
+            LAST_PRISM_REFUSAL.with(|lr| *lr.borrow_mut() = Some(r.sentence));
+            None
+        }
+    }
+}
+
+/// Open the sketch's rows and solve them from the rows themselves; a refusal leaves its sentence behind.
+fn solved_session(sk: &Value) -> Option<crate::sketch::session::SketchSession> {
     LAST_PRISM_REFUSAL.with(|lr| *lr.borrow_mut() = None);
     let json = sk.to_string();
     let mut session = match crate::sketch::session::SketchSession::open(&json) {
@@ -56,64 +93,56 @@ pub(crate) fn soup_profile(sk: &Value) -> Option<(Vec<Vec<build::ProfileSeg>>, V
             return None;
         }
     }
-    match session.profile() {
-        Ok(loops) => {
-            // §8.2: the outline first, then its holes. build normalises a
-            // hole to CLOCKWISE (`(a2 < 0.0) == outer`, build.rs:1897) and
-            // discovery hands every loop over counterclockwise, so the hole
-            // is reversed HERE rather than inside the builder: reverse_loop
-            // would permute the hole's wall faces out from under `roles`,
-            // whose whole meaning is "wall face i is profile segment i".
-            let mut out: Vec<Vec<build::ProfileSeg>> = Vec::with_capacity(loops.len());
-            for lp in &loops {
-                let mut segs: Vec<build::ProfileSeg> = lp
-                    .segs
-                    .iter()
-                    .map(|s| match s {
-                        crate::sketch::wires::WireSeg::Line { a, b } => build::ProfileSeg::Line { a: *a, b: *b },
-                        crate::sketch::wires::WireSeg::Arc { centre, radius, start, sweep } => build::ProfileSeg::Arc {
-                            centre: *centre,
-                            radius: *radius,
-                            start: *start,
-                            sweep: *sweep,
-                        },
-                    })
-                    .collect();
-                // The session's wire discovery splits edges where they cross, but a touch that
-                // joins no ends (two arcs just kissing) is invisible to it: check each loop as
-                // the polygon path does.
-                if let Some(flaw) = crate::sketch::wires::outline_flaw(&lp.segs) {
-                    if !matches!(flaw, crate::sketch::wires::OutlineFlaw::NoArea) {
-                        LAST_PRISM_REFUSAL.with(|lr| *lr.borrow_mut() = Some(format!("this sketch's outline cannot be pulled: {}.", flaw_why(flaw))));
-                        return None;
-                    }
-                }
-                if lp.role == crate::sketch::wires::LoopRole::Hole {
-                    segs = segs
-                        .iter()
-                        .rev()
-                        .map(|s| match s {
-                            build::ProfileSeg::Line { a, b } => build::ProfileSeg::Line { a: *b, b: *a },
-                            build::ProfileSeg::Arc { centre, radius, start, sweep } => build::ProfileSeg::Arc {
-                                centre: *centre,
-                                radius: *radius,
-                                start: *start + *sweep,
-                                sweep: -*sweep,
-                            },
-                        })
-                        .collect();
-                }
-                out.push(segs);
+    Some(session)
+}
+
+/// Discovered loops as profile loops. §8.2: the outline first, then its holes. build normalises a hole to
+/// CLOCKWISE (`(a2 < 0.0) == outer`) and discovery hands every loop over counterclockwise, so a hole is reversed
+/// HERE rather than inside the builder: reverse_loop would permute the hole's wall faces out from under `roles`,
+/// whose whole meaning is "wall face i is profile segment i".
+fn profile_loops(loops: &[crate::sketch::wires::WireLoop]) -> Option<Vec<Vec<build::ProfileSeg>>> {
+    let mut out: Vec<Vec<build::ProfileSeg>> = Vec::with_capacity(loops.len());
+    for lp in loops {
+        let mut segs: Vec<build::ProfileSeg> = lp
+            .segs
+            .iter()
+            .map(|s| match s {
+                crate::sketch::wires::WireSeg::Line { a, b } => build::ProfileSeg::Line { a: *a, b: *b },
+                crate::sketch::wires::WireSeg::Arc { centre, radius, start, sweep } => build::ProfileSeg::Arc {
+                    centre: *centre,
+                    radius: *radius,
+                    start: *start,
+                    sweep: *sweep,
+                },
+            })
+            .collect();
+        // The session's wire discovery splits edges where they cross, but a touch that
+        // joins no ends (two arcs just kissing) is invisible to it: check each loop as
+        // the polygon path does.
+        if let Some(flaw) = crate::sketch::wires::outline_flaw(&lp.segs) {
+            if !matches!(flaw, crate::sketch::wires::OutlineFlaw::NoArea) {
+                LAST_PRISM_REFUSAL.with(|lr| *lr.borrow_mut() = Some(format!("this sketch's outline cannot be pulled: {}.", flaw_why(flaw))));
+                return None;
             }
-            let nseg: usize = out.iter().map(|l| l.len()).sum();
-            let roles = (0..nseg).map(|i| ("edge".to_string(), i)).collect();
-            Some((out, roles))
         }
-        Err(r) => {
-            LAST_PRISM_REFUSAL.with(|lr| *lr.borrow_mut() = Some(r.sentence));
-            None
+        if lp.role == crate::sketch::wires::LoopRole::Hole {
+            segs = segs
+                .iter()
+                .rev()
+                .map(|s| match s {
+                    build::ProfileSeg::Line { a, b } => build::ProfileSeg::Line { a: *b, b: *a },
+                    build::ProfileSeg::Arc { centre, radius, start, sweep } => build::ProfileSeg::Arc {
+                        centre: *centre,
+                        radius: *radius,
+                        start: *start + *sweep,
+                        sweep: -*sweep,
+                    },
+                })
+                .collect();
         }
+        out.push(segs);
     }
+    Some(out)
 }
 
 /// Why an outline with this flaw is not a profile, in a student's words.

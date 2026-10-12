@@ -619,8 +619,10 @@ const washerRes = runD(D_FIXTURES.washer);
 const washerBuilds = washerRes.parseError === undefined && Object.keys(washerRes.built.refusals ?? {}).length === 0
   && closeTo(washerRes.measured.shapes?.[washerRes.id]?.volume, WASHER_V);
 const plugRes = runD(D_FIXTURES.plug);
-const plugRefuses = plugRes.parseError === undefined && !!plugRes.built.refusals?.[plugRes.id]?.includes(PLUG_SENTENCE)
-  && plugRes.measured.shapes?.[plugRes.id] === undefined;
+// A plug standing in a bore is its own piece (even-odd nesting): the plate with its 8 mm bore, and a 3 mm disc in the bore.
+const PLUG_V = (40 * 30 - PI * 64 + PI * 9) * 12;
+const plugRefuses = plugRes.parseError === undefined && Object.keys(plugRes.built.refusals ?? {}).length === 0
+  && closeTo(plugRes.measured.shapes?.[plugRes.id]?.volume, PLUG_V);
 const dPinnedNumbers = D_NUMBERS.filter((n) => dRows.filter((r) => r.n.replace(/[ab]$/, '') === n).every((r) => r.pinned)
   && dRows.some((r) => r.n.replace(/[ab]$/, '') === n));
 
@@ -843,11 +845,11 @@ test('D multi-loop (7 retired): a washer BUILDS with volume (1200 - 25 pi) * 12'
   assert.ok(closeTo(got, (1200 - 25 * PI) * 12), `washer volume ${got}`);
 });
 
-test('D multi-loop: a plug sitting inside a bore still refuses, no solid', () => {
+test('D multi-loop: a plug sitting inside a bore is its own piece, volume (1200 - 64 pi + 9 pi) * 12', () => {
   assert.equal(plugRes.parseError, undefined);
-  const why = plugRes.built.refusals?.[plugRes.id];
-  assert.ok(why?.includes(PLUG_SENTENCE), `plug: ${why}`);
-  assert.equal(plugRes.measured.shapes?.[plugRes.id], undefined);
+  assert.deepEqual(plugRes.built.refusals, {});
+  const got = plugRes.measured.shapes?.[plugRes.id]?.volume;
+  assert.ok(closeTo(got, PLUG_V), `plug volume ${got}, want ${PLUG_V}`);
 });
 
 test('D(d): docs/coverage.json lists the same 11 refusals', () => {

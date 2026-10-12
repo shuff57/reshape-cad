@@ -1,0 +1,18 @@
+{
+ "id": "pad-basic__two-disjoint-rects-one-sketch",
+ "ok": true,
+ "volume": 12000.0,
+ "bbox": [
+  -30.0,
+  -10.0,
+  0.0,
+  30.0,
+  10.0,
+  15.0
+ ],
+ "faces": 12,
+ "com": null,
+ "valid": true,
+ "solids": 2,
+ "bad": {}
+}

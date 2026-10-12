@@ -614,6 +614,53 @@ fn direction_options(f: &Value) -> (bool, bool, f64) {
     (flag("reversed"), mid, if mid || !(l2 > 0.0) { 0.0 } else { l2 })
 }
 
+/// A sketch whose shapes make several pieces (side by side, or an island inside a hole): one prism per region,
+/// joined into one body that is several solids. The pieces stand clear of each other (the regions reader refuses
+/// a touch), so the join is a plain union and its volume must be the sum -- anything else is refused rather than
+/// returned. Faces are not named: the pieces' walls carry no sweep history.
+fn multi_region_prism(sk: &Value, origin: Vec3, u_axis: Vec3, v_axis: Vec3, sweep: Vec3) -> Option<(TSolid, PrismKind)> {
+    let regions = crate::profile::soup_regions(sk)?;
+    if regions.len() < 2 {
+        return None;
+    }
+    let mut pieces: Vec<TSolid> = Vec::with_capacity(regions.len());
+    for loops in &regions {
+        match build::extrude_profile_loops_with(loops, origin, u_axis, v_axis, sweep, true) {
+            Ok(p) => pieces.push(build::ensure_outward(&p)),
+            Err(e) => {
+                LAST_PRISM_REFUSAL.with(|lr| *lr.borrow_mut() = Some(e));
+                return None;
+            }
+        }
+    }
+    let total: f64 = pieces.iter().map(build::solid_volume).sum();
+    let mut it = pieces.into_iter();
+    let mut acc = it.next()?;
+    for p in it {
+        acc = match ops::boolean("union", &acc, &p) {
+            Some(u) => u,
+            None => {
+                LAST_PRISM_REFUSAL.with(|lr| {
+                    *lr.borrow_mut() = Some(
+                        "this sketch makes several separate pieces and brep-rs could not join them into one part; draw them on separate sketches".to_string(),
+                    )
+                });
+                return None;
+            }
+        };
+    }
+    let got = build::solid_volume(&acc);
+    if !((got - total).abs() <= 1e-9 * total.abs().max(1.0)) {
+        LAST_PRISM_REFUSAL.with(|lr| {
+            *lr.borrow_mut() = Some(
+                "this sketch makes several separate pieces and brep-rs could not join them exactly; draw them on separate sketches".to_string(),
+            )
+        });
+        return None;
+    }
+    Some((acc, PrismKind::Plain))
+}
+
 /// The prism of a sketch swept along the plane normal by `height * dir` -- the
 /// tool-building step that `extrude` and `pocket` share. A negative `height`
 /// (a pocket's `-depth`) sweeps the profile INTO the material; the resulting
@@ -644,7 +691,25 @@ fn extrude_prism(sk: &Value, _plane: &str, height: f64) -> Option<(TSolid, Prism
         );
         return Some((solid, PrismKind::Circle));
     }
-    let (loops, roles) = extruded_profile(sk)?;
+    let Some((loops, roles)) = extruded_profile(sk) else {
+        // One outline did not come out. A sketch of SEVERAL shapes (side by side, or an island inside a hole) is
+        // still a profile: each region is built as its own prism, and the prisms are one body that is several
+        // pieces. The single-outline reader's sentence stands unless the regions reader has a more specific one.
+        let single = LAST_PRISM_REFUSAL.with(|lr| lr.borrow().clone());
+        let several = single.as_deref().map_or(false, |s| s.contains("separate outlines") || s.contains("island inside a hole"));
+        if several {
+            return multi_region_prism(sk, origin, u_axis, v_axis, scale(n, height * dir)).or_else(|| {
+                // Keep the regions reader's own sentence when it has one; otherwise the original.
+                LAST_PRISM_REFUSAL.with(|lr| {
+                    if lr.borrow().is_none() {
+                        *lr.borrow_mut() = single.clone();
+                    }
+                });
+                None
+            });
+        }
+        return None;
+    };
     // One wall per segment of EVERY loop, then the two caps -- the order
     // extrude_profile_loops pushes them in (build.rs:2009 walls, :2152 caps).
     // A loop that is one whole circle (a circle row's two half arcs) is built
@@ -814,7 +879,24 @@ fn slanted_prism(
         let Some((c, r)) = circle_of_value(sk) else { return refuse("this circle has no usable size.") };
         Outline::Circle(c, r)
     } else {
-        let Some((loops, roles)) = extruded_profile(sk) else { return None };
+        let Some((loops, roles)) = extruded_profile(sk) else {
+            // Several pieces are a plain pull's business only: a taper or a slanted pull takes ONE outline.
+            LAST_PRISM_REFUSAL.with(|lr| {
+                let mut b = lr.borrow_mut();
+                if let Some(w) = b.as_mut() {
+                    *w = w
+                        .replace(
+                            "extrude needs one outline, with any other loop inside it as a hole",
+                            "a taper or a slanted pull takes one outline, with no other shape beside it",
+                        )
+                        .replace(
+                            "an island inside a hole is not a shape this builds",
+                            "a taper or a slanted pull cannot carry an island standing inside a hole",
+                        );
+                }
+            });
+            return None;
+        };
         if loops.len() != 1 {
             return refuse("a taper or a custom direction is built for a profile without holes yet: draw the outline without the hole.");
         }
@@ -935,6 +1017,7 @@ fn spin_profile(sk: &Value) -> Result<(Vec<build::ProfileSeg>, Vec<(String, usiz
             .unwrap_or_else(|| "this sketch has no usable outline to spin".to_string());
         // The same sentence a pull gives, about spinning instead; no full stop, the caller adds the rest.
         return Err(why
+            .replace("extrude needs one outline, with any other loop inside it as a hole", "a spin takes one outline, with no other shape beside it")
             .replace("cannot be pulled", "cannot be spun")
             .replace("nothing to pull", "nothing to spin")
             .trim_end_matches('.')

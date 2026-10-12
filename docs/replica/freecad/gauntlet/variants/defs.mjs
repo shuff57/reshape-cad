@@ -435,6 +435,95 @@ revArc('arc-top-cone-round-150', 'a frustum ring (slanted outer side) with its w
 revArc('arc-top-cone-round-neg-60', 'the same frustum ring 60 degrees the other way', { prof: RP([[10, 0], [22, 0], [16, 30], [10, 30]], { 1: 4, 2: 3 }), angle: -60 });
 revArc('arc-top-cone-tip-round-90', 'a cone to a point on the axis (triangle) with the base corner rounded 4, a quarter turn', { prof: RP([[0, 0], [20, 0], [0, 30]], { 1: 4 }), angle: 90 });
 
+// ---- several closed shapes in ONE sketch: nested loops are holes and islands, side-by-side loops are separate pieces of one pad ------------------------
+// ours: sk.rect()/sk.circle() called more than once on a sketch (kept as rows, one loop each). FreeCAD: the same wires in one sketch. A profile that makes
+// several pieces is a valid compound in FreeCAD (emit_multi) and a body of several solids here.
+const multiAdd = (piece, slug, desc, ours, fc) => add({ id: `${piece}__${slug}`, piece, desc, ours, fc, multi: true });
+const SK = "const sk = sketch('top'); ";
+const FSK = "doc, body = setup()\nsk = sketch(body, 'top')\n";
+rawAdd('pad-basic', 'circle-in-rect-one-sketch', 'sk.rect(40, 30); sk.circle(10): a plate with a round hole, both called on one sketch',
+  `${SK}sk.rect(40, 30); sk.circle(10); extrude(sk, 15);`, `${FSK}rect(sk, -20, -15, 20, 15)\ncircle(sk, 0, 0, 5)\npad(body, sk, 15)`);
+rawAdd('pad-basic', 'rect-in-circle-one-sketch', 'sk.circle(40); sk.rect(10, 10): a disc with a square hole',
+  `${SK}sk.circle(40); sk.rect(10, 10); extrude(sk, 15);`, `${FSK}circle(sk, 0, 0, 20)\nrect(sk, -5, -5, 5, 5)\npad(body, sk, 15)`);
+rawAdd('pad-basic', 'two-holes-one-sketch', 'a plate with two round holes, three calls on one sketch',
+  `${SK}sk.rect(60, 40); sk.circle(12, { at: [-15, 0] }); sk.circle(12, { at: [15, 0] }); extrude(sk, 15);`,
+  `${FSK}rect(sk, -30, -20, 30, 20)\ncircle(sk, -15, 0, 6)\ncircle(sk, 15, 0, 6)\npad(body, sk, 15)`);
+rawAdd('pad-basic', 'polygon-with-rect-hole-one-sketch', 'a triangle with a square hole, polygon() then rect() on one sketch',
+  `${SK}sk.polygon([[-20, -20], [20, -20], [0, 20]]); sk.rect(4, 4, { at: [0, -8] }); extrude(sk, 15);`,
+  `${FSK}poly(sk, [(-20,-20),(20,-20),(0,20)])\nrect(sk, -2, -10, 2, -6)\npad(body, sk, 15)`);
+rawAdd('pad-basic', 'rect-off-centre-hole-one-sketch', 'a plate with an off-centre round hole near a corner',
+  `${SK}sk.rect(50, 30, { at: [25, 15] }); sk.circle(8, { at: [10, 10] }); extrude(sk, 12);`,
+  `${FSK}rect(sk, 0, 0, 50, 30)\ncircle(sk, 10, 10, 4)\npad(body, sk, 12)`);
+multiAdd('pad-basic', 'two-disjoint-rects-one-sketch', 'two squares side by side on one sketch: two pieces of one pad',
+  `${SK}sk.rect(20, 20, { at: [-20, 0] }); sk.rect(20, 20, { at: [20, 0] }); extrude(sk, 15);`,
+  `${FSK}rect(sk, -30, -10, -10, 10)\nrect(sk, 10, -10, 30, 10)\npad(body, sk, 15)`);
+multiAdd('pad-basic', 'two-disjoint-circles-one-sketch', 'two discs side by side on one sketch',
+  `${SK}sk.circle(16, { at: [-20, 0] }); sk.circle(16, { at: [20, 0] }); extrude(sk, 15);`,
+  `${FSK}circle(sk, -20, 0, 8)\ncircle(sk, 20, 0, 8)\npad(body, sk, 15)`);
+multiAdd('pad-basic', 'rect-and-circle-apart-one-sketch', 'a square and a disc side by side',
+  `${SK}sk.rect(20, 20, { at: [-20, 0] }); sk.circle(16, { at: [20, 0] }); extrude(sk, 10);`,
+  `${FSK}rect(sk, -30, -10, -10, 10)\ncircle(sk, 20, 0, 8)\npad(body, sk, 10)`);
+multiAdd('pad-basic', 'three-deep-circles-one-sketch', 'circles of 60, 40 and 20 across, concentric: a ring and a disc inside its hole (two solids)',
+  `${SK}sk.circle(60); sk.circle(40); sk.circle(20); extrude(sk, 15);`,
+  `${FSK}circle(sk, 0, 0, 30)\ncircle(sk, 0, 0, 20)\ncircle(sk, 0, 0, 10)\npad(body, sk, 15)`);
+multiAdd('pad-basic', 'three-deep-rects-one-sketch', 'squares of 60, 40 and 20 nested: a frame and a block inside its hole (two solids)',
+  `${SK}sk.rect(60, 60); sk.rect(40, 40); sk.rect(20, 20); extrude(sk, 15);`,
+  `${FSK}rect(sk, -30, -30, 30, 30)\nrect(sk, -20, -20, 20, 20)\nrect(sk, -10, -10, 10, 10)\npad(body, sk, 15)`);
+multiAdd('pad-basic', 'four-deep-circles-one-sketch', 'four concentric circles: two rings (even-odd), two solids',
+  `${SK}sk.circle(80); sk.circle(60); sk.circle(40); sk.circle(20); extrude(sk, 10);`,
+  `${FSK}circle(sk, 0, 0, 40)\ncircle(sk, 0, 0, 30)\ncircle(sk, 0, 0, 20)\ncircle(sk, 0, 0, 10)\npad(body, sk, 10)`);
+multiAdd('pad-basic', 'island-and-far-disc-one-sketch', 'a ring with a disc in its hole, and a third disc far away (three solids)',
+  `${SK}sk.circle(60); sk.circle(40); sk.circle(20); sk.circle(10, { at: [60, 0] }); extrude(sk, 15);`,
+  `${FSK}circle(sk, 0, 0, 30)\ncircle(sk, 0, 0, 20)\ncircle(sk, 0, 0, 10)\ncircle(sk, 60, 0, 5)\npad(body, sk, 15)`);
+multiAdd('pad-basic', 'holed-plate-and-far-rect-one-sketch', 'a plate with a hole and a separate square beside it',
+  `${SK}sk.rect(40, 30); sk.circle(10); sk.rect(10, 10, { at: [40, 0] }); extrude(sk, 15);`,
+  `${FSK}rect(sk, -20, -15, 20, 15)\ncircle(sk, 0, 0, 5)\nrect(sk, 35, -5, 45, 5)\npad(body, sk, 15)`);
+rawAdd('pad-basic', 'crossing-rects-one-sketch', 'two overlapping rectangles on one sketch (FreeCAD pads their union; ours refuses a crossing in a sentence)',
+  `${SK}sk.rect(30, 20, { at: [-5, 0] }); sk.rect(30, 20, { at: [5, -10] }); extrude(sk, 15);`,
+  `${FSK}rect(sk, -20, -10, 10, 10)\nrect(sk, -10, -20, 20, 0)\npad(body, sk, 15)`);
+rawAdd('pad-basic', 'crossing-circles-one-sketch', 'two overlapping circles on one sketch',
+  `${SK}sk.circle(20, { at: [-5, 0] }); sk.circle(20, { at: [5, 0] }); extrude(sk, 15);`,
+  `${FSK}circle(sk, -5, 0, 10)\ncircle(sk, 5, 0, 10)\npad(body, sk, 15)`);
+rawAdd('pad-basic', 'tangent-inside-circles-one-sketch', 'a circle inside another touching it at one point',
+  `${SK}sk.circle(40); sk.circle(20, { at: [10, 0] }); extrude(sk, 15);`,
+  `${FSK}circle(sk, 0, 0, 20)\ncircle(sk, 10, 0, 10)\npad(body, sk, 15)`);
+multiAdd('pad-basic', 'tangent-outside-circles-one-sketch', 'two circles touching at one point, side by side',
+  `${SK}sk.circle(20, { at: [-10, 0] }); sk.circle(20, { at: [10, 0] }); extrude(sk, 15);`,
+  `${FSK}circle(sk, -10, 0, 10)\ncircle(sk, 10, 0, 10)\npad(body, sk, 15)`);
+rawAdd('pad-basic', 'shared-edge-rects-one-sketch', 'two rectangles sharing one side',
+  `${SK}sk.rect(20, 20, { at: [-10, 0] }); sk.rect(20, 20, { at: [10, 0] }); extrude(sk, 15);`,
+  `${FSK}rect(sk, -20, -10, 0, 10)\nrect(sk, 0, -10, 20, 10)\npad(body, sk, 15)`);
+rawAdd('pocket-blind', 'two-holes-one-sketch', 'two round pockets drawn on one sketch, 4 deep',
+  `${plateOurs(40, 30, 10)} const s2 = sketch('top', 10); s2.circle(8, { at: [10, 15] }); s2.circle(8, { at: [30, 15] }); pocket(s2, plate, 4);`,
+  `${plateFc(40, 30, 10)}\ns2 = sketch(body, 'top', 10)\ncircle(s2, 10, 15, 4)\ncircle(s2, 30, 15, 4)\npocket(body, s2, 4)`);
+rawAdd('pocket-blind', 'rect-and-circle-one-sketch', 'a square pocket and a round pocket on one sketch, 3 deep',
+  `${plateOurs(40, 30, 10)} const s2 = sketch('top', 10); s2.rect(8, 8, { at: [10, 15] }); s2.circle(8, { at: [30, 15] }); pocket(s2, plate, 3);`,
+  `${plateFc(40, 30, 10)}\ns2 = sketch(body, 'top', 10)\nrect(s2, 6, 11, 14, 19)\ncircle(s2, 30, 15, 4)\npocket(body, s2, 3)`);
+rawAdd('pocket-blind', 'ring-island-one-sketch', 'a ring-shaped pocket written as two circle() calls on one sketch, 4 deep',
+  `${plateOurs(40, 30, 10)} const s2 = sketch('top', 10); s2.circle(20, { at: [20, 15] }); s2.circle(8, { at: [20, 15] }); pocket(s2, plate, 4);`,
+  `${plateFc(40, 30, 10)}\ns2 = sketch(body, 'top', 10)\ncircle(s2, 20, 15, 10)\ncircle(s2, 20, 15, 4)\npocket(body, s2, 4)`);
+rawAdd('pocket-blind', 'three-deep-one-sketch', 'concentric circles 24, 16 and 8 across as one pocket sketch: a ring cut, a standing ring, a round pocket in the middle',
+  `${plateOurs(40, 30, 10)} const s2 = sketch('top', 10); s2.circle(24, { at: [20, 15] }); s2.circle(16, { at: [20, 15] }); s2.circle(8, { at: [20, 15] }); pocket(s2, plate, 4);`,
+  `${plateFc(40, 30, 10)}\ns2 = sketch(body, 'top', 10)\ncircle(s2, 20, 15, 12)\ncircle(s2, 20, 15, 8)\ncircle(s2, 20, 15, 4)\npocket(body, s2, 4)`);
+rawAdd('pocket-through', 'two-holes-one-sketch', 'two round through pockets on one sketch',
+  `${plateOurs(40, 30, 10)} const s2 = sketch('top', 10); s2.circle(8, { at: [10, 15] }); s2.circle(8, { at: [30, 15] }); pocket(s2, plate, 10, { through: true });`,
+  `${plateFc(40, 30, 10)}\ns2 = sketch(body, 'top', 10)\ncircle(s2, 10, 15, 4)\ncircle(s2, 30, 15, 4)\npocket(body, s2, None, through=True)`);
+rawAdd('pocket-blind', 'ring-and-far-rect-one-sketch', 'a ring-shaped pocket and a separate square pocket on one sketch, 4 deep',
+  `const s1 = sketch('top'); s1.polygon([[0,0],[60,0],[60,30],[0,30]]); const plate = extrude(s1, 10); const s2 = sketch('top', 10); s2.circle(24, { at: [15, 15] }); s2.circle(16, { at: [15, 15] }); s2.rect(8, 8, { at: [45, 15] }); pocket(s2, plate, 4);`,
+  `doc, body = setup()\ns1 = sketch(body, 'top')\nrect(s1, 0, 0, 60, 30)\nbase = pad(body, s1, 10)\ns2 = sketch(body, 'top', 10)\ncircle(s2, 15, 15, 12)\ncircle(s2, 15, 15, 8)\nrect(s2, 41, 11, 49, 19)\npocket(body, s2, 4)`);
+multiAdd('pocket-through', 'ring-and-far-rect-one-sketch', 'a ring-shaped through pocket (leaves a disc standing apart, two solids) and a separate square one on one sketch',
+  `const s1 = sketch('top'); s1.polygon([[0,0],[60,0],[60,30],[0,30]]); const plate = extrude(s1, 10); const s2 = sketch('top', 10); s2.circle(24, { at: [15, 15] }); s2.circle(16, { at: [15, 15] }); s2.rect(8, 8, { at: [45, 15] }); pocket(s2, plate, 10, { through: true });`,
+  `doc, body = setup()\ns1 = sketch(body, 'top')\nrect(s1, 0, 0, 60, 30)\nbase = pad(body, s1, 10)\ns2 = sketch(body, 'top', 10)\ncircle(s2, 15, 15, 12)\ncircle(s2, 15, 15, 8)\nrect(s2, 41, 11, 49, 19)\npocket(body, s2, None, through=True)`);
+rawAdd('revolution', 'rect-with-hole-one-sketch', 'a 10 x 30 profile at radius 10..20 with a 4 across hole in it, a full turn: a torus-shaped void inside the ring',
+  `${SK}sk.rect(10, 30, { at: [15, 15] }); sk.circle(4, { at: [15, 15] }); revolve(sk, 360);`,
+  "doc, body = setup()\nsk = sketch(body, 'front')\nrect(sk, 10, 0, 20, 30)\ncircle(sk, 15, 15, 2)\nrevolve(body, sk, 360, 'V_Axis')");
+multiAdd('revolution', 'two-rects-one-sketch', 'two profiles at different radii on one sketch, a full turn: two rings',
+  `${SK}sk.rect(4, 20, { at: [10, 10] }); sk.rect(4, 20, { at: [30, 10] }); revolve(sk, 360);`,
+  "doc, body = setup()\nsk = sketch(body, 'front')\nrect(sk, 8, 0, 12, 20)\nrect(sk, 28, 0, 32, 20)\nrevolve(body, sk, 360, 'V_Axis')");
+rawAdd('revolution', 'rect-with-hole-quarter-one-sketch', 'the same profile with a hole, a quarter turn',
+  `${SK}sk.rect(10, 30, { at: [15, 15] }); sk.circle(4, { at: [15, 15] }); revolve(sk, 90);`,
+  "doc, body = setup()\nsk = sketch(body, 'front')\nrect(sk, 10, 0, 20, 30)\ncircle(sk, 15, 15, 2)\nrevolve(body, sk, 90, 'V_Axis')");
+
 for (const v of SKETCH_VARIANTS) add(v);
 export const VARIANTS = out;
 export const PIECES = ['pad-basic', 'pad-symmetric', 'pocket-blind', 'pocket-through', 'revolution', 'chamfer-edge', 'fillet-edge', 'hole-simple',

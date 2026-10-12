@@ -10,7 +10,7 @@ export function generateFc() {
   mkdirSync(dir, { recursive: true }); mkdirSync(refs, { recursive: true });
   for (const f of readdirSync(dir)) if (f.endsWith('.py')) rmSync(path.join(dir, f));
   for (const v of VARIANTS) {
-    const body = v.kind === 'sketch' ? v.fc : `${v.fc}\nemit(${JSON.stringify(v.id)}, body)`;
+    const body = v.kind === 'sketch' ? v.fc : `${v.fc}\n${v.multi ? 'emit_multi' : 'emit'}(${JSON.stringify(v.id)}, body)`;
     const src = [
       `# ${v.id}: ${v.desc}`,
       `REFS_DIR = ${JSON.stringify(refs)}`,
