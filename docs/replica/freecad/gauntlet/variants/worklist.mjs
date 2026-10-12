@@ -46,6 +46,9 @@ export async function writeWorklist(board) {
     lines.push(`- reproduce: \`node docs/replica/freecad/gauntlet/variants/kernel-gaps/${p.id}.mjs\``, '');
     writeFileSync(path.join(dir, `${p.id}.mjs`), repro(p, k));
   }
+  lines.push('## Final status of the earlier entries (2026-10-12, hand-written in variants/worklist.mjs)', '');
+  for (const l of FINAL_STATUS) lines.push(l);
+  lines.push('');
   writeFileSync(path.join(HERE, '..', 'KERNEL-WORKLIST.md'), lines.join('\n') + '\n');
   return items.length;
 }
@@ -119,3 +122,13 @@ console.log(reproduces ? 'REPRODUCES: the kernel differs from FreeCAD / refuses 
 process.exit(reproduces ? 0 : 1);
 `;
 }
+
+// Hand-maintained: what became of every entry the worklist ever carried, and the one gauntlet piece still not built.
+const FINAL_STATUS = [
+  '- revolve with a negative angle (top -90, top -180, front -90) and an angle past 360 (400): WON. Handed a raw ModelDoc, brep-rs builds exactly what FreeCAD builds (volume, bbox, faces, centre of mass; the four repros exit 1, DOES NOT REPRODUCE). The script layer also refuses the input in a sentence.',
+  '- Ten earlier face-count entries (blind pocket across both faces, polar blind pockets, ring with hole, round hole as geom, ring island, copies running off the part, overlapping slot holes, overlapping polar blind, mirrored hole on its own plane, countersink in a cylinder): WON, all MATCH FreeCAD.',
+  '- groove (gauntlet piece, not a variant): NOT-BUILT, refused in a sentence. The baseline front-plane script spins about a plane normal that crosses the post axis; the refusal names that cause. A full-turn ring coincident with the wall builds and equals FreeCAD 36505.30663471339 exactly; a partial-turn ring that would leave one notched wall refuses with the notched-wall sentence (FreeCAD 37102.2092, 8 faces).',
+  '- Round and bevel of a pocket rim (rectangular and circular): WON, equal to FreeCAD (11591.03244517641 for the square rim; 11917.78804033823 round 1 and 11912.559004475084 bevel 1 for a 5 mm circle). Still refused in a sentence: a round as large as the pocket is deep, a second round on the same circular rim, a non-square corner.',
+  '- Arcs on a part-turn revolve: WON for arcs clear of the axis. Arcs touching or crossing the axis (horn tori), outlines thinner than 1e-3 mm of radius times angle, and angles within 0.01 deg of 0 or 360 refuse in a sentence.',
+  '- Open entries 1 and 2 above: REFUSED, honest, no wrong solid (a countersink cone deeper than the plate; a tangent row written arc-then-line).',
+];
