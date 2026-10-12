@@ -181,6 +181,23 @@ impl Build {
         self.add(Geo::ellipse(c, major, minor, angle))
     }
 
+    /// An elliptic arc whose end points genuinely lie on its own ellipse, at two eccentric angles a random
+    /// 0.6 to 2.4 radians apart.
+    pub fn ellipse_arc(&mut self) -> Result<GeoId, String> {
+        let c = [self.rng.range(-40.0, 40.0), self.rng.range(-40.0, 40.0)];
+        let major = self.rng.range(12.0, 30.0);
+        let minor = self.rng.range(4.0, major - 3.0);
+        let angle = self.rng.range(0.0, 360.0);
+        let t0 = self.rng.range(0.0, core::f64::consts::TAU);
+        let dt = self.rng.range(0.6, 2.4);
+        let (ca, sa) = (angle.to_radians().cos(), angle.to_radians().sin());
+        let at = |t: f64| {
+            let (x, y) = (major * t.cos(), minor * t.sin());
+            [c[0] + x * ca - y * sa, c[1] + x * sa + y * ca]
+        };
+        self.add(Geo::ellipse_arc(c, major, minor, angle, at(t0), at(t0 + dt), Sense::Ccw))
+    }
+
     /// An arc whose endpoints genuinely lie on its own circle. The on-circle
     /// rows are separate constraints and are not what this fixture is testing,
     /// but an arc whose `a` is nowhere near its radius is not a shape the
@@ -207,10 +224,10 @@ impl Build {
     }
 }
 
-/// Every argument shape the harness covers. 18 kinds, 31 shapes: the kinds that
+/// Every argument shape the harness covers. 18 kinds, 35 shapes: the kinds that
 /// behave differently against a line, a circle and an arc get one entry each,
 /// because a derivative can be right for one and wrong for another.
-pub const FORMS: [&str; 31] = [
+pub const FORMS: [&str; 35] = [
     "coincident/point-point",
     "coincident/line-b-arc-a",
     "pointOnObject/point-line",
@@ -242,6 +259,10 @@ pub const FORMS: [&str; 31] = [
     "equal/ellipse-ellipse",
     "majorRadius/ellipse",
     "minorRadius/ellipse",
+    "pointOnObject/point-ellipse-arc",
+    "tangent/endpoint-line-ellipse-arc",
+    "equal/ellipse-arc-ellipse",
+    "majorRadius/ellipse-arc",
 ];
 
 /// Inputs that have no defensible answer, paired with the rule that has to
@@ -514,6 +535,37 @@ pub fn fixture(name: &'static str) -> Result<Fixture, String> {
             (
                 K::MinorRadius,
                 Constraint::unary(K::MinorRadius, b.arg(g1, None)?).with_value(9.0),
+            )
+        }
+        "pointOnObject/point-ellipse-arc" => {
+            let g1 = b.point()?;
+            let g2 = b.ellipse_arc()?;
+            (
+                K::PointOnObject,
+                Constraint::binary(K::PointOnObject, b.arg(g1, Some(A))?, b.arg(g2, None)?),
+            )
+        }
+        "tangent/endpoint-line-ellipse-arc" => {
+            let g1 = b.line()?;
+            let g2 = b.ellipse_arc()?;
+            (
+                K::Tangent,
+                Constraint::binary(K::Tangent, b.arg(g1, Some(B))?, b.arg(g2, Some(A))?),
+            )
+        }
+        "equal/ellipse-arc-ellipse" => {
+            let g1 = b.ellipse_arc()?;
+            let g2 = b.ellipse()?;
+            (
+                K::Equal,
+                Constraint::binary(K::Equal, b.arg(g1, None)?, b.arg(g2, None)?),
+            )
+        }
+        "majorRadius/ellipse-arc" => {
+            let g1 = b.ellipse_arc()?;
+            (
+                K::MajorRadius,
+                Constraint::unary(K::MajorRadius, b.arg(g1, None)?).with_value(21.0),
             )
         }
         "equal/circle-circle" => {

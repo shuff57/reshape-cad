@@ -17,7 +17,11 @@
 //! circle  3   cx cy r
 //! arc     7   cx cy r ax ay bx by
 //! ellipse 5   cx cy fx fy b
+//! ellipseArc 9   cx cy fx fy b ax ay bx by
 //! ```
+//!
+//! An ellipse arc is an ellipse plus two end points that LIE ON it (two on-curve rows pin them, as for a
+//! circular arc), so its freedom is 9 - 2 = 7, which is what FreeCAD measures.
 //!
 //! An ellipse stores its centre, its FIRST FOCUS as a point, and its minor radius. The major radius is
 //! derived, `a = sqrt(b^2 + |f - c|^2)`, so `a >= b` holds by construction and every slot is a length
@@ -60,6 +64,7 @@ pub enum GeoKind {
     Circle,
     Arc,
     Ellipse,
+    EllipseArc,
 }
 
 /// Which way an arc runs from `a` to `b`. Non-solver data (O1).
@@ -124,9 +129,35 @@ pub enum Geo {
         f: [f64; 2],
         b: f64,
     },
+    /// An ellipse plus the two end points of the arc, `start` to `end` in `sense`.
+    EllipseArc {
+        c: [f64; 2],
+        f: [f64; 2],
+        b: f64,
+        start: [f64; 2],
+        end: [f64; 2],
+        sense: Sense,
+    },
 }
 
 impl Geo {
+    /// An elliptic arc from the numbers a student writes: the ellipse as in [`Geo::ellipse`], and the two end
+    /// points, which the caller has put on the curve.
+    pub fn ellipse_arc(
+        c: [f64; 2],
+        major: f64,
+        minor: f64,
+        angle_deg: f64,
+        start: [f64; 2],
+        end: [f64; 2],
+        sense: Sense,
+    ) -> Geo {
+        match Geo::ellipse(c, major, minor, angle_deg) {
+            Geo::Ellipse { c, f, b } => Geo::EllipseArc { c, f, b, start, end, sense },
+            other => other,
+        }
+    }
+
     /// An ellipse from the numbers a student writes: centre, major radius, minor radius, and the angle of
     /// the major axis from +x in degrees. A minor radius larger than the major swaps the two and turns the
     /// axis a quarter turn, so the stored `a >= b` always holds and the same curve is drawn.
@@ -148,12 +179,13 @@ impl Geo {
             Geo::Circle { .. } => GeoKind::Circle,
             Geo::Arc { .. } => GeoKind::Arc,
             Geo::Ellipse { .. } => GeoKind::Ellipse,
+            Geo::EllipseArc { .. } => GeoKind::EllipseArc,
         }
     }
 
     pub fn sense(&self) -> Option<Sense> {
         match self {
-            Geo::Arc { sense, .. } => Some(*sense),
+            Geo::Arc { sense, .. } | Geo::EllipseArc { sense, .. } => Some(*sense),
             _ => None,
         }
     }
@@ -161,13 +193,16 @@ impl Geo {
     /// The initial values of this geometry's parameter slice, in layout order.
     /// The array is the widest a kind needs; `push` copies only the prefix the
     /// kind actually owns.
-    fn values(&self) -> [f64; 7] {
+    fn values(&self) -> [f64; 9] {
         match *self {
-            Geo::Point { p } => [p[0], p[1], 0.0, 0.0, 0.0, 0.0, 0.0],
-            Geo::Line { a, b } => [a[0], a[1], b[0], b[1], 0.0, 0.0, 0.0],
-            Geo::Circle { c, r } => [c[0], c[1], r, 0.0, 0.0, 0.0, 0.0],
-            Geo::Arc { c, r, a, b, .. } => [c[0], c[1], r, a[0], a[1], b[0], b[1]],
-            Geo::Ellipse { c, f, b } => [c[0], c[1], f[0], f[1], b, 0.0, 0.0],
+            Geo::Point { p } => [p[0], p[1], 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+            Geo::Line { a, b } => [a[0], a[1], b[0], b[1], 0.0, 0.0, 0.0, 0.0, 0.0],
+            Geo::Circle { c, r } => [c[0], c[1], r, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+            Geo::Arc { c, r, a, b, .. } => [c[0], c[1], r, a[0], a[1], b[0], b[1], 0.0, 0.0],
+            Geo::Ellipse { c, f, b } => [c[0], c[1], f[0], f[1], b, 0.0, 0.0, 0.0, 0.0],
+            Geo::EllipseArc { c, f, b, start, end, .. } => {
+                [c[0], c[1], f[0], f[1], b, start[0], start[1], end[0], end[1]]
+            }
         }
     }
 }
@@ -184,6 +219,7 @@ impl GeoKind {
             GeoKind::Circle => &["cx", "cy", "r"],
             GeoKind::Arc => &["cx", "cy", "r", "ax", "ay", "bx", "by"],
             GeoKind::Ellipse => &["cx", "cy", "fx", "fy", "b"],
+            GeoKind::EllipseArc => &["cx", "cy", "fx", "fy", "b", "ax", "ay", "bx", "by"],
         }
     }
 
@@ -198,6 +234,7 @@ impl GeoKind {
             GeoKind::Circle => "circle",
             GeoKind::Arc => "arc",
             GeoKind::Ellipse => "ellipse",
+            GeoKind::EllipseArc => "ellipseArc",
         }
     }
 
@@ -223,6 +260,11 @@ impl GeoKind {
             (GeoKind::Ellipse, PointRef::C) => Some([0, 1]),
             // The first focus. The second is derived (2c - f), so it is not addressable.
             (GeoKind::Ellipse, PointRef::A) => Some([2, 3]),
+            // An elliptic arc's `a` and `b` are its END POINTS, as for a circular arc; its focus is not
+            // addressable (FreeCAD reaches it only through internal geometry).
+            (GeoKind::EllipseArc, PointRef::C) => Some([0, 1]),
+            (GeoKind::EllipseArc, PointRef::A) => Some([5, 6]),
+            (GeoKind::EllipseArc, PointRef::B) => Some([7, 8]),
             _ => None,
         }
     }
@@ -232,14 +274,14 @@ impl GeoKind {
     pub fn radius_offset(self) -> Option<usize> {
         match self {
             GeoKind::Circle | GeoKind::Arc => Some(2),
-            GeoKind::Point | GeoKind::Line | GeoKind::Ellipse => None,
+            GeoKind::Point | GeoKind::Line | GeoKind::Ellipse | GeoKind::EllipseArc => None,
         }
     }
 
     /// The offset of an ellipse's minor radius `b`, None for every other kind.
     pub fn minor_offset(self) -> Option<usize> {
         match self {
-            GeoKind::Ellipse => Some(4),
+            GeoKind::Ellipse | GeoKind::EllipseArc => Some(4),
             _ => None,
         }
     }
@@ -361,7 +403,13 @@ impl Arg {
 
     /// Slots of an ellipse's centre and first focus, as `([cx, cy], [fx, fy])`.
     pub fn ellipse_slots(&self) -> Result<([usize; 2], [usize; 2]), String> {
-        Ok((self.slots_of(PointRef::C)?, self.slots_of(PointRef::A)?))
+        match self.kind {
+            // Fixed offsets, not point refs: an elliptic arc's `a` is its start point, not its focus.
+            GeoKind::Ellipse | GeoKind::EllipseArc => {
+                Ok(([self.base, self.base + 1], [self.base + 2, self.base + 3]))
+            }
+            other => Err(format!("geometry {} is a {} and is not an ellipse", self.geo, other.label())),
+        }
     }
 
     /// Slot of this geometry's radius.
@@ -534,7 +582,7 @@ impl ParamBlock {
                     r_max = r_max.max(r.abs());
                 }
             }
-            if e.kind == GeoKind::Ellipse {
+            if matches!(e.kind, GeoKind::Ellipse | GeoKind::EllipseArc) {
                 // Its extent is the major radius, derived from the focus offset and the minor radius.
                 let v = |d: usize| self.values.get(e.base + d).copied().unwrap_or(0.0);
                 let a = (v(4).powi(2) + (v(2) - v(0)).powi(2) + (v(3) - v(1)).powi(2)).sqrt();

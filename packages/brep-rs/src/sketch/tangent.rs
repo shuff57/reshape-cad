@@ -355,7 +355,9 @@ pub fn tangent_residual(
         (GeoKind::Line, GeoKind::Circle | GeoKind::Arc) => {
             simple_line_circle_residual(c, p, scale, out, a, b)
         }
-        (GeoKind::Line, GeoKind::Ellipse) => line_ellipse_residual(c, p, scale, out, a, b),
+        (GeoKind::Line, GeoKind::Ellipse | GeoKind::EllipseArc) => {
+            line_ellipse_residual(c, p, scale, out, a, b)
+        }
         (GeoKind::Circle | GeoKind::Arc, GeoKind::Circle | GeoKind::Arc) => {
             circle_circle_residual(c, p, scale, out, a, b)
         }
@@ -381,7 +383,9 @@ pub fn tangent_jacobian(
         (GeoKind::Line, GeoKind::Circle | GeoKind::Arc) => {
             simple_line_circle_jacobian(c, p, scale, out, a, b)
         }
-        (GeoKind::Line, GeoKind::Ellipse) => line_ellipse_jacobian(c, p, scale, out, a, b),
+        (GeoKind::Line, GeoKind::Ellipse | GeoKind::EllipseArc) => {
+            line_ellipse_jacobian(c, p, scale, out, a, b)
+        }
         (GeoKind::Circle | GeoKind::Arc, GeoKind::Circle | GeoKind::Arc) => {
             circle_circle_jacobian(c, p, scale, out, a, b)
         }
@@ -640,6 +644,10 @@ fn endpoint_residual(
     // Shared point: line's named end, or arc's named end. The residual needs
     // the SHARED point's coordinates, the OTHER geometry's direction at that
     // point, and the radial vector from the (or each) arc centre.
+    if a.kind == GeoKind::EllipseArc || b.kind == GeoKind::EllipseArc {
+        let v = read_line_ellipse_arc_end(p, scale, a, b)?;
+        return set_row(out, 0, scale * v.w / (v.len * v.m));
+    }
     if a.kind == GeoKind::Line {
         // line (end A) meets arc (end B): u = A_arc - c_arc is the radial;
         // D = dot(line direction, radial) ; e = S*D/(L*r).
@@ -696,6 +704,99 @@ fn endpoint_residual(
     }
 }
 
+/// A line meeting an elliptic arc at one of the arc's end points. The arc's normal there is the sum of the
+/// unit vectors from the two foci, `n = u1 + u2` (it bisects the focal radii), so the two curves are tangent
+/// when the line's direction is perpendicular to it: `e = S * (d . n) / (|d| * |n|)`, a length, with no
+/// angle and no branch cut. A circle is the case F1 = F2, where `n = 2u`, the circular endpoint form above.
+struct LineEllipseArcEnd {
+    l0: [usize; 2],
+    l1: [usize; 2],
+    sh: [usize; 2],
+    e: super::metric::EllipseNow,
+    d: [f64; 2],
+    len: f64,
+    u1: [f64; 2],
+    u2: [f64; 2],
+    r1: f64,
+    r2: f64,
+    n: [f64; 2],
+    m: f64,
+    w: f64,
+}
+
+fn read_line_ellipse_arc_end(
+    p: &[f64],
+    scale: f64,
+    line: super::params::Arg,
+    arc: super::params::Arg,
+) -> Result<LineEllipseArcEnd, String> {
+    if line.kind != GeoKind::Line || arc.kind != GeoKind::EllipseArc {
+        return Err(
+            "tangent at an endpoint of an arc of an ellipse is only defined against a line; join two curves with a coincident and a tangent along the edge instead"
+                .to_string(),
+        );
+    }
+    let l0 = line.slots_of(PointRef::A)?;
+    let l1 = line.slots_of(PointRef::B)?;
+    let sh = arc.slots_of(arc.at.unwrap_or(PointRef::A))?;
+    let e = super::metric::ellipse_now(&arc, p, scale)?;
+    let d = [param_at(p, l1[0])? - param_at(p, l0[0])?, param_at(p, l1[1])? - param_at(p, l0[1])?];
+    let len = (d[0] * d[0] + d[1] * d[1]).sqrt();
+    if degenerate(len, scale) {
+        return Err(format!("line {} has zero length; there is no direction", line.geo));
+    }
+    let (px, py) = (param_at(p, sh[0])?, param_at(p, sh[1])?);
+    let (f1, f2) = ([e.cx + e.fx, e.cy + e.fy], [e.cx - e.fx, e.cy - e.fy]);
+    let r1 = ((px - f1[0]).powi(2) + (py - f1[1]).powi(2)).sqrt();
+    let r2 = ((px - f2[0]).powi(2) + (py - f2[1]).powi(2)).sqrt();
+    if degenerate(r1, scale) || degenerate(r2, scale) {
+        return Err(format!("arc {} endpoint sits on a focus of its own ellipse", arc.geo));
+    }
+    let u1 = [(px - f1[0]) / r1, (py - f1[1]) / r1];
+    let u2 = [(px - f2[0]) / r2, (py - f2[1]) / r2];
+    let n = [u1[0] + u2[0], u1[1] + u2[1]];
+    let m = (n[0] * n[0] + n[1] * n[1]).sqrt();
+    if degenerate(m, scale) {
+        return Err(format!("arc {} has no normal at that endpoint", arc.geo));
+    }
+    let w = d[0] * n[0] + d[1] * n[1];
+    Ok(LineEllipseArcEnd { l0, l1, sh, e, d, len, u1, u2, r1, r2, n, m, w })
+}
+
+fn line_ellipse_arc_end_jacobian(
+    scale: f64,
+    v: &LineEllipseArcEnd,
+    out: &mut JacRows,
+) -> Result<(), String> {
+    // M_i = (I - u_i u_i^T) / r_i, the derivative of the unit vector u_i with respect to its point.
+    let mat = |u: [f64; 2], r: f64| [[(1.0 - u[0] * u[0]) / r, -u[0] * u[1] / r], [-u[0] * u[1] / r, (1.0 - u[1] * u[1]) / r]];
+    let (m1, m2) = (mat(v.u1, v.r1), mat(v.u2, v.r2));
+    let k = 1.0 / (v.len * v.m);
+    // de/dv for a variable that moves d by `dd` and n by `dn`.
+    let de = |dd: [f64; 2], dn: [f64; 2]| -> f64 {
+        let dw = dd[0] * v.n[0] + dd[1] * v.n[1] + v.d[0] * dn[0] + v.d[1] * dn[1];
+        let dlen = (v.d[0] * dd[0] + v.d[1] * dd[1]) / v.len;
+        let dm = (v.n[0] * dn[0] + v.n[1] * dn[1]) / v.m;
+        scale * k * (dw - v.w * (dlen / v.len + dm / v.m))
+    };
+    let col = |m: [[f64; 2]; 2], j: usize, s: f64| [s * m[0][j], s * m[1][j]];
+    let sum = [[m1[0][0] + m2[0][0], m1[0][1] + m2[0][1]], [m1[1][0] + m2[1][0], m1[1][1] + m2[1][1]]];
+    let diff = [[-m1[0][0] + m2[0][0], -m1[0][1] + m2[0][1]], [-m1[1][0] + m2[1][0], -m1[1][1] + m2[1][1]]];
+    for j in 0..2 {
+        let unit = if j == 0 { [1.0, 0.0] } else { [0.0, 1.0] };
+        // The line's two ends move d with weight -1 (start) and +1 (end); n does not depend on them.
+        out.add(0, v.l0[j], de([-unit[0], -unit[1]], [0.0, 0.0]))?;
+        out.add(0, v.l1[j], de(unit, [0.0, 0.0]))?;
+        // The shared point moves both unit vectors.
+        out.add(0, v.sh[j], de([0.0, 0.0], col(sum, j, 1.0)))?;
+        // F1 is the focus slot: F1 enters u1 with -1 and u2 (through F2 = 2c - F1) with +1.
+        out.add(0, v.e.f[j], de([0.0, 0.0], col(diff, j, 1.0)))?;
+        // The centre enters F2 with weight 2, so u2 with -2.
+        out.add(0, v.e.c[j], de([0.0, 0.0], col(m2, j, -2.0)))?;
+    }
+    Ok(())
+}
+
 fn endpoint_jacobian(
     c: &Constraint,
     p: &[f64],
@@ -705,6 +806,10 @@ fn endpoint_jacobian(
     b: super::params::Arg,
 ) -> Result<(), String> {
     let _ = c;
+    if a.kind == GeoKind::EllipseArc || b.kind == GeoKind::EllipseArc {
+        let v = read_line_ellipse_arc_end(p, scale, a, b)?;
+        return line_ellipse_arc_end_jacobian(scale, &v, out);
+    }
     if a.kind == GeoKind::Line {
         // line (end named) meets arc (end named): u = shared - c_arc.
         // D = dx*ux + dy*uy ; e = S*D/(L*r).

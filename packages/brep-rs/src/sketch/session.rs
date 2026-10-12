@@ -100,6 +100,30 @@ impl SketchSession {
                         sense,
                     }
                 }
+                "ellipseArc" => {
+                    // The ellipse as above, plus the two end points the arc runs between.
+                    let positive = |key: &str| -> Result<f64, String> {
+                        match g.get(key).and_then(|x| x.as_f64()) {
+                            Some(v) if v > 0.0 => Ok(v),
+                            _ => Err(format!("an ellipseArc row needs a positive {key} radius")),
+                        }
+                    };
+                    let angle = g.get("angle").and_then(|x| x.as_f64()).unwrap_or(0.0);
+                    let sense = match g.get("sense").and_then(|x| x.as_str()) {
+                        Some("cw") => super::params::Sense::Cw,
+                        Some("ccw") | None => super::params::Sense::Ccw,
+                        other => return Err(format!("an arc needs sense 'ccw' or 'cw', got {other:?}")),
+                    };
+                    super::params::Geo::ellipse_arc(
+                        point_of(g, "c")?,
+                        positive("major")?,
+                        positive("minor")?,
+                        angle,
+                        point_of(g, "a")?,
+                        point_of(g, "b")?,
+                        sense,
+                    )
+                }
                 "ellipse" => {
                     // centre, major radius, minor radius, and the major axis's angle from +x in degrees.
                     let positive = |key: &str| -> Result<f64, String> {
@@ -147,7 +171,8 @@ impl SketchSession {
                 let at = a.at.unwrap_or(match a.kind {
                     super::params::GeoKind::Circle
                     | super::params::GeoKind::Arc
-                    | super::params::GeoKind::Ellipse => PointRef::C,
+                    | super::params::GeoKind::Ellipse
+                    | super::params::GeoKind::EllipseArc => PointRef::C,
                     _ => PointRef::A,
                 });
                 block.lock(a.geo, at).map_err(|e| e.to_string())?;
@@ -163,7 +188,7 @@ impl SketchSession {
         // blame, and `diagnose` below hides them from the blame list.
         let mut constraints: Vec<Constraint> = Vec::new();
         for (i, g) in geoms.iter().enumerate() {
-            if g.get("k").and_then(|x| x.as_str()) == Some("arc") {
+            if matches!(g.get("k").and_then(|x| x.as_str()), Some("arc" | "ellipseArc")) {
                 let id = (i + 1) as i32;
                 for end in [PointRef::A, PointRef::B] {
                     let on = block.arg(id, Some(end)).map_err(|e| e.to_string())?;
@@ -867,6 +892,156 @@ mod ellipse_tests {
             let e = SketchSession::open(&json!({"geoms":[row.clone()],"rules":[]}).to_string()).err();
             assert!(e.is_some_and(|m| m.contains("positive")), "{row}");
         }
+    }
+
+    // ---- the arc of an ellipse (probe_s2b_ellipse_arc.py) ---------------------------------------------
+
+    fn arc_e() -> Value {
+        json!({"id":1,"k":"ellipseArc","c":[0.0,0.0],"major":10.0,"minor":5.0,"angle":0.0,"a":[10.0,0.0],"b":[0.0,5.0]})
+    }
+
+    #[test]
+    fn a1_a_lone_elliptic_arc_has_seven_degrees_of_freedom() {
+        assert_eq!(dof(vec![arc_e()], vec![]), 7);
+    }
+
+    #[test]
+    fn a2_the_rules_that_apply_remove_what_freecad_removes() {
+        let pt = || json!({"id":2,"k":"point","p":[7.0, 3.6]});
+        let line = |a: [f64; 2], b: [f64; 2]| json!({"id":2,"k":"line","a":a,"b":b});
+        // coincident of an end or the centre with a point: 9 -> 7
+        for end in ["a", "b", "c"] {
+            let r = vec![json!({"k":"coincident","a":2,"aEnd":"a","b":1,"bEnd":end})];
+            assert_eq!(dof(vec![arc_e(), pt()], r), 7, "end {end}");
+        }
+        // coincident arc end to a line end: 11 -> 9
+        let l = line([0.0, 5.0], [-10.0, 5.0]);
+        assert_eq!(dof(vec![arc_e(), l.clone()], vec![]), 11);
+        assert_eq!(dof(vec![arc_e(), l.clone()], vec![json!({"k":"coincident","a":2,"aEnd":"a","b":1,"bEnd":"b"})]), 9);
+        // a point on the ellipse: 9 -> 8
+        assert_eq!(dof(vec![arc_e(), pt()], vec![json!({"k":"pointOnObject","a":2,"aEnd":"a","b":1})]), 8);
+        // tangent along the edge, line to arc: 11 -> 10
+        let far = line([-15.0, 7.0], [15.0, 7.0]);
+        assert_eq!(dof(vec![arc_e(), far.clone()], vec![json!({"k":"tangent","a":2,"b":1,"side":1.0})]), 10 - 0);
+        // joined at an end and tangent there (a coincident plus the endpoint tangent): 11 -> 8
+        let r = vec![
+            json!({"k":"coincident","a":2,"aEnd":"a","b":1,"bEnd":"b"}),
+            json!({"k":"tangent","a":2,"aEnd":"a","b":1,"bEnd":"b"}),
+        ];
+        assert_eq!(dof(vec![arc_e(), l], r), 8);
+        // equal with an ellipse or another elliptic arc removes both radii: 12 -> 10, 14 -> 12
+        let e2 = ellipse(2, [30.0, 0.0], 8.0, 3.0, 10.0);
+        assert_eq!(dof(vec![arc_e(), e2.clone()], vec![]), 12);
+        assert_eq!(dof(vec![arc_e(), e2], vec![json!({"k":"equal","a":1,"b":2})]), 10);
+        let a2 = json!({"id":2,"k":"ellipseArc","c":[30.0,0.0],"major":8.0,"minor":3.0,"angle":0.0,"a":[38.0,0.0],"b":[30.0,3.0]});
+        assert_eq!(dof(vec![arc_e(), a2.clone()], vec![]), 14);
+        assert_eq!(dof(vec![arc_e(), a2], vec![json!({"k":"equal","a":1,"b":2})]), 12);
+        // distance between the two ends: 7 -> 6
+        assert_eq!(
+            dof(vec![arc_e()], vec![json!({"k":"distance","a":1,"aEnd":"a","b":1,"bEnd":"b","value":9.0})]),
+            6
+        );
+    }
+
+    #[test]
+    fn a3_the_axis_dimensions_size_the_arc() {
+        // FreeCAD: 24 and 8 on the axis lines gave major 12, minor 4 and DoF 7 -> 5.
+        let mut s = open(
+            vec![arc_e()],
+            vec![json!({"k":"majorRadius","a":1,"value":12.0}), json!({"k":"minorRadius","a":1,"value":4.0})],
+        );
+        let (_p, st) = s.solve(&[], None).unwrap();
+        assert!(st.converged, "{st:?}");
+        let d = s.diagnose().unwrap();
+        assert_eq!(d.dof, 5, "{d:?}");
+        let (_c, _f, b, a) = solved(&s, 1);
+        assert!((a - 12.0).abs() < 1e-6 && (b - 4.0).abs() < 1e-6, "major {a}, minor {b}");
+    }
+
+    #[test]
+    fn a4_a_point_outside_the_sweep_is_pulled_onto_the_whole_ellipse() {
+        // FreeCAD's pointOnObject takes the whole ellipse, not the arc: the arc re-fits so the point lies
+        // on the full curve, as for a circular arc.
+        let mut s = open(
+            vec![arc_e(), json!({"id":2,"k":"point","p":[-6.0, -4.5]})],
+            vec![
+                json!({"k":"lock","a":1}),
+                json!({"k":"majorRadius","a":1,"value":10.0}),
+                json!({"k":"minorRadius","a":1,"value":5.0}),
+                json!({"k":"pointOnObject","a":2,"aEnd":"a","b":1}),
+            ],
+        );
+        let (_p, st) = s.solve(&[], None).unwrap();
+        assert!(st.converged, "{st:?}");
+        let [x, y] = s.block.arg(2, Some(PointRef::A)).unwrap().point_slots().unwrap();
+        let (c, f, _b, a) = solved(&s, 1);
+        let f2 = [2.0 * c[0] - f[0], 2.0 * c[1] - f[1]];
+        let (px, py) = (s.params[x], s.params[y]);
+        let sum = ((px - f[0]).powi(2) + (py - f[1]).powi(2)).sqrt() + ((px - f2[0]).powi(2) + (py - f2[1]).powi(2)).sqrt();
+        assert!((sum - 2.0 * a).abs() < 1e-6, "{sum} vs {}", 2.0 * a);
+    }
+
+    #[test]
+    fn a5_a_line_joined_tangent_to_an_arc_end_is_tangent_there() {
+        // The ellipse is fixed in size and place but may turn, and the arc's ends slide on it, so the
+        // tangent point is not pinned; what the two rules promise is that the line ends ON the arc's start
+        // and runs perpendicular to the ellipse's normal there (the sum of the unit focal vectors).
+        let mut s = open(
+            vec![arc_e(), json!({"id":2,"k":"line","a":[10.0,-9.0],"b":[11.0,0.5]})],
+            vec![
+                json!({"k":"lock","a":1}),
+                json!({"k":"majorRadius","a":1,"value":10.0}),
+                json!({"k":"minorRadius","a":1,"value":5.0}),
+                json!({"k":"coincident","a":2,"aEnd":"b","b":1,"bEnd":"a"}),
+                json!({"k":"tangent","a":2,"aEnd":"b","b":1,"bEnd":"a"}),
+            ],
+        );
+        let (_p, st) = s.solve(&[], None).unwrap();
+        assert!(st.converged, "{st:?}");
+        let pt = |id: i32, at: PointRef| {
+            let [x, y] = s.block.arg(id, Some(at)).unwrap().point_slots().unwrap();
+            [s.params[x], s.params[y]]
+        };
+        let (l0, l1, start) = (pt(2, PointRef::A), pt(2, PointRef::B), pt(1, PointRef::A));
+        assert!((l1[0] - start[0]).abs() < 1e-6 && (l1[1] - start[1]).abs() < 1e-6, "{l1:?} vs {start:?}");
+        let (c, f, _b, _a) = solved(&s, 1);
+        let f2 = [2.0 * c[0] - f[0], 2.0 * c[1] - f[1]];
+        let unit = |from: [f64; 2]| {
+            let (dx, dy) = (start[0] - from[0], start[1] - from[1]);
+            let r = (dx * dx + dy * dy).sqrt();
+            [dx / r, dy / r]
+        };
+        let (u1, u2) = (unit(f), unit(f2));
+        let n = [u1[0] + u2[0], u1[1] + u2[1]];
+        let d = [l1[0] - l0[0], l1[1] - l0[1]];
+        let cos = (d[0] * n[0] + d[1] * n[1]) / ((d[0].hypot(d[1])) * n[0].hypot(n[1]));
+        assert!(cos.abs() < 1e-6, "the line is not perpendicular to the normal: cos {cos}");
+    }
+
+    #[test]
+    fn a6_endpoint_tangent_to_other_elliptic_things_refuses_in_a_sentence() {
+        let a2 = json!({"id":2,"k":"ellipseArc","c":[30.0,0.0],"major":8.0,"minor":3.0,"angle":0.0,"a":[38.0,0.0],"b":[30.0,3.0]});
+        let mut s = open(
+            vec![arc_e(), a2],
+            vec![json!({"k":"tangent","a":1,"aEnd":"b","b":2,"bEnd":"a"})],
+        );
+        let e = s.solve(&[], None).err().expect("must refuse");
+        assert!(e.contains("only defined against a line"), "{e}");
+    }
+
+    #[test]
+    fn a7_an_elliptic_arc_refuses_as_a_profile_unless_it_is_construction() {
+        let e = open(vec![arc_e()], vec![]).profile().err().expect("refuses");
+        assert!(format!("{e:?}").contains("arc of an ellipse"), "{e:?}");
+    }
+
+    #[test]
+    fn a8_a_bad_elliptic_arc_row_refuses_at_open() {
+        let row = json!({"id":1,"k":"ellipseArc","c":[0.0,0.0],"major":10.0,"minor":5.0,"a":[10.0,0.0],"b":[0.0,5.0],"sense":"sideways"});
+        let e = SketchSession::open(&json!({"geoms":[row],"rules":[]}).to_string()).err();
+        assert!(e.is_some_and(|m| m.contains("sense")));
+        let row = json!({"id":1,"k":"ellipseArc","c":[0.0,0.0],"major":10.0,"minor":5.0,"a":[10.0,0.0]});
+        assert!(SketchSession::open(&json!({"geoms":[row],"rules":[]}).to_string()).is_err(), "needs both ends");
     }
 }
 

@@ -581,9 +581,10 @@ fn read_curves(
             // An ellipse is solved and constrained like any other geometry, but a pull needs an elliptic
             // wall in the kernel (docs/specs/SPEC-sketch-ellipse.md, S3). Until that exists it refuses in a
             // sentence rather than being dropped from the outline, which would build a wrong part.
-            GeoKind::Ellipse => {
+            GeoKind::Ellipse | GeoKind::EllipseArc => {
                 return Err(Refusal::say(format!(
-                    "geometry {id} is an ellipse; brep-rs can draw and constrain an ellipse but cannot pull one into a solid yet -- make it construction geometry, or remove it"
+                    "geometry {id} is an {}; brep-rs can draw and constrain it but cannot pull it into a solid yet -- make it construction geometry, or remove it",
+                    if kind == GeoKind::Ellipse { "ellipse" } else { "arc of an ellipse" }
                 )));
             }
         }

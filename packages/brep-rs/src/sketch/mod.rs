@@ -377,6 +377,9 @@ impl Constraint {
                     | (GeoKind::Arc, PointRef::B)
                     | (GeoKind::Arc, PointRef::C) => true,
                     (GeoKind::Ellipse, PointRef::A) | (GeoKind::Ellipse, PointRef::C) => true,
+                    (GeoKind::EllipseArc, PointRef::A)
+                    | (GeoKind::EllipseArc, PointRef::B)
+                    | (GeoKind::EllipseArc, PointRef::C) => true,
                     _ => false,
                 };
                 if !ok {
@@ -536,7 +539,9 @@ impl Constraint {
             ConstraintKind::Tangent => 1,
             // Two ellipses are equal in BOTH radii (FreeCAD: DoF 10 -> 8), so that form is two rows.
             ConstraintKind::Equal => {
-                let ellipse = |i: usize| matches!(self.args.get(i), Some(Some(a)) if a.kind == GeoKind::Ellipse);
+                let ellipse = |i: usize| {
+                    matches!(self.args.get(i), Some(Some(a)) if matches!(a.kind, GeoKind::Ellipse | GeoKind::EllipseArc))
+                };
                 if ellipse(0) && ellipse(1) {
                     2
                 } else {

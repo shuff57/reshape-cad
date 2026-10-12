@@ -72,7 +72,7 @@ pub fn ellipse_now(a: &Arg, p: &[f64], scale: f64) -> Result<EllipseNow, String>
 /// The sentence for a circle-only rule handed something else.
 fn circle_only(rule: &str, kind: GeoKind) -> String {
     match kind {
-        GeoKind::Ellipse => format!(
+        GeoKind::Ellipse | GeoKind::EllipseArc => format!(
             "{rule} needs a circle or an arc; an ellipse has two radii, so dimension it with majorRadius or minorRadius"
         ),
         other => format!("{rule} needs a circle or an arc, not a {}", other.label()),
@@ -281,7 +281,7 @@ pub fn equal_residual(
             let r2 = b.radius_slot()?;
             set_row(out, 0, param_at(p, r1)? - param_at(p, r2)?)
         }
-        (GeoKind::Ellipse, GeoKind::Ellipse) => {
+        (GeoKind::Ellipse | GeoKind::EllipseArc, GeoKind::Ellipse | GeoKind::EllipseArc) => {
             // Both radii (FreeCAD: two ellipses equal removes 2 degrees of freedom).
             let (e1, e2) = (ellipse_now(&a, p, scale)?, ellipse_now(&b, p, scale)?);
             set_row(out, 0, e1.major - e2.major)?;
@@ -334,7 +334,7 @@ pub fn equal_jacobian(
             out.add(0, a.radius_slot()?, 1.0)?;
             out.add(0, b.radius_slot()?, -1.0)
         }
-        (GeoKind::Ellipse, GeoKind::Ellipse) => {
+        (GeoKind::Ellipse | GeoKind::EllipseArc, GeoKind::Ellipse | GeoKind::EllipseArc) => {
             let (e1, e2) = (ellipse_now(&a, p, scale)?, ellipse_now(&b, p, scale)?);
             // d(major)/d(first focus) = f/major, d(major)/d(centre) = -f/major, d(major)/d(b) = b/major.
             for (sign, e) in [(1.0, &e1), (-1.0, &e2)] {
@@ -359,7 +359,7 @@ pub fn equal_jacobian(
 
 fn ellipse_of(c: &Constraint, rule: &str) -> Result<Arg, String> {
     let a = c.arg(0)?;
-    if a.kind != GeoKind::Ellipse {
+    if !matches!(a.kind, GeoKind::Ellipse | GeoKind::EllipseArc) {
         return Err(format!("{rule} needs an ellipse, not a {}; use radius for a circle or an arc", a.kind.label()));
     }
     Ok(a)

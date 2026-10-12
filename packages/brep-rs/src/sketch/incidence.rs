@@ -165,7 +165,7 @@ pub fn point_on_object_residual(
             }
             set_row(out, 0, d - param_at(p, r_slot)?)
         }
-        GeoKind::Ellipse => {
+        GeoKind::Ellipse | GeoKind::EllipseArc => {
             // Sum of the two focal distances equals the major diameter: |P-F1| + |P-F2| - 2a, a length.
             let e = super::metric::ellipse_now(&t, p, scale)?;
             let (f1x, f1y) = (e.cx + e.fx, e.cy + e.fy);
@@ -250,7 +250,7 @@ pub fn point_on_object_jacobian(
             out.add(0, cy, -ry * inv)?;
             out.add(0, r_slot, -1.0)
         }
-        GeoKind::Ellipse => {
+        GeoKind::Ellipse | GeoKind::EllipseArc => {
             let e = super::metric::ellipse_now(&t, p, scale)?;
             let (f1x, f1y) = (e.cx + e.fx, e.cy + e.fy);
             let (f2x, f2y) = (e.cx - e.fx, e.cy - e.fy);
