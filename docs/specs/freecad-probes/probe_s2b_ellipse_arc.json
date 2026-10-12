@@ -1,0 +1,836 @@
+{
+ "freecad": [
+  "26",
+  "3",
+  "0",
+  "20261008 (Git shallow)"
+ ],
+ "cases": {
+  "lone": {
+   "info": {
+    "solve": 0,
+    "dof": 7,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": []
+   },
+   "geo": {
+    "type": "ArcOfEllipse",
+    "MajorRadius": 10.0,
+    "MinorRadius": 5.0,
+    "AngleXU": -0.0,
+    "FirstParameter": 0.0,
+    "LastParameter": 1.5707963267948966,
+    "Center": [
+     0.0,
+     0.0
+    ],
+    "StartPoint": [
+     10.0,
+     0.0
+    ],
+    "EndPoint": [
+     0.0,
+     5.0
+    ]
+   }
+  },
+  "coincident_start_to_point": {
+   "before": {
+    "solve": 0,
+    "dof": 9,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": []
+   },
+   "accepted": true,
+   "after": {
+    "solve": 0,
+    "dof": 7,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": []
+   },
+   "geometry": [
+    {
+     "type": "ArcOfEllipse",
+     "MajorRadius": 9.965821899740646,
+     "MinorRadius": 5.012725324898926,
+     "AngleXU": 0.011237371584944485,
+     "FirstParameter": 0.6504152145791243,
+     "LastParameter": 1.5642945816868263,
+     "Center": [
+      -0.008782959,
+      -0.013269108
+     ],
+     "StartPoint": [
+      7.887732754,
+      3.11095226
+     ],
+     "EndPoint": [
+      -0.000319754,
+      4.999761885
+     ]
+    },
+    {
+     "type": "Point"
+    }
+   ]
+  },
+  "coincident_end_to_point": {
+   "before": {
+    "solve": 0,
+    "dof": 9,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": []
+   },
+   "accepted": true,
+   "after": {
+    "solve": 0,
+    "dof": 7,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": []
+   },
+   "geometry": [
+    {
+     "type": "ArcOfEllipse",
+     "MajorRadius": 9.97004701305738,
+     "MinorRadius": 5.003646784215544,
+     "AngleXU": -0.0061145938670158426,
+     "FirstParameter": 0.006793216179762985,
+     "LastParameter": 0.807795653351867,
+     "Center": [
+      0.04154644,
+      0.026871853
+     ],
+     "StartPoint": [
+      10.011384867,
+      -9.9191e-05
+     ],
+     "EndPoint": [
+      6.953763756,
+      3.601136914
+     ]
+    },
+    {
+     "type": "Point"
+    }
+   ]
+  },
+  "coincident_center_to_point": {
+   "before": {
+    "solve": 0,
+    "dof": 9,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": []
+   },
+   "accepted": true,
+   "after": {
+    "solve": 0,
+    "dof": 7,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": []
+   },
+   "geometry": [
+    {
+     "type": "ArcOfEllipse",
+     "MajorRadius": 10.0,
+     "MinorRadius": 5.0,
+     "AngleXU": -0.0,
+     "FirstParameter": 0.0,
+     "LastParameter": 1.5707963267948966,
+     "Center": [
+      0.0,
+      0.0
+     ],
+     "StartPoint": [
+      10.0,
+      0.0
+     ],
+     "EndPoint": [
+      0.0,
+      5.0
+     ]
+    },
+    {
+     "type": "Point"
+    }
+   ]
+  },
+  "coincident_end_to_line_end": {
+   "before": {
+    "solve": 0,
+    "dof": 11,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": []
+   },
+   "accepted": true,
+   "after": {
+    "solve": 0,
+    "dof": 9,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": []
+   },
+   "geometry": [
+    {
+     "type": "ArcOfEllipse",
+     "MajorRadius": 10.0,
+     "MinorRadius": 5.0,
+     "AngleXU": -0.0,
+     "FirstParameter": 0.0,
+     "LastParameter": 1.5707963267948966,
+     "Center": [
+      0.0,
+      0.0
+     ],
+     "StartPoint": [
+      10.0,
+      0.0
+     ],
+     "EndPoint": [
+      0.0,
+      5.0
+     ]
+    },
+    {
+     "type": "LineSegment",
+     "FirstParameter": 0.0,
+     "LastParameter": 10.0,
+     "StartPoint": [
+      0.0,
+      5.0
+     ],
+     "EndPoint": [
+      -10.0,
+      5.0
+     ]
+    }
+   ]
+  },
+  "pointOnObject_on_sweep": {
+   "before": {
+    "solve": 0,
+    "dof": 9,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": []
+   },
+   "accepted": true,
+   "after": {
+    "solve": 0,
+    "dof": 8,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": []
+   },
+   "geometry": [
+    {
+     "type": "ArcOfEllipse",
+     "MajorRadius": 10.0,
+     "MinorRadius": 5.0,
+     "AngleXU": -0.0,
+     "FirstParameter": 0.0,
+     "LastParameter": 1.5707963267948966,
+     "Center": [
+      0.0,
+      0.0
+     ],
+     "StartPoint": [
+      10.0,
+      0.0
+     ],
+     "EndPoint": [
+      0.0,
+      5.0
+     ]
+    },
+    {
+     "type": "Point"
+    }
+   ]
+  },
+  "pointOnObject_outside_sweep": {
+   "before": {
+    "solve": 0,
+    "dof": 9,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": []
+   },
+   "accepted": true,
+   "after": {
+    "solve": 0,
+    "dof": 8,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": []
+   },
+   "geometry": [
+    {
+     "type": "ArcOfEllipse",
+     "MajorRadius": 10.122088381398244,
+     "MinorRadius": 5.171559725090283,
+     "AngleXU": 0.02245849729538429,
+     "FirstParameter": 6.272678250033565,
+     "LastParameter": 7.839715872013621,
+     "Center": [
+      -0.028234113,
+      -0.172972067
+     ],
+     "StartPoint": [
+      10.091963303,
+      -0.0
+     ],
+     "EndPoint": [
+      0.0,
+      5.0
+     ]
+    },
+    {
+     "type": "Point"
+    }
+   ]
+  },
+  "tangent_line_arc_edge": {
+   "before": {
+    "solve": 0,
+    "dof": 11,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": []
+   },
+   "accepted": true,
+   "after": {
+    "solve": 0,
+    "dof": 10,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": []
+   },
+   "geometry": [
+    {
+     "type": "ArcOfEllipse",
+     "MajorRadius": 10.2828369098409,
+     "MinorRadius": 5.231299239736262,
+     "AngleXU": -0.1616210822533243,
+     "FirstParameter": 0.04445324149657531,
+     "LastParameter": 1.6494861341131462,
+     "Center": [
+      -0.041185691,
+      1.422378128
+     ],
+     "StartPoint": [
+      10.135025497,
+      -0.001242622
+     ],
+     "EndPoint": [
+      0.000236125,
+      6.699598082
+     ]
+    },
+    {
+     "type": "LineSegment",
+     "FirstParameter": 0.0,
+     "LastParameter": 30.000000042374307,
+     "StartPoint": [
+      -14.999999244,
+      6.843241138
+     ],
+     "EndPoint": [
+      15.000000717,
+      6.845450627
+     ]
+    }
+   ]
+  },
+  "tangent_endpoint_line_end_arc_end": {
+   "before": {
+    "solve": 0,
+    "dof": 11,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": []
+   },
+   "accepted": true,
+   "after": {
+    "solve": 0,
+    "dof": 8,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": []
+   },
+   "geometry": [
+    {
+     "type": "ArcOfEllipse",
+     "MajorRadius": 10.0,
+     "MinorRadius": 5.0,
+     "AngleXU": -0.0,
+     "FirstParameter": 0.0,
+     "LastParameter": 1.5707963267948966,
+     "Center": [
+      0.0,
+      0.0
+     ],
+     "StartPoint": [
+      10.0,
+      0.0
+     ],
+     "EndPoint": [
+      0.0,
+      5.0
+     ]
+    },
+    {
+     "type": "LineSegment",
+     "FirstParameter": 0.0,
+     "LastParameter": 10.0,
+     "StartPoint": [
+      0.0,
+      5.0
+     ],
+     "EndPoint": [
+      -10.0,
+      5.0
+     ]
+    }
+   ]
+  },
+  "tangent_arc_ellipse": {
+   "before": {
+    "solve": 0,
+    "dof": 12,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": []
+   },
+   "accepted": true,
+   "after": {
+    "solve": -5,
+    "dof": 12,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [
+     1
+    ]
+   },
+   "geometry": [
+    {
+     "type": "Ellipse",
+     "MajorRadius": 10.000000000000002,
+     "MinorRadius": 3.0,
+     "AngleXU": -0.0,
+     "FirstParameter": 0.0,
+     "LastParameter": 6.283185307179586,
+     "Center": [
+      30.0,
+      0.0
+     ]
+    },
+    {
+     "type": "ArcOfEllipse",
+     "MajorRadius": 10.0,
+     "MinorRadius": 5.0,
+     "AngleXU": -0.0,
+     "FirstParameter": 0.0,
+     "LastParameter": 1.5707963267948966,
+     "Center": [
+      0.0,
+      0.0
+     ],
+     "StartPoint": [
+      10.0,
+      0.0
+     ],
+     "EndPoint": [
+      0.0,
+      5.0
+     ]
+    }
+   ]
+  },
+  "tangent_arc_arc_edge": {
+   "before": {
+    "solve": 0,
+    "dof": 14,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": []
+   },
+   "accepted": true,
+   "after": {
+    "solve": -5,
+    "dof": 14,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [
+     1
+    ]
+   },
+   "geometry": [
+    {
+     "type": "ArcOfEllipse",
+     "MajorRadius": 10.0,
+     "MinorRadius": 5.0,
+     "AngleXU": -0.0,
+     "FirstParameter": 0.0,
+     "LastParameter": 1.5707963267948966,
+     "Center": [
+      0.0,
+      0.0
+     ],
+     "StartPoint": [
+      10.0,
+      0.0
+     ],
+     "EndPoint": [
+      0.0,
+      5.0
+     ]
+    },
+    {
+     "type": "ArcOfEllipse",
+     "MajorRadius": 8.0,
+     "MinorRadius": 3.0,
+     "AngleXU": -0.0,
+     "FirstParameter": 0.0,
+     "LastParameter": 1.0,
+     "Center": [
+      30.0,
+      0.0
+     ],
+     "StartPoint": [
+      38.0,
+      0.0
+     ],
+     "EndPoint": [
+      34.322418447,
+      2.524412954
+     ]
+    }
+   ]
+  },
+  "equal_arc_ellipse": {
+   "before": {
+    "solve": 0,
+    "dof": 12,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": []
+   },
+   "accepted": true,
+   "after": {
+    "solve": 0,
+    "dof": 10,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": []
+   },
+   "geometry": [
+    {
+     "type": "Ellipse",
+     "MajorRadius": 9.821625081883534,
+     "MinorRadius": 3.677876777368784,
+     "AngleXU": -0.0,
+     "FirstParameter": 0.0,
+     "LastParameter": 6.283185307179586,
+     "Center": [
+      30.295636187,
+      0.0
+     ]
+    },
+    {
+     "type": "ArcOfEllipse",
+     "MajorRadius": 9.821625081883612,
+     "MinorRadius": 3.677876777368784,
+     "AngleXU": -0.10289306344333714,
+     "FirstParameter": 0.020478755857401942,
+     "LastParameter": 1.5982373097281846,
+     "Center": [
+      -0.117824533,
+      0.93257532
+     ],
+     "StartPoint": [
+      9.657542712,
+      -0.00109327
+     ],
+     "EndPoint": [
+      -0.00826211,
+      4.617301984
+     ]
+    }
+   ]
+  },
+  "equal_arc_arc": {
+   "before": {
+    "solve": 0,
+    "dof": 14,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": []
+   },
+   "accepted": true,
+   "after": {
+    "solve": 0,
+    "dof": 12,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": []
+   },
+   "geometry": [
+    {
+     "type": "ArcOfEllipse",
+     "MajorRadius": 8.942223213649525,
+     "MinorRadius": 4.762390401035638,
+     "AngleXU": -0.0297670133738521,
+     "FirstParameter": 0.008581657593061351,
+     "LastParameter": 1.652964711072917,
+     "Center": [
+      0.592577127,
+      0.225299651
+     ],
+     "StartPoint": [
+      9.531726125,
+      1.6078e-05
+     ],
+     "EndPoint": [
+      0.00022375,
+      4.991363491
+     ]
+    },
+    {
+     "type": "ArcOfEllipse",
+     "MajorRadius": 8.942223213614277,
+     "MinorRadius": 4.762390401035638,
+     "AngleXU": 0.0023668116974909833,
+     "FirstParameter": 0.018109270557330345,
+     "LastParameter": 1.0334625932613484,
+     "Center": [
+      29.826965541,
+      -0.109852945
+     ],
+     "StartPoint": [
+      38.76749336,
+      -0.002453416
+     ],
+     "EndPoint": [
+      34.394322186,
+      3.992226068
+     ]
+    }
+   ]
+  },
+  "radius_arc": {
+   "before": {
+    "solve": 0,
+    "dof": 7,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": []
+   },
+   "accepted": true,
+   "after": {
+    "solve": -5,
+    "dof": 7,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [
+     1
+    ]
+   },
+   "geometry": [
+    {
+     "type": "ArcOfEllipse",
+     "MajorRadius": 10.0,
+     "MinorRadius": 5.0,
+     "AngleXU": -0.0,
+     "FirstParameter": 0.0,
+     "LastParameter": 1.5707963267948966,
+     "Center": [
+      0.0,
+      0.0
+     ],
+     "StartPoint": [
+      10.0,
+      0.0
+     ],
+     "EndPoint": [
+      0.0,
+      5.0
+     ]
+    }
+   ]
+  },
+  "horizontal_arc": {
+   "before": {
+    "solve": 0,
+    "dof": 7,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": []
+   },
+   "accepted": true,
+   "after": {
+    "solve": -5,
+    "dof": 7,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [
+     1
+    ]
+   },
+   "geometry": [
+    {
+     "type": "ArcOfEllipse",
+     "MajorRadius": 10.0,
+     "MinorRadius": 5.0,
+     "AngleXU": -0.0,
+     "FirstParameter": 0.0,
+     "LastParameter": 1.5707963267948966,
+     "Center": [
+      0.0,
+      0.0
+     ],
+     "StartPoint": [
+      10.0,
+      0.0
+     ],
+     "EndPoint": [
+      0.0,
+      5.0
+     ]
+    }
+   ]
+  },
+  "distance_start_end": {
+   "before": {
+    "solve": 0,
+    "dof": 7,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": []
+   },
+   "accepted": true,
+   "after": {
+    "solve": 0,
+    "dof": 6,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": []
+   },
+   "geometry": [
+    {
+     "type": "ArcOfEllipse",
+     "MajorRadius": 9.455522946691717,
+     "MinorRadius": 3.8186381731258003,
+     "AngleXU": 0.0005100757421398785,
+     "FirstParameter": 0.03309029530209593,
+     "LastParameter": 1.4405426969574973,
+     "Center": [
+      0.002758713,
+      -0.002433597
+     ],
+     "StartPoint": [
+      9.453039715,
+      0.128723585
+     ],
+     "EndPoint": [
+      1.228963795,
+      3.784482777
+     ]
+    }
+   ]
+  },
+  "block_arc": {
+   "before": {
+    "solve": 0,
+    "dof": 7,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": []
+   },
+   "accepted": true,
+   "after": {
+    "solve": 0,
+    "dof": 0,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": []
+   },
+   "geometry": [
+    {
+     "type": "ArcOfEllipse",
+     "MajorRadius": 10.0,
+     "MinorRadius": 5.0,
+     "AngleXU": -0.0,
+     "FirstParameter": 0.0,
+     "LastParameter": 1.5707963267948966,
+     "Center": [
+      0.0,
+      0.0
+     ],
+     "StartPoint": [
+      10.0,
+      0.0
+     ],
+     "EndPoint": [
+      0.0,
+      5.0
+     ]
+    }
+   ]
+  },
+  "axis_dims": {
+   "count": 5,
+   "lines": [
+    1,
+    2
+   ],
+   "info": {
+    "solve": 0,
+    "dof": 7,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": []
+   },
+   "after": {
+    "solve": 0,
+    "dof": 5,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": []
+   },
+   "arc": {
+    "type": "ArcOfEllipse",
+    "MajorRadius": 12.0,
+    "MinorRadius": 4.000000000000302,
+    "AngleXU": -0.00030795279187161213,
+    "FirstParameter": 0.00010913328838964406,
+    "LastParameter": 1.7380996753386757,
+    "Center": [
+     2.000087479,
+     0.002872512
+    ],
+    "StartPoint": [
+     14.000086973,
+     -0.000386389
+    ],
+    "EndPoint": [
+     0.003014683,
+     3.947637337
+    ]
+   }
+  },
+  "pad_half_ellipse": {
+   "valid": true,
+   "volume": 314.15926535897927,
+   "expected": 314.1592653589793,
+   "faces": 4
+  }
+ }
+}

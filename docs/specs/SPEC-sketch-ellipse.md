@@ -1,6 +1,7 @@
 # SPEC: the ellipse in the sketcher (FreeCAD Sketcher S2, and what S3 needs)
 
-Status: IMPLEMENTED in `41f4bac` (sketcher half, option B). Not implemented: S3, the ellipse as a solid.
+Status: IMPLEMENTED in `41f4bac` (the ellipse) and `92acd93` (the arc of an ellipse), sketcher half, option B.
+Not implemented: S3, the ellipse as a solid.
 Source: `freecad-probes/probe_s2_ellipse.py` (output `probe_s2_ellipse.json`), FreeCAD 26.3.0 RC1 headless.
 Clean-room: measured outputs only.
 
@@ -57,8 +58,27 @@ ellipse refuse in a sentence that names them, where FreeCAD marks them malformed
 - A sketch with an ellipse that is not construction geometry refuses as a PROFILE until S3.
 - Verified against FreeCAD's DoF facts E1, E3, E6 (tests `ellipse_tests`) and against central differences.
 
+## The arc of an ellipse (`probe_s2b_ellipse_arc.py`)
+
+| # | Fact |
+|---|---|
+| A1 | DoF 7 on its own. Points: 1 = start, 2 = end, 3 = centre. Internal geometry adds the same four objects. |
+| A2 | coincident of an end or the centre with a point: 9 -> 7. Of an end with a line end: 11 -> 9. |
+| A3 | pointOnObject: 9 -> 8, and a point OUTSIDE the sweep re-fits the arc onto the whole ellipse (same as a circular arc). |
+| A4 | tangent line to arc along the edge: 11 -> 10. Line end to arc end (coincident + tangent): 11 -> 8. |
+| A5 | tangent arc-to-ellipse and arc-to-arc along the edge: MALFORMED (-5). |
+| A6 | equal arc-to-ellipse 12 -> 10, arc-to-arc 14 -> 12 (both radii). |
+| A7 | radius and horizontal on the arc: MALFORMED. distance start-to-end: 7 -> 6. |
+| A8 | Axis lines dimensioned 24 and 8: major 12, minor 4, DoF 7 -> 5. |
+| A9 | A Pad of a half ellipse closed by a line is valid at pi*a*b*h/2 = 314.159, 4 faces. |
+
+brep-rs: `GeoKind::EllipseArc`, nine slots `cx cy fx fy b ax ay bx by`, two internal on-curve rows. Point refs
+`c` centre, `a` start, `b` end (the focus is not addressable). Endpoint tangency is defined against a line
+only, as `S*(d.n)/(|d||n|)` with `n` the sum of the unit focal vectors at the shared end; any other endpoint
+tangency refuses in a sentence. Rows: `{"id","k":"ellipseArc","c","major","minor","angle"?,"a":[x,y],"b":[x,y],"sense"?}`.
+
 ## Not done
-- Arc of an ellipse (E7): two more slots and on-curve rows, and the end-point parameterisation.
+- Endpoint tangency between an elliptic arc and a circular arc or another elliptic arc.
 - The ellipse as a solid (S3, below), and the ellipse in `packages/script` / the studio.
 
 ## What S3 (an ellipse as a solid) needs that does not exist
