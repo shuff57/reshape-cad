@@ -7,11 +7,12 @@
 //
 //   --no-ref        reuse refs/*.json instead of re-running FreeCAD
 //   --only=a,b      only variants whose id contains one of these substrings
-//   --strict        exit 1 unless every variant is MATCH (default: exit 1 only for unclassified mismatches or errors)
+//   --strict        exit 1 unless every variant is MATCH or AGREED-REFUSAL (default: exit 1 only for unclassified mismatches or errors)
 //
 // Statuses
 //   MATCH     built; volume, bbox, faces, centre of mass agree with FreeCAD within tolerance (sketch: DoF, bucket, sets, bbox)
 //   MISMATCH  built, a check is outside tolerance
+//   AGREED-REFUSAL  ours refuses in a sentence and the reference is no answer (FreeCAD refuses too, or builds a documented quirk); not a failure
 //   REFUSED   the script layer or the kernel refused in a sentence (recorded); nothing is compared
 //   REF-FAIL  FreeCAD could not build the reference
 //   ERROR     our side crashed (a refusal without a sentence also lands here: it is a bug by itself)
@@ -161,6 +162,10 @@ for (const v of list) {
     rec = v.kind === 'sketch' ? compareSketch(v, ref, await oursSketch(v)) : compareSolid(v, ref, v.patch ? await measurePatched(v.ours, v.patch.kind, v.patch.set) : await measureScript(v.ours));
   } catch (e) { rec = { id: v.id, piece: v.piece, desc: v.desc, status: 'ERROR', note: String(e && e.stack || e).split('\n').slice(0, 3).join(' | ') }; }
   const c = classes[v.id];
+  // AGREED-REFUSAL: ours refuses in a sentence AND the reference gives no usable answer (FreeCAD refuses too, or its answer is a
+  // documented quirk). Counted separately, never as a failure, never hidden. `agreedBasis` says which of the two it is.
+  if (rec.status === 'REFUSED' && rec.bothRefuse) { rec.status = 'AGREED-REFUSAL'; rec.agreedBasis = 'freecad-refuses'; }
+  else if (rec.status === 'REFUSED' && c && c.agreed) { rec.status = 'AGREED-REFUSAL'; rec.agreedBasis = c.agreed; }
   if (rec.status !== 'MATCH') {
     if (c) rec.classification = c; else if (!rec.bothRefuse) rec.classification = null; // both sides refusing is agreement, not a mismatch
   } else if (c) rec.staleClassification = c; // a classified variant that now matches: the entry should be deleted
@@ -170,16 +175,16 @@ for (const v of list) {
 console.log('');
 
 const pad = (s, n) => String(s).padEnd(n);
-console.log(`${pad('variant', 46)}${pad('status', 10)}${pad('class', 20)}detail`);
+console.log(`${pad('variant', 46)}${pad('status', 16)}${pad('class', 46)}detail`);
 console.log('-'.repeat(130));
 for (const p of pieces) {
   const bad = (p.checks ?? []).filter((c) => !c.pass).map((c) => `${c.name.split(' (')[0]}: ref ${JSON.stringify(c.ref)} vs ours ${JSON.stringify(c.ours)}`).join('; ');
-  const detail = p.status === 'MATCH' ? `${p.checks.length} checks ok` : p.status === 'REFUSED' ? `[${p.layer}] ${p.sentence}` : p.status === 'MISMATCH' ? bad : p.note ?? '';
-  console.log(`${pad(p.id, 46)}${pad(p.status, 10)}${pad(p.status === 'MATCH' ? '' : p.bothRefuse ? 'agrees (both refuse)' : p.classification?.class ?? 'UNCLASSIFIED', 20)}${String(detail).slice(0, 150)}`);
+  const detail = p.status === 'MATCH' ? `${p.checks.length} checks ok` : (p.status === 'REFUSED' || p.status === 'AGREED-REFUSAL') ? `[${p.layer}] ${p.sentence}` : p.status === 'MISMATCH' ? bad : p.note ?? '';
+  console.log(`${pad(p.id, 46)}${pad(p.status, 16)}${pad(p.status === 'MATCH' ? '' : p.status === 'AGREED-REFUSAL' ? `agreed: ${p.agreedBasis}` : p.classification?.class ?? 'UNCLASSIFIED', 46)}${String(detail).slice(0, 150)}`);
 }
 console.log('-'.repeat(130));
 const tally = {}; for (const p of pieces) tally[p.status] = (tally[p.status] ?? 0) + 1;
-const classTally = {}; for (const p of pieces) if (p.status !== 'MATCH') { const k = p.bothRefuse ? 'agrees-both-refuse' : p.classification?.class ?? 'UNCLASSIFIED'; classTally[k] = (classTally[k] ?? 0) + 1; }
+const classTally = {}; for (const p of pieces) if (p.status !== 'MATCH') { const k = p.status === 'AGREED-REFUSAL' ? 'agreed-refusal' : p.classification?.class ?? 'UNCLASSIFIED'; classTally[k] = (classTally[k] ?? 0) + 1; }
 const perPiece = {}; for (const p of pieces) { perPiece[p.piece] ??= { total: 0, MATCH: 0 }; perPiece[p.piece].total++; if (p.status === 'MATCH') perPiece[p.piece].MATCH++; }
 console.log(`variants ${pieces.length}: ` + Object.entries(tally).map(([k, v]) => `${k} ${v}`).join(', '));
 console.log('non-MATCH by class: ' + (Object.entries(classTally).map(([k, v]) => `${k} ${v}`).join(', ') || 'none'));
@@ -199,4 +204,4 @@ writeFileSync(path.join(HERE, 'scoreboard.json'), JSON.stringify(board, null, 2)
 const kernelItems = await writeWorklist(board);
 console.log(`wrote ${path.join(HERE, 'scoreboard.json')}, ../KERNEL-WORKLIST.md (${kernelItems} kernel entries) and kernel-gaps/`);
 const bad = (classTally.UNCLASSIFIED ?? 0) + (tally.ERROR ?? 0) + (tally['REF-FAIL'] ?? 0);
-if (args.strict ? pieces.some((p) => p.status !== 'MATCH') : bad > 0) process.exit(1);
+if (args.strict ? pieces.some((p) => p.status !== 'MATCH' && p.status !== 'AGREED-REFUSAL') : bad > 0) process.exit(1);

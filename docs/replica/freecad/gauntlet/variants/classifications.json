@@ -11,11 +11,13 @@
   },
   "sk-circle-arc-tangent__circle-circle-no-mode": {
     "class": "spec-mismatch",
-    "evidence": "A circle-circle tangent row without mode is refused: 'a circle-circle tangency must record external or internal'. That is the design (the mode is part of the row; abs() was rejected for its kink, brep-rs/src/sketch/mod.rs TangentMode). FreeCAD infers it from where the circles sit. With mode: 'external' / 'internal' the variants (circle-circle-external, circle-circle-internal) MATCH on DoF 0 and the solved bbox."
+    "evidence": "A circle-circle tangent row without mode is refused: 'a circle-circle tangency must record external or internal'. That is the design (the mode is part of the row; abs() was rejected for its kink, brep-rs/src/sketch/mod.rs TangentMode). FreeCAD infers it from where the circles sit. With mode: 'external' / 'internal' the variants (circle-circle-external, circle-circle-internal) MATCH on DoF 0 and the solved bbox.",
+    "agreed": "freecad-infers-mode-we-require-it-by-design"
   },
   "pocket-blind__depth-negative": {
     "class": "reference-wrong",
-    "evidence": "pocket depth -3: FreeCAD 26.3 accepts Length=-3 and recomputes with every object Up-to-date, but cuts nothing -- volume 12000.0, 6 faces, the uncut plate (refs/ref-pocket-blind__depth-negative.json). A pocket of negative depth has no meaning (the direction is fixed, into the material: packages/script/src/model-types.ts PocketFeature.depth 'Always positive'), so the plate FreeCAD returns is a silent no-op, not the answer. The script now refuses it in a sentence that names the depth; before the fix the same script came back from the kernel as 'pocket1 does not touch the part', which blamed the wrong cause (pinned in packages/script/test/sweep-fixes.test.mjs)."
+    "evidence": "pocket depth -3: FreeCAD 26.3 accepts Length=-3 and recomputes with every object Up-to-date, but cuts nothing -- volume 12000.0, 6 faces, the uncut plate (refs/ref-pocket-blind__depth-negative.json). A pocket of negative depth has no meaning (the direction is fixed, into the material: packages/script/src/model-types.ts PocketFeature.depth 'Always positive'), so the plate FreeCAD returns is a silent no-op, not the answer. The script now refuses it in a sentence that names the depth; before the fix the same script came back from the kernel as 'pocket1 does not touch the part', which blamed the wrong cause (pinned in packages/script/test/sweep-fixes.test.mjs).",
+    "agreed": "freecad-quirk-silent-noop"
   },
   "pad-basic__crossing-rects-one-sketch": {
     "class": "spec-mismatch",

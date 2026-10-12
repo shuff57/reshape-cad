@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-12T05:50:22.020Z",
+  "generatedAt": "2026-10-12T05:59:52.081Z",
   "reference": "FreeCAD 26.3.0 RC1 headless (variants/fc/<id>.py -> variants/refs/ref-<id>.json)",
   "ours": "reSHape Script -> ModelDoc -> brep-rs wasm (solids) / SketchSession2D (sketches)",
   "tolerances": {
@@ -13,12 +13,12 @@
     "total": 218,
     "MATCH": 204,
     "MISMATCH": 1,
-    "REFUSED": 13,
+    "AGREED-REFUSAL": 5,
+    "REFUSED": 8,
     "byClass": {
-      "spec-mismatch": 6,
-      "agrees-both-refuse": 3,
-      "real-kernel-gap": 4,
-      "reference-wrong": 1
+      "spec-mismatch": 5,
+      "agreed-refusal": 5,
+      "real-kernel-gap": 4
     },
     "unclassified": 0,
     "staleClassifications": []
@@ -11120,13 +11120,14 @@
       "desc": "a round bigger than the plate is thick (12 on a 10 plate): both should refuse",
       "kind": "solid",
       "oursSource": "const sk = sketch('top'); sk.rect(40, 30, { at: [20, 15] }); const pad = extrude(sk, 10); fillet(pad.edge('top', 'front'), 12);",
-      "status": "REFUSED",
+      "status": "AGREED-REFUSAL",
       "checks": [],
       "oursOutcome": "refused",
       "bothRefuse": true,
       "layer": "kernel",
       "sentence": "Rounding round1 at 12 would not fit its edge -- round1 is shown without it.",
-      "note": "FreeCAD does not build it either: FreeCAD recompute left {\"Fillet\":[\"Touched\",\"Invalid\"]}, valid=true, solids=1"
+      "note": "FreeCAD does not build it either: FreeCAD recompute left {\"Fillet\":[\"Touched\",\"Invalid\"]}, valid=true, solids=1",
+      "agreedBasis": "freecad-refuses"
     },
     {
       "id": "hole-simple__breaks-out-of-the-side",
@@ -14229,13 +14230,14 @@
       "desc": "a pocket of depth 0 (nothing to cut): the reference and the script should both refuse",
       "kind": "solid",
       "oursSource": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); const s2 = sketch('top', 10); s2.circle(8, { at: [20, 15] }); pocket(s2, plate, 0);",
-      "status": "REFUSED",
+      "status": "AGREED-REFUSAL",
       "checks": [],
       "oursOutcome": "script-error",
       "bothRefuse": true,
       "layer": "script",
       "sentence": "pocket(): the depth is how far the cut goes into the material, so it has to be a positive number -- got 0.",
-      "note": "FreeCAD does not build it either: FreeCAD recompute left {\"Pocket\":[\"Touched\",\"Invalid\"]}, valid=true, solids=1"
+      "note": "FreeCAD does not build it either: FreeCAD recompute left {\"Pocket\":[\"Touched\",\"Invalid\"]}, valid=true, solids=1",
+      "agreedBasis": "freecad-refuses"
     },
     {
       "id": "pocket-blind__depth-negative",
@@ -14243,7 +14245,7 @@
       "desc": "a pocket of depth -3: the reference and the script should both refuse",
       "kind": "solid",
       "oursSource": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); const s2 = sketch('top', 10); s2.circle(8, { at: [20, 15] }); pocket(s2, plate, -3);",
-      "status": "REFUSED",
+      "status": "AGREED-REFUSAL",
       "checks": [],
       "oursOutcome": "script-error",
       "ref": {
@@ -14265,9 +14267,11 @@
       },
       "layer": "script",
       "sentence": "pocket(): the depth is how far the cut goes into the material, so it has to be a positive number -- got -3.",
+      "agreedBasis": "freecad-quirk-silent-noop",
       "classification": {
         "class": "reference-wrong",
-        "evidence": "pocket depth -3: FreeCAD 26.3 accepts Length=-3 and recomputes with every object Up-to-date, but cuts nothing -- volume 12000.0, 6 faces, the uncut plate (refs/ref-pocket-blind__depth-negative.json). A pocket of negative depth has no meaning (the direction is fixed, into the material: packages/script/src/model-types.ts PocketFeature.depth 'Always positive'), so the plate FreeCAD returns is a silent no-op, not the answer. The script now refuses it in a sentence that names the depth; before the fix the same script came back from the kernel as 'pocket1 does not touch the part', which blamed the wrong cause (pinned in packages/script/test/sweep-fixes.test.mjs)."
+        "evidence": "pocket depth -3: FreeCAD 26.3 accepts Length=-3 and recomputes with every object Up-to-date, but cuts nothing -- volume 12000.0, 6 faces, the uncut plate (refs/ref-pocket-blind__depth-negative.json). A pocket of negative depth has no meaning (the direction is fixed, into the material: packages/script/src/model-types.ts PocketFeature.depth 'Always positive'), so the plate FreeCAD returns is a silent no-op, not the answer. The script now refuses it in a sentence that names the depth; before the fix the same script came back from the kernel as 'pocket1 does not touch the part', which blamed the wrong cause (pinned in packages/script/test/sweep-fixes.test.mjs).",
+        "agreed": "freecad-quirk-silent-noop"
       }
     },
     {
@@ -17210,13 +17214,14 @@
       "desc": "two rectangles sharing one side",
       "kind": "solid",
       "oursSource": "const sk = sketch('top'); sk.rect(20, 20, { at: [-10, 0] }); sk.rect(20, 20, { at: [10, 0] }); extrude(sk, 15);",
-      "status": "REFUSED",
+      "status": "AGREED-REFUSAL",
       "checks": [],
       "oursOutcome": "refused",
       "bothRefuse": true,
       "layer": "kernel",
       "sentence": "extrude pull1: edge 1 and edge 5 nearly touch but nothing says they meet. Add a coincident rule.",
-      "note": "FreeCAD does not build it either: FreeCAD recompute left {}, valid=false, solids=1"
+      "note": "FreeCAD does not build it either: FreeCAD recompute left {}, valid=false, solids=1",
+      "agreedBasis": "freecad-refuses"
     },
     {
       "id": "pocket-blind__two-holes-one-sketch",
@@ -19373,10 +19378,10 @@
         "solve": 0,
         "bucket": "consistent",
         "bbox": [
-          -6,
+          -6.000000001230622,
+          -2.0246757066869233e-31,
           0,
-          0,
-          36,
+          35.99999999876938,
           12,
           0
         ]
@@ -19723,7 +19728,7 @@
       "piece": "sk-circle-arc-tangent",
       "desc": "the same two circles with the tangent row written without external/internal (FreeCAD infers it from where the circles are)",
       "kind": "sketch",
-      "status": "REFUSED",
+      "status": "AGREED-REFUSAL",
       "checks": [],
       "oursRules": 5,
       "ref": {
@@ -19743,9 +19748,11 @@
       },
       "layer": "kernel",
       "sentence": "a circle-circle tangency must record external or internal",
+      "agreedBasis": "freecad-infers-mode-we-require-it-by-design",
       "classification": {
         "class": "spec-mismatch",
-        "evidence": "A circle-circle tangent row without mode is refused: 'a circle-circle tangency must record external or internal'. That is the design (the mode is part of the row; abs() was rejected for its kink, brep-rs/src/sketch/mod.rs TangentMode). FreeCAD infers it from where the circles sit. With mode: 'external' / 'internal' the variants (circle-circle-external, circle-circle-internal) MATCH on DoF 0 and the solved bbox."
+        "evidence": "A circle-circle tangent row without mode is refused: 'a circle-circle tangency must record external or internal'. That is the design (the mode is part of the row; abs() was rejected for its kink, brep-rs/src/sketch/mod.rs TangentMode). FreeCAD infers it from where the circles sit. With mode: 'external' / 'internal' the variants (circle-circle-external, circle-circle-internal) MATCH on DoF 0 and the solved bbox.",
+        "agreed": "freecad-infers-mode-we-require-it-by-design"
       }
     },
     {
