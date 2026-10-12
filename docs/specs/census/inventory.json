@@ -1,0 +1,5508 @@
+{
+ "freecad": [
+  "26",
+  "3",
+  "0",
+  "20261008 (Git shallow)"
+ ],
+ "features": {
+  "Pad": {
+   "typeId": "PartDesign::Pad",
+   "props": {
+    "AllowMultiFace": {
+     "type": "App::PropertyBool",
+     "group": "SketchBased",
+     "default": true
+    },
+    "AlongSketchNormal": {
+     "type": "App::PropertyBool",
+     "group": "Pad",
+     "default": true
+    },
+    "Direction": {
+     "type": "App::PropertyVector",
+     "group": "Pad"
+    },
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "Length": {
+     "type": "App::PropertyLength",
+     "group": "Side1"
+    },
+    "Length2": {
+     "type": "App::PropertyLength",
+     "group": "Side2"
+    },
+    "Midplane": {
+     "type": "App::PropertyBool",
+     "group": "SketchBased",
+     "default": false
+    },
+    "Offset": {
+     "type": "App::PropertyLength",
+     "group": "Side1"
+    },
+    "Offset2": {
+     "type": "App::PropertyLength",
+     "group": "Side2"
+    },
+    "Operation": {
+     "type": "App::PropertyEnumeration",
+     "group": "Part Design",
+     "enum": [
+      "Union"
+     ],
+     "default": "Union"
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Profile": {
+     "type": "App::PropertyLinkSub",
+     "group": "SketchBased"
+    },
+    "ReferenceAxis": {
+     "type": "App::PropertyLinkSub",
+     "group": "Pad"
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "Reversed": {
+     "type": "App::PropertyBool",
+     "group": "SketchBased",
+     "default": false
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "SideType": {
+     "type": "App::PropertyEnumeration",
+     "group": "Pad",
+     "enum": [
+      "One side",
+      "Two sides",
+      "Symmetric"
+     ],
+     "default": "One side"
+    },
+    "StartOffset": {
+     "type": "App::PropertyLength",
+     "group": "Start"
+    },
+    "StartReference": {
+     "type": "App::PropertyLinkSub",
+     "group": "Start"
+    },
+    "StartType": {
+     "type": "App::PropertyEnumeration",
+     "group": "Start",
+     "enum": [
+      "Profile plane",
+      "Offset",
+      "Reference"
+     ],
+     "default": "Profile plane"
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "TaperAngle": {
+     "type": "App::PropertyAngle",
+     "group": "Side1"
+    },
+    "TaperAngle2": {
+     "type": "App::PropertyAngle",
+     "group": "Side2"
+    },
+    "Type": {
+     "type": "App::PropertyEnumeration",
+     "group": "Side1",
+     "enum": [
+      "Length",
+      "UpToLast",
+      "UpToFirst",
+      "UpToFace",
+      "?TwoLengths",
+      "UpToShape"
+     ],
+     "default": "Length"
+    },
+    "Type2": {
+     "type": "App::PropertyEnumeration",
+     "group": "Side2",
+     "enum": [
+      "Length",
+      "UpToLast",
+      "UpToFirst",
+      "UpToFace",
+      "?TwoLengths",
+      "UpToShape"
+     ],
+     "default": "Length"
+    },
+    "UpToFace": {
+     "type": "App::PropertyLinkSub",
+     "group": "Side1"
+    },
+    "UpToFace2": {
+     "type": "App::PropertyLinkSub",
+     "group": "Side2"
+    },
+    "UpToShape": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Side1"
+    },
+    "UpToShape2": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Side2"
+    },
+    "UseCustomVector": {
+     "type": "App::PropertyBool",
+     "group": "Pad",
+     "default": false
+    },
+    "UseLegacyTaperDirection": {
+     "type": "App::PropertyBool",
+     "group": "Compatibility",
+     "default": false
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "Pocket": {
+   "typeId": "PartDesign::Pocket",
+   "props": {
+    "AllowMultiFace": {
+     "type": "App::PropertyBool",
+     "group": "SketchBased",
+     "default": true
+    },
+    "AlongSketchNormal": {
+     "type": "App::PropertyBool",
+     "group": "Pocket",
+     "default": true
+    },
+    "Direction": {
+     "type": "App::PropertyVector",
+     "group": "Pocket"
+    },
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "Length": {
+     "type": "App::PropertyLength",
+     "group": "Side1"
+    },
+    "Length2": {
+     "type": "App::PropertyLength",
+     "group": "Side2"
+    },
+    "Midplane": {
+     "type": "App::PropertyBool",
+     "group": "SketchBased",
+     "default": false
+    },
+    "Offset": {
+     "type": "App::PropertyLength",
+     "group": "Side1"
+    },
+    "Offset2": {
+     "type": "App::PropertyLength",
+     "group": "Side2"
+    },
+    "Operation": {
+     "type": "App::PropertyEnumeration",
+     "group": "Part Design",
+     "enum": [
+      "Subtraction",
+      "Common"
+     ],
+     "default": "Subtraction"
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Profile": {
+     "type": "App::PropertyLinkSub",
+     "group": "SketchBased"
+    },
+    "ReferenceAxis": {
+     "type": "App::PropertyLinkSub",
+     "group": "Pocket"
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "Reversed": {
+     "type": "App::PropertyBool",
+     "group": "SketchBased",
+     "default": false
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "SideType": {
+     "type": "App::PropertyEnumeration",
+     "group": "Pocket",
+     "enum": [
+      "One side",
+      "Two sides",
+      "Symmetric"
+     ],
+     "default": "One side"
+    },
+    "StartOffset": {
+     "type": "App::PropertyLength",
+     "group": "Start"
+    },
+    "StartReference": {
+     "type": "App::PropertyLinkSub",
+     "group": "Start"
+    },
+    "StartType": {
+     "type": "App::PropertyEnumeration",
+     "group": "Start",
+     "enum": [
+      "Profile plane",
+      "Offset",
+      "Reference"
+     ],
+     "default": "Profile plane"
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "TaperAngle": {
+     "type": "App::PropertyAngle",
+     "group": "Side1"
+    },
+    "TaperAngle2": {
+     "type": "App::PropertyAngle",
+     "group": "Side2"
+    },
+    "Type": {
+     "type": "App::PropertyEnumeration",
+     "group": "Side1",
+     "enum": [
+      "Length",
+      "ThroughAll",
+      "UpToFirst",
+      "UpToFace",
+      "?TwoLengths",
+      "UpToShape"
+     ],
+     "default": "Length"
+    },
+    "Type2": {
+     "type": "App::PropertyEnumeration",
+     "group": "Side2",
+     "enum": [
+      "Length",
+      "ThroughAll",
+      "UpToFirst",
+      "UpToFace",
+      "?TwoLengths",
+      "UpToShape"
+     ],
+     "default": "Length"
+    },
+    "UpToFace": {
+     "type": "App::PropertyLinkSub",
+     "group": "Side1"
+    },
+    "UpToFace2": {
+     "type": "App::PropertyLinkSub",
+     "group": "Side2"
+    },
+    "UpToShape": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Side1"
+    },
+    "UpToShape2": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Side2"
+    },
+    "UseCustomVector": {
+     "type": "App::PropertyBool",
+     "group": "Pocket",
+     "default": false
+    },
+    "UseLegacyTaperDirection": {
+     "type": "App::PropertyBool",
+     "group": "Compatibility",
+     "default": false
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "Revolution": {
+   "typeId": "PartDesign::Revolution",
+   "props": {
+    "AllowMultiFace": {
+     "type": "App::PropertyBool",
+     "group": "SketchBased",
+     "default": true
+    },
+    "Angle": {
+     "type": "App::PropertyAngle",
+     "group": "Side1"
+    },
+    "Angle2": {
+     "type": "App::PropertyAngle",
+     "group": "Side2"
+    },
+    "Axis": {
+     "type": "App::PropertyVector",
+     "group": "Revolution"
+    },
+    "Base": {
+     "type": "App::PropertyVector",
+     "group": "Revolution"
+    },
+    "FuseOrder": {
+     "type": "App::PropertyEnumeration",
+     "group": "Compatibility",
+     "enum": [
+      "BaseFirst",
+      "FeatureFirst"
+     ],
+     "default": "BaseFirst"
+    },
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "Midplane": {
+     "type": "App::PropertyBool",
+     "group": "SketchBased",
+     "default": false
+    },
+    "Operation": {
+     "type": "App::PropertyEnumeration",
+     "group": "Part Design",
+     "enum": [
+      "Union"
+     ],
+     "default": "Union"
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Profile": {
+     "type": "App::PropertyLinkSub",
+     "group": "SketchBased"
+    },
+    "ProjectAxis": {
+     "type": "App::PropertyBool",
+     "group": "Revolution",
+     "default": false
+    },
+    "ReferenceAxis": {
+     "type": "App::PropertyLinkSub",
+     "group": "Revolution"
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "Reversed": {
+     "type": "App::PropertyBool",
+     "group": "SketchBased",
+     "default": false
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "SideType": {
+     "type": "App::PropertyEnumeration",
+     "group": "Revolution",
+     "enum": [
+      "One side",
+      "Two sides",
+      "Symmetric"
+     ],
+     "default": "One side"
+    },
+    "StartOffset": {
+     "type": "App::PropertyAngle",
+     "group": "Start"
+    },
+    "StartReference": {
+     "type": "App::PropertyLinkSub",
+     "group": "Start"
+    },
+    "StartType": {
+     "type": "App::PropertyEnumeration",
+     "group": "Start",
+     "enum": [
+      "Profile plane",
+      "Offset",
+      "Reference"
+     ],
+     "default": "Profile plane"
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Type": {
+     "type": "App::PropertyEnumeration",
+     "group": "Side1",
+     "enum": [
+      "Angle",
+      "UpToLast",
+      "UpToFirst",
+      "UpToFace",
+      "?TwoAngles"
+     ],
+     "default": "Angle"
+    },
+    "Type2": {
+     "type": "App::PropertyEnumeration",
+     "group": "Side2",
+     "enum": [
+      "Angle",
+      "UpToLast",
+      "UpToFirst",
+      "UpToFace",
+      "?TwoAngles"
+     ],
+     "default": "Angle"
+    },
+    "UpToFace": {
+     "type": "App::PropertyLinkSub",
+     "group": "Side1"
+    },
+    "UpToFace2": {
+     "type": "App::PropertyLinkSub",
+     "group": "Side2"
+    },
+    "UpToShape": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Side1"
+    },
+    "UpToShape2": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Side2"
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "Groove": {
+   "typeId": "PartDesign::Groove",
+   "props": {
+    "AllowMultiFace": {
+     "type": "App::PropertyBool",
+     "group": "SketchBased",
+     "default": true
+    },
+    "Angle": {
+     "type": "App::PropertyAngle",
+     "group": "Side1"
+    },
+    "Angle2": {
+     "type": "App::PropertyAngle",
+     "group": "Side2"
+    },
+    "Axis": {
+     "type": "App::PropertyVector",
+     "group": "Groove"
+    },
+    "Base": {
+     "type": "App::PropertyVector",
+     "group": "Groove"
+    },
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "Midplane": {
+     "type": "App::PropertyBool",
+     "group": "SketchBased",
+     "default": false
+    },
+    "Operation": {
+     "type": "App::PropertyEnumeration",
+     "group": "Part Design",
+     "enum": [
+      "Subtraction",
+      "Common"
+     ],
+     "default": "Subtraction"
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Profile": {
+     "type": "App::PropertyLinkSub",
+     "group": "SketchBased"
+    },
+    "ProjectAxis": {
+     "type": "App::PropertyBool",
+     "group": "Groove",
+     "default": false
+    },
+    "ReferenceAxis": {
+     "type": "App::PropertyLinkSub",
+     "group": "Groove"
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "Reversed": {
+     "type": "App::PropertyBool",
+     "group": "SketchBased",
+     "default": false
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "SideType": {
+     "type": "App::PropertyEnumeration",
+     "group": "Groove",
+     "enum": [
+      "One side",
+      "Two sides",
+      "Symmetric"
+     ],
+     "default": "One side"
+    },
+    "StartOffset": {
+     "type": "App::PropertyAngle",
+     "group": "Start"
+    },
+    "StartReference": {
+     "type": "App::PropertyLinkSub",
+     "group": "Start"
+    },
+    "StartType": {
+     "type": "App::PropertyEnumeration",
+     "group": "Start",
+     "enum": [
+      "Profile plane",
+      "Offset",
+      "Reference"
+     ],
+     "default": "Profile plane"
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Type": {
+     "type": "App::PropertyEnumeration",
+     "group": "Side1",
+     "enum": [
+      "Angle",
+      "ThroughAll",
+      "UpToFirst",
+      "UpToFace",
+      "?TwoAngles"
+     ],
+     "default": "Angle"
+    },
+    "Type2": {
+     "type": "App::PropertyEnumeration",
+     "group": "Side2",
+     "enum": [
+      "Angle",
+      "ThroughAll",
+      "UpToFirst",
+      "UpToFace",
+      "?TwoAngles"
+     ],
+     "default": "Angle"
+    },
+    "UpToFace": {
+     "type": "App::PropertyLinkSub",
+     "group": "Side1"
+    },
+    "UpToFace2": {
+     "type": "App::PropertyLinkSub",
+     "group": "Side2"
+    },
+    "UpToShape": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Side1"
+    },
+    "UpToShape2": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Side2"
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "Hole": {
+   "typeId": "PartDesign::Hole",
+   "props": {
+    "AllowMultiFace": {
+     "type": "App::PropertyBool",
+     "group": "SketchBased",
+     "default": true
+    },
+    "BaseProfileType": {
+     "type": "App::PropertyInteger",
+     "group": "Hole",
+     "default": 7
+    },
+    "CosmeticThread": {
+     "type": "App::PropertyBool",
+     "group": "Hole",
+     "default": true
+    },
+    "CustomThreadClearance": {
+     "type": "App::PropertyLength",
+     "group": "Hole"
+    },
+    "Depth": {
+     "type": "App::PropertyLength",
+     "group": "Hole"
+    },
+    "DepthType": {
+     "type": "App::PropertyEnumeration",
+     "group": "Hole",
+     "enum": [
+      "Dimension",
+      "ThroughAll"
+     ],
+     "default": "Dimension"
+    },
+    "Diameter": {
+     "type": "App::PropertyLength",
+     "group": "Hole"
+    },
+    "DrillForDepth": {
+     "type": "App::PropertyBool",
+     "group": "Hole",
+     "default": false
+    },
+    "DrillPoint": {
+     "type": "App::PropertyEnumeration",
+     "group": "Hole",
+     "enum": [
+      "Flat",
+      "Angled"
+     ],
+     "default": "Angled"
+    },
+    "DrillPointAngle": {
+     "type": "App::PropertyAngle",
+     "group": "Hole"
+    },
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "HoleCutCountersinkAngle": {
+     "type": "App::PropertyAngle",
+     "group": "Hole"
+    },
+    "HoleCutCustomValues": {
+     "type": "App::PropertyBool",
+     "group": "Hole",
+     "default": false
+    },
+    "HoleCutDepth": {
+     "type": "App::PropertyLength",
+     "group": "Hole"
+    },
+    "HoleCutDiameter": {
+     "type": "App::PropertyLength",
+     "group": "Hole"
+    },
+    "HoleCutType": {
+     "type": "App::PropertyEnumeration",
+     "group": "Hole",
+     "enum": [
+      "None",
+      "Counterbore",
+      "Countersink",
+      "Counterdrill"
+     ],
+     "default": "None"
+    },
+    "Midplane": {
+     "type": "App::PropertyBool",
+     "group": "SketchBased",
+     "default": false
+    },
+    "ModelThread": {
+     "type": "App::PropertyBool",
+     "group": "Hole",
+     "default": false
+    },
+    "Operation": {
+     "type": "App::PropertyEnumeration",
+     "group": "Part Design",
+     "enum": [
+      "Subtraction",
+      "Common"
+     ],
+     "default": "Subtraction"
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Profile": {
+     "type": "App::PropertyLinkSub",
+     "group": "SketchBased"
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "Reversed": {
+     "type": "App::PropertyBool",
+     "group": "SketchBased",
+     "default": false
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "StartOffset": {
+     "type": "App::PropertyLength",
+     "group": "Start"
+    },
+    "StartReference": {
+     "type": "App::PropertyLinkSub",
+     "group": "Start"
+    },
+    "StartType": {
+     "type": "App::PropertyEnumeration",
+     "group": "Start",
+     "enum": [
+      "Profile plane",
+      "Offset",
+      "Reference"
+     ],
+     "default": "Profile plane"
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Tapered": {
+     "type": "App::PropertyBool",
+     "group": "Hole",
+     "default": false
+    },
+    "TaperedAngle": {
+     "type": "App::PropertyAngle",
+     "group": "Hole"
+    },
+    "ThreadClass": {
+     "type": "App::PropertyEnumeration",
+     "group": "Hole",
+     "enum": [
+      "None"
+     ],
+     "default": "None"
+    },
+    "ThreadDepth": {
+     "type": "App::PropertyLength",
+     "group": "Hole"
+    },
+    "ThreadDepthType": {
+     "type": "App::PropertyEnumeration",
+     "group": "Hole",
+     "enum": [
+      "Hole Depth",
+      "Dimension",
+      "Tapped (DIN76)"
+     ],
+     "default": "Hole Depth"
+    },
+    "ThreadDiameter": {
+     "type": "App::PropertyLength",
+     "group": "Hole"
+    },
+    "ThreadDirection": {
+     "type": "App::PropertyEnumeration",
+     "group": "Hole",
+     "enum": [
+      "Right",
+      "Left"
+     ],
+     "default": "Right"
+    },
+    "ThreadFit": {
+     "type": "App::PropertyEnumeration",
+     "group": "Hole",
+     "enum": [
+      "Medium",
+      "Fine",
+      "Coarse"
+     ],
+     "default": "Medium"
+    },
+    "ThreadSize": {
+     "type": "App::PropertyEnumeration",
+     "group": "Hole",
+     "enum": [
+      "---"
+     ],
+     "default": "---"
+    },
+    "ThreadType": {
+     "type": "App::PropertyEnumeration",
+     "group": "Hole",
+     "enum": [
+      "None",
+      "ISOMetricProfile",
+      "ISOMetricFineProfile",
+      "UNC",
+      "UNF",
+      "UNEF",
+      "NPT",
+      "BSP",
+      "BSW",
+      "BSF",
+      "ISOTyre"
+     ],
+     "default": "None"
+    },
+    "Threaded": {
+     "type": "App::PropertyBool",
+     "group": "Hole",
+     "default": false
+    },
+    "UpToFace": {
+     "type": "App::PropertyLinkSub",
+     "group": "Side1"
+    },
+    "UpToFace2": {
+     "type": "App::PropertyLinkSub",
+     "group": "Side2"
+    },
+    "UpToShape": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Side1"
+    },
+    "UpToShape2": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Side2"
+    },
+    "UseCustomThreadClearance": {
+     "type": "App::PropertyBool",
+     "group": "Hole",
+     "default": false
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "Fillet": {
+   "typeId": "PartDesign::Fillet",
+   "props": {
+    "Base": {
+     "type": "App::PropertyLinkSub",
+     "group": ""
+    },
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "Operation": {
+     "type": "App::PropertyEnumeration",
+     "group": "Part Design",
+     "enum": [
+      "Union",
+      "Subtraction",
+      "Common"
+     ],
+     "default": "Union"
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Radius": {
+     "type": "App::PropertyQuantityConstraint",
+     "group": "Fillet"
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "SupportTransform": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "UseAllEdges": {
+     "type": "App::PropertyBool",
+     "group": "Fillet",
+     "default": false
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "Chamfer": {
+   "typeId": "PartDesign::Chamfer",
+   "props": {
+    "Angle": {
+     "type": "App::PropertyAngle",
+     "group": "Chamfer"
+    },
+    "Base": {
+     "type": "App::PropertyLinkSub",
+     "group": ""
+    },
+    "ChamferType": {
+     "type": "App::PropertyEnumeration",
+     "group": "Chamfer",
+     "enum": [
+      "Equal distance",
+      "Two distances",
+      "Distance and Angle"
+     ],
+     "default": "Equal distance"
+    },
+    "FlipDirection": {
+     "type": "App::PropertyBool",
+     "group": "Chamfer",
+     "default": false
+    },
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "Operation": {
+     "type": "App::PropertyEnumeration",
+     "group": "Part Design",
+     "enum": [
+      "Union",
+      "Subtraction",
+      "Common"
+     ],
+     "default": "Union"
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "Size": {
+     "type": "App::PropertyQuantityConstraint",
+     "group": "Chamfer"
+    },
+    "Size2": {
+     "type": "App::PropertyQuantityConstraint",
+     "group": "Chamfer"
+    },
+    "SupportTransform": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "UseAllEdges": {
+     "type": "App::PropertyBool",
+     "group": "Chamfer",
+     "default": false
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "Draft": {
+   "typeId": "PartDesign::Draft",
+   "props": {
+    "Angle": {
+     "type": "App::PropertyAngle",
+     "group": ""
+    },
+    "Base": {
+     "type": "App::PropertyLinkSub",
+     "group": ""
+    },
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "NeutralPlane": {
+     "type": "App::PropertyLinkSub",
+     "group": "Draft"
+    },
+    "Operation": {
+     "type": "App::PropertyEnumeration",
+     "group": "Part Design",
+     "enum": [
+      "Union",
+      "Subtraction",
+      "Common"
+     ],
+     "default": "Union"
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "PullDirection": {
+     "type": "App::PropertyLinkSub",
+     "group": "Draft"
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "Reversed": {
+     "type": "App::PropertyBool",
+     "group": "",
+     "default": false
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "SupportTransform": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "Thickness": {
+   "typeId": "PartDesign::Thickness",
+   "props": {
+    "Base": {
+     "type": "App::PropertyLinkSub",
+     "group": ""
+    },
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "Intersection": {
+     "type": "App::PropertyBool",
+     "group": "Thickness",
+     "default": false
+    },
+    "Join": {
+     "type": "App::PropertyEnumeration",
+     "group": "Thickness",
+     "enum": [
+      "Arc",
+      "Intersection"
+     ],
+     "default": "Arc"
+    },
+    "Mode": {
+     "type": "App::PropertyEnumeration",
+     "group": "Thickness",
+     "enum": [
+      "Skin",
+      "Pipe",
+      "RectoVerso"
+     ],
+     "default": "Skin"
+    },
+    "Operation": {
+     "type": "App::PropertyEnumeration",
+     "group": "Part Design",
+     "enum": [
+      "Union",
+      "Subtraction",
+      "Common"
+     ],
+     "default": "Union"
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "Reversed": {
+     "type": "App::PropertyBool",
+     "group": "Thickness",
+     "default": true
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "SupportTransform": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Value": {
+     "type": "App::PropertyLength",
+     "group": "Thickness"
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "AdditiveLoft": {
+   "typeId": "PartDesign::AdditiveLoft",
+   "props": {
+    "AllowMultiFace": {
+     "type": "App::PropertyBool",
+     "group": "SketchBased",
+     "default": true
+    },
+    "Closed": {
+     "type": "App::PropertyBool",
+     "group": "Loft",
+     "default": false
+    },
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "Midplane": {
+     "type": "App::PropertyBool",
+     "group": "SketchBased",
+     "default": false
+    },
+    "Operation": {
+     "type": "App::PropertyEnumeration",
+     "group": "Part Design",
+     "enum": [
+      "Union"
+     ],
+     "default": "Union"
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Profile": {
+     "type": "App::PropertyLinkSub",
+     "group": "SketchBased"
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "Reversed": {
+     "type": "App::PropertyBool",
+     "group": "SketchBased",
+     "default": false
+    },
+    "Ruled": {
+     "type": "App::PropertyBool",
+     "group": "Loft",
+     "default": false
+    },
+    "Sections": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Loft"
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "UpToFace": {
+     "type": "App::PropertyLinkSub",
+     "group": "Side1"
+    },
+    "UpToFace2": {
+     "type": "App::PropertyLinkSub",
+     "group": "Side2"
+    },
+    "UpToShape": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Side1"
+    },
+    "UpToShape2": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Side2"
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "SubtractiveLoft": {
+   "typeId": "PartDesign::SubtractiveLoft",
+   "props": {
+    "AllowMultiFace": {
+     "type": "App::PropertyBool",
+     "group": "SketchBased",
+     "default": true
+    },
+    "Closed": {
+     "type": "App::PropertyBool",
+     "group": "Loft",
+     "default": false
+    },
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "Midplane": {
+     "type": "App::PropertyBool",
+     "group": "SketchBased",
+     "default": false
+    },
+    "Operation": {
+     "type": "App::PropertyEnumeration",
+     "group": "Part Design",
+     "enum": [
+      "Subtraction",
+      "Common"
+     ],
+     "default": "Subtraction"
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Profile": {
+     "type": "App::PropertyLinkSub",
+     "group": "SketchBased"
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "Reversed": {
+     "type": "App::PropertyBool",
+     "group": "SketchBased",
+     "default": false
+    },
+    "Ruled": {
+     "type": "App::PropertyBool",
+     "group": "Loft",
+     "default": false
+    },
+    "Sections": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Loft"
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "UpToFace": {
+     "type": "App::PropertyLinkSub",
+     "group": "Side1"
+    },
+    "UpToFace2": {
+     "type": "App::PropertyLinkSub",
+     "group": "Side2"
+    },
+    "UpToShape": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Side1"
+    },
+    "UpToShape2": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Side2"
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "AdditivePipe": {
+   "typeId": "PartDesign::AdditivePipe",
+   "props": {
+    "AllowMultiFace": {
+     "type": "App::PropertyBool",
+     "group": "SketchBased",
+     "default": true
+    },
+    "AuxiliaryCurvilinear": {
+     "type": "App::PropertyBool",
+     "group": "Sweep",
+     "default": true
+    },
+    "AuxiliarySpine": {
+     "type": "App::PropertyLinkSub",
+     "group": "Sweep"
+    },
+    "AuxiliarySpineTangent": {
+     "type": "App::PropertyBool",
+     "group": "Sweep",
+     "default": false
+    },
+    "Binormal": {
+     "type": "App::PropertyVector",
+     "group": "Sweep"
+    },
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "Midplane": {
+     "type": "App::PropertyBool",
+     "group": "SketchBased",
+     "default": false
+    },
+    "Mode": {
+     "type": "App::PropertyEnumeration",
+     "group": "Sweep",
+     "enum": [
+      "Standard",
+      "Fixed",
+      "Frenet",
+      "Auxiliary",
+      "Binormal"
+     ],
+     "default": "Standard"
+    },
+    "Operation": {
+     "type": "App::PropertyEnumeration",
+     "group": "Part Design",
+     "enum": [
+      "Union"
+     ],
+     "default": "Union"
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Profile": {
+     "type": "App::PropertyLinkSub",
+     "group": "SketchBased"
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "Reversed": {
+     "type": "App::PropertyBool",
+     "group": "SketchBased",
+     "default": false
+    },
+    "Sections": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Sweep"
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "Spine": {
+     "type": "App::PropertyLinkSub",
+     "group": "Sweep"
+    },
+    "SpineTangent": {
+     "type": "App::PropertyBool",
+     "group": "Sweep",
+     "default": false
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Transformation": {
+     "type": "App::PropertyEnumeration",
+     "group": "Sweep",
+     "enum": [
+      "Constant",
+      "Multisection",
+      "Linear",
+      "S-shape",
+      "Interpolation"
+     ],
+     "default": "Constant"
+    },
+    "Transition": {
+     "type": "App::PropertyEnumeration",
+     "group": "Sweep",
+     "enum": [
+      "Transformed",
+      "Right corner",
+      "Round corner"
+     ],
+     "default": "Transformed"
+    },
+    "UpToFace": {
+     "type": "App::PropertyLinkSub",
+     "group": "Side1"
+    },
+    "UpToFace2": {
+     "type": "App::PropertyLinkSub",
+     "group": "Side2"
+    },
+    "UpToShape": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Side1"
+    },
+    "UpToShape2": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Side2"
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "SubtractivePipe": {
+   "typeId": "PartDesign::SubtractivePipe",
+   "props": {
+    "AllowMultiFace": {
+     "type": "App::PropertyBool",
+     "group": "SketchBased",
+     "default": true
+    },
+    "AuxiliaryCurvilinear": {
+     "type": "App::PropertyBool",
+     "group": "Sweep",
+     "default": true
+    },
+    "AuxiliarySpine": {
+     "type": "App::PropertyLinkSub",
+     "group": "Sweep"
+    },
+    "AuxiliarySpineTangent": {
+     "type": "App::PropertyBool",
+     "group": "Sweep",
+     "default": false
+    },
+    "Binormal": {
+     "type": "App::PropertyVector",
+     "group": "Sweep"
+    },
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "Midplane": {
+     "type": "App::PropertyBool",
+     "group": "SketchBased",
+     "default": false
+    },
+    "Mode": {
+     "type": "App::PropertyEnumeration",
+     "group": "Sweep",
+     "enum": [
+      "Standard",
+      "Fixed",
+      "Frenet",
+      "Auxiliary",
+      "Binormal"
+     ],
+     "default": "Standard"
+    },
+    "Operation": {
+     "type": "App::PropertyEnumeration",
+     "group": "Part Design",
+     "enum": [
+      "Subtraction",
+      "Common"
+     ],
+     "default": "Subtraction"
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Profile": {
+     "type": "App::PropertyLinkSub",
+     "group": "SketchBased"
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "Reversed": {
+     "type": "App::PropertyBool",
+     "group": "SketchBased",
+     "default": false
+    },
+    "Sections": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Sweep"
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "Spine": {
+     "type": "App::PropertyLinkSub",
+     "group": "Sweep"
+    },
+    "SpineTangent": {
+     "type": "App::PropertyBool",
+     "group": "Sweep",
+     "default": false
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Transformation": {
+     "type": "App::PropertyEnumeration",
+     "group": "Sweep",
+     "enum": [
+      "Constant",
+      "Multisection",
+      "Linear",
+      "S-shape",
+      "Interpolation"
+     ],
+     "default": "Constant"
+    },
+    "Transition": {
+     "type": "App::PropertyEnumeration",
+     "group": "Sweep",
+     "enum": [
+      "Transformed",
+      "Right corner",
+      "Round corner"
+     ],
+     "default": "Transformed"
+    },
+    "UpToFace": {
+     "type": "App::PropertyLinkSub",
+     "group": "Side1"
+    },
+    "UpToFace2": {
+     "type": "App::PropertyLinkSub",
+     "group": "Side2"
+    },
+    "UpToShape": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Side1"
+    },
+    "UpToShape2": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Side2"
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "AdditiveHelix": {
+   "typeId": "PartDesign::AdditiveHelix",
+   "props": {
+    "AllowMultiFace": {
+     "type": "App::PropertyBool",
+     "group": "SketchBased",
+     "default": true
+    },
+    "Angle": {
+     "type": "App::PropertyAngle",
+     "group": "Helix"
+    },
+    "Axis": {
+     "type": "App::PropertyVector",
+     "group": "Helix"
+    },
+    "Base": {
+     "type": "App::PropertyVector",
+     "group": "Helix"
+    },
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "Growth": {
+     "type": "App::PropertyDistance",
+     "group": "Helix"
+    },
+    "HasBeenEdited": {
+     "type": "App::PropertyBool",
+     "group": "Helix",
+     "default": false
+    },
+    "Height": {
+     "type": "App::PropertyLength",
+     "group": "Helix"
+    },
+    "LeftHanded": {
+     "type": "App::PropertyBool",
+     "group": "Helix",
+     "default": false
+    },
+    "Midplane": {
+     "type": "App::PropertyBool",
+     "group": "SketchBased",
+     "default": false
+    },
+    "Mode": {
+     "type": "App::PropertyEnumeration",
+     "group": "Helix",
+     "enum": [
+      "pitch-height-angle",
+      "pitch-turns-angle",
+      "height-turns-angle",
+      "height-turns-growth"
+     ],
+     "default": "pitch-height-angle"
+    },
+    "Operation": {
+     "type": "App::PropertyEnumeration",
+     "group": "Part Design",
+     "enum": [
+      "Union"
+     ],
+     "default": "Union"
+    },
+    "Outside": {
+     "type": "App::PropertyBool",
+     "group": "Helix",
+     "default": false
+    },
+    "Pitch": {
+     "type": "App::PropertyLength",
+     "group": "Helix"
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Profile": {
+     "type": "App::PropertyLinkSub",
+     "group": "SketchBased"
+    },
+    "ReferenceAxis": {
+     "type": "App::PropertyLinkSub",
+     "group": "Helix"
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "Reversed": {
+     "type": "App::PropertyBool",
+     "group": "Helix",
+     "default": false
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Tolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Helix",
+     "default": 0.1
+    },
+    "Turns": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Helix",
+     "default": 3.0
+    },
+    "UpToFace": {
+     "type": "App::PropertyLinkSub",
+     "group": "Side1"
+    },
+    "UpToFace2": {
+     "type": "App::PropertyLinkSub",
+     "group": "Side2"
+    },
+    "UpToShape": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Side1"
+    },
+    "UpToShape2": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Side2"
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "SubtractiveHelix": {
+   "typeId": "PartDesign::SubtractiveHelix",
+   "props": {
+    "AllowMultiFace": {
+     "type": "App::PropertyBool",
+     "group": "SketchBased",
+     "default": true
+    },
+    "Angle": {
+     "type": "App::PropertyAngle",
+     "group": "Helix"
+    },
+    "Axis": {
+     "type": "App::PropertyVector",
+     "group": "Helix"
+    },
+    "Base": {
+     "type": "App::PropertyVector",
+     "group": "Helix"
+    },
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "Growth": {
+     "type": "App::PropertyDistance",
+     "group": "Helix"
+    },
+    "HasBeenEdited": {
+     "type": "App::PropertyBool",
+     "group": "Helix",
+     "default": false
+    },
+    "Height": {
+     "type": "App::PropertyLength",
+     "group": "Helix"
+    },
+    "LeftHanded": {
+     "type": "App::PropertyBool",
+     "group": "Helix",
+     "default": false
+    },
+    "Midplane": {
+     "type": "App::PropertyBool",
+     "group": "SketchBased",
+     "default": false
+    },
+    "Mode": {
+     "type": "App::PropertyEnumeration",
+     "group": "Helix",
+     "enum": [
+      "pitch-height-angle",
+      "pitch-turns-angle",
+      "height-turns-angle",
+      "height-turns-growth"
+     ],
+     "default": "pitch-height-angle"
+    },
+    "Operation": {
+     "type": "App::PropertyEnumeration",
+     "group": "Part Design",
+     "enum": [
+      "Subtraction",
+      "Common"
+     ],
+     "default": "Subtraction"
+    },
+    "Outside": {
+     "type": "App::PropertyBool",
+     "group": "Helix",
+     "default": false
+    },
+    "Pitch": {
+     "type": "App::PropertyLength",
+     "group": "Helix"
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Profile": {
+     "type": "App::PropertyLinkSub",
+     "group": "SketchBased"
+    },
+    "ReferenceAxis": {
+     "type": "App::PropertyLinkSub",
+     "group": "Helix"
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "Reversed": {
+     "type": "App::PropertyBool",
+     "group": "Helix",
+     "default": false
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Tolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Helix",
+     "default": 0.1
+    },
+    "Turns": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Helix",
+     "default": 3.0
+    },
+    "UpToFace": {
+     "type": "App::PropertyLinkSub",
+     "group": "Side1"
+    },
+    "UpToFace2": {
+     "type": "App::PropertyLinkSub",
+     "group": "Side2"
+    },
+    "UpToShape": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Side1"
+    },
+    "UpToShape2": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Side2"
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "LinearPattern": {
+   "typeId": "PartDesign::LinearPattern",
+   "props": {
+    "Direction": {
+     "type": "App::PropertyLinkSub",
+     "group": "Direction 1"
+    },
+    "Direction2": {
+     "type": "App::PropertyLinkSub",
+     "group": "Direction 2"
+    },
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "Length": {
+     "type": "App::PropertyLength",
+     "group": "Direction 1"
+    },
+    "Length2": {
+     "type": "App::PropertyLength",
+     "group": "Direction 2"
+    },
+    "Mode": {
+     "type": "App::PropertyEnumeration",
+     "group": "Direction 1",
+     "enum": [
+      "Extent",
+      "Spacing"
+     ],
+     "default": "Extent"
+    },
+    "Mode2": {
+     "type": "App::PropertyEnumeration",
+     "group": "Direction 2",
+     "enum": [
+      "Extent",
+      "Spacing"
+     ],
+     "default": "Extent"
+    },
+    "Occurrences": {
+     "type": "App::PropertyIntegerConstraint",
+     "group": "Direction 1",
+     "default": 2
+    },
+    "Occurrences2": {
+     "type": "App::PropertyIntegerConstraint",
+     "group": "Direction 2",
+     "default": 1
+    },
+    "Offset": {
+     "type": "App::PropertyLength",
+     "group": "Direction 1"
+    },
+    "Offset2": {
+     "type": "App::PropertyLength",
+     "group": "Direction 2"
+    },
+    "Originals": {
+     "type": "App::PropertyLinkList",
+     "group": ""
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "Reversed": {
+     "type": "App::PropertyBool",
+     "group": "Direction 1",
+     "default": false
+    },
+    "Reversed2": {
+     "type": "App::PropertyBool",
+     "group": "Direction 2",
+     "default": false
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "SpacingPattern": {
+     "type": "App::PropertyFloatList",
+     "group": "Direction 1"
+    },
+    "SpacingPattern2": {
+     "type": "App::PropertyFloatList",
+     "group": "Direction 2"
+    },
+    "Spacings": {
+     "type": "App::PropertyFloatList",
+     "group": "Direction 1"
+    },
+    "Spacings2": {
+     "type": "App::PropertyFloatList",
+     "group": "Direction 2"
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedIndices": {
+     "type": "App::PropertyIntegerList",
+     "group": "Transformation"
+    },
+    "SuppressedPositions": {
+     "type": "App::PropertyIntPairList",
+     "group": "Pattern"
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "TransformMode": {
+     "type": "App::PropertyEnumeration",
+     "group": "",
+     "enum": [
+      "Features",
+      "Whole shape"
+     ],
+     "default": "Features"
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "PolarPattern": {
+   "typeId": "PartDesign::PolarPattern",
+   "props": {
+    "Angle": {
+     "type": "App::PropertyAngle",
+     "group": "PolarPattern"
+    },
+    "Axis": {
+     "type": "App::PropertyLinkSub",
+     "group": "PolarPattern"
+    },
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "Mode": {
+     "type": "App::PropertyEnumeration",
+     "group": "PolarPattern",
+     "enum": [
+      "Extent",
+      "Spacing"
+     ],
+     "default": "Extent"
+    },
+    "Occurrences": {
+     "type": "App::PropertyIntegerConstraint",
+     "group": "PolarPattern",
+     "default": 3
+    },
+    "Offset": {
+     "type": "App::PropertyAngle",
+     "group": "PolarPattern"
+    },
+    "Originals": {
+     "type": "App::PropertyLinkList",
+     "group": ""
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "Reversed": {
+     "type": "App::PropertyBool",
+     "group": "PolarPattern",
+     "default": false
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "SpacingPattern": {
+     "type": "App::PropertyFloatList",
+     "group": "PolarPattern"
+    },
+    "Spacings": {
+     "type": "App::PropertyFloatList",
+     "group": "PolarPattern"
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedIndices": {
+     "type": "App::PropertyIntegerList",
+     "group": "Transformation"
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "TransformMode": {
+     "type": "App::PropertyEnumeration",
+     "group": "",
+     "enum": [
+      "Features",
+      "Whole shape"
+     ],
+     "default": "Features"
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "Mirrored": {
+   "typeId": "PartDesign::Mirrored",
+   "props": {
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "MirrorPlane": {
+     "type": "App::PropertyLinkSub",
+     "group": "Mirrored"
+    },
+    "Originals": {
+     "type": "App::PropertyLinkList",
+     "group": ""
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedIndices": {
+     "type": "App::PropertyIntegerList",
+     "group": "Transformation"
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "TransformMode": {
+     "type": "App::PropertyEnumeration",
+     "group": "",
+     "enum": [
+      "Features",
+      "Whole shape"
+     ],
+     "default": "Features"
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "MultiTransform": {
+   "typeId": "PartDesign::MultiTransform",
+   "props": {
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "Originals": {
+     "type": "App::PropertyLinkList",
+     "group": ""
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedIndices": {
+     "type": "App::PropertyIntegerList",
+     "group": "Transformation"
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "TransformMode": {
+     "type": "App::PropertyEnumeration",
+     "group": "",
+     "enum": [
+      "Features",
+      "Whole shape"
+     ],
+     "default": "Features"
+    },
+    "Transformations": {
+     "type": "App::PropertyLinkList",
+     "group": ""
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "Boolean": {
+   "typeId": "PartDesign::Boolean",
+   "props": {
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Type": {
+     "type": "App::PropertyEnumeration",
+     "group": "",
+     "enum": [
+      "Fuse",
+      "Cut",
+      "Common"
+     ],
+     "default": "Fuse"
+    },
+    "UseLegacyBodyPlacement": {
+     "type": "App::PropertyBool",
+     "group": "Compatibility",
+     "default": false
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    },
+    "_GroupTouched": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    }
+   }
+  },
+  "AdditiveBox": {
+   "typeId": "PartDesign::AdditiveBox",
+   "props": {
+    "AttachmentOffset": {
+     "type": "App::PropertyPlacement",
+     "group": "Attachment"
+    },
+    "AttachmentSupport": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Attachment"
+    },
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "Height": {
+     "type": "App::PropertyLength",
+     "group": "Box"
+    },
+    "Length": {
+     "type": "App::PropertyLength",
+     "group": "Box"
+    },
+    "MapMode": {
+     "type": "App::PropertyEnumeration",
+     "group": "Attachment",
+     "enum": [
+      "Deactivated",
+      "Translate",
+      "ObjectXY",
+      "ObjectXZ",
+      "ObjectYZ",
+      "FlatFace",
+      "TangentPlane",
+      "NormalToEdge",
+      "FrenetNB",
+      "FrenetTN",
+      "FrenetTB",
+      "Concentric",
+      "SectionOfRevolution",
+      "ThreePointsPlane",
+      "ThreePointsNormal",
+      "Folding",
+      "ObjectX",
+      "ObjectY",
+      "ObjectZ",
+      "AxisOfCurvature",
+      "Directrix1",
+      "Directrix2",
+      "Asymptote1",
+      "Asymptote2",
+      "Tangent",
+      "Normal",
+      "Binormal",
+      "TangentU",
+      "TangentV",
+      "TwoPointLine",
+      "IntersectionLine",
+      "ProximityLine",
+      "ObjectOrigin",
+      "Focus1",
+      "Focus2",
+      "OnEdge",
+      "CenterOfCurvature",
+      "CenterOfMass",
+      "IntersectionPoint",
+      "Vertex",
+      "ProximityPoint1",
+      "ProximityPoint2",
+      "AxisOfInertia1",
+      "AxisOfInertia2",
+      "AxisOfInertia3",
+      "InertialCS",
+      "FaceNormal",
+      "OZX",
+      "OZY",
+      "OXY",
+      "OXZ",
+      "OYZ",
+      "OYX",
+      "ParallelPlane",
+      "MidPoint",
+      "MidPlane"
+     ],
+     "default": "Deactivated"
+    },
+    "MapPathParameter": {
+     "type": "App::PropertyFloat",
+     "group": "Attachment",
+     "default": 0.0
+    },
+    "MapReversed": {
+     "type": "App::PropertyBool",
+     "group": "Attachment",
+     "default": false
+    },
+    "Operation": {
+     "type": "App::PropertyEnumeration",
+     "group": "Part Design",
+     "enum": [
+      "Union"
+     ],
+     "default": "Union"
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Width": {
+     "type": "App::PropertyLength",
+     "group": "Box"
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "AdditiveCylinder": {
+   "typeId": "PartDesign::AdditiveCylinder",
+   "props": {
+    "Angle": {
+     "type": "App::PropertyAngle",
+     "group": "Cylinder"
+    },
+    "AttachmentOffset": {
+     "type": "App::PropertyPlacement",
+     "group": "Attachment"
+    },
+    "AttachmentSupport": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Attachment"
+    },
+    "FirstAngle": {
+     "type": "App::PropertyAngle",
+     "group": "Prism"
+    },
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "Height": {
+     "type": "App::PropertyLength",
+     "group": "Cylinder"
+    },
+    "MapMode": {
+     "type": "App::PropertyEnumeration",
+     "group": "Attachment",
+     "enum": [
+      "Deactivated",
+      "Translate",
+      "ObjectXY",
+      "ObjectXZ",
+      "ObjectYZ",
+      "FlatFace",
+      "TangentPlane",
+      "NormalToEdge",
+      "FrenetNB",
+      "FrenetTN",
+      "FrenetTB",
+      "Concentric",
+      "SectionOfRevolution",
+      "ThreePointsPlane",
+      "ThreePointsNormal",
+      "Folding",
+      "ObjectX",
+      "ObjectY",
+      "ObjectZ",
+      "AxisOfCurvature",
+      "Directrix1",
+      "Directrix2",
+      "Asymptote1",
+      "Asymptote2",
+      "Tangent",
+      "Normal",
+      "Binormal",
+      "TangentU",
+      "TangentV",
+      "TwoPointLine",
+      "IntersectionLine",
+      "ProximityLine",
+      "ObjectOrigin",
+      "Focus1",
+      "Focus2",
+      "OnEdge",
+      "CenterOfCurvature",
+      "CenterOfMass",
+      "IntersectionPoint",
+      "Vertex",
+      "ProximityPoint1",
+      "ProximityPoint2",
+      "AxisOfInertia1",
+      "AxisOfInertia2",
+      "AxisOfInertia3",
+      "InertialCS",
+      "FaceNormal",
+      "OZX",
+      "OZY",
+      "OXY",
+      "OXZ",
+      "OYZ",
+      "OYX",
+      "ParallelPlane",
+      "MidPoint",
+      "MidPlane"
+     ],
+     "default": "Deactivated"
+    },
+    "MapPathParameter": {
+     "type": "App::PropertyFloat",
+     "group": "Attachment",
+     "default": 0.0
+    },
+    "MapReversed": {
+     "type": "App::PropertyBool",
+     "group": "Attachment",
+     "default": false
+    },
+    "Operation": {
+     "type": "App::PropertyEnumeration",
+     "group": "Part Design",
+     "enum": [
+      "Union"
+     ],
+     "default": "Union"
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Radius": {
+     "type": "App::PropertyLength",
+     "group": "Cylinder"
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "SecondAngle": {
+     "type": "App::PropertyAngle",
+     "group": "Prism"
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "AdditiveSphere": {
+   "typeId": "PartDesign::AdditiveSphere",
+   "props": {
+    "Angle1": {
+     "type": "App::PropertyAngle",
+     "group": "Sphere"
+    },
+    "Angle2": {
+     "type": "App::PropertyAngle",
+     "group": "Sphere"
+    },
+    "Angle3": {
+     "type": "App::PropertyAngle",
+     "group": "Sphere"
+    },
+    "AttachmentOffset": {
+     "type": "App::PropertyPlacement",
+     "group": "Attachment"
+    },
+    "AttachmentSupport": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Attachment"
+    },
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "MapMode": {
+     "type": "App::PropertyEnumeration",
+     "group": "Attachment",
+     "enum": [
+      "Deactivated",
+      "Translate",
+      "ObjectXY",
+      "ObjectXZ",
+      "ObjectYZ",
+      "FlatFace",
+      "TangentPlane",
+      "NormalToEdge",
+      "FrenetNB",
+      "FrenetTN",
+      "FrenetTB",
+      "Concentric",
+      "SectionOfRevolution",
+      "ThreePointsPlane",
+      "ThreePointsNormal",
+      "Folding",
+      "ObjectX",
+      "ObjectY",
+      "ObjectZ",
+      "AxisOfCurvature",
+      "Directrix1",
+      "Directrix2",
+      "Asymptote1",
+      "Asymptote2",
+      "Tangent",
+      "Normal",
+      "Binormal",
+      "TangentU",
+      "TangentV",
+      "TwoPointLine",
+      "IntersectionLine",
+      "ProximityLine",
+      "ObjectOrigin",
+      "Focus1",
+      "Focus2",
+      "OnEdge",
+      "CenterOfCurvature",
+      "CenterOfMass",
+      "IntersectionPoint",
+      "Vertex",
+      "ProximityPoint1",
+      "ProximityPoint2",
+      "AxisOfInertia1",
+      "AxisOfInertia2",
+      "AxisOfInertia3",
+      "InertialCS",
+      "FaceNormal",
+      "OZX",
+      "OZY",
+      "OXY",
+      "OXZ",
+      "OYZ",
+      "OYX",
+      "ParallelPlane",
+      "MidPoint",
+      "MidPlane"
+     ],
+     "default": "Deactivated"
+    },
+    "MapPathParameter": {
+     "type": "App::PropertyFloat",
+     "group": "Attachment",
+     "default": 0.0
+    },
+    "MapReversed": {
+     "type": "App::PropertyBool",
+     "group": "Attachment",
+     "default": false
+    },
+    "Operation": {
+     "type": "App::PropertyEnumeration",
+     "group": "Part Design",
+     "enum": [
+      "Union"
+     ],
+     "default": "Union"
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Radius": {
+     "type": "App::PropertyLength",
+     "group": "Sphere"
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "AdditiveCone": {
+   "typeId": "PartDesign::AdditiveCone",
+   "props": {
+    "Angle": {
+     "type": "App::PropertyAngle",
+     "group": "Cone"
+    },
+    "AttachmentOffset": {
+     "type": "App::PropertyPlacement",
+     "group": "Attachment"
+    },
+    "AttachmentSupport": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Attachment"
+    },
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "Height": {
+     "type": "App::PropertyLength",
+     "group": "Cone"
+    },
+    "MapMode": {
+     "type": "App::PropertyEnumeration",
+     "group": "Attachment",
+     "enum": [
+      "Deactivated",
+      "Translate",
+      "ObjectXY",
+      "ObjectXZ",
+      "ObjectYZ",
+      "FlatFace",
+      "TangentPlane",
+      "NormalToEdge",
+      "FrenetNB",
+      "FrenetTN",
+      "FrenetTB",
+      "Concentric",
+      "SectionOfRevolution",
+      "ThreePointsPlane",
+      "ThreePointsNormal",
+      "Folding",
+      "ObjectX",
+      "ObjectY",
+      "ObjectZ",
+      "AxisOfCurvature",
+      "Directrix1",
+      "Directrix2",
+      "Asymptote1",
+      "Asymptote2",
+      "Tangent",
+      "Normal",
+      "Binormal",
+      "TangentU",
+      "TangentV",
+      "TwoPointLine",
+      "IntersectionLine",
+      "ProximityLine",
+      "ObjectOrigin",
+      "Focus1",
+      "Focus2",
+      "OnEdge",
+      "CenterOfCurvature",
+      "CenterOfMass",
+      "IntersectionPoint",
+      "Vertex",
+      "ProximityPoint1",
+      "ProximityPoint2",
+      "AxisOfInertia1",
+      "AxisOfInertia2",
+      "AxisOfInertia3",
+      "InertialCS",
+      "FaceNormal",
+      "OZX",
+      "OZY",
+      "OXY",
+      "OXZ",
+      "OYZ",
+      "OYX",
+      "ParallelPlane",
+      "MidPoint",
+      "MidPlane"
+     ],
+     "default": "Deactivated"
+    },
+    "MapPathParameter": {
+     "type": "App::PropertyFloat",
+     "group": "Attachment",
+     "default": 0.0
+    },
+    "MapReversed": {
+     "type": "App::PropertyBool",
+     "group": "Attachment",
+     "default": false
+    },
+    "Operation": {
+     "type": "App::PropertyEnumeration",
+     "group": "Part Design",
+     "enum": [
+      "Union"
+     ],
+     "default": "Union"
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Radius1": {
+     "type": "App::PropertyLength",
+     "group": "Cone"
+    },
+    "Radius2": {
+     "type": "App::PropertyLength",
+     "group": "Cone"
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "AdditiveEllipsoid": {
+   "typeId": "PartDesign::AdditiveEllipsoid",
+   "props": {
+    "Angle1": {
+     "type": "App::PropertyAngle",
+     "group": "Ellipsoid"
+    },
+    "Angle2": {
+     "type": "App::PropertyAngle",
+     "group": "Ellipsoid"
+    },
+    "Angle3": {
+     "type": "App::PropertyAngle",
+     "group": "Ellipsoid"
+    },
+    "AttachmentOffset": {
+     "type": "App::PropertyPlacement",
+     "group": "Attachment"
+    },
+    "AttachmentSupport": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Attachment"
+    },
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "MapMode": {
+     "type": "App::PropertyEnumeration",
+     "group": "Attachment",
+     "enum": [
+      "Deactivated",
+      "Translate",
+      "ObjectXY",
+      "ObjectXZ",
+      "ObjectYZ",
+      "FlatFace",
+      "TangentPlane",
+      "NormalToEdge",
+      "FrenetNB",
+      "FrenetTN",
+      "FrenetTB",
+      "Concentric",
+      "SectionOfRevolution",
+      "ThreePointsPlane",
+      "ThreePointsNormal",
+      "Folding",
+      "ObjectX",
+      "ObjectY",
+      "ObjectZ",
+      "AxisOfCurvature",
+      "Directrix1",
+      "Directrix2",
+      "Asymptote1",
+      "Asymptote2",
+      "Tangent",
+      "Normal",
+      "Binormal",
+      "TangentU",
+      "TangentV",
+      "TwoPointLine",
+      "IntersectionLine",
+      "ProximityLine",
+      "ObjectOrigin",
+      "Focus1",
+      "Focus2",
+      "OnEdge",
+      "CenterOfCurvature",
+      "CenterOfMass",
+      "IntersectionPoint",
+      "Vertex",
+      "ProximityPoint1",
+      "ProximityPoint2",
+      "AxisOfInertia1",
+      "AxisOfInertia2",
+      "AxisOfInertia3",
+      "InertialCS",
+      "FaceNormal",
+      "OZX",
+      "OZY",
+      "OXY",
+      "OXZ",
+      "OYZ",
+      "OYX",
+      "ParallelPlane",
+      "MidPoint",
+      "MidPlane"
+     ],
+     "default": "Deactivated"
+    },
+    "MapPathParameter": {
+     "type": "App::PropertyFloat",
+     "group": "Attachment",
+     "default": 0.0
+    },
+    "MapReversed": {
+     "type": "App::PropertyBool",
+     "group": "Attachment",
+     "default": false
+    },
+    "Operation": {
+     "type": "App::PropertyEnumeration",
+     "group": "Part Design",
+     "enum": [
+      "Union"
+     ],
+     "default": "Union"
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Radius1": {
+     "type": "App::PropertyLength",
+     "group": "Ellipsoid"
+    },
+    "Radius2": {
+     "type": "App::PropertyLength",
+     "group": "Ellipsoid"
+    },
+    "Radius3": {
+     "type": "App::PropertyLength",
+     "group": "Ellipsoid"
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "AdditiveTorus": {
+   "typeId": "PartDesign::AdditiveTorus",
+   "props": {
+    "Angle1": {
+     "type": "App::PropertyAngle",
+     "group": "Torus"
+    },
+    "Angle2": {
+     "type": "App::PropertyAngle",
+     "group": "Torus"
+    },
+    "Angle3": {
+     "type": "App::PropertyAngle",
+     "group": "Torus"
+    },
+    "AttachmentOffset": {
+     "type": "App::PropertyPlacement",
+     "group": "Attachment"
+    },
+    "AttachmentSupport": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Attachment"
+    },
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "MapMode": {
+     "type": "App::PropertyEnumeration",
+     "group": "Attachment",
+     "enum": [
+      "Deactivated",
+      "Translate",
+      "ObjectXY",
+      "ObjectXZ",
+      "ObjectYZ",
+      "FlatFace",
+      "TangentPlane",
+      "NormalToEdge",
+      "FrenetNB",
+      "FrenetTN",
+      "FrenetTB",
+      "Concentric",
+      "SectionOfRevolution",
+      "ThreePointsPlane",
+      "ThreePointsNormal",
+      "Folding",
+      "ObjectX",
+      "ObjectY",
+      "ObjectZ",
+      "AxisOfCurvature",
+      "Directrix1",
+      "Directrix2",
+      "Asymptote1",
+      "Asymptote2",
+      "Tangent",
+      "Normal",
+      "Binormal",
+      "TangentU",
+      "TangentV",
+      "TwoPointLine",
+      "IntersectionLine",
+      "ProximityLine",
+      "ObjectOrigin",
+      "Focus1",
+      "Focus2",
+      "OnEdge",
+      "CenterOfCurvature",
+      "CenterOfMass",
+      "IntersectionPoint",
+      "Vertex",
+      "ProximityPoint1",
+      "ProximityPoint2",
+      "AxisOfInertia1",
+      "AxisOfInertia2",
+      "AxisOfInertia3",
+      "InertialCS",
+      "FaceNormal",
+      "OZX",
+      "OZY",
+      "OXY",
+      "OXZ",
+      "OYZ",
+      "OYX",
+      "ParallelPlane",
+      "MidPoint",
+      "MidPlane"
+     ],
+     "default": "Deactivated"
+    },
+    "MapPathParameter": {
+     "type": "App::PropertyFloat",
+     "group": "Attachment",
+     "default": 0.0
+    },
+    "MapReversed": {
+     "type": "App::PropertyBool",
+     "group": "Attachment",
+     "default": false
+    },
+    "Operation": {
+     "type": "App::PropertyEnumeration",
+     "group": "Part Design",
+     "enum": [
+      "Union"
+     ],
+     "default": "Union"
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Radius1": {
+     "type": "App::PropertyLength",
+     "group": "Torus"
+    },
+    "Radius2": {
+     "type": "App::PropertyLength",
+     "group": "Torus"
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "AdditivePrism": {
+   "typeId": "PartDesign::AdditivePrism",
+   "props": {
+    "AttachmentOffset": {
+     "type": "App::PropertyPlacement",
+     "group": "Attachment"
+    },
+    "AttachmentSupport": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Attachment"
+    },
+    "Circumradius": {
+     "type": "App::PropertyLength",
+     "group": "Prism"
+    },
+    "FirstAngle": {
+     "type": "App::PropertyAngle",
+     "group": "Prism"
+    },
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "Height": {
+     "type": "App::PropertyLength",
+     "group": "Prism"
+    },
+    "MapMode": {
+     "type": "App::PropertyEnumeration",
+     "group": "Attachment",
+     "enum": [
+      "Deactivated",
+      "Translate",
+      "ObjectXY",
+      "ObjectXZ",
+      "ObjectYZ",
+      "FlatFace",
+      "TangentPlane",
+      "NormalToEdge",
+      "FrenetNB",
+      "FrenetTN",
+      "FrenetTB",
+      "Concentric",
+      "SectionOfRevolution",
+      "ThreePointsPlane",
+      "ThreePointsNormal",
+      "Folding",
+      "ObjectX",
+      "ObjectY",
+      "ObjectZ",
+      "AxisOfCurvature",
+      "Directrix1",
+      "Directrix2",
+      "Asymptote1",
+      "Asymptote2",
+      "Tangent",
+      "Normal",
+      "Binormal",
+      "TangentU",
+      "TangentV",
+      "TwoPointLine",
+      "IntersectionLine",
+      "ProximityLine",
+      "ObjectOrigin",
+      "Focus1",
+      "Focus2",
+      "OnEdge",
+      "CenterOfCurvature",
+      "CenterOfMass",
+      "IntersectionPoint",
+      "Vertex",
+      "ProximityPoint1",
+      "ProximityPoint2",
+      "AxisOfInertia1",
+      "AxisOfInertia2",
+      "AxisOfInertia3",
+      "InertialCS",
+      "FaceNormal",
+      "OZX",
+      "OZY",
+      "OXY",
+      "OXZ",
+      "OYZ",
+      "OYX",
+      "ParallelPlane",
+      "MidPoint",
+      "MidPlane"
+     ],
+     "default": "Deactivated"
+    },
+    "MapPathParameter": {
+     "type": "App::PropertyFloat",
+     "group": "Attachment",
+     "default": 0.0
+    },
+    "MapReversed": {
+     "type": "App::PropertyBool",
+     "group": "Attachment",
+     "default": false
+    },
+    "Operation": {
+     "type": "App::PropertyEnumeration",
+     "group": "Part Design",
+     "enum": [
+      "Union"
+     ],
+     "default": "Union"
+    },
+    "Polygon": {
+     "type": "App::PropertyIntegerConstraint",
+     "group": "Prism",
+     "default": 6
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "SecondAngle": {
+     "type": "App::PropertyAngle",
+     "group": "Prism"
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "AdditiveWedge": {
+   "typeId": "PartDesign::AdditiveWedge",
+   "props": {
+    "AttachmentOffset": {
+     "type": "App::PropertyPlacement",
+     "group": "Attachment"
+    },
+    "AttachmentSupport": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Attachment"
+    },
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "MapMode": {
+     "type": "App::PropertyEnumeration",
+     "group": "Attachment",
+     "enum": [
+      "Deactivated",
+      "Translate",
+      "ObjectXY",
+      "ObjectXZ",
+      "ObjectYZ",
+      "FlatFace",
+      "TangentPlane",
+      "NormalToEdge",
+      "FrenetNB",
+      "FrenetTN",
+      "FrenetTB",
+      "Concentric",
+      "SectionOfRevolution",
+      "ThreePointsPlane",
+      "ThreePointsNormal",
+      "Folding",
+      "ObjectX",
+      "ObjectY",
+      "ObjectZ",
+      "AxisOfCurvature",
+      "Directrix1",
+      "Directrix2",
+      "Asymptote1",
+      "Asymptote2",
+      "Tangent",
+      "Normal",
+      "Binormal",
+      "TangentU",
+      "TangentV",
+      "TwoPointLine",
+      "IntersectionLine",
+      "ProximityLine",
+      "ObjectOrigin",
+      "Focus1",
+      "Focus2",
+      "OnEdge",
+      "CenterOfCurvature",
+      "CenterOfMass",
+      "IntersectionPoint",
+      "Vertex",
+      "ProximityPoint1",
+      "ProximityPoint2",
+      "AxisOfInertia1",
+      "AxisOfInertia2",
+      "AxisOfInertia3",
+      "InertialCS",
+      "FaceNormal",
+      "OZX",
+      "OZY",
+      "OXY",
+      "OXZ",
+      "OYZ",
+      "OYX",
+      "ParallelPlane",
+      "MidPoint",
+      "MidPlane"
+     ],
+     "default": "Deactivated"
+    },
+    "MapPathParameter": {
+     "type": "App::PropertyFloat",
+     "group": "Attachment",
+     "default": 0.0
+    },
+    "MapReversed": {
+     "type": "App::PropertyBool",
+     "group": "Attachment",
+     "default": false
+    },
+    "Operation": {
+     "type": "App::PropertyEnumeration",
+     "group": "Part Design",
+     "enum": [
+      "Union"
+     ],
+     "default": "Union"
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "X2max": {
+     "type": "App::PropertyDistance",
+     "group": "Wedge"
+    },
+    "X2min": {
+     "type": "App::PropertyDistance",
+     "group": "Wedge"
+    },
+    "Xmax": {
+     "type": "App::PropertyDistance",
+     "group": "Wedge"
+    },
+    "Xmin": {
+     "type": "App::PropertyDistance",
+     "group": "Wedge"
+    },
+    "Ymax": {
+     "type": "App::PropertyDistance",
+     "group": "Wedge"
+    },
+    "Ymin": {
+     "type": "App::PropertyDistance",
+     "group": "Wedge"
+    },
+    "Z2max": {
+     "type": "App::PropertyDistance",
+     "group": "Wedge"
+    },
+    "Z2min": {
+     "type": "App::PropertyDistance",
+     "group": "Wedge"
+    },
+    "Zmax": {
+     "type": "App::PropertyDistance",
+     "group": "Wedge"
+    },
+    "Zmin": {
+     "type": "App::PropertyDistance",
+     "group": "Wedge"
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "SubtractiveBox": {
+   "typeId": "PartDesign::SubtractiveBox",
+   "props": {
+    "AttachmentOffset": {
+     "type": "App::PropertyPlacement",
+     "group": "Attachment"
+    },
+    "AttachmentSupport": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Attachment"
+    },
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "Height": {
+     "type": "App::PropertyLength",
+     "group": "Box"
+    },
+    "Length": {
+     "type": "App::PropertyLength",
+     "group": "Box"
+    },
+    "MapMode": {
+     "type": "App::PropertyEnumeration",
+     "group": "Attachment",
+     "enum": [
+      "Deactivated",
+      "Translate",
+      "ObjectXY",
+      "ObjectXZ",
+      "ObjectYZ",
+      "FlatFace",
+      "TangentPlane",
+      "NormalToEdge",
+      "FrenetNB",
+      "FrenetTN",
+      "FrenetTB",
+      "Concentric",
+      "SectionOfRevolution",
+      "ThreePointsPlane",
+      "ThreePointsNormal",
+      "Folding",
+      "ObjectX",
+      "ObjectY",
+      "ObjectZ",
+      "AxisOfCurvature",
+      "Directrix1",
+      "Directrix2",
+      "Asymptote1",
+      "Asymptote2",
+      "Tangent",
+      "Normal",
+      "Binormal",
+      "TangentU",
+      "TangentV",
+      "TwoPointLine",
+      "IntersectionLine",
+      "ProximityLine",
+      "ObjectOrigin",
+      "Focus1",
+      "Focus2",
+      "OnEdge",
+      "CenterOfCurvature",
+      "CenterOfMass",
+      "IntersectionPoint",
+      "Vertex",
+      "ProximityPoint1",
+      "ProximityPoint2",
+      "AxisOfInertia1",
+      "AxisOfInertia2",
+      "AxisOfInertia3",
+      "InertialCS",
+      "FaceNormal",
+      "OZX",
+      "OZY",
+      "OXY",
+      "OXZ",
+      "OYZ",
+      "OYX",
+      "ParallelPlane",
+      "MidPoint",
+      "MidPlane"
+     ],
+     "default": "Deactivated"
+    },
+    "MapPathParameter": {
+     "type": "App::PropertyFloat",
+     "group": "Attachment",
+     "default": 0.0
+    },
+    "MapReversed": {
+     "type": "App::PropertyBool",
+     "group": "Attachment",
+     "default": false
+    },
+    "Operation": {
+     "type": "App::PropertyEnumeration",
+     "group": "Part Design",
+     "enum": [
+      "Subtraction",
+      "Common"
+     ],
+     "default": "Subtraction"
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Width": {
+     "type": "App::PropertyLength",
+     "group": "Box"
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "SubtractiveCylinder": {
+   "typeId": "PartDesign::SubtractiveCylinder",
+   "props": {
+    "Angle": {
+     "type": "App::PropertyAngle",
+     "group": "Cylinder"
+    },
+    "AttachmentOffset": {
+     "type": "App::PropertyPlacement",
+     "group": "Attachment"
+    },
+    "AttachmentSupport": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Attachment"
+    },
+    "FirstAngle": {
+     "type": "App::PropertyAngle",
+     "group": "Prism"
+    },
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "Height": {
+     "type": "App::PropertyLength",
+     "group": "Cylinder"
+    },
+    "MapMode": {
+     "type": "App::PropertyEnumeration",
+     "group": "Attachment",
+     "enum": [
+      "Deactivated",
+      "Translate",
+      "ObjectXY",
+      "ObjectXZ",
+      "ObjectYZ",
+      "FlatFace",
+      "TangentPlane",
+      "NormalToEdge",
+      "FrenetNB",
+      "FrenetTN",
+      "FrenetTB",
+      "Concentric",
+      "SectionOfRevolution",
+      "ThreePointsPlane",
+      "ThreePointsNormal",
+      "Folding",
+      "ObjectX",
+      "ObjectY",
+      "ObjectZ",
+      "AxisOfCurvature",
+      "Directrix1",
+      "Directrix2",
+      "Asymptote1",
+      "Asymptote2",
+      "Tangent",
+      "Normal",
+      "Binormal",
+      "TangentU",
+      "TangentV",
+      "TwoPointLine",
+      "IntersectionLine",
+      "ProximityLine",
+      "ObjectOrigin",
+      "Focus1",
+      "Focus2",
+      "OnEdge",
+      "CenterOfCurvature",
+      "CenterOfMass",
+      "IntersectionPoint",
+      "Vertex",
+      "ProximityPoint1",
+      "ProximityPoint2",
+      "AxisOfInertia1",
+      "AxisOfInertia2",
+      "AxisOfInertia3",
+      "InertialCS",
+      "FaceNormal",
+      "OZX",
+      "OZY",
+      "OXY",
+      "OXZ",
+      "OYZ",
+      "OYX",
+      "ParallelPlane",
+      "MidPoint",
+      "MidPlane"
+     ],
+     "default": "Deactivated"
+    },
+    "MapPathParameter": {
+     "type": "App::PropertyFloat",
+     "group": "Attachment",
+     "default": 0.0
+    },
+    "MapReversed": {
+     "type": "App::PropertyBool",
+     "group": "Attachment",
+     "default": false
+    },
+    "Operation": {
+     "type": "App::PropertyEnumeration",
+     "group": "Part Design",
+     "enum": [
+      "Subtraction",
+      "Common"
+     ],
+     "default": "Subtraction"
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Radius": {
+     "type": "App::PropertyLength",
+     "group": "Cylinder"
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "SecondAngle": {
+     "type": "App::PropertyAngle",
+     "group": "Prism"
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "SubtractiveSphere": {
+   "typeId": "PartDesign::SubtractiveSphere",
+   "props": {
+    "Angle1": {
+     "type": "App::PropertyAngle",
+     "group": "Sphere"
+    },
+    "Angle2": {
+     "type": "App::PropertyAngle",
+     "group": "Sphere"
+    },
+    "Angle3": {
+     "type": "App::PropertyAngle",
+     "group": "Sphere"
+    },
+    "AttachmentOffset": {
+     "type": "App::PropertyPlacement",
+     "group": "Attachment"
+    },
+    "AttachmentSupport": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Attachment"
+    },
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "MapMode": {
+     "type": "App::PropertyEnumeration",
+     "group": "Attachment",
+     "enum": [
+      "Deactivated",
+      "Translate",
+      "ObjectXY",
+      "ObjectXZ",
+      "ObjectYZ",
+      "FlatFace",
+      "TangentPlane",
+      "NormalToEdge",
+      "FrenetNB",
+      "FrenetTN",
+      "FrenetTB",
+      "Concentric",
+      "SectionOfRevolution",
+      "ThreePointsPlane",
+      "ThreePointsNormal",
+      "Folding",
+      "ObjectX",
+      "ObjectY",
+      "ObjectZ",
+      "AxisOfCurvature",
+      "Directrix1",
+      "Directrix2",
+      "Asymptote1",
+      "Asymptote2",
+      "Tangent",
+      "Normal",
+      "Binormal",
+      "TangentU",
+      "TangentV",
+      "TwoPointLine",
+      "IntersectionLine",
+      "ProximityLine",
+      "ObjectOrigin",
+      "Focus1",
+      "Focus2",
+      "OnEdge",
+      "CenterOfCurvature",
+      "CenterOfMass",
+      "IntersectionPoint",
+      "Vertex",
+      "ProximityPoint1",
+      "ProximityPoint2",
+      "AxisOfInertia1",
+      "AxisOfInertia2",
+      "AxisOfInertia3",
+      "InertialCS",
+      "FaceNormal",
+      "OZX",
+      "OZY",
+      "OXY",
+      "OXZ",
+      "OYZ",
+      "OYX",
+      "ParallelPlane",
+      "MidPoint",
+      "MidPlane"
+     ],
+     "default": "Deactivated"
+    },
+    "MapPathParameter": {
+     "type": "App::PropertyFloat",
+     "group": "Attachment",
+     "default": 0.0
+    },
+    "MapReversed": {
+     "type": "App::PropertyBool",
+     "group": "Attachment",
+     "default": false
+    },
+    "Operation": {
+     "type": "App::PropertyEnumeration",
+     "group": "Part Design",
+     "enum": [
+      "Subtraction",
+      "Common"
+     ],
+     "default": "Subtraction"
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Radius": {
+     "type": "App::PropertyLength",
+     "group": "Sphere"
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "SubtractiveCone": {
+   "typeId": "PartDesign::SubtractiveCone",
+   "props": {
+    "Angle": {
+     "type": "App::PropertyAngle",
+     "group": "Cone"
+    },
+    "AttachmentOffset": {
+     "type": "App::PropertyPlacement",
+     "group": "Attachment"
+    },
+    "AttachmentSupport": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Attachment"
+    },
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "Height": {
+     "type": "App::PropertyLength",
+     "group": "Cone"
+    },
+    "MapMode": {
+     "type": "App::PropertyEnumeration",
+     "group": "Attachment",
+     "enum": [
+      "Deactivated",
+      "Translate",
+      "ObjectXY",
+      "ObjectXZ",
+      "ObjectYZ",
+      "FlatFace",
+      "TangentPlane",
+      "NormalToEdge",
+      "FrenetNB",
+      "FrenetTN",
+      "FrenetTB",
+      "Concentric",
+      "SectionOfRevolution",
+      "ThreePointsPlane",
+      "ThreePointsNormal",
+      "Folding",
+      "ObjectX",
+      "ObjectY",
+      "ObjectZ",
+      "AxisOfCurvature",
+      "Directrix1",
+      "Directrix2",
+      "Asymptote1",
+      "Asymptote2",
+      "Tangent",
+      "Normal",
+      "Binormal",
+      "TangentU",
+      "TangentV",
+      "TwoPointLine",
+      "IntersectionLine",
+      "ProximityLine",
+      "ObjectOrigin",
+      "Focus1",
+      "Focus2",
+      "OnEdge",
+      "CenterOfCurvature",
+      "CenterOfMass",
+      "IntersectionPoint",
+      "Vertex",
+      "ProximityPoint1",
+      "ProximityPoint2",
+      "AxisOfInertia1",
+      "AxisOfInertia2",
+      "AxisOfInertia3",
+      "InertialCS",
+      "FaceNormal",
+      "OZX",
+      "OZY",
+      "OXY",
+      "OXZ",
+      "OYZ",
+      "OYX",
+      "ParallelPlane",
+      "MidPoint",
+      "MidPlane"
+     ],
+     "default": "Deactivated"
+    },
+    "MapPathParameter": {
+     "type": "App::PropertyFloat",
+     "group": "Attachment",
+     "default": 0.0
+    },
+    "MapReversed": {
+     "type": "App::PropertyBool",
+     "group": "Attachment",
+     "default": false
+    },
+    "Operation": {
+     "type": "App::PropertyEnumeration",
+     "group": "Part Design",
+     "enum": [
+      "Subtraction",
+      "Common"
+     ],
+     "default": "Subtraction"
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Radius1": {
+     "type": "App::PropertyLength",
+     "group": "Cone"
+    },
+    "Radius2": {
+     "type": "App::PropertyLength",
+     "group": "Cone"
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "SubtractiveEllipsoid": {
+   "typeId": "PartDesign::SubtractiveEllipsoid",
+   "props": {
+    "Angle1": {
+     "type": "App::PropertyAngle",
+     "group": "Ellipsoid"
+    },
+    "Angle2": {
+     "type": "App::PropertyAngle",
+     "group": "Ellipsoid"
+    },
+    "Angle3": {
+     "type": "App::PropertyAngle",
+     "group": "Ellipsoid"
+    },
+    "AttachmentOffset": {
+     "type": "App::PropertyPlacement",
+     "group": "Attachment"
+    },
+    "AttachmentSupport": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Attachment"
+    },
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "MapMode": {
+     "type": "App::PropertyEnumeration",
+     "group": "Attachment",
+     "enum": [
+      "Deactivated",
+      "Translate",
+      "ObjectXY",
+      "ObjectXZ",
+      "ObjectYZ",
+      "FlatFace",
+      "TangentPlane",
+      "NormalToEdge",
+      "FrenetNB",
+      "FrenetTN",
+      "FrenetTB",
+      "Concentric",
+      "SectionOfRevolution",
+      "ThreePointsPlane",
+      "ThreePointsNormal",
+      "Folding",
+      "ObjectX",
+      "ObjectY",
+      "ObjectZ",
+      "AxisOfCurvature",
+      "Directrix1",
+      "Directrix2",
+      "Asymptote1",
+      "Asymptote2",
+      "Tangent",
+      "Normal",
+      "Binormal",
+      "TangentU",
+      "TangentV",
+      "TwoPointLine",
+      "IntersectionLine",
+      "ProximityLine",
+      "ObjectOrigin",
+      "Focus1",
+      "Focus2",
+      "OnEdge",
+      "CenterOfCurvature",
+      "CenterOfMass",
+      "IntersectionPoint",
+      "Vertex",
+      "ProximityPoint1",
+      "ProximityPoint2",
+      "AxisOfInertia1",
+      "AxisOfInertia2",
+      "AxisOfInertia3",
+      "InertialCS",
+      "FaceNormal",
+      "OZX",
+      "OZY",
+      "OXY",
+      "OXZ",
+      "OYZ",
+      "OYX",
+      "ParallelPlane",
+      "MidPoint",
+      "MidPlane"
+     ],
+     "default": "Deactivated"
+    },
+    "MapPathParameter": {
+     "type": "App::PropertyFloat",
+     "group": "Attachment",
+     "default": 0.0
+    },
+    "MapReversed": {
+     "type": "App::PropertyBool",
+     "group": "Attachment",
+     "default": false
+    },
+    "Operation": {
+     "type": "App::PropertyEnumeration",
+     "group": "Part Design",
+     "enum": [
+      "Subtraction",
+      "Common"
+     ],
+     "default": "Subtraction"
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Radius1": {
+     "type": "App::PropertyLength",
+     "group": "Ellipsoid"
+    },
+    "Radius2": {
+     "type": "App::PropertyLength",
+     "group": "Ellipsoid"
+    },
+    "Radius3": {
+     "type": "App::PropertyLength",
+     "group": "Ellipsoid"
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "SubtractiveTorus": {
+   "typeId": "PartDesign::SubtractiveTorus",
+   "props": {
+    "Angle1": {
+     "type": "App::PropertyAngle",
+     "group": "Torus"
+    },
+    "Angle2": {
+     "type": "App::PropertyAngle",
+     "group": "Torus"
+    },
+    "Angle3": {
+     "type": "App::PropertyAngle",
+     "group": "Torus"
+    },
+    "AttachmentOffset": {
+     "type": "App::PropertyPlacement",
+     "group": "Attachment"
+    },
+    "AttachmentSupport": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Attachment"
+    },
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "MapMode": {
+     "type": "App::PropertyEnumeration",
+     "group": "Attachment",
+     "enum": [
+      "Deactivated",
+      "Translate",
+      "ObjectXY",
+      "ObjectXZ",
+      "ObjectYZ",
+      "FlatFace",
+      "TangentPlane",
+      "NormalToEdge",
+      "FrenetNB",
+      "FrenetTN",
+      "FrenetTB",
+      "Concentric",
+      "SectionOfRevolution",
+      "ThreePointsPlane",
+      "ThreePointsNormal",
+      "Folding",
+      "ObjectX",
+      "ObjectY",
+      "ObjectZ",
+      "AxisOfCurvature",
+      "Directrix1",
+      "Directrix2",
+      "Asymptote1",
+      "Asymptote2",
+      "Tangent",
+      "Normal",
+      "Binormal",
+      "TangentU",
+      "TangentV",
+      "TwoPointLine",
+      "IntersectionLine",
+      "ProximityLine",
+      "ObjectOrigin",
+      "Focus1",
+      "Focus2",
+      "OnEdge",
+      "CenterOfCurvature",
+      "CenterOfMass",
+      "IntersectionPoint",
+      "Vertex",
+      "ProximityPoint1",
+      "ProximityPoint2",
+      "AxisOfInertia1",
+      "AxisOfInertia2",
+      "AxisOfInertia3",
+      "InertialCS",
+      "FaceNormal",
+      "OZX",
+      "OZY",
+      "OXY",
+      "OXZ",
+      "OYZ",
+      "OYX",
+      "ParallelPlane",
+      "MidPoint",
+      "MidPlane"
+     ],
+     "default": "Deactivated"
+    },
+    "MapPathParameter": {
+     "type": "App::PropertyFloat",
+     "group": "Attachment",
+     "default": 0.0
+    },
+    "MapReversed": {
+     "type": "App::PropertyBool",
+     "group": "Attachment",
+     "default": false
+    },
+    "Operation": {
+     "type": "App::PropertyEnumeration",
+     "group": "Part Design",
+     "enum": [
+      "Subtraction",
+      "Common"
+     ],
+     "default": "Subtraction"
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Radius1": {
+     "type": "App::PropertyLength",
+     "group": "Torus"
+    },
+    "Radius2": {
+     "type": "App::PropertyLength",
+     "group": "Torus"
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "SubtractivePrism": {
+   "typeId": "PartDesign::SubtractivePrism",
+   "props": {
+    "AttachmentOffset": {
+     "type": "App::PropertyPlacement",
+     "group": "Attachment"
+    },
+    "AttachmentSupport": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Attachment"
+    },
+    "Circumradius": {
+     "type": "App::PropertyLength",
+     "group": "Prism"
+    },
+    "FirstAngle": {
+     "type": "App::PropertyAngle",
+     "group": "Prism"
+    },
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "Height": {
+     "type": "App::PropertyLength",
+     "group": "Prism"
+    },
+    "MapMode": {
+     "type": "App::PropertyEnumeration",
+     "group": "Attachment",
+     "enum": [
+      "Deactivated",
+      "Translate",
+      "ObjectXY",
+      "ObjectXZ",
+      "ObjectYZ",
+      "FlatFace",
+      "TangentPlane",
+      "NormalToEdge",
+      "FrenetNB",
+      "FrenetTN",
+      "FrenetTB",
+      "Concentric",
+      "SectionOfRevolution",
+      "ThreePointsPlane",
+      "ThreePointsNormal",
+      "Folding",
+      "ObjectX",
+      "ObjectY",
+      "ObjectZ",
+      "AxisOfCurvature",
+      "Directrix1",
+      "Directrix2",
+      "Asymptote1",
+      "Asymptote2",
+      "Tangent",
+      "Normal",
+      "Binormal",
+      "TangentU",
+      "TangentV",
+      "TwoPointLine",
+      "IntersectionLine",
+      "ProximityLine",
+      "ObjectOrigin",
+      "Focus1",
+      "Focus2",
+      "OnEdge",
+      "CenterOfCurvature",
+      "CenterOfMass",
+      "IntersectionPoint",
+      "Vertex",
+      "ProximityPoint1",
+      "ProximityPoint2",
+      "AxisOfInertia1",
+      "AxisOfInertia2",
+      "AxisOfInertia3",
+      "InertialCS",
+      "FaceNormal",
+      "OZX",
+      "OZY",
+      "OXY",
+      "OXZ",
+      "OYZ",
+      "OYX",
+      "ParallelPlane",
+      "MidPoint",
+      "MidPlane"
+     ],
+     "default": "Deactivated"
+    },
+    "MapPathParameter": {
+     "type": "App::PropertyFloat",
+     "group": "Attachment",
+     "default": 0.0
+    },
+    "MapReversed": {
+     "type": "App::PropertyBool",
+     "group": "Attachment",
+     "default": false
+    },
+    "Operation": {
+     "type": "App::PropertyEnumeration",
+     "group": "Part Design",
+     "enum": [
+      "Subtraction",
+      "Common"
+     ],
+     "default": "Subtraction"
+    },
+    "Polygon": {
+     "type": "App::PropertyIntegerConstraint",
+     "group": "Prism",
+     "default": 6
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "SecondAngle": {
+     "type": "App::PropertyAngle",
+     "group": "Prism"
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "SubtractiveWedge": {
+   "typeId": "PartDesign::SubtractiveWedge",
+   "props": {
+    "AttachmentOffset": {
+     "type": "App::PropertyPlacement",
+     "group": "Attachment"
+    },
+    "AttachmentSupport": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Attachment"
+    },
+    "FuzzyTolerance": {
+     "type": "App::PropertyFloatConstraint",
+     "group": "Part Design",
+     "default": 0.0
+    },
+    "MapMode": {
+     "type": "App::PropertyEnumeration",
+     "group": "Attachment",
+     "enum": [
+      "Deactivated",
+      "Translate",
+      "ObjectXY",
+      "ObjectXZ",
+      "ObjectYZ",
+      "FlatFace",
+      "TangentPlane",
+      "NormalToEdge",
+      "FrenetNB",
+      "FrenetTN",
+      "FrenetTB",
+      "Concentric",
+      "SectionOfRevolution",
+      "ThreePointsPlane",
+      "ThreePointsNormal",
+      "Folding",
+      "ObjectX",
+      "ObjectY",
+      "ObjectZ",
+      "AxisOfCurvature",
+      "Directrix1",
+      "Directrix2",
+      "Asymptote1",
+      "Asymptote2",
+      "Tangent",
+      "Normal",
+      "Binormal",
+      "TangentU",
+      "TangentV",
+      "TwoPointLine",
+      "IntersectionLine",
+      "ProximityLine",
+      "ObjectOrigin",
+      "Focus1",
+      "Focus2",
+      "OnEdge",
+      "CenterOfCurvature",
+      "CenterOfMass",
+      "IntersectionPoint",
+      "Vertex",
+      "ProximityPoint1",
+      "ProximityPoint2",
+      "AxisOfInertia1",
+      "AxisOfInertia2",
+      "AxisOfInertia3",
+      "InertialCS",
+      "FaceNormal",
+      "OZX",
+      "OZY",
+      "OXY",
+      "OXZ",
+      "OYZ",
+      "OYX",
+      "ParallelPlane",
+      "MidPoint",
+      "MidPlane"
+     ],
+     "default": "Deactivated"
+    },
+    "MapPathParameter": {
+     "type": "App::PropertyFloat",
+     "group": "Attachment",
+     "default": 0.0
+    },
+    "MapReversed": {
+     "type": "App::PropertyBool",
+     "group": "Attachment",
+     "default": false
+    },
+    "Operation": {
+     "type": "App::PropertyEnumeration",
+     "group": "Part Design",
+     "enum": [
+      "Subtraction",
+      "Common"
+     ],
+     "default": "Subtraction"
+    },
+    "PreviewShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Part Design",
+     "default": true
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "Suppressed": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "SuppressedShape": {
+     "type": "Part::PropertyPartShape",
+     "group": ""
+    },
+    "X2max": {
+     "type": "App::PropertyDistance",
+     "group": "Wedge"
+    },
+    "X2min": {
+     "type": "App::PropertyDistance",
+     "group": "Wedge"
+    },
+    "Xmax": {
+     "type": "App::PropertyDistance",
+     "group": "Wedge"
+    },
+    "Xmin": {
+     "type": "App::PropertyDistance",
+     "group": "Wedge"
+    },
+    "Ymax": {
+     "type": "App::PropertyDistance",
+     "group": "Wedge"
+    },
+    "Ymin": {
+     "type": "App::PropertyDistance",
+     "group": "Wedge"
+    },
+    "Z2max": {
+     "type": "App::PropertyDistance",
+     "group": "Wedge"
+    },
+    "Z2min": {
+     "type": "App::PropertyDistance",
+     "group": "Wedge"
+    },
+    "Zmax": {
+     "type": "App::PropertyDistance",
+     "group": "Wedge"
+    },
+    "Zmin": {
+     "type": "App::PropertyDistance",
+     "group": "Wedge"
+    },
+    "_Body": {
+     "type": "App::PropertyLinkHidden",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "Plane": {
+   "typeId": "PartDesign::Plane",
+   "props": {
+    "AttachmentOffset": {
+     "type": "App::PropertyPlacement",
+     "group": "Attachment"
+    },
+    "AttachmentSupport": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Attachment"
+    },
+    "Length": {
+     "type": "App::PropertyLength",
+     "group": "Size"
+    },
+    "MapMode": {
+     "type": "App::PropertyEnumeration",
+     "group": "Attachment",
+     "enum": [
+      "Deactivated",
+      "Translate",
+      "ObjectXY",
+      "ObjectXZ",
+      "ObjectYZ",
+      "FlatFace",
+      "TangentPlane",
+      "NormalToEdge",
+      "FrenetNB",
+      "FrenetTN",
+      "FrenetTB",
+      "Concentric",
+      "SectionOfRevolution",
+      "ThreePointsPlane",
+      "ThreePointsNormal",
+      "Folding",
+      "ObjectX",
+      "ObjectY",
+      "ObjectZ",
+      "AxisOfCurvature",
+      "Directrix1",
+      "Directrix2",
+      "Asymptote1",
+      "Asymptote2",
+      "Tangent",
+      "Normal",
+      "Binormal",
+      "TangentU",
+      "TangentV",
+      "TwoPointLine",
+      "IntersectionLine",
+      "ProximityLine",
+      "ObjectOrigin",
+      "Focus1",
+      "Focus2",
+      "OnEdge",
+      "CenterOfCurvature",
+      "CenterOfMass",
+      "IntersectionPoint",
+      "Vertex",
+      "ProximityPoint1",
+      "ProximityPoint2",
+      "AxisOfInertia1",
+      "AxisOfInertia2",
+      "AxisOfInertia3",
+      "InertialCS",
+      "FaceNormal",
+      "OZX",
+      "OZY",
+      "OXY",
+      "OXZ",
+      "OYZ",
+      "OYX",
+      "ParallelPlane",
+      "MidPoint",
+      "MidPlane"
+     ],
+     "default": "Deactivated"
+    },
+    "MapPathParameter": {
+     "type": "App::PropertyFloat",
+     "group": "Attachment",
+     "default": 0.0
+    },
+    "MapReversed": {
+     "type": "App::PropertyBool",
+     "group": "Attachment",
+     "default": false
+    },
+    "ResizeMode": {
+     "type": "App::PropertyEnumeration",
+     "group": "Size",
+     "enum": [
+      "Automatic",
+      "Manual"
+     ],
+     "default": "Automatic"
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "Width": {
+     "type": "App::PropertyLength",
+     "group": "Size"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "Line": {
+   "typeId": "PartDesign::Line",
+   "props": {
+    "AttachmentOffset": {
+     "type": "App::PropertyPlacement",
+     "group": "Attachment"
+    },
+    "AttachmentSupport": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Attachment"
+    },
+    "Length": {
+     "type": "App::PropertyLength",
+     "group": "Size"
+    },
+    "MapMode": {
+     "type": "App::PropertyEnumeration",
+     "group": "Attachment",
+     "enum": [
+      "Deactivated",
+      "Translate",
+      "ObjectXY",
+      "ObjectXZ",
+      "ObjectYZ",
+      "FlatFace",
+      "TangentPlane",
+      "NormalToEdge",
+      "FrenetNB",
+      "FrenetTN",
+      "FrenetTB",
+      "Concentric",
+      "SectionOfRevolution",
+      "ThreePointsPlane",
+      "ThreePointsNormal",
+      "Folding",
+      "ObjectX",
+      "ObjectY",
+      "ObjectZ",
+      "AxisOfCurvature",
+      "Directrix1",
+      "Directrix2",
+      "Asymptote1",
+      "Asymptote2",
+      "Tangent",
+      "Normal",
+      "Binormal",
+      "TangentU",
+      "TangentV",
+      "TwoPointLine",
+      "IntersectionLine",
+      "ProximityLine",
+      "ObjectOrigin",
+      "Focus1",
+      "Focus2",
+      "OnEdge",
+      "CenterOfCurvature",
+      "CenterOfMass",
+      "IntersectionPoint",
+      "Vertex",
+      "ProximityPoint1",
+      "ProximityPoint2",
+      "AxisOfInertia1",
+      "AxisOfInertia2",
+      "AxisOfInertia3",
+      "InertialCS",
+      "FaceNormal",
+      "OZX",
+      "OZY",
+      "OXY",
+      "OXZ",
+      "OYZ",
+      "OYX",
+      "ParallelPlane",
+      "MidPoint",
+      "MidPlane"
+     ],
+     "default": "Deactivated"
+    },
+    "MapPathParameter": {
+     "type": "App::PropertyFloat",
+     "group": "Attachment",
+     "default": 0.0
+    },
+    "MapReversed": {
+     "type": "App::PropertyBool",
+     "group": "Attachment",
+     "default": false
+    },
+    "ResizeMode": {
+     "type": "App::PropertyEnumeration",
+     "group": "Size",
+     "enum": [
+      "Automatic",
+      "Manual"
+     ],
+     "default": "Automatic"
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "Point": {
+   "typeId": "PartDesign::Point",
+   "props": {
+    "AttachmentOffset": {
+     "type": "App::PropertyPlacement",
+     "group": "Attachment"
+    },
+    "AttachmentSupport": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Attachment"
+    },
+    "MapMode": {
+     "type": "App::PropertyEnumeration",
+     "group": "Attachment",
+     "enum": [
+      "Deactivated",
+      "Translate",
+      "ObjectXY",
+      "ObjectXZ",
+      "ObjectYZ",
+      "FlatFace",
+      "TangentPlane",
+      "NormalToEdge",
+      "FrenetNB",
+      "FrenetTN",
+      "FrenetTB",
+      "Concentric",
+      "SectionOfRevolution",
+      "ThreePointsPlane",
+      "ThreePointsNormal",
+      "Folding",
+      "ObjectX",
+      "ObjectY",
+      "ObjectZ",
+      "AxisOfCurvature",
+      "Directrix1",
+      "Directrix2",
+      "Asymptote1",
+      "Asymptote2",
+      "Tangent",
+      "Normal",
+      "Binormal",
+      "TangentU",
+      "TangentV",
+      "TwoPointLine",
+      "IntersectionLine",
+      "ProximityLine",
+      "ObjectOrigin",
+      "Focus1",
+      "Focus2",
+      "OnEdge",
+      "CenterOfCurvature",
+      "CenterOfMass",
+      "IntersectionPoint",
+      "Vertex",
+      "ProximityPoint1",
+      "ProximityPoint2",
+      "AxisOfInertia1",
+      "AxisOfInertia2",
+      "AxisOfInertia3",
+      "InertialCS",
+      "FaceNormal",
+      "OZX",
+      "OZY",
+      "OXY",
+      "OXZ",
+      "OYZ",
+      "OYX",
+      "ParallelPlane",
+      "MidPoint",
+      "MidPlane"
+     ],
+     "default": "Deactivated"
+    },
+    "MapPathParameter": {
+     "type": "App::PropertyFloat",
+     "group": "Attachment",
+     "default": 0.0
+    },
+    "MapReversed": {
+     "type": "App::PropertyBool",
+     "group": "Attachment",
+     "default": false
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "CoordinateSystem": {
+   "typeId": "PartDesign::CoordinateSystem",
+   "props": {
+    "AttachmentOffset": {
+     "type": "App::PropertyPlacement",
+     "group": "Attachment"
+    },
+    "AttachmentSupport": {
+     "type": "App::PropertyLinkSubList",
+     "group": "Attachment"
+    },
+    "MapMode": {
+     "type": "App::PropertyEnumeration",
+     "group": "Attachment",
+     "enum": [
+      "Deactivated",
+      "Translate",
+      "ObjectXY",
+      "ObjectXZ",
+      "ObjectYZ",
+      "FlatFace",
+      "TangentPlane",
+      "NormalToEdge",
+      "FrenetNB",
+      "FrenetTN",
+      "FrenetTB",
+      "Concentric",
+      "SectionOfRevolution",
+      "ThreePointsPlane",
+      "ThreePointsNormal",
+      "Folding",
+      "ObjectX",
+      "ObjectY",
+      "ObjectZ",
+      "AxisOfCurvature",
+      "Directrix1",
+      "Directrix2",
+      "Asymptote1",
+      "Asymptote2",
+      "Tangent",
+      "Normal",
+      "Binormal",
+      "TangentU",
+      "TangentV",
+      "TwoPointLine",
+      "IntersectionLine",
+      "ProximityLine",
+      "ObjectOrigin",
+      "Focus1",
+      "Focus2",
+      "OnEdge",
+      "CenterOfCurvature",
+      "CenterOfMass",
+      "IntersectionPoint",
+      "Vertex",
+      "ProximityPoint1",
+      "ProximityPoint2",
+      "AxisOfInertia1",
+      "AxisOfInertia2",
+      "AxisOfInertia3",
+      "InertialCS",
+      "FaceNormal",
+      "OZX",
+      "OZY",
+      "OXY",
+      "OXZ",
+      "OYZ",
+      "OYX",
+      "ParallelPlane",
+      "MidPoint",
+      "MidPlane"
+     ],
+     "default": "Deactivated"
+    },
+    "MapPathParameter": {
+     "type": "App::PropertyFloat",
+     "group": "Attachment",
+     "default": 0.0
+    },
+    "MapReversed": {
+     "type": "App::PropertyBool",
+     "group": "Attachment",
+     "default": false
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "ShapeBinder": {
+   "typeId": "PartDesign::ShapeBinder",
+   "props": {
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "Support": {
+     "type": "App::PropertyLinkSubListGlobal",
+     "group": ""
+    },
+    "TraceSupport": {
+     "type": "App::PropertyBool",
+     "group": "",
+     "default": false
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    }
+   }
+  },
+  "SubShapeBinder": {
+   "typeId": "PartDesign::SubShapeBinder",
+   "props": {
+    "BindCopyOnChange": {
+     "type": "App::PropertyEnumeration",
+     "group": "Base",
+     "enum": [
+      "Disabled",
+      "Enabled",
+      "Mutated"
+     ],
+     "default": "Disabled"
+    },
+    "BindMode": {
+     "type": "App::PropertyEnumeration",
+     "group": "Base",
+     "enum": [
+      "Synchronized",
+      "Frozen",
+      "Detached"
+     ],
+     "default": "Synchronized"
+    },
+    "ClaimChildren": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "Context": {
+     "type": "App::PropertyXLink",
+     "group": "Base"
+    },
+    "Fuse": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "MakeFace": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": true
+    },
+    "Offset": {
+     "type": "App::PropertyFloat",
+     "group": "Offsetting",
+     "default": 0.0
+    },
+    "OffsetFill": {
+     "type": "App::PropertyBool",
+     "group": "Offsetting",
+     "default": false
+    },
+    "OffsetIntersection": {
+     "type": "App::PropertyBool",
+     "group": "Offsetting",
+     "default": false
+    },
+    "OffsetJoinType": {
+     "type": "App::PropertyEnumeration",
+     "group": "Offsetting",
+     "enum": [
+      "Arcs",
+      "Tangent",
+      "Intersection"
+     ],
+     "default": "Arcs"
+    },
+    "OffsetOpenResult": {
+     "type": "App::PropertyBool",
+     "group": "Offsetting",
+     "default": false
+    },
+    "PartialLoad": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": false
+    },
+    "Refine": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": true
+    },
+    "Relative": {
+     "type": "App::PropertyBool",
+     "group": "Base",
+     "default": true
+    },
+    "ShapeMaterial": {
+     "type": "Materials::PropertyMaterial",
+     "group": ""
+    },
+    "Support": {
+     "type": "App::PropertyXLinkSubList",
+     "group": ""
+    },
+    "_CopiedLink": {
+     "type": "App::PropertyXLinkSub",
+     "group": "Base"
+    },
+    "_ElementMapVersion": {
+     "type": "App::PropertyString",
+     "group": "Base",
+     "default": ""
+    },
+    "_Version": {
+     "type": "App::PropertyInteger",
+     "group": "Base",
+     "default": 3
+    }
+   }
+  },
+  "Clone": {
+   "error": "Document::addObject: 'PartDesign::Clone' is not a document object type"
+  }
+ },
+ "commands": null
+}

@@ -1,0 +1,22 @@
+{
+ "id": "pad-mode__start-offset",
+ "ok": true,
+ "volume": 6000.0,
+ "bbox": [
+  0.0,
+  0.0,
+  3.0,
+  30.0,
+  20.0,
+  13.0
+ ],
+ "faces": 6,
+ "com": [
+  15.0,
+  10.0,
+  8.0
+ ],
+ "valid": true,
+ "solids": 1,
+ "bad": {}
+}

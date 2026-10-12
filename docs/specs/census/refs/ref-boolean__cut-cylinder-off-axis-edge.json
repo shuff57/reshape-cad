@@ -1,0 +1,22 @@
+{
+ "id": "boolean__cut-cylinder-off-axis-edge",
+ "ok": true,
+ "volume": 5199.034949960505,
+ "bbox": [
+  0.0,
+  0.0,
+  0.0,
+  30.0,
+  20.0,
+  10.0
+ ],
+ "faces": 8,
+ "com": [
+  13.229334835043124,
+  10.0,
+  5.0
+ ],
+ "valid": true,
+ "solids": 1,
+ "bad": {}
+}

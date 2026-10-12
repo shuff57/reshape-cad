@@ -1,0 +1,2516 @@
+{
+ "freecad": "26.3.0RC1",
+ "root": "/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/fba0ad57-c1d0-46ea-96e1-4757006d360d/scratchpad/cen",
+ "results": [
+  {
+   "id": "pad-mode__taper-5",
+   "family": "pad-mode",
+   "desc": "taper angle 5 degrees on a 30 x 20 x 10 pad",
+   "ref": {
+    "volume": 6447.649005957024,
+    "faces": 6,
+    "bbox": [
+     -0.8748867352592408,
+     -0.8748867352592408,
+     -1e-7,
+     30.874886735259242,
+     20.874886735259242,
+     10.0000001
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 6447.649005957024,
+    "faces": 6,
+    "bbox": [
+     -0.87488663525924,
+     -0.87488663525924,
+     0,
+     30.87488663525924,
+     20.87488663525924,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 1.0000000116860974e-7,
+    "faces": 0,
+    "comAbs": 3.552713678800501e-15,
+    "meshVsExact": 1.41058345597386e-16
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "pad-mode__taper-negative",
+   "family": "pad-mode",
+   "desc": "taper angle -8 (the section grows)",
+   "ref": {
+    "volume": 5323.631461446503,
+    "faces": 6,
+    "bbox": [
+     -1e-7,
+     -1e-7,
+     -1e-7,
+     30.0000001,
+     20.0000001,
+     10.0000001
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5323.631461446503,
+    "faces": 6,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 1.0000000116860974e-7,
+    "faces": 0,
+    "comAbs": 3.552713678800501e-15,
+    "meshVsExact": 0
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "pad-mode__two-sides",
+   "family": "pad-mode",
+   "desc": "two sides: 10 one way, 4 the other",
+   "ref": {
+    "volume": 8400,
+    "faces": 6,
+    "bbox": [
+     0,
+     0,
+     -4,
+     30,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 8400.000000000002,
+    "faces": 6,
+    "bbox": [
+     0,
+     0,
+     -4,
+     30,
+     20,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 2.1654635756498291e-16,
+    "bboxAbs": 0,
+    "faces": 0,
+    "comAbs": 0,
+    "meshVsExact": 2.1654635756498286e-16
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "pad-mode__direction-45",
+   "family": "pad-mode",
+   "desc": "custom direction (1,0,1), length along the sketch normal",
+   "ref": {
+    "volume": 6000.000000000001,
+    "faces": 6,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     20,
+     10.000000000000002
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 6000,
+    "faces": 6,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     20,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.51582450295488e-16,
+    "bboxAbs": 1.7763568394002505e-15,
+    "faces": 0,
+    "comAbs": 8.881784197001252e-16,
+    "meshVsExact": 0
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "pad-mode__direction-along-vector",
+   "family": "pad-mode",
+   "desc": "custom direction (1,0,1), length along the vector itself",
+   "ref": {
+    "volume": 4242.640687119285,
+    "faces": 6,
+    "bbox": [
+     0,
+     0,
+     0,
+     37.071067811865476,
+     20,
+     7.0710678118654755
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 4242.640687119285,
+    "faces": 6,
+    "bbox": [
+     0,
+     0,
+     0,
+     37.071067811865476,
+     20,
+     7.071067811865475
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 8.881784197001252e-16,
+    "faces": 0,
+    "comAbs": 3.552713678800501e-15,
+    "meshVsExact": 0
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "pad-mode__start-offset",
+   "family": "pad-mode",
+   "desc": "start 3 mm off the profile plane (FreeCAD StartType Offset); ours: the sketch lifted 3",
+   "ref": {
+    "volume": 6000,
+    "faces": 6,
+    "bbox": [
+     0,
+     0,
+     3,
+     30,
+     20,
+     13
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 6000,
+    "faces": 6,
+    "bbox": [
+     0,
+     0,
+     3,
+     30,
+     20,
+     13
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 0,
+    "faces": 0,
+    "comAbs": 0,
+    "meshVsExact": 0
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "pad-mode__up-to-first",
+   "family": "pad-mode",
+   "desc": "a 6 across post under a plate, padded up to the first face it meets",
+   "ref": {
+    "volume": 16226.194671058463,
+    "faces": 8,
+    "bbox": [
+     -20,
+     -20,
+     -8,
+     20,
+     20,
+     10
+    ]
+   },
+   "status": "NO-CONSTRUCT",
+   "note": "pull() has no up-to option"
+  },
+  {
+   "id": "pad-mode__up-to-face",
+   "family": "pad-mode",
+   "desc": "a 6 across post padded up to the underside of a plate",
+   "ref": {
+    "volume": 8282.74333882308,
+    "faces": 8,
+    "bbox": [
+     -20,
+     -20,
+     0,
+     20,
+     20,
+     15
+    ]
+   },
+   "status": "NO-CONSTRUCT",
+   "note": "pull() has no up-to option"
+  },
+  {
+   "id": "pocket-mode__symmetric",
+   "family": "pocket-mode",
+   "desc": "symmetric: 6 total about the top face (3 into the plate)",
+   "ref": {
+    "volume": 11759.999999999998,
+    "faces": 11,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 11760,
+    "faces": 11,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.5467596968927352e-16,
+    "bboxAbs": 0,
+    "faces": 0,
+    "comAbs": 7.105427357601002e-15,
+    "meshVsExact": 3.09351939378547e-16
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "pocket-mode__two-sides",
+   "family": "pocket-mode",
+   "desc": "two sides from a plane at z=8: 3 down, 4 up (opens on the top face)",
+   "ref": {
+    "volume": 11600.000000000002,
+    "faces": 11,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 11600,
+    "faces": 11,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.5680943134016e-16,
+    "bboxAbs": 0,
+    "faces": 0,
+    "comAbs": 7.105427357601002e-15,
+    "meshVsExact": 0
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "pocket-mode__taper-10",
+   "family": "pocket-mode",
+   "desc": "blind 6 with a 10 degree taper",
+   "ref": {
+    "volume": 11396.785849712693,
+    "faces": 11,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10.0000001
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 11396.785849712694,
+    "faces": 11,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.596054736425281e-16,
+    "bboxAbs": 9.99999993922529e-8,
+    "faces": 0,
+    "comAbs": 7.105427357601002e-15,
+    "meshVsExact": 1.5960547364252808e-16
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "pocket-mode__direction-slanted",
+   "family": "pocket-mode",
+   "desc": "a slanted cut, direction (1,0,-1) of a 10 x 8 rect, 6 along the normal",
+   "ref": {
+    "volume": 11519.999999999998,
+    "faces": 11,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 11520,
+    "faces": 11,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.5789838572446674e-16,
+    "bboxAbs": 0,
+    "faces": 0,
+    "comAbs": 1.4210854715202004e-14,
+    "meshVsExact": 3.1579677144893343e-16
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "pocket-mode__through-taper",
+   "family": "pocket-mode",
+   "desc": "through all with a 5 degree taper",
+   "ref": {
+    "volume": 11032.314717325931,
+    "faces": 10,
+    "bbox": [
+     -1e-7,
+     -1e-7,
+     -1.0000000355271367e-7,
+     40.0000001,
+     30.0000001,
+     10.0000001
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 11032.314717325933,
+    "faces": 10,
+    "bbox": [
+     0,
+     0,
+     -1.7763568394002505e-15,
+     40,
+     30,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.648783097792874e-16,
+    "bboxAbs": 1.0000000177635683e-7,
+    "faces": 0,
+    "comAbs": 1.0658141036401503e-14,
+    "meshVsExact": 3.2975661955857476e-16
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "pocket-mode__up-to-first",
+   "family": "pocket-mode",
+   "desc": "a cut up to the first face it meets (a plate over a plate)",
+   "ref": {
+    "volume": 22994.690350851266,
+    "faces": 7,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     20
+    ]
+   },
+   "status": "NO-CONSTRUCT",
+   "note": "pocket() has no up-to option"
+  },
+  {
+   "id": "groove__ring-360",
+   "family": "groove",
+   "desc": "a full ring groove, 6 deep and 5 high, on a 30 across post",
+   "ref": {
+    "volume": 19933.405387027236,
+    "faces": 7,
+    "bbox": [
+     -15,
+     -15,
+     0,
+     15,
+     15,
+     30
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 19933.405387027236,
+    "faces": 7,
+    "bbox": [
+     -15,
+     -15,
+     0,
+     15,
+     15,
+     30
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 0,
+    "faces": 0,
+    "comAbs": 0.00007259003146486975,
+    "meshVsExact": 0.0008963433137689765
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "groove__half-180",
+   "family": "groove",
+   "desc": "the same groove, half a turn",
+   "ref": {
+    "volume": 20569.57789937917,
+    "faces": 8,
+    "bbox": [
+     -15,
+     -15,
+     0,
+     15,
+     15,
+     30
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 20569.577899379165,
+    "faces": 12,
+    "bbox": [
+     -15,
+     -15,
+     0,
+     15,
+     15,
+     30
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.7686210309651102e-16,
+    "bboxAbs": 0,
+    "faces": 4,
+    "comAbs": 0.00002991236948091114,
+    "meshVsExact": 0.0008610354841141308
+   },
+   "status": "FACES"
+  },
+  {
+   "id": "groove__quarter-90",
+   "family": "groove",
+   "desc": "the same groove, a quarter turn",
+   "ref": {
+    "volume": 20887.664155555136,
+    "faces": 8,
+    "bbox": [
+     -15,
+     -15,
+     0,
+     15,
+     15,
+     30
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 20887.664155555136,
+    "faces": 12,
+    "bbox": [
+     -15,
+     -15,
+     0,
+     15,
+     15,
+     30
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 0,
+    "faces": 4,
+    "comAbs": 0.000020480592217819726,
+    "meshVsExact": 0.000860638566022203
+   },
+   "status": "FACES"
+  },
+  {
+   "id": "groove__v-notch",
+   "family": "groove",
+   "desc": "a triangular V groove, full turn",
+   "ref": {
+    "volume": 20845.514454119475,
+    "faces": 6,
+    "bbox": [
+     -15,
+     -15.000000000000004,
+     0,
+     15,
+     15,
+     30
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 20845.51445411947,
+    "faces": 6,
+    "bbox": [
+     -15,
+     -15,
+     0,
+     15,
+     15,
+     30
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.7452094142837422e-16,
+    "bboxAbs": 3.552713678800501e-15,
+    "faces": 0,
+    "comAbs": 0.00001907829467207023,
+    "meshVsExact": 0.0008641035691202562
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "groove__at-the-end",
+   "family": "groove",
+   "desc": "a rebate flush with the post end (z 25..30)",
+   "ref": {
+    "volume": 19933.405387027233,
+    "faces": 5,
+    "bbox": [
+     -15,
+     -15,
+     0,
+     15,
+     15,
+     30.000000000000004
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 19933.405387027233,
+    "faces": 5,
+    "bbox": [
+     -15,
+     -15,
+     0,
+     15,
+     15,
+     30
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 3.552713678800501e-15,
+    "faces": 0,
+    "comAbs": 0.0003629501586353001,
+    "meshVsExact": 0.0008963433137624063
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "revolution-mode__symmetric-120",
+   "family": "revolution-mode",
+   "desc": "a ring profile turned 120 degrees symmetric about the sketch plane",
+   "ref": {
+    "volume": 9424.777960769377,
+    "faces": 6,
+    "bbox": [
+     4.999999999999998,
+     -17.32050807568877,
+     -4.440892098500626e-15,
+     20,
+     17.320508075688778,
+     30.000000000000007
+    ]
+   },
+   "status": "NO-CONSTRUCT",
+   "note": "spin() takes an angle only (no symmetric option)"
+  },
+  {
+   "id": "dress-mode__chamfer-two-distances",
+   "family": "dress-mode",
+   "desc": "chamfer 3 x 2 on the top/front edge",
+   "ref": {
+    "volume": 5910,
+    "faces": 7,
+    "bbox": [
+     0,
+     -1.5543122344752192e-15,
+     0,
+     30,
+     20,
+     10.000000000000002
+    ]
+   },
+   "status": "NO-CONSTRUCT",
+   "note": "bevel() takes one size"
+  },
+  {
+   "id": "dress-mode__chamfer-distance-angle",
+   "family": "dress-mode",
+   "desc": "chamfer 3 at 30 degrees on the top/front edge",
+   "ref": {
+    "volume": 5922.0577136594,
+    "faces": 7,
+    "bbox": [
+     0,
+     -2.220446049250313e-16,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "status": "NO-CONSTRUCT",
+   "note": "bevel() takes one size"
+  },
+  {
+   "id": "dress-mode__fillet-all-edges",
+   "family": "dress-mode",
+   "desc": "fillet 2 on every edge of a 30 x 20 x 10 block",
+   "ref": {
+    "volume": 5804.696111127533,
+    "faces": 26,
+    "bbox": [
+     -4.440892098500626e-16,
+     -4.440892098500626e-16,
+     -4.440892098500626e-16,
+     30,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5804.696111127531,
+    "faces": 26,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 3.133651389706475e-16,
+    "bboxAbs": 4.440892098500626e-16,
+    "faces": 0,
+    "comAbs": 6.750155989720952e-14,
+    "meshVsExact": 0.0007585423738629827
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "dress-mode__fillet-two-adjacent",
+   "family": "dress-mode",
+   "desc": "fillet 2 on the top/right and top/front edges (they meet at a corner)",
+   "ref": {
+    "volume": 5957.846595368392,
+    "faces": 8,
+    "bbox": [
+     0,
+     -8.881784197001252e-16,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "refused",
+   "status": "REFUSED",
+   "sentence": "brep-rs can only round a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); round it on the plain box before you hollow, chamfer or cut it -- round2 is shown without it."
+  },
+  {
+   "id": "dress-mode__fillet-top-loop",
+   "family": "dress-mode",
+   "desc": "fillet 2 on all four top edges (a closed loop)",
+   "ref": {
+    "volume": 5917.227116037393,
+    "faces": 10,
+    "bbox": [
+     -8.881784197001252e-16,
+     -8.881784197001252e-16,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "refused",
+   "status": "REFUSED",
+   "sentence": "brep-rs can only round a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); round it on the plain box before you hollow, chamfer or cut it -- round2 is shown without it. | brep-rs can only round a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); round it on the plain box before you hollow, chamfer or cut it -- round4 is shown without it."
+  },
+  {
+   "id": "dress-mode__fillet-after-pocket",
+   "family": "dress-mode",
+   "desc": "fillet 1.5 on a top edge of a plate that already has a blind pocket",
+   "ref": {
+    "volume": 11666.526569346792,
+    "faces": 9,
+    "bbox": [
+     0,
+     -2.220446049250313e-16,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 11666.526569346794,
+    "faces": 9,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.5591524973038326e-16,
+    "bboxAbs": 2.220446049250313e-16,
+    "faces": 0,
+    "comAbs": 0.0007325878248813922,
+    "meshVsExact": 0.000020095178907847823
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "dress-mode__chamfer-after-pocket",
+   "family": "dress-mode",
+   "desc": "chamfer 1.5 on a top edge of a plate that already has a blind pocket",
+   "ref": {
+    "volume": 11640.84073464102,
+    "faces": 9,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 11640.840734641022,
+    "faces": 9,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10.000000000000004
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.5625928100990812e-16,
+    "bboxAbs": 3.552713678800501e-15,
+    "faces": 0,
+    "comAbs": 0.00021988315632093247,
+    "meshVsExact": 0.0000709726614263312
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "hole-mode__drill-point-118",
+   "family": "hole-mode",
+   "desc": "a 6 hole, 7 deep, with a 118 degree drill point",
+   "ref": {
+    "volume": 11785.090729064728,
+    "faces": 8,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "status": "NO-CONSTRUCT",
+   "note": "hole() has no drill point option"
+  },
+  {
+   "id": "hole-mode__drill-point-for-depth",
+   "family": "hole-mode",
+   "desc": "the same, the depth measured to the cone tip",
+   "ref": {
+    "volume": 11836.057530342074,
+    "faces": 8,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "status": "NO-CONSTRUCT",
+   "note": "hole() has no drill point option"
+  },
+  {
+   "id": "hole-mode__tapered-5",
+   "family": "hole-mode",
+   "desc": "a tapered hole, 5 degrees",
+   "ref": null,
+   "refNote": "invalid: bad={\"Hole\":[\"Touched\",\"Invalid\"]} valid=true solids=1",
+   "status": "NO-CONSTRUCT",
+   "note": "hole() has no taper option"
+  },
+  {
+   "id": "hole-mode__counterdrill",
+   "family": "hole-mode",
+   "desc": "a counterdrill (a conical recess)",
+   "ref": {
+    "volume": 11605.206523198882,
+    "faces": 10,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "status": "NO-CONSTRUCT",
+   "note": "hole() has no counterdrill option"
+  },
+  {
+   "id": "hole-mode__two-holes-one-sketch",
+   "family": "hole-mode",
+   "desc": "two 6 holes from one sketch, 7 deep",
+   "ref": {
+    "volume": 11604.159325647688,
+    "faces": 10,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 11604.159325647684,
+    "faces": 10,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 3.1350645100597657e-16,
+    "bboxAbs": 0,
+    "faces": 0,
+    "comAbs": 0.00022856892962153097,
+    "meshVsExact": 0.0001473745091555829
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "thickness__box-open-top-2",
+   "family": "thickness",
+   "desc": "a 30 x 20 x 10 block shelled to 2, top open",
+   "ref": {
+    "volume": 2671.9999999999995,
+    "faces": 11,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 2671.999999999999,
+    "faces": 11,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.7018987682876655e-16,
+    "bboxAbs": 0,
+    "faces": 0,
+    "comAbs": 8.881784197001252e-15,
+    "meshVsExact": 8.509493841438329e-16
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "thickness__box-open-top-intersection",
+   "family": "thickness",
+   "desc": "the same with Join = Intersection",
+   "ref": {
+    "volume": 2671.9999999999995,
+    "faces": 11,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 2671.999999999999,
+    "faces": 11,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.7018987682876655e-16,
+    "bboxAbs": 0,
+    "faces": 0,
+    "comAbs": 8.881784197001252e-15,
+    "meshVsExact": 8.509493841438329e-16
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "thickness__box-outward",
+   "family": "thickness",
+   "desc": "thickness 2 outward (Reversed), top open",
+   "ref": {
+    "volume": 2671.9999999999995,
+    "faces": 11,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "status": "NO-CONSTRUCT",
+   "note": "hollow() has no outward option"
+  },
+  {
+   "id": "thickness__cylinder-open-top",
+   "family": "thickness",
+   "desc": "a cylinder 30 across, 20 tall, shelled to 2, top open",
+   "ref": {
+    "volume": 4580.442088933916,
+    "faces": 5,
+    "bbox": [
+     -15,
+     -15,
+     0,
+     15,
+     15,
+     20
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 4580.44208893391,
+    "faces": 6,
+    "bbox": [
+     -15,
+     -15,
+     0,
+     15,
+     15,
+     20
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.389923240770035e-15,
+    "bboxAbs": 0,
+    "faces": 1,
+    "comAbs": 0.0008600620243690571,
+    "meshVsExact": 0.0005905784012428533
+   },
+   "status": "FACES"
+  },
+  {
+   "id": "thickness__box-two-open",
+   "family": "thickness",
+   "desc": "top and bottom both open, wall 2",
+   "ref": {
+    "volume": 1840.0000000000016,
+    "faces": 10,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "status": "NO-CONSTRUCT",
+   "note": "hollow() opens one face"
+  },
+  {
+   "id": "draft__right-face-5",
+   "family": "draft",
+   "desc": "the right face of a 30 x 20 x 10 block drafted 5 degrees about the bottom",
+   "ref": {
+    "volume": 5912.5113364740755,
+    "faces": 6,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5912.5113364740755,
+    "faces": 6,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 0,
+    "faces": 0,
+    "comAbs": 1.7763568394002505e-15,
+    "meshVsExact": 0
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "draft__all-sides-3",
+   "family": "draft",
+   "desc": "all four side faces drafted 3 degrees",
+   "ref": {
+    "volume": 5741.623204023967,
+    "faces": 6,
+    "bbox": [
+     -3.552713678800501e-15,
+     -3.552713678800501e-15,
+     0,
+     30.000000000000007,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5741.623204023969,
+    "faces": 6,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 3.168075192170453e-16,
+    "bboxAbs": 7.105427357601002e-15,
+    "faces": 0,
+    "comAbs": 1.7763568394002505e-15,
+    "meshVsExact": 3.168075192170452e-16
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "draft__neutral-mid",
+   "family": "draft",
+   "desc": "drafted about a plane at mid height",
+   "ref": {
+    "volume": 5912.5113364740755,
+    "faces": 6,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "status": "NO-CONSTRUCT",
+   "note": "draft() neutral plane only at a primitive extreme or an offset"
+  },
+  {
+   "id": "loft__rect-to-rect-ruled",
+   "family": "loft",
+   "desc": "a 30 x 20 rectangle lofted to a 16 x 10 one 12 above (ruled)",
+   "ref": {
+    "volume": 4280,
+    "faces": 6,
+    "bbox": [
+     -1e-7,
+     -1e-7,
+     -1e-7,
+     30.0000001,
+     20.0000001,
+     12.0000001
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 4280.000000000003,
+    "faces": 6,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     12
+    ]
+   },
+   "deltas": {
+    "volumeRel": 6.374962862894356e-16,
+    "bboxAbs": 1.0000000116860974e-7,
+    "faces": 0,
+    "comAbs": 1.7763568394002505e-15,
+    "meshVsExact": 6.374962862894352e-16
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "loft__rect-to-rect-smooth",
+   "family": "loft",
+   "desc": "the same loft, not ruled (FreeCAD smooths between sections; two sections are identical)",
+   "ref": {
+    "volume": 4280,
+    "faces": 6,
+    "bbox": [
+     -1e-7,
+     -1e-7,
+     -1e-7,
+     30.0000001,
+     20.0000001,
+     12.0000001
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 4280.000000000003,
+    "faces": 6,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     12
+    ]
+   },
+   "deltas": {
+    "volumeRel": 6.374962862894356e-16,
+    "bboxAbs": 1.0000000116860974e-7,
+    "faces": 0,
+    "comAbs": 1.7763568394002505e-15,
+    "meshVsExact": 6.374962862894352e-16
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "loft__circle-to-circle",
+   "family": "loft",
+   "desc": "a 20 across circle lofted to a 10 across one 15 above (a frustum)",
+   "ref": {
+    "volume": 2748.893571891069,
+    "faces": 3,
+    "bbox": [
+     -10.0000001,
+     -10.0000001,
+     -1e-7,
+     10.0000001,
+     10.0000001,
+     15.0000001
+    ]
+   },
+   "oursOutcome": "refused",
+   "status": "REFUSED",
+   "sentence": "brep-rs can only blend two matching straight outlines yet -- bl1 is shown without it."
+  },
+  {
+   "id": "loft__rect-to-circle",
+   "family": "loft",
+   "desc": "a 20 x 20 square lofted to a 12 across circle, 15 above (ruled)",
+   "ref": {
+    "volume": 3645.866257049253,
+    "faces": 7,
+    "bbox": [
+     -10.0000001,
+     -10.0000001,
+     -1e-7,
+     10.0000001,
+     10.0000001,
+     15.000000100000005
+    ]
+   },
+   "oursOutcome": "refused",
+   "status": "REFUSED",
+   "sentence": "brep-rs can only blend two matching straight outlines yet -- bl1 is shown without it."
+  },
+  {
+   "id": "pipe__straight",
+   "family": "pipe-helix",
+   "desc": "a 10 across circle swept along a 30 mm straight path",
+   "ref": {
+    "volume": 2356.194490192345,
+    "faces": 3,
+    "bbox": [
+     -5,
+     -5,
+     -1.1102230246251565e-15,
+     5,
+     5.000000000000007,
+     30
+    ]
+   },
+   "status": "NO-CONSTRUCT",
+   "note": "there is no pipe()"
+  },
+  {
+   "id": "helix__coil",
+   "family": "pipe-helix",
+   "desc": "a 4 across circle swept on a helix of pitch 8, height 24, radius 10",
+   "ref": {
+    "volume": 2368.705616603345,
+    "faces": 5,
+    "bbox": [
+     -11.99998718142203,
+     -11.999999394932573,
+     -2.0000000999999976,
+     12.000000100000161,
+     11.99999939468708,
+     26.00000009678189
+    ]
+   },
+   "status": "NO-CONSTRUCT",
+   "note": "there is no helix()"
+  },
+  {
+   "id": "primitive__add-box",
+   "family": "primitive",
+   "desc": "an additive 10 x 10 x 10 box overlapping a 30 x 20 x 10 block",
+   "ref": {
+    "volume": 6750,
+    "faces": 12,
+    "bbox": [
+     0,
+     0,
+     0,
+     35,
+     20,
+     15
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 6750,
+    "faces": 12,
+    "bbox": [
+     0,
+     0,
+     0,
+     35,
+     20,
+     15
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 0,
+    "faces": 0,
+    "comAbs": 2.6645352591003757e-15,
+    "meshVsExact": 0
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "primitive__add-cylinder",
+   "family": "primitive",
+   "desc": "an additive 12 across, 15 tall cylinder standing on the block",
+   "ref": {
+    "volume": 7696.460032938488,
+    "faces": 8,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     25
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 7696.4600329384875,
+    "faces": 8,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     25
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.181705222765492e-16,
+    "bboxAbs": 0,
+    "faces": 0,
+    "comAbs": 0.0046712240915640635,
+    "meshVsExact": 0.00047912885251011713
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "primitive__add-sphere",
+   "family": "primitive",
+   "desc": "an additive 14 across sphere half sunk in the top",
+   "ref": {
+    "volume": 6718.377520120868,
+    "faces": 7,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     17
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 6718.3775201208655,
+    "faces": 7,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     17
+    ]
+   },
+   "deltas": {
+    "volumeRel": 4.061224748307531e-16,
+    "bboxAbs": 0,
+    "faces": 0,
+    "comAbs": 0.004031301119493236,
+    "meshVsExact": 0.0005444246667741605
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "primitive__add-cone",
+   "family": "primitive",
+   "desc": "an additive cone, base 12 across, 14 tall, on the block",
+   "ref": {
+    "volume": 6527.787565803085,
+    "faces": 7,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     24
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 6527.787565803085,
+    "faces": 7,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     24
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 0,
+    "faces": 0,
+    "comAbs": 0.0013733250722482993,
+    "meshVsExact": 0.0001757489956929996
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "primitive__add-torus",
+   "family": "primitive",
+   "desc": "an additive torus (ring 10, tube 3) lying across the top face",
+   "ref": {
+    "volume": 7033.5534544976,
+    "faces": 9,
+    "bbox": [
+     -1e-7,
+     -3.0000001,
+     -1e-7,
+     30.0000001,
+     23.0000001,
+     13.0000001
+    ]
+   },
+   "oursOutcome": "refused",
+   "status": "REFUSED",
+   "sentence": "combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it."
+  },
+  {
+   "id": "primitive__sub-cylinder-through",
+   "family": "primitive",
+   "desc": "a subtractive 8 across cylinder through the block",
+   "ref": {
+    "volume": 5497.345175425633,
+    "faces": 7,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5497.345175425632,
+    "faces": 7,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.654425313947128e-16,
+    "bboxAbs": 0,
+    "faces": 0,
+    "comAbs": 1.9539925233402755e-14,
+    "meshVsExact": 0.00029680892613804594
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "primitive__sub-sphere-corner",
+   "family": "primitive",
+   "desc": "a subtractive 16 across sphere centred on a top corner",
+   "ref": {
+    "volume": 5731.917426893664,
+    "faces": 7,
+    "bbox": [
+     -1.4695761589768238e-15,
+     -1.959434878635765e-15,
+     0,
+     30,
+     20,
+     10.000000000000332
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5731.91742689367,
+    "faces": 7,
+    "bbox": [
+     -9.797174393178826e-16,
+     -1.4695761589768238e-15,
+     0,
+     30,
+     20,
+     10.000000000000002
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.110703877648272e-15,
+    "bboxAbs": 3.304023721284466e-13,
+    "faces": 0,
+    "comAbs": 0.0027882327679495944,
+    "meshVsExact": 0.0002384429242827399
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "primitive__sub-cone",
+   "family": "primitive",
+   "desc": "a subtractive cone (a countersink-like pit), base flush with the top face, apex down",
+   "ref": {
+    "volume": 5698.40710525538,
+    "faces": 7,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10.000000000000002
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5698.407105255378,
+    "faces": 7,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10.000000000000002
+    ]
+   },
+   "deltas": {
+    "volumeRel": 3.192101529334901e-16,
+    "bboxAbs": 0,
+    "faces": 0,
+    "comAbs": 0.00036335941266063543,
+    "meshVsExact": 0.00011504489263180521
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "primitive__add-wedge",
+   "family": "primitive",
+   "desc": "an additive wedge (right triangle 10 x 8, 6 thick) on the block",
+   "ref": {
+    "volume": 6239.999999999999,
+    "faces": 10,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     16
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 6240,
+    "faces": 10,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     16
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.457523560533539e-16,
+    "bboxAbs": 0,
+    "faces": 0,
+    "comAbs": 1.7763568394002505e-15,
+    "meshVsExact": 1.4575235605335388e-16
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "primitive__add-prism",
+   "family": "primitive",
+   "desc": "an additive hexagonal prism, 12 across corners, 8 tall",
+   "ref": {
+    "volume": 6748.245948869755,
+    "faces": 13,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     18
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 6748.245948869753,
+    "faces": 13,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     18
+    ]
+   },
+   "deltas": {
+    "volumeRel": 2.695499567336478e-16,
+    "bboxAbs": 0,
+    "faces": 0,
+    "comAbs": 1.2434497875801753e-14,
+    "meshVsExact": 5.390999134672958e-16
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "primitive__add-ellipsoid",
+   "family": "primitive",
+   "desc": "an additive ellipsoid",
+   "ref": {
+    "volume": 6667.7585626955615,
+    "faces": 7,
+    "bbox": [
+     -1e-7,
+     -1e-7,
+     0,
+     30.0000001,
+     20.0000001,
+     15.000000100000005
+    ]
+   },
+   "status": "NO-CONSTRUCT",
+   "note": "there is no ellipsoid()"
+  },
+  {
+   "id": "boolean__fuse-box-box",
+   "family": "boolean",
+   "desc": "fuse an overlapping 10 cube (a corner stands proud)",
+   "ref": {
+    "volume": 6300,
+    "faces": 8,
+    "bbox": [
+     0,
+     0,
+     0,
+     33,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 6300,
+    "faces": 8,
+    "bbox": [
+     0,
+     0,
+     0,
+     33,
+     20,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 0,
+    "faces": 0,
+    "comAbs": 0,
+    "meshVsExact": 0
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "boolean__cut-box-box",
+   "family": "boolean",
+   "desc": "cut an overlapping 10 cube from a corner",
+   "ref": {
+    "volume": 5300,
+    "faces": 8,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5300,
+    "faces": 8,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 0,
+    "faces": 0,
+    "comAbs": 1.7763568394002505e-15,
+    "meshVsExact": 0
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "boolean__common-box-box",
+   "family": "boolean",
+   "desc": "common of two overlapping boxes",
+   "ref": {
+    "volume": 700,
+    "faces": 6,
+    "bbox": [
+     23,
+     10,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 699.9999999999999,
+    "faces": 6,
+    "bbox": [
+     23,
+     10,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.6240976817373719e-16,
+    "bboxAbs": 0,
+    "faces": 0,
+    "comAbs": 7.105427357601002e-15,
+    "meshVsExact": 4.872293045212117e-16
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "boolean__cut-cylinder-through",
+   "family": "boolean",
+   "desc": "cut a 8 across cylinder clean through",
+   "ref": {
+    "volume": 5497.345175425633,
+    "faces": 7,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5497.345175425632,
+    "faces": 7,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.654425313947128e-16,
+    "bboxAbs": 0,
+    "faces": 0,
+    "comAbs": 1.9539925233402755e-14,
+    "meshVsExact": 0.00029680892613804594
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "boolean__cut-cylinder-off-axis-edge",
+   "family": "boolean",
+   "desc": "cut a 12 across cylinder biting a side face",
+   "ref": {
+    "volume": 5199.034949960505,
+    "faces": 8,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5199.034949960505,
+    "faces": 8,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 0,
+    "faces": 0,
+    "comAbs": 0.0032701617855259713,
+    "meshVsExact": 0.0002772109347778339
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "boolean__fuse-cylinder-standing",
+   "family": "boolean",
+   "desc": "fuse a 12 across cylinder standing on the face",
+   "ref": {
+    "volume": 7696.460032938488,
+    "faces": 8,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     25
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 7696.4600329384875,
+    "faces": 8,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     25
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.181705222765492e-16,
+    "bboxAbs": 0,
+    "faces": 0,
+    "comAbs": 0.0046712240915640635,
+    "meshVsExact": 0.00047912885251011713
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "boolean__common-cylinder",
+   "family": "boolean",
+   "desc": "common of the block and a 20 across cylinder",
+   "ref": {
+    "volume": 3141.5926535897934,
+    "faces": 3,
+    "bbox": [
+     4.9999999,
+     -1e-7,
+     -1e-7,
+     25.0000001,
+     20.0000001,
+     10.0000001
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 3141.592653589793,
+    "faces": 4,
+    "bbox": [
+     5,
+     0,
+     0,
+     25,
+     20,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.447505775030507e-16,
+    "bboxAbs": 1.0000000116860974e-7,
+    "faces": 1,
+    "comAbs": 8.881784197001252e-15,
+    "meshVsExact": 0.0012687560462515252
+   },
+   "status": "FACES"
+  },
+  {
+   "id": "boolean__cut-sphere-top",
+   "family": "boolean",
+   "desc": "cut a 14 across sphere centred in the top face (a dish)",
+   "ref": {
+    "volume": 5281.622479879133,
+    "faces": 7,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10.000000000000005
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5281.622479879134,
+    "faces": 7,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.7219986949800727e-16,
+    "bboxAbs": 5.329070518200751e-15,
+    "faces": 0,
+    "comAbs": 0.0014473170331186225,
+    "meshVsExact": 0.0006906246222573733
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "boolean__fuse-sphere",
+   "family": "boolean",
+   "desc": "fuse a 14 across sphere half sunk in the top face",
+   "ref": {
+    "volume": 6718.3775201208655,
+    "faces": 7,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     17
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 6718.3775201208655,
+    "faces": 7,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     17
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 0,
+    "faces": 0,
+    "comAbs": 0.004031301119494124,
+    "meshVsExact": 0.0005444246667738897
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "boolean__common-sphere",
+   "family": "boolean",
+   "desc": "common of the block and a 24 across sphere",
+   "ref": {
+    "volume": 3992.1676383265153,
+    "faces": 7,
+    "bbox": [
+     3,
+     -1.7763568394002505e-15,
+     -1.7763568394002505e-15,
+     27,
+     20,
+     10.000000000000002
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 3992.167638107248,
+    "faces": 5,
+    "bbox": [
+     3,
+     -3.552713678800501e-15,
+     0,
+     27,
+     20.000000000000004,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 5.492438420202341e-11,
+    "bboxAbs": 3.552713678800501e-15,
+    "faces": -2,
+    "comAbs": 0.00002582988221888627,
+    "meshVsExact": 0.0009134022557948066
+   },
+   "status": "FACES"
+  },
+  {
+   "id": "boolean__cut-cone",
+   "family": "boolean",
+   "desc": "cut a cone (apex down, base flush with the top face) from the block",
+   "ref": {
+    "volume": 5698.40710525538,
+    "faces": 7,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5698.407105255378,
+    "faces": 7,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10.000000000000002
+    ]
+   },
+   "deltas": {
+    "volumeRel": 3.192101529334901e-16,
+    "bboxAbs": 1.7763568394002505e-15,
+    "faces": 0,
+    "comAbs": 0.00036335941266063543,
+    "meshVsExact": 0.00011504489263180521
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "boolean__fuse-cone",
+   "family": "boolean",
+   "desc": "fuse a cone standing on the top face",
+   "ref": {
+    "volume": 6527.787565803085,
+    "faces": 7,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     24
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 6527.787565803085,
+    "faces": 7,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     24
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 0,
+    "faces": 0,
+    "comAbs": 0.0013733250722482993,
+    "meshVsExact": 0.0001757489956929996
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "boolean__cut-torus",
+   "family": "boolean",
+   "desc": "cut a ring groove (torus) from the top face",
+   "ref": {
+    "volume": 5257.024662301524,
+    "faces": 9,
+    "bbox": [
+     -1e-7,
+     -1e-7,
+     -1e-7,
+     30.0000001,
+     20.00000010000001,
+     10.0000001
+    ]
+   },
+   "oursOutcome": "refused",
+   "status": "REFUSED",
+   "sentence": "combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it."
+  },
+  {
+   "id": "boolean__fuse-cylinder-cylinder-cross",
+   "family": "boolean",
+   "desc": "two 10 across cylinders crossing at right angles (a cross-shaped fuse)",
+   "ref": {
+    "volume": 5616.518640502987,
+    "faces": 8,
+    "bbox": [
+     -5,
+     -20,
+     -20,
+     5,
+     20,
+     20
+    ]
+   },
+   "oursOutcome": "refused",
+   "status": "REFUSED",
+   "sentence": "combine op1: brep-rs cannot boolean these two solids (an unsupported surface pair, or a surface/orientation combination its face-by-face boolean does not intersect yet) -- op1 is shown without it."
+  },
+  {
+   "id": "boolean__fuse-cylinder-cylinder-cross-unequal",
+   "family": "boolean",
+   "ref": {
+    "volume": 4003.218389973928,
+    "faces": 7,
+    "bbox": [
+     -5.0000001,
+     -20.0000001,
+     -20.0000001,
+     5.0000001,
+     20.0000001,
+     20.0000001
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 4003.19568135406,
+    "faces": 7,
+    "bbox": [
+     -5,
+     -20,
+     -20,
+     5,
+     20,
+     20
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0.0000056725908146237445,
+    "bboxAbs": 1.0000000116860974e-7,
+    "faces": 0,
+    "comAbs": 0.00004825649969688261,
+    "meshVsExact": 0.002775923663411054,
+    "oursVsExact": 2.6119976723772397e-10,
+    "refVsExact": 0.000005672361791843905
+   },
+   "exactVolume": 4003.195682399694,
+   "status": "MATCH-EXACT"
+  },
+  {
+   "id": "sketch-face__pad-on-top-face",
+   "family": "sketch-on-face",
+   "desc": "a 10 x 8 boss 5 high padded from a sketch on the top face of a block",
+   "ref": {
+    "volume": 6400.000000000002,
+    "faces": 11,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     15
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 6400,
+    "faces": 11,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     15
+    ]
+   },
+   "deltas": {
+    "volumeRel": 2.8421709430404e-16,
+    "bboxAbs": 0,
+    "faces": 0,
+    "comAbs": 1.0658141036401503e-14,
+    "meshVsExact": 2.842170943040401e-16
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "sketch-face__pocket-on-side-face",
+   "family": "sketch-on-face",
+   "desc": "a 6 across, 8 deep pocket from a sketch on the right face",
+   "ref": {
+    "volume": 5773.805328941534,
+    "faces": 8,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5773.805328941534,
+    "faces": 8,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 0,
+    "faces": 0,
+    "comAbs": 0.0019343905781585846,
+    "meshVsExact": 0.00016925280270133042
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "sketch-face__datum-tilted-pad",
+   "family": "sketch-on-face",
+   "desc": "a 20 x 10 rectangle on a datum plane tilted 30 degrees about X, padded 6",
+   "ref": {
+    "volume": 1199.9999999999998,
+    "faces": 6,
+    "bbox": [
+     0,
+     -2.999999999999999,
+     0,
+     20,
+     8.660254037844387,
+     10.196152422706632
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 1200.0000000000002,
+    "faces": 6,
+    "bbox": [
+     0,
+     -3,
+     0,
+     20,
+     8.660254037844387,
+     10.196152422706632
+    ]
+   },
+   "deltas": {
+    "volumeRel": 3.7895612573872017e-16,
+    "bboxAbs": 8.881784197001252e-16,
+    "faces": 0,
+    "comAbs": 1.7763568394002505e-15,
+    "meshVsExact": 1.8947806286936001e-16
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "sketch-face__pocket-from-tilted-face",
+   "family": "sketch-on-face",
+   "desc": "a 6 across, 4 deep pocket from a sketch on a datum plane tilted 20 degrees through a plate",
+   "ref": {
+    "volume": 11997.542553912475,
+    "faces": 8,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     10.000000000000002
+    ]
+   },
+   "oursOutcome": "refused",
+   "status": "REFUSED",
+   "sentence": "pocket pocket1: brep-rs cannot cut this pocket yet (the tool is not fully enclosed by pull1, or its surface pair is unsupported) -- pocket1 is shown without it."
+  },
+  {
+   "id": "dress-mode__chamfer-top-loop",
+   "family": "dress-mode",
+   "desc": "chamfer 2 on all four top edges (a closed loop)",
+   "ref": {
+    "volume": 5810.666666666667,
+    "faces": 10,
+    "bbox": [
+     -1.3322676295501878e-15,
+     -2.6645352591003757e-15,
+     0,
+     30.000000000000004,
+     20.000000000000004,
+     10
+    ]
+   },
+   "oursOutcome": "refused",
+   "status": "REFUSED",
+   "sentence": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain box before you hollow, round or cut it -- bevel2 is shown without it. | brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain box before you hollow, round or cut it -- bevel4 is shown without it."
+  },
+  {
+   "id": "dress-mode__chamfer-two-adjacent",
+   "family": "dress-mode",
+   "desc": "chamfer 2 on the top/right and top/front edges (they meet at a corner)",
+   "ref": {
+    "volume": 5902.666666666666,
+    "faces": 8,
+    "bbox": [
+     0,
+     -2.6645352591003757e-15,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "refused",
+   "status": "REFUSED",
+   "sentence": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain box before you hollow, round or cut it -- bevel2 is shown without it."
+  },
+  {
+   "id": "dress-mode__fillet-vertical-edges",
+   "family": "dress-mode",
+   "desc": "fillet 3 on the four vertical edges of a block (rounded rectangle corners)",
+   "ref": {
+    "volume": 5922.743338823082,
+    "faces": 10,
+    "bbox": [
+     -4.440892098500626e-16,
+     -4.440892098500626e-16,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5922.743338823079,
+    "faces": 10,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 4.606791058180424e-16,
+    "bboxAbs": 4.440892098500626e-16,
+    "faces": 0,
+    "comAbs": 2.3092638912203256e-14,
+    "meshVsExact": 0.0001960749747577038
+   },
+   "status": "MATCH"
+  }
+ ]
+}

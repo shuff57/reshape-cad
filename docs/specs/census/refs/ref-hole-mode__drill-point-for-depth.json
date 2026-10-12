@@ -1,0 +1,22 @@
+{
+ "id": "hole-mode__drill-point-for-depth",
+ "ok": true,
+ "volume": 11836.057530342074,
+ "bbox": [
+  0.0,
+  0.0,
+  0.0,
+  40.0,
+  30.0,
+  10.0
+ ],
+ "faces": 8,
+ "com": [
+  20.0,
+  15.0,
+  4.971116371976033
+ ],
+ "valid": true,
+ "solids": 1,
+ "bad": {}
+}
