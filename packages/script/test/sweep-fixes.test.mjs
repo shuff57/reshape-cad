@@ -1,8 +1,8 @@
 // Script-layer fixes from the FreeCAD variant sweep (docs/replica/freecad/gauntlet/variants). Each one was a silent wrong part:
 //   - sk.circle(40); sk.circle(20) on one sketch kept only the LAST shape (the second call replaced the first), so a ring extruded
 //     as the 20 disc (4712.39 mm^3 where FreeCAD, given both loops, gives 14137.17).
-//   - revolve(sk, -90) and revolve(sk, 400) reached the kernel, which built a solid of |angle|/360 of the full volume in the wrong
-//     place (negative) or MORE than the full turn (400 -> 111%).
+//   - revolve(sk, -90) and revolve(sk, 400) once reached a kernel that built the wrong solid; the kernel now equals FreeCAD for
+//     both, so only 0 and absurd magnitudes (past 720 degrees) are still refused.
 //   - pocket(sk, shape, 0) / a negative depth came back as "does not touch the part", which names the wrong cause.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -31,19 +31,26 @@ test('one shape per sketch, a shape on each of two sketches, and rounds on the o
   assert.deepEqual(errs("const sk = sketch('top'); sk.geom([{ k: 'circle', id: 1, c: [0, 0], r: 20 }, { k: 'circle', id: 2, c: [0, 0], r: 10 }]); extrude(sk, 15);"), []);
 });
 
-test('revolve and groove take an angle above 0 and at most 360', () => {
-  for (const a of [-90, -360, 0, 400, 361]) {
-    const e = errs(`const sk = sketch('top'); sk.rect(10, 30, { at: [15, 15] }); revolve(sk, ${a});`);
-    assert.equal(e.length, 1, `revolve ${a}`);
-    assert.match(e[0], /more than 0 and at most 360 degrees/);
-    assert.ok(e[0].includes(`got ${a}`), e[0]);
-  }
-  for (const a of [1, 90, 359, 360]) {
+test('revolve takes a negative angle and a turn past 360; 0, NaN and absurd magnitudes still refuse in a sentence', () => {
+  for (const a of [-90, -180, -360, 400, 361, 720, -720, 1, 359]) {
     assert.deepEqual(errs(`const sk = sketch('top'); sk.rect(10, 30, { at: [15, 15] }); revolve(sk, ${a});`), [], `revolve ${a}`);
   }
-  const g = errs("const b = box(40, 40, 20); const sk = sketch('front'); sk.rect(6, 8, { at: [3, 18] }); groove(sk, b, -90);");
-  assert.equal(g.length, 1);
-  assert.match(g[0], /groove\(\): the angle is how far the sketch turns/);
+  for (const a of [0, 721, -721, 1e9, -1e9]) {
+    const e = errs(`const sk = sketch('top'); sk.rect(10, 30, { at: [15, 15] }); revolve(sk, ${a});`);
+    assert.equal(e.length, 1, `revolve ${a}`);
+    assert.match(e[0], /spin\(\): the angle is how far the sketch turns/);
+  }
+  const nan = errs("const sk = sketch('top'); sk.rect(10, 30, { at: [15, 15] }); revolve(sk, NaN);");
+  assert.equal(nan.length, 1);
+  assert.match(nan[0], /has to be a number/);
+});
+
+test('groove keeps its angle above 0 and at most 360', () => {
+  for (const a of [-90, 0, 400]) {
+    const g = errs(`const b = box(40, 40, 20); const sk = sketch('front'); sk.rect(6, 8, { at: [3, 18] }); groove(sk, b, ${a});`);
+    assert.equal(g.length, 1, `groove ${a}`);
+    assert.match(g[0], /groove\(\): the angle is how far the sketch turns/);
+  }
 });
 
 test('a pocket depth has to be positive, in a sentence that names the depth', () => {

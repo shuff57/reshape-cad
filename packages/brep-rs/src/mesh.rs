@@ -3797,6 +3797,35 @@ fn mesh_curved_face(
 mod tests {
     use super::*;
 
+    /// A part turn spun the other way (spun |a| and turned back by -|a|, as the spin does for a negative angle) is as
+    /// watertight as the same turn the usual way, at every angle: the hole wall's seam used to sit at u = 0 while its
+    /// arc began at pi - angle, a stray column on no neighbour's rim (6 open edges at -181, -199, -359, ...).
+    #[test]
+    fn reversed_partial_revolve_is_watertight_at_every_angle() {
+        let ring = [[10.0, 0.0], [30.0, 0.0], [30.0, 30.0], [10.0, 30.0]];
+        let mut bad = Vec::new();
+        let mut deg = 1.0f64;
+        while deg < 360.0 {
+            let (s, _) = crate::build::revolve_profile(&ring, [0.0, 0.0, 1.0], [1.0, 0.0, 0.0], deg).unwrap();
+            let r = crate::build::transform_solid(&s, &crate::math::Transform::rotation([0.0, 0.0, 1.0], -deg.to_radians()));
+            for defl in [0.005, 0.05, 0.5] {
+                let m = mesh_solid_once(&r, defl).expect("meshes");
+                if !watertight(&m) {
+                    bad.push((deg, defl));
+                }
+            }
+            deg += 7.0;
+        }
+        for deg in [181.0, 199.0, 359.0, 359.5, 180.5, 270.0] {
+            let (s, _) = crate::build::revolve_profile(&ring, [0.0, 0.0, 1.0], [1.0, 0.0, 0.0], deg).unwrap();
+            let r = crate::build::transform_solid(&s, &crate::math::Transform::rotation([0.0, 0.0, 1.0], -deg.to_radians()));
+            if !watertight(&mesh_solid_once(&r, 0.01).expect("meshes")) {
+                bad.push((deg, 0.01));
+            }
+        }
+        assert!(bad.is_empty(), "open meshes (angle, chord): {bad:?}");
+    }
+
     #[test]
     fn box_mesh_watertight() {
         let s = crate::build::box_solid([40.0, 30.0, 20.0], [0.0, 0.0, 0.0], None);

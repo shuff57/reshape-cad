@@ -427,16 +427,33 @@ function optionalNumber(fn: string, label: string, v: unknown): number | undefin
  * reworded.
  */
 /**
- * The turn of a spin()/groove(): more than 0 and at most 360 degrees. The kernel has no meaning for anything else and, measured
- * against FreeCAD (docs/replica/freecad/gauntlet/variants), it does not refuse it either: a negative angle comes back as a solid of
- * the right volume in the wrong place (bounding box and centre of mass of a full ring), and an angle past 360 comes back as a
- * self-overlapping solid with MORE volume than the full turn (400 degrees gives 111%). Refused here, in a sentence, so neither
- * shows up as a part.
+ * The turn of a groove(): more than 0 and at most 360 degrees. A groove's partial and reversed turns were never measured against
+ * FreeCAD (only the full turn is built), so a negative or past-a-turn angle stays a sentence here.
  */
 function sweepAngle(fn: string, v: unknown): void {
   const val = unwrap(v as number);
   if (!(val > 0 && val <= 360)) {
     throw new Error(`${fn}(): the angle is how far the sketch turns, more than 0 and at most 360 degrees -- got ${val}. A negative angle or one past a full turn is not a turn this kernel builds.`);
+  }
+}
+
+/** The largest turn spin() takes, either way round: two full turns. Past a whole turn the part is the whole turn (FreeCAD clamps
+ *  it the same way), so 400 and 720 build the full ring; more than that is a typo, not a turn. */
+const MAX_SPIN_DEGREES = 720;
+
+/**
+ * The turn of a spin(): any angle other than 0, up to two full turns either way. A negative angle turns the other way round the
+ * axis and a turn past 360 is the full turn -- the kernel builds both exactly as FreeCAD does (volume, bounding box, centre of
+ * mass and faces, variants revolution__top-neg-90 / top-neg-180 / front-neg-90 / top-400). Zero turns nothing and an absurd
+ * magnitude is almost certainly a mistake, so those stay a sentence.
+ */
+function spinAngle(v: unknown): void {
+  const val = unwrap(v as number);
+  if (val === 0) {
+    throw new Error(`spin(): the angle is how far the sketch turns, and 0 degrees turns it nowhere -- got ${val}. Use a turn from 1 to 360 degrees (a negative one turns the other way).`);
+  }
+  if (!(Math.abs(val) <= MAX_SPIN_DEGREES)) {
+    throw new Error(`spin(): the angle is how far the sketch turns, and ${val} degrees is more than ${MAX_SPIN_DEGREES} -- got ${val}. Use a turn of at most 360 degrees (a negative one turns the other way).`);
   }
 }
 
@@ -1793,7 +1810,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     noExtraArgs('spin', 'a sketch and an angle', 2, extra, 'To move the result, use move(...).');
     if (!isSketchHandle(sk)) throw new Error(`spin() needs a sketch: spin(sketch('top'), angle).`);
     requiredNumber('spin', 'angle', angle);
-    sweepAngle('spin', angle);
+    spinAngle(angle);
     const f = newRevolve(docNow(), sk.id);
     f.angle = num(angle, f.id, 'angle');
     pushFeature(f);

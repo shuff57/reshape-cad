@@ -411,12 +411,9 @@ cutV('pocket-blind', 'depth-negative', 'a pocket of depth -3: the reference and 
 function revArc(slug, desc, { plane = 'top', prof, angle }) {
   const r = REV[plane];
   const neg = angle < 0;
-  // The script layer refuses a negative angle in a sentence (spin(): more than 0 and at most 360), so a turn the other way
-  // reaches the kernel as the same script at |angle| with the revolve feature's angle patched (`patch`, applied by compare-variants).
   add({
     id: `revolution__${slug}`, piece: 'revolution', desc,
-    ours: `const sk = sketch('${plane}'); ${oursProf('sk', prof)} revolve(sk, ${Math.abs(angle)});`,
-    ...(neg ? { patch: { kind: 'revolve', set: { angle } } } : {}),
+    ours: `const sk = sketch('${plane}'); ${oursProf('sk', prof)} revolve(sk, ${angle});`,
     fc: `doc, body = setup()\nsk = sketch(body, '${r.fcPlane}')\n${fcProf('sk', prof)}\nrevolve(body, sk, ${Math.abs(angle)}, '${r.fcAxis}', ${neg ? 'True' : 'False'})`,
   });
 }

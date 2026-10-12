@@ -21,26 +21,6 @@
     "fixed": true,
     "evidence": "Same defect as pad-basic__two-circle-calls-one-sketch: before the fix sk.rect(40, 30); sk.rect(10, 10) built a 10 x 10 x 15 block (1500 mm^3) and dropped the 40 x 30 rectangle with no message. The second call is now refused in a sentence. FreeCAD, given the two loops, makes a frame (16500 mm^3, 10 faces); the way to say that in the script is sk.geom([...]) rows."
   },
-  "revolution__top-neg-90": {
-    "class": "script-layer-bug",
-    "fixed": true,
-    "evidence": "Before the fix revolve(sk, -90) reached the kernel and came back as 7068.583 mm^3 (a quarter, the right volume) with bbox y in [-20, 20] and centre of mass (9.899, 4.9495, 15): neither the quarter FreeCAD builds for the reversed 90 (bbox y in [-20, 0], centre of mass (9.903, -9.903, 15)) nor anything else a quarter ring can be. No refusal sentence, so a silent wrong solid. The script layer now refuses an angle outside (0, 360] in a sentence (spin()/groove() sweepAngle in packages/script/src/reshape-script.ts, pinned in packages/script/test/sweep-fixes.test.mjs). The kernel itself still builds the wrong solid when handed such a ModelDoc, which is the entry in KERNEL-WORKLIST.md. FINAL STATUS (2026-10-12): the kernel entry is closed. Handed the patched ModelDoc, brep-rs now builds exactly what FreeCAD builds (volume, bbox, face count and centre of mass, compared by kernel-gaps/revolution__top-neg-90.mjs, which exits 1: DOES NOT REPRODUCE); the script layer refusal stays as a second guard."
-  },
-  "revolution__top-neg-180": {
-    "class": "script-layer-bug",
-    "fixed": true,
-    "evidence": "Same defect as revolution__top-neg-90: before the fix the kernel returned 14137.1669 mm^3 (a half) with the bbox of a full ring ([-20,-20,0,20,20,30]) and centre of mass (0, 4.9495, 15); FreeCAD's reversed half turn has bbox y in [-20, 0] and centre of mass (0, -9.903, 15). Now refused in a sentence at the script layer. FINAL STATUS (2026-10-12): the kernel entry is closed. Handed the patched ModelDoc, brep-rs now builds exactly what FreeCAD builds (volume, bbox, face count and centre of mass, compared by kernel-gaps/revolution__top-neg-180.mjs, which exits 1: DOES NOT REPRODUCE); the script layer refusal stays as a second guard."
-  },
-  "revolution__front-neg-90": {
-    "class": "script-layer-bug",
-    "fixed": true,
-    "evidence": "Same defect on the front plane: before the fix revolve(sk, -90) gave a quarter-volume solid (7068.583 mm^3) with bbox z in [-20, 20] and centre of mass (9.899, 15, -4.9495), where FreeCAD's reversed quarter has bbox z in [0, 20] and centre of mass (9.903, 15, 9.903). Now refused in a sentence at the script layer. FINAL STATUS (2026-10-12): the kernel entry is closed. Handed the patched ModelDoc, brep-rs now builds exactly what FreeCAD builds (volume, bbox, face count and centre of mass, compared by kernel-gaps/revolution__front-neg-90.mjs, which exits 1: DOES NOT REPRODUCE); the script layer refusal stays as a second guard."
-  },
-  "revolution__top-400": {
-    "class": "script-layer-bug",
-    "fixed": true,
-    "evidence": "Before the fix revolve(sk, 400) built 31415.9265 mm^3: 400/360 of the full ring (28274.3339), i.e. a self-overlapping solid with MORE volume than a complete turn, no refusal. Now refused in a sentence at the script layer. FINAL STATUS (2026-10-12): the kernel entry is closed. Handed the patched ModelDoc, brep-rs now builds exactly what FreeCAD builds (volume, bbox, face count and centre of mass, compared by kernel-gaps/revolution__top-400.mjs, which exits 1: DOES NOT REPRODUCE); the script layer refusal stays as a second guard."
-  },
   "hole-countersink__cone-deeper-than-plate": {
     "class": "real-kernel-gap",
     "severity": 4,

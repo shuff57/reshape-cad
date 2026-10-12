@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-12T01:35:14.985Z",
+  "generatedAt": "2026-10-12T03:48:05.691Z",
   "reference": "FreeCAD 26.3.0 RC1 headless (variants/fc/<id>.py -> variants/refs/ref-<id>.json)",
   "ours": "reSHape Script -> ModelDoc -> brep-rs wasm (solids) / SketchSession2D (sketches)",
   "tolerances": {
@@ -11,12 +11,12 @@
   },
   "summary": {
     "total": 180,
-    "MATCH": 165,
+    "MATCH": 169,
     "MISMATCH": 1,
-    "REFUSED": 14,
+    "REFUSED": 10,
     "byClass": {
       "spec-mismatch": 4,
-      "script-layer-bug": 6,
+      "script-layer-bug": 2,
       "agrees-both-refuse": 2,
       "real-kernel-gap": 2,
       "reference-wrong": 1
@@ -43,7 +43,7 @@
     },
     "revolution": {
       "total": 34,
-      "MATCH": 30
+      "MATCH": 34
     },
     "chamfer-edge": {
       "total": 8,
@@ -9215,9 +9215,66 @@
       "desc": "a quarter turn the OTHER way (angle -90); FreeCAD: 90 reversed",
       "kind": "solid",
       "oursSource": "const sk = sketch('top'); sk.rect(10, 30, { at: [15, 15] }); revolve(sk, -90);",
-      "status": "REFUSED",
-      "checks": [],
-      "oursOutcome": "script-error",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 7068.583471,
+          "ours": 7068.583471,
+          "pass": true,
+          "delta": 2.573343600054235e-16
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            6.123233996e-16,
+            -20,
+            0,
+            20,
+            6.661338148e-15,
+            30
+          ],
+          "ours": [
+            6.123233996e-16,
+            -20,
+            0,
+            20,
+            1.224646799e-15,
+            30
+          ],
+          "pass": true,
+          "delta": 7.105427357601002e-15
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 6,
+          "ours": 6,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            9.902974237,
+            -9.902974237,
+            15
+          ],
+          "ours": [
+            9.898995691,
+            -9.898995691,
+            15
+          ],
+          "pass": true,
+          "delta": 0.003978545877471262
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 7068.583471,
+          "ours": 7065.372875,
+          "pass": true,
+          "delta": 0.0004542063314633574
+        }
+      ],
+      "oursOutcome": "built",
       "ref": {
         "volume": 7068.583470577035,
         "bbox": [
@@ -9235,12 +9292,23 @@
           15.000000000000004
         ]
       },
-      "layer": "script",
-      "sentence": "spin(): the angle is how far the sketch turns, more than 0 and at most 360 degrees -- got -90. A negative angle or one past a full turn is not a turn this kernel builds.",
-      "classification": {
-        "class": "script-layer-bug",
-        "fixed": true,
-        "evidence": "Before the fix revolve(sk, -90) reached the kernel and came back as 7068.583 mm^3 (a quarter, the right volume) with bbox y in [-20, 20] and centre of mass (9.899, 4.9495, 15): neither the quarter FreeCAD builds for the reversed 90 (bbox y in [-20, 0], centre of mass (9.903, -9.903, 15)) nor anything else a quarter ring can be. No refusal sentence, so a silent wrong solid. The script layer now refuses an angle outside (0, 360] in a sentence (spin()/groove() sweepAngle in packages/script/src/reshape-script.ts, pinned in packages/script/test/sweep-fixes.test.mjs). The kernel itself still builds the wrong solid when handed such a ModelDoc, which is the entry in KERNEL-WORKLIST.md. FINAL STATUS (2026-10-12): the kernel entry is closed. Handed the patched ModelDoc, brep-rs now builds exactly what FreeCAD builds (volume, bbox, face count and centre of mass, compared by kernel-gaps/revolution__top-neg-90.mjs, which exits 1: DOES NOT REPRODUCE); the script layer refusal stays as a second guard."
+      "ours": {
+        "volume": 7068.583470577037,
+        "bbox": [
+          6.123233995736766e-16,
+          -20,
+          0,
+          20,
+          1.2246467991473533e-15,
+          30
+        ],
+        "faces": 6,
+        "com": [
+          9.89899569095158,
+          -9.898995690951569,
+          15.000000000000018
+        ],
+        "meshVolume": 7065.372875210223
       }
     },
     {
@@ -9249,9 +9317,66 @@
       "desc": "a half turn the other way (angle -180); FreeCAD: 180 reversed",
       "kind": "solid",
       "oursSource": "const sk = sketch('top'); sk.rect(10, 30, { at: [15, 15] }); revolve(sk, -180);",
-      "status": "REFUSED",
-      "checks": [],
-      "oursOutcome": "script-error",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 14137.16694,
+          "ours": 14137.16694,
+          "pass": true,
+          "delta": 3.860015400081353e-16
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            -20,
+            -20,
+            0,
+            20,
+            6.661338148e-15,
+            30
+          ],
+          "ours": [
+            -20,
+            -20,
+            0,
+            20,
+            1.224646799e-15,
+            30
+          ],
+          "pass": true,
+          "delta": 5.436691348603588e-15
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 6,
+          "ours": 6,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            -2.403715954e-16,
+            -9.902974237,
+            15
+          ],
+          "ours": [
+            4.143356795e-16,
+            -9.898995691,
+            15
+          ],
+          "pass": true,
+          "delta": 0.0039785458774570515
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 14137.16694,
+          "ours": 14130.74575,
+          "pass": true,
+          "delta": 0.0004542063314641294
+        }
+      ],
+      "oursOutcome": "built",
       "ref": {
         "volume": 14137.166941154068,
         "bbox": [
@@ -9269,12 +9394,23 @@
           15.000000000000004
         ]
       },
-      "layer": "script",
-      "sentence": "spin(): the angle is how far the sketch turns, more than 0 and at most 360 degrees -- got -180. A negative angle or one past a full turn is not a turn this kernel builds.",
-      "classification": {
-        "class": "script-layer-bug",
-        "fixed": true,
-        "evidence": "Same defect as revolution__top-neg-90: before the fix the kernel returned 14137.1669 mm^3 (a half) with the bbox of a full ring ([-20,-20,0,20,20,30]) and centre of mass (0, 4.9495, 15); FreeCAD's reversed half turn has bbox y in [-20, 0] and centre of mass (0, -9.903, 15). Now refused in a sentence at the script layer. FINAL STATUS (2026-10-12): the kernel entry is closed. Handed the patched ModelDoc, brep-rs now builds exactly what FreeCAD builds (volume, bbox, face count and centre of mass, compared by kernel-gaps/revolution__top-neg-180.mjs, which exits 1: DOES NOT REPRODUCE); the script layer refusal stays as a second guard."
+      "ours": {
+        "volume": 14137.166941154073,
+        "bbox": [
+          -20,
+          -20,
+          0,
+          20,
+          1.2246467991473533e-15,
+          30
+        ],
+        "faces": 6,
+        "com": [
+          4.14335679522719e-16,
+          -9.898995690951589,
+          15.000000000000025
+        ],
+        "meshVolume": 14130.745750420436
       }
     },
     {
@@ -9283,9 +9419,66 @@
       "desc": "front plane, a quarter turn the other way (angle -90); FreeCAD: 90 reversed",
       "kind": "solid",
       "oursSource": "const sk = sketch('front'); sk.rect(10, 30, { at: [15, 15] }); revolve(sk, -90);",
-      "status": "REFUSED",
-      "checks": [],
-      "oursOutcome": "script-error",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 7068.583471,
+          "ours": 7068.583471,
+          "pass": true,
+          "delta": 1.2866718000271173e-16
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            6.123233996e-16,
+            0,
+            0,
+            20,
+            30,
+            20
+          ],
+          "ours": [
+            6.123233996e-16,
+            0,
+            -1.224646799e-15,
+            20,
+            30,
+            20
+          ],
+          "pass": true,
+          "delta": 1.2246467991473533e-15
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 6,
+          "ours": 6,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            9.902974237,
+            15,
+            9.902974237
+          ],
+          "ours": [
+            9.898995691,
+            15,
+            9.898995691
+          ],
+          "pass": true,
+          "delta": 0.003978545877471262
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 7068.583471,
+          "ours": 7065.372875,
+          "pass": true,
+          "delta": 0.0004542063314633574
+        }
+      ],
+      "oursOutcome": "built",
       "ref": {
         "volume": 7068.583470577036,
         "bbox": [
@@ -9303,12 +9496,23 @@
           9.902974236829042
         ]
       },
-      "layer": "script",
-      "sentence": "spin(): the angle is how far the sketch turns, more than 0 and at most 360 degrees -- got -90. A negative angle or one past a full turn is not a turn this kernel builds.",
-      "classification": {
-        "class": "script-layer-bug",
-        "fixed": true,
-        "evidence": "Same defect on the front plane: before the fix revolve(sk, -90) gave a quarter-volume solid (7068.583 mm^3) with bbox z in [-20, 20] and centre of mass (9.899, 15, -4.9495), where FreeCAD's reversed quarter has bbox z in [0, 20] and centre of mass (9.903, 15, 9.903). Now refused in a sentence at the script layer. FINAL STATUS (2026-10-12): the kernel entry is closed. Handed the patched ModelDoc, brep-rs now builds exactly what FreeCAD builds (volume, bbox, face count and centre of mass, compared by kernel-gaps/revolution__front-neg-90.mjs, which exits 1: DOES NOT REPRODUCE); the script layer refusal stays as a second guard."
+      "ours": {
+        "volume": 7068.583470577037,
+        "bbox": [
+          6.123233995736766e-16,
+          0,
+          -1.2246467991473533e-15,
+          20,
+          30,
+          20
+        ],
+        "faces": 6,
+        "com": [
+          9.89899569095158,
+          15.00000000000002,
+          9.89899569095157
+        ],
+        "meshVolume": 7065.372875210223
       }
     },
     {
@@ -9317,9 +9521,66 @@
       "desc": "an angle past a full turn (400); FreeCAD: a full turn",
       "kind": "solid",
       "oursSource": "const sk = sketch('top'); sk.rect(10, 30, { at: [15, 15] }); revolve(sk, 400);",
-      "status": "REFUSED",
-      "checks": [],
-      "oursOutcome": "script-error",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 28274.33388,
+          "ours": 28274.33388,
+          "pass": true,
+          "delta": 1.2866718000271173e-16
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            -20,
+            -20,
+            -4.440892099e-15,
+            20,
+            20,
+            30
+          ],
+          "ours": [
+            -20,
+            -20,
+            0,
+            20,
+            20,
+            30
+          ],
+          "pass": true,
+          "delta": 7.105427357601002e-15
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 4,
+          "ours": 4,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            2.70201078e-15,
+            3.071469005e-15,
+            15
+          ],
+          "ours": [
+            -1.04990597e-15,
+            2.297926381e-16,
+            15
+          ],
+          "pass": true,
+          "delta": 7.638334409421077e-14
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 28274.33388,
+          "ours": 28261.83058,
+          "pass": true,
+          "delta": 0.00044221393115787596
+        }
+      ],
+      "oursOutcome": "built",
       "ref": {
         "volume": 28274.333882308143,
         "bbox": [
@@ -9337,12 +9598,23 @@
           15
         ]
       },
-      "layer": "script",
-      "sentence": "spin(): the angle is how far the sketch turns, more than 0 and at most 360 degrees -- got 400. A negative angle or one past a full turn is not a turn this kernel builds.",
-      "classification": {
-        "class": "script-layer-bug",
-        "fixed": true,
-        "evidence": "Before the fix revolve(sk, 400) built 31415.9265 mm^3: 400/360 of the full ring (28274.3339), i.e. a self-overlapping solid with MORE volume than a complete turn, no refusal. Now refused in a sentence at the script layer. FINAL STATUS (2026-10-12): the kernel entry is closed. Handed the patched ModelDoc, brep-rs now builds exactly what FreeCAD builds (volume, bbox, face count and centre of mass, compared by kernel-gaps/revolution__top-400.mjs, which exits 1: DOES NOT REPRODUCE); the script layer refusal stays as a second guard."
+      "ours": {
+        "volume": 28274.33388230814,
+        "bbox": [
+          -20,
+          -20,
+          0,
+          20,
+          20,
+          30
+        ],
+        "faces": 4,
+        "com": [
+          -1.0499059699434324e-15,
+          2.2979263805754243e-16,
+          14.999999999999924
+        ],
+        "meshVolume": 28261.830577971174
       }
     },
     {
@@ -13220,7 +13492,7 @@
       "piece": "revolution",
       "desc": "the rounded ring a quarter turn the OTHER way (-90); FreeCAD: 90 reversed",
       "kind": "solid",
-      "oursSource": "const sk = sketch('top'); sk.polygon([[10,0],[20,0],[20,30],[10,30]]); sk.round(3, 3); revolve(sk, 90);",
+      "oursSource": "const sk = sketch('top'); sk.polygon([[10,0],[20,0],[20,30],[10,30]]); sk.round(3, 3); revolve(sk, -90);",
       "status": "MATCH",
       "checks": [
         {
@@ -13322,7 +13594,7 @@
       "piece": "revolution",
       "desc": "the rounded ring 250 degrees the other way",
       "kind": "solid",
-      "oursSource": "const sk = sketch('top'); sk.polygon([[10,0],[20,0],[20,30],[10,30]]); sk.round(3, 3); revolve(sk, 250);",
+      "oursSource": "const sk = sketch('top'); sk.polygon([[10,0],[20,0],[20,30],[10,30]]); sk.round(3, 3); revolve(sk, -250);",
       "status": "MATCH",
       "checks": [
         {
@@ -13730,7 +14002,7 @@
       "piece": "revolution",
       "desc": "front plane, the rounded ring 135 degrees the other way",
       "kind": "solid",
-      "oursSource": "const sk = sketch('front'); sk.polygon([[10,0],[20,0],[20,30],[10,30]]); sk.round(2, 3); sk.round(3, 3); revolve(sk, 135);",
+      "oursSource": "const sk = sketch('front'); sk.polygon([[10,0],[20,0],[20,30],[10,30]]); sk.round(2, 3); sk.round(3, 3); revolve(sk, -135);",
       "status": "MATCH",
       "checks": [
         {
@@ -14138,7 +14410,7 @@
       "piece": "revolution",
       "desc": "the same frustum ring 60 degrees the other way",
       "kind": "solid",
-      "oursSource": "const sk = sketch('top'); sk.polygon([[10,0],[22,0],[16,30],[10,30]]); sk.round(2, 4); sk.round(3, 3); revolve(sk, 60);",
+      "oursSource": "const sk = sketch('top'); sk.polygon([[10,0],[22,0],[16,30],[10,30]]); sk.round(2, 4); sk.round(3, 3); revolve(sk, -60);",
       "status": "MATCH",
       "checks": [
         {
@@ -15696,10 +15968,10 @@
         "solve": 0,
         "bucket": "consistent",
         "bbox": [
-          -6.000000001230618,
+          -6,
           0,
           0,
-          35.99999999876938,
+          36,
           12,
           0
         ]

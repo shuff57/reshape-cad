@@ -2842,8 +2842,13 @@ fn revolve_profile_partial(
                 vmax: hh,
                 arc: Some(geom::ArcRange { start: arc_start, span: angle.abs() }), cross: None,
             });
-            let pa = add(scale(e1c, r), scale(axis, h_lo));
-            let pb = add(scale(e1c, r), scale(axis, h_lo + hh));
+            // The seam sits at u = arc_start, where its pcurve says it does. For a hole wall (flipped e1) that is
+            // NOT u = 0: the arc starts at pi - angle, and a seam left at e1c * r landed a stray column inside the
+            // wall (a point on no neighbour's rim, so a T-vertex crack whenever the turn was reversed and the point
+            // missed an extremum of the circle).
+            let seam_dir = add(scale(e1c, arc_start.cos()), scale(e2, arc_start.sin()));
+            let pa = add(scale(seam_dir, r), scale(axis, h_lo));
+            let pb = add(scale(seam_dir, r), scale(axis, h_lo + hh));
             let seam = topo::edge(
                 topo::vertex(pa),
                 topo::vertex(pb),
