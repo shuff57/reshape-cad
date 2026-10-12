@@ -131,7 +131,7 @@ fn event_angles(c: &ConeSpec, b: &AlignedBox) -> Vec<f64> {
 pub fn runs(c: &ConeSpec, b: &AlignedBox, n: usize) -> Vec<Run> {
     let mut st: Vec<f64> = (0..n).map(|k| k as f64 * TAU / n as f64).collect();
     st.extend(event_angles(c, b));
-    st.sort_by(|a, b| a.partial_cmp(b).unwrap());
+    st.sort_by(|a, b| a.total_cmp(b));
     st.dedup_by(|a, b| (*a - *b).abs() < 1e-12);
     let m = st.len();
     let cell_ok: Vec<bool> = (0..m).map(|k| {
@@ -197,7 +197,7 @@ impl Soup {
 
 fn hull2(pts: &[(f64, f64, usize)]) -> Vec<usize> {
     let mut p: Vec<(f64, f64, usize)> = pts.to_vec();
-    p.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap().then(a.1.partial_cmp(&b.1).unwrap()));
+    p.sort_by(|a, b| a.0.total_cmp(&b.0).then(a.1.total_cmp(&b.1)));
     p.dedup_by(|a, b| (a.0 - b.0).abs() < 1e-12 && (a.1 - b.1).abs() < 1e-12);
     if p.len() < 3 {
         return vec![];

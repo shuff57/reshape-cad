@@ -553,7 +553,7 @@ pub(crate) fn planar_face_trace_on_plane(f: &TFace, p: &Plane) -> Result<Vec<Vec
             }
         }
     }
-    ts.sort_by(|x, y| x.partial_cmp(y).unwrap_or(std::cmp::Ordering::Equal));
+    ts.sort_by(|x, y| x.total_cmp(y));
     // A polygon vertex belongs to two edges, so both report the same crossing and
     // it lands in `ts` twice -- which paired with itself into a zero-length
     // segment. Collapsing duplicates also makes the pairing robust to a face whose
@@ -1652,7 +1652,7 @@ fn clip_convex_poly_by_disk(poly: &[[f64; 2]], c: [f64; 2], r: f64) -> Option<Ve
                         ts.push(t);
                     }
                 }
-                ts.sort_by(|x, y| x.partial_cmp(y).unwrap());
+                ts.sort_by(|x, y| x.total_cmp(y));
             }
         }
         let mut params = vec![0.0];
@@ -3830,7 +3830,7 @@ fn process_face(
             if wall_arc.is_some() && !parallel_cylinders.is_empty() {
                 return None;
             }
-            breaks.sort_by(|a, b| a.partial_cmp(b).unwrap());
+            breaks.sort_by(|a, b| a.total_cmp(b));
             breaks.dedup_by(|a, b| (*a - *b).abs() < 1e-9);
             for w in breaks.windows(2) {
                 let (vlo, vhi) = (w[0], w[1]);
@@ -4114,7 +4114,7 @@ fn process_face(
  _ => return None,
  }
  }
- breaks.sort_by(|a, b| a.partial_cmp(b).unwrap());
+ breaks.sort_by(|a, b| a.total_cmp(b));
  breaks.dedup_by(|a, b| (*a - *b).abs() < 1e-9);
  for pair in breaks.windows(2) {
  let (vlo, vhi) = (pair[0], pair[1]);
@@ -5786,7 +5786,7 @@ pub(crate) fn planar_windings_ok(s: &TSolid) -> bool {
             continue;
         }
         let ws: Vec<(f64, Vec<[f64; 2]>)> = fb.boundary.iter().map(|w| wire_area2_in(p, w)).collect();
-        let Some(big) = (0..ws.len()).max_by(|&i, &j| ws[i].0.abs().partial_cmp(&ws[j].0.abs()).unwrap()) else { continue };
+        let Some(big) = (0..ws.len()).max_by(|&i, &j| ws[i].0.abs().total_cmp(&ws[j].0.abs())) else { continue };
         if ws[big].0.abs() < 1e-12 {
             continue;
         }
@@ -6247,7 +6247,7 @@ pub(crate) fn unmatched_once_edges(faces: &[TFace]) -> Vec<topo::EdgeRef<Curve3>
             .map(|&(a, b)| (dot(sub(a, p), dir), dot(sub(b, p), dir)))
             .collect();
         let mut cuts: Vec<f64> = spans.iter().flat_map(|&(a, b)| [a, b]).collect();
-        cuts.sort_by(|x, y| x.partial_cmp(y).unwrap());
+        cuts.sort_by(|x, y| x.total_cmp(y));
         let balanced = cuts.windows(2).all(|w| {
             if w[1] - w[0] <= WELD_TOL {
                 return true;
@@ -6920,7 +6920,7 @@ fn split_full_circle(e: &topo::Edge<Curve3>, verts: &[topo::VertexRef], edges: &
     if on.is_empty() {
         return None;
     }
-    on.sort_by(|x, y| x.0.partial_cmp(&y.0).unwrap_or(std::cmp::Ordering::Equal));
+    on.sort_by(|x, y| x.0.total_cmp(&y.0));
     let mut chain = Vec::new();
     let (mut prev, mut prev_ang) = (e.a.clone(), 0.0);
     for (ang, v) in on.into_iter().chain(std::iter::once((TWO_PI, e.b.clone()))) {
@@ -7007,7 +7007,7 @@ pub(crate) fn split_t_junctions(faces: &mut [TFace]) -> bool {
         if on.is_empty() {
             continue;
         }
-        on.sort_by(|x, y| x.0.partial_cmp(&y.0).unwrap_or(std::cmp::Ordering::Equal));
+        on.sort_by(|x, y| x.0.total_cmp(&y.0));
         let mut chain = Vec::new();
         let mut prev = ea.clone();
         for v in on.iter().map(|(_, v)| v.clone()).chain(std::iter::once(eb.clone())) {

@@ -436,7 +436,7 @@ fn fit_curve_spans(curve: &Curve, rev: bool, open: bool, m: usize) -> Result<Seg
     }
     for col in 0..ncp {
         let piv = (col..ncp)
-            .max_by(|&x, &y| a[x][col].abs().partial_cmp(&a[y][col].abs()).unwrap())
+            .max_by(|&x, &y| a[x][col].abs().total_cmp(&a[y][col].abs()))
             .unwrap();
         if a[piv][col].abs() < 1e-12 {
             return Err("a curve it could not fit".to_string());
@@ -1107,7 +1107,7 @@ fn hull_frame(sp: &SphereSurf, h: &crate::geom::HullTrim, bounds: &[Vec<Seg>]) -
         let e1 = perpendicular(a);
         let e2 = cross(a, e1);
         let mut phis: Vec<f64> = pts.iter().map(|p| dot(*p, e2).atan2(dot(*p, e1))).collect();
-        phis.sort_by(|x, y| x.partial_cmp(y).unwrap());
+        phis.sort_by(|x, y| x.total_cmp(y));
         let wrap = phis[0] + tau - phis[phis.len() - 1];
         let (mut gap, mut mid) = (wrap, phis[phis.len() - 1] + 0.5 * wrap);
         for w in phis.windows(2) {

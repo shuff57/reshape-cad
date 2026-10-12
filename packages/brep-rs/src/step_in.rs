@@ -554,8 +554,7 @@ fn build_face(
         .max_by(|a, b| {
             areas[*a]
                 .abs()
-                .partial_cmp(&areas[*b].abs())
-                .unwrap_or(std::cmp::Ordering::Equal)
+                .total_cmp(&areas[*b].abs())
         })
         .expect("a face has at least one wire");
 

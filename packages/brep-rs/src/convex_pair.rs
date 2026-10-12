@@ -169,7 +169,7 @@ fn nearest_to_origin(pts: &[Vec3]) -> (Vec3, Vec<Vec3>) {
         // Gaussian elimination with pivoting; a singular subset (a degenerate simplex) is skipped
         let mut ok = true;
         for col in 0..=k {
-            let piv = (col..=k).max_by(|&x, &y| m[x][col].abs().partial_cmp(&m[y][col].abs()).unwrap()).unwrap();
+            let piv = (col..=k).max_by(|&x, &y| m[x][col].abs().total_cmp(&m[y][col].abs())).unwrap();
             if m[piv][col].abs() < 1e-14 {
                 ok = false;
                 break;

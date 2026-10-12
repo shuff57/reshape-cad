@@ -313,7 +313,7 @@ fn assemble(base: Vec3, apex: Vec3, r: f64, bx: &crate::ball_box::BoxSpec, mode:
     for (i, s) in signed.iter().enumerate() {
         if *s < 0.0 {
             let probe = polys[i][0];
-            let home = (0..groups.len()).filter(|&g| inside(&polys[groups[g].0], probe)).min_by(|&p, &q| signed[groups[p].0].partial_cmp(&signed[groups[q].0]).unwrap());
+            let home = (0..groups.len()).filter(|&g| inside(&polys[groups[g].0], probe)).min_by(|&p, &q| signed[groups[p].0].total_cmp(&signed[groups[q].0]));
             match home {
                 Some(g) => groups[g].1.push(i),
                 None => return Err("a hole in the cone's face with nothing round it"),

@@ -105,7 +105,7 @@ fn vertical_loop(c: &ConeSpec, k: usize, pos: f64, a_lo: f64, a_hi: f64, z0: f64
     if straight {
         inner.push(0.0);
     }
-    inner.sort_by(|a, b| b.partial_cmp(a).unwrap());
+    inner.sort_by(|a, b| b.total_cmp(a));
     for x in inner {
         if x < mb - tiny && x > ma + tiny {
             cuts.push(x);

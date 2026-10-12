@@ -234,7 +234,7 @@ pub fn curve_points(c: &Curve, defl: f64) -> Vec<Vec3> {
                     }
                 }
             }
-            angs.sort_by(|a, b| a.partial_cmp(b).unwrap());
+            angs.sort_by(|a, b| a.total_cmp(b));
             angs.dedup_by(|a, b| (*a - *b).abs() < 1e-9);
             if *sweep < 0.0 {
                 angs.reverse();
@@ -444,7 +444,7 @@ fn split_collinear_triangles(tris: &mut Vec<usize>, flat: &[f64]) {
             if mids.is_empty() {
                 continue;
             }
-            mids.sort_by(|u, v| u.0.partial_cmp(&v.0).unwrap());
+            mids.sort_by(|u, v| u.0.total_cmp(&v.0));
             let mut prev = p;
             for &(_, m) in &mids {
                 work.push([prev, m, x]);
@@ -737,7 +737,7 @@ fn mesh_curved_band(
     let mut bands: Vec<Vec<[f64; 2]>> = Vec::new();
     for r in rings {
         let mut rs = r;
-        rs.sort_by(|a, b| a[0].partial_cmp(&b[0]).unwrap());
+        rs.sort_by(|a, b| a[0].total_cmp(&b[0]));
         let (vlo, vhi) = rs.iter().fold((f64::MAX, f64::MIN), |(lo, hi), p| {
             (lo.min(p[1]), hi.max(p[1]))
         });
@@ -750,7 +750,7 @@ fn mesh_curved_band(
     }
     bands.sort_by(|a, b| {
         let mv = |r: &Vec<[f64; 2]>| r.iter().map(|p| p[1]).sum::<f64>() / r.len() as f64;
-        mv(a).partial_cmp(&mv(b)).unwrap()
+        mv(a).total_cmp(&mv(b))
     });
     let (bot, top) = (bands[0].clone(), bands[1].clone());
     if bot.len() != top.len()
@@ -792,7 +792,7 @@ fn mesh_curved_band(
             }
         }
     }
-    row_t.sort_by(|a, b| a.partial_cmp(b).unwrap());
+    row_t.sort_by(|a, b| a.total_cmp(b));
     row_t.dedup_by(|a, b| (*a - *b).abs() < 1e-9);
     let m = row_t.len() - 1;
     // Need at least one interior row for the two boundary fans to attach to.
@@ -962,7 +962,7 @@ fn mesh_revolution_band(
     if let crate::geom::Surface::Cone(c) = surface {
         let apex_at_hi = c.base_radius - v1 * c.half_angle.sin() < 1e-9;
         if apex_at_hi && v0 > 1e-9 && lo.len() >= 3 && hi.is_empty() {
-            lo.sort_by(|a, b| a[0].partial_cmp(&b[0]).unwrap());
+            lo.sort_by(|a, b| a[0].total_cmp(&b[0]));
             let n1 = lo.len();
             let start = out.indices.len();
             let apex = out.push(surface.param(0.0, v1));
@@ -979,8 +979,8 @@ fn mesh_revolution_band(
     if lo.len() < 3 || hi.len() < 3 {
         return None;
     }
-    lo.sort_by(|a, b| a[0].partial_cmp(&b[0]).unwrap());
-    hi.sort_by(|a, b| a[0].partial_cmp(&b[0]).unwrap());
+    lo.sort_by(|a, b| a[0].total_cmp(&b[0]));
+    hi.sort_by(|a, b| a[0].total_cmp(&b[0]));
     let n1 = lo.len();
     let n2 = hi.len();
     let n_out_at = |u: f64, v: f64| -> Vec3 {
@@ -1145,11 +1145,11 @@ fn mesh_sector_band(
             let pts_v: Vec<(f64, Vec3)> = uvs.iter().zip(poly.iter()).map(|(q, p)| (q[1], *p)).collect();
             if vhi - vlo <= 1e-6 {
                 let mut r = pts_u;
-                r.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+                r.sort_by(|a, b| a.0.total_cmp(&b.0));
                 rims.push((0.5 * (vlo + vhi), r));
             } else if uhi - ulo <= 1e-6 {
                 let mut r = pts_v;
-                r.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+                r.sort_by(|a, b| a.0.total_cmp(&b.0));
                 seams.push((0.5 * (ulo + uhi), r));
             } else {
                 return None; // an edge that is neither a rim nor a seam
@@ -1159,7 +1159,7 @@ fn mesh_sector_band(
     if seams.len() != 2 || rims.is_empty() || rims.len() > 2 || tips.len() > 1 {
         return None;
     }
-    seams.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+    seams.sort_by(|a, b| a.0.total_cmp(&b.0));
     if (seams[0].0 - u0).abs() > 1e-6 || (seams[1].0 - u1).abs() > 1e-6 {
         return None;
     }
@@ -1182,7 +1182,7 @@ fn mesh_sector_band(
         }
     };
     // Which rim is the base (more samples), and which end of v it sits at.
-    rims.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+    rims.sort_by(|a, b| a.0.total_cmp(&b.0));
     let (base, base_at_lo, other): (&(f64, Vec<(f64, Vec3)>), bool, Option<&(f64, Vec<(f64, Vec3)>)>) = if rims.len() == 2 {
         if rims[0].1.len() >= rims[1].1.len() {
             (&rims[0], true, Some(&rims[1]))
@@ -1362,14 +1362,14 @@ fn mesh_sphere_zone(
                 continue;
             }
             let mut us: Vec<f64> = ring.iter().map(|p| p[0]).collect();
-            us.sort_by(|a, b| a.partial_cmp(b).unwrap());
+            us.sort_by(|a, b| a.total_cmp(b));
             us.dedup_by(|a, b| (*a - *b).abs() < 1e-9);
             if us.len() >= 3 && !rims.iter().any(|(v, _)| (v - 0.5 * (vlo + vhi)).abs() < 1e-6) {
                 rims.push((0.5 * (vlo + vhi), us));
             }
         }
     }
-    rims.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+    rims.sort_by(|a, b| a.0.total_cmp(&b.0));
     let want = (!pole0) as usize + (!pole1) as usize;
     if rims.len() != want {
         return None;
@@ -1387,7 +1387,7 @@ fn mesh_sphere_zone(
     let eq = std::f64::consts::FRAC_PI_2;
     if eq > v0 + 1e-6 && eq < v1 - 1e-6 && vs.iter().all(|v| (v - eq).abs() > 1e-6) {
         vs.push(eq);
-        vs.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        vs.sort_by(|a, b| a.total_cmp(b));
     }
     let start = out.indices.len();
     let n_at = |u: f64, v: f64| -> Vec3 {
@@ -1661,7 +1661,7 @@ fn mesh_slant(
     if chains.len() != 2 {
         return None;
     }
-    chains.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+    chains.sort_by(|a, b| a.0.total_cmp(&b.0));
     let lo_poly = increasing_u(chains[0].1.clone(), o, e1, a_dir);
     let hi_poly = increasing_u(chains[1].1.clone(), o, e1, a_dir);
     // angles from the arc's start, both chains ending exactly at the span (their ends are the sides' vertices)
@@ -2137,8 +2137,8 @@ fn mesh_sphere_bore(
             if tips != 2 {
                 return None; // the loop must cross the pole's equator exactly twice
             }
-            upper.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
-            lower.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+            upper.sort_by(|a, b| a.0.total_cmp(&b.0));
+            lower.sort_by(|a, b| a.0.total_cmp(&b.0));
             let (lo, hi) = (upper.first()?.0, upper.last()?.0);
             // A window must lie inside (-pi, pi) without straddling the seam.
             if !(hi - lo > 1e-9) || hi - lo >= std::f64::consts::PI {
@@ -2171,7 +2171,7 @@ fn mesh_sphere_bore(
         for ho in &holes {
             rim.extend(if ysgn > 0.0 { ho.upper.iter() } else { ho.lower.iter() }.cloned());
         }
-        rim.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+        rim.sort_by(|a, b| a.0.total_cmp(&b.0));
         let k = rim.len();
         if k < 8 {
             return None;
@@ -2381,7 +2381,7 @@ fn mesh_bounded_cone_body(face: &TFace, edges_cache: &HashMap<usize, Vec<Vec3>>,
     };
     // the stations: every angle some ring point has (the lattice and every corner are among them)
     let mut stations: Vec<f64> = rings.iter().flat_map(|r| r.iter().filter(|p| !at_apex(**p)).map(|p| ang(*p))).collect();
-    stations.sort_by(|a, b| a.partial_cmp(b).unwrap());
+    stations.sort_by(|a, b| a.total_cmp(b));
     stations.dedup_by(|a, b| (*a - *b).abs() < 1e-9);
     // the same angle at the far end of the turn (pi and -pi)
     if stations.len() > 1 && (stations[stations.len() - 1] - stations[0] - TAU).abs() < 1e-9 {
@@ -2447,7 +2447,7 @@ fn mesh_bounded_cone_body(face: &TFace, edges_cache: &HashMap<usize, Vec<Vec3>>,
         }
     }
     for g in gen_pts.iter_mut() {
-        g.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+        g.sort_by(|a, b| a.0.total_cmp(&b.0));
     }
     // The cone projects one to one onto the plane square to its axis, so a triangle is wound by its flat signed area in (e1, e2): positive is
     // counter-clockwise about the face's own outward normal (a left-handed frame, the wall of a cavity, runs it the other way round).
@@ -2493,7 +2493,7 @@ fn mesh_bounded_cone_body(face: &TFace, edges_cache: &HashMap<usize, Vec<Vec3>>,
             }
         };
         // the chains in order away from the axis along that ray
-        chains.sort_by(|a, b| at_mid(&Some(*a)).partial_cmp(&at_mid(&Some(*b))).unwrap());
+        chains.sort_by(|a, b| at_mid(&Some(*a)).total_cmp(&at_mid(&Some(*b))));
         // the axis is the first "chain": a point
         let mut prev: Option<(Vec3, Vec3)> = None;
         for cur in chains.iter() {
@@ -2731,7 +2731,7 @@ fn split_straight_edges_at_touching_points(solid: &TSolid, cache: &mut HashMap<u
         if on.is_empty() {
             continue;
         }
-        on.sort_by(|x, y| x.0.partial_cmp(&y.0).unwrap_or(std::cmp::Ordering::Equal));
+        on.sort_by(|x, y| x.0.total_cmp(&y.0));
         on.dedup_by(|x, y| (x.0 - y.0).abs() * l < 1e-7);
         let mut out = vec![a];
         out.extend(on.into_iter().map(|(_, p)| p));
@@ -2757,7 +2757,7 @@ fn add_samples_near_vertices(solid: &TSolid, cache: &mut HashMap<usize, Vec<Vec3
         verts.push(eb.a.borrow().point);
         verts.push(eb.b.borrow().point);
     }
-    verts.sort_by(|p, q| p.partial_cmp(q).unwrap_or(std::cmp::Ordering::Equal));
+    verts.sort_by(|p, q| p[0].total_cmp(&q[0]).then(p[1].total_cmp(&q[1])).then(p[2].total_cmp(&q[2])));
     verts.dedup_by(|p, q| dist(*p, *q) < 1e-9);
     let circles: Vec<&crate::topo::EdgeRef<Curve>> = edges.iter().filter(|e| matches!(e.borrow().curve, Curve::Arc { .. } | Curve::Circle { .. })).collect();
     if circles.is_empty() || (circles.len() as u64) * (verts.len() as u64) > 4_000_000 {
@@ -2892,7 +2892,7 @@ fn add_samples_near_vertices(solid: &TSolid, cache: &mut HashMap<usize, Vec<Vec3
             }
             merged.push((t, q));
         }
-        merged.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap_or(std::cmp::Ordering::Equal));
+        merged.sort_by(|a, b| a.0.total_cmp(&b.0));
         cache.insert(k, merged.into_iter().map(|(_, p)| p).collect());
     }
 }
@@ -3130,7 +3130,7 @@ fn cone_lattice_polylines(solid: &TSolid, defl: f64, cache: &mut HashMap<usize, 
                     }
                 }
             }
-            found.sort_by(|x, y| x.0.partial_cmp(&y.0).unwrap());
+            found.sort_by(|x, y| x.0.total_cmp(&y.0));
             Some(found)
         };
         // A cut edge can bend harder than the rim (a hyperbola on a tall thin cone, or the meeting curve of a bore, where one step of angle
@@ -3244,7 +3244,7 @@ fn cone_lattice_polylines(solid: &TSolid, defl: f64, cache: &mut HashMap<usize, 
                 if mids.is_empty() {
                     continue;
                 }
-                mids.sort_by(|x, y| x.0.partial_cmp(&y.0).unwrap());
+                mids.sort_by(|x, y| x.0.total_cmp(&y.0));
                 let mut pts = vec![a];
                 pts.extend(mids.into_iter().map(|m| m.1));
                 pts.push(b);
@@ -3426,7 +3426,7 @@ fn stations(
     lattice_n: usize,
 ) -> (Vec<f64>, bool) {
     raw.retain(|x| x.is_finite() && *x >= lo - 1e-9 && *x <= hi + 1e-9);
-    raw.sort_by(|a, b| a.partial_cmp(b).unwrap());
+    raw.sort_by(|a, b| a.total_cmp(b));
     let mut pts: Vec<f64> = Vec::new();
     for x in raw {
         if pts.last().map(|y| (y - x).abs() > 1e-7).unwrap_or(true) {
@@ -3464,7 +3464,7 @@ fn stations(
                 }
             }
         }
-        pts.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        pts.sort_by(|a, b| a.total_cmp(b));
         let mut out = vec![pts[0]];
         for i in 1..=pts.len() {
             let prev = *out.last().unwrap();

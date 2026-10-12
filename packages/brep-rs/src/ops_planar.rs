@@ -865,7 +865,7 @@ fn rev_grid(f: &RFace, other: &[AFace]) -> Result<Grid, ()> {
             }
         }
     }
-    zs.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
+    zs.sort_by(|a, b| a.total_cmp(b));
     zs.dedup_by(|a, b| (*a - *b).abs() < EPS);
     Ok(Grid { us: Vec::new(), vs: zs })
 }
@@ -978,7 +978,7 @@ fn crossings_x(e: &E2, y: f64, out: &mut Vec<f64>) {
                 }
             }
             cuts.push(a0 + sw);
-            cuts.sort_by(|x, z| x.partial_cmp(z).unwrap());
+            cuts.sort_by(|x, z| x.total_cmp(z));
             for w in cuts.windows(2) {
                 let (p, q) = (ang_pt(c, r, w[0]), ang_pt(c, r, w[1]));
                 // Same as a segment's: an arc's end within noise of the scan line IS on it. A ring's seam
@@ -1303,7 +1303,7 @@ fn split_face(f: &PFace, cuts: &[E2], nodes_at: &[P2]) -> Result<Vec<Region>, ()
     let mut gedges: Vec<GEdge> = Vec::new();
     for (i, e) in es.iter().enumerate() {
         let mut ts = splits[i].clone();
-        ts.sort_by(|x, y| x.partial_cmp(y).unwrap());
+        ts.sort_by(|x, y| x.total_cmp(y));
         let l = e.length();
         // A whole circle starts at an arbitrary point (a wall's seam). When nothing else is noded there, that start is not
         // a vertex: the circle is cut only at the real nodes, and the piece that runs across the start stays one edge.
@@ -1380,9 +1380,9 @@ fn split_face(f: &PFace, cuts: &[E2], nodes_at: &[P2]) -> Result<Vec<Region>, ()
         hs.sort_by(|&x, &y| {
             let ((ax, kx), (ay, ky)) = (out_dir(x), out_dir(y));
             if (ax - ay).abs() < 1e-9 {
-                kx.partial_cmp(&ky).unwrap()
+                kx.total_cmp(&ky)
             } else {
-                ax.partial_cmp(&ay).unwrap()
+                ax.total_cmp(&ay)
             }
         });
     }
@@ -1467,10 +1467,10 @@ fn interior_point(r: &Region) -> Option<P2> {
             }
         }
     }
-    ys.sort_by(|a, b| a.partial_cmp(b).unwrap());
+    ys.sort_by(|a, b| a.total_cmp(b));
     ys.dedup_by(|a, b| (*a - *b).abs() < 1e-9);
     let mut gaps: Vec<(f64, f64)> = ys.windows(2).map(|w| (w[1] - w[0], 0.5 * (w[0] + w[1]))).collect();
-    gaps.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap());
+    gaps.sort_by(|a, b| b.0.total_cmp(&a.0));
     for (gap, y) in gaps {
         if gap < 1e-6 {
             break;
@@ -1479,7 +1479,7 @@ fn interior_point(r: &Region) -> Option<P2> {
         for e in &all {
             crossings_x(e, y, &mut xs);
         }
-        xs.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        xs.sort_by(|a, b| a.total_cmp(b));
         let mut best: Option<(f64, f64)> = None;
         for pair in xs.chunks(2) {
             if pair.len() == 2 && best.map_or(true, |b| pair[1] - pair[0] > b.0) {
@@ -1530,7 +1530,7 @@ fn line_intervals(g: &PFace, p0: Vec3, dir: Vec3) -> Result<Vec<(f64, f64)>, ()>
                         .map(|&th| pos_ang(th - a0))
                         .filter(|&rel| rel > 1e-9 && rel < sw - 1e-9)
                         .collect();
-                    roots.sort_by(|x, y| x.partial_cmp(y).unwrap());
+                    roots.sort_by(|x, y| x.total_cmp(y));
                     roots.dedup_by(|x, y| (*x - *y).abs() < 1e-9);
                     bps.extend(roots);
                 }
@@ -1552,7 +1552,7 @@ fn line_intervals(g: &PFace, p0: Vec3, dir: Vec3) -> Result<Vec<(f64, f64)>, ()>
     if hits.len() % 2 != 0 {
         bail!();
     }
-    hits.sort_by(|a, b| a.partial_cmp(b).unwrap());
+    hits.sort_by(|a, b| a.total_cmp(b));
     Ok(hits.chunks(2).filter(|p| p[1] - p[0] > EPS).map(|p| (p[0], p[1])).collect())
 }
 
@@ -1756,7 +1756,7 @@ fn wall_grid(f: &CFace, other: &[AFace], skip: &dyn Fn(usize) -> bool, wall_is_a
                     }
                 }
             }
-            rels.sort_by(|x, y| x.partial_cmp(y).unwrap());
+            rels.sort_by(|x, y| x.total_cmp(y));
             let inside = rels.windows(2).any(|w| w[1] - w[0] > tol && in_edges(g.plane.project(cyl_pt(c, f.u0 + 0.5 * (w[0] + w[1]), v0)), &g.edges));
             if inside {
                 vs.push(v0);
@@ -1766,9 +1766,9 @@ fn wall_grid(f: &CFace, other: &[AFace], skip: &dyn Fn(usize) -> bool, wall_is_a
             bail!();
         }
     }
-    us.sort_by(|a, b| a.partial_cmp(b).unwrap());
+    us.sort_by(|a, b| a.total_cmp(b));
     us.dedup_by(|a, b| (*a - *b).abs() < tol);
-    vs.sort_by(|a, b| a.partial_cmp(b).unwrap());
+    vs.sort_by(|a, b| a.total_cmp(b));
     vs.dedup_by(|a, b| (*a - *b).abs() < EPS);
     // A cut whole-turn wall has NO node at its seam unless a cut lies there: the cell that runs across the seam is one
     // cell (the last, which ends where the first begins one turn on), so a stretch of the wall that survives across the
@@ -1941,7 +1941,7 @@ fn share_heights(faces: &[AFace], grids: &mut [Option<Grid>]) {
                         changed = true;
                     }
                 }
-                gi.vs.sort_by(|a, b| a.partial_cmp(b).unwrap());
+                gi.vs.sort_by(|a, b| a.total_cmp(b));
             }
         }
         if !changed {
@@ -2252,7 +2252,7 @@ fn cross_pair(cr: &Crossing, w: &CFace, t: &CFace, a_solid: &TSolid, b_solid: &T
     if cr.minus {
         levels.push((-s0, Lvl::Curve(-1.0)));
     }
-    levels.sort_by(|x, y| x.0.partial_cmp(&y.0).unwrap());
+    levels.sort_by(|x, y| x.0.total_cmp(&y.0));
     levels.dedup_by(|x, y| matches!((x.1, y.1), (Lvl::Const(_), Lvl::Const(_))) && (x.0 - y.0).abs() < tol);
     for pair in levels.windows(2) {
         let ((k1, l1), (k2, l2)) = (pair[0], pair[1]);
@@ -2393,7 +2393,7 @@ fn cross_pair_solid(cr: &Crossing, w: &CFace, t: &CFace, a_solid: &TSolid, b_sol
     if cr.minus {
         levels.push((-s0, Lvl::Curve(-1.0)));
     }
-    levels.sort_by(|x, y| x.0.partial_cmp(&y.0).unwrap());
+    levels.sort_by(|x, y| x.0.total_cmp(&y.0));
     levels.dedup_by(|x, y| matches!((x.1, y.1), (Lvl::Const(_), Lvl::Const(_))) && (x.0 - y.0).abs() < tol);
     for pair in levels.windows(2) {
         let ((k1, l1), (k2, l2)) = (pair[0], pair[1]);
@@ -2880,7 +2880,7 @@ fn merge_notched_wall(f: &CFace, arcs: &[(f64, f64)], hs: &[f64], kept: &[(usize
         (0..pts.len()).map(|k| pts[k][0] * pts[(k + 1) % pts.len()][1] - pts[(k + 1) % pts.len()][0] * pts[k][1]).sum::<f64>() * 0.5
     };
     let mut order: Vec<usize> = (0..loops.len()).collect();
-    order.sort_by(|&a, &b| area(&loops[b]).abs().partial_cmp(&area(&loops[a]).abs()).unwrap_or(std::cmp::Ordering::Equal));
+    order.sort_by(|&a, &b| area(&loops[b]).abs().total_cmp(&area(&loops[a]).abs()));
     let wires: Vec<Rc<RefCell<Wire<Curve>>>> =
         order.iter().map(|&k| Rc::new(RefCell::new(Wire { edges: loops[k].iter().map(|&i| items[i].u.clone()).collect() }))).collect();
     let mut cyl = f.cyl.clone();
@@ -3735,7 +3735,7 @@ mod tests {
                 }
             }
         }
-        xs.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        xs.sort_by(|a, b| a.total_cmp(b));
         let mut area = 0.0;
         for w in xs.windows(2) {
             let m = 0.5 * (w[0] + w[1]);
@@ -4667,7 +4667,7 @@ mod rev_tests {
 
     fn norm(mut v: Vec<(f64, f64)>) -> Vec<(f64, f64)> {
         v.retain(|p| p.1 - p.0 > 1e-12 || p.1 == INF);
-        v.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+        v.sort_by(|a, b| a.0.total_cmp(&b.0));
         let mut out: Vec<(f64, f64)> = Vec::new();
         for p in v {
             match out.last_mut() {
@@ -4744,7 +4744,7 @@ mod rev_tests {
                 }
             }
         }
-        zs.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        zs.sort_by(|a, b| a.total_cmp(b));
         zs.dedup_by(|a, b| (*a - *b).abs() < 1e-12);
         let mut v = 0.0;
         for w in zs.windows(2) {

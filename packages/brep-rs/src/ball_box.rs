@@ -67,7 +67,7 @@ fn intersect(a: &[(f64, f64)], b: &[(f64, f64)]) -> Vec<(f64, f64)> {
             }
         }
     }
-    out.sort_by(|x, y| x.0.partial_cmp(&y.0).unwrap());
+    out.sort_by(|x, y| x.0.total_cmp(&y.0));
     out
 }
 

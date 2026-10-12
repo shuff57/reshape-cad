@@ -190,7 +190,7 @@ fn box_lower_bound(b: &Option<crate::math::Aabb>, p: Vec3) -> f64 {
 
 fn dist_to_faces(o: &Others, p: Vec3) -> f64 {
     let mut order: Vec<(f64, usize)> = o.boxes.iter().enumerate().map(|(i, b)| (box_lower_bound(b, p), i)).collect();
-    order.sort_by(|x, y| x.0.partial_cmp(&y.0).unwrap_or(std::cmp::Ordering::Equal));
+    order.sort_by(|x, y| x.0.total_cmp(&y.0));
     let mut best = f64::INFINITY;
     for (lb, i) in order {
         if lb >= best {
@@ -507,7 +507,7 @@ pub(crate) fn contact(a: &TSolid, b: &TSolid) -> Option<Contact> {
             }
         }
         // the closest few, slid downhill: a tangent line lies between any grid of samples
-        scored.sort_by(|x, y| x.0.partial_cmp(&y.0).unwrap_or(std::cmp::Ordering::Equal));
+        scored.sort_by(|x, y| x.0.total_cmp(&y.0));
         for (d, i) in scored.iter().take(14) {
             if *d <= tol {
                 continue;

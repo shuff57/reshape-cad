@@ -303,7 +303,7 @@ fn inside_polygon(poly: &[P], p: P) -> bool {
 
 /// Cut `pieces` at the given parameters (sorted, deduplicated here), returning the sub-pieces in order.
 fn split(piece: &Piece, mut cuts: Vec<f64>) -> Vec<Piece> {
-    cuts.sort_by(|a, b| a.partial_cmp(b).unwrap());
+    cuts.sort_by(|a, b| a.total_cmp(b));
     cuts.dedup_by(|a, b| (*a - *b).abs() < 1e-12);
     let mut ts = vec![0.0];
     ts.extend(cuts);
@@ -387,7 +387,7 @@ pub fn combine(p: &Region, q: Option<&Region>, op: Op, scale: f64) -> Result<Vec
     for (i, lp) in loops.iter().enumerate() {
         if areas[i] < 0.0 {
             let probe = lp[0].at(0.5);
-            let home = (0..owner.len()).filter(|&k| inside_polygon(&polys[owner[k]], probe)).min_by(|&x, &y| areas[owner[x]].partial_cmp(&areas[owner[y]]).unwrap());
+            let home = (0..owner.len()).filter(|&k| inside_polygon(&polys[owner[k]], probe)).min_by(|&x, &y| areas[owner[x]].total_cmp(&areas[owner[y]]));
             match home {
                 Some(k) => faces[k].holes.push(lp.clone()),
                 None => return Err("a hole outside every outline"),

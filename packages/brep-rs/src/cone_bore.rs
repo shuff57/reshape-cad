@@ -60,7 +60,7 @@ pub fn removed_above_floor(big_r: f64, h: f64, rho: f64, e: f64, zf: f64) -> f64
                 }
             }
         }
-        cuts.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        cuts.sort_by(|a, b| a.total_cmp(b));
         for w in cuts.windows(2) {
             total += crate::geom::integrate_composite(w[0], w[1], 12, |s: f64| {
                 let d = (e * e + s * s + 2.0 * e * s * c).max(0.0).sqrt();

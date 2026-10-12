@@ -1502,6 +1502,16 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
     for f in features {
         let kind = f.get("kind").and_then(|k| k.as_str()).unwrap_or("");
         let id = f.get("id").and_then(|i| i.as_str()).unwrap_or("").to_string();
+        let biggest = largest_number(f);
+        if biggest > MAX_FEATURE_NUMBER {
+            refusals.insert(
+                id.clone(),
+                json!(format!(
+                    "{kind} {id}: it has a size or position of {biggest:.3e}, past the {MAX_FEATURE_NUMBER:.0e} brep-rs builds exactly -- {id} is shown without it."
+                )),
+            );
+            continue;
+        }
         // A solid with a bore across a cylinder's side (docs/specs/SPEC-transverse-bore.md)
         // carries curved faces trimmed by a space curve. Moving and copying them is
         // exact; every other operation would read those faces as whole cylinders and
@@ -1672,6 +1682,10 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     continue;
                 };
                 let h = f.get("height").and_then(|h| h.as_f64()).unwrap_or(0.0);
+                if h < 0.0 {
+                    refusals.insert(id.clone(), json!(format!("cylinder {id}: its height is {h}, below zero, so there is no part to build -- give it a height above 0 -- {id} is shown without it.")));
+                    continue;
+                }
                 let center = f.get("center").and_then(v3).unwrap_or([0.0, 0.0, 0.0]);
                 let round = f.get("round").and_then(|r| r.as_f64()).unwrap_or(0.0);
                 let rotate = f.get("rotate").and_then(v3);
@@ -1709,6 +1723,10 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     continue;
                 };
                 let h = f.get("height").and_then(|h| h.as_f64()).unwrap_or(0.0);
+                if h < 0.0 {
+                    refusals.insert(id.clone(), json!(format!("cone {id}: its height is {h}, below zero, so there is no part to build -- give it a height above 0 -- {id} is shown without it.")));
+                    continue;
+                }
                 let center = f.get("center").and_then(v3).unwrap_or([0.0, 0.0, 0.0]);
                 let rotate = f.get("rotate").and_then(v3);
                 let mut solid = build::cone_solid(center, r, h, [0.0, 0.0, 1.0]);
@@ -4001,7 +4019,7 @@ pub fn face_size(doc_json: &str, feature_id: &str, face_index: usize) -> String 
         .filter(|i| *i != axis)
         .map(|i| hi[i] - lo[i])
         .collect();
-    rest.sort_by(|a: &f64, b2: &f64| a.partial_cmp(b2).unwrap());
+    rest.sort_by(|a: &f64, b2: &f64| a.total_cmp(b2));
     json!([round2(rest[0]), round2(rest[1])]).to_string()
 }
 
@@ -4234,6 +4252,21 @@ fn sweep_name(hist: &History, feature_id: &str, face: &build::TFace) -> Option<V
 enum Resolved {
     Face(f64, Vec3),
     Edge(f64, Vec3),
+}
+
+/// The largest number a feature may carry, in mm (or degrees, or a count). A part is millimetres to a few
+/// metres; far past this the kernel's absolute 1e-9 tolerances are below one ulp, and a fuzz sweep of
+/// the parity fixtures measured aborts and endless loops from sizes of 1e300.
+const MAX_FEATURE_NUMBER: f64 = 1.0e6;
+
+/// The largest absolute number anywhere inside a feature's JSON, however deeply nested.
+fn largest_number(v: &Value) -> f64 {
+    match v {
+        Value::Number(n) => n.as_f64().map_or(0.0, f64::abs),
+        Value::Array(a) => a.iter().map(largest_number).fold(0.0, f64::max),
+        Value::Object(o) => o.values().map(largest_number).fold(0.0, f64::max),
+        _ => 0.0,
+    }
 }
 
 /// Every string anywhere inside a feature's JSON, however deeply nested: a fillet's
@@ -4654,6 +4687,28 @@ mod tests {
             ]
         }"#
         .to_string()
+    }
+
+    /// A sweep of the parity fixtures with degenerate numbers found aborts (panic = "abort" kills the
+    /// whole module) and a mesher that never returned. Each of these is now one feature refused in a
+    /// sentence, with nothing built for it and every other feature untouched.
+    #[test]
+    fn degenerate_numbers_are_refused_not_built() {
+        let cases = [
+            (json!({ "id": "c1", "kind": "cone", "radius": 12.0, "height": -1.0 }), "below zero"),
+            (json!({ "id": "c1", "kind": "cylinder", "radius": 12.0, "height": -1.0 }), "below zero"),
+            (json!({ "id": "c1", "kind": "cylinder", "radius": 1.0e300, "height": 10.0 }), "past the"),
+            (json!({ "id": "c1", "kind": "box", "size": [1.0e300, 10.0, 10.0] }), "past the"),
+            (json!({ "id": "c1", "kind": "sphere", "radius": 1.7976931348623157e308 }), "past the"),
+        ];
+        for (feature, needle) in cases {
+            let doc = json!({ "version": 1, "features": [json!({ "id": "ok", "kind": "box", "size": [10.0, 10.0, 10.0] }), feature] });
+            let (hist, refusals) = build_doc(&doc);
+            let why = refusals.get("c1").and_then(|r| r.as_str()).unwrap_or("");
+            assert!(why.contains(needle), "{doc}: refusal was {why:?}");
+            assert!(!hist.shapes.contains_key("c1"), "{doc}: a solid was built anyway");
+            assert!(hist.shapes.contains_key("ok"), "{doc}: the untouched box vanished");
+        }
     }
 
     #[test]
@@ -7973,7 +8028,7 @@ fn clip_rings(rings: &Rings, n: Vec3, d: f64) -> Option<Rings> {
                 let r = sub(*x, c);
                 dot(r, e2).atan2(dot(r, e1))
             };
-            ang(p).partial_cmp(&ang(q)).unwrap()
+            ang(p).total_cmp(&ang(q))
         });
         out.push((n, cut));
     }

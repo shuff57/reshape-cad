@@ -31,7 +31,7 @@ pub fn sphere_hull(pts: &[Vec3], c: Vec3) -> Option<Vec<[u32; 3]>> {
 
     // A tetrahedron to start from: far apart, then widest triangle, then largest volume.
     let i0 = 0usize;
-    let far = |f: &dyn Fn(usize) -> f64| (0..n).max_by(|&a, &b| f(a).partial_cmp(&f(b)).unwrap()).unwrap();
+    let far = |f: &dyn Fn(usize) -> f64| (0..n).max_by(|&a, &b| f(a).total_cmp(&f(b))).unwrap();
     let i1 = far(&|i| len(sub(p[i], p[i0])));
     let i2 = far(&|i| len(cross(sub(p[i1], p[i0]), sub(p[i], p[i0]))));
     let nrm = cross(sub(p[i1], p[i0]), sub(p[i2], p[i0]));
