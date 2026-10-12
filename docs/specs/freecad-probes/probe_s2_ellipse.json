@@ -1,0 +1,1033 @@
+{
+ "freecad": [
+  "26",
+  "3",
+  "0",
+  "20261008 (Git shallow)"
+ ],
+ "cases": {
+  "A_lone": {
+   "info": {
+    "solve": 0,
+    "dof": 5,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [],
+    "partial": []
+   },
+   "geometry": [
+    {
+     "type": "Ellipse",
+     "Center": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "MajorRadius": 10.0,
+     "MinorRadius": 5.0,
+     "AngleXU": -0.0,
+     "FirstParameter": 0.0,
+     "LastParameter": 6.283185307179586,
+     "Focus1": [
+      8.660254037844387,
+      0.0
+     ]
+    }
+   ],
+   "geo_count": 1,
+   "getPoint": {
+    "0": [
+     10.0,
+     0.0
+    ],
+    "1": [
+     10.0,
+     0.0
+    ],
+    "2": [
+     10.0,
+     0.0
+    ],
+    "3": [
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "A_rotated": {
+   "info": {
+    "solve": 0,
+    "dof": 5,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [],
+    "partial": []
+   },
+   "geometry": [
+    {
+     "type": "Ellipse",
+     "Center": [
+      3.0,
+      4.0,
+      0.0
+     ],
+     "MajorRadius": 8.000000000000002,
+     "MinorRadius": 3.0,
+     "AngleXU": 0.5235987755982987,
+     "FirstParameter": 0.0,
+     "LastParameter": 6.283185307179586,
+     "Focus1": [
+      9.422616289332566,
+      7.7080992435478315
+     ]
+    }
+   ]
+  },
+  "B_coincident_point_center": {
+   "before": {
+    "solve": 0,
+    "dof": 7,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [],
+    "partial": []
+   },
+   "accepted": true,
+   "constraint_index": 0,
+   "after": {
+    "solve": 0,
+    "dof": 5,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [],
+    "partial": []
+   },
+   "geometry_after": [
+    {
+     "type": "Ellipse",
+     "Center": [
+      7.0,
+      3.0,
+      0.0
+     ],
+     "MajorRadius": 6.062709251661223,
+     "MinorRadius": 5.0,
+     "AngleXU": -1.065332709976605,
+     "FirstParameter": 0.0,
+     "LastParameter": 6.283185307179586,
+     "Focus1": [
+      8.660254037844387,
+      8.881784197001252e-16
+     ]
+    },
+    {
+     "type": "Point"
+    }
+   ]
+  },
+  "B_pointOnObject_point_on_ellipse": {
+   "before": {
+    "solve": 0,
+    "dof": 7,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [],
+    "partial": []
+   },
+   "accepted": true,
+   "constraint_index": 0,
+   "after": {
+    "solve": 0,
+    "dof": 6,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [],
+    "partial": []
+   },
+   "geometry_after": [
+    {
+     "type": "Ellipse",
+     "Center": [
+      -0.029360587204840846,
+      -0.0490246015159978,
+      0.0
+     ],
+     "MajorRadius": 9.931019408118578,
+     "MinorRadius": 4.872283818791013,
+     "AngleXU": -0.004557644613810729,
+     "FirstParameter": 0.0,
+     "LastParameter": 6.283185307179586,
+     "Focus1": [
+      8.62421909655037,
+      -0.08846481543790186
+     ]
+    },
+    {
+     "type": "Point"
+    }
+   ]
+  },
+  "B_tangent_line_ellipse": {
+   "before": {
+    "solve": 0,
+    "dof": 9,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [],
+    "partial": []
+   },
+   "accepted": true,
+   "constraint_index": 0,
+   "after": {
+    "solve": 0,
+    "dof": 8,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [],
+    "partial": []
+   },
+   "geometry_after": [
+    {
+     "type": "Ellipse",
+     "Center": [
+      -0.0691223618759946,
+      1.087631477332212,
+      0.0
+     ],
+     "MajorRadius": 10.435032857860874,
+     "MinorRadius": 5.500559922589629,
+     "AngleXU": -0.12490506567676625,
+     "FirstParameter": 0.0,
+     "LastParameter": 6.283185307179586,
+     "Focus1": [
+      8.729362225103367,
+      -0.017094848652407846
+     ]
+    },
+    {
+     "type": "LineSegment",
+     "FirstParameter": 0.0,
+     "LastParameter": 30.00000133924365,
+     "StartPoint": [
+      -14.999992723892568,
+      6.693566598040095
+     ],
+     "EndPoint": [
+      15.000006898509582,
+      6.703716006475963
+     ]
+    }
+   ]
+  },
+  "B_tangent_circle_ellipse": {
+   "before": {
+    "solve": 0,
+    "dof": 8,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [],
+    "partial": []
+   },
+   "accepted": true,
+   "constraint_index": 0,
+   "after": {
+    "solve": -5,
+    "dof": 8,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [
+     1
+    ],
+    "partial": []
+   },
+   "geometry_after": [
+    {
+     "type": "Ellipse",
+     "Center": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "MajorRadius": 10.0,
+     "MinorRadius": 5.0,
+     "AngleXU": -0.0,
+     "FirstParameter": 0.0,
+     "LastParameter": 6.283185307179586,
+     "Focus1": [
+      8.660254037844387,
+      0.0
+     ]
+    },
+    {
+     "type": "Circle",
+     "Center": [
+      20.0,
+      0.0,
+      0.0
+     ],
+     "AngleXU": -0.0,
+     "Radius": 4.0,
+     "FirstParameter": 0.0,
+     "LastParameter": 6.283185307179586
+    }
+   ]
+  },
+  "B_tangent_ellipse_ellipse": {
+   "before": {
+    "solve": 0,
+    "dof": 10,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [],
+    "partial": []
+   },
+   "accepted": true,
+   "constraint_index": 0,
+   "after": {
+    "solve": -5,
+    "dof": 10,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [
+     1
+    ],
+    "partial": []
+   },
+   "geometry_after": [
+    {
+     "type": "Ellipse",
+     "Center": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "MajorRadius": 10.0,
+     "MinorRadius": 5.0,
+     "AngleXU": -0.0,
+     "FirstParameter": 0.0,
+     "LastParameter": 6.283185307179586,
+     "Focus1": [
+      8.660254037844387,
+      0.0
+     ]
+    },
+    {
+     "type": "Ellipse",
+     "Center": [
+      30.0,
+      0.0,
+      0.0
+     ],
+     "MajorRadius": 7.999999999999999,
+     "MinorRadius": 2.9999999999999996,
+     "AngleXU": 0.17453292519943295,
+     "FirstParameter": 0.0,
+     "LastParameter": 6.283185307179586,
+     "Focus1": [
+      37.303529767969216,
+      1.2878093525004075
+     ]
+    }
+   ]
+  },
+  "B_equal_ellipse_ellipse": {
+   "before": {
+    "solve": 0,
+    "dof": 10,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [],
+    "partial": []
+   },
+   "accepted": true,
+   "constraint_index": 0,
+   "after": {
+    "solve": 0,
+    "dof": 8,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [],
+    "partial": []
+   },
+   "geometry_after": [
+    {
+     "type": "Ellipse",
+     "Center": [
+      0.20369085718449914,
+      0.0,
+      0.0
+     ],
+     "MajorRadius": 9.278575729946919,
+     "MinorRadius": 5.012238058526389,
+     "AngleXU": -0.0,
+     "FirstParameter": 0.0,
+     "LastParameter": 6.283185307179586,
+     "Focus1": [
+      8.011983706522287,
+      0.0
+     ]
+    },
+    {
+     "type": "Ellipse",
+     "Center": [
+      29.806931216075792,
+      -0.034043235738410754,
+      0.0
+     ],
+     "MajorRadius": 9.278575729946917,
+     "MinorRadius": 5.012238058526389,
+     "AngleXU": 0.17453292519943298,
+     "FirstParameter": 0.0,
+     "LastParameter": 6.283185307179586,
+     "Focus1": [
+      37.49659855189343,
+      1.3218525882388188
+     ]
+    }
+   ]
+  },
+  "B_equal_ellipse_circle": {
+   "before": {
+    "solve": 0,
+    "dof": 8,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [],
+    "partial": []
+   },
+   "accepted": true,
+   "constraint_index": 0,
+   "after": {
+    "solve": -5,
+    "dof": 8,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [
+     1
+    ],
+    "partial": []
+   },
+   "geometry_after": [
+    {
+     "type": "Ellipse",
+     "Center": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "MajorRadius": 10.0,
+     "MinorRadius": 5.0,
+     "AngleXU": -0.0,
+     "FirstParameter": 0.0,
+     "LastParameter": 6.283185307179586,
+     "Focus1": [
+      8.660254037844387,
+      0.0
+     ]
+    },
+    {
+     "type": "Circle",
+     "Center": [
+      20.0,
+      0.0,
+      0.0
+     ],
+     "AngleXU": -0.0,
+     "Radius": 4.0,
+     "FirstParameter": 0.0,
+     "LastParameter": 6.283185307179586
+    }
+   ]
+  },
+  "B_radius_ellipse": {
+   "before": {
+    "solve": 0,
+    "dof": 5,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [],
+    "partial": []
+   },
+   "accepted": true,
+   "constraint_index": 0,
+   "after": {
+    "solve": -5,
+    "dof": 5,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [
+     1
+    ],
+    "partial": []
+   },
+   "geometry_after": [
+    {
+     "type": "Ellipse",
+     "Center": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "MajorRadius": 10.0,
+     "MinorRadius": 5.0,
+     "AngleXU": -0.0,
+     "FirstParameter": 0.0,
+     "LastParameter": 6.283185307179586,
+     "Focus1": [
+      8.660254037844387,
+      0.0
+     ]
+    }
+   ]
+  },
+  "B_diameter_ellipse": {
+   "before": {
+    "solve": 0,
+    "dof": 5,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [],
+    "partial": []
+   },
+   "accepted": true,
+   "constraint_index": 0,
+   "after": {
+    "solve": -5,
+    "dof": 5,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [
+     1
+    ],
+    "partial": []
+   },
+   "geometry_after": [
+    {
+     "type": "Ellipse",
+     "Center": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "MajorRadius": 10.0,
+     "MinorRadius": 5.0,
+     "AngleXU": -0.0,
+     "FirstParameter": 0.0,
+     "LastParameter": 6.283185307179586,
+     "Focus1": [
+      8.660254037844387,
+      0.0
+     ]
+    }
+   ]
+  },
+  "B_horizontal_ellipse": {
+   "before": {
+    "solve": 0,
+    "dof": 5,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [],
+    "partial": []
+   },
+   "accepted": true,
+   "constraint_index": 0,
+   "after": {
+    "solve": -5,
+    "dof": 5,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [
+     1
+    ],
+    "partial": []
+   },
+   "geometry_after": [
+    {
+     "type": "Ellipse",
+     "Center": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "MajorRadius": 10.0,
+     "MinorRadius": 5.0,
+     "AngleXU": -0.0,
+     "FirstParameter": 0.0,
+     "LastParameter": 6.283185307179586,
+     "Focus1": [
+      8.660254037844387,
+      0.0
+     ]
+    }
+   ]
+  },
+  "B_vertical_ellipse": {
+   "before": {
+    "solve": 0,
+    "dof": 5,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [],
+    "partial": []
+   },
+   "accepted": true,
+   "constraint_index": 0,
+   "after": {
+    "solve": -5,
+    "dof": 5,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [
+     1
+    ],
+    "partial": []
+   },
+   "geometry_after": [
+    {
+     "type": "Ellipse",
+     "Center": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "MajorRadius": 10.0,
+     "MinorRadius": 5.0,
+     "AngleXU": -0.0,
+     "FirstParameter": 0.0,
+     "LastParameter": 6.283185307179586,
+     "Focus1": [
+      8.660254037844387,
+      0.0
+     ]
+    }
+   ]
+  },
+  "B_block_ellipse": {
+   "before": {
+    "solve": 0,
+    "dof": 5,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [],
+    "partial": []
+   },
+   "accepted": true,
+   "constraint_index": 0,
+   "after": {
+    "solve": 0,
+    "dof": 0,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [],
+    "partial": []
+   },
+   "geometry_after": [
+    {
+     "type": "Ellipse",
+     "Center": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "MajorRadius": 10.0,
+     "MinorRadius": 5.0,
+     "AngleXU": -0.0,
+     "FirstParameter": 0.0,
+     "LastParameter": 6.283185307179586,
+     "Focus1": [
+      8.660254037844387,
+      0.0
+     ]
+    }
+   ]
+  },
+  "B_distanceX_center": {
+   "before": {
+    "solve": 0,
+    "dof": 5,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [],
+    "partial": []
+   },
+   "accepted": true,
+   "constraint_index": 0,
+   "after": {
+    "solve": 0,
+    "dof": 4,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [],
+    "partial": []
+   },
+   "geometry_after": [
+    {
+     "type": "Ellipse",
+     "Center": [
+      4.0,
+      0.0,
+      0.0
+     ],
+     "MajorRadius": 6.8350543302335875,
+     "MinorRadius": 5.0,
+     "AngleXU": -0.0,
+     "FirstParameter": 0.0,
+     "LastParameter": 6.283185307179586,
+     "Focus1": [
+      8.660254037844387,
+      0.0
+     ]
+    }
+   ]
+  },
+  "B_distance_center_point": {
+   "before": {
+    "solve": 0,
+    "dof": 7,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [],
+    "partial": []
+   },
+   "accepted": true,
+   "constraint_index": 0,
+   "after": {
+    "solve": 0,
+    "dof": 6,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [],
+    "partial": []
+   },
+   "geometry_after": [
+    {
+     "type": "Ellipse",
+     "Center": [
+      -0.8963735137820854,
+      -0.38416007733517954,
+      0.0
+     ],
+     "MajorRadius": 10.792437589605251,
+     "MinorRadius": 5.0,
+     "AngleXU": 0.04017665791749745,
+     "FirstParameter": 0.0,
+     "LastParameter": 6.283185307179586,
+     "Focus1": [
+      8.66025403784439,
+      1.1102230246251565e-16
+     ]
+    },
+    {
+     "type": "Point"
+    }
+   ]
+  },
+  "B_angle_ellipse": {
+   "before": {
+    "solve": 0,
+    "dof": 5,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [],
+    "partial": []
+   },
+   "accepted": true,
+   "constraint_index": 0,
+   "after": {
+    "solve": -5,
+    "dof": 5,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [
+     1
+    ],
+    "partial": []
+   },
+   "geometry_after": [
+    {
+     "type": "Ellipse",
+     "Center": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "MajorRadius": 10.0,
+     "MinorRadius": 5.0,
+     "AngleXU": -0.0,
+     "FirstParameter": 0.0,
+     "LastParameter": 6.283185307179586,
+     "Focus1": [
+      8.660254037844387,
+      0.0
+     ]
+    }
+   ]
+  },
+  "B_symmetric_points_about_ellipse_center": {
+   "before": {
+    "solve": 0,
+    "dof": 7,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [],
+    "partial": []
+   },
+   "accepted": true,
+   "constraint_index": 0,
+   "after": {
+    "solve": -3,
+    "dof": 7,
+    "conflicting": [
+     1
+    ],
+    "redundant": [],
+    "malformed": [],
+    "partial": [
+     1
+    ]
+   },
+   "geometry_after": [
+    {
+     "type": "Ellipse",
+     "Center": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "MajorRadius": 10.0,
+     "MinorRadius": 5.0,
+     "AngleXU": -0.0,
+     "FirstParameter": 0.0,
+     "LastParameter": 6.283185307179586,
+     "Focus1": [
+      8.660254037844387,
+      0.0
+     ]
+    },
+    {
+     "type": "Point"
+    }
+   ]
+  },
+  "C_expose_internal": {
+   "returned": null,
+   "before": {
+    "solve": 0,
+    "dof": 5,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [],
+    "partial": []
+   },
+   "after": {
+    "solve": 0,
+    "dof": 5,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [],
+    "partial": []
+   },
+   "geometry": [
+    {
+     "type": "Ellipse",
+     "Center": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "MajorRadius": 10.0,
+     "MinorRadius": 5.0,
+     "AngleXU": -0.0,
+     "FirstParameter": 0.0,
+     "LastParameter": 6.283185307179586,
+     "Focus1": [
+      8.660254037844387,
+      0.0
+     ],
+     "construction": false
+    },
+    {
+     "type": "LineSegment",
+     "FirstParameter": 0.0,
+     "LastParameter": 20.0,
+     "StartPoint": [
+      10.0,
+      0.0
+     ],
+     "EndPoint": [
+      -10.0,
+      0.0
+     ],
+     "construction": true
+    },
+    {
+     "type": "LineSegment",
+     "FirstParameter": 0.0,
+     "LastParameter": 10.0,
+     "StartPoint": [
+      0.0,
+      5.0
+     ],
+     "EndPoint": [
+      0.0,
+      -5.0
+     ],
+     "construction": true
+    },
+    {
+     "type": "Point",
+     "construction": true
+    },
+    {
+     "type": "Point",
+     "construction": true
+    }
+   ],
+   "constraints": [
+    {
+     "type": "InternalAlignment",
+     "first": 1,
+     "firstPos": 0,
+     "second": 0,
+     "secondPos": 0,
+     "value": 0.0,
+     "driving": true
+    },
+    {
+     "type": "InternalAlignment",
+     "first": 2,
+     "firstPos": 0,
+     "second": 0,
+     "secondPos": 0,
+     "value": 0.0,
+     "driving": true
+    },
+    {
+     "type": "InternalAlignment",
+     "first": 3,
+     "firstPos": 1,
+     "second": 0,
+     "secondPos": 0,
+     "value": 0.0,
+     "driving": true
+    },
+    {
+     "type": "InternalAlignment",
+     "first": 4,
+     "firstPos": 1,
+     "second": 0,
+     "secondPos": 0,
+     "value": 0.0,
+     "driving": true
+    }
+   ]
+  },
+  "D_dimension_axes": {
+   "lines": [
+    1,
+    2
+   ],
+   "base": {
+    "solve": 0,
+    "dof": 5,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [],
+    "partial": []
+   },
+   "line_1_length": 20.0,
+   "line_2_length": 10.0,
+   "after_dims": {
+    "solve": 0,
+    "dof": 3,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [],
+    "partial": []
+   },
+   "ellipse_after": {
+    "type": "Ellipse",
+    "Center": [
+     2.555129446225357,
+     0.0,
+     0.0
+    ],
+    "MajorRadius": 11.999999999999998,
+    "MinorRadius": 4.0,
+    "AngleXU": -0.0,
+    "FirstParameter": 0.0,
+    "LastParameter": 6.283185307179586,
+    "Focus1": [
+     13.868837945210117,
+     0.0
+    ]
+   }
+  },
+  "E_arc_of_ellipse": {
+   "info": {
+    "solve": 0,
+    "dof": 7,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [],
+    "partial": []
+   },
+   "geometry": [
+    {
+     "type": "ArcOfEllipse",
+     "Center": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "MajorRadius": 10.0,
+     "MinorRadius": 5.0,
+     "AngleXU": -0.0,
+     "FirstParameter": 0.0,
+     "LastParameter": 1.5707963267948966,
+     "StartPoint": [
+      10.0,
+      0.0
+     ],
+     "EndPoint": [
+      6.123233995736766e-16,
+      5.0
+     ]
+    }
+   ],
+   "getPoint_1": [
+    10.0,
+    0.0
+   ],
+   "getPoint_2": [
+    6.123233995736766e-16,
+    5.0
+   ],
+   "getPoint_3": [
+    0.0,
+    0.0
+   ],
+   "after_expose": {
+    "solve": 0,
+    "dof": 7,
+    "conflicting": [],
+    "redundant": [],
+    "malformed": [],
+    "partial": []
+   },
+   "geo_count_after_expose": 5
+  },
+  "F_pad_ellipse": {
+   "valid": true,
+   "volume": 628.3185307179585,
+   "expected": 628.3185307179587,
+   "faces": 3,
+   "face_types": [
+    "SurfaceOfExtrusion",
+    "Plane",
+    "Plane"
+   ]
+  }
+ }
+}
