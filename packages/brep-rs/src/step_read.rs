@@ -105,9 +105,15 @@ pub fn parse_step(text: &str) -> Result<Graph, String> {
         src: text,
         toks,
         pos: 0,
+        depth: 0,
     }
     .parse()
 }
+
+/// How deep a parameter list may nest. A real STEP file nests a handful of levels (a list of typed values); the parser
+/// recurses once per level, and the wasm is built `panic = "abort"` with a small stack, so a file of ten thousand open
+/// parentheses used to run it out of stack and kill the whole instance (found by `docs/specs/fuzz/fuzz-wasm.mjs`).
+const MAX_NESTING: usize = 64;
 
 /// A lexical token. `Other` carries any byte the grammar does not use, so the
 /// lexer never fails on a stray character; the parser rejects it instead.
@@ -394,6 +400,8 @@ struct Parser<'a> {
     src: &'a str,
     toks: Vec<Token>,
     pos: usize,
+    /// How many parameter lists are open right now.
+    depth: usize,
 }
 
 impl<'a> Parser<'a> {
@@ -561,6 +569,20 @@ impl<'a> Parser<'a> {
     }
 
     fn parse_params(&mut self) -> Result<Vec<Value>, String> {
+        if self.depth >= MAX_NESTING {
+            return Err(err_at(
+                self.src,
+                self.at(),
+                &format!("parameters nested more than {MAX_NESTING} deep, which is not a STEP file brep-rs can read"),
+            ));
+        }
+        self.depth += 1;
+        let parsed = self.parse_params_nested();
+        self.depth -= 1;
+        parsed
+    }
+
+    fn parse_params_nested(&mut self) -> Result<Vec<Value>, String> {
         self.expect(&Tok::LParen, "'('")?;
         let mut vals = Vec::new();
         if self.peek() == Some(&Tok::RParen) {
@@ -844,6 +866,17 @@ mod tests {
         let g = parse_step(text).unwrap();
         assert!(g.get(1).is_some());
         assert_eq!(g.all("CARTESIAN_POINT"), vec![1]);
+    }
+
+    #[test]
+    fn deeply_nested_parentheses_are_an_error_not_a_stack_overflow() {
+        // 20000 open parentheses overflowed the parser's stack in the wasm and killed the instance.
+        let deep = format!("ISO-10303-21;\nDATA;\n#1=X({});\nENDSEC;\n", "(".repeat(20000));
+        let e = parse_step(&deep).err().expect("must refuse");
+        assert!(e.contains("nested"), "{e}");
+        // Real files nest a few levels; sixty-odd is the most one may.
+        let ok = format!("ISO-10303-21;\nDATA;\n#1=X({}1.{});\nENDSEC;\n", "(".repeat(40), ")".repeat(40));
+        assert!(parse_step(&ok).is_ok(), "forty levels is fine");
     }
 
     #[test]
