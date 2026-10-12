@@ -33,6 +33,10 @@ import {
   findSnap,
   geomMidpoint,
   autoDimension,
+  referenceRowOf,
+  dimensionArt,
+  lineSmartDimension,
+  placeDimension,
   dimensionValueError,
   ruleGlyphAnchors,
   filletPick,
@@ -481,9 +485,9 @@ test('27: geomMidpoint reads each geometry kind', () => {
 });
 
 // 28: a picked LINE auto-detects as the distance between its own endpoints.
-test('28: autoDimension turns a line pick into an endpoint distance', () => {
+test('28: autoDimension turns a horizontal line pick into a Horizontal distance (FreeCAD smart Dimension)', () => {
   const d = autoDimension([LINE], { id: 1, at: null });
-  assert.equal(d.kind, 'distance');
+  assert.equal(d.kind, 'distanceX');
   assert.equal(d.value, 40);
   assert.deepEqual(d.a, { id: 1, at: 'a' });
   assert.deepEqual(d.b, { id: 1, at: 'b' });
@@ -492,10 +496,10 @@ test('28: autoDimension turns a line pick into an endpoint distance', () => {
 
 // 29: a circle and an arc both auto-detect as RADIUS -- the convention
 // openDimFromSelection already uses, so the canvas and the ribbon agree.
-test('29: autoDimension reads a circle and an arc as radius', () => {
+test('29: autoDimension reads a circle as Diameter and an arc as Radius', () => {
   const c = autoDimension([CIRCLE], { id: 2, at: null });
-  assert.equal(c.kind, 'radius');
-  assert.equal(c.value, 5);
+  assert.equal(c.kind, 'diameter');
+  assert.equal(c.value, 10);
   assert.equal(c.b, null);
   const a = autoDimension([ARC], { id: 3, at: null });
   assert.equal(a.kind, 'radius');
@@ -534,6 +538,16 @@ test('32: dimensionValueError names every value the solver cannot take', () => {
   // direction and zero names a shared axis, so both are real answers.
   assert.equal(dimensionValueError('distanceX', '-12'), null);
   assert.equal(dimensionValueError('distanceY', '0'), null);
+  // ...but a smart-Dim pick of ONE line (or two points) refuses 0: that is a
+  // line folded onto an axis, which the unsigned 'distance' always refused.
+  const hLine = autoDimension([{ k: 'line', id: 1, a: [0, 0], b: [40, 0] }], { id: 1, at: null });
+  assert.equal(hLine.kind, 'distanceX');
+  const zeroH = dimensionValueError(hLine.kind, '0', { collapses: true });
+  assert.match(zeroH, /collapses this line/);
+  assert.match(dimensionValueError('distanceY', '0', { collapses: true }), /vertical distance of 0 collapses/);
+  assert.equal(dimensionValueError('distanceX', '40', { collapses: true }), null);
+  assert.equal(dimensionValueError('distanceX', '-40', { collapses: true }), null);
+  assert.ok(dimensionValueError('distanceX', '', { collapses: true }));
 });
 
 // 33: where each rule kind's glyph hangs -- one geometry's midpoint, the
@@ -845,4 +859,64 @@ test('46: migratedRules closes the loop and keeps the H/V edges', () => {
     [],
     'a circle carries no corners to weld and no line edges',
   );
+});
+
+// 28b: vertical -> DistanceY, slanted -> length, ends ordered so the value is positive.
+test('28b: autoDimension on a vertical and a slanted line', () => {
+  const v = autoDimension([{ k: 'line', id: 7, a: [5, 30], b: [5, 10] }], { id: 7, at: null });
+  assert.equal(v.kind, 'distanceY');
+  assert.equal(v.value, 20);
+  assert.deepEqual(v.a, { id: 7, at: 'b' }, 'DistanceY runs bottom to top');
+  assert.deepEqual(v.b, { id: 7, at: 'a' });
+  const h = lineSmartDimension({ id: 8, a: [40, 0], b: [0, 0] });
+  assert.equal(h.kind, 'distanceX');
+  assert.deepEqual(h.a, { id: 8, at: 'b' }, 'DistanceX runs left to right');
+  const s = autoDimension([{ k: 'line', id: 9, a: [0, 0], b: [3, 4] }], { id: 9, at: null });
+  assert.equal(s.kind, 'distance');
+  assert.equal(s.value, 5);
+  const near = lineSmartDimension({ id: 10, a: [0, 0], b: [40, 1e-12] });
+  assert.equal(near.kind, 'distanceX', 'solver noise still reads as horizontal');
+});
+
+// 30b: two points: the label position picks distance / distanceX / distanceY.
+test('30b: placeDimension picks the kind from where the label lands', () => {
+  const geoms = [
+    { k: 'line', id: 1, a: [0, 0], b: [40, 0] },
+    { k: 'line', id: 4, a: [30, 20], b: [60, 20] },
+  ];
+  const d = autoDimension(geoms, { id: 1, at: 'a' }, { id: 4, at: 'a' }); // (0,0) -> (30,20)
+  assert.equal(d.kind, 'distance');
+  const above = placeDimension(geoms, d, { x: 15, y: 40 });
+  assert.equal(above.kind, 'distanceX');
+  assert.equal(above.value, 30);
+  const beside = placeDimension(geoms, d, { x: -10, y: 10 });
+  assert.equal(beside.kind, 'distanceY');
+  assert.equal(beside.value, 20);
+  const diag = placeDimension(geoms, d, { x: 50, y: 50 });
+  assert.equal(diag.kind, 'distance');
+  assert.ok(Math.abs(diag.value - Math.hypot(30, 20)) < 1e-12);
+  // a single-entity dimension never changes with the label
+  const l = autoDimension(geoms, { id: 1, at: null });
+  assert.equal(placeDimension(geoms, l, { x: 5, y: 99 }), l);
+});
+
+// 30c: a reference two-point dim keeps its axis kind, and measures what the box showed.
+test('30c: referenceRowOf keeps distanceX/distanceY and measures the axis projection', () => {
+  const geoms = [
+    { k: 'line', id: 1, a: [0, 0], b: [40, 0] },
+    { k: 'line', id: 4, a: [30, 25], b: [60, 25] },
+  ];
+  const d0 = autoDimension(geoms, { id: 1, at: 'a' }, { id: 4, at: 'a' });
+  const dx = placeDimension(geoms, d0, { x: 15, y: 60 });
+  assert.equal(dx.kind, 'distanceX');
+  const row = referenceRowOf(dx);
+  assert.equal(row.k, 'distanceX');
+  assert.equal(row.a, 1);
+  assert.equal(row.bEnd, 'a');
+  const art = dimensionArt(geoms, row, { x: 15, y: 60 }, 5, { x: 0, y: 0 });
+  assert.ok(art, 'the art draws for a distanceX reference');
+  const dy = referenceRowOf(placeDimension(geoms, d0, { x: -20, y: 10 }));
+  assert.equal(dy.k, 'distanceY');
+  assert.equal(referenceRowOf(d0).k, 'distance');
+  assert.deepEqual(referenceRowOf(autoDimension([CIRCLE], { id: 2, at: null })), { k: 'diameter', a: 2 });
 });

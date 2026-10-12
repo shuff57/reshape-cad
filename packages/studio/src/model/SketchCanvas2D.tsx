@@ -71,6 +71,7 @@ import {
   arcEnds,
   arcFromClicks,
   autoDimension,
+  referenceRowOf,
   dimensionValueError,
   distToCircleStroke,
   distToSegment,
@@ -113,6 +114,8 @@ import {
   type CoreGeom,
   type DimKind,
   type DimPick,
+  lineSmartDimension,
+  placeDimension,
   type LineChain,
   type FilletPick,
   type OffsetPick,
@@ -1280,7 +1283,9 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
             ? String(2 * (g.r ?? 0))
             : kind === 'distance'
               ? String(Math.hypot((g.b?.[0] ?? 0) - (g.a?.[0] ?? 0), (g.b?.[1] ?? 0) - (g.a?.[1] ?? 0)))
-              : '0';
+              : (kind === 'distanceX' || kind === 'distanceY') && g.k === 'line'
+                ? String(lineSmartDimension(g as any).value)
+                : '0';
       setDim({ kind, a: selShapes[0] ?? null, b: null, value: initial });
     },
     [selShapes, solved],
@@ -1292,13 +1297,20 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
    *  picked it now ARMS the on-canvas flow instead of only complaining, which
    *  is the entry point item 7 asks for. */
   const openDimFromSelection = useCallback(() => {
-    if (canDimLine) openDim('distance');
-    else if (canDimRadius) openDim('radius');
+    if (canDimLine) {
+      // The same pick the on-canvas smart dimension makes: horizontal ->
+      // Horizontal distance, vertical -> Vertical distance, else length.
+      const g = solved.find((x) => x.id === selShapes[0]?.id) as any;
+      openDim(g ? lineSmartDimension(g).kind : 'distance');
+    } else if (canDimRadius) {
+      const g = solved.find((x) => x.id === selShapes[0]?.id);
+      openDim(g?.k === 'circle' ? 'diameter' : 'radius');
+    }
     else {
       setTool('dim');
       setStatus('dimension: click a line, a circle, an arc, or two points');
     }
-  }, [canDimLine, canDimRadius, openDim]);
+  }, [canDimLine, canDimRadius, openDim, selShapes, solved]);
 
   // SPEC-mouse-parity.md Phase 4.1: the marking menu's own view of the
   // current selection, as geometry kinds -- a named point (sel[i].at !==
@@ -1391,11 +1403,20 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
       setStatus('enter a number (positive unless a signed offset)');
       return;
     }
+    if ((dim.kind === 'distanceX' || dim.kind === 'distanceY') && v === 0) {
+      // A line's own horizontal/vertical distance: 0 folds it onto an axis.
+      setStatus(dimensionValueError(dim.kind, dim.value, { collapses: true }) ?? 'enter a positive number');
+      return;
+    }
     const g = dim.a ? solved.find((x) => x.id === dim.a!.id) : null;
     if (!g) return;
     if (dim.kind === 'radius') applyRule({ k: 'radius', a: g.id, value: v });
     else if (dim.kind === 'diameter') applyRule({ k: 'diameter', a: g.id, value: v });
     else if (dim.kind === 'distance') applyRule({ k: 'distance', a: g.id, aEnd: 'a', b: g.id, bEnd: 'b', value: v });
+    else if ((dim.kind === 'distanceX' || dim.kind === 'distanceY') && g.k === 'line') {
+      const s = lineSmartDimension(g as any);
+      applyRule({ k: dim.kind, a: s.a.id, aEnd: s.a.at!, b: s.b.id, bEnd: s.b.at!, value: v } as any);
+    }
     setDim(null);
   }, [applyRule, dim, solved]);
 
@@ -1410,7 +1431,12 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
       if (place?.dim && !place.at) {
         // The label lands here and the box opens on the measured value, so
         // Enter alone is a no-op and typing over it is the edit.
-        setPlace({ ...place, at: worldFromEvent(e), value: formatDim(place.dim.value) });
+        // A two-point pick settles its kind HERE, from where the label
+        // lands (FreeCAD: above/below -> Horizontal distance, beside ->
+        // Vertical distance, else the straight distance).
+        const at = worldFromEvent(e);
+        const placed = placeDimension(solved as CoreGeom[], place.dim, at);
+        setPlace({ ...place, dim: placed, at, value: formatDim(placed.value) });
         return;
       }
       const snap = findSnap(e);
@@ -1451,26 +1477,23 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
     const d = place?.dim;
     if (!place || !d) return;
     if (refMode) {
-      const ref: Record<string, any> =
-        d.kind === 'radius'
-          ? { k: 'radius', a: d.a.id }
-          : { k: 'distance', a: d.a.id, aEnd: d.a.at ?? 'a', b: (d.b ?? d.a).id, bEnd: d.b?.at ?? 'b' };
+      const ref = referenceRowOf(d);
       setRefDims((r) => [...r, { ...ref, label: place.at ?? null }]);
       setPlace(null);
       setStatus('');
       return;
     }
-    const err = dimensionValueError(d.kind, place.value);
+    const err = dimensionValueError(d.kind, place.value, { collapses: true });
     if (err) {
       setStatus(err);
       return;
     }
     const v = Number(place.value.trim());
     const row: SoupRule =
-      d.kind === 'radius'
-        ? { k: 'radius', a: d.a.id, value: v }
+      d.kind === 'radius' || d.kind === 'diameter'
+        ? ({ k: d.kind, a: d.a.id, value: v } as SoupRule)
         : {
-            k: 'distance',
+            k: d.kind === 'distanceX' || d.kind === 'distanceY' ? d.kind : 'distance',
             a: d.a.id,
             aEnd: d.a.at ?? 'a',
             b: (d.b ?? d.a).id,
@@ -1495,7 +1518,9 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
       if (raw === undefined) return;
       // The label shows its unit; typing around it must not make it an error.
       const text = raw.replace(/\s*(mm|\u00b0|deg)\s*$/i, '');
-      const err = dimensionValueError(r.k as DimKind, text);
+      const err = dimensionValueError(r.k as DimKind, text, {
+        collapses: r.a !== undefined && r.a === r.b && r.aEnd !== r.bEnd,
+      });
       if (err) {
         setStatus(err);
         return;
@@ -1522,7 +1547,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
   const toggleReference = () => {
     const i = selRule;
     const r = i !== null ? (rules[i] as unknown as Record<string, any> | undefined) : undefined;
-    if (i !== null && r && isDimensionRule(String(r.k)) && ['distance', 'distanceX', 'distanceY', 'radius'].includes(String(r.k))) {
+    if (i !== null && r && isDimensionRule(String(r.k)) && ['distance', 'distanceX', 'distanceY', 'radius', 'diameter'].includes(String(r.k))) {
       const { value: _v, ...rest } = r;
       setRefDims((d) => [...d, { ...rest, label: labelAt[i] ?? null }]);
       removeRuleAt(i);
@@ -2430,7 +2455,7 @@ export default function SketchCanvas2D({ sketch, doc, onChange, onExit }: Props)
       const ga = pick(r.a);
       const gb = pick(r.b ?? r.a);
       let v: number | null = null;
-      if (r.k === 'radius' && ga && 'r' in ga) v = (ga as any).r as number;
+      if ((r.k === 'radius' || r.k === 'diameter') && ga && 'r' in ga) v = (r.k === 'diameter' ? 2 : 1) * ((ga as any).r as number);
       else if (ga && gb) {
         const p = pointWorld(ga, r.aEnd ?? 'a');
         const q = pointWorld(gb, r.bEnd ?? 'b');

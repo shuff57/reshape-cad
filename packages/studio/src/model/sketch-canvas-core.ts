@@ -1585,14 +1585,68 @@ export interface AutoDimension {
   /** The ends the committed rule will name. */
   a: DimPick;
   b: DimPick | null;
+  /** True for a two-point pick: the kind is settled by where the label lands. */
+  byCursor?: boolean;
 }
 
-/** What dimension does a pick (or a pair of point picks) ASK for? A line
-  * wants the distance between its own two ends; a circle or an arc wants its
-  * radius -- the convention SketchCanvas2D's own openDimFromSelection already
-  * uses, so the on-canvas flow and the ribbon buttons cannot disagree about
-  * what `D` on a circle means; two picked points want the distance between
-  * them.
+/** A line is "axis-aligned" when its off-axis run is a rounding error of its
+  * length, so a line the solver left at 1e-15 off horizontal still reads as
+  * horizontal. */
+const AXIS_EPS = 1e-9;
+
+/** What FreeCAD's Sketcher_Dimension (smart dimension) writes for ONE line:
+  * a horizontal line a Horizontal distance (DistanceX), a vertical line a
+  * Vertical distance (DistanceY), anything slanted its length (Distance).
+  * The ends are ordered so the committed value is positive: DistanceX runs
+  * left to right, DistanceY bottom to top. */
+export function lineSmartDimension(g: { id: number; a: [number, number]; b: [number, number] }): {
+  kind: 'distance' | 'distanceX' | 'distanceY';
+  value: number;
+  a: DimPick;
+  b: DimPick;
+} {
+  const dx = g.b[0] - g.a[0];
+  const dy = g.b[1] - g.a[1];
+  const len = Math.hypot(dx, dy);
+  const A: DimPick = { id: g.id, at: 'a' };
+  const B: DimPick = { id: g.id, at: 'b' };
+  if (len > 0 && Math.abs(dy) <= AXIS_EPS * len) {
+    return dx >= 0
+      ? { kind: 'distanceX', value: Math.abs(dx), a: A, b: B }
+      : { kind: 'distanceX', value: Math.abs(dx), a: B, b: A };
+  }
+  if (len > 0 && Math.abs(dx) <= AXIS_EPS * len) {
+    return dy >= 0
+      ? { kind: 'distanceY', value: Math.abs(dy), a: A, b: B }
+      : { kind: 'distanceY', value: Math.abs(dy), a: B, b: A };
+  }
+  return { kind: 'distance', value: len, a: A, b: B };
+}
+
+/** The row a REFERENCE (measured, non-driving) dimension is stored as. It keeps
+  * the axis kind of a Horizontal/Vertical distance so the chip and the drawn
+  * art measure the same number the box opened on, not the hypotenuse. */
+export function referenceRowOf(d: AutoDimension): Record<string, any> {
+  if (d.kind === 'radius' || d.kind === 'diameter') return { k: d.kind, a: d.a.id };
+  return {
+    k: d.kind === 'distanceX' || d.kind === 'distanceY' ? d.kind : 'distance',
+    a: d.a.id,
+    aEnd: d.a.at ?? 'a',
+    b: (d.b ?? d.a).id,
+    bEnd: d.b?.at ?? 'b',
+  };
+}
+
+/** What dimension does a pick (or a pair of point picks) ASK for? This
+  * follows FreeCAD's smart Dimension:
+  *   - a horizontal line  -> Horizontal distance (distanceX)
+  *   - a vertical line    -> Vertical distance (distanceY)
+  *   - a slanted line     -> its length (distance)
+  *   - a circle           -> Diameter
+  *   - an arc             -> Radius
+  *   - two points         -> the straight distance until a label position is
+  *     known; {@link placeDimension} then re-reads it from where the label is
+  *     dragged to, as FreeCAD does.
   *
   * Returns null when there is nothing to measure: ONE point pick (it is half
   * a dimension, and the caller waits for the other half), a bare point row,
@@ -1612,24 +1666,53 @@ export function autoDimension(geoms: CoreGeom[], a: DimPick, b: DimPick | null =
       anchor: { x: (pa.x + pb.x) / 2, y: (pa.y + pb.y) / 2 },
       a,
       b,
+      byCursor: true,
     };
   }
   if (a.at !== null) return null;
   const anchor = geomMidpoint(ga);
   if (!anchor) return null;
   if (ga.k === 'line') {
-    return {
-      kind: 'distance',
-      value: Math.hypot(ga.b[0] - ga.a[0], ga.b[1] - ga.a[1]),
-      anchor,
-      a: { id: ga.id, at: 'a' },
-      b: { id: ga.id, at: 'b' },
-    };
+    const s = lineSmartDimension(ga as any);
+    return { kind: s.kind, value: s.value, anchor, a: s.a, b: s.b };
   }
-  if (ga.k === 'circle' || ga.k === 'arc') {
+  if (ga.k === 'circle') {
+    return { kind: 'diameter', value: 2 * ga.r, anchor, a: { id: ga.id, at: null }, b: null };
+  }
+  if (ga.k === 'arc') {
     return { kind: 'radius', value: ga.r, anchor, a: { id: ga.id, at: null }, b: null };
   }
   return null;
+}
+
+/** Re-read a two-point dimension from where its label was put. FreeCAD picks
+  * Horizontal distance when the label sits above or below the points (inside
+  * their x span), Vertical distance when it sits beside them (inside their y
+  * span), and the straight distance anywhere else. Anything that is not a
+  * two-point pick comes back unchanged. */
+export function placeDimension(geoms: CoreGeom[], dim: AutoDimension, at: Pt): AutoDimension {
+  if (!dim.byCursor || !dim.b) return dim;
+  const ga = geoms.find((x) => x.id === dim.a.id);
+  const gb = geoms.find((x) => x.id === dim.b!.id);
+  if (!ga || !gb || dim.a.at === null || dim.b.at === null) return dim;
+  const pa = pointWorld(ga, dim.a.at);
+  const pb = pointWorld(gb, dim.b.at);
+  if (!pa || !pb) return dim;
+  const loX = Math.min(pa.x, pb.x);
+  const hiX = Math.max(pa.x, pb.x);
+  const loY = Math.min(pa.y, pb.y);
+  const hiY = Math.max(pa.y, pb.y);
+  const inX = at.x >= loX && at.x <= hiX;
+  const inY = at.y >= loY && at.y <= hiY;
+  if (inX && !inY && hiX > loX) {
+    const left = pa.x <= pb.x;
+    return { ...dim, kind: 'distanceX', value: hiX - loX, a: left ? dim.a : dim.b, b: left ? dim.b : dim.a };
+  }
+  if (inY && !inX && hiY > loY) {
+    const low = pa.y <= pb.y;
+    return { ...dim, kind: 'distanceY', value: hiY - loY, a: low ? dim.a : dim.b, b: low ? dim.b : dim.a };
+  }
+  return dim;
 }
 
 /** Why the solver cannot take this text, in a sentence, or null when it can.
@@ -1639,13 +1722,24 @@ export function autoDimension(geoms: CoreGeom[], a: DimPick, b: DimPick | null =
   * distanceX/distanceY are the only SIGNED kinds: a negative one names the
   * other direction and a zero one names a shared axis, so neither is absurd
   * there the way a zero-length distance or a negative radius is. */
-export function dimensionValueError(kind: DimKind, text: string): string | null {
+export function dimensionValueError(
+  kind: DimKind,
+  text: string,
+  /** `collapses`: the dimension names the two ends of ONE line (or the two
+    * points a smart Dimension picked), so 0 would fold that line onto an
+    * axis -- refuse it as the unsigned kinds always did. */
+  opts: { collapses?: boolean } = {},
+): string | null {
   const t = String(text ?? '').trim();
   if (!t) return 'dimension: type a number -- an empty box sets nothing';
   const v = Number(t);
   if (!Number.isFinite(v)) return `dimension: "${t}" is not a number`;
   const signed = kind === 'distanceX' || kind === 'distanceY';
   if (!signed && v <= 0) return `dimension: a ${kind} of ${t} is not a shape -- give a positive number`;
+  if (signed && opts.collapses && v === 0) {
+    const what = kind === 'distanceX' ? 'horizontal' : 'vertical';
+    return `dimension: a ${what} distance of ${t} collapses this line -- give a positive number`;
+  }
   return null;
 }
 
