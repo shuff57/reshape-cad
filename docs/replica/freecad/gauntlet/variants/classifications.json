@@ -3,10 +3,6 @@
     "class": "spec-mismatch",
     "evidence": "sketch('front', 5): the script puts the plane at y=+5 and pulls toward -Y, so the pad fills y in [-5, 5]; FreeCAD's XZ_Plane offsets 5 along ITS normal (-Y), plane at y=-5, pad y in [-15, -5]. Volume 12000 and 6 faces agree, the position does not (centre of mass y 0 vs -10). The script's convention is written down and pinned: packages/script/src/model-types.ts NAMED_PLANE_FRAMES has xz n=[0,1,0] (offset direction) while SWEEP_DIR has xz=-1 ('MEASURED, not derived (xz pulls -Y)'), kept so no existing document moves. Same-geometry variants with offset 0 on the front plane (pad-basic__front-plane, pad-symmetric__front-plane with the +len/2 idiom) all MATCH."
   },
-  "hole-countersink__angle-120": {
-    "class": "spec-mismatch",
-    "evidence": "countersink: { across: 14, angle: 120 } is refused by the SCRIPT: 'a countersink's angle is its INCLUDED cone angle, so 90 is the widest'. That is a recorded decision (packages/script/test/holes-recess.test.mjs 'the countersink angle is an INCLUDED cone angle, so 90 is the widest'; the slider is capped at max 90 in packages/script/src/model-codegen.ts) and the test pins it, so it was NOT changed here. Measured on the other side of it: with the angle patched into the ModelDoc the kernel builds 60/90/100/120/150/170 degrees without a refusal, and 120 gives 11656.732710647668 mm^3, 8 faces, where FreeCAD gives 11656.732710647666, 8 faces. The 90 limit is therefore not a kernel limit; an owner call whether standard 100/120 degree countersinks should be reachable."
-  },
   "mirrored__top-bottom-pocket": {
     "class": "spec-mismatch",
     "evidence": "mirror(pocket, 'top-bottom', { at: 5 }) is refused by the script on purpose: 'reflects it through a plane parallel to the face it sits on, which would turn it to the other side of the part instead of copying it across' (packages/script/src/reshape-script.ts mirrorCut parallel()). FreeCAD's Mirrored does it (volume 11830.354, 10 faces: a pocket on the top face and one on the bottom). The refusal is documented in the mirror docs page and is a sentence, so nothing wrong is built."

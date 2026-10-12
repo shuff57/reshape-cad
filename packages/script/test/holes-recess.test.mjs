@@ -73,12 +73,20 @@ test('a hole takes a counterbore OR a countersink, never both', () => {
   assert.match(r.errors[0].message, /counterbore OR a countersink, not both/);
 });
 
-test('the countersink angle is an INCLUDED cone angle, so 90 is the widest', () => {
-  const ok = runScript(`${BOX}\nhole(b, { across: 6, countersink: { across: 12, angle: 90 } })`);
-  assert.deepEqual(ok.errors, [], '90 is the usual choice and must be accepted');
-  const bad = runScript(`${BOX}\nhole(b, { across: 6, countersink: { across: 12, angle: 120 } })`);
-  assert.equal(bad.errors.length, 1);
-  assert.match(bad.errors[0].message, /INCLUDED cone angle/);
+test('the countersink angle is an INCLUDED cone angle: 90 and 120 are accepted, 180 and over are not', () => {
+  // FreeCAD's Hole takes anything under 180 (measured with freecadcmd: 179.9 builds, 180 degenerates
+  // to a flat spot face), and 100/120 degree countersinks are standard, so 90 is NOT the widest.
+  for (const angle of [90, 100, 120, 170]) {
+    const ok = runScript(`${BOX}\nhole(b, { across: 6, countersink: { across: 12, angle: ${angle} } })`);
+    assert.deepEqual(ok.errors, [], `${angle} must be accepted`);
+    assert.equal(hole(ok).countersink.angleDeg, angle);
+  }
+  for (const angle of [180, 181, 270, 'NaN']) {
+    const bad = runScript(`${BOX}\nhole(b, { across: 6, countersink: { across: 12, angle: ${angle} } })`);
+    assert.equal(bad.errors.length, 1, `${angle} must be refused`);
+  }
+  const flat = runScript(`${BOX}\nhole(b, { across: 6, countersink: { across: 12, angle: 180 } })`);
+  assert.match(flat.errors[0].message, /INCLUDED cone angle.*under 180/);
 });
 
 test('recess dimensions must be positive, like every other size', () => {

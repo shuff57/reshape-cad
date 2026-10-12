@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-12T04:57:58.458Z",
+  "generatedAt": "2026-10-12T05:10:44.956Z",
   "reference": "FreeCAD 26.3.0 RC1 headless (variants/fc/<id>.py -> variants/refs/ref-<id>.json)",
   "ours": "reSHape Script -> ModelDoc -> brep-rs wasm (solids) / SketchSession2D (sketches)",
   "tolerances": {
@@ -11,11 +11,11 @@
   },
   "summary": {
     "total": 208,
-    "MATCH": 192,
+    "MATCH": 193,
     "MISMATCH": 1,
-    "REFUSED": 15,
+    "REFUSED": 14,
     "byClass": {
-      "spec-mismatch": 8,
+      "spec-mismatch": 7,
       "agrees-both-refuse": 3,
       "real-kernel-gap": 4,
       "reference-wrong": 1
@@ -62,7 +62,7 @@
     },
     "hole-countersink": {
       "total": 7,
-      "MATCH": 5
+      "MATCH": 6
     },
     "linear-pattern": {
       "total": 9,
@@ -6122,9 +6122,66 @@
       "desc": "countersink 14 / 120 over a 5 hole",
       "kind": "solid",
       "oursSource": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); hole(plate, { across: 5, countersink: { across: 14, angle: 120 } });",
-      "status": "REFUSED",
-      "checks": [],
-      "oursOutcome": "script-error",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 11656.73271,
+          "ours": 11656.73271,
+          "pass": true,
+          "delta": 1.560462480094725e-16
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            0,
+            0,
+            0,
+            40,
+            30,
+            10
+          ],
+          "ours": [
+            0,
+            0,
+            0,
+            40,
+            30,
+            10
+          ],
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 8,
+          "ours": 8,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            20,
+            15,
+            4.946873409
+          ],
+          "ours": [
+            20.00000028,
+            15.00000016,
+            4.946935833
+          ],
+          "pass": true,
+          "delta": 0.00006242461701422286
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 11656.73271,
+          "ours": 11657.87816,
+          "pass": true,
+          "delta": 0.00009826515305034767
+        }
+      ],
+      "oursOutcome": "built",
       "ref": {
         "volume": 11656.732710647666,
         "bbox": [
@@ -6142,11 +6199,23 @@
           4.946873408696642
         ]
       },
-      "layer": "script",
-      "sentence": "hole(): a countersink's angle is its INCLUDED cone angle, so 90 is the widest -- got 120.",
-      "classification": {
-        "class": "spec-mismatch",
-        "evidence": "countersink: { across: 14, angle: 120 } is refused by the SCRIPT: 'a countersink's angle is its INCLUDED cone angle, so 90 is the widest'. That is a recorded decision (packages/script/test/holes-recess.test.mjs 'the countersink angle is an INCLUDED cone angle, so 90 is the widest'; the slider is capped at max 90 in packages/script/src/model-codegen.ts) and the test pins it, so it was NOT changed here. Measured on the other side of it: with the angle patched into the ModelDoc the kernel builds 60/90/100/120/150/170 degrees without a refusal, and 120 gives 11656.732710647668 mm^3, 8 faces, where FreeCAD gives 11656.732710647666, 8 faces. The 90 limit is therefore not a kernel limit; an owner call whether standard 100/120 degree countersinks should be reachable."
+      "ours": {
+        "volume": 11656.732710647668,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 8,
+        "com": [
+          20.000000278878858,
+          15.000000158813439,
+          4.946935833313656
+        ],
+        "meshVolume": 11657.878161271547
       }
     },
     {
@@ -18261,7 +18330,7 @@
           "name": "solved geometry bbox in plane (abs 1e-6)",
           "ref": [
             -12,
-            -5.329070518e-15,
+            3.552713679e-15,
             30,
             24
           ],
@@ -18282,11 +18351,11 @@
         "solve": 0,
         "bucket": "consistent",
         "bbox": [
-          -12.000000000000004,
-          -5.329070518200751e-15,
+          -11.999999999999996,
+          3.552713678800501e-15,
           0,
-          29.999999999999996,
-          23.999999999999993,
+          30,
+          24,
           0
         ]
       },

@@ -33,12 +33,12 @@ test('a counterbore surfaces its two slots, named in the panel\'s own voice', ()
   assert.match(deep.caption, /counterbore deep/);
 });
 
-test('a countersink surfaces width and its INCLUDED angle, capped at 90', () => {
+test('a countersink surfaces width and its INCLUDED angle, capped under 180', () => {
   const d = docOf(hole('h1', [0, 0, 0], { countersink: { diameter: 12, angleDeg: 90 } }));
   const angle = slot(d, 'h1_countersinkAngle');
   assert.ok(angle);
   assert.equal(angle.value, 90);
-  assert.equal(angle.max, 90, 'an included angle cannot exceed 90');
+  assert.equal(angle.max, 179, 'an included angle must stay under 180, the limit the script enforces');
 });
 
 test('a hole with NO recess gets no recess slots', () => {

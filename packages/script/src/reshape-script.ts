@@ -2005,7 +2005,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
    *
    *  The split of responsibility is deliberate and is not re-argued per option.
    *  This validates only what is nonsensical REGARDLESS of geometry: types,
-   *  positivity, an included angle over 90, and the two being mutually exclusive.
+   *  positivity, an included angle of 180 or more, and the two being mutually exclusive.
    *  Genuine geometric degeneracy -- a counterbore wider than its bore, or deeper
    *  than it -- is deliberately NOT checked here. That has to reach the kernel
    *  and come back as a refusal sentence, because a script error would tell the
@@ -2046,9 +2046,9 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
         throw new Error(`${fn}(): countersink needs { angle: <number> } for the included cone angle (90 is the usual choice).`);
       }
       const angleDeg = num(positiveNumber(fn, 'countersink angle', o.angle), base.id, 'angleDeg');
-      if (angleDeg > 90) {
+      if (angleDeg >= 180) {
         throw new Error(
-          `${fn}(): a countersink's angle is its INCLUDED cone angle, so 90 is the widest -- got ${angleDeg}.`,
+          `${fn}(): a countersink's angle is its INCLUDED cone angle, so it has to be under 180 (90 and 120 are the usual choices) -- got ${angleDeg}.`,
         );
       }
       base.countersink = {

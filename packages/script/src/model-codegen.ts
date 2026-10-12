@@ -269,9 +269,9 @@ export function generatedParams(doc: ModelDoc): GeneratedParam[] {
       }
       if (f.countersink) {
         push('countersinkAcross', 'countersink across', f.countersink.diameter, { min: 0.5, max: 250, step: 0.5 });
-        // Included cone angle, so 90 is the ceiling. Same reasoning as above: an
-        // angle past 90 is refused by the script, so the panel stops there.
-        push('countersinkAngle', 'countersink angle', f.countersink.angleDeg, { min: 1, max: 90, step: 1 });
+        // Included cone angle: 90 and 120 are the usual choices, and the script
+        // refuses 180 and over, so the panel stops one degree short of it.
+        push('countersinkAngle', 'countersink angle', f.countersink.angleDeg, { min: 1, max: 179, step: 1 });
       }
     } else if (f.kind === 'shell') {
       push('thickness', 'wall', f.thickness, { min: 0.5, max: 40, step: 0.5 });
