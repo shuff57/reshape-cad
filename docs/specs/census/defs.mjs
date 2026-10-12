@@ -195,3 +195,44 @@ add({ id: 'dress-mode__chamfer-two-adjacent', family: 'dress-mode', desc: 'chamf
 add({ id: 'dress-mode__fillet-vertical-edges', family: 'dress-mode', desc: 'fillet 3 on the four vertical edges of a block (rounded rectangle corners)',
   ours: `${BOX_O} fillet([pad.edge('front','left'), pad.edge('front','right'), pad.edge('back','left'), pad.edge('back','right')], 3);`,
   fc: `${BOX_F}\ndress(body, 'Fillet', base, [edge_between(base.Shape, [0,0,0], [0,0,10]), edge_between(base.Shape, [30,0,0], [30,0,10]), edge_between(base.Shape, [0,20,0], [0,20,10]), edge_between(base.Shape, [30,20,0], [30,20,10])], 3)` });
+// ---- DRESS-UP CHAINS: chamfers of edges that meet at a corner, one pick or several features (all FreeCAD 26.3.0 RC1) ----------
+const CE = (a, b) => `edge_between(base.Shape, [${a}], [${b}])`;
+const TF = CE('0,0,10', '30,0,10'), TR = CE('30,0,10', '30,20,10'), TB = CE('30,20,10', '0,20,10'), TL = CE('0,20,10', '0,0,10');
+const VFR = CE('30,0,0', '30,0,10');
+const OTF = "pad.edge('top','front')", OTR = "pad.edge('top','right')", OTB = "pad.edge('top','back')", OTL = "pad.edge('top','left')", OVFR = "pad.edge('front','right')";
+add({ id: 'dress-chain__three-at-corner', family: 'dress-chain', desc: 'chamfer 2 on the three edges meeting at the (30,0,10) corner',
+  ours: `${BOX_O} chamfer([${OTR}, ${OTF}, ${OVFR}], 2);`, fc: `${BOX_F}\ndress(body, 'Chamfer', base, [${TR}, ${TF}, ${VFR}], 2)` });
+add({ id: 'dress-chain__u-shape', family: 'dress-chain', desc: 'chamfer 2 on top front, right, back (a chain of three)',
+  ours: `${BOX_O} chamfer([${OTF}, ${OTR}, ${OTB}], 2);`, fc: `${BOX_F}\ndress(body, 'Chamfer', base, [${TF}, ${TR}, ${TB}], 2)` });
+add({ id: 'dress-chain__two-sequential-sizes', family: 'dress-chain', desc: 'chamfer 2 on top/right then, as a later feature, chamfer 3 on top/front',
+  ours: `${BOX_O} chamfer(${OTR}, 2); chamfer(${OTF}, 3);`,
+  fc: `${BOX_F}\nc1 = dress(body, 'Chamfer', base, [${TR}], 2)\nbase = c1\ndress(body, 'Chamfer', c1, [edge_between(c1.Shape, [0,0,10], [28,0,10])], 3)` });
+add({ id: 'dress-chain__top-and-bottom-loops', family: 'dress-chain', desc: 'chamfer 2 on all eight horizontal edges',
+  ours: `${BOX_O} chamfer([${OTF}, ${OTR}, ${OTB}, ${OTL}, pad.edge('bottom','front'), pad.edge('bottom','right'), pad.edge('bottom','back'), pad.edge('bottom','left')], 2);`,
+  fc: `${BOX_F}\ndress(body, 'Chamfer', base, [${TF}, ${TR}, ${TB}, ${TL}, ${CE('0,0,0','30,0,0')}, ${CE('30,0,0','30,20,0')}, ${CE('30,20,0','0,20,0')}, ${CE('0,20,0','0,0,0')}], 2)` });
+add({ id: 'dress-chain__top-front-and-vertical', family: 'dress-chain', desc: 'chamfer 2 on top/front and the vertical front/right (adjacent, different axes)',
+  ours: `${BOX_O} chamfer([${OTF}, ${OVFR}], 2);`, fc: `${BOX_F}\ndress(body, 'Chamfer', base, [${TF}, ${VFR}], 2)` });
+add({ id: 'dress-chain__opposite-corners', family: 'dress-chain', desc: 'chamfer 2 on top/front and top/back (parallel, no shared vertex)',
+  ours: `${BOX_O} chamfer([${OTF}, ${OTB}], 2);`, fc: `${BOX_F}\ndress(body, 'Chamfer', base, [${TF}, ${TB}], 2)` });
+add({ id: 'dress-chain__two-adjacent-big', family: 'dress-chain', desc: 'chamfer 4 on top/right and top/front (the bevels nearly meet)',
+  ours: `${BOX_O} chamfer([${OTR}, ${OTF}], 4);`, fc: `${BOX_F}\ndress(body, 'Chamfer', base, [${TR}, ${TF}], 4)` });
+const PENT_O = `const s = sketch('top'); s.polygon([[0,0],[30,0],[40,15],[15,30],[-10,15]]); const pad = extrude(s, 10);`;
+const PENT_F = `doc, body = setup()\ns = sketch(body, 'top')\npoly(s, [(0,0),(30,0),(40,15),(15,30),(-10,15)])\nbase = pad(body, s, 10)`;
+const PF = CE('0,0,10', '30,0,10'), PR = CE('30,0,10', '40,15,10'), PL = CE('0,0,10', '-10,15,10');
+add({ id: 'dress-chain__pentagon-front-right', family: 'dress-chain', desc: 'pentagon prism, chamfer 1.5 on the front and right top edges (obtuse corner)',
+  ours: `${PENT_O} chamfer([pad.edge('top','front'), pad.edge('top','right')], 1.5);`, fc: `${PENT_F}\ndress(body, 'Chamfer', base, [${PF}, ${PR}], 1.5)` });
+add({ id: 'dress-chain__pentagon-left-front', family: 'dress-chain', desc: 'pentagon prism, chamfer 1.5 on the left and front top edges',
+  ours: `${PENT_O} chamfer([pad.edge('top','left'), pad.edge('top','front')], 1.5);`, fc: `${PENT_F}\ndress(body, 'Chamfer', base, [${PL}, ${PF}], 1.5)` });
+add({ id: 'dress-chain__pentagon-single', family: 'dress-chain', desc: 'pentagon prism, one chamfer 4 on the front top edge',
+  ours: `${PENT_O} chamfer(pad.edge('top','front'), 4);`, fc: `${PENT_F}\ndress(body, 'Chamfer', base, [${PF}], 4)` });
+add({ id: 'dress-chain__pentagon-big', family: 'dress-chain', desc: 'pentagon prism, chamfer 6 on front and right',
+  ours: `${PENT_O} chamfer([pad.edge('top','front'), pad.edge('top','right')], 6);`, fc: `${PENT_F}\ndress(body, 'Chamfer', base, [${PF}, ${PR}], 6)` });
+add({ id: 'dress-chain__sequential-3-then-2', family: 'dress-chain', desc: 'chamfer 3 on top/right then chamfer 2 on top/front',
+  ours: `${BOX_O} chamfer(${OTR}, 3); chamfer(${OTF}, 2);`,
+  fc: `${BOX_F}\nc1 = dress(body, 'Chamfer', base, [${TR}], 3)\ndress(body, 'Chamfer', c1, [edge_between(c1.Shape, [0,0,10], [27,0,10])], 2)` });
+add({ id: 'dress-chain__sequential-three-edges', family: 'dress-chain', desc: 'chamfer 2 top/right, then 2 top/front, then 2 top/back as three features',
+  ours: `${BOX_O} chamfer(${OTR}, 2); chamfer(${OTF}, 2); chamfer(${OTB}, 2);`,
+  fc: `${BOX_F}\nc1 = dress(body, 'Chamfer', base, [${TR}], 2)\nc2 = dress(body, 'Chamfer', c1, [edge_between(c1.Shape, [0,0,10], [28,0,10])], 2)\ndress(body, 'Chamfer', c2, [edge_between(c2.Shape, [0,20,10], [28,20,10])], 2)` });
+add({ id: 'dress-chain__chain-then-fillet', family: 'dress-chain', desc: 'chamfer 2 on top/right and top/front, then fillet 1 on top/back',
+  ours: `${BOX_O} chamfer([${OTR}, ${OTF}], 2); fillet(${OTB}, 1);`,
+  fc: `${BOX_F}\nc1 = dress(body, 'Chamfer', base, [${TR}, ${TF}], 2)\ndress(body, 'Fillet', c1, [edge_between(c1.Shape, [0,20,10], [28,20,10])], 1)` });

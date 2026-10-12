@@ -1,11 +1,11 @@
 # PartDesign census: modes the gauntlet does not cover
 
-FreeCAD 26.3.0 RC1 against brep-rs at `cen`. 79 cases.
+FreeCAD 26.3.0 RC1 against brep-rs at `reshape-cad`. 93 cases.
 
 | status | n |
 |---|---|
 | FACES | 5 |
-| MATCH | 47 |
+| MATCH | 61 |
 | MATCH-EXACT | 1 |
 | NO-CONSTRUCT | 16 |
 | REFUSED | 10 |
@@ -18,7 +18,7 @@ FreeCAD 26.3.0 RC1 against brep-rs at `cen`. 79 cases.
 | pocket-mode | MATCH 5, NO-CONSTRUCT 1 |
 | groove | MATCH 3, FACES 2 |
 | revolution-mode | NO-CONSTRUCT 1 |
-| dress-mode | NO-CONSTRUCT 2, MATCH 4, REFUSED 4 |
+| dress-mode | NO-CONSTRUCT 2, MATCH 6, REFUSED 2 |
 | hole-mode | NO-CONSTRUCT 4, MATCH 1 |
 | thickness | MATCH 2, NO-CONSTRUCT 2, FACES 1 |
 | draft | MATCH 2, NO-CONSTRUCT 1 |
@@ -27,6 +27,7 @@ FreeCAD 26.3.0 RC1 against brep-rs at `cen`. 79 cases.
 | primitive | MATCH 9, REFUSED 1, NO-CONSTRUCT 1 |
 | boolean | MATCH 10, FACES 2, REFUSED 2, MATCH-EXACT 1 |
 | sketch-on-face | MATCH 3, REFUSED 1 |
+| dress-chain | REFUSED 2, MATCH 12 |
 
 ## Every case
 
@@ -55,8 +56,8 @@ FreeCAD 26.3.0 RC1 against brep-rs at `cen`. 79 cases.
 | dress-mode__chamfer-two-distances | NO-CONSTRUCT | bevel() takes one size |
 | dress-mode__chamfer-distance-angle | NO-CONSTRUCT | bevel() takes one size |
 | dress-mode__fillet-all-edges | MATCH | vol 5804.6961, 26 faces |
-| dress-mode__fillet-two-adjacent | REFUSED | brep-rs can only round a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is |
-| dress-mode__fillet-top-loop | REFUSED | brep-rs can only round a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is |
+| dress-mode__fillet-two-adjacent | REFUSED | brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2  |
+| dress-mode__fillet-top-loop | REFUSED | brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2  |
 | dress-mode__fillet-after-pocket | MATCH | vol 11666.5266, 9 faces |
 | dress-mode__chamfer-after-pocket | MATCH | vol 11640.8407, 9 faces |
 | hole-mode__drill-point-118 | NO-CONSTRUCT | hole() has no drill point option |
@@ -108,6 +109,20 @@ FreeCAD 26.3.0 RC1 against brep-rs at `cen`. 79 cases.
 | sketch-face__pocket-on-side-face | MATCH | vol 5773.8053, 8 faces |
 | sketch-face__datum-tilted-pad | MATCH | vol 1200.0000, 6 faces |
 | sketch-face__pocket-from-tilted-face | REFUSED | pocket pocket1: brep-rs cannot cut this pocket yet (the tool is not fully enclosed by pull1, or its surface pair is unsupported) -- pocket1 is shown without it. |
-| dress-mode__chamfer-top-loop | REFUSED | brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face  |
-| dress-mode__chamfer-two-adjacent | REFUSED | brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face  |
+| dress-mode__chamfer-top-loop | MATCH | vol 5810.6667, 10 faces |
+| dress-mode__chamfer-two-adjacent | MATCH | vol 5902.6667, 8 faces |
 | dress-mode__fillet-vertical-edges | MATCH | vol 5922.7433, 10 faces |
+| dress-chain__three-at-corner | REFUSED | brep-rs cannot chamfer an edge whose end touches more than three faces -- bevel3 is shown without it. |
+| dress-chain__u-shape | MATCH | vol 5845.3333, 9 faces |
+| dress-chain__two-sequential-sizes | MATCH | vol 5829.6667, 8 faces |
+| dress-chain__top-and-bottom-loops | MATCH | vol 5621.3333, 14 faces |
+| dress-chain__top-front-and-vertical | MATCH | vol 5922.6667, 8 faces |
+| dress-chain__opposite-corners | MATCH | vol 5880.0000, 8 faces |
+| dress-chain__two-adjacent-big | MATCH | vol 5621.3333, 8 faces |
+| dress-chain__pentagon-front-right | MATCH | vol 9696.2226, 9 faces |
+| dress-chain__pentagon-left-front | MATCH | vol 9696.2226, 9 faces |
+| dress-chain__pentagon-single | MATCH | vol 9495.7778, 8 faces |
+| dress-chain__pentagon-big | MATCH | vol 8901.7479, 9 faces |
+| dress-chain__sequential-3-then-2 | MATCH | vol 5854.6667, 8 faces |
+| dress-chain__sequential-three-edges | MATCH | vol 5845.3333, 9 faces |
+| dress-chain__chain-then-fillet | REFUSED | brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1  |

@@ -1,10 +1,15 @@
 # PartDesign census: findings
 
-Source: `defs.mjs` (79 cases), run by `run.mjs` on FreeCAD 26.3.0 RC1 and on brep-rs + the script layer built from
-`main` at `5d55e89`. Table of every case: `CENSUS.md`; raw numbers: `results.json`; FreeCAD's own feature and
+Source: `defs.mjs` (93 cases: the 79 of the first run, plus 14 `dress-chain__*` cases added with the chamfer-chain slice),
+run by `run.mjs` on FreeCAD 26.3.0 RC1 and on brep-rs + the script layer. The first 79 were measured on `main` at
+`5d55e89`; the chamfer rows below were re-measured after the chain slice (see "Update: chamfer chains"). Table of every case: `CENSUS.md`; raw numbers: `results.json`; FreeCAD's own feature and
 mode inventory: `inventory.json`. These are the modes the gauntlet's 17 pieces (218 variants) do NOT cover.
 
 ## The headline
+
+The table is the first 79-case run. Current totals over all 93 cases: 61 match, 1 matches the closed form, 5 face
+count only, 10 refuse, 16 have no script construct, 0 silently wrong. (The pentagon sliver in "Update: chamfer
+chains" was a silently wrong solid that the first 79 cases did not exercise.)
 
 | | n |
 |---|---|
@@ -28,6 +33,32 @@ with an end. Thickness (shell) of a box, with Join = Arc and Intersection. Draft
 smooth loft of two rectangles. Nine additive and subtractive primitives. Ten booleans between bodies (box, cylinder,
 sphere, cone against a block: fuse, cut, common). Sketch on a face and on a tilted datum plane (pad, side-face
 pocket). Two holes from one sketch. A fillet and a chamfer on a plate that already has a pocket.
+
+## Update: chamfer chains (landed after the first run)
+
+Chamfers of edges that meet at a corner now build, and match FreeCAD to 1e-15 on volume, bounding box and face count:
+two adjacent edges (5902.667, 8 faces), the four top edges (5810.667), a U of three top edges, the eight horizontal
+edges of a block (14 faces), a vertical edge after a horizontal one, and the same edges as SEPARATE features of
+different sizes (3 then 2). `dress-chain__*` holds all fourteen; 12 match, 2 refuse.
+
+Two defects, both in the general convex-edge chamfer, were behind it:
+
+- The name of the second edge points at the plain box, and the first bevel had shortened the edge it names, so the
+  lookup (`map_edge_into`) found nothing and the cut refused. It now takes the one surviving straight piece of that
+  edge between faces in the same two planes.
+- The box path returned a refusal for an edge on a different axis than the bevels the part already carried, before
+  the general path got a turn. It now falls through to it.
+
+**One was a silent wrong solid, not a refusal.** The general chamfer cuts a triangular wedge swept along the edge, and
+let it run only `size` past each end. Where the face at an end is not square to the edge (the obtuse corners of a
+pentagon prism), the material beyond the bevel plane runs on past that, and a sliver was left: 9696.2298 on 10 faces
+where the half-space cut, and FreeCAD, give 9696.222642 on 9. 7e-7 relative: inside every gate's tolerance, so it
+had been there unseen. A convex planar part is now cut with a wedge that spans the whole part (which makes the cut
+exactly "the part, less what lies beyond the plane") and the result is refused if any vertex is left beyond the plane;
+any other part is cut as before, and refused when a wedge eight times as long would have removed a different volume.
+
+Still refused, deliberately: three chamfers meeting at ONE corner (FreeCAD 5885.333 on 10 faces: it builds a corner
+patch; cutting three wedges gives 5886 on 9, a different solid), and a fillet after chamfers that meet it.
 
 ## What refuses (10) -- ranked by how often a student meets it
 
@@ -76,7 +107,8 @@ one extra split of the post's wall at the seam; I have not diagnosed it.
 
 ## Ranking for the next kernel work
 
-1. Chamfer chains on convex planar solids (small, no new surface), then equal-radius fillet corners.
+1. ~~Chamfer chains on convex planar solids~~ (done, above). Next: the three-chamfers-at-a-corner patch and equal-radius
+   fillet corners.
 2. Face parity of the part-turn groove (12 -> 8), because grooves are common and names depend on it.
 3. Coaxial circle-to-circle loft as a cone frustum.
 4. A general (two-distance / distance-and-angle) chamfer wedge, and a drill point cone on a blind hole.

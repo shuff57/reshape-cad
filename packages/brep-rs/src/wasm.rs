@@ -5264,6 +5264,116 @@ mod tests {
         assert_eq!(solid.faces().len(), 8, "6 box faces + 2 bevels");
     }
 
+    /// Chamfers of edges that meet at a corner and run along DIFFERENT axes. The second edge's name points at a
+    /// face of the plain box, and the first bevel has shortened the edge it names, so it is found as the surviving
+    /// piece and cut as a wedge of the solid as it stands: the union of the two wedges leaves, per shared corner,
+    /// the overlap `d^3 / 3` that a pair of independent cuts would count twice. FreeCAD 26.3.0 RC1 measured
+    /// 5902.6667 on 8 faces for 2 on a 30 x 20 x 10 box (census cc__two-adjacent).
+    fn chamfer_chain(sizes: &[f64], edges: &[&str]) -> (f64, usize, serde_json::Map<String, Value>) {
+        let mut features = vec![json!({ "id": "b1", "kind": "box", "size": [30.0, 20.0, 10.0] })];
+        for (k, (size, edge)) in sizes.iter().zip(edges).enumerate() {
+            let prev = if k == 0 { "b1".to_string() } else { format!("r{k}") };
+            features.push(json!({
+                "id": format!("r{}", k + 1), "kind": "fillet", "target": prev, "size": size, "style": "chamfer",
+                "edge": between_edge(edge)
+            }));
+        }
+        let (hist, refusals) = build_doc(&json!({ "features": features }));
+        let last = format!("r{}", edges.len());
+        match hist.shapes.get(&last) {
+            Some(s) => (build::solid_volume(s), s.faces().len(), refusals.into_iter().collect()),
+            None => (f64::NAN, 0, refusals.into_iter().collect()),
+        }
+    }
+
+    #[test]
+    fn chamfer_two_edges_meeting_at_a_corner_match_freecad() {
+        let (v, f, refusals) = chamfer_chain(&[2.0, 2.0], &["+z|+x", "+z|-y"]);
+        assert!(refusals.is_empty(), "refusals: {refusals:?}");
+        assert!((v - 5902.666666666667).abs() < 1e-6, "volume {v}");
+        assert_eq!(f, 8);
+        // two bevels of 4 meet across the corner: the closed form 6000 - 2*(20+30)*4/2 + 4^3/3 = 5621.3333
+        let (v, f, refusals) = chamfer_chain(&[4.0, 4.0], &["+z|+x", "+z|-y"]);
+        assert!(refusals.is_empty(), "refusals: {refusals:?}");
+        assert!((v - 5621.333333333333).abs() < 1e-6, "volume {v}");
+        assert_eq!(f, 8);
+    }
+
+    #[test]
+    fn chamfer_a_vertical_edge_after_a_horizontal_one_matches_freecad() {
+        let (v, f, refusals) = chamfer_chain(&[2.0, 2.0], &["+z|-y", "-y|+x"]);
+        assert!(refusals.is_empty(), "refusals: {refusals:?}");
+        assert!((v - 5922.666666666667).abs() < 1e-6, "volume {v}");
+        assert_eq!(f, 8);
+    }
+
+    #[test]
+    fn chamfer_a_chain_of_three_top_edges_and_two_sizes_match_freecad() {
+        let (v, f, refusals) = chamfer_chain(&[2.0, 2.0, 2.0], &["+z|+x", "+z|-y", "+z|+y"]);
+        assert!(refusals.is_empty(), "refusals: {refusals:?}");
+        assert!((v - 5845.333333333333).abs() < 1e-6, "volume {v}");
+        assert_eq!(f, 9);
+        // 3 then 2: FreeCAD 5854.6667
+        let (v, f, refusals) = chamfer_chain(&[3.0, 2.0], &["+z|+x", "+z|-y"]);
+        assert!(refusals.is_empty(), "refusals: {refusals:?}");
+        assert!((v - 5854.666666666667).abs() < 1e-6, "volume {v}");
+        assert_eq!(f, 8);
+    }
+
+    #[test]
+    fn chamfer_a_whole_top_and_bottom_loop_matches_freecad() {
+        let edges = ["+z|-y", "+z|+x", "+z|+y", "+z|-x", "-z|-y", "-z|+x", "-z|+y", "-z|-x"];
+        let (v, f, refusals) = chamfer_chain(&[2.0; 8], &edges);
+        assert!(refusals.is_empty(), "refusals: {refusals:?}");
+        assert!((v - 5621.333333333333).abs() < 1e-6, "volume {v}");
+        assert_eq!(f, 14);
+    }
+
+    /// A prism whose side faces meet at OBTUSE corners: the part beyond a bevel plane runs on past the end of the
+    /// edge by more than the size, so a cutter that stops `size` past it left a sliver (a tenth face, 9696.2298
+    /// where the half-space cut is 9696.222642). FreeCAD 26.3.0 RC1 measured 9696.2226 on 9 faces for 1.5 on the
+    /// two edges meeting at (30, 0), and 9495.7778 on 8 faces for one edge of 4 (census cc__pentagon-*).
+    #[test]
+    fn chamfer_at_the_oblique_corners_of_a_pentagon_prism_has_no_sliver() {
+        let pentagon = |size: f64, parts: &[&str]| {
+            let mut features = vec![
+                json!({ "id": "sk1", "kind": "sketch", "plane": "xy", "offset": 0,
+                        "points": [[0.0, 0.0], [30.0, 0.0], [40.0, 15.0], [15.0, 30.0], [-10.0, 15.0]] }),
+                json!({ "id": "e1", "kind": "extrude", "target": "sk1", "height": 10.0 }),
+            ];
+            for (k, part) in parts.iter().enumerate() {
+                features.push(json!({
+                    "id": format!("r{}", k + 1), "kind": "fillet",
+                    "target": if k == 0 { "e1".to_string() } else { format!("r{k}") },
+                    "size": size, "style": "chamfer",
+                    "edge": { "cause": "between", "feature": "e1", "kind": "edge", "of": [
+                        { "cause": "primitive", "feature": "e1", "kind": "face", "part": "+z" },
+                        { "cause": "primitive", "feature": "e1", "kind": "face", "part": part } ] }
+                }));
+            }
+            let (hist, refusals) = build_doc(&json!({ "features": features }));
+            assert!(refusals.is_empty(), "refusals: {refusals:?}");
+            let s = hist.shapes.get(&format!("r{}", parts.len())).expect("builds").clone();
+            (build::solid_volume(&s), s.faces().len())
+        };
+        let (v, f) = pentagon(1.5, &["-y", "+x"]);
+        assert!((v - 9696.222641518).abs() < 1e-5, "volume {v}");
+        assert_eq!(f, 9);
+        let (v, f) = pentagon(4.0, &["-y"]);
+        assert!((v - 9495.777777777777).abs() < 1e-5, "volume {v}");
+        assert_eq!(f, 8);
+    }
+
+    /// Three bevels at one corner would need the corner patch FreeCAD builds (5885.3333 on 10 faces); cutting the
+    /// three wedges gives 5886 on 9 faces, which is a different solid. It refuses, in a sentence.
+    #[test]
+    fn chamfer_three_edges_at_one_corner_refuses() {
+        let (v, _, refusals) = chamfer_chain(&[2.0, 2.0, 2.0], &["+z|+x", "+z|-y", "-y|+x"]);
+        assert!(refusals.contains_key("r3"), "refusals: {refusals:?}");
+        // the refused bevel is shown without it: the part as the first two left it
+        assert!((v - 5902.666666666667).abs() < 1e-6, "volume {v}");
+    }
+
     /// A chamfer and then a ROUND on a neighbouring edge of the same box: the
     /// existing bevel is re-applied as a straight cut while the new corner gets an
     /// arc. 40 * (800 - 8 - (16 - 4pi)) = 31040 + 160pi = 31542.654825, on 8
@@ -5293,13 +5403,14 @@ mod tests {
         assert_eq!(solid.faces().len(), 8, "6 box faces + bevel + cylinder");
     }
 
-    /// The honest limit, pinned: bevels on edges running along DIFFERENT axes
-    /// leave a solid that is no longer a prism along any one of them, so the
-    /// second edge refuses in words and keeps the first one's solid. A
-    /// re-extruded cross-section here would silently drop material, so refusing
-    /// is the contract (SPEC 4.5).
+    /// Bevels on edges running along DIFFERENT axes leave a solid that is no longer a prism along any one of them,
+    /// so the second edge is NOT a re-extruded cross-section; it is a wedge cut off the solid as it stands (the
+    /// general convex-edge path). Pinned here as it was once pinned as a refusal: the vertical +x|+y edge of a
+    /// 40 x 40 x 20 box and then the top +z|+x edge, 4 each, meet at one corner. Volume is the box less both
+    /// wedges plus their overlap, 32000 - 160 - 320 + 4^3/3, on 8 faces (FreeCAD measures the same shape of
+    /// answer on 30 x 20 x 10: census cc__top-front-and-vertical).
     #[test]
-    fn fillet_second_edge_on_a_different_axis_refuses() {
+    fn fillet_second_edge_on_a_different_axis_cuts_a_wedge_of_the_solid() {
         let doc = json!({
             "features": [
                 { "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0] },
@@ -5314,16 +5425,12 @@ mod tests {
             ]
         });
         let (hist, refusals) = build_doc(&doc);
-        let text = refusals.get("r2").and_then(|v| v.as_str()).unwrap_or_default();
-        assert!(
-            text.contains("can only chamfer a straight edge between two flat faces yet") && text.contains("without it"),
-            "refusal text: {text}"
-        );
-        let solid = hist.shapes.get("r2").expect("r1's solid kept");
+        assert!(refusals.is_empty(), "refusals: {refusals:?}");
+        let solid = hist.shapes.get("r2").expect("second edge builds");
         let vol = build::solid_volume(solid);
-        // r1 alone: the 40x40 cross-section in (x,y), corner cut, swept 20 in z.
-        let want = (1600.0 - 8.0) * 20.0;
+        let want = 32000.0 - 160.0 - 320.0 + 64.0 / 3.0;
         assert!((vol - want).abs() <= 1e-6 * want, "volume {vol} vs {want}");
+        assert_eq!(solid.faces().len(), 8);
     }
 
     /// SPEC-brep-fillet.md refusal: a size at least the shorter adjacent-face
@@ -9504,6 +9611,30 @@ fn map_edge_into(
             hits.push(e.clone());
         }
     }
+    // The named edge may have been SHORTENED by a neighbour's bevel (the top/front edge of a box whose top/right edge
+    // is already chamfered ends where the bevel begins): then it is the one straight edge of the part that lies within
+    // the named one's extent, on its line, between faces in the same two planes (checked below).
+    if hits.is_empty() {
+        let span_ab = len(sub(b, a));
+        if span_ab > 1e-9 {
+            let dir_ab = scale(sub(b, a), 1.0 / span_ab);
+            let within = |x: Vec3| {
+                let t = dot(sub(x, a), dir_ab);
+                len(sub(sub(x, a), scale(dir_ab, t))) < 1e-6 && t > -1e-6 && t < span_ab + 1e-6
+            };
+            for e in src.edges() {
+                let eb = e.borrow();
+                if !matches!(eb.curve, crate::geom::Curve::Segment { .. }) {
+                    continue;
+                }
+                let (p, q) = (eb.a.borrow().point, eb.b.borrow().point);
+                if len(sub(q, p)) > 1e-9 && within(p) && within(q) {
+                    drop(eb);
+                    hits.push(e.clone());
+                }
+            }
+        }
+    }
     if hits.len() != 1 {
         return None;
     }
@@ -9528,6 +9659,36 @@ fn map_edge_into(
     } else {
         None
     }
+}
+
+/// Every face a plane and every vertex on the inner side of every face's plane: a convex polyhedron with flat faces.
+fn is_convex_planar(src: &TSolid) -> bool {
+    let faces = src.faces();
+    let verts = src.vertices();
+    let tol = 1e-9 * (1.0 + vertex_extent(src));
+    faces.iter().all(|f| {
+        let fb = f.borrow();
+        let Surface::Plane(pl) = &fb.surface else { return false };
+        let n = if fb.forward { normalize(pl.n) } else { scale(normalize(pl.n), -1.0) };
+        verts.iter().all(|v| dot(n, sub(v.borrow().point, pl.origin)) <= tol)
+    })
+}
+
+/// The diagonal of the box that holds every vertex: a length no straight cut through the part can exceed.
+fn vertex_extent(src: &TSolid) -> f64 {
+    let mut lo = [f64::INFINITY; 3];
+    let mut hi = [f64::NEG_INFINITY; 3];
+    for v in src.vertices() {
+        let p = v.borrow().point;
+        for i in 0..3 {
+            lo[i] = lo[i].min(p[i]);
+            hi[i] = hi[i].max(p[i]);
+        }
+    }
+    if lo[0] > hi[0] {
+        return 0.0;
+    }
+    len(sub(hi, lo))
 }
 
 /// What a planar face contributes to a straight edge's blend: its outward normal, its in-face direction
@@ -10058,7 +10219,14 @@ fn build_fillet(
     // rather than guessing, so a shape this does not recognise keeps its old
     // sentence. Placed before the rotated path, which refuses outright on any
     // solid that is not six faces.
-    if let Some((lo_hi, eaxis, bevels)) = box_chamfer_frame(src) {
+    // An edge that does not run along the bevels' own axis is not a cut of that cross-section: it falls through to the
+    // general convex-edge path below, which cuts a wedge off the solid as it stands.
+    if let Some((lo_hi, eaxis, bevels)) = box_chamfer_frame(src).filter(|(_, eaxis, _)| {
+        match (face_axis(&fa), face_axis(&fb)) {
+            (Some((ax1, _)), Some((ax2, _))) => ax1 != ax2 && *eaxis != ax1 && *eaxis != ax2,
+            _ => true,
+        }
+    }) {
         let (ax1, s1) = face_axis(&fa).ok_or(FilletErr::NoBox)?;
         let (ax2, s2) = face_axis(&fb).ok_or(FilletErr::NoBox)?;
         if ax1 == ax2 || eaxis == ax1 || eaxis == ax2 {
@@ -10530,10 +10698,44 @@ fn build_fillet(
      }
      return Ok(result);
  }
- let cut = ops::boolean("subtract", src, &make_tool(0.0, edge_length, over_a, over_b)?)
+ // A CHAMFER is the part less the part of it beyond the bevel plane. The cutter is the wedge's triangle swept along
+ // the edge, and it must be long enough to take ALL of that: where the face at an end of the edge is not square to
+ // it (a pentagon's corner, the bevel of an edge chamfered before) the part beyond the plane runs on past the end by
+ // more than the size, and a cutter that stops `leg` past it leaves a sliver -- a tenth face and a volume a few
+ // millionths too large, inside every tolerance a gate holds. On a convex planar part the half-space cut IS the
+ // answer, so the cutter simply spans the whole part; the result is then checked to have no vertex left beyond the
+ // plane. On any other part a cutter eight times as long must remove exactly what this one does, or the cut is
+ // refused (the part carries on beyond the end: it cannot be told here whether that is a sliver or other material).
+ let convex_planar = !round && src.shells.len() == 1 && is_convex_planar(src);
+ let reach = if convex_planar { vertex_extent(src) + leg } else { 0.0 };
+ let (cut_a, cut_b) = if convex_planar { (reach, reach) } else { (over_a, over_b) };
+ let cut = ops::boolean("subtract", src, &make_tool(0.0, edge_length, cut_a, cut_b)?)
      .map(|solid| build::ensure_outward(&solid))
      .ok_or(if round { FilletErr::RoundEnds } else { FilletErr::NoBox })?;
  if !round {
+     let v0 = build::solid_volume(src);
+     if convex_planar {
+         // the bevel plane through the two outer corners of the wedge; the kept side is the one away from the edge
+         let p1 = add(a, scale(u_axis, leg));
+         let p2 = add(a, add(scale(u_axis, third[0]), scale(v_axis, third[1])));
+         let mut n = normalize(cross(edge_direction, sub(p2, p1)));
+         if dot(n, sub(a, p1)) > 0.0 {
+             n = scale(n, -1.0);
+         }
+         let tol = 1e-7 * (1.0 + vertex_extent(src));
+         let past = cut.vertices().iter().any(|v| dot(n, sub(v.borrow().point, p1)) < -tol);
+         let lost = v0 - build::solid_volume(&cut);
+         if past || !lost.is_finite() || lost <= 0.0 {
+             return Err(FilletErr::RoundEnds);
+         }
+     } else if over_a > 0.0 || over_b > 0.0 {
+         let longer = ops::boolean("subtract", src, &make_tool(0.0, edge_length, 8.0 * over_a, 8.0 * over_b)?)
+             .map(|solid| build::ensure_outward(&solid))
+             .ok_or(FilletErr::RoundEnds)?;
+         if (build::solid_volume(&longer) - build::solid_volume(&cut)).abs() > 1e-9 * v0.abs().max(1.0) {
+             return Err(FilletErr::RoundEnds);
+         }
+     }
      return Ok(cut);
  }
  // The wedge's bevel is the one face of the result lying in the plane through the two

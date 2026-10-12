@@ -1,6 +1,6 @@
 {
  "freecad": "26.3.0RC1",
- "root": "/tmp/claude-1000/-home-shuff57-Documents-GitHub-reshape-cad/fba0ad57-c1d0-46ea-96e1-4757006d360d/scratchpad/cen",
+ "root": "/home/shuff57/Documents/GitHub/reshape-cad",
  "results": [
   {
    "id": "pad-mode__taper-5",
@@ -780,7 +780,7 @@
    },
    "oursOutcome": "refused",
    "status": "REFUSED",
-   "sentence": "brep-rs can only round a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); round it on the plain box before you hollow, chamfer or cut it -- round2 is shown without it."
+   "sentence": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it."
   },
   {
    "id": "dress-mode__fillet-top-loop",
@@ -800,7 +800,7 @@
    },
    "oursOutcome": "refused",
    "status": "REFUSED",
-   "sentence": "brep-rs can only round a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); round it on the plain box before you hollow, chamfer or cut it -- round2 is shown without it. | brep-rs can only round a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); round it on the plain box before you hollow, chamfer or cut it -- round4 is shown without it."
+   "sentence": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2 is shown without it. | brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round4 is shown without it."
   },
   {
    "id": "dress-mode__fillet-after-pocket",
@@ -1492,8 +1492,8 @@
     "volumeRel": 4.061224748307531e-16,
     "bboxAbs": 0,
     "faces": 0,
-    "comAbs": 0.004031301119493236,
-    "meshVsExact": 0.0005444246667741605
+    "comAbs": 0.004031301119495012,
+    "meshVsExact": 0.0005444246667738897
    },
    "status": "MATCH"
   },
@@ -2063,8 +2063,8 @@
     "volumeRel": 1.7219986949800727e-16,
     "bboxAbs": 5.329070518200751e-15,
     "faces": 0,
-    "comAbs": 0.0014473170331186225,
-    "meshVsExact": 0.0006906246222573733
+    "comAbs": 0.0014473170331177343,
+    "meshVsExact": 0.0006906246222575454
    },
    "status": "MATCH"
   },
@@ -2101,8 +2101,8 @@
     "volumeRel": 0,
     "bboxAbs": 0,
     "faces": 0,
-    "comAbs": 0.004031301119494124,
-    "meshVsExact": 0.0005444246667738897
+    "comAbs": 0.004031301119492348,
+    "meshVsExact": 0.0005444246667741605
    },
    "status": "MATCH"
   },
@@ -2139,8 +2139,8 @@
     "volumeRel": 5.492438420202341e-11,
     "bboxAbs": 3.552713678800501e-15,
     "faces": -2,
-    "comAbs": 0.00002582988221888627,
-    "meshVsExact": 0.0009134022557948066
+    "comAbs": 0.000025829882220662626,
+    "meshVsExact": 0.0009134022557950344
    },
    "status": "FACES"
   },
@@ -2450,9 +2450,27 @@
      10
     ]
    },
-   "oursOutcome": "refused",
-   "status": "REFUSED",
-   "sentence": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain box before you hollow, round or cut it -- bevel2 is shown without it. | brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain box before you hollow, round or cut it -- bevel4 is shown without it."
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5810.666666666664,
+    "faces": 10,
+    "bbox": [
+     0,
+     -7.105427357601002e-15,
+     0,
+     30,
+     20,
+     10.000000000000004
+    ]
+   },
+   "deltas": {
+    "volumeRel": 4.69564726706996e-16,
+    "bboxAbs": 4.440892098500626e-15,
+    "faces": 0,
+    "comAbs": 1.7763568394002505e-15,
+    "meshVsExact": 3.1304315113799746e-16
+   },
+   "status": "MATCH"
   },
   {
    "id": "dress-mode__chamfer-two-adjacent",
@@ -2470,9 +2488,27 @@
      10
     ]
    },
-   "oursOutcome": "refused",
-   "status": "REFUSED",
-   "sentence": "brep-rs can only chamfer a straight edge between two flat faces yet, and this edge is not one on the part as it stands (a rounded, curved, hollowed or cut face is in the way); chamfer it on the plain box before you hollow, round or cut it -- bevel2 is shown without it."
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5902.666666666667,
+    "faces": 8,
+    "bbox": [
+     0,
+     -8.881784197001252e-16,
+     0,
+     30,
+     20,
+     10.000000000000004
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.5408200278511323e-16,
+    "bboxAbs": 3.552713678800501e-15,
+    "faces": 0,
+    "comAbs": 3.552713678800501e-15,
+    "meshVsExact": 0
+   },
+   "status": "MATCH"
   },
   {
    "id": "dress-mode__fillet-vertical-edges",
@@ -2511,6 +2547,502 @@
     "meshVsExact": 0.0001960749747577038
    },
    "status": "MATCH"
+  },
+  {
+   "id": "dress-chain__three-at-corner",
+   "family": "dress-chain",
+   "desc": "chamfer 2 on the three edges meeting at the (30,0,10) corner",
+   "ref": {
+    "volume": 5885.333333333332,
+    "faces": 10,
+    "bbox": [
+     0,
+     -1.887379141862766e-15,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "refused",
+   "status": "REFUSED",
+   "sentence": "brep-rs cannot chamfer an edge whose end touches more than three faces -- bevel3 is shown without it."
+  },
+  {
+   "id": "dress-chain__u-shape",
+   "family": "dress-chain",
+   "desc": "chamfer 2 on top front, right, back (a chain of three)",
+   "ref": {
+    "volume": 5845.333333333334,
+    "faces": 9,
+    "bbox": [
+     0,
+     -2.6645352591003757e-15,
+     0,
+     30.000000000000004,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5845.333333333329,
+    "faces": 9,
+    "bbox": [
+     -1.4210854715202004e-14,
+     -7.105427357601002e-15,
+     0,
+     30,
+     20.000000000000004,
+     10.000000000000002
+    ]
+   },
+   "deltas": {
+    "volumeRel": 7.779664990074089e-16,
+    "bboxAbs": 1.4210854715202004e-14,
+    "faces": 0,
+    "comAbs": 1.7763568394002505e-15,
+    "meshVsExact": 6.223731992059276e-16
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "dress-chain__two-sequential-sizes",
+   "family": "dress-chain",
+   "desc": "chamfer 2 on top/right then, as a later feature, chamfer 3 on top/front",
+   "ref": {
+    "volume": 5829.666666666667,
+    "faces": 8,
+    "bbox": [
+     0,
+     0,
+     0,
+     30.000000000000007,
+     20,
+     10.000000000000002
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5829.666666666667,
+    "faces": 8,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 7.105427357601002e-15,
+    "faces": 0,
+    "comAbs": 1.7763568394002505e-15,
+    "meshVsExact": 0
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "dress-chain__top-and-bottom-loops",
+   "family": "dress-chain",
+   "desc": "chamfer 2 on all eight horizontal edges",
+   "ref": {
+    "volume": 5621.333333333333,
+    "faces": 14,
+    "bbox": [
+     -2.220446049250313e-15,
+     -2.6645352591003757e-15,
+     0,
+     30.000000000000004,
+     20.000000000000004,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5621.333333333329,
+    "faces": 14,
+    "bbox": [
+     0,
+     -1.3322676295501878e-15,
+     -1.7763568394002505e-15,
+     30.000000000000004,
+     20,
+     10.000000000000004
+    ]
+   },
+   "deltas": {
+    "volumeRel": 6.471736492691614e-16,
+    "bboxAbs": 3.552713678800501e-15,
+    "faces": 0,
+    "comAbs": 1.7763568394002505e-15,
+    "meshVsExact": 8.089670615864524e-16
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "dress-chain__top-front-and-vertical",
+   "family": "dress-chain",
+   "desc": "chamfer 2 on top/front and the vertical front/right (adjacent, different axes)",
+   "ref": {
+    "volume": 5922.666666666666,
+    "faces": 8,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5922.666666666665,
+    "faces": 8,
+    "bbox": [
+     0,
+     -4.440892098500626e-16,
+     0,
+     30.000000000000004,
+     20,
+     10.000000000000007
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.5356168985360114e-16,
+    "bboxAbs": 7.105427357601002e-15,
+    "faces": 0,
+    "comAbs": 1.7763568394002505e-15,
+    "meshVsExact": 0
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "dress-chain__opposite-corners",
+   "family": "dress-chain",
+   "desc": "chamfer 2 on top/front and top/back (parallel, no shared vertex)",
+   "ref": {
+    "volume": 5880,
+    "faces": 8,
+    "bbox": [
+     0,
+     -2.220446049250313e-16,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5880,
+    "faces": 8,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 2.220446049250313e-16,
+    "faces": 0,
+    "comAbs": 1.7763568394002505e-15,
+    "meshVsExact": 0
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "dress-chain__two-adjacent-big",
+   "family": "dress-chain",
+   "desc": "chamfer 4 on top/right and top/front (the bevels nearly meet)",
+   "ref": {
+    "volume": 5621.333333333333,
+    "faces": 8,
+    "bbox": [
+     0,
+     -8.881784197001252e-16,
+     0,
+     30.000000000000004,
+     20,
+     10.000000000000002
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5621.333333333333,
+    "faces": 8,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10.000000000000002
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 3.552713678800501e-15,
+    "faces": 0,
+    "comAbs": 1.7763568394002505e-15,
+    "meshVsExact": 1.6179341231729036e-16
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "dress-chain__pentagon-front-right",
+   "family": "dress-chain",
+   "desc": "pentagon prism, chamfer 1.5 on the front and right top edges (obtuse corner)",
+   "ref": {
+    "volume": 9696.222641518101,
+    "faces": 9,
+    "bbox": [
+     -10,
+     -2.6645352591003757e-15,
+     0,
+     40,
+     30,
+     10.000000000000004
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 9696.222641518101,
+    "faces": 9,
+    "bbox": [
+     -10,
+     -1.1824145848576163e-14,
+     0,
+     40.000000000000014,
+     30,
+     10.000000000000002
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 1.4210854715202004e-14,
+    "faces": 0,
+    "comAbs": 7.105427357601002e-15,
+    "meshVsExact": 3.7519546957536943e-16
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "dress-chain__pentagon-left-front",
+   "family": "dress-chain",
+   "desc": "pentagon prism, chamfer 1.5 on the left and front top edges",
+   "ref": {
+    "volume": 9696.222641518101,
+    "faces": 9,
+    "bbox": [
+     -10.000000000000007,
+     -7.105427357601002e-15,
+     0,
+     40,
+     30,
+     10.000000000000004
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 9696.222641518098,
+    "faces": 9,
+    "bbox": [
+     -10,
+     -5.329070518200751e-15,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 3.7519546957536943e-16,
+    "bboxAbs": 7.105427357601002e-15,
+    "faces": 0,
+    "comAbs": 1.7763568394002505e-15,
+    "meshVsExact": 3.751954695753696e-16
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "dress-chain__pentagon-single",
+   "family": "dress-chain",
+   "desc": "pentagon prism, one chamfer 4 on the front top edge",
+   "ref": {
+    "volume": 9495.777777777777,
+    "faces": 8,
+    "bbox": [
+     -10,
+     -2.6645352591003757e-15,
+     0,
+     40,
+     30,
+     10.000000000000002
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 9495.77777777778,
+    "faces": 8,
+    "bbox": [
+     -10,
+     0,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.9155770555232394e-16,
+    "bboxAbs": 2.6645352591003757e-15,
+    "faces": 0,
+    "comAbs": 8.881784197001252e-16,
+    "meshVsExact": 1.9155770555232392e-16
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "dress-chain__pentagon-big",
+   "family": "dress-chain",
+   "desc": "pentagon prism, chamfer 6 on front and right",
+   "ref": {
+    "volume": 8901.747901533663,
+    "faces": 9,
+    "bbox": [
+     -10,
+     -1.7763568394002505e-15,
+     0,
+     40,
+     30,
+     10.000000000000002
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 8901.747901533656,
+    "faces": 9,
+    "bbox": [
+     -10,
+     -5.329070518200751e-15,
+     0,
+     40.000000000000014,
+     30,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 8.173628027513414e-16,
+    "bboxAbs": 1.4210854715202004e-14,
+    "faces": 0,
+    "comAbs": 5.329070518200751e-15,
+    "meshVsExact": 6.130221020635065e-16
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "dress-chain__sequential-3-then-2",
+   "family": "dress-chain",
+   "desc": "chamfer 3 on top/right then chamfer 2 on top/front",
+   "ref": {
+    "volume": 5854.666666666668,
+    "faces": 8,
+    "bbox": [
+     0,
+     -1.7763568394002505e-15,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5854.666666666667,
+    "faces": 8,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.553452576473915e-16,
+    "bboxAbs": 1.7763568394002505e-15,
+    "faces": 0,
+    "comAbs": 3.552713678800501e-15,
+    "meshVsExact": 0
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "dress-chain__sequential-three-edges",
+   "family": "dress-chain",
+   "desc": "chamfer 2 top/right, then 2 top/front, then 2 top/back as three features",
+   "ref": {
+    "volume": 5845.333333333334,
+    "faces": 9,
+    "bbox": [
+     0,
+     -1.7763568394002505e-15,
+     0,
+     30.000000000000004,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5845.333333333333,
+    "faces": 9,
+    "bbox": [
+     0,
+     -8.881784197001252e-16,
+     0,
+     30,
+     20.000000000000004,
+     10.000000000000009
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.5559329980148178e-16,
+    "bboxAbs": 8.881784197001252e-15,
+    "faces": 0,
+    "comAbs": 3.552713678800501e-15,
+    "meshVsExact": 1.555932998014818e-16
+   },
+   "status": "MATCH"
+  },
+  {
+   "id": "dress-chain__chain-then-fillet",
+   "family": "dress-chain",
+   "desc": "chamfer 2 on top/right and top/front, then fillet 1 on top/back",
+   "ref": {
+    "volume": 5896.609874158271,
+    "faces": 9,
+    "bbox": [
+     0,
+     -2.6645352591003757e-15,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "refused",
+   "status": "REFUSED",
+   "sentence": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it."
   }
  ]
 }
