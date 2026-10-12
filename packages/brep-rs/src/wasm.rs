@@ -267,6 +267,14 @@ fn extruded_profile(sk: &Value) -> Option<(Vec<Vec<build::ProfileSeg>>, Vec<(Str
                 start: *start,
                 sweep: *sweep,
             },
+            build::ProfileSeg::Ellipse { centre, a, b, rot, start, sweep } => crate::sketch::wires::WireSeg::Ellipse {
+                centre: *centre,
+                a: *a,
+                b: *b,
+                rot: *rot,
+                start: *start,
+                sweep: *sweep,
+            },
         })
         .collect();
     if let Some(flaw) = crate::sketch::wires::outline_flaw(&wire) {
@@ -720,7 +728,7 @@ fn extrude_prism(sk: &Value, _plane: &str, height: f64) -> Option<(TSolid, Prism
         let mut kept = Vec::with_capacity(nseg);
         let mut at = 0usize;
         for lp in &loops {
-            let take = if build::whole_circle_ring(lp).is_some() { 1 } else { lp.len() };
+            let take = if build::whole_circle_ring(lp).is_some() || build::whole_ellipse_ring(lp).is_some() { 1 } else { lp.len() };
             if let Some(r) = roles.get(at) {
                 for k in 0..take {
                     kept.push(roles.get(at + k).cloned().unwrap_or_else(|| r.clone()));
@@ -744,6 +752,37 @@ fn extrude_prism(sk: &Value, _plane: &str, height: f64) -> Option<(TSolid, Prism
     Some((solid, PrismKind::Outline { nseg, nloops: loops.len(), roles }))
 }
 
+
+/// A pocket whose tool has an ELLIPTIC wall, cut by topology alone (docs/specs/SPEC-sketch-ellipse.md, S3): no
+/// boolean understands an elliptic surface, so the tool is rebuilt as an exact fit -- its mouth on the entry face and
+/// its far end on the floor, or on the face it leaves through -- and `interior_pocket::cut_interior` swaps the
+/// entry face for one with the mouth as a hole. Only a plain cut from a face is taken; everything else refuses.
+fn elliptic_pocket(base: &TSolid, sk: &Value, sgn: f64, len: f64, through: bool) -> Result<TSolid, String> {
+    let fr = sketch_frame(sk);
+    let signed = -sgn * len * fr.dir;
+    let axis = crate::math::normalize(scale(fr.n, if signed < 0.0 { -1.0 } else { 1.0 }));
+    // A through cut ends on the first flat face ahead of the mouth that faces along the cut.
+    let exact = if through {
+        let mut best: Option<f64> = None;
+        for fc in base.faces() {
+            if let crate::geom::Surface::Plane(p) = &fc.borrow().surface {
+                let t = crate::math::dot(sub(p.origin, fr.origin), axis);
+                if crate::math::dot(p.n, axis) > 1.0 - 1e-9 && t > 1e-9 && best.map_or(true, |b| t < b) {
+                    best = Some(t);
+                }
+            }
+        }
+        best.ok_or_else(|| "this pocket has no flat face to leave through".to_string())?
+    } else {
+        len
+    };
+    let Some((tool, _)) = extrude_prism(sk, "", -(sgn * exact)) else {
+        return Err(LAST_PRISM_REFUSAL
+            .with(|lr| lr.borrow().clone())
+            .unwrap_or_else(|| "this sketch has no usable outline".to_string()));
+    };
+    crate::interior_pocket::cut_interior(base, &tool, axis)
+}
 
 /// The mitre offset of a closed straight-sided outline by `d` (positive grows it
 /// outward, negative shrinks it), or the plain reason it cannot be offset that far.
@@ -979,6 +1018,22 @@ fn seg_u_extent(s: &build::ProfileSeg) -> (f64, f64) {
             }
             (mn, mx)
         }
+        build::ProfileSeg::Ellipse { centre, a, b, rot, start, sweep } => {
+            // x(t) = cx + a cos(rot) cos t - b sin(rot) sin t: its extremes are at tan t = -b sin(rot) / (a cos(rot)).
+            let (lo, hi) = if *sweep >= 0.0 { (*start, start + sweep) } else { (start + sweep, *start) };
+            let x = |t: f64| build::ellipse_point(*centre, *a, *b, *rot, t)[0];
+            let (mut mn, mut mx) = (x(lo).min(x(hi)), x(lo).max(x(hi)));
+            let th0 = (-b * rot.sin()).atan2(a * rot.cos());
+            let pi = std::f64::consts::PI;
+            let mut k = ((lo - th0) / pi).ceil();
+            while th0 + k * pi <= hi {
+                let u = x(th0 + k * pi);
+                mn = mn.min(u);
+                mx = mx.max(u);
+                k += 1.0;
+            }
+            (mn, mx)
+        }
     }
 }
 
@@ -1099,6 +1154,11 @@ fn revolve_tool_caps(
     let reverse = angle < 0.0;
     let angle = angle.abs().min(360.0);
     let (segs, roles) = spin_profile(sk)?;
+    // An ellipse has no wall a spin builds (a torus-like surface of revolution of an ellipse is not one brep-rs
+    // has), so it refuses here in a sentence rather than reaching a builder that reads arcs as circles.
+    if segs.iter().any(|s| matches!(s, build::ProfileSeg::Ellipse { .. })) {
+        return Err("a spin does not build an ellipse yet -- draw the outline from lines and circular arcs".to_string());
+    }
     // The profile is laid in the plane spanned by the sketch's U direction and
     // the plane NORMAL -- a plane CONTAINING the axis, not the sketch plane
     // (revolveProfileFace in occt-build.ts). So p[0] is radius along a.u and
@@ -1122,7 +1182,7 @@ fn revolve_tool_caps(
             .iter()
             .filter_map(|s| match s {
                 build::ProfileSeg::Line { a, .. } => Some(*a),
-                build::ProfileSeg::Arc { .. } => None,
+                build::ProfileSeg::Arc { .. } | build::ProfileSeg::Ellipse { .. } => None,
             })
             .collect();
         let spun: Vec<[f64; 2]> = if far_side { points.iter().map(|p| [-p[0], p[1]]).collect() } else { points };
@@ -1157,7 +1217,7 @@ fn revolve_tool_caps(
                     start: std::f64::consts::PI - start,
                     sweep: -sweep,
                 },
-                build::ProfileSeg::Arc { .. } => s.clone(),
+                build::ProfileSeg::Arc { .. } | build::ProfileSeg::Ellipse { .. } => s.clone(),
             })
             .collect();
         for s in &refl {
@@ -1186,6 +1246,8 @@ fn revolve_tool_caps(
                     vec![turned::Seg { k: turned::Kind::Arc { c: *centre, r: *radius, a0: *start, sw: *sweep }, face: None, origin_z: None }]
                 }
                 build::ProfileSeg::Arc { centre, radius, start, sweep } => split_at_diameter(*centre, *radius, *start, *sweep),
+                // Refused above, before any profile reaches this loop.
+                build::ProfileSeg::Ellipse { .. } => vec![],
             };
             owner.extend(std::iter::repeat(i).take(pieces.len()));
             flat.extend(pieces);
@@ -1972,6 +2034,29 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     refusals.insert(id.clone(), json!(format!("pocket {id}: {sentence}")));
                     continue;
                 };
+                // A tool with an elliptic wall: no boolean reads it, so it is cut by topology alone, for the plain pocket
+                // only (a cut from a face to a floor or through the part, no second length, no taper, no direction).
+                if tool.faces().iter().any(|fc| matches!(fc.borrow().surface, crate::geom::Surface::EllipticCylinder(_))) {
+                    if midplane || length2 != 0.0 || taper != 0.0 || dirv.is_some() {
+                        refusals.insert(
+                            id.clone(),
+                            json!(format!("pocket {id}: a pocket with an ellipse in it is only cut as a plain cut from a face (no symmetric, two-sided, tapered or angled cut yet) -- {id} is shown without it.")),
+                        );
+                        continue;
+                    }
+                    match elliptic_pocket(&base, sk, sgn, span, through) {
+                        Ok(result) => {
+                            let face_fates: Vec<Fate> = base.faces().iter().map(|fc| carry_fate(&result, fc)).collect();
+                            record_op(&mut hist, &id, OpKind::Boolean, vec![from.clone()], face_fates, Vec::new());
+                            hist.advance_head(into, &id);
+                            hist.insert(&id, result);
+                        }
+                        Err(why) => {
+                            refusals.insert(id.clone(), json!(format!("pocket {id}: {why} -- {id} is shown without it.")));
+                        }
+                    }
+                    continue;
+                }
                 // An annular profile (an outline with islands) cannot be
                 // cut as one ring-shaped tool (MEASURED: ops::boolean returns
                 // None for it). It is cut as what it is: the outline's
@@ -10675,6 +10760,9 @@ pub fn sketch_profile(h: u32) -> Option<String> {
                                 crate::sketch::wires::WireSeg::Arc { centre, radius, start, sweep } => json!({
                                     "k": "arc", "centre": centre, "radius": radius, "start": start, "sweep": sweep,
                                 }),
+                                crate::sketch::wires::WireSeg::Ellipse { centre, a, b, rot, start, sweep } => json!({
+                                    "k": "ellipse", "centre": centre, "a": a, "b": b, "rot": rot, "start": start, "sweep": sweep,
+                                }),
                             })
                             .collect();
                         let role = match lp.role {
@@ -11737,4 +11825,204 @@ mod rim_corner_tests {
         let want3 = POCKETED - wedge(1.0, 10.0) - 0.5 * 10.0;
         assert!(refusals.is_empty() && (v3 - want3).abs() <= 1e-9 * want3, "{v3} vs {want3}: {refusals:?}");
     }
+
+    // ---- the elliptic wall (S3): pad of a whole ellipse, measured against FreeCAD 26.3.0 RC1 ---------------
+
+    fn mesh_volume(m: &crate::mesh::Mesh) -> f64 {
+        let mut v = 0.0;
+        for t in m.indices.chunks(3) {
+            let (a, b, c) = (m.positions[t[0] as usize], m.positions[t[1] as usize], m.positions[t[2] as usize]);
+            v += crate::math::dot(a, crate::math::cross(b, c)) / 6.0;
+        }
+        v
+    }
+
+    fn ellipse_pad(plane: &str, c: [f64; 2], major: f64, minor: f64, angle: f64, extra: Value) -> Value {
+        let mut e = json!({ "id": "e1", "kind": "extrude", "target": "sk1", "height": 4.0 });
+        for (k, v) in extra.as_object().unwrap() {
+            e[k] = v.clone();
+        }
+        json!({ "features": [
+            { "id": "sk1", "kind": "sketch", "plane": plane, "offset": 0.0,
+              "geoms": [ { "k": "ellipse", "id": 1, "c": c, "major": major, "minor": minor, "angle": angle } ],
+              "rules": [] },
+            e
+        ]})
+    }
+
+    /// FreeCAD: a Pad of a 10 x 5 ellipse, length 4, is valid, volume 628.3185307 = pi a b h exactly, 3 faces
+    /// (one elliptic wall and two caps).
+    #[test]
+    fn s3_a_whole_ellipse_pads_to_pi_a_b_h_in_three_faces() {
+        let (hist, refusals) = build_doc(&ellipse_pad("xy", [0.0, 0.0], 10.0, 5.0, 0.0, json!({})));
+        assert!(refusals.is_empty(), "{refusals:?}");
+        let s = hist.shapes.get("e1").expect("builds");
+        let want = std::f64::consts::PI * 10.0 * 5.0 * 4.0;
+        let v = build::solid_volume(s);
+        assert!((v - want).abs() < 1e-9 * want, "{v} vs {want}");
+        assert_eq!(s.faces().len(), 3, "FreeCAD: one wall, two caps");
+        let bb = build::solid_aabb(s);
+        for (got, want) in [(bb.lo, [-10.0, -5.0, 0.0]), (bb.hi, [10.0, 5.0, 4.0])] {
+            for k in 0..3 {
+                assert!((got[k] - want[k]).abs() < 1e-9, "{bb:?}");
+            }
+        }
+        let m = crate::mesh::mesh_solid(s, 0.01).expect("meshes");
+        assert!(crate::mesh::mesh_is_closed(&m), "the mesh is not closed");
+        // A faceted solid inscribed in the curve is below the exact volume by at most deflection x area.
+        let mv = mesh_volume(&m);
+        assert!(mv <= want + 1e-6 && want - mv < 0.01 * (std::f64::consts::PI * 10.0 * 5.0 * 2.0), "mesh volume {mv} vs {want}");
+    }
+
+    #[test]
+    fn s3_a_turned_and_offset_ellipse_has_the_exact_box() {
+        let (c, a, b, ang) = ([7.0, -3.0], 12.0, 4.0, 30.0f64);
+        let (hist, refusals) = build_doc(&ellipse_pad("xy", c, a, b, ang, json!({})));
+        assert!(refusals.is_empty(), "{refusals:?}");
+        let s = hist.shapes.get("e1").expect("builds");
+        let want = std::f64::consts::PI * a * b * 4.0;
+        assert!((build::solid_volume(s) - want).abs() < 1e-9 * want);
+        let t = ang.to_radians();
+        let hx = (a * a * t.cos().powi(2) + b * b * t.sin().powi(2)).sqrt();
+        let hy = (a * a * t.sin().powi(2) + b * b * t.cos().powi(2)).sqrt();
+        let bb = build::solid_aabb(s);
+        for (got, want) in [(bb.lo[0], c[0] - hx), (bb.hi[0], c[0] + hx), (bb.lo[1], c[1] - hy), (bb.hi[1], c[1] + hy)] {
+            assert!((got - want).abs() < 1e-9, "{bb:?}: {got} vs {want}");
+        }
+        let m = crate::mesh::mesh_solid(s, 0.01).expect("meshes");
+        assert!(crate::mesh::mesh_is_closed(&m));
+    }
+
+    #[test]
+    fn s3_every_plane_and_both_pull_directions_build_the_same_solid() {
+        let want = std::f64::consts::PI * 10.0 * 5.0 * 4.0;
+        for plane in ["xy", "xz", "yz"] {
+            for extra in [json!({}), json!({ "reversed": true })] {
+                let (hist, refusals) = build_doc(&ellipse_pad(plane, [2.0, 3.0], 10.0, 5.0, 20.0, extra.clone()));
+                assert!(refusals.is_empty(), "{plane} {extra}: {refusals:?}");
+                let s = hist.shapes.get("e1").expect("builds");
+                let v = build::solid_volume(s);
+                // A negative volume would be an inside-out solid: the sign is the whole test of the frame.
+                assert!((v - want).abs() < 1e-9 * want, "{plane} {extra}: {v} vs {want}");
+                assert_eq!(s.faces().len(), 3, "{plane} {extra}");
+                let m = crate::mesh::mesh_solid(s, 0.01).unwrap_or_else(|| panic!("{plane} {extra}: no mesh"));
+                assert!(crate::mesh::mesh_is_closed(&m), "{plane} {extra}");
+                assert!(mesh_volume(&m) > 0.0, "{plane} {extra}: the mesh is inside out");
+            }
+        }
+    }
+
+    /// An ellipse drawn inside a rectangle is a hole through it: (1000 - pi a b) h, and the hole's wall faces its axis.
+    #[test]
+    fn s3_an_ellipse_inside_an_outline_is_a_hole() {
+        let doc = json!({ "features": [
+            { "id": "sk1", "kind": "sketch", "plane": "xy", "offset": 0.0,
+              "geoms": [
+                  { "k": "line", "id": 1, "a": [0.0, 0.0], "b": [40.0, 0.0] },
+                  { "k": "line", "id": 2, "a": [40.0, 0.0], "b": [40.0, 25.0] },
+                  { "k": "line", "id": 3, "a": [40.0, 25.0], "b": [0.0, 25.0] },
+                  { "k": "line", "id": 4, "a": [0.0, 25.0], "b": [0.0, 0.0] },
+                  { "k": "ellipse", "id": 5, "c": [20.0, 12.5], "major": 9.0, "minor": 4.0, "angle": 15.0 }
+              ],
+              "rules": [
+                  { "k": "coincident", "a": 1, "aEnd": "b", "b": 2, "bEnd": "a" },
+                  { "k": "coincident", "a": 2, "aEnd": "b", "b": 3, "bEnd": "a" },
+                  { "k": "coincident", "a": 3, "aEnd": "b", "b": 4, "bEnd": "a" },
+                  { "k": "coincident", "a": 4, "aEnd": "b", "b": 1, "bEnd": "a" },
+                  { "k": "horizontal", "a": 1 },
+                  { "k": "vertical", "a": 2 }
+              ] },
+            { "id": "e1", "kind": "extrude", "target": "sk1", "height": 6.0 }
+        ]});
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "{refusals:?}");
+        let s = hist.shapes.get("e1").expect("builds");
+        let want = (1000.0 - std::f64::consts::PI * 9.0 * 4.0) * 6.0;
+        let v = build::solid_volume(s);
+        assert!((v - want).abs() < 1e-9 * want, "{v} vs {want}");
+        assert_eq!(s.faces().len(), 7, "four sides, the hole's wall, two caps");
+        let m = crate::mesh::mesh_solid(s, 0.01).expect("meshes");
+        assert!(crate::mesh::mesh_is_closed(&m));
+    }
+
+    /// No boolean understands an elliptic wall, so each one refuses (None) rather than reading it as a circular
+    /// cylinder and returning a closed, wrong solid; the STEP writer says what it cannot write.
+    #[test]
+    fn s3_an_elliptic_wall_refuses_every_boolean_and_the_step_writer_in_a_sentence() {
+        let (hist, _) = build_doc(&ellipse_pad("xy", [0.0, 0.0], 10.0, 5.0, 0.0, json!({})));
+        let pad = hist.shapes.get("e1").expect("builds");
+        // A cube overlapping the ellipse's +x end: a real cut, so a Some() here would have to be exactly right.
+        let cube = build::box_solid([8.0, 8.0, 8.0], [10.0, 0.0, 2.0], None);
+        for op in ["union", "subtract", "intersect"] {
+            assert!(crate::ops::boolean(op, &cube, pad).is_none(), "cube {op} ellipse must refuse");
+            assert!(crate::ops::boolean(op, pad, &cube).is_none(), "ellipse {op} cube must refuse");
+        }
+        let e = crate::step::write_solid(pad, "p").err().expect("STEP refuses an elliptic wall");
+        assert!(e.contains("elliptic"), "{e}");
+    }
+
+    // ---- the interior pocket (S3) ---------------------------------------------------------------------------
+
+    /// A 40 x 30 x 10 block (z 0..10) and an ellipse pocket sketched on its top face.
+    fn block_with_ellipse_pocket(c: [f64; 2], major: f64, minor: f64, angle: f64, pocket: Value) -> Value {
+        let mut p = json!({ "id": "p1", "kind": "pocket", "target": "sk2", "into": "e0", "depth": 4.0 });
+        for (k, v) in pocket.as_object().unwrap() {
+            p[k] = v.clone();
+        }
+        json!({ "features": [
+            { "id": "sk1", "kind": "sketch", "plane": "xy", "offset": 0.0,
+              "points": [[0.0, 0.0], [40.0, 0.0], [40.0, 30.0], [0.0, 30.0]] },
+            { "id": "e0", "kind": "extrude", "target": "sk1", "height": 10.0 },
+            { "id": "sk2", "kind": "sketch", "plane": "xy", "offset": 10.0,
+              "geoms": [ { "k": "ellipse", "id": 1, "c": c, "major": major, "minor": minor, "angle": angle } ],
+              "rules": [] },
+            p
+        ]})
+    }
+
+    #[test]
+    fn s3_a_blind_ellipse_pocket_removes_pi_a_b_h_and_adds_a_wall_and_a_floor() {
+        let doc = block_with_ellipse_pocket([20.0, 15.0], 10.0, 5.0, 0.0, json!({}));
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "{refusals:?}");
+        let s = hist.shapes.get("p1").expect("builds");
+        let want = 12000.0 - std::f64::consts::PI * 10.0 * 5.0 * 4.0;
+        let v = build::solid_volume(s);
+        assert!((v - want).abs() < 1e-9 * want, "{v} vs {want}");
+        assert_eq!(s.faces().len(), 8, "six block faces, the elliptic wall and the floor");
+        let m = crate::mesh::mesh_solid(s, 0.01).expect("meshes");
+        assert!(crate::mesh::mesh_is_closed(&m));
+        assert!(mesh_volume(&m) > 0.0 && (mesh_volume(&m) - want).abs() < 0.01 * want);
+    }
+
+    #[test]
+    fn s3_a_through_ellipse_pocket_leaves_by_the_bottom_face() {
+        let doc = block_with_ellipse_pocket([14.0, 18.0], 8.0, 3.0, 35.0, json!({ "through": true }));
+        let (hist, refusals) = build_doc(&doc);
+        assert!(refusals.is_empty(), "{refusals:?}");
+        let s = hist.shapes.get("p1").expect("builds");
+        let want = (1200.0 - std::f64::consts::PI * 8.0 * 3.0) * 10.0;
+        let v = build::solid_volume(s);
+        assert!((v - want).abs() < 1e-9 * want, "{v} vs {want}");
+        assert_eq!(s.faces().len(), 7, "six block faces and the elliptic wall");
+        let m = crate::mesh::mesh_solid(s, 0.01).expect("meshes");
+        assert!(crate::mesh::mesh_is_closed(&m));
+    }
+
+    #[test]
+    fn s3_an_ellipse_pocket_that_would_reach_the_edge_or_is_not_plain_refuses_in_a_sentence() {
+        // Its major radius reaches past the block's left edge (x = 0).
+        let (hist, refusals) = build_doc(&block_with_ellipse_pocket([6.0, 15.0], 10.0, 5.0, 0.0, json!({})));
+        assert!(!hist.shapes.contains_key("p1"));
+        assert!(refusals["p1"].as_str().unwrap().contains("reaches the edge"), "{refusals:?}");
+        // A symmetric cut straddles the face: not a plain cut from it.
+        let (hist, refusals) = build_doc(&block_with_ellipse_pocket([20.0, 15.0], 10.0, 5.0, 0.0, json!({ "midplane": true })));
+        assert!(!hist.shapes.contains_key("p1"));
+        assert!(refusals["p1"].as_str().unwrap().contains("plain cut from a face"), "{refusals:?}");
+        // Deeper than the block is thick: the floor would be outside the part.
+        let (hist, refusals) = build_doc(&block_with_ellipse_pocket([20.0, 15.0], 10.0, 5.0, 0.0, json!({ "depth": 14.0 })));
+        assert!(!hist.shapes.contains_key("p1"), "a floor below the part must not build");
+        assert!(refusals.contains_key("p1"), "{refusals:?}");
+    }
 }
+

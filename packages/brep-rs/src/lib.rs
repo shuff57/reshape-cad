@@ -36,6 +36,7 @@ pub mod profile;
 pub mod ops;
 pub mod ops_planar;
 pub mod ops_touch;
+pub mod interior_pocket;
 pub mod turned;
 pub mod history;
 pub mod mesh;

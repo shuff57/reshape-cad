@@ -859,10 +859,13 @@ mod ellipse_tests {
     }
 
     #[test]
-    fn an_ellipse_is_refused_as_a_profile_until_the_kernel_can_pull_one() {
+    fn a_whole_ellipse_is_a_profile_of_its_own_and_as_construction_it_is_left_out() {
+        // S3: a whole ellipse is its own outline, as a circle is, written as two half arcs of one ellipse.
         let s = open(vec![ellipse(1, [0.0, 0.0], 10.0, 5.0, 0.0)], vec![]);
-        let e = s.profile().err().expect("an ellipse cannot be pulled yet");
-        assert!(format!("{e:?}").contains("ellipse"), "{e:?}");
+        let loops = s.profile().expect("a whole ellipse is a profile");
+        assert_eq!(loops.len(), 1);
+        assert_eq!(loops[0].segs.len(), 2);
+        assert!(loops[0].segs.iter().all(|g| matches!(g, crate::sketch::wires::WireSeg::Ellipse { .. })));
         // As construction geometry it is solved and constrained but takes no part in the outline.
         let mut g = vec![
             json!({"id":1,"k":"line","a":[0.0,0.0],"b":[40.0,0.0]}),
@@ -880,6 +883,25 @@ mod ellipse_tests {
             json!({"k":"coincident","a":4,"aEnd":"b","b":1,"bEnd":"a"}),
         ];
         assert_eq!(open(g, r).profile().expect("builds").len(), 1);
+    }
+
+    #[test]
+    fn an_ellipse_overlapping_the_outline_is_refused_not_dropped() {
+        let g = vec![
+            json!({"id":1,"k":"line","a":[0.0,0.0],"b":[40.0,0.0]}),
+            json!({"id":2,"k":"line","a":[40.0,0.0],"b":[40.0,25.0]}),
+            json!({"id":3,"k":"line","a":[40.0,25.0],"b":[0.0,25.0]}),
+            json!({"id":4,"k":"line","a":[0.0,25.0],"b":[0.0,0.0]}),
+            ellipse(5, [38.0, 12.0], 8.0, 4.0, 0.0),
+        ];
+        let r = vec![
+            json!({"k":"coincident","a":1,"aEnd":"b","b":2,"bEnd":"a"}),
+            json!({"k":"coincident","a":2,"aEnd":"b","b":3,"bEnd":"a"}),
+            json!({"k":"coincident","a":3,"aEnd":"b","b":4,"bEnd":"a"}),
+            json!({"k":"coincident","a":4,"aEnd":"b","b":1,"bEnd":"a"}),
+        ];
+        let e = open(g, r).profile().err().expect("an ellipse hanging out of its outline must refuse");
+        assert!(format!("{e:?}").contains("not fully inside"), "{e:?}");
     }
 
     #[test]

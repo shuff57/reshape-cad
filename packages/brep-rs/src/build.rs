@@ -1837,6 +1837,24 @@ pub enum ProfileSeg {
         start: f64,
         sweep: f64,
     },
+    /// An arc of an ellipse (or, with `sweep` a whole turn, all of one): semi-axes `a` along the direction at
+    /// angle `rot` from +u and `b` along its quarter turn, the point at eccentric angle `t` being
+    /// `centre + a cos t (cos rot, sin rot) + b sin t (-sin rot, cos rot)`, run from `start` through `sweep`.
+    Ellipse {
+        centre: [f64; 2],
+        a: f64,
+        b: f64,
+        rot: f64,
+        start: f64,
+        sweep: f64,
+    },
+}
+
+/// The point of an elliptic [`ProfileSeg`] at eccentric angle `t`.
+pub fn ellipse_point(centre: [f64; 2], a: f64, b: f64, rot: f64, t: f64) -> [f64; 2] {
+    let (cr, sr) = (rot.cos(), rot.sin());
+    let (x, y) = (a * t.cos(), b * t.sin());
+    [centre[0] + x * cr - y * sr, centre[1] + x * sr + y * cr]
 }
 
 impl ProfileSeg {
@@ -1850,6 +1868,10 @@ impl ProfileSeg {
                     centre[0] + radius * (start + sweep).cos(),
                     centre[1] + radius * (start + sweep).sin(),
                 ],
+            ),
+            ProfileSeg::Ellipse { centre, a, b, rot, start, sweep } => (
+                ellipse_point(*centre, *a, *b, *rot, *start),
+                ellipse_point(*centre, *a, *b, *rot, *start + *sweep),
             ),
         }
     }
@@ -1869,8 +1891,14 @@ fn loop_area2(segs: &[ProfileSeg]) -> f64 {
     for s in segs {
         let (p, q) = s.endpoints();
         a2 += p[0] * q[1] - q[0] * p[1];
-        if let ProfileSeg::Arc { radius, sweep, .. } = s {
-            a2 += radius * radius * (sweep - sweep.sin());
+        match s {
+            ProfileSeg::Arc { radius, sweep, .. } => a2 += radius * radius * (sweep - sweep.sin()),
+            // The arc's own x dy - y dx integral is c x (q - p) + a b sweep (the part of the radius-vector term that
+            // does not cancel), against the chord term p x q already added: the difference is a b sweep - (p-c) x (q-c).
+            ProfileSeg::Ellipse { centre, a, b, sweep, .. } => {
+                a2 += a * b * sweep - ((p[0] - centre[0]) * (q[1] - centre[1]) - (q[0] - centre[0]) * (p[1] - centre[1]));
+            }
+            ProfileSeg::Line { .. } => {}
         }
     }
     a2
@@ -1887,6 +1915,14 @@ fn reverse_loop(segs: &[ProfileSeg]) -> Vec<ProfileSeg> {
             ProfileSeg::Arc { centre, radius, start, sweep } => out.push(ProfileSeg::Arc {
                 centre: *centre,
                 radius: *radius,
+                start: *start + *sweep,
+                sweep: -*sweep,
+            }),
+            ProfileSeg::Ellipse { centre, a, b, rot, start, sweep } => out.push(ProfileSeg::Ellipse {
+                centre: *centre,
+                a: *a,
+                b: *b,
+                rot: *rot,
                 start: *start + *sweep,
                 sweep: -*sweep,
             }),
@@ -1914,6 +1950,14 @@ fn loop_polyline(segs: &[ProfileSeg]) -> Vec<[f64; 2]> {
                 for k in 0..k_max {
                     let t = start + sweep * (k as f64) / (k_max as f64);
                     pts.push([centre[0] + radius * t.cos(), centre[1] + radius * t.sin()]);
+                }
+            }
+            ProfileSeg::Ellipse { centre, a, b, rot, start, sweep } => {
+                let steps = (sweep.abs() / two_pi * 96.0).ceil().max(4.0).min(384.0);
+                let k_max = steps as usize;
+                for k in 0..k_max {
+                    let t = start + sweep * (k as f64) / (k_max as f64);
+                    pts.push(ellipse_point(*centre, *a, *b, *rot, t));
                 }
             }
         }
@@ -2000,6 +2044,73 @@ pub fn whole_circle_ring(ring: &[ProfileSeg]) -> Option<([f64; 2], f64)> {
     } else {
         None
     }
+}
+
+/// The centre, semi-axes and axis angle of a ring that is one whole ellipse written as two arcs of one ellipse
+/// turning the same way (what an `ellipse` sketch row compiles to), the elliptic counterpart of
+/// [`whole_circle_ring`].
+pub fn whole_ellipse_ring(ring: &[ProfileSeg]) -> Option<([f64; 2], f64, f64, f64)> {
+    let [ProfileSeg::Ellipse { centre: c0, a: a0, b: b0, rot: r0, sweep: s0, .. }, ProfileSeg::Ellipse { centre: c1, a: a1, b: b1, rot: r1, sweep: s1, .. }] = ring
+    else {
+        return None;
+    };
+    let tol = 1e-9 * a0.max(1.0);
+    let same = (c0[0] - c1[0]).abs() <= tol
+        && (c0[1] - c1[1]).abs() <= tol
+        && (a0 - a1).abs() <= tol
+        && (b0 - b1).abs() <= tol
+        && (r0 - r1).abs() <= 1e-9;
+    let turn = s0.abs() + s1.abs();
+    if same && s0 * s1 > 0.0 && (turn - 2.0 * std::f64::consts::PI).abs() <= 1e-9 && *a0 > 0.0 && *b0 > 0.0 {
+        Some((*c0, *a0, *b0, *r0))
+    } else {
+        None
+    }
+}
+
+/// One whole elliptic wall of semi-axes `a` (along `e1`) and `b` (along `e2`) and `height`, its low rim centred
+/// on `zlo`, axis `z`: the elliptic counterpart of [`cylinder_parts`], with the same shape (the lateral face's
+/// seam closing on itself and the two rim edges shared with the caps).
+pub(crate) fn elliptic_cylinder_parts(zlo: Vec3, z: Vec3, e1: Vec3, e2: Vec3, a: f64, b: f64, height: f64) -> CylinderParts {
+    let tau = 2.0 * std::f64::consts::PI;
+    let zhi = add(zlo, scale(z, height));
+    let v_seam_lo = topo::vertex(add(zlo, scale(e1, a)));
+    let v_seam_hi = topo::vertex(add(zhi, scale(e1, a)));
+    let rim = |zc: Vec3| Curve::Ellipse { center: zc, x_axis: scale(e1, a), y_axis: scale(e2, b), phi0: 0.0, phi1: tau };
+    let seam_lo = topo::edge(v_seam_lo.clone(), v_seam_lo.clone(), true, rim(zlo));
+    let seam_hi = topo::edge(v_seam_hi.clone(), v_seam_hi.clone(), true, rim(zhi));
+    let lateral = make_face(
+        Surface::EllipticCylinder(geom::EllipticCylinder {
+            origin: zlo,
+            axis: z,
+            e1,
+            e2,
+            a,
+            b,
+            vmin: 0.0,
+            vmax: height,
+            arc: None,
+        }),
+        [[0.0, 0.0], [0.0, height]],
+        vec![
+            topo::EdgeUse {
+                edge: seam_lo.clone(),
+                forward: true,
+                pcurve: topo::Pcurve { start: [0.0, 0.0], end: [0.0, height], mid: [0.0, height / 2.0] },
+            },
+            topo::EdgeUse {
+                edge: seam_hi.clone(),
+                forward: false,
+                pcurve: topo::Pcurve { start: [tau, height], end: [0.0, height], mid: [std::f64::consts::PI, height] },
+            },
+            topo::EdgeUse {
+                edge: seam_lo.clone(),
+                forward: false,
+                pcurve: topo::Pcurve { start: [0.0, height], end: [0.0, 0.0], mid: [0.0, height / 2.0] },
+            },
+        ],
+    );
+    CylinderParts { lateral, seam_lo, seam_hi, v_seam_lo, v_seam_hi }
 }
 
 /// `extrude_profile_loops`, optionally giving a ring that is a whole circle ONE
@@ -2224,6 +2335,34 @@ pub fn extrude_profile_loops_with(
                 top_wires.push(vec![topo::EdgeUse { edge: e_t, forward: outer, pcurve: zero }]);
                 continue;
             }
+            if let Some((c, ea, eb, rot)) = whole_ellipse_ring(ring) {
+                // The same one-wall construction as a circle: the rims shared with the caps, the wall turned to
+                // face its axis for a hole. The wall's frame is (major direction, its quarter turn, plane normal),
+                // right-handed for either sign of the sweep, with v running up the normal from the low rim.
+                let outer = ri == 0;
+                let up = dot(sweep, frame_normal) >= 0.0;
+                let c_w = at(c);
+                let zlo = if up { c_w } else { add(c_w, sweep) };
+                let e1w = add(scale(u_axis, rot.cos()), scale(v_axis, rot.sin()));
+                let e2w = add(scale(u_axis, -rot.sin()), scale(v_axis, rot.cos()));
+                let parts = elliptic_cylinder_parts(zlo, frame_normal, e1w, e2w, ea, eb, height);
+                let wall = if outer {
+                    parts.lateral.clone()
+                } else {
+                    crate::ops::flip_face(&parts.lateral)
+                        .ok_or_else(|| "an elliptic hole's wall could not be turned to face its axis".to_string())?
+                };
+                faces.push(wall);
+                let (e_b, e_t) = if up {
+                    (parts.seam_lo.clone(), parts.seam_hi.clone())
+                } else {
+                    (parts.seam_hi.clone(), parts.seam_lo.clone())
+                };
+                let zero = topo::Pcurve { start: [0.0, 0.0], end: [0.0, 0.0], mid: [0.0, 0.0] };
+                base_wires.push(vec![topo::EdgeUse { edge: e_b, forward: outer, pcurve: zero.clone() }]);
+                top_wires.push(vec![topo::EdgeUse { edge: e_t, forward: outer, pcurve: zero }]);
+                continue;
+            }
         }
         let n = ring.len();
         // One 3D curve per base and top segment. These stay in world terms and
@@ -2242,6 +2381,13 @@ pub fn extrude_profile_loops_with(
                     x_axis: add(scale(u_axis, start.cos()), scale(v_axis, start.sin())),
                     sweep: *sweep,
                 },
+                ProfileSeg::Ellipse { centre, a, b, rot, start, sweep } => Curve::Ellipse {
+                    center: at(*centre),
+                    x_axis: scale(add(scale(u_axis, rot.cos()), scale(v_axis, rot.sin())), *a),
+                    y_axis: scale(add(scale(u_axis, -rot.sin()), scale(v_axis, rot.cos())), *b),
+                    phi0: *start,
+                    phi1: *start + *sweep,
+                },
             }
         };
         let top_curve = |s: &ProfileSeg| -> Curve {
@@ -2254,6 +2400,9 @@ pub fn extrude_profile_loops_with(
                     x_axis,
                     sweep: sw,
                 },
+                Curve::Ellipse { center, x_axis, y_axis, phi0, phi1 } => {
+                    Curve::Ellipse { center: add(center, sweep), x_axis, y_axis, phi0, phi1 }
+                }
                 _ => base_curve(s),
             }
         };
@@ -2346,6 +2495,37 @@ pub fn extrude_profile_loops_with(
                     ];
                     faces.push(make_face(wall, [[u_lo, u_hi], [0.0, height]], uses));
                 }
+                ProfileSeg::Ellipse { centre, a, b, rot, start, sweep: sw } => {
+                    // The wall's frame is (major direction, its quarter turn, plane normal), right-handed whichever
+                    // way the sweep points, with v up the normal from the LOW end. A piece walked clockwise (a hole's
+                    // or an inward bite) has material inside it, so its wall faces the axis: e2 is negated and
+                    // u = -t, which keeps u increasing along the walk. Either way sigma*sw > 0.
+                    let up = dot(sweep, frame_normal) >= 0.0;
+                    let sigma = if *sw < 0.0 { -1.0 } else { 1.0 };
+                    let e1w = add(scale(u_axis, rot.cos()), scale(v_axis, rot.sin()));
+                    let e2w = add(scale(u_axis, -rot.sin()), scale(v_axis, rot.cos()));
+                    let origin_w = if up { at(*centre) } else { add(at(*centre), sweep) };
+                    let (u0, u1) = (sigma * *start, sigma * (*start + *sw));
+                    let (v_b, v_t) = if up { (0.0, height) } else { (height, 0.0) };
+                    let wall = Surface::EllipticCylinder(geom::EllipticCylinder {
+                        origin: origin_w,
+                        axis: frame_normal,
+                        e1: e1w,
+                        e2: scale(e2w, sigma),
+                        a: *a,
+                        b: *b,
+                        vmin: 0.0,
+                        vmax: height,
+                        arc: Some(geom::ArcRange { start: u0.min(u1), span: (u1 - u0).abs() }),
+                    });
+                    let uses = vec![
+                        cyl_arc_use(&e_base[i], true, u0, u1, v_b, v_b),
+                        cyl_arc_use(&vert[j], true, u1, u1, v_b, v_t),
+                        cyl_arc_use(&e_top[i], false, u1, u0, v_t, v_t),
+                        cyl_arc_use(&vert[i], false, u0, u0, v_t, v_b),
+                    ];
+                    faces.push(make_face(wall, [[u0.min(u1), u0.max(u1)], [0.0, height]], uses));
+                }
             }
         }
 
@@ -2377,7 +2557,10 @@ pub fn extrude_profile_loops_with(
 /// The walls `extrude_profile_loops_with(.., true)` pushes ahead of the two
 /// caps: one per segment, a whole-circle ring counting as one.
 pub fn extruded_wall_count(loops: &[Vec<ProfileSeg>]) -> usize {
-    loops.iter().map(|l| if whole_circle_ring(l).is_some() { 1 } else { l.len() }).sum()
+    loops
+        .iter()
+        .map(|l| if whole_circle_ring(l).is_some() || whole_ellipse_ring(l).is_some() { 1 } else { l.len() })
+        .sum()
 }
 
 /// Extrude one closed loop of straight and circular segments, given in the

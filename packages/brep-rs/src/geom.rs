@@ -911,6 +911,68 @@ pub struct Cylinder {
     pub cross: Option<Cross>,
 }
 
+/// An elliptic cylinder: an ellipse of semi-axes `a` (along `e1`) and `b` (along `e2`) swept along `axis`.
+/// `u` is the ellipse's own eccentric angle, so `param(u, v) = origin + a cos u e1 + b sin u e2 + v axis`, and a
+/// [`Curve::Ellipse`] edge on it with `x_axis = a e1`, `y_axis = b e2` carries the SAME `u` as its `phi`.
+///
+/// Orientation lives in the frame, as for [`Cylinder`]: with `e1 x e2 = axis` the normal `r_u x r_v =
+/// b cos u e1 + a sin u e2` points OUT of the ellipse; a subtracted tool's wall is the same surface with `e2`
+/// negated. Only the pad of a profile and the interior pocket build one (docs/specs/SPEC-sketch-ellipse.md, S3):
+/// no boolean understands it, so each says so in a sentence.
+#[derive(Clone, Debug)]
+pub struct EllipticCylinder {
+    pub origin: Vec3,
+    pub axis: Vec3,
+    pub e1: Vec3,
+    pub e2: Vec3,
+    pub a: f64,
+    pub b: f64,
+    pub vmin: f64,
+    pub vmax: f64,
+    /// A partial wall: only eccentric angles in [start, start + span] exist (a profile's elliptic arc).
+    pub arc: Option<ArcRange>,
+}
+
+impl EllipticCylinder {
+    /// The `u` range of the wall as an ordered pair.
+    pub fn u_range(&self) -> [f64; 2] {
+        match &self.arc {
+            Some(r) if r.span >= 0.0 => [r.start, r.start + r.span],
+            Some(r) => [r.start + r.span, r.start],
+            None => [0.0, 2.0 * std::f64::consts::PI],
+        }
+    }
+
+    /// The arc length element `|r_u x r_v| = sqrt(a^2 sin^2 u + b^2 cos^2 u)`.
+    fn speed(&self, u: f64) -> f64 {
+        (self.a * self.a * u.sin() * u.sin() + self.b * self.b * u.cos() * u.cos()).sqrt()
+    }
+
+    /// Area and centroid of the wall, by composite quadrature of the closed-form element along `u` (the
+    /// 16-point rule `integrate11` uses is exact for the volume term but not for this element when the
+    /// ellipse is eccentric).
+    pub fn measure(&self) -> (f64, Vec3) {
+        let [u0, u1] = self.u_range();
+        let h = self.vmax - self.vmin;
+        let panels = (256.0 * (u1 - u0).abs() / (2.0 * std::f64::consts::PI)).ceil().max(16.0) as usize;
+        let area = h * integrate_composite(u0, u1, panels, |u| self.speed(u));
+        if area.abs() < 1e-300 {
+            return (0.0, self.origin);
+        }
+        let mid = 0.5 * (self.vmax * self.vmax - self.vmin * self.vmin);
+        let mut c = [0.0; 3];
+        for i in 0..3 {
+            let flat = integrate_composite(u0, u1, panels, |u| {
+                let p = self.origin[i] + self.a * u.cos() * self.e1[i] + self.b * u.sin() * self.e2[i];
+                p * h * self.speed(u)
+            });
+            let along = integrate_composite(u0, u1, panels, |u| self.axis[i] * mid * self.speed(u));
+            c[i] = (flat + along) / area;
+        }
+        (area, c)
+    }
+}
+
 /// How a cylinder face is trimmed by a perpendicular bore through its axis.
 ///
 /// Both faces carry the SAME bore: tool radius `r`, part radius `big_r`
@@ -1569,6 +1631,7 @@ pub enum Surface {
     Cone(Cone),
     Sphere(SphereSurf),
     Torus(TorusSurf),
+    EllipticCylinder(EllipticCylinder),
 }
 
 impl Surface {
@@ -1635,6 +1698,24 @@ impl Surface {
                 v_range: s.v_range,
                 u_range: reflect_u_range(t, s.u_range),
             }),
+            Surface::EllipticCylinder(c) => Surface::EllipticCylinder(EllipticCylinder {
+                origin: t.apply(c.origin),
+                axis: normalize(t.dir(c.axis)),
+                e1: normalize(t.dir(c.e1)),
+                e2: flip_e2(t, normalize(t.dir(c.e2))),
+                a: c.a,
+                b: c.b,
+                vmin: c.vmin,
+                vmax: c.vmax,
+                arc: c.arc.as_ref().map(|r| {
+                    if t.reverses_handedness() {
+                        let (x, y) = (-r.start, -(r.start + r.span));
+                        ArcRange { start: x.min(y), span: (x - y).abs() }
+                    } else {
+                        r.clone()
+                    }
+                }),
+            }),
         }
     }
 
@@ -1643,6 +1724,7 @@ impl Surface {
     pub fn flip_u(&self, u: f64) -> f64 {
         match self {
             Surface::Cylinder(c) if c.arc.is_some() => -u,
+            Surface::EllipticCylinder(c) if c.arc.is_some() => -u,
             Surface::Cone(c) if is_partial_u(c.u_range) => -u,
             Surface::Torus(c) if is_partial_u(c.u_range) => -u,
             _ => 2.0 * std::f64::consts::PI - u,
@@ -1680,6 +1762,7 @@ impl Surface {
             Surface::Cone(c) => (c.u_range, c.v_range),
             Surface::Sphere(s) => (s.u_range, s.v_range),
             Surface::Torus(s) => (s.u_range, s.v_range),
+            Surface::EllipticCylinder(c) => (c.u_range(), [c.vmin, c.vmax]),
         }
     }
 
@@ -1733,6 +1816,13 @@ impl Surface {
                     ),
                 )
             }
+            Surface::EllipticCylinder(c) => add(
+                c.origin,
+                add(
+                    add(scale(c.e1, c.a * u.cos()), scale(c.e2, c.b * u.sin())),
+                    scale(c.axis, v),
+                ),
+            ),
         }
     }
 
@@ -1778,6 +1868,10 @@ impl Surface {
                 );
                 (du, dv)
             }
+            Surface::EllipticCylinder(c) => {
+                let du = add(scale(c.e1, -c.a * u.sin()), scale(c.e2, c.b * u.cos()));
+                (du, c.axis)
+            }
         }
     }
 
@@ -1797,6 +1891,9 @@ impl Surface {
                     return (area, [sx[0] / area, sx[1] / area, sx[2] / area]);
                 }
             }
+        }
+        if let Surface::EllipticCylinder(c) = self {
+            return c.measure();
         }
         if let Surface::Sphere(sp) = self {
             if sp.trim.is_hull() {
@@ -2017,6 +2114,40 @@ impl Surface {
                         b.expand(add(rho, scale(c.axis, h)));
                     }
                 }
+            }
+            Surface::EllipticCylinder(c) => {
+                // World coordinate i is o_i + a e1_i cos u + b e2_i sin u + v axis_i: linear in v, and in u a single
+                // sinusoid of amplitude sqrt((a e1_i)^2 + (b e2_i)^2) peaking where tan u = b e2_i / (a e1_i).
+                let [u0, u1] = c.u_range();
+                let full = c.arc.is_none();
+                let (mut lo, mut hi) = (c.origin, c.origin);
+                for i in 0..3 {
+                    let (p, q) = (c.vmin * c.axis[i], c.vmax * c.axis[i]);
+                    let (vlo, vhi) = (p.min(q), p.max(q));
+                    let (x, y) = (c.a * c.e1[i], c.b * c.e2[i]);
+                    let amp = x.hypot(y);
+                    let at = |u: f64| x * u.cos() + y * u.sin();
+                    let (rlo, rhi) = if full {
+                        (-amp, amp)
+                    } else {
+                        let (mut l, mut h) = (at(u0).min(at(u1)), at(u0).max(at(u1)));
+                        if amp > 1e-300 {
+                            let star = y.atan2(x);
+                            let k0 = ((u0 - star) / std::f64::consts::PI).ceil() as i64;
+                            let k1 = ((u1 - star) / std::f64::consts::PI).floor() as i64;
+                            for k in k0..=k1.min(k0 + 4) {
+                                let v = at(star + k as f64 * std::f64::consts::PI);
+                                l = l.min(v);
+                                h = h.max(v);
+                            }
+                        }
+                        (l, h)
+                    };
+                    lo[i] = c.origin[i] + vlo + rlo;
+                    hi[i] = c.origin[i] + vhi + rhi;
+                }
+                b.expand(lo);
+                b.expand(hi);
             }
             Surface::Cylinder(c) => {
                 let a = normalize(c.axis);

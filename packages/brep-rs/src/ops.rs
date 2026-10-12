@@ -797,6 +797,21 @@ fn crossings(solid: &TSolid, p: Vec3, d: Vec3) -> Option<(usize, bool)> {
                     }
                 }
             }
+            Surface::EllipticCylinder(c) => {
+                // In the frame (e1/a, e2/b, axis) the wall is the unit cylinder x^2 + y^2 = 1, so the ray is a
+                // quadratic there.
+                let w = sub(p, c.origin);
+                let (px, py) = (dot(w, c.e1) / c.a, dot(w, c.e2) / c.b);
+                let (dx, dy) = (dot(d, c.e1) / c.a, dot(d, c.e2) / c.b);
+                let qa = dx * dx + dy * dy;
+                if qa > 1e-12 {
+                    for t in crate::math::solve_quadratic(qa, 2.0 * (px * dx + py * dy), px * px + py * py - 1.0) {
+                        if t > 1e-9 && ell_face_contains(c, add(p, scale(d, t))) {
+                            count += 1;
+                        }
+                    }
+                }
+            }
         }
     }
     }
@@ -967,6 +982,24 @@ fn cyl_face_contains(c: &Cylinder, q: Vec3) -> bool {
     true
 }
 
+/// Whether a point already on an elliptic wall's surface lies within its height and, for a partial wall, its
+/// range of eccentric angle.
+fn ell_face_contains(c: &crate::geom::EllipticCylinder, q: Vec3) -> bool {
+    let dv = sub(q, c.origin);
+    let av = dot(dv, c.axis);
+    if av < c.vmin - 1e-7 || av > c.vmax + 1e-7 {
+        return false;
+    }
+    if let Some(arc) = &c.arc {
+        let (x, y) = (dot(dv, c.e1) / c.a, dot(dv, c.e2) / c.b);
+        let a = (y.atan2(x) - arc.start).rem_euclid(TWO_PI);
+        if a > arc.span + 1e-7 && a < TWO_PI - 1e-7 {
+            return false;
+        }
+    }
+    true
+}
+
 fn ray_cylinder(d: Vec3, p: Vec3, c: &Cylinder) -> Option<Vec<f64>> {
     let w = sub(p, c.origin);
     let dw = dot(d, c.axis);
@@ -1050,6 +1083,24 @@ fn inside_surface(s: &Surface, p: Vec3) -> bool {
             let rho = crate::math::len(radial);
             let dr = rho - t.ring;
             dr * dr + axial * axial <= t.tube * t.tube + TOL
+        }
+        Surface::EllipticCylinder(c) => {
+            let d = sub(p, c.origin);
+            let along = dot(d, c.axis);
+            if along < c.vmin - TOL || along > c.vmax + TOL {
+                return false;
+            }
+            let (x, y) = (dot(d, c.e1) / c.a, dot(d, c.e2) / c.b);
+            if x.hypot(y) > 1.0 + TOL / c.a.min(c.b) {
+                return false;
+            }
+            if let Some(arc) = &c.arc {
+                let ang = (y.atan2(x) - arc.start).rem_euclid(TWO_PI);
+                if ang > arc.span + TOL && ang < TWO_PI - TOL {
+                    return false;
+                }
+            }
+            true
         }
     }
 }
@@ -7246,6 +7297,25 @@ fn strictly_inside_face(f: &Face<Curve3, Surface3>, p: Vec3, margin: f64) -> boo
             let dq = (radial - t.ring).powi(2) + axial * axial;
             (t.tube - dq.sqrt()) >= margin
         }
+        Surface::EllipticCylinder(c) => {
+            let d = sub(p, c.origin);
+            let along = dot(d, c.axis);
+            if along < c.vmin + margin || along > c.vmax - margin {
+                return false;
+            }
+            let (x, y) = (dot(d, c.e1) / c.a, dot(d, c.e2) / c.b);
+            let k = margin / c.a.min(c.b).max(1e-9);
+            if x.hypot(y) > 1.0 - k {
+                return false;
+            }
+            if let Some(arc) = &c.arc {
+                let ang = (y.atan2(x) - arc.start).rem_euclid(TWO_PI);
+                if ang > arc.span - k {
+                    return false;
+                }
+            }
+            true
+        }
     }
 }
 
@@ -7479,6 +7549,29 @@ pub(crate) fn flip_face(face: &TFace) -> Option<TFace> {
             });
  Some(make_face(surf, fb.uv_domain, uses))
  }
+        Surface::EllipticCylinder(ec) => {
+            let mut uses = Vec::new();
+            for w in &fb.boundary {
+                for u in &w.borrow().edges {
+                    uses.push(u.clone());
+                }
+            }
+            // Negating e2 turns the angle u into -u and the normal inward; a partial wall's range is mirrored
+            // with it so the flipped wall covers the SAME points, as for a circular cylinder above.
+            let arc = ec.arc.as_ref().map(|a| crate::geom::ArcRange { start: -(a.start + a.span), span: a.span });
+            let surf = Surface::EllipticCylinder(crate::geom::EllipticCylinder {
+                origin: ec.origin,
+                axis: ec.axis,
+                e1: ec.e1,
+                e2: scale(ec.e2, -1.0),
+                a: ec.a,
+                b: ec.b,
+                vmin: ec.vmin,
+                vmax: ec.vmax,
+                arc,
+            });
+            Some(make_face(surf, fb.uv_domain, uses))
+        }
  Surface::Cone(c) => {
  let mut uses = Vec::new();
  for w in &fb.boundary {
@@ -7553,6 +7646,7 @@ mod tests {
                         Surface::Sphere(_) => "sphere",
                         Surface::Cone(_) => "cone",
                         Surface::Torus(_) => "torus",
+                        Surface::EllipticCylinder(_) => "ellcyl",
                     };
                     println!("   f{i} area={area:.6} centroid={c:?} {sn} n={:?}", match &fb.surface {
                         Surface::Plane(p) => p.n,

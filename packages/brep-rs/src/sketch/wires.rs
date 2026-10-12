@@ -94,6 +94,24 @@ pub enum WireSeg {
         start: f64,
         sweep: f64,
     },
+    /// An arc of an ellipse of semi-axes `a` and `b`, the major axis `rot` radians from +u, the point at
+    /// eccentric angle `t` being `centre + a cos t (cos rot, sin rot) + b sin t (-sin rot, cos rot)`. Only a
+    /// whole standalone ellipse reaches here (as two halves, like a circle); `sweep` is signed like an arc's.
+    Ellipse {
+        centre: [f64; 2],
+        a: f64,
+        b: f64,
+        rot: f64,
+        start: f64,
+        sweep: f64,
+    },
+}
+
+/// The point of an elliptic segment at eccentric angle `t`.
+pub fn ellipse_pt(centre: [f64; 2], a: f64, b: f64, rot: f64, t: f64) -> [f64; 2] {
+    let (sr, cr) = rot.sin_cos();
+    let (x, y) = (a * t.cos(), b * t.sin());
+    [centre[0] + x * cr - y * sr, centre[1] + x * sr + y * cr]
 }
 
 impl WireSeg {
@@ -116,6 +134,10 @@ impl WireSeg {
                     centre[0] + radius * (start + sweep).cos(),
                     centre[1] + radius * (start + sweep).sin(),
                 ],
+            ),
+            WireSeg::Ellipse { centre, a, b, rot, start, sweep } => (
+                ellipse_pt(*centre, *a, *b, *rot, *start),
+                ellipse_pt(*centre, *a, *b, *rot, *start + *sweep),
             ),
         }
     }
@@ -395,8 +417,12 @@ impl Curve {
 struct Circ {
     id: GeoId,
     centre: [f64; 2],
+    /// The radius of a circle; the SEMI-MAJOR radius of an ellipse.
     radius: f64,
     flawed: bool,
+    /// `Some((minor radius, major-axis angle))` for a whole standalone ellipse, `None` for a circle. An ellipse
+    /// is its own outline exactly as a circle is, so it rides the same candidate machinery.
+    ellipse: Option<(f64, f64)>,
 }
 
 /// One named point of one geometry. `endpoint` is false for a centre or a free
@@ -576,15 +602,41 @@ fn read_curves(
                     centre,
                     radius,
                     flawed: degenerate(radius, scale),
+                    ellipse: None,
+                });
+            }
+            GeoKind::Ellipse => {
+                // centre, first focus, minor radius: the major radius is derived (params.rs).
+                let centre = read_point(block, coords, id, PointRef::C)?;
+                let focus = read_point(block, coords, id, PointRef::A)?;
+                let slot = block.arg(id, None).map_err(|e| Refusal::say(e.to_string()))?.base + 4;
+                let minor = match coords.get(slot) {
+                    Some(b) => *b,
+                    None => {
+                        return Err(Refusal::say(format!(
+                            "geometry {id} has no solved minor radius; the solve and the sketch disagree about how many parameters there are"
+                        )))
+                    }
+                };
+                let (fx, fy) = (focus[0] - centre[0], focus[1] - centre[1]);
+                let major = (minor * minor + fx * fx + fy * fy).sqrt();
+                let rot = if fx.hypot(fy) > 0.0 { fy.atan2(fx) } else { 0.0 };
+                circles.push(Circ {
+                    id,
+                    centre,
+                    radius: major,
+                    flawed: degenerate(major, scale) || degenerate(minor, scale),
+                    ellipse: Some((minor, rot)),
                 });
             }
             // An ellipse is solved and constrained like any other geometry, but a pull needs an elliptic
             // wall in the kernel (docs/specs/SPEC-sketch-ellipse.md, S3). Until that exists it refuses in a
             // sentence rather than being dropped from the outline, which would build a wrong part.
-            GeoKind::Ellipse | GeoKind::EllipseArc => {
+            // An arc of an ellipse takes part in a wire with lines and other arcs, which needs curve-curve
+            // intersection the planner does not have for it; a whole ellipse is a loop of its own and is above.
+            GeoKind::EllipseArc => {
                 return Err(Refusal::say(format!(
-                    "geometry {id} is an {}; brep-rs can draw and constrain it but cannot pull it into a solid yet -- make it construction geometry, or remove it",
-                    if kind == GeoKind::Ellipse { "ellipse" } else { "arc of an ellipse" }
+                    "geometry {id} is an arc of an ellipse; brep-rs can draw and constrain it but cannot yet pull a profile that has one in it into a solid -- make it construction geometry, or remove it"
                 )));
             }
         }
@@ -962,7 +1014,11 @@ impl Plan {
         }
         for c in &self.circles {
             if c.flawed {
-                return Err(Refusal::say(format!("circle {} has zero radius", c.id)));
+                return Err(Refusal::say(if c.ellipse.is_some() {
+                    format!("ellipse {} has a zero radius", c.id)
+                } else {
+                    format!("circle {} has zero radius", c.id)
+                }));
             }
         }
         Ok(())
@@ -974,10 +1030,17 @@ impl Plan {
     fn circle_in_mixed_wire(&self) -> Result<(), Refusal> {
         for c in &self.circles {
             if self.welded_geos.contains(&c.id) {
-                return Err(Refusal::say(format!(
-                    "circle {}: a circle can only be its own outline in this version; use two arcs to join it to other edges",
-                    c.id
-                )));
+                return Err(Refusal::say(if c.ellipse.is_some() {
+                    format!(
+                        "ellipse {}: an ellipse can only be its own outline in this version; it cannot be joined to other edges",
+                        c.id
+                    )
+                } else {
+                    format!(
+                        "circle {}: a circle can only be its own outline in this version; use two arcs to join it to other edges",
+                        c.id
+                    )
+                }));
             }
         }
         Ok(())
@@ -1172,8 +1235,15 @@ pub fn signed_area(segs: &[WireSeg]) -> f64 {
     for s in segs {
         let (p, q) = s.endpoints();
         area += 0.5 * (p[0] * q[1] - q[0] * p[1]);
-        if let WireSeg::Arc { radius, sweep, .. } = s {
-            area += 0.5 * radius * radius * (sweep - sweep.sin());
+        match s {
+            WireSeg::Arc { radius, sweep, .. } => area += 0.5 * radius * radius * (sweep - sweep.sin()),
+            // a b sweep - (p - c) x (q - c): the arc's own share beyond the chord, as in build.rs `loop_area2`.
+            WireSeg::Ellipse { centre, a, b, sweep, .. } => {
+                area += 0.5
+                    * (a * b * sweep
+                        - ((p[0] - centre[0]) * (q[1] - centre[1]) - (q[0] - centre[0]) * (p[1] - centre[1])));
+            }
+            WireSeg::Line { .. } => {}
         }
     }
     area
@@ -1202,6 +1272,9 @@ fn seg_curve(s: &WireSeg, id: GeoId) -> Curve {
         WireSeg::Arc { centre, radius, sweep, .. } => {
             Curve { id, arc: true, a, b, centre, radius, sweep, flaw: None }
         }
+        // `outline_flaw` answers for a loop with an ellipse in it before any curve is built; the chord is
+        // only here so the match is total.
+        WireSeg::Ellipse { .. } => Curve { id, arc: false, a, b, centre: [0.0, 0.0], radius: 0.0, sweep: 0.0, flaw: None },
     }
 }
 
@@ -1273,6 +1346,18 @@ fn tangent_touch(c1: &Curve, c2: &Curve, eps: f64) -> bool {
 /// ignored (a doubled point in a polygon is harmless). `None` means the outline
 /// is a simple closed curve.
 pub fn outline_flaw(segs: &[WireSeg]) -> Option<OutlineFlaw> {
+    // An ellipse is a simple closed curve, and only a whole standalone one reaches here (two halves of one
+    // ellipse); anything else with an ellipse in it is not a loop this version can vouch for.
+    if segs.iter().any(|s| matches!(s, WireSeg::Ellipse { .. })) {
+        return match segs {
+            [WireSeg::Ellipse { centre: c0, a: a0, b: b0, rot: r0, .. }, WireSeg::Ellipse { centre: c1, a: a1, b: b1, rot: r1, .. }]
+                if c0 == c1 && a0 == a1 && b0 == b1 && r0 == r1 =>
+            {
+                None
+            }
+            _ => Some(OutlineFlaw::Touching(0, segs.len().saturating_sub(1))),
+        };
+    }
     // Indices of the live segments, in order.
     let mut lo = [f64::INFINITY; 2];
     let mut hi = [f64::NEG_INFINITY; 2];
@@ -1302,6 +1387,7 @@ pub fn outline_flaw(segs: &[WireSeg]) -> Option<OutlineFlaw> {
             match segs[i] {
                 WireSeg::Line { .. } => dist2(a, b) > eps,
                 WireSeg::Arc { radius, sweep, .. } => radius > eps && sweep.abs() * radius > eps,
+                WireSeg::Ellipse { a, b, sweep, .. } => b > eps && sweep.abs() * a > eps,
             }
         })
         .collect();
@@ -1619,6 +1705,12 @@ fn arc_arc_crossing(a1: &Curve, a2: &Curve) -> Option<[f64; 2]> {
 /// twice produces the same two faces with the same two names, which is what a
 /// downstream feature needs to keep pointing at the same thing.
 fn circle_segs(c: &Circ) -> Vec<WireSeg> {
+    if let Some((minor, rot)) = c.ellipse {
+        return vec![
+            WireSeg::Ellipse { centre: c.centre, a: c.radius, b: minor, rot, start: 0.0, sweep: PI },
+            WireSeg::Ellipse { centre: c.centre, a: c.radius, b: minor, rot, start: PI, sweep: PI },
+        ];
+    }
     vec![
         WireSeg::Arc {
             centre: c.centre,
@@ -1693,6 +1785,15 @@ fn loop_probes(segs: &[WireSeg]) -> Vec<[f64; 2]> {
                     pts.push([centre[0] + radius * th.cos(), centre[1] + radius * th.sin()]);
                 }
             }
+            WireSeg::Ellipse { centre, a, b, rot, start, sweep } => {
+                let want = sweep.abs() / TAU * 64.0;
+                let steps = if want.is_finite() { want.ceil().max(PROBES_PER_SEG as f64).min(256.0) } else { PROBES_PER_SEG as f64 };
+                let n = steps as usize;
+                for k in 0..n {
+                    let t = start + sweep * (k as f64) / (n as f64);
+                    pts.push(ellipse_pt(*centre, *a, *b, *rot, t));
+                }
+            }
         }
     }
     pts
@@ -1730,9 +1831,66 @@ fn point_in_loop(p: [f64; 2], segs: &[WireSeg]) -> bool {
                 start,
                 sweep,
             } => n += arc_ray_crossings(p, *centre, *radius, *start, *sweep),
+            WireSeg::Ellipse { centre, a, b, rot, start, sweep } => {
+                n += ellipse_ray_crossings(p, *centre, *a, *b, *rot, *start, *sweep)
+            }
         }
     }
     n % 2 == 1
+}
+
+/// How many times the +u ray from `p` crosses an elliptic arc, ANALYTIC like [`arc_ray_crossings`]: with
+/// `y(t) = cy + R cos(t - phi)` the arc is cut where `y` turns round, each piece is monotone in `y`, and each
+/// takes the half-open straddle test, the crossing's `x` read off the ellipse at the `t` that solves `y(t) = p_y`.
+fn ellipse_ray_crossings(p: [f64; 2], centre: [f64; 2], a: f64, b: f64, rot: f64, start: f64, sweep: f64) -> usize {
+    if !(a > 0.0) || !(b > 0.0) || sweep == 0.0 {
+        return 0;
+    }
+    let (sr, cr) = rot.sin_cos();
+    let (ya, yb) = (a * sr, b * cr);
+    let r = ya.hypot(yb);
+    if !(r > 0.0) {
+        return 0;
+    }
+    let phi = yb.atan2(ya);
+    let y_at = |t: f64| centre[1] + ya * t.cos() + yb * t.sin();
+    let (lo, hi) = if sweep > 0.0 { (start, start + sweep) } else { (start + sweep, start) };
+    // The turning points of y are at t = phi + k pi.
+    let mut breaks: Vec<f64> = vec![lo];
+    let k0 = ((lo - phi) / PI).floor();
+    for i in 0..6 {
+        let th = phi + (k0 + i as f64) * PI;
+        if th > lo && th < hi {
+            breaks.push(th);
+        }
+    }
+    breaks.push(hi);
+    let mut n = 0usize;
+    for w in breaks.windows(2) {
+        let (Some(&t0), Some(&t1)) = (w.first(), w.get(1)) else { continue };
+        if (y_at(t0) > p[1]) == (y_at(t1) > p[1]) {
+            continue;
+        }
+        // y(t) = p_y on this monotone piece: cos(t - phi) = (p_y - cy) / R.
+        let c = ((p[1] - centre[1]) / r).clamp(-1.0, 1.0);
+        let s = c.acos();
+        let mid = 0.5 * (t0 + t1);
+        let mut best: Option<f64> = None;
+        for base in [phi + s, phi - s] {
+            // The representative of base + 2 pi k nearest the piece's middle.
+            let k = ((mid - base) / TAU).round();
+            let t = base + k * TAU;
+            if t >= t0 - 1e-12 && t <= t1 + 1e-12 && best.map_or(true, |bt| (t - mid).abs() < (bt - mid).abs()) {
+                best = Some(t);
+            }
+        }
+        if let Some(t) = best {
+            if ellipse_pt(centre, a, b, rot, t)[0] > p[0] {
+                n += 1;
+            }
+        }
+    }
+    n
 }
 
 /// How many times the +u ray from `p` crosses this arc.
@@ -1823,6 +1981,25 @@ fn loop_marker(segs: &[WireSeg]) -> [f64; 2] {
         let (p, q) = s.endpoints();
         stretch(&mut lo, &mut hi, p);
         stretch(&mut lo, &mut hi, q);
+        if let WireSeg::Ellipse { centre, a, b, rot, start, sweep } = s {
+            // The x and y extremes of the arc: where d/dt of each coordinate vanishes, plus the ends above.
+            let (sr, cr) = rot.sin_cos();
+            let (lo_t, hi_t) = if *sweep > 0.0 { (*start, *start + *sweep) } else { (*start + *sweep, *start) };
+            for (u, v) in [(a * cr, -b * sr), (a * sr, b * cr)] {
+                if u.hypot(v) <= 0.0 {
+                    continue;
+                }
+                let th0 = v.atan2(u);
+                let k0 = ((lo_t - th0) / PI).floor();
+                for i in 0..6 {
+                    let th = th0 + (k0 + i as f64) * PI;
+                    if th > lo_t && th < hi_t {
+                        stretch(&mut lo, &mut hi, ellipse_pt(*centre, *a, *b, *rot, th));
+                    }
+                }
+            }
+            continue;
+        }
         let WireSeg::Arc {
             centre,
             radius,
@@ -1922,14 +2099,14 @@ fn read_candidates(
         });
     }
     for circle in &plan.circles {
-        let pre_r = pre_circles
-            .iter()
-            .find(|c| c.id == circle.id)
-            .map(|c| c.radius)
-            .unwrap_or(circle.radius);
+        let pre = pre_circles.iter().find(|c| c.id == circle.id);
+        let pre_r = pre.map(|c| c.radius).unwrap_or(circle.radius);
+        // A circle's area is pi r^2; an ellipse's is pi a b.
+        let minor_of = |c: &Circ, r: f64| c.ellipse.map(|(b, _)| b).unwrap_or(r);
+        let (minor, pre_minor) = (minor_of(circle, circle.radius), pre.map(|c| minor_of(c, c.radius)).unwrap_or(minor_of(circle, circle.radius)));
         cands.push(Cand {
-            area: PI * circle.radius * circle.radius,
-            pre_area: PI * pre_r * pre_r,
+            area: PI * circle.radius * minor,
+            pre_area: PI * pre_r * pre_minor,
             segs: circle_segs(circle),
         });
     }
@@ -2219,7 +2396,45 @@ fn seg_gap(s: &WireSeg, t: &WireSeg) -> f64 {
             }
             best
         }
+        // An ellipse against anything: no closed form here, so the polylines (see `sampled_gap`).
+        (WireSeg::Ellipse { .. }, _) | (_, WireSeg::Ellipse { .. }) => sampled_gap(s, t),
     }
+}
+
+/// A segment as a polyline: lines as themselves, curves in `per_turn` chords to the full turn. Only for the
+/// distance between curves that have no closed form here (an ellipse against anything); each chord is exact, so
+/// the gap this gives is an UPPER bound on the true one, high by at most the chord's sag (3e-6 of the semi-axis
+/// at 512 to the turn).
+fn seg_polyline(s: &WireSeg) -> Vec<[f64; 2]> {
+    let (n, pt): (usize, Box<dyn Fn(f64) -> [f64; 2]>) = match *s {
+        WireSeg::Line { a, b } => return vec![a, b],
+        WireSeg::Arc { centre, radius, start, sweep } => (
+            ((sweep.abs() / TAU * 256.0).ceil() as usize).clamp(4, 512),
+            Box::new(move |k: f64| [centre[0] + radius * (start + sweep * k).cos(), centre[1] + radius * (start + sweep * k).sin()]),
+        ),
+        WireSeg::Ellipse { centre, a, b, rot, start, sweep } => (
+            ((sweep.abs() / TAU * 512.0).ceil() as usize).clamp(8, 1024),
+            Box::new(move |k: f64| ellipse_pt(centre, a, b, rot, start + sweep * k)),
+        ),
+    };
+    (0..=n).map(|i| pt(i as f64 / n as f64)).collect()
+}
+
+/// The gap between two segments, one of which is elliptic, from their polylines: 0 when two chords cross.
+fn sampled_gap(s: &WireSeg, t: &WireSeg) -> f64 {
+    let (p, q) = (seg_polyline(s), seg_polyline(t));
+    let mut best = f64::MAX;
+    for i in 0..p.len().saturating_sub(1) {
+        for j in 0..q.len().saturating_sub(1) {
+            let (a, b, c, d) = (p[i], p[i + 1], q[j], q[j + 1]);
+            if proper_cross(a, b, c, d) {
+                return 0.0;
+            }
+            let g = pt_seg_dist(a, c, d).min(pt_seg_dist(b, c, d)).min(pt_seg_dist(c, a, b)).min(pt_seg_dist(d, a, b));
+            best = best.min(g);
+        }
+    }
+    best
 }
 
 /// The smallest gap between two loops.

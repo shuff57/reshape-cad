@@ -160,7 +160,12 @@ pub fn curve_points(c: &Curve, defl: f64) -> Vec<Vec3> {
             let (xx, yy, xy) = (dot(*x_axis, *x_axis), dot(*y_axis, *y_axis), dot(*x_axis, *y_axis));
             let big = (0.5 * (xx + yy) + (0.25 * (xx - yy) * (xx - yy) + xy * xy).sqrt()).max(0.0).sqrt();
             let nseg = arc_segments(big, phi1 - phi0, defl, 4);
-            (0..=nseg).map(|k| c.point_at(k as f64 / nseg as f64)).collect()
+            // A whole ellipse is a closed loop: its last sample is EXACTLY the first, so the vertex is shared bit
+            // for bit (cos and sin of 2 pi are not exactly 1 and 0).
+            let closed = (phi1 - phi0).abs() >= TAU - 1e-12;
+            (0..=nseg)
+                .map(|k| c.point_at(if closed && k == nseg { 0.0 } else { k as f64 / nseg as f64 }))
+                .collect()
         }
         Curve::Hyperbola { .. } => {
             // An open arc: segments from its tightest bend, sampled evenly in its own parameter, ends exact.
@@ -3379,6 +3384,13 @@ fn surface_uv(s: &crate::geom::Surface, p: Vec3) -> Option<[f64; 2]> {
             let u = crate::math::dot(perp, t.e2).atan2(crate::math::dot(perp, t.e1));
             Some([u, v])
         }
+        Surface::EllipticCylinder(c) => {
+            // The eccentric angle: the point's coordinates divided by the semi-axes lie on the unit circle.
+            let d = sub(p, c.origin);
+            let v = crate::math::dot(d, c.axis);
+            let u = (crate::math::dot(d, c.e2) / c.b).atan2(crate::math::dot(d, c.e1) / c.a);
+            Some([u, v])
+        }
     }
 }
 
@@ -3391,6 +3403,9 @@ fn surface_radii(s: &crate::geom::Surface) -> (f64, f64) {
         Surface::Cone(c) => (c.base_radius.max(1e-9), c.v_range[1] - c.v_range[0]),
         Surface::Sphere(sp) => (sp.radius, sp.radius),
         Surface::Torus(t) => (t.ring + t.tube, t.tube),
+        // The deflection of an ellipse sampled in its eccentric angle is worst at the ends of the major axis,
+        // where it is that of a circle of the semi-major radius.
+        Surface::EllipticCylinder(c) => (c.a.max(c.b), c.vmax - c.vmin),
         Surface::Plane(_) => (1.0, 1.0),
     }
 }
@@ -3549,6 +3564,7 @@ fn mesh_curved_face(
     // samples define the cycle; `stations` wraps it. v is never cyclic here, so
     // it keeps its endpoints.
     let seed_u = !(matches!(&surface, crate::geom::Surface::Cylinder(c) if c.arc.is_none())
+        || matches!(&surface, crate::geom::Surface::EllipticCylinder(c) if c.arc.is_none())
         || (matches!(&surface, crate::geom::Surface::Cone(_)) && (u1 - u0 - TAU).abs() < 1e-9));
     let mut us: Vec<f64> = if seed_u { vec![u0, u1] } else { Vec::new() };
     let mut vs: Vec<f64> = vec![v0, v1];
@@ -3593,7 +3609,7 @@ fn mesh_curved_face(
                 let seam_seg = (matches!(
                     &surface,
                     crate::geom::Surface::Cylinder(c) if c.arc.is_none()
-                ) || matches!(&surface, crate::geom::Surface::Cone(_)) && (u1 - u0 - TAU).abs() < 1e-9) && matches!(edge_curve_kind(&u.edge), CurveKind::Seg);
+                ) || matches!(&surface, crate::geom::Surface::EllipticCylinder(c) if c.arc.is_none()) || matches!(&surface, crate::geom::Surface::Cone(_)) && (u1 - u0 - TAU).abs() < 1e-9) && matches!(edge_curve_kind(&u.edge), CurveKind::Seg);
                 if !seam_seg && uu >= u0 - 1e-7 && uu <= u1 + 1e-7 {
                     add_station(&mut us, uu, u0, u1);
                 }
@@ -3625,6 +3641,11 @@ fn mesh_curved_face(
         },
         _ => None,
     };
+    // An elliptic wall's columns are exactly its rims' own samples (they ARE its boundary, in the eccentric angle the
+    // wall uses), so no lattice of its own is added.
+    if matches!(&surface, crate::geom::Surface::EllipticCylinder(_)) {
+        cyl_lattice = true;
+    }
     if notch.is_some() {
         cyl_lattice = true;
     } else if let crate::geom::Surface::Cylinder(c) = &surface {
@@ -3720,6 +3741,7 @@ fn mesh_curved_face(
     // back to the same bounded, boundary-driven path a partial cylinder uses.
     let (u_periodic, v_periodic, u_fill, v_fill) = match &surface {
         crate::geom::Surface::Cylinder(c) => (c.arc.is_none(), false, false, false),
+        crate::geom::Surface::EllipticCylinder(c) => (c.arc.is_none(), false, false, false),
         crate::geom::Surface::Cone(_) => (true, false, false, false),
         crate::geom::Surface::Sphere(s) => {
             let full_u = (s.u_range[1] - s.u_range[0] - TAU).abs() < 1e-9;

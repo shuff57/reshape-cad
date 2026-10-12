@@ -319,7 +319,8 @@ fn read_with(src: &TSolid, tips: bool) -> Option<Read> {
                 let sw = s * (v1 - v0);
                 segs.push(mk(Kind::Arc { c: [t.ring, t.center[2]], r: t.tube, a0, sw }, None));
             }
-            Surface::Sphere(_) => return None,
+            // Not a surface of revolution: this part is not a turned one.
+            Surface::Sphere(_) | Surface::EllipticCylinder(_) => return None,
         }
     }
     let origin = origin_cell.get()?;

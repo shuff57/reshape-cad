@@ -1224,6 +1224,9 @@ fn face_bounds(face: &crate::topo::Face<Curve, Surface>) -> Result<(Vec<Vec<Seg>
         }
     }
     let same_sense = match &face.surface {
+        // STEP has no elliptic-cylinder primitive (FreeCAD writes a surface of linear extrusion over an ellipse),
+        // and brep-rs does not write one yet: refuse in a sentence rather than write a circular wall.
+        Surface::EllipticCylinder(_) => return Err("an elliptic wall".to_string()),
         Surface::Plane(_) => face.forward,
         Surface::Cylinder(c) => face.forward == right_handed(c.e1, c.e2, c.axis),
         Surface::Cone(c) => face.forward == right_handed(c.e1, c.e2, c.axis),
@@ -1260,6 +1263,7 @@ fn face_bounds(face: &crate::topo::Face<Curve, Surface>) -> Result<(Vec<Vec<Seg>
     // set for a hull-trimmed sphere: the frame it is written in (see `hull_frame`)
     let mut frame: Option<(Vec3, Vec3)> = None;
     match &face.surface {
+        Surface::EllipticCylinder(_) => return Err("an elliptic wall".to_string()),
         // a bore across a cylinder's side: both faces are bounded by the meeting curve, so they are
         // written from their own wires (rims, seam, B-spline curves) instead of the plain seam loop
         Surface::Cylinder(c) if c.cross.is_some() => {
@@ -1658,6 +1662,7 @@ pub fn write_solid(solid: &TSolid, product: &str) -> Result<String, String> {
         }
         let same_sense = *same_sense;
         let surface = match surf {
+            Surface::EllipticCylinder(_) => return Err("brep-rs cannot write an elliptic wall to STEP yet".to_string()),
             Surface::Plane(p) => {
                 let pl = w.axis2(p.origin, p.n, p.u);
                 w.put(format!("PLANE('',#{pl})"))

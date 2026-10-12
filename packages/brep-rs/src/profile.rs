@@ -114,6 +114,14 @@ fn profile_loops(loops: &[crate::sketch::wires::WireLoop]) -> Option<Vec<Vec<bui
                     start: *start,
                     sweep: *sweep,
                 },
+                crate::sketch::wires::WireSeg::Ellipse { centre, a, b, rot, start, sweep } => build::ProfileSeg::Ellipse {
+                    centre: *centre,
+                    a: *a,
+                    b: *b,
+                    rot: *rot,
+                    start: *start,
+                    sweep: *sweep,
+                },
             })
             .collect();
         // The session's wire discovery splits edges where they cross, but a touch that
@@ -134,6 +142,14 @@ fn profile_loops(loops: &[crate::sketch::wires::WireLoop]) -> Option<Vec<Vec<bui
                     build::ProfileSeg::Arc { centre, radius, start, sweep } => build::ProfileSeg::Arc {
                         centre: *centre,
                         radius: *radius,
+                        start: *start + *sweep,
+                        sweep: -*sweep,
+                    },
+                    build::ProfileSeg::Ellipse { centre, a, b, rot, start, sweep } => build::ProfileSeg::Ellipse {
+                        centre: *centre,
+                        a: *a,
+                        b: *b,
+                        rot: *rot,
                         start: *start + *sweep,
                         sweep: -*sweep,
                     },
