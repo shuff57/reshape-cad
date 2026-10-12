@@ -956,6 +956,14 @@ fn cyl_face_contains(c: &Cylinder, q: Vec3) -> bool {
             return false;
         }
     }
+    // A wall with a notch taken out of it (`Cross::Notch`): a point inside the rectangle is not on the face.
+    if let Some(crate::geom::Cross::Notch { u0, span, v0, v1 }) = &c.cross {
+        let r = sub(dv, scale(c.axis, av));
+        let a = (dot(r, c.e2).atan2(dot(r, c.e1)) - u0).rem_euclid(TWO_PI);
+        if a > 1e-7 && a < span - 1e-7 && av > v0 + 1e-7 && av < v1 - 1e-7 {
+            return false;
+        }
+    }
     true
 }
 
@@ -5531,6 +5539,22 @@ pub fn has_only_slant_trim(s: &TSolid) -> bool {
     any
 }
 
+/// True when every cross trim on `s` is the notch a part turn of a groove ring leaves in a round wall (`Cross::Notch`) and
+/// there is at least one: such a part is exact to move, copy and mirror; every further cut would read that wall as whole.
+pub fn has_only_notched_wall(s: &TSolid) -> bool {
+    let mut any = false;
+    for f in s.faces() {
+        if let Surface::Cylinder(c) = &f.borrow().surface {
+            match &c.cross {
+                None => {}
+                Some(crate::geom::Cross::Notch { .. }) => any = true,
+                Some(_) => return false,
+            }
+        }
+    }
+    any
+}
+
 /// True when any face of `s` carries a cross-bore trim (`geom::Cross`). Such a
 /// solid is only ever the RESULT of [`cylinder_cross_bore`]: the generic face
 /// machinery would treat its faces as whole cylinders and return a wrong solid,
@@ -9673,6 +9697,7 @@ mod cross_bore_pins {
                             Some(crate::geom::Cross::SphTool { .. }) => unreachable!("no sphere bore in the transverse-bore fixtures"),
                             Some(crate::geom::Cross::ConeTool { .. }) => unreachable!("no cone bore in the transverse-bore fixtures"),
                             Some(crate::geom::Cross::Slant { .. }) => unreachable!("no mitred round in the transverse-bore fixtures"),
+                            Some(crate::geom::Cross::Notch { .. }) => unreachable!("no notched wall in the transverse-bore fixtures"),
                             None | Some(crate::geom::Cross::Patch { .. }) => {}
                         }
                         checked += 1;

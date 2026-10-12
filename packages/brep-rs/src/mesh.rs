@@ -1616,6 +1616,8 @@ fn mesh_cross_face(
         crate::geom::Cross::Tool { .. } | crate::geom::Cross::SphTool { .. } | crate::geom::Cross::ConeTool { .. } => mesh_cross_tool(&fb, cy, edges_cache, out, defl)?,
         crate::geom::Cross::Patch { plus, .. } => mesh_cross_patch(&fb, cy, *plus, edges_cache, out, defl)?,
         crate::geom::Cross::Slant { .. } => mesh_slant(&fb, cy, edges_cache, out, defl)?,
+        // meshed as an ordinary wall by `mesh_curved_face` (see `mesh_face`), which skips the notch's cells
+        crate::geom::Cross::Notch { .. } => return None,
     }
     let count = out.indices.len() - start;
     if count == 0 {
@@ -2556,7 +2558,7 @@ fn mesh_face(
     // A cylinder trimmed by a perpendicular bore through its axis (the part's
     // pierced wall, or the bore's own wall): ladders between boundary chains.
     if let crate::geom::Surface::Cylinder(c) = &face.borrow().surface {
-        if c.cross.is_some() {
+        if c.cross.is_some() && !matches!(c.cross, Some(crate::geom::Cross::Notch { .. })) {
             return mesh_cross_face(face, edges_cache, out, defl);
         }
     }
@@ -3613,7 +3615,19 @@ fn mesh_curved_face(
     // sample set, never an interleaved extra one -- and suppress the surface's
     // own (e1,e2) lattice, which a rotated boolean frame would misalign.
     let mut cyl_lattice = false;
-    if let crate::geom::Surface::Cylinder(c) = &surface {
+    // A wall with a notch taken out (`Cross::Notch`): its rims are PARTIAL arcs (the notch's own two, and the pieces the
+    // post's rim circles were split into), each sampled from its own start, so neither the full-turn lattice nor an
+    // arc-range lattice is on any neighbour's samples. Its columns are exactly its boundary's samples.
+    let notch = match &surface {
+        crate::geom::Surface::Cylinder(c) => match c.cross {
+            Some(crate::geom::Cross::Notch { u0, span, v0, v1 }) => Some((u0, span, v0, v1)),
+            _ => None,
+        },
+        _ => None,
+    };
+    if notch.is_some() {
+        cyl_lattice = true;
+    } else if let crate::geom::Surface::Cylinder(c) = &surface {
         let span = u1 - u0;
         if c.arc.is_none() {
             let n = arc_segments(ru, span, defl, 8).max(1);
@@ -3779,6 +3793,11 @@ fn mesh_curved_face(
             let d = ids[i][j + 1];
             let uc = 0.5 * (ucol(i) + ucol(i + 1));
             let vc = 0.5 * (vrow(j) + vrow(j + 1));
+            if let Some((nu0, nspan, nv0, nv1)) = notch {
+                if (uc - nu0).rem_euclid(TAU) < nspan && vc > nv0 && vc < nv1 {
+                    continue;
+                }
+            }
             let (du, dv) = surface.dparam(uc, vc);
             let n_out = cross(du, dv);
             out.tri_oriented([a, b, c], n_out);

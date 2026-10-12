@@ -2642,6 +2642,7 @@ fn pieces(
                 let uncut = g.us.is_empty() && g.vs.is_empty();
                 // Cells kept (by column, row) and whether any cell was dropped for lying ON a partial wall.
                 let mut kept_cells: Vec<(usize, usize)> = Vec::new();
+                let mut cells: Vec<TFace> = Vec::new();
                 let mut partial_drop = false;
                 for (ci, &(a, b)) in arcs.iter().enumerate() {
                     for (ri, w) in hs.windows(2).enumerate() {
@@ -2659,9 +2660,10 @@ fn pieces(
                         }
                         kept_cells.push((ci, ri));
                         let face = wall_piece(c, f, a, b, w[0], w[1], uncut, vertex);
-                        out.push(Kept::Wall(if flip { ops::flip_face(&face).ok_or(())? } else { face }));
+                        cells.push(if flip { ops::flip_face(&face).ok_or(())? } else { face });
                     }
                 }
+                let mut notched = false;
                 // A wall that a part turn of a ring lies on must be left as ONE rectangle (or separate ones). Where the
                 // ring's footprint is a bite out of the wall's side or middle the rest is a single face with a notch in
                 // it, which this kernel holds only as patches along the ring's edges: a different face count from what
@@ -2699,15 +2701,197 @@ fn pieces(
                         rows.sort_unstable();
                         rows.dedup();
                         if comp.len() != cols.len() * rows.len() {
+                            notched = true;
+                        }
+                    }
+                }
+                // A wall with ONE rectangle of it lying under the ring is ONE face with a notch (as FreeCAD leaves it): the
+                // cells are merged into it. Anything else this kernel cannot hold as one face refuses.
+                if notched {
+                    if flip {
+                        set_reason(NOTCHED_WALL_SENTENCE);
+                        bail!();
+                    }
+                    match merge_notched_wall(f, &arcs, &hs, &kept_cells, &cells) {
+                        Some(face) => {
+                            out.push(Kept::Wall(face));
+                            continue;
+                        }
+                        None => {
                             set_reason(NOTCHED_WALL_SENTENCE);
                             bail!();
                         }
                     }
                 }
+                out.extend(cells.into_iter().map(Kept::Wall));
             }
         }
     }
     Ok(out)
+}
+
+/// The cells of a wall that a part turn of a ring lies on, merged into ONE face with a notch: every cell the ring did not
+/// take, with the edges the cells share (and a whole wall's seam, which is one edge used twice) taken out of the loops.
+/// `arcs` are the columns' angle ranges, `hs` the row boundaries, `kept` the (column, row) of each of `cells`, in order.
+/// `None` when what is left is not a wall less ONE rectangle (a second bite, a band across the whole height or turn, a
+/// pinched corner): the caller refuses it in a sentence.
+fn merge_notched_wall(f: &CFace, arcs: &[(f64, f64)], hs: &[f64], kept: &[(usize, usize)], cells: &[TFace]) -> Option<TFace> {
+    let (nc, nr) = (arcs.len(), hs.len().checked_sub(1)?);
+    let whole = f.span >= TAU - 1e-9;
+    if nc < 2 || nr < 2 || kept.len() != cells.len() || kept.len() >= nc * nr {
+        return None;
+    }
+    // the dropped cells must be exactly one block of columns x rows
+    let is_kept = |ci: usize, ri: usize| kept.contains(&(ci, ri));
+    let mut dcols: Vec<usize> = Vec::new();
+    let mut drows: Vec<usize> = Vec::new();
+    for ci in 0..nc {
+        for ri in 0..nr {
+            if !is_kept(ci, ri) {
+                dcols.push(ci);
+                drows.push(ri);
+            }
+        }
+    }
+    dcols.sort_unstable();
+    dcols.dedup();
+    drows.sort_unstable();
+    drows.dedup();
+    if dcols.len() * drows.len() != nc * nr - kept.len() {
+        return None;
+    }
+    for &ci in &dcols {
+        for &ri in &drows {
+            if is_kept(ci, ri) {
+                return None;
+            }
+        }
+    }
+    // rows are one run that stops short of the wall's height on at least one side (else the pieces are rectangles)
+    if drows.windows(2).any(|w| w[1] != w[0] + 1) || drows.len() == nr {
+        return None;
+    }
+    // columns are one run (cyclically for a whole wall) that stops short of the whole turn
+    if dcols.len() >= nc {
+        return None;
+    }
+    let mut start = dcols[0];
+    if whole && dcols.windows(2).any(|w| w[1] != w[0] + 1) {
+        // a cyclic run: it starts at the one column whose predecessor is kept
+        let first = dcols.iter().copied().find(|&c| !dcols.contains(&((c + nc - 1) % nc)))?;
+        let run_ok = (0..dcols.len()).all(|k| dcols.contains(&((first + k) % nc)));
+        if !run_ok {
+            return None;
+        }
+        start = first;
+    } else if dcols.windows(2).any(|w| w[1] != w[0] + 1) {
+        return None;
+    }
+    let mut span = 0.0;
+    for k in 0..dcols.len() {
+        let (a, b) = arcs[(start + k) % nc];
+        span += b - a;
+    }
+    let (nu0, nv0, nv1) = (arcs[start].0, hs[drows[0]], hs[drows[drows.len() - 1] + 1]);
+    if !(span > 1e-9 && span < TAU - 1e-9 && nv1 > nv0) {
+        return None;
+    }
+
+    // every use of every kept cell, with where it came from; a wall_piece wire is [left, top, right, bottom]
+    struct Item {
+        u: topo::EdgeUse<Curve>,
+        alive: bool,
+    }
+    let mut items: Vec<Item> = Vec::new();
+    let mut slot: HashMap<(usize, usize, usize), usize> = HashMap::new();
+    for (k, &(ci, ri)) in kept.iter().enumerate() {
+        let cb = cells[k].borrow();
+        let wire = cb.boundary.first()?.borrow();
+        if cb.boundary.len() != 1 || wire.edges.len() != 4 {
+            return None;
+        }
+        for (side, u) in wire.edges.iter().enumerate() {
+            slot.insert((ci, ri, side), items.len());
+            items.push(Item { u: u.clone(), alive: true });
+        }
+    }
+    let ends = |u: &topo::EdgeUse<Curve>| {
+        let e = u.edge.borrow();
+        let (a, b) = (Rc::as_ptr(&e.a) as *const () as usize, Rc::as_ptr(&e.b) as *const () as usize);
+        (a.min(b), a.max(b))
+    };
+    // shared sides cancel; a whole wall's seam is one edge, used twice
+    for &(ci, ri) in kept {
+        let mut pairs: Vec<((usize, usize, usize), (usize, usize, usize), bool)> = Vec::new();
+        if ci + 1 < nc {
+            pairs.push(((ci, ri, 2), (ci + 1, ri, 0), false));
+        } else if whole {
+            pairs.push(((ci, ri, 2), (0, ri, 0), true));
+        }
+        if ri + 1 < nr {
+            pairs.push(((ci, ri, 1), (ci, ri + 1, 3), false));
+        }
+        for (a, b, seam) in pairs {
+            let (Some(&ia), Some(&ib)) = (slot.get(&a), slot.get(&b)) else { continue };
+            if ends(&items[ia].u) != ends(&items[ib].u) {
+                return None;
+            }
+            if seam {
+                let shared = items[ib].u.edge.clone();
+                items[ia].u.edge = shared;
+            } else {
+                items[ia].alive = false;
+                items[ib].alive = false;
+            }
+        }
+    }
+    // chain the rest into loops by their (u, v) ends, which tell a whole wall's two seam sides apart
+    let key = |p: [f64; 2]| ((p[0] * 1e7).round() as i64, (p[1] * 1e7).round() as i64);
+    let alive: Vec<usize> = (0..items.len()).filter(|&i| items[i].alive).collect();
+    let mut used = vec![false; items.len()];
+    let mut loops: Vec<Vec<usize>> = Vec::new();
+    for &i0 in &alive {
+        if used[i0] {
+            continue;
+        }
+        let mut lp = vec![i0];
+        used[i0] = true;
+        loop {
+            let last = *lp.last()?;
+            let end = key(items[last].u.pcurve.end);
+            if end == key(items[lp[0]].u.pcurve.start) {
+                break;
+            }
+            let next: Vec<usize> = alive.iter().copied().filter(|&j| !used[j] && key(items[j].u.pcurve.start) == end).collect();
+            if next.len() != 1 {
+                return None;
+            }
+            used[next[0]] = true;
+            lp.push(next[0]);
+        }
+        loops.push(lp);
+    }
+    if loops.is_empty() {
+        return None;
+    }
+    // the outer loop is the one that encloses the most (u, v) area
+    let area = |lp: &Vec<usize>| -> f64 {
+        let pts: Vec<[f64; 2]> = lp.iter().flat_map(|&i| [items[i].u.pcurve.start, items[i].u.pcurve.mid]).collect();
+        (0..pts.len()).map(|k| pts[k][0] * pts[(k + 1) % pts.len()][1] - pts[(k + 1) % pts.len()][0] * pts[k][1]).sum::<f64>() * 0.5
+    };
+    let mut order: Vec<usize> = (0..loops.len()).collect();
+    order.sort_by(|&a, &b| area(&loops[b]).abs().partial_cmp(&area(&loops[a]).abs()).unwrap_or(std::cmp::Ordering::Equal));
+    let wires: Vec<Rc<RefCell<Wire<Curve>>>> =
+        order.iter().map(|&k| Rc::new(RefCell::new(Wire { edges: loops[k].iter().map(|&i| items[i].u.clone()).collect() }))).collect();
+    let mut cyl = f.cyl.clone();
+    cyl.cross = Some(crate::geom::Cross::Notch { u0: nu0, span, v0: nv0, v1: nv1 });
+    // `cyl.arc` stays the wall's own range: none for a whole wall, its arc for a part of one
+    Some(Rc::new(RefCell::new(Face {
+        boundary: wires,
+        forward: true,
+        surface: Surface::Cylinder(cyl),
+        uv_domain: [[arcs[0].0, arcs[nc - 1].1], [hs[0], hs[nr]]],
+    })))
 }
 
 /// One rectangle of a cylinder wall as a finished face. `uncut` keeps the
@@ -4943,16 +5127,66 @@ mod coincident_wall_tests {
     }
 
     #[test]
-    fn ring_on_the_outer_wall_whole_turn_builds_part_turn_refuses_in_a_sentence() {
+    fn ring_on_the_outer_wall_builds_whole_turn_and_part_turn_as_one_notched_wall() {
         let host = post(20.0);
         let want = PI * 400.0 * 30.0 - PI * (400.0 - 324.0) * 5.0;
         let r = cut(&host, &ring(18.0, 20.0, 10.0, 15.0, 360.0)).expect("whole turn refused");
         assert!((vol(&r) - want).abs() <= 1e-9 * want);
         closed(&r);
+        assert_eq!(r.faces().len(), 7, "FreeCAD: top, bottom, two wall bands, inner wall, two floors");
+        // a part turn leaves the wall as ONE face with a notch (FreeCAD: 8 faces), exact and closed
         for deg in [30.0, 90.0, 180.0, 270.0, 330.0] {
-            clear_reason();
-            assert!(cut(&host, &ring(18.0, 20.0, 10.0, 15.0, deg)).is_none(), "{deg} must refuse: a notched wall");
-            assert_eq!(take_reason(), Some(NOTCHED_WALL_SENTENCE));
+            let r = cut(&host, &ring(18.0, 20.0, 10.0, 15.0, deg)).unwrap_or_else(|| panic!("{deg} refused"));
+            let want = PI * 400.0 * 30.0 - PI * 76.0 * 5.0 * deg / 360.0;
+            assert!((vol(&r) - want).abs() <= 1e-9 * want, "{deg}: {} vs {want}", vol(&r));
+            assert_eq!(r.faces().len(), 8, "{deg}: top, bottom, notched wall, inner wall, two floors, two end planes");
+            let notched = r.faces().iter().filter(|f| matches!(&f.borrow().surface, Surface::Cylinder(c) if matches!(c.cross, Some(crate::geom::Cross::Notch { .. })))).count();
+            assert_eq!(notched, 1, "{deg}: one wall with a notch");
+            closed(&r);
+        }
+    }
+
+    /// The notched wall's area, centroid and volume term are the whole wall's less the rectangle's, and they stay right
+    /// when the part is turned, moved or mirrored (a reflection turns the notch's angle range over).
+    #[test]
+    fn notched_wall_measures_equal_independent_quadrature_and_survive_moves_and_mirrors() {
+        use crate::math::Transform;
+        let host = post(20.0);
+        let r = cut(&host, &ring(18.0, 20.0, 10.0, 15.0, 100.0)).expect("part turn builds");
+        let want_vol = PI * 400.0 * 30.0 - PI * 76.0 * 5.0 * 100.0 / 360.0;
+        for t in [Transform::translation([3.0, -2.0, 1.0]), Transform::rotation([0.0, 0.0, 1.0], 0.7), Transform::mirror([0.0, 0.0, 0.0], [1.0, 0.0, 0.0]), Transform::mirror([0.0, 0.0, 15.0], [0.0, 0.0, 1.0])] {
+            let m = build::transform_solid(&r, &t);
+            assert!((vol(&m) - want_vol).abs() <= 1e-9 * want_vol, "volume after a move or mirror");
+            closed(&m);
+            // the notched face: its area and centroid against a dense grid over the wall's own (u, v), skipping the notch
+            let face = m.faces().into_iter().find(|f| matches!(&f.borrow().surface, Surface::Cylinder(c) if c.cross.is_some())).expect("a notched wall");
+            let fb = face.borrow();
+            let Surface::Cylinder(c) = &fb.surface else { unreachable!() };
+            let Some(crate::geom::Cross::Notch { u0, span, v0, v1 }) = c.cross else { unreachable!() };
+            let (area, cen) = build::face_area_centroid(&fb);
+            let (nu, nv) = (4000usize, 600usize);
+            let (mut a, mut sx) = (0.0, [0.0; 3]);
+            for i in 0..nu {
+                let u = (i as f64 + 0.5) * TAU / nu as f64;
+                for j in 0..nv {
+                    let v = c.vmin + (j as f64 + 0.5) * (c.vmax - c.vmin) / nv as f64;
+                    if (u - u0).rem_euclid(TAU) < span && v > v0 && v < v1 {
+                        continue;
+                    }
+                    let da = c.radius * (TAU / nu as f64) * ((c.vmax - c.vmin) / nv as f64);
+                    let p = add(add(c.origin, scale(add(scale(c.e1, u.cos()), scale(c.e2, u.sin())), c.radius)), scale(c.axis, v));
+                    a += da;
+                    for k in 0..3 {
+                        sx[k] += da * p[k];
+                    }
+                }
+            }
+            let want_area = 2.0 * PI * 20.0 * 30.0 - 20.0 * (100.0f64.to_radians()) * 5.0;
+            assert!((area - want_area).abs() <= 1e-9 * want_area, "area {area} vs {want_area}");
+            assert!((a - want_area).abs() <= 1e-3 * want_area, "grid area {a}");
+            for k in 0..3 {
+                assert!((cen[k] - sx[k] / a).abs() <= 2e-3, "centroid {k}: {} vs grid {}", cen[k], sx[k] / a);
+            }
         }
     }
 
@@ -4965,21 +5199,26 @@ mod coincident_wall_tests {
             assert!((vol(&r) - (PI * 400.0 * 30.0 - want)).abs() <= 1e-9 * PI * 400.0 * 30.0);
             closed(&r);
         }
-        // a ring flush with an end face still bites the wall's side: a notch
+        // a ring flush with an end face bites the wall's side: ONE face with a notch that reaches the rim (FreeCAD: 7 faces)
         for (z0, z1) in [(0.0, 8.0), (22.0, 30.0)] {
-            clear_reason();
-            assert!(cut(&host, &ring(15.0, 20.0, z0, z1, 180.0)).is_none());
-            assert_eq!(take_reason(), Some(NOTCHED_WALL_SENTENCE));
+            let r = cut(&host, &ring(15.0, 20.0, z0, z1, 180.0)).unwrap_or_else(|| panic!("z{z0}..{z1} refused"));
+            let want = PI * 400.0 * 30.0 - PI * 175.0 * 8.0 / 2.0;
+            assert!((vol(&r) - want).abs() <= 1e-9 * want);
+            assert_eq!(r.faces().len(), 7);
+            closed(&r);
         }
     }
 
     #[test]
-    fn ring_on_a_bore_wall_partial_turn_refuses() {
+    fn ring_on_a_bore_wall_partial_turn_builds_as_one_notched_wall() {
         let host = sub_bore(20.0, 10.0);
+        let tube = PI * 300.0 * 30.0;
         for deg in [90.0, 180.0, 270.0] {
-            clear_reason();
-            assert!(cut(&host, &ring(10.0, 14.0, 10.0, 15.0, deg)).is_none(), "{deg}");
-            assert_eq!(take_reason(), Some(NOTCHED_WALL_SENTENCE));
+            let r = cut(&host, &ring(10.0, 14.0, 10.0, 15.0, deg)).unwrap_or_else(|| panic!("{deg} refused"));
+            let want = tube - PI * 96.0 * 5.0 * deg / 360.0;
+            assert!((vol(&r) - want).abs() <= 1e-9 * want, "{deg}");
+            assert_eq!(r.faces().len(), 9, "{deg}: FreeCAD 9");
+            closed(&r);
         }
     }
 

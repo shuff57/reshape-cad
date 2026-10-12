@@ -1545,6 +1545,8 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
             if let Some(n) = crossed {
                 let what = if hist.shapes.get(n).or_else(|| hist.shapes.get(hist.head_of(n))).is_some_and(ops::has_only_slant_trim) {
                     "rounds mitred at the corners of a pocket's rim"
+                } else if hist.shapes.get(n).or_else(|| hist.shapes.get(hist.head_of(n))).is_some_and(ops::has_only_notched_wall) {
+                    "a round wall with a notch cut out of it by a part turn of a groove"
                 } else {
                     "a bore across its side"
                 };

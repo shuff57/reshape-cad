@@ -6,10 +6,9 @@
 // sketch's V axis, measured 2026-10-11: 180 -> 37102.20923889546, 90 -> 37400.6605409865, 270 -> 36803.75793680443,
 // 45 -> 37549.886192032, 300 -> 36704.27416944075, 360 -> 36505.30663471339; bbox [-20,-20,0, 20,20,30] in all),
 // OpenCascade reading brep-rs's STEP back, and the mesh (closed, and its volume against the exact one).
-// FreeCAD keeps the wall that is left as ONE face with a notch (8 faces for a part turn); brep-rs holds a wall only as
-// rectangles, so it cuts the notch into patches (12 faces): the same solid, a different face count. A part turn whose
-// ring would notch the wall therefore REFUSES in a sentence; whole turns (7 faces, as FreeCAD) and part turns that
-// take the wall's whole height (one patch left, as FreeCAD) build.
+// FreeCAD keeps the wall that is left as ONE face with a notch (8 faces for a part turn). brep-rs now holds that wall as
+// one face too (`Cross::Notch`; groove-notched-wall.test.mjs measures it against FreeCAD): part turns build here, with
+// the faces FreeCAD counts, as do whole turns (7 faces) and part turns that take the wall's whole height (one patch).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { stepRoundTrip, okRead, brep } from './step-readback-lib.mjs';
@@ -61,7 +60,6 @@ const near = (a, b, tol = 1e-9) => assert.ok(Math.abs(a - b) <= tol * Math.max(1
 
 const WALL = POST + ring(18, 20, 10, 15) + 'groove(s2, cyl, 180);';
 const FREECAD_360 = 36505.30663471339;
-const NOTCH = /the ring lies on the part's own round wall over only part of a turn and would leave that wall as one face with a notch/;
 
 test("ring x18..20 z10..15 on the post's own wall, full turn: exact, equals FreeCAD (7 faces), mesh closed", () => {
   const { refusals, s, json, id } = built(WALL, 360);
@@ -85,13 +83,14 @@ test('STEP of the full-turn ring on the wall reads back in OpenCascade: valid, o
   near(r.got.volume, FREECAD_360, 1e-6);
 });
 
-// A part turn would leave one face with a notch (FreeCAD: 8 faces, this kernel can only patch it into 12): refuse.
+// A part turn leaves one face with a notch (FreeCAD: 8 faces): it builds, exact, 8 faces, mesh closed.
 for (const a of [45, 90, 180, 270, 300, -90, -180]) {
-  test(`ring x18..20 z10..15 on the post's wall, ${a} degrees, refuses (notched wall) and builds nothing`, () => {
-    const { refusals, s } = built(WALL, a);
-    assert.equal(s, undefined);
-    assert.match(refusals.groove1, NOTCH);
-    assert.match(refusals.groove1, /^groove groove1: .* -- groove1 is shown without it\.$/);
+  test(`ring x18..20 z10..15 on the post's wall, ${a} degrees, builds one notched wall (8 faces) and its mesh is closed`, () => {
+    const { refusals, s, json, id } = built(WALL, a);
+    assert.deepEqual(refusals, {});
+    near(s.volume, POST_VOL - PI * 76 * 5 * Math.abs(a) / 360);
+    assert.equal(s.faces, 8);
+    assert.equal(mesh(json, id, 0.05).open, 0);
   });
 }
 
@@ -105,12 +104,14 @@ for (const a of [90, 180, 270]) {
     assert.equal(mesh(json, id, 0.1).open, 0);
   });
 }
-// flush with an end face still notches the wall's side
+// flush with an end face still bites the wall's side: one wall with a notch that reaches the rim (FreeCAD: 7 faces)
 for (const [z0, z1] of [[0, 8], [22, 30]]) {
-  test(`ring x15..20 z${z0}..${z1} flush with an end face, 180 degrees, refuses`, () => {
-    const { refusals, s } = built(POST + ring(15, 20, z0, z1) + 'groove(s2, cyl, 180);', 180);
-    assert.equal(s, undefined);
-    assert.match(refusals.groove1, NOTCH);
+  test(`ring x15..20 z${z0}..${z1} flush with an end face, 180 degrees, builds one wall with a notch to the rim (7 faces)`, () => {
+    const { refusals, s, json, id } = built(POST + ring(15, 20, z0, z1) + 'groove(s2, cyl, 180);', 180);
+    assert.deepEqual(refusals, {});
+    near(s.volume, POST_VOL - PI * 175 * 8 / 2);
+    assert.equal(s.faces, 7);
+    assert.equal(mesh(json, id, 0.05).open, 0);
   });
 }
 
@@ -124,10 +125,12 @@ test("ring x10..14 z10..15 on a bore's wall, full turn: exact, mesh closed", () 
   assert.equal(mesh(json, id, 0.1).open, 0);
 });
 for (const a of [90, 180, 270]) {
-  test(`ring x10..14 z10..15 on a bore's wall, ${a} degrees, refuses (notched wall)`, () => {
-    const { refusals, s } = built(TUBE + ring(10, 14, 10, 15) + 'groove(s2, cyl, 180);', a);
-    assert.equal(s, undefined);
-    assert.match(refusals.groove1, NOTCH);
+  test(`ring x10..14 z10..15 on a bore's wall, ${a} degrees, builds one notched bore wall (9 faces, as FreeCAD)`, () => {
+    const { refusals, s, json, id } = built(TUBE + ring(10, 14, 10, 15) + 'groove(s2, cyl, 180);', a);
+    assert.deepEqual(refusals, {});
+    near(s.volume, TUBE_VOL - PI * 96 * 5 * a / 360);
+    assert.equal(s.faces, 9);
+    assert.equal(mesh(json, id, 0.05).open, 0);
   });
 }
 test('STEP of the full-turn ring on a bore wall reads back in OpenCascade', () => {

@@ -964,6 +964,12 @@ pub enum Cross {
     /// angle u the face runs along the axis from `lo(u)` to `hi(u)`, each `[c, a, b]` meaning
     /// `c + a cos u + b sin u` (a plane square to the axis has `a = b = 0`). The two never cross over the arc.
     Slant { lo: [f64; 3], hi: [f64; 3] },
+    /// The WHOLE wall (or the partial wall its `arc` names) with ONE rectangle of it removed: the notch a part turn of a
+    /// groove ring that lies on the wall leaves, `[u0, u0 + span]` in angle from `e1` toward `e2` and `[v0, v1]` along the
+    /// axis. It never spans the wall's whole height (that would be two rectangles, not one face with a notch), so every
+    /// angle of the wall is still present and its bounding box is the wall's own. Area, centroid and the volume term are the
+    /// wall's less the rectangle's closed form.
+    Notch { u0: f64, span: f64, v0: f64, v1: f64 },
 }
 
 impl Cross {
@@ -1103,6 +1109,22 @@ impl Cylinder {
                         let p = add(o, scale(rho(u), rad));
                         rad * (p[i] * (h - l) + self.axis[i] * 0.5 * (h * h - l * l))
                     });
+                }
+                Some((area, vol, sx))
+            }
+            // The removed rectangle: closed forms over [u0, u0 + span] x [v0, v1].
+            Cross::Notch { u0, span, v0, v1 } => {
+                let (u1, dv) = (u0 + span, v1 - v0);
+                let (s1, s0, c1, c0) = (u1.sin(), u0.sin(), u1.cos(), u0.cos());
+                let area = rad * span * dv;
+                // integral of (rad + o . rho(u)) du
+                let ring = rad * span + dot(o, self.e1) * (s1 - s0) - dot(o, self.e2) * (c1 - c0);
+                let vol = s * rad * ring * dv;
+                let mut sx = [0.0; 3];
+                for i in 0..3 {
+                    // integral of p_i(u) du, p = o + rad rho(u), plus the axial part
+                    let pu = o[i] * span + rad * (self.e1[i] * (s1 - s0) - self.e2[i] * (c1 - c0));
+                    sx[i] = rad * (pu * dv + self.axis[i] * span * 0.5 * (v1 * v1 - v0 * v0));
                 }
                 Some((area, vol, sx))
             }
@@ -1572,7 +1594,11 @@ impl Surface {
                         a.clone()
                     }
                 }),
-                cross: c.cross.clone(),
+                cross: match (&c.cross, t.reverses_handedness()) {
+                    // a reflection turns an angle u into -u: the notch's range [u0, u0 + span] lands on [-u0 - span, -u0]
+                    (Some(Cross::Notch { u0, span, v0, v1 }), true) => Some(Cross::Notch { u0: -(u0 + span), span: *span, v0: *v0, v1: *v1 }),
+                    (other, _) => other.clone(),
+                },
             }),
             Surface::Cone(c) => Surface::Cone(Cone {
                 base: t.apply(c.base),
@@ -1829,7 +1855,7 @@ impl Surface {
         }
         // A part's wall pierced by a bore: the whole wall less the entry holes.
         if let Surface::Cylinder(c) = self {
-            if let Some(Cross::Wall { .. }) = c.cross {
+            if let Some(Cross::Wall { .. } | Cross::Notch { .. }) = c.cross {
                 if let Some((ha, _, hsx)) = c.cross_region() {
                     area -= ha;
                     for i in 0..3 {
@@ -1903,7 +1929,7 @@ impl Surface {
             }
         }
         if let Surface::Cylinder(c) = self {
-            if let Some(Cross::Wall { .. }) = c.cross {
+            if let Some(Cross::Wall { .. } | Cross::Notch { .. }) = c.cross {
                 if let Some((_, hv, _)) = c.cross_region() {
                     vt -= hv;
                 }
