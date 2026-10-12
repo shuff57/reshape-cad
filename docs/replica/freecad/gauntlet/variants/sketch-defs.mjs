@@ -33,8 +33,8 @@ function translate(geom, r) {
     case 'join':
       return { ours: [{ k: 'coincident', a: og(r.a), aEnd: oe('a', 'ae'), b: og(r.b), bEnd: oe('b', 'be') }], fc: [C(`'Coincident'`, r.a, fe('a', 'ae'), r.b, fe('b', 'be'))] };
     case 'tangentJoin': {
-      // brep-rs's tangent row wants the LINE first and the ARC second (measured: the other order solves to
-      // "geometry N is a line and has no 'c' point"); the translator puts them in that order unless r.asGiven is set.
+      // brep-rs's tangent row used to want the LINE first and the ARC second (the other order solved to
+      // "geometry N is a line and has no 'c' point"; fixed, either order solves now); the translator still puts them line-first unless r.asGiven is set.
       const swap = !r.asGiven && geom[r.a].k === 'arc' && geom[r.b].k === 'line';
       const [a, ae, b, be] = swap ? [r.b, r.be, r.a, r.ae] : [r.a, r.ae, r.b, r.be];
       const T = (i, e) => OURS_END(geom[i], e);

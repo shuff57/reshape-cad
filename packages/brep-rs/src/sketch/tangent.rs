@@ -291,6 +291,21 @@ pub fn angle_jacobian(
 // tangent
 // ---------------------------------------------------------------------------
 
+/// Tangency is symmetric in its two geometries, so a row that names the arc
+/// or circle before the line is read as if the line came first. Every form
+/// below assumes the line is `a`; without this swap an arc-then-line row
+/// asked the line for its centre point.
+fn line_first(
+    a: super::params::Arg,
+    b: super::params::Arg,
+) -> (super::params::Arg, super::params::Arg) {
+    if a.kind != GeoKind::Line && b.kind == GeoKind::Line {
+        (b, a)
+    } else {
+        (a, b)
+    }
+}
+
 /// `tangent`, all five forms. Which one is selected by the argument kinds and
 /// by whether the row named endpoints:
 ///
@@ -306,8 +321,7 @@ pub fn tangent_residual(
     scale: f64,
     out: &mut [f64],
 ) -> Result<(), String> {
-    let a = c.arg(0)?;
-    let b = c.arg(1)?;
+    let (a, b) = line_first(c.arg(0)?, c.arg(1)?);
     let endpoints_named = a.at.is_some() || b.at.is_some();
     if endpoints_named {
         return endpoint_residual(c, p, scale, out, a, b);
@@ -332,8 +346,7 @@ pub fn tangent_jacobian(
     scale: f64,
     out: &mut JacRows,
 ) -> Result<(), String> {
-    let a = c.arg(0)?;
-    let b = c.arg(1)?;
+    let (a, b) = line_first(c.arg(0)?, c.arg(1)?);
     let endpoints_named = a.at.is_some() || b.at.is_some();
     if endpoints_named {
         return endpoint_jacobian(c, p, scale, out, a, b);

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-12T04:30:13.017Z",
+  "generatedAt": "2026-10-12T04:57:58.458Z",
   "reference": "FreeCAD 26.3.0 RC1 headless (variants/fc/<id>.py -> variants/refs/ref-<id>.json)",
   "ours": "reSHape Script -> ModelDoc -> brep-rs wasm (solids) / SketchSession2D (sketches)",
   "tolerances": {
@@ -11,13 +11,13 @@
   },
   "summary": {
     "total": 208,
-    "MATCH": 191,
+    "MATCH": 192,
     "MISMATCH": 1,
-    "REFUSED": 16,
+    "REFUSED": 15,
     "byClass": {
       "spec-mismatch": 8,
       "agrees-both-refuse": 3,
-      "real-kernel-gap": 5,
+      "real-kernel-gap": 4,
       "reference-wrong": 1
     },
     "unclassified": 0,
@@ -90,7 +90,7 @@
     },
     "sk-circle-arc-tangent": {
       "total": 10,
-      "MATCH": 8
+      "MATCH": 9
     }
   },
   "variants": [
@@ -18215,10 +18215,10 @@
         "solve": 0,
         "bucket": "consistent",
         "bbox": [
-          -6.000000001230621,
+          -6,
           0,
           0,
-          35.99999999876938,
+          36,
           12,
           0
         ]
@@ -18261,7 +18261,7 @@
           "name": "solved geometry bbox in plane (abs 1e-6)",
           "ref": [
             -12,
-            0,
+            -5.329070518e-15,
             30,
             24
           ],
@@ -18282,11 +18282,11 @@
         "solve": 0,
         "bucket": "consistent",
         "bbox": [
-          -12,
+          -12.000000000000004,
+          -5.329070518200751e-15,
           0,
-          0,
-          30,
-          24,
+          29.999999999999996,
+          23.999999999999993,
           0
         ]
       },
@@ -18310,8 +18310,37 @@
       "piece": "sk-circle-arc-tangent",
       "desc": "the same slot with the tangent rows written arc-then-line where the geometry order gives that",
       "kind": "sketch",
-      "status": "REFUSED",
-      "checks": [],
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "bucket (consistent / redundant / conflicting)",
+          "ref": "consistent",
+          "ours": "consistent",
+          "pass": true
+        },
+        {
+          "name": "degrees of freedom",
+          "ref": 0,
+          "ours": 0,
+          "pass": true
+        },
+        {
+          "name": "solved geometry bbox in plane (abs 1e-6)",
+          "ref": [
+            -6,
+            0,
+            36,
+            12
+          ],
+          "ours": [
+            -6,
+            0,
+            36,
+            12
+          ],
+          "pass": true
+        }
+      ],
       "oursRules": 9,
       "ref": {
         "dof": 0,
@@ -18328,13 +18357,19 @@
           0
         ]
       },
-      "layer": "kernel",
-      "sentence": "geometry 3 is a line and has no 'c' point",
-      "classification": {
-        "class": "real-kernel-gap",
-        "severity": 4,
-        "title": "A tangent row written arc-then-line fails with a message that blames the wrong thing",
-        "evidence": "The slot rows are accepted by sketch_open and then solve() fails with \"geometry 3 is a line and has no 'c' point\" when a tangent row names the arc before the line. The same rows with the line first solve to DoF 0 (sk-circle-arc-tangent__slot-r6-L30-anchored MATCHES FreeCAD). FreeCAD's Tangent accepts either order. The sentence should say the line has to come first, or the solver should accept both."
+      "ours": {
+        "dof": 0,
+        "bucket": "consistent",
+        "conflicting": [],
+        "nativeBlame": [],
+        "redundant": [],
+        "solved": true,
+        "bbox": [
+          -6,
+          0,
+          36,
+          12
+        ]
       }
     },
     {

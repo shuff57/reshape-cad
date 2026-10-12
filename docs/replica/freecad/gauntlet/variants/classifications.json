@@ -17,12 +17,6 @@
     "title": "A countersink whose cone is deeper than the plate (30 / 90 over a 5 hole in 10 mm) is refused",
     "evidence": "Measured 2026-10-12: refused in one sentence, never a wrong solid: \"hole hole1: its counterbore or countersink is as wide as pull1, so its rim would touch the part's edge at a single point, a tangent contact brep-rs cannot cut yet; make the recess a little narrower -- hole1 is shown without it.\" (the wording blames tangency where the real cause is a cone deeper than the plate; honest but imprecise). The part exists: FreeCAD builds 8596.607958611059 mm^3, 8 faces (the cone leaves the plate as a 10 mm wide frustum opening). The 14 mm / 90 countersink over the same hole (hole-countersink__thick-block, other variants) builds and matches."
   },
-  "sk-circle-arc-tangent__slot-arc-first-order": {
-    "class": "real-kernel-gap",
-    "severity": 4,
-    "title": "A tangent row written arc-then-line fails with a message that blames the wrong thing",
-    "evidence": "The slot rows are accepted by sketch_open and then solve() fails with \"geometry 3 is a line and has no 'c' point\" when a tangent row names the arc before the line. The same rows with the line first solve to DoF 0 (sk-circle-arc-tangent__slot-r6-L30-anchored MATCHES FreeCAD). FreeCAD's Tangent accepts either order. The sentence should say the line has to come first, or the solver should accept both."
-  },
   "sk-circle-arc-tangent__circle-circle-no-mode": {
     "class": "spec-mismatch",
     "evidence": "A circle-circle tangent row without mode is refused: 'a circle-circle tangency must record external or internal'. That is the design (the mode is part of the row; abs() was rejected for its kink, brep-rs/src/sketch/mod.rs TangentMode). FreeCAD infers it from where the circles sit. With mode: 'external' / 'internal' the variants (circle-circle-external, circle-circle-internal) MATCH on DoF 0 and the solved bbox."

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-12T04:30:02.518Z",
+  "generatedAt": "2026-10-12T04:57:47.527Z",
   "reference": "FreeCAD 26.3.0 RC1 (headless), baseline/ref-<id>.json",
   "ours": "reSHape Script -> ModelDoc -> brep-rs wasm, baseline/ours-<id>.mjs re-run",
   "tolerances": {
