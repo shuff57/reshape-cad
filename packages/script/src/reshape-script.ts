@@ -85,6 +85,7 @@ import {
   throughExtentAlong,
   extentBoundAlong,
   featureRangeAlong,
+  SWEEP_DIR,
   holeAxialOffset,
   isRoundable,
   canRotate,
@@ -2382,6 +2383,9 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     improper = false,
     slides = false,
     turns = false,
+    /** a reflection through a plane parallel to the sketch's own plane (world axis 0|1|2 is the mirror axis): the cut is
+     *  carried to the other side of the part, pushing the opposite way, instead of being copied across */
+    flipAxis: 0 | 1 | 2 | null = null,
   ): SolidHandle {
     const tf = findFeature(target.id);
     const isPad = isPadFeature(tf);
@@ -2447,6 +2451,9 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
       }
     }
     for (let i = 0; i < flats.length; i++) for (let j = i + 1; j < flats.length; j++) {
+      // through a parallel plane both copies stand over the very same outline; whether they collide is a question of how far
+      // along the axis each one reaches, answered below once the part's extent is known
+      if (flipAxis !== null) continue;
       if (mirrorRects) continue;
       if (dropped.has(i) || dropped.has(j)) continue;
       // circles that only just touch (or nearly) leave a pinched, zero-width web the kernel cannot close: a clean overlap needs
@@ -2518,6 +2525,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
       return { kind: h.kind, flat: null, box };
     };
     const members: Member[] = [];
+    const memberIds: string[] = [];
     const visit = (id: string, depth: number): void => {
       let h = findFeature(id);
       for (let guard = 0; guard < 64; guard++) {
@@ -2530,8 +2538,49 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
         return;
       }
       members.push(memberOf(h));
+      memberIds.push(h.id);
     };
     visit(isPad ? (tf as CombineFeature).targets[0] : (pk as PocketFeature).into, 0);
+    if (flipAxis !== null) {
+      // A cut reflected through a plane parallel to its own sketch lands on the other side of the part, pushing the other way.
+      // It is built only when its reach along that axis is provable: the part's extent there is exact, the copy cuts into
+      // the part, and it does not touch the original cut (two cuts over one outline that meet or overlap along the axis leave
+      // faces the kernel does not yet join the way FreeCAD does).
+      const AXN = ['x', 'y', 'z'] as const;
+      let lo = Infinity, hi = -Infinity, exactAll = true;
+      for (const id of memberIds) {
+        const r = featureRangeAlong(docNow(), id, AXN[flipAxis]);
+        if (!r || !r.exact) { exactAll = false; break; }
+        lo = Math.min(lo, r.lo); hi = Math.max(hi, r.hi);
+      }
+      if (!exactAll || !(hi > lo)) {
+        refuse('brep-rs cannot yet tell exactly where the part ends along the mirror direction, so it cannot tell where the copy would land');
+      }
+      const src = pk as PocketFeature;
+      if (src.direction || src.taper || src.midplane || src.length2 !== undefined) {
+        refuse('the cut is slanted, tapered, symmetric or two-sided, and a reflection through a parallel plane has not been matched against FreeCAD for those yet');
+      }
+      const sweep = sk.frame ? 1 : (SWEEP_DIR[sk.plane ?? 'xy'] ?? 1);
+      const cutDir = -fr.n[flipAxis] * sweep * (src.reversed ? -1 : 1);
+      const reachOf = (o: number, dir: number): [number, number] => {
+        if (src.midplane) return [o - src.depth / 2, o + src.depth / 2];
+        const ahead = src.through ? (dir > 0 ? hi - o : o - lo) + 0 : src.depth;
+        const a = o + dir * Math.max(ahead, 0), b = o - dir * (src.length2 ?? 0);
+        return [Math.min(a, b), Math.max(a, b)];
+      };
+      const o0 = fr.origin[flipAxis];
+      const [a0, b0] = reachOf(o0, cutDir);
+      const [a1, b1] = reachOf(place(1)(fr.origin)[flipAxis], -cutDir);
+      const E = 1e-9;
+      if (b1 <= lo + E || a1 >= hi - E) {
+        refuse(`the copy lies wholly off the part (it would cut from ${+a1.toFixed(6)} to ${+b1.toFixed(6)}, and the part runs from ${+lo.toFixed(6)} to ${+hi.toFixed(6)}), so it would cut nothing`);
+      }
+      if (a1 <= b0 + E && a0 <= b1 + E) {
+        const covers = a0 <= lo + E && b0 >= hi - E;
+        if (src.through && covers) dropped.add(1);
+        else refuse('the copy meets the original cut along the part, so brep-rs cannot yet join them into the one cut FreeCAD gives');
+      }
+    }
     const known = members.filter((m): m is Member & { flat: Flat } => m.flat !== null);
     const unknown = members.filter((m) => m.flat === null);
     // a slanted or tapered cut (or pad) runs out past its own sketch outline as it goes, so its outline in the plane says
@@ -2613,6 +2662,9 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
         });
         copy.offset = (sk.offset ?? 0) + dot3(sub3(mv(fr.origin), fr.origin), fr.n);
       }
+      // A named plane keeps its normal, so a copy carried through a parallel plane would push the same way as the original; the
+      // reflected push is the opposite one. (A sketch with its own frame turns its normal with the reflection, above.)
+      const flipPush = flipAxis !== null && !sk.frame;
       pushFeature(copy);
       // a slanted pull or cut runs along a world direction, which the move turns (or reflects) with the copy: only a slide
       // leaves it as it is. Copied unchanged, every copy round a circle (or across a mirror) slanted the original's way.
@@ -2638,7 +2690,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
         const cut = newPocket(docNow(), copy.id, last.id);
         const src = pk as PocketFeature;
         cut.depth = src.depth;
-        if (src.reversed) cut.reversed = true;
+        if (!!src.reversed !== flipPush) cut.reversed = true;
         if (src.midplane) cut.midplane = true;
         if (src.length2 !== undefined) cut.length2 = src.length2;
         if (src.through) cut.through = true;
@@ -2916,14 +2968,20 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     const tf = findFeature(target.id);
     const pk = (isPadFeature(tf) ? findFeature((tf as CombineFeature).targets[1]) : tf) as PocketFeature | ExtrudeFeature;
     const sk = findFeature(pk.target) as SketchFeature;
+    let flipAxis: 0 | 1 | 2 | null = null;
     if (sk.kind === 'sketch') {
       const fr = sketchFrameOf(sk) as Frame3;
-      if (Math.abs(fr.n[m]) > 1e-9) parallel();
+      if (Math.abs(fr.n[m]) > 1e-9) {
+        // a pocket reflected through a plane parallel to its sketch is cut from the opposite face (what FreeCAD's Mirrored
+        // does); a pad would be grown on it, which is not built
+        if (what !== 'pocket' || Math.abs(Math.abs(fr.n[m]) - 1) > 1e-9) parallel();
+        flipAxis = m as 0 | 1 | 2;
+      }
     }
     return patternOfCut(
       'mirror', target, 2,
       () => (p) => { const q: Vec3 = [p[0], p[1], p[2]]; q[m] = 2 * at - q[m]; return q; },
-      () => true, true,
+      () => true, true, false, false, flipAxis,
     );
   }
 

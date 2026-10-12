@@ -57,7 +57,9 @@ mirror(h, 'left-right', { at: 20 });`);
 for (const [name, src, re] of [
   ['a cut that meets its own reflection', POCKET.replace('[10, 15]', '[19, 15]') + `mirror(p, 'left-right', { at: 20 });`, /overlap each other/],
   ['a reflection that leaves the part', POCKET + `mirror(p, 'left-right', { at: 5 });`, /edge of the part/],
-  ['a plane parallel to the face the cut sits on', POCKET + `mirror(p, 'top-bottom', { at: 5 });`, /parallel to the face/],
+  ['a pad across a plane parallel to the face it sits on', HEAD + `const s2 = sketch('top', 10); s2.polygon([[5,5],[12,5],[12,12],[5,12]]);
+const pd = join(plate, pull(s2, 4));
+mirror(pd, 'top-bottom', { at: 5 });`, /parallel to the face/],
   ['a whole solid with { at }', HEAD + `mirror(plate, 'left-right', { at: 5 });`, /pocket, a hole or a pad/],
   ['an at that is not a number', POCKET + `mirror(p, 'left-right', { at: 'x' });`, /at/],
 ]) {

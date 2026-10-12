@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-12T05:10:44.956Z",
+  "generatedAt": "2026-10-12T05:31:24.179Z",
   "reference": "FreeCAD 26.3.0 RC1 headless (variants/fc/<id>.py -> variants/refs/ref-<id>.json)",
   "ours": "reSHape Script -> ModelDoc -> brep-rs wasm (solids) / SketchSession2D (sketches)",
   "tolerances": {
@@ -10,12 +10,12 @@
     "meshVolumeRelative": 0.005
   },
   "summary": {
-    "total": 208,
-    "MATCH": 193,
+    "total": 216,
+    "MATCH": 202,
     "MISMATCH": 1,
-    "REFUSED": 14,
+    "REFUSED": 13,
     "byClass": {
-      "spec-mismatch": 7,
+      "spec-mismatch": 6,
       "agrees-both-refuse": 3,
       "real-kernel-gap": 4,
       "reference-wrong": 1
@@ -73,8 +73,8 @@
       "MATCH": 10
     },
     "mirrored": {
-      "total": 13,
-      "MATCH": 12
+      "total": 21,
+      "MATCH": 21
     },
     "sk-rect-dof": {
       "total": 6,
@@ -8264,9 +8264,66 @@
       "desc": "pocket mirrored across the horizontal plane z=5 (FreeCAD can; the script says a parallel plane is refused)",
       "kind": "solid",
       "oursSource": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); const s2 = sketch('top', 10); s2.circle(6, { at: [10, 15] }); const p = pocket(s2, plate, 3); mirror(p, 'top-bottom', { at: 5 });",
-      "status": "REFUSED",
-      "checks": [],
-      "oursOutcome": "script-error",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 11830.354,
+          "ours": 11830.354,
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            0,
+            0,
+            0,
+            40,
+            30,
+            10
+          ],
+          "ours": [
+            0,
+            0,
+            0,
+            40,
+            30,
+            10
+          ],
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 10,
+          "ours": 10,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            20.14339892,
+            15,
+            5
+          ],
+          "ours": [
+            20.14277055,
+            15,
+            5
+          ],
+          "pass": true,
+          "delta": 0.0006283738889045765
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 11830.354,
+          "ours": 11831.08692,
+          "pass": true,
+          "delta": 0.00006195288415309344
+        }
+      ],
+      "oursOutcome": "built",
       "ref": {
         "volume": 11830.35399670615,
         "bbox": [
@@ -8284,11 +8341,839 @@
           5.000000000000001
         ]
       },
-      "layer": "script",
-      "sentence": "mirror() of a pocket across 'top-bottom' reflects it through a plane parallel to the face it sits on, which would turn it to the other side of the part instead of copying it across. Mirror it across a plane that stands square to that face.",
-      "classification": {
-        "class": "spec-mismatch",
-        "evidence": "mirror(pocket, 'top-bottom', { at: 5 }) is refused by the script on purpose: 'reflects it through a plane parallel to the face it sits on, which would turn it to the other side of the part instead of copying it across' (packages/script/src/reshape-script.ts mirrorCut parallel()). FreeCAD's Mirrored does it (volume 11830.354, 10 faces: a pocket on the top face and one on the bottom). The refusal is documented in the mirror docs page and is a sentence, so nothing wrong is built."
+      "ours": {
+        "volume": 11830.35399670615,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 10,
+        "com": [
+          20.142770550049537,
+          14.999999999999963,
+          4.999999999999986
+        ],
+        "meshVolume": 11831.086921256798
+      }
+    },
+    {
+      "id": "mirrored__top-bottom-rect-pocket",
+      "piece": "mirrored",
+      "desc": "rect pocket 4 deep mirrored through the middle plane z=5 to the bottom face",
+      "kind": "solid",
+      "oursSource": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); const s2 = sketch('top', 10); s2.rect(15, 7, { at: [12.5, 8.5] }); const p = pocket(s2, plate, 4); mirror(p, 'top-bottom', { at: 5 });",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 11160,
+          "ours": 11160,
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            0,
+            0,
+            0,
+            40,
+            30,
+            10
+          ],
+          "ours": [
+            0,
+            0,
+            0,
+            40,
+            30,
+            10
+          ],
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 16,
+          "ours": 16,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            20.56451613,
+            15.48924731,
+            5
+          ],
+          "ours": [
+            20.56451613,
+            15.48924731,
+            5
+          ],
+          "pass": true,
+          "delta": 8.881784197001252e-15
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 11160,
+          "ours": 11160,
+          "pass": true,
+          "delta": 1.6299188203815918e-16
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 11160,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 16,
+        "com": [
+          20.56451612903226,
+          15.489247311827961,
+          5.000000000000001
+        ]
+      },
+      "ours": {
+        "volume": 11160,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 16,
+        "com": [
+          20.564516129032256,
+          15.489247311827953,
+          4.999999999999999
+        ],
+        "meshVolume": 11160.000000000002
+      }
+    },
+    {
+      "id": "mirrored__top-bottom-offcentre-plane",
+      "piece": "mirrored",
+      "desc": "circle pocket 3 deep mirrored through z=6: the copy is a sealed void (z 2 to 5) inside the plate",
+      "kind": "solid",
+      "oursSource": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); const s2 = sketch('top', 10); s2.circle(6, { at: [10, 15] }); const p = pocket(s2, plate, 3); mirror(p, 'top-bottom', { at: 6 });",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 11830.354,
+          "ours": 11830.354,
+          "pass": true,
+          "delta": 1.5375612632152054e-16
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            0,
+            0,
+            0,
+            40,
+            30,
+            10
+          ],
+          "ours": [
+            0,
+            0,
+            0,
+            40,
+            30,
+            10
+          ],
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 11,
+          "ours": 11,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            20.14339892,
+            15,
+            4.985660108
+          ],
+          "ours": [
+            20.14277055,
+            15,
+            4.985722945
+          ],
+          "pass": true,
+          "delta": 0.000628373888897471
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 11830.354,
+          "ours": 11831.08692,
+          "pass": true,
+          "delta": 0.00006195288415278592
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 11830.353996706152,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 11,
+        "com": [
+          20.14339892393844,
+          14.999999999999998,
+          4.985660107606155
+        ]
+      },
+      "ours": {
+        "volume": 11830.35399670615,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 11,
+        "com": [
+          20.142770550049544,
+          14.999999999999961,
+          4.98572294499503
+        ],
+        "meshVolume": 11831.086921256794
+      }
+    },
+    {
+      "id": "mirrored__top-bottom-breaks-bottom",
+      "piece": "mirrored",
+      "desc": "circle pocket 3 deep mirrored through z=4: the copy starts below the part and opens the bottom face 1 deep",
+      "kind": "solid",
+      "oursSource": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); const s2 = sketch('top', 10); s2.circle(6, { at: [10, 15] }); const p = pocket(s2, plate, 3); mirror(p, 'top-bottom', { at: 4 });",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 11886.90266,
+          "ours": 11886.90266,
+          "pass": true,
+          "delta": 1.5302467386922463e-16
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            0,
+            0,
+            0,
+            40,
+            30,
+            10
+          ],
+          "ours": [
+            0,
+            0,
+            0,
+            40,
+            30,
+            10
+          ],
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 10,
+          "ours": 10,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            20.0951445,
+            15,
+            4.985728326
+          ],
+          "ours": [
+            20.09472955,
+            15,
+            4.985790568
+          ],
+          "pass": true,
+          "delta": 0.000414948302168483
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 11886.90266,
+          "ours": 11887.39128,
+          "pass": true,
+          "delta": 0.000041105440240113245
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 11886.902664470766,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 10,
+        "com": [
+          20.095144495350564,
+          14.999999999999996,
+          4.985728325697416
+        ]
+      },
+      "ours": {
+        "volume": 11886.902664470765,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 10,
+        "com": [
+          20.094729547048395,
+          14.999999999999956,
+          4.985790567942712
+        ],
+        "meshVolume": 11887.39128083788
+      }
+    },
+    {
+      "id": "mirrored__top-bottom-from-bottom-reversed",
+      "piece": "mirrored",
+      "desc": "a pocket sketched on the bottom face and cut up (reversed), mirrored through z=5 onto the top face",
+      "kind": "solid",
+      "oursSource": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); const s2 = sketch('top', 0); s2.circle(6, { at: [10, 15] }); const p = pocket(s2, plate, 3, { reversed: true }); mirror(p, 'top-bottom', { at: 5 });",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 11830.354,
+          "ours": 11830.354,
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            0,
+            0,
+            0,
+            40,
+            30,
+            10
+          ],
+          "ours": [
+            0,
+            0,
+            0,
+            40,
+            30,
+            10
+          ],
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 10,
+          "ours": 10,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            20.14339892,
+            15,
+            5
+          ],
+          "ours": [
+            20.14277055,
+            15,
+            5
+          ],
+          "pass": true,
+          "delta": 0.0006283738889045765
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 11830.354,
+          "ours": 11831.08692,
+          "pass": true,
+          "delta": 0.00006195288415309344
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 11830.35399670615,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 10,
+        "com": [
+          20.14339892393844,
+          14.999999999999998,
+          5.000000000000001
+        ]
+      },
+      "ours": {
+        "volume": 11830.35399670615,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 10,
+        "com": [
+          20.142770550049537,
+          14.999999999999963,
+          4.999999999999986
+        ],
+        "meshVolume": 11831.086921256798
+      }
+    },
+    {
+      "id": "mirrored__top-bottom-through",
+      "piece": "mirrored",
+      "desc": "a through pocket mirrored through z=5: the copy is the same hole again",
+      "kind": "solid",
+      "oursSource": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); const s2 = sketch('top', 10); s2.circle(6, { at: [10, 15] }); const p = pocket(s2, plate, 10, { through: true }); mirror(p, 'top-bottom', { at: 5 });",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 11717.25666,
+          "ours": 11717.25666,
+          "pass": true,
+          "delta": 1.5524021160795769e-16
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            0,
+            0,
+            0,
+            40,
+            30,
+            10
+          ],
+          "ours": [
+            0,
+            0,
+            0,
+            40,
+            30,
+            10
+          ],
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 7,
+          "ours": 7,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            20.24130507,
+            15,
+            5
+          ],
+          "ours": [
+            20.24023751,
+            15,
+            5
+          ],
+          "pass": true,
+          "delta": 0.0010675595390985393
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 11717.25666,
+          "ours": 11718.4782,
+          "pass": true,
+          "delta": 0.0001042514432366924
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 11717.256661176918,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 7,
+        "com": [
+          20.24130506568138,
+          14.999999999999998,
+          5
+        ]
+      },
+      "ours": {
+        "volume": 11717.256661176916,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          10
+        ],
+        "faces": 7,
+        "com": [
+          20.240237506142282,
+          15.000000000000023,
+          5.000000000000002
+        ],
+        "meshVolume": 11718.478202094619
+      }
+    },
+    {
+      "id": "mirrored__top-bottom-on-disc",
+      "piece": "mirrored",
+      "desc": "pocket in a 60 across disc mirrored through z=5",
+      "kind": "solid",
+      "oursSource": "const sk1 = sketch('top'); sk1.circle(60); const plate = extrude(sk1, 10); const s2 = sketch('top', 10); s2.circle(8, { at: [10, 0] }); const p = pocket(s2, plate, 3); mirror(p, 'top-bottom', { at: 5 });",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 27972.74099,
+          "ours": 27972.74099,
+          "pass": true,
+          "delta": 9.103809905852246e-16
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            -30,
+            -30,
+            0,
+            30,
+            30,
+            10
+          ],
+          "ours": [
+            -30,
+            -30,
+            0,
+            30,
+            30,
+            10
+          ],
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 7,
+          "ours": 7,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            -0.1078167116,
+            -1.007635874e-16,
+            5
+          ],
+          "ours": [
+            -0.1075109997,
+            1.241267192e-15,
+            5
+          ],
+          "pass": true,
+          "delta": 0.00030571188806084726
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 27972.74099,
+          "ours": 27961.22247,
+          "pass": true,
+          "delta": 0.0004117764763240373
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 27972.74098756352,
+        "bbox": [
+          -30,
+          -30,
+          0,
+          30,
+          30,
+          10
+        ],
+        "faces": 7,
+        "com": [
+          -0.10781671159030072,
+          -1.0076358735121353e-16,
+          5.000000000000001
+        ]
+      },
+      "ours": {
+        "volume": 27972.740987563495,
+        "bbox": [
+          -30,
+          -30,
+          0,
+          30,
+          30,
+          10
+        ],
+        "faces": 7,
+        "com": [
+          -0.10751099970223987,
+          1.2412671921912235e-15,
+          4.999999999999991
+        ],
+        "meshVolume": 27961.22247084651
+      }
+    },
+    {
+      "id": "mirrored__top-bottom-in-boss",
+      "piece": "mirrored",
+      "desc": "pocket in the top of a joined boss (z 16) mirrored through z=8 onto the plate bottom",
+      "kind": "solid",
+      "oursSource": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); const sb = sketch('top', 10); sb.circle(20, { at: [20, 15] }); const bs = extrude(sb, 6); const padded = join(plate, bs); const s2 = sketch('top', 16); s2.circle(8, { at: [20, 15] }); const p = pocket(s2, padded, 3); mirror(p, 'top-bottom', { at: 8 });",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 13583.3627,
+          "ours": 13583.3627,
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            0,
+            0,
+            0,
+            40,
+            30,
+            16
+          ],
+          "ours": [
+            0,
+            0,
+            0,
+            40,
+            30,
+            16
+          ],
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 12,
+          "ours": 12,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            20,
+            15,
+            6.043546165
+          ],
+          "ours": [
+            20,
+            15,
+            6.042427536
+          ],
+          "pass": true,
+          "delta": 0.0011186293307883233
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 13583.3627,
+          "ours": 13581.88233,
+          "pass": true,
+          "delta": 0.00010898387921637986
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 13583.362697409255,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          16
+        ],
+        "faces": 12,
+        "com": [
+          20.000000000000004,
+          15.000000000000002,
+          6.043546165170184
+        ]
+      },
+      "ours": {
+        "volume": 13583.362697409255,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          16
+        ],
+        "faces": 12,
+        "com": [
+          19.999999999999932,
+          14.999999999999922,
+          6.042427535839396
+        ],
+        "meshVolume": 13581.882329849688
+      }
+    },
+    {
+      "id": "mirrored__top-bottom-tall-block",
+      "piece": "mirrored",
+      "desc": "pocket 5 deep in a 20 thick block, mirrored through z=10 onto its bottom face",
+      "kind": "solid",
+      "oursSource": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 20); const s2 = sketch('top', 20); s2.rect(16, 12, { at: [16, 14] }); const p = pocket(s2, plate, 5); mirror(p, 'top-bottom', { at: 10 });",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 22080,
+          "ours": 22080,
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            0,
+            0,
+            0,
+            40,
+            30,
+            20
+          ],
+          "ours": [
+            0,
+            0,
+            0,
+            40,
+            30,
+            20
+          ],
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 16,
+          "ours": 16,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            20.34782609,
+            15.08695652,
+            10
+          ],
+          "ours": [
+            20.34782609,
+            15.08695652,
+            10
+          ],
+          "pass": true,
+          "delta": 1.0658141036401503e-14
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 22080,
+          "ours": 22080,
+          "pass": true,
+          "delta": 0
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 22080,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          20
+        ],
+        "faces": 16,
+        "com": [
+          20.347826086956513,
+          15.086956521739136,
+          10
+        ]
+      },
+      "ours": {
+        "volume": 22080,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          30,
+          20
+        ],
+        "faces": 16,
+        "com": [
+          20.347826086956523,
+          15.08695652173913,
+          10
+        ],
+        "meshVolume": 22080
       }
     },
     {
@@ -18212,7 +19097,7 @@
           "name": "solved geometry bbox in plane (abs 1e-6)",
           "ref": [
             -6,
-            0,
+            -2.067738762e-30,
             36,
             12
           ],
@@ -18234,7 +19119,7 @@
         "bucket": "consistent",
         "bbox": [
           -6,
-          0,
+          -2.06773876218909e-30,
           0,
           36,
           12,
@@ -18330,7 +19215,7 @@
           "name": "solved geometry bbox in plane (abs 1e-6)",
           "ref": [
             -12,
-            3.552713679e-15,
+            -3.552713679e-15,
             30,
             24
           ],
@@ -18351,11 +19236,11 @@
         "solve": 0,
         "bucket": "consistent",
         "bbox": [
-          -11.999999999999996,
-          3.552713678800501e-15,
+          -12.000000000000002,
+          -3.552713678800501e-15,
           0,
           30,
-          24,
+          23.999999999999996,
           0
         ]
       },

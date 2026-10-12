@@ -268,6 +268,31 @@ mirV('front-back-hole-at15', 'hole at (10,8) mirrored across y=15', { prof: C(10
 mirV('left-right-offset-plane', 'rect pocket mirrored across x=17 (not the middle), 4 deep', { prof: R(4, 5, 10, 12), depth: 4, dir: 'left-right', at: 17 });
 mirV('front-back-blind', 'blind pocket 3 deep mirrored across y=12', { prof: C(25, 5, 7), depth: 3, dir: 'front-back', at: 12 });
 mirV('top-bottom-pocket', 'pocket mirrored across the horizontal plane z=5 (FreeCAD can; the script says a parallel plane is refused)', { prof: C(10, 15, 6), depth: 3, dir: 'top-bottom', at: 5 });
+// a pocket mirrored through a plane PARALLEL to its own sketch: it is cut from the opposite side of the part (FreeCAD's Mirrored)
+function mirTB(slug, desc, { w = 40, d = 30, h = 10, prof, depth, at, through = false, disc = 0, boss = 0, pocketOff, reversed = false }) {
+  const plane = 'top';
+  const base = disc
+    ? { o: `const sk1 = sketch('top'); sk1.circle(${disc}); const plate = extrude(sk1, ${h});`, f: `doc, body = setup()\nsk1 = sketch(body, 'top')\ncircle(sk1, 0, 0, ${disc / 2})\nbase = pad(body, sk1, ${h})` }
+    : { o: plateOurs(w, d, h), f: plateFc(w, d, h) };
+  const top = h + boss;
+  const into = boss ? 'padded' : 'plate';
+  const bossO = boss ? ` const sb = sketch('top', ${h}); sb.circle(20, { at: [20, 15] }); const bs = extrude(sb, ${boss}); const padded = join(plate, bs);` : '';
+  const bossF = boss ? `\nsb = sketch(body, 'top', ${h})\ncircle(sb, 20, 15, 10)\nbp = pad(body, sb, ${boss})` : '';
+  const off = pocketOff ?? top;
+  add({
+    id: `mirrored__${slug}`, piece: 'mirrored', desc,
+    ours: `${base.o}${bossO} const s2 = sketch('top', ${off}); ${oursProf('s2', prof)} const p = pocket(s2, ${into}, ${depth}${through ? ', { through: true }' : reversed ? ', { reversed: true }' : ''}); mirror(p, 'top-bottom', { at: ${at} });`,
+    fc: `${base.f}${bossF}\ns2 = sketch(body, 'top', ${off})\n${fcProf('s2', prof)}\npk = pocket(body, s2, ${through ? 'None, through=True' : depth}${reversed ? ', reversed_=True' : ''})\nmirrored(body, pk, '${plane}', ${at})`,
+  });
+}
+mirTB('top-bottom-rect-pocket', 'rect pocket 4 deep mirrored through the middle plane z=5 to the bottom face', { prof: R(5, 5, 20, 12), depth: 4, at: 5 });
+mirTB('top-bottom-offcentre-plane', 'circle pocket 3 deep mirrored through z=6: the copy is a sealed void (z 2 to 5) inside the plate', { prof: C(10, 15, 6), depth: 3, at: 6 });
+mirTB('top-bottom-breaks-bottom', 'circle pocket 3 deep mirrored through z=4: the copy starts below the part and opens the bottom face 1 deep', { prof: C(10, 15, 6), depth: 3, at: 4 });
+mirTB('top-bottom-from-bottom-reversed', 'a pocket sketched on the bottom face and cut up (reversed), mirrored through z=5 onto the top face', { prof: C(10, 15, 6), depth: 3, at: 5, pocketOff: 0, reversed: true });
+mirTB('top-bottom-through', 'a through pocket mirrored through z=5: the copy is the same hole again', { prof: C(10, 15, 6), depth: 10, at: 5, through: true });
+mirTB('top-bottom-on-disc', 'pocket in a 60 across disc mirrored through z=5', { disc: 60, prof: C(10, 0, 8), depth: 3, at: 5 });
+mirTB('top-bottom-in-boss', 'pocket in the top of a joined boss (z 16) mirrored through z=8 onto the plate bottom', { prof: C(20, 15, 8), depth: 3, boss: 6, at: 8 });
+mirTB('top-bottom-tall-block', 'pocket 5 deep in a 20 thick block, mirrored through z=10 onto its bottom face', { h: 20, prof: R(8, 8, 24, 20), depth: 5, at: 10 });
 mirV('left-right-boss', 'a round boss mirrored across x=30', { w: 60, d: 30, h: 5, prof: C(10, 15, 8), boss: 6, dir: 'left-right', at: 30 });
 
 // ---- wave 2: edges of the envelope (profiles with islands, cuts that leave the part, bad numbers, copies that collide) ---------------------------------------------
