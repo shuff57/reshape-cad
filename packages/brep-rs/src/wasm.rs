@@ -10585,6 +10585,7 @@ pub fn sketch_diagnose(h: u32) -> Option<String> {
                     "dof": diagnosis_dof(&session),
                     "bucket": bucket_name(&session),
                     "blame": diagnosis_blame(&session),
+                    "references": diagnosis_references(&session),
                 })
                 .to_string(),
             ),
@@ -10612,6 +10613,14 @@ fn diagnosis_blame(session: &crate::sketch::session::SketchSession) -> Vec<serde
     session
         .diagnose()
         .map(|d| d.blame.iter().map(|b| json!(b)).collect())
+        .unwrap_or_default()
+}
+
+/// What each reference dimension measures now: `[{ rule, value }]`, `rule` an index among the student's rules.
+fn diagnosis_references(session: &crate::sketch::session::SketchSession) -> Vec<serde_json::Value> {
+    session
+        .reference_values()
+        .map(|v| v.into_iter().map(|(rule, value)| json!({ "rule": rule, "value": value })).collect())
         .unwrap_or_default()
 }
 

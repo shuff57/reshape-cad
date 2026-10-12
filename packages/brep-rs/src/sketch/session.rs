@@ -131,7 +131,7 @@ impl SketchSession {
         // session never applied it, so a locked point stayed free -- the DoF
         // badge never reached 0 on a pinned sketch and a drag moved the pin.
         for c in &user {
-            if c.kind == ConstraintKind::Lock {
+            if c.kind == ConstraintKind::Lock && c.active {
                 let a = c.arg(0)?;
                 let at = a.at.unwrap_or(match a.kind {
                     super::params::GeoKind::Circle | super::params::GeoKind::Arc => PointRef::C,
@@ -187,6 +187,56 @@ impl SketchSession {
         Ok(d)
     }
 
+    /// The rules the wire planner may weld corners from: every live rule, plus each switched-off
+    /// `coincident` whose two points DO coincide in the solved state. FreeCAD builds a sketch's shape from
+    /// its geometry, not its rules (measured, probe_s1b.py): with one coincident of a rectangle switched
+    /// off the wire still closes and pads to the full 10000. So a switched-off weld still welds while
+    /// the points sit together, and the outline opens (a loose-end refusal) only once they have come apart.
+    fn live_constraints(&self) -> Vec<Constraint> {
+        let tol = 1e-7 * self.block.scale().max(1.0);
+        let together = |c: &Constraint| -> bool {
+            let at = |i: usize| -> Option<[f64; 2]> {
+                let [x, y] = c.arg(i).ok()?.point_slots().ok()?;
+                Some([*self.params.get(x)?, *self.params.get(y)?])
+            };
+            match (at(0), at(1)) {
+                (Some(a), Some(b)) => ((a[0] - b[0]).powi(2) + (a[1] - b[1]).powi(2)).sqrt() <= tol,
+                _ => false,
+            }
+        };
+        self.constraints
+            .iter()
+            .copied()
+            .filter_map(|mut c| {
+                if c.is_live() {
+                    Some(c)
+                } else if c.kind == ConstraintKind::Coincident && c.driving && together(&c) {
+                    c.active = true;
+                    Some(c)
+                } else {
+                    None
+                }
+            })
+            .collect()
+    }
+
+    /// What every REFERENCE dimension currently measures, as (index among the student's rules, value),
+    /// at the session's solved parameters. A reference rule adds no equation, so its stored number goes
+    /// stale the moment the geometry moves; this is the number to show. A rule that is also switched
+    /// off is skipped: an inactive rule keeps the value it had (measured against FreeCAD).
+    pub fn reference_values(&self) -> Result<Vec<(usize, f64)>, String> {
+        let mut out = Vec::new();
+        for (i, c) in self.constraints.iter().enumerate().skip(self.n_internal) {
+            if c.driving || !c.active {
+                continue;
+            }
+            if let Some(v) = c.measured(&self.params, self.block.scale())? {
+                out.push((i - self.n_internal, v));
+            }
+        }
+        Ok(out)
+    }
+
     /// The solved profile: the outline first, then every hole through it
     /// (§8.2), construction geometry dropped.
     pub fn profile(&self) -> Result<Vec<WireLoop>, Refusal> {
@@ -195,7 +245,7 @@ impl SketchSession {
                 "every line in this sketch is construction geometry, so there is no outline to extrude",
             ));
         }
-        wires::discover_wires_excluding(&self.block, &self.constraints, &self.params, &self.construction)
+        wires::discover_wires_excluding(&self.block, &self.live_constraints(), &self.params, &self.construction)
     }
 
     /// The solved profile as separate pieces: each region is one outline with the loops cut out of it, by
@@ -206,7 +256,7 @@ impl SketchSession {
                 "every line in this sketch is construction geometry, so there is no outline to extrude",
             ));
         }
-        wires::discover_regions_excluding(&self.block, &self.constraints, &self.params, &self.construction)
+        wires::discover_regions_excluding(&self.block, &self.live_constraints(), &self.params, &self.construction)
     }
 }
 
@@ -396,3 +446,209 @@ mod construction_tests {
     }
 }
 
+#[cfg(test)]
+mod reference_tests {
+    //! Reference (non-driving) and inactive rules, against what FreeCAD 26.3.0 RC1 measured headless
+    //! (probe_s1.py): a reference dimension adds no equation and reads back what the geometry measures;
+    //! an inactive rule is ignored and keeps its stored value; either resolves a conflict; only a
+    //! dimension may be a reference; any rule may be inactive.
+    use super::*;
+    use crate::sketch::solve::Bucket;
+    use serde_json::json;
+
+    /// One line from (0,0) to (10,0), its start locked and kept horizontal: one degree of freedom (length).
+    fn line_with(extra: Vec<Value>) -> SketchSession {
+        let g = vec![json!({"id":1,"k":"line","a":[0.0,0.0],"b":[10.0,0.0]})];
+        let mut r = vec![json!({"k":"lock","a":1}), json!({"k":"horizontal","a":1})];
+        r.extend(extra);
+        SketchSession::open(&json!({"geoms": g, "rules": r}).to_string()).expect("opens")
+    }
+    fn length(s: &SketchSession) -> f64 {
+        let p = &s.params;
+        let (b0, b1) = (s.block.arg(1, Some(PointRef::A)).unwrap(), s.block.arg(1, Some(PointRef::B)).unwrap());
+        let [ax, ay] = b0.point_slots().unwrap();
+        let [bx, by] = b1.point_slots().unwrap();
+        ((p[bx] - p[ax]).powi(2) + (p[by] - p[ay]).powi(2)).sqrt()
+    }
+    fn len_rule(value: f64, extra: Value) -> Value {
+        let mut r = json!({"k":"distance","a":1,"aEnd":"a","b":1,"bEnd":"b","value":value});
+        for (k, v) in extra.as_object().unwrap() {
+            r[k] = v.clone();
+        }
+        r
+    }
+
+    #[test]
+    fn a_driving_length_pins_the_line() {
+        let mut s = line_with(vec![len_rule(12.0, json!({}))]);
+        s.solve(&[], None).unwrap();
+        assert_eq!(s.diagnose().unwrap().dof, 0);
+        assert!((length(&s) - 12.0).abs() < 1e-6, "{}", length(&s));
+    }
+
+    #[test]
+    fn a_reference_length_adds_no_equation_and_reads_back_the_measurement() {
+        let mut s = line_with(vec![len_rule(12.0, json!({"driving": false}))]);
+        s.solve(&[], None).unwrap();
+        assert_eq!(s.diagnose().unwrap().dof, 1, "F2: a reference leaves the degree of freedom free");
+        assert!((length(&s) - 10.0).abs() < 1e-6, "the geometry is not pulled to the stored 12");
+        let refs = s.reference_values().unwrap();
+        assert_eq!(refs.len(), 1);
+        assert_eq!(refs[0].0, 2, "the third rule the student wrote");
+        assert!((refs[0].1 - 10.0).abs() < 1e-6, "F3: stored 12, measured {}", refs[0].1);
+    }
+
+    #[test]
+    fn a_reference_follows_the_geometry_when_another_rule_moves_it() {
+        // Probe item 1 of the spec, answered here by construction: the reference is re-read from the
+        // solved parameters on every call, so a driving length that moves the line moves it.
+        let mut s = line_with(vec![len_rule(7.0, json!({"driving": false})), len_rule(15.0, json!({}))]);
+        s.solve(&[], None).unwrap();
+        let refs = s.reference_values().unwrap();
+        assert_eq!(refs.len(), 1);
+        assert!((refs[0].1 - 15.0).abs() < 1e-6, "{refs:?}");
+        assert_eq!(s.diagnose().unwrap().dof, 0);
+    }
+
+    #[test]
+    fn an_inactive_length_is_ignored_and_keeps_its_value() {
+        let mut s = line_with(vec![len_rule(12.0, json!({"active": false}))]);
+        s.solve(&[], None).unwrap();
+        assert_eq!(s.diagnose().unwrap().dof, 1, "F6");
+        assert!((length(&s) - 10.0).abs() < 1e-6);
+        assert!(s.reference_values().unwrap().is_empty(), "F6: an inactive rule is not re-measured");
+        assert!((s.constraints[s.n_internal + 2].value - 12.0).abs() < 1e-12, "F6: the stored 12 stays 12");
+    }
+
+    #[test]
+    fn two_conflicting_lengths_are_resolved_by_reference_or_inactive() {
+        let mut both = line_with(vec![len_rule(10.0, json!({})), len_rule(12.0, json!({}))]);
+        both.solve(&[], None).unwrap();
+        assert!(matches!(both.diagnose().unwrap().bucket, Bucket::Conflicting | Bucket::Redundant), "F5 setup");
+        for extra in [json!({"driving": false}), json!({"active": false})] {
+            let mut s = line_with(vec![len_rule(10.0, json!({})), len_rule(12.0, extra.clone())]);
+            let (_p, st) = s.solve(&[], None).unwrap();
+            let d = s.diagnose().unwrap();
+            assert!(st.converged, "{extra}: {st:?}");
+            assert_eq!(d.bucket, Bucket::Consistent, "F5 {extra}: {d:?}");
+            assert_eq!(d.dof, 0, "F5 {extra}");
+        }
+    }
+
+    #[test]
+    fn only_a_dimension_may_be_a_reference() {
+        // F7: FreeCAD raises for horizontal, vertical, coincident, equal, parallel, perpendicular, symmetric.
+        let g = vec![
+            json!({"id":1,"k":"line","a":[0.0,0.0],"b":[10.0,0.0]}),
+            json!({"id":2,"k":"line","a":[0.0,5.0],"b":[10.0,5.0]}),
+        ];
+        for row in [
+            json!({"k":"horizontal","a":1,"driving":false}),
+            json!({"k":"parallel","a":1,"b":2,"driving":false}),
+            json!({"k":"coincident","a":1,"aEnd":"a","b":2,"bEnd":"a","driving":false}),
+            json!({"k":"equal","a":1,"b":2,"driving":false}),
+        ] {
+            let e = SketchSession::open(&json!({"geoms": g, "rules": [row.clone()]}).to_string()).err();
+            let e = e.unwrap_or_else(|| panic!("{row} should refuse"));
+            assert!(e.contains("reference"), "{row}: {e}");
+        }
+    }
+
+    #[test]
+    fn any_rule_may_be_inactive() {
+        // F8: setActive(False) was accepted for every kind probed.
+        let g = vec![
+            json!({"id":1,"k":"line","a":[0.0,0.0],"b":[10.0,0.0]}),
+            json!({"id":2,"k":"line","a":[0.0,5.0],"b":[10.0,5.0]}),
+        ];
+        let rows = [
+            json!({"k":"horizontal","a":1,"active":false}),
+            json!({"k":"parallel","a":1,"b":2,"active":false}),
+            json!({"k":"coincident","a":1,"aEnd":"a","b":2,"bEnd":"a","active":false}),
+            json!({"k":"equal","a":1,"b":2,"active":false}),
+            json!({"k":"lock","a":1,"active":false}),
+        ];
+        for row in rows {
+            let mut s = SketchSession::open(&json!({"geoms": g, "rules": [row.clone()]}).to_string())
+                .unwrap_or_else(|e| panic!("{row}: {e}"));
+            s.solve(&[], None).unwrap();
+            assert_eq!(s.diagnose().unwrap().dof, 8, "{row}: an inactive rule removes nothing");
+        }
+    }
+
+    #[test]
+    fn an_inactive_lock_leaves_the_point_free() {
+        let g = vec![json!({"id":1,"k":"line","a":[0.0,0.0],"b":[10.0,0.0]})];
+        let locked = SketchSession::open(&json!({"geoms": g, "rules": [{"k":"lock","a":1}]}).to_string()).unwrap();
+        let free = SketchSession::open(&json!({"geoms": g, "rules": [{"k":"lock","a":1,"active":false}]}).to_string()).unwrap();
+        assert_eq!(locked.diagnose().unwrap().dof + 2, free.diagnose().unwrap().dof);
+    }
+
+    #[test]
+    fn a_reference_angle_reads_back_degrees() {
+        let g = vec![
+            json!({"id":1,"k":"line","a":[0.0,0.0],"b":[10.0,0.0]}),
+            json!({"id":2,"k":"line","a":[0.0,0.0],"b":[0.0,10.0]}),
+        ];
+        let r = vec![json!({"k":"angle","a":1,"b":2,"value":45.0,"driving":false})];
+        let mut s = SketchSession::open(&json!({"geoms": g, "rules": r}).to_string()).unwrap();
+        s.solve(&[], None).unwrap();
+        let refs = s.reference_values().unwrap();
+        assert!((refs[0].1 - 90.0).abs() < 1e-9, "{refs:?}");
+    }
+
+    #[test]
+    fn a_reference_diameter_and_radius_read_back() {
+        let g = vec![json!({"id":1,"k":"circle","c":[0.0,0.0],"r":4.0})];
+        let r = vec![
+            json!({"k":"diameter","a":1,"value":99.0,"driving":false}),
+            json!({"k":"radius","a":1,"value":99.0,"driving":false}),
+        ];
+        let mut s = SketchSession::open(&json!({"geoms": g, "rules": r}).to_string()).unwrap();
+        s.solve(&[], None).unwrap();
+        let refs = s.reference_values().unwrap();
+        assert!((refs[0].1 - 8.0).abs() < 1e-9 && (refs[1].1 - 4.0).abs() < 1e-9, "{refs:?}");
+    }
+
+    fn rectangle(gap: f64) -> Vec<Value> {
+        vec![
+            json!({"id":1,"k":"line","a":[0.0,0.0],"b":[40.0,0.0]}),
+            json!({"id":2,"k":"line","a":[40.0,0.0],"b":[40.0,25.0]}),
+            json!({"id":3,"k":"line","a":[40.0,25.0],"b":[0.0,25.0]}),
+            json!({"id":4,"k":"line","a":[0.0,25.0],"b":[0.0,gap]}),
+        ]
+    }
+    fn welds(off: Option<usize>) -> Vec<Value> {
+        let mut r = vec![
+            json!({"k":"coincident","a":1,"aEnd":"b","b":2,"bEnd":"a"}),
+            json!({"k":"coincident","a":2,"aEnd":"b","b":3,"bEnd":"a"}),
+            json!({"k":"coincident","a":3,"aEnd":"b","b":4,"bEnd":"a"}),
+            json!({"k":"coincident","a":4,"aEnd":"b","b":1,"bEnd":"a"}),
+        ];
+        if let Some(i) = off {
+            r[i]["active"] = json!(false);
+        }
+        r
+    }
+
+    #[test]
+    fn a_switched_off_weld_still_closes_the_outline_while_the_points_sit_together() {
+        // FreeCAD, probe_s1b.py: any one coincident off, the wire is still closed and the pad is 10000.
+        for off in [None, Some(0), Some(1), Some(2), Some(3)] {
+            let s = SketchSession::open(&json!({"geoms": rectangle(0.0), "rules": welds(off)}).to_string()).unwrap();
+            let loops = s.profile().unwrap_or_else(|e| panic!("off {off:?}: {e:?}"));
+            assert_eq!(loops.len(), 1, "off {off:?}");
+            let d = s.diagnose().unwrap();
+            assert_eq!(d.dof, if off.is_some() { 10 } else { 8 }, "off {off:?}: the rule removed no freedom while off");
+        }
+    }
+
+    #[test]
+    fn a_switched_off_weld_does_not_close_points_that_are_apart() {
+        // The corner is 3 mm open and its coincident is off: nothing joins the ends, so it refuses in a
+        // sentence rather than building a profile with a hole in its wall.
+        let s = SketchSession::open(&json!({"geoms": rectangle(3.0), "rules": welds(Some(3))}).to_string()).unwrap();
+        let e = s.profile().err().expect("an open outline must refuse");
+        assert!(format!("{e:?}").contains("loose end"), "{e:?}");
+    }
+}

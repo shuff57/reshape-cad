@@ -109,6 +109,19 @@ pub enum ConstraintKind {
 }
 
 impl ConstraintKind {
+    /// The kinds that carry a number and so may be a reference measurement instead of a driving rule.
+    pub fn is_dimensional(self) -> bool {
+        matches!(
+            self,
+            ConstraintKind::Distance
+                | ConstraintKind::DistanceX
+                | ConstraintKind::DistanceY
+                | ConstraintKind::Radius
+                | ConstraintKind::Diameter
+                | ConstraintKind::Angle
+        )
+    }
+
     /// Every kind, so a test can assert coverage and a UI can enumerate without
     /// a second list that drifts.
     pub const ALL: [ConstraintKind; 16] = [
@@ -203,6 +216,13 @@ pub struct Constraint {
     /// turning counterclockwise" and so a "reverse edge" edit knows what the
     /// user meant when the four candidate angles stop agreeing.
     pub quadrant: i8,
+    /// `false` makes a dimension a REFERENCE: it adds no equation and its `value` is read back from the
+    /// geometry after a solve ([`Constraint::measured`]). Only the dimensional kinds may be reference
+    /// (FreeCAD rejects the rest, measured), which `from_row` enforces.
+    pub driving: bool,
+    /// `false` switches the rule off: it is dropped from the solve, the diagnosis and the profile, and its
+    /// stored `value` is kept as it was. Any kind may be inactive.
+    pub active: bool,
 }
 
 impl Constraint {
@@ -214,7 +234,16 @@ impl Constraint {
             side: 1.0,
             mode: None,
             quadrant: 0,
+            driving: true,
+            active: true,
         }
+    }
+
+    /// Whether this rule takes part in the solve: driving AND active. A rule that is not live has no
+    /// residual rows, exactly as `Lock` has none, so every consumer that walks `rows()` drops it with no
+    /// special case; the ones that read `kind` directly (`session::open`, the wire planner) test this.
+    pub fn is_live(&self) -> bool {
+        self.driving && self.active
     }
 
     pub fn unary(kind: ConstraintKind, a: Arg) -> Self {
@@ -404,7 +433,44 @@ impl Constraint {
         if let Some(q) = row.get("quadrant").and_then(|x| x.as_i64()) {
             c = c.with_quadrant(q as i8);
         }
+        if row.get("driving").and_then(|x| x.as_bool()) == Some(false) {
+            if !kind.is_dimensional() {
+                return Err(format!(
+                    "rules row {} is a {} rule, and only a dimension (distance, distanceX, distanceY, radius, diameter or angle) can be a reference measurement -- keep it driving, or switch it off with active: false",
+                    index + 1,
+                    kind.name()
+                ));
+            }
+            c.driving = false;
+        }
+        if row.get("active").and_then(|x| x.as_bool()) == Some(false) {
+            c.active = false;
+        }
         Ok(c)
+    }
+
+    /// The number this dimension currently measures on the geometry at `p`, in the units `value` is
+    /// stored in (lengths, or degrees for `angle`); `None` for a rule that carries no number. This is
+    /// what a reference dimension's `value` becomes after a solve. Every length residual in this layer
+    /// is `measured - value`, so the measurement is that residual with `value` taken as zero; an angle
+    /// is read straight off the two directions with `atan2`, the quadrant-blind residual being
+    /// unusable for reading a number back.
+    pub fn measured(&self, p: &[f64], scale: f64) -> Result<Option<f64>, String> {
+        let mut zeroed = *self;
+        zeroed.driving = true;
+        zeroed.active = true;
+        zeroed.value = 0.0;
+        let mut out = [0.0f64];
+        match self.kind {
+            ConstraintKind::Distance => metric::distance_residual(&zeroed, p, scale, &mut out)?,
+            ConstraintKind::DistanceX => metric::distance_x_residual(&zeroed, p, scale, &mut out)?,
+            ConstraintKind::DistanceY => metric::distance_y_residual(&zeroed, p, scale, &mut out)?,
+            ConstraintKind::Radius => metric::radius_residual(&zeroed, p, scale, &mut out)?,
+            ConstraintKind::Diameter => metric::diameter_residual(&zeroed, p, scale, &mut out)?,
+            ConstraintKind::Angle => return tangent::measured_angle(self, p, scale).map(Some),
+            _ => return Ok(None),
+        }
+        Ok(Some(out[0]))
     }
 
     /// The i'th geometry this rule names.
@@ -441,6 +507,9 @@ impl Constraint {
     /// `Lock` is zero rows on purpose. A lock is column removal, not a rule the
     /// solver can trade against other rules (O4).
     pub fn rows(&self) -> usize {
+        if !self.is_live() {
+            return 0;
+        }
         match self.kind {
             ConstraintKind::Coincident => 2,
             ConstraintKind::PointOnObject => 1,
@@ -476,6 +545,9 @@ impl Constraint {
                 self.rows(),
                 out.len()
             ));
+        }
+        if !self.is_live() {
+            return Ok(());
         }
         match self.kind {
             ConstraintKind::Coincident => incidence::coincident_residual(self, p, scale, out),
@@ -515,6 +587,9 @@ impl Constraint {
                 self.rows(),
                 out.rows()
             ));
+        }
+        if !self.is_live() {
+            return Ok(());
         }
         match self.kind {
             ConstraintKind::Coincident => incidence::coincident_jacobian(self, p, scale, out),

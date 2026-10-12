@@ -202,6 +202,31 @@ pub fn perpendicular_jacobian(
 // angle
 // ---------------------------------------------------------------------------
 
+/// The angle, in degrees, from the first line's direction to the second's, as the same `atan2(cross, dot)`
+/// the angle residual is built on -- read out as a number rather than driven to one. Used to give a
+/// reference angle its measured value.
+pub fn measured_angle(c: &Constraint, p: &[f64], scale: f64) -> Result<f64, String> {
+    let a = c.arg(0)?;
+    let b = c.arg(1)?;
+    let [a0x, a0y] = a.slots_of(PointRef::A)?;
+    let [a1x, a1y] = a.slots_of(PointRef::B)?;
+    let [b0x, b0y] = b.slots_of(PointRef::A)?;
+    let [b1x, b1y] = b.slots_of(PointRef::B)?;
+    let d1x = param_at(p, a1x)? - param_at(p, a0x)?;
+    let d1y = param_at(p, a1y)? - param_at(p, a0y)?;
+    let d2x = param_at(p, b1x)? - param_at(p, b0x)?;
+    let d2y = param_at(p, b1y)? - param_at(p, b0y)?;
+    if degenerate((d1x * d1x + d1y * d1y).sqrt(), scale) {
+        return Err(format!("line {} has zero length; there is no direction", a.geo));
+    }
+    if degenerate((d2x * d2x + d2y * d2y).sqrt(), scale) {
+        return Err(format!("line {} has zero length; there is no direction", b.geo));
+    }
+    let cross = d1x * d2y - d1y * d2x;
+    let dot = d1x * d2x + d1y * d2y;
+    Ok(cross.atan2(dot) * 180.0 / std::f64::consts::PI)
+}
+
 pub fn angle_residual(
     c: &Constraint,
     p: &[f64],
