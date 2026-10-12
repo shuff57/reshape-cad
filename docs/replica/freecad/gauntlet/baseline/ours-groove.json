@@ -53,5 +53,6 @@
   "refusals": {
     "groove1": "groove groove1: the ring is spun about the normal of its sketch, which crosses the axis of pull1's round wall -- sketch the ring on a plane square to that axis (the top plane for an upright post) -- groove1 is shown without it."
   },
-  "refusal": "groove groove1: the ring is spun about the normal of its sketch, which crosses the axis of pull1's round wall -- sketch the ring on a plane square to that axis (the top plane for an upright post) -- groove1 is shown without it."
+  "refusal": "groove groove1: the ring is spun about the normal of its sketch, which crosses the axis of pull1's round wall -- sketch the ring on a plane square to that axis (the top plane for an upright post) -- groove1 is shown without it.",
+  "differenceFromRef": "script spins about Y (front-plane normal), the reference about Z; FreeCAD builds the Y-axis ring as 37332.6605 / 7 faces and brep-rs refuses it in the sentence above. The Z-axis ring written on the top plane builds and equals FreeCAD (whole turn 36505.30663471339 / 7 faces, part turns 8 faces)."
 }

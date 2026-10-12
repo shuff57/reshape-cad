@@ -26,7 +26,14 @@ try {
     const b = JSON.parse(brep.build_doc_json(j));
     out.refusals = b.refusals;
     const m = JSON.parse(brep.measure_doc(j)).shapes[last];
-    if (b.refusals && Object.keys(b.refusals).length) { out.outcome = 'refused'; out.refusal = Object.values(b.refusals).join(' | '); }
+    if (b.refusals && Object.keys(b.refusals).length) {
+      out.outcome = 'refused'; out.refusal = Object.values(b.refusals).join(' | ');
+      // Measured 2026-10-12: a groove spins its sketch about the sketch plane's normal. This front-plane script therefore
+      // describes a ring about Y, not the Z-axis ring ref-groove.py measures (36505.30663471339, 7 faces). FreeCAD builds
+      // the Y-axis ring as well (PartDesign Groove on an XY sketch about its V axis: 37332.6605, 7 faces, valid) but its two
+      // mirror placements disagree at the 8th digit (a ring of the post's own radius crossing it at right angles).
+      out.differenceFromRef = 'script spins about Y (front-plane normal), the reference about Z; FreeCAD builds the Y-axis ring as 37332.6605 / 7 faces and brep-rs refuses it in the sentence above. The Z-axis ring written on the top plane builds and equals FreeCAD (whole turn 36505.30663471339 / 7 faces, part turns 8 faces).';
+    }
     else if (!m) { out.outcome = 'error'; out.notes = 'no measurement for last feature'; }
     else {
       out.outcome = 'built'; out.volume = m.volume; out.bbox = m.bbox.flat(); out.faces = m.faces;

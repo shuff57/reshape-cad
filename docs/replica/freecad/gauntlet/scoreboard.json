@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-12T05:59:40.583Z",
+  "generatedAt": "2026-10-12T15:20:02.312Z",
   "reference": "FreeCAD 26.3.0 RC1 (headless), baseline/ref-<id>.json",
   "ours": "reSHape Script -> ModelDoc -> brep-rs wasm, baseline/ours-<id>.mjs re-run",
   "tolerances": {
@@ -11,8 +11,8 @@
   },
   "frameMapping": "ours json frame:'y-up' => (x,y,z) -> (x,-z,y) before bbox compare; otherwise already FreeCAD axes",
   "summary": {
-    "total": 19,
-    "MATCH": 18,
+    "total": 21,
+    "MATCH": 20,
     "NOT-BUILT": 1
   },
   "pieces": [
@@ -255,6 +255,150 @@
           30
         ],
         "faces": 7
+      },
+      "rerun": true
+    },
+    {
+      "id": "groove-coaxial",
+      "kind": "solid",
+      "status": "MATCH",
+      "oursOutcome": "built",
+      "frame": "FreeCAD axes",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 36505.30663471339,
+          "ours": 36505.30663471341,
+          "pass": true,
+          "delta": 3.9862465405315176e-16
+        },
+        {
+          "name": "faces",
+          "ref": 7,
+          "ours": 7,
+          "pass": true
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            -20,
+            20,
+            -20,
+            20.000000000000004,
+            0,
+            30
+          ],
+          "ours": [
+            -20,
+            20,
+            -20,
+            20,
+            0,
+            30
+          ],
+          "pass": true,
+          "delta": 3.552713678800501e-15
+        }
+      ],
+      "notes": [],
+      "differences": [],
+      "ref": {
+        "volume": 36505.30663471339,
+        "bbox": [
+          -20,
+          -20,
+          0,
+          20,
+          20.000000000000004,
+          30
+        ],
+        "faces": 7,
+        "cases": null
+      },
+      "ours": {
+        "volume": 36505.30663471341,
+        "bbox": [
+          -20,
+          -20,
+          0,
+          20,
+          20,
+          30
+        ],
+        "faces": 7,
+        "cases": null
+      },
+      "rerun": true
+    },
+    {
+      "id": "groove-half-turn",
+      "kind": "solid",
+      "status": "MATCH",
+      "oursOutcome": "built",
+      "frame": "FreeCAD axes",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 37102.20923889546,
+          "ours": 37102.209238895455,
+          "pass": true,
+          "delta": 1.9610577815823973e-16
+        },
+        {
+          "name": "faces",
+          "ref": 8,
+          "ours": 8,
+          "pass": true
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            -20,
+            20,
+            -20,
+            20.000000000000004,
+            0,
+            30
+          ],
+          "ours": [
+            -20,
+            20,
+            -20,
+            20,
+            0,
+            30
+          ],
+          "pass": true,
+          "delta": 3.552713678800501e-15
+        }
+      ],
+      "notes": [],
+      "differences": [],
+      "ref": {
+        "volume": 37102.20923889546,
+        "bbox": [
+          -20,
+          -20,
+          0,
+          20,
+          20.000000000000004,
+          30
+        ],
+        "faces": 8,
+        "cases": null
+      },
+      "ours": {
+        "volume": 37102.209238895455,
+        "bbox": [
+          -20,
+          -20,
+          0,
+          20,
+          20,
+          30
+        ],
+        "faces": 8,
+        "cases": null
       },
       "rerun": true
     },
