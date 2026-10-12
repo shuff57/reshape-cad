@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-12T05:31:24.179Z",
+  "generatedAt": "2026-10-12T05:50:22.020Z",
   "reference": "FreeCAD 26.3.0 RC1 headless (variants/fc/<id>.py -> variants/refs/ref-<id>.json)",
   "ours": "reSHape Script -> ModelDoc -> brep-rs wasm (solids) / SketchSession2D (sketches)",
   "tolerances": {
@@ -10,8 +10,8 @@
     "meshVolumeRelative": 0.005
   },
   "summary": {
-    "total": 216,
-    "MATCH": 202,
+    "total": 218,
+    "MATCH": 204,
     "MISMATCH": 1,
     "REFUSED": 13,
     "byClass": {
@@ -61,8 +61,8 @@
       "MATCH": 5
     },
     "hole-countersink": {
-      "total": 7,
-      "MATCH": 6
+      "total": 9,
+      "MATCH": 8
     },
     "linear-pattern": {
       "total": 9,
@@ -11335,7 +11335,7 @@
     {
       "id": "hole-countersink__cone-deeper-than-plate",
       "piece": "hole-countersink",
-      "desc": "a 30 / 90 countersink over a 5 hole in a 10 plate: the cone (17.5 deep) would pass through the plate",
+      "desc": "a 30 / 90 countersink over a 5 hole in a 40 x 30 x 10 plate: the cone (17.5 deep) leaves through the bottom AND the 30 wide rim is exactly as wide as the 30 deep plate, so it touches both long edges at a point (the tangent-rim case)",
       "kind": "solid",
       "oursSource": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,30],[0,30]]); const plate = extrude(s1, 10); hole(plate, { across: 5, countersink: { across: 30, angle: 90 } });",
       "status": "REFUSED",
@@ -11363,8 +11363,212 @@
       "classification": {
         "class": "real-kernel-gap",
         "severity": 4,
-        "title": "A countersink whose cone is deeper than the plate (30 / 90 over a 5 hole in 10 mm) is refused",
-        "evidence": "Measured 2026-10-12: refused in one sentence, never a wrong solid: \"hole hole1: its counterbore or countersink is as wide as pull1, so its rim would touch the part's edge at a single point, a tangent contact brep-rs cannot cut yet; make the recess a little narrower -- hole1 is shown without it.\" (the wording blames tangency where the real cause is a cone deeper than the plate; honest but imprecise). The part exists: FreeCAD builds 8596.607958611059 mm^3, 8 faces (the cone leaves the plate as a 10 mm wide frustum opening). The 14 mm / 90 countersink over the same hole (hole-countersink__thick-block, other variants) builds and matches."
+        "title": "A countersink whose rim is exactly as wide as the plate (30 across on a 30 deep plate, rim tangent to both long edges) is refused",
+        "evidence": "Re-measured 2026-10-12: the original diagnosis was wrong. The cone being deeper than the plate is NOT the cause -- the same 30 / 90 countersink over a 5 hole in a 40 x 40 x 10 plate (variant hole-countersink__cone-deeper-than-plate-roomy) and a 24 / 60 one in a 40 x 40 x 6 plate (...-angle-60) build and MATCH FreeCAD, the cone leaving through the bottom face. The refusal is the tangent-rim case and its sentence is accurate: the plate is 30 deep and the countersink 30 across, so the rim touches both long edges at a single point and the top face pinches into two pieces joined at two points. FreeCAD builds that anyway (8596.607958611059 mm^3, 8 faces, the top face as 2 faces); brep-rs refuses every tangent contact in one sentence rather than build a solid with point contacts (a non-manifold vertex). Refusal: \"hole hole1: its counterbore or countersink is as wide as pull1, so its rim would touch the part's edge at a single point, a tangent contact brep-rs cannot cut yet; make the recess a little narrower -- hole1 is shown without it.\" Never a wrong solid."
+      }
+    },
+    {
+      "id": "hole-countersink__cone-deeper-than-plate-roomy",
+      "piece": "hole-countersink",
+      "desc": "the same 30 / 90 countersink over a 5 hole in a 40 x 40 x 10 plate: the cone passes through the bottom face, with 5 mm of top face left on every side",
+      "kind": "solid",
+      "oursSource": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,40],[0,40]]); const plate = extrude(s1, 10); hole(plate, { across: 5, countersink: { across: 30, angle: 90 } });",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 12596.60796,
+          "ours": 12596.60796,
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            0,
+            0,
+            -1.776356839e-15,
+            40,
+            40,
+            10
+          ],
+          "ours": [
+            0,
+            0,
+            0,
+            40,
+            40,
+            10
+          ],
+          "pass": true,
+          "delta": 1.7763568394002505e-15
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 7,
+          "ours": 7,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            20,
+            20,
+            4.584333515
+          ],
+          "ours": [
+            20.0000031,
+            20.00000024,
+            4.584714703
+          ],
+          "pass": true,
+          "delta": 0.00038118781879070696
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 12596.60796,
+          "ours": 12599.89627,
+          "pass": true,
+          "delta": 0.00026104710771289994
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 12596.607958611055,
+        "bbox": [
+          0,
+          0,
+          -1.7763568394002505e-15,
+          40,
+          40,
+          10
+        ],
+        "faces": 7,
+        "com": [
+          20.000000000000004,
+          20,
+          4.584333514769454
+        ]
+      },
+      "ours": {
+        "volume": 12596.607958611055,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          40,
+          10
+        ],
+        "faces": 7,
+        "com": [
+          20.000003097230802,
+          20.000000241452256,
+          4.584714702588244
+        ],
+        "meshVolume": 12599.896266685644
+      }
+    },
+    {
+      "id": "hole-countersink__cone-deeper-than-plate-angle-60",
+      "piece": "hole-countersink",
+      "desc": "a 24 / 60 countersink over a 5 hole in a 40 x 40 x 6 plate: the cone (16.5 deep) exits the bottom as a 13.9 wide circle",
+      "kind": "solid",
+      "oursSource": "const s1 = sketch('top'); s1.polygon([[0,0],[40,0],[40,40],[0,40]]); const plate = extrude(s1, 6); hole(plate, { across: 5, countersink: { across: 24, angle: 60 } });",
+      "status": "MATCH",
+      "checks": [
+        {
+          "name": "volume (rel 1e-6)",
+          "ref": 7593.827049,
+          "ours": 7593.827049,
+          "pass": true,
+          "delta": 1.1976763441001907e-16
+        },
+        {
+          "name": "bbox (abs 1e-6)",
+          "ref": [
+            0,
+            0,
+            0,
+            40,
+            40,
+            6
+          ],
+          "ours": [
+            0,
+            0,
+            0,
+            40,
+            40,
+            6
+          ],
+          "pass": true,
+          "delta": 0
+        },
+        {
+          "name": "faces (exact)",
+          "ref": 7,
+          "ours": 7,
+          "pass": true
+        },
+        {
+          "name": "centre of mass (abs 0.02)",
+          "ref": [
+            20,
+            20,
+            2.911709342
+          ],
+          "ours": [
+            20.00000173,
+            19.99999949,
+            2.911824957
+          ],
+          "pass": true,
+          "delta": 0.00011561571433915674
+        },
+        {
+          "name": "own mesh volume vs exact volume (rel 5e-3)",
+          "ref": 7593.827049,
+          "ours": 7596.042259,
+          "pass": true,
+          "delta": 0.00029171191740818414
+        }
+      ],
+      "oursOutcome": "built",
+      "ref": {
+        "volume": 7593.827048961445,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          40,
+          6
+        ],
+        "faces": 7,
+        "com": [
+          20.000000000000004,
+          20.000000000000004,
+          2.9117093416142996
+        ]
+      },
+      "ours": {
+        "volume": 7593.827048961444,
+        "bbox": [
+          0,
+          0,
+          0,
+          40,
+          40,
+          6
+        ],
+        "faces": 7,
+        "com": [
+          20.00000173155801,
+          19.99999948555992,
+          2.9118249573286388
+        ],
+        "meshVolume": 7596.042258810363
       }
     },
     {
@@ -19097,7 +19301,7 @@
           "name": "solved geometry bbox in plane (abs 1e-6)",
           "ref": [
             -6,
-            -2.067738762e-30,
+            0,
             36,
             12
           ],
@@ -19119,7 +19323,7 @@
         "bucket": "consistent",
         "bbox": [
           -6,
-          -2.06773876218909e-30,
+          0,
           0,
           36,
           12,
@@ -19215,7 +19419,7 @@
           "name": "solved geometry bbox in plane (abs 1e-6)",
           "ref": [
             -12,
-            -3.552713679e-15,
+            0,
             30,
             24
           ],
@@ -19236,11 +19440,11 @@
         "solve": 0,
         "bucket": "consistent",
         "bbox": [
-          -12.000000000000002,
-          -3.552713678800501e-15,
+          -12,
+          0,
           0,
           30,
-          23.999999999999996,
+          24,
           0
         ]
       },

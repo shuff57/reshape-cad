@@ -1,0 +1,22 @@
+{
+ "id": "hole-countersink__cone-deeper-than-plate-roomy",
+ "ok": true,
+ "volume": 12596.607958611055,
+ "bbox": [
+  0.0,
+  0.0,
+  -1.7763568394002505e-15,
+  40.0,
+  40.0,
+  10.0
+ ],
+ "faces": 7,
+ "com": [
+  20.000000000000004,
+  20.0,
+  4.584333514769454
+ ],
+ "valid": true,
+ "solids": 1,
+ "bad": {}
+}

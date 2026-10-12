@@ -1,0 +1,22 @@
+{
+ "id": "hole-countersink__cone-deeper-than-plate-angle-60",
+ "ok": true,
+ "volume": 7593.827048961445,
+ "bbox": [
+  0.0,
+  0.0,
+  0.0,
+  40.0,
+  40.0,
+  6.0
+ ],
+ "faces": 7,
+ "com": [
+  20.000000000000004,
+  20.000000000000004,
+  2.9117093416142996
+ ],
+ "valid": true,
+ "solids": 1,
+ "bad": {}
+}

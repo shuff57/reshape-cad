@@ -1,4 +1,4 @@
-# hole-countersink__cone-deeper-than-plate: a 30 / 90 countersink over a 5 hole in a 10 plate: the cone (17.5 deep) would pass through the plate
+# hole-countersink__cone-deeper-than-plate: a 30 / 90 countersink over a 5 hole in a 40 x 30 x 10 plate: the cone (17.5 deep) leaves through the bottom AND the 30 wide rim is exactly as wide as the 30 deep plate, so it touches both long edges at a point (the tangent-rim case)
 REFS_DIR = "/home/shuff57/Documents/GitHub/reshape-cad/docs/replica/freecad/gauntlet/variants/refs"
 exec(open("/home/shuff57/Documents/GitHub/reshape-cad/docs/replica/freecad/gauntlet/variants/fc_prelude.py").read())
 try:

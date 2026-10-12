@@ -359,7 +359,9 @@ add({
   ours: "const c = cylinder(30, 20, { at: [0, 0, 10] }); hole(c, { across: 6 });",
   fc: "doc, body = setup()\nsk = sketch(body, 'top')\ncircle(sk, 0, 0, 15)\nbase = pad(body, sk, 20)\nhs = sketch(body, 'top', 20)\ncircle(hs, 0, 0, 3)\nhole(body, hs, 6)",
 });
-holeV('hole-countersink', 'cone-deeper-than-plate', 'a 30 / 90 countersink over a 5 hole in a 10 plate: the cone (17.5 deep) would pass through the plate', { across: 5, cs: { across: 30, angle: 90 } });
+holeV('hole-countersink', 'cone-deeper-than-plate', 'a 30 / 90 countersink over a 5 hole in a 40 x 30 x 10 plate: the cone (17.5 deep) leaves through the bottom AND the 30 wide rim is exactly as wide as the 30 deep plate, so it touches both long edges at a point (the tangent-rim case)', { across: 5, cs: { across: 30, angle: 90 } });
+holeV('hole-countersink', 'cone-deeper-than-plate-roomy', 'the same 30 / 90 countersink over a 5 hole in a 40 x 40 x 10 plate: the cone passes through the bottom face, with 5 mm of top face left on every side', { d: 40, across: 5, cs: { across: 30, angle: 90 } });
+holeV('hole-countersink', 'cone-deeper-than-plate-angle-60', 'a 24 / 60 countersink over a 5 hole in a 40 x 40 x 6 plate: the cone (16.5 deep) exits the bottom as a 13.9 wide circle', { d: 40, h: 6, across: 5, cs: { across: 24, angle: 60 } });
 
 // patterns whose copies leave the part or collide
 linV('copies-run-off-the-part', 'four holes step 20 from x=10 in a 60 plate: the 4th is at x=70, off the plate', { hole: C(10, 10, 6), count: 4, step: 20 });
