@@ -1,0 +1,162 @@
+{
+ "freecad": [
+  "26",
+  "3",
+  "0",
+  "20261008 (Git shallow)"
+ ],
+ "cases": {
+  "blind": {
+   "base": {
+    "volume": 12000.0,
+    "faces": 6,
+    "edges": 12,
+    "valid": true,
+    "bbox": [
+     0.0,
+     0.0,
+     0.0,
+     40.0,
+     30.0,
+     10.0
+    ],
+    "face_types": [
+     "Plane",
+     "Plane",
+     "Plane",
+     "Plane",
+     "Plane",
+     "Plane"
+    ]
+   },
+   "pocket": {
+    "volume": 11371.68146928204,
+    "faces": 8,
+    "edges": 15,
+    "valid": true,
+    "bbox": [
+     0.0,
+     0.0,
+     0.0,
+     40.0,
+     30.0,
+     10.0
+    ],
+    "face_types": [
+     "Plane",
+     "Plane",
+     "Plane",
+     "Plane",
+     "Plane",
+     "Plane",
+     "Plane",
+     "SurfaceOfExtrusion"
+    ]
+   },
+   "valid": true,
+   "state": [
+    "Up-to-date"
+   ]
+  },
+  "through": {
+   "base": {
+    "volume": 12000.0,
+    "faces": 6,
+    "edges": 12,
+    "valid": true,
+    "bbox": [
+     0.0,
+     0.0,
+     0.0,
+     40.0,
+     30.0,
+     10.0
+    ],
+    "face_types": [
+     "Plane",
+     "Plane",
+     "Plane",
+     "Plane",
+     "Plane",
+     "Plane"
+    ]
+   },
+   "pocket": {
+    "volume": 11246.027049734581,
+    "faces": 7,
+    "edges": 15,
+    "valid": true,
+    "bbox": [
+     0.0,
+     0.0,
+     0.0,
+     40.0,
+     30.0,
+     10.0
+    ],
+    "face_types": [
+     "Plane",
+     "Plane",
+     "Plane",
+     "Plane",
+     "Plane",
+     "Plane",
+     "SurfaceOfExtrusion"
+    ]
+   },
+   "valid": true,
+   "state": [
+    "Up-to-date"
+   ]
+  },
+  "d_shape_pad": {
+   "pad": {
+    "volume": 314.15926535897927,
+    "faces": 4,
+    "edges": 6,
+    "valid": true,
+    "bbox": [
+     -10.0,
+     0.0,
+     0.0,
+     10.0,
+     5.0,
+     4.0
+    ],
+    "face_types": [
+     "Plane",
+     "Plane",
+     "Plane",
+     "SurfaceOfExtrusion"
+    ]
+   },
+   "expected": 314.1592653589793
+  },
+  "ellipse_hole_pad": {
+   "pad": {
+    "volume": 5321.415986824604,
+    "faces": 7,
+    "edges": 15,
+    "valid": true,
+    "bbox": [
+     0.0,
+     0.0,
+     0.0,
+     40.0,
+     25.0,
+     6.0
+    ],
+    "face_types": [
+     "Plane",
+     "Plane",
+     "Plane",
+     "Plane",
+     "Plane",
+     "Plane",
+     "SurfaceOfExtrusion"
+    ]
+   },
+   "expected": 5321.415986824605
+  }
+ }
+}

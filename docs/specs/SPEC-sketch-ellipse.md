@@ -1,7 +1,7 @@
 # SPEC: the ellipse in the sketcher (FreeCAD Sketcher S2, and what S3 needs)
 
-Status: IMPLEMENTED in `41f4bac` (the ellipse) and `92acd93` (the arc of an ellipse), sketcher half, option B.
-Not implemented: S3, the ellipse as a solid.
+Status: IMPLEMENTED. Sketcher half (option B) in `41f4bac` (the ellipse) and `92acd93` (the arc of an
+ellipse); S3, the ellipse as a solid, in `99f1e82` (whole ellipse) and `0633d28` (arcs of an ellipse).
 Source: `freecad-probes/probe_s2_ellipse.py` (output `probe_s2_ellipse.json`), FreeCAD 26.3.0 RC1 headless.
 Clean-room: measured outputs only.
 
@@ -81,10 +81,40 @@ tangency refuses in a sentence. Rows: `{"id","k":"ellipseArc","c","major","minor
 - Endpoint tangency between an elliptic arc and a circular arc or another elliptic arc.
 - The ellipse as a solid (S3, below), and the ellipse in `packages/script` / the studio.
 
-## What S3 (an ellipse as a solid) needs that does not exist
+## S3: the ellipse as a solid (landed) -- `freecad-probes/probe_s3_ellipse_solid.py`
 
-`geom::Surface` has Plane, Cylinder, Cone, Sphere, Torus; `Curve::Ellipse` exists (rim corners). A pad of an
-ellipse (E8) needs an ELLIPTIC CYLINDER surface: area, volume integrand, tessellation, STEP
-(`CYLINDRICAL_SURFACE` is circular; STEP has no elliptic cylinder, FreeCAD writes a surface of extrusion), and
-a `flip_face` arm. That is a kernel change across `geom`, `mesh`, `step` and the boolean paths, and is its
-own roadmap item.
+FreeCAD measured: pad of 10 x 5 ellipse, h 4: 628.3185 = pi a b h, 3 faces. A D-shape (half ellipse closed by its
+chord), h 4: 314.159, 4 faces. An ellipse hole in a 40 x 25 plate, h 6: 5321.416, 7 faces. Blind pocket 4 deep in a
+40 x 30 x 10 block: 11371.681, 8 faces. Through pocket: 11246.027, 7 faces. All reproduced exactly.
+
+What exists in brep-rs:
+- `geom::EllipticCylinder` (semi-axes a, b along e1, e2; u is the eccentric angle; orientation lives in the frame,
+  as for the circular cylinder; arc range for a partial wall). Exact tight box; area and centroid by composite
+  quadrature because the 16-point rule is not accurate for the elliptic area element on an eccentric ellipse.
+- `ProfileSeg::Ellipse` / `WireSeg::Ellipse`. A whole ellipse is its own candidate loop (two half arcs, built as ONE
+  wall with shared rims, like a circle). An elliptic arc is a curve of the planner's graph like any other arc:
+  tangent, curvature, parameter and area are closed form; crossings and contacts against anything use sampled
+  polylines, which only makes them more cautious.
+- Pad, and an ellipse hole inside an outline, through the ordinary prism builder.
+- Pocket: `interior_pocket::cut_interior`, by topology alone (no surface is intersected). The tool is rebuilt as an
+  exact fit, the entry face is replaced by one with the mouth as a hole, the tool's walls are flipped to face the
+  cavity, and a blind floor is added (or a matching hole on the exit face for a through cut).
+
+What refuses, in a sentence:
+- every boolean against an elliptic wall (`ops::extract` reads only planes, circular cylinders and surfaces of
+  revolution), so a union, subtract or intersect with a part that has one;
+- a pocket whose mouth is not wholly inside one flat face, that runs into a hole of that face, that has an island,
+  that any other face of the part reaches, or that is not a plain cut from a face (no symmetric, two-sided,
+  tapered or angled cut);
+- STEP export ("an elliptic wall"; FreeCAD writes a surface of linear extrusion over an ellipse), and a spin of an
+  ellipse.
+
+Fuzzed with degenerate numbers over every ellipse pad, hole, arc and pocket document: 0 aborts, 0 hangs.
+
+## Not done
+- Booleans against an elliptic wall (union, a fillet or chamfer of its rim, a hole through it).
+- STEP write and read of the elliptic wall.
+- Revolve of an elliptic profile.
+- An ellipse in a profile that also has circular arcs meeting it: crossings are sampled, so a tangential
+  contact closer than a chord's sag is refused as touching rather than judged exactly.
+- Endpoint tangency between an elliptic arc and anything but a line (sketcher half, above).
