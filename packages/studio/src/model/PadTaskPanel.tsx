@@ -65,7 +65,7 @@ interface Props {
   stepIds: readonly string[];
   /** Bind a slot to a parameter (name) or free it (null). Returns the value the
    *  slot now has, or a sentence when it was refused. */
-  onBind: (slot: string, name: string | null, value: number) => { value: number } | { why: string };
+  onBind: (slot: string, name: string | null, value: number, intent?: 'bind' | 'follow') => { value: number } | { why: string };
   onPreview: (p: PadTaskPreview) => void;
   onOk: (feature: PadFeature) => void;
   onCancel: () => void;
@@ -166,7 +166,7 @@ export default function PadTaskPanel({
     (which === 'length' ? setLengthText : setLength2Text)(text);
     const n = toNumber(text);
     patch(which === 'length' ? { length: n } : { length2: n });
-    if (which === 'length' && bound && Number.isFinite(n)) onBind(slot, bound, n);
+    if (which === 'length' && bound && Number.isFinite(n)) onBind(slot, bound, n, 'follow');
   }
 
   function typeTaper(text: string) {

@@ -24,15 +24,17 @@ import {
   type PropGroup, type TreeIcon, type TreeNode,
 } from './model-tree-core.js';
 import PadProperties from './PadProperties.js';
-import { applyPadProp, padPropertyGroups, parseQuantity, type PropRow } from './pad-props-core.js';
-import { isPadFeature, lengthSlot, readBinding } from './pad-task-core.js';
+import { applyPadProp, padPropertyGroups, parseQuantity, readPaneBinding, type PropRow } from './pad-props-core.js';
+import { isPadFeature, lengthSlot } from './pad-task-core.js';
 
 /** How the property view reaches the script's named parameters (fx chips). */
 export interface PropertyBinding {
   boundTo: (slot: string) => string | undefined;
   known: readonly string[];
+  /** The value a parameter has right now, or undefined for a name that is not one. */
+  valueOf?: (name: string) => number | undefined;
   /** Bind a slot to a parameter name, or free it with null. */
-  onBind: (slot: string, name: string | null, value: number) => { value: number } | { why: string };
+  onBind: (slot: string, name: string | null, value: number, intent?: 'bind' | 'follow') => { value: number } | { why: string };
   /** The Pad task panel holds a draft of the selected feature: no edits here. */
   locked?: boolean;
 }
@@ -321,7 +323,7 @@ export default function ModelTree({
     // A length that follows a parameter moves the parameter, not just the step.
     if (r.slot && propertyBinding && !freed) {
       const name = propertyBinding.boundTo(r.slot);
-      if (name && typeof value === 'number') propertyBinding.onBind(r.slot, name, value);
+      if (name && typeof value === 'number') propertyBinding.onBind(r.slot, name, value, 'follow');
     }
     onChangeFeature(r.feature);
     return null;
@@ -330,7 +332,7 @@ export default function ModelTree({
   /** The "=name" / "=12" text of an expression typed into a quantity cell. */
   function commitPadExpr(key: string, text: string): string | null {
     if (!propFeature || !isPadFeature(propFeature) || !onChangeFeature || !propertyBinding) return 'Nothing is selected.';
-    const b = readBinding(text, propertyBinding.known, doc.features.map((x) => x.id));
+    const b = readPaneBinding(text, propertyBinding.known, doc.features.map((x) => x.id));
     if (b.kind === 'error') return b.why;
     if (key !== 'length') {
       if (b.kind === 'param') return 'This field takes a number; only the first length can follow a parameter.';
@@ -344,10 +346,14 @@ export default function ModelTree({
       propertyBinding.onBind(slot, null, b.value);
       return commitPadProp('length', b.value, true);
     }
-    const r = propertyBinding.onBind(slot, b.name, cur);
+    // Binding follows the parameter: the field takes the parameter's value and
+    // no parameter is rewritten. Check the edit with that value BEFORE the bind,
+    // so a refused edit leaves every binding as it was.
+    const target = propertyBinding.valueOf?.(b.name) ?? cur;
+    const edit = applyPadProp(doc, propFeature, 'length', target);
+    if (edit.ok !== true) return edit.why;
+    const r = propertyBinding.onBind(slot, b.name, cur, 'bind');
     if ('why' in r) return r.why;
-    const edit = applyPadProp(doc, propFeature, 'length', r.value);
-    if (edit.ok !== true) return edit.ok === false ? edit.why : edit.why;
     onChangeFeature(edit.feature);
     return null;
   }

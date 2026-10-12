@@ -59,6 +59,7 @@ import {
 import { outlineOf } from '@shuff57/reshape-sketch/sketch-arc';
 import { handlesFor, featureCenter, flatViewPlane, type HandleSpec } from '@shuff57/reshape-script/model-handles';
 import { previewTint } from './model/manipulator-core.js';
+import { bindSlot, paramValueOf } from './model/pad-props-core.js';
 import { treeLabels as nameMap } from './model/model-tree-core.js';
 import { nameMap as scriptNameMap } from '@shuff57/reshape-script/model-types';
 import { EMPTY_DOC, type Feature, isSketchOnly, type ModelDoc, newSketch, type SketchPlane } from '@shuff57/reshape-script/model-types';
@@ -665,29 +666,17 @@ export default function ReshapeStudio({
     }
     closePadTask();
   }, [padTask, loadDoc, closePadTask]);
-  const padBind = useCallback((slot: string, name: string | null, value: number): { value: number } | { why: string } => {
-    const list = (namedParamsRef.current ?? []).map((p) => ({ ...p, slots: p.slots.filter((x) => x !== slot) }));
-    if (name === null) {
-      setScriptNamedParams(list.filter((p) => p.slots.length > 0 || (namedParamsRef.current ?? []).some((q) => q.name === p.name && q.slots.length === 0)));
-      return { value };
-    }
-    const existing = list.find((p) => p.name === name);
-    if (existing) {
-      existing.slots = [...existing.slots, slot];
-      // The slot takes the parameter's own value; a typed value on a field that
-      // already follows this parameter moves the parameter instead.
-      const was = (namedParamsRef.current ?? []).find((p) => p.name === name);
-      const follows = !!was && was.slots.includes(slot);
-      if (follows) existing.value = value;
-      setScriptNamedParams(list);
-      return { value: follows ? value : existing.value };
-    }
-    const made: ScriptParamRef = {
-      name, caption: captionOf(name), value,
-      min: Math.min(1, value), max: Math.max(100, Math.ceil(value * 4)), step: 1, slots: [slot],
-    };
-    setScriptNamedParams([...list, made]);
-    return { value };
+  const padBind = useCallback((slot: string, name: string | null, value: number, intent: 'bind' | 'follow' = 'bind'): { value: number } | { why: string } => {
+    // Pure core (pad-props-core bindSlot): binding never rewrites a parameter;
+    // only a number typed into an already bound field ('follow') moves it.
+    const live = new Map(generatedParams(docRef.current).map((p) => [p.name, p.value] as const));
+    const r = bindSlot(namedParamsRef.current, slot, name, value, live, intent);
+    setScriptNamedParams(r.params);
+    return { value: r.value };
+  }, []);
+  const padParamValue = useCallback((name: string): number | undefined => {
+    const live = new Map(generatedParams(docRef.current).map((p) => [p.name, p.value] as const));
+    return paramValueOf(namedParamsRef.current, name, live);
   }, []);
 
   const uncommitted = useRef<ParamValues>({});
@@ -1501,6 +1490,7 @@ export default function ReshapeStudio({
               propertyBinding={{
                 boundTo: (slot) => scriptNamedParams?.find((p) => p.slots.includes(slot))?.name,
                 known: (scriptNamedParams ?? []).map((p) => p.name),
+                valueOf: padParamValue,
                 onBind: padBind,
                 locked: !!padTask,
               }}

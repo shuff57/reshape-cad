@@ -17,7 +17,7 @@
 
 import type { ModelDoc } from '@shuff57/reshape-script/model-types';
 import {
-  SIDE_OPTIONS, checkDraft, draftOf, lengthSlot, pullNormal, reachLength, withDraft,
+  SIDE_OPTIONS, captionOf, checkDraft, draftOf, lengthSlot, pullNormal, reachLength, readBinding, withDraft,
   type PadDraft, type PadFeature, type SideMode, type Vec3,
 } from './pad-task-core.js';
 
@@ -282,4 +282,118 @@ export function applyPadProp(doc: ModelDoc, f: PadFeature, key: string, value: u
   const problem = checkDraft(d);
   if (problem) return { ok: false, why: problem };
   return { ok: true, feature: withDraft(f, d), slot: key === 'length' ? lengthSlot(f) : undefined };
+}
+
+// ---- binding a field to a named parameter --------------------------------
+
+/** The shape of one named parameter the property view binds a slot to
+ *  (reshape-script-gen's ScriptParamRef satisfies it). */
+export interface NamedParamLike {
+  name: string;
+  caption: string;
+  value: number;
+  min: number;
+  max: number;
+  step: number;
+  slots: string[];
+}
+
+/**
+ * 'bind'    the field starts following `name`. The field takes the parameter's
+ *           value; no parameter's value is touched, the one it followed before
+ *           included.
+ * 'follow'  the field already follows `name` and a number was typed into it:
+ *           that moves the parameter (and every other field on it).
+ * Anything that binds is 'bind'; only a typed number on an already bound field
+ * is 'follow', so a repeated or stale bind can never rewrite a parameter.
+ */
+export type BindIntent = 'bind' | 'follow';
+
+export interface BindResult<T extends NamedParamLike> {
+  params: T[];
+  /** The number the field now has. */
+  value: number;
+}
+
+/**
+ * The value a parameter has right now: its bound slots' live value in the
+ * document when one exists (a slider drag edits the document and leaves the
+ * parameter's own `value` stale), else the parameter's own.
+ */
+export function paramValueOf(
+  params: readonly NamedParamLike[] | null, name: string, live: ReadonlyMap<string, number>,
+): number | undefined {
+  const p = (params ?? []).find((q) => q.name === name);
+  if (!p) return undefined;
+  const s = p.slots.find((x) => live.has(x));
+  return s !== undefined ? live.get(s)! : p.value;
+}
+
+/**
+ * Pure: what the named-parameter list becomes when `slot` is bound to `name`
+ * (or freed, with null), and the value the field takes.
+ *
+ * `live` maps a slot to the value the document holds for it right now. The
+ * parameter's own `value` can be stale (a slider drag edits the document and
+ * never touches it), so the bound slots' live value wins when one exists.
+ */
+export function bindSlot<T extends NamedParamLike>(
+  params: readonly T[] | null,
+  slot: string,
+  name: string | null,
+  value: number,
+  live: ReadonlyMap<string, number>,
+  intent: BindIntent = 'bind',
+  make?: (name: string, value: number, slot: string) => T,
+): BindResult<T> {
+  const before = params ?? [];
+  const list = before.map((p) => ({ ...p, slots: p.slots.filter((x) => x !== slot) }));
+  if (name === null) {
+    // Freed: the parameter keeps its value and its other fields. One left with
+    // no field at all is dropped, unless it was already declared unused.
+    const kept = list.filter((p) => p.slots.length > 0 || before.some((q) => q.name === p.name && q.slots.length === 0));
+    return { params: kept, value };
+  }
+  const existing = list.find((p) => p.name === name);
+  if (existing) {
+    const was = before.find((p) => p.name === name);
+    const follows = !!was && was.slots.includes(slot);
+    if (intent === 'follow' && follows) {
+      existing.value = value;
+      existing.slots = [...existing.slots, slot];
+      return { params: list, value };
+    }
+    const v = paramValueOf(list, name, live) ?? existing.value;
+    existing.slots = [...existing.slots, slot];
+    return { params: list, value: v };
+  }
+  const made = make
+    ? make(name, value, slot)
+    : ({
+        name, caption: captionOf(name), value,
+        min: Math.min(1, value), max: Math.max(100, Math.ceil(value * 4)), step: 1, slots: [slot],
+      } as unknown as T);
+  return { params: [...list, made], value };
+}
+
+/**
+ * What typing "=text" into a Length cell of the property view means, given the
+ * parameters that exist: a number frees the field, a known name binds it, and
+ * anything else is a sentence. A name that is not a parameter is refused here
+ * rather than quietly created: a new parameter is made in the Pad task panel or
+ * with param() in the script.
+ */
+export type PaneBinding =
+  | { kind: 'number'; value: number }
+  | { kind: 'param'; name: string }
+  | { kind: 'error'; why: string };
+
+export function readPaneBinding(text: string, known: readonly string[], featureIds: readonly string[]): PaneBinding {
+  const b = readBinding(text, known, featureIds);
+  if (b.kind !== 'param') return b;
+  if (b.isNew) {
+    const list = known.length ? ` The parameters here are ${known.join(', ')}.` : ' This model has no parameters yet.';
+    return { kind: 'error', why: `${b.name} is not a parameter of this model.${list} Add it with param() in the script, or from the Pad task panel.` };
+  }
+  return { kind: 'param', name: b.name };
 }
