@@ -1,6 +1,6 @@
 # SPEC: the ellipse in the sketcher (FreeCAD Sketcher S2, and what S3 needs)
 
-Status: MEASURED, design proposed, NOT implemented.
+Status: IMPLEMENTED in `41f4bac` (sketcher half, option B). Not implemented: S3, the ellipse as a solid.
 Source: `freecad-probes/probe_s2_ellipse.py` (output `probe_s2_ellipse.json`), FreeCAD 26.3.0 RC1 headless.
 Clean-room: measured outputs only.
 
@@ -37,21 +37,29 @@ Residuals, all lengths:
 
 Arcs of an ellipse need two more slots (end points) with on-curve rows, as the circular arc has.
 
-## The decision this needs (NOT mine to make alone)
+## Decision: option B (taken)
 
-How is an ellipse SIZED? FreeCAD does it through internal geometry (E5, E6): four extra construction objects
-per ellipse. brep-rs has a 16-kind rule vocabulary and the studio has no concept of internal alignment.
+An ellipse is sized by two new dimension kinds, `majorRadius` and `minorRadius`: one geometry per ellipse, no
+internal-alignment objects. Both may be reference rules (`driving: false`). `radius` and `diameter` on an
+ellipse refuse in a sentence that names them, where FreeCAD marks them malformed (E4).
 
-- (A) FreeCAD-faithful: add internal geometry + an internal-alignment rule. Most faithful, heaviest; the studio
-  must draw and pick the extra construction objects. Needs a schema change (rule kind + geometry rows).
-- (B) Two new dimension kinds, `majorRadius` and `minorRadius`, each one residual on the derived `a` and on
-  `b`. Same expressive power for sizing, no extra geometry; a schema change of two kinds.
-- (C) Ship ellipse with NO size rule: an ellipse is sized by its seed and by points on it (E3). Smallest, but a
-  student cannot type "major radius 12".
+## What landed (`packages/brep-rs/src/sketch/`)
 
-Recommendation: (B). It keeps one geometry per ellipse, needs no new studio drawing concept, and the kernel
-stores exactly the numbers FreeCAD's axis dimensions end up setting (E6). Either A or B touches the rule
-vocabulary, which lives in `packages/script` (the other agent's area).
+- Geometry row: `{"id", "k":"ellipse", "c":[x,y], "major":a, "minor":b, "angle":degrees}` (angle optional,
+  default 0; minor > major is stored as the same curve with the axis turned a quarter). Slots: centre,
+  first focus, minor radius. Point refs: `c` = centre, `a` = first focus; the second focus is derived.
+- Rules: `coincident`/`distance`/`distanceX`/`distanceY` on `c` or `a`; `pointOnObject` of a point on the
+  ellipse; `tangent` line-to-ellipse (signed by `side`, as for a circle); `equal` ellipse-to-ellipse (two rows);
+  `majorRadius`, `minorRadius`.
+- Refused in a sentence: radius, diameter, and tangent/equal of an ellipse with a circle or another ellipse
+  (FreeCAD: malformed). `horizontal`, `vertical` and `angle` on an ellipse refuse because an ellipse has no
+  two ends.
+- A sketch with an ellipse that is not construction geometry refuses as a PROFILE until S3.
+- Verified against FreeCAD's DoF facts E1, E3, E6 (tests `ellipse_tests`) and against central differences.
+
+## Not done
+- Arc of an ellipse (E7): two more slots and on-curve rows, and the end-point parameterisation.
+- The ellipse as a solid (S3, below), and the ellipse in `packages/script` / the studio.
 
 ## What S3 (an ellipse as a solid) needs that does not exist
 
