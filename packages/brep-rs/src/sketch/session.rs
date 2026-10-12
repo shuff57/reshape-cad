@@ -100,6 +100,17 @@ impl SketchSession {
                         sense,
                     }
                 }
+                "ellipse" => {
+                    // centre, major radius, minor radius, and the major axis's angle from +x in degrees.
+                    let positive = |key: &str| -> Result<f64, String> {
+                        match g.get(key).and_then(|x| x.as_f64()) {
+                            Some(v) if v > 0.0 => Ok(v),
+                            _ => Err(format!("an ellipse row needs a positive {key} radius")),
+                        }
+                    };
+                    let angle = g.get("angle").and_then(|x| x.as_f64()).unwrap_or(0.0);
+                    super::params::Geo::ellipse(point_of(g, "c")?, positive("major")?, positive("minor")?, angle)
+                }
                 other => return Err(format!("unknown geometry kind {other:?}")),
             };
             block
@@ -134,7 +145,9 @@ impl SketchSession {
             if c.kind == ConstraintKind::Lock && c.active {
                 let a = c.arg(0)?;
                 let at = a.at.unwrap_or(match a.kind {
-                    super::params::GeoKind::Circle | super::params::GeoKind::Arc => PointRef::C,
+                    super::params::GeoKind::Circle
+                    | super::params::GeoKind::Arc
+                    | super::params::GeoKind::Ellipse => PointRef::C,
                     _ => PointRef::A,
                 });
                 block.lock(a.geo, at).map_err(|e| e.to_string())?;
@@ -652,3 +665,208 @@ mod reference_tests {
         assert!(format!("{e:?}").contains("loose end"), "{e:?}");
     }
 }
+
+#[cfg(test)]
+mod ellipse_tests {
+    //! The ellipse against what FreeCAD 26.3.0 RC1 measured (docs/specs/SPEC-sketch-ellipse.md, E1-E7):
+    //! its degrees of freedom, which rules apply, and the axis dimensions that size it.
+    use super::*;
+    use crate::sketch::solve::Bucket;
+    use serde_json::json;
+
+    fn ellipse(id: i64, c: [f64; 2], major: f64, minor: f64, angle: f64) -> Value {
+        json!({"id": id, "k": "ellipse", "c": c, "major": major, "minor": minor, "angle": angle})
+    }
+    fn open(geoms: Vec<Value>, rules: Vec<Value>) -> SketchSession {
+        SketchSession::open(&json!({"geoms": geoms, "rules": rules}).to_string()).expect("opens")
+    }
+    fn dof(geoms: Vec<Value>, rules: Vec<Value>) -> usize {
+        let mut s = open(geoms, rules);
+        s.solve(&[], None).unwrap();
+        s.diagnose().unwrap().dof
+    }
+    /// (centre, first focus, minor radius, major radius) of geometry `id` in the solved state.
+    fn solved(s: &SketchSession, id: i32) -> ([f64; 2], [f64; 2], f64, f64) {
+        let base = s.block.arg(id, None).unwrap().base;
+        let p = &s.params;
+        let (c, f, b) = ([p[base], p[base + 1]], [p[base + 2], p[base + 3]], p[base + 4]);
+        let a = (b * b + (f[0] - c[0]).powi(2) + (f[1] - c[1]).powi(2)).sqrt();
+        (c, f, b, a).into_tuple()
+    }
+    trait IntoTuple {
+        fn into_tuple(self) -> ([f64; 2], [f64; 2], f64, f64);
+    }
+    impl IntoTuple for ([f64; 2], [f64; 2], f64, f64) {
+        fn into_tuple(self) -> ([f64; 2], [f64; 2], f64, f64) {
+            self
+        }
+    }
+
+    #[test]
+    fn e1_a_lone_ellipse_has_five_degrees_of_freedom() {
+        assert_eq!(dof(vec![ellipse(1, [0.0, 0.0], 10.0, 5.0, 0.0)], vec![]), 5);
+    }
+
+    #[test]
+    fn e3_the_rules_that_apply_remove_what_freecad_removes() {
+        let e = || ellipse(1, [0.0, 0.0], 10.0, 5.0, 0.0);
+        let pt = || json!({"id":2,"k":"point","p":[7.0, 3.0]});
+        // coincident point-to-centre: 7 -> 5
+        assert_eq!(dof(vec![e(), pt()], vec![]), 7);
+        assert_eq!(dof(vec![e(), pt()], vec![json!({"k":"coincident","a":2,"aEnd":"a","b":1,"bEnd":"c"})]), 5);
+        // point on the ellipse: 7 -> 6
+        assert_eq!(dof(vec![e(), pt()], vec![json!({"k":"pointOnObject","a":2,"aEnd":"a","b":1})]), 6);
+        // equal ellipse-ellipse removes BOTH radii: 10 -> 8
+        let e2 = ellipse(2, [30.0, 0.0], 8.0, 3.0, 10.0);
+        assert_eq!(dof(vec![e(), e2.clone()], vec![]), 10);
+        assert_eq!(dof(vec![e(), e2], vec![json!({"k":"equal","a":1,"b":2})]), 8);
+        // tangent line-ellipse: 9 -> 8
+        let l = json!({"id":2,"k":"line","a":[-15.0, 7.0],"b":[15.0, 7.0]});
+        assert_eq!(dof(vec![e(), l.clone()], vec![]), 9);
+        assert_eq!(dof(vec![e(), l], vec![json!({"k":"tangent","a":2,"b":1,"side":1.0})]), 8);
+        // distanceX of the centre from the origin: 5 -> 4
+        assert_eq!(dof(vec![e()], vec![json!({"k":"distanceX","a":-1,"aEnd":"a","b":1,"bEnd":"c","value":4.0})]), 4);
+    }
+
+    #[test]
+    fn e6_the_two_axis_dimensions_size_the_ellipse_and_leave_the_centre_free() {
+        // FreeCAD: 24 and 8 on the axis lines gave major 12, minor 4, DoF 5 -> 3.
+        let mut s = open(
+            vec![ellipse(1, [0.0, 0.0], 10.0, 5.0, 0.0)],
+            vec![json!({"k":"majorRadius","a":1,"value":12.0}), json!({"k":"minorRadius","a":1,"value":4.0})],
+        );
+        let (_p, st) = s.solve(&[], None).unwrap();
+        assert!(st.converged, "{st:?}");
+        let d = s.diagnose().unwrap();
+        assert_eq!(d.dof, 3, "{d:?}");
+        assert_eq!(d.bucket, Bucket::Consistent);
+        let (_c, _f, b, a) = solved(&s, 1);
+        assert!((a - 12.0).abs() < 1e-6 && (b - 4.0).abs() < 1e-6, "major {a}, minor {b}");
+    }
+
+    #[test]
+    fn a_point_pulled_onto_an_ellipse_lands_on_it() {
+        let mut s = open(
+            vec![ellipse(1, [0.0, 0.0], 10.0, 5.0, 0.0), json!({"id":2,"k":"point","p":[7.0, 6.0]})],
+            vec![
+                json!({"k":"lock","a":1}),
+                json!({"k":"majorRadius","a":1,"value":10.0}),
+                json!({"k":"minorRadius","a":1,"value":5.0}),
+                json!({"k":"pointOnObject","a":2,"aEnd":"a","b":1}),
+            ],
+        );
+        let (_p, st) = s.solve(&[], None).unwrap();
+        assert!(st.converged, "{st:?}");
+        let pb = s.block.arg(2, Some(PointRef::A)).unwrap();
+        let [x, y] = pb.point_slots().unwrap();
+        let (c, f, _b, a) = solved(&s, 1);
+        let f2 = [2.0 * c[0] - f[0], 2.0 * c[1] - f[1]];
+        let (px, py) = (s.params[x], s.params[y]);
+        let sum = ((px - f[0]).powi(2) + (py - f[1]).powi(2)).sqrt() + ((px - f2[0]).powi(2) + (py - f2[1]).powi(2)).sqrt();
+        assert!((sum - 2.0 * a).abs() < 1e-6, "focal sum {sum} vs 2a {}", 2.0 * a);
+    }
+
+    #[test]
+    fn a_line_pulled_tangent_to_an_ellipse_touches_it() {
+        // Ellipse a = 10, b = 5 along x, centred at the origin and fixed in size and place; the line starts
+        // above it. The tangent distance from the centre is the support radius h = sqrt(b^2 + (u.f)^2).
+        let mut s = open(
+            vec![ellipse(1, [0.0, 0.0], 10.0, 5.0, 0.0), json!({"id":2,"k":"line","a":[-15.0, 8.0],"b":[15.0, 9.0]})],
+            vec![
+                json!({"k":"lock","a":1}),
+                json!({"k":"majorRadius","a":1,"value":10.0}),
+                json!({"k":"minorRadius","a":1,"value":5.0}),
+                json!({"k":"tangent","a":2,"b":1,"side":-1.0}),
+            ],
+        );
+        let (_p, st) = s.solve(&[], None).unwrap();
+        assert!(st.converged, "{st:?}");
+        let (c, f, b, _a) = solved(&s, 1);
+        let l0 = s.block.arg(2, Some(PointRef::A)).unwrap().point_slots().unwrap();
+        let l1 = s.block.arg(2, Some(PointRef::B)).unwrap().point_slots().unwrap();
+        let (dx, dy) = (s.params[l1[0]] - s.params[l0[0]], s.params[l1[1]] - s.params[l0[1]]);
+        let len = (dx * dx + dy * dy).sqrt();
+        let (ux, uy) = (-dy / len, dx / len);
+        let dist = ux * (c[0] - s.params[l0[0]]) + uy * (c[1] - s.params[l0[1]]);
+        let w = ux * (f[0] - c[0]) + uy * (f[1] - c[1]);
+        let h = (b * b + w * w).sqrt();
+        assert!((dist.abs() - h).abs() < 1e-6, "centre-to-line {dist} vs support radius {h}");
+    }
+
+    #[test]
+    fn e4_radius_on_an_ellipse_is_refused_and_points_to_the_axis_rules() {
+        // FreeCAD marks radius/diameter on an ellipse malformed (status -5) and applies nothing. Ours refuses.
+        for k in ["radius", "diameter"] {
+            let mut s = open(vec![ellipse(1, [0.0, 0.0], 10.0, 5.0, 0.0)], vec![json!({"k": k, "a": 1, "value": 7.0})]);
+            let e = s.solve(&[], None).err().unwrap_or_else(|| panic!("{k} on an ellipse must refuse"));
+            assert!(e.contains("majorRadius") && e.contains("minorRadius"), "{k}: {e}");
+        }
+    }
+
+    #[test]
+    fn majorradius_on_a_circle_points_back_to_radius() {
+        let g = vec![json!({"id":1,"k":"circle","c":[0.0,0.0],"r":4.0})];
+        let mut s = open(g, vec![json!({"k":"majorRadius","a":1,"value":7.0})]);
+        let e = s.solve(&[], None).err().expect("refuses");
+        assert!(e.contains("radius for a circle"), "{e}");
+    }
+
+    #[test]
+    fn a_reference_axis_reads_back_what_the_ellipse_measures() {
+        let s = open(
+            vec![ellipse(1, [0.0, 0.0], 10.0, 5.0, 30.0)],
+            vec![
+                json!({"k":"majorRadius","a":1,"value":99.0,"driving":false}),
+                json!({"k":"minorRadius","a":1,"value":99.0,"driving":false}),
+            ],
+        );
+        let refs = s.reference_values().unwrap();
+        assert!((refs[0].1 - 10.0).abs() < 1e-9 && (refs[1].1 - 5.0).abs() < 1e-9, "{refs:?}");
+    }
+
+    #[test]
+    fn a_swapped_pair_of_radii_is_the_same_ellipse_turned_a_quarter() {
+        // minor > major is stored as major/minor with the axis turned 90 degrees: a >= b always holds.
+        let s = open(vec![ellipse(1, [0.0, 0.0], 5.0, 10.0, 0.0)], vec![]);
+        let (c, f, b, a) = solved(&s, 1);
+        assert!((a - 10.0).abs() < 1e-9 && (b - 5.0).abs() < 1e-9, "a {a} b {b}");
+        assert!(f[0].abs() < 1e-9 && ((f[1] - c[1]) - (75.0f64).sqrt()).abs() < 1e-9, "focus {f:?}");
+    }
+
+    #[test]
+    fn an_ellipse_is_refused_as_a_profile_until_the_kernel_can_pull_one() {
+        let s = open(vec![ellipse(1, [0.0, 0.0], 10.0, 5.0, 0.0)], vec![]);
+        let e = s.profile().err().expect("an ellipse cannot be pulled yet");
+        assert!(format!("{e:?}").contains("ellipse"), "{e:?}");
+        // As construction geometry it is solved and constrained but takes no part in the outline.
+        let mut g = vec![
+            json!({"id":1,"k":"line","a":[0.0,0.0],"b":[40.0,0.0]}),
+            json!({"id":2,"k":"line","a":[40.0,0.0],"b":[40.0,25.0]}),
+            json!({"id":3,"k":"line","a":[40.0,25.0],"b":[0.0,25.0]}),
+            json!({"id":4,"k":"line","a":[0.0,25.0],"b":[0.0,0.0]}),
+        ];
+        let mut c = ellipse(5, [20.0, 12.0], 8.0, 4.0, 0.0);
+        c["construction"] = json!(true);
+        g.push(c);
+        let r = vec![
+            json!({"k":"coincident","a":1,"aEnd":"b","b":2,"bEnd":"a"}),
+            json!({"k":"coincident","a":2,"aEnd":"b","b":3,"bEnd":"a"}),
+            json!({"k":"coincident","a":3,"aEnd":"b","b":4,"bEnd":"a"}),
+            json!({"k":"coincident","a":4,"aEnd":"b","b":1,"bEnd":"a"}),
+        ];
+        assert_eq!(open(g, r).profile().expect("builds").len(), 1);
+    }
+
+    #[test]
+    fn a_bad_ellipse_row_refuses_at_open() {
+        for row in [
+            json!({"id":1,"k":"ellipse","c":[0.0,0.0],"major":0.0,"minor":5.0}),
+            json!({"id":1,"k":"ellipse","c":[0.0,0.0],"major":10.0}),
+            json!({"id":1,"k":"ellipse","c":[0.0,0.0],"major":-3.0,"minor":2.0}),
+        ] {
+            let e = SketchSession::open(&json!({"geoms":[row.clone()],"rules":[]}).to_string()).err();
+            assert!(e.is_some_and(|m| m.contains("positive")), "{row}");
+        }
+    }
+}
+

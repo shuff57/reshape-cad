@@ -171,6 +171,16 @@ impl Build {
         self.add(Geo::Circle { c, r })
     }
 
+    /// An ellipse whose minor radius is drawn below its major, at a random angle, so neither axis is
+    /// special and the foci are well apart (a circle has no axis, which the derivatives do not need).
+    pub fn ellipse(&mut self) -> Result<GeoId, String> {
+        let c = [self.rng.range(-40.0, 40.0), self.rng.range(-40.0, 40.0)];
+        let major = self.rng.range(12.0, 30.0);
+        let minor = self.rng.range(4.0, major - 3.0);
+        let angle = self.rng.range(0.0, 360.0);
+        self.add(Geo::ellipse(c, major, minor, angle))
+    }
+
     /// An arc whose endpoints genuinely lie on its own circle. The on-circle
     /// rows are separate constraints and are not what this fixture is testing,
     /// but an arc whose `a` is nowhere near its radius is not a shape the
@@ -197,10 +207,10 @@ impl Build {
     }
 }
 
-/// Every argument shape the harness covers. 16 kinds, 26 shapes: the kinds that
+/// Every argument shape the harness covers. 18 kinds, 31 shapes: the kinds that
 /// behave differently against a line, a circle and an arc get one entry each,
 /// because a derivative can be right for one and wrong for another.
-pub const FORMS: [&str; 26] = [
+pub const FORMS: [&str; 31] = [
     "coincident/point-point",
     "coincident/line-b-arc-a",
     "pointOnObject/point-line",
@@ -227,6 +237,11 @@ pub const FORMS: [&str; 26] = [
     "diameter/circle",
     "angle/line-line",
     "lock/point",
+    "pointOnObject/point-ellipse",
+    "tangent/line-ellipse",
+    "equal/ellipse-ellipse",
+    "majorRadius/ellipse",
+    "minorRadius/ellipse",
 ];
 
 /// Inputs that have no defensible answer, paired with the rule that has to
@@ -238,7 +253,7 @@ pub const FORMS: [&str; 26] = [
 /// user-authored geometry, so a division by a zero-length edge does not produce
 /// a bad number — it produces a dead wasm instance and, because persistence in
 /// this app is the script text held in the studio, lost work (O14).
-pub const DEGENERATE_FORMS: [&str; 12] = [
+pub const DEGENERATE_FORMS: [&str; 15] = [
     "degenerate/pointOnObject-zero-length-line",
     "degenerate/pointOnObject-point-at-centre",
     "degenerate/parallel-zero-length-line",
@@ -251,6 +266,9 @@ pub const DEGENERATE_FORMS: [&str; 12] = [
     "degenerate/equal-zero-length-line",
     "degenerate/distance-coincident-points",
     "degenerate/symmetric-zero-length-mirror",
+    "degenerate/pointOnObject-point-at-ellipse-focus",
+    "degenerate/tangent-line-ellipse-zero-length-line",
+    "degenerate/majorRadius-ellipse-with-no-size",
 ];
 
 /// Build one fixture by name. The name is both the identity of the argument
@@ -460,6 +478,44 @@ pub fn fixture(name: &'static str) -> Result<Fixture, String> {
                 Constraint::binary(K::Equal, b.arg(g1, None)?, b.arg(g2, None)?),
             )
         }
+        "pointOnObject/point-ellipse" => {
+            let g1 = b.point()?;
+            let g2 = b.ellipse()?;
+            (
+                K::PointOnObject,
+                Constraint::binary(K::PointOnObject, b.arg(g1, Some(A))?, b.arg(g2, None)?),
+            )
+        }
+        "tangent/line-ellipse" => {
+            let g1 = b.line()?;
+            let g2 = b.ellipse()?;
+            (
+                K::Tangent,
+                Constraint::binary(K::Tangent, b.arg(g1, None)?, b.arg(g2, None)?).with_side(1.0),
+            )
+        }
+        "equal/ellipse-ellipse" => {
+            let g1 = b.ellipse()?;
+            let g2 = b.ellipse()?;
+            (
+                K::Equal,
+                Constraint::binary(K::Equal, b.arg(g1, None)?, b.arg(g2, None)?),
+            )
+        }
+        "majorRadius/ellipse" => {
+            let g1 = b.ellipse()?;
+            (
+                K::MajorRadius,
+                Constraint::unary(K::MajorRadius, b.arg(g1, None)?).with_value(22.0),
+            )
+        }
+        "minorRadius/ellipse" => {
+            let g1 = b.ellipse()?;
+            (
+                K::MinorRadius,
+                Constraint::unary(K::MinorRadius, b.arg(g1, None)?).with_value(9.0),
+            )
+        }
         "equal/circle-circle" => {
             let g1 = b.circle()?;
             let g2 = b.circle()?;
@@ -531,6 +587,31 @@ pub fn fixture(name: &'static str) -> Result<Fixture, String> {
             (
                 K::PointOnObject,
                 Constraint::binary(K::PointOnObject, b.arg(g1, Some(A))?, b.arg(g2, None)?),
+            )
+        }
+        "degenerate/pointOnObject-point-at-ellipse-focus" => {
+            // The first focus of this ellipse is (10, 0): the point sits on it.
+            let g1 = b.add(Geo::Point { p: [10.0, 0.0] })?;
+            let g2 = b.add(Geo::Ellipse { c: [0.0, 0.0], f: [10.0, 0.0], b: 6.0 })?;
+            (
+                K::PointOnObject,
+                Constraint::binary(K::PointOnObject, b.arg(g1, Some(A))?, b.arg(g2, None)?),
+            )
+        }
+        "degenerate/tangent-line-ellipse-zero-length-line" => {
+            let g1 = b.add(Geo::Line { a: [3.0, 3.0], b: [3.0, 3.0] })?;
+            let g2 = b.add(Geo::Ellipse { c: [0.0, 0.0], f: [5.0, 0.0], b: 4.0 })?;
+            (
+                K::Tangent,
+                Constraint::binary(K::Tangent, b.arg(g1, None)?, b.arg(g2, None)?).with_side(1.0),
+            )
+        }
+        "degenerate/majorRadius-ellipse-with-no-size" => {
+            // Centre and focus together and a minor radius of zero: a = 0, so there is no ellipse.
+            let g1 = b.add(Geo::Ellipse { c: [2.0, 2.0], f: [2.0, 2.0], b: 0.0 })?;
+            (
+                K::MajorRadius,
+                Constraint::unary(K::MajorRadius, b.arg(g1, None)?).with_value(5.0),
             )
         }
         "degenerate/parallel-zero-length-line" => {
@@ -1006,6 +1087,18 @@ mod tests {
     #[test]
     fn fd_angle_line_line() {
         assert_fd("angle/line-line");
+    }
+
+    #[test]
+    fn fd_every_form_in_the_table() {
+        // The named tests above are one per shape; this one walks the TABLE, so a shape added to `FORMS`
+        // cannot be left unverified. Measured by sabotage: with a flipped sign in the line-ellipse
+        // tangent's minor-radius derivative and only the named tests, nothing failed.
+        for name in FORMS {
+            if name != "lock/point" {
+                assert_fd(name);
+            }
+        }
     }
 
     #[test]

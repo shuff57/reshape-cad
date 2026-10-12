@@ -355,6 +355,7 @@ pub fn tangent_residual(
         (GeoKind::Line, GeoKind::Circle | GeoKind::Arc) => {
             simple_line_circle_residual(c, p, scale, out, a, b)
         }
+        (GeoKind::Line, GeoKind::Ellipse) => line_ellipse_residual(c, p, scale, out, a, b),
         (GeoKind::Circle | GeoKind::Arc, GeoKind::Circle | GeoKind::Arc) => {
             circle_circle_residual(c, p, scale, out, a, b)
         }
@@ -380,6 +381,7 @@ pub fn tangent_jacobian(
         (GeoKind::Line, GeoKind::Circle | GeoKind::Arc) => {
             simple_line_circle_jacobian(c, p, scale, out, a, b)
         }
+        (GeoKind::Line, GeoKind::Ellipse) => line_ellipse_jacobian(c, p, scale, out, a, b),
         (GeoKind::Circle | GeoKind::Arc, GeoKind::Circle | GeoKind::Arc) => {
             circle_circle_jacobian(c, p, scale, out, a, b)
         }
@@ -388,6 +390,103 @@ pub fn tangent_jacobian(
                 .to_string(),
         ),
     }
+}
+
+// -- line-ellipse: s - sigma*h --------------------------------------------------
+//
+// With `u` the line's unit left normal, `s = u . (C - P)` the signed distance from the ellipse's centre to
+// the line, and `f = F1 - C` the centre-to-focus vector, the ellipse's support radius in direction `u` is
+// `h = sqrt(b^2 + (u . f)^2)` (from a^2 cos^2 + b^2 sin^2 with a^2 = b^2 + |f|^2). The line is tangent
+// exactly when `s = +-h`, and `sigma` records which side it was drawn on, as it does for a circle. A circle
+// is the case f = 0, h = b, which is the line-circle residual above.
+
+struct LineEllipse {
+    l0: [usize; 2],
+    l1: [usize; 2],
+    e: super::metric::EllipseNow,
+    dx: f64,
+    dy: f64,
+    len: f64,
+    rx: f64,
+    ry: f64,
+    s: f64,
+    w: f64,
+    h: f64,
+}
+
+fn read_line_ellipse(
+    p: &[f64],
+    scale: f64,
+    line: super::params::Arg,
+    ell: super::params::Arg,
+) -> Result<LineEllipse, String> {
+    let l0 = line.slots_of(PointRef::A)?;
+    let l1 = line.slots_of(PointRef::B)?;
+    let e = super::metric::ellipse_now(&ell, p, scale)?;
+    let dx = param_at(p, l1[0])? - param_at(p, l0[0])?;
+    let dy = param_at(p, l1[1])? - param_at(p, l0[1])?;
+    let len = (dx * dx + dy * dy).sqrt();
+    if degenerate(len, scale) {
+        return Err(format!("line {} has zero length; there is no direction", line.geo));
+    }
+    let rx = e.cx - param_at(p, l0[0])?;
+    let ry = e.cy - param_at(p, l0[1])?;
+    let s = (dx * ry - dy * rx) / len;
+    let w = (-dy * e.fx + dx * e.fy) / len;
+    let h = (e.b * e.b + w * w).sqrt();
+    if degenerate(h, scale) {
+        return Err(format!("ellipse {} has no size; give it a major and a minor radius", ell.geo));
+    }
+    Ok(LineEllipse { l0, l1, e, dx, dy, len, rx, ry, s, w, h })
+}
+
+fn line_ellipse_residual(
+    c: &Constraint,
+    p: &[f64],
+    scale: f64,
+    out: &mut [f64],
+    line: super::params::Arg,
+    ell: super::params::Arg,
+) -> Result<(), String> {
+    let v = read_line_ellipse(p, scale, line, ell)?;
+    set_row(out, 0, v.s - c.side * v.h)
+}
+
+fn line_ellipse_jacobian(
+    c: &Constraint,
+    p: &[f64],
+    scale: f64,
+    out: &mut JacRows,
+    line: super::params::Arg,
+    ell: super::params::Arg,
+) -> Result<(), String> {
+    let v = read_line_ellipse(p, scale, line, ell)?;
+    let sigma = c.side;
+    let (len, l2) = (v.len, v.len * v.len);
+    // s = (dx*ry - dy*rx)/len, w = (-dy*fx + dx*fy)/len, e = s - sigma*sqrt(b^2 + w^2).
+    let ds_ddx = v.ry / len - v.s * v.dx / l2;
+    let ds_ddy = -v.rx / len - v.s * v.dy / l2;
+    let ds_drx = -v.dy / len;
+    let ds_dry = v.dx / len;
+    let dw_ddx = v.e.fy / len - v.w * v.dx / l2;
+    let dw_ddy = -v.e.fx / len - v.w * v.dy / l2;
+    let dw_dfx = -v.dy / len;
+    let dw_dfy = v.dx / len;
+    let k = sigma * v.w / v.h; // d(sigma*h)/dw
+    let de_ddx = ds_ddx - k * dw_ddx;
+    let de_ddy = ds_ddy - k * dw_ddy;
+    let de_dfx = -k * dw_dfx;
+    let de_dfy = -k * dw_dfy;
+    // dx = qx - px, rx = cx - px, fx = f1x - cx (and the same in y).
+    out.add(0, v.l0[0], -de_ddx - ds_drx)?;
+    out.add(0, v.l0[1], -de_ddy - ds_dry)?;
+    out.add(0, v.l1[0], de_ddx)?;
+    out.add(0, v.l1[1], de_ddy)?;
+    out.add(0, v.e.c[0], ds_drx - de_dfx)?;
+    out.add(0, v.e.c[1], ds_dry - de_dfy)?;
+    out.add(0, v.e.f[0], de_dfx)?;
+    out.add(0, v.e.f[1], de_dfy)?;
+    out.add(0, v.e.b_slot, -sigma * v.e.b / v.h)
 }
 
 // -- simple line-circle: cross(d, c - P)/L - sigma*r --------------------------

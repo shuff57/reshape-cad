@@ -80,10 +80,11 @@ pub use params::{
     ORIGIN, X_AXIS, Y_AXIS,
 };
 
-/// The 16 constraint kinds of the schema contract, spelled as the schema spells
-/// them.
+/// The 18 constraint kinds of the schema contract, spelled as the schema spells
+/// them. The last two, `majorRadius` and `minorRadius`, size an ellipse (docs/specs/SPEC-sketch-ellipse.md,
+/// option B): FreeCAD marks `radius` on an ellipse malformed and sizes it through internal geometry.
 ///
-/// 16 kinds, 17 forms: `symmetric` has a three-point form and an about-a-line
+/// 18 kinds, 19 forms: `symmetric` has a three-point form and an about-a-line
 /// form, distinguished by whether the row carries a `cEnd`. `tangent` also has
 /// several forms — endpoint versus simple, line-circle versus circle-circle —
 /// but those are selected by the argument kinds and by `mode`, not by a
@@ -106,6 +107,8 @@ pub enum ConstraintKind {
     Diameter,
     Angle,
     Lock,
+    MajorRadius,
+    MinorRadius,
 }
 
 impl ConstraintKind {
@@ -119,12 +122,14 @@ impl ConstraintKind {
                 | ConstraintKind::Radius
                 | ConstraintKind::Diameter
                 | ConstraintKind::Angle
+                | ConstraintKind::MajorRadius
+                | ConstraintKind::MinorRadius
         )
     }
 
     /// Every kind, so a test can assert coverage and a UI can enumerate without
     /// a second list that drifts.
-    pub const ALL: [ConstraintKind; 16] = [
+    pub const ALL: [ConstraintKind; 18] = [
         ConstraintKind::Coincident,
         ConstraintKind::PointOnObject,
         ConstraintKind::Horizontal,
@@ -141,6 +146,8 @@ impl ConstraintKind {
         ConstraintKind::Diameter,
         ConstraintKind::Angle,
         ConstraintKind::Lock,
+        ConstraintKind::MajorRadius,
+        ConstraintKind::MinorRadius,
     ];
 
     /// The `k` discriminator of a `rules()` row, verbatim. The parser, the
@@ -165,6 +172,8 @@ impl ConstraintKind {
             ConstraintKind::Diameter => "diameter",
             ConstraintKind::Angle => "angle",
             ConstraintKind::Lock => "lock",
+            ConstraintKind::MajorRadius => "majorRadius",
+            ConstraintKind::MinorRadius => "minorRadius",
         }
     }
 }
@@ -367,6 +376,7 @@ impl Constraint {
                     (GeoKind::Arc, PointRef::A)
                     | (GeoKind::Arc, PointRef::B)
                     | (GeoKind::Arc, PointRef::C) => true,
+                    (GeoKind::Ellipse, PointRef::A) | (GeoKind::Ellipse, PointRef::C) => true,
                     _ => false,
                 };
                 if !ok {
@@ -399,6 +409,8 @@ impl Constraint {
             "diameter" => ConstraintKind::Diameter,
             "angle" => ConstraintKind::Angle,
             "lock" => ConstraintKind::Lock,
+            "majorRadius" => ConstraintKind::MajorRadius,
+            "minorRadius" => ConstraintKind::MinorRadius,
             other => return Err(format!("rules row {} has unknown kind {other:?}", index + 1)),
         };
         let mut c = match kind {
@@ -406,6 +418,8 @@ impl Constraint {
             | ConstraintKind::Vertical
             | ConstraintKind::Radius
             | ConstraintKind::Diameter
+            | ConstraintKind::MajorRadius
+            | ConstraintKind::MinorRadius
             | ConstraintKind::Lock => Constraint::unary(kind, arg_of("a")?),
             ConstraintKind::Symmetric => {
                 Constraint::ternary(kind, arg_of("a")?, arg_of("b")?, arg_of("c")?)
@@ -467,6 +481,8 @@ impl Constraint {
             ConstraintKind::DistanceY => metric::distance_y_residual(&zeroed, p, scale, &mut out)?,
             ConstraintKind::Radius => metric::radius_residual(&zeroed, p, scale, &mut out)?,
             ConstraintKind::Diameter => metric::diameter_residual(&zeroed, p, scale, &mut out)?,
+            ConstraintKind::MajorRadius => metric::major_radius_residual(&zeroed, p, scale, &mut out)?,
+            ConstraintKind::MinorRadius => metric::minor_radius_residual(&zeroed, p, scale, &mut out)?,
             ConstraintKind::Angle => return tangent::measured_angle(self, p, scale).map(Some),
             _ => return Ok(None),
         }
@@ -518,7 +534,15 @@ impl Constraint {
             ConstraintKind::Parallel => 1,
             ConstraintKind::Perpendicular => 1,
             ConstraintKind::Tangent => 1,
-            ConstraintKind::Equal => 1,
+            // Two ellipses are equal in BOTH radii (FreeCAD: DoF 10 -> 8), so that form is two rows.
+            ConstraintKind::Equal => {
+                let ellipse = |i: usize| matches!(self.args.get(i), Some(Some(a)) if a.kind == GeoKind::Ellipse);
+                if ellipse(0) && ellipse(1) {
+                    2
+                } else {
+                    1
+                }
+            }
             ConstraintKind::Symmetric => 2,
             ConstraintKind::Distance => 1,
             ConstraintKind::DistanceX => 1,
@@ -527,6 +551,8 @@ impl Constraint {
             ConstraintKind::Diameter => 1,
             ConstraintKind::Angle => 1,
             ConstraintKind::Lock => 0,
+            ConstraintKind::MajorRadius => 1,
+            ConstraintKind::MinorRadius => 1,
         }
     }
 
@@ -568,6 +594,8 @@ impl Constraint {
             ConstraintKind::Diameter => metric::diameter_residual(self, p, scale, out),
             ConstraintKind::Angle => tangent::angle_residual(self, p, scale, out),
             ConstraintKind::Lock => incidence::lock_residual(self, p, scale, out),
+            ConstraintKind::MajorRadius => metric::major_radius_residual(self, p, scale, out),
+            ConstraintKind::MinorRadius => metric::minor_radius_residual(self, p, scale, out),
         }
     }
 
@@ -610,6 +638,8 @@ impl Constraint {
             ConstraintKind::Diameter => metric::diameter_jacobian(self, p, scale, out),
             ConstraintKind::Angle => tangent::angle_jacobian(self, p, scale, out),
             ConstraintKind::Lock => incidence::lock_jacobian(self, p, scale, out),
+            ConstraintKind::MajorRadius => metric::major_radius_jacobian(self, p, scale, out),
+            ConstraintKind::MinorRadius => metric::minor_radius_jacobian(self, p, scale, out),
         }
     }
 }
@@ -823,7 +853,9 @@ mod tests {
         assert_eq!(ConstraintKind::PointOnObject.name(), "pointOnObject");
         assert_eq!(ConstraintKind::DistanceX.name(), "distanceX");
         assert_eq!(ConstraintKind::Lock.name(), "lock");
-        assert_eq!(ConstraintKind::ALL.len(), 16);
+        assert_eq!(ConstraintKind::ALL.len(), 18);
+        assert_eq!(ConstraintKind::MajorRadius.name(), "majorRadius");
+        assert_eq!(ConstraintKind::MinorRadius.name(), "minorRadius");
     }
 
     #[test]

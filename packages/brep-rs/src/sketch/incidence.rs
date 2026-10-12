@@ -165,8 +165,23 @@ pub fn point_on_object_residual(
             }
             set_row(out, 0, d - param_at(p, r_slot)?)
         }
+        GeoKind::Ellipse => {
+            // Sum of the two focal distances equals the major diameter: |P-F1| + |P-F2| - 2a, a length.
+            let e = super::metric::ellipse_now(&t, p, scale)?;
+            let (f1x, f1y) = (e.cx + e.fx, e.cy + e.fy);
+            let (f2x, f2y) = (e.cx - e.fx, e.cy - e.fy);
+            let d1 = ((px - f1x).powi(2) + (py - f1y).powi(2)).sqrt();
+            let d2 = ((px - f2x).powi(2) + (py - f2y).powi(2)).sqrt();
+            if degenerate(d1, scale) || degenerate(d2, scale) {
+                return Err(format!(
+                    "point {} sits on a focus of ellipse {}; there is no direction to the curve from there",
+                    a.geo, t.geo
+                ));
+            }
+            set_row(out, 0, d1 + d2 - 2.0 * e.major)
+        }
         GeoKind::Point => Err(format!(
-            "pointOnObject needs a line, a circle or an arc to sit on, not a point"
+            "pointOnObject needs a line, a circle, an arc or an ellipse to sit on, not a point"
         )),
     }
 }
@@ -235,8 +250,33 @@ pub fn point_on_object_jacobian(
             out.add(0, cy, -ry * inv)?;
             out.add(0, r_slot, -1.0)
         }
+        GeoKind::Ellipse => {
+            let e = super::metric::ellipse_now(&t, p, scale)?;
+            let (f1x, f1y) = (e.cx + e.fx, e.cy + e.fy);
+            let (f2x, f2y) = (e.cx - e.fx, e.cy - e.fy);
+            let d1 = ((px - f1x).powi(2) + (py - f1y).powi(2)).sqrt();
+            let d2 = ((px - f2x).powi(2) + (py - f2y).powi(2)).sqrt();
+            if degenerate(d1, scale) || degenerate(d2, scale) {
+                return Err(format!(
+                    "point {} sits on a focus of ellipse {}; there is no direction to the curve from there",
+                    a.geo, t.geo
+                ));
+            }
+            let (u1x, u1y) = ((px - f1x) / d1, (py - f1y) / d1);
+            let (u2x, u2y) = ((px - f2x) / d2, (py - f2y) / d2);
+            // The point enters both distances with weight +1.
+            out.add(0, ux, u1x + u2x)?;
+            out.add(0, uy, u1y + u2y)?;
+            // F1 is the focus slot; F2 = 2c - F1, so F1 enters d2 with weight -(-1) = +1 on u2, and the
+            // centre enters d2 with weight -2 on u2. 2a depends on f = F1 - c and on b.
+            out.add(0, e.f[0], -u1x + u2x - 2.0 * e.fx / e.major)?;
+            out.add(0, e.f[1], -u1y + u2y - 2.0 * e.fy / e.major)?;
+            out.add(0, e.c[0], -2.0 * u2x + 2.0 * e.fx / e.major)?;
+            out.add(0, e.c[1], -2.0 * u2y + 2.0 * e.fy / e.major)?;
+            out.add(0, e.b_slot, -2.0 * e.b / e.major)
+        }
         GeoKind::Point => Err(format!(
-            "pointOnObject needs a line, a circle or an arc to sit on, not a point"
+            "pointOnObject needs a line, a circle, an arc or an ellipse to sit on, not a point"
         )),
     }
 }

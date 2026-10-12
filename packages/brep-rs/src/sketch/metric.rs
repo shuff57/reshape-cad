@@ -37,8 +37,47 @@
 //! is defined there but its derivative is not, so it refuses rather than
 //! returning a direction it had to invent.
 
-use super::params::{GeoKind, PointRef};
+use super::params::{Arg, GeoKind, PointRef};
 use super::{degenerate, param_at, set_row, Constraint, JacRows};
+
+/// An ellipse read out of the parameter vector: its slots and its current numbers. `fx, fy` is the first
+/// focus RELATIVE to the centre, `major` is `a = sqrt(b^2 + fx^2 + fy^2)`, and `b` is the minor radius.
+/// Shared by every rule that touches an ellipse (metric, incidence, tangent), so the foci form is read in
+/// exactly one place.
+pub struct EllipseNow {
+    pub c: [usize; 2],
+    pub f: [usize; 2],
+    pub b_slot: usize,
+    pub cx: f64,
+    pub cy: f64,
+    pub fx: f64,
+    pub fy: f64,
+    pub b: f64,
+    pub major: f64,
+}
+
+pub fn ellipse_now(a: &Arg, p: &[f64], scale: f64) -> Result<EllipseNow, String> {
+    let (c, f) = a.ellipse_slots()?;
+    let b_slot = a.minor_slot()?;
+    let (cx, cy) = (param_at(p, c[0])?, param_at(p, c[1])?);
+    let (fx, fy) = (param_at(p, f[0])? - cx, param_at(p, f[1])? - cy);
+    let b = param_at(p, b_slot)?;
+    let major = (b * b + fx * fx + fy * fy).sqrt();
+    if degenerate(major, scale) {
+        return Err(format!("ellipse {} has no size; give it a major and a minor radius", a.geo));
+    }
+    Ok(EllipseNow { c, f, b_slot, cx, cy, fx, fy, b, major })
+}
+
+/// The sentence for a circle-only rule handed something else.
+fn circle_only(rule: &str, kind: GeoKind) -> String {
+    match kind {
+        GeoKind::Ellipse => format!(
+            "{rule} needs a circle or an arc; an ellipse has two radii, so dimension it with majorRadius or minorRadius"
+        ),
+        other => format!("{rule} needs a circle or an arc, not a {}", other.label()),
+    }
+}
 
 // ---------------------------------------------------------------------------
 // distance
@@ -157,10 +196,7 @@ pub fn radius_residual(
 ) -> Result<(), String> {
     let a = c.arg(0)?;
     if a.kind != GeoKind::Circle && a.kind != GeoKind::Arc {
-        return Err(format!(
-            "radius needs a circle or an arc, not a {:?}",
-            a.kind
-        ));
+        return Err(circle_only("radius", a.kind));
     }
     let r = a.radius_slot()?;
     set_row(out, 0, param_at(p, r)? - c.value)
@@ -174,10 +210,7 @@ pub fn radius_jacobian(
 ) -> Result<(), String> {
     let a = c.arg(0)?;
     if a.kind != GeoKind::Circle && a.kind != GeoKind::Arc {
-        return Err(format!(
-            "radius needs a circle or an arc, not a {:?}",
-            a.kind
-        ));
+        return Err(circle_only("radius", a.kind));
     }
     out.add(0, a.radius_slot()?, 1.0)
 }
@@ -190,10 +223,7 @@ pub fn diameter_residual(
 ) -> Result<(), String> {
     let a = c.arg(0)?;
     if a.kind != GeoKind::Circle && a.kind != GeoKind::Arc {
-        return Err(format!(
-            "diameter names a circle or an arc, not a {:?}",
-            a.kind
-        ));
+        return Err(circle_only("diameter", a.kind));
     }
     let r = a.radius_slot()?;
     set_row(out, 0, 2.0 * param_at(p, r)? - c.value)
@@ -207,10 +237,7 @@ pub fn diameter_jacobian(
 ) -> Result<(), String> {
     let a = c.arg(0)?;
     if a.kind != GeoKind::Circle && a.kind != GeoKind::Arc {
-        return Err(format!(
-            "diameter names a circle or an arc, not a {:?}",
-            a.kind
-        ));
+        return Err(circle_only("diameter", a.kind));
     }
     // 2*r - value: the derivative is 2, not 1, and the residual is the error
     // the dimension label shows rather than half of it (header note).
@@ -254,8 +281,14 @@ pub fn equal_residual(
             let r2 = b.radius_slot()?;
             set_row(out, 0, param_at(p, r1)? - param_at(p, r2)?)
         }
+        (GeoKind::Ellipse, GeoKind::Ellipse) => {
+            // Both radii (FreeCAD: two ellipses equal removes 2 degrees of freedom).
+            let (e1, e2) = (ellipse_now(&a, p, scale)?, ellipse_now(&b, p, scale)?);
+            set_row(out, 0, e1.major - e2.major)?;
+            set_row(out, 1, e1.b - e2.b)
+        }
         _ => Err(
-            "equal between a line and a circle is not defined; constrain lengths to lengths or radii to radii"
+            "equal needs two lines, two circles or arcs, or two ellipses; constrain lengths to lengths and radii to radii"
                 .to_string(),
         ),
     }
@@ -301,9 +334,78 @@ pub fn equal_jacobian(
             out.add(0, a.radius_slot()?, 1.0)?;
             out.add(0, b.radius_slot()?, -1.0)
         }
+        (GeoKind::Ellipse, GeoKind::Ellipse) => {
+            let (e1, e2) = (ellipse_now(&a, p, scale)?, ellipse_now(&b, p, scale)?);
+            // d(major)/d(first focus) = f/major, d(major)/d(centre) = -f/major, d(major)/d(b) = b/major.
+            for (sign, e) in [(1.0, &e1), (-1.0, &e2)] {
+                out.add(0, e.f[0], sign * e.fx / e.major)?;
+                out.add(0, e.f[1], sign * e.fy / e.major)?;
+                out.add(0, e.c[0], -sign * e.fx / e.major)?;
+                out.add(0, e.c[1], -sign * e.fy / e.major)?;
+                out.add(0, e.b_slot, sign * e.b / e.major)?;
+            }
+            out.add(1, e1.b_slot, 1.0)?;
+            out.add(1, e2.b_slot, -1.0)
+        }
         _ => Err(
-            "equal between a line and a circle is not defined; constrain lengths to lengths or radii to radii"
+            "equal needs two lines, two circles or arcs, or two ellipses; constrain lengths to lengths and radii to radii"
                 .to_string(),
         ),
     }
+}
+// ---------------------------------------------------------------------------
+// majorRadius / minorRadius  (an ellipse is sized through its axes, not `radius`)
+// ---------------------------------------------------------------------------
+
+fn ellipse_of(c: &Constraint, rule: &str) -> Result<Arg, String> {
+    let a = c.arg(0)?;
+    if a.kind != GeoKind::Ellipse {
+        return Err(format!("{rule} needs an ellipse, not a {}; use radius for a circle or an arc", a.kind.label()));
+    }
+    Ok(a)
+}
+
+pub fn major_radius_residual(
+    c: &Constraint,
+    p: &[f64],
+    scale: f64,
+    out: &mut [f64],
+) -> Result<(), String> {
+    let a = ellipse_of(c, "majorRadius")?;
+    set_row(out, 0, ellipse_now(&a, p, scale)?.major - c.value)
+}
+
+pub fn major_radius_jacobian(
+    c: &Constraint,
+    p: &[f64],
+    scale: f64,
+    out: &mut JacRows,
+) -> Result<(), String> {
+    let a = ellipse_of(c, "majorRadius")?;
+    let e = ellipse_now(&a, p, scale)?;
+    out.add(0, e.f[0], e.fx / e.major)?;
+    out.add(0, e.f[1], e.fy / e.major)?;
+    out.add(0, e.c[0], -e.fx / e.major)?;
+    out.add(0, e.c[1], -e.fy / e.major)?;
+    out.add(0, e.b_slot, e.b / e.major)
+}
+
+pub fn minor_radius_residual(
+    c: &Constraint,
+    p: &[f64],
+    _scale: f64,
+    out: &mut [f64],
+) -> Result<(), String> {
+    let a = ellipse_of(c, "minorRadius")?;
+    set_row(out, 0, param_at(p, a.minor_slot()?)? - c.value)
+}
+
+pub fn minor_radius_jacobian(
+    c: &Constraint,
+    _p: &[f64],
+    _scale: f64,
+    out: &mut JacRows,
+) -> Result<(), String> {
+    let a = ellipse_of(c, "minorRadius")?;
+    out.add(0, a.minor_slot()?, 1.0)
 }

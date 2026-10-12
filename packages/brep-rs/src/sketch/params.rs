@@ -16,7 +16,14 @@
 //! line    4   ax ay bx by
 //! circle  3   cx cy r
 //! arc     7   cx cy r ax ay bx by
+//! ellipse 5   cx cy fx fy b
 //! ```
+//!
+//! An ellipse stores its centre, its FIRST FOCUS as a point, and its minor radius. The major radius is
+//! derived, `a = sqrt(b^2 + |f - c|^2)`, so `a >= b` holds by construction and every slot is a length
+//! (the same foci form FreeCAD's solver uses). The second focus is `2c - f`, not a slot. The major axis
+//! direction is `f - c`; a circle is the limit `f = c`, where it has no direction, which the rules that
+//! need one (tangent) refuse in a sentence.
 //!
 //! An arc's `sense` is NOT in that list. It is a non-solver bit: the emitter
 //! needs it to pick a sweep direction, no residual may read it, and putting it
@@ -52,6 +59,7 @@ pub enum GeoKind {
     Line,
     Circle,
     Arc,
+    Ellipse,
 }
 
 /// Which way an arc runs from `a` to `b`. Non-solver data (O1).
@@ -110,15 +118,36 @@ pub enum Geo {
         b: [f64; 2],
         sense: Sense,
     },
+    /// Centre, first focus (a point), minor radius. See the layout note above.
+    Ellipse {
+        c: [f64; 2],
+        f: [f64; 2],
+        b: f64,
+    },
 }
 
 impl Geo {
+    /// An ellipse from the numbers a student writes: centre, major radius, minor radius, and the angle of
+    /// the major axis from +x in degrees. A minor radius larger than the major swaps the two and turns the
+    /// axis a quarter turn, so the stored `a >= b` always holds and the same curve is drawn.
+    pub fn ellipse(c: [f64; 2], major: f64, minor: f64, angle_deg: f64) -> Geo {
+        let (a, b, ang) = if minor > major {
+            (minor, major, angle_deg + 90.0)
+        } else {
+            (major, minor, angle_deg)
+        };
+        let reach = (a * a - b * b).max(0.0).sqrt();
+        let t = ang.to_radians();
+        Geo::Ellipse { c, f: [c[0] + reach * t.cos(), c[1] + reach * t.sin()], b }
+    }
+
     pub fn kind(&self) -> GeoKind {
         match self {
             Geo::Point { .. } => GeoKind::Point,
             Geo::Line { .. } => GeoKind::Line,
             Geo::Circle { .. } => GeoKind::Circle,
             Geo::Arc { .. } => GeoKind::Arc,
+            Geo::Ellipse { .. } => GeoKind::Ellipse,
         }
     }
 
@@ -138,6 +167,7 @@ impl Geo {
             Geo::Line { a, b } => [a[0], a[1], b[0], b[1], 0.0, 0.0, 0.0],
             Geo::Circle { c, r } => [c[0], c[1], r, 0.0, 0.0, 0.0, 0.0],
             Geo::Arc { c, r, a, b, .. } => [c[0], c[1], r, a[0], a[1], b[0], b[1]],
+            Geo::Ellipse { c, f, b } => [c[0], c[1], f[0], f[1], b, 0.0, 0.0],
         }
     }
 }
@@ -153,6 +183,7 @@ impl GeoKind {
             GeoKind::Line => &["ax", "ay", "bx", "by"],
             GeoKind::Circle => &["cx", "cy", "r"],
             GeoKind::Arc => &["cx", "cy", "r", "ax", "ay", "bx", "by"],
+            GeoKind::Ellipse => &["cx", "cy", "fx", "fy", "b"],
         }
     }
 
@@ -166,6 +197,7 @@ impl GeoKind {
             GeoKind::Line => "line",
             GeoKind::Circle => "circle",
             GeoKind::Arc => "arc",
+            GeoKind::Ellipse => "ellipse",
         }
     }
 
@@ -188,6 +220,9 @@ impl GeoKind {
             (GeoKind::Arc, PointRef::C) => Some([0, 1]),
             (GeoKind::Arc, PointRef::A) => Some([3, 4]),
             (GeoKind::Arc, PointRef::B) => Some([5, 6]),
+            (GeoKind::Ellipse, PointRef::C) => Some([0, 1]),
+            // The first focus. The second is derived (2c - f), so it is not addressable.
+            (GeoKind::Ellipse, PointRef::A) => Some([2, 3]),
             _ => None,
         }
     }
@@ -197,7 +232,15 @@ impl GeoKind {
     pub fn radius_offset(self) -> Option<usize> {
         match self {
             GeoKind::Circle | GeoKind::Arc => Some(2),
-            GeoKind::Point | GeoKind::Line => None,
+            GeoKind::Point | GeoKind::Line | GeoKind::Ellipse => None,
+        }
+    }
+
+    /// The offset of an ellipse's minor radius `b`, None for every other kind.
+    pub fn minor_offset(self) -> Option<usize> {
+        match self {
+            GeoKind::Ellipse => Some(4),
+            _ => None,
         }
     }
 }
@@ -306,6 +349,19 @@ impl Arg {
                 self.geo
             )),
         }
+    }
+
+    /// Slot of an ellipse's minor radius `b`.
+    pub fn minor_slot(&self) -> Result<usize, String> {
+        match self.kind.minor_offset() {
+            Some(d) => Ok(self.base + d),
+            None => Err(format!("geometry {} is a {} and has no minor radius", self.geo, self.kind.label())),
+        }
+    }
+
+    /// Slots of an ellipse's centre and first focus, as `([cx, cy], [fx, fy])`.
+    pub fn ellipse_slots(&self) -> Result<([usize; 2], [usize; 2]), String> {
+        Ok((self.slots_of(PointRef::C)?, self.slots_of(PointRef::A)?))
     }
 
     /// Slot of this geometry's radius.
@@ -477,6 +533,12 @@ impl ParamBlock {
                 if let Some(r) = self.values.get(e.base + d) {
                     r_max = r_max.max(r.abs());
                 }
+            }
+            if e.kind == GeoKind::Ellipse {
+                // Its extent is the major radius, derived from the focus offset and the minor radius.
+                let v = |d: usize| self.values.get(e.base + d).copied().unwrap_or(0.0);
+                let a = (v(4).powi(2) + (v(2) - v(0)).powi(2) + (v(3) - v(1)).powi(2)).sqrt();
+                r_max = r_max.max(a);
             }
             for at in [PointRef::A, PointRef::B, PointRef::C] {
                 if let Some(off) = e.kind.point_offsets(at) {
