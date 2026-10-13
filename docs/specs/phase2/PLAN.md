@@ -43,6 +43,30 @@ add to the census FIRST (the baseline is the REFUSED/FACES row they start as).
 | A3 | chamfer `Two distances` and `Distance and angle` | NO-CONSTRUCT (kernel half missing) | `dress-mode__chamfer-two-distances` 5910, `chamfer-distance-angle` 5922.058; which of the two faces carries which distance (FreeCAD orders by the edge's face order: probe) | asymmetric wedge on the `f78f396` path; the script word (`bevel` takes one size) is the gauntlet agent's: send the schema field via msgbox. |
 | A4 | fillet after chamfers (`chain-then-fillet`) | refuses | FreeCAD 5896.610 / 9 | only if A2 lands a corner blend that composes; else stays refused. |
 
+### A1 result (2026-10-12, loop `wf_d06b3b51-d06`): stop rule hit, refusal kept, branches NOT landed
+
+Two rounds, both failed verification (branches `worktree-wf_d06b3b51-d06-2`, `-6`, forked from `219a017`, so they also
+conflict with `7426176` in `wasm.rs`/`lib.rs`; cargo 611/623 on that stale base). What was measured:
+
+- **FreeCAD's answer depends on how the chamfer is picked.** One `PartDesign::Chamfer` with three edges at a corner:
+  5885.333 on 10 faces (corner patch). Three SEPARATE chamfer features of the same size: 5886.000 on 9 faces (d=2) and
+  5568 on 9 (d=4) -- exactly the three wedges the kernel would cut. The script lowers `chamfer([e1,e2,e3], d)` to one
+  fillet feature per edge, so the doc cannot say which was meant. Round 1 built the patch and so disagreed with FreeCAD
+  for every separate-feature doc (rel 1.1e-4 .. 9.6e-4, no refusal): a silently wrong solid. Round 2 chained "any order"
+  and still disagreed for the same separate-feature case.
+- Order-dependent wrong solid in round 1 (five edges of a post in one order: 5791.333/12 faces, reverse order
+  5790.667/13 = FreeCAD): one set of edges, two solids.
+- Near-equal sizes (eps <= 1e-7) were treated as equal with a patch (off by 2e-5 absolute).
+- The "more than three faces" guard also refuses a plain 3-face corner on a triangle/hexagon/wedge prism (90 of 222
+  sweep cases refused; all in a sentence).
+
+**What this means:** the three-wedge result the kernel's old path would give IS FreeCAD's answer for three separate
+features. The census case `dress-chain__three-at-corner` was made from one pick; the script's own doc form is the
+sequential one. New idea for the next round (a legitimate third round under the stop rule): do not build a patch; add
+a census reference built from THREE SEPARATE features, and lift the corner guard only when the three bevels are
+separate features of one chain (wedges, 9 faces), keeping the one-pick patch refused until the IR can carry a pick
+group (schema change: goes to `reshape-gauntlet`).
+
 ### B. Face-count parity (the solid is right, the topology differs)
 
 | id | what | gap | acceptance |
