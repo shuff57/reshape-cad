@@ -3110,6 +3110,30 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     hist.insert(&id, src);
                     continue;
                 }
+                // A second distance or an angle (slice A3): honoured exactly or refused in a sentence, never read as absent.
+                match asym_request(f, size, round) {
+                    Ok(None) => {}
+                    Err(why) => {
+                        refusals.insert(id.clone(), json!(format!("{verb} {label}: {why} -- {label} is shown without it.")));
+                        hist.insert(&id, src);
+                        continue;
+                    }
+                    Ok(Some(ask)) => {
+                        let order = pad_order_known(features, &sketches, &hist, target, &src);
+                        match chamfer_asym(&src, &hist, f, size, &ask, order) {
+                            Ok(solid) => {
+                                let face_fates: Vec<Fate> = src.faces().iter().map(|fc| carry_fate(&solid, fc)).collect();
+                                record_op(&mut hist, &id, OpKind::Fillet, vec![target.to_string()], face_fates, Vec::new());
+                                hist.insert(&id, solid);
+                            }
+                            Err(why) => {
+                                refusals.insert(id.clone(), json!(format!("{verb} {label}: {why} -- {label} is shown without it.")));
+                                hist.insert(&id, src);
+                            }
+                        }
+                        continue;
+                    }
+                }
                 // The run of rounds this one belongs to (see RimRun): a round of the same radius on the result of
                 // the previous round. Once a corner could not be blended the rest of the run is refused unbuilt.
                 let own_ends: Option<(Vec3, Vec3)> = fillet_face_pair(&hist, f)
@@ -10117,6 +10141,347 @@ fn rim_corner_build(pre: &TSolid, hist: &History, features: &[Value], size: f64,
         return Err(size_fail());
     }
     Ok(cur)
+}
+
+/// A chamfer's second leg (FreeCAD's PartDesign Chamfer `Two distances` / `Distance and Angle`): `size` goes on the
+/// LOWER-numbered of the edge's two faces (the numbering of the base shape: a pad's walls in profile-edge order, then
+/// the start cap, then the end cap), `second` on the higher-numbered one, and `flip` swaps the two (measured on
+/// FreeCAD 26.3.0 RC1, docs/specs/phase2 slice A3: 26 cases, every one equal to an independent exact solid).
+struct AsymAsk {
+    second: f64,
+    flip: bool,
+}
+
+/// Read the fields of a fillet feature that ask for something other than one symmetric size: `size2` (a second
+/// distance), `angle` (degrees, the chamfer plane's angle to the first face), `flip`, `chamferType`. None when the
+/// ordinary one-size path is exactly right (no such field, or the two legs come out equal); an `Err` sentence when a
+/// field is present but cannot be honoured, so that it is never read as absent and never builds a wrong solid.
+fn asym_request(f: &Value, size: f64, round: bool) -> Result<Option<AsymAsk>, String> {
+    let present = |k: &str| f.get(k).map_or(false, |v| !v.is_null());
+    let (has2, hasa, hasf, hast) = (present("size2"), present("angle"), present("flip"), present("chamferType"));
+    if !(has2 || hasa || hasf || hast) {
+        return Ok(None);
+    }
+    if round {
+        return Err("a round has one radius, so a second distance, an angle or a flip cannot be applied to it; give a chamfer for that".to_string());
+    }
+    let kind: Option<u8> = match f.get("chamferType") {
+        None | Some(Value::Null) => None,
+        Some(v) => match v.as_str().map(|s| s.to_ascii_lowercase()) {
+            Some(s) if s.contains("equal") => Some(0),
+            Some(s) if s.contains("two") => Some(1),
+            Some(s) if s.contains("angle") => Some(2),
+            _ => return Err("the chamfer type is not one brep-rs knows (Equal distance, Two distances, Distance and Angle)".to_string()),
+        },
+    };
+    if has2 && hasa {
+        return Err("a chamfer takes a second distance or an angle, not both".to_string());
+    }
+    match kind {
+        Some(0) if has2 || hasa => return Err("an equal-distance chamfer has no second distance or angle".to_string()),
+        Some(1) if !has2 => return Err("a two-distances chamfer needs its second distance (size2)".to_string()),
+        Some(2) if !hasa => return Err("a distance-and-angle chamfer needs its angle".to_string()),
+        _ => {}
+    }
+    let flip = match f.get("flip") {
+        None | Some(Value::Null) => false,
+        Some(v) => v.as_bool().ok_or_else(|| "the flip of a chamfer is true or false".to_string())?,
+    };
+    if !(size.is_finite() && size > 0.0) {
+        return Err("the first distance of a chamfer must be a number above 0".to_string());
+    }
+    let second = if has2 {
+        match f.get("size2").and_then(|v| v.as_f64()) {
+            Some(d) if d.is_finite() && d > 0.0 => d,
+            _ => return Err("the second distance of a chamfer must be a number above 0".to_string()),
+        }
+    } else if hasa {
+        match f.get("angle").and_then(|v| v.as_f64()) {
+            Some(a) if a.is_finite() && a > 0.0 && a < 90.0 => size * a.to_radians().tan(),
+            _ => return Err("the angle of a chamfer must be a number of degrees above 0 and below 90".to_string()),
+        }
+    } else {
+        size
+    };
+    // Equal legs: the face order does not matter and the ordinary one-size path is exact.
+    if (second - size).abs() <= 1e-12 * size.max(1.0) {
+        return Ok(None);
+    }
+    Ok(Some(AsymAsk { second, flip }))
+}
+
+/// Whether the face numbering FreeCAD would give the part `target` is known here: only a plain pad (no reverse,
+/// symmetric, second length, taper or direction) of one straight-sided outline, untouched since, whose walls stand in
+/// the order the outline's edges were given. Anything else is `Err(why)`, because the rule is on that numbering and a
+/// guess would put the long leg on the wrong face.
+fn pad_order_known(
+    features: &[Value],
+    sketches: &std::collections::HashMap<String, Value>,
+    hist: &History,
+    target: &str,
+    src: &TSolid,
+) -> Result<(), String> {
+    const WHY: &str = "FreeCAD puts the first distance on the lower-numbered of the edge's two faces, and brep-rs can only tell that numbering for a part that is a plain pad (no reverse, symmetric, taper or direction option) of one straight-sided sketch with nothing done to it since, so it cannot say which face takes which distance on this part";
+    let g = features
+        .iter()
+        .find(|g| g.get("id").and_then(|i| i.as_str()) == Some(target) && g.get("kind").and_then(|k| k.as_str()) == Some("extrude"))
+        .ok_or(WHY)?;
+    if direction_options(g) != (false, false, 0.0) {
+        return Err(WHY.to_string());
+    }
+    if !matches!(slant_options(g), Ok((t, None, _)) if t == 0.0) {
+        return Err(WHY.to_string());
+    }
+    if !(g.get("height").and_then(|h| h.as_f64()).unwrap_or(0.0) > 0.0) {
+        return Err(WHY.to_string());
+    }
+    let sk = g.get("target").and_then(|t| t.as_str()).and_then(|t| sketches.get(t)).ok_or(WHY)?;
+    if frame_refusal(sk).is_some() {
+        return Err(WHY.to_string());
+    }
+    let rec = hist.sweeps.get(target).ok_or(WHY)?;
+    let n = rec.segments.len();
+    let faces = src.faces();
+    if src.shells.len() != 1 || n < 3 || faces.len() != n + 2 || rec.closed {
+        return Err(WHY.to_string());
+    }
+    if !(rec.cap_bottom == Some(n) && rec.cap_top == Some(n + 1) || rec.cap_bottom == Some(n + 1) && rec.cap_top == Some(n)) {
+        return Err(WHY.to_string());
+    }
+    // the outline's straight edges in the order they were given
+    let lines: Vec<([f64; 2], [f64; 2])> = if sk.get("geoms").and_then(|x| x.as_array()).map_or(false, |x| !x.is_empty()) {
+        let geoms = sk.get("geoms").and_then(|x| x.as_array()).ok_or(WHY)?;
+        let pt = |g: &Value, k: &str| -> Option<[f64; 2]> {
+            let a = g.get(k)?.as_array()?;
+            Some([a.first()?.as_f64()?, a.get(1)?.as_f64()?])
+        };
+        let mut out = Vec::new();
+        for gm in geoms {
+            if gm.get("k").and_then(|k| k.as_str()) != Some("line") {
+                return Err(WHY.to_string());
+            }
+            out.push((pt(gm, "a").ok_or(WHY)?, pt(gm, "b").ok_or(WHY)?));
+        }
+        out
+    } else {
+        let (points, _basis, bulges) = profile_corners(sk).ok_or(WHY)?;
+        if !bulges.is_empty() || points.len() != n {
+            return Err(WHY.to_string());
+        }
+        (0..n).map(|i| (points[i], points[(i + 1) % n])).collect()
+    };
+    if lines.len() != n {
+        return Err(WHY.to_string());
+    }
+    let fr = sketch_frame(sk);
+    for (i, (p, q)) in lines.iter().enumerate() {
+        let wall = faces[i].borrow();
+        let mut verts: Vec<Vec3> = Vec::new();
+        for w in &wall.boundary {
+            for u in &w.borrow().edges {
+                let e = u.edge.borrow();
+                verts.push(e.a.borrow().point);
+                verts.push(e.b.borrow().point);
+            }
+        }
+        for end in [p, q] {
+            let world = uv_world(fr.origin, fr.u, fr.v, *end);
+            if !verts.iter().any(|v| len(sub(*v, world)) <= 1e-6 * (1.0 + len(world))) {
+                return Err(WHY.to_string());
+            }
+        }
+    }
+    Ok(())
+}
+
+/// The volume of the part of the convex flat-faced `src` on the `n` side of the plane through `p0`, found face by face
+/// (each face clipped, then the cap), independently of any boolean. None for a face that is not one flat loop.
+fn volume_beyond_plane(src: &TSolid, p0: Vec3, n: Vec3) -> Option<f64> {
+    let fan = |pts: &[Vec3], outward: Vec3| -> f64 {
+        let mut nn = [0.0; 3];
+        for i in 0..pts.len() {
+            nn = add(nn, cross(sub(pts[i], p0), sub(pts[(i + 1) % pts.len()], p0)));
+        }
+        let mut ordered: Vec<Vec3> = pts.to_vec();
+        if dot(nn, outward) < 0.0 {
+            ordered.reverse();
+        }
+        let mut v = 0.0;
+        for i in 1..ordered.len() - 1 {
+            v += dot(sub(ordered[0], p0), cross(sub(ordered[i], p0), sub(ordered[i + 1], p0))) / 6.0;
+        }
+        v
+    };
+    let mut total = 0.0;
+    let mut cap: Vec<Vec3> = Vec::new();
+    for face in src.faces() {
+        let fb = face.borrow();
+        let Surface::Plane(pl) = &fb.surface else { return None };
+        if fb.boundary.len() != 1 {
+            return None;
+        }
+        let outward = if fb.forward { normalize(pl.n) } else { scale(normalize(pl.n), -1.0) };
+        let pts: Vec<Vec3> = fb.boundary[0]
+            .borrow()
+            .edges
+            .iter()
+            .map(|u| {
+                let e = u.edge.borrow();
+                let r = if u.forward { e.a.borrow().point } else { e.b.borrow().point };
+                r
+            })
+            .collect();
+        let d: Vec<f64> = pts.iter().map(|p| dot(n, sub(*p, p0))).collect();
+        let mut kept: Vec<Vec3> = Vec::new();
+        for i in 0..pts.len() {
+            let j = (i + 1) % pts.len();
+            if d[i] >= 0.0 {
+                kept.push(pts[i]);
+            }
+            if (d[i] >= 0.0) != (d[j] >= 0.0) {
+                let t = d[i] / (d[i] - d[j]);
+                let x = add(pts[i], scale(sub(pts[j], pts[i]), t));
+                kept.push(x);
+                if !cap.iter().any(|c| len(sub(*c, x)) < 1e-9 * (1.0 + len(x))) {
+                    cap.push(x);
+                }
+            }
+        }
+        if kept.len() >= 3 {
+            total += fan(&kept, outward);
+        }
+    }
+    if cap.len() >= 3 {
+        // order the cap by angle about its centroid, in the cutting plane
+        let c = scale(cap.iter().fold([0.0; 3], |s, p| add(s, *p)), 1.0 / cap.len() as f64);
+        let e1 = normalize(sub(cap[0], c));
+        let e2 = cross(n, e1);
+        cap.sort_by(|p, q| {
+            let (dp, dq) = (sub(*p, c), sub(*q, c));
+            let ap = dot(dp, e2).atan2(dot(dp, e1));
+            let aq = dot(dq, e2).atan2(dot(dq, e1));
+            ap.partial_cmp(&aq).unwrap_or(std::cmp::Ordering::Equal)
+        });
+        total += fan(&cap, scale(n, -1.0));
+    }
+    Some(total)
+}
+
+/// An asymmetric chamfer of one straight edge of a convex flat-faced pad: the part less what lies beyond the plane
+/// through the point `leg_a` from the edge along face a and the point `leg_b` along face b. Each leg is measured
+/// square to the edge, in its face. Refuses (the sentence, without the feature's label) anything it cannot prove: the
+/// result is built by a boolean and then held to the exact volume of the cut-off piece computed face by face, one new
+/// flat face, and no vertex left beyond the plane.
+fn chamfer_asym(
+    src: &TSolid,
+    hist: &History,
+    f: &Value,
+    size: f64,
+    ask: &AsymAsk,
+    order: Result<(), String>,
+) -> Result<TSolid, String> {
+    order?;
+    let (fa, fb) = fillet_face_pair(hist, f).ok_or_else(|| "its edge could not be found".to_string())?;
+    if std::rc::Rc::ptr_eq(&fa, &fb) {
+        return Err("brep-rs cannot chamfer a flat edge".to_string());
+    }
+    if src.shells.len() != 1 || !is_convex_planar(src) {
+        return Err("brep-rs can only give a chamfer two distances on a part made only of flat faces with no inside corner yet".to_string());
+    }
+    let faces = src.faces();
+    let pos = |x: &build::TFace| faces.iter().position(|y| std::rc::Rc::ptr_eq(x, y));
+    let (Some(ia), Some(ib)) = (pos(&fa), pos(&fb)) else {
+        return Err("the edge named belongs to an earlier step, so the part's own face order cannot be read from it".to_string());
+    };
+    let edge = hist.edge_between(&fa, &fb).ok_or_else(|| "its edge could not be found".to_string())?;
+    if !matches!(&edge.borrow().curve, crate::geom::Curve::Segment { .. }) {
+        return Err("brep-rs can only give a chamfer two distances on a straight edge between two flat faces yet".to_string());
+    }
+    let (a, b) = {
+        let e = edge.borrow();
+        let ends = (e.a.borrow().point, e.b.borrow().point);
+        ends
+    };
+    let edge_length = len(sub(b, a));
+    if edge_length <= 1e-9 {
+        return Err("its edge could not be found".to_string());
+    }
+    let dir = scale(sub(b, a), 1.0 / edge_length);
+    let mid = scale(add(a, b), 0.5);
+    let cannot = |_| "brep-rs can only give a chamfer two distances on a straight edge between two flat faces yet".to_string();
+    let (na, in_a, reach_a) = fillet_face_data(&fa, mid, &edge).map_err(cannot)?;
+    let (nb, in_b, reach_b) = fillet_face_data(&fb, mid, &edge).map_err(cannot)?;
+    if dot(na, nb).abs() >= 1.0 - 1e-9 {
+        return Err("brep-rs cannot chamfer a flat edge".to_string());
+    }
+    let (first, second) = (size, ask.second);
+    // the lower-numbered face carries the first distance; a flip swaps the two
+    let a_first = (ia < ib) != ask.flip;
+    let (leg_a, leg_b) = if a_first { (first, second) } else { (second, first) };
+    if leg_a >= reach_a - 1e-9 || leg_b >= reach_b - 1e-9 {
+        return Err(format!(
+            "chamfering {first} and {second} would not fit its edge: the face it runs along is not as wide as the distance"
+        ));
+    }
+    let pa = add(mid, scale(in_a, leg_a));
+    let pb = add(mid, scale(in_b, leg_b));
+    let mut n = normalize(cross(dir, sub(pb, pa)));
+    if dot(n, sub(mid, pa)) < 0.0 {
+        n = scale(n, -1.0);
+    }
+    // Only the edge's two end points may lie beyond the plane; every other vertex must be clear of it.
+    let tol = 1e-7 * (1.0 + vertex_extent(src));
+    let mut beyond = 0usize;
+    for v in src.vertices() {
+        let p = v.borrow().point;
+        let d = dot(n, sub(p, pa));
+        if d > tol {
+            if len(sub(p, a)) > 1e-9 && len(sub(p, b)) > 1e-9 {
+                return Err(format!(
+                    "chamfering {first} and {second} reaches past a corner of the part beside its edge, which brep-rs does not blend yet"
+                ));
+            }
+            beyond += 1;
+        } else if d >= -tol {
+            return Err(format!(
+                "chamfering {first} and {second} ends within a millionth of a corner of the part, which brep-rs cannot hold exactly"
+            ));
+        }
+    }
+    if beyond < 2 {
+        return Err("its edge could not be found".to_string());
+    }
+    let want = volume_beyond_plane(src, pa, n).ok_or_else(|| "the part has a face brep-rs cannot clip exactly".to_string())?;
+    // the wedge: the triangle (edge, leg_a along face a, leg_b along face b) swept along the edge past both ends
+    let u_axis = in_a;
+    let v_axis = cross(dir, u_axis);
+    let third = [leg_b * dot(in_b, u_axis), leg_b * dot(in_b, v_axis)];
+    let segs = vec![
+        build::ProfileSeg::Line { a: [0.0, 0.0], b: [leg_a, 0.0] },
+        build::ProfileSeg::Line { a: [leg_a, 0.0], b: third },
+        build::ProfileSeg::Line { a: third, b: [0.0, 0.0] },
+    ];
+    let over = vertex_extent(src) + leg_a.max(leg_b);
+    let tool = build::extrude_profile(&segs, sub(a, scale(dir, over)), u_axis, v_axis, scale(dir, edge_length + 2.0 * over))
+        .map_err(|_| "brep-rs could not build the cutting wedge".to_string())?;
+    let tool = build::ensure_outward(&tool);
+    let cut = ops::boolean("subtract", src, &tool)
+        .map(|solid| build::ensure_outward(&solid))
+        .ok_or_else(|| "brep-rs could not cut the wedge off this part".to_string())?;
+    let v0 = build::solid_volume(src);
+    let lost = v0 - build::solid_volume(&cut);
+    let past = cut.vertices().iter().any(|v| dot(n, sub(v.borrow().point, pa)) > tol);
+    if past
+        || !lost.is_finite()
+        || (lost - want).abs() > 1e-9 * v0.abs().max(1.0)
+        || cut.faces().len() != faces.len() + 1
+        || cut.shells.len() != 1
+    {
+        return Err(format!(
+            "the cut for a chamfer of {first} and {second} did not come out as the one flat face the geometry calls for, so it is not built"
+        ));
+    }
+    Ok(cut)
 }
 
 /// Build the fillet/chamfer: a box edge rounded or chamfered is the extrusion
