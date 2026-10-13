@@ -36,6 +36,7 @@ pub mod profile;
 pub mod ops;
 pub mod ops_planar;
 pub mod ops_touch;
+pub mod corner3;
 pub mod turned;
 pub mod history;
 pub mod mesh;
@@ -53,3 +54,5 @@ pub mod step_in;
 pub mod wasm;
 #[cfg(test)]
 mod coplanar_merge_tests;
+#[cfg(test)]
+mod corner3_tests;

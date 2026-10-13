@@ -5153,13 +5153,13 @@ mod tests {
         assert_eq!(solid.faces().len(), 8, "6 box faces + bevel + cylinder");
     }
 
-    /// The honest limit, pinned: bevels on edges running along DIFFERENT axes
-    /// leave a solid that is no longer a prism along any one of them, so the
-    /// second edge refuses in words and keeps the first one's solid. A
-    /// re-extruded cross-section here would silently drop material, so refusing
-    /// is the contract (SPEC 4.5).
+    /// Bevels on edges running along DIFFERENT axes leave a solid that is no longer a prism along any one of
+    /// them, so the re-extruded cross-section cannot take the second edge (it would silently drop material).
+    /// Slice A1 cuts it as its own half-space instead, exact on a convex part: two equal chamfers at one
+    /// corner are the UNION of the two cuts, the removed volumes minus the shared tetrahedron, d^3 / 3 (FreeCAD
+    /// 26.3.0 RC1, one pick of the two edges of a 30x20x10 box at d=2: 5902.666666666666 on 8 faces).
     #[test]
-    fn fillet_second_edge_on_a_different_axis_refuses() {
+    fn fillet_second_edge_on_a_different_axis_is_the_union_of_the_two_cuts() {
         let doc = json!({
             "features": [
                 { "id": "b1", "kind": "box", "size": [40.0, 40.0, 20.0] },
@@ -5174,16 +5174,13 @@ mod tests {
             ]
         });
         let (hist, refusals) = build_doc(&doc);
-        let text = refusals.get("r2").and_then(|v| v.as_str()).unwrap_or_default();
-        assert!(
-            text.contains("can only chamfer a straight edge between two flat faces yet") && text.contains("without it"),
-            "refusal text: {text}"
-        );
-        let solid = hist.shapes.get("r2").expect("r1's solid kept");
+        assert!(refusals.is_empty(), "refusals: {refusals:?}");
+        let solid = hist.shapes.get("r2").expect("second edge builds");
         let vol = build::solid_volume(solid);
-        // r1 alone: the 40x40 cross-section in (x,y), corner cut, swept 20 in z.
-        let want = (1600.0 - 8.0) * 20.0;
-        assert!((vol - want).abs() <= 1e-6 * want, "volume {vol} vs {want}");
+        // 32000 - 8 * 20 (r1) - 8 * 40 (r2) + 4^3 / 3 (the corner both cut)
+        let want = 32000.0 - 160.0 - 320.0 + 64.0 / 3.0;
+        assert!((vol - want).abs() <= 1e-9 * want, "volume {vol} vs {want}");
+        assert_eq!(solid.faces().len(), 8, "6 box faces + 2 bevels");
     }
 
     /// SPEC-brep-fillet.md refusal: a size at least the shorter adjacent-face
@@ -9325,6 +9322,18 @@ fn map_edge_into(
     fa: &build::TFace,
     fb: &build::TFace,
 ) -> Option<(build::TEdge, build::TFace, build::TFace)> {
+    map_edge_into_with(src, edge, fa, fb, false)
+}
+
+/// `map_edge_into`; with `shorter`, also the one edge of `src` that is a SHORTER stretch of the named edge's line
+/// (a neighbouring chamfer took its end), which is what a student means by "that edge" afterwards.
+fn map_edge_into_with(
+    src: &TSolid,
+    edge: &build::TEdge,
+    fa: &build::TFace,
+    fb: &build::TFace,
+    shorter: bool,
+) -> Option<(build::TEdge, build::TFace, build::TFace)> {
     let (a, b) = {
         let e = edge.borrow();
         let r = (e.a.borrow().point, e.b.borrow().point);
@@ -9359,7 +9368,17 @@ fn map_edge_into(
             let t = dot(sub(x, p), dir);
             len(sub(sub(x, p), scale(dir, t))) < 1e-6 && t > -1e-6 && t < span + 1e-6
         };
-        if on(a) && on(b) {
+        // the piece itself lies on the named edge (it may be a shorter stretch of it)
+        let nl = len(sub(b, a));
+        let within = |x: Vec3| {
+            if nl < 1e-9 {
+                return false;
+            }
+            let nd = scale(sub(b, a), 1.0 / nl);
+            let t = dot(sub(x, a), nd);
+            len(sub(sub(x, a), scale(nd, t))) < 1e-6 && t > -1e-6 && t < nl + 1e-6
+        };
+        if (on(a) && on(b)) || (shorter && within(p) && within(q)) {
             drop(eb);
             hits.push(e.clone());
         }
@@ -9918,7 +9937,15 @@ fn build_fillet(
     // rather than guessing, so a shape this does not recognise keeps its old
     // sentence. Placed before the rotated path, which refuses outright on any
     // solid that is not six faces.
-    if let Some((lo_hi, eaxis, bevels)) = box_chamfer_frame(src) {
+    // A1: a chamfer on an edge that runs ACROSS the bevels' axis (the second edge at a corner) is not a re-extrusion of
+    // one cross-section; it falls through to the general wedge path below, which cuts it as its own half-space.
+    let across = |eaxis: usize| match (face_axis(&fa), face_axis(&fb)) {
+        (Some((a1, _)), Some((a2, _))) => !round && a1 != a2 && (eaxis == a1 || eaxis == a2),
+        _ => false,
+    };
+    let frame = box_chamfer_frame(src);
+    let skipped_frame = frame.as_ref().is_some_and(|(_, eaxis, _)| across(*eaxis));
+    if let Some((lo_hi, eaxis, bevels)) = frame.filter(|(_, eaxis, _)| !across(*eaxis)) {
         let (ax1, s1) = face_axis(&fa).ok_or(FilletErr::NoBox)?;
         let (ax2, s2) = face_axis(&fb).ok_or(FilletErr::NoBox)?;
         if ax1 == ax2 || eaxis == ax1 || eaxis == ax2 {
@@ -10032,7 +10059,24 @@ fn build_fillet(
  let own = src.edges().iter().any(|e| crate::topo::same(e, &edge))
      && src.faces().iter().any(|f| std::rc::Rc::ptr_eq(f, &fa))
      && src.faces().iter().any(|f| std::rc::Rc::ptr_eq(f, &fb));
- let (edge, fa, fb) = match if own { Some((edge.clone(), fa.clone(), fb.clone())) } else { map_edge_into(src, &edge, &fa, &fb) } {
+ // A1: a chamfer already took the end of this edge (the second and third edges at a corner): the edge to cut is
+ // what is left of it, provided the part that is gone is air.
+ let was_shortened = std::cell::Cell::new(false);
+ let shortened = |src: &TSolid| -> Option<(build::TEdge, build::TFace, build::TFace)> {
+     if round || src.shells.len() != 1 {
+         return None;
+     }
+     let (pa, pb) = { let e = edge.borrow(); let r = (e.a.borrow().point, e.b.borrow().point); r };
+     let m = map_edge_into_with(src, &edge, &fa, &fb, true)?;
+     let (qa, qb) = { let e = m.0.borrow(); let r = (e.a.borrow().point, e.b.borrow().point); r };
+     let gone = |p: Vec3| len(sub(p, qa)) > 1e-6 && len(sub(p, qb)) > 1e-6;
+     if [pa, pb].iter().any(|p| gone(*p) && ops::inside_solid(src, *p)) {
+         return None;
+     }
+     was_shortened.set(true);
+     Some(m)
+ };
+ let (edge, fa, fb) = match if own { Some((edge.clone(), fa.clone(), fb.clone())) } else { map_edge_into(src, &edge, &fa, &fb).or_else(|| shortened(src)) } {
      Some(m) => m,
      None if parallel => return Err(FilletErr::Flat),
      None => return Err(FilletErr::NoBox),
@@ -10074,9 +10118,24 @@ fn build_fillet(
  std::rc::Rc::ptr_eq(&e.a, endpoint) || std::rc::Rc::ptr_eq(&e.b, endpoint)
  }))
  }).count();
- if count > 3 {
+  if count > 3 {
+ // A1: the third of three equal chamfers at one convex corner (FreeCAD's corner patch).
+ if !round && count == 4 && !concave {
+     if let Some(solid) = crate::corner3::corner_patch(src, &fa, &fb, endpoint, size) {
+         return Ok(solid);
+     }
+ }
  return Err(FilletErr::VertexTooComplex);
  }
+ // The third of three chamfers at one corner at sizes that are not all equal: refused, not built.
+ if count == 3 && !round && !concave && crate::corner3::closes_unequal_corner(src, &fa, &fb, endpoint) {
+     return Err(FilletErr::VertexTooComplex);
+ }
+ }
+ // A1: an edge that a chamfer already cut short, or that runs across the bevels' axis, on a convex planar part:
+ // the bevel is one more half-space, exact at any angle and at an end that is not square.
+ if (skipped_frame || was_shortened.get()) && !round && !concave && src.shells.len() == 1 {
+     return crate::corner3::halfspace_chamfer(src, midpoint, edge_direction, in_a, in_b, size).ok_or(FilletErr::NoBox);
  }
  let u_axis = in_a;
  let v_axis = cross(edge_direction, u_axis);
