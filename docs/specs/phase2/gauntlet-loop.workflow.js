@@ -12,6 +12,12 @@ export const meta = {
 
 // Slice definitions mirror docs/specs/phase2/PLAN.md section 1. The goal text is what the implementer is held to.
 const SLICES = {
+  A3R: {
+    base: 'slice-A3-r2',
+    goal: 'Third round of A3 (chamfer Two distances / Distance and angle). The branch already builds and matches FreeCAD on the census cases, but has ONE silent wrong solid: on a vertical wall-wall edge the two legs swap when the sketch lines are drawn backwards (FreeCAD walks the wire from the END of geom 0; pad_order_known only checks that wall i contains geom i end points). Equal volume, different centre of mass. Fix by computing the same walk direction FreeCAD uses, or REFUSE (a sentence) whenever the sketch line order/direction is not one the kernel proves equals FreeCAD walk. Do not widen anything else. Re-test all 576-case sweep style variants the earlier verifiers used, plus backwards lines at every vertex, and compare centre of mass (0.02) as well as volume.',
+    cases: 'every dress-mode two-distances / distance-angle case in census defs.mjs plus backwards-drawn box variants at each of the 4 vertical edges, flip true/false',
+    probe: 'Reproduce the swap in FreeCAD first: box drawn with every line backwards, two distances 3/1 on the vertical edge at (30,20): expected COM (14.96491, 9.97577, 5.0).',
+  },
   A1W: {
     goal: 'WEDGE-ONLY corner: three equal-or-unequal chamfers at ONE corner of a convex planar solid, given as THREE SEPARATE bevel features (the script form), build as three successive wedge cuts and match FreeCAD run as three SEPARATE PartDesign::Chamfer features (box d=2: 5886.000 / 9 faces; d=4: 5568 / 9). NO corner patch. Lift the "end touches more than three faces" guard ONLY for that sequential case; the one-pick patch (5885.333 / 10 faces) is not buildable from the doc and must not be produced. A plain 3-face corner on a triangle/hexagon/wedge prism must stop being falsely refused.',
     cases: 'new census family dress-seq: three separate chamfers at a box corner at d=1,2,4 (FreeCAD reference = three separate features, NOT one pick); same on a pentagon prism, hexagon prism, right-triangle prism; five-edge post in BOTH orders (must agree); keep dress-chain__three-at-corner as a documented one-pick case that stays REFUSED',
@@ -104,7 +110,7 @@ for (const id of slices) {
     rounds += 1
     phase('Build')
     build = await agent(
-      `${RULES}\n\nSLICE ${id}: ${S.goal}\nCases: ${S.cases}\n\nFACT SHEET FROM THE PROBE:\n${probe.facts}\n${probe.baseline ? 'BASELINE:\n' + probe.baseline + '\n' : ''}${feedback ? '\nROUND ' + (rounds - 1) + ' FAILED. Fix exactly these, do not regress what passed:\n' + feedback + '\n' : ''}\nFIRST, in your worktree, run: git checkout -B slice-${id} ${base}  (a stale base cost a whole round last time; the base must contain docs/specs/phase2 and commit 7426176). Implement the slice in your worktree (packages/brep-rs/src). Add cargo tests that pin the FreeCAD numbers AND each refusal sentence. Run cargo test --release and the wasm build into a scratch pkg. Commit in the worktree branch (explicit paths, trailer Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>). Return the worktree path, branch, scratch pkg path, cargo test count, and a summary.`,
+      `${RULES}\n\nSLICE ${id}: ${S.goal}\nCases: ${S.cases}\n\nFACT SHEET FROM THE PROBE:\n${probe.facts}\n${probe.baseline ? 'BASELINE:\n' + probe.baseline + '\n' : ''}${feedback ? '\nROUND ' + (rounds - 1) + ' FAILED. Fix exactly these, do not regress what passed:\n' + feedback + '\n' : ''}\nFIRST, in your worktree, run: git checkout -B slice-${id} ${S.base || base}  (a stale base cost a whole round last time; the base must contain docs/specs/phase2 and commit 7426176). Implement the slice in your worktree (packages/brep-rs/src). Add cargo tests that pin the FreeCAD numbers AND each refusal sentence. Run cargo test --release and the wasm build into a scratch pkg. Commit in the worktree branch (explicit paths, trailer Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>). Return the worktree path, branch, scratch pkg path, cargo test count, and a summary.`,
       { label: `build:${id}#${rounds}`, phase: 'Build', isolation: 'worktree', schema: BUILD },
     )
     if (!build) { feedback = 'the build agent died'; continue }
