@@ -70,6 +70,22 @@ thread_local! {
     static CUR_OP: std::cell::Cell<u8> = const { std::cell::Cell::new(0) };
 }
 
+thread_local! {
+    /// Whether a wall's kept cells that are one rectangle short of the whole are merged into ONE face with a notch even
+    /// where the cells were dropped for lying inside the other solid (a groove ring reaching past the wall). Off by
+    /// default: such a part is exact to move or copy but every further cut refuses it, so only the groove feature turns
+    /// this on, and keeps the unmerged part beside it for the features that follow (wasm.rs).
+    static MERGE_PAST_WALL: std::cell::Cell<bool> = const { std::cell::Cell::new(false) };
+}
+
+/// Run `f` with a wall bitten by a ring that reaches past it merged into one notched face (see `MERGE_PAST_WALL`).
+pub fn with_wall_merge<R>(f: impl FnOnce() -> R) -> R {
+    let before = MERGE_PAST_WALL.with(|m| m.replace(true));
+    let r = f();
+    MERGE_PAST_WALL.with(|m| m.set(before));
+    r
+}
+
 /// Forget the reason a previous refusal left behind (call before a boolean whose reason will be read).
 pub fn clear_reason() {
     REASON.with(|r| r.set(None));
@@ -2668,7 +2684,8 @@ fn pieces(
                 // ring's footprint is a bite out of the wall's side or middle the rest is a single face with a notch in
                 // it, which this kernel holds only as patches along the ring's edges: a different face count from what
                 // a CAD user expects, and the faces cannot be told apart from a wall cut in several places. Refuse.
-                if partial_drop && !kept_cells.is_empty() {
+                let merge_past = MERGE_PAST_WALL.with(|m| m.get());
+                if (partial_drop || merge_past) && !kept_cells.is_empty() {
                     let whole = f.span >= TAU - 1e-9;
                     let nc = arcs.len();
                     let mut seen = vec![false; kept_cells.len()];
@@ -2708,19 +2725,21 @@ fn pieces(
                 // A wall with ONE rectangle of it lying under the ring is ONE face with a notch (as FreeCAD leaves it): the
                 // cells are merged into it. Anything else this kernel cannot hold as one face refuses.
                 if notched {
-                    if flip {
-                        set_reason(NOTCHED_WALL_SENTENCE);
-                        bail!();
-                    }
-                    match merge_notched_wall(f, &arcs, &hs, &kept_cells, &cells) {
+                    // Cells dropped for lying under a ring's wall that this wall also is (`partial_drop`) cannot be held
+                    // any other way, so a bite that is not one rectangle refuses. Cells dropped because the other solid
+                    // covers them (a ring that reaches past the wall) are the same one face with a notch when they are
+                    // one rectangle, and otherwise stay as the separate pieces they have always been.
+                    let merged = if flip { None } else { merge_notched_wall(f, &arcs, &hs, &kept_cells, &cells) };
+                    match merged {
                         Some(face) => {
                             out.push(Kept::Wall(face));
                             continue;
                         }
-                        None => {
+                        None if partial_drop => {
                             set_reason(NOTCHED_WALL_SENTENCE);
                             bail!();
                         }
+                        None => {}
                     }
                 }
                 out.extend(cells.into_iter().map(Kept::Wall));
@@ -5118,6 +5137,10 @@ mod coincident_wall_tests {
             _ => None,
         }
     }
+    /// The cut as the groove feature asks for it: a wall bitten by a ring that reaches past it merged into one face.
+    fn cut_merged(host: &TSolid, tool: &TSolid) -> Option<TSolid> {
+        with_wall_merge(|| cut(host, tool))
+    }
     fn closed(r: &TSolid) {
         assert!(ops::edge_use_counts(&r.faces()).values().all(|&n| n == 2), "every edge used twice");
         for d in [0.5, 0.05] {
@@ -5218,6 +5241,63 @@ mod coincident_wall_tests {
             let want = tube - PI * 96.0 * 5.0 * deg / 360.0;
             assert!((vol(&r) - want).abs() <= 1e-9 * want, "{deg}");
             assert_eq!(r.faces().len(), 9, "{deg}: FreeCAD 9");
+            closed(&r);
+        }
+    }
+
+    /// A ring whose outer wall lies BEYOND the host's wall (12..18 on a post of 15) takes a rectangle out of the post's
+    /// side: the rest is ONE cylinder face with a notch, as FreeCAD leaves it (8 faces: top, bottom, outer wall, inner
+    /// wall, floor, ceiling, two end planes), not the five pieces the cut grid used to leave (12 faces). Volumes are the
+    /// closed form pi 15^2 30 - (15^2 - 12^2) 5 theta / 2, FreeCAD's own figures for 180 and 90.
+    #[test]
+    fn ring_reaching_past_the_wall_leaves_one_notched_wall_like_freecad() {
+        let host = post(15.0);
+        let fc = [(180.0, 20569.57789937917), (90.0, 20887.664155555136)];
+        for deg in [30.0, 45.0, 90.0, 120.0, 180.0, 270.0, 330.0] {
+            let r = cut_merged(&host, &ring(12.0, 18.0, 10.0, 15.0, deg)).unwrap_or_else(|| panic!("{deg} refused"));
+            let want = PI * 225.0 * 30.0 - 81.0 * 5.0 / 2.0 * deg.to_radians();
+            assert!((vol(&r) - want).abs() <= 1e-9 * want, "{deg}: {} vs {want}", vol(&r));
+            if let Some(&(_, v)) = fc.iter().find(|(d, _)| *d == deg) {
+                assert!((vol(&r) - v).abs() <= 1e-9 * v, "{deg}: {} vs FreeCAD {v}", vol(&r));
+            }
+            assert_eq!(r.faces().len(), 8, "{deg}: FreeCAD 8 faces");
+            let cyl: Vec<_> = r.faces().into_iter().filter(|f| matches!(&f.borrow().surface, Surface::Cylinder(_))).collect();
+            assert_eq!(cyl.len(), 2, "{deg}: the outer wall (one notched face) and the groove's inner wall");
+            let notched = cyl.iter().filter(|f| matches!(&f.borrow().surface, Surface::Cylinder(c) if matches!(c.cross, Some(crate::geom::Cross::Notch { .. })))).count();
+            assert_eq!(notched, 1, "{deg}: one wall with a notch");
+            closed(&r);
+            let text = crate::step::write_solid(&r, "g").expect("writes to STEP");
+            assert!(text.contains("CYLINDRICAL_SURFACE"));
+        }
+        // without the merge (every cut but a groove's) the wall stays the five pieces the later features read: same volume
+        let plain = cut(&host, &ring(12.0, 18.0, 10.0, 15.0, 180.0)).expect("builds");
+        assert_eq!(plain.faces().len(), 12);
+        assert!(plain.faces().iter().all(|f| !matches!(&f.borrow().surface, Surface::Cylinder(c) if c.cross.is_some())));
+        assert!((vol(&plain) - 20569.57789937917).abs() <= 1e-9 * 20569.0);
+        // the notched wall's area is the whole wall's less the rectangle (FreeCAD 2591.814 for the half turn)
+        let r = cut_merged(&host, &ring(12.0, 18.0, 10.0, 15.0, 180.0)).expect("builds");
+        let face = r.faces().into_iter().find(|f| matches!(&f.borrow().surface, Surface::Cylinder(c) if c.cross.is_some())).expect("notched wall");
+        let (area, _) = build::face_area_centroid(&face.borrow());
+        let want = 2.0 * PI * 15.0 * 30.0 - 15.0 * PI * 5.0;
+        assert!((area - want).abs() <= 1e-9 * want, "area {area} vs {want}");
+    }
+
+    /// What does not become one notched wall stays what it was: two bands (a whole-turn ring, 7 faces), a ring that
+    /// takes the whole height, and a bite that reaches an end.
+    #[test]
+    fn ring_reaching_past_the_wall_keeps_bands_and_whole_height_cuts_as_before() {
+        let host = post(15.0);
+        let r = cut_merged(&host, &ring(12.0, 18.0, 10.0, 15.0, 360.0)).expect("whole turn builds");
+        assert_eq!(r.faces().len(), 7, "FreeCAD: top, bottom, two wall bands, inner wall, floor, ceiling");
+        closed(&r);
+        let r = cut_merged(&host, &ring(12.0, 18.0, 0.0, 30.0, 90.0)).expect("whole height builds");
+        let want = PI * 225.0 * 30.0 - 81.0 * 30.0 * PI / 4.0;
+        assert!((vol(&r) - want).abs() <= 1e-9 * want);
+        closed(&r);
+        for (z0, z1) in [(0.0, 8.0), (22.0, 30.0)] {
+            let r = cut_merged(&host, &ring(12.0, 18.0, z0, z1, 180.0)).expect("flush builds");
+            let want = PI * 225.0 * 30.0 - 81.0 * 8.0 * PI / 2.0;
+            assert!((vol(&r) - want).abs() <= 1e-9 * want);
             closed(&r);
         }
     }
