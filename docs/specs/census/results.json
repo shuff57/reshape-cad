@@ -533,8 +533,8 @@
    },
    "oursOutcome": "built",
    "ours": {
-    "volume": 20569.577899379165,
-    "faces": 12,
+    "volume": 20569.577899379176,
+    "faces": 8,
     "bbox": [
      -15,
      -15,
@@ -545,13 +545,13 @@
     ]
    },
    "deltas": {
-    "volumeRel": 1.7686210309651102e-16,
+    "volumeRel": 3.5372420619302204e-16,
     "bboxAbs": 0,
-    "faces": 4,
-    "comAbs": 0.00002991236948091114,
-    "meshVsExact": 0.0008610354841141308
+    "faces": 0,
+    "comAbs": 0.00002991236939031694,
+    "meshVsExact": 0.0008610354841139535
    },
-   "status": "FACES"
+   "status": "MATCH"
   },
   {
    "id": "groove__quarter-90",
@@ -571,8 +571,8 @@
    },
    "oursOutcome": "built",
    "ours": {
-    "volume": 20887.664155555136,
-    "faces": 12,
+    "volume": 20887.664155555147,
+    "faces": 8,
     "bbox": [
      -15,
      -15,
@@ -583,13 +583,13 @@
     ]
    },
    "deltas": {
-    "volumeRel": 0,
+    "volumeRel": 5.225063147318244e-16,
     "bboxAbs": 0,
-    "faces": 4,
-    "comAbs": 0.000020480592217819726,
-    "meshVsExact": 0.000860638566022203
+    "faces": 0,
+    "comAbs": 0.000020480592217264615,
+    "meshVsExact": 0.000860638566013494
    },
-   "status": "FACES"
+   "status": "MATCH"
   },
   {
    "id": "groove__v-notch",
@@ -1095,8 +1095,8 @@
    },
    "oursOutcome": "built",
    "ours": {
-    "volume": 4580.44208893391,
-    "faces": 6,
+    "volume": 4580.442088933906,
+    "faces": 5,
     "bbox": [
      -15,
      -15,
@@ -1107,13 +1107,13 @@
     ]
    },
    "deltas": {
-    "volumeRel": 1.389923240770035e-15,
+    "volumeRel": 2.1841650926386264e-15,
     "bboxAbs": 0,
-    "faces": 1,
-    "comAbs": 0.0008600620243690571,
-    "meshVsExact": 0.0005905784012428533
+    "faces": 0,
+    "comAbs": 0.0008600620243814916,
+    "meshVsExact": 0.0005905784012416624
    },
-   "status": "FACES"
+   "status": "MATCH"
   },
   {
    "id": "thickness__box-two-open",
@@ -2063,8 +2063,8 @@
     "volumeRel": 1.7219986949800727e-16,
     "bboxAbs": 5.329070518200751e-15,
     "faces": 0,
-    "comAbs": 0.0014473170331177343,
-    "meshVsExact": 0.0006906246222575454
+    "comAbs": 0.0014473170331186225,
+    "meshVsExact": 0.0006906246222573733
    },
    "status": "MATCH"
   },
@@ -2101,8 +2101,8 @@
     "volumeRel": 0,
     "bboxAbs": 0,
     "faces": 0,
-    "comAbs": 0.004031301119492348,
-    "meshVsExact": 0.0005444246667741605
+    "comAbs": 0.004031301119493236,
+    "meshVsExact": 0.000544424666774025
    },
    "status": "MATCH"
   },
@@ -2139,8 +2139,8 @@
     "volumeRel": 5.492438420202341e-11,
     "bboxAbs": 3.552713678800501e-15,
     "faces": -2,
-    "comAbs": 0.000025829882220662626,
-    "meshVsExact": 0.0009134022557950344
+    "comAbs": 0.00002582988221888627,
+    "meshVsExact": 0.0009134022557948066
    },
    "status": "FACES"
   },
@@ -2549,24 +2549,947 @@
    "status": "MATCH"
   },
   {
-   "id": "dress-chain__three-at-corner",
-   "family": "dress-chain",
-   "desc": "chamfer 2 on the three edges meeting at the (30,0,10) corner",
+   "id": "dress-seq__box-d1",
+   "family": "dress-seq",
+   "desc": "30x20x10 box, three at the (30,0,10) corner; 3 SEPARATE chamfer features of 1, in order",
    "ref": {
-    "volume": 5885.333333333332,
-    "faces": 10,
+    "volume": 5970.75,
+    "faces": 9,
     "bbox": [
      0,
-     -1.887379141862766e-15,
+     0,
      0,
      30,
      20,
      10
     ]
    },
-   "oursOutcome": "refused",
-   "status": "REFUSED",
-   "sentence": "brep-rs cannot chamfer an edge whose end touches more than three faces -- bevel3 is shown without it."
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5970.749999999997,
+    "faces": 9,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10.000000000000002
+    ]
+   },
+   "deltas": {
+    "volumeRel": 4.56975104521004e-16,
+    "bboxAbs": 1.7763568394002505e-15,
+    "faces": 0,
+    "comAbs": 1.7763568394002505e-15,
+    "meshVsExact": 6.093001393613389e-16,
+    "oursVsExact": 4.56975104521004e-16,
+    "refVsExact": 0
+   },
+   "exactVolume": 5970.75,
+   "status": "MATCH"
+  },
+  {
+   "id": "dress-seq__box-d2",
+   "family": "dress-seq",
+   "desc": "30x20x10 box, three at the (30,0,10) corner; 3 SEPARATE chamfer features of 2, in order",
+   "ref": {
+    "volume": 5886,
+    "faces": 9,
+    "bbox": [
+     0,
+     0,
+     0,
+     30.000000000000004,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5886,
+    "faces": 9,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10.000000000000004
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 3.552713678800501e-15,
+    "faces": 0,
+    "comAbs": 1.7763568394002505e-15,
+    "meshVsExact": 1.5451829795666468e-16,
+    "oursVsExact": 0,
+    "refVsExact": 0
+   },
+   "exactVolume": 5886,
+   "status": "MATCH"
+  },
+  {
+   "id": "dress-seq__box-d4",
+   "family": "dress-seq",
+   "desc": "30x20x10 box, three at the (30,0,10) corner; 3 SEPARATE chamfer features of 4, in order",
+   "ref": {
+    "volume": 5568.000000000001,
+    "faces": 9,
+    "bbox": [
+     0,
+     -8.881784197001252e-16,
+     0,
+     30,
+     20,
+     10.000000000000002
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5568,
+    "faces": 9,
+    "bbox": [
+     0,
+     -3.848773152033877e-16,
+     0,
+     30,
+     20,
+     10.000000000000002
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.6334315764600002e-16,
+    "bboxAbs": 5.033011044967375e-16,
+    "faces": 0,
+    "comAbs": 1.7763568394002505e-15,
+    "meshVsExact": 1.6334315764600004e-16,
+    "oursVsExact": 0,
+    "refVsExact": 1.6334315764600004e-16
+   },
+   "exactVolume": 5568,
+   "status": "MATCH"
+  },
+  {
+   "id": "dress-seq__box-vertical-first-d2",
+   "family": "dress-seq",
+   "desc": "box, same corner, vertical edge first; 3 SEPARATE chamfer features of 2, in order",
+   "ref": {
+    "volume": 5886,
+    "faces": 9,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5886,
+    "faces": 9,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10.000000000000004
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 3.552713678800501e-15,
+    "faces": 0,
+    "comAbs": 1.7763568394002505e-15,
+    "meshVsExact": 3.0903659591332936e-16,
+    "oursVsExact": 0,
+    "refVsExact": 0
+   },
+   "exactVolume": 5886,
+   "status": "MATCH"
+  },
+  {
+   "id": "dress-seq__pentagon-obtuse-d1.5",
+   "family": "dress-seq",
+   "desc": "pentagon prism, obtuse (30,0,10) corner; 3 SEPARATE chamfer features of 1.5, in order",
+   "ref": {
+    "volume": 9688.071449040035,
+    "faces": 10,
+    "bbox": [
+     -10,
+     -2.6645352591003757e-15,
+     0,
+     40,
+     30,
+     10.000000000000005
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 9688.07144904005,
+    "faces": 10,
+    "bbox": [
+     -10,
+     -8.437694987151188e-15,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.502044581825288e-15,
+    "bboxAbs": 5.7731597280508124e-15,
+    "faces": 0,
+    "comAbs": 3.552713678800501e-15,
+    "meshVsExact": 2.065311300009768e-15,
+    "oursVsExact": 5.069400463660365e-15,
+    "refVsExact": 3.5673558818350715e-15
+   },
+   "exactVolume": 9688.07144904,
+   "status": "MATCH"
+  },
+  {
+   "id": "dress-seq__pentagon-obtuse-d3",
+   "family": "dress-seq",
+   "desc": "pentagon prism, obtuse corner; 3 SEPARATE chamfer features of 3, in order",
+   "ref": {
+    "volume": 9508.138759263404,
+    "faces": 10,
+    "bbox": [
+     -10,
+     -1.7763568394002505e-15,
+     0,
+     40,
+     30,
+     10.000000000000002
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 9508.1387592634,
+    "faces": 10,
+    "bbox": [
+     -10,
+     -5.329070518200751e-15,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 3.826173449085789e-16,
+    "bboxAbs": 3.552713678800501e-15,
+    "faces": 0,
+    "comAbs": 0,
+    "meshVsExact": 3.8261734490857904e-16,
+    "oursVsExact": 4.208790793994546e-14,
+    "refVsExact": 4.247052528485406e-14
+   },
+   "exactVolume": 9508.138759263,
+   "status": "MATCH"
+  },
+  {
+   "id": "dress-seq__hexagon-d2",
+   "family": "dress-seq",
+   "desc": "hexagon prism, 100 degree (30,0,10) corner; 3 SEPARATE chamfer features of 2, in order",
+   "ref": {
+    "volume": 5919.201422189131,
+    "faces": 11,
+    "bbox": [
+     0,
+     -4.440892098500626e-16,
+     0,
+     33,
+     24,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5919.201422189145,
+    "faces": 11,
+    "bbox": [
+     0,
+     -1.5987211554602247e-15,
+     0,
+     33.00000000000001,
+     24.000000000000004,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 2.30477382902582e-15,
+    "bboxAbs": 7.105427357601002e-15,
+    "faces": 0,
+    "comAbs": 3.552713678800501e-15,
+    "meshVsExact": 2.1511222404240937e-15,
+    "oursVsExact": 2.4430602587674233e-14,
+    "refVsExact": 2.2125828758648362e-14
+   },
+   "exactVolume": 5919.201422189,
+   "status": "MATCH"
+  },
+  {
+   "id": "dress-seq__hexagon-d3",
+   "family": "dress-seq",
+   "desc": "hexagon prism, 100 degree corner; 3 SEPARATE chamfer features of 3, in order",
+   "ref": {
+    "volume": 5809.5534520903975,
+    "faces": 11,
+    "bbox": [
+     0,
+     -4.440892098500626e-16,
+     0,
+     33,
+     24,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5809.5534520903975,
+    "faces": 11,
+    "bbox": [
+     0,
+     -1.5099033134902138e-15,
+     0,
+     33.00000000000001,
+     24.000000000000004,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 7.105427357601002e-15,
+    "faces": 0,
+    "comAbs": 3.552713678800501e-15,
+    "meshVsExact": 1.565515679084893e-16,
+    "oursVsExact": 6.841303517601449e-14,
+    "refVsExact": 6.841303517601449e-14
+   },
+   "exactVolume": 5809.55345209,
+   "status": "MATCH"
+  },
+  {
+   "id": "dress-seq__triangle-right-angle-d2",
+   "family": "dress-seq",
+   "desc": "right-triangle prism, the 90 degree (0,0,10) corner; 3 SEPARATE chamfer features of 2, in order",
+   "ref": {
+    "volume": 2888.8888888888882,
+    "faces": 8,
+    "bbox": [
+     0,
+     -8.881784197001252e-16,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 2888.888888888887,
+    "faces": 8,
+    "bbox": [
+     -4.440892098500626e-16,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 4.722376336128667e-16,
+    "bboxAbs": 8.881784197001252e-16,
+    "faces": 0,
+    "comAbs": 1.7763568394002505e-15,
+    "meshVsExact": 4.722376336128669e-16,
+    "oursVsExact": 3.919572358986642e-14,
+    "refVsExact": 3.872348595625357e-14
+   },
+   "exactVolume": 2888.888888889,
+   "status": "MATCH"
+  },
+  {
+   "id": "dress-seq__triangle-right-angle-d4",
+   "family": "dress-seq",
+   "desc": "right-triangle prism, the 90 degree corner; 3 SEPARATE chamfer features of 4, in order",
+   "ref": {
+    "volume": 2591.1111111111113,
+    "faces": 8,
+    "bbox": [
+     -3.1086244689504383e-15,
+     -6.661338147750939e-16,
+     0,
+     30.000000000000004,
+     20,
+     10.000000000000002
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 2591.111111111111,
+    "faces": 8,
+    "bbox": [
+     -8.881784197001252e-16,
+     0,
+     0,
+     30,
+     20,
+     10.000000000000002
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.755028369630436e-16,
+    "bboxAbs": 3.552713678800501e-15,
+    "faces": 0,
+    "comAbs": 1.7763568394002505e-15,
+    "meshVsExact": 3.5100567392608726e-16,
+    "oursVsExact": 4.282269221898448e-14,
+    "refVsExact": 4.299819505594753e-14
+   },
+   "exactVolume": 2591.111111111,
+   "status": "MATCH"
+  },
+  {
+   "id": "dress-seq__triangle-acute-d2",
+   "family": "dress-seq",
+   "desc": "right-triangle prism, the 33.7 degree (30,0,10) corner; 3 SEPARATE chamfer features of 2, in order",
+   "ref": {
+    "volume": 2868.5049337354967,
+    "faces": 8,
+    "bbox": [
+     -3.552713678800501e-15,
+     0,
+     0,
+     28.33589941132432,
+     20,
+     10.000000000000004
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 2868.504933735501,
+    "faces": 8,
+    "bbox": [
+     0,
+     0,
+     0,
+     28.335899411324313,
+     20.000000000000004,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.4267802400633992e-15,
+    "bboxAbs": 7.105427357601002e-15,
+    "faces": 0,
+    "comAbs": 1.7763568394002505e-15,
+    "meshVsExact": 1.585311377848219e-15,
+    "oursVsExact": 1.7454278270111938e-13,
+    "refVsExact": 1.7311600246105575e-13
+   },
+   "exactVolume": 2868.504933735,
+   "status": "MATCH"
+  },
+  {
+   "id": "dress-seq__triangle-acute-d4",
+   "family": "dress-seq",
+   "desc": "right-triangle prism, the 33.7 degree corner; 3 SEPARATE chamfer features of 4, in order",
+   "ref": {
+    "volume": 2520.859587619105,
+    "faces": 8,
+    "bbox": [
+     -3.552713678800501e-15,
+     -8.881784197001252e-16,
+     0,
+     26.671798822648633,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 2520.8595876191052,
+    "faces": 8,
+    "bbox": [
+     0,
+     -3.8487731520338747e-16,
+     0,
+     26.67179882264863,
+     20.00000000000001,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.803937645396437e-16,
+    "bboxAbs": 1.0658141036401503e-14,
+    "faces": 0,
+    "comAbs": 1.7763568394002505e-15,
+    "meshVsExact": 3.6078752907928735e-16,
+    "oursVsExact": 4.1670959608659425e-14,
+    "refVsExact": 4.1490565844119773e-14
+   },
+   "exactVolume": 2520.859587619,
+   "status": "MATCH"
+  },
+  {
+   "id": "dress-seq__post5a-fwd-d2",
+   "family": "dress-seq",
+   "desc": "box, five edges (two corners sharing top/right), listed order; 5 SEPARATE chamfer features of 2, in order",
+   "ref": {
+    "volume": 5812,
+    "faces": 11,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5812.000000000001,
+    "faces": 11,
+    "bbox": [
+     0,
+     -4.440892098500626e-16,
+     0,
+     30,
+     20.000000000000004,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.5648566788935447e-16,
+    "bboxAbs": 3.552713678800501e-15,
+    "faces": 0,
+    "comAbs": 3.552713678800501e-15,
+    "meshVsExact": 3.129713357787089e-16,
+    "oursVsExact": 1.5648566788935447e-16,
+    "refVsExact": 0
+   },
+   "exactVolume": 5812,
+   "status": "MATCH"
+  },
+  {
+   "id": "dress-seq__post5a-rev-d2",
+   "family": "dress-seq",
+   "desc": "same five edges, reversed order; 5 SEPARATE chamfer features of 2, in order",
+   "ref": {
+    "volume": 5812,
+    "faces": 11,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5811.999999999994,
+    "faces": 11,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.0953996752254814e-15,
+    "bboxAbs": 0,
+    "faces": 0,
+    "comAbs": 1.4210854715202004e-14,
+    "meshVsExact": 1.4083710110041918e-15,
+    "oursVsExact": 1.0953996752254814e-15,
+    "refVsExact": 0
+   },
+   "exactVolume": 5812,
+   "status": "MATCH"
+  },
+  {
+   "id": "dress-seq__post5b-fwd-d2",
+   "family": "dress-seq",
+   "desc": "box, five edges VFR,TF,bottom/front,TR,TL, listed order; 5 SEPARATE chamfer features of 2, in order",
+   "ref": {
+    "volume": 5791.333333333333,
+    "faces": 11,
+    "bbox": [
+     -8.881784197001252e-16,
+     -8.881784197001252e-16,
+     -2.6645352591003757e-15,
+     30,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5791.333333333333,
+    "faces": 11,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20.000000000000007,
+     10.000000000000004
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 7.105427357601002e-15,
+    "faces": 0,
+    "comAbs": 3.552713678800501e-15,
+    "meshVsExact": 1.5704409493028576e-16,
+    "oursVsExact": 5.747813874448789e-14,
+    "refVsExact": 5.747813874448789e-14
+   },
+   "exactVolume": 5791.333333333,
+   "status": "MATCH"
+  },
+  {
+   "id": "dress-seq__post5b-rev-d2",
+   "family": "dress-seq",
+   "desc": "same five edges, reversed order; 5 SEPARATE chamfer features of 2, in order",
+   "ref": {
+    "volume": 5791.333333333334,
+    "faces": 11,
+    "bbox": [
+     -8.881784197001252e-16,
+     -8.881784197001252e-16,
+     -1.7763568394002505e-15,
+     30,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5791.333333333333,
+    "faces": 11,
+    "bbox": [
+     0,
+     0,
+     0,
+     30.000000000000004,
+     20,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.5704409493028574e-16,
+    "bboxAbs": 3.552713678800501e-15,
+    "faces": 0,
+    "comAbs": 3.552713678800501e-15,
+    "meshVsExact": 0,
+    "oursVsExact": 5.747813874448789e-14,
+    "refVsExact": 5.763518283941818e-14
+   },
+   "exactVolume": 5791.333333333,
+   "status": "MATCH"
+  },
+  {
+   "id": "dress-chain__three-at-corner",
+   "family": "dress-chain",
+   "desc": "chamfer 2 on the three edges meeting at the (30,0,10) corner (script list = three bevel features; FreeCAD as three separate features)",
+   "ref": {
+    "volume": 5886,
+    "faces": 9,
+    "bbox": [
+     0,
+     0,
+     0,
+     30.000000000000004,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5886,
+    "faces": 9,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10.000000000000004
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 3.552713678800501e-15,
+    "faces": 0,
+    "comAbs": 1.7763568394002505e-15,
+    "meshVsExact": 1.5451829795666468e-16,
+    "oursVsExact": 0,
+    "refVsExact": 0
+   },
+   "exactVolume": 5886,
+   "status": "MATCH"
+  },
+  {
+   "id": "corner3__box-d1",
+   "family": "corner3",
+   "desc": "chamfer 1 on the three edges at the (30,0,10) corner of 30x20x10 (as three separate features)",
+   "ref": {
+    "volume": 5970.75,
+    "faces": 9,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5970.749999999997,
+    "faces": 9,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10.000000000000002
+    ]
+   },
+   "deltas": {
+    "volumeRel": 4.56975104521004e-16,
+    "bboxAbs": 1.7763568394002505e-15,
+    "faces": 0,
+    "comAbs": 1.7763568394002505e-15,
+    "meshVsExact": 6.093001393613389e-16,
+    "oursVsExact": 4.56975104521004e-16,
+    "refVsExact": 0
+   },
+   "exactVolume": 5970.75,
+   "status": "MATCH"
+  },
+  {
+   "id": "corner3__box-d2",
+   "family": "corner3",
+   "desc": "chamfer 2 on the three edges at the (30,0,10) corner of 30x20x10 (as three separate features)",
+   "ref": {
+    "volume": 5886,
+    "faces": 9,
+    "bbox": [
+     0,
+     0,
+     0,
+     30.000000000000004,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5886,
+    "faces": 9,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10.000000000000004
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 3.552713678800501e-15,
+    "faces": 0,
+    "comAbs": 1.7763568394002505e-15,
+    "meshVsExact": 1.5451829795666468e-16,
+    "oursVsExact": 0,
+    "refVsExact": 0
+   },
+   "exactVolume": 5886,
+   "status": "MATCH"
+  },
+  {
+   "id": "corner3__box-d4",
+   "family": "corner3",
+   "desc": "chamfer 4 on the three edges at the (30,0,10) corner of 30x20x10 (as three separate features)",
+   "ref": {
+    "volume": 5568.000000000001,
+    "faces": 9,
+    "bbox": [
+     0,
+     -8.881784197001252e-16,
+     0,
+     30,
+     20,
+     10.000000000000002
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5568,
+    "faces": 9,
+    "bbox": [
+     0,
+     -3.848773152033877e-16,
+     0,
+     30,
+     20,
+     10.000000000000002
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.6334315764600002e-16,
+    "bboxAbs": 5.033011044967375e-16,
+    "faces": 0,
+    "comAbs": 1.7763568394002505e-15,
+    "meshVsExact": 1.6334315764600004e-16,
+    "oursVsExact": 0,
+    "refVsExact": 1.6334315764600004e-16
+   },
+   "exactVolume": 5568,
+   "status": "MATCH"
+  },
+  {
+   "id": "corner3__box-bottom-corner-d2",
+   "family": "corner3",
+   "desc": "chamfer 2 on the three edges at the (0,20,0) bottom corner (as three separate features)",
+   "ref": {
+    "volume": 5886.000000000001,
+    "faces": 9,
+    "bbox": [
+     -3.3306690738754696e-16,
+     0,
+     -3.3306690738754696e-16,
+     30,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5886,
+    "faces": 9,
+    "bbox": [
+     -1.9984014443252826e-16,
+     -7.105427357601002e-15,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.5451829795666466e-16,
+    "bboxAbs": 7.105427357601002e-15,
+    "faces": 0,
+    "comAbs": 1.7763568394002505e-15,
+    "meshVsExact": 0,
+    "oursVsExact": 0,
+    "refVsExact": 1.5451829795666468e-16
+   },
+   "exactVolume": 5886,
+   "status": "MATCH"
+  },
+  {
+   "id": "corner3__pentagon-d1.5",
+   "family": "corner3",
+   "desc": "pentagon prism, chamfer 1.5 on the three edges at the obtuse (30,0,10) corner (as three separate features)",
+   "ref": {
+    "volume": 9688.071449040035,
+    "faces": 10,
+    "bbox": [
+     -10,
+     -2.6645352591003757e-15,
+     0,
+     40,
+     30,
+     10.000000000000005
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 9688.07144904005,
+    "faces": 10,
+    "bbox": [
+     -10,
+     -8.437694987151188e-15,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.502044581825288e-15,
+    "bboxAbs": 5.7731597280508124e-15,
+    "faces": 0,
+    "comAbs": 3.552713678800501e-15,
+    "meshVsExact": 2.065311300009768e-15,
+    "oursVsExact": 5.069400463660365e-15,
+    "refVsExact": 3.5673558818350715e-15
+   },
+   "exactVolume": 9688.07144904,
+   "status": "MATCH"
+  },
+  {
+   "id": "corner3__pentagon-d3",
+   "family": "corner3",
+   "desc": "pentagon prism, chamfer 3 on the three edges at the obtuse (30,0,10) corner (as three separate features)",
+   "ref": {
+    "volume": 9508.138759263404,
+    "faces": 10,
+    "bbox": [
+     -10,
+     -1.7763568394002505e-15,
+     0,
+     40,
+     30,
+     10.000000000000002
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 9508.1387592634,
+    "faces": 10,
+    "bbox": [
+     -10,
+     -5.329070518200751e-15,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 3.826173449085789e-16,
+    "bboxAbs": 3.552713678800501e-15,
+    "faces": 0,
+    "comAbs": 0,
+    "meshVsExact": 3.8261734490857904e-16,
+    "oursVsExact": 4.208790793994546e-14,
+    "refVsExact": 4.247052528485406e-14
+   },
+   "exactVolume": 9508.138759263,
+   "status": "MATCH"
   },
   {
    "id": "dress-chain__u-shape",

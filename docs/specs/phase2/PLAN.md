@@ -122,6 +122,19 @@ Script/studio wiring for everything S1-S3 already landed (reference/inactive fla
 the TS solver) belong to `reshape-gauntlet`. Torus booleans, the oblique cylinder, pipe and helix are P5: refused, and they
 stay refused.
 
+### Loop `wf_9dd6b1a4-a51` results (2026-10-13)
+
+| slice | rounds | outcome |
+|---|---|---|
+| A1W | 2 | LANDED (`68ecf29`, `9ded01e`). Three separate chamfers at one corner build as sequential wedges and match FreeCAD run as separate features; the one-pick patch is still refused. All three round-2 verifiers passed (the loop counted their non-blocking notes as failures). |
+| B1 | 1 | LANDED (`cbadd68`). Part-turn groove, half and quarter: 8 faces, like FreeCAD. |
+| B2 | 1 | LANDED (`8fc3b36`). Thickness of a cylinder: 5 faces. |
+| A3 | 2 | NOT landed (branch `slice-A3-r2`). A silent wrong solid remains: Two-distances on a vertical wall-wall edge swaps the legs when the sketch's lines are drawn backwards (FreeCAD walks the wire from the END of geom 0; `pad_order_known` only checks that wall i contains geom i's end points). Equal volume, different COM: the gates cannot see it. Fix idea: refuse unless every sketch line runs in the order FreeCAD walks, or compute the walk direction the same way. A plane-offset sign convention in the harness (xz offset 7, COM y off by 2*offset) is outside A3: report to `reshape-gauntlet`. |
+| B3 | 2 | NOT landed (branch `slice-B3-r2`). The two census cases pass, but neighbours disagree on faces: a cylinder tangent on two sides and crossing a third has its wall split at the seam (5 vs 4, centre x=3..8); some ball-in-block cases merge or split sphere patches (4 of 24 random); the STEP reader refuses a partial circle edge, so `measure_step` cannot round-trip curved booleans. Honest refusals: a turned 45 degree block with an inscribed cylinder; a sphere against a non-box prism. |
+
+Census after the landing: 115 cases, 87 MATCH, 1 MATCH-EXACT, 2 FACES (B3's two), 9 REFUSED, 16 NO-CONSTRUCT, 0 silently
+wrong. Merged tree: cargo 672, gates 78/78/78 + 17, wasm 634,990 B gz.
+
 ## 2. The gauntlet loop
 
 `docs/specs/phase2/gauntlet-loop.workflow.js` is a Workflow script (run with

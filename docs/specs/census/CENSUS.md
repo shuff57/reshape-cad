@@ -1,14 +1,14 @@
 # PartDesign census: modes the gauntlet does not cover
 
-FreeCAD 26.3.0 RC1 against brep-rs at `reshape-cad`. 93 cases.
+FreeCAD 26.3.0 RC1 against brep-rs at `reshape-cad`. 115 cases.
 
 | status | n |
 |---|---|
-| FACES | 5 |
-| MATCH | 61 |
+| FACES | 2 |
+| MATCH | 87 |
 | MATCH-EXACT | 1 |
 | NO-CONSTRUCT | 16 |
-| REFUSED | 10 |
+| REFUSED | 9 |
 
 ## By family
 
@@ -16,18 +16,20 @@ FreeCAD 26.3.0 RC1 against brep-rs at `reshape-cad`. 93 cases.
 |---|---|
 | pad-mode | MATCH 6, NO-CONSTRUCT 2 |
 | pocket-mode | MATCH 5, NO-CONSTRUCT 1 |
-| groove | MATCH 3, FACES 2 |
+| groove | MATCH 5 |
 | revolution-mode | NO-CONSTRUCT 1 |
 | dress-mode | NO-CONSTRUCT 2, MATCH 6, REFUSED 2 |
 | hole-mode | NO-CONSTRUCT 4, MATCH 1 |
-| thickness | MATCH 2, NO-CONSTRUCT 2, FACES 1 |
+| thickness | MATCH 3, NO-CONSTRUCT 2 |
 | draft | MATCH 2, NO-CONSTRUCT 1 |
 | loft | MATCH 2, REFUSED 2 |
 | pipe-helix | NO-CONSTRUCT 2 |
 | primitive | MATCH 9, REFUSED 1, NO-CONSTRUCT 1 |
 | boolean | MATCH 10, FACES 2, REFUSED 2, MATCH-EXACT 1 |
 | sketch-on-face | MATCH 3, REFUSED 1 |
-| dress-chain | REFUSED 2, MATCH 12 |
+| dress-seq | MATCH 16 |
+| dress-chain | MATCH 13, REFUSED 1 |
+| corner3 | MATCH 6 |
 
 ## Every case
 
@@ -48,8 +50,8 @@ FreeCAD 26.3.0 RC1 against brep-rs at `reshape-cad`. 93 cases.
 | pocket-mode__through-taper | MATCH | vol 11032.3147, 10 faces |
 | pocket-mode__up-to-first | NO-CONSTRUCT | pocket() has no up-to option |
 | groove__ring-360 | MATCH | vol 19933.4054, 7 faces |
-| groove__half-180 | FACES | vol 20569.5779 vs 20569.5779, faces 12 vs 8, bbox d 0.0e+0 |
-| groove__quarter-90 | FACES | vol 20887.6642 vs 20887.6642, faces 12 vs 8, bbox d 0.0e+0 |
+| groove__half-180 | MATCH | vol 20569.5779, 8 faces |
+| groove__quarter-90 | MATCH | vol 20887.6642, 8 faces |
 | groove__v-notch | MATCH | vol 20845.5145, 6 faces |
 | groove__at-the-end | MATCH | vol 19933.4054, 5 faces |
 | revolution-mode__symmetric-120 | NO-CONSTRUCT | spin() takes an angle only (no symmetric option) |
@@ -68,7 +70,7 @@ FreeCAD 26.3.0 RC1 against brep-rs at `reshape-cad`. 93 cases.
 | thickness__box-open-top-2 | MATCH | vol 2672.0000, 11 faces |
 | thickness__box-open-top-intersection | MATCH | vol 2672.0000, 11 faces |
 | thickness__box-outward | NO-CONSTRUCT | hollow() has no outward option |
-| thickness__cylinder-open-top | FACES | vol 4580.4421 vs 4580.4421, faces 6 vs 5, bbox d 0.0e+0 |
+| thickness__cylinder-open-top | MATCH | vol 4580.4421, 5 faces |
 | thickness__box-two-open | NO-CONSTRUCT | hollow() opens one face |
 | draft__right-face-5 | MATCH | vol 5912.5113, 6 faces |
 | draft__all-sides-3 | MATCH | vol 5741.6232, 6 faces |
@@ -112,7 +114,29 @@ FreeCAD 26.3.0 RC1 against brep-rs at `reshape-cad`. 93 cases.
 | dress-mode__chamfer-top-loop | MATCH | vol 5810.6667, 10 faces |
 | dress-mode__chamfer-two-adjacent | MATCH | vol 5902.6667, 8 faces |
 | dress-mode__fillet-vertical-edges | MATCH | vol 5922.7433, 10 faces |
-| dress-chain__three-at-corner | REFUSED | brep-rs cannot chamfer an edge whose end touches more than three faces -- bevel3 is shown without it. |
+| dress-seq__box-d1 | MATCH | vol 5970.7500, 9 faces |
+| dress-seq__box-d2 | MATCH | vol 5886.0000, 9 faces |
+| dress-seq__box-d4 | MATCH | vol 5568.0000, 9 faces |
+| dress-seq__box-vertical-first-d2 | MATCH | vol 5886.0000, 9 faces |
+| dress-seq__pentagon-obtuse-d1.5 | MATCH | vol 9688.0714, 10 faces |
+| dress-seq__pentagon-obtuse-d3 | MATCH | vol 9508.1388, 10 faces |
+| dress-seq__hexagon-d2 | MATCH | vol 5919.2014, 11 faces |
+| dress-seq__hexagon-d3 | MATCH | vol 5809.5535, 11 faces |
+| dress-seq__triangle-right-angle-d2 | MATCH | vol 2888.8889, 8 faces |
+| dress-seq__triangle-right-angle-d4 | MATCH | vol 2591.1111, 8 faces |
+| dress-seq__triangle-acute-d2 | MATCH | vol 2868.5049, 8 faces |
+| dress-seq__triangle-acute-d4 | MATCH | vol 2520.8596, 8 faces |
+| dress-seq__post5a-fwd-d2 | MATCH | vol 5812.0000, 11 faces |
+| dress-seq__post5a-rev-d2 | MATCH | vol 5812.0000, 11 faces |
+| dress-seq__post5b-fwd-d2 | MATCH | vol 5791.3333, 11 faces |
+| dress-seq__post5b-rev-d2 | MATCH | vol 5791.3333, 11 faces |
+| dress-chain__three-at-corner | MATCH | vol 5886.0000, 9 faces |
+| corner3__box-d1 | MATCH | vol 5970.7500, 9 faces |
+| corner3__box-d2 | MATCH | vol 5886.0000, 9 faces |
+| corner3__box-d4 | MATCH | vol 5568.0000, 9 faces |
+| corner3__box-bottom-corner-d2 | MATCH | vol 5886.0000, 9 faces |
+| corner3__pentagon-d1.5 | MATCH | vol 9688.0714, 10 faces |
+| corner3__pentagon-d3 | MATCH | vol 9508.1388, 10 faces |
 | dress-chain__u-shape | MATCH | vol 5845.3333, 9 faces |
 | dress-chain__two-sequential-sizes | MATCH | vol 5829.6667, 8 faces |
 | dress-chain__top-and-bottom-loops | MATCH | vol 5621.3333, 14 faces |
