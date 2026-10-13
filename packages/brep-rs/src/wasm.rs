@@ -2649,6 +2649,32 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     let fr = sketch_frame(sk);
                     Some((uv_world(fr.origin, fr.u, fr.v, c), fr.n, r))
                 };
+                // Only two circle sections build. A third section (or any section past the second) would be
+                // silently dropped, which is a wrong solid, so a blend with a circle among more than two
+                // targets is refused whole.
+                let is_circle = |name: Option<&Value>| -> bool {
+                    name.and_then(|n| n.as_str())
+                        .and_then(|n| sketches.get(n))
+                        .map_or(false, |sk| sk.get("shape").and_then(|s| s.as_str()) == Some("circle"))
+                };
+                if targets.len() > 2 && targets.iter().any(|t| is_circle(Some(t))) {
+                    refusals.insert(id.clone(), json!(format!(
+                        "brep-rs can only blend two circle sections yet -- a blend through three or more sections that include a circle is not built, so {id} is shown without it.")));
+                    continue;
+                }
+                // A circle on a plane name this kernel does not know would be laid on xy by a guess.
+                let bad_plane = [targets.first(), targets.get(1)].into_iter().any(|t| {
+                    t.and_then(|n| n.as_str()).and_then(|n| sketches.get(n)).map_or(false, |sk| {
+                        sk.get("shape").and_then(|s| s.as_str()) == Some("circle")
+                            && sk.get("frame").is_none()
+                            && !matches!(sk.get("plane").and_then(|p| p.as_str()), Some("xy" | "xz" | "yz") | None)
+                    })
+                });
+                if bad_plane {
+                    refusals.insert(id.clone(), json!(format!(
+                        "brep-rs does not know the plane one of these circle sketches sits on (it is not xy, xz or yz), so it will not guess where the blend goes -- {id} is shown without it.")));
+                    continue;
+                }
                 if let (Some((c0, n0, r0)), Some((c1, n1, r1))) =
                     (circle_of(targets.first()), circle_of(targets.get(1)))
                 {
@@ -2662,6 +2688,11 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     if !(r0 > 1e-9 && r1 > 1e-9) {
                         refusals.insert(id.clone(), json!(format!(
                             "brep-rs cannot blend a circle that has no size -- {id} is shown without it.")));
+                        continue;
+                    }
+                    if h <= 1e-9 * scale_ref && parallel {
+                        refusals.insert(id.clone(), json!(format!(
+                            "brep-rs cannot blend two circles at the same height -- they have no length between them, so {id} is shown without it.")));
                         continue;
                     }
                     if !axis_ok {
@@ -7157,6 +7188,37 @@ mod tests {
             let rm = r0.max(r1);
             assert!((bb.lo[2]).abs() <= 1e-6 && (bb.hi[2] - 15.0).abs() <= 1e-6, "z reach");
             assert!((bb.hi[0] - rm).abs() <= 1e-6 && (bb.lo[1] + rm).abs() <= 1e-6, "xy reach");
+        }
+    }
+
+    /// Slice C1 round 2: extra sections, coplanar circles and unknown planes refuse rather than build wrong.
+    #[test]
+    fn blend_circle_edge_cases_refuse() {
+        let three = json!({ "features": [
+            { "id": "sa", "kind": "sketch", "plane": "xy", "offset": 0.0, "shape": "circle", "points": [[-10.0, 0.0], [10.0, 0.0]] },
+            { "id": "sb", "kind": "sketch", "plane": "xy", "offset": 15.0, "shape": "circle", "points": [[-5.0, 0.0], [5.0, 0.0]] },
+            { "id": "sc", "kind": "sketch", "plane": "xy", "offset": 30.0, "shape": "circle", "points": [[-8.0, 0.0], [8.0, 0.0]] },
+            { "id": "bl1", "kind": "blend", "targets": ["sa", "sb", "sc"] }
+        ]});
+        let (hist, refusals) = build_doc(&three);
+        assert!(!hist.shapes.contains_key("bl1"));
+        assert_eq!(refusals.get("bl1").and_then(|v| v.as_str()),
+            Some("brep-rs can only blend two circle sections yet -- a blend through three or more sections that include a circle is not built, so bl1 is shown without it."));
+
+        let mut flat = circle_blend_doc(10.0, 0.0, 5.0, 0.0, json!("sb"));
+        flat["features"][1]["offset"] = json!(0.0);
+        let (hist, refusals) = build_doc(&flat);
+        assert!(!hist.shapes.contains_key("bl1"));
+        assert_eq!(refusals.get("bl1").and_then(|v| v.as_str()),
+            Some("brep-rs cannot blend two circles at the same height -- they have no length between them, so bl1 is shown without it."));
+
+        for bad in ["", "zz", "XY"] {
+            let mut d = circle_blend_doc(10.0, 0.0, 5.0, 0.0, json!("sb"));
+            d["features"][0]["plane"] = json!(bad);
+            let (hist, refusals) = build_doc(&d);
+            assert!(!hist.shapes.contains_key("bl1"), "plane {bad:?}");
+            assert_eq!(refusals.get("bl1").and_then(|v| v.as_str()),
+                Some("brep-rs does not know the plane one of these circle sketches sits on (it is not xy, xz or yz), so it will not guess where the blend goes -- bl1 is shown without it."));
         }
     }
 
