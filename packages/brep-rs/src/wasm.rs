@@ -1556,6 +1556,8 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
     // Runs of rounds, one feature after another on the same part at the same radius (a picked rim): each run is
     // all or nothing where its edges meet at a corner, keyed by the id of the run's latest feature.
     let mut rim_runs: std::collections::HashMap<String, RimRun> = std::collections::HashMap::new();
+    // A groove's part before its notched wall was merged into one face, keyed by the groove's id (see "groove" below).
+    let mut plain_walls: std::collections::HashMap<String, TSolid> = std::collections::HashMap::new();
     let empty = Vec::new();
     let features = doc
         .get("features")
@@ -1600,6 +1602,18 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
         if matches!(kind, "pocket" | "groove" | "hole" | "combine" | "fillet" | "draft" | "shell" | "mirror" | "blend") {
             let mut names: Vec<&str> = Vec::new();
             collect_strings(f, &mut names);
+            // A part a groove left with one notched wall (a ring reaching past the wall) goes on as the pieces it was
+            // built from: the notch is exact to move or copy, and a further cut would read that wall as whole.
+            for n in &names {
+                let head = hist.head_of(n).to_string();
+                for key in [n.to_string(), head] {
+                    if hist.shapes.get(&key).is_some_and(ops::has_only_notched_wall) {
+                        if let Some(p) = plain_walls.get(&key) {
+                            hist.shapes.insert(key, p.clone());
+                        }
+                    }
+                }
+            }
             // A hole in a sphere bored by an earlier hole is the one cut such a part takes (more bores parallel to the
             // first, SPEC-brep-sphere-multi-bore.md); the builder refuses what it cannot cut, in the hole's own sentence.
             let takes_it = |n: &str| kind == "hole" && hist.shapes.get(n).is_some_and(ops::is_bored_sphere);
@@ -2706,6 +2720,22 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                         refusals.insert(id.clone(), json!(miss_refusal(&id)));
                     }
                     Some(result) => {
+                        // A ring that reaches past the part's round wall bites a rectangle out of its side: the rest is
+                        // ONE wall with a notch (as FreeCAD leaves it), not the pieces of the cut grid. Such a wall is
+                        // exact to move or copy but every further cut refuses it, so the part with the pieces is kept
+                        // beside it and handed to whichever feature comes next (`plain_walls`).
+                        let mut result = result;
+                        if let Some(m) = ops_planar::with_wall_merge(|| ops::boolean("subtract", &base, &tool)) {
+                            let (vp, vm) = (build::solid_volume(&result), build::solid_volume(&m));
+                            if ops::has_only_notched_wall(&m)
+                                && !ops::has_cross_trim(&result)
+                                && (vp - vm).abs() <= 1e-9 * vp.abs().max(1.0)
+                                && skin_pieces(&m) <= skin_pieces(&result)
+                            {
+                                plain_walls.insert(id.clone(), result);
+                                result = m;
+                            }
+                        }
                         // The base's own faces carry through the subtract,
                         // surface-matched (no sweep history for the cut,
                         // exactly as OCCT's groove branch does).
@@ -12688,3 +12718,67 @@ mod rim_corner_tests {
     }
 }
 
+
+/// B1: a part-turn groove whose ring reaches PAST the post's wall (rect x 12..18, z 10..15 on a radius-15 post) leaves
+/// the post's wall as ONE cylinder face with a notch, as FreeCAD does (8 faces, not the 12 the cut grid's pieces made),
+/// and a feature after it still builds, from the pieces. The solid is the same one either way.
+#[cfg(test)]
+mod groove_past_wall_tests {
+    use super::*;
+    const PI: f64 = std::f64::consts::PI;
+
+    fn doc(angle: f64, tail: Option<Value>) -> Value {
+        let mut features = vec![
+            json!({ "id": "c1", "kind": "cylinder", "radius": 15.0, "height": 30.0, "center": [0.0, 0.0, 15.0] }),
+            json!({ "id": "s1", "kind": "sketch", "plane": "xy", "offset": 0.0, "points": [[12.0, 10.0], [18.0, 10.0], [18.0, 15.0], [12.0, 15.0]] }),
+            json!({ "id": "g1", "kind": "groove", "target": "s1", "into": "c1", "angle": angle }),
+        ];
+        features.extend(tail);
+        json!({ "features": features })
+    }
+    fn closed_form(angle: f64) -> f64 {
+        PI * 225.0 * 30.0 - 81.0 * 5.0 / 2.0 * angle.to_radians()
+    }
+
+    #[test]
+    fn half_and_quarter_turn_grooves_are_eight_faces_with_freecads_volumes() {
+        for (angle, freecad) in [(180.0, 20569.57789937917), (90.0, 20887.664155555136)] {
+            let (hist, refusals) = build_doc(&doc(angle, None));
+            assert!(refusals.is_empty(), "{angle}: {refusals:?}");
+            let s = hist.shapes.get("g1").expect("builds");
+            let v = build::solid_volume(s);
+            assert!((v - freecad).abs() <= 1e-9 * freecad, "{angle}: {v} vs FreeCAD {freecad}");
+            assert!((v - closed_form(angle)).abs() <= 1e-9 * freecad, "{angle}: {v} vs closed form");
+            assert_eq!(s.faces().len(), 8, "{angle}: FreeCAD 8 faces");
+            for d in [0.5, 0.05] {
+                assert!(crate::mesh::mesh_is_closed(&crate::mesh::mesh_solid(s, d).expect("meshes")), "{angle}: mesh closed at {d}");
+            }
+        }
+    }
+
+    #[test]
+    fn whole_turn_groove_past_the_wall_stays_seven_faces() {
+        let (hist, refusals) = build_doc(&doc(360.0, None));
+        assert!(refusals.is_empty(), "{refusals:?}");
+        let s = hist.shapes.get("g1").expect("builds");
+        assert_eq!(s.faces().len(), 7);
+        assert!((build::solid_volume(s) - closed_form(360.0)).abs() <= 1e-9 * 21000.0);
+    }
+
+    #[test]
+    fn a_hole_after_the_part_turn_groove_still_builds() {
+        for angle in [90.0, 180.0] {
+            for (tail, bore) in [
+                (json!({ "id": "h1", "kind": "hole", "target": "g1", "diameter": 6.0, "depth": 40.0, "center": [0.0, 0.0, 0.0], "axis": "z" }), PI * 9.0 * 30.0),
+                (json!({ "id": "h1", "kind": "hole", "target": "g1", "diameter": 3.0, "depth": 40.0, "center": [4.0, 0.0, 0.0], "axis": "z" }), PI * 2.25 * 30.0),
+            ] {
+                let (hist, refusals) = build_doc(&doc(angle, Some(tail.clone())));
+                assert!(refusals.is_empty(), "{angle} {tail}: {refusals:?}");
+                let s = hist.shapes.get("h1").expect("the hole builds");
+                let want = closed_form(angle) - bore;
+                let v = build::solid_volume(s);
+                assert!((v - want).abs() <= 1e-9 * want, "{angle} {tail}: {v} vs {want}");
+            }
+        }
+    }
+}
