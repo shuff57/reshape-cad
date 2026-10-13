@@ -1,14 +1,15 @@
 # PartDesign census: modes the gauntlet does not cover
 
-FreeCAD 26.3.0 RC1 against brep-rs at `reshape-cad`. 93 cases.
+FreeCAD 26.3.0 RC1 against brep-rs at `reshape-cad`. 105 cases.
 
 | status | n |
 |---|---|
 | FACES | 5 |
-| MATCH | 61 |
+| MATCH | 73 |
 | MATCH-EXACT | 1 |
-| NO-CONSTRUCT | 16 |
-| REFUSED | 10 |
+| NO-CONSTRUCT | 14 |
+| REFUSED(ref-fail) | 1 |
+| REFUSED | 11 |
 
 ## By family
 
@@ -18,7 +19,7 @@ FreeCAD 26.3.0 RC1 against brep-rs at `reshape-cad`. 93 cases.
 | pocket-mode | MATCH 5, NO-CONSTRUCT 1 |
 | groove | MATCH 3, FACES 2 |
 | revolution-mode | NO-CONSTRUCT 1 |
-| dress-mode | NO-CONSTRUCT 2, MATCH 6, REFUSED 2 |
+| dress-mode | MATCH 8, REFUSED 2 |
 | hole-mode | NO-CONSTRUCT 4, MATCH 1 |
 | thickness | MATCH 2, NO-CONSTRUCT 2, FACES 1 |
 | draft | MATCH 2, NO-CONSTRUCT 1 |
@@ -28,6 +29,7 @@ FreeCAD 26.3.0 RC1 against brep-rs at `reshape-cad`. 93 cases.
 | boolean | MATCH 10, FACES 2, REFUSED 2, MATCH-EXACT 1 |
 | sketch-on-face | MATCH 3, REFUSED 1 |
 | dress-chain | REFUSED 2, MATCH 12 |
+| chamfer-asym | MATCH 10, REFUSED(ref-fail) 1, REFUSED 1 |
 
 ## Every case
 
@@ -53,8 +55,8 @@ FreeCAD 26.3.0 RC1 against brep-rs at `reshape-cad`. 93 cases.
 | groove__v-notch | MATCH | vol 20845.5145, 6 faces |
 | groove__at-the-end | MATCH | vol 19933.4054, 5 faces |
 | revolution-mode__symmetric-120 | NO-CONSTRUCT | spin() takes an angle only (no symmetric option) |
-| dress-mode__chamfer-two-distances | NO-CONSTRUCT | bevel() takes one size |
-| dress-mode__chamfer-distance-angle | NO-CONSTRUCT | bevel() takes one size |
+| dress-mode__chamfer-two-distances | MATCH | vol 5910.0000, 7 faces |
+| dress-mode__chamfer-distance-angle | MATCH | vol 5922.0577, 7 faces |
 | dress-mode__fillet-all-edges | MATCH | vol 5804.6961, 26 faces |
 | dress-mode__fillet-two-adjacent | REFUSED | brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2  |
 | dress-mode__fillet-top-loop | REFUSED | brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round2  |
@@ -126,3 +128,15 @@ FreeCAD 26.3.0 RC1 against brep-rs at `reshape-cad`. 93 cases.
 | dress-chain__sequential-3-then-2 | MATCH | vol 5854.6667, 8 faces |
 | dress-chain__sequential-three-edges | MATCH | vol 5845.3333, 9 faces |
 | dress-chain__chain-then-fillet | REFUSED | brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1  |
+| chamfer-asym__box-top-front-9x1 | MATCH | vol 5865.0000, 7 faces |
+| chamfer-asym__box-top-front-9x1-flip | MATCH | vol 5865.0000, 7 faces |
+| chamfer-asym__box-top-left-9x1 | MATCH | vol 5910.0000, 7 faces |
+| chamfer-asym__box-vertical-front-right-6x2 | MATCH | vol 5940.0000, 7 faces |
+| chamfer-asym__box-angle-top-left-6-60 | MATCH | vol 5376.4617, 7 faces |
+| chamfer-asym__para-vertical-angle-3-30 | MATCH | vol 5963.4755, 7 faces |
+| chamfer-asym__para-vertical-angle-2-60-flip | MATCH | vol 5741.4359, 7 faces |
+| chamfer-asym__pent-oblique-8x1 | MATCH | vol 9677.0636, 8 faces |
+| chamfer-asym__pent-oblique-8x1-flip | MATCH | vol 9671.2858, 8 faces |
+| chamfer-asym__pent-vertical-angle-3-30 | MATCH | vol 9707.7617, 8 faces |
+| chamfer-asym__pent-vertical-angle-2-60-flip | REFUSED(ref-fail) | Chamfering bevel1: a chamfer of 2 at 60 degrees on an edge whose faces meet at 123.69 degrees would never meet the second face (the two angles add to 180 or mor |
+| chamfer-asym__box-clockwise-top-front-3x2 | REFUSED | Chamfering bevel1: FreeCAD puts the first distance on the lower-numbered of the edge's two faces, and brep-rs can only tell that numbering for a part that is a  |

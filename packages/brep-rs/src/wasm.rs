@@ -10148,7 +10148,11 @@ fn rim_corner_build(pre: &TSolid, hist: &History, features: &[Value], size: f64,
 /// the start cap, then the end cap), `second` on the higher-numbered one, and `flip` swaps the two (measured on
 /// FreeCAD 26.3.0 RC1, docs/specs/phase2 slice A3: 26 cases, every one equal to an independent exact solid).
 struct AsymAsk {
+    /// the second distance; for an angle ask this is only a placeholder, the leg comes from the dihedral
     second: f64,
+    /// degrees: the chamfer face's angle to the face that carries `size`. The second distance is
+    /// `size * sin(a) / sin(theta + a)` with theta the interior dihedral of the edge (`size * tan(a)` only at 90).
+    angle: Option<f64>,
     flip: bool,
 }
 
@@ -10190,6 +10194,7 @@ fn asym_request(f: &Value, size: f64, round: bool) -> Result<Option<AsymAsk>, St
     if !(size.is_finite() && size > 0.0) {
         return Err("the first distance of a chamfer must be a number above 0".to_string());
     }
+    let mut angle: Option<f64> = None;
     let second = if has2 {
         match f.get("size2").and_then(|v| v.as_f64()) {
             Some(d) if d.is_finite() && d > 0.0 => d,
@@ -10197,17 +10202,21 @@ fn asym_request(f: &Value, size: f64, round: bool) -> Result<Option<AsymAsk>, St
         }
     } else if hasa {
         match f.get("angle").and_then(|v| v.as_f64()) {
-            Some(a) if a.is_finite() && a > 0.0 && a < 90.0 => size * a.to_radians().tan(),
+            Some(a) if a.is_finite() && a > 0.0 && a < 90.0 => {
+                angle = Some(a);
+                size
+            }
             _ => return Err("the angle of a chamfer must be a number of degrees above 0 and below 90".to_string()),
         }
     } else {
         size
     };
-    // Equal legs: the face order does not matter and the ordinary one-size path is exact.
-    if (second - size).abs() <= 1e-12 * size.max(1.0) {
+    // Equal legs: the face order does not matter and the ordinary one-size path is exact. (An angle is never
+    // equal until the dihedral is known, so it always goes the asymmetric way.)
+    if angle.is_none() && (second - size).abs() <= 1e-12 * size.max(1.0) {
         return Ok(None);
     }
-    Ok(Some(AsymAsk { second, flip }))
+    Ok(Some(AsymAsk { second, angle, flip }))
 }
 
 /// Whether the face numbering FreeCAD would give the part `target` is known here: only a plain pad (no reverse,
@@ -10380,7 +10389,6 @@ fn chamfer_asym(
     ask: &AsymAsk,
     order: Result<(), String>,
 ) -> Result<TSolid, String> {
-    order?;
     let (fa, fb) = fillet_face_pair(hist, f).ok_or_else(|| "its edge could not be found".to_string())?;
     if std::rc::Rc::ptr_eq(&fa, &fb) {
         return Err("brep-rs cannot chamfer a flat edge".to_string());
@@ -10414,7 +10422,27 @@ fn chamfer_asym(
     if dot(na, nb).abs() >= 1.0 - 1e-9 {
         return Err("brep-rs cannot chamfer a flat edge".to_string());
     }
-    let (first, second) = (size, ask.second);
+    let first = size;
+    // FreeCAD measures the angle from the face that carries the first distance, inside the edge's cross-section
+    // triangle (edge, leg along that face, leg along the other): the other leg is size*sin(a)/sin(theta+a), which is
+    // size*tan(a) only when the faces are square. At theta + a >= 180 the chamfer plane never meets the second face:
+    // FreeCAD marks that feature invalid or hands back the part unchanged, and neither is a thing to copy.
+    let second = match ask.angle {
+        None => ask.second,
+        Some(a) => {
+            let theta = dot(in_a, in_b).clamp(-1.0, 1.0).acos().to_degrees();
+            if theta + a >= 180.0 - 1e-6 {
+                return Err(format!(
+                    "a chamfer of {first} at {a} degrees on an edge whose faces meet at {theta:.2} degrees would never meet the second face (the two angles add to 180 or more), which FreeCAD itself cannot build"
+                ));
+            }
+            first * a.to_radians().sin() / (theta + a).to_radians().sin()
+        }
+    };
+    // the face numbering only decides anything when the two legs differ
+    if (second - first).abs() > 1e-9 * first.max(1.0) {
+        order?;
+    }
     // the lower-numbered face carries the first distance; a flip swaps the two
     let a_first = (ia < ib) != ask.flip;
     let (leg_a, leg_b) = if a_first { (first, second) } else { (second, first) };

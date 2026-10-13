@@ -369,3 +369,111 @@ fn an_ordered_points_sketch_numbers_its_walls_in_point_order() {
     assert!(b.refusal.is_none(), "{:?}", b.refusal);
     assert!(close(b.vol, 9677.063578), "volume {}", b.vol);
 }
+
+// ---- Distance and angle on an edge whose two faces are NOT square (round 2) -----------------------------------------------
+//
+// FreeCAD measures the angle between the chamfer face and the face that carries the first distance, so the second leg is
+// size * sin(a) / sin(theta + a) with theta the interior angle of the two faces -- size * tan(a) only when theta is 90.
+// Every volume below is the exact polyhedron (area less the cut triangle, times the height), and the first two are also
+// FreeCAD 26.3.0 RC1 measurements (5963.4755 and 5741.4359 on the parallelogram prism).
+
+fn prism_edge_angle(pts: &[[f64; 2]], a: usize, b: usize, size: f64, angle: f64, flip: bool) -> Built {
+    let mut f = pad("xy", pts, 10.0, json!({}));
+    f.push(chamfer("c1", "e1", size, json!({ "angle": angle, "flip": flip }), between(wall(a), wall(b))));
+    run(f, "c1")
+}
+
+const PARALLELOGRAM: [[f64; 2]; 4] = [[0.0, 0.0], [30.0, 0.0], [40.0, 20.0], [10.0, 20.0]];
+
+#[test]
+fn angle_on_an_oblique_edge_uses_the_law_of_sines() {
+    // 116.565 degree corner: 3 at 30 degrees puts 2.722373 on the second face, not 3 tan 30 = 1.732051
+    let b = prism_edge_angle(&PARALLELOGRAM, 0, 1, 3.0, 30.0, false);
+    assert!(b.refusal.is_none(), "{:?}", b.refusal);
+    assert!(close(b.vol, 5963.475532), "volume {}", b.vol);
+    assert_eq!(b.faces, 7);
+    // flip: the 2 goes on the right wall and the angle is taken from it, so the front takes 28.908341
+    let b = prism_edge_angle(&PARALLELOGRAM, 0, 1, 2.0, 60.0, true);
+    assert!(b.refusal.is_none(), "{:?}", b.refusal);
+    assert!(close(b.vol, 5741.435935), "volume {}", b.vol);
+    assert_eq!(b.faces, 7);
+    // and the same corner by two distances with those legs is the same solid
+    let mut f = pad("xy", &PARALLELOGRAM, 10.0, json!({}));
+    f.push(chamfer("c1", "e1", 3.0, json!({ "size2": 2.722373091794896 }), between(wall(0), wall(1))));
+    let two = run(f, "c1");
+    assert!(close(two.vol, 5963.475532), "volume {}", two.vol);
+}
+
+#[test]
+fn angle_on_oblique_edges_of_other_prisms_matches_the_exact_solid() {
+    let hex: Vec<[f64; 2]> = (0..6)
+        .map(|k| {
+            let t = (60.0 * k as f64).to_radians();
+            [20.0 * t.cos(), 20.0 * t.sin()]
+        })
+        .collect();
+    // regular hexagon r 20 (120 degree walls), 6 at 40 degrees: leg 11.276311
+    let b = prism_edge_angle(&hex, 5, 0, 6.0, 40.0, false);
+    assert!(b.refusal.is_none(), "{:?}", b.refusal);
+    assert!(close(b.vol, 10099.337680127), "volume {}", b.vol);
+    assert_eq!(b.faces, 9);
+    // pentagon, walls 1/2 (87.274 degrees), 5 at 35
+    let b = prism_edge_angle(&PENTAGON, 1, 2, 5.0, 35.0, false);
+    assert!(close(b.vol, 9665.298285301), "volume {}", b.vol);
+    // pentagon, walls 0/1 (123.690 degrees), 3 at 30: FreeCAD 9707.7617
+    let b = prism_edge_angle(&PENTAGON, 0, 1, 3.0, 30.0, false);
+    assert!(close(b.vol, 9707.761714), "volume {}", b.vol);
+    // triangle, walls 2/0 (68.199 degrees) 5 at 30 and walls 1/2 (71.996 degrees) 4 at 60
+    let tri: [[f64; 2]; 3] = [[0.0, 0.0], [40.0, 0.0], [10.0, 25.0]];
+    let b = prism_edge_angle(&tri, 2, 0, 5.0, 30.0, false);
+    assert!(close(b.vol, 4941.371003), "volume {}", b.vol);
+    let b = prism_edge_angle(&tri, 1, 2, 4.0, 60.0, false);
+    assert!(close(b.vol, 4911.342632), "volume {}", b.vol);
+    // trapezoid, walls 2/3 (113.962 degrees), 6 at 20
+    let trap: [[f64; 2]; 4] = [[0.0, 0.0], [40.0, 0.0], [28.0, 18.0], [8.0, 18.0]];
+    let b = prism_edge_angle(&trap, 2, 3, 6.0, 20.0, false);
+    assert!(close(b.vol, 5321.842196), "volume {}", b.vol);
+}
+
+#[test]
+fn angle_that_cannot_meet_the_second_face_is_refused_as_freecad_fails() {
+    // pentagon walls 0/1 are 123.69 degrees apart: with 60 degrees the angles add to 183.69. FreeCAD marks that
+    // feature invalid (Touched), so the kernel gives no solid either.
+    for flip in [false, true] {
+        let b = prism_edge_angle(&PENTAGON, 0, 1, 2.0, 60.0, flip);
+        let why = b.refusal.expect("refused");
+        assert!(why.contains("would never meet the second face") && why.contains("shown without it"), "{why}");
+        assert_eq!(b.faces, 7);
+    }
+    // the trapezoid's 113.96 degree corner at 77.4 degrees (FreeCAD returns the part unchanged)
+    let trap: [[f64; 2]; 4] = [[0.0, 0.0], [40.0, 0.0], [30.0, 18.0], [8.0, 18.0]];
+    let b = prism_edge_angle(&trap, 1, 2, 2.61, 77.4, false);
+    assert!(b.refusal.is_some());
+    // a leg that comes out longer than the face (120 degrees, 54.3 degrees, 2.64 gives 21.6 on a 20 wall) does not fit
+    let hexagon: [[f64; 2]; 6] = [[10.0, 0.0], [30.0, 0.0], [40.0, 17.0], [30.0, 34.0], [10.0, 34.0], [0.0, 17.0]];
+    let b = prism_edge_angle(&hexagon, 2, 3, 2.64, 54.3, false);
+    assert!(b.refusal.as_deref().unwrap_or("").contains("would not fit"), "{:?}", b.refusal);
+}
+
+#[test]
+fn a_square_corner_keeps_the_tangent_rule() {
+    // theta = 90 (front and right walls of the box): sin a / sin(90 + a) = tan a, round 1's box cases are unchanged
+    let b = on_top_sketch_box(json!({ "angle": 30.0 }), 3.0, between(wall(0), wall(1)));
+    assert!(b.refusal.is_none(), "{:?}", b.refusal);
+    assert!(close(b.vol, 6000.0 - 0.5 * 3.0 * 3.0 * 30.0_f64.to_radians().tan() * 10.0), "volume {}", b.vol);
+}
+
+#[test]
+fn a_clockwise_outline_stays_a_refusal_with_its_sentence() {
+    // The kernel cannot tell FreeCAD's face numbering for a clockwise-drawn outline (not probed), so a second
+    // distance or an angle is refused for it rather than guessed; the part is shown whole.
+    let cw: Vec<[f64; 2]> = BOX_PTS.iter().rev().cloned().collect();
+    for extra in [json!({ "size2": 2.0 }), json!({ "angle": 30.0 })] {
+        let mut f = pad("xy", &cw, 10.0, json!({}));
+        f.push(chamfer("c1", "e1", 3.0, extra, between(cap("top"), wall(0))));
+        let b = run(f, "c1");
+        let why = b.refusal.expect("refused");
+        assert!(why.contains("lower-numbered") && why.contains("shown without it"), "{why}");
+        assert!(close(b.vol, 6000.0));
+    }
+}

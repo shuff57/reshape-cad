@@ -1,0 +1,27 @@
+{
+ "id": "chamfer-asym__pent-vertical-angle-2-60-flip",
+ "ok": false,
+ "volume": 9750.0,
+ "bbox": [
+  -10.0,
+  -1.7763568394002505e-15,
+  0.0,
+  40.0,
+  30.0,
+  10.0
+ ],
+ "faces": 7,
+ "com": [
+  15.0,
+  12.692307692307692,
+  5.0
+ ],
+ "valid": true,
+ "solids": 1,
+ "bad": {
+  "Chamfer": [
+   "Touched",
+   "Invalid"
+  ]
+ }
+}
