@@ -12,6 +12,11 @@ export const meta = {
 
 // Slice definitions mirror docs/specs/phase2/PLAN.md section 1. The goal text is what the implementer is held to.
 const SLICES = {
+  A1W: {
+    goal: 'WEDGE-ONLY corner: three equal-or-unequal chamfers at ONE corner of a convex planar solid, given as THREE SEPARATE bevel features (the script form), build as three successive wedge cuts and match FreeCAD run as three SEPARATE PartDesign::Chamfer features (box d=2: 5886.000 / 9 faces; d=4: 5568 / 9). NO corner patch. Lift the "end touches more than three faces" guard ONLY for that sequential case; the one-pick patch (5885.333 / 10 faces) is not buildable from the doc and must not be produced. A plain 3-face corner on a triangle/hexagon/wedge prism must stop being falsely refused.',
+    cases: 'new census family dress-seq: three separate chamfers at a box corner at d=1,2,4 (FreeCAD reference = three separate features, NOT one pick); same on a pentagon prism, hexagon prism, right-triangle prism; five-edge post in BOTH orders (must agree); keep dress-chain__three-at-corner as a documented one-pick case that stays REFUSED',
+    probe: 'Build every case in FreeCAD as separate sequential features and as one pick; record both. Independent exact volume by successive half-space clipping. Confirm the kernel old three-wedge path gives the sequential number.',
+  },
   A1: {
     goal: 'Three equal chamfers meeting at ONE corner of a convex planar solid build and match FreeCAD (corner patch). Currently refused: "an edge whose end touches more than three faces". Unequal sizes at a corner stay refused.',
     cases: 'dress-chain__three-at-corner (FreeCAD 5885.333, 10 faces); add: vertical+two horizontal on a 30x20x10 block at sizes 1 and 4; a convex pentagon prism corner of three',
@@ -78,6 +83,7 @@ const RULES = `Project rules (AGENTS.md and docs/specs/phase2/PLAN.md section 0)
 
 const slices = (args && args.slices) || ['A1']
 const board = []
+let base = 'main'
 
 for (const id of slices) {
   const S = SLICES[id]
@@ -98,7 +104,7 @@ for (const id of slices) {
     rounds += 1
     phase('Build')
     build = await agent(
-      `${RULES}\n\nSLICE ${id}: ${S.goal}\nCases: ${S.cases}\n\nFACT SHEET FROM THE PROBE:\n${probe.facts}\n${probe.baseline ? 'BASELINE:\n' + probe.baseline + '\n' : ''}${feedback ? '\nROUND ' + (rounds - 1) + ' FAILED. Fix exactly these, do not regress what passed:\n' + feedback + '\n' : ''}\nImplement the slice in your worktree (packages/brep-rs/src). Add cargo tests that pin the FreeCAD numbers AND each refusal sentence. Run cargo test --release and the wasm build into a scratch pkg. Commit in the worktree branch (explicit paths, trailer Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>). Return the worktree path, branch, scratch pkg path, cargo test count, and a summary.`,
+      `${RULES}\n\nSLICE ${id}: ${S.goal}\nCases: ${S.cases}\n\nFACT SHEET FROM THE PROBE:\n${probe.facts}\n${probe.baseline ? 'BASELINE:\n' + probe.baseline + '\n' : ''}${feedback ? '\nROUND ' + (rounds - 1) + ' FAILED. Fix exactly these, do not regress what passed:\n' + feedback + '\n' : ''}\nFIRST, in your worktree, run `git checkout -B ${S.branchName || 'slice-' + id} ${base}` (a stale base cost a whole round last time; the base must contain docs/specs/phase2 and commit 7426176). Implement the slice in your worktree (packages/brep-rs/src). Add cargo tests that pin the FreeCAD numbers AND each refusal sentence. Run cargo test --release and the wasm build into a scratch pkg. Commit in the worktree branch (explicit paths, trailer Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>). Return the worktree path, branch, scratch pkg path, cargo test count, and a summary.`,
       { label: `build:${id}#${rounds}`, phase: 'Build', isolation: 'worktree', schema: BUILD },
     )
     if (!build) { feedback = 'the build agent died'; continue }
@@ -114,7 +120,7 @@ for (const id of slices) {
       () => lens('adversary',
         `(1) For each case compute an independent exact volume and compare with the kernel to 1e-9 -- a 1e-6 gate cannot see a sliver. (2) export_step then measure_step: same volume and face count. (3) mesh_feature is watertight. (4) Mutate the slice's docs (every numeric leaf: 0, -1, 1e-300, 1e300, f64::MAX, 5e-324, 1e-9, 1e6) and run docs/specs/fuzz/fuzz-wasm.mjs --mode=build --docs=<file>: 0 aborts, 0 hangs. (5) Invent three cases NOT in the list near the slice's edge (different size, a non-box convex prism, an oblique corner) and compare each with FreeCAD: any case that builds and disagrees is a wrong solid and a hard fail.`),
       () => lens('gates',
-        `In the checkout, with the wasm built into packages/brep-rs/pkg of a scratch root: node scripts/brep-parity-gate.mjs (78), brep-mesh-gate.mjs (78), brep-step-gate.mjs (78), npm run gate:occt (17), and cargo test --release (not fewer tests than 658 + what the slice added). Report the gz wasm size.`),
+        `In the checkout, with the wasm built into packages/brep-rs/pkg of a scratch root: node scripts/brep-parity-gate.mjs (78), brep-mesh-gate.mjs (78), brep-step-gate.mjs (78), npm run gate:occt (17), and cargo test --release (not fewer tests than main has at the base commit: measure main first, then base + what the slice added). Report the gz wasm size.`),
     ])).filter(Boolean)
 
     const failures = verdicts.flatMap((v) => v.failures || [])
@@ -123,6 +129,7 @@ for (const id of slices) {
     log(`${id} round ${rounds}: ${done ? 'DONE' : failures.length + ' failure(s)'}`)
     board.push({ id, round: rounds, done, branch: build.branch, worktree: build.worktree, failures: failures.slice(0, 10), numbers: verdicts.map((v) => v.numbers).filter(Boolean) })
   }
+  if (done && build) base = build.branch
   if (!done) log(`${id}: stop rule hit after ${rounds} rounds -- record what was measured in PLAN.md, keep the refusal, move on`)
 }
 
