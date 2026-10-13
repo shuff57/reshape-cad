@@ -2634,6 +2634,56 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     let origin = fr.origin;
                     Some(points.iter().map(|p| uv_world(origin, u_axis, v_axis, *p)).collect())
                 };
+                // Two circles: a coaxial pair is a cone frustum (a cylinder when the radii are equal), built
+                // as a revolved trapezoid. A pair whose axes differ is a skewed loft FreeCAD answers with a
+                // B-spline surface, which this kernel cannot represent, so it is refused in its own sentence.
+                let circle_of = |name: Option<&Value>| -> Option<([f64; 3], [f64; 3], f64)> {
+                    let sk = sketches.get(name?.as_str()?)?;
+                    if sk.get("shape").and_then(|s| s.as_str()) != Some("circle") {
+                        return None;
+                    }
+                    if frame_refusal(sk).is_some() {
+                        return None;
+                    }
+                    let (c, r) = circle_of_value(sk)?;
+                    let fr = sketch_frame(sk);
+                    Some((uv_world(fr.origin, fr.u, fr.v, c), fr.n, r))
+                };
+                if let (Some((c0, n0, r0)), Some((c1, n1, r1))) =
+                    (circle_of(targets.first()), circle_of(targets.get(1)))
+                {
+                    let d = sub(c1, c0);
+                    let h = crate::math::len(d);
+                    let scale_ref = r0.max(r1).max(h).max(1e-30);
+                    let parallel = crate::math::len(cross(n0, n1)) <= 1e-9;
+                    let axis_ok = h > 1e-9 * scale_ref
+                        && parallel
+                        && crate::math::len(cross(d, n0)) <= 1e-9 * h;
+                    if !(r0 > 1e-9 && r1 > 1e-9) {
+                        refusals.insert(id.clone(), json!(format!(
+                            "brep-rs cannot blend a circle that has no size -- {id} is shown without it.")));
+                        continue;
+                    }
+                    if !axis_ok {
+                        refusals.insert(id.clone(), json!(format!(
+                            "brep-rs can only blend two circles that share one axis, one above the other, into a cone or cylinder -- two circles off each other's axis make a curved skew surface it does not build yet, so {id} is shown without it.")));
+                        continue;
+                    }
+                    let unit = scale(d, 1.0 / h);
+                    let e1 = if crate::math::dot(unit, [1.0, 0.0, 0.0]).abs() < 0.9 { [1.0, 0.0, 0.0] } else { [0.0, 1.0, 0.0] };
+                    let profile = [[0.0, 0.0], [r0, 0.0], [r1, h], [0.0, h]];
+                    match build::revolve_profile(&profile, unit, e1, 360.0) {
+                        Some((solid, _)) => {
+                            let solid = build::transform_solid(&solid, &crate::math::Transform::translation(c0));
+                            hist.insert(&id, build::ensure_outward(&solid));
+                        }
+                        None => {
+                            refusals.insert(id.clone(), json!(format!(
+                                "brep-rs could not build this blend between two circles -- {id} is shown without it.")));
+                        }
+                    }
+                    continue;
+                }
                 let lo = targets.first().and_then(|t| read_target(t, &sketches));
                 let hi = targets.get(1).and_then(|t| read_target(t, &sketches));
                 let reason = match (&lo, &hi) {
@@ -7071,6 +7121,73 @@ mod tests {
             assert!((bb.lo[i] - want[i][0]).abs() <= 1e-6, "bbox lo[{i}] {}", bb.lo[i]);
             assert!((bb.hi[i] - want[i][1]).abs() <= 1e-6, "bbox hi[{i}] {}", bb.hi[i]);
         }
+    }
+
+    fn circle_blend_doc(r0: f64, c0: f64, r1: f64, c1: f64, top: serde_json::Value) -> serde_json::Value {
+        json!({
+            "features": [
+                { "id": "sa", "kind": "sketch", "plane": "xy", "offset": 0.0, "shape": "circle", "points": [[c0 - r0, 0.0], [c0 + r0, 0.0]] },
+                { "id": "sb", "kind": "sketch", "plane": "xy", "offset": 15.0, "shape": "circle", "points": [[c1 - r1, 0.0], [c1 + r1, 0.0]] },
+                { "id": "bl1", "kind": "blend", "targets": ["sa", top] }
+            ]
+        })
+    }
+
+    /// Slice C1, FreeCAD 26.3.0 RC1: coaxial circle-to-circle loft is 3 faces (two planes + cone/cylinder)
+    /// with the closed-form frustum volume pi*h/3*(R^2+R*r+r^2).
+    #[test]
+    fn blend_coaxial_circles_are_a_frustum() {
+        let pi = std::f64::consts::PI;
+        let cases: [(f64, f64, f64); 3] = [
+            (10.0, 5.0, 2748.893571891069),
+            (5.0, 12.0, 3597.1235883603126),
+            (8.0, 8.0, 3015.928947446201),
+        ];
+        for (r0, r1, want) in cases {
+            let doc = circle_blend_doc(r0, 0.0, r1, 0.0, json!("sb"));
+            let (hist, refusals) = build_doc(&doc);
+            assert!(refusals.is_empty(), "refusals: {refusals:?}");
+            let solid = hist.shapes.get("bl1").expect("coaxial circles must blend");
+            let exact = pi * 15.0 / 3.0 * (r0 * r0 + r0 * r1 + r1 * r1);
+            assert!((exact - want).abs() < 1e-9, "closed form {exact} vs FreeCAD {want}");
+            let vol = build::solid_volume(solid);
+            assert!((vol - want).abs() <= 1e-6 * want, "R{r0}->r{r1}: volume {vol} vs {want}");
+            assert_eq!(solid.faces().len(), 3, "two caps and one wall");
+            let bb = build::solid_aabb(solid);
+            let rm = r0.max(r1);
+            assert!((bb.lo[2]).abs() <= 1e-6 && (bb.hi[2] - 15.0).abs() <= 1e-6, "z reach");
+            assert!((bb.hi[0] - rm).abs() <= 1e-6 && (bb.lo[1] + rm).abs() <= 1e-6, "xy reach");
+        }
+    }
+
+    /// Slice C1: circles whose axes differ stay refused in their own sentence (FreeCAD builds a B-spline there).
+    #[test]
+    fn blend_offset_circles_refuse() {
+        let doc = circle_blend_doc(10.0, 0.0, 5.0, 4.0, json!("sb"));
+        let (hist, refusals) = build_doc(&doc);
+        assert!(!hist.shapes.contains_key("bl1"));
+        assert_eq!(
+            refusals.get("bl1").and_then(|v| v.as_str()),
+            Some("brep-rs can only blend two circles that share one axis, one above the other, into a cone or cylinder -- two circles off each other's axis make a curved skew surface it does not build yet, so bl1 is shown without it.")
+        );
+    }
+
+    /// Slice C1: a circle against a rectangle keeps the straight-outline refusal.
+    #[test]
+    fn blend_circle_to_rect_refuses() {
+        let doc = json!({
+            "features": [
+                { "id": "sa", "kind": "sketch", "plane": "xy", "offset": 0.0, "shape": "circle", "points": [[-10.0, 0.0], [10.0, 0.0]] },
+                { "id": "sb", "kind": "sketch", "plane": "xy", "offset": 15.0, "points": [[-5.0, -5.0], [5.0, -5.0], [5.0, 5.0], [-5.0, 5.0]] },
+                { "id": "bl1", "kind": "blend", "targets": ["sa", "sb"] }
+            ]
+        });
+        let (hist, refusals) = build_doc(&doc);
+        assert!(!hist.shapes.contains_key("bl1"));
+        assert_eq!(
+            refusals.get("bl1").and_then(|v| v.as_str()),
+            Some("brep-rs can only blend two matching straight outlines yet -- bl1 is shown without it.")
+        );
     }
 
     /// SPEC-brep-draft.md fixture: box 40x40x20, angle 8, pull z, neutral -10,
