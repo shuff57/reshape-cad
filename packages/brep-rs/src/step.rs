@@ -525,6 +525,11 @@ fn opposed_windings(mut segs: Vec<Seg>, origin: Vec3, axis: Vec3, e1: Vec3) -> V
     segs
 }
 
+/// How many uses of a wire are PART of a circle (a part-turn wall has two, one rim at each end; a whole turn has none).
+fn rim_arcs(wire: &[crate::topo::EdgeUse<Curve>]) -> usize {
+    wire.iter().filter(|u| matches!(&u.edge.borrow().curve, Curve::Arc { sweep, .. } if sweep.abs() < std::f64::consts::TAU - 1e-9)).count()
+}
+
 /// The boundary pieces of one wire, in the order the wire walks them.
 fn wire_segs(wire: &[crate::topo::EdgeUse<Curve>]) -> Result<Vec<Seg>, String> {
     let mut out = Vec::with_capacity(wire.len());
@@ -1274,6 +1279,16 @@ fn face_bounds(face: &crate::topo::Face<Curve, Surface>) -> Result<(Vec<Vec<Seg>
                 }
                 bounds.push(segs);
             }
+        }
+        // A wall whose rims are broken into arcs where the flat faces' circles are (a cylinder kept from a block it touches along
+        // lines: its two tangent points) is written from its own wires, so the rim pieces it shares with the disks are the same
+        // edges on both sides; `cylinder_loop` would write one rim circle against the disks' two arcs.
+        Surface::Cylinder(c) if face.boundary.len() == 1 && rim_arcs(&face.boundary[0].borrow().edges) > 2 => {
+            let segs = opposed_windings(wire_segs(&face.boundary[0].borrow().edges)?, c.origin, c.axis, c.e1);
+            if !closed_chain(&segs) {
+                return Err("a face whose wire is not a closed chain".to_string());
+            }
+            bounds.push(segs);
         }
         Surface::Cylinder(c) => {
             if face.boundary.len() > 1 {

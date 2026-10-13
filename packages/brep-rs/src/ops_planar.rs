@@ -883,7 +883,7 @@ fn rev_grid(f: &RFace, other: &[AFace]) -> Result<Grid, ()> {
     }
     zs.sort_by(|a, b| a.total_cmp(b));
     zs.dedup_by(|a, b| (*a - *b).abs() < EPS);
-    Ok(Grid { us: Vec::new(), vs: zs })
+    Ok(Grid { us: Vec::new(), vs: zs, soft: Vec::new() })
 }
 
 /// The heights where a cylinder wall of the other solid is cut by sphere or cone `r` (in the
@@ -1686,6 +1686,10 @@ fn cyl_on_plane(f: &PFace, g: &CFace, plane_box: &Box3, plane_is_a: bool) -> Res
 struct Grid {
     us: Vec<f64>,
     vs: Vec<f64>,
+    /// The angles in `us` that only a TOUCH put there (a plane tangent to the wall, a circle that merely meets an
+    /// edge of a face) in an intersection, with no cut of any other kind at that angle. Two kept cells of one row that
+    /// meet at such an angle are ONE face (see `pieces`): nothing separates them but a line the other solid only touches.
+    soft: Vec<f64>,
 }
 
 fn wall_grid(f: &CFace, other: &[AFace], skip: &dyn Fn(usize) -> bool, wall_is_a: bool) -> Result<Grid, ()> {
@@ -1693,6 +1697,8 @@ fn wall_grid(f: &CFace, other: &[AFace], skip: &dyn Fn(usize) -> bool, wall_is_a
     let me = aabb_cyl(c);
     let tol = EPS / c.radius;
     let (mut us, mut vs) = (Vec::new(), Vec::new());
+    let mut soft_c: Vec<f64> = Vec::new();
+    let keeping = CUR_OP.with(|o| o.get()) == 2;
     for (gi, g) in other.iter().enumerate() {
         if skip(gi) {
             continue; // the crossing cylinder is handled as a pair
@@ -1733,6 +1739,9 @@ fn wall_grid(f: &CFace, other: &[AFace], skip: &dyn Fn(usize) -> bool, wall_is_a
                 // Where the other solid's face holds this line: any overlap with
                 // the wall's height makes it a grid line, and each end that stops
                 // inside the wall is a height line too.
+                // A plane that only TOUCHES the wall in a keep cuts it nowhere: the line is a soft node, and no height
+                // line is made of where the contact starts or stops.
+                let soft = tangent && keeping;
                 let mut touched = false;
                 for (t0, t1) in line_intervals(g, cyl_pt(c, th, 0.0), c.axis)? {
                     let (lo, hi) = (t0.max(c.vmin), t1.min(c.vmax));
@@ -1740,6 +1749,9 @@ fn wall_grid(f: &CFace, other: &[AFace], skip: &dyn Fn(usize) -> bool, wall_is_a
                         continue;
                     }
                     touched = true;
+                    if soft {
+                        continue;
+                    }
                     if lo > c.vmin + EPS {
                         vs.push(lo);
                     }
@@ -1748,7 +1760,11 @@ fn wall_grid(f: &CFace, other: &[AFace], skip: &dyn Fn(usize) -> bool, wall_is_a
                     }
                 }
                 if touched {
-                    us.push(rel + f.u0);
+                    if soft {
+                        soft_c.push(rel + f.u0);
+                    } else {
+                        us.push(rel + f.u0);
+                    }
                 }
             }
         } else if ax.abs() > 1.0 - 1e-9 {
@@ -1761,6 +1777,7 @@ fn wall_grid(f: &CFace, other: &[AFace], skip: &dyn Fn(usize) -> bool, wall_is_a
             let centre = add(c.origin, scale(c.axis, v0));
             let circle = E2::Arc { c: g.plane.project(centre), r: c.radius, a0: 0.0, sw: TAU };
             let mut rels = vec![0.0, f.span];
+            let mut touching: Vec<f64> = Vec::new();
             for e in &g.edges {
                 let (mut a, mut b) = (Vec::new(), Vec::new());
                 meet(e, &circle, &mut a, &mut b);
@@ -1768,6 +1785,14 @@ fn wall_grid(f: &CFace, other: &[AFace], skip: &dyn Fn(usize) -> bool, wall_is_a
                     let d = sub(g.plane.point(circle.at(t)), centre);
                     let rel = pos_ang(dot(d, c.e2).atan2(dot(d, c.e1)) - f.u0);
                     if rel > tol && rel < f.span - tol {
+                        // The circle stays inside, or outside, the face on both sides of the contact: it only TOUCHES
+                        // an edge there (a 20 across cylinder against the 20 wide block's sides), nothing is cut.
+                        if keeping {
+                            let side = |s: f64| in_edges(g.plane.project(cyl_pt(c, f.u0 + rel + s, v0)), &g.edges);
+                            if side(-1e-4) == side(1e-4) {
+                                touching.push(rel);
+                            }
+                        }
                         rels.push(rel);
                     }
                 }
@@ -1776,7 +1801,13 @@ fn wall_grid(f: &CFace, other: &[AFace], skip: &dyn Fn(usize) -> bool, wall_is_a
             let inside = rels.windows(2).any(|w| w[1] - w[0] > tol && in_edges(g.plane.project(cyl_pt(c, f.u0 + 0.5 * (w[0] + w[1]), v0)), &g.edges));
             if inside {
                 vs.push(v0);
-                us.extend(rels.iter().filter(|&&r| r > tol && r < f.span - tol).map(|&r| r + f.u0));
+                for &r in rels.iter().filter(|&&r| r > tol && r < f.span - tol) {
+                    if touching.iter().any(|&t| (t - r).abs() < tol) {
+                        soft_c.push(r + f.u0);
+                    } else {
+                        us.push(r + f.u0);
+                    }
+                }
             }
         } else if boxes_meet(&me, &aabb_plane(&g.curves)) {
             bail!();
@@ -1789,7 +1820,12 @@ fn wall_grid(f: &CFace, other: &[AFace], skip: &dyn Fn(usize) -> bool, wall_is_a
     // A cut whole-turn wall has NO node at its seam unless a cut lies there: the cell that runs across the seam is one
     // cell (the last, which ends where the first begins one turn on), so a stretch of the wall that survives across the
     // seam stays one face. A single cut line leaves one cell, the whole turn, seamed at that line.
-    Ok(Grid { us, vs })
+    // A soft node survives only where nothing cut at that angle.
+    let soft: Vec<f64> = soft_c.iter().copied().filter(|&t| !us.iter().any(|&u| (u - t).abs() < tol)).collect();
+    us.extend(soft_c);
+    us.sort_by(|a, b| a.total_cmp(b));
+    us.dedup_by(|a, b| (*a - *b).abs() < tol);
+    Ok(Grid { us, vs, soft })
 }
 
 /// Where a second cylinder wall with a PARALLEL axis meets wall `f`: two straight
@@ -2742,10 +2778,80 @@ fn pieces(
                         None => {}
                     }
                 }
+                if !g.soft.is_empty() && !partial_drop && !merge_past && !kept_cells.is_empty() {
+                    let hs_rows = hs.len().saturating_sub(1);
+                    let faces = merge_soft_cells(f, g, &arcs, hs_rows, uncut, &kept_cells, cells, flip, vertex)?;
+                    out.extend(faces.into_iter().map(Kept::Wall));
+                    continue;
+                }
                 out.extend(cells.into_iter().map(Kept::Wall));
             }
         }
     }
+    Ok(out)
+}
+
+/// The kept cells of a wall cut in a keep (intersection) at lines the other solid only touches, joined across those
+/// lines into one face per run: a 20 across cylinder kept from a 20 wide block is ONE lateral face (FreeCAD: 3 faces),
+/// not two halves meeting along the two tangent lines. A run that closes the whole turn is one seamed wall whose rims
+/// are broken into arcs at the touch points (the plane faces' own circle edges are arcs between those points, so the
+/// shell's edges pair). `cells` are the faces cut for `kept`'s (column, row) pairs, already flipped when `flip`.
+#[allow(clippy::too_many_arguments)]
+fn merge_soft_cells(f: &CFace, g: &Grid, arcs: &[(f64, f64)], rows: usize, uncut: bool, kept: &[(usize, usize)], cells: Vec<TFace>, flip: bool, vertex: VertexFn) -> Result<Vec<TFace>, ()> {
+    let c = &f.cyl;
+    let nc = arcs.len();
+    let tol = EPS / c.radius;
+    let soft_at = |ang: f64| g.soft.iter().any(|&s| {
+        let d = pos_ang(s - ang);
+        d.min(TAU - d) < tol
+    });
+    let whole = f.span >= TAU - 1e-9;
+    let mut cells: Vec<Option<TFace>> = cells.into_iter().map(Some).collect();
+    let mut out: Vec<TFace> = Vec::new();
+    let mut hs_of_row = vec![(0.0, 0.0); rows];
+    // the heights of each row come from the cells themselves
+    for (idx, &(_, ri)) in kept.iter().enumerate() {
+        if let Some(face) = &cells[idx] {
+            let fb = face.borrow();
+            hs_of_row[ri] = (fb.uv_domain[1][0], fb.uv_domain[1][1]);
+        }
+    }
+    for ri in 0..rows {
+        let has = |ci: usize| kept.iter().position(|&k| k == (ci, ri));
+        let all_kept = (0..nc).all(|ci| has(ci).is_some());
+        let closed = whole && nc >= 2 && all_kept && (0..nc).all(|ci| soft_at(arcs[ci].1));
+        let (v_lo, v_hi) = hs_of_row[ri];
+        if closed {
+            let mids: Vec<f64> = arcs[..nc - 1].iter().map(|a| a.1).collect();
+            let face = wall_multi(c, f, arcs[0].0, arcs[0].0 + TAU, &mids, v_lo, v_hi, uncut, vertex);
+            for ci in 0..nc {
+                cells[has(ci).unwrap()] = None;
+            }
+            out.push(if flip { ops::flip_face(&face).ok_or(())? } else { face });
+            continue;
+        }
+        let mut ci = 0;
+        while ci < nc {
+            if has(ci).is_none() {
+                ci += 1;
+                continue;
+            }
+            let mut last = ci;
+            while last + 1 < nc && has(last + 1).is_some() && soft_at(arcs[last].1) {
+                last += 1;
+            }
+            if last > ci {
+                let mids: Vec<f64> = arcs[ci..last].iter().map(|a| a.1).collect();
+                let face = wall_multi(c, f, arcs[ci].0, arcs[last].1, &mids, v_lo, v_hi, uncut, vertex);
+                for k in ci..=last {
+                    cells[has(k).unwrap()] = None;
+                }
+                out.push(if flip { ops::flip_face(&face).ok_or(())? } else { face });
+            }
+            ci = last + 1;
+        }
+    }
+    out.extend(cells.into_iter().flatten());
     Ok(out)
 }
 
@@ -2947,6 +3053,50 @@ fn wall_piece(c: &Cylinder, orig: &CFace, th_a: f64, th_b: f64, v_lo: f64, v_hi:
             topo::EdgeUse { edge: bot, forward: false, pcurve: pc(th_b, v_lo, th_a, v_lo) },
         ]
     };
+    let mut cyl = c.clone();
+    cyl.vmin = v_lo;
+    cyl.vmax = v_hi;
+    cyl.arc = if closed || uncut { c.arc.clone() } else { Some(ArcRange { start: th_a, span: sw }) };
+    cyl.cross = None;
+    Rc::new(RefCell::new(Face {
+        boundary: vec![Rc::new(RefCell::new(Wire { edges: uses }))],
+        forward: true,
+        surface: Surface::Cylinder(cyl),
+        uv_domain: [[th_a, th_b], [v_lo, v_hi]],
+    }))
+}
+
+/// A wall piece over angles `th_a..th_b` whose rims are broken into arcs at the angles `mids` (touch points shared with
+/// the flat faces' circle edges). Closed (a whole turn) when the range is a full turn of a whole-turn wall.
+#[allow(clippy::too_many_arguments)]
+fn wall_multi(c: &Cylinder, orig: &CFace, th_a: f64, th_b: f64, mids: &[f64], v_lo: f64, v_hi: f64, uncut: bool, vertex: VertexFn) -> TFace {
+    let sw = th_b - th_a;
+    let closed = orig.span >= TAU - 1e-9 && sw >= TAU - 1e-9;
+    let hand = cyl_hand(c);
+    let mut angs = vec![th_a];
+    angs.extend(mids.iter().copied());
+    angs.push(th_b);
+    let pc = |u0: f64, v0: f64, u1: f64, v1: f64| Pcurve { start: [u0, v0], end: [u1, v1], mid: [0.5 * (u0 + u1), 0.5 * (v0 + v1)] };
+    let ring = |v: f64| add(c.origin, scale(c.axis, v));
+    let mut vtx = |th: f64, v: f64| vertex(cyl_pt(c, th, v));
+    let mut make_seam = |th: f64, vtx: &mut dyn FnMut(f64, f64) -> topo::VertexRef| {
+        let (lo, hi) = (vtx(th, v_lo), vtx(th, v_hi));
+        topo::edge(lo, hi, true, Curve::Segment { a: cyl_pt(c, th, v_lo), b: cyl_pt(c, th, v_hi) })
+    };
+    let seam_a = make_seam(th_a, &mut vtx);
+    let seam_b = if closed { seam_a.clone() } else { make_seam(th_b, &mut vtx) };
+    let mut make_arc = |v: f64, t0: f64, t1: f64, vtx: &mut dyn FnMut(f64, f64) -> topo::VertexRef| {
+        let x_axis = normalize(add(scale(c.e1, t0.cos()), scale(c.e2, t0.sin())));
+        topo::edge(vtx(t0, v), vtx(t1, v), true, Curve::Arc { center: ring(v), radius: c.radius, normal: c.axis, x_axis, sweep: hand * (t1 - t0) })
+    };
+    let mut uses = vec![topo::EdgeUse { edge: seam_a, forward: true, pcurve: pc(th_a, v_lo, th_a, v_hi) }];
+    for w in angs.windows(2) {
+        uses.push(topo::EdgeUse { edge: make_arc(v_hi, w[0], w[1], &mut vtx), forward: true, pcurve: pc(w[0], v_hi, w[1], v_hi) });
+    }
+    uses.push(topo::EdgeUse { edge: seam_b, forward: false, pcurve: pc(th_b, v_hi, th_b, v_lo) });
+    for w in angs.windows(2).rev() {
+        uses.push(topo::EdgeUse { edge: make_arc(v_lo, w[0], w[1], &mut vtx), forward: false, pcurve: pc(w[1], v_lo, w[0], v_lo) });
+    }
     let mut cyl = c.clone();
     cyl.vmin = v_lo;
     cyl.vmax = v_hi;
