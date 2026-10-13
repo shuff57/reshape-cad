@@ -10230,6 +10230,7 @@ fn pad_order_known(
     target: &str,
     src: &TSolid,
 ) -> Result<(), String> {
+    const WHY_BACKWARDS: &str = "FreeCAD puts the first distance on the lower-numbered of the edge's two faces and numbers the faces by walking the sketch outline from the end of its first line, and the first line of this sketch is drawn backwards (its start, not its end, meets the second line), so brep-rs cannot say which face takes which distance on this part -- draw the first line from its start towards the second line";
     const WHY: &str = "FreeCAD puts the first distance on the lower-numbered of the edge's two faces, and brep-rs can only tell that numbering for a part that is a plain pad (no reverse, symmetric, taper or direction option) of one straight-sided sketch with nothing done to it since, so it cannot say which face takes which distance on this part";
     let g = features
         .iter()
@@ -10281,6 +10282,19 @@ fn pad_order_known(
     };
     if lines.len() != n {
         return Err(WHY.to_string());
+    }
+    // FreeCAD numbers the walls by walking the wire from the END of geom 0, so a first line drawn backwards
+    // (its start, not its end, meeting geom 1) numbers them 0,3,2,1 and puts the legs on the other faces.
+    // That numbering was only probed on a box, so a first line that does not run forward is refused.
+    {
+        let same = |p: [f64; 2], q: [f64; 2]| (p[0] - q[0]).hypot(p[1] - q[1]) <= 1e-9 * (1.0 + q[0].abs() + q[1].abs());
+        let (g0a, g0b) = lines[0];
+        let (g1a, g1b) = lines[1];
+        let b_meets = same(g0b, g1a) || same(g0b, g1b);
+        let a_meets = same(g0a, g1a) || same(g0a, g1b);
+        if !b_meets || a_meets {
+            return Err(WHY_BACKWARDS.to_string());
+        }
     }
     let fr = sketch_frame(sk);
     for (i, (p, q)) in lines.iter().enumerate() {

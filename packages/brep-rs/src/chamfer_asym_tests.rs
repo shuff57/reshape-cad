@@ -477,3 +477,84 @@ fn a_clockwise_outline_stays_a_refusal_with_its_sentence() {
         assert!(close(b.vol, 6000.0));
     }
 }
+
+/// Slice A3R: the 30x20x10 box sketched with chosen lines backwards, the vertical edge at vertex k (walls k-1, k).
+fn backwards_box(rev: &[usize], k: usize, extra: Value, size: f64) -> Built {
+    let n = 4;
+    let geoms: Vec<Value> = (0..n)
+        .map(|i| {
+            let (a, b) = (BOX_PTS[i], BOX_PTS[(i + 1) % n]);
+            if rev.contains(&i) {
+                json!({ "k": "line", "id": i + 1, "a": b, "b": a })
+            } else {
+                json!({ "k": "line", "id": i + 1, "a": a, "b": b })
+            }
+        })
+        .collect();
+    let rules: Vec<Value> = (0..n)
+        .map(|i| {
+            let ea = if rev.contains(&i) { "a" } else { "b" };
+            let nx = (i + 1) % n;
+            let eb = if rev.contains(&nx) { "b" } else { "a" };
+            json!({ "k": "coincident", "a": i + 1, "aEnd": ea, "b": nx + 1, "bEnd": eb })
+        })
+        .collect();
+    let sk = json!({ "id": "sk1", "kind": "sketch", "plane": "xy", "offset": 0.0, "geoms": geoms, "rules": rules });
+    let e = json!({ "id": "e1", "kind": "extrude", "target": "sk1", "height": 10.0 });
+    let c = chamfer("c1", "e1", size, extra, between(wall((k + 3) % 4), wall(k)));
+    run(vec![sk, e, c], "c1")
+}
+
+/// Centre of mass (x, y) of the convex prism: area centroid of its z = 0 cross-section.
+fn com_xy(s: &TSolid) -> [f64; 2] {
+    let mut pts: Vec<[f64; 2]> = s
+        .vertices()
+        .iter()
+        .map(|v| v.borrow().point)
+        .filter(|p| p[2].abs() < 1e-9)
+        .map(|p| [p[0], p[1]])
+        .collect();
+    let m = [pts.iter().map(|p| p[0]).sum::<f64>() / pts.len() as f64, pts.iter().map(|p| p[1]).sum::<f64>() / pts.len() as f64];
+    pts.sort_by(|a, b| (a[1] - m[1]).atan2(a[0] - m[0]).partial_cmp(&(b[1] - m[1]).atan2(b[0] - m[0])).unwrap());
+    let (mut a2, mut cx, mut cy) = (0.0, 0.0, 0.0);
+    for i in 0..pts.len() {
+        let (p, q) = (pts[i], pts[(i + 1) % pts.len()]);
+        let c = p[0] * q[1] - q[0] * p[1];
+        a2 += c;
+        cx += (p[0] + q[0]) * c;
+        cy += (p[1] + q[1]) * c;
+    }
+    [cx / (3.0 * a2), cy / (3.0 * a2)]
+}
+
+#[test]
+fn a_backwards_first_line_is_refused_never_swapped() {
+    // FreeCAD 26.3.0 RC1, 3/1 on the (30,20) edge with every line backwards: COM (14.96491, 9.97577), the legs
+    // the other way from the forward-drawn box (14.96324, 9.97744); volume 5985 both ways, so only a refusal is safe.
+    for rev in [vec![0usize], vec![0, 1, 2, 3], vec![0, 2], vec![0, 3]] {
+        for k in 0..4 {
+            for extra in [json!({ "size2": 1.0 }), json!({ "size2": 1.0, "flip": true }), json!({ "angle": 30.0 })] {
+                let b = backwards_box(&rev, k, extra, 3.0);
+                let why = b.refusal.expect("refused");
+                assert!(why.contains("drawn backwards") && why.contains("shown without it"), "{why}");
+                assert!(close(b.vol, 6000.0) && b.faces == 6);
+            }
+        }
+    }
+}
+
+#[test]
+fn forward_first_line_builds_with_freecad_centre_of_mass() {
+    // FreeCAD COM (x, y), 3 / 1, flip false: 3 on the lower-numbered wall (k-1; wall 0 for vertex 0), vertex k = 0..3
+    let want: [[f64; 2]; 4] = [[15.03509, 10.02423], [14.96491, 10.02423], [14.96324, 9.97744], [15.03509, 9.97577]];
+    // geom 0 forward, the other lines in any direction: FreeCAD's result does not depend on them
+    for rev in [vec![], vec![1usize], vec![2], vec![3], vec![1, 2, 3]] {
+        for k in 0..4 {
+            let b = backwards_box(&rev, k, json!({ "size2": 1.0 }), 3.0);
+            assert!(b.refusal.is_none(), "{rev:?} {k}: {:?}", b.refusal);
+            assert!(close(b.vol, 5985.0) && b.faces == 7, "{}", b.vol);
+            let c = com_xy(&b.solid);
+            assert!((c[0] - want[k][0]).abs() < 1e-4 && (c[1] - want[k][1]).abs() < 1e-4, "{rev:?} {k}: {c:?}");
+        }
+    }
+}
