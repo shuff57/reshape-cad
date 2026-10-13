@@ -200,28 +200,17 @@ const CE = (a, b) => `edge_between(base.Shape, [${a}], [${b}])`;
 const TF = CE('0,0,10', '30,0,10'), TR = CE('30,0,10', '30,20,10'), TB = CE('30,20,10', '0,20,10'), TL = CE('0,20,10', '0,0,10');
 const VFR = CE('30,0,0', '30,0,10');
 const OTF = "pad.edge('top','front')", OTR = "pad.edge('top','right')", OTB = "pad.edge('top','back')", OTL = "pad.edge('top','left')", OVFR = "pad.edge('front','right')";
-add({ id: 'dress-chain__three-at-corner', family: 'dress-chain', desc: 'chamfer 2 on the three edges meeting at the (30,0,10) corner',
-  ours: `${BOX_O} chamfer([${OTR}, ${OTF}, ${OVFR}], 2);`, fc: `${BOX_F}\ndress(body, 'Chamfer', base, [${TR}, ${TF}, ${VFR}], 2)` });
-
-// ---- SLICE A1 probe: three equal chamfers at one convex corner ----
-const exBox = (d) => 6000 - 30 * d * d + (2 / 3) * d ** 3;
-for (const d of [1, 2, 4]) add({ id: `corner3__box-d${d}`, family: 'corner3', desc: `chamfer ${d} on the three edges at the (30,0,10) corner of 30x20x10`, exactVolume: exBox(d),
-  ours: `${BOX_O} chamfer([${OTR}, ${OTF}, ${OVFR}], ${d});`, fc: `${BOX_F}\ndress(body, 'Chamfer', base, [${TR}, ${TF}, ${VFR}], ${d})` });
-add({ id: 'corner3__box-bottom-corner-d2', family: 'corner3', desc: 'chamfer 2 on the three edges at the (0,20,0) bottom corner', exactVolume: exBox(2),
-  ours: `${BOX_O} chamfer([pad.edge('bottom','back'), pad.edge('bottom','left'), pad.edge('back','left')], 2);`,
-  fc: `${BOX_F}\ndress(body, 'Chamfer', base, [${CE('0,20,0','30,20,0')}, ${CE('0,0,0','0,20,0')}, ${CE('0,20,0','0,20,10')}], 2)` });
 const PENT3_O = `const s = sketch('top'); s.polygon([[0,0],[30,0],[40,15],[15,30],[-10,15]]); const pad = extrude(s, 10);`;
 const PENT3_F = `doc, body = setup()\ns = sketch(body, 'top')\npoly(s, [(0,0),(30,0),(40,15),(15,30),(-10,15)])\nbase = pad(body, s, 10)`;
-const pExact = { 1.5: 9687.479465687933, 3: 9503.402892446624 };
-for (const d of [1.5, 3]) add({ id: `corner3__pentagon-d${d}`, family: 'corner3', desc: `pentagon prism, chamfer ${d} on the three edges at the obtuse (30,0,10) corner`, exactVolume: pExact[d],
-  ours: `${PENT3_O} chamfer([pad.edge('top','front'), pad.edge('top','right'), pad.edge('front','right')], ${d});`,
-  fc: `${PENT3_F}\ndress(body, 'Chamfer', base, [edge_between(base.Shape, [0,0,10], [30,0,10]), edge_between(base.Shape, [30,0,10], [40,15,10]), edge_between(base.Shape, [30,0,0], [30,0,10])], ${d})` });
-
-// ---- SLICE A1W probe: chamfers at ONE corner as SEPARATE sequential features (family dress-seq) vs ONE pick (family dress-pick) ----
-// FreeCAD answers differently for the two (the one-pick corner patch is 5885.333 / 10 faces at d=2; separate features are three
-// wedges, 5886 / 9). The script lowers chamfer([a,b,c], d) to one fillet feature per edge, so `ours` is the SAME source for both
-// families: the kernel sees one doc and cannot tell which FreeCAD answer was meant. `exactVolume` is by successive half-space
-// clipping (docs/specs/census/ has no numpy tool; the clipper lives with the probe, not in the repo).
+// ---- SLICE A1W: chamfers at ONE corner, as the script means them: SEPARATE sequential features (family dress-seq) ----
+// The script lowers chamfer([a,b,c], d) and chamfer(a,d); chamfer(b,d); chamfer(c,d) to the SAME doc: one bevel feature per
+// edge, each the previous one's target. So the kernel cannot tell a one-pick from three separate features, and the script's
+// own meaning (see eachEdge in reshape-script.ts: "one feature per edge, in order") is the sequential one. FreeCAD answers
+// differently for the two: ONE PartDesign::Chamfer with three edges at a corner builds a corner patch (box 30x20x10, d=2:
+// 5885.333 / 10 faces; d=1 5970.667 / 10; d=4 5562.667 / 10; pentagon prism d1.5 9687.479 / 11, d3 9503.403 / 11), three
+// SEPARATE features are three wedges (5886 / 9; 5970.75; 5568; pentagon 9688.071 / 10, 9508.139 / 10). The one-pick patch is
+// NOT reachable from a script, and the references below are built the way the doc reads: three separate features.
+// `exactVolume` is by successive half-space clipping (the clipper lives with the probe, not in the repo).
 const FCH = [
   'import math',
   'from collections import Counter',
@@ -294,19 +283,32 @@ SEQ.push(['post5a-rev-d2', BOX_O, BOX_F, [...P5A].reverse(), 2, null, 'same five
 SEQ.push(['post5b-fwd-d2', BOX_O, BOX_F, P5B, 2, null, 'box, five edges VFR,TF,bottom/front,TR,TL, listed order']);
 SEQ.push(['post5b-rev-d2', BOX_O, BOX_F, [...P5B].reverse(), 2, null, 'same five edges, reversed order']);
 export const A1W_SEQ = SEQ;
-for (const [slug, o, f, pairs, d, , what] of SEQ) {
-  const ours = `${o} ${pairs.map(([a, b]) => `chamfer(pad.edge('${a}','${b}'), ${d});`).join(' ')}`;
-  const oursPick = `${o} chamfer([${pairs.map(([a, b]) => `pad.edge('${a}','${b}')`).join(', ')}], ${d});`;
+const seqFc = (f, pairs, d) => {
   const py = `[${pairs.map(([a, b]) => `('${a}', '${b}')`).join(', ')}]`;
   const hasPolySides = f.includes('poly(s,');
   const polyPts = hasPolySides ? /poly\(s, (\[.*\])\)/.exec(f)[1] : null;
   // face words -> outward normals of the prism's sides (front = -y side, right = side with the largest +x normal, etc.)
   const wordFix = hasPolySides ? `\n_sn = side_norms(${polyPts})\nfor _w, _ax, _sg in (("front", 1, -1), ("back", 1, 1), ("left", 0, -1), ("right", 0, 1)):\n    NORM[_w] = max(_sn, key=lambda n: n[_ax] * _sg)` : '';
-  const seqF = `${f}\n${FCH}${wordFix}\ncur = base\nfor a, b in ${py}:\n    cur = dress(body, 'Chamfer', cur, [eb(cur.Shape, a, b)], ${d})`;
-  const pickF = `${f}\n${FCH}${wordFix}\ndress(body, 'Chamfer', base, [eb(base.Shape, a, b) for a, b in ${py}], ${d})`;
-  add({ id: `dress-seq__${slug}`, family: 'dress-seq', desc: `${what}; ${pairs.length} SEPARATE chamfer features of ${d}, in order`, exactVolume: A1W_EXACT[slug][0], exactFaces: A1W_EXACT[slug][1], ours, fc: seqF });
-  add({ id: `dress-pick__${slug}`, family: 'dress-pick', desc: `${what}; ONE chamfer feature of ${d} with ${pairs.length} edges picked`, ours: oursPick, fc: pickF });
+  return `${f}\n${FCH}${wordFix}\ncur = base\nfor a, b in ${py}:\n    cur = dress(body, 'Chamfer', cur, [eb(cur.Shape, a, b)], ${d})`;
+};
+const oursSeq = (o, pairs, d) => `${o} ${pairs.map(([a, b]) => `chamfer(pad.edge('${a}','${b}'), ${d});`).join(' ')}`;
+for (const [slug, o, f, pairs, d, , what] of SEQ) {
+  add({ id: `dress-seq__${slug}`, family: 'dress-seq', desc: `${what}; ${pairs.length} SEPARATE chamfer features of ${d}, in order`, exactVolume: A1W_EXACT[slug][0], exactFaces: A1W_EXACT[slug][1], ours: oursSeq(o, pairs, d), fc: seqFc(f, pairs, d) });
 }
+// The earlier one-pick corner cases, re-baselined: the same script text (`chamfer([..], d)` = three bevel features), compared
+// with FreeCAD built as three separate chamfer features, which is what that doc says. The one-pick patch numbers are in the
+// header above; nothing in a doc can ask for them.
+const CORNER = [['top','right'],['top','front'],['front','right']];
+add({ id: 'dress-chain__three-at-corner', family: 'dress-chain', desc: 'chamfer 2 on the three edges meeting at the (30,0,10) corner (script list = three bevel features; FreeCAD as three separate features)',
+  exactVolume: 5886, exactFaces: 9, ours: `${BOX_O} chamfer([${OTR}, ${OTF}, ${OVFR}], 2);`, fc: seqFc(BOX_F, CORNER, 2) });
+for (const d of [1, 2, 4]) add({ id: `corner3__box-d${d}`, family: 'corner3', desc: `chamfer ${d} on the three edges at the (30,0,10) corner of 30x20x10 (as three separate features)`,
+  exactVolume: { 1: 5970.75, 2: 5886, 4: 5568 }[d], exactFaces: 9, ours: `${BOX_O} chamfer([${OTR}, ${OTF}, ${OVFR}], ${d});`, fc: seqFc(BOX_F, CORNER, d) });
+add({ id: 'corner3__box-bottom-corner-d2', family: 'corner3', desc: 'chamfer 2 on the three edges at the (0,20,0) bottom corner (as three separate features)',
+  exactVolume: 5886, exactFaces: 9, ours: `${BOX_O} chamfer([pad.edge('bottom','back'), pad.edge('bottom','left'), pad.edge('back','left')], 2);`,
+  fc: seqFc(BOX_F, [['bottom','back'],['bottom','left'],['back','left']], 2) });
+for (const [d, v] of [[1.5, 9688.07144904], [3, 9508.138759263]]) add({ id: `corner3__pentagon-d${d}`, family: 'corner3', desc: `pentagon prism, chamfer ${d} on the three edges at the obtuse (30,0,10) corner (as three separate features)`,
+  exactVolume: v, exactFaces: 10, ours: `${PENT3_O} chamfer([pad.edge('top','front'), pad.edge('top','right'), pad.edge('front','right')], ${d});`,
+  fc: seqFc(PENT3_F, [['top','front'],['top','right'],['front','right']], d) });
 add({ id: 'dress-chain__u-shape', family: 'dress-chain', desc: 'chamfer 2 on top front, right, back (a chain of three)',
   ours: `${BOX_O} chamfer([${OTF}, ${OTR}, ${OTB}], 2);`, fc: `${BOX_F}\ndress(body, 'Chamfer', base, [${TF}, ${TR}, ${TB}], 2)` });
 add({ id: 'dress-chain__two-sequential-sizes', family: 'dress-chain', desc: 'chamfer 2 on top/right then, as a later feature, chamfer 3 on top/front',

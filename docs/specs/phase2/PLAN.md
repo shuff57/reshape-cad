@@ -67,6 +67,28 @@ a census reference built from THREE SEPARATE features, and lift the corner guard
 separate features of one chain (wedges, 9 faces), keeping the one-pick patch refused until the IR can carry a pick
 group (schema change: goes to `reshape-gauntlet`).
 
+### A1W result (2026-10-13, branch `slice-A1W-r2`)
+
+Round 2 of the wedge-only slice, after round 1 failed verification on one-pick WRONG-SOLIDs, a STEP round-trip failure and a
+near-tangent wrong solid. What changed and what was measured:
+
+- **Decision, flagged for the lead:** the doc cannot tell one pick from three separate features (`runScript` lowers both to
+  `bevel1 -> bevel2 -> bevel3`, and `eachEdge` documents "one feature per edge, in order"), so the one-pick patch cannot be
+  kept refused without also refusing the plain 3-face corner on a prism. The kernel builds the SEQUENTIAL meaning (three
+  wedges; FreeCAD with three separate features: box d=1/2/4 5970.75 / 5886 / 5568 on 9 faces) and never the patch. The census
+  cases that were built from one pick (`dress-chain__three-at-corner`, `corner3__*`) are re-baselined to FreeCAD as three
+  separate features, and the `dress-pick` family is dropped (the one-pick numbers are kept in the defs.mjs header). If the
+  lead wants one-pick kept refused, the only route is a pick-group field in the doc (schema change: `reshape-gauntlet`).
+- **STEP round trip fixed:** a wedge plane through an existing vertex left a zero-length edge (both ends one vertex); STEP
+  wrote it as a zero-direction line and the importer saw an edge used twice the same way. Zero-length straight edges are
+  dropped from the wires after a chamfer cut. 774 corner builds sweep (3 boxes x sizes x 6 orders): 5 failed before, 0 now.
+- **Near-tangent guard:** FreeCAD chains a chamfer along an edge that continues the picked one within 0.1 rad (measured:
+  prism side kinked 5.5 degrees chains (9 faces), 6 degrees does not (8)). A chamfer whose edge runs on within 0.12 rad into
+  another straight edge of one of its faces is refused in a sentence ("runs on, almost straight (within about 7 degrees)").
+  This closes round 1's third-bevel wrong solid and also the single-chamfer wrong solid that pre-dated the slice.
+- Census (scratch copy, FreeCAD 26.3.0 RC1): 115 cases, 84 MATCH, no change in any other case; parity / mesh / STEP gates
+  78 / 78 / 78 passed.
+
 ### B. Face-count parity (the solid is right, the topology differs)
 
 | id | what | gap | acceptance |

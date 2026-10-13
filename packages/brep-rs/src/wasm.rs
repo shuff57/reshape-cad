@@ -3214,6 +3214,9 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
  FilletErr::VertexTooComplex => format!(
  "brep-rs cannot {} an edge whose end touches more than three faces -- {label} is shown without it.", if round { "round" } else { "chamfer" }
  ),
+ FilletErr::NearTangent => format!(
+ "brep-rs cannot chamfer an edge that runs on, almost straight (within about 7 degrees), into the next edge of the same face yet: the chamfer would have to follow that edge as well -- {label} is shown without it."
+ ),
  FilletErr::SplitEdge => format!(
  "brep-rs cannot chamfer an edge that carries on across the mirror or pattern plane into the next copy yet; chamfer the part before you mirror it -- {label} is shown without it."
  ),
@@ -5422,6 +5425,95 @@ mod tests {
             Some(s) => (build::solid_volume(s), s.faces().len(), refusals),
             None => (f64::NAN, 0, refusals),
         }
+    }
+
+    /// Round 1's STEP round-trip failure: the vertical edge chamfered first and largest. The export must read
+    /// back (OCCT reads this STEP fine) as the same face count.
+    #[test]
+    fn three_separate_chamfers_at_a_corner_round_trip_through_step() {
+        let orders: [([f64; 3], [&str; 3]); 4] = [
+            ([3.0, 2.0, 1.0], ["-y|+x", "+z|+x", "+z|-y"]),
+            ([2.0, 1.0, 1.0], ["-y|+x", "+z|+x", "+z|-y"]),
+            ([1.0, 2.0, 3.0], ["+z|-y", "+z|+x", "-y|+x"]),
+            // the wedge's bevel plane passes through an existing vertex: a zero-length edge used to survive
+            ([3.0, 2.0, 1.0], ["+z|-y", "-y|+x", "+z|+x"]),
+        ];
+        for (sizes, edges) in orders {
+            let mut features = vec![json!({ "id": "b1", "kind": "box", "size": [30.0, 20.0, 10.0] })];
+            for (k, (size, edge)) in sizes.iter().zip(edges).enumerate() {
+                let prev = if k == 0 { "b1".to_string() } else { format!("r{k}") };
+                features.push(json!({ "id": format!("r{}", k + 1), "kind": "fillet", "target": prev, "size": size,
+                    "style": "chamfer", "edge": between_edge(edge) }));
+            }
+            let doc = json!({ "features": features }).to_string();
+            let out: Value = serde_json::from_str(&export_step(&doc, "r3")).unwrap();
+            let text = out.get("step").and_then(|s| s.as_str()).unwrap_or_else(|| panic!("export: {out}"));
+            let back: Value = serde_json::from_str(&measure_step(text)).unwrap();
+            assert!(back.get("error").is_none(), "{sizes:?} {edges:?}: {back}");
+            assert_eq!(back["faces"].as_u64(), Some(9), "{sizes:?} {edges:?}");
+        }
+    }
+
+    /// FreeCAD chains a chamfer along an edge that continues the picked one within 0.1 rad (measured on 26.3.0
+    /// RC1: a side kinked 5 degrees off its neighbour: 9 faces, 6 degrees: 8). The single-edge wedge does not, so
+    /// a kink inside the margin is refused in a sentence and one outside it builds exactly FreeCAD's solid.
+    #[test]
+    fn a_chamfer_that_runs_on_almost_straight_is_refused_and_a_clear_kink_builds() {
+        let kinked = |deg: f64| {
+            let t = deg.to_radians();
+            [[0.0, 0.0], [30.0, 0.0], [30.0 + 20.0 * t.cos(), 20.0 * t.sin()], [30.0, 30.0], [0.0, 30.0]]
+        };
+        for deg in [1.8, 5.0] {
+            let pts = kinked(deg);
+            let (v, _, refusals) = prism_chain(&pts, 2.0, &[("+z", "-y")]);
+            let text = refusals.get("r1").and_then(|t| t.as_str()).unwrap_or_default().to_string();
+            assert!(text.contains("runs on, almost straight (within about 7 degrees)"), "{deg}: {refusals:?} {v}");
+        }
+        // FreeCAD (Part makeChamfer, d=2, top edge of the front side): 10 degrees 11886.8615 / 8 faces,
+        // 30 degrees 11535.7668 / 8 faces
+        for (deg, want) in [(10.0, 11886.8615), (30.0, 11535.7668)] {
+            let pts = kinked(deg);
+            let (v, f, refusals) = prism_chain(&pts, 2.0, &[("+z", "-y")]);
+            assert!(refusals.is_empty(), "{deg}: {refusals:?}");
+            assert!((v - want).abs() < 1e-3, "{deg}: volume {v} vs {want}");
+            assert_eq!(f, 8, "{deg}");
+        }
+    }
+
+    /// Round 1's silent wrong solid: three separate chamfers (6.25, 5.25, 7) on a prism whose sides 1.8 degrees
+    /// apart built 3425.77 / 10 faces where FreeCAD 26.3.0 RC1 builds 3395.35 / 11 (it chains the third chamfer
+    /// along the near-tangent top edge). The first two bevels match FreeCAD (4389.492 / 8, 4190.930 / 9); the third
+    /// stops with the sentence and the part is shown as the second left it.
+    #[test]
+    fn near_tangent_prism_corner_is_refused_not_built_wrong() {
+        let pts = [[0.7, 29.1], [2.9, 14.5], [6.7, 6.5], [37.9, 7.5], [18.2, 19.3]];
+        let mut features = vec![
+            json!({ "id": "sk1", "kind": "sketch", "plane": "xy", "offset": 0, "points": pts }),
+            json!({ "id": "e1", "kind": "extrude", "target": "sk1", "height": 12.0 }),
+        ];
+        let steps = [(("+y", "-x"), 6.25), (("+z", "-x"), 5.25), (("+z", "+y"), 7.0)];
+        for (k, ((a, b), size)) in steps.iter().enumerate() {
+            features.push(json!({
+                "id": format!("r{}", k + 1), "kind": "fillet",
+                "target": if k == 0 { "e1".to_string() } else { format!("r{k}") },
+                "size": size, "style": "chamfer",
+                "edge": { "cause": "between", "feature": "e1", "kind": "edge", "of": [
+                    { "cause": "primitive", "feature": "e1", "kind": "face", "part": a },
+                    { "cause": "primitive", "feature": "e1", "kind": "face", "part": b } ] }
+            }));
+        }
+        let (hist, refusals) = build_doc(&json!({ "features": features }));
+        let vol = |id: &str| hist.shapes.get(id).map(|s| (build::solid_volume(s), s.faces().len()));
+        assert!(refusals.get("r1").is_none() && refusals.get("r2").is_none(), "{refusals:?}");
+        let (v1, f1) = vol("r1").unwrap();
+        let (v2, f2) = vol("r2").unwrap();
+        assert!((v1 - 4389.492).abs() < 1e-2 && f1 == 8, "r1 {v1} / {f1}");
+        assert!((v2 - 4190.930).abs() < 1e-2 && f2 == 9, "r2 {v2} / {f2}");
+        let text = refusals.get("r3").and_then(|t| t.as_str()).unwrap_or_default().to_string();
+        assert!(text.contains("runs on, almost straight"), "r3: {refusals:?} {:?}", vol("r3"));
+        // the refused bevel is shown without it: the part as the second one left it
+        let (v3, f3) = vol("r3").unwrap();
+        assert!((v3 - v2).abs() < 1e-9 && f3 == f2, "r3 {v3} / {f3}");
     }
 
     /// A plain 3-face corner on a pentagon, hexagon and right-triangle prism is no longer falsely refused. Values
@@ -9463,6 +9555,9 @@ enum FilletErr {
  Concave,
  Flat,
  VertexTooComplex,
+ /// A chamfer edge that runs on, nearly straight, into the next edge of one of its two faces: the chamfer would
+ /// have to follow that edge too (FreeCAD does within 0.1 rad), which a single-edge wedge does not.
+ NearTangent,
  /// The edge carries on, collinear, into another lump (a mirror or pattern copy that touches).
  SplitEdge,
  /// A round whose ends are not plain, or whose cutter reaches other material.
@@ -9917,6 +10012,24 @@ fn fillet_end_kind(
     kind
 }
 
+/// A wedge cut whose bevel plane passes exactly through an existing vertex leaves a zero-length straight edge (both
+/// ends one vertex) in the two faces that meet there. It carries no geometry, but STEP writes it as a line with a zero
+/// direction and the importer then sees one edge used twice the same way, so the kernel could not read back its own
+/// export (box 30 x 20 x 10, three chamfers 3 / 2 / 1, vertical edge first). The faces' areas do not change.
+fn drop_zero_length_edges(solid: &TSolid) {
+    for face in solid.faces() {
+        let fb = face.borrow();
+        for wire in &fb.boundary {
+            wire.borrow_mut().edges.retain(|u| {
+                let e = u.edge.borrow();
+                let zero = matches!(e.curve, crate::geom::Curve::Segment { .. })
+                    && len(sub(e.a.borrow().point, e.b.borrow().point)) <= 1e-9;
+                !zero
+            });
+        }
+    }
+}
+
 /// A solid of ONE shell whose every face is flat and whose every vertex lies on or behind the plane of every face:
 /// a convex polyhedron. A chamfer's wedge is then exactly "clip the part by the plane d along both faces of the
 /// edge", whatever else meets at the edge's ends -- which is what lets the third bevel of a corner (a vertex that
@@ -9924,20 +10037,52 @@ fn fillet_end_kind(
 /// answer. The doc cannot tell one pick of three edges from three separate features (the script lowers both to
 /// one bevel feature per edge, in order), so the script's sequential meaning is what is built; no corner patch.
 fn is_convex_planar_solid(src: &TSolid) -> bool {
-    if src.shells.len() != 1 {
-        return false;
-    }
-    let verts: Vec<Vec3> = src.vertices().iter().map(|v| v.borrow().point).collect();
-    let scale_len = verts.iter().fold(1.0_f64, |m, p| m.max(len(*p)));
-    for face in src.faces() {
-        let fb = face.borrow();
-        let Surface::Plane(pl) = &fb.surface else { return false };
-        let n = if fb.forward { normalize(pl.n) } else { scale(normalize(pl.n), -1.0) };
-        if verts.iter().any(|p| dot(n, sub(*p, pl.origin)) > 1e-7 * scale_len) {
-            return false;
+    src.shells.len() == 1 && is_convex_planar(src)
+}
+
+/// Whether the chamfer edge runs on, within `NEAR_TANGENT` radians of straight, into another straight edge of one of
+/// its two faces at either end. FreeCAD then chains the chamfer along that edge too (measured, 26.3.0 RC1: a prism
+/// side kinked 5.5 degrees off its neighbour chains, 6 degrees does not: the threshold is 0.1 rad); the single-edge
+/// wedge does not, so the two answers differ by a face and a few tenths of a percent of volume. The refusal margin
+/// is 0.12 rad: between the two a sentence is the honest answer.
+const NEAR_TANGENT: f64 = 0.12;
+fn edge_runs_on_nearly_straight(edge: &build::TEdge, faces: [&build::TFace; 2]) -> bool {
+    let (a, b) = {
+        let e = edge.borrow();
+        (e.a.clone(), e.b.clone())
+    };
+    let (pa, pb) = (a.borrow().point, b.borrow().point);
+    let cos_limit = NEAR_TANGENT.cos();
+    for (v, here, there) in [(&a, pa, pb), (&b, pb, pa)] {
+        let inward = normalize(sub(there, here));
+        for face in faces {
+            let fb = face.borrow();
+            for wire in &fb.boundary {
+                for u in &wire.borrow().edges {
+                    if std::rc::Rc::ptr_eq(&u.edge, edge) {
+                        continue;
+                    }
+                    let e2 = u.edge.borrow();
+                    let other = if std::rc::Rc::ptr_eq(&e2.a, v) {
+                        e2.b.borrow().point
+                    } else if std::rc::Rc::ptr_eq(&e2.b, v) {
+                        e2.a.borrow().point
+                    } else {
+                        continue;
+                    };
+                    let w = sub(other, here);
+                    if len(w) <= 1e-9 {
+                        continue;
+                    }
+                    // a straight continuation leaves the vertex exactly opposite to `inward`
+                    if dot(normalize(w), scale(inward, -1.0)) >= cos_limit {
+                        return true;
+                    }
+                }
+            }
         }
     }
-    true
+    false
 }
 
 /// Whether the part is CONVEX at `endpoint`: every edge leaving the vertex lies behind the plane of every flat face
@@ -10837,6 +10982,7 @@ fn build_fillet(
          }
      }
      let result = build::ensure_outward(&TSolid { shells });
+     drop_zero_length_edges(&result);
      if members.len() > 1 {
          // Exact: the part loses the wedge's area times the edge's length, and nothing else.
          let want: f64 = members.iter().map(|(_, t0, t1)| wedge_area * (t1 - t0)).sum();
@@ -10856,6 +11002,9 @@ fn build_fillet(
  // plane. On any other part a cutter eight times as long must remove exactly what this one does, or the cut is
  // refused (the part carries on beyond the end: it cannot be told here whether that is a sliver or other material).
  let convex_planar = !round && src.shells.len() == 1 && is_convex_planar(src);
+ if convex_planar && edge_runs_on_nearly_straight(&edge, [&fa, &fb]) {
+     return Err(FilletErr::NearTangent);
+ }
  let reach = if convex_planar { vertex_extent(src) + leg } else { 0.0 };
  let (cut_a, cut_b) = if convex_planar { (reach, reach) } else { (over_a, over_b) };
  let cut = ops::boolean("subtract", src, &make_tool(0.0, edge_length, cut_a, cut_b)?)
@@ -10885,6 +11034,7 @@ fn build_fillet(
              return Err(FilletErr::RoundEnds);
          }
      }
+     drop_zero_length_edges(&cut);
      return Ok(cut);
  }
  // The wedge's bevel is the one face of the result lying in the plane through the two
