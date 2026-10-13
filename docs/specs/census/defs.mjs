@@ -202,6 +202,111 @@ const VFR = CE('30,0,0', '30,0,10');
 const OTF = "pad.edge('top','front')", OTR = "pad.edge('top','right')", OTB = "pad.edge('top','back')", OTL = "pad.edge('top','left')", OVFR = "pad.edge('front','right')";
 add({ id: 'dress-chain__three-at-corner', family: 'dress-chain', desc: 'chamfer 2 on the three edges meeting at the (30,0,10) corner',
   ours: `${BOX_O} chamfer([${OTR}, ${OTF}, ${OVFR}], 2);`, fc: `${BOX_F}\ndress(body, 'Chamfer', base, [${TR}, ${TF}, ${VFR}], 2)` });
+
+// ---- SLICE A1 probe: three equal chamfers at one convex corner ----
+const exBox = (d) => 6000 - 30 * d * d + (2 / 3) * d ** 3;
+for (const d of [1, 2, 4]) add({ id: `corner3__box-d${d}`, family: 'corner3', desc: `chamfer ${d} on the three edges at the (30,0,10) corner of 30x20x10`, exactVolume: exBox(d),
+  ours: `${BOX_O} chamfer([${OTR}, ${OTF}, ${OVFR}], ${d});`, fc: `${BOX_F}\ndress(body, 'Chamfer', base, [${TR}, ${TF}, ${VFR}], ${d})` });
+add({ id: 'corner3__box-bottom-corner-d2', family: 'corner3', desc: 'chamfer 2 on the three edges at the (0,20,0) bottom corner', exactVolume: exBox(2),
+  ours: `${BOX_O} chamfer([pad.edge('bottom','back'), pad.edge('bottom','left'), pad.edge('back','left')], 2);`,
+  fc: `${BOX_F}\ndress(body, 'Chamfer', base, [${CE('0,20,0','30,20,0')}, ${CE('0,0,0','0,20,0')}, ${CE('0,20,0','0,20,10')}], 2)` });
+const PENT3_O = `const s = sketch('top'); s.polygon([[0,0],[30,0],[40,15],[15,30],[-10,15]]); const pad = extrude(s, 10);`;
+const PENT3_F = `doc, body = setup()\ns = sketch(body, 'top')\npoly(s, [(0,0),(30,0),(40,15),(15,30),(-10,15)])\nbase = pad(body, s, 10)`;
+const pExact = { 1.5: 9687.479465687933, 3: 9503.402892446624 };
+for (const d of [1.5, 3]) add({ id: `corner3__pentagon-d${d}`, family: 'corner3', desc: `pentagon prism, chamfer ${d} on the three edges at the obtuse (30,0,10) corner`, exactVolume: pExact[d],
+  ours: `${PENT3_O} chamfer([pad.edge('top','front'), pad.edge('top','right'), pad.edge('front','right')], ${d});`,
+  fc: `${PENT3_F}\ndress(body, 'Chamfer', base, [edge_between(base.Shape, [0,0,10], [30,0,10]), edge_between(base.Shape, [30,0,10], [40,15,10]), edge_between(base.Shape, [30,0,0], [30,0,10])], ${d})` });
+
+// ---- SLICE A1W probe: chamfers at ONE corner as SEPARATE sequential features (family dress-seq) vs ONE pick (family dress-pick) ----
+// FreeCAD answers differently for the two (the one-pick corner patch is 5885.333 / 10 faces at d=2; separate features are three
+// wedges, 5886 / 9). The script lowers chamfer([a,b,c], d) to one fillet feature per edge, so `ours` is the SAME source for both
+// families: the kernel sees one doc and cannot tell which FreeCAD answer was meant. `exactVolume` is by successive half-space
+// clipping (docs/specs/census/ has no numpy tool; the clipper lives with the probe, not in the repo).
+const FCH = [
+  'import math',
+  'from collections import Counter',
+  'NORM = {"top": (0,0,1), "bottom": (0,0,-1), "front": (0,-1,0), "back": (0,1,0), "left": (-1,0,0), "right": (1,0,0)}',
+  'def side_norms(poly):',
+  '    out = []',
+  '    for i in range(len(poly)):',
+  '        a, b = poly[i], poly[(i + 1) % len(poly)]',
+  '        dx, dy = b[0] - a[0], b[1] - a[1]',
+  '        L = math.hypot(dx, dy)',
+  '        out.append((dy / L, -dx / L, 0.0))',
+  '    return out',
+  'def eb(shape, na, nb):',
+  '    na, nb = V(*NORM.get(na, na)), V(*NORM.get(nb, nb))',
+  '    for i, e in enumerate(shape.Edges, 1):',
+  '        if type(e.Curve).__name__ != "Line": continue',
+  '        fs = shape.ancestorsOfType(e, Part.Face)',
+  '        if len(fs) != 2: continue',
+  '        n0, n1 = fs[0].normalAt(0, 0), fs[1].normalAt(0, 0)',
+  '        if ((n0 - na).Length < 1e-6 and (n1 - nb).Length < 1e-6) or ((n0 - nb).Length < 1e-6 and (n1 - na).Length < 1e-6):',
+  '            return "Edge%d" % i',
+  '    raise RuntimeError("no edge between faces %s and %s" % (na, nb))',
+  '_emit0 = emit',
+  'def emit(vid, b, extra=None):',
+  '    sh = b.Shape',
+  '    ex = dict(surf=dict(Counter(type(f.Surface).__name__ for f in sh.Faces)), faceAreas=sorted([[type(f.Surface).__name__, round(f.Area, 6)] for f in sh.Faces], key=lambda t: (t[0], t[1])))',
+  '    if extra: ex.update(extra)',
+  '    return _emit0(vid, b, ex)',
+].join('\n');
+const HEX_PTS = '[[10,0],[30,0],[33,17],[20,24],[5,20],[0,8]]', TRI_PTS = '[[0,0],[30,0],[0,20]]';
+const PRISM_O = (pts) => `const s = sketch('top'); s.polygon(${pts}); const pad = extrude(s, 10);`;
+const PRISM_F = (pts) => `doc, body = setup()\ns = sketch(body, 'top')\npoly(s, [${pts.replace(/\[\[/, '(').replace(/\]\]/, ')').replace(/\],\[/g, '),(')}])\nbase = pad(body, s, 10)`;
+// each entry: [slug, ours prism source, fc prism source, [[faceA, faceB] x n], size, exactVolume (clipping), what]
+// exactVolume / face count by successive half-space clipping of the convex solid (each chamfer = the plane d along both faces of
+// the CURRENT edge); independent of FreeCAD and of the kernel. [volume, faces]
+const A1W_EXACT = {
+  'box-d1': [5970.75, 9],
+  'box-d2': [5886.0, 9],
+  'box-d4': [5568.0, 9],
+  'box-vertical-first-d2': [5886.0, 9],
+  'pentagon-obtuse-d1.5': [9688.07144904, 10],
+  'pentagon-obtuse-d3': [9508.138759263, 10],
+  'hexagon-d2': [5919.201422189, 11],
+  'hexagon-d3': [5809.55345209, 11],
+  'triangle-right-angle-d2': [2888.888888889, 8],
+  'triangle-right-angle-d4': [2591.111111111, 8],
+  'triangle-acute-d2': [2868.504933735, 8],
+  'triangle-acute-d4': [2520.859587619, 8],
+  'post5a-fwd-d2': [5812.0, 11],
+  'post5a-rev-d2': [5812.0, 11],
+  'post5b-fwd-d2': [5791.333333333, 11],
+  'post5b-rev-d2': [5791.333333333, 11],
+};
+const SEQ = [];
+for (const d of [1, 2, 4]) SEQ.push([`box-d${d}`, BOX_O, BOX_F, [['top','right'],['top','front'],['front','right']], d, null, `30x20x10 box, three at the (30,0,10) corner`]);
+SEQ.push(['box-vertical-first-d2', BOX_O, BOX_F, [['front','right'],['top','front'],['top','right']], 2, null, 'box, same corner, vertical edge first']);
+SEQ.push(['pentagon-obtuse-d1.5', PENT3_O, PENT3_F, [['top','front'],['top','right'],['front','right']], 1.5, null, 'pentagon prism, obtuse (30,0,10) corner']);
+SEQ.push(['pentagon-obtuse-d3', PENT3_O, PENT3_F, [['top','front'],['top','right'],['front','right']], 3, null, 'pentagon prism, obtuse corner']);
+SEQ.push(['hexagon-d2', PRISM_O(HEX_PTS), PRISM_F(HEX_PTS), [['top','front'],['top','right'],['front','right']], 2, null, 'hexagon prism, 100 degree (30,0,10) corner']);
+SEQ.push(['hexagon-d3', PRISM_O(HEX_PTS), PRISM_F(HEX_PTS), [['top','front'],['top','right'],['front','right']], 3, null, 'hexagon prism, 100 degree corner']);
+SEQ.push(['triangle-right-angle-d2', PRISM_O(TRI_PTS), PRISM_F(TRI_PTS), [['top','front'],['top','left'],['front','left']], 2, null, 'right-triangle prism, the 90 degree (0,0,10) corner']);
+SEQ.push(['triangle-right-angle-d4', PRISM_O(TRI_PTS), PRISM_F(TRI_PTS), [['top','front'],['top','left'],['front','left']], 4, null, 'right-triangle prism, the 90 degree corner']);
+SEQ.push(['triangle-acute-d2', PRISM_O(TRI_PTS), PRISM_F(TRI_PTS), [['top','front'],['top','right'],['front','right']], 2, null, 'right-triangle prism, the 33.7 degree (30,0,10) corner']);
+SEQ.push(['triangle-acute-d4', PRISM_O(TRI_PTS), PRISM_F(TRI_PTS), [['top','front'],['top','right'],['front','right']], 4, null, 'right-triangle prism, the 33.7 degree corner']);
+// five edges of a box post (two shared corners), in two orders; P5B is the set whose one-pick/sequential split was seen in round 1
+const P5A = [['top','front'],['top','right'],['top','back'],['front','right'],['right','back']];     // two corners sharing top/right
+const P5B = [['front','right'],['top','front'],['bottom','front'],['top','right'],['top','left']];   // VFR, TF, bottom/front, TR, TL
+SEQ.push(['post5a-fwd-d2', BOX_O, BOX_F, P5A, 2, null, 'box, five edges (two corners sharing top/right), listed order']);
+SEQ.push(['post5a-rev-d2', BOX_O, BOX_F, [...P5A].reverse(), 2, null, 'same five edges, reversed order']);
+SEQ.push(['post5b-fwd-d2', BOX_O, BOX_F, P5B, 2, null, 'box, five edges VFR,TF,bottom/front,TR,TL, listed order']);
+SEQ.push(['post5b-rev-d2', BOX_O, BOX_F, [...P5B].reverse(), 2, null, 'same five edges, reversed order']);
+export const A1W_SEQ = SEQ;
+for (const [slug, o, f, pairs, d, , what] of SEQ) {
+  const ours = `${o} ${pairs.map(([a, b]) => `chamfer(pad.edge('${a}','${b}'), ${d});`).join(' ')}`;
+  const oursPick = `${o} chamfer([${pairs.map(([a, b]) => `pad.edge('${a}','${b}')`).join(', ')}], ${d});`;
+  const py = `[${pairs.map(([a, b]) => `('${a}', '${b}')`).join(', ')}]`;
+  const hasPolySides = f.includes('poly(s,');
+  const polyPts = hasPolySides ? /poly\(s, (\[.*\])\)/.exec(f)[1] : null;
+  // face words -> outward normals of the prism's sides (front = -y side, right = side with the largest +x normal, etc.)
+  const wordFix = hasPolySides ? `\n_sn = side_norms(${polyPts})\nfor _w, _ax, _sg in (("front", 1, -1), ("back", 1, 1), ("left", 0, -1), ("right", 0, 1)):\n    NORM[_w] = max(_sn, key=lambda n: n[_ax] * _sg)` : '';
+  const seqF = `${f}\n${FCH}${wordFix}\ncur = base\nfor a, b in ${py}:\n    cur = dress(body, 'Chamfer', cur, [eb(cur.Shape, a, b)], ${d})`;
+  const pickF = `${f}\n${FCH}${wordFix}\ndress(body, 'Chamfer', base, [eb(base.Shape, a, b) for a, b in ${py}], ${d})`;
+  add({ id: `dress-seq__${slug}`, family: 'dress-seq', desc: `${what}; ${pairs.length} SEPARATE chamfer features of ${d}, in order`, exactVolume: A1W_EXACT[slug][0], exactFaces: A1W_EXACT[slug][1], ours, fc: seqF });
+  add({ id: `dress-pick__${slug}`, family: 'dress-pick', desc: `${what}; ONE chamfer feature of ${d} with ${pairs.length} edges picked`, ours: oursPick, fc: pickF });
+}
 add({ id: 'dress-chain__u-shape', family: 'dress-chain', desc: 'chamfer 2 on top front, right, back (a chain of three)',
   ours: `${BOX_O} chamfer([${OTF}, ${OTR}, ${OTB}], 2);`, fc: `${BOX_F}\ndress(body, 'Chamfer', base, [${TF}, ${TR}, ${TB}], 2)` });
 add({ id: 'dress-chain__two-sequential-sizes', family: 'dress-chain', desc: 'chamfer 2 on top/right then, as a later feature, chamfer 3 on top/front',
