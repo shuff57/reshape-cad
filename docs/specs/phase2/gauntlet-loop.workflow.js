@@ -1,0 +1,133 @@
+export const meta = {
+  name: 'brep-rs-gauntlet-phase2',
+  description: 'For each kernel slice: probe FreeCAD, build in a worktree, verify with three refuting lenses, up to two rounds',
+  whenToUse: 'Phase 2 of the FreeCAD rebuild (docs/specs/phase2/PLAN.md). args: { slices: ["A1", ...] }. Slices run sequentially: they share wasm.rs.',
+  phases: [
+    { title: 'Probe', detail: 'FreeCAD references + independent exact numbers for the slice' },
+    { title: 'Build', detail: 'implementer in a worktree; wasm to a scratch pkg; cargo' },
+    { title: 'Verify', detail: 'comparator, adversary, gates -- each told to refute' },
+    { title: 'Report', detail: 'scoreboard' },
+  ],
+}
+
+// Slice definitions mirror docs/specs/phase2/PLAN.md section 1. The goal text is what the implementer is held to.
+const SLICES = {
+  A1: {
+    goal: 'Three equal chamfers meeting at ONE corner of a convex planar solid build and match FreeCAD (corner patch). Currently refused: "an edge whose end touches more than three faces". Unequal sizes at a corner stay refused.',
+    cases: 'dress-chain__three-at-corner (FreeCAD 5885.333, 10 faces); add: vertical+two horizontal on a 30x20x10 block at sizes 1 and 4; a convex pentagon prism corner of three',
+    probe: 'Probe the corner patch FreeCAD builds (its plane, its vertex count) BEFORE any code; half-space intersection gives 5886 on 9 faces, which is a different solid.',
+  },
+  A2: {
+    goal: 'Equal-radius FILLET chains at a corner (two adjacent edges, top loop, three at a box corner) build and match FreeCAD, faces exact. Refuse what is not a sphere or a cylinder pair.',
+    cases: 'dress-mode__fillet-two-adjacent (5957.847), fillet-top-loop (5917.227); add three-at-corner and sizes 1,3',
+    probe: 'Probe whether the FreeCAD corner is a sphere, a cylinder-pair crossing along an ellipse, or a general patch, from face surface types and areas.',
+  },
+  A3: {
+    goal: 'Chamfer Two distances and Distance-and-angle: the kernel wedge is asymmetric. Which face carries which distance must match FreeCAD (probe it).',
+    cases: 'dress-mode__chamfer-two-distances (5910), chamfer-distance-angle (5922.058); swap the face order; a convex pentagon edge',
+    probe: 'FreeCAD orders the two distances by the edge\'s face order: measure it on both orders.',
+  },
+  B1: {
+    goal: 'Part-turn groove (half and quarter turn) has 8 faces like FreeCAD, not 12; the solid is already right.',
+    cases: 'groove half-turn and quarter-turn cases in census defs.mjs (family groove)',
+    probe: 'Dump our face list and FreeCAD\'s by (surface kind, area, bbox) and say which of our faces FreeCAD does not have. Not yet diagnosed.',
+  },
+  B2: { goal: 'Thickness of a cylinder: 5 faces like FreeCAD, not 6.', cases: 'thickness of cylinder in census defs.mjs', probe: 'Diff face lists by (surface, area).' },
+  B3: { goal: 'Common of box x cylinder (FreeCAD 3 faces, ours 4) and box x sphere (FreeCAD 7, ours 5): find which face we merge or split and match FreeCAD.', cases: 'boolean__common-cylinder, boolean__common-sphere', probe: 'Diff face lists by (surface, area).' },
+  C1: {
+    goal: 'Coaxial circle-to-circle loft is a cone frustum: volume pi*h/3*(R^2+R*r+r^2), faces vs FreeCAD. Non-coaxial and circle-to-rect stay refused in a sentence.',
+    cases: 'loft circle->circle in census defs.mjs (family loft)',
+    probe: 'FreeCAD loft ruled vs smooth on two circles: which the script maps to; face count and surface types.',
+  },
+  C2: {
+    goal: 'Hole drill point (118 degree cone), counterdrill and tapered hole match FreeCAD volumes; depth convention (does depth include the point?) measured.',
+    cases: 'hole drill point x2, counterdrill, tapered (the tapered reference was invalid: rebuild it)',
+    probe: 'Measure FreeCAD depth convention with and without DrillForDepth.',
+  },
+  C3: {
+    goal: 'Kernel half of symmetric revolve (180 about the axis) and up-to-first / up-to-face (planar faces only).',
+    cases: 'pad/pocket up-to-first/face, symmetric revolve in census defs.mjs',
+    probe: 'Probe what FreeCAD does when the up-to face is not reached.',
+  },
+}
+
+const VERDICT = {
+  type: 'object',
+  properties: {
+    pass: { type: 'boolean' },
+    failures: { type: 'array', items: { type: 'string' } },
+    numbers: { type: 'string' },
+  },
+  required: ['pass', 'failures'],
+}
+
+const BUILD = {
+  type: 'object',
+  properties: {
+    worktree: { type: 'string' },
+    branch: { type: 'string' },
+    pkg: { type: 'string' },
+    cargoTests: { type: 'number' },
+    summary: { type: 'string' },
+    refused: { type: 'array', items: { type: 'string' } },
+  },
+  required: ['worktree', 'branch', 'pkg', 'summary'],
+}
+
+const RULES = `Project rules (AGENTS.md and docs/specs/phase2/PLAN.md section 0): never return a silent wrong solid -- refuse per feature in a sentence; never edit scripts/brep-*.mjs, check-record.mjs, occt-modeldoc-gate.mjs, docs/replica/**, dependsOn/VOCABULARY, or the TS script/studio layers; topo and geom must not import each other; build the wasm (wasm-pack build --release --target web --out-dir <scratch pkg>) before anything that loads it; FreeCAD 26.3.0 RC1 via ~/Applications/freecad-rc/squashfs-root ./AppRun freecadcmd with an isolated HOME/XDG_* is the oracle and is authoritative; clean-room: do not read FreeCAD or planegcs source. Use node from ~/.local/opt/node-24/bin (bare node is Bun). Never run docs/specs/census/run.mjs with --only into the committed outputs: it rewrites results.json, CENSUS.md and fc/ -- copy the census dir to scratch and point REPO at the checkout. Stage explicit paths only. Never push, never touch main.`
+
+const slices = (args && args.slices) || ['A1']
+const board = []
+
+for (const id of slices) {
+  const S = SLICES[id]
+  if (!S) { log(`unknown slice ${id}`); continue }
+
+  phase('Probe')
+  const probe = await agent(
+    `${RULES}\n\nSLICE ${id}: ${S.goal}\nCases: ${S.cases}\nProbe first: ${S.probe}\n\nDo ONLY the probe: add/adjust the slice's cases in docs/specs/census/defs.mjs (family dress-chain or the case's own family), run them on FreeCAD and on the CURRENT kernel in a scratch copy of the census dir, and for each case compute an independent exact number (closed form, or z-slice clipping in numpy -- scipy is not installed). Write a short fact sheet (what FreeCAD builds, face surface types and counts, the exact volume) and return it. Do not change the kernel.`,
+    { label: `probe:${id}`, phase: 'Probe', schema: { type: 'object', properties: { facts: { type: 'string' }, baseline: { type: 'string' } }, required: ['facts'] } },
+  )
+  if (!probe) { log(`${id}: probe agent died; skipping`); board.push({ id, rounds: 0, done: false, why: 'probe failed' }); continue }
+
+  let feedback = ''
+  let done = false
+  let rounds = 0
+  let build = null
+  while (!done && rounds < 2) {
+    rounds += 1
+    phase('Build')
+    build = await agent(
+      `${RULES}\n\nSLICE ${id}: ${S.goal}\nCases: ${S.cases}\n\nFACT SHEET FROM THE PROBE:\n${probe.facts}\n${probe.baseline ? 'BASELINE:\n' + probe.baseline + '\n' : ''}${feedback ? '\nROUND ' + (rounds - 1) + ' FAILED. Fix exactly these, do not regress what passed:\n' + feedback + '\n' : ''}\nImplement the slice in your worktree (packages/brep-rs/src). Add cargo tests that pin the FreeCAD numbers AND each refusal sentence. Run cargo test --release and the wasm build into a scratch pkg. Commit in the worktree branch (explicit paths, trailer Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>). Return the worktree path, branch, scratch pkg path, cargo test count, and a summary.`,
+      { label: `build:${id}#${rounds}`, phase: 'Build', isolation: 'worktree', schema: BUILD },
+    )
+    if (!build) { feedback = 'the build agent died'; continue }
+
+    phase('Verify')
+    const lens = (name, brief) => agent(
+      `${RULES}\n\nYou are the ${name} verifier for SLICE ${id}: ${S.goal}\nCheckout: ${build.worktree} (branch ${build.branch}); built wasm: ${build.pkg}.\nTry to REFUTE the claim that this slice is done. Default to pass=false if you cannot measure it.\n${brief}\nReturn pass, a numbered list of concrete failures (case, expected, got), and the numbers you measured.`,
+      { label: `${name}:${id}#${rounds}`, phase: 'Verify', schema: VERDICT },
+    )
+    const verdicts = (await parallel([
+      () => lens('comparator',
+        `Run the slice's census cases (scratch copy of docs/specs/census, REPO pointing at the checkout, --root a dir whose packages/brep-rs/pkg is the built wasm) against FreeCAD. Every case must be MATCH: volume 1e-6, bbox 1e-6, FACE COUNT exact, centre of mass 0.02. A case that refuses must refuse in a sentence and be one the plan says stays refused.`),
+      () => lens('adversary',
+        `(1) For each case compute an independent exact volume and compare with the kernel to 1e-9 -- a 1e-6 gate cannot see a sliver. (2) export_step then measure_step: same volume and face count. (3) mesh_feature is watertight. (4) Mutate the slice's docs (every numeric leaf: 0, -1, 1e-300, 1e300, f64::MAX, 5e-324, 1e-9, 1e6) and run docs/specs/fuzz/fuzz-wasm.mjs --mode=build --docs=<file>: 0 aborts, 0 hangs. (5) Invent three cases NOT in the list near the slice's edge (different size, a non-box convex prism, an oblique corner) and compare each with FreeCAD: any case that builds and disagrees is a wrong solid and a hard fail.`),
+      () => lens('gates',
+        `In the checkout, with the wasm built into packages/brep-rs/pkg of a scratch root: node scripts/brep-parity-gate.mjs (78), brep-mesh-gate.mjs (78), brep-step-gate.mjs (78), npm run gate:occt (17), and cargo test --release (not fewer tests than 658 + what the slice added). Report the gz wasm size.`),
+    ])).filter(Boolean)
+
+    const failures = verdicts.flatMap((v) => v.failures || [])
+    done = verdicts.length === 3 && verdicts.every((v) => v.pass) && failures.length === 0
+    feedback = failures.map((f, i) => `${i + 1}. ${f}`).join('\n')
+    log(`${id} round ${rounds}: ${done ? 'DONE' : failures.length + ' failure(s)'}`)
+    board.push({ id, round: rounds, done, branch: build.branch, worktree: build.worktree, failures: failures.slice(0, 10), numbers: verdicts.map((v) => v.numbers).filter(Boolean) })
+  }
+  if (!done) log(`${id}: stop rule hit after ${rounds} rounds -- record what was measured in PLAN.md, keep the refusal, move on`)
+}
+
+phase('Report')
+return {
+  board,
+  next: 'The main loop (not an agent) fast-forwards each DONE branch to main, stages explicit paths, commits, and sends the msgbox note to reshape-gauntlet.',
+}
