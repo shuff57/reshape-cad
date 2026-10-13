@@ -831,8 +831,8 @@ fn sphere_face(rg: &Region, halves: &[Half], o: Vec3, region_side: bool, reverse
         }
         wires.push(Rc::new(RefCell::new(Wire { edges: uses })));
     }
-    let mut planes = [[0.0; 4]; 6];
-    for (k, h) in halves.iter().enumerate().take(6) {
+    let mut planes = [[0.0; 4]; crate::geom::MAX_HULL];
+    for (k, h) in halves.iter().enumerate().take(crate::geom::MAX_HULL) {
         planes[k] = [h.n[0], h.n[1], h.n[2], h.d];
     }
     let e1 = normalize(cross([0.0, 0.0, 1.0], [1.0, 0.0, 0.0]));
@@ -844,9 +844,58 @@ fn sphere_face(rg: &Region, halves: &[Half], o: Vec3, region_side: bool, reverse
         e2: cross([0.0, 0.0, 1.0], e1),
         u_range: [0.0, TAU],
         v_range: [0.0, PI],
-        trim: SphTrim::Hull(HullTrim { n: halves.len().min(6) as u8, planes, inside: region_side, reversed }),
+        trim: SphTrim::Hull(HullTrim { n: halves.len().min(crate::geom::MAX_HULL) as u8, planes, inside: region_side, reversed }),
     };
     Some(Rc::new(RefCell::new(topo::Face { boundary: wires, forward: true, surface: Surface::Sphere(sp), uv_domain: [[0.0, TAU], [0.0, PI]] })))
+}
+
+/// A plane `n . p <= d` (`n` unit) with every point of `a` strictly inside it and every point of `b` strictly outside, by a perceptron on
+/// the worst violator from the difference of the two mean directions. It cuts the sphere in a circle that lies in the gap between the two
+/// patches: a patch that wraps most of the way round (the band a turned box leaves) is not parted from its neighbour by any plane through
+/// the centre, but by one off it. `None` when no such plane settles.
+fn separating_plane(a: &[Vec3], b: &[Vec3], r: f64) -> Option<(Vec3, f64)> {
+    let unit = |p: &Vec3| scale(*p, 1.0 / r);
+    let mean = |v: &[Vec3]| scale(v.iter().fold([0.0; 3], |acc, p| add(acc, unit(p))), 1.0 / v.len() as f64);
+    let (ma, mb) = (mean(a), mean(b));
+    let n0 = sub(mb, ma);
+    if len(n0) < 1e-9 {
+        return None;
+    }
+    let n0 = normalize(n0);
+    // w = (n, -d); a point p is on the wanted side when w . (p, 1) is negative for a and positive for b, so a's rows are negated
+    let rows: Vec<[f64; 4]> = a
+        .iter()
+        .map(|p| {
+            let q = unit(p);
+            [-q[0], -q[1], -q[2], -1.0]
+        })
+        .chain(b.iter().map(|p| {
+            let q = unit(p);
+            [q[0], q[1], q[2], 1.0]
+        }))
+        .collect();
+    let mid = scale(add(ma, mb), 0.5);
+    // the start: through the middle of the two means, square to the line between them
+    let mut w = [n0[0], n0[1], n0[2], -dot(n0, mid)];
+    for _ in 0..20000 {
+        let (mut worst, mut at) = (f64::INFINITY, None);
+        for row in &rows {
+            let d = w[0] * row[0] + w[1] * row[1] + w[2] * row[2] + w[3] * row[3];
+            if d < worst {
+                worst = d;
+                at = Some(*row);
+            }
+        }
+        let nlen = len([w[0], w[1], w[2]]);
+        if nlen > 1e-12 && worst > 1e-3 * nlen && w[3].abs() / nlen < 0.999 {
+            return Some(([w[0] / nlen, w[1] / nlen, w[2] / nlen], -w[3] / nlen * r));
+        }
+        let row = at?;
+        for k in 0..4 {
+            w[k] += 0.05 * row[k];
+        }
+    }
+    None
 }
 
 /// The sphere faces of a KEEP whose region is several patches, or a patch that crosses the sphere's seam: one face per patch, each
@@ -866,11 +915,6 @@ fn split_keep_patches(ball: &BallSpec, rg: &Region, halves: &[Half]) -> Option<(
     }
     let (axis, e1) = (ball.axis, ball.seam);
     let m = normalize(cross(axis, e1));
-    for sg in [1.0, -1.0] {
-        if inside_all(halves, scale(axis, sg * r)) {
-            return None; // a pole in the region: its seam is a different shape of face
-        }
-    }
     // the box's bounding planes (a plane that misses the ball keeps all of it inside)
     let binding: Vec<Half> = halves.iter().filter(|h| h.d.abs() < r).copied().collect();
     let polys = rg.polylines(0.05 * r);
@@ -919,22 +963,33 @@ fn split_keep_patches(ball: &BallSpec, rg: &Region, halves: &[Half]) -> Option<(
     let mut sub_faces: Vec<(Vec<Half>, bool)> = Vec::new();
     for k in 0..rg.loops.len() {
         // separators that keep patch k whole and every other patch out
-        let mut seps: Vec<Vec3> = Vec::new();
+        let mut seps: Vec<Half> = Vec::new();
         for j in 0..rg.loops.len() {
             if j == k {
                 continue;
             }
-            let ok = |n: &Vec3| side(&polys[k], *n).1 < -margin && side(&polys[j], *n).0 > margin;
-            if seps.iter().any(ok) {
+            let ok_h = |h: &Half| side(&polys[k], h.n).1 < h.d - margin && side(&polys[j], h.n).0 > h.d + margin;
+            if seps.iter().any(ok_h) {
                 continue;
             }
-            seps.push(*cands.iter().find(|n| ok(n))?);
+            let ok = |n: &Vec3| ok_h(&Half { n: *n, d: 0.0 });
+            match cands.iter().find(|n| ok(n)) {
+                Some(n) => seps.push(Half { n: *n, d: 0.0 }),
+                // none of the box's own directions parts them (a turned box leaves a band round the ball): any plane that does
+                None => {
+                    let (n, d) = separating_plane(&polys[k], &polys[j], r)?;
+                    seps.push(Half { n, d });
+                }
+            }
         }
         let mut hk: Vec<Half> = binding.clone();
-        hk.extend(seps.iter().map(|n| Half { n: *n, d: 0.0 }));
+        hk.extend(seps.iter().copied());
         let on_pos = seam_pos.iter().any(|q| inside_all(&hk, *q));
         let on_neg = seam_neg.iter().any(|q| inside_all(&hk, *q));
-        if on_pos && !on_neg {
+        // a patch that holds a pole is one face and is not cut (FreeCAD: a 12 across ball at the centre of a 12 x 12 x 30 block is two
+        // caps, one face each)
+        let has_pole = [1.0, -1.0].iter().any(|sg| inside_all(&hk, scale(axis, sg * r)));
+        if on_pos && !on_neg && !has_pole {
             // cut along the seam: the two sides of the plane of the seam
             any_cut = true;
             for sg in [1.0, -1.0] {
@@ -950,7 +1005,7 @@ fn split_keep_patches(ball: &BallSpec, rg: &Region, halves: &[Half]) -> Option<(
         return None;
     }
     for (hs, is_cut) in &sub_faces {
-        if hs.len() > 6 {
+        if hs.len() > crate::geom::MAX_HULL {
             return None;
         }
         let rgk = region(r, hs).ok()?;
@@ -1348,6 +1403,21 @@ pub fn ball_box_boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
             _ => return None,
         },
     };
+    // A box wholly inside the ball (no corner within a hair of the sphere): the common is the box, the join is the ball. A cut leaves a
+    // cavity or nothing, which this does not build.
+    let (bsrc, ssrc) = if ball_first { (a, b) } else { (b, a) };
+    let swallowed = (0..8).all(|i| {
+        let corner = (0..3).fold(bx.c, |p, k| add(p, scale(bx.axes[k], if i >> k & 1 == 1 { bx.half[k] } else { -bx.half[k] })));
+        len(sub(corner, ball.c)) < ball.r * (1.0 - 1e-9)
+    });
+    if swallowed {
+        let copy = |s: &TSolid| crate::build::transform_solid(s, &crate::math::Transform::identity());
+        return match op {
+            "intersect" => Some(copy(ssrc)),
+            "union" => Some(copy(bsrc)),
+            _ => None,
+        };
+    }
     let mode = match (op, ball_first) {
         ("intersect", _) => Mode::Keep,
         ("union", _) => Mode::Join,

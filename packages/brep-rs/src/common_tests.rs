@@ -163,3 +163,168 @@ fn a_patch_is_cut_along_the_seam_only_where_it_crosses_it() {
         sound(&r, &format!("{rc:?}"));
     }
 }
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// Round 2: the same family, off centre, turned, thin, and the limits of it.
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+fn sorted_close(got: &[f64], want: &[f64], rel: f64, what: &str) {
+    assert_eq!(got.len(), want.len(), "{what}: {got:?} vs {want:?}");
+    for (g, w) in got.iter().zip(want) {
+        assert!(close(*g, *w, rel), "{what}: {got:?} vs {want:?}");
+    }
+}
+
+/// FreeCAD 26.3.0 RC1: box 30x20x10 x ball r12 at (10,10,5): 9 faces (planes 118.7228 x 3, 357.8687 x 2; spheres 60.2582 x 2 for the two
+/// pieces the x = 0 plane leaves of the -x side, 124.3769 x 2 for the +x patch cut along the seam). Exact volume 3857.2044404757926.
+#[test]
+fn a_ball_off_centre_leaves_one_face_per_patch_and_cuts_the_seam() {
+    let a = block(0.0, 0.0, 30.0, 20.0);
+    let r = keep(&a, &ball([10.0, 10.0, 5.0], 12.0));
+    assert_eq!(r.faces().len(), 9, "FreeCAD: 9 faces");
+    assert!(close(build::solid_volume(&r), 3857.2044404757926, 1e-11));
+    let (p, c, s) = areas(&r);
+    assert!(c.is_empty());
+    sorted_close(&p, &[118.7228, 118.7228, 118.7228, 357.8687, 357.8687], 1e-6, "planes");
+    sorted_close(&s, &[60.2582, 60.2582, 124.3769, 124.3769], 1e-6, "spheres");
+    sound(&r, "ball at x = 10");
+    // its mirror: the +x patch is gone and the -x side is cut by the plane, FreeCAD 8 faces (spheres 60.2582 x 2, 248.7538)
+    let r = keep(&a, &ball([20.0, 10.0, 5.0], 12.0));
+    assert_eq!(r.faces().len(), 8, "FreeCAD: 8 faces");
+    assert!(close(build::solid_volume(&r), 3857.2044404757926, 1e-11));
+    let (p, _, s) = areas(&r);
+    sorted_close(&p, &[118.7228, 118.7228, 118.7228, 357.8687, 357.8687], 1e-6, "planes");
+    sorted_close(&s, &[60.2582, 60.2582, 248.7538], 1e-6, "spheres");
+    sound(&r, "ball at x = 20");
+}
+
+/// FreeCAD: the same block turned 30 degrees about z through its centre, ball r12 at (20,10,5): 7 faces, spheres 14.36, 21.2676 and
+/// 412.6187, planes 91.7294, 178.0286, 335.8222 x 2. Exact volume 3683.7106206687336.
+#[test]
+fn a_turned_block_cuts_the_seam_where_it_crosses_it() {
+    let a = build::box_solid([30.0, 20.0, 10.0], [15.0, 10.0, 5.0], Some([0.0, 0.0, 30.0]));
+    let r = keep(&a, &ball([20.0, 10.0, 5.0], 12.0));
+    assert_eq!(r.faces().len(), 7, "FreeCAD: 7 faces");
+    assert!(close(build::solid_volume(&r), 3683.7106206687336, 1e-9));
+    let (p, _, s) = areas(&r);
+    sorted_close(&p, &[91.7294, 178.0286, 335.8222, 335.8222], 1e-5, "planes");
+    sorted_close(&s, &[14.36, 21.2676, 412.6187], 1e-4, "spheres");
+    sound(&r, "turned block");
+}
+
+/// FreeCAD: ball r12 at the middle of a 10 x 20 x 10 block (x 0..10): eight slivers of the sphere of 0.2377 each, four at each end, with
+/// the six planes (199.6203 x 4, 99.2155 x 2): 14 faces. Exact volume 1999.8453927597.
+#[test]
+fn a_ball_through_a_thin_block_is_a_face_per_sliver() {
+    let r = keep(&block(0.0, 0.0, 10.0, 20.0), &ball([5.0, 10.0, 5.0], 12.0));
+    assert_eq!(r.faces().len(), 14, "FreeCAD: 14 faces");
+    assert!(close(build::solid_volume(&r), 1999.8453927597, 1e-10));
+    let (p, _, s) = areas(&r);
+    sorted_close(&p, &[99.2155, 99.2155, 199.6203, 199.6203, 199.6203, 199.6203], 1e-6, "planes");
+    assert_eq!(s.len(), 8);
+    assert!(s.iter().all(|a| close(*a, 0.2377, 1e-3)), "slivers {s:?}");
+    sound(&r, "slivers");
+}
+
+/// FreeCAD: ball r12 at the middle of a 12 x 12 x 30 block: the square column leaves one cap of the ball at each end, a face each (no
+/// seam cut: each holds a pole), 158.7703 x 2 with four planes of 234.767. Exact volume 3148.2979672978927.
+#[test]
+fn a_ball_in_a_tall_column_leaves_two_caps_one_face_each() {
+    let a = build::box_solid([12.0, 12.0, 30.0], [0.0, 0.0, 0.0], None);
+    let r = keep(&a, &ball([0.0, 0.0, 0.0], 12.0));
+    assert_eq!(r.faces().len(), 6, "FreeCAD: 6 faces");
+    assert!(close(build::solid_volume(&r), 3148.2979672978927, 1e-10));
+    let (p, _, s) = areas(&r);
+    sorted_close(&p, &[234.767; 4], 1e-6, "planes");
+    sorted_close(&s, &[158.7703, 158.7703], 1e-6, "caps");
+    sound(&r, "column");
+}
+
+/// FreeCAD: the 20 x 20 x 10 triangle prism and a cylinder of r6 at (6,6) tangent to both legs and crossing the hypotenuse: 4 faces
+/// (the wall 336.2107, planes 40.0, 112.1769 x 2). This was built as 6 faces before the wall stopped being cut at the touch lines, then
+/// refused for an open mesh of the merged wall: it builds again, as FreeCAD does.
+#[test]
+fn a_cylinder_touching_two_sides_of_a_triangle_is_one_wall() {
+    let tri = build::extrude_polygon(&[[0.0, 0.0], [20.0, 0.0], [0.0, 20.0]], [0.0; 3], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 10.0]);
+    let c = build::cylinder_solid([6.0, 6.0, 5.0], 6.0, 14.0, [0.0, 0.0, 1.0]);
+    let r = keep(&tri, &c);
+    assert_eq!(r.faces().len(), 4, "FreeCAD: 4 faces");
+    assert!(close(build::solid_volume(&r), 1121.7691528786893, 1e-10));
+    let (p, cy, _) = areas(&r);
+    sorted_close(&p, &[40.0, 112.1769, 112.1769], 1e-6, "planes");
+    sorted_close(&cy, &[336.2107], 1e-6, "wall");
+    sound(&r, "triangle x tangent cylinder");
+    // a bigger one touching the same two legs
+    let r = keep(&tri, &build::cylinder_solid([7.0, 7.0, 5.0], 7.0, 14.0, [0.0, 0.0, 1.0]));
+    assert_eq!(r.faces().len(), 4);
+    sound(&r, "second tangent cylinder");
+}
+
+/// A ball the size of the world must not take the page with it: the mesh stops refining at 720 steps to a turn (a ball of 1e6 at a
+/// tolerance of 0.1 was 7000 x 3500 quads, and the wasm instance aborted in the allocator).
+#[test]
+fn a_huge_ball_meshes_in_bounded_size() {
+    for r in [1e6, 1e9] {
+        let m = crate::mesh::mesh_solid(&ball([0.0; 3], r), 0.1).expect("meshes");
+        assert!(m.indices.len() / 3 < 1_000_000, "{} triangles", m.indices.len() / 3);
+    }
+}
+
+/// A ball that swallows the block (r 20 and r 1e6 about its middle; FreeCAD: r 20 is 6 faces, the block, volume 6000): the common is the
+/// block, the join is the ball, and a cut leaves nothing and is refused in a sentence. Never an abort: the ball's own feature meshes at
+/// any radius.
+#[test]
+fn a_ball_that_swallows_the_block_is_the_block_and_a_cut_is_refused_in_a_sentence() {
+    let doc = |r: &str, op: &str| {
+        format!(
+            r#"{{"version":1,"features":[{{"id":"A","kind":"box","size":[30,20,10],"center":[15,10,5]}},{{"id":"B","kind":"sphere","radius":{r},"center":[15,10,5]}},{{"id":"K","kind":"combine","op":"{op}","targets":["A","B"]}}]}}"#
+        )
+    };
+    for r in ["20", "1000000"] {
+        let m: serde_json::Value = serde_json::from_str(&crate::wasm::measure_doc(&doc(r, "intersect"))).unwrap();
+        assert!(m["refusals"].as_object().unwrap().is_empty(), "radius {r}: {m}");
+        assert_eq!(m["shapes"]["K"]["faces"], 6, "radius {r}: the block");
+        assert!((m["shapes"]["K"]["volume"].as_f64().unwrap() - 6000.0).abs() < 1e-6);
+        let m: serde_json::Value = serde_json::from_str(&crate::wasm::measure_doc(&doc(r, "union"))).unwrap();
+        assert_eq!(m["shapes"]["K"]["faces"], 1, "radius {r}: the ball");
+        let m: serde_json::Value = serde_json::from_str(&crate::wasm::measure_doc(&doc(r, "subtract"))).unwrap();
+        let text = m["refusals"]["K"].as_str().unwrap_or_else(|| panic!("radius {r}: a cut that leaves nothing was built: {m}"));
+        assert!(text.starts_with("combine K:"), "{text}");
+        let mesh = crate::wasm::mesh_feature(&doc(r, "intersect"), "B", 0.1);
+        assert!(!mesh.contains("\"error\""), "radius {r}: {}", &mesh[..mesh.len().min(120)]);
+    }
+}
+
+/// A ball cut by a box in the two shapes STEP has no writer for: refused in a sentence at the export; the solid itself builds and meshes.
+#[test]
+fn step_export_of_a_ball_in_the_unwritable_shapes_says_so() {
+    let a = block(0.0, 0.0, 30.0, 20.0);
+    let want = [
+        (11.0, 5.0, "brep-rs cannot write a ball cut by a box whose edges reach all round it to STEP yet"),
+        (10.5, 5.0, "brep-rs cannot write a ball cut by a box whose edges reach all round it to STEP yet"),
+        (12.0, 8.0, "brep-rs cannot write a ball cut by a box at a whole circle and at corners together to STEP yet"),
+    ];
+    for (rad, z, sentence) in want {
+        let r = keep(&a, &ball([15.0, 10.0, z], rad));
+        let e = crate::step::write_solid(&r, "b3").expect_err("no STEP writer for this");
+        assert!(e.contains(sentence), "r{rad} z{z}: {e}");
+        assert!(ops::check_watertight(&crate::mesh::mesh_solid(&r, 0.05).unwrap()));
+    }
+}
+
+/// A ball in the corner it is centred on is a rectangle in the sphere's own longitude and colatitude, so it is written in that frame
+/// (axis z, the hull face's longitude 0 at y): OpenCascade then reads the volume back exactly (179.59438003; it read 179.59440184 from the tilted frame
+/// the other patches need).
+#[test]
+fn a_corner_ball_is_written_in_the_spheres_own_frame() {
+    let r = keep(&block(0.0, 0.0, 30.0, 20.0), &ball([0.0, 0.0, 0.0], 7.0));
+    assert_eq!(r.faces().len(), 4);
+    let step = crate::step::write_solid(&r, "b3").unwrap();
+    let line = step.lines().find(|l| l.contains("SPHERICAL_SURFACE")).expect("a sphere");
+    let frame_id: String = line.split('#').nth(2).unwrap().chars().take_while(|c| c.is_ascii_digit()).collect();
+    let frame = step.lines().find(|l| l.starts_with(&format!("#{frame_id} = AXIS2_PLACEMENT_3D"))).unwrap();
+    let ids: Vec<String> = frame.split('#').skip(2).map(|s| s.chars().take_while(|c| c.is_ascii_digit()).collect()).collect();
+    let dir = |id: &String| step.lines().find(|l| l.starts_with(&format!("#{id} = DIRECTION"))).unwrap().to_string();
+    assert!(dir(&ids[1]).contains("(0.0,0.0,1.0)"), "axis {}", dir(&ids[1]));
+    assert!(dir(&ids[2]).contains("(0.0,1.0,0.0)"), "ref {}", dir(&ids[2]));
+}

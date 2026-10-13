@@ -1305,11 +1305,15 @@ pub enum SphTrim {
     Hull(HullTrim),
 }
 
-/// Up to six half-spaces `[nx, ny, nz, d]`, `n` a unit outward normal, `q` an offset from the sphere's centre.
+/// At most this many half-spaces in a [`HullTrim`]: the box's six, and the planes through the centre that keep one patch of a
+/// ball cut by a box apart from the others, and the plane of the seam cut (`ball_box::split_keep_patches`).
+pub const MAX_HULL: usize = 10;
+
+/// Up to [`MAX_HULL`] half-spaces `[nx, ny, nz, d]`, `n` a unit outward normal, `q` an offset from the sphere's centre.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct HullTrim {
     pub n: u8,
-    pub planes: [[f64; 4]; 6],
+    pub planes: [[f64; 4]; MAX_HULL],
     pub inside: bool,
     /// The face's normal points INTO the sphere (the wall of a cavity the sphere leaves in a box).
     pub reversed: bool,

@@ -1083,6 +1083,58 @@ fn loop_points(segs: &[Seg], per_arc: usize) -> Vec<Vec3> {
     out
 }
 
+/// The sphere's own frame when the face is a rectangle in its (longitude, colatitude) with the seam and both poles off its interior: all
+/// its edges are great circles, each square to the axis (the equator) or through it (a meridian), and no seam point is strictly inside.
+fn natural_frame(sp: &SphereSurf, h: &crate::geom::HullTrim, bounds: &[Vec<Seg>]) -> Option<(Vec3, Vec3)> {
+    let (axis, e1) = (normalize(sp.axis), normalize(sp.e1));
+    let r = sp.radius;
+    if bounds.is_empty() {
+        return None;
+    }
+    for b in bounds {
+        for sg in b {
+            let Seg::Arc { center, radius, axis: n, a, mid, .. } = sg else { return None };
+            let c = dot(normalize(*n), axis).abs();
+            if dist(*center, sp.center) > 1e-9 * r || (radius - r).abs() > 1e-9 * r || (c > 1e-9 && c < 1.0 - 1e-9) {
+                return None;
+            }
+            if c < 1e-9 {
+                // a meridian: it may END at a pole, but not run through one (the longitude jumps by a half turn there)
+                let u0 = sub(*a, *center);
+                let w = cross(normalize(*n), u0);
+                let m = sub(*mid, *center);
+                let sweep = 2.0 * dot(m, w).atan2(dot(m, u0));
+                let sweep = if sweep <= 0.0 { sweep + 2.0 * std::f64::consts::PI } else { sweep };
+                for sgn in [1.0, -1.0] {
+                    let pole = scale(axis, sgn * r);
+                    let t = dot(pole, w).atan2(dot(pole, u0)).rem_euclid(2.0 * std::f64::consts::PI);
+                    if t > 1e-6 && t < sweep - 1e-6 {
+                        return None;
+                    }
+                }
+            }
+        }
+    }
+    let e2 = cross(axis, e1);
+    // a point just either side of the seam at each colatitude: the face holds the seam in its interior if it holds both
+    let eps = 1e-4;
+    for k in 1..64 {
+        let v = std::f64::consts::PI * k as f64 / 64.0;
+        let at = |u: f64| add(scale(axis, -r * v.cos()), scale(add(scale(e1, u.cos()), scale(e2, u.sin())), r * v.sin()));
+        if h.contains(at(eps)) && h.contains(at(-eps)) {
+            return None;
+        }
+    }
+    // a pole strictly inside: every point just beside it is in the face as well
+    for sg in [1.0, -1.0] {
+        let near = |u: f64| add(scale(axis, sg * r * (1.0 - eps * eps / 2.0)), scale(add(scale(e1, u.cos()), scale(e2, u.sin())), r * eps));
+        if (0..8).all(|i| h.contains(near(std::f64::consts::TAU * i as f64 / 8.0))) {
+            return None;
+        }
+    }
+    Some((axis, e1))
+}
+
 /// The frame (axis, direction of longitude 0) a hull-trimmed sphere is written in. OpenCascade reads a loop on a sphere through the
 /// sphere's own (longitude, colatitude) parameters, where a pole is a point and the seam is a line, and it takes the wrong region when a
 /// loop comes near a pole or the seam. So the frame is chosen from the loops: both poles on the same side of the face (so no loop
@@ -1093,6 +1145,12 @@ fn hull_frame(sp: &SphereSurf, h: &crate::geom::HullTrim, bounds: &[Vec<Seg>]) -
     let pts: Vec<Vec3> = bounds.iter().flat_map(|b| loop_points(b, 24)).map(|p| normalize(sub(p, sp.center))).collect();
     if pts.is_empty() {
         return None;
+    }
+    // A patch whose every edge is a great circle square to the sphere's axis or through it (the octant a ball leaves in a box corner it is
+    // centred on) is a rectangle in the sphere's own (longitude, colatitude): written in the sphere's own frame it reads back exactly
+    // (OpenCascade integrates a curved triangle to about 1e-8 instead). Its seam and poles must lie on its boundary.
+    if let Some(frame) = natural_frame(sp, h, bounds) {
+        return Some(frame);
     }
     let tau = 2.0 * std::f64::consts::PI;
     let n = 600usize;

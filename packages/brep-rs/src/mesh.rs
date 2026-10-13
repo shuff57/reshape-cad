@@ -28,7 +28,9 @@ pub struct Mesh {
 fn angle_step(r: f64, defl: f64) -> f64 {
     let r = r.max(1e-12);
     let d = defl.max(1e-12).min(r * 1.9999);
-    2.0 * (1.0 - d / r).clamp(-1.0, 1.0).acos()
+    // Never finer than 720 steps to a turn: a ball of radius 1e6 at a tolerance of 0.1 is 7000 x 3500 quads, which no instance has the
+    // memory for (the wasm aborts, taking the page with it). The chord tolerance a tolerance this small asks for is not visible anyway.
+    (2.0 * (1.0 - d / r).clamp(-1.0, 1.0).acos()).max(TAU / 720.0)
 }
 
 /// Segments for an arc of radius `r`, angular span `span`, at deflection `d`.
@@ -3631,6 +3633,14 @@ fn mesh_curved_face(
     // sample set, never an interleaved extra one -- and suppress the surface's
     // own (e1,e2) lattice, which a rotated boolean frame would misalign.
     let mut cyl_lattice = false;
+    // More than one rim arc on each side: the boundary holds more than two arc edges.
+    let multi_rim = face
+        .borrow()
+        .boundary
+        .iter()
+        .map(|w| w.borrow().edges.iter().filter(|u| matches!(edge_curve_kind(&u.edge), CurveKind::Other)).count())
+        .sum::<usize>()
+        > 2;
     // A wall with a notch taken out (`Cross::Notch`): its rims are PARTIAL arcs (the notch's own two, and the pieces the
     // post's rim circles were split into), each sampled from its own start, so neither the full-turn lattice nor an
     // arc-range lattice is on any neighbour's samples. Its columns are exactly its boundary's samples.
@@ -3667,6 +3677,10 @@ fn mesh_curved_face(
                     add_station(&mut us, uu, u0, u1);
                 }
             }
+        } else if multi_rim {
+            // A partial wall whose rims are broken into several arcs (a keep's wall that touches a flat face's side at a line, kept
+            // as one face): each arc is sampled from its own start, so no lattice of the whole span is on any neighbour's samples.
+            // Its columns are exactly its boundary's samples.
         } else {
             // Partial wall: the arc's own uniform lattice in the e1 frame its
             // cap arcs use, so columns land on their samples -- plus the
