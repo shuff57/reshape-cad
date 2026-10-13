@@ -1499,7 +1499,7 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
         .get("features")
         .and_then(|f| f.as_array())
         .unwrap_or(&empty);
-    for f in features {
+    for (feature_index, f) in features.iter().enumerate() {
         let kind = f.get("kind").and_then(|k| k.as_str()).unwrap_or("");
         let id = f.get("id").and_then(|i| i.as_str()).unwrap_or("").to_string();
         // A solid with a bore across a cylinder's side (docs/specs/SPEC-transverse-bore.md)
@@ -3050,6 +3050,53 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 // the cuts) when a proof says the cuts stay clear of the rounded edge.
                 let mut attempt = build_fillet(&src, &hist, f, size, round);
                 let mut replay_refusal: Option<String> = None;
+                // A1: equal chamfers picked together on a convex planar part are one cut, built from the part the
+                // run started on, so the order the edges came in cannot change the solid (and a corner of three
+                // gets FreeCAD's patch whichever edge closes it).
+                let mut run_refused = false;
+                if !round && src.shells.len() == 1 {
+                    let mut feats: Vec<Value> = rim_run.members.iter().filter(|m| m.built).map(|m| m.feature.clone()).collect();
+                    if !feats.is_empty() {
+                        feats.push(f.clone());
+                        // How the run goes on: the chamfers of this size chained straight after this one.
+                        let mut whole: Vec<Value> = feats.clone();
+                        let mut tail_id = id.clone();
+                        for next in features.iter().skip(feature_index + 1) {
+                            let same = next.get("kind").and_then(|k| k.as_str()) == Some("fillet")
+                                && next.get("style").and_then(|k| k.as_str()) == Some("chamfer")
+                                && next.get("target").and_then(|k| k.as_str()) == Some(tail_id.as_str())
+                                && (next.get("size").and_then(|k| k.as_f64()).unwrap_or(f64::NAN) - size).abs() <= 1e-12;
+                            if !same {
+                                break;
+                            }
+                            tail_id = next.get("id").and_then(|k| k.as_str()).unwrap_or("").to_string();
+                            whole.push(next.clone());
+                        }
+                        match convex_run_build(&rim_run.pre, &hist, &feats, size, Some(&whole)) {
+                            Ok(solid) => attempt = Ok(solid),
+                            Err(crate::corner3::RunFail::TooBig) => {
+                                run_refused = true;
+                                attempt = Err(FilletErr::TooBig);
+                            }
+                            Err(crate::corner3::RunFail::NearSquare) => {
+                                run_refused = true;
+                                attempt = Err(FilletErr::NearSquare);
+                            }
+                            Err(crate::corner3::RunFail::Sharp) => {
+                                run_refused = true;
+                                attempt = Err(FilletErr::CornerBlend);
+                            }
+                            Err(crate::corner3::RunFail::Skip) => {}
+                        }
+                    }
+                    // A lone chamfer of a convex planar part that the wedge boolean could not take (a face with
+                    // an edge a hair out of square, as a rounded decimal gives): the bevel half-space is exact.
+                    if attempt.is_err() && !run_refused {
+                        if let Ok(solid) = convex_run_build(&src, &hist, std::slice::from_ref(f), size, None) {
+                            attempt = Ok(solid);
+                        }
+                    }
+                }
                 // The rim of a circular pocket in a flat-topped plate (no boolean holds a torus, so it is assembled).
                 if attempt.is_err() {
                     if let Some((fa, fb)) = fillet_face_pair(&hist, f) {
@@ -3110,6 +3157,12 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
  ),
  FilletErr::VertexTooComplex => format!(
  "brep-rs cannot {} an edge whose end touches more than three faces -- {label} is shown without it.", if round { "round" } else { "chamfer" }
+ ),
+ FilletErr::NearSquare => format!(
+ "brep-rs cannot chamfer this edge yet: it meets another chamfered edge at a corner a hair off square, where FreeCAD's own result is not the plain union of the two cuts, and brep-rs will not show a number it cannot match -- {label} is shown without it."
+ ),
+ FilletErr::CornerBlend => format!(
+ "brep-rs cannot chamfer the third edge of a corner sharper than 69.4 degrees yet: FreeCAD closes that corner with a curved blend patch, which brep-rs does not build -- {label} is shown without it."
  ),
  FilletErr::SplitEdge => format!(
  "brep-rs cannot chamfer an edge that carries on across the mirror or pattern plane into the next copy yet; chamfer the part before you mirror it -- {label} is shown without it."
@@ -9087,6 +9140,10 @@ enum FilletErr {
  Concave,
  Flat,
  VertexTooComplex,
+ /// The third of three equal chamfers at a corner sharper than FreeCAD's planar corner: it closes it with a curved blend.
+ CornerBlend,
+ /// Two chamfers meeting at a prism corner that is a hair off square (`corner3::RunFail::NearSquare`).
+ NearSquare,
  /// The edge carries on, collinear, into another lump (a mirror or pattern copy that touches).
  SplitEdge,
  /// A round whose ends are not plain, or whose cutter reaches other material.
@@ -9837,6 +9894,44 @@ fn rim_corner_build(pre: &TSolid, hist: &History, features: &[Value], size: f64,
     Ok(cur)
 }
 
+/// A1: a run of equal chamfers picked together on a convex planar part, built from the part the run STARTED on
+/// (`pre`), so that the answer is the one FreeCAD builds for the whole pick whatever order its edges came in:
+/// every bevel's half-space, and FreeCAD's corner patch at each vertex where three picked edges meet. `None`
+/// when any edge cannot be read on `pre` or the part is not a convex planar one (see `corner3::run_chamfer`),
+/// and the caller keeps what it had.
+fn convex_run_build(
+    pre: &TSolid,
+    hist: &History,
+    features: &[Value],
+    size: f64,
+    whole: Option<&[Value]>,
+) -> Result<TSolid, crate::corner3::RunFail> {
+    use crate::corner3::RunFail;
+    if pre.shells.len() != 1 || features.is_empty() {
+        return Err(RunFail::Skip);
+    }
+    let src = build::unify_coplanar(pre);
+    let read = |list: &[Value]| -> Option<Vec<crate::corner3::RunEdge>> {
+        let mut picks: Vec<crate::corner3::RunEdge> = Vec::new();
+        for f in list {
+            let (fa0, fb0) = fillet_face_pair(hist, f)?;
+            if std::rc::Rc::ptr_eq(&fa0, &fb0) {
+                return None;
+            }
+            let edge0 = hist.edge_between(&fa0, &fb0)?;
+            let own = src.edges().iter().any(|e| crate::topo::same(e, &edge0))
+                && src.faces().iter().any(|f| std::rc::Rc::ptr_eq(f, &fa0))
+                && src.faces().iter().any(|f| std::rc::Rc::ptr_eq(f, &fb0));
+            let (edge, fa, fb) = if own { (edge0, fa0, fb0) } else { map_edge_into(&src, &edge0, &fa0, &fb0)? };
+            picks.push(crate::corner3::RunEdge { edge, fa, fb });
+        }
+        Some(picks)
+    };
+    let picks = read(features).ok_or(RunFail::Skip)?;
+    let whole_picks = whole.and_then(|w| read(w));
+    crate::corner3::run_chamfer(&src, &picks, size, whole_picks.as_deref())
+}
+
 /// Build the fillet/chamfer: a box edge rounded or chamfered is the extrusion
 /// of the box cross-section perpendicular to that edge, with the corner named
 /// by the two faces replaced by an arc (round) or a straight bevel (chamfer).
@@ -10111,6 +10206,10 @@ fn build_fillet(
  if concave && src.shells.len() > 1 {
      return Err(FilletErr::Concave);
  }
+ // A1: the ends of the edge that touch four faces (the third of three equal chamfers at a convex corner) are
+ // each FreeCAD's corner patch, and BOTH ends are built together or the edge is refused.
+ let mut patch_ends: Vec<crate::topo::VertexRef> = Vec::new();
+ let mut unequal_end = false;
  for endpoint in [&edge.borrow().a, &edge.borrow().b] {
  let count = src.faces().iter().filter(|face| {
  face.borrow().boundary.iter().any(|wire| wire.borrow().edges.iter().any(|use_| {
@@ -10119,18 +10218,27 @@ fn build_fillet(
  }))
  }).count();
   if count > 3 {
- // A1: the third of three equal chamfers at one convex corner (FreeCAD's corner patch).
  if !round && count == 4 && !concave {
-     if let Some(solid) = crate::corner3::corner_patch(src, &fa, &fb, endpoint, size) {
-         return Ok(solid);
-     }
+     patch_ends.push(endpoint.clone());
+     continue;
  }
  return Err(FilletErr::VertexTooComplex);
  }
  // The third of three chamfers at one corner at sizes that are not all equal: refused, not built.
  if count == 3 && !round && !concave && crate::corner3::closes_unequal_corner(src, &fa, &fb, endpoint) {
-     return Err(FilletErr::VertexTooComplex);
+     unequal_end = true;
  }
+ }
+ if !patch_ends.is_empty() {
+     return match crate::corner3::corner_patch(src, &fa, &fb, &patch_ends, size) {
+         Ok(_) if unequal_end => Err(FilletErr::VertexTooComplex),
+         Ok(solid) => Ok(solid),
+         Err(crate::corner3::CornerFail::Sharp) => Err(FilletErr::CornerBlend),
+         Err(crate::corner3::CornerFail::Other) => Err(FilletErr::VertexTooComplex),
+     };
+ }
+ if unequal_end {
+     return Err(FilletErr::VertexTooComplex);
  }
  // A1: an edge that a chamfer already cut short, or that runs across the bevels' axis, on a convex planar part:
  // the bevel is one more half-space, exact at any angle and at an end that is not square.

@@ -7,22 +7,27 @@
 //!
 //! Three equal chamfers meeting at ONE corner are one more thing. FreeCAD (26.3.0 RC1) builds a single pick of
 //! the three edges as the half-space solid cut once more by ONE planar "corner patch" that removes the tip of
-//! the three-plane apex:
+//! the three-plane apex. At a prism corner (a cap face square to the two sides) with corner angle `theta`:
 //!
-//! * each strip ends squarely at distance `d` from the original corner `C` along its own edge, as a segment from
-//!   the point `d` inside one adjacent face to the point `d` inside the other;
-//! * the patch plane passes through those end points (three of them at a right-angled corner, four at an obtuse
-//!   one -- they are coplanar either way) and the side holding `C` goes;
-//! * every face of the result is a plane: the part's faces + the three bevels + the patch.
+//! * `69.38 < theta < 110.555` degrees: the patch plane goes through the three points where the edges leaving
+//!   the apex reach the part's own faces (a triangle at a right angle);
+//! * `theta > 110.555`: it goes through the four strip end points (each strip ends squarely at distance `d` from
+//!   the corner along its own edge; they are coplanar at any angle) and the side holding the corner goes;
+//! * `theta < 69.38`: FreeCAD closes the corner with a B-spline patch. brep-rs builds none and refuses.
+//!
+//! Every face of a built result is a plane: the part's faces + the bevels + one patch per corner of three.
 //!
 //! (Three SEPARATE chamfer features chained one after another build the plain half-space solid in FreeCAD, with
 //! no patch; a document cannot tell the two apart, and a run of equal chamfers is one pick everywhere else in
 //! the kernel -- `rim_runs` -- so the run is read as one pick here.)
 //!
-//! Both are built as a convex polytope and refused unless every precondition holds: single convex planar shell;
-//! the bevels already there are exactly the equal-size bevels of the edges the new one shares a face with; the
-//! six end points are coplanar; the result gains exactly the faces it should; every edge is used twice; the
-//! volume only went down.
+//! `run_chamfer` builds a whole run from the part it started on, so the order the edges came in cannot matter.
+//! It refuses (`RunFail`), measured against FreeCAD, what FreeCAD refuses or builds in a way brep-rs cannot
+//! match: two opposite faces within twice the size of each other, bevels overlapping on a face without meeting
+//! at a corner, a bevel reaching past the faces beside its edge, and two edges meeting at a corner a hair off
+//! square where FreeCAD's solid is not the union of the two cuts. Everything is built as a convex polytope and
+//! refused unless the result gains exactly the faces it should, every edge is used twice and the volume only
+//! went down.
 use crate::build::{self, TFace, TSolid};
 use crate::geom::Surface;
 use crate::math::{add, cross, dot, len, normalize, scale, sub, Vec3};
@@ -207,7 +212,7 @@ fn polytope(planes: &[Half], centre: Vec3, extent: f64, reach: f64) -> Option<(T
                 break;
             }
         }
-        let poly = tidy(poly, 1e-7 * (1.0 + extent));
+        let poly = tidy(poly, 1e-8 * (1.0 + extent));
         if poly.len() < 3 {
             return None;
         }
@@ -220,7 +225,7 @@ fn polytope(planes: &[Half], centre: Vec3, extent: f64, reach: f64) -> Option<(T
     // merge coincident vertices across rings
     let mut points: Vec<Vec3> = Vec::new();
     let mut faces_out: Vec<(Vec3, Vec<usize>)> = Vec::new();
-    let tol = 1e-6 * (1.0 + extent);
+    let tol = 2e-8 * (1.0 + extent);
     for (n, poly) in &rings {
         let mut ring: Vec<usize> = Vec::new();
         for p in poly {
@@ -281,59 +286,108 @@ pub fn halfspace_chamfer(src: &TSolid, mid: Vec3, t: Vec3, ia: Vec3, ib: Vec3, s
     Some(solid)
 }
 
-/// Build the part with the third bevel (`size`, on the edge between `fa` and `fb`, which ends at `endpoint`) and
-/// the corner patch, or `None` when it is not exactly the equal-size corner of three described above.
-pub fn corner_patch(src: &TSolid, fa: &TFace, fb: &TFace, endpoint: &topo::VertexRef, size: f64) -> Option<TSolid> {
-    if !(size > 0.0) {
-        return None;
+/// Tolerance for "this plane is exactly that bevel": sizes that differ by more than rounding are different sizes.
+fn same_half(x: Half, y: Half, extent: f64) -> bool {
+    len(sub(x.0, y.0)) < 1e-9 && (x.1 - y.1).abs() < 1e-9 * (1.0 + extent)
+}
+
+/// Why a corner of three equal chamfers is not built.
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+pub enum CornerFail {
+    /// The corner is sharper than FreeCAD's planar corner: it closes such a corner with a curved (B-spline) blend,
+    /// which brep-rs does not build.
+    Sharp,
+    /// Anything else: not the equal-size corner of three on a convex part that this slice reads.
+    Other,
+}
+
+/// The corner angle (degrees) below which FreeCAD 26.3.0 RC1 closes three equal chamfers at a prism corner with a
+/// curved (B-spline) patch rather than a plane, and the one above which it uses the four-point plane. Measured by
+/// bisection on a parallelogram prism (d = 0.5 .. 3, heights 4 .. 20, side lengths 20 .. 60; the angles did not
+/// move): the curved patch up to 69.3785, the three-point plane from 69.3790 to 110.5550, the four-point plane
+/// from 110.5551. Between the first two the plane goes through the three points where the edges leaving the
+/// three-bevel apex reach the part's own faces. A corner within the margin of either is refused, not guessed.
+const ANGLE_LO: f64 = 69.3788;
+const ANGLE_HI: f64 = 110.55505;
+const ANGLE_LO_MARGIN: f64 = 0.0006;
+const ANGLE_HI_MARGIN: f64 = 0.0003;
+
+/// One picked edge at a corner: its direction away from the corner, the in-face unit directions square to it, and
+/// the outward normals of its two faces.
+#[derive(Clone, Copy)]
+struct EdgeFrame {
+    t: Vec3,
+    p: Vec3,
+    q: Vec3,
+    na: Vec3,
+    nb: Vec3,
+}
+
+/// The patch plane of three equal bevels at the corner `c`, the patch's outward side being the one holding `c`.
+///
+/// The corner must be a prism corner: one face (the cap) square to the other two. With its angle `theta` (the
+/// angle the two other faces make, equally the cap's angle at the corner) FreeCAD builds
+/// * `theta` between 69.38 and 110.555 degrees: the plane through the apex of the strips on the cap and the two end
+///   points of the edge between the other faces, a triangle at a right angle;
+/// * `theta` over 110.555 degrees: the plane through the four strip end points (coplanar at any angle);
+/// * `theta` under 69.38 degrees: a curved patch, refused.
+fn patch_plane(c: Vec3, size: f64, edges: [EdgeFrame; 3], extent: f64) -> Result<(Half, Vec<Vec3>), CornerFail> {
+    let mut dn: Vec<Vec3> = Vec::new();
+    for e in &edges {
+        for n in [e.na, e.nb] {
+            if !dn.iter().any(|m| len(sub(*m, n)) < 1e-6) {
+                dn.push(n);
+            }
+        }
     }
-    let faces = src.faces();
-    let (halves, centroid, extent) = read_convex(src)?;
-    let idx = |f: &TFace| faces.iter().position(|g| std::rc::Rc::ptr_eq(g, f));
-    let (ia, ib) = (idx(fa)?, idx(fb)?);
-    // the faces at the end of the edge: its own two and the two bevels already cut
-    let at: Vec<usize> = (0..faces.len()).filter(|k| touches(&faces[*k], endpoint)).collect();
-    if at.len() != 4 || !at.contains(&ia) || !at.contains(&ib) {
-        return None;
+    if dn.len() != 3 {
+        return Err(CornerFail::Other);
     }
-    let others: Vec<usize> = at.iter().copied().filter(|k| *k != ia && *k != ib).collect();
-    let (g1, g2) = (others[0], others[1]);
-    // the third face of the original corner: the one the two bevels both border
-    let zs: Vec<usize> = (0..faces.len())
-        .filter(|k| ![ia, ib, g1, g2].contains(k) && same_edge_use(&faces[*k], &faces[g1]) && same_edge_use(&faces[*k], &faces[g2]))
-        .collect();
-    if zs.len() != 1 {
-        return None;
+    let cap = (0..3).find(|k| (0..3).all(|j| j == *k || dot(dn[*k], dn[j]).abs() < 1e-7)).ok_or(CornerFail::Other)?;
+    let (s1, s2) = match cap {
+        0 => (1, 2),
+        1 => (0, 2),
+        _ => (0, 1),
+    };
+    let cos_theta = (-dot(dn[s1], dn[s2])).clamp(-1.0, 1.0);
+    let theta = cos_theta.acos().to_degrees();
+    if theta < ANGLE_LO - ANGLE_LO_MARGIN {
+        return Err(CornerFail::Sharp);
     }
-    let iz = zs[0];
-    let (na, nb, nz) = (halves[ia].0, halves[ib].0, halves[iz].0);
-    let c = solve3([na, nb, nz], [halves[ia].1, halves[ib].1, halves[iz].1])?;
-    // the three edges of the corner and their bevels of this size
-    let (tab, aab, bab) = edge_frame(na, nb, nz)?;
-    let (taz, aaz, zaz) = edge_frame(na, nz, nb)?;
-    let (tbz, bbz, zbz) = edge_frame(nb, nz, na)?;
-    let b_ab = bevel_plane(c, size, tab, aab, bab)?;
-    let b_az = bevel_plane(c, size, taz, aaz, zaz)?;
-    let b_bz = bevel_plane(c, size, tbz, bbz, zbz)?;
-    let near = |x: Half, y: Half| len(sub(x.0, y.0)) < 1e-7 && (x.1 - y.1).abs() < 1e-7 * (1.0 + extent);
-    // the two bevels in the part are exactly this size, on the two other edges of the corner
-    let (h1, h2) = (halves[g1], halves[g2]);
-    if !((near(h1, b_az) && near(h2, b_bz)) || (near(h1, b_bz) && near(h2, b_az))) {
-        return None;
+    if (theta - ANGLE_LO).abs() <= ANGLE_LO_MARGIN || (theta - ANGLE_HI).abs() <= ANGLE_HI_MARGIN {
+        return Err(CornerFail::Other);
     }
-    // the strips' end points; each strip ends square at `size` along its own edge
+    // the end points of each strip: square at `size` along its own edge, one point in each of its faces
     let mut pts: Vec<Vec3> = Vec::new();
-    for (t, p, q) in [(tab, aab, bab), (taz, aaz, zaz), (tbz, bbz, zbz)] {
-        let base = add(c, scale(t, size));
-        pts.push(add(base, scale(p, size)));
-        pts.push(add(base, scale(q, size)));
+    for e in &edges {
+        let base = add(c, scale(e.t, size));
+        pts.push(add(base, scale(e.p, size)));
+        pts.push(add(base, scale(e.q, size)));
     }
-    // the patch plane through the end points: the widest triangle, then every point must lie on it
+    let key: Vec<Vec3> = if theta < ANGLE_HI {
+        // the edge between the two non-cap faces, and the two cap edges
+        let is_cap = |n: Vec3| len(sub(n, dn[cap])) < 1e-6;
+        let vi = (0..3).find(|i| !is_cap(edges[*i].na) && !is_cap(edges[*i].nb)).ok_or(CornerFail::Other)?;
+        let mut ta: Vec<Vec3> = Vec::new();
+        for (i, e) in edges.iter().enumerate() {
+            if i != vi {
+                ta.push(e.t);
+            }
+        }
+        let sin_theta = theta.to_radians().sin();
+        if ta.len() != 2 || sin_theta < 1e-3 {
+            return Err(CornerFail::Other);
+        }
+        let apex = add(c, scale(add(ta[0], ta[1]), size / sin_theta));
+        vec![pts[2 * vi], pts[2 * vi + 1], apex]
+    } else {
+        pts.clone()
+    };
     let mut best: Option<(f64, Vec3)> = None;
-    for i in 0..pts.len() {
-        for j in (i + 1)..pts.len() {
-            for k in (j + 1)..pts.len() {
-                let nrm = cross(sub(pts[j], pts[i]), sub(pts[k], pts[i]));
+    for i in 0..key.len() {
+        for j in (i + 1)..key.len() {
+            for k in (j + 1)..key.len() {
+                let nrm = cross(sub(key[j], key[i]), sub(key[k], key[i]));
                 let area = len(nrm);
                 if best.map_or(true, |(a, _)| area > a) {
                     best = Some((area, nrm));
@@ -341,38 +395,418 @@ pub fn corner_patch(src: &TSolid, fa: &TFace, fb: &TFace, endpoint: &topo::Verte
             }
         }
     }
-    let (area, nrm) = best?;
+    let (area, nrm) = best.ok_or(CornerFail::Other)?;
     if area < 1e-9 {
-        return None;
+        return Err(CornerFail::Other);
     }
     let mut pn = normalize(nrm);
-    let p0 = pts[0];
-    if pts.iter().any(|p| dot(pn, sub(*p, p0)).abs() > 1e-7 * (1.0 + extent)) {
-        return None;
+    let p0 = key[0];
+    if key.iter().any(|p| dot(pn, sub(*p, p0)).abs() > 1e-7 * (1.0 + extent)) {
+        return Err(CornerFail::Other);
     }
     if dot(pn, sub(c, p0)) < 0.0 {
         pn = scale(pn, -1.0);
     }
     let patch: Half = (pn, dot(pn, p0));
     if dot(pn, c) - patch.1 < 1e-9 {
-        return None;
+        return Err(CornerFail::Other);
     }
-    // the polytope: the part's planes, the third bevel, the patch -- exactly two faces more
+    Ok((patch, key))
+}
+
+/// What the third bevel at one end needs: the new edge's bevel plane, the patch, and the strip end points.
+struct EndPatch {
+    bevel: Half,
+    patch: Half,
+    pts: Vec<Vec3>,
+}
+
+/// The equal-size corner of three closing at `endpoint` (which touches four faces: the new edge's `ia` and `ib` and
+/// the two bevels already cut). The third face of the ORIGINAL corner is found as the one candidate for which the
+/// two bevels in the part are exactly the bevels of this size of the other two edges.
+fn end_patch(faces: &[TFace], halves: &[Half], extent: f64, ia: usize, ib: usize, endpoint: &topo::VertexRef, size: f64) -> Result<EndPatch, CornerFail> {
+    let at: Vec<usize> = (0..faces.len()).filter(|k| touches(&faces[*k], endpoint)).collect();
+    if at.len() != 4 || !at.contains(&ia) || !at.contains(&ib) {
+        return Err(CornerFail::Other);
+    }
+    let others: Vec<usize> = at.iter().copied().filter(|k| *k != ia && *k != ib).collect();
+    let (g1, g2) = (others[0], others[1]);
+    let (h1, h2) = (halves[g1], halves[g2]);
+    let (na, nb) = (halves[ia].0, halves[ib].0);
+    let mut found: Option<EndPatch> = None;
+    let mut sharp = false;
+    for iz in 0..faces.len() {
+        if [ia, ib, g1, g2].contains(&iz) {
+            continue;
+        }
+        let nz = halves[iz].0;
+        let Some(c) = solve3([na, nb, nz], [halves[ia].1, halves[ib].1, halves[iz].1]) else { continue };
+        let (Some(fab), Some(faz), Some(fbz)) = (edge_frame(na, nb, nz), edge_frame(na, nz, nb), edge_frame(nb, nz, na)) else { continue };
+        let (Some(b_ab), Some(b_az), Some(b_bz)) = (
+            bevel_plane(c, size, fab.0, fab.1, fab.2),
+            bevel_plane(c, size, faz.0, faz.1, faz.2),
+            bevel_plane(c, size, fbz.0, fbz.1, fbz.2),
+        ) else {
+            continue;
+        };
+        // the two bevels in the part are exactly this size, on the two other edges of the corner
+        if !((same_half(h1, b_az, extent) && same_half(h2, b_bz, extent)) || (same_half(h1, b_bz, extent) && same_half(h2, b_az, extent))) {
+            continue;
+        }
+        let ef = |f: (Vec3, Vec3, Vec3), x: Vec3, y: Vec3| EdgeFrame { t: f.0, p: f.1, q: f.2, na: x, nb: y };
+        let frames = [ef(fab, na, nb), ef(faz, na, nz), ef(fbz, nb, nz)];
+        let (patch, pts) = match patch_plane(c, size, frames, extent) {
+            Ok(x) => x,
+            Err(CornerFail::Sharp) => {
+                sharp = true;
+                continue;
+            }
+            Err(_) => continue,
+        };
+        if found.is_some() {
+            return Err(CornerFail::Other);
+        }
+        found = Some(EndPatch { bevel: b_ab, patch, pts });
+    }
+    found.ok_or(if sharp { CornerFail::Sharp } else { CornerFail::Other })
+}
+
+/// Build the part with the third bevel (`size`, on the edge between `fa` and `fb`) and the corner patch at EVERY
+/// end in `ends` (each touching four faces: the edge's own two and the two equal bevels already cut), or `None`
+/// when it is not exactly the equal-size corner of three described above at each of them.
+pub fn corner_patch(src: &TSolid, fa: &TFace, fb: &TFace, ends: &[topo::VertexRef], size: f64) -> Result<TSolid, CornerFail> {
+    let other = CornerFail::Other;
+    if !(size > 0.0) || ends.is_empty() {
+        return Err(other);
+    }
+    let faces = src.faces();
+    let (halves, centroid, extent) = read_convex(src).ok_or(other)?;
+    let idx = |f: &TFace| faces.iter().position(|g| std::rc::Rc::ptr_eq(g, f));
+    let (ia, ib) = (idx(fa).ok_or(other)?, idx(fb).ok_or(other)?);
     let mut planes = halves.clone();
-    planes.push(b_ab);
-    planes.push(patch);
-    let (solid, points, rings) = polytope(&planes, centroid, extent, len(sub(c, centroid)) + size)?;
-    if rings.len() != faces.len() + 2 || !volume_went_down(src, &solid) {
-        return None;
+    let mut patches: Vec<EndPatch> = Vec::new();
+    for endpoint in ends {
+        patches.push(end_patch(&faces, &halves, extent, ia, ib, endpoint, size)?);
     }
-    // every strip end point is a vertex of the patch ring
-    let patch_ring = &rings[rings.len() - 1].1;
-    for p in &pts {
-        if !patch_ring.iter().any(|k| len(sub(points[*k], *p)) <= 1e-6 * (1.0 + extent)) {
-            return None;
+    // the new edge has ONE bevel plane, whichever end it is read at
+    if patches.iter().any(|p| !same_half(p.bevel, patches[0].bevel, extent)) {
+        return Err(other);
+    }
+    planes.push(patches[0].bevel);
+    for p in &patches {
+        planes.push(p.patch);
+    }
+    let reach = patches.iter().map(|p| len(sub(centroid, p.pts[0]))).fold(0.0_f64, f64::max) + size;
+    let (solid, points, rings) = polytope(&planes, centroid, extent, reach).ok_or(other)?;
+    if rings.len() != faces.len() + 1 + patches.len() || !volume_went_down(src, &solid) {
+        return Err(other);
+    }
+    // every strip end point is a vertex of its patch ring
+    for (j, p) in patches.iter().enumerate() {
+        let patch_ring = &rings[faces.len() + 1 + j].1;
+        for q in &p.pts {
+            if !patch_ring.iter().any(|k| len(sub(points[*k], *q)) <= 1e-7 * (1.0 + extent)) {
+                return Err(other);
+            }
         }
     }
-    Some(solid)
+    Ok(solid)
+}
+
+/// Why a run of chamfers is not built by `run_chamfer`.
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+pub enum RunFail {
+    /// Not a run this builder reads (not convex, an end that is not a plain three-face corner, ...): the caller
+    /// keeps whatever it had.
+    Skip,
+    /// The size does not fit the part: two opposite faces carrying bevels are not more than twice the size apart,
+    /// or two bevels that do not meet at a corner cut the same face in overlapping places (FreeCAD marks the
+    /// feature Invalid and builds nothing).
+    TooBig,
+    /// Two picked edges meet at a vertex of a prism where the face they share is a side and the other side leans
+    /// a hair off square: FreeCAD 26.3.0 RC1's solid there is not the union of the two cuts (it differs by up to a
+    /// few thousandths of a percent), and not by a rule that is known, so it is refused rather than shown.
+    NearSquare,
+    /// Three of the picked edges close a corner sharper than FreeCAD's planar corner (`CornerFail::Sharp`).
+    Sharp,
+}
+
+/// One picked edge of a run, as the part has it: the edge and the two faces it lies between.
+pub struct RunEdge {
+    pub edge: build::TEdge,
+    pub fa: TFace,
+    pub fb: TFace,
+}
+
+/// One picked edge of a run read on the part: ends, directions, face normals and indices, and its bevel.
+struct Pick {
+    va: topo::VertexRef,
+    vb: topo::VertexRef,
+    /// In-face unit directions (square to the edge, into each face) and the edge's own direction.
+    ia: Vec3,
+    ib: Vec3,
+    n: Vec3,
+    m: Vec3,
+    /// Outward normals and indices of the two faces.
+    na: Vec3,
+    nb: Vec3,
+    ka: usize,
+    kb: usize,
+}
+
+/// Read the picked edges of a run on the part: each a straight edge between two flat faces at a convex angle with
+/// the size fitting both faces. The bevel half-space of each is returned beside it.
+fn read_run(faces: &[TFace], halves: &[Half], extent: f64, picks: &[RunEdge], size: f64) -> Result<(Vec<Pick>, Vec<Half>), RunFail> {
+    let skip = RunFail::Skip;
+    let idx = |f: &TFace| faces.iter().position(|g| std::rc::Rc::ptr_eq(g, f));
+    let mut ps: Vec<Pick> = Vec::new();
+    let mut bevels: Vec<Half> = Vec::new();
+    for pk in picks {
+        let (ka, kb) = (idx(&pk.fa).ok_or(skip)?, idx(&pk.fb).ok_or(skip)?);
+        if ka == kb {
+            return Err(skip);
+        }
+        if picks.iter().filter(|q| topo::same(&q.edge, &pk.edge)).count() != 1 {
+            return Err(skip);
+        }
+        let e = pk.edge.borrow();
+        if !matches!(&e.curve, crate::geom::Curve::Segment { .. }) {
+            return Err(skip);
+        }
+        let (va, vb) = (e.a.clone(), e.b.clone());
+        let (a, b) = (va.borrow().point, vb.borrow().point);
+        drop(e);
+        let l = len(sub(b, a));
+        if l <= 1e-9 {
+            return Err(skip);
+        }
+        let t = scale(sub(b, a), 1.0 / l);
+        let ((na, da), (nb, db)) = (halves[ka], halves[kb]);
+        let tol = 1e-7 * (1.0 + extent);
+        if [a, b].iter().any(|p| (dot(na, *p) - da).abs() > tol || (dot(nb, *p) - db).abs() > tol) {
+            return Err(skip);
+        }
+        let mut ia = normalize(cross(na, t));
+        if dot(ia, nb) > 0.0 {
+            ia = scale(ia, -1.0);
+        }
+        let mut ib = normalize(cross(nb, t));
+        if dot(ib, na) > 0.0 {
+            ib = scale(ib, -1.0);
+        }
+        if dot(ia, nb) > -1e-6 || dot(ib, na) > -1e-6 {
+            return Err(skip);
+        }
+        // the size must fit both faces, measured across them from the edge
+        let reach = |k: usize, dir: Vec3| build::face_ring_points(&faces[k].borrow()).iter().fold(0.0_f64, |m, p| m.max(dot(sub(*p, a), dir)));
+        if size >= reach(ka, ia).min(reach(kb, ib)) - 1e-9 * (1.0 + extent) {
+            return Err(RunFail::TooBig);
+        }
+        let mid = scale(add(a, b), 0.5);
+        bevels.push(plane_through(mid, t, add(mid, scale(ia, size)), add(mid, scale(ib, size))).ok_or(skip)?);
+        ps.push(Pick { va, vb, ia, ib, n: t, m: mid, na, nb, ka, kb });
+    }
+    Ok((ps, bevels))
+}
+
+/// The vertices the picked edges end at, each with the picks (and which end) that end there.
+fn group_vertices(ps: &[Pick]) -> Vec<(topo::VertexRef, Vec<(usize, bool)>)> {
+    let mut verts: Vec<(topo::VertexRef, Vec<(usize, bool)>)> = Vec::new();
+    for (i, p) in ps.iter().enumerate() {
+        for (v, is_b) in [(&p.va, false), (&p.vb, true)] {
+            match verts.iter_mut().find(|(w, _)| std::rc::Rc::ptr_eq(w, v)) {
+                Some((_, l)) => l.push((i, is_b)),
+                None => verts.push((v.clone(), vec![(i, is_b)])),
+            }
+        }
+    }
+    verts
+}
+
+/// The validity rules FreeCAD 26.3.0 RC1 imposes on a pick (all measured against it; see `RunFail`). `Ok` when the
+/// run, as a whole pick, is one FreeCAD builds as the half-space solid with corner patches.
+fn run_guards(faces: &[TFace], halves: &[Half], extent: f64, ps: &[Pick], bevels: &[Half], size: f64, volume: f64) -> Result<(), RunFail> {
+    // Two opposite parallel faces that both carry a bevel of this run (a chamfered top and a chamfered bottom, two
+    // chamfered sides) must be more than twice the size apart: FreeCAD marks the feature Invalid and builds nothing
+    // when they are not (3 mm plate, size 1.5 and over, top and bottom corners), whichever edges of the faces are
+    // picked. Refused the same way as a size that does not fit.
+    for (i, pi) in ps.iter().enumerate() {
+        for pj in ps.iter().skip(i + 1) {
+            for kx in [pi.ka, pi.kb] {
+                for ky in [pj.ka, pj.kb] {
+                    if kx == ky {
+                        continue;
+                    }
+                    let (hx, hy) = (halves[kx], halves[ky]);
+                    if dot(hx.0, hy.0) < -1.0 + 1e-9 && 2.0 * size >= hx.1 + hy.1 - 1e-9 * (1.0 + extent) {
+                        return Err(RunFail::TooBig);
+                    }
+                }
+            }
+        }
+    }
+    // Two bevels of edges that do not meet at a corner must not cut the same face in overlapping places: FreeCAD
+    // marks the feature Invalid and builds nothing (measured on 1,500 random convex prisms: every such overlap
+    // invalid, none valid). Edges that meet at a corner overlap legitimately at it, and a third bevel that meets
+    // both and already removes the overlap makes it legitimate as well (a short side between two picked sides).
+    let shares = |a: &Pick, b: &Pick| [&a.va, &a.vb].iter().any(|x| [&b.va, &b.vb].iter().any(|y| std::rc::Rc::ptr_eq(x, y)));
+    let outer = |poly: &[Vec3], h: Half| clip(poly, scale(h.0, -1.0), -h.1, 1e-9 * (1.0 + extent));
+    let area_of = |poly: &[Vec3]| {
+        let mut acc = [0.0; 3];
+        for k in 0..poly.len() {
+            acc = add(acc, cross(poly[k], poly[(k + 1) % poly.len()]));
+        }
+        0.5 * len(acc)
+    };
+    for (fi, f) in faces.iter().enumerate() {
+        let ring = build::face_ring_points(&f.borrow());
+        if ring.len() < 3 {
+            continue;
+        }
+        let fa = area_of(&ring);
+        let fps: Vec<Vec<Vec3>> = bevels.iter().map(|b| outer(&ring, *b)).collect();
+        for i in 0..ps.len() {
+            if fps[i].len() < 3 {
+                continue;
+            }
+            // In a run of two or more, a bevel's half-space must not reach past the faces next to its edge (its
+            // own two and the faces at its two ends) onto a face further away: FreeCAD marks such a pick Invalid
+            // (a lone chamfer is built, and so is one that only grazes).
+            if ps.len() >= 2 && fi != ps[i].ka && fi != ps[i].kb && !touches(f, &ps[i].va) && !touches(f, &ps[i].vb) && area_of(&fps[i]) > 1e-7 * fa.max(1.0) {
+                return Err(RunFail::TooBig);
+            }
+            for j in (i + 1)..ps.len() {
+                if fps[j].len() < 3 || shares(&ps[i], &ps[j]) {
+                    continue;
+                }
+                let ov = outer(&fps[i], bevels[j]);
+                if ov.len() < 3 || area_of(&ov) <= 1e-7 * fa.max(1.0) {
+                    continue;
+                }
+                // (and the pick that covers it lies on this very face)
+                let covered = (0..ps.len()).any(|k| {
+                    k != i
+                        && k != j
+                        && (fi == ps[k].ka || fi == ps[k].kb)
+                        && shares(&ps[k], &ps[i])
+                        && shares(&ps[k], &ps[j])
+                        && ov.iter().all(|v| dot(bevels[k].0, *v) >= bevels[k].1 - 1e-7 * (1.0 + extent))
+                });
+                if !covered {
+                    return Err(RunFail::TooBig);
+                }
+            }
+        }
+    }
+    // Two picked edges that meet at a vertex and share a face. When that face is a side of a prism (not the cap,
+    // the face square to the other two) and the other side leans off square by a hair, FreeCAD's solid is not the
+    // union of the two cuts (see `RunFail::NearSquare`); the window is exactly where size * (1 - cos(lean)) is
+    // under a thousandth of a millimetre (measured at sizes 0.3 .. 2.5: still off at 0.99e-3, on the half-space
+    // solid from 1.00e-3).
+    for (v, list) in group_vertices(ps) {
+        if list.len() != 2 {
+            continue;
+        }
+        let at: Vec<usize> = (0..faces.len()).filter(|k| touches(&faces[*k], &v)).collect();
+        if at.len() != 3 {
+            continue;
+        }
+        let cap = at.iter().copied().find(|k| at.iter().all(|j| j == k || dot(halves[*k].0, halves[*j].0).abs() < 1e-7));
+        let Some(cap) = cap else { continue };
+        let both_on_cap = list.iter().all(|(i, _)| ps[*i].ka == cap || ps[*i].kb == cap);
+        let sides: Vec<usize> = at.iter().copied().filter(|k| *k != cap).collect();
+        if !both_on_cap && sides.len() == 2 {
+            let lean = (-dot(halves[sides[0]].0, halves[sides[1]].0)).clamp(-1.0, 1.0).acos() - std::f64::consts::FRAC_PI_2;
+            // ... and where its deviation from the union of the cuts (about 9 * size^0.8 * lean^2 mm^3, measured at
+            // leans of 0.001 .. 0.5 degrees and sizes 0.5 .. 6, three times over for the edge lengths) could
+            // reach a ten-billionth of the part.
+            let est = 30.0 * size.powf(0.8) * lean * lean;
+            if lean.abs() > 1e-9 && size * (1.0 - lean.cos()) < 1.0002e-3 && est > 1e-10 * volume {
+                return Err(RunFail::NearSquare);
+            }
+        }
+    }
+    Ok(())
+}
+
+/// A run of EQUAL chamfers on a convex planar part, built together from the part the run started on, so that the
+/// answer does not depend on the order the edges were picked in. The result is the part cut by every bevel
+/// half-space and, at each vertex where three of the picked edges meet, by FreeCAD's corner patch (see the module
+/// header). Where two picked edges meet the two cuts are simply united.
+///
+/// `picks` is the run so far. `whole`, when the caller knows how the run goes on (the chamfers of the same size
+/// chained after this one), is the run in full: the validity rules FreeCAD imposes on a pick are held against the
+/// whole of it, so a prefix that only becomes legitimate when a later edge is picked is built, as it is in FreeCAD
+/// (one pick of the whole run); a prefix is refused only when the whole run is invalid too.
+///
+/// `Err(Skip)` (the caller keeps whatever it had) unless every precondition holds: single convex planar shell,
+/// every picked edge straight between two flat faces at a convex angle with the size fitting its faces, every end
+/// of every picked edge a vertex of exactly three faces, and the result gains exactly one face per bevel and one
+/// per patch, closed, with every strip end a vertex of its patch.
+pub fn run_chamfer(src: &TSolid, picks: &[RunEdge], size: f64, whole: Option<&[RunEdge]>) -> Result<TSolid, RunFail> {
+    let skip = RunFail::Skip;
+    if !(size > 0.0) || picks.is_empty() {
+        return Err(skip);
+    }
+    let (halves, centroid, extent) = read_convex(src).ok_or(skip)?;
+    let faces = src.faces();
+    let (ps, bevels) = read_run(&faces, &halves, extent, picks, size)?;
+    let volume = build::solid_volume(src).abs();
+    if let Err(why) = run_guards(&faces, &halves, extent, &ps, &bevels, size, volume) {
+        let whole_ok = whole.is_some_and(|w| {
+            read_run(&faces, &halves, extent, w, size)
+                .is_ok_and(|(wp, wb)| run_guards(&faces, &halves, extent, &wp, &wb, size, volume).is_ok())
+        });
+        if !whole_ok {
+            return Err(why);
+        }
+    }
+    // the vertices the picked edges end at: each a corner of exactly three faces
+    let verts = group_vertices(&ps);
+    let mut planes = halves.clone();
+    planes.extend(bevels.iter().copied());
+    let mut patch_pts: Vec<Vec<Vec3>> = Vec::new();
+    for (v, list) in &verts {
+        let valence = faces.iter().filter(|f| touches(f, v)).count();
+        if valence != 3 {
+            return Err(skip);
+        }
+        if list.len() == 3 {
+            let c = v.borrow().point;
+            let mut frames: Vec<EdgeFrame> = Vec::new();
+            for (i, is_b) in list {
+                let p = &ps[*i];
+                // the edge's direction away from the corner, and the in-face directions square to it
+                frames.push(EdgeFrame { t: if *is_b { scale(p.n, -1.0) } else { p.n }, p: p.ia, q: p.ib, na: p.na, nb: p.nb });
+            }
+            let (patch, pts) = match patch_plane(c, size, [frames[0], frames[1], frames[2]], extent) {
+                Ok(x) => x,
+                Err(CornerFail::Sharp) => return Err(RunFail::Sharp),
+                Err(CornerFail::Other) => return Err(skip),
+            };
+            if dot(patch.0, centroid) - patch.1 > -1e-9 {
+                return Err(skip);
+            }
+            planes.push(patch);
+            patch_pts.push(pts);
+        } else if list.len() > 3 {
+            return Err(skip);
+        }
+    }
+    let reach = ps.iter().map(|p| len(sub(centroid, p.m))).fold(0.0_f64, f64::max) + size;
+    let (solid, points, rings) = polytope(&planes, centroid, extent, reach).ok_or(skip)?;
+    if rings.len() != faces.len() + bevels.len() + patch_pts.len() || !volume_went_down(src, &solid) {
+        return Err(skip);
+    }
+    for (j, pts) in patch_pts.iter().enumerate() {
+        let ring = &rings[faces.len() + bevels.len() + j].1;
+        for q in pts {
+            if !ring.iter().any(|k| len(sub(points[*k], *q)) <= 1e-7 * (1.0 + extent)) {
+                return Err(skip);
+            }
+        }
+    }
+    Ok(solid)
 }
 
 /// Whether the edge between `fa` and `fb` that ends at `endpoint` (a vertex touching exactly one other face `g`)
