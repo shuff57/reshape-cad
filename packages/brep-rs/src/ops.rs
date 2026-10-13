@@ -4571,7 +4571,7 @@ fn circle_boundary_of_wire(fb: &Face<Curve3, Surface3>) -> Option<(Vec3, f64)> {
 ///
 /// Layout (subtract, outer `a`, inner `b`, b's top cap FLUSH with a's, b's
 /// bottom strictly inside): the void spans z in [b.lo, a.hi], so the result
-/// is 6 faces — a's wall split at b's bottom plane (2 pieces), b's wall
+/// is 5 faces — a's wall whole (one face), b's wall
 /// flipped (the void wall), a's own bottom cap (full disk, untouched), the
 /// top annulus (a's top rim + b's top rim reversed), and b's bottom cap
 /// flipped (the void floor). `None` for any other configuration.
@@ -4614,15 +4614,6 @@ pub fn cylinder_open_hollow(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> 
             .find(|f| matches!(&f.borrow().surface, Surface::Plane(p) if dot(p.n, axis) < -1e-9))?;
         flip_planar(&bf)
     };
-    // The split rim circle at b's bottom height, in a's frame (+axis normal
-    // so both wall pieces and any neighbour sample the same set).
-    let rim_split_centre = add(wa.origin, scale(axis, bottom_gap));
-    let rim_split = topo::edge(
-        topo::vertex(add(rim_split_centre, scale(wa.e1, wa.radius))),
-        topo::vertex(add(rim_split_centre, scale(wa.e1, wa.radius))),
-        true,
-        Curve::Circle { center: rim_split_centre, radius: wa.radius, normal: axis },
-    );
     // A full-turn wall piece over [vlo, vhi] reusing the shared rim handles
     // (same wire shape as [`partial_wall`], rims supplied not built).
     let wall_piece = |vlo: f64, vhi: f64, rim_lo: &topo::EdgeRef<Curve3>, rim_hi: &topo::EdgeRef<Curve3>| -> TFace {
@@ -4660,8 +4651,9 @@ pub fn cylinder_open_hollow(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> 
             uv_domain: [[0.0, TWO_PI], [vlo, vhi]],
         }))
     };
-    let wall_lower = wall_piece(wa.vmin, bottom_gap, &fa_lo, &rim_split);
-    let wall_upper = wall_piece(bottom_gap, wa.vmax, &rim_split, &fa_hi);
+    // The outer wall stays ONE face: the cavity floor's plane meets it nowhere (the floor lies inside the
+    // wall), so there is no edge at the wall thickness (FreeCAD's thickness of a cylinder: 5 faces, not 6).
+    let wall_outer = wall_piece(wa.vmin, wa.vmax, &fa_lo, &fa_hi);
     // The void wall: b's wall flipped; its rim handles (fb_lo/fb_hi) stay
     // b's, which the annulus hole and the floor reuse.
     let wall_inner = flip_face(
@@ -4687,7 +4679,7 @@ pub fn cylinder_open_hollow(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> 
     let top = annulus(&fa_hi, &fb_hi, ca_hi, axis);
     Some(Solid {
         shells: vec![Rc::new(RefCell::new(Shell {
-            faces: vec![wall_lower, wall_upper, wall_inner, cap_bottom, top, floor],
+            faces: vec![wall_outer, wall_inner, cap_bottom, top, floor],
         }))],
     })
 }
@@ -8527,9 +8519,35 @@ fn shell_cylinder_open_top_flush_subtract() {
     let want = std::f64::consts::PI * 144.0 * 30.0 - std::f64::consts::PI * 100.0 * 28.0;
     let vol = build::solid_volume(&result);
     assert!((vol - want).abs() <= 1e-6 * want, "volume {vol} vs {want}");
-    assert_eq!(result.faces().len(), 6, "2 outer walls + void wall + bottom cap + top annulus + void floor");
+    assert_eq!(result.faces().len(), 5, "outer wall + void wall + bottom cap + top annulus + void floor (FreeCAD: 5)");
     let m = crate::mesh::mesh_solid(&result, 0.05).expect("open-top hollow meshes");
     assert!(check_watertight(&m), "open-top hollow mesh must be watertight");
+}
+
+/// FreeCAD 26.3.0 thickness of a cylinder r15 h20 wall 2 (top open): 5 faces, volume 4580.442088933916, the outer wall ONE
+/// face (z 0..20), and the same 5 faces mirrored for an open bottom.
+#[test]
+fn thickness_of_a_cylinder_is_five_faces_like_freecad() {
+    for (r, h, t, want_vol) in [(15.0, 20.0, 2.0, 4580.442088933918), (10.0, 30.0, 3.0, 5268.450880070083), (15.0, 20.0, 1.0, 2437.8758991856794)] {
+        let outer = build::cylinder_solid([0.0, 0.0, h / 2.0], r, h, [0.0, 0.0, 1.0]);
+        let inner = build::cylinder_solid([0.0, 0.0, t + (h - t) / 2.0], r - t, h - t, [0.0, 0.0, 1.0]);
+        let res = boolean("subtract", &outer, &inner).expect("builds");
+        assert_eq!(res.faces().len(), 5);
+        let walls: Vec<_> = res
+            .faces()
+            .into_iter()
+            .filter(|f| matches!(&f.borrow().surface, Surface::Cylinder(c) if (c.radius - r).abs() < 1e-9))
+            .collect();
+        assert_eq!(walls.len(), 1, "the outer wall is one face");
+        let v = build::solid_volume(&res);
+        assert!((v - want_vol).abs() < 1e-9 * want_vol, "{v} vs {want_vol}");
+    }
+    // open bottom: the floor sits at the far end, the wall is still one face
+    let outer = build::cylinder_solid([0.0, 0.0, 10.0], 15.0, 20.0, [0.0, 0.0, 1.0]);
+    let inner = build::cylinder_solid([0.0, 0.0, 8.0], 13.0, 20.0, [0.0, 0.0, 1.0]);
+    let res = boolean("subtract", &outer, &inner).expect("builds");
+    assert_eq!(res.faces().len(), 5);
+    assert!((build::solid_volume(&res) - 4580.442088933918).abs() < 1e-8 * 4580.0);
 }
 
 /// W3 closed case: a fully-enclosed cylindrical void inside a cylinder is
