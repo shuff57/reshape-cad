@@ -5364,14 +5364,140 @@ mod tests {
         assert_eq!(f, 8);
     }
 
-    /// Three bevels at one corner would need the corner patch FreeCAD builds (5885.3333 on 10 faces); cutting the
-    /// three wedges gives 5886 on 9 faces, which is a different solid. It refuses, in a sentence.
+    /// Three SEPARATE bevels at one corner of a convex part (the script's own doc form: one bevel feature per
+    /// edge, each the previous one's target) are three successive wedge cuts. FreeCAD 26.3.0 RC1 run as three
+    /// separate PartDesign::Chamfer features (census dress-seq__*): box 30 x 20 x 10, corner (30, 0, 10), 5970.75
+    /// (d=1), 5886.000 (d=2), 5568 (d=4), all on 9 planar faces; exact by clipping. The one-pick corner patch
+    /// (5885.3333 on 10 faces) is NOT built: nothing in the doc says the three were picked together.
     #[test]
-    fn chamfer_three_edges_at_one_corner_refuses() {
-        let (v, _, refusals) = chamfer_chain(&[2.0, 2.0, 2.0], &["+z|+x", "+z|-y", "-y|+x"]);
-        assert!(refusals.contains_key("r3"), "refusals: {refusals:?}");
-        // the refused bevel is shown without it: the part as the first two left it
-        assert!((v - 5902.666666666667).abs() < 1e-6, "volume {v}");
+    fn three_separate_chamfers_at_a_box_corner_match_freecad_sequential() {
+        let orders: [[&str; 3]; 4] = [
+            ["+z|+x", "+z|-y", "-y|+x"],
+            ["-y|+x", "+z|-y", "+z|+x"],
+            ["+z|-y", "-y|+x", "+z|+x"],
+            ["-y|+x", "+z|+x", "+z|-y"],
+        ];
+        for (d, want) in [(1.0, 5970.75), (2.0, 5886.0), (4.0, 5568.0)] {
+            for order in &orders {
+                let (v, f, refusals) = chamfer_chain(&[d, d, d], order);
+                assert!(refusals.is_empty(), "d={d} {order:?} refusals: {refusals:?}");
+                assert!((v - want).abs() < 1e-6, "d={d} {order:?} volume {v} vs {want}");
+                assert_eq!(f, 9, "d={d} {order:?}");
+            }
+        }
+    }
+
+    /// Unequal sizes at one corner are still wedges (clipper: 6000 minus the three cuts, 9 planes).
+    #[test]
+    fn three_separate_unequal_chamfers_at_a_box_corner_are_order_independent() {
+        let (v1, f1, r1) = chamfer_chain(&[1.0, 2.0, 3.0], &["+z|+x", "+z|-y", "-y|+x"]);
+        let (v2, f2, r2) = chamfer_chain(&[3.0, 2.0, 1.0], &["-y|+x", "+z|-y", "+z|+x"]);
+        assert!(r1.is_empty() && r2.is_empty(), "refusals: {r1:?} {r2:?}");
+        assert_eq!((f1, f2), (9, 9));
+        assert!(v1.is_finite() && v1 > 5000.0 && v1 < 6000.0, "volume {v1}");
+        // each order cuts the same three half-spaces only when the sizes follow the same edges: same edge, same size
+        let (v3, _, r3) = chamfer_chain(&[3.0, 2.0, 1.0], &["-y|+x", "+z|-y", "+z|+x"]);
+        assert!(r3.is_empty() && (v3 - v2).abs() < 1e-12);
+        let (v4, _, r4) = chamfer_chain(&[1.0, 2.0, 3.0], &["+z|+x", "+z|-y", "-y|+x"]);
+        assert!(r4.is_empty() && (v4 - v1).abs() < 1e-12);
+    }
+
+    fn prism_chain(points: &[[f64; 2]], size: f64, edges: &[(&str, &str)]) -> (f64, usize, Map<String, Value>) {
+        let mut features = vec![
+            json!({ "id": "sk1", "kind": "sketch", "plane": "xy", "offset": 0, "points": points }),
+            json!({ "id": "e1", "kind": "extrude", "target": "sk1", "height": 10.0 }),
+        ];
+        for (k, (a, b)) in edges.iter().enumerate() {
+            features.push(json!({
+                "id": format!("r{}", k + 1), "kind": "fillet",
+                "target": if k == 0 { "e1".to_string() } else { format!("r{k}") },
+                "size": size, "style": "chamfer",
+                "edge": { "cause": "between", "feature": "e1", "kind": "edge", "of": [
+                    { "cause": "primitive", "feature": "e1", "kind": "face", "part": a },
+                    { "cause": "primitive", "feature": "e1", "kind": "face", "part": b } ] }
+            }));
+        }
+        let (hist, refusals) = build_doc(&json!({ "features": features }));
+        match hist.shapes.get(&format!("r{}", edges.len())) {
+            Some(s) => (build::solid_volume(s), s.faces().len(), refusals),
+            None => (f64::NAN, 0, refusals),
+        }
+    }
+
+    /// A plain 3-face corner on a pentagon, hexagon and right-triangle prism is no longer falsely refused. Values
+    /// are FreeCAD 26.3.0 RC1 with three separate chamfer features (census dress-seq__*), each equal to the
+    /// independent half-space clip.
+    #[test]
+    fn three_separate_chamfers_at_a_prism_corner_match_freecad_sequential() {
+        let pentagon = [[0.0, 0.0], [30.0, 0.0], [40.0, 15.0], [15.0, 30.0], [-10.0, 15.0]];
+        let hexagon = [[10.0, 0.0], [30.0, 0.0], [33.0, 17.0], [20.0, 24.0], [5.0, 20.0], [0.0, 8.0]];
+        let triangle = [[0.0, 0.0], [30.0, 0.0], [0.0, 20.0]];
+        let cases: [(&str, &[[f64; 2]], f64, [(&str, &str); 3], f64, usize); 8] = [
+            ("pentagon d1.5", &pentagon, 1.5, [("+z", "-y"), ("+z", "+x"), ("-y", "+x")], 9688.07144904, 10),
+            ("pentagon d3", &pentagon, 3.0, [("-y", "+x"), ("+z", "+x"), ("+z", "-y")], 9508.138759263, 10),
+            ("hexagon d2", &hexagon, 2.0, [("+z", "-y"), ("+z", "+x"), ("-y", "+x")], 5919.201422189, 11),
+            ("hexagon d3", &hexagon, 3.0, [("-y", "+x"), ("+z", "-y"), ("+z", "+x")], 5809.55345209, 11),
+            ("triangle right d2", &triangle, 2.0, [("+z", "-y"), ("+z", "-x"), ("-y", "-x")], 2888.888888889, 8),
+            ("triangle right d4", &triangle, 4.0, [("-y", "-x"), ("+z", "-x"), ("+z", "-y")], 2591.111111111, 8),
+            ("triangle acute d2", &triangle, 2.0, [("+z", "-y"), ("+z", "+y"), ("-y", "+y")], 2868.504933735, 8),
+            ("triangle acute d4", &triangle, 4.0, [("-y", "+y"), ("+z", "+y"), ("+z", "-y")], 2520.859587619, 8),
+        ];
+        for (name, pts, d, edges, want, faces) in cases {
+            let (v, f, refusals) = prism_chain(pts, d, &edges);
+            assert!(refusals.is_empty(), "{name} refusals: {refusals:?}");
+            assert!((v - want).abs() < 1e-5, "{name} volume {v} vs {want}");
+            assert_eq!(f, faces, "{name} faces");
+        }
+    }
+
+    /// A five-edge post of one size is the same solid in both orders (FreeCAD sequential 5812.0 and 5791.3333,
+    /// both on 11 planar faces; the clipper over all 120 permutations gives one value).
+    #[test]
+    fn five_edge_posts_are_order_independent_and_match_freecad_sequential() {
+        let post5a = ["+z|-y", "+z|+x", "+z|+y", "-y|+x", "+y|+x"];
+        let post5b = ["-y|+x", "+z|-y", "-z|-y", "+z|+x", "+z|-x"];
+        for (set, want) in [(post5a, 5812.0), (post5b, 5791.333333333333)] {
+            let mut rev = set;
+            rev.reverse();
+            for order in [set, rev] {
+                let (v, f, refusals) = chamfer_chain(&[2.0; 5], &order);
+                assert!(refusals.is_empty(), "{order:?} refusals: {refusals:?}");
+                assert!((v - want).abs() < 1e-6, "{order:?} volume {v} vs {want}");
+                assert_eq!(f, 11, "{order:?}");
+            }
+        }
+    }
+
+    /// The guard stays for a ROUND (a ball blend is not a wedge) and for a part that is not a convex flat-faced
+    /// solid, in the original sentence.
+    #[test]
+    fn corner_with_more_than_three_faces_still_refuses_for_a_round() {
+        let mut features = vec![json!({ "id": "b1", "kind": "box", "size": [30.0, 20.0, 10.0] })];
+        let edges = ["+z|+x", "+z|-y", "-y|+x"];
+        for (k, edge) in edges.iter().enumerate() {
+            features.push(json!({
+                "id": format!("r{}", k + 1), "kind": "fillet",
+                "target": if k == 0 { "b1".to_string() } else { format!("r{k}") },
+                "size": 2.0, "style": "fillet", "edge": between_edge(edge)
+            }));
+        }
+        let (_, refusals) = build_doc(&json!({ "features": features }));
+        let text = refusals.get("r3").and_then(|v| v.as_str()).unwrap_or_default().to_string();
+        assert!(text.contains("whose ends are plain flat faces square to it"), "refusal: {refusals:?}");
+        assert!(!refusals.contains_key("r1"), "refusals: {refusals:?}");
+    }
+
+    /// The lifted guard's condition: a convex flat-faced solid passes, an L-shaped one (a concave edge) does not,
+    /// so a non-convex part keeps the "end touches more than three faces" sentence.
+    #[test]
+    fn convex_planar_condition_for_the_corner_guard() {
+        let (hist, _) = build_doc(&json!({ "features": [ { "id": "b1", "kind": "box", "size": [30.0, 20.0, 10.0] } ] }));
+        assert!(is_convex_planar_solid(hist.shapes.get("b1").expect("box")));
+        let (hist, _) = build_doc(&json!({ "features": [
+            { "id": "sk1", "kind": "sketch", "plane": "xy", "offset": 0,
+              "points": [[0.0, 0.0], [30.0, 0.0], [30.0, 10.0], [10.0, 10.0], [10.0, 30.0], [0.0, 30.0]] },
+            { "id": "e1", "kind": "extrude", "target": "sk1", "height": 10.0 } ] }));
+        assert!(!is_convex_planar_solid(hist.shapes.get("e1").expect("L prism")));
     }
 
     /// A chamfer and then a ROUND on a neighbouring edge of the same box: the
@@ -9791,6 +9917,29 @@ fn fillet_end_kind(
     kind
 }
 
+/// A solid of ONE shell whose every face is flat and whose every vertex lies on or behind the plane of every face:
+/// a convex polyhedron. A chamfer's wedge is then exactly "clip the part by the plane d along both faces of the
+/// edge", whatever else meets at the edge's ends -- which is what lets the third bevel of a corner (a vertex that
+/// already carries the two earlier bevels) cut as the third separate chamfer, matching FreeCAD's sequential
+/// answer. The doc cannot tell one pick of three edges from three separate features (the script lowers both to
+/// one bevel feature per edge, in order), so the script's sequential meaning is what is built; no corner patch.
+fn is_convex_planar_solid(src: &TSolid) -> bool {
+    if src.shells.len() != 1 {
+        return false;
+    }
+    let verts: Vec<Vec3> = src.vertices().iter().map(|v| v.borrow().point).collect();
+    let scale_len = verts.iter().fold(1.0_f64, |m, p| m.max(len(*p)));
+    for face in src.faces() {
+        let fb = face.borrow();
+        let Surface::Plane(pl) = &fb.surface else { return false };
+        let n = if fb.forward { normalize(pl.n) } else { scale(normalize(pl.n), -1.0) };
+        if verts.iter().any(|p| dot(n, sub(*p, pl.origin)) > 1e-7 * scale_len) {
+            return false;
+        }
+    }
+    true
+}
+
 /// Whether the part is CONVEX at `endpoint`: every edge leaving the vertex lies behind the plane of every flat face
 /// that meets there (a curved face's own edges lie in it, so its plane adds nothing those faces do not). That is
 /// what lets a chamfer's wedge run on past an end whose third face is not square to the edge (a bevel, a round's
@@ -10382,7 +10531,7 @@ fn build_fillet(
  std::rc::Rc::ptr_eq(&e.a, endpoint) || std::rc::Rc::ptr_eq(&e.b, endpoint)
  }))
  }).count();
- if count > 3 {
+ if count > 3 && (round || !is_convex_planar_solid(src)) {
  return Err(FilletErr::VertexTooComplex);
  }
  }
