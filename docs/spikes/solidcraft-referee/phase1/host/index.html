@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>reSHape script on solidcraft (referee demo)</title>
+<style>
+  :root { --bg:#f6f7f9; --fg:#15181d; --mut:#5a6270; --card:#fff; --line:#d5d9e0; --ok:#0b7a3b; --bad:#b3261e; --acc:#1f5fd6; --code:#eef1f5; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#14171c; --fg:#e8eaee; --mut:#9aa3b2; --card:#1c2027; --line:#323844; --ok:#4cc27f; --bad:#ff7b72; --acc:#7aa7ff; --code:#252a33; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:14px/1.45 system-ui, sans-serif; }
+  header { padding:10px 16px; border-bottom:1px solid var(--line); background:var(--card); }
+  header b { font-size:15px; } header span { color:var(--mut); }
+  main { display:grid; grid-template-columns:minmax(380px, 44%) 1fr; gap:12px; padding:12px 16px; height:calc(100vh - 52px); }
+  @media (max-width: 900px) { main { grid-template-columns:1fr; height:auto; } iframe#sc { height:70vh; } }
+  .col { display:flex; flex-direction:column; gap:10px; min-height:0; overflow:auto; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:10px 12px; }
+  h2 { margin:0 0 6px; font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--mut); }
+  textarea { width:100%; height:110px; font:13px/1.4 ui-monospace, Menlo, monospace; background:var(--code); color:var(--fg); border:1px solid var(--line); border-radius:6px; padding:8px; resize:vertical; }
+  button { font:inherit; padding:6px 12px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--fg); cursor:pointer; }
+  button.run { background:var(--acc); color:#fff; border-color:var(--acc); }
+  button:focus-visible, textarea:focus-visible { outline:2px solid var(--acc); outline-offset:2px; }
+  .row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  pre { margin:0; background:var(--code); border-radius:6px; padding:8px; font:12px/1.4 ui-monospace, Menlo, monospace; overflow:auto; max-height:210px; white-space:pre-wrap; word-break:break-word; }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  td, th { text-align:left; padding:3px 6px; border-bottom:1px solid var(--line); vertical-align:top; }
+  .built { color:var(--ok); font-weight:600; } .refused { color:var(--bad); font-weight:600; } .noop { color:var(--mut); }
+  iframe#sc { width:100%; height:100%; min-height:420px; border:1px solid var(--line); border-radius:8px; background:#000; }
+  .scwrap { display:flex; flex-direction:column; min-height:0; gap:6px; } .scwrap iframe { flex:1; }
+  #status { color:var(--mut); }
+  .kv { display:grid; grid-template-columns:auto 1fr; gap:2px 12px; font-size:13px; } .kv dt { color:var(--mut); } .kv dd { margin:0; font-variant-numeric:tabular-nums; }
+</style>
+</head>
+<body>
+<header><b>reSHape script on solidcraft</b> <span>- referee/demo spike, not a product, not an engine. Geometry comes from solidcraft (truck, wasm), not brep-rs.</span></header>
+<main>
+  <div class="col">
+    <div class="card">
+      <h2>reSHape script (evaluated only in a sandboxed iframe)</h2>
+      <textarea id="src" spellcheck="false" aria-label="reSHape script"></textarea>
+      <div class="row" style="margin-top:8px">
+        <button class="run" id="run">Run</button>
+        <button id="ex-ok">Example: box + post + hole</button>
+        <button id="ex-ref">Example: refusals</button>
+        <span id="status" role="status">starting...</span>
+      </div>
+    </div>
+    <div class="card"><h2>Features: what solidcraft built or refused</h2><div id="features">Not run yet.</div></div>
+    <div class="card"><h2>Bridge result</h2><dl class="kv" id="result"><dt>-</dt><dd>Not run yet.</dd></dl></div>
+    <div class="card"><h2>Translated solidcraft commands</h2><pre id="cmds">(none)</pre></div>
+    <div class="card"><h2>ModelDoc from the sandbox (after solveDoc)</h2><pre id="doc">(none)</pre></div>
+  </div>
+  <div class="scwrap">
+    <div class="row"><span id="scurl" style="color:var(--mut)"></span></div>
+    <iframe id="sc" title="solidcraft (embedded, bridge build)" allow="fullscreen"></iframe>
+  </div>
+</main>
+<script type="module" src="app.js"></script>
+</body>
+</html>

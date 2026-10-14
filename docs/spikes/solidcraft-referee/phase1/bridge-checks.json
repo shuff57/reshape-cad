@@ -1,0 +1,40 @@
+{
+ "preVol": 13717.303625887836,
+ "preBodies": [
+  "b_box1",
+  "b_pull1"
+ ],
+ "rejected_file_save_as": {
+  "ok": false,
+  "rejected": "Command 2 (`file.save_as`) is not on the bridge allowlist, so the whole request was refused and nothing ran."
+ },
+ "rejected_export": {
+  "ok": false,
+  "rejected": "Command 1 (`export.step`) is not on the bridge allowlist, so the whole request was refused and nothing ran."
+ },
+ "midfail": {
+  "ok": false,
+  "failed": {
+   "command": "solid.fillet",
+   "error": "invalid parameters for `solid.fillet`: no edge at [999, 999, 999]: the nearest edge is 1688.594 mm away",
+   "index": 1
+  },
+  "restored": true,
+  "volReturned": 13717.303625887836
+ },
+ "postVol": 13717.303625887836,
+ "postBodies": [
+  "b_box1",
+  "b_pull1"
+ ],
+ "volumeEqualsPre": true,
+ "positiveControl_validAppend": {
+  "ok": true,
+  "vol": 14446.303625887836,
+  "bodies": [
+   "b_box1",
+   "b_pull1",
+   "zz"
+  ]
+ }
+}

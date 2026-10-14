@@ -1,0 +1,213 @@
+[
+ {
+  "script": "ok",
+  "body": "b_box1",
+  "feature": "hole1",
+  "curved": true,
+  "occt": {
+   "volume": 11717.256661176918,
+   "faces": 7,
+   "bbox": [
+    -20,
+    -15,
+    -5,
+    20,
+    15,
+    5
+   ]
+  },
+  "brep": {
+   "volume": 11717.256661176916,
+   "faces": 7
+  },
+  "solidcraft_browser": {
+   "volume": 11717.303625887836,
+   "faces": 7,
+   "bbox": [
+    -20,
+    -15,
+    -5.000000000000003,
+    20,
+    15,
+    5.000000000000003
+   ]
+  },
+  "dVol_vs_occt": 0.000004008166098646861,
+  "dVol_vs_brep": 0.000004008166098802102,
+  "dBbox_vs_occt": 5.329070518200751e-16,
+  "tol": 0.0003,
+  "pass": true
+ },
+ {
+  "script": "ok",
+  "body": "b_pull1",
+  "feature": "pull1",
+  "curved": false,
+  "occt": {
+   "volume": 1999.9999999999995,
+   "faces": 6,
+   "bbox": [
+    -5,
+    -5,
+    5,
+    5,
+    5,
+    25
+   ]
+  },
+  "brep": {
+   "volume": 1999.9999999999998,
+   "faces": 6
+  },
+  "solidcraft_browser": {
+   "volume": 2000,
+   "faces": 6,
+   "bbox": [
+    -5,
+    -5,
+    5,
+    5,
+    5,
+    25
+   ]
+  },
+  "dVol_vs_occt": 2.273736754432321e-16,
+  "dVol_vs_brep": 1.1368683772161603e-16,
+  "dBbox_vs_occt": 0,
+  "tol": 1e-9,
+  "pass": true
+ },
+ {
+  "script": "ok",
+  "body": "(TOTAL)",
+  "occt_total": 13717.256661176918,
+  "solidcraft_browser_total": 13717.303625887836,
+  "dVol": 0.00000342376847488716,
+  "pass": true
+ },
+ {
+  "script": "refuse",
+  "body": "b_box1",
+  "feature": "box1",
+  "curved": false,
+  "occt": {
+   "volume": 11999.999999999998,
+   "faces": 6,
+   "bbox": [
+    -20,
+    -15,
+    -5,
+    20,
+    15,
+    5
+   ]
+  },
+  "brep": {
+   "volume": 12000,
+   "faces": 6
+  },
+  "solidcraft_browser": {
+   "volume": 12000,
+   "faces": 6,
+   "bbox": [
+    -20,
+    -15,
+    -5,
+    20,
+    15,
+    5
+   ]
+  },
+  "dVol_vs_occt": 1.5158245029548806e-16,
+  "dVol_vs_brep": 0,
+  "dBbox_vs_occt": 0,
+  "tol": 1e-9,
+  "pass": true
+ },
+ {
+  "script": "refuse",
+  "body": "b_pull1",
+  "feature": "pull1",
+  "curved": false,
+  "occt": {
+   "volume": 1999.9999999999995,
+   "faces": 6,
+   "bbox": [
+    -5,
+    -5,
+    5,
+    5,
+    5,
+    25
+   ]
+  },
+  "brep": {
+   "volume": 1999.9999999999998,
+   "faces": 6
+  },
+  "solidcraft_browser": {
+   "volume": 2000,
+   "faces": 6,
+   "bbox": [
+    -5,
+    -5,
+    5,
+    5,
+    5,
+    25
+   ]
+  },
+  "dVol_vs_occt": 2.273736754432321e-16,
+  "dVol_vs_brep": 1.1368683772161603e-16,
+  "dBbox_vs_occt": 0,
+  "tol": 1e-9,
+  "pass": true
+ },
+ {
+  "script": "refuse",
+  "body": "b_box2",
+  "feature": "box2",
+  "curved": false,
+  "occt": {
+   "volume": 999.9999999999998,
+   "faces": 6,
+   "bbox": [
+    25,
+    -5,
+    -5,
+    35,
+    5,
+    5
+   ]
+  },
+  "brep": {
+   "volume": 999.9999999999999,
+   "faces": 6
+  },
+  "solidcraft_browser": {
+   "volume": 1000,
+   "faces": 6,
+   "bbox": [
+    25,
+    -5,
+    -5,
+    35,
+    5,
+    5
+   ]
+  },
+  "dVol_vs_occt": 2.273736754432321e-16,
+  "dVol_vs_brep": 1.1368683772161603e-16,
+  "dBbox_vs_occt": 0,
+  "tol": 1e-9,
+  "pass": true
+ },
+ {
+  "script": "refuse",
+  "body": "(TOTAL)",
+  "occt_total": 14999.999999999998,
+  "solidcraft_browser_total": 15000,
+  "dVol": 1.2126596023639044e-16,
+  "pass": true
+ }
+]
