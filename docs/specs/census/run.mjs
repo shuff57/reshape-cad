@@ -76,12 +76,18 @@ function meshMoments(pos, idx) {
 }
 // `patch` (a case's `docPatch`) is merged into the LAST feature of the doc the script lowered to, for a field the script has no
 // word for yet (a chamfer's size2 / angle / flip, slice A3). It exercises the kernel's reading of the doc, not the script layer.
-function measure(src, patch) {
+// `at` (a case's `docPatchAt`) names the feature to patch when it is not the last one (a pad joined to its plate, whose
+// combine is last).
+function measure(src, patch, at) {
   let run;
   try { run = runScript(src); } catch (e) { return { outcome: 'error', refusal: String(e && e.stack || e).split('\n').slice(0, 2).join(' | ') }; }
   if (run.errors?.length) return { outcome: 'script-error', refusal: run.errors.map((e) => e.message ?? String(e)).join(' | ') };
   const doc = run.doc, o = {};
-  if (patch) Object.assign(doc.features.at(-1), patch);
+  if (patch) {
+    const target = at ? doc.features.find((f) => f.id === at) : doc.features.at(-1);
+    if (!target) return { outcome: 'error', refusal: `docPatchAt names no feature ${at}` };
+    Object.assign(target, patch);
+  }
   try {
     const built = adapter.build(doc);
     const refusals = Object.fromEntries(built.refusals ?? []);
@@ -113,7 +119,7 @@ for (const c of list) {
     r.status = 'NO-CONSTRUCT'; r.note = c.noConstruct;
     results.push(r); continue;
   }
-  const ours = measure(c.ours, c.docPatch);
+  const ours = measure(c.ours, c.docPatch, c.docPatchAt);
   r.oursOutcome = ours.outcome;
   if (ours.outcome === 'built') r.ours = { volume: ours.volume, faces: ours.faces, bbox: ours.bbox };
   if (ours.outcome === 'script-error') { r.status = 'SCRIPT-ERROR'; r.sentence = ours.refusal; results.push(r); continue; }

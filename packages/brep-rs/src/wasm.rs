@@ -622,6 +622,346 @@ fn direction_options(f: &Value) -> (bool, bool, f64) {
     (flag("reversed"), mid, if mid || !(l2 > 0.0) { 0.0 } else { l2 })
 }
 
+/// What a pad's or pocket's "up to" option asks for (slice C3): `upTo: "first"` stops at the nearest flat face of the
+/// part (named by `into`) that the profile meets ahead of it; `upTo: "face"` stops at the plane of the face `upToFace`
+/// names. `offset` moves the end plane past that face, in the way the feature travels. An option that is present but
+/// not one of these is refused, never read as absent, so it cannot build the plain pad in its place.
+struct UpToAsk {
+    face: bool,
+    offset: f64,
+}
+
+fn up_to_options(f: &Value, kind: &str) -> Result<Option<UpToAsk>, String> {
+    let Some(obj) = f.as_object() else { return Ok(None) };
+    for (k, v) in obj {
+        let lk = k.to_ascii_lowercase();
+        if (lk.contains("upto") || lk.contains("up_to")) && k != "upTo" && k != "upToFace" {
+            return Err(format!(
+                "the option '{k}' is not one a {kind} takes -- ask for it with upTo: \"first\" or upTo: \"face\" (and upToFace to name the face)"
+            ));
+        }
+        if lk == "type" || lk == "endtype" || lk == "mode" {
+            if let Some(s) = v.as_str() {
+                let ls = s.to_ascii_lowercase();
+                if ls.contains("upto") || ls.contains("first") || ls.contains("face") || ls.contains("through") {
+                    return Err(format!(
+                        "the {kind}'s '{k}' option is not one brep-rs reads -- ask for an up-to {kind} with upTo: \"first\" or upTo: \"face\""
+                    ));
+                }
+            }
+        }
+    }
+    let up = match f.get("upTo") {
+        None | Some(Value::Null) => None,
+        Some(Value::String(s)) if s == "first" => Some(false),
+        Some(Value::String(s)) if s == "face" => Some(true),
+        Some(other) => {
+            return Err(format!(
+                "the {kind}'s upTo {other} is not one brep-rs builds -- use \"first\" (the first face the profile meets) or \"face\" (with upToFace naming a flat face)"
+            ))
+        }
+    };
+    let has_face = !matches!(f.get("upToFace"), None | Some(Value::Null));
+    let has_offset = !matches!(f.get("offset"), None | Some(Value::Null));
+    let Some(face) = up else {
+        if has_face {
+            return Err(format!("the {kind} names an upToFace but upTo is not \"face\", so it would be a plain {kind} -- set upTo: \"face\""));
+        }
+        if has_offset {
+            return Err(format!("the {kind}'s offset only means something with upTo: \"first\" or \"face\", so it would be ignored"));
+        }
+        return Ok(None);
+    };
+    if !face && has_face {
+        return Err(format!("the {kind} asks to stop at the first face but also names an upToFace -- say which one it is"));
+    }
+    let offset = match f.get("offset") {
+        None | Some(Value::Null) => 0.0,
+        Some(o) => match o.as_f64() {
+            Some(d) if d.is_finite() => d,
+            _ => return Err(format!("the {kind}'s offset is not a number")),
+        },
+    };
+    Ok(Some(UpToAsk { face, offset }))
+}
+
+fn overhang_sentence(kind: &str) -> String {
+    format!(
+        "the {kind}'s profile reaches past the edge of the face it is to stop at, and brep-rs builds an up-to {kind} only when the whole profile sits over that face -- move or shrink the sketch so it is inside the face"
+    )
+}
+
+/// How far a pad or pocket travels to reach what `ask` names, and whether it travels AGAINST `travel` to get there.
+/// `travel` is the unit vector the feature would run along with no up-to option; `wf` is the sketch's sweep axis
+/// (the way a positive prism height goes). Only a flat face square to the sweep is a stop: a slanted or curved one
+/// is refused in a sentence, as is a profile with no face ahead of it.
+#[allow(clippy::too_many_arguments)]
+fn up_to_reach(
+    ask: &UpToAsk,
+    f: &Value,
+    hist: &History,
+    base: Option<&TSolid>,
+    sk: &Value,
+    travel: Vec3,
+    wf: Vec3,
+    kind: &str,
+) -> Result<(f64, bool), String> {
+    const SQUARE: f64 = 1.0 - 1e-9;
+    let o = sketch_frame(sk).origin;
+    let prism_len = |l: f64, back: bool| -> Option<TSolid> {
+        let h = if (dot(travel, wf) >= 0.0) != back { l } else { -l };
+        extrude_prism(sk, "", h).map(|(s, _)| s)
+    };
+    let (dist, flip) = if ask.face {
+        let Some(name) = f.get("upToFace").filter(|v| !v.is_null()) else {
+            return Err(format!("the {kind} stops at a face but names none -- give upToFace the face to stop at"));
+        };
+        let Some(face) = resolve_face(hist, name) else {
+            return Err(format!("the {kind}'s upToFace could not be found"));
+        };
+        let surf = face.borrow().surface.clone();
+        let Surface::Plane(p) = surf else {
+            return Err(format!(
+                "a {kind} up to a curved face is not built yet -- brep-rs stops at a flat face square to the {kind}'s direction only"
+            ));
+        };
+        let nrm = normalize(p.n);
+        if dot(nrm, travel).abs() < SQUARE {
+            return Err(format!(
+                "a {kind} up to a slanted face is not built yet -- brep-rs stops at a flat face square to the {kind}'s direction only"
+            ));
+        }
+        let dt = dot(sub(p.origin, o), travel);
+        if dt.abs() < 1e-7 {
+            return Err(format!("the face the {kind} is to stop at lies in the sketch's own plane, so there is no length to {kind}"));
+        }
+        // The plane is what matters, not the face's extent (FreeCAD builds a post that stands clear of the face as a
+        // second piece). A profile wholly off the face would be that separate piece, so it is refused.
+        let mut fb = crate::math::Aabb::empty();
+        {
+            let fc = face.borrow();
+            for w in &fc.boundary {
+                for u in &w.borrow().edges {
+                    let cb = u.edge.borrow().curve.aabb();
+                    if !cb.is_empty() {
+                        fb.expand(cb.lo);
+                        fb.expand(cb.hi);
+                    }
+                }
+            }
+        }
+        if !fb.is_empty() {
+            for i in 0..3 {
+                fb.lo[i] -= 1e-6;
+                fb.hi[i] += 1e-6;
+            }
+            if let Some(t) = prism_len(dt.abs(), dt < 0.0) {
+                if !build::aabbs_overlap(&build::solid_aabb(&t), &fb) {
+                    return Err(format!(
+                        "the {kind}'s sketch is not over the face it is to stop at, so it would stand as a separate piece beside the part"
+                    ));
+                }
+            }
+        }
+        // The whole profile must sit over the face (boundary sampled, each point tested a hair inward).
+        if let Some(t) = prism_len(dt.abs(), dt < 0.0) {
+            let fr = sketch_frame(sk);
+            let dirs: Vec<Vec3> = {
+                let mut v = Vec::new();
+                for k in 0..8 {
+                    let a = std::f64::consts::PI * 0.25 * (k as f64);
+                    v.push(add(scale(fr.u, a.cos()), scale(fr.v, a.sin())));
+                }
+                v
+            };
+            let fcb = face.borrow();
+            let mut over = true;
+            'cap: for cf in t.faces() {
+                let cb = cf.borrow();
+                let Surface::Plane(cp) = &cb.surface else { continue };
+                if dot(normalize(cp.n), travel).abs() < SQUARE || (dot(sub(cp.origin, o), travel) - dt).abs() > 1e-6 {
+                    continue;
+                }
+                for w in &cb.boundary {
+                    for u in &w.borrow().edges {
+                        let eb = u.edge.borrow();
+                        let steps = 24;
+                        for k in 0..=steps {
+                            let q = eb.curve.point_at((k as f64) / (steps as f64));
+                            let mut ok = ops::plane_face_contains(&p, &fcb, q);
+                            if !ok {
+                                ok = dirs.iter().any(|d| ops::plane_face_contains(&p, &fcb, add(q, scale(*d, 1e-9))));
+                            }
+                            if !ok {
+                                over = false;
+                                break 'cap;
+                            }
+                        }
+                    }
+                }
+            }
+            if !over {
+                return Err(overhang_sentence(kind));
+            }
+        }
+        (dt.abs(), dt < 0.0)
+    } else {
+        let Some(base) = base else {
+            return Err(format!("a {kind} up to the first face needs `into`, the part whose faces it stops at"));
+        };
+        let none_ahead = || {
+            format!("there is no face ahead of the {kind}'s sketch in this direction for it to stop at (SketchBased: no faces found in this direction)")
+        };
+        let bb = build::solid_aabb(base);
+        let mut far = 1.0f64;
+        for cx in [bb.lo[0], bb.hi[0]] {
+            for cy in [bb.lo[1], bb.hi[1]] {
+                for cz in [bb.lo[2], bb.hi[2]] {
+                    far = far.max(len(sub([cx, cy, cz], o)));
+                }
+            }
+        }
+        let Some(probe) = prism_len(2.0 * far + 1.0, false) else {
+            return Err(format!("the {kind}'s sketch has no usable outline to look ahead from"));
+        };
+        if !build::aabbs_overlap(&build::solid_aabb(&probe), &bb) {
+            return Err(none_ahead());
+        }
+        let Some(hit) = ops::boolean("intersect", base, &probe) else {
+            return Err(format!(
+                "brep-rs could not work out which face the {kind} meets first (the sketch grazes an edge or a face of the part) -- move the sketch off it"
+            ));
+        };
+        if build::solid_volume(&hit).abs() < 1e-9 {
+            return Err(none_ahead());
+        }
+        let mut best: Option<f64> = None;
+        let mut oblique = false;
+        for fc in hit.faces() {
+            match &fc.borrow().surface {
+                Surface::Plane(p) => {
+                    let c = dot(normalize(p.n), travel).abs();
+                    if c >= SQUARE {
+                        let d = dot(sub(p.origin, o), travel);
+                        if d > 1e-7 {
+                            best = Some(best.map_or(d, |b: f64| b.min(d)));
+                        }
+                    } else if c > 1e-9 {
+                        oblique = true;
+                    }
+                }
+                Surface::Cylinder(c) => {
+                    if len(cross(normalize(c.axis), travel)) > 1e-9 {
+                        oblique = true;
+                    }
+                }
+                Surface::EllipticCylinder(c) => {
+                    if len(cross(normalize(c.axis), travel)) > 1e-9 {
+                        oblique = true;
+                    }
+                }
+                _ => oblique = true,
+            }
+        }
+        if oblique {
+            return Err(format!(
+                "the first face the {kind} meets is slanted or curved, and brep-rs stops at a flat face square to the {kind}'s direction only"
+            ));
+        }
+        let Some(d) = best else { return Err(none_ahead()) };
+        // Overhang: FreeCAD builds the whole profile to the plane of the face it meets, merging coplanar walls where
+        // the profile crosses the face's edge into fewer faces than brep-rs keeps. Only a profile wholly over the
+        // stopping face is built; any overhang (also the centre-on-the-edge cases FreeCAD builds or fails on a hair)
+        // is refused, in a sentence.
+        {
+            let (mut cap, mut covered) = (0.0f64, 0.0f64);
+            for fc in probe.faces() {
+                let fb = fc.borrow();
+                if let Surface::Plane(p) = &fb.surface {
+                    if dot(normalize(p.n), travel).abs() >= SQUARE && dot(sub(p.origin, o), travel).abs() < 1e-6 {
+                        cap += build::face_area_centroid(&fb).0.abs();
+                    }
+                }
+            }
+            for fc in hit.faces() {
+                let fb = fc.borrow();
+                if let Surface::Plane(p) = &fb.surface {
+                    if dot(normalize(p.n), travel).abs() >= SQUARE && (dot(sub(p.origin, o), travel) - d).abs() < 1e-6 {
+                        covered += build::face_area_centroid(&fb).0.abs();
+                    }
+                }
+            }
+            if cap > 0.0 && (cap - covered).abs() > 1e-9 * cap {
+                return Err(overhang_sentence(kind));
+            }
+        }
+        // FreeCAD's up-to-first fails (the feature goes Invalid) when the centre of mass of the profile lies off
+        // the face it would stop at, even if the profile overlaps it. Building the clipped solid there would hand
+        // a student a part FreeCAD refuses, so it is refused. On the edge still builds.
+        let mut cen: Option<Vec3> = None;
+        for fc in probe.faces() {
+            let fb = fc.borrow();
+            if let Surface::Plane(p) = &fb.surface {
+                if dot(normalize(p.n), travel).abs() >= SQUARE {
+                    cen = Some(build::face_area_centroid(&fb).1);
+                    break;
+                }
+            }
+        }
+        if let Some(c) = cen {
+            let q = add(c, scale(travel, d - dot(sub(c, o), travel)));
+            let fr = sketch_frame(sk);
+            let eps = 1e-9;
+            let mut cands = vec![q];
+            for ax in [fr.u, fr.v] {
+                cands.push(add(q, scale(ax, eps)));
+                cands.push(add(q, scale(ax, -eps)));
+            }
+            let mut on_face = false;
+            'faces: for fc in base.faces() {
+                let fb = fc.borrow();
+                if let Surface::Plane(p) = &fb.surface {
+                    if dot(normalize(p.n), travel).abs() >= SQUARE
+                        && (dot(sub(p.origin, o), travel) - d).abs() < 1e-6
+                    {
+                        for qq in &cands {
+                            if ops::plane_face_contains(p, &fb, *qq) {
+                                on_face = true;
+                                break 'faces;
+                            }
+                        }
+                    }
+                }
+            }
+            if !on_face {
+                return Err(format!(
+                    "FreeCAD cannot find the first face when the centre of the {kind}'s profile is off it, so brep-rs does not build it -- move the sketch so its centre is over the face, or stop at a named face"
+                ));
+            }
+        }
+        (d, false)
+    };
+    let total = dist + ask.offset;
+    if !(total > 1e-7) {
+        return Err(format!("the offset leaves the {kind} no length: it would end at or behind its own sketch"));
+    }
+    Ok((total, flip))
+}
+
+/// Symmetric revolve (slice C3): half the angle each side of the sketch plane. `symmetric` (or `midplane`) must be a
+/// bool; anything else is refused rather than read as absent.
+fn symmetric_option(f: &Value, kind: &str) -> Result<bool, String> {
+    let mut on = false;
+    for k in ["symmetric", "midplane"] {
+        match f.get(k) {
+            None | Some(Value::Null) => {}
+            Some(Value::Bool(b)) => on |= *b,
+            Some(other) => return Err(format!("the {kind}'s {k} {other} is not true or false")),
+        }
+    }
+    Ok(on)
+}
+
 /// A sketch whose shapes make several pieces (side by side, or an island inside a hole): one prism per region,
 /// joined into one body that is several solids. The pieces stand clear of each other (the regions reader refuses
 /// a touch), so the join is a plain union and its volume must be the sum -- anything else is refused rather than
@@ -1140,6 +1480,21 @@ fn revolve_tool_caps(
     angle: f64,
     allow_arcs: bool,
 ) -> Result<(TSolid, Vec<Option<usize>>, Vec<(String, usize)>, usize), String> {
+    // The one-face cap merge of a half turn goes through the turned-profile builder; where that builder cannot take
+    // the outline, the plain builder's solid (two coplanar caps, the same volume) stands, never a refusal the plain
+    // builder would not have given.
+    match revolve_tool_caps_in(sk, angle, allow_arcs, true) {
+        Ok(t) => Ok(t),
+        Err(_) => revolve_tool_caps_in(sk, angle, allow_arcs, false),
+    }
+}
+
+fn revolve_tool_caps_in(
+    sk: &Value,
+    angle: f64,
+    allow_arcs: bool,
+    merge_caps: bool,
+) -> Result<(TSolid, Vec<Option<usize>>, Vec<(String, usize)>, usize), String> {
     if !angle.is_finite() || angle.abs() < 1e-9 {
         return Err("a spin needs an angle other than 0".to_string());
     }
@@ -1186,7 +1541,18 @@ fn revolve_tool_caps(
             })
             .collect();
         let spun: Vec<[f64; 2]> = if far_side { points.iter().map(|p| [-p[0], p[1]]).collect() } else { points };
-        match build::revolve_profile(&spun, n, u_axis, angle) {
+        // A half turn of a profile with exactly one side on the axis leaves its two flat caps in ONE plane, which
+        // FreeCAD counts as one face. `revolve_profile` keeps them apart, so that case goes to the turned-profile
+        // builder below, which merges them (`turned::partial_caps_merge`). A groove keeps the plain builder: its tool is
+        // cut from a part, and that builder is the one the groove gates measured.
+        let axis_sides = (0..spun.len())
+            .filter(|&i| {
+                let (p, q) = (spun[i], spun[(i + 1) % spun.len()]);
+                p[0].abs() < 1e-9 && q[0].abs() < 1e-9 && (q[1] - p[1]).abs() > 1e-9
+            })
+            .count();
+        let merged_caps = merge_caps && allow_arcs && (angle - 180.0).abs() < 1e-9 && axis_sides == 1;
+        match if merged_caps { None } else { build::revolve_profile(&spun, n, u_axis, angle) } {
             Some((mut solid, map)) => {
                 if far_side {
                     solid = build::transform_solid(&solid, &crate::math::Transform::rotation(n, std::f64::consts::PI));
@@ -1880,14 +2246,21 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 }
                 let fr = sketch_frame(sk);
                 let dir = fr.dir;
-                if height == 0.0 {
+                let up_ask = match up_to_options(f, "pad") {
+                    Ok(a) => a,
+                    Err(why) => {
+                        refusals.insert(id.clone(), json!(format!("extrude {id}: {why} -- {id} is shown without it.")));
+                        continue;
+                    }
+                };
+                if up_ask.is_none() && height == 0.0 {
                     refusals.insert(id.clone(), json!(format!("extrude {id}: the pull height is 0, so there is nothing to pull -- {id} is shown without it.")));
                     continue;
                 }
                 // Direction options (Reversed, Symmetric to plane, Two sides): the
                 // profile is re-seated behind the sketch plane and swept the whole
                 // span, so the one forward sweep below builds all three.
-                let (reversed, midplane, length2) = direction_options(f);
+                let (mut reversed, midplane, length2) = direction_options(f);
                 let (taper, dirv, along) = match slant_options(f) {
                     Ok(o) => o,
                     Err(why) => {
@@ -1895,6 +2268,36 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                         continue;
                     }
                 };
+                let mut height = height;
+                if let Some(ask) = &up_ask {
+                    if midplane || length2 != 0.0 || taper != 0.0 || dirv.is_some() {
+                        refusals.insert(id.clone(), json!(format!("extrude {id}: a pad up to a face takes no symmetric, two-sided, tapered or angled option yet -- {id} is shown without it.")));
+                        continue;
+                    }
+                    let wf = scale(fr.n, dir);
+                    let travel = if reversed && !ask.face { scale(wf, -1.0) } else { wf };
+                    let base = f
+                        .get("into")
+                        .and_then(|t| t.as_str())
+                        .and_then(|n| hist.shapes.get(hist.head_of(n)).cloned());
+                    if !ask.face && f.get("into").and_then(|t| t.as_str()).is_some() && base.is_none() {
+                        refusals.insert(id.clone(), json!(format!("extrude {id} cannot find solid {}", f.get("into").and_then(|t| t.as_str()).unwrap_or(""))));
+                        continue;
+                    }
+                    match up_to_reach(ask, f, &hist, base.as_ref(), sk, travel, wf, "pad") {
+                        Ok((d, flip)) => {
+                            height = d;
+                            // Up to a face goes TOWARD the face whatever Reversed says (FreeCAD does the same).
+                            if ask.face {
+                                reversed = flip;
+                            }
+                        }
+                        Err(why) => {
+                            refusals.insert(id.clone(), json!(format!("extrude {id}: {why} -- {id} is shown without it.")));
+                            continue;
+                        }
+                    }
+                }
                 // A direction along the sketch normal is the plain prism (which
                 // takes arcs and holes), flipped like Reversed when it points back.
                 let (dirv, flip) = split_parallel_direction(dirv, scale(fr.n, dir));
@@ -1993,8 +2396,16 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 // = into the material); Reversed flips it, Through all replaces it by
                 // a length that clears the whole part, and Symmetric / Two sides
                 // re-seat the profile behind the plane and cut the whole span.
-                let (reversed, midplane, length2) = direction_options(f);
+                let (mut reversed, midplane, length2) = direction_options(f);
                 let through = f.get("through").and_then(|b| b.as_bool()).unwrap_or(false);
+                let up_ask = match up_to_options(f, "pocket") {
+                    Ok(a) => a,
+                    Err(why) => {
+                        refusals.insert(id.clone(), json!(format!("pocket {id}: {why} -- {id} is shown without it.")));
+                        continue;
+                    }
+                };
+                let mut depth = depth;
                 let (taper, dirv, along) = match slant_options(f) {
                     Ok(o) => o,
                     Err(why) => {
@@ -2008,6 +2419,31 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 // points out of the material.
                 let fr_plain = sketch_frame(sk_plain);
                 let (dirv, flip) = split_parallel_direction(dirv.map(|d| scale(d, -1.0)), scale(fr_plain.n, fr_plain.dir));
+                if let Some(ask) = &up_ask {
+                    if midplane || length2 != 0.0 || taper != 0.0 || dirv.is_some() || through {
+                        refusals.insert(id.clone(), json!(format!("pocket {id}: a pocket up to a face takes no through, symmetric, two-sided, tapered or angled option yet -- {id} is shown without it.")));
+                        continue;
+                    }
+                    if ask.offset < 0.0 {
+                        refusals.insert(id.clone(), json!(format!("pocket {id}: a negative offset on a pocket up to a face is not built yet (FreeCAD's answer for it is not measured) -- {id} is shown without it.")));
+                        continue;
+                    }
+                    let wf = scale(fr_plain.n, fr_plain.dir);
+                    // A pocket cuts against the sketch normal (pad up, pocket down); Reversed turns it round.
+                    let travel = if reversed && !ask.face { wf } else { scale(wf, -1.0) };
+                    match up_to_reach(ask, f, &hist, Some(&base), sk_plain, travel, wf, "pocket") {
+                        Ok((d, back)) => {
+                            depth = d;
+                            if ask.face {
+                                reversed = back;
+                            }
+                        }
+                        Err(why) => {
+                            refusals.insert(id.clone(), json!(format!("pocket {id}: {why} -- {id} is shown without it.")));
+                            continue;
+                        }
+                    }
+                }
                 // The sign of `depth` is a direction too, as it is for a pad's
                 // height and in the OCCT referee (`h = -f.depth * a.dir`): a
                 // negative depth cuts out of the face, not into it.
@@ -2574,13 +3010,31 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 // this branch supplies the naming history each needs, and the
                 // caps' own face indices for a partial.
                 let closed = angle.abs() >= 360.0 - 1e-9;
-                let (solid, face_map, roles, n_caps) = match revolve_tool_caps(sk, angle, true) {
+                let symmetric = match symmetric_option(f, "revolve") {
+                    Ok(b) => b,
+                    Err(why) => {
+                        refusals.insert(id.clone(), json!(format!("revolve {id}: {why} -- {id} is shown without it.")));
+                        continue;
+                    }
+                };
+                let (mut solid, face_map, roles, n_caps) = match revolve_tool_caps(sk, angle, true) {
                     Ok(t) => t,
                     Err(why) => {
                         refusals.insert(id.clone(), json!(format!("revolve {id}: {why} -- {id} is shown without it.")));
                         continue;
                     }
                 };
+                // Symmetric: half the angle each side of the sketch plane. The spin is the one-sided part turned
+                // back by half its own angle about the axis (a whole turn is already symmetric). A positive spin
+                // runs [0, a] and a negative one [-a, 0], so each is moved by half the angle toward the sketch
+                // plane: both end up on [-a/2, +a/2], which is where FreeCAD centres either sign (measured).
+                if symmetric && !closed {
+                    let fr = sketch_frame(sk);
+                    let half = angle.abs().min(360.0) / 2.0;
+                    let back = if angle < 0.0 { half } else { -half };
+                    let t = crate::math::Transform::rotation(fr.n, back.to_radians()).about(fr.origin);
+                    solid = build::transform_solid(&solid, &t);
+                }
                 // Face indices for the naming history: the walls come back in
                 // `face_map` (one entry per profile segment, in segment order);
                 // the partial path appends its two caps AFTER them, in the
@@ -2770,6 +3224,10 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     refusals.insert(id.clone(), json!(format!("groove {id} cannot find sketch {target}")));
                     continue;
                 };
+                if matches!(f.get("symmetric"), Some(Value::Bool(true))) || matches!(f.get("midplane"), Some(Value::Bool(true))) {
+                    refusals.insert(id.clone(), json!(format!("groove {id}: a symmetric groove is not built yet (only a symmetric revolve is) -- {id} is shown without it.")));
+                    continue;
+                }
                 if let Some(why) = frame_refusal(sk) {
                     refusals.insert(id.clone(), json!(format!("groove {id}: {why} -- {id} is shown without it.")));
                     continue;

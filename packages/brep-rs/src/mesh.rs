@@ -2671,6 +2671,23 @@ pub fn mesh_solid(solid: &TSolid, defl: f64) -> Option<Mesh> {
     if mesh_is_closed(&first) {
         return Some(first);
     }
+    // A part a million chords across (a 1e6 mm outline drawn at 0.1) is not one a finer chord closes: the retries
+    // below were measured to cost sixteen more full tessellations (about 35 s in wasm) and never closed it. The first
+    // attempt stands for such a size; an ordinary part is a thousand times smaller in this ratio.
+    {
+        let mut lo = [f64::INFINITY; 3];
+        let mut hi = [f64::NEG_INFINITY; 3];
+        for p in &first.positions {
+            for i in 0..3 {
+                lo[i] = lo[i].min(p[i]);
+                hi[i] = hi[i].max(p[i]);
+            }
+        }
+        let extent = (0..3).map(|i| hi[i] - lo[i]).fold(0.0f64, f64::max);
+        if extent.is_finite() && extent / defl.max(1e-12) > 1.0e6 {
+            return Some(first);
+        }
+    }
     // Closure is chord-sensitive: a part can mesh closed at 0.05 and 0.5 and open at 0.2 and 0.3 (a
     // mirrored overlapping pattern of cylinders with blind holes, found by the S4 integration sweep),
     // because the sampled rims of two neighbouring faces agree only when the chord happens to fall
