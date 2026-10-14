@@ -28,9 +28,12 @@ with fresh context; the corrected claims below are what survived.
 - Named picks (`between`) come from brep-rs `resolve` in Node, and are refused in the browser.
 - Solidcraft solver diagnostics are not a reliable referee for DoF on tangent-heavy sketches.
 
-## Known solidcraft defects (repros recorded in phase0/phase2 PROGRESS.md)
-1. `solid.chamfer` on all 12 edges of a box builds the union of wedge prisms (29184, 18 faces) without the corner
-   triangles OCCT and brep-rs produce (26 faces); 1.46e-3 volume delta.
+## Known solidcraft divergences and defect candidates (repros in phase0/phase2 PROGRESS.md)
+1. `solid.chamfer` on all 12 edges of a box gives 29184 mm3 and 18 faces; OCCT and brep-rs give 29141.33 and 26 faces
+   (corner triangles), a 1.46e-3 volume delta. **Whether this is a defect is not established**: a plain intersection
+   of the 12 chamfer half-spaces reproduces solidcraft's 29184 exactly, so it may be a different, valid corner
+   convention. It is a divergence from the OCCT/FreeCAD convention that reSHape follows (see
+   `upstream/01-chamfer-all-edges.md`, which asks upstream what is intended).
 2. Endpoint tangency is ~1e-4 mm off while the report says `solved`, `failing: []` (mapper-independent repro).
 3. An exactly-tangent start reports dof 7 and a redundant tangent; the hand count is 6, and a 0.05 mm jitter gives 6.
 
