@@ -1,0 +1,426 @@
+// SPIKE, referee only (docs/spikes/solidcraft-referee/phase0). Not an engine, not an EngineAdapter, not in npm test.
+//
+// ModelDoc -> solidcraft command JSON, executed PER FEATURE on fresh sessions (prefix 1..k).
+//
+// Refusal contract (AGENTS.md): a feature that cannot be mapped, or that solidcraft refuses, is refused in a plain
+// sentence alongside whatever DID build; a feature that depends on a refused or already-consumed feature is refused
+// with a pointer to it. Nothing here falls back to another engine.
+//
+// ModelDoc semantics were read off packages/brep-adapter/src/occt-build.ts (the same file the parity gate trusts):
+//   - a sketch lies in (u, v); an extrude sweeps along u x v (xy +Z, xz -Y, yz +X); a revolve lays the outline in
+//     (u, n) and spins about n through the frame origin; a pocket/groove cuts against / around the same frame.
+//   - primitives are built centred at the origin, rotated about the ORIGIN, then translated by `center`.
+//   - a hole is a cylinder cut, centred on target-bbox-centre + center, `depth` long, along `axis`.
+//   - a mirror reflects through the part's nearer bbox face on the plane's axis and fuses with the original.
+//
+// Picks: solidcraft picks faces/edges by a 3D point. For `between`/`swept`/`cap`/`carried` names the point comes from
+// brep-rs `resolve` (ctx.resolve) -- so every named pick DEPENDS ON brep-rs. That is recorded, not hidden.
+
+const FEATURE_KINDS = ['box', 'cylinder', 'sphere', 'cone', 'torus', 'prism', 'wedge', 'sketch', 'datum', 'extrude', 'combine',
+  'blend', 'revolve', 'groove', 'pocket', 'mirror', 'pattern', 'hole', 'shell', 'move', 'rotate', 'fillet', 'draft'];
+export { FEATURE_KINDS };
+
+const AX = { x: [1, 0, 0], y: [0, 1, 0], z: [0, 0, 1] };
+const AXN = { x: 'X', y: 'Y', z: 'Z' };
+const add = (a, b) => a.map((v, i) => v + b[i]);
+const len = (a) => Math.hypot(...a);
+const isZero3 = (v) => !v || (v[0] === 0 && v[1] === 0 && v[2] === 0);
+const bname = (id) => `b_${id}`;
+
+/** named-plane frame, identical to model-types.ts NAMED_PLANE_FRAMES / sketchFrameOf (copied, with a check in run-phase0). */
+const NAMED = {
+  xy: { u: [1, 0, 0], v: [0, 1, 0], n: [0, 0, 1] },
+  xz: { u: [1, 0, 0], v: [0, 0, 1], n: [0, 1, 0] },
+  yz: { u: [0, 1, 0], v: [0, 0, 1], n: [1, 0, 0] },
+};
+function frameOf(s, mt) {
+  if (mt && mt.sketchFrameOf) return mt.sketchFrameOf(s);
+  if (s.frame) {
+    const { origin, u, v } = s.frame;
+    return { origin, u, v, n: [u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0]] };
+  }
+  const a = NAMED[s.plane ?? 'xy'] ?? NAMED.xy;
+  const o = s.offset ?? 0;
+  return { origin: a.n.map((c) => c * o), ...a };
+}
+
+const refuse = (sentence) => ({ refusal: sentence });
+
+/** Sketch outline -> sketch.* commands (inside an open sketch). Returns {cmds} or {refusal}. */
+function profileCmds(sk, ctx) {
+  if (sk.shape !== 'circle' && Array.isArray(sk.geoms) && sk.geoms.length > 0) {
+    return refuse(`sketch ${sk.id} is drawn as rows and rules (a soup), which this translator does not map yet`);
+  }
+  const o = ctx.arc.outlineOf(sk);
+  if (!o.ok) return refuse(`sketch ${sk.id} has no usable outline (${(o.notes ?? []).join('; ') || 'outlineOf refused it'})`);
+  if (sk.shape === 'circle') {
+    const [a, b] = o.points;
+    const c = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+    return { cmds: [{ command: 'sketch.circle.center', params: { center: c, diameter: Math.hypot(b[0] - a[0], b[1] - a[1]) } }] };
+  }
+  const pts = o.points;
+  const bulges = o.bulges ?? {};
+  if (!Object.values(bulges).some((g) => g)) {
+    return { cmds: [{ command: 'sketch.line', params: { points: pts.map((p) => [p[0], p[1]]), closed: true } }] };
+  }
+  const cmds = [];
+  const n = pts.length;
+  for (let i = 0; i < n; i++) {
+    const a = pts[i];
+    const b = pts[(i + 1) % n];
+    const g = bulges[i];
+    if (!g) { cmds.push({ command: 'sketch.line', params: { points: [a, b] } }); continue; }
+    // same arc construction as occt-build.ts sketchWire: a point on the arc halfway round
+    const { center, radius, startAngle, endAngle } = ctx.arc.arcFromBulge(a, b, g);
+    let sweep = endAngle - startAngle;
+    if (g > 0 && sweep < 0) sweep += Math.PI * 2;
+    if (g < 0 && sweep > 0) sweep -= Math.PI * 2;
+    const mid = startAngle + sweep / 2;
+    cmds.push({ command: 'sketch.arc.three_point', params: { start: a, end: b, through: [center[0] + radius * Math.cos(mid), center[1] + radius * Math.sin(mid)] } });
+  }
+  return { cmds };
+}
+
+function inSketch(sk, ctx, st, { revolve = false } = {}) {
+  const fr = frameOf(sk, ctx.mt);
+  const prof = profileCmds(sk, ctx);
+  if (prof.refusal) return prof;
+  const name = `sk_${sk.id}_${st.counter++}`;
+  return {
+    name,
+    cmds: [
+      { command: 'sketch.create', params: { name, plane: { origin: fr.origin, x_dir: fr.u, y_dir: revolve ? fr.n : fr.v } } },
+      ...prof.cmds,
+      { command: 'sketch.finish', params: {} },
+    ],
+  };
+}
+
+const rotCmds = (name, rotate) => {
+  const out = [];
+  if (isZero3(rotate)) return out;
+  ['x', 'y', 'z'].forEach((a, i) => { if (rotate[i]) out.push({ command: 'solid.move', params: { bodies: [name], axis: AX[a], angle: rotate[i] } }); });
+  return out;
+};
+const moveCmd = (name, t) => ({ command: 'solid.move', params: { bodies: [name], translate: t } });
+
+/** Edge points for a primitive's whole-shape `round`: box = 12 edge midpoints, cylinder = the two rim circles. */
+function roundPoints(f, base) {
+  if (f.kind === 'box') {
+    const [w, d, h] = f.size.map((v) => v / 2);
+    const c = base;
+    const p = [];
+    for (const sy of [-1, 1]) for (const sz of [-1, 1]) p.push([c[0], c[1] + sy * d, c[2] + sz * h]);
+    for (const sx of [-1, 1]) for (const sz of [-1, 1]) p.push([c[0] + sx * w, c[1], c[2] + sz * h]);
+    for (const sx of [-1, 1]) for (const sy of [-1, 1]) p.push([c[0] + sx * w, c[1] + sy * d, c[2]]);
+    return p;
+  }
+  return [[base[0] + f.radius, base[1], base[2] + f.height / 2], [base[0] + f.radius, base[1], base[2] - f.height / 2]];
+}
+
+/** Plan one feature. Returns {refusal} | {variants:[cmds...], produces:[names], consumes:[ids]} | {noop:true}. */
+export function planFeature(f, st, ctx) {
+  const name = bname(f.id);
+  const needBody = (id) => {
+    const bs = st.bodies[headOf(id)];
+    return bs && bs.length ? bs : null;
+  };
+  // occt-build advanceHead: a hole / pocket / groove leaves its target's id pointing at the NEWEST cut, so a second bore
+  // on the same target stacks on the first instead of starting over.
+  const headOf = (id) => { let h = id; const seen = new Set(); while (st.head[h] && !seen.has(h)) { seen.add(h); h = st.head[h]; } return h; };
+  const dep = (id, role = 'target') => {
+    id = headOf(id);
+    if (st.refused[id]) return `${f.id} (${f.kind}): its ${role} ${id} was refused (${st.refused[id]})`;
+    if (st.stale[id]) return `${f.id} (${f.kind}): its ${role} ${id} was already changed in place by ${st.stale[id]}, and a solidcraft command list has no second copy of it`;
+    return null;
+  };
+  switch (f.kind) {
+    case 'box': case 'cylinder': case 'sphere': case 'torus': case 'cone': case 'prism': case 'wedge': {
+      const rot = !isZero3(f.rotate);
+      const c = f.center ?? [0, 0, 0];
+      const at = rot ? [0, 0, 0] : c; // rotation is about the ORIGIN, so a rotated primitive is built at the origin first
+      let cmds = [];
+      if (f.kind === 'box') {
+        cmds.push({ command: 'solid.box', params: { length: f.size[0], width: f.size[1], height: f.size[2], center: at, body_name: name } });
+      } else if (f.kind === 'cylinder') {
+        cmds.push({ command: 'solid.cylinder', params: { radius: f.radius, height: f.height, base: [at[0], at[1], at[2] - f.height / 2], axis: 'Z', body_name: name } });
+      } else if (f.kind === 'sphere') {
+        cmds.push({ command: 'solid.sphere', params: { radius: f.radius, center: at, body_name: name } });
+      } else if (f.kind === 'torus') {
+        cmds.push({ command: 'solid.torus', params: { major: f.ringRadius, minor: f.tubeRadius, center: at, body_name: name } });
+      } else if (f.kind === 'cone') {
+        // no solid.cone: spin the right triangle (0,0)-(r,0)-(0,h) about the sketch y axis, as occt-build coneOf does
+        const nm = `sk_${f.id}_${st.counter++}`;
+        cmds.push(
+          { command: 'sketch.create', params: { name: nm, plane: { origin: [at[0], at[1], at[2] - f.height / 2], x_dir: [1, 0, 0], y_dir: [0, 0, 1] } } },
+          { command: 'sketch.line', params: { points: [[0, 0], [f.radius, 0], [0, f.height]], closed: true } },
+          { command: 'sketch.finish', params: {} },
+          { command: 'solid.revolve', params: { axis: 'y', sketch: nm, operation: 'new', body_name: name } },
+        );
+      } else {
+        const poly = f.kind === 'prism'
+          ? (() => { const n = Math.max(3, Math.min(12, Math.round(f.sides))); return Array.from({ length: n }, (_, i) => [f.radius * Math.cos(2 * Math.PI * i / n), f.radius * Math.sin(2 * Math.PI * i / n)]); })()
+          : [[-f.width / 2, -f.depth / 2], [f.width / 2, -f.depth / 2], [-f.width / 2, f.depth / 2]];
+        const nm = `sk_${f.id}_${st.counter++}`;
+        cmds.push(
+          { command: 'sketch.create', params: { name: nm, plane: { origin: [at[0], at[1], at[2] - f.height / 2], x_dir: [1, 0, 0], y_dir: [0, 1, 0] } } },
+          { command: 'sketch.line', params: { points: poly, closed: true } },
+          { command: 'sketch.finish', params: {} },
+          { command: 'solid.extrude', params: { distance: f.height, sketch: nm, operation: 'new', body_name: name } },
+        );
+      }
+      if (f.round) {
+        if (f.kind !== 'box' && f.kind !== 'cylinder') return refuse(`${f.id} (${f.kind}): a whole-shape round is only mapped for box and cylinder`);
+        const pts = roundPoints(f, at);
+        cmds.push(f.roundStyle === 'chamfer'
+          ? { command: 'solid.chamfer', params: { edges: pts, distance: f.round, body: name } }
+          : { command: 'solid.fillet', params: { edges: pts, radius: f.round, body: name } });
+      }
+      if (rot) { cmds.push(...rotCmds(name, f.rotate)); if (!isZero3(c)) cmds.push(moveCmd(name, c)); }
+      return { variants: [cmds], produces: [name], consumes: [] };
+    }
+    case 'datum':
+      return { noop: true };
+    case 'sketch':
+      return { noop: true, stage: true };
+    case 'extrude': {
+      const d = dep(f.target, 'sketch');
+      if (d) return refuse(d);
+      for (const k of ['midplane', 'length2', 'reversed', 'taper', 'direction', 'alongNormal']) {
+        if (f[k]) return refuse(`${f.id} (extrude): the ${k} option is not mapped in phase 0 (only a plain one-sided extrude along the sketch normal is)`);
+      }
+      const sk = st.sketches[f.target];
+      if (!sk) return refuse(`${f.id} (extrude): ${f.target} is not a sketch`);
+      const s = inSketch(sk, ctx, st);
+      if (s.refusal) return refuse(`${f.id} (extrude): ${s.refusal}`);
+      return { variants: [[...s.cmds, { command: 'solid.extrude', params: { distance: f.height, sketch: s.name, operation: 'new', body_name: name } }]], produces: [name], consumes: [] };
+    }
+    case 'revolve': case 'groove': {
+      const d = dep(f.target, 'sketch') || (f.kind === 'groove' ? dep(f.into, 'solid') : null);
+      if (d) return refuse(d);
+      const sk = st.sketches[f.target];
+      if (!sk) return refuse(`${f.id} (${f.kind}): ${f.target} is not a sketch`);
+      const s = inSketch(sk, ctx, st, { revolve: true });
+      if (s.refusal) return refuse(`${f.id} (${f.kind}): ${s.refusal}`);
+      const params = { axis: 'y', sketch: s.name };
+      if (f.angle !== 360) params.angle = -f.angle;
+      if (f.kind === 'revolve') return { variants: [[...s.cmds, { command: 'solid.revolve', params: { ...params, operation: 'new', body_name: name } }]], produces: [name], consumes: [] };
+      const bs = needBody(f.into);
+      if (!bs || bs.length !== 1) return refuse(`${f.id} (groove): ${f.into} is not a single body`);
+      return { variants: [[...s.cmds, { command: 'solid.revolve', params: { ...params, operation: 'cut', targets: bs } }]], produces: bs, consumes: [f.into] };
+    }
+    case 'pocket': {
+      const d = dep(f.target, 'sketch') || dep(f.into, 'solid');
+      if (d) return refuse(d);
+      const sk = st.sketches[f.target];
+      const bs = needBody(f.into);
+      if (!sk || !bs || bs.length !== 1) return refuse(`${f.id} (pocket): needs a sketch and a single body`);
+      const s = inSketch(sk, ctx, st);
+      if (s.refusal) return refuse(`${f.id} (pocket): ${s.refusal}`);
+      // pocket pushes OPPOSITE the sweep direction (occt-build: h = -depth * dir), i.e. direction negative on a u x v frame
+      return { variants: [[...s.cmds, { command: 'solid.extrude', params: { distance: f.depth, direction: 'negative', sketch: s.name, operation: 'cut', targets: bs } }]], produces: bs, consumes: [f.into] };
+    }
+    case 'blend': {
+      const ds = f.targets.map((t) => dep(t, 'sketch')).find(Boolean);
+      if (ds) return refuse(ds);
+      if (f.targets.length < 2) return refuse(`${f.id} (blend): needs two or more sketches`);
+      const cmds = []; const names = [];
+      for (const t of f.targets) {
+        const sk = st.sketches[t];
+        if (!sk) return refuse(`${f.id} (blend): ${t} is not a sketch`);
+        const s = inSketch(sk, ctx, st);
+        if (s.refusal) return refuse(`${f.id} (blend): ${s.refusal}`);
+        cmds.push(...s.cmds); names.push(s.name);
+      }
+      cmds.push({ command: 'solid.loft', params: { sections: names.map((n) => ({ sketch: n })), operation: 'new', body_name: name } });
+      return { variants: [cmds], produces: [name], consumes: [] };
+    }
+    case 'combine': {
+      const ds = f.targets.map((t) => dep(t)).find(Boolean);
+      if (ds) return refuse(ds);
+      if (f.targets.length < 2) return refuse(`${f.id} (combine): needs two or more targets`);
+      const all = f.targets.map((t) => needBody(t));
+      if (all.some((b) => !b || b.length !== 1)) return refuse(`${f.id} (combine): every target must be a single body`);
+      const op = f.op === 'union' ? 'join' : f.op === 'subtract' ? 'cut' : 'intersect';
+      const names = all.map((b) => b[0]);
+      return {
+        variants: [[{ command: 'solid.combine', params: { target: names[0], tools: names.slice(1), operation: op } }]],
+        produces: [names[0]], consumes: f.targets,
+      };
+    }
+    case 'move': {
+      const d = dep(f.target);
+      if (d) return refuse(d);
+      if (f.copy) return refuse(`${f.id} (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)`);
+      const bs = needBody(f.target);
+      return { variants: [[{ command: 'solid.move', params: { bodies: bs, translate: f.offset } }]], produces: bs, consumes: [f.target] };
+    }
+    case 'rotate': {
+      const d = dep(f.target);
+      if (d) return refuse(d);
+      const bs = needBody(f.target);
+      const m = st.measure[f.target];
+      if (!m) return refuse(`${f.id} (rotate): no measured bounding box for ${f.target}`);
+      const c = [0, 1, 2].map((i) => (m.bbox[i] + m.bbox[i + 3]) / 2);
+      const cmds = [];
+      if (!isZero3(c)) cmds.push({ command: 'solid.move', params: { bodies: bs, translate: c.map((v) => -v) } });
+      ['x', 'y', 'z'].forEach((a, i) => { if (f.angles[i]) cmds.push({ command: 'solid.move', params: { bodies: bs, axis: AX[a], angle: f.angles[i] } }); });
+      if (!isZero3(c)) cmds.push({ command: 'solid.move', params: { bodies: bs, translate: c } });
+      return { variants: [cmds], produces: bs, consumes: [f.target] };
+    }
+    case 'mirror': {
+      const d = dep(f.target);
+      if (d) return refuse(d);
+      const bs = needBody(f.target);
+      const m = st.measure[f.target];
+      if (!m) return refuse(`${f.id} (mirror): no measured bounding box for ${f.target}`);
+      const axis = f.plane === 'yz' ? 0 : f.plane === 'xz' ? 1 : 2;
+      const lo = m.bbox[axis]; const hi = m.bbox[axis + 3];
+      const at = Math.abs(lo) <= Math.abs(hi) ? lo : hi; // occt-build: through the part's nearer face on this axis
+      const origin = [0, 0, 0]; origin[axis] = at;
+      const normal = [0, 0, 0]; normal[axis] = 1;
+      return { variants: [[{ command: 'solid.mirror', params: { bodies: bs, plane: { origin, normal }, combine: true } }]], produces: bs, consumes: [f.target] };
+    }
+    case 'pattern': {
+      const d = dep(f.target);
+      if (d) return refuse(d);
+      const bs = needBody(f.target);
+      if (!bs || bs.length !== 1) return refuse(`${f.id} (pattern): needs a single target body`);
+      if (f.count < 2) return refuse(`${f.id} (pattern): a count under 2 is the original alone; not mapped`);
+      const copies = [bs[0], ...Array.from({ length: f.count - 1 }, (_, i) => `${bs[0]} (${i + 2})`)];
+      let pat;
+      if (f.mode === 'circular') {
+        if ((f.totalAngle ?? 360) !== 360) return refuse(`${f.id} (pattern): a circular pattern over less than 360 degrees is not mapped (solidcraft's angle semantics were not verified)`);
+        pat = { command: 'solid.pattern.circular', params: { bodies: bs, axis: AXN[f.axis ?? 'z'], count: f.count } };
+      } else {
+        const s = f.step ?? [0, 0, 0];
+        if (isZero3(s)) return refuse(`${f.id} (pattern): a zero step puts every copy on the original`);
+        const L = len(s);
+        pat = { command: 'solid.pattern.rectangular', params: { bodies: bs, dir1: s.map((v) => v / L), count1: f.count, spacing1: L } };
+      }
+      // OCCT fuses the instances. Try to join them; if solidcraft cannot (disjoint copies), keep them as separate bodies.
+      const join = { command: 'solid.combine', params: { target: copies[0], tools: copies.slice(1), operation: 'join' } };
+      return { variants: [[pat, join], [pat]], produces: copies, consumes: [f.target] };
+    }
+    case 'hole': {
+      const d = dep(f.target);
+      if (d) return refuse(d);
+      if (f.counterbore || f.countersink) return refuse(`${f.id} (hole): counterbore and countersink are not mapped in phase 0`);
+      const bs = needBody(f.target);
+      const m = st.measure[f.target];
+      if (!bs || bs.length !== 1 || !m) return refuse(`${f.id} (hole): needs a single measured target body`);
+      const bc = [0, 1, 2].map((i) => (m.bbox[i] + m.bbox[i + 3]) / 2);
+      const cx = bc[0] + f.center[0]; const cy = bc[1] + f.center[1]; const cz = bc[2] + f.center[2];
+      const centers = f.corners
+        ? [[cx - f.corners.dx, cy - f.corners.dy, cz], [cx + f.corners.dx, cy - f.corners.dy, cz], [cx - f.corners.dx, cy + f.corners.dy, cz], [cx + f.corners.dx, cy + f.corners.dy, cz]]
+        : [[cx, cy, cz]];
+      const dir = AX[f.axis ?? 'z'];
+      const cmds = centers.map((c) => ({
+        command: 'solid.cylinder',
+        params: { radius: f.diameter / 2, height: f.depth, base: c.map((v, i) => v - dir[i] * f.depth / 2), axis: AXN[f.axis ?? 'z'], operation: 'cut', targets: bs },
+      }));
+      return { variants: [cmds], produces: bs, consumes: [f.target] };
+    }
+    case 'shell': {
+      const d = dep(f.target);
+      if (d) return refuse(d);
+      const bs = needBody(f.target);
+      if (!bs || bs.length !== 1) return refuse(`${f.id} (shell): needs a single target body`);
+      if (!f.open) return { variants: [[{ command: 'solid.shell', params: { thickness: f.thickness, body: bs[0] } }]], produces: bs, consumes: [f.target] };
+      const r = ctx.resolve(f.open);
+      if (!r || r.kind !== 'face') return refuse(`${f.id} (shell): the opened face could not be resolved to a point (brep-rs resolve gave ${r ? r.kind : 'nothing'})`);
+      return { variants: [[{ command: 'solid.shell', params: { faces: [r.centroid], thickness: f.thickness, body: bs[0] } }]], produces: bs, consumes: [f.target], pickedFrom: 'brep-rs resolve' };
+    }
+    case 'fillet': {
+      const d = dep(f.target);
+      if (d) return refuse(d);
+      const bs = needBody(f.target);
+      if (!bs || bs.length !== 1) return refuse(`${f.id} (fillet): needs a single target body`);
+      const r = ctx.resolve(f.edge);
+      if (!r || r.kind !== 'edge') return refuse(`${f.id} (fillet): the edge could not be resolved to a point (brep-rs resolve gave ${r ? r.kind : 'nothing'})`);
+      const c = r.centroid;
+      // A closed circle's centroid is its centre, which is not on the edge: also try one radius out along each world axis.
+      const cands = [c];
+      if (r.length > 0) { const rad = r.length / (2 * Math.PI); for (const a of ['x', 'y', 'z']) cands.push(add(c, AX[a].map((v) => v * rad))); }
+      const mk = (p) => (f.style === 'chamfer'
+        ? { command: 'solid.chamfer', params: { edges: [p], distance: f.size, body: bs[0] } }
+        : { command: 'solid.fillet', params: { edges: [p], radius: f.size, body: bs[0] } });
+      return { variants: cands.map((p) => [mk(p)]), produces: bs, consumes: [f.target], pickedFrom: 'brep-rs resolve' };
+    }
+    case 'draft': {
+      const d = dep(f.target);
+      if (d) return refuse(d);
+      if (f.whole || !f.face) return refuse(`${f.id} (draft): a whole-body draft is not mapped (needs a face pick per face)`);
+      const bs = needBody(f.target);
+      if (!bs || bs.length !== 1) return refuse(`${f.id} (draft): needs a single target body`);
+      const r = ctx.resolve(f.face);
+      if (!r || r.kind !== 'face') return refuse(`${f.id} (draft): the face could not be resolved to a point`);
+      const ax = AX[f.pull ?? 'z'];
+      return {
+        variants: [[{ command: 'solid.draft', params: { faces: [r.centroid], angle: f.angle, neutral: { origin: ax.map((v) => v * f.neutral), normal: ax }, pull: ax, body: bs[0] } }]],
+        produces: bs, consumes: [f.target], pickedFrom: 'brep-rs resolve',
+      };
+    }
+    default:
+      return refuse(`${f.id}: feature kind '${f.kind}' is not in the ModelDoc vocabulary this translator knows`);
+  }
+}
+
+/** Aggregate the named bodies of a successful run into one measure (sum volume/faces, union bbox). */
+function aggregate(res, names) {
+  const bs = res.measure.bodies.filter((b) => names.includes(b.name));
+  if (!bs.length) return null;
+  const lo = [Infinity, Infinity, Infinity]; const hi = [-Infinity, -Infinity, -Infinity];
+  for (const b of bs) for (let i = 0; i < 3; i++) { lo[i] = Math.min(lo[i], b.bbox.min[i]); hi[i] = Math.max(hi[i], b.bbox.max[i]); }
+  return {
+    volume: bs.reduce((s, b) => s + b.volume_mm3, 0),
+    faces: bs.reduce((s, b) => s + b.faces, 0),
+    kernelFaces: bs.reduce((s, b) => s + b.kernel.faces, 0),
+    curved: bs.some((b) => Object.keys(b.face_types ?? {}).some((k) => k !== 'plane')),
+    bbox: [...lo, ...hi],
+    faceTypes: bs.reduce((a, b) => { for (const [k, v] of Object.entries(b.face_types ?? {})) a[k] = (a[k] ?? 0) + v; return a; }, {}),
+    com: [0, 1, 2].map((i) => bs.reduce((a, b) => a + b.volume_mm3 * b.center_of_mass[i], 0) / bs.reduce((a, b) => a + b.volume_mm3, 0)),
+    bodies: bs.map((b) => b.name),
+  };
+}
+
+/**
+ * Translate and execute a ModelDoc feature by feature.
+ * ctx: { arc, mt, runSC(cmds)->parsed result, resolveAt(prefixFeatures, nameJson)->{kind,centroid,length|area}|null }
+ * Returns { features: [{id, kind, status: 'built'|'refused'|'noop', commands, refusal?, measure?, pickedFrom?}], commands }.
+ */
+export function translateDoc(doc, ctx) {
+  const st = { head: {}, bodies: {}, stale: {}, refused: {}, sketches: {}, measure: {}, counter: 0 };
+  const accepted = [];
+  const out = [];
+  doc.features.forEach((f, idx) => {
+    const prefix = doc.features.slice(0, idx);
+    const fctx = { ...ctx, resolve: (name) => ctx.resolveAt(prefix, name) };
+    const note = (o) => out.push({ id: f.id, kind: f.kind, ...o });
+    if (f.kind === 'sketch') st.sketches[f.id] = f;
+    let plan;
+    try { plan = planFeature(f, st, fctx); } catch (e) { plan = refuse(`${f.id} (${f.kind}): translator error: ${e.message}`); }
+    if (plan.refusal) { st.refused[f.id] = plan.refusal; return note({ status: 'refused', refusal: plan.refusal, commands: [] }); }
+    if (plan.noop) return note({ status: 'noop', commands: [] });
+    let lastErr = null;
+    for (const variant of plan.variants) {
+      let res;
+      try { res = ctx.runSC([...accepted, ...variant]); } catch (e) { res = { ok: false, failed: { error: `WASM TRAP: ${e.message}` } }; }
+      if (!res.ok) { lastErr = res.failed ? `${res.failed.command}: ${res.failed.error}` : String(res.error ?? 'unknown'); continue; }
+      const m = aggregate(res, plan.produces);
+      if (!m) { lastErr = `solidcraft ran the commands but no body named ${plan.produces.join(', ')} came back`; continue; }
+      accepted.push(...variant);
+      st.bodies[f.id] = m.bodies;
+      st.measure[f.id] = m;
+      for (const c of plan.consumes) {
+        if (c === f.id) continue;
+        if (f.kind === 'hole' || f.kind === 'pocket' || f.kind === 'groove') { if (c === (f.kind === 'hole' ? f.target : f.into)) st.head[c] = f.id; } else st.stale[c] = f.id;
+      }
+      return note({ status: 'built', commands: variant, measure: m, pickedFrom: plan.pickedFrom, variantsTried: plan.variants.indexOf(variant) + 1, pick: (variant.find((c) => c.params.edges || c.params.faces)?.params) ?? null });
+    }
+    const sentence = `${f.id} (${f.kind}): solidcraft refused it -- ${lastErr}`;
+    st.refused[f.id] = sentence;
+    note({ status: 'refused', refusal: sentence, commands: plan.variants[0] });
+  });
+  return { features: out, commands: accepted };
+}
