@@ -1,3 +1,45 @@
+# solidcraft referee spike: summary of phases 0-3
+
+Status: spike, **referee/demo only**. Not an EngineAdapter, not in `npm test`, no engine mode, nothing under
+`packages/brep-adapter`. The AGENTS.md one-kernel rule is untouched; whether solidcraft is ever more than a referee
+is an **undecided policy question** for the owner.
+
+Subject: https://github.com/bherbruck/solidcraft @ `fe3717f2e400010a4cd0e7dd4f294e7091c25625` (MIT OR Apache-2.0),
+a truck-based Rust CAD kernel with an egui web app. Each phase was built, then attacked by a separate harsh critic
+with fresh context; the corrected claims below are what survived.
+
+| Phase | Dir | What | Result |
+|---|---|---|---|
+| wasm proof of concept | `wrapper/`, `run.mjs`, `demo/`, `egui-demo/` | solidcraft-engine to wasm, run under Node and in an egui page | builds; 23 MB raw / 4.3 MB gzip (no wasm-opt); 11 fixtures agree with OCCT within tessellation error |
+| 0 | `phase0/` | ModelDoc to solidcraft commands, scored vs live OCCT and brep-rs on 78 parity fixtures + 14 asymmetric pick fixtures | 74 PASS, 1 FAIL (`box-round-chamfer`, truck 1.46e-3 off, brep-rs exact), 1 REFEREE-ARTIFACT (OCCT bbox padding), 2 REFUSED (closed shell) |
+| 1 | `phase1/` | `window.solidcraft.execute/inspect` bridge patch (`bridge.patch`), sandboxed host page | script runs in solidcraft's viewport, within 3.4e-6 of OCCT/brep-rs on the demo script; token is an opt-in, not authentication |
+| 2 | `phase2/` | constraints and dimensions mapped to solidcraft's solver | 86 cases; rough start 19/43 PASS; tangency residual ~1e-4 mm while reporting solved; DoF/redundancy misreported for exactly-tangent starts |
+| 3 | `phase3/` | one-command reviewable page, 20 examples | `sh docs/spikes/solidcraft-referee/phase3/run.sh` |
+
+## What is established
+- Truck matches live OCCT on volume, bbox and centre of mass for the covered feature classes (primitives, extrudes,
+  revolves, booleans, bores, fillet, shell, draft) at 1e-9 planar / 3e-4 curved; wrong-feature picks, adjacent and
+  opposite, are rejected at 26x the bar or more on an asymmetric body.
+- Its volume is tessellation-derived (`crates/kernel/src/measure.rs`), so curved deltas of ~1e-4 are the measurer's.
+  It cannot see a wrong-rim fillet of about 0.1 mm or smaller.
+
+## What is not
+- Face fidelity is verified by count per surface type only.
+- Named picks (`between`) come from brep-rs `resolve` in Node, and are refused in the browser.
+- Solidcraft solver diagnostics are not a reliable referee for DoF on tangent-heavy sketches.
+
+## Known solidcraft defects (repros recorded in phase0/phase2 PROGRESS.md)
+1. `solid.chamfer` on all 12 edges of a box builds the union of wedge prisms (29184, 18 faces) without the corner
+   triangles OCCT and brep-rs produce (26 faces); 1.46e-3 volume delta.
+2. Endpoint tangency is ~1e-4 mm off while the report says `solved`, `failing: []` (mapper-independent repro).
+3. An exactly-tangent start reports dof 7 and a redundant tangent; the hand count is 6, and a 0.05 mm jitter gives 6.
+
+## Open
+Policy (referee vs product), browser-side named picks, WebGPU/Firefox/Safari, wasm trap behaviour, bridge
+authentication (not for deployment). Per-phase limits are in each `PROGRESS.md`/`README.md`.
+
+---
+
 # Spike: solidcraft (truck) compiled to wasm as a third referee
 
 Status: minimal proof of concept. **Referee only.** Not an EngineAdapter, not in `npm test`, not a gate.
