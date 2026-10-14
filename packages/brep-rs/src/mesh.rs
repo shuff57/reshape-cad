@@ -3389,7 +3389,14 @@ fn surface_uv(s: &crate::geom::Surface, p: Vec3) -> Option<[f64; 2]> {
             let cosv = (-crate::math::dot(d, sp.axis) / sp.radius).clamp(-1.0, 1.0);
             let v = cosv.acos();
             let perp = sub(d, crate::math::scale(sp.axis, crate::math::dot(d, sp.axis)));
-            let u = crate::math::dot(perp, sp.e2).atan2(crate::math::dot(perp, sp.e1));
+            // At a pole u is undefined and `atan2` of the float noise on a (near) zero perpendicular is an arbitrary
+            // angle: a station no neighbour shares, which cracks the sphere's boundary (a solver-noisy sketch's
+            // corner). A point within the weld of the axis takes u = 0, as an exact pole does.
+            let u = if crate::math::len(perp) <= 1e-7 * sp.radius.max(1.0) {
+                0.0
+            } else {
+                crate::math::dot(perp, sp.e2).atan2(crate::math::dot(perp, sp.e1))
+            };
             Some([u, v])
         }
         Surface::Torus(t) => {

@@ -3782,7 +3782,15 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     // three at a corner) are one blend there, where taking them one after the other leaves the
                     // later one refused. Built together from the part the run started on (rim_convex_build); a
                     // run that is not the shape that builder takes keeps the refusal it already has.
-                    if !conflict && round && !built && refusals.contains_key(&id) {
+                    //
+                    // DECISION (A2, round 2): the doc cannot tell `round(a, 2); round(b, 2)` from `round([a, b], 2)` -- both
+                    // are consecutive equal fillet features -- and the run is read as ONE blend, the form a picked rim
+                    // arrives in (and S4h's rule for a pocket's corners). FreeCAD's two SEQUENTIAL Fillet ops on the same
+                    // two edges build a sphere corner instead (5949.8348 / 10 faces against 5957.8466 / 8 for one op on
+                    // both, 8.01 mm^3 apart). A feature that carries `"sequential": true` opts out of the merge and keeps
+                    // its refusal, so a doc that means the two-op result is never answered with the one-op solid.
+                    let sequential = f.get("sequential").and_then(|v| v.as_bool()).unwrap_or(false);
+                    if !conflict && round && !built && !sequential && refusals.contains_key(&id) {
                         let meets = own_ends.as_ref().is_some_and(|e| {
                             rim_run.members.iter().any(|m| {
                                 m.id != id && m.built && m.ends.as_ref().is_some_and(|x| rim_shares_vertex(x, e))
@@ -5977,6 +5985,98 @@ mod tests {
             let mesh = crate::mesh::mesh_solid(&s, 0.05).expect("meshes");
             assert!(crate::ops::check_watertight(&mesh), "r={r} mesh is watertight");
         }
+    }
+
+    /// Equal rounds on the named edges (`+z|-y` ...) of a SKETCH prism of `points` and `height`, the first point's
+    /// y carrying `eps` of solver noise and the second's a third of it: the last part and every refusal.
+    fn sketch_rounds(
+        points: &[[f64; 2]],
+        height: f64,
+        edges: &[&str],
+        eps: f64,
+        size: f64,
+    ) -> (Option<TSolid>, serde_json::Map<String, Value>) {
+        let mut pts = points.to_vec();
+        pts[0][1] += eps;
+        pts[1][1] += eps / 3.0;
+        let mut features = vec![
+            json!({ "id": "sk1", "kind": "sketch", "plane": "xy", "offset": 0, "points": pts }),
+            json!({ "id": "e1", "kind": "extrude", "target": "sk1", "height": height }),
+        ];
+        for (k, part) in edges.iter().enumerate() {
+            let (a, b) = part.split_once('|').unwrap();
+            features.push(json!({
+                "id": format!("r{}", k + 1), "kind": "fillet",
+                "target": if k == 0 { "e1".to_string() } else { format!("r{k}") },
+                "size": size, "style": "fillet",
+                "edge": { "cause": "between", "feature": "e1", "kind": "edge", "of": [
+                    { "cause": "primitive", "feature": "e1", "kind": "face", "part": a },
+                    { "cause": "primitive", "feature": "e1", "kind": "face", "part": b } ] }
+            }));
+        }
+        let (hist, refusals) = build_doc(&json!({ "features": features }));
+        (hist.shapes.get(&format!("r{}", edges.len())).cloned(), refusals)
+    }
+
+    /// Solver noise on a sketch's points (1e-12 .. 1e-8) must not leave a crack in a sphere corner's mesh, with or
+    /// without a mitre beside it, on a block or an L: the part is watertight at the kernel's own 1e-6 weld, or it is
+    /// refused (as it is from 1e-7 on). Round 1 of A2: `atan2` of noise at the sphere's pole was a stray column.
+    #[test]
+    fn sphere_corner_of_a_noisy_sketch_prism_is_watertight_or_refused() {
+        let rect = [[0.0, 0.0], [50.0, 0.0], [50.0, 40.0], [0.0, 40.0]];
+        let ell = [[0.0, 0.0], [50.0, 0.0], [50.0, 15.0], [15.0, 15.0], [15.0, 40.0], [0.0, 40.0]];
+        let corner = ["+z|-y", "+z|+x", "-y|+x"];
+        let corner_mitre = ["+z|-y", "+z|+x", "-y|+x", "+z|+y"];
+        let cases: [(&[[f64; 2]], f64, &[&str], f64); 4] =
+            [(&rect, 25.0, &corner, 4.0), (&rect, 25.0, &corner_mitre, 4.0), (&rect, 25.0, &corner, 2.0), (&ell, 8.0, &corner, 2.0)];
+        let mut built = 0;
+        for (points, h, edges, r) in cases {
+            for eps in [0.0, 1e-12, 1e-10, 1e-9, 1e-8, 1e-7, 1e-6] {
+                let (s, refusals) = sketch_rounds(points, h, edges, eps, r);
+                if !refusals.is_empty() {
+                    assert!(eps >= 1e-9, "eps={eps} r={r} {} edges: unexpected refusal {refusals:?}", edges.len());
+                    continue;
+                }
+                built += 1;
+                let s = s.expect("builds");
+                let mesh = crate::mesh::mesh_solid(&s, 0.05).expect("meshes");
+                assert!(crate::ops::check_watertight(&mesh), "eps={eps} r={r} {} edges: mesh has a crack", edges.len());
+            }
+        }
+        assert!(built >= 20, "only {built} noisy parts built");
+    }
+
+    /// The doc cannot tell two `round()` calls from one `round([a, b])`: consecutive equal rounds at a vertex are one
+    /// blend (FreeCAD's single Fillet on both edges, 5957.8466 / 8 faces). A round marked `sequential` is the
+    /// two-op reading (FreeCAD builds a sphere corner there, 5949.8348 / 10 faces) and keeps its refusal -- never
+    /// the one-op solid under the two-op name.
+    #[test]
+    fn a_sequential_round_is_not_merged_with_the_one_before() {
+        let features = |sequential: bool| {
+            let mut second = json!({
+                "id": "r2", "kind": "fillet", "target": "r1", "size": 2.0, "style": "fillet", "edge": between_edge("+z|-y")
+            });
+            if sequential {
+                second["sequential"] = json!(true);
+            }
+            json!({ "features": [
+                { "id": "b1", "kind": "box", "size": [30.0, 20.0, 10.0] },
+                { "id": "r1", "kind": "fillet", "target": "b1", "size": 2.0, "style": "fillet", "edge": between_edge("+z|+x") },
+                second ] })
+        };
+        let (hist, refusals) = build_doc(&features(false));
+        assert!(refusals.is_empty(), "{refusals:?}");
+        let v = build::solid_volume(hist.shapes.get("r2").unwrap());
+        assert!((v - 5957.846595398464).abs() < 1e-6, "volume {v}");
+        let (hist, refusals) = build_doc(&features(true));
+        let text = refusals.get("r2").and_then(|t| t.as_str()).unwrap_or_default();
+        assert!(
+            text.starts_with("brep-rs can only round a straight edge between two flat faces") && text.ends_with("r2 is shown without it."),
+            "refusal: {text}"
+        );
+        // shown without it: the part as the first round left it
+        let v = build::solid_volume(hist.shapes.get("r2").expect("part kept"));
+        assert!((v - (6000.0 - (1.0 - std::f64::consts::PI / 4.0) * 4.0 * 20.0)).abs() < 1e-6, "volume {v}");
     }
 
     /// The same three edges in any order are the same part.
