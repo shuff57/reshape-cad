@@ -1316,6 +1316,52 @@ fn revolve_tool_caps(
     Ok((solid, face_map, roles, n_caps))
 }
 
+/// Height (along the +axis) of the flat level the hole's mouth sits on: rays are dropped from above at the
+/// hole's centre and on a ring just inside `r_mouth`; every one must land at the same height. `None` when a
+/// ray misses the part or two land at different heights. Axis-aligned axes only.
+fn start_face_level(src: &TSolid, centre: Vec3, axis: Vec3, r_mouth: f64) -> Option<f64> {
+    let k = if axis[0].abs() > 0.5 { 0 } else if axis[1].abs() > 0.5 { 1 } else { 2 };
+    let (ia, ib) = match k { 0 => (1, 2), 1 => (0, 2), _ => (0, 1) };
+    let mesh = crate::mesh::mesh_solid(src, 0.02)?;
+    let mut samples = vec![(centre[ia], centre[ib])];
+    for i in 0..8 {
+        let t = i as f64 * std::f64::consts::FRAC_PI_4;
+        samples.push((centre[ia] + 0.98 * r_mouth * t.cos(), centre[ib] + 0.98 * r_mouth * t.sin()));
+    }
+    let mut level: Option<f64> = None;
+    for (qa, qb) in samples {
+        let mut top: Option<f64> = None;
+        for tri in mesh.indices.chunks(3) {
+            let p: Vec<[f64; 3]> = tri.iter().map(|&i| mesh.positions[i as usize]).collect();
+            let (ax, ay) = (p[0][ia], p[0][ib]);
+            let (bx, by) = (p[1][ia] - ax, p[1][ib] - ay);
+            let (cx, cy) = (p[2][ia] - ax, p[2][ib] - ay);
+            let det = bx * cy - by * cx;
+            if det.abs() < 1e-14 {
+                continue;
+            }
+            let (dx, dy) = (qa - ax, qb - ay);
+            let u = (dx * cy - dy * cx) / det;
+            let v = (bx * dy - by * dx) / det;
+            let e = 1e-9;
+            if u < -e || v < -e || u + v > 1.0 + e {
+                continue;
+            }
+            let h = p[0][k] + u * (p[1][k] - p[0][k]) + v * (p[2][k] - p[0][k]);
+            if top.map_or(true, |t| h > t) {
+                top = Some(h);
+            }
+        }
+        let h = top?;
+        match level {
+            None => level = Some(h),
+            Some(l) if (l - h).abs() <= 1e-6 * (1.0 + l.abs()) => {}
+            _ => return None,
+        }
+    }
+    level
+}
+
 /// True when a hole carries one of the turned-bore fields (drill point, counterdrill, taper).
 fn hole_has_turned_fields(f: &Value) -> bool {
     f.get("drillPoint").is_some() || f.get("counterdrill").is_some() || f.get("taper").is_some()
@@ -1334,7 +1380,7 @@ fn hole_has_turned_fields(f: &Value) -> bool {
 /// * `taper { angleDeg }`: degrees off the axis; positive narrows with depth, negative widens. The
 ///   radius is the bore's at the face. Refused when the cone would close before the floor. A drill point
 ///   on a taper is as tall as the NOMINAL radius asks, standing on the floor's own (smaller) radius.
-fn hole_tool_turned(centre: Vec3, bore_r: f64, depth: f64, axis: Vec3, v_face: f64, v_back: f64, f: &Value, id: &str) -> Result<TSolid, String> {
+fn hole_tool_turned(src: &TSolid, centre: Vec3, bore_r: f64, depth: f64, axis: Vec3, v_face: f64, v_back: f64, f: &Value, id: &str) -> Result<TSolid, String> {
     let no = |why: &str| -> Result<TSolid, String> { Err(format!("hole {id}: {why} -- {id} is shown without it.")) };
     if f.get("counterbore").is_some() || f.get("countersink").is_some() {
         return no("a drill point, counterdrill or taper cannot be combined with a counterbore or countersink (one mouth, one shape)");
@@ -1360,6 +1406,22 @@ fn hole_tool_turned(centre: Vec3, bore_r: f64, depth: f64, axis: Vec3, v_face: f
     let dp = f.get("drillPoint");
     let cd = f.get("counterdrill");
     let tp = f.get("taper");
+    // A taper's radius and a counterdrill's depth are measured from the face the hole STARTS in, which on a
+    // stepped part is not the bbox top. Find it: the mouth must sit wholly on one flat level (every ray
+    // from above lands at the same height), else the shape is refused rather than measured from air.
+    let mut v_face = v_face;
+    if cd.is_some() || tp.is_some() {
+        let r_mouth = num(cd, "diameter").map(|d| 0.5 * d).unwrap_or(bore_r);
+        match start_face_level(src, centre, axis, r_mouth) {
+            Some(h) if h <= v_face + 1e-6 => v_face = h,
+            _ => {
+                return no("its mouth does not sit on one flat face of the part (the part is stepped or the hole runs off an edge there), and a counterdrill or taper is measured from the face the hole starts in, a shape brep-rs cannot cut yet");
+            }
+        }
+        if !(v_mouth >= v_face) {
+            return no("the hole does not reach the face it starts in");
+        }
+    }
     let mut point_h = 0.0;
     let mut for_depth = false;
     if let Some(d) = dp {
@@ -2434,7 +2496,7 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 if turned_fields {
                     if let Err(e) = centers
                         .iter()
-                        .map(|&c| hole_tool_turned(c, diameter / 2.0, depth, axis, v_face, v_face - along, f, &id).map(|_| ()))
+                        .map(|&c| hole_tool_turned(&src, c, diameter / 2.0, depth, axis, v_face, v_face - along, f, &id).map(|_| ()))
                         .collect::<Result<Vec<_>, String>>()
                     {
                         refusals.insert(id.clone(), json!(e));
@@ -2445,7 +2507,7 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     .iter()
                     .map(|&c| {
                         if turned_fields {
-                            hole_tool_turned(c, diameter / 2.0, depth, axis, v_face, v_face - along, f, &id).ok()
+                            hole_tool_turned(&src, c, diameter / 2.0, depth, axis, v_face, v_face - along, f, &id).ok()
                         } else {
                             hole_tool(c, diameter / 2.0, depth, axis, v_face, v_face - along, Some(f))
                         }
