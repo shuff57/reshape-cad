@@ -10,6 +10,8 @@ import { REGRESSIONS } from './regression-fixtures.mjs';
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.join(HERE, '..', '..', '..', '..');
 const URL_ = 'http://127.0.0.1:8796/';
+const STUBREF = JSON.parse(readFileSync(path.join(HERE, 'stub-reference-results.json'), 'utf8')).results; // verify-stub-reference.mjs
+const PLANAR_BAR = 1e-9; // the page's planar bar (host/app.js TOL), not tuned here
 const pw = (...a) => execFileSync('playwright-cli', ['-s=spike', ...a], { encoding: 'utf8', maxBuffer: 1 << 28, cwd: process.env.PW_CWD ?? process.cwd() });
 const evalJson = (fn) => { const m = pw('eval', fn).match(/### Result\n([\s\S]*?)\n### /); if (!m) throw new Error('no result'); const v = JSON.parse(m[1]); return typeof v === 'string' ? JSON.parse(v) : v; };
 const OCCT_DIR = path.join(REPO, 'node_modules', 'replicad-opencascadejs', 'dist');
@@ -41,7 +43,15 @@ for (const fx of REGRESSIONS) {
   const row = { id: fx.id, expect: fx.expect, status: f?.status, sentence: f?.refusal ?? null, volume: f?.measure?.volume ?? null, occt: occtV, occtNoOp, brep: brepV, brepNote, evidence: f?.evidence?.target ?? null };
   let ok;
   if (fx.expect === 'refuse') ok = f?.status === 'refused' && String(f.refusal).includes(fx.contains);
-  else {
+  else if (fx.expect === 'diverges') {
+    // independent reference = box composition on live OCCT (P: plane offset, L: distance erosion), not OCCT's shell
+    const r = STUBREF[fx.id];
+    const dP = row.volume === null ? null : Math.abs(row.volume - r.occt_P) / r.occt_P;
+    const dL = row.volume === null ? null : Math.abs(row.volume - r.occt_L) / r.occt_L;
+    row.reference = { P: r.occt_P, L: r.occt_L, relDeltaP: dP, relDeltaL: dL };
+    row.class = f?.status !== 'built' ? 'NOT BUILT (expected a built, wrong solid)' : (dP <= PLANAR_BAR || dL <= PLANAR_BAR) ? 'VERIFIED (matches the independent reference): re-classify this fixture' : 'DIVERGES from the independent reference';
+    ok = f?.status === 'built' && dP > PLANAR_BAR && dL > PLANAR_BAR;
+  } else {
     const match = row.volume !== null && occtV !== null && !occtNoOp && Math.abs(row.volume - occtV) / Math.max(1, occtV) <= (fx.bar ?? 3e-4);
     const brepMatch = row.volume !== null && brepV !== null && Math.abs(row.volume - brepV) / Math.max(1, brepV) <= (fx.bar ?? 3e-4);
     row.brepMatch = brepMatch;

@@ -64,16 +64,19 @@ a count.** It does NOT claim the resulting solid is right where no independent r
   1.1e-14 mm), 19/24 equal to brep-rs's centroid; the other 5 are cylinder rims (brep-rs returns the circle centre).
 * **Solids**: 24/24 PASS at the phase 0 bars; the OCCT harness now flags a no-op reference (none of the 24 hit it).
 * **Negative controls**: 11/11 rejected (COM miss 3.5e-5 to 7.4e-2).
-* **Gallery**: 29/29 verdicts as expected in the real page, phase 3 examples unchanged.
+* **Gallery**: 29/29 verdicts as expected in the real page, phase 3 examples unchanged. Plus 6 `diverge-stub-*` examples that are red `DIVERGES` by design (see below).
 * **Probes**: 18/18 refusal probes as expected (`refusal-probes.json`).
-* **Regression fixtures** (`regression-fixtures.mjs`, `verify-regression.mjs`, exit 1 on a miss): 21/21 as expected:
+* **Regression fixtures** (`regression-fixtures.mjs`, `verify-regression.mjs`, exit 1 on a miss): 21/21 as expected (the 6 built stubs are pinned as `diverges`, and the run exits 1 if solidcraft ever matches the reference):
   * the critic's silent-pick repros (channel at x = 15, -15, 5) REFUSE with `matches 2 faces`;
   * `hole-then-shell` builds 2656.464 vs OCCT = brep-rs = 2656.478 (5e-6);
   * xz-plane cap top/bottom and swept edges 0-3, CW and CCW, with offsets: 8/8 build and equal OCCT
     (the extrude sweeps along u x v = -Y on xz; the resolver had used the table's +Y);
   * the 9 b2-stub-on-b1.+z variants: 3 REFUSED by the resolver with a count (strip-across 4 faces, strip-along 4 faces, and
-    stub-full-top "no face lies on that plane any more"), 6 BUILT by solidcraft but **with no independent reference**
-    (OCCT returns the un-hollowed volume on all 9, brep-rs does not measure 8 of them). Not claimed correct.
+    stub-full-top "no face lies on that plane any more"), 6 BUILT by solidcraft and **all 6 DIVERGE from an independent
+    reference** (box composition on live OCCT, cross-checked by a voxel estimator; OCCT's shell no-ops and brep-rs does not
+    measure them, so neither could be the reference): 2.2% to 4.7% below the plane-offset reference and 3.5% to 7.4% below
+    the connected one (VERIFY.md section 5b). The pick opened the right face in all 6; the solid is wrong because solidcraft
+    cuts the stub's tube off short of its base. The page shows them red, in their own gallery group, never green.
 
 ## Test / review checklist (new rows; the phase 3 table still applies to the other examples)
 
@@ -94,9 +97,12 @@ a count.** It does NOT claim the resulting solid is right where no independent r
 
 ## Limits and gaps (not hidden)
 
-* **Unverified builds**: the 6 stub variants above. A hand count for the centred stub gives 2776, solidcraft built 2644.35;
-  unexplained. A shell opened at a face that is partly covered by a unioned stub is exactly where I do not trust the
-  engine's number. Nothing in the page can tell the user.
+* **Known wrong build**: the 6 built stub variants DIVERGE from an independent reference (VERIFY.md section 5b). The
+  builder's hand count 2776 for the centred stub was right under the plane-offset convention (b1's shell 2424 + a whole stub
+  tube 352); solidcraft's 2644.35 is 131.65 lower because its tube is cut off at z = 8.657 instead of z = 5, a solidcraft
+  defect. Neither number is the connected shell (2856). Nothing in the page's resolver can see this; the verdict now can,
+  only for these fixtures (it needs the reference numbers). Any other shell opened at a face partly covered by a unioned
+  body is still not independently checked.
 * The page's OCCT-free evidence panel now names the solidcraft face/edge id, the candidate count on the name's own shape and
   on the target body, the pick point and solidcraft's pick test; its "cross-checks" line is labelled as covering the name's
   own shape only.
@@ -130,6 +136,7 @@ a count.** It does NOT claim the resulting solid is right where no independent r
 | `host/resolve-names.mjs` | the name resolver (pure; reads a topology snapshot) |
 | `host/translate-p4.mjs` | phase 3 translator + named-pick wiring, target check, `resolveAfter` |
 | `host/app.js`, `host/index.html`, `host/src/`, `host/build.sh`, `host/examples.json` | the page, bundle entries, merged example data |
+| `verify-stub-reference.mjs`, `stub-reference-results.json` | the independent reference (OCCT box composition + voxel) for the b2-stub family |
 | `examples.mjs`, `make-reference.mjs` | the gallery (imports phase 3's, unedited) and its OCCT / brep-rs reference measurement |
 | `verify-browser.mjs`, `verify-picks.mjs`, `refusal-probes.mjs`, `regression-fixtures.mjs`, `verify-regression.mjs` | drive the real page (`playwright-cli -s=spike`) |
 | `VERIFY.md`, `browser-results.json`, `picks-results.json`, `refusal-probes.json`, `regression-results.json`, `verify-run.txt`, `picks-run.txt`, `screenshots/` | evidence |

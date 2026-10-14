@@ -1,7 +1,9 @@
 // SPIKE (phase 4), referee only. PERMANENT regression fixtures from the phase 4 critic. Each is a ModelDoc plus what the
 // page MUST do. verify-regression.mjs drives the real page and exits 1 if any expectation is not met, so a regression
 // turns this red. `expect`: 'refuse' (sentence must contain `contains`), 'build' (must equal live OCCT at `bar`),
-// 'any' (classified only: either refused by the resolver with a count, or built and equal to OCCT; never a mismatch).
+// 'any' (classified only: either refused by the resolver with a count, or built and equal to OCCT; never a mismatch),
+// 'diverges' (the b2-stub builds: a KNOWN wrong build, pinned against stub-reference-results.json; it must still be built and
+// still NOT match the independent reference, and the row says DIVERGES. If solidcraft ever matches, this fails so it is re-classified).
 const face = (feature, part) => ({ cause: 'primitive', feature, kind: 'face', part });
 const box = (id, size, center = [0, 0, 0]) => ({ id, kind: 'box', size, center });
 const slotShell = (x) => ({ id: `slot-shell-x${x}`, measure: 's1', expect: 'refuse', contains: 'matches 2 faces',
@@ -17,10 +19,10 @@ const CCW = [[0, 0], [40, 0], [40, 25], [0, 25]];
 const CW = [...CCW].reverse();
 const cap = (end) => ({ cause: 'cap', feature: 'e1', kind: 'face', end });
 const swept = (edge) => ({ cause: 'swept', feature: 'e1', kind: 'face', from: 'sk1', edge });
-const stub = (id, size, center, extra = {}) => ({ id, measure: 's1', expect: 'any',
+const stub = (id, size, center, expect = 'diverges') => ({ id, measure: 's1', expect,
   why: 'b2 stub on b1.+z: the +z plane of b1 after the union is an annulus; shell must build the right solid or refuse with a count',
   features: [box('b1', [40, 30, 10]), box('b2', size, center), { id: 'op1', kind: 'combine', op: 'union', targets: ['b1', 'b2'] },
-    { id: 's1', kind: 'shell', target: 'op1', thickness: 1, open: face('b1', '+z') }], ...extra });
+    { id: 's1', kind: 'shell', target: 'op1', thickness: 1, open: face('b1', '+z') }] });
 export const REGRESSIONS = [
   slotShell(15), slotShell(-15), slotShell(5),
   { id: 'hole-then-shell', measure: 's1', expect: 'build', bar: 3e-4,
@@ -32,6 +34,6 @@ export const REGRESSIONS = [
   xzCase('xz-swept-0-ccw', CCW, 0, swept(0)), xzCase('xz-swept-2-ccw-offset', CCW, 5, swept(2)),
   xzCase('xz-swept-1-cw', CW, 0, swept(1)), xzCase('xz-swept-3-cw-offset', CW, -4, swept(3)),
   stub('stub-centre', [10, 10, 8], [0, 0, 9]), stub('stub-offset-x', [10, 10, 8], [10, 0, 9]), stub('stub-corner', [10, 10, 8], [15, 10, 9]),
-  stub('stub-edge-flush', [10, 10, 8], [15, 0, 9]), stub('stub-tall', [8, 8, 30], [-8, 5, 20]), stub('stub-strip-across', [10, 40, 8], [0, 0, 9]),
-  stub('stub-strip-along', [50, 8, 8], [0, 0, 9]), stub('stub-full-top', [40, 30, 8], [0, 0, 9]), stub('stub-low', [12, 12, 2], [5, -5, 6]),
+  stub('stub-edge-flush', [10, 10, 8], [15, 0, 9]), stub('stub-tall', [8, 8, 30], [-8, 5, 20]), stub('stub-strip-across', [10, 40, 8], [0, 0, 9], 'any'),
+  stub('stub-strip-along', [50, 8, 8], [0, 0, 9], 'any'), stub('stub-full-top', [40, 30, 8], [0, 0, 9], 'any'), stub('stub-low', [12, 12, 2], [5, -5, 6]),
 ];

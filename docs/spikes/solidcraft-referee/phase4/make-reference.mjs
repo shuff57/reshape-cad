@@ -28,9 +28,12 @@ function occtOf(shape) {
   const lo = bx.CornerMin(), hi = bx.CornerMax();
   return { volume: g.Mass(), bbox: [lo.X(), lo.Y(), lo.Z(), hi.X(), hi.Y(), hi.Z()] };
 }
+// --only-group=diverge: measure just that group and MERGE it into the existing examples.json (other entries untouched)
+const onlyGroup = (process.argv.find((a) => a.startsWith('--only-group=')) ?? '').split('=')[1] || null;
 const out = [];
 for (const e of EXAMPLES) {
-  const r = runScript(e.script);
+  if (onlyGroup && e.group !== onlyGroup) continue;
+  const r = e.doc ? { errors: [], doc: e.doc } : runScript(e.script); // doc examples have no script form
   if (r.errors.length) throw new Error(`${e.id}: ${r.errors[0].message}`);
   const doc = solveDoc(r.doc);
   const finalId = [...doc.features].reverse().find((f) => !['sketch', 'datum'].includes(f.kind))?.id;
@@ -55,6 +58,10 @@ for (const e of EXAMPLES) {
   }
   ref.volume = ref.occt?.volume ?? ref.brep?.volume ?? ref.closed ?? null;
   ref.source = ref.occt?.volume != null ? 'OCCT' : ref.brep?.volume != null ? 'brep-rs' : ref.closed != null ? 'closed form' : null;
+  if (e.divergence) { // OCCT's shell no-ops here: its volume is the UNHOLLOWED solid and must not be used as the reference
+    ref.occtShellNoOp = ref.occt?.volume ?? null;
+    ref.volume = e.ref.volume; ref.source = e.ref.source;
+  }
   if (ref.occt?.bbox) ref.bbox = ref.occt.bbox;
   else if (e.bbox) ref.bbox = e.bbox;
   // cross-checks the reviewer can see: the sources must agree with each other
@@ -65,5 +72,11 @@ for (const e of EXAMPLES) {
   out.push({ ...e, ref });
   console.log(e.id.padEnd(26), `final ${finalId}`.padEnd(14), 'occt', ref.occt?.volume?.toFixed(6) ?? JSON.stringify(ref.occt), '| brep', ref.brep.volume?.toFixed(6) ?? ref.brep.refused, '| closed', ref.closed?.toFixed(6) ?? '-', '|', JSON.stringify(ref.agree));
 }
-writeFileSync(path.join(HERE, 'host', 'examples.json'), JSON.stringify(out, null, 1) + '\n');
-console.log(`wrote host/examples.json (${out.length} examples)`);
+let final = out;
+if (onlyGroup) {
+  const prev = JSON.parse(readFileSync(path.join(HERE, 'host', 'examples.json'), 'utf8'));
+  const ids = new Set(out.map((x) => x.id));
+  final = [...prev.filter((x) => !ids.has(x.id)), ...out];
+}
+writeFileSync(path.join(HERE, 'host', 'examples.json'), JSON.stringify(final, null, 1) + '\n');
+console.log(`wrote host/examples.json (${final.length} examples)`);

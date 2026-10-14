@@ -3,7 +3,9 @@
 //   * new examples for every cause this phase resolves in the browser (primitive, carried, swept, between),
 //   * new refusal examples for names this phase does not resolve (with the plain sentence checked).
 // Every script here was run in the real page and scored against live OCCT (VERIFY.md).
+import { readFileSync } from 'node:fs';
 import { EXAMPLES as P3 } from '../phase3/examples.mjs';
+import { REGRESSIONS } from './regression-fixtures.mjs';
 
 const keep = P3.filter((e) => !['refuse-shell-open', 'refuse-edge-pick', 'refuse-counterbore-round'].includes(e.id));
 const gal = (id) => keep.findIndex((e) => e.id === id);
@@ -49,4 +51,23 @@ const NAMED = [
     expect: 'EXPECTED REFUSAL: the round is refused with the sentence that a swept name over a circle sketch is not resolved in the browser demo. The plate and pocket stay.', refusal: true, partial: true, curved: true, expectRefused: [{ id: 'round1', contains: 'swept name over it is not resolved' }], expectBuilt: ['pocket1'] },
 ];
 
-export const EXAMPLES = [...keep.slice(0, gal('refuse-shell-closed')), ...NAMED.filter((e) => e.group !== 'refusal'), ...keep.slice(gal('refuse-shell-closed')), ...NAMED.filter((e) => e.group === 'refusal')];
+// ---- the b2-stub shell family: built by solidcraft, DIVERGES from the independent reference (VERIFY.md section 5b) ----------
+// The reSHape script language cannot name "b1's +z face" on a union (open: 'top' on the union opens b2's top instead), so these
+// carry a ModelDoc (`doc`); the page runs it as is while the editor text is unedited. The reference numbers come from
+// verify-stub-reference.mjs (stub-reference-results.json): box composition on live OCCT, cross-checked by a voxel estimator.
+// Nothing here is a pass: the page shows the verdict computed from `divergence` (red when it does not match, never green
+// unless the built volume equals a reference).
+const STUBREF = JSON.parse(readFileSync(new URL('./stub-reference-results.json', import.meta.url), 'utf8')).results;
+const STUBS = Object.keys(STUBREF).map((id) => {
+  const fx = REGRESSIONS.find((r) => r.id === id);
+  const r0 = STUBREF[id];
+  const r = { occt_P: +r0.occt_P.toFixed(3), occt_L: +r0.occt_L.toFixed(3) };
+  const doc = { version: 1, features: fx.features };
+  return { id: 'diverge-' + id, group: 'diverge', title: `Shell open at b1's top, stub ${id.replace('stub-', '')} unioned on it`,
+    script: `// ModelDoc (no script form: the script language cannot name b1's +z face on the union).\n// b1 = box 40x30x10 centred at the origin, b2 = ${JSON.stringify(fx.features[1].size)} at ${JSON.stringify(fx.features[1].center)}, union, shell 1 mm, open = b1.+z\n${JSON.stringify(doc)}`,
+    expect: `KNOWN DIVERGENCE, shown red on purpose. solidcraft builds this shell, but the independent reference is ${r.occt_P} (plane offset: every face 1 mm in, the open plane not offset) or ${r.occt_L} (distance erosion: the stub stays attached). OCCT's own shell no-ops here and brep-rs does not measure it, so neither is a reference.`,
+    doc, divergence: { status: 'diverges', refs: [{ label: 'plane-offset box composition (OCCT)', volume: r.occt_P }, { label: 'distance erosion (OCCT boxes, voxel-checked)', volume: r.occt_L }] },
+    ref: { source: 'independent box composition (OCCT booleans of primitives; voxel cross-check)', volume: r.occt_P, finalFeature: 's1' } };
+});
+
+export const EXAMPLES = [...keep.slice(0, gal('refuse-shell-closed')), ...NAMED.filter((e) => e.group !== 'refusal'), ...keep.slice(gal('refuse-shell-closed')), ...NAMED.filter((e) => e.group === 'refusal'), ...STUBS];

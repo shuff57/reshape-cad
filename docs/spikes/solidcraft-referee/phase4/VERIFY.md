@@ -121,7 +121,7 @@ Scored against the OCCT solid of the CORRECT name; the score includes centre of 
 
 ## 4. The real page: every gallery example (`verify-browser.mjs`)
 
-29 examples; none FAIL/ERROR. Screenshots kept (few): `screenshots/`.
+29 phase-4 examples; none FAIL/ERROR. A further 6 `diverge-stub-*` examples (section 5b) were added later and are red by design (verdict `DIVERGES`). Screenshots kept (few): `screenshots/`.
 
 | example | verdict |
 |---|---|
@@ -159,7 +159,7 @@ Restore self-test: `{"failedAsExpected": true, "failed": {"command": "solid.cyli
 
 ## 5. Regression fixtures (permanent; `regression-fixtures.mjs`, `verify-regression.mjs`, exit 1 on any miss)
 
-The critic's repros plus extras. `refuse` = must be refused by the resolver with the sentence; `build` = must equal live OCCT at 3e-4; `any` = classify only, never a mismatch. brep-rs is shown where it builds. **OCCT silently returns the un-hollowed volume on every one of the b2-stub variants (reported NO-OP, no reference).**
+The critic's repros plus extras. `refuse` = must be refused by the resolver with the sentence; `build` = must equal live OCCT at 3e-4; `any` = classify only, never a mismatch; `diverges` = a KNOWN wrong build pinned against the independent reference of section 5b (the run exits 1 if solidcraft ever matches it, so the fixture is re-classified). brep-rs is shown where it builds. **OCCT silently returns the un-hollowed volume on every one of the b2-stub variants (reported NO-OP, no reference).**
 
 | fixture | expect | page | page volume | OCCT | brep-rs | class / sentence |
 |---|---|---|---|---|---|---|
@@ -175,17 +175,65 @@ The critic's repros plus extras. `refuse` = must be refused by the resolver with
 | xz-swept-2-ccw-offset | build | built OK | 2880 | 2879.999999999999 | 2880 | built, equals OCCT  |
 | xz-swept-1-cw | build | built OK | 3030 | 3030.000000000001 | 2880 | built, equals OCCT  |
 | xz-swept-3-cw-offset | build | built OK | 3030 | 3030.000000000001 | 2880 | built, equals OCCT  |
-| stub-centre | any | built OK | 2644.346 | NO-OP 12800.0 | None | built, OCCT no-op; brep-rs none  |
-| stub-offset-x | any | built OK | 2644.346 | NO-OP 12800 | None | built, OCCT no-op; brep-rs none  |
-| stub-corner | any | built OK | 2713.83 | NO-OP 12800.0 | None | built, OCCT no-op; brep-rs none  |
-| stub-edge-flush | any | built OK | 2680.916 | NO-OP 12800 | None | built, OCCT no-op; brep-rs none  |
-| stub-tall | any | built OK | 3182.356 | NO-OP 13920.0 | None | built, OCCT no-op; brep-rs none  |
+| stub-centre | diverges | built OK | 2644.346 | NO-OP | None | DIVERGES from the independent reference (P 2776, L 2856; section 5b) |
+| stub-offset-x | diverges | built OK | 2644.346 | NO-OP | None | DIVERGES from the independent reference (P 2776, L 2856; section 5b) |
+| stub-corner | diverges | built OK | 2713.830 | NO-OP | None | DIVERGES from the independent reference (P 2776, L 2812; section 5b) |
+| stub-edge-flush | diverges | built OK | 2680.916 | NO-OP | None | DIVERGES from the independent reference (P 2776, L 2832; section 5b) |
+| stub-tall | diverges | built OK | 3182.356 | NO-OP | None | DIVERGES from the independent reference (P 3300, L 3364; section 5b) |
 | stub-strip-across | any | refused OK | None | NO-OP 15200 | None | resolver refusal with a count s1 (shell): b1.face[+z] matches 4 faces on b_b1 (F1:+z#[F1:-x,F2:-x], F1:+z#[F1:+x,F2:+x], F2:-z#[F1:-y,F2:-y], F2:-z#[F1:+y,F2:+y]; all on the named plane); a name must pick exactly one, so nothing i |
 | stub-strip-along | any | refused OK | None | NO-OP 15200 | None | resolver refusal with a count s1 (shell): b1.face[+z] matches 4 faces on b_b1 (F1:+z#[F1:-y,F2:-y], F1:+z#[F1:+y,F2:+y], F2:-z#[F1:-x,F2:-x], F2:-z#[F1:+x,F2:+x]; all on the named plane); a name must pick exactly one, so nothing i |
 | stub-full-top | any | refused OK | None | NO-OP 21600.0 | 4576.0 | resolver refusal s1 (shell): b1.face[+z] resolves on b1, but no face of b_b1 lies on that plane any more; nothing is picked |
-| stub-low | any | built OK | 2524.0 | NO-OP 12288.0 | None | built, OCCT no-op; brep-rs none  |
+| stub-low | diverges | built OK | 2524.000 | NO-OP | None | DIVERGES from the independent reference (P 2612, L 2708; section 5b) |
 
-**Unverified builds (honest):** the stub-centre / offset-x / corner / edge-flush / tall / low variants build in solidcraft but have NO independent reference (OCCT no-ops, brep-rs refuses or does not measure). A hand calculation for stub-centre (outer 12800 - cavity 9576 - 448 = 2776) differs from solidcraft's 2644.35 by 131.65 and I could not explain the gap, so these builds must be treated as UNVERIFIED, not correct. The page's resolver only guarantees the pick was unique and safe on the target.
+**The 6 built stub variants are not "unverified" any more: they now have an independent reference and all 6 DIVERGE (section 5b).** The 3 refused ones stay refusals with a count.
+
+## 5b. The b2-stub shell family against an independent reference (`verify-stub-reference.mjs`, `stub-reference-results.json`)
+
+Fixture: b1 = box 40x30x10 centred at the origin (top at z = 5), b2 a second box standing on that top, union, `shell` 1 mm, open face named `b1.+z`. The "named b1.+z face" after the union is the part of b1's top NOT covered by b2 (an annulus; the stub's footprint is interior). Everything else is offset 1 mm inward, including b2's 5 outer faces. OCCT's own `shell` is not used (buildDoc no-ops it: it returns the unhollowed volume) and solidcraft is not used; no number comes from the thing under test.
+
+Two independent methods, which must agree with each other (they do, to the printed digits):
+
+* **(A) Box composition on live OCCT** (booleans of primitives only, via `buildDoc`, same harness pattern as phase 1): outer = b1 U b2, minus a cavity composed of boxes.
+* **(B) A voxel estimator** (step 0.1 mm, `cavity = { p in S : dist(p, B) > 1 }`, B = every boundary rectangle of S except the open face).
+
+Two conventions, because "offset inward" is not unique at the stub's foot (both reported, neither tuned):
+
+* **P, plane offset**: each remaining face moves 1 mm inward along its plane; the open plane is not offset. cavity = b1 inner box (38x28, z -4..5) U b2 inner box (b2 shrunk 1 mm on its 5 outer faces, bottom not offset). For a stub standing on the opened top this leaves b2's tube resting on nothing (a second, free shell), except where b2 is flush with b1's wall.
+* **L, distance erosion**: cavity = points farther than 1 mm (Chebyshev) from every non-open face, so the stub stays attached: material within 1 mm of the stub's wall foot (a ring at z 4..5 around the footprint) stays. This is the one that is a connected solid. E (Euclidean ball) is reported from the voxel estimator only.
+
+| variant | solidcraft | P (OCCT boxes = voxel) | delta vs P | L (OCCT boxes = voxel) | delta vs L | E (voxel) | kernel shells | class |
+|---|---|---|---|---|---|---|---|---|
+| stub-centre | 2644.346 | 2776.000 | -4.74% | 2856.000 | -7.41% | 2838.62 | 2 | **DIVERGES** |
+| stub-offset-x | 2644.346 | 2776.000 | -4.74% | 2856.000 | -7.41% | 2838.62 | 2 | **DIVERGES** |
+| stub-corner | 2713.830 | 2776.000 | -2.24% | 2812.000 | -3.49% | 2804.30 | 1 | **DIVERGES** |
+| stub-edge-flush | 2680.916 | 2776.000 | -3.43% | 2832.000 | -5.33% | 2819.95 | 1 | **DIVERGES** |
+| stub-tall | 3182.356 | 3300.000 | -3.56% | 3364.000 | -5.40% | 3349.98 | 2 | **DIVERGES** |
+| stub-low | 2524.000 | 2612.000 | -3.37% | 2708.000 | -6.79% | 2687.26 | 2 | **DIVERGES** |
+
+The bar is the page's own (planar 1e-9); the smallest miss is 2.2e-2, seven orders over it, so no choice of convention or bar changes a class. solidcraft is smaller than every convention, i.e. it removed more material than any reading of "shell" allows.
+
+**Did the pick open the right face? Yes, for all 6.** In solidcraft's own topology of the result: the `F1:+z` face exists only as the 1 mm rim (area 136; 117 / 126 where the stub is flush with a wall and covers part of the rim), the floor `F4:inner:F1:-z` (38x28 = 1064) and the 4 inner walls are present, and there is no cavity ceiling at z = 4. The open plane is the b1 +z plane and nothing else was opened.
+
+**Why the number is wrong (stub-centre, exact arithmetic).** solidcraft's result is b1's shell, 40*30*10 - 38*28*9 = 12000 - 9576 = 2424, plus a floating stub tube that starts at z = 8.657 instead of z = 5: faces `F2:+x` etc. have area 43.4293 = 10 x 4.3429 (z 8.657..13), inner walls 26.7435 = 8 x 3.3429 (z 8.657..12). Tube volume = 10*10*4.3429 - 8*8*3.3429 = 434.29 - 213.94 = 220.35, total 2424 + 220.35 = 2644.35. The correct tube (P) is z 5..13: 10*10*8 - 8*8*7 = 800 - 448 = 352, total 2776. Missing = 352 - 220.35 = 131.65 = (100 - 64) x 3.657 (the bottom 3.657 mm of the tube's walls), the same 131.654 as the discrepancy below. Tall: tube cut at z = 9.2015, missing (64 - 36) x 4.2015 = 117.64 = 3300 - 3182.36. Low: the stub (z 5..7) loses its outer walls entirely and survives only as a floating 10x10x1 lid (volume 100): 2424 + 100 = 2524, missing 188 - 100 = 88. The cut heights (3.657 and 4.2015 mm above the base, 10 and 8 mm footprints) are not t, 2t or any thickness derived number; a defect in solidcraft's shell of a fused body, not a convention.
+
+### The 2776 vs 2644.35 discrepancy, settled
+
+The builder's hand count, outer 12800 - cavity 9576 - 448 = **2776**, is exactly reference P (b1's shell 2424 + a whole tube of 352), so the hand count was right under the plane-offset convention; it was not a mistake and not unexplained. solidcraft's 2644.35 is 131.65 lower because its stub tube is truncated: missing (10x10 - 8x8) x 3.657 = 131.654. The cause is a **solidcraft defect**, not a convention. (A second, separate point: P's stub tube is physically unsupported; the connected shell L is 2856, i.e. 211.65 above solidcraft's number. So the true shell is neither 2776 nor 2644.35 under a "connected solid" reading.)
+
+### Classification of the 6
+
+| variant | class | reason |
+|---|---|---|
+| stub-centre | DIVERGES | -4.74% vs P, -7.41% vs L; tube cut at z = 8.657 |
+| stub-offset-x | DIVERGES | identical to centre (translation of the stub inside the top) |
+| stub-corner | DIVERGES | -2.24% vs P, -3.49% vs L; one shell, tube cut short |
+| stub-edge-flush | DIVERGES | -3.43% vs P, -5.33% vs L; one shell, tube cut short |
+| stub-tall | DIVERGES | -3.56% vs P, -5.40% vs L; tube cut at z = 9.20 |
+| stub-low | DIVERGES | -3.37% vs P, -6.79% vs L; outer walls gone, floating lid only |
+
+None is VERIFIED; none is UNVERIFIABLE any more (a reference exists and is agreed by two methods). OCCT/brep-rs remain no help: OCCT no-ops, brep-rs does not measure these (stub-full-top only: 4576.0 on a refused feature).
+
+In the page these six are gallery group "Built, but DIVERGES from an independent reference (not a pass)" (`diverge-stub-*`, ModelDoc examples: the script language cannot name b1's face on a union, `open: 'top'` opens b2's top instead). The verdict is computed from the references and is red `DIVERGES`; amber `UNVERIFIED` and green `VERIFIED` exist in the verdict code and only appear for a reference that is missing / matched. Screenshots: `screenshots/diverge-stub-*.png`.
 
 ## 6. Refusal probes (`refusal-probes.mjs`)
 

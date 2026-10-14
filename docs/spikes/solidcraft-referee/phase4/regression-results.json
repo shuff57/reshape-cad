@@ -364,7 +364,7 @@
  },
  {
   "id": "stub-centre",
-  "expect": "any",
+  "expect": "diverges",
   "status": "built",
   "sentence": null,
   "volume": 2644.345622159777,
@@ -392,15 +392,18 @@
     "index": 9
    }
   },
-  "brepMatch": false,
-  "match": false,
-  "reference": "none (OCCT no-op)",
-  "class": "built, OCCT no-op; brep-rs none",
+  "reference": {
+   "P": 2775.999999999999,
+   "L": 2856.000000000001,
+   "relDeltaP": 0.04742592861679467,
+   "relDeltaL": 0.07410867571436405
+  },
+  "class": "DIVERGES from the independent reference",
   "ok": true
  },
  {
   "id": "stub-offset-x",
-  "expect": "any",
+  "expect": "diverges",
   "status": "built",
   "sentence": null,
   "volume": 2644.3456221597767,
@@ -428,15 +431,18 @@
     "index": 9
    }
   },
-  "brepMatch": false,
-  "match": false,
-  "reference": "none (OCCT no-op)",
-  "class": "built, OCCT no-op; brep-rs none",
+  "reference": {
+   "P": 2776.0000000000005,
+   "L": 2855.9999999999995,
+   "relDeltaP": 0.0474259286167953,
+   "relDeltaL": 0.07410867571436376
+  },
+  "class": "DIVERGES from the independent reference",
   "ok": true
  },
  {
   "id": "stub-corner",
-  "expect": "any",
+  "expect": "diverges",
   "status": "built",
   "sentence": null,
   "volume": 2713.8298771310065,
@@ -464,15 +470,18 @@
     "index": 7
    }
   },
-  "brepMatch": false,
-  "match": false,
-  "reference": "none (OCCT no-op)",
-  "class": "built, OCCT no-op; brep-rs none",
+  "reference": {
+   "P": 2776,
+   "L": 2812.000000000001,
+   "relDeltaP": 0.022395577402375192,
+   "relDeltaL": 0.03491113900035363
+  },
+  "class": "DIVERGES from the independent reference",
   "ok": true
  },
  {
   "id": "stub-edge-flush",
-  "expect": "any",
+  "expect": "diverges",
   "status": "built",
   "sentence": null,
   "volume": 2680.9162826709507,
@@ -500,15 +509,18 @@
     "index": 8
    }
   },
-  "brepMatch": false,
-  "match": false,
-  "reference": "none (OCCT no-op)",
-  "class": "built, OCCT no-op; brep-rs none",
+  "reference": {
+   "P": 2776.000000000001,
+   "L": 2832.0000000000027,
+   "relDeltaP": 0.03425205955657425,
+   "relDeltaL": 0.053348770243309265
+  },
+  "class": "DIVERGES from the independent reference",
   "ok": true
  },
  {
   "id": "stub-tall",
-  "expect": "any",
+  "expect": "diverges",
   "status": "built",
   "sentence": null,
   "volume": 3182.3562606759406,
@@ -536,10 +548,13 @@
     "index": 9
    }
   },
-  "brepMatch": false,
-  "match": false,
-  "reference": "none (OCCT no-op)",
-  "class": "built, OCCT no-op; brep-rs none",
+  "reference": {
+   "P": 3299.999999999998,
+   "L": 3364.000000000002,
+   "relDeltaP": 0.03564961797698717,
+   "relDeltaL": 0.053996355328198915
+  },
+  "class": "DIVERGES from the independent reference",
   "ok": true
  },
  {
@@ -595,7 +610,7 @@
  },
  {
   "id": "stub-low",
-  "expect": "any",
+  "expect": "diverges",
   "status": "built",
   "sentence": null,
   "volume": 2524.0000000000005,
@@ -623,10 +638,13 @@
     "index": 9
    }
   },
-  "brepMatch": false,
-  "match": false,
-  "reference": "none (OCCT no-op)",
-  "class": "built, OCCT no-op; brep-rs none",
+  "reference": {
+   "P": 2611.9999999999986,
+   "L": 2707.999999999996,
+   "relDeltaP": 0.033690658499233625,
+   "relDeltaL": 0.06794682422451837
+  },
+  "class": "DIVERGES from the independent reference",
   "ok": true
  }
 ]

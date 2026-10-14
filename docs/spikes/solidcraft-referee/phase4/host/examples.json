@@ -1192,5 +1192,629 @@
     "occtVsBrep": 1.2723211432442464e-16
    }
   }
+ },
+ {
+  "id": "diverge-stub-centre",
+  "group": "diverge",
+  "title": "Shell open at b1's top, stub centre unioned on it",
+  "script": "// ModelDoc (no script form: the script language cannot name b1's +z face on the union).\n// b1 = box 40x30x10 centred at the origin, b2 = [10,10,8] at [0,0,9], union, shell 1 mm, open = b1.+z\n{\"version\":1,\"features\":[{\"id\":\"b1\",\"kind\":\"box\",\"size\":[40,30,10],\"center\":[0,0,0]},{\"id\":\"b2\",\"kind\":\"box\",\"size\":[10,10,8],\"center\":[0,0,9]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"union\",\"targets\":[\"b1\",\"b2\"]},{\"id\":\"s1\",\"kind\":\"shell\",\"target\":\"op1\",\"thickness\":1,\"open\":{\"cause\":\"primitive\",\"feature\":\"b1\",\"kind\":\"face\",\"part\":\"+z\"}}]}",
+  "expect": "KNOWN DIVERGENCE, shown red on purpose. solidcraft builds this shell, but the independent reference is 2776 (plane offset: every face 1 mm in, the open plane not offset) or 2856 (distance erosion: the stub stays attached). OCCT's own shell no-ops here and brep-rs does not measure it, so neither is a reference.",
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "b1",
+     "kind": "box",
+     "size": [
+      40,
+      30,
+      10
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "id": "b2",
+     "kind": "box",
+     "size": [
+      10,
+      10,
+      8
+     ],
+     "center": [
+      0,
+      0,
+      9
+     ]
+    },
+    {
+     "id": "op1",
+     "kind": "combine",
+     "op": "union",
+     "targets": [
+      "b1",
+      "b2"
+     ]
+    },
+    {
+     "id": "s1",
+     "kind": "shell",
+     "target": "op1",
+     "thickness": 1,
+     "open": {
+      "cause": "primitive",
+      "feature": "b1",
+      "kind": "face",
+      "part": "+z"
+     }
+    }
+   ]
+  },
+  "divergence": {
+   "status": "diverges",
+   "refs": [
+    {
+     "label": "plane-offset box composition (OCCT)",
+     "volume": 2776
+    },
+    {
+     "label": "distance erosion (OCCT boxes, voxel-checked)",
+     "volume": 2856
+    }
+   ]
+  },
+  "ref": {
+   "finalFeature": "s1",
+   "closed": null,
+   "brep": {
+    "refused": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- s1 is shown without it."
+   },
+   "occt": {
+    "volume": 12800.000000000002,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     13
+    ]
+   },
+   "volume": 2776,
+   "source": "independent box composition (OCCT booleans of primitives; voxel cross-check)",
+   "occtShellNoOp": 12800.000000000002,
+   "bbox": [
+    -20,
+    -15,
+    -5,
+    20,
+    15,
+    13
+   ],
+   "agree": {}
+  }
+ },
+ {
+  "id": "diverge-stub-offset-x",
+  "group": "diverge",
+  "title": "Shell open at b1's top, stub offset-x unioned on it",
+  "script": "// ModelDoc (no script form: the script language cannot name b1's +z face on the union).\n// b1 = box 40x30x10 centred at the origin, b2 = [10,10,8] at [10,0,9], union, shell 1 mm, open = b1.+z\n{\"version\":1,\"features\":[{\"id\":\"b1\",\"kind\":\"box\",\"size\":[40,30,10],\"center\":[0,0,0]},{\"id\":\"b2\",\"kind\":\"box\",\"size\":[10,10,8],\"center\":[10,0,9]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"union\",\"targets\":[\"b1\",\"b2\"]},{\"id\":\"s1\",\"kind\":\"shell\",\"target\":\"op1\",\"thickness\":1,\"open\":{\"cause\":\"primitive\",\"feature\":\"b1\",\"kind\":\"face\",\"part\":\"+z\"}}]}",
+  "expect": "KNOWN DIVERGENCE, shown red on purpose. solidcraft builds this shell, but the independent reference is 2776 (plane offset: every face 1 mm in, the open plane not offset) or 2856 (distance erosion: the stub stays attached). OCCT's own shell no-ops here and brep-rs does not measure it, so neither is a reference.",
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "b1",
+     "kind": "box",
+     "size": [
+      40,
+      30,
+      10
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "id": "b2",
+     "kind": "box",
+     "size": [
+      10,
+      10,
+      8
+     ],
+     "center": [
+      10,
+      0,
+      9
+     ]
+    },
+    {
+     "id": "op1",
+     "kind": "combine",
+     "op": "union",
+     "targets": [
+      "b1",
+      "b2"
+     ]
+    },
+    {
+     "id": "s1",
+     "kind": "shell",
+     "target": "op1",
+     "thickness": 1,
+     "open": {
+      "cause": "primitive",
+      "feature": "b1",
+      "kind": "face",
+      "part": "+z"
+     }
+    }
+   ]
+  },
+  "divergence": {
+   "status": "diverges",
+   "refs": [
+    {
+     "label": "plane-offset box composition (OCCT)",
+     "volume": 2776
+    },
+    {
+     "label": "distance erosion (OCCT boxes, voxel-checked)",
+     "volume": 2856
+    }
+   ]
+  },
+  "ref": {
+   "finalFeature": "s1",
+   "closed": null,
+   "brep": {
+    "refused": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- s1 is shown without it."
+   },
+   "occt": {
+    "volume": 12800,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     13
+    ]
+   },
+   "volume": 2776,
+   "source": "independent box composition (OCCT booleans of primitives; voxel cross-check)",
+   "occtShellNoOp": 12800,
+   "bbox": [
+    -20,
+    -15,
+    -5,
+    20,
+    15,
+    13
+   ],
+   "agree": {}
+  }
+ },
+ {
+  "id": "diverge-stub-corner",
+  "group": "diverge",
+  "title": "Shell open at b1's top, stub corner unioned on it",
+  "script": "// ModelDoc (no script form: the script language cannot name b1's +z face on the union).\n// b1 = box 40x30x10 centred at the origin, b2 = [10,10,8] at [15,10,9], union, shell 1 mm, open = b1.+z\n{\"version\":1,\"features\":[{\"id\":\"b1\",\"kind\":\"box\",\"size\":[40,30,10],\"center\":[0,0,0]},{\"id\":\"b2\",\"kind\":\"box\",\"size\":[10,10,8],\"center\":[15,10,9]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"union\",\"targets\":[\"b1\",\"b2\"]},{\"id\":\"s1\",\"kind\":\"shell\",\"target\":\"op1\",\"thickness\":1,\"open\":{\"cause\":\"primitive\",\"feature\":\"b1\",\"kind\":\"face\",\"part\":\"+z\"}}]}",
+  "expect": "KNOWN DIVERGENCE, shown red on purpose. solidcraft builds this shell, but the independent reference is 2776 (plane offset: every face 1 mm in, the open plane not offset) or 2812 (distance erosion: the stub stays attached). OCCT's own shell no-ops here and brep-rs does not measure it, so neither is a reference.",
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "b1",
+     "kind": "box",
+     "size": [
+      40,
+      30,
+      10
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "id": "b2",
+     "kind": "box",
+     "size": [
+      10,
+      10,
+      8
+     ],
+     "center": [
+      15,
+      10,
+      9
+     ]
+    },
+    {
+     "id": "op1",
+     "kind": "combine",
+     "op": "union",
+     "targets": [
+      "b1",
+      "b2"
+     ]
+    },
+    {
+     "id": "s1",
+     "kind": "shell",
+     "target": "op1",
+     "thickness": 1,
+     "open": {
+      "cause": "primitive",
+      "feature": "b1",
+      "kind": "face",
+      "part": "+z"
+     }
+    }
+   ]
+  },
+  "divergence": {
+   "status": "diverges",
+   "refs": [
+    {
+     "label": "plane-offset box composition (OCCT)",
+     "volume": 2776
+    },
+    {
+     "label": "distance erosion (OCCT boxes, voxel-checked)",
+     "volume": 2812
+    }
+   ]
+  },
+  "ref": {
+   "finalFeature": "s1",
+   "closed": null,
+   "brep": {
+    "refused": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- s1 is shown without it."
+   },
+   "occt": {
+    "volume": 12800.000000000002,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     13
+    ]
+   },
+   "volume": 2776,
+   "source": "independent box composition (OCCT booleans of primitives; voxel cross-check)",
+   "occtShellNoOp": 12800.000000000002,
+   "bbox": [
+    -20,
+    -15,
+    -5,
+    20,
+    15,
+    13
+   ],
+   "agree": {}
+  }
+ },
+ {
+  "id": "diverge-stub-edge-flush",
+  "group": "diverge",
+  "title": "Shell open at b1's top, stub edge-flush unioned on it",
+  "script": "// ModelDoc (no script form: the script language cannot name b1's +z face on the union).\n// b1 = box 40x30x10 centred at the origin, b2 = [10,10,8] at [15,0,9], union, shell 1 mm, open = b1.+z\n{\"version\":1,\"features\":[{\"id\":\"b1\",\"kind\":\"box\",\"size\":[40,30,10],\"center\":[0,0,0]},{\"id\":\"b2\",\"kind\":\"box\",\"size\":[10,10,8],\"center\":[15,0,9]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"union\",\"targets\":[\"b1\",\"b2\"]},{\"id\":\"s1\",\"kind\":\"shell\",\"target\":\"op1\",\"thickness\":1,\"open\":{\"cause\":\"primitive\",\"feature\":\"b1\",\"kind\":\"face\",\"part\":\"+z\"}}]}",
+  "expect": "KNOWN DIVERGENCE, shown red on purpose. solidcraft builds this shell, but the independent reference is 2776 (plane offset: every face 1 mm in, the open plane not offset) or 2832 (distance erosion: the stub stays attached). OCCT's own shell no-ops here and brep-rs does not measure it, so neither is a reference.",
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "b1",
+     "kind": "box",
+     "size": [
+      40,
+      30,
+      10
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "id": "b2",
+     "kind": "box",
+     "size": [
+      10,
+      10,
+      8
+     ],
+     "center": [
+      15,
+      0,
+      9
+     ]
+    },
+    {
+     "id": "op1",
+     "kind": "combine",
+     "op": "union",
+     "targets": [
+      "b1",
+      "b2"
+     ]
+    },
+    {
+     "id": "s1",
+     "kind": "shell",
+     "target": "op1",
+     "thickness": 1,
+     "open": {
+      "cause": "primitive",
+      "feature": "b1",
+      "kind": "face",
+      "part": "+z"
+     }
+    }
+   ]
+  },
+  "divergence": {
+   "status": "diverges",
+   "refs": [
+    {
+     "label": "plane-offset box composition (OCCT)",
+     "volume": 2776
+    },
+    {
+     "label": "distance erosion (OCCT boxes, voxel-checked)",
+     "volume": 2832
+    }
+   ]
+  },
+  "ref": {
+   "finalFeature": "s1",
+   "closed": null,
+   "brep": {
+    "refused": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- s1 is shown without it."
+   },
+   "occt": {
+    "volume": 12800,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     13
+    ]
+   },
+   "volume": 2776,
+   "source": "independent box composition (OCCT booleans of primitives; voxel cross-check)",
+   "occtShellNoOp": 12800,
+   "bbox": [
+    -20,
+    -15,
+    -5,
+    20,
+    15,
+    13
+   ],
+   "agree": {}
+  }
+ },
+ {
+  "id": "diverge-stub-tall",
+  "group": "diverge",
+  "title": "Shell open at b1's top, stub tall unioned on it",
+  "script": "// ModelDoc (no script form: the script language cannot name b1's +z face on the union).\n// b1 = box 40x30x10 centred at the origin, b2 = [8,8,30] at [-8,5,20], union, shell 1 mm, open = b1.+z\n{\"version\":1,\"features\":[{\"id\":\"b1\",\"kind\":\"box\",\"size\":[40,30,10],\"center\":[0,0,0]},{\"id\":\"b2\",\"kind\":\"box\",\"size\":[8,8,30],\"center\":[-8,5,20]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"union\",\"targets\":[\"b1\",\"b2\"]},{\"id\":\"s1\",\"kind\":\"shell\",\"target\":\"op1\",\"thickness\":1,\"open\":{\"cause\":\"primitive\",\"feature\":\"b1\",\"kind\":\"face\",\"part\":\"+z\"}}]}",
+  "expect": "KNOWN DIVERGENCE, shown red on purpose. solidcraft builds this shell, but the independent reference is 3300 (plane offset: every face 1 mm in, the open plane not offset) or 3364 (distance erosion: the stub stays attached). OCCT's own shell no-ops here and brep-rs does not measure it, so neither is a reference.",
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "b1",
+     "kind": "box",
+     "size": [
+      40,
+      30,
+      10
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "id": "b2",
+     "kind": "box",
+     "size": [
+      8,
+      8,
+      30
+     ],
+     "center": [
+      -8,
+      5,
+      20
+     ]
+    },
+    {
+     "id": "op1",
+     "kind": "combine",
+     "op": "union",
+     "targets": [
+      "b1",
+      "b2"
+     ]
+    },
+    {
+     "id": "s1",
+     "kind": "shell",
+     "target": "op1",
+     "thickness": 1,
+     "open": {
+      "cause": "primitive",
+      "feature": "b1",
+      "kind": "face",
+      "part": "+z"
+     }
+    }
+   ]
+  },
+  "divergence": {
+   "status": "diverges",
+   "refs": [
+    {
+     "label": "plane-offset box composition (OCCT)",
+     "volume": 3300
+    },
+    {
+     "label": "distance erosion (OCCT boxes, voxel-checked)",
+     "volume": 3364
+    }
+   ]
+  },
+  "ref": {
+   "finalFeature": "s1",
+   "closed": null,
+   "brep": {
+    "refused": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- s1 is shown without it."
+   },
+   "occt": {
+    "volume": 13919.999999999998,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     35
+    ]
+   },
+   "volume": 3300,
+   "source": "independent box composition (OCCT booleans of primitives; voxel cross-check)",
+   "occtShellNoOp": 13919.999999999998,
+   "bbox": [
+    -20,
+    -15,
+    -5,
+    20,
+    15,
+    35
+   ],
+   "agree": {}
+  }
+ },
+ {
+  "id": "diverge-stub-low",
+  "group": "diverge",
+  "title": "Shell open at b1's top, stub low unioned on it",
+  "script": "// ModelDoc (no script form: the script language cannot name b1's +z face on the union).\n// b1 = box 40x30x10 centred at the origin, b2 = [12,12,2] at [5,-5,6], union, shell 1 mm, open = b1.+z\n{\"version\":1,\"features\":[{\"id\":\"b1\",\"kind\":\"box\",\"size\":[40,30,10],\"center\":[0,0,0]},{\"id\":\"b2\",\"kind\":\"box\",\"size\":[12,12,2],\"center\":[5,-5,6]},{\"id\":\"op1\",\"kind\":\"combine\",\"op\":\"union\",\"targets\":[\"b1\",\"b2\"]},{\"id\":\"s1\",\"kind\":\"shell\",\"target\":\"op1\",\"thickness\":1,\"open\":{\"cause\":\"primitive\",\"feature\":\"b1\",\"kind\":\"face\",\"part\":\"+z\"}}]}",
+  "expect": "KNOWN DIVERGENCE, shown red on purpose. solidcraft builds this shell, but the independent reference is 2612 (plane offset: every face 1 mm in, the open plane not offset) or 2708 (distance erosion: the stub stays attached). OCCT's own shell no-ops here and brep-rs does not measure it, so neither is a reference.",
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "b1",
+     "kind": "box",
+     "size": [
+      40,
+      30,
+      10
+     ],
+     "center": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "id": "b2",
+     "kind": "box",
+     "size": [
+      12,
+      12,
+      2
+     ],
+     "center": [
+      5,
+      -5,
+      6
+     ]
+    },
+    {
+     "id": "op1",
+     "kind": "combine",
+     "op": "union",
+     "targets": [
+      "b1",
+      "b2"
+     ]
+    },
+    {
+     "id": "s1",
+     "kind": "shell",
+     "target": "op1",
+     "thickness": 1,
+     "open": {
+      "cause": "primitive",
+      "feature": "b1",
+      "kind": "face",
+      "part": "+z"
+     }
+    }
+   ]
+  },
+  "divergence": {
+   "status": "diverges",
+   "refs": [
+    {
+     "label": "plane-offset box composition (OCCT)",
+     "volume": 2612
+    },
+    {
+     "label": "distance erosion (OCCT boxes, voxel-checked)",
+     "volume": 2708
+    }
+   ]
+  },
+  "ref": {
+   "finalFeature": "s1",
+   "closed": null,
+   "brep": {
+    "refused": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- s1 is shown without it."
+   },
+   "occt": {
+    "volume": 12287.999999999998,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     7
+    ]
+   },
+   "volume": 2612,
+   "source": "independent box composition (OCCT booleans of primitives; voxel cross-check)",
+   "occtShellNoOp": 12287.999999999998,
+   "bbox": [
+    -20,
+    -15,
+    -5,
+    20,
+    15,
+    7
+   ],
+   "agree": {}
+  }
  }
 ]

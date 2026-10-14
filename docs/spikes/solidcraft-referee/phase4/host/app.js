@@ -21,10 +21,10 @@ const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt
 const fmt = (n, d = 4) => (Number.isFinite(n) ? n.toFixed(d) : String(n));
 
 // ---- gallery ---------------------------------------------------------------------------------------------------
-const GROUPS = [['3d', '3D scripts'], ['2d', 'Constrained 2D sketches (solidcraft solver)'], ['diag', 'Sketch diagnostics'], ['refusal', 'Expected refusals']];
+const GROUPS = [['3d', '3D scripts'], ['2d', 'Constrained 2D sketches (solidcraft solver)'], ['diag', 'Sketch diagnostics'], ['refusal', 'Expected refusals'], ['diverge', 'Built, but DIVERGES from an independent reference (not a pass)']];
 function renderGallery() {
   $('gallery').innerHTML = GROUPS.map(([g, label]) => `<div class="grp">${label}</div>` + EXAMPLES.filter((e) => e.group === g)
-    .map((e) => `<button class="ex" data-id="${e.id}"><span class="chip c${g}">${g === '3d' ? '3D' : g === '2d' ? '2D' : g === 'diag' ? 'DIAG' : 'REFUSAL'}</span>${esc(e.title)}</button>`).join('')).join('');
+    .map((e) => `<button class="ex" data-id="${e.id}"><span class="chip c${g}">${g === '3d' ? '3D' : g === '2d' ? '2D' : g === 'diag' ? 'DIAG' : g === 'diverge' ? 'DIVERGES' : 'REFUSAL'}</span>${esc(e.title)}</button>`).join('')).join('');
   for (const b of $('gallery').querySelectorAll('button.ex')) b.onclick = () => load(b.dataset.id);
 }
 function load(id) {
@@ -259,6 +259,23 @@ function verdict(ex, tr, fin, rows) {
   const total = bodies.reduce((s, b) => s + b.volume_mm3, 0);
   const out = { cls: 'mut', text: 'Custom script: no reference. Built ' + built.length + ', refused ' + refused.length + '.', detail: '', pass: null };
   if (!ex) return out;
+  if (ex.divergence) {
+    // Never green unless the built volume equals an independent reference. 'diverges' = red, 'unverified' = amber.
+    const tol = ex.curved ? TOL.curved : TOL.planar;
+    const rows = ex.divergence.refs.map((r) => ({ ...r, d: Math.abs(total - r.volume) / Math.max(Math.abs(r.volume), 1) }));
+    const hit = rows.find((r) => r.d <= tol);
+    const list = rows.map((r) => `${r.label} ${fmt(r.volume, 3)} (rel delta ${r.d.toExponential(2)})`).join('; ');
+    if (refused.length) { out.cls = 'fail'; out.pass = false; out.text = `FAIL: ${refused.length} feature(s) refused: ${refused.map((f) => f.refusal).join(' | ')}`; return out; }
+    if (hit) { out.cls = 'pass'; out.pass = true; out.text = `VERIFIED: built ${fmt(total, 6)} equals the independent reference ${hit.label} ${fmt(hit.volume, 6)} (bar ${tol})`; return out; }
+    if (ex.divergence.status === 'unverified') {
+      out.cls = 'note'; out.pass = null; out.text = `UNVERIFIED, NO INDEPENDENT REFERENCE: solidcraft built ${fmt(total, 3)}; nothing independent to compare with. Not a pass.`;
+    } else {
+      out.cls = 'fail'; out.pass = false;
+      out.text = `DIVERGES: solidcraft built ${fmt(total, 3)} mm3, which matches neither independent reference. ${list}. Not a pass.`;
+      out.detail = 'OCCT\'s own shell no-ops on this body and brep-rs does not measure it, so neither is a reference; the references are box compositions (VERIFY.md section 5b). solidcraft\'s stub tube is cut off short of its base (and for the non-flush stubs the result has 2 kernel shells).';
+    }
+    return out;
+  }
   if (ex.refusal || ex.partial) {
     const want = ex.expectRefused ?? null;
     const problems = [];
@@ -336,7 +353,8 @@ async function run() {
   resetPanels('Running...');
   try {
     status('evaluating in the sandbox...');
-    const r = await evaluate($('src').value);
+    // a ModelDoc example (no script form) runs as is while its editor text is unedited; anything else goes through the sandbox
+    const r = (ex?.doc && $('src').value === ex.script) ? { errors: [], doc: ex.doc } : await evaluate($('src').value);
     if (r.errors.length) {
       const e0 = r.errors[0];
       const syntax = e0.line == null;

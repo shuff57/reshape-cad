@@ -2277,6 +2277,726 @@
    "title": "Unsupported name: a swept wall of a circular pocket",
    "refSource": "OCCT",
    "refVolume": 28593.243352188278
+  },
+  {
+   "id": "diverge-stub-centre",
+   "ok": true,
+   "verdict": "DIVERGES: solidcraft built 2644.346 mm3, which matches neither independent reference. plane-offset box composition (OCCT) 2776.000 (rel delta 4.74e-2); distance erosion (OCCT boxes, voxel-checked) 2856.000 (rel delta 7.41e-2). Not a pass.",
+   "pass": false,
+   "dofMatch": null,
+   "detail": "OCCT's own shell no-ops on this body and brep-rs does not measure it, so neither is a reference; the references are box compositions (VERIFY.md section 6). solidcraft's stub tube is cut off short of its base (and for the non-flush stubs the result has 2 kernel shells).",
+   "volume": 2644.345622159777,
+   "bodies": [
+    {
+     "name": "b_b1",
+     "volume": 2644.345622159777,
+     "faces": 22
+    }
+   ],
+   "bbox": [
+    -20,
+    -15,
+    -5,
+    20,
+    15,
+    13
+   ],
+   "features": [
+    {
+     "id": "b1",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "b2",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "op1",
+     "kind": "combine",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "s1",
+     "kind": "shell",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": "solidcraft topology (browser)",
+     "pick": {
+      "faces": [
+       [
+        13.217056117291154,
+        -1.4214827252291766,
+        5
+       ]
+      ],
+      "thickness": 1,
+      "body": "b_b1"
+     },
+     "evidence": {
+      "name": "b1.face[+z]",
+      "candidates": 1,
+      "engineFace": "F1:+z",
+      "rule": "planar face with outward normal +z at the extreme along it on b1's own shape",
+      "checks": [
+       {
+        "check": "doc plane",
+        "expected": 5,
+        "got": 5,
+        "agree": true
+       },
+       {
+        "check": "engine persistent name",
+        "expected": "F1:+z",
+        "got": "F1:+z",
+        "agree": true
+       }
+      ],
+      "pickPoint": "target b_b1: interior point (largest display triangle); the centroid is off the face",
+      "target": {
+       "body": "b_b1",
+       "candidates": 1,
+       "face": "F1:+z",
+       "faceIndex": 9,
+       "point": [
+        13.217056117291154,
+        -1.4214827252291766,
+        5
+       ],
+       "pickSource": "interior point (largest display triangle); the centroid is off the face",
+       "centroidHit": {
+        "dist": 5,
+        "index": 4
+       },
+       "innerHit": {
+        "dist": 6.661338147750939e-16,
+        "index": 9
+       }
+      }
+     }
+    }
+   ],
+   "refusals": [],
+   "sketches": [],
+   "refusedCommand": null,
+   "commands": 4,
+   "group": "diverge",
+   "title": "Shell open at b1's top, stub centre unioned on it",
+   "refSource": "independent box composition (OCCT booleans of primitives; voxel cross-check)",
+   "refVolume": 2775.999999999999
+  },
+  {
+   "id": "diverge-stub-offset-x",
+   "ok": true,
+   "verdict": "DIVERGES: solidcraft built 2644.346 mm3, which matches neither independent reference. plane-offset box composition (OCCT) 2776.000 (rel delta 4.74e-2); distance erosion (OCCT boxes, voxel-checked) 2856.000 (rel delta 7.41e-2). Not a pass.",
+   "pass": false,
+   "dofMatch": null,
+   "detail": "OCCT's own shell no-ops on this body and brep-rs does not measure it, so neither is a reference; the references are box compositions (VERIFY.md section 6). solidcraft's stub tube is cut off short of its base (and for the non-flush stubs the result has 2 kernel shells).",
+   "volume": 2644.3456221597767,
+   "bodies": [
+    {
+     "name": "b_b1",
+     "volume": 2644.3456221597767,
+     "faces": 22
+    }
+   ],
+   "bbox": [
+    -20,
+    -15,
+    -5,
+    20,
+    15,
+    13
+   ],
+   "features": [
+    {
+     "id": "b1",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "b2",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "op1",
+     "kind": "combine",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "s1",
+     "kind": "shell",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": "solidcraft topology (browser)",
+     "pick": {
+      "faces": [
+       [
+        -0.9090909090909087,
+        1.5502750598402187e-16,
+        5
+       ]
+      ],
+      "thickness": 1,
+      "body": "b_b1"
+     },
+     "evidence": {
+      "name": "b1.face[+z]",
+      "candidates": 1,
+      "engineFace": "F1:+z",
+      "rule": "planar face with outward normal +z at the extreme along it on b1's own shape",
+      "checks": [
+       {
+        "check": "doc plane",
+        "expected": 5,
+        "got": 5,
+        "agree": true
+       },
+       {
+        "check": "engine persistent name",
+        "expected": "F1:+z",
+        "got": "F1:+z",
+        "agree": true
+       }
+      ],
+      "pickPoint": "target b_b1: centroid",
+      "target": {
+       "body": "b_b1",
+       "candidates": 1,
+       "face": "F1:+z",
+       "faceIndex": 9,
+       "point": [
+        -0.9090909090909087,
+        1.5502750598402187e-16,
+        5
+       ],
+       "pickSource": "centroid",
+       "centroidHit": {
+        "dist": 5.298791323945411e-16,
+        "index": 9
+       },
+       "innerHit": {
+        "dist": 6.280369834735101e-16,
+        "index": 9
+       }
+      }
+     }
+    }
+   ],
+   "refusals": [],
+   "sketches": [],
+   "refusedCommand": null,
+   "commands": 4,
+   "group": "diverge",
+   "title": "Shell open at b1's top, stub offset-x unioned on it",
+   "refSource": "independent box composition (OCCT booleans of primitives; voxel cross-check)",
+   "refVolume": 2776.0000000000005
+  },
+  {
+   "id": "diverge-stub-corner",
+   "ok": true,
+   "verdict": "DIVERGES: solidcraft built 2713.830 mm3, which matches neither independent reference. plane-offset box composition (OCCT) 2776.000 (rel delta 2.24e-2); distance erosion (OCCT boxes, voxel-checked) 2812.000 (rel delta 3.49e-2). Not a pass.",
+   "pass": false,
+   "dofMatch": null,
+   "detail": "OCCT's own shell no-ops on this body and brep-rs does not measure it, so neither is a reference; the references are box compositions (VERIFY.md section 6). solidcraft's stub tube is cut off short of its base (and for the non-flush stubs the result has 2 kernel shells).",
+   "volume": 2713.8298771310065,
+   "bodies": [
+    {
+     "name": "b_b1",
+     "volume": 2713.8298771310065,
+     "faces": 18
+    }
+   ],
+   "bbox": [
+    -20.000000000000004,
+    -15,
+    -5,
+    20,
+    15,
+    13
+   ],
+   "features": [
+    {
+     "id": "b1",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "b2",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "op1",
+     "kind": "combine",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "s1",
+     "kind": "shell",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": "solidcraft topology (browser)",
+     "pick": {
+      "faces": [
+       [
+        -1.3636363636363635,
+        -0.9090909090909091,
+        5
+       ]
+      ],
+      "thickness": 1,
+      "body": "b_b1"
+     },
+     "evidence": {
+      "name": "b1.face[+z]",
+      "candidates": 1,
+      "engineFace": "F1:+z",
+      "rule": "planar face with outward normal +z at the extreme along it on b1's own shape",
+      "checks": [
+       {
+        "check": "doc plane",
+        "expected": 5,
+        "got": 5,
+        "agree": true
+       },
+       {
+        "check": "engine persistent name",
+        "expected": "F1:+z",
+        "got": "F1:+z",
+        "agree": true
+       }
+      ],
+      "pickPoint": "target b_b1: centroid",
+      "target": {
+       "body": "b_b1",
+       "candidates": 1,
+       "face": "F1:+z",
+       "faceIndex": 7,
+       "point": [
+        -1.3636363636363635,
+        -0.9090909090909091,
+        5
+       ],
+       "pickSource": "centroid",
+       "centroidHit": {
+        "dist": 1.1102230246251565e-15,
+        "index": 7
+       },
+       "innerHit": {
+        "dist": 4.440892098500626e-16,
+        "index": 7
+       }
+      }
+     }
+    }
+   ],
+   "refusals": [],
+   "sketches": [],
+   "refusedCommand": null,
+   "commands": 4,
+   "group": "diverge",
+   "title": "Shell open at b1's top, stub corner unioned on it",
+   "refSource": "independent box composition (OCCT booleans of primitives; voxel cross-check)",
+   "refVolume": 2776
+  },
+  {
+   "id": "diverge-stub-edge-flush",
+   "ok": true,
+   "verdict": "DIVERGES: solidcraft built 2680.916 mm3, which matches neither independent reference. plane-offset box composition (OCCT) 2776.000 (rel delta 3.43e-2); distance erosion (OCCT boxes, voxel-checked) 2832.000 (rel delta 5.33e-2). Not a pass.",
+   "pass": false,
+   "dofMatch": null,
+   "detail": "OCCT's own shell no-ops on this body and brep-rs does not measure it, so neither is a reference; the references are box compositions (VERIFY.md section 6). solidcraft's stub tube is cut off short of its base (and for the non-flush stubs the result has 2 kernel shells).",
+   "volume": 2680.9162826709507,
+   "bodies": [
+    {
+     "name": "b_b1",
+     "volume": 2680.9162826709507,
+     "faces": 20
+    }
+   ],
+   "bbox": [
+    -20,
+    -15,
+    -5,
+    20,
+    15,
+    13
+   ],
+   "features": [
+    {
+     "id": "b1",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "b2",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "op1",
+     "kind": "combine",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "s1",
+     "kind": "shell",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": "solidcraft topology (browser)",
+     "pick": {
+      "faces": [
+       [
+        -1.3636363636363635,
+        0,
+        5
+       ]
+      ],
+      "thickness": 1,
+      "body": "b_b1"
+     },
+     "evidence": {
+      "name": "b1.face[+z]",
+      "candidates": 1,
+      "engineFace": "F1:+z",
+      "rule": "planar face with outward normal +z at the extreme along it on b1's own shape",
+      "checks": [
+       {
+        "check": "doc plane",
+        "expected": 5,
+        "got": 5,
+        "agree": true
+       },
+       {
+        "check": "engine persistent name",
+        "expected": "F1:+z",
+        "got": "F1:+z",
+        "agree": true
+       }
+      ],
+      "pickPoint": "target b_b1: centroid",
+      "target": {
+       "body": "b_b1",
+       "candidates": 1,
+       "face": "F1:+z",
+       "faceIndex": 8,
+       "point": [
+        -1.3636363636363635,
+        0,
+        5
+       ],
+       "pickSource": "centroid",
+       "centroidHit": {
+        "dist": 6.684427777288335e-16,
+        "index": 8
+       },
+       "innerHit": {
+        "dist": 9.930136612989092e-16,
+        "index": 8
+       }
+      }
+     }
+    }
+   ],
+   "refusals": [],
+   "sketches": [],
+   "refusedCommand": null,
+   "commands": 4,
+   "group": "diverge",
+   "title": "Shell open at b1's top, stub edge-flush unioned on it",
+   "refSource": "independent box composition (OCCT booleans of primitives; voxel cross-check)",
+   "refVolume": 2776.000000000001
+  },
+  {
+   "id": "diverge-stub-tall",
+   "ok": true,
+   "verdict": "DIVERGES: solidcraft built 3182.356 mm3, which matches neither independent reference. plane-offset box composition (OCCT) 3300.000 (rel delta 3.56e-2); distance erosion (OCCT boxes, voxel-checked) 3364.000 (rel delta 5.40e-2). Not a pass.",
+   "pass": false,
+   "dofMatch": null,
+   "detail": "OCCT's own shell no-ops on this body and brep-rs does not measure it, so neither is a reference; the references are box compositions (VERIFY.md section 6). solidcraft's stub tube is cut off short of its base (and for the non-flush stubs the result has 2 kernel shells).",
+   "volume": 3182.3562606759406,
+   "bodies": [
+    {
+     "name": "b_b1",
+     "volume": 3182.3562606759406,
+     "faces": 22
+    }
+   ],
+   "bbox": [
+    -20,
+    -15,
+    -5,
+    20,
+    15,
+    35.00000000000001
+   ],
+   "features": [
+    {
+     "id": "b1",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "b2",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "op1",
+     "kind": "combine",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "s1",
+     "kind": "shell",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": "solidcraft topology (browser)",
+     "pick": {
+      "faces": [
+       [
+        0.45070422535211346,
+        -0.2816901408450703,
+        5
+       ]
+      ],
+      "thickness": 1,
+      "body": "b_b1"
+     },
+     "evidence": {
+      "name": "b1.face[+z]",
+      "candidates": 1,
+      "engineFace": "F1:+z",
+      "rule": "planar face with outward normal +z at the extreme along it on b1's own shape",
+      "checks": [
+       {
+        "check": "doc plane",
+        "expected": 5,
+        "got": 5,
+        "agree": true
+       },
+       {
+        "check": "engine persistent name",
+        "expected": "F1:+z",
+        "got": "F1:+z",
+        "agree": true
+       }
+      ],
+      "pickPoint": "target b_b1: centroid",
+      "target": {
+       "body": "b_b1",
+       "candidates": 1,
+       "face": "F1:+z",
+       "faceIndex": 9,
+       "point": [
+        0.45070422535211346,
+        -0.2816901408450703,
+        5
+       ],
+       "pickSource": "centroid",
+       "centroidHit": {
+        "dist": 1.415262216750919e-15,
+        "index": 9
+       },
+       "innerHit": {
+        "dist": 9.930136612989092e-16,
+        "index": 9
+       }
+      }
+     }
+    }
+   ],
+   "refusals": [],
+   "sketches": [],
+   "refusedCommand": null,
+   "commands": 4,
+   "group": "diverge",
+   "title": "Shell open at b1's top, stub tall unioned on it",
+   "refSource": "independent box composition (OCCT booleans of primitives; voxel cross-check)",
+   "refVolume": 3299.999999999998
+  },
+  {
+   "id": "diverge-stub-low",
+   "ok": true,
+   "verdict": "DIVERGES: solidcraft built 2524.000 mm3, which matches neither independent reference. plane-offset box composition (OCCT) 2612.000 (rel delta 3.37e-2); distance erosion (OCCT boxes, voxel-checked) 2708.000 (rel delta 6.79e-2). Not a pass.",
+   "pass": false,
+   "dofMatch": null,
+   "detail": "OCCT's own shell no-ops on this body and brep-rs does not measure it, so neither is a reference; the references are box compositions (VERIFY.md section 6). solidcraft's stub tube is cut off short of its base (and for the non-flush stubs the result has 2 kernel shells).",
+   "volume": 2524.0000000000005,
+   "bodies": [
+    {
+     "name": "b_b1",
+     "volume": 2524.0000000000005,
+     "faces": 17
+    }
+   ],
+   "bbox": [
+    -20,
+    -15,
+    -5,
+    20,
+    15,
+    7
+   ],
+   "features": [
+    {
+     "id": "b1",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "b2",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "op1",
+     "kind": "combine",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "s1",
+     "kind": "shell",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": "solidcraft topology (browser)",
+     "pick": {
+      "faces": [
+       [
+        5,
+        10.333333333333332,
+        5
+       ]
+      ],
+      "thickness": 1,
+      "body": "b_b1"
+     },
+     "evidence": {
+      "name": "b1.face[+z]",
+      "candidates": 1,
+      "engineFace": "F1:+z",
+      "rule": "planar face with outward normal +z at the extreme along it on b1's own shape",
+      "checks": [
+       {
+        "check": "doc plane",
+        "expected": 5,
+        "got": 5,
+        "agree": true
+       },
+       {
+        "check": "engine persistent name",
+        "expected": "F1:+z",
+        "got": "F1:+z",
+        "agree": true
+       }
+      ],
+      "pickPoint": "target b_b1: interior point (largest display triangle); the centroid is off the face",
+      "target": {
+       "body": "b_b1",
+       "candidates": 1,
+       "face": "F1:+z",
+       "faceIndex": 9,
+       "point": [
+        5,
+        10.333333333333332,
+        5
+       ],
+       "pickSource": "interior point (largest display triangle); the centroid is off the face",
+       "centroidHit": {
+        "dist": 0.31818181818181823,
+        "index": 7
+       },
+       "innerHit": {
+        "dist": 0,
+        "index": 9
+       }
+      }
+     }
+    }
+   ],
+   "refusals": [],
+   "sketches": [],
+   "refusedCommand": null,
+   "commands": 4,
+   "group": "diverge",
+   "title": "Shell open at b1's top, stub low unioned on it",
+   "refSource": "independent box composition (OCCT booleans of primitives; voxel cross-check)",
+   "refVolume": 2611.9999999999986
   }
  ],
  "restore": {
@@ -2307,5 +3027,6 @@
    "bodies": "b_box1"
   },
   "same": true
- }
+ },
+ "note": "diverge-* rows (6) added by a --only run on 2026-10-14T18:57:00.978Z; the other 29 rows are from the earlier full run"
 }
