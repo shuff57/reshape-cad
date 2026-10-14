@@ -56,3 +56,4 @@ pub mod wasm;
 mod coplanar_merge_tests;
 #[cfg(test)]
 mod common_tests;
+mod b3r_tests;

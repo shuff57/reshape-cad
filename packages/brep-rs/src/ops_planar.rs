@@ -2830,25 +2830,42 @@ fn merge_soft_cells(f: &CFace, g: &Grid, arcs: &[(f64, f64)], rows: usize, uncut
             out.push(if flip { ops::flip_face(&face).ok_or(())? } else { face });
             continue;
         }
-        let mut ci = 0;
-        while ci < nc {
-            if has(ci).is_none() {
-                ci += 1;
+        // runs of kept cells joined at soft nodes, cyclically on a whole-turn wall (a run may cross the wall's seam)
+        let joins_prev = |ci: usize| -> bool {
+            let p = if ci == 0 {
+                if whole { nc - 1 } else { return false }
+            } else {
+                ci - 1
+            };
+            p != ci && has(p).is_some() && soft_at(arcs[p].1)
+        };
+        let mut done = vec![false; nc];
+        for start in 0..nc {
+            if has(start).is_none() || done[start] || joins_prev(start) {
                 continue;
             }
-            let mut last = ci;
-            while last + 1 < nc && has(last + 1).is_some() && soft_at(arcs[last].1) {
-                last += 1;
-            }
-            if last > ci {
-                let mids: Vec<f64> = arcs[ci..last].iter().map(|a| a.1).collect();
-                let face = wall_multi(c, f, arcs[ci].0, arcs[last].1, &mids, v_lo, v_hi, uncut, vertex);
-                for k in ci..=last {
-                    cells[has(k).unwrap()] = None;
+            let mut n = 1;
+            while n < nc {
+                let (idx, nxt) = ((start + n - 1) % nc, (start + n) % nc);
+                if has(nxt).is_some() && soft_at(arcs[idx].1) && (whole || start + n < nc) {
+                    n += 1;
+                } else {
+                    break;
                 }
-                out.push(if flip { ops::flip_face(&face).ok_or(())? } else { face });
             }
-            ci = last + 1;
+            if n == 1 {
+                continue;
+            }
+            let off = |k: usize| if start + k >= nc { TAU } else { 0.0 };
+            let mids: Vec<f64> = (0..n - 1).map(|k| arcs[(start + k) % nc].1 + off(k)).collect();
+            let th_b = arcs[(start + n - 1) % nc].1 + off(n - 1);
+            let face = wall_multi(c, f, arcs[start].0, th_b, &mids, v_lo, v_hi, uncut, vertex);
+            for k in 0..n {
+                let idx = (start + k) % nc;
+                done[idx] = true;
+                cells[has(idx).unwrap()] = None;
+            }
+            out.push(if flip { ops::flip_face(&face).ok_or(())? } else { face });
         }
     }
     out.extend(cells.into_iter().flatten());
