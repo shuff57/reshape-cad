@@ -313,11 +313,46 @@ fn symmetric_180_is_centred_on_the_sketch_plane() {
 fn symmetric_180_touching_the_axis_is_a_half_cylinder() {
     let o = spin(0.0, 180.0, json!({ "symmetric": true }));
     assert!(near(o.vol, 18849.555922), "{}", o.vol);
-    // FreeCAD counts 4: its two end caps are one plane, one face. Ours stay two coplanar faces sharing the
-    // axis edge (the same solid, FACES verdict in the census), exactly as the plain one-sided half turn does.
-    assert_eq!(o.faces, 5);
+    // FreeCAD counts 4: its two end caps are one plane, one face (3 Plane + 1 Cylinder).
+    assert_eq!(o.faces, 4);
     let one = spin(0.0, 180.0, json!({}));
-    assert_eq!(one.faces, 5);
+    assert_eq!(one.faces, 4);
+    assert!(near(one.vol, 18849.555922), "{}", one.vol);
+    // x 0..10 is the same family (FreeCAD: vol 4712.389, 4 faces)
+    let o = spin_in(0.0, 10.0, 180.0, json!({ "symmetric": true }));
+    assert!(near(o.vol, 4712.388980), "{}", o.vol);
+    assert_eq!(o.faces, 4);
+}
+
+fn spin_in(x0: f64, x1: f64, angle: f64, extra: Value) -> Out {
+    let sk = json!({ "id": "sk", "kind": "sketch", "plane": "xy", "offset": 0.0,
+                     "points": [[x0, 0.0], [x1, 0.0], [x1, 30.0], [x0, 30.0]] });
+    run(vec![sk, with(json!({ "id": "r1", "kind": "revolve", "target": "sk", "angle": angle }), extra)], "r1")
+}
+
+/// FreeCAD centres a symmetric revolve on the sketch plane whatever the sign of the angle (measured: -90, -180, -270
+/// and -45 give the same solid as the positive angle).
+#[test]
+fn symmetric_negative_angle_is_the_positive_one() {
+    for a in [90.0, 180.0, 270.0, 45.0] {
+        let p = spin(10.0, a, json!({ "symmetric": true }));
+        let n = spin(10.0, -a, json!({ "symmetric": true }));
+        assert!(n.refusal.is_none(), "{:?}", n.refusal);
+        assert!(near(p.vol, n.vol), "{a}: {} {}", p.vol, n.vol);
+        assert_eq!(p.faces, n.faces);
+        for i in 0..3 {
+            assert!((p.lo[i] - n.lo[i]).abs() < 1e-6 && (p.hi[i] - n.hi[i]).abs() < 1e-6, "{a}: {:?} {:?} vs {:?} {:?}", p.lo, p.hi, n.lo, n.hi);
+        }
+    }
+    let o = spin(10.0, -90.0, json!({ "symmetric": true }));
+    assert!(near(o.vol, 7068.583), "{}", o.vol);
+    assert_eq!(o.faces, 6);
+    // FreeCAD: x 7.07..20, y -14.14..14.14
+    assert!((o.lo[0] - 10.0 * 45f64.to_radians().cos()).abs() < 1e-3, "{:?}", o.lo);
+    assert!((o.hi[0] - 20.0).abs() < 1e-3 && (o.lo[1] + 14.1421356).abs() < 1e-3 && (o.hi[1] - 14.1421356).abs() < 1e-3, "{:?} {:?}", o.lo, o.hi);
+    // -45: FreeCAD x 9.24..20, y -7.65..7.65
+    let o = spin(10.0, -45.0, json!({ "symmetric": true }));
+    assert!((o.lo[0] - 9.2388).abs() < 1e-3 && (o.hi[1] - 7.6537).abs() < 1e-3 && (o.lo[1] + 7.6537).abs() < 1e-3, "{:?} {:?}", o.lo, o.hi);
 }
 
 #[test]
@@ -344,4 +379,23 @@ fn symmetric_that_is_not_a_bool_or_on_a_groove_is_refused() {
         "g1",
     );
     refused(&o, "symmetric groove is not built yet");
+}
+
+/// The fuzz harness's two hangs: a 1e6 mm revolve meshed at 0.1 used to run the whole closure-retry ladder (sixteen
+/// more tessellations, about 35 s in wasm) for a mesh no finer chord closes. One tessellation is the budget now.
+#[test]
+fn a_million_mm_revolve_meshes_in_one_pass() {
+    let sk = json!({ "id": "sk", "kind": "sketch", "plane": "xy", "offset": 0.0,
+                     "points": [[10.0, 0.0], [1e6, 0.0], [20.0, 30.0], [10.0, 30.0]] });
+    let doc = json!({ "features": [sk, { "id": "r1", "kind": "revolve", "target": "sk", "angle": 360.0, "symmetric": true }] });
+    let (hist, _) = crate::wasm::build_doc(&doc);
+    let s = hist.shapes.get("r1").expect("builds");
+    let once = std::time::Instant::now();
+    let _ = crate::mesh::mesh_solid_once(s, 0.1).expect("meshes");
+    let one = once.elapsed();
+    let t = std::time::Instant::now();
+    let m = crate::mesh::mesh_solid(s, 0.1).expect("meshes");
+    let all = t.elapsed();
+    assert!(!m.indices.is_empty());
+    assert!(all < one * 4 + std::time::Duration::from_millis(200), "one pass {one:?}, mesh_solid {all:?}");
 }

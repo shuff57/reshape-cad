@@ -1365,6 +1365,21 @@ fn revolve_tool_caps(
     angle: f64,
     allow_arcs: bool,
 ) -> Result<(TSolid, Vec<Option<usize>>, Vec<(String, usize)>, usize), String> {
+    // The one-face cap merge of a half turn goes through the turned-profile builder; where that builder cannot take
+    // the outline, the plain builder's solid (two coplanar caps, the same volume) stands, never a refusal the plain
+    // builder would not have given.
+    match revolve_tool_caps_in(sk, angle, allow_arcs, true) {
+        Ok(t) => Ok(t),
+        Err(_) => revolve_tool_caps_in(sk, angle, allow_arcs, false),
+    }
+}
+
+fn revolve_tool_caps_in(
+    sk: &Value,
+    angle: f64,
+    allow_arcs: bool,
+    merge_caps: bool,
+) -> Result<(TSolid, Vec<Option<usize>>, Vec<(String, usize)>, usize), String> {
     if !angle.is_finite() || angle.abs() < 1e-9 {
         return Err("a spin needs an angle other than 0".to_string());
     }
@@ -1411,7 +1426,18 @@ fn revolve_tool_caps(
             })
             .collect();
         let spun: Vec<[f64; 2]> = if far_side { points.iter().map(|p| [-p[0], p[1]]).collect() } else { points };
-        match build::revolve_profile(&spun, n, u_axis, angle) {
+        // A half turn of a profile with exactly one side on the axis leaves its two flat caps in ONE plane, which
+        // FreeCAD counts as one face. `revolve_profile` keeps them apart, so that case goes to the turned-profile
+        // builder below, which merges them (`turned::partial_caps_merge`). A groove keeps the plain builder: its tool is
+        // cut from a part, and that builder is the one the groove gates measured.
+        let axis_sides = (0..spun.len())
+            .filter(|&i| {
+                let (p, q) = (spun[i], spun[(i + 1) % spun.len()]);
+                p[0].abs() < 1e-9 && q[0].abs() < 1e-9 && (q[1] - p[1]).abs() > 1e-9
+            })
+            .count();
+        let merged_caps = merge_caps && allow_arcs && (angle - 180.0).abs() < 1e-9 && axis_sides == 1;
+        match if merged_caps { None } else { build::revolve_profile(&spun, n, u_axis, angle) } {
             Some((mut solid, map)) => {
                 if far_side {
                     solid = build::transform_solid(&solid, &crate::math::Transform::rotation(n, std::f64::consts::PI));
@@ -2870,12 +2896,14 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                     }
                 };
                 // Symmetric: half the angle each side of the sketch plane. The spin is the one-sided part turned
-                // back by half its own angle about the axis (a whole turn is already symmetric). A negative angle
-                // is the same turn the other way round, so it centres the same way.
+                // back by half its own angle about the axis (a whole turn is already symmetric). A positive spin
+                // runs [0, a] and a negative one [-a, 0], so each is moved by half the angle toward the sketch
+                // plane: both end up on [-a/2, +a/2], which is where FreeCAD centres either sign (measured).
                 if symmetric && !closed {
                     let fr = sketch_frame(sk);
                     let half = angle.abs().min(360.0) / 2.0;
-                    let t = crate::math::Transform::rotation(fr.n, -half.to_radians()).about(fr.origin);
+                    let back = if angle < 0.0 { half } else { -half };
+                    let t = crate::math::Transform::rotation(fr.n, back.to_radians()).about(fr.origin);
                     solid = build::transform_solid(&solid, &t);
                 }
                 // Face indices for the naming history: the walls come back in
