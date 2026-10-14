@@ -1434,6 +1434,40 @@ fn hole_tool_turned(src: &TSolid, centre: Vec3, bore_r: f64, depth: f64, axis: V
         for_depth = d.get("includedInDepth").and_then(|b| b.as_bool()).unwrap_or(false);
         point_h = bore_r / (0.5 * a.to_radians()).tan();
     }
+    // Slice C2R: FreeCAD removes nothing where a tapered or counterdrilled tool lies inside an existing
+    // bore, and a turned tool's cone/shoulder cannot be cut against a curved wall here. Any curved face
+    // of the part within the tool's reach refuses, rather than build a solid with extra material cut.
+    {
+        let r_max = bore_r.max(num(cd, "diameter").map(|d| 0.5 * d).unwrap_or(0.0));
+        let reach = half + point_h + r_max;
+        let tool = crate::math::Aabb {
+            lo: [centre[0] - reach, centre[1] - reach, centre[2] - reach],
+            hi: [centre[0] + reach, centre[1] + reach, centre[2] + reach],
+        };
+        for face in src.faces() {
+            let fb = face.borrow();
+            let grow = match &fb.surface {
+                Surface::Plane(_) => continue,
+                Surface::Cylinder(c) => c.radius,
+                Surface::Cone(c) => c.base_radius.abs() + c.slant.abs(),
+                _ => f64::INFINITY,
+            };
+            let mut b = crate::math::Aabb::empty();
+            for w in fb.boundary.iter() {
+                for e in w.borrow().edges.iter() {
+                    let ed = e.edge.borrow();
+                    b.expand(ed.a.borrow().point);
+                    b.expand(ed.b.borrow().point);
+                }
+            }
+            let hit = b.is_empty()
+                || !grow.is_finite()
+                || (0..3).all(|i| b.lo[i] - grow < tool.hi[i] && tool.lo[i] < b.hi[i] + grow);
+            if hit {
+                return no("it starts where the part already has a bore or other curved wall, and a drill point, counterdrill or taper is only built into the original flat face of a plain prism, a shape brep-rs cannot cut yet");
+            }
+        }
+    }
     let mut r_floor = bore_r;
     let wall_len = v_face - v_far;
     if tp.is_some() {
