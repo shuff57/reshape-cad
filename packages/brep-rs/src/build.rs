@@ -2870,11 +2870,50 @@ pub fn revolve_profile(
  } else {
  (h1, h0, r1, r0)
  };
- if base_r <= 1e-9 || cap_r <= 1e-9 {
+ if base_r <= 1e-9 {
  return None;
  }
  let sign = (cap_h - base_h).signum();
  let axis_c = scale(axis, sign);
+ if cap_r <= 1e-9 {
+ // A pointed end (a drill tip): the cone's apex is ON the axis. Its lateral face is the seam
+ // up and back down, as `cone_solid` writes it; the base rim belongs to the neighbouring face.
+ let height = (cap_h - base_h).abs();
+ let slant = (base_r * base_r + height * height).sqrt();
+ let half_angle = base_r.atan2(height);
+ let base = scale(axis, base_h);
+ let apex = add(base, scale(axis_c, height));
+ let e2c = if nr * dot(axis_c, axis) >= 0.0 { e2 } else { scale(e2, -1.0) };
+ let base_v = topo::vertex(add(base, scale(e1, base_r)));
+ let apex_v = topo::vertex(apex);
+ let seam = topo::edge(
+ base_v.clone(),
+ apex_v.clone(),
+ true,
+ Curve::Segment { a: base_v.borrow().point, b: apex },
+ );
+ let f = make_face(
+ Surface::Cone(Cone {
+ base,
+ axis: axis_c,
+ e1,
+ e2: e2c,
+ base_radius: base_r,
+ half_angle,
+ slant,
+ v_range: [0.0, slant],
+ bounded: false, u_range: [0.0, std::f64::consts::TAU],
+ }),
+ [[0.0, 0.0], [0.0, slant]],
+ vec![
+ topo::EdgeUse { edge: seam.clone(), forward: true, pcurve: topo::Pcurve { start: [0.0, 0.0], end: [0.0, slant], mid: [0.0, slant / 2.0] } },
+ topo::EdgeUse { edge: seam, forward: false, pcurve: topo::Pcurve { start: [2.0 * std::f64::consts::PI, slant], end: [0.0, 0.0], mid: [std::f64::consts::PI, slant / 2.0] } },
+ ],
+ );
+ map.push(Some(faces.len()));
+ faces.push(f);
+ continue;
+ }
  let slant = len;
  let half_angle = (base_r - cap_r).atan2((cap_h - base_h).abs());
  let base = scale(axis, base_h);
