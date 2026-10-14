@@ -1,0 +1,6 @@
+{"relay_origin_repro":
+{"embedder_127.0.0.1:8791_no_parent_param":"{}  (no reply to inspect-empty, inspect-token, execute)",
+ "embedder_parent=http://localhost:8785_(not its own origin)":"{}  (no reply to any)",
+ "embedder_names_itself_parent_NO_frame-ancestors":"inspect-empty rejected (token missing); inspect-token and execute SUCCEEDED (an embedder that sets parent=itself and its own token is not stopped by the app)",
+ "same_embedder_with_server_header_Content-Security-Policy:_frame-ancestors_http://localhost:8785_http://127.0.0.1:8785":"{}  (the app is not framed at all)"}
+}
