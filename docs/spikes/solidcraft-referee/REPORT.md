@@ -53,3 +53,11 @@ wasm-bindgen --target nodejs --out-dir /tmp/sc-referee-pkg /tmp/sc-referee/wasm3
 # 2. needs `npm run build` at repo root and packages/brep-rs/pkg (wasm-pack build --release --target web --out-dir pkg)
 SOLIDCRAFT_REFEREE_PKG=/tmp/sc-referee-pkg node docs/spikes/solidcraft-referee/run.mjs
 ```
+
+## Browser demos (both load the same engine, no network)
+- `egui-demo/`: eframe/egui 0.36 (glow/WebGL2) app with `solidcraft-engine` **linked straight in**, no JS bridge: the
+  same stack as solidcraft-web. 13 MB wasm after trunk's wasm-opt. Build: copy `~/solidcraft/Cargo.lock` here (pins
+  eframe 0.36.2 etc.), then `trunk build --release` and serve `dist/` (or `trunk serve --release`, port 8782).
+  Verified in headless Chromium: wasm ready, box minus cylinder gives 27979.429346 mm3, 7 faces, in ~175 ms.
+- `demo/`: plain HTML + wasm-bindgen `--target web` build of `wrapper/` (output into the gitignored `demo/pkg`),
+  serve the folder over HTTP (`python3 -m http.server`).

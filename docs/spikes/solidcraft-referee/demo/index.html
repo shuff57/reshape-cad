@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>solidcraft wasm referee</title>
+<style>
+  :root { --bg:#fff; --fg:#1b1f24; --mut:#5b6572; --bd:#d0d7de; --acc:#0b6bcb; --card:#f6f8fa; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#0d1117; --fg:#e6edf3; --mut:#8b949e; --bd:#30363d; --acc:#58a6ff; --card:#161b22; } }
+  body { margin:0; background:var(--bg); color:var(--fg); font:15px/1.5 system-ui,sans-serif; }
+  main { max-width:960px; margin:0 auto; padding:20px 16px 40px; }
+  h1 { font-size:20px; margin:0 0 4px; }
+  p.sub { margin:0 0 16px; color:var(--mut); }
+  .row { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 10px; }
+  button { font:inherit; padding:6px 12px; border:1px solid var(--bd); border-radius:6px; background:var(--card); color:var(--fg); cursor:pointer; }
+  button.run { background:var(--acc); border-color:var(--acc); color:#fff; }
+  button:disabled { opacity:.5; cursor:default; }
+  textarea { width:100%; box-sizing:border-box; height:220px; font:13px/1.45 ui-monospace,monospace; background:var(--card); color:var(--fg); border:1px solid var(--bd); border-radius:6px; padding:10px; }
+  table { border-collapse:collapse; width:100%; margin:14px 0; }
+  td { border:1px solid var(--bd); padding:6px 10px; }
+  td:first-child { color:var(--mut); width:150px; }
+  pre { background:var(--card); border:1px solid var(--bd); border-radius:6px; padding:10px; overflow:auto; max-height:320px; font-size:12px; }
+  .err { color:#cf222e; } .ok { color:#1a7f37; }
+  #status { color:var(--mut); margin:4px 0 12px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>solidcraft engine, compiled to WebAssembly</h1>
+  <p class="sub">Spike: a referee, not part of the studio. Commands are solidcraft's JSON command list. Volume is tessellation-derived.</p>
+  <div id="status">loading wasm…</div>
+  <div class="row" id="presets"></div>
+  <textarea id="cmds" spellcheck="false"></textarea>
+  <div class="row" style="margin-top:10px"><button class="run" id="go" disabled>Run</button></div>
+  <div id="summary"></div>
+  <details><summary>raw result</summary><pre id="raw"></pre></details>
+</main>
+<script type="module">
+import init, { run } from './pkg/solidcraft_referee.js';
+const BOX = { command: 'solid.box', params: { length: 40, width: 40, height: 20, center: [0, 0, 0] } };
+const cyl = (r, h, op) => ({ command: 'solid.cylinder', params: { radius: r, height: h, base: [0, 0, -h / 2], axis: 'Z', ...(op ? { operation: op } : {}) } });
+const PRESETS = {
+  'box': [BOX],
+  'cylinder': [cyl(12, 30)],
+  'sphere': [{ command: 'solid.sphere', params: { radius: 15, center: [0, 0, 0] } }],
+  'box − cylinder': [BOX, cyl(8, 40, 'cut')],
+  'box ∪ cylinder': [BOX, cyl(8, 40, 'join')],
+  'fillet one edge': [BOX, { command: 'solid.fillet', params: { edges: [[20, 0, 10]], radius: 4 } }],
+  'shell, open top': [BOX, { command: 'solid.shell', params: { faces: [[0, 0, 10]], thickness: 2 } }],
+  'shell, closed (refused)': [BOX, { command: 'solid.shell', params: { thickness: 2 } }],
+};
+const $ = (id) => document.getElementById(id);
+const fmt = (n) => (typeof n === 'number' ? n.toFixed(6) : String(n));
+function show(res, ms) {
+  const el = $('summary');
+  $('raw').textContent = JSON.stringify(res, null, 2);
+  if (!res.ok) {
+    const f = res.failed;
+    el.innerHTML = `<p class="err">Refused: ${f ? `step ${f.index + 1} <code>${f.command}</code>: ${f.error}` : res.error}</p>`;
+    return;
+  }
+  const m = res.measure;
+  const rows = m.bodies.map((b) => `<tr><td>${b.name}</td><td>volume ${fmt(b.volume_mm3)} mm³ · area ${fmt(b.area_mm2)} mm² · ${b.faces} faces (kernel ${b.kernel.faces}) · bbox [${b.bbox.min.map(fmt)}] → [${b.bbox.max.map(fmt)}]</td></tr>`);
+  el.innerHTML = `<table>${rows.join('')}<tr><td>bodies</td><td>${m.body_count} <span class="ok">ok</span> in ${ms.toFixed(0)} ms</td></tr></table>`;
+}
+function exec() {
+  let cmds;
+  try { cmds = JSON.parse($('cmds').value); } catch (e) { $('summary').innerHTML = `<p class="err">Bad JSON: ${e.message}</p>`; return; }
+  const t = performance.now();
+  let res;
+  try { res = JSON.parse(run(JSON.stringify({ commands: cmds }))); }
+  catch (e) { res = { ok: false, error: `WASM TRAP: ${e.message}` }; }
+  show(res, performance.now() - t);
+}
+for (const [name, cmds] of Object.entries(PRESETS)) {
+  const b = document.createElement('button');
+  b.textContent = name;
+  b.onclick = () => { $('cmds').value = JSON.stringify(cmds, null, 2); exec(); };
+  $('presets').append(b);
+}
+$('cmds').value = JSON.stringify(PRESETS['box − cylinder'], null, 2);
+$('go').onclick = exec;
+const t0 = performance.now();
+try {
+  await init();
+  $('status').textContent = `wasm ready in ${(performance.now() - t0).toFixed(0)} ms`;
+  $('go').disabled = false;
+  exec();
+} catch (e) {
+  $('status').innerHTML = `<span class="err">failed to load wasm: ${e.message}</span>`;
+}
+</script>
+</body>
+</html>
