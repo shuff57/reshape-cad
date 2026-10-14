@@ -3778,6 +3778,41 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                             }
                         }
                     }
+                    // A2: equal rounds that meet at a CONVEX corner (two rounded edges of a block at a vertex, or
+                    // three at a corner) are one blend there, where taking them one after the other leaves the
+                    // later one refused. Built together from the part the run started on (rim_convex_build); a
+                    // run that is not the shape that builder takes keeps the refusal it already has.
+                    if !conflict && round && !built && refusals.contains_key(&id) {
+                        let meets = own_ends.as_ref().is_some_and(|e| {
+                            rim_run.members.iter().any(|m| {
+                                m.id != id && m.built && m.ends.as_ref().is_some_and(|x| rim_shares_vertex(x, e))
+                            })
+                        });
+                        if meets {
+                            let feats: Vec<Value> = rim_run.members.iter().map(|m| m.feature.clone()).collect();
+                            if let Ok(solid) = rim_convex_build(&rim_run.pre, &hist, &feats, size) {
+                                refusals.remove(&id);
+                                for m in rim_run.members.iter_mut() {
+                                    if m.id != id && refusals.remove(&m.id).is_some() {
+                                        hist.insert(&m.id, solid.clone());
+                                        m.built = true;
+                                    }
+                                }
+                                hist.ops.remove(&id);
+                                let prev = hist.shapes.get(target).cloned().unwrap_or_else(|| rim_run.pre.clone());
+                                let face_fates: Vec<Fate> = prev.faces().iter().map(|fc| carry_fate(&solid, fc)).collect();
+                                replay_log.insert(
+                                    id.clone(),
+                                    ReplayStep::Round { parent: target.to_string(), feature: f.clone(), size, round },
+                                );
+                                record_op(&mut hist, &id, OpKind::Fillet, vec![target.to_string()], face_fates, Vec::new());
+                                hist.insert(&id, solid);
+                                if let Some(m) = rim_run.members.last_mut() {
+                                    m.built = true;
+                                }
+                            }
+                        }
+                    }
                     rim_runs.insert(id.clone(), rim_run);
                 }
             }
@@ -5854,6 +5889,125 @@ mod tests {
         assert!(refusals.contains_key("r3"), "refusals: {refusals:?}");
         // the refused bevel is shown without it: the part as the first two left it
         assert!((v - 5902.666666666667).abs() < 1e-6, "volume {v}");
+    }
+
+    /// Rounds one after another on the 30 x 20 x 10 box, each of its own size, the way a picked rim arrives: the
+    /// part, its face count, the surface kinds of its faces (planes, cylinders, spheres) and every refusal.
+    fn round_chain(sizes: &[f64], edges: &[&str]) -> (Option<TSolid>, serde_json::Map<String, Value>) {
+        let mut features = vec![json!({ "id": "b1", "kind": "box", "size": [30.0, 20.0, 10.0] })];
+        for (k, (size, edge)) in sizes.iter().zip(edges).enumerate() {
+            let prev = if k == 0 { "b1".to_string() } else { format!("r{k}") };
+            features.push(json!({
+                "id": format!("r{}", k + 1), "kind": "fillet", "target": prev, "size": size, "style": "fillet",
+                "edge": between_edge(edge)
+            }));
+        }
+        let (hist, refusals) = build_doc(&json!({ "features": features }));
+        (hist.shapes.get(&format!("r{}", edges.len())).cloned(), refusals)
+    }
+
+    fn kinds(s: &TSolid) -> (usize, usize, usize) {
+        let mut k = (0, 0, 0);
+        for f in s.faces() {
+            match &f.borrow().surface {
+                Surface::Plane(_) => k.0 += 1,
+                Surface::Cylinder(_) => k.1 += 1,
+                Surface::Sphere(_) => k.2 += 1,
+                _ => {}
+            }
+        }
+        k
+    }
+
+    /// FreeCAD 26.3.0 RC1 (census a2__*): two equal rounds on adjacent top edges are two cylinders that simply
+    /// meet (8 faces: 6 planes + 2 cylinders), the volume `6000 - (1 - pi/4) r^2 (30 + 20) + (5/3 - pi/2) r^3`.
+    #[test]
+    fn round_two_adjacent_edges_of_equal_radius_match_freecad() {
+        let want = [(1.0, 5989.365778509744), (2.0, 5957.846595398464), (3.0, 5906.0176727053895)];
+        for (r, v_want) in want {
+            let (s, refusals) = round_chain(&[r, r], &["+z|+x", "+z|-y"]);
+            assert!(refusals.is_empty(), "r={r} refusals: {refusals:?}");
+            let s = s.expect("builds");
+            let v = build::solid_volume(&s);
+            assert!((v - v_want).abs() < 1e-9 * 6000.0, "r={r} volume {v} vs {v_want}");
+            assert_eq!(s.faces().len(), 8, "r={r}");
+            assert_eq!(kinds(&s), (6, 2, 0), "r={r}");
+            let bb = build::solid_aabb(&s);
+            assert_eq!((bb.lo, bb.hi), ([-15.0, -10.0, -5.0], [15.0, 10.0, 5.0]));
+            let mesh = crate::mesh::mesh_solid(&s, 0.05).expect("meshes");
+            assert!(crate::ops::check_watertight(&mesh), "r={r} mesh is watertight");
+        }
+    }
+
+    /// FreeCAD: the four top edges rounded are four cylinders, no corner patch (10 faces: 6 planes + 4 cylinders).
+    #[test]
+    fn round_the_four_top_edges_of_equal_radius_match_freecad() {
+        let want = [(1.0, 5978.923297699232), (2.0, 5917.227116234876), (3.0, 5817.212343763855)];
+        for (r, v_want) in want {
+            let (s, refusals) = round_chain(&[r; 4], &["+z|-y", "+z|+x", "+z|+y", "+z|-x"]);
+            assert!(refusals.is_empty(), "r={r} refusals: {refusals:?}");
+            let s = s.expect("builds");
+            let v = build::solid_volume(&s);
+            assert!((v - v_want).abs() < 1e-9 * 6000.0, "r={r} volume {v} vs {v_want}");
+            assert_eq!(s.faces().len(), 10, "r={r}");
+            assert_eq!(kinds(&s), (6, 4, 0), "r={r}");
+            let mesh = crate::mesh::mesh_solid(&s, 0.05).expect("meshes");
+            assert!(crate::ops::check_watertight(&mesh), "r={r} mesh is watertight");
+        }
+    }
+
+    /// FreeCAD: three equal rounds at one corner stop at the corner cube and a sphere octant of the same radius
+    /// fills it (10 faces: 6 planes + 3 cylinders + 1 sphere). Sphere area pi r^2 / 2 = 6.28319 at r = 2.
+    #[test]
+    fn round_three_edges_at_a_corner_of_equal_radius_make_a_sphere_corner() {
+        let want = [(1.0, 5987.291294089253), (2.0, 5949.834793498635), (3.0, 5888.634923940583)];
+        for (r, v_want) in want {
+            let (s, refusals) = round_chain(&[r; 3], &["+z|-y", "+z|+x", "-y|+x"]);
+            assert!(refusals.is_empty(), "r={r} refusals: {refusals:?}");
+            let s = s.expect("builds");
+            let v = build::solid_volume(&s);
+            assert!((v - v_want).abs() < 1e-9 * 6000.0, "r={r} volume {v} vs {v_want}");
+            assert_eq!(s.faces().len(), 10, "r={r}");
+            assert_eq!(kinds(&s), (6, 3, 1), "r={r}");
+            let sphere = s.faces().into_iter().find(|f| matches!(f.borrow().surface, Surface::Sphere(_))).expect("a sphere");
+            let (area, _) = build::face_area_centroid(&sphere.borrow());
+            assert!((area - std::f64::consts::PI * r * r / 2.0).abs() < 1e-6, "r={r} sphere area {area}");
+            let bb = build::solid_aabb(&s);
+            assert_eq!((bb.lo, bb.hi), ([-15.0, -10.0, -5.0], [15.0, 10.0, 5.0]));
+            let mesh = crate::mesh::mesh_solid(&s, 0.05).expect("meshes");
+            assert!(crate::ops::check_watertight(&mesh), "r={r} mesh is watertight");
+        }
+    }
+
+    /// The same three edges in any order are the same part.
+    #[test]
+    fn round_three_edges_at_a_corner_in_another_order_is_the_same_part() {
+        let (a, ra) = round_chain(&[2.0; 3], &["+z|-y", "+z|+x", "-y|+x"]);
+        let (b, rb) = round_chain(&[2.0; 3], &["-y|+x", "+z|-y", "+z|+x"]);
+        assert!(ra.is_empty() && rb.is_empty(), "{ra:?} {rb:?}");
+        let (a, b) = (a.unwrap(), b.unwrap());
+        assert!((build::solid_volume(&a) - build::solid_volume(&b)).abs() < 1e-9);
+        assert_eq!(kinds(&a), kinds(&b));
+    }
+
+    /// What is not a sphere or a pair of cylinders is refused in its own sentence, never built wrong: rounds of
+    /// different radii at a corner (an ellipsoid would be needed), a radius that does not leave two on every edge.
+    #[test]
+    fn round_chains_that_are_not_a_sphere_or_a_cylinder_pair_refuse() {
+        let ends = "whose ends are plain flat faces square to it, with nothing else within reach of the cut -- r2 is shown without it.";
+        // unequal radii at a corner: the second is its own run, and meets a cylinder end
+        let (s, refusals) = round_chain(&[2.0, 3.0], &["+z|+x", "+z|-y"]);
+        let text = refusals.get("r2").and_then(|t| t.as_str()).unwrap_or_default();
+        assert!(text.starts_with("brep-rs can only round a straight edge between two flat faces") && text.ends_with(ends), "refusal: {text}");
+        // the refused round is shown without it: the part as the first round left it
+        let v = build::solid_volume(&s.expect("part kept"));
+        assert!((v - (6000.0 - (1.0 - std::f64::consts::PI / 4.0) * 4.0 * 20.0)).abs() < 1e-6, "volume {v}");
+        // unequal radii among three at a corner
+        let (_, refusals) = round_chain(&[2.0, 2.0, 3.0], &["+z|-y", "+z|+x", "-y|+x"]);
+        assert!(refusals.contains_key("r3") && !refusals.contains_key("r2"), "refusals: {refusals:?}");
+        // r = 5 on the 10 mm height: two radii do not fit, so the corner is not built (and the first stays)
+        let (_, refusals) = round_chain(&[5.0, 5.0], &["+z|+x", "+z|-y"]);
+        assert!(refusals.contains_key("r2"), "refusals: {refusals:?}");
     }
 
     /// A chamfer and then a ROUND on a neighbouring edge of the same box: the
@@ -10343,24 +10497,9 @@ enum RimEnd {
     Mitre { v: Vec3, m: Vec3 },
 }
 
-/// S4h: a run of equal rounds (or chamfers) whose edges meet at the inside corners of a pocket's opening, built
-/// TOGETHER from the part the run started from. Two such edges meet at a vertex whose third edge is concave
-/// (the pocket's vertical corner): each blend is extended by its own tangent length into the corner and cut
-/// by the mitre plane through the vertex, the plane of symmetry that swaps the two edges, so the two cuts
-/// remove the INTERSECTION of the two blends there, which is what OCCT (FreeCAD) builds. For rounds the two
-/// quarter cylinders then meet along the arc of the ellipse where the mitre plane cuts them.
-///
-/// This slice takes square geometry only: every edge straight, between two flat faces at a right angle, two
-/// members meeting at a corner perpendicular to each other with the same face between them, and every other
-/// end a plain flat face square to the edge. The removed volume is checked against its closed form -- per edge
-/// the blend's cross-section times its length, per corner `leg^3 / 3` for a chamfer and `(5/3 - pi/2) r^3`
-/// for a round -- and the part gains exactly one face per member, or the run is refused.
-fn rim_corner_build(pre: &TSolid, hist: &History, features: &[Value], size: f64, round: bool) -> Result<TSolid, FilletErr> {
-    if pre.shells.len() != 1 || features.len() < 2 {
-        return Err(FilletErr::NoBox);
-    }
-    let src = build::unify_coplanar(pre);
-    let near = |p: Vec3, q: Vec3| len(sub(p, q)) <= 1e-6 * (1.0 + len(p).max(len(q)));
+/// Read the edges of a rim run on the part it started from (every one a straight edge between two faces at a right
+/// angle, convex or not as `Concave` says, with size fitting), and the narrowest face any of them runs along.
+fn rim_read_members(src: &TSolid, hist: &History, features: &[Value], size: f64) -> Result<(Vec<RimEdge>, f64), FilletErr> {
     let mut members: Vec<RimEdge> = Vec::new();
     // The narrowest face the run's edges run along; a failure past the shape checks is a size one when the size
     // is tiny against it or all but equal to it.
@@ -10374,7 +10513,7 @@ fn rim_corner_build(pre: &TSolid, hist: &History, features: &[Value], size: f64,
         let own = src.edges().iter().any(|e| crate::topo::same(e, &edge0))
             && src.faces().iter().any(|f| std::rc::Rc::ptr_eq(f, &fa0))
             && src.faces().iter().any(|f| std::rc::Rc::ptr_eq(f, &fb0));
-        let (edge, fa, fb) = if own { (edge0, fa0, fb0) } else { map_edge_into(&src, &edge0, &fa0, &fb0).ok_or(FilletErr::NoBox)? };
+        let (edge, fa, fb) = if own { (edge0, fa0, fb0) } else { map_edge_into(src, &edge0, &fa0, &fb0).ok_or(FilletErr::NoBox)? };
         let (a, b) = {
             let e = edge.borrow();
             let r = (e.a.borrow().point, e.b.borrow().point);
@@ -10397,7 +10536,7 @@ fn rim_corner_build(pre: &TSolid, hist: &History, features: &[Value], size: f64,
         }
         narrowest = narrowest.min(reach_a.min(reach_b));
         let into_corner = normalize(add(in_a, in_b));
-        if !ops::inside_solid(&src, add(midpoint, scale(into_corner, 1e-6))) {
+        if !ops::inside_solid(src, add(midpoint, scale(into_corner, 1e-6))) {
             return Err(FilletErr::Concave);
         }
         for endpoint in [&edge.borrow().a, &edge.borrow().b] {
@@ -10427,6 +10566,28 @@ fn rim_corner_build(pre: &TSolid, hist: &History, features: &[Value], size: f64,
             }
         }
     }
+    Ok((members, narrowest))
+}
+
+/// S4h: a run of equal rounds (or chamfers) whose edges meet at the inside corners of a pocket's opening, built
+/// TOGETHER from the part the run started from. Two such edges meet at a vertex whose third edge is concave
+/// (the pocket's vertical corner): each blend is extended by its own tangent length into the corner and cut
+/// by the mitre plane through the vertex, the plane of symmetry that swaps the two edges, so the two cuts
+/// remove the INTERSECTION of the two blends there, which is what OCCT (FreeCAD) builds. For rounds the two
+/// quarter cylinders then meet along the arc of the ellipse where the mitre plane cuts them.
+///
+/// This slice takes square geometry only: every edge straight, between two flat faces at a right angle, two
+/// members meeting at a corner perpendicular to each other with the same face between them, and every other
+/// end a plain flat face square to the edge. The removed volume is checked against its closed form -- per edge
+/// the blend's cross-section times its length, per corner `leg^3 / 3` for a chamfer and `(5/3 - pi/2) r^3`
+/// for a round -- and the part gains exactly one face per member, or the run is refused.
+fn rim_corner_build(pre: &TSolid, hist: &History, features: &[Value], size: f64, round: bool) -> Result<TSolid, FilletErr> {
+    if pre.shells.len() != 1 || features.len() < 2 {
+        return Err(FilletErr::NoBox);
+    }
+    let src = build::unify_coplanar(pre);
+    let near = |p: Vec3, q: Vec3| len(sub(p, q)) <= 1e-6 * (1.0 + len(p).max(len(q)));
+    let (mut members, narrowest) = rim_read_members(&src, hist, features, size)?;
     // A right angle: the round's tangent length is its radius, a chamfer's leg its size.
     let leg = size;
     let mut mitre_ends = 0usize;
@@ -10594,6 +10755,256 @@ fn rim_corner_build(pre: &TSolid, hist: &History, features: &[Value], size: f64,
     // material above both quarter cylinders, 2 int_0^1 (1 - u)(1 - sqrt(1 - u^2)) du.
     let pi = std::f64::consts::PI;
     let want = (1.0 - pi / 4.0) * size * size * total_len + corners as f64 * (5.0 / 3.0 - pi / 2.0) * size * size * size;
+    let got = v0 - build::solid_volume(&cur);
+    if !agrees(got, want) {
+        return Err(size_fail());
+    }
+    Ok(cur)
+}
+
+/// How one end of a member of a convex rim run is cut.
+#[derive(Clone, Copy, PartialEq)]
+enum ConvexEnd {
+    /// Nothing else is rounded at this vertex: the wedge runs `leg` on past it into air.
+    Open,
+    /// The part carries on past this end (a boss on a base): the wedge stops flush.
+    Flush,
+    /// One other round ends here, at a right angle: the two cylinders meet along the ellipse the bisector
+    /// plane through the vertex (through `v`, unit normal `m`) cuts them in.
+    Mitre { v: Vec3, m: Vec3 },
+    /// The rounds of three mutually square edges end here: they stop at the corner cube and a sphere fills it.
+    Sphere,
+}
+
+/// A convex polyhedron from vertex rings, each ring turned to face away from the centroid of the points.
+fn convex_polyhedron(points: &[Vec3], rings: Vec<Vec<usize>>) -> TSolid {
+    let centroid = scale(points.iter().fold([0.0; 3], |acc, p| add(acc, *p)), 1.0 / points.len() as f64);
+    let faces: Vec<(Vec3, Vec<usize>)> = rings
+        .into_iter()
+        .map(|idx| {
+            let pts: Vec<Vec3> = idx.iter().map(|i| points[*i]).collect();
+            let mut n = [0.0; 3];
+            for k in 0..pts.len() {
+                n = add(n, cross(sub(pts[k], pts[0]), sub(pts[(k + 1) % pts.len()], pts[0])));
+            }
+            let n = normalize(n);
+            if dot(n, sub(pts[0], centroid)) >= 0.0 {
+                (n, idx)
+            } else {
+                let mut r = idx.clone();
+                r.reverse();
+                (scale(n, -1.0), r)
+            }
+        })
+        .collect();
+    build::ensure_outward(&build::polyhedron_solid(points, &faces))
+}
+
+/// A2: a run of equal rounds whose edges meet at CONVEX corners of the part -- two rounded edges at a vertex
+/// (their cylinders meet along an ellipse in the bisector plane), or three mutually square ones (the cylinders
+/// stop at the corner cube and a sphere octant fills it, which is what FreeCAD builds) -- built TOGETHER from the
+/// part the run started on, as `rim_corner_build` does for an inside corner. Each blend is first cut flat (its
+/// chord wedge, running past a plain end into air); at a vertex of three the corner cube is cut by the plane
+/// through the three tangent points; then every chord face is re-skinned as its tangent cylinder (an end chord in
+/// a bisector plane becomes its ellipse, shared with the neighbour) and the corner triangle as its sphere.
+///
+/// Anything outside that is refused whole by the caller: an edge end that is not a plain face square to the edge,
+/// two edges that are not at a right angle, a vertex that is not convex, a size that does not leave every edge
+/// longer than two radii. The removed volume is checked against its closed form -- `(1 - pi/4) r^2` per unit of
+/// edge (each end at a sphere corner shortened by `r`), less `(5/3 - pi/2) r^3` where two cylinders overlap, plus
+/// `(1 - pi/6) r^3` per sphere corner -- and the part gains exactly one face per member and per sphere corner.
+fn rim_convex_build(pre: &TSolid, hist: &History, features: &[Value], size: f64) -> Result<TSolid, FilletErr> {
+    if pre.shells.len() != 1 || features.len() < 2 {
+        return Err(FilletErr::NoBox);
+    }
+    let src = build::unify_coplanar(pre);
+    let near = |p: Vec3, q: Vec3| len(sub(p, q)) <= 1e-6 * (1.0 + len(p).max(len(q)));
+    let (members, narrowest) = rim_read_members(&src, hist, features, size)?;
+    let leg = size;
+    // Two radii must fit along every edge and across the narrowest face, or the cuts of opposite edges (or the two
+    // ends of one) meet and the closed form below no longer describes the part.
+    if 2.0 * size >= narrowest - 1e-12 || members.iter().any(|m| m.length <= 2.0 * size * (1.0 + 1e-9)) {
+        return Err(FilletErr::TooBig);
+    }
+    let size_fail = || {
+        if size < 1e-3 * narrowest {
+            FilletErr::SizeTiny
+        } else if size > narrowest * (1.0 - 1e-6) {
+            FilletErr::SizeNear
+        } else {
+            FilletErr::RoundEnds
+        }
+    };
+    let mut ends: Vec<[ConvexEnd; 2]> = vec![[ConvexEnd::Open; 2]; members.len()];
+    let mut mitre_count = 0usize;
+    let mut sphere_ends = 0usize;
+    for i in 0..members.len() {
+        for end in 0..2 {
+            let p = if end == 0 { members[i].a } else { members[i].b };
+            let mi = &members[i];
+            let ti = if end == 0 { mi.dir } else { scale(mi.dir, -1.0) };
+            let endpoint = if end == 0 { mi.edge.borrow().a.clone() } else { mi.edge.borrow().b.clone() };
+            let shared: Vec<usize> = (0..members.len()).filter(|j| *j != i && (near(members[*j].a, p) || near(members[*j].b, p))).collect();
+            let away = |j: usize| if near(members[j].a, p) { members[j].dir } else { scale(members[j].dir, -1.0) };
+            ends[i][end] = match shared.len() {
+                0 => {
+                    let toward = scale(ti, -1.0);
+                    match fillet_end_kind(&src, &mi.fa, &mi.fb, &endpoint, toward, mi.dir) {
+                        Some(true) => ConvexEnd::Open,
+                        Some(false) => ConvexEnd::Flush,
+                        None => return Err(FilletErr::RoundEnds),
+                    }
+                }
+                1 => {
+                    let tj = away(shared[0]);
+                    if dot(ti, tj).abs() > 1e-9 || !fillet_vertex_is_convex(&src, &endpoint) {
+                        return Err(FilletErr::RoundEnds);
+                    }
+                    mitre_count += 1;
+                    ConvexEnd::Mitre { v: p, m: normalize(sub(ti, tj)) }
+                }
+                2 => {
+                    let (tj, tk) = (away(shared[0]), away(shared[1]));
+                    if dot(ti, tj).abs() > 1e-9 || dot(ti, tk).abs() > 1e-9 || dot(tj, tk).abs() > 1e-9 || !fillet_vertex_is_convex(&src, &endpoint) {
+                        return Err(FilletErr::RoundEnds);
+                    }
+                    sphere_ends += 1;
+                    ConvexEnd::Sphere
+                }
+                _ => return Err(FilletErr::VertexTooComplex),
+            };
+        }
+    }
+    // Every vertex is counted once per member end: a corner of two members has two ends, of three has three.
+    if mitre_count % 2 != 0 || sphere_ends % 3 != 0 {
+        return Err(FilletErr::NoBox);
+    }
+    let (overlaps, spheres) = (mitre_count / 2, sphere_ends / 3);
+    // The chord wedge of each member: a triangular prism, its apex on the edge and one leg along each face,
+    // running `leg` past any end but a flush one.
+    let mut tools: Vec<TSolid> = Vec::new();
+    for (idx, m) in members.iter().enumerate() {
+        let tri = |end: usize| -> [Vec3; 3] {
+            let (p, outward) = if end == 0 { (m.a, scale(m.dir, -1.0)) } else { (m.b, m.dir) };
+            let apex = if ends[idx][end] == ConvexEnd::Flush { p } else { add(p, scale(outward, leg)) };
+            [apex, add(apex, scale(m.in_a, leg)), add(apex, scale(m.in_b, leg))]
+        };
+        let (ta, tb) = (tri(0), tri(1));
+        let points = vec![ta[0], ta[1], ta[2], tb[0], tb[1], tb[2]];
+        tools.push(convex_polyhedron(&points, vec![vec![0, 1, 2], vec![3, 4, 5], vec![0, 3, 4, 1], vec![0, 2, 5, 3], vec![1, 4, 5, 2]]));
+    }
+    // The corner cube of each sphere corner, less the tetrahedron at its far corner: what lies on the vertex's side
+    // of the plane through the three tangent points.
+    struct SphereCorner {
+        vertex: Vec3,
+        centre: Vec3,
+        triangle: [Vec3; 3],
+    }
+    let mut corners: Vec<SphereCorner> = Vec::new();
+    for (idx, m) in members.iter().enumerate() {
+        for end in 0..2 {
+            if ends[idx][end] != ConvexEnd::Sphere {
+                continue;
+            }
+            let p = if end == 0 { m.a } else { m.b };
+            if corners.iter().any(|c| near(c.vertex, p)) {
+                continue;
+            }
+            let dirs: Vec<Vec3> = (0..members.len())
+                .filter(|j| near(members[*j].a, p) || near(members[*j].b, p))
+                .map(|j| if near(members[j].a, p) { members[j].dir } else { scale(members[j].dir, -1.0) })
+                .collect();
+            if dirs.len() != 3 {
+                return Err(FilletErr::NoBox);
+            }
+            let (i, j, k) = (scale(dirs[0], leg), scale(dirs[1], leg), scale(dirs[2], leg));
+            let centre = add(p, add(i, add(j, k)));
+            let triangle = [add(p, add(i, j)), add(p, add(j, k)), add(p, add(i, k))];
+            let pts = vec![p, add(p, i), add(p, j), add(p, k), triangle[0], triangle[1], triangle[2]];
+            // 0 K, 1 rI, 2 rJ, 3 rK, 4 r(I+J), 5 r(J+K), 6 r(I+K)
+            tools.push(convex_polyhedron(
+                &pts,
+                vec![vec![0, 1, 4, 2], vec![0, 2, 5, 3], vec![0, 3, 6, 1], vec![1, 4, 6], vec![2, 4, 5], vec![3, 5, 6], vec![4, 5, 6]],
+            ));
+            corners.push(SphereCorner { vertex: p, centre, triangle });
+        }
+    }
+    if corners.len() != spheres {
+        return Err(FilletErr::NoBox);
+    }
+    let v0 = build::solid_volume(&src);
+    let agrees = |got: f64, want: f64| {
+        got.is_finite() && (got - want).abs() <= 1e-9 * v0.abs().max(1.0) && (got - want).abs() <= 1e-6 * want.abs()
+    };
+    let mut cur = src.clone();
+    for tool in &tools {
+        cur = ops::boolean("subtract", &cur, tool).map(|s| build::ensure_outward(&s)).ok_or_else(size_fail)?;
+    }
+    // One new face per member, one per sphere corner.
+    if cur.faces().len() != src.faces().len() + members.len() + spheres {
+        return Err(size_fail());
+    }
+    // Re-skin each chord face as its tangent quarter cylinder; a chord in a bisector plane becomes the ellipse
+    // where the plane cuts it, shared with the neighbour's cylinder.
+    let theta = std::f64::consts::FRAC_PI_2;
+    for (idx, m) in members.iter().enumerate() {
+        let into = normalize(add(m.in_a, m.in_b));
+        let midpoint = scale(add(m.a, m.b), 0.5);
+        let bevel_point = add(midpoint, scale(add(scale(m.in_a, leg), scale(m.in_b, leg)), 0.5));
+        let bevel_normal = scale(into, -1.0);
+        let mut bevel: Option<build::TFace> = None;
+        for face in cur.faces() {
+            let hit = match &face.borrow().surface {
+                Surface::Plane(p) => {
+                    let n = if face.borrow().forward { normalize(p.n) } else { scale(normalize(p.n), -1.0) };
+                    len(sub(n, bevel_normal)) < 1e-7 && dot(sub(bevel_point, p.origin), normalize(p.n)).abs() < 1e-7
+                }
+                _ => false,
+            };
+            if hit {
+                if bevel.is_some() {
+                    return Err(size_fail());
+                }
+                bevel = Some(face.clone());
+            }
+        }
+        let bevel = bevel.ok_or_else(size_fail)?;
+        let mitres: Vec<(Vec3, Vec3)> = ends[idx].iter().filter_map(|e| match e { ConvexEnd::Mitre { v, m } => Some((*v, *m)), _ => None }).collect();
+        let axis_point = add(midpoint, scale(into, size / (0.5 * theta).sin()));
+        build::bevel_to_round_mitred(&bevel, axis_point, m.dir, size, theta, false, &mitres).ok_or_else(size_fail)?;
+    }
+    for c in &corners {
+        let mut tri: Option<build::TFace> = None;
+        for face in cur.faces() {
+            let hit = {
+                let fb = face.borrow();
+                matches!(fb.surface, Surface::Plane(_))
+                    && fb.boundary.len() == 1
+                    && fb.boundary[0].borrow().edges.len() == 3
+                    && fb.boundary[0].borrow().edges.iter().all(|u| {
+                        let e = u.edge.borrow();
+                        let (a, b) = (e.a.borrow().point, e.b.borrow().point);
+                        c.triangle.iter().any(|t| near(*t, a)) && c.triangle.iter().any(|t| near(*t, b))
+                    })
+            };
+            if hit {
+                if tri.is_some() {
+                    return Err(size_fail());
+                }
+                tri = Some(face.clone());
+            }
+        }
+        let tri = tri.ok_or_else(size_fail)?;
+        build::corner_triangle_to_sphere(&tri, c.centre, size).ok_or_else(size_fail)?;
+    }
+    // Exact: (1 - pi/4) r^2 per unit of edge, with each end that stops at a sphere corner `r` short; the overlap
+    // of two cylinders at a corner of two, (5/3 - pi/2) r^3, is counted twice and taken back once; and a sphere
+    // corner removes the corner cube less its octant of the ball, (1 - pi/6) r^3.
+    let pi = std::f64::consts::PI;
+    let shortened = sphere_ends as f64 * size;
+    let total_len: f64 = members.iter().map(|m| m.length).sum::<f64>() - shortened;
+    let want = (1.0 - pi / 4.0) * size * size * total_len - overlaps as f64 * (5.0 / 3.0 - pi / 2.0) * size.powi(3)
+        + spheres as f64 * (1.0 - pi / 6.0) * size.powi(3);
     let got = v0 - build::solid_volume(&cur);
     if !agrees(got, want) {
         return Err(size_fail());

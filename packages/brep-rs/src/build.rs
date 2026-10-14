@@ -4032,6 +4032,108 @@ pub fn bevel_to_round_mitred(
     Some(())
 }
 
+/// A2: re-skin the planar triangle left at a corner where three equal rounds meet as the sphere octant that
+/// blends them (FreeCAD's corner of three equal-radius fillets). `tri` is the plane face whose three edges are
+/// the arcs the neighbouring cylinders' end chords became (each centred in a plane through `centre`, the three
+/// planes mutually square); `centre` is the sphere's centre and `radius` the rounds' radius. The face handle
+/// and the three edge handles are KEPT, so every neighbour stays welded exactly as the planar cut left it.
+/// None, and nothing changed, for any face that is not that triangle.
+pub fn corner_triangle_to_sphere(tri: &TFace, centre: Vec3, radius: f64) -> Option<()> {
+    use crate::math::{len, normalize};
+    let hp = std::f64::consts::FRAC_PI_2;
+    if radius <= 0.0 {
+        return None;
+    }
+    let near = |p: Vec3, q: Vec3| len(sub(p, q)) <= 1e-6 * (1.0 + len(p).max(len(q)));
+    let (edges, verts) = {
+        let f = tri.borrow();
+        if f.boundary.len() != 1 || !matches!(f.surface, Surface::Plane(_)) {
+            return None;
+        }
+        let w = f.boundary[0].borrow();
+        if w.edges.len() != 3 {
+            return None;
+        }
+        let mut edges: Vec<TEdge> = Vec::new();
+        let mut verts: Vec<Vec3> = Vec::new();
+        for u in &w.edges {
+            let e = u.edge.borrow();
+            // every edge is a circular arc of this radius about a point of the sphere's centre plane: the arc's
+            // middle and both ends lie on the sphere
+            let (pa, pb) = (e.a.borrow().point, e.b.borrow().point);
+            if !matches!(e.curve, Curve::Arc { .. }) {
+                return None;
+            }
+            for q in [pa, pb, e.curve.point_at(0.5)] {
+                if (len(sub(q, centre)) - radius).abs() > 1e-7 * radius.max(1.0) {
+                    return None;
+                }
+            }
+            for q in [pa, pb] {
+                if !verts.iter().any(|v| near(*v, q)) {
+                    verts.push(q);
+                }
+            }
+            edges.push(u.edge.clone());
+        }
+        (edges, verts)
+    };
+    if verts.len() != 3 {
+        return None;
+    }
+    // B is the pole; C and A are the other two, taken in the order that makes (C, A) turn about -(B - centre)
+    // as the e1 -> e2 of the sphere's frame does.
+    let b = verts[0];
+    let axis = scale(normalize(sub(b, centre)), -1.0);
+    let (c, a) = if dot(cross(sub(verts[1], centre), sub(verts[2], centre)), axis) > 0.0 {
+        (verts[1], verts[2])
+    } else {
+        (verts[2], verts[1])
+    };
+    let e1 = normalize(sub(c, centre));
+    let e2 = normalize(sub(a, centre));
+    if dot(e1, e2).abs() > 1e-6 || dot(cross(e1, e2), axis) < 1.0 - 1e-6 || dot(normalize(sub(b, centre)), e1).abs() > 1e-6 {
+        return None;
+    }
+    let find = |p: Vec3, q: Vec3| -> Option<(TEdge, Vec3)> {
+        edges.iter().find_map(|e| {
+            let (x, y) = {
+                let eb = e.borrow();
+                let r = (eb.a.borrow().point, eb.b.borrow().point);
+                r
+            };
+            if (near(x, p) && near(y, q)) || (near(x, q) && near(y, p)) {
+                Some((e.clone(), x))
+            } else {
+                None
+            }
+        })
+    };
+    let (e_bc, x_bc) = find(b, c)?;
+    let (e_ca, x_ca) = find(c, a)?;
+    let (e_ab, x_ab) = find(a, b)?;
+    let uses = vec![
+        cyl_arc_use(&e_bc, near(x_bc, b), 0.0, 0.0, 0.0, hp),
+        cyl_arc_use(&e_ca, near(x_ca, c), 0.0, hp, hp, hp),
+        cyl_arc_use(&e_ab, near(x_ab, a), hp, hp, hp, 0.0),
+    ];
+    let mut f = tri.borrow_mut();
+    f.surface = Surface::Sphere(SphereSurf {
+        center: centre,
+        radius,
+        axis,
+        e1,
+        e2,
+        u_range: [0.0, hp],
+        v_range: [0.0, hp],
+        trim: crate::geom::SphTrim::None,
+    });
+    f.forward = true;
+    f.uv_domain = [[0.0, hp], [0.0, hp]];
+    f.boundary = vec![Rc::new(RefCell::new(Wire { edges: uses }))];
+    Some(())
+}
+
 // ---------------------------------------------------------------------------
 // S4g: one logical face, one logical edge.
 //
