@@ -1,4 +1,4 @@
-# dress-mode__chamfer-two-distances: chamfer 3 x 2 on the top/front edge
+# dress-mode__chamfer-two-distances: chamfer 3 x 2 on the top/front edge (3 on the front, 2 on the top)
 REFS_DIR = "/home/shuff57/Documents/GitHub/reshape-cad/docs/specs/census/refs"
 exec(open("/home/shuff57/Documents/GitHub/reshape-cad/docs/replica/freecad/gauntlet/variants/fc_prelude.py").read())
 exec(open("/home/shuff57/Documents/GitHub/reshape-cad/docs/specs/census/census-prelude.py").read())
