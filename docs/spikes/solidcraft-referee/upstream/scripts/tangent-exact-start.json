@@ -1,0 +1,8 @@
+[
+  {"command":"sketch.create","params":{"name":"s","plane":{"origin":[0,0,0],"x_dir":[1,0,0],"y_dir":[0,1,0]}}},
+  {"command":"sketch.line","params":{"points":[[0,0],[10,0]],"ids":["l"],"connect":false}},
+  {"command":"sketch.arc.three_point","params":{"start":[10,0],"through":[15,5],"end":[10,10],"id":"a","connect":false}},
+  {"command":"sketch.constraint.coincident","params":{"a":"l.end","b":"a.start"}},
+  {"command":"sketch.constraint.tangent","params":{"a":"l","b":"a"}},
+  {"command":"sketch.solve","params":{}}
+]
