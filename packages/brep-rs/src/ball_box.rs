@@ -72,7 +72,7 @@ fn intersect(a: &[(f64, f64)], b: &[(f64, f64)]) -> Vec<(f64, f64)> {
 }
 
 /// The angles `t` of circle `ci` that lie inside half-space `h`, as intervals of [0, TAU]. `Err` for a plane tangent to the circle.
-fn allowed_by(ci: &Circle, h: &Half) -> Result<Vec<(f64, f64)>, &'static str> {
+fn allowed_by(ci: &Circle, h: &Half, r: f64) -> Result<Vec<(f64, f64)>, &'static str> {
     let a = ci.rho * dot(h.n, ci.e1);
     let b = ci.rho * dot(h.n, ci.e2);
     let k = h.d - dot(h.n, ci.c);
@@ -82,6 +82,11 @@ fn allowed_by(ci: &Circle, h: &Half) -> Result<Vec<(f64, f64)>, &'static str> {
     }
     let q = k / m;
     if (q - 1.0).abs() < 1e-9 || (q + 1.0).abs() < 1e-9 {
+        // A plane that touches the circle at the very point where it touches the SPHERE (a great circle through the point of contact
+        // of a face the ball rests on) cuts nothing: it is no edge of the box meeting the ball.
+        if (h.d - r).abs() < 1e-9 * r {
+            return Ok(vec![(0.0, TAU)]);
+        }
         return Err("a box face is tangent to a circle of the ball");
     }
     if q > 1.0 {
@@ -134,7 +139,9 @@ impl Region {
 pub fn region(r: f64, halves: &[Half]) -> Result<Region, &'static str> {
     let circles: Vec<Option<Circle>> = halves.iter().map(|h| circle_of(h, r)).collect();
     for h in halves {
-        if (h.d.abs() - r).abs() < 1e-9 * r {
+        // A face the ball touches from inside the half-space (`d = +r`) keeps all of the sphere: it cuts nothing, so it is no boundary and
+        // FreeCAD makes no face of it either. The far side (`d = -r`) leaves the box and the ball one point in common.
+        if (h.d + r).abs() < 1e-9 * r {
             return Err("a box face touches the ball at a single point");
         }
     }
@@ -145,7 +152,7 @@ pub fn region(r: f64, halves: &[Half]) -> Result<Region, &'static str> {
         let mut allowed = vec![(0.0, TAU)];
         for (j, h) in halves.iter().enumerate() {
             if j != i {
-                allowed = intersect(&allowed, &allowed_by(ci, h)?);
+                allowed = intersect(&allowed, &allowed_by(ci, h, r)?);
             }
         }
         if allowed.is_empty() {
@@ -259,6 +266,23 @@ impl Region {
         Some((comps(chi_in)?, comps(chi_out)?))
     }
 
+    /// The end points of arc `a` and the points of it that are extreme along a coordinate axis.
+    fn arc_extent_points(&self, a: &ArcRef) -> Vec<Vec3> {
+        let ci = self.circles[a.plane].as_ref().unwrap();
+        let mut out = vec![ci.at(a.from), ci.at(a.to)];
+        for i in 0..3 {
+            let t0 = ci.e2[i].atan2(ci.e1[i]); // the maximum along axis i; +PI is the minimum
+            for t in [t0, t0 + PI] {
+                // t on the arc [to, from] modulo a turn
+                let rel = (a.from - t).rem_euclid(TAU);
+                if rel <= a.from - a.to {
+                    out.push(ci.at(t));
+                }
+            }
+        }
+        out
+    }
+
     /// Points of the closed face whose bounding box is the face's: every arc's end points, the point of each arc that is extreme along a
     /// coordinate axis (if it lies on the arc), and the sphere's six axis points that belong to the face (`inside`: the region, else its
     /// complement). Exact; a sampled bound could fall short of the true extreme.
@@ -266,19 +290,7 @@ impl Region {
         let mut out = Vec::new();
         for l in self.all_loops() {
             for a in &l {
-                let ci = self.circles[a.plane].as_ref().unwrap();
-                out.push(ci.at(a.from));
-                out.push(ci.at(a.to));
-                for i in 0..3 {
-                    let t0 = ci.e2[i].atan2(ci.e1[i]); // the maximum along axis i; +PI is the minimum
-                    for t in [t0, t0 + PI] {
-                        // t on the arc [to, from] modulo a turn
-                        let rel = (a.from - t).rem_euclid(TAU);
-                        if rel <= a.from - a.to {
-                            out.push(ci.at(t));
-                        }
-                    }
-                }
+                out.extend(self.arc_extent_points(a));
             }
         }
         for i in 0..3 {
@@ -446,6 +458,36 @@ pub fn overlap_volume(r: f64, centre: Vec3, axes: [Vec3; 3], half: [f64; 3]) -> 
     acc
 }
 
+
+/// Points whose bounding box is that of a hull-trimmed sphere face of radius `r` about the origin: the hull's own, or, for a hull with a
+/// wedge left out, those of the hull outside the wedge and of the wedge's arcs inside the hull. `None` when the boundary is degenerate.
+pub fn trim_extent_points(r: f64, h: &crate::geom::HullTrim) -> Option<Vec<Vec3>> {
+    let rg = region(r, &h.halves()).ok()?;
+    if rg.is_boundaryless() {
+        return None;
+    }
+    if h.ex_n == 0 {
+        return Some(rg.extent_points(h.inside));
+    }
+    if !h.inside {
+        return None;
+    }
+    let ex = h.ex_halves();
+    let in_wedge = |p: &Vec3| ex.iter().all(|e| dot(e.n, *p) < e.d - 1e-9 * r);
+    let mut out: Vec<Vec3> = rg.extent_points(true).into_iter().filter(|p| !in_wedge(p)).collect();
+    let mut both = h.halves();
+    let nb = both.len();
+    both.extend(ex.iter().copied());
+    let cut = region(r, &both).ok()?;
+    for l in cut.all_loops() {
+        for a in &l {
+            if a.plane >= nb {
+                out.extend(cut.arc_extent_points(a));
+            }
+        }
+    }
+    Some(out)
+}
 
 // ---------------------------------------------------------------------------
 // The builder: a ball and a box as B-rep (S1, `keep`).
@@ -808,20 +850,29 @@ fn reversed_piece(p: &Piece) -> Piece {
 /// The sphere face: one wire per loop of the region. `region_side`: the face is the part inside the box (`true`) or outside it;
 /// `reversed`: its normal points into the sphere. The loops run with the face's material on the left of ITS normal.
 fn sphere_face(rg: &Region, halves: &[Half], o: Vec3, region_side: bool, reversed: bool) -> Option<TFace> {
-    let r = rg.r;
+    let mut all: Vec<Vec<ArcRef>> = rg.whole.iter().map(|&i| vec![ArcRef { plane: i, from: TAU, to: 0.0 }]).collect();
+    all.extend(rg.loops.iter().cloned());
+    sphere_face_with(rg.r, &rg.circles, &all, halves, &[], o, region_side, reversed)
+}
+
+/// A sphere face from its loops (arcs of `circles`, in `Region`'s convention: the material on the left of the outward normal) and its
+/// trim: the hull of `halves`, less the wedge inside every one of `ex`.
+#[allow(clippy::too_many_arguments)]
+fn sphere_face_with(r: f64, circles: &[Option<Circle>], all: &[Vec<ArcRef>], halves: &[Half], ex: &[Half], o: Vec3, region_side: bool, reversed: bool) -> Option<TFace> {
     let w = |p: Vec3| add(p, o);
     // Inside the box with the outward normal runs with t decreasing; flipping either the side or the normal turns it round (flipping
     // both turns it back).
     let decreasing = region_side != reversed;
     let mut wires = Vec::new();
-    let mut all: Vec<Vec<ArcRef>> = rg.whole.iter().map(|&i| vec![ArcRef { plane: i, from: TAU, to: 0.0 }]).collect();
-    all.extend(rg.loops.iter().cloned());
-    for l in &all {
+    if halves.len() > crate::geom::MAX_HULL || ex.len() > crate::geom::MAX_EXCLUDE {
+        return None;
+    }
+    for l in all {
         let mut verts = Verts(Vec::new(), 1e-9 * r);
         let mut uses = Vec::new();
         let order: Vec<ArcRef> = if decreasing { l.clone() } else { l.iter().rev().map(|a| ArcRef { plane: a.plane, from: a.to, to: a.from }).collect() };
         for a in &order {
-            let ci = rg.circles[a.plane].as_ref()?;
+            let ci = circles[a.plane].as_ref()?;
             let (pa, pb) = (ci.at(a.from), ci.at(a.to));
             let (va, vb) = (verts.at(w(pa)), verts.at(w(pb)));
             // a decreasing angle about n is counter-clockwise about -n; an increasing one is counter-clockwise about n
@@ -835,6 +886,10 @@ fn sphere_face(rg: &Region, halves: &[Half], o: Vec3, region_side: bool, reverse
     for (k, h) in halves.iter().enumerate().take(crate::geom::MAX_HULL) {
         planes[k] = [h.n[0], h.n[1], h.n[2], h.d];
     }
+    let mut exs = [[0.0; 4]; crate::geom::MAX_EXCLUDE];
+    for (k, h) in ex.iter().enumerate() {
+        exs[k] = [h.n[0], h.n[1], h.n[2], h.d];
+    }
     let e1 = normalize(cross([0.0, 0.0, 1.0], [1.0, 0.0, 0.0]));
     let sp = SphereSurf {
         center: o,
@@ -844,7 +899,7 @@ fn sphere_face(rg: &Region, halves: &[Half], o: Vec3, region_side: bool, reverse
         e2: cross([0.0, 0.0, 1.0], e1),
         u_range: [0.0, TAU],
         v_range: [0.0, PI],
-        trim: SphTrim::Hull(HullTrim { n: halves.len().min(crate::geom::MAX_HULL) as u8, planes, inside: region_side, reversed }),
+        trim: SphTrim::Hull(HullTrim { n: halves.len().min(crate::geom::MAX_HULL) as u8, planes, inside: region_side, reversed, ex_n: ex.len() as u8, ex: exs }),
     };
     Some(Rc::new(RefCell::new(topo::Face { boundary: wires, forward: true, surface: Surface::Sphere(sp), uv_domain: [[0.0, TAU], [0.0, PI]] })))
 }
@@ -898,71 +953,152 @@ fn separating_plane(a: &[Vec3], b: &[Vec3], r: f64) -> Option<(Vec3, f64)> {
     None
 }
 
-/// The sphere faces of a KEEP whose region is several patches, or a patch that crosses the sphere's seam: one face per patch, each
-/// patch that crosses the seam half-meridian cut along it in two. A face is a hull of the box's planes that bound it plus
-/// planes THROUGH THE CENTRE that keep it apart from the other patches (they touch no boundary: every patch lies wholly on one side)
-/// and, for the seam cut, the plane of the seam (whose great circle meets the patch in exactly the seam's arc). The second return is
-/// the points where a seam cut meets the box's circles, which the planar faces' arcs must break at. `None` leaves the one hull face
-/// (several wires) as it was: a patch holding a pole, a patch across both half-meridians, a plane that cannot be told apart.
-fn split_keep_patches(ball: &BallSpec, rg: &Region, halves: &[Half]) -> Option<(Vec<TFace>, Vec<Vec3>)> {
-    let r = rg.r;
-    if !rg.whole.is_empty() || rg.loops.is_empty() {
-        return None;
+/// Intervals of `a` left after taking `b` away (both sorted and disjoint, in [0, TAU], not joined across the wrap).
+fn minus_intervals(a: &[(f64, f64)], b: &[(f64, f64)]) -> Vec<(f64, f64)> {
+    let mut out = Vec::new();
+    for &(a0, a1) in a {
+        let mut cur = a0;
+        for &(b0, b1) in b {
+            if b1 <= cur || b0 >= a1 {
+                continue;
+            }
+            if b0 > cur {
+                out.push((cur, b0));
+            }
+            cur = cur.max(b1);
+            if cur >= a1 {
+                break;
+            }
+        }
+        if cur < a1 {
+            out.push((cur, a1));
+        }
     }
-    let (c_in, _) = rg.sphere_components()?;
+    out.retain(|&(x, y)| y - x > 1e-12);
+    out
+}
+
+/// The angles of circle `ci` inside every plane of `planes` but number `skip`, as sorted intervals of [0, TAU].
+fn raw_allowed(ci: &Circle, planes: &[Half], skip: usize, r: f64) -> Result<Vec<(f64, f64)>, &'static str> {
+    let mut a = vec![(0.0, TAU)];
+    for (j, h) in planes.iter().enumerate() {
+        if j != skip {
+            a = intersect(&a, &allowed_by(ci, h, r)?);
+        }
+    }
+    Ok(a)
+}
+
+/// Join an interval that ends at TAU with the one that starts at 0 (they are one arc through the wrap), as `(lo, hi)` with `hi` possibly
+/// past TAU. A whole turn is returned as `(0, TAU)`.
+fn join_wrap(mut v: Vec<(f64, f64)>) -> Vec<(f64, f64)> {
+    if v.len() > 1 && v[0].0 <= 1e-12 && v.last().unwrap().1 >= TAU - 1e-12 {
+        let first = v.remove(0);
+        let last = v.pop().unwrap();
+        v.push((last.0, first.1 + TAU));
+    }
+    v
+}
+
+/// The boundary of the part of the sphere inside `base` and NOT inside every plane of `cut` (a patch less a piece of it): the arcs of the
+/// base planes outside the wedge, and the wedge's own arcs inside the patch, run the other way round. Loops carry the material on the
+/// left of the outward normal, as `Region`'s do. The circles are those of `base` followed by those of `cut`.
+#[allow(clippy::type_complexity)]
+fn region_minus(r: f64, base: &[Half], cut: &[Half]) -> Result<(Vec<Option<Circle>>, Vec<Vec<ArcRef>>), &'static str> {
+    let all: Vec<Half> = base.iter().chain(cut.iter()).copied().collect();
+    let circles: Vec<Option<Circle>> = all.iter().map(|h| circle_of(h, r)).collect();
+    let nb = base.len();
+    let mut arcs: Vec<ArcRef> = Vec::new();
+    let mut loops: Vec<Vec<ArcRef>> = Vec::new();
+    for i in 0..all.len() {
+        let Some(ci) = &circles[i] else { continue };
+        if i < nb {
+            let in_base = raw_allowed(ci, &all[..nb], i, r)?;
+            let in_all = raw_allowed(ci, &all, i, r)?;
+            let rest = minus_intervals(&in_base, &in_all);
+            if rest.is_empty() {
+                continue;
+            }
+            if rest.len() == 1 && rest[0].0 <= 1e-12 && rest[0].1 >= TAU - 1e-12 {
+                loops.push(vec![ArcRef { plane: i, from: TAU, to: 0.0 }]);
+                continue;
+            }
+            for (lo, hi) in join_wrap(rest) {
+                arcs.push(ArcRef { plane: i, from: hi, to: lo });
+            }
+        } else {
+            let on = raw_allowed(ci, &all, i, r)?;
+            if on.is_empty() {
+                continue;
+            }
+            if on.len() == 1 && on[0].0 <= 1e-12 && on[0].1 >= TAU - 1e-12 {
+                loops.push(vec![ArcRef { plane: i, from: 0.0, to: TAU }]);
+                continue;
+            }
+            for (lo, hi) in join_wrap(on) {
+                arcs.push(ArcRef { plane: i, from: lo, to: hi });
+            }
+        }
+    }
+    let tol = 1e-7 * r;
+    let start_of = |a: &ArcRef| circles[a.plane].as_ref().unwrap().at(a.from);
+    let end_of = |a: &ArcRef| circles[a.plane].as_ref().unwrap().at(a.to);
+    let mut used = vec![false; arcs.len()];
+    for s in 0..arcs.len() {
+        if used[s] {
+            continue;
+        }
+        let mut chain = Vec::new();
+        let mut cur = s;
+        loop {
+            used[cur] = true;
+            chain.push(arcs[cur]);
+            let e = end_of(&arcs[cur]);
+            let next: Vec<usize> = (0..arcs.len()).filter(|&k| len(sub(start_of(&arcs[k]), e)) < tol).collect();
+            match next.as_slice() {
+                [k] if *k == s => break,
+                [k] if !used[*k] => cur = *k,
+                _ => return Err("the arcs of a cut patch do not close"),
+            }
+        }
+        loops.push(chain);
+    }
+    Ok((circles, loops))
+}
+
+/// The hull of each connected patch of the sphere inside `base`, as `base` plus the planes that keep that patch apart from the others
+/// (they touch no boundary: every patch lies wholly on one side). One hull for one patch, none for an empty region. `Err` when a patch has a
+/// hole or a whole circle for its boundary, or no plane parts two patches.
+fn patch_hulls(ball: &BallSpec, r: f64, base: &[Half], cands: &[Vec3]) -> Result<Vec<Vec<Half>>, &'static str> {
+    let rg = region(r, base)?;
+    if rg.is_boundaryless() {
+        return Ok(Vec::new());
+    }
+    let (c_in, _) = rg.sphere_components().ok_or("the patches cannot be counted")?;
+    if c_in == 1 {
+        // one patch, whatever holes and whole circles bound it
+        return Ok(vec![base.to_vec()]);
+    }
+    if !rg.whole.is_empty() {
+        return Err("several patches, one bounded by a whole circle");
+    }
     if c_in != rg.loops.len() {
-        return None;
+        return Err("several patches, one with a hole in it");
     }
-    let (axis, e1) = (ball.axis, ball.seam);
-    let m = normalize(cross(axis, e1));
-    // the box's bounding planes (a plane that misses the ball keeps all of it inside)
-    let binding: Vec<Half> = halves.iter().filter(|h| h.d.abs() < r).copied().collect();
+    let _ = ball;
     let polys = rg.polylines(0.05 * r);
     if polys.len() != rg.loops.len() {
-        return None;
+        return Err("a patch's loop cannot be sampled");
     }
     let margin = 1e-6 * r;
-    // candidate separators: planes through the centre, normals the box's own and the world axes (n . q <= 0 keeps a patch)
-    let mut cands: Vec<Vec3> = Vec::new();
-    for h in halves {
-        for sg in [1.0, -1.0] {
-            let n = scale(h.n, sg);
-            if !cands.iter().any(|c| len(sub(*c, n)) < 1e-9) {
-                cands.push(n);
-            }
-        }
-    }
-    for k in 0..3 {
-        for sg in [1.0, -1.0] {
-            let mut n = [0.0; 3];
-            n[k] = sg;
-            if !cands.iter().any(|c| len(sub(*c, n)) < 1e-9) {
-                cands.push(n);
-            }
-        }
-    }
     let side = |poly: &[Vec3], n: Vec3| -> (f64, f64) {
         poly.iter().fold((f64::INFINITY, f64::NEG_INFINITY), |(lo, hi), p| {
             let d = dot(n, *p);
             (lo.min(d), hi.max(d))
         })
     };
-    let seam_pts = |sg: f64| -> Vec<Vec3> {
-        (1..2000)
-            .map(|i| {
-                let phi = -0.5 * PI + PI * i as f64 / 2000.0;
-                add(scale(e1, sg * r * phi.cos()), scale(axis, r * phi.sin()))
-            })
-            .collect()
-    };
-    let (seam_pos, seam_neg) = (seam_pts(1.0), seam_pts(-1.0));
-    let mut out_faces: Vec<TFace> = Vec::new();
-    let mut cuts: Vec<Vec3> = Vec::new();
-    let mut any_cut = false;
-    let mut area_sum = 0.0;
-    let mut sub_faces: Vec<(Vec<Half>, bool)> = Vec::new();
+    let mut out = Vec::new();
     for k in 0..rg.loops.len() {
-        // separators that keep patch k whole and every other patch out
         let mut seps: Vec<Half> = Vec::new();
         for j in 0..rg.loops.len() {
             if j == k {
@@ -977,64 +1113,226 @@ fn split_keep_patches(ball: &BallSpec, rg: &Region, halves: &[Half]) -> Option<(
                 Some(n) => seps.push(Half { n: *n, d: 0.0 }),
                 // none of the box's own directions parts them (a turned box leaves a band round the ball): any plane that does
                 None => {
-                    let (n, d) = separating_plane(&polys[k], &polys[j], r)?;
+                    let (n, d) = separating_plane(&polys[k], &polys[j], r).ok_or("no plane parts two patches")?;
                     seps.push(Half { n, d });
                 }
             }
         }
-        let mut hk: Vec<Half> = binding.clone();
-        hk.extend(seps.iter().copied());
-        let on_pos = seam_pos.iter().any(|q| inside_all(&hk, *q));
-        let on_neg = seam_neg.iter().any(|q| inside_all(&hk, *q));
-        // a patch that holds a pole is one face and is not cut (FreeCAD: a 12 across ball at the centre of a 12 x 12 x 30 block is two
-        // caps, one face each)
-        let has_pole = [1.0, -1.0].iter().any(|sg| inside_all(&hk, scale(axis, sg * r)));
-        if on_pos && !on_neg && !has_pole {
-            // cut along the seam: the two sides of the plane of the seam
-            any_cut = true;
-            for sg in [1.0, -1.0] {
-                let mut hs = hk.clone();
-                hs.push(Half { n: scale(m, sg), d: 0.0 });
-                sub_faces.push((hs, true));
-            }
-        } else {
-            sub_faces.push((hk, false));
-        }
+        let mut hk: Vec<Half> = base.to_vec();
+        hk.extend(seps);
+        out.push(hk);
     }
-    if rg.loops.len() == 1 && !any_cut {
-        return None;
-    }
-    for (hs, is_cut) in &sub_faces {
-        if hs.len() > crate::geom::MAX_HULL {
-            return None;
-        }
-        let rgk = region(r, hs).ok()?;
-        if !rgk.whole.is_empty() || rgk.loops.len() != 1 || rgk.sphere_components()?.0 != 1 {
-            return None;
-        }
-        area_sum += rgk.area();
-        if *is_cut {
-            // the seam plane is the last half; its arcs' end points are where the planar faces' arcs break
-            let seam_idx = hs.len() - 1;
-            for a in &rgk.loops[0] {
-                if a.plane == seam_idx {
-                    let ci = rgk.circles[a.plane].as_ref()?;
-                    for t in [a.from, a.to] {
-                        let p = add(ci.at(t), ball.c);
-                        if !cuts.iter().any(|q| len(sub(*q, p)) < 1e-9 * r) {
-                            cuts.push(p);
-                        }
-                    }
+    Ok(out)
+}
+
+/// What a KEEP leaves of one patch: faces as `(hull, wedge left out of it)`, and the points where a cut meets the planar faces' arcs.
+type PatchPlan = (Vec<(Vec<Half>, Vec<Half>)>, Vec<Vec3>);
+
+/// One patch of a keep: one face, or, when the sphere's seam half-meridian crosses it and no full latitude circle lies in it, two (as
+/// FreeCAD: the patch is parted along the seam's arc, a chord from boundary to boundary). The plane of the seam cuts the patch in that
+/// chord and possibly in more on the far half-meridian, which are NOT cut (the pieces they join stay one face): the two faces are the
+/// groups of the plane's pieces, joined across every chord but the seam's. A group of one piece is a hull; a group of several is the patch
+/// less the other, a hull with a wedge left out. `Err` when the groups are not two, or both are several pieces.
+fn plan_patch(ball: &BallSpec, r: f64, hk: &[Half], cands: &[Vec3]) -> Result<PatchPlan, &'static str> {
+    let (axis, seam) = (ball.axis, ball.seam);
+    let m = normalize(cross(axis, seam));
+    let whole = || -> Result<PatchPlan, &'static str> { Ok((vec![(hk.to_vec(), Vec::new())], Vec::new())) };
+    let cm = circle_of(&Half { n: m, d: 0.0 }, r).ok_or("the plane of the seam misses the ball")?;
+    let allowed = join_wrap(raw_allowed(&cm, hk, usize::MAX, r)?);
+    let strict = |p: Vec3| hk.iter().all(|h| dot(h.n, p) < h.d - 1e-9 * r);
+    let off = |q: Vec3, s: f64| scale(normalize(add(q, scale(m, s * 1e-6 * r))), r);
+    // (lo, hi, midpoint, on the seam's half-meridian)
+    let mut chords: Vec<(f64, f64, Vec3, bool)> = Vec::new();
+    // the poles on the circle: a chord through one runs from the seam's half-meridian onto the other, so it is cut there
+    let pole_angles: Vec<f64> = [1.0, -1.0].iter().map(|sg| dot(scale(axis, sg * r), cm.e2).atan2(dot(scale(axis, sg * r), cm.e1)).rem_euclid(TAU)).collect();
+    for (lo, hi) in allowed {
+        let mut cuts_at: Vec<f64> = vec![lo];
+        for t0 in &pole_angles {
+            for t in [*t0, *t0 + TAU] {
+                if t > lo + 1e-9 && t < hi - 1e-9 {
+                    cuts_at.push(t);
                 }
             }
         }
-        out_faces.push(sphere_face(&rgk, hs, ball.c, true, false)?);
+        cuts_at.push(hi);
+        cuts_at.sort_by(|a, b| a.total_cmp(b));
+        for w in cuts_at.windows(2) {
+            let (a, b) = (w[0], w[1]);
+            if b - a < 1e-9 {
+                continue;
+            }
+            let q = cm.at(0.5 * (a + b));
+            if strict(off(q, 1.0)) && strict(off(q, -1.0)) {
+                chords.push((a, b, q, dot(q, seam) > 0.0));
+            }
+        }
+    }
+    let pos: Vec<usize> = (0..chords.len()).filter(|&i| chords[i].3).collect();
+    if pos.is_empty() {
+        return whole();
+    }
+    let mut hp = hk.to_vec();
+    hp.push(Half { n: scale(m, -1.0), d: 0.0 });
+    let mut hm = hk.to_vec();
+    hm.push(Half { n: m, d: 0.0 });
+    let plus = patch_hulls(ball, r, &hp, cands)?;
+    let minus = patch_hulls(ball, r, &hm, cands)?;
+    let np = plus.len();
+    let total = np + minus.len();
+    let hs_of = |i: usize| -> &Vec<Half> { if i < np { &plus[i] } else { &minus[i - np] } };
+    let find_in = |list: &[Vec<Half>], q: Vec3| -> Result<usize, &'static str> {
+        let hits: Vec<usize> = (0..list.len()).filter(|&i| list[i].iter().all(|h| dot(h.n, q) <= h.d + 1e-9 * r)).collect();
+        match hits.as_slice() {
+            [i] => Ok(*i),
+            _ => Err("a piece of the patch cannot be told from its neighbours"),
+        }
+    };
+    let mut parent: Vec<usize> = (0..total).collect();
+    fn root(p: &mut Vec<usize>, x: usize) -> usize {
+        let mut a = x;
+        while p[a] != a {
+            a = p[a];
+        }
+        let mut c = x;
+        while p[c] != a {
+            let n = p[c];
+            p[c] = a;
+            c = n;
+        }
+        a
+    }
+    let mut seam_pairs: Vec<(usize, (usize, usize))> = Vec::new();
+    for (ci, ch) in chords.iter().enumerate() {
+        let ip = find_in(&plus, off(ch.2, 1.0))?;
+        let im = np + find_in(&minus, off(ch.2, -1.0))?;
+        if pos.contains(&ci) {
+            seam_pairs.push((ci, (ip, im)));
+        } else {
+            let (a, b) = (root(&mut parent, ip), root(&mut parent, im));
+            parent[a] = b;
+        }
+    }
+    // a chord of the seam whose two pieces another chord joins is no edge (a slit to a pole, or a lobe the box leaves round it)
+    let roots: std::collections::BTreeSet<usize> = (0..total).map(|i| root(&mut parent, i)).collect();
+    if roots.len() < 2 {
+        return whole();
+    }
+    let groups: Vec<Vec<usize>> = roots.iter().map(|&g| (0..total).filter(|&i| root(&mut parent, i) == g).collect()).collect();
+    let mut faces: Vec<(Vec<Half>, Vec<Half>)> = Vec::new();
+    let multi: Vec<usize> = (0..groups.len()).filter(|&g| groups[g].len() > 1).collect();
+    match multi.len() {
+        0 => {
+            for g in &groups {
+                faces.push((hs_of(g[0]).clone(), Vec::new()));
+            }
+        }
+        1 if groups.len() == 2 => {
+            // the patch less the single piece: a hull with the piece's wedge left out
+            let one = groups.iter().find(|g| g.len() == 1).unwrap()[0];
+            let piece = hs_of(one);
+            let extras: Vec<Half> = piece[hk.len()..].to_vec();
+            if extras.len() > crate::geom::MAX_EXCLUDE {
+                return Err("a piece of a patch needs too many planes");
+            }
+            faces.push((piece.clone(), Vec::new()));
+            faces.push((hk.to_vec(), extras));
+        }
+        _ => return Err("a cut along the seam leaves groups of several pieces that one hull cannot hold"),
+    }
+    let mut cuts = Vec::new();
+    for &(ci, (ip, im)) in &seam_pairs {
+        if root(&mut parent, ip) != root(&mut parent, im) {
+            cuts.push(cm.at(chords[ci].0));
+            cuts.push(cm.at(chords[ci].1));
+        }
+    }
+    Ok((faces, cuts))
+}
+
+/// The sphere faces of a KEEP: one face per connected patch of the sphere inside the box, each patch the sphere's seam crosses without a
+/// full latitude circle in it cut along the seam in two (`plan_patch`). `Ok(None)` leaves the one hull face (several wires, if several
+/// patches have holes) as it was: a single patch that is not cut. The second part is the points where a seam cut meets the box's circles,
+/// which the planar faces' arcs must break at. `Err` for what FreeCAD cuts and this cannot, rather than a count that disagrees.
+fn split_keep_patches(ball: &BallSpec, rg: &Region, halves: &[Half]) -> Result<Option<(Vec<TFace>, Vec<Vec3>)>, &'static str> {
+    let r = rg.r;
+    if rg.is_boundaryless() {
+        return Ok(None);
+    }
+    let (axis, seam) = (ball.axis, ball.seam);
+    let m = normalize(cross(axis, seam));
+    // the box's bounding planes (a plane that misses the ball keeps all of it inside)
+    let binding: Vec<Half> = halves.iter().filter(|h| h.d.abs() < r).copied().collect();
+    // candidate separators: planes through the centre, normals the box's own and the sphere's own axes (n . q <= 0 keeps a patch)
+    let mut cands: Vec<Vec3> = Vec::new();
+    let mut push = |n: Vec3| {
+        if !cands.iter().any(|c| len(sub(*c, n)) < 1e-9) {
+            cands.push(n);
+        }
+    };
+    for h in halves {
+        push(h.n);
+        push(scale(h.n, -1.0));
+    }
+    for k in 0..3 {
+        for sg in [1.0, -1.0] {
+            let mut n = [0.0; 3];
+            n[k] = sg;
+            push(n);
+        }
+    }
+    for v in [axis, seam, m] {
+        push(v);
+        push(scale(v, -1.0));
+    }
+    let hulls = patch_hulls(ball, r, &binding, &cands)?;
+    let mut defs: Vec<(Vec<Half>, Vec<Half>)> = Vec::new();
+    let mut cuts: Vec<Vec3> = Vec::new();
+    let mut any_cut = false;
+    for hk in &hulls {
+        let (fs, cs) = plan_patch(ball, r, hk, &cands)?;
+        if !cs.is_empty() {
+            any_cut = true;
+            for p in cs {
+                let p = add(p, ball.c);
+                if !cuts.iter().any(|q| len(sub(*q, p)) < 1e-9 * r) {
+                    cuts.push(p);
+                }
+            }
+        }
+        defs.extend(fs);
+    }
+    if hulls.len() == 1 && !any_cut {
+        return Ok(None);
+    }
+    let mut faces: Vec<TFace> = Vec::new();
+    let mut area_sum = 0.0;
+    for (hs, ex) in &defs {
+        if hs.len() > crate::geom::MAX_HULL {
+            return Err("a patch needs too many planes");
+        }
+        let face = if ex.is_empty() {
+            let rgk = region(r, hs)?;
+            if rgk.sphere_components().ok_or("components")?.0 != 1 {
+                return Err("a piece of a patch is not one patch");
+            }
+            sphere_face(&rgk, hs, ball.c, true, false).ok_or("sphere face")?
+        } else {
+            let (circles, loops) = region_minus(r, hs, ex)?;
+            if loops.is_empty() {
+                return Err("the rest of a patch has no boundary");
+            }
+            sphere_face_with(r, &circles, &loops, hs, ex, ball.c, true, false).ok_or("sphere face")?
+        };
+        if let Surface::Sphere(sp) = &face.borrow().surface {
+            area_sum += sp.hull_measure().ok_or("a piece cannot be measured")?.0;
+        }
+        faces.push(face);
     }
     let total = rg.area();
     if !total.is_finite() || (area_sum - total).abs() > 1e-7 * total {
-        return None;
+        return Err("the pieces of a patch do not add up to it");
     }
-    Some((out_faces, cuts))
+    Ok(Some((faces, cuts)))
 }
 
 /// Break the arcs of the planar faces at `points` that lie strictly inside them (a T-junction a seam cut of the sphere face leaves on a
@@ -1058,10 +1356,6 @@ fn split_plane_arcs_at(faces: &[TFace], points: &[Vec3]) {
                     new.push(u);
                     continue;
                 };
-                if sweep.abs() >= TAU - 1e-9 {
-                    new.push(u);
-                    continue;
-                }
                 let n = normalize(normal);
                 let y_axis = cross(n, x_axis);
                 // angles (signed, along the sweep) of the points that lie on this arc
@@ -1169,30 +1463,35 @@ pub enum Mode {
 /// A ball and a box as one solid, by `mode`. `None` when the pair is not a clean crossing: no boundary (one inside the other, or apart),
 /// a degenerate contact, a result in more than one lump, or one the checks below cannot vouch for.
 pub fn assemble(ball: &BallSpec, bx: &BoxSpec, mode: Mode) -> Option<TSolid> {
+    assemble_why(ball, bx, mode).ok()
+}
+
+/// `assemble`, with the reason it gave up (a short label for tests and diagnostics).
+pub fn assemble_why(ball: &BallSpec, bx: &BoxSpec, mode: Mode) -> Result<TSolid, &'static str> {
     let r = ball.r;
     let c = sub(bx.c, ball.c);
     let halves = box_halves(c, bx.axes, bx.half);
-    let rg = region(r, &halves).ok()?;
+    let rg = region(r, &halves)?;
     if rg.is_boundaryless() {
-        return None;
+        return Err("no boundary");
     }
     let bxl = BoxSpec { c, axes: bx.axes, half: bx.half };
     let mut faces: Vec<TFace> = Vec::new();
     for i in 0..6 {
         match mode {
             Mode::Keep | Mode::CutBall => {
-                if let Some(items) = inside_piece(r, &halves, &bxl, i).ok()? {
+                if let Some(items) = inside_piece(r, &halves, &bxl, i)? {
                     let piece = Piece { outer: items, hole: None };
-                    faces.push(if mode == Mode::Keep { planar_face(r, &halves, i, &piece, ball.c, false)? } else { planar_face(r, &halves, i, &reversed_piece(&piece), ball.c, true)? });
+                    faces.push(if mode == Mode::Keep { planar_face(r, &halves, i, &piece, ball.c, false).ok_or("planar face")? } else { planar_face(r, &halves, i, &reversed_piece(&piece), ball.c, true).ok_or("planar face")? });
                 }
             }
             Mode::Join | Mode::CutBox => {
-                for piece in outside_pieces(&rg, &halves, &bxl, i).ok()? {
+                for piece in outside_pieces(&rg, &halves, &bxl, i)? {
                     if circle_of(&halves[i], r).is_some() {
-                        faces.push(planar_face(r, &halves, i, &piece, ball.c, false)?);
+                        faces.push(planar_face(r, &halves, i, &piece, ball.c, false).ok_or("planar face")?);
                     } else {
                         // a plane that misses the sphere: the whole rectangle, built on any circle-free frame
-                        faces.push(rect_face(&halves, &bxl, i, ball.c, r)?);
+                        faces.push(rect_face(&halves, &bxl, i, ball.c, r).ok_or("rect face")?);
                     }
                 }
             }
@@ -1209,14 +1508,14 @@ pub fn assemble(ball: &BallSpec, bx: &BoxSpec, mode: Mode) -> Option<TSolid> {
     let mut split_cuts: Vec<Vec3> = Vec::new();
     let mut split_done = false;
     if mode == Mode::Keep {
-        if let Some((fs, cuts)) = split_keep_patches(ball, &rg, &halves) {
+        if let Some((fs, cuts)) = split_keep_patches(ball, &rg, &halves)? {
             faces.extend(fs);
             split_cuts = cuts;
             split_done = true;
         }
     }
     if !split_done {
-        faces.push(sphere_face(&rg, &halves, ball.c, region_side, reversed)?);
+        faces.push(sphere_face(&rg, &halves, ball.c, region_side, reversed).ok_or("sphere face")?);
     }
     crate::ops::drop_degenerate_faces(&mut faces);
     if !split_cuts.is_empty() {
@@ -1225,18 +1524,18 @@ pub fn assemble(ball: &BallSpec, bx: &BoxSpec, mode: Mode) -> Option<TSolid> {
     crate::ops::split_t_junctions(&mut faces);
     crate::ops::weld_shared_edges(&mut faces);
     if crate::ops::edge_use_counts(&faces).values().any(|&n| n != 2) || !crate::ops::unmatched_once_edges(&faces).is_empty() {
-        return None;
+        return Err("open edges");
     }
     // The sphere face may be several pieces (a slab through the ball leaves two caps), which the shared-edge graph cannot see: count its
     // pieces from the loops.
     let l_count = rg.loops.len() + rg.whole.len();
-    let (c_in, c_out) = rg.sphere_components()?;
+    let (c_in, c_out) = rg.sphere_components().ok_or("components")?;
     let pieces = if region_side { c_in } else { c_out };
     if pieces != 1 && pieces != l_count {
-        return None;
+        return Err("pieces");
     }
     if lump_count(&faces, !split_done && pieces == l_count && l_count > 1) != 1 {
-        return None;
+        return Err("lumps");
     }
     let solid = Solid { shells: vec![Rc::new(RefCell::new(Shell { faces }))] };
     let v_in = overlap_volume(r, c, bx.axes, bx.half);
@@ -1249,12 +1548,12 @@ pub fn assemble(ball: &BallSpec, bx: &BoxSpec, mode: Mode) -> Option<TSolid> {
     };
     let got = crate::build::solid_volume(&solid);
     if !got.is_finite() || (got - want).abs() > 1e-7 * v_ball.max(v_box) {
-        return None;
+        return Err("volume");
     }
     if !crate::ops::volume_is_translation_invariant(&solid) || !crate::ops::mesh_is_closed_coarse(&solid) {
-        return None;
+        return Err("mesh");
     }
-    Some(solid)
+    Ok(solid)
 }
 
 /// A whole rectangle face of the box (a plane that misses the ball), with no circle.
@@ -1385,6 +1684,52 @@ pub fn lens_volume(r1: f64, r2: f64, d: f64) -> f64 {
     PI * s * s * (d * d + 2.0 * d * r2 - 3.0 * r2 * r2 + 2.0 * d * r1 + 6.0 * r1 * r2 - 3.0 * r1 * r1) / (12.0 * d)
 }
 
+/// The sentence for a ball that meets the box only at a point, along an edge or at a corner (an edge tangent to the sphere's circle, a corner
+/// on its surface, a face that only touches it), which the loops of the sphere's patch cannot be told apart at.
+pub const CONTACT_SENTENCE: &str = "the ball touches the box at a point, along an edge or at a corner, which brep-rs does not build yet";
+
+/// The sentence for a ball kept from a box whose patch the sphere's seam crosses in a way brep-rs cannot part into the faces FreeCAD does
+/// (it would have to build a face it cannot describe, or the groups of pieces are not two).
+pub const SEAM_SENTENCE: &str = "the sphere's seam crosses the part of the ball kept here in a way brep-rs cannot cut into faces like FreeCAD's yet";
+
+/// The sentence for a ball that leaves several separate patches in the box, one of them with a hole in it (or a whole circle for its edge),
+/// which brep-rs cannot yet part into one face per patch.
+pub const PATCHES_SENTENCE: &str = "the ball leaves several separate patches in the box and one of them has a hole in it, which brep-rs cannot cut into faces like FreeCAD's yet";
+
+/// The plain sentence for a label `assemble_why` gave up with, `None` for the checks that have no sentence of their own.
+pub(crate) fn refusal_sentence(why: &str) -> Option<&'static str> {
+    const CONTACT: [&str; 8] = [
+        "a box face is tangent to a circle of the ball",
+        "a box face touches the ball at a single point",
+        "an arc of the ball's boundary does not meet another",
+        "more than two circles meet at one point of the sphere",
+        "a box edge is tangent to the ball's circle",
+        "a box corner lies on the sphere",
+        "an arc of no length",
+        "the pieces of a box face outside the ball do not close up",
+    ];
+    if CONTACT.contains(&why) {
+        return Some(CONTACT_SENTENCE);
+    }
+    if why.starts_with("several patches") {
+        return Some(PATCHES_SENTENCE);
+    }
+    const SEAM: [&str; 8] = [
+        "the arcs of a cut patch do not close",
+        "a patch's loop cannot be sampled",
+        "a piece of the patch cannot be told from its neighbours",
+        "a piece of a patch needs too many planes",
+        "a patch needs too many planes",
+        "a piece of a patch is not one patch",
+        "the rest of a patch has no boundary",
+        "the pieces of a patch do not add up to it",
+    ];
+    if SEAM.contains(&why) || why.starts_with("a cut along the seam") || why == "no plane parts two patches" || why == "the patches cannot be counted" || why == "the plane of the seam misses the ball" {
+        return Some(SEAM_SENTENCE);
+    }
+    None
+}
+
 /// The boolean entry: a whole ball against a cuboid, in either order (or against another ball).
 pub fn ball_box_boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
     if let (Some(x), Some(y)) = (as_ball(a), as_ball(b)) {
@@ -1425,7 +1770,15 @@ pub fn ball_box_boolean(op: &str, a: &TSolid, b: &TSolid) -> Option<TSolid> {
         ("subtract", false) => Mode::CutBox,
         _ => return None,
     };
-    assemble(&ball, &bx, mode)
+    match assemble_why(&ball, &bx, mode) {
+        Ok(s) => Some(s),
+        Err(why) => {
+            if let Some(sentence) = refusal_sentence(why) {
+                crate::ops_planar::set_reason(sentence);
+            }
+            None
+        }
+    }
 }
 
 #[cfg(test)]

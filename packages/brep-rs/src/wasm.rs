@@ -2823,6 +2823,11 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                                 refused = true;
                                 break;
                             }
+                            (None, Some(w)) if w == crate::ball_box::CONTACT_SENTENCE || w == crate::ball_box::SEAM_SENTENCE || w == crate::ball_box::PATCHES_SENTENCE => {
+                                refusals.insert(id.clone(), json!(format!("combine {id}: {w} -- {id} is shown without it.")));
+                                refused = true;
+                                break;
+                            }
                             (None, _) if op == "intersect" && ops::solids_provably_disjoint(&cur, &s) => {
                                 refusals.insert(
                                     id.clone(),

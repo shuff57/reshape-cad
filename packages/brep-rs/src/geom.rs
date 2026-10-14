@@ -1317,15 +1317,30 @@ pub struct HullTrim {
     pub inside: bool,
     /// The face's normal points INTO the sphere (the wall of a cavity the sphere leaves in a box).
     pub reversed: bool,
+    /// How many of `ex` are in use. Zero: the face is the hull. Otherwise the hull LESS the wedge inside every one of `ex`: a patch of
+    /// the ball that a seam cut parts from one piece and leaves joined to others (`ball_box::split_keep_patches`).
+    pub ex_n: u8,
+    pub ex: [[f64; 4]; MAX_EXCLUDE],
 }
+
+/// At most this many half-spaces in the wedge a [`HullTrim`] leaves out.
+pub const MAX_EXCLUDE: usize = 4;
 
 impl HullTrim {
     pub fn halves(&self) -> Vec<crate::ball_box::Half> {
         self.planes[..self.n as usize].iter().map(|p| crate::ball_box::Half { n: [p[0], p[1], p[2]], d: p[3] }).collect()
     }
+    /// The half-spaces of the wedge left out of the hull (empty when nothing is).
+    pub fn ex_halves(&self) -> Vec<crate::ball_box::Half> {
+        self.ex[..self.ex_n as usize].iter().map(|p| crate::ball_box::Half { n: [p[0], p[1], p[2]], d: p[3] }).collect()
+    }
     /// Whether the sphere point at offset `q` from the centre belongs to the face.
     pub fn contains(&self, q: Vec3) -> bool {
-        crate::ball_box::inside_all(&self.halves(), q) == self.inside
+        let mut inside = crate::ball_box::inside_all(&self.halves(), q);
+        if inside && self.ex_n > 0 && crate::ball_box::inside_all(&self.ex_halves(), q) {
+            inside = false;
+        }
+        inside == self.inside
     }
     /// The same trim after a transform of space (rotation, reflection, uniform scale).
     pub fn transformed(&self, t: &crate::math::Transform) -> HullTrim {
@@ -1335,6 +1350,12 @@ impl HullTrim {
             let v = t.dir([p[0], p[1], p[2]]);
             let l = crate::math::len(v);
             out.planes[k] = [v[0] / l, v[1] / l, v[2] / l, p[3] * l];
+        }
+        for k in 0..self.ex_n as usize {
+            let p = self.ex[k];
+            let v = t.dir([p[0], p[1], p[2]]);
+            let l = crate::math::len(v);
+            out.ex[k] = [v[0] / l, v[1] / l, v[2] / l, p[3] * l];
         }
         out
     }
@@ -1543,7 +1564,17 @@ impl SphereSurf {
         if rg.is_boundaryless() {
             return None;
         }
-        let (a, v) = (rg.area(), rg.vector_area());
+        let (mut a, mut v) = (rg.area(), rg.vector_area());
+        if h.ex_n > 0 {
+            // the hull less the wedge: the wedge lies in the hull (its planes come on top of the hull's)
+            let mut both = h.halves();
+            both.extend(h.ex_halves());
+            let cut = crate::ball_box::region(self.radius, &both).ok()?;
+            if !cut.is_boundaryless() {
+                a -= cut.area();
+                v = sub(v, cut.vector_area());
+            }
+        }
         if !a.is_finite() {
             return None;
         }
@@ -2361,13 +2392,13 @@ impl Surface {
                         }
                     }
                 } else if let SphTrim::Hull(h) = s.trim {
-                    match crate::ball_box::region(s.radius, &h.halves()) {
-                        Ok(rg) if !rg.is_boundaryless() => {
-                            for q in rg.extent_points(h.inside) {
+                    match crate::ball_box::trim_extent_points(s.radius, &h) {
+                        Some(pts) => {
+                            for q in pts {
                                 b.expand(add(s.center, q));
                             }
                         }
-                        _ => {
+                        None => {
                             for i in 0..3 {
                                 let mut p = s.center;
                                 p[i] += s.radius;

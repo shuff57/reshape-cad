@@ -1378,14 +1378,17 @@ fn split_face(f: &PFace, cuts: &[E2], nodes_at: &[P2]) -> Result<Vec<Region>, ()
     // Half-edge h = 2 * edge + dir; dir 1 runs the edge backwards.
     let origin = |h: usize| if h & 1 == 0 { gedges[h >> 1].u } else { gedges[h >> 1].v };
     let dest = |h: usize| if h & 1 == 0 { gedges[h >> 1].v } else { gedges[h >> 1].u };
+    // An angle a hair under a whole turn is the same direction as one of zero: left apart it would put two edges that leave a node the
+    // same way (a circle tangent to a straight edge) at the two ends of the ring, in the wrong order of curvature.
+    let wrap = |a: f64| if a > TAU - 1e-9 { a - TAU } else { a };
     let out_dir = |h: usize| -> (f64, f64) {
         let g = &gedges[h >> 1];
         if h & 1 == 0 {
             let (t, k) = g.e.tangent(0.0);
-            (pos_ang(t[1].atan2(t[0])), k)
+            (wrap(pos_ang(t[1].atan2(t[0]))), k)
         } else {
             let (t, k) = g.e.tangent(1.0);
-            (pos_ang((-t[1]).atan2(-t[0])), -k)
+            (wrap(pos_ang((-t[1]).atan2(-t[0]))), -k)
         }
     };
     let mut ring: HashMap<usize, Vec<usize>> = HashMap::new();

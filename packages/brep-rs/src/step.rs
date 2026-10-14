@@ -1197,6 +1197,9 @@ fn hull_frame(sp: &SphereSurf, h: &crate::geom::HullTrim, bounds: &[Vec<Seg>]) -
 /// band for the part inside the planes (or outside a single plane); the part outside TWO planes is two separate caps, so two. `None` for a
 /// tilted plane that reaches the sphere, or when the caps would overlap.
 fn hull_zones(sp: &SphereSurf, h: &crate::geom::HullTrim) -> Option<Vec<SphereSurf>> {
+    if h.ex_n > 0 {
+        return None; // a hull with a wedge left out is no band
+    }
     let axis = normalize(sp.axis);
     let r = sp.radius;
     // a box brings all six planes; one that does not reach the sphere (its distance is the radius or more) cuts nothing from it
