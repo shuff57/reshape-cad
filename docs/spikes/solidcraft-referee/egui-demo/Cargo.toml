@@ -1,0 +1,35 @@
+[package]
+name = "solidcraft-referee-egui"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[[bin]]
+name = "solidcraft-referee-egui"
+path = "src/main.rs"
+
+[dependencies]
+solidcraft-engine = { path = "/home/shuff57/solidcraft/crates/engine" }
+solidcraft-doc = { path = "/home/shuff57/solidcraft/crates/doc" }
+serde_json = "1"
+egui = "0.36"
+log = "0.4"
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+eframe = { version = "0.36", default-features = false, features = ["default_fonts", "glow"] }
+wasm-bindgen-futures = "0.4"
+web-sys = { version = "0.3", features = ["Window", "Document", "Element", "HtmlCanvasElement", "Performance"] }
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+
+# [patch] is honoured only from the root manifest: copied from /home/shuff57/solidcraft/Cargo.toml.
+[patch.crates-io]
+truck-shapeops = { path = "/home/shuff57/solidcraft/vendor/truck-shapeops" }
+truck-stepio = { path = "/home/shuff57/solidcraft/vendor/truck-stepio" }
+truck-meshalgo = { path = "/home/shuff57/solidcraft/vendor/truck-meshalgo" }
+matext4cgmath = { path = "/home/shuff57/solidcraft/vendor/matext4cgmath" }
+
+[workspace]
