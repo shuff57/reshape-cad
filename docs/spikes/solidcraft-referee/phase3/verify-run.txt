@@ -1,0 +1,21 @@
+3d-box-hole                PASS: volume 11717.303626 vs OCCT 11717.256661 (rel delta 4.01e-6, bar 0.0003); bbox delta 7.11e-16 
+3d-extrude-sketch          PASS: volume 9900.000000 vs OCCT 9900.000000 (rel delta 1.84e-16, bar 1e-9); bbox delta 0.00e+0 
+3d-revolve                 PASS: volume 75397.450849 vs OCCT 75398.223686 (rel delta 1.03e-5, bar 0.0003); bbox delta 2.58e-16 
+3d-union                   PASS: volume 16282.696374 vs OCCT 16282.743339 (rel delta 2.88e-6, bar 0.0003); bbox delta 5.33e-16 
+3d-subtract                PASS: volume 24000.000000 vs OCCT 24000.000000 (rel delta 0.00e+0, bar 1e-9); bbox delta 0.00e+0 
+3d-linear-pattern          PASS: volume 12000.000000 vs OCCT 12000.000000 (rel delta 3.03e-16, bar 1e-9); bbox delta 0.00e+0 
+3d-polar-pattern           PASS: volume 12000.000000 vs OCCT 12000.000000 (rel delta 3.03e-16, bar 1e-9); bbox delta 1.18e-16 
+2d-rect-dims               PASS: volume 6000.000000 vs brep-rs 6000.000000 (rel delta 1.48e-11, bar 1e-9); bbox delta 0.00e+0  | dof 0
+2d-plate-hole-dims         PASS: volume 9214.732294 vs brep-rs 9214.601837 (rel delta 1.42e-5, bar 0.0003)  | dof 0
+2d-slot-tangent            PASS: volume 11141.176810 vs brep-rs 11141.592654 (rel delta 3.73e-5, bar 0.0003); bbox delta 5.33e-16  | dof 4
+2d-triangle-angle          PASS: volume 5196.152423 vs brep-rs 5196.152423 (rel delta 2.03e-13, bar 1e-9)  | dof 0
+2d-hexagon                 PASS: volume 10392.304845 vs brep-rs 10392.304845 (rel delta 6.59e-13, bar 1e-9)  | dof 0
+2d-handle-api              PASS: volume 12000.000000 vs OCCT 12000.000000 (rel delta 0.00e+0, bar 1e-9); bbox delta 0.00e+0 
+diag-under                 PASS: volume 8000.000000 vs OCCT 8000.000000 (rel delta 2.27e-16, bar 1e-9); bbox delta 0.00e+0  | dof 3
+diag-conflict              EXPECTED REFUSAL matched: pull1 refused with the expected sentence; built 0 feature(s), volume 0.000 = reference 0.000  | dof 0
+diag-redundant             EXPECTED REFUSAL matched: pull1 refused with the expected sentence; built 0 feature(s), volume 0.000 = reference 0.000  | dof 0
+refuse-counterbore-round   EXPECTED REFUSAL matched: hole1, round1 refused with the expected sentence; built 3 feature(s), volume 15000.000 = reference 15000.000 
+refuse-shell-closed        EXPECTED REFUSAL matched: shell1 refused with the expected sentence; built 1 feature(s), volume 32000.000 = reference 32000.000 
+refuse-shell-open          EXPECTED REFUSAL matched: shell1 refused with the expected sentence; built 1 feature(s), volume 32000.000 = reference 32000.000 
+refuse-edge-pick           EXPECTED REFUSAL matched: round1 refused with the expected sentence; built 1 feature(s), volume 32000.000 = reference 32000.000 
+restore {"failedAsExpected":true,"failed":{"command":"solid.cylinder","error":"invalid input: radius must be positive","index":1,"params":{"axis":"Z","base":[210,200,200],"body_name":"restore_probe_bad","height":10,"radius":-5}},"restored":true,"before":{"volume":11717.30362588783,"bodies":"b_box1"},"after":{"volume":11717.30362588783,"bodies":"b_box1"},"same":true}
