@@ -1,0 +1,242 @@
+[
+ {
+  "name": "gallery misuse-unknown-handle",
+  "ok": true,
+  "detail": "line 5: A line has no .mid: a line has .a (start point) and .b (end point)."
+ },
+ {
+  "name": "gallery misuse-dimension-non-line",
+  "ok": true,
+  "detail": "line 5: sk.length() needs the first argument to be a line, but got a circle. A length is measured along a st"
+ },
+ {
+  "name": "gallery misuse-tangent-two-lines",
+  "ok": true,
+  "detail": "line 5: sk.tangent() was given two straight lines: two lines are never tangent (they are parallel or they cr"
+ },
+ {
+  "name": "gallery misuse-other-sketch",
+  "ok": true,
+  "detail": "line 7: sk.parallel() was given a line that belongs to a different sketch() than this one (this is sketch #1"
+ },
+ {
+  "name": "gallery misuse-removed-entity",
+  "ok": true,
+  "detail": "line 6: sk.vertical() was given a line that was removed with sk.remove(). Draw it again, or leave out the co"
+ },
+ {
+  "name": "gallery misuse-undefined-entity",
+  "ok": true,
+  "detail": "line 5: rigth is not a tool here. Did you mean ring()?"
+ },
+ {
+  "name": "gallery misuse-arity",
+  "ok": true,
+  "detail": "line 5: sk.length() takes 2 arguments: sk.length(line, 40). You gave it 1."
+ },
+ {
+  "name": "gallery misuse-negative-radius",
+  "ok": true,
+  "detail": "line 5: sk.radius() needs the radius above 0, but got -3."
+ },
+ {
+  "name": "gallery misuse-remove-all",
+  "ok": true,
+  "detail": "line 3: sk.remove() would leave this sketch with no shapes, and an empty sketch is drawn as a default 40 x 2"
+ },
+ {
+  "name": "gallery misuse-reassign-sketch",
+  "ok": true,
+  "detail": "line 5: \"sketch\" is already a reSHape tool here (you call it like sketch(...)) -- you can't assign to it dir"
+ },
+ {
+  "name": "gallery misuse-line-over-line",
+  "ok": true,
+  "detail": "line 5: sk.line() would draw a second line exactly on top of an existing line (same two ends). Use the line "
+ },
+ {
+  "name": "gallery misuse-nan",
+  "ok": true,
+  "detail": "line 5: sk.length() needs the length as a finite number, but got NaN."
+ },
+ {
+  "name": "untouched sketch is not refused and draws the interpreter default",
+  "ok": true,
+  "detail": "[[0,0],[40,0],[40,25],[0,25]]"
+ },
+ {
+  "name": "refused remove is rolled back (the line is still usable)",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "remove drops every rule that names the shape (incl. a dimension on another shape)",
+  "ok": true,
+  "detail": "[]"
+ },
+ {
+  "name": "sk.join after endpoint reuse writes no duplicate coincident",
+  "ok": true,
+  "detail": "[{\"k\":\"coincident\",\"a\":1,\"aEnd\":\"b\",\"b\":2,\"bEnd\":\"a\"}]"
+ },
+ {
+  "name": "student's own const sketch = 5 is a plain local shadow (no collision with the preamble)",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "student's own function sketch(){} is a plain local shadow (no collision with the preamble)",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "renamed scope gives the drift sentence",
+  "ok": true,
+  "detail": "this runner build does not match the interpreter version (it cannot find the interpreter's sketch tool); friendly sketch syntax is unavailable. Rebuild the runner bundle (phase5/host/build.sh)."
+ },
+ {
+  "name": "critic cases1/empty",
+  "ok": true,
+  "detail": "ran (no error)"
+ },
+ {
+  "name": "critic cases1/tri_friendly",
+  "ok": true,
+  "detail": "ran (no error)"
+ },
+ {
+  "name": "critic cases1/tri_soup",
+  "ok": true,
+  "detail": "ran (no error)"
+ },
+ {
+  "name": "critic cases1/tri_rough_friendly",
+  "ok": true,
+  "detail": "ran (no error)"
+ },
+ {
+  "name": "critic cases1/tri_rough_soup",
+  "ok": true,
+  "detail": "ran (no error)"
+ },
+ {
+  "name": "critic cases1/rem_all",
+  "ok": true,
+  "detail": "line 3: sk.remove() would leave this sketch with no shapes, and an empty sketch is drawn as a defa"
+ },
+ {
+  "name": "critic cases1/dupjoin",
+  "ok": true,
+  "detail": "ran (no error)"
+ },
+ {
+  "name": "critic cases2/f0",
+  "ok": true,
+  "detail": "ran (no error)"
+ },
+ {
+  "name": "critic cases2/s0",
+  "ok": true,
+  "detail": "ran (no error)"
+ },
+ {
+  "name": "critic cases2/f1",
+  "ok": true,
+  "detail": "ran (no error)"
+ },
+ {
+  "name": "critic cases2/s1",
+  "ok": true,
+  "detail": "ran (no error)"
+ },
+ {
+  "name": "critic cases2/f2",
+  "ok": true,
+  "detail": "ran (no error)"
+ },
+ {
+  "name": "critic cases2/s2",
+  "ok": true,
+  "detail": "ran (no error)"
+ },
+ {
+  "name": "critic cases2/f3",
+  "ok": true,
+  "detail": "ran (no error)"
+ },
+ {
+  "name": "critic cases2/s3",
+  "ok": true,
+  "detail": "ran (no error)"
+ },
+ {
+  "name": "critic cases2/f4",
+  "ok": true,
+  "detail": "ran (no error)"
+ },
+ {
+  "name": "critic cases2/s4",
+  "ok": true,
+  "detail": "ran (no error)"
+ },
+ {
+  "name": "critic cases2/f5",
+  "ok": true,
+  "detail": "ran (no error)"
+ },
+ {
+  "name": "critic cases2/s5",
+  "ok": true,
+  "detail": "ran (no error)"
+ },
+ {
+  "name": "critic cases2/f6",
+  "ok": true,
+  "detail": "ran (no error)"
+ },
+ {
+  "name": "critic cases2/s6",
+  "ok": true,
+  "detail": "ran (no error)"
+ },
+ {
+  "name": "critic cases2/f7",
+  "ok": true,
+  "detail": "ran (no error)"
+ },
+ {
+  "name": "critic cases2/s7",
+  "ok": true,
+  "detail": "ran (no error)"
+ },
+ {
+  "name": "critic cases3/dx_neg_consistent",
+  "ok": true,
+  "detail": "ran (no error)"
+ },
+ {
+  "name": "critic cases3/dx_neg_flipped_start",
+  "ok": true,
+  "detail": "ran (no error)"
+ },
+ {
+  "name": "critic cases3/dx_pos_but_left_start",
+  "ok": true,
+  "detail": "ran (no error)"
+ },
+ {
+  "name": "critic cases3/mixed_rect_friendly",
+  "ok": true,
+  "detail": "line 3: sk.line() cannot be used on sketch #1: it already has geometry from sk.rect / sk.circle(di"
+ },
+ {
+  "name": "critic cases3/old_style_passthrough",
+  "ok": true,
+  "detail": "ran (no error)"
+ },
+ {
+  "name": "critic cases3/rigth",
+  "ok": true,
+  "detail": "line 4: rigth is not a tool here. Did you mean ring()?"
+ }
+]
