@@ -89,6 +89,17 @@ near-tangent wrong solid. What changed and what was measured:
 - Census (scratch copy, FreeCAD 26.3.0 RC1): 115 cases, 84 MATCH, no change in any other case; parity / mesh / STEP gates
   78 / 78 / 78 passed.
 
+### A3 result (2026-10-13, round 2 on `slice-A3-r2`)
+
+Round 1 (`6506975`) read the angle as `size * tan(a)`, right only at a 90 degree dihedral: 11 of 19 oblique vertical edges came
+out silently wrong. FreeCAD measures the angle from the face that carries the first distance, so the second leg is
+`size * sin(a) / sin(theta + a)` (theta = interior angle of the edge's two faces; law of sines in the edge's cross-section).
+At `theta + a >= 180` the chamfer plane never meets the second face and FreeCAD marks the feature Invalid or returns the part
+unchanged: the kernel refuses, in a sentence. A leg longer than its face still refuses ("would not fit"). The face numbering is
+only consulted when the two legs differ. A clockwise-drawn outline stays an INTENDED refusal (FreeCAD's numbering for it was
+not probed); `chamfer-asym__box-clockwise-top-front-3x2` records it. The census now carries 12 A3 cases (10 MATCH, 2 intended
+refusals) through a `docPatch` field in `run.mjs`, because the script has no word for size2/angle/flip yet (gauntlet agent).
+
 ### B. Face-count parity (the solid is right, the topology differs)
 
 | id | what | gap | acceptance |
