@@ -1,0 +1,28 @@
+[package]
+name = "solidcraft-referee"
+version = "0.0.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+solidcraft-engine = { path = "/home/shuff57/solidcraft/crates/engine" }
+solidcraft-doc = { path = "/home/shuff57/solidcraft/crates/doc" }
+serde_json = "1"
+wasm-bindgen = "=0.2.129"
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+
+# Copied from /home/shuff57/solidcraft/Cargo.toml: [patch] is honoured only from the root
+# manifest, so without this the build silently uses stock upstream truck.
+[patch.crates-io]
+truck-shapeops = { path = "/home/shuff57/solidcraft/vendor/truck-shapeops" }
+truck-stepio = { path = "/home/shuff57/solidcraft/vendor/truck-stepio" }
+truck-meshalgo = { path = "/home/shuff57/solidcraft/vendor/truck-meshalgo" }
+matext4cgmath = { path = "/home/shuff57/solidcraft/vendor/matext4cgmath" }
+
+[workspace]
