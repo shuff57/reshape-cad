@@ -685,6 +685,12 @@ fn up_to_options(f: &Value, kind: &str) -> Result<Option<UpToAsk>, String> {
     Ok(Some(UpToAsk { face, offset }))
 }
 
+fn overhang_sentence(kind: &str) -> String {
+    format!(
+        "the {kind}'s profile reaches past the edge of the face it is to stop at, and brep-rs builds an up-to {kind} only when the whole profile sits over that face -- move or shrink the sketch so it is inside the face"
+    )
+}
+
 /// How far a pad or pocket travels to reach what `ask` names, and whether it travels AGAINST `travel` to get there.
 /// `travel` is the unit vector the feature would run along with no up-to option; `wf` is the sketch's sweep axis
 /// (the way a positive prism height goes). Only a flat face square to the sweep is a stop: a slanted or curved one
@@ -757,6 +763,47 @@ fn up_to_reach(
                 }
             }
         }
+        // The whole profile must sit over the face (boundary sampled, each point tested a hair inward).
+        if let Some(t) = prism_len(dt.abs(), dt < 0.0) {
+            let fr = sketch_frame(sk);
+            let dirs: Vec<Vec3> = {
+                let mut v = Vec::new();
+                for k in 0..8 {
+                    let a = std::f64::consts::PI * 0.25 * (k as f64);
+                    v.push(add(scale(fr.u, a.cos()), scale(fr.v, a.sin())));
+                }
+                v
+            };
+            let fcb = face.borrow();
+            let mut over = true;
+            'cap: for cf in t.faces() {
+                let cb = cf.borrow();
+                let Surface::Plane(cp) = &cb.surface else { continue };
+                if dot(normalize(cp.n), travel).abs() < SQUARE || (dot(sub(cp.origin, o), travel) - dt).abs() > 1e-6 {
+                    continue;
+                }
+                for w in &cb.boundary {
+                    for u in &w.borrow().edges {
+                        let eb = u.edge.borrow();
+                        let steps = 24;
+                        for k in 0..=steps {
+                            let q = eb.curve.point_at((k as f64) / (steps as f64));
+                            let mut ok = ops::plane_face_contains(&p, &fcb, q);
+                            if !ok {
+                                ok = dirs.iter().any(|d| ops::plane_face_contains(&p, &fcb, add(q, scale(*d, 1e-9))));
+                            }
+                            if !ok {
+                                over = false;
+                                break 'cap;
+                            }
+                        }
+                    }
+                }
+            }
+            if !over {
+                return Err(overhang_sentence(kind));
+            }
+        }
         (dt.abs(), dt < 0.0)
     } else {
         let Some(base) = base else {
@@ -822,6 +869,32 @@ fn up_to_reach(
             ));
         }
         let Some(d) = best else { return Err(none_ahead()) };
+        // Overhang: FreeCAD builds the whole profile to the plane of the face it meets, merging coplanar walls where
+        // the profile crosses the face's edge into fewer faces than brep-rs keeps. Only a profile wholly over the
+        // stopping face is built; any overhang (also the centre-on-the-edge cases FreeCAD builds or fails on a hair)
+        // is refused, in a sentence.
+        {
+            let (mut cap, mut covered) = (0.0f64, 0.0f64);
+            for fc in probe.faces() {
+                let fb = fc.borrow();
+                if let Surface::Plane(p) = &fb.surface {
+                    if dot(normalize(p.n), travel).abs() >= SQUARE && dot(sub(p.origin, o), travel).abs() < 1e-6 {
+                        cap += build::face_area_centroid(&fb).0.abs();
+                    }
+                }
+            }
+            for fc in hit.faces() {
+                let fb = fc.borrow();
+                if let Surface::Plane(p) = &fb.surface {
+                    if dot(normalize(p.n), travel).abs() >= SQUARE && (dot(sub(p.origin, o), travel) - d).abs() < 1e-6 {
+                        covered += build::face_area_centroid(&fb).0.abs();
+                    }
+                }
+            }
+            if cap > 0.0 && (cap - covered).abs() > 1e-9 * cap {
+                return Err(overhang_sentence(kind));
+            }
+        }
         // FreeCAD's up-to-first fails (the feature goes Invalid) when the centre of mass of the profile lies off
         // the face it would stop at, even if the profile overlaps it. Building the clipped solid there would hand
         // a student a part FreeCAD refuses, so it is refused. On the edge still builds.
@@ -838,7 +911,7 @@ fn up_to_reach(
         if let Some(c) = cen {
             let q = add(c, scale(travel, d - dot(sub(c, o), travel)));
             let fr = sketch_frame(sk);
-            let eps = 1e-6;
+            let eps = 1e-9;
             let mut cands = vec![q];
             for ax in [fr.u, fr.v] {
                 cands.push(add(q, scale(ax, eps)));

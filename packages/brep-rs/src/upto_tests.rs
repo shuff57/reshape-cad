@@ -167,12 +167,13 @@ fn pad_up_to_first_stops_at_the_lower_of_two_plates() {
 }
 
 #[test]
-fn pad_half_under_the_plate_edge_still_runs_to_the_plane() {
+fn pad_half_over_the_plate_edge_is_refused_for_first_and_face() {
+    // FreeCAD builds these to the plane but merges the walls where the post crosses the plate edge (fewer faces
+    // than brep-rs keeps), so a profile that overhangs the stopping face is refused in a sentence.
     let o = post(0.0, 20.0, json!({ "upTo": "first", "into": "e1" }));
-    assert!(o.refusal.is_none(), "{:?}", o.refusal);
-    assert!(near(o.vol, 90.0 * PI) && near(o.hi[2], 10.0));
+    refused(&o, OVERHANG);
     let o = post(0.0, 20.0, json!({ "upTo": "face", "upToFace": under() }));
-    assert!(near(o.vol, 90.0 * PI));
+    refused(&o, OVERHANG);
 }
 
 #[test]
@@ -263,11 +264,11 @@ fn pocket_beside_a_slot_is_a_through_cut() {
 }
 
 #[test]
-fn pocket_half_over_a_slot_stops_at_the_slot_floor_for_the_whole_profile() {
+fn pocket_half_over_a_slot_is_refused_because_the_profile_is_not_wholly_over_the_stopping_face() {
+    // FreeCAD builds this (stops at the slot floor), but an up-to profile that is not wholly over the face it stops
+    // at is refused; the slot floor does not cover the circle.
     let o = pocket(slot(), "c1", 25.0, json!({ "upTo": "first" }));
-    assert!(o.refusal.is_none(), "{:?}", o.refusal);
-    assert!(near(o.vol, 24000.0 - 2000.0 - 80.0 * PI), "{}", o.vol);
-    assert_eq!(o.faces, 13);
+    refused(&o, "reaches past the edge of the face it is to stop at");
 }
 
 #[test]
@@ -400,28 +401,31 @@ fn a_million_mm_revolve_meshes_in_one_pass() {
     assert!(all < one * 4 + std::time::Duration::from_millis(200), "one pass {one:?}, mesh_solid {all:?}");
 }
 
-// ---- slice C3R: FreeCAD's up-to-first fails when the profile's centre of mass is off the stopping face ----------
+// ---- slice C3R: an up-to profile must sit wholly over the stopping face --------------------------------------
 
-const OFF_FACE: &str = "centre of the pocket's profile is off it";
-
-#[test]
-fn pocket_up_to_first_with_its_centre_off_the_face_is_refused() {
-    refused(&pocket(vec![], "e1", 40.5, json!({ "upTo": "first" })), OFF_FACE);
-}
+const OVERHANG: &str = "profile reaches past the edge of the face it is to stop at";
 
 #[test]
-fn pocket_up_to_first_overhanging_with_its_centre_on_or_over_the_face_builds() {
-    // FreeCAD 26.3.0 RC1: r4 at x=40 (centre on the edge) 23497.345, x=39.5 23417.554, x=38 23191.2295
-    for (cx, v) in [(40.0, 23497.345), (39.5, 23417.554), (38.0, 23191.2295)] {
-        let o = pocket(vec![], "e1", cx, json!({ "upTo": "first" }));
-        assert!(o.refusal.is_none(), "{cx}: {:?}", o.refusal);
-        assert!((o.vol - v).abs() < 1e-3, "{cx}: {}", o.vol);
+fn pocket_up_to_first_overhanging_the_block_edge_is_refused() {
+    // centre off the face (FreeCAD: Invalid), centre on the edge (builds in FreeCAD with merged walls), centre just
+    // inside but the circle crossing the wall: all refused with the one sentence, never a clipped solid.
+    for cx in [40.5, 40.0, 39.5, 38.0] {
+        refused(&pocket(vec![], "e1", cx, json!({ "upTo": "first" })), OVERHANG);
     }
 }
 
 #[test]
-fn pocket_wholly_off_the_face_is_still_the_no_face_ahead_sentence() {
-    refused(&pocket(vec![], "e1", 60.0, json!({ "upTo": "first" })), "no faces found in this direction");
+fn pocket_up_to_first_wholly_inside_the_face_builds() {
+    // r4 at (20,15) on the 40x30 block: pocket volume pi*16*20
+    let o = pocket(vec![], "e1", 20.0, json!({ "upTo": "first" }));
+    assert!(o.refusal.is_none(), "{:?}", o.refusal);
+    assert!(near(o.vol, 40.0 * 30.0 * 20.0 - 16.0 * PI * 20.0), "{}", o.vol);
+}
+
+#[test]
+fn a_tenth_of_a_micron_past_the_edge_is_refused() {
+    // FreeCAD fails the feature from 1e-8 past the edge; the old 1e-6 slack built it.
+    refused(&pocket(vec![], "e1", 40.0 + 1e-7, json!({ "upTo": "first" })), OVERHANG);
 }
 
 fn plate_post(x0: f64, x1: f64, extra: Value) -> Out {
@@ -437,9 +441,33 @@ fn plate_post(x0: f64, x1: f64, extra: Value) -> Out {
 }
 
 #[test]
-fn pad_up_to_first_with_its_centre_off_the_plate_is_refused_and_inside_builds() {
-    let o = plate_post(15.0, 28.0, json!({ "upTo": "first", "into": "e1" }));
-    refused(&o, "centre of the pad's profile is off it");
-    let o = plate_post(12.0, 24.0, json!({ "upTo": "first", "into": "e1" }));
+fn pad_up_to_first_overhanging_the_plate_is_refused_and_a_post_inside_builds() {
+    for (x0, x1) in [(15.0, 28.0), (12.0, 24.0), (15.0, 25.0), (13.0, 23.0)] {
+        refused(&plate_post(x0, x1, json!({ "upTo": "first", "into": "e1" })), OVERHANG);
+    }
+    let o = plate_post(5.0, 15.0, json!({ "upTo": "first", "into": "e1" }));
     assert!(o.refusal.is_none(), "{:?}", o.refusal);
+    assert!(near(o.vol, 10.0 * 10.0 * 8.0), "{}", o.vol);
+}
+
+#[test]
+fn pad_up_to_face_overhanging_the_plate_is_refused() {
+    let bottom = json!({ "cause": "cap", "feature": "e1", "kind": "face", "end": "bottom" });
+    refused(&plate_post(13.0, 23.0, json!({ "upTo": "face", "upToFace": bottom.clone() })), OVERHANG);
+    let o = plate_post(5.0, 15.0, json!({ "upTo": "face", "upToFace": bottom }));
+    assert!(o.refusal.is_none(), "{:?}", o.refusal);
+}
+
+#[test]
+fn pad_circle_on_the_plate_edge_a_tenth_micron_out_is_refused() {
+    let o = run(
+        vec![
+            rect("s1", 0.0, -20.0, -20.0, 20.0, 20.0),
+            pad("e1", "s1", 10.0),
+            disc("s2", -8.0, 20.0 + 1e-7, 0.0, 3.0),
+            with(pad("e2", "s2", 5.0), json!({ "upTo": "first", "into": "e1" })),
+        ],
+        "e2",
+    );
+    refused(&o, OVERHANG);
 }
