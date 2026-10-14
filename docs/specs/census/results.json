@@ -246,8 +246,27 @@
      10
     ]
    },
-   "status": "NO-CONSTRUCT",
-   "note": "pull() has no up-to option"
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 16226.194671058462,
+    "faces": 8,
+    "bbox": [
+     -20,
+     -20,
+     -8,
+     20,
+     20,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.1210203257269318e-16,
+    "bboxAbs": 0,
+    "faces": 0,
+    "comAbs": 0.0005345068686812837,
+    "meshVsExact": 0.00006022562615738742
+   },
+   "status": "MATCH"
   },
   {
    "id": "pad-mode__up-to-face",
@@ -265,8 +284,27 @@
      15
     ]
    },
-   "status": "NO-CONSTRUCT",
-   "note": "pull() has no up-to option"
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 8282.74333882308,
+    "faces": 8,
+    "bbox": [
+     -20,
+     -20,
+     0,
+     20,
+     20,
+     15
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 0,
+    "faces": 0,
+    "comAbs": 0.0010685009587785288,
+    "meshVsExact": 0.00014748023302491197
+   },
+   "status": "MATCH"
   },
   {
    "id": "pocket-mode__symmetric",
@@ -474,8 +512,27 @@
      20
     ]
    },
-   "status": "NO-CONSTRUCT",
-   "note": "pocket() has no up-to option"
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 22994.690350851266,
+    "faces": 7,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     20
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 0,
+    "faces": 0,
+    "comAbs": 7.105427357601002e-15,
+    "meshVsExact": 0.00014191633748738064
+   },
+   "status": "MATCH"
   },
   {
    "id": "groove__ring-360",
@@ -683,8 +740,27 @@
      30.000000000000007
     ]
    },
-   "status": "NO-CONSTRUCT",
-   "note": "spin() takes an angle only (no symmetric option)"
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 9424.77796076939,
+    "faces": 6,
+    "bbox": [
+     5,
+     -17.32050807568877,
+     0,
+     20,
+     17.32050807568877,
+     30
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.3510053900284736e-15,
+    "bboxAbs": 7.105427357601002e-15,
+    "faces": 0,
+    "comAbs": 0.005043035405947194,
+    "meshVsExact": 0.0004201529603382395
+   },
+   "status": "MATCH"
   },
   {
    "id": "dress-mode__chamfer-two-distances",

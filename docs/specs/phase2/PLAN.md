@@ -158,6 +158,18 @@ wrong. Merged tree: cargo 672, gates 78/78/78 + 17, wasm 634,990 B gz.
 Census after: 127 references, 100 MATCH, 1 MATCH-EXACT, 2 FACES, 9 REFUSED, 14 NO-CONSTRUCT, 1 reference failed in
 FreeCAD, 0 silently wrong. Merged tree: cargo 699, gates 78/78/78 + 17, wasm 643,960 B gz.
 
+### Loop `wf_dc079f54-416` results (2026-10-14)
+
+| slice | rounds | outcome |
+|---|---|---|
+| C3 / C3R | 2 + 2 | LANDED (merge of `slice-C3R-r2`). Pad/pocket up to first / up to a flat face and symmetric revolve; an up-to whose profile is not wholly over the stopping face, or whose centre of mass is off it (FreeCAD fails those), refuses in a sentence. Symmetric half turn merges its caps (4 faces). |
+| C2R | 2 | NOT landed (`worktree-wf_dc079f54-416-6`). Refusing a taper/counterdrill/drill point into an existing bore is not enough: a plain cylinder body with a depth-7 hole still disagrees, a refusal sentence misstates the oracle, and a stepped plate (rect pocket then a taper at the lower level) still builds wrong (8 failures). Probably needs the hole start frame derived from the FEATURE's face, not the bbox top. |
+| B3R | 2 | NOT landed (`slice-B3R-r2`). The named neighbour (ball r11 at (9,13,7), FreeCAD 6 faces) was fixed in round 2, but `mesh_feature` is not watertight for ball r15 at (17,5,2.5) (6 faces, volume right). A face-structure change that cracks the mesh is worse than the face-count mismatch: kept refused/unchanged. |
+| A2 | 2 | NOT landed (`slice-A2-r2`, stacked on C3R). Equal-radius rounds at a corner build, but SEQUENTIAL fillets (`fillet(top,right,2); fillet(top,front,2)`) are merged into one blend and disagree with FreeCAD, the same one-pick vs separate-features split A1 hit; round 1 had a mesh crack at a sphere corner. Needs the same decision as A1: the doc cannot say which was meant. |
+
+Census after: 127 references, 104 MATCH, 1 MATCH-EXACT, 2 FACES, 9 REFUSED, 10 NO-CONSTRUCT, 1 reference failed in
+FreeCAD, 0 silently wrong. Merged tree: cargo 728, gates 78/78/78 + 17, wasm 649,317 B gz.
+
 ## 2. The gauntlet loop
 
 `docs/specs/phase2/gauntlet-loop.workflow.js` is a Workflow script (run with
