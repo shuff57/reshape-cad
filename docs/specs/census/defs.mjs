@@ -50,10 +50,14 @@ add({ id: 'revolution-mode__symmetric-120', family: 'revolution-mode', noConstru
   ours: '', fc: `doc, body = setup()\nsk = sketch(body, 'front')\nrect(sk, 10, 0, 20, 30)\nr = body.newObject('PartDesign::Revolution', 'Rev')\nr.Profile = sk\nr.ReferenceAxis = (sk, ['V_Axis'])\nr.Angle = 120\nr.SideType = 'Symmetric'\nbody.Document.recompute()` });
 
 // ---- FILLET / CHAMFER modes -----------------------------------------------------------------------------------------------------
-add({ id: 'dress-mode__chamfer-two-distances', family: 'dress-mode', noConstruct: 'bevel() takes one size', desc: 'chamfer 3 x 2 on the top/front edge',
-  ours: '', fc: `${BOX_F}\nchamfer_x(body, base, [edge_between(base.Shape, [0,0,10], [30,0,10])], 3, ChamferType='Two distances', Size2=2)` });
-add({ id: 'dress-mode__chamfer-distance-angle', family: 'dress-mode', noConstruct: 'bevel() takes one size', desc: 'chamfer 3 at 30 degrees on the top/front edge',
-  ours: '', fc: `${BOX_F}\nchamfer_x(body, base, [edge_between(base.Shape, [0,0,10], [30,0,10])], 3, ChamferType='Distance and Angle', Angle=30)` });
+// A chamfer's second distance / angle / flip have no script word yet (bevel() takes one size; the word is the gauntlet agent's), so
+// these run the one-size chamfer the script CAN say and patch the extra doc field onto the fillet feature (`docPatch`, run.mjs).
+add({ id: 'dress-mode__chamfer-two-distances', family: 'dress-mode', desc: 'chamfer 3 x 2 on the top/front edge (3 on the front, 2 on the top)', exactVolume: 5910,
+  ours: `${BOX_O} chamfer(pad.edge('top','front'), 3);`, docPatch: { size2: 2 },
+  fc: `${BOX_F}\nchamfer_x(body, base, [edge_between(base.Shape, [0,0,10], [30,0,10])], 3, ChamferType='Two distances', Size2=2)` });
+add({ id: 'dress-mode__chamfer-distance-angle', family: 'dress-mode', desc: 'chamfer 3 at 30 degrees on the top/front edge', exactVolume: 6000 - 45 * Math.sqrt(3),
+  ours: `${BOX_O} chamfer(pad.edge('top','front'), 3);`, docPatch: { angle: 30 },
+  fc: `${BOX_F}\nchamfer_x(body, base, [edge_between(base.Shape, [0,0,10], [30,0,10])], 3, ChamferType='Distance and Angle', Angle=30)` });
 add({ id: 'dress-mode__fillet-all-edges', family: 'dress-mode', desc: 'fillet 2 on every edge of a 30 x 20 x 10 block',
   ours: `const b = box(30, 20, 10, { at: [15, 10, 5] }); fillet(b, 2);`, fc: `${BOX_F}\nf = body.newObject('PartDesign::Fillet', 'Fillet')\nf.Base = (base, [])\nf.UseAllEdges = True\nf.Radius = 2\ndoc.recompute()` });
 add({ id: 'dress-mode__fillet-two-adjacent', family: 'dress-mode', desc: 'fillet 2 on the top/right and top/front edges (they meet at a corner)',
@@ -343,3 +347,41 @@ add({ id: 'dress-chain__sequential-three-edges', family: 'dress-chain', desc: 'c
 add({ id: 'dress-chain__chain-then-fillet', family: 'dress-chain', desc: 'chamfer 2 on top/right and top/front, then fillet 1 on top/back',
   ours: `${BOX_O} chamfer([${OTR}, ${OTF}], 2); fillet(${OTB}, 1);`,
   fc: `${BOX_F}\nc1 = dress(body, 'Chamfer', base, [${TR}, ${TF}], 2)\ndress(body, 'Fillet', c1, [edge_between(c1.Shape, [0,20,10], [28,20,10])], 1)` });
+
+// ---- SLICE A3: Chamfer 'Two distances' / 'Distance and Angle' ----------------------------------------------------------------
+// FreeCAD puts Size on the LOWER-numbered of the edge's two faces of the base shape (a pad's walls in profile-edge order, then the
+// start cap, then the end cap), Size2 (or Size*sin(a)/sin(theta+a), theta the interior angle of the two faces) on the other;
+// FlipDirection swaps them. `exactVolume` is the independent exact polyhedron (area less the cut triangle, times the height).
+const A3 = (id, desc, ours, patch, fc, exactVolume, extra = {}) => add({ id: `chamfer-asym__${id}`, family: 'chamfer-asym', desc, ours, docPatch: patch, fc, exactVolume, ...extra });
+const A3E = (a, b) => `edge_between(base.Shape, [${a}], [${b}])`;
+const CH = (type, props) => `ChamferType='${type}', ${props}`;
+A3('box-top-front-9x1', 'box, top/front edge, 9 on the front and 1 on the top', `${BOX_O} chamfer(pad.edge('top','front'), 9);`, { size2: 1 },
+  `${BOX_F}\nchamfer_x(body, base, [${A3E('0,0,10', '30,0,10')}], 9, ${CH('Two distances', 'Size2=1')})`, 5865);
+A3('box-top-front-9x1-flip', 'the same with FlipDirection (9 on the top, 1 on the front: same volume, the centre of mass tells)', `${BOX_O} chamfer(pad.edge('top','front'), 9);`, { size2: 1, flip: true },
+  `${BOX_F}\nchamfer_x(body, base, [${A3E('0,0,10', '30,0,10')}], 9, ${CH('Two distances', 'Size2=1, FlipDirection=True')})`, 5865);
+A3('box-top-left-9x1', 'box, top/left edge: the left wall is face 4, the top is face 6, so 9 goes on the left', `${BOX_O} chamfer(pad.edge('top','left'), 9);`, { size2: 1 },
+  `${BOX_F}\nchamfer_x(body, base, [${A3E('0,20,10', '0,0,10')}], 9, ${CH('Two distances', 'Size2=1')})`, 5910);
+A3('box-vertical-front-right-6x2', 'box, vertical front/right edge, 6 on the front and 2 on the right', `${BOX_O} chamfer(pad.edge('front','right'), 6);`, { size2: 2 },
+  `${BOX_F}\nchamfer_x(body, base, [${A3E('30,0,0', '30,0,10')}], 6, ${CH('Two distances', 'Size2=2')})`, 5940);
+A3('box-angle-top-left-6-60', 'box, top/left edge, 6 at 60 degrees (10.392305 on the top)', `${BOX_O} chamfer(pad.edge('top','left'), 6);`, { angle: 60 },
+  `${BOX_F}\nchamfer_x(body, base, [${A3E('0,20,10', '0,0,10')}], 6, ${CH('Distance and Angle', 'Angle=60')})`, 6000 - 0.5 * 6 * 6 * Math.tan(Math.PI / 3) * 30);
+const PARA_O = `const s = sketch('top'); s.polygon([[0,0],[30,0],[40,20],[10,20]]); const pad = extrude(s, 10);`;
+const PARA_F = `doc, body = setup()\ns = sketch(body, 'top')\npoly(s, [(0,0),(30,0),(40,20),(10,20)])\nbase = pad(body, s, 10)`;
+A3('para-vertical-angle-3-30', 'parallelogram prism, vertical front/right edge (116.57 degrees), 3 at 30: the second leg is 2.722373, not 3 tan 30', `${PARA_O} chamfer(pad.edge('front','right'), 3);`, { angle: 30 },
+  `${PARA_F}\nchamfer_x(body, base, [${A3E('30,0,0', '30,0,10')}], 3, ${CH('Distance and Angle', 'Angle=30')})`, 5963.475532239782);
+A3('para-vertical-angle-2-60-flip', 'the same corner, 2 at 60 with FlipDirection (the 2 is on the right wall, the angle is taken from it)', `${PARA_O} chamfer(pad.edge('front','right'), 2);`, { angle: 60, flip: true },
+  `${PARA_F}\nchamfer_x(body, base, [${A3E('30,0,0', '30,0,10')}], 2, ${CH('Distance and Angle', 'Angle=60, FlipDirection=True')})`, 5741.435935394492);
+A3('pent-oblique-8x1', 'pentagon prism, oblique top edge (30,0)-(40,15), 8 on the wall and 1 on the top', `${PENT_O} chamfer(pad.edge('top','right'), 8);`, { size2: 1 },
+  `${PENT_F}\nchamfer_x(body, base, [${A3E('30,0,10', '40,15,10')}], 8, ${CH('Two distances', 'Size2=1')})`, 9677.063578);
+A3('pent-oblique-8x1-flip', 'the same with FlipDirection: the volume itself differs on an oblique edge', `${PENT_O} chamfer(pad.edge('top','right'), 8);`, { size2: 1, flip: true },
+  `${PENT_F}\nchamfer_x(body, base, [${A3E('30,0,10', '40,15,10')}], 8, ${CH('Two distances', 'Size2=1, FlipDirection=True')})`, 9671.2858);
+A3('pent-vertical-angle-3-30', 'pentagon prism, vertical front/right edge (123.69 degrees), 3 at 30', `${PENT_O} chamfer(pad.edge('front','right'), 3);`, { angle: 30 },
+  `${PENT_F}\nchamfer_x(body, base, [${A3E('30,0,0', '30,0,10')}], 3, ${CH('Distance and Angle', 'Angle=30')})`, 9707.761714040635);
+// FreeCAD fails (Touched/Invalid) when the two angles add to 180 or more: the kernel refuses too, in a sentence. Reference is a failure.
+A3('pent-vertical-angle-2-60-flip', 'pentagon prism, vertical front/right edge, 2 at 60 flipped: 123.69 + 60 > 180, FreeCAD marks the feature invalid; INTENDED REFUSAL', `${PENT_O} chamfer(pad.edge('front','right'), 2);`, { angle: 60, flip: true },
+  `${PENT_F}\nchamfer_x(body, base, [${A3E('30,0,0', '30,0,10')}], 2, ${CH('Distance and Angle', 'Angle=60, FlipDirection=True')})`, undefined);
+// A clockwise-drawn outline: FreeCAD builds it, the kernel cannot tell FreeCAD's face numbering for it (not probed) and refuses.
+// INTENDED REFUSAL (the part is shown whole, in a sentence), recorded here so it is not mistaken for a gap nobody saw.
+A3('box-clockwise-top-front-3x2', 'box drawn clockwise, top/front edge, 3 x 2; INTENDED REFUSAL (face numbering of a clockwise outline not probed)',
+  `const s = sketch('top'); s.polygon([[0,0],[0,20],[30,20],[30,0]]); const pad = extrude(s, 10); chamfer(pad.edge('top','front'), 3);`, { size2: 2 },
+  `doc, body = setup()\ns = sketch(body, 'top')\npoly(s, [(0,0),(0,20),(30,20),(30,0)])\nbase = pad(body, s, 10)\nchamfer_x(body, base, [${A3E('0,0,10', '30,0,10')}], 3, ${CH('Two distances', 'Size2=2')})`, 5910);

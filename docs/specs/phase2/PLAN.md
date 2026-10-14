@@ -89,6 +89,17 @@ near-tangent wrong solid. What changed and what was measured:
 - Census (scratch copy, FreeCAD 26.3.0 RC1): 115 cases, 84 MATCH, no change in any other case; parity / mesh / STEP gates
   78 / 78 / 78 passed.
 
+### A3 result (2026-10-13, round 2 on `slice-A3-r2`)
+
+Round 1 (`6506975`) read the angle as `size * tan(a)`, right only at a 90 degree dihedral: 11 of 19 oblique vertical edges came
+out silently wrong. FreeCAD measures the angle from the face that carries the first distance, so the second leg is
+`size * sin(a) / sin(theta + a)` (theta = interior angle of the edge's two faces; law of sines in the edge's cross-section).
+At `theta + a >= 180` the chamfer plane never meets the second face and FreeCAD marks the feature Invalid or returns the part
+unchanged: the kernel refuses, in a sentence. A leg longer than its face still refuses ("would not fit"). The face numbering is
+only consulted when the two legs differ. A clockwise-drawn outline stays an INTENDED refusal (FreeCAD's numbering for it was
+not probed); `chamfer-asym__box-clockwise-top-front-3x2` records it. The census now carries 12 A3 cases (10 MATCH, 2 intended
+refusals) through a `docPatch` field in `run.mjs`, because the script has no word for size2/angle/flip yet (gauntlet agent).
+
 ### B. Face-count parity (the solid is right, the topology differs)
 
 | id | what | gap | acceptance |
@@ -134,6 +145,18 @@ stay refused.
 
 Census after the landing: 115 cases, 87 MATCH, 1 MATCH-EXACT, 2 FACES (B3's two), 9 REFUSED, 16 NO-CONSTRUCT, 0 silently
 wrong. Merged tree: cargo 672, gates 78/78/78 + 17, wasm 634,990 B gz.
+
+### Loop `wf_63dab8a8-a18` results (2026-10-13)
+
+| slice | rounds | outcome |
+|---|---|---|
+| A3 / A3R | 2 + 1 | LANDED (merge `4aadb3c`). Two-distances and distance-and-angle chamfer; a sketch whose first line is drawn backwards now refuses (FreeCAD walks the wire from the end of geom 0 and swaps the legs) instead of swapping silently. |
+| C1 | 2 | LANDED. Coaxial circle-to-circle blend is a cone frustum (a cylinder when equal); three sections, coplanar circles and off-axis circles refuse in their own sentences. `measure_step` cannot read a conical face yet, so STEP was checked by FreeCAD read-back. |
+| C2 | 2 | NOT landed (`slice-C2-r2`). A hole with taper/counterdrill into an EXISTING bore is a silent wrong solid (box 40x30x10, plain d6 bore to z=6, then a tapered hole); round 1 had the same class on a stepped body. Needs the bore-floor logic (`region_inside`) to see a prior bore's wall before a tapered or counterdrilled tool is allowed there: refuse when the hole's start face is not the original planar face. |
+| C3 | 2 | NOT landed (`slice-C3-r2`). Pocket `upTo: first` whose profile overhangs the block (pentagon prism, oblique) is a silent wrong solid; round 1 had symmetric revolve with a negative angle and a profile touching the axis. Refuse any up-to case whose profile is not fully inside the target face. |
+
+Census after: 127 references, 100 MATCH, 1 MATCH-EXACT, 2 FACES, 9 REFUSED, 14 NO-CONSTRUCT, 1 reference failed in
+FreeCAD, 0 silently wrong. Merged tree: cargo 699, gates 78/78/78 + 17, wasm 643,960 B gz.
 
 ## 2. The gauntlet loop
 

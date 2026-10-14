@@ -689,7 +689,7 @@
   {
    "id": "dress-mode__chamfer-two-distances",
    "family": "dress-mode",
-   "desc": "chamfer 3 x 2 on the top/front edge",
+   "desc": "chamfer 3 x 2 on the top/front edge (3 on the front, 2 on the top)",
    "ref": {
     "volume": 5910,
     "faces": 7,
@@ -702,8 +702,30 @@
      10.000000000000002
     ]
    },
-   "status": "NO-CONSTRUCT",
-   "note": "bevel() takes one size"
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5910,
+    "faces": 7,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 1.7763568394002505e-15,
+    "faces": 0,
+    "comAbs": 1.7763568394002505e-15,
+    "meshVsExact": 0,
+    "oursVsExact": 0,
+    "refVsExact": 0
+   },
+   "exactVolume": 5910,
+   "status": "MATCH"
   },
   {
    "id": "dress-mode__chamfer-distance-angle",
@@ -721,8 +743,30 @@
      10
     ]
    },
-   "status": "NO-CONSTRUCT",
-   "note": "bevel() takes one size"
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5922.0577136594,
+    "faces": 7,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 2.220446049250313e-16,
+    "faces": 0,
+    "comAbs": 3.552713678800501e-15,
+    "meshVsExact": 0,
+    "oursVsExact": 0,
+    "refVsExact": 0
+   },
+   "exactVolume": 5922.0577136594,
+   "status": "MATCH"
   },
   {
    "id": "dress-mode__fillet-all-edges",
@@ -1321,9 +1365,27 @@
      15.0000001
     ]
    },
-   "oursOutcome": "refused",
-   "status": "REFUSED",
-   "sentence": "brep-rs can only blend two matching straight outlines yet -- bl1 is shown without it."
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 2748.893571891071,
+    "faces": 3,
+    "bbox": [
+     -10,
+     -10,
+     0,
+     10,
+     10,
+     15
+    ]
+   },
+   "deltas": {
+    "volumeRel": 8.271461571602898e-16,
+    "bboxAbs": 1e-7,
+    "faces": 0,
+    "comAbs": 0.0006098079527525613,
+    "meshVsExact": 0.001385279278016298
+   },
+   "status": "MATCH"
   },
   {
    "id": "loft__rect-to-circle",
@@ -1492,8 +1554,8 @@
     "volumeRel": 4.061224748307531e-16,
     "bboxAbs": 0,
     "faces": 0,
-    "comAbs": 0.004031301119495012,
-    "meshVsExact": 0.0005444246667738897
+    "comAbs": 0.004031301119493236,
+    "meshVsExact": 0.0005444246667741605
    },
    "status": "MATCH"
   },
@@ -3966,6 +4028,446 @@
    "oursOutcome": "refused",
    "status": "REFUSED",
    "sentence": "brep-rs can only round a straight edge between two flat faces whose ends are plain flat faces square to it, with nothing else within reach of the cut -- round1 is shown without it."
+  },
+  {
+   "id": "chamfer-asym__box-top-front-9x1",
+   "family": "chamfer-asym",
+   "desc": "box, top/front edge, 9 on the front and 1 on the top",
+   "ref": {
+    "volume": 5865,
+    "faces": 7,
+    "bbox": [
+     0,
+     -4.996003610813204e-16,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5865,
+    "faces": 7,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 4.996003610813204e-16,
+    "faces": 0,
+    "comAbs": 0,
+    "meshVsExact": 0,
+    "oursVsExact": 0,
+    "refVsExact": 0
+   },
+   "exactVolume": 5865,
+   "status": "MATCH"
+  },
+  {
+   "id": "chamfer-asym__box-top-front-9x1-flip",
+   "family": "chamfer-asym",
+   "desc": "the same with FlipDirection (9 on the top, 1 on the front: same volume, the centre of mass tells)",
+   "ref": {
+    "volume": 5865,
+    "faces": 7,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5865,
+    "faces": 7,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 0,
+    "faces": 0,
+    "comAbs": 1.7763568394002505e-15,
+    "meshVsExact": 0,
+    "oursVsExact": 0,
+    "refVsExact": 0
+   },
+   "exactVolume": 5865,
+   "status": "MATCH"
+  },
+  {
+   "id": "chamfer-asym__box-top-left-9x1",
+   "family": "chamfer-asym",
+   "desc": "box, top/left edge: the left wall is face 4, the top is face 6, so 9 goes on the left",
+   "ref": {
+    "volume": 5910,
+    "faces": 7,
+    "bbox": [
+     -3.3306690738754696e-16,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5910,
+    "faces": 7,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 3.3306690738754696e-16,
+    "faces": 0,
+    "comAbs": 3.552713678800501e-15,
+    "meshVsExact": 0,
+    "oursVsExact": 0,
+    "refVsExact": 0
+   },
+   "exactVolume": 5910,
+   "status": "MATCH"
+  },
+  {
+   "id": "chamfer-asym__box-vertical-front-right-6x2",
+   "family": "chamfer-asym",
+   "desc": "box, vertical front/right edge, 6 on the front and 2 on the right",
+   "ref": {
+    "volume": 5940,
+    "faces": 7,
+    "bbox": [
+     0,
+     -2.220446049250313e-15,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5940,
+    "faces": 7,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 2.220446049250313e-15,
+    "faces": 0,
+    "comAbs": 1.7763568394002505e-15,
+    "meshVsExact": 0,
+    "oursVsExact": 0,
+    "refVsExact": 0
+   },
+   "exactVolume": 5940,
+   "status": "MATCH"
+  },
+  {
+   "id": "chamfer-asym__box-angle-top-left-6-60",
+   "family": "chamfer-asym",
+   "desc": "box, top/left edge, 6 at 60 degrees (10.392305 on the top)",
+   "ref": {
+    "volume": 5376.461709275203,
+    "faces": 7,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5376.461709275204,
+    "faces": 7,
+    "bbox": [
+     0,
+     0,
+     0,
+     30,
+     20,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.691623136093229e-16,
+    "bboxAbs": 0,
+    "faces": 0,
+    "comAbs": 1.7763568394002505e-15,
+    "meshVsExact": 1.6916231360932288e-16,
+    "oursVsExact": 0.06155736827617734,
+    "refVsExact": 0.06155736827617716
+   },
+   "exactVolume": 5064.692563912807,
+   "status": "MATCH"
+  },
+  {
+   "id": "chamfer-asym__para-vertical-angle-3-30",
+   "family": "chamfer-asym",
+   "desc": "parallelogram prism, vertical front/right edge (116.57 degrees), 3 at 30: the second leg is 2.722373, not 3 tan 30",
+   "ref": {
+    "volume": 5963.475532239782,
+    "faces": 7,
+    "bbox": [
+     -1.7763568394002505e-15,
+     -3.552713678800501e-15,
+     -2.232681433251857e-31,
+     40,
+     20.000000000000004,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5963.475532239783,
+    "faces": 7,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     20.000000000000007,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.525108465451081e-16,
+    "bboxAbs": 3.552713678800501e-15,
+    "faces": 0,
+    "comAbs": 3.552713678800501e-15,
+    "meshVsExact": 0,
+    "oursVsExact": 1.525108465451081e-16,
+    "refVsExact": 0
+   },
+   "exactVolume": 5963.475532239782,
+   "status": "MATCH"
+  },
+  {
+   "id": "chamfer-asym__para-vertical-angle-2-60-flip",
+   "family": "chamfer-asym",
+   "desc": "the same corner, 2 at 60 with FlipDirection (the 2 is on the right wall, the angle is taken from it)",
+   "ref": {
+    "volume": 5741.435935394492,
+    "faces": 7,
+    "bbox": [
+     -1.7763568394002505e-15,
+     -3.552713678800501e-15,
+     0,
+     40,
+     20.000000000000004,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 5741.435935394493,
+    "faces": 7,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     20.000000000000007,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 1.5840892626984213e-16,
+    "bboxAbs": 3.552713678800501e-15,
+    "faces": 0,
+    "comAbs": 7.105427357601002e-15,
+    "meshVsExact": 1.584089262698421e-16,
+    "oursVsExact": 1.5840892626984213e-16,
+    "refVsExact": 0
+   },
+   "exactVolume": 5741.435935394492,
+   "status": "MATCH"
+  },
+  {
+   "id": "chamfer-asym__pent-oblique-8x1",
+   "family": "chamfer-asym",
+   "desc": "pentagon prism, oblique top edge (30,0)-(40,15), 8 on the wall and 1 on the top",
+   "ref": {
+    "volume": 9677.063577665323,
+    "faces": 8,
+    "bbox": [
+     -10,
+     -1.9941313557690318e-15,
+     0,
+     40,
+     30,
+     10.000000000000002
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 9677.06357766533,
+    "faces": 8,
+    "bbox": [
+     -10,
+     0,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 7.518765951870304e-16,
+    "bboxAbs": 1.9941313557690318e-15,
+    "faces": 0,
+    "comAbs": 1.7763568394002505e-15,
+    "meshVsExact": 7.518765951870298e-16,
+    "oursVsExact": 3.4583691809324184e-11,
+    "refVsExact": 3.4584443685919345e-11
+   },
+   "exactVolume": 9677.063578,
+   "status": "MATCH"
+  },
+  {
+   "id": "chamfer-asym__pent-oblique-8x1-flip",
+   "family": "chamfer-asym",
+   "desc": "the same with FlipDirection: the volume itself differs on an oblique edge",
+   "ref": {
+    "volume": 9671.285799887548,
+    "faces": 8,
+    "bbox": [
+     -10,
+     -1.7763568394002505e-15,
+     0,
+     40,
+     30,
+     10.000000000000002
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 9671.285799887548,
+    "faces": 8,
+    "bbox": [
+     -10,
+     0,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 1.7763568394002505e-15,
+    "faces": 0,
+    "comAbs": 3.552713678800501e-15,
+    "meshVsExact": 3.7616288902702197e-16,
+    "oursVsExact": 1.1627382981134565e-11,
+    "refVsExact": 1.1627382981134565e-11
+   },
+   "exactVolume": 9671.2858,
+   "status": "MATCH"
+  },
+  {
+   "id": "chamfer-asym__pent-vertical-angle-3-30",
+   "family": "chamfer-asym",
+   "desc": "pentagon prism, vertical front/right edge (123.69 degrees), 3 at 30",
+   "ref": {
+    "volume": 9707.761714040635,
+    "faces": 8,
+    "bbox": [
+     -10,
+     -1.7763568394002505e-15,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "oursOutcome": "built",
+   "ours": {
+    "volume": 9707.761714040635,
+    "faces": 8,
+    "bbox": [
+     -10,
+     0,
+     0,
+     40,
+     30,
+     10
+    ]
+   },
+   "deltas": {
+    "volumeRel": 0,
+    "bboxAbs": 1.7763568394002505e-15,
+    "faces": 0,
+    "comAbs": 1.7763568394002505e-15,
+    "meshVsExact": 0,
+    "oursVsExact": 0,
+    "refVsExact": 0
+   },
+   "exactVolume": 9707.761714040635,
+   "status": "MATCH"
+  },
+  {
+   "id": "chamfer-asym__pent-vertical-angle-2-60-flip",
+   "family": "chamfer-asym",
+   "desc": "pentagon prism, vertical front/right edge, 2 at 60 flipped: 123.69 + 60 > 180, FreeCAD marks the feature invalid; INTENDED REFUSAL",
+   "ref": null,
+   "refNote": "invalid: bad={\"Chamfer\":[\"Touched\",\"Invalid\"]} valid=true solids=1",
+   "oursOutcome": "refused",
+   "status": "REFUSED(ref-fail)",
+   "sentence": "Chamfering bevel1: a chamfer of 2 at 60 degrees on an edge whose faces meet at 123.69 degrees would never meet the second face (the two angles add to 180 or more), which FreeCAD itself cannot build -- bevel1 is shown without it."
+  },
+  {
+   "id": "chamfer-asym__box-clockwise-top-front-3x2",
+   "family": "chamfer-asym",
+   "desc": "box drawn clockwise, top/front edge, 3 x 2; INTENDED REFUSAL (face numbering of a clockwise outline not probed)",
+   "ref": {
+    "volume": 5910,
+    "faces": 7,
+    "bbox": [
+     0,
+     -1.5543122344752192e-15,
+     0,
+     30,
+     20,
+     10.000000000000002
+    ]
+   },
+   "oursOutcome": "refused",
+   "status": "REFUSED",
+   "sentence": "Chamfering bevel1: FreeCAD puts the first distance on the lower-numbered of the edge's two faces, and brep-rs can only tell that numbering for a part that is a plain pad (no reverse, symmetric, taper or direction option) of one straight-sided sketch with nothing done to it since, so it cannot say which face takes which distance on this part -- bevel1 is shown without it."
   }
  ]
 }
