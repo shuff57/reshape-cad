@@ -12,6 +12,24 @@ export const meta = {
 
 // Slice definitions mirror docs/specs/phase2/PLAN.md section 1. The goal text is what the implementer is held to.
 const SLICES = {
+  C2R: {
+    base: 'slice-C2-r2',
+    goal: 'Third round of C2 (hole drill point / counterdrill / tapered). Branch builds the census cases, but a tapered or counterdrilled hole cut INTO AN EXISTING BORE (plain d6 bore to z=6 on a 40x30x10 box, then a taper or counterdrill hole at the same place) and a hole into a stepped body are silent wrong solids. Fix by REFUSING, in a sentence, any drill-point/counterdrill/taper hole whose start face is not the original planar face of a single convex prism, or that overlaps an existing bore; plain holes keep their existing behaviour. Do not widen. Compare volume AND face count AND centre of mass to FreeCAD.',
+    cases: 'census hole-mode cases; plus: hole after a bore at the same place (d6 depth 4, then taper 5 and counterdrill), hole on a stepped body, hole near an edge, two holes overlapping',
+    probe: 'Reproduce each wrong solid in FreeCAD and on the branch wasm first.',
+  },
+  C3R: {
+    base: 'slice-C3-r2',
+    goal: 'Third round of C3 (symmetric revolve, up-to-first/up-to-face). Branch builds the census cases, but pocket upTo:first whose profile overhangs the block (pentagon prism, oblique) is a silent wrong solid; earlier: symmetric revolve with negative angle, profile touching the axis. Fix by REFUSING in a sentence any up-to case whose profile is not fully inside the target face and any symmetric revolve with a non-positive angle or a profile touching the axis unless FreeCAD agrees (probe). Do not widen.',
+    cases: 'census pad/pocket up-to and symmetric revolve cases; plus overhanging profile, oblique target face, negative angle, profile on the axis',
+    probe: 'Reproduce each wrong solid on the branch wasm and the FreeCAD result first.',
+  },
+  B3R: {
+    base: 'slice-B3-r2',
+    goal: 'Third round of B3 (common of box x cylinder 3 faces, box x sphere 7 faces). Census cases pass; neighbours disagree on face count: a cylinder tangent on two sides and crossing a third (centres x=3,5,8 in 30x20x10, r10) splits the wall at the seam (5 vs FreeCAD 4); some ball-in-block cases merge or split sphere patches (sphere r11 at (9,13,7): 5 vs 6). Match FreeCAD face counts on these neighbours, or refuse in a sentence a configuration you cannot prove. Never change volumes.',
+    cases: 'cylinder tangent-two-sides crossing a third at several x and radii; 24 random ball-in-block cases from the earlier verifier; the census cases',
+    probe: 'Diff face lists by (surface kind, area) against FreeCAD for each neighbour.',
+  },
   A3R: {
     base: 'slice-A3-r2',
     goal: 'Third round of A3 (chamfer Two distances / Distance and angle). The branch already builds and matches FreeCAD on the census cases, but has ONE silent wrong solid: on a vertical wall-wall edge the two legs swap when the sketch lines are drawn backwards (FreeCAD walks the wire from the END of geom 0; pad_order_known only checks that wall i contains geom i end points). Equal volume, different centre of mass. Fix by computing the same walk direction FreeCAD uses, or REFUSE (a sentence) whenever the sketch line order/direction is not one the kernel proves equals FreeCAD walk. Do not widen anything else. Re-test all 576-case sweep style variants the earlier verifiers used, plus backwards lines at every vertex, and compare centre of mass (0.02) as well as volume.',
