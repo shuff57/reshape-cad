@@ -821,10 +821,52 @@ fn up_to_reach(
                 "the first face the {kind} meets is slanted or curved, and brep-rs stops at a flat face square to the {kind}'s direction only"
             ));
         }
-        match best {
-            Some(d) => (d, false),
-            None => return Err(none_ahead()),
+        let Some(d) = best else { return Err(none_ahead()) };
+        // FreeCAD's up-to-first fails (the feature goes Invalid) when the centre of mass of the profile lies off
+        // the face it would stop at, even if the profile overlaps it. Building the clipped solid there would hand
+        // a student a part FreeCAD refuses, so it is refused. On the edge still builds.
+        let mut cen: Option<Vec3> = None;
+        for fc in probe.faces() {
+            let fb = fc.borrow();
+            if let Surface::Plane(p) = &fb.surface {
+                if dot(normalize(p.n), travel).abs() >= SQUARE {
+                    cen = Some(build::face_area_centroid(&fb).1);
+                    break;
+                }
+            }
         }
+        if let Some(c) = cen {
+            let q = add(c, scale(travel, d - dot(sub(c, o), travel)));
+            let fr = sketch_frame(sk);
+            let eps = 1e-6;
+            let mut cands = vec![q];
+            for ax in [fr.u, fr.v] {
+                cands.push(add(q, scale(ax, eps)));
+                cands.push(add(q, scale(ax, -eps)));
+            }
+            let mut on_face = false;
+            'faces: for fc in base.faces() {
+                let fb = fc.borrow();
+                if let Surface::Plane(p) = &fb.surface {
+                    if dot(normalize(p.n), travel).abs() >= SQUARE
+                        && (dot(sub(p.origin, o), travel) - d).abs() < 1e-6
+                    {
+                        for qq in &cands {
+                            if ops::plane_face_contains(p, &fb, *qq) {
+                                on_face = true;
+                                break 'faces;
+                            }
+                        }
+                    }
+                }
+            }
+            if !on_face {
+                return Err(format!(
+                    "FreeCAD cannot find the first face when the centre of the {kind}'s profile is off it, so brep-rs does not build it -- move the sketch so its centre is over the face, or stop at a named face"
+                ));
+            }
+        }
+        (d, false)
     };
     let total = dist + ask.offset;
     if !(total > 1e-7) {

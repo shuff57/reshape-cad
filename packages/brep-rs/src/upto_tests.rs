@@ -399,3 +399,47 @@ fn a_million_mm_revolve_meshes_in_one_pass() {
     assert!(!m.indices.is_empty());
     assert!(all < one * 4 + std::time::Duration::from_millis(200), "one pass {one:?}, mesh_solid {all:?}");
 }
+
+// ---- slice C3R: FreeCAD's up-to-first fails when the profile's centre of mass is off the stopping face ----------
+
+const OFF_FACE: &str = "centre of the pocket's profile is off it";
+
+#[test]
+fn pocket_up_to_first_with_its_centre_off_the_face_is_refused() {
+    refused(&pocket(vec![], "e1", 40.5, json!({ "upTo": "first" })), OFF_FACE);
+}
+
+#[test]
+fn pocket_up_to_first_overhanging_with_its_centre_on_or_over_the_face_builds() {
+    // FreeCAD 26.3.0 RC1: r4 at x=40 (centre on the edge) 23497.345, x=39.5 23417.554, x=38 23191.2295
+    for (cx, v) in [(40.0, 23497.345), (39.5, 23417.554), (38.0, 23191.2295)] {
+        let o = pocket(vec![], "e1", cx, json!({ "upTo": "first" }));
+        assert!(o.refusal.is_none(), "{cx}: {:?}", o.refusal);
+        assert!((o.vol - v).abs() < 1e-3, "{cx}: {}", o.vol);
+    }
+}
+
+#[test]
+fn pocket_wholly_off_the_face_is_still_the_no_face_ahead_sentence() {
+    refused(&pocket(vec![], "e1", 60.0, json!({ "upTo": "first" })), "no faces found in this direction");
+}
+
+fn plate_post(x0: f64, x1: f64, extra: Value) -> Out {
+    run(
+        vec![
+            rect("s1", 0.0, -20.0, -20.0, 20.0, 20.0),
+            pad("e1", "s1", 10.0),
+            rect("s2", -8.0, x0, -5.0, x1, 5.0),
+            with(pad("e2", "s2", 5.0), extra),
+        ],
+        "e2",
+    )
+}
+
+#[test]
+fn pad_up_to_first_with_its_centre_off_the_plate_is_refused_and_inside_builds() {
+    let o = plate_post(15.0, 28.0, json!({ "upTo": "first", "into": "e1" }));
+    refused(&o, "centre of the pad's profile is off it");
+    let o = plate_post(12.0, 24.0, json!({ "upTo": "first", "into": "e1" }));
+    assert!(o.refusal.is_none(), "{:?}", o.refusal);
+}
