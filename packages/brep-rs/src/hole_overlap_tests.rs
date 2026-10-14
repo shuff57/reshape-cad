@@ -36,7 +36,7 @@ fn result(d: &Value) -> Result<(f64, usize), String> {
     Ok((build::solid_volume(s), s.faces().len()))
 }
 
-const SENTENCE: &str = "already has a bore or other curved wall";
+const SENTENCE: &str = "overlaps a bore the part already has";
 
 #[test]
 fn a_taper_inside_an_existing_bore_is_refused() {
@@ -75,4 +75,64 @@ fn a_taper_on_a_plain_plate_is_unchanged() {
     let (v, f) = result(&plate(vec![t])).expect("builds");
     assert!((v - 11839.73383658493).abs() < 1e-6 * 11839.7, "{v}");
     assert_eq!(f, 8);
+}
+
+fn close(v: f64, want: f64) -> bool {
+    (v - want).abs() <= 1e-6 * want
+}
+
+fn cyl_body(h: Value) -> Value {
+    json!({ "version": 1, "measure": "h2", "features": [
+        { "id": "b1", "kind": "cylinder", "radius": 20, "height": 10, "center": [0, 0, 0] }, h ] })
+}
+
+#[test]
+fn turned_holes_in_a_plain_cylinder_body_build_to_freecad() {
+    // The part's own outer wall is not a bore. FreeCAD 26.3.0 RC1, d40 x 10 cylinder, d6 depth 7 at the axis.
+    for (extra, vol, faces) in [
+        (json!({ "taper": { "angleDeg": 5 } }), 12406.1045, 5usize),
+        (json!({ "counterdrill": { "diameter": 10, "depth": 3 } }), 12171.5771, 7),
+        (json!({ "drillPoint": { "angleDeg": 118 } }), 12351.4613, 5),
+    ] {
+        let mut h = json!({ "id": "h2", "kind": "hole", "target": "b1", "diameter": 6, "depth": 7,
+            "center": [0, 0, 1.5], "axis": "z" });
+        for (k, v) in extra.as_object().unwrap() {
+            h[k] = v.clone();
+        }
+        let (v, f) = result(&cyl_body(h)).expect("builds");
+        assert!(close(v, vol), "{v} vs {vol}");
+        assert_eq!(f, faces);
+    }
+}
+
+#[test]
+fn a_taper_beside_a_bore_that_does_not_overlap_builds_to_freecad() {
+    // bore d6 depth 4 at x=0, taper 5 depth 7 at x=8 (mouths 8 apart): FreeCAD 11726.6365, 10 faces.
+    let mut b = bore("h1", "b1", 4.0);
+    b["center"] = json!([0, 0, 3.0]);
+    let t = json!({ "id": "h2", "kind": "hole", "target": "h1", "diameter": 6, "depth": 7,
+        "center": [8, 0, 1.5], "axis": "z", "taper": { "angleDeg": 5 } });
+    let (v, f) = result(&plate(vec![b, t])).expect("builds");
+    assert!(close(v, 11726.6365), "{v}");
+    assert_eq!(f, 10);
+}
+
+#[test]
+fn a_taper_that_overlaps_a_neighbouring_bore_is_refused() {
+    // mouths 4 apart: the tool meets the bore's wall; brep-rs does not cut across a bore wall
+    let mut b = bore("h1", "b1", 4.0);
+    b["center"] = json!([-1, 0, 3.0]);
+    let t = json!({ "id": "h2", "kind": "hole", "target": "h1", "diameter": 6, "depth": 7,
+        "center": [3, 0, 1.5], "axis": "z", "taper": { "angleDeg": 5 } });
+    let s = result(&plate(vec![b, t])).expect_err("refuses");
+    // the mouth lands on the bore's own opening, so the flat-face sentence speaks first
+    assert!(s.contains(SENTENCE) || s.contains("does not sit on one flat face"), "{s}");
+}
+
+#[test]
+fn a_taper_that_runs_off_a_cylinders_wall_is_refused_in_its_own_sentence() {
+    let t = json!({ "id": "h2", "kind": "hole", "target": "b1", "diameter": 6, "depth": 7,
+        "center": [18, 0, 1.5], "axis": "z", "taper": { "angleDeg": 5 } });
+    let s = result(&cyl_body(t)).expect_err("refuses");
+    assert!(s.contains("curved outer wall") || s.contains("flat face"), "{s}");
 }
