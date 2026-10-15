@@ -1682,6 +1682,404 @@ fn revolve_tool_caps_in(
     Ok((solid, face_map, roles, n_caps))
 }
 
+/// Height (along the +axis) of the flat level the hole's mouth sits on: rays are dropped from above at the
+/// hole's centre and on a ring just inside `r_mouth`; every one must land at the same height. `None` when a
+/// ray misses the part or two land at different heights. Axis-aligned axes only.
+/// Ray-parity point-in-solid over a tessellation (a generic direction, so no edge is hit exactly).
+fn point_in_mesh(m: &crate::mesh::Mesh, p: Vec3) -> bool {
+    let dir = [0.5773, 0.3711, 0.7316];
+    let mut hits = 0;
+    for tri in m.indices.chunks(3) {
+        let a = m.positions[tri[0] as usize];
+        let b = m.positions[tri[1] as usize];
+        let c = m.positions[tri[2] as usize];
+        let e1 = crate::math::sub(b, a);
+        let e2 = crate::math::sub(c, a);
+        let h = crate::math::cross(dir, e2);
+        let det = crate::math::dot(e1, h);
+        if det.abs() < 1e-14 {
+            continue;
+        }
+        let s = crate::math::sub(p, a);
+        let u = crate::math::dot(s, h) / det;
+        if !(0.0..=1.0).contains(&u) {
+            continue;
+        }
+        let q = crate::math::cross(s, e1);
+        let v = crate::math::dot(dir, q) / det;
+        if v < 0.0 || u + v > 1.0 {
+            continue;
+        }
+        if crate::math::dot(e2, q) / det > 1e-9 {
+            hits += 1;
+        }
+    }
+    hits % 2 == 1
+}
+
+fn start_face_level(src: &TSolid, centre: Vec3, axis: Vec3, r_mouth: f64) -> Option<f64> {
+    let k = if axis[0].abs() > 0.5 { 0 } else if axis[1].abs() > 0.5 { 1 } else { 2 };
+    let (ia, ib) = match k { 0 => (1, 2), 1 => (0, 2), _ => (0, 1) };
+    let mesh = crate::mesh::mesh_solid(src, 0.02)?;
+    let mut samples = vec![(centre[ia], centre[ib])];
+    for i in 0..8 {
+        let t = i as f64 * std::f64::consts::FRAC_PI_4;
+        samples.push((centre[ia] + 0.98 * r_mouth * t.cos(), centre[ib] + 0.98 * r_mouth * t.sin()));
+    }
+    let mut level: Option<f64> = None;
+    for (qa, qb) in samples {
+        let mut top: Option<f64> = None;
+        for tri in mesh.indices.chunks(3) {
+            let p: Vec<[f64; 3]> = tri.iter().map(|&i| mesh.positions[i as usize]).collect();
+            let (ax, ay) = (p[0][ia], p[0][ib]);
+            let (bx, by) = (p[1][ia] - ax, p[1][ib] - ay);
+            let (cx, cy) = (p[2][ia] - ax, p[2][ib] - ay);
+            let det = bx * cy - by * cx;
+            if det.abs() < 1e-14 {
+                continue;
+            }
+            let (dx, dy) = (qa - ax, qb - ay);
+            let u = (dx * cy - dy * cx) / det;
+            let v = (bx * dy - by * dx) / det;
+            let e = 1e-9;
+            if u < -e || v < -e || u + v > 1.0 + e {
+                continue;
+            }
+            let h = p[0][k] + u * (p[1][k] - p[0][k]) + v * (p[2][k] - p[0][k]);
+            if top.map_or(true, |t| h > t) {
+                top = Some(h);
+            }
+        }
+        let h = top?;
+        match level {
+            None => level = Some(h),
+            Some(l) if (l - h).abs() <= 1e-6 * (1.0 + l.abs()) => {}
+            _ => return None,
+        }
+    }
+    level
+}
+
+/// True when a hole carries one of the turned-bore fields (drill point, counterdrill, taper).
+fn hole_has_turned_fields(f: &Value) -> bool {
+    f.get("drillPoint").is_some() || f.get("counterdrill").is_some() || f.get("taper").is_some()
+}
+
+/// A hole whose wall is turned: a drill point (cone under the bore), a counterdrill (cylinder, then a
+/// cone, then the bore) or a taper (one frustum). Every number is measured against FreeCAD 26.3.0 RC1
+/// (slice C2). `Err` is the plain sentence of the refusal: a shape this does not take is refused, never
+/// built as a plain bore.
+///
+/// * `drillPoint { angleDeg, includedInDepth }`: the FULL apex angle. The cone is r / tan(angle/2) tall.
+///   `includedInDepth` false (default): `depth` ends at the cylinder's shoulder and the point is below it.
+///   True: the tip is at `depth` and the wall is shorter by the cone's height.
+/// * `counterdrill { diameter, depth, angleDeg }`: a cylinder of the mouth diameter `depth` deep, then a
+///   cone (full angle `angleDeg`, default 90) narrowing to the bore, then the bore. Inside `depth`.
+/// * `taper { angleDeg }`: degrees off the axis; positive narrows with depth, negative widens. The
+///   radius is the bore's at the face. Refused when the cone would close before the floor. A drill point
+///   on a taper is as tall as the NOMINAL radius asks, standing on the floor's own (smaller) radius.
+fn hole_tool_turned(src: &TSolid, centre: Vec3, bore_r: f64, depth: f64, axis: Vec3, v_face: f64, v_back: f64, f: &Value, id: &str) -> Result<TSolid, String> {
+    let no = |why: &str| -> Result<TSolid, String> { Err(format!("hole {id}: {why} -- {id} is shown without it.")) };
+    if f.get("counterbore").is_some() || f.get("countersink").is_some() {
+        return no("a drill point, counterdrill or taper cannot be combined with a counterbore or countersink (one mouth, one shape)");
+    }
+    if f.get("corners").is_some() {
+        return no("a drill point, counterdrill or taper is built on a single hole, not a four-corner set, yet");
+    }
+    if !(bore_r > 0.0) || !(depth > 0.0) {
+        return no("its diameter and depth must be greater than zero");
+    }
+    let axis = crate::math::normalize(axis);
+    let half = 0.5 * depth;
+    let mid = crate::math::dot(centre, axis);
+    let v_far = mid - half;
+    let v_mouth = mid + half;
+    if !(v_mouth >= v_face) {
+        return no("the hole does not reach the face it starts in");
+    }
+    if v_far < v_back - 1e-9 {
+        return no("a drill point, counterdrill or taper is only built for a hole that stops inside the part (a taper through all is invalid in FreeCAD too)");
+    }
+    let num = |o: Option<&Value>, k: &str| o.and_then(|v| v.get(k)).and_then(|v| v.as_f64());
+    let dp = f.get("drillPoint");
+    let cd = f.get("counterdrill");
+    let tp = f.get("taper");
+    // Slice C2S: the SAFE SUBSET. A drill point, counterdrill or taper is cut only into ONE plain
+    // axis-aligned box, from its original flat face, along that face's normal, with the whole tool
+    // (cylinder, cone tip, counterdrill radius, widening taper radius) strictly inside the box.
+    // Everything else is refused in a sentence; nothing falls back to a plain bore.
+    {
+        if let Some(a) = num(cd, "angleDeg") {
+            if (a - 90.0).abs() > 1e-9 {
+                return no("its counterdrill cone is only built at 90 degrees (the one angle measured against FreeCAD), a shape brep-rs cannot cut yet");
+            }
+        }
+        if dp.is_some() && (cd.is_some() || tp.is_some()) {
+            return no("a drill point together with a counterdrill or a taper is not a shape brep-rs can cut yet (only one turned option per hole is measured against FreeCAD)");
+        }
+        let mut n_plane = 0usize;
+        let mut n_curved = 0usize;
+        let mut n_per_axis = [0usize; 3];
+        let mut bb = crate::math::Aabb::empty();
+        for face in src.faces() {
+            let fb = face.borrow();
+            match &fb.surface {
+                Surface::Plane(p) => {
+                    n_plane += 1;
+                    for i in 0..3 {
+                        if p.n[i].abs() > 1.0 - 1e-9 {
+                            n_per_axis[i] += 1;
+                        }
+                    }
+                }
+                _ => n_curved += 1,
+            }
+            for w in fb.boundary.iter() {
+                for e in w.borrow().edges.iter() {
+                    let ed = e.edge.borrow();
+                    bb.expand(ed.a.borrow().point);
+                    bb.expand(ed.b.borrow().point);
+                }
+            }
+        }
+        let is_box = n_curved == 0 && n_plane == 6 && n_per_axis == [2, 2, 2];
+        if !is_box {
+            if n_curved > 0 && n_plane >= 6 && n_per_axis.iter().all(|&c| c >= 2) {
+                return no("the part already has a bore or a curved cut, and a drill point, counterdrill or taper is only built into a plain box, a shape brep-rs cannot cut yet");
+            }
+            if n_curved > 0 {
+                return no("the part is a round body, and a drill point, counterdrill or taper is only built into a plain box, a shape brep-rs cannot cut yet");
+            }
+            return no("the part is not one plain box (it is stepped, pocketed or notched), and a drill point, counterdrill or taper is only built into a plain box, a shape brep-rs cannot cut yet");
+        }
+        let Some(ai) = (0..3).find(|&i| axis[i].abs() > 1.0 - 1e-9) else {
+            return no("its axis is not the normal of a face of the box, a shape brep-rs cannot cut yet");
+        };
+        let top = if axis[ai] > 0.0 { bb.hi[ai] } else { -bb.lo[ai] };
+        if (v_face - top).abs() > 1e-6 {
+            return no("its mouth does not sit on the original top face of the box, a shape brep-rs cannot cut yet");
+        }
+        let mut rt = bore_r;
+        if let Some(dm) = num(cd, "diameter") {
+            rt = rt.max(0.5 * dm);
+        }
+        if let Some(a) = num(tp, "angleDeg") {
+            if a < 0.0 {
+                rt = rt.max(bore_r + (v_face - v_far) * (-a).to_radians().tan());
+            }
+        }
+        for i in 0..3 {
+            if i == ai {
+                continue;
+            }
+            if !(centre[i] - rt > bb.lo[i] + 1e-9 && centre[i] + rt < bb.hi[i] - 1e-9) {
+                return no("the tool would leave the box through a side wall (the hole is too near an edge for its counterdrill or taper), a shape brep-rs does not cut yet");
+            }
+        }
+        let bottom = if axis[ai] > 0.0 { bb.lo[ai] } else { -bb.hi[ai] };
+        if !(v_far > bottom + 1e-9) {
+            return no("it would reach the far face of the box, a shape brep-rs does not cut yet");
+        }
+    }
+    // A taper's radius and a counterdrill's depth are measured from the face the hole STARTS in, which on a
+    // stepped part is not the bbox top. Find it: the mouth must sit wholly on one flat level (every ray
+    // from above lands at the same height), else the shape is refused rather than measured from air.
+    let mut v_face = v_face;
+    if cd.is_some() || tp.is_some() {
+        let r_mouth = num(cd, "diameter").map(|d| 0.5 * d).unwrap_or(bore_r);
+        match start_face_level(src, centre, axis, r_mouth) {
+            Some(h) if h <= v_face + 1e-6 => v_face = h,
+            _ => {
+                return no("its mouth does not sit on one flat face of the part (the part is stepped or the hole runs off an edge there), and a counterdrill or taper is measured from the face the hole starts in, a shape brep-rs cannot cut yet");
+            }
+        }
+        if !(v_mouth >= v_face) {
+            return no("the hole does not reach the face it starts in");
+        }
+    }
+    let mut point_h = 0.0;
+    let mut for_depth = false;
+    if let Some(d) = dp {
+        let Some(a) = num(Some(d), "angleDeg") else {
+            return no("its drill point needs an angleDeg");
+        };
+        if !(a > 0.0 && a < 180.0) {
+            return no("its drill point angle must be between 0 and 180 degrees");
+        }
+        for_depth = d.get("includedInDepth").and_then(|b| b.as_bool()).unwrap_or(false);
+        point_h = bore_r / (0.5 * a.to_radians()).tan();
+    }
+    let mut r_floor = bore_r;
+    let wall_len = v_face - v_far;
+    if tp.is_some() {
+        let Some(a) = num(tp, "angleDeg") else {
+            return no("its taper needs an angleDeg");
+        };
+        if !(a.abs() < 89.0) {
+            return no("its taper angle must be less than 89 degrees off the axis");
+        }
+        if cd.is_some() {
+            return no("a taper with a counterdrill is not a shape brep-rs can cut yet (not measured against FreeCAD)");
+        }
+        if for_depth {
+            return no("a taper whose drill point is counted in the depth is not a shape brep-rs can cut yet (not measured against FreeCAD)");
+        }
+        r_floor = bore_r - wall_len * a.to_radians().tan();
+        if !(r_floor > 1e-6 * bore_r.max(1.0)) {
+            return no("its taper closes to a point before it reaches the depth, which FreeCAD also leaves invalid; use a smaller taper angle or a shallower depth");
+        }
+    }
+    let mut cdrill: Option<(f64, f64)> = None; // (mouth radius, cone end v)
+    let mut cyl_end = v_face;
+    if cd.is_some() {
+        let (Some(dm), Some(dd)) = (num(cd, "diameter"), num(cd, "depth")) else {
+            return no("its counterdrill needs a diameter and a depth");
+        };
+        let a = num(cd, "angleDeg").unwrap_or(90.0);
+        if !(dm > 2.0 * bore_r) || !(dd > 0.0) || !(a > 0.0 && a < 180.0) {
+            return no("its counterdrill must be wider than the hole, with a depth above zero and a cone angle between 0 and 180 degrees");
+        }
+        let rc = 0.5 * dm;
+        cyl_end = v_face - dd;
+        let cone_h = (rc - bore_r) / (0.5 * a.to_radians()).tan();
+        let cone_end = cyl_end - cone_h;
+        let shoulder = if dp.is_some() && for_depth { v_far + point_h } else { v_far };
+        if !(cone_end > shoulder + 1e-9) {
+            return no("its counterdrill's cone would reach the hole's own floor, so no wall of the hole is left under it; make the counterdrill shallower or its cone steeper");
+        }
+        cdrill = Some((rc, cone_end));
+    }
+    let (v_shoulder, v_tip) = if dp.is_some() {
+        if for_depth {
+            (v_far + point_h, v_far)
+        } else {
+            (v_far, v_far - point_h)
+        }
+    } else {
+        (v_far, v_far)
+    };
+    if dp.is_some() {
+        if !(v_tip > v_back + 1e-9) {
+            return no("its drill point would break through the far face of the part, a shape brep-rs does not cut yet");
+        }
+        if for_depth && !(v_face - v_shoulder > 1e-9) {
+            return no("its drill point is taller than the depth it is counted in");
+        }
+    }
+    let mut pts: Vec<[f64; 2]> = Vec::new();
+    pts.push([0.0, v_mouth]);
+    if tp.is_some() {
+        // The cone line is continued above the face so the tool overshoots it.
+        let k = (bore_r - r_floor) / wall_len;
+        pts.push([bore_r + (v_mouth - v_face) * k, v_mouth]);
+        pts.push([r_floor, v_shoulder]);
+    } else {
+        if let Some((rc, cone_end)) = cdrill {
+            pts.push([rc, v_mouth]);
+            pts.push([rc, cyl_end]);
+            pts.push([bore_r, cone_end]);
+        } else {
+            pts.push([bore_r, v_mouth]);
+        }
+        pts.push([bore_r, v_shoulder]);
+    }
+    if dp.is_some() {
+        pts.push([0.0, v_tip]);
+    } else {
+        // flat floor: the profile closes along the floor plane back to the axis
+        pts.push([0.0, v_shoulder]);
+    }
+    // Slice C2R: FreeCAD removes nothing where a tapered or counterdrilled tool lies inside an existing
+    // bore, and a turned tool's cone/shoulder cannot be cut against a bore wall here. Judged by the
+    // tool's own revolved envelope against each curved face, not by a box: the part's own convex outer
+    // wall (a cylinder body) is not an obstruction while the tool stays inside it.
+    {
+        let rt = pts.iter().fold(0.0f64, |m, p| m.max(p[0]));
+        let (t_lo, t_hi) = pts.iter().fold((f64::INFINITY, f64::NEG_INFINITY), |m, p| (m.0.min(p[1]), m.1.max(p[1])));
+        let reach = t_hi - t_lo + rt;
+        let axis_mesh = crate::mesh::mesh_solid(src, 0.05);
+        let tool_box = crate::math::Aabb {
+            lo: [centre[0] - reach, centre[1] - reach, centre[2] - reach],
+            hi: [centre[0] + reach, centre[1] + reach, centre[2] + reach],
+        };
+        for face in src.faces() {
+            let fb = face.borrow();
+            let (fo, fa, grow, cone) = match &fb.surface {
+                Surface::Plane(_) => continue,
+                Surface::Cylinder(c) => (c.origin, c.axis, c.radius, false),
+                Surface::Cone(c) => (c.base, c.axis, c.base_radius.abs() + c.slant.abs(), true),
+                _ => ([0.0; 3], [0.0; 3], f64::INFINITY, false),
+            };
+            let mut pt: Vec<Vec3> = Vec::new();
+            let mut b = crate::math::Aabb::empty();
+            for w in fb.boundary.iter() {
+                for e in w.borrow().edges.iter() {
+                    let ed = e.edge.borrow();
+                    let (p, q) = (ed.a.borrow().point, ed.b.borrow().point);
+                    b.expand(p);
+                    b.expand(q);
+                    pt.push(p);
+                    pt.push(q);
+                }
+            }
+            let fa_n = if grow.is_finite() { crate::math::normalize(fa) } else { fa };
+            let parallel = grow.is_finite() && !pt.is_empty() && {
+                let cr = crate::math::cross(fa_n, axis);
+                crate::math::dot(cr, cr) < 1e-12
+            };
+            if parallel {
+                let rel = crate::math::sub(centre, fo);
+                let along = crate::math::dot(rel, fa_n);
+                let perp = crate::math::sub(rel, scale(fa_n, along));
+                let d = crate::math::dot(perp, perp).sqrt();
+                let (mut a_lo, mut a_hi, mut r_hi) = (f64::INFINITY, f64::NEG_INFINITY, 0.0f64);
+                for p in &pt {
+                    a_lo = a_lo.min(crate::math::dot(*p, axis));
+                    a_hi = a_hi.max(crate::math::dot(*p, axis));
+                    let rp = crate::math::sub(*p, fo);
+                    let q = crate::math::sub(rp, scale(fa_n, crate::math::dot(rp, fa_n)));
+                    r_hi = r_hi.max(crate::math::dot(q, q).sqrt());
+                }
+                if !cone {
+                    if let Surface::Cylinder(c) = &fb.surface {
+                        r_hi = c.radius;
+                    }
+                }
+                if !(a_lo < t_hi + 1e-9 && t_lo < a_hi + 1e-9) {
+                    continue;
+                }
+                let a_mid = pt.iter().map(|p| crate::math::dot(crate::math::sub(*p, fo), fa_n)).sum::<f64>() / pt.len() as f64;
+                let on_axis = [fo[0] + fa_n[0] * a_mid, fo[1] + fa_n[1] * a_mid, fo[2] + fa_n[2] * a_mid];
+                let convex = match &axis_mesh {
+                    Some(m) => point_in_mesh(m, on_axis),
+                    None => return no("it could not be measured against the part's curved walls, a shape brep-rs cannot cut yet"),
+                };
+                if convex {
+                    // convex outer wall: fine while the tool stays inside it
+                    if d + rt > r_hi - 1e-9 {
+                        return no("it reaches the curved outer wall of the part, so the hole does not sit wholly on the flat face it starts in, a shape brep-rs cannot cut yet");
+                    }
+                } else if d - rt < r_hi + 1e-9 {
+                    return no("it overlaps a bore the part already has at that place, and a drill point, counterdrill or taper cut into an existing bore is a shape brep-rs cannot cut yet (FreeCAD removes nothing there)");
+                }
+            } else {
+                let hit = b.is_empty()
+                    || !grow.is_finite()
+                    || (0..3).all(|i| b.lo[i] - grow < tool_box.hi[i] && tool_box.lo[i] < b.hi[i] + grow);
+                if hit {
+                    return no("it starts where the part has a curved wall across the hole's own axis, and a drill point, counterdrill or taper is only built into the original flat face of a plain prism, a shape brep-rs cannot cut yet");
+                }
+            }
+        }
+    }
+    let seed = if axis[0].abs() < 0.9 { [1.0, 0.0, 0.0] } else { [0.0, 1.0, 0.0] };
+    let Some((solid, _)) = build::revolve_profile(&pts, axis, seed, 360.0) else {
+        return no("brep-rs could not turn this hole's profile");
+    };
+    let across = crate::math::sub(centre, scale(axis, mid));
+    Ok(build::transform_solid(&solid, &crate::math::Transform::translation(across)))
+}
+
 /// A hole's cutting tool: a plain cylinder, or ONE revolved stepped profile when
 /// the mouth carries a counterbore. A countersink refuses: its wall is a cone,
 /// which `revolve_profile` does not build yet.
@@ -2736,9 +3134,26 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 // From the target's bbox, not the hole's centre: an axial centre
                 // offset moves the bore, never the face it is measured from.
                 let v_face = crate::math::dot(base, axis) + 0.5 * along;
+                let turned_fields = hole_has_turned_fields(f);
+                if turned_fields {
+                    if let Err(e) = centers
+                        .iter()
+                        .map(|&c| hole_tool_turned(&src, c, diameter / 2.0, depth, axis, v_face, v_face - along, f, &id).map(|_| ()))
+                        .collect::<Result<Vec<_>, String>>()
+                    {
+                        refusals.insert(id.clone(), json!(e));
+                        continue;
+                    }
+                }
                 let tools: Vec<TSolid> = match centers
                     .iter()
-                    .map(|&c| hole_tool(c, diameter / 2.0, depth, axis, v_face, v_face - along, Some(f)))
+                    .map(|&c| {
+                        if turned_fields {
+                            hole_tool_turned(&src, c, diameter / 2.0, depth, axis, v_face, v_face - along, f, &id).ok()
+                        } else {
+                            hole_tool(c, diameter / 2.0, depth, axis, v_face, v_face - along, Some(f))
+                        }
+                    })
                     .collect::<Option<Vec<_>>>()
                 {
                     Some(t) => t,
@@ -2860,7 +3275,7 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 // has a planar end at BOTH ends perpendicular to the axis. Blind
                 // holes, recesses and any case that already built are untouched; a
                 // transverse bore has no such planar ends and still refuses.
-                if !cut && recess.is_none() {
+                if !cut && recess.is_none() && !turned_fields {
                     let a_base = crate::math::dot(base, axis);
                     let (lo_b, hi_b) = (a_base - 0.5 * along, a_base + 0.5 * along);
                     let has_end = |at: f64| {
@@ -2901,7 +3316,7 @@ pub(crate) fn build_doc(doc: &Value) -> (History, Map<String, Value>) {
                 // washer) is an edit of its profile, exact where the face-by-face cut refused.
                 // A counterbore or countersink at the mouth is the same edit of the profile
                 // (one more step or cone), measured from the part's own top face.
-                if !cut && f.get("corners").is_none() && axis_name == "z" && centers.len() == 1 {
+                if !cut && !turned_fields && f.get("corners").is_none() && axis_name == "z" && centers.len() == 1 {
                     let turned_recess: Option<Option<turned::Recess>> = match (f.get("counterbore"), f.get("countersink")) {
                         (None, None) => Some(None),
                         (Some(cb), None) => cb
