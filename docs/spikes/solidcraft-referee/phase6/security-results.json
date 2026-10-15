@@ -1,0 +1,152 @@
+{
+ "generatedAt": "2026-10-15T13:47:45.957Z",
+ "checks": [
+  {
+   "name": "S1 allowlist identical to phase 4/5 (no new command ids)",
+   "ok": true,
+   "detail": {
+    "size": 33,
+    "added": [],
+    "removed": []
+   }
+  },
+  {
+   "name": "S1 no file/edit/macro/parameter/ui ids on the allowlist",
+   "ok": true,
+   "detail": []
+  },
+  {
+   "name": "S1 ?bridge= URL switch and postMessage relay listener are gone from the patched bridge",
+   "ok": true,
+   "detail": "static check of the added lines"
+  },
+  {
+   "name": "S2 runner CSP string identical to phase 5 (source)",
+   "ok": true,
+   "detail": "default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval'"
+  },
+  {
+   "name": "S3 app served with frame-ancestors 'none' and X-Frame-Options DENY",
+   "ok": true,
+   "detail": {
+    "content-type": "text/html; charset=utf-8",
+    "cache-control": "no-store",
+    "x-content-type-options": "nosniff",
+    "content-security-policy": "frame-ancestors 'none'",
+    "x-frame-options": "DENY",
+    "date": "Thu, 15 Oct 2026 13:44:42 GMT",
+    "connection": "keep-alive",
+    "keep-alive": "timeout=5",
+    "transfer-encoding": "chunked"
+   }
+  },
+  {
+   "name": "S3 /pane/ serves only its four whitelisted files (traversal and src refused)",
+   "ok": true,
+   "detail": {
+    "traversal": 404,
+    "src": 404
+   }
+  },
+  {
+   "name": "S4 without ?pane=on there is no window.solidcraft and no pane",
+   "ok": true,
+   "detail": {
+    "solidcraft": "undefined",
+    "pane": false
+   }
+  },
+  {
+   "name": "S4 the old ?bridge=<token> switch does not enable the bridge",
+   "ok": true,
+   "detail": {
+    "solidcraft": "undefined"
+   }
+  },
+  {
+   "name": "S2 exactly one iframe, sandbox=\"allow-scripts\" (no allow-same-origin), CSP default-src none",
+   "ok": true,
+   "detail": [
+    {
+     "sandbox": "allow-scripts",
+     "csp": "default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval'",
+     "src": null,
+     "sameOriginAccess": false
+    }
+   ]
+  },
+  {
+   "name": "S2 the page cannot reach into the sandbox document (opaque origin)",
+   "ok": true,
+   "detail": false
+  },
+  {
+   "name": "S2 the interpreter is not loaded into the app origin",
+   "ok": true,
+   "detail": {
+    "scriptsInAppOrigin": [],
+    "runnerGlobal": "undefined"
+   }
+  },
+  {
+   "name": "S5 another origin cannot embed the app (browser refuses the frame) and cannot reach window.solidcraft",
+   "ok": true,
+   "detail": {
+    "consoleRefused": true,
+    "reach": {
+     "reach": "throws SecurityError"
+    }
+   }
+  },
+  {
+   "name": "S6 the canary server saw zero requests from any script",
+   "ok": true,
+   "detail": {
+    "hits": 0,
+    "outcomes": {
+     "fetch": [],
+     "globalThis.fetch": [],
+     "xhr": [],
+     "websocket": [],
+     "image": [],
+     "top.document": [
+      "Failed to read a named property 'document' from 'Window': Blocked a frame with origin \"null\" from accessing a cross-origin frame."
+     ],
+     "parent.solidcraft": [
+      "Failed to read a named property 'solidcraft' from 'Window': Blocked a frame with origin \"null\" from accessing a cross-origin frame."
+     ],
+     "localStorage": [
+      "Failed to read the 'localStorage' property from 'Window': The document is sandboxed and lacks the 'allow-same-origin' flag."
+     ]
+    }
+   }
+  },
+  {
+   "name": "S6 the sandboxed script cannot read the page (parent.TOKEN, parent.document: errors, not data)",
+   "ok": true,
+   "detail": {
+    "net": {
+     "fetch": [],
+     "globalThis.fetch": [],
+     "xhr": [],
+     "websocket": [],
+     "image": [],
+     "top.document": [
+      "Failed to read a named property 'document' from 'Window': Blocked a frame with origin \"null\" from accessing a cross-origin frame."
+     ],
+     "parent.solidcraft": [
+      "Failed to read a named property 'solidcraft' from 'Window': Blocked a frame with origin \"null\" from accessing a cross-origin frame."
+     ],
+     "localStorage": [
+      "Failed to read the 'localStorage' property from 'Window': The document is sandboxed and lacks the 'allow-same-origin' flag."
+     ]
+    },
+    "secrets": {
+     "errors": [
+      "Failed to read a named property 'TOKEN' from 'Window': Blocked a frame with origin \"null\" from accessing a cross-origin frame."
+     ]
+    }
+   }
+  }
+ ]
+}

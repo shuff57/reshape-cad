@@ -1,0 +1,1384 @@
+{
+ "generatedAt": "2026-10-15T02:36:04.784Z",
+ "results": [
+  {
+   "id": "fr-rect-dims",
+   "group": "friendly",
+   "finalFeature": "pull1",
+   "closed": 6000,
+   "brep": {
+    "volume": 5999.99999991092,
+    "faces": 6,
+    "bbox": [
+     4.999999999965918,
+     2.9999999996066347,
+     0,
+     34.99999999996461,
+     22.999999999508848,
+     10
+    ]
+   },
+   "brepRefusals": {},
+   "occt": {
+    "refused": "Sketch 1: rule 9 names geometry -1, which this sketch does not have"
+   },
+   "occtRefusals": {
+    "sk1": "Sketch 1: rule 9 names geometry -1, which this sketch does not have"
+   }
+  },
+  {
+   "id": "fr-plate-hole-dims",
+   "group": "friendly",
+   "finalFeature": "pull1",
+   "closed": 9214.601836602551,
+   "brep": {
+    "volume": 9214.601836621781,
+    "faces": 7,
+    "bbox": [
+     -1.0463163781506625e-11,
+     2.7162895586566087e-11,
+     0,
+     39.99999999998878,
+     25.000000000112014,
+     10
+    ]
+   },
+   "brepRefusals": {},
+   "occt": {
+    "refused": "Sketch 1: rule 9 names geometry -1, which this sketch does not have"
+   },
+   "occtRefusals": {
+    "sk1": "Sketch 1: rule 9 names geometry -1, which this sketch does not have"
+   }
+  },
+  {
+   "id": "fr-slot-tangent",
+   "group": "friendly",
+   "finalFeature": "pull1",
+   "closed": 11141.592653589794,
+   "brep": {
+    "volume": 11141.592653589794,
+    "faces": 6,
+    "bbox": [
+     -10,
+     0,
+     0,
+     50,
+     20,
+     10
+    ]
+   },
+   "brepRefusals": {},
+   "occt": {
+    "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+   },
+   "occtRefusals": {
+    "sk1": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+   }
+  },
+  {
+   "id": "fr-triangle-angle",
+   "group": "friendly",
+   "finalFeature": "pull1",
+   "closed": 5196.152422706632,
+   "brep": {
+    "volume": 5196.152422707686,
+    "faces": 5,
+    "bbox": [
+     -4.0994308430312135e-13,
+     1.0840702195727518e-11,
+     0,
+     39.999999999999076,
+     25.980762113558907,
+     10
+    ]
+   },
+   "brepRefusals": {},
+   "occt": {
+    "refused": "Sketch 1: rule 4 (horizontal) is off by 6.00e-1 mm: edge 1 does not lie along the axis. These rows have not been solved, and this reference reads them rather than solving them"
+   },
+   "occtRefusals": {
+    "sk1": "Sketch 1: rule 4 (horizontal) is off by 6.00e-1 mm: edge 1 does not lie along the axis. These rows have not been solved, and this reference reads them rather than solving them"
+   }
+  },
+  {
+   "id": "fr-hexagon",
+   "group": "friendly",
+   "finalFeature": "pull1",
+   "closed": 10392.304845413264,
+   "brep": {
+    "volume": 10392.304845406437,
+    "faces": 8,
+    "bbox": [
+     -17.320508075841875,
+     -20.000000000038852,
+     0,
+     17.320508075736583,
+     19.999999999952742,
+     10
+    ]
+   },
+   "brepRefusals": {},
+   "occt": {
+    "refused": "Sketch 1: circle 7 is construction geometry, and this reference cannot referee it yet: brep-rs reads that flag and discards it, so the row still draws"
+   },
+   "occtRefusals": {
+    "sk1": "Sketch 1: circle 7 is construction geometry, and this reference cannot referee it yet: brep-rs reads that flag and discards it, so the row still draws"
+   }
+  },
+  {
+   "id": "fr-untouched-default",
+   "group": "friendly",
+   "finalFeature": "pull1",
+   "closed": 10000,
+   "brep": {
+    "volume": 10000,
+    "faces": 6,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     10
+    ]
+   },
+   "brepRefusals": {},
+   "occt": {
+    "volume": 9999.999999999998,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     10
+    ],
+    "com": [
+     19.999999999999996,
+     12.5,
+     5.000000000000001
+    ]
+   },
+   "occtRefusals": {}
+  },
+  {
+   "id": "fr-bracket-rounded",
+   "group": "friendly",
+   "finalFeature": "pull1",
+   "closed": 18500.38934211693,
+   "brep": {
+    "volume": 18500.38934211693,
+    "faces": 12,
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     40,
+     8
+    ]
+   },
+   "brepRefusals": {},
+   "occt": {
+    "refused": "Sketch 1: rule 9 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+   },
+   "occtRefusals": {
+    "sk1": "Sketch 1: rule 9 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+   }
+  },
+  {
+   "id": "fr-symmetric-profile",
+   "group": "friendly",
+   "finalFeature": "pull1",
+   "closed": 7000,
+   "brep": {
+    "volume": 6999.999999942348,
+    "faces": 10,
+    "bbox": [
+     -19.999999999994312,
+     -3.8089368111546274e-10,
+     0,
+     20.00000000001023,
+     39.999999999356355,
+     10
+    ]
+   },
+   "brepRefusals": {},
+   "occt": {
+    "refused": "Sketch 1: line 9 is construction geometry, and this reference cannot referee it yet: brep-rs reads that flag and discards it, so the row still draws"
+   },
+   "occtRefusals": {
+    "sk1": "Sketch 1: line 9 is construction geometry, and this reference cannot referee it yet: brep-rs reads that flag and discards it, so the row still draws"
+   }
+  },
+  {
+   "id": "fr-symmetric-axis",
+   "group": "friendly",
+   "finalFeature": "pull1",
+   "closed": 7000,
+   "brep": {
+    "refused": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+   },
+   "brepRefusals": {
+    "pull1": "extrude pull1: the sketch's rules cannot be solved; resolve the conflict first"
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 9 names geometry -3, which this sketch does not have"
+   },
+   "occtRefusals": {
+    "sk1": "Sketch 1: rule 9 names geometry -3, which this sketch does not have"
+   }
+  },
+  {
+   "id": "3d-box-hole",
+   "group": "3d",
+   "finalFeature": "hole1",
+   "closed": 11717.256661176918,
+   "brep": {
+    "volume": 11717.256661176916,
+    "faces": 7,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     5
+    ]
+   },
+   "brepRefusals": {},
+   "occt": {
+    "volume": 11717.256661176918,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     5
+    ],
+    "com": [
+     -1.433091523759789e-15,
+     1.172930154137988e-16,
+     8.832698075008432e-17
+    ]
+   },
+   "occtRefusals": {}
+  },
+  {
+   "id": "3d-extrude-sketch",
+   "group": "3d",
+   "finalFeature": "pull1",
+   "closed": 9900,
+   "brep": {
+    "volume": 9900,
+    "faces": 8,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     12
+    ]
+   },
+   "brepRefusals": {},
+   "occt": {
+    "volume": 9899.999999999998,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     30,
+     12
+    ],
+    "com": [
+     16.590909090909093,
+     11.59090909090909,
+     6
+    ]
+   },
+   "occtRefusals": {}
+  },
+  {
+   "id": "3d-revolve",
+   "group": "3d",
+   "finalFeature": "rev1",
+   "closed": 75398.22368615503,
+   "brep": {
+    "volume": 75398.22368615506,
+    "faces": 4,
+    "bbox": [
+     -55,
+     -5,
+     -55,
+     55,
+     5,
+     55
+    ]
+   },
+   "brepRefusals": {},
+   "occt": {
+    "volume": 75398.22368615502,
+    "bbox": [
+     -55,
+     -5,
+     -55,
+     55,
+     5,
+     55
+    ],
+    "com": [
+     -1.9203576615404733e-14,
+     -7.27051240518253e-17,
+     3.276067257911541e-15
+    ]
+   },
+   "occtRefusals": {}
+  },
+  {
+   "id": "3d-union",
+   "group": "3d",
+   "finalFeature": "op1",
+   "closed": null,
+   "brep": {
+    "volume": 16282.74333882308,
+    "faces": 8,
+    "bbox": [
+     -20,
+     -20,
+     0,
+     20,
+     20,
+     20
+    ]
+   },
+   "brepRefusals": {},
+   "occt": {
+    "volume": 16282.743338823077,
+    "bbox": [
+     -20,
+     -20,
+     0,
+     20,
+     20,
+     20
+    ],
+    "com": [
+     -2.1164322231990507e-17,
+     1.0928888168414058e-16,
+     5.1736460085008735
+    ]
+   },
+   "occtRefusals": {}
+  },
+  {
+   "id": "3d-subtract",
+   "group": "3d",
+   "finalFeature": "op1",
+   "closed": 24000,
+   "brep": {
+    "volume": 23999.999999999996,
+    "faces": 10,
+    "bbox": [
+     -20,
+     -20,
+     0,
+     20,
+     20,
+     20
+    ]
+   },
+   "brepRefusals": {},
+   "occt": {
+    "volume": 24000,
+    "bbox": [
+     -20,
+     -20,
+     0,
+     20,
+     20,
+     20
+    ],
+    "com": [
+     0,
+     2.839210348308067e-16,
+     9.999999999999998
+    ]
+   },
+   "occtRefusals": {}
+  },
+  {
+   "id": "3d-linear-pattern",
+   "group": "3d",
+   "finalFeature": "pat1",
+   "closed": 12000,
+   "brep": {
+    "volume": 12000,
+    "faces": 18,
+    "bbox": [
+     -10,
+     -10,
+     -5,
+     130,
+     10,
+     5
+    ]
+   },
+   "brepRefusals": {},
+   "occt": {
+    "volume": 11999.999999999996,
+    "bbox": [
+     -10,
+     -10,
+     -5,
+     130,
+     10,
+     5
+    ],
+    "com": [
+     60.00000000000002,
+     -1.296740492762183e-16,
+     1.1368683772161606e-16
+    ]
+   },
+   "occtRefusals": {}
+  },
+  {
+   "id": "3d-polar-pattern",
+   "group": "3d",
+   "finalFeature": "pat1",
+   "closed": 12000,
+   "brep": {
+    "volume": 12000,
+    "faces": 24,
+    "bbox": [
+     -30.000000000000004,
+     -30.000000000000004,
+     -5,
+     30,
+     30,
+     5
+    ]
+   },
+   "brepRefusals": {},
+   "occt": {
+    "volume": 11999.999999999996,
+    "bbox": [
+     -30.000000000000004,
+     -30.000000000000004,
+     -5,
+     30,
+     30.000000000000004,
+     5
+    ],
+    "com": [
+     -8.363865156013619e-16,
+     0,
+     1.5158245029548808e-16
+    ]
+   },
+   "occtRefusals": {}
+  },
+  {
+   "id": "2d-rect-dims",
+   "group": "2d",
+   "finalFeature": "pull1",
+   "closed": 6000,
+   "brep": {
+    "volume": 5999.99999991092,
+    "faces": 6,
+    "bbox": [
+     4.999999999965918,
+     2.9999999996066347,
+     0,
+     34.99999999996461,
+     22.999999999508848,
+     10
+    ]
+   },
+   "brepRefusals": {},
+   "occt": {
+    "refused": "Sketch 1: rule 9 names geometry -1, which this sketch does not have"
+   },
+   "occtRefusals": {
+    "sk1": "Sketch 1: rule 9 names geometry -1, which this sketch does not have"
+   }
+  },
+  {
+   "id": "2d-plate-hole-dims",
+   "group": "2d",
+   "finalFeature": "pull1",
+   "closed": 9214.601836602551,
+   "brep": {
+    "volume": 9214.601836621781,
+    "faces": 7,
+    "bbox": [
+     -1.0463163781506625e-11,
+     2.7162895586566087e-11,
+     0,
+     39.99999999998878,
+     25.000000000112014,
+     10
+    ]
+   },
+   "brepRefusals": {},
+   "occt": {
+    "refused": "Sketch 1: rule 9 names geometry -1, which this sketch does not have"
+   },
+   "occtRefusals": {
+    "sk1": "Sketch 1: rule 9 names geometry -1, which this sketch does not have"
+   }
+  },
+  {
+   "id": "2d-slot-tangent",
+   "group": "2d",
+   "finalFeature": "pull1",
+   "closed": 11141.592653589794,
+   "brep": {
+    "volume": 11141.592653589794,
+    "faces": 6,
+    "bbox": [
+     -10,
+     0,
+     0,
+     50,
+     20,
+     10
+    ]
+   },
+   "brepRefusals": {},
+   "occt": {
+    "refused": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+   },
+   "occtRefusals": {
+    "sk1": "Sketch 1: rule 2 is a tangent rule, and this reference has not been taught to check one; it reads rows rather than solving them, so it cannot tell whether this rule is already satisfied"
+   }
+  },
+  {
+   "id": "2d-triangle-angle",
+   "group": "2d",
+   "finalFeature": "pull1",
+   "closed": 5196.152422706632,
+   "brep": {
+    "volume": 5196.152422707686,
+    "faces": 5,
+    "bbox": [
+     -4.0994308430312135e-13,
+     1.0840702195727518e-11,
+     0,
+     39.999999999999076,
+     25.980762113558907,
+     10
+    ]
+   },
+   "brepRefusals": {},
+   "occt": {
+    "refused": "Sketch 1: rule 4 (horizontal) is off by 6.00e-1 mm: edge 1 does not lie along the axis. These rows have not been solved, and this reference reads them rather than solving them"
+   },
+   "occtRefusals": {
+    "sk1": "Sketch 1: rule 4 (horizontal) is off by 6.00e-1 mm: edge 1 does not lie along the axis. These rows have not been solved, and this reference reads them rather than solving them"
+   }
+  },
+  {
+   "id": "2d-hexagon",
+   "group": "2d",
+   "finalFeature": "pull1",
+   "closed": 10392.304845413264,
+   "brep": {
+    "volume": 10392.304845406437,
+    "faces": 8,
+    "bbox": [
+     -17.320508075841875,
+     -20.000000000038852,
+     0,
+     17.320508075736583,
+     19.999999999952742,
+     10
+    ]
+   },
+   "brepRefusals": {},
+   "occt": {
+    "refused": "Sketch 1: circle 7 is construction geometry, and this reference cannot referee it yet: brep-rs reads that flag and discards it, so the row still draws"
+   },
+   "occtRefusals": {
+    "sk1": "Sketch 1: circle 7 is construction geometry, and this reference cannot referee it yet: brep-rs reads that flag and discards it, so the row still draws"
+   }
+  },
+  {
+   "id": "2d-handle-api",
+   "group": "2d",
+   "finalFeature": "pull1",
+   "closed": 12000,
+   "brep": {
+    "volume": 12000,
+    "faces": 6,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ]
+   },
+   "brepRefusals": {},
+   "occt": {
+    "volume": 12000,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     25,
+     12
+    ],
+    "com": [
+     20,
+     12.5,
+     6
+    ]
+   },
+   "occtRefusals": {}
+  },
+  {
+   "id": "diag-under",
+   "group": "diag",
+   "finalFeature": "pull1",
+   "closed": 8000,
+   "brep": {
+    "volume": 7999.999999999999,
+    "faces": 6,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     20,
+     10
+    ]
+   },
+   "brepRefusals": {},
+   "occt": {
+    "volume": 7999.999999999998,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     20,
+     10
+    ],
+    "com": [
+     20,
+     10,
+     5
+    ]
+   },
+   "occtRefusals": {}
+  },
+  {
+   "id": "diag-conflict",
+   "group": "diag",
+   "finalFeature": "pull1",
+   "closed": null,
+   "brep": {
+    "refused": "extrude pull1: the sketch's rules conflict, so no profile can be trusted; resolve the conflict first"
+   },
+   "brepRefusals": {
+    "pull1": "extrude pull1: the sketch's rules conflict, so no profile can be trusted; resolve the conflict first"
+   },
+   "occt": {
+    "refused": "Sketch 1: rule 12 (distanceX) is off by 1.00e+1 mm: (0.0, 0.0) mm to (40.0, 0.0) mm measures 40 where the rule says 50. These rows have not been solved, and this reference reads them rather than solving them"
+   },
+   "occtRefusals": {
+    "sk1": "Sketch 1: rule 12 (distanceX) is off by 1.00e+1 mm: (0.0, 0.0) mm to (40.0, 0.0) mm measures 40 where the rule says 50. These rows have not been solved, and this reference reads them rather than solving them"
+   }
+  },
+  {
+   "id": "diag-redundant",
+   "group": "diag",
+   "finalFeature": "pull1",
+   "closed": 8000,
+   "brep": {
+    "volume": 7999.999999999999,
+    "faces": 6,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     20,
+     10
+    ]
+   },
+   "brepRefusals": {},
+   "occt": {
+    "volume": 7999.999999999998,
+    "bbox": [
+     0,
+     0,
+     0,
+     40,
+     20,
+     10
+    ],
+    "com": [
+     20,
+     10,
+     5
+    ]
+   },
+   "occtRefusals": {}
+  },
+  {
+   "id": "named-fillet-edge",
+   "group": "3d",
+   "finalFeature": "round1",
+   "closed": null,
+   "brep": {
+    "volume": 31922.743338823082,
+    "faces": 7,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10
+    ]
+   },
+   "brepRefusals": {},
+   "occt": {
+    "volume": 31922.743338853463,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10
+    ],
+    "com": [
+     0,
+     0.04678054169204956,
+     -0.02257940637054405
+    ]
+   },
+   "occtRefusals": {}
+  },
+  {
+   "id": "named-bevel-edge",
+   "group": "3d",
+   "finalFeature": "bevel1",
+   "closed": 31820,
+   "brep": {
+    "volume": 31820,
+    "faces": 7,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10
+    ]
+   },
+   "brepRefusals": {},
+   "occt": {
+    "volume": 31819.999999999993,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10
+    ],
+    "com": [
+     -0.10747957259585214,
+     2.9475688598470534e-16,
+     -0.050911376492772165
+    ]
+   },
+   "occtRefusals": {}
+  },
+  {
+   "id": "named-shell-open-top",
+   "group": "3d",
+   "finalFeature": "shell1",
+   "closed": 8672,
+   "brep": {
+    "volume": 8671.999999999995,
+    "faces": 11,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10
+    ]
+   },
+   "brepRefusals": {},
+   "occt": {
+    "volume": 8671.999999999993,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10
+    ],
+    "com": [
+     -4.866955547065266e-16,
+     4.424505042786606e-17,
+     -2.690036900369005
+    ]
+   },
+   "occtRefusals": {}
+  },
+  {
+   "id": "named-draft-face",
+   "group": "3d",
+   "finalFeature": "draft1",
+   "closed": null,
+   "brep": {
+    "volume": 30875.67332238087,
+    "faces": 6,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10
+    ]
+   },
+   "brepRefusals": {},
+   "occt": {
+    "volume": 30875.673322380862,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20.000000000000004,
+     10
+    ],
+    "com": [
+     -0.6941745992145876,
+     0,
+     -0.12138214940067726
+    ]
+   },
+   "occtRefusals": {}
+  },
+  {
+   "id": "named-cylinder-rim",
+   "group": "3d",
+   "finalFeature": "round1",
+   "closed": null,
+   "brep": {
+    "volume": 3328.239388115527,
+    "faces": 4,
+    "bbox": [
+     -6,
+     -6,
+     -15,
+     6,
+     6,
+     15
+    ]
+   },
+   "brepRefusals": {},
+   "occt": {
+    "volume": 3328.2393881155253,
+    "bbox": [
+     -6,
+     -6,
+     -15,
+     6,
+     6,
+     15
+    ],
+    "com": [
+     -4.654061752553396e-16,
+     -7.110262585683387e-16,
+     -0.27780705598314726
+    ]
+   },
+   "occtRefusals": {}
+  },
+  {
+   "id": "named-edge-after-cut",
+   "group": "3d",
+   "finalFeature": "round1",
+   "closed": null,
+   "brep": {
+    "volume": 31714.33629385641,
+    "faces": 8,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10
+    ]
+   },
+   "brepRefusals": {},
+   "occt": {
+    "volume": 31714.33629387892,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10
+    ],
+    "com": [
+     -0.02116981446022355,
+     3.2281412781061022e-18,
+     -0.010343072130667775
+    ]
+   },
+   "occtRefusals": {}
+  },
+  {
+   "id": "named-hole-then-round",
+   "group": "3d",
+   "finalFeature": "round1",
+   "closed": null,
+   "brep": {
+    "volume": 11691.504440784613,
+    "faces": 8,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     5
+    ]
+   },
+   "brepRefusals": {},
+   "occt": {
+    "volume": 11691.504440798064,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     5
+    ],
+    "com": [
+     -0.0430688768368262,
+     1.1856824926604927e-17,
+     -0.010029218202234682
+    ]
+   },
+   "occtRefusals": {}
+  },
+  {
+   "id": "named-hole-then-shell",
+   "group": "3d",
+   "finalFeature": "shell1",
+   "closed": null,
+   "brep": {
+    "volume": 2656.477856365644,
+    "faces": 14,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     5
+    ]
+   },
+   "brepRefusals": {},
+   "occt": {
+    "volume": 2656.4778563656455,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     5
+    ],
+    "com": [
+     1.4550667054395e-15,
+     1.5341616502607116e-15,
+     -1.6108028078851313
+    ]
+   },
+   "occtRefusals": {}
+  },
+  {
+   "id": "named-pocket-wall-round",
+   "group": "3d",
+   "finalFeature": "round1",
+   "closed": null,
+   "brep": {
+    "volume": 27995.707963267952,
+    "faces": 12,
+    "bbox": [
+     -30,
+     -20,
+     -6,
+     30,
+     20,
+     6
+    ]
+   },
+   "brepRefusals": {},
+   "occt": {
+    "volume": 27995.707963267254,
+    "bbox": [
+     -30,
+     -20,
+     -6,
+     30,
+     20,
+     6
+    ],
+    "com": [
+     7.566536748290831e-17,
+     0.0008007973016663871,
+     -0.11518885401725353
+    ]
+   },
+   "occtRefusals": {}
+  },
+  {
+   "id": "named-counterbore-round",
+   "group": "3d",
+   "finalFeature": "round1",
+   "closed": null,
+   "brep": {
+    "volume": 997.8539816339749,
+    "faces": 7,
+    "bbox": [
+     25,
+     -5,
+     -5,
+     35,
+     5,
+     5
+    ]
+   },
+   "brepRefusals": {},
+   "occt": {
+    "volume": 997.8539816348185,
+    "bbox": [
+     25,
+     -5,
+     -5,
+     35,
+     5,
+     5
+    ],
+    "com": [
+     29.989727214506267,
+     2.4477435568014952e-17,
+     -0.010272785493730764
+    ]
+   },
+   "occtRefusals": {}
+  },
+  {
+   "id": "refuse-shell-closed",
+   "group": "refusal",
+   "finalFeature": "shell1",
+   "closed": 11264,
+   "brep": {
+    "volume": 11263.999999999995,
+    "faces": 12,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10
+    ]
+   },
+   "brepRefusals": {},
+   "occt": {
+    "volume": 11263.999999999993,
+    "bbox": [
+     -20,
+     -20,
+     -10,
+     20,
+     20,
+     10
+    ],
+    "com": [
+     0,
+     1.2124140075736092e-15,
+     1.3373140978439395e-15
+    ]
+   },
+   "occtRefusals": {}
+  },
+  {
+   "id": "refuse-name-two-faces",
+   "group": "refusal",
+   "finalFeature": "shell1",
+   "closed": null,
+   "brep": {
+    "refused": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+   },
+   "brepRefusals": {
+    "shell1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it."
+   },
+   "occt": {
+    "volume": 14690.194671058525,
+    "bbox": [
+     -30,
+     -20,
+     -10,
+     30,
+     20,
+     10
+    ],
+    "com": [
+     1.8012014539242502,
+     1.0888052493056021e-15,
+     -1.0184362413035077
+    ]
+   },
+   "occtRefusals": {}
+  },
+  {
+   "id": "refuse-name-swept-arc",
+   "group": "refusal",
+   "finalFeature": "round1",
+   "closed": null,
+   "brep": {
+    "volume": 28593.243352188274,
+    "faces": 9,
+    "bbox": [
+     -30,
+     -20,
+     -6,
+     30,
+     20,
+     6
+    ]
+   },
+   "brepRefusals": {},
+   "occt": {
+    "volume": 28593.243352188278,
+    "bbox": [
+     -30,
+     -20,
+     -6,
+     30,
+     20,
+     6
+    ],
+    "com": [
+     -1.0331396783277253e-16,
+     6.296374407607634e-16,
+     -0.0292786616932488
+    ]
+   },
+   "occtRefusals": {}
+  },
+  {
+   "id": "diverge-stub-centre",
+   "group": "diverge",
+   "finalFeature": "s1",
+   "closed": null,
+   "brep": {
+    "refused": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- s1 is shown without it."
+   },
+   "brepRefusals": {
+    "s1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- s1 is shown without it."
+   },
+   "occt": {
+    "volume": 12800.000000000002,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     13
+    ],
+    "com": [
+     -2.885885974635016e-16,
+     -8.236467063937878e-17,
+     0.5624999999999997
+    ]
+   },
+   "occtRefusals": {
+    "s1": "Hollowing Hollow 1 to 1 thick did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it."
+   }
+  },
+  {
+   "id": "diverge-stub-offset-x",
+   "group": "diverge",
+   "finalFeature": "s1",
+   "closed": null,
+   "brep": {
+    "refused": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- s1 is shown without it."
+   },
+   "brepRefusals": {
+    "s1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- s1 is shown without it."
+   },
+   "occt": {
+    "volume": 12800,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     13
+    ],
+    "com": [
+     0.6249999999999994,
+     -6.016021014687567e-17,
+     0.5624999999999994
+    ]
+   },
+   "occtRefusals": {
+    "s1": "Hollowing Hollow 1 to 1 thick did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it."
+   }
+  },
+  {
+   "id": "diverge-stub-corner",
+   "group": "diverge",
+   "finalFeature": "s1",
+   "closed": null,
+   "brep": {
+    "refused": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- s1 is shown without it."
+   },
+   "brepRefusals": {
+    "s1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- s1 is shown without it."
+   },
+   "occt": {
+    "volume": 12800.000000000002,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     13
+    ],
+    "com": [
+     0.9375000000000003,
+     0.6249999999999989,
+     0.5624999999999999
+    ]
+   },
+   "occtRefusals": {
+    "s1": "Hollowing Hollow 1 did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it."
+   }
+  },
+  {
+   "id": "diverge-stub-edge-flush",
+   "group": "diverge",
+   "finalFeature": "s1",
+   "closed": null,
+   "brep": {
+    "refused": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- s1 is shown without it."
+   },
+   "brepRefusals": {
+    "s1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- s1 is shown without it."
+   },
+   "occt": {
+    "volume": 12800,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     13
+    ],
+    "com": [
+     0.9374999999999994,
+     -1.5661083541118615e-16,
+     0.5625
+    ]
+   },
+   "occtRefusals": {
+    "s1": "Hollowing Hollow 1 did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it."
+   }
+  },
+  {
+   "id": "diverge-stub-tall",
+   "group": "diverge",
+   "finalFeature": "s1",
+   "closed": null,
+   "brep": {
+    "refused": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- s1 is shown without it."
+   },
+   "brepRefusals": {
+    "s1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- s1 is shown without it."
+   },
+   "occt": {
+    "volume": 13919.999999999998,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     35
+    ],
+    "com": [
+     -1.1034482758620678,
+     0.6896551724137928,
+     2.758620689655172
+    ]
+   },
+   "occtRefusals": {
+    "s1": "Hollowing Hollow 1 to 1 thick did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it."
+   }
+  },
+  {
+   "id": "diverge-stub-low",
+   "group": "diverge",
+   "finalFeature": "s1",
+   "closed": null,
+   "brep": {
+    "refused": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- s1 is shown without it."
+   },
+   "brepRefusals": {
+    "s1": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- s1 is shown without it."
+   },
+   "occt": {
+    "volume": 12287.999999999998,
+    "bbox": [
+     -20,
+     -15,
+     -5,
+     20,
+     15,
+     7
+    ],
+    "com": [
+     0.11718750000000061,
+     -0.1171874999999994,
+     0.1406249999999997
+    ]
+   },
+   "occtRefusals": {
+    "s1": "Hollowing Hollow 1 to 1 thick did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it."
+   }
+  }
+ ]
+}

@@ -1,0 +1,339 @@
+{
+ "generatedAt": "2026-10-15T13:43:30.848Z",
+ "checks": [
+  {
+   "name": "R1 setup: tab 2 has its own hand work, tab 1 has the script result + a stash",
+   "ok": true,
+   "detail": "{\"M\":[\"b_box1:11717.304\",\"Body1:1507.714\"],\"scriptRes\":[\"b_box1:1000.000\"],\"N\":[\"Body1:1847.048\"],\"stash\":[{\"doc\":1,\"tab\":0,\"name\":\"Untitled\",\"active\":false}]}"
+  },
+  {
+   "name": "R1 Restore switched to the ORIGIN tab and put M back there",
+   "ok": true,
+   "detail": {
+    "r1": {
+     "ok": true,
+     "restored": true
+    },
+    "now": {
+     "bodies": [
+      "b_box1:11717.304",
+      "Body1:1507.714"
+     ],
+     "tab": 0,
+     "tabs": 2,
+     "stash": [],
+     "untouched": false,
+     "dirty": true,
+     "activeDoc": 1
+    }
+   }
+  },
+  {
+   "name": "R1 the other tab still holds exactly its own hand work",
+   "ok": true,
+   "detail": {
+    "bodies": [
+     "Body1:1847.048"
+    ],
+    "tab": 1,
+    "tabs": 2,
+    "stash": [],
+    "untouched": false,
+    "dirty": true,
+    "activeDoc": 2
+   }
+  },
+  {
+   "name": "R2 setup: tab 1 closed without saving; tab 2 holds its own work; the stash outlives the tab",
+   "ok": true,
+   "detail": {
+    "now": {
+     "bodies": [
+      "Body1:1847.048"
+     ],
+     "tab": 0,
+     "tabs": 1,
+     "stash": [
+      {
+       "doc": 1,
+       "tab": null,
+       "name": null,
+       "active": false
+      }
+     ],
+     "untouched": false,
+     "dirty": true,
+     "activeDoc": 2
+    },
+    "N2": [
+     "Body1:1847.048"
+    ]
+   }
+  },
+  {
+   "name": "R2 Restore with a closed origin says so and changes NOTHING (does not overwrite the open tab)",
+   "ok": true,
+   "detail": {
+    "raw": "The tab this design came from was closed. Nothing changed; restore it into a new tab instead.",
+    "now": [
+     "Body1:1847.048"
+    ]
+   }
+  },
+  {
+   "name": "R2 \"Restore into a new tab\": M appears in a NEW tab",
+   "ok": true,
+   "detail": {
+    "r2": {
+     "ok": true,
+     "restored": true
+    },
+    "now": {
+     "bodies": [
+      "b_box1:11717.304",
+      "Body1:1507.714"
+     ],
+     "tab": 1,
+     "tabs": 2,
+     "stash": [],
+     "untouched": false,
+     "dirty": true,
+     "activeDoc": 3
+    }
+   }
+  },
+  {
+   "name": "R2 the remaining original tab still holds N",
+   "ok": true,
+   "detail": {
+    "bodies": [
+     "Body1:1847.048"
+    ],
+    "tab": 0,
+    "tabs": 2,
+    "stash": [],
+    "untouched": false,
+    "dirty": true,
+    "activeDoc": 2
+   }
+  },
+  {
+   "name": "R3 a reload after Replace and run asks before leaving (beforeunload)",
+   "ok": true,
+   "detail": {
+    "stashed": true,
+    "modal": true,
+    "out": "### Ran Playwright code\n```js\nawait page.reload();\n```\n### Page\n- Page URL: http://127.0.0.1:8800/?webgl&pane=on\n- Console: 0 errors, 3 warnings\n### Modal state"
+   }
+  },
+  {
+   "name": "R3 \"Recover unsaved work?\" is offered and Recover restores the STASHED hand work",
+   "ok": true,
+   "detail": {
+    "recovered": [
+     "b_box1:11717.304",
+     "Body1:1507.714"
+    ],
+    "wanted": [
+     "b_box1:11717.304",
+     "Body1:1507.714"
+    ]
+   }
+  },
+  {
+   "name": "R4 run B over A+E asked first, and the stash is now a STACK (depth 2), not silently replaced",
+   "ok": true,
+   "detail": {
+    "pr": {
+     "shown": true,
+     "txt": "Run will replace the design on screen (2 body(ies), 2847.048 mm3, changed by hand).It is kept in memory in this tab (1 earlier saved of 3); Restore my design puts it back into this tab only.\n    \n    If you reload or close the page, the saved hand work is offered back by solidcraft's \"Recover unsaved work\" prompt (the newest one"
+    },
+    "depth": 2
+   }
+  },
+  {
+   "name": "R4 first Restore returns A+E exactly",
+   "ok": true,
+   "detail": {
+    "got": [
+     "b_box1:1000.000",
+     "Body1:1847.048"
+    ],
+    "want": [
+     "b_box1:1000.000",
+     "Body1:1847.048"
+    ]
+   }
+  },
+  {
+   "name": "R4 the next Restore asks first: the tab has edits made after the run (A+E would be discarded)",
+   "ok": true,
+   "detail": "Tab \"Untitled\" has changes made after the script run; restoring would replace them. Nothing changed."
+  },
+  {
+   "name": "R4 second Restore returns M exactly",
+   "ok": true,
+   "detail": {
+    "got": [
+     "b_box1:11717.304",
+     "Body1:1507.714"
+    ],
+    "want": [
+     "b_box1:11717.304",
+     "Body1:1507.714"
+    ]
+   }
+  },
+  {
+   "name": "R4 an untouched script result of THIS document does not prompt (guard is per document, not global history)",
+   "ok": true,
+   "detail": {
+    "shown": false
+   }
+  },
+  {
+   "name": "R5 an HTML feature id / body name is shown as text: no element created, onerror never fires",
+   "ok": true,
+   "detail": {
+    "xss": 0,
+    "imgs": 0,
+    "text": "idkindstatusdetail<img src=x onerror=\"window.__xss=1\">boxrefused<img src=x onerror=\"window.__xss=1\"> (box): translator error: Cannot read properties of undefined (reading '0')q\"'<b>xcylinderbuiltbuilt",
+    "verdict": "FAIL: 1 feature(s) refused: <img src=x onerror=\"window.__xss=1\"> (box): translator error: Cannot read properties of undefined (reading '0')"
+   }
+  },
+  {
+   "name": "R5 hostile script strings (param name, long unicode, quotes) create no elements and run no handler",
+   "ok": true,
+   "detail": {
+    "param name with HTML": {
+     "xss": 0,
+     "imgs": 0,
+     "v": "Custom script: no reference. Built 1, refused 0."
+    },
+    "long unicode identifier": {
+     "xss": 0,
+     "imgs": 0,
+     "v": "Custom script: no reference. Built 1, refused 0."
+    },
+    "string in a number slot": {
+     "xss": 0,
+     "imgs": 0,
+     "v": "SCRIPT ERROR (line 2): hole's across has to be a number, and you gave it the text \"<img src=x onerro"
+    },
+    "quotes and backticks": {
+     "xss": 0,
+     "imgs": 0,
+     "v": "SCRIPT ERROR (line 2): hole's across has to be a number, and you gave it the text \"\"`${1}\"."
+    }
+   }
+  },
+  {
+   "name": "R6 two tabs: ribbon on in both; Ctrl+. hides it in the active tab AND the other (one app setting)",
+   "ok": true,
+   "detail": {
+    "t2On": true,
+    "t2Off": false,
+    "t1Off": false
+   }
+  },
+  {
+   "name": "R6 undo / redo run from the palette with the ribbon hidden",
+   "ok": true,
+   "detail": {
+    "before": [
+     "b_box1:11717.304"
+    ],
+    "afterUndo": [
+     "b_box1:12000.000"
+    ],
+    "afterRedo": [
+     "b_box1:11717.304"
+    ]
+   }
+  },
+  {
+   "name": "R6 empty / comments-only editor: no crash, a plain sentence or an empty build, panels not stale",
+   "ok": true,
+   "detail": {
+    "empty": {
+     "pass": null,
+     "volume": 0,
+     "refusals": []
+    },
+    "comments": {
+     "pass": null,
+     "volume": 0,
+     "refusals": []
+    },
+    "bodies": []
+   }
+  },
+  {
+   "name": "R6 a second Run while one is in flight is ignored (no double build)",
+   "ok": true,
+   "detail": {
+    "second": true,
+    "first": true
+   }
+  },
+  {
+   "name": "R6 example A then example B: B replaces A cleanly and both pass",
+   "ok": true,
+   "detail": {
+    "a": true,
+    "b": true,
+    "vb": 16282.696374112165
+   }
+  },
+  {
+   "name": "R6 a failing run with hand work: either the design is untouched or Restore returns it exactly",
+   "ok": true,
+   "detail": {
+    "fail": {
+     "pass": null,
+     "volume": 0,
+     "refusals": [
+      "pull1 (extrude): sketch sk1 cannot be handed to solidcraft's solver: rule 1 (distanceX): needs a point of geometry 1 and the row names none (brep-rs refuses the same row); rule 1 (distanceX): needs a point of geometry 1 and the row names none (brep-rs refuses the same row); rule 2 (distanceX): needs a point of geometry 1 and the row names none (brep-rs refuses the same row); rule 2 (distanceX): needs a point of geometry 1 and the row names none (brep-rs refuses the same row)"
+     ]
+    },
+    "afterBodies": [],
+    "restoredBodies": [
+     "b_box1:16282.696",
+     "Body1:1507.714"
+    ],
+    "want": [
+     "b_box1:16282.696",
+     "Body1:1507.714"
+    ],
+    "rest": {
+     "ok": true,
+     "restored": true
+    }
+   }
+  },
+  {
+   "name": "R6 devicePixelRatio 2: canvas backing store follows DPR and canvas + pane tile the window",
+   "ok": true,
+   "detail": {
+    "dpr": {
+     "dpr": 2,
+     "w": 1280,
+     "canvas": 819,
+     "pane": 461,
+     "backing": 819
+    },
+    "dprOut": "### Result\n\"ok\"\n### Ran Playwright code\n```js\nawait (async (page) => { const c ="
+   }
+  },
+  {
+   "name": "R6 600 px wide: canvas + pane tile the window, no horizontal page scroll",
+   "ok": true,
+   "detail": {
+    "w": 600,
+    "canvas": 300,
+    "pane": 300,
+    "hs": 600
+   }
+  }
+ ]
+}
