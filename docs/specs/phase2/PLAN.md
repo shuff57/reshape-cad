@@ -170,6 +170,14 @@ FreeCAD, 0 silently wrong. Merged tree: cargo 699, gates 78/78/78 + 17, wasm 643
 Census after: 127 references, 104 MATCH, 1 MATCH-EXACT, 2 FACES, 9 REFUSED, 10 NO-CONSTRUCT, 1 reference failed in
 FreeCAD, 0 silently wrong. Merged tree: cargo 728, gates 78/78/78 + 17, wasm 649,317 B gz.
 
+### Loop `wf_3138874d-d82` result (2026-10-15)
+
+| slice | rounds | outcome |
+|---|---|---|
+| C2S | 1 | LANDED (merge `2baef9c`). Drill point (118 degrees), counterdrill and taper are built only into ONE plain axis-aligned box from its original top face with the whole tool inside; every other target (cylinder body, stepped plate, hole after a bore, pocket floor, tip through the bottom, tool leaving a side wall) refuses in its own sentence. Built subset matches FreeCAD to 1e-16 on volume and exactly on faces (8, or 10 for a counterdrill); 42 of 54 adversarial docs built and all matched the closed form; fuzz 1296 docs 0 aborts, 0 hangs. Conservative on purpose: FreeCAD builds some refused cases (through-depth drill point, tool leaving a side wall). |
+
+Merged tree: cargo 746, gates 78/78/78 + 17, wasm 655,131 B gz.
+
 ## 2. The gauntlet loop
 
 `docs/specs/phase2/gauntlet-loop.workflow.js` is a Workflow script (run with
