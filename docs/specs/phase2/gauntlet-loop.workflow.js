@@ -12,6 +12,12 @@ export const meta = {
 
 // Slice definitions mirror docs/specs/phase2/PLAN.md section 1. The goal text is what the implementer is held to.
 const SLICES = {
+  B3M: {
+    base: 'slice-B3R-r2',
+    goal: 'Final round of B3 on the mesh crack. Branch slice-B3R-r2 fixed the named face-count neighbour (ball r11 at (9,13,7) in 30x20x10: FreeCAD 6 faces) but mesh_feature is NOT watertight for built solids such as ball r15 at (17,5,2.5) (6 faces, volume exact). Make mesh_feature watertight at the kernel 1e-6 weld for EVERY ball-in-block and cylinder-in-block case of the earlier sweeps (find the cracking sphere patch seam/boundary and fix its tessellation, not the topology), keeping the face counts that match FreeCAD. If the crack cannot be fixed, restore the base (main) behaviour for exactly the configurations that crack and refuse nothing else. Never change volumes.',
+    cases: 'boolean__common-cylinder, boolean__common-sphere; ball r11 at (9,13,7); ball r15 at (17,5,2.5); the 24 random ball-in-block cases and the cylinder tangent-two-sides cases from the earlier verifiers',
+    probe: 'Reproduce the open edges on the branch wasm: list them (which face pair, where) before any change.',
+  },
   C2S: {
     base: 'worktree-wf_dc079f54-416-6',
     goal: 'SAFE SUBSET of C2 (hole drill point 118 degrees / counterdrill / tapered). Four rounds of widening have failed; shrink instead. Build the new hole options ONLY when ALL hold: the target is ONE axis-aligned box primitive (no pocket, no step, no earlier hole or bore, no boolean, no cylinder body), the hole starts on its original planar top face, the axis is that face normal, and the whole tool (including the cone tip or the taper) stays inside the box. Everything else with a drill point, counterdrill or taper field REFUSES in a sentence (the plain hole keeps its current behaviour). Pin each refusal. Match FreeCAD on volume, face count and centre of mass for the built subset, including the depth convention probed earlier.',
