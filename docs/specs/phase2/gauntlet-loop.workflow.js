@@ -12,6 +12,12 @@ export const meta = {
 
 // Slice definitions mirror docs/specs/phase2/PLAN.md section 1. The goal text is what the implementer is held to.
 const SLICES = {
+  C2S: {
+    base: 'worktree-wf_dc079f54-416-6',
+    goal: 'SAFE SUBSET of C2 (hole drill point 118 degrees / counterdrill / tapered). Four rounds of widening have failed; shrink instead. Build the new hole options ONLY when ALL hold: the target is ONE axis-aligned box primitive (no pocket, no step, no earlier hole or bore, no boolean, no cylinder body), the hole starts on its original planar top face, the axis is that face normal, and the whole tool (including the cone tip or the taper) stays inside the box. Everything else with a drill point, counterdrill or taper field REFUSES in a sentence (the plain hole keeps its current behaviour). Pin each refusal. Match FreeCAD on volume, face count and centre of mass for the built subset, including the depth convention probed earlier.',
+    cases: 'census hole-mode cases (drill point x2, counterdrill, tapered) on a plain box; plus the earlier failing neighbours, which must all REFUSE: cylinder body, stepped plate, hole after a bore, hole through a pocket floor, hole near an edge so the taper leaves the box',
+    probe: 'Reuse the earlier probe numbers; confirm each refused neighbour is a case the branch used to build wrong.',
+  },
   C2R: {
     base: 'slice-C2-r2',
     goal: 'Third round of C2 (hole drill point / counterdrill / tapered). Branch builds the census cases, but a tapered or counterdrilled hole cut INTO AN EXISTING BORE (plain d6 bore to z=6 on a 40x30x10 box, then a taper or counterdrill hole at the same place) and a hole into a stepped body are silent wrong solids. Fix by REFUSING, in a sentence, any drill-point/counterdrill/taper hole whose start face is not the original planar face of a single convex prism, or that overlaps an existing bore; plain holes keep their existing behaviour. Do not widen. Compare volume AND face count AND centre of mass to FreeCAD.',
