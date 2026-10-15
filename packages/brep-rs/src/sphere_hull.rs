@@ -172,7 +172,7 @@ pub fn sphere_with_holes_scattered(
     let h = spacing.max(hb);
     let margin = hb.max(0.8 * h);
     let target = ((4.0 * std::f64::consts::PI * big * big) / (0.866 * h * h)).ceil() as usize;
-    if target < 12 || target > MAX_POINTS - 8 * loops.iter().map(|l| l.len()).sum::<usize>().min(4000) {
+    if (target < 12 && !scatter_holes) || target > MAX_POINTS - 8 * loops.iter().map(|l| l.len()).sum::<usize>().min(4000) {
         return None;
     }
     // Fibonacci lattice, turned by a fixed irrational-ish rotation so no lattice row lines up with a bore's own symmetry.
@@ -244,6 +244,40 @@ pub fn sphere_with_holes_scattered(
         }
         if pts.len() > MAX_POINTS {
             return None;
+        }
+    }
+    if scatter_holes {
+        // A coarse chord leaves the hole side with no scatter at all (the rim is a handful of points, the coarse scatter is
+        // a handful of lattice points that all fall inside twice the margin), so the hull's far facets lie flat across the
+        // rim, and where the rim is a great circle the flat facets' centres are the sphere's own centre and are kept as a
+        // second layer. Fourteen fixed directions (the axes and the cube's diagonals, turned like the lattice) are added
+        // where they are inside a hole and outside the diametral cap of every loop edge (slice B3M).
+        let dirs: [Vec3; 14] = {
+            let k = 1.0 / 3.0f64.sqrt();
+            [
+                [1.0, 0.0, 0.0], [-1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, -1.0, 0.0], [0.0, 0.0, 1.0], [0.0, 0.0, -1.0],
+                [k, k, k], [k, k, -k], [k, -k, k], [k, -k, -k], [-k, k, k], [-k, k, -k], [-k, -k, k], [-k, -k, -k],
+            ]
+        };
+        for d in dirs {
+            let q = add(c, scale(rot(d), big));
+            if !in_hole(q) {
+                continue;
+            }
+            let d2 = |a: Vec3, b: Vec3| {
+                let t = sub(a, b);
+                dot(t, t)
+            };
+            let in_a_cap = loops.iter().any(|l| {
+                (0..l.len()).any(|i| {
+                    let (a, b) = (l[i], l[(i + 1) % l.len()]);
+                    d2(scale(add(a, b), 0.5), q) < 1.1 * 0.25 * d2(a, b)
+                })
+            });
+            if in_a_cap || all_loop.iter().any(|l| d2(*l, q) < 0.25 * margin2) || pts.iter().any(|p| d2(*p, q) < margin2) {
+                continue;
+            }
+            pts.push(q);
         }
     }
     let tris = sphere_hull(&pts, c)?;

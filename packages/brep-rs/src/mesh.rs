@@ -2663,7 +2663,7 @@ pub(crate) fn mesh_is_closed(m: &Mesh) -> bool {
 pub fn mesh_solid(solid: &TSolid, defl: f64) -> Option<Mesh> {
     let Some(first) = mesh_solid_once(solid, defl) else {
         // A face the mesher cannot hold at this chord (a box-carved sphere's loops, say) may be fine at a finer one.
-        for k in [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1] {
+        for k in [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0.07, 0.05, 0.035, 0.025, 0.018, 0.012] {
             if let Some(m) = mesh_solid_once(solid, defl * k) {
                 return Some(m);
             }
@@ -3283,6 +3283,7 @@ pub(crate) fn mesh_solid_once(solid: &TSolid, defl: f64) -> Option<Mesh> {
     split_straight_edges_at_touching_points(solid, &mut edges_cache);
     add_samples_near_vertices(solid, &mut edges_cache, defl);
     cone_lattice_polylines(solid, defl, &mut edges_cache);
+    refine_hull_loops(solid, &mut edges_cache);
 
     let mut out = MeshBuilder::new();
     for f in solid.faces() {
@@ -3340,6 +3341,110 @@ pub(crate) fn mesh_solid_once(solid: &TSolid, defl: f64) -> Option<Mesh> {
         faces: out.faces,
         edges,
     })
+}
+
+
+/// A box-carved ball (SPEC-brep-ball-box.md) can be bounded by two circles that come within a hair of touching (the ball just misses a block
+/// edge, 0.008 mm) with the seam's great-circle chord across the gap. The hull mesher holds a loop edge only while no other loop vertex lies
+/// in its diametral ball, and between such circles the neighbouring arc's samples are nearer than the edge is long, so the edge is lost
+/// and the whole face is refused (slice B3M). Every circular edge of a hull face is bisected, on its own circle, wherever a vertex of the
+/// face's loops (other than the edge's own ends and their loop neighbours, which the corner logic of `hull_arc_steps` already handles)
+/// lies inside the edge's diametral ball. The edge's polyline is shared by every face on it, so each side takes the same points.
+fn refine_hull_loops(solid: &TSolid, cache: &mut HashMap<usize, Vec<Vec3>>) {
+    let key_of = |e: &crate::topo::EdgeRef<Curve>| std::rc::Rc::as_ptr(e) as *const () as usize;
+    for f in solid.faces() {
+        let fb = f.borrow();
+        let crate::geom::Surface::Sphere(sp) = &fb.surface else { continue };
+        if !sp.trim.is_hull() {
+            continue;
+        }
+        let mut edges: Vec<(usize, Vec3, f64)> = Vec::new();
+        for w in &fb.boundary {
+            for u in &w.borrow().edges {
+                let k = key_of(&u.edge);
+                if edges.iter().any(|e| e.0 == k) {
+                    continue;
+                }
+                match &u.edge.borrow().curve {
+                    Curve::Arc { center, radius, .. } | Curve::Circle { center, radius, .. } => edges.push((k, *center, *radius)),
+                    _ => {}
+                }
+            }
+        }
+        if edges.is_empty() {
+            continue;
+        }
+        // every edge of the face's loops takes part as an obstacle, circular or not
+        let mut all_keys: Vec<usize> = Vec::new();
+        for w in &fb.boundary {
+            for u in &w.borrow().edges {
+                let k = key_of(&u.edge);
+                if !all_keys.contains(&k) {
+                    all_keys.push(k);
+                }
+            }
+        }
+        for _round in 0..16 {
+            // vertices of the loops, welded, with the loop neighbours of each
+            let mut verts: Vec<Vec3> = Vec::new();
+            let mut nbr: Vec<Vec<usize>> = Vec::new();
+            let mut id_of = |p: Vec3, verts: &mut Vec<Vec3>, nbr: &mut Vec<Vec<usize>>| -> usize {
+                if let Some(i) = verts.iter().position(|q| dist(*q, p) < 1e-9) {
+                    return i;
+                }
+                verts.push(p);
+                nbr.push(Vec::new());
+                verts.len() - 1
+            };
+            for k in &all_keys {
+                let Some(poly) = cache.get(k) else { continue };
+                let ids: Vec<usize> = poly.iter().map(|p| id_of(*p, &mut verts, &mut nbr)).collect();
+                for i in 0..ids.len().saturating_sub(1) {
+                    nbr[ids[i]].push(ids[i + 1]);
+                    nbr[ids[i + 1]].push(ids[i]);
+                }
+            }
+            if verts.len() > 6000 {
+                break;
+            }
+            let mut changed = false;
+            for &(k, center, radius) in &edges {
+                let Some(poly) = cache.get(&k).cloned() else { continue };
+                let mut out: Vec<Vec3> = Vec::with_capacity(poly.len());
+                for i in 0..poly.len() {
+                    out.push(poly[i]);
+                    if i + 1 == poly.len() {
+                        break;
+                    }
+                    let (p, q) = (poly[i], poly[i + 1]);
+                    let r = dist(p, q) / 2.0;
+                    if r < 2e-4 {
+                        continue;
+                    }
+                    let m = scale(add(p, q), 0.5);
+                    let ip = verts.iter().position(|v| dist(*v, p) < 1e-9);
+                    let iq = verts.iter().position(|v| dist(*v, q) < 1e-9);
+                    let (Some(ip), Some(iq)) = (ip, iq) else { continue };
+                    let hit = verts.iter().enumerate().any(|(j, v)| {
+                        j != ip && j != iq && !nbr[ip].contains(&j) && !nbr[iq].contains(&j) && dist(*v, m) < r * 0.999
+                    });
+                    if hit {
+                        let d = sub(m, center);
+                        if len(d) > 1e-12 {
+                            out.push(add(center, scale(crate::math::normalize(d), radius)));
+                            changed = true;
+                        }
+                    }
+                }
+                if out.len() != poly.len() {
+                    cache.insert(k, out);
+                }
+            }
+            if !changed {
+                break;
+            }
+        }
+    }
 }
 
 /// True when two triangles are the same orientation, used by tests only.
@@ -3660,7 +3765,18 @@ fn mesh_curved_face(
         cyl_lattice = true;
     } else if let crate::geom::Surface::Cylinder(c) = &surface {
         let span = u1 - u0;
-        if c.arc.is_none() {
+        // A full-turn wall that carries its own rim ARCS (a cylinder tangent to two block faces: each rim is cut into two
+        // half-turn arcs, each sampled with its own count, 2 * ceil(pi / step), which is not ceil(2 pi / step)) has the caps'
+        // samples among its boundary stations already; the whole-turn lattice would add a second set that no cap has, and
+        // the rim opens at the chords where the two counts differ (slice B3M).
+        let rim_arcs = face
+            .borrow()
+            .boundary
+            .iter()
+            .any(|w| w.borrow().edges.iter().any(|u| matches!(&u.edge.borrow().curve, Curve::Arc { .. })));
+        if c.arc.is_none() && rim_arcs {
+            // columns are exactly the boundary's samples
+        } else if c.arc.is_none() {
             let n = arc_segments(ru, span, defl, 8).max(1);
             let (c1, c2, _) = crate::geom::frame(c.axis);
             for k in 0..n {

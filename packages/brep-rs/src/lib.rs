@@ -59,3 +59,5 @@ mod common_tests;
 mod b3r_tests;
 #[cfg(test)]
 mod b3r_sweep;
+#[cfg(test)]
+mod b3m_tests;

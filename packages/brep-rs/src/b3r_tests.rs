@@ -80,7 +80,7 @@ fn a_cylinder_crossing_one_face_and_tangent_to_another_is_four_faces() {
 }
 
 // (centre, radius, box size, FreeCAD 26.3.0 RC1 face count, exact volume of ball x box)
-const BALLS: &[([f64; 3], f64, [f64; 3], usize, f64)] = &[
+pub(crate) const BALLS: &[([f64; 3], f64, [f64; 3], usize, f64)] = &[
     ([9.0, 13.0, 7.0], 5.0, [30.0, 20.0, 10.0], 2, 469.144502936071),
     ([9.0, 13.0, 7.0], 7.0, [30.0, 20.0, 10.0], 2, 1151.9173063162457),
     ([9.0, 13.0, 7.0], 9.0, [30.0, 20.0, 10.0], 4, 2064.4194815027313),
@@ -308,7 +308,7 @@ const BALLS: &[([f64; 3], f64, [f64; 3], usize, f64)] = &[
 ];
 
 // (centre, radius, box size, FreeCAD face count, exact volume): random neighbours, the ones FreeCAD cuts into three or more sphere faces first
-const NEIGHBOURS: &[([f64; 3], f64, [f64; 3], usize, f64)] = &[
+pub(crate) const NEIGHBOURS: &[([f64; 3], f64, [f64; 3], usize, f64)] = &[
     ([21.1, 7.2, 6.3], 20.9, [50.0, 8.0, 8.0], 7, 2593.004032175699),
     ([16.8, 1.9, 4.3], 11.2, [50.0, 8.0, 8.0], 7, 1342.0779726244002),
     ([8.4, 9.1, 3.7], 13.5, [30.0, 20.0, 10.0], 9, 4003.898169922457),
@@ -459,7 +459,7 @@ fn a_ball_resting_on_faces_is_the_ball_a_hair_clear_of_them() {
     }
 }
 
-fn refusal(size: [f64; 3], at: [f64; 3], r: f64) -> String {
+pub(crate) fn refusal(size: [f64; 3], at: [f64; 3], r: f64) -> String {
     let doc = format!(
         r#"{{"version":1,"features":[{{"id":"A","kind":"box","size":[{},{},{}],"center":[{},{},{}]}},{{"id":"B","kind":"sphere","radius":{r},"center":[{},{},{}]}},{{"id":"K","kind":"combine","op":"intersect","targets":["A","B"]}}]}}"#,
         size[0],
