@@ -78,20 +78,6 @@ fn counterdrill_measured() {
     let (v, f) = built(json!({ "counterdrill": { "diameter": 10, "depth": 3 } }));
     near(v, 11605.206523198884, "FreeCAD 11605.2065");
     assert_eq!(f, 10);
-    let (v, _) = built(json!({ "counterdrill": { "diameter": 10, "depth": 3, "angleDeg": 60 } }));
-    near(v, 11571.476043425228, "cone 60");
-    let (v, _) = built(json!({ "counterdrill": { "diameter": 10, "depth": 3, "angleDeg": 118 } }));
-    near(v, 11623.597545621864, "cone 118");
-}
-
-#[test]
-fn counterdrill_with_a_drill_point() {
-    let (v, f) = built(json!({ "counterdrill": { "diameter": 10, "depth": 3 }, "drillPoint": { "angleDeg": 118 } }));
-    near(v, 11588.217589439766, "counterdrill + point");
-    assert_eq!(f, 10);
-    let (v, _) = built(json!({ "counterdrill": { "diameter": 10, "depth": 3 },
-        "drillPoint": { "angleDeg": 118, "includedInDepth": true } }));
-    near(v, 11639.184390717113, "counterdrill + point in depth");
 }
 
 #[test]
@@ -110,13 +96,6 @@ fn tapered_measured() {
 }
 
 #[test]
-fn tapered_with_a_drill_point() {
-    let (v, f) = built(json!({ "taper": { "angleDeg": 5 }, "drillPoint": { "angleDeg": 118 } }));
-    assert!((v - 11828.973168).abs() < 1e-4, "{v}");
-    assert_eq!(f, 8);
-}
-
-#[test]
 fn refusal_sentences() {
     let s = refused(json!({ "taper": { "angleDeg": 80 } }));
     assert!(s.contains("its taper closes to a point before it reaches the depth"), "{s}");
@@ -126,7 +105,7 @@ fn refusal_sentences() {
     let s = refused(json!({ "counterdrill": { "diameter": 10, "depth": 6.5 } }));
     assert!(s.contains("cone would reach the hole's own floor"), "{s}");
     let s = refused(json!({ "taper": { "angleDeg": 5 }, "drillPoint": { "angleDeg": 118, "includedInDepth": true } }));
-    assert!(s.contains("not measured against FreeCAD"), "{s}");
+    assert!(s.contains("drill point together with a counterdrill or a taper"), "{s}");
     let s = refused(json!({ "taper": { "angleDeg": 5 }, "counterdrill": { "diameter": 10, "depth": 3 } }));
     assert!(s.contains("taper with a counterdrill"), "{s}");
     let s = refused(json!({ "drillPoint": { "angleDeg": 200 } }));

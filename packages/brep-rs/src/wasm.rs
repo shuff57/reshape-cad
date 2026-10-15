@@ -1438,6 +1438,83 @@ fn hole_tool_turned(src: &TSolid, centre: Vec3, bore_r: f64, depth: f64, axis: V
     let dp = f.get("drillPoint");
     let cd = f.get("counterdrill");
     let tp = f.get("taper");
+    // Slice C2S: the SAFE SUBSET. A drill point, counterdrill or taper is cut only into ONE plain
+    // axis-aligned box, from its original flat face, along that face's normal, with the whole tool
+    // (cylinder, cone tip, counterdrill radius, widening taper radius) strictly inside the box.
+    // Everything else is refused in a sentence; nothing falls back to a plain bore.
+    {
+        if let Some(a) = num(cd, "angleDeg") {
+            if (a - 90.0).abs() > 1e-9 {
+                return no("its counterdrill cone is only built at 90 degrees (the one angle measured against FreeCAD), a shape brep-rs cannot cut yet");
+            }
+        }
+        if dp.is_some() && (cd.is_some() || tp.is_some()) {
+            return no("a drill point together with a counterdrill or a taper is not a shape brep-rs can cut yet (only one turned option per hole is measured against FreeCAD)");
+        }
+        let mut n_plane = 0usize;
+        let mut n_curved = 0usize;
+        let mut n_per_axis = [0usize; 3];
+        let mut bb = crate::math::Aabb::empty();
+        for face in src.faces() {
+            let fb = face.borrow();
+            match &fb.surface {
+                Surface::Plane(p) => {
+                    n_plane += 1;
+                    for i in 0..3 {
+                        if p.n[i].abs() > 1.0 - 1e-9 {
+                            n_per_axis[i] += 1;
+                        }
+                    }
+                }
+                _ => n_curved += 1,
+            }
+            for w in fb.boundary.iter() {
+                for e in w.borrow().edges.iter() {
+                    let ed = e.edge.borrow();
+                    bb.expand(ed.a.borrow().point);
+                    bb.expand(ed.b.borrow().point);
+                }
+            }
+        }
+        let is_box = n_curved == 0 && n_plane == 6 && n_per_axis == [2, 2, 2];
+        if !is_box {
+            if n_curved > 0 && n_plane >= 6 && n_per_axis.iter().all(|&c| c >= 2) {
+                return no("the part already has a bore or a curved cut, and a drill point, counterdrill or taper is only built into a plain box, a shape brep-rs cannot cut yet");
+            }
+            if n_curved > 0 {
+                return no("the part is a round body, and a drill point, counterdrill or taper is only built into a plain box, a shape brep-rs cannot cut yet");
+            }
+            return no("the part is not one plain box (it is stepped, pocketed or notched), and a drill point, counterdrill or taper is only built into a plain box, a shape brep-rs cannot cut yet");
+        }
+        let Some(ai) = (0..3).find(|&i| axis[i].abs() > 1.0 - 1e-9) else {
+            return no("its axis is not the normal of a face of the box, a shape brep-rs cannot cut yet");
+        };
+        let top = if axis[ai] > 0.0 { bb.hi[ai] } else { -bb.lo[ai] };
+        if (v_face - top).abs() > 1e-6 {
+            return no("its mouth does not sit on the original top face of the box, a shape brep-rs cannot cut yet");
+        }
+        let mut rt = bore_r;
+        if let Some(dm) = num(cd, "diameter") {
+            rt = rt.max(0.5 * dm);
+        }
+        if let Some(a) = num(tp, "angleDeg") {
+            if a < 0.0 {
+                rt = rt.max(bore_r + (v_face - v_far) * (-a).to_radians().tan());
+            }
+        }
+        for i in 0..3 {
+            if i == ai {
+                continue;
+            }
+            if !(centre[i] - rt > bb.lo[i] + 1e-9 && centre[i] + rt < bb.hi[i] - 1e-9) {
+                return no("the tool would leave the box through a side wall (the hole is too near an edge for its counterdrill or taper), a shape brep-rs does not cut yet");
+            }
+        }
+        let bottom = if axis[ai] > 0.0 { bb.lo[ai] } else { -bb.hi[ai] };
+        if !(v_far > bottom + 1e-9) {
+            return no("it would reach the far face of the box, a shape brep-rs does not cut yet");
+        }
+    }
     // A taper's radius and a counterdrill's depth are measured from the face the hole STARTS in, which on a
     // stepped part is not the bbox top. Find it: the mouth must sit wholly on one flat level (every ray
     // from above lands at the same height), else the shape is refused rather than measured from air.

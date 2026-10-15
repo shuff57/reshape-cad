@@ -59,6 +59,4 @@ mod chamfer_asym_tests;
 #[cfg(test)]
 mod hole_turned_tests;
 #[cfg(test)]
-mod hole_step_tests;
-#[cfg(test)]
-mod hole_overlap_tests;
+mod hole_safe_tests;
