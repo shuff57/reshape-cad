@@ -101,3 +101,82 @@ a plain sentence. Everything else (curved/standing-on-round bodies) keeps the ol
 cylindrical-pocket / round-boss improvements was the critic's measurement on 178110f and is NOT claimed for 3dbe11b.
 Known: round boss tangent to two walls was +7.5e-4 off P on 178110f (real kernel error); on 3dbe11b a round boss has a
 cylinder next to what stands, and the case was not re-measured.
+
+## Truthful old path (commit d8c35a2; supersedes "Claim allowed" above)
+Critic finding: when material stands on the open plane but the exact path was not taken (a round face beside it, a
+torus, ...), the old path returned the boss cut short, silently (-1.7%..-5.5%). Now: if something stands on the open
+plane and the exact path does not apply, the old path is still run so its own refusals keep their text, and a body it
+would return is refused instead: "not supported yet: a boss or wall stands on the open face of a body with round faces (or
+on a round wall); solid.shell would cut it short here, so it is not built (open a face nothing stands on, or shell before
+adding the boss)". Also refused: what stands on the open face is not taller than the shell is thick (pads 0.5 and 0.01 mm,
+t=1: baseline and the exact path gave +1.3%/+2.6% too heavy), and the floating-piece sentence now says "something stands on
+the open face (a boss, a rim or a pocket's walls) ... would leave part of it free of the rest of the part".
+Critic cases, before (silent number) -> now:
+| case | ref P | before | now |
+|---|---|---|---|
+| n6 rounded-corner plate, wall-flush boss | 2729.646 | 2634.554 | refused |
+| n9 corner boss with a hole through it | 3002.195 | 2940.007 | refused |
+| n11 round pocket floor open | 3393.752 | 3233.572 | refused |
+| n10 round boss r4 at (16,11) | 2584.221 | 2539.500 | refused |
+| n13 bottom-rounded box, corner boss | 2776 | 2624.632 | refused |
+| n8b pad 0.5 mm, t=1 | 2474 | 2497.5 (base) / 2506 (exact path) | refused |
+Still exact on the verified path (engine tests): n19 step boss 4240.0, n5 L-body boss 5528.0, n2 two bosses 3128.0,
+n6b rounded plate without boss 2377.638 (ref 2377.646). Tests: engine `shell_with_material_on_the_open_face_is_refused_where_not_exact`
+(6 cases) and `..._keeps_the_exact_cases` (4 controls).
+Plain-body identity (no material above the open plane), baseline fe3717f vs fixed, status and volume: box, L, T, cylinder,
+box with through hole, pocket, boss on a different face (open bottom), open +x face, two open faces, rounded-edge box,
+counterbore plate, sphere (both: same offset refusal) - 12 of 12 identical (volumes e.g. 2424.0, 4424.0, 1824.0, 3348.559,
+2593.633, 2752.0, 2712.0, 3264.0, 1360.0, 2377.638, 2628.188). Faces/bbox were not compared (volume and status only).
+Unrelated, pre-existing, NOT fixed and not caused by this patch (baseline = fixed): (a) counterbore+hole plate open top, no boss:
+2628.188 vs a hand reference 2577.938 (+50.27 = pi*4^2*1); (b) cylinder with a box joined on its round wall, open = cylinder
+top (n17b): 3760.8 vs P 4477.2 (-16%), nothing stands on the open plane so my rule does not see it.
+
+## FINAL STATE (supersedes everything above where it differs)
+Rule set in polyhedron.rs shell_planar:
+1. "Standing" = a face (not an opened one) that meets an opened planar face along a CONCAVE edge (its outward normal there
+   points back over the open face; the sign comes from the open face's own mesh). Earlier versions (any point beyond the
+   plane; a triangle with two corners on the plane) over-flagged ring ends, plates and notch walls (existing engine tests and
+   seeds 19 and 24 caught it) and were replaced.
+2. Nothing standing: the old path, untouched.
+3. Standing, every face a plane or cylinder, no standing face meeting a round face: margin 0 (exact plane offset), then
+   refuse if a piece comes apart or what stands is not taller than the shell is thick.
+4. Standing, otherwise: the old path is run so its own refusals keep their text; a body it returns is refused with the
+   "round faces" sentence (never a truncated part).
+
+Critic cases, final (ref P hand-derived by the critic):
+| case | ref P | baseline | final |
+|---|---|---|---|
+| n10 round boss r4 tangent to two walls | 2584.221 | 2539.500 | refused |
+| n11 round pocket floor open | 3393.752 | 3233.572 | refused |
+| n6 rounded-corner plate, wall-flush boss | 2729.646 | 2634.554 | 2729.638 (exact path) |
+| n9 corner boss with a hole through it | 3002.195 | 2940.007 | 3002.177 (exact path) |
+| n13 bottom-rounded box, corner boss | 2776 (ignores the rounding) | 2624.632 | 2686.88 (exact path; my hand estimate ~2684 = 2776 minus the rounding loss; NOT independently verified) |
+| n8b / n8c pads 0.5 / 0.01 mm, t=1 | 2474 / 2425 | 2497.5 / 2488.19 | refused (shorter than the shell is thick) |
+| n4 pocket with a rim boss | 3160 | 3097.83 | refused (pocket walls would float) |
+Exact path also: n19 4240.0, n5 5528.0, n2 3128.0, n2c 2856.0, n4b 3440.0, n12/n3 2945.633 (P 2945.646), n1/n1c within 2e-4.
+Tests: engine `shell_with_material_on_the_open_face_is_refused_where_not_exact` (n10, n11, n8b) and `..._keeps_the_exact_cases`
+(n6, n9, n6b, n19, n5, n2); kernel `shell_open_*`; engine seed 73 (ends, refused) and seed 48 (7141.547) tests.
+Plain-body identity (volume and status, fixed vs baseline): box, L, T, cylinder, box with hole, pocket, boss on another face
+(open bottom), open +x face, two open faces, rounded-edge box, counterbore plate, sphere: 12/12 identical. That battery was run
+on the version before the concave-edge detection; the final detection only narrows what counts as standing and was not
+re-run on the battery (the engine/kernel shell tests and all goldens do pass).
+
+Residual silent-wrong cases I know of (all equal to baseline, none are new): n7 vertex-contact boss 2720 (touches the open face
+at one vertex only, no shared edge, so it is not seen); n17b cylinder top open with a box joined on its wall 3760.8 vs P 4477.2;
+counterbore+hole plate 2628.188 vs hand 2577.938 (n20 is that + 352).
+
+Results (all runs capped with systemd-run MemoryMax): kernel lib 430 passed / 0 failed / 26 ignored; engine `--lib shell`
+25 passed; clippy -D warnings (kernel, engine) clean. Goldens one shard at a time, 30 GB cap: all_0 pass (358 s), all_3 pass
+(399 s), all_2 fails only on pre-existing seed 18 (252 s), all_1 differed only in seed 53 (1151 s), then recorded (re-run below).
+Goldens changed by the patch: seed 48 (7044.773 -> 7141.547; hand-worked 7141.39) and seed 53 (16607.030 -> 16943.636, +336.6:
+the open wall of a notched plate; the notch floor stands on it and the old margin cut a ~2 x 5.5 x 31 = ~341 mm3 lip off it).
+Seeds 86, 14, 40, 43, 83, 19, 24, 45, 69 are unchanged. Seed 18: pre-existing stale golden (fails identically on fe3717f).
+Seed 81 is independent of the patch (critic: 309 s/560 MB baseline vs 314 s/580 MB fixed). No runaway: seed 73 ends in 1.6 s.
+all_1 re-run with seed 53 recorded: pass (869 s). cargo fmt --check clean.
+
+## Final verification (second pass, separate agents)
+- Authoritative artifact: shell-stub.patch (= git diff fe3717f..80c1e67). The scratch clone branch was later rebased onto a newer origin/main; do not use it.
+- Identity battery on the final rule: 19 plain bodies, baseline fe3717f vs 80c1e67, status/volume/faces/edges/bbox identical on all 19 (sphere refuses identically on both).
+- n13 (bottom-rounded box + boss): independent analytic derivation gives 2686.835 under convention P; kernel 2686.88 (1.7e-5). Under L it would be about 2720 +/- 15. Kernel uses P.
+- Refused now (were silent wrong volumes): n10, n11, n2b, n4, n8b, n8c, n17a, n17c.
+- Still wrong, same as baseline: n7 (boss touching the open face at one vertex, 2720 vs 2424), n17b.
