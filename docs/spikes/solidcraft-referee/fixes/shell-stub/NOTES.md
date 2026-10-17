@@ -204,3 +204,55 @@ edges, bodies, bbox, status vs fe3717f): 19 same / 0 different. Critic cases unc
 n13 2686.883 (still not independently verified), n10 and n11 refused. Kernel `--lib shell` 32 passed; engine `--lib shell` 25 passed.
 Not re-run on this commit: full kernel suite, clippy, robustness goldens (the change only adds a refusal inside the
 standing path; seeds 48 and 53 take that path, and I did not check their wall thicknesses, so a golden could in principle move).
+
+## Hole ligaments, exact thresholds, and three "wrong" bodies that are right (commits 1a3d78ef, a92f577b + tests commit)
+Critic finding, reproduced on fe3717f and d9df6230 (identical): plate 40x30x10, shell t=1 from the top, vertical hole r=2.
+Independent closed form (plane offset): cavity = 38x28 rectangle minus the hole discs of radius r+t = 3 (clipped to the
+rectangle), height 9; outer = 12000 - hole. For a hole clear of the wall P = 2424 + 41 pi = 2552.795 (two holes 2424 + 82 pi
+= 2681.591). For web 1.0 the disc r=3 pokes 1.0 past the offset wall at x=19: segment 9 acos(2/3) - 2 sqrt(5) = 3.0975 mm2, so
+P = 2524.93 (critic's value reproduced). Cause: the topology-keeping offset moves the hole wall out by t and the side wall in
+by t; where the web is under 2t they cross, nothing in offset.rs sees a cylinder crossing a plane, and the cavity comes out
+too small. Refused in polyhedron.rs (`thin_web`): a concave cylinder and a plane parallel to its axis (or another parallel
+hole) with material between them, a gap in (0, 2t), overlapping extents. A web of exactly 2t is fine (measured: 2552.7962 vs
+2552.7953) and builds. The refusal only replaces a part the shell built: where the shell fails by itself its own message stands.
+| case | closed-form P | fe3717f (= before) | now |
+|---|---|---|---|
+| hole web 1.0 east | 2524.93 | 2549.090 | refused |
+| hole web 1.0 north | 2524.87 (critic) | 2548.580 | refused |
+| hole web 1.5 | - | 2551.229 | refused |
+| hole web 1.9 east | 2551.88 (critic) | 2552.772 | refused |
+| hole web 2.0 east | 2552.795 | 2552.796 | 2552.796 (built) |
+| hole web 2.1 / 3.0 | 2552.795 | 2552.795 | 2552.795 (built) |
+| two holes 1.0 apart | 2661.10 (critic) | 2678.591 | refused |
+| two holes 1.9 apart | - | 2681.494 | refused |
+| two holes 2.1 apart | 2681.591 | 2681.591 | 2681.591 (built) |
+Existing engine test `shell_with_a_hole_through_a_curved_side` had the hole 2.5 mm from the side wall at t=2 (under 2t = 4): it
+only checked that the shell ran. The hole is moved to the plate's centre line (web 5) and the original geometry is a new test that
+expects the refusal. NOT independently measured: that the old result of that body was wrong (inferred by analogy to the plate).
+
+Exact rim threshold: the guard used `2t + 100*tol` (0.005 for these sizes), so rims of 2.002..2.005 (t=1) and 4.002..4.005 (t=2)
+were refused though the cut is right there. It is now `2t + 1e-9*size`: w <= 2t refused, w > 2t built. Tests:
+`shell_rim_threshold_is_exactly_twice_the_shell` (t=1: 2.0005, 2.002, 2.005, 2.006 equal 2872 - 48 (w-2) to 1e-6; t=2: 4.002,
+4.005, 4.02 on the straight line through the volumes at 4.1 and 4.5 to 1e-6 - the t=2 line is a consistency check, not a
+closed form; 2.0 and 4.0, 3.9 refused). The thin-wall refusal also now only replaces a built part.
+
+Bodies the loop plan listed as silent wrong solids that are NOT wrong (independent closed forms; unchanged, pinned by
+`shell_bodies_that_are_exact_stay_exact`):
+- counterbore plate (r2 hole at (-8,-6), r4 x 2 counterbore), open top, t=1: cavity = 1064 x 9 - 129 pi, outer = 12000 - 64 pi,
+  P = 2424 + 65 pi = 2628.2036; app 2628.1884 (6e-6). (My earlier "hand reference 2577.938" was wrong - that number is the OPEN
+  BOTTOM variant, 2424 + 49 pi = 2577.9376; app 2577.927.) With the corner boss (n20): 2628.2036 + 352 = 2980.2036; app 2980.188.
+  The critic's P 2929.938 for n20 does not match this calculation.
+- n17b, cylinder r15 h30 with a 14x10x10 box joined on its wall, cylinder top open, t=1: outer 22334.0106; cavity = pi 196 x 29
+  + the box's inner part outside the cylinder (integral over |y|<4 of (25 - sqrt(196 - y^2)) x 8 = 716.34); P = 3760.854; app
+  3760.8355 (5e-6). The critic's 4477.198 equals outer minus the cylinder cavity alone, i.e. it leaves the box solid.
+- n7, boss touching the open face at one vertex: a separate piece; the offset hollows it closed: plate 2424 + (8^3 - 6^3 = 296) =
+  2720; app 2720.0. The critic's 2424 omits the boss. Caveat: the result has a sealed void inside a piece that touches the plate at
+  a single vertex; if a different semantics is wanted (e.g. refuse such contact) that is a policy choice, not a measured error.
+
+Gates on a92f577b + tests commit (capped systemd-run, one at a time): 19-body battery 19 same / 0 different vs fe3717f;
+critic cases n6 2729.638, n9 3002.177, n13 2686.883 (unverified), n10 and n11 refused (unchanged); rim table: 3, 2.5, 2.2, 2.05
+exact, 2.0, 1.95, 1.8, 1.5 refused; kernel lib 433 passed / 0 failed / 26 ignored; engine `--lib shell` 27 passed; clippy -D
+warnings (kernel, engine) clean; fmt --check clean; goldens all_0, all_1, all_3 pass, all_2 fails only on pre-existing seed 18.
+Seeds 48 and 53 are recorded as in the earlier commits and remain PROVISIONAL until the upstream bisect (LOOP-PLAN A6, B1); no
+golden was added or changed in this step. One earlier version of the ligament refusal replaced a baseline failure message and
+moved seed 69; that is why the new refusals only replace a built part.
