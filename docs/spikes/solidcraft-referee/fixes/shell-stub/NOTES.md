@@ -297,7 +297,7 @@ not compute a plane-offset closed form; the same cube-vs-Euclid argument applies
 
 ### Fuzz (docs/spikes/solidcraft-referee/fuzz): the 932 cases with an oracle P that I could run (sweep seed 9 + first 500 of seed 1)
 p7 (80c1e67): 303/1790 WRONG over the full 2000. Head, on these 932: MATCH 426, WRONG 0, REFUSED 506 (p7 on the same rows:
-MATCH 426+29, WRONG 124, REFUSED 355+...). 29 rows p7 matched are refused now (webs/gaps in [t,2t) that happen to match
+MATCH 453, WRONG 124, REFUSED 355). 29 rows p7 matched are refused now (webs/gaps in [t,2t) that happen to match
 within 1e-3, e.g. web 1.9 t=1); 2 p7 WRONG rows now MATCH; 122 p7 WRONG rows are refused. The 10 repros (fuzz/repros): all
 refused in plain sentences (s1-00031, s1-00038, s1-00201 (the lobes-dropped large form), s1-00501, sw-0164, sw-0177, sw-0195,
 sw-0196, sw-0310) and the wall=2 rim (sw-0286). Rim w > 2t builds exact (2.05..3: 2869.6, 2862.4, 2848, 2824).
