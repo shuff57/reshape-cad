@@ -256,3 +256,63 @@ warnings (kernel, engine) clean; fmt --check clean; goldens all_0, all_1, all_3 
 Seeds 48 and 53 are recorded as in the earlier commits and remain PROVISIONAL until the upstream bisect (LOOP-PLAN A6, B1); no
 golden was added or changed in this step. One earlier version of the ligament refusal replaced a baseline failure message and
 moved seed 69; that is why the new refusals only replace a built part.
+
+## Round 5: one general check instead of family guards (commits 0d3f9927 .. 430f0ec9 on b23218e9)
+Rule (polyhedron.rs `cavity_too_close`): after the cut, every face of the shell's cavity must stay at least the shell
+thickness away from every face of the part other than the open ones. Samples: the cavity mesh (a grid over flat faces,
+corners of curved ones, projected onto their surface), its corners and edge points; distance measured square to the part's
+triangles (foot inside the triangle); feet within `t` above an open plane do not count (the open face extruded out by t
+is solid for the cut); cavity above an open plane is not part. Tolerances: flat vs flat exact (1e-6 size, 0.2% of t);
+a curved face on either side must fall short by 10% of t (edges where curved faces meet are rebuilt through moved
+points and sit up to 5% of t off). Skipped when the cavity has fewer faces than the part (a round thinner than the shell
+collapsed). It runs on the cut's cavity and on the closed-up cavity of the second way (`shell_by_opening`).
+Like the earlier guards it only replaces a shell that would have been built; a shell that fails by itself keeps its message.
+Also in this round:
+- Cause of the countersink error (B): the open face is pushed out by the margin, a cone flares with it past the open plane
+  and crosses the other offset walls there. Bodies with a cone now use a margin of 0.5% of the size (D=10, t=2: 3392.9 ->
+  3474.6, oracle 3474.865). A countersink cone that reaches the opening in the closed-up way is refused (D=14 t=2 etc. were
+  -2.7%..-3.9%); a convex chamfer-like cone is flagged the same way (a bore mouth chamfer is a countersink to the offset).
+- n7 (boss touching at a vertex): refused ("two pieces of this part meet only at a point or along an edge ...").
+- D: the shell's own failures no longer name internals. A failed cutting step -> "the kernel cannot build this shell yet:
+  its inner wall meets the part's own faces in a way it cannot cut ...". The offset's size limit ("rim or ledge", "wall or
+  step is thick") loses its "offset:" prefix; its corner message is unchanged (10 goldens carry it).
+- Tests: engine `shell_refuses_material_thinner_than_twice_the_shell` (floors 1.5/1.2/1.2 t=1, pocket t=2.5 floor 4,
+  opposed holes 1.5, pocket-wide, csink D=10 t=2.5 and D=18 t=1 - none may name boolean/fallback/offset:/coincident),
+  `shell_builds_material_at_twice_the_shell_and_more` (floor 2.0 = 1656 + 49 pi, csink D=10 t=2 3474.865, D=8 t=1),
+  `shell_of_pieces_that_touch_at_a_point_is_refused`; kernel rim threshold, ligament, rim tests accept both sentences.
+  The n7 pin (2720) in `shell_bodies_that_are_exact_stay_exact` was removed (now refused).
+
+### Data (c8 critic rows, 388 distinct cases rebuilt from cases.mjs + results.jsonl P values, CLI of the head commit)
+Baseline fe3717f: 320 built, 94 built-mismatch >1e-3. b23218e9: 288 built, 43 mismatch. Head: 261 built, 127 refused,
+16 built-mismatch, all 16 family f8 (plate chamfer/fillet) - see below; 0 internals in refusal sentences.
+Every non-f8 mismatch row listed in the brief is now built within 1e-3 of P or refused: blind d8.5 floor 1.5 (1817.777 vs
+1803.580) refused; slot d8.8 (2115.6 vs 2043.6) refused; pocket 10x8 d8.8 (2128 vs 2032) refused; pocket 20x16 d8.8
+(2720.8 vs 2404) refused; pocket 10x8 t=2.5 d6 (4815 vs 4620) refused; opposed holes web 1.2/1.5/1.9 refused; pocket-wide
+t=2.5 d5/d6 refused; csink t=2/2.5/3 and D=18 t=1 refused or exact (D=10 t=2 now 3474.567 vs 3474.865). Controls: floor 2.0
+builds (1809.924 vs 1809.938 closed form), 2.1 builds.
+f8 (not changed, not a defect I can show): plate chamfer rows differ from P by 1e-3..2.6e-3 and bottom-fillet rows by
++1.8%..+5.3%. For chamfer the critic's P is cube erosion, which shifts an inclined plane by t(|nx|+|nz|) instead of t; my
+hand plane offset of "plate top-chamfer 1 t=0.5" is 884.3 and the app gives 884.258 (P 886.383). For the fillet rows I did
+not compute a plane-offset closed form; the same cube-vs-Euclid argument applies to a convex round but is unverified.
+
+### Fuzz (docs/spikes/solidcraft-referee/fuzz): the 932 cases with an oracle P that I could run (sweep seed 9 + first 500 of seed 1)
+p7 (80c1e67): 303/1790 WRONG over the full 2000. Head, on these 932: MATCH 426, WRONG 0, REFUSED 506 (p7 on the same rows:
+MATCH 426+29, WRONG 124, REFUSED 355+...). 29 rows p7 matched are refused now (webs/gaps in [t,2t) that happen to match
+within 1e-3, e.g. web 1.9 t=1); 2 p7 WRONG rows now MATCH; 122 p7 WRONG rows are refused. The 10 repros (fuzz/repros): all
+refused in plain sentences (s1-00031, s1-00038, s1-00201 (the lobes-dropped large form), s1-00501, sw-0164, sw-0177, sw-0195,
+sw-0196, sw-0310) and the wall=2 rim (sw-0286). Rim w > 2t builds exact (2.05..3: 2869.6, 2862.4, 2848, 2824).
+The remaining 1068 cases of the 2000 and cases needing other oracles were not run by me.
+
+### Gates on 430f0ec9 (capped, one at a time)
+19-body battery 19 same / 0 different; critic cases n6 2729.638, n9 3002.177, n13 2686.883 (unverified), n10/n11 refused;
+rim table (2.05, 2.2, 2.5, 3 exact; 2.0, 1.95, 1.8, 1.5 refused); hole-web table (2.0, 2.1, 3.0 and two holes 2.1 build; 1.0,
+1.5, 1.9 refuse); kernel lib 433 passed / 0 failed / 26 ignored; engine `--lib shell` 30 passed; clippy -D warnings and
+`cargo fmt --check` clean.
+Goldens (not re-recorded): all_2 fails only on pre-existing seed 18. all_0 FAILS on seed 24, all_1 on seed 61, all_3 on
+seed 19: each built a shell before and is refused now, after which the fuzz run takes other steps. 53/48 pass as recorded
+(provisional). No independent P exists for these three bodies. Why each is flagged: 61 (arc end plate with a r10 channel
+cut, t=2) overlap 1.914 mm at [-10.47, 10.69, 7.48], the large-form hole/wall mechanism; 19 (270 deg ring with a r10
+sphere bite, t=1) the cavity's sphere face reaches z=-4.98, 0.02 above the bottom plane that the offset puts at -4
+(overlap 0.909); 24 a hollow cone (a chamfered bore mouth) reaches the opening in the closed-up shell, the countersink
+class that was 2.7..3.9% wrong. These three goldens need the maintainer's decision (record the refusal, or keep the
+built shell); I did not choose.
