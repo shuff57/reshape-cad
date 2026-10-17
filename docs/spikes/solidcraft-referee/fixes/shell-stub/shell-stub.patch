@@ -1,5 +1,5 @@
 diff --git a/crates/engine/src/tests/robustness.rs b/crates/engine/src/tests/robustness.rs
-index 55637a4..2374cc5 100644
+index 55637a41..2374cc56 100644
 --- a/crates/engine/src/tests/robustness.rs
 +++ b/crates/engine/src/tests/robustness.rs
 @@ -352,3 +352,142 @@ fn lip_on_a_rounded_shelled_rim() {
@@ -146,10 +146,10 @@ index 55637a4..2374cc5 100644
 +    }
 +}
 diff --git a/crates/kernel/src/polyhedron.rs b/crates/kernel/src/polyhedron.rs
-index 6b7675e..4cd3589 100644
+index 6b7675ef..974b7549 100644
 --- a/crates/kernel/src/polyhedron.rs
 +++ b/crates/kernel/src/polyhedron.rs
-@@ -490,13 +490,162 @@ fn shell_planar(b: &Body, open: &[Vec3], thickness: f64) -> Result<Body> {
+@@ -490,13 +490,230 @@ fn shell_planar(b: &Body, open: &[Vec3], thickness: f64) -> Result<Body> {
              "the rim would have no thickness: an open face meets a round of radius {r:.4} mm tangentially, and the shell is {thickness:.4} mm thick (make the round smaller than the thickness)"
          )));
      }
@@ -188,6 +188,15 @@ index 6b7675e..4cd3589 100644
 +    if rises && stands_up <= thickness + tol {
 +        return Err(unsupported_shell(&format!(
 +            "what stands on the open face is only {stands_up:.4} mm tall and the shell is {thickness:.4} mm thick, so its top would move below the open face (use a shell thinner than the pad is tall, or shell before adding it)"
++        )));
++    }
++    // A wall or rim standing on the open face needs two shell thicknesses: its outer side moves in
++    // by the thickness and its inner side the other way, and at a thinner wall they cross (the
++    // offset is then not a solid, and the cut leaves an artefact). Exactly two is a wall of zero
++    // thickness in the cavity, refused the same way.
++    if rises && let Some(w) = thin_standing_wall(&healed, &mesh, &standing, thickness) {
++        return Err(unsupported_shell(&format!(
++            "a wall standing on the open face is only {w:.4} mm thick and the shell is {thickness:.4} mm, so its two sides would cross (a wall needs more than twice the shell thickness; use a thinner shell or a thicker wall)"
 +        )));
 +    }
 +    let margin = if rises { 0.0 } else { thickness + size * 0.05 };
@@ -306,6 +315,65 @@ index 6b7675e..4cd3589 100644
 +    (out, height)
 +}
 +
++/// The thickness of a standing wall thinner than twice `t` (or exactly that): the standing face
++/// and a face looking the other way behind it, a plane parallel to it that overlaps it, or a
++/// cylinder coaxial inside it.
++fn thin_standing_wall(b: &Body, mesh: &solidcraft_geom::Mesh, standing: &[usize], t: f64) -> Option<f64> {
++    use crate::offset::{Surf, surf_of};
++    let tol = (b.size() * 1e-6).max(1e-9);
++    let faces: Vec<mt::Face> = b.solid.face_iter().cloned().collect();
++    let surfs: Vec<Option<Surf>> = faces.iter().map(|f| surf_of(f, tol * 100.0)).collect();
++    // Extent of each face in the plane square to `n`.
++    let extent = |face: usize, u: Vec3, w: Vec3| -> Option<[f64; 4]> {
++        let mut e = [f64::INFINITY, f64::NEG_INFINITY, f64::INFINITY, f64::NEG_INFINITY];
++        for (tri, f) in mesh.triangles.iter().zip(&mesh.tri_face) {
++            if *f as usize != face {
++                continue;
++            }
++            for p in mesh.tri(tri)? {
++                e = [e[0].min(p.dot(u)), e[1].max(p.dot(u)), e[2].min(p.dot(w)), e[3].max(p.dot(w))];
++            }
++        }
++        e[0].is_finite().then_some(e)
++    };
++    let limit = 2.0 * t + tol * 100.0;
++    for &si in standing {
++        let Some(sf) = surfs.get(si).copied().flatten() else { continue };
++        match sf {
++            Surf::Plane { n, d } => {
++                let (u, w) = (n.any_perp(), n.cross(n.any_perp()));
++                let Some(es) = extent(si, u, w) else { continue };
++                for (oi, o) in surfs.iter().enumerate() {
++                    let Some(Surf::Plane { n: n2, d: d2 }) = *o else { continue };
++                    let wall = d + d2;
++                    if oi == si || n2.dot(n) > -1.0 + 1e-9 || wall <= tol * 100.0 || wall > limit {
++                        continue;
++                    }
++                    let Some(eo) = extent(oi, u, w) else { continue };
++                    let overlap = |a: (f64, f64), c: (f64, f64)| a.1.min(c.1) - a.0.max(c.0) > tol * 100.0;
++                    if overlap((es[0], es[1]), (eo[0], eo[1])) && overlap((es[2], es[3]), (eo[2], eo[3])) {
++                        return Some(wall);
++                    }
++                }
++            }
++            Surf::Cylinder { o, a, r, convex: true } => {
++                for sf in surfs.iter().flatten() {
++                    if let Surf::Cylinder { o: o2, a: a2, r: r2, convex: false } = *sf {
++                        let v = o2 - o;
++                        let coaxial = a.cross(a2).len() < 1e-6 && (v - a * v.dot(a)).len() < tol * 100.0;
++                        let wall = r - r2;
++                        if coaxial && wall > tol * 100.0 && wall <= limit {
++                            return Some(wall);
++                        }
++                    }
++                }
++            }
++            _ => {}
++        }
++    }
++    None
++}
++
 +/// Whether any of the faces `standing` shares an edge with a face that is not a plane.
 +fn meets_a_round(b: &Body, standing: &[usize], tol: f64) -> bool {
 +    let faces: Vec<mt::Face> = b.solid.face_iter().cloned().collect();
@@ -320,10 +388,10 @@ index 6b7675e..4cd3589 100644
  
  /// The radius of a convex round (cylinder or torus) that meets an open face tangentially and
 diff --git a/crates/kernel/src/tests.rs b/crates/kernel/src/tests.rs
-index abd2a89..397ac31 100644
+index abd2a89a..37873a55 100644
 --- a/crates/kernel/src/tests.rs
 +++ b/crates/kernel/src/tests.rs
-@@ -2312,3 +2312,102 @@ fn shell_of_a_disc_rounded_smaller_than_the_wall() {
+@@ -2312,3 +2312,129 @@ fn shell_of_a_disc_rounded_smaller_than_the_wall() {
          }
      }
  }
@@ -426,8 +494,35 @@ index abd2a89..397ac31 100644
 +    }
 +    assert!(t.elapsed().as_secs() < 60, "took {:?}", t.elapsed());
 +}
++
++/// A 10x10 rim, 6 mm tall and `w` thick, flush in a corner of a 40x30x10 plate, shelled 1 mm from
++/// the plate's top.
++fn rim_shell(w: f64) -> Result<Body> {
++    let base = box_solid(Vec3::new(-20.0, -15.0, -5.0), Vec3::new(20.0, 15.0, 5.0)).unwrap();
++    let outer = box_solid(Vec3::new(10.0, 5.0, 5.0), Vec3::new(20.0, 15.0, 11.0)).unwrap();
++    let hole = box_solid(Vec3::new(10.0 + w, 5.0 + w, 4.0), Vec3::new(20.0 - w, 15.0 - w, 12.0)).unwrap();
++    let ring = boolean(&outer, &hole, BoolOp::Cut).unwrap().unwrap();
++    let u = boolean(&base, &ring, BoolOp::Union).unwrap().unwrap();
++    shell(&u, &[Vec3::new(-17.0, -12.0, 5.0)], 1.0)
++}
++
++/// A rim thicker than twice the shell is the exact plane offset (2872 - 48 (w - 2)); at twice the
++/// shell (a wall of no thickness in the cavity) or less its two sides cross, and it is refused
++/// instead of built with the artefact that gave 2839.4 for a 1.5 mm rim (exact path: 2802.25).
++#[test]
++fn shell_open_face_with_a_rim_thinner_than_two_walls_is_refused() {
++    for w in [3.0, 2.5, 2.2, 2.05] {
++        let v = measure(&rim_shell(w).unwrap()).unwrap().volume;
++        let want = 2872.0 - 48.0 * (w - 2.0);
++        assert!(rel(v, want) < 1e-6, "w {w}: {v} vs {want}");
++    }
++    for w in [2.0, 1.95, 1.8, 1.5] {
++        let e = rim_shell(w).unwrap_err().to_string();
++        assert!(e.contains("its two sides would cross"), "w {w}: {e}");
++    }
++}
 diff --git a/tests/robustness/goldens.json b/tests/robustness/goldens.json
-index 1042729..2ca5e0f 100644
+index 10427291..2ca5e0f1 100644
 --- a/tests/robustness/goldens.json
 +++ b/tests/robustness/goldens.json
 @@ -49,12 +49,12 @@

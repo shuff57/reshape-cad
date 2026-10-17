@@ -174,9 +174,33 @@ Seeds 86, 14, 40, 43, 83, 19, 24, 45, 69 are unchanged. Seed 18: pre-existing st
 Seed 81 is independent of the patch (critic: 309 s/560 MB baseline vs 314 s/580 MB fixed). No runaway: seed 73 ends in 1.6 s.
 all_1 re-run with seed 53 recorded: pass (869 s). cargo fmt --check clean.
 
-## Final verification (second pass, separate agents)
-- Authoritative artifact: shell-stub.patch (= git diff fe3717f..80c1e67). The scratch clone branch was later rebased onto a newer origin/main; do not use it.
-- Identity battery on the final rule: 19 plain bodies, baseline fe3717f vs 80c1e67, status/volume/faces/edges/bbox identical on all 19 (sphere refuses identically on both).
-- n13 (bottom-rounded box + boss): independent analytic derivation gives 2686.835 under convention P; kernel 2686.88 (1.7e-5). Under L it would be about 2720 +/- 15. Kernel uses P.
-- Refused now (were silent wrong volumes): n10, n11, n2b, n4, n8b, n8c, n17a, n17c.
-- Still wrong, same as baseline: n7 (boss touching the open face at one vertex, 2720 vs 2424), n17b.
+## Thin standing wall (commit d9df6230 on top of 80c1e67; supersedes the exact-path claim for rims)
+Critic finding, reproduced: a rim (outer 10x10, 6 mm tall, flush in a plate corner, shell t=1) thinner than 2t built on the
+exact path with an artefact. The loop-crossing check in offset.rs (`crossed_loops`) never sees it, because the rim top's
+inner loop grows past its outer loop without any edge crossing (the hole ends up enclosing the outer boundary).
+Fix (polyhedron.rs, `thin_standing_wall`, only in the standing/exact path, offset.rs untouched): refuse when a standing
+plane has an antiparallel overlapping plane behind it, or a convex standing cylinder a coaxial concave one inside it, with
+a gap in (0, 2t + tol]. Sentence: "not supported yet: a wall standing on the open face is only W mm thick and the shell is
+T mm, so its two sides would cross (a wall needs more than twice the shell thickness; use a thinner shell or a thicker wall)".
+Rule for exactly 2t (w = 2.0): REFUSED. The cavity wall there has zero thickness, the cut meets coincident faces, and the
+result carries a 3e-5 artefact (2872.087 vs 2872); refusing at <= 2t is consistent with the existing `<= 0` area test and
+with the 5x5 boss at t=3. Walls above 2t stay exact.
+| rim wall w | P = 2872 - 48 (w - 2) | baseline fe3717f | before this fix (80c1e67) | now |
+|---|---|---|---|---|
+| 3 | 2824 | 2762.377 | 2824.000 | 2824.000 |
+| 2.5 | 2848 | 2786.377 | 2848.000 | 2848.000 |
+| 2.2 | 2862.4 | 2800.777 | 2862.400 | 2862.400 |
+| 2.05 | 2869.6 | 2807.977 | 2869.600 | 2869.600 |
+| 2.0 | 2872 | 2810.377 | 2872.087 | refused |
+| 1.95 | (2865.06 crossing) | 2807.410 | 2869.120 | refused |
+| 1.8 | (2845.48 crossing) | 2798.110 | 2859.820 | refused |
+| 1.5 | (2802.25 crossing) | 2777.710 | 2839.419 | refused |
+(P(w) formula fitted to the critic's exact values: 2824, 2848, 2862.4, 2869.6, 2872.) Before/after numbers for 2.0..1.5 match the
+critic's 2872.087 / 2869.120 / 2859.820 / 2839.419 exactly.
+Regression test: kernel `shell_open_face_with_a_rim_thinner_than_two_walls_is_refused` (w 3, 2.5, 2.2, 2.05 exact to 1e-6;
+w 2.0, 1.95, 1.8, 1.5 refused).
+Re-run on d9df6230, one job at a time under systemd-run MemoryMax=16G: 19-body plain battery (plain/ + plain2/, volume, faces,
+edges, bodies, bbox, status vs fe3717f): 19 same / 0 different. Critic cases unchanged vs 80c1e67: n6 2729.638, n9 3002.177,
+n13 2686.883 (still not independently verified), n10 and n11 refused. Kernel `--lib shell` 32 passed; engine `--lib shell` 25 passed.
+Not re-run on this commit: full kernel suite, clippy, robustness goldens (the change only adds a refusal inside the
+standing path; seeds 48 and 53 take that path, and I did not check their wall thicknesses, so a golden could in principle move).
