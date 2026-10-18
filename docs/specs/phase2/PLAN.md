@@ -178,6 +178,16 @@ FreeCAD, 0 silently wrong. Merged tree: cargo 728, gates 78/78/78 + 17, wasm 649
 
 Merged tree: cargo 746, gates 78/78/78 + 17, wasm 655,131 B gz.
 
+### Stopped (2026-10-17)
+
+The brep-rs kernel was retired by the owner (commit `4f3c99c` on `spike/solidcraft-wasm-referee`: `packages/brep-rs` moved to
+`archive/brep-rs`); the new direction is `docs/PLAN-scripting-layer.md`. Phase 2 work stops here. State at the stop:
+
+- Landed on `main`: A1W, B1, B2, A3 (+A3R), C1, C2 (safe subset), C3 (+C3R). Last kernel merge `2baef9c`; cargo 746, gates 78/78/78 + 17.
+- Open, not landed: A1 one-pick patch / A2 / A4 (need the pick-group field, `SCHEMA-pick-group.md`, msgbox #552), B3 (branch
+  `slice-B3M`: mesh crack fixed per the comparator, but the adversary found a fuzz hang; the run was cut off mid-verify), D1/D2.
+- Branches `slice-*` and the `.claude/worktrees/wf_*` worktrees are loop leftovers and can be deleted.
+
 ## 2. The gauntlet loop
 
 `docs/specs/phase2/gauntlet-loop.workflow.js` is a Workflow script (run with
