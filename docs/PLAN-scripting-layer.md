@@ -103,7 +103,7 @@ Never a silently wrong solid. A feature the layer cannot build correctly is refu
 
 ## Parked, not continued
 
-Truck patching from `LOOP-PLAN.md` (shell patch rebuilds, upstream bisect B1, sketch-solver rebase B2), the seed goldens (24, 61, 19 unblessed; 48 and 53 provisional; 18 unexplained), Phase 7 rebuild on the new shell rule, all FreeCAD parity slices (A3, B3, C2, C3), and the four upstream issue/PR drafts. Nothing is pushed, filed or posted without the owner approving the exact text.
+Truck patching from `LOOP-PLAN.md` (shell patch rebuilds, upstream bisect B1, sketch-solver rebase B2), the seed goldens (24, 61, 19 unblessed; 48 and 53 provisional; 18 unexplained), Phase 7 rebuild on the new shell rule, all FreeCAD parity slices (A3, B3, C2, C3), the upstream bisect and rebase (B1, B2), and the upstream issue/PR drafts. Upstream contributions are handled in a separate session, not by this plan. Nothing is pushed, filed or posted without the owner approving the exact text.
 
 ## Risks
 
