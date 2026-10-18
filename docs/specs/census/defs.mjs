@@ -385,3 +385,232 @@ A3('pent-vertical-angle-2-60-flip', 'pentagon prism, vertical front/right edge, 
 A3('box-clockwise-top-front-3x2', 'box drawn clockwise, top/front edge, 3 x 2; INTENDED REFUSAL (face numbering of a clockwise outline not probed)',
   `const s = sketch('top'); s.polygon([[0,0],[0,20],[30,20],[30,0]]); const pad = extrude(s, 10); chamfer(pad.edge('top','front'), 3);`, { size2: 2 },
   `doc, body = setup()\ns = sketch(body, 'top')\npoly(s, [(0,0),(0,20),(30,20),(30,0)])\nbase = pad(body, s, 10)\nchamfer_x(body, base, [${A3E('0,0,10', '30,0,10')}], 3, ${CH('Two distances', 'Size2=2')})`, 5910);
+
+// ---- B3R: common of the block with a cylinder tangent on two sides / a ball, neighbours of the two B3 census cases (slice B3R, probe) ----
+// exactVolume: disc-rect area closed form (piecewise asin) times height; ball by z-slices with tanh-sinh, breakpoints at the rect edges/corners
+add({ id: 'b3r__cyl-r10-x1-tangent-y', family: 'boolean', exactVolume: 1770.4624916671185, desc: 'common of the block and a vertical cylinder r10 at (1,10) tangent on two sides, crossing a third',
+  ours: `${BLOCK_O} const c = cylinder(20, 14, { at: [1, 10, 5] }); keep(a, c);`,
+  fc: `${BASE_BOX_F}\n${B2('Cylinder', 'Radius=10, Height=14', '(1,10,-2)')}\n${BOOL('Common')}` });
+add({ id: 'b3r__cyl-r10-x3-tangent-y', family: 'boolean', exactVolume: 2161.670741235378, desc: 'common of the block and a vertical cylinder r10 at (3,10) tangent on two sides, crossing a third',
+  ours: `${BLOCK_O} const c = cylinder(20, 14, { at: [3, 10, 5] }); keep(a, c);`,
+  fc: `${BASE_BOX_F}\n${B2('Cylinder', 'Radius=10, Height=14', '(3,10,-2)')}\n${BOOL('Common')}` });
+add({ id: 'b3r__cyl-r10-x5-tangent-y', family: 'boolean', exactVolume: 2527.407804285415, desc: 'common of the block and a vertical cylinder r10 at (5,10) tangent on two sides, crossing a third',
+  ours: `${BLOCK_O} const c = cylinder(20, 14, { at: [5, 10, 5] }); keep(a, c);`,
+  fc: `${BASE_BOX_F}\n${B2('Cylinder', 'Radius=10, Height=14', '(5,10,-2)')}\n${BOOL('Common')}` });
+add({ id: 'b3r__cyl-r10-x8-tangent-y', family: 'boolean', exactVolume: 2978.091544796509, desc: 'common of the block and a vertical cylinder r10 at (8,10) tangent on two sides, crossing a third',
+  ours: `${BLOCK_O} const c = cylinder(20, 14, { at: [8, 10, 5] }); keep(a, c);`,
+  fc: `${BASE_BOX_F}\n${B2('Cylinder', 'Radius=10, Height=14', '(8,10,-2)')}\n${BOOL('Common')}` });
+add({ id: 'b3r__cyl-r10-x9-tangent-y', family: 'boolean', exactVolume: 3082.8667467121913, desc: 'common of the block and a vertical cylinder r10 at (9,10) tangent on two sides, crossing a third',
+  ours: `${BLOCK_O} const c = cylinder(20, 14, { at: [9, 10, 5] }); keep(a, c);`,
+  fc: `${BASE_BOX_F}\n${B2('Cylinder', 'Radius=10, Height=14', '(9,10,-2)')}\n${BOOL('Common')}` });
+add({ id: 'b3r__cyl-r15-y1-tangent-x', family: 'boolean', exactVolume: 3834.0693646824798, desc: 'common of the block and a vertical cylinder r15 at (15,1) tangent on two sides, crossing a third',
+  ours: `${BLOCK_O} const c = cylinder(30, 14, { at: [15, 1, 5] }); keep(a, c);`,
+  fc: `${BASE_BOX_F}\n${B2('Cylinder', 'Radius=15, Height=14', '(15,1,-2)')}\n${BOOL('Common')}` });
+add({ id: 'b3r__cyl-r15-y3-tangent-x', family: 'boolean', exactVolume: 4428.255210767733, desc: 'common of the block and a vertical cylinder r15 at (15,3) tangent on two sides, crossing a third',
+  ours: `${BLOCK_O} const c = cylinder(30, 14, { at: [15, 3, 5] }); keep(a, c);`,
+  fc: `${BASE_BOX_F}\n${B2('Cylinder', 'Radius=15, Height=14', '(15,3,-2)')}\n${BOOL('Common')}` });
+add({ id: 'b3r__cyl-r15-y5-tangent-x', family: 'boolean', exactVolume: 5006.031562746839, desc: 'common of the block and a vertical cylinder r15 at (15,5) tangent on two sides, crossing a third',
+  ours: `${BLOCK_O} const c = cylinder(30, 14, { at: [15, 5, 5] }); keep(a, c);`,
+  fc: `${BASE_BOX_F}\n${B2('Cylinder', 'Radius=15, Height=14', '(15,5,-2)')}\n${BOOL('Common')}` });
+add({ id: 'b3r__cyl-r5-horizontal-x3-tangent-z', family: 'boolean', exactVolume: 1347.1487177940908, desc: 'common of the block and a horizontal cylinder r5 at (3,10), tangent to the top and bottom faces, crossing the left face',
+  ours: `${BLOCK_O} const c = cylinder(10, 24, { at: [3, 10, 5] }); turn(c, [90, 0, 0]); keep(a, c);`,
+  fc: `${BASE_BOX_F}\n${B2('Cylinder', 'Radius=5, Height=24', '(3,22,5)') + '\nb2.Tip.Placement = App.Placement(V(3,22,5), App.Rotation(V(1,0,0), 90))\ndoc.recompute()'}\n${BOOL('Common')}` });
+add({ id: 'b3r__cyl-r5-horizontal-x5-tangent-z', family: 'boolean', exactVolume: 1570.7963267948967, desc: 'common of the block and a horizontal cylinder r5 at (5,10), tangent to the top and bottom faces',
+  ours: `${BLOCK_O} const c = cylinder(10, 24, { at: [5, 10, 5] }); turn(c, [90, 0, 0]); keep(a, c);`,
+  fc: `${BASE_BOX_F}\n${B2('Cylinder', 'Radius=5, Height=24', '(5,22,5)') + '\nb2.Tip.Placement = App.Placement(V(5,22,5), App.Rotation(V(1,0,0), 90))\ndoc.recompute()'}\n${BOOL('Common')}` });
+add({ id: 'b3r__cyl-r5-horizontal-x8-tangent-z', family: 'boolean', exactVolume: 1570.7963267948967, desc: 'common of the block and a horizontal cylinder r5 at (8,10), tangent to the top and bottom faces',
+  ours: `${BLOCK_O} const c = cylinder(10, 24, { at: [8, 10, 5] }); turn(c, [90, 0, 0]); keep(a, c);`,
+  fc: `${BASE_BOX_F}\n${B2('Cylinder', 'Radius=5, Height=24', '(8,22,5)') + '\nb2.Tip.Placement = App.Placement(V(8,22,5), App.Rotation(V(1,0,0), 90))\ndoc.recompute()'}\n${BOOL('Common')}` });
+add({ id: 'b3r__ball-r11-at-9-13-7', family: 'boolean', exactVolume: 2932.0972883970926, desc: 'common of the block and a ball r11 centred (9,13,7)',
+  ours: `${BLOCK_O} const s = sphere(22, { at: [9, 13, 7] }); keep(a, s);`,
+  fc: `${BASE_BOX_F}\n${B2('Sphere', 'Radius=11', '(9,13,7)')}\n${BOOL('Common')}` });
+add({ id: 'b3r__ball-r12-at-15-10-5', family: 'boolean', exactVolume: 3992.1676381072066, desc: 'common of the block and a ball r12 centred (15,10,5)',
+  ours: `${BLOCK_O} const s = sphere(24, { at: [15, 10, 5] }); keep(a, s);`,
+  fc: `${BASE_BOX_F}\n${B2('Sphere', 'Radius=12', '(15,10,5)')}\n${BOOL('Common')}` });
+add({ id: 'b3r__ball-r10-at-5-10-5', family: 'boolean', exactVolume: 2350.862479914361, desc: 'common of the block and a ball r10 centred (5,10,5)',
+  ours: `${BLOCK_O} const s = sphere(20, { at: [5, 10, 5] }); keep(a, s);`,
+  fc: `${BASE_BOX_F}\n${B2('Sphere', 'Radius=10', '(5,10,5)')}\n${BOOL('Common')}` });
+add({ id: 'b3r__ball-rand00-r13-at-5-4-7', family: 'boolean', exactVolume: 2529.9944155412104, desc: 'common of the block and a ball r13 centred (5,4,7)',
+  ours: `${BLOCK_O} const s = sphere(26, { at: [5, 4, 7] }); keep(a, s);`,
+  fc: `${BASE_BOX_F}\n${B2('Sphere', 'Radius=13', '(5,4,7)')}\n${BOOL('Common')}` });
+add({ id: 'b3r__ball-rand01-r14-at-16-10-10', family: 'boolean', exactVolume: 4473.62793871182, desc: 'common of the block and a ball r14 centred (16,10,10)',
+  ours: `${BLOCK_O} const s = sphere(28, { at: [16, 10, 10] }); keep(a, s);`,
+  fc: `${BASE_BOX_F}\n${B2('Sphere', 'Radius=14', '(16,10,10)')}\n${BOOL('Common')}` });
+add({ id: 'b3r__ball-rand02-r10-at-10-16-5', family: 'boolean', exactVolume: 2182.213203823838, desc: 'common of the block and a ball r10 centred (10,16,5)',
+  ours: `${BLOCK_O} const s = sphere(20, { at: [10, 16, 5] }); keep(a, s);`,
+  fc: `${BASE_BOX_F}\n${B2('Sphere', 'Radius=10', '(10,16,5)')}\n${BOOL('Common')}` });
+add({ id: 'b3r__ball-rand03-r7-at-29-17-6', family: 'boolean', exactVolume: 583.3041990009939, desc: 'common of the block and a ball r7 centred (29,17,6)',
+  ours: `${BLOCK_O} const s = sphere(14, { at: [29, 17, 6] }); keep(a, s);`,
+  fc: `${BASE_BOX_F}\n${B2('Sphere', 'Radius=7', '(29,17,6)')}\n${BOOL('Common')}` });
+add({ id: 'b3r__ball-rand04-r9-at-28-14-6', family: 'boolean', exactVolume: 1309.8243514853007, desc: 'common of the block and a ball r9 centred (28,14,6)',
+  ours: `${BLOCK_O} const s = sphere(18, { at: [28, 14, 6] }); keep(a, s);`,
+  fc: `${BASE_BOX_F}\n${B2('Sphere', 'Radius=9', '(28,14,6)')}\n${BOOL('Common')}` });
+add({ id: 'b3r__ball-rand05-r9-at-7-1-7', family: 'boolean', exactVolume: 1183.510496279674, desc: 'common of the block and a ball r9 centred (7,1,7)',
+  ours: `${BLOCK_O} const s = sphere(18, { at: [7, 1, 7] }); keep(a, s);`,
+  fc: `${BASE_BOX_F}\n${B2('Sphere', 'Radius=9', '(7,1,7)')}\n${BOOL('Common')}` });
+add({ id: 'b3r__ball-rand06-r10-at-21-16-10', family: 'boolean', exactVolume: 1626.8493867590805, desc: 'common of the block and a ball r10 centred (21,16,10)',
+  ours: `${BLOCK_O} const s = sphere(20, { at: [21, 16, 10] }); keep(a, s);`,
+  fc: `${BASE_BOX_F}\n${B2('Sphere', 'Radius=10', '(21,16,10)')}\n${BOOL('Common')}` });
+add({ id: 'b3r__ball-rand07-r14-at-20-12-5', family: 'boolean', exactVolume: 4386.158210705371, desc: 'common of the block and a ball r14 centred (20,12,5)',
+  ours: `${BLOCK_O} const s = sphere(28, { at: [20, 12, 5] }); keep(a, s);`,
+  fc: `${BASE_BOX_F}\n${B2('Sphere', 'Radius=14', '(20,12,5)')}\n${BOOL('Common')}` });
+add({ id: 'b3r__ball-rand08-r9-at-24-13-9', family: 'boolean', exactVolume: 1571.9512755906862, desc: 'common of the block and a ball r9 centred (24,13,9)',
+  ours: `${BLOCK_O} const s = sphere(18, { at: [24, 13, 9] }); keep(a, s);`,
+  fc: `${BASE_BOX_F}\n${B2('Sphere', 'Radius=9', '(24,13,9)')}\n${BOOL('Common')}` });
+add({ id: 'b3r__ball-rand09-r8-at-30-2-5', family: 'boolean', exactVolume: 584.2508633198477, desc: 'common of the block and a ball r8 centred (30,2,5)',
+  ours: `${BLOCK_O} const s = sphere(16, { at: [30, 2, 5] }); keep(a, s);`,
+  fc: `${BASE_BOX_F}\n${B2('Sphere', 'Radius=8', '(30,2,5)')}\n${BOOL('Common')}` });
+add({ id: 'b3r__ball-rand10-r8-at-3-12-1', family: 'boolean', exactVolume: 970.3497790202136, desc: 'common of the block and a ball r8 centred (3,12,1)',
+  ours: `${BLOCK_O} const s = sphere(16, { at: [3, 12, 1] }); keep(a, s);`,
+  fc: `${BASE_BOX_F}\n${B2('Sphere', 'Radius=8', '(3,12,1)')}\n${BOOL('Common')}` });
+add({ id: 'b3r__ball-rand11-r5-at-27-1-5', family: 'boolean', exactVolume: 301.19006214929806, desc: 'common of the block and a ball r5 centred (27,1,5)',
+  ours: `${BLOCK_O} const s = sphere(10, { at: [27, 1, 5] }); keep(a, s);`,
+  fc: `${BASE_BOX_F}\n${B2('Sphere', 'Radius=5', '(27,1,5)')}\n${BOOL('Common')}` });
+add({ id: 'b3r__ball-rand12-r9-at-12-3-6', family: 'boolean', exactVolume: 1621.5387873706802, desc: 'common of the block and a ball r9 centred (12,3,6)',
+  ours: `${BLOCK_O} const s = sphere(18, { at: [12, 3, 6] }); keep(a, s);`,
+  fc: `${BASE_BOX_F}\n${B2('Sphere', 'Radius=9', '(12,3,6)')}\n${BOOL('Common')}` });
+add({ id: 'b3r__ball-rand13-r11-at-2-4-2', family: 'boolean', exactVolume: 1490.0107382277688, desc: 'common of the block and a ball r11 centred (2,4,2)',
+  ours: `${BLOCK_O} const s = sphere(22, { at: [2, 4, 2] }); keep(a, s);`,
+  fc: `${BASE_BOX_F}\n${B2('Sphere', 'Radius=11', '(2,4,2)')}\n${BOOL('Common')}` });
+add({ id: 'b3r__ball-rand14-r9-at-11-1-5', family: 'boolean', exactVolume: 1311.3079793132354, desc: 'common of the block and a ball r9 centred (11,1,5)',
+  ours: `${BLOCK_O} const s = sphere(18, { at: [11, 1, 5] }); keep(a, s);`,
+  fc: `${BASE_BOX_F}\n${B2('Sphere', 'Radius=9', '(11,1,5)')}\n${BOOL('Common')}` });
+add({ id: 'b3r__ball-rand15-r7-at-1-6-0', family: 'boolean', exactVolume: 428.04723102774267, desc: 'common of the block and a ball r7 centred (1,6,0)',
+  ours: `${BLOCK_O} const s = sphere(14, { at: [1, 6, 0] }); keep(a, s);`,
+  fc: `${BASE_BOX_F}\n${B2('Sphere', 'Radius=7', '(1,6,0)')}\n${BOOL('Common')}` });
+add({ id: 'b3r__ball-rand16-r9-at-16-17-0', family: 'boolean', exactVolume: 1130.9733552923137, desc: 'common of the block and a ball r9 centred (16,17,0)',
+  ours: `${BLOCK_O} const s = sphere(18, { at: [16, 17, 0] }); keep(a, s);`,
+  fc: `${BASE_BOX_F}\n${B2('Sphere', 'Radius=9', '(16,17,0)')}\n${BOOL('Common')}` });
+add({ id: 'b3r__ball-rand17-r5-at-26-8-1', family: 'boolean', exactVolume: 328.08586685714056, desc: 'common of the block and a ball r5 centred (26,8,1)',
+  ours: `${BLOCK_O} const s = sphere(10, { at: [26, 8, 1] }); keep(a, s);`,
+  fc: `${BASE_BOX_F}\n${B2('Sphere', 'Radius=5', '(26,8,1)')}\n${BOOL('Common')}` });
+add({ id: 'b3r__ball-rand18-r10-at-17-15-1', family: 'boolean', exactVolume: 1988.8194975603321, desc: 'common of the block and a ball r10 centred (17,15,1)',
+  ours: `${BLOCK_O} const s = sphere(20, { at: [17, 15, 1] }); keep(a, s);`,
+  fc: `${BASE_BOX_F}\n${B2('Sphere', 'Radius=10', '(17,15,1)')}\n${BOOL('Common')}` });
+add({ id: 'b3r__ball-rand19-r10-at-0-8-0', family: 'boolean', exactVolume: 1017.8760197630825, desc: 'common of the block and a ball r10 centred (0,8,0)',
+  ours: `${BLOCK_O} const s = sphere(20, { at: [0, 8, 0] }); keep(a, s);`,
+  fc: `${BASE_BOX_F}\n${B2('Sphere', 'Radius=10', '(0,8,0)')}\n${BOOL('Common')}` });
+add({ id: 'b3r__ball-rand20-r6-at-24-18-7', family: 'boolean', exactVolume: 558.0649505140603, desc: 'common of the block and a ball r6 centred (24,18,7)',
+  ours: `${BLOCK_O} const s = sphere(12, { at: [24, 18, 7] }); keep(a, s);`,
+  fc: `${BASE_BOX_F}\n${B2('Sphere', 'Radius=6', '(24,18,7)')}\n${BOOL('Common')}` });
+add({ id: 'b3r__ball-rand21-r5-at-6-0-2', family: 'boolean', exactVolume: 205.250720034531, desc: 'common of the block and a ball r5 centred (6,0,2)',
+  ours: `${BLOCK_O} const s = sphere(10, { at: [6, 0, 2] }); keep(a, s);`,
+  fc: `${BASE_BOX_F}\n${B2('Sphere', 'Radius=5', '(6,0,2)')}\n${BOOL('Common')}` });
+add({ id: 'b3r__ball-rand22-r8-at-17-10-3', family: 'boolean', exactVolume: 1623.15620435471, desc: 'common of the block and a ball r8 centred (17,10,3)',
+  ours: `${BLOCK_O} const s = sphere(16, { at: [17, 10, 3] }); keep(a, s);`,
+  fc: `${BASE_BOX_F}\n${B2('Sphere', 'Radius=8', '(17,10,3)')}\n${BOOL('Common')}` });
+add({ id: 'b3r__ball-rand23-r10-at-9-0-3', family: 'boolean', exactVolume: 1362.5564936315002, desc: 'common of the block and a ball r10 centred (9,0,3)',
+  ours: `${BLOCK_O} const s = sphere(20, { at: [9, 0, 3] }); keep(a, s);`,
+  fc: `${BASE_BOX_F}\n${B2('Sphere', 'Radius=10', '(9,0,3)')}\n${BOOL('Common')}` });
+
+// ---- A2 probe: equal-radius fillet chains at a corner of a 30 x 20 x 10 block (slice A2) ------------------------------------------
+// exactVolume (independent closed forms; prisms of the rounded section, k = 1 - pi/4):
+//   two adjacent top edges (x30 + y20): 6000 - k r^2 (30+20) + r^3 (5/3 - pi/2)       (two prisms, overlap at the corner)
+//   top loop (4 edges):                 6000 - k r^2 (2*30+2*20) + 4 r^3 (5/3 - pi/2)
+//   three edges at a corner, sphere corner: 6000 - k r^2 (60 - 3r) - r^3 (1 - pi/6)    (cylinders stop at the corner cube, sphere octant in it)
+{
+  const k = 1 - Math.PI / 4, o = 5 / 3 - Math.PI / 2;
+  const TF = `edge_between(base.Shape, [0,0,10], [30,0,10])`, TR = `edge_between(base.Shape, [30,0,10], [30,20,10])`;
+  const TB = `edge_between(base.Shape, [30,20,10], [0,20,10])`, TL = `edge_between(base.Shape, [0,20,10], [0,0,10])`;
+  const VFR = `edge_between(base.Shape, [30,0,0], [30,0,10])`;
+  for (const r of [1, 2, 3]) {
+    add({ id: `a2__two-adjacent-r${r}`, family: 'dress-chain', desc: `fillet ${r} on top/right and top/front (meet at a corner)`,
+      exactVolume: 6000 - k * r * r * 50 + r ** 3 * o,
+      ours: `${BOX_O} fillet([pad.edge('top','right'), pad.edge('top','front')], ${r});`,
+      fc: `${BOX_F}\ndress(body, 'Fillet', base, [${TR}, ${TF}], ${r})` });
+    add({ id: `a2__top-loop-r${r}`, family: 'dress-chain', desc: `fillet ${r} on all four top edges`,
+      exactVolume: 6000 - k * r * r * 100 + 4 * r ** 3 * o,
+      ours: `${BOX_O} fillet([pad.edge('top','front'), pad.edge('top','right'), pad.edge('top','back'), pad.edge('top','left')], ${r});`,
+      fc: `${BOX_F}\ndress(body, 'Fillet', base, [${TF}, ${TR}, ${TB}, ${TL}], ${r})` });
+    add({ id: `a2__three-at-corner-r${r}`, family: 'dress-chain', desc: `fillet ${r} on the three edges meeting at the (30,0,10) corner`,
+      exactVolume: 6000 - k * r * r * (60 - 3 * r) - r ** 3 * (1 - Math.PI / 6),
+      ours: `${BOX_O} fillet([pad.edge('top','front'), pad.edge('top','right'), pad.edge('front','right')], ${r});`,
+      fc: `${BOX_F}\ndress(body, 'Fillet', base, [${TF}, ${TR}, ${VFR}], ${r})` });
+  }
+}
+
+// ---- C2S probe: hole drill point / counterdrill / taper, SAFE SUBSET (slice C2S) ---------------------------------------------------
+// ours has no word for these options: the plain hole is scripted and `docPatch` puts the doc field on the hole feature (the
+// field names are the ones the earlier C2 branches used: drillPoint {angleDeg, includedInDepth}, counterdrill {diameter, depth,
+// angleDeg}, taper {angleDeg}). `docFn` (probe-only, honoured by the scratch run.mjs) edits the lowered doc for the neighbours the
+// script itself refuses to say. exactVolume: closed forms, see probe notes (cylinder + cone / frustum volumes off 40x30x10).
+{
+  const C2S_EMIT = [
+    'from collections import Counter',
+    '_emit0 = emit',
+    'def emit(vid, b, extra=None):',
+    '    sh = b.Shape',
+    '    ex = dict(surf=dict(Counter(type(f.Surface).__name__ for f in sh.Faces)), faceAreas=sorted([[type(f.Surface).__name__, round(f.Area, 6)] for f in sh.Faces], key=lambda t: (t[0], t[1])))',
+    '    if extra: ex.update(extra)',
+    '    return _emit0(vid, b, ex)',
+  ].join('\n');
+  const FC_HOLE = (cx, cy, z, depth, props, dia = 6) => `sk_${String(depth + '_' + cx + '_' + cy).replace(/[.]/g, 'p')} = sketch(body, 'top', ${z})\ncircle(sk_${String(depth + '_' + cx + '_' + cy).replace(/[.]/g, 'p')}, ${cx}, ${cy}, ${dia / 2})\nh = body.newObject('PartDesign::Hole', 'Hole')\nh.Profile = sk_${String(depth + '_' + cx + '_' + cy).replace(/[.]/g, 'p')}\nh.Threaded = False\nh.Diameter = ${dia}\nh.DepthType = 'Dimension'\nh.Depth = ${depth}\nh.DrillPoint = 'Flat'\n${props}\ndoc.recompute()`;
+  const OPT = {
+    'drill-point-118': { patch: { drillPoint: { angleDeg: 118, includedInDepth: false } }, fc: "h.DrillPoint = 'Angled'\nh.DrillPointAngle = 118\nh.DrillForDepth = False" },
+    'drill-point-118-for-depth': { patch: { drillPoint: { angleDeg: 118, includedInDepth: true } }, fc: "h.DrillPoint = 'Angled'\nh.DrillPointAngle = 118\nh.DrillForDepth = True" },
+    'counterdrill-d10-3': { patch: { counterdrill: { diameter: 10, depth: 3, angleDeg: 90 } }, fc: "h.HoleCutType = 'Counterdrill'\nh.HoleCutDiameter = 10\nh.HoleCutDepth = 3" },
+    'tapered-85': { patch: { taper: { angleDeg: 5 } }, fc: 'h.Tapered = True\nh.TaperedAngle = 85' },
+    'tapered-95': { patch: { taper: { angleDeg: -5 } }, fc: 'h.Tapered = True\nh.TaperedAngle = 95' },
+  };
+  const mk = (slug, o, f, desc, o2) => add({ id: `c2s__${slug}`, family: 'hole-mode', desc, ours: o.ours, docPatch: o2.patch, docFn: o.docFn, fc: `${C2S_EMIT}\n${f}\n${o2.fc}\ndoc.recompute()` });
+  void mk;
+  const PLATE_HOLE_F = (o) => `${PLATE_F}\n${FC_HOLE(20, 15, 10, 7, o.fc)}`;
+  // built subset: plain box
+  for (const [k, o] of Object.entries(OPT)) {
+    add({ id: `c2s__box-${k}`, family: 'hole-mode', desc: `40x30x10 box, d6 hole 7 deep at the centre, ${k}`, ours: `${PLATE_O} hole(plate, { across: 6, deep: 7, at: [0, 0] });`, docPatch: o.patch, fc: `${C2S_EMIT}\n${PLATE_HOLE_F(o)}` });
+  }
+  // neighbours that must refuse
+  const NB = {
+    'cylinder-body': { desc: 'a cylinder body r20 x 10, hole at the axis',
+      ours: `const s = sketch('top'); s.circle(40, { at: [20, 15] }); const cyl = extrude(s, 10); hole(cyl, { across: 6, deep: 7, at: [0, 0] });`,
+      fc: (o) => `doc, body = setup()\ns1 = sketch(body, 'top')\ncircle(s1, 20, 15, 20)\nbase = pad(body, s1, 10)\n${FC_HOLE(20, 15, 10, 7, o.fc)}` },
+    'stepped-top': { desc: 'a 40x30x10 plate with a 20x20x5 step on it, the hole starts on the step top (z 15)',
+      ours: `${PLATE_O} const s2 = sketch('top', 10); s2.rect(20, 20, { at: [20, 15] }); const step = extrude(s2, 5); const u = join(plate, step); hole(u, { across: 6, deep: 7, at: [0, 0] });`,
+      fc: (o) => `${PLATE_F}\ns2 = sketch(body, 'top', 10)\nrect(s2, 10, 5, 30, 25)\npad_x(body, s2, 5)\n${FC_HOLE(20, 15, 15, 7, o.fc)}` },
+    'beside-step': { desc: 'the same stepped plate, the hole on the ORIGINAL top face beside the step (x 5)',
+      ours: `${PLATE_O} const s2 = sketch('top', 10); s2.rect(20, 20, { at: [20, 15] }); const step = extrude(s2, 5); const u = join(plate, step); hole(u, { across: 6, deep: 7, at: [-15, 0] });`,
+      docFn: (doc) => { doc.features.at(-1).center = [-15, 0, -1]; },
+      fc: (o) => `${PLATE_F}\ns2 = sketch(body, 'top', 10)\nrect(s2, 10, 5, 30, 25)\npad_x(body, s2, 5)\n${FC_HOLE(5, 15, 10, 7, o.fc)}` },
+    'after-bore': { desc: 'a plain d6 bore 4 deep (to z 6), then the option hole at the same place',
+      ours: `${PLATE_O} const h1 = hole(plate, { across: 6, deep: 4, at: [0, 0] }); hole(h1, { across: 6, deep: 7, at: [0, 0] });`,
+      fc: (o) => `${PLATE_F}\n${FC_HOLE(20, 15, 10, 4, '')}\n${FC_HOLE(20, 15, 10, 7, o.fc)}` },
+    'pocket-floor': { desc: 'a d10 pocket 4 deep (floor z 6), the d6 hole starts at the top and runs 7 deep through the pocket floor',
+      ours: `${PLATE_O} const s2 = sketch('top', 10); s2.circle(10, { at: [20, 15] }); pocket(s2, plate, 4);`,
+      docFn: (doc) => { doc.features.push({ id: 'hole1', kind: 'hole', target: doc.features.at(-1).id, diameter: 6, depth: 7, center: [0, 0, 1.5], axis: 'z' }); },
+      fc: (o) => `${PLATE_F}\nsp = sketch(body, 'top', 10)\ncircle(sp, 20, 15, 5)\npocket_x(body, sp, 4)\n${FC_HOLE(20, 15, 10, 7, o.fc)}` },
+    'near-edge': { desc: 'hole centre 3.4 from the left face (x 3.4), the widening taper / the d10 counterdrill leave the box through x 0',
+      ours: `${PLATE_O} hole(plate, { across: 6, deep: 7, at: [-16.6, 0] });`,
+      fc: (o) => `${PLATE_F}\n${FC_HOLE(3.4, 15, 10, 7, o.fc)}` },
+  };
+  for (const [nb, n] of Object.entries(NB)) {
+    for (const [k, o] of Object.entries(OPT)) {
+      if (nb === 'near-edge' && k.startsWith('drill-point')) continue;
+      add({ id: `c2s__nb-${nb}__${k}`, family: 'hole-mode', desc: `${n.desc}; ${k}`, ours: n.ours, docPatch: o.patch, docFn: n.docFn, fc: `${C2S_EMIT}\n${n.fc(o)}` });
+    }
+  }
+  // the cone tip leaves the bottom face: 9.5 deep in a 10 thick plate, 118 point not counted in the depth
+  add({ id: 'c2s__nb-tip-leaves-bottom__drill-point-118', family: 'hole-mode', desc: 'd6 hole 9.5 deep (shoulder at z 0.5), 118 point below it: the cone tip is 1.3 below the box',
+    ours: `${PLATE_O} hole(plate, { across: 6, deep: 9.5, at: [0, 0] });`, docPatch: OPT['drill-point-118'].patch, fc: `${C2S_EMIT}\n${PLATE_F}\n${FC_HOLE(20, 15, 10, 9.5, OPT['drill-point-118'].fc)}` });
+  add({ id: 'c2s__nb-counterdrill-reaches-floor__counterdrill', family: 'hole-mode', desc: 'a d10 counterdrill 5 deep in a d6 hole 7 deep: the cone would end at z 3 inside, plus 90 degree (ends at depth 7)',
+    ours: `${PLATE_O} hole(plate, { across: 6, deep: 7, at: [0, 0] });`, docPatch: { counterdrill: { diameter: 10, depth: 5, angleDeg: 90 } }, fc: `${C2S_EMIT}\n${PLATE_F}\n${FC_HOLE(20, 15, 10, 7, "h.HoleCutType = 'Counterdrill'\nh.HoleCutDiameter = 10\nh.HoleCutDepth = 5")}` });
+}
+
+// ---- B3M probe: mesh watertightness of a ball / cylinder kept from a block (slice B3M) ----------------------------------------------
+// Every B3 / B3R keep case is cloned as b3m__<id> with an emit that also records FreeCAD's face surface types and areas, plus the one
+// new case the mesh crack was found on (ball r15 at (17,5,2.5)). exactVolume is filled in by the probe's independent numpy integral.
+{
+  const B3M_EMIT = [
+    'from collections import Counter',
+    '_emit0 = emit',
+    'def emit(vid, b, extra=None):',
+    '    sh = b.Shape',
+    '    ex = dict(surf=dict(Counter(type(f.Surface).__name__ for f in sh.Faces)), faceAreas=sorted([[type(f.Surface).__name__, round(f.Area, 6)] for f in sh.Faces], key=lambda t: (t[0], t[1])))',
+    '    if extra: ex.update(extra)',
+    '    return _emit0(vid, b, ex)',
+  ].join('\n');
+  add({ id: 'b3r__ball-r15-at-17-5-2p5', family: 'boolean', desc: 'common of the block and a ball r15 centred (17,5,2.5) (mesh crack found here)',
+    ours: `${BLOCK_O} const s = sphere(30, { at: [17, 5, 2.5] }); keep(a, s);`,
+    fc: `${BASE_BOX_F}\n${B2('Sphere', 'Radius=15', '(17,5,2.5)')}\n${BOOL('Common')}` });
+  const src = CASES.filter((c) => c.id.startsWith('b3r__') || c.id === 'boolean__common-cylinder' || c.id === 'boolean__common-sphere');
+  for (const c of src) add({ ...c, id: `b3m__${c.id.replace(/^(b3r__|boolean__)/, '')}`, fc: `${B3M_EMIT}\n${c.fc}` });
+}
