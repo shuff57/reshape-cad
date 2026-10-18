@@ -12,7 +12,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // plus `/brep-rs/` -- so the URL the adapter asks for is the URL this
 // answers, with no path knowledge duplicated on the adapter side.
 const KERNEL_URL_PREFIX = '/reshape/kernel/brep-rs/';
-const KERNEL_DIR = path.resolve(__dirname, '../brep-rs/pkg');
+const KERNEL_DIR = path.resolve(__dirname, '../../archive/brep-rs/pkg');
 
 const CONTENT_TYPES: Record<string, string> = {
   '.wasm': 'application/wasm',
