@@ -1,0 +1,21 @@
+{
+ "id": "asym-revolve-90-xy",
+ "outcome": "built",
+ "volume": 5183.112168397525,
+ "faces": 6,
+ "bbox": [
+  8.881784197001252e-16,
+  -8.881784197001252e-16,
+  2.9999999999999996,
+  20.000000000000004,
+  20,
+  25
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sketch",
+  "revolve"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[10,3],[20,3],[20,25],[10,25]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"angle\":-90,\"operation\":\"new\",\"body_name\":\"b_r1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

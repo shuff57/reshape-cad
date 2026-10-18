@@ -1,0 +1,177 @@
+phase 2: 43 constrained sketches x 2 start modes (stored / rough), truck=solidcraft solver, ref=brep-rs + closed form + FreeCAD refs
+bars (inherited from phase0, not tuned): volume/bbox rel 1e-9 planar / 0.0003 curved; COM x diagonal 0.000001 / 0.00003; rule residual 0.000001; solved geometry 0.000001
+PASS                     own-rect-rough-dims                                  stored  dof ref/brep/truck 0/0/0
+PASS                     own-rect-rough-dims                                  rough   dof ref/brep/truck 0/0/0
+PASS                     own-symmetric-trapezoid                              stored  dof ref/brep/truck 0/null/0
+PASS                     own-symmetric-trapezoid                              rough   dof ref/brep/truck 0/null/0
+PASS                     own-symmetric-3pt-rect                               stored  dof ref/brep/truck 0/0/0
+PASS                     own-symmetric-3pt-rect                               rough   dof ref/brep/truck 0/0/0
+PASS                     own-triangle-length-angle                            stored  dof ref/brep/truck 0/0/0
+PASS                     own-triangle-length-angle                            rough   dof ref/brep/truck 0/0/0
+PASS                     own-hexagon-equal-oncircle                           stored  dof ref/brep/truck 0/0/0
+PASS                     own-hexagon-equal-oncircle                           rough   dof ref/brep/truck 0/0/0
+PASS                     own-circle-diameter                                  stored  dof ref/brep/truck 0/0/0
+PASS                     own-circle-diameter                                  rough   dof ref/brep/truck 0/0/0
+PASS                     own-washer-dims                                      stored  dof ref/brep/truck 0/0/0
+PASS                     own-washer-dims                                      rough   dof ref/brep/truck 0/0/0
+PASS                     own-l-shape-dims                                     stored  dof ref/brep/truck 0/0/0
+FAIL                     own-l-shape-dims                                     rough   dof ref/brep/truck 0/0/0 | brep-rs/bbox delta 1.11e-9 > 1e-9
+PASS                     own-xz-plane-rect                                    stored  dof ref/brep/truck 0/0/0
+PASS                     own-xz-plane-rect                                    rough   dof ref/brep/truck 0/0/0
+PASS                     own-right-trapezoid-par-perp                         stored  dof ref/brep/truck 0/0/0
+PASS                     own-right-trapezoid-par-perp                         rough   dof ref/brep/truck 0/0/0
+PASS                     own-slot-dims-from-points                            stored  dof ref/brep/truck 0/0/0
+PASS                     own-slot-dims-from-points                            rough   dof ref/brep/truck 0/0/0
+PASS                     sk-rect-dof__corner-origin-25x60                     stored  dof ref/brep/truck 0/0/0
+PASS                     sk-rect-dof__corner-origin-25x60                     rough   dof ref/brep/truck 0/0/0
+PASS                     sk-rect-dof__offset-corner-30x18                     stored  dof ref/brep/truck 0/0/0
+PASS                     sk-rect-dof__offset-corner-30x18                     rough   dof ref/brep/truck 0/0/0
+PASS                     sk-rect-dof__square-by-equal                         stored  dof ref/brep/truck 0/0/0
+PASS                     sk-rect-dof__square-by-equal                         rough   dof ref/brep/truck 0/0/0
+PASS                     sk-rect-dof__right-triangle                          stored  dof ref/brep/truck 0/0/0
+PASS                     sk-rect-dof__right-triangle                          rough   dof ref/brep/truck 0/0/0
+PASS                     sk-rect-dof__parallelogram                           stored  dof ref/brep/truck 0/0/0
+PASS                     sk-rect-dof__parallelogram                           rough   dof ref/brep/truck 0/0/0
+PASS                     sk-rect-dof__circle-pinned                           stored  dof ref/brep/truck 0/0/0
+PASS                     sk-rect-dof__circle-pinned                           rough   dof ref/brep/truck 0/0/0
+AGREE-UNDERDETERMINED    sk-rect-underconstrained__hv-only-30x15              stored  dof ref/brep/truck 4/4/4 | the reference leaves degrees of freedom open, so two solvers may legitimately land on different parts; every rule is checked on each output instead
+DIVERGE-UNDERDETERMINED  sk-rect-underconstrained__hv-only-30x15              rough   dof ref/brep/truck 4/4/4 | the reference leaves degrees of freedom open, so two solvers may legitimately land on different parts; every rule is checked on each output instead
+AGREE-UNDERDETERMINED    sk-rect-underconstrained__width-only                 stored  dof ref/brep/truck 3/3/3 | the reference leaves degrees of freedom open, so two solvers may legitimately land on different parts; every rule is checked on each output instead
+DIVERGE-UNDERDETERMINED  sk-rect-underconstrained__width-only                 rough   dof ref/brep/truck 3/3/3 | the reference leaves degrees of freedom open, so two solvers may legitimately land on different parts; every rule is checked on each output instead
+AGREE-UNDERDETERMINED    sk-rect-underconstrained__width-and-height           stored  dof ref/brep/truck 2/2/2 | the reference leaves degrees of freedom open, so two solvers may legitimately land on different parts; every rule is checked on each output instead
+DIVERGE-UNDERDETERMINED  sk-rect-underconstrained__width-and-height           rough   dof ref/brep/truck 2/2/2 | the reference leaves degrees of freedom open, so two solvers may legitimately land on different parts; every rule is checked on each output instead
+AGREE-UNDERDETERMINED    sk-rect-underconstrained__pinned-corner-only         stored  dof ref/brep/truck 2/2/2 | the reference leaves degrees of freedom open, so two solvers may legitimately land on different parts; every rule is checked on each output instead
+DIVERGE-UNDERDETERMINED  sk-rect-underconstrained__pinned-corner-only         rough   dof ref/brep/truck 2/2/2 | the reference leaves degrees of freedom open, so two solvers may legitimately land on different parts; every rule is checked on each output instead
+AGREED-NO-SOLID          sk-rect-underconstrained__free-line                  stored   | command 4 solid.extrude: sk has no closed profiles | brep-rs: extrude e1: edge 1 has a loose end; the outline must close
+AGREED-NO-SOLID          sk-rect-underconstrained__free-line                  rough    | command 4 solid.extrude: sk has no closed profiles | brep-rs: extrude e1: edge 1 has a loose end; the outline must close
+AGREE-UNDERDETERMINED    sk-rect-underconstrained__free-circle                stored  dof ref/brep/truck 3/3/3 | the reference leaves degrees of freedom open, so two solvers may legitimately land on different parts; every rule is checked on each output instead
+AGREE-UNDERDETERMINED    sk-rect-underconstrained__free-circle                rough   dof ref/brep/truck 3/3/3 | the reference leaves degrees of freedom open, so two solvers may legitimately land on different parts; every rule is checked on each output instead
+AGREE-UNDERDETERMINED    sk-rect-underconstrained__triangle-joined            stored  dof ref/brep/truck 6/6/6 | the reference leaves degrees of freedom open, so two solvers may legitimately land on different parts; every rule is checked on each output instead
+DIVERGE-UNDERDETERMINED  sk-rect-underconstrained__triangle-joined            rough   dof ref/brep/truck 6/6/6 | the reference leaves degrees of freedom open, so two solvers may legitimately land on different parts; every rule is checked on each output instead
+AGREE-UNDERDETERMINED    sk-rect-underconstrained__circle-radius-only         stored  dof ref/brep/truck 2/2/2 | the reference leaves degrees of freedom open, so two solvers may legitimately land on different parts; every rule is checked on each output instead
+DIVERGE-UNDERDETERMINED  sk-rect-underconstrained__circle-radius-only         rough   dof ref/brep/truck 2/2/2 | the reference leaves degrees of freedom open, so two solvers may legitimately land on different parts; every rule is checked on each output instead
+AGREED-REFUSAL           sk-conflict__width-30-vs-35                          stored   | command 16 sketch.dimension: that would over-constrain the sketch (conflicts with k10, k12)
+AGREED-REFUSAL           sk-conflict__width-30-vs-35                          rough    | command 16 sketch.dimension: that would over-constrain the sketch (conflicts with k10, k12)
+SOLIDCRAFT-STRICTER      sk-conflict__redundant-width                         stored   | command 16 sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k10 (LinearDimension); add it as a driven (reference) dimension with driven: true
+SOLIDCRAFT-STRICTER      sk-conflict__redundant-width                         rough    | command 16 sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k10 (LinearDimension); add it as a driven (reference) dimension with driven: true
+SOLIDCRAFT-STRICTER      sk-conflict__redundant-height                        stored   | command 16 sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k11 (LinearDimension); add it as a driven (reference) dimension with driven: true
+SOLIDCRAFT-STRICTER      sk-conflict__redundant-height                        rough    | command 16 sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k11 (LinearDimension); add it as a driven (reference) dimension with driven: true
+AGREE-UNDERDETERMINED    sk-conflict__redundant-perpendicular                 stored  dof ref/brep/truck null/0/0 | the reference leaves degrees of freedom open, so two solvers may legitimately land on different parts; every rule is checked on each output instead
+AGREE-UNDERDETERMINED    sk-conflict__redundant-perpendicular                 rough   dof ref/brep/truck null/0/0 | the reference leaves degrees of freedom open, so two solvers may legitimately land on different parts; every rule is checked on each output instead
+AGREED-REFUSAL           sk-conflict__radius-vs-diameter                      stored   | command 4 sketch.dimension: that would over-constrain the sketch (conflicts with k2, k3)
+AGREED-REFUSAL           sk-conflict__radius-vs-diameter                      rough    | command 4 sketch.dimension: that would over-constrain the sketch (conflicts with k2, k3)
+AGREED-REFUSAL           sk-conflict__equal-vs-two-radii                      stored   | command 7 sketch.dimension: that would over-constrain the sketch (conflicts with k3, k4, k5)
+AGREED-REFUSAL           sk-conflict__equal-vs-two-radii                      rough    | command 7 sketch.dimension: that would over-constrain the sketch (conflicts with k3, k4, k5)
+AGREED-NO-SOLID          sk-conflict__horizontal-and-vertical                 stored   | command 6 solid.extrude: sk has no closed profiles | brep-rs: extrude e1: edge 1 has a loose end; the outline must close
+AGREED-NO-SOLID          sk-conflict__horizontal-and-vertical                 rough    | command 6 solid.extrude: sk has no closed profiles | brep-rs: extrude e1: edge 1 has a loose end; the outline must close
+PASS                     sk-conflict__clean-30x20                             stored  dof ref/brep/truck 0/0/0
+PASS                     sk-conflict__clean-30x20                             rough   dof ref/brep/truck 0/0/0
+PASS                     sk-circle-arc-tangent__slot-r6-L30-anchored          stored  dof ref/brep/truck 0/0/0
+PASS                     sk-circle-arc-tangent__slot-r6-L30-anchored          rough   dof ref/brep/truck 0/0/0
+AGREE-UNDERDETERMINED    sk-circle-arc-tangent__slot-r6-L30-floating          stored  dof ref/brep/truck 2/2/2 | the reference leaves degrees of freedom open, so two solvers may legitimately land on different parts; every rule is checked on each output instead
+AGREE-UNDERDETERMINED    sk-circle-arc-tangent__slot-r6-L30-floating          rough   dof ref/brep/truck 2/2/2 | the reference leaves degrees of freedom open, so two solvers may legitimately land on different parts; every rule is checked on each output instead
+PASS                     sk-circle-arc-tangent__slot-r12-L18-anchored         stored  dof ref/brep/truck 0/0/0
+PASS                     sk-circle-arc-tangent__slot-r12-L18-anchored         rough   dof ref/brep/truck 0/0/0
+PASS                     sk-circle-arc-tangent__slot-arc-first-order          stored  dof ref/brep/truck 0/0/0
+PASS                     sk-circle-arc-tangent__slot-arc-first-order          rough   dof ref/brep/truck 0/0/0
+AGREED-REFUSAL           sk-circle-arc-tangent__slot-extra-radius             stored   | command 18 sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k11 (RadialDimension), k12 (Equal); add it as a driven (reference) dimension with driven: true
+AGREED-REFUSAL           sk-circle-arc-tangent__slot-extra-radius             rough    | command 18 sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k11 (RadialDimension), k12 (Equal); add it as a driven (reference) dimension with driven: true
+NO-REFERENCE             sk-circle-arc-tangent__line-circle-tangent           stored   | solidcraft built a solid (volume 785.3095405, 1 body) but there is no closed form and brep-rs refused (extrude e1: edge 1 has a loose end; the outline must close): nothing to score it against
+NO-REFERENCE             sk-circle-arc-tangent__line-circle-tangent           rough    | solidcraft built a solid (volume 785.3095405, 1 body) but there is no closed form and brep-rs refused (extrude e1: edge 1 has a loose end; the outline must close): nothing to score it against
+PASS                     sk-circle-arc-tangent__circle-circle-external        stored  dof ref/brep/truck 0/0/0
+PASS                     sk-circle-arc-tangent__circle-circle-external        rough   dof ref/brep/truck 0/0/0
+PASS                     sk-circle-arc-tangent__circle-circle-no-mode         stored  dof ref/brep/truck 0/null/0
+PASS                     sk-circle-arc-tangent__circle-circle-no-mode         rough   dof ref/brep/truck 0/null/0
+PASS                     sk-circle-arc-tangent__circle-circle-internal        stored  dof ref/brep/truck 0/0/0
+PASS                     sk-circle-arc-tangent__circle-circle-internal        rough   dof ref/brep/truck 0/0/0
+AGREED-NO-SOLID          sk-circle-arc-tangent__arc-centre-radius             stored   | command 6 solid.extrude: sk has no closed profiles | brep-rs: extrude e1: edge 1 has a loose end; the outline must close
+AGREED-NO-SOLID          sk-circle-arc-tangent__arc-centre-radius             rough    | command 6 solid.extrude: sk has no closed profiles | brep-rs: extrude e1: edge 1 has a loose end; the outline must close
+
+--- negative controls (each must be rejected by the same scorer) ---
+REJECTED [stored] own-rect-rough-dims :: swap width 30 <-> height 20 dimension -> BUILT volume 6000 bbox [5,3,0,25,33,10] | rejected by: bbox, com, solved sketch geometry | failed: closed form/bbox 4.3e-1, brep-rs (unedited doc)/bbox 4.3e-1, brep-rs (unedited doc)/com 1.3e-1, brep-rs (unedited doc)/solved sketch geometry 1.0e+1
+REJECTED [stored] own-l-shape-dims :: swap length 40 <-> 18 -> BUILT volume 4960 bbox [-7,0,0,18,52,10] | rejected by: volume, bbox, com, solved sketch geometry | failed: closed form/volume 3.4e-1, closed form/bbox 7.0e+0, brep-rs (unedited doc)/volume 3.4e-1, brep-rs (unedited doc)/bbox 7.0e+0, brep-rs (unedited doc)/com 2.7e-1, brep-rs (unedited doc)/solved sketch geometry 2.2e+1
+REJECTED [stored] sk-rect-dof__corner-origin-25x60 :: swap dx 25 <-> dy 60 dimension -> BUILT volume 15000 bbox [0,0,0,60,25,10] | rejected by: bbox, com, solved sketch geometry | failed: closed form/bbox 1.4e+0, brep-rs (unedited doc)/bbox 1.4e+0, brep-rs (unedited doc)/com 2.7e-1, brep-rs (unedited doc)/solved sketch geometry 3.5e+1
+REJECTED [stored] own-triangle-length-angle :: angle 120 -> 100 (wrong dimension value) -> BUILT volume 5908.846518 bbox [0,0,0,40,29.54423259,10] | rejected by: volume, bbox, com, solved sketch geometry | failed: closed form/volume 1.4e-1, closed form/bbox 1.4e-1, brep-rs (unedited doc)/volume 1.4e-1, brep-rs (unedited doc)/bbox 1.4e-1, brep-rs (unedited doc)/com 6.7e-2, brep-rs (unedited doc)/solved sketch geometry 9.8e+0
+REJECTED [stored] own-circle-diameter :: radius dimension used where the doc says diameter -> BUILT volume 6157.099711 bbox [-4,-9,0,24,19,10] | rejected by: volume, bbox, solved sketch geometry | failed: closed form/volume 3.0e+0, closed form/bbox 3.5e+0, brep-rs (unedited doc)/volume 3.0e+0, brep-rs (unedited doc)/bbox 3.5e+0, brep-rs (unedited doc)/solved sketch geometry 7.0e+0
+REJECTED [stored] sk-circle-arc-tangent__slot-r6-L30-anchored :: tangent branch flipped: right cap starts bulging INWARD (same endpoints, other sense) -> BUILT volume 3600 bbox [-6,0,0,30,12,10] | rejected by: volume, bbox | failed: closed form/volume 2.4e-1, closed form/bbox 1.7e-1
+REJECTED [stored] sk-circle-arc-tangent__circle-circle-external :: tangent mode flipped: small circle starts INSIDE (internal) while the doc says external -> REFUSED-MAPPER | asks for external tangency but the circles start internally placed; solidcraft's tangent has no mode parameter (it keeps the branch of the starting geometry), so it cannot be requested
+REJECTED [stored] sk-circle-arc-tangent__circle-circle-external :: same, with the mode request stripped so the mapper cannot refuse it -> BUILT volume 1225.134743 bbox [-8,-8,0,8,8,10] | rejected by: volume, bbox, solved sketch geometry | failed: closed form/volume 5.6e-1, closed form/bbox 5.6e-1, brep-rs (unedited doc)/solved sketch geometry 1.0e+1
+NOT-REJECTED [stored] sk-circle-arc-tangent__slot-r6-L30-anchored :: drop the first tangent row (stored start) -> BUILT volume 4730.793327 bbox [-6,0,0,36,12,10] | rejected by: nothing | failed: 
+REJECTED [stored] sk-circle-arc-tangent__slot-r6-L30-anchored :: slot length 30 -> 30.001 (stored start) -> BUILT volume 4730.913327 bbox [-6,-2.31115402e-25,0,36.001,12,10] | rejected by: solved sketch geometry | failed: brep-rs (unedited doc)/solved sketch geometry 1.0e-3
+REJECTED [rough] sk-circle-arc-tangent__slot-r6-L30-anchored :: drop the first tangent row (rough start) -> BUILT volume 4876.680403 bbox [-5.999977458,-0.1721907939,0,37.42663161,11.99990983,10] | rejected by: volume, bbox, solved sketch geometry | failed: closed form/volume 3.1e-2, closed form/bbox 1.7e-1, brep-rs (unedited doc)/solved sketch geometry 1.5e+0
+REJECTED [rough] sk-circle-arc-tangent__slot-r6-L30-anchored :: slot length 30 -> 30.001 (rough start) -> BUILT volume 4730.913327 bbox [-6,-1.77635684e-15,0,36.001,12,10] | rejected by: solved sketch geometry | failed: brep-rs (unedited doc)/solved sketch geometry 1.0e-3
+
+--- solver diagnostics, stored start: FreeCAD ref | brep-rs sketch_diagnose | solidcraft (refusal at command time, then SolveReport) ---
+sk-rect-underconstrained__hv-only-30x15
+   FreeCAD  {"bucket":"consistent","dof":4,"conflicting":0,"redundant":0}
+   brep-rs  {"bucket":"consistent","dof":4,"blame":[],"solved":true,"buildOutcome":"built","buildRefusal":null}
+   solidcraft {"refusedAt":null,"status":"solved","dof":4,"redundant":[],"failing":[],"solidIfErrorIgnored":null,"solid":{"volume":4500}}
+sk-rect-underconstrained__width-only
+   FreeCAD  {"bucket":"consistent","dof":3,"conflicting":0,"redundant":0}
+   brep-rs  {"bucket":"consistent","dof":3,"blame":[],"solved":true,"buildOutcome":"built","buildRefusal":null}
+   solidcraft {"refusedAt":null,"status":"solved","dof":3,"redundant":[],"failing":[],"solidIfErrorIgnored":null,"solid":{"volume":4500}}
+sk-rect-underconstrained__width-and-height
+   FreeCAD  {"bucket":"consistent","dof":2,"conflicting":0,"redundant":0}
+   brep-rs  {"bucket":"consistent","dof":2,"blame":[],"solved":true,"buildOutcome":"built","buildRefusal":null}
+   solidcraft {"refusedAt":null,"status":"solved","dof":2,"redundant":[],"failing":[],"solidIfErrorIgnored":null,"solid":{"volume":4500}}
+sk-rect-underconstrained__pinned-corner-only
+   FreeCAD  {"bucket":"consistent","dof":2,"conflicting":0,"redundant":0}
+   brep-rs  {"bucket":"consistent","dof":2,"blame":[],"solved":true,"buildOutcome":"built","buildRefusal":null}
+   solidcraft {"refusedAt":null,"status":"solved","dof":2,"redundant":[],"failing":[],"solidIfErrorIgnored":null,"solid":{"volume":4500}}
+sk-rect-underconstrained__free-line
+   FreeCAD  {"bucket":"consistent","dof":4,"conflicting":0,"redundant":0}
+   brep-rs  {"bucket":"consistent","dof":4,"blame":[],"solved":true,"buildOutcome":"refused","buildRefusal":"extrude e1: edge 1 has a loose end; the outline must close"}
+   solidcraft {"refusedAt":"cmd 4 solid.extrude: sk has no closed profiles","status":"solved","dof":4,"redundant":[],"failing":[],"solidIfErrorIgnored":null,"solid":null}
+sk-rect-underconstrained__free-circle
+   FreeCAD  {"bucket":"consistent","dof":3,"conflicting":0,"redundant":0}
+   brep-rs  {"bucket":"consistent","dof":3,"blame":[],"solved":true,"buildOutcome":"built","buildRefusal":null}
+   solidcraft {"refusedAt":null,"status":"solved","dof":3,"redundant":[],"failing":[],"solidIfErrorIgnored":null,"solid":{"volume":502.5981059471615}}
+sk-rect-underconstrained__triangle-joined
+   FreeCAD  {"bucket":"consistent","dof":6,"conflicting":0,"redundant":0}
+   brep-rs  {"bucket":"consistent","dof":6,"blame":[],"solved":true,"buildOutcome":"built","buildRefusal":null}
+   solidcraft {"refusedAt":null,"status":"solved","dof":6,"redundant":[],"failing":[],"solidIfErrorIgnored":null,"solid":{"volume":3000}}
+sk-rect-underconstrained__circle-radius-only
+   FreeCAD  {"bucket":"consistent","dof":2,"conflicting":0,"redundant":0}
+   brep-rs  {"bucket":"consistent","dof":2,"blame":[],"solved":true,"buildOutcome":"built","buildRefusal":null}
+   solidcraft {"refusedAt":null,"status":"solved","dof":2,"redundant":[],"failing":[],"solidIfErrorIgnored":null,"solid":{"volume":502.5981059471615}}
+sk-conflict__width-30-vs-35
+   FreeCAD  {"bucket":"conflicting","dof":null,"conflicting":2,"redundant":0}
+   brep-rs  {"bucket":"conflicting","dof":0,"blame":[11],"solved":true,"buildOutcome":"refused","buildRefusal":"extrude e1: the sketch's rules conflict, so no profile can be trusted; resolve the conflict first"}
+   solidcraft {"refusedAt":"cmd 16 sketch.dimension: that would over-constrain the sketch (conflicts with k10, k12)","status":"solved","dof":0,"redundant":[],"failing":[],"solidIfErrorIgnored":{"volume":6000,"bbox":[0,0,0,30,20,10]},"solid":null}
+sk-conflict__redundant-width
+   FreeCAD  {"bucket":"redundant","dof":null,"conflicting":0,"redundant":1}
+   brep-rs  {"bucket":"redundant","dof":0,"blame":[11],"solved":true,"buildOutcome":"built","buildRefusal":null}
+   solidcraft {"refusedAt":"cmd 16 sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k10 (LinearDimension); add it as a driven (reference) dimension with driven: true","status":"solved","dof":0,"redundant":[],"failing":[],"solidIfErrorIgnored":{"volume":6000,"bbox":[0,0,0,30,20,10]},"solid":null}
+sk-conflict__redundant-height
+   FreeCAD  {"bucket":"redundant","dof":null,"conflicting":0,"redundant":1}
+   brep-rs  {"bucket":"redundant","dof":0,"blame":[11],"solved":true,"buildOutcome":"built","buildRefusal":null}
+   solidcraft {"refusedAt":"cmd 16 sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k11 (LinearDimension); add it as a driven (reference) dimension with driven: true","status":"solved","dof":0,"redundant":[],"failing":[],"solidIfErrorIgnored":{"volume":6000,"bbox":[0,0,0,30,20,10]},"solid":null}
+sk-conflict__redundant-perpendicular
+   FreeCAD  {"bucket":"redundant","dof":null,"conflicting":0,"redundant":1}
+   brep-rs  {"bucket":"redundant","dof":0,"blame":[11],"solved":true,"buildOutcome":"built","buildRefusal":null}
+   solidcraft {"refusedAt":null,"status":"solved","dof":0,"redundant":["k12"],"failing":[],"solidIfErrorIgnored":null,"solid":{"volume":6000}}
+sk-conflict__radius-vs-diameter
+   FreeCAD  {"bucket":"conflicting","dof":null,"conflicting":2,"redundant":0}
+   brep-rs  {"bucket":"conflicting","dof":0,"blame":[2],"solved":true,"buildOutcome":"refused","buildRefusal":"extrude e1: the sketch's rules conflict, so no profile can be trusted; resolve the conflict first"}
+   solidcraft {"refusedAt":"cmd 4 sketch.dimension: that would over-constrain the sketch (conflicts with k2, k3)","status":"solved","dof":0,"redundant":[],"failing":[],"solidIfErrorIgnored":{"volume":785.3095405426548,"bbox":[-5,-5.000000000000004,0,5,5,10.000000000000005]},"solid":null}
+sk-conflict__equal-vs-two-radii
+   FreeCAD  {"bucket":"conflicting","dof":null,"conflicting":3,"redundant":0}
+   brep-rs  {"bucket":"conflicting","dof":0,"blame":[4],"solved":true,"buildOutcome":"refused","buildRefusal":"extrude e1: the sketch's rules conflict, so no profile can be trusted; resolve the conflict first"}
+   solidcraft {"refusedAt":"cmd 7 sketch.dimension: that would over-constrain the sketch (conflicts with k3, k4, k5)","status":"solved","dof":0,"redundant":[],"failing":[],"solidIfErrorIgnored":{"volume":1570.6190810853127,"bbox":[-5,-5.000000000000006,0,25.000000000000007,5,10.000000000000005]},"solid":null}
+sk-conflict__horizontal-and-vertical
+   FreeCAD  {"bucket":"consistent","dof":2,"conflicting":0,"redundant":0}
+   brep-rs  {"bucket":"consistent","dof":2,"blame":[],"solved":true,"buildOutcome":"refused","buildRefusal":"extrude e1: edge 1 has a loose end; the outline must close"}
+   solidcraft {"refusedAt":"cmd 6 solid.extrude: sk has no closed profiles","status":"solved","dof":2,"redundant":[],"failing":[],"solidIfErrorIgnored":null,"solid":null}
+sk-conflict__clean-30x20
+   FreeCAD  {"bucket":"consistent","dof":0,"conflicting":0,"redundant":0}
+   brep-rs  {"bucket":"consistent","dof":0,"blame":[],"solved":true,"buildOutcome":"built","buildRefusal":null}
+   solidcraft {"refusedAt":null,"status":"solved","dof":0,"redundant":[],"failing":[],"solidIfErrorIgnored":null,"solid":{"volume":6000}}
+sk-circle-arc-tangent__slot-r6-L30-floating
+   FreeCAD  {"bucket":"consistent","dof":2,"conflicting":0,"redundant":0}
+   brep-rs  {"bucket":"consistent","dof":2,"blame":[],"solved":true,"buildOutcome":"refused","buildRefusal":"extrude e1: edge 1 and arc 2 meet in a point rather than running smoothly; reverse one of them"}
+   solidcraft {"refusedAt":null,"status":"solved","dof":2,"redundant":[],"failing":[],"solidIfErrorIgnored":null,"solid":{"volume":4730.793327002382}}
+
+verdict tally (all): PASS 47, FAIL 1, AGREE-UNDERDETERMINED 12, DIVERGE-UNDERDETERMINED 6, AGREED-NO-SOLID 6, AGREED-REFUSAL 8, SOLIDCRAFT-STRICTER 4, NO-REFERENCE 2
+  stored: PASS 24, AGREE-UNDERDETERMINED 9, AGREED-NO-SOLID 3, AGREED-REFUSAL 4, SOLIDCRAFT-STRICTER 2, NO-REFERENCE 1
+  rough: PASS 23, FAIL 1, DIVERGE-UNDERDETERMINED 6, AGREED-NO-SOLID 3, AGREE-UNDERDETERMINED 3, AGREED-REFUSAL 4, SOLIDCRAFT-STRICTER 2, NO-REFERENCE 1
+controls: 9 distinct, 12 runs, 11 rejected, 1 NOT rejected

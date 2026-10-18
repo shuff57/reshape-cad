@@ -1,0 +1,20 @@
+{
+ "id": "torus",
+ "outcome": "built",
+ "volume": 4420.9333821917,
+ "faces": 1,
+ "bbox": [
+  -17.999951658506347,
+  -17.999951658506347,
+  -3.999640730332158,
+  17.999951658506372,
+  17.99995165850635,
+  3.999640730332159
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "torus"
+ ],
+ "scriptSource": "[{\"command\":\"solid.torus\",\"params\":{\"major\":14,\"minor\":4,\"center\":[0,0,0],\"body_name\":\"b_t1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

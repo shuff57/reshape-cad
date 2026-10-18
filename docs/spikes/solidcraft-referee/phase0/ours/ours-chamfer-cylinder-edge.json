@@ -1,0 +1,21 @@
+{
+ "id": "chamfer-cylinder-edge",
+ "outcome": "built",
+ "volume": 13259.230052635146,
+ "faces": 4,
+ "bbox": [
+  -11.99981467455886,
+  -11.999677604887713,
+  -15.000000000000012,
+  11.999814674558857,
+  11.999677604887712,
+  15.000000000000007
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "cylinder",
+  "fillet"
+ ],
+ "scriptSource": "[{\"command\":\"solid.cylinder\",\"params\":{\"radius\":12,\"height\":30,\"base\":[0,0,-15],\"axis\":\"Z\",\"body_name\":\"b_c1\"}},{\"command\":\"solid.chamfer\",\"params\":{\"edges\":[[12,0,-15]],\"distance\":3,\"body\":\"b_c1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

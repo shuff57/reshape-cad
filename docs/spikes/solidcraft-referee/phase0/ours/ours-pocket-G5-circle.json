@@ -1,0 +1,22 @@
+{
+ "id": "pocket-G5-circle",
+ "outcome": "built",
+ "volume": 28407.366147065986,
+ "faces": 8,
+ "bbox": [
+  -30,
+  -30,
+  0,
+  30,
+  30,
+  8
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "box",
+  "sketch",
+  "pocket"
+ ],
+ "scriptSource": "[{\"command\":\"solid.box\",\"params\":{\"length\":60,\"width\":60,\"height\":8,\"center\":[0,0,4],\"body_name\":\"b_box1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,8],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.circle.center\",\"params\":{\"center\":[12,-6],\"diameter\":10}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":5,\"direction\":\"negative\",\"sketch\":\"sk_sk1_0\",\"operation\":\"cut\",\"targets\":[\"b_box1\"]}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

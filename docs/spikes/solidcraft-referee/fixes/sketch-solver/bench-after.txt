@@ -1,0 +1,17 @@
+| grid | points | start | ms | status | dof | iterations |
+|---|---|---|---|---|---|---|
+| 10×10 | 100 | at solution | 13.19 | Solved | 0 | 0 |
+| 10×10 | 100 | ±1 mm | 13.62 | Solved | 0 | 0 |
+| 15×15 | 225 | at solution | 0.44 | Solved | 0 | 0 |
+| 15×15 | 225 | ±1 mm | 0.44 | Solved | 0 | 0 |
+| 20×20 | 400 | at solution | 0.82 | Solved | 0 | 0 |
+| 20×20 | 400 | ±1 mm | 0.88 | Solved | 0 | 0 |
+
+| strip | points | held drag frame ms | full solve ms |
+|---|---|---|---|
+| 30 rectangles | 63 | 0.07 (Solved) | 0.13 |
+| 100 rectangles | 203 | 0.18 (Solved) | 0.47 |
+
+real	0m0.190s
+user	0m0.184s
+sys	0m0.005s

@@ -1,0 +1,650 @@
+[
+ {
+  "id": "slot-shell-x15",
+  "expect": "refuse",
+  "status": "refused",
+  "sentence": "s1 (shell): b1.face[+z] matches 2 faces on b_b1 (F1:+z#[F1:+x,F2:+x], F1:+z#[F1:-x,F2:-x]; all on the named plane); a name must pick exactly one, so nothing is picked",
+  "volume": null,
+  "occt": 45999.999999999985,
+  "occtNoOp": true,
+  "brep": null,
+  "brepNote": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hol",
+  "evidence": null,
+  "ok": true
+ },
+ {
+  "id": "slot-shell-x-15",
+  "expect": "refuse",
+  "status": "refused",
+  "sentence": "s1 (shell): b1.face[+z] matches 2 faces on b_b1 (F1:+z#[F1:-x,F2:-x], F1:+z#[F1:+x,F2:+x]; all on the named plane); a name must pick exactly one, so nothing is picked",
+  "volume": null,
+  "occt": 45999.99999999999,
+  "occtNoOp": true,
+  "brep": null,
+  "brepNote": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hol",
+  "evidence": null,
+  "ok": true
+ },
+ {
+  "id": "slot-shell-x5",
+  "expect": "refuse",
+  "status": "refused",
+  "sentence": "s1 (shell): b1.face[+z] matches 2 faces on b_b1 (F1:+z#[F1:+x,F2:+x], F1:+z#[F1:-x,F2:-x]; all on the named plane); a name must pick exactly one, so nothing is picked",
+  "volume": null,
+  "occt": 45999.99999999999,
+  "occtNoOp": true,
+  "brep": null,
+  "brepNote": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hol",
+  "evidence": null,
+  "ok": true
+ },
+ {
+  "id": "hole-then-shell",
+  "expect": "build",
+  "status": "built",
+  "sentence": null,
+  "volume": 2656.4641016857736,
+  "occt": 2656.4778563656455,
+  "occtNoOp": false,
+  "brep": 2656.477856365644,
+  "brepNote": null,
+  "evidence": {
+   "body": "b_b1",
+   "candidates": 1,
+   "face": "F1:+z",
+   "faceIndex": 7,
+   "point": [
+    13.267320324271475,
+    -7.554507244218565,
+    5
+   ],
+   "pickSource": "interior point (largest display triangle); the centroid is off the face",
+   "centroidHit": {
+    "dist": 4.949747468305832,
+    "index": 5
+   },
+   "innerHit": {
+    "dist": 1.7763568394002505e-15,
+    "index": 7
+   }
+  },
+  "brepMatch": true,
+  "match": true,
+  "reference": "OCCT",
+  "class": "built, equals OCCT",
+  "ok": true
+ },
+ {
+  "id": "xz-cap-top-ccw",
+  "expect": "build",
+  "status": "built",
+  "sentence": null,
+  "volume": 2386.0000000000005,
+  "occt": 2385.999999999999,
+  "occtNoOp": false,
+  "brep": 2385.9999999999995,
+  "brepNote": null,
+  "evidence": {
+   "body": "b_e1",
+   "candidates": 1,
+   "face": "F2:top",
+   "faceIndex": 5,
+   "point": [
+    20,
+    -12,
+    12.499999999999998
+   ],
+   "pickSource": "centroid",
+   "centroidHit": {
+    "dist": 0,
+    "index": 5
+   },
+   "innerHit": {
+    "dist": 4.440892098500626e-16,
+    "index": 5
+   }
+  },
+  "brepMatch": true,
+  "match": true,
+  "reference": "OCCT",
+  "class": "built, equals OCCT",
+  "ok": true
+ },
+ {
+  "id": "xz-cap-bottom-ccw",
+  "expect": "build",
+  "status": "built",
+  "sentence": null,
+  "volume": 2386,
+  "occt": 2385.999999999999,
+  "occtNoOp": false,
+  "brep": 2386.0000000000014,
+  "brepNote": null,
+  "evidence": {
+   "body": "b_e1",
+   "candidates": 1,
+   "face": "F2:start",
+   "faceIndex": 0,
+   "point": [
+    20,
+    0,
+    12.499999999999998
+   ],
+   "pickSource": "centroid",
+   "centroidHit": {
+    "dist": 0,
+    "index": 0
+   },
+   "innerHit": {
+    "dist": 4.440892098500626e-16,
+    "index": 0
+   }
+  },
+  "brepMatch": true,
+  "match": true,
+  "reference": "OCCT",
+  "class": "built, equals OCCT",
+  "ok": true
+ },
+ {
+  "id": "xz-cap-top-cw",
+  "expect": "build",
+  "status": "built",
+  "sentence": null,
+  "volume": 2386.0000000000005,
+  "occt": 2385.999999999999,
+  "occtNoOp": false,
+  "brep": 2385.9999999999995,
+  "brepNote": null,
+  "evidence": {
+   "body": "b_e1",
+   "candidates": 1,
+   "face": "F2:top",
+   "faceIndex": 5,
+   "point": [
+    20,
+    -12,
+    12.499999999999998
+   ],
+   "pickSource": "centroid",
+   "centroidHit": {
+    "dist": 0,
+    "index": 5
+   },
+   "innerHit": {
+    "dist": 4.440892098500626e-16,
+    "index": 5
+   }
+  },
+  "brepMatch": true,
+  "match": true,
+  "reference": "OCCT",
+  "class": "built, equals OCCT",
+  "ok": true
+ },
+ {
+  "id": "xz-cap-bottom-cw-offset",
+  "expect": "build",
+  "status": "built",
+  "sentence": null,
+  "volume": 2386.0000000000014,
+  "occt": 2385.999999999999,
+  "occtNoOp": false,
+  "brep": 2386.0000000000005,
+  "brepNote": null,
+  "evidence": {
+   "body": "b_e1",
+   "candidates": 1,
+   "face": "F2:start",
+   "faceIndex": 0,
+   "point": [
+    20,
+    7,
+    12.499999999999998
+   ],
+   "pickSource": "centroid",
+   "centroidHit": {
+    "dist": 0,
+    "index": 0
+   },
+   "innerHit": {
+    "dist": 4.440892098500626e-16,
+    "index": 0
+   }
+  },
+  "brepMatch": true,
+  "match": true,
+  "reference": "OCCT",
+  "class": "built, equals OCCT",
+  "ok": true
+ },
+ {
+  "id": "xz-swept-0-ccw",
+  "expect": "build",
+  "status": "built",
+  "sentence": null,
+  "volume": 2880,
+  "occt": 2879.999999999999,
+  "occtNoOp": false,
+  "brep": 2880,
+  "brepNote": null,
+  "evidence": {
+   "body": "b_e1",
+   "candidates": 1,
+   "face": "F2:side:l1",
+   "faceIndex": 1,
+   "point": [
+    20,
+    -6,
+    0
+   ],
+   "pickSource": "centroid",
+   "centroidHit": {
+    "dist": 0,
+    "index": 1
+   },
+   "innerHit": {
+    "dist": 0,
+    "index": 1
+   }
+  },
+  "brepMatch": true,
+  "match": true,
+  "reference": "OCCT",
+  "class": "built, equals OCCT",
+  "ok": true
+ },
+ {
+  "id": "xz-swept-2-ccw-offset",
+  "expect": "build",
+  "status": "built",
+  "sentence": null,
+  "volume": 2880,
+  "occt": 2879.999999999999,
+  "occtNoOp": false,
+  "brep": 2880,
+  "brepNote": null,
+  "evidence": {
+   "body": "b_e1",
+   "candidates": 1,
+   "face": "F2:side:l3",
+   "faceIndex": 3,
+   "point": [
+    20,
+    -1,
+    25
+   ],
+   "pickSource": "centroid",
+   "centroidHit": {
+    "dist": 0,
+    "index": 3
+   },
+   "innerHit": {
+    "dist": 4.440892098500626e-16,
+    "index": 3
+   }
+  },
+  "brepMatch": true,
+  "match": true,
+  "reference": "OCCT",
+  "class": "built, equals OCCT",
+  "ok": true
+ },
+ {
+  "id": "xz-swept-1-cw",
+  "expect": "build",
+  "status": "built",
+  "sentence": null,
+  "volume": 3030,
+  "occt": 3030.000000000001,
+  "occtNoOp": false,
+  "brep": 2880,
+  "brepNote": null,
+  "evidence": {
+   "body": "b_e1",
+   "candidates": 1,
+   "face": "F2:side:l2",
+   "faceIndex": 4,
+   "point": [
+    40,
+    -6,
+    12.5
+   ],
+   "pickSource": "centroid",
+   "centroidHit": {
+    "dist": 0,
+    "index": 4
+   },
+   "innerHit": {
+    "dist": 0,
+    "index": 4
+   }
+  },
+  "brepMatch": false,
+  "match": true,
+  "reference": "OCCT",
+  "class": "built, equals OCCT",
+  "ok": true
+ },
+ {
+  "id": "xz-swept-3-cw-offset",
+  "expect": "build",
+  "status": "built",
+  "sentence": null,
+  "volume": 3030,
+  "occt": 3030.000000000001,
+  "occtNoOp": false,
+  "brep": 2880,
+  "brepNote": null,
+  "evidence": {
+   "body": "b_e1",
+   "candidates": 1,
+   "face": "F2:side:l4",
+   "faceIndex": 2,
+   "point": [
+    0,
+    -10,
+    12.5
+   ],
+   "pickSource": "centroid",
+   "centroidHit": {
+    "dist": 0,
+    "index": 2
+   },
+   "innerHit": {
+    "dist": 0,
+    "index": 2
+   }
+  },
+  "brepMatch": false,
+  "match": true,
+  "reference": "OCCT",
+  "class": "built, equals OCCT",
+  "ok": true
+ },
+ {
+  "id": "stub-centre",
+  "expect": "diverges",
+  "status": "built",
+  "sentence": null,
+  "volume": 2644.345622159777,
+  "occt": 12800.000000000002,
+  "occtNoOp": true,
+  "brep": null,
+  "brepNote": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hol",
+  "evidence": {
+   "body": "b_b1",
+   "candidates": 1,
+   "face": "F1:+z",
+   "faceIndex": 9,
+   "point": [
+    13.217056117291154,
+    -1.4214827252291766,
+    5
+   ],
+   "pickSource": "interior point (largest display triangle); the centroid is off the face",
+   "centroidHit": {
+    "dist": 5,
+    "index": 4
+   },
+   "innerHit": {
+    "dist": 6.661338147750939e-16,
+    "index": 9
+   }
+  },
+  "reference": {
+   "P": 2775.999999999999,
+   "L": 2856.000000000001,
+   "relDeltaP": 0.04742592861679467,
+   "relDeltaL": 0.07410867571436405
+  },
+  "class": "DIVERGES from the independent reference",
+  "ok": true
+ },
+ {
+  "id": "stub-offset-x",
+  "expect": "diverges",
+  "status": "built",
+  "sentence": null,
+  "volume": 2644.3456221597767,
+  "occt": 12800,
+  "occtNoOp": true,
+  "brep": null,
+  "brepNote": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hol",
+  "evidence": {
+   "body": "b_b1",
+   "candidates": 1,
+   "face": "F1:+z",
+   "faceIndex": 9,
+   "point": [
+    -0.9090909090909087,
+    1.5502750598402187e-16,
+    5
+   ],
+   "pickSource": "centroid",
+   "centroidHit": {
+    "dist": 5.298791323945411e-16,
+    "index": 9
+   },
+   "innerHit": {
+    "dist": 6.280369834735101e-16,
+    "index": 9
+   }
+  },
+  "reference": {
+   "P": 2776.0000000000005,
+   "L": 2855.9999999999995,
+   "relDeltaP": 0.0474259286167953,
+   "relDeltaL": 0.07410867571436376
+  },
+  "class": "DIVERGES from the independent reference",
+  "ok": true
+ },
+ {
+  "id": "stub-corner",
+  "expect": "diverges",
+  "status": "built",
+  "sentence": null,
+  "volume": 2713.8298771310065,
+  "occt": 12800.000000000002,
+  "occtNoOp": true,
+  "brep": null,
+  "brepNote": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hol",
+  "evidence": {
+   "body": "b_b1",
+   "candidates": 1,
+   "face": "F1:+z",
+   "faceIndex": 7,
+   "point": [
+    -1.3636363636363635,
+    -0.9090909090909091,
+    5
+   ],
+   "pickSource": "centroid",
+   "centroidHit": {
+    "dist": 1.1102230246251565e-15,
+    "index": 7
+   },
+   "innerHit": {
+    "dist": 4.440892098500626e-16,
+    "index": 7
+   }
+  },
+  "reference": {
+   "P": 2776,
+   "L": 2812.000000000001,
+   "relDeltaP": 0.022395577402375192,
+   "relDeltaL": 0.03491113900035363
+  },
+  "class": "DIVERGES from the independent reference",
+  "ok": true
+ },
+ {
+  "id": "stub-edge-flush",
+  "expect": "diverges",
+  "status": "built",
+  "sentence": null,
+  "volume": 2680.9162826709507,
+  "occt": 12800,
+  "occtNoOp": true,
+  "brep": null,
+  "brepNote": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hol",
+  "evidence": {
+   "body": "b_b1",
+   "candidates": 1,
+   "face": "F1:+z",
+   "faceIndex": 8,
+   "point": [
+    -1.3636363636363635,
+    0,
+    5
+   ],
+   "pickSource": "centroid",
+   "centroidHit": {
+    "dist": 6.684427777288335e-16,
+    "index": 8
+   },
+   "innerHit": {
+    "dist": 9.930136612989092e-16,
+    "index": 8
+   }
+  },
+  "reference": {
+   "P": 2776.000000000001,
+   "L": 2832.0000000000027,
+   "relDeltaP": 0.03425205955657425,
+   "relDeltaL": 0.053348770243309265
+  },
+  "class": "DIVERGES from the independent reference",
+  "ok": true
+ },
+ {
+  "id": "stub-tall",
+  "expect": "diverges",
+  "status": "built",
+  "sentence": null,
+  "volume": 3182.3562606759406,
+  "occt": 13919.999999999998,
+  "occtNoOp": true,
+  "brep": null,
+  "brepNote": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hol",
+  "evidence": {
+   "body": "b_b1",
+   "candidates": 1,
+   "face": "F1:+z",
+   "faceIndex": 9,
+   "point": [
+    0.45070422535211346,
+    -0.2816901408450703,
+    5
+   ],
+   "pickSource": "centroid",
+   "centroidHit": {
+    "dist": 1.415262216750919e-15,
+    "index": 9
+   },
+   "innerHit": {
+    "dist": 9.930136612989092e-16,
+    "index": 9
+   }
+  },
+  "reference": {
+   "P": 3299.999999999998,
+   "L": 3364.000000000002,
+   "relDeltaP": 0.03564961797698717,
+   "relDeltaL": 0.053996355328198915
+  },
+  "class": "DIVERGES from the independent reference",
+  "ok": true
+ },
+ {
+  "id": "stub-strip-across",
+  "expect": "any",
+  "status": "refused",
+  "sentence": "s1 (shell): b1.face[+z] matches 4 faces on b_b1 (F1:+z#[F1:-x,F2:-x], F1:+z#[F1:+x,F2:+x], F2:-z#[F1:-y,F2:-y], F2:-z#[F1:+y,F2:+y]; all on the named plane); a name must pick exactly one, so nothing is picked",
+  "volume": null,
+  "occt": 15200,
+  "occtNoOp": true,
+  "brep": null,
+  "brepNote": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hol",
+  "evidence": null,
+  "brepMatch": false,
+  "match": false,
+  "reference": "none (OCCT no-op)",
+  "class": "resolver refusal with a count",
+  "ok": true
+ },
+ {
+  "id": "stub-strip-along",
+  "expect": "any",
+  "status": "refused",
+  "sentence": "s1 (shell): b1.face[+z] matches 4 faces on b_b1 (F1:+z#[F1:-y,F2:-y], F1:+z#[F1:+y,F2:+y], F2:-z#[F1:-x,F2:-x], F2:-z#[F1:+x,F2:+x]; all on the named plane); a name must pick exactly one, so nothing is picked",
+  "volume": null,
+  "occt": 15200,
+  "occtNoOp": true,
+  "brep": null,
+  "brepNote": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hol",
+  "evidence": null,
+  "brepMatch": false,
+  "match": false,
+  "reference": "none (OCCT no-op)",
+  "class": "resolver refusal with a count",
+  "ok": true
+ },
+ {
+  "id": "stub-full-top",
+  "expect": "any",
+  "status": "refused",
+  "sentence": "s1 (shell): b1.face[+z] resolves on b1, but no face of b_b1 lies on that plane any more; nothing is picked",
+  "volume": null,
+  "occt": 21599.999999999996,
+  "occtNoOp": true,
+  "brep": 4576.000000000001,
+  "brepNote": "s1 could not find the face to leave open -- s1 is shown closed.",
+  "evidence": null,
+  "brepMatch": false,
+  "match": false,
+  "reference": "none (OCCT no-op)",
+  "class": "resolver refusal",
+  "ok": true
+ },
+ {
+  "id": "stub-low",
+  "expect": "diverges",
+  "status": "built",
+  "sentence": null,
+  "volume": 2524.0000000000005,
+  "occt": 12287.999999999998,
+  "occtNoOp": true,
+  "brep": null,
+  "brepNote": "brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hol",
+  "evidence": {
+   "body": "b_b1",
+   "candidates": 1,
+   "face": "F1:+z",
+   "faceIndex": 9,
+   "point": [
+    5,
+    10.333333333333332,
+    5
+   ],
+   "pickSource": "interior point (largest display triangle); the centroid is off the face",
+   "centroidHit": {
+    "dist": 0.31818181818181823,
+    "index": 7
+   },
+   "innerHit": {
+    "dist": 0,
+    "index": 9
+   }
+  },
+  "reference": {
+   "P": 2611.9999999999986,
+   "L": 2707.999999999996,
+   "relDeltaP": 0.033690658499233625,
+   "relDeltaL": 0.06794682422451837
+  },
+  "class": "DIVERGES from the independent reference",
+  "ok": true
+ }
+]

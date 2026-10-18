@@ -1,0 +1,21 @@
+{
+ "id": "shell-cylinder-open-top",
+ "outcome": "built",
+ "volume": 4774.728976887152,
+ "faces": 5,
+ "bbox": [
+  -11.999814674558865,
+  -11.999677604887712,
+  -15.00000000000002,
+  11.999814674558857,
+  11.999677604887728,
+  15.000000000000007
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "cylinder",
+  "shell"
+ ],
+ "scriptSource": "[{\"command\":\"solid.cylinder\",\"params\":{\"radius\":12,\"height\":30,\"base\":[0,0,-15],\"axis\":\"Z\",\"body_name\":\"b_c1\"}},{\"command\":\"solid.shell\",\"params\":{\"faces\":[[-3.552713678800501e-15,-4.816642480570265e-16,15]],\"thickness\":2,\"body\":\"b_c1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

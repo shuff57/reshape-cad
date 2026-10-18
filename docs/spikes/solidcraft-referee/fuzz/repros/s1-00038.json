@@ -1,0 +1,100 @@
+{
+ "id": "s1-00038",
+ "seed": 1,
+ "desc": "convex vchamfer s=2 36x16x12 +vthru",
+ "t": 2,
+ "commands": [
+  {
+   "command": "solid.box",
+   "params": {
+    "length": 36,
+    "width": 16,
+    "height": 12,
+    "center": [
+     0,
+     0,
+     6
+    ],
+    "body_name": "b1"
+   }
+  },
+  {
+   "command": "solid.chamfer",
+   "params": {
+    "edges": [
+     [
+      18,
+      8,
+      6
+     ],
+     [
+      -18,
+      8,
+      6
+     ],
+     [
+      18,
+      -8,
+      6
+     ],
+     [
+      -18,
+      -8,
+      6
+     ]
+    ],
+    "distance": 2,
+    "body": "b1"
+   }
+  },
+  {
+   "command": "solid.cylinder",
+   "params": {
+    "radius": 2.5,
+    "height": 14,
+    "base": [
+     7.9,
+     -1.8,
+     -1
+    ],
+    "axis": [
+     0,
+     0,
+     1
+    ],
+    "body_name": "f1"
+   }
+  },
+  {
+   "command": "solid.combine",
+   "params": {
+    "target": "b1",
+    "tools": [
+     "f1"
+    ],
+    "operation": "cut"
+   }
+  },
+  {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      -9.863,
+      0,
+      12
+     ]
+    ],
+    "thickness": 2,
+    "body": "b1"
+   }
+  }
+ ],
+ "oracleFamily": "convex",
+ "p7": {
+  "cls": "WRONG",
+  "expectedP": 3383.6787500000005,
+  "built": 3390.7692812095133,
+  "rel": 0.0020955095720930498
+ }
+}

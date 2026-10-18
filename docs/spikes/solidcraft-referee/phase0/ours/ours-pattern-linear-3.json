@@ -1,0 +1,21 @@
+{
+ "id": "pattern-linear-3",
+ "outcome": "built",
+ "volume": 96000,
+ "faces": 18,
+ "bbox": [
+  -20,
+  -20,
+  -10,
+  140,
+  20,
+  10
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "box",
+  "pattern"
+ ],
+ "scriptSource": "[{\"command\":\"solid.box\",\"params\":{\"length\":40,\"width\":40,\"height\":20,\"center\":[0,0,0],\"body_name\":\"b_b1\"}},{\"command\":\"solid.pattern.rectangular\",\"params\":{\"bodies\":[\"b_b1\"],\"dir1\":[1,0,0],\"count1\":3,\"spacing1\":60}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_b1\",\"tools\":[\"b_b1 (2)\",\"b_b1 (3)\"],\"operation\":\"join\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

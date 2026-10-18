@@ -1,0 +1,20 @@
+{
+ "id": "box",
+ "outcome": "built",
+ "volume": 24000,
+ "faces": 6,
+ "bbox": [
+  -20,
+  -15,
+  -10,
+  20,
+  15,
+  10
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "box"
+ ],
+ "scriptSource": "[{\"command\":\"solid.box\",\"params\":{\"length\":40,\"width\":30,\"height\":20,\"center\":[0,0,0],\"body_name\":\"b_b1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

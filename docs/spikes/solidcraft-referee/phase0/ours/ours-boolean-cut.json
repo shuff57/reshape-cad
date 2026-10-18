@@ -1,0 +1,22 @@
+{
+ "id": "boolean-cut",
+ "outcome": "built",
+ "volume": 27979.429345959823,
+ "faces": 7,
+ "bbox": [
+  -20,
+  -20.000000000000004,
+  -10.000000000000012,
+  20,
+  20,
+  10.000000000000007
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "box",
+  "cylinder",
+  "combine"
+ ],
+ "scriptSource": "[{\"command\":\"solid.box\",\"params\":{\"length\":40,\"width\":40,\"height\":20,\"center\":[0,0,0],\"body_name\":\"b_b1\"}},{\"command\":\"solid.cylinder\",\"params\":{\"radius\":8,\"height\":40,\"base\":[0,0,-20],\"axis\":\"Z\",\"body_name\":\"b_c1\"}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_b1\",\"tools\":[\"b_c1\"],\"operation\":\"cut\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

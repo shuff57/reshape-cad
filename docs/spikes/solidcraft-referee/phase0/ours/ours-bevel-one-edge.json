@@ -1,0 +1,21 @@
+{
+ "id": "bevel-one-edge",
+ "outcome": "built",
+ "volume": 31680,
+ "faces": 7,
+ "bbox": [
+  -20,
+  -20.000000000000007,
+  -10,
+  20,
+  20,
+  10
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "box",
+  "fillet"
+ ],
+ "scriptSource": "[{\"command\":\"solid.box\",\"params\":{\"length\":40,\"width\":40,\"height\":20,\"center\":[0,0,0],\"body_name\":\"b_b1\"}},{\"command\":\"solid.chamfer\",\"params\":{\"edges\":[[20,0,10]],\"distance\":4,\"body\":\"b_b1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

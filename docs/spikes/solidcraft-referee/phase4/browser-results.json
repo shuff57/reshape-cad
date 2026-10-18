@@ -1,0 +1,3032 @@
+{
+ "url": "http://127.0.0.1:8796/",
+ "generatedAt": "2026-10-14T16:56:43.874Z",
+ "results": [
+  {
+   "id": "3d-box-hole",
+   "ok": true,
+   "verdict": "PASS: volume 11717.303626 vs OCCT 11717.256661 (rel delta 4.01e-6, bar 0.0003); bbox delta 7.11e-16",
+   "pass": true,
+   "dofMatch": null,
+   "detail": "",
+   "volume": 11717.30362588783,
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 11717.30362588783,
+     "faces": 7
+    }
+   ],
+   "bbox": [
+    -20,
+    -15,
+    -5.0000000000000036,
+    20,
+    15,
+    5.000000000000003
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "hole1",
+     "kind": "hole",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    }
+   ],
+   "refusals": [],
+   "sketches": [],
+   "refusedCommand": null,
+   "commands": 2,
+   "group": "3d",
+   "title": "Box with a through hole",
+   "refSource": "OCCT",
+   "refVolume": 11717.256661176918
+  },
+  {
+   "id": "3d-extrude-sketch",
+   "ok": true,
+   "verdict": "PASS: volume 9900.000000 vs OCCT 9900.000000 (rel delta 1.84e-16, bar 1e-9); bbox delta 0.00e+0",
+   "pass": true,
+   "dofMatch": null,
+   "detail": "",
+   "volume": 9900,
+   "bodies": [
+    {
+     "name": "b_pull1",
+     "volume": 9900,
+     "faces": 8
+    }
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    30,
+    12
+   ],
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    }
+   ],
+   "refusals": [],
+   "sketches": [],
+   "refusedCommand": null,
+   "commands": 4,
+   "group": "3d",
+   "title": "Extruded L-shaped sketch",
+   "refSource": "OCCT",
+   "refVolume": 9899.999999999998
+  },
+  {
+   "id": "3d-revolve",
+   "ok": true,
+   "verdict": "PASS: volume 75397.450849 vs OCCT 75398.223686 (rel delta 1.03e-5, bar 0.0003); bbox delta 2.58e-16",
+   "pass": true,
+   "dofMatch": null,
+   "detail": "",
+   "volume": 75397.45084917518,
+   "bodies": [
+    {
+     "name": "b_rev1",
+     "volume": 75397.45084917518,
+     "faces": 4
+    }
+   ],
+   "bbox": [
+    -55,
+    -5,
+    -54.99999999999999,
+    55.000000000000014,
+    5,
+    55.00000000000001
+   ],
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "rev1",
+     "kind": "revolve",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    }
+   ],
+   "refusals": [],
+   "sketches": [],
+   "refusedCommand": null,
+   "commands": 4,
+   "group": "3d",
+   "title": "Revolve: a ring",
+   "refSource": "OCCT",
+   "refVolume": 75398.22368615502
+  },
+  {
+   "id": "3d-union",
+   "ok": true,
+   "verdict": "PASS: volume 16282.696374 vs OCCT 16282.743339 (rel delta 2.88e-6, bar 0.0003); bbox delta 5.33e-16",
+   "pass": true,
+   "dofMatch": null,
+   "detail": "",
+   "volume": 16282.696374112165,
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 16282.696374112165,
+     "faces": 8
+    }
+   ],
+   "bbox": [
+    -20,
+    -20,
+    0,
+    20,
+    20,
+    20.00000000000001
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "cyl1",
+     "kind": "cylinder",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "op1",
+     "kind": "combine",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    }
+   ],
+   "refusals": [],
+   "sketches": [],
+   "refusedCommand": null,
+   "commands": 3,
+   "group": "3d",
+   "title": "Boolean union: base plus post",
+   "refSource": "OCCT",
+   "refVolume": 16282.743338823077
+  },
+  {
+   "id": "3d-subtract",
+   "ok": true,
+   "verdict": "PASS: volume 24000.000000 vs OCCT 24000.000000 (rel delta 0.00e+0, bar 1e-9); bbox delta 0.00e+0",
+   "pass": true,
+   "dofMatch": null,
+   "detail": "",
+   "volume": 24000,
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 24000,
+     "faces": 10
+    }
+   ],
+   "bbox": [
+    -20,
+    -20,
+    0,
+    20,
+    20,
+    20
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "box2",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "op1",
+     "kind": "combine",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    }
+   ],
+   "refusals": [],
+   "sketches": [],
+   "refusedCommand": null,
+   "commands": 3,
+   "group": "3d",
+   "title": "Boolean subtract: a square pocket through",
+   "refSource": "OCCT",
+   "refVolume": 24000
+  },
+  {
+   "id": "3d-linear-pattern",
+   "ok": true,
+   "verdict": "PASS: volume 12000.000000 vs OCCT 12000.000000 (rel delta 3.03e-16, bar 1e-9); bbox delta 0.00e+0",
+   "pass": true,
+   "dofMatch": null,
+   "detail": "",
+   "volume": 12000,
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 12000,
+     "faces": 18
+    }
+   ],
+   "bbox": [
+    -10,
+    -10,
+    -5,
+    130,
+    10,
+    5
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "pat1",
+     "kind": "pattern",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    }
+   ],
+   "refusals": [],
+   "sketches": [],
+   "refusedCommand": null,
+   "commands": 3,
+   "group": "3d",
+   "title": "Linear pattern: three copies",
+   "refSource": "OCCT",
+   "refVolume": 11999.999999999996
+  },
+  {
+   "id": "3d-polar-pattern",
+   "ok": true,
+   "verdict": "PASS: volume 12000.000000 vs OCCT 12000.000000 (rel delta 3.03e-16, bar 1e-9); bbox delta 1.18e-16",
+   "pass": true,
+   "dofMatch": null,
+   "detail": "",
+   "volume": 12000,
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 12000,
+     "faces": 24
+    }
+   ],
+   "bbox": [
+    -30.000000000000004,
+    -30.000000000000004,
+    -5,
+    30,
+    30,
+    5
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "pat1",
+     "kind": "pattern",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    }
+   ],
+   "refusals": [],
+   "sketches": [],
+   "refusedCommand": null,
+   "commands": 3,
+   "group": "3d",
+   "title": "Polar pattern: four copies round Z",
+   "refSource": "OCCT",
+   "refVolume": 11999.999999999996
+  },
+  {
+   "id": "2d-rect-dims",
+   "ok": true,
+   "verdict": "PASS: volume 6000.000000 vs brep-rs 6000.000000 (rel delta 1.48e-11, bar 1e-9); bbox delta 0.00e+0",
+   "pass": true,
+   "dofMatch": true,
+   "detail": "dof 0 = hand count 0.",
+   "volume": 5999.999999999869,
+   "bodies": [
+    {
+     "name": "b_pull1",
+     "volume": 5999.999999999869,
+     "faces": 6
+    }
+   ],
+   "bbox": [
+    5,
+    3,
+    0,
+    35,
+    23,
+    10
+   ],
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    }
+   ],
+   "refusals": [],
+   "sketches": [
+    {
+     "sketch": "sk1",
+     "state": "accepted",
+     "status": "solved",
+     "dof": 0,
+     "failing": [],
+     "redundant": [],
+     "resid": 6.181721801112872e-13,
+     "worstRes": 6.181721801112872e-13,
+     "profiles": 1,
+     "rule": "worst residual 6.18e-13 (horizontal mm) over 12 rules"
+    }
+   ],
+   "refusedCommand": null,
+   "commands": 19,
+   "group": "2d",
+   "title": "Rectangle with width and height dimensions (hand-drawn start)",
+   "refSource": "brep-rs",
+   "refVolume": 5999.99999991092
+  },
+  {
+   "id": "2d-plate-hole-dims",
+   "ok": true,
+   "verdict": "PASS: volume 9214.732294 vs brep-rs 9214.601837 (rel delta 1.42e-5, bar 0.0003)",
+   "pass": true,
+   "dofMatch": true,
+   "detail": "dof 0 = hand count 0.",
+   "volume": 9214.732294132637,
+   "bodies": [
+    {
+     "name": "b_pull1",
+     "volume": 9214.732294132637,
+     "faces": 7
+    }
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    25,
+    10.000000000000005
+   ],
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    }
+   ],
+   "refusals": [],
+   "sketches": [
+    {
+     "sketch": "sk1",
+     "state": "accepted",
+     "status": "solved",
+     "dof": 0,
+     "failing": [],
+     "redundant": [],
+     "resid": 1.4986538650729726e-40,
+     "worstRes": 1.4986538650729726e-40,
+     "profiles": 2,
+     "rule": "worst residual 1.50e-40 (vertical mm) over 14 rules"
+    }
+   ],
+   "refusedCommand": null,
+   "commands": 22,
+   "group": "2d",
+   "title": "Plate with a dimensioned hole (two loops)",
+   "refSource": "brep-rs",
+   "refVolume": 9214.601836621781
+  },
+  {
+   "id": "2d-slot-tangent",
+   "ok": true,
+   "verdict": "PASS: volume 11141.176810 vs brep-rs 11141.592654 (rel delta 3.73e-5, bar 0.0003); bbox delta 5.33e-16",
+   "pass": true,
+   "dofMatch": false,
+   "detail": "dof reported 4, hand count 0: a known solidcraft limit (report depends on the start state); the solid is still scored above.",
+   "volume": 11141.176810322657,
+   "bodies": [
+    {
+     "name": "b_pull1",
+     "volume": 11141.176810322657,
+     "faces": 6
+    }
+   ],
+   "bbox": [
+    -10.000000000000004,
+    0,
+    0,
+    50.00000000000001,
+    20,
+    10.000000000000005
+   ],
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    }
+   ],
+   "refusals": [],
+   "sketches": [
+    {
+     "sketch": "sk1",
+     "state": "accepted",
+     "status": "solved",
+     "dof": 4,
+     "failing": [],
+     "redundant": [
+      "k3",
+      "k5",
+      "k7",
+      "k9"
+     ],
+     "resid": 0,
+     "worstRes": 1.1368683772161603e-15,
+     "profiles": 1,
+     "rule": "worst residual 1.14e-15 (tangent mm) over 13 rules"
+    }
+   ],
+   "refusedCommand": null,
+   "commands": 20,
+   "group": "2d",
+   "title": "Slot: two lines and two tangent arcs",
+   "refSource": "brep-rs",
+   "refVolume": 11141.592653589794
+  },
+  {
+   "id": "2d-triangle-angle",
+   "ok": true,
+   "verdict": "PASS: volume 5196.152423 vs brep-rs 5196.152423 (rel delta 2.03e-13, bar 1e-9)",
+   "pass": true,
+   "dofMatch": true,
+   "detail": "dof 0 = hand count 0.",
+   "volume": 5196.15242270663,
+   "bodies": [
+    {
+     "name": "b_pull1",
+     "volume": 5196.15242270663,
+     "faces": 5
+    }
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    25.98076211353316,
+    10
+   ],
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    }
+   ],
+   "refusals": [],
+   "sketches": [
+    {
+     "sketch": "sk1",
+     "state": "accepted",
+     "status": "solved",
+     "dof": 0,
+     "failing": [],
+     "redundant": [],
+     "resid": 1.554312234475219e-14,
+     "worstRes": 0,
+     "profiles": 1,
+     "rule": "worst residual 0.00e+0 (none) over 8 rules"
+    }
+   ],
+   "refusedCommand": null,
+   "commands": 14,
+   "group": "2d",
+   "title": "Triangle with two lengths and an angle dimension",
+   "refSource": "brep-rs",
+   "refVolume": 5196.152422707686
+  },
+  {
+   "id": "2d-hexagon",
+   "ok": true,
+   "verdict": "PASS: volume 10392.304845 vs brep-rs 10392.304845 (rel delta 6.59e-13, bar 1e-9)",
+   "pass": true,
+   "dofMatch": true,
+   "detail": "dof 0 = hand count 0.",
+   "volume": 10392.304845413282,
+   "bodies": [
+    {
+     "name": "b_pull1",
+     "volume": 10392.304845413282,
+     "faces": 8
+    }
+   ],
+   "bbox": [
+    -17.32050807574122,
+    -20.00000000000634,
+    0,
+    17.320508075699497,
+    19.99999999999372,
+    10
+   ],
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    }
+   ],
+   "refusals": [],
+   "sketches": [
+    {
+     "sketch": "sk1",
+     "state": "accepted",
+     "status": "solved",
+     "dof": 0,
+     "failing": [],
+     "redundant": [],
+     "resid": 1.651656589274353e-11,
+     "worstRes": 1.651656589274353e-11,
+     "profiles": 1,
+     "rule": "worst residual 1.65e-11 (vertical mm) over 20 rules"
+    }
+   ],
+   "refusedCommand": null,
+   "commands": 30,
+   "group": "2d",
+   "title": "Regular hexagon from equal sides and a construction circle",
+   "refSource": "brep-rs",
+   "refVolume": 10392.304845406437
+  },
+  {
+   "id": "2d-handle-api",
+   "ok": true,
+   "verdict": "PASS: volume 12000.000000 vs OCCT 12000.000000 (rel delta 0.00e+0, bar 1e-9); bbox delta 0.00e+0",
+   "pass": true,
+   "dofMatch": null,
+   "detail": "",
+   "volume": 12000,
+   "bodies": [
+    {
+     "name": "b_pull1",
+     "volume": 12000,
+     "faces": 6
+    }
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    25,
+    12
+   ],
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    }
+   ],
+   "refusals": [],
+   "sketches": [],
+   "refusedCommand": null,
+   "commands": 4,
+   "group": "2d",
+   "title": "Handle API: rect + length/across/up (reSHape solver, not solidcraft)",
+   "refSource": "OCCT",
+   "refVolume": 12000
+  },
+  {
+   "id": "diag-under",
+   "ok": true,
+   "verdict": "PASS: volume 8000.000000 vs OCCT 8000.000000 (rel delta 2.27e-16, bar 1e-9); bbox delta 0.00e+0",
+   "pass": true,
+   "dofMatch": true,
+   "detail": "dof 3 = hand count 3.",
+   "volume": 8000,
+   "bodies": [
+    {
+     "name": "b_pull1",
+     "volume": 8000,
+     "faces": 6
+    }
+   ],
+   "bbox": [
+    0,
+    0,
+    0,
+    40,
+    20,
+    10
+   ],
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    }
+   ],
+   "refusals": [],
+   "sketches": [
+    {
+     "sketch": "sk1",
+     "state": "accepted",
+     "status": "solved",
+     "dof": 3,
+     "failing": [],
+     "redundant": [],
+     "resid": 0,
+     "worstRes": 0,
+     "profiles": 1,
+     "rule": "worst residual 0.00e+0 (none) over 9 rules"
+    }
+   ],
+   "refusedCommand": null,
+   "commands": 16,
+   "group": "diag",
+   "title": "Under-constrained: only the width is dimensioned",
+   "refSource": "OCCT",
+   "refVolume": 7999.999999999998
+  },
+  {
+   "id": "diag-conflict",
+   "ok": true,
+   "verdict": "EXPECTED REFUSAL matched: pull1 refused with the expected sentence; built 0 feature(s), volume 0.000 = reference 0.000",
+   "pass": true,
+   "dofMatch": null,
+   "detail": "brep-rs refuses it too: extrude pull1: the sketch's rules conflict, so no profile can be trusted; resolve the conflict first",
+   "volume": 0,
+   "bodies": [],
+   "bbox": null,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "refused",
+     "refusal": "pull1 (extrude): solidcraft refused it -- sketch.dimension: that would over-constrain the sketch (conflicts with k10, k12)",
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    }
+   ],
+   "refusals": [
+    "pull1 (extrude): solidcraft refused it -- sketch.dimension: that would over-constrain the sketch (conflicts with k10, k12)"
+   ],
+   "sketches": [
+    {
+     "sketch": "sk1",
+     "state": "at refusal (sketch.dimension)",
+     "status": "solved",
+     "dof": 0,
+     "failing": [],
+     "redundant": [],
+     "resid": 0,
+     "worstRes": 10,
+     "profiles": 1,
+     "rule": "worst residual 1.00e+1 (distanceX mm) over 12 rules"
+    }
+   ],
+   "refusedCommand": {
+    "command": "sketch.dimension",
+    "error": "that would over-constrain the sketch (conflicts with k10, k12)",
+    "index": 16,
+    "params": {
+     "entities": [
+      "g1.start",
+      "g1.end"
+     ],
+     "type": "horizontal",
+     "value": 50
+    }
+   },
+   "commands": 0,
+   "group": "diag",
+   "title": "Conflicting: width dimensioned 40 and 50",
+   "refSource": null,
+   "refVolume": null
+  },
+  {
+   "id": "diag-redundant",
+   "ok": true,
+   "verdict": "EXPECTED REFUSAL matched: pull1 refused with the expected sentence; built 0 feature(s), volume 0.000 = reference 0.000",
+   "pass": true,
+   "dofMatch": null,
+   "detail": "brep-rs builds this (8000.000 mm3): solidcraft is stricter, not wrong.",
+   "volume": 0,
+   "bodies": [],
+   "bbox": null,
+   "features": [
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "refused",
+     "refusal": "pull1 (extrude): solidcraft refused it -- sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k10 (LinearDimension); add it as a driven (reference) dimension with driven: true",
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    }
+   ],
+   "refusals": [
+    "pull1 (extrude): solidcraft refused it -- sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k10 (LinearDimension); add it as a driven (reference) dimension with driven: true"
+   ],
+   "sketches": [
+    {
+     "sketch": "sk1",
+     "state": "at refusal (sketch.dimension)",
+     "status": "solved",
+     "dof": 0,
+     "failing": [],
+     "redundant": [],
+     "resid": 0,
+     "worstRes": 0,
+     "profiles": 1,
+     "rule": "worst residual 0.00e+0 (none) over 12 rules"
+    }
+   ],
+   "refusedCommand": {
+    "command": "sketch.dimension",
+    "error": "invalid parameters for `sketch.dimension`: that dimension is already determined by k10 (LinearDimension); add it as a driven (reference) dimension with driven: true",
+    "index": 16,
+    "params": {
+     "entities": [
+      "g1.start",
+      "g1.end"
+     ],
+     "type": "horizontal",
+     "value": 40
+    }
+   },
+   "commands": 0,
+   "group": "diag",
+   "title": "Redundant: width dimensioned 40 twice",
+   "refSource": "OCCT",
+   "refVolume": 7999.999999999998
+  },
+  {
+   "id": "named-fillet-edge",
+   "ok": true,
+   "verdict": "PASS: volume 31922.692672 vs OCCT 31922.743339 (rel delta 1.59e-6, bar 0.0003); bbox delta 7.11e-16",
+   "pass": true,
+   "dofMatch": null,
+   "detail": "",
+   "volume": 31922.69267166208,
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 31922.69267166208,
+     "faces": 7
+    }
+   ],
+   "bbox": [
+    -20.000000000000014,
+    -20,
+    -10,
+    20.00000000000001,
+    20,
+    10
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": "solidcraft topology (browser)",
+     "pick": {
+      "edges": [
+       [
+        0,
+        -20,
+        10
+       ]
+      ],
+      "radius": 3,
+      "body": "b_box1"
+     },
+     "evidence": {
+      "name": "box1.edge[box1.face[+z] ^ box1.face[-y]]",
+      "candidates": 1,
+      "loop": false,
+      "engineEdges": [
+       "F1:+z|F1:-y"
+      ],
+      "pointOn": "F1:+z|F1:-y",
+      "facesA": [
+       "F1:+z"
+      ],
+      "facesB": [
+       "F1:-y"
+      ],
+      "checks": [
+       {
+        "check": "geometry vs persistent names",
+        "agree": true,
+        "geometric": 1,
+        "named": 1
+       }
+      ],
+      "target": {
+       "body": "b_box1",
+       "candidates": 1,
+       "edges": [
+        "F1:+z|F1:-y"
+       ],
+       "point": [
+        0,
+        -20,
+        10
+       ]
+      }
+     }
+    }
+   ],
+   "refusals": [],
+   "sketches": [],
+   "refusedCommand": null,
+   "commands": 2,
+   "group": "3d",
+   "title": "Fillet on a named edge (top / front)",
+   "refSource": "OCCT",
+   "refVolume": 31922.743338853463
+  },
+  {
+   "id": "named-bevel-edge",
+   "ok": true,
+   "verdict": "PASS: volume 31820.000000 vs OCCT 31820.000000 (rel delta 1.14e-16, bar 1e-9); bbox delta 8.88e-16",
+   "pass": true,
+   "dofMatch": null,
+   "detail": "",
+   "volume": 31819.999999999996,
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 31819.999999999996,
+     "faces": 7
+    }
+   ],
+   "bbox": [
+    -20,
+    -20.000000000000018,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "bevel1",
+     "kind": "fillet",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": "solidcraft topology (browser)",
+     "pick": {
+      "edges": [
+       [
+        20,
+        0,
+        10
+       ]
+      ],
+      "distance": 3,
+      "body": "b_box1"
+     },
+     "evidence": {
+      "name": "box1.edge[box1.face[+z] ^ box1.face[+x]]",
+      "candidates": 1,
+      "loop": false,
+      "engineEdges": [
+       "F1:+x|F1:+z"
+      ],
+      "pointOn": "F1:+x|F1:+z",
+      "facesA": [
+       "F1:+z"
+      ],
+      "facesB": [
+       "F1:+x"
+      ],
+      "checks": [
+       {
+        "check": "geometry vs persistent names",
+        "agree": true,
+        "geometric": 1,
+        "named": 1
+       }
+      ],
+      "target": {
+       "body": "b_box1",
+       "candidates": 1,
+       "edges": [
+        "F1:+x|F1:+z"
+       ],
+       "point": [
+        20,
+        0,
+        10
+       ]
+      }
+     }
+    }
+   ],
+   "refusals": [],
+   "sketches": [],
+   "refusedCommand": null,
+   "commands": 2,
+   "group": "3d",
+   "title": "Chamfer on a named edge (top / right)",
+   "refSource": "OCCT",
+   "refVolume": 31819.999999999993
+  },
+  {
+   "id": "named-shell-open-top",
+   "ok": true,
+   "verdict": "PASS: volume 8672.000000 vs OCCT 8672.000000 (rel delta 2.10e-16, bar 1e-9); bbox delta 0.00e+0",
+   "pass": true,
+   "dofMatch": null,
+   "detail": "",
+   "volume": 8671.999999999995,
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 8671.999999999995,
+     "faces": 11
+    }
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "shell1",
+     "kind": "shell",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": "solidcraft topology (browser)",
+     "pick": {
+      "faces": [
+       [
+        0,
+        0,
+        10.000000000000002
+       ]
+      ],
+      "thickness": 2,
+      "body": "b_box1"
+     },
+     "evidence": {
+      "name": "box1.face[+z]",
+      "candidates": 1,
+      "engineFace": "F1:+z",
+      "rule": "planar face with outward normal +z at the extreme along it on box1's own shape",
+      "checks": [
+       {
+        "check": "doc plane",
+        "expected": 10,
+        "got": 10.000000000000002,
+        "agree": true
+       },
+       {
+        "check": "engine persistent name",
+        "expected": "F1:+z",
+        "got": "F1:+z",
+        "agree": true
+       }
+      ],
+      "pickPoint": "target b_box1: centroid",
+      "target": {
+       "body": "b_box1",
+       "candidates": 1,
+       "face": "F1:+z",
+       "faceIndex": 5,
+       "point": [
+        0,
+        0,
+        10.000000000000002
+       ],
+       "pickSource": "centroid",
+       "centroidHit": {
+        "dist": 1.7763568394002505e-15,
+        "index": 5
+       },
+       "innerHit": {
+        "dist": 4.440892098500626e-16,
+        "index": 5
+       }
+      }
+     }
+    }
+   ],
+   "refusals": [],
+   "sketches": [],
+   "refusedCommand": null,
+   "commands": 2,
+   "group": "3d",
+   "title": "Shell with an open face (top)",
+   "refSource": "OCCT",
+   "refVolume": 8671.999999999993
+  },
+  {
+   "id": "named-draft-face",
+   "ok": true,
+   "verdict": "PASS: volume 30875.673322 vs OCCT 30875.673322 (rel delta 5.89e-16, bar 0.0003); bbox delta 5.33e-16",
+   "pass": true,
+   "dofMatch": null,
+   "detail": "",
+   "volume": 30875.67332238088,
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 30875.67332238088,
+     "faces": 6
+    }
+   ],
+   "bbox": [
+    -20.000000000000004,
+    -20.000000000000004,
+    -10.000000000000005,
+    20.000000000000004,
+    20.000000000000004,
+    10.000000000000004
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "draft1",
+     "kind": "draft",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": "solidcraft topology (browser)",
+     "pick": {
+      "faces": [
+       [
+        20.000000000000004,
+        0,
+        0
+       ]
+      ],
+      "angle": 8,
+      "neutral": {
+       "origin": [
+        0,
+        0,
+        -10
+       ],
+       "normal": [
+        0,
+        0,
+        1
+       ]
+      },
+      "pull": [
+       0,
+       0,
+       1
+      ],
+      "body": "b_box1"
+     },
+     "evidence": {
+      "name": "box1.face[+x]",
+      "candidates": 1,
+      "engineFace": "F1:+x",
+      "rule": "planar face with outward normal +x at the extreme along it on box1's own shape",
+      "checks": [
+       {
+        "check": "doc plane",
+        "expected": 20,
+        "got": 20.000000000000004,
+        "agree": true
+       },
+       {
+        "check": "engine persistent name",
+        "expected": "F1:+x",
+        "got": "F1:+x",
+        "agree": true
+       }
+      ],
+      "pickPoint": "target b_box1: centroid",
+      "target": {
+       "body": "b_box1",
+       "candidates": 1,
+       "face": "F1:+x",
+       "faceIndex": 2,
+       "point": [
+        20.000000000000004,
+        0,
+        0
+       ],
+       "pickSource": "centroid",
+       "centroidHit": {
+        "dist": 3.552713678800501e-15,
+        "index": 2
+       },
+       "innerHit": {
+        "dist": 1.7763568394002505e-15,
+        "index": 2
+       }
+      }
+     }
+    }
+   ],
+   "refusals": [],
+   "sketches": [],
+   "refusedCommand": null,
+   "commands": 2,
+   "group": "3d",
+   "title": "Draft one face (right) by 8 degrees",
+   "refSource": "OCCT",
+   "refVolume": 30875.673322380862
+  },
+  {
+   "id": "named-cylinder-rim",
+   "ok": true,
+   "verdict": "PASS: volume 3327.863985 vs OCCT 3328.239388 (rel delta 1.13e-4, bar 0.0003); bbox delta 2.69e-5",
+   "pass": true,
+   "dofMatch": null,
+   "detail": "",
+   "volume": 3327.8639846070914,
+   "bodies": [
+    {
+     "name": "b_cyl1",
+     "volume": 3327.8639846070914,
+     "faces": 4
+    }
+   ],
+   "bbox": [
+    -5.999907337279429,
+    -5.999838802443857,
+    -15.000000000000014,
+    5.999907337279428,
+    5.999838802443856,
+    15
+   ],
+   "features": [
+    {
+     "id": "cyl1",
+     "kind": "cylinder",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": "solidcraft topology (browser)",
+     "pick": {
+      "edges": [
+       [
+        -3.452433673561041,
+        4.907209158947863,
+        14.999999999999998
+       ]
+      ],
+      "radius": 3,
+      "body": "b_cyl1"
+     },
+     "evidence": {
+      "name": "cyl1.edge[cyl1.face[+z] ^ cyl1.face[side]]",
+      "candidates": 2,
+      "loop": true,
+      "engineEdges": [
+       "F1:side#1|F1:top",
+       "F1:side#2|F1:top"
+      ],
+      "pointOn": "F1:side#1|F1:top",
+      "facesA": [
+       "F1:top"
+      ],
+      "facesB": [
+       "F1:side#1",
+       "F1:side#2"
+      ],
+      "checks": [
+       {
+        "check": "persistent names + plane of the planar face",
+        "agree": true,
+        "named": 2
+       }
+      ],
+      "target": {
+       "body": "b_cyl1",
+       "candidates": 2,
+       "edges": [
+        "F1:side#1|F1:top",
+        "F1:side#2|F1:top"
+       ],
+       "point": [
+        -3.452433673561041,
+        4.907209158947863,
+        14.999999999999998
+       ]
+      }
+     }
+    }
+   ],
+   "refusals": [],
+   "sketches": [],
+   "refusedCommand": null,
+   "commands": 2,
+   "group": "3d",
+   "title": "Round the top rim of a cylinder (edge between top and side)",
+   "refSource": "OCCT",
+   "refVolume": 3328.2393881155253
+  },
+  {
+   "id": "named-edge-after-cut",
+   "ok": true,
+   "verdict": "PASS: volume 31714.355520 vs OCCT 31714.336294 (rel delta 6.06e-7, bar 0.0003); bbox delta 7.11e-16",
+   "pass": true,
+   "dofMatch": null,
+   "detail": "",
+   "volume": 31714.355519860972,
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 31714.355519860972,
+     "faces": 8
+    }
+   ],
+   "bbox": [
+    -20,
+    -20.000000000000014,
+    -10.000000000000005,
+    20,
+    20.000000000000007,
+    10.000000000000007
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "cyl1",
+     "kind": "cylinder",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "op1",
+     "kind": "combine",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": "solidcraft topology (browser)",
+     "pick": {
+      "edges": [
+       [
+        20,
+        0,
+        10
+       ]
+      ],
+      "radius": 2,
+      "body": "b_box1"
+     },
+     "evidence": {
+      "name": "op1.edge[op1.face[+z] ^ op1.face[+x]]",
+      "candidates": 1,
+      "loop": false,
+      "engineEdges": [
+       "F1:+x|F1:+z"
+      ],
+      "pointOn": "F1:+x|F1:+z",
+      "facesA": [
+       "F1:+z"
+      ],
+      "facesB": [
+       "F1:+x"
+      ],
+      "checks": [
+       {
+        "check": "geometry vs persistent names",
+        "agree": true,
+        "geometric": 1,
+        "named": 1
+       }
+      ],
+      "target": {
+       "body": "b_box1",
+       "candidates": 1,
+       "edges": [
+        "F1:+x|F1:+z"
+       ],
+       "point": [
+        20,
+        0,
+        10
+       ]
+      }
+     }
+    }
+   ],
+   "refusals": [],
+   "sketches": [],
+   "refusedCommand": null,
+   "commands": 4,
+   "group": "3d",
+   "title": "Round an edge of a block that has had a hole cut through it",
+   "refSource": "OCCT",
+   "refVolume": 31714.33629387892
+  },
+  {
+   "id": "named-hole-then-round",
+   "ok": true,
+   "verdict": "PASS: volume 11691.521834 vs OCCT 11691.504441 (rel delta 1.49e-6, bar 0.0003); bbox delta 7.11e-16",
+   "pass": true,
+   "dofMatch": null,
+   "detail": "",
+   "volume": 11691.521833759396,
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 11691.521833759396,
+     "faces": 8
+    }
+   ],
+   "bbox": [
+    -20,
+    -15.000000000000009,
+    -5.0000000000000036,
+    20,
+    15.000000000000005,
+    5.0000000000000036
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "hole1",
+     "kind": "hole",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": "solidcraft topology (browser)",
+     "pick": {
+      "edges": [
+       [
+        20,
+        0,
+        5
+       ]
+      ],
+      "radius": 2,
+      "body": "b_box1"
+     },
+     "evidence": {
+      "name": "box1.edge[box1.face[+z] ^ box1.face[+x]]",
+      "candidates": 1,
+      "loop": false,
+      "engineEdges": [
+       "F1:+x|F1:+z"
+      ],
+      "pointOn": "F1:+x|F1:+z",
+      "facesA": [
+       "F1:+z"
+      ],
+      "facesB": [
+       "F1:+x"
+      ],
+      "checks": [
+       {
+        "check": "geometry vs persistent names",
+        "agree": true,
+        "geometric": 1,
+        "named": 1
+       }
+      ],
+      "target": {
+       "body": "b_box1",
+       "candidates": 1,
+       "edges": [
+        "F1:+x|F1:+z"
+       ],
+       "point": [
+        20,
+        0,
+        5
+       ]
+      }
+     }
+    }
+   ],
+   "refusals": [],
+   "sketches": [],
+   "refusedCommand": null,
+   "commands": 3,
+   "group": "3d",
+   "title": "Name an edge of the box, round it on the holed body",
+   "refSource": "OCCT",
+   "refVolume": 11691.504440798064
+  },
+  {
+   "id": "named-hole-then-shell",
+   "ok": true,
+   "verdict": "PASS: volume 2656.464102 vs OCCT 2656.477856 (rel delta 5.18e-6, bar 0.0003); bbox delta 7.11e-16",
+   "pass": true,
+   "dofMatch": null,
+   "detail": "",
+   "volume": 2656.4641016857736,
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 2656.4641016857736,
+     "faces": 14
+    }
+   ],
+   "bbox": [
+    -20,
+    -15,
+    -5.0000000000000036,
+    20,
+    15,
+    5.0000000000000036
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "hole1",
+     "kind": "hole",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "shell1",
+     "kind": "shell",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": "solidcraft topology (browser)",
+     "pick": {
+      "faces": [
+       [
+        13.267320324271475,
+        -7.554507244218565,
+        5
+       ]
+      ],
+      "thickness": 1,
+      "body": "b_box1"
+     },
+     "evidence": {
+      "name": "box1.face[+z]",
+      "candidates": 1,
+      "engineFace": "F1:+z",
+      "rule": "planar face with outward normal +z at the extreme along it on box1's own shape",
+      "checks": [
+       {
+        "check": "doc plane",
+        "expected": 5,
+        "got": 5,
+        "agree": true
+       },
+       {
+        "check": "engine persistent name",
+        "expected": "F1:+z",
+        "got": "F1:+z",
+        "agree": true
+       }
+      ],
+      "pickPoint": "target b_box1: interior point (largest display triangle); the centroid is off the face",
+      "target": {
+       "body": "b_box1",
+       "candidates": 1,
+       "face": "F1:+z",
+       "faceIndex": 7,
+       "point": [
+        13.267320324271475,
+        -7.554507244218565,
+        5
+       ],
+       "pickSource": "interior point (largest display triangle); the centroid is off the face",
+       "centroidHit": {
+        "dist": 4.949747468305832,
+        "index": 5
+       },
+       "innerHit": {
+        "dist": 1.7763568394002505e-15,
+        "index": 7
+       }
+      }
+     }
+    }
+   ],
+   "refusals": [],
+   "sketches": [],
+   "refusedCommand": null,
+   "commands": 3,
+   "group": "3d",
+   "title": "Shell open at the top of a plate that has a hole (annular face)",
+   "refSource": "OCCT",
+   "refVolume": 2656.4778563656455
+  },
+  {
+   "id": "named-pocket-wall-round",
+   "ok": true,
+   "verdict": "PASS: volume 27995.701614 vs OCCT 27995.707963 (rel delta 2.27e-7, bar 0.0003); bbox delta 1.48e-16",
+   "pass": true,
+   "dofMatch": null,
+   "detail": "",
+   "volume": 27995.701614313555,
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 27995.701614313555,
+     "faces": 12
+    }
+   ],
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6.000000000000001
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "pocket1",
+     "kind": "combine",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": "solidcraft topology (browser)",
+     "pick": {
+      "edges": [
+       [
+        0,
+        -5,
+        6
+       ]
+      ],
+      "radius": 1,
+      "body": "b_box1"
+     },
+     "evidence": {
+      "name": "pocket1.edge[pocket1.same[box1.face[+z]] ^ pull1.face[sk1.edge0]]",
+      "candidates": 1,
+      "loop": false,
+      "engineEdges": [
+       "F1:+z|F3:side:l1"
+      ],
+      "pointOn": "F1:+z|F3:side:l1",
+      "facesA": [
+       "F1:+z"
+      ],
+      "facesB": [
+       "F3:side:l1"
+      ],
+      "checks": [
+       {
+        "check": "geometry vs persistent names",
+        "agree": true,
+        "geometric": 1,
+        "named": 1
+       }
+      ],
+      "target": {
+       "body": "b_box1",
+       "candidates": 1,
+       "edges": [
+        "F1:+z|F3:side:l1"
+       ],
+       "point": [
+        0,
+        -5,
+        6
+       ]
+      }
+     }
+    }
+   ],
+   "refusals": [],
+   "sketches": [],
+   "refusedCommand": null,
+   "commands": 7,
+   "group": "3d",
+   "title": "Round the rim of a pocket wall (carried + swept + between)",
+   "refSource": "OCCT",
+   "refVolume": 27995.707963267254
+  },
+  {
+   "id": "named-counterbore-round",
+   "ok": true,
+   "verdict": "EXPECTED REFUSAL matched: hole1 refused with the expected sentence; built 4 feature(s), volume 14997.853 = reference 14997.854",
+   "pass": true,
+   "dofMatch": null,
+   "detail": "Each refusal sentence below says why. The accepted part of the model is shown in the viewport.",
+   "volume": 14997.852574108654,
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 12000,
+     "faces": 6
+    },
+    {
+     "name": "b_pull1",
+     "volume": 2000,
+     "faces": 6
+    },
+    {
+     "name": "b_box2",
+     "volume": 997.8525741086536,
+     "faces": 7
+    }
+   ],
+   "bbox": [
+    -20,
+    -15,
+    -5,
+    35,
+    15,
+    25
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "hole1",
+     "kind": "hole",
+     "status": "refused",
+     "refusal": "hole1 (hole): counterbore and countersink are not mapped in phase 0",
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "box2",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": "solidcraft topology (browser)",
+     "pick": {
+      "edges": [
+       [
+        35,
+        0,
+        5
+       ]
+      ],
+      "radius": 1,
+      "body": "b_box2"
+     },
+     "evidence": {
+      "name": "box2.edge[box2.face[+z] ^ box2.face[+x]]",
+      "candidates": 1,
+      "loop": false,
+      "engineEdges": [
+       "F4:+x|F4:+z"
+      ],
+      "pointOn": "F4:+x|F4:+z",
+      "facesA": [
+       "F4:+z"
+      ],
+      "facesB": [
+       "F4:+x"
+      ],
+      "checks": [
+       {
+        "check": "geometry vs persistent names",
+        "agree": true,
+        "geometric": 1,
+        "named": 1
+       }
+      ],
+      "target": {
+       "body": "b_box2",
+       "candidates": 1,
+       "edges": [
+        "F4:+x|F4:+z"
+       ],
+       "point": [
+        35,
+        0,
+        5
+       ]
+      }
+     }
+    }
+   ],
+   "refusals": [
+    "hole1 (hole): counterbore and countersink are not mapped in phase 0"
+   ],
+   "sketches": [],
+   "refusedCommand": null,
+   "commands": 7,
+   "group": "3d",
+   "title": "Counterbore (refused) and a named-edge round (built)",
+   "refSource": "OCCT",
+   "refVolume": 997.8539816348185
+  },
+  {
+   "id": "refuse-shell-closed",
+   "ok": true,
+   "verdict": "EXPECTED REFUSAL matched: shell1 refused with the expected sentence; built 1 feature(s), volume 32000.000 = reference 32000.000",
+   "pass": true,
+   "dofMatch": null,
+   "detail": "Each refusal sentence below says why. The accepted part of the model is shown in the viewport.",
+   "volume": 32000,
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 32000,
+     "faces": 6
+    }
+   ],
+   "bbox": [
+    -20,
+    -20,
+    -10,
+    20,
+    20,
+    10
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "shell1",
+     "kind": "shell",
+     "status": "refused",
+     "refusal": "shell1 (shell): this spike's shell needs a face to remove; a closed hollow box is not mapped",
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    }
+   ],
+   "refusals": [
+    "shell1 (shell): this spike's shell needs a face to remove; a closed hollow box is not mapped"
+   ],
+   "sketches": [],
+   "refusedCommand": null,
+   "commands": 1,
+   "group": "refusal",
+   "title": "Shell: a closed hollow box (no open face)",
+   "refSource": "OCCT",
+   "refVolume": 11263.999999999993
+  },
+  {
+   "id": "refuse-name-two-faces",
+   "ok": true,
+   "verdict": "EXPECTED REFUSAL matched: shell1 refused with the expected sentence; built 3 feature(s), volume 46000.000 = reference 46000.000",
+   "pass": true,
+   "dofMatch": null,
+   "detail": "brep-rs refuses it too: brep-rs cannot hollow a part with a blind hole, counterbore or countersink yet: the wall round a hole that stops inside the part (or steps out) is rounded where it meets the hole's floor, a curve it cannot cut. Make the hole go right through, or hollow the plain shape first and then drill it -- shell1 is shown without it.",
+   "volume": 46000,
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 46000,
+     "faces": 10
+    }
+   ],
+   "bbox": [
+    -30,
+    -20,
+    -10,
+    30,
+    20,
+    10
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "box2",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "op1",
+     "kind": "combine",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "shell1",
+     "kind": "shell",
+     "status": "refused",
+     "refusal": "shell1 (shell): op1.face[+z] matches 2 faces on b_box1 (F1:+z#[F1:-x,F2:-x], F1:+z#[F1:+x,F2:+x]; planar face with outward normal +z at the extreme along it on op1's own shape); a name must pick exactly one, so nothing is picked",
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    }
+   ],
+   "refusals": [
+    "shell1 (shell): op1.face[+z] matches 2 faces on b_box1 (F1:+z#[F1:-x,F2:-x], F1:+z#[F1:+x,F2:+x]; planar face with outward normal +z at the extreme along it on op1's own shape); a name must pick exactly one, so nothing is picked"
+   ],
+   "sketches": [],
+   "refusedCommand": null,
+   "commands": 3,
+   "group": "refusal",
+   "title": "Ambiguous name: the top face is split in two",
+   "refSource": "OCCT",
+   "refVolume": 14690.194671058522
+  },
+  {
+   "id": "refuse-name-swept-arc",
+   "ok": true,
+   "verdict": "EXPECTED REFUSAL matched: round1 refused with the expected sentence; built 3 feature(s), volume 28598.971 = reference 28598.938",
+   "pass": true,
+   "dofMatch": null,
+   "detail": "Each refusal sentence below says why. The accepted part of the model is shown in the viewport.",
+   "volume": 28598.971467297786,
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 28598.971467297786,
+     "faces": 8
+    }
+   ],
+   "bbox": [
+    -30,
+    -20,
+    -6,
+    30,
+    20,
+    6.0000000000000036
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "sk1",
+     "kind": "sketch",
+     "status": "noop",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "pull1",
+     "kind": "extrude",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "pocket1",
+     "kind": "combine",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "refused",
+     "refusal": "round1 (fillet): pocket1.edge[pocket1.same[box1.face[+z]] ^ pull1.face[sk1.edge0]] cannot be resolved: pull1.face[sk1.edge0]: sk1 is a circle or a rows-and-rules sketch; a swept name over it is not resolved in the browser demo",
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    }
+   ],
+   "refusals": [
+    "round1 (fillet): pocket1.edge[pocket1.same[box1.face[+z]] ^ pull1.face[sk1.edge0]] cannot be resolved: pull1.face[sk1.edge0]: sk1 is a circle or a rows-and-rules sketch; a swept name over it is not resolved in the browser demo"
+   ],
+   "sketches": [],
+   "refusedCommand": null,
+   "commands": 6,
+   "group": "refusal",
+   "title": "Unsupported name: a swept wall of a circular pocket",
+   "refSource": "OCCT",
+   "refVolume": 28593.243352188278
+  },
+  {
+   "id": "diverge-stub-centre",
+   "ok": true,
+   "verdict": "DIVERGES: solidcraft built 2644.346 mm3, which matches neither independent reference. plane-offset box composition (OCCT) 2776.000 (rel delta 4.74e-2); distance erosion (OCCT boxes, voxel-checked) 2856.000 (rel delta 7.41e-2). Not a pass.",
+   "pass": false,
+   "dofMatch": null,
+   "detail": "OCCT's own shell no-ops on this body and brep-rs does not measure it, so neither is a reference; the references are box compositions (VERIFY.md section 6). solidcraft's stub tube is cut off short of its base (and for the non-flush stubs the result has 2 kernel shells).",
+   "volume": 2644.345622159777,
+   "bodies": [
+    {
+     "name": "b_b1",
+     "volume": 2644.345622159777,
+     "faces": 22
+    }
+   ],
+   "bbox": [
+    -20,
+    -15,
+    -5,
+    20,
+    15,
+    13
+   ],
+   "features": [
+    {
+     "id": "b1",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "b2",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "op1",
+     "kind": "combine",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "s1",
+     "kind": "shell",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": "solidcraft topology (browser)",
+     "pick": {
+      "faces": [
+       [
+        13.217056117291154,
+        -1.4214827252291766,
+        5
+       ]
+      ],
+      "thickness": 1,
+      "body": "b_b1"
+     },
+     "evidence": {
+      "name": "b1.face[+z]",
+      "candidates": 1,
+      "engineFace": "F1:+z",
+      "rule": "planar face with outward normal +z at the extreme along it on b1's own shape",
+      "checks": [
+       {
+        "check": "doc plane",
+        "expected": 5,
+        "got": 5,
+        "agree": true
+       },
+       {
+        "check": "engine persistent name",
+        "expected": "F1:+z",
+        "got": "F1:+z",
+        "agree": true
+       }
+      ],
+      "pickPoint": "target b_b1: interior point (largest display triangle); the centroid is off the face",
+      "target": {
+       "body": "b_b1",
+       "candidates": 1,
+       "face": "F1:+z",
+       "faceIndex": 9,
+       "point": [
+        13.217056117291154,
+        -1.4214827252291766,
+        5
+       ],
+       "pickSource": "interior point (largest display triangle); the centroid is off the face",
+       "centroidHit": {
+        "dist": 5,
+        "index": 4
+       },
+       "innerHit": {
+        "dist": 6.661338147750939e-16,
+        "index": 9
+       }
+      }
+     }
+    }
+   ],
+   "refusals": [],
+   "sketches": [],
+   "refusedCommand": null,
+   "commands": 4,
+   "group": "diverge",
+   "title": "Shell open at b1's top, stub centre unioned on it",
+   "refSource": "independent box composition (OCCT booleans of primitives; voxel cross-check)",
+   "refVolume": 2775.999999999999
+  },
+  {
+   "id": "diverge-stub-offset-x",
+   "ok": true,
+   "verdict": "DIVERGES: solidcraft built 2644.346 mm3, which matches neither independent reference. plane-offset box composition (OCCT) 2776.000 (rel delta 4.74e-2); distance erosion (OCCT boxes, voxel-checked) 2856.000 (rel delta 7.41e-2). Not a pass.",
+   "pass": false,
+   "dofMatch": null,
+   "detail": "OCCT's own shell no-ops on this body and brep-rs does not measure it, so neither is a reference; the references are box compositions (VERIFY.md section 6). solidcraft's stub tube is cut off short of its base (and for the non-flush stubs the result has 2 kernel shells).",
+   "volume": 2644.3456221597767,
+   "bodies": [
+    {
+     "name": "b_b1",
+     "volume": 2644.3456221597767,
+     "faces": 22
+    }
+   ],
+   "bbox": [
+    -20,
+    -15,
+    -5,
+    20,
+    15,
+    13
+   ],
+   "features": [
+    {
+     "id": "b1",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "b2",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "op1",
+     "kind": "combine",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "s1",
+     "kind": "shell",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": "solidcraft topology (browser)",
+     "pick": {
+      "faces": [
+       [
+        -0.9090909090909087,
+        1.5502750598402187e-16,
+        5
+       ]
+      ],
+      "thickness": 1,
+      "body": "b_b1"
+     },
+     "evidence": {
+      "name": "b1.face[+z]",
+      "candidates": 1,
+      "engineFace": "F1:+z",
+      "rule": "planar face with outward normal +z at the extreme along it on b1's own shape",
+      "checks": [
+       {
+        "check": "doc plane",
+        "expected": 5,
+        "got": 5,
+        "agree": true
+       },
+       {
+        "check": "engine persistent name",
+        "expected": "F1:+z",
+        "got": "F1:+z",
+        "agree": true
+       }
+      ],
+      "pickPoint": "target b_b1: centroid",
+      "target": {
+       "body": "b_b1",
+       "candidates": 1,
+       "face": "F1:+z",
+       "faceIndex": 9,
+       "point": [
+        -0.9090909090909087,
+        1.5502750598402187e-16,
+        5
+       ],
+       "pickSource": "centroid",
+       "centroidHit": {
+        "dist": 5.298791323945411e-16,
+        "index": 9
+       },
+       "innerHit": {
+        "dist": 6.280369834735101e-16,
+        "index": 9
+       }
+      }
+     }
+    }
+   ],
+   "refusals": [],
+   "sketches": [],
+   "refusedCommand": null,
+   "commands": 4,
+   "group": "diverge",
+   "title": "Shell open at b1's top, stub offset-x unioned on it",
+   "refSource": "independent box composition (OCCT booleans of primitives; voxel cross-check)",
+   "refVolume": 2776.0000000000005
+  },
+  {
+   "id": "diverge-stub-corner",
+   "ok": true,
+   "verdict": "DIVERGES: solidcraft built 2713.830 mm3, which matches neither independent reference. plane-offset box composition (OCCT) 2776.000 (rel delta 2.24e-2); distance erosion (OCCT boxes, voxel-checked) 2812.000 (rel delta 3.49e-2). Not a pass.",
+   "pass": false,
+   "dofMatch": null,
+   "detail": "OCCT's own shell no-ops on this body and brep-rs does not measure it, so neither is a reference; the references are box compositions (VERIFY.md section 6). solidcraft's stub tube is cut off short of its base (and for the non-flush stubs the result has 2 kernel shells).",
+   "volume": 2713.8298771310065,
+   "bodies": [
+    {
+     "name": "b_b1",
+     "volume": 2713.8298771310065,
+     "faces": 18
+    }
+   ],
+   "bbox": [
+    -20.000000000000004,
+    -15,
+    -5,
+    20,
+    15,
+    13
+   ],
+   "features": [
+    {
+     "id": "b1",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "b2",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "op1",
+     "kind": "combine",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "s1",
+     "kind": "shell",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": "solidcraft topology (browser)",
+     "pick": {
+      "faces": [
+       [
+        -1.3636363636363635,
+        -0.9090909090909091,
+        5
+       ]
+      ],
+      "thickness": 1,
+      "body": "b_b1"
+     },
+     "evidence": {
+      "name": "b1.face[+z]",
+      "candidates": 1,
+      "engineFace": "F1:+z",
+      "rule": "planar face with outward normal +z at the extreme along it on b1's own shape",
+      "checks": [
+       {
+        "check": "doc plane",
+        "expected": 5,
+        "got": 5,
+        "agree": true
+       },
+       {
+        "check": "engine persistent name",
+        "expected": "F1:+z",
+        "got": "F1:+z",
+        "agree": true
+       }
+      ],
+      "pickPoint": "target b_b1: centroid",
+      "target": {
+       "body": "b_b1",
+       "candidates": 1,
+       "face": "F1:+z",
+       "faceIndex": 7,
+       "point": [
+        -1.3636363636363635,
+        -0.9090909090909091,
+        5
+       ],
+       "pickSource": "centroid",
+       "centroidHit": {
+        "dist": 1.1102230246251565e-15,
+        "index": 7
+       },
+       "innerHit": {
+        "dist": 4.440892098500626e-16,
+        "index": 7
+       }
+      }
+     }
+    }
+   ],
+   "refusals": [],
+   "sketches": [],
+   "refusedCommand": null,
+   "commands": 4,
+   "group": "diverge",
+   "title": "Shell open at b1's top, stub corner unioned on it",
+   "refSource": "independent box composition (OCCT booleans of primitives; voxel cross-check)",
+   "refVolume": 2776
+  },
+  {
+   "id": "diverge-stub-edge-flush",
+   "ok": true,
+   "verdict": "DIVERGES: solidcraft built 2680.916 mm3, which matches neither independent reference. plane-offset box composition (OCCT) 2776.000 (rel delta 3.43e-2); distance erosion (OCCT boxes, voxel-checked) 2832.000 (rel delta 5.33e-2). Not a pass.",
+   "pass": false,
+   "dofMatch": null,
+   "detail": "OCCT's own shell no-ops on this body and brep-rs does not measure it, so neither is a reference; the references are box compositions (VERIFY.md section 6). solidcraft's stub tube is cut off short of its base (and for the non-flush stubs the result has 2 kernel shells).",
+   "volume": 2680.9162826709507,
+   "bodies": [
+    {
+     "name": "b_b1",
+     "volume": 2680.9162826709507,
+     "faces": 20
+    }
+   ],
+   "bbox": [
+    -20,
+    -15,
+    -5,
+    20,
+    15,
+    13
+   ],
+   "features": [
+    {
+     "id": "b1",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "b2",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "op1",
+     "kind": "combine",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "s1",
+     "kind": "shell",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": "solidcraft topology (browser)",
+     "pick": {
+      "faces": [
+       [
+        -1.3636363636363635,
+        0,
+        5
+       ]
+      ],
+      "thickness": 1,
+      "body": "b_b1"
+     },
+     "evidence": {
+      "name": "b1.face[+z]",
+      "candidates": 1,
+      "engineFace": "F1:+z",
+      "rule": "planar face with outward normal +z at the extreme along it on b1's own shape",
+      "checks": [
+       {
+        "check": "doc plane",
+        "expected": 5,
+        "got": 5,
+        "agree": true
+       },
+       {
+        "check": "engine persistent name",
+        "expected": "F1:+z",
+        "got": "F1:+z",
+        "agree": true
+       }
+      ],
+      "pickPoint": "target b_b1: centroid",
+      "target": {
+       "body": "b_b1",
+       "candidates": 1,
+       "face": "F1:+z",
+       "faceIndex": 8,
+       "point": [
+        -1.3636363636363635,
+        0,
+        5
+       ],
+       "pickSource": "centroid",
+       "centroidHit": {
+        "dist": 6.684427777288335e-16,
+        "index": 8
+       },
+       "innerHit": {
+        "dist": 9.930136612989092e-16,
+        "index": 8
+       }
+      }
+     }
+    }
+   ],
+   "refusals": [],
+   "sketches": [],
+   "refusedCommand": null,
+   "commands": 4,
+   "group": "diverge",
+   "title": "Shell open at b1's top, stub edge-flush unioned on it",
+   "refSource": "independent box composition (OCCT booleans of primitives; voxel cross-check)",
+   "refVolume": 2776.000000000001
+  },
+  {
+   "id": "diverge-stub-tall",
+   "ok": true,
+   "verdict": "DIVERGES: solidcraft built 3182.356 mm3, which matches neither independent reference. plane-offset box composition (OCCT) 3300.000 (rel delta 3.56e-2); distance erosion (OCCT boxes, voxel-checked) 3364.000 (rel delta 5.40e-2). Not a pass.",
+   "pass": false,
+   "dofMatch": null,
+   "detail": "OCCT's own shell no-ops on this body and brep-rs does not measure it, so neither is a reference; the references are box compositions (VERIFY.md section 6). solidcraft's stub tube is cut off short of its base (and for the non-flush stubs the result has 2 kernel shells).",
+   "volume": 3182.3562606759406,
+   "bodies": [
+    {
+     "name": "b_b1",
+     "volume": 3182.3562606759406,
+     "faces": 22
+    }
+   ],
+   "bbox": [
+    -20,
+    -15,
+    -5,
+    20,
+    15,
+    35.00000000000001
+   ],
+   "features": [
+    {
+     "id": "b1",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "b2",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "op1",
+     "kind": "combine",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "s1",
+     "kind": "shell",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": "solidcraft topology (browser)",
+     "pick": {
+      "faces": [
+       [
+        0.45070422535211346,
+        -0.2816901408450703,
+        5
+       ]
+      ],
+      "thickness": 1,
+      "body": "b_b1"
+     },
+     "evidence": {
+      "name": "b1.face[+z]",
+      "candidates": 1,
+      "engineFace": "F1:+z",
+      "rule": "planar face with outward normal +z at the extreme along it on b1's own shape",
+      "checks": [
+       {
+        "check": "doc plane",
+        "expected": 5,
+        "got": 5,
+        "agree": true
+       },
+       {
+        "check": "engine persistent name",
+        "expected": "F1:+z",
+        "got": "F1:+z",
+        "agree": true
+       }
+      ],
+      "pickPoint": "target b_b1: centroid",
+      "target": {
+       "body": "b_b1",
+       "candidates": 1,
+       "face": "F1:+z",
+       "faceIndex": 9,
+       "point": [
+        0.45070422535211346,
+        -0.2816901408450703,
+        5
+       ],
+       "pickSource": "centroid",
+       "centroidHit": {
+        "dist": 1.415262216750919e-15,
+        "index": 9
+       },
+       "innerHit": {
+        "dist": 9.930136612989092e-16,
+        "index": 9
+       }
+      }
+     }
+    }
+   ],
+   "refusals": [],
+   "sketches": [],
+   "refusedCommand": null,
+   "commands": 4,
+   "group": "diverge",
+   "title": "Shell open at b1's top, stub tall unioned on it",
+   "refSource": "independent box composition (OCCT booleans of primitives; voxel cross-check)",
+   "refVolume": 3299.999999999998
+  },
+  {
+   "id": "diverge-stub-low",
+   "ok": true,
+   "verdict": "DIVERGES: solidcraft built 2524.000 mm3, which matches neither independent reference. plane-offset box composition (OCCT) 2612.000 (rel delta 3.37e-2); distance erosion (OCCT boxes, voxel-checked) 2708.000 (rel delta 6.79e-2). Not a pass.",
+   "pass": false,
+   "dofMatch": null,
+   "detail": "OCCT's own shell no-ops on this body and brep-rs does not measure it, so neither is a reference; the references are box compositions (VERIFY.md section 6). solidcraft's stub tube is cut off short of its base (and for the non-flush stubs the result has 2 kernel shells).",
+   "volume": 2524.0000000000005,
+   "bodies": [
+    {
+     "name": "b_b1",
+     "volume": 2524.0000000000005,
+     "faces": 17
+    }
+   ],
+   "bbox": [
+    -20,
+    -15,
+    -5,
+    20,
+    15,
+    7
+   ],
+   "features": [
+    {
+     "id": "b1",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "b2",
+     "kind": "box",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "op1",
+     "kind": "combine",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null,
+     "evidence": null
+    },
+    {
+     "id": "s1",
+     "kind": "shell",
+     "status": "built",
+     "refusal": null,
+     "pickedFrom": "solidcraft topology (browser)",
+     "pick": {
+      "faces": [
+       [
+        5,
+        10.333333333333332,
+        5
+       ]
+      ],
+      "thickness": 1,
+      "body": "b_b1"
+     },
+     "evidence": {
+      "name": "b1.face[+z]",
+      "candidates": 1,
+      "engineFace": "F1:+z",
+      "rule": "planar face with outward normal +z at the extreme along it on b1's own shape",
+      "checks": [
+       {
+        "check": "doc plane",
+        "expected": 5,
+        "got": 5,
+        "agree": true
+       },
+       {
+        "check": "engine persistent name",
+        "expected": "F1:+z",
+        "got": "F1:+z",
+        "agree": true
+       }
+      ],
+      "pickPoint": "target b_b1: interior point (largest display triangle); the centroid is off the face",
+      "target": {
+       "body": "b_b1",
+       "candidates": 1,
+       "face": "F1:+z",
+       "faceIndex": 9,
+       "point": [
+        5,
+        10.333333333333332,
+        5
+       ],
+       "pickSource": "interior point (largest display triangle); the centroid is off the face",
+       "centroidHit": {
+        "dist": 0.31818181818181823,
+        "index": 7
+       },
+       "innerHit": {
+        "dist": 0,
+        "index": 9
+       }
+      }
+     }
+    }
+   ],
+   "refusals": [],
+   "sketches": [],
+   "refusedCommand": null,
+   "commands": 4,
+   "group": "diverge",
+   "title": "Shell open at b1's top, stub low unioned on it",
+   "refSource": "independent box composition (OCCT booleans of primitives; voxel cross-check)",
+   "refVolume": 2611.9999999999986
+  }
+ ],
+ "restore": {
+  "failedAsExpected": true,
+  "failed": {
+   "command": "solid.cylinder",
+   "error": "invalid input: radius must be positive",
+   "index": 1,
+   "params": {
+    "axis": "Z",
+    "base": [
+     210,
+     200,
+     200
+    ],
+    "body_name": "restore_probe_bad",
+    "height": 10,
+    "radius": -5
+   }
+  },
+  "restored": true,
+  "before": {
+   "volume": 11717.30362588783,
+   "bodies": "b_box1"
+  },
+  "after": {
+   "volume": 11717.30362588783,
+   "bodies": "b_box1"
+  },
+  "same": true
+ },
+ "note": "diverge-* rows (6) added by a --only run on 2026-10-14T18:57:00.978Z; the other 29 rows are from the earlier full run"
+}

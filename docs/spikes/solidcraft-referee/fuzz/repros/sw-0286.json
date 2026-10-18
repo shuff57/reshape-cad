@@ -1,0 +1,96 @@
+{
+ "id": "sw-0286",
+ "seed": 9,
+ "desc": "S7 rim wall=2 t=1",
+ "t": 1,
+ "commands": [
+  {
+   "command": "solid.box",
+   "params": {
+    "length": 40,
+    "width": 30,
+    "height": 10,
+    "center": [
+     0,
+     0,
+     5
+    ],
+    "body_name": "b1"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": 12,
+    "width": 10,
+    "height": 5,
+    "center": [
+     5,
+     0,
+     12.5
+    ],
+    "body_name": "f1"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": 8,
+    "width": 6,
+    "height": 7,
+    "center": [
+     5,
+     0,
+     12.5
+    ],
+    "body_name": "f1t"
+   }
+  },
+  {
+   "command": "solid.combine",
+   "params": {
+    "target": "f1",
+    "tools": [
+     "f1t"
+    ],
+    "operation": "cut"
+   }
+  },
+  {
+   "command": "solid.combine",
+   "params": {
+    "target": "b1",
+    "tools": [
+     "f1"
+    ],
+    "operation": "join"
+   }
+  },
+  {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      -10.37,
+      -5.41,
+      10
+     ]
+    ],
+    "thickness": 1,
+    "body": "b1"
+   }
+  }
+ ],
+ "oracleFamily": "plate",
+ "p7": {
+  "cls": "REFUSED",
+  "expectedP": 2864.0000000000005,
+  "sentence": "step 6 (solid.shell): lumps: cannot mesh a complete shell boundary"
+ },
+ "base": {
+  "cls": "WRONG",
+  "expectedP": 2864.0000000000005,
+  "built": 2719.5969349108946,
+  "rel": 0.05042006462608445
+ }
+}

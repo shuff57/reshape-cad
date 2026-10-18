@@ -1,0 +1,104 @@
+{
+ "id": "s2-01541",
+ "desc": "plate 18.8x19.3x12 open=top [rim]",
+ "t": 2.5,
+ "p7": {
+  "expectedP": 2557.350000000001
+ },
+ "p8": {
+  "cls": "WRONG",
+  "expectedP": 2557.350000000001,
+  "built": 2635.35,
+  "rel": 0.03050032259956559
+ },
+ "commands": [
+  {
+   "command": "solid.box",
+   "params": {
+    "length": 18.8,
+    "width": 19.3,
+    "height": 12,
+    "center": [
+     0,
+     0,
+     6
+    ],
+    "body_name": "b1"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": 6.4,
+    "width": 6.3,
+    "height": 2,
+    "center": [
+     -1.7000000000000002,
+     1.0000000000000002,
+     -1
+    ],
+    "body_name": "f1"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": 1.2,
+    "width": 1.1,
+    "height": 4,
+    "center": [
+     -1.7000000000000002,
+     1.0000000000000002,
+     -1
+    ],
+    "body_name": "f1t"
+   }
+  },
+  {
+   "command": "solid.combine",
+   "params": {
+    "target": "f1",
+    "tools": [
+     "f1t"
+    ],
+    "operation": "cut"
+   }
+  },
+  {
+   "command": "solid.combine",
+   "params": {
+    "target": "b1",
+    "tools": [
+     "f1"
+    ],
+    "operation": "join"
+   }
+  },
+  {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      0,
+      -0.241,
+      12
+     ]
+    ],
+    "thickness": 2.5,
+    "body": "b1"
+   }
+  }
+ ],
+ "feats": [
+  {
+   "kind": "rim",
+   "bw": 6.4,
+   "bd": 6.3,
+   "bh": 2,
+   "wall": 2.6,
+   "face": "bot",
+   "xc": -1.7,
+   "yc": 1
+  }
+ ]
+}

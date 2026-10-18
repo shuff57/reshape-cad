@@ -1,0 +1,77 @@
+{
+ "id": "sw-0164",
+ "seed": 9,
+ "desc": "S1 vthru web=1.5 t=1",
+ "t": 1,
+ "commands": [
+  {
+   "command": "solid.box",
+   "params": {
+    "length": 40,
+    "width": 30,
+    "height": 10,
+    "center": [
+     0,
+     0,
+     5
+    ],
+    "body_name": "b1"
+   }
+  },
+  {
+   "command": "solid.cylinder",
+   "params": {
+    "radius": 2,
+    "height": 12,
+    "base": [
+     -16.5,
+     0,
+     -1
+    ],
+    "axis": [
+     0,
+     0,
+     1
+    ],
+    "body_name": "f1"
+   }
+  },
+  {
+   "command": "solid.combine",
+   "params": {
+    "target": "b1",
+    "tools": [
+     "f1"
+    ],
+    "operation": "cut"
+   }
+  },
+  {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      0.988,
+      0,
+      10
+     ]
+    ],
+    "thickness": 1,
+    "body": "b1"
+   }
+  }
+ ],
+ "oracleFamily": "plate",
+ "p7": {
+  "cls": "WRONG",
+  "expectedP": 2542.6720312500006,
+  "built": 2553.1869732631976,
+  "rel": 0.004135390598538095
+ },
+ "base": {
+  "cls": "WRONG",
+  "expectedP": 2542.6720312500006,
+  "built": 2553.1869732631976,
+  "rel": 0.004135390598538095
+ }
+}

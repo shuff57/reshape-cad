@@ -1,0 +1,21 @@
+{
+ "id": "asym-fillet-3x-r3",
+ "outcome": "built",
+ "volume": 388730.42332416103,
+ "faces": 7,
+ "bbox": [
+  -15,
+  -66,
+  -9.000000000000004,
+  105.00000000000001,
+  24.000000000000004,
+  27.000000000000014
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "box",
+  "fillet"
+ ],
+ "scriptSource": "[{\"command\":\"solid.box\",\"params\":{\"length\":120,\"width\":90,\"height\":36,\"center\":[45,-21,9],\"body_name\":\"b_b1\"}},{\"command\":\"solid.fillet\",\"params\":{\"edges\":[[105,24,9]],\"radius\":3,\"body\":\"b_b1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

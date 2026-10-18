@@ -1,0 +1,162 @@
+[
+ {
+  "id": "ok-primitive-edge",
+  "expected": "resolves",
+  "status": "built",
+  "sentence": null,
+  "evidence": {
+   "candidates": 1,
+   "engine": [
+    "F1:+x|F1:+z"
+   ]
+  },
+  "ok": true
+ },
+ {
+  "id": "rotated-primitive",
+  "expected": "refuses",
+  "status": "refused",
+  "sentence": "r1 (fillet): b1.edge[b1.face[+z] ^ b1.face[+x]] cannot be resolved: b1.face[+z]: b1 is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)",
+  "evidence": null,
+  "ok": true
+ },
+ {
+  "id": "rounded-primitive",
+  "expected": "refuses",
+  "status": "refused",
+  "sentence": "r1 (fillet): b1.edge[b1.face[+z] ^ b1.face[+x]] cannot be resolved: b1.face[+z]: b1 carries a whole-shape round, which changes its faces and edges; not resolved",
+  "evidence": null,
+  "ok": true
+ },
+ {
+  "id": "cylinder-side-as-face",
+  "expected": "refuses",
+  "status": "refused",
+  "sentence": "sh1 (shell): c1.face[side] names a set of 2 faces, but this feature needs a face",
+  "evidence": null,
+  "ok": true
+ },
+ {
+  "id": "sphere-face",
+  "expected": "refuses",
+  "status": "refused",
+  "sentence": "sh1 (shell): s1.face[+z]: faces of a sphere are not resolved in the browser demo",
+  "evidence": null,
+  "ok": true
+ },
+ {
+  "id": "rounded-cause",
+  "expected": "refuses",
+  "status": "refused",
+  "sentence": "sh1 (shell): e1.face[sk1.corner0]: a name made by a ROUNDED sketch corner is not resolved in the browser demo (only primitive, cap, swept-by-a-straight-edge, carried-plane and between names are)",
+  "evidence": null,
+  "ok": true
+ },
+ {
+  "id": "split-cause",
+  "expected": "refuses",
+  "status": "refused",
+  "sentence": "sh1 (shell): b1.split: a 'split' name (a piece of a face, or a face an operation made) is not resolved in the browser demo; it needs a discriminator point and solidcraft has no history record to read it from",
+  "evidence": null,
+  "ok": true
+ },
+ {
+  "id": "made-cause",
+  "expected": "refuses",
+  "status": "refused",
+  "sentence": "sh1 (shell): b1.made: a 'made' name (a piece of a face, or a face an operation made) is not resolved in the browser demo; it needs a discriminator point and solidcraft has no history record to read it from",
+  "evidence": null,
+  "ok": true
+ },
+ {
+  "id": "swept-line-ok",
+  "expected": "resolves",
+  "status": "built",
+  "sentence": null,
+  "evidence": {
+   "candidates": 1,
+   "engine": "F2:side:l1"
+  },
+  "ok": true
+ },
+ {
+  "id": "swept-wrong-sketch",
+  "expected": "refuses",
+  "status": "refused",
+  "sentence": "sh1 (shell): e1.face[skX.edge0]: the name was written against sketch skX but e1 sweeps sk1; not resolved",
+  "evidence": null,
+  "ok": true
+ },
+ {
+  "id": "swept-edge-out-of-range",
+  "expected": "refuses",
+  "status": "refused",
+  "sentence": "sh1 (shell): e1.face[sk1.edge9]: sk1 has no edge 9",
+  "evidence": null,
+  "ok": true
+ },
+ {
+  "id": "cap-top-ok",
+  "expected": "resolves",
+  "status": "built",
+  "sentence": null,
+  "evidence": {
+   "candidates": 1,
+   "engine": "F2:top"
+  },
+  "ok": true
+ },
+ {
+  "id": "feature-missing",
+  "expected": "refuses",
+  "status": "refused",
+  "sentence": "sh1 (shell): nope.face[+z]: there is no feature nope before this one",
+  "evidence": null,
+  "ok": true
+ },
+ {
+  "id": "no-such-part",
+  "expected": "refuses",
+  "status": "refused",
+  "sentence": "sh1 (shell): b1.face[left]: 'left' is not a face part this demo knows",
+  "evidence": null,
+  "ok": true
+ },
+ {
+  "id": "edge-still-there-after-shell",
+  "expected": "resolves",
+  "status": "built",
+  "sentence": null,
+  "evidence": {
+   "candidates": 1,
+   "engine": [
+    "F1:+x|F1:+z"
+   ]
+  },
+  "ok": true
+ },
+ {
+  "id": "edge-already-rounded",
+  "expected": "refuses",
+  "status": "refused",
+  "sentence": "r2 (fillet): b1.edge[b1.face[+z] ^ b1.face[+x]] resolves to F1:+x|F1:+z on b1, but that edge is no longer present whole on b_b1 (an operation after b1 changed or removed it); nothing is picked",
+  "evidence": null,
+  "ok": true
+ },
+ {
+  "id": "edge-after-move",
+  "expected": "refuses",
+  "status": "refused",
+  "sentence": "r1 (fillet): m1.edge[m1.same[b1.face[+z]] ^ m1.face[+x]] cannot be resolved: m1.same[b1.face[+z]]: m1 is a move, which moves or copies faces; a carried name through it is not resolved",
+  "evidence": null,
+  "ok": true
+ },
+ {
+  "id": "edge-wrong-kind",
+  "expected": "refuses",
+  "status": "refused",
+  "sentence": "r1 (fillet): b1.face[+z] names a face, but this feature needs an edge",
+  "evidence": null,
+  "ok": true
+ }
+]

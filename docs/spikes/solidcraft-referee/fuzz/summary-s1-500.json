@@ -1,0 +1,641 @@
+{
+ "seed": 1,
+ "tol": 0.001,
+ "generated": 2300,
+ "bins": {
+  "p7": {
+   "noOracleConeCombined_outcomes_informational_only": {
+    "MATCH": 6,
+    "REFUSED": 27,
+    "WRONG(unverified oracle)": 7,
+    "other": 1
+   },
+   "label": "Phase7 80c1e67",
+   "classes": {
+    "MATCH": 147,
+    "REFUSED": 235,
+    "WRONG": 76,
+    "TIMEOUT": 0,
+    "ERROR_OTHER": 0,
+    "MISSING": 0
+   },
+   "refusedOpaqueCount": 96,
+   "refusedWithAllGapsClear": 16,
+   "refusalSentences": [
+    {
+     "sentence": "offset: not supported yet: the move is larger than a rim or ledge near [..] is wide (a face would turn inside out)",
+     "count": 65,
+     "opaque": false,
+     "clearGaps": 3,
+     "example": "s1-00020",
+     "exampleText": "step 6 (solid.shell): offset: not supported yet: the move is larger than a rim or ledge near [-7.8, -3.9, -3.2] is wide (a face would turn inside out)",
+     "byFamily": {
+      "plate": 53,
+      "stepped": 12
+     }
+    },
+    {
+     "sentence": "offset: not supported yet: the move is larger than a wall or step is thick (faces would cross)",
+     "count": 53,
+     "opaque": false,
+     "clearGaps": 5,
+     "example": "s1-00028",
+     "exampleText": "step 4 (solid.shell): offset: not supported yet: the move is larger than a wall or step is thick (faces would cross)",
+     "byFamily": {
+      "stepped": 19,
+      "plate": 25,
+      "convex": 9
+     }
+    },
+    {
+     "sentence": "boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target ",
+     "count": 53,
+     "opaque": true,
+     "clearGaps": 4,
+     "example": "s1-00032",
+     "exampleText": "step 7 (solid.shell): boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 8 curved faces (cylinder) and the tool has 8 curved fa",
+     "byFamily": {
+      "convex": 5,
+      "plate": 48
+     }
+    },
+    {
+     "sentence": "not supported yet: a boss or wall stands on the open face of a body with round faces (or on a round wall); solid.shell would cut it short here, so it is not built (open a face nothing stands on, or shell before adding th",
+     "count": 17,
+     "opaque": true,
+     "clearGaps": 0,
+     "example": "s1-00096",
+     "exampleText": "step 6 (solid.shell): not supported yet: a boss or wall stands on the open face of a body with round faces (or on a round wall); solid.shell would cut it short here, so it is not built (open a face nothing stands on, or shell before adding the boss)",
+     "byFamily": {
+      "plate": 17
+     }
+    },
+    {
+     "sentence": "boolean Cut: the operation failed: no result; the operation failed: coincident faces were left in place: pushing them apart would change the result; the operation failed: not supported yet: the exact fallback for where t",
+     "count": 9,
+     "opaque": true,
+     "clearGaps": 1,
+     "example": "s1-00468",
+     "exampleText": "step 6 (solid.shell): boolean Cut: the operation failed: no result; the operation failed: coincident faces were left in place: pushing them apart would change the result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow an",
+     "byFamily": {
+      "plate": 8,
+      "stepped": 1
+     }
+    },
+    {
+     "sentence": "not supported yet: what stands on the open face is only # mm tall and the shell is # mm thick, so its top would move below the open face (use a shell thinner than the pad is tall, or shell before adding it)",
+     "count": 8,
+     "opaque": false,
+     "clearGaps": 0,
+     "example": "s1-00472",
+     "exampleText": "step 6 (solid.shell): not supported yet: what stands on the open face is only 2.0000 mm tall and the shell is 2.0000 mm thick, so its top would move below the open face (use a shell thinner than the pad is tall, or shell before adding it)",
+     "byFamily": {
+      "plate": 8
+     }
+    },
+    {
+     "sentence": "offset: a corner whose faces don't meet the same way after the move",
+     "count": 6,
+     "opaque": false,
+     "clearGaps": 0,
+     "example": "s1-00052",
+     "exampleText": "step 6 (solid.shell): offset: a corner whose faces don't meet the same way after the move",
+     "byFamily": {
+      "plate": 5,
+      "stepped": 1
+     }
+    },
+    {
+     "sentence": "boolean Cut: kernel internal error: boolean: This wire is not simple.; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar fa",
+     "count": 5,
+     "opaque": true,
+     "clearGaps": 1,
+     "example": "s1-00780",
+     "exampleText": "step 8 (solid.shell): boolean Cut: kernel internal error: boolean: This wire is not simple.; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 2 curved faces (cylinder) and",
+     "byFamily": {
+      "stepped": 1,
+      "plate": 4
+     }
+    },
+    {
+     "sentence": "boolean Cut: implausible result volume #; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has ",
+     "count": 4,
+     "opaque": true,
+     "clearGaps": 0,
+     "example": "s1-00076",
+     "exampleText": "step 4 (solid.shell): boolean Cut: implausible result volume 4023.4504; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 8 curved faces (cone, cylinder) and the tool has 8",
+     "byFamily": {
+      "plate": 4
+     }
+    },
+    {
+     "sentence": "boolean Cut: kernel internal error: boolean: This wire is not simple.; the operation failed: coincident faces were left in place: pushing them apart would change the result; the operation failed: not supported yet: the e",
+     "count": 4,
+     "opaque": true,
+     "clearGaps": 0,
+     "example": "s1-00220",
+     "exampleText": "step 6 (solid.shell): boolean Cut: kernel internal error: boolean: This wire is not simple.; the operation failed: coincident faces were left in place: pushing them apart would change the result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch,",
+     "byFamily": {
+      "plate": 4
+     }
+    },
+    {
+     "sentence": "lumps: cannot mesh a complete shell boundary",
+     "count": 3,
+     "opaque": false,
+     "clearGaps": 0,
+     "example": "s1-00180",
+     "exampleText": "step 12 (solid.shell): lumps: cannot mesh a complete shell boundary",
+     "byFamily": {
+      "plate": 3
+     }
+    },
+    {
+     "sentence": "not supported yet: something stands on the open face (a boss, a rim or a pocket's walls) and the # mm shell would leave part of it free of the rest of the part: every face moves in by the thickness, so nothing is left un",
+     "count": 2,
+     "opaque": false,
+     "clearGaps": 0,
+     "example": "s1-00980",
+     "exampleText": "step 4 (solid.shell): not supported yet: something stands on the open face (a boss, a rim or a pocket's walls) and the 2.0000 mm shell would leave part of it free of the rest of the part: every face moves in by the thickness, so nothing is left under it (a thinner shell does not help unless it touch",
+     "byFamily": {
+      "plate": 2
+     }
+    },
+    {
+     "sentence": "offset: not supported yet: faces meeting along a collapsed round in a curve other than a line or circle",
+     "count": 1,
+     "opaque": false,
+     "clearGaps": 1,
+     "example": "s1-00368",
+     "exampleText": "step 5 (solid.shell): offset: not supported yet: faces meeting along a collapsed round in a curve other than a line or circle",
+     "byFamily": {
+      "convex": 1
+     }
+    },
+    {
+     "sentence": "boolean Cut: the operation failed: no result; the operation failed: planar boolean: This shell is not oriented and closed.; nudged: the operation failed: boolean Cut: the operation failed: no result; the operation failed",
+     "count": 1,
+     "opaque": true,
+     "clearGaps": 0,
+     "example": "s1-00672",
+     "exampleText": "step 4 (solid.shell): boolean Cut: the operation failed: no result; the operation failed: planar boolean: This shell is not oriented and closed.; nudged: the operation failed: boolean Cut: the operation failed: no result; the operation failed: planar boolean: This shell is not oriented and closed.",
+     "byFamily": {
+      "plate": 1
+     }
+    },
+    {
+     "sentence": "boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the tool's ",
+     "count": 1,
+     "opaque": true,
+     "clearGaps": 0,
+     "example": "s1-00732",
+     "exampleText": "step 4 (solid.shell): boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the tool's face 10 could not be meshed; nudged: the operation failed:",
+     "byFamily": {
+      "plate": 1
+     }
+    },
+    {
+     "sentence": "offset: an edge vanishes (the offset is too large)",
+     "count": 1,
+     "opaque": false,
+     "clearGaps": 1,
+     "example": "s1-00760",
+     "exampleText": "step 8 (solid.shell): offset: an edge vanishes (the offset is too large)",
+     "byFamily": {
+      "stepped": 1
+     }
+    },
+    {
+     "sentence": "boolean Cut: kernel internal error: boolean: This wire is not simple.; the operation failed: planar boolean: This shell is not oriented and closed.; nudged: the operation failed: boolean Cut: kernel internal error: boole",
+     "count": 1,
+     "opaque": true,
+     "clearGaps": 0,
+     "example": "s1-01320",
+     "exampleText": "step 4 (solid.shell): boolean Cut: kernel internal error: boolean: This wire is not simple.; the operation failed: planar boolean: This shell is not oriented and closed.; nudged: the operation failed: boolean Cut: kernel internal error: boolean: This wire is not simple.; the operation failed: not su",
+     "byFamily": {
+      "plate": 1
+     }
+    },
+    {
+     "sentence": "boolean Cut: kernel internal error: boolean: This wire is not simple.; the operation failed: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies ",
+     "count": 1,
+     "opaque": true,
+     "clearGaps": 0,
+     "example": "s1-01596",
+     "exampleText": "step 12 (solid.shell): boolean Cut: kernel internal error: boolean: This wire is not simple.; the operation failed: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) take",
+     "byFamily": {
+      "plate": 1
+     }
+    }
+   ],
+   "wrongIds": [
+    "s1-00024",
+    "s1-00040",
+    "s1-00084",
+    "s1-00144",
+    "s1-00148",
+    "s1-00156",
+    "s1-00192",
+    "s1-00212",
+    "s1-00216",
+    "s1-00228",
+    "s1-00248",
+    "s1-00256",
+    "s1-00292",
+    "s1-00320",
+    "s1-00340",
+    "s1-00348",
+    "s1-00400",
+    "s1-00448",
+    "s1-00456",
+    "s1-00464",
+    "s1-00524",
+    "s1-00580",
+    "s1-00600",
+    "s1-00664",
+    "s1-00752",
+    "s1-00820",
+    "s1-00896",
+    "s1-00900",
+    "s1-00912",
+    "s1-00932",
+    "s1-00936",
+    "s1-00940",
+    "s1-00944",
+    "s1-00956",
+    "s1-01000",
+    "s1-01020",
+    "s1-01024",
+    "s1-01040",
+    "s1-01052",
+    "s1-01072",
+    "s1-01092",
+    "s1-01124",
+    "s1-01136",
+    "s1-01140",
+    "s1-01160",
+    "s1-01188",
+    "s1-01196",
+    "s1-01208",
+    "s1-01232",
+    "s1-01304",
+    "s1-01340",
+    "s1-01368",
+    "s1-01408",
+    "s1-01456",
+    "s1-01504",
+    "s1-01508",
+    "s1-01516",
+    "s1-01536",
+    "s1-01580",
+    "s1-01620",
+    "s1-01648",
+    "s1-01688",
+    "s1-01696",
+    "s1-01764",
+    "s1-01768",
+    "s1-01784",
+    "s1-01816",
+    "s1-01840",
+    "s1-01872",
+    "s1-01896",
+    "s1-01900",
+    "s1-01904",
+    "s1-01916",
+    "s1-01928",
+    "s1-01956",
+    "s1-01976"
+   ]
+  },
+  "base": {
+   "noOracleConeCombined_outcomes_informational_only": {
+    "MATCH": 6,
+    "REFUSED": 26,
+    "WRONG(unverified oracle)": 8,
+    "other": 1
+   },
+   "label": "baseline fe3717f",
+   "classes": {
+    "MATCH": 125,
+    "REFUSED": 214,
+    "WRONG": 118,
+    "TIMEOUT": 1,
+    "ERROR_OTHER": 0,
+    "MISSING": 0
+   },
+   "refusedOpaqueCount": 76,
+   "refusedWithAllGapsClear": 16,
+   "refusalSentences": [
+    {
+     "sentence": "offset: not supported yet: the move is larger than a wall or step is thick (faces would cross)",
+     "count": 66,
+     "opaque": false,
+     "clearGaps": 5,
+     "example": "s1-00028",
+     "exampleText": "step 4 (solid.shell): offset: not supported yet: the move is larger than a wall or step is thick (faces would cross)",
+     "byFamily": {
+      "stepped": 20,
+      "plate": 37,
+      "convex": 9
+     }
+    },
+    {
+     "sentence": "offset: not supported yet: the move is larger than a rim or ledge near [..] is wide (a face would turn inside out)",
+     "count": 64,
+     "opaque": false,
+     "clearGaps": 3,
+     "example": "s1-00020",
+     "exampleText": "step 6 (solid.shell): offset: not supported yet: the move is larger than a rim or ledge near [-7.8, -3.9, -3.2] is wide (a face would turn inside out)",
+     "byFamily": {
+      "plate": 53,
+      "stepped": 11
+     }
+    },
+    {
+     "sentence": "boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target ",
+     "count": 55,
+     "opaque": true,
+     "clearGaps": 4,
+     "example": "s1-00032",
+     "exampleText": "step 7 (solid.shell): boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 8 curved faces (cylinder) and the tool has 8 curved fa",
+     "byFamily": {
+      "convex": 5,
+      "plate": 50
+     }
+    },
+    {
+     "sentence": "offset: a corner whose faces don't meet the same way after the move",
+     "count": 6,
+     "opaque": false,
+     "clearGaps": 0,
+     "example": "s1-00052",
+     "exampleText": "step 6 (solid.shell): offset: a corner whose faces don't meet the same way after the move",
+     "byFamily": {
+      "plate": 5,
+      "stepped": 1
+     }
+    },
+    {
+     "sentence": "boolean Cut: kernel internal error: boolean: This wire is not simple.; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar fa",
+     "count": 6,
+     "opaque": true,
+     "clearGaps": 2,
+     "example": "s1-00780",
+     "exampleText": "step 8 (solid.shell): boolean Cut: kernel internal error: boolean: This wire is not simple.; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 2 curved faces (cylinder) and",
+     "byFamily": {
+      "stepped": 2,
+      "plate": 4
+     }
+    },
+    {
+     "sentence": "boolean Cut: implausible result volume #; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has ",
+     "count": 5,
+     "opaque": true,
+     "clearGaps": 0,
+     "example": "s1-00076",
+     "exampleText": "step 4 (solid.shell): boolean Cut: implausible result volume 4023.4504; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the target has 8 curved faces (cone, cylinder) and the tool has 8",
+     "byFamily": {
+      "plate": 5
+     }
+    },
+    {
+     "sentence": "boolean Cut: kernel internal error: boolean: This wire is not simple.; the operation failed: coincident faces were left in place: pushing them apart would change the result; the operation failed: not supported yet: the e",
+     "count": 3,
+     "opaque": true,
+     "clearGaps": 0,
+     "example": "s1-00220",
+     "exampleText": "step 6 (solid.shell): boolean Cut: kernel internal error: boolean: This wire is not simple.; the operation failed: coincident faces were left in place: pushing them apart would change the result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch,",
+     "byFamily": {
+      "plate": 3
+     }
+    },
+    {
+     "sentence": "boolean Cut: the operation failed: no result; the operation failed: coincident faces were left in place: pushing them apart would change the result; the operation failed: not supported yet: the exact fallback for where t",
+     "count": 2,
+     "opaque": true,
+     "clearGaps": 0,
+     "example": "s1-00468",
+     "exampleText": "step 6 (solid.shell): boolean Cut: the operation failed: no result; the operation failed: coincident faces were left in place: pushing them apart would change the result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow an",
+     "byFamily": {
+      "plate": 2
+     }
+    },
+    {
+     "sentence": "offset: not supported yet: faces meeting along a collapsed round in a curve other than a line or circle",
+     "count": 1,
+     "opaque": false,
+     "clearGaps": 1,
+     "example": "s1-00368",
+     "exampleText": "step 5 (solid.shell): offset: not supported yet: faces meeting along a collapsed round in a curve other than a line or circle",
+     "byFamily": {
+      "convex": 1
+     }
+    },
+    {
+     "sentence": "boolean Cut: the operation failed: no result; the operation failed: planar boolean: This shell is not oriented and closed.; nudged: the operation failed: boolean Cut: the operation failed: no result; the operation failed",
+     "count": 1,
+     "opaque": true,
+     "clearGaps": 0,
+     "example": "s1-00672",
+     "exampleText": "step 4 (solid.shell): boolean Cut: the operation failed: no result; the operation failed: planar boolean: This shell is not oriented and closed.; nudged: the operation failed: boolean Cut: the operation failed: no result; the operation failed: planar boolean: This shell is not oriented and closed.",
+     "byFamily": {
+      "plate": 1
+     }
+    },
+    {
+     "sentence": "boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the tool's ",
+     "count": 1,
+     "opaque": true,
+     "clearGaps": 0,
+     "example": "s1-00732",
+     "exampleText": "step 4 (solid.shell): boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the tool's face 10 could not be meshed; nudged: the operation failed:",
+     "byFamily": {
+      "plate": 1
+     }
+    },
+    {
+     "sentence": "offset: an edge vanishes (the offset is too large)",
+     "count": 1,
+     "opaque": false,
+     "clearGaps": 1,
+     "example": "s1-00760",
+     "exampleText": "step 8 (solid.shell): offset: an edge vanishes (the offset is too large)",
+     "byFamily": {
+      "stepped": 1
+     }
+    },
+    {
+     "sentence": "boolean Cut: kernel internal error: boolean: This wire is not simple.; the operation failed: planar boolean: This shell is not oriented and closed.; nudged: the operation failed: boolean Cut: kernel internal error: boole",
+     "count": 1,
+     "opaque": true,
+     "clearGaps": 0,
+     "example": "s1-01320",
+     "exampleText": "step 4 (solid.shell): boolean Cut: kernel internal error: boolean: This wire is not simple.; the operation failed: planar boolean: This shell is not oriented and closed.; nudged: the operation failed: boolean Cut: kernel internal error: boolean: This wire is not simple.; the operation failed: not su",
+     "byFamily": {
+      "plate": 1
+     }
+    },
+    {
+     "sentence": "boolean Cut: implausible result volume #; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the tool's face",
+     "count": 1,
+     "opaque": true,
+     "clearGaps": 0,
+     "example": "s1-01464",
+     "exampleText": "step 10 (solid.shell): boolean Cut: implausible result volume 2911.4655; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) takes planar faces only, and the tool's face 12 could not be meshed; nudged: the operation fa",
+     "byFamily": {
+      "plate": 1
+     }
+    },
+    {
+     "sentence": "boolean Cut: kernel internal error: boolean: This wire is not simple.; the operation failed: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies ",
+     "count": 1,
+     "opaque": true,
+     "clearGaps": 0,
+     "example": "s1-01596",
+     "exampleText": "step 12 (solid.shell): boolean Cut: kernel internal error: boolean: This wire is not simple.; the operation failed: boolean Cut: the operation failed: no result; the operation failed: not supported yet: the exact fallback for where the bodies meet (faces that touch, or cross at a shallow angle) take",
+     "byFamily": {
+      "plate": 1
+     }
+    }
+   ],
+   "wrongIds": [
+    "s1-00008",
+    "s1-00024",
+    "s1-00040",
+    "s1-00072",
+    "s1-00084",
+    "s1-00096",
+    "s1-00144",
+    "s1-00148",
+    "s1-00152",
+    "s1-00156",
+    "s1-00176",
+    "s1-00196",
+    "s1-00212",
+    "s1-00216",
+    "s1-00224",
+    "s1-00228",
+    "s1-00248",
+    "s1-00256",
+    "s1-00280",
+    "s1-00292",
+    "s1-00296",
+    "s1-00304",
+    "s1-00320",
+    "s1-00340",
+    "s1-00348",
+    "s1-00360",
+    "s1-00400",
+    "s1-00448",
+    "s1-00456",
+    "s1-00464",
+    "s1-00492",
+    "s1-00496",
+    "s1-00500",
+    "s1-00516",
+    "s1-00524",
+    "s1-00580",
+    "s1-00600",
+    "s1-00604",
+    "s1-00660",
+    "s1-00664",
+    "s1-00716",
+    "s1-00752",
+    "s1-00808",
+    "s1-00820",
+    "s1-00856",
+    "s1-00864",
+    "s1-00896",
+    "s1-00900",
+    "s1-00912",
+    "s1-00932",
+    "s1-00936",
+    "s1-00940",
+    "s1-00944",
+    "s1-00956",
+    "s1-00960",
+    "s1-00964",
+    "s1-00976",
+    "s1-00980",
+    "s1-01000",
+    "s1-01020",
+    "s1-01024",
+    "s1-01032",
+    "s1-01040",
+    "s1-01052",
+    "s1-01068",
+    "s1-01072",
+    "s1-01092",
+    "s1-01100",
+    "s1-01112",
+    "s1-01116",
+    "s1-01124",
+    "s1-01136",
+    "s1-01140",
+    "s1-01160",
+    "s1-01188",
+    "s1-01196",
+    "s1-01208",
+    "s1-01232",
+    "s1-01292",
+    "s1-01304",
+    "s1-01332",
+    "s1-01340",
+    "s1-01368",
+    "s1-01408",
+    "s1-01456",
+    "s1-01468",
+    "s1-01504",
+    "s1-01508",
+    "s1-01516",
+    "s1-01536",
+    "s1-01548",
+    "s1-01576",
+    "s1-01580",
+    "s1-01620",
+    "s1-01648",
+    "s1-01684",
+    "s1-01688",
+    "s1-01696",
+    "s1-01708",
+    "s1-01720",
+    "s1-01764",
+    "s1-01768",
+    "s1-01784",
+    "s1-01800",
+    "s1-01816",
+    "s1-01840",
+    "s1-01848",
+    "s1-01868",
+    "s1-01872",
+    "s1-01896",
+    "s1-01900",
+    "s1-01904",
+    "s1-01916",
+    "s1-01924",
+    "s1-01928",
+    "s1-01948",
+    "s1-01956",
+    "s1-01976"
+   ]
+  }
+ },
+ "exclusions": {
+  "noOracleErr": 0,
+  "baseMultiBody": 1,
+  "baseFail": 0,
+  "modelMismatch": 0,
+  "euclidDisagree": 0,
+  "noOracleConeUnchecked": 41,
+  "baseMissing": 0,
+  "modelMismatchFamilies": {}
+ },
+ "eligible": 458,
+ "euclidChecked": 211,
+ "euclidRelDelta": {
+  "n": 211,
+  "min": 0.00007282309215779447,
+  "median": 0.002761702592313112,
+  "max": 0.0129840741947098
+ }
+}

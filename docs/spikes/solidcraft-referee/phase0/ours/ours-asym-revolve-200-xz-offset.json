@@ -1,0 +1,21 @@
+{
+ "id": "asym-revolve-200-xz-offset",
+ "outcome": "built",
+ "volume": 11519.180240209067,
+ "faces": 6,
+ "bbox": [
+  -19.999867787723886,
+  8,
+  -19.999573883580567,
+  20,
+  30,
+  6.840402866513371
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sketch",
+  "revolve"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,5,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[10,3],[20,3],[20,25],[10,25]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"angle\":-200,\"operation\":\"new\",\"body_name\":\"b_r1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

@@ -1,0 +1,22 @@
+{
+ "id": "asym-groove-270-yz-offset",
+ "outcome": "built",
+ "volume": 139514.23938968073,
+ "faces": 12,
+ "bbox": [
+  -30,
+  -30,
+  -20,
+  30,
+  30,
+  20
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "box",
+  "sketch",
+  "groove"
+ ],
+ "scriptSource": "[{\"command\":\"solid.box\",\"params\":{\"length\":60,\"width\":60,\"height\":40,\"center\":[0,0,0],\"body_name\":\"b_b1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[4,0,0],\"x_dir\":[0,1,0],\"y_dir\":[1,0,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[5,-10],[12,-10],[12,6],[5,6]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.revolve\",\"params\":{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"angle\":-270,\"operation\":\"cut\",\"targets\":[\"b_b1\"]}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

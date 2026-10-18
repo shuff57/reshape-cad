@@ -1,0 +1,21 @@
+{
+ "id": "hole-through",
+ "outcome": "built",
+ "volume": 31434.607251775666,
+ "faces": 7,
+ "bbox": [
+  -20,
+  -20.000000000000004,
+  -10.000000000000007,
+  20,
+  20,
+  10.000000000000005
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "box",
+  "hole"
+ ],
+ "scriptSource": "[{\"command\":\"solid.box\",\"params\":{\"length\":40,\"width\":40,\"height\":20,\"center\":[0,0,0],\"body_name\":\"b_b1\"}},{\"command\":\"solid.cylinder\",\"params\":{\"radius\":3,\"height\":22,\"base\":[0,0,-11],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_b1\"]}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

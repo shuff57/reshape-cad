@@ -1,0 +1,118 @@
+{
+ "pairs": [
+  {
+   "id": "fr-rect-dims",
+   "equivOf": "2d-rect-dims",
+   "errors": {
+    "orig": 0,
+    "friendly": 0
+   },
+   "geoms": 4,
+   "rules": 12,
+   "level": "STRICT (whole ModelDoc deepStrictEqual)"
+  },
+  {
+   "id": "fr-plate-hole-dims",
+   "equivOf": "2d-plate-hole-dims",
+   "errors": {
+    "orig": 0,
+    "friendly": 0
+   },
+   "geoms": 5,
+   "rules": 14,
+   "level": "STRICT (whole ModelDoc deepStrictEqual)"
+  },
+  {
+   "id": "fr-slot-tangent",
+   "equivOf": "2d-slot-tangent",
+   "errors": {
+    "orig": 0,
+    "friendly": 0
+   },
+   "geoms": 4,
+   "rules": 13,
+   "level": "STRICT (whole ModelDoc deepStrictEqual)"
+  },
+  {
+   "id": "fr-triangle-angle",
+   "equivOf": "2d-triangle-angle",
+   "errors": {
+    "orig": 0,
+    "friendly": 0
+   },
+   "geoms": 3,
+   "rules": 8,
+   "level": "CANONICAL (geoms identical; rules equal as an unordered multiset with each coincident/tangent end pair sorted)",
+   "reorderedOrReoriented": 1
+  },
+  {
+   "id": "fr-hexagon",
+   "equivOf": "2d-hexagon",
+   "errors": {
+    "orig": 0,
+    "friendly": 0
+   },
+   "geoms": 7,
+   "rules": 20,
+   "level": "STRICT (whole ModelDoc deepStrictEqual)"
+  }
+ ],
+ "roundTrip": [
+  {
+   "id": "fr-rect-dims",
+   "emitsSoup": true,
+   "emitsFriendlyWords": false,
+   "roundTripEqual": true
+  },
+  {
+   "id": "fr-plate-hole-dims",
+   "emitsSoup": true,
+   "emitsFriendlyWords": false,
+   "roundTripEqual": true
+  },
+  {
+   "id": "fr-slot-tangent",
+   "emitsSoup": true,
+   "emitsFriendlyWords": false,
+   "roundTripEqual": true
+  },
+  {
+   "id": "fr-triangle-angle",
+   "emitsSoup": true,
+   "emitsFriendlyWords": false,
+   "roundTripEqual": true
+  },
+  {
+   "id": "fr-hexagon",
+   "emitsSoup": true,
+   "emitsFriendlyWords": false,
+   "roundTripEqual": true
+  },
+  {
+   "id": "fr-untouched-default",
+   "emitsSoup": false,
+   "emitsFriendlyWords": false,
+   "roundTripEqual": true
+  },
+  {
+   "id": "fr-bracket-rounded",
+   "emitsSoup": true,
+   "emitsFriendlyWords": false,
+   "roundTripEqual": true
+  },
+  {
+   "id": "fr-symmetric-profile",
+   "emitsSoup": true,
+   "emitsFriendlyWords": false,
+   "roundTripEqual": true
+  },
+  {
+   "id": "fr-symmetric-axis",
+   "emitsSoup": true,
+   "emitsFriendlyWords": false,
+   "roundTripEqual": true
+  }
+ ],
+ "phase4ScriptsInert": 29,
+ "phase4ScriptsDiffer": []
+}

@@ -1,0 +1,443 @@
+diff --git a/crates/sketch/src/coincident_tangent_tests.rs b/crates/sketch/src/coincident_tangent_tests.rs
+new file mode 100644
+index 0000000..da4e15a
+--- /dev/null
++++ b/crates/sketch/src/coincident_tangent_tests.rs
+@@ -0,0 +1,262 @@
++//! A line and an arc that meet at two separate points tied by `Coincident` (not at one shared
++//! point), plus `Tangent`. The tangency has to be read at that touch point: the touch-free form
++//! (distance from the centre equals the radius) is a double root there, so it converged to only
++//! sqrt(residual) of tangent and lost a row of rank when the start already was tangent.
++
++use solidcraft_geom::Vec2;
++
++use crate::tests::{Lcg, v};
++use crate::*;
++
++/// Circumcentre of three points.
++fn circumcentre(a: Vec2, t: Vec2, b: Vec2) -> Vec2 {
++    let d = 2.0 * (a.x * (t.y - b.y) + t.x * (b.y - a.y) + b.x * (a.y - t.y));
++    let (a2, t2, b2) = (a.len().powi(2), t.len().powi(2), b.len().powi(2));
++    Vec2::new((a2 * (t.y - b.y) + t2 * (b.y - a.y) + b2 * (a.y - t.y)) / d, (a2 * (b.x - t.x) + t2 * (a.x - b.x) + b2 * (t.x - a.x)) / d)
++}
++
++struct Joint {
++    sk: Sketch,
++    line: usize,
++    arc: usize,
++    line_end: usize,
++    arc_start: usize,
++}
++
++/// Line (0,0)-(10,0) and the arc through (10,0), (15,5), (10,10), each coordinate moved by `j`.
++fn joint(j: [f64; 10]) -> Joint {
++    let mut sk = Sketch::new();
++    let line = sk.add_line(v(j[0], j[1]), v(10.0 + j[2], j[3]), None, None, Some("l")).unwrap();
++    let (a, t, b) = (v(10.0 + j[4], j[5]), v(15.0 + j[6], 5.0 + j[7]), v(10.0 + j[8], 10.0 + j[9]));
++    let arc = sk.add_arc(circumcentre(a, t, b), a, b, [None, None, None], Some("a")).unwrap();
++    let (CurveKind::Line { b: line_end, .. }, CurveKind::Arc { a: arc_start, .. }) = (sk.curves[line].kind.clone(), sk.curves[arc].kind.clone())
++    else {
++        panic!("a line and an arc")
++    };
++    sk.add_constraint(ConstraintKind::Coincident { p: line_end, q: arc_start }, None).unwrap();
++    sk.add_constraint(ConstraintKind::Tangent { a: line, b: arc }, None).unwrap();
++    Joint { sk, line, arc, line_end, arc_start }
++}
++
++/// The centre-to-joint radius's component along the line: the tangency error in mm.
++fn tangency_error(jt: &Joint) -> f64 {
++    let (p0, p1) = match jt.sk.curves[jt.line].kind {
++        CurveKind::Line { a, b } => (jt.sk.points[a].pos, jt.sk.points[b].pos),
++        _ => panic!("line"),
++    };
++    let d = p1 - p0;
++    (jt.sk.points[jt.arc_start].pos - jt.sk.center(jt.arc).unwrap()).dot(d) / d.len()
++}
++
++#[test]
++fn coincident_tangent_holds_in_the_stored_points() {
++    let mut rng = Lcg(12345);
++    for amp in [0.05, 0.1, 0.25, 0.5, 1.0, 2.0, 0.05, 0.1, 0.25, 0.5, 1.0, 2.0] {
++        let mut j = [0.0; 10];
++        for x in &mut j {
++            *x = rng.range(-amp, amp);
++        }
++        let mut jt = joint(j);
++        let rep = solve(&mut jt.sk);
++        assert!(rep.ok(), "amp {amp}: {rep:?}");
++        let err = tangency_error(&jt);
++        // Was 5e-5 .. 1e-4 mm with a reported residual of 1e-10.
++        assert!(err.abs() < 1e-8, "amp {amp}: tangency error {err}");
++        let gap = jt.sk.points[jt.line_end].pos.dist(jt.sk.points[jt.arc_start].pos);
++        assert!(gap < 1e-8, "amp {amp}: gap {gap}");
++        assert_eq!(rep.dof, 6, "amp {amp}: {rep:?}");
++        assert!(rep.redundant.is_empty(), "amp {amp}: {rep:?}");
++    }
++}
++
++#[test]
++fn coincident_tangent_dof_does_not_depend_on_the_start() {
++    let rough = [0.03, -0.04, 0.02, 0.05, -0.05, 0.04, 0.04, -0.03, -0.02, 0.05];
++    let mut reports = Vec::new();
++    for j in [[0.0; 10], rough] {
++        let mut jt = joint(j);
++        reports.push(solve(&mut jt.sk));
++    }
++    for rep in &reports {
++        // 4 (line) + 5 (arc) - 2 (coincident) - 1 (tangent).
++        assert_eq!(rep.dof, 6, "{rep:?}");
++        assert!(rep.redundant.is_empty(), "{rep:?}");
++        assert!(rep.failing.is_empty(), "{rep:?}");
++    }
++}
++
++#[test]
++fn a_coincident_chain_still_finds_the_touch_point() {
++    let mut jt = joint([0.03, -0.04, 0.02, 0.05, -0.05, 0.04, 0.04, -0.03, -0.02, 0.05]);
++    // The line end is tied to the arc start only through a third point.
++    let mid = jt.sk.add_point(v(10.0, 0.0), None).unwrap();
++    jt.sk.constraints.remove(0);
++    jt.sk.add_constraint(ConstraintKind::Coincident { p: jt.line_end, q: mid }, None).unwrap();
++    jt.sk.add_constraint(ConstraintKind::Coincident { p: mid, q: jt.arc_start }, None).unwrap();
++    let rep = solve(&mut jt.sk);
++    assert!(rep.ok(), "{rep:?}");
++    let err = tangency_error(&jt);
++    assert!(err.abs() < 1e-8, "tangency error {err}");
++}
++
++#[test]
++fn a_duplicate_dimension_beside_the_tangent_joint_is_still_redundant() {
++    let mut jt = joint([0.0; 10]);
++    let l = jt.line;
++    jt.sk.add_constraint(ConstraintKind::Length { l, value: 10.0 }, None).unwrap();
++    jt.sk.add_constraint(ConstraintKind::Length { l, value: 10.0 }, None).unwrap();
++    let rep = solve(&mut jt.sk);
++    assert!(rep.ok(), "{rep:?}");
++    assert_eq!(rep.redundant.len(), 1, "{rep:?}");
++    assert_eq!(rep.dof, 5, "{rep:?}");
++}
++
++#[test]
++fn conflicting_dimensions_beside_the_tangent_joint_still_fail() {
++    let mut jt = joint([0.0; 10]);
++    let l = jt.line;
++    jt.sk.add_constraint(ConstraintKind::Length { l, value: 10.0 }, None).unwrap();
++    jt.sk.add_constraint(ConstraintKind::Length { l, value: 12.0 }, None).unwrap();
++    let rep = solve(&mut jt.sk);
++    assert_eq!(rep.status, SolveStatus::Failed, "{rep:?}");
++    assert!(!rep.failing.is_empty(), "{rep:?}");
++}
++
++/// A line at y = 5 and a circle of radius 5 at the origin; the contact is a free point.
++struct FreePoint {
++    sk: Sketch,
++    line: usize,
++    circle: usize,
++    p: usize,
++}
++
++fn free_point_contact(j: [f64; 8], tied_to_line_end: bool) -> FreePoint {
++    let mut sk = Sketch::new();
++    let line =
++        sk.add_line(v(-8.0 + j[0], 5.0 + j[1]), v(if tied_to_line_end { 0.0 } else { 8.0 } + j[2], 5.0 + j[3]), None, None, Some("l")).unwrap();
++    let circle = sk.add_circle(v(j[4], j[5]), 5.0, None, Some("c")).unwrap();
++    let p = sk.add_point(v(j[6], 5.0 + j[7]), None).unwrap();
++    let CurveKind::Line { b: line_end, .. } = sk.curves[line].kind.clone() else { panic!("line") };
++    if tied_to_line_end {
++        // S10: line end ~ free point p, p on the circle.
++        sk.add_constraint(ConstraintKind::Coincident { p, q: line_end }, None).unwrap();
++    } else {
++        // S2b: p on the line and on the circle.
++        sk.add_constraint(ConstraintKind::PointOnCurve { p, c: line }, None).unwrap();
++    }
++    sk.add_constraint(ConstraintKind::PointOnCurve { p, c: circle }, None).unwrap();
++    sk.add_constraint(ConstraintKind::Tangent { a: line, b: circle }, None).unwrap();
++    sk.add_constraint(ConstraintKind::Radius { c: circle, value: 5.0 }, None).unwrap();
++    FreePoint { sk, line, circle, p }
++}
++
++fn free_point_error(f: &FreePoint) -> f64 {
++    let CurveKind::Line { a, b } = f.sk.curves[f.line].kind else { panic!("line") };
++    let d = f.sk.points[b].pos - f.sk.points[a].pos;
++    (f.sk.points[f.p].pos - f.sk.center(f.circle).unwrap()).dot(d) / d.len()
++}
++
++#[test]
++fn a_free_point_contact_is_tangent_and_counted_the_same_from_every_start() {
++    // 9 variables (line 4, circle 3, point 2); equations: point on circle, tangent, radius, plus either
++    // the coincidence (2, S10: dof 4) or the point on the line (1, S2b: dof 5).
++    let mut rng = Lcg(2024);
++    for tied in [true, false] {
++        for amp in [0.0, 0.01, 0.05, 0.5, 1.0] {
++            let mut j = [0.0; 8];
++            for x in &mut j {
++                *x = if amp == 0.0 { 0.0 } else { rng.range(-amp, amp) };
++            }
++            let mut f = free_point_contact(j, tied);
++            let rep = solve(&mut f.sk);
++            assert!(rep.ok(), "tied {tied} amp {amp}: {rep:?}");
++            assert_eq!(rep.dof, if tied { 4 } else { 5 }, "tied {tied} amp {amp}: {rep:?}");
++            assert!(rep.redundant.is_empty(), "tied {tied} amp {amp}: {rep:?}");
++            let err = free_point_error(&f);
++            assert!(err.abs() < 1e-8, "tied {tied} amp {amp}: contact perpendicular {err}");
++        }
++    }
++}
++
++#[test]
++fn a_tangent_to_a_collapsed_round_curve_fails() {
++    // The line passes through the arc's centre while the joint is tangent: only a radius of 0 holds.
++    let mut jt = joint([0.03, -0.04, 0.02, 0.05, -0.05, 0.04, 0.04, -0.03, -0.02, 0.05]);
++    let CurveKind::Arc { c, .. } = jt.sk.curves[jt.arc].kind else { panic!("arc") };
++    jt.sk.add_constraint(ConstraintKind::PointOnCurve { p: c, c: jt.line }, None).unwrap();
++    let rep = solve(&mut jt.sk);
++    assert_eq!(rep.status, SolveStatus::Failed, "{rep:?}");
++    assert!(rep.failing.contains(&"k2".to_string()), "{rep:?}");
++}
++
++#[test]
++fn an_infeasible_tangent_joint_names_the_tangent_too() {
++    let mut jt = joint([0.03, -0.04, 0.02, 0.05, -0.05, 0.04, 0.04, -0.03, -0.02, 0.05]);
++    let CurveKind::Arc { c, .. } = jt.sk.curves[jt.arc].kind else { panic!("arc") };
++    jt.sk.add_constraint(ConstraintKind::Radius { c: jt.arc, value: 5.0 }, None).unwrap();
++    jt.sk.add_constraint(ConstraintKind::PointLineDistance { p: c, l: jt.line, value: 4.0 }, None).unwrap();
++    let rep = solve(&mut jt.sk);
++    assert_eq!(rep.status, SolveStatus::Failed, "{rep:?}");
++    // k1 is the coincident, k2 the tangent.
++    assert!(rep.failing.contains(&"k2".to_string()), "{rep:?}");
++}
++
++/// The unsolved sketch of the critic's c2_t6: the tangent is violated because the Coincident is.
++#[test]
++fn constraint_residual_still_shows_a_violated_tying_constraint() {
++    let mut sk = Sketch::new();
++    let l = sk.add_line(v(-5.0, 3.0), v(5.0, 3.0), None, None, Some("l")).unwrap();
++    let c = sk.add_circle(v(0.0, 0.0), 5.0, None, Some("c")).unwrap();
++    let q = sk.add_point(v(0.0, 5.0), None).unwrap();
++    let CurveKind::Line { b: end, .. } = sk.curves[l].kind.clone() else { panic!("line") };
++    sk.add_constraint(ConstraintKind::PointOnCurve { p: q, c }, None).unwrap();
++    sk.add_constraint(ConstraintKind::Coincident { p: end, q }, None).unwrap();
++    sk.add_constraint(ConstraintKind::Tangent { a: l, b: c }, None).unwrap();
++    let r = constraint_residual(&sk, 2).unwrap();
++    // The distance from the centre to the line is 3 against a radius of 5.
++    assert!((r - 2.0).abs() < 1e-12, "{r}");
++}
++
++#[test]
++fn a_midpoint_contact_is_tangent_and_counted_the_same_from_every_start() {
++    let mut rng = Lcg(5);
++    for amp in [0.0, 0.05, 0.5] {
++        let mut j = [0.0; 6];
++        for x in &mut j {
++            *x = if amp == 0.0 { 0.0 } else { rng.range(-amp, amp) };
++        }
++        let mut sk = Sketch::new();
++        let l = sk.add_line(v(-8.0 + j[0], 5.0 + j[1]), v(8.0 + j[2], 5.0 + j[3]), None, None, Some("l")).unwrap();
++        let c = sk.add_circle(v(j[4], j[5]), 5.0, None, Some("c")).unwrap();
++        let m = sk.add_point(v(0.0, 5.0), None).unwrap();
++        sk.add_constraint(ConstraintKind::Midpoint { p: m, l }, None).unwrap();
++        sk.add_constraint(ConstraintKind::PointOnCurve { p: m, c }, None).unwrap();
++        sk.add_constraint(ConstraintKind::Tangent { a: l, b: c }, None).unwrap();
++        let rep = solve(&mut sk);
++        assert!(rep.ok(), "amp {amp}: {rep:?}");
++        // 4 + 3 + 2 = 9 variables, midpoint 2, on circle 1, tangent 1.
++        assert_eq!(rep.dof, 5, "amp {amp}: {rep:?}");
++        assert!(rep.redundant.is_empty(), "amp {amp}: {rep:?}");
++        let CurveKind::Line { a, b } = sk.curves[l].kind else { panic!("line") };
++        let d = sk.points[b].pos - sk.points[a].pos;
++        let err = (sk.points[m].pos - sk.center(c).unwrap()).dot(d) / d.len();
++        assert!(err.abs() < 1e-8, "amp {amp}: {err}");
++    }
++}
++
++#[test]
++fn a_tangent_is_never_failing_while_the_sketch_is_solved() {
++    let mut rng = Lcg(31);
++    for trial in 0..60 {
++        let amp = [0.05, 0.4, 1.0][trial % 3];
++        let mut j = [0.0; 10];
++        for x in &mut j {
++            *x = rng.range(-amp, amp);
++        }
++        let mut jt = joint(j);
++        let rep = solve(&mut jt.sk);
++        if rep.status == SolveStatus::Solved {
++            assert!(rep.failing.is_empty(), "trial {trial}: {rep:?}");
++        }
++    }
++}
+diff --git a/crates/sketch/src/lib.rs b/crates/sketch/src/lib.rs
+index b6487d2..bdf2735 100644
+--- a/crates/sketch/src/lib.rs
++++ b/crates/sketch/src/lib.rs
+@@ -61,6 +61,8 @@ pub use solver::{
+ pub use text::{MAX_TEXT_CHARS, text_geometry, text_geometry_in};
+ pub use wire::{MAX_FIT_POINTS, MAX_WIRE_POINTS, Wire, WireSpace, fit_polyline};
+ 
++#[cfg(test)]
++mod coincident_tangent_tests;
+ #[cfg(test)]
+ mod construct_rounds_tests;
+ #[cfg(test)]
+diff --git a/crates/sketch/src/redundancy.rs b/crates/sketch/src/redundancy.rs
+index efe6196..d90294c 100644
+--- a/crates/sketch/src/redundancy.rs
++++ b/crates/sketch/src/redundancy.rs
+@@ -129,8 +129,15 @@ pub fn constraint_residual(sk: &Sketch, ci: usize) -> Option<f64> {
+         Some(p) => Block::TangentAt(ci, &c.kind, p),
+         None => Block::User(ci, &c.kind),
+     };
++    let state = State { sk, lay: &fixed, x: &[] };
+     let mut r = Vec::new();
+-    block_residuals(&State { sk, lay: &fixed, x: &[] }, &b, &mut r);
++    block_residuals(&state, &b, &mut r);
++    // A tangency read at its touch point holds there when the curves only touch at a point that
++    // is not on both: the touch-free form (distance from the centre equals the radius) shows a
++    // violated tying constraint as well, so the larger of the two is the constraint's distance.
++    if matches!(b, Block::TangentAt(..)) {
++        super::residuals(&state, &c.kind, &mut r);
++    }
+     Some(max_abs(&r))
+ }
+ 
+diff --git a/crates/sketch/src/solver.rs b/crates/sketch/src/solver.rs
+index 58c6e3e..5760b4c 100644
+--- a/crates/sketch/src/solver.rs
++++ b/crates/sketch/src/solver.rs
+@@ -692,7 +692,72 @@ pub(crate) fn touch_point(sk: &Sketch, k: &ConstraintKind, on_curve: &[(usize, u
+         return Some(*p);
+     }
+     let on = |p: usize, c: usize| on_curve.binary_search(&(p, c)).is_ok();
+-    ea.iter().find(|p| on(**p, b)).or_else(|| eb.iter().find(|p| on(**p, a))).copied()
++    if let Some(p) = ea.iter().find(|p| on(**p, b)).or_else(|| eb.iter().find(|p| on(**p, a))) {
++        return Some(*p);
++    }
++    contact_through_coincident(sk, a, b, &ea, &eb, on_curve)
++}
++
++/// Whether curve `c` is a straight line.
++fn is_straight(sk: &Sketch, c: usize) -> bool {
++    matches!(sk.curves.get(c).map(|c| &c.kind), Some(CurveKind::Line { .. }))
++}
++
++/// A touch point the two curves reach through `Coincident` constraints, when they share no point
++/// and no end of one is a point-on-curve of the other: a point lying on `a` (an end of it, or a
++/// point-on-curve of it) tied by a chain of `Coincident` constraints to a point lying on `b`
++/// (the chain may be empty: a free point on both curves). That covers two ends tied together, a
++/// line end tied to a free point that is on the circle, and a free point on both curves.
++/// Free-form curves count only their ends. Without this the tangency falls back to the
++/// touch-free form (distance from the centre equals the radius), whose Jacobian is
++/// rank-deficient at the solution: the touch point is a double root of it, so it converges to
++/// only sqrt(residual) of tangent and drops rank (see the `coincident_tangent_*` tests). The
++/// point returned is the one lying on the round curve (for a free-form curve, its end), so the
++/// radius to it is read from the curve it belongs to.
++fn contact_through_coincident(sk: &Sketch, a: usize, b: usize, ea: &[usize], eb: &[usize], on_curve: &[(usize, usize)]) -> Option<usize> {
++    let n = sk.points.len();
++    let free = |c: usize| sk.curves.get(c).is_some_and(|c| c.kind.is_freeform());
++    // Points lying on a curve: its ends, and (unless free-form) the points constrained onto it.
++    let lying = |c: usize, ends: &[usize]| -> Vec<usize> {
++        let mut v: Vec<usize> = ends.to_vec();
++        if !free(c) {
++            v.extend(on_curve.iter().filter(|(_, cc)| *cc == c).map(|(p, _)| *p));
++            // The midpoint of a line lies on it.
++            v.extend(sk.constraints.iter().filter(|k| !k.driven).filter_map(|k| match k.kind {
++                ConstraintKind::Midpoint { p, l } if l == c => Some(p),
++                _ => None,
++            }));
++        }
++        v.retain(|p| *p < n);
++        v
++    };
++    let (on_a, on_b) = (lying(a, ea), lying(b, eb));
++    if on_a.is_empty() || on_b.is_empty() {
++        return None;
++    }
++    let mut parent: Vec<usize> = (0..n).collect();
++    for c in sk.constraints.iter().filter(|c| !c.driven) {
++        if let ConstraintKind::Coincident { p, q } = c.kind
++            && p != q
++            && p < n
++            && q < n
++        {
++            union(&mut parent, p, q);
++        }
++    }
++    for &p in &on_a {
++        let root = find(&mut parent, p);
++        if let Some(&q) = on_b.iter().find(|q| find(&mut parent, **q) == root) {
++            return Some(if free(a) {
++                p
++            } else if free(b) || is_straight(sk, a) {
++                q
++            } else {
++                p
++            });
++        }
++    }
++    None
+ }
+ 
+ /// Variables a block depends on, and whether it reads a point that is a constant of the solve.
+@@ -2007,6 +2072,11 @@ fn solve_inner(
+     let mut det = vec![false; lay.n];
+     let mut rank = 0;
+     let mut redundant: Vec<String> = Vec::new();
++    let mut degenerate = false;
++    // Tangents whose touch-free form is violated (or whose round curve collapsed): named in
++    // `failing` only when the sketch failed anyway, so a sketch inside the acceptance tolerance
++    // is never `Solved` with a constraint in `failing`.
++    let mut named: Vec<String> = Vec::new();
+     // A component too large to solve is a failure, not an allocation.
+     if comps.iter().any(|(_, vars, bis)| !bis.is_empty() && oversized(vars)) {
+         max_residual = f64::MAX;
+@@ -2033,6 +2103,26 @@ fn solve_inner(
+         }
+         let (r, _, owner) = system(sk, &lay, &sub, &mut x, false);
+         check(&r, &owner, &sub, &mut failing);
++        // A tangency read at its touch point can hold there while the curves are not tangent (the
++        // touch point is not on the line, or not on the round curve): that failure is named by the
++        // constraint that ties the point, and the tangent is named as well when the touch-free
++        // form (distance from the centre equals the radius) is violated. A tangent whose round
++        // curve has collapsed to a point holds trivially and is a degenerate answer: it fails.
++        let now = State { sk, lay: &lay, x: &x };
++        for (b, _) in &sub {
++            let (Block::User(ci, k) | Block::TangentAt(ci, k, _)) = b else { continue };
++            let ConstraintKind::Tangent { a: ta, b: tb } = **k else { continue };
++            let Some(c) = sk.constraints.get(*ci) else { continue };
++            let mut touch_free = Vec::new();
++            if matches!(b, Block::TangentAt(..)) {
++                residuals(&now, k, &mut touch_free);
++            }
++            let collapsed = [ta, tb].iter().any(|&cv| !now.is_line(cv) && !now.is_freeform(cv) && now.radius_of(cv) < ACCEPT);
++            if (collapsed || touch_free.iter().any(|v| !(v.abs() < ACCEPT))) && !named.contains(&c.id) {
++                named.push(c.id.clone());
++            }
++            degenerate |= collapsed;
++        }
+         if analysis == Analysis::StatusOnly {
+             continue;
+         }
+@@ -2084,6 +2174,9 @@ fn solve_inner(
+         let (r, _, owner) = system(sk, &lay, &consts, &mut x, false);
+         check(&r, &owner, &consts, &mut failing);
+     }
++    if degenerate {
++        max_residual = max_residual.max(1.0);
++    }
+     // Weld the whole connected closure graph, preserving every immutable node.
+     // Validate the actual prospective geometry before accepting a numerical solve.
+     let has_periodic = sk.curves.iter().any(|c| matches!(c.kind, CurveKind::Spline { periodic: true, .. }));
+@@ -2139,6 +2232,13 @@ fn solve_inner(
+         None
+     };
+     let status = if max_residual < ACCEPT { SolveStatus::Solved } else { SolveStatus::Failed };
++    if status == SolveStatus::Failed {
++        for id in named {
++            if !failing.contains(&id) {
++                failing.push(id);
++            }
++        }
++    }
+     for id in &folded {
+         if !failing.contains(id) {
+             failing.push(id.clone());

@@ -1,0 +1,23 @@
+{
+ "id": "boolean-nonconvex-l-minus-cylinder",
+ "outcome": "built",
+ "volume": 5717.303625887831,
+ "faces": 9,
+ "bbox": [
+  0,
+  0,
+  0,
+  40,
+  30,
+  10.000000000000005
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sketch",
+  "extrude",
+  "cylinder",
+  "combine"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[0,0],[40,0],[40,10],[10,10],[10,30],[0,30]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":10,\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_e1\"}},{\"command\":\"solid.cylinder\",\"params\":{\"radius\":3,\"height\":30,\"base\":[5,20,-10],\"axis\":\"Z\",\"body_name\":\"b_c\"}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_e1\",\"tools\":[\"b_c\"],\"operation\":\"cut\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

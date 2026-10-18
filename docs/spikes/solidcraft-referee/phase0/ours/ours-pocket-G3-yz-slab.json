@@ -1,0 +1,22 @@
+{
+ "id": "pocket-G3-yz-slab",
+ "outcome": "built",
+ "volume": 12400,
+ "faces": 11,
+ "bbox": [
+  0,
+  -20,
+  -20,
+  8,
+  20,
+  20
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "box",
+  "sketch",
+  "pocket"
+ ],
+ "scriptSource": "[{\"command\":\"solid.box\",\"params\":{\"length\":8,\"width\":40,\"height\":40,\"center\":[4,0,0],\"body_name\":\"b_box1\"}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sk1_0\",\"plane\":{\"origin\":[8,0,0],\"x_dir\":[0,1,0],\"y_dir\":[0,0,1]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[-5,-4],[5,-4],[5,4],[-5,4]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":5,\"direction\":\"negative\",\"sketch\":\"sk_sk1_0\",\"operation\":\"cut\",\"targets\":[\"b_box1\"]}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

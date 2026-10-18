@@ -1,0 +1,20 @@
+{
+ "id": "prism-tri",
+ "outcome": "built",
+ "volume": 2598.076211353316,
+ "faces": 5,
+ "bbox": [
+  -5.000000000000004,
+  -8.660254037844384,
+  -10,
+  10.000000000000004,
+  8.660254037844387,
+  10
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "prism"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_prism1_0\",\"plane\":{\"origin\":[0,0,-10],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[10,0],[-4.999999999999998,8.660254037844387],[-5.000000000000004,-8.660254037844384]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.extrude\",\"params\":{\"distance\":20,\"sketch\":\"sk_prism1_0\",\"operation\":\"new\",\"body_name\":\"b_prism1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

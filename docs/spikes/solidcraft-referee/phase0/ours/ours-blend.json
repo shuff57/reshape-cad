@@ -1,0 +1,21 @@
+{
+ "id": "blend",
+ "outcome": "referee-artifact",
+ "volume": 20999.999999999996,
+ "faces": 6,
+ "bbox": [
+  -20.000000000000025,
+  -20.000000000000025,
+  -4.662936703425657e-14,
+  20.000000000000025,
+  20.000000000000025,
+  30.000000000000007
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sketch",
+  "blend"
+ ],
+ "scriptSource": "[{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sa_0\",\"plane\":{\"origin\":[0,0,0],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[-20,-20],[20,-20],[20,20],[-20,20]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"sketch.create\",\"params\":{\"name\":\"sk_sb_1\",\"plane\":{\"origin\":[0,0,30],\"x_dir\":[1,0,0],\"y_dir\":[0,1,0]}}},{\"command\":\"sketch.line\",\"params\":{\"points\":[[-5,-5],[5,-5],[5,5],[-5,5]],\"closed\":true}},{\"command\":\"sketch.finish\",\"params\":{}},{\"command\":\"solid.loft\",\"params\":{\"sections\":[{\"sketch\":\"sk_sa_0\"},{\"sketch\":\"sk_sb_1\"}],\"operation\":\"new\",\"body_name\":\"b_bl1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

@@ -1,0 +1,80 @@
+{
+ "generatedAt": "2026-10-17T04:48:38.439Z",
+ "url": "http://127.0.0.1:8801",
+ "rows": [
+  {
+   "wall": 3,
+   "ok": true,
+   "volume": [
+    3152
+   ],
+   "sentence": null,
+   "kind": "built"
+  },
+  {
+   "wall": 2.05,
+   "ok": true,
+   "volume": [
+    3068.589999999999
+   ],
+   "sentence": null,
+   "kind": "built"
+  },
+  {
+   "wall": 2,
+   "ok": false,
+   "volume": null,
+   "sentence": "not supported yet: a wall standing on the open face is only 2.0000 mm thick and the shell is 1.0000 mm, so its two sides would cross (a wall needs more than twi",
+   "kind": "wall sentence"
+  },
+  {
+   "wall": 1.95,
+   "ok": false,
+   "volume": null,
+   "sentence": "not supported yet: a wall standing on the open face is only 1.9500 mm thick and the shell is 1.0000 mm, so its two sides would cross (a wall needs more than twi",
+   "kind": "wall sentence"
+  },
+  {
+   "wall": 1.5,
+   "ok": false,
+   "volume": null,
+   "sentence": "not supported yet: a wall standing on the open face is only 1.5000 mm thick and the shell is 1.0000 mm, so its two sides would cross (a wall needs more than twi",
+   "kind": "wall sentence"
+  },
+  {
+   "wall": 1.4,
+   "ok": false,
+   "volume": null,
+   "sentence": "not supported yet: a wall standing on the open face is only 1.4000 mm thick and the shell is 1.0000 mm, so its two sides would cross (a wall needs more than twi",
+   "kind": "wall sentence"
+  },
+  {
+   "wall": 1.2,
+   "ok": false,
+   "volume": null,
+   "sentence": "boolean Cut: the operation failed: no result; the operation failed: coincident faces were left in place: pushing them apart would change the result; the operati",
+   "kind": "boolean-Cut sentence"
+  },
+  {
+   "wall": 1.1,
+   "ok": false,
+   "volume": null,
+   "sentence": "boolean Cut: the operation failed: no result; the operation failed: coincident faces were left in place: pushing them apart would change the result; the operati",
+   "kind": "boolean-Cut sentence"
+  },
+  {
+   "wall": 1,
+   "ok": false,
+   "volume": null,
+   "sentence": "boolean Cut: the operation failed: no result; the operation failed: coincident faces were left in place: pushing them apart would change the result; the operati",
+   "kind": "boolean-Cut sentence"
+  },
+  {
+   "wall": 0.5,
+   "ok": false,
+   "volume": null,
+   "sentence": "boolean Cut: the operation failed: no result; the operation failed: coincident faces were left in place: pushing them apart would change the result; the operati",
+   "kind": "boolean-Cut sentence"
+  }
+ ]
+}

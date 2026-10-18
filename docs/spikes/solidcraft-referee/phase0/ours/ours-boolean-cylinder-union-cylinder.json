@@ -1,0 +1,21 @@
+{
+ "id": "boolean-cylinder-union-cylinder",
+ "outcome": "built",
+ "volume": 16085.289810172208,
+ "faces": 4,
+ "bbox": [
+  -11.999831635754353,
+  -11.999800359793332,
+  -15.000000000000163,
+  17.99925118780923,
+  11.999123173680484,
+  15.000000000000009
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "cylinder",
+  "combine"
+ ],
+ "scriptSource": "[{\"command\":\"solid.cylinder\",\"params\":{\"radius\":12,\"height\":30,\"base\":[0,0,-15],\"axis\":\"Z\",\"body_name\":\"b_c1\"}},{\"command\":\"solid.cylinder\",\"params\":{\"radius\":8,\"height\":30,\"base\":[10,0,-15],\"axis\":\"Z\",\"body_name\":\"b_c2\"}},{\"command\":\"solid.combine\",\"params\":{\"target\":\"b_c1\",\"tools\":[\"b_c2\"],\"operation\":\"join\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

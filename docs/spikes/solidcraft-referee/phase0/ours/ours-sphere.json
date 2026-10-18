@@ -1,0 +1,20 @@
+{
+ "id": "sphere",
+ "outcome": "built",
+ "volume": 14136.164079347773,
+ "faces": 1,
+ "bbox": [
+  -15.000000000000002,
+  -15.000000000000002,
+  -15.000000000000002,
+  15.000000000000002,
+  15.000000000000002,
+  15.000000000000002
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "sphere"
+ ],
+ "scriptSource": "[{\"command\":\"solid.sphere\",\"params\":{\"radius\":15,\"center\":[0,0,0],\"body_name\":\"b_s1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

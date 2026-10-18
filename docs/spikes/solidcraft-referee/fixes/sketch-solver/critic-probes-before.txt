@@ -1,0 +1,42 @@
+CRIT S0 coincident+tangent amp=0: status=Solved dof=7 redundant=["k2"] failing=[] maxres=0.00e0 tan_dist_err=0.00e0 tan_contact_perp=1.78e-15
+CRIT S1 pointoncurve+tangent amp=0: status=Solved dof=7 redundant=[] failing=[] maxres=1.78e-15 tan_dist_err=0.00e0 tan_contact_perp=1.78e-15
+CRIT S2 line-circle no tie amp=0: status=Solved dof=4 redundant=[] failing=[] maxres=0.00e0 tan_dist_err=0.00e0 tan_contact_perp=0.00e0
+CRIT S2b pin contact via point on both amp=0: status=Solved dof=6 redundant=["k3"] failing=[] maxres=0.00e0 tan_dist_err=0.00e0 tan_contact_perp=0.00e0
+CRIT S3 chain amp=0: status=Solved dof=7 redundant=["k4"] failing=[] maxres=0.00e0 tan_dist_err=0.00e0 tan_contact_perp=1.78e-15
+CRIT S4 arc-arc coincident amp=0: status=Solved dof=7 redundant=[] failing=[] maxres=7.05e-10 tan_dist_err=7.05e-10 tan_contact_perp=5.99e-5
+CRIT S4b arc-arc internal coincident amp=0: status=Solved dof=8 redundant=["k2"] failing=[] maxres=0.00e0 tan_dist_err=0.00e0 tan_contact_perp=3.17e-16
+CRIT S6 rounded rect, all tied amp=0: status=Solved dof=12 redundant=[] failing=[] maxres=8.04e-10 tan_dist_err=8.04e-10 tan_contact_perp=6.95e-5
+CRIT S6b + H,V,R amp=0: status=Solved dof=9 redundant=[] failing=[] maxres=5.32e-10 tan_dist_err=4.42e-10 tan_contact_perp=7.34e-5
+CRIT S7 tangent + centre on line (conflict) amp=0: status=Solved dof=5 redundant=[] failing=[] maxres=2.88e-9 tan_dist_err=2.88e-9 tan_contact_perp=2.89e-9
+CRIT S7b tangent R5 + centre-line dist 4 (conflict) amp=0: status=Failed dof=5 redundant=["k4"] failing=["k2", "k3", "k4"] maxres=3.33e-1 tan_dist_err=0.00e0 tan_contact_perp=1.78e-15
+CRIT S7c tangent R5 + dist 5.001 (infeasible) amp=0: status=Failed dof=5 redundant=["k2", "k4"] failing=["k1", "k2", "k3", "k4"] maxres=4.00e-4 tan_dist_err=0.00e0 tan_contact_perp=1.78e-15
+CRIT S8 duplicate tangent amp=0: status=Solved dof=7 redundant=["k2", "k3"] failing=[] maxres=0.00e0 tan_dist_err=0.00e0 tan_contact_perp=1.78e-15
+CRIT S9 line end on circle + tangent amp=0: status=Solved dof=5 redundant=[] failing=[] maxres=0.00e0 tan_dist_err=0.00e0 tan_contact_perp=0.00e0
+CRIT S0 coincident+tangent amp=0.05: status=Solved dof=6 redundant=[] failing=[] maxres=5.85e-10 tan_dist_err=5.85e-10 tan_contact_perp=8.55e-5
+CRIT S1 pointoncurve+tangent amp=0.05: status=Solved dof=7 redundant=[] failing=[] maxres=1.01e-11 tan_dist_err=1.01e-11 tan_contact_perp=2.48e-1
+CRIT S2 line-circle no tie amp=0.05: status=Solved dof=4 redundant=[] failing=[] maxres=3.44e-10 tan_dist_err=1.43e-10 tan_contact_perp=0.00e0
+CRIT S2b pin contact via point on both amp=0.05: status=Solved dof=5 redundant=[] failing=[] maxres=5.94e-10 tan_dist_err=5.83e-11 tan_contact_perp=0.00e0
+CRIT S3 chain amp=0.05: status=Solved dof=6 redundant=[] failing=[] maxres=5.82e-10 tan_dist_err=5.82e-10 tan_contact_perp=8.47e-5
+CRIT S4 arc-arc coincident amp=0.05: status=Solved dof=7 redundant=[] failing=[] maxres=6.49e-10 tan_dist_err=6.16e-10 tan_contact_perp=7.97e-5
+CRIT S4b arc-arc internal coincident amp=0.05: status=Solved dof=7 redundant=[] failing=[] maxres=4.38e-10 tan_dist_err=4.38e-10 tan_contact_perp=2.39e-5
+CRIT S6 rounded rect, all tied amp=0.05: status=Solved dof=12 redundant=[] failing=[] maxres=9.71e-10 tan_dist_err=9.71e-10 tan_contact_perp=1.05e-4
+CRIT S6b + H,V,R amp=0.05: status=Solved dof=9 redundant=[] failing=[] maxres=5.32e-10 tan_dist_err=5.32e-10 tan_contact_perp=7.95e-5
+CRIT S7 tangent + centre on line (conflict) amp=0.05: status=Solved dof=5 redundant=[] failing=[] maxres=6.44e-9 tan_dist_err=6.44e-9 tan_contact_perp=6.46e-9
+CRIT S7b tangent R5 + centre-line dist 4 (conflict) amp=0.05: status=Failed dof=5 redundant=["k4"] failing=["k2", "k3", "k4"] maxres=3.33e-1 tan_dist_err=2.96e-2 tan_contact_perp=3.67e-2
+CRIT S7c tangent R5 + dist 5.001 (infeasible) amp=0.05: status=Failed dof=5 redundant=["k2", "k4"] failing=["k1", "k2", "k3", "k4"] maxres=4.00e-4 tan_dist_err=2.11e-2 tan_contact_perp=6.91e-3
+CRIT S8 duplicate tangent amp=0.05: status=Solved dof=6 redundant=["k3"] failing=[] maxres=3.41e-10 tan_dist_err=3.41e-10 tan_contact_perp=6.42e-5
+CRIT S9 line end on circle + tangent amp=0.05: status=Solved dof=5 redundant=[] failing=[] maxres=1.07e-12 tan_dist_err=1.07e-12 tan_contact_perp=0.00e0
+CRIT S0 coincident+tangent amp=0.5: status=Solved dof=6 redundant=[] failing=[] maxres=3.42e-10 tan_dist_err=3.42e-10 tan_contact_perp=6.10e-5
+CRIT S1 pointoncurve+tangent amp=0.5: status=Solved dof=7 redundant=[] failing=[] maxres=6.01e-12 tan_dist_err=6.01e-12 tan_contact_perp=8.31e-1
+CRIT S2 line-circle no tie amp=0.5: status=Solved dof=4 redundant=[] failing=[] maxres=2.45e-12 tan_dist_err=8.45e-13 tan_contact_perp=0.00e0
+CRIT S2b pin contact via point on both amp=0.5: status=Solved dof=5 redundant=[] failing=[] maxres=9.72e-10 tan_dist_err=2.69e-11 tan_contact_perp=0.00e0
+CRIT S3 chain amp=0.5: status=Solved dof=6 redundant=[] failing=[] maxres=7.60e-10 tan_dist_err=7.60e-10 tan_contact_perp=9.20e-5
+CRIT S4 arc-arc coincident amp=0.5: status=Solved dof=7 redundant=[] failing=[] maxres=7.86e-10 tan_dist_err=7.86e-10 tan_contact_perp=6.45e-5
+CRIT S4b arc-arc internal coincident amp=0.5: status=Solved dof=7 redundant=[] failing=[] maxres=4.48e-10 tan_dist_err=4.48e-10 tan_contact_perp=2.35e-5
+CRIT S6 rounded rect, all tied amp=0.5: status=Solved dof=12 redundant=[] failing=[] maxres=7.30e-10 tan_dist_err=7.30e-10 tan_contact_perp=8.95e-5
+CRIT S6b + H,V,R amp=0.5: status=Solved dof=9 redundant=[] failing=[] maxres=7.47e-10 tan_dist_err=7.47e-10 tan_contact_perp=8.47e-5
+CRIT S7 tangent + centre on line (conflict) amp=0.5: status=Solved dof=5 redundant=[] failing=[] maxres=3.42e-9 tan_dist_err=3.42e-9 tan_contact_perp=3.43e-9
+CRIT S7b tangent R5 + centre-line dist 4 (conflict) amp=0.5: status=Failed dof=5 redundant=["k4"] failing=["k2", "k3", "k4"] maxres=3.33e-1 tan_dist_err=2.78e-1 tan_contact_perp=3.45e-1
+CRIT S7c tangent R5 + dist 5.001 (infeasible) amp=0.5: status=Failed dof=6 redundant=["k2", "k4"] failing=["k1", "k2", "k3", "k4"] maxres=4.00e-4 tan_dist_err=2.10e-1 tan_contact_perp=6.78e-2
+CRIT S8 duplicate tangent amp=0.5: status=Solved dof=6 redundant=["k3"] failing=[] maxres=3.69e-10 tan_dist_err=3.69e-10 tan_contact_perp=6.33e-5
+CRIT S9 line end on circle + tangent amp=0.5: status=Solved dof=5 redundant=[] failing=[] maxres=7.43e-13 tan_dist_err=2.15e-13 tan_contact_perp=0.00e0

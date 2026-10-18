@@ -1,0 +1,15 @@
+{
+ "id": "shell-2",
+ "outcome": "refused",
+ "reason": "shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points",
+ "volume": null,
+ "faces": null,
+ "bbox": null,
+ "meshTriangles": null,
+ "featureKinds": [
+  "box",
+  "shell"
+ ],
+ "scriptSource": "[{\"command\":\"solid.box\",\"params\":{\"length\":40,\"width\":40,\"height\":20,\"center\":[0,0,0],\"body_name\":\"b_b1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

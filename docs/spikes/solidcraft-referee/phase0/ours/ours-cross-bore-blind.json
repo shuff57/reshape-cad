@@ -1,0 +1,21 @@
+{
+ "id": "cross-bore-blind",
+ "outcome": "built",
+ "volume": 9274.322172826045,
+ "faces": 5,
+ "bbox": [
+  -9.999845562132384,
+  -9.999763825245505,
+  -15.000000000000025,
+  9.999996522342348,
+  9.999763825245505,
+  15.000000000000009
+ ],
+ "meshTriangles": null,
+ "featureKinds": [
+  "cylinder",
+  "hole"
+ ],
+ "scriptSource": "[{\"command\":\"solid.cylinder\",\"params\":{\"radius\":10,\"height\":30,\"base\":[0,0,-15],\"axis\":\"Z\",\"body_name\":\"b_cyl1\"}},{\"command\":\"solid.cylinder\",\"params\":{\"radius\":2,\"height\":12,\"base\":[-2.000000000000001,0,-8.881784197001252e-15],\"axis\":\"X\",\"operation\":\"cut\",\"targets\":[\"b_cyl1\"]}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}

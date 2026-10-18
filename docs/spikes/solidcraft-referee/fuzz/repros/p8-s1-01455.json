@@ -1,0 +1,141 @@
+{
+ "id": "s1-01455",
+ "desc": "plate 26.3x20.4x12 open=top [blind,rim]",
+ "t": 2.5,
+ "p7": {
+  "expectedP": 3774.0920703125007
+ },
+ "p8": {
+  "cls": "WRONG",
+  "expectedP": 3774.0920703125007,
+  "built": 3708.5304310308134,
+  "rel": 0.017371499703837046
+ },
+ "commands": [
+  {
+   "command": "solid.box",
+   "params": {
+    "length": 26.3,
+    "width": 20.4,
+    "height": 12,
+    "center": [
+     0,
+     0,
+     6
+    ],
+    "body_name": "b1"
+   }
+  },
+  {
+   "command": "solid.cylinder",
+   "params": {
+    "radius": 1.5,
+    "height": 7.75,
+    "base": [
+     -6.55,
+     3.6,
+     -1
+    ],
+    "axis": [
+     0,
+     0,
+     1
+    ],
+    "body_name": "f1"
+   }
+  },
+  {
+   "command": "solid.combine",
+   "params": {
+    "target": "b1",
+    "tools": [
+     "f1"
+    ],
+    "operation": "cut"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": 8.1,
+    "width": 10.3,
+    "height": 2,
+    "center": [
+     4.05,
+     0.04999999999999982,
+     -1
+    ],
+    "body_name": "f2"
+   }
+  },
+  {
+   "command": "solid.box",
+   "params": {
+    "length": 1,
+    "width": 3.2,
+    "height": 4,
+    "center": [
+     4.05,
+     0.04999999999999982,
+     -1
+    ],
+    "body_name": "f2t"
+   }
+  },
+  {
+   "command": "solid.combine",
+   "params": {
+    "target": "f2",
+    "tools": [
+     "f2t"
+    ],
+    "operation": "cut"
+   }
+  },
+  {
+   "command": "solid.combine",
+   "params": {
+    "target": "b1",
+    "tools": [
+     "f2"
+    ],
+    "operation": "join"
+   }
+  },
+  {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      3.653,
+      -0.729,
+      12
+     ]
+    ],
+    "thickness": 2.5,
+    "body": "b1"
+   }
+  }
+ ],
+ "feats": [
+  {
+   "kind": "blind",
+   "r": 1.5,
+   "d": 6.75,
+   "face": "bot",
+   "floor": 5.25,
+   "xc": -6.55,
+   "yc": 3.6
+  },
+  {
+   "kind": "rim",
+   "bw": 8.1,
+   "bd": 10.3,
+   "bh": 2,
+   "wall": 3.55,
+   "face": "bot",
+   "xc": 4.05,
+   "yc": 0.05
+  }
+ ]
+}

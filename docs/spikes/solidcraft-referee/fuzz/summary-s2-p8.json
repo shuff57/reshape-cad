@@ -1,0 +1,212 @@
+{
+ "seed": 2,
+ "tol": 0.001,
+ "generated": 2300,
+ "bins": {
+  "p8": {
+   "noOracleConeCombined_outcomes_informational_only": {
+    "MATCH": 18,
+    "REFUSED": 170,
+    "WRONG(unverified oracle)": 2,
+    "other": 2
+   },
+   "label": "p8final",
+   "classes": {
+    "MATCH": 461,
+    "REFUSED": 1328,
+    "WRONG": 5,
+    "TIMEOUT": 7,
+    "ERROR_OTHER": 0,
+    "MISSING": 0
+   },
+   "refusedOpaqueCount": 26,
+   "refusedWithAllGapsClear": 114,
+   "refusalSentences": [
+    {
+     "sentence": "not supported yet: the kernel cannot build this shell yet: its inner wall meets the part's own faces in a way it cannot cut (a feature close to the opening or to a wall); another shell thickness, or opening another face,",
+     "count": 349,
+     "opaque": false,
+     "vague": true,
+     "clearGaps": 29,
+     "example": "s2-00009",
+     "exampleText": "step 8 (solid.shell): not supported yet: the kernel cannot build this shell yet: its inner wall meets the part's own faces in a way it cannot cut (a feature close to the opening or to a wall); another shell thickness, or opening another face, may work",
+     "byFamily": {
+      "stepped": 35,
+      "plate": 279,
+      "convex": 35
+     }
+    },
+    {
+     "sentence": "not supported yet: a floor, wall or ligament near [..] is too thin for a # mm shell: the walls on its two sides would overlap by about # mm (material between two faces needs more than twice the shell thickness, # mm)",
+     "count": 324,
+     "opaque": false,
+     "vague": false,
+     "clearGaps": 31,
+     "example": "s2-00000",
+     "exampleText": "step 4 (solid.shell): not supported yet: a floor, wall or ligament near [-18.71, -2.95, 9.92] is too thin for a 2.5000 mm shell: the walls on its two sides would overlap by about 0.860 mm (material between two faces needs more than twice the shell thickness, 5.0000 mm)",
+     "byFamily": {
+      "plate": 264,
+      "convex": 42,
+      "stepped": 18
+     }
+    },
+    {
+     "sentence": "not supported yet: the move is larger than a rim or ledge near [..] is wide (a face would turn inside out)",
+     "count": 261,
+     "opaque": false,
+     "vague": false,
+     "clearGaps": 14,
+     "example": "s2-00002",
+     "exampleText": "step 8 (solid.shell): not supported yet: the move is larger than a rim or ledge near [-7.4, 5.7, 2.5] is wide (a face would turn inside out)",
+     "byFamily": {
+      "plate": 218,
+      "stepped": 42,
+      "convex": 1
+     }
+    },
+    {
+     "sentence": "not supported yet: the move is larger than a wall or step is thick (faces would cross)",
+     "count": 202,
+     "opaque": false,
+     "vague": false,
+     "clearGaps": 27,
+     "example": "s2-00005",
+     "exampleText": "step 7 (solid.shell): not supported yet: the move is larger than a wall or step is thick (faces would cross)",
+     "byFamily": {
+      "convex": 25,
+      "plate": 107,
+      "stepped": 70
+     }
+    },
+    {
+     "sentence": "not supported yet: a ligament between a hole and a wall (or another hole) is only # mm thick; its two offset sides would cross (it needs at least twice the shell thickness, # mm)",
+     "count": 45,
+     "opaque": false,
+     "vague": false,
+     "clearGaps": 11,
+     "example": "s2-00040",
+     "exampleText": "step 4 (solid.shell): not supported yet: a ligament between a hole and a wall (or another hole) is only 4.9500 mm thick; its two offset sides would cross (it needs at least twice the shell thickness, 5.0000 mm)",
+     "byFamily": {
+      "plate": 22,
+      "stepped": 6,
+      "convex": 17
+     }
+    },
+    {
+     "sentence": "not supported yet: a boss or wall stands on the open face of a body with round faces (or on a round wall); solid.shell would cut it short here, so it is not built (open a face nothing stands on, or shell before adding th",
+     "count": 41,
+     "opaque": false,
+     "vague": false,
+     "clearGaps": 1,
+     "example": "s2-00060",
+     "exampleText": "step 8 (solid.shell): not supported yet: a boss or wall stands on the open face of a body with round faces (or on a round wall); solid.shell would cut it short here, so it is not built (open a face nothing stands on, or shell before adding the boss)",
+     "byFamily": {
+      "plate": 41
+     }
+    },
+    {
+     "sentence": "not supported yet: what stands on the open face is only # mm tall and the shell is # mm thick, so its top would move below the open face (use a shell thinner than the pad is tall, or shell before adding it)",
+     "count": 34,
+     "opaque": false,
+     "vague": false,
+     "clearGaps": 0,
+     "example": "s2-00031",
+     "exampleText": "step 12 (solid.shell): not supported yet: what stands on the open face is only 2.0000 mm tall and the shell is 2.0000 mm thick, so its top would move below the open face (use a shell thinner than the pad is tall, or shell before adding it)",
+     "byFamily": {
+      "plate": 34
+     }
+    },
+    {
+     "sentence": "not supported yet: a wall standing on the open face is only # mm thick and the shell is # mm, so its two sides would cross (a wall needs more than twice the shell thickness; use a thinner shell or a thicker wall)",
+     "count": 27,
+     "opaque": false,
+     "vague": false,
+     "clearGaps": 0,
+     "example": "s2-00029",
+     "exampleText": "step 6 (solid.shell): not supported yet: a wall standing on the open face is only 0.9500 mm thick and the shell is 0.5000 mm, so its two sides would cross (a wall needs more than twice the shell thickness; use a thinner shell or a thicker wall)",
+     "byFamily": {
+      "plate": 27
+     }
+    },
+    {
+     "sentence": "offset: a corner whose faces don't meet the same way after the move",
+     "count": 22,
+     "opaque": true,
+     "vague": false,
+     "clearGaps": 0,
+     "example": "s2-00078",
+     "exampleText": "step 6 (solid.shell): offset: a corner whose faces don't meet the same way after the move",
+     "byFamily": {
+      "plate": 21,
+      "stepped": 1
+     }
+    },
+    {
+     "sentence": "not supported yet: something stands on the open face (a boss, a rim or a pocket's walls) and the # mm shell would leave part of it free of the rest of the part: every face moves in by the thickness, so nothing is left un",
+     "count": 19,
+     "opaque": false,
+     "vague": false,
+     "clearGaps": 1,
+     "example": "s2-00225",
+     "exampleText": "step 6 (solid.shell): not supported yet: something stands on the open face (a boss, a rim or a pocket's walls) and the 1.5000 mm shell would leave part of it free of the rest of the part: every face moves in by the thickness, so nothing is left under it (a thinner shell does not help unless it touch",
+     "byFamily": {
+      "plate": 19
+     }
+    },
+    {
+     "sentence": "offset: an edge vanishes (the offset is too large)",
+     "count": 3,
+     "opaque": true,
+     "vague": false,
+     "clearGaps": 0,
+     "example": "s2-00069",
+     "exampleText": "step 6 (solid.shell): offset: an edge vanishes (the offset is too large)",
+     "byFamily": {
+      "plate": 1,
+      "convex": 1,
+      "stepped": 1
+     }
+    },
+    {
+     "sentence": "lumps: cannot mesh a complete shell boundary",
+     "count": 1,
+     "opaque": true,
+     "vague": false,
+     "clearGaps": 0,
+     "example": "s2-01586",
+     "exampleText": "step 12 (solid.shell): lumps: cannot mesh a complete shell boundary",
+     "byFamily": {
+      "plate": 1
+     }
+    }
+   ],
+   "wrongIds": [
+    "s2-00591",
+    "s2-00829",
+    "s2-01541",
+    "s2-01562",
+    "s2-01770"
+   ]
+  }
+ },
+ "exclusions": {
+  "noOracleErr": 0,
+  "baseMultiBody": 6,
+  "baseFail": 0,
+  "modelMismatch": 1,
+  "euclidDisagree": 0,
+  "noOracleConeUnchecked": 192,
+  "baseMissing": 0,
+  "modelMismatchFamilies": {
+   "convex vfillet": 1
+  }
+ },
+ "eligible": 1801,
+ "euclidChecked": 230,
+ "euclidRelDelta": {
+  "n": 230,
+  "min": 0.000015017013195615093,
+  "median": 0.0028477611668741806,
+  "max": 0.01288153346301081
+ }
+}

@@ -1,0 +1,15 @@
+{
+ "id": "shell-cylinder-closed",
+ "outcome": "refused",
+ "reason": "sh1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points",
+ "volume": null,
+ "faces": null,
+ "bbox": null,
+ "meshTriangles": null,
+ "featureKinds": [
+  "cylinder",
+  "shell"
+ ],
+ "scriptSource": "[{\"command\":\"solid.cylinder\",\"params\":{\"radius\":12,\"height\":30,\"base\":[0,0,-15],\"axis\":\"Z\",\"body_name\":\"b_c1\"}}]",
+ "engine": "solidcraft (truck) wasm referee, phase 0"
+}
