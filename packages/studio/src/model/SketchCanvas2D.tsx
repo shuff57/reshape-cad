@@ -148,6 +148,8 @@ import {
   type SketchSelectionEntry,
 } from './marking-menu-core.js';
 import { rightButtonRole, rightClickGuard } from './marking-menu-guard.js';
+import { SolidIcon } from '../icons/SolidIcon.js';
+import type { SolidIconId } from '../icons/solidcraft-icons.js';
 
 // Todo 19's [CONFIRM]-sourced gesture thresholds, same shape as
 // BrepViewportThree's: the delay is the marking-menu gesture's own default
@@ -3403,7 +3405,22 @@ function SkIconBody({ n }: { n: string }): React.ReactElement | null {
   }
 }
 
+const SK_PACK_ICON: Record<string, SolidIconId> = {
+  select: '2d-select', line: '2d-line', rect: '2d-rectangle', circle: '2d-circle', arc: '2d-arc',
+  slot: '2d-slot', trim: '2d-trim', fillet: '2d-fillet', offset: '2d-offset',
+  dim: '2d-dimension', distance: '2d-dimension', distanceX: '2d-dimension', distanceY: '2d-dimension',
+  radius: '2d-dimension', diameter: '2d-dimension', angle: '2d-dimension',
+  horizontal: '2d-constraint-horizontal', vertical: '2d-constraint-vertical',
+  coincident: '2d-constraint-coincident', parallel: '2d-constraint-parallel',
+  perpendicular: '2d-constraint-perpendicular', tangent: '2d-constraint-tangent',
+  equal: '2d-constraint-equal', symmetric: '2d-constraint-symmetric',
+  lock: '2d-constraint-fix', pointOnObject: '2d-constraint-pierce',
+  construction: '2d-construction', mirror: '2d-mirror',
+};
+
 function SkIcon({ n }: { n: string }): React.ReactElement {
+  const pack = SK_PACK_ICON[n];
+  if (pack) return <SolidIcon id={pack} size={18} className="sk-ico sk-ico-pack" />;
   return (
     <svg className="sk-ico" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
       <SkIconBody n={n} />
