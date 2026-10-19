@@ -1,0 +1,119 @@
+{
+ "group": "move-turn",
+ "verdict": "not-accepted",
+ "summary": "The rows file never mentions the r4/r5 cone-chain evidence in the same harness: plain move/turn chains of a cone are a silent wrong solid in the shipped translator (dVol up to 0.27), yet rows 5, 8, 10, 11 and 6 are 'supported' with no guard condition. Even the proposed guard still fails 3 of 360 fuzz cases against the dCom bar, and make-rows-r3.mjs rebuilds only 27 of the 28 stored rows, so the file is not reproducible by its own assert script. The pick-after-move rows (0-4) replay exactly as stored.",
+ "rowsTotal": 28,
+ "rowsEvidenceChecked": 28,
+ "rowsReplayed": 19,
+ "replays": [
+  {
+   "feature": "cone, turn, move, move (r5-critic-repro)",
+   "command": "bun r5-critic-repro.mjs",
+   "stored": "shipped FAIL dVol 2.61e-1 dCom 6.63e-2; guard PASS",
+   "live": "identical",
+   "match": true
+  },
+  {
+   "feature": "six plain moves of a cone",
+   "command": "bun r5-critic-repro.mjs",
+   "stored": "shipped FAIL dVol 1.07e-1; guard PASS",
+   "live": "identical",
+   "match": true
+  },
+  {
+   "feature": "copy of a copy of a cone x6",
+   "command": "bun r5-critic-repro.mjs",
+   "stored": "shipped REFUSED; guard PASS dVol 1.82e-4",
+   "live": "identical",
+   "match": true
+  },
+  {
+   "feature": "cylinder six moves / one cone move controls",
+   "command": "bun r5-critic-repro.mjs",
+   "stored": "PASS",
+   "live": "PASS",
+   "match": true
+  },
+  {
+   "feature": "guard gw1 turn4",
+   "command": "bun r5-guardwrong.mjs",
+   "stored": "guard FAIL",
+   "live": "guard FAIL dCom 1.68e-4",
+   "match": true
+  },
+  {
+   "feature": "guard gw2 move3",
+   "command": "bun r5-guardwrong.mjs",
+   "stored": "guard FAIL",
+   "live": "guard FAIL dCom 3.02e-5",
+   "match": true
+  },
+  {
+   "feature": "guard gw3 turn3",
+   "command": "bun r5-guardwrong.mjs",
+   "stored": "guard FAIL",
+   "live": "guard FAIL dCom 3.40e-5",
+   "match": true
+  },
+  {
+   "feature": "row 5 move of 7 primitives",
+   "command": "bun a-move.mjs",
+   "stored": "all PASS, planar dVol<=1.5e-16, curved 7.1e-5..1.8e-4",
+   "live": "7/7 PASS same numbers",
+   "match": true
+  },
+  {
+   "feature": "row 0 move [0,0,20] then round",
+   "command": "bun r3-pickrepro.mjs",
+   "stored": "shipped dCom 5.1e-4 dVol 9.4e-7; guard REFUSED",
+   "live": "identical",
+   "match": true
+  },
+  {
+   "feature": "row 1 move then hollow open top",
+   "command": "bun r3-pickrepro.mjs",
+   "stored": "shipped dCom 8.7e-2; guard REFUSED",
+   "live": "identical",
+   "match": true
+  },
+  {
+   "feature": "row 2 hole, turn 180, round",
+   "command": "bun r3-pickrepro.mjs",
+   "stored": "shipped dCom 7.8e-4; guard REFUSED",
+   "live": "identical",
+   "match": true
+  }
+ ],
+ "defects": [
+  {
+   "severity": "blocking",
+   "feature": "rows 5, 6, 8, 10, 11 (supported move/turn)",
+   "problem": "Silent wrong solid called supported: a cone (revolve-built apex solid) moved or turned repeatedly is wrong in the shipped translator (r5-conechain-moves.out: 22 of 100 plain move chains FAIL, dVol up to 0.27, dCom 0.157; r4-conechain.out cone 9/40 FAIL, join-with-cone 14/40 FAIL). The row text only tests a single move/turn of a cone and the s1 chain flag is dismissed as tessellation. The fix (rigid-motion invariant plus chain repair in translate-guard.mjs) is not named in any row, and no row has the condition that the page must ship it.",
+   "evidenceFile": "move-turn-harness/r4-conechain.out, r5-conechain-moves.out, r5-critic-repro.out"
+  },
+  {
+   "severity": "major",
+   "feature": "guard (translate-guard.mjs cone repair)",
+   "problem": "Even with the invariant and repair, the wide fuzz fails the COM bar in 3 of 360 chains (r5-conechain-wide.out: cone 2/120 and copies 1/120 'guard WRONG'; replayed gw1 dCom 1.68e-4, gw3 dCom 3.4e-5, gw2 3.0e-5 against bar 3e-5). Magnitudes are tessellation scale, but they are over the stated bar and no row records them.",
+   "evidenceFile": "move-turn-harness/r5-guardwrong.mjs, r5-conechain-wide.out"
+  },
+  {
+   "severity": "major",
+   "feature": "whole file",
+   "problem": "Not reproducible: make-rows-r3.mjs builds 27 rows; the stored move-turn.json has 28 (row 11, compose, was added by hand) and every row carries an appended RE-VERIFIED paragraph that the script does not produce. The assert script therefore does not guard the shipped file. Also r4/r5 scripts and results exist in the folder but no row cites them.",
+   "evidenceFile": "move-turn-harness/make-rows-r3.mjs, move-turn.json"
+  },
+  {
+   "severity": "minor",
+   "feature": "row 4 (pick guard) and rows 0-3",
+   "problem": "Status 'wrong' for rows 0-3 and a contract 'refused' for row 4 depend on a guard not yet in the page translator; the pick-guard refuses 43 cases that happen to build correctly (stated cost, acceptable). Row 27 sentence 'could not be built by this engine' uses a generic word, not an engine name; fine.",
+   "evidenceFile": "move-turn-harness/k-pickguard-results.json"
+  }
+ ],
+ "notMeasured": [
+  "k-pickguard 109-case sweep not re-run in full (3 repros replayed)",
+  "torus/b-turn 168-case sweep, 120 s time-limit rows 25/26, magnitude rows 22 and r3-lumps/cuthead not replayed (resource and time)",
+  "cone-chain behaviour for ring/sphere revolve solids not stated anywhere in the rows"
+ ],
+ "criticAt": "2026-10-19T09:37:05.341366-07:00"
+}
