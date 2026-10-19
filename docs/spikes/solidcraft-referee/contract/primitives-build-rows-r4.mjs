@@ -30,6 +30,12 @@ const add = (feature, status, evidence, refusalSentence) => { const r = { featur
 const keep = (n) => old(n).evidence;
 const R3 = (t) => `ROUND 3 EVIDENCE (kept for its measured numbers; the guard constants named in it were replaced in round 4 where the header says so): ${t}`;
 
+
+// ---- round 4b helpers: tables over the E22..E27 results
+const resOr = (n) => A.res(n) ?? [];
+const okTxt = (rs) => { const w = rs.filter((r) => r.status === 'built' && !r.good); const dv = (r) => r.truck?.dVolOcct ?? r.truck?.dVolAn ?? 0; return `${rs.filter((r) => r.status === 'built' && r.good).length}/${rs.length} correct${w.length ? ` (${w.length} WRONG: ${w.slice(0, 3).map((r) => why({ r, o: 'wrong' })).join(' | ')}${w.length > 3 ? ' ...' : ''}; worst volume ${ex(Math.max(...w.map(dv)))})` : ''}`; };
+const e27 = () => { const x = A.res('e27-pin-rules'); assert(x, 'e27 results'); return x ?? []; };
+
 const GUARD = ' GUARD: contract/primitives.guard.mjs, a PROTOTYPE that nothing in the product calls (packages/script is read-only here): the status above is what the product does today, refusalSentence is what the integrated layer must show.';
 const CMD = (spec) => ` Spec: contract/primitives-r4/${spec}.mjs, run as in RIG.md 'primitives group, round 4'; results in contract/primitives-r4/results/.`;
 
@@ -56,7 +62,7 @@ function status(h, forced) {
 // BOX
 // =====================================================================================================================================
 const e14 = A.e14(); assert(e14, 'e14 results');
-const SUPPORTED_NOTE = ' Inside the placement and size rules below (a supported row is supported only for inputs the rows "placed far from the origin", "size" and "long and thin" accept).';
+const SUPPORTED_NOTE = ' Inside the placement and size rules below (a supported row is supported only for inputs that none of the wrong-solid rows below catches: "placed far from the origin", "big and far", "size", "long and thin", the rounded plate and disc rows, and the three turned / flat cone rows).';
 add('box(w,d,h) / cuboid', 'supported', keep(1) + SUPPORTED_NOTE);
 add('box option at:[x,y,z]', 'supported', keep(2) + ' Limit: the at position is bounded by the "placed far from the origin" row; a small box far from the origin is a WRONG solid as shipped.');
 add('box doc-level rotate (script turn(box,[rx,ry,rz]))', 'supported', keep(3) + ' Limit: a turned box far from the origin is bounded by the same "placed far" row.');
@@ -99,6 +105,23 @@ add('cylinder doc-level rotate (script turn)', 'supported', keep(9));
     'cylinder(24, 30, { corner: 1.00 x 10^-6 }): the corner is too small -- it would be left out of the part, so it has to be at least 0.0001.');
 }
 
+{
+  const x = e27(); const a = x.filter((r) => /^e27-a-/.test(r.id)); const b = x.filter((r) => /^e27-b-/.test(r.id));
+  const plates = resOr('e26-cone-edges').filter((r) => /^e26-c-plate/.test(r.id));
+  const asp = (rs, re, n) => okTxt(rs.filter((r) => re.test(r.id)));
+  const h = header(['box-round-too-thin']);
+  assert(h.s.wrong.length > 0, 'rounded plate has wrong');
+  add('box option corner on a long thin plate (longest side above 100 x the shortest)', status(h, null),
+    h.text + ` MEASURED: E27a (${a.length} cases: box(L, 0.7 L, t, { corner: t/2 x q }), t = 4 and 40, L/t = 60 .. 500, q = 0.1 / 0.5 / 0.9) and E26c plates (${plates.length}, L/t up to 1500): the face count stays 26 = OCCT's, the bounding box and centre of mass stay exact, and only the volume drifts, scale-free (t 4 and 40 give the same numbers): L/t 60 and 100: ${asp(a, /asp(60|100)-/)}; 150 and 200: ${asp(a, /asp(150|200)-/)}; 300: ${asp(a, /asp300-/)}; 500: ${asp(a, /asp500-/)}. The error is tessellation of the fillet (3.5e-4 to 7.7e-4 against the 3e-4 curved bar, 4x to 8x the usual 1e-4), so this class is 'wrong' by the contract's bar rather than a visibly broken part; the guard keeps the aspect at 100, where the worst cell is 1.2e-4.` + GUARD + CMD('e27-pin-rules') + CMD('e26-cone-edges'),
+    'box(1000, 700, 4, { corner: 1 }): too long and thin for a rounded box -- its volume would be measured wrongly, so the longest side has to be at most 100 times the shortest.');
+  const h2 = header(['cyl-round-too-flat']);
+  assert(h2.s.wrong.length > 0, 'rounded disc has wrong');
+  const fil = b.filter((r) => /-fil-/.test(r.id)); const bev = b.filter((r) => /-bev-/.test(r.id));
+  add('cylinder corner or bevel on a wide flat disc (across above 100 x tall)', status(h2, null),
+    h2.text + ` MEASURED: E27b (${b.length} cases: radius 50 / 500 / 5000, across/tall 40 .. 500, corner = tall/4, fillet and bevel), E24 (disc, ${resOr('e24-disc-corner').length}) and E26c bevels: the result depends on across/tall only (radius 50 and 5000 give the same faces). Fillet across/tall 40 .. 300: ${okTxt(fil.filter((r) => !/asp(450|500)/.test(r.id)))}; 450 and 500: ${okTxt(fil.filter((r) => /asp(450|500)/.test(r.id)))}. Bevel 40 .. 300: ${okTxt(bev.filter((r) => !/asp(450|500)/.test(r.id)))}; 450 and 500: ${okTxt(bev.filter((r) => /asp(450|500)/.test(r.id)))}. A band is dropped (4 faces for OCCT's 5) from across/tall 450; the volume of a fillet disc drifts to 2.2e-4 .. 3.4e-4 from 150 (E24 R 10670 / tall 87.62, ratio 243: 3.2e-4). The guard keeps across/tall at 100, where the worst cell is 7e-5.` + GUARD + CMD('e27-pin-rules') + CMD('e24-disc-corner') + CMD('e26-cone-edges'),
+    'cylinder(1000, 4, { corner: 1 }): too flat for a rounded rim -- a rim on a disc this wide is built with a face missing, so across has to be at most 100 times tall.');
+}
+
 // =====================================================================================================================================
 // SPHERE, CONE
 // =====================================================================================================================================
@@ -116,7 +139,32 @@ add('sphere options corner / rotate (not offered)', 'refused', keep(15) + ' The 
 }
 add('cone(across,tall) pointed cone', 'supported', keep(16) + SUPPORTED_NOTE);
 add('cone option at', 'supported', keep(17));
-add('cone doc-level rotate (script turn)', 'supported', keep(18));
+add('cone doc-level rotate (script turn)', 'supported', keep(18) + ' Limits: a turned cone is wrong in three classes, each its own row below (turned and moved with tall/across under 1, turned with tall/across above 10, flatter than 0.01).');
+{
+  const x = e27(); const c = x.filter((r) => /^e27-c-t/.test(r.id));
+  const byT = [...new Set(c.map((r) => +/^e27-c-t([\d.]+)-/.exec(r.id)[1]))].sort((a, b) => a - b).map((t) => `tall/across ${t}: ${okTxt(c.filter((r) => +/^e27-c-t([\d.]+)-/.exec(r.id)[1] === t))}`).join(' || ');
+  const ax = x.filter((r) => /^e27-c-axis/.test(r.id)); const pm = x.filter((r) => /^e27-c-plainmoved/.test(r.id));
+  const e26b = resOr('e26-cone-edges').filter((r) => /^e26-b-r/.test(r.id)); const e23b = resOr('e23-turned-cone').filter((r) => /^e23-b-/.test(r.id));
+  const h = header(['cone-turned-moved-flat']);
+  assert(h.s.wrong.length > 0 && h.s.status === 'wrong', 'cone turned+moved has recorded wrong solids');
+  add('cone turned (any rotate) AND placed off the origin with tall/across below 1 (a flat turned cone moved with at)', status(h, null),
+    h.text + ` MEASURED: E27c (primitives-r4/e27-pin-rules.mjs, ${c.length} cases, cone across 20, turned [20,35,50], centre [0.001,0,0] / [0.5,0,0] / [0,0,3] / [5,-3,2]), by tall/across: ${byT}. The edge is sharp between 0.65 (volume 10% to 20% off, centre of mass 2e-3 to 6e-3 of the diagonal off) and 0.7 (1e-4, tessellation). Even an offset of 0.001 is enough. Earlier cells: E26b (${e26b.length} cases, cone across 2 / 20 / 100, centre near and far): ${okTxt(e26b)}; E23b (${e23b.length}): ${okTxt(e23b)}. Not wrong: the same cones turned at the origin (E23a, E22), unturned and moved (${okTxt(pm)}), and turned about ONE axis only and moved (${okTxt(ax)}); the guard still refuses any non-zero rotate, because only three single-axis turns (x90, z90, y45) were tried and the multi-axis ones ([20,35,50], [180,90,90]) are the wrong ones; it does not claim that a one-axis turn is always right. The mechanism is not known; the volume is wrong by a large factor, not by tessellation, with the bounding box right, so a student would see the right outline and the wrong mass.` + GUARD + CMD('e27-pin-rules') + CMD('e26-cone-edges') + CMD('e23-turned-cone'),
+    'cone(20, 4): a cone that is turned and not at the origin has to be at least as tall as it is across -- a flatter one is built with the wrong volume and position, so make tall 20 or more, or leave it unturned or at the origin.');
+  const e26a = resOr('e26-cone-edges').filter((r) => /^e26-a-r/.test(r.id)); const e23a = resOr('e23-turned-cone').filter((r) => /^e23-a-r.*-(x90|y90|xyz|mix|z90|none)$/.test(r.id));
+  const ts = (rs, t) => okTxt(rs.filter((r) => new RegExp('-t' + t.replace('.', '\\.') + '-').test(r.id) && !/none|z90/.test(r.id)));
+  const h2 = header(['cone-turned-slender']);
+  assert(h2.s.wrong.length > 0, 'cone turned slender has wrong');
+  add('cone turned (not about Z only) with tall/across above 10', status(h2, null),
+    h2.text + ` MEASURED: E26a (${e26a.length} cases, cone across 2 / 20 / 145.9, tall/across 10 .. 17, turned x90 and [20,35,50]) and E23a (tall/across 18, 25, 40): tall/across 10 .. 15 build 2 faces like OCCT; from 16 the turned cone has 3 faces against OCCT's 2 (a seam through the side), volume and bounding box still right (volume 1.8e-4 = tessellation). 16: ${ts(e26a, '16')}; 17: ${ts(e26a, '17')}; 18: ${ts(e23a, '18')}; 25: ${ts(e23a, '25')}; 40: ${ts(e23a, '40')}; the same cones UNTURNED (tall/across 18, 25, 40) have 2 faces. A turn about Z only (z90) keeps 2 faces. Face count is part of the contract, so the status is wrong, not supported-with-a-note.` + GUARD + CMD('e26-cone-edges') + CMD('e23-turned-cone'),
+    'cone(20, 400): too long to be turned -- a turned cone this long is built with a seam through its side, so tall has to be at most 10 times across, or leave the cone unturned.');
+  const fl = x.filter((r) => /^e27-d-/.test(r.id)); const fl0 = resOr('e26-cone-edges').filter((r) => /^e26-a2-/.test(r.id));
+  const h3 = header(['cone-too-flat']);
+  assert(h3.s.wrong.length > 0, 'cone too flat has wrong');
+  const flT = (re) => okTxt([...fl, ...fl0].filter((r) => re.test(r.id)));
+  add('cone flatter than tall/across 0.01 (tall under one hundredth of across)', status(h3, null),
+    h3.text + ` MEASURED: E27d (${fl.length} cases) and E26a2 (${fl0.length}), across 10 / 100 / 400 / 2000, tall/across 0.0002 .. 0.01, plain and turned [20,35,50], at the origin, volume always 5.6e-5 (tessellation) and the bounding box right: tall/across 0.0005 and below: ${flT(/-t0\.0002-|-t0\.0005-/)}; 0.001: ${flT(/-t0\.001-/)} (turned: 4 faces for 2 at every size; plain: 2 faces); 0.002 and above: ${flT(/-t0\.(002|003|004|005|006|01)-/)}. The guard floor 0.01 is 10x the last wrong cell and 5x the first right one. The 0.01 absolute floor on tall (row "size") does not cover this: cone(1000, 0.2) has tall/across 0.0002.` + GUARD + CMD('e27-pin-rules') + CMD('e26-cone-edges') + CMD('e22-turned-small-cone'),
+    'cone(1000, 0.2): too flat for its width -- a cone this flat is built with the wrong number of faces, so tall has to be at least 10, one hundredth of across.');
+}
 {
   const h = header(['cone-second-radius']);
   add('cone frustum / second radius (cone with three arguments)', 'refused', `AS SHIPPED the interpreter refuses cone(10,5,10) with a sentence, but a misleading one ("cone's extras go in a { } object ... You gave it 10." tells the student to wrap the number in { } and no option takes it); the lint sentence is the correct one. ` + keep(19), 'cone() makes a pointed cone from across and tall only -- the third value 10 would be a second radius, and a flat-topped cone is not available.');
@@ -251,6 +299,16 @@ add('param() accepted as a size, a corner and an at coordinate (the DEFAULT valu
   add('sphere, cylinder, cone, ring or rounded box placed far from the origin (offset above 400 x its smallest size)', status(h, null), h.text + ' ' + e20t + ' ' + R3(old(39).evidence.replace(/GUARD RUN:[^]*?Guard:/, 'Guard:')) + GUARD, 'sphere(): the at position 10000 is too far from the origin for a shape whose smallest size is 2 -- its volume and centre would be worked out wrongly, so keep every at coordinate within 800 (400 times that size), or move the shape nearer.');
 }
 {
+  const x = e27().filter((r) => /^e27-e-/.test(r.id)); const e21 = resOr('e21-fuzz-holes').filter((r) => /^e21-sph/.test(r.id)); const e25 = resOr('e25-curved-far-big');
+  const h = header(['too-far-big-curved']);
+  assert(h.s.wrong.length > 0, 'big far curved has wrong');
+  const P = (r) => { const m = /P(\d+)/.exec(r.id); return m ? +m[1] : null; };
+  const e25wrong = e25.filter((r) => r.status === 'built' && !r.good);
+  add('sphere, cylinder, cone, ring or rounded box that is both big and far (largest |at| x largest typed size above 1e8)', status(h, null),
+    h.text + ` MEASURED: E27e (${x.length} spheres, across 2000 .. 40000, P = |at| x across 1e7 .. 4e9): ${okTxt(x)}; the cells that fail are P ${x.filter((r) => !r.good).map(P).join(', ')}; the ones above 1e9 that are right (sphere 2000 and 5000 at 1e9 .. 4e9, 20000 at 4e9) show the failure is erratic above 1e9, which is why the rule sits a decade below the first wrong cell (E25: sphere 1000 at 1e6, P 1e9, centre of mass 1.7e-4 of the diagonal off). E21 spheres (${e21.length}): ${okTxt(e21)}. E25 (${e25.length} cylinder / cone / rounded box / ring / sphere cells with P up to 8e10): ${okTxt(e25)} -- only spheres failed (${e25wrong.map((r) => r.id.replace('e25-', '')).join(', ')}) and the failing ones are far off: volume 33% .. 330% too big, bounding box 8.5% off (a wrong solid by a large factor, not a tessellation difference). The guard applies the same product to every curved shape because E25 sampled the other kinds once per cell; it costs ${'${'}n${'}'} correct inputs recorded in the truth DB.`.replace('${n}', String(refusedBy('too-far-big-curved').filter((e) => e.o === 'good').length)) + ' This is IN ADDITION to the "400 x its smallest size" row above.' + GUARD + CMD('e27-pin-rules') + CMD('e25-curved-far-big') + CMD('e21-fuzz-holes'),
+    'sphere(40000): a shape 40000 across at a position 50000 from the origin is too far out for its size -- its volume and centre would be worked out wrongly, so keep the position times the biggest size at 100000000 or less (at most 2500 here).');
+}
+{
   const h = header(['too-far']);
   add('any shape with a coordinate beyond 1e6', status(h, null), h.text + ' ' + keep(40).replace(/GUARD RUN:[^]*?Without the guard/, 'Without the guard') + GUARD, 'box(): the at position 10000000 is too far from the origin -- the part would be built in the wrong place, so keep every at coordinate within 1000000.');
   const h2 = header(['too-big-curved']);
@@ -258,7 +316,12 @@ add('param() accepted as a size, a corner and an at coordinate (the DEFAULT valu
   const h3 = header(['too-big']);
   add('planar shape with a size above 1e6 (box, prism, wedge)', status(h3, null), h3.text + ' ' + R3(old(42).evidence.replace(/GUARD RUN:[^]*$/, '')) + GUARD, 'box(): width 10000000 is too big -- a part this big is built with the wrong volume and position, so keep it at 1000000 or less.');
   const h4 = header(['too-small-curved', 'too-small']);
-  add('curved or rounded shape below 1 across (0.5 for a ring tube, 0.01 tall), planar shape below 0.001', status(h4, null), h4.text + ' ' + R3(old(43).evidence.replace(/GUARD RUN:[^]*$/, '')) + GUARD, 'sphere(): across 0.5 is too small -- a curved or rounded shape this small is built with the wrong size and shape, so make it at least 1.');
+  (() => {
+    const tiny = DB.filter((e) => { const f = e.r.doc.features.find((x) => !['rotate', 'move'].includes(x.kind)); if (!f || !['box', 'wedge', 'prism'].includes(f.kind) || f.round) return false; const dims = f.kind === 'box' ? f.size : f.kind === 'wedge' ? [f.width, f.depth, f.height] : [2 * f.radius, f.height]; const m = Math.min(...dims); return m >= 0.0009 && m <= 0.0021; });
+    const kern = tiny.filter((e) => e.o === 'kernel'); const exact = tiny.filter((e) => { const f = e.r.doc.features.find((x) => !['rotate', 'move'].includes(x.kind)); const dims = f.kind === 'box' ? f.size : f.kind === 'wedge' ? [f.width, f.depth, f.height] : [2 * f.radius, f.height]; return Math.abs(Math.min(...dims) - 0.001) < 1e-12; });
+    assert(kern.length > 0 && kern.every((e) => G.guardFirst(e.r.doc)), 'tiny planar: every kernel refusal is refused by the guard');
+    add('curved or rounded shape below 1 across (0.5 for a ring tube, 0.01 tall), planar shape below 0.01', status(h4, null), h4.text + ` ROUND 4b, PLANAR FLOOR RAISED FROM 0.001 TO 0.01: of ${tiny.length} recorded planar box / wedge / prism inputs whose smallest size is 0.0009 .. 0.0021, truck refused ${kern.length} in kernel text ("${kernelText(kern[0])}"), ${exact.filter((e) => e.o === 'kernel').length} of the ${exact.length} that are exactly 0.001 (a prism of across 0.001 has sides shorter than that; a wedge of 0.001 has a leg at it), and the others at 0.00114 and 0.002; none above 0.0021. The fuzz seeds 1..3 had 17 such inputs that the guard with the 0.001 floor ACCEPTED, so a student would have read "solid.extrude: invalid input: profile: cannot attach a plane to a wire that is not on one plane". The floor is now a decade above the last refusal. ` + R3(old(43).evidence.replace(/GUARD RUN:[^]*$/, '')) + GUARD, 'sphere(): across 0.5 is too small -- a curved or rounded shape this small is built with the wrong size and shape, so make it at least 1.');
+  })();
   const h5 = header(['cyl-too-slender', 'cone-too-slender']);
   add('cylinder taller than 30 times its across, cone taller than 40 times its across', status(h5, null), h5.text + ' ' + R3(old(44).evidence.replace(/GUARD RUN:[^]*?Guard:/, 'Guard:')) + GUARD, 'cylinder(2, 100): too long for its width -- a slender cylinder is measured wrongly, so tall has to be at most 30 times across.');
 }
@@ -282,7 +345,7 @@ add('param() accepted as a size, a corner and an at coordinate (the DEFAULT valu
   const cylCha = t(['e15-cyl-leftover', 'e15b-cyl-leftover-big', 'e14-corner-floor', 'e14b-cyl-corner-bigR'], (r) => r.kind === 'cylinder' && r.doc.features[0].roundStyle === 'chamfer');
   const ringT = t(['e19-ring-boundary'], () => true);
   const stat = (a) => (a.length ? `n ${a.length}, median ${sec(med(a.map((r) => r.ms)))}, max ${sec(Math.max(...a.map((r) => r.ms)))}, machine load ${Math.min(...a.map((r) => r.load)).toFixed(0)}-${Math.max(...a.map((r) => r.load)).toFixed(0)} on 24 cores` : 'n/a');
-  const fz = [1, 2, 3].map((s) => A.res('fuzz-seed' + s)).filter(Boolean).flat();
+  const fz = [1, 2, 3, 4, 5].map((s) => A.res('fuzz-seed' + s)).filter(Boolean).flat();
   const fzCurved = fz.filter((r) => r.status === 'built' && r.truck?.curved && r.ms !== undefined);
   const worst = [...fzCurved].sort((a, b) => b.ms - a.ms)[0];
   const br = A.res('browser-bench');
@@ -317,11 +380,11 @@ add('repeated, mirrored and booleaned primitives (repeat, mirror, join, cut, kee
   const badSent = DB.filter((e) => e.g && G.sentenceProblems(e.g.sentence).length);
   assert(badSent.length === 0, 'sentence lint: ' + badSent.map((e) => e.r.id));
   const fzTxt = [];
-  for (const seed of [1, 2, 3]) {
+  for (const seed of [1, 2, 3, 4, 5]) {
     const f = A.res('fuzz-seed' + seed); if (!f) { fzTxt.push(`seed ${seed}: not run`); continue; }
     const es = f.map((r) => ({ r, o: outcome(r), g: r.doc ? G.guardFirst(r.doc) : null }));
     const acc = es.filter((e) => !e.g); const accWrong = acc.filter((e) => e.o === 'wrong' || e.o === 'unverified'); const wrongAll = es.filter((e) => e.o === 'wrong' || e.o === 'unverified');
-    const tag = seed === 1 ? 'DEVELOPMENT sample (the guard constants were fitted while looking at it)' : 'HELD-OUT sample (generated AFTER the guard constants were frozen, run once)';
+    const tag = seed === 1 ? 'DEVELOPMENT sample (the first round 4 constants were fitted while looking at it)' : seed <= 3 ? 'held out from the FIRST round 4 constants, but its holes (cones turned and moved, huge far spheres, wide rounded discs) were then fixed with E22..E27, so for the FINAL guard it is a development sample too' : 'HELD-OUT sample for the FINAL guard (generated and run after the E27 constants were frozen, run once, nothing in the guard changed afterwards)';
     fzTxt.push(`seed ${seed} [${tag}]: ${es.length} inputs that the ROUND 3 guard accepted (frozen pool filter, so nothing is hidden by the new rules); the round 4 guard accepts ${acc.length} and refuses ${es.length - acc.length}; among ALL ${es.length}, truck built ${wrongAll.length} WRONG solids; accepted AND wrong = ${accWrong.length}${accWrong.length ? ' (' + accWrong.slice(0, 6).map((e) => e.r.id + ': ' + why(e)).join('; ') + ')' : ''}; accepted and correct ${acc.filter((e) => e.o === 'good').length}; accepted but the kernel refused ${acc.filter((e) => e.o === 'kernel').length}`);
   }
   add('pre-flight envelope (every limit in one place), its sample-based regression proof, and its limits as a proof', 'unsupported',

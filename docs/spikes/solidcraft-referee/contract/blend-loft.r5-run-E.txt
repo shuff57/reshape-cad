@@ -1,0 +1,17 @@
+Running as unit: run-p3392932-i3394010.scope; invocation ID: 5dbbbfedbd5642c093dc9eae6e3ea1f3
+E row2/28: top vs side planes                        OCCT 3000.000 truck 1209.635 dVol 5.97e-1 guard-if-wired planes
+E row28: top vs front planes                         OCCT 3000.000 truck 3488.281 dVol 1.63e-1 guard-if-wired planes
+E row22/23: 5-corner square -> 4-corner rect         OCCT 28000.000 truck 24093.750 dVol 1.40e-1 guard-if-wired count
+E row22: triangle -> square                          OCCT 6414.177 truck 5860.677 dVol 8.63e-2 guard-if-wired count
+E row20: square 40 -> square 20 twisted 20 deg       OCCT 27517.541 truck 27581.669 dVol 2.33e-3 guard-if-wired sides
+E row20: square 40 -> square 40 twisted 2 deg        OCCT 47990.253 truck 48003.341 dVol 2.73e-4 guard-if-wired sides
+E row11: regular triangle r20 -> circle(40)          OCCT 21964.075 truck 21963.074 dVol 4.56e-5 guard-if-wired circle-poly
+E row24: hexagon turned 0.3 rad -> circle(40)        OCCT 28680.465 truck 28680.230 dVol 8.20e-6 guard-if-wired circle-poly
+E row8: tiny circles r0.05 gap 300                   OCCT 2.356 truck 1.001 dVol 5.75e-1 guard-if-wired coarse
+E row8: circles r0.5 gap 100                         OCCT 78.540 truck 78.508 dVol 4.02e-4 guard-if-wired coarse
+E row26: gap 0                                       OCCT 0.000 truck 0.000 dVol 0.00e+0 guard-if-wired gap0
+E row27: loft(a, a, 30)                              OCCT 0.000 truck -0.000 dVol 2.23e-10 guard-if-wired same
+E row29: frame-placed sketches, gap ignored          OCCT 3500.000 truck 3500.000 dVol 5.46e-15 guard-if-wired frame
+E row30: datum height contradicts the gap            OCCT 9333.333 truck 9333.333 dVol 1.95e-16 guard-if-wired datum
+E row35: undrawn second sketch                       OCCT 39000.000 truck 39000.000 dVol 3.92e-15 guard-if-wired undrawn
+E row19: parallel-sided pair, kernel re-pairs corners OCCT 14000.000 truck 14000.000 dVol 3.90e-16 guard-if-wired PASS

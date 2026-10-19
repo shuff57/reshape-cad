@@ -300,9 +300,19 @@ export function planFeature(f, st, ctx) {
       if (all.some((b) => !b || b.length !== 1)) return refuse(`${f.id} (combine): every target must be a single body`);
       const op = f.op === 'union' ? 'join' : f.op === 'subtract' ? 'cut' : 'intersect';
       const names = all.map((b) => b[0]);
+      // (round 5) keep() of parts that do not overlap: the engine returns no body at all. When the two measured bounding boxes are apart or only touch (an independent
+      // computation, not the engine's word), say so; otherwise the generic sentence stays.
+      let plain;
+      if (op === 'intersect') {
+        const ms = f.targets.map((t) => st.measure[t]);
+        if (ms.every(Boolean) && ms.length === 2) {
+          const gap = [0, 1, 2].map((i) => Math.max(ms[0].bbox[i] - ms[1].bbox[i + 3], ms[1].bbox[i] - ms[0].bbox[i + 3]));
+          if (Math.max(...gap) >= -1e-9) plain = `${st.names[f.id] ?? f.id} is not built: the two parts do not overlap (they are apart, or only touch), so there is nothing left to keep -- move one of them so they share some space.`;
+        }
+      }
       return {
         variants: [[{ command: 'solid.combine', params: { target: names[0], tools: names.slice(1), operation: op } }]],
-        produces: [names[0]], consumes: f.targets, removes: names.slice(1),
+        produces: [names[0]], consumes: f.targets, removes: names.slice(1), ...(plain ? { plain } : {}),
       };
     }
     case 'move': {

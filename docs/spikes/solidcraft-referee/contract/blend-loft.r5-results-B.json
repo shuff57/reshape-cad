@@ -1,0 +1,395 @@
+{
+ "B": [
+  {
+   "r1": 20,
+   "r2": 10,
+   "h": 30,
+   "lateral": 0,
+   "ratio": 0.5,
+   "occtVol": 21991.14857512855,
+   "truckVol": 21990.05727759271,
+   "closedForm": 21991.148575128555,
+   "dTruckOcct": 0.00004962439920372318,
+   "dTruckClosed": 0.000049624399203888606,
+   "occtFaces": 3,
+   "truckFacesMerged": 3,
+   "truckKernelFaces": 4,
+   "truckFaceTypes": {
+    "cone": 1,
+    "plane": 2
+   },
+   "occtFaceTypes": {
+    "?": 3
+   },
+   "guard": "PASS"
+  },
+  {
+   "r1": 20,
+   "r2": 5,
+   "h": 30,
+   "lateral": 0,
+   "ratio": 0.25,
+   "occtVol": 16493.361431346413,
+   "truckVol": 16492.583908068395,
+   "closedForm": 16493.361431346417,
+   "dTruckOcct": 0.00004714158973930654,
+   "dTruckClosed": 0.000047141589739527105,
+   "occtFaces": 3,
+   "truckFacesMerged": 4,
+   "truckKernelFaces": 4,
+   "truckFaceTypes": {
+    "cone": 2,
+    "plane": 2
+   },
+   "occtFaceTypes": {
+    "?": 3
+   },
+   "guard": "PASS"
+  },
+  {
+   "r1": 20,
+   "r2": 3,
+   "h": 30,
+   "lateral": 0,
+   "ratio": 0.15,
+   "occtVol": 14734.06954533613,
+   "truckVol": 14733.874607387099,
+   "closedForm": 14734.069545336131,
+   "dTruckOcct": 0.000013230421400606903,
+   "dTruckClosed": 0.000013230421400730356,
+   "occtFaces": 3,
+   "truckFacesMerged": 4,
+   "truckKernelFaces": 4,
+   "truckFaceTypes": {
+    "cone": 2,
+    "plane": 2
+   },
+   "occtFaceTypes": {
+    "?": 3
+   },
+   "guard": "PASS"
+  },
+  {
+   "r1": 20,
+   "r2": 2.2,
+   "h": 30,
+   "lateral": 0,
+   "ratio": 0.11000000000000001,
+   "occtVol": 14100.724466372425,
+   "truckVol": 14100.547536953985,
+   "closedForm": 14100.724466372429,
+   "dTruckOcct": 0.000012547541004829677,
+   "dTruckClosed": 0.000012547541005087673,
+   "occtFaces": 3,
+   "truckFacesMerged": 3,
+   "truckKernelFaces": 4,
+   "truckFaceTypes": {
+    "cone": 1,
+    "plane": 2
+   },
+   "occtFaceTypes": {
+    "?": 3
+   },
+   "guard": "PASS"
+  },
+  {
+   "r1": 20,
+   "r2": 2,
+   "h": 30,
+   "lateral": 0,
+   "ratio": 0.1,
+   "occtVol": 13948.671381938677,
+   "truckVol": 13948.496379302176,
+   "closedForm": 13948.671381938682,
+   "dTruckOcct": 0.000012546186780722521,
+   "dTruckClosed": 0.000012546186781113733,
+   "occtFaces": 3,
+   "truckFacesMerged": 3,
+   "truckKernelFaces": 4,
+   "truckFaceTypes": {
+    "cone": 1,
+    "plane": 2
+   },
+   "occtFaceTypes": {
+    "?": 3
+   },
+   "guard": "PASS"
+  },
+  {
+   "r1": 20,
+   "r2": 1.9,
+   "h": 30,
+   "lateral": 0,
+   "ratio": 0.095,
+   "occtVol": 13873.587317517886,
+   "truckVol": 13873.477860008432,
+   "closedForm": 13873.587317517886,
+   "dTruckOcct": 0.000007889632792790557,
+   "dTruckClosed": 0.000007889632792790557,
+   "occtFaces": 3,
+   "truckFacesMerged": 3,
+   "truckKernelFaces": 4,
+   "truckFaceTypes": {
+    "cone": 1,
+    "plane": 2
+   },
+   "occtFaceTypes": {
+    "?": 3
+   },
+   "guard": "PASS"
+  },
+  {
+   "r1": 20,
+   "r2": 1,
+   "h": 30,
+   "lateral": 0,
+   "ratio": 0.05,
+   "occtVol": 13226.105071613027,
+   "truckVol": 13226.03794541134,
+   "closedForm": 13226.10507161303,
+   "dTruckOcct": 0.000005075281144552185,
+   "dTruckClosed": 0.0000050752811448272434,
+   "occtFaces": 3,
+   "truckFacesMerged": 4,
+   "truckKernelFaces": 4,
+   "truckFaceTypes": {
+    "cone": 2,
+    "plane": 2
+   },
+   "occtFaceTypes": {
+    "?": 3
+   },
+   "guard": "PASS"
+  },
+  {
+   "r1": 20,
+   "r2": 0.5,
+   "h": 30,
+   "lateral": 0,
+   "ratio": 0.025,
+   "occtVol": 12888.383861352126,
+   "truckVol": 12888.332293187077,
+   "closedForm": 12888.383861352126,
+   "dTruckOcct": 0.000004001135099896306,
+   "dTruckClosed": 0.000004001135099896306,
+   "occtFaces": 3,
+   "truckFacesMerged": 4,
+   "truckKernelFaces": 4,
+   "truckFaceTypes": {
+    "cone": 2,
+    "plane": 2
+   },
+   "occtFaceTypes": {
+    "?": 3
+   },
+   "guard": "PASS"
+  },
+  {
+   "r1": 20,
+   "r2": 0.2,
+   "h": 30,
+   "lateral": 0,
+   "ratio": 0.01,
+   "occtVol": 12693.290957564199,
+   "truckVol": 12693.240595710033,
+   "closedForm": 12693.2909575642,
+   "dTruckOcct": 0.000003967596294332237,
+   "dTruckClosed": 0.00000396759629447554,
+   "occtFaces": 3,
+   "truckFacesMerged": 4,
+   "truckKernelFaces": 4,
+   "truckFaceTypes": {
+    "cone": 2,
+    "plane": 2
+   },
+   "occtFaceTypes": {
+    "?": 3
+   },
+   "guard": "PASS"
+  },
+  {
+   "r1": 20,
+   "r2": 0.05,
+   "h": 30,
+   "lateral": 0,
+   "ratio": 0.0025,
+   "occtVol": 12597.86508071141,
+   "truckVol": 12597.239648379786,
+   "closedForm": 12597.865080711414,
+   "dTruckOcct": 0.000049645898540533174,
+   "dTruckClosed": 0.00004964589854082194,
+   "occtFaces": 3,
+   "truckFacesMerged": 4,
+   "truckKernelFaces": 4,
+   "truckFaceTypes": {
+    "cone": 2,
+    "plane": 2
+   },
+   "occtFaceTypes": {
+    "?": 3
+   },
+   "guard": "PASS"
+  },
+  {
+   "r1": 20,
+   "r2": 0.01,
+   "h": 30,
+   "lateral": 0,
+   "ratio": 0.0005,
+   "occtVol": 12572.656941259002,
+   "truckVol": 12572.033829369764,
+   "closedForm": 12572.656941259007,
+   "dTruckOcct": 0.000049560875807608714,
+   "dTruckClosed": 0.000049560875808042726,
+   "occtFaces": 3,
+   "truckFacesMerged": 4,
+   "truckKernelFaces": 4,
+   "truckFaceTypes": {
+    "cone": 2,
+    "plane": 2
+   },
+   "occtFaceTypes": {
+    "?": 3
+   },
+   "guard": "PASS"
+  },
+  {
+   "r1": 2,
+   "r2": 20,
+   "h": 30,
+   "lateral": 0,
+   "ratio": 10,
+   "occtVol": 13948.67138193868,
+   "truckVol": 13948.496374685186,
+   "closedForm": 13948.671381938682,
+   "dTruckOcct": 0.000012546517779520787,
+   "dTruckClosed": 0.00001254651777965119,
+   "occtFaces": 3,
+   "truckFacesMerged": 3,
+   "truckKernelFaces": 4,
+   "truckFaceTypes": {
+    "cone": 1,
+    "plane": 2
+   },
+   "occtFaceTypes": {
+    "?": 3
+   },
+   "guard": "PASS"
+  },
+  {
+   "r1": 0.5,
+   "r2": 5,
+   "h": 10,
+   "lateral": 0,
+   "ratio": 10,
+   "occtVol": 290.59732045705584,
+   "truckVol": 290.5936744771921,
+   "closedForm": 290.5973204570559,
+   "dTruckOcct": 0.000012546502004902784,
+   "dTruckClosed": 0.000012546502005098391,
+   "occtFaces": 3,
+   "truckFacesMerged": 3,
+   "truckKernelFaces": 4,
+   "truckFaceTypes": {
+    "cone": 1,
+    "plane": 2
+   },
+   "occtFaceTypes": {
+    "?": 3
+   },
+   "guard": "PASS"
+  },
+  {
+   "r1": 20,
+   "r2": 1,
+   "h": 30,
+   "lateral": 3,
+   "ratio": 0.05,
+   "occtVol": 13226.105071066402,
+   "truckVol": 13226.03794540966,
+   "closedForm": 13226.10507161303,
+   "dTruckOcct": 0.0000050752399426274875,
+   "dTruckClosed": 0.000005075281271905186,
+   "occtFaces": 3,
+   "truckFacesMerged": 3,
+   "truckKernelFaces": 4,
+   "truckFaceTypes": {
+    "cone": 1,
+    "plane": 2
+   },
+   "occtFaceTypes": {
+    "?": 3
+   },
+   "guard": "PASS"
+  },
+  {
+   "r1": 10,
+   "r2": 1,
+   "h": 20,
+   "lateral": 0,
+   "ratio": 0.1,
+   "occtVol": 2324.7785636564467,
+   "truckVol": 2324.7493965451963,
+   "closedForm": 2324.778563656447,
+   "dTruckOcct": 0.000012546189003295912,
+   "dTruckClosed": 0.000012546189003491519,
+   "occtFaces": 3,
+   "truckFacesMerged": 4,
+   "truckKernelFaces": 4,
+   "truckFaceTypes": {
+    "cone": 2,
+    "plane": 2
+   },
+   "occtFaceTypes": {
+    "?": 3
+   },
+   "guard": "PASS"
+  },
+  {
+   "r1": 10,
+   "r2": 1.1,
+   "h": 20,
+   "lateral": 0,
+   "ratio": 0.11000000000000001,
+   "occtVol": 2350.120744395404,
+   "truckVol": 2350.0912561534806,
+   "closedForm": 2350.120744395405,
+   "dTruckOcct": 0.000012547543352301949,
+   "dTruckClosed": 0.000012547543352688943,
+   "occtFaces": 3,
+   "truckFacesMerged": 4,
+   "truckKernelFaces": 4,
+   "truckFaceTypes": {
+    "cone": 2,
+    "plane": 2
+   },
+   "occtFaceTypes": {
+    "?": 3
+   },
+   "guard": "PASS"
+  },
+  {
+   "r1": 10,
+   "r2": 0.9,
+   "h": 20,
+   "lateral": 0,
+   "ratio": 0.09,
+   "occtVol": 2299.8552619379675,
+   "truckVol": 2299.837120581637,
+   "closedForm": 2299.8552619379684,
+   "dTruckOcct": 0.000007888042621952593,
+   "dTruckClosed": 0.000007888042622348047,
+   "occtFaces": 3,
+   "truckFacesMerged": 4,
+   "truckKernelFaces": 4,
+   "truckFaceTypes": {
+    "cone": 2,
+    "plane": 2
+   },
+   "occtFaceTypes": {
+    "?": 3
+   },
+   "guard": "PASS"
+  }
+ ]
+}

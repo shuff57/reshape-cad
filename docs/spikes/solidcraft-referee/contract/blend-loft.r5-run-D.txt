@@ -1,0 +1,15 @@
+Running as unit: run-p3391445-i3405315.scope; invocation ID: 8c9cfbda086c466db9a21bc8bd96bc98
+D frustum + join cuboid on top                   guard PASS OCCT 29000.0000 truck 29000.0000 dVol 4.01e-15 bar 1e-9 faces 12/12
+D frustum - cut cuboid through (10x10x60)        guard PASS OCCT 25000.0000 truck 25000.0000 dVol 7.28e-16 bar 1e-9 faces 10/10
+D frustum moved [5,6,7]                          guard PASS OCCT 28000.0000 truck 28000.0000 dVol 3.64e-15 bar 1e-9 faces 6/6
+D frustum mirrored left-right                    guard PASS OCCT 56000.0000 truck 56000.0000 dVol 2.99e-15 bar 1e-9 faces 12/11
+D frustum turned [10,20,30]                      guard PASS OCCT 28000.0000 truck 28000.0000 dVol 5.33e-15 bar 1e-9 faces 6/6
+D frustum round top-left edge r1                 guard PASS OCCT 27998.0659 truck 27998.0627 dVol 1.15e-7 bar 0.0003 faces 7/7
+D frustum bevel top-right edge 1                 guard PASS OCCT 27990.4132 truck 27995.0342 dVol 1.65e-4 bar 0.0003 faces 7/7
+D frustum hollow (shell wall 2)                  guard PASS OCCT 10064.3523 truck REF[shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`] dVol undefined bar 0.0003 faces 12/undefined
+D cone frustum (circle d40->d20) moved           guard PASS OCCT 21991.1486 truck 21990.0573 dVol 4.96e-5 bar 0.0003 faces 3/3
+D cone frustum mirrored                          guard PASS OCCT 43982.2972 truck REF[mir1 (mirror): solidcraft refused it -- solid.mirror: lumps: shell boundaries intersect or] dVol undefined bar 0.0003 faces 6/undefined
+D cone frustum + join cuboid on top              guard PASS OCCT 22991.1486 truck 22988.9691 dVol 9.48e-5 bar 0.0003 faces 9/9
+D cone frustum - cut cuboid (10x10x60)           guard PASS OCCT 18991.1486 truck 18990.0573 dVol 5.75e-5 bar 0.0003 faces 7/7
+D cone frustum rim round (script edge name)      SCRIPT ERROR: .edge(): "side" is the curved wall of a cylinder, not a flat face here.
+D cone frustum hollow (shell wall 2)             guard PASS OCCT 7904.5238 truck REF[shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`] dVol undefined bar 0.0003 faces 6/undefined

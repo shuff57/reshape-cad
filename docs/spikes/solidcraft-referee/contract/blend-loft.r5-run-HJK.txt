@@ -1,0 +1,30 @@
+Running as unit: run-p3370613-i3396571.scope; invocation ID: f0c9ff9cd4b64a71becd9fd891b1e381
+H scripts [[],"pull1",[],"bl1"]
+H plain pull of rect 40x30, height 10 (no blend): OCCT bbox [-20,-15,0,20,15,10] (max off exact 0.00e+0) truck [-20,-15,0,20,15,10] (0.00e+0)
+H blend rect 40x30 -> rect 20x15 gap 10: OCCT bbox [-20.0000001,-15.0000001,-1e-7,20.0000001,15.0000001,10.0000001] (max off exact 1.00e-7) truck [-20.000000000000064,-15.000000000000082,-6.217248937900877e-14,20.000000000000064,15.000000000000082,10.000000000000028] (8.17e-14)
+J chained lofts loft(a,b,30); loft(b,c,30): errors [] doc sk1:sketch@0,sk2:sketch@30,sk3:sketch@60,bl1:blend,bl2:blend guard-if-wired shared,shared
+    bl1 OCCT 28000.000 truck 28000.000 dVol 4.03e-15
+    bl2 OCCT 7000.000 truck 7000.000 dVol 6.89e-15
+J shared sketch: pull(b,10) before loft(a,b,30): errors [] doc sk1:sketch@0,sk2:sketch@30,pull1:extrude,bl1:blend guard-if-wired shared
+    bl1 OCCT 28000.000 truck 28000.000 dVol 4.03e-15
+    ex1 absent
+J no area: b.polygon three collinear points: errors [] doc sk1:sketch@0,sk2:sketch@20,bl1:blend guard-if-wired flat
+    bl1 OCCT REF[OCCT threw: [object WebAssembly.Exception]] truck REF[bl1 (blend): solidcraft refused it -- solid.loft: sk_sk2_1 has no closed profiles] dVol null
+J bowtie second section: errors [] doc sk1:sketch@0,sk2:sketch@20,bl1:blend guard-if-wired crossing
+    bl1 OCCT 3333.333 truck REF[bl1 (blend): solidcraft refused it -- solid.loft: each loft section must be one profile] dVol null
+J slot second section: errors [] doc sk1:sketch@0,sk2:sketch@20,bl1:blend guard-if-wired soup
+    bl1 OCCT REF[Blend 1: Sketch 2 is drawn as rows and rules, and ] truck REF[bl1 (blend): sketch sk2 is drawn as rows and rules (a soup), which this translator does not map yet] dVol null
+J undrawn second sketch: errors [] doc sk1:sketch@0,sk2:sketch@30,bl1:blend guard-if-wired undrawn
+    bl1 OCCT 39000.000 truck 39000.000 dVol 3.92e-15
+J ModelDoc blend with 3 targets: OCCT 18666.667 truck 21867.744 guard-if-wired targets
+J ModelDoc blend with 1 target: OCCT REF[OCCT built nothing] truck REF[bl1 (blend): needs two or more sketches] guard-if-wired targets
+J ModelDoc blend with 0 targets: OCCT REF[OCCT built nothing] truck REF[bl1 (blend): needs two or more sketches] guard-if-wired targets
+K frustum round top-left (control): doc sk1:sketch,sk2:sketch,bl1:blend,round1:fillet OCCT 27998.0659 truck 27998.0627 dVol 1.15e-7
+K cone: round(f.edge(top,bottom),1): doc sk1:sketch,sk2:sketch,bl1:blend,round1:fillet OCCT 21991.1486 truck REF[round1 (fillet): the edge could not be resolved to a point (brep-rs resolve gave nothing)] dVol null
+K cone: round(f.edge(top,left),1): doc sk1:sketch,sk2:sketch,bl1:blend,round1:fillet OCCT 21985.1657 truck REF[round1 (fillet): the edge could not be resolved to a point (brep-rs resolve gave nothing)] dVol null
+K cone: round(f.edge(top,side),1): SCRIPT ERROR [".edge(): \"side\" is the curved wall of a cylinder, not a flat face here."]
+K cone: round(f.edge(bottom,side),1): SCRIPT ERROR [".edge(): \"side\" is the curved wall of a cylinder, not a flat face here."]
+K cone: bevel(f.edge(top,left),1): doc sk1:sketch,sk2:sketch,bl1:blend,bevel1:fillet OCCT 21962.0241 truck REF[bevel1 (fillet): the edge could not be resolved to a point (brep-rs resolve gave nothing)] dVol null
+K cone: round(f, 1) whole shape: SCRIPT ERROR ["Rounding does not work on this shape."]
+K cone: shell(f, {wall:2}): doc sk1:sketch,sk2:sketch,bl1:blend,shell1:shell OCCT 7904.5238 truck REF[shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points] dVol null
+K frustum: shell(f, {wall:2}): doc sk1:sketch,sk2:sketch,bl1:blend,shell1:shell OCCT 10064.3523 truck REF[shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points] dVol null

@@ -11,7 +11,7 @@ import path from 'node:path';
 import { sk, circ, bl, rectPts, regPts, roundedRectDoc, full, occtMeasure, brepMeasure, truckMeasure, rel, G, GR, arc, mt, solveDoc, runScript, toScript, runSC, translateDoc, buildDoc, oc, brep, lcg, frustumVolume, REPO, CONTRACT } from './blend-loft.live-lib.mjs';
 const G4 = await import(pathToFileURL(path.join(CONTRACT, 'blend-loft.guard-r4.mjs')).href);
 const arg = (k, d = '') => { const a = process.argv.find((x) => x.startsWith(`--${k}=`)); return a ? a.slice(k.length + 3) : d; };
-const ONLY = arg('only', 'A,B,C,D,E,F,G,H,I').split(',');
+const ONLY = arg('only', 'A,B,C,D,E,F,G,H,I,J,K').split(',');
 const OUT = {}; const log = (s) => console.log(s);
 const E = (x) => (typeof x === 'number' ? x.toExponential(2) : String(x));
 const guardWith = (GM, doc) => { try { const m = GM.guardDoc(solveDoc(doc), { outlineOf: arc.outlineOf }); return [...m.values()][0] ?? null; } catch (e) { return { code: 'THREW', sentence: e.message }; } };
@@ -202,7 +202,11 @@ if (ONLY.includes('G')) {
 // ---------------------------------------------------------------- H: OCCT bbox padding is not blend-specific
 if (ONLY.includes('H')) {
   OUT.H = [];
-  const docs = [['plain pull of rect 40x30, height 10 (no blend)', { version: 1, features: [sk('a', 'xy', 0, rectPts(20, 15, 40, 30)), { id: 'p1', kind: 'extrude', target: 'a', distance: 10 }] }, 'p1', [0, 0, 0, 40, 30, 10]], ['blend rect 40x30 -> rect 20x15 gap 10', D([sk('a', 'xy', 0, rectPts(20, 15, 40, 30)), sk('b', 'xy', 10, rectPts(20, 15, 20, 15)), bl('a', 'b')]), 'bl1', [0, 0, 0, 40, 30, 10]]];
+  const viaScript = (src) => { const r = runScript(src); return { doc: solveDoc({ version: 1, features: r.doc.features }), last: r.doc.features[r.doc.features.length - 1].id, errors: r.errors.map((e) => e.message) }; };
+  const pl = viaScript("const a = sketch('top'); a.rect(40, 30); pull(a, 10);");
+  const bf = viaScript("const a = sketch('top'); a.rect(40, 30); const b = sketch('top'); b.rect(20, 15); loft(a, b, 10);");
+  console.log('H scripts', JSON.stringify([pl.errors, pl.last, bf.errors, bf.last]));
+  const docs = [['plain pull of rect 40x30, height 10 (no blend)', pl.doc, pl.last, [-20, -15, 0, 20, 15, 10]], ['blend rect 40x30 -> rect 20x15 gap 10', bf.doc, bf.last, [-20, -15, 0, 20, 15, 10]]];
   for (const [label, doc, id, exact] of docs) {
     const o = occtMeasure(doc, id); let t = null; try { t = truckMeasure(doc, id); } catch { /* */ }
     const row = { label, exactExtent: exact, occtBbox: o.bbox ?? null, occtRefused: o.refused ?? null, truckBbox: t?.bbox ?? null, occtPad: o.bbox ? Math.max(...o.bbox.map((v, i) => Math.abs(v - exact[i]))) : null, truckPad: t?.bbox ? Math.max(...t.bbox.map((v, i) => Math.abs(v - exact[i]))) : null };
@@ -218,6 +222,49 @@ if (ONLY.includes('I')) {
     const r = full(doc); const exact = (sc * sc + (sc / 4) * (sc / 4) + sc * sc / 4) / 3 * g;
     const row = { size: sc, relGap, gap: g, exact, truck: r.truck.volume, dExact: rel(r.truck.volume, exact), occtFaces: r.occt.faces, truckFacesMerged: r.truck.faces, truckKernelFaces: r.truck.kernelFaces, guard: r.guard?.code ?? 'PASS' };
     OUT.I.push(row); log(`I size ${sc} gap/size ${relGap}: dExact ${E(row.dExact)} faces OCCT ${r.occt.faces} truck merged ${r.truck.faces} kernel ${r.truck.kernelFaces} guard ${row.guard}`);
+  }
+}
+
+
+// ---------------------------------------------------------------- J: RAW (as shipped) behaviour of the script-level and ModelDoc-level refusal classes
+if (ONLY.includes('J')) {
+  OUT.J = [];
+  const pre = (a, b, c = '') => `const a = sketch('top'); ${a} const b = sketch('top'); ${b} ${c}`;
+  const cases = [
+    ['chained lofts loft(a,b,30); loft(b,c,30)', pre('a.rect(40, 40);', 'b.rect(20, 20);', "const c = sketch('top'); c.rect(10, 10);") + 'loft(a, b, 30); loft(b, c, 30);', ['bl1', 'bl2']],
+    ['shared sketch: pull(b,10) before loft(a,b,30)', pre('a.rect(40, 40);', 'b.rect(20, 20);') + 'const p = pull(b, 10); loft(a, b, 30);', ['bl1', 'ex1']],
+    ['no area: b.polygon three collinear points', pre('a.rect(20, 20);', 'b.polygon([[0,0],[10,0],[20,0]]);') + 'loft(a, b, 20);', ['bl1']],
+    ['bowtie second section', pre('a.rect(20, 20);', 'b.polygon([[-5,-5],[5,5],[5,-5],[-5,5]]);') + 'loft(a, b, 20);', ['bl1']],
+    ['slot second section', pre('a.rect(40, 40);', 'b.slot([0,0],[20,0],5);') + 'loft(a, b, 20);', ['bl1']],
+    ['undrawn second sketch', "const a = sketch('top'); a.rect(40, 40); const b = sketch('top'); loft(a, b, 30);", ['bl1']],
+  ];
+  for (const [label, src, ids] of cases) {
+    const run = runScript(src); const doc = solveDoc({ version: 1, features: run.doc.features }); const kinds = doc.features.map((f) => `${f.id}:${f.kind}${f.offset !== undefined ? '@' + f.offset : ''}`).join(',');
+    const per = ids.map((id) => { if (!doc.features.some((f) => f.id === id)) return { id, absent: true }; const o = occtMeasure(doc, id); let t; try { t = truckMeasure(doc, id); } catch (e) { t = { refused: 'harness threw ' + e.message }; } return { id, occt: o.volume, occtFaces: o.faces, occtRefused: o.refused, truck: t.volume, truckFaces: t.faces, truckRefused: t.refused, dVol: o.volume !== undefined && t.volume !== undefined ? rel(t.volume, o.volume) : null }; });
+    const g = GR.guardedRun(src, { runScript, solveDoc, arc }); const verdict = [...g.verdicts.values()].map((v) => v?.code ?? 'PASS').join(',');
+    const row = { label, src, scriptErrors: run.errors.map((e) => e.message), kinds, per, guardWired: verdict };
+    OUT.J.push(row); log(`J ${label}: errors ${JSON.stringify(row.scriptErrors)} doc ${kinds} guard-if-wired ${verdict}\n    ` + per.map((x) => (x.absent ? `${x.id} absent` : `${x.id} OCCT ${x.occt?.toFixed?.(3) ?? 'REF[' + (x.occtRefused ?? '').slice(0, 50) + ']'} truck ${x.truck?.toFixed?.(3) ?? 'REF[' + (x.truckRefused ?? '').slice(0, 120) + ']'} dVol ${E(x.dVol)}`)).join('\n    '));
+  }
+  for (const [label, targets] of [['ModelDoc blend with 3 targets', ['a', 'b', 'c']], ['ModelDoc blend with 1 target', ['a']], ['ModelDoc blend with 0 targets', []]]) {
+    const doc = D([sk('a', 'xy', 0, rectPts(0, 0, 40, 40)), sk('b', 'xy', 20, rectPts(0, 0, 20, 20)), sk('c', 'xy', 40, rectPts(0, 0, 10, 10)), bl(...targets)]);
+    const o = occtMeasure(doc); let t; try { t = truckMeasure(doc); } catch (e) { t = { refused: 'harness threw ' + e.message }; }
+    const g = guardWith(G, doc);
+    const row = { label, occt: o.volume, occtRefused: o.refused, truck: t.volume, truckRefused: t.refused, guardWired: g?.code ?? 'PASS' };
+    OUT.J.push(row); log(`J ${label}: OCCT ${o.volume?.toFixed?.(3) ?? 'REF[' + (o.refused ?? '').slice(0, 60) + ']'} truck ${t.volume?.toFixed?.(3) ?? 'REF[' + (t.refused ?? '').slice(0, 120) + ']'} guard-if-wired ${row.guardWired}`);
+  }
+}
+
+// ---------------------------------------------------------------- K: rim round / edge picks on a circle<->circle loft (cone frustum), what a student actually types
+if (ONLY.includes('K')) {
+  OUT.K = [];
+  const CC = "const a = sketch('top'); a.circle(40); const b = sketch('top'); b.circle(20); const f = loft(a, b, 30);\n";
+  const FR = "const a = sketch('top'); a.rect(40, 40); const b = sketch('top'); b.rect(20, 20); const f = loft(a, b, 30);\n";
+  const tries = [['frustum round top-left (control)', FR + "round(f.edge('top', 'left'), 1);"], ['cone: round(f.edge(top,bottom),1)', CC + "round(f.edge('top', 'bottom'), 1);"], ['cone: round(f.edge(top,left),1)', CC + "round(f.edge('top', 'left'), 1);"], ['cone: round(f.edge(top,side),1)', CC + "round(f.edge('top', 'side'), 1);"], ['cone: round(f.edge(bottom,side),1)', CC + "round(f.edge('bottom', 'side'), 1);"], ['cone: bevel(f.edge(top,left),1)', CC + "bevel(f.edge('top', 'left'), 1);"], ['cone: round(f, 1) whole shape', CC + 'round(f, 1);'], ['cone: shell(f, {wall:2})', CC + 'shell(f, { wall: 2 });'], ['frustum: shell(f, {wall:2})', FR + 'shell(f, { wall: 2 });']];
+  for (const [label, src] of tries) {
+    const run = runScript(src); const errs = run.errors.map((e) => e.message);
+    const row = { label, src, scriptErrors: errs };
+    if (!errs.length) { const doc = solveDoc({ version: 1, features: run.doc.features }); const last = doc.features[doc.features.length - 1]; row.kinds = doc.features.map((f) => `${f.id}:${f.kind}`).join(','); const o = occtMeasure(doc, last.id); let t; try { t = truckFull(doc, last.id); } catch (e) { t = { refused: 'harness threw ' + e.message }; } Object.assign(row, { occt: o.volume, occtRefused: o.refused, truck: t.volume, truckRefused: t.refused, dVol: o.volume !== undefined && t.volume !== undefined ? rel(t.volume, o.volume) : null }); }
+    OUT.K.push(row); log(`K ${label}: ${errs.length ? 'SCRIPT ERROR ' + JSON.stringify(errs) : `doc ${row.kinds} OCCT ${row.occt?.toFixed?.(4) ?? 'REF[' + (row.occtRefused ?? '').slice(0, 60) + ']'} truck ${row.truck?.toFixed?.(4) ?? 'REF[' + (row.truckRefused ?? '').slice(0, 160) + ']'} dVol ${E(row.dVol)}`}`);
   }
 }
 

@@ -22,6 +22,7 @@ const SC = {
   cone: () => { const n = ri(1, 10); const at = rnd() < 0.7 ? `, { at: [${vec(20)}] }` : ''; return [`let a = cone(${ri(4, 14)}, ${ri(8, 24)}${at})`, ...Array.from({ length: n }, () => op('a'))].join('\n'); },
   copies: () => { const n = ri(2, 9); const L = ['let a = cone(8, 15)']; let cur = 'a'; for (let i = 0; i < n; i++) { if (rnd() < 0.7) { L.push(`let c${i} = move(${cur}, [${vec(30)}], { copy: true })`); cur = `c${i}`; } else L.push(op(cur)); } return L.join('\n'); },
   join: () => { const n = ri(1, 8); return [`let b = box(30, 30, 6)`, `let k = cone(10, 16, { at: [0, 0, 3] })`, `let j = join(b, k)`, ...Array.from({ length: n }, () => op('j'))].join('\n'); },
+  moves: () => { const n = ri(3, 8); const rot = rnd() < 0.6 ? [`turn(a, [${[pick(ANG), pick(ANG), pick(ANG)]}])`] : []; const at = rnd() < 0.6 ? `, { at: [${vec(20)}] }` : ''; return [`let a = cone(${ri(4, 14)}, ${ri(8, 24)}${at})`, ...rot, ...Array.from({ length: n }, () => `move(a, [${vec(40)}])`)].join(String.fromCharCode(10)); }, // round 5: the critic's scan: 3-8 translations after an optional rotation
   control: () => { const n = ri(1, 10); const mk = pick(['cylinder(8, 15)', 'box(10, 8, 6)', 'prism(6, 8, 15)', 'wedge(12, 8, 6)', 'sphere(9)']); return [`let a = ${mk}`, ...Array.from({ length: n }, () => op('a'))].join('\n'); },
 };
 const all = [];

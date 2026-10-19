@@ -1,0 +1,97 @@
+{
+ "critic chain: cone at, turn, move, move": {
+  "script": "let a = cone(6, 15, { at: [-15, 13, 6] });\nturn(a, [45, 30, 135]);\nmove(a, [-15, 30, -13]);\nmove(a, [14, -8, -4]);",
+  "shipped": "FAIL vol=104.5263 occt=141.3717 dVol=2.61e-1 dCom=6.63e-2 dBbox=2.03e-5 faces=2/2",
+  "guard": "PASS vol=141.3459 occt=141.3717 dVol=1.82e-4 dCom=2.17e-15 dBbox=2.03e-5 faces=2/2",
+  "brep": {
+   "volume": 141.3716694115407,
+   "bbox": [
+    -20.77973750965556,
+    27.390686516701557,
+    -17.96450151284474,
+    -14.125,
+    40.625,
+    -6.407206732281541
+   ],
+   "faces": 2,
+   "dVol": 0,
+   "dBbox": 2.5151955248145144e-16
+  }
+ },
+ "fz7-18 style: copy of a copy of a cone": {
+  "script": "let a = cone(8, 15);\nlet c1 = move(a, [20, 0, 0], { copy: true });\nlet c2 = move(c1, [0, 20, 0], { copy: true });\nlet c3 = move(c2, [0, 0, 20], { copy: true });\nlet c4 = move(c3, [-20, 0, 0], { copy: true });\nlet c5 = move(c4, [0, -20, 0], { copy: true });\nlet c6 = move(c5, [0, 0, -20], { copy: true });",
+  "shipped": "REFUSED \"move6 (move): its target move5 was refused (move5 (move): its target move4 was refused (move4 (move): its target move3 was refused (move3 (move): its target move2 was refused (move2 (move): its target move1 was refused (move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it))))))\"",
+  "guard": "PASS vol=251.2816 occt=251.3274 dVol=1.82e-4 dCom=1.89e-16 dBbox=1.25e-5 faces=2/2",
+  "brep": {
+   "volume": 251.3274122871835,
+   "bbox": [
+    -4,
+    -4,
+    -7.5,
+    4,
+    4,
+    7.5
+   ],
+   "faces": 2,
+   "dVol": 0,
+   "dBbox": 0
+  }
+ },
+ "six plain moves of a cone": {
+  "script": "let a = cone(8, 15);\nmove(a, [1, 0, 0]);\nmove(a, [0, 1, 0]);\nmove(a, [0, 0, 1]);\nmove(a, [1, 0, 0]);\nmove(a, [0, 1, 0]);\nmove(a, [0, 0, 1]);",
+  "shipped": "FAIL vol=224.3365 occt=251.3274 dVol=1.07e-1 dCom=8.79e-3 dBbox=2.50e-5 faces=2/2",
+  "guard": "PASS vol=251.2816 occt=251.3274 dVol=1.82e-4 dCom=4.73e-17 dBbox=2.50e-5 faces=2/2",
+  "brep": {
+   "volume": 251.3274122871835,
+   "bbox": [
+    -2,
+    -2,
+    -5.5,
+    6,
+    6,
+    9.5
+   ],
+   "faces": 2,
+   "dVol": 2.2617277734851674e-16,
+   "dBbox": 0
+  }
+ },
+ "one move to the same place (control)": {
+  "script": "let a = cone(8, 15);\nmove(a, [2, 2, 2]);",
+  "shipped": "PASS vol=251.2816 occt=251.3274 dVol=1.82e-4 dCom=4.73e-17 dBbox=2.50e-5 faces=2/2",
+  "guard": "PASS vol=251.2816 occt=251.3274 dVol=1.82e-4 dCom=4.73e-17 dBbox=2.50e-5 faces=2/2",
+  "brep": {
+   "volume": 251.3274122871835,
+   "bbox": [
+    -2,
+    -2,
+    -5.5,
+    6,
+    6,
+    9.5
+   ],
+   "faces": 2,
+   "dVol": 2.2617277734851674e-16,
+   "dBbox": 0
+  }
+ },
+ "cylinder, six moves (control)": {
+  "script": "let a = cylinder(8, 15);\nmove(a, [1, 0, 0]);\nmove(a, [0, 1, 0]);\nmove(a, [0, 0, 1]);\nmove(a, [1, 0, 0]);\nmove(a, [0, 1, 0]);\nmove(a, [0, 0, 1]);",
+  "shipped": "PASS vol=753.8883 occt=753.9822 dVol=1.25e-4 dCom=2.03e-15 dBbox=5.37e-5 faces=3/3",
+  "guard": "PASS vol=753.8883 occt=753.9822 dVol=1.25e-4 dCom=2.03e-15 dBbox=5.37e-5 faces=3/3",
+  "brep": {
+   "volume": 753.98223686155,
+   "bbox": [
+    -2,
+    -2,
+    -5.5,
+    6,
+    6,
+    9.5
+   ],
+   "faces": 3,
+   "dVol": 7.53909257828389e-16,
+   "dBbox": 0
+  }
+ }
+}

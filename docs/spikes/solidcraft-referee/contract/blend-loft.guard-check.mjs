@@ -92,6 +92,20 @@ console.log(`WIRING: guard imported by packages/ or phase0..3: ${summary.wired ?
   }
 }
 
+// ---- 4. hand-typed input (round 5): near-parallel polygon pairs and slightly irregular regular polygons, live truck vs live OCCT ----
+{
+  const out = path.join(WORK, 'typed.json');
+  const r = run('blend-loft.r5-calib.mjs', [`--n=${QUICK ? 80 : 240}`, '--seed=77', `--out=${out}`], path.join(WORK, 'typed'));
+  if (r.status !== 0) bad.push(`r5-calib exit ${r.status}`);
+  else {
+    const K = JSON.parse(readFileSync(out, 'utf8'));
+    if (K.part1Pass.over3e4 || K.part1Pass.faceMismatch || K.part1Pass.noSolidPassed) bad.push(`typed polygon pairs pass-but-wrong: ${JSON.stringify(K.part1Pass)}`);
+    if (K.part2Pass.over3e4 || K.part2Pass.noSolidPassed) bad.push(`typed regular polygon <-> circle pass-but-wrong: ${JSON.stringify(K.part2Pass)}`);
+    summary.typed = { polygonPairs: K.part1Pass, regularPolygonCircle: K.part2Pass };
+    console.log('TYPED', JSON.stringify(summary.typed));
+  }
+}
+
 summary.violations = bad.length;
 if (arg('out')) writeFileSync(arg('out'), JSON.stringify(summary, null, 1));
 console.log(JSON.stringify({ violations: bad.length, wired: summary.wired }, null, 1));

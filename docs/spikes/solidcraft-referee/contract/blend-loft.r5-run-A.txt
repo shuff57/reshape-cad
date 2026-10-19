@@ -1,0 +1,16 @@
+Running as unit: run-p3373210-i3420582.scope; invocation ID: 5068e109daf84ce5adaf85988851c02d
+A hexagon r10 (8.66) -> hexagon r7 (6.06), the critic case sinDev 1.43e-4 dVol 2.06e-7 faces 8/8 guard r4 sides -> r5 PASS
+A pentagon r10 -> pentagon r6, 2 decimals                sinDev 6.21e-4 dVol 7.32e-16 faces 7/7 guard r4 sides -> r5 PASS
+A triangle r10 -> triangle r5, 2 decimals                sinDev 0.00e+0 dVol 1.95e-15 faces 5/5 guard r4 PASS -> r5 PASS
+A hand-drawn triangle pair (1 decimal)                   sinDev 5.80e-2 dVol 1.79e-4 faces 5/5 guard r4 sides -> r5 sides
+A typed hexagon r10 (8.66) -> circle(20), gap 25         dVol 5.75e-5 faces 8/8 guard r4 circle-poly -> r5 PASS
+A typed octagon r10 (7.07) -> circle(20), gap 25         dVol 6.21e-5 faces 10/10 guard r4 circle-poly -> r5 PASS
+A typed octagon r10 (7.07), circle first                 dVol 5.80e-5 faces 10/10 guard r4 circle-poly -> r5 PASS
+A sweep polygon->polygon dec1 r<10         {"n":21,"r4Pass":2,"r5Pass":4,"r5PassMaxD":6.2553478304044795e-15,"r5PassWrong":0,"r4RefusedExact":19,"r5RefusedExact":17,"maxRawD":0.00003756009614342006,"faceMismatch":0}
+A sweep polygon<->circle dec2 r>=10        {"n":51,"r4Pass":12,"r5Pass":51,"r5PassMaxD":0.00013218660310438445,"r5PassWrong":0,"r4RefusedExact":39,"r5RefusedExact":0,"maxRawD":0.00013218660310438445,"faceMismatch":0}
+A sweep polygon->polygon dec2 r<10         {"n":54,"r4Pass":12,"r5Pass":42,"r5PassMaxD":0.000005591808900900245,"r5PassWrong":0,"r4RefusedExact":42,"r5RefusedExact":12,"maxRawD":0.000005591808900900245,"faceMismatch":0}
+A sweep polygon<->circle dec1 r<10         {"n":25,"r4Pass":5,"r5Pass":9,"r5PassMaxD":0.00015658792981313954,"r5PassWrong":0,"r4RefusedExact":20,"r5RefusedExact":16,"maxRawD":0.0001577741825514893,"faceMismatch":0}
+A sweep polygon->polygon dec2 r>=10        {"n":66,"r4Pass":12,"r5Pass":65,"r5PassMaxD":9.595211195282546e-7,"r5PassWrong":0,"r4RefusedExact":54,"r5RefusedExact":1,"maxRawD":0.000003900291908868143,"faceMismatch":0}
+A sweep polygon->polygon dec1 r>=10        {"n":39,"r4Pass":10,"r5Pass":25,"r5PassMaxD":0.0000031415875887547165,"r5PassWrong":0,"r4RefusedExact":29,"r5RefusedExact":14,"maxRawD":0.000012584920851513645,"faceMismatch":0}
+A sweep polygon<->circle dec2 r<10         {"n":45,"r4Pass":11,"r5Pass":41,"r5PassMaxD":0.00015698485897037314,"r5PassWrong":0,"r4RefusedExact":34,"r5RefusedExact":4,"maxRawD":0.00015698485897037314,"faceMismatch":0}
+A sweep polygon<->circle dec1 r>=10        {"n":23,"r4Pass":7,"r5Pass":21,"r5PassMaxD":0.0001035504942051295,"r5PassWrong":0,"r4RefusedExact":16,"r5RefusedExact":2,"maxRawD":0.0001035504942051295,"faceMismatch":0}

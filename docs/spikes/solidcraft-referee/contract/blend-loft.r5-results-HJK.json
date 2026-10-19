@@ -1,0 +1,270 @@
+{
+ "H": [
+  {
+   "label": "plain pull of rect 40x30, height 10 (no blend)",
+   "exactExtent": [
+    -20,
+    -15,
+    0,
+    20,
+    15,
+    10
+   ],
+   "occtBbox": [
+    -20,
+    -15,
+    0,
+    20,
+    15,
+    10
+   ],
+   "occtRefused": null,
+   "truckBbox": [
+    -20,
+    -15,
+    0,
+    20,
+    15,
+    10
+   ],
+   "occtPad": 0,
+   "truckPad": 0
+  },
+  {
+   "label": "blend rect 40x30 -> rect 20x15 gap 10",
+   "exactExtent": [
+    -20,
+    -15,
+    0,
+    20,
+    15,
+    10
+   ],
+   "occtBbox": [
+    -20.0000001,
+    -15.0000001,
+    -1e-7,
+    20.0000001,
+    15.0000001,
+    10.0000001
+   ],
+   "occtRefused": null,
+   "truckBbox": [
+    -20.000000000000064,
+    -15.000000000000082,
+    -6.217248937900877e-14,
+    20.000000000000064,
+    15.000000000000082,
+    10.000000000000028
+   ],
+   "occtPad": 1.0000000116860974e-7,
+   "truckPad": 8.171241461241152e-14
+  }
+ ],
+ "J": [
+  {
+   "label": "chained lofts loft(a,b,30); loft(b,c,30)",
+   "src": "const a = sketch('top'); a.rect(40, 40); const b = sketch('top'); b.rect(20, 20); const c = sketch('top'); c.rect(10, 10);loft(a, b, 30); loft(b, c, 30);",
+   "scriptErrors": [],
+   "kinds": "sk1:sketch@0,sk2:sketch@30,sk3:sketch@60,bl1:blend,bl2:blend",
+   "per": [
+    {
+     "id": "bl1",
+     "occt": 28000,
+     "occtFaces": 6,
+     "truck": 27999.999999999887,
+     "truckFaces": 6,
+     "dVol": 4.027762250708682e-15
+    },
+    {
+     "id": "bl2",
+     "occt": 7000,
+     "occtFaces": 6,
+     "truck": 6999.999999999952,
+     "truckFaces": 6,
+     "dVol": 6.886174170566457e-15
+    }
+   ],
+   "guardWired": "shared,shared"
+  },
+  {
+   "label": "shared sketch: pull(b,10) before loft(a,b,30)",
+   "src": "const a = sketch('top'); a.rect(40, 40); const b = sketch('top'); b.rect(20, 20); const p = pull(b, 10); loft(a, b, 30);",
+   "scriptErrors": [],
+   "kinds": "sk1:sketch@0,sk2:sketch@30,pull1:extrude,bl1:blend",
+   "per": [
+    {
+     "id": "bl1",
+     "occt": 28000,
+     "occtFaces": 6,
+     "truck": 27999.999999999887,
+     "truckFaces": 6,
+     "dVol": 4.027762250708682e-15
+    },
+    {
+     "id": "ex1",
+     "absent": true
+    }
+   ],
+   "guardWired": "shared"
+  },
+  {
+   "label": "no area: b.polygon three collinear points",
+   "src": "const a = sketch('top'); a.rect(20, 20); const b = sketch('top'); b.polygon([[0,0],[10,0],[20,0]]); loft(a, b, 20);",
+   "scriptErrors": [],
+   "kinds": "sk1:sketch@0,sk2:sketch@20,bl1:blend",
+   "per": [
+    {
+     "id": "bl1",
+     "occtRefused": "OCCT threw: [object WebAssembly.Exception]",
+     "truckRefused": "bl1 (blend): solidcraft refused it -- solid.loft: sk_sk2_1 has no closed profiles",
+     "dVol": null
+    }
+   ],
+   "guardWired": "flat"
+  },
+  {
+   "label": "bowtie second section",
+   "src": "const a = sketch('top'); a.rect(20, 20); const b = sketch('top'); b.polygon([[-5,-5],[5,5],[5,-5],[-5,5]]); loft(a, b, 20);",
+   "scriptErrors": [],
+   "kinds": "sk1:sketch@0,sk2:sketch@20,bl1:blend",
+   "per": [
+    {
+     "id": "bl1",
+     "occt": 3333.3333333333335,
+     "occtFaces": 6,
+     "truckRefused": "bl1 (blend): solidcraft refused it -- solid.loft: each loft section must be one profile",
+     "dVol": null
+    }
+   ],
+   "guardWired": "crossing"
+  },
+  {
+   "label": "slot second section",
+   "src": "const a = sketch('top'); a.rect(40, 40); const b = sketch('top'); b.slot([0,0],[20,0],5); loft(a, b, 20);",
+   "scriptErrors": [],
+   "kinds": "sk1:sketch@0,sk2:sketch@20,bl1:blend",
+   "per": [
+    {
+     "id": "bl1",
+     "occtRefused": "Blend 1: Sketch 2 is drawn as rows and rules, and this reference path lofts between single outlines only",
+     "truckRefused": "bl1 (blend): sketch sk2 is drawn as rows and rules (a soup), which this translator does not map yet",
+     "dVol": null
+    }
+   ],
+   "guardWired": "soup"
+  },
+  {
+   "label": "undrawn second sketch",
+   "src": "const a = sketch('top'); a.rect(40, 40); const b = sketch('top'); loft(a, b, 30);",
+   "scriptErrors": [],
+   "kinds": "sk1:sketch@0,sk2:sketch@30,bl1:blend",
+   "per": [
+    {
+     "id": "bl1",
+     "occt": 39000,
+     "occtFaces": 6,
+     "truck": 38999.99999999985,
+     "truckFaces": 6,
+     "dVol": 3.917823330714152e-15
+    }
+   ],
+   "guardWired": "undrawn"
+  },
+  {
+   "label": "ModelDoc blend with 3 targets",
+   "occt": 18666.666666666668,
+   "truck": 21867.743511524135,
+   "guardWired": "targets"
+  },
+  {
+   "label": "ModelDoc blend with 1 target",
+   "occtRefused": "OCCT built nothing",
+   "truckRefused": "bl1 (blend): needs two or more sketches",
+   "guardWired": "targets"
+  },
+  {
+   "label": "ModelDoc blend with 0 targets",
+   "occtRefused": "OCCT built nothing",
+   "truckRefused": "bl1 (blend): needs two or more sketches",
+   "guardWired": "targets"
+  }
+ ],
+ "K": [
+  {
+   "label": "frustum round top-left (control)",
+   "src": "const a = sketch('top'); a.rect(40, 40); const b = sketch('top'); b.rect(20, 20); const f = loft(a, b, 30);\nround(f.edge('top', 'left'), 1);",
+   "scriptErrors": [],
+   "kinds": "sk1:sketch,sk2:sketch,bl1:blend,round1:fillet",
+   "occt": 27998.065891513757,
+   "truck": 27998.062669372794,
+   "dVol": 1.1508441248250704e-7
+  },
+  {
+   "label": "cone: round(f.edge(top,bottom),1)",
+   "src": "const a = sketch('top'); a.circle(40); const b = sketch('top'); b.circle(20); const f = loft(a, b, 30);\nround(f.edge('top', 'bottom'), 1);",
+   "scriptErrors": [],
+   "kinds": "sk1:sketch,sk2:sketch,bl1:blend,round1:fillet",
+   "occt": 21991.14857512855,
+   "truckRefused": "round1 (fillet): the edge could not be resolved to a point (brep-rs resolve gave nothing)",
+   "dVol": null
+  },
+  {
+   "label": "cone: round(f.edge(top,left),1)",
+   "src": "const a = sketch('top'); a.circle(40); const b = sketch('top'); b.circle(20); const f = loft(a, b, 30);\nround(f.edge('top', 'left'), 1);",
+   "scriptErrors": [],
+   "kinds": "sk1:sketch,sk2:sketch,bl1:blend,round1:fillet",
+   "occt": 21985.16570916217,
+   "truckRefused": "round1 (fillet): the edge could not be resolved to a point (brep-rs resolve gave nothing)",
+   "dVol": null
+  },
+  {
+   "label": "cone: round(f.edge(top,side),1)",
+   "src": "const a = sketch('top'); a.circle(40); const b = sketch('top'); b.circle(20); const f = loft(a, b, 30);\nround(f.edge('top', 'side'), 1);",
+   "scriptErrors": [
+    ".edge(): \"side\" is the curved wall of a cylinder, not a flat face here."
+   ]
+  },
+  {
+   "label": "cone: round(f.edge(bottom,side),1)",
+   "src": "const a = sketch('top'); a.circle(40); const b = sketch('top'); b.circle(20); const f = loft(a, b, 30);\nround(f.edge('bottom', 'side'), 1);",
+   "scriptErrors": [
+    ".edge(): \"side\" is the curved wall of a cylinder, not a flat face here."
+   ]
+  },
+  {
+   "label": "cone: bevel(f.edge(top,left),1)",
+   "src": "const a = sketch('top'); a.circle(40); const b = sketch('top'); b.circle(20); const f = loft(a, b, 30);\nbevel(f.edge('top', 'left'), 1);",
+   "scriptErrors": [],
+   "kinds": "sk1:sketch,sk2:sketch,bl1:blend,bevel1:fillet",
+   "occt": 21962.024109892373,
+   "truckRefused": "bevel1 (fillet): the edge could not be resolved to a point (brep-rs resolve gave nothing)",
+   "dVol": null
+  },
+  {
+   "label": "cone: round(f, 1) whole shape",
+   "src": "const a = sketch('top'); a.circle(40); const b = sketch('top'); b.circle(20); const f = loft(a, b, 30);\nround(f, 1);",
+   "scriptErrors": [
+    "Rounding does not work on this shape."
+   ]
+  },
+  {
+   "label": "cone: shell(f, {wall:2})",
+   "src": "const a = sketch('top'); a.circle(40); const b = sketch('top'); b.circle(20); const f = loft(a, b, 30);\nshell(f, { wall: 2 });",
+   "scriptErrors": [],
+   "kinds": "sk1:sketch,sk2:sketch,bl1:blend,shell1:shell",
+   "occt": 7904.523849876541,
+   "truckRefused": "shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points",
+   "dVol": null
+  },
+  {
+   "label": "frustum: shell(f, {wall:2})",
+   "src": "const a = sketch('top'); a.rect(40, 40); const b = sketch('top'); b.rect(20, 20); const f = loft(a, b, 30);\nshell(f, { wall: 2 });",
+   "scriptErrors": [],
+   "kinds": "sk1:sketch,sk2:sketch,bl1:blend,shell1:shell",
+   "occt": 10064.352347965038,
+   "truckRefused": "shell1 (shell): solidcraft refused it -- solid.shell: invalid parameters for `solid.shell`: `faces` must be a list of points",
+   "dVol": null
+  }
+ ]
+}

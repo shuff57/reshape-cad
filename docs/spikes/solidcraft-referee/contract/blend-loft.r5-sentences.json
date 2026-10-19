@@ -1,0 +1,162 @@
+{
+ "maxWords": 43,
+ "over": 0,
+ "cat": {
+  "sides": {
+   "code": "sides",
+   "words": 32,
+   "sentencesCount": 1,
+   "sentence": "Matching sides of these two sketches are up to 20 degrees from parallel, which would twist the loft, so make each side of the first parallel to its partner in the second."
+  },
+  "sides (small twist, 0.5 degrees)": {
+   "code": "sides",
+   "words": 32,
+   "sentencesCount": 1,
+   "sentence": "Matching sides of these two sketches are up to 0.5 degrees from parallel, which would twist the loft, so make each side of the first parallel to its partner in the second."
+  },
+  "tie": {
+   "code": "tie",
+   "words": 35,
+   "sentencesCount": 1,
+   "sentence": "The second sketch is turned exactly half way between two corners of the first, so its corners could be matched two ways; turn it until each side is parallel to a side of the first."
+  },
+  "count": {
+   "code": "count",
+   "words": 33,
+   "sentencesCount": 1,
+   "sentence": "The first sketch has 6 corners and the second has 4, but a loft needs the same number on both, so delete any point that sits in the middle of a straight side."
+  },
+  "start": {
+   "code": "start",
+   "words": 35,
+   "sentencesCount": 1,
+   "sentence": "The corners of these two sketches would be matched in a different order than the one you drew, which twists the loft; list the corners of the second sketch starting from its 2nd corner instead."
+  },
+  "circle-poly": {
+   "code": "circle-poly",
+   "words": 43,
+   "sentencesCount": 1,
+   "sentence": "A circle can only be lofted to another circle, an axis-aligned rectangle (long side at most twice the short side), or a regular 4, 5, 6 or 8 sided shape with a corner pointing right, and the other outline is none of those."
+  },
+  "arcs": {
+   "code": "arcs",
+   "words": 34,
+   "sentencesCount": 1,
+   "sentence": "A loft with rounded corners only works against a circle, and only when the shape is nearly square (long side at most 1.1 times the short side), so use a circle or straight sides."
+  },
+  "tilt (circles)": {
+   "code": "tilt",
+   "words": 38,
+   "sentencesCount": 1,
+   "sentence": "The second circle is 8 times the gap away sideways, and a loft that leans over that far (more than 5 times the gap) cannot be built exactly; move the circles closer sideways or make the gap bigger."
+  },
+  "coarse (circle radius under 0.5)": {
+   "code": "coarse",
+   "words": 25,
+   "sentencesCount": 1,
+   "sentence": "The larger circle has a radius of 0.05 mm, and a loft needs at least 0.5 mm to be built exactly, so make it bigger."
+  },
+  "coarse (circles, loft too long)": {
+   "code": "coarse",
+   "words": 29,
+   "sentencesCount": 1,
+   "sentence": "The larger circle (radius 1 mm) is under 1/40 of the loft's overall size (100 mm), which cannot be built exactly; make the circle bigger or the gap smaller."
+  },
+  "coarse (polygon <-> circle)": {
+   "code": "coarse",
+   "words": 30,
+   "sentencesCount": 1,
+   "sentence": "The circle (radius 0.8 mm) is under 1/15 of the loft's overall size (58.5 mm), which cannot be built exactly; make the circle bigger or the gap and outline smaller."
+  },
+  "size-mix": {
+   "code": "size-mix",
+   "words": 31,
+   "sentencesCount": 1,
+   "sentence": "The circle is 2.5 times as wide as the other outline is long, and it must be between 0.25 and 2 times to be built exactly, so resize one of them."
+  },
+  "thin": {
+   "code": "thin",
+   "words": 40,
+   "sentencesCount": 1,
+   "sentence": "The gap is 0.2 times the long side of the other outline, but a loft between a circle and another shape needs a gap of at least the full long side to be built exactly, so make the gap bigger."
+  },
+  "sliver": {
+   "code": "sliver",
+   "words": 30,
+   "sentencesCount": 1,
+   "sentence": "The gap (0.001 mm) is under 1/10000 of the sketches' size (56.6 mm), so the loft would be a sliver too thin to build reliably; give it a bigger gap."
+  },
+  "gap0": {
+   "code": "gap0",
+   "words": 27,
+   "sentencesCount": 1,
+   "sentence": "The two sketches are in the same place (the gap is zero), so there is nothing between them to fill; give the loft a gap above zero."
+  },
+  "same": {
+   "code": "same",
+   "words": 31,
+   "sentencesCount": 1,
+   "sentence": "The loft was given the same sketch twice, so both of its ends would be in the same place whatever gap you type; draw a second sketch for the other end."
+  },
+  "planes": {
+   "code": "planes",
+   "words": 25,
+   "sentencesCount": 1,
+   "sentence": "The two sketches are on different planes ('top' and 'front'), so there is no single direction to loft along; draw both on the same plane."
+  },
+  "frame": {
+   "code": "frame",
+   "words": 35,
+   "sentencesCount": 1,
+   "sentence": "The first sketch is placed with its own origin and direction, which a loft cannot combine with its gap, so draw both sketches on 'top', 'front' or 'side' and give the distance as the gap."
+  },
+  "datum": {
+   "code": "datum",
+   "words": 33,
+   "sentencesCount": 1,
+   "sentence": "The second sketch was placed at height 30, but the loft's gap puts it at 10, so make the two agree by changing the gap or the height the sketch was drawn at."
+  },
+  "shared": {
+   "code": "shared",
+   "words": 36,
+   "sentencesCount": 1,
+   "sentence": "The second sketch is also used by another feature, and a loft moves its second sketch to the gap you give, which would move the other feature too, so draw a separate sketch for the loft."
+  },
+  "undrawn": {
+   "code": "undrawn",
+   "words": 28,
+   "sentencesCount": 1,
+   "sentence": "The second sketch has not been drawn yet, so the loft would use the default 40 by 25 rectangle; draw its outline first, for example with rect(20, 20)."
+  },
+  "flat": {
+   "code": "flat",
+   "words": 32,
+   "sentencesCount": 1,
+   "sentence": "The second sketch has no area (all its points lie on one line), so there is nothing to loft to; give it at least three corners that are not in a row."
+  },
+  "crossing": {
+   "code": "crossing",
+   "words": 21,
+   "sentencesCount": 1,
+   "sentence": "The second sketch crosses itself, so it is not a closed shape; reorder its corners so that no two sides cross."
+  },
+  "soup": {
+   "code": "soup",
+   "words": 28,
+   "sentencesCount": 1,
+   "sentence": "The second sketch was drawn with geom() or slot(), and a loft can only use plain outlines (rect, circle or polygon), so redraw it as a plain outline."
+  },
+  "targets (3)": {
+   "code": "targets",
+   "words": 14,
+   "sentencesCount": 1,
+   "sentence": "A loft joins exactly two sketches, and this one has 3, so choose two."
+  },
+  "targets (1)": {
+   "code": "targets",
+   "words": 14,
+   "sentencesCount": 1,
+   "sentence": "A loft joins exactly two sketches, and this one has one, so choose two."
+  }
+ }
+}

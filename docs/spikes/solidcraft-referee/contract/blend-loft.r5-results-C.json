@@ -1,0 +1,86 @@
+{
+ "C": [
+  {
+   "label": "rounded square 30 r6 -> circle d20 gap 30",
+   "occtFaces": 11,
+   "truckFacesMerged": 3,
+   "truckKernelFaces": 10,
+   "truckFaceTypes": {
+    "other": 1,
+    "plane": 2
+   },
+   "dVol": 0.000040860372719818556,
+   "guard": "PASS"
+  },
+  {
+   "label": "circle d20 -> rounded square 30 r6 gap 30",
+   "occtFaces": 11,
+   "truckFacesMerged": 3,
+   "truckKernelFaces": 10,
+   "truckFaceTypes": {
+    "other": 1,
+    "plane": 2
+   },
+   "dVol": 0.00004149735533981152,
+   "guard": "PASS"
+  },
+  {
+   "label": "rect 40x30 -> circle d20 gap 40",
+   "occtFaces": 7,
+   "truckFacesMerged": 6,
+   "truckKernelFaces": 6,
+   "truckFaceTypes": {
+    "other": 4,
+    "plane": 2
+   },
+   "dVol": 0.000033488562372382076,
+   "guard": "PASS"
+  },
+  {
+   "label": "rect40 + midpoint (5), -> rect20 + midpoint (5) same side",
+   "occtFaces": 7,
+   "truckFacesMerged": 6,
+   "truckKernelFaces": 7,
+   "truckFaceTypes": {
+    "plane": 6
+   },
+   "dVol": 4.677401323403631e-15,
+   "guard": "PASS"
+  },
+  {
+   "label": "plain rect 40 -> rect 20 (control)",
+   "occtFaces": 6,
+   "truckFacesMerged": 6,
+   "truckKernelFaces": 6,
+   "truckFaceTypes": {
+    "plane": 6
+   },
+   "dVol": 4.027762250708682e-15,
+   "guard": "PASS"
+  },
+  {
+   "label": "regular hexagon r20 -> circle d40 gap 25",
+   "occtFaces": 8,
+   "truckFacesMerged": 8,
+   "truckKernelFaces": 8,
+   "truckFaceTypes": {
+    "other": 6,
+    "plane": 2
+   },
+   "dVol": 0.00004528503709408682,
+   "guard": "PASS"
+  },
+  {
+   "label": "circle d40 -> circle d20 gap 30 (control)",
+   "occtFaces": 3,
+   "truckFacesMerged": 3,
+   "truckKernelFaces": 4,
+   "truckFaceTypes": {
+    "cone": 1,
+    "plane": 2
+   },
+   "dVol": 0.00004962439920372318,
+   "guard": "PASS"
+  }
+ ]
+}

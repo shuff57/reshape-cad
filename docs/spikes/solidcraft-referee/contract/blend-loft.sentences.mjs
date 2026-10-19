@@ -23,6 +23,7 @@ const cases = {
   'coarse (polygon <-> circle)': () => guardDoc(D([sk('a', 'xy', 0, regPts(6, 20, 0)), circ('b', 0, 0, 0.8, 'xy', 25), bl('a', 'b')])),
   'size-mix': () => guardDoc(D([sk('a', 'xy', 0, rectPts(0, 0, 40, 20)), circ('b', 0, 0, 50, 'xy', 60), bl('a', 'b')])),
   thin: () => guardDoc(D([sk('a', 'xy', 0, rectPts(0, 0, 40, 20)), circ('b', 0, 0, 10, 'xy', 8), bl('a', 'b')])),
+  sliver: () => guardDoc(D([sk('a', 'xy', 0, rectPts(0, 0, 40, 40)), sk('b', 'xy', 0.001, rectPts(0, 0, 20, 20)), bl('a', 'b')])),
   gap0: () => guardScript(pre('a.rect(40, 40);', 'b.rect(10, 10);') + 'loft(a, b, 0);'),
   same: () => guardScript(pre('a.rect(40, 40);', 'b.rect(10, 10);') + 'loft(a, a, 30);'),
   planes: () => guardScript("const a = sketch('top'); a.rect(40, 40); const b = sketch('front'); b.rect(10, 10); loft(a, b, 30);"),

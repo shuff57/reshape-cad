@@ -1,0 +1,18 @@
+Running as unit: run-p3380829-i3424638.scope; invocation ID: 2f85aec389fd460488cbe043a67b8348
+B r20->r10 h30 lat0 ratio 0.500 dVol 4.96e-5 dClosed 4.96e-5 faces OCCT 3 truck 3(kernel 4) truckTypes {"cone":1,"plane":2} occtTypes {"?":3} guard PASS
+B r20->r5 h30 lat0 ratio 0.250 dVol 4.71e-5 dClosed 4.71e-5 faces OCCT 3 truck 4(kernel 4) truckTypes {"cone":2,"plane":2} occtTypes {"?":3} guard PASS
+B r20->r3 h30 lat0 ratio 0.150 dVol 1.32e-5 dClosed 1.32e-5 faces OCCT 3 truck 4(kernel 4) truckTypes {"cone":2,"plane":2} occtTypes {"?":3} guard PASS
+B r20->r2.2 h30 lat0 ratio 0.110 dVol 1.25e-5 dClosed 1.25e-5 faces OCCT 3 truck 3(kernel 4) truckTypes {"cone":1,"plane":2} occtTypes {"?":3} guard PASS
+B r20->r2 h30 lat0 ratio 0.100 dVol 1.25e-5 dClosed 1.25e-5 faces OCCT 3 truck 3(kernel 4) truckTypes {"cone":1,"plane":2} occtTypes {"?":3} guard PASS
+B r20->r1.9 h30 lat0 ratio 0.095 dVol 7.89e-6 dClosed 7.89e-6 faces OCCT 3 truck 3(kernel 4) truckTypes {"cone":1,"plane":2} occtTypes {"?":3} guard PASS
+B r20->r1 h30 lat0 ratio 0.050 dVol 5.08e-6 dClosed 5.08e-6 faces OCCT 3 truck 4(kernel 4) truckTypes {"cone":2,"plane":2} occtTypes {"?":3} guard PASS
+B r20->r0.5 h30 lat0 ratio 0.025 dVol 4.00e-6 dClosed 4.00e-6 faces OCCT 3 truck 4(kernel 4) truckTypes {"cone":2,"plane":2} occtTypes {"?":3} guard PASS
+B r20->r0.2 h30 lat0 ratio 0.010 dVol 3.97e-6 dClosed 3.97e-6 faces OCCT 3 truck 4(kernel 4) truckTypes {"cone":2,"plane":2} occtTypes {"?":3} guard PASS
+B r20->r0.05 h30 lat0 ratio 0.003 dVol 4.96e-5 dClosed 4.96e-5 faces OCCT 3 truck 4(kernel 4) truckTypes {"cone":2,"plane":2} occtTypes {"?":3} guard PASS
+B r20->r0.01 h30 lat0 ratio 0.001 dVol 4.96e-5 dClosed 4.96e-5 faces OCCT 3 truck 4(kernel 4) truckTypes {"cone":2,"plane":2} occtTypes {"?":3} guard PASS
+B r2->r20 h30 lat0 ratio 10.000 dVol 1.25e-5 dClosed 1.25e-5 faces OCCT 3 truck 3(kernel 4) truckTypes {"cone":1,"plane":2} occtTypes {"?":3} guard PASS
+B r0.5->r5 h10 lat0 ratio 10.000 dVol 1.25e-5 dClosed 1.25e-5 faces OCCT 3 truck 3(kernel 4) truckTypes {"cone":1,"plane":2} occtTypes {"?":3} guard PASS
+B r20->r1 h30 lat3 ratio 0.050 dVol 5.08e-6 dClosed 5.08e-6 faces OCCT 3 truck 3(kernel 4) truckTypes {"cone":1,"plane":2} occtTypes {"?":3} guard PASS
+B r10->r1 h20 lat0 ratio 0.100 dVol 1.25e-5 dClosed 1.25e-5 faces OCCT 3 truck 4(kernel 4) truckTypes {"cone":2,"plane":2} occtTypes {"?":3} guard PASS
+B r10->r1.1 h20 lat0 ratio 0.110 dVol 1.25e-5 dClosed 1.25e-5 faces OCCT 3 truck 4(kernel 4) truckTypes {"cone":2,"plane":2} occtTypes {"?":3} guard PASS
+B r10->r0.9 h20 lat0 ratio 0.090 dVol 7.89e-6 dClosed 7.89e-6 faces OCCT 3 truck 4(kernel 4) truckTypes {"cone":2,"plane":2} occtTypes {"?":3} guard PASS

@@ -1,0 +1,6 @@
+moves    n 100 SHIPPED {"FAIL":22,"PASS":78} GUARD {"PASS":100} repaired steps 129 {"folded":129} bbox-only artefact (counted PASS, both translators) 0 guard WRONG 0
+   shipped example: "let a = cone(14, 9, { at: [5,11,-10] })\nturn(a, [0,90,90])\nmove(a, [-27,19,-14])\nmove(a, [8,26,30])\nmove(a, [-31,-15,-14])" [{"id":"move3","v":"FAIL","dVol":0.2726967219144098,"dCom":0.1572703142398165}]
+
+real	0m43.254s
+user	0m46.540s
+sys	0m0.351s

@@ -32,10 +32,11 @@ export const PC_THIN_MIN = 0.3;      // gap / long side of the other outline (re
 export const PC_THIN_MIN_RECT = 1.0; // axis-aligned rectangle <-> circle needs a gap of at least its long side: at 0.3 a 5.5x3.4 rect against r5.1 at gap 3.3 is 6.5e-4 off (OCCT 7 faces, truck 6)
 export const PC_SIZE_MAX_RECT = 2;   // ... and a circle at most twice as wide as the rectangle is long: a 1.9x1.0 rect against r3.6 (ratio 3.8) is 4.9e-3 off. Inside both: 0 of 43 over the bar, max 1.6e-4 // measured n; 7 not measured -> refused rather than guessed
 // Round 5 tolerances for HAND-TYPED input. Rounds 1-4 tested 'parallel' and 'regular' at 1e-9, so a hexagon typed as 8.66 and 6.06 was refused
-// ('sides') although the raw build is exact to 2e-7. Calibrated live (blend-loft.r5-calib.mjs, RIG.md): a pair whose matching sides are off parallel by
-// up to sin 2e-3 (0.11 degrees) builds with truck-vs-OCCT error <= 7.3e-5 and equal face counts (worst measured 2.9e-4 at sin 3.5e-3 on a 4:1 rectangle, so
-// the limit stays under that). Regular polygon <-> circle: radius spread and angle spacing 5e-3, corner on +u within 0.02 rad (measured <= 7.6e-5 up to 0.03 rad,
-// 2.3e-4 and a face-count change at 0.1 rad).
+// ('sides') although the raw build is exact to 2e-7. Calibrated live by blend-loft.r5-calib.mjs (result: blend-loft.r5-calib.json, 400 + 400 cases):
+// polygon pairs whose matching sides are off parallel by sine up to 2e-3 (0.11 degrees): 240 passed, worst truck-vs-OCCT 1.5e-5, 0 face-count mismatches;
+// the whole sampled range up to sine 5e-2 never mismatched faces and reached 3.7e-4 only above sine 1e-2, so 2e-3 keeps a factor 20 under the 3e-4 bar.
+// Regular polygon <-> circle: 85 passed with corner-radius spread and corner-spacing error under 5e-3 and the first corner within 0.02 rad of +u, worst 1.5e-4;
+// phase errors of 0.1 to 0.3 rad reached 9.3e-4 (over the bar), so the phase limit stays at 0.02.
 export const PAR_TOL = 2e-3;          // max sine of the angle between matching sides (same direction)
 export const EXACT_PAR_TOL = 1e-9;    // at or below this the sides are exactly parallel: planar faces, bar 1e-9; above it (up to PAR_TOL) the faces are slightly warped, bar 3e-4
 export const REG_RADIUS_TOL = 5e-3;   // regular polygon: corner distances from the centre agree to this fraction

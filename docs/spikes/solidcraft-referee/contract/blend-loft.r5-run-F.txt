@@ -1,0 +1,7 @@
+Running as unit: run-p3393858-i3412790.scope; invocation ID: 8443afda889d4579b2722a042697d5d5
+F gap 30: emitted [const bl1 = loft(sk1, sk2, 30)] offsets [0,30] -> [0,30] exact 21000 truck 20999.999999999996 -> 20999.999999999996 guard PASS -> PASS
+F gap 30.1234567: emitted [const bl1 = loft(sk1, sk2, 30.123457)] offsets [0,30.1234567] -> [0,30.123457] exact 21086.41969 truck 21086.419689999984 -> 21086.419899999975 guard PASS -> PASS
+F gap 0.001: emitted [const bl1 = loft(sk1, sk2, 0.001)] offsets [0,0.001] -> [0,0.001] exact 0.7000000000000001 truck 0.7000000000000037 -> 0.7000000000000037 guard sliver -> sliver
+F gap 0.000001: emitted [const bl1 = loft(sk1, sk2, 0.000001)] offsets [0,0.000001] -> [0,0.000001] exact 0.0007 truck 0.000700000000000004 -> 0.000700000000000004 guard sliver -> sliver
+F gap 5e-7: emitted [const bl1 = loft(sk1, sk2, 0.000001)] offsets [0,5e-7] -> [0,0.000001] exact 0.00035 truck 0.000350000000000002 -> 0.000700000000000004 guard gap0 -> sliver
+F gap 1e-7: emitted [const bl1 = loft(sk1, sk2, 0)] offsets [0,1e-7] -> [0,0] exact 0.00007 truck 0.00007000000000000044 -> 0 guard gap0 -> gap0

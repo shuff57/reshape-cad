@@ -32,7 +32,7 @@ export const LIM = {
   curvedMin: 1,
   ringTubeMin: 0.5,
   tallMin: 0.01,
-  planarMin: 1e-3,
+  planarMin: 1e-2,           // round 4b: was 1e-3. truck refuses a planar profile in kernel text ('cannot attach a plane to a wire ...') for 32 of 233 recorded inputs at EXACTLY 0.001 and for 2 at 0.00114 / 0.002; none at or above 0.0021; a decade above the last refusal
   cylSlender: 30,
   coneSlender: 40,
   planarAspectMax: 1e4,       // E13: longest / shortest typed size of a planar part. Ends are lost (4 faces for 6) from ~1e6 for a box and from 1e5 for a turned box or a prism needle
@@ -43,6 +43,13 @@ export const LIM = {
   planarQMax: 1e6,
   // a TURNED shape or a prism has a wider scatter (the rotation and the n-gon vertices are not exact): the first wrong cases sit at Q 1.4e5, 1.5e5, 5.5e5 (random inputs, seed 1: dVol 6e-8 .. 1.3e-7, COM 3e-4 .. 5e-4 x diagonal) although the E12 grid was exact to 1e7, so the limit is a decade under the lowest wrong cell
   planarQMaxTurned: 1e4,
+  // ---- round 4, after fuzz seeds 1..3 (E22..E27). Every one is the edge of a measured cell with a decade (or the stated factor) of margin.
+  coneFlatMin: 0.01,          // cone tall / across (E26a2, E27d: 4 faces for 2 at 0.0005 plain and at 0.001 turned, right from 0.002 -> 5x margin)
+  coneTurnedSlender: 10,      // a TURNED cone: tall / across (E23, E26a: 3 faces for 2 from 16, right up to 15)
+  coneTurnedMovedMinT: 1,     // a cone that is turned AND not at the origin: tall / across at least this (E26b, E27c: volume 10% .. 100x off up to 0.65, right from 0.7)
+  cylRoundAspectMax: 100,     // cylinder with corner or bevel: across / tall (E24, E26c, E27b: a face is dropped from 450, right through 300; volume 2.6e-4 at 200)
+  boxRoundAspectMax: 100,     // box with corner: longest / shortest (E26c, E27a: volume 3.5e-4 .. 7.7e-4 from 300, 2e-4 at 200, 1.2e-4 up to 100)
+  sphereFarProduct: 1e8,      // a curved shape: largest |at| x largest typed size (E21, E25, E27e: first wrong 1e9 (sphere 1000 at 1e6), erratic above it; right everywhere at or below 4e8)
 };
 
 const SHAPE = { box: 'box', cylinder: 'cylinder', sphere: 'sphere', cone: 'cone', torus: 'ring', prism: 'prism', wedge: 'wedge' };
@@ -175,6 +182,20 @@ export function guardFeature(f) {
   // ---- slenderness (curved) and aspect (planar)
   if (kind === 'cylinder' && f.height / (2 * f.radius) > LIM.cylSlender) return refuse('cyl-too-slender', `cylinder(${num(2 * f.radius)}, ${num(f.height)}): too long for its width -- a slender cylinder is measured wrongly, so tall has to be at most ${LIM.cylSlender} times across.`);
   if (kind === 'cone' && f.height / (2 * f.radius) > LIM.coneSlender) return refuse('cone-too-slender', `cone(${num(2 * f.radius)}, ${num(f.height)}): too long for its width -- a slender cone is measured wrongly, so tall has to be at most ${LIM.coneSlender} times across.`);
+  // ---- cone shapes the mesh gets wrong (E22/E23/E26/E27): too flat, too long when turned, and flat + turned + moved
+  if (kind === 'cone') {
+    const across = 2 * f.radius; const t = f.height / across; const moved = cx.some((v) => v !== 0);
+    if (t < LIM.coneFlatMin) return refuse('cone-too-flat', `cone(${num(across)}, ${num(f.height)}): too flat for its width -- a cone this flat is built with the wrong number of faces, so tall has to be at least ${num(up(LIM.coneFlatMin * across))}, one hundredth of across.`);
+    if (turned && t > LIM.coneTurnedSlender) return refuse('cone-turned-slender', `cone(${num(across)}, ${num(f.height)}): too long to be turned -- a turned cone this long is built with a seam through its side, so tall has to be at most ${LIM.coneTurnedSlender} times across, or leave the cone unturned.`);
+    if (turned && moved && t < LIM.coneTurnedMovedMinT) return refuse('cone-turned-moved-flat', `cone(${num(across)}, ${num(f.height)}): a cone that is turned and not at the origin has to be at least as tall as it is across -- a flatter one is built with the wrong volume and position, so make tall ${num(up(across))} or more, or leave it unturned or at the origin.`);
+  }
+  // ---- rounded plates and discs at a large aspect (E24/E26c/E27a/E27b)
+  if (kind === 'box' && f.round && smax / smin > LIM.boxRoundAspectMax) {
+    return refuse('box-round-too-thin', `${callOf(f)}: too long and thin for a rounded box -- its volume would be measured wrongly, so the longest side has to be at most ${LIM.boxRoundAspectMax} times the shortest.`);
+  }
+  if (kind === 'cylinder' && f.round && (2 * f.radius) / f.height > LIM.cylRoundAspectMax) {
+    return refuse('cyl-round-too-flat', `cylinder(${num(2 * f.radius)}, ${num(f.height)}, { corner: ${num(f.round)} }): too flat for a rounded rim -- a rim on a disc this wide is built with a face missing, so across has to be at most ${LIM.cylRoundAspectMax} times tall.`);
+  }
   if (!curved && smax / smin > LIM.planarAspectMax) {
     return refuse('too-thin-planar', `${callOf(f)}: too long and thin -- its ends would be lost and the part built with missing faces, so the longest size has to be at most ${LIM.planarAspectMax} times the shortest.`);
   }
@@ -183,6 +204,9 @@ export function guardFeature(f) {
   const far = Math.max(...cx.map(Math.abs));
   if (far > LIM.planarMax) return refuse('too-far', `${nm}(): the at position ${num(far)} is too far from the origin -- the part would be built in the wrong place, so keep every at coordinate within ${num(LIM.planarMax)}.`);
   if (curved) {
+    if (far * smax > LIM.sphereFarProduct) {
+      return refuse('too-far-big-curved', `${nm}(): a shape ${num(smax)} across at a position ${num(far)} from the origin is too far out for its size -- its volume and centre would be worked out wrongly, so keep the position times the biggest size at ${num(LIM.sphereFarProduct)} or less (at most ${num(down(LIM.sphereFarProduct / smax, 3))} here).`);
+    }
     if (far > LIM.curvedFarRatio * smin) {
       return refuse('too-far-curved', `${nm}(): the at position ${num(far)} is too far from the origin for a shape whose smallest size is ${num(smin)} -- its volume and centre would be worked out wrongly, so keep every at coordinate within ${num(LIM.curvedFarRatio * smin)} (${LIM.curvedFarRatio} times that size), or move the shape nearer.`);
     }

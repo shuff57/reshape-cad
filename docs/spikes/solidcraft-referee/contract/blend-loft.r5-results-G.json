@@ -1,0 +1,82 @@
+{
+ "G": [
+  {
+   "call": "blend(a, b, c, 30)",
+   "errors": [
+    "blend() takes two sketches and a gap; the fourth argument (30) was ignored."
+   ],
+   "blendInDoc": false,
+   "kinds": "sketch,sketch,sketch"
+  },
+  {
+   "call": "loft(a, b, c, 30)",
+   "errors": [
+    "blend() takes two sketches and a gap; the fourth argument (30) was ignored."
+   ],
+   "blendInDoc": false,
+   "kinds": "sketch,sketch,sketch"
+  },
+  {
+   "call": "blend(a, b, 30, 5)",
+   "errors": [
+    "blend() takes two sketches and a gap; the fourth argument (5) was ignored."
+   ],
+   "blendInDoc": false,
+   "kinds": "sketch,sketch,sketch"
+  },
+  {
+   "call": "loft(a, b, 30, 5)",
+   "errors": [
+    "blend() takes two sketches and a gap; the fourth argument (5) was ignored."
+   ],
+   "blendInDoc": false,
+   "kinds": "sketch,sketch,sketch"
+  },
+  {
+   "call": "loft(a, b, 30, \"x\")",
+   "errors": [
+    "blend() takes two sketches and a gap; the fourth argument (the text \"x\") was ignored."
+   ],
+   "blendInDoc": false,
+   "kinds": "sketch,sketch,sketch"
+  },
+  {
+   "call": "loft(a, b)",
+   "errors": [
+    "blend needs a number for gap."
+   ],
+   "blendInDoc": false,
+   "kinds": "sketch,sketch,sketch"
+  },
+  {
+   "call": "loft(a)",
+   "errors": [
+    "blend() needs two sketches: blend(sketch1, sketch2, gap)."
+   ],
+   "blendInDoc": false,
+   "kinds": "sketch,sketch,sketch"
+  },
+  {
+   "call": "loft()",
+   "errors": [
+    "blend() needs two sketches: blend(sketch1, sketch2, gap)."
+   ],
+   "blendInDoc": false,
+   "kinds": "sketch,sketch,sketch"
+  },
+  {
+   "call": "loft(a, b, \"tall\")",
+   "errors": [
+    "blend's gap has to be a number, and you gave it the text \"tall\"."
+   ],
+   "blendInDoc": false,
+   "kinds": "sketch,sketch,sketch"
+  },
+  {
+   "call": "blend(a, b, 30) then cuboid(5,5,5) (control)",
+   "errors": [],
+   "blendInDoc": true,
+   "kinds": "sketch,sketch,sketch,blend,box"
+  }
+ ]
+}

@@ -1,0 +1,8 @@
+Running as unit: run-p3395519-i3401798.scope; invocation ID: 1a8b61a0131b45d0b1b321667b7eeec5
+cuboid(40,30,10)                         OCCT-vs-exact null truck-vs-exact null OCCT-vs-truck 0.00e+0
+pull rect 40x30 by 10                    OCCT-vs-exact 0.00e+0 truck-vs-exact 0.00e+0 OCCT-vs-truck 0.00e+0
+pull polygon L by 10                     OCCT-vs-exact 0.00e+0 truck-vs-exact 0.00e+0 OCCT-vs-truck 0.00e+0
+pull circle d40 by 10                    OCCT-vs-exact 0.00e+0 truck-vs-exact 1.78e-14 OCCT-vs-truck 1.78e-14
+loft rect 40x30 -> rect 20x15 gap 10     OCCT-vs-exact 1.00e-7 truck-vs-exact 8.17e-14 OCCT-vs-truck 1.00e-7
+loft rect 40x40 -> rect 10x10 gap 30     OCCT-vs-exact 1.00e-7 truck-vs-exact 4.66e-14 OCCT-vs-truck 1.00e-7
+loft circle d40 -> circle d20 gap 30     OCCT-vs-exact 1.00e-7 truck-vs-exact 1.82e-5 OCCT-vs-truck 1.83e-5

@@ -1,0 +1,191 @@
+{
+ "A": {
+  "named": [
+   {
+    "label": "hexagon r10 (8.66) -> hexagon r7 (6.06), the critic case",
+    "dVol": 2.0599324361031788e-7,
+    "occt": 3792.5999999999995,
+    "truck": 3792.600781249975,
+    "faces": [
+     8,
+     8
+    ],
+    "sinDev": 0.00014289878618775755,
+    "guardRound4": "sides",
+    "guardRound5": "PASS",
+    "sentence5": null
+   },
+   {
+    "label": "pentagon r10 -> pentagon r6, 2 decimals",
+    "dVol": 7.318138191818959e-16,
+    "occt": 3106.9880000000003,
+    "truck": 3106.987999999998,
+    "faces": [
+     7,
+     7
+    ],
+    "sinDev": 0.0006206274146023643,
+    "guardRound4": "sides",
+    "guardRound5": "PASS",
+    "sentence5": null
+   },
+   {
+    "label": "triangle r10 -> triangle r5, 2 decimals",
+    "dVol": 1.9504175392688994e-15,
+    "occt": 1515.5,
+    "truck": 1515.499999999997,
+    "faces": [
+     5,
+     5
+    ],
+    "sinDev": 0,
+    "guardRound4": "PASS",
+    "guardRound5": "PASS",
+    "sentence5": null
+   },
+   {
+    "label": "hand-drawn triangle pair (1 decimal)",
+    "dVol": 0.00017891221373987339,
+    "occt": 3111.2499999999995,
+    "truck": 3110.6933593750014,
+    "faces": [
+     5,
+     5
+    ],
+    "sinDev": 0.05800614158477359,
+    "guardRound4": "sides",
+    "guardRound5": "sides",
+    "sentence5": "Matching sides of these two sketches are up to 3.3 degrees from parallel, which would twist the loft, so make each side of the first parallel to its partner in the second."
+   },
+   {
+    "label": "typed hexagon r10 (8.66) -> circle(20), gap 25",
+    "dVol": 0.0000574825496122981,
+    "occt": 7170.283007430129,
+    "truck": 7169.87084128142,
+    "faces": [
+     8,
+     8
+    ],
+    "guardRound4": "circle-poly",
+    "guardRound5": "PASS",
+    "sentence5": null
+   },
+   {
+    "label": "typed octagon r10 (7.07) -> circle(20), gap 25",
+    "dVol": 0.00006205551269810592,
+    "occt": 7460.627682760615,
+    "truck": 7460.164709684712,
+    "faces": [
+     10,
+     10
+    ],
+    "guardRound4": "circle-poly",
+    "guardRound5": "PASS",
+    "sentence5": null
+   },
+   {
+    "label": "typed octagon r10 (7.07), circle first",
+    "dVol": 0.00005804277491510661,
+    "occt": 7460.627682760614,
+    "truck": 7460.194647227298,
+    "faces": [
+     10,
+     10
+    ],
+    "guardRound4": "circle-poly",
+    "guardRound5": "PASS",
+    "sentence5": null
+   }
+  ],
+  "sweep": {
+   "polygon->polygon dec1 r<10": {
+    "n": 21,
+    "r4Pass": 2,
+    "r5Pass": 4,
+    "r5PassMaxD": 6.2553478304044795e-15,
+    "r5PassWrong": 0,
+    "r4RefusedExact": 19,
+    "r5RefusedExact": 17,
+    "maxRawD": 0.00003756009614342006,
+    "faceMismatch": 0
+   },
+   "polygon<->circle dec2 r>=10": {
+    "n": 51,
+    "r4Pass": 12,
+    "r5Pass": 51,
+    "r5PassMaxD": 0.00013218660310438445,
+    "r5PassWrong": 0,
+    "r4RefusedExact": 39,
+    "r5RefusedExact": 0,
+    "maxRawD": 0.00013218660310438445,
+    "faceMismatch": 0
+   },
+   "polygon->polygon dec2 r<10": {
+    "n": 54,
+    "r4Pass": 12,
+    "r5Pass": 42,
+    "r5PassMaxD": 0.000005591808900900245,
+    "r5PassWrong": 0,
+    "r4RefusedExact": 42,
+    "r5RefusedExact": 12,
+    "maxRawD": 0.000005591808900900245,
+    "faceMismatch": 0
+   },
+   "polygon<->circle dec1 r<10": {
+    "n": 25,
+    "r4Pass": 5,
+    "r5Pass": 9,
+    "r5PassMaxD": 0.00015658792981313954,
+    "r5PassWrong": 0,
+    "r4RefusedExact": 20,
+    "r5RefusedExact": 16,
+    "maxRawD": 0.0001577741825514893,
+    "faceMismatch": 0
+   },
+   "polygon->polygon dec2 r>=10": {
+    "n": 66,
+    "r4Pass": 12,
+    "r5Pass": 65,
+    "r5PassMaxD": 9.595211195282546e-7,
+    "r5PassWrong": 0,
+    "r4RefusedExact": 54,
+    "r5RefusedExact": 1,
+    "maxRawD": 0.000003900291908868143,
+    "faceMismatch": 0
+   },
+   "polygon->polygon dec1 r>=10": {
+    "n": 39,
+    "r4Pass": 10,
+    "r5Pass": 25,
+    "r5PassMaxD": 0.0000031415875887547165,
+    "r5PassWrong": 0,
+    "r4RefusedExact": 29,
+    "r5RefusedExact": 14,
+    "maxRawD": 0.000012584920851513645,
+    "faceMismatch": 0
+   },
+   "polygon<->circle dec2 r<10": {
+    "n": 45,
+    "r4Pass": 11,
+    "r5Pass": 41,
+    "r5PassMaxD": 0.00015698485897037314,
+    "r5PassWrong": 0,
+    "r4RefusedExact": 34,
+    "r5RefusedExact": 4,
+    "maxRawD": 0.00015698485897037314,
+    "faceMismatch": 0
+   },
+   "polygon<->circle dec1 r>=10": {
+    "n": 23,
+    "r4Pass": 7,
+    "r5Pass": 21,
+    "r5PassMaxD": 0.0001035504942051295,
+    "r5PassWrong": 0,
+    "r4RefusedExact": 16,
+    "r5RefusedExact": 2,
+    "maxRawD": 0.0001035504942051295,
+    "faceMismatch": 0
+   }
+  }
+ }
+}

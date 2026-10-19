@@ -1,0 +1,106 @@
+{
+ "F": [
+  {
+   "gap": 30,
+   "emitted": "const bl1 = loft(sk1, sk2, 30)",
+   "offsets1": [
+    0,
+    30
+   ],
+   "offsets2": [
+    0,
+    30
+   ],
+   "exactVolume": 21000,
+   "truck1": 20999.999999999996,
+   "truck2": 20999.999999999996,
+   "guard1": "PASS",
+   "guard2": "PASS"
+  },
+  {
+   "gap": 30.1234567,
+   "emitted": "const bl1 = loft(sk1, sk2, 30.123457)",
+   "offsets1": [
+    0,
+    30.1234567
+   ],
+   "offsets2": [
+    0,
+    30.123457
+   ],
+   "exactVolume": 21086.41969,
+   "truck1": 21086.419689999984,
+   "truck2": 21086.419899999975,
+   "guard1": "PASS",
+   "guard2": "PASS"
+  },
+  {
+   "gap": 0.001,
+   "emitted": "const bl1 = loft(sk1, sk2, 0.001)",
+   "offsets1": [
+    0,
+    0.001
+   ],
+   "offsets2": [
+    0,
+    0.001
+   ],
+   "exactVolume": 0.7000000000000001,
+   "truck1": 0.7000000000000037,
+   "truck2": 0.7000000000000037,
+   "guard1": "sliver",
+   "guard2": "sliver"
+  },
+  {
+   "gap": 0.000001,
+   "emitted": "const bl1 = loft(sk1, sk2, 0.000001)",
+   "offsets1": [
+    0,
+    0.000001
+   ],
+   "offsets2": [
+    0,
+    0.000001
+   ],
+   "exactVolume": 0.0007,
+   "truck1": 0.000700000000000004,
+   "truck2": 0.000700000000000004,
+   "guard1": "sliver",
+   "guard2": "sliver"
+  },
+  {
+   "gap": 5e-7,
+   "emitted": "const bl1 = loft(sk1, sk2, 0.000001)",
+   "offsets1": [
+    0,
+    5e-7
+   ],
+   "offsets2": [
+    0,
+    0.000001
+   ],
+   "exactVolume": 0.00035,
+   "truck1": 0.000350000000000002,
+   "truck2": 0.000700000000000004,
+   "guard1": "gap0",
+   "guard2": "sliver"
+  },
+  {
+   "gap": 1e-7,
+   "emitted": "const bl1 = loft(sk1, sk2, 0)",
+   "offsets1": [
+    0,
+    1e-7
+   ],
+   "offsets2": [
+    0,
+    0
+   ],
+   "exactVolume": 0.00007,
+   "truck1": 0.00007000000000000044,
+   "truck2": 0,
+   "guard1": "gap0",
+   "guard2": "gap0"
+  }
+ ]
+}

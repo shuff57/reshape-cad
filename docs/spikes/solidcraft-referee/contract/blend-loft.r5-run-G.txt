@@ -1,0 +1,11 @@
+Running as unit: run-p3394288-i3405468.scope; invocation ID: bb826efccba146c9a7058443f9d38426
+G blend(a, b, c, 30)                           errors=["blend() takes two sketches and a gap; the fourth argument (30) was ignored."] blendInDoc=false
+G loft(a, b, c, 30)                            errors=["blend() takes two sketches and a gap; the fourth argument (30) was ignored."] blendInDoc=false
+G blend(a, b, 30, 5)                           errors=["blend() takes two sketches and a gap; the fourth argument (5) was ignored."] blendInDoc=false
+G loft(a, b, 30, 5)                            errors=["blend() takes two sketches and a gap; the fourth argument (5) was ignored."] blendInDoc=false
+G loft(a, b, 30, "x")                          errors=["blend() takes two sketches and a gap; the fourth argument (the text \"x\") was ignored."] blendInDoc=false
+G loft(a, b)                                   errors=["blend needs a number for gap."] blendInDoc=false
+G loft(a)                                      errors=["blend() needs two sketches: blend(sketch1, sketch2, gap)."] blendInDoc=false
+G loft()                                       errors=["blend() needs two sketches: blend(sketch1, sketch2, gap)."] blendInDoc=false
+G loft(a, b, "tall")                           errors=["blend's gap has to be a number, and you gave it the text \"tall\"."] blendInDoc=false
+G blend(a, b, 30) then cuboid(5,5,5) (control) errors=[] blendInDoc=true

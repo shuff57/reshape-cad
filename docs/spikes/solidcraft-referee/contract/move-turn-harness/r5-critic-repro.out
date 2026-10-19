@@ -1,0 +1,21 @@
+## critic chain: cone at, turn, move, move 
+  shipped: FAIL vol=104.5263 occt=141.3717 dVol=2.61e-1 dCom=6.63e-2 dBbox=2.03e-5 faces=2/2 
+  guard  : PASS vol=141.3459 occt=141.3717 dVol=1.82e-4 dCom=2.17e-15 dBbox=2.03e-5 faces=2/2 
+  brep   : 0.00e+0 faces 2
+## fz7-18 style: copy of a copy of a cone 
+  shipped: REFUSED "move6 (move): its target move5 was refused (move5 (move): its target move4 was refused (move4 (move): its target move3 was refused (move3 (move): its target move2 was refused (move2 (move): its target move1 was refused (move1 (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it))))))" 
+  guard  : PASS vol=251.2816 occt=251.3274 dVol=1.82e-4 dCom=1.89e-16 dBbox=1.25e-5 faces=2/2 
+  brep   : 0.00e+0 faces 2
+     move6 shipped REFUSED "move6 (move): its target move5 was refused (move5 (move): its target move4 was refused (move4 (move): | guard PASS vol=251.2816 occt=251.3274 dVol=1.82e-4 dCom=1.89e-16 dBbox=1.25e-5 faces=2/2
+## six plain moves of a cone 
+  shipped: FAIL vol=224.3365 occt=251.3274 dVol=1.07e-1 dCom=8.79e-3 dBbox=2.50e-5 faces=2/2 
+  guard  : PASS vol=251.2816 occt=251.3274 dVol=1.82e-4 dCom=4.73e-17 dBbox=2.50e-5 faces=2/2 
+  brep   : 2.26e-16 faces 2
+## one move to the same place (control) 
+  shipped: PASS vol=251.2816 occt=251.3274 dVol=1.82e-4 dCom=4.73e-17 dBbox=2.50e-5 faces=2/2 
+  guard  : PASS vol=251.2816 occt=251.3274 dVol=1.82e-4 dCom=4.73e-17 dBbox=2.50e-5 faces=2/2 
+  brep   : 2.26e-16 faces 2
+## cylinder, six moves (control) 
+  shipped: PASS vol=753.8883 occt=753.9822 dVol=1.25e-4 dCom=2.03e-15 dBbox=5.37e-5 faces=3/3 
+  guard  : PASS vol=753.8883 occt=753.9822 dVol=1.25e-4 dCom=2.03e-15 dBbox=5.37e-5 faces=3/3 
+  brep   : 7.54e-16 faces 3
