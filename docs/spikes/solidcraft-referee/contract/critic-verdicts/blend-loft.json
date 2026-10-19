@@ -1,0 +1,36 @@
+{
+ "group": "blend-loft",
+ "verdict": "accepted",
+ "summary": "All 45 rows cite existing evidence files; 3 fresh-seed fuzz runs (2520 live cases, truck vs OCCT, plus closed form for circle-circle), the 1420-case r4 battery and the options probe found 0 guard-pass-but-wrong volumes. One real guard hole found: needle lofts (length/width >= ~1e4..1e6) pass the guard with exact volume but truck drops 2 faces, contradicting the rows' equal-face-count claim; the guard is also documented as NOT WIRED.",
+ "rowsTotal": 45, "rowsEvidenceChecked": 45, "rowsReplayed": 14,
+ "replays": [
+  {"feature":"fuzz seed 7001 n=12 x10 populations","command":"bun contract/blend-loft.fuzz-live.mjs --seed=7001 --n=12 --refused=0","stored":"0 pass-but-wrong (stored seeds 11/12/13/1111)","live":"120 cases, 73 passed, 0 wrong, max straight d 1.2e-13","match":true},
+  {"feature":"fuzz seeds 7002, 7003 n=120 x10","command":"same, n=120","stored":"max curved d <= 3e-4","live":"2400 cases, 1513 passed, 0 wrong; max curved d 1.95e-4 (cc), 1.7e-4 (typedreg)","match":true},
+  {"feature":"r4 deterministic battery (1420 cases)","command":"bun contract/blend-loft.r4.mjs","stored":"blend-loft.r4-results.json","live":"0 pass-but-wrong; N8 58 scripts, 26 blends passed, 0 not exact; but 39 fuzz7p 'corner nudged' labels now PASS the guard where stored r4-results refused them (guard moved to round 5, stored r4 file stale)","match":false},
+  {"feature":"options-live (UI path, refusals, alias)","command":"bun contract/blend-loft.options-live.mjs","stored":"gap0/same/planes/frame/count/coarse refused","live":"all REFUSED with expected codes; UI whyCannotBlend allows 9 pairs the guard refuses","match":true},
+  {"feature":"rect<->rect scale 1e-3..1e5","command":"probe.mjs","stored":"exact 1e-9, equal faces","live":"d <= 6e-15, faces 6/6","match":true},
+  {"feature":"hexagon<->hexagon scale 1e-3..1e5","command":"probe.mjs","stored":"exact","live":"d <= 8e-15, faces equal","match":true},
+  {"feature":"circle<->circle scale 1e3..1e5","command":"probe.mjs","stored":"<=2.5e-4 vs closed form","live":"d 5.0e-5, faces OCCT 3 vs truck 4","match":true},
+  {"feature":"hexagon<->circle scale 1e3..1e5","command":"probe.mjs","stored":"<=3e-4","live":"d 3.7e-5","match":true},
+  {"feature":"rect far lateral shift 1000","command":"probe.mjs","stored":"any centre offset exact","live":"d 1.0e-11 (above 1e-12 but under 1e-9)","match":true},
+  {"feature":"gap/size ratio 1.1e-4 and 2e-4 (just above sliver rule)","command":"probe.mjs","stored":"sliver below 1e-4 refused","live":"passes, d <= 2e-15, faces 6/6","match":true},
+  {"feature":"rect needle 0.01->0.02, h=1e4","command":"probe2.mjs","stored":"equal face counts for straight-sided passes","live":"guard PASS, d 4e-15 but faces OCCT 6 vs truck 5","match":false},
+  {"feature":"rect/hex/triangle needle h=1e5..1e7","command":"probe2.mjs","stored":"equal face counts","live":"guard PASS, faces 6/4, 8/6, 5/3, volumes exact","match":false},
+  {"feature":"circle<->circle equal r5 h10","command":"probe.mjs","stored":"<=2.5e-4 vs closed form","live":"d 1.0e-4","match":true},
+  {"feature":"rect sliver gap -0.0005","command":"probe.mjs","stored":"refused sliver","live":"guard sliver","match":true}
+ ],
+ "defects": [
+  {"severity":"major","feature":"blend: rect to rect / same-count parallel polygons (rows 5, 6)","problem":"No upper bound on loft length vs section width for straight-sided pairs: at length/width >= 1e6 (rect 0.01->0.02 at h=1e4, hex/triangle h=1e5) the guard passes, volume is exact (<1e-11) but truck returns 2 fewer faces than OCCT (6/4, 8/6, 5/3). The rows and the gate define 'wrong' as equal face counts, so the claim 'equal face counts' fails on an untested extreme (the sliver rule covers thin, not needle).","evidenceFile":"critic-blend-loft/probe2.mjs (scratchpad)"},
+  {"severity":"minor","feature":"all rows citing blend-loft.r4-results.json","problem":"Stored r4 results are stale against the current guard: 39 'fuzz7p corner nudged 1e-7..1e-6' cases were guard-refused in the stored file and are passed live. They are exact (0 wrong) but evidence files no longer reproduce the guard's decisions; rows say round 4 while the guard is round 5.","evidenceFile":"blend-loft.r4-results.json"},
+  {"severity":"minor","feature":"rows 9, 12, 13 (polygon/rect/rounded-rect <-> circle supported)","problem":"Only one oracle (OCCT) for truck volume; no closed form, brep-rs refuses or is index-paired. Bar 3e-4 (tessellation); observed up to 1.7e-4, so a measured 1e-4-class error is accepted, not exact.","evidenceFile":"blend-loft.fuzz-live.mjs"},
+  {"severity":"minor","feature":"row 6 (parallel polygons, bar 1e-9)","problem":"Guard also passes slightly non-parallel hand-typed polygons (near/typed populations) with true error up to 2.5e-5; accepted at the 3e-4 bar, but the row text states 1e-9.","evidenceFile":"critic-blend-loft/f7002.json"},
+  {"severity":"minor","feature":"guard not wired / studio button path","problem":"Both are recorded as 'wrong' rows: the guard and its post-check are not imported by packages/, so the product still builds wrong solids silently. Disclosed honestly; supported rows hold only through the guarded rig.","evidenceFile":"blend-loft.json enforcement.wired=false"}
+ ],
+ "notMeasured": [
+  "Rows 25-45 refusal sentences were checked for engine words by grep (none) and for firing via options-live and the r4 battery, not each one individually replayed.",
+  "Full guard-check.mjs gate (about 25 min) not run; seeds 7001-7003 and r4 battery run instead.",
+  "brep-rs oracle-reliability row not independently replayed.",
+  "Needle lofts for circle<->circle and circle<->polygon at length/width >1e4 not probed."
+ ],
+ "criticAt": "2026-10-19"
+}
