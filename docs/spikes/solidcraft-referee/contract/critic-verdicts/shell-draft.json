@@ -1,0 +1,154 @@
+{
+ "group": "shell-draft",
+ "verdict": "accepted",
+ "summary": "No silent wrong solid found: 15 stored cases replayed live and matched, plus about 120 fresh probes (scale 1e-4 to 1e3, thin walls, near-vanish drafts 1e-5 from the limit, near-tie face words 4e-7 apart, 40 random multi-face draft-then-hollow cases against an independent plane closed form) were built exactly or refused. Two hand closed forms (whole draft of a box, L extrude draft, hollow after a rounded cylinder) agree with the truck. Defects are bookkeeping: the committed shell-draft.json is stale against its own builder, and a few evidence/sentence gaps.",
+ "rowsTotal": 94,
+ "rowsEvidenceChecked": 94,
+ "rowsReplayed": 15,
+ "replays": [
+  {
+   "feature": "closed hollow box",
+   "command": "bun contract/shell-draft-runner.mjs --only=<id> hollow-closed-box",
+   "stored": "truck 9024 (occt 9024)",
+   "live": "9024",
+   "match": true
+  },
+  {
+   "feature": "draft angle 77 (supported)",
+   "command": "bun contract/shell-draft-runner.mjs --only=<id> draft-right-angle-77",
+   "stored": "9722.0061",
+   "live": "9722.0061",
+   "match": true
+  },
+  {
+   "feature": "draft angle 78 (refused G-VANISH)",
+   "command": "bun contract/shell-draft-runner.mjs --only=<id> draft-right-angle-78-steep",
+   "stored": "REFUSED, closed:vanish",
+   "live": "REFUSED same sentence",
+   "match": true
+  },
+  {
+   "feature": "hollow wall 14.99 band",
+   "command": "bun contract/shell-draft-runner.mjs --only=<id> hollow-band-14.99",
+   "stored": "23998.996 vs closed 23998.996",
+   "live": "23998.996",
+   "match": true
+  },
+  {
+   "feature": "hollow after through hole 12_12",
+   "command": "bun contract/shell-draft-runner.mjs --only=<id> hollow-hole-pos-12_12",
+   "stored": "9520.1608 vs closed 9520.23 (7.3e-6)",
+   "live": "9520.1608",
+   "match": true
+  },
+  {
+   "feature": "hollow hole too close (G-HOLE)",
+   "command": "bun contract/shell-draft-runner.mjs --only=<id> hollow-hole-pos-14_0",
+   "stored": "REFUSED (unguarded 9509.3252, closed 9446.6545)",
+   "live": "REFUSED same",
+   "match": true
+  },
+  {
+   "feature": "hollow after round r1 on cylinder",
+   "command": "bun contract/shell-draft-runner.mjs --only=<id> hb2-cyl-round1-w2",
+   "stored": "4743.4608 (brep 4743.462)",
+   "live": "4743.4608; hand Pappus closed form 4743.460",
+   "match": true
+  },
+  {
+   "feature": "non-convex draft with pocket",
+   "command": "bun contract/shell-draft-runner.mjs --only=<id> dnc-pocket-right-in10",
+   "stored": "11335.5095 (OCCT and brep 11735.5095, both ignore the pocket)",
+   "live": "11335.5095",
+   "match": true
+  },
+  {
+   "feature": "draft then hollow 2deg",
+   "command": "bun contract/shell-draft-runner.mjs --only=<id> hd2-front-w2-2",
+   "stored": "6872.6338",
+   "live": "6872.6338",
+   "match": true
+  },
+  {
+   "feature": "whole draft turned 30deg",
+   "command": "bun contract/shell-draft-runner.mjs --only=<id> dw2-box-turned-z30",
+   "stored": "13966.7726 (OCCT 14211.02 wrong)",
+   "live": "13966.7726; hand integral for the unturned twin 13966.77",
+   "match": true
+  },
+  {
+   "feature": "whole draft L -25deg",
+   "command": "bun contract/shell-draft-runner.mjs --only=<id> dw2-L--25",
+   "stored": "31876.0046",
+   "live": "31876.0046; hand mitre-offset integral 31876.1",
+   "match": true
+  },
+  {
+   "feature": "sequential 4 faces draft box",
+   "command": "bun contract/shell-draft-runner.mjs --only=<id> dbox-four-n3",
+   "stored": "14404.4089",
+   "live": "14404.4089",
+   "match": true
+  },
+  {
+   "feature": "whole draft circle extrude",
+   "command": "bun contract/shell-draft-runner.mjs --only=<id> dw2-extrude-circle",
+   "stored": "6663.7052 vs 6664.3184 (9.2e-5)",
+   "live": "6663.7052",
+   "match": true
+  },
+  {
+   "feature": "hollow after draft prism6",
+   "command": "bun contract/shell-draft-runner.mjs --only=<id> ha3-prism6-5",
+   "stored": "4294.3266",
+   "live": "4294.3266",
+   "match": true
+  },
+  {
+   "feature": "draft edge hd2-edge",
+   "command": "bun contract/shell-draft-runner.mjs --only=<id> hd2-edge-w2--0.001",
+   "stored": "6552.3",
+   "live": "6552.3",
+   "match": true
+  }
+ ],
+ "defects": [
+  {
+   "severity": "major",
+   "feature": "whole file",
+   "problem": "C/shell-draft.json is stale against its own builder and runs file: committed file says 94 rows, 43 supported, 1013 cases; shell-draft-runs.json holds 1100 cases and shell-draft-make-rows.mjs (run on a copy) rebuilds 100 rows, 46 supported. Six rows are missing from the committed file (closed hollow of 36 seeded random boxes/cylinders/prisms; closed hollow of a turned prism refused; 36 random mirrored boxes supported and swallowed-face refused; hollow after whole draft of cylinder/cone refused; hollow open after whole draft of prism/rectangle extrude) and two rows have older, narrower scopes (whole draft of rectangle/triangle extrude; whole draft with pull not along sides). Common rows are otherwise byte-identical.",
+   "evidenceFile": "shell-draft.json vs shell-draft-runs.json"
+  },
+  {
+   "severity": "minor",
+   "feature": "hollow after a whole-shape round of a cylinder smaller than the wall (row 11)",
+   "problem": "supported on one case (hb2-cyl-round1-w2) whose only reference is brep-rs (OCCT refuses, no closed form). I confirmed the number independently by a Pappus closed form (4743.460 vs truck 4743.4608), so the result is right but the stored evidence is single-oracle.",
+   "evidenceFile": "shell-draft-runs.json"
+  },
+  {
+   "severity": "minor",
+   "feature": "closed hollow of a wedge, cone, extrude... (row 5)",
+   "problem": "refusal sentence says a closed hollow is 'only built for a plain box, cylinder, sphere or prism', but the sphere closed hollow is refused (row 3), so the sentence promises something the layer does not do.",
+   "evidenceFile": "shell-draft.json row 5"
+  },
+  {
+   "severity": "minor",
+   "feature": "non-convex draft with pocket (row 81)",
+   "problem": "the 4 pocket cases (dnc-pocket-*) have both OCCT and brep-rs 400 mm3 above the closed form (both ignore the pocket); row text reports only 'OCCT 84/4/4' without saying the two oracles are wrong the same way, so those cases rest on the closed form alone (hand check: pocket 8x10x5 = 400, consistent with truck).",
+   "evidenceFile": "shell-draft-runs.json dnc-pocket-right-in10"
+  },
+  {
+   "severity": "minor",
+   "feature": "curved hollow near the wall limit (rows 1, 24)",
+   "problem": "curved bar 3e-4 of volume cannot see a tiny cavity (cylinder r12, wall 11.99: cavity 4e-7 of the volume; truck 13570.14 vs exact 13571.67, 1.1e-4); existence of the cavity is guarded only by face count. Not wrong, but weaker than the planar 1e-9 bar. Also an inconsistent ceiling: cylinder open hollow refuses at wall 11.999 although a 0.001 cavity exists, and a wall of 1e-5 prints as 'a wall of 0' in the closed-hollow sentence.",
+   "evidenceFile": "probe in critic-shell-draft/probe.mjs"
+  }
+ ],
+ "notMeasured": [
+  "Full 1100-case rerun (resource cap 1500M; replayed 15 cases + ~120 fresh probes instead)",
+  "Hollow after a very large coordinate scale (1e5): refused honestly (face pick), not investigated",
+  "Time claims (hang file, timings) were not rechecked",
+  "sigma (draft sign convention) is fixed from brep-rs on one case; a hand integral confirmed the sign on dw2-box-5 only"
+ ],
+ "criticAt": "2026-10-19T09:41:15.302000-07:00"
+}
