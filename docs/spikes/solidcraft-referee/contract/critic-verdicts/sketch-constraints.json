@@ -1,0 +1,84 @@
+{
+ "group": "sketch-constraints",
+ "verdict": "not-accepted",
+ "summary": "Evidence files exist and cited numbers are present; the 129-run unguarded re-measure reproduced the stored r4 numbers exactly and refusal sentences are clean (362 distinct, no engine words, one sentence each). But the claimed curved bar (3e-4) fails at small sketch scale with no guard check, every guard-dependent supported row rests on round-3 data I could not replay, and the sweep oracle is volume+bbox only and partly built from the guard's own solver.",
+ "rowsTotal": 119,
+ "rowsEvidenceChecked": 119,
+ "rowsReplayed": 0,
+ "replays": [
+  {
+   "feature": "fixture re-measure (129 runs: own-* and gauntlet sketch fixtures x stored/3.5%/15%)",
+   "command": "bun critic-sketch-constraints/remeasure-copy.mjs (copy of sketch-constraints-r4/remeasure-fixtures.mjs pointed at sc-referee-pkg), MemoryMax=1500M",
+   "stored": "MATCH 82, MISMATCH 15, REFUSED 29, NO-REFERENCE 3 (sketch-constraints-r4/out/remeasure.json)",
+   "live": "MATCH 82, MISMATCH 15, REFUSED 29, NO-REFERENCE 3; 0 volume differences > 1e-9 rel over 129 records",
+   "match": true
+  },
+  {
+   "feature": "rule:tangent / slot with tangent joints (own-slot-dims-from-points) scale sweep",
+   "command": "bun critic-sketch-constraints/scale.mjs, scales 1e-3..1e3",
+   "stored": "curved bar 3e-4",
+   "live": "rel to closed form: 3.0e-3 (s=1e-3), 4.3e-4 (s=1e-2), 3.8e-5 (s>=0.1)",
+   "match": false
+  },
+  {
+   "feature": "rule:diameter (own-circle-diameter) scale sweep",
+   "command": "same",
+   "stored": "7.2e-5..1.1e-4 at s=1",
+   "live": "9.0e-3 (s=1e-3), 8.0e-4 (s=1e-2), 1.13e-4 (s>=0.1)",
+   "match": false
+  },
+  {
+   "feature": "translation to 1e3/1e5/1e6 (own-symmetric-3pt-rect, own-triangle-length-angle)",
+   "command": "bun critic-sketch-constraints/offset.mjs",
+   "stored": "planar 1e-9",
+   "live": "8e-13 and 3.5e-16 at every offset",
+   "match": true
+  },
+  {
+   "feature": "GUARDED route (sweeps, ladder, branch, profiles, params, sentences)",
+   "command": "needs wrapper2 pkg; cargo build of phase2/wrapper2 killed by the 1500M cap (oom-kill compiling solidcraft-kernel)",
+   "stored": "guarded wrongPassed 0 of 3040 built sweep cases",
+   "live": "not replayed (resource)",
+   "match": "not replayed (resource)"
+  }
+ ],
+ "defects": [
+  {
+   "severity": "major",
+   "feature": "rule:diameter, rule:radius, rule:tangent, slot/oval rows (all curved supported rows)",
+   "problem": "The 3e-4 curved volume bar is a relative figure fitted at 10-40 mm. At sketch scale 0.01 the kernel is 4e-4 to 8e-4 off the closed form and at 0.001 it is 3e-3 to 9e-3 (circle d=0.014: 1.5255e-6 vs 1.5394e-6), and nothing in the guard checks the solid against the sketch area, so a tiny curved sketch builds and reports a volume 0.3-0.9% off with no refusal. Tiny scale is not among the swept cases; guard residual tolerance for curved rules is an absolute 1e-3 mm (guard.mjs RES_TOL.mmCurved).",
+   "evidenceFile": "sketch-constraints-r3/guard.mjs; critic-sketch-constraints/scale.mjs output"
+  },
+  {
+   "severity": "major",
+   "feature": "all supported soup/legacy/param/sentence rows",
+   "problem": "Statuses describe an unwired prototype guard whose outcome numbers (guarded 0 wrong of 3040) come only from round-3 runs on a wrapper2 pkg that no longer exists; sketch-constraints.json recheck says so itself. The guarded route could not be independently replayed here. One fresh unguarded replay contradicts a supported row: sk-circle-arc-tangent__slot-r6-L30-floating rough3.5 builds 3634.8 vs closed form 4731.0 (23% wrong, bbox y from -11.5), while the row 'saved FreeCAD refs, remaining sketch fixtures' reports shipped built-right 12 of 12 on its own (different) starts.",
+   "evidenceFile": "sketch-constraints-r4/out/remeasure.json; sketch-constraints.json recheck.whatWasNotRerun"
+  },
+  {
+   "severity": "major",
+   "feature": "sweep scoring (rough start rows, branch check rows)",
+   "problem": "classifyImg scores a build right on volume and bbox only, and the set of acceptable mirror images is derived from the guard's own ladderSketch solution, so a shape with the same area and bbox but a different outline, or a branch the guard itself mis-solves, is scored MATCH. No second oracle judges shape (brep-rs refuses circle-circle, symmetric trapezoid, symmetric-about-construction-line, so those 8 sweep cells at 3.5%/15% have closed form only).",
+   "evidenceFile": "sketch-constraints-r3/oracle.mjs; sketch-constraints-r3/out/sweeps.json"
+  },
+  {
+   "severity": "minor",
+   "feature": "row evidence strings",
+   "problem": "Cited paths use '...' abbreviations and 'out/sentences.json' does not exist (file is sentences.jsonl); 7 of 30 path tokens do not resolve literally.",
+   "evidenceFile": "sketch-constraints.json"
+  },
+  {
+   "severity": "minor",
+   "feature": "refusal sentences",
+   "problem": "Some sentences say 'the solver would pick a different one' / 'the solver cannot swing a line'; these are not in the banned list but are solver talk for a student.",
+   "evidenceFile": "sketch-constraints-r3/guard.mjs (BRANCH, plainMapper)"
+  }
+ ],
+ "notMeasured": [
+  "guarded route replay (wrapper2 pkg missing; build OOM at 1500M)",
+  "tiny/huge scale under the guard",
+  "shape-level (not volume/bbox) comparison in sweeps",
+  "oc OCCT/brep-rs agreement on 8 sweep cells with no brep-rs referee"
+ ],
+ "criticAt": "2026-10-19"
+}
