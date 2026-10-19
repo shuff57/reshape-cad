@@ -22,6 +22,13 @@ on:
     branches: [main]
   pull_request:
 
+# A push that supersedes an earlier one cancels the older run. Without this,
+# three pushes in a minute queue three 8-minute jobs measuring the same tree at
+# different points, and the badge shows whichever finished last.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -126,5 +133,53 @@ jobs:
       # disagreeing is a finding for a person to read rather than a red build.
       # The product's own coverage is what runs here -- including the kernel
       # adapter suite, which exercises the real wasm built above.
-      - name: Test
-        run: npm test
+      #
+      # WHY ONE STEP PER PACKAGE. `npm test --workspaces` stops at the first
+      # red workspace, and the job then reports only that "Test" failed. Finding
+      # out WHICH package broke meant grepping ~18,000 log lines. Named steps
+      # put the package in the red X. Every suite reports rather than blocks, so
+      # one red does not hide the other three; the single blocking gate is the
+      # aggregation step below.
+      - name: check-record
+        run: node scripts/check-record.mjs bench/record.json
+
+      - name: Test sketch
+        id: test-sketch
+        continue-on-error: true
+        run: npm test -w @shuff57/reshape-sketch
+
+      - name: Test script
+        id: test-script
+        continue-on-error: true
+        run: npm test -w @shuff57/reshape-script
+
+      - name: Test brep-adapter
+        id: test-adapter
+        continue-on-error: true
+        run: npm test -w @shuff57/reshape-brep-adapter
+
+      - name: Test studio
+        id: test-studio
+        continue-on-error: true
+        run: npm test -w @shuff57/reshape-studio
+
+      # The only step that reds the job. A suite that is skipped or cancelled
+      # is not a pass, so anything other than `success` fails here.
+      - name: All suites passed
+        if: always()
+        env:
+          SKETCH: ${{ steps.test-sketch.outcome }}
+          SCRIPT: ${{ steps.test-script.outcome }}
+          ADAPTER: ${{ steps.test-adapter.outcome }}
+          STUDIO: ${{ steps.test-studio.outcome }}
+        run: |
+          failed=0
+          for pair in "sketch:$SKETCH" "script:$SCRIPT" "brep-adapter:$ADAPTER" "studio:$STUDIO"; do
+            name=${pair%%:*}
+            outcome=${pair#*:}
+            if [ "$outcome" != "success" ]; then
+              echo "::error::$name suite: $outcome"
+              failed=1
+            fi
+          done
+          exit $failed

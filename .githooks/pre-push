@@ -1,0 +1,15 @@
+#!/bin/sh
+# Blocks a push whose suites are already red, so the failure costs a second
+# here instead of eight minutes in CI.
+#
+# Install once per clone (it is deliberately NOT auto-installed -- a hook that
+# appears by itself is a hook nobody trusts):
+#   git config core.hooksPath .githooks
+#
+# Bypass for one push with: git push --no-verify
+set -eu
+
+root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+cd "$root"
+
+exec npm run --silent ci:local
