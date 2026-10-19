@@ -1,0 +1,167 @@
+{
+ "group": "sketch-geometry",
+ "verdict": "not-accepted",
+ "summary": "Stored evidence (results-guarded/, sketch-geometry.json) predates the current guard and harness: of 813 live guarded replays 10 differ from the stored result, and the rows were not rebuilt. Row 'sketch({origin,u,v}) with u/v slightly off orthogonal' promises a refusal that no longer fires (the guard now straightens the frame with a notice), and the 9/9 gallery claim now reproduces 8/9. Fresh neighbour attacks (about 60 cases: circles/rounds/slots near the curve-size threshold, far from origin, thin pulls, soup arcs, tangent circles) found no silent wrong solid on the guarded path.",
+ "rowsTotal": 82,
+ "rowsEvidenceChecked": 82,
+ "rowsReplayed": 58,
+ "replays": [
+  {
+   "feature": "planes/frames rows 0,2,5",
+   "command": "SG_GUARD=1 bun run-group.mjs cases-planes.mjs",
+   "stored": "25 cases, 6000 mm3 exact, dVol 1.5e-16",
+   "live": "identical (11 PASS 6000.000000, 7 SCRIPT-REFUSED same sentences)",
+   "match": true
+  },
+  {
+   "feature": "outline group (rect/round/chamfer/bulge rows 7,14,18,24-29)",
+   "command": "cases-outline.mjs guarded",
+   "stored": "73 cases",
+   "live": "72 of 73 identical in outcome and volume (1e-9); round-wins-same-corner now TRUCK-REFUSED (stored PASS 11922.69)",
+   "match": false
+  },
+  {
+   "feature": "soup rows 33-38,49,62",
+   "command": "cases-soup.mjs guarded",
+   "stored": "59 cases",
+   "live": "59/59 identical",
+   "match": true
+  },
+  {
+   "feature": "micro scale rows 7,31",
+   "command": "cases-micro.mjs guarded",
+   "stored": "14 cases",
+   "live": "14/14 identical",
+   "match": true
+  },
+  {
+   "feature": "row 52 frame-shear-5e-7",
+   "command": "cases-round3.mjs guarded",
+   "stored": "TRUCK-REFUSED, dot 5.000e-7, 'not exactly at right angles'",
+   "live": "BUILT 6000, notice frame-straightened, no refusal",
+   "match": false
+  },
+  {
+   "feature": "row 53 gallery-fr-plate-hole-dims",
+   "command": "cases-friendly.mjs --only=plate-hole-dims, run twice guarded",
+   "stored": "PASS 9214.732 (closed form 9214.602)",
+   "live": "TRUCK-REFUSED 'could not find one clean closed area' (guard code null) both runs; unguarded still builds 9214.732",
+   "match": false
+  },
+  {
+   "feature": "row 21/25 a5-E-chamfer-round-same-corner",
+   "command": "cases-attacks.mjs guarded",
+   "stored": "PASS 5980.67",
+   "live": "TRUCK-REFUSED (round-and-chamfer guard)",
+   "match": false
+  },
+  {
+   "feature": "guard group fuzz-098",
+   "command": "cases-guard.mjs guarded",
+   "stored": "FAIL (scorer older)",
+   "live": "PASS, same volume 2576.2637",
+   "match": false
+  },
+  {
+   "feature": "far/fc/friendly/frames2/hazards/round2/round3b/2d/extra/extra2 groups",
+   "command": "each cases-*.mjs guarded",
+   "stored": "stored results-guarded",
+   "live": "all identical except the ids listed above",
+   "match": true
+  },
+  {
+   "feature": "own attack: circle across 1 pulled 10 (threshold)",
+   "command": "critic cases-crit.mjs",
+   "stored": "row 10/11: 1.7e-4",
+   "live": "7.852677 vs 7.853982, 1.7e-4",
+   "match": true
+  },
+  {
+   "feature": "own attacks: circle 1.2x25, 2x100, 0.8x3, 5x1000, thin rings",
+   "command": "critic cases-crit.mjs",
+   "stored": "n/a (neighbours of grid)",
+   "live": "all refused with a sentence; across 50 pulled 50 built at 1.1e-4",
+   "match": true
+  },
+  {
+   "feature": "own attacks: rect 1e6x1e6, 0.01 tall 1000, rect at 1e5, sliver 1000x0.01, rounds on 1000 plate",
+   "command": "critic cases-crit.mjs/crit2",
+   "stored": "n/a",
+   "live": "all within 1e-6 of closed form",
+   "match": true
+  },
+  {
+   "feature": "own attack: pull 1e-7 and 1e-9 on a 10x10 rect",
+   "command": "critic cases-crit2.mjs",
+   "stored": "not measured",
+   "live": "TRUCK-REFUSED with the sentence 'Sketch sk1 could not be built; check that its outline closes...' (cause is the pull height, sentence blames the sketch)",
+   "match": true
+  },
+  {
+   "feature": "own attack: soup D shape ends off 1e-3 / gap squares / radius conflict",
+   "command": "critic cases-crit3.mjs",
+   "stored": "n/a",
+   "live": "all refused with plain sentences; D-ok 7.6e-5",
+   "match": true
+  },
+  {
+   "feature": "own attack: internally tangent circles (touch at a point)",
+   "command": "critic cases-crit3.mjs",
+   "stored": "row 63 says tangent circles supported (FreeCAD refs)",
+   "live": "BUILT 2356.059, closed form 2356.194 (5.7e-5), COM x -1.6665 vs -1.6667; no OCCT/brep oracle accepts it",
+   "match": true
+  }
+ ],
+ "defects": [
+  {
+   "severity": "blocking",
+   "feature": "sketch({origin,u,v}) with u/v slightly off orthogonal or off unit length (row 52)",
+   "problem": "The row's refusalSentence ('not exactly at right angles (dot 5.000e-7) ... make them exactly perpendicular', and the u-length one) does not fire on the current guard: sketch-geometry.guard.mjs repairFrame()/FRAME_REPAIR=2e-6 straightens such frames and builds with a notice. Live frame-shear-1e-7/5e-7/9e-7 and frame-u-length-9e-7 build 6000 mm3. No row mentions the straightening (grep 'straighten' = 0).",
+   "evidenceFile": "sketch-geometry-harness/results-guarded/round3.json (stale) vs sketch-geometry.guard.mjs:94-125"
+  },
+  {
+   "severity": "major",
+   "feature": "friendly: the nine gallery scripts (row 53)",
+   "problem": "Row claims 9 of 9 PASS on the guarded path. Live guarded run refuses gallery-fr-plate-hole-dims (both of two runs) with a generic sentence and no guard code; the unguarded path builds 9214.732. Either the row is stale or the guard over-refuses a shipped gallery script.",
+   "evidenceFile": "sketch-geometry-harness/results-guarded/friendly.json"
+  },
+  {
+   "severity": "major",
+   "feature": "rows 18/21/24/25 (round, chamfer)",
+   "problem": "Row counts include round-wins-same-corner and a5-E-chamfer-round-same-corner as PASS; the current guard refuses round+chamfer on one corner ('round-and-chamfer'). Stored results-guarded predates that rule, so the evidence does not describe the guard that ships and no row lists the new refusal.",
+   "evidenceFile": "sketch-geometry-harness/results-guarded/outline.json, attacks.json"
+  },
+  {
+   "severity": "major",
+   "feature": "sketch('front', offset) (row 1, status wrong)",
+   "problem": "A front-plane offset places the part 2x offset from where FreeCAD puts it, with no refusal and no guard; the row is honestly labelled wrong but the shipped path still builds it silently positioned differently from the oracle.",
+   "evidenceFile": "sketch-geometry.json row 1 (fc-front-offset)"
+  },
+  {
+   "severity": "minor",
+   "feature": "rows file freshness",
+   "problem": "Rebuilding rows from the stored results (build-rows.mjs copy writing to scratch) differs from the committed sketch-geometry.json: '373 of 373 built classic prisms' should read 514 of 514 (rows 25, 81), '137 cases' vs 136 (row 75), and row 71 omits param-values-arc-r. The stored results-guarded were not re-run after the guard changed, so build-rows would still pass on stale data.",
+   "evidenceFile": "sketch-geometry.json"
+  },
+  {
+   "severity": "minor",
+   "feature": "tiny pull height (not a row)",
+   "problem": "extrude of a 10x10 rect by 1e-7 or 1e-9 is refused with 'Sketch sk1 could not be built; check that its outline closes, does not cross itself and is not tiny': the cause is the pull, the sentence blames the sketch. Not covered by any row.",
+   "evidenceFile": "critic cases-crit2.mjs thin-1e-7"
+  },
+  {
+   "severity": "minor",
+   "feature": "curved volume tolerance",
+   "problem": "Supported curved rows accept up to 3e-4 relative volume error (truck volume is the tessellated mesh and reads low, 1.7e-4 at across 1 pulled 10); written and stated, but it is a silent small error in the reported volume.",
+   "evidenceFile": "sketch-geometry-harness/results-guarded/holdout.json"
+  }
+ ],
+ "notMeasured": [
+  "not replayed: shallow, shallow-holdout, thinwall, grid, holdout, fartilt and control-noprofiles groups (stored only)",
+  "SolidCraft's own solved sketch (no @sketch command in the pkg); soup guard uses a stand-in solver",
+  "host-page (phase7) adoption of the guard: rows 65/66 are unsupported",
+  "roundtrip (toScript/runScript) checks quoted in rows were not re-run",
+  "solid validity of the tangent-circle pinch beyond volume and COM (no second kernel builds it)"
+ ],
+ "criticAt": "2026-10-19"
+}
