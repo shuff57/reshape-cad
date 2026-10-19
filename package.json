@@ -9,6 +9,7 @@
     "build": "npm run build -w @shuff57/reshape-sketch && npm run build -w @shuff57/reshape-script && npm run build -w @shuff57/reshape-brep-adapter && npm run build -w @shuff57/reshape-studio",
     "dev:sandbox": "npm run dev -w @shuff57/reshape-sandbox-dev",
     "test": "node scripts/check-record.mjs bench/record.json && npm test --workspaces --if-present",
+    "ci:local": "sh .githooks/ci-local.sh",
     "gate:occt": "node scripts/occt-modeldoc-gate.mjs"
   },
   "devDependencies": {
