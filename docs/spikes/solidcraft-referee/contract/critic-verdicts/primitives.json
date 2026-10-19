@@ -1,0 +1,154 @@
+{
+ "group": "primitives",
+ "verdict": "not-accepted",
+ "summary": "No silent wrong solid found behind the guard: 80 fresh neighbour/boundary inputs all either matched live OCCT and closed form or were refused, and guard-check shows 0 accepted of 1282 recorded wrong builds. But the committed primitives.json is stale against its own evidence (rebuild differs in ~25 rows; seeds 4 and 5 held-out proof recorded as 'not run' though results exist), wedge orientation and prism phase rest on one oracle yet are 'supported', and several refusal sentences break the one-sentence / no-engine-word rule. Also the guard is unwired, so 31 'wrong' rows are silent wrong solids in the product today (honestly labelled).",
+ "rowsTotal": 61,
+ "rowsEvidenceChecked": 61,
+ "rowsReplayed": 13,
+ "replays": [
+  {
+   "feature": "g1-box-corner-nearX-r1",
+   "command": "bun primitives-sweep.mjs --spec=primitives-r3/g-supported.mjs --guard --only=g1-box-corner-nearX-r1 (copy of contract in scratchpad, cap 1500M)",
+   "stored": "vol 5573.508500706514, 26 faces, good",
+   "live": "vol 5573.5085007065145, 26 faces, good",
+   "match": true
+  },
+  {
+   "feature": "g1-sph-min-r1",
+   "command": "bun primitives-sweep.mjs --spec=primitives-r3/g-supported.mjs --guard --only=g1-sph-min-r1 (copy of contract in scratchpad, cap 1500M)",
+   "stored": "vol 0.5234498772830696, good",
+   "live": "identical, good",
+   "match": true
+  },
+  {
+   "feature": "g1-cone-turn-r1",
+   "command": "bun primitives-sweep.mjs --spec=primitives-r3/g-supported.mjs --guard --only=g1-cone-turn-r1 (copy of contract in scratchpad, cap 1500M)",
+   "stored": "vol 3141.0198861811027",
+   "live": "identical",
+   "match": true
+  },
+  {
+   "feature": "g1-cone-slender-r1",
+   "command": "bun primitives-sweep.mjs --spec=primitives-r3/g-supported.mjs --guard --only=g1-cone-slender-r1 (copy of contract in scratchpad, cap 1500M)",
+   "stored": "vol 1308.7582859087913",
+   "live": "identical",
+   "match": true
+  },
+  {
+   "feature": "g1-cyl-far-ok-r1",
+   "command": "bun primitives-sweep.mjs --spec=primitives-r3/g-supported.mjs --guard --only=g1-cyl-far-ok-r1 (copy of contract in scratchpad, cap 1500M)",
+   "stored": "vol 9423.690553503888",
+   "live": "identical",
+   "match": true
+  },
+  {
+   "feature": "g1-sph-far-ok-r1",
+   "command": "bun primitives-sweep.mjs --spec=primitives-r3/g-supported.mjs --guard --only=g1-sph-far-ok-r1 (copy of contract in scratchpad, cap 1500M)",
+   "stored": "vol 4188.492680994794",
+   "live": "identical",
+   "match": true
+  },
+  {
+   "feature": "g1-big-sph-r1",
+   "command": "bun primitives-sweep.mjs --spec=primitives-r3/g-supported.mjs --guard --only=g1-big-sph-r1 (copy of contract in scratchpad, cap 1500M)",
+   "stored": "vol 6.5445204089847e13",
+   "live": "identical",
+   "match": true
+  },
+  {
+   "feature": "g1-ring-turn-r1",
+   "command": "bun primitives-sweep.mjs --spec=primitives-r3/g-supported.mjs --guard --only=g1-ring-turn-r1 (copy of contract in scratchpad, cap 1500M)",
+   "stored": "vol 7401.117050568907",
+   "live": "identical",
+   "match": true
+  },
+  {
+   "feature": "g1-cyl-corner-nearR-r1",
+   "command": "bun primitives-sweep.mjs --spec=primitives-r3/g-supported.mjs --guard --only=g1-cyl-corner-nearR-r1 (copy of contract in scratchpad, cap 1500M)",
+   "stored": "built (round-3 guard)",
+   "live": "guard-refused (current round-4 guard)",
+   "match": false
+  },
+  {
+   "feature": "g1-prism-far-ok-r1",
+   "command": "bun primitives-sweep.mjs --spec=primitives-r3/g-supported.mjs --guard --only=g1-prism-far-ok-r1 (copy of contract in scratchpad, cap 1500M)",
+   "stored": "built",
+   "live": "guard-refused now",
+   "match": false
+  },
+  {
+   "feature": "g1-wedge-far-axis-r1",
+   "command": "bun primitives-sweep.mjs --spec=primitives-r3/g-supported.mjs --guard --only=g1-wedge-far-axis-r1 (copy of contract in scratchpad, cap 1500M)",
+   "stored": "built",
+   "live": "guard-refused now",
+   "match": false
+  },
+  {
+   "feature": "g1-tbox-far-ok-r1",
+   "command": "bun primitives-sweep.mjs --spec=primitives-r3/g-supported.mjs --guard --only=g1-tbox-far-ok-r1 (copy of contract in scratchpad, cap 1500M)",
+   "stored": "built",
+   "live": "guard-refused now",
+   "match": false
+  },
+  {
+   "feature": "g1-tiny-box-r1",
+   "command": "bun primitives-sweep.mjs --spec=primitives-r3/g-supported.mjs --guard --only=g1-tiny-box-r1 (copy of contract in scratchpad, cap 1500M)",
+   "stored": "built",
+   "live": "guard-refused now",
+   "match": false
+  },
+  {
+   "feature": "50 fresh edge-neighbour cases (sphere(1), cylinder 30x, cone 40x, ring ratio 50, far/diag at-offsets at 399x, Q-rule edges, aspect 9999, turned cones, box corner on plates)",
+   "command": "own specs myspec*.mjs run with --guard against live OCCT + closed form",
+   "stored": "n/a (new inputs)",
+   "live": "every accepted input GOOD, every case just past a limit guard-refused; no hole found; max curved dVol 2.84e-4 against bar 3e-4",
+   "match": true
+  }
+ ],
+ "defects": [
+  {
+   "severity": "major",
+   "feature": "rows 4,6,12-16,24-26,32,47-49,51-56,60 (and the proof row 'pre-flight envelope')",
+   "problem": "Committed primitives.json does not match what primitives-build-rows-r4.mjs produces from the committed evidence (builder asserts pass, but output differs byte-wise in about 25 rows). Example: row 60 says seed 4 and seed 5 'not run', recorded set 6494 inputs / 1187 wrong; on-disk fuzz-seed4.json and fuzz-seed5.json give 7630 / 1282 and held-out accepted-and-wrong = 0 (635 and 501 inputs). Row 47 quotes 1111 inputs, data now 1335. The rows understate the final evidence and cite counts that no longer reproduce.",
+   "evidenceFile": "contract/primitives.json vs contract/primitives-r4/results/fuzz-seed{4,5}.json"
+  },
+  {
+   "severity": "major",
+   "feature": "wedge(width,depth,tall), wedge at/rotate; prism(sides..) for n != 6 (rows 33-35, 39-41)",
+   "problem": "Marked supported, but orientation (legs along +x,+y, centred on bbox) and prism vertex phase are checked only against occt-build, the same code that defines the semantics; row 58 itself says this is not an independent check. Volume has a closed form, orientation/phase has none (FreeCAD only for hexagon). A support claim with a single oracle on the property that could be silently wrong (a mirrored or phase-shifted solid).",
+   "evidenceFile": "contract/primitives.json rows 39,41,33,58"
+  },
+  {
+   "severity": "major",
+   "feature": "refusal sentences: rows 19, 43 (status refused), 12, 46, 55, 56, 57",
+   "problem": "Rows 19 and 43 are two sentences ('...has no option called \"corner\". It takes at.'), rows 12 and 46 say 'the mesh cannot resolve it' (engine word). Row 55's cited input box(1000,0.001,0.001) fires the 'too small' sentence, not the quoted 'too long and thin' one (that fires for e.g. box(100000,1,1)). Rows 56 and 57 sentences are produced by no code and advise 'a bigger corner... fewer rounded edges' for a ring.",
+   "evidenceFile": "contract/primitives.json; contract/primitives.guard.mjs"
+  },
+  {
+   "severity": "minor",
+   "feature": "rows 10, 33 timing/guarded evidence",
+   "problem": "Round-3 guarded results (g1-supported.json) are cited as guarded runs but 5 of 14 replayed cases (cyl-corner-nearR, prism-far-ok, wedge-far-axis, tbox-far-ok, tiny-box) are refused by the current round-4 guard; cited timings belong to inputs now outside the envelope.",
+   "evidenceFile": "contract/primitives-r3/results/g1-supported.json"
+  },
+  {
+   "severity": "minor",
+   "feature": "curved rows 9,17,21,23,28 tolerance",
+   "problem": "Pass bar for curved volume is 3e-4 relative against OCCT, and several supported cases sit within 5-10% of it (sphere(1) 2.84e-4, cone spire 2.7e-4, ring ratio 50 2.7e-4, sphere doc-rotate-field 2.8e-4); the bar is an empirical tessellation allowance, and row 9 and 23 quote dVol without stating a bar.",
+   "evidenceFile": "contract/primitives.json"
+  },
+  {
+   "severity": "minor",
+   "feature": "guard not wired",
+   "problem": "31 rows are 'wrong' because nothing in the product calls primitives.guard.mjs; the promise is unmet today (labelled correctly, not a status error).",
+   "evidenceFile": "contract/primitives.json row 60"
+  }
+ ],
+ "notMeasured": [
+  "Evidence existence checked for all 61 rows (all cited files exist); stored numbers matched the data for box/cylinder/prism/ring rows spot-checked (about 12), not every cell.",
+  "Rows quoting timings (56,57) and the browser Worker bench were not replayed.",
+  "No independent oracle for wedge orientation / prism vertex phase.",
+  "Resource: full 7630-input corpus not re-run through the kernel; only guard-check replay (offline, exit 0) and ~80 live cases.",
+  "Builder run in a scratch copy because it overwrites primitives.json; repo untouched."
+ ],
+ "criticAt": "2026-10-19"
+}
