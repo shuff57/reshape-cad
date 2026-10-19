@@ -1,0 +1,147 @@
+{
+ "group": "picks-naming-params",
+ "verdict": "not-accepted",
+ "summary": "Stored numbers replay exactly (draft sweep law, hollow/bevel/round sweeps, stale-handle, pocket bevel, round-then-hollow) and no silently wrong solid was found behind a 'supported' status; scale 0.01..10000 and 132 hollow-then-draft neighbours held. But 26 of 29 'refused' rows carry engine jargon in refusalSentence (plain text exists only in the unshipped guard), the guard falsely refuses a valid cylinder hollow with a self-contradicting sentence (contradicting the '0 false refusals' claim), and every supported pick row rests on an emulated pick-hit, never the page's real picking.",
+ "rowsTotal": 76,
+ "rowsEvidenceChecked": 76,
+ "rowsReplayed": 13,
+ "replays": [
+  {
+   "feature": "rows 0,1,26 secA: hollow open x6, draft x4, 12 round, 12 bevel",
+   "command": "bun secA.mjs (copy of evidence dir, native cli built locally)",
+   "stored": "hollow 7152/7872/8192, draft 23860.018/23895.014, round 23965.641 etc",
+   "live": "identical; dVol <=9.4e-7; draft/hollow 1e-16",
+   "match": true
+  },
+  {
+   "feature": "row 28/29 pocket wall round r=3.9/4/4.5",
+   "command": "bun r2k-pocket-radius.mjs",
+   "stored": "r4: SC 11645.6412 vs closed form 11645.6637",
+   "live": "same; face count at r=4 is 11 (wall face vanishes) vs 12 at r=3.99",
+   "match": true
+  },
+  {
+   "feature": "rows 41,42 round THEN hollow r=0.5..3, bevel",
+   "command": "bun r5b-roundhollow.mjs",
+   "stored": "r=1.9 7120.9912, r=2.5 7136.2640, r=3 7154.4455",
+   "live": "identical",
+   "match": true
+  },
+  {
+   "feature": "row 21 stale handle after pocket/groove",
+   "command": "bun r5a-stale.mjs",
+   "stored": "11591.4103 vs 11991.4159; 2600 vs 2424; 11468.767 vs 11868.767; 31488.7696 vs 31991.4159",
+   "live": "identical",
+   "match": true
+  },
+  {
+   "feature": "row 45 inside-corner bevel sweep (54 cases)",
+   "command": "bun r4f-pocket-bevel-sweep.mjs; then through r3-run-sec.mjs guard",
+   "stored": "35 PASS, 19 WRONG (d>T-D); guard refuses the 19",
+   "live": "35 PASS / 19 FAIL unguarded; guarded 35 PASS / 19 REFUSED",
+   "match": true
+  },
+  {
+   "feature": "rows 18 hollow THEN draft pierce",
+   "command": "bun r4b-draft-hollow.mjs",
+   "stored": "4/6/6.5 deg PASS 4990.6317/4927.3124/4911.4159; 7 deg SC 4739.6267 vs closed 4896.5053",
+   "live": "identical",
+   "match": true
+  },
+  {
+   "feature": "rows 44,46,40 size sweep 368 cases",
+   "command": "bun r3b-size-sweep.mjs",
+   "stored": "hollow 126 refused, 74 feasible exact; 40 bevel silent wrong",
+   "live": "identical counts (hollow-box exact 61 + cyl 13 = 74; 107+19 = 126 refused; 40 bevel SILENT-WRONG); round EXACT is 29 not the 23 quoted in row 40",
+   "match": true
+  },
+  {
+   "feature": "row 65 bow-tie slider",
+   "command": "bun r3c-misc.mjs",
+   "stored": "16/16 crossing cases refused",
+   "live": "16 FAIL on page -> 16 refused by guard; 12 PASS stay built",
+   "match": true
+  },
+  {
+   "feature": "rows 62,63 refusals fire",
+   "command": "bun r3f-misc-refusals.mjs",
+   "stored": "counterbore/pat<360 refused with plain sentence",
+   "live": "refused, plain sentences as stored",
+   "match": true
+  },
+  {
+   "feature": "rows 28,30 secD pocket walls",
+   "command": "bun secD.mjs",
+   "stored": "11597.8526 x4 and 11600.8590 x4 vs OCCT",
+   "live": "identical",
+   "match": true
+  },
+  {
+   "feature": "row 2/47 draft limit near threshold, 3 scales",
+   "command": "own probe zprobe2/5: 75.9 vs 75.97 on 40x30x20, scales 0.01..10000",
+   "stored": "limit atan(40/10)=75.964",
+   "live": "75.9 builds 24000 6 faces; 75.97 page builds 5 faces, guard refuses; scale invariant",
+   "match": true
+  },
+  {
+   "feature": "row 46 hollow near collapse",
+   "command": "own probe: wall 14.99/14.999 box, cylinder d20 wall 9.9",
+   "stored": "feasible hollow never refused (0/74)",
+   "live": "box ok (23998.996 = closed form); cylinder d20 h30 wall 9.9: page builds 9424.053 = OCCT 9424.147, guard REFUSES with 'a wall of 9.9 would collapse cyl1 -- the wall has to be under 10'",
+   "match": false
+  },
+  {
+   "feature": "row 1/10 draft then hollow (neighbour)",
+   "command": "own probe zprobe3",
+   "stored": "not in this group (shell-draft.json arbitrates)",
+   "live": "SC 7196.5201 = my plane-offset closed form; OCCT and brep-rs agree with each other at 9027.178; unguarded; same pattern documented in shell-draft.json",
+   "match": true
+  }
+ ],
+ "defects": [
+  {
+   "severity": "major",
+   "feature": "26 of 29 refused rows (e.g. rows 3, 5, 7, 8, 19, 22, 25, 34, 39)",
+   "problem": "refusalSentence is the text the shipped page shows and it is engine jargon or internal ids ('solidcraft refused it -- solid.draft: not supported yet', 'prism1.edge[prism1.face[+z] ^ prism1.face[-y]]', 'b_box1 (F1:-y|F1:-z~1 ...)', 'browser demo'). The plain one-sentence replacement exists only as specifiedSentence in the unshipped guard layer. By the file's own count 26 jargon, 3 plain; 12 'wrong' rows reach a student today with no sentence.",
+   "evidenceFile": "picks-naming-params.json shippedVsSpecified; evidence/r2-lint.mjs output 'refused rows: 3 ship a plain sentence today, 26 ship jargon'"
+  },
+  {
+   "severity": "major",
+   "feature": "row 46/47 hollow guard (G-HOLLOW)",
+   "problem": "False refusal with a self-contradicting sentence. cylinder(20,30), hollow wall 9.9 open top: page 9424.053 = OCCT 9424.147 (valid); guard refuses 'a wall of 9.9 would collapse cyl1 -- the wall has to be under 10'. Cause: truck cylinder volume is tessellation-derived (unhollowed 9423.69 < hollowed 9424.05), so the 'hollow must lose volume' rule fails. Row 47 claims 'Guard changed an otherwise valid build in 0 cases' and row 46 '0/74 feasible refused'; the sweep never used a thin curved cavity.",
+   "evidenceFile": "evidence/r3-guard.mjs (G-HOLLOW), r3-results/r3b-size-sweep.txt; replay in scratchpad critic-picks-naming-params/cc zprobe4.mjs"
+  },
+  {
+   "severity": "major",
+   "feature": "all 16 supported rows that rest on picks (0,1,4,9,10,12,14,17,26,28,30,38,40,42,...)",
+   "problem": "Every pick is resolved with solidcraft topology from the native CLI and an EMULATED pick-hit (lib.mjs pickEmu), never the page's real nearest_face on the display mesh in a browser; the rows state this caveat but keep status 'supported' and pageStatus 'supported'. Also the native solidcraft-cli the harness needs is not in the prepared rig (HOME cache path missing); it had to be built locally (-j1, 3m45s) to replay.",
+   "evidenceFile": "picks-naming-params.json rows 0,1,10,38 (PICK-HIT CAVEAT); evidence/lib.mjs:14,115-125"
+  },
+  {
+   "severity": "minor",
+   "feature": "row 28 (and 29)",
+   "problem": "Supported evidence quotes r=4 = wall height: face count drops 12 -> 11 (wall face vanishes, degenerate), only a closed form agrees, OCCT and brep-rs both refuse; row 41 treats the same equality as degenerate and excludes it. Page builds it silently; the 'too large' refusal only starts above 4.",
+   "evidenceFile": "evidence/r2k-pocket-radius.mjs (live: 3.99 -> 12 faces 11645.8128; 4 -> 11 faces 11645.6412)"
+  },
+  {
+   "severity": "minor",
+   "feature": "row 40",
+   "problem": "Text says 'round inside the limit 23 EXACT'; r3b replay and r3-results/r3b-size-sweep.txt give round EXACT 29 (bevel 23).",
+   "evidenceFile": "evidence/r3-results/r3b-size-sweep.txt"
+  },
+  {
+   "severity": "minor",
+   "feature": "row 33",
+   "problem": "Status 'supported' for a partial build (1 of 4 rim edges rounded, rest refused with jargon cascade text); correct but easy to misread as the whole feature.",
+   "evidenceFile": "picks-naming-params.json row 33; secD.mjs live output"
+  }
+ ],
+ "notMeasured": [
+  "Real page/browser pick path (nearest_face on the display mesh); only the emulated pick-hit was exercised.",
+  "Vertex-on-edge or exactly touching outlines for G-OUTLINE: my slider probe re-solved the rect constraints so it never produced a true touching outline; selfTouch returned null for the cases built.",
+  "Full r3a 624-case draft sweep and r5e/r4g sweeps were not re-run end to end (draft law checked at 75.9/75.97, 3 scales, 132 hollow-then-draft cases; r4b exact).",
+  "Rows 53-75 (param/handles/checkModel, library-level, status unsupported) were read but not replayed except r3c-misc param/bow-tie output.",
+  "No second kernel exists for round-then-hollow (OCCT refuses, brep-rs and the closed form share the plane-offset cavity assumption)."
+ ],
+ "criticAt": "2026-10-19"
+}
