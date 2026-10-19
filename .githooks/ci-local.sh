@@ -1,12 +1,13 @@
 #!/bin/sh
 # The suites CI runs, runnable on this box.
 #
-# WHY IT BRANCHES. CI installs Node 22 and the package scripts are
-# `node --test`; here `node` is Bun 1.4.2, and Bun's `node --test` shim refuses
-# to start ("Cannot use test outside of the test runner"). So the package
-# scripts only run on CI and the plain runner only runs here. Detect, then use
-# the one that works. The suite list is explicit so a package with no tests
-# (sandbox-dev) is skipped rather than silently passing.
+# WHY IT BRANCHES. CI installs Node 22. This box's `node` is a shim that
+# prefers a real Node at ~/.local/share/node/current and falls back to Bun when
+# none is installed. On the fallback path Bun's `node --test` shim refuses to
+# start ("Cannot use test outside of the test runner"), so the package scripts
+# only run on CI and the plain runner only runs here. Detect which one is in
+# play instead of assuming. The suite list is explicit so a package with no
+# tests (sandbox-dev) is skipped rather than silently passing.
 set -eu
 
 root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
