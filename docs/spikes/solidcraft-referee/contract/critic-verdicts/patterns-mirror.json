@@ -1,0 +1,154 @@
+{
+ "group": "patterns-mirror",
+ "verdict": "not-accepted",
+ "summary": "Live truck numbers replay identically on 12 stored cases and the guards held on 18 new neighbouring inputs, but the group fails on provenance. The rows builder pm-make-rows.py cannot run (six round-5 input files missing), the near-coincident-copies class (a real silent wrong solid without its guard) has no row, and stored refusal sentences differ from what the translator now emits and still say 'kernel'.",
+ "rowsTotal": 76,
+ "rowsEvidenceChecked": 76,
+ "rowsReplayed": 12,
+ "replays": [
+  {
+   "feature": "rl-cyl-overlap",
+   "command": "bun contract/pm-run.mjs --out=<scratch> --only=<ids> (live rig, 1.5G cap)",
+   "stored": "dVol 1.456e-4",
+   "live": "same (outcome and dVol identical to stored)",
+   "match": true
+  },
+  {
+   "feature": "rl-cyl-tangent",
+   "command": "bun contract/pm-run.mjs --out=<scratch> --only=<ids> (live rig, 1.5G cap)",
+   "stored": "REFUSED",
+   "live": "same (outcome and dVol identical to stored)",
+   "match": true
+  },
+  {
+   "feature": "rl-sphere-overlap",
+   "command": "bun contract/pm-run.mjs --out=<scratch> --only=<ids> (live rig, 1.5G cap)",
+   "stored": "dVol 2.500e-4",
+   "live": "same (outcome and dVol identical to stored)",
+   "match": true
+  },
+  {
+   "feature": "mi-cone-tb",
+   "command": "bun contract/pm-run.mjs --out=<scratch> --only=<ids> (live rig, 1.5G cap)",
+   "stored": "dVol 1.82e-4",
+   "live": "same (outcome and dVol identical to stored)",
+   "match": true
+  },
+  {
+   "feature": "r2-tie-cyl-tb",
+   "command": "bun contract/pm-run.mjs --out=<scratch> --only=<ids> (live rig, 1.5G cap)",
+   "stored": "dVol 1.32e-4",
+   "live": "same (outcome and dVol identical to stored)",
+   "match": true
+  },
+  {
+   "feature": "r2-torus-repeat-disjoint",
+   "command": "bun contract/pm-run.mjs --out=<scratch> --only=<ids> (live rig, 1.5G cap)",
+   "stored": "dVol 1.47e-4",
+   "live": "same (outcome and dVol identical to stored)",
+   "match": true
+  },
+  {
+   "feature": "r3-cone2-step8",
+   "command": "bun contract/pm-run.mjs --out=<scratch> --only=<ids> (live rig, 1.5G cap)",
+   "stored": "dVol 1.44e-5 (rig FAIL on faces)",
+   "live": "same (outcome and dVol identical to stored)",
+   "match": true
+  },
+  {
+   "feature": "r3-box-count-200",
+   "command": "bun contract/pm-run.mjs --out=<scratch> --only=<ids> (live rig, 1.5G cap)",
+   "stored": "dVol 0",
+   "live": "same (outcome and dVol identical to stored)",
+   "match": true
+  },
+  {
+   "feature": "r3-pocket-count-10",
+   "command": "bun contract/pm-run.mjs --out=<scratch> --only=<ids> (live rig, 1.5G cap)",
+   "stored": "dVol 1.76e-6",
+   "live": "same (outcome and dVol identical to stored)",
+   "match": true
+  },
+  {
+   "feature": "r3-sub-0.001",
+   "command": "bun contract/pm-run.mjs --out=<scratch> --only=<ids> (live rig, 1.5G cap)",
+   "stored": "REFUSED",
+   "live": "same (outcome and dVol identical to stored)",
+   "match": true
+  },
+  {
+   "feature": "r3-sub--0.000003",
+   "command": "bun contract/pm-run.mjs --out=<scratch> --only=<ids> (live rig, 1.5G cap)",
+   "stored": "dVol 0",
+   "live": "same (outcome and dVol identical to stored)",
+   "match": true
+  },
+  {
+   "feature": "r3-mir-vaseT-tb",
+   "command": "bun contract/pm-run.mjs --out=<scratch> --only=<ids> (live rig, 1.5G cap)",
+   "stored": "dVol 1.71e-4",
+   "live": "same (outcome and dVol identical to stored)",
+   "match": true
+  },
+  {
+   "feature": "r3-mir-loft-tb, r3-mir-turned45-tb, taper cases",
+   "command": "same run",
+   "stored": "-",
+   "live": "run ended after 12 cases; these not printed",
+   "match": "not replayed (resource)"
+  },
+  {
+   "feature": "near-coincident copies box10 step 0.01 (PM_OFF=snap)",
+   "command": "pm-run.mjs --r4 --only=r4-snap-b10-x-0.01",
+   "stored": "no stored result",
+   "live": "OCCT 1001, truck 1000 (dVol 1e-3): silent wrong solid without the snap guard",
+   "match": false
+  },
+  {
+   "feature": "snap/sub-gap neighbours (10 gap/overlap cases, 8 long-bar/plate/diagonal cases)",
+   "command": "scratch copy of pm-run.mjs with extra cases",
+   "stored": "none",
+   "live": "guards fire at <=1e-6 overlap, <=1e-3 gap, near-coincident; builds correct above; no hole found",
+   "match": true
+  }
+ ],
+ "defects": [
+  {
+   "severity": "major",
+   "feature": "rows builder",
+   "problem": "pm-make-rows.py (round 5) fails with FileNotFoundError: pm-results.stamp.json, pm-results-snapoff.json, pm-results-asis-oracle.json, pm-snap-fuzz-on/off.json, pm-results-budget-demo.json do not exist; patterns-mirror.json is still the round-4 build and its assertions cannot be re-run. pm-results.json has no r4-* cases and no pkg stamp.",
+   "evidenceFile": "pm-make-rows.py:17-24"
+  },
+  {
+   "severity": "major",
+   "feature": "row 0 / missing row (snap)",
+   "problem": "pm-translate.mjs carries a round-4 'snap' guard for near-coincident copies (truck drops the thin layer: box10 step 0.01 gives truck 1000 vs OCCT 1001 with the guard off, reproduced live). No row records it; row 0 calls overlapping copies supported with no exclusion, and no stored result covers it. Guard does fire live (x-b10-yz refused) and held on long bars/plates, so this is missing evidence, not a live wrong solid.",
+   "evidenceFile": "pm-cases-r4.mjs; pm-translate.mjs:215"
+  },
+  {
+   "severity": "major",
+   "feature": "rows 54, 61, 65, 69, 74",
+   "problem": "refusalSentence says 'the kernel', which the group's own ENGINE lint (pm-sentences.mjs:17, pm-make-rows.py:49) bans; row 74 claims no engine word. The current translator already emits different text ('to keep apart reliably'), so stored sentences are not what fires now (live r-sub gap sentence differs from stored pm-results.json).",
+   "evidenceFile": "pm-sentences.mjs; pm-translate.mjs studentSentence"
+  },
+  {
+   "severity": "minor",
+   "feature": "row 55 / 4",
+   "problem": "curved supported rows lean on a 3e-4 tessellation bar with observed dVol up to 2.5e-4 (spheres); r3-cone2-step8/step6, washer2-z3 are rig FAIL on faces and called convention with no second oracle. Curved-overlap class rests on ~10 cases, no fuzz.",
+   "evidenceFile": "pm-results.json"
+  },
+  {
+   "severity": "minor",
+   "feature": "rows 25, 73",
+   "problem": "status wrong: repeatAround(pocket/hole,{angle:720|-360}) and the angle/count vs angle/(n-1) split stay live silent-wrong in the shipped language with no guard in the layer.",
+   "evidenceFile": "pm3-angle-probe.txt"
+  }
+ ],
+ "notMeasured": [
+  "row 57 count 1000 truck-only vs closed form (OCCT cannot build, not replayed)",
+  "stored truck numbers for ~400 other cases not replayed",
+  "torus, partial-turn MAPPED, taper, loft cases not replayed live",
+  "no fuzz of curved-overlap join success vs wrong solid"
+ ],
+ "criticAt": "2026-10-19"
+}
