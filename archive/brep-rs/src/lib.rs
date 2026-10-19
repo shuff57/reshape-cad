@@ -56,3 +56,9 @@ pub mod wasm;
 mod coplanar_merge_tests;
 #[cfg(test)]
 mod chamfer_asym_tests;
+#[cfg(test)]
+mod upto_tests;
+#[cfg(test)]
+mod hole_turned_tests;
+#[cfg(test)]
+mod hole_safe_tests;

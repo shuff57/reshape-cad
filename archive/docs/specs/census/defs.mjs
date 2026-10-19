@@ -22,10 +22,14 @@ add({ id: 'pad-mode__two-sides', family: 'pad-mode', desc: 'two sides: 10 one wa
 add({ id: 'pad-mode__direction-45', family: 'pad-mode', desc: 'custom direction (1,0,1), length along the sketch normal', ours: PADBASE_O(', { direction: [1, 0, 1] }'), fc: PADBASE_F('UseCustomVector=True, Direction=V(1,0,1)') });
 add({ id: 'pad-mode__direction-along-vector', family: 'pad-mode', desc: 'custom direction (1,0,1), length along the vector itself', ours: PADBASE_O(', { direction: [1, 0, 1], alongNormal: false }'), fc: PADBASE_F('UseCustomVector=True, Direction=V(1,0,1), AlongSketchNormal=False') });
 add({ id: 'pad-mode__start-offset', family: 'pad-mode', desc: 'start 3 mm off the profile plane (FreeCAD StartType Offset); ours: the sketch lifted 3', ours: `const s = sketch('top', 3); s.rect(30, 20, { at: [15, 10] }); extrude(s, 10);`, fc: PADBASE_F("StartType='Offset', StartOffset=3") });
-add({ id: 'pad-mode__up-to-first', family: 'pad-mode', noConstruct: 'pull() has no up-to option', desc: 'a 6 across post under a plate, padded up to the first face it meets',
-  ours: '', fc: `doc, body = setup()\ns1 = sketch(body, 'top', 0)\nrect(s1, -20, -20, 20, 20)\nbase = pad(body, s1, 10)\ns2 = sketch(body, 'top', -8)\ncircle(s2, 0, 0, 3)\npad_x(body, s2, 5, Type='UpToFirst')` });
-add({ id: 'pad-mode__up-to-face', family: 'pad-mode', noConstruct: 'pull() has no up-to option', desc: 'a 6 across post padded up to the underside of a plate',
-  ours: '', fc: `doc, body = setup()\ns1 = sketch(body, 'top', 10)\nrect(s1, -20, -20, 20, 20)\nbase = pad(body, s1, 5)\ns2 = sketch(body, 'top', 0)\ncircle(s2, 0, 0, 3)\npad_x(body, s2, 5, Type='UpToFace', UpToFace=(base, [planar_face(base.Shape, (0,0,-1), -10)]))` });
+// Up-to has no script word yet (pull() takes a length only), so these build the plain pad the script CAN say and patch the
+// up-to fields onto the pad (`docPatch` at `docPatchAt`, run.mjs): the kernel's reading of the doc is what is measured.
+add({ id: 'pad-mode__up-to-first', family: 'pad-mode', desc: 'a 6 across post under a plate, padded up to the first face it meets',
+  ours: `const s1 = sketch('top'); s1.rect(40, 40, { at: [0, 0] }); const plate = extrude(s1, 10); const s2 = sketch('top', -8); s2.circle(6, { at: [0, 0] }); const post = extrude(s2, 5); join(plate, post);`,
+  docPatch: { upTo: 'first', into: 'pull1' }, docPatchAt: 'pull2', fc: `doc, body = setup()\ns1 = sketch(body, 'top', 0)\nrect(s1, -20, -20, 20, 20)\nbase = pad(body, s1, 10)\ns2 = sketch(body, 'top', -8)\ncircle(s2, 0, 0, 3)\npad_x(body, s2, 5, Type='UpToFirst')` });
+add({ id: 'pad-mode__up-to-face', family: 'pad-mode', desc: 'a 6 across post padded up to the underside of a plate',
+  ours: `const s1 = sketch('top', 10); s1.rect(40, 40, { at: [0, 0] }); const plate = extrude(s1, 5); const s2 = sketch('top', 0); s2.circle(6, { at: [0, 0] }); const post = extrude(s2, 5); join(plate, post);`,
+  docPatch: { upTo: 'face', upToFace: { cause: 'cap', feature: 'pull1', kind: 'face', end: 'bottom' } }, docPatchAt: 'pull2', fc: `doc, body = setup()\ns1 = sketch(body, 'top', 10)\nrect(s1, -20, -20, 20, 20)\nbase = pad(body, s1, 5)\ns2 = sketch(body, 'top', 0)\ncircle(s2, 0, 0, 3)\npad_x(body, s2, 5, Type='UpToFace', UpToFace=(base, [planar_face(base.Shape, (0,0,-1), -10)]))` });
 
 // ---- POCKET modes -------------------------------------------------------------------------------------------------------------
 const POCK_O = (off, depth, o = '') => `${PLATE_O} const s2 = sketch('top', ${off}); s2.rect(10, 8, { at: [20, 15] }); pocket(s2, plate, ${depth}${o});`;
@@ -35,8 +39,9 @@ add({ id: 'pocket-mode__two-sides', family: 'pocket-mode', desc: 'two sides from
 add({ id: 'pocket-mode__taper-10', family: 'pocket-mode', desc: 'blind 6 with a 10 degree taper', ours: POCK_O(10, 6, ', { taper: 10 }'), fc: POCK_F(10, 6, 'TaperAngle=10') });
 add({ id: 'pocket-mode__direction-slanted', family: 'pocket-mode', desc: 'a slanted cut, direction (1,0,-1) of a 10 x 8 rect, 6 along the normal', ours: POCK_O(10, 6, ', { direction: [1, 0, -1] }'), fc: POCK_F(10, 6, 'UseCustomVector=True, Direction=V(1,0,-1)') });
 add({ id: 'pocket-mode__through-taper', family: 'pocket-mode', desc: 'through all with a 5 degree taper', ours: POCK_O(10, 10, ', { through: true, taper: 5 }'), fc: `${PLATE_F}\ns2 = sketch(body, 'top', 10)\nrect(s2, 15, 11, 25, 19)\npocket_x(body, s2, None, Type=1, TaperAngle=5)` });
-add({ id: 'pocket-mode__up-to-first', family: 'pocket-mode', noConstruct: 'pocket() has no up-to option', desc: 'a cut up to the first face it meets (a plate over a plate)',
-  ours: '', fc: `doc, body = setup()\ns1 = sketch(body, 'top', 0)\nrect(s1, 0, 0, 40, 30)\nb1 = pad(body, s1, 20)\ns2 = sketch(body, 'top', 20)\ncircle(s2, 20, 15, 4)\npocket_x(body, s2, None, Type='UpToFirst')` });
+const PLATE20_O = `const s1 = sketch('top'); s1.rect(40, 30, { at: [20, 15] }); const plate = extrude(s1, 20);`;
+add({ id: 'pocket-mode__up-to-first', family: 'pocket-mode', desc: 'a cut up to the first face it meets (a plate over a plate)',
+  ours: `${PLATE20_O} const s2 = sketch('top', 20); s2.circle(8, { at: [20, 15] }); pocket(s2, plate, 20);`, docPatch: { upTo: 'first' }, fc: `doc, body = setup()\ns1 = sketch(body, 'top', 0)\nrect(s1, 0, 0, 40, 30)\nb1 = pad(body, s1, 20)\ns2 = sketch(body, 'top', 20)\ncircle(s2, 20, 15, 4)\npocket_x(body, s2, None, Type='UpToFirst')` });
 
 // ---- GROOVE / REVOLUTION extras -------------------------------------------------------------------------------------------------
 const GRV_O = (prof, ang) => `${POST_O} const g = sketch('top'); ${prof}; groove(g, post, ${ang});`;
@@ -46,8 +51,9 @@ add({ id: 'groove__half-180', family: 'groove', desc: 'the same groove, half a t
 add({ id: 'groove__quarter-90', family: 'groove', desc: 'the same groove, a quarter turn', ours: GRV_O('g.rect(6, 5, { at: [15, 12.5] })', 90), fc: GRV_F('rect(g, 12, 10, 18, 15)', 90) });
 add({ id: 'groove__v-notch', family: 'groove', desc: 'a triangular V groove, full turn', ours: GRV_O('g.polygon([[13,10],[18,10],[18,20]])', 360), fc: GRV_F('poly(g, [(13,10),(18,10),(18,20)])', 360) });
 add({ id: 'groove__at-the-end', family: 'groove', desc: 'a rebate flush with the post end (z 25..30)', ours: GRV_O('g.rect(6, 5, { at: [15, 27.5] })', 360), fc: GRV_F('rect(g, 12, 25, 18, 30)', 360) });
-add({ id: 'revolution-mode__symmetric-120', family: 'revolution-mode', noConstruct: 'spin() takes an angle only (no symmetric option)', desc: 'a ring profile turned 120 degrees symmetric about the sketch plane',
-  ours: '', fc: `doc, body = setup()\nsk = sketch(body, 'front')\nrect(sk, 10, 0, 20, 30)\nr = body.newObject('PartDesign::Revolution', 'Rev')\nr.Profile = sk\nr.ReferenceAxis = (sk, ['V_Axis'])\nr.Angle = 120\nr.SideType = 'Symmetric'\nbody.Document.recompute()` });
+// spin() turns a profile about the sketch's own normal, so the profile (x across, z up) is drawn on 'top'.
+add({ id: 'revolution-mode__symmetric-120', family: 'revolution-mode', desc: 'a ring profile turned 120 degrees symmetric about the sketch plane',
+  ours: `const s = sketch('top'); s.polygon([[10,0],[20,0],[20,30],[10,30]]); spin(s, 120);`, docPatch: { symmetric: true }, fc: `doc, body = setup()\nsk = sketch(body, 'front')\nrect(sk, 10, 0, 20, 30)\nr = body.newObject('PartDesign::Revolution', 'Rev')\nr.Profile = sk\nr.ReferenceAxis = (sk, ['V_Axis'])\nr.Angle = 120\nr.SideType = 'Symmetric'\nbody.Document.recompute()` });
 
 // ---- FILLET / CHAMFER modes -----------------------------------------------------------------------------------------------------
 // A chamfer's second distance / angle / flip have no script word yet (bevel() takes one size; the word is the gauntlet agent's), so

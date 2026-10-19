@@ -1,13 +1,13 @@
 # PartDesign census: modes the gauntlet does not cover
 
-FreeCAD 26.3.0 RC1 against brep-rs at `reshape-cad`. 127 cases.
+FreeCAD 26.3.0 RC1 against brep-rs at `mainwt`. 127 cases.
 
 | status | n |
 |---|---|
 | FACES | 2 |
-| MATCH | 100 |
+| MATCH | 104 |
 | MATCH-EXACT | 1 |
-| NO-CONSTRUCT | 14 |
+| NO-CONSTRUCT | 10 |
 | REFUSED(ref-fail) | 1 |
 | REFUSED | 9 |
 
@@ -15,10 +15,10 @@ FreeCAD 26.3.0 RC1 against brep-rs at `reshape-cad`. 127 cases.
 
 | family | result |
 |---|---|
-| pad-mode | MATCH 6, NO-CONSTRUCT 2 |
-| pocket-mode | MATCH 5, NO-CONSTRUCT 1 |
+| pad-mode | MATCH 8 |
+| pocket-mode | MATCH 6 |
 | groove | MATCH 5 |
-| revolution-mode | NO-CONSTRUCT 1 |
+| revolution-mode | MATCH 1 |
 | dress-mode | MATCH 8, REFUSED 2 |
 | hole-mode | NO-CONSTRUCT 4, MATCH 1 |
 | thickness | MATCH 3, NO-CONSTRUCT 2 |
@@ -43,20 +43,20 @@ FreeCAD 26.3.0 RC1 against brep-rs at `reshape-cad`. 127 cases.
 | pad-mode__direction-45 | MATCH | vol 6000.0000, 6 faces |
 | pad-mode__direction-along-vector | MATCH | vol 4242.6407, 6 faces |
 | pad-mode__start-offset | MATCH | vol 6000.0000, 6 faces |
-| pad-mode__up-to-first | NO-CONSTRUCT | pull() has no up-to option |
-| pad-mode__up-to-face | NO-CONSTRUCT | pull() has no up-to option |
+| pad-mode__up-to-first | MATCH | vol 16226.1947, 8 faces |
+| pad-mode__up-to-face | MATCH | vol 8282.7433, 8 faces |
 | pocket-mode__symmetric | MATCH | vol 11760.0000, 11 faces |
 | pocket-mode__two-sides | MATCH | vol 11600.0000, 11 faces |
 | pocket-mode__taper-10 | MATCH | vol 11396.7858, 11 faces |
 | pocket-mode__direction-slanted | MATCH | vol 11520.0000, 11 faces |
 | pocket-mode__through-taper | MATCH | vol 11032.3147, 10 faces |
-| pocket-mode__up-to-first | NO-CONSTRUCT | pocket() has no up-to option |
+| pocket-mode__up-to-first | MATCH | vol 22994.6904, 7 faces |
 | groove__ring-360 | MATCH | vol 19933.4054, 7 faces |
 | groove__half-180 | MATCH | vol 20569.5779, 8 faces |
 | groove__quarter-90 | MATCH | vol 20887.6642, 8 faces |
 | groove__v-notch | MATCH | vol 20845.5145, 6 faces |
 | groove__at-the-end | MATCH | vol 19933.4054, 5 faces |
-| revolution-mode__symmetric-120 | NO-CONSTRUCT | spin() takes an angle only (no symmetric option) |
+| revolution-mode__symmetric-120 | MATCH | vol 9424.7780, 6 faces |
 | dress-mode__chamfer-two-distances | MATCH | vol 5910.0000, 7 faces |
 | dress-mode__chamfer-distance-angle | MATCH | vol 5922.0577, 7 faces |
 | dress-mode__fillet-all-edges | MATCH | vol 5804.6961, 26 faces |

@@ -158,6 +158,36 @@ wrong. Merged tree: cargo 672, gates 78/78/78 + 17, wasm 634,990 B gz.
 Census after: 127 references, 100 MATCH, 1 MATCH-EXACT, 2 FACES, 9 REFUSED, 14 NO-CONSTRUCT, 1 reference failed in
 FreeCAD, 0 silently wrong. Merged tree: cargo 699, gates 78/78/78 + 17, wasm 643,960 B gz.
 
+### Loop `wf_dc079f54-416` results (2026-10-14)
+
+| slice | rounds | outcome |
+|---|---|---|
+| C3 / C3R | 2 + 2 | LANDED (merge of `slice-C3R-r2`). Pad/pocket up to first / up to a flat face and symmetric revolve; an up-to whose profile is not wholly over the stopping face, or whose centre of mass is off it (FreeCAD fails those), refuses in a sentence. Symmetric half turn merges its caps (4 faces). |
+| C2R | 2 | NOT landed (`worktree-wf_dc079f54-416-6`). Refusing a taper/counterdrill/drill point into an existing bore is not enough: a plain cylinder body with a depth-7 hole still disagrees, a refusal sentence misstates the oracle, and a stepped plate (rect pocket then a taper at the lower level) still builds wrong (8 failures). Probably needs the hole start frame derived from the FEATURE's face, not the bbox top. |
+| B3R | 2 | NOT landed (`slice-B3R-r2`). The named neighbour (ball r11 at (9,13,7), FreeCAD 6 faces) was fixed in round 2, but `mesh_feature` is not watertight for ball r15 at (17,5,2.5) (6 faces, volume right). A face-structure change that cracks the mesh is worse than the face-count mismatch: kept refused/unchanged. |
+| A2 | 2 | NOT landed (`slice-A2-r2`, stacked on C3R). Equal-radius rounds at a corner build, but SEQUENTIAL fillets (`fillet(top,right,2); fillet(top,front,2)`) are merged into one blend and disagree with FreeCAD, the same one-pick vs separate-features split A1 hit; round 1 had a mesh crack at a sphere corner. Needs the same decision as A1: the doc cannot say which was meant. |
+
+Census after: 127 references, 104 MATCH, 1 MATCH-EXACT, 2 FACES, 9 REFUSED, 10 NO-CONSTRUCT, 1 reference failed in
+FreeCAD, 0 silently wrong. Merged tree: cargo 728, gates 78/78/78 + 17, wasm 649,317 B gz.
+
+### Loop `wf_3138874d-d82` result (2026-10-15)
+
+| slice | rounds | outcome |
+|---|---|---|
+| C2S | 1 | LANDED (merge `2baef9c`). Drill point (118 degrees), counterdrill and taper are built only into ONE plain axis-aligned box from its original top face with the whole tool inside; every other target (cylinder body, stepped plate, hole after a bore, pocket floor, tip through the bottom, tool leaving a side wall) refuses in its own sentence. Built subset matches FreeCAD to 1e-16 on volume and exactly on faces (8, or 10 for a counterdrill); 42 of 54 adversarial docs built and all matched the closed form; fuzz 1296 docs 0 aborts, 0 hangs. Conservative on purpose: FreeCAD builds some refused cases (through-depth drill point, tool leaving a side wall). |
+
+Merged tree: cargo 746, gates 78/78/78 + 17, wasm 655,131 B gz.
+
+### Stopped (2026-10-17)
+
+The brep-rs kernel was retired by the owner (commit `4f3c99c` on `spike/solidcraft-wasm-referee`: `packages/brep-rs` moved to
+`archive/brep-rs`); the new direction is `docs/PLAN-scripting-layer.md`. Phase 2 work stops here. State at the stop:
+
+- Landed on `main`: A1W, B1, B2, A3 (+A3R), C1, C2 (safe subset), C3 (+C3R). Last kernel merge `2baef9c`; cargo 746, gates 78/78/78 + 17.
+- Open, not landed: A1 one-pick patch / A2 / A4 (need the pick-group field, `SCHEMA-pick-group.md`, msgbox #552), B3 (branch
+  `slice-B3M`: mesh crack fixed per the comparator, but the adversary found a fuzz hang; the run was cut off mid-verify), D1/D2.
+- Branches `slice-*` and the `.claude/worktrees/wf_*` worktrees are loop leftovers and can be deleted.
+
 ## 2. The gauntlet loop
 
 `docs/specs/phase2/gauntlet-loop.workflow.js` is a Workflow script (run with
