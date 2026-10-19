@@ -1,0 +1,153 @@
+{
+ "group": "fillet-chamfer",
+ "verdict": "accepted",
+ "summary": "No blocking defect found: the row builder reproduces the committed file byte for byte, every stored fuzz count and the guard-on-recorded-topology result re-run identically, 12 live rig replays match the stored numbers, and my own neighbouring probes (cylinder rim near the radius at R 0.5 to 2000, huge and tiny box scales, bevel after side and top holes) all stayed inside the guard or were caught by the face-count post-check. Only minor evidence and wording gaps remain; the live contract path (browser) could not be replayed here because no playwright-cli or browser exists on this box.",
+ "rowsTotal": 80,
+ "rowsEvidenceChecked": 80,
+ "rowsReplayed": 14,
+ "replays": [
+  {
+   "feature": "row builder (80 rows)",
+   "command": "FC4_OUT=scratch bun live/fc4-make-rows.mjs; cmp with fillet-chamfer.json",
+   "stored": "28 supported / 39 refused / 12 wrong / 1 unsupported",
+   "live": "identical file",
+   "match": true
+  },
+  {
+   "feature": "fuzz single seed 2027",
+   "command": "bun live/fc4-score.mjs ../fc4-results-fz-single.json",
+   "stored": "pane 58/16/6, contract 58/22/0",
+   "live": "pane 58/16/6, contract 58/22/0",
+   "match": true
+  },
+  {
+   "feature": "fuzz group seed 4101",
+   "command": "fc4-score.mjs fz-group",
+   "stored": "contract 56 match / 44 refused",
+   "live": "56 / 44",
+   "match": true
+  },
+  {
+   "feature": "fuzz pocket seed 5303",
+   "command": "fc4-score.mjs fz-pocket",
+   "stored": "contract 56 / 24",
+   "live": "56 / 24",
+   "match": true
+  },
+  {
+   "feature": "guard on recorded real topology",
+   "command": "bun fc-eval.mjs (copy in scratch)",
+   "stored": "MISSES 0, flat results of stored fc-eval-results.json",
+   "live": "identical, MISSES 0",
+   "match": true
+  },
+  {
+   "feature": "sentences",
+   "command": "fc-sentences-check.mjs + fc-sentences-all.mjs",
+   "stored": "0 unmapped, 0 failing",
+   "live": "0 unmapped, 0 failing",
+   "match": true
+  },
+  {
+   "feature": "a5-box-whole-9.99 (whole box round)",
+   "command": "raw solid.fillet x12 on cuboid 40x30x20 r9.99",
+   "stored": "17622.7078 / 26 faces",
+   "live": "17622.7078 / 26 faces",
+   "match": true
+  },
+  {
+   "feature": "top4-round-3",
+   "command": "solid.fillet 4 top edges 40x30x10 r3",
+   "stored": "11739.8618 / 10f",
+   "live": "11739.8618 / 10f",
+   "match": true
+  },
+  {
+   "feature": "top4-bevel-3",
+   "command": "solid.chamfer 4 top edges d3",
+   "stored": "11406.0000 / 10f (closed form 12000-630+36 = 11406)",
+   "live": "11406.0000 / 10f",
+   "match": true
+  },
+  {
+   "feature": "plate bevel 5 on 10 thick",
+   "command": "solid.chamfer d5",
+   "stored": "11500 / 7f",
+   "live": "11500 / 7f",
+   "match": true
+  },
+  {
+   "feature": "top4bot4-bevel-4.9",
+   "command": "8 edges d4.9",
+   "stored": "8952.3307 / 14f",
+   "live": "8952.3307 / 14f",
+   "match": true
+  },
+  {
+   "feature": "a5-cyl-whole-1",
+   "command": "cylinder R15 H20 both rims r1",
+   "stored": "14097.1584 / 5f",
+   "live": "14097.1584 / 5f",
+   "match": true
+  },
+  {
+   "feature": "tiny-probe.mjs",
+   "command": "bun tiny-probe.mjs vs tiny-probe.txt (size 3e-6..1e-2, fillet and chamfer)",
+   "stored": "txt",
+   "live": "identical",
+   "match": true
+  },
+  {
+   "feature": "bbox-probe R15 H20 chamfer d14.97 and 14.955",
+   "command": "raw",
+   "stored": "bbox 30.2901 x 33.1671 (bad) / 30 x 30",
+   "live": "30.2901 x 33.1671 / 30 x 30",
+   "match": true
+  }
+ ],
+ "defects": [
+  {
+   "severity": "minor",
+   "feature": "row 66 (round then hollow, smaller radius) and row 46 (union edge)",
+   "problem": "Evidence names only brep-rs as the second oracle (OCCT refuses). I derived the closed form for row 66 (14400-6.4379-9360 = 5033.5621 vs truck 5033.5577, 8.7e-7) and it agrees, but the row text does not state it; row 46 face count (9 vs OCCT 14/15) is explained only by brep-rs agreement.",
+   "evidenceFile": "fillet-chamfer.json"
+  },
+  {
+   "severity": "minor",
+   "feature": "row 17 (turned or moved cylinder rim)",
+   "problem": "refusalSentence says 'was turned' but the row also covers move(), whose own evidence quotes a different sentence ('already changed by an earlier move').",
+   "evidenceFile": "fillet-chamfer.json"
+  },
+  {
+   "severity": "minor",
+   "feature": "row 69 (mirror then round)",
+   "problem": "Row carries the contract wording but its TODAY page text ('a solidcraft command list has no second copy') uses engine words; no TODAY/CONTRACT split as elsewhere.",
+   "evidenceFile": "fillet-chamfer.json"
+  },
+  {
+   "severity": "minor",
+   "feature": "rows 0, 1, 74-77 (curved volume bar 3e-4 of total volume)",
+   "problem": "17 of 301 curved contract builds with an oracle have a blend effect below the bar (tiny sizes, rim r0.5), so volume cannot see them; only the face count backs those. A tiny-radius error on a curved body would pass.",
+   "evidenceFile": "live/fc4-score.mjs"
+  },
+  {
+   "severity": "minor",
+   "feature": "row 72 (toScript round trip)",
+   "problem": "status wrong (chamfer-style primitive round silently reopens as a fillet) is honest but has no CONTRACT row and no refusal at save time.",
+   "evidenceFile": "fillet-chamfer-evidence/roundtrip-results.json"
+  },
+  {
+   "severity": "minor",
+   "feature": "guard min size 0.01 (absolute)",
+   "problem": "The kernel's no-chamfer failure is scale dependent: a single chamfer 0.05 on a 2000x1500x1000 box builds 6 faces (no chamfer) although 0.01 works on 40x30x20. Caught only by postCheck (face count), which applies to single planar edges, not to rims or groups; groups and rims tested fine at that scale in my probe.",
+   "evidenceFile": "critic-fillet-chamfer/boxs.mjs"
+  }
+ ],
+ "notMeasured": [
+  "Live contract path (browser, fc-host + fc-live): not replayed, no playwright-cli or browser on this box; replayed the guard on recorded real topology instead (identical).",
+  "Guard on topology of new cases (e.g. a hole that breaks through the front face: raw kernel is 0.7 to 4.1 percent wrong there, the guard rules R1/R4 should refuse it but I could not produce truck topology for it).",
+  "Fillet-at-huge-scale single-edge post-check path, grouped-chamfer tiny sizes on huge parts beyond one case.",
+  "Wall times (box was heavily loaded); row 73 (unsupported, slow fillets) not re-timed."
+ ],
+ "criticAt": "2026-10-19"
+}
