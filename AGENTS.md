@@ -66,7 +66,7 @@ Line numbers are from 2026-09-17 and may have drifted.
 - **One adapter seam, kernel behind it**: everything that builds a solid goes through `EngineAdapter`. Nothing outside the adapter names a kernel. Swapping truck for SolidCore must touch the adapter only
 - **No fallback engine**: a shape the current kernel cannot build correctly is refused per feature, in a sentence. It is not retried elsewhere. `config.ts` exports only the base URL and a `getEngineMode()` must not exist (pinned by `packages/brep-adapter/test/config.test.mjs`)
 - **Upstream stays unmodified**: SolidCraft and SolidCore are pinned to a commit and never forked or patched by us. Defects are handled on our side of the seam. Patch files stay under `docs/spikes/` and are not applied
-- **Tests run with `bun test`**: `node` on this box is Bun 1.4.2, so `npm test` does not run. Archived tests live in `packages/*/test/archived/`, outside the `test/*.test.mjs` glob
+- **Tests run per package, and locally that is now real Node**: `node` is a shim that prefers a user-local Node 22 (`~/.local/share/node/current`) and falls back to Bun only when no Node is installed. With Node present, `npm test` and `npm run ci:local` run the package scripts as `node --test`. Bun's `node:test` shim refuses that runner, so on a box without Node the per-package `bun test test/*.test.mjs` form is the only one that works. Archived tests live in `packages/*/test/archived/`, outside the `test/*.test.mjs` glob
 - **No linter/formatter**: No ESLint, Prettier — conventions enforced by `tsc` + written docs
 - **Line endings**: LF enforced via `.gitattributes` for all text/code; `*.wasm`, `*.png` marked binary
 
@@ -90,7 +90,12 @@ Line numbers are from 2026-09-17 and may have drifted.
 
 ## COMMANDS
 ```bash
-# Tests (Bun; per package). `npm test` does not run on this box.
+# Tests. CI and this box both run these; the suites and check-record are also
+# wrapped by `npm run ci:local`, which `.githooks/pre-push` calls.
+npm test
+
+# Per package, and the only form that works when `node` has fallen back to Bun
+# (Bun's node:test shim refuses `node --test`):
 (cd packages/sketch && bun test test/*.test.mjs)
 (cd packages/script && bun test test/*.test.mjs)
 (cd packages/studio && bun test test/*.test.mjs)
