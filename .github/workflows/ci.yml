@@ -65,8 +65,14 @@ jobs:
       # Keyed on Cargo.lock, and it caches ~/.cargo/bin so wasm-pack itself is
       # installed once rather than compiled on every run (a cold
       # `cargo install wasm-pack` is minutes, not seconds).
+      #
+      # v6, not v4, for the same reason checkout and setup-node are v7: v4's
+      # action.yml declares `using: node20`, which GitHub force-runs on Node 24
+      # and warned about on every run. v5 and v6 both declare node24. Nothing in
+      # this repo would have changed when Node 20 stops being supported -- the
+      # job would just start failing from the outside.
       - name: Cache cargo
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: |
             ~/.cargo/bin
